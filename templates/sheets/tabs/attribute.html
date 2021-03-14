@@ -1,0 +1,17 @@
+<div>
+    <h2>Attribute</h2>
+    <div>
+        <div class="flexrow">
+            <h6></h6>
+            <h6>Wert</h6>
+            <h6>PW</h6>
+        </div>
+        {{#each data.attribute as |attribut key|}}
+        <div class="flexrow">
+            <label>{{attribut.label}}</label>
+            <input name="data.attribute.{{key}}.wert" value="{{attribut.wert}}" type="text" data-dtype="Number">
+            <label class="roll-attribut" data-attribut="{{key}}">{{attribut.pw}}</label>
+        </div>
+        {{/each}}
+    </div>
+</div>

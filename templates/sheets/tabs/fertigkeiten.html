@@ -1,0 +1,37 @@
+<div>
+    <h2>Fertigkeiten</h2>
+    <div>
+        <div class="flexrow">
+            <h6>Name</h6>
+            <h6>Attribute</h6>
+            <h6>Basis</h6>
+            <h6>FW</h6>
+            <h6>Talente</h6>
+            <h6>PW</h6>
+            <h6>PW(T)</h6>
+        </div>
+        {{#each data.fertigkeiten as |fert key|}}
+        <div class="flexrow">
+            <label class="fertigkeit-view" data-fertigkeit="{{key}}">{{fert.label}}</label>
+            <label>{{AttributeFertigkeit fert.attribute}}</label>
+            <label>{{fert.basis}}</label>
+            <input name="data.fertigkeiten.{{key}}.fw" value="{{fert.fw}}" type="text" data-dtype="Number">
+            <label>{{aktivTalentView fert}}</label>
+            <label class="roll-fertigkeitpw">{{fert.pw}}</label>
+            <label class="roll-fertigkeitpwt">{{fert.pwt}}</label>
+        </div>
+        <div id="folding-fert-{{key}}" style="display: none">
+            <label>{{fert.text}}</label>
+            {{#each fert.talente as |tal tkey|}}
+            <div>
+                <input name="data.fertigkeiten.{{key}}.talente.{{tkey}}.aktiv" data-dtype="Boolean" type="checkbox" {{checked tal.aktiv}}>
+                <label>{{tal.label}}</label>
+            </div>
+            <div>
+                <label>{{tal.text}}</label>
+            </div>
+            {{/each}}
+        </div>
+        {{/each}}
+    </div>
+</div>
