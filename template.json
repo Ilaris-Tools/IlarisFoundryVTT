@@ -6,6 +6,25 @@
             "villain"
         ],
         "templates": {
+            "gesundheit":{
+                "gesundheit": {
+                    "erschoepfung": {
+                        "label": "Erschöpfung",
+                        "wert": 0
+                    },
+                    "wunden": {
+                        "label": "Wunden",
+                        "wert": 0
+                    },
+                    "wundabzuege": {
+                        "label": "Wundabzüge",
+                        "wert": 0
+                    },
+                    "status": {
+                        "label": "Status",
+                        "wert": []
+                    }
+                }},
             "attribute": {
                 "attribute": {
                     "KO": {
@@ -879,6 +898,7 @@
             "templates": [
                 "background",
                 "resources",
+                "gesundheit",
                 "attribute",
                 "fertigkeiten"
             ],

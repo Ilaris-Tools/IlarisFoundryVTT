@@ -3,6 +3,15 @@
     <div>
       <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
       <input name="name" type="text" value="{{actor.name}}" />
+      <div class="flexrow">
+          <label>Erschöpfung</label>
+          <input name="data.gesundheit.erschoepfung.wert" value="{{data.gesundheit.erschoepfung.wert}}" type="text" data-dtype="Number">
+      </div>
+      <div class="flexrow">
+          <label>Wunden </label>
+          <input name="data.gesundheit.wunden.wert" value="{{data.gesundheit.wunden.wert}}" type="text" data-dtype="Number">
+      </div>
+      <label>{{data.gesundheit.display}}</label>
       <!-- <label>{{data.notes}}</label>
       {{editor content=data.notes target="data.notes" button=true owner=owner editable=editable}}
       <label>{{data.notes}}</label> -->

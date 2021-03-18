@@ -28,8 +28,15 @@ export class IlarisActorSheet extends ActorSheet {
         console.log(event.currentTarget.dataset);
         console.log(this.actor.name);
         const attribute_name = $(event.currentTarget).data("attribut");
+        console.log(attribute_name);
+        // console.log(this.actor.data);
+        // console.log(this.actor.data.data.attribute[attribute_name]);
+        // console.log(this.actor.data.data.attribute[attribute_name].pw);
+        let pw = this.actor.data.data.attribute[attribute_name].pw;
+        // console.log(pw);
         // const skillName = $(event.currentTarget).data("skill");
-        let formula = `${5} + 3d20dl1dh1`;
+        let wundabzuege = this.actor.data.data.gesundheit.wundabzuege;
+        let formula = `${pw} ${wundabzuege} + 3d20dl1dh1`;
         // let formula = `${data.pw} + 3d20dhdl`;
         let roll = new Roll(formula);
         roll.roll();
@@ -45,6 +52,7 @@ export class IlarisActorSheet extends ActorSheet {
         console.log(event.currentTarget);
     };
 
+    //alter Versuch von mir. Passt nicht mehr, inkompatibles template. 
     async _onRollable_old(event) {
         console.log(event);
         // event.preventDefault();
