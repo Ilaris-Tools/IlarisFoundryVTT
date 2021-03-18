@@ -23,16 +23,16 @@ export class IlarisActorSheet extends ActorSheet {
     };
 
     _rollAttribut(event) {
-        console.log(event);
-        console.log(event.currentTarget);
-        console.log(event.currentTarget.dataset);
+        // console.log(event);
+        // console.log(event.currentTarget);
+        // console.log(event.currentTarget.dataset);
         console.log(this.actor.name);
-        const attribute_name = $(event.currentTarget).data("attribut");
-        console.log(attribute_name);
+        const attribut_name = $(event.currentTarget).data("attribut");
+        console.log(attribut_name);
         // console.log(this.actor.data);
-        // console.log(this.actor.data.data.attribute[attribute_name]);
-        // console.log(this.actor.data.data.attribute[attribute_name].pw);
-        let pw = this.actor.data.data.attribute[attribute_name].pw;
+        // console.log(this.actor.data.data.attribute[attribut_name]);
+        // console.log(this.actor.data.data.attribute[attribut_name].pw);
+        let pw = this.actor.data.data.attribute[attribut_name].pw;
         // console.log(pw);
         // const skillName = $(event.currentTarget).data("skill");
         let wundabzuege = this.actor.data.data.gesundheit.wundabzuege;
@@ -46,10 +46,28 @@ export class IlarisActorSheet extends ActorSheet {
 
     _rollFertigkeitPW(event) {
         console.log(event.currentTarget);
+        const fertigkeit_name = $(event.currentTarget).data("fertigkeit");
+        console.log(fertigkeit_name);
+        let pw = this.actor.data.data.fertigkeiten[fertigkeit_name].pw;
+        let wundabzuege = this.actor.data.data.gesundheit.wundabzuege;
+        let formula = `${pw} ${wundabzuege} + 3d20dl1dh1`;
+        let roll = new Roll(formula);
+        roll.roll();
+        console.log(roll);
+        roll.toMessage();
     };
 
     _rollFertigkeitPWT(event) {
         console.log(event.currentTarget);
+        const fertigkeit_name = $(event.currentTarget).data("fertigkeit");
+        console.log(fertigkeit_name);
+        let pw = this.actor.data.data.fertigkeiten[fertigkeit_name].pwt;
+        let wundabzuege = this.actor.data.data.gesundheit.wundabzuege;
+        let formula = `${pw} ${wundabzuege} + 3d20dl1dh1`;
+        let roll = new Roll(formula);
+        roll.roll();
+        console.log(roll);
+        roll.toMessage();
     };
 
     //alter Versuch von mir. Passt nicht mehr, inkompatibles template. 
