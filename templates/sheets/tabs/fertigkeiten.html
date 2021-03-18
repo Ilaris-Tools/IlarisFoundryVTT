@@ -17,8 +17,8 @@
             <label>{{fert.basis}}</label>
             <input name="data.fertigkeiten.{{key}}.fw" value="{{fert.fw}}" type="text" data-dtype="Number">
             <label>{{aktivTalentView fert}}</label>
-            <label class="roll-fertigkeitpw" data-fertigkeit="{{key}}">{{fert.pw}}</label>
-            <label class="roll-fertigkeitpwt" data-fertigkeit="{{key}}">{{fert.pwt}}</label>
+            <label class="rollable" data-rolltype="fertigkeitpw" data-fertigkeit="{{key}}">{{fert.pw}}</label>
+            <label class="rollable" data-rolltype="fertigkeitpwt" data-fertigkeit="{{key}}">{{fert.pwt}}</label>
         </div>
         <div id="folding-fert-{{key}}" style="display: none">
             <label>{{fert.text}}</label>
