@@ -12,35 +12,27 @@
           <input name="data.gesundheit.wunden.wert" value="{{data.gesundheit.wunden.wert}}" type="text" data-dtype="Number">
       </div>
       <label>{{data.gesundheit.display}}</label>
-      <!-- <label>{{data.notes}}</label>
-      {{editor content=data.notes target="data.notes" button=true owner=owner editable=editable}}
-      <label>{{data.notes}}</label> -->
     </div>
     <div>
       <div>
-        <!-- <div class="tab" data-group="primary" data-tab="stats"> -->
-        <!-- {{> systems/Ilaris/templates/sheets/tabs/attribute.html}}
-        {{> systems/Ilaris/templates/sheets/tabs/fertigkeiten.html}} -->
         <div class="sheet-tabs tabs" data-group="primary">
           <b class="item" data-tab="attribute">Attribute</b>
           <b class="item" data-tab="fertigkeiten">Fertigkeiten</b>
+          <b class="item" data-tab="inventar">Inventar</b>
           <b class="item" data-tab="notes">blabla</b>
         </div>
         <div class="sheet-body">
           <div class="tab" data-group="primary" data-tab="notes">
-            <!-- <div class="notes"> -->
-            <!-- <div style="height: 100%"> -->
-            <!-- {{editor content=data.notes target="data.notes" button=true owner=owner editable=editable}} -->
             {{> systems/Ilaris/templates/sheets/tabs/notes.html}}
-            <!-- <textarea class='bio-section-value' style='height: max-content;resize: none;font-family: "Nodesto", "Signika", "Palatino Linotype", serif;font-size: 12px;' rows="4" >{{data.notes}}</textarea> -->
-            <!-- </div> -->
-            <!-- </div> -->
           </div>
           <div class="tab" data-group="primary" data-tab="attribute">
             {{> systems/Ilaris/templates/sheets/tabs/attribute.html}}
           </div>
           <div class="tab" data-group="primary" data-tab="fertigkeiten">
             {{> systems/Ilaris/templates/sheets/tabs/fertigkeiten.html}}
+          </div>
+          <div class="tab" data-group="primary" data-tab="inventar">
+              {{> systems/Ilaris/templates/sheets/tabs/inventar.html}}
           </div>
         </div>
       </div>

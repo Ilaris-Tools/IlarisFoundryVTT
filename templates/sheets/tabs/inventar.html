@@ -1,0 +1,51 @@
+<div>
+    <h2>Rüstung</h2>
+    <a class="item-create" data-itemclass="ruestung"><i class="fas fa-plus"></i>Neue Rüstung</a>
+    <div>
+        <div class="flexrow">
+            <h6></h6>
+            <h6>Name</h6>
+            <h6>RS</h6>
+            <h6>BE</h6>
+            <h6>Bein</h6>
+            <h6>l. Arm</h6>
+            <h6>r. Arm</h6>
+            <h6>Bauch</h6>
+            <h6>Brust</h6>
+            <h6>Kopf</h6>
+            <h6></h6>
+            <h6></h6>
+        </div>
+        {{#each actor.ruestungen as |ruestung key|}}
+        <div class="flexrow">
+            <label>{{ruestung.data.aktiv}}</label>
+            <label>{{ruestung.name}}</label>
+            <label>{{ruestung.data.rs}}</label>
+            <label>{{ruestung.data.be}}</label>
+            <label>{{ruestung.data.rs_beine}}</label>
+            <label>{{ruestung.data.rs_larm}}</label>
+            <label>{{ruestung.data.rs_rarm}}</label>
+            <label>{{ruestung.data.rs_bauch}}</label>
+            <label>{{ruestung.data.rs_brust}}</label>
+            <label>{{ruestung.data.rs_kopf}}</label>
+            <a class="item-edit" data-itemclass="ruestung" data-itemid="{{ruestung._id}}"><i class="fas fa-edit"></i></a>
+            <a class="item-delete" data-itemclass="ruestung" data-itemid="{{ruestung._id}}"><i class="fas fa-trash"></i></a>
+        </div>
+        {{/each}}
+        <div class="flexrow">
+            <label></label>
+            <label>Gesamt (Ws*)</label>
+            <label>{{actor.data.abgeleitete.ws_stern}}</label>
+            <label>{{actor.data.abgeleitete.be}}</label>
+            <label>{{actor.data.abgeleitete.ws_beine}}</label>
+            <label>{{actor.data.abgeleitete.ws_larm}}</label>
+            <label>{{actor.data.abgeleitete.ws_rarm}}</label>
+            <label>{{actor.data.abgeleitete.ws_bauch}}</label>
+            <label>{{actor.data.abgeleitete.ws_brust}}</label>
+            <label>{{actor.data.abgeleitete.ws_kopf}}</label>
+            <label></label>
+            <label></label>
+        </div>
+    </div>
+</div>
+

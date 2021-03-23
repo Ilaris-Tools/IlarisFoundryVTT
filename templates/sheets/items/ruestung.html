@@ -1,0 +1,47 @@
+<form class="{{cssClass}}">
+    <div>
+        <div>
+            <header class="sheet-header">
+                <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+                <div class="header-fields">
+                    <h1 class="charname"><input name="name" type="text" value="{{item.name}}"/></h1>
+                </div>
+            </header>
+        </div>
+        <div>
+            <div class="'flexrow">
+                <label>Getragen?<label>
+                <input name="data.aktiv" data-dtype="Boolean" type="checkbox" {{checked data.aktiv}}>
+            </div>
+            <div class="flexrow">
+                <h6>RS</h6>
+                <h6>BE</h6>
+                <h6>Bein</h6>
+                <h6>l. Arm</h6>
+                <h6>r. Arm</h6>
+                <h6>Bauch</h6>
+                <h6>Brust</h6>
+                <h6>Kopf</h6>
+            </div>
+            <div class="flexrow">
+                <input name="data.rs" value="{{item.data.rs}}" type="text" data-dtype="Number">
+                <input name="data.be" value="{{item.data.be}}" type="text" data-dtype="Number">
+                <input name="data.rs_beine" value="{{item.data.rs_beine}}" type="text" data-dtype="Number">
+                <input name="data.rs_larm" value="{{item.data.rs_larm}}" type="text" data-dtype="Number">
+                <input name="data.rs_rarm" value="{{item.data.rs_rarm}}" type="text" data-dtype="Number">
+                <input name="data.rs_bauch" value="{{item.data.rs_bauch}}" type="text" data-dtype="Number">
+                <input name="data.rs_brust" value="{{item.data.rs_brust}}" type="text" data-dtype="Number">
+                <input name="data.rs_kopf" value="{{item.data.rs_kopf}}" type="text" data-dtype="Number">
+            </div>
+            <label>Gesundheit</label>
+            <div class="flexrow">
+                <label>Härte</label>
+                <input name="data.haerte" value="{{item.data.haerte}}" type="text" data-dtype="Number">
+                <label>Beschädigung</label>
+                <input name="data.beschaedigung" value="{{item.data.beschaedigung}}" type="text" data-dtype="Number">
+            </div>
+            <label>Beschreibung</label>
+            {{editor content=data.text target="data.text" button=true owner=owner editable=editable}}
+        </div>
+    </div>
+</form>

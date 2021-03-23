@@ -8,9 +8,11 @@ function preloadHandlebarsTemplates() {
         "systems/Ilaris/templates/sheets/helden.html",
         "systems/Ilaris/templates/sheets/tabs/attribute.html",
         "systems/Ilaris/templates/sheets/tabs/fertigkeiten.html",
+        "systems/Ilaris/templates/sheets/tabs/inventar.html",
         "systems/Ilaris/templates/sheets/tabs/fertigkeitview.html",
         "systems/Ilaris/templates/sheets/tabs/notes.html",
         "systems/Ilaris/templates/chat/dreid20.html",
+        "systems/Ilaris/templates/sheets/items/ruestung.html"
     ];
     return loadTemplates(templatePaths);
 };

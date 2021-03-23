@@ -25,6 +25,26 @@
                         "wert": []
                     }
                 }},
+            "abgeleitete": {
+                "abgeleitete": {
+                    "ws": 0,
+                    "ws_stern": 0,
+                    "be": 0,
+                    "ws_beine": 0,
+                    "ws_larm": 0,
+                    "ws_rarm": 0,
+                    "ws_bauch": 0,
+                    "ws_brust": 0,
+                    "ws_kopf": 0,
+                    "mr": 0,
+                    "gs": 0,
+                    "gs_stern": 0,
+                    "sb": 0,
+                    "ini": 0,
+                    "dh": 0,
+                    "dh_stern": 0
+                }
+            },
             "attribute": {
                 "attribute": {
                     "KO": {
@@ -900,7 +920,8 @@
                 "resources",
                 "gesundheit",
                 "attribute",
-                "fertigkeiten"
+                "fertigkeiten",
+                "abgeleitete"
             ],
             "goodness": {
                 "value": 5,
@@ -938,6 +959,7 @@
                 "beschaedigung": 0
             },
             "waffe": {
+                "label": "",
                 "schaden": "1d6+1",
                 "fertigkeit": "",
                 "talent": "",
@@ -974,8 +996,8 @@
             "rs": 0,
             "be": 0,
             "rs_beine": 0,
-            "rs_schildarm": 0,
-            "rs_schwertarm": 0,
+            "rs_larm": 0,
+            "rs_rarm": 0,
             "rs_bauch": 0,
             "rs_brust": 0,
             "rs_kopf": 0,
