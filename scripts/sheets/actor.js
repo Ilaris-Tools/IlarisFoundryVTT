@@ -2,7 +2,7 @@ export class IlarisActorSheet extends ActorSheet {
 
     activateListeners(html) {
         super.activateListeners(html);
-        html.find(".fertigkeit-view").click(ev => this._fertigkeitView(ev));
+        html.find(".ausklappen-trigger").click(ev => this._fertigkeitView(ev));
         html.find(".rollable").click(ev => this._onRollable(ev));
         html.find(".item-create").click(ev => this._onItemCreate(ev));
         html.find(".item-edit").click(ev => this._onItemEdit(ev));
@@ -10,13 +10,13 @@ export class IlarisActorSheet extends ActorSheet {
     };
 
     _fertigkeitView(event) {
-        const fertigkeitKey = $(event.currentTarget).data("fertigkeit");
-        const fertigkeitId = "folding-fert-".concat(fertigkeitKey);
-        var toggleFert = document.getElementById(fertigkeitId);
-        if (toggleFert.style.display === "none") {
-            toggleFert.style.display = "block";
+        const targetkey = $(event.currentTarget).data("ausklappentarget");
+        const targetId = "ausklappen-view-".concat(targetkey);
+        var toggleView = document.getElementById(targetId);
+        if (toggleView.style.display === "none") {
+            toggleView.style.display = "block";
         } else {
-            toggleFert.style.display = "none";
+            toggleView.style.display = "none";
         }
     };
 
@@ -27,27 +27,35 @@ export class IlarisActorSheet extends ActorSheet {
         let wundabzuege = data.gesundheit.wundabzuege;
         let pw = 0;
         let label = "Probe";
-        if (rolltype == "attribut"){
+        if (rolltype == "attribut") {
             const attribut_name = $(event.currentTarget).data("attribut");
             label = data.attribute[attribut_name].label;
             pw = data.attribute[attribut_name].pw;
         }
-        else if (rolltype == "fertigkeitpw"){
+        else if (rolltype == "fertigkeitpw") {
             const fertigkeit_name = $(event.currentTarget).data("fertigkeit");
             label = data.fertigkeiten[fertigkeit_name].label;
             pw = data.fertigkeiten[fertigkeit_name].pw;
         }
-        else if (rolltype == "fertigkeitpwt"){
+        else if (rolltype == "fertigkeitpwt") {
             const fertigkeit_name = $(event.currentTarget).data("fertigkeit");
             label = data.fertigkeiten[fertigkeit_name].label;
             label = label.concat("(Talent)");
             pw = data.fertigkeiten[fertigkeit_name].pwt;
         }
-        let formula = `${pw} ${wundabzuege} + 3d20dl1dh1`;
+        else if (rolltype == "magie_fertigkeit" || rolltype == "karma_fertigkeit") {
+            label = $(event.currentTarget).data("fertigkeit");
+            pw = $(event.currentTarget).data("pw");
+        }
+        else if (rolltype == "magie_talent" || rolltype == "karma_talent") {
+            label = $(event.currentTarget).data("talent");
+            pw = $(event.currentTarget).data("pw");
+        }
+        let formula = `${pw} + ${wundabzuege} + 3d20dl1dh1`;
         // let formula = `${data.pw} + 3d20dhdl`;
         let roll = new Roll(formula);
         roll.roll();
-        console.log(roll);
+        // console.log(roll);
         let critfumble = roll.result.split(" + ")[1];
         let fumble = false;
         let crit = false;
@@ -62,7 +70,7 @@ export class IlarisActorSheet extends ActorSheet {
             crit: crit,
             fumble: fumble
         };
-        console.log(templateData);
+        // console.log(templateData);
         let template = 'systems/Ilaris/templates/chat/dreid20.html';
         renderTemplate(template, templateData, roll).then(content => {
             if (formula != null) {
@@ -78,22 +86,55 @@ export class IlarisActorSheet extends ActorSheet {
         let itemclass= $(event.currentTarget).data("itemclass");
         //ansehen: DomStringMap. Beide Varianten liefern das gleiche.
         //Welche ist besser und warum?
-        console.log($(event.currentTarget).data("itemclass"));
-        console.log(event.currentTarget.dataset.itemclass);
+        // console.log($(event.currentTarget).data("itemclass"));
+        // console.log(event.currentTarget.dataset.itemclass);
         let itemData = {};
         if (itemclass == "ruestung") {
-            console.log("Rüstung");
+            console.log("Neue Rüstung");
             itemData = {
                 name: "Neue Rüstung",
                 type: "ruestung",
                 data: {
-                    be: 42
+                    be: 1,
+                    rs: 1
                 }
             };
         }
-        console.log(this.actor);
-        console.log(this.actor.data);
-        console.log(this.actor.data.data);
+        else if (itemclass == "magie_fertigkeit") {
+            console.log("Neue Magiefertigkeit");
+            itemData = {
+                name: "Zauberfertigkeit",
+                type: "magie_fertigkeit",
+                data: {}
+            };
+        }
+        else if (itemclass == "karma_fertigkeit") {
+            console.log("Neue Karmafertigkeit");
+            itemData = {
+                name: "Karmafertigkeit",
+                type: "karma_fertigkeit",
+                data: {}
+            };
+        }
+        else if (itemclass == "magie_talent") {
+            console.log("Neues Magietalent");
+            itemData = {
+                name: "Magietalent",
+                type: "magie_talent",
+                data: {}
+            };
+        }
+        else if (itemclass == "karma_talent") {
+            console.log("Neues karmatalent");
+            itemData = {
+                name: "Karmatalent",
+                type: "karma_talent",
+                data: {}
+            };
+        }
+        // console.log(this.actor);
+        // console.log(this.actor.data);
+        // console.log(this.actor.data.data);
 
         return this.actor.createOwnedItem(itemData);
 
@@ -120,8 +161,8 @@ export class IlarisActorSheet extends ActorSheet {
 
     _onItemEdit(event){
         console.log("ItemEdit");
-        console.log(event);
-        console.log(event.currentTarget);
+        // console.log(event);
+        // console.log(event.currentTarget);
         // const li = $(ev.currentTarget).parents(".item");
         // const item = this.actor.getOwnedItem(li.data("itemId"));
         // item.sheet.render(true);

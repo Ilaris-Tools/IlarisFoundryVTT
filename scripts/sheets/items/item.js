@@ -1,4 +1,13 @@
 export class IlarisItemSheet extends ItemSheet {
+
+    // Setze ich das an der richtigen Stelle?
+	  getData() {
+		    const data = super.getData();
+		    data.hasOwner = this.item.actor != null;
+        // console.log("In item.js");
+        // console.log(data.actor);
+        return data;
+    }
     // activateListeners(html) {
     //     super.activateListeners(html);
     //     html.find("input").focusin(ev => this._onFocusIn(ev));

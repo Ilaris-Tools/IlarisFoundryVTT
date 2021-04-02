@@ -951,7 +951,10 @@
             "fernkampfwaffe",
             "ruestung",
             "weapon",
-            "spell"
+            "magie_fertigkeit",
+            "magie_talent",
+            "karma_fertigkeit",
+            "karma_talent"
         ],
         "templates": {
             "gesundheit": {
@@ -970,9 +973,34 @@
                 "eigenschaften": [],
                 "text": ""
             },
-            "rarity": {
-                "rarity": "Common",
-                "price": 20
+            "uebernatuerlich_fertigkeit": {
+                "label": "",
+                "faktor": 0,
+                "basis": 0,
+                "fw": 0,
+                "pw": 0,
+                "attribut_0": "KL",
+                "attribut_1": "IN",
+                "attribut_2": "CH",
+                "text": ""
+            },
+            "uebernatuerlich_talent": {
+                "label": "",
+                "fertigkeiten": "",
+                "fertigkeit_ausgewaehlt": "auto",
+                "text": "",
+                "maechtig": "",
+                "schwierigkeit": "",
+                "modifikationen": "",
+                "vorbereitung": "",
+                "ziel": "",
+                "reichweite": "",
+                "wirkungsdauer": "",
+                "kosten": "",
+                "erlernen": "",
+                "pw": 0,
+                "ep": 0,
+                "skripte": ""
             }
         },
         "nahkampfwaffe": {
@@ -1004,17 +1032,25 @@
             "aktiv": false,
             "text": ""
         },
-        "weapon": {
+        "magie_fertigkeit": {
             "templates": [
-                "rarity"
-            ],
-            "damage": 5
+                "uebernatuerlich_fertigkeit"
+            ]
         },
-        "spell": {
+        "karma_fertigkeit": {
             "templates": [
-                "rarity"
-            ],
-            "cost": 2
+                "uebernatuerlich_fertigkeit"
+            ]
+        },
+        "magie_talent": {
+            "templates": [
+                "uebernatuerlich_talent"
+            ]
+        },
+        "karma_talent": {
+            "templates": [
+                "uebernatuerlich_talent"
+            ]
         }
     }
 }

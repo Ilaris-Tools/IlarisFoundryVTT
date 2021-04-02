@@ -1,0 +1,78 @@
+<form class="{{cssClass}}">
+    <div>
+        <div>
+            <header class="sheet-header">
+                <div class="header-fields">
+                    <h1 class="charname"><input name="name" type="text" value="{{item.name}}"/></h1>
+                </div>
+            </header>
+        </div>
+
+
+        {{#if hasOwner}}
+        <label>Fertigkeit:</label>
+        <select name="data.fertigkeit_ausgewaehlt">
+            {{#select data.fertigkeit_ausgewaehlt}}
+            <option value="auto">auto</option>
+            {{#each data.fertigkeit_actor as |fert key|}}
+            <option value="{{fert}}">{{fert}}</option>
+            {{/each}}
+            {{/select}}
+        </select>
+        {{/if}}
+        <div>
+            <div class="flexrow">
+                <label>Mächtig: </label>
+                <textarea name="data.maechtig">{{data.maechtig}}</textarea>
+                <!-- <input name="data.maechtig" value="{{item.data.maechtig}}" type="text" data-dtype="String"> -->
+            </div>
+            <div class="flexrow">
+                <label>Schwierigkeit: </label>
+                <input name="data.schwierigkeit" value="{{item.data.schwierigkeit}}" type="text" data-dtype="String">
+            </div>
+            <div class="flexrow">
+                <label>Modifikationen: </label>
+                <textarea name="data.modifikationen">{{data.modifikationen}}</textarea>
+                <!-- <input name="data.modifikationen" value="{{item.data.modifikationen}}" type="textarea" style="resize: vertical;" rows="2" data-dtype="String"> -->
+            </div>
+            <div class="flexrow">
+                <label>Vorbereitung: </label>
+                <input name="data.vorbereitung" value="{{item.data.vorbereitung}}" type="text" data-dtype="String">
+            </div>
+            <div class="flexrow">
+                <label>Ziel: </label>
+                <input name="data.ziel" value="{{item.data.ziel}}" type="text" data-dtype="String">
+            </div>
+            <div class="flexrow">
+                <label>Reichweite: </label>
+                <input name="data.reichweite" value="{{item.data.reichweite}}" type="text" data-dtype="String">
+            </div>
+            <div class="flexrow">
+                <label>Wirkungsdauer: </label>
+                <input name="data.wirkungsdauer" value="{{item.data.wirkungsdauer}}" type="text" data-dtype="String">
+            </div>
+            <div class="flexrow">
+                <label>Kosten: </label>
+                    <input name="data.kosten" value="{{item.data.kosten}}" type="text" data-dtype="String">
+            </div>
+            <div class="flexrow">
+                <label>Fertigkeiten: </label>
+                <input name="data.fertigkeiten" value="{{item.data.fertigkeiten}}" type="text" data-dtype="String">
+            </div>
+            <div class="flexrow">
+                <label>Erlernen: </label>
+                <input name="data.erlernen" value="{{item.data.erlernen}}" type="text" data-dtype="String">
+            </div>
+            <div class="flexrow">
+                <label>Lernkosten: </label>
+                <div class="flexrow">
+                    <input name="data.ep" value="{{item.data.ep}}" type="text" data-dtype="Number">
+                    <label>EP</label>
+                </div>
+            </div>
+            <label>Beschreibung: </label>
+            <textarea name="data.text">{{data.text}}</textarea>
+            <!-- {{editor content=data.text target="data.text" button=true owner=owner editable=editable}} -->
+        </div>
+    </div>
+</form>

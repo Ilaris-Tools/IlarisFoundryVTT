@@ -10,9 +10,11 @@ function preloadHandlebarsTemplates() {
         "systems/Ilaris/templates/sheets/tabs/fertigkeiten.html",
         "systems/Ilaris/templates/sheets/tabs/inventar.html",
         "systems/Ilaris/templates/sheets/tabs/fertigkeitview.html",
+        "systems/Ilaris/templates/sheets/tabs/uebernatuerlich.html",
         "systems/Ilaris/templates/sheets/tabs/notes.html",
         "systems/Ilaris/templates/chat/dreid20.html",
-        "systems/Ilaris/templates/sheets/items/ruestung.html"
+        "systems/Ilaris/templates/sheets/items/ruestung.html",
+        "systems/Ilaris/templates/helper/select_attribut.html"
     ];
     return loadTemplates(templatePaths);
 };
@@ -23,6 +25,23 @@ function registerHandlebarsHelpers() {
         const fertAttr = attrArray[0].concat("/", attrArray[1], "/", attrArray[2]);
         return fertAttr;
     });
+
+    Handlebars.registerHelper("AttributeFertigkeit_from_data", function (attrArray) {
+        const fertAttr = attrArray.attribut_0.concat("/", attrArray.attribut_1, "/", attrArray.attribut_2);
+        return fertAttr;
+    });
+
+    // Handlebars.registerHelper("AlleMagieFertigkeiten", function (ev) {
+    //     console.log("In AlleMagieFertigkeiten Handlebar");
+    //     console.log(ev);
+    //     console.log(ev.data.root.data.fertigkeit_array);
+    //     // console.log(ev.data.root.Actor());
+    //     // console.log(ev.data.root.item.Actor());
+    //     // console.log(ev.data.root.entity.Actor());
+    //     // console.log(ev.data.root.data.Actor());
+    //     // console.log(ev.data.Actor());
+    //     return ev.data.root.data.fertigkeit_array;
+    // });
 
     Handlebars.registerHelper("aktivTalentView", function (fertigkeitObject) {
         const talentList = fertigkeitObject.talente;

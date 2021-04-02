@@ -9,9 +9,11 @@
             </header>
         </div>
         <div>
-            <div class="'flexrow">
-                <label>Getragen?<label>
+            <div>
+                {{#if hasOwner}}
+                <label>Getragen?</label>
                 <input name="data.aktiv" data-dtype="Boolean" type="checkbox" {{checked data.aktiv}}>
+                {{/if}}
             </div>
             <div class="flexrow">
                 <h6>RS</h6>
@@ -33,7 +35,7 @@
                 <input name="data.rs_brust" value="{{item.data.rs_brust}}" type="text" data-dtype="Number">
                 <input name="data.rs_kopf" value="{{item.data.rs_kopf}}" type="text" data-dtype="Number">
             </div>
-            <label>Gesundheit</label>
+            <h5>Gesundheit</h5>
             <div class="flexrow">
                 <label>Härte</label>
                 <input name="data.haerte" value="{{item.data.haerte}}" type="text" data-dtype="Number">
@@ -41,7 +43,8 @@
                 <input name="data.beschaedigung" value="{{item.data.beschaedigung}}" type="text" data-dtype="Number">
             </div>
             <label>Beschreibung</label>
-            {{editor content=data.text target="data.text" button=true owner=owner editable=editable}}
+            <textarea name="data.text">{{data.text}}</textarea>
+            <!-- {{editor content=data.text target="data.text" button=true owner=owner editable=editable}} -->
         </div>
     </div>
 </form>

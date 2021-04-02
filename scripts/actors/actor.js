@@ -8,11 +8,17 @@ export class IlarisActor extends Actor {
     }
 
     _initializeHeld(data) {
-        this._sortItems(data);
+        console.log("***Bevor Berechnungen***");
+        console.log(data);
+        this._sortItems(data); //Als erstes, darauf basieren Berechnungen
         this._calculatePWAttribute(data);
         this._calculateWerteFertigkeiten(data);
         this._calculateWounds(data);
         this._calculateWundschwellenRuestung(data);
+        this._calculateUebernaturlichFertigkeiten(data);
+        this._calculateUebernaturlichTalente(data); //Nach Uebernatürliche Fertigkeiten
+        console.log("***Nach Berechnungen***");
+        console.log(data);
     }
 
     _calculatePWAttribute(data) {
@@ -22,6 +28,7 @@ export class IlarisActor extends Actor {
     }
 
     _calculateWerteFertigkeiten(data) {
+        console.log("Berechne profane Fertigkeiten");
         for (let fertigkeit of Object.values(data.data.fertigkeiten)) {
             let basiswert = 0;
             for (const attribut of fertigkeit.attribute) {
@@ -34,10 +41,112 @@ export class IlarisActor extends Actor {
         }
     }
 
+    // Werte werden nicht gespeichert, sonder jedes mal neu berechnet?
+    _calculateUebernaturlichFertigkeiten(data) {
+        console.log("Berechne Übernatürliche Fertigkeiten");
+        for (let fertigkeit of data.magie.fertigkeiten) {
+            // console.log(fertigkeit);
+            let basiswert = 0;
+            basiswert = basiswert + data.data.attribute[fertigkeit.data.attribut_0].wert;
+            basiswert = basiswert + data.data.attribute[fertigkeit.data.attribut_1].wert;
+            basiswert = basiswert + data.data.attribute[fertigkeit.data.attribut_2].wert;
+            basiswert = Math.round(basiswert/3);
+            fertigkeit.data.basis = basiswert;
+            fertigkeit.data.pw = basiswert + Number(fertigkeit.data.fw);
+        }
+        for (let fertigkeit of data.karma.fertigkeiten) {
+            // console.log(fertigkeit);
+            let basiswert = 0;
+            basiswert = basiswert + data.data.attribute[fertigkeit.data.attribut_0].wert;
+            basiswert = basiswert + data.data.attribute[fertigkeit.data.attribut_1].wert;
+            basiswert = basiswert + data.data.attribute[fertigkeit.data.attribut_2].wert;
+            basiswert = Math.round(basiswert/3);
+            fertigkeit.data.basis = basiswert;
+            fertigkeit.data.pw = basiswert + Number(fertigkeit.data.fw);
+        }
+    }
+
+
+    __getAlleMagieFertigkeiten(data) {
+        let fertigkeit_list = [];
+        for (let fertigkeit of data.magie.fertigkeiten) {
+            fertigkeit_list.push(fertigkeit.name);
+        }
+        return fertigkeit_list;
+    }
+
+    __getAlleKarmaFertigkeiten(data) {
+        let fertigkeit_list = [];
+        for (let fertigkeit of data.karma.fertigkeiten) {
+            fertigkeit_list.push(fertigkeit.name);
+        }
+        return fertigkeit_list;
+    }
+
+    _calculateUebernaturlichTalente(data) {
+        console.log("Berechne übernatürliche Talente");
+        let fertigkeit_uebereinstimmung = [];
+        const alleMagieFertigkeiten = this.__getAlleMagieFertigkeiten(data);
+        const alleKarmaFertigkeiten = this.__getAlleKarmaFertigkeiten(data);
+        for (let talent of data.magie.talente) {
+            let max_pw = -1;
+            const fertigkeit_string = talent.data.fertigkeiten;
+            let fertigkeit_array = fertigkeit_string.split(",");
+            for (let [i, fert_string] of fertigkeit_array.entries()) {
+                let fertigkeit = fert_string.trim();
+                for (let actor_fertigkeit of data.magie.fertigkeiten){
+                    if (fertigkeit == actor_fertigkeit.name && talent.data.fertigkeit_ausgewaehlt == "auto") {
+                        let max_tmp = actor_fertigkeit.data.pw;
+                        if (max_tmp > max_pw) {
+                            max_pw = max_tmp;
+                        }
+                    }
+                    else if (talent.data.fertigkeit_ausgewaehlt == actor_fertigkeit.name) {
+                        max_pw = actor_fertigkeit.data.pw;
+                    }
+                }
+            }
+						this.updateEmbeddedEntity('OwnedItem', {
+								_id: talent._id,
+                data: {
+                    fertigkeit_actor: alleMagieFertigkeiten,
+                    pw: max_pw
+                }
+            });
+        }
+        for (let talent of data.karma.talente) {
+            let max_pw = -1;
+            const fertigkeit_string = talent.data.fertigkeiten;
+            let fertigkeit_array = fertigkeit_string.split(",");
+            for (let [i, fert_string] of fertigkeit_array.entries()) {
+                let fertigkeit = fert_string.trim();
+                for (let actor_fertigkeit of data.karma.fertigkeiten){
+                    if (fertigkeit == actor_fertigkeit.name && talent.data.fertigkeit_ausgewaehlt == "auto") {
+                        let max_tmp = actor_fertigkeit.data.pw;
+                        if (max_tmp > max_pw) {
+                            max_pw = max_tmp;
+                        }
+                    }
+                    else if (talent.data.fertigkeit_ausgewaehlt == actor_fertigkeit.name) {
+                        max_pw = actor_fertigkeit.data.pw;
+                    }
+                }
+            }
+						this.updateEmbeddedEntity('OwnedItem', {
+								_id: talent._id,
+                data: {
+                    fertigkeit_actor: alleKarmaFertigkeiten,
+                    pw: max_pw
+                }
+            });
+        }
+    }
+
     _calculateWounds(data) {
-        console.log(data.data);
-        console.log(data.data.gesundheit.wunden.wert);
-        console.log(data.data.gesundheit.erschoepfung.wert);
+        console.log("Berechne Wunden");
+        // console.log(data.data);
+        // console.log(data.data.gesundheit.wunden.wert);
+        // console.log(data.data.gesundheit.erschoepfung.wert);
         let einschraenkungen = data.data.gesundheit.wunden.wert + data.data.gesundheit.erschoepfung.wert;
         let abzuege = 0;
         if (einschraenkungen == 0) {
@@ -69,6 +178,7 @@ export class IlarisActor extends Actor {
     }
 
     _calculateWundschwellenRuestung(data){
+        console.log("Berechne Rüstung");
         let ws = 4 + Math.floor(data.data.attribute.KO.wert / 4);
         data.data.abgeleitete.ws = ws;
         data.data.abgeleitete.ws_stern = ws;
@@ -80,7 +190,7 @@ export class IlarisActor extends Actor {
         data.data.abgeleitete.ws_brust = ws;
         data.data.abgeleitete.ws_kopf = ws;
         for (let ruestung of data.ruestungen){
-            console.log(ruestung.data.aktiv);
+            // console.log(ruestung.data.aktiv);
             if (ruestung.data.aktiv == true){
                 data.data.abgeleitete.ws_stern += ruestung.data.rs;
                 data.data.abgeleitete.be += ruestung.data.be;
@@ -96,18 +206,48 @@ export class IlarisActor extends Actor {
 
     _sortItems(data){
         console.log("In sort_Items");
-        console.log(data);
+        // console.log(data);
         let ruestungen = [];
+        let magie_fertigkeiten = [];
+        let magie_talente = [];
+        let karma_fertigkeiten = [];
+        let karma_talente = [];
         for (let i of data.items) {
             let item = i.data;
             if (i.type == "ruestung"){
-                console.log("Rüstung gefunden");
-                console.log(i);
+                // console.log("Rüstung gefunden");
+                // console.log(i);
                 ruestungen.push(i);
             }
+            else if (i.type == "magie_fertigkeit"){
+                // console.log("Magiefertigkeit gefunden");
+                // console.log(i);
+                magie_fertigkeiten.push(i);
+            }
+            else if (i.type == "magie_talent"){
+                // console.log("Magietalent gefunden");
+                // console.log(i);
+                magie_talente.push(i);
+            }
+            else if (i.type == "karma_fertigkeit"){
+                // console.log("Karmafertigkeit gefunden");
+                // console.log(i);
+                karma_fertigkeiten.push(i);
+            }
+            else if (i.type == "karma_talent"){
+                // console.log("Karmatalent gefunden");
+                // console.log(i);
+                karma_talente.push(i);
+            }
         }
+        data.magie = {};
+        data.karma = {};
         data.ruestungen = ruestungen;
-        console.log(data);
+        data.magie.fertigkeiten = magie_fertigkeiten;
+        data.magie.talente = magie_talente;
+        data.karma.fertigkeiten = karma_fertigkeiten;
+        data.karma.talente = karma_talente;
+        // console.log(data);
             // let item = i.data;
             // i.img = i.img || DEFAULT_TOKEN;
             // // Append to gear.

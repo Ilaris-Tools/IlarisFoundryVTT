@@ -12,7 +12,7 @@
         </div>
         {{#each data.fertigkeiten as |fert key|}}
         <div class="flexrow">
-            <label class="fertigkeit-view" data-fertigkeit="{{key}}">{{fert.label}}</label>
+            <label class="ausklappen-trigger" data-ausklappentarget="{{key}}">{{fert.label}}</label>
             <label>{{AttributeFertigkeit fert.attribute}}</label>
             <label>{{fert.basis}}</label>
             <input name="data.fertigkeiten.{{key}}.fw" value="{{fert.fw}}" type="text" data-dtype="Number">
@@ -20,7 +20,8 @@
             <label class="rollable" data-rolltype="fertigkeitpw" data-fertigkeit="{{key}}">{{fert.pw}}</label>
             <label class="rollable" data-rolltype="fertigkeitpwt" data-fertigkeit="{{key}}">{{fert.pwt}}</label>
         </div>
-        <div id="folding-fert-{{key}}" style="display: none">
+        <div id="ausklappen-view-{{key}}" style="display: none">
+            <hr>
             <label>{{fert.text}}</label>
             {{#each fert.talente as |tal tkey|}}
             <div>
@@ -31,6 +32,7 @@
                 <label>{{tal.text}}</label>
             </div>
             {{/each}}
+            <hr>
         </div>
         {{/each}}
     </div>

@@ -1,41 +1,43 @@
 <form class="{{cssClass}}">
-  <div>
     <div>
-      <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
-      <input name="name" type="text" value="{{actor.name}}" />
-      <div class="flexrow">
-          <label>Erschöpfung</label>
-          <input name="data.gesundheit.erschoepfung.wert" value="{{data.gesundheit.erschoepfung.wert}}" type="text" data-dtype="Number">
-      </div>
-      <div class="flexrow">
-          <label>Wunden </label>
-          <input name="data.gesundheit.wunden.wert" value="{{data.gesundheit.wunden.wert}}" type="text" data-dtype="Number">
-      </div>
-      <label>{{data.gesundheit.display}}</label>
-    </div>
-    <div>
-      <div>
+        <div>
+            <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
+            <input name="name" type="text" value="{{actor.name}}" />
+            <div class="flexrow">
+                <label>Erschöpfung</label>
+                <input name="data.gesundheit.erschoepfung.wert" value="{{data.gesundheit.erschoepfung.wert}}" type="text" data-dtype="Number">
+            </div>
+            <div class="flexrow">
+                <label>Wunden </label>
+                <input name="data.gesundheit.wunden.wert" value="{{data.gesundheit.wunden.wert}}" type="text" data-dtype="Number">
+            </div>
+            <label>{{data.gesundheit.display}}</label>
+        </div>
+            <hr>
         <div class="sheet-tabs tabs" data-group="primary">
-          <b class="item" data-tab="attribute">Attribute</b>
-          <b class="item" data-tab="fertigkeiten">Fertigkeiten</b>
-          <b class="item" data-tab="inventar">Inventar</b>
-          <b class="item" data-tab="notes">blabla</b>
+            <b class="item" data-tab="attribute">Attribute</b>
+            <b class="item" data-tab="fertigkeiten">Fertigkeiten</b>
+            <b class="item" data-tab="uebernatuerlich">Magie & Karma</b>
+            <b class="item" data-tab="inventar">Inventar</b>
+            <b class="item" data-tab="notes">blabla</b>
         </div>
+        <hr>
         <div class="sheet-body">
-          <div class="tab" data-group="primary" data-tab="notes">
-            {{> systems/Ilaris/templates/sheets/tabs/notes.html}}
-          </div>
-          <div class="tab" data-group="primary" data-tab="attribute">
-            {{> systems/Ilaris/templates/sheets/tabs/attribute.html}}
-          </div>
-          <div class="tab" data-group="primary" data-tab="fertigkeiten">
-            {{> systems/Ilaris/templates/sheets/tabs/fertigkeiten.html}}
-          </div>
-          <div class="tab" data-group="primary" data-tab="inventar">
-              {{> systems/Ilaris/templates/sheets/tabs/inventar.html}}
-          </div>
+            <div class="tab" data-group="primary" data-tab="notes">
+                {{> systems/Ilaris/templates/sheets/tabs/notes.html}}
+            </div>
+            <div class="tab" data-group="primary" data-tab="attribute">
+                {{> systems/Ilaris/templates/sheets/tabs/attribute.html}}
+            </div>
+            <div class="tab" data-group="primary" data-tab="fertigkeiten">
+                {{> systems/Ilaris/templates/sheets/tabs/fertigkeiten.html}}
+            </div>
+            <div class="tab" data-group="primary" data-tab="uebernatuerlich">
+                {{> systems/Ilaris/templates/sheets/tabs/uebernatuerlich.html}}
+            </div>
+            <div class="tab" data-group="primary" data-tab="inventar">
+                {{> systems/Ilaris/templates/sheets/tabs/inventar.html}}
+            </div>
         </div>
-      </div>
-    </div>
   </div>
 </form>
