@@ -7,6 +7,9 @@ __pycache__
 .\#*
 .#*
 
+createzip.py
+ilaris.zip
+ilaris-foundryvtt.zip
 datenbank.json
 datenbank.xml
 package.json
