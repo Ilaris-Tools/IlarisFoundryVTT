@@ -15,6 +15,7 @@ export class IlarisActor extends Actor {
         this._calculateWerteFertigkeiten(data);
         this._calculateWounds(data);
         this._calculateWundschwellenRuestung(data);
+        this._calculateProfanFertigkeiten(data);
         this._calculateUebernaturlichFertigkeiten(data);
         this._calculateUebernaturlichTalente(data); //Nach Uebernatürliche Fertigkeiten
         console.log("***Nach Berechnungen***");
@@ -28,7 +29,7 @@ export class IlarisActor extends Actor {
     }
 
     _calculateWerteFertigkeiten(data) {
-        console.log("Berechne profane Fertigkeiten");
+        console.log("Berechne profane Fertigkeiten (hardcoded)");
         for (let fertigkeit of Object.values(data.data.fertigkeiten)) {
             let basiswert = 0;
             for (const attribut of fertigkeit.attribute) {
@@ -38,6 +39,20 @@ export class IlarisActor extends Actor {
             fertigkeit.basis = basiswert;
             fertigkeit.pw = basiswert + Math.round(Number(fertigkeit.fw)*0.5);
             fertigkeit.pwt = basiswert + Number(fertigkeit.fw);
+        }
+    }
+
+    _calculateProfanFertigkeiten(data) {
+        console.log("Berechne Profane Fertigkeiten");
+        for (let fertigkeit of data.profan.fertigkeiten) {
+            let basiswert = 0;
+            basiswert = basiswert + data.data.attribute[fertigkeit.data.attribut_0].wert;
+            basiswert = basiswert + data.data.attribute[fertigkeit.data.attribut_1].wert;
+            basiswert = basiswert + data.data.attribute[fertigkeit.data.attribut_2].wert;
+            basiswert = Math.round(basiswert/3);
+            fertigkeit.data.basis = basiswert;
+            fertigkeit.data.pw = basiswert + Math.round(Number(fertigkeit.data.fw)*0.5);
+            fertigkeit.data.pwt = basiswert + Number(fertigkeit.data.fw);
         }
     }
 
@@ -208,16 +223,31 @@ export class IlarisActor extends Actor {
         console.log("In sort_Items");
         // console.log(data);
         let ruestungen = [];
+        let profan_fertigkeiten = [];
+        let profan_talente = [];
+        let profan_fertigkeit_list = [];
+        let profan_talente_unsorted = [];
         let magie_fertigkeiten = [];
         let magie_talente = [];
         let karma_fertigkeiten = [];
         let karma_talente = [];
         for (let i of data.items) {
-            let item = i.data;
+            // let item = i.data;
             if (i.type == "ruestung"){
                 // console.log("Rüstung gefunden");
                 // console.log(i);
                 ruestungen.push(i);
+            }
+            else if (i.type == "profan_fertigkeit"){
+                // console.log("Magiefertigkeit gefunden");
+                // console.log(i);
+                i.data.talente = [];
+                profan_fertigkeiten.push(i);
+                profan_fertigkeit_list.push(i.name);
+                // profan_talente[i.name] = [];
+            }
+            else if (i.type == "profan_talent"){
+                profan_talente.push(i);
             }
             else if (i.type == "magie_fertigkeit"){
                 // console.log("Magiefertigkeit gefunden");
@@ -240,13 +270,31 @@ export class IlarisActor extends Actor {
                 karma_talente.push(i);
             }
         }
+        profan_fertigkeiten.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+        profan_fertigkeiten.sort((a,b) => (a.data.gruppe > b.data.gruppe) ? 1 : ((b.data.gruppe > a.data.gruppe) ? -1 : 0));
+
+        // profan_fertigkeiten = _.sortBy( profan_fertigkeiten, 'name' );
+        // profan_fertigkeiten = _.sortBy( profan_fertigkeiten, 'data.gruppe' );
+
+        for (let i of profan_talente) {
+            if (profan_fertigkeit_list.includes(i.data.fertigkeit)) {
+                profan_fertigkeiten.find(x => x.name == i.data.fertigkeit).data.talente.push(i);
+            }
+            else {
+                profan_talente_unsorted.push(i);
+            }
+        }
+
         data.magie = {};
         data.karma = {};
+        data.profan = {};
         data.ruestungen = ruestungen;
         data.magie.fertigkeiten = magie_fertigkeiten;
         data.magie.talente = magie_talente;
         data.karma.fertigkeiten = karma_fertigkeiten;
         data.karma.talente = karma_talente;
+        data.profan.fertigkeiten = profan_fertigkeiten;
+        data.profan.talente_unsorted = profan_talente_unsorted;
         // console.log(data);
             // let item = i.data;
             // i.img = i.img || DEFAULT_TOKEN;

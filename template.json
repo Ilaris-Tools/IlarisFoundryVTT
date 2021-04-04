@@ -6,7 +6,7 @@
             "villain"
         ],
         "templates": {
-            "gesundheit":{
+            "gesundheit": {
                 "gesundheit": {
                     "erschoepfung": {
                         "label": "Erschöpfung",
@@ -24,7 +24,8 @@
                         "label": "Status",
                         "wert": []
                     }
-                }},
+                }
+            },
             "abgeleitete": {
                 "abgeleitete": {
                     "ws": 0,
@@ -954,7 +955,9 @@
             "magie_fertigkeit",
             "magie_talent",
             "karma_fertigkeit",
-            "karma_talent"
+            "karma_talent",
+            "profan_fertigkeit",
+            "profan_talent"
         ],
         "templates": {
             "gesundheit": {
@@ -1051,6 +1054,23 @@
             "templates": [
                 "uebernatuerlich_talent"
             ]
+        },
+        "profan_fertigkeit": {
+            "text": "",
+            "attribut_0": "KL",
+            "attribut_1": "IN",
+            "attribut_2": "CH",
+            "basis": 0,
+            "fw": 0,
+            "pw": 0,
+            "pwt": 0,
+            "faktor": 2,
+            "gruppe": 0,
+            "talente": []
+        },
+        "profan_talent":{
+            "text": "",
+            "fertigkeit": ""
         }
     }
 }

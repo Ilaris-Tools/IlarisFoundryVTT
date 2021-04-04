@@ -14,7 +14,8 @@ function preloadHandlebarsTemplates() {
         "systems/Ilaris/templates/sheets/tabs/notes.html",
         "systems/Ilaris/templates/chat/dreid20.html",
         "systems/Ilaris/templates/sheets/items/ruestung.html",
-        "systems/Ilaris/templates/helper/select_attribut.html"
+        "systems/Ilaris/templates/helper/select_attribut.html",
+        "systems/Ilaris/templates/helper/select_fertigkeitsgruppe.html"
     ];
     return loadTemplates(templatePaths);
 };
@@ -27,9 +28,30 @@ function registerHandlebarsHelpers() {
     });
 
     Handlebars.registerHelper("AttributeFertigkeit_from_data", function (attrArray) {
+        // console.log(attrArray);
         const fertAttr = attrArray.attribut_0.concat("/", attrArray.attribut_1, "/", attrArray.attribut_2);
         return fertAttr;
     });
+
+    Handlebars.registerHelper("ProfanFertigkeitList", function (talente) {
+        let fertigkeit_list = "";
+        for (let [i, tal] of talente.entries()) {
+            if (i==0) {
+                fertigkeit_list = tal.name;
+            }
+            else {
+            fertigkeit_list = fertigkeit_list.concat(", ", tal.name);
+            }
+        }
+        return fertigkeit_list;
+    });
+
+    // Handlebars.registerHelper("TalentList", function (fertigkeit) {
+    //     // console.log(attrArray);
+    //     let talentlist = [];
+    //     const fertAttr = attrArray.attribut_0.concat("/", attrArray.attribut_1, "/", attrArray.attribut_2);
+    //     return fertAttr;
+    // });
 
     // Handlebars.registerHelper("AlleMagieFertigkeiten", function (ev) {
     //     console.log("In AlleMagieFertigkeiten Handlebar");

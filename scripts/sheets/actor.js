@@ -43,6 +43,20 @@ export class IlarisActorSheet extends ActorSheet {
             label = label.concat("(Talent)");
             pw = data.fertigkeiten[fertigkeit_name].pwt;
         }
+        else if (rolltype == "profan_fertigkeit_pw") {
+            label = $(event.currentTarget).data("fertigkeit");
+            pw = $(event.currentTarget).data("pw");
+        }
+        else if (rolltype == "profan_fertigkeit_pwt") {
+            label = $(event.currentTarget).data("fertigkeit");
+            label = label.concat("(Talent)");
+            pw = $(event.currentTarget).data("pwt");
+        }
+        else if (rolltype == "profan_talent") {
+            label = $(event.currentTarget).data("fertigkeit");
+            label = label.concat("(", $(event.currentTarget).data("talent"), ")");
+            pw = $(event.currentTarget).data("pw");
+        }
         else if (rolltype == "magie_fertigkeit" || rolltype == "karma_fertigkeit") {
             label = $(event.currentTarget).data("fertigkeit");
             pw = $(event.currentTarget).data("pw");
