@@ -43,24 +43,24 @@
             <div>
                 {{#if hasOwner}}
                 <div class="flexrow">
-                    <h6>Basis</h6>
-                    <h6>FW</h6>
-                    <h6>PW</h6>
-                    <h6>PWT</h6>
-                </div>
-                <div class="flexrow">
-                    <label>{{data.basis}}</label>
+                    <!-- <h6>Basis</h6> -->
+                    <label>FW:</label>
+                    <!-- <h6>PW</h6>
+                    <h6>PWT</h6> -->
+                    <!-- </div>
+                <div class="flexrow"> -->
+                    <!-- <label>{{data.basis}}</label> -->
                     <input name="data.fw" value="{{item.data.fw}}" type="text" data-dtype="Number">
-                    <label>{{data.pw}}</label>
-                    <label>{{data.pwt}}</label>
+                    <!-- <label>{{data.pw}}</label>
+                    <label>{{data.pwt}}</label> -->
                 </div>
-                <div>
+                <!-- <div>
                     <label>Talente:</label><br>
                     <label>{{data.talente}}</label>
-                </div>
+                </div> -->
                 {{/if}}
             </div>
-            <label>Beschreibung</label>
+            <label>Beschreibung:</label>
             <textarea name="data.text">{{data.text}}</textarea>
             <!-- {{editor content=data.text target="data.text" button=true owner=owner editable=editable}} -->
         </div>

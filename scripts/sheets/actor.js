@@ -114,6 +114,22 @@ export class IlarisActorSheet extends ActorSheet {
                 }
             };
         }
+        else if (itemclass == "profan_fertigkeit") {
+            console.log("Neue Profanfertigkeit");
+            itemData = {
+                name: "Fertigkeit",
+                type: "profan_fertigkeit",
+                data: {}
+            };
+        }
+        else if (itemclass == "profan_talent") {
+            console.log("Neues Profantalent");
+            itemData = {
+                name: "Talent",
+                type: "profan_talent",
+                data: {}
+            };
+        }
         else if (itemclass == "magie_fertigkeit") {
             console.log("Neue Magiefertigkeit");
             itemData = {

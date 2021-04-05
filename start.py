@@ -3,6 +3,7 @@ import shutil
 import subprocess
 import settings_local
 from zipfile import ZipFile
+import os
 
 """
 Beispiel Settings in settings_local.py:
@@ -39,5 +40,5 @@ with ZipFile(zip_file, 'w') as zip:
 
 
 shutil.rmtree(folder_destination)
-shutil.copytree(src=folder_source, dst=folder_destination)
+shutil.copytree(src=folder_source, dst=folder_destination, ignore=shutil.ignore_patterns(*ignore_files, ilaris_zip))
 subprocess.call([folder_Foundryvtt, start_world_options])

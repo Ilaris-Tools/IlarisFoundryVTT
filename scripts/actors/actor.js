@@ -35,9 +35,9 @@ export class IlarisActor extends Actor {
             for (const attribut of fertigkeit.attribute) {
                 basiswert = basiswert + Number(data.data.attribute[attribut].wert);
             }
-            basiswert = Math.round(basiswert/3);
+            basiswert = Math.round(basiswert / 3);
             fertigkeit.basis = basiswert;
-            fertigkeit.pw = basiswert + Math.round(Number(fertigkeit.fw)*0.5);
+            fertigkeit.pw = basiswert + Math.round(Number(fertigkeit.fw) * 0.5);
             fertigkeit.pwt = basiswert + Number(fertigkeit.fw);
         }
     }
@@ -49,9 +49,9 @@ export class IlarisActor extends Actor {
             basiswert = basiswert + data.data.attribute[fertigkeit.data.attribut_0].wert;
             basiswert = basiswert + data.data.attribute[fertigkeit.data.attribut_1].wert;
             basiswert = basiswert + data.data.attribute[fertigkeit.data.attribut_2].wert;
-            basiswert = Math.round(basiswert/3);
+            basiswert = Math.round(basiswert / 3);
             fertigkeit.data.basis = basiswert;
-            fertigkeit.data.pw = basiswert + Math.round(Number(fertigkeit.data.fw)*0.5);
+            fertigkeit.data.pw = basiswert + Math.round(Number(fertigkeit.data.fw) * 0.5);
             fertigkeit.data.pwt = basiswert + Number(fertigkeit.data.fw);
         }
     }
@@ -65,7 +65,7 @@ export class IlarisActor extends Actor {
             basiswert = basiswert + data.data.attribute[fertigkeit.data.attribut_0].wert;
             basiswert = basiswert + data.data.attribute[fertigkeit.data.attribut_1].wert;
             basiswert = basiswert + data.data.attribute[fertigkeit.data.attribut_2].wert;
-            basiswert = Math.round(basiswert/3);
+            basiswert = Math.round(basiswert / 3);
             fertigkeit.data.basis = basiswert;
             fertigkeit.data.pw = basiswert + Number(fertigkeit.data.fw);
         }
@@ -75,7 +75,7 @@ export class IlarisActor extends Actor {
             basiswert = basiswert + data.data.attribute[fertigkeit.data.attribut_0].wert;
             basiswert = basiswert + data.data.attribute[fertigkeit.data.attribut_1].wert;
             basiswert = basiswert + data.data.attribute[fertigkeit.data.attribut_2].wert;
-            basiswert = Math.round(basiswert/3);
+            basiswert = Math.round(basiswert / 3);
             fertigkeit.data.basis = basiswert;
             fertigkeit.data.pw = basiswert + Number(fertigkeit.data.fw);
         }
@@ -109,7 +109,7 @@ export class IlarisActor extends Actor {
             let fertigkeit_array = fertigkeit_string.split(",");
             for (let [i, fert_string] of fertigkeit_array.entries()) {
                 let fertigkeit = fert_string.trim();
-                for (let actor_fertigkeit of data.magie.fertigkeiten){
+                for (let actor_fertigkeit of data.magie.fertigkeiten) {
                     if (fertigkeit == actor_fertigkeit.name && talent.data.fertigkeit_ausgewaehlt == "auto") {
                         let max_tmp = actor_fertigkeit.data.pw;
                         if (max_tmp > max_pw) {
@@ -121,8 +121,8 @@ export class IlarisActor extends Actor {
                     }
                 }
             }
-						this.updateEmbeddedEntity('OwnedItem', {
-								_id: talent._id,
+            this.updateEmbeddedEntity('OwnedItem', {
+                _id: talent._id,
                 data: {
                     fertigkeit_actor: alleMagieFertigkeiten,
                     pw: max_pw
@@ -135,7 +135,7 @@ export class IlarisActor extends Actor {
             let fertigkeit_array = fertigkeit_string.split(",");
             for (let [i, fert_string] of fertigkeit_array.entries()) {
                 let fertigkeit = fert_string.trim();
-                for (let actor_fertigkeit of data.karma.fertigkeiten){
+                for (let actor_fertigkeit of data.karma.fertigkeiten) {
                     if (fertigkeit == actor_fertigkeit.name && talent.data.fertigkeit_ausgewaehlt == "auto") {
                         let max_tmp = actor_fertigkeit.data.pw;
                         if (max_tmp > max_pw) {
@@ -147,8 +147,8 @@ export class IlarisActor extends Actor {
                     }
                 }
             }
-						this.updateEmbeddedEntity('OwnedItem', {
-								_id: talent._id,
+            this.updateEmbeddedEntity('OwnedItem', {
+                _id: talent._id,
                 data: {
                     fertigkeit_actor: alleKarmaFertigkeiten,
                     pw: max_pw
@@ -192,7 +192,7 @@ export class IlarisActor extends Actor {
         }
     }
 
-    _calculateWundschwellenRuestung(data){
+    _calculateWundschwellenRuestung(data) {
         console.log("Berechne Rüstung");
         let ws = 4 + Math.floor(data.data.attribute.KO.wert / 4);
         data.data.abgeleitete.ws = ws;
@@ -204,9 +204,9 @@ export class IlarisActor extends Actor {
         data.data.abgeleitete.ws_bauch = ws;
         data.data.abgeleitete.ws_brust = ws;
         data.data.abgeleitete.ws_kopf = ws;
-        for (let ruestung of data.ruestungen){
+        for (let ruestung of data.ruestungen) {
             // console.log(ruestung.data.aktiv);
-            if (ruestung.data.aktiv == true){
+            if (ruestung.data.aktiv == true) {
                 data.data.abgeleitete.ws_stern += ruestung.data.rs;
                 data.data.abgeleitete.be += ruestung.data.be;
                 data.data.abgeleitete.ws_beine += ruestung.data.rs_beine;
@@ -219,7 +219,7 @@ export class IlarisActor extends Actor {
         }
     }
 
-    _sortItems(data){
+    _sortItems(data) {
         console.log("In sort_Items");
         // console.log(data);
         let ruestungen = [];
@@ -233,12 +233,12 @@ export class IlarisActor extends Actor {
         let karma_talente = [];
         for (let i of data.items) {
             // let item = i.data;
-            if (i.type == "ruestung"){
+            if (i.type == "ruestung") {
                 // console.log("Rüstung gefunden");
                 // console.log(i);
                 ruestungen.push(i);
             }
-            else if (i.type == "profan_fertigkeit"){
+            else if (i.type == "profan_fertigkeit") {
                 // console.log("Magiefertigkeit gefunden");
                 // console.log(i);
                 i.data.talente = [];
@@ -246,37 +246,48 @@ export class IlarisActor extends Actor {
                 profan_fertigkeit_list.push(i.name);
                 // profan_talente[i.name] = [];
             }
-            else if (i.type == "profan_talent"){
+            else if (i.type == "profan_talent") {
                 profan_talente.push(i);
             }
-            else if (i.type == "magie_fertigkeit"){
+            else if (i.type == "magie_fertigkeit") {
                 // console.log("Magiefertigkeit gefunden");
                 // console.log(i);
                 magie_fertigkeiten.push(i);
             }
-            else if (i.type == "magie_talent"){
+            else if (i.type == "magie_talent") {
                 // console.log("Magietalent gefunden");
                 // console.log(i);
                 magie_talente.push(i);
             }
-            else if (i.type == "karma_fertigkeit"){
+            else if (i.type == "karma_fertigkeit") {
                 // console.log("Karmafertigkeit gefunden");
                 // console.log(i);
                 karma_fertigkeiten.push(i);
             }
-            else if (i.type == "karma_talent"){
+            else if (i.type == "karma_talent") {
                 // console.log("Karmatalent gefunden");
                 // console.log(i);
                 karma_talente.push(i);
             }
         }
-        profan_fertigkeiten.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-        profan_fertigkeiten.sort((a,b) => (a.data.gruppe > b.data.gruppe) ? 1 : ((b.data.gruppe > a.data.gruppe) ? -1 : 0));
+        magie_fertigkeiten.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+        magie_talente.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+        karma_fertigkeiten.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+        karma_talente.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+        profan_fertigkeiten.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+        profan_fertigkeiten.sort((a, b) => (a.data.gruppe > b.data.gruppe) ? 1 : ((b.data.gruppe > a.data.gruppe) ? -1 : 0));
 
         // profan_fertigkeiten = _.sortBy( profan_fertigkeiten, 'name' );
         // profan_fertigkeiten = _.sortBy( profan_fertigkeiten, 'data.gruppe' );
 
         for (let i of profan_talente) {
+            this.updateEmbeddedEntity('OwnedItem', {
+                _id: i._id,
+                data: {
+                    fertigkeit_list: profan_fertigkeit_list,
+                }
+            });
+            // i.data.fertigkeit_list = profan_fertigkeit_list;
             if (profan_fertigkeit_list.includes(i.data.fertigkeit)) {
                 profan_fertigkeiten.find(x => x.name == i.data.fertigkeit).data.talente.push(i);
             }
@@ -296,26 +307,26 @@ export class IlarisActor extends Actor {
         data.profan.fertigkeiten = profan_fertigkeiten;
         data.profan.talente_unsorted = profan_talente_unsorted;
         // console.log(data);
-            // let item = i.data;
-            // i.img = i.img || DEFAULT_TOKEN;
-            // // Append to gear.
-            // if (i.type === 'item') {
-            //     gear.push(i);
-            // }
-            // // Append to features.
-            // else if (i.type === 'feature') {
-            //     features.push(i);
-            // }
-            // // Append to spells.
-            // else if (i.type === 'spell') {
-            //     if (i.data.spellLevel != undefined) {
-            //         spells[i.data.spellLevel].push(i);
-            //     }
-            // }
+        // let item = i.data;
+        // i.img = i.img || DEFAULT_TOKEN;
+        // // Append to gear.
+        // if (i.type === 'item') {
+        //     gear.push(i);
+        // }
+        // // Append to features.
+        // else if (i.type === 'feature') {
+        //     features.push(i);
+        // }
+        // // Append to spells.
+        // else if (i.type === 'spell') {
+        //     if (i.data.spellLevel != undefined) {
+        //         spells[i.data.spellLevel].push(i);
+        //     }
+        // }
         // Assign and return
         // actorData.gear = gear;
         // actorData.features = features;
         // actorData.spells = spells;
-        }
+    }
 
 }

@@ -3,13 +3,23 @@
         <div>
             <header class="sheet-header">
                 <div class="header-fields">
-                    <h1 class="charname"><input name="name" type="text" value="{{item.name}}"/></h1>
+                    <h1 class="charname"><input name="name" type="text" value="{{item.name}}" /></h1>
                 </div>
             </header>
         </div>
-        <div class="flexrow" >
+        <div class="flexrow">
             <label><b>Fertigkeit:</b></label>
+            {{#if hasOwner}}
+            <select name="data.fertigkeit">
+                {{#select data.fertigkeit}}
+                {{#each data.fertigkeit_list as |fert|}}
+                <option value="{{fert}}">{{fert}}</option>
+                {{/each}}
+                {{/select}}
+            </select>
+            {{else}}
             <input name="data.fertigkeit" value="{{item.data.fertigkeit}}" type="text" data-dtype="String">
+            {{/if}}
         </div>
         <div>
             <label><b>Beschreibung:</b></label>

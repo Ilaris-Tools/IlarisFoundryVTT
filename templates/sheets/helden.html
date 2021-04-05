@@ -1,19 +1,42 @@
 <form class="{{cssClass}}">
     <div>
         <div>
-            <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
-            <input name="name" type="text" value="{{actor.name}}" />
-            <div class="flexrow">
-                <label>Erschöpfung</label>
-                <input name="data.gesundheit.erschoepfung.wert" value="{{data.gesundheit.erschoepfung.wert}}" type="text" data-dtype="Number">
+            <div style="float: left;">
+                <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100"
+                    width="100" />
             </div>
-            <div class="flexrow">
-                <label>Wunden </label>
-                <input name="data.gesundheit.wunden.wert" value="{{data.gesundheit.wunden.wert}}" type="text" data-dtype="Number">
+            <div style="float: left;">
+                <input name="name" type="text" value="{{actor.name}}" />
+                <div class="flexrow">
+                    <label>Erschöpfung: </label>
+                    <input name="data.gesundheit.erschoepfung.wert" value="{{data.gesundheit.erschoepfung.wert}}"
+                        type="text" data-dtype="Number">
+                </div>
+                <div class="flexrow">
+                    <label>Wunden: </label>
+                    <input name="data.gesundheit.wunden.wert" value="{{data.gesundheit.wunden.wert}}" type="text"
+                        data-dtype="Number">
+                </div>
+                <label>{{data.gesundheit.display}}</label>
             </div>
-            <label>{{data.gesundheit.display}}</label>
+            <div style="float: left;">
+                <div class="flexrow">
+                    <label>Schip: </label>
+                    <input name="data.schips.schip" value="{{data.schips.schip}}" type="text" data-dtype="Number">
+                    <label>Schip*: </label>
+                    <input name="data.schips.schip_stern" value="{{data.schips.schip_stern}}" type="text"
+                        data-dtype="Number">
+                </div>
+                <div class="flexrow">
+                    <label>WS: </label>
+                    <label>{{actor.data.abgeleitete.ws}}</label>
+                    <label>WS*: </label>
+                    <label>{{actor.data.abgeleitete.ws_stern}}</label>
+                </div>
+            </div>
         </div>
-            <hr>
+        <div style="clear:both;"></div>
+        <hr>
         <div class="sheet-tabs tabs" data-group="primary">
             <b class="item" data-tab="attribute">Attribute</b>
             <b class="item" data-tab="fertigkeiten">Fertigkeiten</b>
@@ -39,5 +62,5 @@
                 {{> systems/Ilaris/templates/sheets/tabs/inventar.html}}
             </div>
         </div>
-  </div>
+    </div>
 </form>

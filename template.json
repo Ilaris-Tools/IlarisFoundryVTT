@@ -1,9 +1,7 @@
 {
     "Actor": {
         "types": [
-            "held",
-            "pawn",
-            "villain"
+            "held"
         ],
         "templates": {
             "gesundheit": {
@@ -44,6 +42,12 @@
                     "ini": 0,
                     "dh": 0,
                     "dh_stern": 0
+                }
+            },
+            "schips": {
+                "schips": {
+                    "schips": 0,
+                    "schips_stern":0
                 }
             },
             "attribute": {
@@ -897,53 +901,16 @@
                         }
                     }
                 }
-            },
-            "background": {
-                "biography": "",
-                "hairColor": "blue"
-            },
-            "resources": {
-                "health": {
-                    "min": 0,
-                    "value": 10,
-                    "max": 10
-                },
-                "power": {
-                    "min": 0,
-                    "value": 1,
-                    "max": 3
-                }
             }
         },
         "held": {
             "templates": [
-                "background",
-                "resources",
                 "gesundheit",
                 "attribute",
                 "fertigkeiten",
                 "abgeleitete"
             ],
-            "goodness": {
-                "value": 5,
-                "max": 10
-            },
             "notes": "Hallo"
-        },
-        "pawn": {
-            "templates": [
-                "resources"
-            ]
-        },
-        "villain": {
-            "templates": [
-                "background",
-                "resources"
-            ],
-            "wickedness": {
-                "value": 5,
-                "max": 100
-            }
         }
     },
     "Item": {
@@ -951,7 +918,6 @@
             "nahkampfwaffe",
             "fernkampfwaffe",
             "ruestung",
-            "weapon",
             "magie_fertigkeit",
             "magie_talent",
             "karma_fertigkeit",
