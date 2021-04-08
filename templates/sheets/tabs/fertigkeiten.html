@@ -40,7 +40,7 @@
                 <label><b>Talente:</b></label><br>
                 {{#each profert.data.talente as |protal|}}
                 <div>
-                    <label class="rollable", data-rolltype="profan_talent", data-fertigkeit="{{profert.name}}" data-talent="{{protal.name}}" data-pw="{{profert.data.pwt}}"><i>{{protal.name}}</i>: </label>
+                    <label class="rollable", data-rolltype="profan_talent", data-fertigkeit="{{profert.name}}" data-talent="{{protal.data.label}}" data-pw="{{profert.data.pwt}}"><i>{{protal.data.label}}</i>: </label>
                     <label style="white-space: pre-line;">{{protal.data.text}}</label>
                     <a class="item-delete" data-itemclass="profan_talent" data-itemid="{{protal._id}}" style="float: right;"><i class="fas fa-trash"></i></a>
                     <a class="item-edit" data-itemclass="profan_talent" data-itemid="{{protal._id}}" style="float: right;"><i class="fas fa-edit"></i></a>
@@ -62,41 +62,4 @@
         {{/if}}
     </div>
     <br>
-    <h2>Fertigkeiten hardcoded</h2>
-    <div>
-        <div class="flexrow">
-            <h6>Name</h6>
-            <h6>Attribute</h6>
-            <h6>Basis</h6>
-            <h6>FW</h6>
-            <h6>Talente</h6>
-            <h6>PW</h6>
-            <h6>PW(T)</h6>
-        </div>
-        {{#each data.fertigkeiten as |fert key|}}
-        <div class="flexrow">
-            <label class="ausklappen-trigger" data-ausklappentarget="{{key}}">{{fert.label}}</label>
-            <label>{{AttributeFertigkeit fert.attribute}}</label>
-            <label>{{fert.basis}}</label>
-            <input name="data.fertigkeiten.{{key}}.fw" value="{{fert.fw}}" type="text" data-dtype="Number">
-            <label>{{aktivTalentView fert}}</label>
-            <label class="rollable" data-rolltype="fertigkeitpw" data-fertigkeit="{{key}}">{{fert.pw}}</label>
-            <label class="rollable" data-rolltype="fertigkeitpwt" data-fertigkeit="{{key}}">{{fert.pwt}}</label>
-        </div>
-        <div id="ausklappen-view-{{key}}" style="display: none">
-            <hr>
-            <label>{{fert.text}}</label>
-            {{#each fert.talente as |tal tkey|}}
-            <div>
-                <input name="data.fertigkeiten.{{key}}.talente.{{tkey}}.aktiv" data-dtype="Boolean" type="checkbox" {{checked tal.aktiv}}>
-                <label>{{tal.label}}</label>
-            </div>
-            <div>
-                <label>{{tal.text}}</label>
-            </div>
-            {{/each}}
-            <hr>
-        </div>
-        {{/each}}
-    </div>
 </div>

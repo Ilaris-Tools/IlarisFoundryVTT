@@ -37,10 +37,12 @@ function registerHandlebarsHelpers() {
         let fertigkeit_list = "";
         for (let [i, tal] of talente.entries()) {
             if (i==0) {
-                fertigkeit_list = tal.name;
+                // fertigkeit_list = tal.name;
+                fertigkeit_list = tal.data.label;
             }
             else {
-            fertigkeit_list = fertigkeit_list.concat(", ", tal.name);
+            // fertigkeit_list = fertigkeit_list.concat(", ", tal.name);
+            fertigkeit_list = fertigkeit_list.concat(", ", tal.data.label);
             }
         }
         return fertigkeit_list;

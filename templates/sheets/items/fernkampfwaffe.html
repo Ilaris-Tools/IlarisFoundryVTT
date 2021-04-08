@@ -1,3 +1,63 @@
 <form class="{{cssClass}}">
-<h2>Hallo, ich bin ein Fernkampfwaffendummy</h2>
+    <div>
+        <div>
+            <header class="sheet-header">
+                <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+                <div class="header-fields">
+                    <h1 class="charname"><input name="name" type="text" value="{{item.name}}" /></h1>
+                </div>
+            </header>
+        </div>
+        <div>
+            <div class="flexrow">
+                <label><b>Label: </b></label>
+                <input name="data.fw" value="{{item.data.label}}" type="text" data-dtype="String">
+            </div>
+            <div class="flexrow">
+                <label><b>Schaden: </b></label>
+                <div class="flexrow">
+                    <input name="data.dice_anzahl" value="{{item.data.dice_anzahl}}" type="text" data-dtype="String">
+                    <label>d6+</label>
+                    <input name="data.plus" value="{{item.data.plus}}" type="text" data-dtype="String">
+                </div>
+            </div>
+            <div class="flexrow">
+                <label><b>Fertigkeit: </b></label>
+                <div class="flexrow">
+                    <input name="data.fertigkeit" value="{{item.data.fertigkeit}}" type="text" data-dtype="String">
+                    <label><b>Talent: </b></label>
+                    <input name="data.talent" value="{{item.data.talent}}" type="text" data-dtype="String">
+                </div>
+            </div>
+            <div class="flexrow">
+                <label><b>Eigenschaften: </b></label>
+                <input name="data.eigenschaften" value="{{item.data.eigenschaften}}" type="text" data-dtype="String">
+            </div>
+            <!-- <div class="flexrow">
+                <label><b>Kampfstile: </b></label>
+                <input name="data.kampfstile" value="{{item.data.kampfstile}}" type="text" data-dtype="String">
+            </div> -->
+            <div class="flexrow">
+                <label><b>WM: </b></label>
+                <div class="flexrow">
+                    <input name="data.wm_fk" value="{{item.data.wm_fk}}" type="text" data-dtype="String">
+                    <label><b>RW: </b></label>
+                    <input name="data.rw" value="{{item.data.rw}}" type="text" data-dtype="String">
+                    <label><b>LZ: </b></label>
+                    <input name="data.lz" value="{{item.data.lz}}" type="text" data-dtype="String">
+                </div>
+            </div>
+            <div class="flexrow">
+                <label><b>Härte: </b></label>
+                <div class="flexrow">
+                    <input name="data.haerte" value="{{item.data.haerte}}" type="text" data-dtype="String">
+                    <label><b>Beschädigung: </b></label>
+                    <input name="data.beschaedigung" value="{{item.data.beschaedigung}}" type="text"
+                        data-dtype="String">
+                </div>
+            </div>
+            <label><b>Beschreibung: </b></label>
+            <textarea name="data.text">{{data.text}}</textarea>
+        </div>
+    </div>
 </form>

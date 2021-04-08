@@ -32,17 +32,17 @@ export class IlarisActorSheet extends ActorSheet {
             label = data.attribute[attribut_name].label;
             pw = data.attribute[attribut_name].pw;
         }
-        else if (rolltype == "fertigkeitpw") {
-            const fertigkeit_name = $(event.currentTarget).data("fertigkeit");
-            label = data.fertigkeiten[fertigkeit_name].label;
-            pw = data.fertigkeiten[fertigkeit_name].pw;
-        }
-        else if (rolltype == "fertigkeitpwt") {
-            const fertigkeit_name = $(event.currentTarget).data("fertigkeit");
-            label = data.fertigkeiten[fertigkeit_name].label;
-            label = label.concat("(Talent)");
-            pw = data.fertigkeiten[fertigkeit_name].pwt;
-        }
+        // else if (rolltype == "fertigkeitpw") {
+        //     const fertigkeit_name = $(event.currentTarget).data("fertigkeit");
+        //     label = data.fertigkeiten[fertigkeit_name].label;
+        //     pw = data.fertigkeiten[fertigkeit_name].pw;
+        // }
+        // else if (rolltype == "fertigkeitpwt") {
+        //     const fertigkeit_name = $(event.currentTarget).data("fertigkeit");
+        //     label = data.fertigkeiten[fertigkeit_name].label;
+        //     label = label.concat("(Talent)");
+        //     pw = data.fertigkeiten[fertigkeit_name].pwt;
+        // }
         else if (rolltype == "profan_fertigkeit_pw") {
             label = $(event.currentTarget).data("fertigkeit");
             pw = $(event.currentTarget).data("pw");

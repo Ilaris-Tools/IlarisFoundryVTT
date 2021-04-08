@@ -14,7 +14,64 @@
   "styles": [
     "css/temp.css"
   ],
-  "packs": [],
+  "packs": [
+    {
+      "label": "Heldenvorlage",
+      "entity": "Actor",
+      "name": "heldenvorlage",
+      "path": "./packs/heldenvorlage.db",
+      "system": "Ilaris"
+    },
+    {
+      "label": "Karma Fertigkeiten",
+      "entity": "Item",
+      "name": "karma-fertigkeiten",
+      "path": "./packs/karma-fertigkeiten.db",
+      "system": "Ilaris"
+    },
+    {
+      "label": "Liturgien",
+      "entity": "Item",
+      "name": "liturgien",
+      "path": "./packs/liturgien.db",
+      "system": "Ilaris"
+    },
+    {
+      "label": "Magie Fertigkeiten",
+      "entity": "Item",
+      "name": "magie-fertigkeiten",
+      "path": "./packs/magie-fertigkeiten.db",
+      "system": "Ilaris"
+    },
+    {
+      "label": "Profane Fertigkeiten",
+      "entity": "Item",
+      "name": "profane-fertigkeiten",
+      "path": "./packs/profane-fertigkeiten.db",
+      "system": "Ilaris"
+    },
+    {
+      "label": "Profane Talente",
+      "entity": "Item",
+      "name": "profane-talente",
+      "path": "./packs/profane-talente.db",
+      "system": "Ilaris"
+    },
+    {
+      "label": "Waffen",
+      "entity": "Item",
+      "name": "waffen",
+      "path": "./packs/waffen.db",
+      "system": "Ilaris"
+    },
+    {
+      "label": "Zaubersprüche und Rituale",
+      "entity": "Item",
+      "name": "zauberspruche-und-rituale",
+      "path": "./packs/zauberspruche-und-rituale.db",
+      "system": "Ilaris"
+    }
+  ],
   "languages": [],
   "gridDistance": 1,
   "gridUnits": "m",

@@ -8,6 +8,10 @@
             </header>
         </div>
         <div class="flexrow">
+            <label><b>Label:</b></label>
+            <input name="data.label" value="{{item.data.label}}" type="text" data-dtype="String">
+        </div>
+        <div class="flexrow">
             <label><b>Fertigkeit:</b></label>
             {{#if hasOwner}}
             <select name="data.fertigkeit">
