@@ -116,7 +116,8 @@
             "karma_fertigkeit",
             "karma_talent",
             "profan_fertigkeit",
-            "profan_talent"
+            "profan_talent",
+            "freie_fertigkeit"
         ],
         "templates": {
             "label": {
@@ -244,6 +245,14 @@
             ],
             "text": "",
             "fertigkeit": ""
+        },
+        "freie_fertigkeit": {
+            "templates": [
+                "label"
+            ],
+            "stufe": 1,
+            "text": "",
+            "gruppe": 0
         }
     }
 }

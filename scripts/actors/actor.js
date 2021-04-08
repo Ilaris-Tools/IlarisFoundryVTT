@@ -231,6 +231,7 @@ export class IlarisActor extends Actor {
         let magie_talente = [];
         let karma_fertigkeiten = [];
         let karma_talente = [];
+        let freie_fertigkeiten = []
         for (let i of data.items) {
             // let item = i.data;
             if (i.type == "ruestung") {
@@ -248,6 +249,9 @@ export class IlarisActor extends Actor {
             }
             else if (i.type == "profan_talent") {
                 profan_talente.push(i);
+            }
+            else if (i.type == "freie_fertigkeit") {
+                freie_fertigkeiten.push(i);
             }
             else if (i.type == "magie_fertigkeit") {
                 // console.log("Magiefertigkeit gefunden");
@@ -280,6 +284,8 @@ export class IlarisActor extends Actor {
         karma_talente.sort((a, b) => (a.data.gruppe > b.data.gruppe) ? 1 : ((b.data.gruppe > a.data.gruppe) ? -1 : 0));
         profan_fertigkeiten.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
         profan_fertigkeiten.sort((a, b) => (a.data.gruppe > b.data.gruppe) ? 1 : ((b.data.gruppe > a.data.gruppe) ? -1 : 0));
+        freie_fertigkeiten.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+        freie_fertigkeiten.sort((a, b) => (a.data.gruppe > b.data.gruppe) ? 1 : ((b.data.gruppe > a.data.gruppe) ? -1 : 0));
 
         // profan_fertigkeiten = _.sortBy( profan_fertigkeiten, 'name' );
         // profan_fertigkeiten = _.sortBy( profan_fertigkeiten, 'data.gruppe' );
@@ -310,6 +316,7 @@ export class IlarisActor extends Actor {
         data.karma.talente = karma_talente;
         data.profan.fertigkeiten = profan_fertigkeiten;
         data.profan.talente_unsorted = profan_talente_unsorted;
+        data.profan.freie = freie_fertigkeiten
         // console.log(data);
         // let item = i.data;
         // i.img = i.img || DEFAULT_TOKEN;

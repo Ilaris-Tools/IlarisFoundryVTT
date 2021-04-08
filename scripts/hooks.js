@@ -10,6 +10,7 @@ import { ProfanTalentSheet } from "./sheets/items/profan_talent.js";
 // import { SephrastoImporter } from "./common/sephrasto_importer.js";
 import { NahkampfwaffeSheet } from "./sheets/items/nahkampfwaffe.js";
 import { FernkampfwaffeSheet } from "./sheets/items/fernkampfwaffe.js";
+import { FreieFertigkeitSheet } from "./sheets/items/freie_fertigkeit.js"
 
 Hooks.once("init", () => {
     CONFIG.Actor.entityClass = IlarisActor;
@@ -23,6 +24,7 @@ Hooks.once("init", () => {
     Items.registerSheet("Ilaris", UebernatuerlichTalentSheet, {types: ["magie_talent", "karma_talent"], makeDefault: true});
     Items.registerSheet("Ilaris", ProfanFertigkeitSheet, {types: ["profan_fertigkeit"], makeDefault: true});
     Items.registerSheet("Ilaris", ProfanTalentSheet, {types: ["profan_talent"], makeDefault: true});
+    Items.registerSheet("Ilaris", FreieFertigkeitSheet, {types: ["freie_fertigkeit"], makeDefault: true});
     initializeHandlebars();
     // game.sephrasto = new SephrastoImporter()
 });

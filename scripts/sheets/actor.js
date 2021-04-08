@@ -57,6 +57,11 @@ export class IlarisActorSheet extends ActorSheet {
             label = label.concat("(", $(event.currentTarget).data("talent"), ")");
             pw = $(event.currentTarget).data("pw");
         }
+        else if (rolltype == "freie_fertigkeit") {
+            label = $(event.currentTarget).data("fertigkeit");
+            // console.log($(event.currentTarget).data("pw"))
+            pw = Number($(event.currentTarget).data("pw"))*8 - 2;
+        }
         else if (rolltype == "magie_fertigkeit" || rolltype == "karma_fertigkeit") {
             label = $(event.currentTarget).data("fertigkeit");
             pw = $(event.currentTarget).data("pw");
@@ -128,6 +133,18 @@ export class IlarisActorSheet extends ActorSheet {
                 name: "Talent",
                 type: "profan_talent",
                 data: {}
+            };
+        }
+        else if (itemclass == "freie_fertigkeit") {
+            console.log("Neue freie Fertigkeit");
+            itemData = {
+                name: "freie Fertigkeit",
+                type: "freie_fertigkeit",
+                data: {
+                    label: "Fertigkeit",
+                    stufe: 1,
+                    gruppe: 4
+                }
             };
         }
         else if (itemclass == "magie_fertigkeit") {
