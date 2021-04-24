@@ -10,7 +10,7 @@ import { ProfanTalentSheet } from "./sheets/items/profan_talent.js";
 // import { SephrastoImporter } from "./common/sephrasto_importer.js";
 import { NahkampfwaffeSheet } from "./sheets/items/nahkampfwaffe.js";
 import { FernkampfwaffeSheet } from "./sheets/items/fernkampfwaffe.js";
-import { FreieFertigkeitSheet } from "./sheets/items/freie_fertigkeit.js"
+import { FreieFertigkeitSheet } from "./sheets/items/freie_fertigkeit.js";
 
 Hooks.once("init", () => {
     CONFIG.Actor.entityClass = IlarisActor;

@@ -4,72 +4,73 @@
     <a class="item-create" data-itemclass="profan_talent"><i class="fas fa-plus"></i>Neues Talent</a>
     <div>
         <div class="flexrow">
-            <h6>Name</h6>
-            <h6>Talente</h6>
-            <h6>PW</h6>
-            <h6>PW(T)</h6>
-            <h6></h6>
-            <h6></h6>
+            <!-- <h6></h6>
+                 <h6>Name</h6>
+                 <h6>Talente</h6>
+                 <h6>PW</h6>
+                 <h6>PW(T)</h6>
+                 <h6></h6>
+                 <h6></h6> -->
+            <label class="icon-small"></label>
+            <label><b>Name</b></label>
+            <label><b>Talente</b></label>
+            <label class="flex-fest-var" style="flex-basis:40px"><b>PW</b></label>
+            <label><b>PW(T)</b></label>
+            <label class="icon-small"></label>
+            <label class="icon-small"></label>
         </div>
-        {{#each actor.profan.fertigkeiten as |profert|}}
-        <div class="flexrow">
-            <label class="ausklappen-trigger" data-ausklappentarget="{{profert._id}}">{{profert.name}}</label>
-            <label>{{ProfanFertigkeitList profert.data.talente}}</label>
-            <label class="rollable" data-rolltype="profan_fertigkeit_pw" data-fertigkeit="{{profert.name}}"
-                data-pw="{{profert.data.pw}}">{{profert.data.pw}}</label>
-            <label class="rollable" data-rolltype="profan_fertigkeit_pwt" data-fertigkeit="{{profert.name}}"
-                data-pwt="{{profert.data.pwt}}">{{profert.data.pwt}}</label>
-            <a class="item-edit" data-itemclass="profan_fertigkeit" data-itemid="{{profert._id}}"><i
-                    class="fas fa-edit"></i></a>
-            <a class="item-delete" data-itemclass="profan_fertigkeit" data-itemid="{{profert._id}}"><i
-                    class="fas fa-trash"></i></a>
-        </div>
-        <div id="ausklappen-view-{{profert._id}}" style="display: none">
-            <hr>
+        {{#each actor.profan.fertigkeiten as |profert key|}}
             <div class="flexrow">
-                <label><b>Attribute:</b></label>
-                <label><b>Basis:</b></label>
-                <label><b>FW:</b></label>
+                <a class="rollable icon-small" data-rolltype="profan_fertigkeit" data-fertigkeit="{{key}}"><i class="fas fa-dice-d20"></i></a>
+                <label class="ausklappen-trigger" data-ausklappentarget="{{profert._id}}">{{profert.name}}</label>
+                <label>{{ProfanFertigkeitList profert.data.talente}}</label>
+                <label class="rollable flex-fest-var" data-rolltype="profan_fertigkeit_pw" data-fertigkeit="{{profert.name}}" data-pw="{{profert.data.pw}}" style="flex-basis: 40px">{{profert.data.pw}}</label>
+                <label class="rollable" data-rolltype="profan_fertigkeit_pwt" data-fertigkeit="{{profert.name}}" data-pwt="{{profert.data.pwt}}">{{profert.data.pwt}}</label>
+                <a class="item-edit icon-small" data-itemclass="profan_fertigkeit" data-itemid="{{profert._id}}"><i class="fas fa-edit"></i></a>
+                <a class="item-delete icon-small" data-itemclass="profan_fertigkeit" data-itemid="{{profert._id}}"><i class="fas fa-trash"></i></a>
             </div>
-            <div class="flexrow">
-                <label>{{AttributeFertigkeit_from_data profert.data}}</label>
-                <label>{{profert.data.basis}}</label>
-                <label>{{profert.data.fw}}</label>
-            </div>
-            <div>
-                <label><b>Beschreibung:</b></label><br>
-                <label style="white-space: pre-line;">{{profert.data.text}}</label>
-            </div>
-            <div>
-                <label><b>Talente:</b></label><br>
-                {{#each profert.data.talente as |protal|}}
-                <div>
-                    <label class="rollable" , data-rolltype="profan_talent" , data-fertigkeit="{{profert.name}}"
-                        data-talent="{{protal.data.label}}" data-pw="{{profert.data.pwt}}"><i>{{protal.data.label}}</i>:
-                    </label>
-                    <label style="white-space: pre-line;">{{protal.data.text}}</label>
-                    <a class="item-delete" data-itemclass="profan_talent" data-itemid="{{protal._id}}"
-                        style="float: right;"><i class="fas fa-trash"></i></a>
-                    <a class="item-edit" data-itemclass="profan_talent" data-itemid="{{protal._id}}"
-                        style="float: right;"><i class="fas fa-edit"></i></a>
+            <div id="ausklappen-view-{{profert._id}}" style="display: none">
+                <hr>
+                <div class="flexrow">
+                    <label><b>Attribute:</b></label>
+                    <label><b>Basis:</b></label>
+                    <label><b>FW:</b></label>
                 </div>
-                {{/each}}
+                <div class="flexrow">
+                    <label>{{AttributeFertigkeit_from_data profert.data}}</label>
+                    <label>{{profert.data.basis}}</label>
+                    <label>{{profert.data.fw}}</label>
+                </div>
+                <div>
+                    <label><b>Beschreibung:</b></label><br>
+                    <label style="white-space: pre-line;">{{profert.data.text}}</label>
+                </div>
+                <div>
+                    <label><b>Talente:</b></label><br>
+                    {{#each profert.data.talente as |protal|}}
+                        <div>
+                            <label class="rollable" , data-rolltype="profan_talent" , data-fertigkeit="{{profert.name}}" data-talent="{{protal.data.label}}" data-pw="{{profert.data.pwt}}"><i>{{protal.data.label}}</i>:
+                            </label>
+                            <label style="white-space: pre-line;">{{protal.data.text}}</label>
+                            <a class="item-delete icon-small" data-itemclass="profan_talent" data-itemid="{{protal._id}}" style="float: right;"><i class="fas fa-trash"></i></a>
+                            <a class="item-edit icon-small" data-itemclass="profan_talent" data-itemid="{{protal._id}}" style="float: right;"><i class="fas fa-edit"></i></a>
+                        </div>
+                    {{/each}}
+                </div>
+                <hr>
             </div>
-            <hr>
-        </div>
         {{/each}}
         {{#if actor.profan.talente_unsorted}}
-        <hr>
-        <hr>
-        <label><b>Talente ohne passende Fertigkeit:</b>&nbsp; | &nbsp;</label>
-        {{#each actor.profan.talente_unsorted as |unsortal|}}
-        <a class="item-edit" data-itemclass="profan_talent" data-itemid="{{unsortal._id}}"> {{unsortal.name}} </i></a>
-        <a class="item-delete" data-itemclass="profan_talent" data-itemid="{{unsortal._id}}"><i
-                class="fas fa-trash"></i></a>
-        &nbsp; | &nbsp;
-        {{/each}}
-        <hr>
-        <hr>
+            <hr>
+            <hr>
+            <label><b>Talente ohne passende Fertigkeit:</b>&nbsp; | &nbsp;</label>
+            {{#each actor.profan.talente_unsorted as |unsortal|}}
+                <a class="item-edit" data-itemclass="profan_talent" data-itemid="{{unsortal._id}}"> {{unsortal.name}} </i></a>
+                <a class="item-delete" data-itemclass="profan_talent" data-itemid="{{unsortal._id}}"><i class="fas fa-trash"></i></a>
+                &nbsp; | &nbsp;
+            {{/each}}
+            <hr>
+            <hr>
         {{/if}}
     </div>
     <br>
@@ -77,20 +78,18 @@
     <h2>Freie Fertigkeiten</h2>
     <a class="item-create" data-itemclass="freie_fertigkeit"><i class="fas fa-plus"></i>Neue freie Fertigkeit</a>
     <div>
-        <div class="flexrow">
-            <h6>Name</h6>
-            <h6>Stufe</h6>
-            <h6></h6>
-        </div>
+        <!-- <div class="flexrow">
+             <h6>Name</h6>
+             <h6>Stufe</h6>
+             <h6></h6>
+             </div> -->
         {{#each actor.profan.freie as |freifert|}}
-        <a class="rollable" data-rolltype="freie_fertigkeit" data-fertigkeit="{{freifert.name}}"
-            data-pw="{{freifert.data.stufe}}"><i class="fas fa-dice-d20"></i></a>
-        <a class="item-edit" data-itemclass="freie_fertigkeit" data-itemid="{{freifert._id}}"> {{freifert.data.label}}
-            &nbsp; {{freifert.data.stufe}} &nbsp;
-            </i></a>
-        <a class="item-delete" data-itemclass="freie_fertigkeit" data-itemid="{{freifert._id}}"><i
-                class="fas fa-trash"></i></a>
-        &nbsp; | &nbsp;
+            <a class="rollable" data-rolltype="freie_fertigkeit" data-fertigkeit="{{freifert.name}}" data-pw="{{freifert.data.stufe}}"><i class="fas fa-dice-d20"></i></a>
+            <a class="item-edit" data-itemclass="freie_fertigkeit" data-itemid="{{freifert._id}}"> {{freifert.data.label}}
+                &nbsp; {{freifert.data.stufe}} &nbsp;
+                </i></a>
+            <a class="item-delete" data-itemclass="freie_fertigkeit" data-itemid="{{freifert._id}}"><i class="fas fa-trash"></i></a>
+            &nbsp; | &nbsp;
         {{/each}}
     </div>
 </div>

@@ -231,7 +231,7 @@ export class IlarisActor extends Actor {
         let magie_talente = [];
         let karma_fertigkeiten = [];
         let karma_talente = [];
-        let freie_fertigkeiten = []
+        let freie_fertigkeiten = [];
         for (let i of data.items) {
             // let item = i.data;
             if (i.type == "ruestung") {
@@ -316,7 +316,7 @@ export class IlarisActor extends Actor {
         data.karma.talente = karma_talente;
         data.profan.fertigkeiten = profan_fertigkeiten;
         data.profan.talente_unsorted = profan_talente_unsorted;
-        data.profan.freie = freie_fertigkeiten
+        data.profan.freie = freie_fertigkeiten;
         // console.log(data);
         // let item = i.data;
         // i.img = i.img || DEFAULT_TOKEN;

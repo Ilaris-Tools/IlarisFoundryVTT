@@ -1,0 +1,37 @@
+<!-- <div>Das ist mein Testdialog</div> -->
+<div>
+    <label>Anzahl W20: </label>
+    <label>{{radioBoxes groupName_xd20 choices_xd20 checked=checked_xd20}}</label>
+</div>
+<div>
+    <label>Schips: </label>
+    <label>{{radioBoxes groupName_schips choices_schips checked=checked_schips}}</label>
+</div>
+<div class="flexrow">
+    <label>Talente: </label>
+    <!-- <label>{{radioBoxes groupName_talente choices_talente_basic checked=checked_talente_basic}}</label>
+         <label for="talent"></label> -->
+    <select id="talent">
+        {{#select talent}}
+        <option value="-2">ohne Talent</option>
+        <option value="-1">mit Talent</option>
+            {{#each choices_talente as |tal key|}}
+                <option value="{{key}}">{{tal}}</option>
+            {{/each}}
+        {{/select}}
+    </select>
+</div>
+<div class="flexrow">
+    <label for="hohequalitaet">Hohe Qualität: </label>
+    <input id="hohequalitaet" type="number" value="" data-dtype="Number" />
+</div>
+<div class="flexrow">
+    <label for="modifikator">Modifikator: </label>
+    <input id="modifikator" type="number" value="" data-dtype="Number" />
+</div>
+<div class="flexrow">
+    <label>Würfelmodus: </label>
+    <select id="rollMode">
+        {{selectOptions rollModes selected=defaultRollMode localize=true}}
+    </select>
+</div>

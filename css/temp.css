@@ -12,3 +12,14 @@
     overflow: auto;
 /*     font-weight: bold; */
 }
+
+.icon-small{
+    flex-basis: 20px;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.flex-fest-var{
+    flex-grow: 0;
+    flex-shrink: 0;
+}

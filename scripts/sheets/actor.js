@@ -1,3 +1,7 @@
+import {
+    wuerfelwurf
+} from "../common/wuerfel.js";
+
 export class IlarisActorSheet extends ActorSheet {
 
     activateListeners(html) {
@@ -20,53 +24,39 @@ export class IlarisActorSheet extends ActorSheet {
         }
     };
 
-    _onRollable(event){
+    async _onRollable(event) {
         let data = this.actor.data.data;
         // console.log($(event.currentTarget));
         let rolltype = $(event.currentTarget).data("rolltype");
         let wundabzuege = data.gesundheit.wundabzuege;
         let pw = 0;
         let label = "Probe";
-        if (rolltype == "attribut") {
+        if (rolltype == "profan_fertigkeit") {
+            wuerfelwurf(event, this.actor);
+            return 0;
+        } else if (rolltype == "attribut") {
             const attribut_name = $(event.currentTarget).data("attribut");
             label = data.attribute[attribut_name].label;
             pw = data.attribute[attribut_name].pw;
-        }
-        // else if (rolltype == "fertigkeitpw") {
-        //     const fertigkeit_name = $(event.currentTarget).data("fertigkeit");
-        //     label = data.fertigkeiten[fertigkeit_name].label;
-        //     pw = data.fertigkeiten[fertigkeit_name].pw;
-        // }
-        // else if (rolltype == "fertigkeitpwt") {
-        //     const fertigkeit_name = $(event.currentTarget).data("fertigkeit");
-        //     label = data.fertigkeiten[fertigkeit_name].label;
-        //     label = label.concat("(Talent)");
-        //     pw = data.fertigkeiten[fertigkeit_name].pwt;
-        // }
-        else if (rolltype == "profan_fertigkeit_pw") {
+        } else if (rolltype == "profan_fertigkeit_pw") {
             label = $(event.currentTarget).data("fertigkeit");
             pw = $(event.currentTarget).data("pw");
-        }
-        else if (rolltype == "profan_fertigkeit_pwt") {
+        } else if (rolltype == "profan_fertigkeit_pwt") {
             label = $(event.currentTarget).data("fertigkeit");
             label = label.concat("(Talent)");
             pw = $(event.currentTarget).data("pwt");
-        }
-        else if (rolltype == "profan_talent") {
+        } else if (rolltype == "profan_talent") {
             label = $(event.currentTarget).data("fertigkeit");
             label = label.concat("(", $(event.currentTarget).data("talent"), ")");
             pw = $(event.currentTarget).data("pw");
-        }
-        else if (rolltype == "freie_fertigkeit") {
+        } else if (rolltype == "freie_fertigkeit") {
             label = $(event.currentTarget).data("fertigkeit");
             // console.log($(event.currentTarget).data("pw"))
-            pw = Number($(event.currentTarget).data("pw"))*8 - 2;
-        }
-        else if (rolltype == "magie_fertigkeit" || rolltype == "karma_fertigkeit") {
+            pw = Number($(event.currentTarget).data("pw")) * 8 - 2;
+        } else if (rolltype == "magie_fertigkeit" || rolltype == "karma_fertigkeit") {
             label = $(event.currentTarget).data("fertigkeit");
             pw = $(event.currentTarget).data("pw");
-        }
-        else if (rolltype == "magie_talent" || rolltype == "karma_talent") {
+        } else if (rolltype == "magie_talent" || rolltype == "karma_talent") {
             label = $(event.currentTarget).data("talent");
             pw = $(event.currentTarget).data("pw");
         }
@@ -80,8 +70,7 @@ export class IlarisActorSheet extends ActorSheet {
         let crit = false;
         if (critfumble == 20) {
             crit = true;
-        }
-        else if (critfumble == 1) {
+        } else if (critfumble == 1) {
             fumble = true;
         }
         let templateData = {
@@ -93,16 +82,18 @@ export class IlarisActorSheet extends ActorSheet {
         let template = 'systems/Ilaris/templates/chat/dreid20.html';
         renderTemplate(template, templateData, roll).then(content => {
             if (formula != null) {
-                roll.toMessage({ flavor: content });
+                roll.toMessage({
+                    flavor: content
+                });
             }
         });
     }
 
-    _onItemCreate(event){
+    _onItemCreate(event) {
         console.log("ItemCreate");
         // console.log(event);
         // console.log($(event.currentTarget));
-        let itemclass= $(event.currentTarget).data("itemclass");
+        let itemclass = $(event.currentTarget).data("itemclass");
         //ansehen: DomStringMap. Beide Varianten liefern das gleiche.
         //Welche ist besser und warum?
         // console.log($(event.currentTarget).data("itemclass"));
@@ -118,24 +109,21 @@ export class IlarisActorSheet extends ActorSheet {
                     rs: 1
                 }
             };
-        }
-        else if (itemclass == "profan_fertigkeit") {
+        } else if (itemclass == "profan_fertigkeit") {
             console.log("Neue Profanfertigkeit");
             itemData = {
                 name: "Fertigkeit",
                 type: "profan_fertigkeit",
                 data: {}
             };
-        }
-        else if (itemclass == "profan_talent") {
+        } else if (itemclass == "profan_talent") {
             console.log("Neues Profantalent");
             itemData = {
                 name: "Talent",
                 type: "profan_talent",
                 data: {}
             };
-        }
-        else if (itemclass == "freie_fertigkeit") {
+        } else if (itemclass == "freie_fertigkeit") {
             console.log("Neue freie Fertigkeit");
             itemData = {
                 name: "freie Fertigkeit",
@@ -146,32 +134,28 @@ export class IlarisActorSheet extends ActorSheet {
                     gruppe: 4
                 }
             };
-        }
-        else if (itemclass == "magie_fertigkeit") {
+        } else if (itemclass == "magie_fertigkeit") {
             console.log("Neue Magiefertigkeit");
             itemData = {
                 name: "Zauberfertigkeit",
                 type: "magie_fertigkeit",
                 data: {}
             };
-        }
-        else if (itemclass == "karma_fertigkeit") {
+        } else if (itemclass == "karma_fertigkeit") {
             console.log("Neue Karmafertigkeit");
             itemData = {
                 name: "Karmafertigkeit",
                 type: "karma_fertigkeit",
                 data: {}
             };
-        }
-        else if (itemclass == "magie_talent") {
+        } else if (itemclass == "magie_talent") {
             console.log("Neues Magietalent");
             itemData = {
                 name: "Magietalent",
                 type: "magie_talent",
                 data: {}
             };
-        }
-        else if (itemclass == "karma_talent") {
+        } else if (itemclass == "karma_talent") {
             console.log("Neues karmatalent");
             itemData = {
                 name: "Karmatalent",
@@ -206,7 +190,7 @@ export class IlarisActorSheet extends ActorSheet {
         // return this.actor.createOwnedItem(itemData);   }
     }
 
-    _onItemEdit(event){
+    _onItemEdit(event) {
         console.log("ItemEdit");
         // console.log(event);
         // console.log(event.currentTarget);
@@ -218,7 +202,7 @@ export class IlarisActorSheet extends ActorSheet {
         item.sheet.render(true);
     }
 
-    _onItemDelete(event){
+    _onItemDelete(event) {
         console.log("ItemDelete");
         const itemID = event.currentTarget.dataset.itemid;
         // const li = $(event.currentTarget).parents(".item");
