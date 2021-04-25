@@ -223,6 +223,8 @@ export class IlarisActor extends Actor {
         console.log("In sort_Items");
         // console.log(data);
         let ruestungen = [];
+        let nahkampfwaffen = [];
+        let fernkampfwaffen = [];
         let profan_fertigkeiten = [];
         let profan_talente = [];
         let profan_fertigkeit_list = [];
@@ -238,6 +240,16 @@ export class IlarisActor extends Actor {
                 // console.log("Rüstung gefunden");
                 // console.log(i);
                 ruestungen.push(i);
+            }
+            else if (i.type == "nahkampfwaffe") {
+                // console.log("Nahkampfwaffe gefunden");
+                // console.log(i);
+                nahkampfwaffen.push(i);
+            }
+            else if (i.type == "fernkampfwaffe") {
+                // console.log("Fernkampfwaffe gefunden");
+                // console.log(i);
+                fernkampfwaffen.push(i);
             }
             else if (i.type == "profan_fertigkeit") {
                 // console.log("Magiefertigkeit gefunden");
@@ -310,6 +322,8 @@ export class IlarisActor extends Actor {
         data.karma = {};
         data.profan = {};
         data.ruestungen = ruestungen;
+        data.nahkampfwaffen = nahkampfwaffen;
+        data.fernkampfwaffen = fernkampfwaffen;
         data.magie.fertigkeiten = magie_fertigkeiten;
         data.magie.talente = magie_talente;
         data.karma.fertigkeiten = karma_fertigkeiten;

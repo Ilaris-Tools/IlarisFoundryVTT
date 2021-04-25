@@ -6,14 +6,16 @@ export class IlarisActorSheet extends ActorSheet {
 
     activateListeners(html) {
         super.activateListeners(html);
-        html.find(".ausklappen-trigger").click(ev => this._fertigkeitView(ev));
+        html.find(".ausklappen-trigger").click(ev => this._ausklappView(ev));
         html.find(".rollable").click(ev => this._onRollable(ev));
         html.find(".item-create").click(ev => this._onItemCreate(ev));
         html.find(".item-edit").click(ev => this._onItemEdit(ev));
         html.find(".item-delete").click(ev => this._onItemDelete(ev));
+        // html.find('.item-toggle').click(this._onToggleItem.bind(this));
+        html.find('.item-toggle').click(ev => this._onToggleItem(ev));
     };
 
-    _fertigkeitView(event) {
+    _ausklappView(event) {
         const targetkey = $(event.currentTarget).data("ausklappentarget");
         const targetId = "ausklappen-view-".concat(targetkey);
         var toggleView = document.getElementById(targetId);
@@ -22,6 +24,23 @@ export class IlarisActorSheet extends ActorSheet {
         } else {
             toggleView.style.display = "none";
         }
+    };
+
+    _onToggleItem(event) {
+        const itemId = event.currentTarget.dataset.itemid;
+        const item = this.actor.items.get(itemId);
+        const toggletype = event.currentTarget.dataset.toggletype;
+        let attr = '';
+        if (toggletype == "hauptwaffe" || toggletype == "nebenwaffe") {
+            // item.update(item.data.data[toggletype])
+            attr = `data.${toggletype}`;
+        }
+        // const attr = item.data.type === "spell" ? "data.preparation.prepared" : "data.equipped";
+        console.log(attr);
+        console.log(!getProperty(item.data, attr));
+        // return item.update({[attr]: !getProperty(item.data, attr)});
+        // return item.update({[attr]: !getProperty(item, attr)});
+        item.update({[attr]: !getProperty(item.data, attr)});
     };
 
     async _onRollable(event) {

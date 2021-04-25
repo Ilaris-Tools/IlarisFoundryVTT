@@ -23,3 +23,10 @@
     flex-grow: 0;
     flex-shrink: 0;
 }
+
+.item-toggle.false {
+    color: #b5b3a4;
+}
+.item-toggle.active {
+    color: #4b4a44;
+}
