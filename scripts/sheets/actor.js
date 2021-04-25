@@ -31,15 +31,11 @@ export class IlarisActorSheet extends ActorSheet {
         const item = this.actor.items.get(itemId);
         const toggletype = event.currentTarget.dataset.toggletype;
         let attr = '';
-        if (toggletype == "hauptwaffe" || toggletype == "nebenwaffe") {
-            // item.update(item.data.data[toggletype])
+        // if (toggletype == "hauptwaffe" || toggletype == "nebenwaffe") {
             attr = `data.${toggletype}`;
-        }
-        // const attr = item.data.type === "spell" ? "data.preparation.prepared" : "data.equipped";
-        console.log(attr);
-        console.log(!getProperty(item.data, attr));
-        // return item.update({[attr]: !getProperty(item.data, attr)});
-        // return item.update({[attr]: !getProperty(item, attr)});
+        // }
+        // console.log(attr);
+        // console.log(!getProperty(item.data, attr));
         item.update({[attr]: !getProperty(item.data, attr)});
     };
 
@@ -127,6 +123,20 @@ export class IlarisActorSheet extends ActorSheet {
                     be: 1,
                     rs: 1
                 }
+            };
+        } else if (itemclass == "nahkampfwaffe") {
+            console.log("Neue Nahkampfwaffe");
+            itemData = {
+                name: "Waffe",
+                type: itemclass,
+                data: {}
+            };
+        } else if (itemclass == "fernkampfwaffe") {
+            console.log("Neue Fernkampfwaffe");
+            itemData = {
+                name: "Waffe",
+                type: itemclass,
+                data: {}
             };
         } else if (itemclass == "profan_fertigkeit") {
             console.log("Neue Profanfertigkeit");

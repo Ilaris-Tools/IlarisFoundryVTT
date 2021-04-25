@@ -15,9 +15,11 @@ export class IlarisActor extends Actor {
         // this._calculateWerteFertigkeiten(data);
         this._calculateWounds(data);
         this._calculateWundschwellenRuestung(data);
+        this._calculateAbgeleitete(data);
         this._calculateProfanFertigkeiten(data);
         this._calculateUebernaturlichFertigkeiten(data);
         this._calculateUebernaturlichTalente(data); //Nach Uebernatürliche Fertigkeiten
+        this._calculateKampf(data);
         console.log("***Nach Berechnungen***");
         console.log(data);
     }
@@ -219,6 +221,77 @@ export class IlarisActor extends Actor {
         }
     }
 
+
+    _calculateAbgeleitete(data) {
+    }
+
+    _calculateKampf(data) {
+        console.log("Berechne Kampf");
+        const sb = Math.floor(data.data.attribute.KK.wert/4);
+        data.data.abgeleitete.sb = sb;
+        for (let nwaffe of data.nahkampfwaffen) {
+            let schaden = 0;
+            schaden += Number(nwaffe.data.plus);
+            let kopflastig = nwaffe.data.eigenschaften.includes("Kopflastig");
+            schaden += sb;
+            if (kopflastig) { schaden += sb; }
+            let at = 0;
+            let vt = 0;
+            let fertigkeit = nwaffe.data.fertigkeit;
+            // console.log(fertigkeit);
+            let talent = nwaffe.data.talent;
+            // console.log(talent);
+            at += Number(nwaffe.data.wm_at);
+            vt += Number(nwaffe.data.wm_vt);
+            let pw = data.profan.fertigkeiten.find(x => x.name == fertigkeit)?.data.pw;
+            // console.log(pw);
+            let pwt = data.profan.fertigkeiten.find(x => x.name == fertigkeit)?.data.pwt;
+            // console.log(pwt);
+            let taltrue = data.profan.fertigkeiten.find(x => x.name == fertigkeit)?.data.talente.find(x => x.name == talent);
+            // console.log(taltrue);
+            if (typeof pw !== "undefined") {
+                // console.log(`${fertigkeit} ist defined`);
+                if (typeof taltrue !== "undefined") {
+                    // console.log(`${talent} ist defined`);
+                    at += pwt;
+                    vt += pwt;
+                }
+                else {
+                    at += pw;
+                    vt += pw;
+                }
+            }
+            let zweihaendig = nwaffe.data.eigenschaften.includes("Zweihändig");
+            let hauptwaffe = nwaffe.data.hauptwaffe;
+            let nebenwaffe = nwaffe.data.nebenwaffe;
+            if (zweihaendig) {
+                if (hauptwaffe && !nebenwaffe) {
+                    at -= 2;
+                    vt -= 2;
+                    schaden -= 4;
+                }
+                else if (!hauptwaffe && nebenwaffe){
+                    at -= 6;
+                    vt -= 6;
+                    schaden -= 4;
+                }
+            }
+            if (nebenwaffe && !zweihaendig) { vt -= 4; at -= 4;}
+            const mod_at = nwaffe.data.mod_at;
+            const mod_vt = nwaffe.data.mod_vt;
+            const mod_schaden = nwaffe.data.mod_schaden;
+            if (!isNaN(mod_at)) { at += mod_at;}
+            if (!isNaN(mod_vt)) { vt += mod_vt;}
+            if (!isNaN(mod_schaden)) { schaden += mod_schaden;}
+            nwaffe.data.at = at;
+            nwaffe.data.vt = vt;
+            nwaffe.data.schaden = `${nwaffe.data.dice_anzahl}d6+${schaden}`;
+            console.log(`AT: ${at} | VT: ${vt}`);
+            // let pwt = data.profan.fertigkeiten.find(x => x.name == fertigkeit)?.data.talente?.find(x => x.name == talent);
+            // console.log(pw);
+        }
+    }
+
     _sortItems(data) {
         console.log("In sort_Items");
         // console.log(data);
@@ -331,27 +404,6 @@ export class IlarisActor extends Actor {
         data.profan.fertigkeiten = profan_fertigkeiten;
         data.profan.talente_unsorted = profan_talente_unsorted;
         data.profan.freie = freie_fertigkeiten;
-        // console.log(data);
-        // let item = i.data;
-        // i.img = i.img || DEFAULT_TOKEN;
-        // // Append to gear.
-        // if (i.type === 'item') {
-        //     gear.push(i);
-        // }
-        // // Append to features.
-        // else if (i.type === 'feature') {
-        //     features.push(i);
-        // }
-        // // Append to spells.
-        // else if (i.type === 'spell') {
-        //     if (i.data.spellLevel != undefined) {
-        //         spells[i.data.spellLevel].push(i);
-        //     }
-        // }
-        // Assign and return
-        // actorData.gear = gear;
-        // actorData.features = features;
-        // actorData.spells = spells;
     }
 
 }
