@@ -227,12 +227,14 @@ export class IlarisActor extends Actor {
 
     _calculateKampf(data) {
         console.log("Berechne Kampf");
-        const sb = Math.floor(data.data.attribute.KK.wert/4);
+        const KK = data.data.attribute.KK.wert;
+        const sb = Math.floor(KK/4);
         data.data.abgeleitete.sb = sb;
         for (let nwaffe of data.nahkampfwaffen) {
+            let eigenschaften = nwaffe.data.eigenschaften;
             let schaden = 0;
             schaden += Number(nwaffe.data.plus);
-            let kopflastig = nwaffe.data.eigenschaften.includes("Kopflastig");
+            let kopflastig = eigenschaften.includes("Kopflastig");
             schaden += sb;
             if (kopflastig) { schaden += sb; }
             let at = 0;
@@ -261,7 +263,23 @@ export class IlarisActor extends Actor {
                     vt += pw;
                 }
             }
-            let zweihaendig = nwaffe.data.eigenschaften.includes("Zweihändig");
+            let eigenschaften_array = eigenschaften.split(", ");
+            let schwer = eigenschaften_array.find(x => x.includes("Schwer"));
+            if (typeof schwer !== "undefined") {
+                if (schwer.length > 0) {
+                    schwer = schwer.replace("(","");
+                    schwer = schwer.replace(")","");
+                    schwer = schwer.split(" ");
+                    schwer = Number(schwer[1]);
+                }
+            }
+            if (!isNaN(schwer)) {
+                if (KK < schwer) {
+                    at -= 2;
+                    vt -= 2;
+                }
+            }
+            let zweihaendig = eigenschaften.includes("Zweihändig");
             let hauptwaffe = nwaffe.data.hauptwaffe;
             let nebenwaffe = nwaffe.data.nebenwaffe;
             if (zweihaendig) {
@@ -286,8 +304,7 @@ export class IlarisActor extends Actor {
             nwaffe.data.at = at;
             nwaffe.data.vt = vt;
             nwaffe.data.schaden = `${nwaffe.data.dice_anzahl}d6+${schaden}`;
-            console.log(`AT: ${at} | VT: ${vt}`);
-            // let pwt = data.profan.fertigkeiten.find(x => x.name == fertigkeit)?.data.talente?.find(x => x.name == talent);
+            // console.log(`AT: ${at} | VT: ${vt}`);
             // console.log(pw);
         }
     }
