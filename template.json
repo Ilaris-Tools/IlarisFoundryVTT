@@ -1,258 +1,258 @@
 {
-    "Actor": {
-        "types": [
-            "held"
-        ],
-        "templates": {
-            "gesundheit": {
-                "gesundheit": {
-                    "erschoepfung": {
-                        "label": "Erschöpfung",
-                        "wert": 0
-                    },
-                    "wunden": {
-                        "label": "Wunden",
-                        "wert": 0
-                    },
-                    "wundabzuege": {
-                        "label": "Wundabzüge",
-                        "wert": 0
-                    },
-                    "status": {
-                        "label": "Status",
-                        "wert": []
-                    }
-                }
-            },
-            "abgeleitete": {
-                "abgeleitete": {
-                    "ws": 0,
-                    "ws_stern": 0,
-                    "be": 0,
-                    "ws_beine": 0,
-                    "ws_larm": 0,
-                    "ws_rarm": 0,
-                    "ws_bauch": 0,
-                    "ws_brust": 0,
-                    "ws_kopf": 0,
-                    "mr": 0,
-                    "gs": 0,
-                    "gs_stern": 0,
-                    "sb": 0,
-                    "ini": 0,
-                    "dh": 0,
-                    "dh_stern": 0
-                }
-            },
-            "schips": {
-                "schips": {
-                    "schips": 0,
-                    "schips_stern": 0
-                }
-            },
-            "attribute": {
-                "attribute": {
-                    "KO": {
-                        "label": "Konstitution",
-                        "wert": 0,
-                        "pw": 0
-                    },
-                    "MU": {
-                        "label": "Mut",
-                        "wert": 0,
-                        "pw": 0
-                    },
-                    "GE": {
-                        "label": "Gewandheit",
-                        "wert": 0,
-                        "pw": 0
-                    },
-                    "KK": {
-                        "label": "Körperkraft",
-                        "wert": 0,
-                        "pw": 0
-                    },
-                    "IN": {
-                        "label": "Intuition",
-                        "wert": 0,
-                        "pw": 0
-                    },
-                    "KL": {
-                        "label": "Klugheit",
-                        "wert": 0,
-                        "pw": 0
-                    },
-                    "CH": {
-                        "label": "Charisma",
-                        "wert": 0,
-                        "pw": 0
-                    },
-                    "FF": {
-                        "label": "Fingerfertigkeit",
-                        "wert": 0,
-                        "pw": 0
-                    }
-                }
-            }
-        },
-        "held": {
-            "templates": [
-                "gesundheit",
-                "attribute",
-                "fertigkeiten",
-                "abgeleitete",
-                "schips"
-            ],
-            "notes": "Hallo"
+  "Actor": {
+    "types": ["held"],
+    "templates": {
+      "gesundheit": {
+        "gesundheit": {
+          "erschoepfung": 0,
+          "wunden": 0,
+          "wundabzuege": 0
         }
+      },
+      "abgeleitete": {
+        "abgeleitete": {
+          "ws": 0,
+          "ws_stern": 0,
+          "be": 0,
+          "ws_beine": 0,
+          "ws_larm": 0,
+          "ws_rarm": 0,
+          "ws_bauch": 0,
+          "ws_brust": 0,
+          "ws_kopf": 0,
+          "mr": 0,
+          "gs": 0,
+          "ini": 0,
+          "dh": 0
+        }
+      },
+      "schips": {
+        "schips": {
+          "schips": 4,
+          "schips_stern": 4
+        }
+      },
+      "attribute": {
+        "attribute": {
+          "KO": {
+            "wert": 0,
+            "pw": 0
+          },
+          "MU": {
+            "wert": 0,
+            "pw": 0
+          },
+          "GE": {
+            "wert": 0,
+            "pw": 0
+          },
+          "KK": {
+            "wert": 0,
+            "pw": 0
+          },
+          "IN": {
+            "wert": 0,
+            "pw": 0
+          },
+          "KL": {
+            "wert": 0,
+            "pw": 0
+          },
+          "CH": {
+            "wert": 0,
+            "pw": 0
+          },
+          "FF": {
+            "wert": 0,
+            "pw": 0
+          }
+        }
+      }
     },
-    "Item": {
-        "types": [
-            "nahkampfwaffe",
-            "fernkampfwaffe",
-            "ruestung",
-            "magie_fertigkeit",
-            "magie_talent",
-            "karma_fertigkeit",
-            "karma_talent",
-            "profan_fertigkeit",
-            "profan_talent",
-            "freie_fertigkeit"
-        ],
-        "templates": {
-            "label": {
-                "label": ""
-            },
-            "gesundheit": {
-                "haerte": 0,
-                "beschaedigung": 0
-            },
-            "waffe": {
-                "dice_anzahl": "1",
-                "dice_typ": "6",
-                "plus": "1",
-                "fertigkeit": "",
-                "talent": "",
-                "rw": 0,
-                "hauptwaffe": false,
-                "nebenwaffe": false,
-                "eigenschaften": [],
-                "kampfstile": [],
-                "text": ""
-            },
-            "uebernatuerlich_fertigkeit": {
-                "basis": 0,
-                "fw": 0,
-                "pw": 0,
-                "attribut_0": "KL",
-                "attribut_1": "IN",
-                "attribut_2": "CH",
-                "gruppe": -1,
-                "text": ""
-            },
-            "uebernatuerlich_talent": {
-                "fertigkeiten": "",
-                "fertigkeit_ausgewaehlt": "auto",
-                "text": "",
-                "maechtig": "",
-                "schwierigkeit": "",
-                "modifikationen": "",
-                "vorbereitung": "",
-                "ziel": "",
-                "reichweite": "",
-                "wirkungsdauer": "",
-                "kosten": "",
-                "erlernen": "",
-                "pw": 0,
-                "gruppe": -1
-            }
-        },
-        "nahkampfwaffe": {
-            "templates": [
-                "label",
-                "gesundheit",
-                "waffe"
-            ],
-            "wm_at": 0,
-            "wm_vt": 0
-        },
-        "fernkampfwaffe": {
-            "templates": [
-                "label",
-                "gesundheit",
-                "waffe"
-            ],
-            "wm_fk": 0,
-            "lz": 0
-        },
-        "ruestung": {
-            "templates": [
-                "label",
-                "gesundheit"
-            ],
-            "rs": 0,
-            "be": 0,
-            "rs_beine": 0,
-            "rs_larm": 0,
-            "rs_rarm": 0,
-            "rs_bauch": 0,
-            "rs_brust": 0,
-            "rs_kopf": 0,
-            "aktiv": false,
-            "text": ""
-        },
-        "magie_fertigkeit": {
-            "templates": [
-                "label",
-                "uebernatuerlich_fertigkeit"
-            ]
-        },
-        "karma_fertigkeit": {
-            "templates": [
-                "label",
-                "uebernatuerlich_fertigkeit"
-            ]
-        },
-        "magie_talent": {
-            "templates": [
-                "label",
-                "uebernatuerlich_talent"
-            ]
-        },
-        "karma_talent": {
-            "templates": [
-                "label",
-                "uebernatuerlich_talent"
-            ]
-        },
-        "profan_fertigkeit": {
-            "templates": [
-                "label"
-            ],
-            "text": "",
-            "attribut_0": "KL",
-            "attribut_1": "IN",
-            "attribut_2": "CH",
-            "basis": 0,
-            "fw": 0,
-            "pw": 0,
-            "pwt": 0,
-            "gruppe": 0
-        },
-        "profan_talent": {
-            "templates": [
-                "label"
-            ],
-            "text": "",
-            "fertigkeit": ""
-        },
-        "freie_fertigkeit": {
-            "templates": [
-                "label"
-            ],
-            "stufe": 1,
-            "text": "",
-            "gruppe": 0
-        }
+    "held": {
+      "templates": [
+        "gesundheit",
+        "attribute",
+        "fertigkeiten",
+        "abgeleitete",
+        "schips"
+      ],
+      "notes": "Hallo"
     }
+  },
+  "Item": {
+    "types": [
+      "nahkampfwaffe",
+      "fernkampfwaffe",
+      "ruestung",
+      "fertigkeit",
+      "talent",
+      "freie_fertigkeit",
+      "uebernatuerliche_fertigkeit",
+      "zauber",
+      "liturgie",
+      "vorteil",
+      "manoever",
+      "eigenheit"
+    ],
+    "templates": {
+      "gesundheit": {
+        "haerte": 0,
+        "beschaedigung": 0
+      },
+      "waffe": {
+        "dice_anzahl": "1",
+        "dice_plus": "1",
+        "fertigkeit": "",
+        "talent": "",
+        "rw": 0,
+        "hauptwaffe": false,
+        "nebenwaffe": false,
+        "eigenschaften": [],
+        "text": ""
+      },
+      "fertigkeit": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 0,
+        "attribut_0": "KO",
+        "attribut_1": "KO",
+        "attribut_2": "KO",
+        "gruppe": -1,
+        "text": ""
+      },
+      "uebernatuerlich_talent": {
+        "fertigkeiten": "",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 0,
+        "gruppe": -1
+      },
+      "schadenstypen": {
+        "schadenstypen": {
+          "profan": true,
+          "stumpf": false,
+          "stich": false,
+          "scharf": false,
+          "magisch": false,
+          "geweiht": false,
+          "eis": false,
+          "erz": false,
+          "feuer": false,
+          "humus": false,
+          "luft": false,
+          "wasser": false
+        }
+      },
+      "munition": {
+        "hat_munition": false,
+        "bolzen_pfeile": false,
+        "anzahl_munition": 0,
+        "anzahl_ruestung": 0,
+        "anzahl_stumpf": 0,
+        "anzahl_krieg": 0
+      }
+    },
+    "nahkampfwaffe": {
+      "templates": ["gesundheit", "waffe"],
+      "wm_at": 0,
+      "wm_vt": 0,
+      "eigenschaften": {
+        "kopflastig": false,
+        "niederwerfen": false,
+        "parierwaffe": false,
+        "reittier": false,
+        "ruestungsbrechend": false,
+        "schild": false,
+        "schwer_4": false,
+        "schwer_8": false,
+        "stumpf": false,
+        "unberechenbar": false,
+        "unzerstoerbar": false,
+        "wendig": false,
+        "zerbrechlich": false,
+        "zweihaendig": false,
+        "kein_malus_nebenwaffe": false
+      }
+    },
+    "fernkampfwaffe": {
+      "templates": ["gesundheit", "waffe"],
+      "wm_fk": 0,
+      "lz": 0,
+      "eigenschaften": {
+        "kein_reiter": false,
+        "niederwerfen": false,
+        "niederwerfen_4": false,
+        "niederwerfen_8": false,
+        "schwer_4": false,
+        "schwer_8": false,
+        "stationaer": false,
+        "stumpf": false,
+        "umklammern_212": false,
+        "umklammern_416": false,
+        "umklammern_816": false,
+        "zweihaendig": false
+      }
+    },
+    "ruestung": {
+      "templates": ["gesundheit"],
+      "rs": 0,
+      "be": 0,
+      "rs_beine": 0,
+      "rs_larm": 0,
+      "rs_rarm": 0,
+      "rs_bauch": 0,
+      "rs_brust": 0,
+      "rs_kopf": 0,
+      "aktiv": false,
+      "text": ""
+    },
+    "fertigkeit": {
+      "templates": ["fertigkeit"],
+      "pwt": 0
+    },
+    "talent": {
+      "text": "",
+      "fertigkeit": ""
+    },
+    "uebernatuerliche_fertigkeit": {
+      "templates": ["fertigkeit"],
+      "voraussetzung": ""
+    },
+    "liturgie": {
+      "templates": ["uebernatuerlich_talent"]
+    },
+    "zauber": {
+      "templates": ["uebernatuerlich_talent"]
+    },
+    "freie_fertigkeit": {
+      "stufe": 1,
+      "text": "",
+      "gruppe": 0
+    },
+    "vorteil": {
+      "voraussetzung": "",
+      "gruppe": 0,
+      "text": ""
+    },
+    "manoever": {
+      "voraussetzung": "",
+      "gruppe": 0,
+      "probe": "",
+      "gegenprobe": "",
+      "text": ""
+    },
+    "eigenheit": {
+      "text": ""
+    }
+  }
 }

@@ -8,53 +8,49 @@
   "templateVersion": 2,
   "author": "Harbard, kleinerIrrer",
   "scripts": [],
-  "esmodules": [
-    "scripts/hooks.js"
-  ],
-  "styles": [
-    "css/temp.css"
-  ],
+  "esmodules": ["scripts/hooks.js"],
+  "styles": ["css/temp.css"],
   "packs": [
     {
-      "label": "Heldenvorlage",
+      "label": "Beispiel Helden",
       "entity": "Actor",
-      "name": "heldenvorlage",
-      "path": "./packs/heldenvorlage.db",
+      "name": "beispiel-helden",
+      "path": "./packs/beispiel-helden.db",
       "system": "Ilaris"
     },
     {
-      "label": "Karma Fertigkeiten",
+      "label": "Fertigkeiten und Talente",
       "entity": "Item",
-      "name": "karma-fertigkeiten",
-      "path": "./packs/karma-fertigkeiten.db",
+      "name": "fertigkeiten-und-talente",
+      "path": "./packs/fertigkeiten-und-talente.db",
       "system": "Ilaris"
     },
     {
-      "label": "Liturgien",
+      "label": "Liturgien und Mirakel",
       "entity": "Item",
-      "name": "liturgien",
-      "path": "./packs/liturgien.db",
+      "name": "liturgien-und-mirakel",
+      "path": "./packs/liturgien-und-mirakel.db",
       "system": "Ilaris"
     },
     {
-      "label": "Magie Fertigkeiten",
+      "label": "Manöver",
       "entity": "Item",
-      "name": "magie-fertigkeiten",
-      "path": "./packs/magie-fertigkeiten.db",
+      "name": "manover",
+      "path": "./packs/manover.db",
       "system": "Ilaris"
     },
     {
-      "label": "Profane Fertigkeiten",
+      "label": "Übernatürliche Fertigkeiten",
       "entity": "Item",
-      "name": "profane-fertigkeiten",
-      "path": "./packs/profane-fertigkeiten.db",
+      "name": "ubernaturliche-fertigkeiten",
+      "path": "./packs/ubernaturliche-fertigkeiten.db",
       "system": "Ilaris"
     },
     {
-      "label": "Profane Talente",
+      "label": "Vorteile",
       "entity": "Item",
-      "name": "profane-talente",
-      "path": "./packs/profane-talente.db",
+      "name": "vorteile",
+      "path": "./packs/vorteile.db",
       "system": "Ilaris"
     },
     {
@@ -78,7 +74,7 @@
   "primaryTokenAttribute": null,
   "secondaryTokenAttribute": null,
   "url": "",
-  "socket": true,
+  "socket": false,
   "manifest": "",
   "download": "",
   "license": ""

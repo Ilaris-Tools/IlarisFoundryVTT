@@ -10,15 +10,11 @@
         </div>
         <div>
             <div class="flexrow">
-                <label class="flex-fest-var" style="flex-basis:100px"><b>Label: </b></label>
-                <input name="data.fw" value="{{item.data.label}}" type="text" data-dtype="String">
-            </div>
-            <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis:100px"><b>Schaden: </b></label>
                 <div class="flexrow">
                     <input name="data.dice_anzahl" value="{{item.data.dice_anzahl}}" type="text" data-dtype="String">
                     <label class="flex-fest-var" style="flex-basis:40px">d6+</label>
-                    <input name="data.plus" value="{{item.data.plus}}" type="text" data-dtype="String">
+                    <input name="data.dice_plus" value="{{item.data.dice_plus}}" type="text" data-dtype="String">
                 </div>
             </div>
             <div class="flexrow">
@@ -29,14 +25,6 @@
                     <input name="data.talent" value="{{item.data.talent}}" type="text" data-dtype="String">
                 </div>
             </div>
-            <div class="flexrow">
-                <label class="flex-fest-var" style="flex-basis:100px"><b>Eigenschaften: </b></label>
-                <input name="data.eigenschaften" value="{{item.data.eigenschaften}}" type="text" data-dtype="String">
-            </div>
-            <!-- <div class="flexrow">
-                <label><b>Kampfstile: </b></label>
-                <input name="data.kampfstile" value="{{item.data.kampfstile}}" type="text" data-dtype="String">
-            </div> -->
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis:100px"><b>WM: </b></label>
                 <div class="flexrow">
@@ -54,6 +42,71 @@
                     <label class="flex-fest-var" style="flex-basis:100px"><b>Beschädigung: </b></label>
                     <input name="data.beschaedigung" value="{{item.data.beschaedigung}}" type="text"
                         data-dtype="String">
+                </div>
+            </div>
+            <!-- "kein_reiter": false,
+                 "niederwerfen": false,
+                 "niederwerfen_4": false,
+                 "niederwerfen_8": false,
+                 "schwer_4": false,
+                 "schwer_8": false,
+                 "stationaer": false,
+                 "stumpf": false,
+                 "umklammern_212": false,
+                 "umklammern_416": false,
+                 "umklammern_816": false,
+                 "zweihaendig": false -->
+            <div class="flexrow">
+                <label class="flex-fest-var" style="flex-basis:100px"><b>Eigenschaften: </b></label>
+                <div>
+                    <span>
+                        <label>| Nicht für Reiter: </label>
+                        <input name="data.eigenschaften.kein_reiter" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.kein_reiter}}>
+                    </span>
+                    <span>
+                        <label>| Niederwerfen: </label>
+                        <input name="data.eigenschaften.niederwerfen" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.niederwerfen}}>
+                    </span>
+                    <span>
+                        <label>| Niederwerfen (-4): </label>
+                        <input name="data.eigenschaften.niederwerfen_4" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.niederwerfen_4}}>
+                    </span>
+                    <span>
+                        <label>| Niederwerfen (-8): </label>
+                        <input name="data.eigenschaften.niederwerfen_8" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.niederwerfen_8}}>
+                    </span>
+                    <span>
+                        <label>| Schwer (4): </label>
+                        <input name="data.eigenschaften.schwer_4" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.schwer_4}}>
+                    </span>
+                    <span>
+                        <label>| Schwer (8): </label>
+                        <input name="data.eigenschaften.schwer_8" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.schwer_8}}>
+                    </span>
+                    <span>
+                        <label>| Stationär: </label>
+                        <input name="data.eigenschaften.stationaer" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.stationaer}}>
+                    </span>
+                    <span>
+                        <label>| Stumpf: </label>
+                        <input name="data.eigenschaften.stumpf" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.stumpf}}>
+                    </span>
+                    <span>
+                        <label>| Umklammern (2,12): </label>
+                        <input name="data.eigenschaften.umklammern_212" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.umklammern_212}}>
+                    </span>
+                    <span>
+                        <label>| Umklammern (4,16): </label>
+                        <input name="data.eigenschaften.umklammern_416" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.umklammern_416}}>
+                    </span>
+                    <span>
+                        <label>| Umklammern (8,16): </label>
+                        <input name="data.eigenschaften.umklammern_816" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.umklammern_816}}>
+                    </span>
+                    <span>
+                        <label>| Zweihändig: </label>
+                        <input name="data.eigenschaften.zweihaendig" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.zweihaendig}}>
+                    </span>
                 </div>
             </div>
             <label><b>Beschreibung: </b></label>

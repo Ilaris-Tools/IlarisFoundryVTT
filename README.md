@@ -1,54 +1,67 @@
 # Ilaris für FoundryVTT
-Ein System für [Ilaris](https://ilarisblog.wordpress.com/)  zur Verwendung mit [FoundryVTT](https://foundryvtt.com/).
+Ein System für [Ilaris](https://ilarisblog.wordpress.com/) zur Verwendung mit [FoundryVTT](https://foundryvtt.com/).
 
-**Achtung:** In der vorliegenden Form ist das System nicht für eine allgemeine Nutzung vorgesehen. Es sind noch nicht alle notwendigen Funktionen implementiert und die templates können und werden sich ohne Ankündigung von einem Tag zum anderen ändern. Wer eine VTT Unterstützung für Ilaris sucht, kann und sollte auf das [Roll20 Charakter Sheet für Ilaris](https://github.com/Roll20/roll20-character-sheets/tree/master/Das_Schwarze_Auge_Ilaris) zurück greifen.
+## Disclaimer
+
+Dies ist ein nicht kommerzielles Community-Projekt.
+Wir stehen in keinem Verhältnis (angestellt oder ähnliches) zu FoundryVTT, Ilaris, Ulisses oder anderen Rechteinhabern. 
+
+## !!Achtung!!
+
+Ilaris für FoundryVTT befindet sich aktuell in der Entwicklung und stellt kein fertiges Produkt dar.
+Die zugrunde liegende Datenstruktur kann (und wird) sich ändern. Alle selbst erstellen Actors und Items sind dann im besten Fall nicht mehr nutzbar, im schlimmsten Fall verursachen sie Bugs und Abstürze.
+Bevor Bugs gemeldet werden, sollte der entsprechende Actor/Item gelöscht und neu angelegt/import werden.
+Abfragen zur Berechnung basieren noch rein auf Strings: Ein Leerzeichen an der falschen Stelle kann daher die Berechnung kaputt machen => Item löschen und neu importieren, bevor ein Bug gemeldet wird.  
+
+Wer ein stabiles und vollständiges System für VTT sucht, sollte daher auf das [Roll20 Charakter Sheet für Ilaris](https://github.com/Roll20/roll20-character-sheets/tree/master/Das_Schwarze_Auge_Ilaris) zurückgreifen. 
+
 
 ### Unterstützung
-Wir freuen uns über jegliche Hilfe und Unterstützung. Wer Javascript programmieren kann oder in html und css firm ist, ist jederzeit herzlich willkommen. Aber auch Anregungen und allgemeines Feedback, welches im [DSA-Forum](https://dsaforum.de/viewtopic.php?f=180&t=55746&sid=58516b319511875ce0bc2dc00b379b4d) gepostet werden kann, helfen uns weiter. 
+Wir freuen uns über jegliche Hilfe und Unterstützung.
+Wer Javascript programmieren kann oder in html und css firm ist, beziehungsweise bereit ist es sich anzueignen, ist jederzeit herzlich willkommen.
+Keiner von uns hatte vorherige Erfahrung in der Webprogrammierung; Wir eignen uns die notwendigen Fertigkeiten selber erst im Rahmen des Projekts an.
+Aber auch Anregungen und allgemeines Feedback, welches im [DSA-Forum](https://dsaforum.de/viewtopic.php?f=180&t=55746&sid=58516b319511875ce0bc2dc00b379b4d) gepostet werden kann, helfen uns weiter und sind herzlich willkommen.
 
+## Aktueller Entwicklungsstand
+### Berechnete Vorteile
+* Abgehärtet II (nur dh)
+* Flink I
+* Flink II (nur gs)
+* Gefäß der Sterne
+* Geweiht I/II/III/IV
+* Glück I
+* Glück II
+* Kampfreflexe
+* Kampfstile Stufe 1 bis 3 (Es werden nur AT, VT und Schaden, sowie entfallender Malus bei Nebenwaffen berechnet)
+* Natürliche Rüstung
+* Rüstungsgewöhnung
+* Unbeugsamkeit (nur mr)
+* Unverwüstlich (nur ws)
+* Verbesserte Rüstungsgewöhnung
+* Willensstark I
+* Willensstark II (nur mr)
+* Zauberer I/II/III/IV
 
-## Roadmap und Versionshistorie
-### TODO (in naher Zukunft)
-* Freie Fertigkeiten
-* Schips
-* Waffen und Kampfsystem implementieren
-    * Waffensheet
-    * Initiative
-    * Waffeneigenschaften
-    * Manöver
-    * Sonderfertigkeiten
-    * Kampfvorteile
-* Proben erweitern. 3d10, 1d20 und der Einsatz von Schicksalspunkten
-* Templates für profante Talente und Fertigkeiten finalisieren => Einen Importer aus der [Sephrasto](https://github.com/Aeolitus/Sephrasto)-Datenbank erstellen 
-oder Compedium Packs händisch anlegen.
-* Fehlende und abgeleitete Werte erstellen und berechnen. Geschwindigkeit, Durchhaltevermögen, Magieresistenz, ...
+### Zu beachten
+* Der obige Absatz unter **!!Achtung!!**
+* Der Einsatz von Schicksalspunkten (Bei profanen Fertigkeiten) funktioniert nur, wenn Schicksalspunkte vorhanden sind. Ansonsten wird ohne Meldung eine normale 3W20 Probe geworfen
+* Astral- und Karmapunkte werden nur angezeigt, wenn die Vorteile Zauberer oder Geweiht aktiviert sind
+* Der Zukauf von AsP und KaP kann durch einen Mausklick auf das Label AsP/KaP eingestellt werden
+* Bei einem Import aus *Beispiel Helden* werden eine ganze Menge Fehler angezeigt. Keine Ahnung woher sie kommen. Es scheint aber dennoch zu funktionieren
 
-### TODO (in ferner Zukunft)
-* Formatieren und Aufhübschen (CSS)
-* Automatisierung, zB für Zauber und Liturgien
-* Helden aus Sephrasto importieren
-* Durchsuchbares Kompedium zur Übersicht
+### TO-DO
+Viel und eine ganze Menge. 
+1. Helden vervollständigen    
+Berechnunungen und Probenwürfe ergänzen, so dass ein nutzbares Heldensheet vorliegt
+2. Vereinfachtes Sheet für Kreaturen/NPCs mit *deutlich* weniger Automatisierungen erstellen 
+3. "Alles schön machen"    
+    * Einarbeitung in html, damit wenigstens halbwegs eine Übersicht vorliegt
+    * Einarbeitung in css, um es auch optisch ansprechend zu gestalten
+4. Code aufräumen    
+Die oben genannten String-Hacks entfernen, Datenstruktur finalisieren, Berechnungen und Variablen-/Funktionsnamen vereinheitlichen, etc.
 
-### Bisherige Funktionalität
-* Wunden und Erschöpfung als einzelne Eingabe und Berechnung der Wundabzüge
-* Eingabe der Attribute und Berechnung des Probenwertes. Attributsprobe bei Klick auf den PW
-* profane Fertigkeiten und Talente
-    * können entweder auf dem HeldenSheet oder als Item erstellt werden
-    * automatisch alphabetische Sortierung in der Talentgruppe (Wie bei Sephrasto)
-    * Berechnung des PW und PWT
-    * Probe auf PW und PWT mit klick auf den entsprechenden Wert.
-    * Klick auf den Namen der Fertigkeit öffnet auf dem Sheet eine genauere Beschreibung. Ein klick auf eines der gelisteten Talente würfelt eine Probe direkt auf das Talent.
-    * Talente, die nicht einsortiert werden können, erscheinen in einer extra Liste.
-* magische und karmale Fertigkeiten und Talente
-    * können entweder auf dem HeldenSheet oder als Item erstellt werden
-    * alphabetische Sortierung, zuerst Magie, dann Karma
-    * Talente haben den Eintrag Fertigkeiten, eine mit Komma abgetrennte Liste der möglichen Fertigkeiten zur Talentnutzung. Zur Berechnung des Probenwertes wird die höchste Fertigkeit auf dem Heldensheet gesucht, die in der Liste aufgeführt ist. Das Verhalten kann im Eintrag "Ausgewählte Fertigkeit" überschrieben werden.
-    * Probe auf Fertigkeit und Talent bei klick auf PW
-    * Bei einem Klick auf den Namen öffnet sich auf dem Heldensheet eine Beschreibung zur Fertigkeit, beziehungsweise zum Talent
-* Rüstungen
-    * können entweder auf dem HeldenSheet oder als Item erstellt werden
-    * automatische Berechnung der WS*
-    * Können getragen oder abgelegt werden, sichtbar am true/false auf dem Heldensheet. Aktuell nur über edit-item möglich und nicht direkt über das Heldensheet.
+Dies ist nur eine ganz grobe Richtlinie. Es gibt keine fest definierte Roadmap. 
+> It will be done when it's done.
 
 ## Beiträge, Inspirationen und Vorlagen
 * Selbstverständlich [Ilaris](https://ilarisblog.wordpress.com/) als Regelgrundlage
@@ -59,6 +72,8 @@ oder Compedium Packs händisch anlegen.
 ## Urheberrecht
 
 [Ilaris](https://ilarisblog.wordpress.com/) ist unter einer [Creative Commons Namensnennung – Nicht kommerziell – Keine Bearbeitungen 4.0 International Lizenz](http://creativecommons.org/licenses/by-nc-nd/4.0/) lizensiert. ![Creative Commons Lizenzvertrag](https://licensebuttons.net/l/by-nc-nd/4.0/80x15.png)
+
+Die Rechte vom genutzten Artwork von Ilaris liegen bei den jeweiligen Künstlern.
 
 DAS SCHWARZE AUGE, AVENTURIEN, DERE, MYRANOR, THARUN, UTHURIA und RIESLAND sind eingetragene Marken der [Significant Fantasy Medienrechte GbR](http://www.wiki-aventurica.de/wiki/Significant_Fantasy). Ohne vorherige schriftliche Genehmigung der Ulisses Medien und Spiel Distribution GmbH ist eine Verwendung der genannten Markenzeichen nicht gestattet.
 

@@ -1,6 +1,15 @@
 <div>
-    <h2>Waffen</h2>
+    <h2>Nahkampfwaffen</h2>
     <a class="item-create" data-itemclass="nahkampfwaffe"><i class="fas fa-plus"></i>Neue Nahkampfwaffe</a>
+    <div>
+        <select name="misc.selected_kampfstil">
+            {{#select actor.misc.selected_kampfstil}}
+                {{#each actor.misc.kampfstile_list}}
+                    <option value="{{this}}">{{get_label this}}</option>
+                {{/each}}
+            {{/select}}
+        </select>
+    </div>
     <div>
         <div class="flexrow">
             <label class="icon-small"><b>HW</b></label>
@@ -14,28 +23,24 @@
             <label class="icon-small" style="float: right;"></label>
         </div>
         {{#each actor.nahkampfwaffen as |nwaffe key|}}
-        <div class="flexrow">
-            <!-- <a class="rollable icon-small" data-rolltype="profan_fertigkeit" data-fertigkeit="{{key}}"><i class="fas fa-dice-d20"></i></a> -->
-            <a class="icon-small item-toggle {{nwaffe.data.hauptwaffe}}" data-itemid="{{nwaffe._id}}" data-toggletype="hauptwaffe"><i class="far fa-hand-paper"></i></a>
-            <a class="icon-small item-toggle {{nwaffe.data.nebenwaffe}}" data-itemid="{{nwaffe._id}}" data-toggletype="nebenwaffe"><i class="far fa-hand-paper"></i></a>
-            <label class="ausklappen-trigger" data-ausklappentarget="{{nwaffe._id}}">{{nwaffe.name}}</label>
-            <label>{{nwaffe.data.rw}}</label>
-            <label>{{nwaffe.data.at}}</label>
-            <label>{{nwaffe.data.vt}}</label>
-            <label>{{nwaffe.data.schaden}}</label>
-            <!-- <label>{{nwaffe.data.dice_anzahl}}d{{nwaffe.data.dice_typ}}+{{nwaffe.data.plus}}</label> -->
-            <a class="item-edit icon-small" data-itemclass="nahkampfwaffe" data-itemid="{{nwaffe._id}}" style="float: right;"><i class="fas fa-edit"></i></a>
-            <a class="item-delete icon-small" data-itemclass="nahkampfwaffe" data-itemid="{{nwaffe._id}}" style="float: right;"><i class="fas fa-trash"></i></a>
-        </div>
+            <div class="flexrow">
+                <!-- <a class="rollable icon-small" data-rolltype="profan_fertigkeit" data-fertigkeit="{{key}}"><i class="fas fa-dice-d20"></i></a> -->
+                <a class="icon-small item-toggle {{nwaffe.data.hauptwaffe}}" data-itemid="{{nwaffe._id}}" data-toggletype="hauptwaffe"><i class="far fa-hand-paper"></i></a>
+                <a class="icon-small item-toggle {{nwaffe.data.nebenwaffe}}" data-itemid="{{nwaffe._id}}" data-toggletype="nebenwaffe"><i class="far fa-hand-paper"></i></a>
+                <label class="ausklappen-trigger onhover" data-ausklappentarget="{{nwaffe._id}}">{{nwaffe.name}}</label>
+                <label>{{nwaffe.data.rw}}</label>
+                <label class="rollable onhover" data-rolltype="at" data-pw="{{nwaffe.data.at}}" data-item="{{nwaffe.name}}">{{nwaffe.data.at}}</label>
+                <label class="rollable onhover" data-rolltype="vt" data-pw="{{nwaffe.data.vt}}" data-item="{{nwaffe.name}}">{{nwaffe.data.vt}}</label>
+                <label class="rollable onhover" data-rolltype="schaden" data-pw="{{nwaffe.data.schaden}}" data-item="{{nwaffe.name}}">{{nwaffe.data.schaden}}</label>
+                <!-- <label>{{nwaffe.data.dice_anzahl}}d{{nwaffe.data.dice_typ}}+{{nwaffe.data.plus}}</label> -->
+                <a class="item-edit icon-small" data-itemclass="nahkampfwaffe" data-itemid="{{nwaffe._id}}" style="float: right;"><i class="fas fa-edit"></i></a>
+                <a class="item-delete icon-small" data-itemclass="nahkampfwaffe" data-itemid="{{nwaffe._id}}" style="float: right;"><i class="fas fa-trash"></i></a>
+            </div>
             <div id="ausklappen-view-{{nwaffe._id}}" style="display: none">
                 <hr>
                 <div>
-                    <label><b>Label:</b></label>
-                    <label>{{nwaffe.data.label}}</label>
-                </div>
-                <div>
                     <label><b>Schaden:</b></label>
-                    <label>{{nwaffe.data.dice_anzahl}}d{{nwaffe.data.dice_typ}}+{{nwaffe.data.plus}}</label>
+                    <label>{{nwaffe.data.dice_anzahl}}d6+{{nwaffe.data.dice_plus}}</label>
                 </div>
                 <div>
                     <label><b>Fertigkeit:</b></label>
@@ -47,11 +52,7 @@
                 </div>
                 <div>
                     <label><b>Eigenschaften:</b></label>
-                    <label>{{nwaffe.data.eigenschaften}}</label>
-                </div>
-                <div>
-                    <label><b>Kampfstile:</b></label>
-                    <label>{{nwaffe.data.kampfstile}}</label>
+                    <label>{{waffeneigenschaften_string nwaffe}}</label>
                 </div>
                 <div>
                     <label><b>WM:</b></label>
@@ -94,16 +95,82 @@
     <a class="item-create" data-itemclass="fernkampfwaffe"><i class="fas fa-plus"></i>Neue Fernkampfwaffe</a>
     <div>
         <div class="flexrow">
+            <label class="icon-small"><b>HW</b></label>
+            <label class="icon-small"><b>NW</b></label>
             <label><b>Name</b></label>
             <label><b>RW</b></label>
             <label><b>LZ</b></label>
-            <label><b>AT</b></label>
+            <label><b>FK</b></label>
             <label><b>Schaden</b></label>
+            <label class="icon-small" style="float: right;"></label>
+            <label class="icon-small" style="float: right;"></label>
         </div>
+        {{#each actor.fernkampfwaffen}}
+            <div class="flexrow">
+                <!-- <a class="rollable icon-small" data-rolltype="profan_fertigkeit" data-fertigkeit="{{key}}"><i class="fas fa-dice-d20"></i></a> -->
+                <a class="icon-small item-toggle {{this.data.hauptwaffe}}" data-itemid="{{this._id}}" data-toggletype="hauptwaffe"><i class="far fa-hand-paper"></i></a>
+                <a class="icon-small item-toggle {{this.data.nebenwaffe}}" data-itemid="{{this._id}}" data-toggletype="nebenwaffe"><i class="far fa-hand-paper"></i></a>
+                <label class="ausklappen-trigger onhover" data-ausklappentarget="{{this._id}}">{{this.name}}</label>
+                <label>{{this.data.rw}}</label>
+                <label>{{this.data.lz}}</label>
+                <label class="rollable onhover" data-rolltype="fk" data-pw="{{this.data.fk}}" data-item="{{this.name}}">{{this.data.fk}}</label>
+                <label class="rollable onhover" data-rolltype="schaden" data-pw="{{this.data.schaden}}" data-item="{{this.name}}">{{this.data.schaden}}</label>
+                <!-- <label>{{nwaffe.data.dice_anzahl}}d{{nwaffe.data.dice_typ}}+{{nwaffe.data.plus}}</label> -->
+                <a class="item-edit icon-small" data-itemclass="fernkampfwaffe" data-itemid="{{this._id}}" style="float: right;"><i class="fas fa-edit"></i></a>
+                <a class="item-delete icon-small" data-itemclass="fernkampfwaffe" data-itemid="{{this._id}}" style="float: right;"><i class="fas fa-trash"></i></a>
+            </div>
+            <div id="ausklappen-view-{{this._id}}" style="display: none">
+                <hr>
+                <div>
+                    <label><b>Schaden:</b></label>
+                    <label>{{this.data.dice_anzahl}}d6+{{this.data.dice_plus}}</label>
+                </div>
+                <div>
+                    <label><b>Fertigkeit:</b></label>
+                    <label>{{this.data.fertigkeit}}</label>
+                </div>
+                <div>
+                    <label><b>Talent:</b></label>
+                    <label>{{this.data.talent}}</label>
+                </div>
+                <div>
+                    <label><b>Eigenschaften:</b></label>
+                    <label>{{waffeneigenschaften_string this}}</label>
+                </div>
+                <div>
+                    <label><b>WM:</b></label>
+                    <label>{{this.data.wm_fk}}</label>
+                </div>
+                <div>
+                    <label><b>Härte:</b></label>
+                    <label>{{this.data.haerte}}</label>
+                </div>
+                <div>
+                    <label><b>Beschädigung:</b></label>
+                    <label>{{this.data.beschaedigung}}</label>
+                </div>
+                <div>
+                    <label><b>Eigene Modifikatoren</b></label>
+                </div>
+                <div>
+                    <label><b>WM:</b></label>
+                    <label>{{this.data.mod_fk}}</label>
+                </div>
+                <div>
+                    <label><b>Schadensbonus:</b></label>
+                    <label>{{this.data.mod_schaden}}</label>
+                </div>
+                <div>
+                    <label><b>Beschreibung:</b></label><br>
+                    <label style="white-space: pre-line;">{{this.data.text}}</label>
+                </div>
+                <hr>
+            </div>
+        {{/each}}
     </div>
     <br>
 
-    <h2>Rüstung</h2>
+    <h2>Rüstungen</h2>
     <a class="item-create" data-itemclass="ruestung"><i class="fas fa-plus"></i>Neue Rüstung</a>
     <div>
         <div class="flexrow">
@@ -121,21 +188,21 @@
             <h6 class="icon-small"></h6>
         </div>
         {{#each actor.ruestungen as |ruestung key|}}
-        <div class="flexrow">
-            <!-- <label>{{ruestung.data.aktiv}}</label> -->
-            <a class="icon-small item-toggle {{ruestung.data.aktiv}}" data-itemid="{{ruestung._id}}" data-toggletype="aktiv"><i class="fas fa-shield-alt"></i></a>
-            <label>{{ruestung.name}}</label>
-            <label>{{ruestung.data.rs}}</label>
-            <label>{{ruestung.data.be}}</label>
-            <label>{{ruestung.data.rs_beine}}</label>
-            <label>{{ruestung.data.rs_larm}}</label>
-            <label>{{ruestung.data.rs_rarm}}</label>
-            <label>{{ruestung.data.rs_bauch}}</label>
-            <label>{{ruestung.data.rs_brust}}</label>
-            <label>{{ruestung.data.rs_kopf}}</label>
-            <a class="item-edit icon-small" data-itemclass="ruestung" data-itemid="{{ruestung._id}}" style="float: right;"><i class="fas fa-edit"></i></a>
-            <a class="item-delete icon-small" data-itemclass="ruestung" data-itemid="{{ruestung._id}}" style="float: right;"><i class="fas fa-trash"></i></a>
-        </div>
+            <div class="flexrow">
+                <!-- <label>{{ruestung.data.aktiv}}</label> -->
+                <a class="icon-small item-toggle {{ruestung.data.aktiv}}" data-itemid="{{ruestung._id}}" data-toggletype="aktiv"><i class="fas fa-shield-alt"></i></a>
+                <label>{{ruestung.name}}</label>
+                <label>{{ruestung.data.rs}}</label>
+                <label>{{ruestung.data.be}}</label>
+                <label>{{ruestung.data.rs_beine}}</label>
+                <label>{{ruestung.data.rs_larm}}</label>
+                <label>{{ruestung.data.rs_rarm}}</label>
+                <label>{{ruestung.data.rs_bauch}}</label>
+                <label>{{ruestung.data.rs_brust}}</label>
+                <label>{{ruestung.data.rs_kopf}}</label>
+                <a class="item-edit icon-small" data-itemclass="ruestung" data-itemid="{{ruestung._id}}" style="float: right;"><i class="fas fa-edit"></i></a>
+                <a class="item-delete icon-small" data-itemclass="ruestung" data-itemid="{{ruestung._id}}" style="float: right;"><i class="fas fa-trash"></i></a>
+            </div>
         {{/each}}
         <hr>
         <div class="flexrow">
@@ -155,8 +222,25 @@
     </div>
     <br>
 
-
-    <h2>Kampfstile und Sonderfertigkeit</h2>
-
+    <h2>Kampfstile und Sonderfertigkeiten</h2>
+    {{#if actor.vorteil.kampf}}
+        <div>
+            <label><b>Kampfvorteile:</b>&nbsp; | &nbsp;</label>
+            {{#each actor.vorteil.kampf}}
+                <a class="item-edit" data-itemid="{{this._id}}"> {{this.name}} </i></a>
+                <a class="item-delete" data-itemid="{{this._id}}"><i class="fas fa-trash"></i></a>
+                &nbsp; | &nbsp;
+            {{/each}}
+        </div>
+    {{/if}}
+    {{#if actor.vorteil.kampfstil}}
+        <div>
+            <label><b>Kampfstile:</b>&nbsp; | &nbsp;</label>
+            {{#each actor.vorteil.kampfstil}}
+                <a class="item-edit" data-itemid="{{this._id}}"> {{this.name}} </i></a>
+                <a class="item-delete" data-itemid="{{this._id}}"><i class="fas fa-trash"></i></a>
+                &nbsp; | &nbsp;
+            {{/each}}
+        </div>
+    {{/if}}
 </div>
-

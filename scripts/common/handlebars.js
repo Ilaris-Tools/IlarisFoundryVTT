@@ -5,16 +5,17 @@ export const initializeHandlebars = () => {
 
 function preloadHandlebarsTemplates() {
     const templatePaths = [
-        "systems/Ilaris/templates/sheets/helden.html",
+        // "systems/Ilaris/templates/sheets/helden.html",
         "systems/Ilaris/templates/sheets/tabs/attribute.html",
         "systems/Ilaris/templates/sheets/tabs/fertigkeiten.html",
         "systems/Ilaris/templates/sheets/tabs/inventar.html",
-        "systems/Ilaris/templates/sheets/tabs/fertigkeitview.html",
         "systems/Ilaris/templates/sheets/tabs/uebernatuerlich.html",
         "systems/Ilaris/templates/sheets/tabs/notes.html",
-        "systems/Ilaris/templates/sheets/items/ruestung.html",
+        // "systems/Ilaris/templates/sheets/items/ruestung.html",
         "systems/Ilaris/templates/helper/select_attribut.html",
         "systems/Ilaris/templates/helper/select_fertigkeitsgruppe.html",
+        "systems/Ilaris/templates/helper/select_vorteilsgruppe.html",
+        "systems/Ilaris/templates/helper/select_manoever.html",
         "systems/Ilaris/templates/chat/dreid20.html",
         "systems/Ilaris/templates/chat/probendiag_profan.html",
         "systems/Ilaris/templates/chat/probenchat_profan.html"
@@ -39,15 +40,64 @@ function registerHandlebarsHelpers() {
         let fertigkeit_list = "";
         for (let [i, tal] of talente.entries()) {
             if (i == 0) {
-                // fertigkeit_list = tal.name;
-                fertigkeit_list = tal.data.label;
+                fertigkeit_list = tal.name;
+                // fertigkeit_list = tal.data.label;
             } else {
-                // fertigkeit_list = fertigkeit_list.concat(", ", tal.name);
-                fertigkeit_list = fertigkeit_list.concat(", ", tal.data.label);
+                fertigkeit_list = fertigkeit_list.concat(", ", tal.name);
+                // fertigkeit_list = fertigkeit_list.concat(", ", tal.data.label);
             }
         }
         return fertigkeit_list;
     });
+
+    Handlebars.registerHelper("arrayToString", function(my_array, sep) {
+        let my_list = "";
+        for (let [i, part] of my_array.entries()) {
+            if (i == 0) {
+                // fertigkeit_list = tal.name;
+                my_list = part;
+            } else {
+                // fertigkeit_list = fertigkeit_list.concat(", ", tal.name);
+                my_list = my_list.concat(sep, part);
+            }
+        }
+        return my_list;
+    });
+
+    Handlebars.registerHelper("waffeneigenschaften_string", function(waffe) {
+        let my_list = "";
+        // console.log(waffe);
+        for (const [eig, val] of Object.entries(waffe.data.eigenschaften)) {
+            // console.log(eig);
+            if (val == true) {
+                if (my_list.length == 0){
+                    my_list = CONFIG.ILARIS.label[eig];
+                }
+                else {
+                    my_list = my_list.concat(", ", CONFIG.ILARIS.label[eig]);
+                }
+            }
+        }
+        return my_list;
+    });
+
+    Handlebars.registerHelper("get_label", function(eig) {
+        // console.log(eig);
+        return CONFIG.ILARIS.label[eig];
+    });
+
+    // Handlebars.registerHelper("get_kampfstile", function(data) {
+    //     let kampfstile = ["ohne"];
+    //     console.log(data);
+    //     if (data.find(x => x.name.includes("Beidhändiger Kampf"))) kampfstile.push("bhk");
+    //     if (data.find(x => x.name.includes("Kraftvoller Kampf"))) kampfstile.push("kvk");
+    //     if (data.find(x => x.name.includes("Parierwaffenkampf"))) kampfstile.push("pwk");
+    //     if (data.find(x => x.name.includes("Reiterkampf"))) kampfstile.push("rtk");
+    //     if (data.find(x => x.name.includes("Schildkampf"))) kampfstile.push("shk");
+    //     if (data.find(x => x.name.includes("Schneller Kampf"))) kampfstile.push("snk");
+    //     console.log(kampfstile);
+    //     return kampfstile;
+    // });
 
     // Handlebars.registerHelper("TalentList", function (fertigkeit) {
     //     // console.log(attrArray);

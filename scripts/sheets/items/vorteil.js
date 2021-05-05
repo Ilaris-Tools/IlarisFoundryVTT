@@ -1,11 +1,11 @@
 import { IlarisItemSheet } from "./item.js";
 
-export class ProfanFertigkeitSheet extends IlarisItemSheet {
+export class VorteilSheet extends IlarisItemSheet {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             // classes: ["wrath-and-glory", "sheet", "actor"],
             // classes: ["ilaris", "sheet"],
-            template: "systems/Ilaris/templates/sheets/items/profan_fertigkeit.html",
+            template: "systems/Ilaris/templates/sheets/items/vorteil.html",
             // width: 720,
             // height: 800,
             // resizable: false,

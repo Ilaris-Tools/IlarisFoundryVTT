@@ -10,15 +10,11 @@
         </div>
         <div>
             <div class="flexrow">
-                <label class="flex-fest-var" style="flex-basis:100px"><b>Label: </b></label>
-                <input name="data.label" value="{{item.data.label}}" type="text" data-dtype="String">
-            </div>
-            <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis:100px"><b>Schaden: </b></label>
                 <div class="flexrow">
                     <input name="data.dice_anzahl" value="{{item.data.dice_anzahl}}" type="text" data-dtype="Number">
                     <label class="flex-fest-var" style="flex-basis:40px">d6+</label>
-                    <input name="data.plus" value="{{item.data.plus}}" type="text" data-dtype="Number">
+                    <input name="data.dice_plus" value="{{item.data.dice_plus}}" type="text" data-dtype="Number">
                 </div>
             </div>
             <div class="flexrow">
@@ -28,14 +24,6 @@
                     <label class="flex-fest-var" style="flex-basis:40px"><b>Talent: </b></label>
                     <input name="data.talent" value="{{item.data.talent}}" type="text" data-dtype="String">
                 </div>
-            </div>
-            <div class="flexrow">
-                <label class="flex-fest-var" style="flex-basis:100px"><b>Eigenschaften: </b></label>
-                <input name="data.eigenschaften" value="{{item.data.eigenschaften}}" type="text" data-dtype="String">
-            </div>
-            <div class="flexrow">
-                <label class="flex-fest-var" style="flex-basis:100px"><b>Kampfstile: </b></label>
-                <input name="data.kampfstile" value="{{item.data.kampfstile}}" type="text" data-dtype="String">
             </div>
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis:100px"><b>WM: </b></label>
@@ -56,6 +44,80 @@
                         data-dtype="Number">
                 </div>
             </div>
+            <div class="flexrow">
+                <label class="flex-fest-var" style="flex-basis:100px"><b>Eigenschaften: </b></label>
+                <span>
+                    {{#each data.eigenschaften as |val key|}}
+                    <!-- <label>{{key}}</label>
+                         <label>{{val}}</label> -->
+                    <label>{{get_label key}}</label>
+                    <input name="data.eigenschaften.{{key}}" data-dtype="Boolean" type="checkbox" {{checked .}}>
+                    <label> | &nbsp;</label>
+                    {{/each}}
+                </span>
+                <!-- <div>
+                     <span>
+                     <label>Kopflastig: </label>
+                     <input name="data.eigenschaften.kopflastig" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.kopflastig}}>
+                     </span>
+                     <span>
+                     <label>| Niederwerfen: </label>
+                     <input name="data.eigenschaften.niederwerfen" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.niederwerfen}}>
+                     </span>
+                     <span>
+                     <label>| Parierwaffe: </label>
+                     <input name="data.eigenschaften.parierwaffe" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.parierwaffe}}>
+                     </span>
+                     <span>
+                     <label>| Reittier: </label>
+                     <input name="data.eigenschaften.reittier" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.reittier}}>
+                     </span>
+                     <span>
+                     <label>| Rüstungsbrechend: </label>
+                     <input name="data.eigenschaften.ruestungsbrechend" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.ruestungsbrechend}}>
+                     </span>
+                     <span>
+                     <label>| Schild: </label>
+                     <input name="data.eigenschaften.schild" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.schild}}>
+                     </span>
+                     <span>
+                     <label>| Schwer (4): </label>
+                     <input name="data.eigenschaften.schwer_4" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.schwer_4}}>
+                     </span>
+                     <span>
+                     <label>| Schwer (8): </label>
+                     <input name="data.eigenschaften.schwer_8" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.schwer_8}}>
+                     </span>
+                     <span>
+                     <label>| Stumpf: </label>
+                     <input name="data.eigenschaften.stumpf" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.stumpf}}>
+                     </span>
+                     <span>
+                     <label>| Unberechenbar: </label>
+                     <input name="data.eigenschaften.unberechenbar" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.unberechenbar}}>
+                     </span>
+                     <span>
+                     <label>| Unzerstörbar: </label>
+                     <input name="data.eigenschaften.unzerstoerbar" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.unzerstoerbar}}>
+                     </span>
+                     <span>
+                     <label>| Wendig: </label>
+                     <input name="data.eigenschaften.wendig" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.wendig}}>
+                     </span>
+                     <span>
+                     <label>| Zerbrechlich: </label>
+                     <input name="data.eigenschaften.zerbrechlich" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.zerbrechlich}}>
+                     </span>
+                     <span>
+                     <label>| Zweihändig: </label>
+                     <input name="data.eigenschaften.zweihaendig" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.zweihaendig}}>
+                     </span>
+                     <span>
+                     <label>| kein Malus als Nebenwaffe: </label>
+                     <input name="data.eigenschaften.kein_malus_nebenwaffe" data-dtype="Boolean" type="checkbox" {{checked data.eigenschaften.kein_malus_nebenwaffe}}>
+                     </span>
+                     </div> -->
+            </div>
             {{#if hasOwner}}
             <label class="flex-fest-var" style="flex-basis:100px"><b>Eigene Mod.: </b></label>
             <div class="flexrow">
@@ -68,7 +130,7 @@
             </div>
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis:100px"><b>Schadensbonus: </b></label>
-                <input name="data.mod_schaden" value="{{item.data.mod_schaden}}" type="text" data-dtype="Number">
+                <input name="data.mod_schaden" value="{{item.data.mod_schaden}}" type="text" data-dtype="String">
             </div>
             {{/if}}
             <label><b>Beschreibung: </b></label>

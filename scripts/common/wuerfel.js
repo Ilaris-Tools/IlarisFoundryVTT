@@ -11,7 +11,7 @@ export async function wuerfelwurf(event, actor) {
         const talent_list = {};
         let array_talente = actor.data.profan.fertigkeiten[fertigkeit].data.talente;
         for (const [i, tal] of array_talente.entries()) {
-            talent_list[i] = tal.data.label;
+            talent_list[i] = tal.name;
         }
         const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_profan.html', {
             groupName_xd20: "xd20",
@@ -198,6 +198,9 @@ export async function wuerfelwurf(event, actor) {
             // jQuery: false,
         });
         d.render(true);
+    }
+    else if (rolltype == "fk") {
+        
     }
     // let formula = `${pw} + ${wundabzuege} + 3d20dl1dh1`;
     // // let formula = `${data.pw} + 3d20dhdl`;

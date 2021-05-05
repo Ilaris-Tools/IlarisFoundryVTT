@@ -7,11 +7,58 @@
             <h6>PW</h6>
         </div>
         {{#each data.attribute as |attribut key|}}
-        <div class="flexrow">
-            <label>{{attribut.label}}</label>
-            <input name="data.attribute.{{key}}.wert" value="{{attribut.wert}}" type="text" data-dtype="Number">
-            <label class="rollable" data-rolltype="attribut" data-attribut="{{key}}">{{attribut.pw}}</label>
-        </div>
+            <div class="flexrow">
+                <label>{{get_label key}}</label>
+                <input name="data.attribute.{{key}}.wert" value="{{attribut.wert}}" type="text" data-dtype="Number">
+                <label class="rollable onhover" data-rolltype="attribut" data-attribut="{{key}}">{{attribut.pw}}</label>
+            </div>
         {{/each}}
     </div>
+    <br>
+    <h2>Eigenheiten</h2>
+    <a class="item-create" data-itemclass="eigenheit"><i class="fas fa-plus"></i>Neue Eigenheit</a>
+    <div>
+    {{#each actor.eigenheiten}}
+        <a class="item-edit" data-itemid="{{this._id}}"> {{this.name}} </i></a>
+        <a class="item-delete" data-itemid="{{this._id}}"><i class="fas fa-trash"></i></a>
+        &nbsp; | &nbsp;
+    {{/each}}
+    </div>
+    <br>
+    <br>
+    <h2>Vorteile</h2>
+    {{#if actor.vorteil.allgemein}}
+        <div>
+            <label><b>Allgemeine Vorteile:</b>&nbsp; | &nbsp;</label>
+            {{#each actor.vorteil.allgemein}}
+                <!-- <label>key: {{@key}}</label> <label>this: {{{this}}}</label> <label>dot: {{{.}}}</label> -->
+                <a class="item-edit" data-itemid="{{this._id}}"> {{this.name}} </i></a>
+                <a class="item-delete" data-itemid="{{this._id}}"><i class="fas fa-trash"></i></a>
+                &nbsp; | &nbsp;
+            {{/each}}
+        </div>
+    {{/if}}
+    {{#if actor.vorteil.profan}}
+        <div>
+            <label><b>Profane Vorteile:</b>&nbsp; | &nbsp;</label>
+            {{#each actor.vorteil.profan}}
+                <a class="item-edit" data-itemid="{{this._id}}"> {{this.name}} </i></a>
+                <a class="item-delete" data-itemid="{{this._id}}"><i class="fas fa-trash"></i></a>
+                &nbsp; | &nbsp;
+            {{/each}}
+        </div>
+    {{/if}}
+    {{#if actor.unsorted}}
+        <br>
+        <hr>
+        <hr>
+        <label><b>Unsorted Items:</b>&nbsp; | &nbsp;</label>
+        {{#each actor.unsorted}}
+            <a class="item-edit" data-itemid="{{this._id}}"> {{this.name}} </i></a>
+            <a class="item-delete" data-itemid="{{this._id}}"><i class="fas fa-trash"></i></a>
+            &nbsp; | &nbsp;
+        {{/each}}
+        <hr>
+        <hr>
+    {{/if}}
 </div>

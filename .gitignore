@@ -7,12 +7,20 @@ __pycache__
 .\#*
 .#*
 
+.log
+myfontdirectory
+README.html
+sephrasto_datenbank.js_old
 sephrasto_datenbank.js
+sephrasto_datenbank.json
 createzip.py
 ilaris.zip
 ilaris-foundryvtt.zip
 datenbank.json
 datenbank.xml
+datenbank_20210425.json
+datenbank.json_20210427
+datenbank.xml_20210427
 package.json
 package-lock.json
 node_modules

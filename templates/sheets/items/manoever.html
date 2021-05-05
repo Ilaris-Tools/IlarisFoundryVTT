@@ -1,0 +1,34 @@
+<form class="{{cssClass}}">
+    <div>
+        <div>
+            <header class="sheet-header">
+                <div class="header-fields">
+                    <h1 class="charname"><input name="name" type="text" value="{{item.name}}" /></h1>
+                </div>
+            </header>
+        </div>
+        <div class="flexrow">
+            <select name="data.gruppe">
+                {{#select data.gruppe}}
+                {{> systems/Ilaris/templates/helper/select_manoever.html}}
+                {{/select}}
+            </select>
+        </div>
+        <div class="flexrow">
+            <label><b>Voraussetzung:</b></label>
+            <input name="data.voraussetzung" value="{{item.data.voraussetzung}}" type="text" data-dtype="String">
+        </div>
+        <div class="flexrow">
+            <label><b>Probe:</b></label>
+            <input name="data.probe" value="{{item.data.probe}}" type="text" data-dtype="String">
+        </div>
+        <div class="flexrow">
+            <label><b>Gegenprobe:</b></label>
+            <input name="data.gegenprobe" value="{{item.data.gegenprobe}}" type="text" data-dtype="String">
+        </div>
+        <div>
+            <label><b>Beschreibung:</b></label>
+            <textarea name="data.text">{{data.text}}</textarea>
+        </div>
+    </div>
+</form>

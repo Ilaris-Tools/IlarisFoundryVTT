@@ -5,6 +5,7 @@ export class HeldenSheet extends IlarisActorSheet {
         return mergeObject(super.defaultOptions, {
             // classes: ["wrath-and-glory", "sheet", "actor"],
             // classes: ["ilaris", "sheet"],
+            classes: ["ilaris"],
             template: "systems/Ilaris/templates/sheets/helden.html",
             // width: 720,
             // height: 800,

@@ -1,11 +1,11 @@
 import { IlarisItemSheet } from "./item.js";
 
-export class ProfanTalentSheet extends IlarisItemSheet {
+export class EigenheitSheet extends IlarisItemSheet {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             // classes: ["wrath-and-glory", "sheet", "actor"],
             // classes: ["ilaris", "sheet"],
-            template: "systems/Ilaris/templates/sheets/items/profan_talent.html",
+            template: "systems/Ilaris/templates/sheets/items/eigenheit.html",
             // width: 720,
             // height: 800,
             // resizable: false,
