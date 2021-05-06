@@ -13,10 +13,16 @@ export function behinderung(be, data) {
 }
 
 export function wundschwelle(ws, data) {
-    let uv = data.vorteil.profan.find(x => x.name == "Unverwüstlich");
-    let nr = data.vorteil.allgemein.find(x => x.name == "Natürliche Rüstung");
-    if (uv) ws += 1;
-    if (nr) ws += 1;
+    if (data.vorteil.profan.find(x => x.name == "Unverwüstlich")) ws += 1;
+    // let uv = data.vorteil.profan.find(x => x.name == "Unverwüstlich");
+    // let nr = data.vorteil.allgemein.find(x => x.name == "Natürliche Rüstung");
+    // if (uv) ws += 1;
+    // if (nr) ws += 1;
+    return ws;
+}
+
+export function wundschwelleStern(ws, data) {
+    if (data.vorteil.allgemein.find(x => x.name == "Natürliche Rüstung")) ws += 1;
     return ws;
 }
 
@@ -62,7 +68,8 @@ export function schips(data) {
     return schips;
 }
 
-export function zauberer(asp, data) {
+// export function zauberer(asp, data) {
+export function zauberer(data) {
     let asp = 0;
     if (data.vorteil.allgemein.find(x => x.name == "Zauberer I")) asp = 8;
     if (data.vorteil.allgemein.find(x => x.name == "Zauberer II")) asp = 16;
@@ -82,7 +89,8 @@ export function zauberer(asp, data) {
     return asp;
 }
 
-export function geweihter(kap, data) {
+// export function geweihter(kap, data) {
+export function geweihter(data) {
     let kap = 0;
     if (data.vorteil.allgemein.find(x => x.name == "Geweiht I")) kap = 8;
     if (data.vorteil.allgemein.find(x => x.name == "Geweiht II")) kap = 16;

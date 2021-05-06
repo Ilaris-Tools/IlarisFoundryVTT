@@ -225,14 +225,15 @@ export class IlarisActor extends Actor {
         console.log("Berechne Rüstung");
         let ws = 4 + Math.floor(data.data.attribute.KO.wert / 4);
         ws = hardcoded.wundschwelle(ws, data);
-        let ws_stern = ws;
+        // let ws_stern = ws;
+        let ws_stern = hardcoded.wundschwelleStern(ws, data);
         let be = 0;
-        let ws_beine = ws;
-        let ws_larm = ws;
-        let ws_rarm = ws;
-        let ws_bauch = ws;
-        let ws_brust = ws;
-        let ws_kopf = ws;
+        let ws_beine = ws_stern;
+        let ws_larm = ws_stern;
+        let ws_rarm = ws_stern;
+        let ws_bauch = ws_stern;
+        let ws_brust = ws_stern;
+        let ws_kopf = ws_stern;
         for (let ruestung of data.ruestungen) {
             if (ruestung.data.aktiv == true) {
                 ws_stern += ruestung.data.rs;
@@ -301,14 +302,16 @@ export class IlarisActor extends Actor {
         // schips = hardcoded.schips(schips, data);
         let schips = hardcoded.schips(data);
         data.data.schips.schips = schips;
-        let asp = 0;
-        asp = hardcoded.zauberer(asp, data);
+        // let asp = 0;
+        // asp = hardcoded.zauberer(asp, data);
+        let asp = hardcoded.zauberer(data);
         data.data.abgeleitete.zauberer = (asp > 0) ? true : false;
         asp += Number(data.data.abgeleitete.asp_zugekauft) || 0;
         asp -= Number(data.data.abgeleitete.gasp) || 0;
         data.data.abgeleitete.asp = asp;
-        let kap = 0;
-        kap = hardcoded.geweihter(kap, data);
+        // let kap = 0;
+        // kap = hardcoded.geweihter(kap, data);
+        let kap = hardcoded.geweihter(data);
         data.data.abgeleitete.geweihter = (kap > 0) ? true : false;
         kap += Number(data.data.abgeleitete.kap_zugekauft) || 0;
         kap -= Number(data.data.abgeleitete.gkap) || 0;
