@@ -27,7 +27,7 @@
 
 .window-app .window-content {
     font-family: var(--font-crimson);
-    background-image: url("../assets/images/background/background\ \(bearbeitet\).jpg");
+    background-image: url("../assets/images/background/hintergrund.jpg");
 }
 
 .tabs {
@@ -65,10 +65,12 @@
 }
 
 .item-toggle.false {
-    color: #b5b3a4;
+    /* color: #b5b3a4; */
+    color: #989898;
 }
 .item-toggle.active {
-    color: #4b4a44;
+    /* color: #4b4a44; */
+    color: black;
 }
 
 .onhover:hover{

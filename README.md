@@ -44,6 +44,9 @@ Aber auch Anregungen und allgemeines Feedback, welches im [DSA-Forum](https://ds
 
 ### Zu beachten
 * Der obige Absatz unter **!!Achtung!!**
+* Rüstungen werden erst berechnet, wenn sie angelegt werden. Symbol links neben dem Namen anklicken
+* Kampfstile werden nur für die ausgerüsteten Haupt- und Nebenwaffen berechnet
+* Es kann maximal jeweils eine Haupt- und Nebenwaffe angelegt sein. Zweihändige Waffen müssen gleichzeitig Haupt- und Nebenwaffe sein, sonst werden die Abzüge für einhändige Führung angerechnet
 * Der Einsatz von Schicksalspunkten (Bei profanen Fertigkeiten) funktioniert nur, wenn Schicksalspunkte vorhanden sind. Ansonsten wird ohne Meldung eine normale 3W20 Probe geworfen
 * Astral- und Karmapunkte werden nur angezeigt, wenn die Vorteile Zauberer oder Geweiht aktiviert sind
 * Der Zukauf von AsP und KaP kann durch einen Mausklick auf das Label AsP/KaP eingestellt werden
