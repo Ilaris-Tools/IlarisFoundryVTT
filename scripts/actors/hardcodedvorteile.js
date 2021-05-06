@@ -50,37 +50,52 @@ export function durchhalte(dh, data) {
     return dh;
 }
 
-export function schips(sch, data) {
-    let gI = data.vorteil.allgemein.find(x => x.name == "Glück I");
-    let gII = data.vorteil.allgemein.find(x => x.name == "Glück II");
-    if (gI) sch += 1;
-    if (gII) sch += 1;
-    return sch;
+// export function schips(sch, data) {
+export function schips(data) {
+    let schips = 4;
+    if (data.vorteil.allgemein.find(x => x.name == "Glück I")) schips = 5;
+    if (data.vorteil.allgemein.find(x => x.name == "Glück II")) schips = 6;
+    // let gI = data.vorteil.allgemein.find(x => x.name == "Glück I");
+    // let gII = data.vorteil.allgemein.find(x => x.name == "Glück II");
+    // if (gI) sch += 1;
+    // if (gII) sch += 1;
+    return schips;
 }
 
 export function zauberer(asp, data) {
-    let zI = data.vorteil.allgemein.find(x => x.name == "Zauberer I");
-    let zII = data.vorteil.allgemein.find(x => x.name == "Zauberer II");
-    let zIII = data.vorteil.allgemein.find(x => x.name == "Zauberer III");
-    let zIV = data.vorteil.allgemein.find(x => x.name == "Zauberer IV");
-    let gds = data.vorteil.magie.find(x => x.name == "Gefäß der Sterne");
-    if (zI) asp += 8;
-    if (zII) asp += 8;
-    if (zIII) asp += 8;
-    if (zIV) asp += 8;
-    if (gds) asp += 4 + data.data.attribute.CH.wert;
+    let asp = 0;
+    if (data.vorteil.allgemein.find(x => x.name == "Zauberer I")) asp = 8;
+    if (data.vorteil.allgemein.find(x => x.name == "Zauberer II")) asp = 16;
+    if (data.vorteil.allgemein.find(x => x.name == "Zauberer III")) asp = 24;
+    if (data.vorteil.allgemein.find(x => x.name == "Zauberer IV")) asp = 32;
+    if (data.vorteil.magie.find(x => x.name == "Gefäß der Sterne")) asp += 4 + data.data.attribute.CH.wert;
+    // let zI = data.vorteil.allgemein.find(x => x.name == "Zauberer I");
+    // let zII = data.vorteil.allgemein.find(x => x.name == "Zauberer II");
+    // let zIII = data.vorteil.allgemein.find(x => x.name == "Zauberer III");
+    // let zIV = data.vorteil.allgemein.find(x => x.name == "Zauberer IV");
+    // let gds = data.vorteil.magie.find(x => x.name == "Gefäß der Sterne");
+    // if (zI) asp += 8;
+    // if (zII) asp += 8;
+    // if (zIII) asp += 8;
+    // if (zIV) asp += 8;
+    // if (gds) asp += 4 + data.data.attribute.CH.wert;
     return asp;
 }
 
 export function geweihter(kap, data) {
-    let gI = data.vorteil.allgemein.find(x => x.name == "Geweiht I");
-    let gII = data.vorteil.allgemein.find(x => x.name == "Geweiht II");
-    let gIII = data.vorteil.allgemein.find(x => x.name == "Geweiht III");
-    let gIV = data.vorteil.allgemein.find(x => x.name == "Geweiht IV");
-    if (gI) kap += 8;
-    if (gII) kap += 8;
-    if (gIII) kap += 8;
-    if (gIV) kap += 8;
+    let kap = 0;
+    if (data.vorteil.allgemein.find(x => x.name == "Geweiht I")) kap = 8;
+    if (data.vorteil.allgemein.find(x => x.name == "Geweiht II")) kap = 16;
+    if (data.vorteil.allgemein.find(x => x.name == "Geweiht III")) kap = 24;
+    if (data.vorteil.allgemein.find(x => x.name == "Geweiht IV")) kap = 32;
+    // let gI = data.vorteil.allgemein.find(x => x.name == "Geweiht I");
+    // let gII = data.vorteil.allgemein.find(x => x.name == "Geweiht II");
+    // let gIII = data.vorteil.allgemein.find(x => x.name == "Geweiht III");
+    // let gIV = data.vorteil.allgemein.find(x => x.name == "Geweiht IV");
+    // if (gI) kap += 8;
+    // if (gII) kap += 8;
+    // if (gIII) kap += 8;
+    // if (gIV) kap += 8;
     return kap;
 }
 

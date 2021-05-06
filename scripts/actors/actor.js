@@ -297,8 +297,9 @@ export class IlarisActor extends Actor {
         gs -= data.data.abgeleitete.be;
         gs = (gs >= 1) ? gs : 1;
         data.data.abgeleitete.gs = gs;
-        let schips = 4;
-        schips = hardcoded.schips(schips, data);
+        // let schips = 4;
+        // schips = hardcoded.schips(schips, data);
+        let schips = hardcoded.schips(data);
         data.data.schips.schips = schips;
         let asp = 0;
         asp = hardcoded.zauberer(asp, data);
