@@ -1,0 +1,144 @@
+<div class="flexrow">
+    <label>Kombinierte Aktion: </label>
+    <!-- <input name="kombinierte_aktion" data-dtype="Boolean" type="checkbox" {{checked kombinierte_aktion}}> -->
+    <input class="toggle-aktion" type="checkbox" id="kombinierte_aktion" unchecked>
+</div>
+<div class="flexrow">
+    <label>Volle Offensive: </label>
+    <!-- <input name="volle_offensive" data-dtype="Boolean" type="checkbox" {{checked volle_offensive}}> -->
+    <input class="toggle-aktion" type="checkbox" id="volle_offensive" unchecked>
+</div>
+<div class="flexrow">
+    <label>Reichweitenunterschied: </label>
+    <label>{{radioBoxes distance_name distance_choice checked=distance_checked}}</label>
+</div>
+<div class="flexrow">
+    <label>Reaktionsanzahl: </label>
+    <input id="reaktionsanzahl" type="number" value="0" data-dtype="Number" />
+</div>
+<hr>
+{{#if (ifIn "km_ever" manoever_at)}}
+    <div class="flexrow">
+        <label>{{get_label "km_ever"}}</label>
+        <input type="checkbox" id="km_ever" unchecked>
+    </div>
+{{/if}}
+{{#if (ifIn "km_entw" manoever_at)}}
+    <div class="flexrow">
+        <label>{{get_label "km_entw"}}</label>
+        <input type="checkbox" id="km_entw" unchecked>
+    </div>
+{{/if}}
+{{#if (ifIn "km_gzsl" manoever_at)}}
+    <div class="flexrow">
+        <label>{{get_label "km_gzsl"}}</label>
+        <input type="checkbox" id="km_gzsl" unchecked>
+    </div>
+{{/if}}
+{{#if (ifIn "km_umre" manoever_at)}}
+    <div class="flexrow">
+        <label>{{get_label "km_umre"}}</label>
+        <input type="checkbox" id="km_umre" unchecked>
+    </div>
+{{/if}}
+{{#if (ifIn "km_wusl" manoever_at)}}
+    <div class="flexrow">
+        <label>{{get_label "km_wusl"}}</label>
+        <input id="km_wusl" type="number" value="" data-dtype="Number" />
+        <!-- <input id="km_wusl" type="text" maxlength="1" pattern="[123456780-]" value=""/> -->
+    </div>
+{{/if}}
+{{#if (ifIn "km_rust" manoever_at)}}
+    <div class="flexrow">
+        <label>{{get_label "km_rust"}}</label>
+        <input type="checkbox" id="km_rust" unchecked>
+    </div>
+{{/if}}
+{{#if (ifIn "km_shsp" manoever_at)}}
+    <div class="flexrow">
+        <label>{{get_label "km_shsp"}}</label>
+        <input type="checkbox" id="km_shsp" unchecked>
+    </div>
+{{/if}}
+{{#if (ifIn "km_stsl" manoever_at)}}
+    <div class="flexrow">
+        <label>{{get_label "km_stsl"}}</label>
+        <input type="checkbox" id="km_stsl" unchecked>
+    </div>
+{{/if}}
+{{#if (ifIn "km_umkl" manoever_at)}}
+    <div class="flexrow">
+        <label>{{get_label "km_umkl"}}</label>
+        <input id="km_umkl" type="number" value="" data-dtype="Number" />
+    </div>
+{{/if}}
+{{#if (ifIn "km_ausf" manoever_at)}}
+    <div class="flexrow">
+        <label>{{get_label "km_ausf"}}</label>
+        <input type="checkbox" id="km_ausf" unchecked>
+    </div>
+{{/if}}
+{{#if (ifIn "km_befr" manoever_at)}}
+    <div class="flexrow">
+        <label>{{get_label "km_befr"}}</label>
+        <input type="checkbox" id="km_befr" unchecked>
+    </div>
+{{/if}}
+{{#if (ifIn "km_dppl" manoever_at)}}
+    <div class="flexrow">
+        <label>{{get_label "km_dppl"}}</label>
+        <input type="checkbox" id="km_dppl" unchecked>
+    </div>
+{{/if}}
+{{#if (ifIn "km_hmsl" manoever_at)}}
+    <div class="flexrow">
+        <label>{{get_label "km_hmsl"}}</label>
+        <input type="checkbox" id="km_hmsl" unchecked>
+    </div>
+{{/if}}
+{{#if (ifIn "km_kltz" manoever_at)}}
+    <div class="flexrow">
+        <label>{{get_label "km_kltz"}}</label>
+        <input type="checkbox" id="km_kltz" unchecked>
+    </div>
+{{/if}}
+{{#if (ifIn "km_ndwf" manoever_at)}}
+    <div class="flexrow">
+        <label>{{get_label "km_ndwf"}}</label>
+        <input type="checkbox" id="km_ndwf" unchecked>
+    </div>
+{{/if}}
+{{#if (ifIn "km_stag" manoever_at)}}
+    <div class="flexrow">
+        <label>{{get_label "km_stag"}}</label>
+        <input type="checkbox" id="km_stag" unchecked>
+    </div>
+{{/if}}
+{{#if (ifIn "km_tdst" manoever_at)}}
+    <div class="flexrow">
+        <label>{{get_label "km_tdst"}}</label>
+        <input type="checkbox" id="km_tdst" unchecked>
+    </div>
+{{/if}}
+{{#if (ifIn "km_uebr" manoever_at)}}
+    <div class="flexrow">
+        <label>{{get_label "km_uebr"}}</label>
+        <input type="checkbox" id="km_uebr" unchecked>
+    </div>
+{{/if}}
+{{#if (ifIn "km_utlf" manoever_at)}}
+    <div class="flexrow">
+        <label>{{get_label "km_utlf"}}</label>
+    </div>
+{{/if}}
+<hr>
+<div class="flexrow">
+    <label for="modifikator">Modifikator: </label>
+    <input id="modifikator" type="number" value="" data-dtype="Number" />
+</div>
+<div class="flexrow">
+    <label>Würfelmodus: </label>
+    <select id="rollMode">
+        {{selectOptions rollModes selected=defaultRollMode localize=true}}
+    </select>
+</div>

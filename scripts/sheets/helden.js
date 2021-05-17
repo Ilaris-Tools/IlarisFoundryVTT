@@ -3,7 +3,6 @@ import { IlarisActorSheet } from "./actor.js";
 export class HeldenSheet extends IlarisActorSheet {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
-            // classes: ["wrath-and-glory", "sheet", "actor"],
             // classes: ["ilaris", "sheet"],
             classes: ["ilaris"],
             template: "systems/Ilaris/templates/sheets/helden.html",

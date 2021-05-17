@@ -18,7 +18,8 @@ function preloadHandlebarsTemplates() {
         "systems/Ilaris/templates/helper/select_manoever.html",
         "systems/Ilaris/templates/chat/dreid20.html",
         "systems/Ilaris/templates/chat/probendiag_profan.html",
-        "systems/Ilaris/templates/chat/probenchat_profan.html"
+        "systems/Ilaris/templates/chat/probenchat_profan.html",
+        "systems/Ilaris/templates/chat/probendiag_at.html",
     ];
     return loadTemplates(templatePaths);
 };
@@ -84,6 +85,10 @@ function registerHandlebarsHelpers() {
     Handlebars.registerHelper("get_label", function(eig) {
         // console.log(eig);
         return CONFIG.ILARIS.label[eig];
+    });
+
+    Handlebars.registerHelper("ifIn", function(word, list) {
+        return (list.indexOf(word) > -1);
     });
 
     // Handlebars.registerHelper("get_kampfstile", function(data) {

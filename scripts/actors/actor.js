@@ -188,11 +188,17 @@ export class IlarisActor extends Actor {
 
     _calculateWounds(data) {
         console.log("Berechne Wunden");
-        // console.log(data.data);
-        // console.log(data.data.gesundheit.wunden.wert);
-        // console.log(data.data.gesundheit.erschoepfung.wert);
         let einschraenkungen = data.data.gesundheit.wunden + data.data.gesundheit.erschoepfung;
         let abzuege = 0;
+        let old_hp = data.data.gesundheit.hp.value;
+        let new_hp = data.data.gesundheit.hp.max - einschraenkungen;
+        if (old_hp != new_hp) {
+            data.data.gesundheit.hp.value = new_hp;
+            let actor = game.actors.get(data._id);
+            console.log(actor);
+            // eigentlich async:
+            actor.update({ "data.gesundheit.hp.value": new_hp});
+        }
         if (einschraenkungen == 0) {
             data.data.gesundheit.wundabzuege = 0;
             data.data.gesundheit.display = "Volle Gesundheit";
@@ -286,6 +292,7 @@ export class IlarisActor extends Actor {
         let ini = data.data.attribute.IN.wert;
         ini = hardcoded.initiative(ini, data);
         data.data.abgeleitete.ini = ini;
+        data.data.initiative = ini + 0.5;
         let mr = 4 + Math.floor(data.data.attribute.MU.wert / 4);
         mr = hardcoded.magieresistenz(mr, data);
         data.data.abgeleitete.mr = mr;
@@ -336,6 +343,20 @@ export class IlarisActor extends Actor {
         // console.log(HAUPTWAFFE.name);
         // console.log(NEBENWAFFE.name);
         for (let nwaffe of data.nahkampfwaffen) {
+            let manoever_at = ["km_ever",
+                               "km_entw",
+                               "km_gzsl",
+                               "km_umre",
+                               "km_wusl",
+                               "km_shsp"];
+            let manoever_vt = ["km_ausw",
+                               "km_bind",
+                               "km_entw",
+                               "km_aufl"];
+            // let manoever_at = {};
+            // Object.assign(manoever_at, CONFIG.ILARIS.manoever_at);
+            // manoever_at = JSON.parse(JSON.stringify(CONFIG.ILARIS.manoever_at));
+            // jQuery.extend(true, manoever_at, CONFIG.ILARIS.manoever_at);
             let kopflastig = nwaffe.data.eigenschaften.kopflastig;
             let niederwerfen = nwaffe.data.eigenschaften.niederwerfen;
             let parierwaffe = nwaffe.data.eigenschaften.parierwaffe;
@@ -437,8 +458,48 @@ export class IlarisActor extends Actor {
             if (typeof mod_schaden !== "undefined" && mod_schaden !==null && mod_schaden !== "") {
                 nwaffe.data.schaden = `${nwaffe.data.dice_anzahl}d6+${schaden}+${mod_schaden}`;
             }
+            if (nwaffe.data.eigenschaften.ruestungsbrechend) {
+                manoever_at.push("km_rust");
+                // manoever_at.km_rust.possible = true;
+            }
+            if (nwaffe.data.eigenschaften.stumpf) {
+                manoever_at.push("km_stsl");
+                // manoever_at.km_stsl.possible = true;
+            }
+            if (nebenwaffe && hauptwaffe) {
+                if (HAUPTWAFFE.data.talent == "Unbewaffnet" && NEBENWAFFE.data.talent == "Unbewaffnet") {
+                    manoever_at.push("km_umkl");
+                    // manoever_at.km_umkl.possible = true;
+                }
+            }
+            if (data.vorteil.kampf.find(x => x.name == "Ausfall")) {
+                manoever_at.push("km_ausf");
+                // manoever_at.km_ausf.possible = true;
+            }
+            if (data.vorteil.kampf.find(x => x.name == "Hammerschlag")) {
+                manoever_at.push("km_hmsl");
+                // manoever_at.km_hmsl.possible = true;
+            }
+            if (data.vorteil.kampf.find(x => x.name == "Klingentanz")) {
+                manoever_at.push("km_kltz");
+                // manoever_at.km_kltz.possible = true;
+            }
+            if (data.vorteil.kampf.find(x => x.name == "Niederwerfen")) {
+                manoever_at.push("km_ndwf");
+                // manoever_at.km_ndwf.possible = true;
+            }
+            if (data.vorteil.kampf.find(x => x.name == "Sturmangriff")) {
+                manoever_at.push("km_stag");
+                // manoever_at.km_stag.possible = true;
+            }
+            if (data.vorteil.kampf.find(x => x.name == "Todesstoß")) {
+                manoever_at.push("km_tdst");
+                // manoever_at.km_tdst.possible = true;
+            }
             // console.log(`AT: ${at} | VT: ${vt}`);
             // console.log(pw);
+            nwaffe.data.manoever_at = manoever_at;
+            // nwaffe.data.manoever_vt = manoever_vt;
         }
         for (let item of data.fernkampfwaffen) {
             let kein_reiter = item.data.eigenschaften.kein_reiter;
@@ -553,6 +614,10 @@ export class IlarisActor extends Actor {
                     console.log("Stufe 3");
                     at_hw += 1;
                     at_nw += 1;
+                    HAUPTWAFFE.data.manoever_at.push("km_dppl");
+                    NEBENWAFFE.data.manoever_at.push("km_dppl");
+                    // HAUPTWAFFE.data.manoever_at.km_dppl.possible = true;
+                    // NEBENWAFFE.data.manoever_at.km_dppl.possible = true;
                 }
                 HAUPTWAFFE.data.at += at_hw;
                 NEBENWAFFE.data.at += at_nw;
@@ -587,6 +652,8 @@ export class IlarisActor extends Actor {
                         if (stufe >= 3) {
                             console.log("Stufe 3");
                             schaden += 1;
+                            WAFFE.data.manoever_at.push("km_befr");
+                            // WAFFE.data.manoever_at.km_befr.possible=true;
                         }
                         schaden = "+".concat(schaden);
                         WAFFE.data.schaden = WAFFE.data.schaden.concat(schaden);
@@ -641,6 +708,10 @@ export class IlarisActor extends Actor {
                 }
                 if (stufe >= 3) {
                     console.log("Stufe 3");
+                    if (hauptwaffe) HAUPTWAFFE.data.manoever_vt.push("km_rpst");
+                    // if (hauptwaffe) HAUPTWAFFE.data.manoever_vt.km_rpst.possible=true;
+                    if (nebenwaffe) NEBENWAFFE.data.manoever_vt.push("km_rpst");
+                    // if (nebenwaffe) NEBENWAFFE.data.manoever_vt.km_rpst.possible=true;
                 }
             }
         }
@@ -682,6 +753,9 @@ export class IlarisActor extends Actor {
                     schaden += 1;
                     at += 1;
                     vt += 1;
+                    if (HAUPTWAFFE.data.eigenschaften.reittier) HAUPTWAFFE.data.manoever_at.push("km_uebr");
+                    // if (HAUPTWAFFE.data.eigenschaften.reittier) HAUPTWAFFE.data.manoever_at.km_uebr.possible=true;
+
                 }
                 schaden = "+".concat(schaden);
                 HAUPTWAFFE.data.at += at;
@@ -713,6 +787,8 @@ export class IlarisActor extends Actor {
                     schaden += 1;
                     at += 1;
                     vt += 1;
+                    if (NEBENWAFFE.data.eigenschaften.reittier) NEBENWAFFE.data.manoever_at.push("km_uebr");
+                    // if (NEBENWAFFE.data.eigenschaften.reittier) NEBENWAFFE.data.manoever_at.km_uebr.possible=true;
                 }
                 schaden = "+".concat(schaden);
                 NEBENWAFFE.data.at += at;
@@ -750,6 +826,7 @@ export class IlarisActor extends Actor {
                 if (stufe >= 3) {
                     console.log("Stufe 3 (Hauptwaffe)");
                     vt += 1;
+                    HAUPTWAFFE.data.manoever_vt.push("km_shwl");
                 }
                 HAUPTWAFFE.data.vt += vt;
             }
@@ -770,6 +847,7 @@ export class IlarisActor extends Actor {
                 if (stufe >= 3) {
                     console.log("Stufe 3 (Nebenwaffe)");
                     vt += 1;
+                    NEBENWAFFE.data.manoever_vt.push("km_shwl");
                 }
                 NEBENWAFFE.data.vt += vt;
             }
@@ -816,6 +894,7 @@ export class IlarisActor extends Actor {
                 if (stufe >= 3) {
                     console.log("Stufe 3");
                     at += 1;
+                    WAFFE.data.manoever_vt.push("km_utlf");
                 }
                 WAFFE.data.at += at;
             }

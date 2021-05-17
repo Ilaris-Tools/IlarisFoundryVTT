@@ -1,13 +1,21 @@
 {
   "Actor": {
-    "types": ["held"],
+    "types": ["held", "kreatur"],
     "templates": {
       "gesundheit": {
         "gesundheit": {
           "erschoepfung": 0,
           "wunden": 0,
-          "wundabzuege": 0
+          "wundabzuege": 0,
+          "hp": {
+            "max": 9,
+            "value": 8,
+            "threshold": 5
+          }
         }
+      },
+      "initiative": {
+        "initiative": 0
       },
       "abgeleitete": {
         "abgeleitete": {
@@ -75,9 +83,48 @@
         "attribute",
         "fertigkeiten",
         "abgeleitete",
-        "schips"
+        "schips",
+        "initiative"
       ],
       "notes": "Hallo"
+    },
+    "kreatur": {
+        "templates": ["gesundheit", "initiative"],
+        "edit": false,
+        "kreaturentyp": "humanoid",
+        "text_short": "",
+        "ws": 0,
+        "ws_stern": 0,
+        "koloss": 0,
+        "mr": 0,
+        "gs": "0",
+        "eigenschaften": "",
+        "angriffe": [],
+        "kampfvorteile": "",
+        "asp": 0,
+        "asp_fertigkeiten": [],
+        "asp_vorteile": [],
+        "kap": 0,
+        "kap_fertigkeiten": [],
+        "kap_vorteile": [],
+      "attribute": {
+        "KO": "-",
+        "MU": "-",
+        "GE": "-",
+        "KK": "-",
+        "IN": "-",
+        "KL": "-",
+        "CH": "-",
+        "FF": "-"
+      },
+        "fertigkeiten": [],
+        "profane_vorteile": "",
+        "vorgehen": "",
+        "schwachpunkte": "",
+        "kampfunfaehig": "",
+        "beschwoerung": "",
+        "dienste": "",
+        "text": ""
     }
   },
   "Item": {

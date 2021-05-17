@@ -74,9 +74,17 @@ Dies ist nur eine ganz grobe Richtlinie. Es gibt keine fest definierte Roadmap.
 
 ## Urheberrecht
 
+Sofern keine anderen Rechte vorliegen, ist der Sourcecode unter der [MPL 2.0](https://www.mozilla.org/en-US/MPL/2.0/) veröffentlicht. Insbesondere die "Compendium Packs" und die nachfolgenden Punkte besitzen ein eigenes Copyright und stehen daher ausdrücklich nicht unter der MPL 2.0. Sollte ein Rechteinhaber nicht aufgeführt sein, gilt auch ohne Nennung weiterhin die von ihm gewählte Lizenz. 
+
 [Ilaris](https://ilarisblog.wordpress.com/) ist unter einer [Creative Commons Namensnennung – Nicht kommerziell – Keine Bearbeitungen 4.0 International Lizenz](http://creativecommons.org/licenses/by-nc-nd/4.0/) lizensiert. ![Creative Commons Lizenzvertrag](https://licensebuttons.net/l/by-nc-nd/4.0/80x15.png)
 
 Die Rechte vom genutzten Artwork von Ilaris liegen bei den jeweiligen Künstlern.
+
+Icons unter assets/game-icons.net von www.game-icons.net.
+
+Foundry VTT: [Limited License Agreement for module development](https://foundryvtt.com/article/license/).
+
+Die genutzten Schriftarten unterliegen dem jeweils bei der Schrift genannten Copyright.
 
 DAS SCHWARZE AUGE, AVENTURIEN, DERE, MYRANOR, THARUN, UTHURIA und RIESLAND sind eingetragene Marken der [Significant Fantasy Medienrechte GbR](http://www.wiki-aventurica.de/wiki/Significant_Fantasy). Ohne vorherige schriftliche Genehmigung der Ulisses Medien und Spiel Distribution GmbH ist eine Verwendung der genannten Markenzeichen nicht gestattet.
 

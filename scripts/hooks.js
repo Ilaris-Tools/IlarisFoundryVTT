@@ -36,4 +36,22 @@ Hooks.once("init", () => {
     initializeHandlebars();
     // game.sephrasto = new SephrastoImporter();
     CONFIG.ILARIS = ILARIS;
+    CONFIG.Combat.initiative = { formula: "@initiative", decimals: 1 };
+});
+
+Hooks.on('preCreateActor', (createData) => {
+    mergeObject(createData, {
+        'token.bar1': { attribute: "gesundheit.hp" },
+        'token.displayName': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
+        'token.displayBars': CONST.TOKEN_DISPLAY_MODES.HOVER,
+        'token.disposition': CONST.TOKEN_DISPOSITIONS.FRIENDLY,
+        'token.name': createData.name,
+    });
+    if (!createData.img) {
+        createData.img = 'systems/Ilaris/assets/images/token/kreaturentypen/humanoid.jpg';
+    }
+    if (createData.type === 'held') {
+        createData.token.vision = true;
+        createData.token.actorLink = true;
+    }
 });

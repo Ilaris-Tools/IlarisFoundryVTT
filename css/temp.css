@@ -38,6 +38,13 @@
     font-family: var(--font-aniron);
 }
 
+.button-icon {
+    height:3ex;
+    border:none;
+    display:inline-block;
+    vertical-align:middle;
+}
+
 .editor {
     height: 100% !important;
     width: 100%;

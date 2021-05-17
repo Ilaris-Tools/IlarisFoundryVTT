@@ -1,19 +1,46 @@
-import {
-    wuerfelwurf
-} from "../common/wuerfel.js";
+// import {
+//     wuerfelwurf
+// } from "../common/wuerfel.js";
 
-export class IlarisActorSheet extends ActorSheet {
+// input in html: pattern="regex" <= damit Zahlen und - bei Kreaturen möglich
+
+export class AttackDialog extends Dialog {
+    constructor(actor, dialogData = {}, options = {}) {
+        super(dialogData, options);
+        // this.html = html;
+        console.log("In Contructor");
+        /**
+         * Store a reference to the Actor entity which is resting
+         * @type {Actor}
+         */
+        this.actor = actor;
+
+        /**
+         * Track the most recently used HD denomination for re-rendering the form
+         * @type {string}
+         */
+        this._denom = null;
+    }
 
     activateListeners(html) {
         super.activateListeners(html);
-        html.find(".ausklappen-trigger").click(ev => this._ausklappView(ev));
-        html.find(".rollable").click(ev => this._onRollable(ev));
-        html.find(".item-create").click(ev => this._onItemCreate(ev));
-        html.find(".item-edit").click(ev => this._onItemEdit(ev));
-        html.find(".item-delete").click(ev => this._onItemDelete(ev));
-        // html.find('.item-toggle').click(this._onToggleItem.bind(this));
-        html.find('.item-toggle').click(ev => this._onToggleItem(ev));
+        // html.find(".ausklappen-trigger").click(ev => this._ausklappView(ev));
+        // html.find(".rollable").click(ev => this._onRollable(ev));
+        // html.find(".item-create").click(ev => this._onItemCreate(ev));
+        // html.find(".item-edit").click(ev => this._onItemEdit(ev));
+        // html.find(".item-delete").click(ev => this._onItemDelete(ev));
+        // // html.find('.item-toggle').click(this._onToggleItem.bind(this));
+        // html.find('.item-toggle').click(ev => this._onToggleItem(ev));
+        html.find('.toggle-aktion').click(ev => this._onToggleAktion(ev, html));
+        console.log("In Listeners");
     };
+
+    _onToggleAktion(event, html) {
+        const id = $(event.currentTarget).attr('id');
+        console.log(html.getElementsByClassName("toggle-aktion"));
+        console.log(id);
+        console.log("hier wird ein item getoggled");
+    }
 
     _ausklappView(event) {
         // Beachte Block: Ausklappen bei asp/kap sieht kacke aus -> inline
@@ -160,7 +187,7 @@ export class IlarisActorSheet extends ActorSheet {
         });
     }
 
-    async _onItemCreate(event) {
+    _onItemCreate(event) {
         console.log("ItemCreate");
         // console.log(event);
         // console.log($(event.currentTarget));
@@ -248,8 +275,7 @@ export class IlarisActorSheet extends ActorSheet {
         // console.log(this.actor.data);
         // console.log(this.actor.data.data);
 
-        await this.actor.createOwnedItem(itemData);
-        // return this.actor.createOwnedItem(itemData);
+        return this.actor.createOwnedItem(itemData);
 
         // // event.preventDefault();
         // const header = event.currentTarget;

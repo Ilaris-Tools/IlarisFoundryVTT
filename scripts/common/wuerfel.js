@@ -1,11 +1,102 @@
+import {AttackDialog} from "../sheets/dialog/dialog_attacke.js";
+
 export async function wuerfelwurf(event, actor) {
+
+    // activateListeners(html);
+
+
     let data = actor.data.data;
     // console.log($(event.currentTarget));
     let rolltype = $(event.currentTarget).data("rolltype");
     let wundabzuege = data.gesundheit.wundabzuege;
     let pw = 0;
     let label = "Probe";
-    if (rolltype == "profan_fertigkeit") {
+    if(rolltype == "at") {
+        let mod_at = 0;
+        let mod_schaden = 0;
+        let text = "";
+        let itemId = event.currentTarget.dataset.itemid;
+        const item = actor.getOwnedItem(itemId);
+        // console.log(item);
+        let manoever_at = item._data.data.manoever_at;
+        console.log(item.data.data.manoever_at);
+        console.log(item._data.data.manoever_at);
+        const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_at.html', {
+            distance_name: "distance",
+            distance_checked: "0",
+            distance_choice: {
+                "0": "ideal",
+                "1": "1 Feld",
+                "2": "2 Felder",
+            },
+            rollModes: CONFIG.Dice.rollModes,
+            manoever_at: manoever_at
+        });
+        let d = new AttackDialog(actor, {
+            title: "Attacke",
+            content: html,
+            buttons: {
+                one: {
+                    icon: '<i><img class="button-icon" src="systems/Ilaris/assets/game-icons.net/sword-clash.png"></i>',
+                    label: "Angriff",
+                    callback: async (html) => {
+                        //Kombinierte Aktion
+                        if (html.find("#kombinierte_aktion")[0].checked) {
+                            mod_at -= 4;
+                            text = text.concat("Kombinierte Aktion\n");
+                        }
+                        // Volle Offensive
+                        if (html.find("#volle_offensive")[0].checked) {
+                            mod_at += 4;
+                            text = text.concat("Volle Offensive\n");
+                        }
+                        //Reichweitenunterschiede
+                        let reichweite_check = html.find("input[name='distance']");
+                        let reichweite = 0;
+                        for (let i of reichweite_check) {
+                            if (i.checked) reichweite = i.value;
+                        }
+                        mod_at -= 2*reichweite;
+                        text = text.concat("Reichweitenunterschied: ");
+                        text = text.concat(reichweite);
+                        text = text.concat("\n");
+                        //Anzahl Reaktionen
+                        let reaktionen = Number(html.find("#reaktionsanzahl")[0].value);
+                        if (reaktionen > 0){
+                            mod_at -= 4 * reaktionen;
+                            text = text.concat(`Anzahl Reaktionen: ${reaktionen}\n`);
+                        }
+                        //Entfernung verändern
+                        if (manoever_at.indexOf("km_ever") > -1) {
+                            // if (html.find("#km_ever").length > 0) {
+                            //     let checkedValue = html.find("#km_ever")[0].checked;
+                            // }
+                            if (html.find("#km_ever")[0].checked) {
+                                mod_at -= be;
+                            }
+                        }
+                        console.log(text);
+                        console.log(mod_at);
+                    }
+                },
+                two: {
+                    icon: '<i><img class="button-icon" src="systems/Ilaris/assets/game-icons.net/bloody-sword.png"></i>',
+                    label: "Schaden",
+                    callback: () => console.log("Schaden")
+                },
+                three: {
+                    icon: '<i class="fas fa-times"></i>',
+                    label: "Abbrechen",
+                    callback: () => console.log("Abbruch")
+                }
+            }
+        }, {
+            jQuery: true,
+            // jQuery: false,
+        });
+        d.render(true);
+    }
+    else if (rolltype == "profan_fertigkeit") {
         let fertigkeit = $(event.currentTarget).data("fertigkeit");
         label = actor.data.profan.fertigkeiten[fertigkeit].name;
         const talent_list = {};
@@ -42,7 +133,8 @@ export async function wuerfelwurf(event, actor) {
             content: html,
             buttons: {
                 one: {
-                    icon: '<i class="fas fa-check"></i>',
+                    // icon: '<i class="fas fa-check"></i>',
+                    icon: '<i><img class="button-icon" src="systems/Ilaris/assets/game-icons.net/rolling-dices.png"></i>',
                     label: "OK",
                     callback: async (html) => {
                         let xd20_check = html.find("input[name='xd20']");
