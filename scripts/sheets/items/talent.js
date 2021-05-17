@@ -1,6 +1,19 @@
 import { IlarisItemSheet } from "./item.js";
 
 export class TalentSheet extends IlarisItemSheet {
+
+    getData() {
+        const data = super.getData();
+        if (data.hasOwner) {
+            // console.log(this.item.actor.data.misc.profan_fertigkeit_list);
+            data.fertigkeit_list = this.item.actor.data.misc.profan_fertigkeit_list;
+        };
+        // console.log("In item.js");
+        // console.log(data.actor);
+        // console.log(data);
+        return data;
+    }
+
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             // classes: ["ilaris", "sheet"],

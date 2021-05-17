@@ -158,9 +158,9 @@ export class IlarisActorSheet extends ActorSheet {
                 });
             }
         });
-    }
+    };
 
-    async _onItemCreate(event) {
+    _onItemCreate(event) {
         console.log("ItemCreate");
         // console.log(event);
         // console.log($(event.currentTarget));
@@ -248,7 +248,8 @@ export class IlarisActorSheet extends ActorSheet {
         // console.log(this.actor.data);
         // console.log(this.actor.data.data);
 
-        await this.actor.createOwnedItem(itemData);
+        this.actor.createOwnedItem(itemData);
+        // await this.actor.createOwnedItem(itemData);
         // return this.actor.createOwnedItem(itemData);
 
         // // event.preventDefault();

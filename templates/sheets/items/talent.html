@@ -14,9 +14,12 @@
         <div class="flexrow">
             <label><b>Fertigkeit:</b></label>
             {{#if hasOwner}}
+            <!-- <label>{{{data}}}</label>
+                 <label>{{data.profan_fertigkeit_list}}</label>
+                 <label>{{item.data.profan_fertigkeit_list}}</label> -->
             <select name="data.fertigkeit">
                 {{#select data.fertigkeit}}
-                {{#each data.fertigkeit_list as |fert|}}
+                {{#each fertigkeit_list as |fert|}}
                 <option value="{{fert}}">{{fert}}</option>
                 {{/each}}
                 {{/select}}

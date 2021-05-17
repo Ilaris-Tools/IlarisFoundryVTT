@@ -125,7 +125,7 @@ export class IlarisActor extends Actor {
         let fertigkeit_uebereinstimmung = [];
         // const alleMagieFertigkeiten = this.__getAlleMagieFertigkeiten(data);
         // const alleKarmaFertigkeiten = this.__getAlleKarmaFertigkeiten(data);
-        const alleFertigkeiten = this.__getAlleUebernatuerlichenFertigkeiten(data);
+        // const alleFertigkeiten = this.__getAlleUebernatuerlichenFertigkeiten(data);
         // for (let talent of data.magie.talente) {
         for (let talent of data.uebernatuerlich.zauber) {
             let max_pw = -1;
@@ -146,14 +146,15 @@ export class IlarisActor extends Actor {
                     }
                 }
             }
-            this.updateEmbeddedEntity('OwnedItem', {
-                _id: talent._id,
-                data: {
-                    // fertigkeit_actor: alleMagieFertigkeiten,
-                    fertigkeit_actor: alleFertigkeiten,
-                    pw: max_pw
-                }
-            });
+            talent.data.pw = max_pw;
+            // this.updateEmbeddedEntity('OwnedItem', {
+            //     _id: talent._id,
+            //     data: {
+            //         // fertigkeit_actor: alleMagieFertigkeiten,
+            //         fertigkeit_actor: alleFertigkeiten,
+            //         pw: max_pw
+            //     }
+            // });
         }
         // for (let talent of data.karma.talente) {
         for (let talent of data.uebernatuerlich.liturgien) {
@@ -175,30 +176,27 @@ export class IlarisActor extends Actor {
                     }
                 }
             }
-            this.updateEmbeddedEntity('OwnedItem', {
-                _id: talent._id,
-                data: {
-                    // fertigkeit_actor: alleKarmaFertigkeiten,
-                    fertigkeit_actor: alleFertigkeiten,
-                    pw: max_pw
-                }
-            });
+            talent.data.pw = max_pw;
+            // this.updateEmbeddedEntity('OwnedItem', {
+            //     _id: talent._id,
+            //     data: {
+            //         // fertigkeit_actor: alleKarmaFertigkeiten,
+            //         fertigkeit_actor: alleFertigkeiten,
+            //         pw: max_pw
+            //     }
+            // });
         }
     }
 
     _calculateWounds(data) {
         console.log("Berechne Wunden");
         let einschraenkungen = data.data.gesundheit.wunden + data.data.gesundheit.erschoepfung;
+        // console.log(einschraenkungen);
         let abzuege = 0;
         let old_hp = data.data.gesundheit.hp.value;
+        // console.log(old_hp);
         let new_hp = data.data.gesundheit.hp.max - einschraenkungen;
-        if (old_hp != new_hp) {
-            data.data.gesundheit.hp.value = new_hp;
-            let actor = game.actors.get(data._id);
-            console.log(actor);
-            // eigentlich async:
-            actor.update({ "data.gesundheit.hp.value": new_hp});
-        }
+        // console.log(new_hp);
         if (einschraenkungen == 0) {
             data.data.gesundheit.wundabzuege = 0;
             data.data.gesundheit.display = "Volle Gesundheit";
@@ -224,6 +222,16 @@ export class IlarisActor extends Actor {
         }
         else {
             data.data.gesundheit.display = 'Irgendetwas ist schief gelaufen';
+        }
+        if (old_hp != new_hp) {
+            data.data.gesundheit.hp.value = new_hp;
+            // console.log(data);
+            let actor = game.actors.get(data._id);
+            // console.log(actor);
+            // eigentlich async:
+            if (actor) {
+                actor.update({ "data.gesundheit.hp.value": new_hp });
+            }
         }
     }
 
@@ -1019,12 +1027,18 @@ export class IlarisActor extends Actor {
         // profan_fertigkeiten = _.sortBy( profan_fertigkeiten, 'data.gruppe' );
 
         for (let i of profan_talente) {
-            this.updateEmbeddedEntity('OwnedItem', {
-                _id: i._id,
-                data: {
-                    fertigkeit_list: profan_fertigkeit_list,
-                }
-            });
+            // this.updateEmbeddedEntity('OwnedItem', {
+            //     _id: i._id,
+            //     data: {
+            //         fertigkeit_list: profan_fertigkeit_list,
+            //     }
+            // });
+            // this.updateOwnedItem({
+            //     _id: i._id,
+            //     data: {
+            //         fertigkeit_list: profan_fertigkeit_list,
+            //     }
+            // });
             // i.data.fertigkeit_list = profan_fertigkeit_list;
             if (profan_fertigkeit_list.includes(i.data.fertigkeit)) {
                 profan_fertigkeiten.find(x => x.name == i.data.fertigkeit).data.talente.push(i);
@@ -1062,6 +1076,15 @@ export class IlarisActor extends Actor {
         data.eigenheiten = eigenheiten;
         data.unsorted = unsorted;
         data.misc = data.misc || {};
+        data.misc.profan_fertigkeit_list = profan_fertigkeit_list;
+        data.misc.uebernatuerlich_fertigkeit_list = this.__getAlleUebernatuerlichenFertigkeiten(data);
+
+        // let actor = game.actors.get(data._id);
+        // // console.log(actor);
+        // // eigentlich async:
+        // if (actor) {
+        //     actor.update({ "data.data.gesundheit.hp.value": new_hp });
+        // }
     }
 
 }

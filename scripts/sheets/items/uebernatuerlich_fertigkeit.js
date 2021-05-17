@@ -1,6 +1,15 @@
 import { IlarisItemSheet } from "./item.js";
 
 export class UebernatuerlichFertigkeitSheet extends IlarisItemSheet {
+
+    getData() {
+        const data = super.getData();
+        if (data.hasOwner) {
+            data.fertigkeit_list = this.item.actor.data.misc.uebernatuerlich_fertigkeit_list;
+        };
+        return data;
+    }
+
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             // classes: ["ilaris", "sheet"],

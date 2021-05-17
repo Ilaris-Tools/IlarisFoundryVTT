@@ -14,7 +14,7 @@
         <select name="data.fertigkeit_ausgewaehlt">
             {{#select data.fertigkeit_ausgewaehlt}}
             <option value="auto">auto</option>
-            {{#each data.fertigkeit_actor as |fert key|}}
+            {{#each fertigkeit_list as |fert key|}}
             <option value="{{fert}}">{{fert}}</option>
             {{/each}}
             {{/select}}
