@@ -31,7 +31,7 @@ export class AttackDialog extends Dialog {
         // html.find(".item-delete").click(ev => this._onItemDelete(ev));
         // // html.find('.item-toggle').click(this._onToggleItem.bind(this));
         // html.find('.item-toggle').click(ev => this._onToggleItem(ev));
-        html.find('.toggle-aktion').click(ev => this._onToggleAktion(ev, html));
+        // html.find('.toggle-aktion').click(ev => this._onToggleAktion(ev, html));
         console.log("In Listeners");
     };
 

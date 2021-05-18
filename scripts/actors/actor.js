@@ -191,12 +191,9 @@ export class IlarisActor extends Actor {
     _calculateWounds(data) {
         console.log("Berechne Wunden");
         let einschraenkungen = data.data.gesundheit.wunden + data.data.gesundheit.erschoepfung;
-        // console.log(einschraenkungen);
         let abzuege = 0;
-        let old_hp = data.data.gesundheit.hp.value;
-        // console.log(old_hp);
-        let new_hp = data.data.gesundheit.hp.max - einschraenkungen;
-        // console.log(new_hp);
+        // let old_hp = data.data.gesundheit.hp.value;
+        // let new_hp = data.data.gesundheit.hp.max - einschraenkungen;
         if (einschraenkungen == 0) {
             data.data.gesundheit.wundabzuege = 0;
             data.data.gesundheit.display = "Volle Gesundheit";
@@ -223,16 +220,16 @@ export class IlarisActor extends Actor {
         else {
             data.data.gesundheit.display = 'Irgendetwas ist schief gelaufen';
         }
-        if (old_hp != new_hp) {
-            data.data.gesundheit.hp.value = new_hp;
-            // console.log(data);
-            let actor = game.actors.get(data._id);
-            // console.log(actor);
-            // eigentlich async:
-            if (actor) {
-                actor.update({ "data.gesundheit.hp.value": new_hp });
-            }
-        }
+        // if (old_hp != new_hp) {
+        //     data.data.gesundheit.hp.value = new_hp;
+        //     // console.log(data);
+        //     let actor = game.actors.get(data._id);
+        //     // console.log(actor);
+        //     // eigentlich async:
+        //     if (actor) {
+        //         actor.update({ "data.gesundheit.hp.value": new_hp });
+        //     }
+        // }
     }
 
     _calculateWundschwellenRuestung(data) {
@@ -507,7 +504,7 @@ export class IlarisActor extends Actor {
             // console.log(`AT: ${at} | VT: ${vt}`);
             // console.log(pw);
             nwaffe.data.manoever_at = manoever_at;
-            // nwaffe.data.manoever_vt = manoever_vt;
+            nwaffe.data.manoever_vt = manoever_vt;
         }
         for (let item of data.fernkampfwaffen) {
             let kein_reiter = item.data.eigenschaften.kein_reiter;

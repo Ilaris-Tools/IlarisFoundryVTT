@@ -9,6 +9,7 @@ export async function wuerfelwurf(event, actor) {
     // console.log($(event.currentTarget));
     let rolltype = $(event.currentTarget).data("rolltype");
     let wundabzuege = data.gesundheit.wundabzuege;
+    let be = data.abgeleitete.be;
     let pw = 0;
     let label = "Probe";
     if(rolltype == "at") {
@@ -19,6 +20,7 @@ export async function wuerfelwurf(event, actor) {
         const item = actor.getOwnedItem(itemId);
         // console.log(item);
         let manoever_at = item._data.data.manoever_at;
+        let schaden = item._data.data.schaden;
         console.log(item.data.data.manoever_at);
         console.log(item._data.data.manoever_at);
         const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_at.html', {
@@ -57,9 +59,7 @@ export async function wuerfelwurf(event, actor) {
                             if (i.checked) reichweite = i.value;
                         }
                         mod_at -= 2*reichweite;
-                        text = text.concat("Reichweitenunterschied: ");
-                        text = text.concat(reichweite);
-                        text = text.concat("\n");
+                        text = text.concat(`Reichweitenunterschied: ${reichweite}\n`);
                         //Anzahl Reaktionen
                         let reaktionen = Number(html.find("#reaktionsanzahl")[0].value);
                         if (reaktionen > 0){
@@ -73,10 +73,136 @@ export async function wuerfelwurf(event, actor) {
                             // }
                             if (html.find("#km_ever")[0].checked) {
                                 mod_at -= be;
+                                text = text.concat(`${CONFIG.ILARIS.label["km_ever"]}\n`);
+                            }
+                        }
+                        //Entwaffnen
+                        if (manoever_at.indexOf("km_entw") > -1) {
+                            if (html.find("#km_entw")[0].checked) {
+                                mod_at -= be;
+                                text = text.concat(`${CONFIG.ILARIS.label["km_entw"]}\n`);
+                                mod_schaden = "-";
+                            }
+                        }
+                        //Gezielter Schlag
+                        if (manoever_at.indexOf("km_gzsl") > -1) {
+                            let trefferzone = Number(html.find("#km_gzsl")[0].value);
+                            if (trefferzone) {
+                                mod_at -= 2;
+                                text = text.concat(`${CONFIG.ILARIS.label["km_gzsl"]}: ${CONFIG.ILARIS.trefferzonen[trefferzone]}\n`);
+                            }
+                        }
+                        //Umreißen km_umre
+                        if (manoever_at.indexOf("km_umre") > -1) {
+                            if (html.find("#km_umre")[0].checked) {
+                                text = text.concat(`${CONFIG.ILARIS.label["km_umre"]}\n`);
+                                mod_schaden = "-";
+                            }
+                        }
+                        //Wuchtschhlag km_wusl
+                        if (manoever_at.indexOf("km_wusl") > -1) {
+                            let wusl = Number(html.find("#km_wusl")[0].value);
+                            if (wusl) {
+                                text = text.concat(`${CONFIG.ILARIS.label["km_wusl"]}: ${wusl}\n`);
+                                mod_at -= wusl;
+                                mod_schaden += wusl;
+                            }
+                        }
+                        //Rüstungsbrecher km_rust
+                        if (manoever_at.indexOf("km_rust") > -1) {
+                            if (html.find("#km_rust")[0].checked) {
+                                text = text.concat(`${CONFIG.ILARIS.label["km_rust"]}\n`);
+                                mod_at -= 4;
+                            }
+                        }
+                        //Schildspalter km_shsp
+                        if (manoever_at.indexOf("km_shsp") > -1) {
+                            if (html.find("#km_shsp")[0].checked) {
+                                text = text.concat(`${CONFIG.ILARIS.label["km_shsp"]}\n`);
+                                mod_at += 2;
+                            }
+                        }
+                        //Stumpfer Schlag km_stsl
+                        if (manoever_at.indexOf("km_stsl") > -1) {
+                            if (html.find("#km_stsl")[0].checked) {
+                                text = text.concat(`${CONFIG.ILARIS.label["km_stsl"]}\n`);
+                            }
+                        }
+                        //Umklammern km_umkl
+                        if (manoever_at.indexOf("km_umkl") > -1) {
+                            let umkl = Number(html.find("#km_umkl")[0].value);
+                            if (umkl) {
+                                text = text.concat(`${CONFIG.ILARIS.label["km_umkl"]}: ${umkl}\n`);
+                                mod_at -= umkl;
+                                mod_schaden = "-";
+                            }
+                        }
+                        //Ausfall km_ausf
+                        if (manoever_at.indexOf("km_ausf") > -1) {
+                            if (html.find("#km_ausf")[0].checked) {
+                                text = text.concat(`${CONFIG.ILARIS.label["km_ausf"]}\n`);
+                                mod_at -= 2 + be;
+                            }
+                        }
+                        //Befreiungsschlag km_befr
+                        if (manoever_at.indexOf("km_befr") > -1) {
+                            if (html.find("#km_befr")[0].checked) {
+                                text = text.concat(`${CONFIG.ILARIS.label["km_befr"]}\n`);
+                                mod_at -= 4;
+                            }
+                        }
+                        //Doppelangriff km_dppl
+                        if (manoever_at.indexOf("km_dppl") > -1) {
+                            if (html.find("#km_dppl")[0].checked) {
+                                text = text.concat(`${CONFIG.ILARIS.label["km_dppl"]}\n`);
+                                mod_at -= 4;
+                            }
+                        }
+                        //Hammerschlag km_hmsl
+                        if (manoever_at.indexOf("km_hmsl") > -1) {
+                            if (html.find("#km_hmsl")[0].checked) {
+                                text = text.concat(`${CONFIG.ILARIS.label["km_hmsl"]}\n`);
+                                mod_at -= 8;
+                                schaden = schaden.concat(`+${schaden}`);
+                            }
+                        }
+                        //Klingentanz km_kltz
+                        if (manoever_at.indexOf("km_kltz") > -1) {
+                            if (html.find("#km_kltz")[0].checked) {
+                                text = text.concat(`${CONFIG.ILARIS.label["km_kltz"]}\n`);
+                                mod_at -= 4;
+                            }
+                        }
+                        //Niederwerfen km_ndwf
+                        if (manoever_at.indexOf("km_ndwf") > -1) {
+                            if (html.find("#km_ndwf")[0].checked) {
+                                text = text.concat(`${CONFIG.ILARIS.label["km_ndwf"]}\n`);
+                                mod_at -= 4;
+                            }
+                        }
+                        //Sturmangriff km_stag
+                        if (manoever_at.indexOf("km_stag") > -1) {
+                            if (html.find("#km_stag")[0].checked) {
+                                text = text.concat(`${CONFIG.ILARIS.label["km_stag"]}\n`);
+                            }
+                        }
+                        //Todesstoß km_tdst
+                        if (manoever_at.indexOf("km_tdst") > -1) {
+                            if (html.find("#km_tdst")[0].checked) {
+                                text = text.concat(`${CONFIG.ILARIS.label["km_tdst"]}\n`);
+                                mod_at -= 8;
+                            }
+                        }
+                        //Überrennen km_uebr
+                        if (manoever_at.indexOf("km_uebr") > -1) {
+                            if (html.find("#km_uebr")[0].checked) {
+                                text = text.concat(`${CONFIG.ILARIS.label["km_uebr"]}\n`);
                             }
                         }
                         console.log(text);
                         console.log(mod_at);
+                        console.log(schaden);
+                        console.log(mod_schaden);
                     }
                 },
                 two: {

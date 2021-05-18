@@ -13,6 +13,7 @@ export class IlarisActorSheet extends ActorSheet {
         html.find(".item-delete").click(ev => this._onItemDelete(ev));
         // html.find('.item-toggle').click(this._onToggleItem.bind(this));
         html.find('.item-toggle').click(ev => this._onToggleItem(ev));
+        html.find('.hp-update').change(ev => this._onHpUpdate(ev));
     };
 
     _ausklappView(event) {
@@ -158,7 +159,27 @@ export class IlarisActorSheet extends ActorSheet {
                 });
             }
         });
-    };
+    }
+
+    _onHpUpdate(event) {
+        console.log("HpUpdate");
+        // console.log(event);
+        let einschraenkungen = this.actor.data.data.gesundheit.wunden + this.actor.data.data.gesundheit.erschoepfung;
+        // let old_hp = this.actor.data.data.gesundheit.hp.value;
+        let new_hp = this.actor.data.data.gesundheit.hp.max - einschraenkungen;
+        this.actor.update({ "data.gesundheit.hp.value": new_hp });
+        // if (old_hp != new_hp) {
+        //     // this.actor.data.data.gesundheit.hp.value = new_hp;
+        //     // // console.log(data);
+        //     // let actor = game.actors.get(data._id);
+        //     // // console.log(actor);
+        //     // // eigentlich async:
+        //     // if (actor) {
+        //     //     actor.update({ "data.gesundheit.hp.value": new_hp });
+        //     // }
+        //     this.actor.update({ "data.gesundheit.hp.value": new_hp });
+        // }
+    }
 
     _onItemCreate(event) {
         console.log("ItemCreate");

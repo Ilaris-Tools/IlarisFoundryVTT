@@ -69,6 +69,17 @@ ILARIS.label = {
     "km_uebr": "Überrennen",
     "km_utlf": "Unterlaufen",
 };
+
+ILARIS.trefferzonen = {
+    "0": "keine",
+    "1": "Beine",
+    "2": "Schildarm",
+    "3": "Schwertarm",
+    "4": "Bauch",
+    "5": "Brust",
+    "6": "Kopf",
+    "7": "andere",
+};
 // Manoever: {
 //     "name": {
 //         "possible": true,         //vss für das manöver erfüllt?
