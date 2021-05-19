@@ -17,6 +17,7 @@ import { ManoeverSheet } from "./sheets/items/manoever.js";
 import { EigenheitSheet } from "./sheets/items/eigenheit.js";
 
 Hooks.once("init", () => {
+    CONFIG.debug.hooks = true;
     CONFIG.Actor.entityClass = IlarisActor;
     Actors.unregisterSheet("core", ActorSheet);
     Actors.registerSheet("Ilaris", HeldenSheet, {types: ["held"], makeDefault: true});
@@ -55,3 +56,26 @@ Hooks.on('preCreateActor', (createData) => {
         createData.token.actorLink = true;
     }
 });
+
+// Hooks.on("preUpdateToken", (scene, token, updateData) => {
+//     const oldHP = token?.actorData?.data?.gesundheit?.hp.value;
+//     // const oldHP = token?.actorData?.data?.attributes?.hp.value;
+//     const newHP = updateData?.actorData?.data?.gesundheit?.hp.value;
+//     console.log("preUpdateToken");
+//     console.log(oldHP);
+//     console.log(newHP);
+//     // const newHP = updateData?.actorData?.data?.attributes?.hp.value;
+//     // const maxHP = canvas.tokens.get(token._id).actor.data.data.attributes.hp.max;
+
+//     // if (!isNaN(oldHP) && !isNaN(newHP) && oldHP != newHP) {
+//     //     var newColor = getColorFromHPPercent(newHP / maxHP);
+
+//     //     console.log("Hitpoints changed");
+//     //     console.log(newColor);
+
+//     //     scene.updateEmbeddedEntity(Token.embeddedName, {
+//     //         tint: newColor,
+//     //         _id: token._id,
+//     //     });
+//     // }
+// });

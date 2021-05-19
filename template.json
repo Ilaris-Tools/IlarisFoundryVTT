@@ -10,8 +10,8 @@
           "display": "Volle Gesundheit",
           "hp": {
             "max": 9,
-            "value": 8,
-            "threshold": 5
+            "value": 9,
+            "threshold": 0
           }
         }
       },

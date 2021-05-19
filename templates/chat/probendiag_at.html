@@ -120,7 +120,7 @@
         <label>{{get_label "km_stag"}}</label>
         <input type="checkbox" id="km_stag" unchecked>
         <label>GS: </label>
-        <input id="stag_gs" type="number" value="0" data-dtype="Number" />
+        <input id="km_stag_gs" type="number" value="0" data-dtype="Number" />
     </div>
 {{/if}}
 {{#if (ifIn "km_tdst" manoever_at)}}
@@ -133,6 +133,8 @@
     <div class="flexrow">
         <label>{{get_label "km_uebr"}}</label>
         <input type="checkbox" id="km_uebr" unchecked>
+        <label>GS: </label>
+        <input id="km_uebr_gs" type="number" value="0" data-dtype="Number" />
     </div>
 {{/if}}
 {{#if (ifIn "km_utlf" manoever_at)}}
@@ -143,7 +145,7 @@
 <hr>
 <div class="flexrow">
     <label for="modifikator">Modifikator: </label>
-    <input id="modifikator" type="number" value="" data-dtype="Number" />
+    <input id="modifikator" type="number" value="0" data-dtype="Number" />
 </div>
 <div class="flexrow">
     <label>Würfelmodus: </label>

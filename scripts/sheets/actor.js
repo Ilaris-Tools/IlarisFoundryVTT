@@ -163,11 +163,22 @@ export class IlarisActorSheet extends ActorSheet {
 
     _onHpUpdate(event) {
         console.log("HpUpdate");
+        // this.actor.token.refresh();
         // console.log(event);
         let einschraenkungen = this.actor.data.data.gesundheit.wunden + this.actor.data.data.gesundheit.erschoepfung;
         // let old_hp = this.actor.data.data.gesundheit.hp.value;
         let new_hp = this.actor.data.data.gesundheit.hp.max - einschraenkungen;
+        // this.actor.data.data.gesundheit.hp.value = new_hp;
         this.actor.update({ "data.gesundheit.hp.value": new_hp });
+        // this.actor.token.actor.data.data.gesundheit.hp.value = new_hp;
+        this.actor.token?.refresh();
+        console.log(this.actor);
+        // let token = this.actor.token;
+        // console.log(token);
+        // this.actor.token.update();
+        // token.refresh();
+        // console.log(token);
+        // console.log(this.actor.token);
         // if (old_hp != new_hp) {
         //     // this.actor.data.data.gesundheit.hp.value = new_hp;
         //     // // console.log(data);

@@ -18,11 +18,12 @@ export async function wuerfelwurf(event, actor) {
         let text = "";
         let itemId = event.currentTarget.dataset.itemid;
         const item = actor.getOwnedItem(itemId);
+        pw = item._data.data.at;
         // console.log(item);
         let manoever_at = item._data.data.manoever_at;
         let schaden = item._data.data.schaden;
-        console.log(item.data.data.manoever_at);
-        console.log(item._data.data.manoever_at);
+        // console.log(item.data.data.manoever_at);
+        // console.log(item._data.data.manoever_at);
         const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_at.html', {
             distance_name: "distance",
             distance_checked: "0",
@@ -32,7 +33,8 @@ export async function wuerfelwurf(event, actor) {
                 "2": "2 Felder",
             },
             rollModes: CONFIG.Dice.rollModes,
-            manoever_at: manoever_at
+            manoever_at: manoever_at,
+            pw: pw
         });
         let d = new AttackDialog(actor, {
             title: "Attacke",
@@ -79,9 +81,9 @@ export async function wuerfelwurf(event, actor) {
                         //Entwaffnen
                         if (manoever_at.indexOf("km_entw") > -1) {
                             if (html.find("#km_entw")[0].checked) {
-                                mod_at -= be;
+                                mod_at -= 4;
                                 text = text.concat(`${CONFIG.ILARIS.label["km_entw"]}\n`);
-                                mod_schaden = "-";
+                                // mod_schaden = "-";
                             }
                         }
                         //Gezielter Schlag
@@ -96,7 +98,7 @@ export async function wuerfelwurf(event, actor) {
                         if (manoever_at.indexOf("km_umre") > -1) {
                             if (html.find("#km_umre")[0].checked) {
                                 text = text.concat(`${CONFIG.ILARIS.label["km_umre"]}\n`);
-                                mod_schaden = "-";
+                                // mod_schaden = "-";
                             }
                         }
                         //Wuchtschhlag km_wusl
@@ -134,7 +136,7 @@ export async function wuerfelwurf(event, actor) {
                             if (umkl) {
                                 text = text.concat(`${CONFIG.ILARIS.label["km_umkl"]}: ${umkl}\n`);
                                 mod_at -= umkl;
-                                mod_schaden = "-";
+                                // mod_schaden = "-";
                             }
                         }
                         //Ausfall km_ausf
@@ -163,7 +165,7 @@ export async function wuerfelwurf(event, actor) {
                             if (html.find("#km_hmsl")[0].checked) {
                                 text = text.concat(`${CONFIG.ILARIS.label["km_hmsl"]}\n`);
                                 mod_at -= 8;
-                                schaden = schaden.concat(`+${schaden}`);
+                                // schaden = schaden.concat(`+${schaden}`);
                             }
                         }
                         //Klingentanz km_kltz
@@ -183,7 +185,9 @@ export async function wuerfelwurf(event, actor) {
                         //Sturmangriff km_stag
                         if (manoever_at.indexOf("km_stag") > -1) {
                             if (html.find("#km_stag")[0].checked) {
-                                text = text.concat(`${CONFIG.ILARIS.label["km_stag"]}\n`);
+                                let gs = Number(html.find("#km_stag_gs")[0].value);
+                                text = text.concat(`${CONFIG.ILARIS.label["km_stag"]}: ${gs}\n`);
+                                // mod_schaden += gs;
                             }
                         }
                         //Todesstoß km_tdst
@@ -196,20 +200,77 @@ export async function wuerfelwurf(event, actor) {
                         //Überrennen km_uebr
                         if (manoever_at.indexOf("km_uebr") > -1) {
                             if (html.find("#km_uebr")[0].checked) {
-                                text = text.concat(`${CONFIG.ILARIS.label["km_uebr"]}\n`);
+                                let gs = Number(html.find("#km_uebr_gs")[0].value);
+                                text = text.concat(`${CONFIG.ILARIS.label["km_uebr"]}: ${gs}\n`);
+                                // mod_schaden += gs;
                             }
                         }
-                        console.log(text);
-                        console.log(mod_at);
-                        console.log(schaden);
-                        console.log(mod_schaden);
+                        //Modifikator
+                        let modifikator = Number(html.find("#modifikator")[0].value);
+                        if (modifikator != 0) {
+                            mod_at += modifikator;
+                            text = text.concat(`Modifikator: ${modifikator}\n`);
+                        }
+                        //Rollmode
+                        let rollmode = html.find("#rollMode")[0].value;
+                        // let rollmode = "";
+                        // if (html.find("#rollMode").length > 0) {
+                        //     rollmode = html.find("#rollMode")[0].value;
+                        // }
+                        // console.log(text);
+                        // console.log(mod_at);
+                        // console.log(schaden);
+                        // console.log(mod_schaden);
+
+                        let formula = `1d20 + ${pw} + ${wundabzuege} + ${mod_at}`;
+                        let roll = new Roll(formula);
+                        roll.roll();
+                        // let result = roll.total;
+                        // let critfumble = roll.result.split(" + ").slice(-1)[0];
+                        // console.log(result);
+                        let critfumble = roll.dice[0].results[0].result;
+                        console.log(critfumble);
+                        let fumble = false;
+                        let crit = false;
+                        if (critfumble == 20) {
+                            crit = true;
+                        } else if (critfumble == 1) {
+                            fumble = true;
+                        }
+                        // console.log(roll);
+                        // console.log(result);
+                        // console.log(critfumble);
+
+                        // const template = 'systems/Ilaris/templates/chat/probenchat_profan.html';
+                        const html_roll = await renderTemplate('systems/Ilaris/templates/chat/probenchat_profan.html', {
+                            title: `Attacke (${item.data.name})`,
+                            text: text,
+                            crit: crit,
+                            fumble: fumble,
+                            // pw: pw,
+                            // wundabzuege: wundabzuege,
+                            // hohequalitaet: hohequalitaet,
+                            // modifikator: modifikator,
+                            // dice_number: dice_number,
+                            // result: result
+                        });
+                        // roll._formula = "hallo";
+                        let roll_msg = roll.toMessage({
+                            flavor: html_roll
+                        }, {
+                            rollMode: rollmode,
+                        //     create: false
+                        });
+                        console.log(roll_msg);
+                        // let blabla = game.settings.get("core", "rollMode");
+                        // console.log(blabla);
                     }
                 },
-                two: {
-                    icon: '<i><img class="button-icon" src="systems/Ilaris/assets/game-icons.net/bloody-sword.png"></i>',
-                    label: "Schaden",
-                    callback: () => console.log("Schaden")
-                },
+                // two: {
+                //     icon: '<i><img class="button-icon" src="systems/Ilaris/assets/game-icons.net/bloody-sword.png"></i>',
+                //     label: "Schaden",
+                //     callback: () => console.log("Schaden")
+                // },
                 three: {
                     icon: '<i class="fas fa-times"></i>',
                     label: "Abbrechen",
@@ -369,14 +430,6 @@ export async function wuerfelwurf(event, actor) {
                         console.log(roll);
                         console.log(result);
                         console.log(critfumble);
-
-                        // splittermond:
-                        // templates/chat/skill-check.hbs mit neuem button
-                        // module/actor/actor.js
-                        //
-                        // CoC:
-                        // module/actors/actor.js
-                        //
 
                         // const template = 'systems/Ilaris/templates/chat/probenchat_profan.html';
                         const html_roll = await renderTemplate('systems/Ilaris/templates/chat/probenchat_profan.html', {

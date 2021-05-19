@@ -44,6 +44,18 @@
     display:inline-block;
     vertical-align:middle;
 }
+.chat-message {
+    color: #000000;
+    font-family: var(--font-crimson);
+    background-image: url("../assets/images/background/hintergrund.jpg");
+}
+.chat-message .message-header {
+    color: #000000;
+}
+
+.chat-message .message-header .flavor-text {
+    color: #000000;
+}
 
 .editor {
     height: 100% !important;
