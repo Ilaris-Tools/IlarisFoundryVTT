@@ -11,6 +11,7 @@ function preloadHandlebarsTemplates() {
         "systems/Ilaris/templates/sheets/tabs/inventar.html",
         "systems/Ilaris/templates/sheets/tabs/uebernatuerlich.html",
         "systems/Ilaris/templates/sheets/tabs/notes.html",
+        "systems/Ilaris/templates/sheets/tabs/effekte.html",
         // "systems/Ilaris/templates/sheets/items/ruestung.html",
         "systems/Ilaris/templates/helper/select_attribut.html",
         "systems/Ilaris/templates/helper/select_fertigkeitsgruppe.html",

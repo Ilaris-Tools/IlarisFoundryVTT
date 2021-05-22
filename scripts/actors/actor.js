@@ -192,28 +192,37 @@ export class IlarisActor extends Actor {
         console.log("Berechne Wunden");
         let einschraenkungen = data.data.gesundheit.wunden + data.data.gesundheit.erschoepfung;
         let abzuege = 0;
+        if (data.data.furchtstufe == 1) {
+            abzuege = -2;
+        }
+        if (data.data.furchtstufe == 2) {
+            abzuege = -4;
+        }
+        if (data.data.furchtstufe >= 3) {
+            abzuege = -8;
+        }
         // let old_hp = data.data.gesundheit.hp.value;
         let new_hp = data.data.gesundheit.hp.max - einschraenkungen;
         if (einschraenkungen == 0) {
-            data.data.gesundheit.wundabzuege = 0;
-            data.data.gesundheit.display = "Volle Gesundheit";
+            data.data.gesundheit.wundabzuege = abzuege;
+            data.data.gesundheit.display = `${abzuege} auf alle Proben`;
         }
         else if (einschraenkungen > 0 && einschraenkungen <= 2) {
-            data.data.gesundheit.wundabzuege = 0;
-            data.data.gesundheit.display = "Keine Abzüge";
+            data.data.gesundheit.wundabzuege = abzuege;
+            data.data.gesundheit.display = `${abzuege} auf alle Proben`;
         }
         else if (einschraenkungen >= 3 && einschraenkungen <= 4) {
-            abzuege = -(einschraenkungen - 2) * 2;
+            abzuege = abzuege -(einschraenkungen - 2) * 2;
             data.data.gesundheit.wundabzuege = abzuege;
             data.data.gesundheit.display = `${abzuege} auf alle Proben`;
         }
         else if (einschraenkungen >= 5 && einschraenkungen <= 8) {
-            abzuege = -(einschraenkungen - 2) * 2;
+            abzuege += abzuege -(einschraenkungen - 2) * 2;
             data.data.gesundheit.wundabzuege = abzuege;
             data.data.gesundheit.display = `${abzuege} auf alle Proben (Kampfunfähig)`;
         }
         else if (einschraenkungen >= 9) {
-            abzuege = -(einschraenkungen - 2) * 2;
+            abzuege += abzuege -(einschraenkungen - 2) * 2;
             data.data.gesundheit.wundabzuege = abzuege;
             data.data.gesundheit.display = 'Tod';
         }

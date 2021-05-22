@@ -15,6 +15,10 @@
           }
         }
       },
+      "furcht": {
+        "furchtstufe": 0,
+        "furchtabzuege": 0
+      },
       "initiative": {
         "initiative": 0
       },
@@ -85,7 +89,8 @@
         "fertigkeiten",
         "abgeleitete",
         "schips",
-        "initiative"
+        "initiative",
+        "furcht"
       ],
       "notes": "Hallo"
     },
