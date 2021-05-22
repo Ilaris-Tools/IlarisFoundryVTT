@@ -3,7 +3,7 @@
         <div>
             <header class="sheet-header">
                 <div class="header-fields">
-                    <h1 class="charname"><input name="name" type="text" value="{{item.name}}" /></h1>
+                    <h1 class="charname"><input name="name" type="text" value="{{data.name}}" /></h1>
                 </div>
             </header>
         </div>
@@ -18,19 +18,19 @@
                  <label>{{data.profan_fertigkeit_list}}</label>
                  <label>{{item.data.profan_fertigkeit_list}}</label> -->
             <select name="data.fertigkeit">
-                {{#select data.fertigkeit}}
+                {{#select data.data.fertigkeit}}
                 {{#each fertigkeit_list as |fert|}}
                 <option value="{{fert}}">{{fert}}</option>
                 {{/each}}
                 {{/select}}
             </select>
             {{else}}
-            <input name="data.fertigkeit" value="{{item.data.fertigkeit}}" type="text" data-dtype="String">
+            <input name="data.fertigkeit" value="{{data.data.fertigkeit}}" type="text" data-dtype="String">
             {{/if}}
         </div>
         <div>
             <label><b>Beschreibung:</b></label>
-            <textarea name="data.text">{{data.text}}</textarea>
+            <textarea name="data.text">{{data.data.text}}</textarea>
         </div>
     </div>
 </form>

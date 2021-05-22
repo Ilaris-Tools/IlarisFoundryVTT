@@ -20,7 +20,7 @@ function preloadHandlebarsTemplates() {
         "systems/Ilaris/templates/chat/dreid20.html",
         "systems/Ilaris/templates/chat/probendiag_profan.html",
         "systems/Ilaris/templates/chat/probenchat_profan.html",
-        "systems/Ilaris/templates/chat/probendiag_at.html",
+        "systems/Ilaris/templates/chat/probendiag_nahkampf.html",
     ];
     return loadTemplates(templatePaths);
 };
@@ -40,6 +40,7 @@ function registerHandlebarsHelpers() {
 
     Handlebars.registerHelper("ProfanFertigkeitList", function(talente) {
         let fertigkeit_list = "";
+        // console.log(talente);
         for (let [i, tal] of talente.entries()) {
             if (i == 0) {
                 fertigkeit_list = tal.name;
@@ -69,7 +70,7 @@ function registerHandlebarsHelpers() {
     Handlebars.registerHelper("waffeneigenschaften_string", function(waffe) {
         let my_list = "";
         // console.log(waffe);
-        for (const [eig, val] of Object.entries(waffe.data.eigenschaften)) {
+        for (const [eig, val] of Object.entries(waffe.data.data.eigenschaften)) {
             // console.log(eig);
             if (val == true) {
                 if (my_list.length == 0){

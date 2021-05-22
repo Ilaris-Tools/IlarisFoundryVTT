@@ -17,8 +17,8 @@ import { ManoeverSheet } from "./sheets/items/manoever.js";
 import { EigenheitSheet } from "./sheets/items/eigenheit.js";
 
 Hooks.once("init", () => {
-    CONFIG.debug.hooks = true;
-    CONFIG.Actor.entityClass = IlarisActor;
+    // CONFIG.debug.hooks = true;
+    CONFIG.Actor.documentClass = IlarisActor;
     Actors.unregisterSheet("core", ActorSheet);
     Actors.registerSheet("Ilaris", HeldenSheet, {types: ["held"], makeDefault: true});
     Items.unregisterSheet("core", ItemSheet);
@@ -40,22 +40,22 @@ Hooks.once("init", () => {
     CONFIG.Combat.initiative = { formula: "@initiative", decimals: 1 };
 });
 
-Hooks.on('preCreateActor', (createData) => {
-    mergeObject(createData, {
-        'token.bar1': { attribute: "gesundheit.hp" },
-        'token.displayName': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
-        'token.displayBars': CONST.TOKEN_DISPLAY_MODES.HOVER,
-        'token.disposition': CONST.TOKEN_DISPOSITIONS.FRIENDLY,
-        'token.name': createData.name,
-    });
-    if (!createData.img) {
-        createData.img = 'systems/Ilaris/assets/images/token/kreaturentypen/humanoid.jpg';
-    }
-    if (createData.type === 'held') {
-        createData.token.vision = true;
-        createData.token.actorLink = true;
-    }
-});
+// Hooks.on('preCreateActor', (createData) => {
+//     mergeObject(createData, {
+//         'token.bar1': { attribute: "gesundheit.hp" },
+//         'token.displayName': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
+//         'token.displayBars': CONST.TOKEN_DISPLAY_MODES.HOVER,
+//         'token.disposition': CONST.TOKEN_DISPOSITIONS.FRIENDLY,
+//         'token.name': createData.name,
+//     });
+//     if (!createData.img) {
+//         createData.img = 'systems/Ilaris/assets/images/token/kreaturentypen/humanoid.jpg';
+//     }
+//     if (createData.type === 'held') {
+//         createData.token.vision = true;
+//         createData.token.actorLink = true;
+//     }
+// });
 
 // Hooks.on("preUpdateToken", (scene, token, updateData) => {
 //     const oldHP = token?.actorData?.data?.gesundheit?.hp.value;

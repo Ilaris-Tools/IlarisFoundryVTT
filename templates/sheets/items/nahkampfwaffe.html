@@ -2,9 +2,9 @@
     <div>
         <div>
             <header class="sheet-header">
-                <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+                <img class="profile-img" src="{{data.img}}" data-edit="img" title="{{data.name}}" />
                 <div class="header-fields">
-                    <h1 class="charname"><input name="name" type="text" value="{{item.name}}" /></h1>
+                    <h1 class="charname"><input name="name" type="text" value="{{data.name}}" /></h1>
                 </div>
             </header>
         </div>
@@ -12,42 +12,42 @@
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis:100px"><b>Schaden: </b></label>
                 <div class="flexrow">
-                    <input name="data.dice_anzahl" value="{{item.data.dice_anzahl}}" type="text" data-dtype="Number">
+                    <input name="data.dice_anzahl" value="{{data.data.dice_anzahl}}" type="text" data-dtype="Number">
                     <label class="flex-fest-var" style="flex-basis:40px">d6+</label>
-                    <input name="data.dice_plus" value="{{item.data.dice_plus}}" type="text" data-dtype="Number">
+                    <input name="data.dice_plus" value="{{data.data.dice_plus}}" type="text" data-dtype="Number">
                 </div>
             </div>
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis:100px"><b>Fertigkeit: </b></label>
                 <div class="flexrow">
-                    <input name="data.fertigkeit" value="{{item.data.fertigkeit}}" type="text" data-dtype="String">
+                    <input name="data.fertigkeit" value="{{data.data.fertigkeit}}" type="text" data-dtype="String">
                     <label class="flex-fest-var" style="flex-basis:40px"><b>Talent: </b></label>
-                    <input name="data.talent" value="{{item.data.talent}}" type="text" data-dtype="String">
+                    <input name="data.talent" value="{{data.data.talent}}" type="text" data-dtype="String">
                 </div>
             </div>
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis:100px"><b>WM: </b></label>
                 <div class="flexrow">
-                    <input name="data.wm_at" value="{{item.data.wm_at}}" type="text" data-dtype="Number">
+                    <input name="data.wm_at" value="{{data.data.wm_at}}" type="text" data-dtype="Number">
                     <label class="flex-fest-var" style="flex-basis:1px"><b>/</b></label>
-                    <input name="data.wm_vt" value="{{item.data.wm_vt}}" type="text" data-dtype="Number">
+                    <input name="data.wm_vt" value="{{data.data.wm_vt}}" type="text" data-dtype="Number">
                     <label class="flex-fest-var" style="flex-basis:30px"><b>RW: </b></label>
-                    <input name="data.rw" value="{{item.data.rw}}" type="text" data-dtype="Number">
+                    <input name="data.rw" value="{{data.data.rw}}" type="text" data-dtype="Number">
                 </div>
             </div>
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis:100px"><b>Härte: </b></label>
                 <div class="flexrow">
-                    <input name="data.haerte" value="{{item.data.haerte}}" type="text" data-dtype="Number">
+                    <input name="data.haerte" value="{{data.data.haerte}}" type="text" data-dtype="Number">
                     <label class="flex-fest-var" style="flex-basis:100px"><b>Beschädigung: </b></label>
-                    <input name="data.beschaedigung" value="{{item.data.beschaedigung}}" type="text"
+                    <input name="data.beschaedigung" value="{{data.data.beschaedigung}}" type="text"
                         data-dtype="Number">
                 </div>
             </div>
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis:100px"><b>Eigenschaften: </b></label>
                 <span>
-                    {{#each data.eigenschaften as |val key|}}
+                    {{#each data.data.eigenschaften as |val key|}}
                     <!-- <label>{{key}}</label>
                          <label>{{val}}</label> -->
                     <label>{{get_label key}}</label>
@@ -123,18 +123,18 @@
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis:100px"><b>WM: </b></label>
                 <div class="flexrow">
-                    <input name="data.mod_at" value="{{item.data.mod_at}}" type="text" data-dtype="Number">
+                    <input name="data.mod_at" value="{{data.data.mod_at}}" type="text" data-dtype="Number">
                     <label class="flex-fest-var" style="flex-basis:1px"><b>/</b></label>
-                    <input name="data.mod_vt" value="{{item.data.mod_vt}}" type="text" data-dtype="Number">
+                    <input name="data.mod_vt" value="{{data.data.mod_vt}}" type="text" data-dtype="Number">
                 </div>
             </div>
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis:100px"><b>Schadensbonus: </b></label>
-                <input name="data.mod_schaden" value="{{item.data.mod_schaden}}" type="text" data-dtype="String">
+                <input name="data.mod_schaden" value="{{data.data.mod_schaden}}" type="text" data-dtype="String">
             </div>
             {{/if}}
             <label><b>Beschreibung: </b></label>
-            <textarea name="data.text">{{data.text}}</textarea>
+            <textarea name="data.text">{{data.data.text}}</textarea>
         </div>
     </div>
 </form>

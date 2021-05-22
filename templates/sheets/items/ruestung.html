@@ -2,9 +2,9 @@
     <div>
         <div>
             <header class="sheet-header">
-                <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}"/>
+                <img class="profile-img" src="{{data.img}}" data-edit="img" title="{{data.name}}"/>
                 <div class="header-fields">
-                    <h1 class="charname"><input name="name" type="text" value="{{item.name}}"/></h1>
+                    <h1 class="charname"><input name="name" type="text" value="{{data.name}}"/></h1>
                 </div>
             </header>
         </div>
@@ -26,24 +26,24 @@
                 <h6>Kopf</h6>
             </div>
             <div class="flexrow">
-                <input name="data.rs" value="{{item.data.rs}}" type="text" data-dtype="Number">
-                <input name="data.be" value="{{item.data.be}}" type="text" data-dtype="Number">
-                <input name="data.rs_beine" value="{{item.data.rs_beine}}" type="text" data-dtype="Number">
-                <input name="data.rs_larm" value="{{item.data.rs_larm}}" type="text" data-dtype="Number">
-                <input name="data.rs_rarm" value="{{item.data.rs_rarm}}" type="text" data-dtype="Number">
-                <input name="data.rs_bauch" value="{{item.data.rs_bauch}}" type="text" data-dtype="Number">
-                <input name="data.rs_brust" value="{{item.data.rs_brust}}" type="text" data-dtype="Number">
-                <input name="data.rs_kopf" value="{{item.data.rs_kopf}}" type="text" data-dtype="Number">
+                <input name="data.rs" value="{{data.data.rs}}" type="text" data-dtype="Number">
+                <input name="data.be" value="{{data.data.be}}" type="text" data-dtype="Number">
+                <input name="data.rs_beine" value="{{data.data.rs_beine}}" type="text" data-dtype="Number">
+                <input name="data.rs_larm" value="{{data.data.rs_larm}}" type="text" data-dtype="Number">
+                <input name="data.rs_rarm" value="{{data.data.rs_rarm}}" type="text" data-dtype="Number">
+                <input name="data.rs_bauch" value="{{data.data.rs_bauch}}" type="text" data-dtype="Number">
+                <input name="data.rs_brust" value="{{data.data.rs_brust}}" type="text" data-dtype="Number">
+                <input name="data.rs_kopf" value="{{data.data.rs_kopf}}" type="text" data-dtype="Number">
             </div>
             <h5>Gesundheit</h5>
             <div class="flexrow">
                 <label>Härte</label>
-                <input name="data.haerte" value="{{item.data.haerte}}" type="text" data-dtype="Number">
+                <input name="data.haerte" value="{{data.data.haerte}}" type="text" data-dtype="Number">
                 <label>Beschädigung</label>
-                <input name="data.beschaedigung" value="{{item.data.beschaedigung}}" type="text" data-dtype="Number">
+                <input name="data.beschaedigung" value="{{data.data.beschaedigung}}" type="text" data-dtype="Number">
             </div>
             <label>Beschreibung</label>
-            <textarea name="data.text">{{data.text}}</textarea>
+            <textarea name="data.text">{{data.data.text}}</textarea>
             <!-- {{editor content=data.text target="data.text" button=true owner=owner editable=editable}} -->
         </div>
     </div>

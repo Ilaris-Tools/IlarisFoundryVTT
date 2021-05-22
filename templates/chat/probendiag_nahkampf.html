@@ -1,0 +1,43 @@
+<div class="flexrow">
+    <label>Kombinierte Aktion: </label>
+    <!-- <input name="kombinierte_aktion" data-dtype="Boolean" type="checkbox" {{checked kombinierte_aktion}}> -->
+    <input type="checkbox" id="kbak" {{checked item.data.data.manoever.kbak.selected}}>
+</div>
+<div class="flexrow">
+    <label>Volle Offensive: </label>
+    <!-- <input name="volle_offensive" data-dtype="Boolean" type="checkbox" {{checked volle_offensive}}> -->
+    <input type="checkbox" id="vlof" {{checked item.data.data.manoever.vlof.selected}}>
+</div>
+<div class="flexrow">
+    <label>Volle Defensive: </label>
+    <input type="checkbox" id="vldf" {{checked item.data.data.manoever.vldf.selected}}>
+</div>
+<div class="flexrow">
+    <label>Reichweitenunterschied: </label>
+    <!-- <label>{{radioBoxes distance_name distance_choice checked=distance_checked}}</label> -->
+    <label>{{radioBoxes "rwdf" distance_choice checked=item.data.data.manoever.rwdf.selected}}</label>
+</div>
+<div class="flexrow">
+    <label>Reaktionsanzahl: </label>
+    <!-- <input name="data.attribute.{{key}}.wert" value="{{attribut.wert}}" type="text" data-dtype="Number"> -->
+    <input id="rkaz" type="number" name="item.data.data.manoever.rkaz.selected" value="{{item.data.data.manoever.rkaz.selected}}" data-dtype="Number" />
+</div>
+<hr>
+{{#if manoever.km_ever.possible}}
+    <div class="flexrow">
+        <label>{{get_label "km_ever"}}</label>
+        <!-- <input type="checkbox" id="km_ever" unchecked> -->
+        <input type="checkbox" id="km_ever" {{checked item.data.data.manoever.km_ever.selected}}>
+    </div>
+{{/if}}
+<hr>
+<div class="flexrow">
+    <label for="modifikator">Modifikator: </label>
+    <input id="modifikator" type="number" value="0" data-dtype="Number" />
+</div>
+<div class="flexrow">
+    <label>Würfelmodus: </label>
+    <select id="rollMode">
+        {{selectOptions rollModes selected=defaultRollMode localize=true}}
+    </select>
+</div>

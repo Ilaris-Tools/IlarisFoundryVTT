@@ -80,6 +80,142 @@ ILARIS.trefferzonen = {
     "6": "Kopf",
     "7": "andere",
 };
+
+
+// Manoever: {
+//     "name": {
+//         "possible": false,
+//         "selected": false,
+//     },
+// }
+
+ILARIS.manoever_nahkampf = {
+    "kbak": {
+        "selected": false
+    },
+    "vlof": {
+        "selected": false
+    },
+    "vldf": {
+        "selected": false
+    },
+    "rwdf": {
+        "selected": "0"
+    },
+    "rkaz": {
+        "selected": 0
+    },
+    "km_ausw": {
+        "possible": true,
+        "selected": false,
+    },
+    "km_bind": {
+        "possible": true,
+        "selected": 0,
+    },
+    "km_ever": {
+        "possible": true,
+        "selected": false,
+    },
+    "km_entw": {
+        "possible": true,
+        "selected_at": false,
+        "selected_vt": false,
+    },
+    "km_gzsl": {
+        "possible": true,
+        "selected": false,
+    },
+    "km_umre": {
+        "possible": true,
+        "selected": false,
+    },
+    "km_wusl": {
+        "possible": true,
+        "selected": 0,
+    },
+    "km_aufl": {
+        "possible": false,
+        "selected": false,
+    },
+    "km_rust": {
+        "possible": false,
+        "selected": false,
+    },
+    "km_shsp": {
+        "possible": false,
+        "selected": false,
+    },
+    "km_stsl": {
+        "possible": false,
+        "selected": false,
+    },
+    "km_umkl": {
+        "possible": false,
+        "selected": 0,
+    },
+    "km_ausf": {
+        "possible": false,
+        "selected": false,
+    },
+    "km_befr": {
+        "possible": false,
+        "selected": false,
+    },
+    "km_dppl": {
+        "possible": false,
+        "selected": false,
+    },
+    "km_hmsl": {
+        "possible": false,
+        "selected": false,
+    },
+    "km_kltz": {
+        "possible": false,
+        "selected": false,
+    },
+    "km_ndwf": {
+        "possible": false,
+        "selected": false,
+    },
+    "km_rpst": {
+        "possible": false,
+        "selected": false,
+    },
+    "km_shwl": {
+        "possible": false,
+        "selected": false,
+    },
+    "km_stag": {
+        "possible": false,
+        "selected": false,
+        "gs": 0,
+    },
+    "km_tdst": {
+        "possible": false,
+        "selected": false,
+    },
+    "km_uebr": {
+        "possible": false,
+        "selected": false,
+        "gs": 0,
+    },
+    "km_utlf": {
+        "possible": false,
+        "selected": false,
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
 // Manoever: {
 //     "name": {
 //         "possible": true,         //vss für das manöver erfüllt?

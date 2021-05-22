@@ -4,23 +4,31 @@
 
 // input in html: pattern="regex" <= damit Zahlen und - bei Kreaturen möglich
 
-export class AttackDialog extends Dialog {
-    constructor(actor, dialogData = {}, options = {}) {
-        super(dialogData, options);
-        // this.html = html;
-        console.log("In Contructor");
-        /**
-         * Store a reference to the Actor entity which is resting
-         * @type {Actor}
-         */
-        this.actor = actor;
+export class NahkampfDialog extends Dialog {
+    // constructor(actor, item, dialogData = {}, options = {}) {
+    //     super(dialogData, options);
+    //     // this.html = html;
+    //     console.log("In Contructor");
+    //     /**
+    //      * Store a reference to the Actor entity which is resting
+    //      * @type {Actor}
+    //      */
+    //     this.actor = actor;
+    //     this.item = item;
 
-        /**
-         * Track the most recently used HD denomination for re-rendering the form
-         * @type {string}
-         */
-        this._denom = null;
-    }
+    //     /**
+    //      * Track the most recently used HD denomination for re-rendering the form
+    //      * @type {string}
+    //      */
+    //     // this._denom = null;
+    // }
+
+    // getData() {
+    //     const data = super.getData();
+    //     data.item = this.item;
+    //     console.log(data);
+    //     return data;
+    // }
 
     activateListeners(html) {
         super.activateListeners(html);
