@@ -190,7 +190,7 @@ export class IlarisActor extends Actor {
     }
 
     _calculateWounds(data) {
-        console.log("Berechne Wunden und Furcht");
+        console.log("Berechne Wunden");
         let einschraenkungen = data.data.gesundheit.wunden + data.data.gesundheit.erschoepfung;
         let gesundheitzusatz = ``;
         // let old_hp = data.data.gesundheit.hp.value;
@@ -237,6 +237,7 @@ export class IlarisActor extends Actor {
     }
 
     _calculateFear(data) {
+        console.log("Berechne Furchteffekt");
         let furchtzusatz = ``;
         if (data.data.furchtstufe == 0) {
             data.data.furchtabzuege = 0;
