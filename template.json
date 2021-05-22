@@ -16,14 +16,21 @@
         }
       },
       "furcht": {
-        "furchtstufe": 0,
-        "furchtabzuege": 0
+        "furcht": {
+          "furchtstufe": 0,
+          "furchtabzuege": 0,
+          "display": ""
+        }
+      },
+      "manuellermod": {
+        "manuellermod": 0
       },
       "initiative": {
         "initiative": 0
       },
       "abgeleitete": {
         "abgeleitete": {
+          "globalermod": 0,
           "ws": 0,
           "ws_stern": 0,
           "be": 0,

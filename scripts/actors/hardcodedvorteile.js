@@ -26,6 +26,10 @@ export function wundschwelleStern(ws, data) {
     return ws;
 }
 
+export function globalermod(data) {
+    return data.data.gesundheit.wundabzuege + data.data.furchtabzuege + data.data.manuellermod;
+}
+
 export function initiative(ini, data) {
     let kr = data.vorteil.kampf.find(x => x.name == "Kampfreflexe");
     if (kr) ini += 4;

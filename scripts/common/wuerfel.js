@@ -8,7 +8,7 @@ export async function wuerfelwurf(event, actor) {
     let data = actor.data.data;
     // console.log($(event.currentTarget));
     let rolltype = $(event.currentTarget).data("rolltype");
-    let wundabzuege = data.gesundheit.wundabzuege;
+    let globalermod = data.data.abgeleitete.globalermod;
     let be = data.abgeleitete.be;
     let pw = 0;
     let label = "Probe";
@@ -222,7 +222,7 @@ export async function wuerfelwurf(event, actor) {
                         // console.log(schaden);
                         // console.log(mod_schaden);
 
-                        let formula = `1d20 + ${pw} + ${wundabzuege} + ${mod_at}`;
+                        let formula = `1d20 + ${pw} + ${globalermod} + ${mod_at}`;
                         let roll = new Roll(formula);
                         roll.roll();
                         // let result = roll.total;
@@ -248,7 +248,7 @@ export async function wuerfelwurf(event, actor) {
                             crit: crit,
                             fumble: fumble,
                             // pw: pw,
-                            // wundabzuege: wundabzuege,
+                            // globalermod: globalermod
                             // hohequalitaet: hohequalitaet,
                             // modifikator: modifikator,
                             // dice_number: dice_number,
@@ -415,7 +415,7 @@ export async function wuerfelwurf(event, actor) {
                         hohequalitaet *= -4;
 
                         let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
-                        let formula = `${pw} + ${wundabzuege} + ${hohequalitaet} + ${modifikator} + ${dice_form}`;
+                        let formula = `${pw} + ${globalermod} + ${hohequalitaet} + ${modifikator} + ${dice_form}`;
                         let roll = new Roll(formula);
                         roll.roll();
                         let result = roll.total;
@@ -437,7 +437,7 @@ export async function wuerfelwurf(event, actor) {
                             crit: crit,
                             fumble: fumble,
                             pw: pw,
-                            wundabzuege: wundabzuege,
+                            globalermod: globalermod,
                             hohequalitaet: hohequalitaet,
                             modifikator: modifikator,
                             dice_number: dice_number,
@@ -473,7 +473,7 @@ export async function wuerfelwurf(event, actor) {
     else if (rolltype == "fk") {
         
     }
-    // let formula = `${pw} + ${wundabzuege} + 3d20dl1dh1`;
+    // let formula = `${pw} + ${globalermod} + 3d20dl1dh1`;
     // // let formula = `${data.pw} + 3d20dhdl`;
     // let roll = new Roll(formula);
     // roll.roll();

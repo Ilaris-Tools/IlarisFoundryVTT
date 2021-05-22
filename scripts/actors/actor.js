@@ -15,7 +15,8 @@ export class IlarisActor extends Actor {
         this._sortItems(data); //Als erstes, darauf basieren Berechnungen
         this._calculatePWAttribute(data);
         // this._calculateWerteFertigkeiten(data);
-        this._calculateWounds(data);
+        this._calculateWounds(data); // muss vor _calculateAbgeleitete kommen (wegen globalermod)
+        this._calculateFear(data); // muss vor _calculateAbgeleitete kommen (wegen globalermod)
         this._calculateWundschwellenRuestung(data);
         this._calculateAbgeleitete(data);
         this._calculateProfanFertigkeiten(data);
@@ -189,46 +190,40 @@ export class IlarisActor extends Actor {
     }
 
     _calculateWounds(data) {
-        console.log("Berechne Wunden");
+        console.log("Berechne Wunden und Furcht");
         let einschraenkungen = data.data.gesundheit.wunden + data.data.gesundheit.erschoepfung;
-        let abzuege = 0;
-        if (data.data.furchtstufe == 1) {
-            abzuege = -2;
-        }
-        if (data.data.furchtstufe == 2) {
-            abzuege = -4;
-        }
-        if (data.data.furchtstufe >= 3) {
-            abzuege = -8;
-        }
+        let gesundheitzusatz = ``;
         // let old_hp = data.data.gesundheit.hp.value;
         let new_hp = data.data.gesundheit.hp.max - einschraenkungen;
         if (einschraenkungen == 0) {
-            data.data.gesundheit.wundabzuege = abzuege;
-            data.data.gesundheit.display = `${abzuege} auf alle Proben`;
+            data.data.gesundheit.wundabzuege = 0;
+            gesundheitzusatz = `(Volle Gesundheit)`;
         }
         else if (einschraenkungen > 0 && einschraenkungen <= 2) {
-            data.data.gesundheit.wundabzuege = abzuege;
-            data.data.gesundheit.display = `${abzuege} auf alle Proben`;
+            data.data.gesundheit.wundabzuege = 0;
+            gesundheitzusatz = `(Kaum ein Kratzer)`;
         }
         else if (einschraenkungen >= 3 && einschraenkungen <= 4) {
-            abzuege = abzuege -(einschraenkungen - 2) * 2;
-            data.data.gesundheit.wundabzuege = abzuege;
-            data.data.gesundheit.display = `${abzuege} auf alle Proben`;
+            data.data.gesundheit.wundabzuege =  -(einschraenkungen - 2) * 2;
+            gesundheitzusatz = `(Verwundet)`;
         }
         else if (einschraenkungen >= 5 && einschraenkungen <= 8) {
-            abzuege += abzuege -(einschraenkungen - 2) * 2;
-            data.data.gesundheit.wundabzuege = abzuege;
-            data.data.gesundheit.display = `${abzuege} auf alle Proben (Kampfunfähig)`;
+            data.data.gesundheit.wundabzuege =  -(einschraenkungen - 2) * 2;
+            gesundheitzusatz = `(Kampfunfähig)`;
         }
         else if (einschraenkungen >= 9) {
-            abzuege += abzuege -(einschraenkungen - 2) * 2;
-            data.data.gesundheit.wundabzuege = abzuege;
-            data.data.gesundheit.display = 'Tod';
+            data.data.gesundheit.wundabzuege =  -(einschraenkungen - 2) * 2;
+            gesundheitzusatz = `(Tot)`;
         }
         else {
             data.data.gesundheit.display = 'Irgendetwas ist schief gelaufen';
+            return;
         }
+        data.data.gesundheit.display = ``;
+        if (data.data.gesundheit.wundabzuege == 0) {
+            data.data.gesundheit.display += `-`;
+        }
+        data.data.gesundheit.display += `${data.data.gesundheit.wundabzuege} auf alle Proben ` + gesundheitzusatz;
         // if (old_hp != new_hp) {
             data.data.gesundheit.hp.value = new_hp;
         //     // console.log(data);
@@ -239,6 +234,35 @@ export class IlarisActor extends Actor {
         //         actor.update({ "data.gesundheit.hp.value": new_hp });
         //     }
         // }
+    }
+
+    _calculateFear(data) {
+        let furchtzusatz = ``;
+        if (data.data.furchtstufe == 0) {
+            data.data.furchtabzuege = 0;
+            furchtzusatz = `(keine Furcht)`;
+        }
+        else if (data.data.furchtstufe == 1) {
+            data.data.furchtabzuege = -2;
+            furchtzusatz = `(Furcht)`;
+        }
+        else if (data.data.furchtstufe == 2) {
+            data.data.furchtabzuege = -4;
+            furchtzusatz = `(Rückzug)`;
+        }
+        else if (data.data.furchtstufe == 3) {
+            data.data.furchtabzuege = -8;
+            furchtzusatz = `(Flucht)`;
+        }
+        else if (data.data.furchtstufe >= 4) {
+            data.data.furchtabzuege = -8;
+            furchtzusatz = `(Proben nur noch zur Flucht)`;
+        }
+        else {
+            data.data.furcht.display = 'Irgendetwas ist schief gelaufen';
+            return;
+        }
+        data.data.furcht.display = `${data.data.furchtabzuege} auf alle Proben ` + furchtzusatz;
     }
 
     _calculateWundschwellenRuestung(data) {
@@ -303,6 +327,8 @@ export class IlarisActor extends Actor {
 
     _calculateAbgeleitete(data) {
         console.log("Berechne abgeleitete Werte");
+        let globalermod = hardcoded.globalermod(data);
+        data.data.abgeleitete.globalermod = globalermod;
         let ini = data.data.attribute.IN.wert;
         ini = hardcoded.initiative(ini, data);
         data.data.abgeleitete.ini = ini;

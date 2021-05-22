@@ -94,7 +94,7 @@ export class AttackDialog extends Dialog {
         let data = this.actor.data.data;
         // console.log($(event.currentTarget));
         let rolltype = $(event.currentTarget).data("rolltype");
-        let wundabzuege = data.gesundheit.wundabzuege;
+        let globalermod = data.abgeleitete.globalermod;
         let pw = 0;
         let label = "Probe";
         let dice = "3d20dl1dh1";
@@ -154,7 +154,7 @@ export class AttackDialog extends Dialog {
             label = $(event.currentTarget).data("talent");
             pw = $(event.currentTarget).data("pw");
         }
-        let formula = `${pw} + ${wundabzuege} + ${dice}`;
+        let formula = `${pw} + ${globalermod} + ${dice}`;
         if (rolltype == "schaden") {
             formula = pw;
         }
