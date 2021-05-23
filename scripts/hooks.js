@@ -41,7 +41,22 @@ Hooks.once("init", () => {
     CONFIG.statusEffects.push(
         {"id": "furcht1",
          "label": "Furch I",
-         "icon": 'systems/Ilaris/assets/game-icons.net/terror.png'}
+         "icon": 'systems/Ilaris/assets/game-icons.net/terror_1.png'},
+        {
+            "id": "furcht2",
+            "label": "Furch II",
+            "icon": 'systems/Ilaris/assets/game-icons.net/terror_2.png'
+        },
+        {
+            "id": "furcht3",
+            "label": "Furch III",
+            "icon": 'systems/Ilaris/assets/game-icons.net/terror_3.png'
+        },
+        {
+            "id": "furcht4",
+            "label": "Furch IV",
+            "icon": 'systems/Ilaris/assets/game-icons.net/terror_4.png'
+        },
     );
 });
 
