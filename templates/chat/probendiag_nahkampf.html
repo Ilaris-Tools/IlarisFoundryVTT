@@ -21,8 +21,24 @@
     <label>Reaktionsanzahl: </label>
     <!-- <input name="data.attribute.{{key}}.wert" value="{{attribut.wert}}" type="text" data-dtype="Number"> -->
     <input id="rkaz" type="number" name="item.data.data.manoever.rkaz.selected" value="{{item.data.data.manoever.rkaz.selected}}" data-dtype="Number" />
+    <div class="flexrow">
+        <label>Passierschlag: </label>
+        <input type="checkbox" id="pssl" {{checked item.data.data.manoever.pssl.selected}}>
+    </div>
 </div>
 <hr>
+{{#if manoever.km_ausw.possible}}
+    <div class="flexrow">
+        <label>{{get_label "km_ausw"}}</label>
+        <input type="checkbox" id="km_ausw" {{checked item.data.data.manoever.km_ausw.selected}}>
+    </div>
+{{/if}}
+{{#if manoever.km_bind.possible}}
+    <div class="flexrow">
+        <label>{{get_label "km_bind"}}</label>
+        <input id="km_bind" type="number" name="item.data.data.manoever.km_bind.selected" value="{{item.data.data.manoever.km_bind.selected}}" data-dtype="Number" />
+    </div>
+{{/if}}
 {{#if manoever.km_ever.possible}}
     <div class="flexrow">
         <label>{{get_label "km_ever"}}</label>
@@ -30,14 +46,166 @@
         <input type="checkbox" id="km_ever" {{checked item.data.data.manoever.km_ever.selected}}>
     </div>
 {{/if}}
+{{#if manoever.km_entw.possible}}
+    <div class="flexrow">
+        <label>{{get_label "km_entw"}}</label>
+        <div class="flexrow">
+            <label>AT:</label>
+            <input type="checkbox" id="km_entw_at" name="item.data.data.manoever.km_entw.selected_at" {{checked item.data.data.manoever.km_entw.selected_at}}>
+            <label>VT:</label>
+            <input type="checkbox" id="km_entw_vt" name="item.data.data.manoever.km_entw.selected_vt" {{checked item.data.data.manoever.km_entw.selected_vt}}>
+        </div>
+    </div>
+{{/if}}
+{{#if manoever.km_gzsl.possible}}
+    <div class="flexrow">
+        <label>{{get_label "km_gzsl"}}</label>
+        <select id="km_gzsl" name="item.data.data.manoever.km_gzsl.selected">
+            {{#select item.data.data.manoever.km_gzsl.selected}}
+                {{> systems/Ilaris/templates/helper/select_trefferzone.html}}
+            {{/select}}
+        </select>
+    </div>
+{{/if}}
+{{#if manoever.km_umre.possible}}
+    <div class="flexrow">
+        <label>{{get_label "km_umre"}}</label>
+        <input type="checkbox" id="km_umre" {{checked item.data.data.manoever.km_umre.selected}}>
+    </div>
+{{/if}}
+{{#if manoever.km_wusl.possible}}
+    <div class="flexrow">
+        <label>{{get_label "km_wusl"}}</label>
+        <input id="km_wusl" type="number" name="item.data.data.manoever.km_wusl.selected" value="{{item.data.data.manoever.km_wusl.selected}}" data-dtype="Number" />
+    </div>
+{{/if}}
+{{#if manoever.km_aufl.possible}}
+    <div class="flexrow">
+        <label>{{get_label "km_aufl"}}</label>
+        <div class="flexrow">
+            <input type="checkbox" id="km_aufl" {{checked item.data.data.manoever.km_aufl.selected}}>
+            <label>GS:</label>
+            <input id="km_aufl_gs" type="number" name="item.data.data.manoever.km_aufl.gs" value="{{item.data.data.manoever.km_aufl.gs}}" data-dtype="Number" />
+        </div>
+    </div>
+{{/if}}
+{{#if manoever.km_rust.possible}}
+    <div class="flexrow">
+        <label>{{get_label "km_rust"}}</label>
+        <input type="checkbox" id="km_rust" {{checked item.data.data.manoever.km_rust.selected}}>
+    </div>
+{{/if}}
+{{#if manoever.km_shsp.possible}}
+    <div class="flexrow">
+        <label>{{get_label "km_shsp"}}</label>
+        <input type="checkbox" id="km_shsp" {{checked item.data.data.manoever.km_shsp.selected}}>
+    </div>
+{{/if}}
+{{#if manoever.km_stsl.possible}}
+    <div class="flexrow">
+        <label>{{get_label "km_stsl"}}</label>
+        <input type="checkbox" id="km_stsl" {{checked item.data.data.manoever.km_stsl.selected}}>
+    </div>
+{{/if}}
+{{#if manoever.km_umkl.possible}}
+    <div class="flexrow">
+        <label>{{get_label "km_umkl"}}</label>
+        <div class="flexrow">
+            <input type="checkbox" id="km_umkl" {{checked item.data.data.manoever.km_umkl.selected}}>
+            <label>mod:</label>
+            <input id="km_umkl_mod" type="number" name="item.data.data.manoever.km_umkl.mod" value="{{item.data.data.manoever.km_umkl.mod}}" data-dtype="Number" />
+        </div>
+    </div>
+{{/if}}
+{{#if manoever.km_ausf.possible}}
+    <div class="flexrow">
+        <label>{{get_label "km_ausf"}}</label>
+        <input type="checkbox" id="km_ausf" {{checked item.data.data.manoever.km_ausf.selected}}>
+    </div>
+{{/if}}
+{{#if manoever.km_befr.possible}}
+    <div class="flexrow">
+        <label>{{get_label "km_befr"}}</label>
+        <input type="checkbox" id="km_befr" {{checked item.data.data.manoever.km_befr.selected}}>
+    </div>
+{{/if}}
+{{#if manoever.km_dppl.possible}}
+    <div class="flexrow">
+        <label>{{get_label "km_dppl"}}</label>
+        <input type="checkbox" id="km_dppl" {{checked item.data.data.manoever.km_dppl.selected}}>
+    </div>
+{{/if}}
+{{#if manoever.km_hmsl.possible}}
+    <div class="flexrow">
+        <label>{{get_label "km_hmsl"}}</label>
+        <input type="checkbox" id="km_hmsl" {{checked item.data.data.manoever.km_hmsl.selected}}>
+    </div>
+{{/if}}
+{{#if manoever.km_kltz.possible}}
+    <div class="flexrow">
+        <label>{{get_label "km_kltz"}}</label>
+        <input type="checkbox" id="km_kltz" {{checked item.data.data.manoever.km_kltz.selected}}>
+    </div>
+{{/if}}
+{{#if manoever.km_ndwf.possible}}
+    <div class="flexrow">
+        <label>{{get_label "km_ndwf"}}</label>
+        <input type="checkbox" id="km_ndwf" {{checked item.data.data.manoever.km_ndwf.selected}}>
+    </div>
+{{/if}}
+{{#if manoever.km_rpst.possible}}
+    <div class="flexrow">
+        <label>{{get_label "km_rpst"}}</label>
+        <input type="checkbox" id="km_rpst" {{checked item.data.data.manoever.km_rpst.selected}}>
+    </div>
+{{/if}}
+{{#if manoever.km_shwl.possible}}
+    <div class="flexrow">
+        <label>{{get_label "km_shwl"}}</label>
+        <input type="checkbox" id="km_shwl" {{checked item.data.data.manoever.km_shwl.selected}}>
+    </div>
+{{/if}}
+{{#if manoever.km_stag.possible}}
+    <div class="flexrow">
+        <label>{{get_label "km_stag"}}</label>
+        <div class="flexrow">
+            <input type="checkbox" id="km_stag" {{checked item.data.data.manoever.km_stag.selected}}>
+            <label>GS:</label>
+            <input id="km_stag_gs" type="number" name="item.data.data.manoever.km_stag.gs" value="{{item.data.data.manoever.km_stag.gs}}" data-dtype="Number" />
+        </div>
+    </div>
+{{/if}}
+{{#if manoever.km_tdst.possible}}
+    <div class="flexrow">
+        <label>{{get_label "km_tdst"}}</label>
+        <input type="checkbox" id="km_tdst" {{checked item.data.data.manoever.km_tdst.selected}}>
+    </div>
+{{/if}}
+{{#if manoever.km_uebr.possible}}
+    <div class="flexrow">
+        <label>{{get_label "km_uebr"}}</label>
+        <div class="flexrow">
+            <input type="checkbox" id="km_uebr" {{checked item.data.data.manoever.km_uebr.selected}}>
+            <label>GS:</label>
+            <input id="km_uebr_gs" type="number" name="item.data.data.manoever.km_uebr.gs" value="{{item.data.data.manoever.km_uebr.gs}}" data-dtype="Number" />
+        </div>
+    </div>
+{{/if}}
+{{#if manoever.km_utlf.possible}}
+    <div class="flexrow">
+        <label>{{get_label "km_utlf"}}</label>
+        <input type="checkbox" id="km_utlf" {{checked item.data.data.manoever.km_utlf.selected}}>
+    </div>
+{{/if}}
 <hr>
 <div class="flexrow">
-    <label for="modifikator">Modifikator: </label>
-    <input id="modifikator" type="number" value="0" data-dtype="Number" />
+    <!-- <label for="modifikator">Modifikator: </label> -->
+    <label>Modifikator: </label>
+    <input id="modifikator" type="number" name="item.data.data.manoever.mod.selected" value="{{item.data.data.manoever.mod.selected}}" data-dtype="Number" />
 </div>
 <div class="flexrow">
     <label>Würfelmodus: </label>
     <select id="rollMode">
-        {{selectOptions rollModes selected=defaultRollMode localize=true}}
+        {{selectOptions rollModes selected=item.data.data.manoever.rllm.selected localize=true}}
     </select>
 </div>

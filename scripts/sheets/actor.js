@@ -27,7 +27,7 @@ export class IlarisActorSheet extends ActorSheet {
         // html.find('.item-toggle').click(this._onToggleItem.bind(this));
         html.find('.item-toggle').click(ev => this._onToggleItem(ev));
         html.find('.hp-update').change(ev => this._onHpUpdate(ev));
-        html.find('.selected-kampfstil').change(ev => this._onSelectedKampfstil(ev));
+        // html.find('.selected-kampfstil').change(ev => this._onSelectedKampfstil(ev));
     };
 
     _ausklappView(event) {

@@ -435,14 +435,14 @@ export class IlarisActor extends Actor {
             //     // nwaffe.update(JSON.parse(JSON.stringify(CONFIG.ILARIS.manoever_nahkampf)));
             }
             nwaffe.data.data.manoever = nwaffe.data.data.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_nahkampf);
-            nwaffe.data.data.manoever.km_utlf.possible = false;
-            nwaffe.data.data.manoever.km_befr.possible = false;
-            nwaffe.data.data.manoever.km_dppl.possible = false;
-            nwaffe.data.data.manoever.km_rpst.possible = false;
-            nwaffe.data.data.manoever.km_shwl.possible = false;
-            nwaffe.data.data.manoever.km_stag.possible = false;
-            nwaffe.data.data.manoever.km_uebr.possible = false;
-            nwaffe.data.data.manoever.km_utlf.possible = false;
+            // nwaffe.data.data.manoever.km_utlf.possible = false;
+            // nwaffe.data.data.manoever.km_befr.possible = false;
+            // nwaffe.data.data.manoever.km_dppl.possible = false;
+            // nwaffe.data.data.manoever.km_rpst.possible = false;
+            // nwaffe.data.data.manoever.km_shwl.possible = false;
+            // nwaffe.data.data.manoever.km_stag.possible = false;
+            // nwaffe.data.data.manoever.km_uebr.possible = false;
+            // nwaffe.data.data.manoever.km_utlf.possible = false;
             // let manoever_at = ["km_ever",
             //                    "km_entw",
             //                    "km_gzsl",
@@ -587,32 +587,45 @@ export class IlarisActor extends Actor {
             //     manoever_at.push("km_ausf");
             //     // manoever_at.km_ausf.possible = true;
             // }
-            nwaffe.data.data.manoever.km_ausf.possible = data.data.vorteil.kampf.includes(x => x.name == "Ausfall");
+            nwaffe.data.data.manoever.km_ausf.possible = data.data.vorteil.kampf.some(x => x.name == "Ausfall");
+            // nwaffe.data.data.manoever.km_ausf.possible = data.data.vorteil.kampf.includes(x => x.name == "Ausfall");
+            // console.log("data.data.vorteil.kampf:");
+            // console.log(data.data.vorteil.kampf);
+            // console.log(data.data.vorteil.kampf.includes(x => x.name == "Ausfall"));
+            // console.log(data.data.vorteil.kampf.find(x => x.name == "Ausfall"));
+            // console.log(data.data.vorteil.kampf.indexOf(x => x.name == "Ausfall"));
+            // console.log(data.data.vorteil.kampf.indexOf(x => x.name == "Ausfall") > -1);
+            // console.log(data.data.vorteil.kampf.some(x => x.name == "Ausfall"));
             // if (data.data.vorteil.kampf.find(x => x.name == "Hammerschlag")) {
             //     manoever_at.push("km_hmsl");
             //     // manoever_at.km_hmsl.possible = true;
             // }
-            nwaffe.data.data.manoever.km_hmsl.possible = data.data.vorteil.kampf.includes(x => x.name == "Hammerschlag");
+            nwaffe.data.data.manoever.km_hmsl.possible = data.data.vorteil.kampf.some(x => x.name == "Hammerschlag");
+            // nwaffe.data.data.manoever.km_hmsl.possible = data.data.vorteil.kampf.includes(x => x.name == "Hammerschlag");
             // if (data.data.vorteil.kampf.find(x => x.name == "Klingentanz")) {
             //     manoever_at.push("km_kltz");
             //     // manoever_at.km_kltz.possible = true;
             // }
-            nwaffe.data.data.manoever.km_kltz.possible = data.data.vorteil.kampf.includes(x => x.name == "Klingentanz");
+            nwaffe.data.data.manoever.km_kltz.possible = data.data.vorteil.kampf.some(x => x.name == "Klingentanz");
+            // nwaffe.data.data.manoever.km_kltz.possible = data.data.vorteil.kampf.includes(x => x.name == "Klingentanz");
             // if (data.data.vorteil.kampf.find(x => x.name == "Niederwerfen")) {
             //     manoever_at.push("km_ndwf");
             //     // manoever_at.km_ndwf.possible = true;
             // }
-            nwaffe.data.data.manoever.km_ndwf.possible = data.data.vorteil.kampf.includes(x => x.name == "Niederwerfen");
+            nwaffe.data.data.manoever.km_ndwf.possible = data.data.vorteil.kampf.some(x => x.name == "Niederwerfen");
+            // nwaffe.data.data.manoever.km_ndwf.possible = data.data.vorteil.kampf.includes(x => x.name == "Niederwerfen");
             // if (data.data.vorteil.kampf.find(x => x.name == "Sturmangriff")) {
             //     manoever_at.push("km_stag");
             //     // manoever_at.km_stag.possible = true;
             // }
-            nwaffe.data.data.manoever.km_stag.possible = data.data.vorteil.kampf.includes(x => x.name == "Sturmangriff");
+            nwaffe.data.data.manoever.km_stag.possible = data.data.vorteil.kampf.some(x => x.name == "Sturmangriff");
+            // nwaffe.data.data.manoever.km_stag.possible = data.data.vorteil.kampf.includes(x => x.name == "Sturmangriff");
             // if (data.data.vorteil.kampf.find(x => x.name == "Todesstoß")) {
             //     manoever_at.push("km_tdst");
             //     // manoever_at.km_tdst.possible = true;
             // }
-            nwaffe.data.data.manoever.km_tdst.possible = data.data.vorteil.kampf.includes(x => x.name == "Todesstoß");
+            nwaffe.data.data.manoever.km_tdst.possible = data.data.vorteil.kampf.some(x => x.name == "Todesstoß");
+            // nwaffe.data.data.manoever.km_tdst.possible = data.data.vorteil.kampf.includes(x => x.name == "Todesstoß");
             // console.log(`AT: ${at} | VT: ${vt}`);
             // console.log(pw);
             // nwaffe.data.data.manoever_at = manoever_at;
@@ -751,7 +764,7 @@ export class IlarisActor extends Actor {
             if (typeof(HAUPTWAFFE) != "undefined") hauptwaffe = true;
             if (typeof(NEBENWAFFE) != "undefined") nebenwaffe = true;
             if (hauptwaffe && nebenwaffe) {
-                if (HAUPTWAFFE._id == NEBENWAFFE._id) {
+                if (HAUPTWAFFE.id == NEBENWAFFE.id) {
                     WAFFE = HAUPTWAFFE;
                 }
             }
@@ -911,7 +924,7 @@ export class IlarisActor extends Actor {
                     schaden += 1;
                     at += 1;
                     vt += 1;
-                    if (NEBENWAFFE.data.data.eigenschaften.reittier) NEBENWAFFE.data.data.manoever_at.km_uebr.possible=true;
+                    if (NEBENWAFFE.data.data.eigenschaften.reittier) NEBENWAFFE.data.data.manoever.km_uebr.possible=true;
                     // if (NEBENWAFFE.data.data.eigenschaften.reittier) NEBENWAFFE.data.data.manoever_at.push("km_uebr");
                     // if (NEBENWAFFE.data.eigenschaften.reittier) NEBENWAFFE.data.manoever_at.km_uebr.possible=true;
                 }

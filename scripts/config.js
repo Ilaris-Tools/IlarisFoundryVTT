@@ -105,6 +105,9 @@ ILARIS.manoever_nahkampf = {
     "rkaz": {
         "selected": 0
     },
+    "pssl": {
+        "selected": false
+    },
     "km_ausw": {
         "possible": true,
         "selected": false,
@@ -124,7 +127,7 @@ ILARIS.manoever_nahkampf = {
     },
     "km_gzsl": {
         "possible": true,
-        "selected": false,
+        "selected": "0",
     },
     "km_umre": {
         "possible": true,
@@ -135,15 +138,16 @@ ILARIS.manoever_nahkampf = {
         "selected": 0,
     },
     "km_aufl": {
-        "possible": false,
+        "possible": true,
         "selected": false,
+        "gs": 0
     },
     "km_rust": {
         "possible": false,
         "selected": false,
     },
     "km_shsp": {
-        "possible": false,
+        "possible": true,
         "selected": false,
     },
     "km_stsl": {
@@ -152,7 +156,8 @@ ILARIS.manoever_nahkampf = {
     },
     "km_umkl": {
         "possible": false,
-        "selected": 0,
+        "selected": false,
+        "mod": 0
     },
     "km_ausf": {
         "possible": false,
@@ -203,6 +208,12 @@ ILARIS.manoever_nahkampf = {
     "km_utlf": {
         "possible": false,
         "selected": false,
+    },
+    "mod": {
+        "selected": "0",
+    },
+    "rllm": {
+        "selected": "roll",
     }
 }
 
