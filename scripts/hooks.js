@@ -38,6 +38,11 @@ Hooks.once("init", () => {
     // game.sephrasto = new SephrastoImporter();
     CONFIG.ILARIS = ILARIS;
     CONFIG.Combat.initiative = { formula: "@initiative", decimals: 1 };
+    CONFIG.statusEffects.push(
+        {"id": "furcht1",
+         "label": "Furch I",
+         "icon": 'systems/Ilaris/assets/game-icons.net/terror.png'}
+    );
 });
 
 // Hooks.on('preCreateActor', (createData) => {
