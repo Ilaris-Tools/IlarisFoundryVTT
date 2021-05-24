@@ -107,8 +107,9 @@ export async function wuerfelwurf(event, actor) {
     let data = actor.data.data;
     // console.log($(event.currentTarget));
     let rolltype = $(event.currentTarget).data("rolltype");
-    let globalermod = data.data.abgeleitete.globalermod;
+    let globalermod = data.abgeleitete.globalermod;
     let be = data.abgeleitete.be;
+    let nahkampfmod = data.modifikatoren.nahkampfmod;
     let pw = 0;
     let label = "Probe";
     if(rolltype == "nahkampf") {
@@ -192,7 +193,7 @@ export async function wuerfelwurf(event, actor) {
                         }
                         // Rollmode
                         let rollmode = item.data.data.manoever.rllm.selected;
-                        let formula = `1d20 + ${pw} + ${wundabzuege} + ${mod_at}`;
+                        let formula = `1d20 + ${pw} + ${globalermod} + ${mod_at} + ${nahkampfmod}`;
                         let roll = new Roll(formula);
                         await roll.evaluate({"async": true});
                         let critfumble = roll.dice[0].results[0].result;

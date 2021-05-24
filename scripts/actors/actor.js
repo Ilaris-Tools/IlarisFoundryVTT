@@ -586,8 +586,6 @@ export class IlarisActor extends Actor {
             if (nebenwaffe && !zweihaendig && !kein_malus_nebenwaffe && !hauptwaffe) { vt -= 4; at -= 4;}
             at -= be;
             vt -= be;
-            at += nahkampfmod;
-            vt += nahkampfmod;
             // at += wundabzuege;
             // vt += wundabzuege;
             const mod_at = nwaffe.data.data.mod_at;
