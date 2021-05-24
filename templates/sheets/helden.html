@@ -2,67 +2,75 @@
     <div>
         <div>
             <div style="float: left;">
-                <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100"
+                <img class="profile-img" src="{{data.img}}" data-edit="img" title="{{data.name}}" height="100"
                     width="100" />
             </div>
             <div style="float: left;">
-                <input name="name" type="text" value="{{actor.name}}" />
+                <input name="name" type="text" value="{{data.name}}" />
                 <div class="flexrow">
                     <label>Erschöpfung: </label>
-                    <input class="hp-update" name="data.gesundheit.erschoepfung" value="{{data.gesundheit.erschoepfung}}"
+                    <input class="hp-update" name="data.gesundheit.erschoepfung" value="{{data.data.gesundheit.erschoepfung}}"
                         type="text" data-dtype="Number">
                 </div>
                 <div class="flexrow">
                     <label>Wunden: </label>
-                    <input class="hp-update" name="data.gesundheit.wunden" value="{{data.gesundheit.wunden}}" type="text"
+                    <input class="hp-update" name="data.gesundheit.wunden" value="{{data.data.gesundheit.wunden}}" type="text"
                         data-dtype="Number">
                 </div>
-                <label>{{data.gesundheit.display}}</label>
+                <label>{{data.data.gesundheit.display}}</label>
             </div>
             <div style="float: left;">
                 <div class="flexrow">
                     <label>Schip: </label>
-                    <label>{{actor.data.schips.schips}}</label>
+                    <label>{{data.schips.schips}}</label>
                     <!-- <input name="data.schips.schips" value="{{data.schips.schips}}" type="text" data-dtype="Number"> -->
                     <label>Schip*: </label>
-                    <input name="data.schips.schips_stern" value="{{data.schips.schips_stern}}" type="text"
+                    <input name="data.schips.schips_stern" value="{{data.data.schips.schips_stern}}" type="text"
                         data-dtype="Number">
                 </div>
                 <div class="flexrow">
                     <label>WS: </label>
-                    <label>{{actor.data.abgeleitete.ws}}</label>
+                    <label>{{data.data.abgeleitete.ws}}</label>
                     <label>WS*: </label>
-                    <label>{{actor.data.abgeleitete.ws_stern}}</label>
+                    <label>{{data.data.abgeleitete.ws_stern}}</label>
                 </div>
                 <div class="flexrow">
                     <label>MR: </label>
-                    <label>{{actor.data.abgeleitete.mr}}</label>
+                    <label>{{data.data.abgeleitete.mr}}</label>
                     <label>INI: </label>
-                    <label>{{actor.data.abgeleitete.ini}}</label>
+                    <label>{{data.data.abgeleitete.ini}}</label>
                 </div>
                 <div class="flexrow">
                     <label>GS*: </label>
-                    <label>{{actor.data.abgeleitete.gs}}</label>
+                    <label>{{data.data.abgeleitete.gs}}</label>
                     <label>DH*: </label>
-                    <label>{{actor.data.abgeleitete.dh}}</label>
+                    <label>{{data.data.abgeleitete.dh}}</label>
                 </div>
             </div>
         </div>
         <div style="float: left;"></div>
             <div class="flexrow">
-                <label>Globaler Mod: </label>
-                <label>{{data.abgeleitete.globalermod}}</label>
+                <label>Globaler Modifikator: </label>
+                <label>{{data.data.abgeleitete.globalermod}}</label>
             </div>
             <div class="flexrow">
+                <label>Nahkampf Mod: </label>
+                <label>{{data.data.modifikatoren.nahkampfmod}}</label>
+            </div>
+            <!-- <div class="flexrow">
                 <label>Manueller Mod: </label>
-                <input name="data.manuellermod" value="{{data.manuellermod}}" type="text" data-dtype="Number">
-            </div>
-            <div class="flexrow">
+                <input name="data.modifikatoren.manuellermod" value="{{data.data.modifikatoren.manuellermod}}" type="text" data-dtype="Number">
+            </div> -->
+            <!-- <div class="flexrow">
                 <label>Furchtstufe: </label>
-                <input name="data.furchtstufe" value="{{data.furchtstufe}}" type="text" data-dtype="Number">
+                <input name="data.furcht.furchtstufe" value="{{data.data.furcht.furchtstufe}}" type="text" data-dtype="Number">
             </div>
             <div class="flexrow">
-                <label>{{data.furcht.display}}</label>
+                <label>{{data.data.furcht.display}}</label>
+            </div> -->
+            <div class="flexrow">
+                <label>Furcht: </label>
+                <label>{{data.data.furcht.display}}</label>
             </div>
        </div>
         <div style="clear:both;"></div>

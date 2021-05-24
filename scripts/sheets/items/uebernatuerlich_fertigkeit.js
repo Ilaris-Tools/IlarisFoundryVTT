@@ -5,7 +5,7 @@ export class UebernatuerlichFertigkeitSheet extends IlarisItemSheet {
     getData() {
         const data = super.getData();
         if (data.hasOwner) {
-            data.fertigkeit_list = this.item.actor.data.misc.uebernatuerlich_fertigkeit_list;
+            data.fertigkeit_list = this.item.actor.data.data.misc.uebernatuerlich_fertigkeit_list;
         };
         return data;
     }

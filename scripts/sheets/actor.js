@@ -4,6 +4,19 @@ import {
 
 export class IlarisActorSheet extends ActorSheet {
 
+    /*
+      data ist nicht actor. Ändern, so dass ich nicht mehr in Actor, sondern über data schreibe?
+      Und welche Items soll ich nehmen? Actor, data, oder direkt?
+      Ansehen, was references und was copys sind.
+    */
+    getData() {
+        const data = super.getData();
+        // console.log("**Ilaris** IlarisActorSheet");
+        // console.log(data);
+        // console.log(this.actor);
+        // this.data = data;
+        return data;
+    }
     activateListeners(html) {
         super.activateListeners(html);
         html.find(".ausklappen-trigger").click(ev => this._ausklappView(ev));
@@ -14,6 +27,7 @@ export class IlarisActorSheet extends ActorSheet {
         // html.find('.item-toggle').click(this._onToggleItem.bind(this));
         html.find('.item-toggle').click(ev => this._onToggleItem(ev));
         html.find('.hp-update').change(ev => this._onHpUpdate(ev));
+        // html.find('.selected-kampfstil').change(ev => this._onSelectedKampfstil(ev));
     };
 
     _ausklappView(event) {
@@ -30,30 +44,35 @@ export class IlarisActorSheet extends ActorSheet {
 
     async _onToggleItem(event) {
         const itemId = event.currentTarget.dataset.itemid;
-        const item = this.actor.items.get(itemId);
+        const item = this.actor.data.items.get(itemId);
+        // console.log(this.data);
+        // const item = this.data.items.get(itemId);
         const toggletype = event.currentTarget.dataset.toggletype;
         let attr = `data.${toggletype}`;
         if (toggletype == "hauptwaffe" || toggletype == "nebenwaffe") {
             let item_status = getProperty(item.data, attr);
             // item.update({[attr]: !getProperty(item.data, attr)});
             if (item_status == false) {
-                for (let nwaffe of this.actor.data.nahkampfwaffen) {
+                for (let nwaffe of this.actor.data.data.nahkampfwaffen) {
+                    // for (let nwaffe of this.actor.data.nahkampfwaffen) {
                     // console.log(nwaffe);
-                    if (nwaffe.data[toggletype] == true) {
-                        let change_itemId = nwaffe._id;
-                        let change_item = this.actor.items.get(change_itemId);
+                    if (nwaffe.data.data[toggletype] == true) {
+                        let change_itemId = nwaffe.id;
+                        let change_item = this.actor.data.items.get(change_itemId);
                         await change_item.update({[attr]: false});
                     }
                 }
-                for (let item of this.actor.data.fernkampfwaffen) {
+                for (let item of this.actor.data.data.fernkampfwaffen) {
                     // console.log(item);
-                    if (item.data[toggletype] == true) {
-                        let change_itemId = item._id;
-                        let change_item = this.actor.items.get(change_itemId);
+                    if (item.data.data[toggletype] == true) {
+                        let change_itemId = item.id;
+                        let change_item = this.actor.data.items.get(change_itemId);
                         await change_item.update({ [attr]: false });
                     }
                 }
             }
+            // console.log(attr);
+            // console.log(item_status);
             await item.update({[attr]: !item_status});
         }
         else {
@@ -76,13 +95,17 @@ export class IlarisActorSheet extends ActorSheet {
             wuerfelwurf(event, this.actor);
             return 0;
         }
-        else if (rolltype == "at") {
+        else if (rolltype == "nahkampf") {
             wuerfelwurf(event, this.actor);
             return 0;
-            // dice = "1d20";
-            // label = $(event.currentTarget).data("item");
-            // label = `Attacke (${label})`;
-            // pw = $(event.currentTarget).data("pw");
+        }
+        else if (rolltype == "at") {
+            // wuerfelwurf(event, this.actor);
+            // return 0;
+            dice = "1d20";
+            label = $(event.currentTarget).data("item");
+            label = `Attacke (${label})`;
+            pw = $(event.currentTarget).data("pw");
         }
         else if (rolltype == "vt") {
             dice = "1d20";
@@ -128,7 +151,7 @@ export class IlarisActorSheet extends ActorSheet {
             label = $(event.currentTarget).data("talent");
             pw = $(event.currentTarget).data("pw");
         }
-        let formula = `${pw} + ${globalermod} + ${dice}`;
+        let formula = `${dice} + ${pw} + ${globalermod}`;
         if (rolltype == "schaden") {
             formula = pw;
         }
@@ -162,7 +185,7 @@ export class IlarisActorSheet extends ActorSheet {
     }
 
     _onHpUpdate(event) {
-        console.log("HpUpdate");
+        // console.log("HpUpdate");
         // this.actor.token.refresh();
         // console.log(event);
         let einschraenkungen = this.actor.data.data.gesundheit.wunden + this.actor.data.data.gesundheit.erschoepfung;
@@ -190,6 +213,18 @@ export class IlarisActorSheet extends ActorSheet {
         //     // }
         //     this.actor.update({ "data.gesundheit.hp.value": new_hp });
         // }
+    }
+
+    _onSelectedKampfstil(event) {
+        console.log("_onSelectedKampfstil");
+        // console.log(event);
+        // var selectElement = event.target;
+        // console.log(selectElement);
+        // var value = selectElement.value;
+        let selected_kampfstil = event.target.value;
+        console.log(selected_kampfstil);
+        this.actor.data.data.misc.selected_kampfstil = selected_kampfstil;
+        this.actor.update({ "data.misc.selected_kampfstil": selected_kampfstil });
     }
 
     _onItemCreate(event) {
@@ -280,7 +315,8 @@ export class IlarisActorSheet extends ActorSheet {
         // console.log(this.actor.data);
         // console.log(this.actor.data.data);
 
-        this.actor.createOwnedItem(itemData);
+        // Actor#createEmbeddedDocuments
+        this.actor.createEmbeddedDocuments('Item', [itemData]);
         // await this.actor.createOwnedItem(itemData);
         // return this.actor.createOwnedItem(itemData);
 
@@ -313,7 +349,8 @@ export class IlarisActorSheet extends ActorSheet {
         // const item = this.actor.getOwnedItem(li.data("itemId"));
         // item.sheet.render(true);
         const itemID = event.currentTarget.dataset.itemid;
-        const item = this.actor.getOwnedItem(itemID);
+        // const item = this.actor.getOwnedItem(itemID);
+        const item = this.actor.items.get(itemID);
         item.sheet.render(true);
     }
 
@@ -328,7 +365,8 @@ export class IlarisActorSheet extends ActorSheet {
         // console.log(event.currentTarget.dataset.itemclass);
         // console.log(event.currentTarget.dataset.itemid);
         // this.actor.deleteOwnedItem(li.data("itemId"));
-        this.actor.deleteOwnedItem(itemID);
+        // this.actor.deleteOwnedItem(itemID);
+        this.actor.deleteEmbeddedDocuments('Item', [itemID]);
         // li.slideUp(200, () => this.render(false)); 
     }
 }

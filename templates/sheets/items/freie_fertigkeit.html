@@ -3,7 +3,7 @@
         <div>
             <header class="sheet-header">
                 <div class="header-fields">
-                    <h1 class="charname"><input name="name" type="text" value="{{item.name}}" /></h1>
+                    <h1 class="charname"><input name="name" type="text" value="{{data.name}}" /></h1>
                 </div>
             </header>
         </div>
@@ -14,7 +14,7 @@
         <div class="flexrow">
             <label><b>Stufe:</b></label>
             <select name="data.stufe">
-                {{#select data.stufe}}
+                {{#select data.data.stufe}}
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -24,7 +24,7 @@
         <div class="flexrow">
             <label><b>Gruppe:</b></label>
             <select name="data.gruppe">
-                {{#select data.gruppe}}
+                {{#select data.data.gruppe}}
                 <option value="0">Sprachen</option>
                 <option value="1">Schriften</option>
                 <option value="2">Berufe</option>
@@ -35,7 +35,7 @@
         </div>
         <div>
             <label><b>Beschreibung:</b></label>
-            <textarea name="data.text">{{data.text}}</textarea>
+            <textarea name="data.text">{{data.data.text}}</textarea>
         </div>
     </div>
 </form>

@@ -22,8 +22,11 @@
           "display": ""
         }
       },
-      "manuellermod": {
-        "manuellermod": 0
+      "modifikatoren": {
+        "modifikatoren": {
+          "manuellermod": 0,
+          "nahkampfmod": 0
+        }
       },
       "initiative": {
         "initiative": 0
@@ -97,7 +100,8 @@
         "abgeleitete",
         "schips",
         "initiative",
-        "furcht"
+        "furcht",
+        "modifikatoren"
       ],
       "notes": "Hallo"
     },
