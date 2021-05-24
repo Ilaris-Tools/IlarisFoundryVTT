@@ -193,7 +193,7 @@ export async function wuerfelwurf(event, actor) {
                         }
                         // Rollmode
                         let rollmode = item.data.data.manoever.rllm.selected;
-                        let formula = `1d20 + ${pw} + ${globalermod} + ${mod_at} + ${nahkampfmod}`;
+                        let formula = `1d20 + ${pw} + ${globalermod} + ${nahkampfmod} + ${mod_at}`;
                         let roll = new Roll(formula);
                         await roll.evaluate({"async": true});
                         let critfumble = roll.dice[0].results[0].result;

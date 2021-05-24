@@ -38,7 +38,6 @@ Hooks.once("init", () => {
     // game.sephrasto = new SephrastoImporter();
     CONFIG.ILARIS = ILARIS;
     CONFIG.Combat.initiative = { formula: "@initiative", decimals: 1 };
-
     CONFIG.statusEffects = [
         {
             id: "Furcht1", 
