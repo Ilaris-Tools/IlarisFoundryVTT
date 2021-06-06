@@ -478,18 +478,19 @@ export async function wuerfelwurf(event, actor) {
                     icon: '<i><img class="button-icon" src="systems/Ilaris/assets/game-icons.net/rolling-dices.png"></i>',
                     label: "OK",
                     callback: async (html) => {
+                        let text = "";
                         let xd20_check = html.find("input[name='xd20']");
                         let xd20 = 0;
                         for (let i of xd20_check) {
                             if (i.checked) xd20 = i.value;
                         }
-                        console.log(xd20);
+                        // console.log(xd20);
                         let schips_check = html.find("input[name='schips']");
                         let schips = 0;
                         for (let i of schips_check) {
                             if (i.checked) schips = i.value;
                         }
-                        console.log(schips);
+                        // console.log(schips);
                         // let talent_check = html.find("input[name='talente']");
                         // let talent = 0;
                         // for (let i of talent_check) {
@@ -502,24 +503,30 @@ export async function wuerfelwurf(event, actor) {
                             talent_specific = Number(html.find("#talent")[0].value);
                             talent = talent_list[talent_specific];
                         }
-                        console.log(talent_list);
-                        console.log(talent_specific);
-                        console.log(talent);
+                        // console.log(talent_list);
+                        // console.log(talent_specific);
+                        // console.log(talent);
                         let hohequalitaet = 0;
                         if (html.find("#hohequalitaet").length > 0) {
                             hohequalitaet = Number(html.find("#hohequalitaet")[0].value);
+                            if (hohequalitaet != 0) {
+                                text = text.concat(`Hohe Qualität: ${hohequalitaet}\n`);
+                            }
                         }
-                        console.log(hohequalitaet);
+                        // console.log(hohequalitaet);
                         let modifikator = 0;
                         if (html.find("#modifikator").length > 0) {
                             modifikator = Number(html.find("#modifikator")[0].value);
+                            if (modifikator != 0) {
+                                text = text.concat(`Modifikator: ${modifikator}\n`);
+                            }
                         }
-                        console.log(modifikator);
+                        // console.log(modifikator);
                         let rollmode = "";
                         if (html.find("#rollMode").length > 0) {
                             rollmode = html.find("#rollMode")[0].value;
                         }
-                        console.log(rollmode);
+                        // console.log(rollmode);
                         // console.log(html.find("#rollMode"));
 
 
@@ -535,6 +542,7 @@ export async function wuerfelwurf(event, actor) {
                         }
                         let schips_val = actor.data.data.schips.schips_stern;
                         if (schips_val > 0 && schips == 1) {
+                            text = text.concat(`Schips ohne Eigenschaft\n`);
                             dice_number += 1;
                             discard_l += 1;
                             let new_schips = actor.data.data.schips.schips_stern - 1;
@@ -546,6 +554,7 @@ export async function wuerfelwurf(event, actor) {
                                 }
                             });
                         } else if (schips_val > 0 && schips == 2) {
+                            text = text.concat(`Schips mit Eigenschaft\n`);
                             dice_number += 2;
                             discard_l += 2;
                             let new_schips = actor.data.data.schips.schips_stern - 1;
@@ -556,24 +565,28 @@ export async function wuerfelwurf(event, actor) {
                                     }
                                 }
                             });
+                        } else if (schips_val == 0 && (schips == 1 || schips == 2) ) {
+                            text = text.concat(`Keine Schips`);
                         }
                         if (talent_specific == -2) {
                             pw = actor.data.data.profan.fertigkeiten[fertigkeit].data.data.pw;
                         } else if (talent_specific == -1){
-                            label = label + "(Talent)";
+                            label = label + " (Talent)";
                             pw = actor.data.data.profan.fertigkeiten[fertigkeit].data.data.pwt;
                         } else {
-                            label = label + "(" + talent + ")";
+                            label = label + " (" + talent + ")";
                             pw = actor.data.data.profan.fertigkeiten[fertigkeit].data.data.pwt;
                         }
                         hohequalitaet *= -4;
 
                         let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
-                        let formula = `${pw} + ${globalermod} + ${hohequalitaet} + ${modifikator} + ${dice_form}`;
+                        let formula = `${dice_form} + ${pw} + ${globalermod} + ${hohequalitaet} + ${modifikator}`;
                         let roll = new Roll(formula);
-                        roll.roll();
-                        let result = roll.total;
-                        let critfumble = roll.result.split(" + ").slice(-1)[0];
+                        // roll.roll();
+                        await roll.evaluate({ "async": true });
+                        // let result = roll.total;
+                        // let critfumble = roll.result.split(" + ").slice(-1)[0];
+                        let critfumble = roll.dice[0].results.find(a => a.active == true).result;
                         let fumble = false;
                         let crit = false;
                         if (critfumble == 20) {
@@ -581,21 +594,26 @@ export async function wuerfelwurf(event, actor) {
                         } else if (critfumble == 1) {
                             fumble = true;
                         }
-                        console.log(roll);
-                        console.log(result);
-                        console.log(critfumble);
+                        // console.log(roll);
+                        // console.log(roll.total);
+                        // console.log(roll.result);
+                        // console.log(roll.dice[0].results);
+                        // console.log(roll.dice[0].results.find(a => a.active == true).result);
+                        // console.log(critfumble);
 
                         // const template = 'systems/Ilaris/templates/chat/probenchat_profan.html';
                         const html_roll = await renderTemplate('systems/Ilaris/templates/chat/probenchat_profan.html', {
-                            title: `${label}-Probe`,
+                            // title: `${label}-Probe`,
+                            title: `${label}`,
+                            text: text,
                             crit: crit,
                             fumble: fumble,
-                            pw: pw,
-                            globalermod: globalermod,
-                            hohequalitaet: hohequalitaet,
-                            modifikator: modifikator,
-                            dice_number: dice_number,
-                            result: result
+                            // pw: pw,
+                            // globalermod: globalermod,
+                            // hohequalitaet: hohequalitaet,
+                            // modifikator: modifikator,
+                            // dice_number: dice_number,
+                            // result: result
                         });
                         // roll._formula = "hallo";
                         let roll_msg = roll.toMessage({
@@ -604,9 +622,6 @@ export async function wuerfelwurf(event, actor) {
                             rollMode: rollmode,
                         //     create: false
                         });
-                        console.log(roll_msg);
-                        // let blabla = game.settings.get("core", "rollMode");
-                        // console.log(blabla);
                     }
                 },
                 two: {

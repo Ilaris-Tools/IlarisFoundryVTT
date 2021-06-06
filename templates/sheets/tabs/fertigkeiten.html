@@ -51,7 +51,7 @@
                     <label><b>Talente:</b></label><br>
                     {{#each profert.data.data.talente as |protal|}}
                         <div>
-                            <label class="rollable onhover" , data-rolltype="talent" , data-fertigkeit="{{profert.name}}" data-talent="{{protal.name}}" data-pw="{{profert.data.data.pwt}}"><i>{{protal.name}}</i>:
+                            <label class="rollable onhover" , data-rolltype="profan_talent" , data-fertigkeit="{{profert.name}}" data-talent="{{protal.name}}" data-pw="{{profert.data.data.pwt}}"><i>{{protal.name}}</i>:
                             </label>
                             <label style="white-space: pre-line;">{{protal.data.data.text}}</label>
                             <a class="item-delete icon-small" data-itemclass="talent" data-itemid="{{protal.id}}" style="float: right;"><i class="fas fa-trash"></i></a>

@@ -2,12 +2,14 @@
     <h2>Attribute</h2>
     <div>
         <div class="flexrow">
+            <label class="icon-small"></label>
             <h6></h6>
             <h6>Wert</h6>
             <h6>PW</h6>
         </div>
         {{#each data.data.attribute as |attribut key|}}
             <div class="flexrow">
+                <a class="rollable icon-small" data-rolltype="nahkampf" data-itemid="{{nwaffe.id}}"><i class="fas fa-dice-d20"></i></a>
                 <label>{{get_label key}}</label>
                 <input name="data.attribute.{{key}}.wert" value="{{attribut.wert}}" type="text" data-dtype="Number">
                 <label class="rollable onhover" data-rolltype="attribut" data-attribut="{{key}}">{{attribut.pw}}</label>

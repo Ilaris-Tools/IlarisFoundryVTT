@@ -100,8 +100,6 @@ export class IlarisActorSheet extends ActorSheet {
             return 0;
         }
         else if (rolltype == "at") {
-            // wuerfelwurf(event, this.actor);
-            // return 0;
             dice = "1d20";
             label = $(event.currentTarget).data("item");
             label = `Attacke (${label})`;
@@ -133,11 +131,11 @@ export class IlarisActorSheet extends ActorSheet {
             pw = $(event.currentTarget).data("pw");
         } else if (rolltype == "profan_fertigkeit_pwt") {
             label = $(event.currentTarget).data("fertigkeit");
-            label = label.concat("(Talent)");
+            label = label.concat(" (Talent)");
             pw = $(event.currentTarget).data("pwt");
         } else if (rolltype == "profan_talent") {
             label = $(event.currentTarget).data("fertigkeit");
-            label = label.concat("(", $(event.currentTarget).data("talent"), ")");
+            label = label.concat(" (", $(event.currentTarget).data("talent"), ")");
             pw = $(event.currentTarget).data("pw");
         } else if (rolltype == "freie_fertigkeit") {
             label = $(event.currentTarget).data("fertigkeit");
@@ -153,16 +151,18 @@ export class IlarisActorSheet extends ActorSheet {
         }
         let formula = `${dice} + ${pw} + ${globalermod}`;
         if (rolltype == "at" || rolltype == "vt") {
-            formula += ` + ${data.modifikatoren.nahkampfmod}`
+            formula += ` + ${data.modifikatoren.nahkampfmod}`;
         }
         if (rolltype == "schaden") {
             formula = pw;
         }
         // let formula = `${data.pw} + 3d20dhdl`;
         let roll = new Roll(formula);
-        roll.roll();
+        // roll.roll();
+        await roll.evaluate({ "async": true });
         // console.log(roll);
-        let critfumble = roll.result.split(" + ")[1];
+        // let critfumble = roll.result.split(" + ")[1];
+        let critfumble = roll.dice[0].results.find(a => a.active == true).result;
         let fumble = false;
         let crit = false;
         if (critfumble == 20) {
@@ -170,20 +170,37 @@ export class IlarisActorSheet extends ActorSheet {
         } else if (critfumble == 1) {
             fumble = true;
         }
-        let templateData = {
-            // title: `${label}-Probe`,
-            title: label,
+        // let templateData = {
+        //     // title: `${label}-Probe`,
+        //     title: label,
+        //     crit: crit,
+        //     fumble: fumble
+        // };
+        // // console.log(templateData);
+        // let template = 'systems/Ilaris/templates/chat/dreid20.html';
+        // renderTemplate(template, templateData, roll).then(content => {
+        //     if (formula != null) {
+        //         roll.toMessage({
+        //             flavor: content
+        //         });
+        //     }
+        // });
+        let speaker = ChatMessage.getSpeaker();
+        console.log(speaker);
+        console.log(speaker.alias);
+        console.log(this.actor.id);
+        const html_roll = await renderTemplate('systems/Ilaris/templates/chat/probenchat_profan.html', {
+            // user: speaker.alias,
+            // user: this.actor.id,
+            speaker: speaker.alias,
+            title: `${label}`,
             crit: crit,
-            fumble: fumble
-        };
-        // console.log(templateData);
-        let template = 'systems/Ilaris/templates/chat/dreid20.html';
-        renderTemplate(template, templateData, roll).then(content => {
-            if (formula != null) {
-                roll.toMessage({
-                    flavor: content
-                });
-            }
+            fumble: fumble,
+        });
+        console.log(html_roll);
+        roll.toMessage({
+            // speaker: "hallo",
+            flavor: html_roll
         });
     }
 
