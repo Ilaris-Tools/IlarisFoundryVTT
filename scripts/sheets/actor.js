@@ -91,11 +91,23 @@ export class IlarisActorSheet extends ActorSheet {
         let pw = 0;
         let label = "Probe";
         let dice = "3d20dl1dh1";
-        if (rolltype == "profan_fertigkeit") {
+        if (rolltype == "profan_fertigkeit_diag") {
             wuerfelwurf(event, this.actor);
             return 0;
         }
-        else if (rolltype == "nahkampf") {
+        else if (rolltype == "nahkampf_diag") {
+            wuerfelwurf(event, this.actor);
+            return 0;
+        }
+        else if (rolltype == "attribut_diag") {
+            wuerfelwurf(event, this.actor);
+            return 0;
+        }
+        else if (rolltype == "fernkampf_diag") {
+            wuerfelwurf(event, this.actor);
+            return 0;
+        }
+        else if (rolltype == "freie_fertigkeit_diag") {
             wuerfelwurf(event, this.actor);
             return 0;
         }

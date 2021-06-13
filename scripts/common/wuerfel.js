@@ -1,6 +1,89 @@
 // import {NahkampfDialog} from "../sheets/dialog/dialog_nahkampf.js";
 import { nahkampfUpdate } from "./wuerfel/nahkampf_prepare.js";
 
+async function roll_crit_message(formula, label, text, rollmode, crit_eval=true, fumble_val=1){
+    let roll = new Roll(formula);
+    await roll.evaluate({ "async": true });
+    let fumble = false;
+    let crit = false;
+    if (crit_eval) {
+        let critfumble = roll.dice[0].results.find(a => a.active == true).result;
+        if (critfumble == 20) {
+            crit = true;
+        } else if (critfumble <= fumble_val) {
+            fumble = true;
+        }
+    }
+    const html_roll = await renderTemplate('systems/Ilaris/templates/chat/probenchat_profan.html', {
+        title: `${label}`,
+        text: text,
+        crit: crit,
+        fumble: fumble,
+    });
+    let roll_msg = roll.toMessage({
+        flavor: html_roll
+    }, {
+        rollMode: rollmode,
+        //     create: false
+    });
+}
+
+
+function calculate_diceschips(html, text, actor){
+    // let text = "";
+    let xd20_check = html.find("input[name='xd20']");
+    let xd20 = 0;
+    for (let i of xd20_check) {
+        if (i.checked) xd20 = i.value;
+    }
+    // console.log(xd20);
+    let schips_check = html.find("input[name='schips']");
+    let schips = 0;
+    for (let i of schips_check) {
+        if (i.checked) schips = i.value;
+    }
+    let dice_number = 0;
+    let discard_l = 0;
+    let discard_h = 0;
+    if (xd20 == 0) {
+        dice_number = 1;
+    } else if (xd20 == 1) {
+        dice_number = 3;
+        discard_l = 1;
+        discard_h = 1;
+    }
+    let schips_val = actor.data.data.schips.schips_stern;
+    if (schips_val > 0 && schips == 1) {
+        text = text.concat(`Schips ohne Eigenschaft\n`);
+        dice_number += 1;
+        discard_l += 1;
+        let new_schips = actor.data.data.schips.schips_stern - 1;
+        actor.update({
+            data: {
+                schips: {
+                    schips_stern: new_schips
+                }
+            }
+        });
+    } else if (schips_val > 0 && schips == 2) {
+        text = text.concat(`Schips mit Eigenschaft\n`);
+        dice_number += 2;
+        discard_l += 2;
+        let new_schips = actor.data.data.schips.schips_stern - 1;
+        actor.update({
+            data: {
+                schips: {
+                    schips_stern: new_schips
+                }
+            }
+        });
+    } else if (schips_val == 0 && (schips == 1 || schips == 2)) {
+        text = text.concat(`Keine Schips`);
+    }
+
+    return [ text, dice_number, discard_l, discard_h ];
+}
+
 function calculate_attacke(actor, item) {
     let data = actor.data.data;
     let be = data.abgeleitete.be;
@@ -112,7 +195,20 @@ export async function wuerfelwurf(event, actor) {
     let nahkampfmod = data.modifikatoren.nahkampfmod;
     let pw = 0;
     let label = "Probe";
-    if(rolltype == "nahkampf") {
+    let groupName_xd20 = "xd20";
+    let choices_xd20 = {
+        "0": "1W20",
+        "1": "3W20"
+    };
+    let checked_xd20 = "1";
+    let groupName_schips = "schips";
+    let choices_schips = {
+        "0": "Ohne",
+        "1": "ohne Eigenheit",
+        "2": "mit Eigenheit"
+    };
+    // checked_schips: "0";
+    if(rolltype == "nahkampf_diag") {
         let mod_at = 0;
         let mod_vt = 0;
         let mod_schaden = 0;
@@ -127,6 +223,10 @@ export async function wuerfelwurf(event, actor) {
         // console.log(item.data.data);
         // console.log(item._data.data.manoever_at);
         const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_nahkampf.html', {
+            choices_xd20: choices_xd20,
+            checked_xd20: "0",
+            choices_schips: choices_schips,
+            checked_schips: "0",
             // distance_name: "distance",
             // distance_name: "rwdf",
             // distance_checked: "0",
@@ -140,7 +240,6 @@ export async function wuerfelwurf(event, actor) {
             item: item
             // pw: pw
         });
-        // let d = new NahkampfDialog(actor, item, {
         let d = new Dialog({
             title: "Nahkampf",
             content: html,
@@ -150,9 +249,10 @@ export async function wuerfelwurf(event, actor) {
                     label: "Attacke",
                     callback: async (html) => {
                         await nahkampfUpdate(html, actor, item);
-                        // console.log(item);
-                        // console.log(item.data.data.manoever);
-                        // console.log(item);
+                        let dice_number = 0;
+                        let discard_l = 0;
+                        let discard_h = 0;
+                        [text, dice_number, discard_l, discard_h] = calculate_diceschips(html, text, actor);
                         // Kombinierte Aktion kbak
                         if (item.data.data.manoever.kbak.selected) {
                             mod_at -= 4;
@@ -193,36 +293,15 @@ export async function wuerfelwurf(event, actor) {
                         }
                         // Rollmode
                         let rollmode = item.data.data.manoever.rllm.selected;
-                        let formula = `1d20 + ${pw} + ${globalermod} + ${nahkampfmod} + ${mod_at}`;
-                        let roll = new Roll(formula);
-                        await roll.evaluate({"async": true});
-                        let critfumble = roll.dice[0].results[0].result;
-                        let fumble = false;
-                        let crit = false;
-                        if (critfumble == 20) {
-                            crit = true;
-                        } else if (critfumble == 1) {
-                            fumble = true;
+                        let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
+                        let formula = `${dice_form} + ${pw} + ${globalermod} + ${nahkampfmod} + ${mod_at}`;
+                        // Critfumble & Message
+                        let label = `Attacke (${item.name})`;
+                        let fumble_val = 1;
+                        if (item.data.data.eigenschaften.unberechenbar){
+                            fumble_val = 2;
                         }
-                        const html_roll = await renderTemplate('systems/Ilaris/templates/chat/probenchat_profan.html', {
-                            title: `Attacke (${item.name})`,
-                            text: text,
-                            crit: crit,
-                            fumble: fumble,
-                            // pw: pw,
-                            // wundabzuege: wundabzuege,
-                            // hohequalitaet: hohequalitaet,
-                            // modifikator: modifikator,
-                            // dice_number: dice_number,
-                            // result: result
-                        });
-                        // roll._formula = "hallo";
-                        let roll_msg = roll.toMessage({
-                            flavor: html_roll
-                        }, {
-                            rollMode: rollmode,
-                        //     create: false
-                        });
+                        await roll_crit_message(formula, label, text, rollmode, true, fumble_val);
                     }
                 },
                 two: {
@@ -230,6 +309,10 @@ export async function wuerfelwurf(event, actor) {
                     label: "Verteidigung",
                     callback: async (html) => {
                         await nahkampfUpdate(html, actor, item);
+                        let dice_number = 0;
+                        let discard_l = 0;
+                        let discard_h = 0;
+                        [text, dice_number, discard_l, discard_h] = calculate_diceschips(html, text, actor);
                         // Volle Offensive vlof
                         if (item.data.data.manoever.vlof.selected) {
                             mod_vt -= 8;
@@ -296,36 +379,11 @@ export async function wuerfelwurf(event, actor) {
                         }
                         // Rollmode
                         let rollmode = item.data.data.manoever.rllm.selected;
-                        let formula = `1d20 + ${pw} + ${globalermod} + ${mod_vt}`;
-                        let roll = new Roll(formula);
-                        await roll.evaluate({"async": true});
-                        let critfumble = roll.dice[0].results[0].result;
-                        let fumble = false;
-                        let crit = false;
-                        if (critfumble == 20) {
-                            crit = true;
-                        } else if (critfumble == 1) {
-                            fumble = true;
-                        }
-                        const html_roll = await renderTemplate('systems/Ilaris/templates/chat/probenchat_profan.html', {
-                            title: `Verteidigung (${item.name})`,
-                            text: text,
-                            crit: crit,
-                            fumble: fumble,
-                            // pw: pw,
-                            // globalermod: globalermod
-                            // hohequalitaet: hohequalitaet,
-                            // modifikator: modifikator,
-                            // dice_number: dice_number,
-                            // result: result
-                        });
-                        // roll._formula = "hallo";
-                        let roll_msg = roll.toMessage({
-                            flavor: html_roll
-                        }, {
-                            rollMode: rollmode,
-                        //     create: false
-                        });
+                        let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
+                        let formula = `${dice_form} + ${pw} + ${globalermod} + ${mod_vt}`;
+                        // Critfumble & Message
+                        let label = `Verteidigung (${item.name})`;
+                        await roll_crit_message(formula, label, text, rollmode);
                     }
                 },
                 three: {
@@ -402,27 +460,9 @@ export async function wuerfelwurf(event, actor) {
                         // Rollmode
                         let rollmode = item.data.data.manoever.rllm.selected;
                         let formula = `${schaden} + ${mod_schaden}`;
-                        let roll = new Roll(formula);
-                        await roll.evaluate({"async": true});
-                        const html_roll = await renderTemplate('systems/Ilaris/templates/chat/probenchat_profan.html', {
-                            title: `Schaden (${item.name})`,
-                            text: text,
-                            // crit: crit,
-                            // fumble: fumble,
-                            // pw: pw,
-                            // wundabzuege: wundabzuege,
-                            // hohequalitaet: hohequalitaet,
-                            // modifikator: modifikator,
-                            // dice_number: dice_number,
-                            // result: result
-                        });
-                        // roll._formula = "hallo";
-                        let roll_msg = roll.toMessage({
-                            flavor: html_roll
-                        }, {
-                            rollMode: rollmode,
-                        //     create: false
-                        });
+                        let label = `Schaden (${item.name})`;
+                        // Critfumble & Message
+                        await roll_crit_message(formula, label, text, rollmode, false);
                     }
                 },
                 four: {
@@ -433,11 +473,71 @@ export async function wuerfelwurf(event, actor) {
             }
         }, {
             jQuery: true,
-            // jQuery: false,
         });
         d.render(true);
     }
-    else if (rolltype == "profan_fertigkeit") {
+    else if (rolltype == "attribut_diag") {
+        const attribut_name = $(event.currentTarget).data("attribut");
+        label = CONFIG.ILARIS.label[attribut_name];
+        pw = data.attribute[attribut_name].pw;
+        const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_attribut.html', {
+            choices_xd20: choices_xd20,
+            checked_xd20: "1",
+            choices_schips: choices_schips,
+            checked_schips: "0",
+            rollModes: CONFIG.Dice.rollModes
+        });
+        let d = new Dialog({
+            title: "Attributsprobe",
+            content: html,
+            buttons: {
+                one: {
+                    icon: '<i><img class="button-icon" src="systems/Ilaris/assets/game-icons.net/rolling-dices.png"></i>',
+                    label: "OK",
+                    callback: async (html) => {
+                        let text = "";
+                        let dice_number = 0;
+                        let discard_l = 0;
+                        let discard_h = 0;
+                        [text, dice_number, discard_l, discard_h ] = calculate_diceschips(html, text, actor);
+                        let hohequalitaet = 0;
+                        if (html.find("#hohequalitaet").length > 0) {
+                            hohequalitaet = Number(html.find("#hohequalitaet")[0].value);
+                            if (hohequalitaet != 0) {
+                                text = text.concat(`Hohe Qualität: ${hohequalitaet}\n`);
+                            }
+                        }
+                        let modifikator = 0;
+                        if (html.find("#modifikator").length > 0) {
+                            modifikator = Number(html.find("#modifikator")[0].value);
+                            if (modifikator != 0) {
+                                text = text.concat(`Modifikator: ${modifikator}\n`);
+                            }
+                        }
+                        let rollmode = "";
+                        if (html.find("#rollMode").length > 0) {
+                            rollmode = html.find("#rollMode")[0].value;
+                        }
+                        hohequalitaet *= -4;
+
+                        let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
+                        let formula = `${dice_form} + ${pw} + ${globalermod} + ${hohequalitaet} + ${modifikator}`;
+                        // Critfumble & Message
+                        await roll_crit_message(formula, label, text, rollmode);
+                    }
+                },
+                two: {
+                    icon: '<i class="fas fa-times"></i>',
+                    label: "Abbrechen",
+                    callback: () => console.log("Chose Two")
+                }
+            },
+        }, {
+            jQuery: true,
+        });
+        d.render(true);
+    }
+    else if (rolltype == "profan_fertigkeit_diag") {
         let fertigkeit = $(event.currentTarget).data("fertigkeit");
         label = actor.data.data.profan.fertigkeiten[fertigkeit].name;
         const talent_list = {};
@@ -446,27 +546,16 @@ export async function wuerfelwurf(event, actor) {
             talent_list[i] = tal.name;
         }
         const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_profan.html', {
-            groupName_xd20: "xd20",
-            choices_xd20: {
-                "0": "1W20",
-                "1": "3W20"
-            },
+            choices_xd20: choices_xd20,
             checked_xd20: "1",
-            groupName_schips: "schips",
-            choices_schips: {
-                "0": "Ohne",
-                "1": "ohne Eigenheit",
-                "2": "mit Eigenheit"
-            },
+            choices_schips: choices_schips,
             checked_schips: "0",
             groupName_talente: "talente",
             choices_talente_basic: {
                 "0": "ohne Talent",
                 "1": "mit Talent: "
             },
-            // checked_talente_basic: "0",
             choices_talente: talent_list,
-            // checked_talente: "-1",
             rollModes: CONFIG.Dice.rollModes
         });
         let d = new Dialog({
@@ -474,38 +563,20 @@ export async function wuerfelwurf(event, actor) {
             content: html,
             buttons: {
                 one: {
-                    // icon: '<i class="fas fa-check"></i>',
                     icon: '<i><img class="button-icon" src="systems/Ilaris/assets/game-icons.net/rolling-dices.png"></i>',
                     label: "OK",
                     callback: async (html) => {
                         let text = "";
-                        let xd20_check = html.find("input[name='xd20']");
-                        let xd20 = 0;
-                        for (let i of xd20_check) {
-                            if (i.checked) xd20 = i.value;
-                        }
-                        // console.log(xd20);
-                        let schips_check = html.find("input[name='schips']");
-                        let schips = 0;
-                        for (let i of schips_check) {
-                            if (i.checked) schips = i.value;
-                        }
-                        // console.log(schips);
-                        // let talent_check = html.find("input[name='talente']");
-                        // let talent = 0;
-                        // for (let i of talent_check) {
-                        //     if (i.checked) talent = i.value;
-                        // }
-                        // console.log(talent);
+                        let dice_number = 0;
+                        let discard_l = 0;
+                        let discard_h = 0;
+                        [text, dice_number, discard_l, discard_h ] = calculate_diceschips(html, text, actor);
                         let talent_specific = 0;
                         let talent = "";
                         if (html.find("#talent").length > 0) {
                             talent_specific = Number(html.find("#talent")[0].value);
                             talent = talent_list[talent_specific];
                         }
-                        // console.log(talent_list);
-                        // console.log(talent_specific);
-                        // console.log(talent);
                         let hohequalitaet = 0;
                         if (html.find("#hohequalitaet").length > 0) {
                             hohequalitaet = Number(html.find("#hohequalitaet")[0].value);
@@ -513,7 +584,6 @@ export async function wuerfelwurf(event, actor) {
                                 text = text.concat(`Hohe Qualität: ${hohequalitaet}\n`);
                             }
                         }
-                        // console.log(hohequalitaet);
                         let modifikator = 0;
                         if (html.find("#modifikator").length > 0) {
                             modifikator = Number(html.find("#modifikator")[0].value);
@@ -521,52 +591,9 @@ export async function wuerfelwurf(event, actor) {
                                 text = text.concat(`Modifikator: ${modifikator}\n`);
                             }
                         }
-                        // console.log(modifikator);
                         let rollmode = "";
                         if (html.find("#rollMode").length > 0) {
                             rollmode = html.find("#rollMode")[0].value;
-                        }
-                        // console.log(rollmode);
-                        // console.log(html.find("#rollMode"));
-
-
-                        let dice_number = 0;
-                        let discard_l = 0;
-                        let discard_h = 0;
-                        if (xd20 == 0) {
-                            dice_number = 1;
-                        } else if (xd20 == 1) {
-                            dice_number = 3;
-                            discard_l = 1;
-                            discard_h = 1;
-                        }
-                        let schips_val = actor.data.data.schips.schips_stern;
-                        if (schips_val > 0 && schips == 1) {
-                            text = text.concat(`Schips ohne Eigenschaft\n`);
-                            dice_number += 1;
-                            discard_l += 1;
-                            let new_schips = actor.data.data.schips.schips_stern - 1;
-                            actor.update({
-                                data: {
-                                    schips: {
-                                        schips_stern: new_schips
-                                    }
-                                }
-                            });
-                        } else if (schips_val > 0 && schips == 2) {
-                            text = text.concat(`Schips mit Eigenschaft\n`);
-                            dice_number += 2;
-                            discard_l += 2;
-                            let new_schips = actor.data.data.schips.schips_stern - 1;
-                            actor.update({
-                                data: {
-                                    schips: {
-                                        schips_stern: new_schips
-                                    }
-                                }
-                            });
-                        } else if (schips_val == 0 && (schips == 1 || schips == 2) ) {
-                            text = text.concat(`Keine Schips`);
                         }
                         if (talent_specific == -2) {
                             pw = actor.data.data.profan.fertigkeiten[fertigkeit].data.data.pw;
@@ -581,47 +608,8 @@ export async function wuerfelwurf(event, actor) {
 
                         let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
                         let formula = `${dice_form} + ${pw} + ${globalermod} + ${hohequalitaet} + ${modifikator}`;
-                        let roll = new Roll(formula);
-                        // roll.roll();
-                        await roll.evaluate({ "async": true });
-                        // let result = roll.total;
-                        // let critfumble = roll.result.split(" + ").slice(-1)[0];
-                        let critfumble = roll.dice[0].results.find(a => a.active == true).result;
-                        let fumble = false;
-                        let crit = false;
-                        if (critfumble == 20) {
-                            crit = true;
-                        } else if (critfumble == 1) {
-                            fumble = true;
-                        }
-                        // console.log(roll);
-                        // console.log(roll.total);
-                        // console.log(roll.result);
-                        // console.log(roll.dice[0].results);
-                        // console.log(roll.dice[0].results.find(a => a.active == true).result);
-                        // console.log(critfumble);
-
-                        // const template = 'systems/Ilaris/templates/chat/probenchat_profan.html';
-                        const html_roll = await renderTemplate('systems/Ilaris/templates/chat/probenchat_profan.html', {
-                            // title: `${label}-Probe`,
-                            title: `${label}`,
-                            text: text,
-                            crit: crit,
-                            fumble: fumble,
-                            // pw: pw,
-                            // globalermod: globalermod,
-                            // hohequalitaet: hohequalitaet,
-                            // modifikator: modifikator,
-                            // dice_number: dice_number,
-                            // result: result
-                        });
-                        // roll._formula = "hallo";
-                        let roll_msg = roll.toMessage({
-                            flavor: html_roll
-                        }, {
-                            rollMode: rollmode,
-                        //     create: false
-                        });
+                        // Critfumble & Message
+                        await roll_crit_message(formula, label, text, rollmode);
                     }
                 },
                 two: {
@@ -630,16 +618,72 @@ export async function wuerfelwurf(event, actor) {
                     callback: () => console.log("Chose Two")
                 }
             },
-            // default: "two",
-            // render: html => console.log("Register interactivity in the rendered dialog"),
-            // close: html => console.log("This always is logged no matter which option is chosen")
         }, {
             jQuery: true,
-            // jQuery: false,
         });
         d.render(true);
     }
-    else if (rolltype == "fk") {
+    else if (rolltype == "freie_fertigkeit_diag") {
+        label = $(event.currentTarget).data("fertigkeit");
+        pw = Number($(event.currentTarget).data("pw")) * 8 - 2;
+        const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_attribut.html', {
+            choices_xd20: choices_xd20,
+            checked_xd20: "1",
+            choices_schips: choices_schips,
+            checked_schips: "0",
+            rollModes: CONFIG.Dice.rollModes
+        });
+        let d = new Dialog({
+            title: "Freie Fertigkeitsprobe",
+            content: html,
+            buttons: {
+                one: {
+                    icon: '<i><img class="button-icon" src="systems/Ilaris/assets/game-icons.net/rolling-dices.png"></i>',
+                    label: "OK",
+                    callback: async (html) => {
+                        let text = "";
+                        let dice_number = 0;
+                        let discard_l = 0;
+                        let discard_h = 0;
+                        [text, dice_number, discard_l, discard_h ] = calculate_diceschips(html, text, actor);
+                        let hohequalitaet = 0;
+                        if (html.find("#hohequalitaet").length > 0) {
+                            hohequalitaet = Number(html.find("#hohequalitaet")[0].value);
+                            if (hohequalitaet != 0) {
+                                text = text.concat(`Hohe Qualität: ${hohequalitaet}\n`);
+                            }
+                        }
+                        let modifikator = 0;
+                        if (html.find("#modifikator").length > 0) {
+                            modifikator = Number(html.find("#modifikator")[0].value);
+                            if (modifikator != 0) {
+                                text = text.concat(`Modifikator: ${modifikator}\n`);
+                            }
+                        }
+                        let rollmode = "";
+                        if (html.find("#rollMode").length > 0) {
+                            rollmode = html.find("#rollMode")[0].value;
+                        }
+                        hohequalitaet *= -4;
+
+                        let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
+                        let formula = `${dice_form} + ${pw} + ${globalermod} + ${hohequalitaet} + ${modifikator}`;
+                        // Critfumble & Message
+                        await roll_crit_message(formula, label, text, rollmode);
+                    }
+                },
+                two: {
+                    icon: '<i class="fas fa-times"></i>',
+                    label: "Abbrechen",
+                    callback: () => console.log("Chose Two")
+                }
+            },
+        }, {
+            jQuery: true,
+        });
+        d.render(true);
+    }
+    else if (rolltype == "fernkampf_diag") {
         
     }
     // let formula = `${pw} + ${globalermod} + 3d20dl1dh1`;

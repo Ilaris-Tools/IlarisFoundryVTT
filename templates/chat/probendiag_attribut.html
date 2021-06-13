@@ -9,20 +9,6 @@
 </div>
 <hr>
 <div class="flexrow">
-    <label>Talente: </label>
-    <!-- <label>{{radioBoxes groupName_talente choices_talente_basic checked=checked_talente_basic}}</label>
-         <label for="talent"></label> -->
-    <select id="talent">
-        {{#select talent}}
-        <option value="-2">ohne Talent</option>
-        <option value="-1">mit Talent</option>
-            {{#each choices_talente as |tal key|}}
-                <option value="{{key}}">{{tal}}</option>
-            {{/each}}
-        {{/select}}
-    </select>
-</div>
-<div class="flexrow">
     <label for="hohequalitaet">Hohe Qualität: </label>
     <input id="hohequalitaet" type="number" value="" data-dtype="Number" />
 </div>

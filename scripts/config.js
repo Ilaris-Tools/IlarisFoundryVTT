@@ -68,6 +68,13 @@ ILARIS.label = {
     "km_tdst": "Todesstoß",
     "km_uebr": "Überrennen",
     "km_utlf": "Unterlaufen",
+    "fm_gzss": "Gezielter Schuss",
+    "fm_rwrh": "Reichweite erhöhen",
+    "fm_srfs": "Scharfschuss",
+    "fm_zlen": "Zielen",
+    "fm_msts": "Meisterschuss",
+    "fm_rust": "Rüstungsbrecher",
+    "fm_snls": "Schnellschuss",
 };
 
 ILARIS.trefferzonen = {
@@ -80,14 +87,6 @@ ILARIS.trefferzonen = {
     "6": "Kopf",
     "7": "andere",
 };
-
-
-// Manoever: {
-//     "name": {
-//         "possible": false,
-//         "selected": false,
-//     },
-// }
 
 ILARIS.manoever_nahkampf = {
     "kbak": {
@@ -215,211 +214,80 @@ ILARIS.manoever_nahkampf = {
     "rllm": {
         "selected": "roll",
     }
-}
+};
 
-
-
-
-
-
-
-
-
-
-
-// Manoever: {
-//     "name": {
-//         "possible": true,         //vss für das manöver erfüllt?
-//         "selected": false,        //Manöver ausgewählt (im Dialog)
-//         "auto": false,            //Automatisches Manöver durch Waffeneigenschaft? zB Niederwerfen
-//         "mod_choosable": false,   // Selbst wählbarer Modifikator? zB Wuchtschlag
-//         "mod_choosable_max": 0,   // Begrenzung des selbstgewählten Zuschlags?
-//         "mod_be": true,           // Wird BE als Erschwernis eingerechnet?
-//         "mod_chosen": 0,          // Selbst gewählte Erschwernis (im Dialog)
-//         "mod_hardcoded": 0,       // Feste Schwierigkeit des Manövers
-//         "schaden": 0,             // Schadensänderung: "-": kein Schaden, nicht kombinierbar mit anderen "-" Manövern
-//     }
-// }
-
-// ILARIS.manoever_at = {
-//     "km_ever": {
-//         "possible": true,
-//         "selected": false,
-//         "auto": false,
-//         "mod_choosable": false,
-//         "mod_be": true,
-//         "mod_chosen": 0,
-//         "mod_hardcoded": 0,
-//         "schaden": 0,
-//     },
-//     "km_entw": {
-//         "possible": true,
-//         "selected": false,
-//         "auto": false,
-//         "mod_choosable": false,
-//         "mod_be": false,
-//         "mod_chosen": 0,
-//         "mod_hardcoded": -4,
-//         "schaden": "-",
-//     },
-//     "km_gzsl": {
-//         "possible": true,
-//         "selected": false,
-//         "auto": false,
-//         "mod_choosable": false,
-//         "mod_be": false,
-//         "mod_chosen": 0,
-//         "mod_hardcoded": -2,
-//         "schaden": 0,
-//     },
-//     "km_umre": {
-//         "possible": true,
-//         "selected": false,
-//         "auto": false,
-//         "mod_choosable": false,
-//         "mod_be": false,
-//         "mod_chosen": 0,
-//         "mod_hardcoded": 0,
-//         "schaden": "-",
-//     },
-//     "km_wusl": {
-//         "possible": true,
-//         "selected": false,
-//         "auto": false,
-//         "mod_choosable": true,
-//         "mod_be": false,
-//         "mod_chosen": 0,
-//         "mod_hardcoded": 0,
-//         "schaden": "@mod_chosen",
-//     },
-//     "km_rust": {
-//         "possible": false,
-//         "selected": false,
-//         "auto": false,
-//         "mod_choosable": false,
-//         "mod_be": false,
-//         "mod_chosen": 0,
-//         "mod_hardcoded": -4,
-//         "schaden": 0,
-//     },
-//     "km_shsp": {
-//         "possible": true,
-//         "selected": false,
-//         "auto": false,
-//         "mod_choosable": false,
-//         "mod_be": false,
-//         "mod_chosen": 0,
-//         "mod_hardcoded": +2,
-//         "schaden": 0,
-//     },
-//     "km_stsl": {
-//         "possible": true,
-//         "selected": false,
-//         "auto": false,
-//         "mod_choosable": false,
-//         "mod_be": false,
-//         "mod_chosen": 0,
-//         "mod_hardcoded": +2,
-//         "schaden": 0,
-//     },
-//     "km_umkl": {
-//         "possible": false,
-//         "selected": false,
-//         "auto": false,
-//         "mod_choosable": true,
-//         "mod_be": false,
-//         "mod_chosen": 0,
-//         "mod_hardcoded": 0,
-//         "schaden": "-",
-//     },
-//     "km_ausf": {
-//         "possible": false,
-//         "selected": false,
-//         "auto": false,
-//         "mod_choosable": false,
-//         "mod_be": true,
-//         "mod_chosen": 0,
-//         "mod_hardcoded": -2,
-//         "schaden": 0,
-//     },
-//     "km_befr": {
-//         "possible": false,
-//         "selected": false,
-//         "auto": false,
-//         "mod_choosable": false,
-//         "mod_be": false,
-//         "mod_chosen": 0,
-//         "mod_hardcoded": -4,
-//         "schaden": 0,
-//     },
-//     "km_dppl": {
-//         "possible": false,
-//         "selected": false,
-//         "auto": false,
-//         "mod_choosable": false,
-//         "mod_be": false,
-//         "mod_chosen": 0,
-//         "mod_hardcoded": -4,
-//         "schaden": 0,
-//     },
-//     "km_hmsl": {
-//         "possible": false,
-//         "selected": false,
-//         "auto": false,
-//         "mod_choosable": false,
-//         "mod_be": false,
-//         "mod_chosen": 0,
-//         "mod_hardcoded": -8,
-//         "schaden": "x2",
-//     },
-//     "km_kltz": {
-//         "possible": false,
-//         "selected": false,
-//         "auto": false,
-//         "mod_choosable": false,
-//         "mod_be": false,
-//         "mod_chosen": 0,
-//         "mod_hardcoded": -4,
-//         "schaden": 0,
-//     },
-//     "km_ndwf": {
-//         "possible": false,
-//         "selected": false,
-//         "auto": false,
-//         "mod_choosable": false,
-//         "mod_be": false,
-//         "mod_chosen": 0,
-//         "mod_hardcoded": -4,
-//         "schaden": 0,
-//     },
-//     "km_stag": {
-//         "possible": false,
-//         "selected": false,
-//         "auto": false,
-//         "mod_choosable": false,
-//         "mod_be": false,
-//         "mod_chosen": 0,
-//         "mod_hardcoded": 0,
-//         "schaden": "@target.gs",
-//     },
-//     "km_tdst": {
-//         "possible": false,
-//         "selected": false,
-//         "auto": false,
-//         "mod_choosable": false,
-//         "mod_be": false,
-//         "mod_chosen": 0,
-//         "mod_hardcoded": -8,
-//         "schaden": 0,
-//     },
-//     "km_uebr": {
-//         "possible": false,
-//         "selected": false,
-//         "auto": false,
-//         "mod_choosable": false,
-//         "mod_be": false,
-//         "mod_chosen": 0,
-//         "mod_hardcoded": 0,
-//         "schaden": "gs",
-//     },
-// };
+ILARIS.manoever_fernkampf = {
+    "kbak": {
+        "selected": false
+    },
+    "vldf": {
+        "possible": false,
+        "selected": false
+    },
+    "gzkl": {
+        "selected": "0"
+    },
+    "umge": {
+        "selected": "0"
+    },
+    "bwng": {
+        "selected": "0"
+    },
+    "lcht": {
+        "selected": "0"
+    },
+    "wttr": {
+        "selected": "0"
+    },
+    "dckg": {
+        "selected": "0"
+    },
+    "kgtl": {
+        "selected": "0"
+    },
+    "brtn": {
+        "selected": false,
+        "rtk": false
+    },
+    "rflx": false,
+    "rw": {
+        "0": "1 Schritt",
+        "1": "2 Schritt",
+        "2": "3 Schritt",
+    },
+    "fm_gzss": {
+        "possible": true,
+        "selected": "0",
+    },
+    "fm_rwrh": {
+        "possible": true,
+        "seleted": "0",
+    },
+    "fm_srfs": {
+        "possible": true,
+        "selected": false,
+    },
+    "fm_zlen": {
+        "possible": true,
+        "ruhige_hand": false,
+        "selected": false,
+    },
+    "fm_msts": {
+        "possible": false,
+        "selected": false,
+    },
+    "fm_rust": {
+        "possible": false,
+        "selected": false,
+    },
+    "fm_snls": {
+        "possible": false,
+        "selected": "0",
+    },
+    "mod": {
+        "selected": "0",
+    },
+    "rllm": {
+        "selected": "roll",
+    }
+};

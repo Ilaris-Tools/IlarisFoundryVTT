@@ -23,7 +23,7 @@
         </div>
         {{#each data.data.profan.fertigkeiten as |profert key|}}
             <div class="flexrow">
-                <a class="rollable icon-small" data-rolltype="profan_fertigkeit" data-fertigkeit="{{key}}"><i class="fas fa-dice-d20"></i></a>
+                <a class="rollable icon-small" data-rolltype="profan_fertigkeit_diag" data-fertigkeit="{{key}}"><i class="fas fa-dice-d20"></i></a>
                 <label class="ausklappen-trigger onhover" data-ausklappentarget="{{profert.id}}">{{profert.name}}</label>
                 <label>{{ProfanFertigkeitList profert.data.data.talente}}</label>
                 <label class="rollable flex-fest-var onhover" data-rolltype="profan_fertigkeit_pw" data-fertigkeit="{{profert.name}}" data-pw="{{profert.data.data.pw}}" style="flex-basis: 40px">{{profert.data.data.pw}}</label>
@@ -62,7 +62,7 @@
                 <hr>
             </div>
         {{/each}}
-            {{#if data.data.profan.talente_unsorted}}
+        {{#if data.data.profan.talente_unsorted}}
             <hr>
             <hr>
             <label><b>Talente ohne passende Fertigkeit:</b>&nbsp; | &nbsp;</label>
@@ -87,10 +87,9 @@
              <h6></h6>
              </div> -->
         {{#each data.data.profan.freie as |freifert|}}
-        <a class="rollable onhover" data-rolltype="freie_fertigkeit" data-fertigkeit="{{freifert.name}}" data-pw="{{freifert.data.data.stufe}}"><i class="fas fa-dice-d20"></i></a>
-            <a class="item-edit" data-itemclass="freie_fertigkeit" data-itemid="{{freifert.id}}"> {{freifert.name}}
-                &nbsp; {{freifert.data.data.stufe}} &nbsp;
-                </i></a>
+            <a class="rollable" data-rolltype="freie_fertigkeit_diag" data-fertigkeit="{{freifert.name}}" data-pw="{{freifert.data.data.stufe}}"><i class="fas fa-dice-d20"></i></a>
+            <label class="rollable onhover" data-rolltype="freie_fertigkeit" data-fertigkeit="{{freifert.name}}" data-pw="{{freifert.data.data.stufe}}">{{freifert.name}} &nbsp; {{freifert.data.data.stufe}} &nbsp;</label>
+            <a class="item-edit" data-itemclass="freie_fertigkeit" data-itemid="{{freifert.id}}"><i class="fas fa-edit"></i></a>
             <a class="item-delete" data-itemclass="freie_fertigkeit" data-itemid="{{freifert.id}}"><i class="fas fa-trash"></i></a>
             &nbsp; | &nbsp;
         {{/each}}

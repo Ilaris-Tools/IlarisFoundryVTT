@@ -675,6 +675,7 @@ export class IlarisActor extends Actor {
             // console.log(nwaffe.data.data.manoever);
         }
         for (let item of data.data.fernkampfwaffen) {
+            item.data.data.manoever = item.data.data.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_fernkampf);
             let kein_reiter = item.data.data.eigenschaften.kein_reiter;
             let niederwerfen = item.data.data.eigenschaften.niederwerfen;
             let niederwerfen_4 = item.data.data.eigenschaften.niederwerfen_4;
@@ -733,7 +734,43 @@ export class IlarisActor extends Actor {
             if (typeof mod_schaden !== "undefined" && mod_schaden !== null && mod_schaden !== "") {
                 item.data.data.schaden = `${item.data.data.dice_anzahl}d6+${schaden}+${mod_schaden}`;
             }
+
+
+            // "vldf": {
+            //     "possible": false,
+            //         "selected": false
+            // },
+    //         "fm_snls": {
+    //             "possible": false,
+    //                 "selected": "0",
+    // },
+    //         "fm_zlen": {
+    //             "possible": true,
+    //                 "ruhige_hand": false,
+    //                     "selected": false,
+    // },
+    //         "fm_msts": {
+    //             "possible": false,
+    //                 "selected": false,
+    // },
+    //         "fm_rust": {
+    //             "possible": false,
+    //                 "selected": false,
+    // },
+    //         "rw": {
+    //             "0": "1 Schritt",
+    //                 "1": "2 Schritt",
+    //                     "2": "3 Schritt",
+    // },
+            // "rflx": false,
+            // "brtn": {
+            //     "selected": false,
+            //         "rtk": false
+            // },
         }
+
+
+
         // "ohne": "Kein Kampfstil",
         // "bhk": "Beidhändiger Kampf",
         // "kvk": "Kraftvoller Kampf",
