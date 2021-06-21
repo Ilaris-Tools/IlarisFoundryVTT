@@ -1,190 +1,9 @@
 // import {NahkampfDialog} from "../sheets/dialog/dialog_nahkampf.js";
-import { nahkampfUpdate } from "./wuerfel/nahkampf_prepare.js";
-
-async function roll_crit_message(formula, label, text, rollmode, crit_eval=true, fumble_val=1){
-    let roll = new Roll(formula);
-    await roll.evaluate({ "async": true });
-    let fumble = false;
-    let crit = false;
-    if (crit_eval) {
-        let critfumble = roll.dice[0].results.find(a => a.active == true).result;
-        if (critfumble == 20) {
-            crit = true;
-        } else if (critfumble <= fumble_val) {
-            fumble = true;
-        }
-    }
-    const html_roll = await renderTemplate('systems/Ilaris/templates/chat/probenchat_profan.html', {
-        title: `${label}`,
-        text: text,
-        crit: crit,
-        fumble: fumble,
-    });
-    let roll_msg = roll.toMessage({
-        flavor: html_roll
-    }, {
-        rollMode: rollmode,
-        //     create: false
-    });
-}
+import { nahkampfUpdate, calculate_attacke } from "./wuerfel/nahkampf_prepare.js";
+import { fernkampfUpdate } from "./wuerfel/fernkampf_prepare.js";
+import { calculate_diceschips, roll_crit_message, get_statuseffect_by_id } from "./wuerfel/wuerfel_misc.js";
 
 
-function calculate_diceschips(html, text, actor){
-    // let text = "";
-    let xd20_check = html.find("input[name='xd20']");
-    let xd20 = 0;
-    for (let i of xd20_check) {
-        if (i.checked) xd20 = i.value;
-    }
-    // console.log(xd20);
-    let schips_check = html.find("input[name='schips']");
-    let schips = 0;
-    for (let i of schips_check) {
-        if (i.checked) schips = i.value;
-    }
-    let dice_number = 0;
-    let discard_l = 0;
-    let discard_h = 0;
-    if (xd20 == 0) {
-        dice_number = 1;
-    } else if (xd20 == 1) {
-        dice_number = 3;
-        discard_l = 1;
-        discard_h = 1;
-    }
-    let schips_val = actor.data.data.schips.schips_stern;
-    if (schips_val > 0 && schips == 1) {
-        text = text.concat(`Schips ohne Eigenschaft\n`);
-        dice_number += 1;
-        discard_l += 1;
-        let new_schips = actor.data.data.schips.schips_stern - 1;
-        actor.update({
-            data: {
-                schips: {
-                    schips_stern: new_schips
-                }
-            }
-        });
-    } else if (schips_val > 0 && schips == 2) {
-        text = text.concat(`Schips mit Eigenschaft\n`);
-        dice_number += 2;
-        discard_l += 2;
-        let new_schips = actor.data.data.schips.schips_stern - 1;
-        actor.update({
-            data: {
-                schips: {
-                    schips_stern: new_schips
-                }
-            }
-        });
-    } else if (schips_val == 0 && (schips == 1 || schips == 2)) {
-        text = text.concat(`Keine Schips`);
-    }
-
-    return [ text, dice_number, discard_l, discard_h ];
-}
-
-function calculate_attacke(actor, item) {
-    let data = actor.data.data;
-    let be = data.abgeleitete.be;
-    let mod_at = 0;
-    let text = "";
-    // Entfernung verändern km_ever
-    if (item.data.data.manoever.km_ever.selected) {
-        mod_at -= be;
-        text = text.concat(`${CONFIG.ILARIS.label["km_ever"]}\n`);
-    }
-    // Entwaffnen km_entw
-    if (item.data.data.manoever.km_entw.selected_at) {
-        mod_at -= 4;
-        text = text.concat(`${CONFIG.ILARIS.label["km_entw"]}\n`);
-    }
-    // Gezielter Schlag km_gzsl
-    let trefferzone = Number(item.data.data.manoever.km_gzsl.selected);
-    if (trefferzone) {
-        mod_at -= 2;
-        text = text.concat(`${CONFIG.ILARIS.label["km_gzsl"]}: ${CONFIG.ILARIS.trefferzonen[trefferzone]}\n`);
-    }
-    // Umreißen km_umre
-    if (item.data.data.manoever.km_umre.selected) {
-        text = text.concat(`${CONFIG.ILARIS.label["km_umre"]}\n`);
-    }
-    // Wuchtschlag km_wusl
-    let wusl = Number(item.data.data.manoever.km_wusl.selected);
-    if (wusl > 0) {
-        mod_at -= wusl;
-        text = text.concat(`${CONFIG.ILARIS.label["km_wusl"]}: ${wusl}\n`);
-    }
-    // Rüstungsbrecher km_rust
-    if (item.data.data.manoever.km_rust.selected) {
-        mod_at -= 4;
-        text = text.concat(`${CONFIG.ILARIS.label["km_rust"]}\n`);
-    }
-    // Schildspalter km_shsp
-    if (item.data.data.manoever.km_shsp.selected) {
-        mod_at += 2;
-        text = text.concat(`${CONFIG.ILARIS.label["km_shsp"]}\n`);
-    }
-    // Stumpfer Schlag km_stsl
-    if (item.data.data.manoever.km_stsl.selected) {
-        text = text.concat(`${CONFIG.ILARIS.label["km_stsl"]}\n`);
-    }
-    // Umklammern km_umkl
-    if (item.data.data.manoever.km_umkl.selected) {
-        let umkl = Number(item.data.data.manoever.km_umkl.mod);
-        mod_at -= umkl;
-        text = text.concat(`${CONFIG.ILARIS.label["km_umkl"]}: ${umkl}\n`);
-    }
-    // Ausfall km_ausf
-    if (item.data.data.manoever.km_ausf.selected) {
-        mod_at -= 2 + be;
-        text = text.concat(`${CONFIG.ILARIS.label["km_ausf"]}\n`);
-    }
-    // Befreiungsschlag km_befr
-    if (item.data.data.manoever.km_befr.selected) {
-        mod_at -= 4;
-        text = text.concat(`${CONFIG.ILARIS.label["km_befr"]}\n`);
-    }
-    // Doppelangriff km_dppl
-    if (item.data.data.manoever.km_dppl.selected) {
-        mod_at -= 4;
-        text = text.concat(`${CONFIG.ILARIS.label["km_dppl"]}\n`);
-    }
-    // Hammerschlag km_hmsl
-    if (item.data.data.manoever.km_hmsl.selected) {
-        mod_at -= 8;
-        text = text.concat(`${CONFIG.ILARIS.label["km_hmsl"]}\n`);
-    }
-    // Klingentanz km_kltz
-    if (item.data.data.manoever.km_kltz.selected) {
-        mod_at -= 4;
-        text = text.concat(`${CONFIG.ILARIS.label["km_kltz"]}\n`);
-    }
-    // Niederwerfen km_ndwf
-    if (item.data.data.manoever.km_ndwf.selected) {
-        mod_at -= 4;
-        text = text.concat(`${CONFIG.ILARIS.label["km_ndwf"]}\n`);
-    }
-    // Sturmangriff km_stag
-    if (item.data.data.manoever.km_stag.selected) {
-        if (item.data.data.manoever.kbak.selected) mod_at += 4;
-        let gs = Number(item.data.data.manoever.km_stag.gs);
-        text = text.concat(`${CONFIG.ILARIS.label["km_stag"]}: ${gs}\n`);
-    }
-    // Todesstoß km_tdst
-    if (item.data.data.manoever.km_tdst.selected) {
-        mod_at -= 8;
-        text = text.concat(`${CONFIG.ILARIS.label["km_tdst"]}\n`);
-    }
-    // Überrennen km_uebr
-    if (item.data.data.manoever.km_uebr.selected) {
-        if (item.data.data.manoever.kbak.selected) mod_at += 4;
-        let gs = Number(item.data.data.manoever.km_uebr.gs);
-        text = text.concat(`${CONFIG.ILARIS.label["km_uebr"]}: ${gs}\n`);
-    }
-    // console.log(mod_at);
-    return [ mod_at, text ];
-}
 
 export async function wuerfelwurf(event, actor) {
     let data = actor.data.data;
@@ -195,19 +14,30 @@ export async function wuerfelwurf(event, actor) {
     let nahkampfmod = data.modifikatoren.nahkampfmod;
     let pw = 0;
     let label = "Probe";
-    let groupName_xd20 = "xd20";
-    let choices_xd20 = {
-        "0": "1W20",
-        "1": "3W20"
-    };
-    let checked_xd20 = "1";
-    let groupName_schips = "schips";
-    let choices_schips = {
-        "0": "Ohne",
-        "1": "ohne Eigenheit",
-        "2": "mit Eigenheit"
-    };
+    // let groupName_xd20 = "xd20";
+    // let choices_xd20 = {
+    //     "0": "1W20",
+    //     "1": "3W20"
+    // };
+    // let checked_xd20 = "1";
+    // let groupName_schips = "schips";
+    // let choices_schips = {
+    //     "0": "Ohne",
+    //     "1": "ohne Eigenheit",
+    //     "2": "mit Eigenheit"
+    // };
     // checked_schips: "0";
+    // let zeroToEightObj = {
+    //     "0": "0",
+    //     "1": "1",
+    //     "2": "2",
+    //     "3": "3",
+    //     "4": "4",
+    //     "5": "5",
+    //     "6": "6",
+    //     "7": "7",
+    //     "8": "8"
+    // };
     if(rolltype == "nahkampf_diag") {
         let mod_at = 0;
         let mod_vt = 0;
@@ -223,18 +53,14 @@ export async function wuerfelwurf(event, actor) {
         // console.log(item.data.data);
         // console.log(item._data.data.manoever_at);
         const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_nahkampf.html', {
-            choices_xd20: choices_xd20,
+            choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: "0",
-            choices_schips: choices_schips,
+            choices_schips: CONFIG.ILARIS.schips_choice,
             checked_schips: "0",
             // distance_name: "distance",
             // distance_name: "rwdf",
             // distance_checked: "0",
-            distance_choice: {
-                "0": "ideal",
-                "1": "1 Feld",
-                "2": "2 Felder",
-            },
+            distance_choice: CONFIG.ILARIS.distance_choice,
             rollModes: CONFIG.Dice.rollModes,
             manoever: item.data.data.manoever,
             item: item
@@ -302,6 +128,8 @@ export async function wuerfelwurf(event, actor) {
                             fumble_val = 2;
                         }
                         await roll_crit_message(formula, label, text, rollmode, true, fumble_val);
+                        // (top, left)
+                        // wuerfelwurf(event, actor);
                     }
                 },
                 two: {
@@ -476,14 +304,322 @@ export async function wuerfelwurf(event, actor) {
         });
         d.render(true);
     }
+    if(rolltype == "fernkampf_diag") {
+        let mod_fk = 0;
+        let mod_schaden = 0;
+        let text = "";
+        let itemId = event.currentTarget.dataset.itemid;
+        // let item = actor.getOwnedItem(itemId);
+        let item = actor.items.get(itemId);
+        pw = item.data.data.fk;
+        // console.log(item);
+        // let manoever_at = item._data.data.manoever_at;
+        let schaden = item.data.data.schaden;
+        // console.log(item.data.data);
+        // console.log(item._data.data.manoever_at);
+        // let gzkl_checked = "0",
+        const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_fernkampf.html', {
+            choices_xd20: CONFIG.ILARIS.xd20_choice,
+            checked_xd20: "0",
+            choices_schips: CONFIG.ILARIS.schips_choice,
+            checked_schips: "0",
+            rw_choice: item.data.data.manoever.rw,
+            rw_checked: item.data.data.manoever.fm_rwrh.selected,
+            gzkl_choice: CONFIG.ILARIS.gzkl_choice,
+            // gzkl_checked: item.data.data.manoever.gzkl.selected,
+            lcht_choice: CONFIG.ILARIS.lcht_choice,
+            // lcht_checked: item.data.data.manoever.lcht.selected,
+            wttr_choice: CONFIG.ILARIS.wttr_choice,
+            // wttr_checked: item.data.data.manoever.wttr.selected,
+            bwng_choice: CONFIG.ILARIS.bwng_choice,
+            // bwng_checked: item.data.data.manoever.bwng.selected,
+            dckg_choice: CONFIG.ILARIS.dckg_choice,
+            // dckg_checked: item.data.data.manoever.dckg.selected,
+            kgtl_choice: CONFIG.ILARIS.kgtl_choice,
+            // kgtl_checked: item.data.data.manoever.kgtl.selected,
+            // brtn_checked: item.data.data.manoever.brtn.selected,
+            fm_snls_choice: CONFIG.ILARIS.fm_snls_choice,
+            // fm_snls_checked: item.data.data.manoever.fm_snls.selected,
+            fm_srfs_choice: CONFIG.ILARIS.zeroToEightObj,
+            // fm_srfs_checked: item.data.data.manoever.fm_srfs.selected,
+            rollModes: CONFIG.Dice.rollModes,
+            manoever: item.data.data.manoever,
+            item: item
+            // pw: pw
+        });
+        let d = new Dialog({
+            title: "Fernkampf",
+            content: html,
+            buttons: {
+                one: {
+                    icon: '<i><img class="button-icon-nahkampf" src="systems/Ilaris/assets/game-icons.net/sword-clash.png"></i>',
+                    label: "Attacke",
+                    callback: async (html) => {
+                        await fernkampfUpdate(html, actor, item);
+                        let fumble_val = 1;
+                        let dice_number = 0;
+                        let discard_l = 0;
+                        let discard_h = 0;
+                        [text, dice_number, discard_l, discard_h] = calculate_diceschips(html, text, actor);
+                        // Kombinierte Aktion kbak
+                        if (item.data.data.manoever.kbak.selected) {
+                            mod_fk -= 4;
+                            text = text.concat("Kombinierte Aktion\n");
+                        }
+                        // // Volle Defensive vldf
+                        // if (item.data.data.manoever.vldf.possible) {
+                        //     if (item.data.data.manoever.vldf.selected) {
+                        //         mod_fk -= 4;
+                        //     text = text.concat("Volle Defensive ()\n");
+                        // }
+                        // Reichweite erhöhen fm_rwrh
+                        let reichweite = Number(item.data.data.manoever.fm_rwrh.selected);
+                        if (reichweite > 0) {
+                            mod_fk -= 4 * reichweite;
+                            text = text.concat(`${item.data.data.manoever.rw[reichweite]} (${reichweite}x)\n`);
+                        }
+                        //Größenklasse gzkl
+                        let gklasse = Number(item.data.data.manoever.gzkl.selected);
+                        if (gklasse != 0) {
+                            mod_fk += 4 * gklasse;
+                            text = text.concat(`${CONFIG.ILARIS.gzkl_choice[gklasse]}\n`);
+                        }
+                        // Lichtverhältnisse ILARIS.lcht_choice = {
+                        let licht = Number(item.data.data.manoever.lcht.selected);
+                        if (licht == 0) {
+                            let ss1 = get_statuseffect_by_id(actor, "schlechtesicht1");
+                            let ss2 = get_statuseffect_by_id(actor, "schlechtesicht2");
+                            let ss3 = get_statuseffect_by_id(actor, "schlechtesicht3");
+                            if (ss3) {
+                                licht = -4;
+                            }
+                            else if (ss2) {
+                                licht = -2;
+                            }
+                            else if (ss1) {
+                                licht = -1;
+                            }
+                        }
+                        if (licht != 0) {
+                            mod_fk += 4 * licht;
+                            text = text.concat(`${CONFIG.ILARIS.lcht_choice[licht]}\n`);
+                        }
+                        // Wetter wttr und Bewegung bwng
+                        let wetter = Number(item.data.data.manoever.wttr.selected);
+                        let bewegung = Number(item.data.data.manoever.bwng.selected);
+                        let reflexschuss = item.data.data.manoever.rflx;
+                        if (reflexschuss) {
+                            let reflex_change = "";
+                            if (wetter < 0 || bewegung < 0) {
+                                if (wetter < bewegung) {
+                                    wetter += 1;
+                                    reflex_change = "wetter";
+                                }
+                                else {
+                                    bewegung += 1;
+                                    reflex_change = "bewegung";
+                                }
+                            }
+                            mod_fk += 4 * (wetter + bewegung);
+                            if (wetter < 0 && reflex_change != "wetter") {
+                                text = text.concat(`${CONFIG.ILARIS.wttr_choice[wetter]}\n`);
+                            }
+                            else if (reflex_change == "wetter") {
+                                text = text.concat(`${CONFIG.ILARIS.wttr_choice[wetter]} (Reflexschuss)\n`);
+                            }
+                            if (bewegung < 0 && reflex_change != "bewegung") {
+                                text = text.concat(`${CONFIG.ILARIS.bwng_choice[bewegung]}\n`);
+                            }
+                            else if (reflex_change == "bewegung") {
+                                text = text.concat(`${CONFIG.ILARIS.bwng_choice[bewegung]} (Reflexschuss)\n`);
+                            }
+                        }
+                        // Deckung dckg
+                        let deckung = Number(item.data.data.manoever.dckg.selected);
+                        if (deckung < 0) {
+                            mod_fk += 4*deckung;
+                            text = text.concat(`${CONFIG.ILARIS.label["dckg"]}: ${CONFIG.ILARIS.dckg_choice[deckung]}\n`);
+                        }
+                        // Kampfgetümmel kgtl
+                        let kampfgetuemmel = Number(item.data.data.manoever.kgtl.selected);
+                        if (kampfgetuemmel == 1) {
+                            fumble_val += 1;
+                            text = text.concat(`${CONFIG.ILARIS.label["kgtl"]}: ${CONFIG.ILARIS.kgtl_choice[kampfgetuemmel]}\n`);
+                        }
+                        if (kampfgetuemmel == 2) {
+                            fumble_val += 3;
+                            text = text.concat(`${CONFIG.ILARIS.label["kgtl"]}: ${CONFIG.ILARIS.kgtl_choice[kampfgetuemmel]}\n`);
+                        }
+                        // Beritten brtn  Reiterkampf II rtk
+                        let beritten = item.data.data.manoever.brtn.selected;
+                        let reiterkampf = item.data.data.manoever.brtn.rtk;
+                        if (beritten && reiterkampf) {
+                            text = text.concat(`${CONFIG.ILARIS.label["brtn"]} (Reiterkampf)\n`);
+                        }
+                        else if (beritten) {
+                            mod_fk -= 4;
+                            text = text.concat(`${CONFIG.ILARIS.label["brtn"]}\n`);
+                        }
+                        // Gezielter Schuss
+                        let trefferzone = Number(item.data.data.manoever.fm_gzss.selected);
+                        if (trefferzone) {
+                            mod_fk -= 2;
+                            text = text.concat(`${CONFIG.ILARIS.label["fm_gzss"]}: ${CONFIG.ILARIS.trefferzonen[trefferzone]}\n`);
+                        }
+                        else {
+                            let r = new Roll("1d6");
+                            r = r.evaluate({ "async": false }).total;
+                            text = text.concat(`Trefferzone: ${CONFIG.ILARIS.trefferzonen[r]}\n`);
+                        }
+                        // Scharfschuss fm_srfs
+                        let scharfschuss = Number(item.data.data.manoever.fm_srfs.selected);
+                        if (scharfschuss) {
+                            mod_fk -= scharfschuss;
+                            text = text.concat(`${CONFIG.ILARIS.label["fm_srfs"]}: ${scharfschuss}\n`);
+                        }
+                        // Zielen fm_zlen    "ruhige_hand": false,
+                        let zielen = item.data.data.manoever.fm_zlen.selected;
+                        let ruhige_hand = item.data.data.manoever.ruhige_hand;
+                        if (zielen && ruhige_hand) {
+                            mod_fk += 4;
+                            text = text.concat(`${CONFIG.ILARIS.label["fm_zlen"]} (Ruhige Hand)\n`);
+                        }
+                        else if (zielen) {
+                            mod_fk += 2;
+                            text = text.concat(`${CONFIG.ILARIS.label["fm_zlen"]}\n`);
+                        }
+                        // Meisterschuss fm_msts
+                        let meisterschuss = item.data.data.manoever.fm_msts.selected;
+                        if (meisterschuss) {
+                            mod_fk -= 8;
+                            text = text.concat(`${CONFIG.ILARIS.label["fm_msts"]}\n`);
+                        }
+                        // Rüstungsbrecher fm_rust
+                        let ruestungsbrecher = item.data.data.manoever.fm_rust.selected;
+                        if (ruestungsbrecher) {
+                            mod_fk -= 4;
+                            text = text.concat(`${CONFIG.ILARIS.label["fm_rust"]}\n`);
+                        }
+                        // Schnellschuss fm_snls
+                        let schnellschuss = Number(item.data.data.manoever.fm_snls.selected);
+                        if (schnellschuss > 0) {
+                            mod_fk -= 4 * schnellschuss;
+                            text = text.concat(`${CONFIG.ILARIS.label["fm_snls"]}\n`);
+                        }
+                        // Modifikator
+                        let modifikator = Number(item.data.data.manoever.mod.selected);
+                        if (modifikator != 0) {
+                            mod_fk += modifikator;
+                            text = text.concat(`Modifikator: ${modifikator}\n`);
+                        }
+                        // Rollmode
+                        let rollmode = item.data.data.manoever.rllm.selected;
+                        let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
+                        // let formula = `${dice_form} + ${pw} + ${globalermod} + ${nahkampfmod} + ${mod_at}`;
+                        let formula = `${dice_form} + ${pw} + ${globalermod} + ${mod_fk}`;
+                        // Critfumble & Message
+                        let label = `Attacke (${item.name})`;
+                        await roll_crit_message(formula, label, text, rollmode, true, fumble_val);
+                    }
+                },
+                two: {
+                    icon: '<i><img class="button-icon-nahkampf" src="systems/Ilaris/assets/game-icons.net/bloody-sword.png"></i>',
+                    label: "Schaden",
+                    callback: async (html) => {
+                        await fernkampfUpdate(html, actor, item);
+                        // Gezielter Schlag km_gzsl
+                        let trefferzone = Number(item.data.data.manoever.km_gzsl.selected);
+                        if (trefferzone) {
+                            text = text.concat(`${CONFIG.ILARIS.label["km_gzsl"]}: ${CONFIG.ILARIS.trefferzonen[trefferzone]}\n`);
+                        }
+                        else {
+                            let zonenroll = new Roll("1d6");
+                            await zonenroll.evaluate({ "async": true});
+                            // let zonenroll = Math.floor(Math.random() * 6 + 1);
+                            text = text.concat(`Trefferzone: ${CONFIG.ILARIS.trefferzonen[zonenroll.total]}\n`);
+                        }
+                        // Wuchtschlag km_wusl
+                        let wusl = Number(item.data.data.manoever.km_wusl.selected);
+                        if (wusl > 0) {
+                            mod_schaden += wusl;
+                            text = text.concat(`${CONFIG.ILARIS.label["km_wusl"]}: ${wusl}\n`);
+                        }
+                        // Auflaufen lassen km_aufl
+                        if (item.data.data.manoever.km_aufl.selected) {
+                            let gs = Number(item.data.data.manoever.km_aufl.gs);
+                            mod_schaden += gs;
+                            text = text.concat(`${CONFIG.ILARIS.label["km_aufl"]}: ${gs}\n`);
+                        }
+                        // Rüstungsbrecher km_rust
+                        if (item.data.data.manoever.km_rust.selected) {
+                            text = text.concat(`${CONFIG.ILARIS.label["km_rust"]}\n`);
+                        }
+                        // Schildspalter km_shsp
+                        if (item.data.data.manoever.km_shsp.selected) {
+                            text = text.concat(`${CONFIG.ILARIS.label["km_shsp"]}\n`);
+                        }
+                        // Stumpfer Schlag km_stsl
+                        if (item.data.data.manoever.km_stsl.selected) {
+                            text = text.concat(`${CONFIG.ILARIS.label["km_stsl"]}\n`);
+                        }
+                        // Hammerschlag km_hmsl
+                        if (item.data.data.manoever.km_hmsl.selected) {
+                            schaden = schaden.concat(`+${schaden}`);
+                            text = text.concat(`${CONFIG.ILARIS.label["km_hmsl"]}\n`);
+                        }
+                        // Niederwerfen km_ndwf
+                        if (item.data.data.manoever.km_ndwf.selected) {
+                            text = text.concat(`${CONFIG.ILARIS.label["km_ndwf"]}\n`);
+                        }
+                        // Sturmangriff km_stag
+                        if (item.data.data.manoever.km_stag.selected) {
+                            let gs = Number(item.data.data.manoever.km_stag.gs);
+                            mod_schaden += gs;
+                            text = text.concat(`${CONFIG.ILARIS.label["km_stag"]}: ${gs}\n`);
+                        }
+                        // Todesstoß km_tdst
+                        if (item.data.data.manoever.km_tdst.selected) {
+                            text = text.concat(`${CONFIG.ILARIS.label["km_tdst"]}\n`);
+                        }
+                        // Überrennen km_uebr
+                        if (item.data.data.manoever.km_uebr.selected) {
+                            let gs = Number(item.data.data.manoever.km_uebr.gs);
+                            mod_schaden += gs;
+                            text = text.concat(`${CONFIG.ILARIS.label["km_uebr"]}: ${gs}\n`);
+                        }
+                        // Modifikator
+                        let modifikator = Number(item.data.data.manoever.mod.selected);
+                        if (modifikator != 0) {
+                            mod_schaden += modifikator;
+                            text = text.concat(`Modifikator: ${modifikator}\n`);
+                        }
+                        // Rollmode
+                        let rollmode = item.data.data.manoever.rllm.selected;
+                        let formula = `${schaden} + ${mod_schaden}`;
+                        let label = `Schaden (${item.name})`;
+                        // Critfumble & Message
+                        await roll_crit_message(formula, label, text, rollmode, false);
+                    }
+                },
+                three: {
+                    icon: '<i class="fas fa-times"></i>',
+                    label: "Abbrechen",
+                    callback: () => console.log("Abbruch")
+                }
+            }
+        }, {
+            jQuery: true,
+        });
+        d.render(true);
+    }
     else if (rolltype == "attribut_diag") {
         const attribut_name = $(event.currentTarget).data("attribut");
         label = CONFIG.ILARIS.label[attribut_name];
         pw = data.attribute[attribut_name].pw;
         const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_attribut.html', {
-            choices_xd20: choices_xd20,
+            choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: "1",
-            choices_schips: choices_schips,
+            choices_schips: CONFIG.ILARIS.schips_choice,
             checked_schips: "0",
             rollModes: CONFIG.Dice.rollModes
         });
@@ -546,9 +682,9 @@ export async function wuerfelwurf(event, actor) {
             talent_list[i] = tal.name;
         }
         const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_profan.html', {
-            choices_xd20: choices_xd20,
+            choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: "1",
-            choices_schips: choices_schips,
+            choices_schips: CONFIG.ILARIS.schips_choice,
             checked_schips: "0",
             groupName_talente: "talente",
             choices_talente_basic: {
@@ -627,9 +763,9 @@ export async function wuerfelwurf(event, actor) {
         label = $(event.currentTarget).data("fertigkeit");
         pw = Number($(event.currentTarget).data("pw")) * 8 - 2;
         const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_attribut.html', {
-            choices_xd20: choices_xd20,
+            choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: "1",
-            choices_schips: choices_schips,
+            choices_schips: CONFIG.ILARIS.schips_choice,
             checked_schips: "0",
             rollModes: CONFIG.Dice.rollModes
         });

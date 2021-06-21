@@ -43,6 +43,16 @@ ILARIS.label = {
     "rtk": "Reiterkampf",
     "shk": "Schildkampf",
     "snk": "Schneller Kampf",
+    // Kampfabkürzungen
+    "kbak": "kombinierte Aktion",
+    "vldf": "volle Defensive",
+    "gzkl": "Größenklasse",
+    "bwng": "Bewegung",
+    "lcht": "Licht",
+    "wttr": "Wetter",
+    "dckg": "Deckung",
+    "kgtl": "Kampfgetümmel",
+    "brtn": "Beritten",
     // kampfmanoever
     "km_ausw": "Ausweichen",
     "km_bind": "Binden",
@@ -75,6 +85,13 @@ ILARIS.label = {
     "fm_msts": "Meisterschuss",
     "fm_rust": "Rüstungsbrecher",
     "fm_snls": "Schnellschuss",
+    "fm_gzss": "Gezielter Schuss",
+    "fm_rwrh": "Reichweite",
+    "fm_srfs": "Scharfschuss",
+    "fm_zlen": "Zielen",
+    "fm_msts": "Meisterschuss",
+    "fm_rust": "Rüstungsbrecher",
+    "fm_snls": "Schnellschuss",
 };
 
 ILARIS.trefferzonen = {
@@ -86,6 +103,90 @@ ILARIS.trefferzonen = {
     "5": "Brust",
     "6": "Kopf",
     "7": "andere",
+};
+
+ILARIS.xd20_choice = {
+    "0": "1W20",
+    "1": "3W20"
+};
+
+ILARIS.schips_choice = {
+    "0": "Ohne",
+    "1": "ohne Eigenheit",
+    "2": "mit Eigenheit"
+};
+
+ILARIS.zeroToEightObj = {
+    "0": "0",
+    "1": "1",
+    "2": "2",
+    "3": "3",
+    "4": "4",
+    "5": "5",
+    "6": "6",
+    "7": "7",
+    "8": "8"
+};
+
+// Reichweite (Nahkampf)
+ILARIS.distance_choice = {
+    "0": "ideal",
+    "1": "1 Feld",
+    "2": "2 Felder",
+};
+
+// Größenklassen
+ILARIS.gzkl_choice = {
+    "2": "sehr groß (Elefant)",
+    "1": "groß (Pferd, Oger)",
+    "0": "mittel (Mensch, Zwerg)",
+    "-1": "klein (Wolf, Reh)",
+    "-2": "sehr klein (Fasan, Hase)",
+    "-3": "winzig (Maus)"
+};
+
+// Lichtverhältnisse
+ILARIS.lcht_choice = {
+    "0": "Tag (Status)",
+    "-1": "Dämmerung",
+    "-2": "Mondlicht",
+    "-4": "Sternenlicht"
+};
+
+// Wetterverhältnisse
+ILARIS.wttr_choice = {
+    "0": "still",
+    "-1": "Wind",
+    "-2": "Sturm"
+};
+
+// Bewegung
+ILARIS.bwng_choice = {
+    "0": "langsam",
+    "-1": "schnell (laufender Mensch)",
+    "-2": "sehr schnell (Pferd)",
+    "-3": "extrem schnell (Vogel)"
+};
+
+// Deckung
+ILARIS.dckg_choice = {
+    "0": "keine",
+    "-1": "halbe Deckung",
+    "-2": "Dreivierteldeckung"
+};
+
+// Kampfgetümmel
+ILARIS.kgtl_choice = {
+    "0": "Freistehendes Ziel",
+    "1": "im offenen Feld",
+    "2": "im beengten Raum"
+};
+
+// Schnellschuss
+ILARIS.fm_snls_choice = {
+    "0": "kein",
+    "1": "1x",
+    "2": "2x"
 };
 
 ILARIS.manoever_nahkampf = {
@@ -220,16 +321,16 @@ ILARIS.manoever_fernkampf = {
     "kbak": {
         "selected": false
     },
-    "vldf": {
-        "possible": false,
-        "selected": false
-    },
+    // "vldf": {
+    //     "possible": false,
+    //     "selected": false
+    // },
     "gzkl": {
         "selected": "0"
     },
-    "umge": {
-        "selected": "0"
-    },
+    // "umge": {
+    //     "selected": "0"
+    // },
     "bwng": {
         "selected": "0"
     },
@@ -261,11 +362,11 @@ ILARIS.manoever_fernkampf = {
     },
     "fm_rwrh": {
         "possible": true,
-        "seleted": "0",
+        "selected": "0",
     },
     "fm_srfs": {
         "possible": true,
-        "selected": false,
+        "selected": "0",
     },
     "fm_zlen": {
         "possible": true,

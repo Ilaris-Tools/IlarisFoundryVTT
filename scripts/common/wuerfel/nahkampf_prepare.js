@@ -230,3 +230,110 @@ export function nahkampfUpdate(html, actor, item) {
     // await item.update(updateData);
     // await actor.updateEmbeddedDocuments("Item", [item]);
 }
+
+export function calculate_attacke(actor, item) {
+    let data = actor.data.data;
+    let be = data.abgeleitete.be;
+    let mod_at = 0;
+    let text = "";
+    // Entfernung verändern km_ever
+    if (item.data.data.manoever.km_ever.selected) {
+        mod_at -= be;
+        text = text.concat(`${CONFIG.ILARIS.label["km_ever"]}\n`);
+    }
+    // Entwaffnen km_entw
+    if (item.data.data.manoever.km_entw.selected_at) {
+        mod_at -= 4;
+        text = text.concat(`${CONFIG.ILARIS.label["km_entw"]}\n`);
+    }
+    // Gezielter Schlag km_gzsl
+    let trefferzone = Number(item.data.data.manoever.km_gzsl.selected);
+    if (trefferzone) {
+        mod_at -= 2;
+        text = text.concat(`${CONFIG.ILARIS.label["km_gzsl"]}: ${CONFIG.ILARIS.trefferzonen[trefferzone]}\n`);
+    }
+    else {
+        let r = new Roll("1d6");
+        r = r.evaluate({ "async": false }).total;
+        text = text.concat(`Trefferzone: ${CONFIG.ILARIS.trefferzonen[r]}\n`);
+    }
+    // Umreißen km_umre
+    if (item.data.data.manoever.km_umre.selected) {
+        text = text.concat(`${CONFIG.ILARIS.label["km_umre"]}\n`);
+    }
+    // Wuchtschlag km_wusl
+    let wusl = Number(item.data.data.manoever.km_wusl.selected);
+    if (wusl > 0) {
+        mod_at -= wusl;
+        text = text.concat(`${CONFIG.ILARIS.label["km_wusl"]}: ${wusl}\n`);
+    }
+    // Rüstungsbrecher km_rust
+    if (item.data.data.manoever.km_rust.selected) {
+        mod_at -= 4;
+        text = text.concat(`${CONFIG.ILARIS.label["km_rust"]}\n`);
+    }
+    // Schildspalter km_shsp
+    if (item.data.data.manoever.km_shsp.selected) {
+        mod_at += 2;
+        text = text.concat(`${CONFIG.ILARIS.label["km_shsp"]}\n`);
+    }
+    // Stumpfer Schlag km_stsl
+    if (item.data.data.manoever.km_stsl.selected) {
+        text = text.concat(`${CONFIG.ILARIS.label["km_stsl"]}\n`);
+    }
+    // Umklammern km_umkl
+    if (item.data.data.manoever.km_umkl.selected) {
+        let umkl = Number(item.data.data.manoever.km_umkl.mod);
+        mod_at -= umkl;
+        text = text.concat(`${CONFIG.ILARIS.label["km_umkl"]}: ${umkl}\n`);
+    }
+    // Ausfall km_ausf
+    if (item.data.data.manoever.km_ausf.selected) {
+        mod_at -= 2 + be;
+        text = text.concat(`${CONFIG.ILARIS.label["km_ausf"]}\n`);
+    }
+    // Befreiungsschlag km_befr
+    if (item.data.data.manoever.km_befr.selected) {
+        mod_at -= 4;
+        text = text.concat(`${CONFIG.ILARIS.label["km_befr"]}\n`);
+    }
+    // Doppelangriff km_dppl
+    if (item.data.data.manoever.km_dppl.selected) {
+        mod_at -= 4;
+        text = text.concat(`${CONFIG.ILARIS.label["km_dppl"]}\n`);
+    }
+    // Hammerschlag km_hmsl
+    if (item.data.data.manoever.km_hmsl.selected) {
+        mod_at -= 8;
+        text = text.concat(`${CONFIG.ILARIS.label["km_hmsl"]}\n`);
+    }
+    // Klingentanz km_kltz
+    if (item.data.data.manoever.km_kltz.selected) {
+        mod_at -= 4;
+        text = text.concat(`${CONFIG.ILARIS.label["km_kltz"]}\n`);
+    }
+    // Niederwerfen km_ndwf
+    if (item.data.data.manoever.km_ndwf.selected) {
+        mod_at -= 4;
+        text = text.concat(`${CONFIG.ILARIS.label["km_ndwf"]}\n`);
+    }
+    // Sturmangriff km_stag
+    if (item.data.data.manoever.km_stag.selected) {
+        if (item.data.data.manoever.kbak.selected) mod_at += 4;
+        let gs = Number(item.data.data.manoever.km_stag.gs);
+        text = text.concat(`${CONFIG.ILARIS.label["km_stag"]}: ${gs}\n`);
+    }
+    // Todesstoß km_tdst
+    if (item.data.data.manoever.km_tdst.selected) {
+        mod_at -= 8;
+        text = text.concat(`${CONFIG.ILARIS.label["km_tdst"]}\n`);
+    }
+    // Überrennen km_uebr
+    if (item.data.data.manoever.km_uebr.selected) {
+        if (item.data.data.manoever.kbak.selected) mod_at += 4;
+        let gs = Number(item.data.data.manoever.km_uebr.gs);
+        text = text.concat(`${CONFIG.ILARIS.label["km_uebr"]}: ${gs}\n`);
+    }
+    // console.log(mod_at);
+    return [ mod_at, text ];
+}

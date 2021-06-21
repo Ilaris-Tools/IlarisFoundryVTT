@@ -677,6 +677,7 @@ export class IlarisActor extends Actor {
         for (let item of data.data.fernkampfwaffen) {
             item.data.data.manoever = item.data.data.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_fernkampf);
             let kein_reiter = item.data.data.eigenschaften.kein_reiter;
+            let reittier = HAUPTWAFFE?.data.data.eigenschaften?.reittier || NEBENWAFFE?.data.data.eigenschaften?.reittier;
             let niederwerfen = item.data.data.eigenschaften.niederwerfen;
             let niederwerfen_4 = item.data.data.eigenschaften.niederwerfen_4;
             let niederwerfen_8 = item.data.data.eigenschaften.niederwerfen_8;
@@ -725,7 +726,7 @@ export class IlarisActor extends Actor {
             }
             else if (kein_reiter && (hauptwaffe || nebenwaffe)) {
                 // let reittier = false;
-                let reittier = HAUPTWAFFE?.data.data.eigenschaften?.reittier || NEBENWAFFE?.data.data.eigenschaften?.reittier;
+                // let reittier = HAUPTWAFFE?.data.data.eigenschaften?.reittier || NEBENWAFFE?.data.data.eigenschaften?.reittier;
                 if (reittier && kein_reiter) {
                     item.data.data.fk = "-";
                 }
@@ -736,37 +737,18 @@ export class IlarisActor extends Actor {
             }
 
 
-            // "vldf": {
-            //     "possible": false,
-            //         "selected": false
-            // },
-    //         "fm_snls": {
-    //             "possible": false,
-    //                 "selected": "0",
-    // },
-    //         "fm_zlen": {
-    //             "possible": true,
-    //                 "ruhige_hand": false,
-    //                     "selected": false,
-    // },
-    //         "fm_msts": {
-    //             "possible": false,
-    //                 "selected": false,
-    // },
-    //         "fm_rust": {
-    //             "possible": false,
-    //                 "selected": false,
-    // },
-    //         "rw": {
-    //             "0": "1 Schritt",
-    //                 "1": "2 Schritt",
-    //                     "2": "3 Schritt",
-    // },
-            // "rflx": false,
-            // "brtn": {
-            //     "selected": false,
-            //         "rtk": false
-            // },
+            // if (data.data.vorteil.kampf.find(x => x.name.includes("Defensiver Kampfstil"))) item.data.data.manoever.vldf.possible = true;
+            if (data.data.vorteil.kampf.find(x => x.name.includes("Schnellziehen"))) item.data.data.manoever.fm_snls.possible = true;
+            if (data.data.vorteil.kampf.find(x => x.name.includes("Ruhige Hand"))) item.data.data.manoever.fm_zlen.ruhige_hand = true;
+            if (data.data.vorteil.kampf.find(x => x.name.includes("Meisterschuss"))) item.data.data.manoever.fm_msts.possible = true;
+            if (true) item.data.data.manoever.fm_rust.possible = true;
+            let rw = item.data.data.rw;
+            item.data.data.manoever.rw["0"] = `${rw} Schritt`;
+            item.data.data.manoever.rw["1"] = `${2 * rw} Schritt`;
+            item.data.data.manoever.rw["2"] = `${4 * rw} Schritt`;
+            if (data.data.vorteil.kampf.find(x => x.name.includes("Reflexschuss"))) item.data.data.manoever.rflx = true;
+            if (hardcoded.getKampfstilStufe("rtk", data) >= 2) item.data.data.manoever.brtn.rtk = true;
+            if (reittier) item.data.data.manoever.brtn.selected = true;
         }
 
 
