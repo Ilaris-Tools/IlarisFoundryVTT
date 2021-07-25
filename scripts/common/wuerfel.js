@@ -1,8 +1,8 @@
 // import {NahkampfDialog} from "../sheets/dialog/dialog_nahkampf.js";
 import { nahkampfUpdate, calculate_attacke } from "./wuerfel/nahkampf_prepare.js";
 import { fernkampfUpdate } from "./wuerfel/fernkampf_prepare.js";
-// import { calculate_diceschips, roll_crit_message, get_statuseffect_by_id } from "./wuerfel/wuerfel_misc.js";
-import { calculate_diceschips, roll_crit_message } from "./wuerfel/wuerfel_misc.js";
+import { calculate_diceschips, roll_crit_message, get_statuseffect_by_id } from "./wuerfel/wuerfel_misc.js";
+// import { calculate_diceschips, roll_crit_message } from "./wuerfel/wuerfel_misc.js";
 
 
 

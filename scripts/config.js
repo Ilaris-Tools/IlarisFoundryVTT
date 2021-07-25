@@ -92,6 +92,18 @@ ILARIS.label = {
     "fm_msts": "Meisterschuss",
     "fm_rust": "Rüstungsbrecher",
     "fm_snls": "Schnellschuss",
+    // magiemanöver
+    "mm_mama": "Mächtige Magie",
+    "mm_mezi": "Mehrere Ziele",
+    "mm_reer": "Reichweite erhöhen",
+    "mm_vove": "Vorbereitung verkürzen",
+    "mm_wive": "Wirkungsdauer verlängern",
+    "mm_zaig": "Zaubertechnik ignorieren",
+    "mm_erzw": "Erzwingen",
+    "mm_kosp": "Kosten sparen",
+    "mm_zela": "Zeit lassen",
+    "mm_zere": "Zeremonie",
+    "mm_opfe": "Opferung"
 };
 
 ILARIS.trefferzonen = {
@@ -188,6 +200,34 @@ ILARIS.fm_snls_choice = {
     "0": "kein",
     "1": "1x",
     "2": "2x"
+};
+
+// Zaubertechnik ignorieren
+ILARIS.mm_zaig_choice = {
+    "0": "0",
+    "1": "1",
+    "2": "2",
+    "3": "3"
+};
+
+// Kosten sparen
+ILARIS.mm_kosp_choice = {
+    "0": "0",
+    "1": "1",
+    "2": "2",
+    "3": "3",
+    "4": "4"
+};
+
+// Zeremonie
+ILARIS.mm_zere_choice = {
+    "0": "0",
+    "1": "1 Minute",
+    "2": "1 Stunde",
+    "3": "1 Tag",
+    "4": "1 Woche",
+    "5": "1 Monat",
+    "6": "1 Jahr"
 };
 
 ILARIS.manoever_nahkampf = {
@@ -392,5 +432,52 @@ ILARIS.manoever_fernkampf = {
     },
     "rllm": {
         "selected": "roll",
+    }
+};
+
+ILARIS.manoever_magie = {
+    "mm_mama": {
+        "possible": false,
+        "selected": "0",
+    },
+    "mm_mezi": {
+        "possible": true,
+        "selected": false,
+    },
+    "mm_reer": {
+        "possible": true,
+        "selected": "0",
+    },
+    "mm_vove": {
+        "possible": true,
+        "selected": "0",
+    },
+    "mm_wive": {
+        "possible": true,
+        "selected": "0",
+    },
+    "mm_zaig": {
+        "possible": true,
+        "selected": "0",
+    },
+    "mm_erzw": {
+        "possible": false,
+        "selected": false,
+    },
+    "mm_kosp": {
+        "possible": false,
+        "selected": "0",
+    },
+    "mm_zela": {
+        "possible": false,
+        "selected": false,
+    },
+    "mm_zere": {
+        "possible": false,
+        "selected": "0",
+    },
+    "mm_opfe": {
+        "possible": false,
+        "selected": "0",
     }
 };
