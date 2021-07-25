@@ -1,12 +1,14 @@
-export function get_statuseffect_by_id(actor, statusId) {
-    let iterator = actor.data.effects.values();
-    for (const effect of iterator) {
-        if (effect.data.flags.core.statusId == statusId) {
-            return true;
-        }
-    }
-    return false;
-}
+// export function get_statuseffect_by_id(actor, statusId) {
+//     console.log("get_statuseffect");
+//     console.log(actor);
+//     // let iterator = actor.data.effects.values();
+//     // for (const effect of iterator) {
+//     //     if (effect.data.flags.core.statusId == statusId) {
+//     //         return true;
+//     //     }
+//     // }
+//     return false;
+// }
 
 export async function roll_crit_message(formula, label, text, rollmode, crit_eval=true, fumble_val=1){
     let roll = new Roll(formula);

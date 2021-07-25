@@ -438,110 +438,127 @@ export class SephrastoImporter {
     }
 
     async _create_waffen() {
+        await game.packs.get("world.waffen").getDocuments();
         const pack = game.packs.get("world.waffen");
-        await pack.getIndex().then(index => {
-            for (let i of index) {
-                pack.deleteEntity(i._id);
-            }
-        });
+        // pack.forEach(e => e.deleteDocument());
+        pack.forEach(e => e.delete());
+        // pack.forEach(e => console.log(e));
+        // await pack.getIndex().then(index => {
+        //     for (let i of index) {
+        //         // pack.deleteEntity(i._id);
+        //         // pack.deleteDocuments('Item', [i._id]);
+        //     }
+        // });
         let nwaffen = this.datenbank.nahkampfwaffen;
         for (let nwaffe of nwaffen) {
             let item = new Item(nwaffe);
-            await pack.importEntity(item);
+            await pack.importDocument(item);
         }
         let fwaffen = this.datenbank.fernkampfwaffen;
         for (let fwaffe of fwaffen) {
             let item = new Item(fwaffe);
-            await pack.importEntity(item);
+            await pack.importDocument(item);
         }
     }
 
     async _create_fertigkeiten_talente() {
+        await game.packs.get("world.fertigkeiten-und-talente").getDocuments();
         const pack = game.packs.get("world.fertigkeiten-und-talente");
-        await pack.getIndex().then(index => {
-            for (let i of index) {
-                pack.deleteEntity(i._id);
-            }
-        });
+        pack.forEach(e => e.delete());
+        // await pack.getIndex().then(index => {
+        //     for (let i of index) {
+        //         pack.deleteEntity(i._id);
+        //     }
+        // });
         let fertigkeiten = this.datenbank.fertigkeiten;
         for (let fert of fertigkeiten) {
             let item = new Item(fert);
-            await pack.importEntity(item);
+            await pack.importDocument(item);
         }
         let talente = this.datenbank.talente;
         for (let tal of talente) {
             let item = new Item(tal);
-            await pack.importEntity(item);
+            await pack.importDocument(item);
         }
     }
 
     async _create_zauber() {
+        await game.packs.get("world.zauberspruche-und-rituale").getDocuments();
         const pack = game.packs.get("world.zauberspruche-und-rituale");
-        await pack.getIndex().then(index => {
-            for (let i of index) {
-                pack.deleteEntity(i._id);
-            }
-        });
+        // await pack.getIndex().then(index => {
+        //     for (let i of index) {
+        //         pack.deleteEntity(i._id);
+        //     }
+        // });
+        pack.forEach(e => e.delete());
         let zauber = this.datenbank.zauber;
         for (let zaub of zauber) {
             let item = new Item(zaub);
-            await pack.importEntity(item);
+            await pack.importDocument(item);
         }
     }
 
     async _create_liturgien() {
+        await game.packs.get("world.liturgien-und-mirakel").getDocuments();
         const pack = game.packs.get("world.liturgien-und-mirakel");
-        await pack.getIndex().then(index => {
-            for (let i of index) {
-                pack.deleteEntity(i._id);
-            }
-        });
+        // await pack.getIndex().then(index => {
+        //     for (let i of index) {
+        //         pack.deleteEntity(i._id);
+        //     }
+        // });
+        pack.forEach(e => e.delete());
         let liturgien = this.datenbank.liturgien;
         for (let litu of liturgien) {
             let item = new Item(litu);
-            await pack.importEntity(item);
+            await pack.importDocument(item);
         }
     }
 
     async _create_uebernatuerliche_fertigkeiten() {
+        await game.packs.get("world.ubernaturliche-fertigkeiten").getDocuments();
         const pack = game.packs.get("world.ubernaturliche-fertigkeiten");
-        await pack.getIndex().then(index => {
-            for (let i of index) {
-                pack.deleteEntity(i._id);
-            }
-        });
+        // await pack.getIndex().then(index => {
+        //     for (let i of index) {
+        //         pack.deleteEntity(i._id);
+        //     }
+        // });
+        pack.forEach(e => e.delete());
         let fertigkeiten = this.datenbank.uebernatuerliche_fertigkeiten;
         for (let fert of fertigkeiten) {
             let item = new Item(fert);
-            await pack.importEntity(item);
+            await pack.importDocument(item);
         }
     }
 
     async _create_vorteile() {
+        await game.packs.get("world.vorteile").getDocuments();
         const pack = game.packs.get("world.vorteile");
-        await pack.getIndex().then(index => {
-            for (let i of index) {
-                pack.deleteEntity(i._id);
-            }
-        });
+        // await pack.getIndex().then(index => {
+        //     for (let i of index) {
+        //         pack.deleteEntity(i._id);
+        //     }
+        // });
+        pack.forEach(e => e.delete());
         let vorteile = this.datenbank.vorteile;
         for (let vort of vorteile) {
             let item = new Item(vort);
-            await pack.importEntity(item);
+            await pack.importDocument(item);
         }
     }
 
     async _create_manoever() {
+        await game.packs.get("world.manover").getDocuments();
         const pack = game.packs.get("world.manover");
-        await pack.getIndex().then(index => {
-            for (let i of index) {
-                pack.deleteEntity(i._id);
-            }
-        });
+        // await pack.getIndex().then(index => {
+        //     for (let i of index) {
+        //         pack.deleteEntity(i._id);
+        //     }
+        // });
+        pack.forEach(e => e.delete());
         let manoever = this.datenbank.manoever;
         for (let man of manoever) {
             let item = new Item(man);
-            await pack.importEntity(item);
+            await pack.importDocument(item);
         }
     }
 

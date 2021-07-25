@@ -1,4 +1,5 @@
 import * as hardcoded from "./hardcodedvorteile.js";
+// import { get_statuseffect_by_id } from "../common/wuerfel/wuerfel_misc.js";
 
 export class IlarisActor extends Actor {
 
@@ -78,6 +79,19 @@ export class IlarisActor extends Actor {
         // }
         super.prepareBaseData();
     }
+
+    __getStatuseffectById(data, statusId) {
+        // console.log("get_statuseffect");
+        // console.log(actor);
+        let iterator = data.effects.values();
+        for (const effect of iterator) {
+            if (effect.data.flags.core.statusId == statusId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
 
     _initializeHeld(data) {
         console.log("**Ilaris** Bevor Berechnungen");
@@ -749,6 +763,22 @@ export class IlarisActor extends Actor {
             if (data.data.vorteil.kampf.find(x => x.name.includes("Reflexschuss"))) item.data.data.manoever.rflx = true;
             if (hardcoded.getKampfstilStufe("rtk", data) >= 2) item.data.data.manoever.brtn.rtk = true;
             if (reittier) item.data.data.manoever.brtn.selected = true;
+            // get status effects
+            // licht lcht
+            // console.log("bevor get_status_effects");
+            // console.log(data);
+            let ss1 = this.__getStatuseffectById(data, "schlechtesicht1");
+            let ss2 = this.__getStatuseffectById(data, "schlechtesicht2");
+            let ss3 = this.__getStatuseffectById(data, "schlechtesicht3");
+            let ss4 = this.__getStatuseffectById(data, "schlechtesicht4");
+            if (ss4) { item.data.data.manoever.lcht.selected = 4; }
+            else if (ss3) { item.data.data.manoever.lcht.selected = 3; }
+            else if (ss2) { item.data.data.manoever.lcht.selected = 2; }
+            else if (ss1) { item.data.data.manoever.lcht.selected = 1; }
+            else { item.data.data.manoever.lcht.selected = 0; }
+            let lcht_angepasst = hardcoded.getAngepasst("Dunkelheit", data);
+            // console.log(`licht angepasst: ${lcht_angepasst}`);
+            item.data.data.manoever.lcht.angepasst = lcht_angepasst;
         }
 
 
@@ -1198,19 +1228,19 @@ export class IlarisActor extends Actor {
             else unsorted.push(i);
         }
         uebernatuerliche_fertigkeiten.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-        uebernatuerliche_fertigkeiten.sort((a, b) => (a.data.gruppe > b.data.gruppe) ? 1 : ((b.data.gruppe > a.data.gruppe) ? -1 : 0));
+        uebernatuerliche_fertigkeiten.sort((a, b) => (a.data.data.gruppe > b.data.data.gruppe) ? 1 : ((b.data.data.gruppe > a.data.data.gruppe) ? -1 : 0));
         // magie_fertigkeiten.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
         // magie_fertigkeiten.sort((a, b) => (a.data.gruppe > b.data.gruppe) ? 1 : ((b.data.gruppe > a.data.gruppe) ? -1 : 0));
         magie_talente.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-        magie_talente.sort((a, b) => (a.data.gruppe > b.data.gruppe) ? 1 : ((b.data.gruppe > a.data.gruppe) ? -1 : 0));
+        magie_talente.sort((a, b) => (a.data.data.gruppe > b.data.data.gruppe) ? 1 : ((b.data.data.gruppe > a.data.data.gruppe) ? -1 : 0));
         // karma_fertigkeiten.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
         // karma_fertigkeiten.sort((a, b) => (a.data.gruppe > b.data.gruppe) ? 1 : ((b.data.gruppe > a.data.gruppe) ? -1 : 0));
         karma_talente.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-        karma_talente.sort((a, b) => (a.data.gruppe > b.data.gruppe) ? 1 : ((b.data.gruppe > a.data.gruppe) ? -1 : 0));
+        karma_talente.sort((a, b) => (a.data.data.gruppe > b.data.data.gruppe) ? 1 : ((b.data.data.gruppe > a.data.data.gruppe) ? -1 : 0));
         profan_fertigkeiten.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-        profan_fertigkeiten.sort((a, b) => (a.data.gruppe > b.data.gruppe) ? 1 : ((b.data.gruppe > a.data.gruppe) ? -1 : 0));
+        profan_fertigkeiten.sort((a, b) => (a.data.data.gruppe > b.data.data.gruppe) ? 1 : ((b.data.data.gruppe > a.data.data.gruppe) ? -1 : 0));
         freie_fertigkeiten.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-        freie_fertigkeiten.sort((a, b) => (a.data.gruppe > b.data.gruppe) ? 1 : ((b.data.gruppe > a.data.gruppe) ? -1 : 0));
+        freie_fertigkeiten.sort((a, b) => (a.data.data.gruppe > b.data.data.gruppe) ? 1 : ((b.data.data.gruppe > a.data.data.gruppe) ? -1 : 0));
         vorteil_allgemein.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
         vorteil_profan.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
         vorteil_kampf.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));

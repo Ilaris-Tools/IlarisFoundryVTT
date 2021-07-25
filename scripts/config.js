@@ -137,35 +137,36 @@ ILARIS.distance_choice = {
 
 // Größenklassen
 ILARIS.gzkl_choice = {
-    "2": "sehr groß (Elefant)",
+    "0": "sehr groß (Elefant)",
     "1": "groß (Pferd, Oger)",
-    "0": "mittel (Mensch, Zwerg)",
-    "-1": "klein (Wolf, Reh)",
-    "-2": "sehr klein (Fasan, Hase)",
-    "-3": "winzig (Maus)"
+    "2": "mittel (Mensch, Zwerg)",
+    "3": "klein (Wolf, Reh)",
+    "4": "sehr klein (Fasan, Hase)",
+    "5": "winzig (Maus)"
 };
 
 // Lichtverhältnisse
 ILARIS.lcht_choice = {
-    "0": "Tag (Status)",
-    "-1": "Dämmerung",
-    "-2": "Mondlicht",
-    "-4": "Sternenlicht"
+    "0": "Tag",
+    "1": "Dämmerung",
+    "2": "Mondlicht",
+    "3": "Sternenlicht",
+    "4": "Blind"
 };
 
 // Wetterverhältnisse
 ILARIS.wttr_choice = {
     "0": "still",
-    "-1": "Wind",
-    "-2": "Sturm"
+    "1": "Wind",
+    "2": "Sturm"
 };
 
 // Bewegung
 ILARIS.bwng_choice = {
     "0": "langsam",
-    "-1": "schnell (laufender Mensch)",
-    "-2": "sehr schnell (Pferd)",
-    "-3": "extrem schnell (Vogel)"
+    "1": "schnell (laufender Mensch)",
+    "2": "sehr schnell (Pferd)",
+    "3": "extrem schnell (Vogel)"
 };
 
 // Deckung
@@ -326,7 +327,7 @@ ILARIS.manoever_fernkampf = {
     //     "selected": false
     // },
     "gzkl": {
-        "selected": "0"
+        "selected": "2"
     },
     // "umge": {
     //     "selected": "0"
@@ -335,6 +336,7 @@ ILARIS.manoever_fernkampf = {
         "selected": "0"
     },
     "lcht": {
+        "angepasst": "0",
         "selected": "0"
     },
     "wttr": {

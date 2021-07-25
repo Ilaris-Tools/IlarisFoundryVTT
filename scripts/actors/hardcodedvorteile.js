@@ -142,3 +142,12 @@ export function getKampfstilStufe(stil, data) {
     if (data.data.vorteil.kampfstil.find(x => x.name == `${CONFIG.ILARIS.label[stil]} IV`)) stufe = 4;
     return stufe;
 }
+
+export function getAngepasst(angepasst_string, data) {
+    let angepasst = 0;
+    let string_1 = `Angepasst (${angepasst_string}) I`;
+    let string_2 = `Angepasst (${angepasst_string}) II`;
+    if (data.data.vorteil.allgemein.find(x => x.name == string_1)) angepasst = 1;
+    if (data.data.vorteil.allgemein.find(x => x.name == string_2)) angepasst = 2;
+    return angepasst;
+}

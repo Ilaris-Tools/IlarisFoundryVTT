@@ -252,11 +252,11 @@ export function calculate_attacke(actor, item) {
         mod_at -= 2;
         text = text.concat(`${CONFIG.ILARIS.label["km_gzsl"]}: ${CONFIG.ILARIS.trefferzonen[trefferzone]}\n`);
     }
-    else {
-        let r = new Roll("1d6");
-        r = r.evaluate({ "async": false }).total;
-        text = text.concat(`Trefferzone: ${CONFIG.ILARIS.trefferzonen[r]}\n`);
-    }
+    // else {
+    //     let r = new Roll("1d6");
+    //     r = r.evaluate({ "async": false }).total;
+    //     text = text.concat(`Trefferzone: ${CONFIG.ILARIS.trefferzonen[r]}\n`);
+    // }
     // Umreißen km_umre
     if (item.data.data.manoever.km_umre.selected) {
         text = text.concat(`${CONFIG.ILARIS.label["km_umre"]}\n`);
