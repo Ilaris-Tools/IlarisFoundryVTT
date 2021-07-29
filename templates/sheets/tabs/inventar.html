@@ -1,10 +1,24 @@
+<div class="flexrow">
+    <label>Dukaten</label>
+    <input name="data.geld.dukaten" value="{{data.data.geld.dukaten}}" type="text" data-dtype="Number">
+    <label>Silbertaler</label>
+    <input name="data.geld.silbertaler" value="{{data.data.geld.silbertaler}}" type="text" data-dtype="Number">
+    <label>Heller</label>
+    <input name="data.geld.heller" value="{{data.data.geld.heller}}" type="text" data-dtype="Number">
+    <label>Kreuzer</label>
+    <input name="data.geld.kreuzer" value="{{data.data.geld.kreuzer}}" type="text" data-dtype="Number">
+    <button class="clickable" data-clicktype="shorten_money" type="button">Geld zusammenrechnen</button>
+</div>
+
+<br>
+
 <a class="item-create" data-itemclass="gegenstand"><i class="fas fa-plus"></i>Neuer Gegenstand</a>
 
 <h2>Tragend</h2>
 <!-- (Gewicht wird nicht berücksichtigt) -->
 <div class="flexrow">
     <label><b>Name</b></label>
-    <label><b>Gewicht</b></label>
+    <label><b>{{get_label "gewicht"}}</b></label>
     <label class="icon-small"></label>
     <label class="icon-small"></label>
 </div>
@@ -25,7 +39,7 @@
 <!-- (Gewicht wird nicht berücksichtigt) -->
 <div class="flexrow">
     <label><b>Name</b></label>
-    <label><b>Gewicht</b></label>
+    <label><b>{{get_label "gewicht"}}</b></label>
     <label><b>{{data.data.getragen}}</b></label>
     <label><b>/</b></label>
     <label><b>{{data.data.abgeleitete.traglast}}</b></label>
@@ -56,7 +70,7 @@
 <a class="item-delete icon-small" data-itemid="{{itemContainer.id}}"><i class="fas fa-trash"></i></a>
 <div class="flexrow">
     <label><b>Name</b></label>
-    <label><b>Gewicht</b></label>
+    <label><b>{{get_label "gewicht"}}</b></label>
     <label><b>{{itemContainer.data.data.gewicht_summe}}</b></label>
     <label><b>/</b></label>
     <label><b>{{multMinusOne itemContainer.data.data.gewicht}}</b></label>

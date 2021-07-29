@@ -18,8 +18,8 @@ Wer ein stabiles und vollständiges System für VTT sucht, sollte daher auf das 
 
 ### Unterstützung
 Wir freuen uns über jegliche Hilfe und Unterstützung.
-Wer Javascript programmieren kann oder in html und css firm ist, beziehungsweise bereit ist es sich anzueignen, ist jederzeit herzlich willkommen.
-Keiner von uns hatte vorherige Erfahrung in der Webprogrammierung; Wir eignen uns die notwendigen Fertigkeiten selber erst im Rahmen des Projekts an.
+Wer Javascript programmieren kann oder in html und css firm ist, beziehungsweise bereit ist es sich anzueignen, ist jederzeit herzlich willkommen. Insbesondere eine künstlerische Ader um den Heldenbogen aufzuhübschen wird dringend benötigt.
+Keiner von uns hatte vorherige Erfahrung in der Webprogrammierung; Wir eignen uns die notwendigen Fertigkeiten selber erst im Rahmen des Projekts an (Was beim Einblick in den Code auch recht offensichtlich wird).
 Aber auch Anregungen und allgemeines Feedback, welches im [DSA-Forum](https://dsaforum.de/viewtopic.php?f=180&t=55746&sid=58516b319511875ce0bc2dc00b379b4d) gepostet werden kann, helfen uns weiter und sind herzlich willkommen.
 
 ## Aktueller Entwicklungsstand
@@ -41,15 +41,25 @@ Aber auch Anregungen und allgemeines Feedback, welches im [DSA-Forum](https://ds
 * Willensstark I
 * Willensstark II (nur mr)
 * Zauberer I/II/III/IV
+* hoffentlich alle Vorteile für Manöver im Nah- und Fernkampf
 
 ### Zu beachten
 * Der obige Absatz unter **!!Achtung!!**
+* Im Compendium "Beispielhelden" gibt es "Alrik die leere Vorlage", die schon alle typischen Fertigkeiten ausgerüstet hat
 * Rüstungen werden erst berechnet, wenn sie angelegt werden. Symbol links neben dem Namen anklicken
 * Kampfstile werden nur für die ausgerüsteten Haupt- und Nebenwaffen berechnet
 * Es kann maximal jeweils eine Haupt- und Nebenwaffe angelegt sein. Zweihändige Waffen müssen gleichzeitig Haupt- und Nebenwaffe sein, sonst werden die Abzüge für einhändige Führung angerechnet
+* Falls (Kampf-)manöver nicht ausgewählt werden können, kontrolliert ob die Voraussetzungen erfüllt sind (Waffeneigenschaften, Waffe ausgerüstet, Kampfstil ausgewählt, Sonderfertigkeit vorhanden)
 * Der Einsatz von Schicksalspunkten (Bei profanen Fertigkeiten) funktioniert nur, wenn Schicksalspunkte vorhanden sind. Ansonsten wird ohne Meldung eine normale 3W20 Probe geworfen
 * Astral- und Karmapunkte werden nur angezeigt, wenn die Vorteile Zauberer oder Geweiht aktiviert sind
 * Der Zukauf von AsP und KaP kann durch einen Mausklick auf das Label AsP/KaP eingestellt werden
+* Inventar:
+    * Zur Traglast werden die Regeln aus [Ilaris Advanced](https://dsaforum.de/viewtopic.php?f=180&t=49412) verwendet. 
+    * Tragend: Gegenstände an der Person, deren Gewicht nicht berücksichtigt wird (zB getragene Kleidung)
+    * Mitführend: Gegenstände an der Person, deren Gewicht berücksichtigt wird
+    * Lagerplatz/Transportmittel: Wenn man bei einem Gegenstand ein negatives Gewicht einträgt, wird er als externer Speicherort gelistet (zB Eselskarren oder eigenes Haus)
+    * Wenn das Durchhaltevermögen (dh*) auf 0 oder niedriger fällt, ist man überladen. (Die Behinderung durch die Rüstung wird vor der Behinderung durch die Traglast berechnet; durch Rüstung kann dh nicht unter 1 fallen)
+    * Das Gewicht der Waffen im Kompendium ist einfachst automatisch aus der Sephrasto-Datenbank berechnet => Anpassungen werden nötig sein
 * Bei einem Import aus *Beispiel Helden* werden eine ganze Menge Fehler angezeigt. Keine Ahnung woher sie kommen. Es scheint aber dennoch zu funktionieren
 
 ### TO-DO

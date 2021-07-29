@@ -103,7 +103,9 @@ ILARIS.label = {
     "mm_kosp": "Kosten sparen",
     "mm_zela": "Zeit lassen",
     "mm_zere": "Zeremonie",
-    "mm_opfe": "Opferung"
+    "mm_opfe": "Opferung",
+    // sonstige
+    "gewicht": "Platzbedarf"
 };
 
 ILARIS.trefferzonen = {

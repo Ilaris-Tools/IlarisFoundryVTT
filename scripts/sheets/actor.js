@@ -21,6 +21,7 @@ export class IlarisActorSheet extends ActorSheet {
         super.activateListeners(html);
         html.find(".ausklappen-trigger").click(ev => this._ausklappView(ev));
         html.find(".rollable").click(ev => this._onRollable(ev));
+        html.find(".clickable").click(ev => this._onClickable(ev));
         html.find(".item-create").click(ev => this._onItemCreate(ev));
         html.find(".item-edit").click(ev => this._onItemEdit(ev));
         html.find(".item-delete").click(ev => this._onItemDelete(ev));
@@ -214,6 +215,37 @@ export class IlarisActorSheet extends ActorSheet {
             // speaker: "hallo",
             flavor: html_roll
         });
+    }
+
+    async _onClickable(event) {
+        let data = this.actor.data.data;
+        // console.log($(event.currentTarget));
+        let clicktype = $(event.currentTarget).data("clicktype");
+        if (clicktype == "shorten_money") {
+            let kreuzer = data.geld.kreuzer;
+            let heller = data.geld.heller;
+            let silbertaler = data.geld.silbertaler;
+            let dukaten = data.geld.dukaten;
+            if (kreuzer > 10) {
+                let div = Math.floor(kreuzer/10);
+                heller += div;
+                kreuzer -= div*10;
+            }
+            if (heller > 10) {
+                let div = Math.floor(heller/10);
+                silbertaler += div;
+                heller -= div*10;
+            }
+            if (silbertaler > 10) {
+                let div = Math.floor(silbertaler/10);
+                dukaten += div;
+                silbertaler -= div*10;
+            }
+            this.actor.update({ "data.geld.kreuzer": kreuzer });
+            this.actor.update({ "data.geld.heller": heller });
+            this.actor.update({ "data.geld.silbertaler": silbertaler });
+            this.actor.update({ "data.geld.dukaten": dukaten });
+        }
     }
 
     _onHpUpdate(event) {

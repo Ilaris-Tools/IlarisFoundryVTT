@@ -61,6 +61,13 @@
       "system": "Ilaris"
     },
     {
+      "label": "Gegenstände",
+      "entity": "Item",
+      "name": "gegenstande",
+      "path": "./packs/gegenstande.db",
+      "system": "Ilaris"
+    },
+    {
       "label": "Zaubersprüche und Rituale",
       "entity": "Item",
       "name": "zauberspruche-und-rituale",
