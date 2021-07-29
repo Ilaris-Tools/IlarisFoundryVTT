@@ -61,51 +61,63 @@
                 <div>
                     <span>
                         <label>| Nicht für Reiter: </label>
-                        <input name="data.eigenschaften.kein_reiter" data-dtype="Boolean" type="checkbox" {{checked data.data.eigenschaften.kein_reiter}}>
+                        <input name="data.eigenschaften.kein_reiter" data-dtype="Boolean" type="checkbox" {{checked
+                            data.data.eigenschaften.kein_reiter}}>
                     </span>
                     <span>
                         <label>| Niederwerfen: </label>
-                        <input name="data.eigenschaften.niederwerfen" data-dtype="Boolean" type="checkbox" {{checked data.data.eigenschaften.niederwerfen}}>
+                        <input name="data.eigenschaften.niederwerfen" data-dtype="Boolean" type="checkbox" {{checked
+                            data.data.eigenschaften.niederwerfen}}>
                     </span>
                     <span>
                         <label>| Niederwerfen (-4): </label>
-                        <input name="data.eigenschaften.niederwerfen_4" data-dtype="Boolean" type="checkbox" {{checked data.data.eigenschaften.niederwerfen_4}}>
+                        <input name="data.eigenschaften.niederwerfen_4" data-dtype="Boolean" type="checkbox" {{checked
+                            data.data.eigenschaften.niederwerfen_4}}>
                     </span>
                     <span>
                         <label>| Niederwerfen (-8): </label>
-                        <input name="data.eigenschaften.niederwerfen_8" data-dtype="Boolean" type="checkbox" {{checked data.data.eigenschaften.niederwerfen_8}}>
+                        <input name="data.eigenschaften.niederwerfen_8" data-dtype="Boolean" type="checkbox" {{checked
+                            data.data.eigenschaften.niederwerfen_8}}>
                     </span>
                     <span>
                         <label>| Schwer (4): </label>
-                        <input name="data.eigenschaften.schwer_4" data-dtype="Boolean" type="checkbox" {{checked data.data.eigenschaften.schwer_4}}>
+                        <input name="data.eigenschaften.schwer_4" data-dtype="Boolean" type="checkbox" {{checked
+                            data.data.eigenschaften.schwer_4}}>
                     </span>
                     <span>
                         <label>| Schwer (8): </label>
-                        <input name="data.eigenschaften.schwer_8" data-dtype="Boolean" type="checkbox" {{checked data.data.eigenschaften.schwer_8}}>
+                        <input name="data.eigenschaften.schwer_8" data-dtype="Boolean" type="checkbox" {{checked
+                            data.data.eigenschaften.schwer_8}}>
                     </span>
                     <span>
                         <label>| Stationär: </label>
-                        <input name="data.eigenschaften.stationaer" data-dtype="Boolean" type="checkbox" {{checked data.data.eigenschaften.stationaer}}>
+                        <input name="data.eigenschaften.stationaer" data-dtype="Boolean" type="checkbox" {{checked
+                            data.data.eigenschaften.stationaer}}>
                     </span>
                     <span>
                         <label>| Stumpf: </label>
-                        <input name="data.eigenschaften.stumpf" data-dtype="Boolean" type="checkbox" {{checked data.data.eigenschaften.stumpf}}>
+                        <input name="data.eigenschaften.stumpf" data-dtype="Boolean" type="checkbox" {{checked
+                            data.data.eigenschaften.stumpf}}>
                     </span>
                     <span>
                         <label>| Umklammern (2,12): </label>
-                        <input name="data.eigenschaften.umklammern_212" data-dtype="Boolean" type="checkbox" {{checked data.data.eigenschaften.umklammern_212}}>
+                        <input name="data.eigenschaften.umklammern_212" data-dtype="Boolean" type="checkbox" {{checked
+                            data.data.eigenschaften.umklammern_212}}>
                     </span>
                     <span>
                         <label>| Umklammern (4,16): </label>
-                        <input name="data.eigenschaften.umklammern_416" data-dtype="Boolean" type="checkbox" {{checked data.data.eigenschaften.umklammern_416}}>
+                        <input name="data.eigenschaften.umklammern_416" data-dtype="Boolean" type="checkbox" {{checked
+                            data.data.eigenschaften.umklammern_416}}>
                     </span>
                     <span>
                         <label>| Umklammern (8,16): </label>
-                        <input name="data.eigenschaften.umklammern_816" data-dtype="Boolean" type="checkbox" {{checked data.data.eigenschaften.umklammern_816}}>
+                        <input name="data.eigenschaften.umklammern_816" data-dtype="Boolean" type="checkbox" {{checked
+                            data.data.eigenschaften.umklammern_816}}>
                     </span>
                     <span>
                         <label>| Zweihändig: </label>
-                        <input name="data.eigenschaften.zweihaendig" data-dtype="Boolean" type="checkbox" {{checked data.data.eigenschaften.zweihaendig}}>
+                        <input name="data.eigenschaften.zweihaendig" data-dtype="Boolean" type="checkbox" {{checked
+                            data.data.eigenschaften.zweihaendig}}>
                     </span>
                 </div>
             </div>
@@ -122,6 +134,25 @@
             {{/if}}
             <label><b>Beschreibung: </b></label>
             <textarea name="data.text">{{data.data.text}}</textarea>
+            <div class="flexrow">
+                <label class="flex-fest-var" style="flex-basis:100px"><b>Gewicht: </b></label>
+                <input name="data.gewicht" value="{{data.data.gewicht}}" type="text" data-dtype="Number">
+            </div>
+            <div class="flexrow">
+                <label class="flex-fest-var" style="flex-basis:100px"><b>Preis: </b></label>
+                <input name="data.preis" value="{{data.data.preis}}" type="text" data-dtype="Number">
+                <label class="flex-fest-var" style="flex-basis:100px"><b>ST </b></label>
+            </div>
+            {{#if hasOwner}}
+            <label class="flex-fest-var" style="flex-basis:100px"><b>Aufbewahrungsort: </b></label>
+            <select name="data.aufbewahrungs_ort">
+                {{#select data.data.aufbewahrungs_ort}}
+                {{#each speicherplatz_list as |ort|}}
+                <option value="{{ort}}">{{ort}}</option>
+                {{/each}}
+                {{/select}}
+            </select>
+            {{/if}}
         </div>
     </div>
 </form>

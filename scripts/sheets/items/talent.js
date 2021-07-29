@@ -5,7 +5,6 @@ export class TalentSheet extends IlarisItemSheet {
     getData() {
         const data = super.getData();
         if (data.hasOwner) {
-            // console.log(this.item.actor.data.misc.profan_fertigkeit_list);
             data.fertigkeit_list = this.item.actor.data.data.misc.profan_fertigkeit_list;
         };
         // console.log("In item.js");

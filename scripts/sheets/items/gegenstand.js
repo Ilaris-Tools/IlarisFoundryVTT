@@ -1,6 +1,6 @@
 import { IlarisItemSheet } from "./item.js";
 
-export class NahkampfwaffeSheet extends IlarisItemSheet {
+export class GegenstandSheet extends IlarisItemSheet {
 
     getData() {
         const data = super.getData();
@@ -13,7 +13,7 @@ export class NahkampfwaffeSheet extends IlarisItemSheet {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             // classes: ["ilaris", "sheet"],
-            template: "systems/Ilaris/templates/sheets/items/nahkampfwaffe.html",
+            template: "systems/Ilaris/templates/sheets/items/gegenstand.html",
             // width: 720,
             // height: 800,
             // resizable: false,

@@ -8,6 +8,7 @@ function preloadHandlebarsTemplates() {
         // "systems/Ilaris/templates/sheets/helden.html",
         "systems/Ilaris/templates/sheets/tabs/attribute.html",
         "systems/Ilaris/templates/sheets/tabs/fertigkeiten.html",
+        "systems/Ilaris/templates/sheets/tabs/kampf.html",
         "systems/Ilaris/templates/sheets/tabs/inventar.html",
         "systems/Ilaris/templates/sheets/tabs/uebernatuerlich.html",
         "systems/Ilaris/templates/sheets/tabs/notes.html",
@@ -142,4 +143,8 @@ function registerHandlebarsHelpers() {
         };
         return talentString;
     });
+
+    Handlebars.registerHelper("multMinusOne", function(numb) {
+        return -1*numb;
+    })
 };

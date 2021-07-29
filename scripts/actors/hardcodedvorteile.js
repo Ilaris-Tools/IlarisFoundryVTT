@@ -12,6 +12,25 @@ export function behinderung(be, data) {
     return be;
 }
 
+export function beTraglast(data) {
+    let summeGewicht = data.data.getragen;
+    let traglast = data.data.abgeleitete.traglast;
+    let intervall = data.data.abgeleitete.traglast_intervall;
+    let be_mod = 0;
+    let gewicht_diff = summeGewicht - traglast;
+    if (gewicht_diff > 0) {
+        let div_floor = Math.floor(gewicht_diff/intervall);
+        let div_ceil = Math.ceil(gewicht_diff/intervall);
+        if (div_ceil == div_floor) {
+            be_mod = div_floor;
+        }
+        else {
+            be_mod = div_floor + 1;
+        }
+    }
+    return be_mod;
+}
+
 export function wundschwelle(ws, data) {
     if (data.data.vorteil.profan.find(x => x.name == "Unverwüstlich")) ws += 1;
     // let uv = data.vorteil.profan.find(x => x.name == "Unverwüstlich");
@@ -54,9 +73,16 @@ export function geschwindigkeit(gs, data) {
     return gs;
 }
 
-export function durchhalte(dh, data) {
+export function durchhalte(data) {
+    //Reihenfolge der Berechnung?
+    let be_traglast = data.data.abgeleitete.be_traglast;
+    let be = data.data.abgeleitete.be - be_traglast;
+    let dh = data.data.attribute.KO.wert;
     let agh = data.data.vorteil.profan.find(x => x.name == "Abgehärtet II");
     if (agh) dh += 2;
+    dh -= 2*be;
+    dh = (dh > 1) ? dh : 1;
+    dh -= 2*be_traglast;
     return dh;
 }
 

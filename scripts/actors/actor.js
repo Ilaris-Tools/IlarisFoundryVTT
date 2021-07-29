@@ -416,7 +416,6 @@ export class IlarisActor extends Actor {
         // }
     }
 
-
     _calculateAbgeleitete(data) {
         console.log("Berechne abgeleitete Werte");
         let globalermod = hardcoded.globalermod(data);
@@ -428,9 +427,22 @@ export class IlarisActor extends Actor {
         let mr = 4 + Math.floor(data.data.attribute.MU.wert / 4);
         mr = hardcoded.magieresistenz(mr, data);
         data.data.abgeleitete.mr = mr;
-        let dh = data.data.attribute.KO.wert - (2 * data.data.abgeleitete.be);
-        dh = hardcoded.durchhalte(dh, data);
-        dh = (dh > 1) ? dh : 1;
+        let traglast_intervall = data.data.attribute.KK.wert;
+        data.data.abgeleitete.traglast_intervall = traglast_intervall;
+        let traglast = 2 * data.data.attribute.KK.wert;
+        data.data.abgeleitete.traglast = traglast;
+        let summeGewicht = 0;
+        for (let i of data.data.inventar.mitfuehrend) {
+            summeGewicht += i.data.data.gewicht;
+        }
+        data.data.getragen = summeGewicht;
+        let be_mod = hardcoded.beTraglast(data);
+        data.data.abgeleitete.be += be_mod;
+        data.data.abgeleitete.be_traglast = be_mod;
+        let dh = hardcoded.durchhalte(data);
+        // let dh = data.data.attribute.KO.wert - (2 * data.data.abgeleitete.be);
+        // dh = hardcoded.durchhalte(dh, data);
+        // dh = (dh > 1) ? dh : 1;
         data.data.abgeleitete.dh = dh;
         let gs = 4 + Math.floor(data.data.attribute.GE.wert / 4);
         gs = hardcoded.geschwindigkeit(gs, data);
@@ -1161,22 +1173,58 @@ export class IlarisActor extends Actor {
         let vorteil_geweihtetraditionen = [];
         let eigenheiten = [];
         let unsorted = [];
+        let speicherplatz_list = ["tragend", "mitführend"];
+        let item_tragend = [];
+        let item_mitfuehrend = [];
+        let item_list = [];
+        let item_list_tmp = [];
         for (let i of data.items) {
             // let item = i.data;
             if (i.type == "ruestung") {
                 // console.log("Rüstung gefunden");
                 // console.log(i);
+                i.data.data.bewahrt_auf = [];
+                if (i.data.data.gewicht < 0) {
+                    i.data.data.gewicht_summe = 0;
+                    speicherplatz_list.push(i.name);
+                    item_list.push(i);
+                }
+                else item_list_tmp.push(i);
                 ruestungen.push(i);
             }
             else if (i.type == "nahkampfwaffe") {
                 // console.log("Nahkampfwaffe gefunden");
                 // console.log(i);
+                i.data.data.bewahrt_auf = [];
+                if (i.data.data.gewicht < 0) {
+                    i.data.data.gewicht_summe = 0;
+                    speicherplatz_list.push(i.name);
+                    item_list.push(i);
+                }
+                else item_list_tmp.push(i);
                 nahkampfwaffen.push(i);
             }
             else if (i.type == "fernkampfwaffe") {
                 // console.log("Fernkampfwaffe gefunden");
                 // console.log(i);
+                i.data.data.bewahrt_auf = [];
+                if (i.data.data.gewicht < 0) {
+                    i.data.data.gewicht_summe = 0;
+                    speicherplatz_list.push(i.name);
+                    item_list.push(i);
+                }
+                else item_list_tmp.push(i);
                 fernkampfwaffen.push(i);
+            }
+            else if (i.type == "gegenstand") {
+                i.data.data.bewahrt_auf = [];
+                if (i.data.data.gewicht < 0) {
+                    i.data.data.gewicht_summe = 0;
+                    speicherplatz_list.push(i.name);
+                    item_list.push(i);
+                }
+                else item_list_tmp.push(i);
+
             }
             else if (i.type == "fertigkeit") {
                 // console.log("Magiefertigkeit gefunden");
@@ -1227,6 +1275,11 @@ export class IlarisActor extends Actor {
             }
             else unsorted.push(i);
         }
+        ruestungen.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+        nahkampfwaffen.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+        fernkampfwaffen.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+        item_list.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+        item_list_tmp.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
         uebernatuerliche_fertigkeiten.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
         uebernatuerliche_fertigkeiten.sort((a, b) => (a.data.data.gruppe > b.data.data.gruppe) ? 1 : ((b.data.data.gruppe > a.data.data.gruppe) ? -1 : 0));
         // magie_fertigkeiten.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
@@ -1276,11 +1329,38 @@ export class IlarisActor extends Actor {
             }
         }
 
+        data.data.getragen = 0;
+        for (let i of item_list_tmp) {
+            let aufbewahrung = i.data.data.aufbewahrungs_ort;
+            if (aufbewahrung == "tragend") {
+                item_tragend.push(i);
+            }
+            else if (aufbewahrung == "mitführend") {
+                item_mitfuehrend.push(i);
+                data.data.getragen += i.data.data.gewicht;
+            }
+            else if (speicherplatz_list.includes(aufbewahrung)) {
+                // item_list.find(x => x.name == aufbewahrung).data.data.bewahrt_auf.push(i);
+                let idx = item_list.indexOf(item_list.find(x => x.name == aufbewahrung));
+                item_list[idx].data.data.bewahrt_auf.push(i);
+                item_list[idx].data.data.gewicht_summe += i.data.data.gewicht;
+            }
+            else {
+                i.data.data.aufbewahrungs_ort == "mitführend";
+                item_mitfuehrend.push(i);
+                data.data.getragen += i.data.data.gewicht;
+            }
+        }
+
         // data.magie = {};
         // data.karma = {};
         data.data.profan = {};
         data.data.uebernatuerlich = {};
         data.data.vorteil = {};
+        data.data.inventar = {};
+        data.data.inventar.tragend = item_tragend;
+        data.data.inventar.mitfuehrend = item_mitfuehrend;
+        data.data.inventar.item_list = item_list;
         data.data.ruestungen = ruestungen;
         data.data.nahkampfwaffen = nahkampfwaffen;
         data.data.fernkampfwaffen = fernkampfwaffen;
@@ -1306,6 +1386,7 @@ export class IlarisActor extends Actor {
         data.data.misc = data.data.misc || {};
         data.data.misc.profan_fertigkeit_list = profan_fertigkeit_list;
         data.data.misc.uebernatuerlich_fertigkeit_list = this.__getAlleUebernatuerlichenFertigkeiten(data);
+        data.data.misc.speicherplatz_list = speicherplatz_list;
 
         // let actor = game.actors.get(data._id);
         // // console.log(actor);

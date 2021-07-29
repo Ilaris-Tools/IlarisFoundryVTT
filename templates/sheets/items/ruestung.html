@@ -45,6 +45,25 @@
             <label>Beschreibung</label>
             <textarea name="data.text">{{data.data.text}}</textarea>
             <!-- {{editor content=data.text target="data.text" button=true owner=owner editable=editable}} -->
+            <div class="flexrow">
+                <label class="flex-fest-var" style="flex-basis:100px"><b>Gewicht: </b></label>
+                <input name="data.gewicht" value="{{data.data.gewicht}}" type="text" data-dtype="Number">
+            </div>
+            <div class="flexrow">
+                <label class="flex-fest-var" style="flex-basis:100px"><b>Preis: </b></label>
+                <input name="data.preis" value="{{data.data.preis}}" type="text" data-dtype="Number">
+                <label class="flex-fest-var" style="flex-basis:100px"><b>ST </b></label>
+            </div>
+            {{#if hasOwner}}
+            <label class="flex-fest-var" style="flex-basis:100px"><b>Aufbewahrungsort: </b></label>
+            <select name="data.aufbewahrungs_ort">
+                {{#select data.data.aufbewahrungs_ort}}
+                {{#each speicherplatz_list as |ort|}}
+                <option value="{{ort}}">{{ort}}</option>
+                {{/each}}
+                {{/select}}
+            </select>
+            {{/if}}
         </div>
     </div>
 </form>

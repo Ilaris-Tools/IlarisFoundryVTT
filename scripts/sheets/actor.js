@@ -342,6 +342,13 @@ export class IlarisActorSheet extends ActorSheet {
                 type: "eigenheit",
                 data: {}
             };
+        } else if (itemclass == "gegenstand") {
+            console.log("Neuer Gegenstand");
+            itemData = {
+                name: "gegenstand",
+                type: "gegenstand",
+                data: {}
+            };
         }
         // console.log(this.actor);
         // console.log(this.actor.data);

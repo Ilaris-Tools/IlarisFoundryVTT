@@ -92,6 +92,7 @@ class Exporter:
                 "rw": int(item["@rw"]),
                 "wm_at": int(item["@wm"]),
                 "wm_vt": int(item["@wm"]),
+                "gewicht": 1,
                 "eigenschaften": {
                     "kopflastig": "Kopflastig" in item.get("#text", ""),
                     "niederwerfen": "Niederwerfen" in item.get("#text", ""),
@@ -111,6 +112,14 @@ class Exporter:
                 }
             }
         }
+        gewicht = 1
+        if (Waffe["data"]["eigenschaften"]["reittier"]):
+            gewicht = -1
+        elif (Waffe["data"]["eigenschaften"]["zweihaendig"]):
+            gewicht = 2
+        elif (Waffe["data"]["eigenschaften"]["schild"] and not Waffe["data"]["eigenschaften"]["parierwaffe"]):
+            gewicht = 2
+        Waffe["data"]["gewicht"] = gewicht
         return Waffe
 
     def __create_fernkampfwaffe(self, item):
@@ -130,6 +139,7 @@ class Exporter:
                 "talent": item["@talent"],
                 "rw": int(item["@rw"]),
                 "lz": int(item["@lz"]),
+                "gewicht": 1,
                 "eigenschaften": {
                     # "kein_reiter": "nicht für Reiter" in item.get("#text", False) or "Nicht für Reiter" in item.get("#text", False),
                     "kein_reiter": kein_reiter,
@@ -149,6 +159,12 @@ class Exporter:
         }
         if (Waffe["data"]["eigenschaften"]["niederwerfen_4"] == True or Waffe["data"]["eigenschaften"]["niederwerfen_8"] == True):
             Waffe["data"]["eigenschaften"]["niederwerfen"] = False
+        gewicht = 1
+        if (Waffe["data"]["eigenschaften"]["stationaer"]):
+            gewicht = 3
+        elif (Waffe["data"]["eigenschaften"]["zweihaendig"]):
+            gewicht = 2
+        Waffe["data"]["gewicht"] = gewicht
         return Waffe
 
     def __create_fertigkeit(self, item):

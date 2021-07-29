@@ -11,6 +11,7 @@ import { TalentSheet } from "./sheets/items/talent.js";
 // import { SephrastoImporter } from "./common/sephrasto_importer.js";
 import { NahkampfwaffeSheet } from "./sheets/items/nahkampfwaffe.js";
 import { FernkampfwaffeSheet } from "./sheets/items/fernkampfwaffe.js";
+import { GegenstandSheet } from "./sheets/items/gegenstand.js";
 import { FreieFertigkeitSheet } from "./sheets/items/freie_fertigkeit.js";
 import { VorteilSheet } from "./sheets/items/vorteil.js";
 import { ManoeverSheet } from "./sheets/items/manoever.js";
@@ -25,6 +26,7 @@ Hooks.once("init", () => {
     Items.registerSheet("Ilaris", RuestungSheet, {types: ["ruestung"], makeDefault: true});
     Items.registerSheet("Ilaris", NahkampfwaffeSheet, {types: ["nahkampfwaffe"], makeDefault: true});
     Items.registerSheet("Ilaris", FernkampfwaffeSheet, {types: ["fernkampfwaffe"], makeDefault: true});
+    Items.registerSheet("Ilaris", GegenstandSheet, {types: ["gegenstand"], makeDefault: true});
     Items.registerSheet("Ilaris", FertigkeitSheet, {types: ["fertigkeit"], makeDefault: true });
     Items.registerSheet("Ilaris", TalentSheet, {types: ["talent"], makeDefault: true});
     Items.registerSheet("Ilaris", UebernatuerlichFertigkeitSheet, {types: ["uebernatuerliche_fertigkeit"], makeDefault: true});

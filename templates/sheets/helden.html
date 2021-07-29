@@ -79,7 +79,8 @@
             <b class="item" data-tab="attribute">Attribute</b>
             <b class="item" data-tab="fertigkeiten">Fertigkeiten</b>
             <b class="item" data-tab="uebernatuerlich">Magie & Karma</b>
-            <b class="item" data-tab="inventar">Kampf</b>
+            <b class="item" data-tab="kampf">Kampf</b>
+            <b class="item" data-tab="inventar">Inventar</b>
             <b class="item" data-tab="notes">Notizen</b>
             <b class="item" data-tab="effekte">Effekte</b>
         </div>
@@ -97,11 +98,14 @@
             <div class="tab" data-group="primary" data-tab="uebernatuerlich">
                 {{> systems/Ilaris/templates/sheets/tabs/uebernatuerlich.html}}
             </div>
-            <div class="tab" data-group="primary" data-tab="inventar">
-                {{> systems/Ilaris/templates/sheets/tabs/inventar.html}}
+            <div class="tab" data-group="primary" data-tab="kampf">
+                {{> systems/Ilaris/templates/sheets/tabs/kampf.html}}
             </div>
             <div class="tab" data-group="primary" data-tab="effekte">
                 {{> systems/Ilaris/templates/sheets/tabs/effekte.html}}
+            </div>
+            <div class="tab" data-group="primary" data-tab="inventar">
+                {{> systems/Ilaris/templates/sheets/tabs/inventar.html}}
             </div>
         </div>
     </div>

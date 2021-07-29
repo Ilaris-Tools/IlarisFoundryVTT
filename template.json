@@ -37,6 +37,7 @@
           "ws": 0,
           "ws_stern": 0,
           "be": 0,
+          "be_traglast": 0,
           "ws_beine": 0,
           "ws_larm": 0,
           "ws_rarm": 0,
@@ -46,7 +47,9 @@
           "mr": 0,
           "gs": 0,
           "ini": 0,
-          "dh": 0
+          "dh": 0,
+          "traglast_intervall": 0,
+          "traglast": 0
         }
       },
       "schips": {
@@ -90,6 +93,14 @@
             "pw": 0
           }
         }
+      },
+      "geld": {
+        "geld": {
+          "dukaten": 0,
+          "silbertaler": 0,
+          "heller": 0,
+          "kreuzer": 0
+        }
       }
     },
     "held": {
@@ -101,8 +112,10 @@
         "schips",
         "initiative",
         "furcht",
-        "modifikatoren"
+        "modifikatoren",
+        "geld"
       ],
+      "getragen": 0,
       "notes": "Hallo"
     },
     "kreatur": {
@@ -157,12 +170,20 @@
       "liturgie",
       "vorteil",
       "manoever",
-      "eigenheit"
+      "eigenheit",
+      "gegenstand"
     ],
     "templates": {
       "gesundheit": {
         "haerte": 0,
         "beschaedigung": 0
+      },
+      "gegenstand": {
+        "aufbewahrungs_ort": "mitführend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0
       },
       "waffe": {
         "dice_anzahl": "1",
@@ -227,7 +248,7 @@
       }
     },
     "nahkampfwaffe": {
-      "templates": ["gesundheit", "waffe"],
+      "templates": ["gesundheit", "waffe", "gegenstand"],
       "wm_at": 0,
       "wm_vt": 0,
       "eigenschaften": {
@@ -249,7 +270,7 @@
       }
     },
     "fernkampfwaffe": {
-      "templates": ["gesundheit", "waffe"],
+      "templates": ["gesundheit", "waffe", "gegenstand"],
       "wm_fk": 0,
       "lz": 0,
       "eigenschaften": {
@@ -268,7 +289,7 @@
       }
     },
     "ruestung": {
-      "templates": ["gesundheit"],
+      "templates": ["gesundheit", "gegenstand"],
       "rs": 0,
       "be": 0,
       "rs_beine": 0,
@@ -278,6 +299,10 @@
       "rs_brust": 0,
       "rs_kopf": 0,
       "aktiv": false,
+      "text": ""
+    },
+    "gegenstand": {
+      "templates": ["gesundheit", "gegenstand"],
       "text": ""
     },
     "fertigkeit": {

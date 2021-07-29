@@ -1,0 +1,43 @@
+<form class="{{cssClass}}">
+    <div>
+        <div>
+            <header class="sheet-header">
+                <div class="header-fields">
+                    <h1 class="charname"><input name="name" type="text" value="{{data.name}}" /></h1>
+                </div>
+            </header>
+        </div>
+        <div>
+            <label><b>Beschreibung: </b></label>
+            <textarea name="data.text">{{data.data.text}}</textarea>
+            <div class="flexrow">
+                <label class="flex-fest-var" style="flex-basis:100px"><b>Härte: </b></label>
+                <div class="flexrow">
+                    <input name="data.haerte" value="{{data.data.haerte}}" type="text" data-dtype="String">
+                    <label class="flex-fest-var" style="flex-basis:100px"><b>Beschädigung: </b></label>
+                    <input name="data.beschaedigung" value="{{data.data.beschaedigung}}" type="text"
+                        data-dtype="String">
+                </div>
+            </div>
+            <div class="flexrow">
+                <label class="flex-fest-var" style="flex-basis:100px"><b>Gewicht: </b></label>
+                <input name="data.gewicht" value="{{data.data.gewicht}}" type="text" data-dtype="Number">
+            </div>
+            <div class="flexrow">
+                <label class="flex-fest-var" style="flex-basis:100px"><b>Preis: </b></label>
+                <input name="data.preis" value="{{data.data.preis}}" type="text" data-dtype="Number">
+                <label class="flex-fest-var" style="flex-basis:100px"><b>ST </b></label>
+            </div>
+            {{#if hasOwner}}
+            <label class="flex-fest-var" style="flex-basis:100px"><b>Aufbewahrungsort: </b></label>
+            <select name="data.aufbewahrungs_ort">
+                {{#select data.data.aufbewahrungs_ort}}
+                {{#each speicherplatz_list as |ort|}}
+                <option value="{{ort}}">{{ort}}</option>
+                {{/each}}
+                {{/select}}
+            </select>
+            {{/if}}
+        </div>
+    </div>
+</form>
