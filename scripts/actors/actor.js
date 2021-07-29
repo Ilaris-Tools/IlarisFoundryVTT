@@ -428,8 +428,10 @@ export class IlarisActor extends Actor {
         mr = hardcoded.magieresistenz(mr, data);
         data.data.abgeleitete.mr = mr;
         let traglast_intervall = data.data.attribute.KK.wert;
+        traglast_intervall = (traglast_intervall >= 1) ? traglast_intervall : 1;
         data.data.abgeleitete.traglast_intervall = traglast_intervall;
         let traglast = 2 * data.data.attribute.KK.wert;
+        traglast = (traglast >= 1) ? traglast : 1;
         data.data.abgeleitete.traglast = traglast;
         let summeGewicht = 0;
         for (let i of data.data.inventar.mitfuehrend) {
