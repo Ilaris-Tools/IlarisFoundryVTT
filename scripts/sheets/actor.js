@@ -198,21 +198,21 @@ export class IlarisActorSheet extends ActorSheet {
         //         });
         //     }
         // });
-        let speaker = ChatMessage.getSpeaker();
-        console.log(speaker);
-        console.log(speaker.alias);
-        console.log(this.actor.id);
+        let speaker = ChatMessage.getSpeaker({actor: this.actor});
+        // console.log(speaker);
+        // console.log(speaker.alias);
+        // console.log(this.actor.id);
         const html_roll = await renderTemplate('systems/Ilaris/templates/chat/probenchat_profan.html', {
             // user: speaker.alias,
             // user: this.actor.id,
-            speaker: speaker.alias,
+            // speaker: speaker.alias,
             title: `${label}`,
             crit: crit,
             fumble: fumble,
         });
-        console.log(html_roll);
+        // console.log(html_roll);
         roll.toMessage({
-            // speaker: "hallo",
+            speaker: speaker,
             flavor: html_roll
         });
     }

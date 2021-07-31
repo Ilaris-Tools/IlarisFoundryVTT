@@ -7,6 +7,7 @@ import { calculate_diceschips, roll_crit_message, get_statuseffect_by_id } from 
 
 
 export async function wuerfelwurf(event, actor) {
+    let speaker = ChatMessage.getSpeaker({actor: actor});
     let data = actor.data.data;
     // console.log($(event.currentTarget));
     let rolltype = $(event.currentTarget).data("rolltype");
@@ -128,7 +129,7 @@ export async function wuerfelwurf(event, actor) {
                         if (item.data.data.eigenschaften.unberechenbar){
                             fumble_val = 2;
                         }
-                        await roll_crit_message(formula, label, text, rollmode, true, fumble_val);
+                        await roll_crit_message(formula, label, text, speaker, rollmode, true, fumble_val);
                         // (top, left)
                         // wuerfelwurf(event, actor);
                     }
@@ -212,7 +213,7 @@ export async function wuerfelwurf(event, actor) {
                         let formula = `${dice_form} + ${pw} + ${globalermod} + ${mod_vt}`;
                         // Critfumble & Message
                         let label = `Verteidigung (${item.name})`;
-                        await roll_crit_message(formula, label, text, rollmode);
+                        await roll_crit_message(formula, label, text, speaker, rollmode);
                     }
                 },
                 three: {
@@ -291,7 +292,7 @@ export async function wuerfelwurf(event, actor) {
                         let formula = `${schaden} + ${mod_schaden}`;
                         let label = `Schaden (${item.name})`;
                         // Critfumble & Message
-                        await roll_crit_message(formula, label, text, rollmode, false);
+                        await roll_crit_message(formula, label, text, speaker, rollmode, false);
                     }
                 },
                 four: {
@@ -558,7 +559,7 @@ export async function wuerfelwurf(event, actor) {
                         let formula = `${dice_form} + ${pw} + ${globalermod} + ${mod_fk}`;
                         // Critfumble & Message
                         let label = `Attacke (${item.name})`;
-                        await roll_crit_message(formula, label, text, rollmode, true, fumble_val);
+                        await roll_crit_message(formula, label, text, speaker, rollmode, true, fumble_val);
                     }
                 },
                 two: {
@@ -604,7 +605,7 @@ export async function wuerfelwurf(event, actor) {
                         let formula = `${schaden} + ${mod_schaden}`;
                         let label = `Schaden (${item.name})`;
                         // Critfumble & Message
-                        await roll_crit_message(formula, label, text, rollmode, false);
+                        await roll_crit_message(formula, label, text, speaker, rollmode, false);
                     }
                 },
                 three: {
@@ -665,7 +666,7 @@ export async function wuerfelwurf(event, actor) {
                         let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
                         let formula = `${dice_form} + ${pw} + ${globalermod} + ${hohequalitaet} + ${modifikator}`;
                         // Critfumble & Message
-                        await roll_crit_message(formula, label, text, rollmode);
+                        await roll_crit_message(formula, label, text, speaker, rollmode);
                     }
                 },
                 two: {
@@ -751,7 +752,7 @@ export async function wuerfelwurf(event, actor) {
                         let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
                         let formula = `${dice_form} + ${pw} + ${globalermod} + ${hohequalitaet} + ${modifikator}`;
                         // Critfumble & Message
-                        await roll_crit_message(formula, label, text, rollmode);
+                        await roll_crit_message(formula, label, text, speaker, rollmode);
                     }
                 },
                 two: {
@@ -811,7 +812,7 @@ export async function wuerfelwurf(event, actor) {
                         let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
                         let formula = `${dice_form} + ${pw} + ${globalermod} + ${hohequalitaet} + ${modifikator}`;
                         // Critfumble & Message
-                        await roll_crit_message(formula, label, text, rollmode);
+                        await roll_crit_message(formula, label, text, speaker, rollmode);
                     }
                 },
                 two: {

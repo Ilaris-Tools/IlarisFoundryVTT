@@ -8,7 +8,7 @@ export function get_statuseffect_by_id(actor, statusId) {
     return false;
 }
 
-export async function roll_crit_message(formula, label, text, rollmode, crit_eval=true, fumble_val=1){
+export async function roll_crit_message(formula, label, text, speaker, rollmode, crit_eval=true, fumble_val=1){
     let roll = new Roll(formula);
     await roll.evaluate({ "async": true });
     let fumble = false;
@@ -28,6 +28,7 @@ export async function roll_crit_message(formula, label, text, rollmode, crit_eva
         fumble: fumble,
     });
     let roll_msg = roll.toMessage({
+        speaker: speaker,
         flavor: html_roll
     }, {
         rollMode: rollmode,
