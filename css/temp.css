@@ -27,7 +27,8 @@
 
 .window-app .window-content {
     font-family: var(--font-crimson);
-    background-image: url("../assets/images/background/hintergrund.jpg");
+    /* TODO CR: Wegen Bild fragen */
+    /* background-image: url("../assets/images/background/hintergrund.jpg"); */
 }
 
 .tabs {
@@ -56,7 +57,8 @@
 .chat-message {
     color: #000000;
     font-family: var(--font-crimson);
-    background-image: url("../assets/images/background/hintergrund.jpg");
+    /* TODO CR: Wegen Bild fragen */
+    /* background-image: url("../assets/images/background/hintergrund.jpg"); */
 }
 .chat-message .message-header {
     color: #000000;
