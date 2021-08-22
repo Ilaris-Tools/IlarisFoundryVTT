@@ -83,6 +83,6 @@
   "url": "https://gitlab.com/Feorg/ilaris-foundryvtt",
   "socket": true,
   "manifest": "https://gitlab.com/Feorg/ilaris-foundryvtt/raw/master/system.json",
-  "download": "https://gitlab.com/Feorg/ilaris-foundryvtt/archive/0.0.1.zip",
+  "download": "https://gitlab.com/Feorg/ilaris-foundryvtt/-/archive/v0.0.1/ilaris-foundryvtt-v0.0.1.zip",
   "license": ""
 }
