@@ -68,7 +68,6 @@ Aber auch Anregungen und allgemeines Feedback, welches im [DSA-Forum](https://ds
 
 ### TO-DO
 Viel und eine ganze Menge. 
-1. Nachfragen ob wir die Bilder aus dem Ilaris PDF verwenden dürfen (Ohne Ilarishintergrund sehen die Sheets richtig "mau" aus. Also so richtig...)
 1. Verzeichnisstruktur überdenken (zB assets nach Urheberrecht sortieren?)
 1. MR als Rollable
 1. Manöver für Magie und Karma
@@ -100,13 +99,13 @@ Die nachfolgenden Punkte besitzen ein eigenes Copyright. Sollte ein Rechteinhabe
 
 [Ilaris](https://ilarisblog.wordpress.com/) ist unter einer [Creative Commons Namensnennung – Nicht kommerziell – Keine Bearbeitungen 4.0 International Lizenz](http://creativecommons.org/licenses/by-nc-nd/4.0/) lizensiert. ![Creative Commons Lizenzvertrag](https://licensebuttons.net/l/by-nc-nd/4.0/80x15.png)
 
-Die Rechte vom genutzten Artwork von Ilaris liegen bei den jeweiligen Künstlern.
+Die Rechte vom genutzten Artwork von Ilaris liegen beim [Künstler](https://www.instagram.com/bernhard_eisner/).
 
 [Ilaris Advanced](https://dsaforum.de/viewtopic.php?f=180&t=49412) als optionale Erweiterung für Ilaris.
 
 [Sephrasto](https://github.com/Aeolitus/Sephrasto), aus welchem wir alle Daten ("Compendium Packs") importiert haben.
 
-Icons unter assets/game-icons.net von www.game-icons.net.
+Weitere Icons von www.game-icons.net.
 
 Foundry VTT: [Limited License Agreement for module development](https://foundryvtt.com/article/license/).
 

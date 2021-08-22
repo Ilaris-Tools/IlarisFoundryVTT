@@ -15,7 +15,7 @@ export class IlarisActor extends Actor {
         });
         if (data.type === 'held') {
             // TODO CR: Wegen Bild fragen
-            // data.img = 'systems/Ilaris/assets/images/token/kreaturentypen/humanoid.jpg';
+            data.img = 'systems/Ilaris/assets/images/token/kreaturentypen/humanoid.jpg';
             data.token.vision = true;
             data.token.actorLink = true;
             data.token.brightSight = 15;

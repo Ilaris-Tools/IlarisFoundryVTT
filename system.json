@@ -75,13 +75,14 @@
       "system": "Ilaris"
     }
   ],
+  "socket": true,
   "languages": [],
   "gridDistance": 1,
   "gridUnits": "m",
   "primaryTokenAttribute": "gesundheit.hp",
   "secondaryTokenAttribute": null,
+  "background": "assets/images/background/splash.jpg",
   "url": "https://gitlab.com/Feorg/ilaris-foundryvtt",
-  "socket": true,
   "manifest": "https://gitlab.com/Feorg/ilaris-foundryvtt/raw/master/system.json",
   "download": "https://gitlab.com/Feorg/ilaris-foundryvtt/-/archive/v0.0.1/ilaris-foundryvtt-v0.0.1.zip",
   "license": ""
