@@ -99,7 +99,7 @@ Die nachfolgenden Punkte besitzen ein eigenes Copyright. Sollte ein Rechteinhabe
 
 [Ilaris](https://ilarisblog.wordpress.com/) ist unter einer [Creative Commons Namensnennung – Nicht kommerziell – Keine Bearbeitungen 4.0 International Lizenz](http://creativecommons.org/licenses/by-nc-nd/4.0/) lizensiert. ![Creative Commons Lizenzvertrag](https://licensebuttons.net/l/by-nc-nd/4.0/80x15.png)
 
-Die Rechte vom genutzten Artwork von Ilaris liegen beim [Künstler](https://www.instagram.com/bernhard_eisner/).
+Die Rechte vom genutzten Artwork von Ilaris liegen bei [Bernhard Eisner](https://www.instagram.com/bernhard_eisner/).
 
 [Ilaris Advanced](https://dsaforum.de/viewtopic.php?f=180&t=49412) als optionale Erweiterung für Ilaris.
 
