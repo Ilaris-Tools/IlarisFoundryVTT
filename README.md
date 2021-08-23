@@ -6,6 +6,10 @@ Ein System für [Ilaris](https://ilarisblog.wordpress.com/) zur Verwendung mit [
 Dies ist ein nicht kommerzielles Community-Projekt.
 Wir stehen in keinem Verhältnis (angestellt oder ähnliches) zu FoundryVTT, Ilaris, Ulisses oder anderen Rechteinhabern. 
 
+## Installation
+
+In Foundry unter "Game Systems" -> "Install System" -> "Manifest URL": *https://gitlab.com/Feorg/ilaris-foundryvtt/raw/master/system.json* einfügen und installieren.
+
 ## !!Achtung!!
 
 Ilaris für FoundryVTT befindet sich aktuell in der Entwicklung und stellt kein fertiges Produkt dar.
