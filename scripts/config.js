@@ -53,6 +53,7 @@ ILARIS.label = {
     "dckg": "Deckung",
     "kgtl": "Kampfgetümmel",
     "brtn": "Beritten",
+    "kwut": "Kalte Wut",
     // kampfmanoever
     "km_ausw": "Ausweichen",
     "km_bind": "Binden",
@@ -237,7 +238,8 @@ ILARIS.manoever_nahkampf = {
         "selected": false
     },
     "vlof": {
-        "selected": false
+        "selected": false,
+        "offensiver_kampfstil": false
     },
     "vldf": {
         "selected": false
@@ -251,6 +253,7 @@ ILARIS.manoever_nahkampf = {
     "pssl": {
         "selected": false
     },
+    "kwut": false,
     "km_ausw": {
         "possible": true,
         "selected": false,
@@ -400,6 +403,7 @@ ILARIS.manoever_fernkampf = {
         "1": "2 Schritt",
         "2": "3 Schritt",
     },
+    "kwut": false,
     "fm_gzss": {
         "possible": true,
         "selected": "0",

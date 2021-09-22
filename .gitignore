@@ -26,3 +26,5 @@ package-lock.json
 node_modules
 .eslintrc.js
 .eslintrc
+tsconfig.json
+jsconfig.json

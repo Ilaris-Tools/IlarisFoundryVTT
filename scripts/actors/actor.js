@@ -702,7 +702,10 @@ export class IlarisActor extends Actor {
             // nwaffe.data.data.manoever_at = manoever_at;
             // nwaffe.data.data.manoever_vt = manoever_vt;
             // console.log(nwaffe.data.data.manoever);
+            nwaffe.data.data.manoever.vlof.offensiver_kampfstil = data.data.vorteil.kampf.some(x => x.name == "Offensiver Kampfstil");
+            nwaffe.data.data.manoever.kwut = data.data.vorteil.kampf.some(x => x.name == "Kalte Wut");
         }
+
         for (let item of data.data.fernkampfwaffen) {
             item.data.data.manoever = item.data.data.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_fernkampf);
             let kein_reiter = item.data.data.eigenschaften.kein_reiter;
@@ -794,6 +797,7 @@ export class IlarisActor extends Actor {
             let lcht_angepasst = hardcoded.getAngepasst("Dunkelheit", data);
             // console.log(`licht angepasst: ${lcht_angepasst}`);
             item.data.data.manoever.lcht.angepasst = lcht_angepasst;
+            item.data.data.manoever.kwut = data.data.vorteil.kampf.some(x => x.name == "Kalte Wut");
         }
 
 

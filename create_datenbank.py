@@ -79,6 +79,7 @@ class Exporter:
         }}
         return datenbank
 
+    awwL  :2
     def __create_nahkampfwaffe(self, item):
         Waffe = {
             "name": item["@name"],

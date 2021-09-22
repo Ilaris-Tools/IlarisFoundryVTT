@@ -12,6 +12,11 @@ export async function wuerfelwurf(event, actor) {
     // console.log($(event.currentTarget));
     let rolltype = $(event.currentTarget).data("rolltype");
     let globalermod = data.abgeleitete.globalermod;
+    let wundabzuegemod = data.gesundheit.wundabzuege;
+    let furchtmod = data.furcht.furchtabzuege;
+    console.log(`globalermod: ${globalermod}`);
+    console.log(`wundabzuegemod: ${wundabzuegemod}`);
+    console.log(`furchtmod: ${furchtmod}`);
     let be = data.abgeleitete.be;
     let nahkampfmod = data.modifikatoren.nahkampfmod;
     let pw = 0;
@@ -88,8 +93,14 @@ export async function wuerfelwurf(event, actor) {
                         }
                         // Volle Offensive vlof
                         if (item.data.data.manoever.vlof.selected) {
-                            mod_at += 4;
-                            text = text.concat("Volle Offensive\n");
+                            if (item.data.data.manoever.vlof.offensiver_kampfstil) {
+                                mod_at += 8;
+                                text = text.concat("Volle Offensive (Offensiver Kampfstil)\n");
+                            }
+                            else {
+                                mod_at += 4;
+                                text = text.concat("Volle Offensive\n");
+                            }
                         }
                         // Reichweitenunterschiede rwdf
                         let reichweite = item.data.data.manoever.rwdf.selected;
@@ -122,7 +133,16 @@ export async function wuerfelwurf(event, actor) {
                         // Rollmode
                         let rollmode = item.data.data.manoever.rllm.selected;
                         let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
-                        let formula = `${dice_form} + ${pw} + ${globalermod} + ${nahkampfmod} + ${mod_at}`;
+                        let at_abzuege_mod = 0;
+                        if (wundabzuegemod < 0 && item.data.data.manoever.kwut) {
+                            text = text.concat(`(Kalte Wut)\n`);
+                            at_abzuege_mod = furchtmod;
+                        }
+                        else {
+                            at_abzuege_mod = globalermod;
+                        }
+                        // let formula = `${dice_form} + ${pw} + ${globalermod} + ${nahkampfmod} + ${mod_at}`;
+                        let formula = `${dice_form} + ${pw} + ${at_abzuege_mod} + ${nahkampfmod} + ${mod_at}`;
                         // Critfumble & Message
                         let label = `Attacke (${item.name})`;
                         let fumble_val = 1;
@@ -210,7 +230,16 @@ export async function wuerfelwurf(event, actor) {
                         // Rollmode
                         let rollmode = item.data.data.manoever.rllm.selected;
                         let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
-                        let formula = `${dice_form} + ${pw} + ${globalermod} + ${mod_vt}`;
+                        let vt_abzuege_mod = 0;
+                        if (wundabzuegemod < 0 && item.data.data.manoever.kwut) {
+                            text = text.concat(`(Kalte Wut)\n`);
+                            vt_abzuege_mod = furchtmod;
+                        }
+                        else {
+                            vt_abzuege_mod = globalermod;
+                        }
+                        // let formula = `${dice_form} + ${pw} + ${globalermod} + ${nahkampfmod} + ${mod_at}`;
+                        let formula = `${dice_form} + ${pw} + ${vt_abzuege_mod} + ${nahkampfmod} + ${mod_vt}`;
                         // Critfumble & Message
                         let label = `Verteidigung (${item.name})`;
                         await roll_crit_message(formula, label, text, speaker, rollmode);
@@ -519,7 +548,7 @@ export async function wuerfelwurf(event, actor) {
                         }
                         // Zielen fm_zlen    "ruhige_hand": false,
                         let zielen = item.data.data.manoever.fm_zlen.selected;
-                        let ruhige_hand = item.data.data.manoever.ruhige_hand;
+                        let ruhige_hand = item.data.data.manoever.fm_zlen.ruhige_hand;
                         if (zielen && ruhige_hand) {
                             mod_fk += 4;
                             text = text.concat(`${CONFIG.ILARIS.label["fm_zlen"]} (Ruhige Hand)\n`);
@@ -556,7 +585,16 @@ export async function wuerfelwurf(event, actor) {
                         let rollmode = item.data.data.manoever.rllm.selected;
                         let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
                         // let formula = `${dice_form} + ${pw} + ${globalermod} + ${nahkampfmod} + ${mod_at}`;
-                        let formula = `${dice_form} + ${pw} + ${globalermod} + ${mod_fk}`;
+                        let fk_abzuege_mod = 0;
+                        if (wundabzuegemod < 0 && item.data.data.manoever.kwut) {
+                            text = text.concat(`(Kalte Wut)\n`);
+                            fk_abzuege_mod = furchtmod;
+                        }
+                        else {
+                            fk_abzuege_mod = globalermod;
+                        }
+                        let formula = `${dice_form} + ${pw} + ${fk_abzuege_mod} + ${mod_fk}`;
+                        // let formula = `${dice_form} + ${pw} + ${globalermod} + ${mod_fk}`;
                         // Critfumble & Message
                         let label = `Attacke (${item.name})`;
                         await roll_crit_message(formula, label, text, speaker, rollmode, true, fumble_val);
