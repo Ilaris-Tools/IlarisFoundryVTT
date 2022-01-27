@@ -26,6 +26,13 @@
       "system": "Ilaris"
     },
     {
+      "label": "Fertigkeiten und Talente (ADVANCED)",
+      "entity": "Item",
+      "name": "fertigkeiten-und-talente-advanced",
+      "path": "./packs/fertigkeiten-und-talente-advanced.db",
+      "system": "Ilaris"
+    },
+    {
       "label": "Liturgien und Mirakel",
       "entity": "Item",
       "name": "liturgien-und-mirakel",
