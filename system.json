@@ -80,6 +80,13 @@
       "name": "zauberspruche-und-rituale",
       "path": "./packs/zauberspruche-und-rituale.db",
       "system": "Ilaris"
+    },
+	  {
+      "label": "Macro-Tools",
+      "entity": "Macro",
+      "name": "macro-tools",
+      "path": "packs/macro-tools.db",
+      "system": "Ilaris"
     }
   ],
   "socket": true,
