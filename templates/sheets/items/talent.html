@@ -1,0 +1,32 @@
+<!-- 2022-01-30 Streuner² -->
+
+<form class="{{cssClass}} flexcol" autocomplete="off">
+
+    <header class="sheet-header">
+        <img src="{{data.img}}" data-edit="img" title="{{data.name}}" height="64" width="64"/>
+        <h1><input name="name" type="text" value="{{data.name}}" placeholder="{{ localize 'Talent' }}"/></h1>
+    </header>
+
+    <div class="form-group">
+        <label><b>Fertigkeit:</b></label>
+        {{#if hasOwner}}
+		<select name="data.fertigkeit">
+			{{#select data.data.fertigkeit}}
+			{{#each fertigkeit_list as |fert|}}
+			<option value="{{fert}}">{{fert}}</option>
+			{{/each}}
+			{{/select}}
+		</select>
+		{{else}}
+		<input name="data.fertigkeit" value="{{data.data.fertigkeit}}" type="text" data-dtype="String">
+		{{/if}}
+    </div>
+
+
+    </div>
+	    <div class="form-group stacked description">
+        <label><b>Beschreibung</b></label>
+        <textarea name="description">{{data.data.text}}</textarea>
+    </div>
+	
+</form>
