@@ -81,6 +81,13 @@
       "path": "./packs/zauberspruche-und-rituale.db",
       "system": "Ilaris"
     },
+    {
+      "label": "Zaubertricks (ADVANCED)",
+      "entity": "Item",
+      "name": "zaubertricks-advanced",
+      "path": "./packs/zaubertricks-advanced.db",
+      "system": "Ilaris"
+    },
 	  {
       "label": "Macro-Tools",
       "entity": "Macro",
