@@ -1,0 +1,28 @@
+{
+  "name": "ilaris-foundryvtt",
+  "description": "Ein System für [Ilaris](https://ilarisblog.wordpress.com/) zur Verwendung mit [FoundryVTT](https://foundryvtt.com/).",
+  "version": "0.0.1",
+  "main": "",
+  "type": "module",
+  "devDependencies": {
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^4.0.0",
+    "lodash": "^4.17.21",
+    "nedb": "^1.8.0",
+    "prettier": "^2.5.1",
+    "xml2js": "^0.4.23"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://gitlab.com/Feorg/ilaris-foundryvtt.git"
+  },
+  "author": "",
+  "bugs": {
+    "url": "https://gitlab.com/Feorg/ilaris-foundryvtt/issues"
+  },
+  "homepage": "https://gitlab.com/Feorg/ilaris-foundryvtt#readme"
+}

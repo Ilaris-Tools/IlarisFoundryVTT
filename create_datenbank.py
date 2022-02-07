@@ -79,7 +79,6 @@ class Exporter:
         }}
         return datenbank
 
-    awwL  :2
     def __create_nahkampfwaffe(self, item):
         Waffe = {
             "name": item["@name"],
@@ -440,6 +439,6 @@ class Exporter:
 
 if __name__ == "__main__":
     db = Exporter(path_db="/home/feorg/PnP_RPG/Ilaris/Sephrasto (alle Versionen)/Sephrasto/datenbank.xml",
-                  path_json="./assets/sephrasto_datenbank.js")
+                  path_json="./local_db/sephrasto_datenbank_21210923.js")
     db.import_Sephrasto()
     # db._xml_to_json()

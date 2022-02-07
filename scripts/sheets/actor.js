@@ -1,9 +1,6 @@
-import {
-    wuerfelwurf
-} from "../common/wuerfel.js";
+import { wuerfelwurf } from '../common/wuerfel.js';
 
 export class IlarisActorSheet extends ActorSheet {
-
     /*
       data ist nicht actor. Ändern, so dass ich nicht mehr in Actor, sondern über data schreibe?
       Und welche Items soll ich nehmen? Actor, data, oder direkt?
@@ -19,29 +16,29 @@ export class IlarisActorSheet extends ActorSheet {
     }
     activateListeners(html) {
         super.activateListeners(html);
-        html.find(".ausklappen-trigger").click(ev => this._ausklappView(ev));
-        html.find(".rollable").click(ev => this._onRollable(ev));
-        html.find(".clickable").click(ev => this._onClickable(ev));
-        html.find(".item-create").click(ev => this._onItemCreate(ev));
-        html.find(".item-edit").click(ev => this._onItemEdit(ev));
-        html.find(".item-delete").click(ev => this._onItemDelete(ev));
+        html.find('.ausklappen-trigger').click((ev) => this._ausklappView(ev));
+        html.find('.rollable').click((ev) => this._onRollable(ev));
+        html.find('.clickable').click((ev) => this._onClickable(ev));
+        html.find('.item-create').click((ev) => this._onItemCreate(ev));
+        html.find('.item-edit').click((ev) => this._onItemEdit(ev));
+        html.find('.item-delete').click((ev) => this._onItemDelete(ev));
         // html.find('.item-toggle').click(this._onToggleItem.bind(this));
-        html.find('.item-toggle').click(ev => this._onToggleItem(ev));
-        html.find('.hp-update').change(ev => this._onHpUpdate(ev));
+        html.find('.item-toggle').click((ev) => this._onToggleItem(ev));
+        html.find('.hp-update').change((ev) => this._onHpUpdate(ev));
         // html.find('.selected-kampfstil').change(ev => this._onSelectedKampfstil(ev));
-    };
+    }
 
     _ausklappView(event) {
         // Beachte Block: Ausklappen bei asp/kap sieht kacke aus -> inline
-        const targetkey = $(event.currentTarget).data("ausklappentarget");
-        const targetId = "ausklappen-view-".concat(targetkey);
+        const targetkey = $(event.currentTarget).data('ausklappentarget');
+        const targetId = 'ausklappen-view-'.concat(targetkey);
         var toggleView = document.getElementById(targetId);
-        if (toggleView.style.display === "none") {
-            toggleView.style.display = "block";
+        if (toggleView.style.display === 'none') {
+            toggleView.style.display = 'block';
         } else {
-            toggleView.style.display = "none";
+            toggleView.style.display = 'none';
         }
-    };
+    }
 
     async _onToggleItem(event) {
         const itemId = event.currentTarget.dataset.itemid;
@@ -50,7 +47,7 @@ export class IlarisActorSheet extends ActorSheet {
         // const item = this.data.items.get(itemId);
         const toggletype = event.currentTarget.dataset.toggletype;
         let attr = `data.${toggletype}`;
-        if (toggletype == "hauptwaffe" || toggletype == "nebenwaffe") {
+        if (toggletype == 'hauptwaffe' || toggletype == 'nebenwaffe') {
             let item_status = getProperty(item.data, attr);
             // item.update({[attr]: !getProperty(item.data, attr)});
             if (item_status == false) {
@@ -60,7 +57,7 @@ export class IlarisActorSheet extends ActorSheet {
                     if (nwaffe.data.data[toggletype] == true) {
                         let change_itemId = nwaffe.id;
                         let change_item = this.actor.data.items.get(change_itemId);
-                        await change_item.update({[attr]: false});
+                        await change_item.update({ [attr]: false });
                     }
                 }
                 for (let item of this.actor.data.data.fernkampfwaffen) {
@@ -74,108 +71,108 @@ export class IlarisActorSheet extends ActorSheet {
             }
             // console.log(attr);
             // console.log(item_status);
-            await item.update({[attr]: !item_status});
-        }
-        else {
+            await item.update({ [attr]: !item_status });
+        } else {
             attr = `data.${toggletype}`;
-            await item.update({[attr]: !getProperty(item.data, attr)});
+            await item.update({ [attr]: !getProperty(item.data, attr) });
         }
         // console.log(attr);
         // console.log(!getProperty(item.data, attr));
-    };
+    }
 
     async _onRollable(event) {
         let data = this.actor.data.data;
         // console.log($(event.currentTarget));
-        let rolltype = $(event.currentTarget).data("rolltype");
+        let rolltype = $(event.currentTarget).data('rolltype');
         let globalermod = data.abgeleitete.globalermod;
         let pw = 0;
-        let label = "Probe";
-        let dice = "3d20dl1dh1";
-        if (rolltype == "profan_fertigkeit_diag") {
+        let label = 'Probe';
+        let dice = '3d20dl1dh1';
+        if (rolltype == 'profan_fertigkeit_diag') {
             wuerfelwurf(event, this.actor);
             return 0;
-        }
-        else if (rolltype == "nahkampf_diag") {
+        } else if (rolltype == 'nahkampf_diag') {
             wuerfelwurf(event, this.actor);
             return 0;
-        }
-        else if (rolltype == "attribut_diag") {
+        } else if (rolltype == 'attribut_diag') {
             wuerfelwurf(event, this.actor);
             return 0;
-        }
-        else if (rolltype == "fernkampf_diag") {
+        } else if (rolltype == 'fernkampf_diag') {
             wuerfelwurf(event, this.actor);
             return 0;
-        }
-        else if (rolltype == "freie_fertigkeit_diag") {
+        } else if (rolltype == 'freie_fertigkeit_diag') {
             wuerfelwurf(event, this.actor);
             return 0;
-        }
-        else if (rolltype == "at") {
-            dice = "1d20";
-            label = $(event.currentTarget).data("item");
+        } else if (rolltype == 'magie_diag') {
+            wuerfelwurf(event, this.actor);
+            return 0;
+        } else if (rolltype == 'karma_diag') {
+            wuerfelwurf(event, this.actor);
+            return 0;
+        } else if (rolltype == 'uefert_diag') {
+            console.log(event);
+            wuerfelwurf(event, this.actor);
+            return 0;
+        } else if (rolltype == 'at') {
+            dice = '1d20';
+            label = $(event.currentTarget).data('item');
             label = `Attacke (${label})`;
-            pw = $(event.currentTarget).data("pw");
-        }
-        else if (rolltype == "vt") {
-            dice = "1d20";
-            label = $(event.currentTarget).data("item");
+            pw = $(event.currentTarget).data('pw');
+        } else if (rolltype == 'vt') {
+            dice = '1d20';
+            label = $(event.currentTarget).data('item');
             label = `Verteidigung (${label})`;
-            pw = $(event.currentTarget).data("pw");
-        }
-        else if (rolltype == "fk") {
-            dice = "1d20";
-            label = $(event.currentTarget).data("item");
+            pw = $(event.currentTarget).data('pw');
+        } else if (rolltype == 'fk') {
+            dice = '1d20';
+            label = $(event.currentTarget).data('item');
             label = `Fernkampf (${label})`;
-            pw = $(event.currentTarget).data("pw");
-        }
-        else if (rolltype == "schaden") {
-            label = $(event.currentTarget).data("item");
+            pw = $(event.currentTarget).data('pw');
+        } else if (rolltype == 'schaden') {
+            label = $(event.currentTarget).data('item');
             label = `Schaden (${label})`;
-            pw = $(event.currentTarget).data("pw");
-        }
-        else if (rolltype == "attribut") {
-            const attribut_name = $(event.currentTarget).data("attribut");
+            pw = $(event.currentTarget).data('pw');
+        } else if (rolltype == 'attribut') {
+            const attribut_name = $(event.currentTarget).data('attribut');
             label = CONFIG.ILARIS.label[attribut_name];
             pw = data.attribute[attribut_name].pw;
-        } else if (rolltype == "profan_fertigkeit_pw") {
-            label = $(event.currentTarget).data("fertigkeit");
-            pw = $(event.currentTarget).data("pw");
-        } else if (rolltype == "profan_fertigkeit_pwt") {
-            label = $(event.currentTarget).data("fertigkeit");
-            label = label.concat(" (Talent)");
-            pw = $(event.currentTarget).data("pwt");
-        } else if (rolltype == "profan_talent") {
-            label = $(event.currentTarget).data("fertigkeit");
-            label = label.concat(" (", $(event.currentTarget).data("talent"), ")");
-            pw = $(event.currentTarget).data("pw");
-        } else if (rolltype == "freie_fertigkeit") {
-            label = $(event.currentTarget).data("fertigkeit");
+        } else if (rolltype == 'profan_fertigkeit_pw') {
+            label = $(event.currentTarget).data('fertigkeit');
+            pw = $(event.currentTarget).data('pw');
+        } else if (rolltype == 'profan_fertigkeit_pwt') {
+            label = $(event.currentTarget).data('fertigkeit');
+            label = label.concat(' (Talent)');
+            pw = $(event.currentTarget).data('pwt');
+        } else if (rolltype == 'profan_talent') {
+            label = $(event.currentTarget).data('fertigkeit');
+            label = label.concat(' (', $(event.currentTarget).data('talent'), ')');
+            pw = $(event.currentTarget).data('pw');
+        } else if (rolltype == 'freie_fertigkeit') {
+            label = $(event.currentTarget).data('fertigkeit');
             // console.log($(event.currentTarget).data("pw"))
-            pw = Number($(event.currentTarget).data("pw")) * 8 - 2;
-        // } else if (rolltype == "magie_fertigkeit" || rolltype == "karma_fertigkeit") {
-        } else if (rolltype == "uebernatuerliche_fertigkeit") {
-            label = $(event.currentTarget).data("fertigkeit");
-            pw = $(event.currentTarget).data("pw");
-        } else if (rolltype == "zauber" || rolltype == "liturgie") {
-            label = $(event.currentTarget).data("talent");
-            pw = $(event.currentTarget).data("pw");
+            pw = Number($(event.currentTarget).data('pw')) * 8 - 2;
+            // } else if (rolltype == "magie_fertigkeit" || rolltype == "karma_fertigkeit") {
+        } else if (rolltype == 'uebernatuerliche_fertigkeit') {
+            label = $(event.currentTarget).data('fertigkeit');
+            pw = $(event.currentTarget).data('pw');
+        } else if (rolltype == 'zauber' || rolltype == 'liturgie') {
+            label = $(event.currentTarget).data('talent');
+            pw = $(event.currentTarget).data('pw');
         }
         let formula = `${dice} + ${pw} + ${globalermod}`;
-        if (rolltype == "at" || rolltype == "vt") {
+        if (rolltype == 'at' || rolltype == 'vt') {
             formula += ` + ${data.modifikatoren.nahkampfmod}`;
         }
-        if (rolltype == "schaden") {
+        if (rolltype == 'schaden') {
             formula = pw;
         }
         // let formula = `${data.pw} + 3d20dhdl`;
         let roll = new Roll(formula);
         // roll.roll();
-        await roll.evaluate({ "async": true });
+        await roll.evaluate({ async: true });
         // console.log(roll);
         // let critfumble = roll.result.split(" + ")[1];
-        let critfumble = roll.dice[0].results.find(a => a.active == true).result;
+        let critfumble = roll.dice[0].results.find((a) => a.active == true).result;
         let fumble = false;
         let crit = false;
         if (critfumble == 20) {
@@ -198,53 +195,56 @@ export class IlarisActorSheet extends ActorSheet {
         //         });
         //     }
         // });
-        let speaker = ChatMessage.getSpeaker({actor: this.actor});
+        let speaker = ChatMessage.getSpeaker({ actor: this.actor });
         // console.log(speaker);
         // console.log(speaker.alias);
         // console.log(this.actor.id);
-        const html_roll = await renderTemplate('systems/Ilaris/templates/chat/probenchat_profan.html', {
-            // user: speaker.alias,
-            // user: this.actor.id,
-            // speaker: speaker.alias,
-            title: `${label}`,
-            crit: crit,
-            fumble: fumble,
-        });
+        const html_roll = await renderTemplate(
+            'systems/Ilaris/templates/chat/probenchat_profan.html',
+            {
+                // user: speaker.alias,
+                // user: this.actor.id,
+                // speaker: speaker.alias,
+                title: `${label}`,
+                crit: crit,
+                fumble: fumble,
+            },
+        );
         // console.log(html_roll);
         roll.toMessage({
             speaker: speaker,
-            flavor: html_roll
+            flavor: html_roll,
         });
     }
 
     async _onClickable(event) {
         let data = this.actor.data.data;
         // console.log($(event.currentTarget));
-        let clicktype = $(event.currentTarget).data("clicktype");
-        if (clicktype == "shorten_money") {
+        let clicktype = $(event.currentTarget).data('clicktype');
+        if (clicktype == 'shorten_money') {
             let kreuzer = data.geld.kreuzer;
             let heller = data.geld.heller;
             let silbertaler = data.geld.silbertaler;
             let dukaten = data.geld.dukaten;
             if (kreuzer > 10) {
-                let div = Math.floor(kreuzer/10);
+                let div = Math.floor(kreuzer / 10);
                 heller += div;
-                kreuzer -= div*10;
+                kreuzer -= div * 10;
             }
             if (heller > 10) {
-                let div = Math.floor(heller/10);
+                let div = Math.floor(heller / 10);
                 silbertaler += div;
-                heller -= div*10;
+                heller -= div * 10;
             }
             if (silbertaler > 10) {
-                let div = Math.floor(silbertaler/10);
+                let div = Math.floor(silbertaler / 10);
                 dukaten += div;
-                silbertaler -= div*10;
+                silbertaler -= div * 10;
             }
-            this.actor.update({ "data.geld.kreuzer": kreuzer });
-            this.actor.update({ "data.geld.heller": heller });
-            this.actor.update({ "data.geld.silbertaler": silbertaler });
-            this.actor.update({ "data.geld.dukaten": dukaten });
+            this.actor.update({ 'data.geld.kreuzer': kreuzer });
+            this.actor.update({ 'data.geld.heller': heller });
+            this.actor.update({ 'data.geld.silbertaler': silbertaler });
+            this.actor.update({ 'data.geld.dukaten': dukaten });
         }
     }
 
@@ -252,11 +252,12 @@ export class IlarisActorSheet extends ActorSheet {
         // console.log("HpUpdate");
         // this.actor.token.refresh();
         // console.log(event);
-        let einschraenkungen = this.actor.data.data.gesundheit.wunden + this.actor.data.data.gesundheit.erschoepfung;
+        let einschraenkungen =
+            this.actor.data.data.gesundheit.wunden + this.actor.data.data.gesundheit.erschoepfung;
         // let old_hp = this.actor.data.data.gesundheit.hp.value;
         let new_hp = this.actor.data.data.gesundheit.hp.max - einschraenkungen;
         // this.actor.data.data.gesundheit.hp.value = new_hp;
-        this.actor.update({ "data.gesundheit.hp.value": new_hp });
+        this.actor.update({ 'data.gesundheit.hp.value': new_hp });
         // this.actor.token.actor.data.data.gesundheit.hp.value = new_hp;
         this.actor.token?.refresh();
         console.log(this.actor);
@@ -280,7 +281,7 @@ export class IlarisActorSheet extends ActorSheet {
     }
 
     _onSelectedKampfstil(event) {
-        console.log("_onSelectedKampfstil");
+        console.log('_onSelectedKampfstil');
         // console.log(event);
         // var selectElement = event.target;
         // console.log(selectElement);
@@ -288,98 +289,98 @@ export class IlarisActorSheet extends ActorSheet {
         let selected_kampfstil = event.target.value;
         console.log(selected_kampfstil);
         this.actor.data.data.misc.selected_kampfstil = selected_kampfstil;
-        this.actor.update({ "data.misc.selected_kampfstil": selected_kampfstil });
+        this.actor.update({ 'data.misc.selected_kampfstil': selected_kampfstil });
     }
 
     _onItemCreate(event) {
-        console.log("ItemCreate");
+        console.log('ItemCreate');
         // console.log(event);
         // console.log($(event.currentTarget));
-        let itemclass = $(event.currentTarget).data("itemclass");
+        let itemclass = $(event.currentTarget).data('itemclass');
         //ansehen: DomStringMap. Beide Varianten liefern das gleiche.
         //Welche ist besser und warum?
         // console.log($(event.currentTarget).data("itemclass"));
         // console.log(event.currentTarget.dataset.itemclass);
         let itemData = {};
-        if (itemclass == "ruestung") {
-            console.log("Neue Rüstung");
+        if (itemclass == 'ruestung') {
+            console.log('Neue Rüstung');
             itemData = {
-                name: "Neue Rüstung",
-                type: "ruestung",
-                data: {}
+                name: 'Neue Rüstung',
+                type: 'ruestung',
+                data: {},
             };
-        } else if (itemclass == "nahkampfwaffe") {
-            console.log("Neue Nahkampfwaffe");
+        } else if (itemclass == 'nahkampfwaffe') {
+            console.log('Neue Nahkampfwaffe');
             itemData = {
-                name: "Waffe",
+                name: 'Waffe',
                 type: itemclass,
-                data: {}
+                data: {},
             };
-        } else if (itemclass == "fernkampfwaffe") {
-            console.log("Neue Fernkampfwaffe");
+        } else if (itemclass == 'fernkampfwaffe') {
+            console.log('Neue Fernkampfwaffe');
             itemData = {
-                name: "Waffe",
+                name: 'Waffe',
                 type: itemclass,
-                data: {}
+                data: {},
             };
-        } else if (itemclass == "fertigkeit") {
-            console.log("Neue Fertigkeit");
+        } else if (itemclass == 'fertigkeit') {
+            console.log('Neue Fertigkeit');
             itemData = {
-                name: "Fertigkeit",
-                type: "fertigkeit",
-                data: {}
+                name: 'Fertigkeit',
+                type: 'fertigkeit',
+                data: {},
             };
-        } else if (itemclass == "talent") {
-            console.log("Neues Talent");
+        } else if (itemclass == 'talent') {
+            console.log('Neues Talent');
             itemData = {
-                name: "Talent",
-                type: "talent",
-                data: {}
+                name: 'Talent',
+                type: 'talent',
+                data: {},
             };
-        } else if (itemclass == "freie_fertigkeit") {
-            console.log("Neue freie Fertigkeit");
+        } else if (itemclass == 'freie_fertigkeit') {
+            console.log('Neue freie Fertigkeit');
             itemData = {
-                name: "freie Fertigkeit",
-                type: "freie_fertigkeit",
+                name: 'freie Fertigkeit',
+                type: 'freie_fertigkeit',
                 data: {
                     stufe: 1,
-                    gruppe: 4
-                }
+                    gruppe: 4,
+                },
             };
-        } else if (itemclass == "uebernatuerliche_fertigkeit") {
-            console.log("Neue übernatürliche Fertigkeit");
+        } else if (itemclass == 'uebernatuerliche_fertigkeit') {
+            console.log('Neue übernatürliche Fertigkeit');
             itemData = {
-                name: "Fertigkeit",
-                type: "uebernatuerliche_fertigkeit",
-                data: {}
+                name: 'Fertigkeit',
+                type: 'uebernatuerliche_fertigkeit',
+                data: {},
             };
-        } else if (itemclass == "zauber") {
-            console.log("Neuer Zauber");
+        } else if (itemclass == 'zauber') {
+            console.log('Neuer Zauber');
             itemData = {
-                name: "Zauber",
-                type: "zauber",
-                data: {}
+                name: 'Zauber',
+                type: 'zauber',
+                data: {},
             };
-        } else if (itemclass == "liturgie") {
-            console.log("Neue Liturgie");
+        } else if (itemclass == 'liturgie') {
+            console.log('Neue Liturgie');
             itemData = {
-                name: "Liturgie",
-                type: "liturgie",
-                data: {}
+                name: 'Liturgie',
+                type: 'liturgie',
+                data: {},
             };
-        } else if (itemclass == "eigenheit") {
-            console.log("Neue Eigenheit");
+        } else if (itemclass == 'eigenheit') {
+            console.log('Neue Eigenheit');
             itemData = {
-                name: "eigenheit",
-                type: "eigenheit",
-                data: {}
+                name: 'eigenheit',
+                type: 'eigenheit',
+                data: {},
             };
-        } else if (itemclass == "gegenstand") {
-            console.log("Neuer Gegenstand");
+        } else if (itemclass == 'gegenstand') {
+            console.log('Neuer Gegenstand');
             itemData = {
-                name: "gegenstand",
-                type: "gegenstand",
-                data: {}
+                name: 'gegenstand',
+                type: 'gegenstand',
+                data: {},
             };
         }
         // console.log(this.actor);
@@ -413,7 +414,7 @@ export class IlarisActorSheet extends ActorSheet {
     }
 
     _onItemEdit(event) {
-        console.log("ItemEdit");
+        console.log('ItemEdit');
         // console.log(event);
         // console.log(event.currentTarget);
         // const li = $(ev.currentTarget).parents(".item");
@@ -426,7 +427,7 @@ export class IlarisActorSheet extends ActorSheet {
     }
 
     _onItemDelete(event) {
-        console.log("ItemDelete");
+        console.log('ItemDelete');
         const itemID = event.currentTarget.dataset.itemid;
         // const li = $(event.currentTarget).parents(".item");
         // console.log(event.currentTarget);
@@ -438,6 +439,6 @@ export class IlarisActorSheet extends ActorSheet {
         // this.actor.deleteOwnedItem(li.data("itemId"));
         // this.actor.deleteOwnedItem(itemID);
         this.actor.deleteEmbeddedDocuments('Item', [itemID]);
-        // li.slideUp(200, () => this.render(false)); 
+        // li.slideUp(200, () => this.render(false));
     }
 }

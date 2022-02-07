@@ -1,0 +1,295 @@
+[
+  {
+    "name": "Kraftfutter, Pony/Esel, 1 Tag",
+    "type": "gegenstand",
+    "data": {
+      "haerte": "0",
+      "beschaedigung": "0",
+      "aufbewahrungs_ort": "mitführend",
+      "bewahrt_auf": [],
+      "gewicht_summe": 0,
+      "gewicht": 1,
+      "preis": 0.5,
+      "text": ""
+    }
+  },
+  {
+    "name": "Schlafsack, Hängematte",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 1,
+      "preis": 10,
+      "text": ""
+    }
+  },
+  {
+    "name": "Archaische Schneiderei",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 1,
+      "preis": 50,
+      "text": ""
+    }
+  },
+  {
+    "name": "Seil, Hanf, je 8 Schritt",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 1,
+      "preis": 6,
+      "text": ""
+    }
+  },
+  {
+    "name": "Eiserne Ration, 2 Tage",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 1,
+      "preis": 1,
+      "text": "Doppelter Wasserverbrauch"
+    }
+  },
+  {
+    "name": "Zelt, zwei Personen",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 6,
+      "preis": 30,
+      "text": ""
+    }
+  },
+  {
+    "name": "Archaische Kochstelle",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 2,
+      "preis": 50,
+      "text": ""
+    }
+  },
+  {
+    "name": "Archaische Werkstatt",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 3,
+      "preis": 200,
+      "text": ""
+    }
+  },
+  {
+    "name": "Angel & Köder, hochwertig",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 1,
+      "preis": 10,
+      "text": ""
+    }
+  },
+  {
+    "name": "Sturmlaterne",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 1,
+      "preis": 12,
+      "text": ""
+    }
+  },
+  {
+    "name": "Bündel Fackeln",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 2,
+      "preis": 4,
+      "text": ""
+    }
+  },
+  {
+    "name": "Spaten, Axt & Hammer",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 3,
+      "preis": 30,
+      "text": ""
+    }
+  },
+  {
+    "name": "Archaische Schmiede",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 16,
+      "preis": 200,
+      "text": ""
+    }
+  },
+  {
+    "name": "Kraftfutter, Maultier, 1 Tag",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 2,
+      "preis": 1,
+      "text": ""
+    }
+  },
+  {
+    "name": "Seil, Seide, je 16 Schritt",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 1,
+      "preis": 190,
+      "text": ""
+    }
+  },
+  {
+    "name": "Marschration, 1 Tag",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 1,
+      "preis": 0.4,
+      "text": ""
+    }
+  },
+  {
+    "name": "Wurfhaken",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 1,
+      "preis": 10,
+      "text": ""
+    }
+  },
+  {
+    "name": "Kraftfutter, Kaltblut, 1 Tag",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 5,
+      "preis": 2.2,
+      "text": ""
+    }
+  },
+  {
+    "name": "Zelt, vier Personen",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 10,
+      "preis": 50,
+      "text": ""
+    }
+  },
+  {
+    "name": "Kraftfutter, Pferd, 1 Tag",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 3,
+      "preis": 1.4,
+      "text": ""
+    }
+  },
+  {
+    "name": "Archaisches Labor",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 6,
+      "preis": 200,
+      "text": ""
+    }
+  },
+  {
+    "name": "Pfeilköcher",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 1,
+      "preis": 20,
+      "text": ""
+    }
+  },
+  {
+    "name": "Wasserschlauch, 1 Tag",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 1,
+      "preis": 1,
+      "text": ""
+    }
+  },
+  {
+    "name": "Bündel Kletterhaken",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 1,
+      "preis": 8,
+      "text": ""
+    }
+  },
+  {
+    "name": "Fischernetz, klein",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 2,
+      "preis": 10,
+      "text": ""
+    }
+  },
+  {
+    "name": "Bärenfalle",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 2,
+      "preis": 30,
+      "text": ""
+    }
+  },
+  {
+    "name": "Archaische Tischlerei",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": 2,
+      "preis": 100,
+      "text": ""
+    }
+  },
+  {
+    "name": "Handkarren",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": -32,
+      "preis": 0,
+      "text": ""
+    }
+  },
+  {
+    "name": "Eselkarren",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": -128,
+      "preis": 0,
+      "text": ""
+    }
+  },
+  {
+    "name": "Wagen, einspännig",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": -256,
+      "preis": 0,
+      "text": ""
+    }
+  },
+  {
+    "name": "Wagen, zweispännig",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": -512,
+      "preis": 0,
+      "text": ""
+    }
+  },
+  {
+    "name": "Wagen, vierspännig",
+    "type": "gegenstand",
+    "data": {
+      "gewicht": -1024,
+      "preis": 0,
+      "text": ""
+    }
+  }
+]

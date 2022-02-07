@@ -1,0 +1,3046 @@
+{
+  "Vorteile": [
+    {
+      "name": "Achaz",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Du kannst mit deinem Schwanz waffenlose Angriffe in Reichweite 1 (siehe auch S. 38) durchführen. Allerdings leidest du unter Kältestarre; für jede Temperaturstufe unter normal (S. 35) sind alle körperlichen Proben um –4 erschwert."
+      }
+    },
+    {
+      "name": "Angepasst (Schnee) I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Durch deine Spezies oder langjährige Erfahrung hast du dich an Schnee gewöhnt. Abzüge durch unsicheren oder eisigen Untergrund, insbesondere im Kampf, sinken für dich um 1 Stufe."
+      }
+    },
+    {
+      "name": "Angepasst (Dunkelheit) I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Durch deine Spezies oder langjährige Erfahrung hast du dich an Dunkelheit gewöhnt. Abzüge durch schlechte Lichtverhältnisse, insbesondere im Kampf, sinken für dich um 1 Stufe."
+      }
+    },
+    {
+      "name": "Angepasst (Wasser) I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Durch deine Spezies oder langjährige Erfahrung hast du dich an Wasser gewöhnt. Abzüge durch duch knietiefes- und hüfttiefes Wasser und unter Wasser, insbesondere im Kampf, sinken für dich um 1 Stufe."
+      }
+    },
+    {
+      "name": "Angepasst (Wald) I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Durch deine Spezies oder langjährige Erfahrung hast du dich an den Wald gewöhnt. Abzüge durch Wurzeln, Gestrüpp und dichtes Unterholz, insbesondere im Kampf, sinken für dich um 1 Stufe."
+      }
+    },
+    {
+      "name": "Angepasst I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Durch deine Spezies oder langjährige Erfahrung hast du dich an eine bestimmte Umgebung oder Umweltbedingung gewöhnt. Abzüge durch diese Umgebung (Beispiele auf S. 38), insbesondere im Kampf, sinken für dich um 1 Stufe.\n\nDie Kosten für Angepasst I legt der Spielleiter fest, wobei er sich an der Häufigkeit der Umgebung orientieren sollte. Zu allgemein gefasste Umgebungen wie „unsicherer Untergrund“ sollte er nicht zulassen.\n\n"
+      }
+    },
+    {
+      "name": "Angepasst II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Angepasst I",
+        "gruppe": 0,
+        "text": "Durch deine Spezies oder langjährige Erfahrung hast du dich an eine bestimmte Umgebung oder Umweltbedingung gewöhnt. Abzüge durch diese Umgebung (Beispiele auf S. 38), insbesondere im Kampf, sinken für dich um 1 weitere Stufe.\n\nDie Kosten für Angepasst II entsprechen den vom Spielleiter festgelegten Kosten von Angepasst I für diesen Umstand.\n\n"
+      }
+    },
+    {
+      "name": "Angepasst (Dunkelheit) II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Angepasst (Dunkelheit) I",
+        "gruppe": 0,
+        "text": "Durch deine Spezies oder langjährige Erfahrung hast du dich an Dunkelheit gewöhnt. Abzüge durch schlechte Lichtverhältnisse, insbesondere im Kampf, sinken für dich um 2 Stufen."
+      }
+    },
+    {
+      "name": "Angepasst (Schnee) II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Angepasst (Schnee) I",
+        "gruppe": 0,
+        "text": "Durch deine Spezies oder langjährige Erfahrung hast du dich an Schnee gewöhnt. Abzüge durch unsicheren oder eisigen Untergrund, insbesondere im Kampf, sinken für dich um 2 Stufen."
+      }
+    },
+    {
+      "name": "Angepasst (Wald) II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Angepasst (Wald) I",
+        "gruppe": 0,
+        "text": "Durch deine Spezies oder langjährige Erfahrung hast du dich an den Wald gewöhnt. Abzüge durch Wurzeln, Gestrüpp und dichtes Unterholz, insbesondere im Kampf, sinken für dich um 2 Stufen."
+      }
+    },
+    {
+      "name": "Angepasst (Wasser) II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Angepasst (Wasser) I",
+        "gruppe": 0,
+        "text": "Durch deine Spezies oder langjährige Erfahrung hast du dich an Wasser gewöhnt. Abzüge durch duch knietiefes- und hüfttiefes Wasser und unter Wasser, insbesondere im Kampf, sinken für dich um 2 Stufen."
+      }
+    },
+    {
+      "name": "Besonderer Besitz",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Ein besonderer Gegenstand wie die 33-fach geflämmte Klinge deines ruhmreichen Großvaters oder ein heilendes Diadem befindet sich in deinem Besitz. Der Spielleiter sollte diesem Gegenstand einen gewissen Schutz gewähren; er wird nicht zufällig von einem Taschendieb gestohlen oder geht durch Pech verloren, ohne dass du ihn wieder zurückerlangen kannst. Umgekehrt darf der Charakter den Gegenstand auch nicht verkaufen.\n\nDie Kosten für einen Besonderen Besitz legt der Spielleiter fest, wobei er sich am Spielnutzen des Gegenstandes orientieren sollte. Ein Besonderer Besitz für 40 EP bringt einen willkommenen Bonus in manchen Situationen, während ein Besonderer Besitz für 160 EP in vielen Situationen entscheidend ist. Der Wert des Gegenstandes spielt hierbei keine Rolle.\n\nBeispiele für besonderen Besitz sind:\n- Schlachtross/verbesserte Waffe (+2 TP)/verbesserte Rüstung (-1 BE), Ferrara Kutsche mit Pferden (40 EP).\n- Verbesserte und magische Waffe, aufladbares Schutzartefakt mit einfachem Auslöser (80 EP).\n- Verbessertes Enduriumschwert, verbesserter Toschkrilpanzer, Reithippogriff (120 EP).\n- Bewaffnetes Handelsschiff, semipermanentes Universalschutzamulett mit intelligentem Auslöser (160 EP).\n\n"
+      }
+    },
+    {
+      "name": "Einkommen I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Deine Familie, Organisation oder ein persönlicher Mäzen stellt dir ein monatliches Einkommen von 4 Dukaten zur Verfügung, die du beispielsweise über eine Filiale der Nordlandbank oder ein Ordenshaus beziehen kannst. Fern der Zivilisation kannst du nicht auf dein Einkommen zugreifen. Das Einkommen reicht aus, um die Lebenserhaltungskosten eines Angehörigen der Unterschicht zu decken."
+      }
+    },
+    {
+      "name": "Einkommen II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Einkommen I",
+        "gruppe": 0,
+        "text": "Deine Familie, Organisation oder ein persönlicher Mäzen stellt dir ein monatliches Einkommen von 16 Dukaten zur Verfügung, die du beispielsweise über eine Filiale der Nordlandbank oder ein Ordenshaus beziehen kannst. Fern der Zivilisation kannst du nicht auf dein Einkommen zugreifen. Das Einkommen reicht aus, um die Lebenserhaltungskosten eines Angehörigen der Mittelschicht zu decken."
+      }
+    },
+    {
+      "name": "Einkommen III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Einkommen II",
+        "gruppe": 0,
+        "text": "Deine Familie, Organisation oder ein persönlicher Mäzen stellt dir ein monatliches Einkommen von 64 Dukaten zur Verfügung, die du beispielsweise über eine Filiale der Nordlandbank oder ein Ordenshaus beziehen kannst. Fern der Zivilisation kannst du nicht auf dein Einkommen zugreifen. Das Einkommen reicht aus, um die Lebenserhaltungskosten eines Angehörigen der Oberschicht zu decken."
+      }
+    },
+    {
+      "name": "Einkommen IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Einkommen III",
+        "gruppe": 0,
+        "text": "Deine Familie, Organisation oder ein persönlicher Mäzen stellt dir ein monatliches Einkommen von 256 Dukaten zur Verfügung, die du beispielsweise über eine Filiale der Nordlandbank oder ein Ordenshaus beziehen kannst. Fern der Zivilisation kannst du nicht auf dein Einkommen zugreifen. Das Einkommen reicht aus, um die Lebenserhaltungskosten eines Angehörigen der Elite zu decken."
+      }
+    },
+    {
+      "name": "Eisenaffine Aura",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I",
+        "gruppe": 0,
+        "text": "Erschwernisse durch den Bann des Eisens (S. 78) sinken um 8 Punkte."
+      }
+    },
+    {
+      "name": "Gefahreninstinkt",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Mit der Gabe Gefahreninstinkt kannst du mit dem Talent Wachsamkeit auch Gefahren erfassen, die mit gewöhnlichen Sinnen nicht wahrzunehmen sind. Dazu gehören etwa magische Fallen oder eine bald losbrechende Lawine. Ist die Gefahr auch mit gewöhnlichen Sinnen wahrnehmbar erhältst du eine Erleichterung von +4."
+      }
+    },
+    {
+      "name": "Geweiht I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Kein Vorteil Paktierer I",
+        "gruppe": 0,
+        "text": "Du verfügst über 8 Karmapunkte und kannst kirchliche Traditionen erlernen."
+      }
+    },
+    {
+      "name": "Geweiht II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Geweiht I",
+        "gruppe": 0,
+        "text": "Du verfügst über 16 Karmapunkte und kannst kirchliche Traditionen erlernen."
+      }
+    },
+    {
+      "name": "Geweiht III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Geweiht II",
+        "gruppe": 0,
+        "text": "Du verfügst über 24 Karmapunkte und kannst kirchliche Traditionen erlernen."
+      }
+    },
+    {
+      "name": "Geweiht IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Geweiht III",
+        "gruppe": 0,
+        "text": "Du verfügst über 32 Karmapunkte und kannst kirchliche Traditionen erlernen."
+      }
+    },
+    {
+      "name": "Glück I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Deine maximalen Schicksalspunkte steigen auf 5."
+      }
+    },
+    {
+      "name": "Glück II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Glück I",
+        "gruppe": 0,
+        "text": "Deine maximalen Schicksalspunkte steigen auf 6."
+      }
+    },
+    {
+      "name": "Kreis der Verdammnis I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Der Vorteil hat vier Auswirkungen. Erstens erhältst du beim Erwerb der ersten Stufe 400 EP, für jede weitere Stufe 200 EP. Zweitens werden deine Gunstpunkte sofort aufgefüllt. Drittens erhältst du für jede Stufe eine verdorbene Eigenheit. Viertens entwickelst du ein Dämonenmal und kannst über die Liturgie Seelenprüfung als Paktierer erkannt werden. Auf geweihtem/heiligen Boden musst du jede Minute eine Willenskraft-Probe (20/28) ablegen, um nicht durch starke Schmerzen aufzufallen und eine Wunde zu erleiden."
+      }
+    },
+    {
+      "name": "Kreis der Verdammnis II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Kreis der Verdammnis I",
+        "gruppe": 0,
+        "text": "Der Vorteil hat vier Auswirkungen. Erstens erhältst du beim Erwerb der ersten Stufe 400 EP, für jede weitere Stufe 200 EP. Zweitens werden deine GuP sofort aufgefüllt. Drittens erhältst du für jede Stufe eine verdorbene Eigenheit. Viertens entwickelst du ein Dämonenmal und kannst über die Liturgie Seelenprüfung als Paktierer erkannt werden. Auf geweihtem/heiligen Boden musst du jede Minute eine Willenskraft-Probe (20/28) ablegen, um nicht durch starke Schmerzen aufzufallen und eine Wunde zu erleiden."
+      }
+    },
+    {
+      "name": "Kreis der Verdammnis III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Kreis der Verdammnis II",
+        "gruppe": 0,
+        "text": "Der Vorteil hat vier Auswirkungen. Erstens erhältst du beim Erwerb der ersten Stufe 400 EP, für jede weitere Stufe 200 EP. Zweitens werden deine GuP sofort aufgefüllt. Drittens erhältst du für jede Stufe eine verdorbene Eigenheit. Viertens entwickelst du ein Dämonenmal und kannst über die Liturgie Seelenprüfung als Paktierer erkannt werden. Auf geweihtem/heiligen Boden musst du jede Minute eine Willenskraft-Probe (20/28) ablegen, um nicht durch starke Schmerzen aufzufallen und eine Wunde zu erleiden."
+      }
+    },
+    {
+      "name": "Kreis der Verdammnis IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Kreis der Verdammnis III",
+        "gruppe": 0,
+        "text": "Der Vorteil hat vier Auswirkungen. Erstens erhältst du beim Erwerb der ersten Stufe 400 EP, für jede weitere Stufe 200 EP. Zweitens werden deine GuP sofort aufgefüllt. Drittens erhältst du für jede Stufe eine verdorbene Eigenheit. Viertens entwickelst du ein Dämonenmal und kannst über die Liturgie Seelenprüfung als Paktierer erkannt werden. Auf geweihtem/heiligen Boden musst du jede Minute eine Willenskraft-Probe (20/28) ablegen, um nicht durch starke Schmerzen aufzufallen und eine Wunde zu erleiden."
+      }
+    },
+    {
+      "name": "Kreis der Verdammnis V",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Kreis der Verdammnis IV",
+        "gruppe": 0,
+        "text": "Der Vorteil hat vier Auswirkungen. Erstens erhältst du beim Erwerb der ersten Stufe 400 EP, für jede weitere Stufe 200 EP. Zweitens werden deine GuP sofort aufgefüllt. Drittens erhältst du für jede Stufe eine verdorbene Eigenheit. Viertens entwickelst du ein Dämonenmal und kannst über die Liturgie Seelenprüfung als Paktierer erkannt werden. Auf geweihtem/heiligen Boden musst du jede Minute eine Willenskraft-Probe (20/28) ablegen, um nicht durch starke Schmerzen aufzufallen und eine Wunde zu erleiden."
+      }
+    },
+    {
+      "name": "Kreis der Verdammnis VI",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Kreis der Verdammnis V",
+        "gruppe": 0,
+        "text": "Der Vorteil hat vier Auswirkungen. Erstens erhältst du beim Erwerb der ersten Stufe 400 EP, für jede weitere Stufe 200 EP. Zweitens werden deine GuP sofort aufgefüllt. Drittens erhältst du für jede Stufe eine verdorbene Eigenheit. Viertens entwickelst du ein Dämonenmal und kannst über die Liturgie Seelenprüfung als Paktierer erkannt werden. Auf geweihtem/heiligen Boden musst du jede Minute eine Willenskraft-Probe (20/28) ablegen, um nicht durch starke Schmerzen aufzufallen und eine Wunde zu erleiden."
+      }
+    },
+    {
+      "name": "Kreis der Verdammnis VII",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Kreis der Verdammnis VI",
+        "gruppe": 0,
+        "text": "Der Vorteil hat vier Auswirkungen. Erstens erhältst du beim Erwerb der ersten Stufe 400 EP, für jede weitere Stufe 200 EP. Zweitens werden deine GuP sofort aufgefüllt. Drittens erhältst du für jede Stufe eine verdorbene Eigenheit. Viertens entwickelst du ein Dämonenmal und kannst über die Liturgie Seelenprüfung als Paktierer erkannt werden. Auf geweihtem/heiligen Boden musst du jede Minute eine Willenskraft-Probe (20/28) ablegen, um nicht durch starke Schmerzen aufzufallen und eine Wunde zu erleiden."
+      }
+    },
+    {
+      "name": "Magieabweisend",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Zauber wirken auf dich deutlich schwächer. Du ignorierst bei allen Zaubern eine Stufe der spontanen Modifikation Mächtige Magie. Zauber ohne Mächtige Magie haben auf dich keine Wirkung."
+      }
+    },
+    {
+      "name": "Magiegespür",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "In der Nähe astraler Kräfte überfällt dich ein Frösteln, du hörst sphärische Klänge oder ein Farbschleier legt sich über die Umgebung. Mit dem Talent Sinnenschärfe kannst du Intensitätsanalysen (S. 80) von magischen Gegenständen durchführen. Nach dem aktiven Einsatz der Gabe erleidest du 1 Punkt Erschöpfung."
+      }
+    },
+    {
+      "name": "Minderpakt",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Minderpakte werden deutlich leichter als reguläre Pakte geschlossen - und oft auch unfreiwillig. Dafür bedeutet ein Minderpakt noch keinen Eintritt in die Kreise der Verdammnis. Stattdessen kann ein Minderpaktierer sofort einen Vorteil für maximal 20 EP erwerben, für den er nicht zwingend die Voraussetzungen erfüllen muss - ein klassisches Beispiel ist die Tradition der Borbaradianer I.\n  Im Gegenzug erhält ein Minderpaktierer die Eigenheit „Von (Erzdämon) berührt“. Mit dieser Eigenheit kann der Erzdämon versuchen, den Minderpaktierer in passenden Situationen zu einem Seelenpakt zu verführen."
+      }
+    },
+    {
+      "name": "Natürliche Rüstung",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Du verfügst über ein dichtes Fell oder zähe Schuppenhaut, wodurch dein RS um 1 steigt. Die BE verändert sich dadurch nicht.\n\nDieser Vorteil kann üblicherweise nur von Achaz, Orks und ähnlichen Rassen gewählt werden."
+      }
+    },
+    {
+      "name": "Paktierer I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Kreis der Verdammnis I, Kein Vorteil Geweiht I",
+        "gruppe": 0,
+        "text": "Du verfügst über 8 Gunstpunkte und kannst die dämonische Tradition deines Erzdämons erlernen."
+      }
+    },
+    {
+      "name": "Paktierer II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Paktierer I",
+        "gruppe": 0,
+        "text": "Du verfügst über 16 Gunstpunkte und kannst die dämonische Tradition deines Erzdämons erlernen."
+      }
+    },
+    {
+      "name": "Paktierer III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Paktierer II",
+        "gruppe": 0,
+        "text": "Du verfügst über 24 Gunstpunkte und kannst die dämonische Tradition deines Erzdämons erlernen."
+      }
+    },
+    {
+      "name": "Paktierer IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Paktierer III",
+        "gruppe": 0,
+        "text": "Du verfügst über 32 Gunstpunkte und kannst die dämonische Tradition deines Erzdämons erlernen."
+      }
+    },
+    {
+      "name": "Privilegien (Adel)",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Du darfst ein „von“ im Namen tragen, an Turnieren teilnehmen und jederzeit angemessen bewaffnet und gerüstet sein. Vor Gericht kannst du nur von höheren Adeligen gerichtet werden und du darfst bei der Abwesenheit eines Richters über Leibeigene richten, solange dabei kein Blut fließt. Diese Privilegien gelten in ähnlicher Art und Weise im Mittel- und Horasreich, dem Bornland und anderen feudalen Gesellschaften."
+      }
+    },
+    {
+      "name": "Privilegien (Krieger)",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Als Krieger/Schwertgeselle/Rondrageweihter darfst du an Turnieren teilnehmen und in Städten Waffen tragen. Diese Privilegien gelten im Mittel- und Horasreich, sowie fast überall, wo es einen anerkannten Kriegerstand gibt."
+      }
+    },
+    {
+      "name": "Privilegien (Gildenmagier)",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I, Vorteil Tradition der Gildenmagier I",
+        "gruppe": 0,
+        "text": "Du darfst Geld für magische Dienstleistungen verlangen und hast erleichterten Zugang zu Bibliotheken und Lehrmeistern der eigenen Gilde. Von weltlichen Gerichten kannst du nur in deiner Anwesenheit verurteilt werden oder du wirst vor ein Gildengericht gestellt. Im Gegenzug musst du dich den Bedingungen des Codex Albyricus unterwerfen, also stets als Gildenmagier erkenntlich sein. Auch die meisten Waffen und fast alle Rüstungen mit einem RS von mehr als 1 sind verboten. Diese Privilegien gelten im Einflussgebiet des Codex Albyricus, wie im Mittel­ und Horasreich, dem Bornland, im Kalifat und in Aranien, sowie eingeschränkt in Südaventurien."
+      }
+    },
+    {
+      "name": "Privilegien",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Unzählige Privilegien können die Leben ihrer Träger erleichtern, weswegen wir auch nicht jedes einzelne Privileg in Werte kleiden möchten.\n\nDie Kosten eines Privilegs legt der Spielleiter fest, wobei er sich an der Spielrelevanz und dem Geltungsbereich der Privilegien orientieren sollte. Zum Beispiel bringt ein eigenes Wappen keine spielrelevanten Vorteile - ganz im Gegensatz zu der Erlaubnis, in Städten Waffen zu tragen. Doch auch diese Erlaubnis verliert an Wert, wenn sie nur in Albenhus oder  am Markttag gilt. \n\n"
+      }
+    },
+    {
+      "name": "Prophezeien",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Du kannst das Talent Willenskraft nutzen, um mit Spielkarten, Würfeln, Astrologie, Drogen oder prophetischen Träumen einen vagen und meist mehrdeutigen Blick in die Zukunft zu werfen. Durch den Einsatz der Gabe erleidest du 1 Punkt Erschöpfung."
+      }
+    },
+    {
+      "name": "Resistenz gegen Gifte",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Resistenz mildert die Auswirkungen von Giften (S. 35)."
+      }
+    },
+    {
+      "name": "Immunität gegen Gifte",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Resistenz gegen Gifte",
+        "gruppe": 0,
+        "text": "Du bist immun gegen Gifte (S. 35)."
+      }
+    },
+    {
+      "name": "Resistenz gegen Krankheiten",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Resistenz mildert die Auswirkungen von Krankheiten (S. 35)."
+      }
+    },
+    {
+      "name": "Immunität gegen Krankheiten",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Resistenz gegen Krankheiten",
+        "gruppe": 0,
+        "text": "Du bist immun gegen Krankheiten (S.35)."
+      }
+    },
+    {
+      "name": "Resistenz gegen Hitze",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Verschiebt die Temperaturstufe bei hohen Temperaturen um eine Stufe in Richtung normal."
+      }
+    },
+    {
+      "name": "Resistenz gegen Kälte",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Verschiebt die Temperaturstufe bei niedrigen Temperaturen um eine Stufe in Richtung normal."
+      }
+    },
+    {
+      "name": "Tierempathie",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Mit der Gabe der Tierempathie kannst du das Talent Überleben verwenden, um die Gedanken von Tieren zu verstehen. Zusätzlich kannst du ihnen sogar einfache Botschaften zukommen lassen. Nach dem aktiven Einsatz der Gabe erleidest du 1 Punkt Erschöpfung.\n\nDie Kosten dieses Vorteils hängen von der Größe der Gruppe von Tieren ab, mit denen du kommunizieren kannst, und dem möglichen Spielnutzen dieser Fähigkeit. Beispiele wären:\n- Fische: Du kannst mit allen Fischen kommunizieren (20 EP).\n- Vögel: Du kannst mit allen Vögeln kommunizieren (40 EP).\n- Alle Tiere: Du kannst mit allen Tieren kommunizieren (60 EP).\n\n"
+      }
+    },
+    {
+      "name": "Verbindungen",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Du hast einen guten Draht zu einer bestimmten Organisation oder Person, die dir üblicherweise freundlich gegenübersteht. Außerdem gelten passende Verbindungen als Werkzeug für Recherchen und viele andere Tätigkeiten. Du kannst Verbindungen zu mehreren Organisationen und Personen haben. Die Kosten deiner Verbindungen legt der Spielleiter fest, wobei er sich an der Macht und dem Einflussbereich der Verbindungen orientieren sollte.\n\nBeispiele für Verbindungen sind:\n- Örtlicher Baron: Starker lokaler Einfluss mit geringem Einflussbereich (20 EP).\n- Badilakaner: Geringer Einfluss in weiten Teilen des zwölfgöttergläubigen Aventuriens (20 EP).\n- Efferdbrüder: Ansehnlicher Einfluss in Hafenstädten des zwölfgöttergläubigen Aventuriens (40 EP).\n- Haus Gareth: Immenser Einfluss im Mittelreich, weitreichende Beziehungen in ganz Aventurien (80 EP).\n\n"
+      }
+    },
+    {
+      "name": "Zauberer I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Du verfügst über 8 Astralpunkte und kannst magische Traditionen erlernen. Dämonen, Elementare oder Hellsichtsmagier können dich magisch wahrnehmen. Zauberer I entspricht einem einfachen Magiedilettanten."
+      }
+    },
+    {
+      "name": "Zauberer II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I",
+        "gruppe": 0,
+        "text": "Du verfügst über 16 Astralpunkte und kannst magische Traditionen erlernen. Dämonen, Elementare oder Hellsichtsmagier können dich magisch wahrnehmen. Zauberer II entspricht einem wenig begabten Alchemisten. "
+      }
+    },
+    {
+      "name": "Zauberer III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer II",
+        "gruppe": 0,
+        "text": "Du verfügst über 24 Astralpunkte und kannst magische Traditionen erlernen. Dämonen, Elementare oder Hellsichtsmagier können dich magisch wahrnehmen. Zauberer III entspricht einem ausgebildeten Zauberer."
+      }
+    },
+    {
+      "name": "Zauberer IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer III",
+        "gruppe": 0,
+        "text": "Du verfügst über 32 Astralpunkte und kannst magische Traditionen erlernen. Dämonen, Elementare oder Hellsichtsmagier können dich magisch wahrnehmen. Zauberer IV entspricht einem sehr kompetenten Zauberer."
+      }
+    },
+    {
+      "name": "Zwergennase",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Mit der Gabe der Zwergennase besitzt du einen übernatürlichen Riecher für Verstecke, Geheimgänge und mechanische Fallen. Du kannst sie mit dem Talent Wachsamkeit wahrnehmen, auch wenn das mit gewöhnlichen Sinnen unmöglich wäre. Ist das Objekt auch mit gewöhnlichen Sinnen wahrnehmbar, erhältst du eine Erleichterung von +4."
+      }
+    },
+    {
+      "name": "Eindrucksvoll I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 4",
+        "gruppe": 1,
+        "text": "In Rededuellen sind Proben auf Betören und Einschüchtern um +2 erleichtert."
+      }
+    },
+    {
+      "name": "Eindrucksvoll II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 6",
+        "gruppe": 1,
+        "text": "In Rededuellen sind Proben auf Betören und Einschüchtern um +2 erleichtert.\n\nBei Proben auf Betören, Einschüchtern und Gebräuche gelten Patzer als gewöhnlich misslungen, außer sie entstehen durch eine ungewohnte Umgebung (S. 55)."
+      }
+    },
+    {
+      "name": "Soziale Anpassungsfähigkeit",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 8",
+        "gruppe": 1,
+        "text": "Du bist immun gegen alle Auswirkungen durch ungewohnte Umgebung (S. 55)."
+      }
+    },
+    {
+      "name": "Starke Aura",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 10",
+        "gruppe": 1,
+        "text": "Während eines Rededuells kannst du eine CH-Probe gegen die Willenskraft deines Gegenübers ablegen. Wenn die Probe gelingt, kannst du eine Probe in diesem Rededuell wiederholen."
+      }
+    },
+    {
+      "name": "Routiniert I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut FF 4",
+        "gruppe": 1,
+        "text": "Die Basiszeit zur Herstellung handwerklicher Produkte, zur Wundversorgung und zum Schlösser knacken verkürzt sich um ein Viertel des unmodifizierten Werts."
+      }
+    },
+    {
+      "name": "Routiniert II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut FF 6",
+        "gruppe": 1,
+        "text": "Die Basiszeit zur Herstellung handwerklicher Produkte, zur Wundversorgung und zum Schlösser knacken verkürzt sich um ein Viertel des unmodifizierten Werts.\n\nBei Proben auf Alchemie, Handwerk, Heilkunde und Verschlagenheit gelten Patzer als gewöhnlich misslungen."
+      }
+    },
+    {
+      "name": "Improvisation",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut FF 8",
+        "gruppe": 1,
+        "text": "Unzureichendes Werkzeug oder minderwertige Verbrauchsmaterialien gelten um eine Stufe höher."
+      }
+    },
+    {
+      "name": "Meisterwerk",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut FF 10",
+        "gruppe": 1,
+        "text": "Mit hervorragenden Materialien und dem doppelten Zeitaufwand kannst du ein Meisterwerk schaffen. Dieses erhält zusätzlich 2x die Modifikation hohe Qualität und kann verbesserte Eigenschaften nach Meisterentscheid haben. Solche Werke sind extrem selten und Gegenstand von Sagen und Legenden. Der Vorteil kann nur mit Fertigkeiten mit einem unmodifizierten Probenwert von mindestens 16 angewandt werden. "
+      }
+    },
+    {
+      "name": "Zerstörerisch I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KK 4",
+        "gruppe": 1,
+        "text": "Proben zum Zerstören oder Durchbrechen von Gegenständen sind um +4 erleichtert."
+      }
+    },
+    {
+      "name": "Zerstörerisch II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KK 6",
+        "gruppe": 1,
+        "text": "Proben zum Zerstören oder Durchbrechen von Gegenständen sind um +4 erleichtert.\n\nErlaubt das Manöver Hammerschlag gegen Gegenstände. Bei waffenlosen Angriffen gegen Gegenstände verletzt du dich normalerweise nicht."
+      }
+    },
+    {
+      "name": "Muskelprotz",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KK 8",
+        "gruppe": 1,
+        "text": "Einschüchtern-Proben im Kampf sind um +4 erleichtert und du kannst ohne zusätzliche Erschwernis bis zu 4 Gegner einschüchtern."
+      }
+    },
+    {
+      "name": "Adrenalinschub",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KK 10",
+        "gruppe": 1,
+        "text": "Du kannst dir eine Probe bei einer körperlichen Tätigkeit (z.B. Schmieden, Laufen, Nahkampfangriff) um +4 erleichtern. Anschließend erleidest du einen Punkt Erschöpfung."
+      }
+    },
+    {
+      "name": "Scharfsinnig I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 4",
+        "gruppe": 1,
+        "text": "Proben bei einer Ermittlung oder Recherche sind um +2 erleichtert."
+      }
+    },
+    {
+      "name": "Scharfsinnig II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 6",
+        "gruppe": 1,
+        "text": "Proben bei einer Ermittlung oder Recherche sind um +2 erleichtert.\n\nBei Recherchen erhältst du einen zusätzlichen Informationsgrad, wenn der gewertete Würfel eine 12 oder höher zeigt."
+      }
+    },
+    {
+      "name": "Vorbereitung",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 8",
+        "gruppe": 1,
+        "text": "Du kannst Proben auf profane Fertigkeiten besonders sorgfältig vorbereiten (sofern Vorbereitung sinnvoll ist). Wenn du die doppelte notwendige Zeit aufwendest, erhältst du +4 Punkte Erleichterung."
+      }
+    },
+    {
+      "name": "Eingebung",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 10",
+        "gruppe": 1,
+        "text": "Pro Abenteuer kannst du den Spielleiter W3 mal um einen Tipp bitten. Diese Tipps sollen nicht das Abenteuer lösen, können dich aber auf Fehler in deinem Plan oder bisher übersehene Aspekte oder Zusammenhänge aufmerksam machen. "
+      }
+    },
+    {
+      "name": "Flink I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 4",
+        "gruppe": 1,
+        "text": "Deine GS steigt um einen Punkt."
+      }
+    },
+    {
+      "name": "Flink II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 6",
+        "gruppe": 1,
+        "text": "Deine GS steigt um einen Punkt.\n\nBei Athletikproben gelten Patzer als gewöhnlich misslungen."
+      }
+    },
+    {
+      "name": "Katzenhaft",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 8",
+        "gruppe": 1,
+        "text": "Erschwernisse durch unsicheren Untergrund sinken um eine Stufe und gegen den Schaden aus Stürzen, Zusammenstößen usw. kannst du deine GE als WS verwenden."
+      }
+    },
+    {
+      "name": "Körperbeherrschung",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 10",
+        "gruppe": 1,
+        "text": "Du kannst Nah- oder Fernkampfangriffen, elementaren Schadenszaubern oder ähnlichen Schadensquellen mit einer GE-Gegenprobe entgehen. Der Einsatz von Körperbeherrschung wird angesagt, nachdem übliche Verteidigungsmöglichkeiten (wie eine Verteidigung) versagt haben, aber bevor der Schaden bestimmt wird. Anschließend erleidest du einen Punkt Erschöpfung."
+      }
+    },
+    {
+      "name": "Vorausschauend I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 4",
+        "gruppe": 1,
+        "text": "In Rededuellen sind Proben auf Rhetorik und Überreden um +2 erleichtert."
+      }
+    },
+    {
+      "name": "Vorausschauend II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 6",
+        "gruppe": 1,
+        "text": "In Rededuellen sind Proben auf Rhetorik und Überreden um +2 erleichtert.\n\nBei Proben auf Überreden, Rhetorik und Menschenkenntnis gelten Patzer als gewöhnlich misslungen, außer sie entstehen durch eine ungewohnte Umgebung (S. 55)."
+      }
+    },
+    {
+      "name": "Bedächtig",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 8",
+        "gruppe": 1,
+        "text": "Wenn du in einem Rededuell abwartest, ist deine Probe um +4 erleichtert."
+      }
+    },
+    {
+      "name": "Empathie",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 10",
+        "gruppe": 1,
+        "text": "Du kannst eine IN-Probe gegen die Willenskraft deines Gegenübers ablegen. Wenn die Probe gelingt, erfährst du eine seiner Schwächen (S. 16). Eine einmal abgelegte Probe, egal ob ge- oder misslungen, kannst du nur wiederholen, wenn du das Gegenüber besser kennengelernt hast."
+      }
+    },
+    {
+      "name": "Abgehärtet I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KO 4",
+        "gruppe": 1,
+        "text": "Proben zur Abwehr von Giften und Krankheiten sind um +4 erleichtert."
+      }
+    },
+    {
+      "name": "Abgehärtet II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KO 6",
+        "gruppe": 1,
+        "text": "Proben zur Abwehr von Giften und Krankheiten sind um +4 erleichtert und das Durchhaltevermögen (S. 19) steigt um 2."
+      }
+    },
+    {
+      "name": "Schnelle Heilung",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KO 8",
+        "gruppe": 1,
+        "text": "Du regenerierst 2 Wunden pro durchschlafener Nacht und immer noch 1 Wunde, wenn die Schlafphase unterbrochen wurde."
+      }
+    },
+    {
+      "name": "Unverwüstlich",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KO 10",
+        "gruppe": 1,
+        "text": "Deine WS steigt um 1 Punkt.\n\nWenn Zähigkeitsproben zum Ignorieren von Kampfunfähigkeit misslingen, erleidest du keine Erschöpfung."
+      }
+    },
+    {
+      "name": "Willensstark I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 4",
+        "gruppe": 1,
+        "text": "Deine MR steigt um 4 Punkte."
+      }
+    },
+    {
+      "name": "Willensstark II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 6",
+        "gruppe": 1,
+        "text": "Deine MR steigt um 4 Punkte.\n\nAuf dich wirkende Furcht-Effekte (S. 46) zählen als eine Stufe niedriger."
+      }
+    },
+    {
+      "name": "Geisterpanzer",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 8",
+        "gruppe": 1,
+        "text": "Gegen direkten Schaden aus Zaubern wie Fulminictus, Ignisphaero oder Hexengalle kannst du deinen MU als WS verwenden."
+      }
+    },
+    {
+      "name": "Unbeugsamkeit",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 10",
+        "gruppe": 1,
+        "text": "Deine MR steigt um MU/2 Punkte.\n\nMit einer Aktion Konflikt und einer Konterprobe (MU, 16) kannst du einen auf dir liegenden Zauber abschütteln. Anschließend erleidest du einen Punkt Erschöpfung."
+      }
+    },
+    {
+      "name": "Kommando: Haltet Stand!",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 4",
+        "gruppe": 2,
+        "text": "Furcht-Effekte für Mitstreiter zählen als eine Stufe niedriger."
+      }
+    },
+    {
+      "name": "Kommando: Formiert Euch!",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 6",
+        "gruppe": 2,
+        "text": "Alle Mitstreiter erhalten VT +1."
+      }
+    },
+    {
+      "name": "Kommando: Keine Gefangenen!",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 8",
+        "gruppe": 2,
+        "text": "Alle Mitstreiter erhalten TP +2."
+      }
+    },
+    {
+      "name": "Kommando: Kennt Keinen Schmerz!",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 10",
+        "gruppe": 2,
+        "text": "Alle Mitstreiter erhalten WS +1."
+      }
+    },
+    {
+      "name": "Ruhige Hand",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut FF 4",
+        "gruppe": 2,
+        "text": "Verdoppelt im Fernkampf den Bonus durch Zielen."
+      }
+    },
+    {
+      "name": "Reflexschuss",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut FF 6",
+        "gruppe": 2,
+        "text": "Im Fernkampf sinken Abzüge durch Bewegung oder Wind um 1 Stufe."
+      }
+    },
+    {
+      "name": "Schnellziehen",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut FF 8",
+        "gruppe": 2,
+        "text": "Erlaubt das Manöver Schnellschuss (FK -4) im Fernkampf: Verkürzt die Vorbereitungszeit um die Hälfte. Eine Vorbereitungszeit von 1 Aktion wird zu 0 Aktionen. Die Aktion Konflikt ist von dieser Modifikation nicht betroffen. Kann bis zu zweimal pro FK eingesetzt werden.\n\nNahkampf- und Wurfwaffen können in einer freien Aktion gezogen werden."
+      }
+    },
+    {
+      "name": "Meisterschuss",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut FF 10",
+        "gruppe": 2,
+        "text": "Erlaubt das Manöver Meisterschuss (FK -8) im Fernkampf: Der Angriff richtet zwei zusätzliche Wunden an - auch wenn der Schaden zu gering ist, um eine Wunde anzurichten."
+      }
+    },
+    {
+      "name": "Niederwerfen",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KK 4",
+        "gruppe": 2,
+        "text": "Erlaubt das Manöver Niederwerfen (AT -4): Gegenprobe: KK. Dein Ziel stürzt und liegt am Boden."
+      }
+    },
+    {
+      "name": "Waffenloser Kampf",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KK 6",
+        "gruppe": 2,
+        "text": "Deine unbewaffneten Angriffe erhalten die Waffeneigenschaften Kopflastig und Wendig (S. 47)."
+      }
+    },
+    {
+      "name": "Hammerschlag",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KK 8",
+        "gruppe": 2,
+        "text": "Erlaubt das Manöver Hammerschlag (AT -8): Der Angriff richtet doppelten Waffenschaden an. Zusätzliche TP aus Kommandos, anderen Manövern usw. werden nicht verdoppelt."
+      }
+    },
+    {
+      "name": "Unaufhaltsam",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KK 10",
+        "gruppe": 2,
+        "text": "Selbst bei einer gelungenen gegnerischen Verteidigung richtest du halben Schaden an. Ausweichen vermeidet diesen Schaden. Manövereffekte wirken weiterhin nur bei gelungenen Attacken."
+      }
+    },
+    {
+      "name": "Standfest",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 4",
+        "gruppe": 2,
+        "text": "Nach einem Sturz befindest du dich in kniender statt liegender Position."
+      }
+    },
+    {
+      "name": "Sturmangriff",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 6",
+        "gruppe": 2,
+        "text": "Erlaubt das Manöver Sturmangriff (Bewegung und AT): Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Außerdem richtet die nächste Attacke GS Trefferpunkte zusätzlich an."
+      }
+    },
+    {
+      "name": "Todesstoß",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 8",
+        "gruppe": 2,
+        "text": "Erlaubt das Manöver Todesstoß (AT -8): Der Angriff richtet zwei zusätzliche Wunden an, auch wenn der Schaden zu gering ist, um Wunden anzurichten."
+      }
+    },
+    {
+      "name": "Präzision",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 10",
+        "gruppe": 2,
+        "text": "Zeigt der gewertete Würfel bei einem Nahkampfangriff eine 16 oder höher, richtet der Angriff GE TP zusätzlich an."
+      }
+    },
+    {
+      "name": "Ausfall",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 4",
+        "gruppe": 2,
+        "text": "Erlaubt das Manöver Ausfall (AT -2 -BE): Das Ziel muss in einer Freien Reaktion bis zu 2 Schritt zurückweichen, du folgst in einer Freien Aktion. Möchte es in seiner nächsten Initiativephase einen anderen Gegner als dich angreifen, darfst du einen Passierschlag ausführen."
+      }
+    },
+    {
+      "name": "Offensiver Kampfstil",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 6",
+        "gruppe": 2,
+        "text": "Der Verteidigungs-Malus durch volle Offensive sinkt auf -4."
+      }
+    },
+    {
+      "name": "Gegenhalten",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 8",
+        "gruppe": 2,
+        "text": "Wenn du eine Attacke abwehrst, die mit einem Manöver verstärkt wurde, darfst du sofort einen Passierschlag gegen den Angreifer ausführen."
+      }
+    },
+    {
+      "name": "Kalte Wut",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 10",
+        "gruppe": 2,
+        "text": "Der Held kann sich im Kampf in kalte Wut versetzen und Wundabzüge ignorieren."
+      }
+    },
+    {
+      "name": "Kampfreflexe",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 4",
+        "gruppe": 2,
+        "text": "Deine INI steigt um 4 Punkte."
+      }
+    },
+    {
+      "name": "Defensiver Kampfstil",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 6",
+        "gruppe": 2,
+        "text": "Volle Defensive (S. 36) ist für dich eine einfache Aktion. Dadurch könntest du beispielsweise zusätzlich die Aktion Konflikt wählen, um eine AT –4 ausführen."
+      }
+    },
+    {
+      "name": "Aufmerksamkeit",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 8",
+        "gruppe": 2,
+        "text": "Misslingt deinem Gegner eine Verteidigung gegen dich, die mit einem Manöver verstärkt wurde, darfst du sofort einen Passierschlag gegen ihn ausführen. Pro Runde kannst du die erste Verteidigung gegen einen Passierschlag als Freie Reaktion ausführen."
+      }
+    },
+    {
+      "name": "Klingentanz",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 10",
+        "gruppe": 2,
+        "text": "Erlaubt das Manöver Klingentanz (AT -4): Wenn der Angriff gelingt, darfst du sofort noch einmal angreifen. Dieser Folgeangriff ist nicht erschwert."
+      }
+    },
+    {
+      "name": "Durchatmen",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KO 4",
+        "gruppe": 2,
+        "text": "Einmal zwischen zwei Ruhephasen kannst du eine Aktion Konzentration aufwenden und eine Zähigkeits-Probe (16) ablegen. Gelingt die Probe, regenerierst du sofort 1 Wunde oder 2 Erschöpfung, die du im laufenden Kampf erlitten hast."
+      }
+    },
+    {
+      "name": "Rüstungsgewöhnung",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KO 6",
+        "gruppe": 2,
+        "text": "Die BE aller Rüstungen ist um 1 gesenkt."
+      }
+    },
+    {
+      "name": "Atemtechnik",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KO 8",
+        "gruppe": 2,
+        "text": "Du fügst +1W6 Trefferpunkte zu. Du aktivierst den Effekt in einer Freien Aktion. Der Effekt endet, wenn du auf einen Schlag zwei Wunden erleidest oder nach KO Initiativephasen. Dann erleidest du einen Punkt Erschöpfung."
+      }
+    },
+    {
+      "name": "Verbesserte Rüstungsgewöhnung",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KO 10",
+        "gruppe": 2,
+        "text": "Die BE aller Rüstungen ist um 2 gesenkt."
+      }
+    },
+    {
+      "name": "Beidhändiger Kampf I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 4",
+        "gruppe": 3,
+        "text": "Bedingungen: zwei einhändige Waffen, kein Schild, nicht beritten.\n\nDu erhältst AT +1."
+      }
+    },
+    {
+      "name": "Beidhändiger Kampf II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 6, Vorteil Beidhändiger Kampf I",
+        "gruppe": 3,
+        "text": "Du erhältst AT +1.\n\nDeine zweite Waffe ignoriert die übliche Erschwernis für Nebenwaffen. Dadurch kannst du den vollen Nutzen aus zwei unterschiedlichen Waffen ziehen. Falls du dennoch zwei identische Waffen nutzt, kannst du den ersten (bzw. mit Wendigen Waffen zweiten) Passierschlag zwischen zwei INI-Phasen als Freie Reaktion ausführen."
+      }
+    },
+    {
+      "name": "Beidhändiger Kampf III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 8, Vorteil Beidhändiger Kampf II",
+        "gruppe": 3,
+        "text": "Du erhältst AT +1.\n\nErlaubt das Manöver Doppelangriff (2x AT -4): Du führst mit beiden Händen je eine Attacke –4 aus. Beide Angriffe sind unabhängig voneinander; sie werden separat ausgewürfelt, können sich gegen verschiedene Ziele richten und mit unterschiedlichen Manövern versehen werden."
+      }
+    },
+    {
+      "name": "Beidhändiger Kampf IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 10, Vorteil Beidhändiger Kampf III",
+        "gruppe": 3,
+        "text": "Bedingung: zwei weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung des Kampfstils verwendet werden. "
+      }
+    },
+    {
+      "name": "Kraftvoller Kampf I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KK 4",
+        "gruppe": 3,
+        "text": "Bedingungen: einzelne Nahkampfwaffe, nicht beritten.\n\nDein Waffenschaden steigt um +1."
+      }
+    },
+    {
+      "name": "Kraftvoller Kampf II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KK 6, Vorteil Kraftvoller Kampf I",
+        "gruppe": 3,
+        "text": "Dein Waffenschaden steigt um +1.\n\nDu kannst in eine Halbschwertstellung wechseln, um deine Waffe in einer um eins kleineren Reichweite zu führen. Der Wechsel in die Stellung oder zurück geschieht in einer Freien Aktion."
+      }
+    },
+    {
+      "name": "Kraftvoller Kampf III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KK 8, Vorteil Kraftvoller Kampf II",
+        "gruppe": 3,
+        "text": "Dein Waffenschaden steigt um +1.\n\nErlaubt das Manöver Befreiungsschlag (AT -4): Du führst eine Attacke aus, die sich (samt anderen Manövern) gegen alle Ziele in einem Winkel von 180° vor dir richtet. Jedem Ziel steht eine eigene Verteidigung zu."
+      }
+    },
+    {
+      "name": "Kraftvoller Kampf IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KK 10, Vorteil Kraftvoller Kampf III",
+        "gruppe": 3,
+        "text": "Bedingung: zwei weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung des Kampfstils verwendet werden. "
+      }
+    },
+    {
+      "name": "Schildkampf I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KK 4",
+        "gruppe": 3,
+        "text": "Bedingung: Schild.\n\nDu erhältst VT +1."
+      }
+    },
+    {
+      "name": "Schildkampf II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KK 6, Vorteil Schildkampf I",
+        "gruppe": 3,
+        "text": "Du erhältst VT +1.\n\nDein Schild ignoriert die übliche Erschwernis für Nebenwaffen (S. 39). Außerdem kannst du die erste VT zwischen zwei Initiativphasen als Freie Reaktion ausführen."
+      }
+    },
+    {
+      "name": "Schildkampf III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KK 8, Vorteil Schildkampf II",
+        "gruppe": 3,
+        "text": "Du erhältst VT +1.\n\nErlaubt das Manöver Schildwall (VT -4): Du kannst einen Angriff auf einen benachbarten Verbündeten abwehren. Das Manöver erfolgt vor der Verteidigung des Verbündeten."
+      }
+    },
+    {
+      "name": "Schildkampf IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KK 10, Vorteil Schildkampf III",
+        "gruppe": 3,
+        "text": "Bedingung: zwei weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung des Kampfstils verwendet werden. "
+      }
+    },
+    {
+      "name": "Schneller Kampf I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 4",
+        "gruppe": 3,
+        "text": "Bedingungen: einzelne Nahkampfwaffe, nicht beritten.\n\nDu erhältst AT +1."
+      }
+    },
+    {
+      "name": "Schneller Kampf II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 6, Vorteil Schneller Kampf I",
+        "gruppe": 3,
+        "text": "Du erhältst AT +1.\n\nDu kannst in eine Halbschwertstellung wechseln, um deine Waffe in einer um 1 kleineren Reichweite zu führen. Der Wechsel in die Stellung oder zurück geschieht in einer Freien Aktion."
+      }
+    },
+    {
+      "name": "Schneller Kampf III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 8, Vorteil Schneller Kampf II",
+        "gruppe": 3,
+        "text": "Du erhältst AT +1.\n\nErlaubt das Manöver Unterlaufen (VT -4): Wenn die Verteidigung gelingt, darfst du in der nächsten eigenen Initiativephase eine Freie Aktion nutzen, um deinen Gegner (ein weiteres Mal) anzugreifen."
+      }
+    },
+    {
+      "name": "Schneller Kampf IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 10, Vorteil Schneller Kampf III",
+        "gruppe": 3,
+        "text": "Bedingung: zwei weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung des Kampfstils verwendet werden. "
+      }
+    },
+    {
+      "name": "Parierwaffenkampf I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 4",
+        "gruppe": 3,
+        "text": "Bedingungen: Parierwaffe, nicht beritten.\n\nDu kannst gegen humanoide Gegner –1 Erschwernis aus Manövern ignorieren."
+      }
+    },
+    {
+      "name": "Parierwaffenkampf II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 6, Vorteil Parierwaffenkampf I",
+        "gruppe": 3,
+        "text": "Du kannst gegen humanoide Gegner –1 Erschwernis aus Manövern ignorieren.\n\nDeine Parierwaffe ignoriert die üblichen Erschwernisse für Nebenwaffen (S. 39). Wenn ideale Kampfbedingungen herrschen – du also keine Erschwernisse durch Position, Untergrund und Licht erleidest – verbessert sich deine Position um eine Stufe (S. 38)."
+      }
+    },
+    {
+      "name": "Parierwaffenkampf III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 8, Vorteil Parierwaffenkampf II",
+        "gruppe": 3,
+        "text": "Du kannst gegen humanoide Gegner –1 Erschwernis aus Manövern ignorieren.\n\nErlaubt das Manöver Riposte (VT -4): Du fügst dem Angreifer den Waffenschaden deiner Waffe zu. Die Riposte ist kombinierbar mit Attackemanövern, die in diesem Fall die Verteidigung zusätzlich erschweren. Zum Beispiel wäre eine Kombination aus Riposte und Hammerschlag um –12 erschwert, würde aber doppelten Schaden anrichten."
+      }
+    },
+    {
+      "name": "Parierwaffenkampf IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 10, Vorteil Parierwaffenkampf III",
+        "gruppe": 3,
+        "text": "Bedingung: zwei weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung des Kampfstils verwendet werden. "
+      }
+    },
+    {
+      "name": "Reiterkampf I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 4 ODER Attribut KK 4",
+        "gruppe": 3,
+        "text": "Bedingung: beritten.\n\nDu erhältst Waffenschaden +1, AT +1 und VT +1.\n\nErlaubt das Manöver Sturmangriff (Bewegung und AT) mit dem Pferd: Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Außerdem richtet die nächste Attacke GS Trefferpunkte zusätzlich an."
+      }
+    },
+    {
+      "name": "Reiterkampf II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 6 ODER Attribut KK 6, Vorteil Reiterkampf I",
+        "gruppe": 3,
+        "text": "Du erhältst Waffenschaden +1, AT +1 und VT +1.\n\nDein Reittier ignoriert die üblichen Erschwernisse für Nebenwaffen (S. 39) und im Reiterkampf ist die BE durch Rüstungen um 1 gesenkt. Außerdem ignorierst du im Fernkampf du den Malus für berittene Schützen (S. 46)."
+      }
+    },
+    {
+      "name": "Reiterkampf III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 8 ODER Attribut KK 8, Vorteil Reiterkampf II",
+        "gruppe": 3,
+        "text": "Du erhältst Waffenschaden +1, AT +1 und VT +1.\n\nErlaubt das Manöver Überrennen (Bewegung und AT) mit dem Pferd: Das Reittier stürmt in die gegnerische Formation. Seine Attacke trifft (samt anderen Manövern) alle Gegner in seiner Bahn, bis es durch mindestens 2 erfolgreiche Verteidigungen gestoppt wird. Außerdem richtet die Attacke GS Trefferpunkte zusätzlich an. Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert."
+      }
+    },
+    {
+      "name": "Reiterkampf IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 10 ODER Attribut KK 10, Vorteil Reiterkampf III",
+        "gruppe": 3,
+        "text": "Bedingung: zwei weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung des Kampfstils verwendet werden. "
+      }
+    },
+    {
+      "name": "Bändiger der Elemente",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut CH 4",
+        "gruppe": 4,
+        "text": "Bei Elementaren sinkt die Erschwernis für schwierige und anmaßende Dienste (S. 81) um eine Stufe."
+      }
+    },
+    {
+      "name": "Meister der Wünsche",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut CH 6",
+        "gruppe": 4,
+        "text": "Nachdem ein gebundenes Elementar (S. 81) einen Dienst erfüllt hat, kannst du für die Hälfte der Basisbeschwörungskosten einen zusätzlichen Dienst erbitten."
+      }
+    },
+    {
+      "name": "Gefäß der Sterne",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut CH 8",
+        "gruppe": 4,
+        "text": "Deine maximale Astralenergie steigt um 4 + CH Punkte. Solltest du nach dem Erwerb dieses Vorteils dein CH erhöhen, erhöht das auch deine Astralenergie."
+      }
+    },
+    {
+      "name": "Gebieter der Urgewalten",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut CH 10",
+        "gruppe": 4,
+        "text": "Gebundene Elementare kosten nur noch die halben gAsP und eine misslungene Beherrschungsprobe kann einmalig für die Hälfte der Beschwörungskosten wiederholt werden."
+      }
+    },
+    {
+      "name": "Reaktivierung",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut FF 4",
+        "gruppe": 4,
+        "text": "Du kannst wieder aufladbare Artefakte erschaffen und reaktivieren (S. 78)."
+      }
+    },
+    {
+      "name": "Matrixverständnis",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut FF 6",
+        "gruppe": 4,
+        "text": "Der erste wirkende Zauber, der bei der Artefakterschaffung misslingt, darf einmal wiederholt werden.\n\nBei Strukturanalysen (S. 80) erhältst du einen zusätzlichen Analysegrad, wenn der gewertete Würfel eine 12 oder höher zeigt."
+      }
+    },
+    {
+      "name": "Semipermanenz",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut FF 8",
+        "gruppe": 4,
+        "text": "Du kannst semipermanente Artefakte erschaffen (S. 78)."
+      }
+    },
+    {
+      "name": "Thaumaturg",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut FF 10",
+        "gruppe": 4,
+        "text": "Artefakte kosten nur die halben gAsP. Außerdem können Thaumaturgen weitere Vorteile zur Artefaktherstellung nutzen: Mit Kraftlinienmagie kannst du ortsgebundene Artefakte erschaffen, ohne gAsP aufzuwenden. Mit Meister der Wünsche/Meister der Seelenlosen kannst du Elementare/Dämonen in Artefakte binden. Beim Auslösen solcher Artefakte ist keine Beherrschungsprobe nötig, solange diese nicht schwieriger wäre als die vom Erschaffer abgelegte Beherrschungsprobe (z.B. durch einen schwierigeren Dienst). "
+      }
+    },
+    {
+      "name": "Astrale Regeneration",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut KO 4",
+        "gruppe": 4,
+        "text": "Du regenerierst 1 zusätzlichen AsP pro Nacht."
+      }
+    },
+    {
+      "name": "Verbotene Pforten",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut KO 6",
+        "gruppe": 4,
+        "text": "Mit diesem Vorteil kannst du deine Zauber mit deiner Lebenskraft speisen. Wenn du nicht über ausreichend AsP für einen Zauber verfügst, kannst du dir selbst Wunden zufügen. Jede dieser Wunden stellt WS+4 AsP für deinen Zauber zur Verfügung, überschüssige AsP verfallen. Verwendest du zudem die Tradition der Borbaradianer, kannst du sogar WS+8 AsP pro Wunde nutzen. Die eigene Lebenskraft kann jedoch niemals genutzt werden, um sich selbst zu heilen. Die Verbotenen Pforten können übrigens keine gAsP zur Verfügung stellen – gAsP müssen immer vom Zaubernden selbst stammen."
+      }
+    },
+    {
+      "name": "Verbesserte astrale Regeneration",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut KO 8",
+        "gruppe": 4,
+        "text": "Du regenerierst 2 weitere, zusätzliche AsP pro Nacht."
+      }
+    },
+    {
+      "name": "Meisterliche astrale Regeneration",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut KO 10",
+        "gruppe": 4,
+        "text": "Du regenerierst 3 weitere, zusätzliche AsP pro Nacht."
+      }
+    },
+    {
+      "name": "Bändiger der Kreaturen",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut MU 4",
+        "gruppe": 4,
+        "text": "Du kannst von dir beschworenen unheiligen Wesenheiten (S. 81) zusätzliche Fähigkeiten im Wert von 4 Punkten verleihen."
+      }
+    },
+    {
+      "name": "Meister der Seelenlosen",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut MU 6",
+        "gruppe": 4,
+        "text": "Wann immer ein gebundenes unheiliges Wesen (S. 81) seinen Dienst erfüllt hat, kannst du für die Hälfte der Basisbeschwörungskosten einen zusätzlichen Dienst erbitten."
+      }
+    },
+    {
+      "name": "Blutmagie",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut MU 8",
+        "gruppe": 4,
+        "text": "Mit finsterer und streng verbotener Blutmagie nutzt du fremde Lebenskraft für deine Zauber. Das Opfer wird dabei völlig ausgezehrt und stirbt. Ein zauberkundiges Opfer stellt 8 x WS AsP, ein humanoides Opfer 4 x WS AsP und ein profanes Tier WS AsP zur Verfügung. Blutmagie erleichtert die Beschwörung von Dämonen um +4, aber erschwert die Kontrollprobe von Dämonen und Elementaren um –4. Blutmagie kann übrigens keine gAsP zur Verfügung stellen – gAsP müssen immer vom Zaubernden selbst stammen."
+      }
+    },
+    {
+      "name": "Gebieter der Finsternis",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut MU 10",
+        "gruppe": 4,
+        "text": "Gebundene unheilige Wesenheiten kosten nur noch die halben gAsP und eine misslungene Beschwörungsprobe kann einmalig für die Hälfte der Beschwörungskosten wiederholt werden."
+      }
+    },
+    {
+      "name": "Unitatio",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut IN 4",
+        "gruppe": 4,
+        "text": "Der Vorteil ermöglicht es dir, mit anderen Kennern dieses Vorteils einen Zauberzirkel zu bilden. Alle Teilnehmer des Zirkels müssen sich berühren und willens sein, ihre Astralenergie zu teilen.\nSolange der Zirkel besteht, können die Teilnehmer die Regeln zur Zusammenarbeit (S. 8) nutzen, um sich gegenseitig beim Zaubern zu unterstützen. Üblicherweise sind dabei maximal vier Helfer möglich, welche die Probe des Zaubernden um jeweils +2 erleichtern können. Allerdings werden Elfensippen und manchen Hexenzirkeln noch viel mächtigere Unitatio-Zauberei nachgesagt.\nZusätzlich werden die Zauberkosten aller Teilnehmer gleichmäßig auf den gesamten Zirkel aufgeteilt. Sollte ein Teilungsrest übrigbleiben oder ein Teilnehmer über zu wenige AsP verfügen, muss der Zaubernde diese Kosten tragen. Nur gAsP muss der Zaubernde stets selbst tragen."
+      }
+    },
+    {
+      "name": "Flexible Magie",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut IN 6",
+        "gruppe": 4,
+        "text": "Während du einen Zauber vorbereitest, kannst du dich mit einer Erschwernis von -4 verteidigen."
+      }
+    },
+    {
+      "name": "Mühelose Magie",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut IN 8",
+        "gruppe": 4,
+        "text": "Zeigt der gewertete Würfel bei einem Zauber eine 16 oder höher, sinken die Kosten um die Hälfte der Basiskosten und der Zauber erhält zusätzlich 1 Stufe Mächtige Magie."
+      }
+    },
+    {
+      "name": "Flinke Magie",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut IN 10",
+        "gruppe": 4,
+        "text": "Einmal pro Initiativphase kannst du eine Zauberprobe in einer freien Aktion statt einer Aktion Konflikt durchführen."
+      }
+    },
+    {
+      "name": "Kontrolliertes Zaubern",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut KL 4",
+        "gruppe": 4,
+        "text": "Du kannst Zauber während ihrer Wirkungsdauer jederzeit beenden."
+      }
+    },
+    {
+      "name": "Kraftlinienmagie",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut KL 6",
+        "gruppe": 4,
+        "text": "An Kraftlinien oder -knoten sind Zauber mit passenden Fertigkeiten je nach Linienstärke um +2 bis +4 erleichtert und die Regeneration ist um 2-4 AsP erhöht."
+      }
+    },
+    {
+      "name": "Effizientes Zaubern",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut KL 8",
+        "gruppe": 4,
+        "text": "Ermöglicht die spontane Modifikation Kosten sparen (Zauber -4): Die AsP-Kosten des Zaubers sinken um ein Viertel der Basiskosten. Die Kosten können dadurch nicht unter die Hälfte der Basiskosten sinken."
+      }
+    },
+    {
+      "name": "Vorbereitendes Zaubern",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut KL 10",
+        "gruppe": 4,
+        "text": "Zwischen dem Vorbereiten des Zaubers und der Aktion Konflikt dürfen bis zu KL Minuten liegen. Danach gilt der Zauber als fehlgeschlagen. Ein Ziel in Reichweite wird erst in der Aktion Konflikt ausgewählt. Du kannst nur einen Zauber in Vorbereitung halten."
+      }
+    },
+    {
+      "name": "Tiergeist (Affe)",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Tradition der Anach-Nurim I ODER Vorteil Tradition der Durro-dun I ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Bär) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Elefant) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Eule) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Falke) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fischotter) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fuchs/Mungo) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Gebirgsbock) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Löwe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Mammut) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Rabe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Schlange) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Stier) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildkatze/Panther) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildschwein) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wolf/Khoramsbestie) ODER Vorteil Tradition der Schamanen I",
+        "gruppe": 4,
+        "text": "Archetyp: Akrobat\nWertebonus: Akrobatik, Klettern, Pirschen, Wurfwaffen, GE\nVerwandlung: Schwanz (Akrobatik und Klettern +4), Kopf (Sinnenschärfe und Wachsamkeit +4)\nZauber: Attributo, Axxeleratus, Motoricus, Wipfellauf\n\n"
+      }
+    },
+    {
+      "name": "Tiergeist (Bär)",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Tradition der Anach-Nurim I ODER Vorteil Tradition der Durro-dun I ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Affe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Elefant) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Eule) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Falke) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fischotter) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fuchs/Mungo) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Gebirgsbock) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Löwe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Mammut) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Rabe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Schlange) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Stier) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildkatze/Panther) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildschwein) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wolf/Khoramsbestie) ODER Vorteil Tradition der Schamanen I",
+        "gruppe": 4,
+        "text": "Archetyp: Nahkämpfer\nWertebonus: TP im Nahkampf, Zähigkeit, KK\nVerwandlung: Pranken (2W6+2 TP waffenlos, nicht zerbrechlich, RW 1), Pelz (+2 RS, Kälteschutz wie dicke Winterkleidung (S. 35))\nZauber: Bärenruhe, Eiseskälte, Ruhe Körper, Sanftmut, Standfest, Zaubernahrung\n\n"
+      }
+    },
+    {
+      "name": "Tiergeist (Elefant)",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Tradition der Anach-Nurim I ODER Vorteil Tradition der Durro-dun I ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Affe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Bär) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Eule) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Falke) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fischotter) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fuchs/Mungo) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Gebirgsbock) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Löwe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Mammut) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Rabe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Schlange) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Stier) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildkatze/Panther) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildschwein) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wolf/Khoramsbestie) ODER Vorteil Tradition der Schamanen I",
+        "gruppe": 4,
+        "text": "Archetyp: Weiser\nWertebonus: Heilkunde, Geographie, Mythenkunde, KL\nVerwandlung: Haut (+1 RS und Willenskraft +4), Stoßzähne (2W6+2 TP waffenlos, nicht zerbrechlich, RW 1)\nZauber: Memorans, Psychostabilis, Seelentier erkennen, Xenographus\n\n"
+      }
+    },
+    {
+      "name": "Tiergeist (Eule)",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Tradition der Anach-Nurim I ODER Vorteil Tradition der Durro-dun I ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Affe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Bär) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Elefant) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Falke) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fischotter) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fuchs/Mungo) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Gebirgsbock) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Löwe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Mammut) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Rabe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Schlange) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Stier) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildkatze/Panther) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildschwein) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wolf/Khoramsbestie) ODER Vorteil Tradition der Schamanen I",
+        "gruppe": 4,
+        "text": "Archetyp: Kundschafter\nWertebonus: Pirschen, Sinnenschärfe, Überleben, IN\nVerwandlung: Flügel (bis zu 8 Schritt weite und 4 Schritt hohe Sprünge, Gleitflüge von bis zu 4xHöhe Schritt), Kopf (Sinnenschärfe und Wachsamkeit +4, wenn Sicht gefragt ist, Angepasst (Dunkelheit) steigt um 1 Stufe)\nZauber: Blick aufs Wesen, Exposami, Hexenkrallen, Senisbar, Silentium\n\n"
+      }
+    },
+    {
+      "name": "Tiergeist (Falke)",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Tradition der Anach-Nurim I ODER Vorteil Tradition der Durro-dun I ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Affe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Bär) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Elefant) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Eule) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fischotter) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fuchs/Mungo) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Gebirgsbock) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Löwe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Mammut) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Rabe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Schlange) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Stier) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildkatze/Panther) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildschwein) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wolf/Khoramsbestie) ODER Vorteil Tradition der Schamanen I",
+        "gruppe": 4,
+        "text": "Archetyp: Fernkämpfer\nWertebonus: TP im Fernkampf, Sinnenschärfe, Wachsamkeit, FF\nVerwandlung: Flügel (bis zu 8 Schritt weite und 4 Schritt hohe Sprünge, Gleitflüge von bis zu 4xHöhe Schritt), Kopf (Sinnenschärfe +8 und Wachsamkeit +4, wenn Sicht gefragt ist)\nZauber: Adlerauge, Axxeleratus, Falkenauge, Pfeil der Luft, Aeropulvis\n\n"
+      }
+    },
+    {
+      "name": "Tiergeist (Fischotter)",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Tradition der Anach-Nurim I ODER Vorteil Tradition der Durro-dun I ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Affe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Bär) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Elefant) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Eule) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Falke) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fuchs/Mungo) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Gebirgsbock) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Löwe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Mammut) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Rabe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Schlange) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Stier) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildkatze/Panther) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildschwein) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wolf/Khoramsbestie) ODER Vorteil Tradition der Schamanen I",
+        "gruppe": 4,
+        "text": "Archetyp: Akrobat\nWertebonus: Akrobatik, Klettern, Pirschen, Schwimmen, GE\nVerwandlung: Pfoten (Schwimmen +4, Angepasst (Wasser) steigt um 1 Stufe), Pelz (+2 RS, Kälteschutz wie dicke Winterkleidung (S. 35))\nZauber: Eins mit der Natur, Katzenaugen, Foramen, Wasseratem, Wellenlauf, Hilfreiche Tatze\n\n"
+      }
+    },
+    {
+      "name": "Tiergeist (Fuchs/Mungo)",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Tradition der Anach-Nurim I ODER Vorteil Tradition der Durro-dun I ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Affe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Bär) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Elefant) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Eule) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Falke) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fischotter) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Gebirgsbock) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Löwe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Mammut) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Rabe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Schlange) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Stier) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildkatze/Panther) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildschwein) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wolf/Khoramsbestie) ODER Vorteil Tradition der Schamanen I",
+        "gruppe": 4,
+        "text": "Archetyp: Gesellschafter\nWertebonus: Gebräuche, Überreden, Menschenkenntnis, CH\nVerwandlung: Fell (+1 RS, Pirschen +4), Kopf (Sinnenschärfe und Wachsamkeit +4)\nZauber: Attributo, Harmlose Gestalt, Sensibar, Seidenzunge\n\n"
+      }
+    },
+    {
+      "name": "Tiergeist (Gebirgsbock)",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Tradition der Anach-Nurim I ODER Vorteil Tradition der Durro-dun I ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Affe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Bär) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Elefant) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Eule) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Falke) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fischotter) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fuchs/Mungo) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Löwe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Mammut) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Rabe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Schlange) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Stier) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildkatze/Panther) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildschwein) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wolf/Khoramsbestie) ODER Vorteil Tradition der Schamanen I",
+        "gruppe": 4,
+        "text": "Archetyp: Sammler\nWertebonus: Pflanzenkunde, Tierkunde, Überleben, Wachsamkeit, KO\nVerwandlung: Hörner (2W6+2 TP waffenlos, nicht zerbrechlich, RW 1), Pelz (+2 RS, Kälteschutz wie dicke Winterkleidung (S. 35))\nZauber: Axxeleratus, Eins mit der Natur, Firnlauf, Spinnenlauf, Standfest\n\n"
+      }
+    },
+    {
+      "name": "Tiergeist (Löwe)",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Tradition der Anach-Nurim I ODER Vorteil Tradition der Durro-dun I ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Affe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Bär) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Elefant) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Eule) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Falke) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fischotter) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fuchs/Mungo) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Gebirgsbock) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Mammut) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Rabe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Schlange) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Stier) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildkatze/Panther) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildschwein) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wolf/Khoramsbestie) ODER Vorteil Tradition der Schamanen I",
+        "gruppe": 4,
+        "text": "Archetyp: Anführer\nWertebonus: Autorität, Willenskraft, MU\nVerwandlung: Maul (2W6+2 TP waffenlos, Einschüchtern +4), Mähne (Anführen +4, Furcht-Effekte sinken um 1 Stufe)\nZauber: Ängste lindern, Armatrutz, Katzenaugen, Kusch!, Standfest\n\n"
+      }
+    },
+    {
+      "name": "Tiergeist (Mammut)",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Tradition der Anach-Nurim I ODER Vorteil Tradition der Durro-dun I ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Affe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Bär) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Elefant) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Eule) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Falke) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fischotter) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fuchs/Mungo) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Gebirgsbock) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Löwe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Rabe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Schlange) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Stier) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildkatze/Panther) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildschwein) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wolf/Khoramsbestie) ODER Vorteil Tradition der Schamanen I",
+        "gruppe": 4,
+        "text": "Archetyp: Anführer\nWertebonus: Autorität, Willenskraft, MU\nVerwandlung: Pelz (+2 RS, Kälteschutz wie dicke Winterkleidung (S. 35)), Stoßzähne (2W6+2 TP waffenlos, RW 1)\nZauber: Ängste lindern, Armatrutz, Kusch!, Psychostabilis, Zaubernahrung\n\n"
+      }
+    },
+    {
+      "name": "Tiergeist (Rabe)",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Tradition der Anach-Nurim I ODER Vorteil Tradition der Durro-dun I ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Affe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Bär) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Elefant) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Eule) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Falke) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fischotter) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fuchs/Mungo) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Gebirgsbock) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Löwe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Mammut) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Schlange) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Stier) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildkatze/Panther) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildschwein) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wolf/Khoramsbestie) ODER Vorteil Tradition der Schamanen I",
+        "gruppe": 4,
+        "text": "Archetyp: Weiser\nWertebonus: Heilkunde, Geographie, Mythenkunde, KL\nVerwandlung: Flügel (bis zu 8 Schritt weite und 4 Schritt hohe Sprünge, Gleitflüge von bis zu 4xHöhe Schritt), Kopf (Sinnenschärfe und Wachsamkeit +4)\nZauber: Krähenruf, Sensibar, Nekropathia, Memorans\n\n"
+      }
+    },
+    {
+      "name": "Tiergeist (Schlange)",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Tradition der Anach-Nurim I ODER Vorteil Tradition der Durro-dun I ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Affe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Bär) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Elefant) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Eule) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Falke) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fischotter) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fuchs/Mungo) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Gebirgsbock) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Löwe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Mammut) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Rabe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Stier) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildkatze/Panther) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildschwein) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wolf/Khoramsbestie) ODER Vorteil Tradition der Schamanen I",
+        "gruppe": 4,
+        "text": "Archetyp: Weiser\nWertebonus: Alchemie, Magietheorie, Mythenkunde, KL\nVerwandlung: Giftzähne (2W6 TP waffenlos, Vergiftung mit Waffengift (Stufe 20, ohne Verzögerung, Intervall und Dauer 2W6 INI-Phasen 2W6 SP)), Schuppen (+1 RS, Pirschen +4)\nZauber: Atemnot, Psychostabilis, Seperentialis, Vipernblick, Warmes Blut\n\n"
+      }
+    },
+    {
+      "name": "Tiergeist (Stier)",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Tradition der Anach-Nurim I ODER Vorteil Tradition der Durro-dun I ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Affe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Bär) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Elefant) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Eule) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Falke) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fischotter) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fuchs/Mungo) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Gebirgsbock) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Löwe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Mammut) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Rabe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Schlange) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildkatze/Panther) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildschwein) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wolf/Khoramsbestie) ODER Vorteil Tradition der Schamanen I",
+        "gruppe": 4,
+        "text": "Archetyp: Nahkämpfer\nWertebonus: TP im Nahkampf, Zähigkeit, KK\nVerwandlung: Hörner (2W6+2 TP waffenlos, nicht zerbrechlich, RW 1), Haut (+1 RS, Zähigkeit +4)\nZauber: Attributo, Horriphobus, Sensattaco, Standfest\n\n"
+      }
+    },
+    {
+      "name": "Tiergeist (Wildkatze/Panther)",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Tradition der Anach-Nurim I ODER Vorteil Tradition der Durro-dun I ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Affe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Bär) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Elefant) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Eule) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Falke) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fischotter) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fuchs/Mungo) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Gebirgsbock) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Löwe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Mammut) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Rabe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Schlange) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Stier) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildschwein) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wolf/Khoramsbestie) ODER Vorteil Tradition der Schamanen I",
+        "gruppe": 4,
+        "text": "Archetyp: Akrobat\nWertebonus: Akrobatik, Klettern, Laufen, Pirschen, GE\nVerwandlung: Krallen (2W6+2 TP waffenlos, Klettern +4), Fell (+1 RS, Pirschen +4)\nZauber: Eins mit der Natur, Katzenaugen, Krötensprung, Spurlos, Standfest, Wipfellauf\n\n"
+      }
+    },
+    {
+      "name": "Tiergeist (Wildschwein)",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Tradition der Anach-Nurim I ODER Vorteil Tradition der Durro-dun I ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Affe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Bär) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Elefant) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Eule) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Falke) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fischotter) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fuchs/Mungo) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Gebirgsbock) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Löwe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Mammut) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Rabe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Schlange) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Stier) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildkatze/Panther) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wolf/Khoramsbestie) ODER Vorteil Tradition der Schamanen I",
+        "gruppe": 4,
+        "text": "Archetyp: Sammler\nWertebonus: Pflanzenkunde, Tierkunde, Überleben, Wachsamkeit, KO\nVerwandlung: Schnauze (2W6 TP waffenlos, Sinnenschärfe und Wachsamkeit +4, wenn der Geruchssinn gefragt ist), Fell (+1 RS, Pirschen +4)\nZauber: Abvenenum, Eins mit der Natur, Kusch!, Standfest, Zaubernahrung\n\n"
+      }
+    },
+    {
+      "name": "Tiergeist (Wolf/Khoramsbestie)",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Tradition der Anach-Nurim I ODER Vorteil Tradition der Durro-dun I ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Affe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Bär) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Elefant) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Eule) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Falke) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fischotter) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fuchs/Mungo) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Gebirgsbock) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Löwe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Mammut) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Rabe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Schlange) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Stier) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildkatze/Panther) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildschwein) ODER Vorteil Tradition der Schamanen I",
+        "gruppe": 4,
+        "text": "Archetyp: Kundschafter\nWertebonus: Pirschen, Sinnenschärfe, Überleben, IN\nVerwandlung: Schnauze (2W6 TP waffenlos, Sinnenschärfe und Wachsamkeit +4, wenn der Geruchssinn gefragt ist), Pelz (+2 RS, Kälteschutz wie dicke Winterkleidung (S. 35))\nZauber: Adlerauge, Axxeleratus, Eins mit der Natur, Kusch!, Movimento, Spurlos\n\n"
+      }
+    },
+    {
+      "name": "Tradition der Alchemisten I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut FF 4, Vorteil Zauberer I",
+        "gruppe": 5,
+        "text": "Bedingungen: Sichtkontakt, Geste, Laut gesprochene Zauberformel.\n\nDu kannst Zauber in der Tradition der Alchemisten erlernen und benutzen. Solche Zauber findest du unter den allgemeinen Zaubern und unter Schalenzauber (S. 171).\n\nZauber der Fertigkeiten Einfluss, Verwandlung und Eigenschaften können nur in Form von Artefakten oder als „Zutat“ für Tränke verwendet werden.."
+      }
+    },
+    {
+      "name": "Tradition der Alchemisten II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut FF 6, Vorteil Tradition der Alchemisten I",
+        "gruppe": 5,
+        "text": "Alchemistische Zauber sind fest in der stofflichen Welt verankert. Die Wirkungsdauer aller Zauber ist verdoppelt."
+      }
+    },
+    {
+      "name": "Tradition der Alchemisten III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut FF 8, Vorteil Tradition der Alchemisten II",
+        "gruppe": 5,
+        "text": "Erlaubt die spontane Modifikation Zeit lassen (Zauber +2): Verdoppelt die Vorbereitungszeit, aber erleichtert den Zauber um +2. Eine Vorbereitungszeit von 0 Aktionen wird zu 1 Aktion. Kann einmal pro Zauber eingesetzt werden und wirkt nicht auf Zauber mit frei wählbarer Vorbereitungszeit."
+      }
+    },
+    {
+      "name": "Tradition der Alchemisten IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut FF 10, Vorteil Tradition der Alchemisten III",
+        "gruppe": 5,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Borbaradianer I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 4, Vorteil Zauberer I",
+        "gruppe": 5,
+        "text": "Bedingungen: Sichtkontakt, Geste, Laut gesprochene Zauberformel.\n\nDu kannst Zauber in der Tradition der Borbaradianer erlernen und benutzen. Solche Zauber findest du unter den allgemeinen Zaubern.\n\nDu kannst den Vorteil auch mit einem Minderpakt (S. 92) erwerben, ohne Zauberer zu sein."
+      }
+    },
+    {
+      "name": "Tradition der Borbaradianer II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 6, Vorteil Tradition der Borbaradianer I",
+        "gruppe": 5,
+        "text": "Borbaradianische Zauber sind chaotisch und instabil. Du kannst Zauberproben mit 1W20 statt mit 3W20 ablegen. Dadurch verbessern sich deine Chancen bei besonders gewagten Zaubern."
+      }
+    },
+    {
+      "name": "Tradition der Borbaradianer III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 8, Vorteil Tradition der Borbaradianer II",
+        "gruppe": 5,
+        "text": "Erlaubt die spontane Modifikation Erzwingen (Zauber +4): Die Kosten des Zaubers steigen um die Hälfte der Basiskosten, dafür ist der Zauber um 4 Punkte erleichtert. Kann nur einmal pro Zauber eingesetzt werden."
+      }
+    },
+    {
+      "name": "Tradition der Borbaradianer IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 10, Vorteil Tradition der Borbaradianer III",
+        "gruppe": 5,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Geoden I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 4, Vorteil Zauberer I",
+        "gruppe": 5,
+        "text": "Bedingungen: Sichtkontakt, Geste, kein Kontakt mit verhüttetem Material.\n\nDu kannst Zauber in der Tradition der Geoden erlernen und benutzen. Solche Zauber findest du unter den allgemeinen Zaubern, unter Dolchzauber (S. 156), Ringrituale (S. 170) und Vertrautenmagie (S. 173).\n\nDu musst dich beim Erlernen für ein bevorzugtes Element entscheiden. Geodische Zauber können nicht schriftlich weitergegeben werden."
+      }
+    },
+    {
+      "name": "Tradition der Geoden II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 6, Vorteil Tradition der Geoden I",
+        "gruppe": 5,
+        "text": "Geoden gelten als die fähigsten Elementaristen Aventuriens. Wenn du einen Zauber mit deinem bevorzugten Element wirkst, kannst du eine Basismodifikation (z.B. 1x Mächtige Magie) ohne Erschwernis ausführen."
+      }
+    },
+    {
+      "name": "Tradition der Geoden III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 8, Vorteil Tradition der Geoden II",
+        "gruppe": 5,
+        "text": "Erlaubt die spontane Modifikation Zeit lassen (Zauber +2): Verdoppelt die Vorbereitungszeit, aber erleichtert den Zauber um +2. Eine Vorbereitungszeit von 0 Aktionen wird zu 1 Aktion. Kann einmal pro Zauber eingesetzt werden und wirkt nicht auf Zauber mit frei wählbarer Vorbereitungszeit."
+      }
+    },
+    {
+      "name": "Tradition der Geoden IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 10, Vorteil Tradition der Geoden III",
+        "gruppe": 5,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Gildenmagier I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 4, Vorteil Zauberer I",
+        "gruppe": 5,
+        "text": "Bedingungen: Sichtkontakt, Geste, laut gesprochene Zauberformel.\n\nDu kannst Zauber in der Tradition der Gildenmagier erlernen und benutzen. Solche Zauber findest du unter den allgemeinen Zaubern, unter Kugelzauber (S. 169), Schalenzauber (S. 171) und Stabzauber (S. 172).\n\nWenn du beim Vorbereiten eines Zaubers gestört wirst, sind entsprechende Willenskraftproben um zusätzliche –4 erschwert."
+      }
+    },
+    {
+      "name": "Tradition der Gildenmagier II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 6, Vorteil Tradition der Gildenmagier I",
+        "gruppe": 5,
+        "text": "Gildenmagier verstehen die Matrix eines Zaubers und können ihn leichter verändern. Wenn du einen Zauber mit mindestens zwei unterschiedlichen Basismodifikationen wirkst, ist er zusätzlich um +2 erleichtert."
+      }
+    },
+    {
+      "name": "Tradition der Gildenmagier III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 8, Vorteil Tradition der Gildenmagier II",
+        "gruppe": 5,
+        "text": "Erlaubt die spontane Modifikation Zeit lassen (Zauber +2): Verdoppelt die Vorbereitungszeit, aber erleichtert den Zauber um +2. Eine Vorbereitungszeit von 0 Aktionen wird zu 1 Aktion. Kann einmal pro Zauber eingesetzt werden und wirkt nicht auf Zauber mit frei wählbarer Vorbereitungszeit."
+      }
+    },
+    {
+      "name": "Tradition der Gildenmagier IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 10, Vorteil Tradition der Gildenmagier III",
+        "gruppe": 5,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Druiden I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 4, Vorteil Zauberer I",
+        "gruppe": 5,
+        "text": "Bedingungen: Sichtkontakt, Geste, kein Kontakt mit verhüttetem Material.\n\nDu kannst Zauber in der Tradition der Druiden erlernen und benutzen. Solche Zauber findest du unter den allgemeinen Zaubern und unter Dolchzauber (S. 156).\n\nDruidische Zauber können nicht schriftlich weitergegeben werden."
+      }
+    },
+    {
+      "name": "Tradition der Druiden II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 6, Vorteil Tradition der Druiden I",
+        "gruppe": 5,
+        "text": "Druiden wissen um Orte von besonderer Kraft. Auf Kraftlinien und -knoten, die sich auch in vielen Städten finden, sind alle druidische Zauber und Rituale um 2–4 Punkte erleichtert."
+      }
+    },
+    {
+      "name": "Tradition der Druiden III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 8, Vorteil Tradition der Druiden II",
+        "gruppe": 5,
+        "text": "Erlaubt die spontane Modifikation Erzwingen (Zauber +4): Die Kosten des Zaubers steigen um die Hälfte der Basiskosten, dafür ist der Zauber um 4 Punkte erleichtert. Kann nur einmal pro Zauber eingesetzt werden."
+      }
+    },
+    {
+      "name": "Tradition der Druiden IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 10, Vorteil Tradition der Druiden III",
+        "gruppe": 5,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Elfen I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 4, Vorteil Zauberer I",
+        "gruppe": 5,
+        "text": "Bedingungen: Sichtkontakt, Geste, Gesungene oder gespielte Formel.\n\nDu kannst Zauber in der Tradition der Elfen erlernen und benutzen. Solche Zauber findest du unter den allgemeinen Zaubern und unter Elfenlieder (S. 158).\n\nIn Umgebungen mit gestörter Harmonie (z.B. dämonische Verseuchung, Geisterscheinungen) sind Zauber um 2–4 Punkte erschwert."
+      }
+    },
+    {
+      "name": "Tradition der Elfen II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 6, Vorteil Tradition der Elfen I",
+        "gruppe": 5,
+        "text": "Elfen begreifen Magie als alltägliche Unterstützung ihrer Fähigkeiten. Die Wirkungsdauer deiner Zauber, die auf dich selbst wirken, ist verdoppelt."
+      }
+    },
+    {
+      "name": "Tradition der Elfen III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 8, Vorteil Tradition der Elfen II",
+        "gruppe": 5,
+        "text": "Erlaubt die spontane Modifikation Zeit lassen (Zauber +2): Verdoppelt die Vorbereitungszeit, aber erleichtert den Zauber um +2. Eine Vorbereitungszeit von 0 Aktionen wird zu 1 Aktion. Kann einmal pro Zauber eingesetzt werden und wirkt nicht auf Zauber mit frei wählbarer Vorbereitungszeit."
+      }
+    },
+    {
+      "name": "Tradition der Elfen IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 10, Vorteil Tradition der Elfen III",
+        "gruppe": 5,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Hexen I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 4, Vorteil Zauberer I",
+        "gruppe": 5,
+        "text": "Bedingungen: Sichtkontakt, Geste, Bodenkontakt.\n\nDu kannst Zauber in der Tradition der Hexen erlernen und benutzen. Solche Zauber findest du unter den allgemeinen Zaubern, unter Hexenflüche (S. 166), Schalenzauber (S. 171) und Vertrautenmagie (S. 173).\n\nDie Komponente Bodenkontakt kann nur ignoriert werden, wenn du zumindest über indirekten Bodenkontakt verfügst (z.B. in einem mehrstöckigen Haus)."
+      }
+    },
+    {
+      "name": "Tradition der Hexen II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 6, Vorteil Tradition der Hexen I",
+        "gruppe": 5,
+        "text": "Für Hexen gehören Gefühle und Magie untrennbar zusammen. Im Zustand besonders starker, zum Zauber passender Emotionen sind Zauber und Rituale um 2–4 Punkte erleichtert."
+      }
+    },
+    {
+      "name": "Tradition der Hexen III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 8, Vorteil Tradition der Hexen II",
+        "gruppe": 5,
+        "text": "Erlaubt die spontane Modifikation Erzwingen (Zauber +4): Die Kosten des Zaubers steigen um die Hälfte der Basiskosten, dafür ist der Zauber um 4 Punkte erleichtert. Kann nur einmal pro Zauber eingesetzt werden."
+      }
+    },
+    {
+      "name": "Tradition der Hexen IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 10, Vorteil Tradition der Hexen III",
+        "gruppe": 5,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Kristallomanten I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 4, Vorteil Zauberer I",
+        "gruppe": 5,
+        "text": "Bedingungen: Sichtkontakt, Geste, passender gebundender Kristall.\n\nDu kannst Zauber in der Tradition der Kristallomanten erlernen und benutzen. Solche Zauber findest du unter den allgemeinen Zaubern und unter Kristallmagie (S. 168).\n\nWenn du einen Zauber mit der Modifikation Vorbereitung verkürzen wirkst, ist er zusätzlich um –2 erschwert."
+      }
+    },
+    {
+      "name": "Tradition der Kristallomanten II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 6, Vorteil Tradition der Kristallomanten I",
+        "gruppe": 5,
+        "text": "Durch das Studium der Edelsteine gelten Kristallomanten als herausragende Artefaktmagier. Zauber zur Artefakterschaffung und zur magischen Analyse sind um +2 erleichtert."
+      }
+    },
+    {
+      "name": "Tradition der Kristallomanten III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 8, Vorteil Tradition der Kristallomanten II",
+        "gruppe": 5,
+        "text": "Erlaubt die spontane Modifikation Zeit lassen (Zauber +2): Verdoppelt die Vorbereitungszeit, aber erleichtert den Zauber um +2. Eine Vorbereitungszeit von 0 Aktionen wird zu 1 Aktion. Kann einmal pro Zauber eingesetzt werden und wirkt nicht auf Zauber mit frei wählbarer Vorbereitungszeit."
+      }
+    },
+    {
+      "name": "Tradition der Kristallomanten IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 10, Vorteil Tradition der Kristallomanten III",
+        "gruppe": 5,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Schelme I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 4, Vorteil Zauberer I",
+        "gruppe": 5,
+        "text": "Bedingungen: Sichtkontakt, Geste, Harmlosigkeit.\n\nDu kannst Zauber in der Tradition der Schelme erlernen und benutzen. Solche Zauber findest du unter den allgemeinen Zaubern.\n\nSchelmische Zauber können nicht schriftlich weitergegeben werden."
+      }
+    },
+    {
+      "name": "Tradition der Schelme II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 6, Vorteil Tradition der Schelme I",
+        "gruppe": 5,
+        "text": "Schelmenmagie umgeht den geistigen Widerstand ihrer Ziele. Wenn ein Zauber gegen die Magieresistenz wirkt, ist er um +2 erleichtert."
+      }
+    },
+    {
+      "name": "Tradition der Schelme III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 8, Vorteil Tradition der Schelme II",
+        "gruppe": 5,
+        "text": "Erlaubt die spontane Modifikation Erzwingen (Zauber +4): Die Kosten des Zaubers steigen um die Hälfte der Basiskosten, dafür ist der Zauber um 4 Punkte erleichtert. Kann nur einmal pro Zauber eingesetzt werden."
+      }
+    },
+    {
+      "name": "Tradition der Schelme IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 10, Vorteil Tradition der Schelme III",
+        "gruppe": 5,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Scharlatane I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 4, Vorteil Zauberer I",
+        "gruppe": 5,
+        "text": "Bedingungen: Sichtkontakt, Geste, laut gesprochene Zauberformel.\n\nDu kannst Zauber in der Tradition der Scharlatane erlernen und benutzen. Solche Zauber findest du unter den allgemeinen Zaubern und unter Kugelzauber (S. 169).\n\nZauber mit Basiskosten von 16 AsP oder mehr sind um –2 erschwert."
+      }
+    },
+    {
+      "name": "Tradition der Scharlatane II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 6, Vorteil Tradition der Scharlatane I",
+        "gruppe": 5,
+        "text": "Scharlatane sind Meister der Illusionsmagie. Wenn du einen Zauber mit der Fertigkeit Illusion wirkst, kannst du eine Basismodifikation (z.B. 1x Mächtige Magie) ohne Erschwernis ausführen."
+      }
+    },
+    {
+      "name": "Tradition der Scharlatane III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 8, Vorteil Tradition der Scharlatane II",
+        "gruppe": 5,
+        "text": "Erlaubt die spontane Modifikation Zeit lassen (Zauber +2): Verdoppelt die Vorbereitungszeit, aber erleichtert den Zauber um +2. Eine Vorbereitungszeit von 0 Aktionen wird zu 1 Aktion. Kann einmal pro Zauber eingesetzt werden und wirkt nicht auf Zauber mit frei wählbarer Vorbereitungszeit."
+      }
+    },
+    {
+      "name": "Tradition der Scharlatane IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 10, Vorteil Tradition der Scharlatane III",
+        "gruppe": 5,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Magiedilettant",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Vorteil Zauberer I",
+        "gruppe": 5,
+        "text": "Bedingungen: Sichtkontakt, Geste.\n\nDu kannst alle allgemeinen Zauber erlernen und benutzen, die weniger als 60 EP kosten.\n\nDu kannst pro Zauber maximal zwei spontane Modifikationen (oder eine Modifikation zweimal) einsetzen."
+      }
+    },
+    {
+      "name": "Tradition der Anach-Nurim I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KO 4, Vorteil Zauberer I",
+        "gruppe": 5,
+        "text": "Bedingungen: Sichtkontakt, Geste.\n\nDu kannst Zauber in der Tradition der Anach-nûrim erlernen und benutzen. Solche Zauber findest du unter Gaben des Blutgeists (S. 159).\n\nWenn du einen Zauber ohne Verbotene Pforten oder Blutmagie wirkst, ist er um -2 erschwert."
+      }
+    },
+    {
+      "name": "Tradition der Anach-Nurim II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KO 6, Vorteil Tradition der Anach-Nurim I",
+        "gruppe": 5,
+        "text": "Wenn du einen Zauber mit verbotenen Pforten oder Blutmagie wirkst, kannst du eine Basismodifikation (z.B. 1x Mächtige Magie) ohne Erschwernis ausführen."
+      }
+    },
+    {
+      "name": "Tradition der Anach-Nurim III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KO 8, Vorteil Tradition der Anach-Nurim II",
+        "gruppe": 5,
+        "text": "Erlaubt die spontane Modifikation Erzwingen (Zauber +4): Die Kosten des Zaubers steigen um die Hälfte der Basiskosten, dafür ist der Zauber um 4 Punkte erleichtert. Kann nur einmal pro Zauber eingesetzt werden."
+      }
+    },
+    {
+      "name": "Tradition der Anach-Nurim IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KO 10, Vorteil Tradition der Anach-Nurim III",
+        "gruppe": 5,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Derwische I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut FF 4, Vorteil Zauberer I",
+        "gruppe": 5,
+        "text": "Bedingungen: Sichtkontakt, Trommelspiel, nur Rashtullahgläubige profitieren von Zaubern.\n\nDu kannst Zauber in der Tradition der Derwische erlernen und benutzen. Solche Zauber findest du unter Trommelrituale (S. 172).\n\nDie Bedingung Trommelspiel kann nicht ignoriert werden."
+      }
+    },
+    {
+      "name": "Tradition der Derwische II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut FF 6, Vorteil Tradition der Derwische I",
+        "gruppe": 5,
+        "text": "Deine Rhythmen sind auf größere Entfernung hörbar. Alle deine Zauber mit dem Ziel Zone wirken auf alle Ziele im Umkreis von 8 Schritt (statt 4 Schritt)."
+      }
+    },
+    {
+      "name": "Tradition der Derwische III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut FF 8, Vorteil Tradition der Derwische II",
+        "gruppe": 5,
+        "text": "Erlaubt die spontane Modifikation Opferung (Zauber +4): Ein Opfer erleichtert den Zauber um +4. Derwische legen ihre ganze Kraft in den Zauber und erleiden danach 2 Punkte Erschöpfung."
+      }
+    },
+    {
+      "name": "Tradition der Derwische IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut FF 10, Vorteil Tradition der Derwische III",
+        "gruppe": 5,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Durro-dun I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 4, Vorteil Zauberer I",
+        "gruppe": 5,
+        "text": "Bedingungen: Sichtkontakt, Geste.\n\nDu kannst Zauber in der Tradition der Durro-dûn erlernen und benutzen. Solche Zauber findest du unter Gaben des Odun (S. 159).\n\nDu musst dich beim Erlernen für ein Tier entscheiden (siehe S. 160). Alle deine Zauber beziehen sich auf dieses Tier.\n\n"
+      }
+    },
+    {
+      "name": "Tradition der Durro-dun II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 6, Vorteil Tradition der Durro-dun I",
+        "gruppe": 5,
+        "text": "Erfahrene Durro-dûn rufen die Tiergeister scheinbar mühelos in ihren Körper. Die Kosten aller Zauber, die du auf dich selbst wirkst, sinken um ein Viertel der Basiskosten."
+      }
+    },
+    {
+      "name": "Tradition der Durro-dun III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 8, Vorteil Tradition der Durro-dun II",
+        "gruppe": 5,
+        "text": "Erlaubt die spontane Modifikation Opferung (Zauber +4): Ein Opfer erleichtert den Zauber um +4. Die Tierkrieger opfern den Geistern ihr Blut und fügen sich dabei eine Wunde zu, deren Auswirkungen bei der Probe für den Zauber ignoriert werden."
+      }
+    },
+    {
+      "name": "Tradition der Durro-dun IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 10, Vorteil Tradition der Durro-dun III",
+        "gruppe": 5,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Schamanen I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 4, Vorteil Zauberer I",
+        "gruppe": 5,
+        "text": "Bedingungen: Sichtkontakt, Geste oder Tanz, gesprochene oder gesungene Formel.\n\nDu kannst Zauber in der Tradition der Schamanen erlernen und benutzen. Solche Zauber findest du unter Geister d. Stärkung (S. 162), Geister d. Zorns, Geister rufen, Geister vertreiben und Keulenrituale (S. 167).\n\nVerärgert der Nutznießer eines positiven schamanischen Zaubers den entsprechenden Geist, endet der Zauber sofort (Spielleiterentscheid)."
+      }
+    },
+    {
+      "name": "Tradition der Schamanen II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 6, Vorteil Tradition der Schamanen I",
+        "gruppe": 5,
+        "text": "Schamanen binden oft einen beträchtlichen Teil ihrer Astralenergie in ihre Zauber. Wenn du mindestens 2/4/8/16 gAsP gebunden hast, sind deine Zauber um +1/+2/+3/+4 erleichtert."
+      }
+    },
+    {
+      "name": "Tradition der Schamanen III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 8, Vorteil Tradition der Schamanen II",
+        "gruppe": 5,
+        "text": "Erlaubt die spontane Modifikation Zeremonie (Zauber +X): Du kannst die Vorbereitungszeit freiwillig um 1 Minute/Stunde/Tag/Woche/Monat/Jahr erhöhen, wodurch der Zauber um +4/6/8/10/12/14 erleichtert ist. Die Vorbereitungszeit muss dadurch mindestens verdoppelt werden."
+      }
+    },
+    {
+      "name": "Tradition der Schamanen IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 10, Vorteil Tradition der Schamanen III",
+        "gruppe": 5,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Zauberbarden I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 4, Vorteil Zauberer I",
+        "gruppe": 5,
+        "text": "Bedingungen: Sichtkontakt, Instrumentenspiel, Ziel kann dich hören.\n\nDu kannst Zauber in der Tradition der Zauberbarden erlernen und benutzen. Solche Zauber findest du unter Zaubermelodien (S. 174).\n\nDie Bedingung Instrumentenspiel kann nicht ignoriert werden."
+      }
+    },
+    {
+      "name": "Tradition der Zauberbarden II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 6, Vorteil Tradition der Zauberbarden I",
+        "gruppe": 5,
+        "text": "Zauberbarden können ihre Melodie flexibel verändern. Während du einen Zauber mit der Eigenschaft Konzentration (S. 124) aufrechterhältst, kannst du weitere Zauber vorbereiten. (Die Aktion Konflikt ist dennoch nötig und beendet den vorherigen Zauber.)"
+      }
+    },
+    {
+      "name": "Tradition der Zauberbarden III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 8, Vorteil Tradition der Zauberbarden II",
+        "gruppe": 5,
+        "text": "Erlaubt die spontane Modifikation Zeit lassen (Zauber +2): Verdoppelt die Vorbereitungszeit, aber erleichtert den Zauber um +2. Eine Vorbereitungszeit von 0 Aktionen wird zu 1 Aktion. Kann einmal pro Zauber eingesetzt werden und wirkt nicht auf Zauber mit frei wählbarer Vorbereitungszeit."
+      }
+    },
+    {
+      "name": "Tradition der Zauberbarden IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 10, Vorteil Tradition der Zauberbarden III",
+        "gruppe": 5,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Zaubertänzer I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 4, Vorteil Zauberer I",
+        "gruppe": 5,
+        "text": "Bedingungen: Sichtkontakt, Tanz, Ziele können dich sehen.\n\nDu kannst Zauber in der Tradition der Zaubertänzer erlernen und benutzen. Solche Zauber findest du unter Zaubertänze (S. 176).\n\nDie Bedingung Tanz kann nicht ignoriert werden."
+      }
+    },
+    {
+      "name": "Tradition der Zaubertänzer II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 6, Vorteil Tradition der Zaubertänzer I",
+        "gruppe": 5,
+        "text": "Die Darbietung eines erfahrenen Zaubertänzers hinterlässt einen bleibenden Eindruck. Die Wirkungsdauer aller deiner Zauber ist verdoppelt."
+      }
+    },
+    {
+      "name": "Tradition der Zaubertänzer III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 8, Vorteil Tradition der Zaubertänzer II",
+        "gruppe": 5,
+        "text": "Erlaubt die spontane Modifikation Opferung (Zauber +4): Ein Opfer erleichtert den Zauber um +4. Zaubertänzer legen ihre ganze Kraft in den Zauber und erleiden danach 2 Punkte Erschöpfung."
+      }
+    },
+    {
+      "name": "Tradition der Zaubertänzer IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut GE 10, Vorteil Tradition der Zaubertänzer III",
+        "gruppe": 5,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Gemeinschaft der Gläubigen",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 4, Vorteil Geweiht I",
+        "gruppe": 6,
+        "text": "Für mindestens 4/8/16/32 Mitbetende ist die Liturgieprobe um +1/2/3/4 erleichtert."
+      }
+    },
+    {
+      "name": "Unterstützung der Gläubigen",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 6, Vorteil Geweiht I",
+        "gruppe": 6,
+        "text": "Mirakel können auch auf andere Gläubige gewirkt werden. Die Wirkung solcher Mirakel ist halbiert."
+      }
+    },
+    {
+      "name": "Aura der Heiligkeit",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 8, Vorteil Geweiht I",
+        "gruppe": 6,
+        "text": "Gläubige Mitstreiter in einem Radius von 16 Schritt erhalten eine Erleichterung von +1 auf alle Mirakel-Fertigkeiten deiner Gottheit, sowie alle Liturgien. Du selbst profitierst nicht von diesem Bonus."
+      }
+    },
+    {
+      "name": "Segnung der Gläubigen",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 10, Vorteil Geweiht I",
+        "gruppe": 6,
+        "text": "Liturgien, die ausschließlich gläubige Mitstreiter (und nicht dich selbst) verstärken, kosten nur die halben Basiskosten."
+      }
+    },
+    {
+      "name": "Gemeinsames Wunder",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 4, Vorteil Geweiht I",
+        "gruppe": 6,
+        "text": "Der Vorteil ermöglicht es dir, mit anderen Kennern dieses Vorteils einen Liturgiezirkel zu bilden. Alle Teilnehmer des Zirkels müssen sich berühren und willens sein, ihre Karmaenergie zu teilen.\nSolange der Zirkel besteht, können die Teilnehmer die Regeln zur Zusammenarbeit (S. 8) nutzen, um sich gegenseitig bei Liturgien zu unterstützen. Üblicherweise sind dabei maximal vier Helfer möglich, welche die Probe des Wirkenden um jeweils +2 erleichtern können.\nZusätzlich werden die Liturgiekosten aller Teilnehmer gleichmäßig auf den gesamten Zirkel aufgeteilt. Sollte ein Teilungsrest übrigbleiben oder ein Teilnehmer über zu wenige KaP verfügen, muss der Wirkende diese Kosten tragen. Nur gKaP muss der Wirkende stets selbst tragen."
+      }
+    },
+    {
+      "name": "Zuverlässiges Wunder",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 6, Vorteil Geweiht I",
+        "gruppe": 6,
+        "text": "Schlägt eine durch ein Mirakel unterstützte Probe fehl, bleibt die Wirkung des Mirakels aufrecht (1x pro Mirakel). Patzer bei solchen Proben gelten nur als gewöhnlich misslungen."
+      }
+    },
+    {
+      "name": "Beeindruckendes Wunder",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 8, Vorteil Geweiht I",
+        "gruppe": 6,
+        "text": "Bei Mirakeln verleiht die Modifikation Mächtige Liturgie einen Bonus von +4 statt +2."
+      }
+    },
+    {
+      "name": "Göttliche Nähe",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 10, Vorteil Geweiht I",
+        "gruppe": 6,
+        "text": "Du regenerierst 1 zusätzlichen KaP pro Nacht."
+      }
+    },
+    {
+      "name": "Liturgische Routine",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 4, Vorteil Geweiht I",
+        "gruppe": 6,
+        "text": "Bei Liturgien gewürfelte Patzer gelten nur als gewöhnlich misslungen."
+      }
+    },
+    {
+      "name": "Liturgische Sorgfalt",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 6, Vorteil Geweiht I",
+        "gruppe": 6,
+        "text": "Misslungene Liturgien kosten nur 1/4 der Basiskosten."
+      }
+    },
+    {
+      "name": "Liturgische Disziplin",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 8, Vorteil Geweiht I",
+        "gruppe": 6,
+        "text": "Ermöglicht die spontane Modifikation Kosten sparen (Liturgie -4): Die Kosten der Liturgie sinken um ein Viertel der Basiskosten. Die Kosten können dadurch nicht unter die Hälfte der Basiskosten sinken."
+      }
+    },
+    {
+      "name": "Liebling der Gottheit",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 10, Vorteil Geweiht I",
+        "gruppe": 6,
+        "text": "Zeigt der gewertete Würfel bei einer Liturgie eine 16 oder höher, kostet diese keine KaP und erhält eine zusätzliche Stufe Mächtige Liturgie."
+      }
+    },
+    {
+      "name": "Verseuchung erspüren",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 4, Vorteil Geweiht I",
+        "gruppe": 6,
+        "text": "Bei Verwendung spürst du die Anwesenheit und die grobe Stärke - nicht aber den genauen Ort - von dämonischen Präsenzen oder Verseuchung in unmittelbarer Nähe. Kostet 1 KaP/Minute."
+      }
+    },
+    {
+      "name": "Gesegnete Waffe",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 6, Vorteil Geweiht I",
+        "gruppe": 6,
+        "text": "Von dir genutzte Waffen gelten immer als geweiht. Bereits geweihte Waffen verursachen +1W6 TP gegen unheilige Wesen (S. 98)."
+      }
+    },
+    {
+      "name": "Stärke des Glaubens",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 8, Vorteil Geweiht I",
+        "gruppe": 6,
+        "text": "Gegen Angriffe von unheiligen Wesenheiten steigt deine WS um 2."
+      }
+    },
+    {
+      "name": "Streiter der Schöpfung",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 10, Vorteil Geweiht I",
+        "gruppe": 6,
+        "text": "Alle Proben im Kampf gegen unheilige Wesen (S. 98) sind um +2 erleichtert, Liturgien sogar um +4."
+      }
+    },
+    {
+      "name": "Tradition der Avesgeweihten I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 4, Vorteil Geweiht I, Kein Vorteil Tradition der Praiosgeweihten I, Kein Vorteil Tradition der Borongeweihten I, Kein Vorteil Tradition der Phexgeweihten I, Kein Vorteil Tradition der Efferdgeweihten I, Kein Vorteil Tradition der Hesindegeweihten I, Kein Vorteil Tradition der Ingerimmgeweihten I, Kein Vorteil Tradition der Angroschgeweihten I, Kein Vorteil Tradition der Perainegeweihten I, Kein Vorteil Tradition der Firungeweihten I, Kein Vorteil Tradition der Swafnirgeweihten I, Kein Vorteil Tradition der Tsageweihten I, Kein Vorteil Tradition der Traviageweihten I, Kein Vorteil Tradition der Ifirngeweihten I, Kein Vorteil Tradition der Nandusgeweihten I, Kein Vorteil Tradition der Rondrageweihten I, Kein Vorteil Tradition der Rahjageweihten I, Kein Vorteil Tradition der Korgeweihten I",
+        "gruppe": 7,
+        "text": "Bedingungen: Sichtkontakt, Geste, Bewegung (min. 1 Schritt pro Aktion).\n\nDu kannst Liturgien in der Tradition der Avesgeweihten erlernen und benutzen. Solche Liturgien findest du unter den allgemeinen Liturgien, unter Fröhlicher Wanderer und Stiller Wanderer (ab S. 201).\n\nLiturgien sind um 2-8 Punkte erschwert, wenn ihr Einsatz gegen die Gebote der Kirche verstößt."
+      }
+    },
+    {
+      "name": "Tradition der Avesgeweihten II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 6, Vorteil Tradition der Avesgeweihten I",
+        "gruppe": 7,
+        "text": "Avesgeweihte sind ständig in Bewegung. Wenn du eine Liturgie vorbereitest, kannst du zusätzlich zur Aktion Konzentration die Aktion Bewegung nutzen."
+      }
+    },
+    {
+      "name": "Tradition der Avesgeweihten III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 8, Vorteil Tradition der Avesgeweihten II",
+        "gruppe": 7,
+        "text": "Erlaubt die spontane Modifikation Opferung (Liturgie +4): Ein rituelles Opfer erleichtert die Liturgie um +4. Der Opfergegenstand wird dabei verbraucht, zerstört oder verschwindet. Avesgeweihte opfern die Feder eines Zugvogels."
+      }
+    },
+    {
+      "name": "Tradition der Avesgeweihten IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 10, Vorteil Tradition der Avesgeweihten III",
+        "gruppe": 7,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Borongeweihten I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 4, Vorteil Geweiht I, Kein Vorteil Tradition der Praiosgeweihten I, Kein Vorteil Tradition der Rondrageweihten I, Kein Vorteil Tradition der Phexgeweihten I, Kein Vorteil Tradition der Efferdgeweihten I, Kein Vorteil Tradition der Hesindegeweihten I, Kein Vorteil Tradition der Ingerimmgeweihten I, Kein Vorteil Tradition der Angroschgeweihten I, Kein Vorteil Tradition der Perainegeweihten I, Kein Vorteil Tradition der Firungeweihten I, Kein Vorteil Tradition der Rahjageweihten I, Kein Vorteil Tradition der Tsageweihten I, Kein Vorteil Tradition der Traviageweihten I, Kein Vorteil Tradition der Swafnirgeweihten I, Kein Vorteil Tradition der Ifirngeweihten I, Kein Vorteil Tradition der Nandusgeweihten I, Kein Vorteil Tradition der Korgeweihten I, Kein Vorteil Tradition der Avesgeweihten I",
+        "gruppe": 7,
+        "text": "Bedingungen: Sichtkontakt, Geste, innere Ruhe (unbeeinflusst von aufwühlenden Emotionen wie Leidenschaft, Zorn oder Panik).\n\nDu kannst Liturgien in der Tradition der Borongeweihten erlernen und benutzen. Solche Liturgien findest du unter den allgemeinen Liturgien, unter Schlaf, Tod und Vergessen (ab S. 179).\n\nLiturgien sind um 2–8 Punkte erschwert, wenn ihr Einsatz gegen die Prinzipien des Geweihten verstößt."
+      }
+    },
+    {
+      "name": "Tradition der Borongeweihten II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 6, Vorteil Tradition der Borongeweihten I",
+        "gruppe": 7,
+        "text": "Borongeweihte würdigen die Ruhe und das Schweigen. In der Stille sind Liturgien um 2–4 Punkte erleichtert."
+      }
+    },
+    {
+      "name": "Tradition der Borongeweihten III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 8, Vorteil Tradition der Borongeweihten II",
+        "gruppe": 7,
+        "text": "Erlaubt die spontane Modifikation Zeremonie (Liturgie +X): Du kannst die Vorbereitungszeit freiwillig um 1 Minute/Stunde/Tag/Woche/Monat/Jahr erhöhen, wodurch die Liturgie um +4/6/8/10/12/14 erleichtert ist. Die Vorbereitungszeit muss dadurch mindestens verdoppelt werden."
+      }
+    },
+    {
+      "name": "Tradition der Borongeweihten IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 10, Vorteil Tradition der Borongeweihten III",
+        "gruppe": 7,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Efferdgeweihten I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 4, Vorteil Geweiht I, Kein Vorteil Tradition der Praiosgeweihten I, Kein Vorteil Tradition der Rondrageweihten I, Kein Vorteil Tradition der Borongeweihten I, Kein Vorteil Tradition der Phexgeweihten I, Kein Vorteil Tradition der Hesindegeweihten I, Kein Vorteil Tradition der Ingerimmgeweihten I, Kein Vorteil Tradition der Angroschgeweihten I, Kein Vorteil Tradition der Perainegeweihten I, Kein Vorteil Tradition der Firungeweihten I, Kein Vorteil Tradition der Rahjageweihten I, Kein Vorteil Tradition der Tsageweihten I, Kein Vorteil Tradition der Traviageweihten I, Kein Vorteil Tradition der Swafnirgeweihten I, Kein Vorteil Tradition der Ifirngeweihten I, Kein Vorteil Tradition der Nandusgeweihten I, Kein Vorteil Tradition der Korgeweihten I, Kein Vorteil Tradition der Avesgeweihten I",
+        "gruppe": 7,
+        "text": "Bedingungen: Sichtkontakt, Geste, gesprochenes oder gesungenes Gebet.\n\nDu kannst Liturgien in der Tradition der Efferdgeweihten erlernen und benutzen. Solche Liturgien findest du unter den allgemeinen Liturgien, unter Flüsse und Quellen, Seefahrt sowie Wind und Wogen (ab S. 181).\n\nLiturgien sind um 2-8 Punkte erschwert, wenn ihr Einsatz gegen die Prinzipien des Geweihten verstößt."
+      }
+    },
+    {
+      "name": "Tradition der Efferdgeweihten II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 6, Vorteil Tradition der Efferdgeweihten I",
+        "gruppe": 7,
+        "text": "Efferdgeweihte sind so wechselhaft wie das Meer. Im Zustand besonders starker Emotionen sind Liturgien um 2–4 Punkte erleichtert."
+      }
+    },
+    {
+      "name": "Tradition der Efferdgeweihten III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 8, Vorteil Tradition der Efferdgeweihten II",
+        "gruppe": 7,
+        "text": "Erlaubt die spontane Modifikation Opferung (Liturgie +4): Ein rituelles Opfer erleichtert die Liturgie um +4. Der Opfergegenstand wird dabei verbraucht, zerstört oder verschwindet. Efferdgeweihte opfern Perlen oder Gwen-­Petryl-­Steine."
+      }
+    },
+    {
+      "name": "Tradition der Efferdgeweihten IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 10, Vorteil Tradition der Efferdgeweihten III",
+        "gruppe": 7,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Firungeweihten I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 4, Vorteil Geweiht I, Kein Vorteil Tradition der Praiosgeweihten I, Kein Vorteil Tradition der Rondrageweihten I, Kein Vorteil Tradition der Borongeweihten I, Kein Vorteil Tradition der Phexgeweihten I, Kein Vorteil Tradition der Efferdgeweihten I, Kein Vorteil Tradition der Hesindegeweihten I, Kein Vorteil Tradition der Ingerimmgeweihten I, Kein Vorteil Tradition der Angroschgeweihten I, Kein Vorteil Tradition der Perainegeweihten I, Kein Vorteil Tradition der Rahjageweihten I, Kein Vorteil Tradition der Tsageweihten I, Kein Vorteil Tradition der Traviageweihten I, Kein Vorteil Tradition der Swafnirgeweihten I, Kein Vorteil Tradition der Ifirngeweihten I, Kein Vorteil Tradition der Nandusgeweihten I, Kein Vorteil Tradition der Korgeweihten I, Kein Vorteil Tradition der Avesgeweihten I",
+        "gruppe": 7,
+        "text": "Bedingungen: Sichtkontakt, Geste, innere Stärke (unbeeinflusst von Charakterschwächen wie Angst, Jähzorn oder Gier).\n\nDu kannst Liturgien in der Tradition der Firungeweihten erlernen und benutzen. Solche Liturgien findest du unter den allgemeinen Liturgien, unter Jagd, Wildnis und Winter (ab S. 184).\n\nLiturgien sind um 2-8 Punkte erschwert, wenn ihr Einsatz gegen die Prinzipien des Geweihten verstößt."
+      }
+    },
+    {
+      "name": "Tradition der Firungeweihten II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 6, Vorteil Tradition der Firungeweihten I",
+        "gruppe": 7,
+        "text": "Firungeweihte sind Einzelgänger. Liturgien, von denen nur sie profitieren, sind um +2 erleichtert."
+      }
+    },
+    {
+      "name": "Tradition der Firungeweihten III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 8, Vorteil Tradition der Firungeweihten II",
+        "gruppe": 7,
+        "text": "Erlaubt die spontane Modifikation Opferung (Liturgie +4): Ein rituelles Opfer erleichtert die Liturgie um +4. Der Opfergegenstand wird dabei verbraucht, zerstört oder verschwindet. Firungeweihte opfern besondere Beute oder Trophäen."
+      }
+    },
+    {
+      "name": "Tradition der Firungeweihten IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 10, Vorteil Tradition der Firungeweihten III",
+        "gruppe": 7,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Hesindegeweihten I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 4, Vorteil Geweiht I, Kein Vorteil Tradition der Praiosgeweihten I, Kein Vorteil Tradition der Rondrageweihten I, Kein Vorteil Tradition der Borongeweihten I, Kein Vorteil Tradition der Phexgeweihten I, Kein Vorteil Tradition der Efferdgeweihten I, Kein Vorteil Tradition der Ingerimmgeweihten I, Kein Vorteil Tradition der Angroschgeweihten I, Kein Vorteil Tradition der Perainegeweihten I, Kein Vorteil Tradition der Firungeweihten I, Kein Vorteil Tradition der Rahjageweihten I, Kein Vorteil Tradition der Tsageweihten I, Kein Vorteil Tradition der Traviageweihten I, Kein Vorteil Tradition der Swafnirgeweihten I, Kein Vorteil Tradition der Ifirngeweihten I, Kein Vorteil Tradition der Nandusgeweihten I, Kein Vorteil Tradition der Korgeweihten I, Kein Vorteil Tradition der Avesgeweihten I",
+        "gruppe": 7,
+        "text": "Bedingungen: Sichtkontakt, Geste, gesprochenes oder gesungenes Gebet.\n\nDu kannst Liturgien in der Tradition der Hesindegeweihten erlernen und benutzen. Solche Liturgien findest du unter den allgemeinen Liturgien, unter Magie und Wissen (ab S. 187).\n\nLiturgien sind um 2-8 Punkte erschwert, wenn ihr Einsatz gegen die Prinzipien des Geweihten verstößt."
+      }
+    },
+    {
+      "name": "Tradition der Hesindegeweihten II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 6, Vorteil Tradition der Hesindegeweihten I",
+        "gruppe": 7,
+        "text": "Hesindegeweihte können auch mit mehrfach veränderten Liturgien gut umgehen. Wird eine Liturgie mit mindestens zwei unterschiedlichen Basismodifikationen gewirkt, ist sie zusätzlich um +2 erleichtert."
+      }
+    },
+    {
+      "name": "Tradition der Hesindegeweihten III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 8, Vorteil Tradition der Hesindegeweihten II",
+        "gruppe": 7,
+        "text": "Erlaubt die spontane Modifikation Zeremonie (Liturgie +X): Du kannst die Vorbereitungszeit freiwillig um 1 Minute/Stunde/Tag/Woche/Monat/Jahr erhöhen, wodurch die Liturgie um +4/6/8/10/12/14 erleichtert ist. Die Vorbereitungszeit muss dadurch mindestens verdoppelt werden."
+      }
+    },
+    {
+      "name": "Tradition der Hesindegeweihten IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 10, Vorteil Tradition der Hesindegeweihten III",
+        "gruppe": 7,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Ifirngeweihten I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 4, Vorteil Geweiht I, Kein Vorteil Tradition der Praiosgeweihten I, Kein Vorteil Tradition der Rondrageweihten I, Kein Vorteil Tradition der Borongeweihten I, Kein Vorteil Tradition der Phexgeweihten I, Kein Vorteil Tradition der Efferdgeweihten I, Kein Vorteil Tradition der Hesindegeweihten I, Kein Vorteil Tradition der Ingerimmgeweihten I, Kein Vorteil Tradition der Angroschgeweihten I, Kein Vorteil Tradition der Perainegeweihten I, Kein Vorteil Tradition der Firungeweihten I, Kein Vorteil Tradition der Rahjageweihten I, Kein Vorteil Tradition der Tsageweihten I, Kein Vorteil Tradition der Traviageweihten I, Kein Vorteil Tradition der Swafnirgeweihten I, Kein Vorteil Tradition der Nandusgeweihten I, Kein Vorteil Tradition der Korgeweihten I, Kein Vorteil Tradition der Avesgeweihten I",
+        "gruppe": 7,
+        "text": "Bedingungen: Sichtkontakt, Geste, gesprochenes oder gesungenes Gebet.\n\nDu kannst Liturgien in der Tradition der Ifirngeweihten erlernen und benutzen. Solche Liturgien findest du unter den allgemeinen Liturgien, unter Jagd und Wildnis (ab S. 184).\n\nLiturgien sind um 2-8 Punkte erschwert, wenn ihr Einsatz gegen die Prinzipien des Geweihten verstößt."
+      }
+    },
+    {
+      "name": "Tradition der Ifirngeweihten II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 6, Vorteil Tradition der Ifirngeweihten I",
+        "gruppe": 7,
+        "text": "Ifirngeweihte durchstreifen die Lande und helfen denen, die in Not geraten sind. Liturgien, von denen nur andere (aber sie selbst nicht) profitieren, sind um +2 erleichtert."
+      }
+    },
+    {
+      "name": "Tradition der Ifirngeweihten III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 8, Vorteil Tradition der Ifirngeweihten II",
+        "gruppe": 7,
+        "text": "Erlaubt die spontane Modifikation Zeremonie (Liturgie +X): Du kannst die Vorbereitungszeit freiwillig um 1 Minute/Stunde/Tag/Woche/Monat/Jahr erhöhen, wodurch die Liturgie um +4/6/8/10/12/14 erleichtert ist. Die Vorbereitungszeit muss dadurch mindestens verdoppelt werden."
+      }
+    },
+    {
+      "name": "Tradition der Ifirngeweihten IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 10, Vorteil Tradition der Ifirngeweihten III",
+        "gruppe": 7,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Ingerimmgeweihten I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut FF 4, Vorteil Geweiht I, Kein Vorteil Tradition der Praiosgeweihten I, Kein Vorteil Tradition der Rondrageweihten I, Kein Vorteil Tradition der Borongeweihten I, Kein Vorteil Tradition der Phexgeweihten I, Kein Vorteil Tradition der Efferdgeweihten I, Kein Vorteil Tradition der Hesindegeweihten I, Kein Vorteil Tradition der Angroschgeweihten I, Kein Vorteil Tradition der Perainegeweihten I, Kein Vorteil Tradition der Firungeweihten I, Kein Vorteil Tradition der Rahjageweihten I, Kein Vorteil Tradition der Tsageweihten I, Kein Vorteil Tradition der Traviageweihten I, Kein Vorteil Tradition der Swafnirgeweihten I, Kein Vorteil Tradition der Ifirngeweihten I, Kein Vorteil Tradition der Nandusgeweihten I, Kein Vorteil Tradition der Korgeweihten I, Kein Vorteil Tradition der Avesgeweihten I",
+        "gruppe": 7,
+        "text": "Bedingungen: Sichtkontakt, Geste, gesprochenes oder gesungenes Gebet.\n\nDu kannst Liturgien in der Tradition der Ingerimmgeweihten erlernen und benutzen. Solche Liturgien findest du unter den allgemeinen Liturgien, unter Heiliges Erz, Hl. Feuer und Hl. Handwerk (ab S. 188).\n\nLiturgien sind um 2-8 Punkte erschwert, wenn ihr Einsatz gegen die Prinzipien des Geweihten verstößt."
+      }
+    },
+    {
+      "name": "Tradition der Ingerimmgeweihten II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut FF 6, Vorteil Tradition der Ingerimmgeweihten I",
+        "gruppe": 7,
+        "text": "Ingerimmgeweihte dienen dem Herren des Feuers und des Erzes. In Gebäuden sind alle Liturgien um 2–4 Punkte erleichtert."
+      }
+    },
+    {
+      "name": "Tradition der Ingerimmgeweihten III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut FF 8, Vorteil Tradition der Ingerimmgeweihten II",
+        "gruppe": 7,
+        "text": "Erlaubt die spontane Modifikation Opferung (Liturgie +4): Ein rituelles Opfer erleichtert die Liturgie um +4. Der Opfergegenstand wird dabei verbraucht, zerstört oder verschwindet. Ingerimmgeweihte opfern Handwerksgegenstände."
+      }
+    },
+    {
+      "name": "Tradition der Ingerimmgeweihten IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut FF 10, Vorteil Tradition der Ingerimmgeweihten III",
+        "gruppe": 7,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Angroschgeweihten I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut FF 4, Vorteil Geweiht I, Kein Vorteil Tradition der Praiosgeweihten I, Kein Vorteil Tradition der Rondrageweihten I, Kein Vorteil Tradition der Borongeweihten I, Kein Vorteil Tradition der Phexgeweihten I, Kein Vorteil Tradition der Efferdgeweihten I, Kein Vorteil Tradition der Hesindegeweihten I, Kein Vorteil Tradition der Ingerimmgeweihten I, Kein Vorteil Tradition der Perainegeweihten I, Kein Vorteil Tradition der Firungeweihten I, Kein Vorteil Tradition der Rahjageweihten I, Kein Vorteil Tradition der Tsageweihten I, Kein Vorteil Tradition der Traviageweihten I, Kein Vorteil Tradition der Swafnirgeweihten I, Kein Vorteil Tradition der Ifirngeweihten I, Kein Vorteil Tradition der Nandusgeweihten I, Kein Vorteil Tradition der Korgeweihten I, Kein Vorteil Tradition der Avesgeweihten I",
+        "gruppe": 7,
+        "text": "Bedingungen: Sichtkontakt, Geste, gesprochenes oder gesungenes Gebet.\n\nDu kannst Liturgien in der Tradition der Angroschgeweihten erlernen und benutzen. Solche Liturgien findest du unter den allgemeinen Liturgien, unter Heiliges Erz, Hl. Feuer und Hl. Handwerk (ab S. 188).\n\nLiturgien sind um 2-8 Punkte erschwert, wenn ihr Einsatz gegen die Prinzipien des Geweihten verstößt."
+      }
+    },
+    {
+      "name": "Tradition der Angroschgeweihten II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut FF 6, Vorteil Tradition der Angroschgeweihten I",
+        "gruppe": 7,
+        "text": "Angroschgeweihte dienen dem Herren des Feuers und des Erzes. Unterirdisch sind alle Liturgien um 2–4 Punkte erleichtert."
+      }
+    },
+    {
+      "name": "Tradition der Angroschgeweihten III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut FF 8, Vorteil Tradition der Angroschgeweihten II",
+        "gruppe": 7,
+        "text": "Erlaubt die spontane Modifikation Opferung (Liturgie +4): Ein rituelles Opfer erleichtert die Liturgie um +4. Der Opfergegenstand wird dabei verbraucht, zerstört oder verschwindet. Angroschgeweihte opfern Handwerksgegenstände."
+      }
+    },
+    {
+      "name": "Tradition der Angroschgeweihten IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut FF 10, Vorteil Tradition der Angroschgeweihten III",
+        "gruppe": 7,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Korgeweihten I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 4, Vorteil Geweiht I, Kein Vorteil Tradition der Praiosgeweihten I, Kein Vorteil Tradition der Borongeweihten I, Kein Vorteil Tradition der Phexgeweihten I, Kein Vorteil Tradition der Efferdgeweihten I, Kein Vorteil Tradition der Hesindegeweihten I, Kein Vorteil Tradition der Ingerimmgeweihten I, Kein Vorteil Tradition der Angroschgeweihten I, Kein Vorteil Tradition der Perainegeweihten I, Kein Vorteil Tradition der Firungeweihten I, Kein Vorteil Tradition der Swafnirgeweihten I, Kein Vorteil Tradition der Tsageweihten I, Kein Vorteil Tradition der Traviageweihten I, Kein Vorteil Tradition der Ifirngeweihten I, Kein Vorteil Tradition der Nandusgeweihten I, Kein Vorteil Tradition der Rondrageweihten I, Kein Vorteil Tradition der Rahjageweihten I, Kein Vorteil Tradition der Avesgeweihten I",
+        "gruppe": 7,
+        "text": "Bedingungen: Sichtkontakt, Geste, gesprochenes oder gesungenes Gebet.\n\nDu kannst Liturgien in der Tradition der Korgeweihten erlernen und benutzen. Solche Liturgien findest du unter den allgemeinen Liturgien, unter Guter Kampf und Gutes Gold (ab S. 202).\n\nLiturgien sind um 2-8 Punkte erschwert, wenn ihr Einsatz gegen die Gebote der Kirche verstößt."
+      }
+    },
+    {
+      "name": "Tradition der Korgeweihten II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 6, Vorteil Tradition der Korgeweihten I",
+        "gruppe": 7,
+        "text": "Korgeweihte werden durch erlittene Wunden eher noch gefährlicher. Der Wundmalus schränkt dich beim Wirken von Liturgien nicht ein. Kannst du den Wundmalus ohnehin ignorieren, sind Liturgien um den halben Wundmalus erleichtert."
+      }
+    },
+    {
+      "name": "Tradition der Korgeweihten III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 8, Vorteil Tradition der Korgeweihten II",
+        "gruppe": 7,
+        "text": "Erlaubt die spontane Modifikation Opferung (Liturgie +4): Ein rituelles Opfer erleichtert die Liturgie um +4. Der Opfergegenstand wird dabei verbraucht, zerstört oder verschwindet. Korgeweihte opfern ihr Blut (verursacht 1 Wunde)."
+      }
+    },
+    {
+      "name": "Tradition der Korgeweihten IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 10, Vorteil Tradition der Korgeweihten III",
+        "gruppe": 7,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Nandusgeweihten I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 4, Vorteil Geweiht I, Kein Vorteil Tradition der Praiosgeweihten I, Kein Vorteil Tradition der Rondrageweihten I, Kein Vorteil Tradition der Borongeweihten I, Kein Vorteil Tradition der Phexgeweihten I, Kein Vorteil Tradition der Efferdgeweihten I, Kein Vorteil Tradition der Hesindegeweihten I, Kein Vorteil Tradition der Ingerimmgeweihten I, Kein Vorteil Tradition der Angroschgeweihten I, Kein Vorteil Tradition der Perainegeweihten I, Kein Vorteil Tradition der Firungeweihten I, Kein Vorteil Tradition der Rahjageweihten I, Kein Vorteil Tradition der Tsageweihten I, Kein Vorteil Tradition der Traviageweihten I, Kein Vorteil Tradition der Swafnirgeweihten I, Kein Vorteil Tradition der Ifirngeweihten I, Kein Vorteil Tradition der Korgeweihten I, Kein Vorteil Tradition der Avesgeweihten I",
+        "gruppe": 7,
+        "text": "Bedingungen: Sichtkontakt, Geste, gesprochenes oder gesungenes Gebet.\n\nDu kannst Liturgien in der Tradition der Nandusgeweihten erlernen und benutzen. Solche Liturgien findest du unter den allgemeinen Liturgien und unter Wissen (ab S. 187).\n\nLiturgien sind um 2-8 Punkte erschwert, wenn ihr Einsatz gegen die Prinzipien des Geweihten verstößt."
+      }
+    },
+    {
+      "name": "Tradition der Nandusgeweihten II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 6, Vorteil Tradition der Nandusgeweihten I",
+        "gruppe": 7,
+        "text": "Nandugeweihte wissen, dass Gesten und Worte nur menschliches Beiwerk einer Liturgie sind. Wird eine Liturgie mit der Modifikation Liturgische Technik ignorieren gewirkt, ist sie zusätzlich um +2 erleichtert."
+      }
+    },
+    {
+      "name": "Tradition der Nandusgeweihten III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 8, Vorteil Tradition der Nandusgeweihten II",
+        "gruppe": 7,
+        "text": "Erlaubt die spontane Modifikation Opferung (Liturgie +4): Ein rituelles Opfer erleichtert die Liturgie um +4. Der Opfergegenstand wird dabei verbraucht, zerstört oder verschwindet. Nandusgeweihte opfern falsches oder veraltetes Wissen."
+      }
+    },
+    {
+      "name": "Tradition der Nandusgeweihten IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut KL 10, Vorteil Tradition der Nandusgeweihten III",
+        "gruppe": 7,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Perainegeweihten I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 4, Vorteil Geweiht I, Kein Vorteil Tradition der Praiosgeweihten I, Kein Vorteil Tradition der Rondrageweihten I, Kein Vorteil Tradition der Borongeweihten I, Kein Vorteil Tradition der Phexgeweihten I, Kein Vorteil Tradition der Efferdgeweihten I, Kein Vorteil Tradition der Hesindegeweihten I, Kein Vorteil Tradition der Ingerimmgeweihten I, Kein Vorteil Tradition der Angroschgeweihten I, Kein Vorteil Tradition der Firungeweihten I, Kein Vorteil Tradition der Rahjageweihten I, Kein Vorteil Tradition der Tsageweihten I, Kein Vorteil Tradition der Traviageweihten I, Kein Vorteil Tradition der Swafnirgeweihten I, Kein Vorteil Tradition der Ifirngeweihten I, Kein Vorteil Tradition der Nandusgeweihten I, Kein Vorteil Tradition der Korgeweihten I, Kein Vorteil Tradition der Avesgeweihten I",
+        "gruppe": 7,
+        "text": "Bedingungen: Sichtkontakt, Geste, gesprochenes oder gesungenes Gebet.\n\nDu kannst Liturgien in der Tradition der Perainegeweihten erlernen und benutzen. Solche Liturgien findest du unter den allgemeinen Liturgien, unter Heilung und Wachstum (ab S. 191).\n\nLiturgien sind um 2-8 Punkte erschwert, wenn ihr Einsatz gegen die Prinzipien des Geweihten verstößt."
+      }
+    },
+    {
+      "name": "Tradition der Perainegeweihten II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 6, Vorteil Tradition der Perainegeweihten I",
+        "gruppe": 7,
+        "text": "Perainegeweihte sind oft das Herz der Gemeinschaft. Wird eine Liturgie mit der Modifikation Mehrere Ziele gesprochen, ist sie zusätzlich um +2 erleichtert."
+      }
+    },
+    {
+      "name": "Tradition der Perainegeweihten III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 8, Vorteil Tradition der Perainegeweihten II",
+        "gruppe": 7,
+        "text": "Erlaubt die spontane Modifikation Zeremonie (Liturgie +X): Du kannst die Vorbereitungszeit freiwillig um 1 Minute/Stunde/Tag/Woche/Monat/Jahr erhöhen, wodurch die Liturgie um +4/6/8/10/12/14 erleichtert ist. Die Vorbereitungszeit muss dadurch mindestens verdoppelt werden."
+      }
+    },
+    {
+      "name": "Tradition der Perainegeweihten IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 10, Vorteil Tradition der Perainegeweihten III",
+        "gruppe": 7,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Phexgeweihten I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 4, Vorteil Geweiht I, Kein Vorteil Tradition der Praiosgeweihten I, Kein Vorteil Tradition der Rondrageweihten I, Kein Vorteil Tradition der Borongeweihten I, Kein Vorteil Tradition der Efferdgeweihten I, Kein Vorteil Tradition der Hesindegeweihten I, Kein Vorteil Tradition der Ingerimmgeweihten I, Kein Vorteil Tradition der Angroschgeweihten I, Kein Vorteil Tradition der Perainegeweihten I, Kein Vorteil Tradition der Firungeweihten I, Kein Vorteil Tradition der Rahjageweihten I, Kein Vorteil Tradition der Tsageweihten I, Kein Vorteil Tradition der Traviageweihten I, Kein Vorteil Tradition der Swafnirgeweihten I, Kein Vorteil Tradition der Ifirngeweihten I, Kein Vorteil Tradition der Nandusgeweihten I, Kein Vorteil Tradition der Korgeweihten I, Kein Vorteil Tradition der Avesgeweihten I",
+        "gruppe": 7,
+        "text": "Bedingungen: Sichtkontakt, Geste, (Symbolische) Gegenleistung an Phex.\n\nDu kannst Liturgien in der Tradition der Phexgeweihten erlernen und benutzen. Solche Liturgien findest du unter den allgemeinen Liturgien, unter Abu al‘Mada, List und Nächstlicher Schatten (ab S. 192).\n\nLiturgien sind um 2-8 Punkte erschwert, wenn ihr Einsatz gegen die Prinzipien des Geweihten verstößt."
+      }
+    },
+    {
+      "name": "Tradition der Phexgeweihten II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 6, Vorteil Tradition der Phexgeweihten I",
+        "gruppe": 7,
+        "text": "Phexgeweihte vertrauen auf ihr Können, aber manchmal auch auf ihr Glück. Statt mit 3W20 kannst du Proben beim Wirken von Liturgien auch mit 1W20 ablegen. Dadurch verbessern sich deine Chancen bei besonders gewagten Liturgien."
+      }
+    },
+    {
+      "name": "Tradition der Phexgeweihten III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 8, Vorteil Tradition der Phexgeweihten II",
+        "gruppe": 7,
+        "text": "Erlaubt die spontane Modifikation Opferung (Liturgie +4): Ein rituelles Opfer erleichtert die Liturgie um +4. Der Opfergegenstand wird dabei verbraucht, zerstört oder verschwindet. Phexgeweihte opfern einen wertvollen Besitz."
+      }
+    },
+    {
+      "name": "Tradition der Phexgeweihten IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 10, Vorteil Tradition der Phexgeweihten III",
+        "gruppe": 7,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Praiosgeweihten I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 4, Vorteil Geweiht I, Kein Vorteil Tradition der Rondrageweihten I, Kein Vorteil Tradition der Borongeweihten I, Kein Vorteil Tradition der Phexgeweihten I, Kein Vorteil Tradition der Efferdgeweihten I, Kein Vorteil Tradition der Hesindegeweihten I, Kein Vorteil Tradition der Ingerimmgeweihten I, Kein Vorteil Tradition der Angroschgeweihten I, Kein Vorteil Tradition der Perainegeweihten I, Kein Vorteil Tradition der Firungeweihten I, Kein Vorteil Tradition der Rahjageweihten I, Kein Vorteil Tradition der Tsageweihten I, Kein Vorteil Tradition der Traviageweihten I, Kein Vorteil Tradition der Swafnirgeweihten I, Kein Vorteil Tradition der Ifirngeweihten I, Kein Vorteil Tradition der Nandusgeweihten I, Kein Vorteil Tradition der Korgeweihten I, Kein Vorteil Tradition der Avesgeweihten I",
+        "gruppe": 7,
+        "text": "Bedingungen: Sichtkontakt, Geste, gesprochenes oder gesungenes Gebet.\n\nDu kannst Liturgien in der Tradition der Praiosgeweihten erlernen und benutzen. Solche Liturgien findest du unter den allgemeinen Liturgien, unter Licht, Magiebann und Ordnung (ab S. 193).\n\nLiturgien sind um 2-8 Punkte erschwert, wenn ihr Einsatz gegen die Prinzipien des Geweihten verstößt."
+      }
+    },
+    {
+      "name": "Tradition der Praiosgeweihten II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 6, Vorteil Tradition der Praiosgeweihten I",
+        "gruppe": 7,
+        "text": "Praiosgeweihte erkennen in der Sonne ihren Gott. Im Sonnenlicht sind Liturgien um 2–4 Punkte erleichtert."
+      }
+    },
+    {
+      "name": "Tradition der Praiosgeweihten III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 8, Vorteil Tradition der Praiosgeweihten II",
+        "gruppe": 7,
+        "text": "Erlaubt die spontane Modifikation Zeremonie (Liturgie +X): Du kannst die Vorbereitungszeit freiwillig um 1 Minute/Stunde/Tag/Woche/Monat/Jahr erhöhen, wodurch die Liturgie um +4/6/8/10/12/14 erleichtert ist. Die Vorbereitungszeit muss dadurch mindestens verdoppelt werden."
+      }
+    },
+    {
+      "name": "Tradition der Praiosgeweihten IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 10, Vorteil Tradition der Praiosgeweihten III",
+        "gruppe": 7,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Rahjageweihten I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 4, Vorteil Geweiht I, Kein Vorteil Tradition der Praiosgeweihten I, Kein Vorteil Tradition der Borongeweihten I, Kein Vorteil Tradition der Phexgeweihten I, Kein Vorteil Tradition der Efferdgeweihten I, Kein Vorteil Tradition der Hesindegeweihten I, Kein Vorteil Tradition der Ingerimmgeweihten I, Kein Vorteil Tradition der Angroschgeweihten I, Kein Vorteil Tradition der Perainegeweihten I, Kein Vorteil Tradition der Firungeweihten I, Kein Vorteil Tradition der Swafnirgeweihten I, Kein Vorteil Tradition der Tsageweihten I, Kein Vorteil Tradition der Traviageweihten I, Kein Vorteil Tradition der Ifirngeweihten I, Kein Vorteil Tradition der Nandusgeweihten I, Kein Vorteil Tradition der Rondrageweihten I, Kein Vorteil Tradition der Korgeweihten I, Kein Vorteil Tradition der Avesgeweihten I",
+        "gruppe": 7,
+        "text": "Bedingungen: Sichtkontakt, Geste, Gebet oder Zärtlichkeit dem Ziel gegenüber.\n\nDu kannst Liturgien in der Tradition der Rahjageweihten erlernen und benutzen. Solche Liturgien findest du unter den allgemeinen Liturgien, unter Harmonie und Rausch (ab S. 195).\n\nLiturgien sind um 2-8 Punkte erschwert, wenn ihr Einsatz gegen die Gebote der Kirche verstößt."
+      }
+    },
+    {
+      "name": "Tradition der Rahjageweihten II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 6, Vorteil Tradition der Rahjageweihten I",
+        "gruppe": 7,
+        "text": "Rahjgeweihte schätzen den Rausch, egal ob durch Alkohol, Sex, Tanz, einen Ausritt oder schieren Nervenkitzel. In berauschtem Zustand sind Liturgien um 2­4 Punkte erleichtert."
+      }
+    },
+    {
+      "name": "Tradition der Rahjageweihten III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 8, Vorteil Tradition der Rahjageweihten II",
+        "gruppe": 7,
+        "text": "Erlaubt die spontane Modifikation Opferung (Liturgie +4): Ein rituelles Opfer erleichtert die Liturgie um +4. Der Opfergegenstand wird dabei verbraucht, zerstört oder verschwindet. Rahjgeweihte opfern den heiligen Wein Tharf."
+      }
+    },
+    {
+      "name": "Tradition der Rahjageweihten IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 10, Vorteil Tradition der Rahjageweihten III",
+        "gruppe": 7,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Rondrageweihten I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 4, Vorteil Geweiht I, Kein Vorteil Tradition der Praiosgeweihten I, Kein Vorteil Tradition der Borongeweihten I, Kein Vorteil Tradition der Phexgeweihten I, Kein Vorteil Tradition der Efferdgeweihten I, Kein Vorteil Tradition der Hesindegeweihten I, Kein Vorteil Tradition der Ingerimmgeweihten I, Kein Vorteil Tradition der Angroschgeweihten I, Kein Vorteil Tradition der Perainegeweihten I, Kein Vorteil Tradition der Firungeweihten I, Kein Vorteil Tradition der Rahjageweihten I, Kein Vorteil Tradition der Tsageweihten I, Kein Vorteil Tradition der Traviageweihten I, Kein Vorteil Tradition der Swafnirgeweihten I, Kein Vorteil Tradition der Ifirngeweihten I, Kein Vorteil Tradition der Nandusgeweihten I, Kein Vorteil Tradition der Korgeweihten I, Kein Vorteil Tradition der Avesgeweihten I",
+        "gruppe": 7,
+        "text": "Bedingungen: Sichtkontakt, Geste, gesprochenes oder gesungenes Gebet.\n\nDu kannst Liturgien in der Tradition der Rondrageweihten erlernen und benutzen. Solche Liturgien findest du unter den allgemeinen Liturgien, unter Ehre, Heerführung und Schutz der Gläubigen (ab S. 197).\n\nLiturgien sind um 2-8 Punkte erschwert, wenn ihr Einsatz gegen die Prinzipien des Geweihten verstößt."
+      }
+    },
+    {
+      "name": "Tradition der Rondrageweihten II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 6, Vorteil Tradition der Rondrageweihten I",
+        "gruppe": 7,
+        "text": "Rondrageweihte geben auch in der düstersten Stunde nicht auf. Der Wundmalus schränkt dich beim Wirken von Liturgien nicht ein. Kannst du den Wundmalus ohnehin ignorieren, sind Liturgien um den halben Wundmalus erleichtert."
+      }
+    },
+    {
+      "name": "Tradition der Rondrageweihten III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 8, Vorteil Tradition der Rondrageweihten II",
+        "gruppe": 7,
+        "text": "Erlaubt die spontane Modifikation Opferung (Liturgie +4): Ein rituelles Opfer erleichtert die Liturgie um +4. Der Opfergegenstand wird dabei verbraucht, zerstört oder verschwindet. Rondrageweihte opfern ihr Blut (verursacht 1 Wunde)."
+      }
+    },
+    {
+      "name": "Tradition der Rondrageweihten IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 10, Vorteil Tradition der Rondrageweihten III",
+        "gruppe": 7,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Swafnirgeweihten I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 4, Vorteil Geweiht I, Kein Vorteil Tradition der Praiosgeweihten I, Kein Vorteil Tradition der Borongeweihten I, Kein Vorteil Tradition der Phexgeweihten I, Kein Vorteil Tradition der Efferdgeweihten I, Kein Vorteil Tradition der Hesindegeweihten I, Kein Vorteil Tradition der Ingerimmgeweihten I, Kein Vorteil Tradition der Angroschgeweihten I, Kein Vorteil Tradition der Perainegeweihten I, Kein Vorteil Tradition der Firungeweihten I, Kein Vorteil Tradition der Rahjageweihten I, Kein Vorteil Tradition der Tsageweihten I, Kein Vorteil Tradition der Traviageweihten I, Kein Vorteil Tradition der Ifirngeweihten I, Kein Vorteil Tradition der Nandusgeweihten I, Kein Vorteil Tradition der Rondrageweihten I, Kein Vorteil Tradition der Korgeweihten I, Kein Vorteil Tradition der Avesgeweihten I",
+        "gruppe": 7,
+        "text": "Bedingungen: Sichtkontakt, Geste, gesprochenes oder gesungenes Gebet.\n\nDu kannst Liturgien in der Tradition der Swafnirgeweihten erlernen und benutzen. Solche Liturgien findest du unter den allgemeinen Liturgien, unter Seefahrt sowie Wind und Wogen (S. 182).\n\nLiturgien sind um 2-8 Punkte erschwert, wenn ihr Einsatz gegen die Prinzipien des Geweihten verstößt."
+      }
+    },
+    {
+      "name": "Tradition der Swafnirgeweihten II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 6, Vorteil Tradition der Swafnirgeweihten I",
+        "gruppe": 7,
+        "text": "Swafnirgeweihte begleiten und unterstützen ihre Gefährten auf ihren Fahrten. Auf See sind Liturgien um 2–4 Punkte erleichtert."
+      }
+    },
+    {
+      "name": "Tradition der Swafnirgeweihten III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 8, Vorteil Tradition der Swafnirgeweihten II",
+        "gruppe": 7,
+        "text": "Erlaubt die spontane Modifikation Opferung (Liturgie +4): Ein rituelles Opfer erleichtert die Liturgie um +4. Der Opfergegenstand wird dabei verbraucht, zerstört oder verschwindet. Swafnirgeweihte opfern ihr Blut (verursacht 1 Wunde)."
+      }
+    },
+    {
+      "name": "Tradition der Swafnirgeweihten IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 10, Vorteil Tradition der Swafnirgeweihten III",
+        "gruppe": 7,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Traviageweihten I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 4, Vorteil Geweiht I, Kein Vorteil Tradition der Praiosgeweihten I, Kein Vorteil Tradition der Borongeweihten I, Kein Vorteil Tradition der Phexgeweihten I, Kein Vorteil Tradition der Efferdgeweihten I, Kein Vorteil Tradition der Hesindegeweihten I, Kein Vorteil Tradition der Ingerimmgeweihten I, Kein Vorteil Tradition der Angroschgeweihten I, Kein Vorteil Tradition der Perainegeweihten I, Kein Vorteil Tradition der Firungeweihten I, Kein Vorteil Tradition der Swafnirgeweihten I, Kein Vorteil Tradition der Tsageweihten I, Kein Vorteil Tradition der Rahjageweihten I, Kein Vorteil Tradition der Ifirngeweihten I, Kein Vorteil Tradition der Nandusgeweihten I, Kein Vorteil Tradition der Rondrageweihten I, Kein Vorteil Tradition der Korgeweihten I, Kein Vorteil Tradition der Avesgeweihten I",
+        "gruppe": 7,
+        "text": "Bedingungen: Sichtkontakt, Geste, gesprochenes oder gesungenes Gebet.\n\nDu kannst Liturgien in der Tradition der Traviageweihten erlernen und benutzen. Solche Liturgien findest du unter den allgemeinen Liturgien, unter Heim und Herd sowie Sichere Heimkehr (ab S. 199).\n\nLiturgien sind um 2-8 Punkte erschwert, wenn ihr Einsatz gegen die Gebote der Kirche verstößt."
+      }
+    },
+    {
+      "name": "Tradition der Traviageweihten II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 6, Vorteil Tradition der Traviageweihten I",
+        "gruppe": 7,
+        "text": "Traviageweihte schätzen Treue und Beständigkeit. Wird eine Liturgie mit der Modifikation Wirkungsdauer verlängern gewirkt, ist sie zusätzlich um +2 erleichtert."
+      }
+    },
+    {
+      "name": "Tradition der Traviageweihten III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 8, Vorteil Tradition der Traviageweihten II",
+        "gruppe": 7,
+        "text": "Erlaubt die spontane Modifikation Zeremonie (Liturgie +X): Du kannst die Vorbereitungszeit freiwillig um 1 Minute/Stunde/Tag/Woche/Monat/Jahr erhöhen, wodurch die Liturgie um +4/6/8/10/12/14 erleichtert ist. Die Vorbereitungszeit muss dadurch mindestens verdoppelt werden."
+      }
+    },
+    {
+      "name": "Tradition der Traviageweihten IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut CH 10, Vorteil Tradition der Traviageweihten III",
+        "gruppe": 7,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Tsageweihten I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 4, Vorteil Geweiht I, Kein Vorteil Tradition der Praiosgeweihten I, Kein Vorteil Tradition der Borongeweihten I, Kein Vorteil Tradition der Phexgeweihten I, Kein Vorteil Tradition der Efferdgeweihten I, Kein Vorteil Tradition der Hesindegeweihten I, Kein Vorteil Tradition der Ingerimmgeweihten I, Kein Vorteil Tradition der Angroschgeweihten I, Kein Vorteil Tradition der Perainegeweihten I, Kein Vorteil Tradition der Firungeweihten I, Kein Vorteil Tradition der Swafnirgeweihten I, Kein Vorteil Tradition der Rahjageweihten I, Kein Vorteil Tradition der Traviageweihten I, Kein Vorteil Tradition der Ifirngeweihten I, Kein Vorteil Tradition der Nandusgeweihten I, Kein Vorteil Tradition der Rondrageweihten I, Kein Vorteil Tradition der Korgeweihten I, Kein Vorteil Tradition der Avesgeweihten I",
+        "gruppe": 7,
+        "text": "Bedingungen: Sichtkontakt, Geste, gesprochenes oder gesungenes Gebet.\n\nDu kannst Liturgien in der Tradition der Tsageweihten erlernen und benutzen. Solche Liturgien findest du unter den allgemeinen Liturgien, unter Friede und Neubeginn (ab S. 200).\n\nLiturgien sind um 2-8 Punkte erschwert, wenn ihr Einsatz gegen die Gebote der Kirche verstößt."
+      }
+    },
+    {
+      "name": "Tradition der Tsageweihten II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 6, Vorteil Tradition der Tsageweihten I",
+        "gruppe": 7,
+        "text": "Tsageweihte sind schnell entschlossen und spontan. Wird eine Liturgie mit der Modifikation Vorbereitungszeit verkürzen gewirkt, ist sie zusätzlich um +2 erleichtert."
+      }
+    },
+    {
+      "name": "Tradition der Tsageweihten III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 8, Vorteil Tradition der Tsageweihten II",
+        "gruppe": 7,
+        "text": "Erlaubt die spontane Modifikation Zeremonie (Liturgie +X): Du kannst die Vorbereitungszeit freiwillig um 1 Minute/Stunde/Tag/Woche/Monat/Jahr erhöhen, wodurch die Liturgie um +4/6/8/10/12/14 erleichtert ist. Die Vorbereitungszeit muss dadurch mindestens verdoppelt werden."
+      }
+    },
+    {
+      "name": "Tradition der Tsageweihten IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut IN 10, Vorteil Tradition der Tsageweihten III",
+        "gruppe": 7,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    },
+    {
+      "name": "Tradition der Paktierer I",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 4, Vorteil Paktierer I",
+        "gruppe": 8,
+        "text": "Die Fertigkeit Dämonische Hilfe (Erzdämon) kann erlernt und benutzt werden. Proben auf Dämonische Hilfe (Erzdämon) werden mit 1W20 gewürfelt."
+      }
+    },
+    {
+      "name": "Tradition der Paktierer II",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 6, Vorteil Tradition der Paktierer I",
+        "gruppe": 8,
+        "text": "Wird eine Anrufung mit der Modifikation Mächtige Anrufung gewirkt, ist sie zusätzlich um +2 erleichtert."
+      }
+    },
+    {
+      "name": "Tradition der Paktierer III",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 8, Vorteil Tradition der Paktierer II",
+        "gruppe": 8,
+        "text": "Erlaubt die spontane Modifikation Opferung (Anrufung +4): Das rituelle Opfer eines intelligenten Wesens erleichtert die Anrufung um +4, ein Geweihter der Gegengottheit verdoppelt den Bonus sogar."
+      }
+    },
+    {
+      "name": "Tradition der Paktierer IV",
+      "type": "vorteil",
+      "data": {
+        "voraussetzung": "Attribut MU 10, Vorteil Tradition der Paktierer III",
+        "gruppe": 8,
+        "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+      }
+    }
+  ]
+}

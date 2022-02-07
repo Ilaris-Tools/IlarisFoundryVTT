@@ -1,6 +1,7 @@
 settings_local.py
 *.pyc
 __pycache__
+.mypy_cache
 
 *~
 \#*\#
@@ -9,22 +10,22 @@ __pycache__
 
 .log
 tmp_directory
-README.html
-sephrasto_datenbank.js_old
-sephrasto_datenbank.js
-sephrasto_datenbank.json
-createzip.py
-ilaris.zip
+README*.html
+# sephrasto_datenbank.js_old
+# sephrasto_datenbank.js
+# sephrasto_datenbank.json
+# createzip.py
+# ilaris.zip
 ilaris-foundryvtt.zip
-datenbank.json
-datenbank.xml
-datenbank_20210425.json
-datenbank.json_20210427
-datenbank.xml_20210427
-package.json
-package-lock.json
+# datenbank.json
+# datenbank.xml
+# datenbank_20210425.json
+# datenbank.json_20210427
+# datenbank.xml_20210427
+# package.json
+# package-lock.json
 node_modules
-.eslintrc.js
-.eslintrc
-tsconfig.json
-jsconfig.json
+#.eslintrc.js
+#.eslintrc
+# tsconfig.json
+#jsconfig.json

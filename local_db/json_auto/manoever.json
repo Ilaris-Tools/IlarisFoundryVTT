@@ -1,0 +1,1124 @@
+{
+  "Manöver": [
+    {
+      "name": "Ausweichen",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 0,
+        "probe": "VT -2-BE",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Binden",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 0,
+        "probe": "VT -X",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Entfernung verändern",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 0,
+        "probe": "AT -BE",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Entwaffnen",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 0,
+        "probe": "AT -4; VT -4",
+        "gegenprobe": "KK"
+      }
+    },
+    {
+      "name": "Gezielter Schlag",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 0,
+        "probe": "AT -2",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Umreißen",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 0,
+        "probe": "AT",
+        "gegenprobe": "GE oder (nur für große und sehr große Gegner) KO"
+      }
+    },
+    {
+      "name": "Wuchtschlag",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 0,
+        "probe": "AT -X",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Auflaufen lassen",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 0,
+        "probe": "VT -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Rüstungsbrecher",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Waffeneigenschaft Rüstungsbrechend",
+        "gruppe": 0,
+        "probe": "AT -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Schildspalter",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 0,
+        "probe": "AT +2",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Stumpfer Schlag",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Waffeneigenschaft Stumpf",
+        "gruppe": 0,
+        "probe": "AT",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Umklammern",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 0,
+        "probe": "AT -X",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Ausfall",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Ausfall",
+        "gruppe": 0,
+        "probe": "AT -2 -BE",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Befreiungsschlag",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Kraftvoller Kampf III",
+        "gruppe": 0,
+        "probe": "AT -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Doppelangriff",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Beidhändiger Kampf III",
+        "gruppe": 0,
+        "probe": "2 x AT -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Hammerschlag",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Hammerschlag",
+        "gruppe": 0,
+        "probe": "AT -8",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Klingentanz",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Klingentanz",
+        "gruppe": 0,
+        "probe": "AT -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Niederwerfen",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Niederwerfen",
+        "gruppe": 0,
+        "probe": "AT -4",
+        "gegenprobe": "KK"
+      }
+    },
+    {
+      "name": "Riposte",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Parierwaffenkampf III",
+        "gruppe": 0,
+        "probe": "VT -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Schildwall",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Schildkampf III",
+        "gruppe": 0,
+        "probe": "VT -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Sturmangriff",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Sturmangriff ODER Vorteil Reiterkampf I",
+        "gruppe": 0,
+        "probe": "Bewegung und AT",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Todesstoß",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Todesstoß",
+        "gruppe": 0,
+        "probe": "AT -8",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Überrennen",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Reiterkampf III",
+        "gruppe": 0,
+        "probe": "Bewegung und AT",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Unterlaufen",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Schneller Kampf III",
+        "gruppe": 0,
+        "probe": "VT -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Gezielter Schuss",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 1,
+        "probe": "FK -2",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Reichweite erhöhen",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 1,
+        "probe": "FK -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Scharfschuss",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 1,
+        "probe": "FK -X",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Zielen",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 1,
+        "probe": "FK +2",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Meisterschuss",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Meisterschuss",
+        "gruppe": 1,
+        "probe": "FK -8",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Rüstungsbrecher (FK)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 1,
+        "probe": "FK -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Schnellschuss",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Schnellziehen",
+        "gruppe": 1,
+        "probe": "FK -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Mächtige Magie",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I",
+        "gruppe": 2,
+        "probe": "Zauber -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Mehrere Ziele (M)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I",
+        "gruppe": 2,
+        "probe": "Zauber -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Reichweite erhöhen (M)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I",
+        "gruppe": 2,
+        "probe": "Zauber -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Vorbereitung verkürzen (M)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I",
+        "gruppe": 2,
+        "probe": "Zauber -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Wirkungsdauer verlängern (M)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I",
+        "gruppe": 2,
+        "probe": "Zauber -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Zaubertechnik ignorieren",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I",
+        "gruppe": 2,
+        "probe": "Zauber -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Erzwingen",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Tradition der Borbaradianer III ODER Vorteil Tradition der Druiden III ODER Vorteil Tradition der Hexen III ODER Vorteil Tradition der Schelme III ODER Vorteil Tradition der Anach-Nurim III",
+        "gruppe": 2,
+        "probe": "Zauber +4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Kosten sparen (M)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Effizientes Zaubern",
+        "gruppe": 2,
+        "probe": "Zauber -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Zeit lassen",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Tradition der Alchemisten III ODER Vorteil Tradition der Elfen III ODER Vorteil Tradition der Geoden III ODER Vorteil Tradition der Gildenmagier III ODER Vorteil Tradition der Kristallomanten III ODER Vorteil Tradition der Scharlatane III ODER Vorteil Tradition der Zauberbarden III",
+        "gruppe": 2,
+        "probe": "Zauber +2",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Opferung (Aves)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Tradition der Avesgeweihten III",
+        "gruppe": 3,
+        "probe": "Liturgie +4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Opferung (Efferd)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Tradition der Efferdgeweihten III",
+        "gruppe": 3,
+        "probe": "Liturgie +4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Opferung (Firun)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Tradition der Firungeweihten III",
+        "gruppe": 3,
+        "probe": "Liturgie +4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Opferung (Ingerimm)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Tradition der Ingerimmgeweihten III",
+        "gruppe": 3,
+        "probe": "Liturgie +4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Opferung (Nandus)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Tradition der Nandusgeweihten III",
+        "gruppe": 3,
+        "probe": "Liturgie +4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Opferung (Phex)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Tradition der Phexgeweihten III",
+        "gruppe": 3,
+        "probe": "Liturgie +4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Opferung (Rahja)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Tradition der Rahjageweihten III",
+        "gruppe": 3,
+        "probe": "Liturgie +4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Opferung (Rondra)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Tradition der Rondrageweihten III",
+        "gruppe": 3,
+        "probe": "Liturgie +4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Opferung (Swafnir)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Tradition der Swafnirgeweihten III",
+        "gruppe": 3,
+        "probe": "Liturgie +4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Opferung (Kor)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Tradition der Korgeweihten III",
+        "gruppe": 3,
+        "probe": "Liturgie +4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Opferung (Derwische)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Tradition der Derwische III",
+        "gruppe": 2,
+        "probe": "Zauber +4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Opferung (Zaubertänzer)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Tradition der Zaubertänzer III",
+        "gruppe": 2,
+        "probe": "Zauber +4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Opferung (Durro-dûn)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Tradition der Durro-dun III",
+        "gruppe": 2,
+        "probe": "Zauber +4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Zeremonie (M)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Tradition der Schamanen III",
+        "gruppe": 2,
+        "probe": "Zauber +X",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Mächtige Liturgie",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Geweiht I",
+        "gruppe": 3,
+        "probe": "Liturgie -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Mehrere Ziele (L)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Geweiht I",
+        "gruppe": 3,
+        "probe": "Liturgie -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Liturgische Technik ignorieren",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Geweiht I",
+        "gruppe": 3,
+        "probe": "Liturgie -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Reichweite erhöhen (L)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Geweiht I",
+        "gruppe": 3,
+        "probe": "Liturgie -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Vorbereitung verkürzen (L)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Geweiht I",
+        "gruppe": 3,
+        "probe": "Liturgie -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Wirkungsdauer verlängern (L)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Geweiht I",
+        "gruppe": 3,
+        "probe": "Liturgie -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Kosten sparen (L)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Liturgische Disziplin",
+        "gruppe": 3,
+        "probe": "Liturgie -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Zeremonie (L)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Tradition der Borongeweihten III ODER Vorteil Tradition der Hesindegeweihten III ODER Vorteil Tradition der Ifirngeweihten III ODER Vorteil Tradition der Perainegeweihten III ODER Vorteil Tradition der Praiosgeweihten III ODER Vorteil Tradition der Traviageweihten III ODER Vorteil Tradition der Tsageweihten III",
+        "gruppe": 3,
+        "probe": "Liturgie +X",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Mächtige Anrufung",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Paktierer I",
+        "gruppe": 6,
+        "probe": "Anrufung -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Mehrere Ziele (D)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Paktierer I",
+        "gruppe": 6,
+        "probe": "Anrufung -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Anrufungstechnik ignorieren",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Paktierer I",
+        "gruppe": 6,
+        "probe": "Anrufung -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Reichweite erhöhen (D)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Paktierer I",
+        "gruppe": 6,
+        "probe": "Anrufung -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Vorbereitung verkürzen (D)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Paktierer I",
+        "gruppe": 6,
+        "probe": "Anrufung -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Wirkungsdauer verlängern (D)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Paktierer I",
+        "gruppe": 6,
+        "probe": "Anrufung -4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Opferung (Paktierer)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Tradition der Paktierer III",
+        "gruppe": 6,
+        "probe": "Anrufung +4",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Antimagie - Gegenzauber",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Übernatürliche-Fertigkeit 'Antimagie' -1",
+        "gruppe": 4,
+        "probe": "Antimagie-Zauber",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Antimagie - Magie unterdrücken",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Übernatürliche-Fertigkeit 'Antimagie' -1",
+        "gruppe": 4,
+        "probe": "Antimagie-Zauber",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Antimagie - Zauber aufheben",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Übernatürliche-Fertigkeit 'Antimagie' -1",
+        "gruppe": 4,
+        "probe": "Antimagie-Zauber",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Antimagie - Wesenheit bannen",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Übernatürliche-Fertigkeit 'Antimagie' -1",
+        "gruppe": 4,
+        "probe": "Antimagie-Zauber",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Hexenbesen reiten",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Tradition der Hexen I",
+        "gruppe": 4,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Hexenflüche",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Übernatürliche-Fertigkeit 'Hexenflüche' -1",
+        "gruppe": 4,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Eigenschaft Aufrechterhalten",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Geweiht I ODER Vorteil Zauberer I ODER Vorteil Paktierer I ODER Vorteil Tradition der Borbaradianer I",
+        "gruppe": 4,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Eigenschaft Ballistisch",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Talent Hexengalle ODER Talent Zorn der Elemente ODER Talent Aeolitus Windgebraus ODER Talent Ignifaxius Flammenstrahl ODER Talent Orcanofaxius ODER Talent Archofaxius ODER Talent Aquafaxius ODER Talent Humofaxius ODER Talent Frigifaxius",
+        "gruppe": 4,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Eigenschaft Illusion (Sinn)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Talent Sinesigill Unerkannt ODER Talent Harmlose Gestalt ODER Übernatürliche-Fertigkeit 'Illusion' -1 ODER Talent Aufmerksamer Wächter ODER Übernatürliche-Fertigkeit 'Kugelzauber' -1 ODER Talent Zaubersiegel",
+        "gruppe": 4,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Eigenschaft Konterprobe",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Geweiht I ODER Vorteil Zauberer I ODER Vorteil Paktierer I ODER Vorteil Tradition der Borbaradianer I",
+        "gruppe": 4,
+        "probe": "Talent oder Attribut",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Eigenschaft Konzentration",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Geweiht I ODER Vorteil Zauberer I ODER Vorteil Paktierer I ODER Vorteil Tradition der Borbaradianer I",
+        "gruppe": 4,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Eigenschaft Objektritual",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Talent Bannschwert ODER Übernatürliche-Fertigkeit 'Dolchzauber' -1 ODER Übernatürliche-Fertigkeit 'Elfenlieder' -1 ODER Übernatürliche-Fertigkeit 'Keulenrituale' -1 ODER Übernatürliche-Fertigkeit 'Kristallmagie' -1 ODER Übernatürliche-Fertigkeit 'Kugelzauber' -1 ODER Übernatürliche-Fertigkeit 'Ringrituale' -1 ODER Übernatürliche-Fertigkeit 'Schalenzauber' -1 ODER Übernatürliche-Fertigkeit 'Stabzauber' -1",
+        "gruppe": 4,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Elementarer Sekundäreffekt",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Geweiht I ODER Vorteil Zauberer I ODER Vorteil Paktierer I ODER Vorteil Tradition der Borbaradianer I",
+        "gruppe": 4,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Verbotene Pforten",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Kein Vorteil Verbotene Pforten, Vorteil Tradition der Borbaradianer I ODER Talent Blut des Dolches (passiv)",
+        "gruppe": 4,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Freie Aktion",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 5,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Reaktion",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 5,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Freie Reaktion",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 5,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Wundschmerz",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 8,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Kampfunfähigkeit",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 8,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Blutungen",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 8,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Mirakel [Fertigkeit oder Attribut]",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Talent Mirakel: Alchemie ODER Talent Mirakel: Athletik ODER Talent Mirakel: Autorität ODER Talent Mirakel: Beeinflussung ODER Talent Mirakel: CH ODER Talent Mirakel: Derekunde ODER Talent Mirakel: Erste Fertigkeit nach Wahl ODER Talent Mirakel: FF ODER Talent Mirakel: GE ODER Talent Mirakel: Gebräuche ODER Talent Mirakel: Handgemenge ODER Talent Mirakel: Handwerk ODER Talent Mirakel: Heilkunde ODER Talent Mirakel: Heimlichkeit ODER Talent Mirakel: Hiebwaffen ODER Talent Mirakel: IN ODER Talent Mirakel: KK ODER Talent Mirakel: KL ODER Talent Mirakel: KO ODER Talent Mirakel: Klingenwaffen ODER Talent Mirakel: MR ODER Talent Mirakel: MU ODER Talent Mirakel: Magiekunde ODER Talent Mirakel: Mythenkunde ODER Talent Mirakel: Schusswaffen ODER Talent Mirakel: Selbstbeherrschung ODER Talent Mirakel: Stangenwaffen ODER Talent Mirakel: Verschlagenheit ODER Talent Mirakel: Wahrnehmung ODER Talent Mirakel: Wurfwaffen ODER Talent Mirakel: Zweite Fertigkeit nach Wahl ODER Talent Mirakel: Überleben",
+        "gruppe": 7,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Dämonische Stärkung [Fertigkeit oder Attribut]",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Talent Dämonische Stärkung: Alchemie ODER Talent Dämonische Stärkung: Athletik ODER Talent Dämonische Stärkung: Autorität ODER Talent Dämonische Stärkung: Beeinflussung ODER Talent Dämonische Stärkung: CH ODER Talent Dämonische Stärkung: Derekunde ODER Talent Dämonische Stärkung: Erste Fertigkeit nach Wahl ODER Talent Dämonische Stärkung: FF ODER Talent Dämonische Stärkung: GE ODER Talent Dämonische Stärkung: Gebräuche ODER Talent Dämonische Stärkung: Handgemenge ODER Talent Dämonische Stärkung: Handwerk ODER Talent Dämonische Stärkung: Heilkunde ODER Talent Dämonische Stärkung: Heimlichkeit ODER Talent Dämonische Stärkung: Hiebwaffen ODER Talent Dämonische Stärkung: IN ODER Talent Dämonische Stärkung: KK ODER Talent Dämonische Stärkung: KL ODER Talent Dämonische Stärkung: KO ODER Talent Dämonische Stärkung: Klingenwaffen ODER Talent Dämonische Stärkung: MR ODER Talent Dämonische Stärkung: MU ODER Talent Dämonische Stärkung: Magiekunde ODER Talent Dämonische Stärkung: Mythenkunde ODER Talent Dämonische Stärkung: Schusswaffen ODER Talent Dämonische Stärkung: Selbstbeherrschung ODER Talent Dämonische Stärkung: Stangenwaffen ODER Talent Dämonische Stärkung: Verschlagenheit ODER Talent Dämonische Stärkung: Wahrnehmung ODER Talent Dämonische Stärkung: Wurfwaffen ODER Talent Dämonische Stärkung: Zweite Fertigkeit nach Wahl ODER Talent Dämonische Stärkung: Überleben",
+        "gruppe": 6,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Beschwörungen - Zusätzliche Fähigkeiten",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Talent Invocatio ODER Talent Macht der Ungeformten ODER Talent Herbeirufung des Feuers ODER Talent Herbeirufung des Eises ODER Talent Herbeirufung der Luft ODER Talent Herbeirufung des Wassers ODER Talent Herbeirufung des Humus ODER Talent Herbeirufung des Erzes ODER Talent Macht des Erzes ODER Talent Macht des Feuers ODER Talent Macht des Humus ODER Talent Macht der Luft ODER Talent Macht des Wassers ODER Talent Skelettarius Totenherr ODER Talent Tairachs Krieger ODER Talent Wasserleiche erheben ODER Talent Chimaeroform Hybridgestalt ODER Talent Stein wandle! ODER Talent Staub wandle! ODER Talent Totes handle!",
+        "gruppe": 4,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Rededuell",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 9,
+        "probe": "Betören, Überreden, Einschüchtern oder Rhetorik",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Artefaktherstellung",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Talent Arcanovi Artefakt ODER Talent Liturgische Bindung",
+        "gruppe": 4,
+        "probe": "Arcanovi (12)",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Regeneration",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 9,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Bereit machen (einfach)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 5,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Konflikt (einfach)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 5,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Volle Defensive (voll)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 5,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Volle Offensive (voll)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 5,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Bewegung (einfach)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 5,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Konzentration (voll)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 5,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Verzögern (voll)",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 5,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Heilkunde",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Fertigkeit 'Heilkunde' 1",
+        "gruppe": 9,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Beschwörungen",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Talent Invocatio ODER Talent Macht der Ungeformten ODER Talent Herbeirufung des Feuers ODER Talent Herbeirufung des Eises ODER Talent Herbeirufung der Luft ODER Talent Herbeirufung des Wassers ODER Talent Herbeirufung des Humus ODER Talent Herbeirufung des Erzes ODER Talent Macht des Erzes ODER Talent Macht des Feuers ODER Talent Macht des Humus ODER Talent Macht der Luft ODER Talent Macht des Wassers ODER Talent Skelettarius Totenherr ODER Talent Tairachs Krieger ODER Talent Wasserleiche erheben ODER Talent Chimaeroform Hybridgestalt ODER Talent Stein wandle! ODER Talent Staub wandle! ODER Talent Totes handle!",
+        "gruppe": 4,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Einschüchtern im Kampf",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Fertigkeit 'Autorität' 1",
+        "gruppe": 8,
+        "probe": "",
+        "gegenprobe": "MU"
+      }
+    },
+    {
+      "name": "Kommandos",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Vorteil Kommando: Formiert Euch! ODER Vorteil Kommando: Haltet Stand! ODER Vorteil Kommando: Keine Gefangenen! ODER Vorteil Kommando: Kennt Keinen Schmerz!",
+        "gruppe": 8,
+        "probe": "Anführen (16, I)",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Allgemeine Fernkampfregeln",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "",
+        "gruppe": 1,
+        "probe": "",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Beschwörungen - Chimären",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Talent Chimaeroform Hybridgestalt",
+        "gruppe": 4,
+        "probe": "Chimaeroform, Kontrollprobe MU",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Beschwörungen - Dämonen",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Talent Invocatio ODER Talent Macht der Ungeformten",
+        "gruppe": 4,
+        "probe": "Invocatio, Kontrollprobe MU",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Beschwörungen - Elementare",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Talent Herbeirufung des Feuers ODER Talent Herbeirufung des Eises ODER Talent Herbeirufung der Luft ODER Talent Herbeirufung des Wassers ODER Talent Herbeirufung des Humus ODER Talent Herbeirufung des Erzes ODER Talent Macht des Erzes ODER Talent Macht des Feuers ODER Talent Macht des Humus ODER Talent Macht der Luft ODER Talent Macht des Wassers",
+        "gruppe": 4,
+        "probe": "Herbeirufung des Elements, Kontrollprobe CH",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Beschwörungen - Golems",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Talent Stein wandle! ODER Talent Staub wandle!",
+        "gruppe": 4,
+        "probe": "Stein wandle! / Staub wandle!, Kontrollprobe MU / CH (elem.)",
+        "gegenprobe": ""
+      }
+    },
+    {
+      "name": "Beschwörungen - Untote",
+      "type": "manoever",
+      "data": {
+        "voraussetzungen": "Talent Skelettarius Totenherr ODER Talent Tairachs Krieger ODER Talent Wasserleiche erheben ODER Talent Totes handle!",
+        "gruppe": 4,
+        "probe": "Skelettarius / Totes handle!, Kontrollprobe MU",
+        "gegenprobe": ""
+      }
+    }
+  ]
+}

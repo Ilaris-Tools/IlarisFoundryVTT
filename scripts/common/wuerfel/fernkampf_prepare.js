@@ -159,11 +159,12 @@ export function fernkampfUpdate(html, actor, item) {
     //     "possible": false,
     //         "selected": "0",
     // },
-    if (html.find("#fm_snls").length > 0) {
-        checked = html.find("#fm_rwrh")[0].value;
-        item.data.data.manoever.fm_rwrh.selected = checked;
-        Object.assign(updateData, { "manoever": { "fm_rwrh": { "selected": checked } } });
+    let snls_check = html.find("input[name='fm_snls']");
+    for (let i of snls_check) {
+        if (i.checked) checked = i.value;
     }
+    item.data.data.manoever.fm_snls.selected = checked;
+    Object.assign(updateData, { "manoever": { "fm_snls": { "selected": checked } } });
     // Modifikator
     checked = html.find("#modifikator")[0].value;
     item.data.data.manoever.mod.selected = checked;

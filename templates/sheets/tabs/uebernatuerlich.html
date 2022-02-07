@@ -47,6 +47,7 @@
         {{#each data.data.uebernatuerlich.fertigkeiten as |uefert|}}
             {{key}}
             <div class="flexrow">
+                <!-- <a class="rollable icon-small" data-rolltype="uefert_diag" data-itemid="{{uefert.id}}"><i class="fas fa-dice-d20"></i></a> -->
                 <label class="ausklappen-trigger onhover" data-ausklappentarget="{{uefert.id}}">{{uefert.name}}</label>
                 <label>{{AttributeFertigkeit_from_data uefert.data.data}}</label>
                 <label>{{uefert.data.data.basis}}</label>
@@ -95,6 +96,7 @@
     <a class="item-create" data-itemclass="liturgie"><i class="fas fa-plus"></i>Neue Liturgie</a>
     <div>
         <div class="flexrow">
+            <!-- <label class="icon-small"></label> -->
             <h6>Talent</h6>
             <h6>Vorbereitung</h6>
             <h6>Reichweite</h6>
@@ -106,6 +108,7 @@
         </div>
         {{#each data.data.uebernatuerlich.zauber as |magtal|}}
             <div class="flexrow">
+                <!-- <a class="rollable icon-small" data-rolltype="magie_diag" data-itemid="{{magtal.id}}"><i class="fas fa-dice-d20"></i></a> -->
                 <label class="ausklappen-trigger onhover" data-ausklappentarget="{{magtal.id}}">{{magtal.name}}</label>
                 <label>{{magtal.data.data.vorbereitung}}</label>
                 <label>{{magtal.data.data.reichweite}}</label>
@@ -144,6 +147,7 @@
         {{/each}}
         {{#each data.data.uebernatuerlich.liturgien as |kartal|}}
             <div class="flexrow">
+                <!-- <a class="rollable icon-small" data-rolltype="karma_diag" data-itemid="{{kartal.id}}"><i class="fas fa-dice-d20"></i></a> -->
                 <label class="ausklappen-trigger onhover" data-ausklappentarget="{{kartal.id}}">{{kartal.name}}</label>
                 <label>{{kartal.data.data.vorbereitung}}</label>
                 <label>{{kartal.data.data.reichweite}}</label>
