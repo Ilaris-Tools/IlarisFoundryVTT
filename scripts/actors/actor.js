@@ -106,7 +106,7 @@ export class IlarisActor extends Actor {
         this._calculateUebernaturlichFertigkeiten(data);
         this._calculateUebernaturlichTalente(data); //Nach Uebernatürliche Fertigkeiten
         this._calculateKampf(data);
-        this._calculateUebernatuerlichProbendiag(data);
+        // this._calculateUebernatuerlichProbendiag(data);
         console.log('**Ilaris** Nach Berechnungen');
         console.log(data);
     }
