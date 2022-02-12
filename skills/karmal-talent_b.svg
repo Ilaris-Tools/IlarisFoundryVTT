@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   inkscape:version="1.0 (4035a4fb49, 2020-05-01)"
+   sodipodi:docname="miracle_b.svg"
+   id="svg5"
+   version="1.1"
+   height="512"
+   width="512"
+   viewBox="0 0 512 512">
+  <title
+     id="title849">Devine: Miracle</title>
+  <metadata
+     id="metadata11">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Devine: Miracle</dc:title>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/by-sa/4.0/" />
+        <dc:date>2022.02.08</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Streuner²</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>completely selfmade</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by-sa/4.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#ShareAlike" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs9" />
+  <sodipodi:namedview
+     inkscape:current-layer="svg5"
+     inkscape:window-maximized="1"
+     inkscape:window-y="-11"
+     inkscape:window-x="-11"
+     inkscape:cy="214.69317"
+     inkscape:cx="-4.9573158"
+     inkscape:zoom="1.8732344"
+     showgrid="false"
+     id="namedview7"
+     inkscape:window-height="2066"
+     inkscape:window-width="3840"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.61960784"
+     guidetolerance="10"
+     gridtolerance="10"
+     objecttolerance="10"
+     borderopacity="1"
+     bordercolor="#666666"
+     pagecolor="#323232"
+     inkscape:document-rotation="0"
+     borderlayer="false"
+     inkscape:showpageshadow="false"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     guidecolor="#00ff00"
+     guideopacity="0.49803922">
+    <sodipodi:guide
+       inkscape:color="rgb(0,255,0)"
+       inkscape:locked="false"
+       inkscape:label=""
+       position="256,256"
+       orientation="-1,0"
+       id="guide869" />
+    <sodipodi:guide
+       inkscape:color="rgb(0,255,0)"
+       inkscape:locked="false"
+       inkscape:label=""
+       position="256,256"
+       orientation="0,1"
+       id="guide905" />
+  </sodipodi:namedview>
+  <filter
+     id="shadow">
+    <feDropShadow
+       stdDeviation="6"
+       dy="12"
+       dx="6" />
+  </filter>
+  <path
+     d="m 255.99604,56.00777 c -110.3735,-1e-5 -200.00976,89.62748 -200.00977,199.99023 0,110.36275 89.63627,199.99024 200.00977,199.99023 11.45518,0 22.68021,-0.98611 33.61133,-2.83984 a 15.001488,15.001488 0 0 0 26.15625,10.625 l 22.28515,-24.86328 6.86719,32.67578 a 15.001488,15.001488 0 0 0 29.35938,0 l 6.86718,-32.67578 22.28711,24.86328 a 15.001488,15.001488 0 0 0 25.42383,-14.67969 l -10.38867,-31.73047 31.73242,10.38868 a 15.001488,15.001488 0 0 0 14.67774,-25.42579 l -24.86329,-22.28515 32.67579,-6.86914 a 15.001488,15.001488 0 0 0 0,-29.35742 l -32.67579,-6.86914 24.86329,-22.28516 a 15.001488,15.001488 0 0 0 -11.54688,-26.08789 c 1.72433,-10.48366 2.64767,-21.2357 2.66797,-32.19922 a 7.5000501,7.5000501 0 0 0 0.01,-0.33789 7.5000501,7.5000501 0 0 0 0,-0.0371 7.5000501,7.5000501 0 0 0 -0.01,-0.38086 c -0.20717,-110.18698 -89.75425,-199.60937 -200,-199.60937 z m 0,15 c 102.26773,0 185.00976,82.73503 185.00977,184.99023 0,12.84753 -1.31441,25.38493 -3.80274,37.49023 l -18.73828,6.13672 10.38867,-31.73242 a 15.001488,15.001488 0 0 0 -25.42383,-14.67969 l -22.28711,24.86328 -6.86718,-32.67382 a 15.001488,15.001488 0 0 0 -14.75,-11.90821 15.001488,15.001488 0 0 0 -14.60742,11.90821 l -6.86915,32.67578 -22.28711,-24.86328 a 15.001488,15.001488 0 0 0 -15.10742,-4.45703 15.001488,15.001488 0 0 0 -10.3164,19.13476 l 10.38867,31.73242 -31.73047,-10.39062 a 15.001488,15.001488 0 0 0 -14.67969,25.42578 l 24.86133,22.28516 -32.67383,6.86914 a 15.001488,15.001488 0 0 0 0,29.35742 l 32.67383,6.86914 -24.86133,22.28515 a 15.001488,15.001488 0 0 0 14.67774,25.42579 l 31.73242,-10.38868 -6.43555,19.65821 c -12.35405,2.59642 -25.16206,3.96679 -38.29492,3.96679 C 153.7283,440.98824 70.98627,358.25321 70.98627,255.998 70.98628,153.7428 153.72831,71.00776 255.99604,71.00777 Z m 103.59961,177.48046 12.95898,61.64258 42.04493,-46.90429 -19.60157,59.86328 37.79297,-12.37305 17.10547,-5.59961 4.9668,-1.62695 -5.94727,5.33008 -16.06445,14.40039 -7.01367,6.28711 -17.88086,16.02734 8.94726,1.88086 15.28125,3.21289 37.41602,7.86523 -61.64453,12.95703 0.002,0.002 6.79883,6.0957 40.10547,35.94727 L 399.38476,395.33202 395,393.89648 h -0.002 l 1.44336,4.40429 18.15821,55.46094 -35.81446,-39.95508 -6.23047,-6.95117 -2.86523,13.62891 -10.09375,48.01562 -7.77149,-36.96679 c 7.8e-4,-4.3e-4 0.001,-0.002 0.002,-0.002 l -3.2207,-15.3164 c -5e-4,2.8e-4 -0.001,-2.9e-4 -0.002,0 l -1.9668,-9.35938 -16.91992,18.87891 -20.73437,23.13281 -4.38867,4.89453 1.33203,-4.06836 5.62304,-17.17773 12.64454,-38.61914 -59.86524,19.59961 46.90625,-42.04493 -61.64453,-12.95703 61.64453,-12.95898 -46.90625,-42.04492 59.86524,19.59961 -19.59961,-59.86328 42.04296,46.90429 z m 0,61.20508 c -26.86961,1e-5 -48.81445,21.93698 -48.81445,48.80078 0,26.8638 21.94484,48.79883 48.81445,48.79883 26.61575,0 48.36808,-21.53062 48.77734,-48.04687 a 7.5,7.5 0 0 0 0.0391,-0.75196 7.5,7.5 0 0 0 -0.0371,-0.73242 c -0.39859,-26.52545 -22.15684,-48.06836 -48.7793,-48.06836 z m 0,15 c 18.76621,0 33.81641,15.04678 33.81641,33.80078 0,18.754 -15.0502,33.79883 -33.81641,33.79883 -18.76621,0 -33.81445,-15.04483 -33.81445,-33.79883 0,-18.75399 15.04824,-33.80077 33.81445,-33.80078 z"
+     style="color:#000000;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:medium;line-height:normal;font-family:sans-serif;font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-variant-east-asian:normal;font-feature-settings:normal;font-variation-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:normal;word-spacing:normal;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;shape-margin:0;inline-size:0;clip-rule:nonzero;display:inline;overflow:visible;visibility:visible;isolation:auto;mix-blend-mode:normal;color-interpolation:sRGB;color-interpolation-filters:linearRGB;solid-color:#000000;solid-opacity:1;vector-effect:none;fill:#000100;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:30;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;paint-order:stroke fill markers;color-rendering:auto;image-rendering:auto;shape-rendering:auto;text-rendering:auto;enable-background:accumulate;stop-color:#000000"
+     id="path943" />
+</svg>
