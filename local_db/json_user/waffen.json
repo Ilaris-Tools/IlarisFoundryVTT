@@ -551,38 +551,38 @@
       }
     },
     {
-        "name": "Kriegsmesser",
-        "type": "nahkampfwaffe",
-        "data": {
-            "dice_anzahl": 2,
-            "dice_plus": 2,
-            "haerte": 10,
-            "fertigkeit": "Klingenwaffen",
-            "talent": "Einhandklingenwaffen",
-            "rw": 1,
-            "wm_at": 0,
-            "wm_vt": 0,
-            "gewicht": 1,
-            "preis": 140,
-            "eigenschaften": {
-                "kopflastig": false,
-                "niederwerfen": false,
-                "parierwaffe": false,
-                "reittier": false,
-                "ruestungsbrechend": false,
-                "schild": false,
-                "schwer_4": false,
-                "schwer_8": false,
-                "stumpf": false,
-                "unberechenbar": false,
-                "unzerstoerbar": false,
-                "wendig": false,
-                "zerbrechlich": false,
-                "zweihaendig": false,
-                "kein_malus_nebenwaffe": false
-            },
-            "text": "Ein Schwert mit einem Messergriff. Oft mit einem senkrecht zur Parierstange herausstehendem Dorn."
-        }
+      "name": "Kriegsmesser",
+      "type": "nahkampfwaffe",
+      "data": {
+        "dice_anzahl": 2,
+        "dice_plus": 2,
+        "haerte": 10,
+        "fertigkeit": "Klingenwaffen",
+        "talent": "Einhandklingenwaffen",
+        "rw": 1,
+        "wm_at": 0,
+        "wm_vt": 0,
+        "gewicht": 1,
+        "preis": 140,
+        "eigenschaften": {
+          "kopflastig": false,
+          "niederwerfen": false,
+          "parierwaffe": false,
+          "reittier": false,
+          "ruestungsbrechend": false,
+          "schild": false,
+          "schwer_4": false,
+          "schwer_8": false,
+          "stumpf": false,
+          "unberechenbar": false,
+          "unzerstoerbar": false,
+          "wendig": false,
+          "zerbrechlich": false,
+          "zweihaendig": false,
+          "kein_malus_nebenwaffe": false
+        },
+        "text": "Ein Schwert mit einem Messergriff. Oft mit einem senkrecht zur Parierstange herausstehendem Dorn."
+      }
     }
   ],
   "Fernkampfwaffen": [

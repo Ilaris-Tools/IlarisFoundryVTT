@@ -1,32 +1,52 @@
 <form class="{{cssClass}}">
     <div>
         <div>
-            <div style="float: left;">
-                <img class="profile-img" src="{{data.img}}" data-edit="img" title="{{data.name}}" height="100"
-                    width="100" />
+            <div style="float: left">
+                <img
+                    class="profile-img"
+                    src="{{data.img}}"
+                    data-edit="img"
+                    title="{{data.name}}"
+                    height="100"
+                    width="100"
+                />
             </div>
-            <div style="float: left;">
+            <div style="float: left">
                 <input name="name" type="text" value="{{data.name}}" />
                 <div class="flexrow">
                     <label>Erschöpfung: </label>
-                    <input class="hp-update" name="data.gesundheit.erschoepfung" value="{{data.data.gesundheit.erschoepfung}}"
-                        type="text" data-dtype="Number">
+                    <input
+                        class="hp-update"
+                        name="data.gesundheit.erschoepfung"
+                        value="{{data.data.gesundheit.erschoepfung}}"
+                        type="text"
+                        data-dtype="Number"
+                    />
                 </div>
                 <div class="flexrow">
                     <label>Wunden: </label>
-                    <input class="hp-update" name="data.gesundheit.wunden" value="{{data.data.gesundheit.wunden}}" type="text"
-                        data-dtype="Number">
+                    <input
+                        class="hp-update"
+                        name="data.gesundheit.wunden"
+                        value="{{data.data.gesundheit.wunden}}"
+                        type="text"
+                        data-dtype="Number"
+                    />
                 </div>
                 <label>{{data.data.gesundheit.display}}</label>
             </div>
-            <div style="float: left;">
+            <div style="float: left">
                 <div class="flexrow">
                     <label>Schip: </label>
                     <label>{{data.data.schips.schips}}</label>
                     <!-- <input name="data.schips.schips" value="{{data.schips.schips}}" type="text" data-dtype="Number"> -->
                     <label>Schip*: </label>
-                    <input name="data.schips.schips_stern" value="{{data.data.schips.schips_stern}}" type="text"
-                        data-dtype="Number">
+                    <input
+                        name="data.schips.schips_stern"
+                        value="{{data.data.schips.schips_stern}}"
+                        type="text"
+                        data-dtype="Number"
+                    />
                 </div>
                 <div class="flexrow">
                     <label>WS: </label>
@@ -48,65 +68,65 @@
                 </div>
             </div>
         </div>
-        <div style="float: left;"></div>
-            <div class="flexrow">
-                <label>Globaler Modifikator: </label>
-                <label>{{data.data.abgeleitete.globalermod}}</label>
-            </div>
-            <div class="flexrow">
-                <label>Nahkampf Mod: </label>
-                <label>{{data.data.modifikatoren.nahkampfmod}}</label>
-            </div>
-            <!-- <div class="flexrow">
+        <div style="float: left"></div>
+        <div class="flexrow">
+            <label>Globaler Modifikator: </label>
+            <label>{{data.data.abgeleitete.globalermod}}</label>
+        </div>
+        <div class="flexrow">
+            <label>Nahkampf Mod: </label>
+            <label>{{data.data.modifikatoren.nahkampfmod}}</label>
+        </div>
+        <!-- <div class="flexrow">
                 <label>Manueller Mod: </label>
                 <input name="data.modifikatoren.manuellermod" value="{{data.data.modifikatoren.manuellermod}}" type="text" data-dtype="Number">
             </div> -->
-            <!-- <div class="flexrow">
+        <!-- <div class="flexrow">
                 <label>Furchtstufe: </label>
                 <input name="data.furcht.furchtstufe" value="{{data.data.furcht.furchtstufe}}" type="text" data-dtype="Number">
             </div>
             <div class="flexrow">
                 <label>{{data.data.furcht.display}}</label>
             </div> -->
-            <div class="flexrow">
-                <label>Furcht: </label>
-                <label>{{data.data.furcht.display}}</label>
-            </div>
-       </div>
-        <div style="clear:both;"></div>
-        <hr>
-        <div class="sheet-tabs tabs" data-group="primary">
-            <b class="item" data-tab="attribute">Attribute</b>
-            <b class="item" data-tab="fertigkeiten">Fertigkeiten</b>
-            <b class="item" data-tab="uebernatuerlich">Magie & Karma</b>
-            <b class="item" data-tab="kampf">Kampf</b>
-            <b class="item" data-tab="inventar">Inventar</b>
-            <b class="item" data-tab="notes">Notizen</b>
-            <b class="item" data-tab="effekte">Effekte</b>
-        </div>
-        <hr>
-        <div class="sheet-body">
-            <div class="tab" data-group="primary" data-tab="notes">
-                {{> systems/Ilaris/templates/sheets/tabs/notes.html}}
-            </div>
-            <div class="tab" data-group="primary" data-tab="attribute">
-                {{> systems/Ilaris/templates/sheets/tabs/attribute.html}}
-            </div>
-            <div class="tab" data-group="primary" data-tab="fertigkeiten">
-                {{> systems/Ilaris/templates/sheets/tabs/fertigkeiten.html}}
-            </div>
-            <div class="tab" data-group="primary" data-tab="uebernatuerlich">
-                {{> systems/Ilaris/templates/sheets/tabs/uebernatuerlich.html}}
-            </div>
-            <div class="tab" data-group="primary" data-tab="kampf">
-                {{> systems/Ilaris/templates/sheets/tabs/kampf.html}}
-            </div>
-            <div class="tab" data-group="primary" data-tab="effekte">
-                {{> systems/Ilaris/templates/sheets/tabs/effekte.html}}
-            </div>
-            <div class="tab" data-group="primary" data-tab="inventar">
-                {{> systems/Ilaris/templates/sheets/tabs/inventar.html}}
-            </div>
+        <div class="flexrow">
+            <label>Furcht: </label>
+            <label>{{data.data.furcht.display}}</label>
         </div>
     </div>
+    <div style="clear: both"></div>
+    <hr />
+    <div class="sheet-tabs tabs" data-group="primary">
+        <b class="item" data-tab="attribute">Attribute</b>
+        <b class="item" data-tab="fertigkeiten">Fertigkeiten</b>
+        <b class="item" data-tab="uebernatuerlich">Magie & Karma</b>
+        <b class="item" data-tab="kampf">Kampf</b>
+        <b class="item" data-tab="inventar">Inventar</b>
+        <b class="item" data-tab="notes">Notizen</b>
+        <b class="item" data-tab="effekte">Effekte</b>
+    </div>
+    <hr />
+    <div class="sheet-body">
+        <div class="tab" data-group="primary" data-tab="notes">
+            {{> systems/Ilaris/templates/sheets/tabs/notes.html}}
+        </div>
+        <div class="tab" data-group="primary" data-tab="attribute">
+            {{> systems/Ilaris/templates/sheets/tabs/attribute.html}}
+        </div>
+        <div class="tab" data-group="primary" data-tab="fertigkeiten">
+            {{> systems/Ilaris/templates/sheets/tabs/fertigkeiten.html}}
+        </div>
+        <div class="tab" data-group="primary" data-tab="uebernatuerlich">
+            {{> systems/Ilaris/templates/sheets/tabs/uebernatuerlich.html}}
+        </div>
+        <div class="tab" data-group="primary" data-tab="kampf">
+            {{> systems/Ilaris/templates/sheets/tabs/kampf.html}}
+        </div>
+        <div class="tab" data-group="primary" data-tab="effekte">
+            {{> systems/Ilaris/templates/sheets/tabs/effekte.html}}
+        </div>
+        <div class="tab" data-group="primary" data-tab="inventar">
+            {{> systems/Ilaris/templates/sheets/tabs/inventar.html}}
+        </div>
+    </div>
+    <!-- </div> -->
 </form>

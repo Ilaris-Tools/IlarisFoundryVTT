@@ -40,34 +40,34 @@ export class NahkampfDialog extends Dialog {
         // // html.find('.item-toggle').click(this._onToggleItem.bind(this));
         // html.find('.item-toggle').click(ev => this._onToggleItem(ev));
         // html.find('.toggle-aktion').click(ev => this._onToggleAktion(ev, html));
-        console.log("In Listeners");
-    };
+        console.log('In Listeners');
+    }
 
     _onToggleAktion(event, html) {
         const id = $(event.currentTarget).attr('id');
-        console.log(html.getElementsByClassName("toggle-aktion"));
+        console.log(html.getElementsByClassName('toggle-aktion'));
         console.log(id);
-        console.log("hier wird ein item getoggled");
+        console.log('hier wird ein item getoggled');
     }
 
     _ausklappView(event) {
         // Beachte Block: Ausklappen bei asp/kap sieht kacke aus -> inline
-        const targetkey = $(event.currentTarget).data("ausklappentarget");
-        const targetId = "ausklappen-view-".concat(targetkey);
+        const targetkey = $(event.currentTarget).data('ausklappentarget');
+        const targetId = 'ausklappen-view-'.concat(targetkey);
         var toggleView = document.getElementById(targetId);
-        if (toggleView.style.display === "none") {
-            toggleView.style.display = "block";
+        if (toggleView.style.display === 'none') {
+            toggleView.style.display = 'block';
         } else {
-            toggleView.style.display = "none";
+            toggleView.style.display = 'none';
         }
-    };
+    }
 
     async _onToggleItem(event) {
         const itemId = event.currentTarget.dataset.itemid;
         const item = this.actor.items.get(itemId);
         const toggletype = event.currentTarget.dataset.toggletype;
         let attr = `data.${toggletype}`;
-        if (toggletype == "hauptwaffe" || toggletype == "nebenwaffe") {
+        if (toggletype == 'hauptwaffe' || toggletype == 'nebenwaffe') {
             let item_status = getProperty(item.data, attr);
             // item.update({[attr]: !getProperty(item.data, attr)});
             if (item_status == false) {
@@ -76,7 +76,7 @@ export class NahkampfDialog extends Dialog {
                     if (nwaffe.data[toggletype] == true) {
                         let change_itemId = nwaffe._id;
                         let change_item = this.actor.items.get(change_itemId);
-                        await change_item.update({[attr]: false});
+                        await change_item.update({ [attr]: false });
                     }
                 }
                 for (let item of this.actor.data.fernkampfwaffen) {
@@ -88,89 +88,83 @@ export class NahkampfDialog extends Dialog {
                     }
                 }
             }
-            await item.update({[attr]: !item_status});
-        }
-        else {
+            await item.update({ [attr]: !item_status });
+        } else {
             attr = `data.${toggletype}`;
-            await item.update({[attr]: !getProperty(item.data, attr)});
+            await item.update({ [attr]: !getProperty(item.data, attr) });
         }
         // console.log(attr);
         // console.log(!getProperty(item.data, attr));
-    };
+    }
 
     async _onRollable(event) {
         let data = this.actor.data.data;
         // console.log($(event.currentTarget));
-        let rolltype = $(event.currentTarget).data("rolltype");
+        let rolltype = $(event.currentTarget).data('rolltype');
         let globalermod = data.abgeleitete.globalermod;
         let pw = 0;
-        let label = "Probe";
-        let dice = "3d20dl1dh1";
-        if (rolltype == "profan_fertigkeit") {
+        let label = 'Probe';
+        let dice = '3d20dl1dh1';
+        if (rolltype == 'profan_fertigkeit') {
             wuerfelwurf(event, this.actor);
             return 0;
-        }
-        else if (rolltype == "at") {
+        } else if (rolltype == 'at') {
             wuerfelwurf(event, this.actor);
             return 0;
             // dice = "1d20";
             // label = $(event.currentTarget).data("item");
             // label = `Attacke (${label})`;
             // pw = $(event.currentTarget).data("pw");
-        }
-        else if (rolltype == "vt") {
-            dice = "1d20";
-            label = $(event.currentTarget).data("item");
+        } else if (rolltype == 'vt') {
+            dice = '1d20';
+            label = $(event.currentTarget).data('item');
             label = `Verteidigung (${label})`;
-            pw = $(event.currentTarget).data("pw");
-        }
-        else if (rolltype == "fk") {
-            dice = "1d20";
-            label = $(event.currentTarget).data("item");
+            pw = $(event.currentTarget).data('pw');
+        } else if (rolltype == 'fk') {
+            dice = '1d20';
+            label = $(event.currentTarget).data('item');
             label = `Fernkampf (${label})`;
-            pw = $(event.currentTarget).data("pw");
-        }
-        else if (rolltype == "schaden") {
-            label = $(event.currentTarget).data("item");
+            pw = $(event.currentTarget).data('pw');
+        } else if (rolltype == 'schaden') {
+            label = $(event.currentTarget).data('item');
             label = `Schaden (${label})`;
-            pw = $(event.currentTarget).data("pw");
-        }
-        else if (rolltype == "attribut") {
-            const attribut_name = $(event.currentTarget).data("attribut");
+            pw = $(event.currentTarget).data('pw');
+        } else if (rolltype == 'attribut') {
+            const attribut_name = $(event.currentTarget).data('attribut');
             label = CONFIG.ILARIS.label[attribut_name];
             pw = data.attribute[attribut_name].pw;
-        } else if (rolltype == "profan_fertigkeit_pw") {
-            label = $(event.currentTarget).data("fertigkeit");
-            pw = $(event.currentTarget).data("pw");
-        } else if (rolltype == "profan_fertigkeit_pwt") {
-            label = $(event.currentTarget).data("fertigkeit");
-            label = label.concat("(Talent)");
-            pw = $(event.currentTarget).data("pwt");
-        } else if (rolltype == "profan_talent") {
-            label = $(event.currentTarget).data("fertigkeit");
-            label = label.concat("(", $(event.currentTarget).data("talent"), ")");
-            pw = $(event.currentTarget).data("pw");
-        } else if (rolltype == "freie_fertigkeit") {
-            label = $(event.currentTarget).data("fertigkeit");
+        } else if (rolltype == 'profan_fertigkeit_pw') {
+            label = $(event.currentTarget).data('fertigkeit');
+            pw = $(event.currentTarget).data('pw');
+        } else if (rolltype == 'profan_fertigkeit_pwt') {
+            label = $(event.currentTarget).data('fertigkeit');
+            label = label.concat('(Talent)');
+            pw = $(event.currentTarget).data('pwt');
+        } else if (rolltype == 'profan_talent') {
+            label = $(event.currentTarget).data('fertigkeit');
+            label = label.concat('(', $(event.currentTarget).data('talent'), ')');
+            pw = $(event.currentTarget).data('pw');
+        } else if (rolltype == 'freie_fertigkeit') {
+            label = $(event.currentTarget).data('fertigkeit');
             // console.log($(event.currentTarget).data("pw"))
-            pw = Number($(event.currentTarget).data("pw")) * 8 - 2;
-        // } else if (rolltype == "magie_fertigkeit" || rolltype == "karma_fertigkeit") {
-        } else if (rolltype == "uebernatuerliche_fertigkeit") {
-            label = $(event.currentTarget).data("fertigkeit");
-            pw = $(event.currentTarget).data("pw");
-        } else if (rolltype == "zauber" || rolltype == "liturgie") {
-            label = $(event.currentTarget).data("talent");
-            pw = $(event.currentTarget).data("pw");
+            pw = Number($(event.currentTarget).data('pw')) * 8 - 2;
+            // } else if (rolltype == "magie_fertigkeit" || rolltype == "karma_fertigkeit") {
+        } else if (rolltype == 'uebernatuerliche_fertigkeit') {
+            label = $(event.currentTarget).data('fertigkeit');
+            pw = $(event.currentTarget).data('pw');
+        } else if (rolltype == 'zauber' || rolltype == 'liturgie') {
+            label = $(event.currentTarget).data('talent');
+            pw = $(event.currentTarget).data('pw');
         }
         let formula = `${pw} + ${globalermod} + ${dice}`;
-        if (rolltype == "schaden") {
+        if (rolltype == 'schaden') {
             formula = pw;
         }
         // let formula = `${data.pw} + 3d20dhdl`;
         let roll = new Roll(formula);
         roll.roll();
         // console.log(roll);
-        let critfumble = roll.result.split(" + ")[1];
+        let critfumble = roll.result.split(' + ')[1];
         let fumble = false;
         let crit = false;
         if (critfumble == 20) {
@@ -182,101 +176,101 @@ export class NahkampfDialog extends Dialog {
             // title: `${label}-Probe`,
             title: label,
             crit: crit,
-            fumble: fumble
+            fumble: fumble,
         };
         // console.log(templateData);
         let template = 'systems/Ilaris/templates/chat/dreid20.html';
-        renderTemplate(template, templateData, roll).then(content => {
+        renderTemplate(template, templateData, roll).then((content) => {
             if (formula != null) {
                 roll.toMessage({
-                    flavor: content
+                    flavor: content,
                 });
             }
         });
     }
 
     _onItemCreate(event) {
-        console.log("ItemCreate");
+        console.log('ItemCreate');
         // console.log(event);
         // console.log($(event.currentTarget));
-        let itemclass = $(event.currentTarget).data("itemclass");
+        let itemclass = $(event.currentTarget).data('itemclass');
         //ansehen: DomStringMap. Beide Varianten liefern das gleiche.
         //Welche ist besser und warum?
         // console.log($(event.currentTarget).data("itemclass"));
         // console.log(event.currentTarget.dataset.itemclass);
         let itemData = {};
-        if (itemclass == "ruestung") {
-            console.log("Neue Rüstung");
+        if (itemclass == 'ruestung') {
+            console.log('Neue Rüstung');
             itemData = {
-                name: "Neue Rüstung",
-                type: "ruestung",
-                data: {}
+                name: 'Neue Rüstung',
+                type: 'ruestung',
+                data: {},
             };
-        } else if (itemclass == "nahkampfwaffe") {
-            console.log("Neue Nahkampfwaffe");
+        } else if (itemclass == 'nahkampfwaffe') {
+            console.log('Neue Nahkampfwaffe');
             itemData = {
-                name: "Waffe",
+                name: 'Waffe',
                 type: itemclass,
-                data: {}
+                data: {},
             };
-        } else if (itemclass == "fernkampfwaffe") {
-            console.log("Neue Fernkampfwaffe");
+        } else if (itemclass == 'fernkampfwaffe') {
+            console.log('Neue Fernkampfwaffe');
             itemData = {
-                name: "Waffe",
+                name: 'Waffe',
                 type: itemclass,
-                data: {}
+                data: {},
             };
-        } else if (itemclass == "fertigkeit") {
-            console.log("Neue Fertigkeit");
+        } else if (itemclass == 'fertigkeit') {
+            console.log('Neue Fertigkeit');
             itemData = {
-                name: "Fertigkeit",
-                type: "fertigkeit",
-                data: {}
+                name: 'Fertigkeit',
+                type: 'fertigkeit',
+                data: {},
             };
-        } else if (itemclass == "talent") {
-            console.log("Neues Talent");
+        } else if (itemclass == 'talent') {
+            console.log('Neues Talent');
             itemData = {
-                name: "Talent",
-                type: "talent",
-                data: {}
+                name: 'Talent',
+                type: 'talent',
+                data: {},
             };
-        } else if (itemclass == "freie_fertigkeit") {
-            console.log("Neue freie Fertigkeit");
+        } else if (itemclass == 'freie_fertigkeit') {
+            console.log('Neue freie Fertigkeit');
             itemData = {
-                name: "freie Fertigkeit",
-                type: "freie_fertigkeit",
+                name: 'freie Fertigkeit',
+                type: 'freie_fertigkeit',
                 data: {
                     stufe: 1,
-                    gruppe: 4
-                }
+                    gruppe: 4,
+                },
             };
-        } else if (itemclass == "uebernatuerliche_fertigkeit") {
-            console.log("Neue übernatürliche Fertigkeit");
+        } else if (itemclass == 'uebernatuerliche_fertigkeit') {
+            console.log('Neue übernatürliche Fertigkeit');
             itemData = {
-                name: "Fertigkeit",
-                type: "uebernatuerliche_fertigkeit",
-                data: {}
+                name: 'Fertigkeit',
+                type: 'uebernatuerliche_fertigkeit',
+                data: {},
             };
-        } else if (itemclass == "zauber") {
-            console.log("Neuer Zauber");
+        } else if (itemclass == 'zauber') {
+            console.log('Neuer Zauber');
             itemData = {
-                name: "Zauber",
-                type: "zauber",
-                data: {}
+                name: 'Zauber',
+                type: 'zauber',
+                data: {},
             };
-        } else if (itemclass == "liturgie") {
-            console.log("Neue Liturgie");
+        } else if (itemclass == 'liturgie') {
+            console.log('Neue Liturgie');
             itemData = {
-                name: "Liturgie",
-                type: "liturgie",
-                data: {}
+                name: 'Liturgie',
+                type: 'liturgie',
+                data: {},
             };
-        } else if (itemclass == "eigenheit") {
-            console.log("Neue Eigenheit");
+        } else if (itemclass == 'eigenheit') {
+            console.log('Neue Eigenheit');
             itemData = {
-                name: "eigenheit",
-                type: "eigenheit",
-                data: {}
+                name: 'eigenheit',
+                type: 'eigenheit',
+                data: {},
             };
         }
         // console.log(this.actor);
@@ -307,7 +301,7 @@ export class NahkampfDialog extends Dialog {
     }
 
     _onItemEdit(event) {
-        console.log("ItemEdit");
+        console.log('ItemEdit');
         // console.log(event);
         // console.log(event.currentTarget);
         // const li = $(ev.currentTarget).parents(".item");
@@ -319,7 +313,7 @@ export class NahkampfDialog extends Dialog {
     }
 
     _onItemDelete(event) {
-        console.log("ItemDelete");
+        console.log('ItemDelete');
         const itemID = event.currentTarget.dataset.itemid;
         // const li = $(event.currentTarget).parents(".item");
         // console.log(event.currentTarget);
@@ -330,6 +324,6 @@ export class NahkampfDialog extends Dialog {
         // console.log(event.currentTarget.dataset.itemid);
         // this.actor.deleteOwnedItem(li.data("itemId"));
         this.actor.deleteOwnedItem(itemID);
-        // li.slideUp(200, () => this.render(false)); 
+        // li.slideUp(200, () => this.render(false));
     }
 }

@@ -153,56 +153,64 @@
         "gruppe": 3,
         "text": ""
       }
-    },    {
+    },
+    {
       "name": "Immanspieler",
       "type": "freie_fertigkeit",
       "data": {
         "gruppe": 3,
         "text": ""
       }
-    },    {
+    },
+    {
       "name": "Lautenspieler",
       "type": "freie_fertigkeit",
       "data": {
         "gruppe": 3,
         "text": ""
       }
-    },    {
+    },
+    {
       "name": "Weinkenner",
       "type": "freie_fertigkeit",
       "data": {
         "gruppe": 3,
         "text": ""
       }
-    },    {
+    },
+    {
       "name": "Haimamud",
       "type": "freie_fertigkeit",
       "data": {
         "gruppe": 3,
         "text": ""
       }
-    },    {
+    },
+    {
       "name": "Meister der Al‘Gebra",
       "type": "freie_fertigkeit",
       "data": {
         "gruppe": 3,
         "text": ""
       }
-    },    {
+    },
+    {
       "name": "Sänger",
       "type": "freie_fertigkeit",
       "data": {
         "gruppe": 3,
         "text": ""
       }
-    },    {
+    },
+    {
       "name": "Schriftsteller",
       "type": "freie_fertigkeit",
       "data": {
         "gruppe": 3,
         "text": ""
       }
-    },    {
+    },
+    {
       "name": "Tänzer",
       "type": "freie_fertigkeit",
       "data": {

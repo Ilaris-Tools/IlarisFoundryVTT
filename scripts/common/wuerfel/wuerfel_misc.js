@@ -8,13 +8,21 @@ export function get_statuseffect_by_id(actor, statusId) {
     return false;
 }
 
-export async function roll_crit_message(formula, label, text, speaker, rollmode, crit_eval=true, fumble_val=1){
+export async function roll_crit_message(
+    formula,
+    label,
+    text,
+    speaker,
+    rollmode,
+    crit_eval = true,
+    fumble_val = 1,
+) {
     let roll = new Roll(formula);
-    await roll.evaluate({ "async": true });
+    await roll.evaluate({ async: true });
     let fumble = false;
     let crit = false;
     if (crit_eval) {
-        let critfumble = roll.dice[0].results.find(a => a.active == true).result;
+        let critfumble = roll.dice[0].results.find((a) => a.active == true).result;
         if (critfumble == 20) {
             crit = true;
         } else if (critfumble <= fumble_val) {
@@ -27,17 +35,19 @@ export async function roll_crit_message(formula, label, text, speaker, rollmode,
         crit: crit,
         fumble: fumble,
     });
-    let roll_msg = roll.toMessage({
-        speaker: speaker,
-        flavor: html_roll
-    }, {
-        rollMode: rollmode,
-        //     create: false
-    });
+    let roll_msg = roll.toMessage(
+        {
+            speaker: speaker,
+            flavor: html_roll,
+        },
+        {
+            rollMode: rollmode,
+            //     create: false
+        },
+    );
 }
 
-
-export function calculate_diceschips(html, text, actor){
+export function calculate_diceschips(html, text, actor) {
     // let text = "";
     let xd20_check = html.find("input[name='xd20']");
     let xd20 = 0;
@@ -69,9 +79,9 @@ export function calculate_diceschips(html, text, actor){
         actor.update({
             data: {
                 schips: {
-                    schips_stern: new_schips
-                }
-            }
+                    schips_stern: new_schips,
+                },
+            },
         });
     } else if (schips_val > 0 && schips == 2) {
         text = text.concat(`Schips mit Eigenschaft\n`);
@@ -81,13 +91,13 @@ export function calculate_diceschips(html, text, actor){
         actor.update({
             data: {
                 schips: {
-                    schips_stern: new_schips
-                }
-            }
+                    schips_stern: new_schips,
+                },
+            },
         });
     } else if (schips_val == 0 && (schips == 1 || schips == 2)) {
         text = text.concat(`Keine Schips\n`);
     }
 
-    return [ text, dice_number, discard_l, discard_h ];
+    return [text, dice_number, discard_l, discard_h];
 }

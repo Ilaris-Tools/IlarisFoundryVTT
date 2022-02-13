@@ -1,36 +1,76 @@
 <div>
-
     <span>
         {{#if data.data.abgeleitete.zauberer}}
-            <label class="ausklappen-trigger onhover" data-ausklappentarget="aspzugekauft"><b>AsP:</b></label>
-            <label>{{data.data.abgeleitete.asp}}&nbsp; | &nbsp;</label>
-            <label><b>gAsP:</b></label>
-            <input style="width: 25px" name="data.abgeleitete.gasp" value="{{data.data.abgeleitete.gasp}}" type="text" data-dtype="Number">
-            <label>&nbsp; | &nbsp;<b>AsP*:</b></label>
-            <input style="width: 25px" name="data.abgeleitete.asp_stern" value="{{data.data.abgeleitete.asp_stern}}" type="text" data-dtype="Number">
-            <span id="ausklappen-view-aspzugekauft" style="display: none">
-                <label>Zugekauft: </label>
-                <input style="width: 25px" name="data.abgeleitete.asp_zugekauft" value="{{data.data.abgeleitete.asp_zugekauft}}" type="text" data-dtype="Number">
-            </span>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-        {{/if}}
-        {{#if data.data.abgeleitete.geweihter}}
-            <label class="ausklappen-trigger onhover" data-ausklappentarget="kapzugekauft"><b>KaP:</b></label>
-            <label>{{data.data.abgeleitete.kap}}&nbsp; | &nbsp;</label>
-            <label><b>gKaP:</b></label>
-            <input style="width: 25px" name="data.abgeleitete.gkap" value="{{data.data.abgeleitete.gkap}}" type="text" data-dtype="Number">
-            <label>&nbsp; | &nbsp;<b>KaP*:</b></label>
-            <input style="width: 25px" name="data.abgeleitete.kap_stern" value="{{data.data.abgeleitete.kap_stern}}" type="text" data-dtype="Number">
-            <span id="ausklappen-view-kapzugekauft" style="display: none">
-                <label>Zugekauft: </label>
-                <input style="width: 25px" name="data.abgeleitete.kap_zugekauft" value="{{data.data.abgeleitete.kap_zugekauft}}" type="text" data-dtype="Number">
-            </span>
-            <br>
+        <label class="ausklappen-trigger onhover" data-ausklappentarget="aspzugekauft"
+            ><b>AsP:</b></label
+        >
+        <label>{{data.data.abgeleitete.asp}}&nbsp; | &nbsp;</label>
+        <label><b>gAsP:</b></label>
+        <input
+            style="width: 25px"
+            name="data.abgeleitete.gasp"
+            value="{{data.data.abgeleitete.gasp}}"
+            type="text"
+            data-dtype="Number"
+        />
+        <label>&nbsp; | &nbsp;<b>AsP*:</b></label>
+        <input
+            style="width: 25px"
+            name="data.abgeleitete.asp_stern"
+            value="{{data.data.abgeleitete.asp_stern}}"
+            type="text"
+            data-dtype="Number"
+        />
+        <span id="ausklappen-view-aspzugekauft" style="display: none">
+            <label>Zugekauft: </label>
+            <input
+                style="width: 25px"
+                name="data.abgeleitete.asp_zugekauft"
+                value="{{data.data.abgeleitete.asp_zugekauft}}"
+                type="text"
+                data-dtype="Number"
+            />
+        </span>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{/if}} {{#if
+        data.data.abgeleitete.geweihter}}
+        <label class="ausklappen-trigger onhover" data-ausklappentarget="kapzugekauft"
+            ><b>KaP:</b></label
+        >
+        <label>{{data.data.abgeleitete.kap}}&nbsp; | &nbsp;</label>
+        <label><b>gKaP:</b></label>
+        <input
+            style="width: 25px"
+            name="data.abgeleitete.gkap"
+            value="{{data.data.abgeleitete.gkap}}"
+            type="text"
+            data-dtype="Number"
+        />
+        <label>&nbsp; | &nbsp;<b>KaP*:</b></label>
+        <input
+            style="width: 25px"
+            name="data.abgeleitete.kap_stern"
+            value="{{data.data.abgeleitete.kap_stern}}"
+            type="text"
+            data-dtype="Number"
+        />
+        <span id="ausklappen-view-kapzugekauft" style="display: none">
+            <label>Zugekauft: </label>
+            <input
+                style="width: 25px"
+                name="data.abgeleitete.kap_zugekauft"
+                value="{{data.data.abgeleitete.kap_zugekauft}}"
+                type="text"
+                data-dtype="Number"
+            />
+        </span>
+        <br />
         {{/if}}
     </span>
 
     <h2>Fertigkeiten</h2>
-    <a class="item-create" data-itemclass="uebernatuerliche_fertigkeit"><i class="fas fa-plus"></i>Neue Übernatürliche Fertigkeit</a>
+    <a class="item-create" data-itemclass="uebernatuerliche_fertigkeit"
+        ><i class="fas fa-plus"></i>Neue Übernatürliche Fertigkeit</a
+    >
     <!-- <a class="item-create" data-itemclass="karma_fertigkeit"><i class="fas fa-plus"></i>Neue Karmafertigkeit</a> -->
     <div>
         <div class="flexrow">
@@ -44,21 +84,38 @@
             <h6></h6>
             <h6></h6>
         </div>
-        {{#each data.data.uebernatuerlich.fertigkeiten as |uefert|}}
-            {{key}}
-            <div class="flexrow">
-                <!-- <a class="rollable icon-small" data-rolltype="uefert_diag" data-itemid="{{uefert.id}}"><i class="fas fa-dice-d20"></i></a> -->
-                <label class="ausklappen-trigger onhover" data-ausklappentarget="{{uefert.id}}">{{uefert.name}}</label>
-                <label>{{AttributeFertigkeit_from_data uefert.data.data}}</label>
-                <label>{{uefert.data.data.basis}}</label>
-                <label>{{uefert.data.data.fw}}</label>
-                <label class="rollable onhover" data-rolltype="uebernatuerliche_fertigkeit" data-fertigkeit="{{uefert.name}}" data-pw="{{uefert.data.data.pw}}">{{uefert.data.data.pw}}</label>
-                <a class="item-edit" data-itemclass="uebernatuerliche_fertigkeit" data-itemid="{{uefert.id}}"><i class="fas fa-edit"></i></a>
-                <a class="item-delete" data-itemclass="uebernatuerliche_fertigkeit" data-itemid="{{uefert.id}}"><i class="fas fa-trash"></i></a>
-            </div>
-            <div id="ausklappen-view-{{uefert.id}}" style="display: none">
-                <label style="white-space: pre-line;">{{uefert.data.data.text}}</label>
-            </div>
+        {{#each data.data.uebernatuerlich.fertigkeiten as |uefert|}} {{key}}
+        <div class="flexrow">
+            <!-- <a class="rollable icon-small" data-rolltype="uefert_diag" data-itemid="{{uefert.id}}"><i class="fas fa-dice-d20"></i></a> -->
+            <label class="ausklappen-trigger onhover" data-ausklappentarget="{{uefert.id}}"
+                >{{uefert.name}}</label
+            >
+            <label>{{AttributeFertigkeit_from_data uefert.data.data}}</label>
+            <label>{{uefert.data.data.basis}}</label>
+            <label>{{uefert.data.data.fw}}</label>
+            <label
+                class="rollable onhover"
+                data-rolltype="uebernatuerliche_fertigkeit"
+                data-fertigkeit="{{uefert.name}}"
+                data-pw="{{uefert.data.data.pw}}"
+                >{{uefert.data.data.pw}}</label
+            >
+            <a
+                class="item-edit"
+                data-itemclass="uebernatuerliche_fertigkeit"
+                data-itemid="{{uefert.id}}"
+                ><i class="fas fa-edit"></i
+            ></a>
+            <a
+                class="item-delete"
+                data-itemclass="uebernatuerliche_fertigkeit"
+                data-itemid="{{uefert.id}}"
+                ><i class="fas fa-trash"></i
+            ></a>
+        </div>
+        <div id="ausklappen-view-{{uefert.id}}" style="display: none">
+            <label style="white-space: pre-line">{{uefert.data.data.text}}</label>
+        </div>
         {{/each}}
         <!-- {{#each actor.magie.fertigkeiten as |magfert|}}
              {{key}}
@@ -90,7 +147,7 @@
              </div>
              {{/each}} -->
     </div>
-    <br>
+    <br />
     <h2>Talente</h2>
     <a class="item-create" data-itemclass="zauber"><i class="fas fa-plus"></i>Neuer Zauber</a>
     <a class="item-create" data-itemclass="liturgie"><i class="fas fa-plus"></i>Neue Liturgie</a>
@@ -107,126 +164,141 @@
             <h6></h6>
         </div>
         {{#each data.data.uebernatuerlich.zauber as |magtal|}}
-            <div class="flexrow">
-                <!-- <a class="rollable icon-small" data-rolltype="magie_diag" data-itemid="{{magtal.id}}"><i class="fas fa-dice-d20"></i></a> -->
-                <label class="ausklappen-trigger onhover" data-ausklappentarget="{{magtal.id}}">{{magtal.name}}</label>
-                <label>{{magtal.data.data.vorbereitung}}</label>
-                <label>{{magtal.data.data.reichweite}}</label>
-                <label>{{magtal.data.data.wirkungsdauer}}</label>
-                <label>{{magtal.data.data.kosten}}</label>
-                <label class="rollable onhover" data-rolltype="zauber" data-talent="{{magtal.name}}" data-pw="{{magtal.data.data.pw}}">{{magtal.data.data.pw}}</label>
-                <a class="item-edit" data-itemclass="zauber" data-itemid="{{magtal.id}}"><i class="fas fa-edit"></i></a>
-                <a class="item-delete" data-itemclass="zauber" data-itemid="{{magtal.id}}"><i class="fas fa-trash"></i></a>
-            </div>
-            <div id="ausklappen-view-{{magtal.id}}" style="display: none">
-                <hr>
+        <div class="flexrow">
+            <!-- <a class="rollable icon-small" data-rolltype="magie_diag" data-itemid="{{magtal.id}}"><i class="fas fa-dice-d20"></i></a> -->
+            <label class="ausklappen-trigger onhover" data-ausklappentarget="{{magtal.id}}"
+                >{{magtal.name}}</label
+            >
+            <label>{{magtal.data.data.vorbereitung}}</label>
+            <label>{{magtal.data.data.reichweite}}</label>
+            <label>{{magtal.data.data.wirkungsdauer}}</label>
+            <label>{{magtal.data.data.kosten}}</label>
+            <label
+                class="rollable onhover"
+                data-rolltype="zauber"
+                data-talent="{{magtal.name}}"
+                data-pw="{{magtal.data.data.pw}}"
+                >{{magtal.data.data.pw}}</label
+            >
+            <a class="item-edit" data-itemclass="zauber" data-itemid="{{magtal.id}}"
+                ><i class="fas fa-edit"></i
+            ></a>
+            <a class="item-delete" data-itemclass="zauber" data-itemid="{{magtal.id}}"
+                ><i class="fas fa-trash"></i
+            ></a>
+        </div>
+        <div id="ausklappen-view-{{magtal.id}}" style="display: none">
+            <hr />
+            <div>
                 <div>
-                    <div>
-                        <label><b>Mächtige Magie: </b></label>
-                        <label style="white-space: pre-line;">{{magtal.data.data.maechtig}}</label>
-                    </div>
-                    <div>
-                        <label><b>Schwierigkeit: </b></label>
-                        <label>{{magtal.data.data.schwierigkeit}}</label>
-                    </div>
-                    <div>
-                        <label><b>Modifikationen: </b></label>
-                        <label style="white-space: pre-line;">{{magtal.data.data.modifikationen}}</label>
-                    </div>
-                    <div>
-                        <label><b>Ziel: </b></label>
-                        <label>{{magtal.data.data.ziel}}</label>
-                    </div>
-                    <div>
-                        <label><b>Beschreibung: </b></label>
-                        <label style="white-space: pre-line;">{{magtal.data.data.text}}</label>
-                    </div>
+                    <label><b>Mächtige Magie: </b></label>
+                    <label style="white-space: pre-line">{{magtal.data.data.maechtig}}</label>
                 </div>
-                <hr>
-            </div>
-        {{/each}}
-        {{#each data.data.uebernatuerlich.liturgien as |kartal|}}
-            <div class="flexrow">
-                <!-- <a class="rollable icon-small" data-rolltype="karma_diag" data-itemid="{{kartal.id}}"><i class="fas fa-dice-d20"></i></a> -->
-                <label class="ausklappen-trigger onhover" data-ausklappentarget="{{kartal.id}}">{{kartal.name}}</label>
-                <label>{{kartal.data.data.vorbereitung}}</label>
-                <label>{{kartal.data.data.reichweite}}</label>
-                <label>{{kartal.data.data.wirkungsdauer}}</label>
-                <label>{{kartal.data.data.kosten}}</label>
-                <label class="rollable onhover" data-rolltype="liturgie" data-talent="{{kartal.name}}" data-pw="{{kartal.data.data.pw}}">{{kartal.data.data.pw}}</label>
-                <a class="item-edit" data-itemclass="liturgie" data-itemid="{{kartal.id}}"><i class="fas fa-edit"></i></a>
-                <a class="item-delete" data-itemclass="liturgie" data-itemid="{{kartal.id}}"><i class="fas fa-trash"></i></a>
-            </div>
-            <div id="ausklappen-view-{{kartal.id}}" style="display: none">
-                <hr>
                 <div>
-                    <div>
-                        <label><b>Mächtige Magie: </b></label>
-                        <label style="white-space: pre-line;">{{kartal.data.data.maechtig}}</label>
-                    </div>
-                    <div>
-                        <label><b>Schwierigkeit: </b></label>
-                        <label>{{kartal.data.data.schwierigkeit}}</label>
-                    </div>
-                    <div>
-                        <label><b>Modifikationen: </b></label>
-                        <label style="white-space: pre-line;">{{kartal.data.data.modifikationen}}</label>
-                    </div>
-                    <div>
-                        <label><b>Ziel: </b></label>
-                        <label>{{kartal.data.data.ziel}}</label>
-                    </div>
-                    <div>
-                        <label><b>Beschreibung: </b></label>
-                        <label style="white-space: pre-line;">{{kartal.data.data.text}}</label>
-                    </div>
+                    <label><b>Schwierigkeit: </b></label>
+                    <label>{{magtal.data.data.schwierigkeit}}</label>
                 </div>
-                <hr>
+                <div>
+                    <label><b>Modifikationen: </b></label>
+                    <label style="white-space: pre-line">{{magtal.data.data.modifikationen}}</label>
+                </div>
+                <div>
+                    <label><b>Ziel: </b></label>
+                    <label>{{magtal.data.data.ziel}}</label>
+                </div>
+                <div>
+                    <label><b>Beschreibung: </b></label>
+                    <label style="white-space: pre-line">{{magtal.data.data.text}}</label>
+                </div>
             </div>
+            <hr />
+        </div>
+        {{/each}} {{#each data.data.uebernatuerlich.liturgien as |kartal|}}
+        <div class="flexrow">
+            <!-- <a class="rollable icon-small" data-rolltype="karma_diag" data-itemid="{{kartal.id}}"><i class="fas fa-dice-d20"></i></a> -->
+            <label class="ausklappen-trigger onhover" data-ausklappentarget="{{kartal.id}}"
+                >{{kartal.name}}</label
+            >
+            <label>{{kartal.data.data.vorbereitung}}</label>
+            <label>{{kartal.data.data.reichweite}}</label>
+            <label>{{kartal.data.data.wirkungsdauer}}</label>
+            <label>{{kartal.data.data.kosten}}</label>
+            <label
+                class="rollable onhover"
+                data-rolltype="liturgie"
+                data-talent="{{kartal.name}}"
+                data-pw="{{kartal.data.data.pw}}"
+                >{{kartal.data.data.pw}}</label
+            >
+            <a class="item-edit" data-itemclass="liturgie" data-itemid="{{kartal.id}}"
+                ><i class="fas fa-edit"></i
+            ></a>
+            <a class="item-delete" data-itemclass="liturgie" data-itemid="{{kartal.id}}"
+                ><i class="fas fa-trash"></i
+            ></a>
+        </div>
+        <div id="ausklappen-view-{{kartal.id}}" style="display: none">
+            <hr />
+            <div>
+                <div>
+                    <label><b>Mächtige Magie: </b></label>
+                    <label style="white-space: pre-line">{{kartal.data.data.maechtig}}</label>
+                </div>
+                <div>
+                    <label><b>Schwierigkeit: </b></label>
+                    <label>{{kartal.data.data.schwierigkeit}}</label>
+                </div>
+                <div>
+                    <label><b>Modifikationen: </b></label>
+                    <label style="white-space: pre-line">{{kartal.data.data.modifikationen}}</label>
+                </div>
+                <div>
+                    <label><b>Ziel: </b></label>
+                    <label>{{kartal.data.data.ziel}}</label>
+                </div>
+                <div>
+                    <label><b>Beschreibung: </b></label>
+                    <label style="white-space: pre-line">{{kartal.data.data.text}}</label>
+                </div>
+            </div>
+            <hr />
+        </div>
         {{/each}}
     </div>
 
-    <br>
+    <br />
     <h2>Traditionen und Vorteile</h2>
     {{#if data.data.vorteil.zaubertraditionen}}
-        <div>
-            <label><b>Magische Traditionen:</b>&nbsp; | &nbsp;</label>
-            {{#each data.data.vorteil.zaubertraditionen}}
-                <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </i></a>
-                <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
-                &nbsp; | &nbsp;
-            {{/each}}
-        </div>
+    <div>
+        <label><b>Magische Traditionen:</b>&nbsp; | &nbsp;</label>
+        {{#each data.data.vorteil.zaubertraditionen}}
+        <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
+        <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
+        &nbsp; | &nbsp; {{/each}}
+    </div>
+    {{/if}} {{#if data.data.vorteil.magie}}
+    <div>
+        <label><b>Magische Vorrteile:</b>&nbsp; | &nbsp;</label>
+        {{#each data.data.vorteil.magie}}
+        <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
+        <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
+        &nbsp; | &nbsp; {{/each}}
+    </div>
+    {{/if}} {{#if data.data.vorteil.geweihtentradition}}
+    <div>
+        <label><b>Karmale Traditionen:</b>&nbsp; | &nbsp;</label>
+        {{#each data.data.vorteil.geweihtentradition}}
+        <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
+        <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
+        &nbsp; | &nbsp; {{/each}}
+    </div>
+    {{/if}} {{#if data.data.vorteil.karma}}
+    <div>
+        <label><b>Karmale Vorteile:</b>&nbsp; | &nbsp;</label>
+        {{#each data.data.vorteil.karma}}
+        <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
+        <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
+        &nbsp; | &nbsp; {{/each}}
+    </div>
     {{/if}}
-    {{#if data.data.vorteil.magie}}
-        <div>
-            <label><b>Magische Vorrteile:</b>&nbsp; | &nbsp;</label>
-            {{#each data.data.vorteil.magie}}
-                <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </i></a>
-                <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
-                &nbsp; | &nbsp;
-            {{/each}}
-        </div>
-    {{/if}}
-    {{#if data.data.vorteil.geweihtentradition}}
-        <div>
-            <label><b>Karmale Traditionen:</b>&nbsp; | &nbsp;</label>
-            {{#each data.data.vorteil.geweihtentradition}}
-                <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </i></a>
-                <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
-                &nbsp; | &nbsp;
-            {{/each}}
-        </div>
-    {{/if}}
-    {{#if data.data.vorteil.karma}}
-        <div>
-            <label><b>Karmale Vorteile:</b>&nbsp; | &nbsp;</label>
-            {{#each data.data.vorteil.karma}}
-                <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </i></a>
-                <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
-                &nbsp; | &nbsp;
-            {{/each}}
-        </div>
-    {{/if}}
-
 </div>

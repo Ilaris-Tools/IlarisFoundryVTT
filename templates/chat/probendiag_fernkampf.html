@@ -6,10 +6,10 @@
     <label>Schips: </label>
     <label>{{radioBoxes "schips" choices_schips checked=checked_schips}}</label>
 </div>
-<hr>
+<hr />
 <div class="flexrow">
     <label>Kombinierte Aktion: </label>
-    <input type="checkbox" id="kbak" {{checked item.data.data.manoever.kbak.selected}}>
+    <input type="checkbox" id="kbak" {{checked item.data.data.manoever.kbak.selected}} />
 </div>
 <!-- {{#if manoever.vldf.possible}}
      <div class="flexrow">
@@ -55,57 +55,65 @@
 </div>
 <div class="flexrow">
     <label>{{get_label "brtn"}}</label>
-    <input type="checkbox" id="brtn" {{checked item.data.data.manoever.brtn.selected}}>
+    <input type="checkbox" id="brtn" {{checked item.data.data.manoever.brtn.selected}} />
 </div>
 <div class="flexrow">
     <label>{{get_label "fm_rwrh"}}</label>
     <select id="fm_rwrh">
-        {{selectOptions manoever.rw selected=item.data.data.manoever.fm_rwrh.selected localize=true}}
+        {{selectOptions manoever.rw selected=item.data.data.manoever.fm_rwrh.selected
+        localize=true}}
     </select>
 </div>
-<hr>
+<hr />
 {{#if manoever.fm_gzss.possible}}
-    <div class="flexrow">
-        <label>{{get_label "fm_gzss"}}</label>
-        <select id="fm_gzss" name="item.data.data.manoever.fm_gzss.selected">
-            {{#select item.data.data.manoever.fm_gzss.selected}}
-                {{> systems/Ilaris/templates/helper/select_trefferzone.html}}
-            {{/select}}
-        </select>
-    </div>
+<div class="flexrow">
+    <label>{{get_label "fm_gzss"}}</label>
+    <select id="fm_gzss" name="item.data.data.manoever.fm_gzss.selected">
+        {{#select item.data.data.manoever.fm_gzss.selected}} {{>
+        systems/Ilaris/templates/helper/select_trefferzone.html}} {{/select}}
+    </select>
+</div>
 {{/if}}
 <div class="flexrow">
     <label>{{get_label "fm_srfs"}}</label>
     <select id="fm_srfs">
-        {{selectOptions fm_srfs_choice selected=item.data.data.manoever.fm_srfs.selected localize=true}}
+        {{selectOptions fm_srfs_choice selected=item.data.data.manoever.fm_srfs.selected
+        localize=true}}
     </select>
 </div>
 <div class="flexrow">
     <label>{{get_label "fm_zlen"}}</label>
-    <input type="checkbox" id="fm_zlen" {{checked item.data.data.manoever.fm_zlen.selected}}>
+    <input type="checkbox" id="fm_zlen" {{checked item.data.data.manoever.fm_zlen.selected}} />
 </div>
 {{#if manoever.fm_msts.possible}}
-    <div class="flexrow">
-        <label>{{get_label "fm_msts"}}</label>
-        <input type="checkbox" id="fm_msts" {{checked item.data.data.manoever.fm_msts.selected}}>
-    </div>
-{{/if}}
-{{#if manoever.fm_rust.possible}}
-    <div class="flexrow">
-        <label>{{get_label "fm_rust"}}</label>
-        <input type="checkbox" id="fm_rust" {{checked item.data.data.manoever.fm_rust.selected}}>
-    </div>
-{{/if}}
-{{#if manoever.fm_snls.possible}}
-    <div class="flexrow">
+<div class="flexrow">
+    <label>{{get_label "fm_msts"}}</label>
+    <input type="checkbox" id="fm_msts" {{checked item.data.data.manoever.fm_msts.selected}} />
+</div>
+{{/if}} {{#if manoever.fm_rust.possible}}
+<div class="flexrow">
+    <label>{{get_label "fm_rust"}}</label>
+    <input type="checkbox" id="fm_rust" {{checked item.data.data.manoever.fm_rust.selected}} />
+</div>
+{{/if}} {{#if manoever.fm_snls.possible}}
+<div class="flexrow">
     <label>{{get_label "fm_snls"}}</label>
-    <label>{{radioBoxes "fm_snls" fm_snls_choice checked=item.data.data.manoever.fm_snls.selected}}</label>
-    </div>
+    <label
+        >{{radioBoxes "fm_snls" fm_snls_choice
+        checked=item.data.data.manoever.fm_snls.selected}}</label
+    >
+</div>
 {{/if}}
-<hr>
+<hr />
 <div class="flexrow">
     <label>Modifikator: </label>
-    <input id="modifikator" type="number" name="item.data.data.manoever.mod.selected" value="{{item.data.data.manoever.mod.selected}}" data-dtype="Number" />
+    <input
+        id="modifikator"
+        type="number"
+        name="item.data.data.manoever.mod.selected"
+        value="{{item.data.data.manoever.mod.selected}}"
+        data-dtype="Number"
+    />
 </div>
 <div class="flexrow">
     <label>Würfelmodus: </label>

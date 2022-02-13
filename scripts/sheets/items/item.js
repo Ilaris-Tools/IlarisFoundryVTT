@@ -1,9 +1,8 @@
 export class IlarisItemSheet extends ItemSheet {
-
     // Setze ich das an der richtigen Stelle?
-	  getData() {
-		    const data = super.getData();
-		    data.hasOwner = this.item.actor != null;
+    getData() {
+        const data = super.getData();
+        data.hasOwner = this.item.actor != null;
         // if(data.hasOwner) {
         //     console.log(this.item.actor.data.misc.profan_fertigkeit_list);
         //     data.profan_fertigkeit_list = this.item.actor.data.misc.profan_fertigkeit_list;

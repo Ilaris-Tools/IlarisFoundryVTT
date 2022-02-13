@@ -1,19 +1,18 @@
-import { IlarisItemSheet } from "./item.js";
+import { IlarisItemSheet } from './item.js';
 
 export class UebernatuerlichFertigkeitSheet extends IlarisItemSheet {
-
     getData() {
         const data = super.getData();
         if (data.hasOwner) {
             data.fertigkeit_list = this.item.actor.data.data.misc.uebernatuerlich_fertigkeit_list;
-        };
+        }
         return data;
     }
 
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             // classes: ["ilaris", "sheet"],
-            template: "systems/Ilaris/templates/sheets/items/uebernatuerlich_fertigkeit.html",
+            template: 'systems/Ilaris/templates/sheets/items/uebernatuerlich_fertigkeit.html',
             // width: 720,
             // height: 800,
             // resizable: false,

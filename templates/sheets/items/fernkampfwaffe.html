@@ -4,44 +4,92 @@
             <header class="sheet-header">
                 <img class="profile-img" src="{{data.img}}" data-edit="img" title="{{data.name}}" />
                 <div class="header-fields">
-                    <h1 class="charname"><input name="name" type="text" value="{{data.name}}" /></h1>
+                    <h1 class="charname">
+                        <input name="name" type="text" value="{{data.name}}" />
+                    </h1>
                 </div>
             </header>
         </div>
         <div>
             <div class="flexrow">
-                <label class="flex-fest-var" style="flex-basis:100px"><b>Schaden: </b></label>
+                <label class="flex-fest-var" style="flex-basis: 100px"><b>Schaden: </b></label>
                 <div class="flexrow">
-                    <input name="data.dice_anzahl" value="{{data.data.dice_anzahl}}" type="text" data-dtype="String">
-                    <label class="flex-fest-var" style="flex-basis:40px">d6+</label>
-                    <input name="data.dice_plus" value="{{data.data.dice_plus}}" type="text" data-dtype="String">
+                    <input
+                        name="data.dice_anzahl"
+                        value="{{data.data.dice_anzahl}}"
+                        type="text"
+                        data-dtype="String"
+                    />
+                    <label class="flex-fest-var" style="flex-basis: 40px">d6+</label>
+                    <input
+                        name="data.dice_plus"
+                        value="{{data.data.dice_plus}}"
+                        type="text"
+                        data-dtype="String"
+                    />
                 </div>
             </div>
             <div class="flexrow">
-                <label class="flex-fest-var" style="flex-basis:100px"><b>Fertigkeit: </b></label>
+                <label class="flex-fest-var" style="flex-basis: 100px"><b>Fertigkeit: </b></label>
                 <div class="flexrow">
-                    <input name="data.fertigkeit" value="{{data.data.fertigkeit}}" type="text" data-dtype="String">
-                    <label class="flex-fest-var" style="flex-basis:40px"><b>Talent: </b></label>
-                    <input name="data.talent" value="{{data.data.talent}}" type="text" data-dtype="String">
+                    <input
+                        name="data.fertigkeit"
+                        value="{{data.data.fertigkeit}}"
+                        type="text"
+                        data-dtype="String"
+                    />
+                    <label class="flex-fest-var" style="flex-basis: 40px"><b>Talent: </b></label>
+                    <input
+                        name="data.talent"
+                        value="{{data.data.talent}}"
+                        type="text"
+                        data-dtype="String"
+                    />
                 </div>
             </div>
             <div class="flexrow">
-                <label class="flex-fest-var" style="flex-basis:100px"><b>WM: </b></label>
+                <label class="flex-fest-var" style="flex-basis: 100px"><b>WM: </b></label>
                 <div class="flexrow">
-                    <input name="data.wm_fk" value="{{data.data.wm_fk}}" type="text" data-dtype="String">
-                    <label class="flex-fest-var" style="flex-basis:30px"><b>RW: </b></label>
-                    <input name="data.rw" value="{{data.data.rw}}" type="text" data-dtype="String">
-                    <label class="flex-fest-var" style="flex-basis:30px"><b>LZ: </b></label>
-                    <input name="data.lz" value="{{data.data.lz}}" type="text" data-dtype="String">
+                    <input
+                        name="data.wm_fk"
+                        value="{{data.data.wm_fk}}"
+                        type="text"
+                        data-dtype="String"
+                    />
+                    <label class="flex-fest-var" style="flex-basis: 30px"><b>RW: </b></label>
+                    <input
+                        name="data.rw"
+                        value="{{data.data.rw}}"
+                        type="text"
+                        data-dtype="String"
+                    />
+                    <label class="flex-fest-var" style="flex-basis: 30px"><b>LZ: </b></label>
+                    <input
+                        name="data.lz"
+                        value="{{data.data.lz}}"
+                        type="text"
+                        data-dtype="String"
+                    />
                 </div>
             </div>
             <div class="flexrow">
-                <label class="flex-fest-var" style="flex-basis:100px"><b>Härte: </b></label>
+                <label class="flex-fest-var" style="flex-basis: 100px"><b>Härte: </b></label>
                 <div class="flexrow">
-                    <input name="data.haerte" value="{{data.data.haerte}}" type="text" data-dtype="String">
-                    <label class="flex-fest-var" style="flex-basis:100px"><b>Beschädigung: </b></label>
-                    <input name="data.beschaedigung" value="{{data.data.beschaedigung}}" type="text"
-                        data-dtype="String">
+                    <input
+                        name="data.haerte"
+                        value="{{data.data.haerte}}"
+                        type="text"
+                        data-dtype="String"
+                    />
+                    <label class="flex-fest-var" style="flex-basis: 100px"
+                        ><b>Beschädigung: </b></label
+                    >
+                    <input
+                        name="data.beschaedigung"
+                        value="{{data.data.beschaedigung}}"
+                        type="text"
+                        data-dtype="String"
+                    />
                 </div>
             </div>
             <!-- "kein_reiter": false,
@@ -57,100 +105,184 @@
                  "umklammern_816": false,
                  "zweihaendig": false -->
             <div class="flexrow">
-                <label class="flex-fest-var" style="flex-basis:100px"><b>Eigenschaften: </b></label>
+                <label class="flex-fest-var" style="flex-basis: 100px"
+                    ><b>Eigenschaften: </b></label
+                >
                 <div>
                     <span>
                         <label>| Nicht für Reiter: </label>
-                        <input name="data.eigenschaften.kein_reiter" data-dtype="Boolean" type="checkbox" {{checked
-                            data.data.eigenschaften.kein_reiter}}>
+                        <input
+                            name="data.eigenschaften.kein_reiter"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                            data.data.eigenschaften.kein_reiter}}
+                        />
                     </span>
                     <span>
                         <label>| Niederwerfen: </label>
-                        <input name="data.eigenschaften.niederwerfen" data-dtype="Boolean" type="checkbox" {{checked
-                            data.data.eigenschaften.niederwerfen}}>
+                        <input
+                            name="data.eigenschaften.niederwerfen"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                            data.data.eigenschaften.niederwerfen}}
+                        />
                     </span>
                     <span>
                         <label>| Niederwerfen (-4): </label>
-                        <input name="data.eigenschaften.niederwerfen_4" data-dtype="Boolean" type="checkbox" {{checked
-                            data.data.eigenschaften.niederwerfen_4}}>
+                        <input
+                            name="data.eigenschaften.niederwerfen_4"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                            data.data.eigenschaften.niederwerfen_4}}
+                        />
                     </span>
                     <span>
                         <label>| Niederwerfen (-8): </label>
-                        <input name="data.eigenschaften.niederwerfen_8" data-dtype="Boolean" type="checkbox" {{checked
-                            data.data.eigenschaften.niederwerfen_8}}>
+                        <input
+                            name="data.eigenschaften.niederwerfen_8"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                            data.data.eigenschaften.niederwerfen_8}}
+                        />
                     </span>
                     <span>
                         <label>| Schwer (4): </label>
-                        <input name="data.eigenschaften.schwer_4" data-dtype="Boolean" type="checkbox" {{checked
-                            data.data.eigenschaften.schwer_4}}>
+                        <input
+                            name="data.eigenschaften.schwer_4"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                            data.data.eigenschaften.schwer_4}}
+                        />
                     </span>
                     <span>
                         <label>| Schwer (8): </label>
-                        <input name="data.eigenschaften.schwer_8" data-dtype="Boolean" type="checkbox" {{checked
-                            data.data.eigenschaften.schwer_8}}>
+                        <input
+                            name="data.eigenschaften.schwer_8"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                            data.data.eigenschaften.schwer_8}}
+                        />
                     </span>
                     <span>
                         <label>| Stationär: </label>
-                        <input name="data.eigenschaften.stationaer" data-dtype="Boolean" type="checkbox" {{checked
-                            data.data.eigenschaften.stationaer}}>
+                        <input
+                            name="data.eigenschaften.stationaer"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                            data.data.eigenschaften.stationaer}}
+                        />
                     </span>
                     <span>
                         <label>| Stumpf: </label>
-                        <input name="data.eigenschaften.stumpf" data-dtype="Boolean" type="checkbox" {{checked
-                            data.data.eigenschaften.stumpf}}>
+                        <input
+                            name="data.eigenschaften.stumpf"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                            data.data.eigenschaften.stumpf}}
+                        />
                     </span>
                     <span>
                         <label>| Umklammern (2,12): </label>
-                        <input name="data.eigenschaften.umklammern_212" data-dtype="Boolean" type="checkbox" {{checked
-                            data.data.eigenschaften.umklammern_212}}>
+                        <input
+                            name="data.eigenschaften.umklammern_212"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                            data.data.eigenschaften.umklammern_212}}
+                        />
                     </span>
                     <span>
                         <label>| Umklammern (4,16): </label>
-                        <input name="data.eigenschaften.umklammern_416" data-dtype="Boolean" type="checkbox" {{checked
-                            data.data.eigenschaften.umklammern_416}}>
+                        <input
+                            name="data.eigenschaften.umklammern_416"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                            data.data.eigenschaften.umklammern_416}}
+                        />
                     </span>
                     <span>
                         <label>| Umklammern (8,16): </label>
-                        <input name="data.eigenschaften.umklammern_816" data-dtype="Boolean" type="checkbox" {{checked
-                            data.data.eigenschaften.umklammern_816}}>
+                        <input
+                            name="data.eigenschaften.umklammern_816"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                            data.data.eigenschaften.umklammern_816}}
+                        />
                     </span>
                     <span>
                         <label>| Zweihändig: </label>
-                        <input name="data.eigenschaften.zweihaendig" data-dtype="Boolean" type="checkbox" {{checked
-                            data.data.eigenschaften.zweihaendig}}>
+                        <input
+                            name="data.eigenschaften.zweihaendig"
+                            data-dtype="Boolean"
+                            type="checkbox"
+                            {{checked
+                            data.data.eigenschaften.zweihaendig}}
+                        />
                     </span>
                 </div>
             </div>
             {{#if hasOwner}}
-            <label class="flex-fest-var" style="flex-basis:100px"><b>Eigene Mod.: </b></label>
+            <label class="flex-fest-var" style="flex-basis: 100px"><b>Eigene Mod.: </b></label>
             <div class="flexrow">
-                <label class="flex-fest-var" style="flex-basis:100px"><b>WM: </b></label>
-                <input name="data.mod_fk" value="{{data.data.mod_fk}}" type="text" data-dtype="Number">
+                <label class="flex-fest-var" style="flex-basis: 100px"><b>WM: </b></label>
+                <input
+                    name="data.mod_fk"
+                    value="{{data.data.mod_fk}}"
+                    type="text"
+                    data-dtype="Number"
+                />
             </div>
             <div class="flexrow">
-                <label class="flex-fest-var" style="flex-basis:100px"><b>Schadensbonus: </b></label>
-                <input name="data.mod_schaden" value="{{data.data.mod_schaden}}" type="text" data-dtype="String">
+                <label class="flex-fest-var" style="flex-basis: 100px"
+                    ><b>Schadensbonus: </b></label
+                >
+                <input
+                    name="data.mod_schaden"
+                    value="{{data.data.mod_schaden}}"
+                    type="text"
+                    data-dtype="String"
+                />
             </div>
             {{/if}}
             <label><b>Beschreibung: </b></label>
             <textarea name="data.text">{{data.data.text}}</textarea>
             <div class="flexrow">
-                <label class="flex-fest-var" style="flex-basis:100px"><b>{{get_label "gewicht"}}: </b></label>
-                <input name="data.gewicht" value="{{data.data.gewicht}}" type="text" data-dtype="Number">
+                <label class="flex-fest-var" style="flex-basis: 100px"
+                    ><b>{{get_label "gewicht"}}: </b></label
+                >
+                <input
+                    name="data.gewicht"
+                    value="{{data.data.gewicht}}"
+                    type="text"
+                    data-dtype="Number"
+                />
             </div>
             <div class="flexrow">
-                <label class="flex-fest-var" style="flex-basis:100px"><b>Preis: </b></label>
-                <input name="data.preis" value="{{data.data.preis}}" type="text" data-dtype="Number">
-                <label class="flex-fest-var" style="flex-basis:100px"><b>ST </b></label>
+                <label class="flex-fest-var" style="flex-basis: 100px"><b>Preis: </b></label>
+                <input
+                    name="data.preis"
+                    value="{{data.data.preis}}"
+                    type="text"
+                    data-dtype="Number"
+                />
+                <label class="flex-fest-var" style="flex-basis: 100px"><b>ST </b></label>
             </div>
             {{#if hasOwner}}
-            <label class="flex-fest-var" style="flex-basis:100px"><b>Aufbewahrungsort: </b></label>
+            <label class="flex-fest-var" style="flex-basis: 100px"><b>Aufbewahrungsort: </b></label>
             <select name="data.aufbewahrungs_ort">
-                {{#select data.data.aufbewahrungs_ort}}
-                {{#each speicherplatz_list as |ort|}}
+                {{#select data.data.aufbewahrungs_ort}} {{#each speicherplatz_list as |ort|}}
                 <option value="{{ort}}">{{ort}}</option>
-                {{/each}}
-                {{/select}}
+                {{/each}} {{/select}}
             </select>
             {{/if}}
         </div>

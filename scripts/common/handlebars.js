@@ -6,57 +6,61 @@ export const initializeHandlebars = () => {
 function preloadHandlebarsTemplates() {
     const templatePaths = [
         // "systems/Ilaris/templates/sheets/helden.html",
-        "systems/Ilaris/templates/sheets/tabs/attribute.html",
-        "systems/Ilaris/templates/sheets/tabs/fertigkeiten.html",
-        "systems/Ilaris/templates/sheets/tabs/kampf.html",
-        "systems/Ilaris/templates/sheets/tabs/inventar.html",
-        "systems/Ilaris/templates/sheets/tabs/uebernatuerlich.html",
-        "systems/Ilaris/templates/sheets/tabs/notes.html",
-        "systems/Ilaris/templates/sheets/tabs/effekte.html",
+        'systems/Ilaris/templates/sheets/tabs/attribute.html',
+        'systems/Ilaris/templates/sheets/tabs/fertigkeiten.html',
+        'systems/Ilaris/templates/sheets/tabs/kampf.html',
+        'systems/Ilaris/templates/sheets/tabs/inventar.html',
+        'systems/Ilaris/templates/sheets/tabs/uebernatuerlich.html',
+        'systems/Ilaris/templates/sheets/tabs/notes.html',
+        'systems/Ilaris/templates/sheets/tabs/effekte.html',
         // "systems/Ilaris/templates/sheets/items/ruestung.html",
-        "systems/Ilaris/templates/helper/select_attribut.html",
-        "systems/Ilaris/templates/helper/select_fertigkeitsgruppe.html",
-        "systems/Ilaris/templates/helper/select_vorteilsgruppe.html",
-        "systems/Ilaris/templates/helper/select_manoever.html",
-        "systems/Ilaris/templates/helper/select_trefferzone.html",
-        "systems/Ilaris/templates/chat/dreid20.html",
-        "systems/Ilaris/templates/chat/probendiag_profan.html",
-        "systems/Ilaris/templates/chat/probenchat_profan.html",
-        "systems/Ilaris/templates/chat/probendiag_nahkampf.html",
+        'systems/Ilaris/templates/helper/select_attribut.html',
+        'systems/Ilaris/templates/helper/select_fertigkeitsgruppe.html',
+        'systems/Ilaris/templates/helper/select_vorteilsgruppe.html',
+        'systems/Ilaris/templates/helper/select_manoever.html',
+        'systems/Ilaris/templates/helper/select_trefferzone.html',
+        'systems/Ilaris/templates/chat/dreid20.html',
+        'systems/Ilaris/templates/chat/probendiag_profan.html',
+        'systems/Ilaris/templates/chat/probenchat_profan.html',
+        'systems/Ilaris/templates/chat/probendiag_nahkampf.html',
     ];
     return loadTemplates(templatePaths);
-};
-
+}
 
 function registerHandlebarsHelpers() {
-    Handlebars.registerHelper("AttributeFertigkeit", function(attrArray) {
-        const fertAttr = attrArray[0].concat("/", attrArray[1], "/", attrArray[2]);
+    Handlebars.registerHelper('AttributeFertigkeit', function (attrArray) {
+        const fertAttr = attrArray[0].concat('/', attrArray[1], '/', attrArray[2]);
         return fertAttr;
     });
 
-    Handlebars.registerHelper("AttributeFertigkeit_from_data", function(attrArray) {
+    Handlebars.registerHelper('AttributeFertigkeit_from_data', function (attrArray) {
         // console.log(attrArray);
-        const fertAttr = attrArray.attribut_0.concat("/", attrArray.attribut_1, "/", attrArray.attribut_2);
+        const fertAttr = attrArray.attribut_0.concat(
+            '/',
+            attrArray.attribut_1,
+            '/',
+            attrArray.attribut_2,
+        );
         return fertAttr;
     });
 
-    Handlebars.registerHelper("ProfanFertigkeitList", function(talente) {
-        let fertigkeit_list = "";
+    Handlebars.registerHelper('ProfanFertigkeitList', function (talente) {
+        let fertigkeit_list = '';
         // console.log(talente);
         for (let [i, tal] of talente.entries()) {
             if (i == 0) {
                 fertigkeit_list = tal.name;
                 // fertigkeit_list = tal.data.label;
             } else {
-                fertigkeit_list = fertigkeit_list.concat(", ", tal.name);
+                fertigkeit_list = fertigkeit_list.concat(', ', tal.name);
                 // fertigkeit_list = fertigkeit_list.concat(", ", tal.data.label);
             }
         }
         return fertigkeit_list;
     });
 
-    Handlebars.registerHelper("arrayToString", function(my_array, sep) {
-        let my_list = "";
+    Handlebars.registerHelper('arrayToString', function (my_array, sep) {
+        let my_list = '';
         for (let [i, part] of my_array.entries()) {
             if (i == 0) {
                 // fertigkeit_list = tal.name;
@@ -69,30 +73,29 @@ function registerHandlebarsHelpers() {
         return my_list;
     });
 
-    Handlebars.registerHelper("waffeneigenschaften_string", function(waffe) {
-        let my_list = "";
+    Handlebars.registerHelper('waffeneigenschaften_string', function (waffe) {
+        let my_list = '';
         // console.log(waffe);
         for (const [eig, val] of Object.entries(waffe.data.data.eigenschaften)) {
             // console.log(eig);
             if (val == true) {
-                if (my_list.length == 0){
+                if (my_list.length == 0) {
                     my_list = CONFIG.ILARIS.label[eig];
-                }
-                else {
-                    my_list = my_list.concat(", ", CONFIG.ILARIS.label[eig]);
+                } else {
+                    my_list = my_list.concat(', ', CONFIG.ILARIS.label[eig]);
                 }
             }
         }
         return my_list;
     });
 
-    Handlebars.registerHelper("get_label", function(eig) {
+    Handlebars.registerHelper('get_label', function (eig) {
         // console.log(eig);
         return CONFIG.ILARIS.label[eig];
     });
 
-    Handlebars.registerHelper("ifIn", function(word, list) {
-        return (list.indexOf(word) > -1);
+    Handlebars.registerHelper('ifIn', function (word, list) {
+        return list.indexOf(word) > -1;
     });
 
     // Handlebars.registerHelper("get_kampfstile", function(data) {
@@ -127,24 +130,24 @@ function registerHandlebarsHelpers() {
     //     return ev.data.root.data.fertigkeit_array;
     // });
 
-    Handlebars.registerHelper("aktivTalentView", function(fertigkeitObject) {
+    Handlebars.registerHelper('aktivTalentView', function (fertigkeitObject) {
         const talentList = fertigkeitObject.talente;
-        let talentString = "";
+        let talentString = '';
         // for (const talent of Object.entries(talentList)) {
         for (const talent of Object.values(talentList)) {
             // if (talent[1].aktiv == true) {
             if (talent.aktiv == true) {
-                if (talentString != "") {
-                    talentString = talentString.concat(", ");
-                };
+                if (talentString != '') {
+                    talentString = talentString.concat(', ');
+                }
                 // talentString = talentString.concat(talent[1].label);
                 talentString = talentString.concat(talent.label);
-            };
-        };
+            }
+        }
         return talentString;
     });
 
-    Handlebars.registerHelper("multMinusOne", function(numb) {
-        return -1*numb;
-    })
-};
+    Handlebars.registerHelper('multMinusOne', function (numb) {
+        return -1 * numb;
+    });
+}

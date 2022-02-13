@@ -3,11 +3,12 @@
         <div>
             <header class="sheet-header">
                 <div class="header-fields">
-                    <h1 class="charname"><input name="name" type="text" value="{{data.name}}"/></h1>
+                    <h1 class="charname">
+                        <input name="name" type="text" value="{{data.name}}" />
+                    </h1>
                 </div>
             </header>
         </div>
-
 
         {{#if hasOwner}}
         <label>Fertigkeit:</label>
@@ -16,8 +17,7 @@
             <option value="auto">auto</option>
             {{#each fertigkeit_list as |fert key|}}
             <option value="{{fert}}">{{fert}}</option>
-            {{/each}}
-            {{/select}}
+            {{/each}} {{/select}}
         </select>
         {{/if}}
         <div>
@@ -28,7 +28,12 @@
             </div>
             <div class="flexrow">
                 <label>Schwierigkeit: </label>
-                <input name="data.schwierigkeit" value="{{data.data.schwierigkeit}}" type="text" data-dtype="String">
+                <input
+                    name="data.schwierigkeit"
+                    value="{{data.data.schwierigkeit}}"
+                    type="text"
+                    data-dtype="String"
+                />
             </div>
             <div class="flexrow">
                 <label>Modifikationen: </label>
@@ -37,31 +42,66 @@
             </div>
             <div class="flexrow">
                 <label>Vorbereitung: </label>
-                <input name="data.vorbereitung" value="{{data.data.vorbereitung}}" type="text" data-dtype="String">
+                <input
+                    name="data.vorbereitung"
+                    value="{{data.data.vorbereitung}}"
+                    type="text"
+                    data-dtype="String"
+                />
             </div>
             <div class="flexrow">
                 <label>Ziel: </label>
-                <input name="data.ziel" value="{{data.data.ziel}}" type="text" data-dtype="String">
+                <input
+                    name="data.ziel"
+                    value="{{data.data.ziel}}"
+                    type="text"
+                    data-dtype="String"
+                />
             </div>
             <div class="flexrow">
                 <label>Reichweite: </label>
-                <input name="data.reichweite" value="{{data.data.reichweite}}" type="text" data-dtype="String">
+                <input
+                    name="data.reichweite"
+                    value="{{data.data.reichweite}}"
+                    type="text"
+                    data-dtype="String"
+                />
             </div>
             <div class="flexrow">
                 <label>Wirkungsdauer: </label>
-                <input name="data.wirkungsdauer" value="{{data.data.wirkungsdauer}}" type="text" data-dtype="String">
+                <input
+                    name="data.wirkungsdauer"
+                    value="{{data.data.wirkungsdauer}}"
+                    type="text"
+                    data-dtype="String"
+                />
             </div>
             <div class="flexrow">
                 <label>Kosten: </label>
-                    <input name="data.kosten" value="{{data.data.kosten}}" type="text" data-dtype="String">
+                <input
+                    name="data.kosten"
+                    value="{{data.data.kosten}}"
+                    type="text"
+                    data-dtype="String"
+                />
             </div>
             <div class="flexrow">
                 <label>Fertigkeiten: </label>
-                <input name="data.fertigkeiten" value="{{data.data.fertigkeiten}}" type="text" data-dtype="String">
+                <input
+                    name="data.fertigkeiten"
+                    value="{{data.data.fertigkeiten}}"
+                    type="text"
+                    data-dtype="String"
+                />
             </div>
             <div class="flexrow">
                 <label>Erlernen: </label>
-                <input name="data.erlernen" value="{{data.data.erlernen}}" type="text" data-dtype="String">
+                <input
+                    name="data.erlernen"
+                    value="{{data.data.erlernen}}"
+                    type="text"
+                    data-dtype="String"
+                />
             </div>
             <!-- <div class="flexrow"
                 <label>Lernkosten: </label>

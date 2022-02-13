@@ -1,16 +1,38 @@
 <div class="flexrow">
     <label>Dukaten</label>
-    <input name="data.geld.dukaten" value="{{data.data.geld.dukaten}}" type="text" data-dtype="Number">
+    <input
+        name="data.geld.dukaten"
+        value="{{data.data.geld.dukaten}}"
+        type="text"
+        data-dtype="Number"
+    />
     <label>Silbertaler</label>
-    <input name="data.geld.silbertaler" value="{{data.data.geld.silbertaler}}" type="text" data-dtype="Number">
+    <input
+        name="data.geld.silbertaler"
+        value="{{data.data.geld.silbertaler}}"
+        type="text"
+        data-dtype="Number"
+    />
     <label>Heller</label>
-    <input name="data.geld.heller" value="{{data.data.geld.heller}}" type="text" data-dtype="Number">
+    <input
+        name="data.geld.heller"
+        value="{{data.data.geld.heller}}"
+        type="text"
+        data-dtype="Number"
+    />
     <label>Kreuzer</label>
-    <input name="data.geld.kreuzer" value="{{data.data.geld.kreuzer}}" type="text" data-dtype="Number">
-    <button class="clickable" data-clicktype="shorten_money" type="button">Geld zusammenrechnen</button>
+    <input
+        name="data.geld.kreuzer"
+        value="{{data.data.geld.kreuzer}}"
+        type="text"
+        data-dtype="Number"
+    />
+    <button class="clickable" data-clicktype="shorten_money" type="button">
+        Geld zusammenrechnen
+    </button>
 </div>
 
-<br>
+<br />
 
 <a class="item-create" data-itemclass="gegenstand"><i class="fas fa-plus"></i>Neuer Gegenstand</a>
 
@@ -33,7 +55,7 @@
     {{/each}}
 </div>
 
-<br>
+<br />
 
 <h2>Mitführend</h2>
 <!-- (Gewicht wird nicht berücksichtigt) -->
@@ -62,12 +84,14 @@
     {{/each}}
 </div>
 
-<br>
+<br />
 
 {{#each data.data.inventar.item_list as |itemContainer key|}}
 <h2>{{itemContainer.name}}</h2>
 <a class="item-edit icon-small" data-itemid="{{itemContainer.id}}"><i class="fas fa-edit"></i></a>
-<a class="item-delete icon-small" data-itemid="{{itemContainer.id}}"><i class="fas fa-trash"></i></a>
+<a class="item-delete icon-small" data-itemid="{{itemContainer.id}}"
+    ><i class="fas fa-trash"></i
+></a>
 <div class="flexrow">
     <label><b>Name</b></label>
     <label><b>{{get_label "gewicht"}}</b></label>
@@ -90,5 +114,5 @@
     </div>
     {{/each}}
 </div>
-<br>
+<br />
 {{/each}}

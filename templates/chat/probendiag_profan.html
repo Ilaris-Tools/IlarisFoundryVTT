@@ -7,7 +7,7 @@
     <label>Schips: </label>
     <label>{{radioBoxes "schips" choices_schips checked=checked_schips}}</label>
 </div>
-<hr>
+<hr />
 <div class="flexrow">
     <label>Talente: </label>
     <!-- <label>{{radioBoxes groupName_talente choices_talente_basic checked=checked_talente_basic}}</label>
@@ -16,10 +16,9 @@
         {{#select talent}}
         <option value="-2">ohne Talent</option>
         <option value="-1">mit Talent</option>
-            {{#each choices_talente as |tal key|}}
-                <option value="{{key}}">{{tal}}</option>
-            {{/each}}
-        {{/select}}
+        {{#each choices_talente as |tal key|}}
+        <option value="{{key}}">{{tal}}</option>
+        {{/each}} {{/select}}
     </select>
 </div>
 <div class="flexrow">
@@ -30,7 +29,7 @@
     <label for="modifikator">Modifikator: </label>
     <input id="modifikator" type="number" value="" data-dtype="Number" />
 </div>
-<hr>
+<hr />
 <div class="flexrow">
     <label>Würfelmodus: </label>
     <select id="rollMode">

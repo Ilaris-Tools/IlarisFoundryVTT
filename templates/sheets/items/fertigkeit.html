@@ -4,7 +4,9 @@
             <header class="sheet-header">
                 <img class="profile-img" src="{{data.img}}" data-edit="img" title="{{data.name}}" />
                 <div class="header-fields">
-                    <h1 class="charname"><input name="name" type="text" value="{{data.name}}" /></h1>
+                    <h1 class="charname">
+                        <input name="name" type="text" value="{{data.name}}" />
+                    </h1>
                 </div>
             </header>
         </div>
@@ -20,24 +22,20 @@
             <div class="flexrow">
                 <!-- <input name="data.faktor" value="{{item.data.faktor}}" type="text" data-dtype="Number"> -->
                 <select name="data.attribut_0">
-                    {{#select data.data.attribut_0}}
-                    {{> systems/Ilaris/templates/helper/select_attribut.html}}
-                    {{/select}}
+                    {{#select data.data.attribut_0}} {{>
+                    systems/Ilaris/templates/helper/select_attribut.html}} {{/select}}
                 </select>
                 <select name="data.attribut_1">
-                    {{#select data.data.attribut_1}}
-                    {{> systems/Ilaris/templates/helper/select_attribut.html}}
-                    {{/select}}
+                    {{#select data.data.attribut_1}} {{>
+                    systems/Ilaris/templates/helper/select_attribut.html}} {{/select}}
                 </select>
                 <select name="data.attribut_2">
-                    {{#select data.data.attribut_2}}
-                    {{> systems/Ilaris/templates/helper/select_attribut.html}}
-                    {{/select}}
+                    {{#select data.data.attribut_2}} {{>
+                    systems/Ilaris/templates/helper/select_attribut.html}} {{/select}}
                 </select>
                 <select name="data.gruppe">
-                    {{#select data.data.gruppe}}
-                    {{> systems/Ilaris/templates/helper/select_fertigkeitsgruppe.html}}
-                    {{/select}}
+                    {{#select data.data.gruppe}} {{>
+                    systems/Ilaris/templates/helper/select_fertigkeitsgruppe.html}} {{/select}}
                 </select>
             </div>
             <div>
@@ -50,7 +48,12 @@
                     <!-- </div>
                 <div class="flexrow"> -->
                     <!-- <label>{{data.basis}}</label> -->
-                    <input name="data.fw" value="{{data.data.fw}}" type="text" data-dtype="Number">
+                    <input
+                        name="data.fw"
+                        value="{{data.data.fw}}"
+                        type="text"
+                        data-dtype="Number"
+                    />
                     <!-- <label>{{data.pw}}</label>
                     <label>{{data.pwt}}</label> -->
                 </div>

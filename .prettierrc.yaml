@@ -4,19 +4,19 @@ semi: false
 singleQuote: true
 printWidth: 100
 overrides:
-  - files: "*.js"
-    options:
-      semi: true
-      singleQuote: True
-  - files:
-      - "*.html"
-    options:
-      tabWidth: 4
-  - files:
-      - "*.json"
-    options:
-      tabWidth: 2
-  - files:
-      - "*.css"
-    options:
-      tabWidth: 2
+    - files: '*.js'
+      options:
+          semi: true
+          singleQuote: True
+    - files:
+          - '*.html'
+      options:
+          tabWidth: 4
+    - files:
+          - '*.json'
+      options:
+          tabWidth: 2
+    - files:
+          - '*.css'
+      options:
+          tabWidth: 2

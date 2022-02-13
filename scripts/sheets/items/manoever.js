@@ -1,10 +1,10 @@
-import { IlarisItemSheet } from "./item.js";
+import { IlarisItemSheet } from './item.js';
 
 export class ManoeverSheet extends IlarisItemSheet {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             // classes: ["ilaris", "sheet"],
-            template: "systems/Ilaris/templates/sheets/items/manoever.html",
+            template: 'systems/Ilaris/templates/sheets/items/manoever.html',
             // width: 720,
             // height: 800,
             // resizable: false,

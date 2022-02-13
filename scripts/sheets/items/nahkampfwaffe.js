@@ -1,19 +1,18 @@
-import { IlarisItemSheet } from "./item.js";
+import { IlarisItemSheet } from './item.js';
 
 export class NahkampfwaffeSheet extends IlarisItemSheet {
-
     getData() {
         const data = super.getData();
         if (data.hasOwner) {
             data.speicherplatz_list = this.item.actor.data.data.misc.speicherplatz_list;
-        };
+        }
         return data;
     }
 
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             // classes: ["ilaris", "sheet"],
-            template: "systems/Ilaris/templates/sheets/items/nahkampfwaffe.html",
+            template: 'systems/Ilaris/templates/sheets/items/nahkampfwaffe.html',
             // width: 720,
             // height: 800,
             // resizable: false,

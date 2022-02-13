@@ -1,10 +1,10 @@
-import { IlarisItemSheet } from "./item.js";
+import { IlarisItemSheet } from './item.js';
 
 export class FertigkeitSheet extends IlarisItemSheet {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
             // classes: ["ilaris", "sheet"],
-            template: "systems/Ilaris/templates/sheets/items/fertigkeit.html",
+            template: 'systems/Ilaris/templates/sheets/items/fertigkeit.html',
             // width: 720,
             // height: 800,
             // resizable: false,
