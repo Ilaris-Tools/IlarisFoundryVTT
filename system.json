@@ -26,6 +26,13 @@
       "system": "Ilaris"
     },
     {
+      "label": "Fertigkeiten und Talente (ADVANCED)",
+      "entity": "Item",
+      "name": "fertigkeiten-und-talente-advanced",
+      "path": "./packs/fertigkeiten-und-talente-advanced.db",
+      "system": "Ilaris"
+    },
+    {
       "label": "Liturgien und Mirakel",
       "entity": "Item",
       "name": "liturgien-und-mirakel",
@@ -72,6 +79,20 @@
       "entity": "Item",
       "name": "zauberspruche-und-rituale",
       "path": "./packs/zauberspruche-und-rituale.db",
+      "system": "Ilaris"
+    },
+    {
+      "label": "Zaubertricks (ADVANCED)",
+      "entity": "Item",
+      "name": "zaubertricks-advanced",
+      "path": "./packs/zaubertricks-advanced.db",
+      "system": "Ilaris"
+    },
+	  {
+      "label": "Macro-Tools",
+      "entity": "Macro",
+      "name": "macro-tools",
+      "path": "packs/macro-tools.db",
       "system": "Ilaris"
     }
   ],

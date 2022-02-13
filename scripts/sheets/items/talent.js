@@ -14,7 +14,7 @@ export class TalentSheet extends IlarisItemSheet {
 
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
-            // classes: ["ilaris", "sheet"],
+            classes: ['ilaris', 'sheet', 'item', 'talent'],
             template: 'systems/Ilaris/templates/sheets/items/talent.html',
             // width: 720,
             // height: 800,

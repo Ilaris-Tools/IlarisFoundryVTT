@@ -112,3 +112,26 @@
 .twokindrow div:nth-child(odd) {
   background: rgba(255, 255, 255, 0.2);
 }
+
+/* Erste Gehversuche Michael*/
+
+/* --------------------------------------- */
+/*  Ilaris Sheet                           */
+/* --------------------------------------- */
+.ilaris {
+  min-width: 360px;
+  min-height: 320px;
+}
+.ilaris form > * {
+  flex: 0;
+}
+.ilaris .form-group.description {
+  flex: 1;
+}
+.ilaris .form-group.description label {
+  height: 24px;
+}
+.ilaris .form-group.description textarea {
+  height: calc(100% - 24px);
+  resize: none;
+}
