@@ -2,7 +2,7 @@
   "name": "Ilaris",
   "title": "Ilaris (beta)",
   "description": "Schnelle und schlanke Regeln für Aventurien",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "minimumCoreVersion": "0.8.6",
   "compatibleCoreVersion": "0.8.9",
   "templateVersion": 2,
@@ -88,7 +88,7 @@
       "path": "./packs/zaubertricks-advanced.db",
       "system": "Ilaris"
     },
-	  {
+    {
       "label": "Macro-Tools",
       "entity": "Macro",
       "name": "macro-tools",
@@ -105,6 +105,6 @@
   "background": "assets/images/background/splash.jpg",
   "url": "https://gitlab.com/Feorg/ilaris-foundryvtt",
   "manifest": "https://gitlab.com/Feorg/ilaris-foundryvtt/raw/master/system.json",
-  "download": "https://gitlab.com/Feorg/ilaris-foundryvtt/-/archive/v0.0.1/ilaris-foundryvtt-v0.0.1.zip",
+  "download": "https://gitlab.com/Feorg/ilaris-foundryvtt/-/archive/v0.0.3/ilaris-foundryvtt-v0.0.3.zip",
   "license": ""
 }
