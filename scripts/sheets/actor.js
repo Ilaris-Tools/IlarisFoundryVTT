@@ -88,6 +88,7 @@ export class IlarisActorSheet extends ActorSheet {
         let pw = 0;
         let label = 'Probe';
         let dice = '3d20dl1dh1';
+        // TODO: simplify this: if rolltype in [...]
         if (rolltype == 'profan_fertigkeit_diag') {
             wuerfelwurf(event, this.actor);
             return 0;
@@ -113,7 +114,8 @@ export class IlarisActorSheet extends ActorSheet {
             console.log(event);
             wuerfelwurf(event, this.actor);
             return 0;
-        } else if (rolltype == 'at') {
+        } else if (rolltype == 'at') { 
+            // TODO: simplify this: if rolltype in [...]
             dice = '1d20';
             label = $(event.currentTarget).data('item');
             label = `Attacke (${label})`;
