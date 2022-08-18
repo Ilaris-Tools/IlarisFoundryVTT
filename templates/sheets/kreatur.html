@@ -1,0 +1,78 @@
+<form class="{{cssClass}}">
+    <div>
+        <div>
+            <div style="float: left">
+                <img
+                    class="profile-img"
+                    src="{{data.img}}"
+                    data-edit="img"
+                    title="{{data.name}}"
+                    height="100"
+                    width="100"
+                />
+            </div>
+            <div style="float: left">
+                <input name="name" type="text" value="{{data.name}}" />
+                <div class="flexrow">
+                    <label>Erschöpfung: </label>
+                    <input
+                        class="hp-update"
+                        name="data.gesundheit.erschoepfung"
+                        value="{{data.data.gesundheit.erschoepfung}}"
+                        type="text"
+                        data-dtype="Number"
+                    />
+                </div>
+                <div class="flexrow">
+                    <label>Wunden: </label>
+                    <input
+                        class="hp-update"
+                        name="data.gesundheit.wunden"
+                        value="{{data.data.gesundheit.wunden}}"
+                        type="text"
+                        data-dtype="Number"
+                    />
+                </div>
+                <label>{{data.data.gesundheit.display}}</label>
+            </div>
+        </div>
+        <div style="float: left"></div>
+    </div>
+    <div style="clear: both"></div>
+    <hr />
+    <div class="sheet-body">
+
+
+        <div>
+            <h2>Attribute</h2>
+            <div>
+                <div class="flexrow">
+                    <label class="icon-small"></label>
+                    <h6>PW</h6>
+                </div>
+                {{#each data.data.attribute as |attribut key|}}
+                <div class="flexrow">
+                    <a class="rollable icon-small" data-rolltype="attribut_diag" data-attribut="{{key}}"
+                        ><i class="fas fa-dice-d20"></i
+                    ></a>
+                    <label>{{get_label key}}</label>
+                    <input
+                        name="data.attribute.{{key}}.pw"
+                        value="{{attribut.pw}}"
+                        type="text"
+                        data-dtype="Number"
+                    />
+                    <label class="rollable onhover" data-rolltype="attribut" data-attribut="{{key}}"
+                        >{{attribut.pw}}</label
+                    >
+                </div>
+                {{/each}}
+            </div>
+            <br />
+        </div>
+        
+
+
+    </div>
+    <!-- </div> -->
+</form>

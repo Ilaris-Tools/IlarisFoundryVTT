@@ -39,6 +39,10 @@ export class IlarisActor extends Actor {
         if (this.data.type === 'held') {
             this._initializeHeld(this.data);
         }
+        else if (this.data.type == 'kreatur') {
+            console.log("Kreaturen Daten müssen nicht berechnet werden.. ");
+            console.log(this.data)
+        }
     }
 
     prepareEmbeddedEntities() {
@@ -110,6 +114,7 @@ export class IlarisActor extends Actor {
         console.log('**Ilaris** Nach Berechnungen');
         console.log(data);
     }
+
 
     _calculatePWAttribute(data) {
         for (let attribut of Object.values(data.data.attribute)) {
