@@ -44,12 +44,21 @@
 
 
         <div>
+            <h2>Eigenschaften</h2>
+            <div class="statblockreihe">
+                <div class="flexrow">
+                    {{#each data.data.eigenschaften as |eigenschaft|}}
+                    <label>{{eigenschaft.name}}</label>
+                    {{/each}}
+                </div>
+
+            </div>
+        </div>
+
+
+        <div>
             <h2>Attribute</h2>
             <div>
-                <div class="flexrow">
-                    <label class="icon-small"></label>
-                    <h6>PW</h6>
-                </div>
                 {{#each data.data.attribute as |attribut key|}}
                 <div class="flexrow">
                     <a class="rollable icon-small" data-rolltype="attribut_diag" data-attribut="{{key}}"
@@ -62,14 +71,12 @@
                         type="text"
                         data-dtype="Number"
                     />
-                    <label class="rollable onhover" data-rolltype="attribut" data-attribut="{{key}}"
-                        >{{attribut.pw}}</label
-                    >
                 </div>
                 {{/each}}
             </div>
             <br />
         </div>
+
         
 
 

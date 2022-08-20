@@ -19,6 +19,13 @@
       "system": "Ilaris"
     },
     {
+      "label": "Kreaturen",
+      "entity": "Actor",
+      "name": "kreaturen",
+      "path": "./packs/kreaturen.db",
+      "system": "Ilaris"
+    },
+    {
       "label": "Fertigkeiten und Talente",
       "entity": "Item",
       "name": "fertigkeiten-und-talente",
