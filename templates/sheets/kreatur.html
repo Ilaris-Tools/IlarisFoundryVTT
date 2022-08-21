@@ -41,44 +41,79 @@
     <div style="clear: both"></div>
     <hr />
     <div class="sheet-body">
-
-
-        <div>
+        <div class="statblockreihe">
             <h2>Eigenschaften</h2>
-            <div class="statblockreihe">
-                <div class="flexrow">
-                    {{#each data.data.eigenschaften as |eigenschaft|}}
-                    <label>{{eigenschaft.name}}</label>
-                    {{/each}}
-                </div>
-
-            </div>
-        </div>
-
-
-        <div>
-            <h2>Attribute</h2>
-            <div>
-                {{#each data.data.attribute as |attribut key|}}
-                <div class="flexrow">
-                    <a class="rollable icon-small" data-rolltype="attribut_diag" data-attribut="{{key}}"
-                        ><i class="fas fa-dice-d20"></i
-                    ></a>
-                    <label>{{get_label key}}</label>
-                    <input
-                        name="data.attribute.{{key}}.pw"
-                        value="{{attribut.pw}}"
-                        type="text"
-                        data-dtype="Number"
-                    />
-                </div>
+                {{#each data.data.eigenschaften as |eigenschaft|}}
+                <label>{{eigenschaft.name}}</label><br/>
                 {{/each}}
-            </div>
-            <br />
         </div>
-
-        
-
+        <div class="statblockreihe">
+            <h2>Attribute</h2>
+            {{#each data.data.attribute as |attribut key|}}
+            <div>
+                <label>{{get_label key}}</label>
+                <input
+                    name="data.attribute.{{key}}.pw"
+                    value="{{attribut.pw}}"
+                    type="text"
+                    data-dtype="Number"
+                />
+            </div>
+            {{/each}}
+        </div>
+        <div class="statblockreihe">
+            <h2>Kampfwerte</h2>
+            {{#each data.data.kampfwerte as |obj key|}}
+            <div>
+                <label>{{key}}</label>
+                <input
+                    name="data.kampfwerte.{{key}}"
+                    value="{{obj}}"
+                    type="text"
+                    data-dtype="Number"
+                />
+            </div>
+            {{/each}}
+        </div>
+        <div class="statblockreihe">
+            <h2>Vorteile</h2>
+                {{#each data.data.vorteile as |vorteil|}}
+                <label>{{vorteil.name}}</label><br/>
+                {{/each}}
+        </div>
+        <div class="statblockreihe">
+            <h2>Übernatürlich</h2>
+            {{#if data.data.asp}}
+            <label>Astralpunkte: </label>
+            <input
+                name="data.asp"
+                value="{{data.data.asp}}"
+                type="text"
+                data-dtype="Number"
+            /><br/>
+            {{/if}}
+            {{#if data.data.gup}}
+            <label>Gunstpunkte: </label>
+            <input
+                name="data.gup"
+                value="{{data.data.gup}}"
+                type="text"
+                data-dtype="Number"
+            /><br/>
+            {{/if}}
+            {{#if data.kap}}
+            <label>Karmalpunkte: </label>
+            <input
+                name="data.kap"
+                value="{{data.kap}}"
+                type="text"
+                data-dtype="Number"
+            /><br/>
+            {{/if}}
+            {{#each data.data.fertigkeiten as |fertigkeit|}}
+            <label>{{fertigkeit.name}}</label><br/>
+            {{/each}}
+        </div>
 
     </div>
     <!-- </div> -->

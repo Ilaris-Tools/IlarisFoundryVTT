@@ -128,13 +128,7 @@
       "edit": false,
       "kreaturentyp": "humanoid",
       "kurzbeschreibung": "",
-      "kampfwerte": {
-        "ws": 0,
-        "ws_stern": 0,
-        "koloss": "",
-        "mr": 0,
-        "gs": ""
-      },
+      "kampfwerte": {},
       "eigenschaften": [],
       "vorteile": [],
       "talente": [],
