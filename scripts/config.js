@@ -10,6 +10,16 @@ let label = {
     KL: 'Klugheit',
     CH: 'Charisma',
     FF: 'Fingerfertigkeit',
+    // Kampfwerte
+    ws: 'Wundschwelle',
+    ws_stern: 'Effektive Wundschwelle',
+    ini: 'Initiative',
+    koloss: 'Koloss',
+    gs: 'Geschwindigkeit',
+    gss: 'Geschwindigkeit (schwimmend)',
+    gsf: 'Geschwindigkeit (fliegend)',
+    gsr: 'Geschwindigkeit (reitend)',
+    schips: 'Schicksalspunkte',
     // Waffeneigenschaften
     kein_malus_nebenwaffe: 'Kein Malus als Nebenwaffe',
     kein_reiter: 'Nicht für Reiter',

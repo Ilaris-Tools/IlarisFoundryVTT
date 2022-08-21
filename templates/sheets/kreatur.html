@@ -42,43 +42,39 @@
     <hr />
     <div class="sheet-body">
         <div class="statblockreihe">
-            <h2>Eigenschaften</h2>
+            <b>Eigenschaften: </b>
                 {{#each data.data.eigenschaften as |eigenschaft|}}
-                <label>{{eigenschaft.name}}</label><br/>
+                <label>{{eigenschaft.name}}, </label>
                 {{/each}}
         </div>
         <div class="statblockreihe">
-            <h2>Attribute</h2>
+            <b>Attribute: </b>
             {{#each data.data.attribute as |attribut key|}}
-            <div>
                 <label>{{get_label key}}</label>
                 <input
                     name="data.attribute.{{key}}.pw"
                     value="{{attribut.pw}}"
                     type="text"
                     data-dtype="Number"
-                />
-            </div>
+                />, 
             {{/each}}
         </div>
         <div class="statblockreihe">
-            <h2>Kampfwerte</h2>
+            <b>Kampfwerte: </b>
             {{#each data.data.kampfwerte as |obj key|}}
-            <div>
-                <label>{{key}}</label>
+                <label>{{get_label key}}</label>
                 <input
                     name="data.kampfwerte.{{key}}"
                     value="{{obj}}"
                     type="text"
                     data-dtype="Number"
-                />
-            </div>
+                />, 
             {{/each}}
         </div>
         <div class="statblockreihe">
-            <h2>Vorteile</h2>
+            <b>Vorteile: </b>
                 {{#each data.data.vorteile as |vorteil|}}
-                <label>{{vorteil.name}}</label><br/>
+                <label>{{vorteil.name}}</label>, 
                 {{/each}}
         </div>
         <div class="statblockreihe">
@@ -101,7 +97,7 @@
                 data-dtype="Number"
             /><br/>
             {{/if}}
-            {{#if data.kap}}
+            {{#if data.data.kap}}
             <label>Karmalpunkte: </label>
             <input
                 name="data.kap"
@@ -111,7 +107,12 @@
             /><br/>
             {{/if}}
             {{#each data.data.fertigkeiten as |fertigkeit|}}
-            <label>{{fertigkeit.name}}</label><br/>
+            <label>
+                {{fertigkeit.name}} ({{fertigkeit.wert}}): 
+                {{#each fertigkeit.talente as |talent|}}
+                    {{talent}}, 
+                {{/each}}
+            </label><br/>
             {{/each}}
         </div>
 
