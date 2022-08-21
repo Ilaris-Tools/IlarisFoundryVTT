@@ -122,12 +122,12 @@
       "templates": [
         "gesundheit", 
         "initiative", 
-        "attribute", 
         "furcht"
       ],
       "edit": false,
       "kreaturentyp": "humanoid",
       "kurzbeschreibung": "",
+      "attribute": {},
       "kampfwerte": {},
       "eigenschaften": [],
       "vorteile": [],
@@ -138,12 +138,12 @@
       "gup": 0,
       "fertigkeiten": [],
       "infos": [],
-      "vorgehen": "",
-      "schwachpunkte": "",
+      "waffen": [],
       "kampfunfaehig": "",
-      "beschwoerung": "",
-      "dienste": "",
-      "text": ""
+      "text": "",
+      "abgeleitete": {
+        "globalermod": 0
+      }
     }
   },
   "Item": {

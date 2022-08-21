@@ -89,6 +89,14 @@ function registerHandlebarsHelpers() {
         return my_list;
     });
 
+    Handlebars.registerHelper('waffe_ist_fernkampf', function (waffe) {
+        return (waffe.typ == "Fern");
+    });
+
+    Handlebars.registerHelper('ist_nicht_leer', function (object) {
+        return (Object.keys(object).length > 0);
+    });
+
     Handlebars.registerHelper('get_label', function (eig) {
         // console.log(eig);
         return CONFIG.ILARIS.label[eig];
