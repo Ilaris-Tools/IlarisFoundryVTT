@@ -136,7 +136,14 @@
         <div class="statblockreihe">
             <b>Attribute: </b>
             {{#each data.data.attribute as |attribut key|}}
-                <label>{{key}} {{attribut.pw}}, </label>
+                <label>
+            <a
+                class="rollable icon-small"
+                data-rolltype="basic"
+                data-formula="1d20+{{attribut.pw}}"
+                data-label="{{key}}"
+                ><i class="fas fa-dice-d20"></i
+                ></a>{{key}} {{attribut.pw}}, </label>
             {{/each}}
         </div>
         {{/if}}
@@ -167,14 +174,31 @@
             <label>
                 <a
                 class="rollable icon-small"
-                data-rolltype="profan_fertigkeit_diag"
-                data-fertigkeit="{{key}}"
+                data-rolltype="basic"
+                data-formula="1d20+{{waffe.at}}"
+                data-label="Attacke ({{waffe.name}})"
                 ><i class="fas fa-dice-d20"></i
                 ></a> 
                 AT: {{waffe.at}}
             </label>
-            <label>VT: {{waffe.vt}}</label>
-            <label>TP: {{waffe.tp}}</label>
+            <label>
+            <a
+                class="rollable icon-small"
+                data-rolltype="basic"
+                data-formula="1d20+{{waffe.vt}}"
+                data-label="Verteidigung ({{waffe.name}})"
+                ><i class="fas fa-dice-d20"></i
+                ></a> 
+            VT: {{waffe.vt}}</label>
+            <label>
+            <a
+                class="rollable icon-small"
+                data-rolltype="basic"
+                data-formula="{{translate_formula waffe.tp}}"
+                data-label="Schaden ({{waffe.name}})"
+                ><i class="fas fa-dice-d20"></i
+                ></a> 
+                TP: {{waffe.tp}}</label>
             <label>HT: {{waffe.haerte}}</label>
             </div>
             <div><label>{{waffe.eigenschaften}}</label></div>
@@ -195,11 +219,35 @@
             {{/if}}
             {{#each data.data.fertigkeiten as |fertigkeit|}}
             <label>
+            <a
+                class="rollable icon-small"
+                data-rolltype="basic"
+                data-formula="3d20dl1dh1+{{fertigkeit.wert}}"
+                data-label="{{fertigkeit.name}}"
+                ><i class="fas fa-dice-d20"></i
+                ></a>
                 {{fertigkeit.name}} ({{fertigkeit.wert}}): 
                 {{#each fertigkeit.talente as |talent|}}
-                    {{talent}}, 
+                    {{talent.name}}: {{talent.wert}}
                 {{/each}}
             </label><br/>
+            {{/each}}
+        </div>
+        {{/if}}
+        {{#if data.data.talente }}
+        <div class="statblockreihe">
+            <b>Talente: </b><br/>
+            {{#each data.data.talente as |talent|}}
+            <label>
+            <a
+                class="rollable icon-small"
+                data-rolltype="basic"
+                data-formula="3d20dl1dh1+{{talent.wert}}"
+                data-label="{{talent.name}}"
+                ><i class="fas fa-dice-d20"></i
+                ></a>
+                {{talent.name}}: {{talent.wert}}, 
+            </label>
             {{/each}}
         </div>
         {{/if}}

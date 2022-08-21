@@ -14,14 +14,16 @@ export async function wuerfelwurf(event, actor) {
     let data = actor.data.data;
     // console.log($(event.currentTarget));
     let rolltype = $(event.currentTarget).data('rolltype');
-    let globalermod = data.abgeleitete.globalermod;
-    let wundabzuegemod = data.gesundheit.wundabzuege;
-    let furchtmod = data.furcht.furchtabzuege;
-    console.log(`globalermod: ${globalermod}`);
-    console.log(`wundabzuegemod: ${wundabzuegemod}`);
-    console.log(`furchtmod: ${furchtmod}`);
-    let be = data.abgeleitete.be;
-    let nahkampfmod = data.modifikatoren.nahkampfmod;
+    if (actor.type == "held") {
+        let globalermod = data.abgeleitete.globalermod;
+        let wundabzuegemod = data.gesundheit.wundabzuege;
+        let furchtmod = data.furcht.furchtabzuege;
+        console.log(`globalermod: ${globalermod}`);
+        console.log(`wundabzuegemod: ${wundabzuegemod}`);
+        console.log(`furchtmod: ${furchtmod}`);
+        let be = data.abgeleitete.be;
+        let nahkampfmod = data.modifikatoren.nahkampfmod;
+    }
     let pw = 0;
     let label = 'Probe';
     // let groupName_xd20 = "xd20";

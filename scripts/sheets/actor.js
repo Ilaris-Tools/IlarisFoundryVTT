@@ -84,11 +84,31 @@ export class IlarisActorSheet extends ActorSheet {
         let data = this.actor.data.data;
         // console.log($(event.currentTarget));
         let rolltype = $(event.currentTarget).data('rolltype');
+        if (rolltype == 'basic') {
+            // NOTE: als Einfaches Beispiel ohne weitere Dialoge und logische Verknüpfungen.
+            let label = $(event.currentTarget).data('label');
+            let formula = $(event.currentTarget).data('formula');
+            let roll = new Roll(formula);
+            console.log(formula);
+            let speaker = ChatMessage.getSpeaker({ actor: this.actor });
+            await roll.evaluate({ async: true });
+            const html_roll = await renderTemplate(
+                'systems/Ilaris/templates/chat/probenchat_profan.html', 
+                {title: `${label}`}
+            );
+            // console.log(html_roll);
+            roll.toMessage({
+                speaker: speaker,
+                flavor: html_roll,
+            });
+            return 0
+        }
         let globalermod = data.abgeleitete.globalermod;
         let pw = 0;
         let label = 'Probe';
         let dice = '3d20dl1dh1';
         // TODO: simplify this: if rolltype in [...]
+        // similar to rolltype based logic in wuerfelwurf.. DRY?
         if (rolltype == 'profan_fertigkeit_diag') {
             wuerfelwurf(event, this.actor);
             return 0;

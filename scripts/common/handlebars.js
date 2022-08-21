@@ -97,6 +97,13 @@ function registerHandlebarsHelpers() {
         return (Object.keys(object).length > 0);
     });
 
+    Handlebars.registerHelper('translate_formula', function (formula) {
+        if (formula) {
+            return formula.replace("W", "d");
+        }
+        return null;
+    });
+
     Handlebars.registerHelper('get_label', function (eig) {
         // console.log(eig);
         return CONFIG.ILARIS.label[eig];
