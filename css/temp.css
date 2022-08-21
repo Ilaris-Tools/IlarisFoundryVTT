@@ -113,6 +113,19 @@
   background: rgba(255, 255, 255, 0.2);
 }
 
+
+
+.statblockreihe {
+  background-color: rgba(247, 68, 37, 0.13);
+  padding: 10px;
+  border-top: solid darkred 2px;
+}
+
+.statblockreihe input {
+  width: 40px;
+  background: rgba(250, 250, 250, 0.2);
+}
+
 /* Erste Gehversuche Michael*/
 
 /* --------------------------------------- */
