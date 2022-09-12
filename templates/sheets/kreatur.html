@@ -1,21 +1,12 @@
-<form class="{{cssClass}}">
-    <div style="display: flex; justify-content: space-between;">
-            <div>
-                {{#if false}}
-                <input style="font-size: 32px; border: None; color: rgb(83, 0, 0);" name="name" type="text" value="{{data.name}}" />
-                {{/if}}
-                <label style="font-size: 32px; border: None; color: rgb(83, 0, 0);">{{data.name}}</label>
-                <p/>
-                <label>{{data.data.kurzbeschreibung}}</label>
+<form class="{{cssClass}} kreatur-sheet">
+    <header class="sheet-header kreatur-header">
+        <div style="display: flex; justify-content: space-between;">
+            <div class="header-fields">
+                <h1 class="kreaturname"><input style="font-size: 32px; border: None; color: rgb(83, 0, 0);" name="data.data.name" type="text" value="{{actor.name}}" placeholder="Name"/></h1>
+                <textarea rows="2" name="data.data.kurzbeschreibung" type="text">{{data.data.kurzbeschreibung}}</textarea>
             </div>
-            <img
-                class="profile-img"
-                src="{{data.img}}"
-                data-edit="img"
-                title="{{data.name}}"
-                height="100"
-                width="100"
-            />
+            <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
+    </header>
     </div>
     {{#if data.edit}}
     <div class="sheet-body">
@@ -119,10 +110,13 @@
     {{else}}
     <div class="sheet-body">
         <div class="statblockreihe">
+            <label>Wunden: </label>
+            <input name="data.gesundheit.wunden" type="text" value="{{data.data.gesundheit.wunden}}" data-dtype="Number"/>
+            <label>Erschöpfung: </label>
+            <input name="data.gesundheit.erschoepfung" type="text" value="{{data.data.gesundheit.erschoepfung}}" data-dtype="Number"/>
+            <br/>
             <b>Zustand: </b>
             <label>{{data.data.gesundheit.display}}</label><br/>
-            <label>Erschöpfung: {{data.data.gesundheit.erschoepfung}}</label>, 
-            <label>Wunden: {{data.data.gesundheit.wunden}}</label>
         </div>
         {{#if data.data.eigenschaften}}
         <div class="statblockreihe">
@@ -143,15 +137,28 @@
                 data-formula="1d20+{{attribut.pw}}"
                 data-label="{{key}}"
                 ><i class="fas fa-dice-d20"></i
-                ></a>{{key}} {{attribut.pw}}, </label>
+                ></a>{{key}} </label>
+                <input name="data.attribute.{{key}}.pw" type="text" value="{{attribut.pw}}" data-dtype="Number"></input>
             {{/each}}
         </div>
         {{/if}}
         <div class="statblockreihe">
-            <b>Kampfwerte: </b>
-            {{#each data.data.kampfwerte as |obj key|}}
-                <label>{{get_label key}} {{obj}}, </label>
-            {{/each}}
+            <b>Kampfwerte: </b><br/>
+                {{#each data.data.kampfwerte as |obj key|}}
+                <div class="flexrow">
+                    {{#if (ifEq key "ws")}}
+                        <label>{{get_label key}}: </label>
+                        <input name="data.kampfwerte.{{key}}" value="{{obj}}" data-dtype="Number"/>/ 
+                        <input name="data.kampfwerte.ws_stern" value="{{data.kampfwerte.ws_stern}}" data-dtype="Number"/><br/>
+                    {{else}}
+                        {{#if (ifEq key "ws_stern")}}
+                        {{else}}
+                        <label>{{get_label key}}: </label>
+                        <input name="data.kampfwerte.{{key}}" value="{{obj}}" data-dtype="Number"/><br/>
+                        {{/if}}
+                    {{/if}}
+                </div>
+                {{/each}}
         </div>
         {{#if data.data.vorteile}}
         <div class="statblockreihe">

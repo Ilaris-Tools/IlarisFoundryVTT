@@ -113,7 +113,20 @@
   background: rgba(255, 255, 255, 0.2);
 }
 
+.kreatur-sheet input {
+  border: none;
+}
 
+.kreatur-header h1 {
+  font-family: var(--font-andada);
+  border: none;
+}
+
+.kreatur-header textarea {
+  border: none;
+  resize: none;
+  font-family: var(--font-crimson);
+}
 
 .statblockreihe {
   background-color: rgba(247, 68, 37, 0.13);
