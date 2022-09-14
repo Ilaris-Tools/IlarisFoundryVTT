@@ -40,8 +40,7 @@ export class IlarisActor extends Actor {
             this._initializeHeld(this.data);
         }
         else if (this.data.type == 'kreatur') {
-            console.log("Kreaturen Daten müssen nicht berechnet werden.. ");
-            console.log(this.data)
+            this._initializeKreatur(this.data);
         }
     }
 
@@ -113,6 +112,12 @@ export class IlarisActor extends Actor {
         // this._calculateUebernatuerlichProbendiag(data);
         console.log('**Ilaris** Nach Berechnungen');
         console.log(data);
+    }
+
+    _initializeKreatur(data) {
+        this._sortItems(data);
+        this._calculateWounds(data);
+        this._calculateFear(data)
     }
 
 
@@ -1270,12 +1275,8 @@ export class IlarisActor extends Actor {
         }
     }
     _sortItems(data) {
-        console.log('In sort_Items');
-        // console.log(data.items);
-        // for (let i of data.items) {
-        //     console.log(i);
-        // }
-        // console.log(data);
+        console.log('_sortItems');
+        // koennen  alle noetigen variablen nicht direkt ins objekt geschrieben werden
         let ruestungen = [];
         let nahkampfwaffen = [];
         let fernkampfwaffen = [];
@@ -1296,6 +1297,10 @@ export class IlarisActor extends Actor {
         let vorteil_karma = [];
         let vorteil_geweihtetraditionen = [];
         let eigenheiten = [];
+        let eigenschaften = [];  // kreatur only
+        let angriffe = [];  // kreatur only
+        let infos = [];  // kreatur only
+        let vorteile = [];  // TODO: gleich machen fuer helden und kreaturen
         let unsorted = [];
         let speicherplatz_list = ['tragend', 'mitführend'];
         let item_tragend = [];
@@ -1371,7 +1376,8 @@ export class IlarisActor extends Actor {
                 // console.log(i);
                 karma_talente.push(i);
             } else if (i.type == 'vorteil') {
-                if (i.data.data.gruppe == 0) vorteil_allgemein.push(i);
+                if (data.type == "kreatur") vorteile.push(i);
+                else if (i.data.data.gruppe == 0) vorteil_allgemein.push(i);
                 else if (i.data.data.gruppe == 1) vorteil_profan.push(i);
                 else if (i.data.data.gruppe == 2) vorteil_kampf.push(i);
                 else if (i.data.data.gruppe == 3) vorteil_kampfstil.push(i);
@@ -1379,8 +1385,16 @@ export class IlarisActor extends Actor {
                 else if (i.data.data.gruppe == 5) vorteil_zaubertraditionen.push(i);
                 else if (i.data.data.gruppe == 6) vorteil_karma.push(i);
                 else if (i.data.data.gruppe == 7) vorteil_geweihtetraditionen.push(i);
+                // else vorteil_allgemein.push(i);
             } else if (i.type == 'eigenheit') {
                 eigenheiten.push(i);
+            } else if (i.type == 'eigenschaft') { // kreatur only
+                console.log(i);
+                eigenschaften.push(i);
+            } else if (i.type == 'angriff') { // kreatur only
+                angriffe.push(i);
+            } else if (i.type == 'info') { // kreatur only
+                infos.push(i);
             } else unsorted.push(i);
         }
         ruestungen.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
@@ -1444,6 +1458,7 @@ export class IlarisActor extends Actor {
         vorteil_geweihtetraditionen.sort((a, b) =>
             a.name > b.name ? 1 : b.name > a.name ? -1 : 0,
         );
+        vorteile.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
         eigenheiten.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
 
         // profan_fertigkeiten = _.sortBy( profan_fertigkeiten, 'name' );
@@ -1513,6 +1528,10 @@ export class IlarisActor extends Actor {
         data.data.profan.fertigkeiten = profan_fertigkeiten;
         data.data.profan.talente_unsorted = profan_talente_unsorted;
         data.data.profan.freie = freie_fertigkeiten;
+        // vorteil singular? inkonsistent zu den anderen listen
+        // fuer kreaturen waere es wesentlich einfacher alles in einer liste zu sammeln
+        // und die kategorie als property zu behalten (kann ja auch nach gefiltert werden)
+        // in data.vorteile leg ich erstmal alle ab als zwischenloesung ;) 
         data.data.vorteil.allgemein = vorteil_allgemein;
         data.data.vorteil.profan = vorteil_profan;
         data.data.vorteil.kampf = vorteil_kampf;
@@ -1528,7 +1547,12 @@ export class IlarisActor extends Actor {
         data.data.misc.uebernatuerlich_fertigkeit_list =
             this.__getAlleUebernatuerlichenFertigkeiten(data);
         data.data.misc.speicherplatz_list = speicherplatz_list;
-
+        if (data.type == "kreatur") {
+            data.data.eigenschaften = eigenschaften;
+            data.data.angriffe = angriffe;
+            data.data.vorteile = vorteile;
+            data.data.infos = infos;
+        }
         // let actor = game.actors.get(data._id);
         // // console.log(actor);
         // // eigentlich async:

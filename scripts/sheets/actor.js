@@ -314,6 +314,12 @@ export class IlarisActorSheet extends ActorSheet {
         this.actor.update({ 'data.misc.selected_kampfstil': selected_kampfstil });
     }
 
+    _onDropItemCreate(event) {
+        console.log("Item gedroppt!");
+        console.log(event);
+        return super._onDropItemCreate(event);
+    }
+
     _onItemCreate(event) {
         console.log('ItemCreate');
         // console.log(event);
@@ -323,6 +329,10 @@ export class IlarisActorSheet extends ActorSheet {
         //Welche ist besser und warum?
         // console.log($(event.currentTarget).data("itemclass"));
         // console.log(event.currentTarget.dataset.itemclass);
+
+        // Das koennte extrem verkuerzt werden, wenn man einfach die namen (ggf. data) als
+        // dict schreibt und itemData = {name: names[type], data: datas[type], type: type} 
+        // statt den ganzen ifs benutzt.. 
         let itemData = {};
         if (itemclass == 'ruestung') {
             console.log('Neue Rüstung');
@@ -404,6 +414,13 @@ export class IlarisActorSheet extends ActorSheet {
                 type: 'gegenstand',
                 data: {},
             };
+        } else  {
+            console.log('Neues generisches Item');
+            itemData = {
+                name: itemclass.replace(itemclass[0], itemclass[0].toUpperCase()),
+                type: itemclass,
+                data: {},
+            };
         }
         // console.log(this.actor);
         // console.log(this.actor.data);
@@ -445,6 +462,8 @@ export class IlarisActorSheet extends ActorSheet {
         const itemID = event.currentTarget.dataset.itemid;
         // const item = this.actor.getOwnedItem(itemID);
         const item = this.actor.items.get(itemID);
+        console.log(itemID);
+        console.log(this.actor.items);
         item.sheet.render(true);
     }
 

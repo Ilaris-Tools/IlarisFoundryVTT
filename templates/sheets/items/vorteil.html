@@ -1,15 +1,9 @@
 <form class="{{cssClass}}">
     <div>
-        <div>
-            <header class="sheet-header">
-                <div class="header-fields">
-                    <h1 class="charname">
-                        <input name="name" type="text" value="{{data.name}}" />
-                    </h1>
-                </div>
-            </header>
-        </div>
+        <input class="titel-input" name="name" type="text" value="{{data.name}}" />
+        <hr>
         <div class="flexrow">
+            <label><b>Kategorie:</b></label>
             <select name="data.gruppe">
                 {{#select data.data.gruppe}} {{>
                 systems/Ilaris/templates/helper/select_vorteilsgruppe.html}} {{/select}}
@@ -26,7 +20,13 @@
         </div>
         <div>
             <label><b>Beschreibung:</b></label>
-            <textarea name="data.text">{{data.data.text}}</textarea>
+            <textarea rows="6" name="data.text">{{data.data.text}}</textarea>
         </div>
+        <hr>
+        <a class="item-delete" data-itemid="{{data._id}}">
+            <button class="clickable" type="button">
+                Vorteil Löschen <i class="fas fa-trash"></i>
+            </button>
+        </a>
     </div>
 </form>

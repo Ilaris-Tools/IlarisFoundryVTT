@@ -17,6 +17,9 @@ import { FreieFertigkeitSheet } from './sheets/items/freie_fertigkeit.js';
 import { VorteilSheet } from './sheets/items/vorteil.js';
 import { ManoeverSheet } from './sheets/items/manoever.js';
 import { EigenheitSheet } from './sheets/items/eigenheit.js';
+import { EigenschaftSheet } from './sheets/items/eigenschaft.js';
+import { InfoSheet } from './sheets/items/info.js';
+import { AngriffSheet } from './sheets/items/angriff.js';
 
 Hooks.once('init', () => {
     // CONFIG.debug.hooks = true;
@@ -52,6 +55,9 @@ Hooks.once('init', () => {
     Items.registerSheet('Ilaris', VorteilSheet, { types: ['vorteil'], makeDefault: true });
     Items.registerSheet('Ilaris', ManoeverSheet, { types: ['manoever'], makeDefault: true });
     Items.registerSheet('Ilaris', EigenheitSheet, { types: ['eigenheit'], makeDefault: true });
+    Items.registerSheet('Ilaris', EigenschaftSheet, { types: ['eigenschaft'], makeDefault: true });
+    Items.registerSheet('Ilaris', AngriffSheet, { types: ['angriff'], makeDefault: true });
+    Items.registerSheet('Ilaris', InfoSheet, { types: ['info'], makeDefault: true });
     // Items.registerSheet("Ilaris", VorteilSheet, {types: ["allgemein_vorteil", "profan_vorteil", "kampf_vorteil", "kampfstil", "magie_vorteil", "magie_tradition", "karma_vorteil", "karma_tradition"], makeDefault: true});
     initializeHandlebars();
     // game.sephrasto = new SephrastoImporter();

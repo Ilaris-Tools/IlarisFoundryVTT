@@ -117,10 +117,31 @@
   border: none;
 }
 
-.kreatur-header h1 {
+.ilaris .titel-input {
+  font-size: 32px; 
+  border: None; 
+  color: rgb(83, 0, 0);
   font-family: var(--font-andada);
+}
+
+input.titel-input {
+  font-size: 32px; 
+  color: rgb(83, 0, 0);
+  font-family: var(--font-andada);
+}
+
+.kreatur-sheet .plus-button {
+  color: rgb(54, 37, 37);
+  font-size: 18px;
+}
+
+.attributblock h2 {
+  font-family: var(--font-aniron);
+  font-size: 14px;
+  color: rgb(54, 37, 37); /*rgb(83, 0, 0);*/
   border: none;
 }
+
 
 .kreatur-header textarea {
   border: none;
