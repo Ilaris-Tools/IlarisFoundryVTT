@@ -5,7 +5,7 @@ export class NscSheet extends IlarisActorSheet {
         return mergeObject(super.defaultOptions, {
             // classes: ["ilaris", "sheet"],
             classes: ['ilaris'],
-            template: 'systems/Ilaris/templates/sheets/nsc.html',
+            template: 'systems/Ilaris/templates/sheets/helden.html',
             // width: 720,
             // height: 800,
             // resizable: false,
