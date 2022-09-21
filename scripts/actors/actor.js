@@ -40,7 +40,8 @@ export class IlarisActor extends Actor {
         // }
         // this.data.update(data);
         super.prepareData();
-        if (this.data.type === 'held' || data.type === 'nsc') {
+        console.log(this.data);
+        if (this.data.type === 'held' || this.data.type === 'nsc') {
             this._initializeHeld(this.data);
         }
         else if (this.data.type == 'kreatur') {
@@ -119,6 +120,8 @@ export class IlarisActor extends Actor {
     }
 
     _initializeKreatur(data) {
+        console.log('**Ilaris** Bevor Berechnungen');
+        console.log(data);
         this._sortItems(data);
         this._calculateWounds(data);
         this._calculateFear(data)
