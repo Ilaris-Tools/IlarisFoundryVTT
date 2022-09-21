@@ -42,10 +42,11 @@
                         <a
                             class="rollable icon-small"
                             data-rolltype="basic"
-                            data-formula="1d20+{{attribut.pw}}"
+                            data-formula="3d20dl1dh1+{{attribut.pw}}"
                             data-label="{{key}}"
                             ><i class="fas fa-dice-d20"></i
-                        ></a>
+                        >
+                    </a>
                     </div>
                 </div>
                 {{/each}}
@@ -72,9 +73,9 @@
                 {{#if (ifEq key "ws")}}
                     <label>{{get_label key}}: </label>
                     <input name="data.kampfwerte.{{key}}" value="{{obj}}" data-dtype="Number"/>/ 
-                    <input name="data.kampfwerte.ws_stern" value="{{data.kampfwerte.ws_stern}}" data-dtype="Number"/>, 
                 {{else}}
                     {{#if (ifEq key "ws_stern")}}
+                    <input name="data.kampfwerte.{{key}}" value="{{obj}}" data-dtype="Number"/>, 
                     {{else}}
                     <label>{{get_label key}}: </label>
                     <input name="data.kampfwerte.{{key}}" value="{{obj}}" data-dtype="Number"/>, 
@@ -134,65 +135,32 @@
             <b>Fertigkeiten</b><a class="item-create plus-button" data-itemclass="freiestalent">[+]</a><b>: </b><br/>
             {{#each data.data.freietalente as |freiestalent|}}
             <label>
-                <a
-                    class="rollable icon-small"
-                    data-rolltype="basic"
-                    data-formula="3d20dl1dh1+{{freiestalent.data.pw}}"
-                    data-label="{{freiestalent.name}}"
-                    ><i class="fas fa-dice-d20"></i
-                    >
-                </a>
-                <label><b><a class="item-edit" data-itemid="{{freiestalent.id}}">{{freiestalent.name}} </a></b></label> 
-            </label><br/>
+                <label>
+                    <a class="item-edit" data-itemid="{{freiestalent.id}}">{{freiestalent.name}} </a> ({{freiestalent.data.data.pw}} 
+                    <a
+                        class="rollable icon-small"
+                        data-rolltype="basic"
+                        data-formula="3d20dl1dh1+{{freiestalent.data.data.pw}}"
+                        data-label="{{freiestalent.name}}"
+                        ><i class="fas fa-dice-d20"></i
+                        >
+                    </a>), 
+                </label> 
+            </label>
             {{/each}}
 
         </div>
-        <!-- TODO: freiefertigkeiten instead of fert and tal -->
-        {{#if data.data.fertigkeiten}}
-        <div class="statblockreihe">
-            <b>Übernatürlich: </b><br/>
-            {{#if data.data.asp}}
-            <label>Astralpunkte: {{data.data.asp}}</label><br/>
-            {{/if}}
-            {{#if data.data.gup}}
-            <label>Gunstpunkte: {{data.data.gup}}, </label><br/>
-            {{/if}}
-            {{#if data.data.kap}}
-            <label>Karmalpunkte: {{data.data.kap}}, </label><br/>
-            {{/if}}
-            {{#each data.data.fertigkeiten as |fertigkeit|}}
-            <label>
-            <a
-                class="rollable icon-small"
-                data-rolltype="basic"
-                data-formula="3d20dl1dh1+{{fertigkeit.wert}}"
-                data-label="{{fertigkeit.name}}"
-                ><i class="fas fa-dice-d20"></i
-                ></a>
-                {{fertigkeit.name}} ({{fertigkeit.wert}}): 
-                {{#each fertigkeit.talente as |talent|}}
-                    {{talent.name}}: {{talent.wert}}
-                {{/each}}
-            </label><br/>
+        
+        
+        <div class="infos statblockreihe">
+            <b>Infos</b><a class="item-create plus-button" data-itemclass="info">[+]</a><b>: </b><br/>
+            {{#each data.data.infos as |info|}}
+            <div class="hangingindent">
+                <b><a class="item-edit" data-itemid="{{info.id}}">{{info.name}}</a>:</b>
+                {{info.data.data.text}}
+            </div>
             {{/each}}
+
         </div>
-        {{/if}}
-        {{#if data.data.talente }}
-        <div class="statblockreihe">
-            <b>Talente: </b><br/>
-            {{#each data.data.talente as |talent|}}
-            <label>
-            <a
-                class="rollable icon-small"
-                data-rolltype="basic"
-                data-formula="3d20dl1dh1+{{talent.wert}}"
-                data-label="{{talent.name}}"
-                ><i class="fas fa-dice-d20"></i
-                ></a>
-                {{talent.name}}: {{talent.wert}}, 
-            </label>
-            {{/each}}
-        </div>
-        {{/if}}
     </div>
 </form>

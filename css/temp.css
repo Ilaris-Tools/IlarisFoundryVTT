@@ -182,3 +182,9 @@ input.titel-input {
   height: calc(100% - 24px);
   resize: none;
 }
+
+
+.hangingindent {
+  padding-left: 22px ;
+  text-indent: -22px ;
+}

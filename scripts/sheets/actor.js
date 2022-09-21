@@ -321,11 +321,6 @@ export class IlarisActorSheet extends ActorSheet {
         this.actor.update({ 'data.misc.selected_kampfstil': selected_kampfstil });
     }
 
-    _onDropItemCreate(event) {
-        console.log("Item gedroppt!");
-        console.log(event);
-        return super._onDropItemCreate(event);
-    }
 
     _onItemCreate(event) {
         console.log('ItemCreate');
