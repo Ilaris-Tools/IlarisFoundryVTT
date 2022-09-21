@@ -1,0 +1,17 @@
+<form class="{{cssClass}}">
+    <div class="flexrow">
+        <div>
+        <label>Freies Talent:</label>
+        <input name="name" type="text" value="{{data.name}}" />
+    </div><div>
+        <label>Probenwert:</label>
+        <input type="number" name="data.pw" value="{{data.data.pw}}"/>
+    </div>
+    </div>
+    <hr>
+    <a class="item-delete" data-itemid="{{data._id}}">
+        <button class="clickable" type="button">
+            Löschen <i class="fas fa-trash"></i>
+        </button>
+    </a>
+</form>

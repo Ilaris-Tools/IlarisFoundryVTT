@@ -267,6 +267,13 @@ export class IlarisActorSheet extends ActorSheet {
             this.actor.update({ 'data.geld.heller': heller });
             this.actor.update({ 'data.geld.silbertaler': silbertaler });
             this.actor.update({ 'data.geld.dukaten': dukaten });
+        } else if (clicktype == "addvorteilinfo"){
+            game.packs.get("Ilaris.vorteile").render(true)
+            Dialog.prompt({
+                content: "Du kannst Vorteile direkt aus den Kompendium Packs auf den Statblock ziehen. Für eigene Vor/Nachteile zu erstellen, die nicht im Regelwerk enthalten sind, benutze die Eigenschaften.",
+                callback: () => {
+                },
+              })
         }
     }
 
@@ -416,11 +423,13 @@ export class IlarisActorSheet extends ActorSheet {
             };
         } else  {
             console.log('Neues generisches Item');
+            console.log(itemclass);
             itemData = {
                 name: itemclass.replace(itemclass[0], itemclass[0].toUpperCase()),
                 type: itemclass,
                 data: {},
             };
+            console.log(itemData);
         }
         // console.log(this.actor);
         // console.log(this.actor.data);
@@ -462,8 +471,9 @@ export class IlarisActorSheet extends ActorSheet {
         const itemID = event.currentTarget.dataset.itemid;
         // const item = this.actor.getOwnedItem(itemID);
         const item = this.actor.items.get(itemID);
-        console.log(itemID);
-        console.log(this.actor.items);
+        // console.log(itemID);
+        // console.log(this.actor.items);
+        // TODO: update actor from here? always? only for kreatur? NO initialize wird schon getriggert
         item.sheet.render(true);
     }
 

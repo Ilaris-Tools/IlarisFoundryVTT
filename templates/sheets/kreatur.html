@@ -32,7 +32,7 @@
         </div>
 
         <div class="attribute statblockreihe">
-            <b>Attribute </b><a class="attribut-create">[+]</a><b>: </b>
+            <b>Attribute <!--</b><a class="attribut-create">[+]</a><b>-->: </b>
             <div class="flexrow">
                 {{#each data.data.attribute as |attribut key|}}
                 <div class="attributblock flex1 flex-group-center">
@@ -60,14 +60,14 @@
         </div>
         
         <div class="vorteile statblockreihe">
-            <b>Vorteile: </b>
+            <b>Vorteile </b><a class="clickable plus-button" data-clicktype="addvorteilinfo">[+]</a><b>: </b>
                 {{#each data.data.vorteile as |vorteil|}}
                     <a class="item-edit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
                 {{/each}}
         </div>
 
         <div class="kampfwerte statblockreihe">
-            <b>Kampfwerte: </b>
+            <b>Kampfwerte: </b><br/>
             {{#each data.data.kampfwerte as |obj key|}}
                 {{#if (ifEq key "ws")}}
                     <label>{{get_label key}}: </label>
@@ -84,51 +84,70 @@
         </div>
 
         <div class="angriffe statblockreihe">
-            <b>Angriffe: </b>
-            {{#each data.data.angriffe as |angriff|}}
+            <b>Angriffe </b><a class="item-create plus-button" data-itemclass="angriff">[+]</a><b>: </b>
+            {{#each data.data.angriffe as |angriff key|}}
             <div class="flexrow">
-            <label><b>{{angriff.name}}</b></label>
-            {{#if (waffe_ist_fernkampf angriff) }}
-            <label>LZ: {{angriff.data.lz}}</label>
-            {{/if}}
-            <label>RW: {{angriff.data.rw}}</label>
-            <label>
+                        
+                <label><b><a class="item-edit" data-itemid="{{angriff.id}}">{{angriff.name}} </a></b></label>
+                {{#if (waffe_ist_fernkampf angriff) }}
+                <label>
+                    LZ: {{angriff.data.data.lz}}
+                </label>
+                {{/if}}
+                <label>RW: {{angriff.data.data.rw}}</label>
+                <label>
+                    <a
+                    class="rollable icon-small"
+                    data-rolltype="basic"
+                    data-formula="1d20+{{angriff.data.data.at}}"
+                    data-label="Attacke ({{angriff.name}})"
+                    ><i class="fas fa-dice-d20"></i
+                    ></a> 
+                    AT: {{angriff.data.data.at}}
+                </label>
+                <label>
                 <a
-                class="rollable icon-small"
-                data-rolltype="basic"
-                data-formula="1d20+{{angriff.data.at}}"
-                data-label="Attacke ({{angriff.name}})"
-                ><i class="fas fa-dice-d20"></i
-                ></a> 
-                AT: {{angriff.at}}
-            </label>
-            <label>
-            <a
-                class="rollable icon-small"
-                data-rolltype="basic"
-                data-formula="1d20+{{angriff.data.vt}}"
-                data-label="Verteidigung ({{angriff.name}})"
-                ><i class="fas fa-dice-d20"></i
-                ></a> 
-            VT: {{angriff.data.vt}}</label>
-            <label>
-            <a
-                class="rollable icon-small"
-                data-rolltype="basic"
-                data-formula="{{translate_formula angriff.data.tp}}"
-                data-label="Schaden ({{angriff.name}})"
-                ><i class="fas fa-dice-d20"></i
-                ></a> 
-                TP: {{angriff.data.tp}}</label>
-            <label>HT: {{angriff.data.haerte}}</label>
+                    class="rollable icon-small"
+                    data-rolltype="basic"
+                    data-formula="1d20+{{angriff.data.data.vt}}"
+                    data-label="Verteidigung ({{angriff.name}})"
+                    ><i class="fas fa-dice-d20"></i
+                    ></a> 
+                VT: {{angriff.data.data.vt}}</label>
+                <label>
+                <a
+                    class="rollable icon-small"
+                    data-rolltype="basic"
+                    data-formula="{{translate_formula angriff.data.data.tp}}"
+                    data-label="Schaden ({{angriff.name}})"
+                    ><i class="fas fa-dice-d20"></i
+                    ></a> 
+                    TP: {{angriff.data.data.tp}}</label>
+                <label>HT: {{angriff.data.data.haerte}}</label>
             </div>
-            <div><label>{{angriff.data.eigenschaften}}</label></div>
+            <div><label>{{angriff.data.data.eigenschaften}}</label></div>
             {{/each}}
         </div>
 
 
+        <div class="freietalente statblockreihe">
+            <b>Fertigkeiten</b><a class="item-create plus-button" data-itemclass="freiestalent">[+]</a><b>: </b><br/>
+            {{#each data.data.freietalente as |freiestalent|}}
+            <label>
+                <a
+                    class="rollable icon-small"
+                    data-rolltype="basic"
+                    data-formula="3d20dl1dh1+{{freiestalent.data.pw}}"
+                    data-label="{{freiestalent.name}}"
+                    ><i class="fas fa-dice-d20"></i
+                    >
+                </a>
+                <label><b><a class="item-edit" data-itemid="{{freiestalent.id}}">{{freiestalent.name}} </a></b></label> 
+            </label><br/>
+            {{/each}}
 
-
+        </div>
+        <!-- TODO: freiefertigkeiten instead of fert and tal -->
         {{#if data.data.fertigkeiten}}
         <div class="statblockreihe">
             <b>Übernatürlich: </b><br/>

@@ -9,6 +9,30 @@
                 </div>
             </header>
         </div>
-        <textarea name="data.text">{{data.data.text}}</textarea>
+        <div class="flexrow">
+            <label>Härte: 
+                <input type="number" name="data.haerte" value="{{data.data.haerte}}" />
+            </label>
+            <label>Ladezeit: 
+                <input type="number" name="data.lz" value="{{data.data.lz}}" />
+            </label>
+            <label>Reichweite: 
+                <input type="number" name="data.rw" value="{{data.data.rw}}" />
+            </label>
+            <label>Attacke: 
+                <input type="number" name="data.at" value="{{data.data.at}}" />
+            </label>
+            <label>Verteidigung: 
+                <input type="number" name="data.vt" value="{{data.data.vt}}" />
+            </label>
+            <label>Trefferpunkte: 
+                <input type="text" name="data.tp" value="{{data.data.tp}}" />
+            </label>
+        </div>
+        <div>
+            <!-- <label>Waffeneigenschaften: 
+                <input type="text" name="data.eigenschaften" value="{{data.data.eigenschaften}}" />{
+            </label> -->
+        </div>
     </div>
 </form>

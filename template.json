@@ -141,18 +141,25 @@
       "templates": [
         "gesundheit",
         "initiative",
-        "furcht"
+        "furcht",
+        "attribute"
       ],
       "edit": false,
       "kreaturentyp": "humanoid",
       "kurzbeschreibung": "",
       "attribute": {},
-      "kampfwerte": {},
+      "kampfwerte": {
+        "ws": 0,
+        "ws_stern": 0,
+        "ini": 0,
+        "gs": 1,
+        "koloss": 0
+      },
       "talente": [],
       "asp": 0,
       "kap": 0,
       "gup": 0,
-      "fertigkeiten": [],
+      "freietalente": [],
       "kampfunfaehig": "",
       "text": "",
       "abgeleitete": {

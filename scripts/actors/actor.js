@@ -14,7 +14,7 @@ export class IlarisActor extends Actor {
         });
         if (data.type === 'held' || data.type === 'nsc') {
             // TODO CR: Wegen Bild fragen
-            data.img = 'systems/Ilaris/assets/images/token/kreaturentypen/humanoid.jpg';
+            data.img = 'systems/Ilaris/assets/images/token/kreaturentypen/humanoid.png';
             data.token.vision = true;
             data.token.actorLink = true;
             data.token.brightSight = 15;
@@ -23,6 +23,8 @@ export class IlarisActor extends Actor {
         if (data.type === 'nsc') {
             data.token.vision = false;
             data.token.disposition = CONST.TOKEN_DISPOSITIONS.NEUTRAL;
+        } else if (data.type == 'kreatur') {
+            data.img = 'systems/Ilaris/assets/images/token/kreaturentypen/tier.png';
         }
         this.data.update(data);
         await super._preCreate(data, options, user);
@@ -1308,6 +1310,7 @@ export class IlarisActor extends Actor {
         let angriffe = [];  // kreatur only
         let infos = [];  // kreatur only
         let vorteile = [];  // TODO: gleich machen fuer helden und kreaturen
+        let freietalente = [];
         let unsorted = [];
         let speicherplatz_list = ['tragend', 'mitführend'];
         let item_tragend = [];
@@ -1402,6 +1405,8 @@ export class IlarisActor extends Actor {
                 angriffe.push(i);
             } else if (i.type == 'info') { // kreatur only
                 infos.push(i);
+            } else if (i.type == 'freiestalent') {
+                freietalente.push(i);
             } else unsorted.push(i);
         }
         ruestungen.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
@@ -1559,6 +1564,7 @@ export class IlarisActor extends Actor {
             data.data.angriffe = angriffe;
             data.data.vorteile = vorteile;
             data.data.infos = infos;
+            data.data.freietalente = freietalente;
         }
         // let actor = game.actors.get(data._id);
         // // console.log(actor);
