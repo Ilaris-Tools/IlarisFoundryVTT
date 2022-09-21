@@ -12,13 +12,17 @@ export class IlarisActor extends Actor {
             'token.disposition': CONST.TOKEN_DISPOSITIONS.FRIENDLY,
             'token.name': data.name,
         });
-        if (data.type === 'held') {
+        if (data.type === 'held' || data.type === 'nsc') {
             // TODO CR: Wegen Bild fragen
             data.img = 'systems/Ilaris/assets/images/token/kreaturentypen/humanoid.jpg';
             data.token.vision = true;
             data.token.actorLink = true;
             data.token.brightSight = 15;
             data.token.dimSight = 5;
+        }
+        if (data.type === 'nsc') {
+            data.token.vision = false;
+            data.token.disposition = CONST.TOKEN_DISPOSITIONS.NEUTRAL;
         }
         this.data.update(data);
         await super._preCreate(data, options, user);
@@ -36,7 +40,7 @@ export class IlarisActor extends Actor {
         // }
         // this.data.update(data);
         super.prepareData();
-        if (this.data.type === 'held') {
+        if (this.data.type === 'held' || data.type === 'nsc') {
             this._initializeHeld(this.data);
         }
         else if (this.data.type == 'kreatur') {

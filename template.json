@@ -2,7 +2,8 @@
   "Actor": {
     "types": [
       "held",
-      "kreatur"
+      "kreatur",
+      "nsc"
     ],
     "templates": {
       "gesundheit": {
@@ -120,6 +121,21 @@
       ],
       "getragen": 0,
       "notes": "Hallo"
+    },
+    "nsc": {
+      "templates": [
+        "gesundheit",
+        "attribute",
+        "fertigkeiten",
+        "abgeleitete",
+        "schips",
+        "initiative",
+        "furcht",
+        "modifikatoren",
+        "geld"
+      ],
+      "getragen": 0,
+      "notes": "Ich bin ein NSC"
     },
     "kreatur": {
       "templates": [
