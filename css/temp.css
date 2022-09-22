@@ -113,7 +113,41 @@
   background: rgba(255, 255, 255, 0.2);
 }
 
+.kreatur-sheet input {
+  border: none;
+}
 
+.ilaris .titel-input {
+  font-size: 32px; 
+  border: None; 
+  color: rgb(83, 0, 0);
+  font-family: var(--font-andada);
+}
+
+input.titel-input {
+  font-size: 32px; 
+  color: rgb(83, 0, 0);
+  font-family: var(--font-andada);
+}
+
+.kreatur-sheet .plus-button {
+  color: rgb(54, 37, 37);
+  font-size: 18px;
+}
+
+.attributblock h2 {
+  font-family: var(--font-aniron);
+  font-size: 14px;
+  color: rgb(54, 37, 37); /*rgb(83, 0, 0);*/
+  border: none;
+}
+
+
+.kreatur-header textarea {
+  border: none;
+  resize: none;
+  font-family: var(--font-crimson);
+}
 
 .statblockreihe {
   background-color: rgba(247, 68, 37, 0.13);
@@ -147,4 +181,10 @@
 .ilaris .form-group.description textarea {
   height: calc(100% - 24px);
   resize: none;
+}
+
+
+.hangingindent {
+  padding-left: 22px ;
+  text-indent: -22px ;
 }

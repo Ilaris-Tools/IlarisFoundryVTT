@@ -1,0 +1,14 @@
+<form class="{{cssClass}}">
+    <div>
+        <input class="titel-input" name="name" type="text" value="{{data.name}}" />
+        <hr>
+        <label>Beschreibung: </label>
+        <textarea rows="4" name="data.text">{{data.data.text}}</textarea>
+        <hr>
+        <a class="item-delete" data-itemid="{{data._id}}">
+            <button class="clickable" type="button">
+                Eigenschaft Löschen <i class="fas fa-trash"></i>
+            </button>
+        </a>
+    </div>
+</form>

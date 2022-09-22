@@ -11,6 +11,21 @@ export class IlarisItemSheet extends ItemSheet {
         // console.log(data.actor);
         return data;
     }
+
+    activateListeners(html) {
+        super.activateListeners(html);
+        html.find('.item-delete').click((ev) => this._onItemDelete(ev));
+    }
+
+    _onItemDelete(event) {
+        console.log('ItemDelete');
+        console.log(event);
+        console.log(this.actor);
+        const itemID = event.currentTarget.dataset.itemid;
+        console.log(itemID);
+        this.actor.deleteEmbeddedDocuments('Item', [itemID]);
+    }
+
     // activateListeners(html) {
     //     super.activateListeners(html);
     //     html.find("input").focusin(ev => this._onFocusIn(ev));

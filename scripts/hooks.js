@@ -3,6 +3,7 @@ import { IlarisActor } from './actors/actor.js';
 import { initializeHandlebars } from './common/handlebars.js';
 // import { IlarisActorSheet } from "./sheets/actor.js";
 import { HeldenSheet } from './sheets/helden.js';
+import { NscSheet } from './sheets/nsc.js';
 import { KreaturSheet } from './sheets/kreatur.js';
 import { RuestungSheet } from './sheets/items/ruestung.js';
 import { UebernatuerlichFertigkeitSheet } from './sheets/items/uebernatuerlich_fertigkeit.js';
@@ -17,23 +18,29 @@ import { FreieFertigkeitSheet } from './sheets/items/freie_fertigkeit.js';
 import { VorteilSheet } from './sheets/items/vorteil.js';
 import { ManoeverSheet } from './sheets/items/manoever.js';
 import { EigenheitSheet } from './sheets/items/eigenheit.js';
+import { EigenschaftSheet } from './sheets/items/eigenschaft.js';
+import { InfoSheet } from './sheets/items/info.js';
+import { AngriffSheet } from './sheets/items/angriff.js';
+import { FreiesTalentSheet } from './sheets/items/freies_talent.js';
 
 Hooks.once('init', () => {
     // CONFIG.debug.hooks = true;
+
+    // ACTORS
     CONFIG.Actor.documentClass = IlarisActor;
     Actors.unregisterSheet('core', ActorSheet);
     Actors.registerSheet('Ilaris', HeldenSheet, { types: ['held'], makeDefault: true });
+    Actors.registerSheet('Ilaris', NscSheet, { types: ['nsc'], makeDefault: true });
     Actors.registerSheet('Ilaris', KreaturSheet, { types: ['kreatur'], makeDefault: true });
+
+    // ITEMS
     Items.unregisterSheet('core', ItemSheet);
     Items.registerSheet('Ilaris', RuestungSheet, { types: ['ruestung'], makeDefault: true });
     Items.registerSheet('Ilaris', NahkampfwaffeSheet, {
         types: ['nahkampfwaffe'],
         makeDefault: true,
     });
-    Items.registerSheet('Ilaris', FernkampfwaffeSheet, {
-        types: ['fernkampfwaffe'],
-        makeDefault: true,
-    });
+    Items.registerSheet('Ilaris', FernkampfwaffeSheet, { types: ['fernkampfwaffe'], makeDefault: true });
     Items.registerSheet('Ilaris', GegenstandSheet, { types: ['gegenstand'], makeDefault: true });
     Items.registerSheet('Ilaris', FertigkeitSheet, { types: ['fertigkeit'], makeDefault: true });
     Items.registerSheet('Ilaris', TalentSheet, { types: ['talent'], makeDefault: true });
@@ -52,6 +59,10 @@ Hooks.once('init', () => {
     Items.registerSheet('Ilaris', VorteilSheet, { types: ['vorteil'], makeDefault: true });
     Items.registerSheet('Ilaris', ManoeverSheet, { types: ['manoever'], makeDefault: true });
     Items.registerSheet('Ilaris', EigenheitSheet, { types: ['eigenheit'], makeDefault: true });
+    Items.registerSheet('Ilaris', EigenschaftSheet, { types: ['eigenschaft'], makeDefault: true });
+    Items.registerSheet('Ilaris', AngriffSheet, { types: ['angriff'], makeDefault: true });
+    Items.registerSheet('Ilaris', InfoSheet, { types: ['info'], makeDefault: true });
+    Items.registerSheet('Ilaris', FreiesTalentSheet, { types: ['freiestalent'], makeDefault: true });
     // Items.registerSheet("Ilaris", VorteilSheet, {types: ["allgemein_vorteil", "profan_vorteil", "kampf_vorteil", "kampfstil", "magie_vorteil", "magie_tradition", "karma_vorteil", "karma_tradition"], makeDefault: true});
     initializeHandlebars();
     // game.sephrasto = new SephrastoImporter();

@@ -1,6 +1,10 @@
 {
   "Actor": {
-    "types": ["held", "kreatur"],
+    "types": [
+      "held",
+      "kreatur",
+      "nsc"
+    ],
     "templates": {
       "gesundheit": {
         "gesundheit": {
@@ -118,27 +122,44 @@
       "getragen": 0,
       "notes": "Hallo"
     },
+    "nsc": {
+      "templates": [
+        "gesundheit",
+        "attribute",
+        "fertigkeiten",
+        "abgeleitete",
+        "schips",
+        "initiative",
+        "furcht",
+        "modifikatoren",
+        "geld"
+      ],
+      "getragen": 0,
+      "notes": "Ich bin ein NSC"
+    },
     "kreatur": {
       "templates": [
-        "gesundheit", 
-        "initiative", 
-        "furcht"
+        "gesundheit",
+        "initiative",
+        "furcht",
+        "attribute"
       ],
       "edit": false,
       "kreaturentyp": "humanoid",
       "kurzbeschreibung": "",
       "attribute": {},
-      "kampfwerte": {},
-      "eigenschaften": [],
-      "vorteile": [],
+      "kampfwerte": {
+        "ws": 0,
+        "ws_stern": 0,
+        "ini": 0,
+        "gs": 1,
+        "koloss": 0
+      },
       "talente": [],
-      "angriffe": [],
       "asp": 0,
       "kap": 0,
       "gup": 0,
-      "fertigkeiten": [],
-      "infos": [],
-      "waffen": [],
+      "freietalente": [],
       "kampfunfaehig": "",
       "text": "",
       "abgeleitete": {
@@ -160,7 +181,11 @@
       "vorteil",
       "manoever",
       "eigenheit",
-      "gegenstand"
+      "gegenstand",
+      "eigenschaft",
+      "angriff",
+      "info",
+      "freiestalent"
     ],
     "templates": {
       "gesundheit": {
@@ -237,7 +262,11 @@
       }
     },
     "nahkampfwaffe": {
-      "templates": ["gesundheit", "waffe", "gegenstand"],
+      "templates": [
+        "gesundheit",
+        "waffe",
+        "gegenstand"
+      ],
       "wm_at": 0,
       "wm_vt": 0,
       "eigenschaften": {
@@ -259,7 +288,11 @@
       }
     },
     "fernkampfwaffe": {
-      "templates": ["gesundheit", "waffe", "gegenstand"],
+      "templates": [
+        "gesundheit",
+        "waffe",
+        "gegenstand"
+      ],
       "wm_fk": 0,
       "lz": 0,
       "eigenschaften": {
@@ -278,7 +311,10 @@
       }
     },
     "ruestung": {
-      "templates": ["gesundheit", "gegenstand"],
+      "templates": [
+        "gesundheit",
+        "gegenstand"
+      ],
       "rs": 0,
       "be": 0,
       "rs_beine": 0,
@@ -291,11 +327,16 @@
       "text": ""
     },
     "gegenstand": {
-      "templates": ["gesundheit", "gegenstand"],
+      "templates": [
+        "gesundheit",
+        "gegenstand"
+      ],
       "text": ""
     },
     "fertigkeit": {
-      "templates": ["fertigkeit"],
+      "templates": [
+        "fertigkeit"
+      ],
       "pwt": 0
     },
     "talent": {
@@ -303,14 +344,20 @@
       "fertigkeit": ""
     },
     "uebernatuerliche_fertigkeit": {
-      "templates": ["fertigkeit"],
+      "templates": [
+        "fertigkeit"
+      ],
       "voraussetzung": ""
     },
     "liturgie": {
-      "templates": ["uebernatuerlich_talent"]
+      "templates": [
+        "uebernatuerlich_talent"
+      ]
     },
     "zauber": {
-      "templates": ["uebernatuerlich_talent"]
+      "templates": [
+        "uebernatuerlich_talent"
+      ]
     },
     "freie_fertigkeit": {
       "stufe": 1,
@@ -331,6 +378,27 @@
     },
     "eigenheit": {
       "text": ""
+    },
+    "eigenschaft": {
+      "text": ""
+    },
+    "angriff": {
+      "eigenschaften": [],
+      "tp": "",
+      "haerte": 0,
+      "rw": 0,
+      "lz": 0,
+      "wm": 0,
+      "typ": "Nah",
+      "at": 0,
+      "vt": 0
+    },
+    "info": {
+      "text": ""
+    },
+    "freiestalent": {
+      "text": "",
+      "pw": ""
     }
   }
 }

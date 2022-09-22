@@ -113,6 +113,10 @@ function registerHandlebarsHelpers() {
         return list.indexOf(word) > -1;
     });
 
+    Handlebars.registerHelper('ifEq', function(arg1, arg2) {
+        return (arg1 == arg2);
+    });
+
     // Handlebars.registerHelper("get_kampfstile", function(data) {
     //     let kampfstile = ["ohne"];
     //     console.log(data);

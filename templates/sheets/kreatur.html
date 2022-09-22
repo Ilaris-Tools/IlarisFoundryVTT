@@ -1,256 +1,166 @@
-<form class="{{cssClass}}">
-    <div style="display: flex; justify-content: space-between;">
-            <div>
-                {{#if false}}
-                <input style="font-size: 32px; border: None; color: rgb(83, 0, 0);" name="name" type="text" value="{{data.name}}" />
-                {{/if}}
-                <label style="font-size: 32px; border: None; color: rgb(83, 0, 0);">{{data.name}}</label>
-                <p/>
-                <label>{{data.data.kurzbeschreibung}}</label>
+<form class="{{cssClass}} kreatur-sheet">
+    <header class="sheet-header kreatur-header">
+        <div style="display: flex; justify-content: space-between;">
+            <div class="header-fields">
+                <input class="titel-input" style="" name="name" type="text" value="{{actor.name}}" placeholder="Name"/>
+                <textarea rows="2" name="data.kurzbeschreibung" type="text">{{data.data.kurzbeschreibung}}</textarea>
             </div>
-            <img
-                class="profile-img"
-                src="{{data.img}}"
-                data-edit="img"
-                title="{{data.name}}"
-                height="100"
-                width="100"
-            />
-    </div>
-    {{#if data.edit}}
+            <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
+    </header>
+
     <div class="sheet-body">
-        <div class="statblockreihe">
-            <b>Zustand: </b>
-            <label>{{data.data.gesundheit.display}}</label>, 
-            <label>Erschöpfung: </label>
-            <input
-                class="hp-update"
-                name="data.gesundheit.erschoepfung"
-                value="{{data.data.gesundheit.erschoepfung}}"
-                type="text"
-                data-dtype="Number"
-            />, 
-            <label>Wunden: </label>
-            <input
-                class="hp-update"
-                name="data.gesundheit.wunden"
-                value="{{data.data.gesundheit.wunden}}"
-                type="text"
-                data-dtype="Number"
-            /><br/>
-        </div>
-        <div class="statblockreihe">
-            <b>Eigenschaften: </b>
-                {{#each data.data.eigenschaften as |eigenschaft|}}
-                <label>{{eigenschaft.name}}, </label>
-                {{/each}}
-        </div>
-        <div class="statblockreihe">
-            <b>Attribute: </b>
-            {{#each data.data.attribute as |attribut key|}}
-                <label>{{key}}</label>
-                <input
-                    name="data.attribute.{{key}}.pw"
-                    value="{{attribut.pw}}"
-                    type="text"
-                    data-dtype="Number"
-                />, 
-            {{/each}}
-        </div>
-        <div class="statblockreihe">
-            <b>Kampfwerte: </b>
-            {{#each data.data.kampfwerte as |obj key|}}
-                <label>{{get_label key}}</label>
-                <input
-                    name="data.kampfwerte.{{key}}"
-                    value="{{obj}}"
-                    type="text"
-                    data-dtype="Number"
-                />, 
-            {{/each}}
-        </div>
-        <div class="statblockreihe">
-            <b>Vorteile: </b>
-                {{#each data.data.vorteile as |vorteil|}}
-                <label>{{vorteil.name}}</label>, 
-                {{/each}}
-        </div>
-        {{#if data.data.fertigkeiten}}
-        <div class="statblockreihe">
-            <b>Übernatürlich: </b><br/>
-            {{#if data.data.asp}}
-            <label>Astralpunkte: </label>
-            <input
-                name="data.asp"
-                value="{{data.data.asp}}"
-                type="text"
-                data-dtype="Number"
-            /><br/>
-            {{/if}}
-            {{#if data.data.gup}}
-            <label>Gunstpunkte: </label>
-            <input
-                name="data.gup"
-                value="{{data.data.gup}}"
-                type="text"
-                data-dtype="Number"
-            /><br/>
-            {{/if}}
-            {{#if data.data.kap}}
-            <label>Karmalpunkte: </label>
-            <input
-                name="data.kap"
-                value="{{data.kap}}"
-                type="text"
-                data-dtype="Number"
-            /><br/>
-            {{/if}}
-            {{#each data.data.fertigkeiten as |fertigkeit|}}
-            <label>
-                {{fertigkeit.name}} ({{fertigkeit.wert}}): 
-                {{#each fertigkeit.talente as |talent|}}
-                    {{talent}}, 
-                {{/each}}
-            </label><br/>
-            {{/each}}
-        </div>
-        {{/if}}
-    </div>
-    {{else}}
-    <div class="sheet-body">
-        <div class="statblockreihe">
-            <b>Zustand: </b>
-            <label>{{data.data.gesundheit.display}}</label><br/>
-            <label>Erschöpfung: {{data.data.gesundheit.erschoepfung}}</label>, 
-            <label>Wunden: {{data.data.gesundheit.wunden}}</label>
-        </div>
-        {{#if data.data.eigenschaften}}
-        <div class="statblockreihe">
-            <b>Eigenschaften: </b>
-                {{#each data.data.eigenschaften as |eigenschaft|}}
-                <label>{{eigenschaft.name}}, </label>
-                {{/each}}
-        </div>
-        {{/if}}
-        {{#if (ist_nicht_leer data.data.attribute)}}
-        <div class="statblockreihe">
-            <b>Attribute: </b>
-            {{#each data.data.attribute as |attribut key|}}
-                <label>
-            <a
-                class="rollable icon-small"
-                data-rolltype="basic"
-                data-formula="1d20+{{attribut.pw}}"
-                data-label="{{key}}"
-                ><i class="fas fa-dice-d20"></i
-                ></a>{{key}} {{attribut.pw}}, </label>
-            {{/each}}
-        </div>
-        {{/if}}
-        <div class="statblockreihe">
-            <b>Kampfwerte: </b>
-            {{#each data.data.kampfwerte as |obj key|}}
-                <label>{{get_label key}} {{obj}}, </label>
-            {{/each}}
-        </div>
-        {{#if data.data.vorteile}}
-        <div class="statblockreihe">
-            <b>Vorteile: </b>
-                {{#each data.data.vorteile as |vorteil|}}
-                <label>{{vorteil.name}}, </label>
-                {{/each}}
-        </div>
-        {{/if}}
-        {{#if data.data.waffen}}
-        <div class="statblockreihe">
-            <b>Waffen: </b><br/>
-            {{#each data.data.waffen as |waffe|}}
+
+        <div class="status statblockreihe">
             <div class="flexrow">
-            <label><b>{{waffe.name}}</b></label>
-            {{#if (waffe_ist_fernkampf waffe) }}
-            <label>LZ: {{waffe.lz}}</label>
-            {{/if}}
-            <label>RW: {{waffe.rw}}</label>
-            <label>
-                <a
-                class="rollable icon-small"
-                data-rolltype="basic"
-                data-formula="1d20+{{waffe.at}}"
-                data-label="Attacke ({{waffe.name}})"
-                ><i class="fas fa-dice-d20"></i
-                ></a> 
-                AT: {{waffe.at}}
-            </label>
-            <label>
-            <a
-                class="rollable icon-small"
-                data-rolltype="basic"
-                data-formula="1d20+{{waffe.vt}}"
-                data-label="Verteidigung ({{waffe.name}})"
-                ><i class="fas fa-dice-d20"></i
-                ></a> 
-            VT: {{waffe.vt}}</label>
-            <label>
-            <a
-                class="rollable icon-small"
-                data-rolltype="basic"
-                data-formula="{{translate_formula waffe.tp}}"
-                data-label="Schaden ({{waffe.name}})"
-                ><i class="fas fa-dice-d20"></i
-                ></a> 
-                TP: {{waffe.tp}}</label>
-            <label>HT: {{waffe.haerte}}</label>
+                <div class="flexcol">
+                    <div>
+                        <label>Wunden/Erschöpft: </label>
+                        <input class="hp-update" name="data.gesundheit.wunden" type="text" value="{{data.data.gesundheit.wunden}}" data-dtype="Number"/>/
+                        <input class="hp-update" name="data.gesundheit.erschoepfung" type="text" value="{{data.data.gesundheit.erschoepfung}}" data-dtype="Number"/>
+
+                    </div>
+                    <div>
+                        <label>Furcht: </label>
+                        <input class="hp-update" name="data.furcht.furchtstufe" type="text" value="{{data.data.furcht.furchtstufe}}" data-dtype="Number"/>
+                    </div>
+                </div>
+                <div class="flexcol">
+                    <label>{{data.data.gesundheit.display}}</label>
+                    <label>{{data.data.furcht.display}}</label>
+                </div>
             </div>
-            <div><label>{{waffe.eigenschaften}}</label></div>
-            {{/each}}
         </div>
-        {{/if}}
-        {{#if data.data.fertigkeiten}}
-        <div class="statblockreihe">
-            <b>Übernatürlich: </b><br/>
-            {{#if data.data.asp}}
-            <label>Astralpunkte: {{data.data.asp}}</label><br/>
-            {{/if}}
-            {{#if data.data.gup}}
-            <label>Gunstpunkte: {{data.data.gup}}, </label><br/>
-            {{/if}}
-            {{#if data.data.kap}}
-            <label>Karmalpunkte: {{data.data.kap}}, </label><br/>
-            {{/if}}
-            {{#each data.data.fertigkeiten as |fertigkeit|}}
-            <label>
-            <a
-                class="rollable icon-small"
-                data-rolltype="basic"
-                data-formula="3d20dl1dh1+{{fertigkeit.wert}}"
-                data-label="{{fertigkeit.name}}"
-                ><i class="fas fa-dice-d20"></i
-                ></a>
-                {{fertigkeit.name}} ({{fertigkeit.wert}}): 
-                {{#each fertigkeit.talente as |talent|}}
-                    {{talent.name}}: {{talent.wert}}
+
+        <div class="attribute statblockreihe">
+            <b>Attribute <!--</b><a class="attribut-create">[+]</a><b>-->: </b>
+            <div class="flexrow">
+                {{#each data.data.attribute as |attribut key|}}
+                <div class="attributblock flex1 flex-group-center">
+                        <h2>{{key}}</h2>
+                    <div>
+                        <input name="data.attribute.{{key}}.pw" type="text" value="{{attribut.pw}}" data-dtype="Number" style="width: 30px;"></input>
+                        <a
+                            class="rollable icon-small"
+                            data-rolltype="basic"
+                            data-formula="3d20dl1dh1+{{attribut.pw}}"
+                            data-label="{{key}}"
+                            ><i class="fas fa-dice-d20"></i
+                        >
+                    </a>
+                    </div>
+                </div>
                 {{/each}}
-            </label><br/>
+            </div>
+        </div>
+        
+        <div class="eigenschaften statblockreihe">
+            <b>Eigenschaften </b><a class="item-create plus-button" data-itemclass="eigenschaft">[+]</a><b>: </b>
+                {{#each data.data.eigenschaften as |eigenschaft|}}
+                    <a class="item-edit" data-itemid="{{eigenschaft.id}}">{{eigenschaft.name}}, </a>
+                {{/each}}
+        </div>
+        
+        <div class="vorteile statblockreihe">
+            <b>Vorteile </b><a class="clickable plus-button" data-clicktype="addvorteilinfo">[+]</a><b>: </b>
+                {{#each data.data.vorteile as |vorteil|}}
+                    <a class="item-edit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
+                {{/each}}
+        </div>
+
+        <div class="kampfwerte statblockreihe">
+            <b>Kampfwerte: </b><br/>
+            {{#each data.data.kampfwerte as |obj key|}}
+                {{#if (ifEq key "ws")}}
+                    <label>{{get_label key}}: </label>
+                    <input name="data.kampfwerte.{{key}}" value="{{obj}}" data-dtype="Number"/>/ 
+                {{else}}
+                    {{#if (ifEq key "ws_stern")}}
+                    <input name="data.kampfwerte.{{key}}" value="{{obj}}" data-dtype="Number"/>, 
+                    {{else}}
+                    <label>{{get_label key}}: </label>
+                    <input name="data.kampfwerte.{{key}}" value="{{obj}}" data-dtype="Number"/>, 
+                    {{/if}}
+                {{/if}}
             {{/each}}
         </div>
-        {{/if}}
-        {{#if data.data.talente }}
-        <div class="statblockreihe">
-            <b>Talente: </b><br/>
-            {{#each data.data.talente as |talent|}}
+
+        <div class="angriffe statblockreihe">
+            <b>Angriffe </b><a class="item-create plus-button" data-itemclass="angriff">[+]</a><b>: </b>
+            {{#each data.data.angriffe as |angriff key|}}
+            <div class="flexrow">
+                        
+                <label><b><a class="item-edit" data-itemid="{{angriff.id}}">{{angriff.name}} </a></b></label>
+                {{#if (waffe_ist_fernkampf angriff) }}
+                <label>
+                    LZ: {{angriff.data.data.lz}}
+                </label>
+                {{/if}}
+                <label>RW: {{angriff.data.data.rw}}</label>
+                <label>
+                    <a
+                    class="rollable icon-small"
+                    data-rolltype="basic"
+                    data-formula="1d20+{{angriff.data.data.at}}"
+                    data-label="Attacke ({{angriff.name}})"
+                    ><i class="fas fa-dice-d20"></i
+                    ></a> 
+                    AT: {{angriff.data.data.at}}
+                </label>
+                <label>
+                <a
+                    class="rollable icon-small"
+                    data-rolltype="basic"
+                    data-formula="1d20+{{angriff.data.data.vt}}"
+                    data-label="Verteidigung ({{angriff.name}})"
+                    ><i class="fas fa-dice-d20"></i
+                    ></a> 
+                VT: {{angriff.data.data.vt}}</label>
+                <label>
+                <a
+                    class="rollable icon-small"
+                    data-rolltype="basic"
+                    data-formula="{{translate_formula angriff.data.data.tp}}"
+                    data-label="Schaden ({{angriff.name}})"
+                    ><i class="fas fa-dice-d20"></i
+                    ></a> 
+                    TP: {{angriff.data.data.tp}}</label>
+                <label>HT: {{angriff.data.data.haerte}}</label>
+            </div>
+            <div><label>{{angriff.data.data.eigenschaften}}</label></div>
+            {{/each}}
+        </div>
+
+
+        <div class="freietalente statblockreihe">
+            <b>Fertigkeiten</b><a class="item-create plus-button" data-itemclass="freiestalent">[+]</a><b>: </b><br/>
+            {{#each data.data.freietalente as |freiestalent|}}
             <label>
-            <a
-                class="rollable icon-small"
-                data-rolltype="basic"
-                data-formula="3d20dl1dh1+{{talent.wert}}"
-                data-label="{{talent.name}}"
-                ><i class="fas fa-dice-d20"></i
-                ></a>
-                {{talent.name}}: {{talent.wert}}, 
+                <label>
+                    <a class="item-edit" data-itemid="{{freiestalent.id}}">{{freiestalent.name}} </a> ({{freiestalent.data.data.pw}} 
+                    <a
+                        class="rollable icon-small"
+                        data-rolltype="basic"
+                        data-formula="3d20dl1dh1+{{freiestalent.data.data.pw}}"
+                        data-label="{{freiestalent.name}}"
+                        ><i class="fas fa-dice-d20"></i
+                        >
+                    </a>), 
+                </label> 
             </label>
             {{/each}}
+
         </div>
-        {{/if}}
+        
+        
+        <div class="infos statblockreihe">
+            <b>Infos</b><a class="item-create plus-button" data-itemclass="info">[+]</a><b>: </b><br/>
+            {{#each data.data.infos as |info|}}
+            <div class="hangingindent">
+                <b><a class="item-edit" data-itemid="{{info.id}}">{{info.name}}</a>:</b>
+                {{info.data.data.text}}
+            </div>
+            {{/each}}
+
+        </div>
     </div>
-    {{/if}} <!-- edit -->
 </form>
