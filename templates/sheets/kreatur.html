@@ -6,6 +6,7 @@
                 <textarea rows="2" name="data.kurzbeschreibung" type="text">{{data.data.kurzbeschreibung}}</textarea>
             </div>
             <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
+        </div>
     </header>
 
     <div class="sheet-body">
@@ -126,7 +127,11 @@
                     TP: {{angriff.data.data.tp}}</label>
                 <label>HT: {{angriff.data.data.haerte}}</label>
             </div>
-            <div><label>{{angriff.data.data.eigenschaften}}</label></div>
+            <div><label>
+                {{#each angriff.data.data.eigenschaften as |eig|}}
+                    <span>{{eig.name}}, </span>
+                {{/each}}
+            </label></div>
             {{/each}}
         </div>
 
@@ -160,7 +165,6 @@
                 {{info.data.data.text}}
             </div>
             {{/each}}
-
         </div>
     </div>
 </form>
