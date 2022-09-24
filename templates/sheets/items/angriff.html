@@ -30,6 +30,20 @@
             </label>
         </div>
         <div>
+            <b>Eigenschaften </b><a class="add-eigenschaft" data-itemclass="Neue Eigenschaft">[+]</a><b>: </b>
+            {{#each data.data.eigenschaften as |eig key|}}
+            <div class="flexrow">
+            <div class="flex1">
+                <input name="data.eigenschaften.{{key}}.name" type="text" value="{{eig.name}}" />
+            </div>
+            <div class="flex2">
+                <input name="data.eigenschaften.{{key}}.text" type="text" value="{{eig.text}}" />
+            </div>
+            <div class="flex0">
+                <a class="del-eigenschaft" data-eigenschaftid="{{key}}"><i class="fas fa-trash"></i></a>
+            </div>
+        </div>
+            {{/each}}
             <!-- <label>Waffeneigenschaften: 
                 <input type="text" name="data.eigenschaften" value="{{data.data.eigenschaften}}" />{
             </label> -->
