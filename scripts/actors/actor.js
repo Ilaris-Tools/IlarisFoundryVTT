@@ -137,6 +137,9 @@ export class IlarisActor extends Actor {
         if (!data.data.modifikatoren.manuellermod) {
             data.data.modifikatoren.manuellermod = 0;
         }
+        if (!data.data.modifikatoren.nahkampfmod) {
+            data.data.modifikatoren.nahkampfmod = 0;
+        }
         this._sortItems(data);
         this._calculateWounds(data);
         this._calculateFear(data);
