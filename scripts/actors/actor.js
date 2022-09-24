@@ -568,6 +568,8 @@ export class IlarisActor extends Actor {
             // Object.assign(manoever_at, CONFIG.ILARIS.manoever_at);
             // manoever_at = JSON.parse(JSON.stringify(CONFIG.ILARIS.manoever_at));
             // jQuery.extend(true, manoever_at, CONFIG.ILARIS.manoever_at);
+            // TODO: ich finde die waffeneigenschaften nicht besonders elegant umgesetzt,
+            // könnte man dafür ggf. items anlegen und die iwie mit den waffen items verknüpfen?
             let kopflastig = nwaffe.data.data.eigenschaften.kopflastig;
             let niederwerfen = nwaffe.data.data.eigenschaften.niederwerfen;
             let parierwaffe = nwaffe.data.data.eigenschaften.parierwaffe;
