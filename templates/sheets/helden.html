@@ -33,7 +33,14 @@
                         data-dtype="Number"
                     />
                 </div>
-                <label>{{data.data.gesundheit.display}}</label>
+                <div class="flexrow"></div>
+                <a
+                    class="icon-small toggle-bool {{data.data.gesundheit.wundenignorieren}}"
+                    data-togglevariable="data.gesundheit.wundenignorieren">
+                    <!-- <i class="fa fa-check"></i> -->
+                    Wundabzüge ignorieren
+                </a>
+            </div>
             </div>
             <div style="float: left">
                 <div class="flexrow">
@@ -66,33 +73,38 @@
                     <label>DH*: </label>
                     <label>{{data.data.abgeleitete.dh}}</label>
                 </div>
+                <div class="flexrow">
+                    <label>-</label>
+                </div>
             </div>
         </div>
         <div style="float: left"></div>
-        <div class="flexrow">
+<!--         <div class="flexrow">
             <label>Globaler Mod: </label>
             <label>{{data.data.abgeleitete.globalermod}}</label>
+        </div> -->
+        <div class="flexrow">
+            <label>Manueller Mod: </label>
             <input name="data.modifikatoren.manuellermod" value="{{data.data.modifikatoren.manuellermod}}" type="text" data-dtype="Number">
         </div>
         <div class="flexrow">
-            <label>Nahkampf Mod: </label>
-            <label>{{data.data.modifikatoren.nahkampfmod}}</label>
-        </div>
-        <!-- <div class="flexrow">
-                <label>Manueller Mod: </label>
-                <input name="data.modifikatoren.manuellermod" value="{{data.data.modifikatoren.manuellermod}}" type="text" data-dtype="Number">
-            </div> -->
-        <!-- <div class="flexrow">
-                <label>Furchtstufe: </label>
-                <input name="data.furcht.furchtstufe" value="{{data.data.furcht.furchtstufe}}" type="text" data-dtype="Number">
-            </div>
-            <div class="flexrow">
-                <label>{{data.data.furcht.display}}</label>
-            </div> -->
-        <div class="flexrow">
-            <label>Furcht: </label>
             <label>{{data.data.furcht.display}}</label>
         </div>
+        <div class="flexrow">
+            <label>{{data.data.gesundheit.display}}</label>
+        </div>
+        <hr/>
+        <div class="flexrow">
+            <label>{{data.data.abgeleitete.globalermoddisplay}}</label>
+        </div>
+        <!-- <div class="flexrow">
+            <label>Nahkampf Mod: </label>
+            <label>{{data.data.modifikatoren.nahkampfmod}}</label>
+        </div> -->
+<!--         <div class="flexrow">
+            <label>Furcht: </label>
+            <label>{{data.data.furcht.display}}</label>
+        </div> -->
     </div>
     <div style="clear: both"></div>
     <hr />

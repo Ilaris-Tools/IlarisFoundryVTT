@@ -24,6 +24,7 @@ export class IlarisActorSheet extends ActorSheet {
         html.find('.item-delete').click((ev) => this._onItemDelete(ev));
         // html.find('.item-toggle').click(this._onToggleItem.bind(this));
         html.find('.item-toggle').click((ev) => this._onToggleItem(ev));
+        html.find('.toggle-bool').click((ev) => this._onToggleBool(ev));
         html.find('.hp-update').change((ev) => this._onHpUpdate(ev));
         // html.find('.selected-kampfstil').change(ev => this._onSelectedKampfstil(ev));
     }
@@ -39,6 +40,17 @@ export class IlarisActorSheet extends ActorSheet {
             toggleView.style.display = 'none';
         }
     }
+
+    async _onToggleBool(event) {
+        const togglevariable = event.currentTarget.dataset.togglevariable;
+        console.log(`hier!`);
+        let attr = `${togglevariable}`;
+        let bool_status = getProperty(this.actor.data, attr);
+        console.log(`hier! ${bool_status}`);
+        await this.actor.update({ [attr]: !bool_status });
+        console.log(`hier! ${bool_status}`);
+    }
+
 
     async _onToggleItem(event) {
         const itemId = event.currentTarget.dataset.itemid;
@@ -274,7 +286,9 @@ export class IlarisActorSheet extends ActorSheet {
                 callback: () => {
                 },
               })
-        }
+        } /* else if (clicktype == "togglewundenignorieren") {
+            data.gesundheit.wundenignorieren = !data.gesundheit.wundenignorieren;
+        } */
     }
 
     _onHpUpdate(event) {

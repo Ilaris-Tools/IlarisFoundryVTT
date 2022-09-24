@@ -103,6 +103,15 @@
   color: black;
 }
 
+.toggle-bool.false {
+  /* color: #b5b3a4; */
+  color: #989898;
+}
+.toggle-bool.active {
+  /* color: #4b4a44; */
+  color: #990000;
+}
+
 .onhover:hover {
   /* background-color: #b32019; */
   /* text-shadow: 0 0 8px #b32019; */

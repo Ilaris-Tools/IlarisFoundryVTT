@@ -11,6 +11,7 @@
           "erschoepfung": 0,
           "wunden": 0,
           "wundabzuege": 0,
+          "wundenignorieren": 0,
           "display": "Volle Gesundheit",
           "hp": {
             "max": 9,

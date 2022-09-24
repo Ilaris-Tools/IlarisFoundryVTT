@@ -322,6 +322,9 @@ export class IlarisActor extends Actor {
             data.data.gesundheit.display = 'Fehler bei Berechnung der Wundabzüge';
             return;
         }
+        if (data.data.gesundheit.wundenignorieren > 0) {
+            data.data.gesundheit.wundabzuege = 0;
+        }
         data.data.gesundheit.display = ``;
         if (data.data.gesundheit.wundabzuege == 0) {
             data.data.gesundheit.display += `-`;
@@ -348,16 +351,16 @@ export class IlarisActor extends Actor {
             furchtzusatz = `(keine Furcht)`;
         } else if (data.data.furcht.furchtstufe == 1) {
             data.data.furcht.furchtabzuege = -2;
-            furchtzusatz = `(Furcht)`;
+            furchtzusatz = `(Furcht I)`;
         } else if (data.data.furcht.furchtstufe == 2) {
             data.data.furcht.furchtabzuege = -4;
-            furchtzusatz = `(Rückzug)`;
+            furchtzusatz = `(Furcht II)`;
         } else if (data.data.furcht.furchtstufe == 3) {
             data.data.furcht.furchtabzuege = -8;
-            furchtzusatz = `(Flucht)`;
+            furchtzusatz = `(Furcht III)`;
         } else if (data.data.furcht.furchtstufe >= 4) {
             data.data.furcht.furchtabzuege = -8;
-            furchtzusatz = `(Proben nur noch zur Flucht)`;
+            furchtzusatz = `(Furcht IV)`;
         } else {
             data.data.furcht.furchtstufe = 0;
             data.data.furcht.display = 'Fehler bei Berechnung der Furchtabzüge';
@@ -483,6 +486,25 @@ export class IlarisActor extends Actor {
         kap += Number(data.data.abgeleitete.kap_zugekauft) || 0;
         kap -= Number(data.data.abgeleitete.gkap) || 0;
         data.data.abgeleitete.kap = kap;
+        // displayed text for nahkampfmod
+        data.data.abgeleitete.nahkampfmoddisplay = ``;
+        if (data.data.modifikatoren.nahkampfmod == 0){
+            data.data.abgeleitete.nahkampfmoddisplay += `-`;
+        }
+        else if (data.data.modifikatoren.nahkampfmod > 0) {
+            data.data.abgeleitete.nahkampfmoddisplay += `+`;
+        }
+        // let nahkampfmodgesamt = data.data.modifikatoren.nahkampfmod + data.data.modifikatoren.globalermod;
+        data.data.abgeleitete.nahkampfmoddisplay += `${data.data.modifikatoren.nahkampfmod} auf alle Nahkampf Proben durch Statuseffekte (am Token)`;
+        // displayed text for globalermod (auf alle Proben insgesamt)
+        data.data.abgeleitete.globalermoddisplay = ``;
+        if (data.data.abgeleitete.globalermod == 0){
+            data.data.abgeleitete.globalermoddisplay += `-`;
+        }
+        else if (data.data.abgeleitete.globalermod > 0) {
+            data.data.abgeleitete.globalermoddisplay += `+`;
+        }
+        data.data.abgeleitete.globalermoddisplay += `${data.data.abgeleitete.globalermod} auf alle Proben (insgesamt)`;
     }
 
     _calculateKampf(data) {
