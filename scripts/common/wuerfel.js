@@ -958,6 +958,75 @@ export async function wuerfelwurf(event, actor) {
             },
         );
         d.render(true);
+    } else if (rolltype == 'simpleprobe_diag') {
+        label = $(event.currentTarget).data('name');
+        pw = Number($(event.currentTarget).data('pw'));
+        const html = await renderTemplate(
+            'systems/Ilaris/templates/chat/probendiag_attribut.html',
+            {
+                choices_xd20: CONFIG.ILARIS.xd20_choice,
+                checked_xd20: '1',
+                choices_schips: CONFIG.ILARIS.schips_choice,
+                checked_schips: '0',
+                rollModes: CONFIG.Dice.rollModes,
+            },
+        );
+        let d = new Dialog(
+            {
+                title: 'Probe',
+                content: html,
+                buttons: {
+                    one: {
+                        icon: '<i><img class="button-icon" src="systems/Ilaris/assets/game-icons.net/rolling-dices.png"></i>',
+                        label: 'OK',
+                        callback: async (html) => {
+                            let text = '';
+                            let dice_number = 0;
+                            let discard_l = 0;
+                            let discard_h = 0;
+                            [text, dice_number, discard_l, discard_h] = calculate_diceschips(
+                                html,
+                                text,
+                                actor,
+                            );
+                            let hohequalitaet = 0;
+                            if (html.find('#hohequalitaet').length > 0) {
+                                hohequalitaet = Number(html.find('#hohequalitaet')[0].value);
+                                if (hohequalitaet != 0) {
+                                    text = text.concat(`Hohe Qualität: ${hohequalitaet}\n`);
+                                }
+                            }
+                            let modifikator = 0;
+                            if (html.find('#modifikator').length > 0) {
+                                modifikator = Number(html.find('#modifikator')[0].value);
+                                if (modifikator != 0) {
+                                    text = text.concat(`Modifikator: ${modifikator}\n`);
+                                }
+                            }
+                            let rollmode = '';
+                            if (html.find('#rollMode').length > 0) {
+                                rollmode = html.find('#rollMode')[0].value;
+                            }
+                            hohequalitaet *= -4;
+
+                            let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
+                            let formula = `${dice_form} + ${pw} + ${globalermod} + ${hohequalitaet} + ${modifikator}`;
+                            // Critfumble & Message
+                            await roll_crit_message(formula, label, text, speaker, rollmode);
+                        },
+                    },
+                    two: {
+                        icon: '<i class="fas fa-times"></i>',
+                        label: 'Abbrechen',
+                        callback: () => console.log('Chose Two'),
+                    },
+                },
+            },
+            {
+                jQuery: true,
+            },
+        );
+        d.render(true);
     } else if (rolltype == 'magie_diag') {
         let mod_pw = 0;
         // let mod_asp = 0;

@@ -10,7 +10,6 @@
     </header>
 
     <div class="sheet-body">
-
         <div class="status statblockreihe">
             <div class="flexrow">
                 <div class="flexcol">
@@ -18,16 +17,32 @@
                         <label>Wunden/Erschöpft: </label>
                         <input class="hp-update" name="data.gesundheit.wunden" type="text" value="{{data.data.gesundheit.wunden}}" data-dtype="Number"/>/
                         <input class="hp-update" name="data.gesundheit.erschoepfung" type="text" value="{{data.data.gesundheit.erschoepfung}}" data-dtype="Number"/>
-
                     </div>
                     <div>
+                        <a
+                        class="icon-small toggle-bool {{data.data.gesundheit.wundenignorieren}}"
+                        data-togglevariable="data.gesundheit.wundenignorieren">
+                        <!-- <i class="fa fa-check"></i> -->
+                        Wundabzüge ignorieren
+                        </a>
+                    </div>
+<!--                     <div>
                         <label>Furcht: </label>
                         <input class="hp-update" name="data.furcht.furchtstufe" type="text" value="{{data.data.furcht.furchtstufe}}" data-dtype="Number"/>
-                    </div>
+                    </div> -->
+                    <label>Schip*: </label><input name="data.schips.schips_stern" value="{{data.data.schips.schips_stern}}" type="text" data-dtype="Number"/>
                 </div>
                 <div class="flexcol">
                     <label>{{data.data.gesundheit.display}}</label>
                     <label>{{data.data.furcht.display}}</label>
+                    <div class="flexrow">
+                        <label>Manueller Mod: </label>
+                        <input name="data.modifikatoren.manuellermod" value="{{data.data.modifikatoren.manuellermod}}" type="text" data-dtype="Number">
+                    </div>
+                    <hr/>
+                    <div class="flexrow">
+                        <label>{{data.data.abgeleitete.globalermoddisplay}}</label>
+                    </div>
                 </div>
             </div>
         </div>
@@ -40,14 +55,16 @@
                         <h2>{{key}}</h2>
                     <div>
                         <input name="data.attribute.{{key}}.pw" type="text" value="{{attribut.pw}}" data-dtype="Number" style="width: 30px;"></input>
-                        <a
+<!--                         <a
                             class="rollable icon-small"
                             data-rolltype="basic"
                             data-formula="3d20dl1dh1+{{attribut.pw}}"
                             data-label="{{key}}"
                             ><i class="fas fa-dice-d20"></i
-                        >
-                    </a>
+                        ></a> -->
+                        <a class="rollable icon-small" data-rolltype="attribut_diag" data-attribut="{{key}}">
+                            <i class="fas fa-dice-d20"></i>
+                        </a>
                     </div>
                 </div>
                 {{/each}}
@@ -69,7 +86,11 @@
         </div>
 
         <div class="kampfwerte statblockreihe">
-            <b>Kampfwerte: </b><br/>
+            <b>Kampfwerte: </b>
+            <div class="flexrow" style="float: right">
+                <label>{{data.data.abgeleitete.nahkampfmoddisplay}}</label>
+            </div>
+            <br/>
             {{#each data.data.kampfwerte as |obj key|}}
                 {{#if (ifEq key "ws")}}
                     <label>{{get_label key}}: </label>
@@ -105,6 +126,9 @@
                     data-label="Attacke ({{angriff.name}})"
                     ><i class="fas fa-dice-d20"></i
                     ></a> 
+<!--                     <a class="rollable icon-small" data-rolltype="nahkampf_diag" data-itemid="{{angriff.id}}"></a>
+                        <i class="fas fa-dice-d20"></i>
+                    </a> -->
                     AT: {{angriff.data.data.at}}
                 </label>
                 <label>
@@ -138,22 +162,29 @@
 
         <div class="freietalente statblockreihe">
             <b>Fertigkeiten</b><a class="item-create plus-button" data-itemclass="freiestalent">[+]</a><b>: </b><br/>
-            {{#each data.data.freietalente as |freiestalent|}}
+            {{#each data.data.freietalente as |freiestalent key|}}
             <label>
                 <label>
                     <a class="item-edit" data-itemid="{{freiestalent.id}}">{{freiestalent.name}} </a> ({{freiestalent.data.data.pw}} 
-                    <a
+<!--                     <a
                         class="rollable icon-small"
                         data-rolltype="basic"
                         data-formula="3d20dl1dh1+{{freiestalent.data.data.pw}}"
                         data-label="{{freiestalent.name}}"
                         ><i class="fas fa-dice-d20"></i
                         >
-                    </a>), 
+                    </a> -->
+                    <a
+                        class="rollable icon-small"
+                        data-rolltype="simpleprobe_diag"
+                        data-name="{{freiestalent.name}}"
+                        data-pw="{{freiestalent.data.data.pw}}"
+                        ><i class="fas fa-dice-d20"></i
+                    ></a>
+                    ), 
                 </label> 
             </label>
             {{/each}}
-
         </div>
         
         

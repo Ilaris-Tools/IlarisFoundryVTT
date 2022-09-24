@@ -111,6 +111,7 @@ export class IlarisActor extends Actor {
         this._calculateWounds(data); // muss vor _calculateAbgeleitete kommen (wegen globalermod)
         this._calculateFear(data); // muss vor _calculateAbgeleitete kommen (wegen globalermod)
         this._calculateWundschwellenRuestung(data);
+        this._calculateModifikatoren(data);
         this._calculateAbgeleitete(data);
         this._calculateProfanFertigkeiten(data);
         this._calculateUebernaturlichFertigkeiten(data);
@@ -126,7 +127,8 @@ export class IlarisActor extends Actor {
         console.log(data);
         this._sortItems(data);
         this._calculateWounds(data);
-        this._calculateFear(data)
+        this._calculateFear(data);
+        this._calculateModifikatoren(data);
     }
 
 
@@ -433,10 +435,32 @@ export class IlarisActor extends Actor {
         // }
     }
 
-    _calculateAbgeleitete(data) {
-        console.log('Berechne abgeleitete Werte');
+    _calculateModifikatoren(data) {
         let globalermod = hardcoded.globalermod(data);
         data.data.abgeleitete.globalermod = globalermod;
+        // displayed text for nahkampfmod
+        data.data.abgeleitete.nahkampfmoddisplay = ``;
+        if (data.data.modifikatoren.nahkampfmod == 0){
+            data.data.abgeleitete.nahkampfmoddisplay += `-`;
+        }
+        else if (data.data.modifikatoren.nahkampfmod > 0) {
+            data.data.abgeleitete.nahkampfmoddisplay += `+`;
+        }
+        // let nahkampfmodgesamt = data.data.modifikatoren.nahkampfmod + data.data.modifikatoren.globalermod;
+        data.data.abgeleitete.nahkampfmoddisplay += `${data.data.modifikatoren.nahkampfmod} auf alle Nahkampf Proben durch Statuseffekte (am Token)`;
+        // displayed text for globalermod (auf alle Proben insgesamt)
+        data.data.abgeleitete.globalermoddisplay = ``;
+        if (data.data.abgeleitete.globalermod == 0){
+            data.data.abgeleitete.globalermoddisplay += `-`;
+        }
+        else if (data.data.abgeleitete.globalermod > 0) {
+            data.data.abgeleitete.globalermoddisplay += `+`;
+        }
+        data.data.abgeleitete.globalermoddisplay += `${data.data.abgeleitete.globalermod} auf alle Proben (insgesamt)`;
+    }
+
+    _calculateAbgeleitete(data) {
+        console.log('Berechne abgeleitete Werte');
         let ini = data.data.attribute.IN.wert;
         ini = hardcoded.initiative(ini, data);
         data.data.abgeleitete.ini = ini;
@@ -486,25 +510,6 @@ export class IlarisActor extends Actor {
         kap += Number(data.data.abgeleitete.kap_zugekauft) || 0;
         kap -= Number(data.data.abgeleitete.gkap) || 0;
         data.data.abgeleitete.kap = kap;
-        // displayed text for nahkampfmod
-        data.data.abgeleitete.nahkampfmoddisplay = ``;
-        if (data.data.modifikatoren.nahkampfmod == 0){
-            data.data.abgeleitete.nahkampfmoddisplay += `-`;
-        }
-        else if (data.data.modifikatoren.nahkampfmod > 0) {
-            data.data.abgeleitete.nahkampfmoddisplay += `+`;
-        }
-        // let nahkampfmodgesamt = data.data.modifikatoren.nahkampfmod + data.data.modifikatoren.globalermod;
-        data.data.abgeleitete.nahkampfmoddisplay += `${data.data.modifikatoren.nahkampfmod} auf alle Nahkampf Proben durch Statuseffekte (am Token)`;
-        // displayed text for globalermod (auf alle Proben insgesamt)
-        data.data.abgeleitete.globalermoddisplay = ``;
-        if (data.data.abgeleitete.globalermod == 0){
-            data.data.abgeleitete.globalermoddisplay += `-`;
-        }
-        else if (data.data.abgeleitete.globalermod > 0) {
-            data.data.abgeleitete.globalermoddisplay += `+`;
-        }
-        data.data.abgeleitete.globalermoddisplay += `${data.data.abgeleitete.globalermod} auf alle Proben (insgesamt)`;
     }
 
     _calculateKampf(data) {

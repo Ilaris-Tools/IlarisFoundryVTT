@@ -130,6 +130,9 @@ export class IlarisActorSheet extends ActorSheet {
         } else if (rolltype == 'attribut_diag') {
             wuerfelwurf(event, this.actor);
             return 0;
+        } else if (rolltype == 'simpleprobe_diag') {
+            wuerfelwurf(event, this.actor);
+            return 0;
         } else if (rolltype == 'fernkampf_diag') {
             wuerfelwurf(event, this.actor);
             return 0;
