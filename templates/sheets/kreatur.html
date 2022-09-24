@@ -118,7 +118,32 @@
                 </label>
                 {{/if}}
                 <label>RW: {{angriff.data.data.rw}}</label>
+                <label
+                    class="rollable onhover"
+                    data-rolltype="at"
+                    data-pw="{{angriff.data.data.at}}"
+                    data-item="{{angriff.name}}"
+                    data-itemid="{{angriff.id}}"
+                    >AT: {{angriff.data.data.at}}</label
+                >
+                <label
+                    class="rollable onhover"
+                    data-rolltype="vt"
+                    data-pw="{{angriff.data.data.vt}}"
+                    data-item="{{angriff.name}}"
+                    data-itemid="{{angriff.id}}"
+                    >VT: {{angriff.data.data.vt}}</label
+                >
                 <label>
+                    <a
+                    class="rollable icon-small"
+                    data-rolltype="basic"
+                    data-formula="{{translate_formula angriff.data.data.tp}}"
+                    data-label="Schaden ({{angriff.name}})"
+                    >TP: {{angriff.data.data.tp}}</a> 
+                </label>
+                <label>HT: {{angriff.data.data.haerte}}</label>
+                <!-- <label>
                     <a
                     class="rollable icon-small"
                     data-rolltype="basic"
@@ -126,11 +151,8 @@
                     data-label="Attacke ({{angriff.name}})"
                     ><i class="fas fa-dice-d20"></i
                     ></a> 
-<!--                     <a class="rollable icon-small" data-rolltype="nahkampf_diag" data-itemid="{{angriff.id}}"></a>
-                        <i class="fas fa-dice-d20"></i>
-                    </a> -->
                     AT: {{angriff.data.data.at}}
-                </label>
+                </label> 
                 <label>
                 <a
                     class="rollable icon-small"
@@ -149,7 +171,7 @@
                     ><i class="fas fa-dice-d20"></i
                     ></a> 
                     TP: {{angriff.data.data.tp}}</label>
-                <label>HT: {{angriff.data.data.haerte}}</label>
+                <label>HT: {{angriff.data.data.haerte}}</label> -->
             </div>
             <div><label>
                 {{#each angriff.data.data.eigenschaften as |eig|}}
