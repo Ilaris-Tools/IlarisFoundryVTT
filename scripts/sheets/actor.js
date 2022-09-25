@@ -43,12 +43,9 @@ export class IlarisActorSheet extends ActorSheet {
 
     async _onToggleBool(event) {
         const togglevariable = event.currentTarget.dataset.togglevariable;
-        console.log(`hier!`);
         let attr = `${togglevariable}`;
         let bool_status = getProperty(this.actor.data, attr);
-        console.log(`hier! ${bool_status}`);
         await this.actor.update({ [attr]: !bool_status });
-        console.log(`hier! ${bool_status}`);
     }
 
 

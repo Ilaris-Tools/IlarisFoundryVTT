@@ -38,6 +38,7 @@
         data-dtype="Number"
     />
 </div>
+<hr />
 {{/if}}
 <!-- Reichweite erhöhen -->
 {{#if manoever.mm_rwrh.possible}}
@@ -52,6 +53,20 @@
     />
 </div>
 {{/if}}
+<!-- Zaubertechnik ignorieren -->
+{{#if manoever.mm_ztig.possible}}
+<div class="flexrow">
+    <label>{{get_label "mm_ztig"}}</label>
+    <input
+        id="mm_ztig"
+        type="number"
+        name="item.data.data.manoever.mm_ztig.selected"
+        value="{{item.data.data.manoever.mm_ztig.selected}}"
+        data-dtype="Number"
+    />
+</div>
+{{/if}}
+<hr/>
 <!-- Vorbereitung verkürzen -->
 {{#if manoever.mm_vbvk.possible}}
 <div class="flexrow">
@@ -77,19 +92,14 @@
         data-dtype="Number"
     />
 </div>
-{{/if}}
-<!-- Zaubertechnik ignorieren -->
-{{#if manoever.mm_ztig.possible}}
+<hr/>
+<!-- Zeit lassen -->
+{{#if manoever.mm_ztls.possible}}
 <div class="flexrow">
-    <label>{{get_label "mm_ztig"}}</label>
-    <input
-        id="mm_ztig"
-        type="number"
-        name="item.data.data.manoever.mm_ztig.selected"
-        value="{{item.data.data.manoever.mm_ztig.selected}}"
-        data-dtype="Number"
-    />
+    <label>{{get_label "mm_ztls"}}</label>
+    <input type="checkbox" id="mm_ztls" {{checked item.data.data.manoever.mm_ztls.selected}} />
 </div>
+{{/if}}
 {{/if}}
 <!-- Erzwingen -->
 {{#if manoever.mm_erzw.possible}}
@@ -112,31 +122,23 @@
     />
 </div>
 {{/if}}
-<!-- Zeit lassen -->
-{{#if manoever.mm_ztls.possible}}
-<div class="flexrow">
-    <label>{{get_label "mm_ztls"}}</label>
-    <input type="checkbox" id="mm_ztls" {{checked item.data.data.manoever.mm_ztls.selected}} />
-</div>
-{{/if}}
 <!-- Zeremonie -->
 {{#if manoever.mm_zere.possible}}
 <div class="flexrow">
     <label>{{get_label "mm_zere"}}</label>
-    <select id="kgtl">
+    <select id="mm_zere">
         {{selectOptions zere_choice selected=item.data.data.manoever.mm_zere.selected
         localize=true}}
     </select>
 </div>
 {{/if}}
 <!-- Opferung -->
-<!-- {{#if manoever.mm_opfe.possible}}
+{{#if manoever.mm_opfe.possible}}
 <div class="flexrow">
     <label>{{get_label "mm_opfe"}}</label>
     <input type="checkbox" id="mm_opfe" {{checked item.data.data.manoever.mm_opfe.selected}} />
 </div>
-{{/if}} -->
-
+{{/if}}
 <hr />
 <div class="flexrow">
     <label>Modifikator: </label>

@@ -52,7 +52,7 @@ export function magieUpdate(html, actor, item) {
     }   
     // Erzwingen mm_erzw
     if (html.find('#mm_erzw').length > 0) {
-        checked = html.find('#mm_erzw')[0].value;
+        checked = html.find('#mm_erzw')[0].checked;
         item.data.data.manoever.mm_erzw.selected = checked;
         Object.assign(updateData, { manoever: { mm_erzw: { selected: checked } } });
     } 
@@ -64,14 +64,21 @@ export function magieUpdate(html, actor, item) {
     } 
     // Zeit lassen mm_ztls
     if (html.find('#mm_ztls').length > 0) {
-        checked = html.find('#mm_ztls')[0].value;
+        checked = html.find('#mm_ztls')[0].checked;
         item.data.data.manoever.mm_ztls.selected = checked;
         Object.assign(updateData, { manoever: { mm_ztls: { selected: checked } } });
     } 
     // Zeremonie mm_zere
     if (html.find('#mm_zere').length > 0) {
         checked = html.find('#mm_zere')[0].value;
+        console.log('Zeremonie ', checked);
         item.data.data.manoever.mm_zere.selected = checked;
         Object.assign(updateData, { manoever: { mm_zere: { selected: checked } } });
+    } 
+    // Opferung mm_opfe
+    if (html.find('#mm_opfe').length > 0) {
+        checked = html.find('#mm_opfe')[0].checked;
+        item.data.data.manoever.mm_opfe.selected = checked;
+        Object.assign(updateData, { manoever: { mm_opfe: { selected: checked } } });
     } 
 }

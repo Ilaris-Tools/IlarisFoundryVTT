@@ -1076,7 +1076,7 @@ export async function wuerfelwurf(event, actor) {
                                 let erschwernis = 4 * mm_mama;
                                 mod_pw -= erschwernis;
                                 text = text.concat(
-                                    `${mm_mama}x Mächtige Magie: -${erschwernis}\n`,
+                                    `Mächtige Magie (${mm_mama}x): -${erschwernis}\n`,
                                 );
                             }
                             //  Mehrere Ziele mm_mezi
@@ -1085,7 +1085,7 @@ export async function wuerfelwurf(event, actor) {
                                 let erschwernis = 4;
                                 mod_pw -= erschwernis;
                                 text = text.concat(
-                                    `${mm_mezi} Ziele: -${erschwernis}\n`,
+                                    `Mehrere Ziele (${mm_mezi}): -${erschwernis}\n`,
                                 );
                             }
                             //  Reichweite erhoehen mm_rwrh
@@ -1095,7 +1095,7 @@ export async function wuerfelwurf(event, actor) {
                                 mod_pw -= erschwernis;
                                 let multiplier = Math.pow(2,mm_rwrh); 
                                 text = text.concat(
-                                    `${multiplier}-fache Reichweite: -${erschwernis}\n`,
+                                    `Reichweite erhöhen (${multiplier}-fach): -${erschwernis}\n`,
                                 );
                             }
                             // Vorbereitung verkuerzen mm_vbvk
@@ -1105,7 +1105,7 @@ export async function wuerfelwurf(event, actor) {
                                 mod_pw -= erschwernis;
                                 let multiplier = Math.pow(2,mm_vbvk); 
                                 text = text.concat(
-                                    `${multiplier}-fach kürzere Vorbereitung: -${erschwernis}\n`,
+                                    `Vorbereitung verkürzen (1/${multiplier}-fach): -${erschwernis}\n`,
                                 );
                             }
                             // Wirkungsdauer verlaengern mm_wkvl
@@ -1115,7 +1115,7 @@ export async function wuerfelwurf(event, actor) {
                                 mod_pw -= erschwernis;
                                 let multiplier = Math.pow(2,mm_wkvl); 
                                 text = text.concat(
-                                    `${multiplier}-fache Wirkungsdauer: -${erschwernis}\n`,
+                                    `Wirkungsdauer verlängern (${multiplier}-fach): -${erschwernis}\n`,
                                 );
                             }
                             // Zaubertechnik ignorieren mm_ztig
@@ -1124,15 +1124,14 @@ export async function wuerfelwurf(event, actor) {
                                 let erschwernis = 4 * mm_ztig; 
                                 mod_pw -= erschwernis;
                                 text = text.concat(
-                                    `${mm_ztig} Zaubertechniken ignoriert: -${erschwernis}\n`,
+                                    `Zaubertechnik ignorieren (${mm_ztig}x): -${erschwernis}\n`,
                                 );
                             }
                             // Erzwingen mm_erzw
-                            console.log(item.data.data.manoever.mm_erzw.selected);
+                            // console.log('Erzwingen possible: ', item.data.data.manoever.mm_erzw.possible);
                             if (item.data.data.manoever.mm_erzw.selected) {
                                 mod_pw += 4;
                                 text = text.concat('Erzwingen: +4\n');
-                                item.data.data.manoever.mm_erzw.selected = false;
                             }
                             // Kosten sparen mm_kosp
                             let mm_kosp = Number(item.data.data.manoever.mm_kosp.selected);
@@ -1140,25 +1139,27 @@ export async function wuerfelwurf(event, actor) {
                                 let erschwernis = 4 * mm_kosp; 
                                 mod_pw -= erschwernis;
                                 text = text.concat(
-                                    `${mm_kosp} mal Kosten sparen: -${erschwernis}\n`,
+                                    `Kosten sparen (${mm_kosp}x): -${erschwernis}\n`,
                                 );
                             }
                             // Zeit lassen mm_ztls
                             if (item.data.data.manoever.mm_ztls.selected) {
                                 mod_pw += 2;
                                 text = text.concat('Zeit lassen: +2\n');
-                                item.data.data.manoever.mm_ztls.selected = false;
                             }
                             // Zeremonie mm_zere
                             let mm_zere = Number(item.data.data.manoever.mm_zere.selected);
-                            // console.log(mm_zere);
                             if (mm_zere > 0) {
                                 let erleichterung = 2+ 2 * mm_zere; 
                                 mod_pw += erleichterung;
-                                let zeitaufwand = Ilaris.zere_choice[mm_zere];
                                 text = text.concat(
-                                    `${zeitaufwand} Zeremonie: +${erleichterung}\n`,
+                                    `Zeremonie (${CONFIG.ILARIS.zere_choice[mm_zere]}): +${erleichterung}\n`,
                                 );
+                            }
+                            // Opferung mm_opfe
+                            if (item.data.data.manoever.mm_opfe.selected) {
+                                mod_pw += 4;
+                                text = text.concat('Opferung: +4\n');
                             }
 
                             // Modifikator
