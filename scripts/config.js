@@ -488,6 +488,9 @@ let manoever_fernkampf = {
 ILARIS.manoever_fernkampf = manoever_fernkampf;
 
 let manoever_magie = {
+    kbak: {
+        selected: false,
+    },
     // mm_mama: 'Mächtige Magie',
     mm_mama: {
         possible: true,
@@ -542,6 +545,12 @@ let manoever_magie = {
     mm_opfe: {
         possible: false,
         selected: '0',
+    },
+    mod: {
+        selected: '0',
+    },
+    rllm: {
+        selected: 'roll',
     },
 };
 ILARIS.manoever_magie = manoever_magie;

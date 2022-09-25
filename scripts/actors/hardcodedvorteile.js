@@ -316,11 +316,11 @@ export function magieZeremoniePossible(data) {
     let possible = false;
 
     if (data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Schamanen III')) {
-        possible = True;
+        possible = true;
     } else if (
         data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Schamanen IV')
     ) {
-        possible = True;
+        possible = true;
     }
     return possible;
 }
@@ -328,27 +328,27 @@ export function magieZeremoniePossible(data) {
 export function magieOpferungPossible(data) {
     let possible = false;
     if (data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Schamanen III')) {
-        possible = True;
+        possible = true;
     } else if (
         data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Schamanen IV')
     ) {
-        possible = True;
+        possible = true;
     } else if (
         data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Durro-dun III')
     ) {
-        possible = True;
+        possible = true;
     } else if (
         data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Durro-dun IV')
     ) {
-        possible = True;
+        possible = true;
     } else if (
         data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Zaubertänzer III')
     ) {
-        possible = True;
+        possible = true;
     } else if (
         data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Zaubertänzer IV')
     ) {
-        possible = True;
+        possible = true;
     }
     return possible;
 }

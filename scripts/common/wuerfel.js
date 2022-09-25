@@ -1053,7 +1053,7 @@ export async function wuerfelwurf(event, actor) {
                 buttons: {
                     one: {
                         icon: '<i><img class="button-icon-nahkampf" src="systems/Ilaris/assets/game-icons.net/book-cover.png"></i>',
-                        label: 'Zubern',
+                        label: 'Zaubern',
                         callback: async (html) => {
                             await magieUpdate(html, actor, item);
                             let fumble_val = 1;
@@ -1067,228 +1067,120 @@ export async function wuerfelwurf(event, actor) {
                             );
                             // Kombinierte Aktion kbak
                             if (item.data.data.manoever.kbak.selected) {
-                                mod_fk -= 4;
-                                text = text.concat('Kombinierte Aktion\n');
+                                mod_pw -= 4;
+                                text = text.concat('Kombinierte Aktion: -4\n');
                             }
-                            // // Volle Defensive vldf
-                            // if (item.data.data.manoever.vldf.possible) {
-                            //     if (item.data.data.manoever.vldf.selected) {
-                            //         mod_fk -= 4;
-                            //     text = text.concat("Volle Defensive ()\n");
-                            // }
-                            // Reichweite erhöhen fm_rwrh
-                            let reichweite = Number(item.data.data.manoever.fm_rwrh.selected);
-                            if (reichweite > 0) {
-                                mod_fk -= 4 * reichweite;
+                            // Maechtige Magie mm_mama
+                            let mm_mama = Number(item.data.data.manoever.mm_mama.selected);
+                            if (mm_mama > 0) {
+                                let erschwernis = 4 * mm_mama;
+                                mod_pw -= erschwernis;
                                 text = text.concat(
-                                    `${item.data.data.manoever.rw[reichweite]} (${reichweite}x)\n`,
+                                    `${mm_mama}x Mächtige Magie: -${erschwernis}\n`,
                                 );
                             }
-                            //Größenklasse gzkl
-                            let gklasse = Number(item.data.data.manoever.gzkl.selected);
-                            if (gklasse == 0) mod_fk += 8;
-                            else if (gklasse == 1) mod_fk += 4;
-                            else if (gklasse == 3) mod_fk -= 4;
-                            else if (gklasse == 4) mod_fk -= 8;
-                            else if (gklasse == 5) mod_fk -= 12;
-                            text = text.concat(`${CONFIG.ILARIS.gzkl_choice[gklasse]}\n`);
-                            // Lichtverhältnisse ILARIS.lcht_choice = {
-                            let licht = Number(item.data.data.manoever.lcht.selected);
-                            let licht_angepasst = Number(item.data.data.manoever.lcht.angepasst);
-                            if (licht == 4) {
-                                mod_fk -= 32;
-                                text = text.concat(`${CONFIG.ILARIS.lcht_choice[licht]}\n`);
-                            } else if (licht == 3) {
-                                if (licht_angepasst == 0) {
-                                    mod_fk -= 16;
-                                    text = text.concat(`${CONFIG.ILARIS.lcht_choice[licht]}\n`);
-                                } else if (licht_angepasst == 1) {
-                                    mod_fk -= 8;
-                                    text = text.concat(
-                                        `${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst I)\n`,
-                                    );
-                                } else if (licht_angepasst == 2) {
-                                    mod_fk -= 4;
-                                    text = text.concat(
-                                        `${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst II)\n`,
-                                    );
-                                }
-                            } else if (licht == 2) {
-                                if (licht_angepasst == 0) {
-                                    mod_fk -= 8;
-                                    text = text.concat(`${CONFIG.ILARIS.lcht_choice[licht]}\n`);
-                                } else if (licht_angepasst == 1) {
-                                    mod_fk -= 4;
-                                    text = text.concat(
-                                        `${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst I)\n`,
-                                    );
-                                } else if (licht_angepasst == 2) {
-                                    text = text.concat(
-                                        `${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst II)\n`,
-                                    );
-                                }
-                            } else if (licht == 1) {
-                                if (licht_angepasst == 0) {
-                                    mod_fk -= 4;
-                                    text = text.concat(`${CONFIG.ILARIS.lcht_choice[licht]}\n`);
-                                } else if (licht_angepasst == 1) {
-                                    text = text.concat(
-                                        `${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst I)\n`,
-                                    );
-                                } else if (licht_angepasst == 2) {
-                                    text = text.concat(
-                                        `${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst II)\n`,
-                                    );
-                                }
-                            }
-                            // Wetter wttr und Bewegung bwng
-                            let wetter = Number(item.data.data.manoever.wttr.selected);
-                            let bewegung = Number(item.data.data.manoever.bwng.selected);
-                            let reflexschuss = item.data.data.manoever.rflx;
-                            if (reflexschuss) {
-                                let reflex_change = '';
-                                if (wetter > 0 || bewegung > 0) {
-                                    if (wetter > bewegung) {
-                                        wetter -= 1;
-                                        reflex_change = 'wetter';
-                                    } else {
-                                        bewegung -= 1;
-                                        reflex_change = 'bewegung';
-                                    }
-                                }
-                                mod_fk -= 4 * (wetter + bewegung);
-                                if (wetter > 0 && reflex_change != 'wetter') {
-                                    text = text.concat(`${CONFIG.ILARIS.wttr_choice[wetter]}\n`);
-                                } else if (reflex_change == 'wetter') {
-                                    text = text.concat(
-                                        `${CONFIG.ILARIS.wttr_choice[wetter]} (Reflexschuss)\n`,
-                                    );
-                                }
-                                if (bewegung > 0 && reflex_change != 'bewegung') {
-                                    text = text.concat(`${CONFIG.ILARIS.bwng_choice[bewegung]}\n`);
-                                } else if (reflex_change == 'bewegung') {
-                                    text = text.concat(
-                                        `${CONFIG.ILARIS.bwng_choice[bewegung]} (Reflexschuss)\n`,
-                                    );
-                                }
-                            } else {
-                                if (wetter > 0) {
-                                    mod_fk -= 4 * wetter;
-                                    text = text.concat(`${CONFIG.ILARIS.wttr_choice[wetter]}\n`);
-                                }
-                                if (bewegung > 0) {
-                                    mod_fk -= 4 * bewegung;
-                                    text = text.concat(`${CONFIG.ILARIS.bwng_choice[bewegung]}\n`);
-                                }
-                            }
-                            // Deckung dckg
-                            let deckung = Number(item.data.data.manoever.dckg.selected);
-                            if (deckung < 0) {
-                                mod_fk += 4 * deckung;
+                            //  Mehrere Ziele mm_mezi
+                            let mm_mezi = Number(item.data.data.manoever.mm_mezi.selected);
+                            if (mm_mezi > 0) {
+                                let erschwernis = 4;
+                                mod_pw -= erschwernis;
                                 text = text.concat(
-                                    `${CONFIG.ILARIS.label['dckg']}: ${CONFIG.ILARIS.dckg_choice[deckung]}\n`,
+                                    `${mm_mezi} Ziele: -${erschwernis}\n`,
                                 );
                             }
-                            // Kampfgetümmel kgtl
-                            let kampfgetuemmel = Number(item.data.data.manoever.kgtl.selected);
-                            if (kampfgetuemmel == 1) {
-                                fumble_val += 1;
+                            //  Reichweite erhoehen mm_rwrh
+                            let mm_rwrh = Number(item.data.data.manoever.mm_rwrh.selected);
+                            if (mm_rwrh > 0) {
+                                let erschwernis = 4 * mm_rwrh; 
+                                mod_pw -= erschwernis;
+                                let multiplier = Math.pow(2,mm_rwrh); 
                                 text = text.concat(
-                                    `${CONFIG.ILARIS.label['kgtl']}: ${CONFIG.ILARIS.kgtl_choice[kampfgetuemmel]}\n`,
+                                    `${multiplier}-fache Reichweite: -${erschwernis}\n`,
                                 );
                             }
-                            if (kampfgetuemmel == 2) {
-                                fumble_val += 3;
+                            // Vorbereitung verkuerzen mm_vbvk
+                            let mm_vbvk = Number(item.data.data.manoever.mm_vbvk.selected);
+                            if (mm_vbvk > 0) {
+                                let erschwernis = 4 * mm_vbvk; 
+                                mod_pw -= erschwernis;
+                                let multiplier = Math.pow(2,mm_vbvk); 
                                 text = text.concat(
-                                    `${CONFIG.ILARIS.label['kgtl']}: ${CONFIG.ILARIS.kgtl_choice[kampfgetuemmel]}\n`,
+                                    `${multiplier}-fach kürzere Vorbereitung: -${erschwernis}\n`,
                                 );
                             }
-                            // Beritten brtn  Reiterkampf II rtk
-                            let beritten = item.data.data.manoever.brtn.selected;
-                            let reiterkampf = item.data.data.manoever.brtn.rtk;
-                            if (beritten && reiterkampf) {
+                            // Wirkungsdauer verlaengern mm_wkvl
+                            let mm_wkvl = Number(item.data.data.manoever.mm_wkvl.selected);
+                            if (mm_wkvl > 0) {
+                                let erschwernis = 4 * mm_wkvl; 
+                                mod_pw -= erschwernis;
+                                let multiplier = Math.pow(2,mm_wkvl); 
                                 text = text.concat(
-                                    `${CONFIG.ILARIS.label['brtn']} (Reiterkampf)\n`,
-                                );
-                            } else if (beritten) {
-                                mod_fk -= 4;
-                                text = text.concat(`${CONFIG.ILARIS.label['brtn']}\n`);
-                            }
-                            // Gezielter Schuss
-                            let trefferzone = Number(item.data.data.manoever.fm_gzss.selected);
-                            if (trefferzone) {
-                                mod_fk -= 2;
-                                text = text.concat(
-                                    `${CONFIG.ILARIS.label['fm_gzss']}: ${CONFIG.ILARIS.trefferzonen[trefferzone]}\n`,
+                                    `${multiplier}-fache Wirkungsdauer: -${erschwernis}\n`,
                                 );
                             }
-                            // else {
-                            //     let r = new Roll("1d6");
-                            //     r = r.evaluate({ "async": false }).total;
-                            //     text = text.concat(`Trefferzone: ${CONFIG.ILARIS.trefferzonen[r]}\n`);
-                            // }
-                            // Scharfschuss fm_srfs
-                            let scharfschuss = Number(item.data.data.manoever.fm_srfs.selected);
-                            if (scharfschuss) {
-                                mod_fk -= scharfschuss;
+                            // Zaubertechnik ignorieren mm_ztig
+                            let mm_ztig = Number(item.data.data.manoever.mm_ztig.selected);
+                            if (mm_ztig > 0) {
+                                let erschwernis = 4 * mm_ztig; 
+                                mod_pw -= erschwernis;
                                 text = text.concat(
-                                    `${CONFIG.ILARIS.label['fm_srfs']}: ${scharfschuss}\n`,
+                                    `${mm_ztig} Zaubertechniken ignoriert: -${erschwernis}\n`,
                                 );
                             }
-                            // Zielen fm_zlen    "ruhige_hand": false,
-                            let zielen = item.data.data.manoever.fm_zlen.selected;
-                            let ruhige_hand = item.data.data.manoever.fm_zlen.ruhige_hand;
-                            if (zielen && ruhige_hand) {
-                                mod_fk += 4;
+                            // Erzwingen mm_erzw
+                            console.log(item.data.data.manoever.mm_erzw.selected);
+                            if (item.data.data.manoever.mm_erzw.selected) {
+                                mod_pw += 4;
+                                text = text.concat('Erzwingen: +4\n');
+                                item.data.data.manoever.mm_erzw.selected = false;
+                            }
+                            // Kosten sparen mm_kosp
+                            let mm_kosp = Number(item.data.data.manoever.mm_kosp.selected);
+                            if (mm_kosp > 0) {
+                                let erschwernis = 4 * mm_kosp; 
+                                mod_pw -= erschwernis;
                                 text = text.concat(
-                                    `${CONFIG.ILARIS.label['fm_zlen']} (Ruhige Hand)\n`,
-                                );
-                            } else if (zielen) {
-                                mod_fk += 2;
-                                text = text.concat(`${CONFIG.ILARIS.label['fm_zlen']}\n`);
-                            }
-                            // Meisterschuss fm_msts
-                            let meisterschuss = item.data.data.manoever.fm_msts.selected;
-                            if (meisterschuss) {
-                                mod_fk -= 8;
-                                text = text.concat(`${CONFIG.ILARIS.label['fm_msts']}\n`);
-                            }
-                            // Rüstungsbrecher fm_rust
-                            let ruestungsbrecher = item.data.data.manoever.fm_rust.selected;
-                            if (ruestungsbrecher) {
-                                mod_fk -= 4;
-                                text = text.concat(`${CONFIG.ILARIS.label['fm_rust']}\n`);
-                            }
-                            // Schnellschuss fm_snls
-                            let schnellschuss = Number(item.data.data.manoever.fm_snls.selected);
-                            console.log(`WERT VON SCHNELLSCHUSS: ${schnellschuss}`);
-                            if (schnellschuss > 0) {
-                                mod_fk -= 4 * schnellschuss;
-                                text = text.concat(
-                                    `${CONFIG.ILARIS.label['fm_snls']} (${schnellschuss})\n`,
+                                    `${mm_kosp} mal Kosten sparen: -${erschwernis}\n`,
                                 );
                             }
+                            // Zeit lassen mm_ztls
+                            if (item.data.data.manoever.mm_ztls.selected) {
+                                mod_pw += 2;
+                                text = text.concat('Zeit lassen: +2\n');
+                                item.data.data.manoever.mm_ztls.selected = false;
+                            }
+                            // Zeremonie mm_zere
+                            let mm_zere = Number(item.data.data.manoever.mm_zere.selected);
+                            // console.log(mm_zere);
+                            if (mm_zere > 0) {
+                                let erleichterung = 2+ 2 * mm_zere; 
+                                mod_pw += erleichterung;
+                                let zeitaufwand = Ilaris.zere_choice[mm_zere];
+                                text = text.concat(
+                                    `${zeitaufwand} Zeremonie: +${erleichterung}\n`,
+                                );
+                            }
+
                             // Modifikator
                             let modifikator = Number(item.data.data.manoever.mod.selected);
                             if (modifikator != 0) {
-                                mod_fk += modifikator;
+                                mod_pw += modifikator;
                                 text = text.concat(`Modifikator: ${modifikator}\n`);
                             }
                             // Rollmode
                             let rollmode = item.data.data.manoever.rllm.selected;
                             let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
                             // let formula = `${dice_form} + ${pw} + ${globalermod} + ${nahkampfmod} + ${mod_at}`;
-                            let fk_abzuege_mod = 0;
+                            let pw_abzuege_mod = 0;
                             if (wundabzuegemod < 0 && item.data.data.manoever.kwut) {
                                 text = text.concat(`(Kalte Wut)\n`);
-                                fk_abzuege_mod = furchtmod;
+                                pw_abzuege_mod = furchtmod;
                             } else {
-                                fk_abzuege_mod = globalermod;
+                                pw_abzuege_mod = globalermod;
                             }
-                            let formula = `${dice_form} + ${pw} + ${fk_abzuege_mod} + ${mod_fk}`;
-                            // let formula = `${dice_form} + ${pw} + ${globalermod} + ${mod_fk}`;
+                            let formula = `${dice_form} + ${pw} + ${pw_abzuege_mod} + ${mod_pw}`;
                             // Critfumble & Message
-                            let label = `Attacke (${item.name})`;
+                            let label = `Zauber (${item.name})`;
                             await roll_crit_message(
                                 formula,
                                 label,
@@ -1300,57 +1192,57 @@ export async function wuerfelwurf(event, actor) {
                             );
                         },
                     },
-                    two: {
-                        icon: '<i><img class="button-icon-nahkampf" src="systems/Ilaris/assets/game-icons.net/bloody-sword.png"></i>',
-                        label: 'Schaden',
-                        callback: async (html) => {
-                            await fernkampfUpdate(html, actor, item);
-                            // Gezielter Schlag km_gzss
-                            let trefferzone = Number(item.data.data.manoever.fm_gzss.selected);
-                            if (trefferzone) {
-                                text = text.concat(
-                                    `${CONFIG.ILARIS.label['fm_gzss']}: ${CONFIG.ILARIS.trefferzonen[trefferzone]}\n`,
-                                );
-                            } else {
-                                let zonenroll = new Roll('1d6');
-                                await zonenroll.evaluate({ async: true });
-                                // let zonenroll = Math.floor(Math.random() * 6 + 1);
-                                text = text.concat(
-                                    `Trefferzone: ${CONFIG.ILARIS.trefferzonen[zonenroll.total]}\n`,
-                                );
-                            }
-                            // Scharfschuss fm_srfs
-                            let fm_srfs = Number(item.data.data.manoever.fm_srfs.selected);
-                            if (fm_srfs > 0) {
-                                mod_schaden += fm_srfs;
-                                text = text.concat(
-                                    `${CONFIG.ILARIS.label['fm_srfs']}: ${fm_srfs}\n`,
-                                );
-                            }
-                            // Rüstungsbrecher fm_rust
-                            let ruestungsbrecher = item.data.data.manoever.fm_rust.selected;
-                            if (ruestungsbrecher) {
-                                text = text.concat(`${CONFIG.ILARIS.label['fm_rust']}\n`);
-                            }
-                            // Meisterschuss fm_msts
-                            let meisterschuss = item.data.data.manoever.fm_msts.selected;
-                            if (meisterschuss) {
-                                text = text.concat(`${CONFIG.ILARIS.label['fm_msts']}\n`);
-                            }
-                            // Modifikator
-                            let modifikator = Number(item.data.data.manoever.mod.selected);
-                            if (modifikator != 0) {
-                                mod_schaden += modifikator;
-                                text = text.concat(`Modifikator: ${modifikator}\n`);
-                            }
-                            // Rollmode
-                            let rollmode = item.data.data.manoever.rllm.selected;
-                            let formula = `${schaden} + ${mod_schaden}`;
-                            let label = `Schaden (${item.name})`;
-                            // Critfumble & Message
-                            await roll_crit_message(formula, label, text, speaker, rollmode, false);
-                        },
-                    },
+                    // two: {
+                    //     icon: '<i><img class="button-icon-nahkampf" src="systems/Ilaris/assets/game-icons.net/bloody-sword.png"></i>',
+                    //     label: 'Schaden',
+                    //     callback: async (html) => {
+                    //         await fernkampfUpdate(html, actor, item);
+                    //         // Gezielter Schlag km_gzss
+                    //         let trefferzone = Number(item.data.data.manoever.fm_gzss.selected);
+                    //         if (trefferzone) {
+                    //             text = text.concat(
+                    //                 `${CONFIG.ILARIS.label['fm_gzss']}: ${CONFIG.ILARIS.trefferzonen[trefferzone]}\n`,
+                    //             );
+                    //         } else {
+                    //             let zonenroll = new Roll('1d6');
+                    //             await zonenroll.evaluate({ async: true });
+                    //             // let zonenroll = Math.floor(Math.random() * 6 + 1);
+                    //             text = text.concat(
+                    //                 `Trefferzone: ${CONFIG.ILARIS.trefferzonen[zonenroll.total]}\n`,
+                    //             );
+                    //         }
+                    //         // Scharfschuss fm_srfs
+                    //         let fm_srfs = Number(item.data.data.manoever.fm_srfs.selected);
+                    //         if (fm_srfs > 0) {
+                    //             mod_schaden += fm_srfs;
+                    //             text = text.concat(
+                    //                 `${CONFIG.ILARIS.label['fm_srfs']}: ${fm_srfs}\n`,
+                    //             );
+                    //         }
+                    //         // Rüstungsbrecher fm_rust
+                    //         let ruestungsbrecher = item.data.data.manoever.fm_rust.selected;
+                    //         if (ruestungsbrecher) {
+                    //             text = text.concat(`${CONFIG.ILARIS.label['fm_rust']}\n`);
+                    //         }
+                    //         // Meisterschuss fm_msts
+                    //         let meisterschuss = item.data.data.manoever.fm_msts.selected;
+                    //         if (meisterschuss) {
+                    //             text = text.concat(`${CONFIG.ILARIS.label['fm_msts']}\n`);
+                    //         }
+                    //         // Modifikator
+                    //         let modifikator = Number(item.data.data.manoever.mod.selected);
+                    //         if (modifikator != 0) {
+                    //             mod_schaden += modifikator;
+                    //             text = text.concat(`Modifikator: ${modifikator}\n`);
+                    //         }
+                    //         // Rollmode
+                    //         let rollmode = item.data.data.manoever.rllm.selected;
+                    //         let formula = `${schaden} + ${mod_schaden}`;
+                    //         let label = `Schaden (${item.name})`;
+                    //         // Critfumble & Message
+                    //         await roll_crit_message(formula, label, text, speaker, rollmode, false);
+                    //     },
+                    // },
                     three: {
                         icon: '<i class="fas fa-times"></i>',
                         label: 'Abbrechen',

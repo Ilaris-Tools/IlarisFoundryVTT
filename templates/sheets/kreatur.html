@@ -187,7 +187,14 @@
             {{#each data.data.freietalente as |freiestalent key|}}
             <label>
                 <label>
-                    <a class="item-edit" data-itemid="{{freiestalent.id}}">{{freiestalent.name}} </a> ({{freiestalent.data.data.pw}} 
+                    <a class="item-edit" data-itemid="{{freiestalent.id}}">{{freiestalent.name}} </a> (
+                    <label
+                    class="rollable onhover"
+                    data-rolltype="profan_fertigkeit_pw"
+                    data-fertigkeit="{{freiestalent.name}}"
+                    data-pw="{{freiestalent.data.data.pw}}"
+                    >{{freiestalent.data.data.pw}}</label
+                >  
 <!--                     <a
                         class="rollable icon-small"
                         data-rolltype="basic"

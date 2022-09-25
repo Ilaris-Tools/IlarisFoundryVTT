@@ -117,7 +117,7 @@ export class IlarisActor extends Actor {
         this._calculateUebernaturlichFertigkeiten(data);
         this._calculateUebernaturlichTalente(data); //Nach Uebernatürliche Fertigkeiten
         this._calculateKampf(data);
-        // this._calculateUebernatuerlichProbendiag(data);
+        this._calculateUebernatuerlichProbendiag(data);
         console.log('**Ilaris** Nach Berechnungen');
         console.log(data);
     }
@@ -1287,8 +1287,12 @@ export class IlarisActor extends Actor {
         // data.data.vorteil.geweihtentradition = vorteil_geweihtetraditionen;
         // let be = data.data.abgeleitete.be;
         for (let item of data.data.uebernatuerlich.zauber) {
+            if (item.data.data.manoever == undefined) {
+                console.log('Ich überschreibe Magie Manöver');
+            }
             item.data.data.manoever =
                 item.data.data.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_magie);
+            console.log(item.data.data);
             // mm_erzw: 'Erzwingen',
             if (hardcoded.magieErzwingenPossible(data)) {
                 console.log('Erzwingen aktiviert');

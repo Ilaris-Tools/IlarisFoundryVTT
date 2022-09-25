@@ -7,6 +7,12 @@
     <label>{{radioBoxes "schips" choices_schips checked=checked_schips}}</label>
 </div>
 <hr />
+<div class="flexrow">
+    <label>Kombinierte Aktion: </label>
+    <!-- <input name="kombinierte_aktion" data-dtype="Boolean" type="checkbox" {{checked kombinierte_aktion}}> -->
+    <input type="checkbox" id="kbak" {{checked item.data.data.manoever.kbak.selected}} />
+</div>
+<hr />
 <!-- mächtige magie -->
 {{#if manoever.mm_mama.possible}}
 <div class="flexrow">
@@ -124,12 +130,12 @@
 </div>
 {{/if}}
 <!-- Opferung -->
-{{#if manoever.mm_opfe.possible}}
+<!-- {{#if manoever.mm_opfe.possible}}
 <div class="flexrow">
     <label>{{get_label "mm_opfe"}}</label>
     <input type="checkbox" id="mm_opfe" {{checked item.data.data.manoever.mm_opfe.selected}} />
 </div>
-{{/if}}
+{{/if}} -->
 
 <hr />
 <div class="flexrow">
