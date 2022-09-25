@@ -10,7 +10,7 @@ export class IlarisActor extends Actor {
             'token.displayName': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
             'token.displayBars': CONST.TOKEN_DISPLAY_MODES.ALWAYS,
             'token.disposition': CONST.TOKEN_DISPOSITIONS.FRIENDLY,
-            'token.name': data.name,
+            'token.name': data.name
         });
         if (data.type === 'held' || data.type === 'nsc') {
             // TODO CR: Wegen Bild fragen
@@ -24,9 +24,12 @@ export class IlarisActor extends Actor {
             data.token.vision = false;
             data.token.disposition = CONST.TOKEN_DISPOSITIONS.NEUTRAL;
         } else if (data.type == 'kreatur') {
-            data.img = 'systems/Ilaris/assets/images/token/kreaturentypen/tier.png';
+            data.token.disposition = CONST.TOKEN_DISPOSITIONS.NEUTRAL;
+            if (!data.img) {
+                data.img = 'systems/Ilaris/assets/images/token/kreaturentypen/tier.png';
+            }
         }
-        this.data.update(data);
+        this.data.update(data);  // should this be called here?
         await super._preCreate(data, options, user);
         // console.log(data);
     }
@@ -42,7 +45,7 @@ export class IlarisActor extends Actor {
         // }
         // this.data.update(data);
         super.prepareData();
-        console.log(this.data);
+        // console.log(this.data);
         if (this.data.type === 'held' || this.data.type === 'nsc') {
             this._initializeHeld(this.data);
         }
@@ -125,6 +128,15 @@ export class IlarisActor extends Actor {
     _initializeKreatur(data) {
         console.log('**Ilaris** Bevor Berechnungen');
         console.log(data);
+
+        // TODO: wo genau sollten default werte definiert werden, die nicht nur beim erstellen sondern auch beim
+        // import aus json oder kompendium gesetzt werden?
+        if (!data.data.modifikatoren) {
+            data.data.modifikatoren = {}
+        }
+        if (!data.data.modifikatoren.manuellermod) {
+            data.data.modifikatoren.manuellermod = 0;
+        }
         this._sortItems(data);
         this._calculateWounds(data);
         this._calculateFear(data);

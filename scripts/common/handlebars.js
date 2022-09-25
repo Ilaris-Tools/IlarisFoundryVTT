@@ -117,6 +117,16 @@ function registerHandlebarsHelpers() {
         return (arg1 == arg2);
     });
 
+    Handlebars.registerHelper('modColor', function(arg1) {
+        if (arg1 > 0) {
+            return "darkgreen";
+        } else if (arg1 < 0) {
+            return "darkred";
+        } else {
+            return "black";
+        }
+    });
+
     // Handlebars.registerHelper("get_kampfstile", function(data) {
     //     let kampfstile = ["ohne"];
     //     console.log(data);

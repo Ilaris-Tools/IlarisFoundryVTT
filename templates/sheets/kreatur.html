@@ -13,35 +13,50 @@
         <div class="status statblockreihe">
             <div class="flexrow">
                 <div class="flexcol">
-                    <div>
-                        <label>Wunden/Erschöpft: </label>
-                        <input class="hp-update" name="data.gesundheit.wunden" type="text" value="{{data.data.gesundheit.wunden}}" data-dtype="Number"/>/
-                        <input class="hp-update" name="data.gesundheit.erschoepfung" type="text" value="{{data.data.gesundheit.erschoepfung}}" data-dtype="Number"/>
+                    <div class="flexrow">
+                        <label class="flex1">Wunden/Erschöpft: </label>
+                        <div class="flex1">
+                            <input class="hp-update" name="data.gesundheit.wunden" type="text" value="{{data.data.gesundheit.wunden}}" data-dtype="Number"/>/
+                            <input class="hp-update" name="data.gesundheit.erschoepfung" type="text" value="{{data.data.gesundheit.erschoepfung}}" data-dtype="Number"/>
+                        </div>
                     </div>
+                    <!--                     
                     <div>
-                        <a
-                        class="icon-small toggle-bool {{data.data.gesundheit.wundenignorieren}}"
-                        data-togglevariable="data.gesundheit.wundenignorieren">
-                        <!-- <i class="fa fa-check"></i> -->
-                        Wundabzüge ignorieren
-                        </a>
-                    </div>
-<!--                     <div>
                         <label>Furcht: </label>
                         <input class="hp-update" name="data.furcht.furchtstufe" type="text" value="{{data.data.furcht.furchtstufe}}" data-dtype="Number"/>
-                    </div> -->
-                    <label>Schip*: </label><input name="data.schips.schips_stern" value="{{data.data.schips.schips_stern}}" type="text" data-dtype="Number"/>
+                    </div> 
+                    -->
+                    <div class="flexrow">
+                        <label class="flex1">Schip*: </label>
+                        <div class="flex1">
+                            <input name="data.schips.schips_stern" value="{{data.data.schips.schips_stern}}" type="text" data-dtype="Number"/>
+                        </div>
+                    </div>
                 </div>
                 <div class="flexcol">
-                    <label>{{data.data.gesundheit.display}}</label>
+                    <div>
+                        
+                        <label style="{{#if data.data.gesundheit.wundenignorieren }}text-decoration:line-through;{{/if}}">{{data.data.gesundheit.display}}</label>
+                        <a
+                            class="icon-small toggle-bool {{data.data.gesundheit.wundenignorieren}}"
+                            data-togglevariable="data.gesundheit.wundenignorieren"
+                            title="tooltip_text"
+                        >
+                        {{#if data.data.gesundheit.wundenignorieren}}
+                            aktivieren
+                        {{else}}
+                            ignorieren
+                        {{/if}}
+                        </a>
+                    </div>
                     <label>{{data.data.furcht.display}}</label>
                     <div class="flexrow">
-                        <label>Manueller Mod: </label>
-                        <input name="data.modifikatoren.manuellermod" value="{{data.data.modifikatoren.manuellermod}}" type="text" data-dtype="Number">
+                        <input class="flex0" name="data.modifikatoren.manuellermod" value="{{data.data.modifikatoren.manuellermod}}" type="text" data-dtype="Number">
+                        <label>auf alle Proben (Manuell) </label>
                     </div>
-                    <hr/>
+                    <hr style="width: 100%; padding-top: 1px; padding-bottom: 1px; margin-top: 1px; margin-bottom: 1px; border-top: 1px solid darkred; border-bottom: 0px;" />
                     <div class="flexrow">
-                        <label>{{data.data.abgeleitete.globalermoddisplay}}</label>
+                        <b><label style="color: {{modColor data.data.abgeleitete.globalermod}}">{{data.data.abgeleitete.globalermoddisplay}}</label></b>
                     </div>
                 </div>
             </div>
