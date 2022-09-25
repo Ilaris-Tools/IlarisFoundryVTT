@@ -2,6 +2,9 @@
 import { nahkampfUpdate, calculate_attacke } from './wuerfel/nahkampf_prepare.js';
 import { fernkampfUpdate } from './wuerfel/fernkampf_prepare.js';
 import { magieUpdate } from './wuerfel/magie_prepare.js';
+import { karmaUpdate } from './wuerfel/karma_prepare.js';
+import { multiplyString } from './wuerfel/chatutilities.js';
+
 import {
     calculate_diceschips,
     roll_crit_message,
@@ -1037,7 +1040,7 @@ export async function wuerfelwurf(event, actor) {
         pw = item.data.data.pw;
         const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_magie.html', {
             choices_xd20: CONFIG.ILARIS.xd20_choice,
-            checked_xd20: '0',
+            checked_xd20: '1',
             choices_schips: CONFIG.ILARIS.schips_choice,
             checked_schips: '0',
             zere_choice: CONFIG.ILARIS.zere_choice,
@@ -1085,7 +1088,7 @@ export async function wuerfelwurf(event, actor) {
                                 let erschwernis = 4;
                                 mod_pw -= erschwernis;
                                 text = text.concat(
-                                    `Mehrere Ziele (${mm_mezi}): -${erschwernis}\n`,
+                                    `Mehrere Ziele: -${erschwernis}\n`,
                                 );
                             }
                             //  Reichweite erhoehen mm_rwrh
@@ -1094,6 +1097,10 @@ export async function wuerfelwurf(event, actor) {
                                 let erschwernis = 4 * mm_rwrh; 
                                 mod_pw -= erschwernis;
                                 let multiplier = Math.pow(2,mm_rwrh); 
+                                // let reichweite = multiplyString(item.data.data.reichweite,multiplier);
+                                // text = text.concat(
+                                //     `Reichweite ${reichweite}: -${erschwernis}\n`,
+                                // );
                                 text = text.concat(
                                     `Reichweite erhöhen (${multiplier}-fach): -${erschwernis}\n`,
                                 );
@@ -1103,10 +1110,17 @@ export async function wuerfelwurf(event, actor) {
                             if (mm_vbvk > 0) {
                                 let erschwernis = 4 * mm_vbvk; 
                                 mod_pw -= erschwernis;
-                                let multiplier = Math.pow(2,mm_vbvk); 
+                                let multiplier = 1/Math.pow(2,mm_vbvk); 
+                                let vorbereitung = multiplyString(item.data.data.vorbereitung,multiplier);
+                                if(vorbereitung == '0.5 Aktionen'){
+                                    vorbereitung = '0 Aktionen';
+                                }
                                 text = text.concat(
-                                    `Vorbereitung verkürzen (1/${multiplier}-fach): -${erschwernis}\n`,
+                                    `Vorbereitung ${vorbereitung}: -${erschwernis}\n`,
                                 );
+                                // text = text.concat(
+                                //     `Vorbereitung verkürzen (${multiplier}-fach): -${erschwernis}\n`,
+                                // );
                             }
                             // Wirkungsdauer verlaengern mm_wkvl
                             let mm_wkvl = Number(item.data.data.manoever.mm_wkvl.selected);
@@ -1114,6 +1128,10 @@ export async function wuerfelwurf(event, actor) {
                                 let erschwernis = 4 * mm_wkvl; 
                                 mod_pw -= erschwernis;
                                 let multiplier = Math.pow(2,mm_wkvl); 
+                                // let wirkungsdauer = multiplyString(item.data.data.wirkungsdauer,multiplier);
+                                // text = text.concat(
+                                //     `Wirkungsdauer ${wirkungsdauer}: -${erschwernis}\n`,
+                                // );
                                 text = text.concat(
                                     `Wirkungsdauer verlängern (${multiplier}-fach): -${erschwernis}\n`,
                                 );
@@ -1129,13 +1147,13 @@ export async function wuerfelwurf(event, actor) {
                             }
                             // Erzwingen mm_erzw
                             // console.log('Erzwingen possible: ', item.data.data.manoever.mm_erzw.possible);
-                            if (item.data.data.manoever.mm_erzw.selected) {
+                            if (item.data.data.manoever.mm_erzw.selected && item.data.data.manoever.mm_erzw.possible) {
                                 mod_pw += 4;
                                 text = text.concat('Erzwingen: +4\n');
                             }
                             // Kosten sparen mm_kosp
                             let mm_kosp = Number(item.data.data.manoever.mm_kosp.selected);
-                            if (mm_kosp > 0) {
+                            if (mm_kosp > 0  && item.data.data.manoever.mm_kosp.possible) {
                                 let erschwernis = 4 * mm_kosp; 
                                 mod_pw -= erschwernis;
                                 text = text.concat(
@@ -1143,13 +1161,13 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             // Zeit lassen mm_ztls
-                            if (item.data.data.manoever.mm_ztls.selected) {
+                            if (item.data.data.manoever.mm_ztls.selected && item.data.data.manoever.mm_ztls.possible) {
                                 mod_pw += 2;
                                 text = text.concat('Zeit lassen: +2\n');
                             }
                             // Zeremonie mm_zere
                             let mm_zere = Number(item.data.data.manoever.mm_zere.selected);
-                            if (mm_zere > 0) {
+                            if (mm_zere > 0  && item.data.data.manoever.mm_zere.possible) {
                                 let erleichterung = 2+ 2 * mm_zere; 
                                 mod_pw += erleichterung;
                                 text = text.concat(
@@ -1157,7 +1175,7 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             // Opferung mm_opfe
-                            if (item.data.data.manoever.mm_opfe.selected) {
+                            if (item.data.data.manoever.mm_opfe.selected && item.data.data.manoever.mm_opfe.possible) {
                                 mod_pw += 4;
                                 text = text.concat('Opferung: +4\n');
                             }
@@ -1220,15 +1238,220 @@ export async function wuerfelwurf(event, actor) {
                     //                 `${CONFIG.ILARIS.label['fm_srfs']}: ${fm_srfs}\n`,
                     //             );
                     //         }
-                    //         // Rüstungsbrecher fm_rust
-                    //         let ruestungsbrecher = item.data.data.manoever.fm_rust.selected;
-                    //         if (ruestungsbrecher) {
-                    //             text = text.concat(`${CONFIG.ILARIS.label['fm_rust']}\n`);
+                    //         // Modifikator
+                    //         let modifikator = Number(item.data.data.manoever.mod.selected);
+                    //         if (modifikator != 0) {
+                    //             mod_schaden += modifikator;
+                    //             text = text.concat(`Modifikator: ${modifikator}\n`);
                     //         }
-                    //         // Meisterschuss fm_msts
-                    //         let meisterschuss = item.data.data.manoever.fm_msts.selected;
-                    //         if (meisterschuss) {
-                    //             text = text.concat(`${CONFIG.ILARIS.label['fm_msts']}\n`);
+                    //         // Rollmode
+                    //         let rollmode = item.data.data.manoever.rllm.selected;
+                    //         let formula = `${schaden} + ${mod_schaden}`;
+                    //         let label = `Schaden (${item.name})`;
+                    //         // Critfumble & Message
+                    //         await roll_crit_message(formula, label, text, speaker, rollmode, false);
+                    //     },
+                    // },
+                    three: {
+                        icon: '<i class="fas fa-times"></i>',
+                        label: 'Abbrechen',
+                        callback: () => console.log('Abbruch'),
+                    },
+                },
+            },
+            {
+                jQuery: true,
+            },
+        );
+        d.render(true);
+    } else if (rolltype == 'karma_diag') {
+        let mod_pw = 0;
+        // let mod_asp = 0;
+        let text = '';
+        let itemId = event.currentTarget.dataset.itemid;
+        let item = actor.items.get(itemId);
+        console.log(item.data.data);
+        pw = item.data.data.pw;
+        const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_karma.html', {
+            choices_xd20: CONFIG.ILARIS.xd20_choice,
+            checked_xd20: '1',
+            choices_schips: CONFIG.ILARIS.schips_choice,
+            checked_schips: '0',
+            zere_choice: CONFIG.ILARIS.zere_choice,
+            rollModes: CONFIG.Dice.rollModes,
+            manoever: item.data.data.manoever,
+            item: item,
+            // pw: pw
+        });
+        let d = new Dialog(
+            {
+                title: 'Liturgie',
+                content: html,
+                buttons: {
+                    one: {
+                        icon: '<i><img class="button-icon-nahkampf" src="systems/Ilaris/assets/game-icons.net/book-cover.png"></i>',
+                        label: 'Beten',
+                        callback: async (html) => {
+                            await karmaUpdate(html, actor, item);
+                            let fumble_val = 1;
+                            let dice_number = 0;
+                            let discard_l = 0;
+                            let discard_h = 0;
+                            [text, dice_number, discard_l, discard_h] = calculate_diceschips(
+                                html,
+                                text,
+                                actor,
+                            );
+                            // Kombinierte Aktion kbak
+                            if (item.data.data.manoever.kbak.selected) {
+                                mod_pw -= 4;
+                                text = text.concat('Kombinierte Aktion: -4\n');
+                            }
+                            // Maechtige Liturgie lm_mali
+                            let lm_mali = Number(item.data.data.manoever.lm_mali.selected);
+                            if (lm_mali > 0) {
+                                let erschwernis = 4 * lm_mali;
+                                mod_pw -= erschwernis;
+                                text = text.concat(
+                                    `Mächtige Liturgie (${lm_mali}x): -${erschwernis}\n`,
+                                );
+                            }
+                            //  Mehrere Ziele lm_mezi
+                            let lm_mezi = Number(item.data.data.manoever.lm_mezi.selected);
+                            if (lm_mezi > 0) {
+                                let erschwernis = 4;
+                                mod_pw -= erschwernis;
+                                text = text.concat(
+                                    `Mehrere Ziele (${lm_mezi}): -${erschwernis}\n`,
+                                );
+                            }
+                            //  Reichweite erhoehen lm_rwrh
+                            let lm_rwrh = Number(item.data.data.manoever.lm_rwrh.selected);
+                            if (lm_rwrh > 0) {
+                                let erschwernis = 4 * lm_rwrh; 
+                                mod_pw -= erschwernis;
+                                let multiplier = Math.pow(2,lm_rwrh); 
+                                text = text.concat(
+                                    `Reichweite erhöhen (ver-${multiplier}-facht): -${erschwernis}\n`,
+                                );
+                            }
+                            // Vorbereitung verkuerzen lm_vbvk
+                            let lm_vbvk = Number(item.data.data.manoever.lm_vbvk.selected);
+                            if (lm_vbvk > 0) {
+                                let erschwernis = 4 * lm_vbvk; 
+                                mod_pw -= erschwernis;
+                                let multiplier = 1/Math.pow(2,lm_vbvk); 
+                                let vorbereitung = multiplyString(item.data.data.vorbereitung,multiplier);
+                                if(vorbereitung == '0.5 Aktionen'){
+                                    vorbereitung = '0 Aktionen';
+                                }
+                                text = text.concat(
+                                    `Vorbereitung ${vorbereitung}: -${erschwernis}\n`,
+                                );
+                                // text = text.concat(
+                                //     `Vorbereitung verkürzen (${multiplier}-fach): -${erschwernis}\n`,
+                                // );
+                            }
+                            // Wirkungsdauer verlaengern lm_wkvl
+                            let lm_wkvl = Number(item.data.data.manoever.lm_wkvl.selected);
+                            if (lm_wkvl > 0) {
+                                let erschwernis = 4 * lm_wkvl; 
+                                mod_pw -= erschwernis;
+                                let multiplier = Math.pow(2,lm_wkvl); 
+                                text = text.concat(
+                                    `Wirkungsdauer verlängern (${multiplier}-fach): -${erschwernis}\n`,
+                                );
+                            }
+                            // Zaubertechnik ignorieren lm_ltig
+                            let lm_ltig = Number(item.data.data.manoever.lm_ltig.selected);
+                            if (lm_ltig > 0) {
+                                let erschwernis = 4 * lm_ltig; 
+                                mod_pw -= erschwernis;
+                                text = text.concat(
+                                    `Zaubertechnik ignorieren (${lm_ltig}x): -${erschwernis}\n`,
+                                );
+                            }
+                            // Kosten sparen lm_kosp
+                            let lm_kosp = Number(item.data.data.manoever.lm_kosp.selected);
+                            if (lm_kosp > 0  && item.data.data.manoever.lm_kosp.possible) {
+                                let erschwernis = 4 * lm_kosp; 
+                                mod_pw -= erschwernis;
+                                text = text.concat(
+                                    `Kosten sparen (${lm_kosp}x): -${erschwernis}\n`,
+                                );
+                            }
+                            // Zeremonie lm_zere
+                            let lm_zere = Number(item.data.data.manoever.lm_zere.selected);
+                            if (lm_zere > 0  && item.data.data.manoever.lm_zere.possible) {
+                                let erleichterung = 2+ 2 * lm_zere; 
+                                mod_pw += erleichterung;
+                                text = text.concat(
+                                    `Zeremonie (${CONFIG.ILARIS.zere_choice[lm_zere]}): +${erleichterung}\n`,
+                                );
+                            }
+                            // Opferung lm_opfe
+                            if (item.data.data.manoever.lm_opfe.selected && item.data.data.manoever.lm_opfe.possible) {
+                                mod_pw += 4;
+                                text = text.concat('Opferung: +4\n');
+                            }
+
+                            // Modifikator
+                            let modifikator = Number(item.data.data.manoever.mod.selected);
+                            if (modifikator != 0) {
+                                mod_pw += modifikator;
+                                text = text.concat(`Modifikator: ${modifikator}\n`);
+                            }
+                            // Rollmode
+                            let rollmode = item.data.data.manoever.rllm.selected;
+                            let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
+                            // let formula = `${dice_form} + ${pw} + ${globalermod} + ${nahkampfmod} + ${mod_at}`;
+                            let pw_abzuege_mod = 0;
+                            if (wundabzuegemod < 0 && item.data.data.manoever.kwut) {
+                                text = text.concat(`(Kalte Wut)\n`);
+                                pw_abzuege_mod = furchtmod;
+                            } else {
+                                pw_abzuege_mod = globalermod;
+                            }
+                            let formula = `${dice_form} + ${pw} + ${pw_abzuege_mod} + ${mod_pw}`;
+                            // Critfumble & Message
+                            let label = `Zauber (${item.name})`;
+                            await roll_crit_message(
+                                formula,
+                                label,
+                                text,
+                                speaker,
+                                rollmode,
+                                true,
+                                fumble_val,
+                            );
+                        },
+                    },
+                    // two: {
+                    //     icon: '<i><img class="button-icon-nahkampf" src="systems/Ilaris/assets/game-icons.net/bloody-sword.png"></i>',
+                    //     label: 'Schaden',
+                    //     callback: async (html) => {
+                    //         await fernkampfUpdate(html, actor, item);
+                    //         // Gezielter Schlag km_gzss
+                    //         let trefferzone = Number(item.data.data.manoever.fm_gzss.selected);
+                    //         if (trefferzone) {
+                    //             text = text.concat(
+                    //                 `${CONFIG.ILARIS.label['fm_gzss']}: ${CONFIG.ILARIS.trefferzonen[trefferzone]}\n`,
+                    //             );
+                    //         } else {
+                    //             let zonenroll = new Roll('1d6');
+                    //             await zonenroll.evaluate({ async: true });
+                    //             // let zonenroll = Math.floor(Math.random() * 6 + 1);
+                    //             text = text.concat(
+                    //                 `Trefferzone: ${CONFIG.ILARIS.trefferzonen[zonenroll.total]}\n`,
+                    //             );
+                    //         }
+                    //         // Scharfschuss fm_srfs
+                    //         let fm_srfs = Number(item.data.data.manoever.fm_srfs.selected);
+                    //         if (fm_srfs > 0) {
+                    //             mod_schaden += fm_srfs;
+                    //             text = text.concat(
+                    //                 `${CONFIG.ILARIS.label['fm_srfs']}: ${fm_srfs}\n`,
+                    //             );
                     //         }
                     //         // Modifikator
                     //         let modifikator = Number(item.data.data.manoever.mod.selected);

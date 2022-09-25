@@ -104,6 +104,14 @@ function registerHandlebarsHelpers() {
         return null;
     });
 
+    // extract a number from a string like '16 Schritt'
+    // Handlebars.registerHelper('get_number_from_string', function (string) {
+    //     if (string) {
+    //         return string.match(/\d+/)[0];
+    //     }
+    //     return null;
+    // });
+
     Handlebars.registerHelper('get_label', function (eig) {
         // console.log(eig);
         return CONFIG.ILARIS.label[eig];
@@ -124,6 +132,14 @@ function registerHandlebarsHelpers() {
             return "darkred";
         } else {
             return "black";
+        }
+    });
+
+    Handlebars.registerHelper('nonzero', function(arg1) {
+        if (arg1 != 0) {
+            return true;
+        } else {
+            return false;
         }
     });
 

@@ -459,7 +459,7 @@ export class IlarisActor extends Actor {
             data.data.abgeleitete.nahkampfmoddisplay += `+`;
         }
         // let nahkampfmodgesamt = data.data.modifikatoren.nahkampfmod + data.data.modifikatoren.globalermod;
-        data.data.abgeleitete.nahkampfmoddisplay += `${data.data.modifikatoren.nahkampfmod} auf alle Nahkampf Proben durch Statuseffekte (am Token)`;
+        data.data.abgeleitete.nahkampfmoddisplay += `${data.data.modifikatoren.nahkampfmod} auf AT/VT durch Status am Token`;
         // displayed text for globalermod (auf alle Proben insgesamt)
         data.data.abgeleitete.globalermoddisplay = ``;
         if (data.data.abgeleitete.globalermod == 0){
@@ -1325,6 +1325,26 @@ export class IlarisActor extends Actor {
             // mm_opfe: 'Opferung',
             if (hardcoded.magieOpferungPossible(data)) {
                 item.data.data.manoever.mm_opfe.possible = true;
+            }
+        }
+        for (let item of data.data.uebernatuerlich.liturgien) {
+            if (item.data.data.manoever == undefined) {
+                console.log('Ich überschreibe Karma Manöver');
+            }
+            item.data.data.manoever =
+                item.data.data.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_karma);
+            console.log(item.data.data);
+            // mm_kosp: 'Kosten sparen',
+            if (hardcoded.karmaKostenSparenPossible(data)) {
+                item.data.data.manoever.lm_kosp.possible = true;
+            }
+            // mm_zere: 'Zeremonie',
+            if (hardcoded.karmaZeremoniePossible(data)) {
+                item.data.data.manoever.lm_zere.possible = true;
+            }
+            // mm_opfe: 'Opferung',
+            if (hardcoded.karmaOpferungPossible(data)) {
+                item.data.data.manoever.lm_opfe.possible = true;
             }
         }
     }

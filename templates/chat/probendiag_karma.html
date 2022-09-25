@@ -1,0 +1,142 @@
+<div>
+    <label>Anzahl W20: </label>
+    <label>{{radioBoxes "xd20" choices_xd20 checked=checked_xd20}}</label>
+</div>
+<div>
+    <label>Schips: </label>
+    <label>{{radioBoxes "schips" choices_schips checked=checked_schips}}</label>
+</div>
+<hr />
+<div class="flexrow">
+    <label>Kombinierte Aktion: </label>
+    <input type="checkbox" id="kbak" {{checked item.data.data.manoever.kbak.selected}} />
+</div>
+<hr />
+<!-- mächtige liturgie -->
+{{#if manoever.lm_mali.possible}}
+<div class="flexrow">
+    <label>{{get_label "lm_mali"}}</label>
+    <input
+        id="lm_mali"
+        type="number"
+        name="item.data.data.manoever.lm_mali.selected"
+        value="{{item.data.data.manoever.lm_mali.selected}}"
+        data-dtype="Number"
+    />
+</div>
+{{/if}}
+<!-- Mehrere Ziele -->
+{{#if manoever.lm_mezi.possible}}
+<div class="flexrow">
+    <label>{{get_label "lm_mezi"}}</label>
+    <input
+        id="lm_mezi"
+        type="number"
+        name="item.data.data.manoever.lm_mezi.selected"
+        value="{{item.data.data.manoever.lm_mezi.selected}}"
+        data-dtype="Number"
+    />
+</div>
+{{/if}}
+<hr />
+<!-- Reichweite erhöhen -->
+{{#if manoever.lm_rwrh.possible}}
+<div class="flexrow">
+    <label>{{get_label "lm_rwrh"}}</label>
+    <input
+        id="lm_rwrh"
+        type="number"
+        name="item.data.data.manoever.lm_rwrh.selected"
+        value="{{item.data.data.manoever.lm_rwrh.selected}}"
+        data-dtype="Number"
+    />
+</div>
+{{/if}}
+<!-- Zaubertechnik ignorieren -->
+{{#if manoever.lm_ltig.possible}}
+<div class="flexrow">
+    <label>{{get_label "lm_ltig"}}</label>
+    <input
+        id="lm_ltig"
+        type="number"
+        name="item.data.data.manoever.lm_ltig.selected"
+        value="{{item.data.data.manoever.lm_ltig.selected}}"
+        data-dtype="Number"
+    />
+</div>
+{{/if}}
+<hr/>
+<!-- Vorbereitung verkürzen -->
+{{#if manoever.lm_vbvk.possible}}
+<div class="flexrow">
+    <label>{{get_label "lm_vbvk"}}</label>
+    <input
+        id="lm_vbvk"
+        type="number"
+        name="item.data.data.manoever.lm_vbvk.selected"
+        value="{{item.data.data.manoever.lm_vbvk.selected}}"
+        data-dtype="Number"
+    />
+</div>
+{{/if}}
+<!-- Wirkungsdauer verlängern -->
+{{#if manoever.lm_wkvl.possible}}
+<div class="flexrow">
+    <label>{{get_label "lm_wkvl"}}</label>
+    <input
+        id="lm_wkvl"
+        type="number"
+        name="item.data.data.manoever.lm_wkvl.selected"
+        value="{{item.data.data.manoever.lm_wkvl.selected}}"
+        data-dtype="Number"
+    />
+</div>
+{{/if}}
+<hr/>
+<!-- Kosten sparen -->
+{{#if manoever.lm_kosp.possible}}
+<div class="flexrow">
+    <label>{{get_label "lm_kosp"}}</label>
+    <input
+        id="lm_kosp"
+        type="number"
+        name="item.data.data.manoever.lm_kosp.selected"
+        value="{{item.data.data.manoever.lm_kosp.selected}}"
+        data-dtype="Number"
+    />
+</div>
+{{/if}}
+<!-- Zeremonie -->
+{{#if manoever.lm_zere.possible}}
+<div class="flexrow">
+    <label>{{get_label "lm_zere"}}</label>
+    <select id="lm_zere">
+        {{selectOptions zere_choice selected=item.data.data.manoever.lm_zere.selected
+        localize=true}}
+    </select>
+</div>
+{{/if}}
+<!-- Opferung -->
+{{#if manoever.lm_opfe.possible}}
+<div class="flexrow">
+    <label>{{get_label "lm_opfe"}}</label>
+    <input type="checkbox" id="lm_opfe" {{checked item.data.data.manoever.lm_opfe.selected}} />
+</div>
+{{/if}}
+<hr />
+<div class="flexrow">
+    <label>Modifikator: </label>
+    <input
+        id="modifikator"
+        type="number"
+        name="item.data.data.manoever.mod.selected"
+        value="{{item.data.data.manoever.mod.selected}}"
+        data-dtype="Number"
+    />
+</div>
+<div class="flexrow">
+    <label>Würfelmodus: </label>
+    <select id="rollMode">
+        {{selectOptions rollModes selected=item.data.data.manoever.rllm.selected localize=true}}
+    </select>
+</div>

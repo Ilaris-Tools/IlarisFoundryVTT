@@ -5,7 +5,7 @@ export function magieUpdate(html, actor, item) {
     // Kombinierta Aktion
     checked = html.find('#kbak')[0].checked;
     item.data.data.manoever.kbak.selected = checked;
-    Object.assign(updateData, { manoever: { kabak: { selected: checked } } });
+    Object.assign(updateData, { manoever: { kbak: { selected: checked } } });
     // Modifikator
     checked = html.find('#modifikator')[0].value;
     item.data.data.manoever.mod.selected = checked;

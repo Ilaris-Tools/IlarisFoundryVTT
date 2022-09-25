@@ -488,6 +488,7 @@ let manoever_fernkampf = {
 ILARIS.manoever_fernkampf = manoever_fernkampf;
 
 let manoever_magie = {
+    // kombinierte aktion
     kbak: {
         selected: false,
     },
@@ -546,16 +547,22 @@ let manoever_magie = {
         possible: false,
         selected: '0',
     },
+    // modifikator
     mod: {
         selected: '0',
     },
+    // rollmode
     rllm: {
         selected: 'roll',
-    },
+    }
 };
 ILARIS.manoever_magie = manoever_magie;
 
 let manoever_karma = {
+    // kombinierta aktion
+    kbak: {
+        selected: false,
+    },
     // lm_mali: 'Mächtige Liturgie',
     lm_mali: {
         possible: true,
@@ -600,6 +607,14 @@ let manoever_karma = {
     lm_opfe: {
         possible: false,
         selected: '0',
+    },
+    // modifikator
+    mod: {
+        selected: '0',
+    },
+    // rollmode
+    rllm: {
+        selected: 'roll',
     },
 };
 ILARIS.manoever_karma = manoever_karma;

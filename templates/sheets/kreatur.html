@@ -61,30 +61,6 @@
                 </div>
             </div>
         </div>
-
-        <div class="attribute statblockreihe">
-            <b>Attribute <!--</b><a class="attribut-create">[+]</a><b>-->: </b>
-            <div class="flexrow">
-                {{#each data.data.attribute as |attribut key|}}
-                <div class="attributblock flex1 flex-group-center">
-                        <h2>{{key}}</h2>
-                    <div>
-                        <input name="data.attribute.{{key}}.pw" type="text" value="{{attribut.pw}}" data-dtype="Number" style="width: 30px;"></input>
-<!--                         <a
-                            class="rollable icon-small"
-                            data-rolltype="basic"
-                            data-formula="3d20dl1dh1+{{attribut.pw}}"
-                            data-label="{{key}}"
-                            ><i class="fas fa-dice-d20"></i
-                        ></a> -->
-                        <a class="rollable icon-small" data-rolltype="attribut_diag" data-attribut="{{key}}">
-                            <i class="fas fa-dice-d20"></i>
-                        </a>
-                    </div>
-                </div>
-                {{/each}}
-            </div>
-        </div>
         
         <div class="eigenschaften statblockreihe">
             <b>Eigenschaften </b><a class="item-create plus-button" data-itemclass="eigenschaft">[+]</a><b>: </b>
@@ -102,9 +78,11 @@
 
         <div class="kampfwerte statblockreihe">
             <b>Kampfwerte: </b>
+            {{#if data.data.modifikatoren.nahkampfmod}}
             <div class="flexrow" style="float: right">
-                <label>{{data.data.abgeleitete.nahkampfmoddisplay}}</label>
+                <b><label style="color: {{modColor data.data.modifikatoren.nahkampfmod}}">{{data.data.abgeleitete.nahkampfmoddisplay}}</label></b>
             </div>
+            {{/if}}
             <br/>
             {{#each data.data.kampfwerte as |obj key|}}
                 {{#if (ifEq key "ws")}}
@@ -196,6 +174,29 @@
             {{/each}}
         </div>
 
+        <div class="attribute statblockreihe">
+            <b>Attribute <!--</b><a class="attribut-create">[+]</a><b>-->: </b>
+            <div class="flexrow">
+                {{#each data.data.attribute as |attribut key|}}
+                <div class="attributblock flex1 flex-group-center">
+                        <b>{{key}}</b>
+                    <div>
+                        <input name="data.attribute.{{key}}.pw" type="text" value="{{attribut.pw}}" data-dtype="Number" style="width: 30px;"></input>
+<!--                         <a
+                            class="rollable icon-small"
+                            data-rolltype="basic"
+                            data-formula="3d20dl1dh1+{{attribut.pw}}"
+                            data-label="{{key}}"
+                            ><i class="fas fa-dice-d20"></i
+                        ></a> -->
+                        <a class="rollable icon-small" data-rolltype="attribut_diag" data-attribut="{{key}}">
+                            <i class="fas fa-dice-d20"></i>
+                        </a>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
 
         <div class="freietalente statblockreihe">
             <b>Fertigkeiten</b><a class="item-create plus-button" data-itemclass="freiestalent">[+]</a><b>: </b><br/>
