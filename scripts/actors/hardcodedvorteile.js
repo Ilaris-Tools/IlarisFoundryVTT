@@ -349,7 +349,7 @@ export function magieOpferungPossible(data) {
 
 export function karmaKostenSparenPossible(data) {
     let possible = false;
-    if (data.data.vorteil.magie.find((x) => x.name == 'Liturgische Disziplin')) {
+    if (data.data.vorteil.karma.find((x) => x.name == 'Liturgische Disziplin')) {
         possible = true;
     }
     return possible;
@@ -358,58 +358,58 @@ export function karmaKostenSparenPossible(data) {
 export function karmaZeremoniePossible(data) {
     let possible = false;
 
-    if (data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Borongeweihten III')) {
+    if (data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Borongeweihten III')) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Borongeweihten IV')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Borongeweihten IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Hesindegeweihten III')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Hesindegeweihten III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Hesindegeweihten IV')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Hesindegeweihten IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Ifirngeweihten III')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Ifirngeweihten III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Ifirngeweihten IV')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Ifirngeweihten IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Perainegeweihten III')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Perainegeweihten III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Perainegeweihten IV')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Perainegeweihten IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Praiosgeweihten III')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Praiosgeweihten III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Praiosgeweihten IV')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Praiosgeweihten IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Traviageweihten III')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Traviageweihten III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Traviageweihten IV')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Traviageweihten IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Tsageweihten III')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Tsageweihten III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Tsageweihten IV')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Tsageweihten IV')
     ) {
         possible = true;
     }
@@ -418,66 +418,66 @@ export function karmaZeremoniePossible(data) {
 
 export function karmaOpferungPossible(data) {
     let possible = false;
-    if (data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Avesgeweihten III')) {
+    if (data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Avesgeweihten III')) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Avesgeweihten IV')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Avesgeweihten IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Efferdgeweihten III')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Efferdgeweihten III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Efferdgeweihten IV')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Efferdgeweihten IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Firungeweihten III')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Firungeweihten III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Firungeweihten IV')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Firungeweihten IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Ingerimmgeweihten III')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Ingerimmgeweihten III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Ingerimmgeweihten IV')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Ingerimmgeweihten IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Nandusgeweihten III')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Nandusgeweihten III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Nandusgeweihten IV')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Nandusgeweihten IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Phexgeweihten III')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Phexgeweihten III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Phexgeweihten IV')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Phexgeweihten IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Rahjageweihten III')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Rahjageweihten III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Rahjageweihten IV')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Rahjageweihten IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Rondrageweihten III')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Rondrageweihten III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Rondrageweihten IV')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Rondrageweihten IV')
     ) {
         possible = true;
     } else if (
@@ -485,15 +485,15 @@ export function karmaOpferungPossible(data) {
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Korgeweihten IV')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Korgeweihten IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Swafnirgeweihten III')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Swafnirgeweihten III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Swafnirgeweihten IV')
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Swafnirgeweihten IV')
     ) {
         possible = true;
     }

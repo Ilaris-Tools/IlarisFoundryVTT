@@ -545,7 +545,7 @@ let manoever_magie = {
     // mm_opfe: 'Opferung',
     mm_opfe: {
         possible: false,
-        selected: '0',
+        selected: false,
     },
     // modifikator
     mod: {
@@ -606,7 +606,7 @@ let manoever_karma = {
     // lm_opfe: 'Opferung',
     lm_opfe: {
         possible: false,
-        selected: '0',
+        selected: false,
     },
     // modifikator
     mod: {

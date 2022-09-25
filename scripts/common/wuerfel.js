@@ -1102,7 +1102,7 @@ export async function wuerfelwurf(event, actor) {
                                 //     `Reichweite ${reichweite}: -${erschwernis}\n`,
                                 // );
                                 text = text.concat(
-                                    `Reichweite erhöhen (${multiplier}-fach): -${erschwernis}\n`,
+                                    `Reichweite erhöhen (ver-${multiplier}-facht): -${erschwernis}\n`,
                                 );
                             }
                             // Vorbereitung verkuerzen mm_vbvk
@@ -1110,17 +1110,17 @@ export async function wuerfelwurf(event, actor) {
                             if (mm_vbvk > 0) {
                                 let erschwernis = 4 * mm_vbvk; 
                                 mod_pw -= erschwernis;
-                                let multiplier = 1/Math.pow(2,mm_vbvk); 
-                                let vorbereitung = multiplyString(item.data.data.vorbereitung,multiplier);
-                                if(vorbereitung == '0.5 Aktionen'){
-                                    vorbereitung = '0 Aktionen';
-                                }
-                                text = text.concat(
-                                    `Vorbereitung ${vorbereitung}: -${erschwernis}\n`,
-                                );
+                                let multiplier = Math.pow(2,mm_vbvk); 
+                                // let vorbereitung = multiplyString(item.data.data.vorbereitung,1/multiplier);
+                                // if(vorbereitung == '0.5 Aktionen'){
+                                //     vorbereitung = '0 Aktionen';
+                                // }
                                 // text = text.concat(
-                                //     `Vorbereitung verkürzen (${multiplier}-fach): -${erschwernis}\n`,
+                                //     `Vorbereitung ${vorbereitung}: -${erschwernis}\n`,
                                 // );
+                                text = text.concat(
+                                    `Vorbereitung verkürzen (ge-${multiplier}-telt): -${erschwernis}\n`,
+                                );
                             }
                             // Wirkungsdauer verlaengern mm_wkvl
                             let mm_wkvl = Number(item.data.data.manoever.mm_wkvl.selected);
@@ -1133,7 +1133,7 @@ export async function wuerfelwurf(event, actor) {
                                 //     `Wirkungsdauer ${wirkungsdauer}: -${erschwernis}\n`,
                                 // );
                                 text = text.concat(
-                                    `Wirkungsdauer verlängern (${multiplier}-fach): -${erschwernis}\n`,
+                                    `Wirkungsdauer verlängern (ver-${multiplier}-facht): -${erschwernis}\n`,
                                 );
                             }
                             // Zaubertechnik ignorieren mm_ztig
@@ -1340,17 +1340,17 @@ export async function wuerfelwurf(event, actor) {
                             if (lm_vbvk > 0) {
                                 let erschwernis = 4 * lm_vbvk; 
                                 mod_pw -= erschwernis;
-                                let multiplier = 1/Math.pow(2,lm_vbvk); 
-                                let vorbereitung = multiplyString(item.data.data.vorbereitung,multiplier);
+                                let multiplier = Math.pow(2,lm_vbvk); 
+                                let vorbereitung = multiplyString(item.data.data.vorbereitung,1/multiplier);
                                 if(vorbereitung == '0.5 Aktionen'){
                                     vorbereitung = '0 Aktionen';
                                 }
                                 text = text.concat(
                                     `Vorbereitung ${vorbereitung}: -${erschwernis}\n`,
                                 );
-                                // text = text.concat(
-                                //     `Vorbereitung verkürzen (${multiplier}-fach): -${erschwernis}\n`,
-                                // );
+                                text = text.concat(
+                                    `Vorbereitung verkürzen (ge-${multiplier}-telt): -${erschwernis}\n`,
+                                );
                             }
                             // Wirkungsdauer verlaengern lm_wkvl
                             let lm_wkvl = Number(item.data.data.manoever.lm_wkvl.selected);
@@ -1359,7 +1359,7 @@ export async function wuerfelwurf(event, actor) {
                                 mod_pw -= erschwernis;
                                 let multiplier = Math.pow(2,lm_wkvl); 
                                 text = text.concat(
-                                    `Wirkungsdauer verlängern (${multiplier}-fach): -${erschwernis}\n`,
+                                    `Wirkungsdauer verlängern (ver-${multiplier}-facht): -${erschwernis}\n`,
                                 );
                             }
                             // Zaubertechnik ignorieren lm_ltig
