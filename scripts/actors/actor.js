@@ -313,7 +313,7 @@ export class IlarisActor extends Actor {
 
     _calculateWounds(data) {
         console.log('Berechne Wunden');
-        let einschraenkungen = data.data.gesundheit.wunden + data.data.gesundheit.erschoepfung;
+        let einschraenkungen = Math.floor(data.data.gesundheit.wunden + data.data.gesundheit.erschoepfung);
         let gesundheitzusatz = ``;
         // let old_hp = data.data.gesundheit.hp.value;
         let new_hp = data.data.gesundheit.hp.max - einschraenkungen;
