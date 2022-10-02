@@ -1011,6 +1011,11 @@ export async function wuerfelwurf(event, actor) {
     } else if (rolltype == 'simpleprobe_diag') {
         label = $(event.currentTarget).data('name');
         pw = Number($(event.currentTarget).data('pw'));
+        let probentyp = $(event.currentTarget).data('probentyp');
+        let spezialmod = 0;
+        if(probentyp == 'nahkampf') {
+            spezialmod = nahkampfmod;
+        }
         const html = await renderTemplate(
             'systems/Ilaris/templates/chat/probendiag_attribut.html',
             {
@@ -1060,7 +1065,7 @@ export async function wuerfelwurf(event, actor) {
                             hohequalitaet *= -4;
 
                             let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
-                            let formula = `${dice_form} + ${pw} + ${globalermod} + ${hohequalitaet} + ${modifikator}`;
+                            let formula = `${dice_form} + ${pw} + ${globalermod} + ${hohequalitaet} + ${modifikator} + ${spezialmod}`;
                             // Critfumble & Message
                             await roll_crit_message(formula, label, text, speaker, rollmode);
                         },
