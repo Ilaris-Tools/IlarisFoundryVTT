@@ -21,6 +21,7 @@ function preloadHandlebarsTemplates() {
         'systems/Ilaris/templates/helper/select_trefferzone.html',
         'systems/Ilaris/templates/chat/dreid20.html',
         'systems/Ilaris/templates/chat/probendiag_profan.html',
+        'systems/Ilaris/templates/chat/simpleformula.html',
         'systems/Ilaris/templates/chat/probenchat_profan.html',
         'systems/Ilaris/templates/chat/probendiag_nahkampf.html',
     ];

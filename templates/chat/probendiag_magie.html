@@ -30,13 +30,14 @@
 {{#if manoever.mm_mezi.possible}}
 <div class="flexrow">
     <label>{{get_label "mm_mezi"}}</label>
-    <input
+    <input type="checkbox" id="mm_mezi" {{checked item.data.data.manoever.mm_mezi.selected}} />
+    <!-- <input
         id="mm_mezi"
         type="number"
         name="item.data.data.manoever.mm_mezi.selected"
         value="{{item.data.data.manoever.mm_mezi.selected}}"
         data-dtype="Number"
-    />
+    /> -->
 </div>
 <hr />
 {{/if}}

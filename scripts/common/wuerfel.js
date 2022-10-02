@@ -961,6 +961,53 @@ export async function wuerfelwurf(event, actor) {
             },
         );
         d.render(true);
+    } else if (rolltype == 'simpleformula_diag') {
+        label = $(event.currentTarget).data('name');
+        let formula = $(event.currentTarget).data('formula')
+        const html = await renderTemplate(
+            'systems/Ilaris/templates/chat/probendiag_simpleformula.html',
+            {
+                rollModes: CONFIG.Dice.rollModes,
+            },
+        );
+        console.log('hier');
+        let d = new Dialog(
+            {
+                title: label,
+                content: html,
+                buttons: {
+                    one: {
+                        icon: '<i><img class="button-icon" src="systems/Ilaris/assets/game-icons.net/rolling-dices.png"></i>',
+                        label: 'OK',
+                        callback: async (html) => {
+                            let text = '';
+                            let modifikator = 0;
+                            if (html.find('#modifikator').length > 0) {
+                                modifikator = Number(html.find('#modifikator')[0].value);
+                                if (modifikator != 0) {
+                                    text = text.concat(`Modifikator: ${modifikator}\n`);
+                                    formula = formula + '+' + modifikator;
+                                }
+                            }
+                            let rollmode = '';
+                            if (html.find('#rollMode').length > 0) {
+                                rollmode = html.find('#rollMode')[0].value;
+                            }
+                            await roll_crit_message(formula, label, text, speaker, rollmode, false);
+                        },
+                    },
+                    two: {
+                        icon: '<i class="fas fa-times"></i>',
+                        label: 'Abbrechen',
+                        callback: () => console.log('Chose Two'),
+                    },
+                }
+            },
+            {
+                jQuery: true,
+            },
+        );
+        d.render(true);
     } else if (rolltype == 'simpleprobe_diag') {
         label = $(event.currentTarget).data('name');
         pw = Number($(event.currentTarget).data('pw'));
@@ -976,7 +1023,7 @@ export async function wuerfelwurf(event, actor) {
         );
         let d = new Dialog(
             {
-                title: 'Probe',
+                title: 'Probe ( ' + label + ')',
                 content: html,
                 buttons: {
                     one: {
@@ -1088,7 +1135,7 @@ export async function wuerfelwurf(event, actor) {
                                 let erschwernis = 4;
                                 mod_pw -= erschwernis;
                                 text = text.concat(
-                                    `Mehrere Ziele (${mm_mezi} Stück): -${erschwernis}\n`,
+                                    `Mehrere Ziele: -${erschwernis}\n`,
                                 );
                             }
                             //  Reichweite erhoehen mm_rwrh
@@ -1322,7 +1369,7 @@ export async function wuerfelwurf(event, actor) {
                                 let erschwernis = 4;
                                 mod_pw -= erschwernis;
                                 text = text.concat(
-                                    `Mehrere Ziele (${lm_mezi} Stück): -${erschwernis}\n`,
+                                    `Mehrere Ziele: -${erschwernis}\n`,
                                 );
                             }
                             //  Reichweite erhoehen lm_rwrh

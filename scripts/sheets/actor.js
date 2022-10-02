@@ -130,6 +130,9 @@ export class IlarisActorSheet extends ActorSheet {
         } else if (rolltype == 'simpleprobe_diag') {
             wuerfelwurf(event, this.actor);
             return 0;
+        } else if (rolltype == 'simpleformula_diag') {
+            wuerfelwurf(event, this.actor);
+            return 0;
         } else if (rolltype == 'fernkampf_diag') {
             wuerfelwurf(event, this.actor);
             return 0;
@@ -241,7 +244,7 @@ export class IlarisActorSheet extends ActorSheet {
                 // speaker: speaker.alias,
                 title: `${label}`,
                 crit: crit,
-                fumble: fumble,
+                fumble: fumble //,wunden
             },
         );
         // console.log(html_roll);

@@ -22,7 +22,7 @@ export function magieUpdate(html, actor, item) {
     }
     // Mehrere Ziele mm_mezi
     if (html.find('#mm_mezi').length > 0) {
-        checked = html.find('#mm_mezi')[0].value;
+        checked = html.find('#mm_mezi')[0].checked;
         item.data.data.manoever.mm_mezi.selected = checked;
         Object.assign(updateData, { manoever: { mm_mezi: { selected: checked } } });
     }

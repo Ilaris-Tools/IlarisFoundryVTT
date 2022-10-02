@@ -121,31 +121,52 @@
                 </label>
                 {{/if}}
                 <label>RW: {{angriff.data.data.rw}}</label>
-                <label
+                <a
+                        class="rollable icon-small"
+                        data-rolltype="simpleprobe_diag"
+                        data-name="Attacke ({{angriff.name}})"
+                        data-pw="{{angriff.data.data.at}}"
+                        ><i class="fas fa-dice-d20"></i
+                    ></a>
+                AT<label
                     class="rollable onhover"
                     data-rolltype="at"
                     data-pw="{{angriff.data.data.at}}"
                     data-item="{{angriff.name}}"
                     data-itemid="{{angriff.id}}"
-                    >AT: {{angriff.data.data.at}}</label
+                    >: {{angriff.data.data.at}}</label
                 >
-                <label
+                <a
+                        class="rollable icon-small"
+                        data-rolltype="simpleprobe_diag"
+                        data-name="Verteidigung ({{angriff.name}})"
+                        data-pw="{{angriff.data.data.vt}}"
+                        ><i class="fas fa-dice-d20"></i
+                ></a>
+                VT<label
                     class="rollable onhover"
                     data-rolltype="vt"
                     data-pw="{{angriff.data.data.vt}}"
                     data-item="{{angriff.name}}"
                     data-itemid="{{angriff.id}}"
-                    >VT: {{angriff.data.data.vt}}</label
+                    >: {{angriff.data.data.vt}}</label
                 >
-                <label>
+                <a
+                        class="rollable icon-small"
+                        data-rolltype="simpleformula_diag"
+                        data-name="Schaden ({{angriff.name}})"
+                        data-formula="{{translate_formula angriff.data.data.tp}}"
+                        ><i class="fas fa-dice-d20"></i
+                ></a>
+                TP<label>
                     <a
                     class="rollable icon-small"
                     data-rolltype="basic"
                     data-formula="{{translate_formula angriff.data.data.tp}}"
                     data-label="Schaden ({{angriff.name}})"
-                    >TP: {{angriff.data.data.tp}}</a> 
+                    >: {{angriff.data.data.tp}}</a> 
                 </label>
-                <label>HT: {{angriff.data.data.haerte}}</label>
+                <label>Härte: {{angriff.data.data.haerte}}</label>
                 <!-- <label>
                     <a
                     class="rollable icon-small"

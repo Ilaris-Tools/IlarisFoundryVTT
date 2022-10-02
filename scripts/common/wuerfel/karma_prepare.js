@@ -22,7 +22,7 @@ export function karmaUpdate(html, actor, item) {
     }
     // Mehrere Ziele lm_mezi
     if (html.find('#lm_mezi').length > 0) {
-        checked = html.find('#lm_mezi')[0].value;
+        checked = html.find('#lm_mezi')[0].checked;
         item.data.data.manoever.lm_mezi.selected = checked;
         Object.assign(updateData, { manoever: { lm_mezi: { selected: checked } } });
     }
