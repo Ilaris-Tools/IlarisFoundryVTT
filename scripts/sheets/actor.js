@@ -433,6 +433,15 @@ export class IlarisActorSheet extends ActorSheet {
                 type: 'gegenstand',
                 data: {},
             };
+        } else if (itemclass == 'freiestalent') {
+            console.log('Neues freies Talent');
+            itemData = {
+                name: 'Neue Kreaturenfertigkeit',
+                type: 'freiestalent',
+                data: {},
+            };
+            console.log($(event.currentTarget).data('profan'));
+            itemData.data.profan = $(event.currentTarget).data('profan');
         } else  {
             console.log('Neues generisches Item');
             console.log(itemclass);
@@ -489,6 +498,37 @@ export class IlarisActorSheet extends ActorSheet {
         item.sheet.render(true);
     }
 
+    // _onItemDelete(event) {
+    //     console.log('ItemDelete');
+    //     const itemID = event.currentTarget.dataset.itemid;
+    //     const html = await renderTemplate('systems/Ilaris/templates/chat/yesno.html', {
+    //     });
+    //     let d = new Dialog(
+    //         {
+    //             title: 'Wirklich Löschen?',
+    //             content: html,
+    //             buttons: {
+    //                 one: {
+    //                     icon: '<i><img class="button-icon-nahkampf" src="systems/Ilaris/assets/game-icons.net/book-cover.png"></i>',
+    //                     label: 'Löschen',
+    //                     callback: () => {
+    //                         await this.actor.deleteEmbeddedDocuments('Item', [itemID]),
+    //                     }
+    //                 },
+    //                 two: {
+    //                     icon: '<i class="fas fa-times"></i>',
+    //                     label: 'Abbrechen',
+    //                     callback: () => console.log('Abbruch'),
+    //                 },
+    //             },
+    //         },
+    //         {
+    //             jQuery: true,
+    //         },
+    //     );
+    //     d.render(true);
+    // }
+
     _onItemDelete(event) {
         console.log('ItemDelete');
         const itemID = event.currentTarget.dataset.itemid;
@@ -504,4 +544,5 @@ export class IlarisActorSheet extends ActorSheet {
         this.actor.deleteEmbeddedDocuments('Item', [itemID]);
         // li.slideUp(200, () => this.render(false));
     }
+
 }

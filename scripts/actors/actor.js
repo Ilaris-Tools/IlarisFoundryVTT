@@ -141,6 +141,8 @@ export class IlarisActor extends Actor {
         this._calculateWounds(data);
         this._calculateFear(data);
         this._calculateModifikatoren(data);
+        this._calculateUebernatuerlichProbendiag(data);
+        this._calculateUebernaturlichTalente(data);
     }
 
 
@@ -1376,6 +1378,7 @@ export class IlarisActor extends Actor {
         let infos = [];  // kreatur only
         let vorteile = [];  // TODO: gleich machen fuer helden und kreaturen
         let freietalente = [];
+        let freie_uebernatuerliche_fertigkeiten = [];
         let unsorted = [];
         let speicherplatz_list = ['tragend', 'mitführend'];
         let item_tragend = [];
@@ -1452,7 +1455,7 @@ export class IlarisActor extends Actor {
                 karma_talente.push(i);
             } else if (i.type == 'vorteil') {
                 if (data.type == "kreatur") vorteile.push(i);
-                else if (i.data.data.gruppe == 0) vorteil_allgemein.push(i);
+                if (i.data.data.gruppe == 0) vorteil_allgemein.push(i);
                 else if (i.data.data.gruppe == 1) vorteil_profan.push(i);
                 else if (i.data.data.gruppe == 2) vorteil_kampf.push(i);
                 else if (i.data.data.gruppe == 3) vorteil_kampfstil.push(i);
@@ -1471,7 +1474,13 @@ export class IlarisActor extends Actor {
             } else if (i.type == 'info') { // kreatur only
                 infos.push(i);
             } else if (i.type == 'freiestalent') {
-                freietalente.push(i);
+                if (i.data.data.profan == true) {
+                    freietalente.push(i);
+                    console.log('Freies Talent eingetragen');
+                } else {
+                    freie_uebernatuerliche_fertigkeiten.push(i);
+                    console.log('Freies Uebernatuerliches Talent eingetragen');
+                }
             } else unsorted.push(i);
         }
         ruestungen.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
@@ -1537,6 +1546,13 @@ export class IlarisActor extends Actor {
         );
         vorteile.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
         eigenheiten.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
+        freie_uebernatuerliche_fertigkeiten.sort((a, b) =>
+        a.data.data.gruppe > b.data.data.gruppe
+            ? 1
+            : b.data.data.gruppe > a.data.data.gruppe
+            ? -1
+            : 0,
+    );
 
         // profan_fertigkeiten = _.sortBy( profan_fertigkeiten, 'name' );
         // profan_fertigkeiten = _.sortBy( profan_fertigkeiten, 'data.gruppe' );
@@ -1630,6 +1646,7 @@ export class IlarisActor extends Actor {
             data.data.vorteile = vorteile;
             data.data.infos = infos;
             data.data.freietalente = freietalente;
+            data.data.uebernatuerlich.fertigkeiten = freie_uebernatuerliche_fertigkeiten;
         }
         // let actor = game.actors.get(data._id);
         // // console.log(actor);

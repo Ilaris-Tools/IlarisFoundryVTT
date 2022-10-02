@@ -1,0 +1,114 @@
+<div class="sheet-body">
+    <div class="status statblockreihe">
+        <div class="flexrow">
+            <div class="flexcol">
+                <div class="flexrow">
+                    <b><label class="flex1">AsP*/AsP: </label></b>
+                    <div class="flex1">
+                        <input class="hp-update" name="data.asp_stern" type="text" value="{{data.data.asp_stern}}" data-dtype="Number"/>/
+                        <input class="hp-update" name="data.asp" type="text" value="{{data.data.asp}}" data-dtype="Number"/>
+                    </div>
+                </div>
+                <div class="flexrow">
+                    <b><label class="flex1">KaP*/KaP: </label></b>
+                    <div class="flex1">
+                        <input class="hp-update" name="data.kap_stern" type="text" value="{{data.data.kap_stern}}" data-dtype="Number"/>/
+                        <input class="hp-update" name="data.kap" type="text" value="{{data.data.kap}}" data-dtype="Number"/>
+                    </div>
+                </div>
+                <div class="flexrow">
+                    <b><label class="flex1">GuP*/GuP: </label></b>
+                    <div class="flex1">
+                        <input class="hp-update" name="data.gup_stern" type="text" value="{{data.data.gup_stern}}" data-dtype="Number"/>/
+                        <input class="hp-update" name="data.gup" type="text" value="{{data.data.gup}}" data-dtype="Number"/>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="freietalente statblockreihe">
+        <b>Übernatürliche Fertigkeiten</b><a class="item-create plus-button" data-itemclass="freiestalent" data-profan="false">[+]</a><b>: </b><br/>
+        {{#each data.data.uebernatuerlich.fertigkeiten as |freiestalent key|}}
+        <label>
+            <label>
+                <a class="item-edit" data-itemid="{{freiestalent.id}}">{{freiestalent.name}} </a> (
+                <label
+                class="rollable onhover"
+                data-rolltype="profan_fertigkeit_pw"
+                data-fertigkeit="{{freiestalent.name}}"
+                data-pw="{{freiestalent.data.data.pw}}"
+                >{{freiestalent.data.data.pw}}</label
+            >  
+<!--                     <a
+                    class="rollable icon-small"
+                    data-rolltype="basic"
+                    data-formula="3d20dl1dh1+{{freiestalent.data.data.pw}}"
+                    data-label="{{freiestalent.name}}"
+                    ><i class="fas fa-dice-d20"></i
+                    >
+                </a> -->
+                <a
+                    class="rollable icon-small"
+                    data-rolltype="simpleprobe_diag"
+                    data-name="{{freiestalent.name}}"
+                    data-pw="{{freiestalent.data.data.pw}}"
+                    ><i class="fas fa-dice-d20"></i
+                ></a>
+                ), 
+            </label> 
+        </label>
+        {{/each}}
+    </div>
+
+    <div class="freietalente statblockreihe">
+        <b>Zauber</b><a class="item-create plus-button" data-itemclass="zauber">[+]</a><b>: </b><br/>
+        {{#each data.data.uebernatuerlich.zauber as |zauber key|}}
+        <label>
+            <label>
+                <a class="item-edit" data-itemid="{{zauber.id}}">{{zauber.name}} </a> (
+                <label
+                class="rollable onhover"
+                data-rolltype="profan_fertigkeit_pw"
+                data-fertigkeit="{{zauber.name}}"
+                data-pw="{{zauber.data.data.pw}}"
+                >{{zauber.data.data.pw}}</label
+            >  
+            <a class="rollable icon-small" data-rolltype="magie_diag" data-itemid="{{zauber.id}}"><i class="fas fa-dice-d20"></i></a>
+                ), 
+            </label> 
+        </label>
+        {{/each}}
+    </div>
+
+    <div class="freietalente statblockreihe">
+        <b>Liturgien</b><a class="item-create plus-button" data-itemclass="liturgie">[+]</a><b>: </b><br/>
+        {{#each data.data.uebernatuerlich.liturgien as |liturgie key|}}
+        <label>
+            <label>
+                <a class="item-edit" data-itemid="{{liturgie.id}}">{{liturgie.name}} </a> (
+                <label
+                class="rollable onhover"
+                data-rolltype="profan_fertigkeit_pw"
+                data-fertigkeit="{{liturgie.name}}"
+                data-pw="{{liturgie.data.data.pw}}"
+                >{{liturgie.data.data.pw}}</label
+            >  
+            <a class="rollable icon-small" data-rolltype="karma_diag" data-itemid="{{liturgie.id}}"><i class="fas fa-dice-d20"></i></a>
+                ), 
+            </label> 
+        </label>
+        {{/each}}
+    </div>
+    
+    
+    <div class="infos statblockreihe">
+        <b>Infos</b><a class="item-create plus-button" data-itemclass="info">[+]</a><b>: </b><br/>
+        {{#each data.data.infos as |info|}}
+        <div class="hangingindent">
+            <b><a class="item-edit" data-itemid="{{info.id}}">{{info.name}}</a>:</b>
+            {{info.data.data.text}}
+        </div>
+        {{/each}}
+    </div>
+</div>

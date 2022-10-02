@@ -402,7 +402,8 @@
     },
     "freiestalent": {
       "text": "",
-      "pw": ""
+      "pw": "",
+      "profan": true
     }
   }
 }
