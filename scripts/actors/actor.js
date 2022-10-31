@@ -143,6 +143,12 @@ export class IlarisActor extends Actor {
         this._calculateModifikatoren(data);
         this._calculateUebernatuerlichProbendiag(data);
         this._calculateUebernaturlichTalente(data);
+        this._calculateIniKreatur(data);
+    }
+
+
+    _calculateIniKreatur(data) {
+        data.data.initiative = data.data.kampfwerte.ini;
     }
 
 

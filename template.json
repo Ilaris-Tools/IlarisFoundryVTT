@@ -145,7 +145,8 @@
         "furcht",
         "modifikatoren",
         "schips",
-        "attribute"
+        "attribute",
+        "initiative"
       ],
       "edit": false,
       "kreaturentyp": "humanoid",

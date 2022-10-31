@@ -80,6 +80,7 @@ export async function wuerfelwurf(event, actor) {
                 // distance_checked: "0",
                 distance_choice: CONFIG.ILARIS.distance_choice,
                 rollModes: CONFIG.Dice.rollModes,
+                defaultRollMode: game.settings.get("core", "rollMode"),
                 manoever: item.data.data.manoever,
                 item: item,
                 // pw: pw
@@ -408,6 +409,7 @@ export async function wuerfelwurf(event, actor) {
                 fm_srfs_choice: CONFIG.ILARIS.zeroToEightObj,
                 // fm_srfs_checked: item.data.data.manoever.fm_srfs.selected,
                 rollModes: CONFIG.Dice.rollModes,
+                defaultRollMode: game.settings.get("core", "rollMode"),
                 manoever: item.data.data.manoever,
                 item: item,
                 // pw: pw
@@ -742,6 +744,7 @@ export async function wuerfelwurf(event, actor) {
                 choices_schips: CONFIG.ILARIS.schips_choice,
                 checked_schips: '0',
                 rollModes: CONFIG.Dice.rollModes,
+                defaultRollMode: game.settings.get("core", "rollMode"),
             },
         );
         let d = new Dialog(
@@ -820,6 +823,7 @@ export async function wuerfelwurf(event, actor) {
             },
             choices_talente: talent_list,
             rollModes: CONFIG.Dice.rollModes,
+            defaultRollMode: game.settings.get("core", "rollMode"),
         });
         let d = new Dialog(
             {
@@ -903,6 +907,7 @@ export async function wuerfelwurf(event, actor) {
                 choices_schips: CONFIG.ILARIS.schips_choice,
                 checked_schips: '0',
                 rollModes: CONFIG.Dice.rollModes,
+                defaultRollMode: game.settings.get("core", "rollMode"),
             },
         );
         let d = new Dialog(
@@ -968,6 +973,7 @@ export async function wuerfelwurf(event, actor) {
             'systems/Ilaris/templates/chat/probendiag_simpleformula.html',
             {
                 rollModes: CONFIG.Dice.rollModes,
+                defaultRollMode: game.settings.get("core", "rollMode"),
             },
         );
         console.log('hier');
@@ -1016,14 +1022,19 @@ export async function wuerfelwurf(event, actor) {
         if(probentyp == 'nahkampf') {
             spezialmod = nahkampfmod;
         }
+        let xd20 = '1';
+        if($(event.currentTarget).data('xd20') == '0') {
+            xd20 = '0';
+        }
         const html = await renderTemplate(
             'systems/Ilaris/templates/chat/probendiag_attribut.html',
             {
                 choices_xd20: CONFIG.ILARIS.xd20_choice,
-                checked_xd20: '1',
+                checked_xd20: xd20,
                 choices_schips: CONFIG.ILARIS.schips_choice,
                 checked_schips: '0',
                 rollModes: CONFIG.Dice.rollModes,
+                defaultRollMode: game.settings.get("core", "rollMode"),
             },
         );
         let d = new Dialog(
@@ -1097,6 +1108,7 @@ export async function wuerfelwurf(event, actor) {
             checked_schips: '0',
             zere_choice: CONFIG.ILARIS.zere_choice,
             rollModes: CONFIG.Dice.rollModes,
+            defaultRollMode: game.settings.get("core", "rollMode"),
             manoever: item.data.data.manoever,
             item: item,
             // pw: pw
@@ -1331,6 +1343,7 @@ export async function wuerfelwurf(event, actor) {
             checked_schips: '0',
             zere_choice: CONFIG.ILARIS.zere_choice,
             rollModes: CONFIG.Dice.rollModes,
+            defaultRollMode: game.settings.get("core", "rollMode"),
             manoever: item.data.data.manoever,
             item: item,
             // pw: pw
