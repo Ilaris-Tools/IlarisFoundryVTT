@@ -1,0 +1,336 @@
+<div class="sheet-body">
+    <div class="status statblockreihe">
+        <div class="flexrow">
+            <div class="flexcol">
+                <div class="flexrow">
+                    <label class="flex1">Wunden/Erschöpft: </label>
+                    <div class="flex1">
+                        <input class="hp-update" name="data.gesundheit.wunden" type="text" value="{{data.data.gesundheit.wunden}}" data-dtype="Number"/>/
+                        <input class="hp-update" name="data.gesundheit.erschoepfung" type="text" value="{{data.data.gesundheit.erschoepfung}}" data-dtype="Number"/>
+                    </div>
+                </div>
+                <!--                     
+                <div>
+                    <label>Furcht: </label>
+                    <input class="hp-update" name="data.furcht.furchtstufe" type="text" value="{{data.data.furcht.furchtstufe}}" data-dtype="Number"/>
+                </div> 
+                -->
+                <div class="flexrow">
+                    <label class="flex1">Schip*: </label>
+                    <div class="flex1">
+                        <input name="data.schips.schips_stern" value="{{data.data.schips.schips_stern}}" type="text" data-dtype="Number"/>
+                    </div>
+                </div>
+            </div>
+            <div class="flexcol">
+                <div>
+                    
+                    <label style="{{#if data.data.gesundheit.wundenignorieren }}text-decoration:line-through;{{/if}}">{{data.data.gesundheit.display}}</label>
+                    <a
+                        class="icon-small toggle-bool {{data.data.gesundheit.wundenignorieren}}"
+                        data-togglevariable="data.gesundheit.wundenignorieren"
+                        title="tooltip_text"
+                    >
+                    {{#if data.data.gesundheit.wundenignorieren}}
+                        aktivieren
+                    {{else}}
+                        ignorieren
+                    {{/if}}
+                    </a>
+                </div>
+                <label>{{data.data.furcht.display}}</label>
+                <div class="flexrow">
+                    <input class="flex0" name="data.modifikatoren.manuellermod" value="{{data.data.modifikatoren.manuellermod}}" type="text" data-dtype="Number">
+                    <label>auf alle Proben (Manuell) </label>
+                </div>
+                <hr style="width: 100%; padding-top: 1px; padding-bottom: 1px; margin-top: 1px; margin-bottom: 1px; border-top: 1px solid darkred; border-bottom: 0px;" />
+                <div class="flexrow">
+                    <b><label style="color: {{modColor data.data.abgeleitete.globalermod}}">{{data.data.abgeleitete.globalermoddisplay}}</label></b>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="eigenschaften statblockreihe">
+        <b>Eigenschaften </b><a class="item-create plus-button" data-itemclass="eigenschaft">[+]</a><b>: </b>
+            {{#each data.data.eigenschaften as |eigenschaft|}}
+                <a class="item-edit" data-itemid="{{eigenschaft.id}}">{{eigenschaft.name}}, </a>
+            {{/each}}
+    </div>
+    
+    <div class="vorteile statblockreihe">
+        <b>Vorteile </b><a class="clickable plus-button" data-clicktype="addvorteilinfo">[+]</a><b>: </b>
+            {{#each data.data.vorteile as |vorteil|}}
+                <a class="item-edit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
+            {{/each}}
+    </div>
+
+    <div class="kampfwerte statblockreihe">
+        <b>Kampfwerte: </b>
+        {{#if data.data.modifikatoren.nahkampfmod}}
+        <div class="flexrow" style="float: right">
+            <b><label style="color: {{modColor data.data.modifikatoren.nahkampfmod}}">{{data.data.abgeleitete.nahkampfmoddisplay}}</label></b>
+        </div>
+        {{/if}}
+        <br/>
+        {{#each data.data.kampfwerte as |obj key|}}
+            {{#if (ifEq key "ws")}}
+                <label>{{get_label key}}: </label>
+                <input name="data.kampfwerte.{{key}}" value="{{obj}}" data-dtype="Number"/>/ 
+            {{else}}
+                {{#if (ifEq key "ws_stern")}}
+                <input name="data.kampfwerte.{{key}}" value="{{obj}}" data-dtype="Number"/>, 
+                {{else}}
+                <label>{{get_label key}}: </label>
+                <input name="data.kampfwerte.{{key}}" value="{{obj}}" data-dtype="Number"/>, 
+                {{/if}}
+            {{/if}}
+        {{/each}}
+        MR: 
+        <input name="data.mr" type="text" value="{{data.data.mr}}" data-dtype="Number" style="width: 30px;"></input>
+        <a
+        class="rollable icon-small"
+        data-rolltype="simpleprobe_diag"
+        data-probentyp=""
+        data-name="Magieresistenz"
+        data-pw="{{data.data.mr}}"
+        ><i class="fas fa-dice-d20"></i
+    ></a>
+        </a>
+    </div>
+
+    <div class="angriffe statblockreihe">
+        <b>Angriffe </b><a class="item-create plus-button" data-itemclass="angriff">[+]</a><b>: </b>
+        {{#each data.data.angriffe as |angriff key|}}
+        <div class="flexrow">
+                    
+            <label><b><a class="item-edit" data-itemid="{{angriff.id}}">{{angriff.name}} </a></b></label>
+            {{#if (waffe_ist_fernkampf angriff) }}
+            <label>
+                LZ: {{angriff.data.data.lz}}
+            </label>
+            {{/if}}
+            <label>RW: {{angriff.data.data.rw}}</label>
+            <a
+                    class="rollable icon-small"
+                    data-rolltype="simpleprobe_diag"
+                    data-probentyp="nahkampf"
+                    data-name="Attacke ({{angriff.name}})"
+                    data-xd20="0" 
+                    data-pw="{{angriff.data.data.at}}"
+                    ><i class="fas fa-dice-d20"></i
+                ></a>
+            AT<label
+                class="rollable onhover"
+                data-rolltype="at"
+                data-pw="{{angriff.data.data.at}}"
+                data-item="{{angriff.name}}"
+                data-itemid="{{angriff.id}}"
+                >: {{angriff.data.data.at}}</label
+            >
+            <a
+                    class="rollable icon-small"
+                    data-rolltype="simpleprobe_diag"
+                    data-probentyp="nahkampf"
+                    data-name="Verteidigung ({{angriff.name}})"
+                    data-xd20="0" 
+                    data-pw="{{angriff.data.data.vt}}"
+                    ><i class="fas fa-dice-d20"></i
+            ></a>
+            VT<label
+                class="rollable onhover"
+                data-rolltype="vt"
+                data-pw="{{angriff.data.data.vt}}"
+                data-item="{{angriff.name}}"
+                data-itemid="{{angriff.id}}"
+                >: {{angriff.data.data.vt}}</label
+            >
+            <a
+                    class="rollable icon-small"
+                    data-rolltype="simpleformula_diag"
+                    data-name="Schaden ({{angriff.name}})"
+                    data-formula="{{translate_formula angriff.data.data.tp}}"
+                    ><i class="fas fa-dice-d20"></i
+            ></a>
+            TP<label>
+                <a
+                class="rollable icon-small"
+                data-rolltype="basic"
+                data-formula="{{translate_formula angriff.data.data.tp}}"
+                data-label="Schaden ({{angriff.name}})"
+                >: {{angriff.data.data.tp}}</a> 
+            </label>
+            <label>Härte: {{angriff.data.data.haerte}}</label>
+            <!-- <label>
+                <a
+                class="rollable icon-small"
+                data-rolltype="basic"
+                data-formula="1d20+{{angriff.data.data.at}}"
+                data-label="Attacke ({{angriff.name}})"
+                ><i class="fas fa-dice-d20"></i
+                ></a> 
+                AT: {{angriff.data.data.at}}
+            </label> 
+            <label>
+            <a
+                class="rollable icon-small"
+                data-rolltype="basic"
+                data-formula="1d20+{{angriff.data.data.vt}}"
+                data-label="Verteidigung ({{angriff.name}})"
+                ><i class="fas fa-dice-d20"></i
+                ></a> 
+            VT: {{angriff.data.data.vt}}</label>
+            <label>
+            <a
+                class="rollable icon-small"
+                data-rolltype="basic"
+                data-formula="{{translate_formula angriff.data.data.tp}}"
+                data-label="Schaden ({{angriff.name}})"
+                ><i class="fas fa-dice-d20"></i
+                ></a> 
+                TP: {{angriff.data.data.tp}}</label>
+            <label>HT: {{angriff.data.data.haerte}}</label> -->
+        </div>
+        <div><label>
+            {{#each angriff.data.data.eigenschaften as |eig|}}
+                <span>{{eig.name}}, </span>
+            {{/each}}
+        </label></div>
+        {{/each}}
+    </div>
+
+    <div class="attribute statblockreihe">
+        <b>Attribute <!--</b><a class="attribut-create">[+]</a><b>-->: </b>
+        <div class="flexrow">
+            {{#each data.data.attribute as |attribut key|}}
+            <div class="attributblock flex1 flex-group-center">
+                    <b>{{key}}</b>
+                <div>
+                    <input name="data.attribute.{{key}}.pw" type="text" value="{{attribut.pw}}" data-dtype="Number" style="width: 30px;"></input>
+<!--                         <a
+                        class="rollable icon-small"
+                        data-rolltype="basic"
+                        data-formula="3d20dl1dh1+{{attribut.pw}}"
+                        data-label="{{key}}"
+                        ><i class="fas fa-dice-d20"></i
+                    ></a> -->
+                    <a class="rollable icon-small" data-rolltype="attribut_diag" data-attribut="{{key}}">
+                        <i class="fas fa-dice-d20"></i>
+                    </a>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+
+    <div class="freietalente statblockreihe">
+        <b>Fertigkeiten</b><a class="item-create plus-button" data-itemclass="freiestalent" data-profan="true">[+]</a><b>: </b><br/>
+        {{#each data.data.freietalente as |freiestalent key|}}
+        <label>
+            <label>
+                <a class="item-edit" data-itemid="{{freiestalent.id}}">{{freiestalent.name}} </a> (
+                <label
+                class="rollable onhover"
+                data-rolltype="profan_fertigkeit_pw"
+                data-fertigkeit="{{freiestalent.name}}"
+                data-pw="{{freiestalent.data.data.pw}}"
+                >{{freiestalent.data.data.pw}}</label
+            >  
+<!--                     <a
+                    class="rollable icon-small"
+                    data-rolltype="basic"
+                    data-formula="3d20dl1dh1+{{freiestalent.data.data.pw}}"
+                    data-label="{{freiestalent.name}}"
+                    ><i class="fas fa-dice-d20"></i
+                    >
+                </a> -->
+                <a
+                    class="rollable icon-small"
+                    data-rolltype="simpleprobe_diag"
+                    data-name="{{freiestalent.name}}"
+                    data-pw="{{freiestalent.data.data.pw}}"
+                    ><i class="fas fa-dice-d20"></i
+                ></a>
+                ), 
+            </label> 
+        </label>
+        {{/each}}
+    </div>
+
+    <!-- <div class="freietalente statblockreihe">
+        <b>Übernatürliche Fertigkeiten</b><a class="item-create plus-button" data-itemclass="freiestalent" data-profan="false">[+]</a><b>: </b><br/>
+        {{#each data.data.uebernatuerlich.fertigkeiten as |freiestalent key|}}
+        <label>
+            <label>
+                <a class="item-edit" data-itemid="{{freiestalent.id}}">{{freiestalent.name}} </a> (
+                <label
+                class="rollable onhover"
+                data-rolltype="profan_fertigkeit_pw"
+                data-fertigkeit="{{freiestalent.name}}"
+                data-pw="{{freiestalent.data.data.pw}}"
+                >{{freiestalent.data.data.pw}}</label
+            >  
+                <a
+                    class="rollable icon-small"
+                    data-rolltype="simpleprobe_diag"
+                    data-name="{{freiestalent.name}}"
+                    data-pw="{{freiestalent.data.data.pw}}"
+                    ><i class="fas fa-dice-d20"></i
+                ></a>
+                ), 
+            </label> 
+        </label>
+        {{/each}}
+    </div>
+
+    <div class="freietalente statblockreihe">
+        <b>Zauber</b><a class="item-create plus-button" data-itemclass="zauber">[+]</a><b>: </b><br/>
+        {{#each data.data.uebernatuerlich.zauber as |zauber key|}}
+        <label>
+            <label>
+                <a class="item-edit" data-itemid="{{zauber.id}}">{{zauber.name}} </a> (
+                <label
+                class="rollable onhover"
+                data-rolltype="profan_fertigkeit_pw"
+                data-fertigkeit="{{zauber.name}}"
+                data-pw="{{zauber.data.data.pw}}"
+                >{{zauber.data.data.pw}}</label
+            >  
+            <a class="rollable icon-small" data-rolltype="magie_diag" data-itemid="{{zauber.id}}"><i class="fas fa-dice-d20"></i></a>
+                ), 
+            </label> 
+        </label>
+        {{/each}}
+    </div>
+
+    <div class="freietalente statblockreihe">
+        <b>Liturgien</b><a class="item-create plus-button" data-itemclass="liturgie">[+]</a><b>: </b><br/>
+        {{#each data.data.uebernatuerlich.liturgien as |liturgie key|}}
+        <label>
+            <label>
+                <a class="item-edit" data-itemid="{{liturgie.id}}">{{liturgie.name}} </a> (
+                <label
+                class="rollable onhover"
+                data-rolltype="profan_fertigkeit_pw"
+                data-fertigkeit="{{liturgie.name}}"
+                data-pw="{{liturgie.data.data.pw}}"
+                >{{liturgie.data.data.pw}}</label
+            >  
+            <a class="rollable icon-small" data-rolltype="magie_diag" data-itemid="{{liturgie.id}}"><i class="fas fa-dice-d20"></i></a>
+                ), 
+            </label> 
+        </label>
+        {{/each}}
+    </div> -->
+    
+    
+    <div class="infos statblockreihe">
+        <b>Infos</b><a class="item-create plus-button" data-itemclass="info">[+]</a><b>: </b><br/>
+        {{#each data.data.infos as |info|}}
+        <div class="hangingindent">
+            <b><a class="item-edit" data-itemid="{{info.id}}">{{info.name}}</a>:</b>
+            {{info.data.data.text}}
+        </div>
+        {{/each}}
+    </div>
+</div>

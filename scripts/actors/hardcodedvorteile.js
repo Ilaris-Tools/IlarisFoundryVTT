@@ -316,39 +316,186 @@ export function magieZeremoniePossible(data) {
     let possible = false;
 
     if (data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Schamanen III')) {
-        possible = True;
+        possible = true;
     } else if (
         data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Schamanen IV')
     ) {
-        possible = True;
+        possible = true;
     }
     return possible;
 }
 
 export function magieOpferungPossible(data) {
     let possible = false;
-    if (data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Schamanen III')) {
-        possible = True;
-    } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Schamanen IV')
-    ) {
-        possible = True;
-    } else if (
+    if (
         data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Durro-dun III')
     ) {
-        possible = True;
+        possible = true;
     } else if (
         data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Durro-dun IV')
     ) {
-        possible = True;
+        possible = true;
     } else if (
         data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Zaubertänzer III')
     ) {
-        possible = True;
+        possible = true;
     } else if (
         data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Zaubertänzer IV')
     ) {
-        possible = True;
+        possible = true;
+    }
+    return possible;
+}
+
+export function karmaKostenSparenPossible(data) {
+    let possible = false;
+    if (data.data.vorteil.karma.find((x) => x.name == 'Liturgische Disziplin')) {
+        possible = true;
+    }
+    return possible;
+}
+
+export function karmaZeremoniePossible(data) {
+    let possible = false;
+
+    if (data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Borongeweihten III')) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Borongeweihten IV')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Hesindegeweihten III')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Hesindegeweihten IV')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Ifirngeweihten III')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Ifirngeweihten IV')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Perainegeweihten III')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Perainegeweihten IV')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Praiosgeweihten III')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Praiosgeweihten IV')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Traviageweihten III')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Traviageweihten IV')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Tsageweihten III')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Tsageweihten IV')
+    ) {
+        possible = true;
+    }
+    return possible;
+}
+
+export function karmaOpferungPossible(data) {
+    let possible = false;
+    if (data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Avesgeweihten III')) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Avesgeweihten IV')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Efferdgeweihten III')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Efferdgeweihten IV')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Firungeweihten III')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Firungeweihten IV')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Ingerimmgeweihten III')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Ingerimmgeweihten IV')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Nandusgeweihten III')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Nandusgeweihten IV')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Phexgeweihten III')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Phexgeweihten IV')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Rahjageweihten III')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Rahjageweihten IV')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Rondrageweihten III')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Rondrageweihten IV')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Korgeweihten III')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Korgeweihten IV')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Swafnirgeweihten III')
+    ) {
+        possible = true;
+    } else if (
+        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Swafnirgeweihten IV')
+    ) {
+        possible = true;
     }
     return possible;
 }

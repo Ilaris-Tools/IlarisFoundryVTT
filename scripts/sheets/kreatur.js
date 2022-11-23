@@ -6,24 +6,62 @@ export class KreaturSheet extends IlarisActorSheet {
             // classes: ["ilaris", "sheet"],
             classes: ['ilaris'],
             template: 'systems/Ilaris/templates/sheets/kreatur.html',
+            tabs: [
+                {
+                    navSelector: '.sheet-tabs',
+                    contentSelector: '.sheet-body',
+                    initial: 'profan',
+                },
+            ],
         });
     }
     
     _onDropItemCreate(item) {
         console.log("Item gedroppt!");
         console.log(item);
+
+        let itemclass = item.type;
+        let itemData = {};
         if (item.type == "talent" || item.type == "fertigkeit") {
             console.log("Item drop abgefangen. Erstelle Freies Talent..");
-            item.type = "freiestalent";
-            item.pw = 0;
-            return super._onDropItemCreate(item);
-            // let freiestalent = {
-            //     name: item.name,
-            //     pw: 0
-            // }
+            itemData = {
+                name: item.name,
+                type: 'freiestalent',
+                data: {
+                    text: item.data.text,
+                    pw: item.data.pw,
+                    profan: true
+                }
+            }
         }
-
-        // TODO: catch fertigkeiten und talente für kreaturen und konvertiere sie on the fly
-        return super._onDropItemCreate(item);
+        if (item.type == "uebernatuerliche_fertigkeit") {
+            console.log("Item drop abgefangen. Erstelle Uebernatuerliches Freies Talent..");
+            itemData = {
+                name: item.name,
+                type: 'freiestalent',
+                data: {
+                    text: item.data.text,
+                    pw: item.data.pw,
+                    profan: false
+                }
+            }
+        }
+        // else if (item.type == "zauber" || item.type == 'liturgie') {
+        //     console.log("Item drop abgefangen. Erstelle Zauber oder Liturgie..");
+        //     itemData = {
+        //         name: item.name,
+        //         type: item.type,
+        //         data: item.data,
+        //     }
+        // } 
+        else {
+            console.log("Item drop abgefangen. Erstelle Kopie..");
+            itemData = {
+                name: item.name,
+                type: item.type,
+                data: item.data,
+            }
+        } 
+        return this.actor.createEmbeddedDocuments('Item', [itemData]);
     }
 }

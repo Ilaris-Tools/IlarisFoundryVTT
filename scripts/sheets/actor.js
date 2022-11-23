@@ -43,12 +43,9 @@ export class IlarisActorSheet extends ActorSheet {
 
     async _onToggleBool(event) {
         const togglevariable = event.currentTarget.dataset.togglevariable;
-        console.log(`hier!`);
         let attr = `${togglevariable}`;
         let bool_status = getProperty(this.actor.data, attr);
-        console.log(`hier! ${bool_status}`);
         await this.actor.update({ [attr]: !bool_status });
-        console.log(`hier! ${bool_status}`);
     }
 
 
@@ -131,6 +128,9 @@ export class IlarisActorSheet extends ActorSheet {
             wuerfelwurf(event, this.actor);
             return 0;
         } else if (rolltype == 'simpleprobe_diag') {
+            wuerfelwurf(event, this.actor);
+            return 0;
+        } else if (rolltype == 'simpleformula_diag') {
             wuerfelwurf(event, this.actor);
             return 0;
         } else if (rolltype == 'fernkampf_diag') {
@@ -244,7 +244,7 @@ export class IlarisActorSheet extends ActorSheet {
                 // speaker: speaker.alias,
                 title: `${label}`,
                 crit: crit,
-                fumble: fumble,
+                fumble: fumble //,wunden
             },
         );
         // console.log(html_roll);
@@ -299,13 +299,13 @@ export class IlarisActorSheet extends ActorSheet {
         // this.actor.token.refresh();
         // console.log(event);
         let einschraenkungen =
-            this.actor.data.data.gesundheit.wunden + this.actor.data.data.gesundheit.erschoepfung;
+            Math.floor(this.actor.data.data.gesundheit.wunden + this.actor.data.data.gesundheit.erschoepfung);
         // let old_hp = this.actor.data.data.gesundheit.hp.value;
         let new_hp = this.actor.data.data.gesundheit.hp.max - einschraenkungen;
         // this.actor.data.data.gesundheit.hp.value = new_hp;
         this.actor.update({ 'data.gesundheit.hp.value': new_hp });
         // this.actor.token.actor.data.data.gesundheit.hp.value = new_hp;
-        this.actor.token?.refresh();
+        // this.actor.token?.refresh();
         console.log(this.actor);
         // let token = this.actor.token;
         // console.log(token);
@@ -433,6 +433,15 @@ export class IlarisActorSheet extends ActorSheet {
                 type: 'gegenstand',
                 data: {},
             };
+        } else if (itemclass == 'freiestalent') {
+            console.log('Neues freies Talent');
+            itemData = {
+                name: 'Neue Kreaturenfertigkeit',
+                type: 'freiestalent',
+                data: {},
+            };
+            console.log($(event.currentTarget).data('profan'));
+            itemData.data.profan = $(event.currentTarget).data('profan');
         } else  {
             console.log('Neues generisches Item');
             console.log(itemclass);
@@ -489,6 +498,37 @@ export class IlarisActorSheet extends ActorSheet {
         item.sheet.render(true);
     }
 
+    // _onItemDelete(event) {
+    //     console.log('ItemDelete');
+    //     const itemID = event.currentTarget.dataset.itemid;
+    //     const html = await renderTemplate('systems/Ilaris/templates/chat/yesno.html', {
+    //     });
+    //     let d = new Dialog(
+    //         {
+    //             title: 'Wirklich Löschen?',
+    //             content: html,
+    //             buttons: {
+    //                 one: {
+    //                     icon: '<i><img class="button-icon-nahkampf" src="systems/Ilaris/assets/game-icons.net/book-cover.png"></i>',
+    //                     label: 'Löschen',
+    //                     callback: () => {
+    //                         await this.actor.deleteEmbeddedDocuments('Item', [itemID]),
+    //                     }
+    //                 },
+    //                 two: {
+    //                     icon: '<i class="fas fa-times"></i>',
+    //                     label: 'Abbrechen',
+    //                     callback: () => console.log('Abbruch'),
+    //                 },
+    //             },
+    //         },
+    //         {
+    //             jQuery: true,
+    //         },
+    //     );
+    //     d.render(true);
+    // }
+
     _onItemDelete(event) {
         console.log('ItemDelete');
         const itemID = event.currentTarget.dataset.itemid;
@@ -504,4 +544,5 @@ export class IlarisActorSheet extends ActorSheet {
         this.actor.deleteEmbeddedDocuments('Item', [itemID]);
         // li.slideUp(200, () => this.render(false));
     }
+
 }

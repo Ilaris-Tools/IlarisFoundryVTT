@@ -1,7 +1,9 @@
 <div>
+    {{#if data.data.modifikatoren.nahkampfmod}}
     <div class="flexrow" style="float: right">
-        <label>{{data.data.abgeleitete.nahkampfmoddisplay}}</label>
+        <b><label style="color: {{modColor data.data.modifikatoren.nahkampfmod}}">{{data.data.abgeleitete.nahkampfmoddisplay}}</label></b>
     </div>
+    {{/if}}
     <h2>Nahkampfwaffen</h2>
     <a class="item-create" data-itemclass="nahkampfwaffe"
         ><i class="fas fa-plus"></i>Neue Nahkampfwaffe</a
@@ -166,7 +168,6 @@
             <a class="rollable icon-small" data-rolltype="fernkampf_diag" data-itemid="{{this.id}}"
                 ><i class="fas fa-dice-d20"></i
             ></a>
-            <!-- <a class="rollable icon-small" data-rolltype="profan_fertigkeit" data-fertigkeit="{{key}}"><i class="fas fa-dice-d20"></i></a> -->
             <a
                 class="icon-small item-toggle {{this.data.data.hauptwaffe}}"
                 data-itemid="{{this.id}}"

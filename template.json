@@ -11,7 +11,7 @@
           "erschoepfung": 0,
           "wunden": 0,
           "wundabzuege": 0,
-          "wundenignorieren": 0,
+          "wundenignorieren": false,
           "display": "Volle Gesundheit",
           "hp": {
             "max": 9,
@@ -145,7 +145,8 @@
         "furcht",
         "modifikatoren",
         "schips",
-        "attribute"
+        "attribute",
+        "initiative"
       ],
       "edit": false,
       "kreaturentyp": "humanoid",
@@ -159,6 +160,7 @@
         "koloss": 0
       },
       "talente": [],
+      "mr": 0,
       "asp": 0,
       "kap": 0,
       "gup": 0,
@@ -403,7 +405,8 @@
     },
     "freiestalent": {
       "text": "",
-      "pw": ""
+      "pw": "",
+      "profan": true
     }
   }
 }

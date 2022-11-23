@@ -37,8 +37,12 @@
                 <a
                     class="icon-small toggle-bool {{data.data.gesundheit.wundenignorieren}}"
                     data-togglevariable="data.gesundheit.wundenignorieren">
-                    <!-- <i class="fa fa-check"></i> -->
-                    Wundabzüge ignorieren
+                    Wundabzüge ignorieren 
+                    {{#if data.data.gesundheit.wundenignorieren}}
+                        (aktiviert)
+                    {{else}}
+                        (nicht aktiv)
+                    {{/if}}
                 </a>
             </div>
             </div>
@@ -84,18 +88,18 @@
             <label>{{data.data.abgeleitete.globalermod}}</label>
         </div> -->
         <div class="flexrow">
-            <label>Manueller Mod: </label>
-            <input name="data.modifikatoren.manuellermod" value="{{data.data.modifikatoren.manuellermod}}" type="text" data-dtype="Number">
+            <label style="{{#if data.data.gesundheit.wundenignorieren }}text-decoration:line-through;{{/if}}">{{data.data.gesundheit.display}}</label>
         </div>
         <div class="flexrow">
             <label>{{data.data.furcht.display}}</label>
         </div>
         <div class="flexrow">
-            <label>{{data.data.gesundheit.display}}</label>
+            <input class="flex0" name="data.modifikatoren.manuellermod" value="{{data.data.modifikatoren.manuellermod}}" type="text" data-dtype="Number">
+            <label>auf alle Proben (Manuell) </label>
         </div>
         <hr/>
         <div class="flexrow">
-            <label>{{data.data.abgeleitete.globalermoddisplay}}</label>
+            <b><label style="color: {{modColor data.data.abgeleitete.globalermod}}">{{data.data.abgeleitete.globalermoddisplay}}</label></b>
         </div>
         <!-- <div class="flexrow">
             <label>Nahkampf Mod: </label>

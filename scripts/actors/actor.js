@@ -120,7 +120,7 @@ export class IlarisActor extends Actor {
         this._calculateUebernaturlichFertigkeiten(data);
         this._calculateUebernaturlichTalente(data); //Nach Uebernatürliche Fertigkeiten
         this._calculateKampf(data);
-        // this._calculateUebernatuerlichProbendiag(data);
+        this._calculateUebernatuerlichProbendiag(data);
         console.log('**Ilaris** Nach Berechnungen');
         console.log(data);
     }
@@ -144,6 +144,14 @@ export class IlarisActor extends Actor {
         this._calculateWounds(data);
         this._calculateFear(data);
         this._calculateModifikatoren(data);
+        this._calculateUebernatuerlichProbendiag(data);
+        this._calculateUebernaturlichTalente(data);
+        this._calculateIniKreatur(data);
+    }
+
+
+    _calculateIniKreatur(data) {
+        data.data.initiative = data.data.kampfwerte.ini;
     }
 
 
@@ -316,7 +324,7 @@ export class IlarisActor extends Actor {
 
     _calculateWounds(data) {
         console.log('Berechne Wunden');
-        let einschraenkungen = data.data.gesundheit.wunden + data.data.gesundheit.erschoepfung;
+        let einschraenkungen = Math.floor(data.data.gesundheit.wunden + data.data.gesundheit.erschoepfung);
         let gesundheitzusatz = ``;
         // let old_hp = data.data.gesundheit.hp.value;
         let new_hp = data.data.gesundheit.hp.max - einschraenkungen;
@@ -462,7 +470,7 @@ export class IlarisActor extends Actor {
             data.data.abgeleitete.nahkampfmoddisplay += `+`;
         }
         // let nahkampfmodgesamt = data.data.modifikatoren.nahkampfmod + data.data.modifikatoren.globalermod;
-        data.data.abgeleitete.nahkampfmoddisplay += `${data.data.modifikatoren.nahkampfmod} auf alle Nahkampf Proben durch Statuseffekte (am Token)`;
+        data.data.abgeleitete.nahkampfmoddisplay += `${data.data.modifikatoren.nahkampfmod} auf AT/VT durch Status am Token`;
         // displayed text for globalermod (auf alle Proben insgesamt)
         data.data.abgeleitete.globalermoddisplay = ``;
         if (data.data.abgeleitete.globalermod == 0){
@@ -1302,8 +1310,12 @@ export class IlarisActor extends Actor {
         // data.data.vorteil.geweihtentradition = vorteil_geweihtetraditionen;
         // let be = data.data.abgeleitete.be;
         for (let item of data.data.uebernatuerlich.zauber) {
+            if (item.data.data.manoever == undefined) {
+                console.log('Ich überschreibe Magie Manöver');
+            }
             item.data.data.manoever =
                 item.data.data.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_magie);
+            console.log(item.data.data);
             // mm_erzw: 'Erzwingen',
             if (hardcoded.magieErzwingenPossible(data)) {
                 console.log('Erzwingen aktiviert');
@@ -1324,6 +1336,26 @@ export class IlarisActor extends Actor {
             // mm_opfe: 'Opferung',
             if (hardcoded.magieOpferungPossible(data)) {
                 item.data.data.manoever.mm_opfe.possible = true;
+            }
+        }
+        for (let item of data.data.uebernatuerlich.liturgien) {
+            if (item.data.data.manoever == undefined) {
+                console.log('Ich überschreibe Karma Manöver');
+            }
+            item.data.data.manoever =
+                item.data.data.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_karma);
+            console.log(item.data.data);
+            // mm_kosp: 'Kosten sparen',
+            if (hardcoded.karmaKostenSparenPossible(data)) {
+                item.data.data.manoever.lm_kosp.possible = true;
+            }
+            // mm_zere: 'Zeremonie',
+            if (hardcoded.karmaZeremoniePossible(data)) {
+                item.data.data.manoever.lm_zere.possible = true;
+            }
+            // mm_opfe: 'Opferung',
+            if (hardcoded.karmaOpferungPossible(data)) {
+                item.data.data.manoever.lm_opfe.possible = true;
             }
         }
     }
@@ -1355,6 +1387,7 @@ export class IlarisActor extends Actor {
         let infos = [];  // kreatur only
         let vorteile = [];  // TODO: gleich machen fuer helden und kreaturen
         let freietalente = [];
+        let freie_uebernatuerliche_fertigkeiten = [];
         let unsorted = [];
         let speicherplatz_list = ['tragend', 'mitführend'];
         let item_tragend = [];
@@ -1431,7 +1464,7 @@ export class IlarisActor extends Actor {
                 karma_talente.push(i);
             } else if (i.type == 'vorteil') {
                 if (data.type == "kreatur") vorteile.push(i);
-                else if (i.data.data.gruppe == 0) vorteil_allgemein.push(i);
+                if (i.data.data.gruppe == 0) vorteil_allgemein.push(i);
                 else if (i.data.data.gruppe == 1) vorteil_profan.push(i);
                 else if (i.data.data.gruppe == 2) vorteil_kampf.push(i);
                 else if (i.data.data.gruppe == 3) vorteil_kampfstil.push(i);
@@ -1450,7 +1483,13 @@ export class IlarisActor extends Actor {
             } else if (i.type == 'info') { // kreatur only
                 infos.push(i);
             } else if (i.type == 'freiestalent') {
-                freietalente.push(i);
+                if (i.data.data.profan == true) {
+                    freietalente.push(i);
+                    console.log('Freies Talent eingetragen');
+                } else {
+                    freie_uebernatuerliche_fertigkeiten.push(i);
+                    console.log('Freies Uebernatuerliches Talent eingetragen');
+                }
             } else unsorted.push(i);
         }
         ruestungen.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
@@ -1516,6 +1555,13 @@ export class IlarisActor extends Actor {
         );
         vorteile.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
         eigenheiten.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
+        freie_uebernatuerliche_fertigkeiten.sort((a, b) =>
+        a.data.data.gruppe > b.data.data.gruppe
+            ? 1
+            : b.data.data.gruppe > a.data.data.gruppe
+            ? -1
+            : 0,
+    );
 
         // profan_fertigkeiten = _.sortBy( profan_fertigkeiten, 'name' );
         // profan_fertigkeiten = _.sortBy( profan_fertigkeiten, 'data.gruppe' );
@@ -1609,6 +1655,7 @@ export class IlarisActor extends Actor {
             data.data.vorteile = vorteile;
             data.data.infos = infos;
             data.data.freietalente = freietalente;
+            data.data.uebernatuerlich.fertigkeiten = freie_uebernatuerliche_fertigkeiten;
         }
         // let actor = game.actors.get(data._id);
         // // console.log(actor);

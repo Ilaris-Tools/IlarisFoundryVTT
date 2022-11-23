@@ -488,6 +488,10 @@ let manoever_fernkampf = {
 ILARIS.manoever_fernkampf = manoever_fernkampf;
 
 let manoever_magie = {
+    // kombinierte aktion
+    kbak: {
+        selected: false,
+    },
     // mm_mama: 'Mächtige Magie',
     mm_mama: {
         possible: true,
@@ -496,7 +500,7 @@ let manoever_magie = {
     // mm_mezi: 'Mehrere Ziele',
     mm_mezi: {
         possible: true,
-        selected: '0',
+        selected: false,
     },
     // mm_rwrh: 'Reichweite erhöhen',
     mm_rwrh: {
@@ -541,12 +545,24 @@ let manoever_magie = {
     // mm_opfe: 'Opferung',
     mm_opfe: {
         possible: false,
+        selected: false,
+    },
+    // modifikator
+    mod: {
         selected: '0',
     },
+    // rollmode
+    rllm: {
+        selected: 'roll',
+    }
 };
 ILARIS.manoever_magie = manoever_magie;
 
 let manoever_karma = {
+    // kombinierta aktion
+    kbak: {
+        selected: false,
+    },
     // lm_mali: 'Mächtige Liturgie',
     lm_mali: {
         possible: true,
@@ -555,7 +571,7 @@ let manoever_karma = {
     // lm_mezi: 'Mehrere Ziele',
     lm_mezi: {
         possible: true,
-        selected: '0',
+        selected: false,
     },
     // lm_ltig: 'Liturgische Technik ignorieren',
     lm_ltig: {
@@ -590,7 +606,15 @@ let manoever_karma = {
     // lm_opfe: 'Opferung',
     lm_opfe: {
         possible: false,
+        selected: false,
+    },
+    // modifikator
+    mod: {
         selected: '0',
+    },
+    // rollmode
+    rllm: {
+        selected: 'roll',
     },
 };
 ILARIS.manoever_karma = manoever_karma;

@@ -7,6 +7,12 @@
     <label>{{radioBoxes "schips" choices_schips checked=checked_schips}}</label>
 </div>
 <hr />
+<div class="flexrow">
+    <label>Kombinierte Aktion: </label>
+    <!-- <input name="kombinierte_aktion" data-dtype="Boolean" type="checkbox" {{checked kombinierte_aktion}}> -->
+    <input type="checkbox" id="kbak" {{checked item.data.data.manoever.kbak.selected}} />
+</div>
+<hr />
 <!-- mächtige magie -->
 {{#if manoever.mm_mama.possible}}
 <div class="flexrow">
@@ -24,14 +30,16 @@
 {{#if manoever.mm_mezi.possible}}
 <div class="flexrow">
     <label>{{get_label "mm_mezi"}}</label>
-    <input
+    <input type="checkbox" id="mm_mezi" {{checked item.data.data.manoever.mm_mezi.selected}} />
+    <!-- <input
         id="mm_mezi"
         type="number"
         name="item.data.data.manoever.mm_mezi.selected"
         value="{{item.data.data.manoever.mm_mezi.selected}}"
         data-dtype="Number"
-    />
+    /> -->
 </div>
+<hr />
 {{/if}}
 <!-- Reichweite erhöhen -->
 {{#if manoever.mm_rwrh.possible}}
@@ -46,6 +54,20 @@
     />
 </div>
 {{/if}}
+<!-- Zaubertechnik ignorieren -->
+{{#if manoever.mm_ztig.possible}}
+<div class="flexrow">
+    <label>{{get_label "mm_ztig"}}</label>
+    <input
+        id="mm_ztig"
+        type="number"
+        name="item.data.data.manoever.mm_ztig.selected"
+        value="{{item.data.data.manoever.mm_ztig.selected}}"
+        data-dtype="Number"
+    />
+</div>
+{{/if}}
+<hr/>
 <!-- Vorbereitung verkürzen -->
 {{#if manoever.mm_vbvk.possible}}
 <div class="flexrow">
@@ -71,19 +93,14 @@
         data-dtype="Number"
     />
 </div>
-{{/if}}
-<!-- Zaubertechnik ignorieren -->
-{{#if manoever.mm_ztig.possible}}
+<hr/>
+<!-- Zeit lassen -->
+{{#if manoever.mm_ztls.possible}}
 <div class="flexrow">
-    <label>{{get_label "mm_ztig"}}</label>
-    <input
-        id="mm_ztig"
-        type="number"
-        name="item.data.data.manoever.mm_ztig.selected"
-        value="{{item.data.data.manoever.mm_ztig.selected}}"
-        data-dtype="Number"
-    />
+    <label>{{get_label "mm_ztls"}}</label>
+    <input type="checkbox" id="mm_ztls" {{checked item.data.data.manoever.mm_ztls.selected}} />
 </div>
+{{/if}}
 {{/if}}
 <!-- Erzwingen -->
 {{#if manoever.mm_erzw.possible}}
@@ -106,18 +123,11 @@
     />
 </div>
 {{/if}}
-<!-- Zeit lassen -->
-{{#if manoever.mm_ztls.possible}}
-<div class="flexrow">
-    <label>{{get_label "mm_ztls"}}</label>
-    <input type="checkbox" id="mm_ztls" {{checked item.data.data.manoever.mm_ztls.selected}} />
-</div>
-{{/if}}
 <!-- Zeremonie -->
 {{#if manoever.mm_zere.possible}}
 <div class="flexrow">
     <label>{{get_label "mm_zere"}}</label>
-    <select id="kgtl">
+    <select id="mm_zere">
         {{selectOptions zere_choice selected=item.data.data.manoever.mm_zere.selected
         localize=true}}
     </select>
@@ -130,7 +140,6 @@
     <input type="checkbox" id="mm_opfe" {{checked item.data.data.manoever.mm_opfe.selected}} />
 </div>
 {{/if}}
-
 <hr />
 <div class="flexrow">
     <label>Modifikator: </label>
