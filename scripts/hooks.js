@@ -235,6 +235,16 @@ Hooks.once('init', () => {
     ];
 });
 
+Hooks.on('applyActiveEffect', (actor, data, options, userId) => {
+    console.log("EFFECT!!! ");
+    data.changes = [];
+    console.log(actor);
+    console.log(options);
+    return userId;
+});
+// const myHookId = Hooks.on('updateActor', this.onUpdateActor.bind(this));
+
+
 // Hooks.on('preCreateActor', (createData) => {
 //     mergeObject(createData, {
 //         'token.bar1': { attribute: "gesundheit.hp" },
