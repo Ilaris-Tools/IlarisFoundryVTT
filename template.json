@@ -166,7 +166,9 @@
       "kampfunfaehig": "",
       "text": "",
       "abgeleitete": {
-        "globalermod": 0
+        "globalermod": 0,
+        "nahkampfmoddisplay": "-",
+        "globalermoddisplay": "-"
       }
     }
   },
