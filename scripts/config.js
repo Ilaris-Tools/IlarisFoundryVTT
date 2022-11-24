@@ -23,15 +23,15 @@ let stat_desc = {
         name: 'Geschwindigkeit',
         short: "GS"
     },
-    gss: {
+    gs_schwimmend: {
         name: 'Geschwindigkeit (schwimmend)',
         short: 'GSS'
     },
-    gsf: {
+    gs_fliegend: {
         name: 'Geschwindigkeit (fliegend)',
         short: 'GSF'
     },
-    gsr: {
+    gs_reitend: {
         name: 'Geschwindigkeit (reitend)',
         short: 'GSR'
     },

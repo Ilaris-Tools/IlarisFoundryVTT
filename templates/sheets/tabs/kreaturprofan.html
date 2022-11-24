@@ -80,12 +80,12 @@
             {{/if}}
             >
                     <b >{{key}}</b>
-                <div>
+                <!--<div>-->
                     <input name="data.attribute.{{key}}.pw" type="text" value="{{attribut.pw}}" data-dtype="Number" style="width: 30px;"></input>
                     <a class="rollable icon-small" data-rolltype="attribut_diag" data-attribut="{{key}}">
                         <i class="fas fa-dice-d20"></i>
                     </a>
-                </div>
+                <!--</div>-->
             </div>
             {{/each}}
         </div>
@@ -108,7 +108,7 @@
                 {{/if}}
             >
                     <b>{{get_stat_short key}}</b>
-                <div>
+                <!--<div>-->
                     <input name="data.kampfwerte.{{key}}" type="text" value="{{obj}}" data-dtype="Number" style="width: 30px;"></input>
                     {{#if (ifEq key 'mr')}}
                     <a
@@ -120,7 +120,7 @@
                         ><i class="fas fa-dice-d20"></i
                     ></a>
                     {{/if}}
-                </div>
+                <!--</div>-->
             </div>
             {{/each}}
         </div>
@@ -234,7 +234,7 @@
 
     {{#if data.data.freietalente}}
     <div class="freietalente statblockreihe">
-        <b>Fertigkeiten: </b><br/>
+        <b>Fertigkeiten: </b>
         {{#each data.data.freietalente as |freiestalent key|}}
         <label>
             <label>
