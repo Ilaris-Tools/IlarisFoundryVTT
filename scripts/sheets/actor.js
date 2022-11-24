@@ -282,13 +282,6 @@ export class IlarisActorSheet extends ActorSheet {
             this.actor.update({ 'data.geld.heller': heller });
             this.actor.update({ 'data.geld.silbertaler': silbertaler });
             this.actor.update({ 'data.geld.dukaten': dukaten });
-        } else if (clicktype == "addvorteilinfo"){
-            game.packs.get("Ilaris.vorteile").render(true)
-            Dialog.prompt({
-                content: "Du kannst Vorteile direkt aus den Kompendium Packs auf den Statblock ziehen. Für eigene Vor/Nachteile zu erstellen, die nicht im Regelwerk enthalten sind, benutze die Eigenschaften.",
-                callback: () => {
-                },
-              })
         } /* else if (clicktype == "togglewundenignorieren") {
             data.gesundheit.wundenignorieren = !data.gesundheit.wundenignorieren;
         } */
@@ -442,7 +435,14 @@ export class IlarisActorSheet extends ActorSheet {
             };
             console.log($(event.currentTarget).data('profan'));
             itemData.data.profan = $(event.currentTarget).data('profan');
-        } else  {
+        } else if (itemclass == 'vorteil') {
+            game.packs.get("Ilaris.vorteile").render(true);
+            Dialog.prompt({
+                content: "Du kannst Vorteile direkt aus den Kompendium Packs auf den Statblock ziehen. Für eigene Vor/Nachteile zu erstellen, die nicht im Regelwerk enthalten sind, benutze die Eigenschaften.",
+                callback: () => {},
+              });
+        } 
+        else  {
             console.log('Neues generisches Item');
             console.log(itemclass);
             itemData = {

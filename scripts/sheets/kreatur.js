@@ -15,6 +15,49 @@ export class KreaturSheet extends IlarisActorSheet {
             ],
         });
     }
+
+
+    async _onClickable(event) {
+        super._onClickable(event);
+        let data = this.actor.data.data;
+        let clicktype = $(event.currentTarget).data('clicktype');
+        if (clicktype == "addvorteilinfo"){
+            game.packs.get("Ilaris.vorteile").render(true)
+            Dialog.prompt({
+                content: "Du kannst Vorteile direkt aus den Kompendium Packs auf den Statblock ziehen. Für eigene Vor/Nachteile zu erstellen, die nicht im Regelwerk enthalten sind, benutze die Eigenschaften.",
+                callback: () => {
+                },
+              })
+        } else if (clicktype == "addanyitem") {
+            const html = await renderTemplate('systems/Ilaris/templates/sheets/dialogs/addkreaturitem.html', {});
+            let d = new Dialog({
+                title: 'Item Hinzufügen:',
+                content: html,
+                buttons: {
+                    one: {
+                        label: 'Zauber',
+                        callback: () => {
+                            console.log("Klicked")
+                            super._onItemCreate(event);
+                        }
+                    },
+                }
+            });
+            d.render(true);
+            //                 two: {
+            //                     icon: '<i class="fas fa-times"></i>',
+            //                     label: 'Abbrechen',
+            //                     callback: () => console.log('Abbruch'),
+            //                 },
+            //             },
+            //         },
+            //         {
+            //             jQuery: true,
+            //         },
+            //     );
+            //     d.render(true);
+        }
+    }
     
     _onDropItemCreate(item) {
         console.log("Item gedroppt!");

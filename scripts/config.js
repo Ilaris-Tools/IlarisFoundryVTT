@@ -1,5 +1,51 @@
 export const ILARIS = {};
 
+let stat_desc = {
+    ws: {
+        name: 'Wundschwelle',
+        short: "WS",
+        text: "Schaden der erforderlich ist um eine Wunde zu verursachen (ohne Rüstung)."
+    },
+    ws_stern: {
+        name: 'Effektive Wundschwelle',
+        short: 'WS*',
+        text: 'Schaden der erforderlich ist um eine Wunde zu verursachen (mit Rüstung).'
+    },
+    ini: {
+        name: 'Initiative',
+        short: "INI"
+    },
+    koloss: { // TODO: move to eigenschaften? #18
+        name: 'Koloss',
+        short: 'KOL',
+    },
+    gs: {
+        name: 'Geschwindigkeit',
+        short: "GS"
+    },
+    gss: {
+        name: 'Geschwindigkeit (schwimmend)',
+        short: 'GSS'
+    },
+    gsf: {
+        name: 'Geschwindigkeit (fliegend)',
+        short: 'GSF'
+    },
+    gsr: {
+        name: 'Geschwindigkeit (reitend)',
+        short: 'GSR'
+    },
+    schips: { // TODO: remove schips completly? #19
+        name: 'Schicksalspunkte',
+        short: "SIP"
+    },
+    mr: {
+        name: 'Magieresistenz',
+        short: "MR"
+    }
+}
+ILARIS.stat_desc = stat_desc;
+
 let label = {
     // Attribute
     KO: 'Konstitution',

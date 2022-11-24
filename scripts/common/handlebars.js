@@ -119,7 +119,14 @@ function registerHandlebarsHelpers() {
         // console.log(eig);
         return CONFIG.ILARIS.label[eig];
     });
-
+    Handlebars.registerHelper('get_stat_short', function (eig) {
+        // console.log(eig);
+        if (CONFIG.ILARIS.stat_desc[eig]) {
+            return CONFIG.ILARIS.stat_desc[eig].short;
+        } else {
+            return eig;
+        }
+    });
     Handlebars.registerHelper('ifIn', function (word, list) {
         return list.indexOf(word) > -1;
     });

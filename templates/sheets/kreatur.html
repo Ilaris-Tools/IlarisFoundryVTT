@@ -22,5 +22,25 @@
         <div class="tab" data-group="primary" data-tab="uebernatuerlich">
             {{> systems/Ilaris/templates/sheets/tabs/kreaturuebernatuerlich.html}}
         </div>
+        <div class="form-group select">
+            <select name="data.additemtype" style="max-width: 150px;">
+                {{#select data.data.additemtype}}
+                <option value="angriff">Angriff</option>
+                <option value="eigenschaft">Eigenschaft</option>
+                <option value="vorteil">Vorteil</option>
+                <option value="freiestalent">Fertigkeit</option>
+                <option value="zauber">Zauber</option>
+                <option value="info">Info</option>
+                {{/select}}
+            </select> 
+            <button 
+                style="max-width: 150px;" 
+                class="item-create" 
+                data-itemclass="{{data.data.additemtype}}" 
+                type="button"
+            >
+                Hinzufügen
+            </button>
+        </div>
     </div>
 </form>
