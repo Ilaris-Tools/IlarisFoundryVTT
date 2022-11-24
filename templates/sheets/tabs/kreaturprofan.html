@@ -79,23 +79,23 @@
                 <input name="data.kampfwerte.{{key}}" value="{{obj}}" data-dtype="Number"/>/ 
             {{else}}
                 {{#if (ifEq key "ws_stern")}}
-                <input name="data.kampfwerte.{{key}}" value="{{obj}}" data-dtype="Number"/>, 
+                    <input name="data.kampfwerte.{{key}}" value="{{obj}}" data-dtype="Number"/>, 
                 {{else}}
-                <label>{{get_label key}}: </label>
-                <input name="data.kampfwerte.{{key}}" value="{{obj}}" data-dtype="Number"/>, 
+                    <label>{{get_label key}}: </label>
+                    <input name="data.kampfwerte.{{key}}" value="{{obj}}" data-dtype="Number"/>, 
+                    {{#if (ifEq key "mr")}}
+                        <a
+                            class="rollable icon-small"
+                            data-rolltype="simpleprobe_diag"
+                            data-probentyp=""
+                            data-name="Magieresistenz"
+                            data-pw="{{data.data.mr}}"
+                            ><i class="fas fa-dice-d20"></i
+                        ></a>
+                    {{/if}}
                 {{/if}}
             {{/if}}
         {{/each}}
-        MR: 
-        <input name="data.mr" type="text" value="{{data.data.mr}}" data-dtype="Number" style="width: 30px;"></input>
-        <a
-        class="rollable icon-small"
-        data-rolltype="simpleprobe_diag"
-        data-probentyp=""
-        data-name="Magieresistenz"
-        data-pw="{{data.data.mr}}"
-        ><i class="fas fa-dice-d20"></i
-    ></a>
         </a>
     </div>
 

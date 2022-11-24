@@ -20,6 +20,7 @@ let label = {
     gsf: 'Geschwindigkeit (fliegend)',
     gsr: 'Geschwindigkeit (reitend)',
     schips: 'Schicksalspunkte',
+    mr: 'Magieresistenz',
     // Waffeneigenschaften
     kein_malus_nebenwaffe: 'Kein Malus als Nebenwaffe',
     kein_reiter: 'Nicht für Reiter',

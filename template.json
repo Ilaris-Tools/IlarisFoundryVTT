@@ -157,10 +157,10 @@
         "ws_stern": 0,
         "ini": 0,
         "gs": 1,
-        "koloss": 0
+        "koloss": 0,
+        "mr": 0
       },
       "talente": [],
-      "mr": 0,
       "asp": 0,
       "kap": 0,
       "gup": 0,
