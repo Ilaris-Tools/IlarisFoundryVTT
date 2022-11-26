@@ -134,6 +134,18 @@ function registerHandlebarsHelpers() {
     Handlebars.registerHelper('ifEq', function(arg1, arg2) {
         return (arg1 == arg2);
     });
+    Handlebars.registerHelper('sum', function(arg1, arg2) {
+        return arg1 + arg2;
+    });
+
+    Handlebars.registerHelper('isCaster', function(actor) {
+        console.log("caster?");
+        console.log(actor.data);
+        return (actor.data.data.energien.asp.max + 
+            actor.data.data.energien.gup.max + 
+            actor.data.data.energien.kap.max > 0);
+    });
+
 
     Handlebars.registerHelper('modColor', function(arg1) {
         if (arg1 > 0) {

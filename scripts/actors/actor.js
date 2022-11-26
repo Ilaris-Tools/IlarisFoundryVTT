@@ -12,6 +12,8 @@ export class IlarisActor extends Actor {
             'token.disposition': CONST.TOKEN_DISPOSITIONS.FRIENDLY,
             'token.name': data.name
         });
+        // TODO: die ganzen Fallunterscheidungen sollten hier raus, 
+        // stattdessen gehört alles in die jeweiligen erbenden klassen held.js und kreatur.js 
         if (data.type === 'held' || data.type === 'nsc') {
             // TODO CR: Wegen Bild fragen
             data.img = 'systems/Ilaris/assets/images/token/kreaturentypen/humanoid.png';
@@ -126,9 +128,6 @@ export class IlarisActor extends Actor {
     }
 
     _initializeKreatur(data) {
-        console.log('**Ilaris** Bevor Berechnungen');
-        console.log(data);
-
         // TODO: wo genau sollten default werte definiert werden, die nicht nur beim erstellen sondern auch beim
         // import aus json oder kompendium gesetzt werden?
         if (!data.data.modifikatoren) {

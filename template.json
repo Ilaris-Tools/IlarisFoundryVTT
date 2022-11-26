@@ -20,6 +20,25 @@
           }
         }
       },
+      "energien": {
+        "energien": {
+          "asp": {
+            "max": 0,
+            "value": 0,
+            "threshold": 0
+          },
+          "gup": {
+            "max": 0,
+            "value": 0,
+            "threshold": 0
+          },
+          "kap": {
+            "max": 0,
+            "value": 0,
+            "threshold": 0
+          }
+        }
+      },
       "furcht": {
         "furcht": {
           "furchtstufe": 0,
@@ -141,6 +160,7 @@
     "kreatur": {
       "templates": [
         "gesundheit",
+        "energien",
         "initiative",
         "furcht",
         "modifikatoren",
@@ -151,7 +171,6 @@
       "edit": false,
       "kreaturentyp": "humanoid",
       "kurzbeschreibung": "",
-      "attribute": {},
       "kampfwerte": {
         "ws": 0,
         "ws_stern": 0,
@@ -161,9 +180,6 @@
         "mr": 0
       },
       "talente": [],
-      "asp": 0,
-      "kap": 0,
-      "gup": 0,
       "freietalente": [],
       "kampfunfaehig": "",
       "text": "",
