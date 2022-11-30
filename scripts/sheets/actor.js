@@ -435,6 +435,13 @@ export class IlarisActorSheet extends ActorSheet {
             };
             console.log($(event.currentTarget).data('profan'));
             itemData.data.profan = $(event.currentTarget).data('profan');
+        } else if (itemclass == 'uebernatfreiestalent') {
+            itemData = {
+                name: 'Neue Kreaturenfertigkeit',
+                type: 'freiestalent',
+                data: {},
+            };
+            itemData.data.profan = false;
         } else if (itemclass == 'vorteil') {
             game.packs.get("Ilaris.vorteile").render(true);
             Dialog.prompt({

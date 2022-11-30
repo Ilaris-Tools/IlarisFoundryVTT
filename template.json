@@ -201,6 +201,7 @@
       "uebernatuerliche_fertigkeit",
       "zauber",
       "liturgie",
+      "anrufung",
       "vorteil",
       "manoever",
       "eigenheit",
@@ -378,6 +379,11 @@
       ]
     },
     "zauber": {
+      "templates": [
+        "uebernatuerlich_talent"
+      ]
+    },
+    "anrufung": {
       "templates": [
         "uebernatuerlich_talent"
       ]

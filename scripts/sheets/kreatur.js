@@ -28,7 +28,7 @@ export class KreaturSheet extends IlarisActorSheet {
                 callback: () => {
                 },
               })
-        } else if (clicktype == "addanyitem") {
+        } else if (clicktype == "addanyitem") {  // not used.. dropdown for itemcreate (actor) is used instead of another dialog
             const html = await renderTemplate('systems/Ilaris/templates/sheets/dialogs/addkreaturitem.html', {});
             let d = new Dialog({
                 title: 'Item Hinzufügen:',

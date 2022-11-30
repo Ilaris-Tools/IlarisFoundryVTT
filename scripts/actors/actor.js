@@ -1371,6 +1371,7 @@ export class IlarisActor extends Actor {
         let uebernatuerliche_fertigkeiten = [];
         let magie_talente = [];
         let karma_talente = [];
+        let anrufung_talente = [];
         let freie_fertigkeiten = [];
         let vorteil_allgemein = [];
         let vorteil_profan = [];
@@ -1448,19 +1449,13 @@ export class IlarisActor extends Actor {
                 // console.log(i);
                 uebernatuerliche_fertigkeiten.push(i);
             } else if (i.type == 'zauber') {
-                // console.log("Magietalent gefunden");
-                // console.log(i);
                 magie_talente.push(i);
             }
-            // else if (i.type == "karma_fertigkeit") {
-            //     // console.log("Karmafertigkeit gefunden");
-            //     // console.log(i);
-            //     karma_fertigkeiten.push(i);
-            // }
             else if (i.type == 'liturgie') {
-                // console.log("Karmatalent gefunden");
-                // console.log(i);
                 karma_talente.push(i);
+            }
+            else if (i.type == 'anrufung') {
+                anrufung_talente.push(i);
             } else if (i.type == 'vorteil') {
                 if (data.type == "kreatur") vorteile.push(i);
                 if (i.data.data.gruppe == 0) vorteil_allgemein.push(i);
@@ -1516,10 +1511,16 @@ export class IlarisActor extends Actor {
                 ? -1
                 : 0,
         );
-        // karma_fertigkeiten.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-        // karma_fertigkeiten.sort((a, b) => (a.data.gruppe > b.data.gruppe) ? 1 : ((b.data.gruppe > a.data.gruppe) ? -1 : 0));
         karma_talente.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
         karma_talente.sort((a, b) =>
+            a.data.data.gruppe > b.data.data.gruppe
+                ? 1
+                : b.data.data.gruppe > a.data.data.gruppe
+                ? -1
+                : 0,
+        );
+        anrufung_talente.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
+        anrufung_talente.sort((a, b) =>
             a.data.data.gruppe > b.data.data.gruppe
                 ? 1
                 : b.data.data.gruppe > a.data.data.gruppe
@@ -1623,6 +1624,7 @@ export class IlarisActor extends Actor {
         data.data.uebernatuerlich.fertigkeiten = uebernatuerliche_fertigkeiten;
         data.data.uebernatuerlich.zauber = magie_talente;
         data.data.uebernatuerlich.liturgien = karma_talente;
+        data.data.uebernatuerlich.anrufungen = anrufung_talente;
         // data.data.magie.talente = magie_talente;
         // data.data.karma.fertigkeiten = karma_fertigkeiten;
         // data.data.karma.talente = karma_talente;
