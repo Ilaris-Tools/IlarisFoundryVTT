@@ -7,13 +7,9 @@ export class IlarisActorSheet extends ActorSheet {
       Ansehen, was references und was copys sind.
     */
     getData() {
-        const data = super.getData();
-        // console.log("**Ilaris** IlarisActorSheet");
-        // console.log(data);
-        // console.log(this.actor);
-        // this.data = data;
-        return data;
+        return super.getData();
     }
+    
     activateListeners(html) {
         super.activateListeners(html);
         html.find('.ausklappen-trigger').click((ev) => this._ausklappView(ev));

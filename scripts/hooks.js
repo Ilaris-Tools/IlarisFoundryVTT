@@ -1,6 +1,6 @@
 import { ILARIS } from './config.js';
-import { IlarisActor } from './actors/actor.js';
-import { IlarisItem } from './items/item.js';
+import { IlarisActorProxy } from './actors/proxy.js';
+import { IlarisItemProxy } from './items/proxy.js';
 import { initializeHandlebars } from './common/handlebars.js';
 // import { IlarisActorSheet } from "./sheets/actor.js";
 import { HeldenSheet } from './sheets/helden.js';
@@ -27,13 +27,13 @@ Hooks.once('init', () => {
     // CONFIG.debug.hooks = true;
 
     // ACTORS
-    CONFIG.Actor.documentClass = IlarisActor;
+    CONFIG.Actor.documentClass = IlarisActorProxy;  // TODO: Proxy
     Actors.unregisterSheet('core', ActorSheet);
     Actors.registerSheet('Ilaris', HeldenSheet, { types: ['held'], makeDefault: true });
     Actors.registerSheet('Ilaris', KreaturSheet, { types: ['kreatur'], makeDefault: true });
 
     // ITEMS
-    CONFIG.Item.documentClass = IlarisItem;
+    CONFIG.Item.documentClass = IlarisItemProxy;
     Items.unregisterSheet('core', ItemSheet);
     Items.registerSheet('Ilaris', RuestungSheet, { types: ['ruestung'], makeDefault: true });
     Items.registerSheet('Ilaris', NahkampfwaffeSheet, {

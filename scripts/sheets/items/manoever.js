@@ -1,20 +1,20 @@
 import { IlarisItemSheet } from './item.js';
 
+
+/* template.json
+    "manoever": {
+      "voraussetzung": "",
+      "gruppe": 0,
+      "probe": "",
+      "gegenprobe": "",
+      "text": ""
+    },
+*/
+
 export class ManoeverSheet extends IlarisItemSheet {
     static get defaultOptions() {
         return mergeObject(super.defaultOptions, {
-            // classes: ["ilaris", "sheet"],
             template: 'systems/Ilaris/templates/sheets/items/manoever.html',
-            // width: 720,
-            // height: 800,
-            // resizable: false,
-            // tabs: [
-            //     {
-            //         navSelector: ".sheet-tabs",
-            //         contentSelector: ".sheet-body",
-            //         initial: "fertigkeiten",
-            //     },
-            // ]
         });
     }
 

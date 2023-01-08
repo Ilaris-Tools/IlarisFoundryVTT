@@ -1,4 +1,4 @@
-import { nahkampfUpdate, calculate_attacke } from '../../common/wuerfel/nahkampf_prepare.js';
+import { angriffUpdate, calculate_attacke } from '../../common/wuerfel/angriff_prepare.js';
 
 export class AngriffDialog extends Dialog {
     constructor(actor, item) {
@@ -8,6 +8,9 @@ export class AngriffDialog extends Dialog {
         // keep references for use in callback functions
         this.actor = actor;  
         this.item = item;
+        if (!"manoever" in this.item) {
+            this.item.manoever = [];
+        }
     }
 
     getData () { // damit wird das template gefüttert
@@ -17,7 +20,6 @@ export class AngriffDialog extends Dialog {
             distance_choice: CONFIG.ILARIS.distance_choice,
             rollModes: CONFIG.Dice.rollModes,
             defaultRollMode: game.settings.get("core", "rollMode"),
-            manoever: [],
             item: this.item,
         };
     }
@@ -29,7 +31,7 @@ export class AngriffDialog extends Dialog {
 
     async _angreifenKlick(ev, html) {
         console.log("ANGREIFEN!");
-        await nahkampfUpdate(html, this.actor, this.item);
+        await angriffUpdate(html, this.actor, this.item);
         // TODO: manoever fehlen in angriff items, damit die funktion durchlaufen kann..
         this.close();
     }

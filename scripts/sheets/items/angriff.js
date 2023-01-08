@@ -33,13 +33,6 @@ export class AngriffSheet extends IlarisItemSheet {
         data["data.eigenschaften"] = eigenschaften;
         return data;
     }
-
-    // _updateObject(event, formData){
-    //     console.log("formdata");
-    //     console.log(formData);
-    //     formData.data.eigenschaften = [];
-    //     return super._updateObject(event, formData);
-    // }
     
     _onAddEigenschaft(event) {
         //let item = this.document.data;
@@ -54,6 +47,20 @@ export class AngriffSheet extends IlarisItemSheet {
         //console.log(`remove: ${eigid}`);
         this.document.data.data.eigenschaften.splice(eigid, 1);
         this.document.render();
+    }
+
+    getPossibleManoevers(){
+        /* liste von verfügbarer manövern für diesen Angriff (ProbenDialog)
+        Kombination aus allgemeinen, (waffeneigenschaften) und kampfvorteilen
+        NOTE: Waffeneigenschaften sind automatische Effekte und Vorteile erlauben Manöver.
+        */ 
+        CONFIG.ILARIS.manoever_nahkampf
+        let manoevers = [
+            ""
+        ];
+
+
+
     }
 
 }
