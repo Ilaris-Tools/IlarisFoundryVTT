@@ -1,103 +1,33 @@
 import * as hardcoded from './hardcodedvorteile.js';
-// import { get_statuseffect_by_id } from "../common/wuerfel/wuerfel_misc.js";
 
 export class IlarisActor extends Actor {
     async _preCreate(data, options, user) {
-        console.log('Hallo aus _preCreate in Actor');
-        console.log(data);
-        mergeObject(data, {
-            'token.bar1': { attribute: 'gesundheit.hp' },
-            'token.displayName': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
-            'token.displayBars': CONST.TOKEN_DISPLAY_MODES.ALWAYS,
-            'token.disposition': CONST.TOKEN_DISPOSITIONS.FRIENDLY,
-            'token.name': data.name
-        });
-        // TODO: die ganzen Fallunterscheidungen sollten hier raus, 
-        // stattdessen gehört alles in die jeweiligen erbenden klassen held.js und kreatur.js 
-        if (data.type === 'held' || data.type === 'nsc') {
-            // TODO CR: Wegen Bild fragen
-            data.img = 'systems/Ilaris/assets/images/token/kreaturentypen/humanoid.png';
-            data.token.vision = true;
-            data.token.actorLink = true;
-            data.token.brightSight = 15;
-            data.token.dimSight = 5;
-        }
-        if (data.type === 'nsc') {
-            data.token.vision = false;
-            data.token.disposition = CONST.TOKEN_DISPOSITIONS.NEUTRAL;
-        } else if (data.type == 'kreatur') {
-            data.token.disposition = CONST.TOKEN_DISPOSITIONS.NEUTRAL;
-            if (!data.img) {
-                data.img = 'systems/Ilaris/assets/images/token/kreaturentypen/tier.png';
-            }
-        }
-        this.data.update(data);  // should this be called here?
+        //this.data.update(data);  // should this be called here?
         await super._preCreate(data, options, user);
         // console.log(data);
     }
 
     prepareData() {
         console.log('prepareData');
-        // let data = this.data;
-        // for (let nwaffe of data.items) {
-        //     if (nwaffe.type == "nahkampfwaffe") {
-        //         console.log(nwaffe.data.data.manoever);
-        //         nwaffe.data.data.manoever = nwaffe.data.data.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_nahkampf);
-        //     }
-        // }
-        // this.data.update(data);
         super.prepareData();
-        // console.log(this.data);
-        if (this.data.type === 'held' || this.data.type === 'nsc') {
-            this._initializeHeld(this.data);
-        }
-        else if (this.data.type == 'kreatur') {
-            this._initializeKreatur(this.data);
-        }
     }
 
     prepareEmbeddedEntities() {
         console.log('prepareEmbeddedEntities');
-        // let data = this.data;
-        // console.log("ursprüngliche this.data");
-        // console.log(this.data);
-        // for (let nwaffe of data.items) {
-        //     if (nwaffe.type == "nahkampfwaffe") {
-        //         console.log(nwaffe.data.data.manoever);
-        //         nwaffe.data.data.manoever = nwaffe.data.data.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_nahkampf);
-        //     }
-        // }
-        // console.log("veränderte data");
-        // console.log(data);
-        // this.data.update(data);
-        // console.log("veränderte this.data");
-        // console.log(this.data);
         super.prepareEmbeddedEntities();
     }
 
     prepareDerivedData() {
         console.log('prepareDerivedData');
-        // if (this.data.data.misc?.selected_kampfstil == undefined) {
-        //     console.log("Wurststulle");
-        //     this.data.update({ "data.misc.selected_kampfstil": "ohne" });
-        // }
         super.prepareDerivedData();
     }
 
     prepareBaseData() {
         console.log('prepareBaseData');
-        // console.log(this.data);
-        // console.log(this.data.data.misc?.selected_kampfstil);
-        // if (this.data.data.misc?.selected_kampfstil == undefined) {
-        //     console.log("Wurstbrot");
-        //     this.data.update({"data.misc.selected_kampfstil": "ohne"});
-        // }
         super.prepareBaseData();
     }
 
     __getStatuseffectById(data, statusId) {
-        // console.log("get_statuseffect");
-        // console.log(actor);
         let iterator = data.effects.values();
         for (const effect of iterator) {
             if (effect.data.flags.core.statusId == statusId) {
@@ -107,72 +37,12 @@ export class IlarisActor extends Actor {
         return false;
     }
 
-    _initializeHeld(data) {
-        console.log('**Ilaris** Bevor Berechnungen');
-        console.log(data);
-        this._sortItems(data); //Als erstes, darauf basieren Berechnungen
-        this._calculatePWAttribute(data);
-        // this._calculateWerteFertigkeiten(data);
-        this._calculateWounds(data); // muss vor _calculateAbgeleitete kommen (wegen globalermod)
-        this._calculateFear(data); // muss vor _calculateAbgeleitete kommen (wegen globalermod)
-        this._calculateWundschwellenRuestung(data);
-        this._calculateModifikatoren(data);
-        this._calculateAbgeleitete(data);
-        this._calculateProfanFertigkeiten(data);
-        this._calculateUebernaturlichFertigkeiten(data);
-        this._calculateUebernaturlichTalente(data); //Nach Uebernatürliche Fertigkeiten
-        this._calculateKampf(data);
-        this._calculateUebernatuerlichProbendiag(data);
-        console.log('**Ilaris** Nach Berechnungen');
-        console.log(data);
-    }
-
-    _initializeKreatur(data) {
-        // TODO: wo genau sollten default werte definiert werden, die nicht nur beim erstellen sondern auch beim
-        // import aus json oder kompendium gesetzt werden?
-        if (!data.data.modifikatoren) {
-            data.data.modifikatoren = {}
-        }
-        if (!data.data.modifikatoren.manuellermod) {
-            data.data.modifikatoren.manuellermod = 0;
-        }
-        if (!data.data.modifikatoren.nahkampfmod) {
-            data.data.modifikatoren.nahkampfmod = 0;
-        }
-        this._sortItems(data);
-        this._calculateWounds(data);
-        this._calculateFear(data);
-        this._calculateModifikatoren(data);
-        this._calculateUebernatuerlichProbendiag(data);
-        this._calculateUebernaturlichTalente(data);
-        this._calculateIniKreatur(data);
-    }
-
-
-    _calculateIniKreatur(data) {
-        data.data.initiative = data.data.kampfwerte.ini;
-    }
-
 
     _calculatePWAttribute(data) {
         for (let attribut of Object.values(data.data.attribute)) {
             attribut.pw = 2 * attribut.wert;
         }
     }
-
-    // _calculateWerteFertigkeiten(data) {
-    //     console.log("Berechne profane Fertigkeiten (hardcoded)");
-    //     for (let fertigkeit of Object.values(data.data.fertigkeiten)) {
-    //         let basiswert = 0;
-    //         for (const attribut of fertigkeit.attribute) {
-    //             basiswert = basiswert + Number(data.data.attribute[attribut].wert);
-    //         }
-    //         basiswert = Math.round(basiswert / 3);
-    //         fertigkeit.basis = basiswert;
-    //         fertigkeit.pw = basiswert + Math.round(Number(fertigkeit.fw) * 0.5);
-    //         fertigkeit.pwt = basiswert + Number(fertigkeit.fw);
-    //     }
-    // }
 
     _calculateProfanFertigkeiten(data) {
         console.log('Berechne Profane Fertigkeiten');
@@ -203,43 +73,7 @@ export class IlarisActor extends Actor {
             fertigkeit.data.data.basis = basiswert;
             fertigkeit.data.data.pw = basiswert + Number(fertigkeit.data.data.fw);
         }
-        // for (let fertigkeit of data.magie.fertigkeiten) {
-        //     // console.log(fertigkeit);
-        //     let basiswert = 0;
-        //     basiswert = basiswert + data.data.attribute[fertigkeit.data.attribut_0].wert;
-        //     basiswert = basiswert + data.data.attribute[fertigkeit.data.attribut_1].wert;
-        //     basiswert = basiswert + data.data.attribute[fertigkeit.data.attribut_2].wert;
-        //     basiswert = Math.round(basiswert / 3);
-        //     fertigkeit.data.basis = basiswert;
-        //     fertigkeit.data.pw = basiswert + Number(fertigkeit.data.fw);
-        // }
-        // for (let fertigkeit of data.karma.fertigkeiten) {
-        //     // console.log(fertigkeit);
-        //     let basiswert = 0;
-        //     basiswert = basiswert + data.data.attribute[fertigkeit.data.attribut_0].wert;
-        //     basiswert = basiswert + data.data.attribute[fertigkeit.data.attribut_1].wert;
-        //     basiswert = basiswert + data.data.attribute[fertigkeit.data.attribut_2].wert;
-        //     basiswert = Math.round(basiswert / 3);
-        //     fertigkeit.data.basis = basiswert;
-        //     fertigkeit.data.pw = basiswert + Number(fertigkeit.data.fw);
-        // }
     }
-
-    // __getAlleMagieFertigkeiten(data) {
-    //     let fertigkeit_list = [];
-    //     for (let fertigkeit of data.magie.fertigkeiten) {
-    //         fertigkeit_list.push(fertigkeit.name);
-    //     }
-    //     return fertigkeit_list;
-    // }
-
-    // __getAlleKarmaFertigkeiten(data) {
-    //     let fertigkeit_list = [];
-    //     for (let fertigkeit of data.karma.fertigkeiten) {
-    //         fertigkeit_list.push(fertigkeit.name);
-    //     }
-    //     return fertigkeit_list;
-    // }
 
     __getAlleUebernatuerlichenFertigkeiten(data) {
         let fertigkeit_list = [];
@@ -433,28 +267,6 @@ export class IlarisActor extends Actor {
         data.data.abgeleitete.ws_bauch = ws_bauch;
         data.data.abgeleitete.ws_brust = ws_brust;
         data.data.abgeleitete.ws_kopf = ws_kopf;
-        // data.data.abgeleitete.ws = ws;
-        // data.data.abgeleitete.ws_stern = ws;
-        // data.data.abgeleitete.be = 0;
-        // data.data.abgeleitete.ws_beine = ws;
-        // data.data.abgeleitete.ws_larm = ws;
-        // data.data.abgeleitete.ws_rarm = ws;
-        // data.data.abgeleitete.ws_bauch = ws;
-        // data.data.abgeleitete.ws_brust = ws;
-        // data.data.abgeleitete.ws_kopf = ws;
-        // for (let ruestung of data.ruestungen) {
-        //     // console.log(ruestung.data.aktiv);
-        //     if (ruestung.data.aktiv == true) {
-        //         data.data.abgeleitete.ws_stern += ruestung.data.rs;
-        //         data.data.abgeleitete.be += ruestung.data.be;
-        //         data.data.abgeleitete.ws_beine += ruestung.data.rs_beine;
-        //         data.data.abgeleitete.ws_larm += ruestung.data.rs_larm;
-        //         data.data.abgeleitete.ws_rarm += ruestung.data.rs_rarm;
-        //         data.data.abgeleitete.ws_bauch += ruestung.data.rs_bauch;
-        //         data.data.abgeleitete.ws_brust += ruestung.data.rs_brust;
-        //         data.data.abgeleitete.ws_kopf += ruestung.data.rs_kopf;
-        //     }
-        // }
     }
 
     _calculateModifikatoren(data) {
@@ -1088,11 +900,7 @@ export class IlarisActor extends Actor {
                 if (stufe >= 3) {
                     console.log('Stufe 3');
                     if (hauptwaffe) HAUPTWAFFE.data.data.manoever.km_rpst.possible = true;
-                    // if (hauptwaffe) HAUPTWAFFE.data.data.manoever_vt.push("km_rpst");
-                    // if (hauptwaffe) HAUPTWAFFE.data.manoever_vt.km_rpst.possible=true;
                     if (nebenwaffe) NEBENWAFFE.data.data.manoever.km_rpst.possible = true;
-                    // if (nebenwaffe) NEBENWAFFE.data.data.manoever_vt.push("km_rpst");
-                    // if (nebenwaffe) NEBENWAFFE.data.manoever_vt.km_rpst.possible=true;
                 }
             }
         } else if (selected_kampfstil == 'rtk') {
@@ -1567,19 +1375,6 @@ export class IlarisActor extends Actor {
         // profan_fertigkeiten = _.sortBy( profan_fertigkeiten, 'data.gruppe' );
 
         for (let i of profan_talente) {
-            // this.updateEmbeddedEntity('OwnedItem', {
-            //     _id: i._id,
-            //     data: {
-            //         fertigkeit_list: profan_fertigkeit_list,
-            //     }
-            // });
-            // this.updateOwnedItem({
-            //     _id: i._id,
-            //     data: {
-            //         fertigkeit_list: profan_fertigkeit_list,
-            //     }
-            // });
-            // i.data.fertigkeit_list = profan_fertigkeit_list;
             if (profan_fertigkeit_list.includes(i.data.data.fertigkeit)) {
                 profan_fertigkeiten
                     .find((x) => x.name == i.data.data.fertigkeit)
@@ -1625,9 +1420,6 @@ export class IlarisActor extends Actor {
         data.data.uebernatuerlich.zauber = magie_talente;
         data.data.uebernatuerlich.liturgien = karma_talente;
         data.data.uebernatuerlich.anrufungen = anrufung_talente;
-        // data.data.magie.talente = magie_talente;
-        // data.data.karma.fertigkeiten = karma_fertigkeiten;
-        // data.data.karma.talente = karma_talente;
         data.data.profan.fertigkeiten = profan_fertigkeiten;
         data.data.profan.talente_unsorted = profan_talente_unsorted;
         data.data.profan.freie = freie_fertigkeiten;
@@ -1658,11 +1450,5 @@ export class IlarisActor extends Actor {
             data.data.freietalente = freietalente;
             data.data.uebernatuerlich.fertigkeiten = freie_uebernatuerliche_fertigkeiten;
         }
-        // let actor = game.actors.get(data._id);
-        // // console.log(actor);
-        // // eigentlich async:
-        // if (actor) {
-        //     actor.update({ "data.data.gesundheit.hp.value": new_hp });
-        // }
     }
 }
