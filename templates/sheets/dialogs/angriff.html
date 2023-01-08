@@ -40,12 +40,12 @@
     </div>
 </div>
 <hr />
-{{#if manoever.km_ausw.possible}}
+{{#if item.data.data.manoever.km_ausw.possible}}
 <div class="flexrow">
     <label>{{get_label "km_ausw"}}</label>
     <input type="checkbox" id="km_ausw" {{checked item.data.data.manoever.km_ausw.selected}} />
 </div>
-{{/if}} {{#if manoever.km_bind.possible}}
+{{/if}} {{#if item.data.data.manoever.km_bind.possible}}
 <div class="flexrow">
     <label>{{get_label "km_bind"}}</label>
     <input
@@ -56,13 +56,13 @@
         data-dtype="Number"
     />
 </div>
-{{/if}} {{#if manoever.km_ever.possible}}
+{{/if}} {{#if item.data.data.manoever.km_ever.possible}}
 <div class="flexrow">
     <label>{{get_label "km_ever"}}</label>
     <!-- <input type="checkbox" id="km_ever" unchecked> -->
     <input type="checkbox" id="km_ever" {{checked item.data.data.manoever.km_ever.selected}} />
 </div>
-{{/if}} {{#if manoever.km_entw.possible}}
+{{/if}} {{#if item.data.data.manoever.km_entw.possible}}
 <div class="flexrow">
     <label>{{get_label "km_entw"}}</label>
     <div class="flexrow">
@@ -84,7 +84,7 @@
         />
     </div>
 </div>
-{{/if}} {{#if manoever.km_gzsl.possible}}
+{{/if}} {{#if item.data.data.manoever.km_gzsl.possible}}
 <div class="flexrow">
     <label>{{get_label "km_gzsl"}}</label>
     <select id="km_gzsl" name="item.data.data.manoever.km_gzsl.selected">
@@ -92,12 +92,12 @@
         systems/Ilaris/templates/helper/select_trefferzone.html}} {{/select}}
     </select>
 </div>
-{{/if}} {{#if manoever.km_umre.possible}}
+{{/if}} {{#if item.data.data.manoever.km_umre.possible}}
 <div class="flexrow">
     <label>{{get_label "km_umre"}}</label>
     <input type="checkbox" id="km_umre" {{checked item.data.data.manoever.km_umre.selected}} />
 </div>
-{{/if}} {{#if manoever.km_wusl.possible}}
+{{/if}} {{#if item.data.data.manoever.km_wusl.possible}}
 <div class="flexrow">
     <label>{{get_label "km_wusl"}}</label>
     <input
@@ -108,7 +108,7 @@
         data-dtype="Number"
     />
 </div>
-{{/if}} {{#if manoever.km_aufl.possible}}
+{{/if}} {{#if item.data.data.manoever.km_aufl.possible}}
 <div class="flexrow">
     <label>{{get_label "km_aufl"}}</label>
     <div class="flexrow">
@@ -123,22 +123,22 @@
         />
     </div>
 </div>
-{{/if}} {{#if manoever.km_rust.possible}}
+{{/if}} {{#if item.data.data.manoever.km_rust.possible}}
 <div class="flexrow">
     <label>{{get_label "km_rust"}}</label>
     <input type="checkbox" id="km_rust" {{checked item.data.data.manoever.km_rust.selected}} />
 </div>
-{{/if}} {{#if manoever.km_shsp.possible}}
+{{/if}} {{#if item.data.data.manoever.km_shsp.possible}}
 <div class="flexrow">
     <label>{{get_label "km_shsp"}}</label>
     <input type="checkbox" id="km_shsp" {{checked item.data.data.manoever.km_shsp.selected}} />
 </div>
-{{/if}} {{#if manoever.km_stsl.possible}}
+{{/if}} {{#if item.data.data.manoever.km_stsl.possible}}
 <div class="flexrow">
     <label>{{get_label "km_stsl"}}</label>
     <input type="checkbox" id="km_stsl" {{checked item.data.data.manoever.km_stsl.selected}} />
 </div>
-{{/if}} {{#if manoever.km_umkl.possible}}
+{{/if}} {{#if item.data.data.manoever.km_umkl.possible}}
 <div class="flexrow">
     <label>{{get_label "km_umkl"}}</label>
     <div class="flexrow">
@@ -153,47 +153,47 @@
         />
     </div>
 </div>
-{{/if}} {{#if manoever.km_ausf.possible}}
+{{/if}} {{#if item.data.data.manoever.km_ausf.possible}}
 <div class="flexrow">
     <label>{{get_label "km_ausf"}}</label>
     <input type="checkbox" id="km_ausf" {{checked item.data.data.manoever.km_ausf.selected}} />
 </div>
-{{/if}} {{#if manoever.km_befr.possible}}
+{{/if}} {{#if item.data.data.manoever.km_befr.possible}}
 <div class="flexrow">
     <label>{{get_label "km_befr"}}</label>
     <input type="checkbox" id="km_befr" {{checked item.data.data.manoever.km_befr.selected}} />
 </div>
-{{/if}} {{#if manoever.km_dppl.possible}}
+{{/if}} {{#if item.data.data.manoever.km_dppl.possible}}
 <div class="flexrow">
     <label>{{get_label "km_dppl"}}</label>
     <input type="checkbox" id="km_dppl" {{checked item.data.data.manoever.km_dppl.selected}} />
 </div>
-{{/if}} {{#if manoever.km_hmsl.possible}}
+{{/if}} {{#if item.data.data.manoever.km_hmsl.possible}}
 <div class="flexrow">
     <label>{{get_label "km_hmsl"}}</label>
     <input type="checkbox" id="km_hmsl" {{checked item.data.data.manoever.km_hmsl.selected}} />
 </div>
-{{/if}} {{#if manoever.km_kltz.possible}}
+{{/if}} {{#if item.data.data.manoever.km_kltz.possible}}
 <div class="flexrow">
     <label>{{get_label "km_kltz"}}</label>
     <input type="checkbox" id="km_kltz" {{checked item.data.data.manoever.km_kltz.selected}} />
 </div>
-{{/if}} {{#if manoever.km_ndwf.possible}}
+{{/if}} {{#if item.data.data.manoever.km_ndwf.possible}}
 <div class="flexrow">
     <label>{{get_label "km_ndwf"}}</label>
     <input type="checkbox" id="km_ndwf" {{checked item.data.data.manoever.km_ndwf.selected}} />
 </div>
-{{/if}} {{#if manoever.km_rpst.possible}}
+{{/if}} {{#if item.data.data.manoever.km_rpst.possible}}
 <div class="flexrow">
     <label>{{get_label "km_rpst"}}</label>
     <input type="checkbox" id="km_rpst" {{checked item.data.data.manoever.km_rpst.selected}} />
 </div>
-{{/if}} {{#if manoever.km_shwl.possible}}
+{{/if}} {{#if item.data.data.manoever.km_shwl.possible}}
 <div class="flexrow">
     <label>{{get_label "km_shwl"}}</label>
     <input type="checkbox" id="km_shwl" {{checked item.data.data.manoever.km_shwl.selected}} />
 </div>
-{{/if}} {{#if manoever.km_stag.possible}}
+{{/if}} {{#if item.data.data.manoever.km_stag.possible}}
 <div class="flexrow">
     <label>{{get_label "km_stag"}}</label>
     <div class="flexrow">
@@ -208,12 +208,12 @@
         />
     </div>
 </div>
-{{/if}} {{#if manoever.km_tdst.possible}}
+{{/if}} {{#if item.data.data.manoever.km_tdst.possible}}
 <div class="flexrow">
     <label>{{get_label "km_tdst"}}</label>
     <input type="checkbox" id="km_tdst" {{checked item.data.data.manoever.km_tdst.selected}} />
 </div>
-{{/if}} {{#if manoever.km_uebr.possible}}
+{{/if}} {{#if item.data.data.manoever.km_uebr.possible}}
 <div class="flexrow">
     <label>{{get_label "km_uebr"}}</label>
     <div class="flexrow">
@@ -252,25 +252,17 @@
         {{selectOptions rollModes selected=item.data.data.manoever.rllm.selected localize=true}}
     </select>
 </div>
-<hr>
+<hr />
 <div class="flexrow">
-    <button 
-    style="max-width: 150px;" 
-    class="angreifen"
-    type="button"
-    >
-    Angreifen
+    <button style="max-width: 150px" class="angreifen" type="button">
+        <i>
+            <img
+                class="button-icon-nahkampf"
+                src="systems/Ilaris/assets/game-icons.net/sword-clash.png"
+            />
+        </i>
+        Angreifen
     </button>
-    <button 
-    style="max-width: 150px;" 
-    type="button"
-    >
-    Verteidigen
-    </button>
-    <button 
-    style="max-width: 150px;" 
-    type="button"
-    >
-    Ausweichen
-    </button>
+    <button style="max-width: 150px" type="button">Verteidigen</button>
+    <button style="max-width: 150px" type="button">Ausweichen</button>
 </div>
