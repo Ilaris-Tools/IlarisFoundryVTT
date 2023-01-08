@@ -187,7 +187,7 @@
                 data-itemid="{{angriff.id}}"
                 >: {{angriff.data.data.at}}</label
             >
-            <a
+            <!-- <a
                     class="rollable icon-small"
                     data-rolltype="simpleprobe_diag"
                     data-probentyp="nahkampf"
@@ -196,6 +196,14 @@
                     data-pw="{{angriff.data.data.at}}"
                     ><i class="fas fa-dice-d20"></i
                 ></a>
+                -->
+            <a 
+                class="rollable icon-small" 
+                data-rolltype="angriff_diag" 
+                data-itemid="{{angriff.id}}"
+            >
+                <i class="fas fa-dice-d20"></i>
+            </a>
             VT<label
                 class="rollable onhover"
                 data-rolltype="vt"

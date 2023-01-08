@@ -1,4 +1,4 @@
-// import {NahkampfDialog} from "../sheets/dialog/dialog_nahkampf.js";
+import {AngriffDialog} from "../sheets/dialogs/angriff.js";
 import { nahkampfUpdate, calculate_attacke } from './wuerfel/nahkampf_prepare.js';
 import { fernkampfUpdate } from './wuerfel/fernkampf_prepare.js';
 import { magieUpdate } from './wuerfel/magie_prepare.js';
@@ -15,18 +15,12 @@ import {
 export async function wuerfelwurf(event, actor) {
     let speaker = ChatMessage.getSpeaker({ actor: actor });
     let data = actor.data.data;
-    // console.log($(event.currentTarget));
     let rolltype = $(event.currentTarget).data('rolltype');
-    // if (actor.type == "held") {
-        let globalermod = data.abgeleitete.globalermod;
-        let wundabzuegemod = data.gesundheit.wundabzuege;
-        let furchtmod = data.furcht.furchtabzuege;
-        console.log(`globalermod: ${globalermod}`);
-        console.log(`wundabzuegemod: ${wundabzuegemod}`);
-        console.log(`furchtmod: ${furchtmod}`);
-        let be = data.abgeleitete.be;
-        let nahkampfmod = data.modifikatoren.nahkampfmod;
-    // }
+    let globalermod = data.abgeleitete.globalermod;
+    let wundabzuegemod = data.gesundheit.wundabzuege;
+    let furchtmod = data.furcht.furchtabzuege;
+    let be = data.abgeleitete.be;
+    let nahkampfmod = data.modifikatoren.nahkampfmod;
     let pw = 0;
     let label = 'Probe';
     // let groupName_xd20 = "xd20";
@@ -53,7 +47,12 @@ export async function wuerfelwurf(event, actor) {
     //     "7": "7",
     //     "8": "8"
     // };
-    if (rolltype == 'nahkampf_diag') {
+    if (rolltype == "angriff_diag") {
+        let itemId = event.currentTarget.dataset.itemid;
+        let item = actor.items.get(itemId);
+        let d = new AngriffDialog(actor, item);
+        await d.render(true);
+    } else if (rolltype == 'nahkampf_diag') {
         let mod_at = 0;
         let mod_vt = 0;
         let mod_schaden = 0;
@@ -196,7 +195,7 @@ export async function wuerfelwurf(event, actor) {
                                 mod_vt -= 8;
                                 text = text.concat('Volle Offensive\n');
                             }
-                            // Volle Offensive vldf
+                            // Volle Defensive vldf
                             if (item.data.data.manoever.vldf.selected) {
                                 mod_vt += 4;
                                 text = text.concat('Volle Defensive\n');
