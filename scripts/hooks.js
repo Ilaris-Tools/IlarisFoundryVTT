@@ -1,9 +1,9 @@
 import { ILARIS } from './config.js';
 import { IlarisActor } from './actors/actor.js';
+import { IlarisItem } from './items/item.js';
 import { initializeHandlebars } from './common/handlebars.js';
 // import { IlarisActorSheet } from "./sheets/actor.js";
 import { HeldenSheet } from './sheets/helden.js';
-import { NscSheet } from './sheets/nsc.js';
 import { KreaturSheet } from './sheets/kreatur.js';
 import { RuestungSheet } from './sheets/items/ruestung.js';
 import { UebernatuerlichFertigkeitSheet } from './sheets/items/uebernatuerlich_fertigkeit.js';
@@ -30,10 +30,10 @@ Hooks.once('init', () => {
     CONFIG.Actor.documentClass = IlarisActor;
     Actors.unregisterSheet('core', ActorSheet);
     Actors.registerSheet('Ilaris', HeldenSheet, { types: ['held'], makeDefault: true });
-    Actors.registerSheet('Ilaris', NscSheet, { types: ['nsc'], makeDefault: true });
     Actors.registerSheet('Ilaris', KreaturSheet, { types: ['kreatur'], makeDefault: true });
 
     // ITEMS
+    CONFIG.Item.documentClass = IlarisItem;
     Items.unregisterSheet('core', ItemSheet);
     Items.registerSheet('Ilaris', RuestungSheet, { types: ['ruestung'], makeDefault: true });
     Items.registerSheet('Ilaris', NahkampfwaffeSheet, {
