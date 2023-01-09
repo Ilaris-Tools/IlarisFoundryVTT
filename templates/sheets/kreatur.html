@@ -171,6 +171,13 @@
         <b>Angriffe: </b>
         {{#each data.data.angriffe as |angriff key|}}
         <div class="flexrow">
+            <a 
+                class="rollable icon-small" 
+                data-rolltype="angriff_diag" 
+                data-itemid="{{angriff.id}}"
+            >
+                <i class="fas fa-dice-d20"></i>
+            </a>
                     
             <label><b><a class="item-edit" data-itemid="{{angriff.id}}">{{angriff.name}} </a></b></label>
             {{#if (waffe_ist_fernkampf angriff) }}
@@ -187,23 +194,6 @@
                 data-itemid="{{angriff.id}}"
                 >: {{angriff.data.data.at}}</label
             >
-            <!-- <a
-                    class="rollable icon-small"
-                    data-rolltype="simpleprobe_diag"
-                    data-probentyp="nahkampf"
-                    data-name="Attacke ({{angriff.name}})"
-                    data-xd20="0" 
-                    data-pw="{{angriff.data.data.at}}"
-                    ><i class="fas fa-dice-d20"></i
-                ></a>
-                -->
-            <a 
-                class="rollable icon-small" 
-                data-rolltype="angriff_diag" 
-                data-itemid="{{angriff.id}}"
-            >
-                <i class="fas fa-dice-d20"></i>
-            </a>
             VT<label
                 class="rollable onhover"
                 data-rolltype="vt"
@@ -211,29 +201,9 @@
                 data-item="{{angriff.name}}"
                 data-itemid="{{angriff.id}}"
                 >: {{angriff.data.data.vt}}</label
-            ><a
-            class="rollable icon-small"
-            data-rolltype="simpleprobe_diag"
-            data-probentyp="nahkampf"
-            data-name="Verteidigung ({{angriff.name}})"
-            data-xd20="0" 
-            data-pw="{{angriff.data.data.vt}}"
-            ><i class="fas fa-dice-d20"></i
-    ></a>
+            >
             TP<label>
-                <a
-                class="rollable icon-small"
-                data-rolltype="basic"
-                data-formula="{{translate_formula angriff.data.data.tp}}"
-                data-label="Schaden ({{angriff.name}})"
-                >: {{angriff.data.data.tp}}</a> 
-            </label><a
-            class="rollable icon-small"
-            data-rolltype="simpleformula_diag"
-            data-name="Schaden ({{angriff.name}})"
-            data-formula="{{translate_formula angriff.data.data.tp}}"
-            ><i class="fas fa-dice-d20"></i
-    ></a>
+            </label>
             <label>Härte: {{angriff.data.data.haerte}}</label>
         </div>
         <div><label>

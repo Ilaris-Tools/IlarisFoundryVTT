@@ -20,13 +20,14 @@
 */
 
 export function nahkampfUpdate(html, actor, item) {
+    /* schreibt alle inputs aus dem nahkampf_angriff template in ein objekt
+    */
     // async function nahkampfUpdate(html, actor, item) {
     // let itemId = item.id;
     // item = actor.items.get(itemId);
     let checked = false;
     let updateData = { manoever: {} };
     // Kombinierte Aktion
-    // console.log(html);
     checked = html.find('#kbak')[0].checked;
     item.data.data.manoever.kbak.selected = checked;
     Object.assign(updateData, { manoever: { kabak: { selected: checked } } });

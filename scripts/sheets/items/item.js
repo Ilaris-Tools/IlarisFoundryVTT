@@ -3,12 +3,6 @@ export class IlarisItemSheet extends ItemSheet {
     getData() {
         const data = super.getData();
         data.hasOwner = this.item.actor != null;
-        // if(data.hasOwner) {
-        //     console.log(this.item.actor.data.misc.profan_fertigkeit_list);
-        //     data.profan_fertigkeit_list = this.item.actor.data.misc.profan_fertigkeit_list;
-        // };
-        // console.log("In item.js");
-        // console.log(data.actor);
         return data;
     }
 

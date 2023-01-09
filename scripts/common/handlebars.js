@@ -24,8 +24,6 @@ function preloadHandlebarsTemplates() {
         'systems/Ilaris/templates/chat/probendiag_simpleformula.html',
         'systems/Ilaris/templates/chat/probenchat_profan.html',
         'systems/Ilaris/templates/chat/probendiag_nahkampf.html',
-        'systems/Ilaris/templates/sheets/tabs/kreaturprofan.html',
-        'systems/Ilaris/templates/sheets/tabs/kreaturuebernatuerlich.html',
     ];
     return loadTemplates(templatePaths);
 }

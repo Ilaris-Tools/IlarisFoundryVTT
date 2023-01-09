@@ -48,8 +48,8 @@ export async function wuerfelwurf(event, actor) {
     //     "8": "8"
     // };
     if (rolltype == "angriff_diag") {
-        let itemId = event.currentTarget.dataset.itemid;
-        let item = actor.items.get(itemId);
+        let item = actor.items.get(event.currentTarget.dataset.itemid);
+        item.setManoevers();
         let d = new AngriffDialog(actor, item);
         await d.render(true);
     } else if (rolltype == 'nahkampf_diag') {
@@ -103,6 +103,8 @@ export async function wuerfelwurf(event, actor) {
                                 text,
                                 actor,
                             );
+                            // TODO: Sind die ganzen mods nicht schon in attacke_prepare berechnet?
+                            // das kann doch alles in eine funktion eig. auch mit nahkampf update zusammen?
                             // Kombinierte Aktion kbak
                             if (item.data.data.manoever.kbak.selected) {
                                 mod_at -= 4;
@@ -119,7 +121,7 @@ export async function wuerfelwurf(event, actor) {
                                 }
                             }
                             // Reichweitenunterschiede rwdf
-                            let reichweite = item.data.data.manoever.rwdf.selected;
+                            let reichweite = item.data.data.manoever.rwdf.selected;  // contains number
                             mod_at -= 2 * Number(reichweite);
                             text = text.concat(`Reichweitenunterschied: ${reichweite}\n`);
                             //Passierschlag pssl & Anzahl Reaktionen rkaz

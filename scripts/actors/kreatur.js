@@ -40,7 +40,21 @@ export class KreaturActor extends IlarisActor {
         this._calculateModifikatoren(data);
         this._calculateUebernatuerlichProbendiag(data);
         this._calculateUebernaturlichTalente(data);
+        this._setManoever();
         data.data.initiative = data.data.kampfwerte.ini;
+    }
+
+    _setManoever() {
+        console.log("Setze Manöver")
+        console.log(this.data.data);
+        for (let angriff of this.data.data.angriffe) {
+            console.log("Angriff:");
+            console.log(angriff);   
+            angriff.data.data.manoever = 
+                angriff.data.data.manoever || 
+                foundry.utils.deepClone(CONFIG.ILARIS.manoever_nahkampf);
+            console.log(angriff);   
+        }
     }
 
 }

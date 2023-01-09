@@ -365,48 +365,13 @@ export class IlarisActor extends Actor {
         let NEBENWAFFE =
             data.data.nahkampfwaffen.find((x) => x.data.data.nebenwaffe == true) ||
             data.data.fernkampfwaffen.find((x) => x.data.data.nebenwaffe == true);
-        // console.log(HAUPTWAFFE.name);
-        // console.log(NEBENWAFFE.name);
         for (let nwaffe of data.data.nahkampfwaffen) {
-            // // console.log(nwaffe.data.data.manoever);
             if (nwaffe.data.data.manoever == undefined) {
-                // if (nwaffe.data.data.manoever == "undefined") {
-                // // if (!nwaffe.data.data.hasOwnProperty("manoever")) {
-                // // if (!("manoever" in nwaffe.data.data)) {
-                // // if (!nwaffe.data.data.manoever) {
-                //     console.log(nwaffe.data.data);
                 console.log('Ich überschreibe Manöver');
-                //     //shallow Copy. Nur bei primitives!
-                //     // nwaffe.data.data.manoever = Object.assign({}, CONFIG.ILARIS.manoever_at);
-                //     //deep copy
-                //     nwaffe.data.data.manoever = JSON.parse(JSON.stringify(CONFIG.ILARIS.manoever_nahkampf));
-                //     // nwaffe.update(JSON.parse(JSON.stringify(CONFIG.ILARIS.manoever_nahkampf)));
             }
             nwaffe.data.data.manoever =
                 nwaffe.data.data.manoever ||
                 foundry.utils.deepClone(CONFIG.ILARIS.manoever_nahkampf);
-            // nwaffe.data.data.manoever.km_utlf.possible = false;
-            // nwaffe.data.data.manoever.km_befr.possible = false;
-            // nwaffe.data.data.manoever.km_dppl.possible = false;
-            // nwaffe.data.data.manoever.km_rpst.possible = false;
-            // nwaffe.data.data.manoever.km_shwl.possible = false;
-            // nwaffe.data.data.manoever.km_stag.possible = false;
-            // nwaffe.data.data.manoever.km_uebr.possible = false;
-            // nwaffe.data.data.manoever.km_utlf.possible = false;
-            // let manoever_at = ["km_ever",
-            //                    "km_entw",
-            //                    "km_gzsl",
-            //                    "km_umre",
-            //                    "km_wusl",
-            //                    "km_shsp"];
-            // let manoever_vt = ["km_ausw",
-            //                    "km_bind",
-            //                    "km_entw",
-            //                    "km_aufl"];
-            // let manoever_at = {};
-            // Object.assign(manoever_at, CONFIG.ILARIS.manoever_at);
-            // manoever_at = JSON.parse(JSON.stringify(CONFIG.ILARIS.manoever_at));
-            // jQuery.extend(true, manoever_at, CONFIG.ILARIS.manoever_at);
             // TODO: ich finde die waffeneigenschaften nicht besonders elegant umgesetzt,
             // könnte man dafür ggf. items anlegen und die iwie mit den waffen items verknüpfen?
             let kopflastig = nwaffe.data.data.eigenschaften.kopflastig;
