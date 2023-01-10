@@ -23,13 +23,13 @@
 
 {{#if item.data.data.manoever.km_entw.possible}}
 <div class="flexrow">
-    <label>{{get_label "km_entw"}} (AT)</label>
+    <label>{{get_label "km_entw"}}</label>
     <input
         type="checkbox"
-        id="km_entw_at"
-        name="item.data.data.manoever.km_entw.selected_at"
+        id="km_entw"
+        name="item.data.data.manoever.km_entw.selected"
         {{checked
-        item.data.data.manoever.km_entw.selected_at}}
+        item.data.data.manoever.km_entw.selected}}
     />
 </div>
 {{/if}}
@@ -127,7 +127,7 @@
 {{#if item.data.data.manoever.km_gzsl.possible}}
 <div class="flexrow">
     <label>{{get_label "km_gzsl"}}</label>
-    <select id="km_gzsl" name="item.data.data.manoever.km_gzsl.selected">
+    <select id="km_gzsl" name="item.data.data.manoever.km_gzsl.selected" style="max-width: 150px">
         {{#select item.data.data.manoever.km_gzsl.selected}} {{>
         systems/Ilaris/templates/helper/select_trefferzone.html}} {{/select}}
     </select>
@@ -146,7 +146,7 @@
 {{/if}} {{#if item.data.data.manoever.km_stag.possible}}
 <div class="flexrow">
     <label>{{get_label "km_stag"}}</label>
-    <div class="flexrow">
+    <div class="flexrow">  <!-- todo remove checkbox and check for > 0 instead-->
         <input type="checkbox" id="km_stag" {{checked item.data.data.manoever.km_stag.selected}} />
         <label>GS:</label>
         <input
@@ -210,20 +210,6 @@
 <div class="flexrow">
     <label>{{get_label "km_ausw"}}</label>
     <input type="checkbox" id="km_ausw" {{checked item.data.data.manoever.km_ausw.selected}} />
-</div>
-{{/if}} 
-
-
-{{#if item.data.data.manoever.km_entw.possible}}
-<div class="flexrow">
-    <label>{{get_label "km_entw"}} (VT)</label>
-    <input
-        type="checkbox"
-        id="km_entw_vt"
-        name="item.data.data.manoever.km_entw.selected_vt"
-        {{checked
-        item.data.data.manoever.km_entw.selected_vt}}
-    />
 </div>
 {{/if}} 
 
@@ -295,7 +281,7 @@
         </i>
         Angriff
     </button>
-    <button style="max-width: 150px" type="button">
+    <button style="max-width: 150px" class="verteidigen" type="button">
         <i
             ><img
                 class="button-icon-nahkampf"
@@ -303,7 +289,7 @@
         /></i>
         Verteidigung
     </button>
-    <button style="max-width: 150px" type="button">
+    <button style="max-width: 150px" type="button" class="schaden">
         <i
             ><img
                 class="button-icon-nahkampf"
