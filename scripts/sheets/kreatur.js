@@ -105,6 +105,7 @@ export class KreaturSheet extends IlarisActorSheet {
                 data: item.data,
             }
         } 
+        super._onDropItemCreate(item);
         return this.actor.createEmbeddedDocuments('Item', [itemData]);
     }
 }

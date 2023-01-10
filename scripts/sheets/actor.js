@@ -348,6 +348,21 @@ export class IlarisActorSheet extends ActorSheet {
     }
 
 
+    _onDropItemCreate(item) {
+        if (item.type == "manoever") {
+            let bogen = "Bogen";
+            if (this.actor.type == "held") {
+                bogen = "Heldenbogen";
+            } else {
+                bogen = "Werteblock";
+            }
+            Dialog.prompt({
+                content: `Manöver stehen automatisch zur Verfügung, wenn die Vorraussetzungen erfüllt sind. Um ein neues aufbauendes Manöver zu lernen, ziehe den Entsprechenden Vorteil auf den ${bogen}.`,
+                callback: () => {},
+              });
+        }
+    }
+
     _onItemCreate(event) {
         console.log('ItemCreate');
         // console.log(event);
