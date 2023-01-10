@@ -17,7 +17,7 @@ In Foundry unter "Game Systems" -> "Install System" -> "Manifest URL":
 https://gitlab.com/Feorg/ilaris-foundryvtt/raw/master/system.json
 ```
 einfügen und installieren.
-![Screenshot](utils/screenshot_install.png)
+![Screenshot](utils/screen_install.png)
 
 ## Bekannte Probleme
 
