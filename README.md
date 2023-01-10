@@ -15,7 +15,7 @@ Wir stehen in keinem Verhältnis (angestellt oder ähnliches) zu FoundryVTT, Ila
 
 Wir freuen uns über jegliche Hilfe. Auch Vorschläge und Kritik werden im [Forum](https://dsaforum.de/viewtopic.php?f=180&t=55746) oder [Discord](https://discord.gg/qEKBnjsspX) dankend entgegen genommen. Die Community von FoundryVTT-Ilaris Spielerinnen ist klein, daher hilft jedes Feedback insbesondere Tests und Erfahrungen mit neuen Versionen. Du hast einen Bug gefunden? Das ist toll! Her damit!
 
-Wir suchen auch Verstärkung im Entwicklerteam. JS-Programmierer und Webdesigner (oder welche die es lernen wollen) sind besonders Wilkommen. Auch eine künstlerische Ader um den Heldenbogen aufzuhübschen und einige assets zu erstellen fehlt bisher. Hier gehts lang um direkt durchzustarten: [CONTRIBUTIONS.md]
+Wir suchen auch Verstärkung im Entwicklerteam. JS-Programmierer und Webdesigner (oder welche die es lernen wollen) sind besonders Wilkommen. Auch eine künstlerische Ader um den Heldenbogen aufzuhübschen und einige assets zu erstellen fehlt bisher. Hier gehts lang um direkt durchzustarten: [CONTRIBUTIONS.md](CONTRIBUTIONS.md)
 
 
 ## Installation
@@ -31,7 +31,7 @@ einfügen und installieren.
 
 
 ## Aktueller Entwicklungsstand
-Für nicht allzu anspruchsvolle Spieler/innen ist das System ausgereift genug um die ein oder andere Session spielen zu können. Kleinere Fehler können immer wieder auftreten. Es sind [noch nicht alle Vorteile](https://gitlab.com/Feorg/ilaris-foundryvtt/-/issues/37) vollständig implementiert. Wir arbeiten gerade an der Einbindung einer großen Datenbank von Kreaturen für Ilaris. Ein grober Überblick kann anhand der [Meilensteinen](https://gitlab.com/Feorg/ilaris-foundryvtt/-/milestones) gewonnen werden. Mehr Details gibt es auf unserem [TODO-Board](https://gitlab.com/Feorg/ilaris-foundryvtt/-/boards). Etwas weniger aktuell, aber wesentlich praxisorientierter sind die Screencasts von [TODO YOUTUBELINK]
+Für nicht allzu anspruchsvolle Spieler/innen ist das System ausgereift genug um die ein oder andere Session spielen zu können. Kleinere Fehler können immer wieder auftreten. Es sind [noch nicht alle Vorteile](https://gitlab.com/Feorg/ilaris-foundryvtt/-/issues/37) vollständig implementiert. Wir arbeiten gerade an der Einbindung einer großen Datenbank von Kreaturen für Ilaris. Ein grober Überblick kann anhand der [Meilensteinen](https://gitlab.com/Feorg/ilaris-foundryvtt/-/milestones) gewonnen werden. Mehr Details gibt es auf unserem [TODO-Board](https://gitlab.com/Feorg/ilaris-foundryvtt/-/boards). Etwas weniger aktuell, aber wesentlich praxisorientierter sind die Screencasts von [TODO YOUTUBELINK]()
 
 
 ## Bekannte Probleme
