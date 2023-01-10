@@ -26,7 +26,7 @@ https://gitlab.com/Feorg/ilaris-foundryvtt/raw/master/system.json
 ```
 einfügen und installieren.
 
-<img src="/utils/screen_install.png"  width="120" height="120">
+<img src="/utils/screen_install.png"  width="250">
 
 
 
