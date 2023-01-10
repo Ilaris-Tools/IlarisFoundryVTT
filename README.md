@@ -1,59 +1,38 @@
 # Ilaris für FoundryVTT (**BETA**)
 
 Ein System für [Ilaris](https://ilarisblog.wordpress.com/) zur Verwendung mit [FoundryVTT](https://foundryvtt.com/).
+> Beta: Ilaris für FoundryVTT befindet sich aktuell in der Entwicklung. Grobe Änderungen am Code stehen aus und können neue Bugs mitbringen. Es sind bisher nicht alle Ilaris-Regeln vollständig umgesetzt. Für erstellte Inhalte (Helden, Kreaturen, eigene Zauber usw..) sollten gelegentlich Backups (Kopie der Spielwelt) erstellt werden insbesondere vor dem Update dieses Systems. Bei Fragen und Problemen warten wir im [Forum](https://dsaforum.de/viewtopic.php?f=180&t=55746) und im [Discord](https://discord.gg/qEKBnjsspX) um zu Helfen. Wer ein stabiles und vollständiges System für VTT sucht, kann auf das [Roll20 Charakter Sheet für Ilaris](https://github.com/Roll20/roll20-character-sheets/tree/master/Das_Schwarze_Auge_Ilaris) zurückgreifen.
+
 
 ## Disclaimer
 
 Dies ist ein nicht kommerzielles Community-Projekt.
 Wir stehen in keinem Verhältnis (angestellt oder ähnliches) zu FoundryVTT, Ilaris, Ulisses oder anderen Rechteinhabern.
 
+
+
 ## Installation
 
 In Foundry unter "Game Systems" -> "Install System" -> "Manifest URL": *https://gitlab.com/Feorg/ilaris-foundryvtt/raw/master/system.json* einfügen und installieren.
 
-## !!Achtung!!
+## Bekannte Probleme
 
-Ilaris für FoundryVTT befindet sich aktuell in der Entwicklung und stellt kein fertiges Produkt dar.
-Die zugrunde liegende Datenstruktur kann (und wird) sich ändern. Alle selbst erstellen Actors und Items sind dann im besten Fall nicht mehr nutzbar, im schlimmsten Fall verursachen sie Bugs und Abstürze.
-Bevor Bugs gemeldet werden, sollte der entsprechende Actor/Item gelöscht und neu angelegt/importiert werden.
 Abfragen zur Berechnung von Fertigkeitn/Vorteilen/etc. basieren rein auf Strings: Ein Leerzeichen an der falschen Stelle kann daher die Berechnung kaputt machen => Item löschen und neu importieren, bevor ein Bug gemeldet wird.  
-Vorschläge und Kritik nehmen wir dankend entgegen, aber wir können keine Garantie geben, wann und ob Anmerkungen umgesetzt werden. Wir arbeiten nur in unserer Freizeit an dem Projekt und haben daher nur sehr wenig zeitliche Ressourcen zur verfügung.
 
-Wer ein stabiles und vollständiges System für VTT sucht, sollte daher auf das [Roll20 Charakter Sheet für Ilaris](https://github.com/Roll20/roll20-character-sheets/tree/master/Das_Schwarze_Auge_Ilaris) zurückgreifen.
+
 
 ### Unterstützung
 
-Wir freuen uns über jegliche Hilfe und Unterstützung.
-Wer Javascript programmieren kann oder in html und css firm ist, beziehungsweise bereit ist es sich anzueignen, ist jederzeit herzlich willkommen. Insbesondere eine künstlerische Ader um den Heldenbogen aufzuhübschen wird dringend benötigt.
-Keiner von uns hatte vorherige Erfahrung in der Webprogrammierung; Wir eignen uns die notwendigen Fertigkeiten selber erst im Rahmen des Projekts an (Was beim Einblick in den Code auch recht offensichtlich wird).
-Aber auch Anregungen und allgemeines Feedback, welches im [DSA-Forum](https://dsaforum.de/viewtopic.php?f=180&t=55746&sid=58516b319511875ce0bc2dc00b379b4d) gepostet werden kann, helfen uns weiter und sind herzlich willkommen.
+Wir freuen uns über jegliche Hilfe. Auch Vorschläge und Kritik werden im [Forum](https://dsaforum.de/viewtopic.php?f=180&t=55746) oder [Discord](https://discord.gg/qEKBnjsspX) dankend entgegen genommen. Die Community von FoundryVTT-Ilaris Spielerinnen ist klein, daher hilft jedes Feedback insbesondere Tests und Erfahrungen mit neuen Versionen. Du hast einen Bug gefunden? Das ist toll! Her damit!
+
+Wir suchen auch Verstärkung im Entwicklerteam. JS-Programmierer und Webdesigner (oder welche die es lernen wollen) sind besonders Wilkommen. Auch eine künstlerische Ader um den Heldenbogen aufzuhübschen und einige assets zu erstellen fehlt bisher. Hier gehts lang um direkt durchzustarten: [CONTRIBUTIONS.md]
 
 ## Aktueller Entwicklungsstand
+Für nicht allzu anspruchsvolle Spieler/innen ist das System ausgereift genug um die ein oder andere Session spielen zu können. Kleinere Fehler können immer wieder auftreten. Es sind [noch nicht alle Vorteile](https://gitlab.com/Feorg/ilaris-foundryvtt/-/issues/37) vollständig implementiert. Wir arbeiten gerade an der Einbindung einer großen Datenbank von Kreaturen für Ilaris. Ein grober Überblick kann anhand der [Meilensteinen](https://gitlab.com/Feorg/ilaris-foundryvtt/-/milestones) gewonnen werden. Mehr Details gibt es auf unserem [TODO-Board](https://gitlab.com/Feorg/ilaris-foundryvtt/-/boards). Etwas weniger aktuell, aber wesentlich praxisorientierter sind die Screencasts von [TODO YOUTUBELINK]
 
-### Berechnete Vorteile
-
--   Abgehärtet II (nur dh)
--   Flink I
--   Flink II (nur gs)
--   Gefäß der Sterne
--   Geweiht I/II/III/IV
--   Glück I
--   Glück II
--   Kampfreflexe
--   Kampfstile Stufe 1 bis 3 (Es werden nur AT, VT und Schaden, sowie entfallender Malus bei Nebenwaffen berechnet)
--   Natürliche Rüstung
--   Rüstungsgewöhnung
--   Unbeugsamkeit (nur mr)
--   Unverwüstlich (nur ws)
--   Verbesserte Rüstungsgewöhnung
--   Willensstark I
--   Willensstark II (nur mr)
--   Zauberer I/II/III/IV
--   hoffentlich alle Vorteile für Manöver im Nah- und Fernkampf
 
 ### Zu beachten / FAQ
 
--   Der obige Absatz unter **!!Achtung!!**
 -   Im Compendium "Beispielhelden" gibt es "Alrik die leere Vorlage", die schon alle typischen Fertigkeiten ausgerüstet hat. "Alrik der Bauer" ist zur Präsentation mit Werten und Ausrüstung ausgestattet.
 -   Rüstungen werden erst berechnet, wenn sie angelegt werden. Symbol links neben dem Namen anklicken
 -   Kampfstile werden nur für die ausgerüsteten Haupt- und Nebenwaffen berechnet
@@ -74,27 +53,6 @@ Aber auch Anregungen und allgemeines Feedback, welches im [DSA-Forum](https://ds
     -   Das Gewicht der Waffen im Kompendium ist einfachst automatisch aus der Sephrasto-Datenbank berechnet => Anpassungen werden nötig sein
 -   ~~Bei einem Import aus _Beispiel Helden_ werden eine ganze Menge Fehler angezeigt. Keine Ahnung woher sie kommen. Es scheint aber dennoch zu funktionieren~~
 
-### TO-DO
-
-Viel und eine ganze Menge.
-
-1. Verzeichnisstruktur überdenken (zB assets nach Urheberrecht sortieren?)
-1. MR als Rollable
-1. Manöver für Magie und Karma
-1. eigene Boni/Mali eintragen (template.json anpassen. Wie viele verschiede mods [item, profan, magie, karma, ...] kann es geben?)
-1. Dice-to-Chat: Clickable Rollmessage für Kampf erstellen -> Vom Verteidiger anklickbar und automatisch Gewinner (und Schaden) ausrechnen und Auswahl der Manöver persistent machen (-> Datenstruktur nochmal ansehen)
-1. Chatnachrichten überarbeiten (Dice zusammenfassen, etc.)
-1. Tab "Effekte" (Statuseffekte und Boni/Mali Übersicht)
-1. Kreaturenklasse anlegen + vereinfachtes Sheet für Kreaturen/NPCs mit _deutlich_ weniger Automatisierungen erstellen
-1. "Alles schön machen"
-    - Einarbeitung in html, damit wenigstens halbwegs eine Übersicht vorliegt
-    - Einarbeitung in css, um es auch optisch ansprechend zu gestalten
-1. Schnittstelle überlegen, so dass die Vorteilsberechnung nicht hardcoded ist -> Eigene Vorteile und Manöver (bzw aus Ilaris Advanced) anlegen/importieren
-1. Code aufräumen
-
-Dies ist nur eine ganz grobe Richtlinie. Es gibt keine fest definierte Roadmap.
-
-> It will be done when it's done.
 
 ## Danke!
 
