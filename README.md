@@ -10,14 +10,18 @@ Dies ist ein nicht kommerzielles Community-Projekt.
 Wir stehen in keinem Verhältnis (angestellt oder ähnliches) zu FoundryVTT, Ilaris, Ulisses oder anderen Rechteinhabern.
 
 
-
 ## Installation
 
-In Foundry unter "Game Systems" -> "Install System" -> "Manifest URL": *https://gitlab.com/Feorg/ilaris-foundryvtt/raw/master/system.json* einfügen und installieren.
+In Foundry unter "Game Systems" -> "Install System" -> "Manifest URL": 
+```
+https://gitlab.com/Feorg/ilaris-foundryvtt/raw/master/system.json
+```
+einfügen und installieren.
+![Screenshot](utils/screenshot_install.png)
 
 ## Bekannte Probleme
 
-Abfragen zur Berechnung von Fertigkeitn/Vorteilen/etc. basieren rein auf Strings: Ein Leerzeichen an der falschen Stelle kann daher die Berechnung kaputt machen => Item löschen und neu importieren, bevor ein Bug gemeldet wird.  
+- Abfragen zur Berechnung von Fertigkeitn/Vorteilen/etc. basieren rein auf Strings: Ein Leerzeichen an der falschen Stelle kann daher die Berechnung kaputt machen => Item löschen und neu importieren, bevor ein Bug gemeldet wird.  
 
 
 
