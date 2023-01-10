@@ -10,6 +10,14 @@ Dies ist ein nicht kommerzielles Community-Projekt.
 Wir stehen in keinem Verhältnis (angestellt oder ähnliches) zu FoundryVTT, Ilaris, Ulisses oder anderen Rechteinhabern.
 
 
+
+## Unterstützung
+
+Wir freuen uns über jegliche Hilfe. Auch Vorschläge und Kritik werden im [Forum](https://dsaforum.de/viewtopic.php?f=180&t=55746) oder [Discord](https://discord.gg/qEKBnjsspX) dankend entgegen genommen. Die Community von FoundryVTT-Ilaris Spielerinnen ist klein, daher hilft jedes Feedback insbesondere Tests und Erfahrungen mit neuen Versionen. Du hast einen Bug gefunden? Das ist toll! Her damit!
+
+Wir suchen auch Verstärkung im Entwicklerteam. JS-Programmierer und Webdesigner (oder welche die es lernen wollen) sind besonders Wilkommen. Auch eine künstlerische Ader um den Heldenbogen aufzuhübschen und einige assets zu erstellen fehlt bisher. Hier gehts lang um direkt durchzustarten: [CONTRIBUTIONS.md]
+
+
 ## Installation
 
 In Foundry unter "Game Systems" -> "Install System" -> "Manifest URL": 
@@ -17,22 +25,18 @@ In Foundry unter "Game Systems" -> "Install System" -> "Manifest URL":
 https://gitlab.com/Feorg/ilaris-foundryvtt/raw/master/system.json
 ```
 einfügen und installieren.
-![Screenshot](utils/screen_install.png)
+
+<img src="/utils/screen_install.png"  width="120" height="120">
+
+
+
+## Aktueller Entwicklungsstand
+Für nicht allzu anspruchsvolle Spieler/innen ist das System ausgereift genug um die ein oder andere Session spielen zu können. Kleinere Fehler können immer wieder auftreten. Es sind [noch nicht alle Vorteile](https://gitlab.com/Feorg/ilaris-foundryvtt/-/issues/37) vollständig implementiert. Wir arbeiten gerade an der Einbindung einer großen Datenbank von Kreaturen für Ilaris. Ein grober Überblick kann anhand der [Meilensteinen](https://gitlab.com/Feorg/ilaris-foundryvtt/-/milestones) gewonnen werden. Mehr Details gibt es auf unserem [TODO-Board](https://gitlab.com/Feorg/ilaris-foundryvtt/-/boards). Etwas weniger aktuell, aber wesentlich praxisorientierter sind die Screencasts von [TODO YOUTUBELINK]
+
 
 ## Bekannte Probleme
 
 - Abfragen zur Berechnung von Fertigkeitn/Vorteilen/etc. basieren rein auf Strings: Ein Leerzeichen an der falschen Stelle kann daher die Berechnung kaputt machen => Item löschen und neu importieren, bevor ein Bug gemeldet wird.  
-
-
-
-### Unterstützung
-
-Wir freuen uns über jegliche Hilfe. Auch Vorschläge und Kritik werden im [Forum](https://dsaforum.de/viewtopic.php?f=180&t=55746) oder [Discord](https://discord.gg/qEKBnjsspX) dankend entgegen genommen. Die Community von FoundryVTT-Ilaris Spielerinnen ist klein, daher hilft jedes Feedback insbesondere Tests und Erfahrungen mit neuen Versionen. Du hast einen Bug gefunden? Das ist toll! Her damit!
-
-Wir suchen auch Verstärkung im Entwicklerteam. JS-Programmierer und Webdesigner (oder welche die es lernen wollen) sind besonders Wilkommen. Auch eine künstlerische Ader um den Heldenbogen aufzuhübschen und einige assets zu erstellen fehlt bisher. Hier gehts lang um direkt durchzustarten: [CONTRIBUTIONS.md]
-
-## Aktueller Entwicklungsstand
-Für nicht allzu anspruchsvolle Spieler/innen ist das System ausgereift genug um die ein oder andere Session spielen zu können. Kleinere Fehler können immer wieder auftreten. Es sind [noch nicht alle Vorteile](https://gitlab.com/Feorg/ilaris-foundryvtt/-/issues/37) vollständig implementiert. Wir arbeiten gerade an der Einbindung einer großen Datenbank von Kreaturen für Ilaris. Ein grober Überblick kann anhand der [Meilensteinen](https://gitlab.com/Feorg/ilaris-foundryvtt/-/milestones) gewonnen werden. Mehr Details gibt es auf unserem [TODO-Board](https://gitlab.com/Feorg/ilaris-foundryvtt/-/boards). Etwas weniger aktuell, aber wesentlich praxisorientierter sind die Screencasts von [TODO YOUTUBELINK]
 
 
 ### Zu beachten / FAQ
@@ -42,7 +46,7 @@ Für nicht allzu anspruchsvolle Spieler/innen ist das System ausgereift genug um
 -   Kampfstile werden nur für die ausgerüsteten Haupt- und Nebenwaffen berechnet
 -   Es kann maximal jeweils eine Haupt- und Nebenwaffe angelegt sein. Zweihändige Waffen müssen gleichzeitig Haupt- und Nebenwaffe sein, sonst werden die Abzüge für einhändige Führung angerechnet
 -   Falls (Kampf-)manöver nicht ausgewählt werden können, kontrolliert ob die Voraussetzungen erfüllt sind (Waffeneigenschaften, Waffe ausgerüstet, Kampfstil ausgewählt, Sonderfertigkeit vorhanden)
--   Die Manöver im Kompedium schalten die Manöver nicht frei: Das passiert über die entsprechenden Vorteile
+-   Die Manöver im Kompedium schalten die Manöver nicht frei: Das passiert über die entsprechenden Vorteile  #40
 -   Manöver für Magie und Karma sind noch nicht integriert
 -   Der Einsatz von Schicksalspunkten funktioniert nur, wenn Schicksalspunkte vorhanden sind. Ansonsten wird ohne Meldung eine normale 3W20 Probe geworfen
 -   Astral- und Karmapunkte werden nur angezeigt, wenn die Vorteile Zauberer oder Geweiht aktiviert sind
