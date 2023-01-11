@@ -37,6 +37,7 @@ export class AngriffDialog extends Dialog {
         super.activateListeners(html);
         html.find(".angreifen").click(ev => this._angreifenKlick(html));
         html.find(".verteidigen").click(ev => this._verteidigenKlick(html));
+        html.find(".schaden").click(ev => this._schadenKlick(html));
     }
 
     async _angreifenKlick(html) {
@@ -78,8 +79,18 @@ export class AngriffDialog extends Dialog {
         this.close();
     }
 
-    async _schadenKlick(html) {
-        console.log("DMG");
+    async _schadenKlick(html){
+        await this.manoeverAuswaehlen(html);
+        this.updateManoeverMods(html);
+        // Rollmode
+        let label = `Schaden (${this.item.name})`;
+        let formula = `${this.schaden} ${signed(this.mod_dm)}`;
+        console.log(formula);
+        if (this.nodmg) {
+            formula = "0";
+        }
+        await roll_crit_message(formula, label, this.text_dm, this.speaker, this.rollmode, false);
+        this.close()
     }
 
     manoeverAuswaehlen(html)  {
@@ -160,8 +171,14 @@ export class AngriffDialog extends Dialog {
 
         let mod_at = 0;
         let mod_vt = 0;
+        let mod_dm = 0;
         let text_at = '';
         let text_vt = '';
+        let text_dm = '';
+        let nodmg = false;
+        // TDOO: this differ between angriff and nk/fk waffen, define get_tp() in both?
+        // let schaden = item.data.data.schaden;
+        let schaden = item.data.data.tp.replace("W", "d");
 
         if (manoever.kbak.selected) {
             mod_at -= 4;
@@ -192,14 +209,14 @@ export class AngriffDialog extends Dialog {
             text_at = text_at.concat(`Reichweitenunterschied: ${mod_rwdf}\n`);
             text_vt = text_vt.concat(`Reichweitenunterschied: ${mod_rwdf}\n`);
         }
-        //Passierschlag pssl & Anzahl Reaktionen rkaz
+        // Passierschlag pssl & Anzahl Reaktionen rkaz
         let reaktionen = Number(manoever.rkaz.selected);
         if (reaktionen > 0) {
             let mod_rkaz = 4 * reaktionen;
-            mod_vt -= mod;
+            mod_vt -= mod_rkaz;
             text_vt = text_vt.concat(`${reaktionen}. Reaktion: -${mod_rkaz}\n`);
             if (manoever.pssl.selected) {
-                mod_at -= mod;
+                mod_at -= mod_rkaz;
                 text_at = text_at.concat(`${reaktionen}. Passierschlag: -${mod_rkaz} \n`);
             }
         }
@@ -213,6 +230,8 @@ export class AngriffDialog extends Dialog {
             let gs = Number(item.data.data.manoever.km_aufl.gs);
             mod_vt -= 4;
             text_vt = text_vt.concat(`${CONFIG.ILARIS.label['km_aufl']} (${gs}): -4\n`);
+            mod_dm += gs;
+            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_aufl']}: ${gs}\n`)
         }
         // Binden km_bind
         let binden = Number(manoever.km_bind.selected);
@@ -239,13 +258,20 @@ export class AngriffDialog extends Dialog {
         let trefferzone = Number(manoever.km_gzsl.selected);
         if (trefferzone) {
             mod_at -= 2;
-            text_at = text_at.concat(
-                `${CONFIG.ILARIS.label['km_gzsl']} (${CONFIG.ILARIS.trefferzonen[trefferzone]}): -2\n`,
+            let txt = `${CONFIG.ILARIS.label['km_gzsl']} (${CONFIG.ILARIS.trefferzonen[trefferzone]}): -2\n`;
+            text_at = text_at.concat(txt);
+            text_dm = text_dm.concat(txt)
+        } else {
+            let zonenroll = new Roll('1d6');
+            zonenroll.evaluate();
+            text_dm = text_dm.concat(
+                `Trefferzone: ${CONFIG.ILARIS.trefferzonen[zonenroll.total]}\n`,
             );
         }
         // Umreißen km_umre
         if (manoever.km_umre.selected) {
             text_at = text_at.concat(`${CONFIG.ILARIS.label['km_umre']}: Kein Schaden\n`);
+            nodmg = true;
         }
         // Unterlaufen km_utlf
         if (manoever.km_utlf.selected) {
@@ -255,18 +281,22 @@ export class AngriffDialog extends Dialog {
         // Wuchtschlag km_wusl
         let wusl = Number(manoever.km_wusl.selected);
         if (wusl > 0) {
+            mod_dm += wusl;
             mod_at -= wusl;
             text_at = text_at.concat(`${CONFIG.ILARIS.label['km_wusl']}: -${wusl}\n`);
+            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_wusl']}: +${wusl}\n`);
         }
         // Rüstungsbrecher km_rust
         if (manoever.km_rust.selected) {
             mod_at -= 4;
             text_at = text_at.concat(`${CONFIG.ILARIS.label['km_rust']}: -4\n`);
+            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_rust']}\n`);
         }
         // Schildspalter km_shsp
         if (manoever.km_shsp.selected) {
             mod_at += 2;
             text_at = text_at.concat(`${CONFIG.ILARIS.label['km_shsp']}: +2\n`);
+            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_shsp']}\n`);
         }
         // Schildwall km_shwl
         if (manoever.km_shwl.selected) {
@@ -276,6 +306,7 @@ export class AngriffDialog extends Dialog {
         // Stumpfer Schlag km_stsl
         if (manoever.km_stsl.selected) {
             text_at = text_at.concat(`${CONFIG.ILARIS.label['km_stsl']}: Erschöpfung statt Wunde\n`);
+            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_stsl']}\n`);
         }
         // Umklammern km_umkl
         if (manoever.km_umkl.selected) {
@@ -302,6 +333,8 @@ export class AngriffDialog extends Dialog {
         if (manoever.km_hmsl.selected) {
             mod_at -= 8;
             text_at = text_at.concat(`${CONFIG.ILARIS.label['km_hmsl']}\n`);
+            schaden = schaden.concat(`+${schaden}`);
+            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_hmsl']}\n`);
         }
         // Klingentanz km_kltz
         if (manoever.km_kltz.selected) {
@@ -312,23 +345,30 @@ export class AngriffDialog extends Dialog {
         if (manoever.km_ndwf.selected) {
             mod_at -= 4;
             text_at = text_at.concat(`${CONFIG.ILARIS.label['km_ndwf']}\n`);
+            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_ndwf']}\n`)
+            nodmg = true; // TODO: error message if already true?
         }
         // Sturmangriff km_stag
         if (manoever.km_stag.selected) {
             if (manoever.kbak.selected) mod_at += 4;
             let gs = Number(manoever.km_stag.gs);
             text_at = text_at.concat(`${CONFIG.ILARIS.label['km_stag']}: ${gs}\n`);
+            mod_dm += gs;
+            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_stag']}: ${gs}\n`);
         }
         // Todesstoß km_tdst
         if (manoever.km_tdst.selected) {
             mod_at -= 8;
             text_at = text_at.concat(`${CONFIG.ILARIS.label['km_tdst']}\n`);
+            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_tdst']}\n`);
         }
         // Überrennen km_uebr
         if (manoever.km_uebr.selected) {
             if (manoever.kbak.selected) mod_at += 4;
             let gs = Number(manoever.km_uebr.gs);
             text_at = text_at.concat(`${CONFIG.ILARIS.label['km_uebr']} (${gs})\n`);
+            mod_dm += gs;
+            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_uebr']}: ${gs}\n`);
         }
 
         // Modifikator
@@ -351,10 +391,14 @@ export class AngriffDialog extends Dialog {
         //         `${CONFIG.ILARIS.label['km_rpst']}: (\n${this.text_at})\n`,
         //     );
         // }
-        this.text_at = text_at;
         this.mod_at = mod_at;
         this.mod_vt = mod_vt;
+        this.mod_dm = mod_dm;
+        this.text_at = text_at;
         this.text_vt = text_vt;
+        this.text_dm = text_dm;
+        this.nodmg = nodmg;
+        this.schaden = schaden;
     }
 
     updateStatusMods() {
