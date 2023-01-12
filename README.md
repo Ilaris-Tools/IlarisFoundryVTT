@@ -1,7 +1,7 @@
 # Ilaris für FoundryVTT (**BETA**)
 
 Ein System für [Ilaris](https://ilarisblog.wordpress.com/) zur Verwendung mit [FoundryVTT](https://foundryvtt.com/).
-> Beta: Ilaris für FoundryVTT befindet sich aktuell in der Entwicklung. Grobe Änderungen am Code stehen aus und können neue Bugs mitbringen. Es sind bisher nicht alle Ilaris-Regeln vollständig umgesetzt. Für erstellte Inhalte (Helden, Kreaturen, eigene Zauber usw..) sollten gelegentlich Backups (Kopie der Spielwelt) erstellt werden insbesondere vor dem Update dieses Systems. Bei Fragen und Problemen warten wir im [Forum](https://dsaforum.de/viewtopic.php?f=180&t=55746) und im [Discord](https://discord.gg/qEKBnjsspX) um zu Helfen. Wer ein stabiles und vollständiges System für VTT sucht, kann auf das [Roll20 Charakter Sheet für Ilaris](https://github.com/Roll20/roll20-character-sheets/tree/master/Das_Schwarze_Auge_Ilaris) zurückgreifen.
+> Beta: Ilaris für FoundryVTT befindet sich aktuell in der Entwicklung. Grobe Änderungen am Code stehen aus und können neue Bugs mitbringen. Es sind bisher nicht alle Ilaris-Regeln vollständig umgesetzt. Für erstellte Inhalte (Helden, Kreaturen, eigene Zauber usw..) sollten gelegentlich Backups (Kopie der Spielwelt) erstellt werden insbesondere vor dem Update dieses Systems. Bei Fragen und Problemen warten wir im [Forum](https://dsaforum.de/viewtopic.php?f=180&t=55746) und im [Discord](https://discord.gg/qEKBnjsspX) um zu Helfen.
 
 
 ## Disclaimer
