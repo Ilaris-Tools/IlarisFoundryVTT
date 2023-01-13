@@ -7,14 +7,15 @@ import {signed} from '../../common/wuerfel/chatutilities.js'
 
 export class AngriffDialog extends Dialog {
     constructor(actor, item) {
-        const dialog = {title: `Angriff: ${item.name}`};
+        const dialog = {title: `Kampf: ${item.name}`};
         const options = {template: 'systems/Ilaris/templates/sheets/dialogs/angriff.html'}
         super(dialog, options);
         // this can be probendialog (more abstract)
         this.item = item;
         this.actor = item.actor;
         this.speaker = ChatMessage.getSpeaker({ actor: this.actor });
-        this.rollmode = game.settings.get("core", "rollMode");  // public, private...
+        this.rollmode = game.settings.get("core", "rollMode");  // public, private.... 
+        this.item.data.data.manoever.rllm.selected = game.settings.get("core", "rollMode");  // TODO: either manoever or dialog property.
         this.fumble_val = 1;
         if (this.item.data.data.eigenschaften.unberechenbar) {
             this.fumble_val = 2;
@@ -27,7 +28,7 @@ export class AngriffDialog extends Dialog {
             checked_xd20: '0',
             distance_choice: CONFIG.ILARIS.distance_choice,
             rollModes: CONFIG.Dice.rollModes,
-            defaultRollMode: this.rollmode,
+            // defaultRollMode: this.rollmode,
             item: this.item,
             mod_at: this.mod_at
         };
