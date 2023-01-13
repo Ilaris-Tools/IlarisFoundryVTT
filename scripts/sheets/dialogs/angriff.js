@@ -20,6 +20,7 @@ export class AngriffDialog extends Dialog {
         if (this.item.data.data.eigenschaften.unberechenbar) {
             this.fumble_val = 2;
         }
+        this.aufbauendeManoeverAktivieren()
     }
 
     getData () { // damit wird das template gefüttert
@@ -47,6 +48,7 @@ export class AngriffDialog extends Dialog {
         await this.manoeverAuswaehlen(html);
         this.updateManoeverMods(this.actor, this.item);  // durch manoever
         this.updateStatusMods();
+        this.eigenschaftenText();
 
         let label = `Attacke (${this.item.name})`;
         let formula = 
@@ -92,6 +94,33 @@ export class AngriffDialog extends Dialog {
         }
         await roll_crit_message(formula, label, this.text_dm, this.speaker, this.rollmode, false);
         this.close()
+    }
+
+    eigenschaftenText() {
+        console.log(this.item);
+        if (!this.item.data.data.eigenschaften.length > 0) {
+            return;
+        }
+        this.text_at += "\nEigenschaften: ";
+        this.text_at += this.item.data.data.eigenschaften.map(e => e.name).join(", ");
+    }
+
+    aufbauendeManoeverAktivieren() {
+        let manoever = this.item.data.data.manoever;
+        let eigenschaften = this.item.data.data.eigenschaften.map(e => e.name);
+        let vorteile = this.actor.data.data.vorteile.map(v => v.name);
+
+        manoever.km_rust.possible = eigenschaften.includes("Rüstungsbrechend");
+        manoever.km_stsl.possible = eigenschaften.includes("Stumpf");
+        manoever.km_umkl.possible = true;
+        manoever.km_ausf.possible = vorteile.includes("Ausfall");
+        manoever.km_hmsl.possible = vorteile.includes('Hammerschlag');
+        manoever.km_kltz.possible = vorteile.includes('Klingentanz');
+        manoever.km_ndwf.possible = vorteile.includes('Niederwerfen');
+        manoever.km_stag.possible = vorteile.includes('Sturmangriff');
+        manoever.km_tdst.possible = vorteile.includes('Todesstoß');
+        manoever.vlof.offensiver_kampfstil =vorteile.includes('Offensiver Kampfstil');
+        manoever.kwut = vorteile.includes('Kalte Wut');
     }
 
     manoeverAuswaehlen(html)  {
