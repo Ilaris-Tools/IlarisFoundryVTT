@@ -57,3 +57,8 @@ https://foundryvtt.wiki/en/development/guides/builtin-css
 und HTML Vorlagen benutzen:
 https://foundryvtt.wiki/en/development/guides/SD-tutorial/SD08-Creating-HTML-templates-for-your-actor-sheets
 (feel free to edit)
+
+
+Weitere Open-Source Foundry-Module als Beispiele:
+https://github.com/foundryvtt/dnd5e/
+https://git.f3l.de/dungeonslayers/ds4/
