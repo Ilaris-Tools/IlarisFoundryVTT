@@ -202,7 +202,13 @@
                 data-itemid="{{angriff.id}}"
                 >: {{angriff.data.data.vt}}</label
             >
-            TP<label>: {{angriff.data.data.tp}}
+            TP<label>
+                <a
+                class="rollable icon-small"
+                data-rolltype="basic"
+                data-formula="{{translate_formula angriff.data.data.tp}}"
+                data-label="Schaden ({{angriff.name}})"
+                >: {{angriff.data.data.tp}}</a> 
             </label>
             <!-- <label>Härte: {{angriff.data.data.haerte}}</label> -->
         </div>

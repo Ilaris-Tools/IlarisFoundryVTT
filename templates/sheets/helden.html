@@ -67,7 +67,13 @@
                 </div>
                 <div class="flexrow">
                     <label>MR: </label>
-                    <label>{{data.data.abgeleitete.mr}}</label>
+                    <label
+                        class="rollable onhover"
+                        data-rolltype="simpleprobe_diag"
+                        data-name="Magierresistenz"
+                        data-pw="{{data.data.abgeleitete.mr}}"
+                        >{{data.data.abgeleitete.mr}}
+                    </label>
                     <label>INI: </label>
                     <label>{{data.data.abgeleitete.ini}}</label>
                 </div>
