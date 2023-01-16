@@ -2,7 +2,7 @@
   "name": "Ilaris",
   "title": "Ilaris (beta)",
   "description": "Schnelle und schlanke Regeln für Aventurien",
-  "version": "0.0.9",
+  "version": "0.0.11",
   "minimumCoreVersion": "0.9.280",
   "compatibleCoreVersion": "0.9.280",
   "templateVersion": 2,
@@ -112,6 +112,6 @@
   "background": "assets/images/background/splash.jpg",
   "url": "https://gitlab.com/Feorg/ilaris-foundryvtt",
   "manifest": "https://gitlab.com/Feorg/ilaris-foundryvtt/raw/master/system.json",
-  "download": "https://gitlab.com/Feorg/ilaris-foundryvtt/-/archive/v0.0.9/ilaris-foundryvtt-v0.0.9.zip",
+  "download": "https://gitlab.com/Feorg/ilaris-foundryvtt/-/archive/v0.0.11/ilaris-foundryvtt-v0.0.11.zip",
   "license": ""
 }
