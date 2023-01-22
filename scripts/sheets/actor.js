@@ -361,6 +361,9 @@ export class IlarisActorSheet extends ActorSheet {
                 callback: () => {},
               });
         }
+        else {
+            super._onDropItemCreate(item);
+        }
     }
 
     _onItemCreate(event) {
