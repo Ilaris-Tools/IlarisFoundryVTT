@@ -31,17 +31,18 @@ einfügen und installieren.
 
 
 ## Aktueller Entwicklungsstand
-Für nicht allzu anspruchsvolle Spieler/innen ist das System ausgereift genug um die ein oder andere Session spielen zu können. Kleinere Fehler können immer wieder auftreten. Es sind [noch nicht alle Vorteile](https://gitlab.com/Feorg/ilaris-foundryvtt/-/issues/37) vollständig implementiert. Wir arbeiten gerade an der Einbindung einer großen Datenbank von Kreaturen für Ilaris. Ein grober Überblick kann anhand der [Meilensteinen](https://gitlab.com/Feorg/ilaris-foundryvtt/-/milestones) gewonnen werden. Mehr Details gibt es auf unserem [TODO-Board](https://gitlab.com/Feorg/ilaris-foundryvtt/-/boards). Etwas weniger aktuell, aber wesentlich praxisorientierter sind die Screencasts von [TODO YOUTUBELINK]()
+Für nicht allzu anspruchsvolle Spieler/innen ist das System ausgereift genug um die ein oder andere Session spielen zu können. Kleinere Fehler können immer wieder auftreten. Es sind [noch nicht alle Vorteile](https://gitlab.com/Feorg/ilaris-foundryvtt/-/issues/37) vollständig implementiert. Wir arbeiten gerade an der Einbindung einer großen Datenbank von Kreaturen für Ilaris. Ein grober Überblick kann anhand der [Meilensteinen](https://gitlab.com/Feorg/ilaris-foundryvtt/-/milestones) gewonnen werden. Mehr Details gibt es auf unserem [TODO-Board](https://gitlab.com/Feorg/ilaris-foundryvtt/-/boards). Etwas weniger aktuell, aber wesentlich praxisorientierter sind die [Screencasts auf YouTube](https://www.youtube.com/playlist?list=PLgv_FQFVPJ-6vOKI3jrfy9d2xfqzQSE-X)
 
 
 ## Bekannte Probleme
 
-- Abfragen zur Berechnung von Fertigkeitn/Vorteilen/etc. basieren rein auf Strings: Ein Leerzeichen an der falschen Stelle kann daher die Berechnung kaputt machen => Item löschen und neu importieren, bevor ein Bug gemeldet wird.  
+- Abfragen zur Berechnung von Fertigkeitn/Vorteilen/etc. basieren rein auf Strings: Ein Leerzeichen an der falschen Stelle kann daher die Berechnung kaputt machen => Item löschen und neu importieren, bevor ein Bug gemeldet wird.
+- Bereits gemeldete Probleme werden [hier als Issues](https://gitlab.com/Feorg/ilaris-foundryvtt/-/issues/?label_name%5B%5D=BUG) gesammelt
 
 
 ### Zu beachten / FAQ
 
--   Im Compendium "Beispielhelden" gibt es "Alrik die leere Vorlage", die schon alle typischen Fertigkeiten ausgerüstet hat. "Alrik der Bauer" ist zur Präsentation mit Werten und Ausrüstung ausgestattet.
+-   Im Kompendium "Beispielhelden" gibt es "Alrik die leere Vorlage", die schon alle typischen Fertigkeiten ausgerüstet hat. "Alrik der Bauer" ist zur Präsentation mit Werten und Ausrüstung ausgestattet.
 -   Rüstungen werden erst berechnet, wenn sie angelegt werden. Symbol links neben dem Namen anklicken
 -   Kampfstile werden nur für die ausgerüsteten Haupt- und Nebenwaffen berechnet
 -   Es kann maximal jeweils eine Haupt- und Nebenwaffe angelegt sein. Zweihändige Waffen müssen gleichzeitig Haupt- und Nebenwaffe sein, sonst werden die Abzüge für einhändige Führung angerechnet
