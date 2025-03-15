@@ -112,13 +112,8 @@ export async function wuerfelwurf(event, actor) {
                             }
                             // Volle Offensive vlof
                             if (item.data.data.manoever.vlof.selected) {
-                                if (item.data.data.manoever.vlof.offensiver_kampfstil) {
-                                    mod_at += 8;
-                                    text = text.concat('Volle Offensive (Offensiver Kampfstil)\n');
-                                } else {
-                                    mod_at += 4;
-                                    text = text.concat('Volle Offensive\n');
-                                }
+                                mod_at += 4;
+                                text = text.concat('Volle Offensive\n');
                             }
                             // Reichweitenunterschiede rwdf
                             let reichweite = item.data.data.manoever.rwdf.selected;  // contains number
@@ -194,8 +189,14 @@ export async function wuerfelwurf(event, actor) {
                             );
                             // Volle Offensive vlof
                             if (item.data.data.manoever.vlof.selected) {
-                                mod_vt -= 8;
-                                text = text.concat('Volle Offensive\n');
+                                if (item.data.data.manoever.vlof.offensiver_kampfstil) {
+                                    mod_vt -= 4;
+                                    text = text.concat('Volle Offensive (Offensiver Kampfstil)\n');
+                                }
+                                else {
+                                    mod_vt -= 8;
+                                    text = text.concat('Volle Offensive\n');
+                                }
                             }
                             // Volle Defensive vldf
                             if (item.data.data.manoever.vldf.selected) {
