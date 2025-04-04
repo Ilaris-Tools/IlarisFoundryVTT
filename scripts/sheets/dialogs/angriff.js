@@ -217,14 +217,14 @@ export class AngriffDialog extends Dialog {
         // Volle Offensive vlof
         if (manoever.vlof.selected) {
             if (manoever.vlof.offensiver_kampfstil) {
-                mod_at += 8;
-                text_at = text_at.concat('Volle Offensive (Off. Stil): +8\n');
+                mod_vt -= 4;
+                text_at = text_at.concat('Volle Offensive (Offensiver Kampfstil): -4\n');
             } else {
-                mod_at += 4;
-                text_at = text_at.concat('Volle Offensive: +4\n');
+                mod_vt -= 8;
+                text_vt = text_vt.concat('Volle Offensive: -8\n'); 
             }
-            mod_vt -= 8;
-            text_vt = text_vt.concat('Volle Offensive: -8\n');
+            mod_at += 4;
+            text_at = text_at.concat('Volle Offensive: +4\n');
         }
         // Volle Defensive vldf
         if (manoever.vldf.selected) {
