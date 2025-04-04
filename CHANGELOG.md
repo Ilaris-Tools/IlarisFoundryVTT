@@ -1,5 +1,17 @@
 # Changelog
 
+## v0.0.18: 
+Manueller Modifikator im Waffendialog wird nicht mehr auf Schaden angerechnet
+
+## v0.0.17: 
+Modifikatoren der Manöver/Spontanen Mod werden in den entsprechenden Dialogen angezeigt
+
+## v0.0.16: 
+Manueller Modifikator und Reichweiten Modifikator auf dem Kreaturensheet Waffendialog gefixt
+
+## v0.0.14: 
+Offensiver Kampfstil jetzt auch auf dem Kreaturensheet Waffendialog gefixt
+
 ## v0.0.10
 
 ## v0.0.9
