@@ -232,7 +232,8 @@ export class AngriffDialog extends Dialog {
             text_vt = text_vt.concat('Volle Defensive +4\n');
         }
         // Reichweitenunterschiede rwdf
-        if (manoever.rwdf.selected) {
+        let reichweite = Number(manoever.rwdf.selected);
+        if (reichweite > 0) {
             let mod_rwdf = 2 * Number(reichweite);
             mod_at -= mod_rwdf;
             mod_vt -= mod_rwdf;
@@ -405,7 +406,9 @@ export class AngriffDialog extends Dialog {
         let modifikator = Number(manoever.mod.selected);
         if (modifikator != 0) {
             mod_vt += modifikator;
+            mod_at += modifikator;
             text_vt = text_vt.concat(`Modifikator: ${modifikator}\n`);
+            text_at = text_at.concat(`Modifikator: ${modifikator}\n`);
         }
         
         // Riposte km_rpst
