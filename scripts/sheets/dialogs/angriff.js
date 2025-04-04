@@ -65,7 +65,7 @@ export class AngriffDialog extends Dialog {
             true,
             this.fumble_val,
         );
-        this.close();
+        // this.close();
     }
 
     async _verteidigenKlick(html) {
@@ -79,7 +79,7 @@ export class AngriffDialog extends Dialog {
         // console.log(this.vt_abzuege_mod);
         await roll_crit_message(formula, label, this.text_vt, this.speaker, this.rollmode, true, this.fumble_val);
         // TODO: wird unberechenbar auch auf VT gezählt?
-        this.close();
+        // this.close();
     }
 
     async _schadenKlick(html){
@@ -93,7 +93,7 @@ export class AngriffDialog extends Dialog {
             formula = "0";
         }
         await roll_crit_message(formula, label, this.text_dm, this.speaker, this.rollmode, false);
-        this.close()
+        // this.close()
     }
 
     eigenschaftenText() {
