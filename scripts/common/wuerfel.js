@@ -344,12 +344,12 @@ export async function wuerfelwurf(event, actor) {
                                 mod_schaden += gs;
                                 text = text.concat(`${CONFIG.ILARIS.label['km_uebr']}: ${gs}\n`);
                             }
-                            // Modifikator
-                            let modifikator = Number(item.data.data.manoever.mod.selected);
-                            if (modifikator != 0) {
-                                mod_schaden += modifikator;
-                                text = text.concat(`Modifikator: ${modifikator}\n`);
-                            }
+                            // // Modifikator
+                            // let modifikator = Number(item.data.data.manoever.mod.selected);
+                            // if (modifikator != 0) {
+                            //     mod_schaden += modifikator;
+                            //     text = text.concat(`Modifikator: ${modifikator}\n`);
+                            // }
                             // Rollmode
                             let rollmode = item.data.data.manoever.rllm.selected;
                             let formula = `${schaden} + ${mod_schaden}`;
@@ -708,12 +708,12 @@ export async function wuerfelwurf(event, actor) {
                             if (meisterschuss) {
                                 text = text.concat(`${CONFIG.ILARIS.label['fm_msts']}\n`);
                             }
-                            // Modifikator
-                            let modifikator = Number(item.data.data.manoever.mod.selected);
-                            if (modifikator != 0) {
-                                mod_schaden += modifikator;
-                                text = text.concat(`Modifikator: ${modifikator}\n`);
-                            }
+                            // // Modifikator
+                            // let modifikator = Number(item.data.data.manoever.mod.selected);
+                            // if (modifikator != 0) {
+                            //     mod_schaden += modifikator;
+                            //     text = text.concat(`Modifikator: ${modifikator}\n`);
+                            // }
                             // Rollmode
                             let rollmode = item.data.data.manoever.rllm.selected;
                             let formula = `${schaden} + ${mod_schaden}`;
