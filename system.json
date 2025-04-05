@@ -4,7 +4,7 @@
   "description": "Schnelle und schlanke Regeln für Aventurien",
   "version": "0.0.19",
   "minimumCoreVersion": "0.9.280",
-  "compatibleCoreVersion": "0.9.280",
+  "compatibleCoreVersion": "0.11.315",
   "templateVersion": 2,
   "author": "Harbard/feorg (Georg Gießler), kleinerIrrer (Arne Strehlow)",
   "scripts": [],
