@@ -63,7 +63,6 @@ export class KreaturSheet extends IlarisActorSheet {
         console.log("Item gedroppt!");
         console.log(item);
 
-        let itemclass = item.type;
         let itemData = {};
         if (item.type == "talent" || item.type == "fertigkeit") {
             console.log("Item drop abgefangen. Erstelle Freies Talent..");
@@ -106,6 +105,6 @@ export class KreaturSheet extends IlarisActorSheet {
             }
         } 
         super._onDropItemCreate(item);
-        return this.actor.createEmbeddedDocuments('Item', [itemData]);
+        // return this.actor.createEmbeddedDocuments('Item', [itemData]);
     }
 }
