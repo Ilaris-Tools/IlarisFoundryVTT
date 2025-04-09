@@ -1334,7 +1334,7 @@ export class IlarisActor extends Actor {
             : b.data.data.gruppe > a.data.data.gruppe
             ? -1
             : 0,
-    );
+        );
 
         // profan_fertigkeiten = _.sortBy( profan_fertigkeiten, 'name' );
         // profan_fertigkeiten = _.sortBy( profan_fertigkeiten, 'data.gruppe' );
