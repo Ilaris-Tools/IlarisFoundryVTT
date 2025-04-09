@@ -1,24 +1,25 @@
+{{log 'actor-sheet' this}}
 <form class="{{cssClass}}">
     <div>
         <div>
             <div style="float: left">
                 <img
                     class="profile-img"
-                    src="{{data.img}}"
+                    src="{{actor.img}}"
                     data-edit="img"
-                    title="{{data.name}}"
+                    title="{{actor.name}}"
                     height="100"
                     width="100"
                 />
             </div>
             <div style="float: left">
-                <input name="name" type="text" value="{{data.name}}" />
+                <input name="name" type="text" value="{{actor.name}}" />
                 <div class="flexrow">
                     <label>Erschöpfung: </label>
                     <input
                         class="hp-update"
                         name="data.gesundheit.erschoepfung"
-                        value="{{data.data.gesundheit.erschoepfung}}"
+                        value="{{actor.system.gesundheit.erschoepfung}}"
                         type="text"
                         data-dtype="Number"
                     />
@@ -28,7 +29,7 @@
                     <input
                         class="hp-update"
                         name="data.gesundheit.wunden"
-                        value="{{data.data.gesundheit.wunden}}"
+                        value="{{actor.system.gesundheit.wunden}}"
                         type="text"
                         data-dtype="Number"
                     />
@@ -38,7 +39,7 @@
                     class="icon-small toggle-bool {{data.data.gesundheit.wundenignorieren}}"
                     data-togglevariable="data.gesundheit.wundenignorieren">
                     Wundabzüge ignorieren 
-                    {{#if data.data.gesundheit.wundenignorieren}}
+                    {{#if actor.system.gesundheit.wundenignorieren}}
                         (aktiviert)
                     {{else}}
                         (nicht aktiv)
@@ -54,16 +55,16 @@
                     <label>Schip*: </label>
                     <input
                         name="data.schips.schips_stern"
-                        value="{{data.data.schips.schips_stern}}"
+                        value="{{actor.system.schips.schips_stern}}"
                         type="text"
                         data-dtype="Number"
                     />
                 </div>
                 <div class="flexrow">
                     <label>WS: </label>
-                    <label>{{data.data.abgeleitete.ws}}</label>
+                    <label>{{actor.system.abgeleitete.ws}}</label>
                     <label>WS*: </label>
-                    <label>{{data.data.abgeleitete.ws_stern}}</label>
+                    <label>{{actor.system.abgeleitete.ws_stern}}</label>
                 </div>
                 <div class="flexrow">
                     <label>MR: </label>
@@ -71,17 +72,17 @@
                         class="rollable onhover"
                         data-rolltype="simpleprobe_diag"
                         data-name="Magierresistenz"
-                        data-pw="{{data.data.abgeleitete.mr}}"
-                        >{{data.data.abgeleitete.mr}}
+                        data-pw="{{actor.system.abgeleitete.mr}}"
+                        >{{actor.system.abgeleitete.mr}}
                     </label>
                     <label>INI: </label>
-                    <label>{{data.data.abgeleitete.ini}}</label>
+                    <label>{{actor.system.abgeleitete.ini}}</label>
                 </div>
                 <div class="flexrow">
                     <label>GS*: </label>
-                    <label>{{data.data.abgeleitete.gs}}</label>
+                    <label>{{actor.system.abgeleitete.gs}}</label>
                     <label>DH*: </label>
-                    <label>{{data.data.abgeleitete.dh}}</label>
+                    <label>{{actor.system.abgeleitete.dh}}</label>
                 </div>
                 <div class="flexrow">
                     <label>-</label>
@@ -94,18 +95,18 @@
             <label>{{data.data.abgeleitete.globalermod}}</label>
         </div> -->
         <div class="flexrow">
-            <label style="{{#if data.data.gesundheit.wundenignorieren }}text-decoration:line-through;{{/if}}">{{data.data.gesundheit.display}}</label>
+            <label style="{{#if data.data.gesundheit.wundenignorieren }}text-decoration:line-through;{{/if}}">{{actor.system.gesundheit.display}}</label>
         </div>
         <div class="flexrow">
             <label>{{data.data.furcht.display}}</label>
         </div>
         <div class="flexrow">
-            <input class="flex0" name="data.modifikatoren.manuellermod" value="{{data.data.modifikatoren.manuellermod}}" type="text" data-dtype="Number">
+            <input class="flex0" name="data.modifikatoren.manuellermod" value="{{actor.system.modifikatoren.manuellermod}}" type="text" data-dtype="Number">
             <label>auf alle Proben (Manuell) </label>
         </div>
         <hr/>
         <div class="flexrow">
-            <b><label style="color: {{modColor data.data.abgeleitete.globalermod}}">{{data.data.abgeleitete.globalermoddisplay}}</label></b>
+            <b><label style="color: {{modColor data.data.abgeleitete.globalermod}}">{{actor.system.abgeleitete.globalermoddisplay}}</label></b>
         </div>
         <!-- <div class="flexrow">
             <label>Nahkampf Mod: </label>

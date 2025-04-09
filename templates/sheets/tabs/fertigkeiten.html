@@ -24,7 +24,7 @@
             <label class="icon-small"></label>
         </div>
         <div class="twokindrow">
-            {{#each data.data.profan.fertigkeiten as |profert key|}}
+            {{#each actor.system.profan.fertigkeiten as |profert key|}}
             <div>
                 <div class="flexrow">
                     <a
@@ -36,21 +36,21 @@
                     <label class="ausklappen-trigger onhover" data-ausklappentarget="{{profert.id}}"
                         >{{profert.name}}</label
                     >
-                    <label>{{ProfanFertigkeitList profert.data.data.talente}}</label>
+                    <label>{{ProfanFertigkeitList profert.system.talente}}</label>
                     <label
                         class="rollable flex-fest-var onhover"
                         data-rolltype="profan_fertigkeit_pw"
                         data-fertigkeit="{{profert.name}}"
-                        data-pw="{{profert.data.data.pw}}"
+                        data-pw="{{profert.system.pw}}"
                         style="flex-basis: 40px"
-                        >{{profert.data.data.pw}}</label
+                        >{{profert.system.pw}}</label
                     >
                     <label
                         class="rollable onhover"
                         data-rolltype="profan_fertigkeit_pwt"
                         data-fertigkeit="{{profert.name}}"
-                        data-pwt="{{profert.data.data.pwt}}"
-                        >{{profert.data.data.pwt}}</label
+                        data-pwt="{{profert.system.pwt}}"
+                        >{{profert.system.pwt}}</label
                     >
                     <a
                         class="item-edit icon-small"
@@ -73,19 +73,19 @@
                         <label><b>FW:</b></label>
                     </div>
                     <div class="flexrow">
-                        <label>{{AttributeFertigkeit_from_data profert.data.data}}</label>
-                        <label>{{profert.data.data.basis}}</label>
-                        <label>{{profert.data.data.fw}}</label>
+                        <label>{{AttributeFertigkeit_from_data profert.system}}</label>
+                        <label>{{profert.system.basis}}</label>
+                        <label>{{profert.system.fw}}</label>
                     </div>
                     <div>
                         <label><b>Beschreibung:</b></label
                         ><br />
-                        <label style="white-space: pre-line">{{profert.data.data.text}}</label>
+                        <label style="white-space: pre-line">{{profert.system.text}}</label>
                     </div>
                     <div>
                         <label><b>Talente:</b></label
                         ><br />
-                        {{#each profert.data.data.talente as |protal|}}
+                        {{#each profert.system.talente as |protal|}}
                         <div>
                             <label
                                 class="rollable onhover"
@@ -94,10 +94,10 @@
                                 ,
                                 data-fertigkeit="{{profert.name}}"
                                 data-talent="{{protal.name}}"
-                                data-pw="{{profert.data.data.pwt}}"
+                                data-pw="{{profert.system.pwt}}"
                                 ><i>{{protal.name}}</i>:
                             </label>
-                            <label style="white-space: pre-line">{{protal.data.data.text}}</label>
+                            <label style="white-space: pre-line">{{protal.system.text}}</label>
                             <a
                                 class="item-delete icon-small"
                                 data-itemclass="talent"
@@ -120,11 +120,11 @@
             </div>
             {{/each}}
         </div>
-        {{#if data.data.profan.talente_unsorted}}
+        {{#if actor.system.profan.talente_unsorted}}
         <hr />
         <hr />
         <label><b>Talente ohne passende Fertigkeit:</b>&nbsp; | &nbsp;</label>
-        {{#each data.data.profan.talente_unsorted as |unsortal|}}
+        {{#each actor.system.profan.talente_unsorted as |unsortal|}}
         <a class="item-edit" data-itemclass="talent" data-itemid="{{unsortal.id}}">
             {{unsortal.name}}
         </a>
@@ -149,20 +149,20 @@
              <h6>Stufe</h6>
              <h6></h6>
              </div> -->
-        {{#each data.data.profan.freie as |freifert|}}
+        {{#each actor.system.profan.freie as |freifert|}}
         <a
             class="rollable"
             data-rolltype="freie_fertigkeit_diag"
             data-fertigkeit="{{freifert.name}}"
-            data-pw="{{freifert.data.data.stufe}}"
+            data-pw="{{freifert.system.stufe}}"
             ><i class="fas fa-dice-d20"></i
         ></a>
         <label
             class="rollable onhover"
             data-rolltype="freie_fertigkeit"
             data-fertigkeit="{{freifert.name}}"
-            data-pw="{{freifert.data.data.stufe}}"
-            >{{freifert.name}} &nbsp; {{freifert.data.data.stufe}} &nbsp;</label
+            data-pw="{{freifert.system.stufe}}"
+            >{{freifert.name}} &nbsp; {{freifert.system.stufe}} &nbsp;</label
         >
         <a class="item-edit" data-itemclass="freie_fertigkeit" data-itemid="{{freifert.id}}"
             ><i class="fas fa-edit"></i
