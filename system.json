@@ -1,10 +1,12 @@
 {
-  "name": "Ilaris",
+  "id": "Ilaris",
   "title": "Ilaris (beta)",
   "description": "Schnelle und schlanke Regeln für Aventurien",
   "version": "0.0.19",
-  "minimumCoreVersion": "0.9.280",
-  "compatibleCoreVersion": "0.9.280",
+  "compatibility": {
+    "minimum": 10,
+    "verified": 10
+  },
   "templateVersion": 2,
   "author": "Harbard/feorg (Georg Gießler), kleinerIrrer (Arne Strehlow)",
   "scripts": [],
