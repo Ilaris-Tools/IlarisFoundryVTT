@@ -70,12 +70,12 @@ export function calculate_diceschips(html, text, actor) {
         discard_l = 1;
         discard_h = 1;
     }
-    let schips_val = actor.data.data.schips.schips_stern;
+    let schips_val = actor.system.schips.schips_stern;
     if (schips_val > 0 && schips == 1) {
         text = text.concat(`Schips ohne Eigenheit\n`);
         dice_number += 1;
         discard_l += 1;
-        let new_schips = actor.data.data.schips.schips_stern - 1;
+        let new_schips = actor.system.schips.schips_stern - 1;
         actor.update({
             data: {
                 schips: {
@@ -87,7 +87,7 @@ export function calculate_diceschips(html, text, actor) {
         text = text.concat(`Schips mit Eigenschaft\n`);
         dice_number += 2;
         discard_l += 2;
-        let new_schips = actor.data.data.schips.schips_stern - 1;
+        let new_schips = actor.system.schips.schips_stern - 1;
         actor.update({
             data: {
                 schips: {
