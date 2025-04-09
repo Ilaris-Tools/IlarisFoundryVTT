@@ -14,13 +14,13 @@ import {
 
 export async function wuerfelwurf(event, actor) {
     let speaker = ChatMessage.getSpeaker({ actor: actor });
-    let data = actor.data.data;
+    let systemData = actor.system;
     let rolltype = $(event.currentTarget).data('rolltype');
-    let globalermod = data.abgeleitete.globalermod;
-    let wundabzuegemod = data.gesundheit.wundabzuege;
-    let furchtmod = data.furcht.furchtabzuege;
-    let be = data.abgeleitete.be;
-    let nahkampfmod = data.modifikatoren.nahkampfmod;
+    let globalermod = systemData.abgeleitete.globalermod;
+    let wundabzuegemod = systemData.gesundheit.wundabzuege;
+    let furchtmod = systemData.furcht.furchtabzuege;
+    let be = systemData.abgeleitete.be;
+    let nahkampfmod = systemData.modifikatoren.nahkampfmod;
     let pw = 0;
     let label = 'Probe';
     // let groupName_xd20 = "xd20";
@@ -60,11 +60,11 @@ export async function wuerfelwurf(event, actor) {
         let itemId = event.currentTarget.dataset.itemid;
         // let item = actor.getOwnedItem(itemId);
         let item = actor.items.get(itemId);
-        let pw_at = item.data.data.at;
-        let pw_vt = item.data.data.vt;
+        let pw_at = item.system.at;
+        let pw_vt = item.system.vt;
         // console.log(item);
         // let manoever_at = item._data.data.manoever_at;
-        let schaden = item.data.data.schaden;
+        let schaden = item.system.schaden;
         // console.log(item.data.data);
         // console.log(item._data.data.manoever_at);
         const html = await renderTemplate(
@@ -80,7 +80,7 @@ export async function wuerfelwurf(event, actor) {
                 distance_choice: CONFIG.ILARIS.distance_choice,
                 rollModes: CONFIG.Dice.rollModes,
                 defaultRollMode: game.settings.get("core", "rollMode"),
-                manoever: item.data.data.manoever,
+                manoever: item.system.manoever,
                 item: item,
                 // pw: pw
             },
@@ -106,29 +106,29 @@ export async function wuerfelwurf(event, actor) {
                             // TODO: Sind die ganzen mods nicht schon in attacke_prepare berechnet?
                             // das kann doch alles in eine funktion eig. auch mit nahkampf update zusammen?
                             // Kombinierte Aktion kbak
-                            if (item.data.data.manoever.kbak.selected) {
+                            if (item.system.manoever.kbak.selected) {
                                 mod_at -= 4;
                                 text = text.concat('Kombinierte Aktion\n');
                             }
                             // Volle Offensive vlof
-                            if (item.data.data.manoever.vlof.selected) {
+                            if (item.system.manoever.vlof.selected) {
                                 mod_at += 4;
                                 text = text.concat('Volle Offensive\n');
                             }
                             // Reichweitenunterschiede rwdf
-                            let reichweite = item.data.data.manoever.rwdf.selected;  // contains number
+                            let reichweite = item.system.manoever.rwdf.selected;  // contains number
                             mod_at -= 2 * Number(reichweite);
                             text = text.concat(`Reichweitenunterschied: ${reichweite}\n`);
                             //Passierschlag pssl & Anzahl Reaktionen rkaz
-                            if (item.data.data.manoever.pssl.selected) {
-                                let reaktionen = Number(item.data.data.manoever.rkaz.selected);
+                            if (item.system.manoever.pssl.selected) {
+                                let reaktionen = Number(item.system.manoever.rkaz.selected);
                                 if (reaktionen > 0) {
                                     mod_at -= 4 * reaktionen;
                                     text = text.concat(`Passierschlag: (${reaktionen})\n`);
                                 }
                             }
                             // Binden km_bind
-                            let binden = Number(item.data.data.manoever.km_bind.selected);
+                            let binden = Number(item.system.manoever.km_bind.selected);
                             if (binden > 0) {
                                 mod_at += binden;
                                 text = text.concat(`Binden: ${binden}\n`);
@@ -138,16 +138,16 @@ export async function wuerfelwurf(event, actor) {
                             mod_at += mod_from_at;
                             text = text.concat(text_from_at);
                             // Modifikator
-                            let modifikator = Number(item.data.data.manoever.mod.selected);
+                            let modifikator = Number(item.system.manoever.mod.selected);
                             if (modifikator != 0) {
                                 mod_at += modifikator;
                                 text = text.concat(`Modifikator: ${modifikator}\n`);
                             }
                             // Rollmode
-                            let rollmode = item.data.data.manoever.rllm.selected;
+                            let rollmode = item.system.manoever.rllm.selected;
                             let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
                             let at_abzuege_mod = 0;
-                            if (wundabzuegemod < 0 && item.data.data.manoever.kwut) {
+                            if (wundabzuegemod < 0 && item.system.manoever.kwut) {
                                 text = text.concat(`(Kalte Wut)\n`);
                                 at_abzuege_mod = furchtmod;
                             } else {
@@ -158,7 +158,7 @@ export async function wuerfelwurf(event, actor) {
                             // Critfumble & Message
                             let label = `Attacke (${item.name})`;
                             let fumble_val = 1;
-                            if (item.data.data.eigenschaften.unberechenbar) {
+                            if (item.system.eigenschaften.unberechenbar) {
                                 fumble_val = 2;
                             }
                             await roll_crit_message(
@@ -188,8 +188,8 @@ export async function wuerfelwurf(event, actor) {
                                 actor,
                             );
                             // Volle Offensive vlof
-                            if (item.data.data.manoever.vlof.selected) {
-                                if (item.data.data.manoever.vlof.offensiver_kampfstil) {
+                            if (item.system.manoever.vlof.selected) {
+                                if (item.system.manoever.vlof.offensiver_kampfstil) {
                                     mod_vt -= 4;
                                     text = text.concat('Volle Offensive (Offensiver Kampfstil)\n');
                                 }
@@ -199,44 +199,44 @@ export async function wuerfelwurf(event, actor) {
                                 }
                             }
                             // Volle Defensive vldf
-                            if (item.data.data.manoever.vldf.selected) {
+                            if (item.system.manoever.vldf.selected) {
                                 mod_vt += 4;
                                 text = text.concat('Volle Defensive\n');
                             }
                             // Reichweitenunterschiede rwdf
-                            let reichweite = item.data.data.manoever.rwdf.selected;
+                            let reichweite = item.system.manoever.rwdf.selected;
                             mod_vt -= 2 * Number(reichweite);
                             text = text.concat(`Reichweitenunterschied: ${reichweite}\n`);
                             //Anzahl Reaktionen rkaz
-                            let reaktionen = Number(item.data.data.manoever.rkaz.selected);
+                            let reaktionen = Number(item.system.manoever.rkaz.selected);
                             if (reaktionen > 0) {
                                 mod_vt -= 4 * reaktionen;
                                 text = text.concat(`Anzahl Reaktionen: ${reaktionen}\n`);
                             }
                             // Ausweichen km_ausw
-                            if (item.data.data.manoever.km_ausw.selected) {
+                            if (item.system.manoever.km_ausw.selected) {
                                 mod_vt -= 2 + be;
                                 text = text.concat('Ausweichen\n');
                             }
                             // Binden km_bind
-                            let binden = Number(item.data.data.manoever.km_bind.selected);
+                            let binden = Number(item.system.manoever.km_bind.selected);
                             if (binden > 0) {
                                 mod_vt -= binden;
                                 text = text.concat(`Binden: ${binden}\n`);
                             }
                             // Entwaffnen km_entw
-                            if (item.data.data.manoever.km_entw.selected_vt) {
+                            if (item.system.manoever.km_entw.selected_vt) {
                                 mod_vt -= 4;
                                 text = text.concat(`${CONFIG.ILARIS.label['km_entw']}\n`);
                             }
                             // Auflaufen lassen km_aufl
-                            if (item.data.data.manoever.km_aufl.selected) {
-                                let gs = Number(item.data.data.manoever.km_aufl.gs);
+                            if (item.system.manoever.km_aufl.selected) {
+                                let gs = Number(item.system.manoever.km_aufl.gs);
                                 mod_vt -= 4;
                                 text = text.concat(`${CONFIG.ILARIS.label['km_aufl']}: ${gs}\n`);
                             }
                             // Riposte km_rpst
-                            if (item.data.data.manoever.km_rpst.selected) {
+                            if (item.system.manoever.km_rpst.selected) {
                                 let [mod_from_at, text_from_at] = calculate_attacke(actor, item);
                                 mod_vt += -4 + mod_from_at;
                                 text = text.concat(
@@ -244,26 +244,26 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             // Schildwall km_shwl
-                            if (item.data.data.manoever.km_shwl.selected) {
+                            if (item.system.manoever.km_shwl.selected) {
                                 mod_vt -= 4;
                                 text = text.concat(`${CONFIG.ILARIS.label['km_shwl']}\n`);
                             }
                             // Unterlaufen km_utlf
-                            if (item.data.data.manoever.km_utlf.selected) {
+                            if (item.system.manoever.km_utlf.selected) {
                                 mod_vt -= 4;
                                 text = text.concat(`${CONFIG.ILARIS.label['km_utlf']}\n`);
                             }
                             // Modifikator
-                            let modifikator = Number(item.data.data.manoever.mod.selected);
+                            let modifikator = Number(item.system.manoever.mod.selected);
                             if (modifikator != 0) {
                                 mod_vt += modifikator;
                                 text = text.concat(`Modifikator: ${modifikator}\n`);
                             }
                             // Rollmode
-                            let rollmode = item.data.data.manoever.rllm.selected;
+                            let rollmode = item.system.manoever.rllm.selected;
                             let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
                             let vt_abzuege_mod = 0;
-                            if (wundabzuegemod < 0 && item.data.data.manoever.kwut) {
+                            if (wundabzuegemod < 0 && item.system.manoever.kwut) {
                                 text = text.concat(`(Kalte Wut)\n`);
                                 vt_abzuege_mod = furchtmod;
                             } else {
@@ -282,7 +282,7 @@ export async function wuerfelwurf(event, actor) {
                         callback: async (html) => {
                             await nahkampfUpdate(html, actor, item);
                             // Gezielter Schlag km_gzsl
-                            let trefferzone = Number(item.data.data.manoever.km_gzsl.selected);
+                            let trefferzone = Number(item.system.manoever.km_gzsl.selected);
                             if (trefferzone) {
                                 text = text.concat(
                                     `${CONFIG.ILARIS.label['km_gzsl']}: ${CONFIG.ILARIS.trefferzonen[trefferzone]}\n`,
@@ -296,51 +296,51 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             // Wuchtschlag km_wusl
-                            let wusl = Number(item.data.data.manoever.km_wusl.selected);
+                            let wusl = Number(item.system.manoever.km_wusl.selected);
                             if (wusl > 0) {
                                 mod_schaden += wusl;
                                 text = text.concat(`${CONFIG.ILARIS.label['km_wusl']}: ${wusl}\n`);
                             }
                             // Auflaufen lassen km_aufl
-                            if (item.data.data.manoever.km_aufl.selected) {
-                                let gs = Number(item.data.data.manoever.km_aufl.gs);
+                            if (item.system.manoever.km_aufl.selected) {
+                                let gs = Number(item.system.manoever.km_aufl.gs);
                                 mod_schaden += gs;
                                 text = text.concat(`${CONFIG.ILARIS.label['km_aufl']}: ${gs}\n`);
                             }
                             // Rüstungsbrecher km_rust
-                            if (item.data.data.manoever.km_rust.selected) {
+                            if (item.system.manoever.km_rust.selected) {
                                 text = text.concat(`${CONFIG.ILARIS.label['km_rust']}\n`);
                             }
                             // Schildspalter km_shsp
-                            if (item.data.data.manoever.km_shsp.selected) {
+                            if (item.system.manoever.km_shsp.selected) {
                                 text = text.concat(`${CONFIG.ILARIS.label['km_shsp']}\n`);
                             }
                             // Stumpfer Schlag km_stsl
-                            if (item.data.data.manoever.km_stsl.selected) {
+                            if (item.system.manoever.km_stsl.selected) {
                                 text = text.concat(`${CONFIG.ILARIS.label['km_stsl']}\n`);
                             }
                             // Hammerschlag km_hmsl
-                            if (item.data.data.manoever.km_hmsl.selected) {
+                            if (item.system.manoever.km_hmsl.selected) {
                                 schaden = schaden.concat(`+${schaden}`);
                                 text = text.concat(`${CONFIG.ILARIS.label['km_hmsl']}\n`);
                             }
                             // Niederwerfen km_ndwf
-                            if (item.data.data.manoever.km_ndwf.selected) {
+                            if (item.system.manoever.km_ndwf.selected) {
                                 text = text.concat(`${CONFIG.ILARIS.label['km_ndwf']}\n`);
                             }
                             // Sturmangriff km_stag
-                            if (item.data.data.manoever.km_stag.selected) {
-                                let gs = Number(item.data.data.manoever.km_stag.gs);
+                            if (item.system.manoever.km_stag.selected) {
+                                let gs = Number(item.system.manoever.km_stag.gs);
                                 mod_schaden += gs;
                                 text = text.concat(`${CONFIG.ILARIS.label['km_stag']}: ${gs}\n`);
                             }
                             // Todesstoß km_tdst
-                            if (item.data.data.manoever.km_tdst.selected) {
+                            if (item.system.manoever.km_tdst.selected) {
                                 text = text.concat(`${CONFIG.ILARIS.label['km_tdst']}\n`);
                             }
                             // Überrennen km_uebr
-                            if (item.data.data.manoever.km_uebr.selected) {
-                                let gs = Number(item.data.data.manoever.km_uebr.gs);
+                            if (item.system.manoever.km_uebr.selected) {
+                                let gs = Number(item.system.manoever.km_uebr.gs);
                                 mod_schaden += gs;
                                 text = text.concat(`${CONFIG.ILARIS.label['km_uebr']}: ${gs}\n`);
                             }
@@ -351,7 +351,7 @@ export async function wuerfelwurf(event, actor) {
                             //     text = text.concat(`Modifikator: ${modifikator}\n`);
                             // }
                             // Rollmode
-                            let rollmode = item.data.data.manoever.rllm.selected;
+                            let rollmode = item.system.manoever.rllm.selected;
                             let formula = `${schaden} + ${mod_schaden}`;
                             let label = `Schaden (${item.name})`;
                             // Critfumble & Message
@@ -737,7 +737,7 @@ export async function wuerfelwurf(event, actor) {
     } else if (rolltype == 'attribut_diag') {
         const attribut_name = $(event.currentTarget).data('attribut');
         label = CONFIG.ILARIS.label[attribut_name];
-        pw = data.attribute[attribut_name].pw;
+        pw = systemData.attribute[attribut_name].pw;
         const html = await renderTemplate(
             'systems/Ilaris/templates/chat/probendiag_attribut.html',
             {

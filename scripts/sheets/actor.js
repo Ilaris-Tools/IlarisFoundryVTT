@@ -56,7 +56,7 @@ export class IlarisActorSheet extends ActorSheet {
             let item_status = getProperty(item, attr);
             // item.update({[attr]: !getProperty(item.data, attr)});
             if (item_status == false) {
-                for (let nwaffe of this.actor.system.nahkampfwaffen) {
+                for (let nwaffe of this.actor.nahkampfwaffen) {
                     // for (let nwaffe of this.actor.data.nahkampfwaffen) {
                     // console.log(nwaffe);
                     if (nwaffe.system[toggletype] == true) {
@@ -65,7 +65,7 @@ export class IlarisActorSheet extends ActorSheet {
                         await change_item.update({ [attr]: false });
                     }
                 }
-                for (let item of this.actor.system.fernkampfwaffen) {
+                for (let item of this.actor.fernkampfwaffen) {
                     // console.log(item);
                     if (item.system[toggletype] == true) {
                         let change_itemId = item.id;

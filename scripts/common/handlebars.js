@@ -77,7 +77,7 @@ function registerHandlebarsHelpers() {
     Handlebars.registerHelper('waffeneigenschaften_string', function (waffe) {
         let my_list = '';
         // console.log(waffe);
-        for (const [eig, val] of Object.entries(waffe.data.data.eigenschaften)) {
+        for (const [eig, val] of Object.entries(waffe.system.eigenschaften)) {
             // console.log(eig);
             if (val == true) {
                 if (my_list.length == 0) {
@@ -139,9 +139,9 @@ function registerHandlebarsHelpers() {
     Handlebars.registerHelper('isCaster', function(actor) {
         console.log("caster?");
         console.log(actor.data);
-        return (actor.data.data.energien.asp.max + 
-            actor.data.data.energien.gup.max + 
-            actor.data.data.energien.kap.max > 0);
+        return (actor.system.energien.asp.max + 
+            actor.system.energien.gup.max + 
+            actor.system.energien.kap.max > 0);
     });
 
 
