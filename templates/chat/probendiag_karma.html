@@ -9,7 +9,7 @@
 <hr />
 <div class="flexrow">
     <label>{{get_label "kbak"}}</label>
-    <input type="checkbox" id="kbak" {{checked item.data.data.manoever.kbak.selected}} />
+    <input type="checkbox" id="kbak" {{checked item.system.manoever.kbak.selected}} />
 </div>
 <hr />
 <!-- mächtige liturgie -->
@@ -20,7 +20,7 @@
         id="lm_mali"
         type="number"
         name="item.data.data.manoever.lm_mali.selected"
-        value="{{item.data.data.manoever.lm_mali.selected}}"
+        value="{{item.system.manoever.lm_mali.selected}}"
         data-dtype="Number"
     />
 </div>
@@ -29,12 +29,12 @@
 {{#if manoever.lm_mezi.possible}}
 <div class="flexrow">
     <label>{{get_label "lm_mezi"}}</label>
-    <input type="checkbox" id="lm_mezi" {{checked item.data.data.manoever.lm_mezi.selected}} />
+    <input type="checkbox" id="lm_mezi" {{checked item.system.manoever.lm_mezi.selected}} />
     <!-- <input
         id="lm_mezi"
         type="number"
         name="item.data.data.manoever.lm_mezi.selected"
-        value="{{item.data.data.manoever.lm_mezi.selected}}"
+        value="{{item.system.manoever.lm_mezi.selected}}"
         data-dtype="Number"
     /> -->
 </div>
@@ -48,7 +48,7 @@
         id="lm_rwrh"
         type="number"
         name="item.data.data.manoever.lm_rwrh.selected"
-        value="{{item.data.data.manoever.lm_rwrh.selected}}"
+        value="{{item.system.manoever.lm_rwrh.selected}}"
         data-dtype="Number"
     />
 </div>
@@ -61,7 +61,7 @@
         id="lm_ltig"
         type="number"
         name="item.data.data.manoever.lm_ltig.selected"
-        value="{{item.data.data.manoever.lm_ltig.selected}}"
+        value="{{item.system.manoever.lm_ltig.selected}}"
         data-dtype="Number"
     />
 </div>
@@ -75,7 +75,7 @@
         id="lm_vbvk"
         type="number"
         name="item.data.data.manoever.lm_vbvk.selected"
-        value="{{item.data.data.manoever.lm_vbvk.selected}}"
+        value="{{item.system.manoever.lm_vbvk.selected}}"
         data-dtype="Number"
     />
 </div>
@@ -88,7 +88,7 @@
         id="lm_wkvl"
         type="number"
         name="item.data.data.manoever.lm_wkvl.selected"
-        value="{{item.data.data.manoever.lm_wkvl.selected}}"
+        value="{{item.system.manoever.lm_wkvl.selected}}"
         data-dtype="Number"
     />
 </div>
@@ -102,7 +102,7 @@
         id="lm_kosp"
         type="number"
         name="item.data.data.manoever.lm_kosp.selected"
-        value="{{item.data.data.manoever.lm_kosp.selected}}"
+        value="{{item.system.manoever.lm_kosp.selected}}"
         data-dtype="Number"
     />
 </div>
@@ -112,7 +112,7 @@
 <div class="flexrow">
     <label>{{get_label "lm_zere"}}</label>
     <select id="lm_zere">
-        {{selectOptions zere_choice selected=item.data.data.manoever.lm_zere.selected
+        {{selectOptions zere_choice selected=item.system.manoever.lm_zere.selected
         localize=true}}
     </select>
 </div>
@@ -121,7 +121,7 @@
 {{#if manoever.lm_opfe.possible}}
 <div class="flexrow">
     <label>{{get_label "lm_opfe"}}</label>
-    <input type="checkbox" id="lm_opfe" {{checked item.data.data.manoever.lm_opfe.selected}} />
+    <input type="checkbox" id="lm_opfe" {{checked item.system.manoever.lm_opfe.selected}} />
 </div>
 {{/if}}
 <hr />
@@ -131,13 +131,13 @@
         id="modifikator"
         type="number"
         name="item.data.data.manoever.mod.selected"
-        value="{{item.data.data.manoever.mod.selected}}"
+        value="{{item.system.manoever.mod.selected}}"
         data-dtype="Number"
     />
 </div>
 <div class="flexrow">
     <label>Würfelmodus: </label>
     <select id="rollMode">
-        {{selectOptions rollModes selected=item.data.data.manoever.rllm.selected localize=true}}
+        {{selectOptions rollModes selected=item.system.manoever.rllm.selected localize=true}}
     </select>
 </div>
