@@ -1,5 +1,11 @@
 # Changelog
 
+## v0.0.20: 
+Vorteile auf Kreaturensheet ziehen gefixt.
+
+## v0.0.19: 
+Kreaturen Waffendialog bleibt jetzt nach Verwendung offen.
+
 ## v0.0.18: 
 Manueller Modifikator im Waffendialog wird nicht mehr auf Schaden angerechnet
 
