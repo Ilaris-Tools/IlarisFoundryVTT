@@ -1,9 +1,10 @@
+{{log 'kreatur-sheet' this}}
 <form class="{{cssClass}} kreatur-sheet">
     <header class="sheet-header kreatur-header">
         <div style="display: flex; justify-content: space-between;">
             <div class="header-fields">
                 <input class="titel-input" style="" name="name" type="text" value="{{actor.name}}" placeholder="Name"/>
-                <textarea rows="2" name="data.kurzbeschreibung" type="text">{{data.data.kurzbeschreibung}}</textarea>
+                <textarea rows="2" name="data.kurzbeschreibung" type="text">{{actor.system.kurzbeschreibung}}</textarea>
             </div>
             <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
         </div>
@@ -17,8 +18,8 @@
                 <div class="flexrow">
                     <label class="flex1">Wunden/Erschöpft: </label>
                     <div class="flex1">
-                        <input class="hp-update" name="data.gesundheit.wunden" type="text" value="{{data.data.gesundheit.wunden}}" data-dtype="Number"/>/
-                        <input class="hp-update" name="data.gesundheit.erschoepfung" type="text" value="{{data.data.gesundheit.erschoepfung}}" data-dtype="Number"/>
+                        <input class="hp-update" name="data.gesundheit.wunden" type="text" value="{{actor.system.gesundheit.wunden}}" data-dtype="Number"/>/
+                        <input class="hp-update" name="data.gesundheit.erschoepfung" type="text" value="{{actor.system.gesundheit.erschoepfung}}" data-dtype="Number"/>
                     </div>
                 </div>
                 <!--                     
@@ -39,22 +40,22 @@
                         <div class="flexrow">
                             <label class="flex1">AsP*/AsP: </label>
                             <div class="flex1">
-                                <input class="hp-update" name="data.energien.asp.value" type="text" value="{{data.data.energien.asp.value}}" data-dtype="Number"/>/
-                                <input class="hp-update" name="data.energien.asp.max" type="text" value="{{data.data.energien.asp.max}}" data-dtype="Number"/>
+                                <input class="hp-update" name="data.energien.asp.value" type="text" value="{{actor.system.energien.asp.value}}" data-dtype="Number"/>/
+                                <input class="hp-update" name="data.energien.asp.max" type="text" value="{{actor.system.energien.asp.max}}" data-dtype="Number"/>
                             </div>
                         </div>
                         <div class="flexrow">
                             <label class="flex1">KaP*/KaP: </label>
                             <div class="flex1">
-                                <input class="hp-update" name="data.energien.kap.value" type="text" value="{{data.data.energien.kap.value}}" data-dtype="Number"/>/
-                                <input class="hp-update" name="data.energien.kap.max" type="text" value="{{data.data.energien.kap.max}}" data-dtype="Number"/>
+                                <input class="hp-update" name="data.energien.kap.value" type="text" value="{{actor.system.energien.kap.value}}" data-dtype="Number"/>/
+                                <input class="hp-update" name="data.energien.kap.max" type="text" value="{{actor.system.energien.kap.max}}" data-dtype="Number"/>
                             </div>
                         </div>
                         <div class="flexrow">
                             <label class="flex1">GuP*/GuP: </label>
                             <div class="flex1">
-                                <input class="flex0 hp-update" name="data.energien.gup.value" type="text" value="{{data.data.energien.gup.value}}" data-dtype="Number"/>/
-                                <input class="flex0 hp-update" name="data.energien.gup.max" type="text" value="{{data.data.energien.gup.max}}" data-dtype="Number"/>
+                                <input class="flex0 hp-update" name="data.energien.gup.value" type="text" value="{{actor.system.energien.gup.value}}" data-dtype="Number"/>/
+                                <input class="flex0 hp-update" name="data.energien.gup.max" type="text" value="{{actor.system.energien.gup.max}}" data-dtype="Number"/>
                             </div>
                         </div>
                     </div>
@@ -63,55 +64,55 @@
             <div class="flexcol">
                 <div>
                     
-                    <label style="{{#if data.data.gesundheit.wundenignorieren }}text-decoration:line-through;{{/if}}">{{data.data.gesundheit.display}}</label>
+                    <label style="{{#if actor.system.gesundheit.wundenignorieren }}text-decoration:line-through;{{/if}}">{{actor.system.gesundheit.display}}</label>
                     <a
-                        class="icon-small toggle-bool {{data.data.gesundheit.wundenignorieren}}"
+                        class="icon-small toggle-bool {{actor.system.gesundheit.wundenignorieren}}"
                         data-togglevariable="data.gesundheit.wundenignorieren"
                         title="tooltip_text"
                     >
-                    {{#if data.data.gesundheit.wundenignorieren}}
+                    {{#if actor.system.gesundheit.wundenignorieren}}
                         aktivieren
                     {{else}}
                         ignorieren
                     {{/if}}
                     </a>
                 </div>
-                <label>{{data.data.furcht.display}}</label>
+                <label>{{actor.system.furcht.display}}</label>
                 <div class="flexrow">
-                    <input class="flex0" name="data.modifikatoren.manuellermod" value="{{data.data.modifikatoren.manuellermod}}" type="text" data-dtype="Number">
+                    <input class="flex0" name="data.modifikatoren.manuellermod" value="{{actor.system.modifikatoren.manuellermod}}" type="text" data-dtype="Number">
                     <label>auf alle Proben (Manuell) </label>
                 </div>
                 <hr style="width: 100%; padding-top: 1px; padding-bottom: 1px; margin-top: 1px; margin-bottom: 1px; border-top: 1px solid darkred; border-bottom: 0px;" />
                 <div class="flexrow">
-                    <b><label style="color: {{modColor data.data.abgeleitete.globalermod}}">{{data.data.abgeleitete.globalermoddisplay}}</label></b>
+                    <b><label style="color: {{modColor actor.system.abgeleitete.globalermod}}">{{actor.system.abgeleitete.globalermoddisplay}}</label></b>
                 </div>
             </div>
         </div>
     </div>
     
-    {{#if data.data.eigenschaften}}
+    {{#if actor.eigenschaften}}
     <div class="eigenschaften statblockreihe">
         <b>Eigenschaften: </b>
-            {{#each data.data.eigenschaften as |eigenschaft|}}
+            {{#each actor.eigenschaften as |eigenschaft|}}
                 <a class="item-edit" data-itemid="{{eigenschaft.id}}">{{eigenschaft.name}}, </a>
             {{/each}}
     </div>
     {{/if}}
     
-    {{#if data.data.vorteile}}
+    {{#if actor.vorteile}}
     <div class="vorteile statblockreihe">
         <b>Vorteile: </b>
-            {{#each data.data.vorteile as |vorteil|}}
+            {{#each actor.vorteile as |vorteil|}}
                 <a class="item-edit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
             {{/each}}
     </div>
     {{/if}}
 
-    {{#if data.data.attribute}}
+    {{#if actor.system.attribute}}
     <div class="attribute statblockreihe">
         <!-- <b>Attribute : </b> -->
         <div class="flexrow">
-            {{#each data.data.attribute as |attribut key|}}
+            {{#each actor.system.attribute as |attribut key|}}
             <div class="attributblock flex1 flex-group-center"
             {{#if (ifEq attribut.pw 0)}} 
             style="opacity: 0.4;"
@@ -130,16 +131,16 @@
     </div>
     {{/if}}
 
-    {{#if data.data.kampfwerte}}
+    {{#if actor.system.kampfwerte}}
     <div class="kampfwerte statblockreihe">
         <!-- <b>Kampfwerte: </b> -->
-        {{#if data.data.modifikatoren.nahkampfmod}}
+        {{#if actor.system.modifikatoren.nahkampfmod}}
         <div class="flexrow" style="float: right">
-            <b><label style="color: {{modColor data.data.modifikatoren.nahkampfmod}}">{{data.data.abgeleitete.nahkampfmoddisplay}}</label></b>
+            <b><label style="color: {{modColor actor.system.modifikatoren.nahkampfmod}}">{{actor.system.abgeleitete.nahkampfmoddisplay}}</label></b>
         </div>
         {{/if}}
         <div class="flexrow">
-            {{#each data.data.kampfwerte as |obj key|}}
+            {{#each actor.system.kampfwerte as |obj key|}}
             <div class="attributblock flex1 flex-group-center" 
                 {{#if (ifEq obj 0)}} 
                 style="opacity: 0.4;"
@@ -166,10 +167,10 @@
     </div>
     {{/if}}
 
-    {{#if data.data.angriffe}}
+    {{#if actor.angriffe}}
     <div class="angriffe statblockreihe">
         <b>Angriffe: </b>
-        {{#each data.data.angriffe as |angriff key|}}
+        {{#each actor.angriffe as |angriff key|}}
         <div class="flexrow">
             <a 
                 class="rollable icon-small" 
@@ -182,38 +183,38 @@
             <label><b><a class="item-edit" data-itemid="{{angriff.id}}">{{angriff.name}} </a></b></label>
             {{#if (waffe_ist_fernkampf angriff) }}
             <label>
-                LZ: {{angriff.data.data.lz}}
+                LZ: {{angriff.system.lz}}
             </label>
             {{/if}}
-            <label>RW: {{angriff.data.data.rw}}</label>
+            <label>RW: {{angriff.system.rw}}</label>
             AT<label
                 class="rollable onhover"
                 data-rolltype="at"
-                data-pw="{{angriff.data.data.at}}"
+                data-pw="{{angriff.system.at}}"
                 data-item="{{angriff.name}}"
                 data-itemid="{{angriff.id}}"
-                >: {{angriff.data.data.at}}</label
+                >: {{angriff.system.at}}</label
             >
             VT<label
                 class="rollable onhover"
                 data-rolltype="vt"
-                data-pw="{{angriff.data.data.vt}}"
+                data-pw="{{angriff.system.vt}}"
                 data-item="{{angriff.name}}"
                 data-itemid="{{angriff.id}}"
-                >: {{angriff.data.data.vt}}</label
+                >: {{angriff.system.vt}}</label
             >
             TP<label>
                 <a
                 class="rollable icon-small"
                 data-rolltype="basic"
-                data-formula="{{translate_formula angriff.data.data.tp}}"
+                data-formula="{{translate_formula angriff.system.tp}}"
                 data-label="Schaden ({{angriff.name}})"
-                >: {{angriff.data.data.tp}}</a> 
+                >: {{angriff.system.tp}}</a> 
             </label>
             <!-- <label>Härte: {{angriff.data.data.haerte}}</label> -->
         </div>
         <div><label>
-            {{#each angriff.data.data.eigenschaften as |eig|}}
+            {{#each angriff.system.eigenschaften as |eig|}}
                 <span>{{eig.name}}, </span>
             {{/each}}
         </label></div>
@@ -225,7 +226,7 @@
     {{#if (isCaster actor)}}
     <div class="freietalente statblockreihe">
         <b>Übernatürliche Fertigkeiten: </b>
-        {{#each data.data.uebernatuerlich.fertigkeiten as |freiestalent key|}}
+        {{#each actor.uebernatuerlich.fertigkeiten as |freiestalent key|}}
         <label>
             <label>
                 <a class="item-edit" data-itemid="{{freiestalent.id}}">{{freiestalent.name}} </a> (
@@ -233,8 +234,8 @@
                 class="rollable onhover"
                 data-rolltype="profan_fertigkeit_pw"
                 data-fertigkeit="{{freiestalent.name}}"
-                data-pw="{{freiestalent.data.data.pw}}"
-                >{{freiestalent.data.data.pw}}</label
+                data-pw="{{freiestalent.system.pw}}"
+                >{{freiestalent.system.pw}}</label
             >  
 <!--                     <a
                     class="rollable icon-small"
@@ -248,7 +249,7 @@
                     class="rollable icon-small"
                     data-rolltype="simpleprobe_diag"
                     data-name="{{freiestalent.name}}"
-                    data-pw="{{freiestalent.data.data.pw}}"
+                    data-pw="{{freiestalent.system.pw}}"
                     ><i class="fas fa-dice-d20"></i
                 ></a>
                 ), 
@@ -259,7 +260,7 @@
 
     <div class="freietalente statblockreihe">
         <b>Zauber/Liturgien/Anrufungen: </b>
-        {{#each data.data.uebernatuerlich.zauber as |zauber key|}}
+        {{#each actor.uebernatuerlich.zauber as |zauber key|}}
         <label>
             <label>
                 <a class="item-edit" data-itemid="{{zauber.id}}">{{zauber.name}} </a> (
@@ -267,15 +268,15 @@
                 class="rollable onhover"
                 data-rolltype="profan_fertigkeit_pw"
                 data-fertigkeit="{{zauber.name}}"
-                data-pw="{{zauber.data.data.pw}}"
-                >{{zauber.data.data.pw}}</label
+                data-pw="{{zauber.system.pw}}"
+                >{{zauber.system.pw}}</label
             >  
             <a class="rollable icon-small" data-rolltype="magie_diag" data-itemid="{{zauber.id}}"><i class="fas fa-dice-d20"></i></a>
                 ), 
             </label> 
         </label>
         {{/each}}
-        {{#each data.data.uebernatuerlich.liturgien as |liturgie key|}}
+        {{#each actor.uebernatuerlich.liturgien as |liturgie key|}}
         <label>
             <label>
                 <a class="item-edit" data-itemid="{{liturgie.id}}">{{liturgie.name}} </a> (
@@ -283,15 +284,15 @@
                 class="rollable onhover"
                 data-rolltype="profan_fertigkeit_pw"
                 data-fertigkeit="{{liturgie.name}}"
-                data-pw="{{liturgie.data.data.pw}}"
-                >{{liturgie.data.data.pw}}</label
+                data-pw="{{liturgie.system.pw}}"
+                >{{liturgie.system.pw}}</label
             >  
             <a class="rollable icon-small" data-rolltype="karma_diag" data-itemid="{{liturgie.id}}"><i class="fas fa-dice-d20"></i></a>
                 ), 
             </label> 
         </label>
         {{/each}}
-        {{#each data.data.uebernatuerlich.anrufungen as |anrufung key|}}
+        {{#each actor.uebernatuerlich.anrufungen as |anrufung key|}}
         <label>
             <label>
                 <a class="item-edit" data-itemid="{{anrufung.id}}">{{anrufung.name}} </a> (
@@ -299,8 +300,8 @@
                 class="rollable onhover"
                 data-rolltype="profan_fertigkeit_pw"
                 data-fertigkeit="{{anrufung.name}}"
-                data-pw="{{anrufung.data.data.pw}}"
-                >{{anrufung.data.data.pw}}</label
+                data-pw="{{anrufung.system.pw}}"
+                >{{anrufung.system.pw}}</label
             >  
             <a class="rollable icon-small" data-rolltype="magie_diag" data-itemid="{{anrufung.id}}"><i class="fas fa-dice-d20"></i></a>
                 ), 
@@ -310,10 +311,10 @@
     </div>
     {{/if}}
 
-    {{#if data.data.freietalente}}
+    {{#if actor.freietalente}}
     <div class="freietalente statblockreihe">
         <b>Fertigkeiten: </b>
-        {{#each data.data.freietalente as |freiestalent key|}}
+        {{#each actor.freietalente as |freiestalent key|}}
         <label>
             <label>
                 <a class="item-edit" data-itemid="{{freiestalent.id}}">{{freiestalent.name}} </a> (
@@ -321,8 +322,8 @@
                 class="rollable onhover"
                 data-rolltype="profan_fertigkeit_pw"
                 data-fertigkeit="{{freiestalent.name}}"
-                data-pw="{{freiestalent.data.data.pw}}"
-                >{{freiestalent.data.data.pw}}</label
+                data-pw="{{freiestalent.system.pw}}"
+                >{{freiestalent.system.pw}}</label
             >  
 <!--                     <a
                     class="rollable icon-small"
@@ -336,7 +337,7 @@
                     class="rollable icon-small"
                     data-rolltype="simpleprobe_diag"
                     data-name="{{freiestalent.name}}"
-                    data-pw="{{freiestalent.data.data.pw}}"
+                    data-pw="{{freiestalent.system.pw}}"
                     ><i class="fas fa-dice-d20"></i
                 ></a>
                 ), 
@@ -412,19 +413,19 @@
         {{/each}}
     </div> -->
     
-    {{#if data.data.infos}}
+    {{#if actor.infos}}
     <div class="infos statblockreihe">
-        {{#each data.data.infos as |info|}}
+        {{#each actor.infos as |info|}}
         <div class="hangingindent">
             <b><a class="item-edit" data-itemid="{{info.id}}">{{info.name}}</a>:</b>
-            {{info.data.data.text}}
+            {{info.system.text}}
         </div>
         {{/each}}
     </div>
     {{/if}}
         <div class="form-group select">
             <select name="data.additemtype" style="max-width: 150px;">
-                {{#select data.data.additemtype}}
+                {{#select actor.system.additemtype}}
                 <option value="angriff">Angriff</option>
                 <option value="eigenschaft">Eigenschaft</option>
                 <option value="vorteil">Vorteil</option>
@@ -439,7 +440,7 @@
             <button 
                 style="max-width: 150px;" 
                 class="item-create" 
-                data-itemclass="{{data.data.additemtype}}"
+                data-itemclass="{{actor.system.additemtype}}"
                 type="button"
             >
                 Hinzufügen

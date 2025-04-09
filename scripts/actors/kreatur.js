@@ -25,33 +25,33 @@ export class KreaturActor extends IlarisActor {
     _initializeActor() {
         // TODO: wird das irgendwo anders gebraucht? sonst kann das auch direkt teil der prepareData() sein
         let data = this.data;
-        if (!data.data.modifikatoren) {
-            data.data.modifikatoren = {}
+        if (!this.system.modifikatoren) {
+            this.system.modifikatoren = {}
         }
-        if (!data.data.modifikatoren.manuellermod) {
-            data.data.modifikatoren.manuellermod = 0;
+        if (!this.system.modifikatoren.manuellermod) {
+            this.system.modifikatoren.manuellermod = 0;
         }
-        if (!data.data.modifikatoren.nahkampfmod) {
-            data.data.modifikatoren.nahkampfmod = 0;
+        if (!this.system.modifikatoren.nahkampfmod) {
+            this.system.modifikatoren.nahkampfmod = 0;
         }
-        this._sortItems(data);
-        this._calculateWounds(data);
-        this._calculateFear(data);
-        this._calculateModifikatoren(data);
-        this._calculateUebernatuerlichProbendiag(data);
-        this._calculateUebernaturlichTalente(data);
+        this._sortItems(this);
+        this._calculateWounds(this.system);
+        this._calculateFear(this.system);
+        this._calculateModifikatoren(this.system);
+        this._calculateUebernatuerlichProbendiag(this);
+        this._calculateUebernaturlichTalente(this);
         this._setManoever();
-        data.data.initiative = data.data.kampfwerte.ini;
+        this.system.initiative = this.system.kampfwerte.ini;
     }
 
     _setManoever() {
         console.log("Setze Manöver")
-        console.log(this.data.data);
-        for (let angriff of this.data.data.angriffe) {
+        console.log(this);
+        for (let angriff of this.angriffe) {
             console.log("Angriff:");
             console.log(angriff);   
-            angriff.data.data.manoever = 
-                angriff.data.data.manoever || 
+            angriff.system.manoever = 
+                angriff.system.manoever || 
                 foundry.utils.deepClone(CONFIG.ILARIS.manoever_nahkampf);
             console.log(angriff);   
         }
