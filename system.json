@@ -8,7 +8,14 @@
     "verified": 10
   },
   "templateVersion": 2,
-  "author": "Harbard/feorg (Georg Gießler), kleinerIrrer (Arne Strehlow)",
+  "authors": [
+    {
+      "name": "Harbard/feorg (Georg Gießler)"
+    },
+    {
+      "name": "kleinerIrrer (Arne Strehlow)"
+    }
+  ],
   "scripts": [],
   "esmodules": ["scripts/hooks.js"],
   "styles": ["css/temp.css"],
