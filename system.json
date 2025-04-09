@@ -22,91 +22,91 @@
   "packs": [
     {
       "label": "Beispiel Helden",
-      "entity": "Actor",
+      "type": "Actor",
       "name": "beispiel-helden",
       "path": "./packs/beispiel-helden.db",
       "system": "Ilaris"
     },
     {
       "label": "Kreaturen",
-      "entity": "Actor",
+      "type": "Actor",
       "name": "kreaturen",
       "path": "./packs/kreaturen.db",
       "system": "Ilaris"
     },
     {
       "label": "Fertigkeiten und Talente",
-      "entity": "Item",
+      "type": "Item",
       "name": "fertigkeiten-und-talente",
       "path": "./packs/fertigkeiten-und-talente.db",
       "system": "Ilaris"
     },
     {
       "label": "Fertigkeiten und Talente (ADVANCED)",
-      "entity": "Item",
+      "type": "Item",
       "name": "fertigkeiten-und-talente-advanced",
       "path": "./packs/fertigkeiten-und-talente-advanced.db",
       "system": "Ilaris"
     },
     {
       "label": "Liturgien und Mirakel",
-      "entity": "Item",
+      "type": "Item",
       "name": "liturgien-und-mirakel",
       "path": "./packs/liturgien-und-mirakel.db",
       "system": "Ilaris"
     },
     {
       "label": "Manöver",
-      "entity": "Item",
+      "type": "Item",
       "name": "manover",
       "path": "./packs/manover.db",
       "system": "Ilaris"
     },
     {
       "label": "Übernatürliche Fertigkeiten",
-      "entity": "Item",
+      "type": "Item",
       "name": "ubernaturliche-fertigkeiten",
       "path": "./packs/ubernaturliche-fertigkeiten.db",
       "system": "Ilaris"
     },
     {
       "label": "Vorteile",
-      "entity": "Item",
+      "type": "Item",
       "name": "vorteile",
       "path": "./packs/vorteile.db",
       "system": "Ilaris"
     },
     {
       "label": "Waffen",
-      "entity": "Item",
+      "type": "Item",
       "name": "waffen",
       "path": "./packs/waffen.db",
       "system": "Ilaris"
     },
     {
       "label": "Gegenstände",
-      "entity": "Item",
+      "type": "Item",
       "name": "gegenstande",
       "path": "./packs/gegenstande.db",
       "system": "Ilaris"
     },
     {
       "label": "Zaubersprüche und Rituale",
-      "entity": "Item",
+      "type": "Item",
       "name": "zauberspruche-und-rituale",
       "path": "./packs/zauberspruche-und-rituale.db",
       "system": "Ilaris"
     },
     {
       "label": "Zaubertricks (ADVANCED)",
-      "entity": "Item",
+      "type": "Item",
       "name": "zaubertricks-advanced",
       "path": "./packs/zaubertricks-advanced.db",
       "system": "Ilaris"
     },
     {
       "label": "Macro-Tools",
-      "entity": "Macro",
+      "type": "Macro",
       "name": "macro-tools",
       "path": "packs/macro-tools.db",
       "system": "Ilaris"
