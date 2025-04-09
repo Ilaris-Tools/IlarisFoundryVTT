@@ -30,7 +30,7 @@ export class IlarisActor extends Actor {
     __getStatuseffectById(data, statusId) {
         let iterator = data.effects.values();
         for (const effect of iterator) {
-            if (effect.data.flags.core.statusId == statusId) {
+            if (effect.flags.core.statusId == statusId) {
                 return true;
             }
         }
@@ -38,80 +38,80 @@ export class IlarisActor extends Actor {
     }
 
 
-    _calculatePWAttribute(data) {
-        for (let attribut of Object.values(data.data.attribute)) {
+    _calculatePWAttribute(systemData) {
+        for (let attribut of Object.values(systemData.attribute)) {
             attribut.pw = 2 * attribut.wert;
         }
     }
 
-    _calculateProfanFertigkeiten(data) {
+    _calculateProfanFertigkeiten(actor) {
         console.log('Berechne Profane Fertigkeiten');
-        for (let fertigkeit of data.data.profan.fertigkeiten) {
+        for (let fertigkeit of actor.profan.fertigkeiten) {
             let basiswert = 0;
             // console.log(data.data.attribute);
             // console.log(fertigkeit.data);
-            basiswert = basiswert + data.data.attribute[fertigkeit.data.data.attribut_0].wert;
-            basiswert = basiswert + data.data.attribute[fertigkeit.data.data.attribut_1].wert;
-            basiswert = basiswert + data.data.attribute[fertigkeit.data.data.attribut_2].wert;
+            basiswert = basiswert + actor.system.attribute[fertigkeit.system.attribut_0].wert;
+            basiswert = basiswert + actor.system.attribute[fertigkeit.system.attribut_1].wert;
+            basiswert = basiswert + actor.system.attribute[fertigkeit.system.attribut_2].wert;
             basiswert = Math.round(basiswert / 3);
-            fertigkeit.data.data.basis = basiswert;
-            fertigkeit.data.data.pw = basiswert + Math.round(Number(fertigkeit.data.data.fw) * 0.5);
-            fertigkeit.data.data.pwt = basiswert + Number(fertigkeit.data.data.fw);
+            fertigkeit.system.basis = basiswert;
+            fertigkeit.system.pw = basiswert + Math.round(Number(fertigkeit.system.fw) * 0.5);
+            fertigkeit.system.pwt = basiswert + Number(fertigkeit.system.fw);
         }
     }
 
     // Werte werden nicht gespeichert, sonder jedes mal neu berechnet?
-    _calculateUebernaturlichFertigkeiten(data) {
+    _calculateUebernaturlichFertigkeiten(actor) {
         console.log('Berechne Übernatürliche Fertigkeiten');
-        for (let fertigkeit of data.data.uebernatuerlich.fertigkeiten) {
+        for (let fertigkeit of actor.uebernatuerlich.fertigkeiten) {
             // console.log(fertigkeit);
             let basiswert = 0;
-            basiswert = basiswert + data.data.attribute[fertigkeit.data.data.attribut_0].wert;
-            basiswert = basiswert + data.data.attribute[fertigkeit.data.data.attribut_1].wert;
-            basiswert = basiswert + data.data.attribute[fertigkeit.data.data.attribut_2].wert;
+            basiswert = basiswert + actor.system.attribute[fertigkeit.system.attribut_0].wert;
+            basiswert = basiswert + actor.system.attribute[fertigkeit.system.attribut_1].wert;
+            basiswert = basiswert + actor.system.attribute[fertigkeit.system.attribut_2].wert;
             basiswert = Math.round(basiswert / 3);
-            fertigkeit.data.data.basis = basiswert;
-            fertigkeit.data.data.pw = basiswert + Number(fertigkeit.data.data.fw);
+            fertigkeit.system.basis = basiswert;
+            fertigkeit.system.pw = basiswert + Number(fertigkeit.system.fw);
         }
     }
 
-    __getAlleUebernatuerlichenFertigkeiten(data) {
+    __getAlleUebernatuerlichenFertigkeiten(actor) {
         let fertigkeit_list = [];
-        for (let fertigkeit of data.data.uebernatuerlich.fertigkeiten) {
+        for (let fertigkeit of actor.uebernatuerlich.fertigkeiten) {
             fertigkeit_list.push(fertigkeit.name);
         }
         return fertigkeit_list;
     }
 
-    _calculateUebernaturlichTalente(data) {
+    _calculateUebernaturlichTalente(actor) {
         console.log('Berechne übernatürliche Talente');
         let fertigkeit_uebereinstimmung = [];
         // const alleMagieFertigkeiten = this.__getAlleMagieFertigkeiten(data);
         // const alleKarmaFertigkeiten = this.__getAlleKarmaFertigkeiten(data);
         // const alleFertigkeiten = this.__getAlleUebernatuerlichenFertigkeiten(data);
         // for (let talent of data.magie.talente) {
-        for (let talent of data.data.uebernatuerlich.zauber) {
+        for (let talent of actor.uebernatuerlich.zauber) {
             let max_pw = -1;
-            const fertigkeit_string = talent.data.data.fertigkeiten;
+            const fertigkeit_string = talent.system.fertigkeiten;
             let fertigkeit_array = fertigkeit_string.split(',');
             for (let [i, fert_string] of fertigkeit_array.entries()) {
                 let fertigkeit = fert_string.trim();
                 // for (let actor_fertigkeit of data.magie.fertigkeiten) {
-                for (let actor_fertigkeit of data.data.uebernatuerlich.fertigkeiten) {
+                for (let actor_fertigkeit of actor.uebernatuerlich.fertigkeiten) {
                     if (
                         fertigkeit == actor_fertigkeit.name &&
-                        talent.data.data.fertigkeit_ausgewaehlt == 'auto'
+                        talent.system.fertigkeit_ausgewaehlt == 'auto'
                     ) {
-                        let max_tmp = actor_fertigkeit.data.data.pw;
+                        let max_tmp = actor_fertigkeit.system.pw;
                         if (max_tmp > max_pw) {
                             max_pw = max_tmp;
                         }
-                    } else if (talent.data.data.fertigkeit_ausgewaehlt == actor_fertigkeit.name) {
-                        max_pw = actor_fertigkeit.data.data.pw;
+                    } else if (talent.system.fertigkeit_ausgewaehlt == actor_fertigkeit.name) {
+                        max_pw = actor_fertigkeit.system.pw;
                     }
                 }
             }
-            talent.data.data.pw = max_pw;
+            talent.system.pw = max_pw;
             // this.updateEmbeddedEntity('OwnedItem', {
             //     _id: talent._id,
             //     data: {
@@ -122,28 +122,28 @@ export class IlarisActor extends Actor {
             // });
         }
         // for (let talent of data.karma.talente) {
-        for (let talent of data.data.uebernatuerlich.liturgien) {
+        for (let talent of actor.uebernatuerlich.liturgien) {
             let max_pw = -1;
-            const fertigkeit_string = talent.data.data.fertigkeiten;
+            const fertigkeit_string = talent.system.fertigkeiten;
             let fertigkeit_array = fertigkeit_string.split(',');
             for (let [i, fert_string] of fertigkeit_array.entries()) {
                 let fertigkeit = fert_string.trim();
                 // for (let actor_fertigkeit of data.karma.fertigkeiten) {
-                for (let actor_fertigkeit of data.data.uebernatuerlich.fertigkeiten) {
+                for (let actor_fertigkeit of actor.uebernatuerlich.fertigkeiten) {
                     if (
                         fertigkeit == actor_fertigkeit.name &&
-                        talent.data.data.fertigkeit_ausgewaehlt == 'auto'
+                        talent.system.fertigkeit_ausgewaehlt == 'auto'
                     ) {
-                        let max_tmp = actor_fertigkeit.data.data.pw;
+                        let max_tmp = actor_fertigkeit.system.pw;
                         if (max_tmp > max_pw) {
                             max_pw = max_tmp;
                         }
-                    } else if (talent.data.data.fertigkeit_ausgewaehlt == actor_fertigkeit.name) {
-                        max_pw = actor_fertigkeit.data.data.pw;
+                    } else if (talent.system.fertigkeit_ausgewaehlt == actor_fertigkeit.name) {
+                        max_pw = actor_fertigkeit.system.pw;
                     }
                 }
             }
-            talent.data.data.pw = max_pw;
+            talent.system.pw = max_pw;
             // this.updateEmbeddedEntity('OwnedItem', {
             //     _id: talent._id,
             //     data: {
@@ -155,42 +155,42 @@ export class IlarisActor extends Actor {
         }
     }
 
-    _calculateWounds(data) {
+    _calculateWounds(systemData) {
         console.log('Berechne Wunden');
-        let einschraenkungen = Math.floor(data.data.gesundheit.wunden + data.data.gesundheit.erschoepfung);
+        let einschraenkungen = Math.floor(systemData.gesundheit.wunden + systemData.gesundheit.erschoepfung);
         let gesundheitzusatz = ``;
         // let old_hp = data.data.gesundheit.hp.value;
-        let new_hp = data.data.gesundheit.hp.max - einschraenkungen;
+        let new_hp = systemData.gesundheit.hp.max - einschraenkungen;
         if (einschraenkungen == 0) {
-            data.data.gesundheit.wundabzuege = 0;
+            systemData.gesundheit.wundabzuege = 0;
             gesundheitzusatz = `(Volle Gesundheit)`;
         } else if (einschraenkungen > 0 && einschraenkungen <= 2) {
-            data.data.gesundheit.wundabzuege = 0;
+            systemData.gesundheit.wundabzuege = 0;
             gesundheitzusatz = `(Kaum ein Kratzer)`;
         } else if (einschraenkungen >= 3 && einschraenkungen <= 4) {
-            data.data.gesundheit.wundabzuege = -(einschraenkungen - 2) * 2;
+            systemData.gesundheit.wundabzuege = -(einschraenkungen - 2) * 2;
             gesundheitzusatz = `(Verwundet)`;
         } else if (einschraenkungen >= 5 && einschraenkungen <= 8) {
-            data.data.gesundheit.wundabzuege = -(einschraenkungen - 2) * 2;
+            systemData.gesundheit.wundabzuege = -(einschraenkungen - 2) * 2;
             gesundheitzusatz = `(Kampfunfähig)`;
         } else if (einschraenkungen >= 9) {
-            data.data.gesundheit.wundabzuege = -(einschraenkungen - 2) * 2;
+            systemData.gesundheit.wundabzuege = -(einschraenkungen - 2) * 2;
             gesundheitzusatz = `(Tot)`;
         } else {
-            data.data.gesundheit.display = 'Fehler bei Berechnung der Wundabzüge';
+            systemData.gesundheit.display = 'Fehler bei Berechnung der Wundabzüge';
             return;
         }
-        if (data.data.gesundheit.wundenignorieren > 0) {
-            data.data.gesundheit.wundabzuege = 0;
+        if (systemData.gesundheit.wundenignorieren > 0) {
+            systemData.gesundheit.wundabzuege = 0;
         }
-        data.data.gesundheit.display = ``;
-        if (data.data.gesundheit.wundabzuege == 0) {
-            data.data.gesundheit.display += `-`;
+        systemData.gesundheit.display = ``;
+        if (systemData.gesundheit.wundabzuege == 0) {
+            systemData.gesundheit.display += `-`;
         }
-        data.data.gesundheit.display +=
-            `${data.data.gesundheit.wundabzuege} auf alle Proben ` + gesundheitzusatz;
+        systemData.gesundheit.display +=
+            `${systemData.gesundheit.wundabzuege} auf alle Proben ` + gesundheitzusatz;
         // if (old_hp != new_hp) {
-        data.data.gesundheit.hp.value = new_hp;
+        systemData.gesundheit.hp.value = new_hp;
         //     // console.log(data);
         //     let actor = game.actors.get(data._id);
         //     // console.log(actor);
@@ -201,43 +201,43 @@ export class IlarisActor extends Actor {
         // }
     }
 
-    _calculateFear(data) {
+    _calculateFear(systemData) {
         console.log('Berechne Furchteffekt');
         let furchtzusatz = ``;
-        if (data.data.furcht.furchtstufe == 0) {
-            data.data.furcht.furchtabzuege = 0;
+        if (systemData.furcht.furchtstufe == 0) {
+            systemData.furcht.furchtabzuege = 0;
             furchtzusatz = `(keine Furcht)`;
-        } else if (data.data.furcht.furchtstufe == 1) {
-            data.data.furcht.furchtabzuege = -2;
+        } else if (systemData.furcht.furchtstufe == 1) {
+            systemData.furcht.furchtabzuege = -2;
             furchtzusatz = `(Furcht I)`;
-        } else if (data.data.furcht.furchtstufe == 2) {
-            data.data.furcht.furchtabzuege = -4;
+        } else if (systemData.furcht.furchtstufe == 2) {
+            systemData.furcht.furchtabzuege = -4;
             furchtzusatz = `(Furcht II)`;
-        } else if (data.data.furcht.furchtstufe == 3) {
-            data.data.furcht.furchtabzuege = -8;
+        } else if (systemData.furcht.furchtstufe == 3) {
+            systemData.furcht.furchtabzuege = -8;
             furchtzusatz = `(Furcht III)`;
-        } else if (data.data.furcht.furchtstufe >= 4) {
-            data.data.furcht.furchtabzuege = -8;
+        } else if (systemData.furcht.furchtstufe >= 4) {
+            systemData.furcht.furchtabzuege = -8;
             furchtzusatz = `(Furcht IV)`;
         } else {
-            data.data.furcht.furchtstufe = 0;
-            data.data.furcht.display = 'Fehler bei Berechnung der Furchtabzüge';
+            systemData.furcht.furchtstufe = 0;
+            systemData.furcht.display = 'Fehler bei Berechnung der Furchtabzüge';
             return;
         }
-        data.data.furcht.display = ``;
-        if (data.data.furcht.furchtabzuege == 0) {
-            data.data.furcht.display += `-`;
+        systemData.furcht.display = ``;
+        if (systemData.furcht.furchtabzuege == 0) {
+            systemData.furcht.display += `-`;
         }
-        data.data.furcht.display +=
-            `${data.data.furcht.furchtabzuege} auf alle Proben ` + furchtzusatz;
+        systemData.furcht.display +=
+            `${systemData.furcht.furchtabzuege} auf alle Proben ` + furchtzusatz;
     }
 
-    _calculateWundschwellenRuestung(data) {
+    _calculateWundschwellenRuestung(actor) {
         console.log('Berechne Rüstung');
-        let ws = 4 + Math.floor(data.data.attribute.KO.wert / 4);
-        ws = hardcoded.wundschwelle(ws, data);
+        let ws = 4 + Math.floor(actor.system.attribute.KO.wert / 4);
+        ws = hardcoded.wundschwelle(ws, actor);
         // let ws_stern = ws;
-        let ws_stern = hardcoded.wundschwelleStern(ws, data);
+        let ws_stern = hardcoded.wundschwelleStern(ws, actor);
         let be = 0;
         let ws_beine = ws_stern;
         let ws_larm = ws_stern;
@@ -245,154 +245,154 @@ export class IlarisActor extends Actor {
         let ws_bauch = ws_stern;
         let ws_brust = ws_stern;
         let ws_kopf = ws_stern;
-        for (let ruestung of data.data.ruestungen) {
-            if (ruestung.data.data.aktiv == true) {
-                ws_stern += ruestung.data.data.rs;
-                be += ruestung.data.data.be;
-                ws_beine += ruestung.data.data.rs_beine;
-                ws_larm += ruestung.data.data.rs_larm;
-                ws_rarm += ruestung.data.data.rs_rarm;
-                ws_bauch += ruestung.data.data.rs_bauch;
-                ws_brust += ruestung.data.data.rs_brust;
-                ws_kopf += ruestung.data.data.rs_kopf;
+        for (let ruestung of actor.ruestungen) {
+            if (ruestung.system.aktiv == true) {
+                ws_stern += ruestung.system.rs;
+                be += ruestung.system.be;
+                ws_beine += ruestung.system.rs_beine;
+                ws_larm += ruestung.system.rs_larm;
+                ws_rarm += ruestung.system.rs_rarm;
+                ws_bauch += ruestung.system.rs_bauch;
+                ws_brust += ruestung.system.rs_brust;
+                ws_kopf += ruestung.system.rs_kopf;
             }
         }
-        be = hardcoded.behinderung(be, data);
-        data.data.abgeleitete.ws = ws;
-        data.data.abgeleitete.ws_stern = ws_stern;
-        data.data.abgeleitete.be = be;
-        data.data.abgeleitete.ws_beine = ws_beine;
-        data.data.abgeleitete.ws_larm = ws_larm;
-        data.data.abgeleitete.ws_rarm = ws_rarm;
-        data.data.abgeleitete.ws_bauch = ws_bauch;
-        data.data.abgeleitete.ws_brust = ws_brust;
-        data.data.abgeleitete.ws_kopf = ws_kopf;
+        be = hardcoded.behinderung(be, actor);
+        actor.system.abgeleitete.ws = ws;
+        actor.system.abgeleitete.ws_stern = ws_stern;
+        actor.system.abgeleitete.be = be;
+        actor.system.abgeleitete.ws_beine = ws_beine;
+        actor.system.abgeleitete.ws_larm = ws_larm;
+        actor.system.abgeleitete.ws_rarm = ws_rarm;
+        actor.system.abgeleitete.ws_bauch = ws_bauch;
+        actor.system.abgeleitete.ws_brust = ws_brust;
+        actor.system.abgeleitete.ws_kopf = ws_kopf;
     }
 
-    _calculateModifikatoren(data) {
-        let globalermod = hardcoded.globalermod(data);
-        data.data.abgeleitete.globalermod = globalermod;
+    _calculateModifikatoren(systemData) {
+        let globalermod = hardcoded.globalermod(systemData);
+        systemData.abgeleitete.globalermod = globalermod;
         // displayed text for nahkampfmod
-        data.data.abgeleitete.nahkampfmoddisplay = ``;
-        if (data.data.modifikatoren.nahkampfmod == 0){
-            data.data.abgeleitete.nahkampfmoddisplay += `-`;
+        systemData.abgeleitete.nahkampfmoddisplay = ``;
+        if (systemData.modifikatoren.nahkampfmod == 0){
+            systemData.abgeleitete.nahkampfmoddisplay += `-`;
         }
-        else if (data.data.modifikatoren.nahkampfmod > 0) {
-            data.data.abgeleitete.nahkampfmoddisplay += `+`;
+        else if (systemData.modifikatoren.nahkampfmod > 0) {
+            systemData.abgeleitete.nahkampfmoddisplay += `+`;
         }
         // let nahkampfmodgesamt = data.data.modifikatoren.nahkampfmod + data.data.modifikatoren.globalermod;
-        data.data.abgeleitete.nahkampfmoddisplay += `${data.data.modifikatoren.nahkampfmod} auf AT/VT durch Status am Token`;
+        systemData.abgeleitete.nahkampfmoddisplay += `${systemData.modifikatoren.nahkampfmod} auf AT/VT durch Status am Token`;
         // displayed text for globalermod (auf alle Proben insgesamt)
-        data.data.abgeleitete.globalermoddisplay = ``;
-        if (data.data.abgeleitete.globalermod == 0){
-            data.data.abgeleitete.globalermoddisplay += `-`;
+        systemData.abgeleitete.globalermoddisplay = ``;
+        if (systemData.abgeleitete.globalermod == 0){
+            systemData.abgeleitete.globalermoddisplay += `-`;
         }
-        else if (data.data.abgeleitete.globalermod > 0) {
-            data.data.abgeleitete.globalermoddisplay += `+`;
+        else if (systemData.abgeleitete.globalermod > 0) {
+            systemData.abgeleitete.globalermoddisplay += `+`;
         }
-        data.data.abgeleitete.globalermoddisplay += `${data.data.abgeleitete.globalermod} auf alle Proben (insgesamt)`;
+        systemData.abgeleitete.globalermoddisplay += `${systemData.abgeleitete.globalermod} auf alle Proben (insgesamt)`;
     }
 
-    _calculateAbgeleitete(data) {
+    _calculateAbgeleitete(actor) {
         console.log('Berechne abgeleitete Werte');
-        let ini = data.data.attribute.IN.wert;
-        ini = hardcoded.initiative(ini, data);
-        data.data.abgeleitete.ini = ini;
-        data.data.initiative = ini + 0.5;
-        let mr = 4 + Math.floor(data.data.attribute.MU.wert / 4);
-        mr = hardcoded.magieresistenz(mr, data);
-        data.data.abgeleitete.mr = mr;
-        let traglast_intervall = data.data.attribute.KK.wert;
+        let ini = actor.system.attribute.IN.wert;
+        ini = hardcoded.initiative(ini, actor);
+        actor.system.abgeleitete.ini = ini;
+        actor.system.initiative = ini + 0.5;
+        let mr = 4 + Math.floor(actor.system.attribute.MU.wert / 4);
+        mr = hardcoded.magieresistenz(mr, actor);
+        actor.system.abgeleitete.mr = mr;
+        let traglast_intervall = actor.system.attribute.KK.wert;
         traglast_intervall = traglast_intervall >= 1 ? traglast_intervall : 1;
-        data.data.abgeleitete.traglast_intervall = traglast_intervall;
-        let traglast = 2 * data.data.attribute.KK.wert;
+        actor.system.abgeleitete.traglast_intervall = traglast_intervall;
+        let traglast = 2 * actor.system.attribute.KK.wert;
         traglast = traglast >= 1 ? traglast : 1;
-        data.data.abgeleitete.traglast = traglast;
+        actor.system.abgeleitete.traglast = traglast;
         let summeGewicht = 0;
-        for (let i of data.data.inventar.mitfuehrend) {
-            summeGewicht += i.data.data.gewicht;
+        for (let i of actor.inventar.mitfuehrend) {
+            summeGewicht += i.gewicht;
         }
-        data.data.getragen = summeGewicht;
-        let be_mod = hardcoded.beTraglast(data);
-        data.data.abgeleitete.be += be_mod;
-        data.data.abgeleitete.be_traglast = be_mod;
-        let dh = hardcoded.durchhalte(data);
-        // let dh = data.data.attribute.KO.wert - (2 * data.data.abgeleitete.be);
-        // dh = hardcoded.durchhalte(dh, data);
+        actor.system.getragen = summeGewicht;
+        let be_mod = hardcoded.beTraglast(actor.system);
+        actor.system.abgeleitete.be += be_mod;
+        actor.system.abgeleitete.be_traglast = be_mod;
+        let dh = hardcoded.durchhalte(actor);
+        // let dh = systemData.attribute.KO.wert - (2 * systemData.abgeleitete.be);
+        // dh = hardcoded.durchhalte(dh, systemData);
         // dh = (dh > 1) ? dh : 1;
-        data.data.abgeleitete.dh = dh;
-        let gs = 4 + Math.floor(data.data.attribute.GE.wert / 4);
-        gs = hardcoded.geschwindigkeit(gs, data);
-        gs -= data.data.abgeleitete.be;
+        actor.system.abgeleitete.dh = dh;
+        let gs = 4 + Math.floor(actor.system.attribute.GE.wert / 4);
+        gs = hardcoded.geschwindigkeit(gs, actor);
+        gs -= actor.system.abgeleitete.be;
         gs = gs >= 1 ? gs : 1;
-        data.data.abgeleitete.gs = gs;
+        actor.system.abgeleitete.gs = gs;
         // let schips = 4;
         // schips = hardcoded.schips(schips, data);
-        let schips = hardcoded.schips(data);
-        data.data.schips.schips = schips;
+        let schips = hardcoded.schips(actor);
+        actor.system.schips.schips = schips;
         // let asp = 0;
         // asp = hardcoded.zauberer(asp, data);
-        let asp = hardcoded.zauberer(data);
-        data.data.abgeleitete.zauberer = asp > 0 ? true : false;
-        asp += Number(data.data.abgeleitete.asp_zugekauft) || 0;
-        asp -= Number(data.data.abgeleitete.gasp) || 0;
-        data.data.abgeleitete.asp = asp;
+        let asp = hardcoded.zauberer(actor);
+        actor.system.abgeleitete.zauberer = asp > 0 ? true : false;
+        asp += Number(actor.system.abgeleitete.asp_zugekauft) || 0;
+        asp -= Number(actor.system.abgeleitete.gasp) || 0;
+        actor.system.abgeleitete.asp = asp;
         // let kap = 0;
         // kap = hardcoded.geweihter(kap, data);
-        let kap = hardcoded.geweihter(data);
-        data.data.abgeleitete.geweihter = kap > 0 ? true : false;
-        kap += Number(data.data.abgeleitete.kap_zugekauft) || 0;
-        kap -= Number(data.data.abgeleitete.gkap) || 0;
-        data.data.abgeleitete.kap = kap;
+        let kap = hardcoded.geweihter(actor);
+        actor.system.abgeleitete.geweihter = kap > 0 ? true : false;
+        kap += Number(actor.system.abgeleitete.kap_zugekauft) || 0;
+        kap -= Number(actor.system.abgeleitete.gkap) || 0;
+        actor.system.abgeleitete.kap = kap;
     }
 
-    _calculateKampf(data) {
+    _calculateKampf(actor) {
         console.log('Berechne Kampf');
-        const KK = data.data.attribute.KK.wert;
+        const KK = actor.system.attribute.KK.wert;
         const sb = Math.floor(KK / 4);
         // data.data.abgeleitete.sb = sb;
-        let be = data.data.abgeleitete.be;
-        let nahkampfmod = data.data.modifikatoren.nahkampfmod;
+        let be = actor.system.abgeleitete.be;
+        let nahkampfmod = actor.system.modifikatoren.nahkampfmod;
         // let wundabzuege = data.data.gesundheit.wundabzuege;
-        let kampfstile = hardcoded.getKampfstile(data);
+        let kampfstile = hardcoded.getKampfstile(actor);
         // data.misc.selected_kampfstil = "ohne";
-        data.data.misc.kampfstile_list = kampfstile;
-        let selected_kampfstil = data.data.misc.selected_kampfstil;
+        actor.system.misc.kampfstile_list = kampfstile;
+        let selected_kampfstil = actor.system.misc.selected_kampfstil;
         // console.log(kampfstile);
         let HAUPTWAFFE =
-            data.data.nahkampfwaffen.find((x) => x.data.data.hauptwaffe == true) ||
-            data.data.fernkampfwaffen.find((x) => x.data.data.hauptwaffe == true);
+            actor.nahkampfwaffen.find((x) => x.system.hauptwaffe == true) ||
+            actor.fernkampfwaffen.find((x) => x.system.hauptwaffe == true);
         let NEBENWAFFE =
-            data.data.nahkampfwaffen.find((x) => x.data.data.nebenwaffe == true) ||
-            data.data.fernkampfwaffen.find((x) => x.data.data.nebenwaffe == true);
-        for (let nwaffe of data.data.nahkampfwaffen) {
-            if (nwaffe.data.data.manoever == undefined) {
+            actor.nahkampfwaffen.find((x) => x.system.nebenwaffe == true) ||
+            actor.fernkampfwaffen.find((x) => x.system.nebenwaffe == true);
+        for (let nwaffe of actor.nahkampfwaffen) {
+            if (nwaffe.system.manoever == undefined) {
                 console.log('Ich überschreibe Manöver');
             }
-            nwaffe.data.data.manoever =
-                nwaffe.data.data.manoever ||
+            nwaffe.system.manoever =
+                nwaffe.system.manoever ||
                 foundry.utils.deepClone(CONFIG.ILARIS.manoever_nahkampf);
             // TODO: ich finde die waffeneigenschaften nicht besonders elegant umgesetzt,
             // könnte man dafür ggf. items anlegen und die iwie mit den waffen items verknüpfen?
-            let kopflastig = nwaffe.data.data.eigenschaften.kopflastig;
-            let niederwerfen = nwaffe.data.data.eigenschaften.niederwerfen;
-            let parierwaffe = nwaffe.data.data.eigenschaften.parierwaffe;
-            let reittier = nwaffe.data.data.eigenschaften.reittier;
-            let ruestungsbrechend = nwaffe.data.data.eigenschaften.ruestungsbrechend;
-            let schild = nwaffe.data.data.eigenschaften.schild;
-            let schwer_4 = nwaffe.data.data.eigenschaften.schwer_4;
-            let schwer_8 = nwaffe.data.data.eigenschaften.schwer_8;
-            let stumpf = nwaffe.data.data.eigenschaften.stumpf;
-            let unberechenbar = nwaffe.data.data.eigenschaften.unberechenbar;
-            let unzerstoerbar = nwaffe.data.data.eigenschaften.unzerstoerbar;
-            let wendig = nwaffe.data.data.eigenschaften.wendig;
-            let zerbrechlich = nwaffe.data.data.eigenschaften.zerbrechlich;
-            let zweihaendig = nwaffe.data.data.eigenschaften.zweihaendig;
-            let kein_malus_nebenwaffe = nwaffe.data.data.eigenschaften.kein_malus_nebenwaffe;
-            let hauptwaffe = nwaffe.data.data.hauptwaffe;
-            let nebenwaffe = nwaffe.data.data.nebenwaffe;
+            let kopflastig = nwaffe.system.eigenschaften.kopflastig;
+            let niederwerfen = nwaffe.system.eigenschaften.niederwerfen;
+            let parierwaffe = nwaffe.system.eigenschaften.parierwaffe;
+            let reittier = nwaffe.system.eigenschaften.reittier;
+            let ruestungsbrechend = nwaffe.system.eigenschaften.ruestungsbrechend;
+            let schild = nwaffe.system.eigenschaften.schild;
+            let schwer_4 = nwaffe.system.eigenschaften.schwer_4;
+            let schwer_8 = nwaffe.system.eigenschaften.schwer_8;
+            let stumpf = nwaffe.system.eigenschaften.stumpf;
+            let unberechenbar = nwaffe.system.eigenschaften.unberechenbar;
+            let unzerstoerbar = nwaffe.system.eigenschaften.unzerstoerbar;
+            let wendig = nwaffe.system.eigenschaften.wendig;
+            let zerbrechlich = nwaffe.system.eigenschaften.zerbrechlich;
+            let zweihaendig = nwaffe.system.eigenschaften.zweihaendig;
+            let kein_malus_nebenwaffe = nwaffe.system.eigenschaften.kein_malus_nebenwaffe;
+            let hauptwaffe = nwaffe.system.hauptwaffe;
+            let nebenwaffe = nwaffe.system.nebenwaffe;
             let schaden = 0;
-            schaden += Number(nwaffe.data.data.dice_plus);
+            schaden += Number(nwaffe.system.dice_plus);
             // let kopflastig = eigenschaften.includes("Kopflastig");
             schaden += sb;
             if (kopflastig) {
@@ -400,20 +400,19 @@ export class IlarisActor extends Actor {
             }
             let at = 0;
             let vt = 0;
-            let fertigkeit = nwaffe.data.data.fertigkeit;
+            let fertigkeit = nwaffe.system.fertigkeit;
             // console.log(fertigkeit);
-            let talent = nwaffe.data.data.talent;
+            let talent = nwaffe.system.talent;
             // console.log(talent);
-            at += Number(nwaffe.data.data.wm_at);
-            vt += Number(nwaffe.data.data.wm_vt);
-            let pw = data.data.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.data.data.pw;
+            at += Number(nwaffe.system.wm_at);
+            vt += Number(nwaffe.system.wm_vt);
+            let pw = actor.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.system.pw;
             // console.log(pw);
-            let pwt = data.data.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.data.data
-                .pwt;
+            let pwt = actor.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.system.pwt;
             // console.log(pwt);
-            let taltrue = data.data.profan.fertigkeiten
+            let taltrue = actor.profan.fertigkeiten
                 .find((x) => x.name == fertigkeit)
-                ?.data.data.talente.find((x) => x.name == talent); // console.log(taltrue);
+                ?.system.talente.find((x) => x.name == talent); // console.log(taltrue);
             if (typeof pw !== 'undefined') {
                 // console.log(`${fertigkeit} ist defined`);
                 if (typeof taltrue !== 'undefined') {
@@ -468,9 +467,9 @@ export class IlarisActor extends Actor {
             vt -= be;
             // at += wundabzuege;
             // vt += wundabzuege;
-            const mod_at = nwaffe.data.data.mod_at;
-            const mod_vt = nwaffe.data.data.mod_vt;
-            const mod_schaden = nwaffe.data.data.mod_schaden;
+            const mod_at = nwaffe.system.mod_at;
+            const mod_vt = nwaffe.system.mod_vt;
+            const mod_schaden = nwaffe.system.mod_schaden;
             if (!isNaN(mod_at)) {
                 at += mod_at;
             }
@@ -478,11 +477,11 @@ export class IlarisActor extends Actor {
                 vt += mod_vt;
             }
             // if (!isNaN(mod_schaden)) { schaden += mod_schaden;}
-            nwaffe.data.data.at = at;
-            nwaffe.data.data.vt = vt;
-            nwaffe.data.data.schaden = `${nwaffe.data.data.dice_anzahl}d6+${schaden}`;
+            nwaffe.system.at = at;
+            nwaffe.system.vt = vt;
+            nwaffe.system.schaden = `${nwaffe.system.dice_anzahl}d6+${schaden}`;
             if (typeof mod_schaden !== 'undefined' && mod_schaden !== null && mod_schaden !== '') {
-                nwaffe.data.data.schaden = `${nwaffe.data.data.dice_anzahl}d6+${schaden}+${mod_schaden}`;
+                nwaffe.system.schaden = `${nwaffe.system.dice_anzahl}d6+${schaden}+${mod_schaden}`;
             }
             // if (nwaffe.data.data.eigenschaften.ruestungsbrechend) {
             //     // manoever_at.push("km_rust");
@@ -490,8 +489,8 @@ export class IlarisActor extends Actor {
             //     nwaffe.data.data.manoever.km_rust.possible = true;
             // }
             // nwaffe.data.data.manoever.km_rust.possible = nwaffe.data.data.eigenschaften.ruestungsbrechend == "true";
-            nwaffe.data.data.manoever.km_rust.possible =
-                nwaffe.data.data.eigenschaften.ruestungsbrechend;
+            nwaffe.system.manoever.km_rust.possible =
+                nwaffe.system.eigenschaften.ruestungsbrechend;
             // if (nwaffe.data.data.eigenschaften.stumpf) {
             //     manoever_at.push("km_stsl");
             //     // manoever_at.km_stsl.possible = true;
@@ -499,24 +498,24 @@ export class IlarisActor extends Actor {
             // console.log(nwaffe.data.data.eigenschaften.stumpf);
             // console.log(nwaffe.data.data.eigenschaften.stumpf == "true");
             // nwaffe.data.data.manoever.km_stsl.possible = nwaffe.data.data.eigenschaften.stumpf == "true";
-            nwaffe.data.data.manoever.km_stsl.possible = nwaffe.data.data.eigenschaften.stumpf;
+            nwaffe.system.manoever.km_stsl.possible = nwaffe.system.eigenschaften.stumpf;
             if (nebenwaffe && hauptwaffe) {
                 if (
-                    HAUPTWAFFE.data.data.talent == 'Unbewaffnet' &&
-                    NEBENWAFFE.data.data.talent == 'Unbewaffnet'
+                    HAUPTWAFFE.system.talent == 'Unbewaffnet' &&
+                    NEBENWAFFE.system.talent == 'Unbewaffnet'
                 ) {
                     // manoever_at.push("km_umkl");
                     // manoever_at.km_umkl.possible = true;
-                    nwaffe.data.data.manoever.km_umkl.possible = true;
+                    nwaffe.system.manoever.km_umkl.possible = true;
                 }
             } else {
-                nwaffe.data.data.manoever.km_umkl.possible = false;
+                nwaffe.system.manoever.km_umkl.possible = false;
             }
             // if (data.data.vorteil.kampf.find(x => x.name == "Ausfall")) {
             //     manoever_at.push("km_ausf");
             //     // manoever_at.km_ausf.possible = true;
             // }
-            nwaffe.data.data.manoever.km_ausf.possible = data.data.vorteil.kampf.some(
+            nwaffe.system.manoever.km_ausf.possible = actor.vorteil.kampf.some(
                 (x) => x.name == 'Ausfall',
             );
             // nwaffe.data.data.manoever.km_ausf.possible = data.data.vorteil.kampf.includes(x => x.name == "Ausfall");
@@ -531,7 +530,7 @@ export class IlarisActor extends Actor {
             //     manoever_at.push("km_hmsl");
             //     // manoever_at.km_hmsl.possible = true;
             // }
-            nwaffe.data.data.manoever.km_hmsl.possible = data.data.vorteil.kampf.some(
+            nwaffe.system.manoever.km_hmsl.possible = actor.vorteil.kampf.some(
                 (x) => x.name == 'Hammerschlag',
             );
             // nwaffe.data.data.manoever.km_hmsl.possible = data.data.vorteil.kampf.includes(x => x.name == "Hammerschlag");
@@ -539,7 +538,7 @@ export class IlarisActor extends Actor {
             //     manoever_at.push("km_kltz");
             //     // manoever_at.km_kltz.possible = true;
             // }
-            nwaffe.data.data.manoever.km_kltz.possible = data.data.vorteil.kampf.some(
+            nwaffe.system.manoever.km_kltz.possible = actor.vorteil.kampf.some(
                 (x) => x.name == 'Klingentanz',
             );
             // nwaffe.data.data.manoever.km_kltz.possible = data.data.vorteil.kampf.includes(x => x.name == "Klingentanz");
@@ -547,7 +546,7 @@ export class IlarisActor extends Actor {
             //     manoever_at.push("km_ndwf");
             //     // manoever_at.km_ndwf.possible = true;
             // }
-            nwaffe.data.data.manoever.km_ndwf.possible = data.data.vorteil.kampf.some(
+            nwaffe.system.manoever.km_ndwf.possible = actor.vorteil.kampf.some(
                 (x) => x.name == 'Niederwerfen',
             );
             // nwaffe.data.data.manoever.km_ndwf.possible = data.data.vorteil.kampf.includes(x => x.name == "Niederwerfen");
@@ -555,7 +554,7 @@ export class IlarisActor extends Actor {
             //     manoever_at.push("km_stag");
             //     // manoever_at.km_stag.possible = true;
             // }
-            nwaffe.data.data.manoever.km_stag.possible = data.data.vorteil.kampf.some(
+            nwaffe.system.manoever.km_stag.possible = actor.vorteil.kampf.some(
                 (x) => x.name == 'Sturmangriff',
             );
             // nwaffe.data.data.manoever.km_stag.possible = data.data.vorteil.kampf.includes(x => x.name == "Sturmangriff");
@@ -563,7 +562,7 @@ export class IlarisActor extends Actor {
             //     manoever_at.push("km_tdst");
             //     // manoever_at.km_tdst.possible = true;
             // }
-            nwaffe.data.data.manoever.km_tdst.possible = data.data.vorteil.kampf.some(
+            nwaffe.system.manoever.km_tdst.possible = actor.vorteil.kampf.some(
                 (x) => x.name == 'Todesstoß',
             );
             // nwaffe.data.data.manoever.km_tdst.possible = data.data.vorteil.kampf.includes(x => x.name == "Todesstoß");
@@ -572,47 +571,47 @@ export class IlarisActor extends Actor {
             // nwaffe.data.data.manoever_at = manoever_at;
             // nwaffe.data.data.manoever_vt = manoever_vt;
             // console.log(nwaffe.data.data.manoever);
-            nwaffe.data.data.manoever.vlof.offensiver_kampfstil = data.data.vorteil.kampf.some(
+            nwaffe.system.manoever.vlof.offensiver_kampfstil = actor.vorteil.kampf.some(
                 (x) => x.name == 'Offensiver Kampfstil',
             );
-            nwaffe.data.data.manoever.kwut = data.data.vorteil.kampf.some(
+            nwaffe.system.manoever.kwut = actor.vorteil.kampf.some(
                 (x) => x.name == 'Kalte Wut',
             );
         }
 
-        for (let item of data.data.fernkampfwaffen) {
-            item.data.data.manoever =
-                item.data.data.manoever ||
+        for (let fwaffe of actor.fernkampfwaffen) {
+            fwaffe.system.manoever =
+                fwaffe.system.manoever ||
                 foundry.utils.deepClone(CONFIG.ILARIS.manoever_fernkampf);
-            let kein_reiter = item.data.data.eigenschaften.kein_reiter;
+            let kein_reiter = fwaffe.system.eigenschaften.kein_reiter;
             let reittier =
-                HAUPTWAFFE?.data.data.eigenschaften?.reittier ||
-                NEBENWAFFE?.data.data.eigenschaften?.reittier;
-            let niederwerfen = item.data.data.eigenschaften.niederwerfen;
-            let niederwerfen_4 = item.data.data.eigenschaften.niederwerfen_4;
-            let niederwerfen_8 = item.data.data.eigenschaften.niederwerfen_8;
-            let schwer_4 = item.data.data.eigenschaften.schwer_4;
-            let schwer_8 = item.data.data.eigenschaften.schwer_8;
-            let stationaer = item.data.data.eigenschaften.stationaer;
-            let stumpf = item.data.data.eigenschaften.stumpf;
-            let umklammern_212 = item.data.data.eigenschaften.umklammern_212;
-            let umklammern_416 = item.data.data.eigenschaften.umklammern_416;
-            let umklammern_816 = item.data.data.eigenschaften.umklammern_816;
-            let zweihaendig = item.data.data.eigenschaften.zweihaendig;
-            let hauptwaffe = item.data.data.hauptwaffe;
-            let nebenwaffe = item.data.data.nebenwaffe;
+                HAUPTWAFFE?.system.eigenschaften?.reittier ||
+                NEBENWAFFE?.system.eigenschaften?.reittier;
+            let niederwerfen = fwaffe.system.eigenschaften.niederwerfen;
+            let niederwerfen_4 = fwaffe.system.eigenschaften.niederwerfen_4;
+            let niederwerfen_8 = fwaffe.system.eigenschaften.niederwerfen_8;
+            let schwer_4 = fwaffe.system.eigenschaften.schwer_4;
+            let schwer_8 = fwaffe.system.eigenschaften.schwer_8;
+            let stationaer = fwaffe.system.eigenschaften.stationaer;
+            let stumpf = fwaffe.system.eigenschaften.stumpf;
+            let umklammern_212 = fwaffe.system.eigenschaften.umklammern_212;
+            let umklammern_416 = fwaffe.system.eigenschaften.umklammern_416;
+            let umklammern_816 = fwaffe.system.eigenschaften.umklammern_816;
+            let zweihaendig = fwaffe.system.eigenschaften.zweihaendig;
+            let hauptwaffe = fwaffe.system.hauptwaffe;
+            let nebenwaffe = fwaffe.system.nebenwaffe;
             let schaden = 0;
-            schaden += Number(item.data.data.dice_plus);
+            schaden += Number(fwaffe.system.dice_plus);
             let fk = 0;
-            let fertigkeit = item.data.data.fertigkeit;
-            let talent = item.data.data.talent;
-            fk += Number(item.data.data.wm_fk);
-            let pw = data.data.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.data.data.pw;
-            let pwt = data.data.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.data.data
+            let fertigkeit = fwaffe.system.fertigkeit;
+            let talent = fwaffe.system.talent;
+            fk += Number(fwaffe.system.wm_fk);
+            let pw = actor.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.system.pw;
+            let pwt = actor.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.system
                 .pwt;
-            let taltrue = data.data.profan.fertigkeiten
+            let taltrue = actor.profan.fertigkeiten
                 .find((x) => x.name == fertigkeit)
-                ?.data.data.talente.find((x) => x.name == talent);
+                ?.system.talente.find((x) => x.name == talent);
             if (typeof pw !== 'undefined') {
                 if (typeof taltrue !== 'undefined') {
                     fk += pwt;
@@ -630,66 +629,66 @@ export class IlarisActor extends Actor {
             }
             fk -= be;
             // fk += wundabzuege;
-            const mod_fk = item.data.data.mod_fk;
-            const mod_schaden = item.data.data.mod_schaden;
+            const mod_fk = fwaffe.system.mod_fk;
+            const mod_schaden = fwaffe.system.mod_schaden;
             if (!isNaN(mod_fk)) {
                 fk += mod_fk;
             }
-            item.data.data.fk = fk;
+            fwaffe.system.fk = fk;
             if (zweihaendig && ((hauptwaffe && !nebenwaffe) || (!hauptwaffe && nebenwaffe))) {
-                item.data.data.fk = '-';
+                fwaffe.system.fk = '-';
             } else if (kein_reiter && (hauptwaffe || nebenwaffe)) {
                 // let reittier = false;
                 // let reittier = HAUPTWAFFE?.data.data.eigenschaften?.reittier || NEBENWAFFE?.data.data.eigenschaften?.reittier;
                 if (reittier && kein_reiter) {
-                    item.data.data.fk = '-';
+                    fwaffe.system.fk = '-';
                 }
             }
-            item.data.data.schaden = `${item.data.data.dice_anzahl}d6+${schaden}`;
+            fwaffe.system.schaden = `${fwaffe.system.dice_anzahl}d6+${schaden}`;
             if (typeof mod_schaden !== 'undefined' && mod_schaden !== null && mod_schaden !== '') {
-                item.data.data.schaden = `${item.data.data.dice_anzahl}d6+${schaden}+${mod_schaden}`;
+                fwaffe.system.schaden = `${fwaffe.system.dice_anzahl}d6+${schaden}+${mod_schaden}`;
             }
 
             // if (data.data.vorteil.kampf.find(x => x.name.includes("Defensiver Kampfstil"))) item.data.data.manoever.vldf.possible = true;
-            if (data.data.vorteil.kampf.find((x) => x.name.includes('Schnellziehen')))
-                item.data.data.manoever.fm_snls.possible = true;
-            if (data.data.vorteil.kampf.find((x) => x.name.includes('Ruhige Hand')))
-                item.data.data.manoever.fm_zlen.ruhige_hand = true;
-            if (data.data.vorteil.kampf.find((x) => x.name.includes('Meisterschuss')))
-                item.data.data.manoever.fm_msts.possible = true;
-            if (true) item.data.data.manoever.fm_rust.possible = true;
-            let rw = item.data.data.rw;
-            item.data.data.manoever.rw['0'] = `${rw} Schritt`;
-            item.data.data.manoever.rw['1'] = `${2 * rw} Schritt`;
-            item.data.data.manoever.rw['2'] = `${4 * rw} Schritt`;
-            if (data.data.vorteil.kampf.find((x) => x.name.includes('Reflexschuss')))
-                item.data.data.manoever.rflx = true;
-            if (hardcoded.getKampfstilStufe('rtk', data) >= 2)
-                item.data.data.manoever.brtn.rtk = true;
-            if (reittier) item.data.data.manoever.brtn.selected = true;
+            if (actor.vorteil.kampf.find((x) => x.name.includes('Schnellziehen')))
+                fwaffe.system.manoever.fm_snls.possible = true;
+            if (actor.vorteil.kampf.find((x) => x.name.includes('Ruhige Hand')))
+                fwaffe.system.manoever.fm_zlen.ruhige_hand = true;
+            if (actor.vorteil.kampf.find((x) => x.name.includes('Meisterschuss')))
+                fwaffe.system.manoever.fm_msts.possible = true;
+            if (true) fwaffe.system.manoever.fm_rust.possible = true;
+            let rw = fwaffe.system.rw;
+            fwaffe.system.manoever.rw['0'] = `${rw} Schritt`;
+            fwaffe.system.manoever.rw['1'] = `${2 * rw} Schritt`;
+            fwaffe.system.manoever.rw['2'] = `${4 * rw} Schritt`;
+            if (actor.vorteil.kampf.find((x) => x.name.includes('Reflexschuss')))
+                fwaffe.system.manoever.rflx = true;
+            if (hardcoded.getKampfstilStufe('rtk', actor) >= 2)
+                fwaffe.system.manoever.brtn.rtk = true;
+            if (reittier) fwaffe.system.manoever.brtn.selected = true;
             // get status effects
             // licht lcht
             // console.log("bevor get_status_effects");
             // console.log(data);
-            let ss1 = this.__getStatuseffectById(data, 'schlechtesicht1');
-            let ss2 = this.__getStatuseffectById(data, 'schlechtesicht2');
-            let ss3 = this.__getStatuseffectById(data, 'schlechtesicht3');
-            let ss4 = this.__getStatuseffectById(data, 'schlechtesicht4');
+            let ss1 = this.__getStatuseffectById(actor, 'schlechtesicht1');
+            let ss2 = this.__getStatuseffectById(actor, 'schlechtesicht2');
+            let ss3 = this.__getStatuseffectById(actor, 'schlechtesicht3');
+            let ss4 = this.__getStatuseffectById(actor, 'schlechtesicht4');
             if (ss4) {
-                item.data.data.manoever.lcht.selected = 4;
+                fwaffe.system.manoever.lcht.selected = 4;
             } else if (ss3) {
-                item.data.data.manoever.lcht.selected = 3;
+                fwaffe.system.manoever.lcht.selected = 3;
             } else if (ss2) {
-                item.data.data.manoever.lcht.selected = 2;
+                fwaffe.system.manoever.lcht.selected = 2;
             } else if (ss1) {
-                item.data.data.manoever.lcht.selected = 1;
+                fwaffe.system.manoever.lcht.selected = 1;
             } else {
-                item.data.data.manoever.lcht.selected = 0;
+                fwaffe.system.manoever.lcht.selected = 0;
             }
-            let lcht_angepasst = hardcoded.getAngepasst('Dunkelheit', data);
+            let lcht_angepasst = hardcoded.getAngepasst('Dunkelheit', actor);
             // console.log(`licht angepasst: ${lcht_angepasst}`);
-            item.data.data.manoever.lcht.angepasst = lcht_angepasst;
-            item.data.data.manoever.kwut = data.data.vorteil.kampf.some(
+            fwaffe.system.manoever.lcht.angepasst = lcht_angepasst;
+            fwaffe.system.manoever.kwut = actor.vorteil.kampf.some(
                 (x) => x.name == 'Kalte Wut',
             );
         }
@@ -701,7 +700,7 @@ export class IlarisActor extends Actor {
         // "rtk": "Reiterkampf",
         // "shk": "Schildkampf",
         // "snk": "Schneller Kampf"
-        let stufe = hardcoded.getKampfstilStufe(selected_kampfstil, data);
+        let stufe = hardcoded.getKampfstilStufe(selected_kampfstil, actor);
         if (
             selected_kampfstil == 'bhk' &&
             typeof HAUPTWAFFE != 'undefined' &&
@@ -721,8 +720,8 @@ export class IlarisActor extends Actor {
             }
             if (
                 !(
-                    HAUPTWAFFE.data.data.eigenschaften.zweihaendig ||
-                    NEBENWAFFE.data.data.eigenschaften.zweihaendig
+                    HAUPTWAFFE.system.eigenschaften.zweihaendig ||
+                    NEBENWAFFE.system.eigenschaften.zweihaendig
                 )
             ) {
                 einhaendig = true;
@@ -730,16 +729,16 @@ export class IlarisActor extends Actor {
             if (nahkampfwaffe) {
                 if (
                     !(
-                        HAUPTWAFFE.data.data.eigenschaften.schild ||
-                        NEBENWAFFE.data.data.eigenschaften.schild
+                        HAUPTWAFFE.system.eigenschaften.schild ||
+                        NEBENWAFFE.system.eigenschaften.schild
                     )
                 ) {
                     kein_schild = true;
                 }
                 if (
                     !(
-                        HAUPTWAFFE.data.data.eigenschaften.reittier ||
-                        NEBENWAFFE.data.data.eigenschaften.reittier
+                        HAUPTWAFFE.system.eigenschaften.reittier ||
+                        NEBENWAFFE.system.eigenschaften.reittier
                     )
                 ) {
                     kein_reiter = true;
@@ -757,24 +756,24 @@ export class IlarisActor extends Actor {
                     console.log('Stufe 2');
                     at_hw += 1;
                     at_nw += 1;
-                    if (!NEBENWAFFE.data.data.eigenschaften.kein_malus_nebenwaffe) {
+                    if (!NEBENWAFFE.system.eigenschaften.kein_malus_nebenwaffe) {
                         at_nw += 4;
-                        NEBENWAFFE.data.data.vt += 4;
+                        NEBENWAFFE.system.vt += 4;
                     }
                 }
                 if (stufe >= 3) {
                     console.log('Stufe 3');
                     at_hw += 1;
                     at_nw += 1;
-                    HAUPTWAFFE.data.data.manoever.km_dppl.possible = true;
-                    NEBENWAFFE.data.data.manoever.km_dppl.possible = true;
+                    HAUPTWAFFE.system.manoever.km_dppl.possible = true;
+                    NEBENWAFFE.system.manoever.km_dppl.possible = true;
                     // HAUPTWAFFE.data.data.manoever_at.push("km_dppl");
                     // NEBENWAFFE.data.data.manoever_at.push("km_dppl");
                     // HAUPTWAFFE.data.manoever_at.km_dppl.possible = true;
                     // NEBENWAFFE.data.manoever_at.km_dppl.possible = true;
                 }
-                HAUPTWAFFE.data.data.at += at_hw;
-                NEBENWAFFE.data.data.at += at_nw;
+                HAUPTWAFFE.system.at += at_hw;
+                NEBENWAFFE.system.at += at_nw;
             }
         } else if (selected_kampfstil == 'kvk') {
             console.log(CONFIG.ILARIS.label[selected_kampfstil]);
@@ -796,7 +795,7 @@ export class IlarisActor extends Actor {
             }
             if (WAFFE) {
                 if (WAFFE.type == 'nahkampfwaffe') {
-                    if (WAFFE.data.data.eigenschaften.reittier == false) {
+                    if (WAFFE.system.eigenschaften.reittier == false) {
                         let schaden = 0;
                         if (stufe >= 1) {
                             console.log('Stufe 1');
@@ -809,12 +808,12 @@ export class IlarisActor extends Actor {
                         if (stufe >= 3) {
                             console.log('Stufe 3');
                             schaden += 1;
-                            WAFFE.data.data.manoever.km_befr.possible = true;
+                            WAFFE.system.manoever.km_befr.possible = true;
                             // WAFFE.data.data.manoever_at.push("km_befr");
                             // WAFFE.data.manoever_at.km_befr.possible=true;
                         }
                         schaden = '+'.concat(schaden);
-                        WAFFE.data.data.schaden = WAFFE.data.data.schaden.concat(schaden);
+                        WAFFE.system.schaden = WAFFE.system.schaden.concat(schaden);
                     }
                 }
             }
@@ -828,18 +827,18 @@ export class IlarisActor extends Actor {
             if (typeof HAUPTWAFFE != 'undefined') hauptwaffe = true;
             if (typeof NEBENWAFFE != 'undefined') nebenwaffe = true;
             if (hauptwaffe && HAUPTWAFFE.type == 'nahkampfwaffe') {
-                if (HAUPTWAFFE.data.data.eigenschaften.parierwaffe) {
+                if (HAUPTWAFFE.system.eigenschaften.parierwaffe) {
                     parierwaffe = true;
                 }
-                if (HAUPTWAFFE.data.data.eigenschaften.reittier) {
+                if (HAUPTWAFFE.system.eigenschaften.reittier) {
                     reittier = true;
                 }
             }
             if (nebenwaffe && NEBENWAFFE.type == 'nahkampfwaffe') {
-                if (NEBENWAFFE.data.data.eigenschaften.parierwaffe) {
+                if (NEBENWAFFE.system.eigenschaften.parierwaffe) {
                     parierwaffe = true;
                 }
-                if (NEBENWAFFE.data.data.eigenschaften.reittier) {
+                if (NEBENWAFFE.system.eigenschaften.reittier) {
                     reittier = true;
                 }
             }
@@ -856,16 +855,16 @@ export class IlarisActor extends Actor {
                 if (stufe >= 2) {
                     console.log('Stufe 2');
                     if (nebenwaffe) {
-                        if (!NEBENWAFFE.data.data.eigenschaften.kein_malus_nebenwaffe) {
-                            NEBENWAFFE.data.data.at += 4;
-                            NEBENWAFFE.data.data.vt += 4;
+                        if (!NEBENWAFFE.system.eigenschaften.kein_malus_nebenwaffe) {
+                            NEBENWAFFE.system.at += 4;
+                            NEBENWAFFE.system.vt += 4;
                         }
                     }
                 }
                 if (stufe >= 3) {
                     console.log('Stufe 3');
-                    if (hauptwaffe) HAUPTWAFFE.data.data.manoever.km_rpst.possible = true;
-                    if (nebenwaffe) NEBENWAFFE.data.data.manoever.km_rpst.possible = true;
+                    if (hauptwaffe) HAUPTWAFFE.system.manoever.km_rpst.possible = true;
+                    if (nebenwaffe) NEBENWAFFE.system.manoever.km_rpst.possible = true;
                 }
             }
         } else if (selected_kampfstil == 'rtk') {
@@ -876,12 +875,12 @@ export class IlarisActor extends Actor {
             if (typeof HAUPTWAFFE != 'undefined') hauptwaffe = true;
             if (typeof NEBENWAFFE != 'undefined') nebenwaffe = true;
             if (hauptwaffe && HAUPTWAFFE.type == 'nahkampfwaffe') {
-                if (HAUPTWAFFE.data.data.eigenschaften.reittier) {
+                if (HAUPTWAFFE.system.eigenschaften.reittier) {
                     reittier = true;
                 }
             }
             if (nebenwaffe && NEBENWAFFE.type == 'nahkampfwaffe') {
-                if (NEBENWAFFE.data.data.eigenschaften.reittier) {
+                if (NEBENWAFFE.system.eigenschaften.reittier) {
                     reittier = true;
                 }
             }
@@ -906,15 +905,15 @@ export class IlarisActor extends Actor {
                     schaden += 1;
                     at += 1;
                     vt += 1;
-                    if (HAUPTWAFFE.data.data.eigenschaften.reittier)
-                        HAUPTWAFFE.data.data.manoever.km_uebr.possible = true;
+                    if (HAUPTWAFFE.system.eigenschaften.reittier)
+                        HAUPTWAFFE.system.manoever.km_uebr.possible = true;
                     // if (HAUPTWAFFE.data.data.eigenschaften.reittier) HAUPTWAFFE.data.data.manoever_at.push("km_uebr");
                     // if (HAUPTWAFFE.data.eigenschaften.reittier) HAUPTWAFFE.data.manoever_at.km_uebr.possible=true;
                 }
                 schaden = '+'.concat(schaden);
-                HAUPTWAFFE.data.data.at += at;
-                HAUPTWAFFE.data.data.vt += vt;
-                HAUPTWAFFE.data.data.schaden = HAUPTWAFFE.data.data.schaden.concat(schaden);
+                HAUPTWAFFE.system.at += at;
+                HAUPTWAFFE.system.vt += vt;
+                HAUPTWAFFE.system.schaden = HAUPTWAFFE.system.schaden.concat(schaden);
             }
             if (
                 reittier &&
@@ -937,8 +936,8 @@ export class IlarisActor extends Actor {
                     at += 1;
                     vt += 1;
                     if (
-                        !NEBENWAFFE.data.data.eigenschaften.kein_malus_nebenwaffe &&
-                        NEBENWAFFE.data.data.eigenschaften.reittier
+                        !NEBENWAFFE.system.eigenschaften.kein_malus_nebenwaffe &&
+                        NEBENWAFFE.system.eigenschaften.reittier
                     ) {
                         at += 4;
                         vt += 4;
@@ -949,15 +948,15 @@ export class IlarisActor extends Actor {
                     schaden += 1;
                     at += 1;
                     vt += 1;
-                    if (NEBENWAFFE.data.data.eigenschaften.reittier)
-                        NEBENWAFFE.data.data.manoever.km_uebr.possible = true;
+                    if (NEBENWAFFE.system.eigenschaften.reittier)
+                        NEBENWAFFE.system.manoever.km_uebr.possible = true;
                     // if (NEBENWAFFE.data.data.eigenschaften.reittier) NEBENWAFFE.data.data.manoever_at.push("km_uebr");
                     // if (NEBENWAFFE.data.eigenschaften.reittier) NEBENWAFFE.data.manoever_at.km_uebr.possible=true;
                 }
                 schaden = '+'.concat(schaden);
-                NEBENWAFFE.data.data.at += at;
-                NEBENWAFFE.data.data.vt += vt;
-                NEBENWAFFE.data.data.schaden = NEBENWAFFE.data.data.schaden.concat(schaden);
+                NEBENWAFFE.system.at += at;
+                NEBENWAFFE.system.vt += vt;
+                NEBENWAFFE.system.schaden = NEBENWAFFE.system.schaden.concat(schaden);
             }
         } else if (selected_kampfstil == 'shk') {
             console.log(CONFIG.ILARIS.label[selected_kampfstil]);
@@ -967,12 +966,12 @@ export class IlarisActor extends Actor {
             if (typeof HAUPTWAFFE != 'undefined') hauptwaffe = true;
             if (typeof NEBENWAFFE != 'undefined') nebenwaffe = true;
             if (hauptwaffe && HAUPTWAFFE.type == 'nahkampfwaffe') {
-                if (HAUPTWAFFE.data.data.eigenschaften.schild) {
+                if (HAUPTWAFFE.system.eigenschaften.schild) {
                     schild = true;
                 }
             }
             if (nebenwaffe && NEBENWAFFE.type == 'nahkampfwaffe') {
-                if (NEBENWAFFE.data.data.eigenschaften.schild) {
+                if (NEBENWAFFE.system.eigenschaften.schild) {
                     schild = true;
                 }
             }
@@ -989,10 +988,10 @@ export class IlarisActor extends Actor {
                 if (stufe >= 3) {
                     console.log('Stufe 3 (Hauptwaffe)');
                     vt += 1;
-                    HAUPTWAFFE.data.data.manoever.km_shwl.possible = true;
+                    HAUPTWAFFE.system.manoever.km_shwl.possible = true;
                     // HAUPTWAFFE.data.data.manoever_vt.push("km_shwl");
                 }
-                HAUPTWAFFE.data.data.vt += vt;
+                HAUPTWAFFE.system.vt += vt;
             }
             if (nebenwaffe && NEBENWAFFE.type == 'nahkampfwaffe' && schild) {
                 let vt = 0;
@@ -1004,20 +1003,20 @@ export class IlarisActor extends Actor {
                     console.log('Stufe 2 (Nebenwaffe)');
                     vt += 1;
                     if (
-                        !NEBENWAFFE.data.data.eigenschaften.kein_malus_nebenwaffe &&
-                        NEBENWAFFE.data.data.eigenschaften.schild
+                        !NEBENWAFFE.system.eigenschaften.kein_malus_nebenwaffe &&
+                        NEBENWAFFE.system.eigenschaften.schild
                     ) {
                         vt += 4;
-                        NEBENWAFFE.data.data.at += 4;
+                        NEBENWAFFE.system.at += 4;
                     }
                 }
                 if (stufe >= 3) {
                     console.log('Stufe 3 (Nebenwaffe)');
                     vt += 1;
-                    NEBENWAFFE.data.data.manoever.km_shwl.possible = true;
+                    NEBENWAFFE.system.manoever.km_shwl.possible = true;
                     // NEBENWAFFE.data.data.manoever_vt.push("km_shwl");
                 }
-                NEBENWAFFE.data.data.vt += vt;
+                NEBENWAFFE.system.vt += vt;
             }
         } else if (selected_kampfstil == 'snk') {
             console.log(CONFIG.ILARIS.label[selected_kampfstil]);
@@ -1028,13 +1027,13 @@ export class IlarisActor extends Actor {
             if (typeof NEBENWAFFE != 'undefined') nebenwaffe = true;
             if (hauptwaffe && !nebenwaffe && HAUPTWAFFE.type == 'nahkampfwaffe') {
                 console.log('Hauptwaffe nahkampf');
-                if (!HAUPTWAFFE.data.data.eigenschaften.reittier) {
+                if (!HAUPTWAFFE.system.eigenschaften.reittier) {
                     WAFFE = HAUPTWAFFE;
                     console.log('step 1');
                 }
             } else if (!hauptwaffe && nebenwaffe && NEBENWAFFE.type == 'nahkampfwaffe') {
                 console.log('Nebenwaffe nahkampf');
-                if (!NEBENWAFFE.data.data.eigenschaften.reittier) {
+                if (!NEBENWAFFE.system.eigenschaften.reittier) {
                     WAFFE = NEBENWAFFE;
                     console.log('step 2');
                 }
@@ -1045,7 +1044,7 @@ export class IlarisActor extends Actor {
                 HAUPTWAFFE.id == NEBENWAFFE.id
             ) {
                 console.log('Nahkampfwaffen identisch');
-                if (!HAUPTWAFFE.data.data.eigenschaften.reittier) {
+                if (!HAUPTWAFFE.system.eigenschaften.reittier) {
                     WAFFE = HAUPTWAFFE;
                     console.log('step 3');
                 }
@@ -1064,15 +1063,15 @@ export class IlarisActor extends Actor {
                 if (stufe >= 3) {
                     console.log('Stufe 3');
                     at += 1;
-                    WAFFE.data.data.manoever.km_utlf.possible = true;
+                    WAFFE.system.manoever.km_utlf.possible = true;
                     // WAFFE.data.data.manoever_vt.push("km_utlf");
                 }
-                WAFFE.data.data.at += at;
+                WAFFE.system.at += at;
             }
         }
     }
 
-    _calculateUebernatuerlichProbendiag(data) {
+    _calculateUebernatuerlichProbendiag(actor) {
         // data.data.uebernatuerlich.fertigkeiten = uebernatuerliche_fertigkeiten;
         // data.data.uebernatuerlich.zauber = magie_talente;
         // data.data.uebernatuerlich.liturgien = karma_talente;
@@ -1081,57 +1080,57 @@ export class IlarisActor extends Actor {
         // data.data.vorteil.karma = vorteil_karma;
         // data.data.vorteil.geweihtentradition = vorteil_geweihtetraditionen;
         // let be = data.data.abgeleitete.be;
-        for (let item of data.data.uebernatuerlich.zauber) {
-            if (item.data.data.manoever == undefined) {
+        for (let item of actor.uebernatuerlich.zauber) {
+            if (item.system.manoever == undefined) {
                 console.log('Ich überschreibe Magie Manöver');
             }
-            item.data.data.manoever =
-                item.data.data.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_magie);
-            console.log(item.data.data);
+            item.system.manoever =
+                item.system.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_magie);
+            console.log(item.system);
             // mm_erzw: 'Erzwingen',
-            if (hardcoded.magieErzwingenPossible(data)) {
+            if (hardcoded.magieErzwingenPossible(actor)) {
                 console.log('Erzwingen aktiviert');
-                item.data.data.manoever.mm_erzw.possible = true;
+                item.system.manoever.mm_erzw.possible = true;
             }
             // mm_kosp: 'Kosten sparen',
-            if (hardcoded.magieKostenSparenPossible(data)) {
-                item.data.data.manoever.mm_kosp.possible = true;
+            if (hardcoded.magieKostenSparenPossible(actor)) {
+                item.system.manoever.mm_kosp.possible = true;
             }
             // mm_ztls: 'Zeit lassen',
-            if (hardcoded.magieZeitLassenPossible(data)) {
-                item.data.data.manoever.mm_ztls.possible = true;
+            if (hardcoded.magieZeitLassenPossible(actor)) {
+                item.system.manoever.mm_ztls.possible = true;
             }
             // mm_zere: 'Zeremonie',
-            if (hardcoded.magieZeremoniePossible(data)) {
-                item.data.data.manoever.mm_zere.possible = true;
+            if (hardcoded.magieZeremoniePossible(actor)) {
+                item.system.manoever.mm_zere.possible = true;
             }
             // mm_opfe: 'Opferung',
-            if (hardcoded.magieOpferungPossible(data)) {
-                item.data.data.manoever.mm_opfe.possible = true;
+            if (hardcoded.magieOpferungPossible(actor)) {
+                item.system.manoever.mm_opfe.possible = true;
             }
         }
-        for (let item of data.data.uebernatuerlich.liturgien) {
-            if (item.data.data.manoever == undefined) {
+        for (let item of actor.uebernatuerlich.liturgien) {
+            if (item.system.manoever == undefined) {
                 console.log('Ich überschreibe Karma Manöver');
             }
-            item.data.data.manoever =
-                item.data.data.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_karma);
-            console.log(item.data.data);
+            item.system.manoever =
+                item.system.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_karma);
+            console.log(item.system);
             // mm_kosp: 'Kosten sparen',
-            if (hardcoded.karmaKostenSparenPossible(data)) {
-                item.data.data.manoever.lm_kosp.possible = true;
+            if (hardcoded.karmaKostenSparenPossible(actor)) {
+                item.system.manoever.lm_kosp.possible = true;
             }
             // mm_zere: 'Zeremonie',
-            if (hardcoded.karmaZeremoniePossible(data)) {
-                item.data.data.manoever.lm_zere.possible = true;
+            if (hardcoded.karmaZeremoniePossible(actor)) {
+                item.system.manoever.lm_zere.possible = true;
             }
             // mm_opfe: 'Opferung',
-            if (hardcoded.karmaOpferungPossible(data)) {
-                item.data.data.manoever.lm_opfe.possible = true;
+            if (hardcoded.karmaOpferungPossible(actor)) {
+                item.system.manoever.lm_opfe.possible = true;
             }
         }
     }
-    _sortItems(data) {
+    _sortItems(actor) {
         console.log('_sortItems');
         // koennen  alle noetigen variablen nicht direkt ins objekt geschrieben werden
         let ruestungen = [];
@@ -1167,97 +1166,97 @@ export class IlarisActor extends Actor {
         let item_mitfuehrend = [];
         let item_list = [];
         let item_list_tmp = [];
-        for (let i of data.items) {
+        for (let item of actor.items) {
             // let item = i.data;
-            if (i.type == 'ruestung') {
+            if (item.type == 'ruestung') {
                 // console.log("Rüstung gefunden");
                 // console.log(i);
-                i.data.data.bewahrt_auf = [];
-                if (i.data.data.gewicht < 0) {
-                    i.data.data.gewicht_summe = 0;
-                    speicherplatz_list.push(i.name);
-                    item_list.push(i);
-                } else item_list_tmp.push(i);
-                ruestungen.push(i);
-            } else if (i.type == 'nahkampfwaffe') {
+                item.system.bewahrt_auf = [];
+                if (item.system.gewicht < 0) {
+                    item.system.gewicht_summe = 0;
+                    speicherplatz_list.push(item.name);
+                    item_list.push(item);
+                } else item_list_tmp.push(item);
+                ruestungen.push(item);
+            } else if (item.type == 'nahkampfwaffe') {
                 // console.log("Nahkampfwaffe gefunden");
                 // console.log(i);
-                i.data.data.bewahrt_auf = [];
-                if (i.data.data.gewicht < 0) {
-                    i.data.data.gewicht_summe = 0;
-                    speicherplatz_list.push(i.name);
-                    item_list.push(i);
-                } else item_list_tmp.push(i);
-                nahkampfwaffen.push(i);
-            } else if (i.type == 'fernkampfwaffe') {
+                item.system.bewahrt_auf = [];
+                if (item.system.gewicht < 0) {
+                    item.system.gewicht_summe = 0;
+                    speicherplatz_list.push(item.name);
+                    item_list.push(item);
+                } else item_list_tmp.push(item);
+                nahkampfwaffen.push(item);
+            } else if (item.type == 'fernkampfwaffe') {
                 // console.log("Fernkampfwaffe gefunden");
                 // console.log(i);
-                i.data.data.bewahrt_auf = [];
-                if (i.data.data.gewicht < 0) {
-                    i.data.data.gewicht_summe = 0;
-                    speicherplatz_list.push(i.name);
-                    item_list.push(i);
-                } else item_list_tmp.push(i);
-                fernkampfwaffen.push(i);
-            } else if (i.type == 'gegenstand') {
-                i.data.data.bewahrt_auf = [];
-                if (i.data.data.gewicht < 0) {
-                    i.data.data.gewicht_summe = 0;
-                    speicherplatz_list.push(i.name);
-                    item_list.push(i);
-                } else item_list_tmp.push(i);
-            } else if (i.type == 'fertigkeit') {
+                item.system.bewahrt_auf = [];
+                if (item.system.gewicht < 0) {
+                    item.system.gewicht_summe = 0;
+                    speicherplatz_list.push(item.name);
+                    item_list.push(item);
+                } else item_list_tmp.push(item);
+                fernkampfwaffen.push(item);
+            } else if (item.type == 'gegenstand') {
+                item.system.bewahrt_auf = [];
+                if (item.system.gewicht < 0) {
+                    item.system.gewicht_summe = 0;
+                    speicherplatz_list.push(item.name);
+                    item_list.push(item);
+                } else item_list_tmp.push(item);
+            } else if (item.type == 'fertigkeit') {
                 // console.log("Magiefertigkeit gefunden");
                 // console.log(i);
-                i.data.data.talente = [];
-                profan_fertigkeiten.push(i);
-                profan_fertigkeit_list.push(i.name);
+                item.system.talente = [];
+                profan_fertigkeiten.push(item);
+                profan_fertigkeit_list.push(item.name);
                 // profan_talente[i.name] = [];
-            } else if (i.type == 'talent') {
-                profan_talente.push(i);
-            } else if (i.type == 'freie_fertigkeit') {
-                freie_fertigkeiten.push(i);
-            } else if (i.type == 'uebernatuerliche_fertigkeit') {
+            } else if (item.type == 'talent') {
+                profan_talente.push(item);
+            } else if (item.type == 'freie_fertigkeit') {
+                freie_fertigkeiten.push(item);
+            } else if (item.type == 'uebernatuerliche_fertigkeit') {
                 // console.log("Magiefertigkeit gefunden");
                 // console.log(i);
-                uebernatuerliche_fertigkeiten.push(i);
-            } else if (i.type == 'zauber') {
-                magie_talente.push(i);
+                uebernatuerliche_fertigkeiten.push(item);
+            } else if (item.type == 'zauber') {
+                magie_talente.push(item);
             }
-            else if (i.type == 'liturgie') {
-                karma_talente.push(i);
+            else if (item.type == 'liturgie') {
+                karma_talente.push(item);
             }
-            else if (i.type == 'anrufung') {
-                anrufung_talente.push(i);
-            } else if (i.type == 'vorteil') {
-                if (data.type == "kreatur") vorteile.push(i);
-                if (i.data.data.gruppe == 0) vorteil_allgemein.push(i);
-                else if (i.data.data.gruppe == 1) vorteil_profan.push(i);
-                else if (i.data.data.gruppe == 2) vorteil_kampf.push(i);
-                else if (i.data.data.gruppe == 3) vorteil_kampfstil.push(i);
-                else if (i.data.data.gruppe == 4) vorteil_magie.push(i);
-                else if (i.data.data.gruppe == 5) vorteil_zaubertraditionen.push(i);
-                else if (i.data.data.gruppe == 6) vorteil_karma.push(i);
-                else if (i.data.data.gruppe == 7) vorteil_geweihtetraditionen.push(i);
+            else if (item.type == 'anrufung') {
+                anrufung_talente.push(item);
+            } else if (item.type == 'vorteil') {
+                if (actor.type == "kreatur") vorteile.push(item);
+                if (item.system.gruppe == 0) vorteil_allgemein.push(item);
+                else if (item.system.gruppe == 1) vorteil_profan.push(item);
+                else if (item.system.gruppe == 2) vorteil_kampf.push(item);
+                else if (item.system.gruppe == 3) vorteil_kampfstil.push(item);
+                else if (item.system.gruppe == 4) vorteil_magie.push(item);
+                else if (item.system.gruppe == 5) vorteil_zaubertraditionen.push(item);
+                else if (item.system.gruppe == 6) vorteil_karma.push(item);
+                else if (item.system.gruppe == 7) vorteil_geweihtetraditionen.push(item);
                 // else vorteil_allgemein.push(i);
-            } else if (i.type == 'eigenheit') {
-                eigenheiten.push(i);
-            } else if (i.type == 'eigenschaft') { // kreatur only
-                console.log(i);
-                eigenschaften.push(i);
-            } else if (i.type == 'angriff') { // kreatur only
-                angriffe.push(i);
-            } else if (i.type == 'info') { // kreatur only
-                infos.push(i);
-            } else if (i.type == 'freiestalent') {
-                if (i.data.data.profan == true) {
-                    freietalente.push(i);
+            } else if (item.type == 'eigenheit') {
+                eigenheiten.push(item);
+            } else if (item.type == 'eigenschaft') { // kreatur only
+                console.log(item);
+                eigenschaften.push(item);
+            } else if (item.type == 'angriff') { // kreatur only
+                angriffe.push(item);
+            } else if (item.type == 'info') { // kreatur only
+                infos.push(item);
+            } else if (item.type == 'freiestalent') {
+                if (item.system.profan == true) {
+                    freietalente.push(item);
                     console.log('Freies Talent eingetragen');
                 } else {
-                    freie_uebernatuerliche_fertigkeiten.push(i);
+                    freie_uebernatuerliche_fertigkeiten.push(item);
                     console.log('Freies Uebernatuerliches Talent eingetragen');
                 }
-            } else unsorted.push(i);
+            } else unsorted.push(item);
         }
         ruestungen.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
         nahkampfwaffen.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
@@ -1268,9 +1267,9 @@ export class IlarisActor extends Actor {
             a.name > b.name ? 1 : b.name > a.name ? -1 : 0,
         );
         uebernatuerliche_fertigkeiten.sort((a, b) =>
-            a.data.data.gruppe > b.data.data.gruppe
+            a.system.gruppe > b.system.gruppe
                 ? 1
-                : b.data.data.gruppe > a.data.data.gruppe
+                : b.system.gruppe > a.system.gruppe
                 ? -1
                 : 0,
         );
@@ -1278,41 +1277,41 @@ export class IlarisActor extends Actor {
         // magie_fertigkeiten.sort((a, b) => (a.data.gruppe > b.data.gruppe) ? 1 : ((b.data.gruppe > a.data.gruppe) ? -1 : 0));
         magie_talente.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
         magie_talente.sort((a, b) =>
-            a.data.data.gruppe > b.data.data.gruppe
+            a.system.gruppe > b.system.gruppe
                 ? 1
-                : b.data.data.gruppe > a.data.data.gruppe
+                : b.system.gruppe > a.system.gruppe
                 ? -1
                 : 0,
         );
         karma_talente.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
         karma_talente.sort((a, b) =>
-            a.data.data.gruppe > b.data.data.gruppe
+            a.system.gruppe > b.system.gruppe
                 ? 1
-                : b.data.data.gruppe > a.data.data.gruppe
+                : b.system.gruppe > a.system.gruppe
                 ? -1
                 : 0,
         );
         anrufung_talente.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
         anrufung_talente.sort((a, b) =>
-            a.data.data.gruppe > b.data.data.gruppe
+            a.system.gruppe > b.system.gruppe
                 ? 1
-                : b.data.data.gruppe > a.data.data.gruppe
+                : b.system.gruppe > a.system.gruppe
                 ? -1
                 : 0,
         );
         profan_fertigkeiten.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
         profan_fertigkeiten.sort((a, b) =>
-            a.data.data.gruppe > b.data.data.gruppe
+            a.system.gruppe > b.system.gruppe
                 ? 1
-                : b.data.data.gruppe > a.data.data.gruppe
+                : b.system.gruppe > a.system.gruppe
                 ? -1
                 : 0,
         );
         freie_fertigkeiten.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
         freie_fertigkeiten.sort((a, b) =>
-            a.data.data.gruppe > b.data.data.gruppe
+            a.system.gruppe > b.system.gruppe
                 ? 1
-                : b.data.data.gruppe > a.data.data.gruppe
+                : b.system.gruppe > a.system.gruppe
                 ? -1
                 : 0,
         );
@@ -1329,9 +1328,9 @@ export class IlarisActor extends Actor {
         vorteile.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
         eigenheiten.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
         freie_uebernatuerliche_fertigkeiten.sort((a, b) =>
-        a.data.data.gruppe > b.data.data.gruppe
+        a.system.gruppe > b.system.gruppe
             ? 1
-            : b.data.data.gruppe > a.data.data.gruppe
+            : b.system.gruppe > a.system.gruppe
             ? -1
             : 0,
         );
@@ -1339,81 +1338,81 @@ export class IlarisActor extends Actor {
         // profan_fertigkeiten = _.sortBy( profan_fertigkeiten, 'name' );
         // profan_fertigkeiten = _.sortBy( profan_fertigkeiten, 'data.gruppe' );
 
-        for (let i of profan_talente) {
-            if (profan_fertigkeit_list.includes(i.data.data.fertigkeit)) {
+        for (let talent of profan_talente) {
+            if (profan_fertigkeit_list.includes(talent.system.fertigkeit)) {
                 profan_fertigkeiten
-                    .find((x) => x.name == i.data.data.fertigkeit)
-                    .data.data.talente.push(i);
+                    .find((x) => x.name == talent.system.fertigkeit)
+                    .system.talente.push(talent);
             } else {
-                profan_talente_unsorted.push(i);
+                profan_talente_unsorted.push(talent);
             }
         }
 
-        data.data.getragen = 0;
+        actor.system.getragen = 0;
         for (let i of item_list_tmp) {
-            let aufbewahrung = i.data.data.aufbewahrungs_ort;
+            let aufbewahrung = i.system.aufbewahrungs_ort;
             if (aufbewahrung == 'tragend') {
                 item_tragend.push(i);
             } else if (aufbewahrung == 'mitführend') {
                 item_mitfuehrend.push(i);
-                data.data.getragen += i.data.data.gewicht;
+                actor.system.getragen += i.system.gewicht;
             } else if (speicherplatz_list.includes(aufbewahrung)) {
-                // item_list.find(x => x.name == aufbewahrung).data.data.bewahrt_auf.push(i);
+                // item_list.find(x => x.name == aufbewahrung).system.bewahrt_auf.push(i);
                 let idx = item_list.indexOf(item_list.find((x) => x.name == aufbewahrung));
-                item_list[idx].data.data.bewahrt_auf.push(i);
-                item_list[idx].data.data.gewicht_summe += i.data.data.gewicht;
+                item_list[idx].system.bewahrt_auf.push(i);
+                item_list[idx].system.gewicht_summe += i.system.gewicht;
             } else {
-                i.data.data.aufbewahrungs_ort == 'mitführend';
+                i.system.aufbewahrungs_ort == 'mitführend';
                 item_mitfuehrend.push(i);
-                data.data.getragen += i.data.data.gewicht;
+                actor.system.getragen += i.system.gewicht;
             }
         }
 
         // data.magie = {};
         // data.karma = {};
-        data.data.profan = {};
-        data.data.uebernatuerlich = {};
-        data.data.vorteil = {};
-        data.data.inventar = {};
-        data.data.inventar.tragend = item_tragend;
-        data.data.inventar.mitfuehrend = item_mitfuehrend;
-        data.data.inventar.item_list = item_list;
-        data.data.ruestungen = ruestungen;
-        data.data.nahkampfwaffen = nahkampfwaffen;
-        data.data.fernkampfwaffen = fernkampfwaffen;
-        data.data.uebernatuerlich.fertigkeiten = uebernatuerliche_fertigkeiten;
-        data.data.uebernatuerlich.zauber = magie_talente;
-        data.data.uebernatuerlich.liturgien = karma_talente;
-        data.data.uebernatuerlich.anrufungen = anrufung_talente;
-        data.data.profan.fertigkeiten = profan_fertigkeiten;
-        data.data.profan.talente_unsorted = profan_talente_unsorted;
-        data.data.profan.freie = freie_fertigkeiten;
+        actor.profan = {};
+        actor.uebernatuerlich = {};
+        actor.vorteil = {};
+        actor.inventar = {};
+        actor.inventar.tragend = item_tragend;
+        actor.inventar.mitfuehrend = item_mitfuehrend;
+        actor.inventar.item_list = item_list;
+        actor.ruestungen = ruestungen;
+        actor.nahkampfwaffen = nahkampfwaffen;
+        actor.fernkampfwaffen = fernkampfwaffen;
+        actor.uebernatuerlich.fertigkeiten = uebernatuerliche_fertigkeiten;
+        actor.uebernatuerlich.zauber = magie_talente;
+        actor.uebernatuerlich.liturgien = karma_talente;
+        actor.uebernatuerlich.anrufungen = anrufung_talente;
+        actor.profan.fertigkeiten = profan_fertigkeiten;
+        actor.profan.talente_unsorted = profan_talente_unsorted;
+        actor.profan.freie = freie_fertigkeiten;
         // vorteil singular? inkonsistent zu den anderen listen
         // fuer kreaturen waere es wesentlich einfacher alles in einer liste zu sammeln
         // und die kategorie als property zu behalten (kann ja auch nach gefiltert werden)
         // in data.vorteile leg ich erstmal alle ab als zwischenloesung ;) 
-        data.data.vorteil.allgemein = vorteil_allgemein;
-        data.data.vorteil.profan = vorteil_profan;
-        data.data.vorteil.kampf = vorteil_kampf;
-        data.data.vorteil.kampfstil = vorteil_kampfstil;
-        data.data.vorteil.magie = vorteil_magie;
-        data.data.vorteil.zaubertraditionen = vorteil_zaubertraditionen;
-        data.data.vorteil.karma = vorteil_karma;
-        data.data.vorteil.geweihtentradition = vorteil_geweihtetraditionen;
-        data.data.eigenheiten = eigenheiten;
-        data.data.unsorted = unsorted;
-        data.data.misc = data.data.misc || {};
-        data.data.misc.profan_fertigkeit_list = profan_fertigkeit_list;
-        data.data.misc.uebernatuerlich_fertigkeit_list =
-            this.__getAlleUebernatuerlichenFertigkeiten(data);
-        data.data.misc.speicherplatz_list = speicherplatz_list;
-        if (data.type == "kreatur") {
-            data.data.eigenschaften = eigenschaften;
-            data.data.angriffe = angriffe;
-            data.data.vorteile = vorteile;
-            data.data.infos = infos;
-            data.data.freietalente = freietalente;
-            data.data.uebernatuerlich.fertigkeiten = freie_uebernatuerliche_fertigkeiten;
+        actor.vorteil.allgemein = vorteil_allgemein;
+        actor.vorteil.profan = vorteil_profan;
+        actor.vorteil.kampf = vorteil_kampf;
+        actor.vorteil.kampfstil = vorteil_kampfstil;
+        actor.vorteil.magie = vorteil_magie;
+        actor.vorteil.zaubertraditionen = vorteil_zaubertraditionen;
+        actor.vorteil.karma = vorteil_karma;
+        actor.vorteil.geweihtentradition = vorteil_geweihtetraditionen;
+        actor.eigenheiten = eigenheiten;
+        actor.unsorted = unsorted;
+        actor.misc = actor.misc || {};
+        actor.misc.profan_fertigkeit_list = profan_fertigkeit_list;
+        actor.misc.uebernatuerlich_fertigkeit_list =
+            this.__getAlleUebernatuerlichenFertigkeiten(actor);
+        actor.misc.speicherplatz_list = speicherplatz_list;
+        if (actor.type == "kreatur") {
+            actor.eigenschaften = eigenschaften;
+            actor.angriffe = angriffe;
+            actor.vorteile = vorteile;
+            actor.infos = infos;
+            actor.freietalente = freietalente;
+            actor.uebernatuerlich.fertigkeiten = freie_uebernatuerliche_fertigkeiten;
         }
     }
 }

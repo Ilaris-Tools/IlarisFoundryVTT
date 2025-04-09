@@ -45,7 +45,7 @@
     <label class="icon-small"></label>
 </div>
 <div class="twokindrow">
-    {{#each actor.system.inventar.tragend as |item key|}}
+    {{#each actor.inventar.tragend as |item key|}}
     <div class="flexrow">
         <label>{{item.name}}</label>
         <label>{{item.system.gewicht}}</label>
@@ -70,7 +70,7 @@
     <label class="icon-small"></label>
 </div>
 <div class="twokindrow">
-    {{#each actor.system.inventar.mitfuehrend as |item key|}}
+    {{#each actor.inventar.mitfuehrend as |item key|}}
     <div class="flexrow">
         <label>{{item.name}}</label>
         <label>{{item.system.gewicht}}</label>
@@ -86,7 +86,7 @@
 
 <br />
 
-{{#each actor.system.inventar.item_list as |itemContainer key|}}
+{{#each actor.inventar.item_list as |itemContainer key|}}
 <h2>{{itemContainer.name}}</h2>
 <a class="item-edit icon-small" data-itemid="{{itemContainer.id}}"><i class="fas fa-edit"></i></a>
 <a class="item-delete icon-small" data-itemid="{{itemContainer.id}}"

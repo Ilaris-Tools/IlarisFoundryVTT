@@ -84,7 +84,7 @@
             <h6></h6>
             <h6></h6>
         </div>
-        {{#each actor.system.uebernatuerlich.fertigkeiten as |uefert|}} {{key}}
+        {{#each actor.uebernatuerlich.fertigkeiten as |uefert|}} {{key}}
         <div class="flexrow">
             <!-- <a class="rollable icon-small" data-rolltype="uefert_diag" data-itemid="{{uefert.id}}"><i class="fas fa-dice-d20"></i></a> -->
             <label class="ausklappen-trigger onhover" data-ausklappentarget="{{uefert.id}}"
@@ -163,7 +163,7 @@
             <h6></h6>
             <h6></h6>
         </div>
-        {{#each actor.system.uebernatuerlich.zauber as |magtal|}}
+        {{#each actor.uebernatuerlich.zauber as |magtal|}}
         <div class="flexrow">
             <a class="rollable icon-small" data-rolltype="magie_diag" data-itemid="{{magtal.id}}"><i class="fas fa-dice-d20"></i></a>
             <label class="ausklappen-trigger onhover" data-ausklappentarget="{{magtal.id}}"
@@ -213,7 +213,7 @@
             </div>
             <hr />
         </div>
-        {{/each}} {{#each actor.system.uebernatuerlich.liturgien as |kartal|}}
+        {{/each}} {{#each actor.uebernatuerlich.liturgien as |kartal|}}
         <div class="flexrow">
             <a class="rollable icon-small" data-rolltype="karma_diag" data-itemid="{{kartal.id}}"><i class="fas fa-dice-d20"></i></a>
             <label class="ausklappen-trigger onhover" data-ausklappentarget="{{kartal.id}}"
@@ -268,34 +268,34 @@
 
     <br />
     <h2>Traditionen und Vorteile</h2>
-    {{#if actor.system.vorteil.zaubertraditionen}}
+    {{#if actor.vorteil.zaubertraditionen}}
     <div>
         <label><b>Magische Traditionen:</b>&nbsp; | &nbsp;</label>
-        {{#each actor.system.vorteil.zaubertraditionen}}
+        {{#each actor.vorteil.zaubertraditionen}}
         <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
     </div>
-    {{/if}} {{#if actor.system.vorteil.magie}}
+    {{/if}} {{#if actor.vorteil.magie}}
     <div>
         <label><b>Magische Vorrteile:</b>&nbsp; | &nbsp;</label>
-        {{#each actor.system.vorteil.magie}}
+        {{#each actor.vorteil.magie}}
         <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
     </div>
-    {{/if}} {{#if actor.system.vorteil.geweihtentradition}}
+    {{/if}} {{#if actor.vorteil.geweihtentradition}}
     <div>
         <label><b>Karmale Traditionen:</b>&nbsp; | &nbsp;</label>
-        {{#each actor.system.vorteil.geweihtentradition}}
+        {{#each actor.vorteil.geweihtentradition}}
         <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
     </div>
-    {{/if}} {{#if actor.system.vorteil.karma}}
+    {{/if}} {{#if actor.vorteil.karma}}
     <div>
         <label><b>Karmale Vorteile:</b>&nbsp; | &nbsp;</label>
-        {{#each actor.system.vorteil.karma}}
+        {{#each actor.vorteil.karma}}
         <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}

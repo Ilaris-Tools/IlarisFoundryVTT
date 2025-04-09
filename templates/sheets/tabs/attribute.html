@@ -29,7 +29,7 @@
     <h2>Eigenheiten</h2>
     <a class="item-create" data-itemclass="eigenheit"><i class="fas fa-plus"></i>Neue Eigenheit</a>
     <div>
-        {{#each actor.system.eigenheiten}}
+        {{#each actor.eigenheiten}}
         <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}}</a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
@@ -37,29 +37,29 @@
     <br />
     <br />
     <h2>Vorteile</h2>
-    {{#if actor.system.vorteil.allgemein}}
+    {{#if actor.vorteil.allgemein}}
     <div>
         <label><b>Allgemeine Vorteile:</b>&nbsp; | &nbsp;</label>
-        {{#each actor.system.vorteil.allgemein}}
+        {{#each actor.vorteil.allgemein}}
         <!-- <label>key: {{@key}}</label> <label>this: {{{this}}}</label> <label>dot: {{{.}}}</label> -->
         <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}}</a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
     </div>
-    {{/if}} {{#if actor.system.vorteil.profan}}
+    {{/if}} {{#if actor.vorteil.profan}}
     <div>
         <label><b>Profane Vorteile:</b>&nbsp; | &nbsp;</label>
-        {{#each actor.system.vorteil.profan}}
+        {{#each actor.vorteil.profan}}
         <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
     </div>
-    {{/if}} {{#if actor.system.unsorted}}
+    {{/if}} {{#if actor.unsorted}}
     <br />
     <hr />
     <hr />
     <label><b>Unsorted Items:</b>&nbsp; | &nbsp;</label>
-    {{#each actor.system.unsorted}}
+    {{#each actor.unsorted}}
     <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
     <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
     &nbsp; | &nbsp; {{/each}}

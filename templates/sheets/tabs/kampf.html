@@ -28,7 +28,7 @@
             <label class="icon-small" style="float: right"></label>
             <label class="icon-small" style="float: right"></label>
         </div>
-        {{#each actor.system.nahkampfwaffen as |nwaffe key|}}
+        {{#each actor.nahkampfwaffen as |nwaffe key|}}
         <div class="flexrow">
             <!-- <a class="rollable icon-small" data-rolltype="profan_fertigkeit" data-fertigkeit="{{key}}"><i class="fas fa-dice-d20"></i></a> -->
             <a class="rollable icon-small" data-rolltype="nahkampf_diag" data-itemid="{{nwaffe.id}}"
@@ -163,7 +163,7 @@
             <label class="icon-small" style="float: right"></label>
             <label class="icon-small" style="float: right"></label>
         </div>
-        {{#each actor.system.fernkampfwaffen as |fwaffe key|}}
+        {{#each actor.fernkampfwaffen as |fwaffe key|}}
         <div class="flexrow">
             <a class="rollable icon-small" data-rolltype="fernkampf_diag" data-itemid="{{fwaffe.id}}"
                 ><i class="fas fa-dice-d20"></i
@@ -284,7 +284,7 @@
             <h6 class="icon-small"></h6>
             <h6 class="icon-small"></h6>
         </div>
-        {{#each actor.system.ruestungen as |ruestung key|}}
+        {{#each actor.ruestungen as |ruestung key|}}
         <div class="flexrow">
             <!-- <label>{{ruestung.data.aktiv}}</label> -->
             <a
@@ -337,18 +337,18 @@
     <br />
 
     <h2>Vorteile</h2>
-    {{#if actor.system.vorteil.kampf}}
+    {{#if actor.vorteil.kampf}}
     <div>
         <label><b>Kampfvorteile:</b>&nbsp; | &nbsp;</label>
-        {{#each actor.system.vorteil.kampf}}
+        {{#each actor.vorteil.kampf}}
         <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
     </div>
-    {{/if}} {{#if actor.system.vorteil.kampfstil}}
+    {{/if}} {{#if actor.vorteil.kampfstil}}
     <div>
         <label><b>Kampfstile:</b>&nbsp; | &nbsp;</label>
-        {{#each actor.system.vorteil.kampfstil}}
+        {{#each actor.vorteil.kampfstil}}
         <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}

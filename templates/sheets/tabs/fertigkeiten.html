@@ -24,7 +24,7 @@
             <label class="icon-small"></label>
         </div>
         <div class="twokindrow">
-            {{#each actor.system.profan.fertigkeiten as |profert key|}}
+            {{#each actor.profan.fertigkeiten as |profert key|}}
             <div>
                 <div class="flexrow">
                     <a
@@ -120,11 +120,11 @@
             </div>
             {{/each}}
         </div>
-        {{#if actor.system.profan.talente_unsorted}}
+        {{#if actor.profan.talente_unsorted}}
         <hr />
         <hr />
         <label><b>Talente ohne passende Fertigkeit:</b>&nbsp; | &nbsp;</label>
-        {{#each actor.system.profan.talente_unsorted as |unsortal|}}
+        {{#each actor.profan.talente_unsorted as |unsortal|}}
         <a class="item-edit" data-itemclass="talent" data-itemid="{{unsortal.id}}">
             {{unsortal.name}}
         </a>
@@ -149,7 +149,7 @@
              <h6>Stufe</h6>
              <h6></h6>
              </div> -->
-        {{#each actor.system.profan.freie as |freifert|}}
+        {{#each actor.profan.freie as |freifert|}}
         <a
             class="rollable"
             data-rolltype="freie_fertigkeit_diag"

@@ -40,36 +40,36 @@ export class IlarisActorSheet extends ActorSheet {
     async _onToggleBool(event) {
         const togglevariable = event.currentTarget.dataset.togglevariable;
         let attr = `${togglevariable}`;
-        let bool_status = getProperty(this.actor.data, attr);
+        let bool_status = getProperty(this.actor, attr);
         await this.actor.update({ [attr]: !bool_status });
     }
 
 
     async _onToggleItem(event) {
         const itemId = event.currentTarget.dataset.itemid;
-        const item = this.actor.data.items.get(itemId);
-        // console.log(this.data);
+        const item = this.actor.items.get(itemId);
+        console.log(item);
         // const item = this.data.items.get(itemId);
         const toggletype = event.currentTarget.dataset.toggletype;
-        let attr = `data.${toggletype}`;
+        let attr = `system.${toggletype}`;
         if (toggletype == 'hauptwaffe' || toggletype == 'nebenwaffe') {
-            let item_status = getProperty(item.data, attr);
+            let item_status = getProperty(item, attr);
             // item.update({[attr]: !getProperty(item.data, attr)});
             if (item_status == false) {
-                for (let nwaffe of this.actor.data.data.nahkampfwaffen) {
+                for (let nwaffe of this.actor.system.nahkampfwaffen) {
                     // for (let nwaffe of this.actor.data.nahkampfwaffen) {
                     // console.log(nwaffe);
-                    if (nwaffe.data.data[toggletype] == true) {
+                    if (nwaffe.system[toggletype] == true) {
                         let change_itemId = nwaffe.id;
-                        let change_item = this.actor.data.items.get(change_itemId);
+                        let change_item = this.actor.items.get(change_itemId);
                         await change_item.update({ [attr]: false });
                     }
                 }
-                for (let item of this.actor.data.data.fernkampfwaffen) {
+                for (let item of this.actor.system.fernkampfwaffen) {
                     // console.log(item);
-                    if (item.data.data[toggletype] == true) {
+                    if (item.system[toggletype] == true) {
                         let change_itemId = item.id;
-                        let change_item = this.actor.data.items.get(change_itemId);
+                        let change_item = this.actor.items.get(change_itemId);
                         await change_item.update({ [attr]: false });
                     }
                 }
@@ -78,7 +78,7 @@ export class IlarisActorSheet extends ActorSheet {
             // console.log(item_status);
             await item.update({ [attr]: !item_status });
         } else {
-            attr = `data.${toggletype}`;
+            attr = `system.${toggletype}`;
             await item.update({ [attr]: !getProperty(item.data, attr) });
         }
         // console.log(attr);
@@ -86,7 +86,7 @@ export class IlarisActorSheet extends ActorSheet {
     }
 
     async _onRollable(event) {
-        let data = this.actor.data.data;
+        let systemData = this.actor.system;
         // console.log($(event.currentTarget));
         let rolltype = $(event.currentTarget).data('rolltype');
         if (rolltype == 'basic') {
@@ -108,7 +108,7 @@ export class IlarisActorSheet extends ActorSheet {
             });
             return 0
         }
-        let globalermod = data.abgeleitete.globalermod;
+        let globalermod = systemData.abgeleitete.globalermod;
         let pw = 0;
         let label = 'Probe';
         let dice = '3d20dl1dh1';
@@ -188,7 +188,7 @@ export class IlarisActorSheet extends ActorSheet {
         } else if (rolltype == 'attribut') {
             const attribut_name = $(event.currentTarget).data('attribut');
             label = CONFIG.ILARIS.label[attribut_name];
-            pw = data.attribute[attribut_name].pw;
+            pw = systemData.attribute[attribut_name].pw;
         } else if (rolltype == 'profan_fertigkeit_pw') {
             label = $(event.currentTarget).data('fertigkeit');
             pw = $(event.currentTarget).data('pw');
@@ -214,7 +214,7 @@ export class IlarisActorSheet extends ActorSheet {
         }
         let formula = `${dice} + ${pw} + ${globalermod}`;
         if (rolltype == 'at' || rolltype == 'vt') {
-            formula += ` + ${data.modifikatoren.nahkampfmod}`;
+            formula += ` + ${systemData.modifikatoren.nahkampfmod}`;
         }
         if (rolltype == 'schaden') {
             formula = pw;
@@ -271,14 +271,14 @@ export class IlarisActorSheet extends ActorSheet {
     }
 
     async _onClickable(event) {
-        let data = this.actor.data.data;
+        let systemData = this.actor.system;
         // console.log($(event.currentTarget));
         let clicktype = $(event.currentTarget).data('clicktype');
         if (clicktype == 'shorten_money') {
-            let kreuzer = data.geld.kreuzer;
-            let heller = data.geld.heller;
-            let silbertaler = data.geld.silbertaler;
-            let dukaten = data.geld.dukaten;
+            let kreuzer = systemData.geld.kreuzer;
+            let heller = systemData.geld.heller;
+            let silbertaler = systemData.geld.silbertaler;
+            let dukaten = systemData.geld.dukaten;
             if (kreuzer > 10) {
                 let div = Math.floor(kreuzer / 10);
                 heller += div;
@@ -294,10 +294,10 @@ export class IlarisActorSheet extends ActorSheet {
                 dukaten += div;
                 silbertaler -= div * 10;
             }
-            this.actor.update({ 'data.geld.kreuzer': kreuzer });
-            this.actor.update({ 'data.geld.heller': heller });
-            this.actor.update({ 'data.geld.silbertaler': silbertaler });
-            this.actor.update({ 'data.geld.dukaten': dukaten });
+            this.actor.update({ 'system.geld.kreuzer': kreuzer });
+            this.actor.update({ 'system.geld.heller': heller });
+            this.actor.update({ 'system.geld.silbertaler': silbertaler });
+            this.actor.update({ 'system.geld.dukaten': dukaten });
         } /* else if (clicktype == "togglewundenignorieren") {
             data.gesundheit.wundenignorieren = !data.gesundheit.wundenignorieren;
         } */
@@ -308,11 +308,11 @@ export class IlarisActorSheet extends ActorSheet {
         // this.actor.token.refresh();
         // console.log(event);
         let einschraenkungen =
-            Math.floor(this.actor.data.data.gesundheit.wunden + this.actor.data.data.gesundheit.erschoepfung);
+            Math.floor(this.actor.system.gesundheit.wunden + this.actor.system.gesundheit.erschoepfung);
         // let old_hp = this.actor.data.data.gesundheit.hp.value;
-        let new_hp = this.actor.data.data.gesundheit.hp.max - einschraenkungen;
+        let new_hp = this.actor.system.gesundheit.hp.max - einschraenkungen;
         // this.actor.data.data.gesundheit.hp.value = new_hp;
-        this.actor.update({ 'data.gesundheit.hp.value': new_hp });
+        this.actor.update({ 'system.gesundheit.hp.value': new_hp });
         // this.actor.token.actor.data.data.gesundheit.hp.value = new_hp;
         // this.actor.token?.refresh();
         console.log(this.actor);
@@ -343,8 +343,8 @@ export class IlarisActorSheet extends ActorSheet {
         // var value = selectElement.value;
         let selected_kampfstil = event.target.value;
         console.log(selected_kampfstil);
-        this.actor.data.data.misc.selected_kampfstil = selected_kampfstil;
-        this.actor.update({ 'data.misc.selected_kampfstil': selected_kampfstil });
+        this.actor.system.misc.selected_kampfstil = selected_kampfstil;
+        this.actor.update({ 'system.misc.selected_kampfstil': selected_kampfstil });
     }
 
 
