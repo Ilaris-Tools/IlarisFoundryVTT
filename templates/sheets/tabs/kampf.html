@@ -1,7 +1,7 @@
 <div>
     {{#if actor.system.modifikatoren.nahkampfmod}}
     <div class="flexrow" style="float: right">
-        <b><label style="color: {{modColor data.data.modifikatoren.nahkampfmod}}">{{actor.system.abgeleitete.nahkampfmoddisplay}}</label></b>
+        <b><label style="color: {{modColor actor.system.modifikatoren.nahkampfmod}}">{{actor.system.abgeleitete.nahkampfmoddisplay}}</label></b>
     </div>
     {{/if}}
     <h2>Nahkampfwaffen</h2>
@@ -288,7 +288,7 @@
         <div class="flexrow">
             <!-- <label>{{ruestung.data.aktiv}}</label> -->
             <a
-                class="icon-small item-toggle {{ruestung.data.data.aktiv}}"
+                class="icon-small item-toggle {{ruestung.system.aktiv}}"
                 data-itemid="{{ruestung.id}}"
                 data-toggletype="aktiv"
                 ><i class="fas fa-shield-alt"></i

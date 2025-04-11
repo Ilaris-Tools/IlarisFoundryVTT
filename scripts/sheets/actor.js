@@ -385,42 +385,42 @@ export class IlarisActorSheet extends ActorSheet {
             itemData = {
                 name: 'Neue Rüstung',
                 type: 'ruestung',
-                data: {},
+                system: {},
             };
         } else if (itemclass == 'nahkampfwaffe') {
             console.log('Neue Nahkampfwaffe');
             itemData = {
                 name: 'Waffe',
                 type: itemclass,
-                data: {},
+                system: {},
             };
         } else if (itemclass == 'fernkampfwaffe') {
             console.log('Neue Fernkampfwaffe');
             itemData = {
                 name: 'Waffe',
                 type: itemclass,
-                data: {},
+                system: {},
             };
         } else if (itemclass == 'fertigkeit') {
             console.log('Neue Fertigkeit');
             itemData = {
                 name: 'Fertigkeit',
                 type: 'fertigkeit',
-                data: {},
+                system: {},
             };
         } else if (itemclass == 'talent') {
             console.log('Neues Talent');
             itemData = {
                 name: 'Talent',
                 type: 'talent',
-                data: {},
+                system: {},
             };
         } else if (itemclass == 'freie_fertigkeit') {
             console.log('Neue freie Fertigkeit');
             itemData = {
                 name: 'freie Fertigkeit',
                 type: 'freie_fertigkeit',
-                data: {
+                system: {
                     stufe: 1,
                     gruppe: 4,
                 },
@@ -430,52 +430,52 @@ export class IlarisActorSheet extends ActorSheet {
             itemData = {
                 name: 'Fertigkeit',
                 type: 'uebernatuerliche_fertigkeit',
-                data: {},
+                system: {},
             };
         } else if (itemclass == 'zauber') {
             console.log('Neuer Zauber');
             itemData = {
                 name: 'Zauber',
                 type: 'zauber',
-                data: {},
+                system: {},
             };
         } else if (itemclass == 'liturgie') {
             console.log('Neue Liturgie');
             itemData = {
                 name: 'Liturgie',
                 type: 'liturgie',
-                data: {},
+                system: {},
             };
         } else if (itemclass == 'eigenheit') {
             console.log('Neue Eigenheit');
             itemData = {
                 name: 'eigenheit',
                 type: 'eigenheit',
-                data: {},
+                system: {},
             };
         } else if (itemclass == 'gegenstand') {
             console.log('Neuer Gegenstand');
             itemData = {
                 name: 'gegenstand',
                 type: 'gegenstand',
-                data: {},
+                system: {},
             };
         } else if (itemclass == 'freiestalent') {
             console.log('Neues freies Talent');
             itemData = {
                 name: 'Neue Kreaturenfertigkeit',
                 type: 'freiestalent',
-                data: {},
+                system: {},
             };
             console.log($(event.currentTarget).data('profan'));
-            itemData.data.profan = $(event.currentTarget).data('profan');
+            itemData.system.profan = $(event.currentTarget).data('profan');
         } else if (itemclass == 'uebernatfreiestalent') {
             itemData = {
                 name: 'Neue Kreaturenfertigkeit',
                 type: 'freiestalent',
-                data: {},
+                system: {},
             };
-            itemData.data.profan = false;
+            itemData.system.profan = false;
         } else if (itemclass == 'vorteil') {
             game.packs.get("Ilaris.vorteile").render(true);
             Dialog.prompt({
@@ -487,9 +487,9 @@ export class IlarisActorSheet extends ActorSheet {
             console.log('Neues generisches Item');
             console.log(itemclass);
             itemData = {
-                name: itemclass.replace(itemclass[0], itemclass[0].toUpperCase()),
+                name: 'Neues generisches Item',
                 type: itemclass,
-                data: {},
+                system: {},
             };
             console.log(itemData);
         }
@@ -498,6 +498,7 @@ export class IlarisActorSheet extends ActorSheet {
         // console.log(this.actor.data.data);
 
         // Actor#createEmbeddedDocuments
+        console.log(itemData);
         this.actor.createEmbeddedDocuments('Item', [itemData]);
         // await this.actor.createOwnedItem(itemData);
         // return this.actor.createOwnedItem(itemData);

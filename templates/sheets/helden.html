@@ -36,7 +36,7 @@
                 </div>
                 <div class="flexrow"></div>
                 <a
-                    class="icon-small toggle-bool {{data.data.gesundheit.wundenignorieren}}"
+                    class="icon-small toggle-bool {{actor.system.gesundheit.wundenignorieren}}"
                     data-togglevariable="data.gesundheit.wundenignorieren">
                     Wundabzüge ignorieren 
                     {{#if actor.system.gesundheit.wundenignorieren}}
@@ -50,7 +50,7 @@
             <div style="float: left">
                 <div class="flexrow">
                     <label>Schip: </label>
-                    <label>{{data.data.schips.schips}}</label>
+                    <label>{{actor.system.schips.schips}}</label>
                     <!-- <input name="data.schips.schips" value="{{data.schips.schips}}" type="text" data-dtype="Number"> -->
                     <label>Schip*: </label>
                     <input
@@ -95,10 +95,10 @@
             <label>{{data.data.abgeleitete.globalermod}}</label>
         </div> -->
         <div class="flexrow">
-            <label style="{{#if data.data.gesundheit.wundenignorieren }}text-decoration:line-through;{{/if}}">{{actor.system.gesundheit.display}}</label>
+            <label style="{{#if actor.system.gesundheit.wundenignorieren }}text-decoration:line-through;{{/if}}">{{actor.system.gesundheit.display}}</label>
         </div>
         <div class="flexrow">
-            <label>{{data.data.furcht.display}}</label>
+            <label>{{actor.system.furcht.display}}</label>
         </div>
         <div class="flexrow">
             <input class="flex0" name="data.modifikatoren.manuellermod" value="{{actor.system.modifikatoren.manuellermod}}" type="text" data-dtype="Number">
@@ -106,7 +106,7 @@
         </div>
         <hr/>
         <div class="flexrow">
-            <b><label style="color: {{modColor data.data.abgeleitete.globalermod}}">{{actor.system.abgeleitete.globalermoddisplay}}</label></b>
+            <b><label style="color: {{modColor actor.system.abgeleitete.globalermod}}">{{actor.system.abgeleitete.globalermoddisplay}}</label></b>
         </div>
         <!-- <div class="flexrow">
             <label>Nahkampf Mod: </label>

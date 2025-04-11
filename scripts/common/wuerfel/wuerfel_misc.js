@@ -1,7 +1,7 @@
 export function get_statuseffect_by_id(actor, statusId) {
-    let iterator = actor.data.effects.values();
+    let iterator = actor.effects.values();
     for (const effect of iterator) {
-        if (effect.data.flags.core.statusId == statusId) {
+        if (effect.flags.core.statusId == statusId) {
             return true;
         }
     }

@@ -24,7 +24,6 @@ export class KreaturActor extends IlarisActor {
 
     _initializeActor() {
         // TODO: wird das irgendwo anders gebraucht? sonst kann das auch direkt teil der prepareData() sein
-        let data = this.data;
         if (!this.system.modifikatoren) {
             this.system.modifikatoren = {}
         }

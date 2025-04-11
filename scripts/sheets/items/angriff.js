@@ -14,30 +14,30 @@ export class AngriffSheet extends IlarisItemSheet {
         html.find('.del-eigenschaft').click((ev) => this._onDelEigenschaft(ev));
     }
 
-    _getSubmitData(updateData={}) {
-        const data = super._getSubmitData(updateData);
-        // dirty workaround for v9 to turn objects back into arrays. 
-        // In V10 a datamodel with schema should solve this, by directly using arrays
-        console.log("data");
-        // console.log(data);
-        let eigenschaften = [];
-        for (const [key, value] of Object.entries(data)) {
-            if (key.startsWith("data.eigenschaften") && key.endsWith("name")) {
-                var idx = key.split(".")[2];
-                eigenschaften.push({name: value, text: data[`data.eigenschaften.${idx}.text`]})
-                delete data[key];
-                delete data[`data.eigenschaften.${idx}.text`]
-            }
-        }
-        console.log(eigenschaften);
-        data["data.eigenschaften"] = eigenschaften;
-        return data;
-    }
+    // _getSubmitData(updateData={}) {
+    //     const data = super._getSubmitData(updateData);
+    //     // dirty workaround for v9 to turn objects back into arrays. 
+    //     // In V10 a datamodel with schema should solve this, by directly using arrays
+    //     console.log("data");
+    //     console.log(data);
+    //     let eigenschaften = [];
+    //     for (const [key, value] of Object.entries(data)) {
+    //         if (key.startsWith("system.eigenschaften") && key.endsWith("name")) {
+    //             var idx = key.split(".")[2];
+    //             eigenschaften.push({name: value, text: data[`system.eigenschaften.${idx}.text`]})
+    //             delete data[key];
+    //             delete data[`system.eigenschaften.${idx}.text`]
+    //         }
+    //     }
+    //     console.log(eigenschaften);
+    //     data["system.eigenschaften"] = eigenschaften;
+    //     return data;
+    // }
     
     _onAddEigenschaft(event) {
         //let item = this.document.data;
-        console.log(this.document);
-        this.document.data.data.eigenschaften.push({name: "Neue Eigenschaft", text: ""});
+        this.document.system.eigenschaften = Object.values(this.document.system.eigenschaften);
+        this.document.system.eigenschaften.push({name: "Neue Eigenschaft", text: ""});
         console.log(this.document);
         this.document.render();
     }
@@ -45,7 +45,7 @@ export class AngriffSheet extends IlarisItemSheet {
     _onDelEigenschaft(event){
         let eigid = $(event.currentTarget).data('eigenschaftid');
         //console.log(`remove: ${eigid}`);
-        this.document.data.data.eigenschaften.splice(eigid, 1);
+        this.document.system.eigenschaften.splice(eigid, 1);
         this.document.render();
     }
 
@@ -58,9 +58,6 @@ export class AngriffSheet extends IlarisItemSheet {
         let manoevers = [
             ""
         ];
-
-
-
     }
 
 }

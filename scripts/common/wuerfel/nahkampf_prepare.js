@@ -232,8 +232,8 @@ export function nahkampfUpdate(html, actor, item) {
 }
 
 export function calculate_attacke(actor, item) {
-    let data = actor.system;
-    let be = data.abgeleitete.be;
+    let systemData = actor.system;
+    let be = systemData.abgeleitete.be;
     let mod_at = 0;
     let text = '';
     // Entfernung verändern km_ever
