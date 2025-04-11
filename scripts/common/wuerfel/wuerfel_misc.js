@@ -77,7 +77,7 @@ export function calculate_diceschips(html, text, actor) {
         discard_l += 1;
         let new_schips = actor.system.schips.schips_stern - 1;
         actor.update({
-            data: {
+            system: {
                 schips: {
                     schips_stern: new_schips,
                 },
@@ -89,7 +89,7 @@ export function calculate_diceschips(html, text, actor) {
         discard_l += 2;
         let new_schips = actor.system.schips.schips_stern - 1;
         actor.update({
-            data: {
+            system: {
                 schips: {
                     schips_stern: new_schips,
                 },
