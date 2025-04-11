@@ -1,11 +1,12 @@
+{{log 'ruestung' this}}
 <form class="{{cssClass}}">
     <div>
         <div>
             <header class="sheet-header">
-                <img class="profile-img" src="{{data.img}}" data-edit="img" title="{{data.name}}" />
+                <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
                 <div class="header-fields">
                     <h1 class="charname">
-                        <input name="name" type="text" value="{{data.name}}" />
+                        <input name="name" type="text" value="{{item.name}}" />
                     </h1>
                 </div>
             </header>
@@ -28,41 +29,41 @@
                 <h6>Kopf</h6>
             </div>
             <div class="flexrow">
-                <input name="data.rs" value="{{data.data.rs}}" type="text" data-dtype="Number" />
-                <input name="data.be" value="{{data.data.be}}" type="text" data-dtype="Number" />
+                <input name="data.rs" value="{{item.system.rs}}" type="text" data-dtype="Number" />
+                <input name="data.be" value="{{item.system.be}}" type="text" data-dtype="Number" />
                 <input
                     name="data.rs_beine"
-                    value="{{data.data.rs_beine}}"
+                    value="{{item.system.rs_beine}}"
                     type="text"
                     data-dtype="Number"
                 />
                 <input
                     name="data.rs_larm"
-                    value="{{data.data.rs_larm}}"
+                    value="{{item.system.rs_larm}}"
                     type="text"
                     data-dtype="Number"
                 />
                 <input
                     name="data.rs_rarm"
-                    value="{{data.data.rs_rarm}}"
+                    value="{{item.system.rs_rarm}}"
                     type="text"
                     data-dtype="Number"
                 />
                 <input
                     name="data.rs_bauch"
-                    value="{{data.data.rs_bauch}}"
+                    value="{{item.system.rs_bauch}}"
                     type="text"
                     data-dtype="Number"
                 />
                 <input
                     name="data.rs_brust"
-                    value="{{data.data.rs_brust}}"
+                    value="{{item.system.rs_brust}}"
                     type="text"
                     data-dtype="Number"
                 />
                 <input
                     name="data.rs_kopf"
-                    value="{{data.data.rs_kopf}}"
+                    value="{{item.system.rs_kopf}}"
                     type="text"
                     data-dtype="Number"
                 />
@@ -72,20 +73,20 @@
                 <label>Härte</label>
                 <input
                     name="data.haerte"
-                    value="{{data.data.haerte}}"
+                    value="{{item.system.haerte}}"
                     type="text"
                     data-dtype="Number"
                 />
                 <label>Beschädigung</label>
                 <input
                     name="data.beschaedigung"
-                    value="{{data.data.beschaedigung}}"
+                    value="{{item.system.beschaedigung}}"
                     type="text"
                     data-dtype="Number"
                 />
             </div>
             <label>Beschreibung</label>
-            <textarea rows="6" name="data.text">{{data.data.text}}</textarea>
+            <textarea rows="6" name="data.text">{{item.system.text}}</textarea>
             <!-- {{editor content=data.text target="data.text" button=true owner=owner editable=editable}} -->
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis: 100px"
@@ -93,7 +94,7 @@
                 >
                 <input
                     name="data.gewicht"
-                    value="{{data.data.gewicht}}"
+                    value="{{item.system.gewicht}}"
                     type="text"
                     data-dtype="Number"
                 />
@@ -102,7 +103,7 @@
                 <label class="flex-fest-var" style="flex-basis: 100px"><b>Preis: </b></label>
                 <input
                     name="data.preis"
-                    value="{{data.data.preis}}"
+                    value="{{item.system.preis}}"
                     type="text"
                     data-dtype="Number"
                 />
@@ -111,7 +112,7 @@
             {{#if hasOwner}}
             <label class="flex-fest-var" style="flex-basis: 100px"><b>Aufbewahrungsort: </b></label>
             <select name="data.aufbewahrungs_ort">
-                {{#select data.data.aufbewahrungs_ort}} {{#each speicherplatz_list as |ort|}}
+                {{#select item.system.aufbewahrungs_ort}} {{#each speicherplatz_list as |ort|}}
                 <option value="{{ort}}">{{ort}}</option>
                 {{/each}} {{/select}}
             </select>

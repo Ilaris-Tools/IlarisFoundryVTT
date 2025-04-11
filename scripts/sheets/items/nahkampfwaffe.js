@@ -4,7 +4,7 @@ export class NahkampfwaffeSheet extends IlarisItemSheet {
     getData() {
         const data = super.getData();
         if (data.hasOwner) {
-            data.speicherplatz_list = this.item.actor.data.data.misc.speicherplatz_list;
+            data.speicherplatz_list = this.item.actor.system.misc.speicherplatz_list;
         }
         return data;
     }

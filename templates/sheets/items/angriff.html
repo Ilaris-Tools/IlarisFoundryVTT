@@ -1,32 +1,33 @@
+{{log 'angriff' this}}
 <form class="{{cssClass}}">
     <div>
         <div>
             <header class="sheet-header">
                 <div class="header-fields">
                     <h1 class="charname">
-                        <input name="name" type="text" value="{{data.name}}" />
+                        <input name="name" type="text" value="{{item.name}}" />
                     </h1>
                 </div>
             </header>
         </div>
         <div class="flexrow">
             <label>Härte: 
-                <input type="number" name="data.haerte" value="{{data.data.haerte}}" />
+                <input type="number" name="data.haerte" value="{{item.system.haerte}}" />
             </label>
             <label>Ladezeit: 
-                <input type="number" name="data.lz" value="{{data.data.lz}}" />
+                <input type="number" name="data.lz" value="{{item.system.lz}}" />
             </label>
             <label>Reichweite: 
-                <input type="number" name="data.rw" value="{{data.data.rw}}" />
+                <input type="number" name="data.rw" value="{{item.system.rw}}" />
             </label>
             <label>Attacke: 
-                <input type="number" name="data.at" value="{{data.data.at}}" />
+                <input type="number" name="data.at" value="{{item.system.at}}" />
             </label>
             <label>Verteidigung: 
-                <input type="number" name="data.vt" value="{{data.data.vt}}" />
+                <input type="number" name="data.vt" value="{{item.system.vt}}" />
             </label>
             <label>Trefferpunkte: 
-                <input type="text" name="data.tp" value="{{data.data.tp}}" />
+                <input type="text" name="data.tp" value="{{item.system.tp}}" />
             </label>
         </div>
         <div>

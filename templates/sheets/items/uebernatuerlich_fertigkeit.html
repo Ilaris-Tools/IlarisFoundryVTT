@@ -1,11 +1,12 @@
+{{log 'uebernatuerliche' this}}
 <form class="{{cssClass}}">
     <div>
         <div>
             <header class="sheet-header">
-                <img class="profile-img" src="{{data.img}}" data-edit="img" title="{{data.name}}" />
+                <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
                 <div class="header-fields">
                     <h1 class="charname">
-                        <input name="name" type="text" value="{{data.name}}" />
+                        <input name="name" type="text" value="{{item.name}}" />
                     </h1>
                 </div>
             </header>
@@ -28,25 +29,25 @@
             <div class="flexrow">
                 <!-- <input name="data.faktor" value="{{item.data.faktor}}" type="text" data-dtype="Number"> -->
                 <select name="data.attribut_0">
-                    {{#select data.data.attribut_0}} {{>
+                    {{#select item.system.attribut_0}} {{>
                     systems/Ilaris/templates/helper/select_attribut.html}} {{/select}}
                 </select>
                 <select name="data.attribut_1">
-                    {{#select data.data.attribut_1}} {{>
+                    {{#select item.system.attribut_1}} {{>
                     systems/Ilaris/templates/helper/select_attribut.html}} {{/select}}
                 </select>
                 <select name="data.attribut_2">
-                    {{#select data.data.attribut_2}} {{>
+                    {{#select item.system.attribut_2}} {{>
                     systems/Ilaris/templates/helper/select_attribut.html}} {{/select}}
                 </select>
                 {{#if hasOwner}}
-                <input name="data.fw" value="{{data.data.fw}}" type="text" data-dtype="Number" />
+                <input name="data.fw" value="{{item.system.fw}}" type="text" data-dtype="Number" />
                 {{/if}}
                 <!-- <label> {{item.data.pw}} </label> -->
                 <!-- <label> {{data.pw}} </label> -->
             </div>
             <label>Beschreibung</label>
-            <textarea rows="6" name="data.text">{{data.data.text}}</textarea>
+            <textarea rows="6" name="data.text">{{item.system.text}}</textarea>
             <!-- {{editor content=data.text target="data.text" button=true owner=owner editable=editable}} -->
         </div>
     </div>

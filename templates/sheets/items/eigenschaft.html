@@ -1,9 +1,10 @@
+{{log 'eigenschaft' this}}
 <form class="{{cssClass}}">
     <div>
-        <input class="titel-input" name="name" type="text" value="{{data.name}}" />
+        <input class="titel-input" name="name" type="text" value="{{item.name}}" />
         <hr>
         <label>Beschreibung: </label>
-        <textarea rows="8" name="data.text">{{data.data.text}}</textarea>
+        <textarea rows="8" name="data.text">{{item.system.text}}</textarea>
         <hr>
         <a class="item-delete" data-itemid="{{data._id}}">
             <button class="clickable" type="button">

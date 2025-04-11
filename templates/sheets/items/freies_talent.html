@@ -1,11 +1,12 @@
+{{log 'freies talent' this}}
 <form class="{{cssClass}}">
     <div class="flexrow">
         <div>
             <label>Freies Talent:</label>
-            <input name="name" type="text" value="{{data.name}}" />
+            <input name="name" type="text" value="{{item.name}}" />
         </div><div>
             <label>Probenwert:</label>
-            <input type="number" name="data.pw" value="{{data.data.pw}}"/>
+            <input type="number" name="data.pw" value="{{item.system.pw}}"/>
         </div>
     </div>
     <hr>

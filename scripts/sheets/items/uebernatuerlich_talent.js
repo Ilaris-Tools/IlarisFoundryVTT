@@ -4,7 +4,7 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
     getData() {
         const data = super.getData();
         if (data.hasOwner) {
-            data.fertigkeit_list = this.item.actor.data.data.misc.uebernatuerlich_fertigkeit_list;
+            data.fertigkeit_list = this.item.actor.system.misc.uebernatuerlich_fertigkeit_list;
             console.log(data);
         }
         return data;
