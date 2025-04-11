@@ -2,7 +2,7 @@
   "id": "Ilaris",
   "title": "Ilaris (beta)",
   "description": "Schnelle und schlanke Regeln für Aventurien",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "compatibility": {
     "minimum": 10,
     "verified": 10
