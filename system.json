@@ -4,10 +4,9 @@
   "description": "Schnelle und schlanke Regeln für Aventurien",
   "version": "0.0.20",
   "compatibility": {
-    "minimum": 11,
-    "verified": 11
+    "minimum": 12,
+    "verified": 12
   },
-  "templateVersion": 2,
   "authors": [
     {
       "name": "Harbard/feorg (Georg Gießler)"
@@ -114,8 +113,10 @@
   ],
   "socket": true,
   "languages": [],
-  "gridDistance": 1,
-  "gridUnits": "m",
+  "grid": {
+    "distance": 1,
+    "units":"m"
+  },
   "primaryTokenAttribute": "gesundheit.hp",
   "secondaryTokenAttribute": null,
   "background": "assets/images/background/splash.jpg",
