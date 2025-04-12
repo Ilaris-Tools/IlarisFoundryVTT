@@ -106,8 +106,9 @@ export class AngriffDialog extends Dialog {
     }
 
     aufbauendeManoeverAktivieren() {
+        console.log(this.actor)
         let manoever = this.item.system.manoever;
-        let eigenschaften = this.item.system.eigenschaften.map(e => e.name);
+        let eigenschaften = Object.values(this.item.system.eigenschaften).map(e => e.name);
         let vorteile = this.actor.vorteile.map(v => v.name);
 
         manoever.km_rust.possible = eigenschaften.includes("Rüstungsbrechend");
