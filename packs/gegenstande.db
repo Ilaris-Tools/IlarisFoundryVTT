@@ -1,32 +1,32 @@
-{"name":"Kraftfutter, Pony/Esel, 1 Tag","type":"gegenstand","data":{"haerte":"0","beschaedigung":"0","aufbewahrungs_ort":"mitführend","bewahrt_auf":[],"gewicht_summe":0,"gewicht":1,"preis":0.5,"text":""},"_id":"0PTCCpsVSY4HnuDw"}
-{"name":"Pfeilköcher","type":"gegenstand","data":{"gewicht":1,"preis":20,"text":""},"_id":"0bZyufYaL7Tmc2BR"}
-{"name":"Eselkarren","type":"gegenstand","data":{"gewicht":-128,"preis":0,"text":""},"_id":"0sUEIDLEbpN2eUex"}
-{"name":"Handkarren","type":"gegenstand","data":{"gewicht":-32,"preis":0,"text":""},"_id":"1gFAAuxaMrYaFAyL"}
-{"name":"Seil, Seide, je 16 Schritt","type":"gegenstand","data":{"gewicht":1,"preis":190,"text":""},"_id":"3IMRIpSflXJhzDwa"}
-{"name":"Bärenfalle","type":"gegenstand","data":{"gewicht":2,"preis":30,"text":""},"_id":"4g7m8SO0Cqt7LALd"}
-{"name":"Wagen, zweispännig","type":"gegenstand","data":{"gewicht":-512,"preis":0,"text":""},"_id":"FhfQAYFDVRU70uaG"}
-{"name":"Marschration, 1 Tag","type":"gegenstand","data":{"gewicht":1,"preis":0.4,"text":""},"_id":"HPAxW3zC7hNRBq8R"}
-{"name":"Kraftfutter, Kaltblut, 1 Tag","type":"gegenstand","data":{"gewicht":5,"preis":2.2,"text":""},"_id":"K81MWJWbNebXolfP"}
-{"name":"Schlafsack, Hängematte","type":"gegenstand","data":{"gewicht":1,"preis":10,"text":""},"_id":"LGUYHTXiucB0P8yz"}
-{"name":"Sturmlaterne","type":"gegenstand","data":{"gewicht":1,"preis":12,"text":""},"_id":"LuMntjPbQFqqCgOb"}
-{"name":"Fischernetz, klein","type":"gegenstand","data":{"gewicht":2,"preis":10,"text":""},"_id":"TfuPRqgSKo3qWWPk"}
-{"name":"Wagen, einspännig","type":"gegenstand","data":{"gewicht":-256,"preis":0,"text":""},"_id":"U55Y25Wjma8Mu3ID"}
-{"name":"Archaische Werkstatt","type":"gegenstand","data":{"gewicht":3,"preis":200,"text":""},"_id":"WXLSrIUeWxEhUfI7"}
-{"name":"Wasserschlauch, 1 Tag","type":"gegenstand","data":{"gewicht":1,"preis":1,"text":""},"_id":"XD73qlfKVyivCts1"}
-{"name":"Zelt, vier Personen","type":"gegenstand","data":{"gewicht":10,"preis":50,"text":""},"_id":"YbXmQwIA5hJFT0BM"}
-{"name":"Archaisches Labor","type":"gegenstand","data":{"gewicht":6,"preis":200,"text":""},"_id":"dwsOa5GaIqB8Ojb7"}
-{"name":"Kraftfutter, Maultier, 1 Tag","type":"gegenstand","data":{"gewicht":2,"preis":1,"text":""},"_id":"fGTWmcWm2azUSSJI"}
-{"name":"Bündel Kletterhaken","type":"gegenstand","data":{"gewicht":1,"preis":8,"text":""},"_id":"hItOWxl102FGxViq"}
-{"name":"Wagen, vierspännig","type":"gegenstand","data":{"gewicht":-1024,"preis":0,"text":""},"_id":"kLUmjOBBB1mPIrhH"}
-{"name":"Bündel Fackeln","type":"gegenstand","data":{"gewicht":2,"preis":4,"text":""},"_id":"m3wK9F7zEid6bkFK"}
-{"name":"Archaische Tischlerei","type":"gegenstand","data":{"gewicht":2,"preis":100,"text":""},"_id":"mAICd6Eb9edXybAk"}
-{"name":"Archaische Schneiderei","type":"gegenstand","data":{"gewicht":1,"preis":50,"text":""},"_id":"n4YsdZHY6sSqyPC6"}
-{"name":"Zelt, zwei Personen","type":"gegenstand","data":{"gewicht":6,"preis":30,"text":""},"_id":"n8CtqErFkF2bs1WW"}
-{"name":"Spaten, Axt & Hammer","type":"gegenstand","data":{"gewicht":3,"preis":30,"text":""},"_id":"oI3PpL0ImL4oI9qP"}
-{"name":"Wurfhaken","type":"gegenstand","data":{"gewicht":1,"preis":10,"text":""},"_id":"oVQPrVa6szxHrxHf"}
-{"name":"Kraftfutter, Pferd, 1 Tag","type":"gegenstand","data":{"gewicht":3,"preis":1.4,"text":""},"_id":"plvNYxt8luUgs6qR"}
-{"name":"Archaische Schmiede","type":"gegenstand","data":{"gewicht":16,"preis":200,"text":""},"_id":"qjeKLl7wl8EfnQ90"}
-{"name":"Seil, Hanf, je 8 Schritt","type":"gegenstand","data":{"gewicht":1,"preis":6,"text":""},"_id":"sKc4bSjJMpQpnmUz"}
-{"name":"Archaische Kochstelle","type":"gegenstand","data":{"gewicht":2,"preis":50,"text":""},"_id":"u0vyFEjNMALCM71Q"}
-{"name":"Eiserne Ration, 2 Tage","type":"gegenstand","data":{"gewicht":1,"preis":1,"text":"Doppelter Wasserverbrauch"},"_id":"xEMu11V6akWIjhtP"}
-{"name":"Angel & Köder, hochwertig","type":"gegenstand","data":{"gewicht":1,"preis":10,"text":""},"_id":"zD8MtPnpGJjlFA1i"}
+{"name":"Kraftfutter, Pony/Esel, 1 Tag","type":"gegenstand","system":{"haerte":"0","beschaedigung":"0","aufbewahrungs_ort":"mitführend","bewahrt_auf":[],"gewicht_summe":0,"gewicht":1,"preis":0.5,"text":""},"_id":"0PTCCpsVSY4HnuDw"}
+{"name":"Pfeilköcher","type":"gegenstand","system":{"gewicht":1,"preis":20,"text":""},"_id":"0bZyufYaL7Tmc2BR"}
+{"name":"Eselkarren","type":"gegenstand","system":{"gewicht":-128,"preis":0,"text":""},"_id":"0sUEIDLEbpN2eUex"}
+{"name":"Handkarren","type":"gegenstand","system":{"gewicht":-32,"preis":0,"text":""},"_id":"1gFAAuxaMrYaFAyL"}
+{"name":"Seil, Seide, je 16 Schritt","type":"gegenstand","system":{"gewicht":1,"preis":190,"text":""},"_id":"3IMRIpSflXJhzDwa"}
+{"name":"Bärenfalle","type":"gegenstand","system":{"gewicht":2,"preis":30,"text":""},"_id":"4g7m8SO0Cqt7LALd"}
+{"name":"Wagen, zweispännig","type":"gegenstand","system":{"gewicht":-512,"preis":0,"text":""},"_id":"FhfQAYFDVRU70uaG"}
+{"name":"Marschration, 1 Tag","type":"gegenstand","system":{"gewicht":1,"preis":0.4,"text":""},"_id":"HPAxW3zC7hNRBq8R"}
+{"name":"Kraftfutter, Kaltblut, 1 Tag","type":"gegenstand","system":{"gewicht":5,"preis":2.2,"text":""},"_id":"K81MWJWbNebXolfP"}
+{"name":"Schlafsack, Hängematte","type":"gegenstand","system":{"gewicht":1,"preis":10,"text":""},"_id":"LGUYHTXiucB0P8yz"}
+{"name":"Sturmlaterne","type":"gegenstand","system":{"gewicht":1,"preis":12,"text":""},"_id":"LuMntjPbQFqqCgOb"}
+{"name":"Fischernetz, klein","type":"gegenstand","system":{"gewicht":2,"preis":10,"text":""},"_id":"TfuPRqgSKo3qWWPk"}
+{"name":"Wagen, einspännig","type":"gegenstand","system":{"gewicht":-256,"preis":0,"text":""},"_id":"U55Y25Wjma8Mu3ID"}
+{"name":"Archaische Werkstatt","type":"gegenstand","system":{"gewicht":3,"preis":200,"text":""},"_id":"WXLSrIUeWxEhUfI7"}
+{"name":"Wasserschlauch, 1 Tag","type":"gegenstand","system":{"gewicht":1,"preis":1,"text":""},"_id":"XD73qlfKVyivCts1"}
+{"name":"Zelt, vier Personen","type":"gegenstand","system":{"gewicht":10,"preis":50,"text":""},"_id":"YbXmQwIA5hJFT0BM"}
+{"name":"Archaisches Labor","type":"gegenstand","system":{"gewicht":6,"preis":200,"text":""},"_id":"dwsOa5GaIqB8Ojb7"}
+{"name":"Kraftfutter, Maultier, 1 Tag","type":"gegenstand","system":{"gewicht":2,"preis":1,"text":""},"_id":"fGTWmcWm2azUSSJI"}
+{"name":"Bündel Kletterhaken","type":"gegenstand","system":{"gewicht":1,"preis":8,"text":""},"_id":"hItOWxl102FGxViq"}
+{"name":"Wagen, vierspännig","type":"gegenstand","system":{"gewicht":-1024,"preis":0,"text":""},"_id":"kLUmjOBBB1mPIrhH"}
+{"name":"Bündel Fackeln","type":"gegenstand","system":{"gewicht":2,"preis":4,"text":""},"_id":"m3wK9F7zEid6bkFK"}
+{"name":"Archaische Tischlerei","type":"gegenstand","system":{"gewicht":2,"preis":100,"text":""},"_id":"mAICd6Eb9edXybAk"}
+{"name":"Archaische Schneiderei","type":"gegenstand","system":{"gewicht":1,"preis":50,"text":""},"_id":"n4YsdZHY6sSqyPC6"}
+{"name":"Zelt, zwei Personen","type":"gegenstand","system":{"gewicht":6,"preis":30,"text":""},"_id":"n8CtqErFkF2bs1WW"}
+{"name":"Spaten, Axt & Hammer","type":"gegenstand","system":{"gewicht":3,"preis":30,"text":""},"_id":"oI3PpL0ImL4oI9qP"}
+{"name":"Wurfhaken","type":"gegenstand","system":{"gewicht":1,"preis":10,"text":""},"_id":"oVQPrVa6szxHrxHf"}
+{"name":"Kraftfutter, Pferd, 1 Tag","type":"gegenstand","system":{"gewicht":3,"preis":1.4,"text":""},"_id":"plvNYxt8luUgs6qR"}
+{"name":"Archaische Schmiede","type":"gegenstand","system":{"gewicht":16,"preis":200,"text":""},"_id":"qjeKLl7wl8EfnQ90"}
+{"name":"Seil, Hanf, je 8 Schritt","type":"gegenstand","system":{"gewicht":1,"preis":6,"text":""},"_id":"sKc4bSjJMpQpnmUz"}
+{"name":"Archaische Kochstelle","type":"gegenstand","system":{"gewicht":2,"preis":50,"text":""},"_id":"u0vyFEjNMALCM71Q"}
+{"name":"Eiserne Ration, 2 Tage","type":"gegenstand","system":{"gewicht":1,"preis":1,"text":"Doppelter Wasserverbrauch"},"_id":"xEMu11V6akWIjhtP"}
+{"name":"Angel & Köder, hochwertig","type":"gegenstand","system":{"gewicht":1,"preis":10,"text":""},"_id":"zD8MtPnpGJjlFA1i"}

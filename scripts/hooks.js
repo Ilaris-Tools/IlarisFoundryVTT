@@ -236,6 +236,8 @@ Hooks.once('init', () => {
 });
 
 Hooks.on('applyActiveEffect', (actor, data, options, userId) => {
+    console.log(data)
+    console.log(actor)
     console.log("EFFECT!!! ");
     data.changes = [];
     console.log(actor);

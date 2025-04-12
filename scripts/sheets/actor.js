@@ -79,7 +79,7 @@ export class IlarisActorSheet extends ActorSheet {
             await item.update({ [attr]: !item_status });
         } else {
             attr = `system.${toggletype}`;
-            await item.update({ [attr]: !getProperty(item.data, attr) });
+            await item.update({ [attr]: !getProperty(item, attr) });
         }
         // console.log(attr);
         // console.log(!getProperty(item.data, attr));

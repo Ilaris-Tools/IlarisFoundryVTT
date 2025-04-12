@@ -69,20 +69,20 @@ export class NahkampfDialog extends Dialog {
         console.log(attr)
         let attr = `system.${toggletype}`;
         if (toggletype == 'hauptwaffe' || toggletype == 'nebenwaffe') {
-            let item_status = getProperty(item.data, attr);
+            let item_status = getProperty(item, attr);
             // item.update({[attr]: !getProperty(item.data, attr)});
             if (item_status == false) {
                 for (let nwaffe of this.actor.nahkampfwaffen) {
-                    // console.log(nwaffe);
-                    if (nwaffe.data[toggletype] == true) {
+                    console.log(nwaffe);
+                    if (nwaffe[toggletype] == true) {
                         let change_itemId = nwaffe._id;
                         let change_item = this.actor.items.get(change_itemId);
                         await change_item.update({ [attr]: false });
                     }
                 }
                 for (let item of this.actor.fernkampfwaffen) {
-                    // console.log(item);
-                    if (item.data[toggletype] == true) {
+                    console.log(item);
+                    if (item[toggletype] == true) {
                         let change_itemId = item._id;
                         let change_item = this.actor.items.get(change_itemId);
                         await change_item.update({ [attr]: false });
@@ -92,7 +92,7 @@ export class NahkampfDialog extends Dialog {
             await item.update({ [attr]: !item_status });
         } else {
             attr = `system.${toggletype}`;
-            await item.update({ [attr]: !getProperty(item.data, attr) });
+            await item.update({ [attr]: !getProperty(item, attr) });
         }
         // console.log(attr);
         // console.log(!getProperty(item.data, attr));
