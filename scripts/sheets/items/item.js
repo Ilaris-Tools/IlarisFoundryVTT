@@ -1,6 +1,6 @@
 export class IlarisItemSheet extends ItemSheet {
     // Setze ich das an der richtigen Stelle?
-    getData() {
+    async getData() {
         const data = super.getData();
         data.hasOwner = this.item.actor != null;
         return data;

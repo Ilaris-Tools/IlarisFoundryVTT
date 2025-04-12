@@ -356,8 +356,8 @@ export class IlarisActor extends Actor {
         // let wundabzuege = data.data.gesundheit.wundabzuege;
         let kampfstile = hardcoded.getKampfstile(actor);
         // data.misc.selected_kampfstil = "ohne";
-        actor.system.misc.kampfstile_list = kampfstile;
-        let selected_kampfstil = actor.system.misc.selected_kampfstil;
+        actor.misc.kampfstile_list = kampfstile;
+        let selected_kampfstil = actor.misc.selected_kampfstil;
         // console.log(kampfstile);
         let HAUPTWAFFE =
             actor.nahkampfwaffen.find((x) => x.system.hauptwaffe == true) ||
@@ -1402,6 +1402,7 @@ export class IlarisActor extends Actor {
         actor.eigenheiten = eigenheiten;
         actor.unsorted = unsorted;
         actor.misc = actor.misc || {};
+        actor.misc.kampfstile_list = vorteil_kampfstil.map(kampfstil => kampfstil.name);
         actor.misc.profan_fertigkeit_list = profan_fertigkeit_list;
         actor.misc.uebernatuerlich_fertigkeit_list =
             this.__getAlleUebernatuerlichenFertigkeiten(actor);

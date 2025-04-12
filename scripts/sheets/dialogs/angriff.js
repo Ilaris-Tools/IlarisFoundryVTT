@@ -23,7 +23,7 @@ export class AngriffDialog extends Dialog {
         this.aufbauendeManoeverAktivieren()
     }
 
-    getData () { // damit wird das template gefüttert
+    async getData () { // damit wird das template gefüttert
         return {
             choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: '0',

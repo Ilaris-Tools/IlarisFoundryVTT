@@ -6,8 +6,12 @@ export class IlarisActorSheet extends ActorSheet {
       Und welche Items soll ich nehmen? Actor, data, oder direkt?
       Ansehen, was references und was copys sind.
     */
-    getData() {
-        return super.getData();
+    async getData() {
+        const context = super.getData();
+        console.log(context)
+
+        context.enrichedBiography = await TextEditor.enrichHTML(this.actor.system.notes, {async: true});
+        return context;
     }
     
     activateListeners(html) {

@@ -1,7 +1,7 @@
 import { IlarisItemSheet } from './item.js';
 
 export class TalentSheet extends IlarisItemSheet {
-    getData() {
+    async getData() {
         const data = super.getData();
         if (data.hasOwner) {
             data.fertigkeit_list = this.item.actor.misc.profan_fertigkeit_list;

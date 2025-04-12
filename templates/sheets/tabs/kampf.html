@@ -10,7 +10,7 @@
     >
     <div>
         <select class="selected-kampfstil" name="data.misc.selected_kampfstil">
-            {{#select actor.system.misc.selected_kampfstil}} {{#each actor.system.misc.kampfstile_list}}
+            {{#select actor.misc.selected_kampfstil}} {{#each actor.misc.kampfstile_list}}
             <option value="{{this}}">{{get_label this}}</option>
             {{/each}} {{/select}}
         </select>
@@ -29,6 +29,7 @@
             <label class="icon-small" style="float: right"></label>
         </div>
         {{#each actor.nahkampfwaffen as |nwaffe key|}}
+        {{log 'waffe' nwaffe}}
         <div class="flexrow">
             <!-- <a class="rollable icon-small" data-rolltype="profan_fertigkeit" data-fertigkeit="{{key}}"><i class="fas fa-dice-d20"></i></a> -->
             <a class="rollable icon-small" data-rolltype="nahkampf_diag" data-itemid="{{nwaffe.id}}"

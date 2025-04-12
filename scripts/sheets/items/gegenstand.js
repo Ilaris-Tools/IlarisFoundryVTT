@@ -1,7 +1,7 @@
 import { IlarisItemSheet } from './item.js';
 
 export class GegenstandSheet extends IlarisItemSheet {
-    getData() {
+    async getData() {
         const data = super.getData();
         if (data.hasOwner) {
             data.speicherplatz_list = this.item.actor.misc.speicherplatz_list;

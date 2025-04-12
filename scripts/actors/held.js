@@ -18,6 +18,7 @@ export class HeldActor extends IlarisActor {
         await super._preCreate(data, options, user);  // IlarisActor._preCreate() -> Actor._preCreate()
     }
     
+    /** @override */
     prepareData() {  // sieht jetzt gleich aus, kann in actor.js?
         super.prepareData();
         this._initializeActor();  // TODO: warum wird data überall durchgegeben, ist doch sowieso instanziert??
