@@ -143,12 +143,6 @@ export function geweihter(actor) {
 
 export function getKampfstile(actor) {
     let kampfstile = ['ohne'];
-    let bhk = false;
-    let kvk = false;
-    let pwk = false;
-    let rtk = false;
-    let shk = false;
-    let snk = false;
     if (actor.vorteil.kampfstil.find((x) => x.name.includes('Beidhändiger Kampf')))
         kampfstile.push('bhk');
     if (actor.vorteil.kampfstil.find((x) => x.name.includes('Kraftvoller Kampf')))

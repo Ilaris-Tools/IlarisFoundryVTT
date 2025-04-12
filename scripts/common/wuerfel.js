@@ -13,6 +13,7 @@ import {
 // import { calculate_diceschips, roll_crit_message } from "./wuerfel/wuerfel_misc.js";
 
 export async function wuerfelwurf(event, actor) {
+    console.log(event)
     let speaker = ChatMessage.getSpeaker({ actor: actor });
     let systemData = actor.system;
     let rolltype = $(event.currentTarget).data('rolltype');
