@@ -1,0 +1,8 @@
+2025/04/12-17:19:57.602 aec Recovering log #4
+2025/04/12-17:19:57.610 aec Delete type=0 #4
+2025/04/12-17:19:57.611 aec Delete type=3 #2
+2025/04/12-17:26:13.341 234c Level-0 table #9: started
+2025/04/12-17:26:13.341 234c Level-0 table #9: 0 bytes OK
+2025/04/12-17:26:13.344 234c Delete type=0 #7
+2025/04/12-17:26:13.348 234c Manual compaction at level-0 from '!actors!0Cch8pl8HgthaJx1' @ 72057594037927935 : 1 .. '!actors.items!zxY9j9fKcy9ktwrW.w3i10mPhVRVHYqBi' @ 0 : 0; will stop at (end)
+2025/04/12-17:26:13.348 234c Manual compaction at level-1 from '!actors!0Cch8pl8HgthaJx1' @ 72057594037927935 : 1 .. '!actors.items!zxY9j9fKcy9ktwrW.w3i10mPhVRVHYqBi' @ 0 : 0; will stop at (end)

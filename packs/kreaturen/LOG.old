@@ -1,0 +1,5 @@
+2025/04/12-17:15:14.147 aec Delete type=3 #1
+2025/04/12-17:15:55.052 234c Level-0 table #5: started
+2025/04/12-17:15:55.092 234c Level-0 table #5: 1200361 bytes OK
+2025/04/12-17:15:55.094 234c Delete type=0 #3
+2025/04/12-17:15:55.095 234c Manual compaction at level-0 from '!actors!0Cch8pl8HgthaJx1' @ 72057594037927935 : 1 .. '!actors.items!zxY9j9fKcy9ktwrW.w3i10mPhVRVHYqBi' @ 0 : 0; will stop at (end)
