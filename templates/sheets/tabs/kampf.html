@@ -29,7 +29,6 @@
             <label class="icon-small" style="float: right"></label>
         </div>
         {{#each actor.nahkampfwaffen as |nwaffe key|}}
-        {{log 'waffe' nwaffe}}
         <div class="flexrow">
             <!-- <a class="rollable icon-small" data-rolltype="profan_fertigkeit" data-fertigkeit="{{key}}"><i class="fas fa-dice-d20"></i></a> -->
             <a class="rollable icon-small" data-rolltype="nahkampf_diag" data-itemid="{{nwaffe.id}}"
@@ -75,7 +74,6 @@
                 data-itemid="{{nwaffe.id}}"
                 >{{nwaffe.system.schaden}}</label
             >
-            <!-- <label>{{nwaffe.data.dice_anzahl}}d{{nwaffe.data.dice_typ}}+{{nwaffe.data.plus}}</label> -->
             <a
                 class="item-edit icon-small"
                 data-itemclass="nahkampfwaffe"
@@ -200,7 +198,6 @@
                 data-item="{{fwaffe.name}}"
                 >{{fwaffe.system.schaden}}</label
             >
-            <!-- <label>{{nwaffe.data.dice_anzahl}}d{{nwaffe.data.dice_typ}}+{{nwaffe.data.plus}}</label> -->
             <a
                 class="item-edit icon-small"
                 data-itemclass="fernkampfwaffe"
@@ -287,7 +284,6 @@
         </div>
         {{#each actor.ruestungen as |ruestung key|}}
         <div class="flexrow">
-            <!-- <label>{{ruestung.data.aktiv}}</label> -->
             <a
                 class="icon-small item-toggle {{ruestung.system.aktiv}}"
                 data-itemid="{{ruestung.id}}"
