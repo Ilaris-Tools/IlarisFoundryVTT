@@ -12,12 +12,12 @@
         </div>
         <div>
             <label><b>Beschreibung: </b></label>
-            <textarea rows="8" name="data.text">{{item.system.text}}</textarea>
+            <textarea rows="8" name="system.text">{{item.system.text}}</textarea>
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis: 100px"><b>Härte: </b></label>
                 <div class="flexrow">
                     <input
-                        name="data.haerte"
+                        name="system.haerte"
                         value="{{item.system.haerte}}"
                         type="text"
                         data-dtype="String"
@@ -26,7 +26,7 @@
                         ><b>Beschädigung: </b></label
                     >
                     <input
-                        name="data.beschaedigung"
+                        name="system.beschaedigung"
                         value="{{item.system.beschaedigung}}"
                         type="text"
                         data-dtype="String"
@@ -38,7 +38,7 @@
                     ><b>{{get_label "gewicht"}}: </b></label
                 >
                 <input
-                    name="data.gewicht"
+                    name="system.gewicht"
                     value="{{item.system.gewicht}}"
                     type="text"
                     data-dtype="Number"
@@ -47,7 +47,7 @@
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis: 100px"><b>Preis: </b></label>
                 <input
-                    name="data.preis"
+                    name="system.preis"
                     value="{{item.system.preis}}"
                     type="text"
                     data-dtype="Number"
@@ -56,7 +56,7 @@
             </div>
             {{#if hasOwner}}
             <label class="flex-fest-var" style="flex-basis: 100px"><b>Aufbewahrungsort: </b></label>
-            <select name="data.aufbewahrungs_ort">
+            <select name="system.aufbewahrungs_ort">
                 {{#select item.system.aufbewahrungs_ort}} {{#each speicherplatz_list as |ort|}}
                 <option value="{{ort}}">{{ort}}</option>
                 {{/each}} {{/select}}

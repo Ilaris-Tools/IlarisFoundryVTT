@@ -29,40 +29,40 @@
                 <h6>Kopf</h6>
             </div>
             <div class="flexrow">
-                <input name="data.rs" value="{{item.system.rs}}" type="text" data-dtype="Number" />
-                <input name="data.be" value="{{item.system.be}}" type="text" data-dtype="Number" />
+                <input name="system.rs" value="{{item.system.rs}}" type="text" data-dtype="Number" />
+                <input name="system.be" value="{{item.system.be}}" type="text" data-dtype="Number" />
                 <input
-                    name="data.rs_beine"
+                    name="system.rs_beine"
                     value="{{item.system.rs_beine}}"
                     type="text"
                     data-dtype="Number"
                 />
                 <input
-                    name="data.rs_larm"
+                    name="system.rs_larm"
                     value="{{item.system.rs_larm}}"
                     type="text"
                     data-dtype="Number"
                 />
                 <input
-                    name="data.rs_rarm"
+                    name="system.rs_rarm"
                     value="{{item.system.rs_rarm}}"
                     type="text"
                     data-dtype="Number"
                 />
                 <input
-                    name="data.rs_bauch"
+                    name="system.rs_bauch"
                     value="{{item.system.rs_bauch}}"
                     type="text"
                     data-dtype="Number"
                 />
                 <input
-                    name="data.rs_brust"
+                    name="system.rs_brust"
                     value="{{item.system.rs_brust}}"
                     type="text"
                     data-dtype="Number"
                 />
                 <input
-                    name="data.rs_kopf"
+                    name="system.rs_kopf"
                     value="{{item.system.rs_kopf}}"
                     type="text"
                     data-dtype="Number"
@@ -72,28 +72,28 @@
             <div class="flexrow">
                 <label>Härte</label>
                 <input
-                    name="data.haerte"
+                    name="system.haerte"
                     value="{{item.system.haerte}}"
                     type="text"
                     data-dtype="Number"
                 />
                 <label>Beschädigung</label>
                 <input
-                    name="data.beschaedigung"
+                    name="system.beschaedigung"
                     value="{{item.system.beschaedigung}}"
                     type="text"
                     data-dtype="Number"
                 />
             </div>
             <label>Beschreibung</label>
-            <textarea rows="6" name="data.text">{{item.system.text}}</textarea>
+            <textarea rows="6" name="system.text">{{item.system.text}}</textarea>
             <!-- {{editor content=data.text target="data.text" button=true owner=owner editable=editable}} -->
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis: 100px"
                     ><b>{{get_label "gewicht"}}: </b></label
                 >
                 <input
-                    name="data.gewicht"
+                    name="system.gewicht"
                     value="{{item.system.gewicht}}"
                     type="text"
                     data-dtype="Number"
@@ -102,7 +102,7 @@
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis: 100px"><b>Preis: </b></label>
                 <input
-                    name="data.preis"
+                    name="system.preis"
                     value="{{item.system.preis}}"
                     type="text"
                     data-dtype="Number"
@@ -111,7 +111,7 @@
             </div>
             {{#if hasOwner}}
             <label class="flex-fest-var" style="flex-basis: 100px"><b>Aufbewahrungsort: </b></label>
-            <select name="data.aufbewahrungs_ort">
+            <select name="system.aufbewahrungs_ort">
                 {{#select item.system.aufbewahrungs_ort}} {{#each speicherplatz_list as |ort|}}
                 <option value="{{ort}}">{{ort}}</option>
                 {{/each}} {{/select}}

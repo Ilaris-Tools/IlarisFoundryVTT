@@ -13,7 +13,7 @@
 
         {{#if hasOwner}}
         <label>Fertigkeit:</label>
-        <select name="data.fertigkeit_ausgewaehlt">
+        <select name="system.fertigkeit_ausgewaehlt">
             {{#select item.system.fertigkeit_ausgewaehlt}}
             <option value="auto">auto</option>
             {{#each fertigkeit_list as |fert key|}}
@@ -24,13 +24,13 @@
         <div>
             <div class="flexrow">
                 <label>Mächtig: </label>
-                <textarea rows="10" name="data.maechtig">{{item.system.maechtig}}</textarea>
+                <textarea rows="10" name="system.maechtig">{{item.system.maechtig}}</textarea>
                 <!-- <input name="data.maechtig" value="{{item.data.maechtig}}" type="text" data-dtype="String"> -->
             </div>
             <div class="flexrow">
                 <label>Schwierigkeit: </label>
                 <input
-                    name="data.schwierigkeit"
+                    name="system.schwierigkeit"
                     value="{{item.system.schwierigkeit}}"
                     type="text"
                     data-dtype="String"
@@ -38,13 +38,13 @@
             </div>
             <div class="flexrow">
                 <label>Modifikationen: </label>
-                <textarea name="data.modifikationen">{{item.system.modifikationen}}</textarea>
+                <textarea name="system.modifikationen">{{item.system.modifikationen}}</textarea>
                 <!-- <input name="data.modifikationen" value="{{item.data.modifikationen}}" type="textarea" style="resize: vertical;" rows="2" data-dtype="String"> -->
             </div>
             <div class="flexrow">
                 <label>Vorbereitung: </label>
                 <input
-                    name="data.vorbereitung"
+                    name="system.vorbereitung"
                     value="{{item.system.vorbereitung}}"
                     type="text"
                     data-dtype="String"
@@ -53,7 +53,7 @@
             <div class="flexrow">
                 <label>Ziel: </label>
                 <input
-                    name="data.ziel"
+                    name="system.ziel"
                     value="{{item.system.ziel}}"
                     type="text"
                     data-dtype="String"
@@ -62,7 +62,7 @@
             <div class="flexrow">
                 <label>Reichweite: </label>
                 <input
-                    name="data.reichweite"
+                    name="system.reichweite"
                     value="{{item.system.reichweite}}"
                     type="text"
                     data-dtype="String"
@@ -71,7 +71,7 @@
             <div class="flexrow">
                 <label>Wirkungsdauer: </label>
                 <input
-                    name="data.wirkungsdauer"
+                    name="system.wirkungsdauer"
                     value="{{item.system.wirkungsdauer}}"
                     type="text"
                     data-dtype="String"
@@ -80,7 +80,7 @@
             <div class="flexrow">
                 <label>Kosten: </label>
                 <input
-                    name="data.kosten"
+                    name="system.kosten"
                     value="{{item.system.kosten}}"
                     type="text"
                     data-dtype="String"
@@ -89,7 +89,7 @@
             <div class="flexrow">
                 <label>Fertigkeiten: </label>
                 <input
-                    name="data.fertigkeiten"
+                    name="system.fertigkeiten"
                     value="{{item.system.fertigkeiten}}"
                     type="text"
                     data-dtype="String"
@@ -98,7 +98,7 @@
             <div class="flexrow">
                 <label>Erlernen: </label>
                 <input
-                    name="data.erlernen"
+                    name="system.erlernen"
                     value="{{item.system.erlernen}}"
                     type="text"
                     data-dtype="String"
@@ -112,7 +112,7 @@
                 </div>
             </div> -->
             <label>Beschreibung: </label>
-            <textarea name="data.text">{{item.system.text}}</textarea>
+            <textarea name="system.text">{{item.system.text}}</textarea>
             <!-- {{editor content=data.text target="data.text" button=true owner=owner editable=editable}} -->
         </div>
     </div>

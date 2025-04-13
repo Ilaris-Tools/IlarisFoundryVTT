@@ -3,7 +3,7 @@ import { IlarisActor } from "./actor.js";
 export class KreaturActor extends IlarisActor {
 
     async _preCreate(data, options, user) {
-        mergeObject(data, {
+        foundry.utils.mergeObject(data, {
             'token.bar1': { attribute: 'gesundheit.hp' },
             'token.displayName': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
             'token.displayBars': CONST.TOKEN_DISPLAY_MODES.ALWAYS,

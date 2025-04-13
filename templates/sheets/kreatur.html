@@ -18,8 +18,8 @@
                 <div class="flexrow">
                     <label class="flex1">Wunden/Erschöpft: </label>
                     <div class="flex1">
-                        <input class="hp-update" name="data.gesundheit.wunden" type="text" value="{{actor.system.gesundheit.wunden}}" data-dtype="Number"/>/
-                        <input class="hp-update" name="data.gesundheit.erschoepfung" type="text" value="{{actor.system.gesundheit.erschoepfung}}" data-dtype="Number"/>
+                        <input class="hp-update" name="system.gesundheit.wunden" type="text" value="{{actor.system.gesundheit.wunden}}" data-dtype="Number"/>/
+                        <input class="hp-update" name="system.gesundheit.erschoepfung" type="text" value="{{actor.system.gesundheit.erschoepfung}}" data-dtype="Number"/>
                     </div>
                 </div>                
                 <div class="flexrow">
@@ -27,22 +27,22 @@
                         <div class="flexrow">
                             <label class="flex1">AsP*/AsP: </label>
                             <div class="flex1">
-                                <input class="hp-update" name="data.energien.asp.value" type="text" value="{{actor.system.energien.asp.value}}" data-dtype="Number"/>/
-                                <input class="hp-update" name="data.energien.asp.max" type="text" value="{{actor.system.energien.asp.max}}" data-dtype="Number"/>
+                                <input class="hp-update" name="system.energien.asp.value" type="text" value="{{actor.system.energien.asp.value}}" data-dtype="Number"/>/
+                                <input class="hp-update" name="system.energien.asp.max" type="text" value="{{actor.system.energien.asp.max}}" data-dtype="Number"/>
                             </div>
                         </div>
                         <div class="flexrow">
                             <label class="flex1">KaP*/KaP: </label>
                             <div class="flex1">
-                                <input class="hp-update" name="data.energien.kap.value" type="text" value="{{actor.system.energien.kap.value}}" data-dtype="Number"/>/
-                                <input class="hp-update" name="data.energien.kap.max" type="text" value="{{actor.system.energien.kap.max}}" data-dtype="Number"/>
+                                <input class="hp-update" name="system.energien.kap.value" type="text" value="{{actor.system.energien.kap.value}}" data-dtype="Number"/>/
+                                <input class="hp-update" name="system.energien.kap.max" type="text" value="{{actor.system.energien.kap.max}}" data-dtype="Number"/>
                             </div>
                         </div>
                         <div class="flexrow">
                             <label class="flex1">GuP*/GuP: </label>
                             <div class="flex1">
-                                <input class="flex0 hp-update" name="data.energien.gup.value" type="text" value="{{actor.system.energien.gup.value}}" data-dtype="Number"/>/
-                                <input class="flex0 hp-update" name="data.energien.gup.max" type="text" value="{{actor.system.energien.gup.max}}" data-dtype="Number"/>
+                                <input class="flex0 hp-update" name="system.energien.gup.value" type="text" value="{{actor.system.energien.gup.value}}" data-dtype="Number"/>/
+                                <input class="flex0 hp-update" name="system.energien.gup.max" type="text" value="{{actor.system.energien.gup.max}}" data-dtype="Number"/>
                             </div>
                         </div>
                     </div>
@@ -54,7 +54,7 @@
                     <label style="{{#if actor.system.gesundheit.wundenignorieren }}text-decoration:line-through;{{/if}}">{{actor.system.gesundheit.display}}</label>
                     <a
                         class="icon-small toggle-bool {{actor.system.gesundheit.wundenignorieren}}"
-                        data-togglevariable="data.gesundheit.wundenignorieren"
+                        data-togglevariable="system.gesundheit.wundenignorieren"
                         title="tooltip_text"
                     >
                     {{#if actor.system.gesundheit.wundenignorieren}}
@@ -66,7 +66,7 @@
                 </div>
                 <label>{{actor.system.furcht.display}}</label>
                 <div class="flexrow">
-                    <input class="flex0" name="data.modifikatoren.manuellermod" value="{{actor.system.modifikatoren.manuellermod}}" type="text" data-dtype="Number">
+                    <input class="flex0" name="system.modifikatoren.manuellermod" value="{{actor.system.modifikatoren.manuellermod}}" type="text" data-dtype="Number">
                     <label>auf alle Proben (Manuell) </label>
                 </div>
                 <hr style="width: 100%; padding-top: 1px; padding-bottom: 1px; margin-top: 1px; margin-bottom: 1px; border-top: 1px solid darkred; border-bottom: 0px;" />
@@ -106,7 +106,7 @@
             {{/if}}
             >
                     <b >{{key}}</b>
-                    <input name="data.attribute.{{key}}.pw" type="text" value="{{attribut.pw}}" data-dtype="Number" style="width: 30px;"></input>
+                    <input name="system.attribute.{{key}}.pw" type="text" value="{{attribut.pw}}" data-dtype="Number" style="width: 30px;"></input>
                     <a class="rollable icon-small" data-rolltype="attribut_diag" data-attribut="{{key}}">
                         <i class="fas fa-dice-d20"></i>
                     </a>
@@ -133,7 +133,7 @@
             >
                     <b>{{get_stat_short key}}</b>
                 <!--<div>-->
-                    <input name="data.kampfwerte.{{key}}" type="text" value="{{obj}}" data-dtype="Number" style="width: 30px;"></input>
+                    <input name="system.kampfwerte.{{key}}" type="text" value="{{obj}}" data-dtype="Number" style="width: 30px;"></input>
                     {{#if (ifEq key 'mr')}}
                     <a
                         class="rollable icon-small"
@@ -366,18 +366,8 @@
     </div>
     {{/if}}
         <div class="form-group select">
-            <select name="data.additemtype" style="max-width: 150px;">
-                {{#select actor.system.additemtype}}
-                <option selected="selected" value="angriff">Angriff</option>
-                <option value="eigenschaft">Eigenschaft</option>
-                <option value="vorteil">Vorteil</option>
-                <option value="freiestalent">Fertigkeit</option>
-                <option value="uebernatfreiestalent">Übernat. Fertigkeit</option>
-                <option value="zauber">Zauber</option>
-                <option value="liturgie">Liturgie</option>
-                <option value="anrufung">Anrufung</option>
-                <option value="info">Info</option>
-                {{/select}}
+            <select name="system.additemtype" style="max-width: 150px;">
+                {{selectOptions actor.kreaturItemOptions selected=actor.system.additemtype}}
             </select> 
             <button 
                 style="max-width: 150px;" 

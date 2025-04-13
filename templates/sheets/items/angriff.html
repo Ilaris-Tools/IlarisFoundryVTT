@@ -12,22 +12,22 @@
         </div>
         <div class="flexrow">
             <label>Härte: 
-                <input type="number" name="data.haerte" value="{{item.system.haerte}}" />
+                <input type="number" name="system.haerte" value="{{item.system.haerte}}" />
             </label>
             <label>Ladezeit: 
-                <input type="number" name="data.lz" value="{{item.system.lz}}" />
+                <input type="number" name="system.lz" value="{{item.system.lz}}" />
             </label>
             <label>Reichweite: 
-                <input type="number" name="data.rw" value="{{item.system.rw}}" />
+                <input type="number" name="system.rw" value="{{item.system.rw}}" />
             </label>
             <label>Attacke: 
-                <input type="number" name="data.at" value="{{item.system.at}}" />
+                <input type="number" name="system.at" value="{{item.system.at}}" />
             </label>
             <label>Verteidigung: 
-                <input type="number" name="data.vt" value="{{item.system.vt}}" />
+                <input type="number" name="system.vt" value="{{item.system.vt}}" />
             </label>
             <label>Trefferpunkte: 
-                <input type="text" name="data.tp" value="{{item.system.tp}}" />
+                <input type="text" name="system.tp" value="{{item.system.tp}}" />
             </label>
         </div>
         <div>
@@ -35,10 +35,10 @@
             {{#each item.system.eigenschaften as |eig key|}}
             <div class="flexrow">
             <div class="flex1">
-                <input name="data.eigenschaften.{{key}}.name" type="text" value="{{eig.name}}" />
+                <input name="system.eigenschaften.{{key}}.name" type="text" value="{{eig.name}}" />
             </div>
             <div class="flex2">
-                <input name="data.eigenschaften.{{key}}.text" type="text" value="{{eig.text}}" />
+                <input name="system.eigenschaften.{{key}}.text" type="text" value="{{eig.text}}" />
             </div>
             <div class="flex0">
                 <a class="del-eigenschaft" data-eigenschaftid="{{key}}"><i class="fas fa-trash"></i></a>

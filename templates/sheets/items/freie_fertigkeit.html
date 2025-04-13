@@ -16,7 +16,7 @@
              </div> -->
         <div class="flexrow">
             <label><b>Stufe:</b></label>
-            <select name="data.stufe">
+            <select name="system.stufe">
                 {{#select item.system.stufe}}
                 <option value="1">1</option>
                 <option value="2">2</option>
@@ -26,7 +26,7 @@
         </div>
         <div class="flexrow">
             <label><b>Gruppe:</b></label>
-            <select name="data.gruppe">
+            <select name="system.gruppe">
                 {{#select item.system.gruppe}}
                 <option value="0">Sprachen</option>
                 <option value="1">Schriften</option>
@@ -38,7 +38,7 @@
         </div>
         <div>
             <label><b>Beschreibung:</b></label>
-            <textarea name="data.text">{{item.system.text}}</textarea>
+            <textarea name="system.text">{{item.system.text}}</textarea>
         </div>
     </div>
 </form>

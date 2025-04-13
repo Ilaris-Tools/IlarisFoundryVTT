@@ -11,7 +11,7 @@
             </header>
         </div>
         <div class="flexrow">
-            <select name="data.gruppe">
+            <select name="system.gruppe">
                 {{#select item.system.gruppe}} {{>
                 systems/Ilaris/templates/helper/select_manoever.html}} {{/select}}
             </select>
@@ -19,7 +19,7 @@
         <div class="flexrow">
             <label><b>Voraussetzung:</b></label>
             <input
-                name="data.voraussetzung"
+                name="system.voraussetzung"
                 value="{{item.system.voraussetzung}}"
                 type="text"
                 data-dtype="String"
@@ -27,12 +27,12 @@
         </div>
         <div class="flexrow">
             <label><b>Probe:</b></label>
-            <input name="data.probe" value="{{item.system.probe}}" type="text" data-dtype="String" />
+            <input name="system.probe" value="{{item.system.probe}}" type="text" data-dtype="String" />
         </div>
         <div class="flexrow">
             <label><b>Gegenprobe:</b></label>
             <input
-                name="data.gegenprobe"
+                name="system.gegenprobe"
                 value="{{item.system.gegenprobe}}"
                 type="text"
                 data-dtype="String"
@@ -40,7 +40,7 @@
         </div>
         <div>
             <label><b>Beschreibung:</b></label>
-            <textarea rows="8" name="data.text">{{item.system.text}}</textarea>
+            <textarea rows="8" name="system.text">{{item.system.text}}</textarea>
         </div>
     </div>
 </form>

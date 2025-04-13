@@ -18,7 +18,7 @@
                     <label>Erschöpfung: </label>
                     <input
                         class="hp-update"
-                        name="data.gesundheit.erschoepfung"
+                        name="system.gesundheit.erschoepfung"
                         value="{{actor.system.gesundheit.erschoepfung}}"
                         type="text"
                         data-dtype="Number"
@@ -28,7 +28,7 @@
                     <label>Wunden: </label>
                     <input
                         class="hp-update"
-                        name="data.gesundheit.wunden"
+                        name="system.gesundheit.wunden"
                         value="{{actor.system.gesundheit.wunden}}"
                         type="text"
                         data-dtype="Number"
@@ -52,15 +52,15 @@
                 <div class="flexrow">
                     <label>Schip: </label>
                     <label>{{actor.system.schips.schips}}</label>
-                    <!-- <input name="data.schips.schips" value="{{actor.system.schips.schips}}" type="text" data-dtype="Number"> -->
                     <label>Schip*: </label>
                     <input
-                        name="data.schips.schips_stern"
+                        name="system.schips.schips_stern"
                         value="{{actor.system.schips.schips_stern}}"
                         type="text"
                         data-dtype="Number"
                     />
                 </div>
+                {{log 'abgel' actor.abgeleitete}}
                 <div class="flexrow">
                     <label>WS: </label>
                     <label>{{actor.system.abgeleitete.ws}}</label>
@@ -91,9 +91,6 @@
             </div>
         </div>
         <div style="float: left"></div>
-<!--         <div class="flexrow">
-            <label>Globaler Mod: </label>
-            <label>{{actor.system.abgeleitete.globalermod}}</label>
         </div> -->
         <div class="flexrow">
             <label style="{{#if actor.system.gesundheit.wundenignorieren }}text-decoration:line-through;{{/if}}">{{actor.system.gesundheit.display}}</label>
@@ -102,24 +99,17 @@
             <label>{{actor.system.furcht.display}}</label>
         </div>
         <div class="flexrow">
-            <input class="flex0" name="data.modifikatoren.manuellermod" value="{{actor.system.modifikatoren.manuellermod}}" type="text" data-dtype="Number">
+            <input class="flex0" name="system.modifikatoren.manuellermod" value="{{actor.system.modifikatoren.manuellermod}}" type="text" data-dtype="Number">
             <label>auf alle Proben (Manuell) </label>
         </div>
         <hr/>
         <div class="flexrow">
             <b><label style="color: {{modColor actor.system.abgeleitete.globalermod}}">{{actor.system.abgeleitete.globalermoddisplay}}</label></b>
         </div>
-        <!-- <div class="flexrow">
-            <label>Nahkampf Mod: </label>
-            <label>{{actor.system.modifikatoren.nahkampfmod}}</label>
-        </div> -->
-<!--         <div class="flexrow">
-            <label>Furcht: </label>
-            <label>{{actor.system.furcht.display}}</label>
-        </div> -->
     </div>
     <div style="clear: both"></div>
     <hr />
+    {{log 'stuff aaaaaaaaaaaaaaaaaaa'}}
     <div class="sheet-tabs tabs" data-group="primary">
         <b class="item" data-tab="attribute">Attribute</b>
         <b class="item" data-tab="fertigkeiten">Fertigkeiten</b>
@@ -130,27 +120,35 @@
         <b class="item" data-tab="effekte">Effekte</b>
     </div>
     <hr />
+    {{log 'stuff bbbbbbbbbbbbbbbbbbbbb'}}
     <div class="sheet-body">
         <div class="tab" data-group="primary" data-tab="notes">
             {{> systems/Ilaris/templates/sheets/tabs/notes.html}}
+            {{log 'stuff ccccccccccccccccccc'}}
         </div>
         <div class="tab" data-group="primary" data-tab="attribute">
             {{> systems/Ilaris/templates/sheets/tabs/attribute.html}}
+            {{log 'stuff ccccccccccccccccccc'}}
         </div>
         <div class="tab" data-group="primary" data-tab="fertigkeiten">
             {{> systems/Ilaris/templates/sheets/tabs/fertigkeiten.html}}
+            {{log 'stuff ccccccccccccccccccc'}}
         </div>
         <div class="tab" data-group="primary" data-tab="uebernatuerlich">
             {{> systems/Ilaris/templates/sheets/tabs/uebernatuerlich.html}}
+            {{log 'stuff ccccccccccccccccccc'}}
         </div>
         <div class="tab" data-group="primary" data-tab="kampf">
             {{> systems/Ilaris/templates/sheets/tabs/kampf.html}}
+            {{log 'stuff ccccccccccccccccccc'}}
         </div>
         <div class="tab" data-group="primary" data-tab="effekte">
             {{> systems/Ilaris/templates/sheets/tabs/effekte.html}}
+            {{log 'stuff ccccccccccccccccccc'}}
         </div>
         <div class="tab" data-group="primary" data-tab="inventar">
             {{> systems/Ilaris/templates/sheets/tabs/inventar.html}}
+            {{log 'stuff ccccccccccccccccccc'}}
         </div>
     </div>
 </form>

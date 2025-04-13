@@ -18,7 +18,7 @@ export async function roll_crit_message(
     fumble_val = 1,
 ) {
     let roll = new Roll(formula);
-    await roll.evaluate({ async: true });
+    await roll.evaluate();
     let fumble = false;
     let crit = false;
     if (crit_eval) {

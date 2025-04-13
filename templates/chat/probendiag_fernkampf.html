@@ -68,7 +68,7 @@
 {{#if manoever.fm_gzss.possible}}
 <div class="flexrow">
     <label>{{get_label "fm_gzss"}}</label>
-    <select id="fm_gzss" name="item.data.data.manoever.fm_gzss.selected">
+    <select id="fm_gzss" name="item.system.manoever.fm_gzss.selected">
         {{#select item.system.manoever.fm_gzss.selected}} {{>
         systems/Ilaris/templates/helper/select_trefferzone.html}} {{/select}}
     </select>
@@ -110,7 +110,7 @@
     <input
         id="modifikator"
         type="number"
-        name="item.data.data.manoever.mod.selected"
+        name="item.system.manoever.mod.selected"
         value="{{item.system.manoever.mod.selected}}"
         data-dtype="Number"
     />

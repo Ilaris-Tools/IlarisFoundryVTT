@@ -2,7 +2,7 @@ import { IlarisItemSheet } from './item.js';
 
 export class FertigkeitSheet extends IlarisItemSheet {
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ['ilaris', 'sheet', 'item', 'skill'],
             template: 'systems/Ilaris/templates/sheets/items/fertigkeit.html',
             // width: 720,

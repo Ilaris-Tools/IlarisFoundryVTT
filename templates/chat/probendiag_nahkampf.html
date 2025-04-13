@@ -34,7 +34,7 @@
     <input
         id="rkaz"
         type="number"
-        name="item.data.data.manoever.rkaz.selected"
+        name="item.system.manoever.rkaz.selected"
         value="{{item.system.manoever.rkaz.selected}}"
         data-dtype="Number"
     />
@@ -55,7 +55,7 @@
     <input
         id="km_bind"
         type="number"
-        name="item.data.data.manoever.km_bind.selected"
+        name="item.system.manoever.km_bind.selected"
         value="{{item.system.manoever.km_bind.selected}}"
         data-dtype="Number"
     />
@@ -74,7 +74,7 @@
         <input
             type="checkbox"
             id="km_entw_at"
-            name="item.data.data.manoever.km_entw.selected_at"
+            name="item.system.manoever.km_entw.selected_at"
             {{checked
             item.system.manoever.km_entw.selected_at}}
         />
@@ -82,7 +82,7 @@
         <input
             type="checkbox"
             id="km_entw_vt"
-            name="item.data.data.manoever.km_entw.selected_vt"
+            name="item.system.manoever.km_entw.selected_vt"
             {{checked
             item.system.manoever.km_entw.selected_vt}}
         />
@@ -91,7 +91,7 @@
 {{/if}} {{#if manoever.km_gzsl.possible}}
 <div class="flexrow">
     <label>{{get_label "km_gzsl"}}</label>
-    <select id="km_gzsl" name="item.data.data.manoever.km_gzsl.selected">
+    <select id="km_gzsl" name="item.system.manoever.km_gzsl.selected">
         {{#select item.system.manoever.km_gzsl.selected}} {{>
         systems/Ilaris/templates/helper/select_trefferzone.html}} {{/select}}
     </select>
@@ -107,7 +107,7 @@
     <input
         id="km_wusl"
         type="number"
-        name="item.data.data.manoever.km_wusl.selected"
+        name="item.system.manoever.km_wusl.selected"
         value="{{item.system.manoever.km_wusl.selected}}"
         data-dtype="Number"
     />
@@ -121,7 +121,7 @@
         <input
             id="km_aufl_gs"
             type="number"
-            name="item.data.data.manoever.km_aufl.gs"
+            name="item.system.manoever.km_aufl.gs"
             value="{{item.system.manoever.km_aufl.gs}}"
             data-dtype="Number"
         />
@@ -151,7 +151,7 @@
         <input
             id="km_umkl_mod"
             type="number"
-            name="item.data.data.manoever.km_umkl.mod"
+            name="item.system.manoever.km_umkl.mod"
             value="{{item.system.manoever.km_umkl.mod}}"
             data-dtype="Number"
         />
@@ -206,7 +206,7 @@
         <input
             id="km_stag_gs"
             type="number"
-            name="item.data.data.manoever.km_stag.gs"
+            name="item.system.manoever.km_stag.gs"
             value="{{item.system.manoever.km_stag.gs}}"
             data-dtype="Number"
         />
@@ -226,7 +226,7 @@
         <input
             id="km_uebr_gs"
             type="number"
-            name="item.data.data.manoever.km_uebr.gs"
+            name="item.system.manoever.km_uebr.gs"
             value="{{item.system.manoever.km_uebr.gs}}"
             data-dtype="Number"
         />
@@ -245,7 +245,7 @@
     <input
         id="modifikator"
         type="number"
-        name="item.data.data.manoever.mod.selected"
+        name="item.system.manoever.mod.selected"
         value="{{item.system.manoever.mod.selected}}"
         data-dtype="Number"
     />

@@ -5,7 +5,7 @@
         <hr>
         <div class="flexrow">
             <label><b>Kategorie:</b></label>
-            <select name="data.gruppe">
+            <select name="system.gruppe">
                 {{#select item.system.gruppe}} {{>
                 systems/Ilaris/templates/helper/select_vorteilsgruppe.html}} {{/select}}
             </select>
@@ -13,7 +13,7 @@
         <div class="flexrow">
             <label><b>Voraussetzung:</b></label>
             <input
-                name="data.voraussetzung"
+                name="system.voraussetzung"
                 value="{{item.system.voraussetzung}}"
                 type="text"
                 data-dtype="String"
@@ -21,7 +21,7 @@
         </div>
         <div>
             <label><b>Beschreibung:</b></label>
-            <textarea rows="8" name="data.text">{{item.system.text}}</textarea>
+            <textarea rows="8" name="system.text">{{item.system.text}}</textarea>
         </div>
         <hr>
         <a class="item-delete" data-itemid="{{item._id}}">
