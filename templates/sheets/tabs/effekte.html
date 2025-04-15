@@ -1,4 +1,9 @@
 {{log 'effekte' this}}
 <div>
     <h2>Effekte</h2>
+    {{#each effects as |effect|}}
+        <a class="item-edit" data-itemclass="talent" data-itemid="{{unsortal.effect}}">
+            {{effect.name}}
+        </a>
+    &nbsp; | &nbsp; {{/each}}
 </div>
