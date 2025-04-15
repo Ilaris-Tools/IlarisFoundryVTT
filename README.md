@@ -1,7 +1,10 @@
-# Ilaris für FoundryVTT (**BETA**)
+# Ilaris für FoundryVTT
 
 Ein System für [Ilaris](https://ilarisblog.wordpress.com/) zur Verwendung mit [FoundryVTT](https://foundryvtt.com/).
-> Beta: Ilaris für FoundryVTT befindet sich aktuell in der Entwicklung. Grobe Änderungen am Code stehen aus und können neue Bugs mitbringen. Es sind bisher nicht alle Ilaris-Regeln vollständig umgesetzt. Für erstellte Inhalte (Helden, Kreaturen, eigene Zauber usw..) sollten gelegentlich Backups (Kopie der Spielwelt) erstellt werden insbesondere vor dem Update dieses Systems. Bei Fragen und Problemen warten wir im [Forum](https://dsaforum.de/viewtopic.php?f=180&t=55746) und im [Discord](https://discord.gg/qEKBnjsspX) um zu Helfen.
+
+> Das Projekt wurde von Feorg gestartet und das ursprüngliche Repository (kompatibel bis Foundry v9) befindet sich auf [GitLab](https://gitlab.com/Feorg/ilaris-foundryvtt).
+> Verwaltet wird das Projekt aktuell von KleinerIrrer. Bei Fragen und Problemen eröffne gern ein Issue oder schreib uns im [Forum](https://dsaforum.de/viewtopic.php?f=180&t=55746) oder im [Discord](https://discord.gg/qEKBnjsspX).
+> Wir warten dort um zu Helfen :).
 
 
 ## Disclaimer
