@@ -357,8 +357,8 @@ export class IlarisActor extends Actor {
         let kampfstile = hardcoded.getKampfstile(actor);
         // data.misc.selected_kampfstil = "ohne";
         actor.misc.kampfstile_list = kampfstile;
-        let selected_kampfstil = actor.misc.selected_kampfstil;
-        // console.log(kampfstile);
+        let selected_kampfstil = actor.system.misc.selected_kampfstil;
+        console.log(kampfstile);
         let HAUPTWAFFE =
             actor.nahkampfwaffen.find((x) => x.system.hauptwaffe == true) ||
             actor.fernkampfwaffen.find((x) => x.system.hauptwaffe == true);

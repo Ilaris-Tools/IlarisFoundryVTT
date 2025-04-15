@@ -10,8 +10,8 @@
         ><i class="fas fa-plus"></i>Neue Nahkampfwaffe</a
     >
     <div>
-        <select class="selected-kampfstil" name="data.misc.selected_kampfstil">
-            {{#select actor.misc.selected_kampfstil}} {{#each actor.misc.kampfstile_list}}
+        <select class="selected-kampfstil" name="system.misc.selected_kampfstil">
+            {{#select actor.system.misc.selected_kampfstil}} {{#each actor.misc.kampfstile_list}}
             <option value="{{this}}">{{get_label this}}</option>
             {{/each}} {{/select}}
         </select>
