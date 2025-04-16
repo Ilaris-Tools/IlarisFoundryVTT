@@ -25,9 +25,15 @@ Wir suchen auch Verstärkung im Entwicklerteam. JS-Programmierer und Webdesigner
 
 In Foundry unter "Game Systems" -> "Install System" -> "Manifest URL": 
 ```
-https://gitlab.com/Feorg/ilaris-foundryvtt/raw/master/system.json
+Manifest Urls (stable):
+Foundry 09: https://gitlab.com/Feorg/ilaris-foundry ... ystem.json
+
+Manifest Urls (development branches):
+Foundry 10: https://gitlab.com/Feorg/ilaris-foundry ... ystem.json
+Foundry 11: https://gitlab.com/Feorg/ilaris-foundry ... ystem.json
+Foundry 12: https://raw.githubusercontent.com/Ilari ... ystem.json
 ```
-einfügen und installieren.
+Einfügen und installieren.
 
 <img src="/utils/screen_install.png"  width="250">
 
