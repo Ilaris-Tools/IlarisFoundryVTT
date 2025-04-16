@@ -1,7 +1,7 @@
 export function get_statuseffect_by_id(actor, statusId) {
-    let iterator = actor.data.effects.values();
+    let iterator = actor.effects.values();
     for (const effect of iterator) {
-        if (effect.data.flags.core.statusId == statusId) {
+        if (effect.flags.core.statusId == statusId) {
             return true;
         }
     }
@@ -18,7 +18,7 @@ export async function roll_crit_message(
     fumble_val = 1,
 ) {
     let roll = new Roll(formula);
-    await roll.evaluate({ async: true });
+    await roll.evaluate();
     let fumble = false;
     let crit = false;
     if (crit_eval) {
@@ -70,14 +70,14 @@ export function calculate_diceschips(html, text, actor) {
         discard_l = 1;
         discard_h = 1;
     }
-    let schips_val = actor.data.data.schips.schips_stern;
+    let schips_val = actor.system.schips.schips_stern;
     if (schips_val > 0 && schips == 1) {
         text = text.concat(`Schips ohne Eigenheit\n`);
         dice_number += 1;
         discard_l += 1;
-        let new_schips = actor.data.data.schips.schips_stern - 1;
+        let new_schips = actor.system.schips.schips_stern - 1;
         actor.update({
-            data: {
+            system: {
                 schips: {
                     schips_stern: new_schips,
                 },
@@ -87,9 +87,9 @@ export function calculate_diceschips(html, text, actor) {
         text = text.concat(`Schips mit Eigenschaft\n`);
         dice_number += 2;
         discard_l += 2;
-        let new_schips = actor.data.data.schips.schips_stern - 1;
+        let new_schips = actor.system.schips.schips_stern - 1;
         actor.update({
-            data: {
+            system: {
                 schips: {
                     schips_stern: new_schips,
                 },

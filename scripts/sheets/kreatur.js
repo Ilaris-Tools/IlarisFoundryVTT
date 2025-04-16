@@ -2,7 +2,7 @@ import { IlarisActorSheet } from './actor.js';
 
 export class KreaturSheet extends IlarisActorSheet {
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             // classes: ["ilaris", "sheet"],
             classes: ['ilaris'],
             template: 'systems/Ilaris/templates/sheets/kreatur.html',
@@ -19,7 +19,6 @@ export class KreaturSheet extends IlarisActorSheet {
 
     async _onClickable(event) {
         super._onClickable(event);
-        let data = this.actor.data.data;
         let clicktype = $(event.currentTarget).data('clicktype');
         if (clicktype == "addvorteilinfo"){
             game.packs.get("Ilaris.vorteile").render(true)
@@ -71,8 +70,8 @@ export class KreaturSheet extends IlarisActorSheet {
                 itemData = {
                     name: item.name,
                     type: 'freiestalent',
-                    data: {
-                        ...item.data,
+                    system: {
+                        ...item.system,
                         profan: true
                     }
                 } 
@@ -83,8 +82,8 @@ export class KreaturSheet extends IlarisActorSheet {
                 itemData = {
                     name: item.name,
                     type: 'freiestalent',
-                    data: {
-                        ...item.data,
+                    system: {
+                        ...item.system,
                         profan: false
                     }
                 }
@@ -95,7 +94,7 @@ export class KreaturSheet extends IlarisActorSheet {
                 itemData = {
                     name: item.name,
                     type: item.type,
-                    data: item.data,
+                    system: item.system,
                 }
                 super._onDropItemCreate(item);
         }

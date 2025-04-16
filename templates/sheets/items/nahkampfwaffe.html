@@ -1,11 +1,12 @@
+{{log 'nahkampfwaffe' this}}
 <form class="{{cssClass}}">
     <div>
         <div>
             <header class="sheet-header">
-                <img class="profile-img" src="{{data.img}}" data-edit="img" title="{{data.name}}" />
+                <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
                 <div class="header-fields">
                     <h1 class="charname">
-                        <input name="name" type="text" value="{{data.name}}" />
+                        <input name="name" type="text" value="{{item.name}}" />
                     </h1>
                 </div>
             </header>
@@ -15,15 +16,15 @@
                 <label class="flex-fest-var" style="flex-basis: 100px"><b>Schaden: </b></label>
                 <div class="flexrow">
                     <input
-                        name="data.dice_anzahl"
-                        value="{{data.data.dice_anzahl}}"
+                        name="system.dice_anzahl"
+                        value="{{item.system.dice_anzahl}}"
                         type="text"
                         data-dtype="Number"
                     />
                     <label class="flex-fest-var" style="flex-basis: 40px">d6+</label>
                     <input
-                        name="data.dice_plus"
-                        value="{{data.data.dice_plus}}"
+                        name="system.dice_plus"
+                        value="{{item.system.dice_plus}}"
                         type="text"
                         data-dtype="Number"
                     />
@@ -33,15 +34,15 @@
                 <label class="flex-fest-var" style="flex-basis: 100px"><b>Fertigkeit: </b></label>
                 <div class="flexrow">
                     <input
-                        name="data.fertigkeit"
-                        value="{{data.data.fertigkeit}}"
+                        name="system.fertigkeit"
+                        value="{{item.system.fertigkeit}}"
                         type="text"
                         data-dtype="String"
                     />
                     <label class="flex-fest-var" style="flex-basis: 40px"><b>Talent: </b></label>
                     <input
-                        name="data.talent"
-                        value="{{data.data.talent}}"
+                        name="system.talent"
+                        value="{{item.system.talent}}"
                         type="text"
                         data-dtype="String"
                     />
@@ -51,22 +52,22 @@
                 <label class="flex-fest-var" style="flex-basis: 100px"><b>WM: </b></label>
                 <div class="flexrow">
                     <input
-                        name="data.wm_at"
-                        value="{{data.data.wm_at}}"
+                        name="system.wm_at"
+                        value="{{item.system.wm_at}}"
                         type="text"
                         data-dtype="Number"
                     />
                     <label class="flex-fest-var" style="flex-basis: 1px"><b>/</b></label>
                     <input
-                        name="data.wm_vt"
-                        value="{{data.data.wm_vt}}"
+                        name="system.wm_vt"
+                        value="{{item.system.wm_vt}}"
                         type="text"
                         data-dtype="Number"
                     />
                     <label class="flex-fest-var" style="flex-basis: 30px"><b>RW: </b></label>
                     <input
-                        name="data.rw"
-                        value="{{data.data.rw}}"
+                        name="system.rw"
+                        value="{{item.system.rw}}"
                         type="text"
                         data-dtype="Number"
                     />
@@ -76,8 +77,8 @@
                 <label class="flex-fest-var" style="flex-basis: 100px"><b>Härte: </b></label>
                 <div class="flexrow">
                     <input
-                        name="data.haerte"
-                        value="{{data.data.haerte}}"
+                        name="system.haerte"
+                        value="{{item.system.haerte}}"
                         type="text"
                         data-dtype="Number"
                     />
@@ -85,8 +86,8 @@
                         ><b>Beschädigung: </b></label
                     >
                     <input
-                        name="data.beschaedigung"
-                        value="{{data.data.beschaedigung}}"
+                        name="system.beschaedigung"
+                        value="{{item.system.beschaedigung}}"
                         type="text"
                         data-dtype="Number"
                     />
@@ -97,12 +98,12 @@
                     ><b>Eigenschaften: </b></label
                 >
                 <span>
-                    {{#each data.data.eigenschaften as |val key|}}
+                    {{#each item.system.eigenschaften as |val key|}}
                     <!-- <label>{{key}}</label>
                          <label>{{val}}</label> -->
                     <label>{{get_label key}}</label>
                     <input
-                        name="data.eigenschaften.{{key}}"
+                        name="system.eigenschaften.{{key}}"
                         data-dtype="Boolean"
                         type="checkbox"
                         {{checked
@@ -118,15 +119,15 @@
                 <label class="flex-fest-var" style="flex-basis: 100px"><b>WM: </b></label>
                 <div class="flexrow">
                     <input
-                        name="data.mod_at"
-                        value="{{data.data.mod_at}}"
+                        name="system.mod_at"
+                        value="{{item.system.mod_at}}"
                         type="text"
                         data-dtype="Number"
                     />
                     <label class="flex-fest-var" style="flex-basis: 1px"><b>/</b></label>
                     <input
-                        name="data.mod_vt"
-                        value="{{data.data.mod_vt}}"
+                        name="system.mod_vt"
+                        value="{{item.system.mod_vt}}"
                         type="text"
                         data-dtype="Number"
                     />
@@ -137,22 +138,22 @@
                     ><b>Schadensbonus: </b></label
                 >
                 <input
-                    name="data.mod_schaden"
-                    value="{{data.data.mod_schaden}}"
+                    name="system.mod_schaden"
+                    value="{{item.system.mod_schaden}}"
                     type="text"
                     data-dtype="String"
                 />
             </div>
             {{/if}}
             <label><b>Beschreibung: </b></label>
-            <textarea rows="6" name="data.text">{{data.data.text}}</textarea>
+            <textarea rows="6" name="system.text">{{item.system.text}}</textarea>
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis: 100px"
                     ><b>{{get_label "gewicht"}}: </b></label
                 >
                 <input
-                    name="data.gewicht"
-                    value="{{data.data.gewicht}}"
+                    name="system.gewicht"
+                    value="{{item.system.gewicht}}"
                     type="text"
                     data-dtype="Number"
                 />
@@ -160,8 +161,8 @@
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis: 100px"><b>Preis: </b></label>
                 <input
-                    name="data.preis"
-                    value="{{data.data.preis}}"
+                    name="system.preis"
+                    value="{{item.system.preis}}"
                     type="text"
                     data-dtype="Number"
                 />
@@ -169,8 +170,8 @@
             </div>
             {{#if hasOwner}}
             <label class="flex-fest-var" style="flex-basis: 100px"><b>Aufbewahrungsort: </b></label>
-            <select name="data.aufbewahrungs_ort">
-                {{#select data.data.aufbewahrungs_ort}} {{#each speicherplatz_list as |ort|}}
+            <select name="system.aufbewahrungs_ort">
+                {{#select item.system.aufbewahrungs_ort}} {{#each speicherplatz_list as |ort|}}
                 <option value="{{ort}}">{{ort}}</option>
                 {{/each}} {{/select}}
             </select>

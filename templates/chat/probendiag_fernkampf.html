@@ -9,58 +9,58 @@
 <hr />
 <div class="flexrow">
     <label>{{get_label "kbak"}}</label>
-    <input type="checkbox" id="kbak" {{checked item.data.data.manoever.kbak.selected}} />
+    <input type="checkbox" id="kbak" {{checked item.system.manoever.kbak.selected}} />
 </div>
 <!-- {{#if manoever.vldf.possible}}
      <div class="flexrow">
      <label>Volle Defensive: </label>
-     <input type="checkbox" id="vldf" {{checked item.data.data.manoever.vldf.selected}}>
+     <input type="checkbox" id="vldf" {{checked item.system.manoever.vldf.selected}}>
      </div>
      {{/if}} -->
 <div class="flexrow">
     <label>{{get_label "gzkl"}}</label>
     <select id="gzkl">
-        {{selectOptions gzkl_choice selected=item.data.data.manoever.gzkl.selected localize=true}}
+        {{selectOptions gzkl_choice selected=item.system.manoever.gzkl.selected localize=true}}
     </select>
 </div>
 <div class="flexrow">
     <label>{{get_label "lcht"}}</label>
     <select id="lcht">
-        {{selectOptions lcht_choice selected=item.data.data.manoever.lcht.selected localize=true}}
+        {{selectOptions lcht_choice selected=item.system.manoever.lcht.selected localize=true}}
     </select>
 </div>
 <div class="flexrow">
     <label>{{get_label "wttr"}}</label>
     <select id="wttr">
-        {{selectOptions wttr_choice selected=item.data.data.manoever.wttr.selected localize=true}}
+        {{selectOptions wttr_choice selected=item.system.manoever.wttr.selected localize=true}}
     </select>
 </div>
 <div class="flexrow">
     <label>{{get_label "bwng"}}</label>
     <select id="bwng">
-        {{selectOptions bwng_choice selected=item.data.data.manoever.bwng.selected localize=true}}
+        {{selectOptions bwng_choice selected=item.system.manoever.bwng.selected localize=true}}
     </select>
 </div>
 <div class="flexrow">
     <label>{{get_label "dckg"}}</label>
     <select id="dckg">
-        {{selectOptions dckg_choice selected=item.data.data.manoever.dckg.selected localize=true}}
+        {{selectOptions dckg_choice selected=item.system.manoever.dckg.selected localize=true}}
     </select>
 </div>
 <div class="flexrow">
     <label>{{get_label "kgtl"}}</label>
     <select id="kgtl">
-        {{selectOptions kgtl_choice selected=item.data.data.manoever.kgtl.selected localize=true}}
+        {{selectOptions kgtl_choice selected=item.system.manoever.kgtl.selected localize=true}}
     </select>
 </div>
 <div class="flexrow">
     <label>{{get_label "brtn"}}</label>
-    <input type="checkbox" id="brtn" {{checked item.data.data.manoever.brtn.selected}} />
+    <input type="checkbox" id="brtn" {{checked item.system.manoever.brtn.selected}} />
 </div>
 <div class="flexrow">
     <label>{{get_label "fm_rwrh"}}</label>
     <select id="fm_rwrh">
-        {{selectOptions manoever.rw selected=item.data.data.manoever.fm_rwrh.selected
+        {{selectOptions manoever.rw selected=item.system.manoever.fm_rwrh.selected
         localize=true}}
     </select>
 </div>
@@ -68,8 +68,8 @@
 {{#if manoever.fm_gzss.possible}}
 <div class="flexrow">
     <label>{{get_label "fm_gzss"}}</label>
-    <select id="fm_gzss" name="item.data.data.manoever.fm_gzss.selected">
-        {{#select item.data.data.manoever.fm_gzss.selected}} {{>
+    <select id="fm_gzss" name="item.system.manoever.fm_gzss.selected">
+        {{#select item.system.manoever.fm_gzss.selected}} {{>
         systems/Ilaris/templates/helper/select_trefferzone.html}} {{/select}}
     </select>
 </div>
@@ -77,30 +77,30 @@
 <div class="flexrow">
     <label>{{get_label "fm_srfs"}}</label>
     <select id="fm_srfs">
-        {{selectOptions fm_srfs_choice selected=item.data.data.manoever.fm_srfs.selected
+        {{selectOptions fm_srfs_choice selected=item.system.manoever.fm_srfs.selected
         localize=true}}
     </select>
 </div>
 <div class="flexrow">
     <label>{{get_label "fm_zlen"}}</label>
-    <input type="checkbox" id="fm_zlen" {{checked item.data.data.manoever.fm_zlen.selected}} />
+    <input type="checkbox" id="fm_zlen" {{checked item.system.manoever.fm_zlen.selected}} />
 </div>
 {{#if manoever.fm_msts.possible}}
 <div class="flexrow">
     <label>{{get_label "fm_msts"}}</label>
-    <input type="checkbox" id="fm_msts" {{checked item.data.data.manoever.fm_msts.selected}} />
+    <input type="checkbox" id="fm_msts" {{checked item.system.manoever.fm_msts.selected}} />
 </div>
 {{/if}} {{#if manoever.fm_rust.possible}}
 <div class="flexrow">
     <label>{{get_label "fm_rust"}}</label>
-    <input type="checkbox" id="fm_rust" {{checked item.data.data.manoever.fm_rust.selected}} />
+    <input type="checkbox" id="fm_rust" {{checked item.system.manoever.fm_rust.selected}} />
 </div>
 {{/if}} {{#if manoever.fm_snls.possible}}
 <div class="flexrow">
     <label>{{get_label "fm_snls"}}</label>
     <label
         >{{radioBoxes "fm_snls" fm_snls_choice
-        checked=item.data.data.manoever.fm_snls.selected}}</label
+        checked=item.system.manoever.fm_snls.selected}}</label
     >
 </div>
 {{/if}}
@@ -110,14 +110,14 @@
     <input
         id="modifikator"
         type="number"
-        name="item.data.data.manoever.mod.selected"
-        value="{{item.data.data.manoever.mod.selected}}"
+        name="item.system.manoever.mod.selected"
+        value="{{item.system.manoever.mod.selected}}"
         data-dtype="Number"
     />
 </div>
 <div class="flexrow">
     <label>Würfelmodus: </label>
     <select id="rollMode">
-        {{selectOptions rollModes selected=item.data.data.manoever.rllm.selected localize=true}}
+        {{selectOptions rollModes selected=item.system.manoever.rllm.selected localize=true}}
     </select>
 </div>

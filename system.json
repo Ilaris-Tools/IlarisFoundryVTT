@@ -1,112 +1,122 @@
 {
-  "name": "Ilaris",
+  "id": "Ilaris",
   "title": "Ilaris (beta)",
   "description": "Schnelle und schlanke Regeln für Aventurien",
   "version": "0.0.20",
-  "minimumCoreVersion": "0.9.280",
-  "compatibleCoreVersion": "0.9.280",
-  "templateVersion": 2,
-  "author": "Harbard/feorg (Georg Gießler), kleinerIrrer (Arne Strehlow)",
+  "compatibility": {
+    "minimum": 12,
+    "verified": 12
+  },
+  "authors": [
+    {
+      "name": "Harbard/feorg (Georg Gießler)"
+    },
+    {
+      "name": "kleinerIrrer (Arne Strehlow)"
+    }
+  ],
   "scripts": [],
   "esmodules": ["scripts/hooks.js"],
   "styles": ["css/temp.css"],
   "packs": [
     {
       "label": "Beispiel Helden",
-      "entity": "Actor",
+      "type": "Actor",
       "name": "beispiel-helden",
-      "path": "./packs/beispiel-helden.db",
+      "path": "./packs/beispiel-helden",
       "system": "Ilaris"
     },
     {
       "label": "Kreaturen",
-      "entity": "Actor",
+      "type": "Actor",
       "name": "kreaturen",
-      "path": "./packs/kreaturen.db",
+      "path": "./packs/kreaturen",
       "system": "Ilaris"
     },
     {
       "label": "Fertigkeiten und Talente",
-      "entity": "Item",
+      "type": "Item",
       "name": "fertigkeiten-und-talente",
-      "path": "./packs/fertigkeiten-und-talente.db",
+      "path": "./packs/fertigkeiten-und-talente",
       "system": "Ilaris"
     },
     {
       "label": "Fertigkeiten und Talente (ADVANCED)",
-      "entity": "Item",
+      "type": "Item",
       "name": "fertigkeiten-und-talente-advanced",
-      "path": "./packs/fertigkeiten-und-talente-advanced.db",
+      "path": "./packs/fertigkeiten-und-talente-advanced",
       "system": "Ilaris"
     },
     {
       "label": "Liturgien und Mirakel",
-      "entity": "Item",
+      "type": "Item",
       "name": "liturgien-und-mirakel",
-      "path": "./packs/liturgien-und-mirakel.db",
+      "path": "./packs/liturgien-und-mirakel",
       "system": "Ilaris"
     },
     {
       "label": "Manöver",
-      "entity": "Item",
+      "type": "Item",
       "name": "manover",
-      "path": "./packs/manover.db",
+      "path": "./packs/manover",
       "system": "Ilaris"
     },
     {
       "label": "Übernatürliche Fertigkeiten",
-      "entity": "Item",
+      "type": "Item",
       "name": "ubernaturliche-fertigkeiten",
-      "path": "./packs/ubernaturliche-fertigkeiten.db",
+      "path": "./packs/ubernaturliche-fertigkeiten",
       "system": "Ilaris"
     },
     {
       "label": "Vorteile",
-      "entity": "Item",
+      "type": "Item",
       "name": "vorteile",
-      "path": "./packs/vorteile.db",
+      "path": "./packs/vorteile",
       "system": "Ilaris"
     },
     {
       "label": "Waffen",
-      "entity": "Item",
+      "type": "Item",
       "name": "waffen",
-      "path": "./packs/waffen.db",
+      "path": "./packs/waffen",
       "system": "Ilaris"
     },
     {
       "label": "Gegenstände",
-      "entity": "Item",
+      "type": "Item",
       "name": "gegenstande",
-      "path": "./packs/gegenstande.db",
+      "path": "./packs/gegenstande",
       "system": "Ilaris"
     },
     {
       "label": "Zaubersprüche und Rituale",
-      "entity": "Item",
+      "type": "Item",
       "name": "zauberspruche-und-rituale",
-      "path": "./packs/zauberspruche-und-rituale.db",
+      "path": "./packs/zauberspruche-und-rituale",
       "system": "Ilaris"
     },
     {
       "label": "Zaubertricks (ADVANCED)",
-      "entity": "Item",
+      "type": "Item",
       "name": "zaubertricks-advanced",
-      "path": "./packs/zaubertricks-advanced.db",
+      "path": "./packs/zaubertricks-advanced",
       "system": "Ilaris"
     },
     {
       "label": "Macro-Tools",
-      "entity": "Macro",
+      "type": "Macro",
       "name": "macro-tools",
-      "path": "packs/macro-tools.db",
+      "path": "packs/macro-tools",
       "system": "Ilaris"
     }
   ],
   "socket": true,
   "languages": [],
-  "gridDistance": 1,
-  "gridUnits": "m",
+  "grid": {
+    "distance": 1,
+    "units":"m"
+  },
   "primaryTokenAttribute": "gesundheit.hp",
   "secondaryTokenAttribute": null,
   "background": "assets/images/background/splash.jpg",

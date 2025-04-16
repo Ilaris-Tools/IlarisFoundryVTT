@@ -1,17 +1,18 @@
+{{log 'info' this}}
 <form class="{{cssClass}}">
     <div>
         <div>
             <header class="sheet-header">
                 <div class="header-fields">
                     <h1 class="charname">
-                        <input name="name" type="text" value="{{data.name}}" />
+                        <input name="name" type="text" value="{{item.name}}" />
                     </h1>
                 </div>
             </header>
         </div>
-        <textarea rows="8" name="data.text">{{data.data.text}}</textarea>
+        <textarea rows="8" name="system.text">{{item.system.text}}</textarea>
         <hr>
-        <a class="item-delete" data-itemid="{{data._id}}">
+        <a class="item-delete" data-itemid="{{item._id}}">
             <button class="clickable" type="button">
                 Löschen <i class="fas fa-trash"></i>
             </button>

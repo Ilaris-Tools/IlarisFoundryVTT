@@ -15,15 +15,15 @@ export class AngriffDialog extends Dialog {
         this.actor = item.actor;
         this.speaker = ChatMessage.getSpeaker({ actor: this.actor });
         this.rollmode = game.settings.get("core", "rollMode");  // public, private.... 
-        this.item.data.data.manoever.rllm.selected = game.settings.get("core", "rollMode");  // TODO: either manoever or dialog property.
+        this.item.system.manoever.rllm.selected = game.settings.get("core", "rollMode");  // TODO: either manoever or dialog property.
         this.fumble_val = 1;
-        if (this.item.data.data.eigenschaften.unberechenbar) {
+        if (this.item.system.eigenschaften.unberechenbar) {
             this.fumble_val = 2;
         }
         this.aufbauendeManoeverAktivieren()
     }
 
-    getData () { // damit wird das template gefüttert
+    async getData () { // damit wird das template gefüttert
         return {
             choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: '0',
@@ -52,9 +52,9 @@ export class AngriffDialog extends Dialog {
 
         let label = `Attacke (${this.item.name})`;
         let formula = 
-            `1d20 ${signed(this.item.data.data.at)} \
+            `1d20 ${signed(this.item.system.at)} \
             ${signed(this.at_abzuege_mod)} \
-            ${signed(this.item.actor.data.data.modifikatoren.nahkampfmod)} \
+            ${signed(this.item.actor.system.modifikatoren.nahkampfmod)} \
             ${signed(this.mod_at)}`;
         await roll_crit_message(
             formula,
@@ -74,7 +74,7 @@ export class AngriffDialog extends Dialog {
         console.log(this.mod_vt);
         this.updateStatusMods();
         let label = `Verteidigung (${this.item.name})`;
-        let formula = `1d20 + ${this.item.data.data.vt} ${signed(this.vt_abzuege_mod)} ${signed(this.item.actor.data.data.modifikatoren.nahkampfmod)} ${signed(this.mod_vt)}`;
+        let formula = `1d20 + ${this.item.system.vt} ${signed(this.vt_abzuege_mod)} ${signed(this.item.actor.system.modifikatoren.nahkampfmod)} ${signed(this.mod_vt)}`;
         // console.log(formula);
         // console.log(this.vt_abzuege_mod);
         await roll_crit_message(formula, label, this.text_vt, this.speaker, this.rollmode, true, this.fumble_val);
@@ -98,17 +98,18 @@ export class AngriffDialog extends Dialog {
 
     eigenschaftenText() {
         console.log(this.item);
-        if (!this.item.data.data.eigenschaften.length > 0) {
+        if (!this.item.system.eigenschaften.length > 0) {
             return;
         }
         this.text_at += "\nEigenschaften: ";
-        this.text_at += this.item.data.data.eigenschaften.map(e => e.name).join(", ");
+        this.text_at += this.item.system.eigenschaften.map(e => e.name).join(", ");
     }
 
     aufbauendeManoeverAktivieren() {
-        let manoever = this.item.data.data.manoever;
-        let eigenschaften = this.item.data.data.eigenschaften.map(e => e.name);
-        let vorteile = this.actor.data.data.vorteile.map(v => v.name);
+        console.log(this.actor)
+        let manoever = this.item.system.manoever;
+        let eigenschaften = Object.values(this.item.system.eigenschaften).map(e => e.name);
+        let vorteile = this.actor.vorteile.map(v => v.name);
 
         manoever.km_rust.possible = eigenschaften.includes("Rüstungsbrechend");
         manoever.km_stsl.possible = eigenschaften.includes("Stumpf");
@@ -135,7 +136,7 @@ export class AngriffDialog extends Dialog {
         dann wäre die ganze funktion hier nicht nötig.
         TODO: alle simplen booleans könnten einfach in eine loop statt einzeln aufgeschrieben werden
         */
-        let manoever = this.item.data.data.manoever;
+        let manoever = this.item.system.manoever;
         
         // manoeverIds = ['kbak', 'vlof', 'vldf', 'pssl']
 
@@ -182,7 +183,7 @@ export class AngriffDialog extends Dialog {
         }
         manoever.mod.selected = html.find('#modifikator')[0]?.value || false;  // Modifikator
         manoever.rllm.selected = html.find('#rollMode')[0]?.value || false;  // RollMode
-        this.rollmode = this.item.data.data.manoever.rllm.selected;
+        this.rollmode = this.item.system.manoever.rllm.selected;
     }
     
     updateManoeverMods() {
@@ -194,10 +195,10 @@ export class AngriffDialog extends Dialog {
         // item.at_mod, item.vt_mod, item.at_text item.vt_text schreibt oder sowas?
         // #31
         */
-        let data = this.item.actor.data.data;
+        let systemData = this.item.actor.system;
         let item = this.item;
-        let manoever = this.item.data.data.manoever;
-        let be = data.abgeleitete.be || 0;
+        let manoever = this.item.system.manoever;
+        let be = systemData.abgeleitete.be || 0;
 
         let mod_at = 0;
         let mod_vt = 0;
@@ -208,7 +209,7 @@ export class AngriffDialog extends Dialog {
         let nodmg = false;
         // TDOO: this differ between angriff and nk/fk waffen, define get_tp() in both?
         // let schaden = item.data.data.schaden;
-        let schaden = item.data.data.tp.replace("W", "d");
+        let schaden = item.system.tp.replace("W", "d");
 
         if (manoever.kbak.selected) {
             mod_at -= 4;
@@ -258,7 +259,7 @@ export class AngriffDialog extends Dialog {
         }
         // Auflaufen lassen km_aufl
         if (manoever.km_aufl.selected) {
-            let gs = Number(item.data.data.manoever.km_aufl.gs);
+            let gs = Number(item.system.manoever.km_aufl.gs);
             mod_vt -= 4;
             text_vt = text_vt.concat(`${CONFIG.ILARIS.label['km_aufl']} (${gs}): -4\n`);
             mod_dm += gs;
@@ -274,7 +275,7 @@ export class AngriffDialog extends Dialog {
         }
         // Entfernung verändern km_ever
         if (manoever.km_ever.selected) {
-            let be = data.abgeleitete.be || 0
+            let be = systemData.abgeleitete.be || 0
             mod_at -= be;
             text_at = text_at.concat(`${CONFIG.ILARIS.label['km_ever']}: -${be}\n`);
         }
@@ -441,14 +442,14 @@ export class AngriffDialog extends Dialog {
         this.at_abzuege_mod = 0;
         this.vt_abzuege_mod = 0;
 
-        if (this.item.actor.data.data.gesundheit.wundabzuege < 0 && this.item.data.data.manoever.kwut) {
+        if (this.item.actor.system.gesundheit.wundabzuege < 0 && this.item.system.manoever.kwut) {
             this.text_at = this.text_at.concat(`(Kalte Wut)\n`);
-            this.at_abzuege_mod = this.item.actor.data.data.abgeleitete.furchtabzuege;
+            this.at_abzuege_mod = this.item.actor.system.abgeleitete.furchtabzuege;
             this.text_vt = this.text_at.concat(`(Kalte Wut)\n`);
-            this.vt_abzuege_mod = this.item.actor.data.data.abgeleitete.furchtabzuege;
+            this.vt_abzuege_mod = this.item.actor.system.abgeleitete.furchtabzuege;
         } else {
-            this.at_abzuege_mod = this.item.actor.data.data.abgeleitete.globalermod;
-            this.vt_abzuege_mod = this.item.actor.data.data.abgeleitete.globalermod;
+            this.at_abzuege_mod = this.item.actor.system.abgeleitete.globalermod;
+            this.vt_abzuege_mod = this.item.actor.system.abgeleitete.globalermod;
         }
     }
 }

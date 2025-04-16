@@ -66,22 +66,23 @@ export class NahkampfDialog extends Dialog {
         const itemId = event.currentTarget.dataset.itemid;
         const item = this.actor.items.get(itemId);
         const toggletype = event.currentTarget.dataset.toggletype;
-        let attr = `data.${toggletype}`;
+        console.log(attr)
+        let attr = `system.${toggletype}`;
         if (toggletype == 'hauptwaffe' || toggletype == 'nebenwaffe') {
-            let item_status = getProperty(item.data, attr);
+            let item_status = getProperty(item, attr);
             // item.update({[attr]: !getProperty(item.data, attr)});
             if (item_status == false) {
-                for (let nwaffe of this.actor.data.nahkampfwaffen) {
-                    // console.log(nwaffe);
-                    if (nwaffe.data[toggletype] == true) {
+                for (let nwaffe of this.actor.nahkampfwaffen) {
+                    console.log(nwaffe);
+                    if (nwaffe[toggletype] == true) {
                         let change_itemId = nwaffe._id;
                         let change_item = this.actor.items.get(change_itemId);
                         await change_item.update({ [attr]: false });
                     }
                 }
-                for (let item of this.actor.data.fernkampfwaffen) {
-                    // console.log(item);
-                    if (item.data[toggletype] == true) {
+                for (let item of this.actor.fernkampfwaffen) {
+                    console.log(item);
+                    if (item[toggletype] == true) {
                         let change_itemId = item._id;
                         let change_item = this.actor.items.get(change_itemId);
                         await change_item.update({ [attr]: false });
@@ -90,18 +91,18 @@ export class NahkampfDialog extends Dialog {
             }
             await item.update({ [attr]: !item_status });
         } else {
-            attr = `data.${toggletype}`;
-            await item.update({ [attr]: !getProperty(item.data, attr) });
+            attr = `system.${toggletype}`;
+            await item.update({ [attr]: !getProperty(item, attr) });
         }
         // console.log(attr);
         // console.log(!getProperty(item.data, attr));
     }
 
     async _onRollable(event) {
-        let data = this.actor.data.data;
-        // console.log($(event.currentTarget));
+        let systemData = this.actor.system;
+        console.log($(event.currentTarget));
         let rolltype = $(event.currentTarget).data('rolltype');
-        let globalermod = data.abgeleitete.globalermod;
+        let globalermod = systemData.abgeleitete.globalermod;
         let pw = 0;
         let label = 'Probe';
         let dice = '3d20dl1dh1';
@@ -132,7 +133,7 @@ export class NahkampfDialog extends Dialog {
         } else if (rolltype == 'attribut') {
             const attribut_name = $(event.currentTarget).data('attribut');
             label = CONFIG.ILARIS.label[attribut_name];
-            pw = data.attribute[attribut_name].pw;
+            pw = systemData.attribute[attribut_name].pw;
         } else if (rolltype == 'profan_fertigkeit_pw') {
             label = $(event.currentTarget).data('fertigkeit');
             pw = $(event.currentTarget).data('pw');

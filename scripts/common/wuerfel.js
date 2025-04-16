@@ -13,14 +13,15 @@ import {
 // import { calculate_diceschips, roll_crit_message } from "./wuerfel/wuerfel_misc.js";
 
 export async function wuerfelwurf(event, actor) {
+    console.log(event)
     let speaker = ChatMessage.getSpeaker({ actor: actor });
-    let data = actor.data.data;
+    let systemData = actor.system;
     let rolltype = $(event.currentTarget).data('rolltype');
-    let globalermod = data.abgeleitete.globalermod;
-    let wundabzuegemod = data.gesundheit.wundabzuege;
-    let furchtmod = data.furcht.furchtabzuege;
-    let be = data.abgeleitete.be;
-    let nahkampfmod = data.modifikatoren.nahkampfmod;
+    let globalermod = systemData.abgeleitete.globalermod;
+    let wundabzuegemod = systemData.gesundheit.wundabzuege;
+    let furchtmod = systemData.furcht.furchtabzuege;
+    let be = systemData.abgeleitete.be;
+    let nahkampfmod = systemData.modifikatoren.nahkampfmod;
     let pw = 0;
     let label = 'Probe';
     // let groupName_xd20 = "xd20";
@@ -60,11 +61,11 @@ export async function wuerfelwurf(event, actor) {
         let itemId = event.currentTarget.dataset.itemid;
         // let item = actor.getOwnedItem(itemId);
         let item = actor.items.get(itemId);
-        let pw_at = item.data.data.at;
-        let pw_vt = item.data.data.vt;
+        let pw_at = item.system.at;
+        let pw_vt = item.system.vt;
         // console.log(item);
         // let manoever_at = item._data.data.manoever_at;
-        let schaden = item.data.data.schaden;
+        let schaden = item.system.schaden;
         // console.log(item.data.data);
         // console.log(item._data.data.manoever_at);
         const html = await renderTemplate(
@@ -80,7 +81,7 @@ export async function wuerfelwurf(event, actor) {
                 distance_choice: CONFIG.ILARIS.distance_choice,
                 rollModes: CONFIG.Dice.rollModes,
                 defaultRollMode: game.settings.get("core", "rollMode"),
-                manoever: item.data.data.manoever,
+                manoever: item.system.manoever,
                 item: item,
                 // pw: pw
             },
@@ -106,29 +107,29 @@ export async function wuerfelwurf(event, actor) {
                             // TODO: Sind die ganzen mods nicht schon in attacke_prepare berechnet?
                             // das kann doch alles in eine funktion eig. auch mit nahkampf update zusammen?
                             // Kombinierte Aktion kbak
-                            if (item.data.data.manoever.kbak.selected) {
+                            if (item.system.manoever.kbak.selected) {
                                 mod_at -= 4;
                                 text = text.concat('Kombinierte Aktion\n');
                             }
                             // Volle Offensive vlof
-                            if (item.data.data.manoever.vlof.selected) {
+                            if (item.system.manoever.vlof.selected) {
                                 mod_at += 4;
                                 text = text.concat('Volle Offensive\n');
                             }
                             // Reichweitenunterschiede rwdf
-                            let reichweite = item.data.data.manoever.rwdf.selected;  // contains number
+                            let reichweite = item.system.manoever.rwdf.selected;  // contains number
                             mod_at -= 2 * Number(reichweite);
                             text = text.concat(`Reichweitenunterschied: ${reichweite}\n`);
                             //Passierschlag pssl & Anzahl Reaktionen rkaz
-                            if (item.data.data.manoever.pssl.selected) {
-                                let reaktionen = Number(item.data.data.manoever.rkaz.selected);
+                            if (item.system.manoever.pssl.selected) {
+                                let reaktionen = Number(item.system.manoever.rkaz.selected);
                                 if (reaktionen > 0) {
                                     mod_at -= 4 * reaktionen;
                                     text = text.concat(`Passierschlag: (${reaktionen})\n`);
                                 }
                             }
                             // Binden km_bind
-                            let binden = Number(item.data.data.manoever.km_bind.selected);
+                            let binden = Number(item.system.manoever.km_bind.selected);
                             if (binden > 0) {
                                 mod_at += binden;
                                 text = text.concat(`Binden: ${binden}\n`);
@@ -138,16 +139,16 @@ export async function wuerfelwurf(event, actor) {
                             mod_at += mod_from_at;
                             text = text.concat(text_from_at);
                             // Modifikator
-                            let modifikator = Number(item.data.data.manoever.mod.selected);
+                            let modifikator = Number(item.system.manoever.mod.selected);
                             if (modifikator != 0) {
                                 mod_at += modifikator;
                                 text = text.concat(`Modifikator: ${modifikator}\n`);
                             }
                             // Rollmode
-                            let rollmode = item.data.data.manoever.rllm.selected;
+                            let rollmode = item.system.manoever.rllm.selected;
                             let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
                             let at_abzuege_mod = 0;
-                            if (wundabzuegemod < 0 && item.data.data.manoever.kwut) {
+                            if (wundabzuegemod < 0 && item.system.manoever.kwut) {
                                 text = text.concat(`(Kalte Wut)\n`);
                                 at_abzuege_mod = furchtmod;
                             } else {
@@ -158,7 +159,7 @@ export async function wuerfelwurf(event, actor) {
                             // Critfumble & Message
                             let label = `Attacke (${item.name})`;
                             let fumble_val = 1;
-                            if (item.data.data.eigenschaften.unberechenbar) {
+                            if (item.system.eigenschaften.unberechenbar) {
                                 fumble_val = 2;
                             }
                             await roll_crit_message(
@@ -188,8 +189,8 @@ export async function wuerfelwurf(event, actor) {
                                 actor,
                             );
                             // Volle Offensive vlof
-                            if (item.data.data.manoever.vlof.selected) {
-                                if (item.data.data.manoever.vlof.offensiver_kampfstil) {
+                            if (item.system.manoever.vlof.selected) {
+                                if (item.system.manoever.vlof.offensiver_kampfstil) {
                                     mod_vt -= 4;
                                     text = text.concat('Volle Offensive (Offensiver Kampfstil)\n');
                                 }
@@ -199,44 +200,44 @@ export async function wuerfelwurf(event, actor) {
                                 }
                             }
                             // Volle Defensive vldf
-                            if (item.data.data.manoever.vldf.selected) {
+                            if (item.system.manoever.vldf.selected) {
                                 mod_vt += 4;
                                 text = text.concat('Volle Defensive\n');
                             }
                             // Reichweitenunterschiede rwdf
-                            let reichweite = item.data.data.manoever.rwdf.selected;
+                            let reichweite = item.system.manoever.rwdf.selected;
                             mod_vt -= 2 * Number(reichweite);
                             text = text.concat(`Reichweitenunterschied: ${reichweite}\n`);
                             //Anzahl Reaktionen rkaz
-                            let reaktionen = Number(item.data.data.manoever.rkaz.selected);
+                            let reaktionen = Number(item.system.manoever.rkaz.selected);
                             if (reaktionen > 0) {
                                 mod_vt -= 4 * reaktionen;
                                 text = text.concat(`Anzahl Reaktionen: ${reaktionen}\n`);
                             }
                             // Ausweichen km_ausw
-                            if (item.data.data.manoever.km_ausw.selected) {
+                            if (item.system.manoever.km_ausw.selected) {
                                 mod_vt -= 2 + be;
                                 text = text.concat('Ausweichen\n');
                             }
                             // Binden km_bind
-                            let binden = Number(item.data.data.manoever.km_bind.selected);
+                            let binden = Number(item.system.manoever.km_bind.selected);
                             if (binden > 0) {
                                 mod_vt -= binden;
                                 text = text.concat(`Binden: ${binden}\n`);
                             }
                             // Entwaffnen km_entw
-                            if (item.data.data.manoever.km_entw.selected_vt) {
+                            if (item.system.manoever.km_entw.selected_vt) {
                                 mod_vt -= 4;
                                 text = text.concat(`${CONFIG.ILARIS.label['km_entw']}\n`);
                             }
                             // Auflaufen lassen km_aufl
-                            if (item.data.data.manoever.km_aufl.selected) {
-                                let gs = Number(item.data.data.manoever.km_aufl.gs);
+                            if (item.system.manoever.km_aufl.selected) {
+                                let gs = Number(item.system.manoever.km_aufl.gs);
                                 mod_vt -= 4;
                                 text = text.concat(`${CONFIG.ILARIS.label['km_aufl']}: ${gs}\n`);
                             }
                             // Riposte km_rpst
-                            if (item.data.data.manoever.km_rpst.selected) {
+                            if (item.system.manoever.km_rpst.selected) {
                                 let [mod_from_at, text_from_at] = calculate_attacke(actor, item);
                                 mod_vt += -4 + mod_from_at;
                                 text = text.concat(
@@ -244,26 +245,26 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             // Schildwall km_shwl
-                            if (item.data.data.manoever.km_shwl.selected) {
+                            if (item.system.manoever.km_shwl.selected) {
                                 mod_vt -= 4;
                                 text = text.concat(`${CONFIG.ILARIS.label['km_shwl']}\n`);
                             }
                             // Unterlaufen km_utlf
-                            if (item.data.data.manoever.km_utlf.selected) {
+                            if (item.system.manoever.km_utlf.selected) {
                                 mod_vt -= 4;
                                 text = text.concat(`${CONFIG.ILARIS.label['km_utlf']}\n`);
                             }
                             // Modifikator
-                            let modifikator = Number(item.data.data.manoever.mod.selected);
+                            let modifikator = Number(item.system.manoever.mod.selected);
                             if (modifikator != 0) {
                                 mod_vt += modifikator;
                                 text = text.concat(`Modifikator: ${modifikator}\n`);
                             }
                             // Rollmode
-                            let rollmode = item.data.data.manoever.rllm.selected;
+                            let rollmode = item.system.manoever.rllm.selected;
                             let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
                             let vt_abzuege_mod = 0;
-                            if (wundabzuegemod < 0 && item.data.data.manoever.kwut) {
+                            if (wundabzuegemod < 0 && item.system.manoever.kwut) {
                                 text = text.concat(`(Kalte Wut)\n`);
                                 vt_abzuege_mod = furchtmod;
                             } else {
@@ -282,7 +283,7 @@ export async function wuerfelwurf(event, actor) {
                         callback: async (html) => {
                             await nahkampfUpdate(html, actor, item);
                             // Gezielter Schlag km_gzsl
-                            let trefferzone = Number(item.data.data.manoever.km_gzsl.selected);
+                            let trefferzone = Number(item.system.manoever.km_gzsl.selected);
                             if (trefferzone) {
                                 text = text.concat(
                                     `${CONFIG.ILARIS.label['km_gzsl']}: ${CONFIG.ILARIS.trefferzonen[trefferzone]}\n`,
@@ -296,51 +297,51 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             // Wuchtschlag km_wusl
-                            let wusl = Number(item.data.data.manoever.km_wusl.selected);
+                            let wusl = Number(item.system.manoever.km_wusl.selected);
                             if (wusl > 0) {
                                 mod_schaden += wusl;
                                 text = text.concat(`${CONFIG.ILARIS.label['km_wusl']}: ${wusl}\n`);
                             }
                             // Auflaufen lassen km_aufl
-                            if (item.data.data.manoever.km_aufl.selected) {
-                                let gs = Number(item.data.data.manoever.km_aufl.gs);
+                            if (item.system.manoever.km_aufl.selected) {
+                                let gs = Number(item.system.manoever.km_aufl.gs);
                                 mod_schaden += gs;
                                 text = text.concat(`${CONFIG.ILARIS.label['km_aufl']}: ${gs}\n`);
                             }
                             // Rüstungsbrecher km_rust
-                            if (item.data.data.manoever.km_rust.selected) {
+                            if (item.system.manoever.km_rust.selected) {
                                 text = text.concat(`${CONFIG.ILARIS.label['km_rust']}\n`);
                             }
                             // Schildspalter km_shsp
-                            if (item.data.data.manoever.km_shsp.selected) {
+                            if (item.system.manoever.km_shsp.selected) {
                                 text = text.concat(`${CONFIG.ILARIS.label['km_shsp']}\n`);
                             }
                             // Stumpfer Schlag km_stsl
-                            if (item.data.data.manoever.km_stsl.selected) {
+                            if (item.system.manoever.km_stsl.selected) {
                                 text = text.concat(`${CONFIG.ILARIS.label['km_stsl']}\n`);
                             }
                             // Hammerschlag km_hmsl
-                            if (item.data.data.manoever.km_hmsl.selected) {
+                            if (item.system.manoever.km_hmsl.selected) {
                                 schaden = schaden.concat(`+${schaden}`);
                                 text = text.concat(`${CONFIG.ILARIS.label['km_hmsl']}\n`);
                             }
                             // Niederwerfen km_ndwf
-                            if (item.data.data.manoever.km_ndwf.selected) {
+                            if (item.system.manoever.km_ndwf.selected) {
                                 text = text.concat(`${CONFIG.ILARIS.label['km_ndwf']}\n`);
                             }
                             // Sturmangriff km_stag
-                            if (item.data.data.manoever.km_stag.selected) {
-                                let gs = Number(item.data.data.manoever.km_stag.gs);
+                            if (item.system.manoever.km_stag.selected) {
+                                let gs = Number(item.system.manoever.km_stag.gs);
                                 mod_schaden += gs;
                                 text = text.concat(`${CONFIG.ILARIS.label['km_stag']}: ${gs}\n`);
                             }
                             // Todesstoß km_tdst
-                            if (item.data.data.manoever.km_tdst.selected) {
+                            if (item.system.manoever.km_tdst.selected) {
                                 text = text.concat(`${CONFIG.ILARIS.label['km_tdst']}\n`);
                             }
                             // Überrennen km_uebr
-                            if (item.data.data.manoever.km_uebr.selected) {
-                                let gs = Number(item.data.data.manoever.km_uebr.gs);
+                            if (item.system.manoever.km_uebr.selected) {
+                                let gs = Number(item.system.manoever.km_uebr.gs);
                                 mod_schaden += gs;
                                 text = text.concat(`${CONFIG.ILARIS.label['km_uebr']}: ${gs}\n`);
                             }
@@ -351,7 +352,7 @@ export async function wuerfelwurf(event, actor) {
                             //     text = text.concat(`Modifikator: ${modifikator}\n`);
                             // }
                             // Rollmode
-                            let rollmode = item.data.data.manoever.rllm.selected;
+                            let rollmode = item.system.manoever.rllm.selected;
                             let formula = `${schaden} + ${mod_schaden}`;
                             let label = `Schaden (${item.name})`;
                             // Critfumble & Message
@@ -377,10 +378,10 @@ export async function wuerfelwurf(event, actor) {
         let itemId = event.currentTarget.dataset.itemid;
         // let item = actor.getOwnedItem(itemId);
         let item = actor.items.get(itemId);
-        pw = item.data.data.fk;
+        pw = item.system.fk;
         // console.log(item);
         // let manoever_at = item._data.data.manoever_at;
-        let schaden = item.data.data.schaden;
+        let schaden = item.system.schaden;
         // console.log(item.data.data);
         // console.log(item._data.data.manoever_at);
         // let gzkl_checked = "0",
@@ -391,8 +392,8 @@ export async function wuerfelwurf(event, actor) {
                 checked_xd20: '0',
                 choices_schips: CONFIG.ILARIS.schips_choice,
                 checked_schips: '0',
-                rw_choice: item.data.data.manoever.rw,
-                rw_checked: item.data.data.manoever.fm_rwrh.selected,
+                rw_choice: item.system.manoever.rw,
+                rw_checked: item.system.manoever.fm_rwrh.selected,
                 gzkl_choice: CONFIG.ILARIS.gzkl_choice,
                 // gzkl_checked: item.data.data.manoever.gzkl.selected,
                 lcht_choice: CONFIG.ILARIS.lcht_choice,
@@ -412,7 +413,7 @@ export async function wuerfelwurf(event, actor) {
                 // fm_srfs_checked: item.data.data.manoever.fm_srfs.selected,
                 rollModes: CONFIG.Dice.rollModes,
                 defaultRollMode: game.settings.get("core", "rollMode"),
-                manoever: item.data.data.manoever,
+                manoever: item.system.manoever,
                 item: item,
                 // pw: pw
             },
@@ -437,7 +438,7 @@ export async function wuerfelwurf(event, actor) {
                                 actor,
                             );
                             // Kombinierte Aktion kbak
-                            if (item.data.data.manoever.kbak.selected) {
+                            if (item.system.manoever.kbak.selected) {
                                 mod_fk -= 4;
                                 text = text.concat('Kombinierte Aktion\n');
                             }
@@ -448,15 +449,15 @@ export async function wuerfelwurf(event, actor) {
                             //     text = text.concat("Volle Defensive ()\n");
                             // }
                             // Reichweite erhöhen fm_rwrh
-                            let reichweite = Number(item.data.data.manoever.fm_rwrh.selected);
+                            let reichweite = Number(item.system.manoever.fm_rwrh.selected);
                             if (reichweite > 0) {
                                 mod_fk -= 4 * reichweite;
                                 text = text.concat(
-                                    `${item.data.data.manoever.rw[reichweite]} (${reichweite}x)\n`,
+                                    `${item.system.manoever.rw[reichweite]} (${reichweite}x)\n`,
                                 );
                             }
                             //Größenklasse gzkl
-                            let gklasse = Number(item.data.data.manoever.gzkl.selected);
+                            let gklasse = Number(item.system.manoever.gzkl.selected);
                             if (gklasse == 0) mod_fk += 8;
                             else if (gklasse == 1) mod_fk += 4;
                             else if (gklasse == 3) mod_fk -= 4;
@@ -464,8 +465,8 @@ export async function wuerfelwurf(event, actor) {
                             else if (gklasse == 5) mod_fk -= 12;
                             text = text.concat(`${CONFIG.ILARIS.gzkl_choice[gklasse]}\n`);
                             // Lichtverhältnisse ILARIS.lcht_choice = {
-                            let licht = Number(item.data.data.manoever.lcht.selected);
-                            let licht_angepasst = Number(item.data.data.manoever.lcht.angepasst);
+                            let licht = Number(item.system.manoever.lcht.selected);
+                            let licht_angepasst = Number(item.system.manoever.lcht.angepasst);
                             if (licht == 4) {
                                 mod_fk -= 32;
                                 text = text.concat(`${CONFIG.ILARIS.lcht_choice[licht]}\n`);
@@ -513,9 +514,9 @@ export async function wuerfelwurf(event, actor) {
                                 }
                             }
                             // Wetter wttr und Bewegung bwng
-                            let wetter = Number(item.data.data.manoever.wttr.selected);
-                            let bewegung = Number(item.data.data.manoever.bwng.selected);
-                            let reflexschuss = item.data.data.manoever.rflx;
+                            let wetter = Number(item.system.manoever.wttr.selected);
+                            let bewegung = Number(item.system.manoever.bwng.selected);
+                            let reflexschuss = item.system.manoever.rflx;
                             if (reflexschuss) {
                                 let reflex_change = '';
                                 if (wetter > 0 || bewegung > 0) {
@@ -553,7 +554,7 @@ export async function wuerfelwurf(event, actor) {
                                 }
                             }
                             // Deckung dckg
-                            let deckung = Number(item.data.data.manoever.dckg.selected);
+                            let deckung = Number(item.system.manoever.dckg.selected);
                             if (deckung < 0) {
                                 mod_fk += 4 * deckung;
                                 text = text.concat(
@@ -561,7 +562,7 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             // Kampfgetümmel kgtl
-                            let kampfgetuemmel = Number(item.data.data.manoever.kgtl.selected);
+                            let kampfgetuemmel = Number(item.system.manoever.kgtl.selected);
                             if (kampfgetuemmel == 1) {
                                 fumble_val += 1;
                                 text = text.concat(
@@ -575,8 +576,8 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             // Beritten brtn  Reiterkampf II rtk
-                            let beritten = item.data.data.manoever.brtn.selected;
-                            let reiterkampf = item.data.data.manoever.brtn.rtk;
+                            let beritten = item.system.manoever.brtn.selected;
+                            let reiterkampf = item.system.manoever.brtn.rtk;
                             if (beritten && reiterkampf) {
                                 text = text.concat(
                                     `${CONFIG.ILARIS.label['brtn']} (Reiterkampf)\n`,
@@ -586,7 +587,7 @@ export async function wuerfelwurf(event, actor) {
                                 text = text.concat(`${CONFIG.ILARIS.label['brtn']}\n`);
                             }
                             // Gezielter Schuss
-                            let trefferzone = Number(item.data.data.manoever.fm_gzss.selected);
+                            let trefferzone = Number(item.system.manoever.fm_gzss.selected);
                             if (trefferzone) {
                                 mod_fk -= 2;
                                 text = text.concat(
@@ -599,7 +600,7 @@ export async function wuerfelwurf(event, actor) {
                             //     text = text.concat(`Trefferzone: ${CONFIG.ILARIS.trefferzonen[r]}\n`);
                             // }
                             // Scharfschuss fm_srfs
-                            let scharfschuss = Number(item.data.data.manoever.fm_srfs.selected);
+                            let scharfschuss = Number(item.system.manoever.fm_srfs.selected);
                             if (scharfschuss) {
                                 mod_fk -= scharfschuss;
                                 text = text.concat(
@@ -607,8 +608,8 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             // Zielen fm_zlen    "ruhige_hand": false,
-                            let zielen = item.data.data.manoever.fm_zlen.selected;
-                            let ruhige_hand = item.data.data.manoever.fm_zlen.ruhige_hand;
+                            let zielen = item.system.manoever.fm_zlen.selected;
+                            let ruhige_hand = item.system.manoever.fm_zlen.ruhige_hand;
                             if (zielen && ruhige_hand) {
                                 mod_fk += 4;
                                 text = text.concat(
@@ -619,19 +620,19 @@ export async function wuerfelwurf(event, actor) {
                                 text = text.concat(`${CONFIG.ILARIS.label['fm_zlen']}\n`);
                             }
                             // Meisterschuss fm_msts
-                            let meisterschuss = item.data.data.manoever.fm_msts.selected;
+                            let meisterschuss = item.system.manoever.fm_msts.selected;
                             if (meisterschuss) {
                                 mod_fk -= 8;
                                 text = text.concat(`${CONFIG.ILARIS.label['fm_msts']}\n`);
                             }
                             // Rüstungsbrecher fm_rust
-                            let ruestungsbrecher = item.data.data.manoever.fm_rust.selected;
+                            let ruestungsbrecher = item.system.manoever.fm_rust.selected;
                             if (ruestungsbrecher) {
                                 mod_fk -= 4;
                                 text = text.concat(`${CONFIG.ILARIS.label['fm_rust']}\n`);
                             }
                             // Schnellschuss fm_snls
-                            let schnellschuss = Number(item.data.data.manoever.fm_snls.selected);
+                            let schnellschuss = Number(item.system.manoever.fm_snls.selected);
                             console.log(`WERT VON SCHNELLSCHUSS: ${schnellschuss}`);
                             if (schnellschuss > 0) {
                                 mod_fk -= 4 * schnellschuss;
@@ -640,17 +641,17 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             // Modifikator
-                            let modifikator = Number(item.data.data.manoever.mod.selected);
+                            let modifikator = Number(item.system.manoever.mod.selected);
                             if (modifikator != 0) {
                                 mod_fk += modifikator;
                                 text = text.concat(`Modifikator: ${modifikator}\n`);
                             }
                             // Rollmode
-                            let rollmode = item.data.data.manoever.rllm.selected;
+                            let rollmode = item.system.manoever.rllm.selected;
                             let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
                             // let formula = `${dice_form} + ${pw} + ${globalermod} + ${nahkampfmod} + ${mod_at}`;
                             let fk_abzuege_mod = 0;
-                            if (wundabzuegemod < 0 && item.data.data.manoever.kwut) {
+                            if (wundabzuegemod < 0 && item.system.manoever.kwut) {
                                 text = text.concat(`(Kalte Wut)\n`);
                                 fk_abzuege_mod = furchtmod;
                             } else {
@@ -677,7 +678,7 @@ export async function wuerfelwurf(event, actor) {
                         callback: async (html) => {
                             await fernkampfUpdate(html, actor, item);
                             // Gezielter Schlag km_gzss
-                            let trefferzone = Number(item.data.data.manoever.fm_gzss.selected);
+                            let trefferzone = Number(item.system.manoever.fm_gzss.selected);
                             if (trefferzone) {
                                 text = text.concat(
                                     `${CONFIG.ILARIS.label['fm_gzss']}: ${CONFIG.ILARIS.trefferzonen[trefferzone]}\n`,
@@ -691,7 +692,7 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             // Scharfschuss fm_srfs
-                            let fm_srfs = Number(item.data.data.manoever.fm_srfs.selected);
+                            let fm_srfs = Number(item.system.manoever.fm_srfs.selected);
                             if (fm_srfs > 0) {
                                 mod_schaden += fm_srfs;
                                 text = text.concat(
@@ -699,12 +700,12 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             // Rüstungsbrecher fm_rust
-                            let ruestungsbrecher = item.data.data.manoever.fm_rust.selected;
+                            let ruestungsbrecher = item.system.manoever.fm_rust.selected;
                             if (ruestungsbrecher) {
                                 text = text.concat(`${CONFIG.ILARIS.label['fm_rust']}\n`);
                             }
                             // Meisterschuss fm_msts
-                            let meisterschuss = item.data.data.manoever.fm_msts.selected;
+                            let meisterschuss = item.system.manoever.fm_msts.selected;
                             if (meisterschuss) {
                                 text = text.concat(`${CONFIG.ILARIS.label['fm_msts']}\n`);
                             }
@@ -715,7 +716,7 @@ export async function wuerfelwurf(event, actor) {
                             //     text = text.concat(`Modifikator: ${modifikator}\n`);
                             // }
                             // Rollmode
-                            let rollmode = item.data.data.manoever.rllm.selected;
+                            let rollmode = item.system.manoever.rllm.selected;
                             let formula = `${schaden} + ${mod_schaden}`;
                             let label = `Schaden (${item.name})`;
                             // Critfumble & Message
@@ -737,7 +738,7 @@ export async function wuerfelwurf(event, actor) {
     } else if (rolltype == 'attribut_diag') {
         const attribut_name = $(event.currentTarget).data('attribut');
         label = CONFIG.ILARIS.label[attribut_name];
-        pw = data.attribute[attribut_name].pw;
+        pw = systemData.attribute[attribut_name].pw;
         const html = await renderTemplate(
             'systems/Ilaris/templates/chat/probendiag_attribut.html',
             {
@@ -807,9 +808,10 @@ export async function wuerfelwurf(event, actor) {
         d.render(true);
     } else if (rolltype == 'profan_fertigkeit_diag') {
         let fertigkeit = $(event.currentTarget).data('fertigkeit');
-        label = actor.data.data.profan.fertigkeiten[fertigkeit].name;
+        console.log(actor)
+        label = actor.profan.fertigkeiten[fertigkeit].name;
         const talent_list = {};
-        let array_talente = actor.data.data.profan.fertigkeiten[fertigkeit].data.data.talente;
+        let array_talente = actor.profan.fertigkeiten[fertigkeit].system.talente;
         for (const [i, tal] of array_talente.entries()) {
             talent_list[i] = tal.name;
         }
@@ -870,13 +872,13 @@ export async function wuerfelwurf(event, actor) {
                                 rollmode = html.find('#rollMode')[0].value;
                             }
                             if (talent_specific == -2) {
-                                pw = actor.data.data.profan.fertigkeiten[fertigkeit].data.data.pw;
+                                pw = actor.profan.fertigkeiten[fertigkeit].system.pw;
                             } else if (talent_specific == -1) {
                                 label = label + ' (Talent)';
-                                pw = actor.data.data.profan.fertigkeiten[fertigkeit].data.data.pwt;
+                                pw = actor.profan.fertigkeiten[fertigkeit].system.pwt;
                             } else {
                                 label = label + ' (' + talent + ')';
-                                pw = actor.data.data.profan.fertigkeiten[fertigkeit].data.data.pwt;
+                                pw = actor.profan.fertigkeiten[fertigkeit].system.pwt;
                             }
                             hohequalitaet *= -4;
 
@@ -1101,8 +1103,8 @@ export async function wuerfelwurf(event, actor) {
         let text = '';
         let itemId = event.currentTarget.dataset.itemid;
         let item = actor.items.get(itemId);
-        console.log(item.data.data);
-        pw = item.data.data.pw;
+        console.log(item);
+        pw = item.system.pw;
         const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_magie.html', {
             choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: '1',
@@ -1111,7 +1113,7 @@ export async function wuerfelwurf(event, actor) {
             zere_choice: CONFIG.ILARIS.zere_choice,
             rollModes: CONFIG.Dice.rollModes,
             defaultRollMode: game.settings.get("core", "rollMode"),
-            manoever: item.data.data.manoever,
+            manoever: item.system.manoever,
             item: item,
             // pw: pw
         });
@@ -1135,12 +1137,12 @@ export async function wuerfelwurf(event, actor) {
                                 actor,
                             );
                             // Kombinierte Aktion kbak
-                            if (item.data.data.manoever.kbak.selected) {
+                            if (item.system.manoever.kbak.selected) {
                                 mod_pw -= 4;
                                 text = text.concat('Kombinierte Aktion: -4\n');
                             }
                             // Maechtige Magie mm_mama
-                            let mm_mama = Number(item.data.data.manoever.mm_mama.selected);
+                            let mm_mama = Number(item.system.manoever.mm_mama.selected);
                             if (mm_mama > 0) {
                                 let erschwernis = 4 * mm_mama;
                                 mod_pw -= erschwernis;
@@ -1149,7 +1151,7 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             //  Mehrere Ziele mm_mezi
-                            let mm_mezi = Number(item.data.data.manoever.mm_mezi.selected);
+                            let mm_mezi = Number(item.system.manoever.mm_mezi.selected);
                             if (mm_mezi > 0) {
                                 let erschwernis = 4;
                                 mod_pw -= erschwernis;
@@ -1158,7 +1160,7 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             //  Reichweite erhoehen mm_rwrh
-                            let mm_rwrh = Number(item.data.data.manoever.mm_rwrh.selected);
+                            let mm_rwrh = Number(item.system.manoever.mm_rwrh.selected);
                             if (mm_rwrh > 0) {
                                 let erschwernis = 4 * mm_rwrh; 
                                 mod_pw -= erschwernis;
@@ -1172,7 +1174,7 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             // Vorbereitung verkuerzen mm_vbvk
-                            let mm_vbvk = Number(item.data.data.manoever.mm_vbvk.selected);
+                            let mm_vbvk = Number(item.system.manoever.mm_vbvk.selected);
                             if (mm_vbvk > 0) {
                                 let erschwernis = 4 * mm_vbvk; 
                                 mod_pw -= erschwernis;
@@ -1189,7 +1191,7 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             // Wirkungsdauer verlaengern mm_wkvl
-                            let mm_wkvl = Number(item.data.data.manoever.mm_wkvl.selected);
+                            let mm_wkvl = Number(item.system.manoever.mm_wkvl.selected);
                             if (mm_wkvl > 0) {
                                 let erschwernis = 4 * mm_wkvl; 
                                 mod_pw -= erschwernis;
@@ -1203,7 +1205,7 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             // Zaubertechnik ignorieren mm_ztig
-                            let mm_ztig = Number(item.data.data.manoever.mm_ztig.selected);
+                            let mm_ztig = Number(item.system.manoever.mm_ztig.selected);
                             if (mm_ztig > 0) {
                                 let erschwernis = 4 * mm_ztig; 
                                 mod_pw -= erschwernis;
@@ -1213,13 +1215,13 @@ export async function wuerfelwurf(event, actor) {
                             }
                             // Erzwingen mm_erzw
                             // console.log('Erzwingen possible: ', item.data.data.manoever.mm_erzw.possible);
-                            if (item.data.data.manoever.mm_erzw.selected && item.data.data.manoever.mm_erzw.possible) {
+                            if (item.system.manoever.mm_erzw.selected && item.system.manoever.mm_erzw.possible) {
                                 mod_pw += 4;
                                 text = text.concat('Erzwingen: +4\n');
                             }
                             // Kosten sparen mm_kosp
-                            let mm_kosp = Number(item.data.data.manoever.mm_kosp.selected);
-                            if (mm_kosp > 0  && item.data.data.manoever.mm_kosp.possible) {
+                            let mm_kosp = Number(item.system.manoever.mm_kosp.selected);
+                            if (mm_kosp > 0  && item.system.manoever.mm_kosp.possible) {
                                 let erschwernis = 4 * mm_kosp; 
                                 mod_pw -= erschwernis;
                                 text = text.concat(
@@ -1227,13 +1229,13 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             // Zeit lassen mm_ztls
-                            if (item.data.data.manoever.mm_ztls.selected && item.data.data.manoever.mm_ztls.possible) {
+                            if (item.system.manoever.mm_ztls.selected && item.system.manoever.mm_ztls.possible) {
                                 mod_pw += 2;
                                 text = text.concat('Zeit lassen: +2\n');
                             }
                             // Zeremonie mm_zere
-                            let mm_zere = Number(item.data.data.manoever.mm_zere.selected);
-                            if (mm_zere > 0  && item.data.data.manoever.mm_zere.possible) {
+                            let mm_zere = Number(item.system.manoever.mm_zere.selected);
+                            if (mm_zere > 0  && item.system.manoever.mm_zere.possible) {
                                 let erleichterung = 2+ 2 * mm_zere; 
                                 mod_pw += erleichterung;
                                 text = text.concat(
@@ -1241,23 +1243,23 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             // Opferung mm_opfe
-                            if (item.data.data.manoever.mm_opfe.selected && item.data.data.manoever.mm_opfe.possible) {
+                            if (item.system.manoever.mm_opfe.selected && item.system.manoever.mm_opfe.possible) {
                                 mod_pw += 4;
                                 text = text.concat('Opferung: +4\n');
                             }
 
                             // Modifikator
-                            let modifikator = Number(item.data.data.manoever.mod.selected);
+                            let modifikator = Number(item.system.manoever.mod.selected);
                             if (modifikator != 0) {
                                 mod_pw += modifikator;
                                 text = text.concat(`Modifikator: ${modifikator}\n`);
                             }
                             // Rollmode
-                            let rollmode = item.data.data.manoever.rllm.selected;
+                            let rollmode = item.system.manoever.rllm.selected;
                             let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
                             // let formula = `${dice_form} + ${pw} + ${globalermod} + ${nahkampfmod} + ${mod_at}`;
                             let pw_abzuege_mod = 0;
-                            if (wundabzuegemod < 0 && item.data.data.manoever.kwut) {
+                            if (wundabzuegemod < 0 && item.system.manoever.kwut) {
                                 text = text.concat(`(Kalte Wut)\n`);
                                 pw_abzuege_mod = furchtmod;
                             } else {
@@ -1336,8 +1338,8 @@ export async function wuerfelwurf(event, actor) {
         let text = '';
         let itemId = event.currentTarget.dataset.itemid;
         let item = actor.items.get(itemId);
-        console.log(item.data.data);
-        pw = item.data.data.pw;
+        console.log(item);
+        pw = item.system.pw;
         const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_karma.html', {
             choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: '1',
@@ -1346,7 +1348,7 @@ export async function wuerfelwurf(event, actor) {
             zere_choice: CONFIG.ILARIS.zere_choice,
             rollModes: CONFIG.Dice.rollModes,
             defaultRollMode: game.settings.get("core", "rollMode"),
-            manoever: item.data.data.manoever,
+            manoever: item.system.manoever,
             item: item,
             // pw: pw
         });
@@ -1370,12 +1372,12 @@ export async function wuerfelwurf(event, actor) {
                                 actor,
                             );
                             // Kombinierte Aktion kbak
-                            if (item.data.data.manoever.kbak.selected) {
+                            if (item.system.manoever.kbak.selected) {
                                 mod_pw -= 4;
                                 text = text.concat('Kombinierte Aktion: -4\n');
                             }
                             // Maechtige Liturgie lm_mali
-                            let lm_mali = Number(item.data.data.manoever.lm_mali.selected);
+                            let lm_mali = Number(item.system.manoever.lm_mali.selected);
                             if (lm_mali > 0) {
                                 let erschwernis = 4 * lm_mali;
                                 mod_pw -= erschwernis;
@@ -1384,7 +1386,7 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             //  Mehrere Ziele lm_mezi
-                            let lm_mezi = Number(item.data.data.manoever.lm_mezi.selected);
+                            let lm_mezi = Number(item.system.manoever.lm_mezi.selected);
                             if (lm_mezi > 0) {
                                 let erschwernis = 4;
                                 mod_pw -= erschwernis;
@@ -1393,7 +1395,7 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             //  Reichweite erhoehen lm_rwrh
-                            let lm_rwrh = Number(item.data.data.manoever.lm_rwrh.selected);
+                            let lm_rwrh = Number(item.system.manoever.lm_rwrh.selected);
                             if (lm_rwrh > 0) {
                                 let erschwernis = 4 * lm_rwrh; 
                                 mod_pw -= erschwernis;
@@ -1403,7 +1405,7 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             // Vorbereitung verkuerzen lm_vbvk
-                            let lm_vbvk = Number(item.data.data.manoever.lm_vbvk.selected);
+                            let lm_vbvk = Number(item.system.manoever.lm_vbvk.selected);
                             if (lm_vbvk > 0) {
                                 let erschwernis = 4 * lm_vbvk; 
                                 mod_pw -= erschwernis;
@@ -1420,7 +1422,7 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             // Wirkungsdauer verlaengern lm_wkvl
-                            let lm_wkvl = Number(item.data.data.manoever.lm_wkvl.selected);
+                            let lm_wkvl = Number(item.system.manoever.lm_wkvl.selected);
                             if (lm_wkvl > 0) {
                                 let erschwernis = 4 * lm_wkvl; 
                                 mod_pw -= erschwernis;
@@ -1430,7 +1432,7 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             // Zaubertechnik ignorieren lm_ltig
-                            let lm_ltig = Number(item.data.data.manoever.lm_ltig.selected);
+                            let lm_ltig = Number(item.system.manoever.lm_ltig.selected);
                             if (lm_ltig > 0) {
                                 let erschwernis = 4 * lm_ltig; 
                                 mod_pw -= erschwernis;
@@ -1439,8 +1441,8 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             // Kosten sparen lm_kosp
-                            let lm_kosp = Number(item.data.data.manoever.lm_kosp.selected);
-                            if (lm_kosp > 0  && item.data.data.manoever.lm_kosp.possible) {
+                            let lm_kosp = Number(item.system.manoever.lm_kosp.selected);
+                            if (lm_kosp > 0  && item.system.manoever.lm_kosp.possible) {
                                 let erschwernis = 4 * lm_kosp; 
                                 mod_pw -= erschwernis;
                                 text = text.concat(
@@ -1448,8 +1450,8 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             // Zeremonie lm_zere
-                            let lm_zere = Number(item.data.data.manoever.lm_zere.selected);
-                            if (lm_zere > 0  && item.data.data.manoever.lm_zere.possible) {
+                            let lm_zere = Number(item.system.manoever.lm_zere.selected);
+                            if (lm_zere > 0  && item.system.manoever.lm_zere.possible) {
                                 let erleichterung = 2+ 2 * lm_zere; 
                                 mod_pw += erleichterung;
                                 text = text.concat(
@@ -1457,23 +1459,23 @@ export async function wuerfelwurf(event, actor) {
                                 );
                             }
                             // Opferung lm_opfe
-                            if (item.data.data.manoever.lm_opfe.selected && item.data.data.manoever.lm_opfe.possible) {
+                            if (item.system.manoever.lm_opfe.selected && item.system.manoever.lm_opfe.possible) {
                                 mod_pw += 4;
                                 text = text.concat('Opferung: +4\n');
                             }
 
                             // Modifikator
-                            let modifikator = Number(item.data.data.manoever.mod.selected);
+                            let modifikator = Number(item.system.manoever.mod.selected);
                             if (modifikator != 0) {
                                 mod_pw += modifikator;
                                 text = text.concat(`Modifikator: ${modifikator}\n`);
                             }
                             // Rollmode
-                            let rollmode = item.data.data.manoever.rllm.selected;
+                            let rollmode = item.system.manoever.rllm.selected;
                             let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
                             // let formula = `${dice_form} + ${pw} + ${globalermod} + ${nahkampfmod} + ${mod_at}`;
                             let pw_abzuege_mod = 0;
-                            if (wundabzuegemod < 0 && item.data.data.manoever.kwut) {
+                            if (wundabzuegemod < 0 && item.system.manoever.kwut) {
                                 text = text.concat(`(Kalte Wut)\n`);
                                 pw_abzuege_mod = furchtmod;
                             } else {

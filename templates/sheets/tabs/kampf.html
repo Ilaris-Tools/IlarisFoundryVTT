@@ -1,7 +1,8 @@
+{{log 'kampf' this}}
 <div>
-    {{#if data.data.modifikatoren.nahkampfmod}}
+    {{#if actor.system.modifikatoren.nahkampfmod}}
     <div class="flexrow" style="float: right">
-        <b><label style="color: {{modColor data.data.modifikatoren.nahkampfmod}}">{{data.data.abgeleitete.nahkampfmoddisplay}}</label></b>
+        <b><label style="color: {{modColor actor.system.modifikatoren.nahkampfmod}}">{{actor.system.abgeleitete.nahkampfmoddisplay}}</label></b>
     </div>
     {{/if}}
     <h2>Nahkampfwaffen</h2>
@@ -9,8 +10,8 @@
         ><i class="fas fa-plus"></i>Neue Nahkampfwaffe</a
     >
     <div>
-        <select class="selected-kampfstil" name="data.misc.selected_kampfstil">
-            {{#select data.data.misc.selected_kampfstil}} {{#each data.data.misc.kampfstile_list}}
+        <select class="selected-kampfstil" name="system.misc.selected_kampfstil">
+            {{#select actor.system.misc.selected_kampfstil}} {{#each actor.misc.kampfstile_list}}
             <option value="{{this}}">{{get_label this}}</option>
             {{/each}} {{/select}}
         </select>
@@ -28,20 +29,20 @@
             <label class="icon-small" style="float: right"></label>
             <label class="icon-small" style="float: right"></label>
         </div>
-        {{#each data.data.nahkampfwaffen as |nwaffe key|}}
+        {{#each actor.nahkampfwaffen as |nwaffe key|}}
         <div class="flexrow">
             <!-- <a class="rollable icon-small" data-rolltype="profan_fertigkeit" data-fertigkeit="{{key}}"><i class="fas fa-dice-d20"></i></a> -->
             <a class="rollable icon-small" data-rolltype="nahkampf_diag" data-itemid="{{nwaffe.id}}"
                 ><i class="fas fa-dice-d20"></i
             ></a>
             <a
-                class="icon-small item-toggle {{nwaffe.data.data.hauptwaffe}}"
+                class="icon-small item-toggle {{nwaffe.system.hauptwaffe}}"
                 data-itemid="{{nwaffe.id}}"
                 data-toggletype="hauptwaffe"
                 ><i class="far fa-hand-paper"></i
             ></a>
             <a
-                class="icon-small item-toggle {{nwaffe.data.data.nebenwaffe}}"
+                class="icon-small item-toggle {{nwaffe.system.nebenwaffe}}"
                 data-itemid="{{nwaffe.id}}"
                 data-toggletype="nebenwaffe"
                 ><i class="far fa-hand-paper"></i
@@ -49,32 +50,31 @@
             <label class="ausklappen-trigger onhover" data-ausklappentarget="{{nwaffe.id}}"
                 >{{nwaffe.name}}</label
             >
-            <label>{{nwaffe.data.data.rw}}</label>
+            <label>{{nwaffe.system.rw}}</label>
             <label
                 class="rollable onhover"
                 data-rolltype="at"
-                data-pw="{{nwaffe.data.data.at}}"
+                data-pw="{{nwaffe.system.at}}"
                 data-item="{{nwaffe.name}}"
                 data-itemid="{{nwaffe.id}}"
-                >{{nwaffe.data.data.at}}</label
+                >{{nwaffe.system.at}}</label
             >
             <label
                 class="rollable onhover"
                 data-rolltype="vt"
-                data-pw="{{nwaffe.data.data.vt}}"
+                data-pw="{{nwaffe.system.vt}}"
                 data-item="{{nwaffe.name}}"
                 data-itemid="{{nwaffe.id}}"
-                >{{nwaffe.data.data.vt}}</label
+                >{{nwaffe.system.vt}}</label
             >
             <label
                 class="rollable onhover"
                 data-rolltype="schaden"
-                data-pw="{{nwaffe.data.data.schaden}}"
+                data-pw="{{nwaffe.system.schaden}}"
                 data-item="{{nwaffe.name}}"
                 data-itemid="{{nwaffe.id}}"
-                >{{nwaffe.data.data.schaden}}</label
+                >{{nwaffe.system.schaden}}</label
             >
-            <!-- <label>{{nwaffe.data.dice_anzahl}}d{{nwaffe.data.dice_typ}}+{{nwaffe.data.plus}}</label> -->
             <a
                 class="item-edit icon-small"
                 data-itemclass="nahkampfwaffe"
@@ -94,15 +94,15 @@
             <hr />
             <div>
                 <label><b>Schaden:</b></label>
-                <label>{{nwaffe.data.data.dice_anzahl}}d6+{{nwaffe.data.data.dice_plus}}</label>
+                <label>{{nwaffe.system.dice_anzahl}}d6+{{nwaffe.system.dice_plus}}</label>
             </div>
             <div>
                 <label><b>Fertigkeit:</b></label>
-                <label>{{nwaffe.data.data.fertigkeit}}</label>
+                <label>{{nwaffe.system.fertigkeit}}</label>
             </div>
             <div>
                 <label><b>Talent:</b></label>
-                <label>{{nwaffe.data.data.talent}}</label>
+                <label>{{nwaffe.system.talent}}</label>
             </div>
             <div>
                 <label><b>Eigenschaften:</b></label>
@@ -110,35 +110,35 @@
             </div>
             <div>
                 <label><b>WM:</b></label>
-                <label>{{nwaffe.data.data.wm_at}}</label>
+                <label>{{nwaffe.system.wm_at}}</label>
                 <label><b>/</b></label>
-                <label>{{nwaffe.data.data.wm_vt}}</label>
+                <label>{{nwaffe.system.wm_vt}}</label>
             </div>
             <div>
                 <label><b>Härte:</b></label>
-                <label>{{nwaffe.data.data.haerte}}</label>
+                <label>{{nwaffe.system.haerte}}</label>
             </div>
             <div>
                 <label><b>Beschädigung:</b></label>
-                <label>{{nwaffe.data.data.beschaedigung}}</label>
+                <label>{{nwaffe.system.beschaedigung}}</label>
             </div>
             <div>
                 <label><b>Eigene Modifikatoren</b></label>
             </div>
             <div>
                 <label><b>WM:</b></label>
-                <label>{{nwaffe.data.data.mod_at}}</label>
+                <label>{{nwaffe.system.mod_at}}</label>
                 <label><b>/</b></label>
-                <label>{{nwaffe.data.data.mod_vt}}</label>
+                <label>{{nwaffe.system.mod_vt}}</label>
             </div>
             <div>
                 <label><b>Schadensbonus:</b></label>
-                <label>{{nwaffe.data.data.mod_schaden}}</label>
+                <label>{{nwaffe.system.mod_schaden}}</label>
             </div>
             <div>
                 <label><b>Beschreibung:</b></label
                 ><br />
-                <label style="white-space: pre-line">{{nwaffe.data.data.text}}</label>
+                <label style="white-space: pre-line">{{nwaffe.system.text}}</label>
             </div>
             <hr />
         </div>
@@ -163,71 +163,70 @@
             <label class="icon-small" style="float: right"></label>
             <label class="icon-small" style="float: right"></label>
         </div>
-        {{#each data.data.fernkampfwaffen}}
+        {{#each actor.fernkampfwaffen as |fwaffe key|}}
         <div class="flexrow">
-            <a class="rollable icon-small" data-rolltype="fernkampf_diag" data-itemid="{{this.id}}"
+            <a class="rollable icon-small" data-rolltype="fernkampf_diag" data-itemid="{{fwaffe.id}}"
                 ><i class="fas fa-dice-d20"></i
             ></a>
             <a
-                class="icon-small item-toggle {{this.data.data.hauptwaffe}}"
-                data-itemid="{{this.id}}"
+                class="icon-small item-toggle {{fwaffe.system.hauptwaffe}}"
+                data-itemid="{{fwaffe.id}}"
                 data-toggletype="hauptwaffe"
                 ><i class="far fa-hand-paper"></i
             ></a>
             <a
-                class="icon-small item-toggle {{this.data.data.nebenwaffe}}"
-                data-itemid="{{this.id}}"
+                class="icon-small item-toggle {{fwaffe.system.nebenwaffe}}"
+                data-itemid="{{fwaffe.id}}"
                 data-toggletype="nebenwaffe"
                 ><i class="far fa-hand-paper"></i
             ></a>
-            <label class="ausklappen-trigger onhover" data-ausklappentarget="{{this.id}}"
-                >{{this.name}}</label
+            <label class="ausklappen-trigger onhover" data-ausklappentarget="{{fwaffe.id}}"
+                >{{fwaffe.name}}</label
             >
-            <label>{{this.data.data.rw}}</label>
-            <label>{{this.data.data.lz}}</label>
+            <label>{{fwaffe.system.rw}}</label>
+            <label>{{fwaffe.system.lz}}</label>
             <label
                 class="rollable onhover"
                 data-rolltype="fk"
-                data-pw="{{this.data.data.fk}}"
-                data-item="{{this.name}}"
-                >{{this.data.data.fk}}</label
+                data-pw="{{fwaffe.system.fk}}"
+                data-item="{{fwaffe.name}}"
+                >{{fwaffe.system.fk}}</label
             >
             <label
                 class="rollable onhover"
                 data-rolltype="schaden"
-                data-pw="{{this.data.data.schaden}}"
-                data-item="{{this.name}}"
-                >{{this.data.data.schaden}}</label
+                data-pw="{{fwaffe.system.schaden}}"
+                data-item="{{fwaffe.name}}"
+                >{{fwaffe.system.schaden}}</label
             >
-            <!-- <label>{{nwaffe.data.dice_anzahl}}d{{nwaffe.data.dice_typ}}+{{nwaffe.data.plus}}</label> -->
             <a
                 class="item-edit icon-small"
                 data-itemclass="fernkampfwaffe"
-                data-itemid="{{this.id}}"
+                data-itemid="{{fwaffe.id}}"
                 style="float: right"
                 ><i class="fas fa-edit"></i
             ></a>
             <a
                 class="item-delete icon-small"
                 data-itemclass="fernkampfwaffe"
-                data-itemid="{{this.id}}"
+                data-itemid="{{fwaffe.id}}"
                 style="float: right"
                 ><i class="fas fa-trash"></i
             ></a>
         </div>
-        <div id="ausklappen-view-{{this.id}}" style="display: none">
+        <div id="ausklappen-view-{{fwaffe.id}}" style="display: none">
             <hr />
             <div>
                 <label><b>Schaden:</b></label>
-                <label>{{this.data.data.dice_anzahl}}d6+{{this.data.data.dice_plus}}</label>
+                <label>{{fwaffe.system.dice_anzahl}}d6+{{fwaffe.system.dice_plus}}</label>
             </div>
             <div>
                 <label><b>Fertigkeit:</b></label>
-                <label>{{this.data.data.fertigkeit}}</label>
+                <label>{{fwaffe.system.fertigkeit}}</label>
             </div>
             <div>
                 <label><b>Talent:</b></label>
-                <label>{{this.data.data.talent}}</label>
+                <label>{{fwaffe.system.talent}}</label>
             </div>
             <div>
                 <label><b>Eigenschaften:</b></label>
@@ -235,31 +234,31 @@
             </div>
             <div>
                 <label><b>WM:</b></label>
-                <label>{{this.data.data.wm_fk}}</label>
+                <label>{{fwaffe.system.wm_fk}}</label>
             </div>
             <div>
                 <label><b>Härte:</b></label>
-                <label>{{this.data.data.haerte}}</label>
+                <label>{{fwaffe.system.haerte}}</label>
             </div>
             <div>
                 <label><b>Beschädigung:</b></label>
-                <label>{{this.data.data.beschaedigung}}</label>
+                <label>{{fwaffe.system.beschaedigung}}</label>
             </div>
             <div>
                 <label><b>Eigene Modifikatoren</b></label>
             </div>
             <div>
                 <label><b>WM:</b></label>
-                <label>{{this.data.data.mod_fk}}</label>
+                <label>{{fwaffe.system.mod_fk}}</label>
             </div>
             <div>
                 <label><b>Schadensbonus:</b></label>
-                <label>{{this.data.data.mod_schaden}}</label>
+                <label>{{fwaffe.system.mod_schaden}}</label>
             </div>
             <div>
                 <label><b>Beschreibung:</b></label
                 ><br />
-                <label style="white-space: pre-line">{{this.data.data.text}}</label>
+                <label style="white-space: pre-line">{{fwaffe.system.text}}</label>
             </div>
             <hr />
         </div>
@@ -284,24 +283,23 @@
             <h6 class="icon-small"></h6>
             <h6 class="icon-small"></h6>
         </div>
-        {{#each data.data.ruestungen as |ruestung key|}}
+        {{#each actor.ruestungen as |ruestung key|}}
         <div class="flexrow">
-            <!-- <label>{{ruestung.data.aktiv}}</label> -->
             <a
-                class="icon-small item-toggle {{ruestung.data.data.aktiv}}"
+                class="icon-small item-toggle {{ruestung.system.aktiv}}"
                 data-itemid="{{ruestung.id}}"
                 data-toggletype="aktiv"
                 ><i class="fas fa-shield-alt"></i
             ></a>
             <label>{{ruestung.name}}</label>
-            <label>{{ruestung.data.data.rs}}</label>
-            <label>{{ruestung.data.data.be}}</label>
-            <label>{{ruestung.data.data.rs_beine}}</label>
-            <label>{{ruestung.data.data.rs_larm}}</label>
-            <label>{{ruestung.data.data.rs_rarm}}</label>
-            <label>{{ruestung.data.data.rs_bauch}}</label>
-            <label>{{ruestung.data.data.rs_brust}}</label>
-            <label>{{ruestung.data.data.rs_kopf}}</label>
+            <label>{{ruestung.system.rs}}</label>
+            <label>{{ruestung.system.be}}</label>
+            <label>{{ruestung.system.rs_beine}}</label>
+            <label>{{ruestung.system.rs_larm}}</label>
+            <label>{{ruestung.system.rs_rarm}}</label>
+            <label>{{ruestung.system.rs_bauch}}</label>
+            <label>{{ruestung.system.rs_brust}}</label>
+            <label>{{ruestung.system.rs_kopf}}</label>
             <a
                 class="item-edit icon-small"
                 data-itemclass="ruestung"
@@ -322,14 +320,14 @@
         <div class="flexrow">
             <label class="icon-small"></label>
             <label>Gesamt (WS*)</label>
-            <label>{{data.data.abgeleitete.ws_stern}}</label>
-            <label>{{data.data.abgeleitete.be}}</label>
-            <label>{{data.data.abgeleitete.ws_beine}}</label>
-            <label>{{data.data.abgeleitete.ws_larm}}</label>
-            <label>{{data.data.abgeleitete.ws_rarm}}</label>
-            <label>{{data.data.abgeleitete.ws_bauch}}</label>
-            <label>{{data.data.abgeleitete.ws_brust}}</label>
-            <label>{{data.data.abgeleitete.ws_kopf}}</label>
+            <label>{{actor.system.abgeleitete.ws_stern}}</label>
+            <label>{{actor.system.abgeleitete.be}}</label>
+            <label>{{actor.system.abgeleitete.ws_beine}}</label>
+            <label>{{actor.system.abgeleitete.ws_larm}}</label>
+            <label>{{actor.system.abgeleitete.ws_rarm}}</label>
+            <label>{{actor.system.abgeleitete.ws_bauch}}</label>
+            <label>{{actor.system.abgeleitete.ws_brust}}</label>
+            <label>{{actor.system.abgeleitete.ws_kopf}}</label>
             <label class="icon-small"></label>
             <label class="icon-small"></label>
         </div>
@@ -337,18 +335,18 @@
     <br />
 
     <h2>Vorteile</h2>
-    {{#if data.data.vorteil.kampf}}
+    {{#if actor.vorteil.kampf}}
     <div>
         <label><b>Kampfvorteile:</b>&nbsp; | &nbsp;</label>
-        {{#each data.data.vorteil.kampf}}
+        {{#each actor.vorteil.kampf}}
         <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
     </div>
-    {{/if}} {{#if data.data.vorteil.kampfstil}}
+    {{/if}} {{#if actor.vorteil.kampfstil}}
     <div>
         <label><b>Kampfstile:</b>&nbsp; | &nbsp;</label>
-        {{#each data.data.vorteil.kampfstil}}
+        {{#each actor.vorteil.kampfstil}}
         <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}

@@ -409,8 +409,8 @@ export class SephrastoImporter {
             let fk = Number(waffe.fk[0]);
             if (fk == 0) {
                 itemData.type = 'nahkampfwaffe';
-                itemData.data.wm_at = waffe.wm[0];
-                itemData.data.wm_vt = waffe.wm[0];
+                itemData.wm_at = waffe.wm[0];
+                itemData.wm_vt = waffe.wm[0];
             } else if (fk == 1) {
                 itemData.type = 'fernkampfwaffe';
                 itemData.lz = waffe.lz[0];

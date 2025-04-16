@@ -1,16 +1,16 @@
 import { IlarisItemSheet } from './item.js';
 
 export class UebernatuerlichFertigkeitSheet extends IlarisItemSheet {
-    getData() {
+    async getData() {
         const data = super.getData();
         if (data.hasOwner) {
-            data.fertigkeit_list = this.item.actor.data.data.misc.uebernatuerlich_fertigkeit_list;
+            data.fertigkeit_list = this.item.actor.misc.uebernatuerlich_fertigkeit_list;
         }
         return data;
     }
 
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             // classes: ["ilaris", "sheet"],
             template: 'systems/Ilaris/templates/sheets/items/uebernatuerlich_fertigkeit.html',
             // width: 720,

@@ -1,10 +1,11 @@
+{{log 'ue talent' this}}
 <form class="{{cssClass}}">
     <div>
         <div>
             <header class="sheet-header">
                 <div class="header-fields">
                     <h1 class="charname">
-                        <input name="name" type="text" value="{{data.name}}" />
+                        <input name="name" type="text" value="{{item.name}}" />
                     </h1>
                 </div>
             </header>
@@ -12,8 +13,8 @@
 
         {{#if hasOwner}}
         <label>Fertigkeit:</label>
-        <select name="data.fertigkeit_ausgewaehlt">
-            {{#select data.data.fertigkeit_ausgewaehlt}}
+        <select name="system.fertigkeit_ausgewaehlt">
+            {{#select item.system.fertigkeit_ausgewaehlt}}
             <option value="auto">auto</option>
             {{#each fertigkeit_list as |fert key|}}
             <option value="{{fert}}">{{fert}}</option>
@@ -23,28 +24,28 @@
         <div>
             <div class="flexrow">
                 <label>Mächtig: </label>
-                <textarea rows="10" name="data.maechtig">{{data.data.maechtig}}</textarea>
+                <textarea rows="10" name="system.maechtig">{{item.system.maechtig}}</textarea>
                 <!-- <input name="data.maechtig" value="{{item.data.maechtig}}" type="text" data-dtype="String"> -->
             </div>
             <div class="flexrow">
                 <label>Schwierigkeit: </label>
                 <input
-                    name="data.schwierigkeit"
-                    value="{{data.data.schwierigkeit}}"
+                    name="system.schwierigkeit"
+                    value="{{item.system.schwierigkeit}}"
                     type="text"
                     data-dtype="String"
                 />
             </div>
             <div class="flexrow">
                 <label>Modifikationen: </label>
-                <textarea name="data.modifikationen">{{data.data.modifikationen}}</textarea>
+                <textarea name="system.modifikationen">{{item.system.modifikationen}}</textarea>
                 <!-- <input name="data.modifikationen" value="{{item.data.modifikationen}}" type="textarea" style="resize: vertical;" rows="2" data-dtype="String"> -->
             </div>
             <div class="flexrow">
                 <label>Vorbereitung: </label>
                 <input
-                    name="data.vorbereitung"
-                    value="{{data.data.vorbereitung}}"
+                    name="system.vorbereitung"
+                    value="{{item.system.vorbereitung}}"
                     type="text"
                     data-dtype="String"
                 />
@@ -52,8 +53,8 @@
             <div class="flexrow">
                 <label>Ziel: </label>
                 <input
-                    name="data.ziel"
-                    value="{{data.data.ziel}}"
+                    name="system.ziel"
+                    value="{{item.system.ziel}}"
                     type="text"
                     data-dtype="String"
                 />
@@ -61,8 +62,8 @@
             <div class="flexrow">
                 <label>Reichweite: </label>
                 <input
-                    name="data.reichweite"
-                    value="{{data.data.reichweite}}"
+                    name="system.reichweite"
+                    value="{{item.system.reichweite}}"
                     type="text"
                     data-dtype="String"
                 />
@@ -70,8 +71,8 @@
             <div class="flexrow">
                 <label>Wirkungsdauer: </label>
                 <input
-                    name="data.wirkungsdauer"
-                    value="{{data.data.wirkungsdauer}}"
+                    name="system.wirkungsdauer"
+                    value="{{item.system.wirkungsdauer}}"
                     type="text"
                     data-dtype="String"
                 />
@@ -79,8 +80,8 @@
             <div class="flexrow">
                 <label>Kosten: </label>
                 <input
-                    name="data.kosten"
-                    value="{{data.data.kosten}}"
+                    name="system.kosten"
+                    value="{{item.system.kosten}}"
                     type="text"
                     data-dtype="String"
                 />
@@ -88,8 +89,8 @@
             <div class="flexrow">
                 <label>Fertigkeiten: </label>
                 <input
-                    name="data.fertigkeiten"
-                    value="{{data.data.fertigkeiten}}"
+                    name="system.fertigkeiten"
+                    value="{{item.system.fertigkeiten}}"
                     type="text"
                     data-dtype="String"
                 />
@@ -97,8 +98,8 @@
             <div class="flexrow">
                 <label>Erlernen: </label>
                 <input
-                    name="data.erlernen"
-                    value="{{data.data.erlernen}}"
+                    name="system.erlernen"
+                    value="{{item.system.erlernen}}"
                     type="text"
                     data-dtype="String"
                 />
@@ -111,13 +112,13 @@
                 </div>
             </div> -->
             <label>Beschreibung: </label>
-            <textarea name="data.text">{{data.data.text}}</textarea>
+            <textarea name="system.text">{{item.system.text}}</textarea>
             <!-- {{editor content=data.text target="data.text" button=true owner=owner editable=editable}} -->
         </div>
     </div>
     <div>
         <label>Löschen</label>
-        <a class="item-delete" data-itemclass="freie_fertigkeit" data-itemid="{{data._id}}"
+        <a class="item-delete" data-itemclass="freie_fertigkeit" data-itemid="{{item._id}}"
         ><i class="fas fa-trash"></i
         ></a>
     </div>

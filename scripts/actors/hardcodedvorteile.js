@@ -1,7 +1,7 @@
-export function behinderung(be, data) {
+export function behinderung(be, systemData) {
     // let pw = data.profan.fertigkeiten.find(x => x.name == fertigkeit)?.data.pw;
-    let rg = data.data.vorteil.kampf.find((x) => x.name == 'Rüstungsgewöhnung');
-    let vrg = data.data.vorteil.kampf.find((x) => x.name == 'Verbesserte Rüstungsgewöhnung');
+    let rg = systemData.vorteil.kampf.find((x) => x.name == 'Rüstungsgewöhnung');
+    let vrg = systemData.vorteil.kampf.find((x) => x.name == 'Verbesserte Rüstungsgewöhnung');
     if (be > 0 && rg) {
         be -= 1;
     }
@@ -12,10 +12,10 @@ export function behinderung(be, data) {
     return be;
 }
 
-export function beTraglast(data) {
-    let summeGewicht = data.data.getragen;
-    let traglast = data.data.abgeleitete.traglast;
-    let intervall = data.data.abgeleitete.traglast_intervall;
+export function beTraglast(systemData) {
+    let summeGewicht = systemData.getragen;
+    let traglast = systemData.abgeleitete.traglast;
+    let intervall = systemData.abgeleitete.traglast_intervall;
     let be_mod = 0;
     let gewicht_diff = summeGewicht - traglast;
     if (gewicht_diff > 0) {
@@ -30,8 +30,8 @@ export function beTraglast(data) {
     return be_mod;
 }
 
-export function wundschwelle(ws, data) {
-    if (data.data.vorteil.profan.find((x) => x.name == 'Unverwüstlich')) ws += 1;
+export function wundschwelle(ws, actor) {
+    if (actor.vorteil.profan.find((x) => x.name == 'Unverwüstlich')) ws += 1;
     // let uv = data.vorteil.profan.find(x => x.name == "Unverwüstlich");
     // let nr = data.vorteil.allgemein.find(x => x.name == "Natürliche Rüstung");
     // if (uv) ws += 1;
@@ -39,49 +39,49 @@ export function wundschwelle(ws, data) {
     return ws;
 }
 
-export function wundschwelleStern(ws, data) {
-    if (data.data.vorteil.allgemein.find((x) => x.name == 'Natürliche Rüstung')) ws += 1;
+export function wundschwelleStern(ws, actor) {
+    if (actor.vorteil.allgemein.find((x) => x.name == 'Natürliche Rüstung')) ws += 1;
     return ws;
 }
 
-export function globalermod(data) {
+export function globalermod(systemData) {
     return (
-        data.data.gesundheit.wundabzuege +
-        data.data.furcht.furchtabzuege +
-        data.data.modifikatoren.manuellermod
+        systemData.gesundheit.wundabzuege +
+        systemData.furcht.furchtabzuege +
+        systemData.modifikatoren.manuellermod
     );
 }
 
-export function initiative(ini, data) {
-    let kr = data.data.vorteil.kampf.find((x) => x.name == 'Kampfreflexe');
+export function initiative(ini, actor) {
+    let kr = actor.vorteil.kampf.find((x) => x.name == 'Kampfreflexe');
     if (kr) ini += 4;
     return ini;
 }
 
-export function magieresistenz(mr, data) {
-    let wsI = data.data.vorteil.profan.find((x) => x.name == 'Willensstark I');
-    let wsII = data.data.vorteil.profan.find((x) => x.name == 'Willensstark II');
-    let ub = data.data.vorteil.profan.find((x) => x.name == 'Unbeugsamkeit');
+export function magieresistenz(mr, actor) {
+    let wsI = actor.vorteil.profan.find((x) => x.name == 'Willensstark I');
+    let wsII = actor.vorteil.profan.find((x) => x.name == 'Willensstark II');
+    let ub = actor.vorteil.profan.find((x) => x.name == 'Unbeugsamkeit');
     if (wsI) mr += 4;
     if (wsII) mr += 4;
-    if (ub) mr += Math.round(data.data.attribute.MU.wert / 2);
+    if (ub) mr += Math.round(actor.system.attribute.MU.wert / 2);
     return mr;
 }
 
-export function geschwindigkeit(gs, data) {
-    let fI = data.data.vorteil.profan.find((x) => x.name == 'Flink I');
-    let fII = data.data.vorteil.profan.find((x) => x.name == 'Flink II');
+export function geschwindigkeit(gs, actor) {
+    let fI = actor.vorteil.profan.find((x) => x.name == 'Flink I');
+    let fII = actor.vorteil.profan.find((x) => x.name == 'Flink II');
     if (fI) gs += 1;
     if (fII) gs += 1;
     return gs;
 }
 
-export function durchhalte(data) {
+export function durchhalte(actor) {
     //Reihenfolge der Berechnung?
-    let be_traglast = data.data.abgeleitete.be_traglast;
-    let be = data.data.abgeleitete.be - be_traglast;
-    let dh = data.data.attribute.KO.wert;
-    let agh = data.data.vorteil.profan.find((x) => x.name == 'Abgehärtet II');
+    let be_traglast = actor.system.abgeleitete.be_traglast;
+    let be = actor.system.abgeleitete.be - be_traglast;
+    let dh = actor.system.attribute.KO.wert;
+    let agh = actor.vorteil.profan.find((x) => x.name == 'Abgehärtet II');
     if (agh) dh += 2;
     dh -= 2 * be;
     dh = dh > 1 ? dh : 1;
@@ -90,10 +90,10 @@ export function durchhalte(data) {
 }
 
 // export function schips(sch, data) {
-export function schips(data) {
+export function schips(actor) {
     let schips = 4;
-    if (data.data.vorteil.allgemein.find((x) => x.name == 'Glück I')) schips = 5;
-    if (data.data.vorteil.allgemein.find((x) => x.name == 'Glück II')) schips = 6;
+    if (actor.vorteil.allgemein.find((x) => x.name == 'Glück I')) schips = 5;
+    if (actor.vorteil.allgemein.find((x) => x.name == 'Glück II')) schips = 6;
     // let gI = data.vorteil.allgemein.find(x => x.name == "Glück I");
     // let gII = data.vorteil.allgemein.find(x => x.name == "Glück II");
     // if (gI) sch += 1;
@@ -102,14 +102,14 @@ export function schips(data) {
 }
 
 // export function zauberer(asp, data) {
-export function zauberer(data) {
+export function zauberer(actor) {
     let asp = 0;
-    if (data.data.vorteil.allgemein.find((x) => x.name == 'Zauberer I')) asp = 8;
-    if (data.data.vorteil.allgemein.find((x) => x.name == 'Zauberer II')) asp = 16;
-    if (data.data.vorteil.allgemein.find((x) => x.name == 'Zauberer III')) asp = 24;
-    if (data.data.vorteil.allgemein.find((x) => x.name == 'Zauberer IV')) asp = 32;
-    if (data.data.vorteil.magie.find((x) => x.name == 'Gefäß der Sterne'))
-        asp += 4 + data.data.attribute.CH.wert;
+    if (actor.vorteil.allgemein.find((x) => x.name == 'Zauberer I')) asp = 8;
+    if (actor.vorteil.allgemein.find((x) => x.name == 'Zauberer II')) asp = 16;
+    if (actor.vorteil.allgemein.find((x) => x.name == 'Zauberer III')) asp = 24;
+    if (actor.vorteil.allgemein.find((x) => x.name == 'Zauberer IV')) asp = 32;
+    if (actor.vorteil.magie.find((x) => x.name == 'Gefäß der Sterne'))
+        asp += 4 + actor.system.attribute.CH.wert;
     // let zI = data.vorteil.allgemein.find(x => x.name == "Zauberer I");
     // let zII = data.vorteil.allgemein.find(x => x.name == "Zauberer II");
     // let zIII = data.vorteil.allgemein.find(x => x.name == "Zauberer III");
@@ -124,12 +124,12 @@ export function zauberer(data) {
 }
 
 // export function geweihter(kap, data) {
-export function geweihter(data) {
+export function geweihter(actor) {
     let kap = 0;
-    if (data.data.vorteil.allgemein.find((x) => x.name == 'Geweiht I')) kap = 8;
-    if (data.data.vorteil.allgemein.find((x) => x.name == 'Geweiht II')) kap = 16;
-    if (data.data.vorteil.allgemein.find((x) => x.name == 'Geweiht III')) kap = 24;
-    if (data.data.vorteil.allgemein.find((x) => x.name == 'Geweiht IV')) kap = 32;
+    if (actor.vorteil.allgemein.find((x) => x.name == 'Geweiht I')) kap = 8;
+    if (actor.vorteil.allgemein.find((x) => x.name == 'Geweiht II')) kap = 16;
+    if (actor.vorteil.allgemein.find((x) => x.name == 'Geweiht III')) kap = 24;
+    if (actor.vorteil.allgemein.find((x) => x.name == 'Geweiht IV')) kap = 32;
     // let gI = data.vorteil.allgemein.find(x => x.name == "Geweiht I");
     // let gII = data.vorteil.allgemein.find(x => x.name == "Geweiht II");
     // let gIII = data.vorteil.allgemein.find(x => x.name == "Geweiht III");
@@ -141,30 +141,24 @@ export function geweihter(data) {
     return kap;
 }
 
-export function getKampfstile(data) {
+export function getKampfstile(actor) {
     let kampfstile = ['ohne'];
-    let bhk = false;
-    let kvk = false;
-    let pwk = false;
-    let rtk = false;
-    let shk = false;
-    let snk = false;
-    if (data.data.vorteil.kampfstil.find((x) => x.name.includes('Beidhändiger Kampf')))
+    if (actor.vorteil.kampfstil.find((x) => x.name.includes('Beidhändiger Kampf')))
         kampfstile.push('bhk');
-    if (data.data.vorteil.kampfstil.find((x) => x.name.includes('Kraftvoller Kampf')))
+    if (actor.vorteil.kampfstil.find((x) => x.name.includes('Kraftvoller Kampf')))
         kampfstile.push('kvk');
-    if (data.data.vorteil.kampfstil.find((x) => x.name.includes('Parierwaffenkampf')))
+    if (actor.vorteil.kampfstil.find((x) => x.name.includes('Parierwaffenkampf')))
         kampfstile.push('pwk');
-    if (data.data.vorteil.kampfstil.find((x) => x.name.includes('Reiterkampf')))
+    if (actor.vorteil.kampfstil.find((x) => x.name.includes('Reiterkampf')))
         kampfstile.push('rtk');
-    if (data.data.vorteil.kampfstil.find((x) => x.name.includes('Schildkampf')))
+    if (actor.vorteil.kampfstil.find((x) => x.name.includes('Schildkampf')))
         kampfstile.push('shk');
-    if (data.data.vorteil.kampfstil.find((x) => x.name.includes('Schneller Kampf')))
+    if (actor.vorteil.kampfstil.find((x) => x.name.includes('Schneller Kampf')))
         kampfstile.push('snk');
     return kampfstile;
 }
 
-export function getKampfstilStufe(stil, data) {
+export function getKampfstilStufe(stil, actor) {
     // "bhk": "Beidhändiger Kampf",
     // "kvk": "Kraftvoller Kampf",
     // "pwk": "Parierwaffenkampf",
@@ -172,328 +166,328 @@ export function getKampfstilStufe(stil, data) {
     // "shk": "Schildkampf",
     // "snk": "Schneller Kampf"
     let stufe = 0;
-    if (data.data.vorteil.kampfstil.find((x) => x.name == `${CONFIG.ILARIS.label[stil]} I`))
+    if (actor.vorteil.kampfstil.find((x) => x.name == `${CONFIG.ILARIS.label[stil]} I`))
         stufe = 1;
-    if (data.data.vorteil.kampfstil.find((x) => x.name == `${CONFIG.ILARIS.label[stil]} II`))
+    if (actor.vorteil.kampfstil.find((x) => x.name == `${CONFIG.ILARIS.label[stil]} II`))
         stufe = 2;
-    if (data.data.vorteil.kampfstil.find((x) => x.name == `${CONFIG.ILARIS.label[stil]} III`))
+    if (actor.vorteil.kampfstil.find((x) => x.name == `${CONFIG.ILARIS.label[stil]} III`))
         stufe = 3;
-    if (data.data.vorteil.kampfstil.find((x) => x.name == `${CONFIG.ILARIS.label[stil]} IV`))
+    if (actor.vorteil.kampfstil.find((x) => x.name == `${CONFIG.ILARIS.label[stil]} IV`))
         stufe = 4;
     return stufe;
 }
 
-export function getAngepasst(angepasst_string, data) {
+export function getAngepasst(angepasst_string, actor) {
     let angepasst = 0;
     let string_1 = `Angepasst (${angepasst_string}) I`;
     let string_2 = `Angepasst (${angepasst_string}) II`;
-    if (data.data.vorteil.allgemein.find((x) => x.name == string_1)) angepasst = 1;
-    if (data.data.vorteil.allgemein.find((x) => x.name == string_2)) angepasst = 2;
+    if (actor.vorteil.allgemein.find((x) => x.name == string_1)) angepasst = 1;
+    if (actor.vorteil.allgemein.find((x) => x.name == string_2)) angepasst = 2;
     return angepasst;
 }
 
-export function magieErzwingenPossible(data) {
+export function magieErzwingenPossible(actor) {
     let possible = false;
     if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Anach-Nurim III')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Anach-Nurim III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Anach-Nurim IV')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Anach-Nurim IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Borbaradianer III')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Borbaradianer III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Borbaradianer IV')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Borbaradianer IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Druiden III')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Druiden III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Druiden IV')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Druiden IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Hexen III')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Hexen III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Hexen IV')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Hexen IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Schelme III')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Schelme III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Schelme IV')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Schelme IV')
     ) {
         possible = true;
     }
     return possible;
 }
 
-export function magieKostenSparenPossible(data) {
+export function magieKostenSparenPossible(actor) {
     let possible = false;
-    if (data.data.vorteil.magie.find((x) => x.name == 'Effizientes Zaubern')) {
+    if (actor.vorteil.magie.find((x) => x.name == 'Effizientes Zaubern')) {
         possible = true;
     }
     return possible;
 }
 
-export function magieZeitLassenPossible(data) {
+export function magieZeitLassenPossible(actor) {
     let possible = false;
     if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Alchemisten III')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Alchemisten III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Alchemisten IV')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Alchemisten IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Elfen III')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Elfen III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Elfen IV')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Elfen IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Geoden III')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Geoden III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Geoden IV')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Geoden IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Gildenmagier III')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Gildenmagier III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Gildenmagier IV')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Gildenmagier IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find(
+        actor.vorteil.zaubertraditionen.find(
             (x) => x.name == 'Tradition der Kristallomanten III',
         )
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find(
+        actor.vorteil.zaubertraditionen.find(
             (x) => x.name == 'Tradition der Kristallomanten IV',
         )
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Scharlatane III')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Scharlatane III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Scharlatane IV')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Scharlatane IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Zauberbarden III')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Zauberbarden III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Zauberbarden IV')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Zauberbarden IV')
     ) {
         possible = true;
     }
     return possible;
 }
 
-export function magieZeremoniePossible(data) {
+export function magieZeremoniePossible(actor) {
     let possible = false;
 
-    if (data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Schamanen III')) {
+    if (actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Schamanen III')) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Schamanen IV')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Schamanen IV')
     ) {
         possible = true;
     }
     return possible;
 }
 
-export function magieOpferungPossible(data) {
+export function magieOpferungPossible(actor) {
     let possible = false;
     if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Durro-dun III')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Durro-dun III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Durro-dun IV')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Durro-dun IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Zaubertänzer III')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Zaubertänzer III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Zaubertänzer IV')
-    ) {
-        possible = true;
-    }
-    return possible;
-}
-
-export function karmaKostenSparenPossible(data) {
-    let possible = false;
-    if (data.data.vorteil.karma.find((x) => x.name == 'Liturgische Disziplin')) {
-        possible = true;
-    }
-    return possible;
-}
-
-export function karmaZeremoniePossible(data) {
-    let possible = false;
-
-    if (data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Borongeweihten III')) {
-        possible = true;
-    } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Borongeweihten IV')
-    ) {
-        possible = true;
-    } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Hesindegeweihten III')
-    ) {
-        possible = true;
-    } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Hesindegeweihten IV')
-    ) {
-        possible = true;
-    } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Ifirngeweihten III')
-    ) {
-        possible = true;
-    } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Ifirngeweihten IV')
-    ) {
-        possible = true;
-    } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Perainegeweihten III')
-    ) {
-        possible = true;
-    } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Perainegeweihten IV')
-    ) {
-        possible = true;
-    } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Praiosgeweihten III')
-    ) {
-        possible = true;
-    } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Praiosgeweihten IV')
-    ) {
-        possible = true;
-    } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Traviageweihten III')
-    ) {
-        possible = true;
-    } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Traviageweihten IV')
-    ) {
-        possible = true;
-    } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Tsageweihten III')
-    ) {
-        possible = true;
-    } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Tsageweihten IV')
+        actor.vorteil.zaubertraditionen.find((x) => x.name == 'Tradition der Zaubertänzer IV')
     ) {
         possible = true;
     }
     return possible;
 }
 
-export function karmaOpferungPossible(data) {
+export function karmaKostenSparenPossible(actor) {
     let possible = false;
-    if (data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Avesgeweihten III')) {
+    if (actor.vorteil.karma.find((x) => x.name == 'Liturgische Disziplin')) {
+        possible = true;
+    }
+    return possible;
+}
+
+export function karmaZeremoniePossible(actor) {
+    let possible = false;
+
+    if (actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Borongeweihten III')) {
         possible = true;
     } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Avesgeweihten IV')
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Borongeweihten IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Efferdgeweihten III')
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Hesindegeweihten III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Efferdgeweihten IV')
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Hesindegeweihten IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Firungeweihten III')
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Ifirngeweihten III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Firungeweihten IV')
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Ifirngeweihten IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Ingerimmgeweihten III')
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Perainegeweihten III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Ingerimmgeweihten IV')
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Perainegeweihten IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Nandusgeweihten III')
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Praiosgeweihten III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Nandusgeweihten IV')
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Praiosgeweihten IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Phexgeweihten III')
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Traviageweihten III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Phexgeweihten IV')
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Traviageweihten IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Rahjageweihten III')
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Tsageweihten III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Rahjageweihten IV')
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Tsageweihten IV')
+    ) {
+        possible = true;
+    }
+    return possible;
+}
+
+export function karmaOpferungPossible(actor) {
+    let possible = false;
+    if (actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Avesgeweihten III')) {
+        possible = true;
+    } else if (
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Avesgeweihten IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Rondrageweihten III')
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Efferdgeweihten III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Rondrageweihten IV')
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Efferdgeweihten IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Korgeweihten III')
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Firungeweihten III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Korgeweihten IV')
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Firungeweihten IV')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Swafnirgeweihten III')
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Ingerimmgeweihten III')
     ) {
         possible = true;
     } else if (
-        data.data.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Swafnirgeweihten IV')
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Ingerimmgeweihten IV')
+    ) {
+        possible = true;
+    } else if (
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Nandusgeweihten III')
+    ) {
+        possible = true;
+    } else if (
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Nandusgeweihten IV')
+    ) {
+        possible = true;
+    } else if (
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Phexgeweihten III')
+    ) {
+        possible = true;
+    } else if (
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Phexgeweihten IV')
+    ) {
+        possible = true;
+    } else if (
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Rahjageweihten III')
+    ) {
+        possible = true;
+    } else if (
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Rahjageweihten IV')
+    ) {
+        possible = true;
+    } else if (
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Rondrageweihten III')
+    ) {
+        possible = true;
+    } else if (
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Rondrageweihten IV')
+    ) {
+        possible = true;
+    } else if (
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Korgeweihten III')
+    ) {
+        possible = true;
+    } else if (
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Korgeweihten IV')
+    ) {
+        possible = true;
+    } else if (
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Swafnirgeweihten III')
+    ) {
+        possible = true;
+    } else if (
+        actor.vorteil.geweihtentradition.find((x) => x.name == 'Tradition der Swafnirgeweihten IV')
     ) {
         possible = true;
     }

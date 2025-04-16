@@ -659,3 +659,16 @@ let manoever_karma = {
     },
 };
 ILARIS.manoever_karma = manoever_karma;
+
+let kreatur_item_options = {
+    angriff:"Angriff",
+    eigenschaft:"Eigenschaft",
+    vorteil:"Vorteil",
+    freiestalent:"Fertigkeit",
+    uebernatfreiestalent:"Übernat. Fertigkeit",
+    zauber:"Zauber",
+    liturgie:"Liturgie",
+    anrufung:"Anrufung",
+    info:"Info"
+};
+ILARIS.kreatur_item_options = kreatur_item_options;

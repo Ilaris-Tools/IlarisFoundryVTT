@@ -2,7 +2,7 @@ import { IlarisItemSheet } from './item.js';
 
 export class FreieFertigkeitSheet extends IlarisItemSheet {
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             // classes: ["ilaris", "sheet"],
             template: 'systems/Ilaris/templates/sheets/items/freie_fertigkeit.html',
             // width: 720,

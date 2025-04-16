@@ -1,11 +1,12 @@
+{{log 'fernkampfwaffe' this}}
 <form class="{{cssClass}}">
     <div>
         <div>
             <header class="sheet-header">
-                <img class="profile-img" src="{{data.img}}" data-edit="img" title="{{data.name}}" />
+                <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
                 <div class="header-fields">
                     <h1 class="charname">
-                        <input name="name" type="text" value="{{data.name}}" />
+                        <input name="name" type="text" value="{{item.name}}" />
                     </h1>
                 </div>
             </header>
@@ -15,15 +16,15 @@
                 <label class="flex-fest-var" style="flex-basis: 100px"><b>Schaden: </b></label>
                 <div class="flexrow">
                     <input
-                        name="data.dice_anzahl"
-                        value="{{data.data.dice_anzahl}}"
+                        name="system.dice_anzahl"
+                        value="{{item.system.dice_anzahl}}"
                         type="text"
                         data-dtype="String"
                     />
                     <label class="flex-fest-var" style="flex-basis: 40px">d6+</label>
                     <input
-                        name="data.dice_plus"
-                        value="{{data.data.dice_plus}}"
+                        name="system.dice_plus"
+                        value="{{item.system.dice_plus}}"
                         type="text"
                         data-dtype="String"
                     />
@@ -33,15 +34,15 @@
                 <label class="flex-fest-var" style="flex-basis: 100px"><b>Fertigkeit: </b></label>
                 <div class="flexrow">
                     <input
-                        name="data.fertigkeit"
-                        value="{{data.data.fertigkeit}}"
+                        name="system.fertigkeit"
+                        value="{{item.system.fertigkeit}}"
                         type="text"
                         data-dtype="String"
                     />
                     <label class="flex-fest-var" style="flex-basis: 40px"><b>Talent: </b></label>
                     <input
-                        name="data.talent"
-                        value="{{data.data.talent}}"
+                        name="system.talent"
+                        value="{{item.system.talent}}"
                         type="text"
                         data-dtype="String"
                     />
@@ -51,22 +52,22 @@
                 <label class="flex-fest-var" style="flex-basis: 100px"><b>WM: </b></label>
                 <div class="flexrow">
                     <input
-                        name="data.wm_fk"
-                        value="{{data.data.wm_fk}}"
+                        name="system.wm_fk"
+                        value="{{item.system.wm_fk}}"
                         type="text"
                         data-dtype="String"
                     />
                     <label class="flex-fest-var" style="flex-basis: 30px"><b>RW: </b></label>
                     <input
-                        name="data.rw"
-                        value="{{data.data.rw}}"
+                        name="system.rw"
+                        value="{{item.system.rw}}"
                         type="text"
                         data-dtype="String"
                     />
                     <label class="flex-fest-var" style="flex-basis: 30px"><b>LZ: </b></label>
                     <input
-                        name="data.lz"
-                        value="{{data.data.lz}}"
+                        name="system.lz"
+                        value="{{item.system.lz}}"
                         type="text"
                         data-dtype="String"
                     />
@@ -76,8 +77,8 @@
                 <label class="flex-fest-var" style="flex-basis: 100px"><b>Härte: </b></label>
                 <div class="flexrow">
                     <input
-                        name="data.haerte"
-                        value="{{data.data.haerte}}"
+                        name="system.haerte"
+                        value="{{item.system.haerte}}"
                         type="text"
                         data-dtype="String"
                     />
@@ -85,8 +86,8 @@
                         ><b>Beschädigung: </b></label
                     >
                     <input
-                        name="data.beschaedigung"
-                        value="{{data.data.beschaedigung}}"
+                        name="system.beschaedigung"
+                        value="{{item.system.beschaedigung}}"
                         type="text"
                         data-dtype="String"
                     />
@@ -112,121 +113,121 @@
                     <span>
                         <label>| Nicht für Reiter: </label>
                         <input
-                            name="data.eigenschaften.kein_reiter"
+                            name="system.eigenschaften.kein_reiter"
                             data-dtype="Boolean"
                             type="checkbox"
                             {{checked
-                            data.data.eigenschaften.kein_reiter}}
+                                item.system.eigenschaften.kein_reiter}}
                         />
                     </span>
                     <span>
                         <label>| Niederwerfen: </label>
                         <input
-                            name="data.eigenschaften.niederwerfen"
+                            name="system.eigenschaften.niederwerfen"
                             data-dtype="Boolean"
                             type="checkbox"
                             {{checked
-                            data.data.eigenschaften.niederwerfen}}
+                                item.system.eigenschaften.niederwerfen}}
                         />
                     </span>
                     <span>
                         <label>| Niederwerfen (-4): </label>
                         <input
-                            name="data.eigenschaften.niederwerfen_4"
+                            name="system.eigenschaften.niederwerfen_4"
                             data-dtype="Boolean"
                             type="checkbox"
                             {{checked
-                            data.data.eigenschaften.niederwerfen_4}}
+                                item.system.eigenschaften.niederwerfen_4}}
                         />
                     </span>
                     <span>
                         <label>| Niederwerfen (-8): </label>
                         <input
-                            name="data.eigenschaften.niederwerfen_8"
+                            name="system.eigenschaften.niederwerfen_8"
                             data-dtype="Boolean"
                             type="checkbox"
                             {{checked
-                            data.data.eigenschaften.niederwerfen_8}}
+                                item.system.eigenschaften.niederwerfen_8}}
                         />
                     </span>
                     <span>
                         <label>| Schwer (4): </label>
                         <input
-                            name="data.eigenschaften.schwer_4"
+                            name="system.eigenschaften.schwer_4"
                             data-dtype="Boolean"
                             type="checkbox"
                             {{checked
-                            data.data.eigenschaften.schwer_4}}
+                                item.system.eigenschaften.schwer_4}}
                         />
                     </span>
                     <span>
                         <label>| Schwer (8): </label>
                         <input
-                            name="data.eigenschaften.schwer_8"
+                            name="system.eigenschaften.schwer_8"
                             data-dtype="Boolean"
                             type="checkbox"
                             {{checked
-                            data.data.eigenschaften.schwer_8}}
+                                item.system.eigenschaften.schwer_8}}
                         />
                     </span>
                     <span>
                         <label>| Stationär: </label>
                         <input
-                            name="data.eigenschaften.stationaer"
+                            name="system.eigenschaften.stationaer"
                             data-dtype="Boolean"
                             type="checkbox"
                             {{checked
-                            data.data.eigenschaften.stationaer}}
+                                item.system.eigenschaften.stationaer}}
                         />
                     </span>
                     <span>
                         <label>| Stumpf: </label>
                         <input
-                            name="data.eigenschaften.stumpf"
+                            name="system.eigenschaften.stumpf"
                             data-dtype="Boolean"
                             type="checkbox"
                             {{checked
-                            data.data.eigenschaften.stumpf}}
+                                item.system.eigenschaften.stumpf}}
                         />
                     </span>
                     <span>
                         <label>| Umklammern (2,12): </label>
                         <input
-                            name="data.eigenschaften.umklammern_212"
+                            name="system.eigenschaften.umklammern_212"
                             data-dtype="Boolean"
                             type="checkbox"
                             {{checked
-                            data.data.eigenschaften.umklammern_212}}
+                                item.system.eigenschaften.umklammern_212}}
                         />
                     </span>
                     <span>
                         <label>| Umklammern (4,16): </label>
                         <input
-                            name="data.eigenschaften.umklammern_416"
+                            name="system.eigenschaften.umklammern_416"
                             data-dtype="Boolean"
                             type="checkbox"
                             {{checked
-                            data.data.eigenschaften.umklammern_416}}
+                                item.system.eigenschaften.umklammern_416}}
                         />
                     </span>
                     <span>
                         <label>| Umklammern (8,16): </label>
                         <input
-                            name="data.eigenschaften.umklammern_816"
+                            name="system.eigenschaften.umklammern_816"
                             data-dtype="Boolean"
                             type="checkbox"
                             {{checked
-                            data.data.eigenschaften.umklammern_816}}
+                                item.system.eigenschaften.umklammern_816}}
                         />
                     </span>
                     <span>
                         <label>| Zweihändig: </label>
                         <input
-                            name="data.eigenschaften.zweihaendig"
+                            name="system.eigenschaften.zweihaendig"
                             data-dtype="Boolean"
                             type="checkbox"
                             {{checked
-                            data.data.eigenschaften.zweihaendig}}
+                                item.system.eigenschaften.zweihaendig}}
                         />
                     </span>
                 </div>
@@ -236,8 +237,8 @@
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis: 100px"><b>WM: </b></label>
                 <input
-                    name="data.mod_fk"
-                    value="{{data.data.mod_fk}}"
+                    name="system.mod_fk"
+                    value="{{item.system.mod_fk}}"
                     type="text"
                     data-dtype="Number"
                 />
@@ -247,22 +248,22 @@
                     ><b>Schadensbonus: </b></label
                 >
                 <input
-                    name="data.mod_schaden"
-                    value="{{data.data.mod_schaden}}"
+                    name="system.mod_schaden"
+                    value="{{item.system.mod_schaden}}"
                     type="text"
                     data-dtype="String"
                 />
             </div>
             {{/if}}
             <label><b>Beschreibung: </b></label>
-            <textarea name="data.text">{{data.data.text}}</textarea>
+            <textarea name="system.text">{{item.system.text}}</textarea>
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis: 100px"
                     ><b>{{get_label "gewicht"}}: </b></label
                 >
                 <input
-                    name="data.gewicht"
-                    value="{{data.data.gewicht}}"
+                    name="system.gewicht"
+                    value="{{item.system.gewicht}}"
                     type="text"
                     data-dtype="Number"
                 />
@@ -270,8 +271,8 @@
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis: 100px"><b>Preis: </b></label>
                 <input
-                    name="data.preis"
-                    value="{{data.data.preis}}"
+                    name="system.preis"
+                    value="{{item.system.preis}}"
                     type="text"
                     data-dtype="Number"
                 />
@@ -279,8 +280,8 @@
             </div>
             {{#if hasOwner}}
             <label class="flex-fest-var" style="flex-basis: 100px"><b>Aufbewahrungsort: </b></label>
-            <select name="data.aufbewahrungs_ort">
-                {{#select data.data.aufbewahrungs_ort}} {{#each speicherplatz_list as |ort|}}
+            <select name="system.aufbewahrungs_ort">
+                {{#select item.system.aufbewahrungs_ort}} {{#each speicherplatz_list as |ort|}}
                 <option value="{{ort}}">{{ort}}</option>
                 {{/each}} {{/select}}
             </select>

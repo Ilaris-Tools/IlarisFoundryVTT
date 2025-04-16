@@ -2,7 +2,7 @@ import { IlarisActorSheet } from './actor.js';
 
 export class HeldenSheet extends IlarisActorSheet {
     static get defaultOptions() {
-        return mergeObject(super.defaultOptions, {
+        return foundry.utils.mergeObject(super.defaultOptions, {
             // classes: ["ilaris", "sheet"],
             classes: ['ilaris'],
             template: 'systems/Ilaris/templates/sheets/helden.html',

@@ -1,29 +1,30 @@
+{{log 'inventar' this}}
 <div class="flexrow">
     <label>Dukaten</label>
     <input
-        name="data.geld.dukaten"
-        value="{{data.data.geld.dukaten}}"
+        name="system.geld.dukaten"
+        value="{{actor.system.geld.dukaten}}"
         type="text"
         data-dtype="Number"
     />
     <label>Silbertaler</label>
     <input
-        name="data.geld.silbertaler"
-        value="{{data.data.geld.silbertaler}}"
+        name="system.geld.silbertaler"
+        value="{{actor.system.geld.silbertaler}}"
         type="text"
         data-dtype="Number"
     />
     <label>Heller</label>
     <input
-        name="data.geld.heller"
-        value="{{data.data.geld.heller}}"
+        name="system.geld.heller"
+        value="{{actor.system.geld.heller}}"
         type="text"
         data-dtype="Number"
     />
     <label>Kreuzer</label>
     <input
-        name="data.geld.kreuzer"
-        value="{{data.data.geld.kreuzer}}"
+        name="system.geld.kreuzer"
+        value="{{actor.system.geld.kreuzer}}"
         type="text"
         data-dtype="Number"
     />
@@ -45,10 +46,10 @@
     <label class="icon-small"></label>
 </div>
 <div class="twokindrow">
-    {{#each data.data.inventar.tragend as |item key|}}
+    {{#each actor.inventar.tragend as |item key|}}
     <div class="flexrow">
         <label>{{item.name}}</label>
-        <label>{{item.data.data.gewicht}}</label>
+        <label>{{item.system.gewicht}}</label>
         <a class="item-edit icon-small" data-itemid="{{item.id}}"><i class="fas fa-edit"></i></a>
         <a class="item-delete icon-small" data-itemid="{{item.id}}"><i class="fas fa-trash"></i></a>
     </div>
@@ -62,18 +63,18 @@
 <div class="flexrow">
     <label><b>Name</b></label>
     <label><b>{{get_label "gewicht"}}</b></label>
-    <label><b>{{data.data.getragen}}</b></label>
+    <label><b>{{actor.system.getragen}}</b></label>
     <label><b>/</b></label>
-    <label><b>{{data.data.abgeleitete.traglast}}</b></label>
-    <label><b>({{data.data.abgeleitete.traglast_intervall}})</b></label>
+    <label><b>{{actor.system.abgeleitete.traglast}}</b></label>
+    <label><b>({{actor.system.abgeleitete.traglast_intervall}})</b></label>
     <label class="icon-small"></label>
     <label class="icon-small"></label>
 </div>
 <div class="twokindrow">
-    {{#each data.data.inventar.mitfuehrend as |item key|}}
+    {{#each actor.inventar.mitfuehrend as |item key|}}
     <div class="flexrow">
         <label>{{item.name}}</label>
-        <label>{{item.data.data.gewicht}}</label>
+        <label>{{item.system.gewicht}}</label>
         <label></label>
         <label></label>
         <label></label>
@@ -86,7 +87,7 @@
 
 <br />
 
-{{#each data.data.inventar.item_list as |itemContainer key|}}
+{{#each actor.inventar.item_list as |itemContainer key|}}
 <h2>{{itemContainer.name}}</h2>
 <a class="item-edit icon-small" data-itemid="{{itemContainer.id}}"><i class="fas fa-edit"></i></a>
 <a class="item-delete icon-small" data-itemid="{{itemContainer.id}}"
@@ -95,17 +96,17 @@
 <div class="flexrow">
     <label><b>Name</b></label>
     <label><b>{{get_label "gewicht"}}</b></label>
-    <label><b>{{itemContainer.data.data.gewicht_summe}}</b></label>
+    <label><b>{{itemContainer.system.gewicht_summe}}</b></label>
     <label><b>/</b></label>
-    <label><b>{{multMinusOne itemContainer.data.data.gewicht}}</b></label>
+    <label><b>{{multMinusOne itemContainer.system.gewicht}}</b></label>
     <label class="icon-small"></label>
     <label class="icon-small"></label>
 </div>
 <div class="twokindrow">
-    {{#each itemContainer.data.data.bewahrt_auf as |item key|}}
+    {{#each itemContainer.system.bewahrt_auf as |item key|}}
     <div class="flexrow">
         <label>{{item.name}}</label>
-        <label>{{item.data.data.gewicht}}</label>
+        <label>{{item.system.gewicht}}</label>
         <label></label>
         <label></label>
         <label></label>
