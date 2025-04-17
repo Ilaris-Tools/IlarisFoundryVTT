@@ -129,7 +129,7 @@ export class NahkampfDialog extends Dialog {
         } else if (rolltype == 'schaden') {
             label = $(event.currentTarget).data('item');
             label = `Schaden (${label})`;
-            pw = $(event.currentTarget).data('pw');
+            pw = $(event.currentTarget).data('pw').replace('W', 'd');
         } else if (rolltype == 'attribut') {
             const attribut_name = $(event.currentTarget).data('attribut');
             label = CONFIG.ILARIS.label[attribut_name];

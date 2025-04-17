@@ -50,6 +50,7 @@ export async function wuerfelwurf(event, actor) {
     // };
     if (rolltype == "angriff_diag") {
         let item = actor.items.get(event.currentTarget.dataset.itemid);
+        console.log(item);
         item.setManoevers();
         let d = new AngriffDialog(actor, item);
         await d.render(true);
@@ -381,7 +382,7 @@ export async function wuerfelwurf(event, actor) {
         pw = item.system.fk;
         // console.log(item);
         // let manoever_at = item._data.data.manoever_at;
-        let schaden = item.system.schaden;
+        let schaden = item.system.schaden.replace('W','d');
         // console.log(item.data.data);
         // console.log(item._data.data.manoever_at);
         // let gzkl_checked = "0",
