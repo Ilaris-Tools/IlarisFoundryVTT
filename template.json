@@ -398,7 +398,7 @@
       "text": ""
     },
     "manoever": {
-      "voraussetzung": "",
+      "voraussetzungen": [],
       "gruppe": 0,
       "probe": "",
       "gegenprobe": "",
