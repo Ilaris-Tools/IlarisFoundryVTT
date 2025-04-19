@@ -1,1 +1,5 @@
-export class IlarisItem extends Item {}
+export class IlarisItem extends Item {
+    setManoevers() {
+        this.system.manoever.kbak = {selected: false}
+    }
+}

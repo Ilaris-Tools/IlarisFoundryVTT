@@ -224,8 +224,7 @@
         "preis": 0
       },
       "waffe": {
-        "dice_anzahl": "1",
-        "dice_plus": "1",
+        "tp": "",
         "fertigkeit": "",
         "talent": "",
         "rw": 0,

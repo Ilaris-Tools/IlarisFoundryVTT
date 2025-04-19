@@ -10,6 +10,7 @@ export class FernkampfwaffeSheet extends IlarisItemSheet {
     }
 
     static get defaultOptions() {
+        console.log("defaultOptions",this);
         return foundry.utils.mergeObject(super.defaultOptions, {
             // classes: ["ilaris", "sheet"],
             template: 'systems/Ilaris/templates/sheets/items/fernkampfwaffe.html',

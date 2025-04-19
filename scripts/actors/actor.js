@@ -479,9 +479,9 @@ export class IlarisActor extends Actor {
             // if (!isNaN(mod_schaden)) { schaden += mod_schaden;}
             nwaffe.system.at = at;
             nwaffe.system.vt = vt;
-            nwaffe.system.schaden = `${nwaffe.system.dice_anzahl}d6+${schaden}`;
+            nwaffe.system.schaden = `${nwaffe.system.tp}`;
             if (typeof mod_schaden !== 'undefined' && mod_schaden !== null && mod_schaden !== '') {
-                nwaffe.system.schaden = `${nwaffe.system.dice_anzahl}d6+${schaden}+${mod_schaden}`;
+                nwaffe.system.schaden = `${nwaffe.system.tp}+${mod_schaden}`;
             }
             // if (nwaffe.data.data.eigenschaften.ruestungsbrechend) {
             //     // manoever_at.push("km_rust");
@@ -644,9 +644,9 @@ export class IlarisActor extends Actor {
                     fwaffe.system.fk = '-';
                 }
             }
-            fwaffe.system.schaden = `${fwaffe.system.dice_anzahl}d6+${schaden}`;
+            fwaffe.system.schaden = `${fwaffe.system.tp}`;
             if (typeof mod_schaden !== 'undefined' && mod_schaden !== null && mod_schaden !== '') {
-                fwaffe.system.schaden = `${fwaffe.system.dice_anzahl}d6+${schaden}+${mod_schaden}`;
+                fwaffe.system.schaden = `${fwaffe.system.tp}+${mod_schaden}`;
             }
 
             // if (data.data.vorteil.kampf.find(x => x.name.includes("Defensiver Kampfstil"))) item.data.data.manoever.vldf.possible = true;
@@ -1229,7 +1229,6 @@ export class IlarisActor extends Actor {
             else if (item.type == 'anrufung') {
                 anrufung_talente.push(item);
             } else if (item.type == 'vorteil') {
-                if (actor.type == "kreatur") vorteile.push(item);
                 if (item.system.gruppe == 0) vorteil_allgemein.push(item);
                 else if (item.system.gruppe == 1) vorteil_profan.push(item);
                 else if (item.system.gruppe == 2) vorteil_kampf.push(item);
@@ -1325,7 +1324,6 @@ export class IlarisActor extends Actor {
         vorteil_geweihtetraditionen.sort((a, b) =>
             a.name > b.name ? 1 : b.name > a.name ? -1 : 0,
         );
-        vorteile.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
         eigenheiten.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
         freie_uebernatuerliche_fertigkeiten.sort((a, b) =>
         a.system.gruppe > b.system.gruppe
@@ -1410,7 +1408,6 @@ export class IlarisActor extends Actor {
         if (actor.type == "kreatur") {
             actor.eigenschaften = eigenschaften;
             actor.angriffe = angriffe;
-            actor.vorteile = vorteile;
             actor.infos = infos;
             actor.freietalente = freietalente;
             actor.uebernatuerlich.fertigkeiten = freie_uebernatuerliche_fertigkeiten;

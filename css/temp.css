@@ -198,3 +198,31 @@ input.titel-input {
   padding-left: 22px ;
   text-indent: -22px ;
 }
+
+/* Style for valid input */
+.regex-check:valid {
+  border-color: green;
+  border-width: 2px;
+}
+
+/* Style for invalid input */
+.regex-check:invalid {
+  border-color: red;
+  border-width: 2px;
+}
+
+.validation-icon {
+  font-size: 1.2em;
+  flex: 0;
+  margin-left: 16px;
+} 
+
+.regex-check:valid + .validation-icon::before {
+  content: '✔';
+  color: green;
+}
+
+.regex-check:invalid + .validation-icon::before {
+  content: '✘';
+  color: red;
+}

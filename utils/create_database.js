@@ -126,6 +126,7 @@ function create_weapons(data) {
                 data: {
                     dice_anzahl: parseInt(item['W6']),
                     dice_plus: parseInt(item['plus']),
+                    tp: item['tp'],
                     haerte: parseInt(item['haerte']),
                     fertigkeit: item['fertigkeit'],
                     talent: item['talent'],
@@ -181,6 +182,7 @@ function create_weapons(data) {
                 data: {
                     dice_anzahl: parseInt(item['W6']),
                     dice_plus: parseInt(item['plus']),
+                    tp: item['tp'],
                     haerte: parseInt(item['haerte']),
                     fertigkeit: item['fertigkeit'],
                     talent: item['talent'],

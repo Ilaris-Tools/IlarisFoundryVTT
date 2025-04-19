@@ -109,7 +109,7 @@ export class AngriffDialog extends Dialog {
         console.log(this.actor)
         let manoever = this.item.system.manoever;
         let eigenschaften = Object.values(this.item.system.eigenschaften).map(e => e.name);
-        let vorteile = this.actor.vorteile.map(v => v.name);
+        let vorteile = this.actor.vorteil.kampf.map(v => v.name);
 
         manoever.km_rust.possible = eigenschaften.includes("Rüstungsbrechend");
         manoever.km_stsl.possible = eigenschaften.includes("Stumpf");
@@ -210,6 +210,9 @@ export class AngriffDialog extends Dialog {
         // TDOO: this differ between angriff and nk/fk waffen, define get_tp() in both?
         // let schaden = item.data.data.schaden;
         let schaden = item.system.tp.replace("W", "d");
+        if(this.actor.type == "held") {
+            schaden = item.system.schaden.replace("W", "d");
+        }
 
         if (manoever.kbak.selected) {
             mod_at -= 4;
