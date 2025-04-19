@@ -12,7 +12,7 @@ export class AngriffDialog extends Dialog {
         super(dialog, options);
         // this can be probendialog (more abstract)
         this.item = item;
-        this.actor = item.actor;
+        this.actor = actor;
         this.speaker = ChatMessage.getSpeaker({ actor: this.actor });
         this.rollmode = game.settings.get("core", "rollMode");  // public, private.... 
         this.item.system.manoever.rllm.selected = game.settings.get("core", "rollMode");  // TODO: either manoever or dialog property.
@@ -25,12 +25,10 @@ export class AngriffDialog extends Dialog {
 
     async getData () { // damit wird das template gefüttert
         return {
-            choices_xd20: CONFIG.ILARIS.xd20_choice,
-            checked_xd20: '0',
             distance_choice: CONFIG.ILARIS.distance_choice,
             rollModes: CONFIG.Dice.rollModes,
-            // defaultRollMode: this.rollmode,
             item: this.item,
+            actor: this.actor,
             mod_at: this.mod_at
         };
     }
