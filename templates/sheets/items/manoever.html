@@ -11,18 +11,32 @@
             </header>
         </div>
         <div class="flexrow">
+            <label><b>Manövertyp:</b></label>
             <select name="system.gruppe">
                 {{selectOptions manoever.manoever_type selected=item.system.gruppe}}
             </select>
         </div>
-        <div class="flexrow">
-            <label><b>Voraussetzungen:</b></label>
-            <select name="system.voraussetzungen.type">
-                {{selectOptions manoever.voraussetzung_type selected=item.system.voraussetzungen.type}}
-            </select>
-            <!-- <select name="system.gruppe">
-                {{selectOptions manoever.voraussetzung_type selected=item.system.voraussetzungen.type}}
-            </select> -->
+        <div>
+            <b>Voraussetzungen </b><a class="add-voraussetzung">[+]</a><b>: </b>
+            {{#each item.system.voraussetzungen}}
+                <div class="flexrow">
+                    <input
+                        name="system.voraussetzungen.{{@index}}.name"
+                        value="{{this.name}}"
+                        type="text"
+                        data-dtype="String"
+                    />
+                    <select name="system.voraussetzungen.{{@index}}.type">
+                        {{selectOptions ../manoever.voraussetzung_type selected=this.type}}
+                    </select>
+                    <a
+                        class="voraussetzung-delete icon-small"
+                        data-voraussetzungid="{{@index}}"
+                        style="float: right"
+                        ><i class="fas fa-trash"></i
+                    ></a>
+                </div>                
+            {{/each}}
         </div>
         <div class="flexrow">
             <label><b>Probe:</b></label>

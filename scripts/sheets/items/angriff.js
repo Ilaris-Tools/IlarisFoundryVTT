@@ -51,6 +51,7 @@ export class AngriffSheet extends IlarisItemSheet {
     _onDelEigenschaft(event){
         let eigid = $(event.currentTarget).data('eigenschaftid');
         //console.log(`remove: ${eigid}`);
+        this.document.system.eigenschaften = Object.values(this.document.system.eigenschaften);
         this.document.system.eigenschaften.splice(eigid, 1);
         this.document.render();
     }

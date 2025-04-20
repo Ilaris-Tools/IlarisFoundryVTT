@@ -3,7 +3,7 @@ import { IlarisItemSheet } from './item.js';
 
 /* template.json
     "manoever": {
-      "voraussetzungen": "",
+      "voraussetzungen": [],
       "gruppe": 0,
       "probe": "",
       "gegenprobe": "",
@@ -24,17 +24,22 @@ export class ManoeverSheet extends IlarisItemSheet {
         return data;
     }
 
-    // getData() {
-    //     const data = super.getData();
-    //     return data;
-    // }
+    activateListeners(html) {
+        super.activateListeners(html);
+        html.find('.add-voraussetzung').click(() => this._onAddVoraussetzung());
+        html.find('.voraussetzung-delete').click((ev) => this._ongDeleteVoraussetzun(ev));
+    }
 
-    // _getHeaderButtons() {
-    //     let buttons = super._getHeaderButtons();
-    //     return buttons;
-    // }
+    _onAddVoraussetzung() {
+        this.document.system.voraussetzungen = Object.values(this.document.system.voraussetzungen);
+        this.document.system.voraussetzungen.push({name: "Neue Voraussetzung", type: "VORTEIL"});
+        this.document.render();
+    }
 
-    // activateListeners(html) {
-    //     super.activateListeners(html);
-    // }
+    _ongDeleteVoraussetzun(event) {
+        let eigid = $(event.currentTarget).data('voraussetzungid');
+        this.document.system.voraussetzungen = Object.values(this.document.system.voraussetzungen);
+        this.document.system.voraussetzungen.splice(eigid, 1);
+        this.document.render();
+    }
 }
