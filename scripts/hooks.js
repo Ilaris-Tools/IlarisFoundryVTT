@@ -236,16 +236,29 @@ Hooks.once('init', () => {
 
     game.settings.register('Ilaris', 'IlarisManoeverPaket', {
         name: 'Ilaris Manoever Paket',
-        hint: 'Bestimmt welche Paket aus dem Compendium verwendet werden soll. Per Default werden die Manöver von Ilaris verwendet (Ilaris.manoever (System/Modulname.Manöverpaketname)). Diese Einstellung sollte am Besten nur beim nach Erstellung einer neuen Welt geändert werden, danach wird es dazu führen, dass es Helden/Kreaturen mit Manövern aus anderen Kompendien gibt.',
+        hint: 'Bestimmt welches Manöverpaket aus dem Compendium verwendet werden soll. Per Default werden die Manöver von Ilaris verwendet (Ilaris.manoever (System/Modulname.Manöverpaketname)). Diese Einstellung sollte am Besten nur beim nach Erstellung einer neuen Welt geändert werden, danach wird es dazu führen, dass es Helden/Kreaturen mit Manövern aus anderen Kompendien gibt.',
         scope: 'world',
         config: true,
         type: String,
         default: 'Ilaris.manover',
-        onChange: value => { // value is the new value of the setting
+        onChange: value => {
           console.log(value)
         },
-        requiresReload: true, // true if you want to prompt the user to reload
-      });
+        requiresReload: true,
+    });
+
+    game.settings.register('Ilaris', 'IlarisVorteilePaket', {
+        name: 'Ilaris Vorteile Paket',
+        hint: 'Bestimmt welches Vorteilepaket aus dem Compendium verwendet werden soll. Per Default werden die Manöver von Ilaris verwendet (Ilaris.vorteile (System/Modulname.Vorteilepaketname)). Diese Einstellung sollte am Besten nur beim nach Erstellung einer neuen Welt geändert werden!',
+        scope: 'world',
+        config: true,
+        type: String,
+        default: 'Ilaris.vorteile',
+        onChange: value => {
+          console.log(value)
+        },
+        requiresReload: true,
+    });
 });
 
 Hooks.on('applyActiveEffect', (actor, data, options, userId) => {
@@ -257,45 +270,3 @@ Hooks.on('applyActiveEffect', (actor, data, options, userId) => {
     console.log(options);
     return userId;
 });
-// const myHookId = Hooks.on('updateActor', this.onUpdateActor.bind(this));
-
-
-// Hooks.on('preCreateActor', (createData) => {
-//     mergeObject(createData, {
-//         'token.bar1': { attribute: "gesundheit.hp" },
-//         'token.displayName': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
-//         'token.displayBars': CONST.TOKEN_DISPLAY_MODES.HOVER,
-//         'token.disposition': CONST.TOKEN_DISPOSITIONS.FRIENDLY,
-//         'token.name': createData.name,
-//     });
-//     if (!createData.img) {
-//         createData.img = 'systems/Ilaris/assets/images/token/kreaturentypen/humanoid.jpg';
-//     }
-//     if (createData.type === 'held') {
-//         createData.token.vision = true;
-//         createData.token.actorLink = true;
-//     }
-// });
-
-// Hooks.on("preUpdateToken", (scene, token, updateData) => {
-//     const oldHP = token?.actorData?.data?.gesundheit?.hp.value;
-//     // const oldHP = token?.actorData?.data?.attributes?.hp.value;
-//     const newHP = updateData?.actorData?.data?.gesundheit?.hp.value;
-//     console.log("preUpdateToken");
-//     console.log(oldHP);
-//     console.log(newHP);
-//     // const newHP = updateData?.actorData?.data?.attributes?.hp.value;
-//     // const maxHP = canvas.tokens.get(token._id).actor.data.data.attributes.hp.max;
-
-//     // if (!isNaN(oldHP) && !isNaN(newHP) && oldHP != newHP) {
-//     //     var newColor = getColorFromHPPercent(newHP / maxHP);
-
-//     //     console.log("Hitpoints changed");
-//     //     console.log(newColor);
-
-//     //     scene.updateEmbeddedEntity(Token.embeddedName, {
-//     //         tint: newColor,
-//     //         _id: token._id,
-//     //     });
-//     // }
-// });
