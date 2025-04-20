@@ -12,18 +12,17 @@
         </div>
         <div class="flexrow">
             <select name="system.gruppe">
-                {{#select item.system.gruppe}} {{>
-                systems/Ilaris/templates/helper/select_manoever.html}} {{/select}}
+                {{selectOptions manoever.manoever_type selected=item.system.gruppe}}
             </select>
         </div>
         <div class="flexrow">
-            <label><b>Voraussetzung:</b></label>
-            <input
-                name="system.voraussetzung"
-                value="{{item.system.voraussetzung}}"
-                type="text"
-                data-dtype="String"
-            />
+            <label><b>Voraussetzungen:</b></label>
+            <select name="system.voraussetzungen.type">
+                {{selectOptions manoever.voraussetzung_type selected=item.system.voraussetzungen.type}}
+            </select>
+            <!-- <select name="system.gruppe">
+                {{selectOptions manoever.voraussetzung_type selected=item.system.voraussetzungen.type}}
+            </select> -->
         </div>
         <div class="flexrow">
             <label><b>Probe:</b></label>

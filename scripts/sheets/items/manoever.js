@@ -3,7 +3,7 @@ import { IlarisItemSheet } from './item.js';
 
 /* template.json
     "manoever": {
-      "voraussetzung": "",
+      "voraussetzungen": "",
       "gruppe": 0,
       "probe": "",
       "gegenprobe": "",
@@ -16,6 +16,12 @@ export class ManoeverSheet extends IlarisItemSheet {
         return foundry.utils.mergeObject(super.defaultOptions, {
             template: 'systems/Ilaris/templates/sheets/items/manoever.html',
         });
+    }
+
+    async getData () {
+        const data = await super.getData();
+        data.manoever = CONFIG.ILARIS.manoever;
+        return data;
     }
 
     // getData() {

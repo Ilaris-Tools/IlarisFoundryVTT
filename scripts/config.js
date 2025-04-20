@@ -318,6 +318,21 @@ let zere_choice = {
 };
 ILARIS.zere_choice = zere_choice;
 
+let manoever = {
+    voraussetzung_type: {
+        VORTEIL: 'Vorteil',
+        WAFFENEIGENSCHAFT: 'Waffeneigenschaft',
+        KAMPFSTIL: 'Kampfstil',
+    },
+    manoever_type: {
+        0: "Nahkampf",
+        1: "Fernkampf",
+        2: "Magie",
+        3: "Karma",
+    }
+};
+ILARIS.manoever = manoever;
+
 let manoever_nahkampf = {
     kbak: {
         selected: false,
