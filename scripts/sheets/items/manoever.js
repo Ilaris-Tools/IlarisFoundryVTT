@@ -22,9 +22,12 @@ export class ManoeverSheet extends IlarisItemSheet {
         const data = await super.getData();
         data.manoever = CONFIG.ILARIS.manoever;
         const vorteilePack = game.packs.get(game.settings.get('Ilaris', 'IlarisVorteilePaket'));
+        const vorteile = [];
         vorteilePack.index.forEach((vorteil) => {
-            data.vorteile = {...data.vorteile,[vorteil._id]: vorteil.name};
+            vorteile.push({key: vorteil._id, label: vorteil.name});
         });
+        vorteile.sort((a, b) => (a.label > b.label ? 1 : b.label > a.label ? -1 : 0));
+        data.vorteile = vorteile;
         data.waffeneigenschaften = CONFIG.ILARIS.waffeneigenschaften;
         return data;
     }

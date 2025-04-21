@@ -31,7 +31,7 @@
                     </select>
                     {{#if (ifEq this.type "VORTEIL")}} 
                         <select name="system.voraussetzungen.{{@index}}.value">
-                            {{selectOptions ../vorteile selected=this.value}}
+                            {{selectOptions ../vorteile selected=this.value valueAttr="key" labelAttr="label"}}
                         </select>
                     {{/if}}
                     {{#if (ifEq this.type "WAFFENEIGENSCHAFT")}} 
