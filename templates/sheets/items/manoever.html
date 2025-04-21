@@ -29,6 +29,16 @@
                     <select name="system.voraussetzungen.{{@index}}.type">
                         {{selectOptions ../manoever.voraussetzung_type selected=this.type}}
                     </select>
+                    {{#if (ifEq this.type "VORTEIL")}} 
+                        <select name="system.voraussetzungen.{{@index}}.value">
+                            {{selectOptions ../vorteile selected=this.value}}
+                        </select>
+                    {{/if}}
+                    {{#if (ifEq this.type "WAFFENEIGENSCHAFT")}} 
+                        <select name="system.voraussetzungen.{{@index}}.value">
+                            {{selectOptions ../waffeneigenschaften selected=this.value}}
+                        </select>
+                    {{/if}}
                     <a
                         class="voraussetzung-delete icon-small"
                         data-voraussetzungid="{{@index}}"

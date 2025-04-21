@@ -21,6 +21,11 @@ export class ManoeverSheet extends IlarisItemSheet {
     async getData () {
         const data = await super.getData();
         data.manoever = CONFIG.ILARIS.manoever;
+        const vorteilePack = game.packs.get(game.settings.get('Ilaris', 'IlarisVorteilePaket'));
+        vorteilePack.index.forEach((vorteil) => {
+            data.vorteile = {...data.vorteile,[vorteil._id]: vorteil.name};
+        });
+        data.waffeneigenschaften = CONFIG.ILARIS.waffeneigenschaften;
         return data;
     }
 
@@ -32,7 +37,7 @@ export class ManoeverSheet extends IlarisItemSheet {
 
     _onAddVoraussetzung() {
         this.document.system.voraussetzungen = Object.values(this.document.system.voraussetzungen);
-        this.document.system.voraussetzungen.push({name: "Neue Voraussetzung", type: "VORTEIL"});
+        this.document.system.voraussetzungen.push({name: "Neue Voraussetzung", type: "VORTEIL", value: ""});
         this.document.render();
     }
 
