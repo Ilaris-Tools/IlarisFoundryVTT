@@ -310,7 +310,7 @@ export class IlarisActor extends Actor {
         actor.system.abgeleitete.traglast = traglast;
         let summeGewicht = 0;
         for (let i of actor.inventar.mitfuehrend) {
-            summeGewicht += i.gewicht;
+            summeGewicht += i.system.gewicht;
         }
         actor.system.getragen = summeGewicht;
         let be_mod = hardcoded.beTraglast(actor.system);
@@ -357,7 +357,7 @@ export class IlarisActor extends Actor {
         let kampfstile = hardcoded.getKampfstile(actor);
         // data.misc.selected_kampfstil = "ohne";
         actor.misc.kampfstile_list = kampfstile;
-        let selected_kampfstil = actor.system.misc.selected_kampfstil;
+        let selected_kampfstil = actor.system.misc?.selected_kampfstil ?? 'ohne';
         console.log(kampfstile);
         let HAUPTWAFFE =
             actor.nahkampfwaffen.find((x) => x.system.hauptwaffe == true) ||
