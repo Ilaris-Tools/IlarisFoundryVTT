@@ -11,7 +11,7 @@ export class CombatItem extends IlarisItem {
         if("nahkampfwaffe" === this.type || ("angriff" === this.type && this.system.typ === "Nah")) {
             this.manoever = [];
             manoeverItemData.forEach(manoever => {
-                if(manoever.system.gruppe === 0) {
+                if(manoever.system.gruppe === 0 && manoever._manoeverRequirementsFulfilled(this.actor, this)) {
                     this.manoever.push(manoever);
                 }
             });

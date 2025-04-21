@@ -347,7 +347,8 @@ ILARIS.waffeneigenschaften = waffeneigenschaften;
 let manoever = {
     voraussetzung_type: {
         VORTEIL: 'Vorteil',
-        WAFFENEIGENSCHAFT: 'Waffeneigenschaft'
+        WAFFENEIGENSCHAFT: 'Waffeneigenschaft',
+        STIL: "Stil"
     },
     manoever_type: {
         0: "Nahkampf",

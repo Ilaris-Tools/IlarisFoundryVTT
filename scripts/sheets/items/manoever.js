@@ -22,9 +22,15 @@ export class ManoeverSheet extends IlarisItemSheet {
         const data = await super.getData();
         data.manoever = CONFIG.ILARIS.manoever;
         const vorteilePack = game.packs.get(game.settings.get('Ilaris', 'IlarisVorteilePaket'));
+        const vorteileItemData = (await vorteilePack.getDocuments());
         const vorteile = [];
-        vorteilePack.index.forEach((vorteil) => {
-            vorteile.push({key: vorteil._id, label: vorteil.name});
+        const stil = [];
+        vorteileItemData.index.forEach((vorteil) => {
+            if(vorteil.gruppe === 3) {
+                stil.push({key: vorteil._id, label: vorteil.name});
+            } else {
+                vorteile.push({key: vorteil._id, label: vorteil.name});
+            }
         });
         vorteile.sort((a, b) => (a.label > b.label ? 1 : b.label > a.label ? -1 : 0));
         data.vorteile = vorteile;
@@ -40,7 +46,7 @@ export class ManoeverSheet extends IlarisItemSheet {
 
     _onAddVoraussetzung() {
         this.document.system.voraussetzungen = Object.values(this.document.system.voraussetzungen);
-        this.document.system.voraussetzungen.push({name: "Neue Voraussetzung", type: "VORTEIL", value: ""});
+        this.document.system.voraussetzungen.push({name: "Neue Voraussetzung", type: "VORTEIL", value: []});
         this.document.render();
     }
 

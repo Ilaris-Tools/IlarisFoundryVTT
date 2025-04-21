@@ -27,6 +27,26 @@ export class IlarisActor extends Actor {
         super.prepareBaseData();
     }
 
+    _hasVorteil(vorteilRequirement) {
+        return this.vorteil_allgemein.some((vorteil) => {
+            return vorteil.name == vorteilRequirement;
+        }) || this.vorteil_geweihtetraditionen.some((vorteil) => {
+            return vorteil.name == vorteilRequirement;
+        }) || this.vorteil_kampf.some((vorteil) => {
+            return vorteil.name == vorteilRequirement;
+        }) || this.vorteil_kampfstil.some((vorteil) => {
+            return vorteil.name == vorteilRequirement;
+        }) || this.vorteil_karma.some((vorteil) => {
+            return vorteil.name == vorteilRequirement;
+        }) || this.vorteil_magie.some((vorteil) => {
+            return vorteil.name == vorteilRequirement;
+        }) || this.vorteil_profan.some((vorteil) => {
+            return vorteil.name == vorteilRequirement;
+        }) || this.vorteil_zaubertraditionen.some((vorteil) => {
+            return vorteil.name == vorteilRequirement;
+        });
+    }
+
     __getStatuseffectById(data, statusId) {
         let iterator = data.effects.values();
         for (const effect of iterator) {

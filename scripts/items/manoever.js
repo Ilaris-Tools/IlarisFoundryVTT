@@ -1,11 +1,19 @@
 import { IlarisItem } from "./item.js";
 
 export class ManoeverItem extends IlarisItem {
-    istNutzbar(actor, item) {
+    _manoeverRequirementsFulfilled(actor, item) {
         if (this.vorraussetzungen) {
-            console.log(this.vorraussetzungen);
-            // todo: check vorteile
-            return false;
+            fulfilled = [];
+            this.vorraussetzungen.forEach(vorraussetzung => {
+                if(vorraussetzung.type == "WAFFENEIGENSCHAFT") {
+                    fulfilled.push(item.system.eigenschaften[vorraussetzung.value] == true);
+                }
+                if(vorraussetzung.type == "VORTEIL") {
+                    fulfilled.push(actor._hasVorteil(vorraussetzung.value) == true);
+                }
+            }); 
+            console.log(fulfilled);
+            return fulfilled.every((e) => e == true);
         } else {
             return true;
         }
