@@ -27,24 +27,28 @@ export class IlarisActor extends Actor {
         super.prepareBaseData();
     }
 
-    _hasVorteil(vorteilRequirement) {
+    _hasVorteil(vorteilRequirements) {
         return this.vorteil_allgemein.some((vorteil) => {
-            return vorteil.name == vorteilRequirement;
-        }) || this.vorteil_geweihtetraditionen.some((vorteil) => {
-            return vorteil.name == vorteilRequirement;
+            return vorteilRequirements.includes(vorteil._id);
         }) || this.vorteil_kampf.some((vorteil) => {
-            return vorteil.name == vorteilRequirement;
-        }) || this.vorteil_kampfstil.some((vorteil) => {
-            return vorteil.name == vorteilRequirement;
-        }) || this.vorteil_karma.some((vorteil) => {
-            return vorteil.name == vorteilRequirement;
+            return vorteilRequirements.includes(vorteil._id);
+        })  || this.vorteil_karma.some((vorteil) => {
+            return vorteilRequirements.includes(vorteil._id);
         }) || this.vorteil_magie.some((vorteil) => {
-            return vorteil.name == vorteilRequirement;
+            return vorteilRequirements.includes(vorteil._id);
         }) || this.vorteil_profan.some((vorteil) => {
-            return vorteil.name == vorteilRequirement;
-        }) || this.vorteil_zaubertraditionen.some((vorteil) => {
-            return vorteil.name == vorteilRequirement;
+            return vorteilRequirements.includes(vorteil._id);
         });
+    }
+
+    _hasKampfstilSelected(stilRequirements) {
+        return stilRequirements.includes(this.selected_kampfstil)
+        || this.vorteil_geweihtetraditionen.some((vorteil) => {
+            return stilRequirements.includes(vorteil._id);
+        }) || this.vorteil_zaubertraditionen.some((vorteil) => {
+            return stilRequirements.includes(vorteil._id);
+        });
+        // zauber traditionen und liturgien werden noch wie Vorteile behandelt, da noch nicht implementiert wurde einen Stil dort zu wählen, obwohl nach Regeln sowas nötig ist
     }
 
     __getStatuseffectById(data, statusId) {

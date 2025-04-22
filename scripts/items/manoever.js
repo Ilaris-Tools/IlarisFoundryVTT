@@ -11,6 +11,10 @@ export class ManoeverItem extends IlarisItem {
                 if(vorraussetzung.type == "VORTEIL") {
                     fulfilled.push(actor._hasVorteil(vorraussetzung.value) == true);
                 }
+                if(vorraussetzung.type == "STILE") {
+                    // gleich wie vorteile, aber macht den PR nochmal größer
+                    fulfilled.push(actor._hasVorteil(vorraussetzung.value) == true);
+                }
             }); 
             console.log(fulfilled);
             return fulfilled.every((e) => e == true);
