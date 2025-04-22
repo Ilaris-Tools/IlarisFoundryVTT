@@ -101,7 +101,7 @@ function registerHandlebarsHelpers() {
 
     Handlebars.registerHelper('translate_formula', function (formula) {
         if (formula) {
-            return formula.replace("W", "d");
+            return formula.replace(/[Ww]/g, "d");
         }
         return null;
     });

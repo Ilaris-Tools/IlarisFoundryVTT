@@ -207,9 +207,9 @@ export class AngriffDialog extends Dialog {
         let nodmg = false;
         // TDOO: this differ between angriff and nk/fk waffen, define get_tp() in both?
         // let schaden = item.data.data.schaden;
-        let schaden = item.system.tp.replace("W", "d");
+        let schaden = item.system.tp.replace(/[Ww]/g, "d");
         if(this.actor.type == "held") {
-            schaden = item.system.schaden.replace("W", "d");
+            schaden = item.system.schaden.replace(/[Ww]/g, "d");
         }
 
         if (manoever.kbak.selected) {
