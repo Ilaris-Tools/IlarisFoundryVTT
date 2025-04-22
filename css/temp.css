@@ -234,4 +234,14 @@ input.titel-input {
 .manoever-voraussetzungen {
   margin-top: 8px;
   margin-bottom: 8px;
+  .voraussetzung {
+    margin: 8px 16px 0 16px;
+    .row {
+      margin-bottom: 8px
+    }
+    .delete-button {
+      margin-left: 8px;
+      margin-top: 2px;
+    }
+  }
 }

@@ -355,7 +355,8 @@ let manoever = {
         1: "Fernkampf",
         2: "Magie",
         3: "Karma",
-    }
+    },
+    voraussetzung_tooltip: "Bestimmt welche Voraussetzung(en) für das Manöver erforderlich sind. Es können mehrere Voraussetzungen angegeben werden, die dann alle erfüllt sein müssen (UND-Verknüpfung). Die Voraussetzungstypen Vorteile und Stile erlauben eine ODER-Verknüpfung, wenn im Feld Vorteile also mehrere Vorteile als Voraussetzung angegeben sind, muss der Charakter nur über einen der Vorteile verfügen. ",
 };
 ILARIS.manoever = manoever;
 
