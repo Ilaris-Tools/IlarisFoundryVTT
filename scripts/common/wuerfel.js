@@ -381,7 +381,7 @@ export async function wuerfelwurf(event, actor) {
         pw = item.system.fk;
         // console.log(item);
         // let manoever_at = item._data.data.manoever_at;
-        let schaden = item.system.schaden.replace('W','d');
+        let schaden = item.system.schaden.replace(/[Ww]/g,'d');
         // console.log(item.data.data);
         // console.log(item._data.data.manoever_at);
         // let gzkl_checked = "0",
