@@ -385,8 +385,7 @@ export class SephrastoImporter {
             let name = waffe.name[0];
             let label = name.split(' (')[0];
             let haerte = waffe.haerte[0];
-            let dice_anzahl = waffe.W6[0];
-            let plus = waffe.plus[0];
+            let tp = `${waffe.W6[0]}W6 + ${waffe.plus[0]}`;
             let eigenschaften = waffe._;
             let fertigkeit = waffe.fertigkeit[0];
             let talent = waffe.talent[0];
@@ -397,8 +396,7 @@ export class SephrastoImporter {
                 data: {
                     label: label,
                     haerte: haerte,
-                    dice_anzahl: dice_anzahl,
-                    plus: plus,
+                    tp: tp,
                     eigenschaften: eigenschaften,
                     fertigkeit: fertigkeit,
                     talent: talent,

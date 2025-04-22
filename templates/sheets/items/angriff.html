@@ -27,7 +27,17 @@
                 <input type="number" name="system.vt" value="{{item.system.vt}}" />
             </label>
             <label>Trefferpunkte: 
-                <input type="text" name="system.tp" value="{{item.system.tp}}" />
+                <div class="flexrow">
+                    <input 
+                        class="regex-check" 
+                        pattern="^\d+[WwDd]\d{1,2}([\+\-]?\d*)?$"
+                        title="TP der Waffe in Schema xWy+/-z Anzahl Würfel x, Würfelkürzel W,w,D oder d, Seitenanzahl y, +/- Modifikator und Modifikator z" 
+                        type="text" 
+                        name="system.tp" 
+                        value="{{item.system.tp}}" 
+                    />
+                    <span class="validation-icon"></span>
+                </div>
             </label>
         </div>
         <div>
