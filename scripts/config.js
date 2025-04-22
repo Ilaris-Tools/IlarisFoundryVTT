@@ -348,7 +348,7 @@ let manoever = {
     voraussetzung_type: {
         VORTEIL: 'Vorteil',
         WAFFENEIGENSCHAFT: 'Waffeneigenschaft',
-        STIL: "Stil"
+        STILE: "Stile"
     },
     manoever_type: {
         0: "Nahkampf",

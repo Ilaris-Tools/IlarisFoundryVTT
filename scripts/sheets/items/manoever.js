@@ -1,9 +1,14 @@
 import { IlarisItemSheet } from './item.js';
 
-
 /* template.json
     "manoever": {
-      "voraussetzungen": [],
+      "voraussetzungen": [
+        {
+          "name": "Voraussetzung Beschreibung",
+          "type": "VORTEIL | WAFFENEIGENSCHAFT | STIL",
+          "value": ["VorteilID1", "VorteilID2"]
+        }
+      ],
       "gruppe": 0,
       "probe": "",
       "gegenprobe": "",
@@ -24,16 +29,18 @@ export class ManoeverSheet extends IlarisItemSheet {
         const vorteilePack = game.packs.get(game.settings.get('Ilaris', 'IlarisVorteilePaket'));
         const vorteileItemData = (await vorteilePack.getDocuments());
         const vorteile = [];
-        const stil = [];
-        vorteileItemData.index.forEach((vorteil) => {
-            if(vorteil.gruppe == 3 || vorteil.gruppe == 5 || vorteil.gruppe == 7) {
-                stil.push({key: vorteil._id, label: vorteil.name});
-            } else {
+        const stile = [];
+        vorteileItemData.forEach((vorteil) => {
+            if(vorteil.system.gruppe == 3 || vorteil.system.gruppe == 5 || vorteil.system.gruppe == 7) {
+                stile.push({key: vorteil._id, label: vorteil.name});
+            } else if(vorteil.system.gruppe == 2) {
                 vorteile.push({key: vorteil._id, label: vorteil.name});
             }
         });
         vorteile.sort((a, b) => (a.label > b.label ? 1 : b.label > a.label ? -1 : 0));
+        stile.sort((a, b) => (a.label > b.label ? 1 : b.label > a.label ? -1 : 0));
         data.vorteile = vorteile;
+        data.stile = stile;
         data.waffeneigenschaften = CONFIG.ILARIS.waffeneigenschaften;
         return data;
     }

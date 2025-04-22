@@ -213,18 +213,4 @@ function registerHandlebarsHelpers() {
     Handlebars.registerHelper('multMinusOne', function (numb) {
         return -1 * numb;
     });
-
-    Handlebars.registerHelper('selectMultiple', function(value, options) {
-
-        var select = document.createElement('selectMultiple');
-        select.innerHTML = options.fn(this);
-    
-        [].forEach.call(select.options, function(option) {
-            if (value.indexOf(option.value) > -1) {
-                option.setAttribute('selected', 'selected');
-            }
-        });
-    
-        return select.innerHTML;
-    });
 }

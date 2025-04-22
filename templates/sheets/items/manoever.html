@@ -16,40 +16,54 @@
                 {{selectOptions manoever.manoever_type selected=item.system.gruppe}}
             </select>
         </div>
-        <div>
-            <b>Voraussetzungen </b><a class="add-voraussetzung">[+]</a><b>: </b>
+        <div class="manoever-voraussetzungen">
+            <div class="flexrow">
+                <div><b>Voraussetzungen </b><a class="add-voraussetzung">[+]</a><b>: </b></div>
+                <a title="tooltip_text"><i class="fas fa-info"></i></a>
+            </div>
             {{#each item.system.voraussetzungen}}
                 <div class="flexrow">
+                    <label>Beschreibung:</label>
                     <input
                         name="system.voraussetzungen.{{@index}}.name"
                         value="{{this.name}}"
                         type="text"
                         data-dtype="String"
                     />
-                    <select name="system.voraussetzungen.{{@index}}.type">
-                        {{selectOptions ../manoever.voraussetzung_type selected=this.type}}
-                    </select>
-                    {{#if (ifEq this.type "VORTEIL")}} 
-                        <select name="system.voraussetzungen.{{@index}}.value">
-                            {{#selectMultiple this.value}}
-                                {{#each ../vorteile}}
-                                    <option value="{{this.key}}">{{this.label}}</option>
-                                {{/each}}
-                            {{/selectMultiple}}
-                        </select>
-                    {{/if}}
-                    {{#if (ifEq this.type "WAFFENEIGENSCHAFT")}} 
-                        <select name="system.voraussetzungen.{{@index}}.value">
-                            {{selectOptions ../waffeneigenschaften selected=this.value}}
-                        </select>
-                    {{/if}}
                     <a
                         class="voraussetzung-delete icon-small"
                         data-voraussetzungid="{{@index}}"
                         style="float: right"
                         ><i class="fas fa-trash"></i
                     ></a>
-                </div>                
+                </div>
+                <div class="flexrow">
+                    <label>Voraussetzungtyp:</label>
+                    <select name="system.voraussetzungen.{{@index}}.type">
+                        {{selectOptions ../manoever.voraussetzung_type selected=this.type}}
+                    </select> 
+                </div>   
+                <div class="flexrow">
+                    {{#if (ifEq this.type "VORTEIL")}} 
+                        <label>Vorteile:</label>
+                        <multi-select name="system.voraussetzungen.{{@index}}.value">
+                            {{selectOptions ../vorteile selected=this.value valueAttr="key" labelAttr="label"}}
+                        </multi-select>
+                    {{/if}}
+                    {{#if (ifEq this.type "STILE")}}
+                        <label>Stile:</label> 
+                        <multi-select name="system.voraussetzungen.{{@index}}.value">
+                            {{selectOptions ../stile selected=this.value valueAttr="key" labelAttr="label"}}
+                        </multi-select>
+                    {{/if}}
+                    {{#if (ifEq this.type "WAFFENEIGENSCHAFT")}} 
+                        <label>Waffeneigenschaften:</label>
+                        <select name="system.voraussetzungen.{{@index}}.value">
+                            {{selectOptions ../waffeneigenschaften selected=this.value}}
+                        </select>
+                    {{/if}}
+                </div>  
+                <hr>        
             {{/each}}
         </div>
         <div class="flexrow">
