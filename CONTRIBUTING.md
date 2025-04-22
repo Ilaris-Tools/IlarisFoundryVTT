@@ -3,6 +3,10 @@ Ein technischer Überblick und Hinweise zur Mitarbeit am Projekt. Die Dokumentat
 
 ## Installation für Entwickler
 TODO:
+### Visual Studio Code
+TODO:
+#### Empfohlene Plugins
+- [Unit Tests: Jest Runner](https://marketplace.visualstudio.com/items?itemName=Orta.vscode-jest)
 
 ## Foundry Basics
 FoundryVTT wird als Webapp, auf einem Server (oder Home-PC) ausgeführt, dafür muss eine Lizenz erworben werden. Das Ilaris als `System` für FoundryVTT (dieses Projekt), kann über eine url direkt aus der Weboberfläche als Erweiterung installiert werden. Oder auf dem Server direkt nach `foundry-data/systems/` geklont werden (Entwicklerinstallation). Bisher läuft dieses System nur für FoundryVTT v9.
