@@ -33,7 +33,7 @@ export class ManoeverSheet extends IlarisItemSheet {
         vorteileItemData.forEach((vorteil) => {
             if(vorteil.system.gruppe == 3 || vorteil.system.gruppe == 5 || vorteil.system.gruppe == 7) {
                 stile.push({key: vorteil._id, label: vorteil.name});
-            } else if(vorteil.system.gruppe == 2) {
+            } else {
                 vorteile.push({key: vorteil._id, label: vorteil.name});
             }
         });
