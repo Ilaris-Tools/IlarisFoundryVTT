@@ -26,7 +26,7 @@ https://raw.githubusercontent.com/Ilaris-Tools/IlarisFoundryVTT/refs/heads/main/
 ```
 <img src="/utils/screen_install.png"  width="250">
 
-> Für ältere nicht mehr kompatible Foundry versionen schaue in die jeweiligen `foundryvtt-v*` Branches oder folge der Anleitung auf [GitLab](https://gitlab.com/Feorg/ilaris-foundryvtt) für die legacy version bis FoundryVTT v9.
+> Für FoundryVTT v9 folge der Anleitung auf [GitLab](https://gitlab.com/Feorg/ilaris-foundryvtt)
 
 
 ## Aktueller Entwicklungsstand
