@@ -30,8 +30,12 @@ Um das zu erreichen, werden neue features und bugfixes zuerst im develop branch 
 ### Feature oder Bugfix
 Idealerweise wird zuerst ein neues Issue erstellt, wo Ideen noch vor der Umsetzung diskutiert und koordiniert werden können.
 Assigne dich selbst dem Issue, wenn du anderen zeigen willst, dass du daran arbeitest oder es noch vor hast.
-Ausgehend von der obenstehenden Entwicklerinstallation, erstelle einen feature-branch mit PR auf `develop`. Tipp: den PR schon am Anfang als Draft zu erstellen erlaubt anderen zu sehen woran du arbeitest.
 Wenn du deinem Issue ein Milestone zuordnest, steigen die Chancen, dass die nächste Version auf die Änderungen wartet und sie im Changelog erwähnt wird.
+Ausgehend von der obenstehenden Entwicklerinstallation, erstelle einen feature-branch mit PR auf `develop`.
+Tipp: den PR schon am Anfang als Draft zu erstellen erlaubt anderen zu sehen woran du arbeitest.
+Es ist gut wenn wenigstens ein zweites Augenpaar über die Änderungen geschaut hat um
+a) vielleicht Probleme zu sehen, die du übersehen hast und
+b) damit sich in jedem Teil des Codes mehrere Leute zurechtfinden.
 
 ### Update im Main
 Damit die Features zeitnah mit Infos zum Update für Nutzer verfügbar sind muss der develop branch regelmäßig in den main branch gemerged werden.
