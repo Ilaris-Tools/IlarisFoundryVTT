@@ -1,0 +1,21 @@
+# Zu beachten / FAQ
+
+-   Im Kompendium "Beispielhelden" gibt es "Alrik die leere Vorlage", die schon alle typischen Fertigkeiten ausgerüstet hat. "Alrik der Bauer" ist zur Präsentation mit Werten und Ausrüstung ausgestattet.
+-   Rüstungen werden erst berechnet, wenn sie angelegt werden. Symbol links neben dem Namen anklicken
+-   Kampfstile werden nur für die ausgerüsteten Haupt- und Nebenwaffen berechnet
+-   Es kann maximal jeweils eine Haupt- und Nebenwaffe angelegt sein. Zweihändige Waffen müssen gleichzeitig Haupt- und Nebenwaffe sein, sonst werden die Abzüge für einhändige Führung angerechnet
+-   Falls (Kampf-)manöver nicht ausgewählt werden können, kontrolliert ob die Voraussetzungen erfüllt sind (Waffeneigenschaften, Waffe ausgerüstet, Kampfstil ausgewählt, Sonderfertigkeit vorhanden)
+-   Die Manöver im Kompedium schalten die Manöver nicht frei: Das passiert über die entsprechenden Vorteile  #40
+-   Manöver für Magie und Karma sind noch nicht integriert
+-   Der Einsatz von Schicksalspunkten funktioniert nur, wenn Schicksalspunkte vorhanden sind. Ansonsten wird ohne Meldung eine normale 3W20 Probe geworfen
+-   Astral- und Karmapunkte werden nur angezeigt, wenn die Vorteile Zauberer oder Geweiht aktiviert sind
+-   Der Zukauf von AsP und KaP kann durch einen Mausklick auf das Label AsP/KaP eingestellt werden
+-   Einzelne Boni und Mali können noch nicht verteilt werden!
+-   Inventar:
+    -   Zur Traglast werden die Regeln aus [Ilaris Advanced](https://dsaforum.de/viewtopic.php?f=180&t=49412) verwendet.
+    -   Tragend: Gegenstände an der Person, deren Gewicht nicht berücksichtigt wird (zB getragene Kleidung)
+    -   Mitführend: Gegenstände an der Person, deren Gewicht berücksichtigt wird
+    -   Lagerplatz/Transportmittel: Wenn man bei einem Gegenstand ein negatives Gewicht einträgt, wird er als externer Speicherort gelistet (zB Eselskarren oder eigenes Haus)
+    -   Wenn das Durchhaltevermögen (dh\*) auf 0 oder niedriger fällt, ist man überladen. (Die Behinderung durch die Rüstung wird vor der Behinderung durch die Traglast berechnet; durch Rüstung kann dh nicht unter 1 fallen)
+    -   Das Gewicht der Waffen im Kompendium ist einfachst automatisch aus der Sephrasto-Datenbank berechnet => Anpassungen werden nötig sein
+-   ~~Bei einem Import aus _Beispiel Helden_ werden eine ganze Menge Fehler angezeigt. Keine Ahnung woher sie kommen. Es scheint aber dennoch zu funktionieren~~
