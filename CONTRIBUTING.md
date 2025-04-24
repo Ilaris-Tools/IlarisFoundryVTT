@@ -10,7 +10,7 @@ Wenn du noch nicht mit Foundry gearbeitet hast lohnt sich vielleicht ein Blick a
 - `foundrydata`-Ordner ausserhalb des Installationsordners anlegen
 - Einmal foundry starten `node resources/app/main.js --dataPath=../foundrydata`, Token eingeben, Adminpasswort setzen etc.
 - Dieses Repository in den `foundrydata/Data/systems` Ordner clonen. (ggf. in "Ilaris" umbenennen?)
-- Branch auschecken und foundry neu starten
+- `develop` oder Feature-Branch auschecken und foundry neu starten
 
 ### Visual Studio Code
 
@@ -20,6 +20,28 @@ TODO: workspace file anlegen mit run tasks für foundry und tests?
 #### Empfohlene Plugins
 - [Unit Tests: Jest Runner](https://marketplace.visualstudio.com/items?itemName=Orta.vscode-jest)
 - [Code Formatting: Prettier](https://marketplace.visualstudio.com/items/?itemName=esbenp.prettier-vscode)
+
+
+## Versionen und Workflow
+Das System bekommt keine regelmäßigen Releases, sondern kann über foundry direkt aus dem Repository installiert und upgedated werden.
+Dabei ist es wichtig, dass mehr oder weniger sichergestellt ist, dass der code im main branch möglichst immer funktioniert und die metadaten in system.json korrekt sind.
+Um das zu erreichen, werden neue features und bugfixes zuerst im develop branch gesammelt und getestet bevor sie mit einer neuen Version in den main branch kommen (automatische Updates bei Nutzern in Foundry).
+
+### Feature oder Bugfix
+Idealerweise wird zuerst ein neues Issue erstellt, wo Ideen noch vor der Umsetzung diskutiert und koordiniert werden können.
+Assigne dich selbst dem Issue, wenn du anderen zeigen willst, dass du daran arbeitest oder es noch vor hast.
+Ausgehend von der obenstehenden Entwicklerinstallation, erstelle einen feature-branch mit PR auf `develop`. Tipp: den PR schon am Anfang als Draft zu erstellen erlaubt anderen zu sehen woran du arbeitest.
+Wenn du deinem Issue ein Milestone zuordnest, steigen die Chancen, dass die nächste Version auf die Änderungen wartet und sie im Changelog erwähnt wird.
+
+### Update im Main
+Damit die Features zeitnah mit Infos zum Update für Nutzer verfügbar sind muss der develop branch regelmäßig in den main branch gemerged werden.
+Als Faustregel bekommt ein PR develop->main eine neue Version und entspricht einem Meilenstein.
+Checklist für ein größeres Versionsupdate:
+- Neue Version in system.json (zB `x.1.x` auf `x.2.x`)
+- Prüfe den dazugehörigen Meilenstein und ob ggf. noch offene Issues auf die nächste version geschoben werden.
+- Updates im Changelog (Blick auf commits seit letztem eintrag und closed issues im Meilenstein)
+- Sind Anpassungen der Dokumentation nötig?
+- Ist das Update eine Erwähnung im Forum wert?
 
 
 ## Code Struktur
