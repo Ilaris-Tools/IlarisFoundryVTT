@@ -14,18 +14,29 @@
             <label>Härte: 
                 <input type="number" name="system.haerte" value="{{item.system.haerte}}" />
             </label>
-            <label>Ladezeit: 
-                <input type="number" name="system.lz" value="{{item.system.lz}}" />
-            </label>
+            {{#if (ifEq item.system.typ "Fern")}}
+                <label>Ladezeit: 
+                    <input type="number" name="system.lz" value="{{item.system.lz}}" />
+                </label>
+            {{/if}}
             <label>Reichweite: 
                 <input type="number" name="system.rw" value="{{item.system.rw}}" />
             </label>
+            <label><div>Angrifftyp:</div> 
+                <select name="system.typ">
+                    {{selectOptions angrifftypen selected=item.system.typ}}
+                </select>
+            </label>
+        </div>
+        <div class="flexrow">
             <label>Attacke: 
                 <input type="number" name="system.at" value="{{item.system.at}}" />
             </label>
-            <label>Verteidigung: 
-                <input type="number" name="system.vt" value="{{item.system.vt}}" />
-            </label>
+            {{#if (ifEq item.system.typ "Nah")}}
+                <label>Verteidigung: 
+                    <input type="number" name="system.vt" value="{{item.system.vt}}" />
+                </label>
+            {{/if}}
             <label>Trefferpunkte: 
                 <div class="flexrow">
                     <input 
@@ -38,7 +49,7 @@
                     />
                     <span class="validation-icon"></span>
                 </div>
-            </label>
+            </label>            
         </div>
         <div>
             <b>Eigenschaften </b><a class="add-eigenschaft" data-itemclass="Neue Eigenschaft">[+]</a><b>: </b>
