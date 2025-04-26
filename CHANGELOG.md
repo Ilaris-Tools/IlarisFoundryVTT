@@ -1,5 +1,10 @@
 # Changelog
 
+## v12.1:
+- Neue Versionsnummerierung (erste Stelle gibt Zielversion von Foundry an)
+- Support von neueren FoundryVTT einschließlich der neusten v12
+- Umzug von GitLab auf GitHub
+
 ## v0.0.20: 
 Vorteile auf Kreaturensheet ziehen gefixt.
 

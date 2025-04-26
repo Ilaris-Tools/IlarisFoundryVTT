@@ -188,7 +188,7 @@ export class IlarisActorSheet extends ActorSheet {
         } else if (rolltype == 'schaden') {
             label = $(event.currentTarget).data('item');
             label = `Schaden (${label})`;
-            pw = $(event.currentTarget).data('pw').replace("W", "d");;
+            pw = $(event.currentTarget).data('pw').replace(/[Ww]/g, "d");;
         } else if (rolltype == 'attribut') {
             const attribut_name = $(event.currentTarget).data('attribut');
             label = CONFIG.ILARIS.label[attribut_name];
