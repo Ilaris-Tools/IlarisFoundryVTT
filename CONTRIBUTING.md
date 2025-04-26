@@ -1,27 +1,52 @@
-Ein technischer Überblick und Hinweise zur Mitarbeit am Projekt. Die Dokumentation der FoundryVTT-API alleine macht es nicht gerade einfach direkt in den chaotischen Code dieses Projekts einzusteigen. Diese Hinweise und Anleitungen sollen etwas Hilfestellung geben. 
+Ein technischer Überblick und Hinweise zur Mitarbeit am Projekt. 
+Die Dokumentation der FoundryVTT-API alleine macht es nicht gerade einfach direkt in den chaotischen Code dieses Projekts einzusteigen. 
+Diese Hinweise und Anleitungen sollen etwas Hilfestellung geben.
+Wenn du noch nicht mit Foundry gearbeitet hast lohnt sich vielleicht ein Blick auf die Zusammenfassung von Konzepten und Begriffen in [Foundry Basics](docs/foundry-basics.md).
 
 
 ## Installation für Entwickler
-TODO:
+
+- [Foundry für node.js installieren (dedicated server)](https://foundryvtt.com/article/installation/)
+- `foundrydata`-Ordner ausserhalb des Installationsordners anlegen
+- Einmal foundry starten `node resources/app/main.js --dataPath=../foundrydata`, Token eingeben, Adminpasswort setzen etc.
+- Dieses Repository in den `foundrydata/Data/systems` Ordner clonen. (ggf. in "Ilaris" umbenennen?)
+- `develop` oder Feature-Branch auschecken und foundry neu starten
+
 ### Visual Studio Code
-TODO:
+
+TODO: workspace file anlegen mit run tasks für foundry und tests?
+
+
 #### Empfohlene Plugins
 - [Unit Tests: Jest Runner](https://marketplace.visualstudio.com/items?itemName=Orta.vscode-jest)
+- [Code Formatting: Prettier](https://marketplace.visualstudio.com/items/?itemName=esbenp.prettier-vscode)
 
-## Foundry Basics
-FoundryVTT wird als Webapp, auf einem Server (oder Home-PC) ausgeführt, dafür muss eine Lizenz erworben werden. Das Ilaris als `System` für FoundryVTT (dieses Projekt), kann über eine url direkt aus der Weboberfläche als Erweiterung installiert werden. Oder auf dem Server direkt nach `foundry-data/systems/` geklont werden (Entwicklerinstallation). Bisher läuft dieses System nur für FoundryVTT v9.
-Einige Begriffe aus dem FoundryVTT-Jargon kurz erklärt: 
-- **module**: Eigenständiges Plugin, das optional zu beliebigen oder bestimmten Systemen installiert werden kann. zB: [Dice so Nice](https://foundryvtt.com/packages/dice-so-nice/) für animierte 3D Würfel.
-- **system**: Das Regelsystem von dem als Kernkomponente nur eins geladen wird. Enthält Datenstrukturen, Spiellogik, Heldenbögen, Würfeldialoge usw.. zB: Ilaris
-- **world**: Spielwelten gehören idR zu einem bestimmten system und beinhalten Karten, Helden, Kreaturen, Notizen usw.. Spielleiter können bei laufendem Betrieb zwischen Spielwelten (auch mit versch. systems) wechseln. zB: Mittwochrunde
-- **actor**: Figuren, die von Spielerinnen/SL verkörpert werden können. Standardmäßig können sie ein oder mehrere tokens und items besitzen. Aktuell verfügt Ilaris über zwei typen von actors: Helden und Kreaturen.
-- **items**: Auch innerweltliche Gegenstände, aber bei weitem nicht nur: In FoundryVTT ist ein item, eigentlich nur ein container für beliebige Entitäten des systems. Dies schließt zB Zauber, Vorteile, Waffen, Manöver usw. mit ein. Items können in ihrer Datenstruktur definiert und mit zugeordneten Formularen verknüpft werden (ItemSheets). Items stellen viel Funktionalität zur Verfügung: zB: Drag'n'drop auf neue Besitzer, automatische Dialoge zum Bearbeiten, automatische Instanzierung usw..
-- **token**: Die Spielfigur ist die visuelle/"physische" Verkörperung eines Actors auf einer Karte. Wenn der Actor, dem Heldenbogen entspricht, wäre ein token dessen Miniatur auf der Battlemap. Tokens haben eine Reihe von zusätzlichen Eigenschaften, wie zB Lichtlevel, Sicht, Freund/Feind/Neutral, können Encountern beitreten. Ein wichtiges Konzept ist die Verlinkung von Token und Actor: Bei aktivem Link, werden Änderungen am Token direkt auf den Actor (und auf dessen andere Tokens) übertragen. Dies ist üblich für Helden oder NSCs die zB parallel auf Karten in verschiedenen Szenen präsent sind. Und deren Wunden zB auch die Proben auf dem Heldenbogen beeinflussen sollen. Ohne diesen Link, ist die Figur eine Kopie des Actors zum Zeitpunkt der Erstellung. Dies ist zum Beispiel praktisch um aus einer Kreatur "Wolf" (Actor) ein ganzes Rudel zu erstellen (Tokens), bei dem einzelne von der SL oder von Spielerinnen im Kampf bearbeitet werden können.
-- **sheets**: Der Heldenbogen oder Statblock für Kreaturen. Ein html-Formular und eine .js-Datei für die Interaktion. Was wird angezeigt, welche Werte können von wem Verändert werden, was passiert beim Klick auf einen Button usw.. Frontendlogik. Die Sheets werden direkt mit den Items/Actors verknüpft, so dass dessen Daten im html-Template direkt angezeigt und/oder formularfeldern zugewiesen werden können.
-- **packs**: Kompendien oder Sammlungen bestimmter Entitäten. zB Zauber, Liturgien, Kreaturen, Archetypen usw.. Können zB per Drag'n'Drop als Kopie direkt ins Spiel geladen werden. Sie liegen als einzelne .db-Dateien vor, in der jede Zeile die JSON-representation einer Entität ist (wie im template.json definiert). Packs können von SL selbst erstellt/bearbeitet werden oder durch Module (zB für Abenteuer) bezogen werden. Das Ilaris-System stellt auch einige Kernkompendien bereit, die grob dem Entsprechen, was in den Ilaris-Regeln zu finden ist. Dies schließt unteranderem ein:
-  - Zauber, Vorteile, Fertigkeiten, Liturgien ... (aus Sephrasto importiert)
-  - Kreaturen und Kreatureigenschaften (aus ilaris-online.de/api generiert)
-  - Beispielhelden (von Hand erstellt)
+
+## Versionen und Workflow
+Das System bekommt keine regelmäßigen Releases, sondern kann über foundry direkt aus dem Repository installiert und upgedated werden.
+Dabei ist es wichtig, dass mehr oder weniger sichergestellt ist, dass der code im main branch möglichst immer funktioniert und die metadaten in system.json korrekt sind.
+Um das zu erreichen, werden neue features und bugfixes zuerst im develop branch gesammelt und getestet bevor sie mit einer neuen Version in den main branch kommen (automatische Updates bei Nutzern in Foundry).
+
+### Feature oder Bugfix
+Idealerweise wird zuerst ein neues Issue erstellt, wo Ideen noch vor der Umsetzung diskutiert und koordiniert werden können.
+Assigne dich selbst dem Issue, wenn du anderen zeigen willst, dass du daran arbeitest oder es noch vor hast.
+Wenn du deinem Issue ein Milestone zuordnest, steigen die Chancen, dass die nächste Version auf die Änderungen wartet und sie im Changelog erwähnt wird.
+Ausgehend von der obenstehenden Entwicklerinstallation, erstelle einen feature-branch mit PR auf `develop`.
+Tipp: den PR schon am Anfang als Draft zu erstellen erlaubt anderen zu sehen woran du arbeitest.
+Es ist gut wenn wenigstens ein zweites Augenpaar über die Änderungen geschaut hat um
+a) vielleicht Probleme zu sehen, die du übersehen hast und
+b) damit sich in jedem Teil des Codes mehrere Leute zurechtfinden.
+
+### Update im Main
+Damit die Features zeitnah mit Infos zum Update für Nutzer verfügbar sind muss der develop branch regelmäßig in den main branch gemerged werden.
+Als Faustregel bekommt ein PR develop->main eine neue Version und entspricht einem Meilenstein.
+Checklist für ein größeres Versionsupdate:
+- Neue Version in system.json (zB `x.1.x` auf `x.2.x`)
+- Prüfe den dazugehörigen Meilenstein und ob ggf. noch offene Issues auf die nächste version geschoben werden.
+- Updates im Changelog (Blick auf commits seit letztem eintrag und closed issues im Meilenstein)
+- Sind Anpassungen der Dokumentation nötig?
+- Ist das Update eine Erwähnung im Forum wert?
+
 
 ## Code Struktur
 In der template.json steht die grobe Datenstruktur für Actors und Items. Es können darin auch templates zum wiederverwenden erstellt werden um zB Nahkampfwaffen, Fernkampfwaffen und Rüstungen alle Eigenschaften eines Gegenstandes zu geben (gewicht, platz, härte, wert ...)
@@ -31,7 +56,6 @@ Actor: (types: Held, Kreatur) haben jeweils eigene html Templates zum ansehen un
 Items: Zauber, Fertigkeiten, Gegenstände, Eigenheiten, Waffen, Vorteile usw.. sind Items mit jeweiligem type. Auch hier gibt es einzelne html snippets als formular um individuelle Items zu bearbeiten.
 
 TODO: Dateistruktur und wichtige Dateien erklären
-
 
 
 
