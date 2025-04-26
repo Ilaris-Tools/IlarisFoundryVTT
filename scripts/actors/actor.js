@@ -393,7 +393,6 @@ export class IlarisActor extends Actor {
             let hauptwaffe = nwaffe.system.hauptwaffe;
             let nebenwaffe = nwaffe.system.nebenwaffe;
             let schaden = 0;
-            schaden += Number(nwaffe.system.dice_plus);
             // let kopflastig = eigenschaften.includes("Kopflastig");
             schaden += sb;
             if (kopflastig) {
@@ -480,9 +479,9 @@ export class IlarisActor extends Actor {
             // if (!isNaN(mod_schaden)) { schaden += mod_schaden;}
             nwaffe.system.at = at;
             nwaffe.system.vt = vt;
-            nwaffe.system.schaden = `${nwaffe.system.tp}`;
+            nwaffe.system.schaden = `${nwaffe.system.tp}${schaden < 0 ? schaden : '+'+schaden}`;
             if (typeof mod_schaden !== 'undefined' && mod_schaden !== null && mod_schaden !== '') {
-                nwaffe.system.schaden = `${nwaffe.system.tp}+${mod_schaden}`;
+                nwaffe.system.schaden = `${nwaffe.system.tp}${mod_schaden < 0 ? mod_schaden : '+'+mod_schaden}`;
             }
             // if (nwaffe.data.data.eigenschaften.ruestungsbrechend) {
             //     // manoever_at.push("km_rust");
@@ -602,7 +601,6 @@ export class IlarisActor extends Actor {
             let hauptwaffe = fwaffe.system.hauptwaffe;
             let nebenwaffe = fwaffe.system.nebenwaffe;
             let schaden = 0;
-            schaden += Number(fwaffe.system.dice_plus);
             let fk = 0;
             let fertigkeit = fwaffe.system.fertigkeit;
             let talent = fwaffe.system.talent;
@@ -647,7 +645,7 @@ export class IlarisActor extends Actor {
             }
             fwaffe.system.schaden = `${fwaffe.system.tp}`;
             if (typeof mod_schaden !== 'undefined' && mod_schaden !== null && mod_schaden !== '') {
-                fwaffe.system.schaden = `${fwaffe.system.tp}+${mod_schaden}`;
+                fwaffe.system.schaden = `${fwaffe.system.tp}${mod_schaden < 0 ? mod_schaden : '+'+mod_schaden}`;
             }
 
             // if (data.data.vorteil.kampf.find(x => x.name.includes("Defensiver Kampfstil"))) item.data.data.manoever.vldf.possible = true;
@@ -1181,23 +1179,34 @@ export class IlarisActor extends Actor {
                 ruestungen.push(item);
             } else if (item.type == 'nahkampfwaffe') {
                 // console.log("Nahkampfwaffe gefunden");
-                // console.log(i);
                 item.system.bewahrt_auf = [];
                 if (item.system.gewicht < 0) {
                     item.system.gewicht_summe = 0;
                     speicherplatz_list.push(item.name);
                     item_list.push(item);
                 } else item_list_tmp.push(item);
+                // for migration from dice_anzahl and dice_plus to tp
+                if(item.system.dice_plus || item.system.dice_anzahl) {
+                    item.system.tp = `${item.system.dice_anzahl}W6${item.system.dice_plus < 0 ? '' : '+'}${item.system.dice_plus}`;
+                    delete item.system.dice_anzahl;
+                    delete item.system.dice_plus;
+                }
                 nahkampfwaffen.push(item);
             } else if (item.type == 'fernkampfwaffe') {
                 // console.log("Fernkampfwaffe gefunden");
-                // console.log(i);
+                console.log(item);
                 item.system.bewahrt_auf = [];
                 if (item.system.gewicht < 0) {
                     item.system.gewicht_summe = 0;
                     speicherplatz_list.push(item.name);
                     item_list.push(item);
                 } else item_list_tmp.push(item);
+                // for migration from dice_anzahl and dice_plus to tp
+                if(item.system.dice_plus || item.system.dice_anzahl) {
+                    item.system.tp = `${item.system.dice_anzahl}W6${item.system.dice_plus < 0 ? '' : '+'}${item.system.dice_plus}`;
+                    delete item.system.dice_anzahl;
+                    delete item.system.dice_plus;
+                }
                 fernkampfwaffen.push(item);
             } else if (item.type == 'gegenstand') {
                 item.system.bewahrt_auf = [];
