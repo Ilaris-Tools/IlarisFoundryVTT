@@ -1,5 +1,5 @@
 > **Dies ist die letzte getestete Version des Systems fuer FoundryVTT v9.
-> [Zur aktuellen Version](https://github.de/ilaris-tools/ilarisfoundryvtt/)**
+> [Zur aktuellen Version](https://github.com/ilaris-tools/ilarisfoundryvtt/)**
 
 # Ilaris für FoundryVTT (**BETA**)
 
