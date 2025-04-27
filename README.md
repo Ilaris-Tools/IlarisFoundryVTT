@@ -1,3 +1,6 @@
+> **Dies ist die letzte getestete Version des Systems fuer FoundryVTT v9.
+> [Zur aktuellen Version](https://github.de/ilaris-tools/ilarisfoundryvtt/)**
+
 # Ilaris für FoundryVTT (**BETA**)
 
 Ein System für [Ilaris](https://ilarisblog.wordpress.com/) zur Verwendung mit [FoundryVTT](https://foundryvtt.com/).
@@ -22,7 +25,7 @@ Wir suchen auch Verstärkung im Entwicklerteam. JS-Programmierer und Webdesigner
 
 In Foundry unter "Game Systems" -> "Install System" -> "Manifest URL": 
 ```
-https://gitlab.com/Feorg/ilaris-foundryvtt/raw/master/system.json
+https://raw.githubusercontent.com/Ilaris-Tools/IlarisFoundryVTT/refs/heads/main/system.json
 ```
 einfügen und installieren.
 
