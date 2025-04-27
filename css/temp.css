@@ -1,228 +1,269 @@
-@font-face {
-  font-family: 'Crimson Text';
-  src: url('../assets/fonts/CrimsonText-Regular.ttf');
-}
-@font-face {
-  font-family: 'Aniron';
-  src: url('../assets/fonts/anirm___.ttf');
-}
-@font-face {
-  font-family: 'Andada';
-  src: url('../assets/fonts/AndadaSC-Regular.otf');
-}
+.herosheet {
+    display: grid;
+    grid-template-areas: 'header header' 'sidebar navigation1'
+      'sidebar navigation2' 'sidebar tabs';
+    grid-template-rows: 100px 45px 100px 5fr;
+    grid-template-columns: 2fr 4fr;
+    background-image: url(/systems/Ilaris/assets/images/Ilaris/Kasten_high_res.png);
+    background-repeat: round;
+    min-height: 680px;
+  }
+  
+  .heroheader {
+    grid-area: header;
+    justify-content: space-around;
+    align-items: center;
+    padding-left: 300px;
+    display: flex;
+    flex-direction: row;
+    background-image: url(/systems/Ilaris/assets/images/Ilaris/Kasten_high_res.png);
+    background-position: center bottom;
+    background-size: cover;
+  }
+  
+  .heroattributes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around; /* gleichmäßige Verteilung */
+    align-items: center;
+    gap: 10px; /* Abstand zwischen den Elementen */
+  }
+  
+  
+  .attribute-wrapper {
+    position: relative;
+    width: 45px;
+    height: 45px;
+  }
+  
+  .attribute-wrapper img {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .attribute-number {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: black; /* oder eine andere Farbe, je nach Hintergrund */
+    font-weight: bold;
+    font-size: 22px;
+  }
+  
+  
+  .herotabnavigation {
+    grid-area: navigation2;
+  }
+  
+  .herotab {
+    grid-area: tabs;
+    margin-left: 1rem;
+    margin-bottom: 20px;
+    margin-right: 1rem;
+  }
 
-:root {
-  /* --font-text: "Crimson Text", serif; */
-  --font-crimson: 'Crimson Text';
-  --font-aniron: 'Aniron';
-  --font-andada: 'Andada';
-}
+  .herosidebar {
+    grid-area: sidebar;
+    display: block;
+    justify-content: space-between;
+    background-image: url(/systems/Ilaris/assets/images/Ilaris/bronze_glatt.png); /* Korrekte Syntax */
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: black;
+    font-size: 30px;
+    font-weight: bold;
+    padding-top: 1rem;
+    text-align: center;
+    box-shadow: 8px 0 5px rgba(0,0,0,0.3);
+    z-index: 2;
+    margin-left: 1rem;
+    margin-top: -80px;
+    margin-bottom: 20px;
+    border-top-left-radius: 5px;
+    border-bottom-left-radius: 200px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 200px;
+    border-style: solid;
+    border-color: #B87333;
+    position: relative;
+  }
+  
+  .hangingindent {
+    padding-left: 22px ;
+    text-indent: -22px ;
+  }
+  
+  .custom-icon {
+    display: inline-block;
+    width: 24px;
+    height: 24px;
+    background-image: url("/systems/Ilaris/assets/images/ilaris/icon_clear.png");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+  }
+  
+  #pause {
+    .fa-spin {
+    content: url("/systems/Ilaris/assets/images/ilaris/icon_rot.png")
+    }
+  }
 
-.ilaris {
-  /* font-family: var(--font-crimson); */
-  /* background: url("../assets/images/background/Kasten_high_res.JPG"); /\*ersetzt so die Statusleiste!*\/ */
-  /* background-image: url("../assets/images/background/Kasten_high_res.JPG"); */
-  /* mix-blend-mode: multiply; */
-}
+  .profile-img {
+    border: none;
+    flex-flow: row;
 
-.window-app .window-content {
-  font-family: var(--font-crimson);
-  /* TODO CR: Wegen Bild fragen */
-  background-image: url('../assets/images/background/hintergrund.jpg');
-}
+  }
+  
+  #lebensleiste {
+    max-width: 800px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .triStateBtn {
+    width: 18px;
+    height: 15px;
+    border: 2px solid brown;
+    border-radius: 0;
+    cursor: pointer;
+    background-color: #ac3100;
+    position: relative; /* ← notwendig für absolute Positionierung der Linien */
+  }
+  
+  /* Hintergrundfarbe für die ersten 4 Buttons */
+  #lebensleiste .triStateBtn:nth-child(-n+5) {
+    background-color: beige;
+  }
+  
+  /* Zustand 1: Kreuz */
+  .state-1::before,
+  .state-1::after {
+    content: "";
+    position: absolute;
+    top: 40%;
+    left: -15%;
+    width: 18px;
+    height: 2px;
+    background-color: black;
+  }
+  
+  .state-1::before {
+    transform: rotate(45deg);
+  }
+  
+  .state-1::after {
+    transform: rotate(-45deg);
+  }
+  
+  /* Zustand 2: einfache diagonale Linie */
+  .state-2::after {
+    content: "";
+    position: absolute;
+    top: 40%;
+    left: -15%;
+    width: 18px;
+    height: 2px;
+    background-color: black;
+    transform: rotate(135deg);
+  }
+  
+  .icon-small {
+    flex-basis: 20px;
+    flex-grow: 0;
+    flex-shrink: 0;
+    font-size: 15px;
+  }
+  
+  .flex-fest-var {
+    flex-grow: 0;
+    flex-shrink: 0;
+  }
+  
+  .item-toggle.false {
+    /* color: #b5b3a4; */
+    color: #989898;
+  }
+  .item-toggle.active {
+    /* color: #4b4a44; */
+    color: black;
+  }
+  
+  .toggle-bool.false {
+    /* color: #b5b3a4; */
+    color: #989898;
+  }
+  .toggle-bool.active {
+    /* color: #4b4a44; */
+    color: #00990d;
+  }
 
-.tabs {
-  font-family: var(--font-andada);
-}
+  .button-icon {
+    height: 3ex;
+    border: none;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .button-icon-nahkampf {
+    height: 4ex;
+    border: none;
+    /* display:inline-block; */
+    display: block;
+    /* vertical-align:middle; */
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .chat-message {
+    color: #000000;
+    font-family: var(--font-crimson);
+    /* TODO CR: Wegen Bild fragen */
+    background-image: url('../assets/images/background/hintergrund.jpg');
+  }
+  .chat-message .message-header {
+    color: #000000;
+  }
+  
+  .chat-message .message-header .flavor-text {
+    color: #000000;
+  }
+  
+  .editor {
+    height: 100% !important;
+    width: 100%;
+    overflow: auto;
+  }
+  .editor-content {
+    min-height: 50px;
+    min-height: 500px;
+    min-width: 300px;
+    height: 100% !important;
+    width: 100%;
+    overflow: auto;
+    /*     font-weight: bold; */
+  }
 
-.ilaris h2 {
-  font-family: var(--font-aniron);
-}
-
-.button-icon {
-  height: 3ex;
-  border: none;
-  display: inline-block;
-  vertical-align: middle;
-}
-.button-icon-nahkampf {
-  height: 4ex;
-  border: none;
-  /* display:inline-block; */
-  display: block;
-  /* vertical-align:middle; */
-  margin-left: auto;
-  margin-right: auto;
-}
-.chat-message {
-  color: #000000;
-  font-family: var(--font-crimson);
-  /* TODO CR: Wegen Bild fragen */
-  background-image: url('../assets/images/background/hintergrund.jpg');
-}
-.chat-message .message-header {
-  color: #000000;
-}
-
-.chat-message .message-header .flavor-text {
-  color: #000000;
-}
-
-.editor {
-  height: 100% !important;
-  width: 100%;
-  overflow: auto;
-}
-.editor-content {
-  min-height: 50px;
-  min-height: 500px;
-  min-width: 300px;
-  height: 100% !important;
-  width: 100%;
-  overflow: auto;
-  /*     font-weight: bold; */
-}
-
-.icon-small {
-  flex-basis: 20px;
-  flex-grow: 0;
-  flex-shrink: 0;
-}
-
-.flex-fest-var {
-  flex-grow: 0;
-  flex-shrink: 0;
-}
-
-.item-toggle.false {
-  /* color: #b5b3a4; */
-  color: #989898;
-}
-.item-toggle.active {
-  /* color: #4b4a44; */
-  color: black;
-}
-
-.toggle-bool.false {
-  /* color: #b5b3a4; */
-  color: #989898;
-}
-.toggle-bool.active {
-  /* color: #4b4a44; */
-  color: #990000;
-}
-
-.onhover:hover {
-  /* background-color: #b32019; */
-  /* text-shadow: 0 0 8px #b32019; */
-  text-shadow: 0 0 8px red;
-}
-
-.twokindrow div:nth-child(odd) {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.kreatur-sheet input {
-  border: none;
-}
-
-.ilaris .titel-input {
-  font-size: 32px; 
-  border: None; 
-  color: rgb(83, 0, 0);
-  font-family: var(--font-andada);
-}
-
-input.titel-input {
-  font-size: 32px; 
-  color: rgb(83, 0, 0);
-  font-family: var(--font-andada);
-}
-
-.kreatur-sheet .plus-button {
-  color: rgb(54, 37, 37);
-  font-size: 18px;
-}
-
-.attributblock h2 {
-  font-family: var(--font-aniron);
-  font-size: 14px;
-  color: rgb(54, 37, 37); /*rgb(83, 0, 0);*/
-  border: none;
-}
-
-
-.kreatur-header textarea {
-  border: none;
-  resize: none;
-  font-family: var(--font-crimson);
-}
-
-.statblockreihe {
-  background-color: rgba(247, 68, 37, 0.13);
-  padding: 10px;
-  border-top: solid darkred 2px;
-}
-
-.statblockreihe input {
-  width: 40px;
-  height: 16px;
-  background: rgba(250, 250, 250, 0.2);
-}
-
-/* Erste Gehversuche Michael*/
-
-/* --------------------------------------- */
-/*  Ilaris Sheet                           */
-/* --------------------------------------- */
-.ilaris {
-  min-width: 360px;
-  min-height: 320px;
-}
-.ilaris form > * {
-  flex: 0;
-}
-.ilaris .form-group.description {
-  flex: 1;
-}
-.ilaris .form-group.description label {
-  height: 24px;
-}
-.ilaris .form-group.description textarea {
-  height: calc(100% - 24px);
-  resize: none;
-}
-
-
-.hangingindent {
-  padding-left: 22px ;
-  text-indent: -22px ;
-}
-
-/* Style for valid input */
-.regex-check:valid {
-  border-color: green;
-  border-width: 2px;
-}
-
-/* Style for invalid input */
-.regex-check:invalid {
-  border-color: red;
-  border-width: 2px;
-}
-
-.validation-icon {
-  font-size: 1.2em;
-  flex: 0;
-  margin-left: 16px;
-} 
-
-.regex-check:valid + .validation-icon::before {
-  content: '✔';
-  color: green;
-}
-
-.regex-check:invalid + .validation-icon::before {
-  content: '✘';
-  color: red;
-}
+  .Schips-button input {
+    display: none;
+  }
+  
+  .Schips-button span {
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid #333;
+    background-color: grey;
+    background-size: cover;
+    background-position: center;
+    transition: background-image 0.3s ease;
+    cursor: pointer;
+  }
+  
+  /* Wenn die Checkbox gecheckt ist, wird das Hintergrundbild angezeigt */
+  .Schips-button input:checked + span {
+    background-image: url('/systems/Ilaris/assets/images/Ilaris/phex.png');
+  }
+  
