@@ -25,7 +25,7 @@ Wir suchen auch Verstärkung im Entwicklerteam. JS-Programmierer und Webdesigner
 
 In Foundry unter "Game Systems" -> "Install System" -> "Manifest URL": 
 ```
-https://raw.githubusercontent.com/Ilaris-Tools/IlarisFoundryVTT/refs/heads/main/system.json
+https://raw.githubusercontent.com/Ilaris-Tools/IlarisFoundryVTT/refs/heads/foundry-v9/system.json
 ```
 einfügen und installieren.
 
