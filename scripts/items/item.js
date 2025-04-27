@@ -1,1 +1,2 @@
-export class IlarisItem extends Item {}
+export class IlarisItem extends Item {
+}

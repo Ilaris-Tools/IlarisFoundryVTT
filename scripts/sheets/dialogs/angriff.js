@@ -12,7 +12,7 @@ export class AngriffDialog extends Dialog {
         super(dialog, options);
         // this can be probendialog (more abstract)
         this.item = item;
-        this.actor = item.actor;
+        this.actor = actor;
         this.speaker = ChatMessage.getSpeaker({ actor: this.actor });
         this.rollmode = game.settings.get("core", "rollMode");  // public, private.... 
         this.item.system.manoever.rllm.selected = game.settings.get("core", "rollMode");  // TODO: either manoever or dialog property.
@@ -25,12 +25,10 @@ export class AngriffDialog extends Dialog {
 
     async getData () { // damit wird das template gefüttert
         return {
-            choices_xd20: CONFIG.ILARIS.xd20_choice,
-            checked_xd20: '0',
             distance_choice: CONFIG.ILARIS.distance_choice,
             rollModes: CONFIG.Dice.rollModes,
-            // defaultRollMode: this.rollmode,
             item: this.item,
+            actor: this.actor,
             mod_at: this.mod_at
         };
     }
@@ -109,7 +107,7 @@ export class AngriffDialog extends Dialog {
         console.log(this.actor)
         let manoever = this.item.system.manoever;
         let eigenschaften = Object.values(this.item.system.eigenschaften).map(e => e.name);
-        let vorteile = this.actor.vorteile.map(v => v.name);
+        let vorteile = this.actor.vorteil.kampf.map(v => v.name);
 
         manoever.km_rust.possible = eigenschaften.includes("Rüstungsbrechend");
         manoever.km_stsl.possible = eigenschaften.includes("Stumpf");
@@ -209,7 +207,10 @@ export class AngriffDialog extends Dialog {
         let nodmg = false;
         // TDOO: this differ between angriff and nk/fk waffen, define get_tp() in both?
         // let schaden = item.data.data.schaden;
-        let schaden = item.system.tp.replace("W", "d");
+        let schaden = item.system.tp.replace(/[Ww]/g, "d");
+        if(this.actor.type == "held") {
+            schaden = item.system.schaden.replace(/[Ww]/g, "d");
+        }
 
         if (manoever.kbak.selected) {
             mod_at -= 4;

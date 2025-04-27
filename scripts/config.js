@@ -672,3 +672,9 @@ let kreatur_item_options = {
     info:"Info"
 };
 ILARIS.kreatur_item_options = kreatur_item_options;
+
+let angriff_typ = {
+    Nah:"Nahkampf",
+    Fern:"Fernkampf",
+}
+ILARIS.angriff_typ = angriff_typ;
