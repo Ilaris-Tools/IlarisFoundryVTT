@@ -1,5 +1,8 @@
 # Changelog
 
+## v12.0.0: 
+Update auf Foundry12
+
 ## v0.0.20: 
 Vorteile auf Kreaturensheet ziehen gefixt.
 
