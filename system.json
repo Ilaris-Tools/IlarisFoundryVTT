@@ -110,8 +110,8 @@
   "primaryTokenAttribute": "gesundheit.hp",
   "secondaryTokenAttribute": null,
   "background": "assets/images/background/splash.jpg",
-  "url": "https://gitlab.com/Feorg/ilaris-foundryvtt",
-  "manifest": "https://gitlab.com/Feorg/ilaris-foundryvtt/raw/master/system.json",
-  "download": "https://gitlab.com/Feorg/ilaris-foundryvtt/-/archive/master/ilaris-foundryvtt-master.zip",
+  "url": "https://github.com/Ilaris-Tools/IlarisFoundryVTT/",
+  "manifest": "https://raw.githubusercontent.com/Ilaris-Tools/IlarisFoundryVTT/refs/heads/foundry-v9/system.json",
+  "download": "https://github.com/Ilaris-Tools/IlarisFoundryVTT/archive/refs/heads/foundry-v9.zip",
   "license": ""
 }
