@@ -233,32 +233,6 @@ Hooks.once('init', () => {
             icon: 'systems/Ilaris/assets/images/icon/swordwoman-orange.svg',
         },
     ];
-
-    game.settings.register('Ilaris', 'IlarisManoeverPaket', {
-        name: 'Ilaris Manoever Paket',
-        hint: 'Bestimmt welches Manöverpaket aus dem Compendium verwendet werden soll. Per Default werden die Manöver von Ilaris verwendet (Ilaris.manoever (System/Modulname.Manöverpaketname)). Diese Einstellung sollte am Besten nur beim nach Erstellung einer neuen Welt geändert werden, danach wird es dazu führen, dass es Helden/Kreaturen mit Manövern aus anderen Kompendien gibt.',
-        scope: 'world',
-        config: true,
-        type: String,
-        default: 'Ilaris.manover',
-        onChange: value => {
-          console.log(value)
-        },
-        requiresReload: true,
-    });
-
-    game.settings.register('Ilaris', 'IlarisVorteilePaket', {
-        name: 'Ilaris Vorteile Paket',
-        hint: 'Bestimmt welches Vorteilepaket aus dem Compendium verwendet werden soll. Per Default werden die Manöver von Ilaris verwendet (Ilaris.vorteile (System/Modulname.Vorteilepaketname)). Diese Einstellung sollte am Besten nur beim nach Erstellung einer neuen Welt geändert werden!',
-        scope: 'world',
-        config: true,
-        type: String,
-        default: 'Ilaris.vorteile',
-        onChange: value => {
-          console.log(value)
-        },
-        requiresReload: true,
-    });
 });
 
 Hooks.on('applyActiveEffect', (actor, data, options, userId) => {
