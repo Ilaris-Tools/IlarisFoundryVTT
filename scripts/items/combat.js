@@ -10,20 +10,20 @@ export class CombatItem extends IlarisItem {
         // Durchsucht alle packs und items in der Welt. Filtert bei packs alle packs mit dem typ Item und überprüft ob ein Item dort den typ Manoever hat.
         // Wenn ja, wird das pack geladen und die Items werden in ein Array gepusht.
         const manoeverItems = [];
-        game.packs.forEach(async (pack) => {
+        for await (const pack of game.packs) {
             if(pack.metadata.type == "Item") {
                 if(pack.index.contents.length > 0 && pack.index.contents[0].type == 'manoever') {
                     manoeverItems.push(...(await pack.getDocuments()));
                 }
             }
-        });
+        }
         game.items.forEach(item => {
             if(item.type == "manoever") {
                 manoeverItems.push(item);
             }
         });
 
-        console.log("manoeverItems",manoeverItems);
+        this.manoever = [];
         if("nahkampfwaffe" === this.type || ("angriff" === this.type && this.system.typ === "Nah")) {
             this.manoever = [];
             manoeverItems.forEach(manoever => {

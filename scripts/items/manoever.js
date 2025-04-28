@@ -2,9 +2,9 @@ import { IlarisItem } from "./item.js";
 
 export class ManoeverItem extends IlarisItem {
     _manoeverRequirementsFulfilled(actor, item) {
-        if (this.vorraussetzungen) {
+        if (this.system.vorraussetzungen && this.system.vorraussetzungen.length > 0) {
             fulfilled = [];
-            this.vorraussetzungen.forEach(vorraussetzung => {
+            this.system.vorraussetzungen.forEach(vorraussetzung => {
                 if(vorraussetzung.type == "WAFFENEIGENSCHAFT") {
                     fulfilled.push(item.system.eigenschaften[vorraussetzung.value] == true);
                 }

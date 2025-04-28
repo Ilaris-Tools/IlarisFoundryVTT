@@ -32,13 +32,13 @@ export class ManoeverSheet extends IlarisItemSheet {
 
         // Durchsucht alle packs und items in der Welt. Filtert bei packs alle packs mit dem typ Item und überprüft ob ein Item dort den typ vorteil hat.
         // Wenn ja, wird das pack geladen und die Items werden in ein Array gepusht. Anschließend werden die Vorteile sortiert nach gruppe
-        game.packs.forEach(async (pack) => {
-            if(pack.metadata.type == 'Item') {
+        for await (const pack of game.packs) {
+            if(pack.metadata.type == "Item") {
                 if(pack.index.contents.length > 0 && pack.index.contents[0].type == 'vorteil') {
                     vorteileItems.push(...(await pack.getDocuments()));
                 }
             }
-        });
+        }
         game.items.forEach(item => {
             if(item.type == 'vorteil') {
                 vorteileItems.push(item);
