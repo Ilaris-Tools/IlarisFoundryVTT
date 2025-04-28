@@ -26,11 +26,25 @@ export class ManoeverSheet extends IlarisItemSheet {
     async getData () {
         const data = await super.getData();
         data.manoever = CONFIG.ILARIS.manoever;
-        const vorteilePack = game.packs.get(game.settings.get('Ilaris', 'IlarisVorteilePaket'));
-        const vorteileItemData = (await vorteilePack.getDocuments());
+        const vorteileItems = [];
         const vorteile = [];
         const stile = [];
-        vorteileItemData.forEach((vorteil) => {
+
+        // Durchsucht alle packs und items in der Welt. Filtert bei packs alle packs mit dem typ Item und überprüft ob ein Item dort den typ vorteil hat.
+        // Wenn ja, wird das pack geladen und die Items werden in ein Array gepusht. Anschließend werden die Vorteile sortiert nach gruppe
+        game.packs.forEach(async (pack) => {
+            if(pack.metadata.type == 'Item') {
+                if(pack.index.contents.length > 0 && pack.index.contents[0].type == 'vorteil') {
+                    vorteileItems.push(...(await pack.getDocuments()));
+                }
+            }
+        });
+        game.items.forEach(item => {
+            if(item.type == 'vorteil') {
+                vorteileItems.push(item);
+            }
+        });
+        vorteileItems.forEach((vorteil) => {
             if(vorteil.system.gruppe == 3 || vorteil.system.gruppe == 5 || vorteil.system.gruppe == 7) {
                 stile.push({key: vorteil._id, label: vorteil.name});
             } else {
@@ -53,7 +67,7 @@ export class ManoeverSheet extends IlarisItemSheet {
 
     _onAddVoraussetzung() {
         this.document.system.voraussetzungen = Object.values(this.document.system.voraussetzungen);
-        this.document.system.voraussetzungen.push({name: "Neue Voraussetzung", type: "VORTEIL", value: []});
+        this.document.system.voraussetzungen.push({name: 'Neue Voraussetzung', type: 'VORTEIL', value: []});
         this.document.render();
     }
 
