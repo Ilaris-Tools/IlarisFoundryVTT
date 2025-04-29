@@ -18,7 +18,7 @@ Wir stehen in keinem Verhältnis (angestellt oder ähnliches) zu FoundryVTT, Ila
 
 Wir freuen uns über jegliche Hilfe. Auch Vorschläge und Kritik werden im [Forum](https://dsaforum.de/viewtopic.php?f=180&t=55746) oder [Discord](https://discord.gg/qEKBnjsspX) dankend entgegen genommen. Die Community von FoundryVTT-Ilaris Spielerinnen ist klein, daher hilft jedes Feedback insbesondere Tests und Erfahrungen mit neuen Versionen. Du hast einen Bug gefunden? Das ist toll! Her damit!
 
-Wir suchen auch Verstärkung im Entwicklerteam. JS-Programmierer und Webdesigner (oder welche die es lernen wollen) sind besonders Wilkommen. Auch eine künstlerische Ader um den Heldenbogen aufzuhübschen und einige assets zu erstellen fehlt bisher. Hier gehts lang um direkt durchzustarten: [CONTRIBUTIONS.md](CONTRIBUTIONS.md)
+Wir suchen auch Verstärkung im Entwicklerteam. JS-Programmierer und Webdesigner (oder welche die es lernen wollen) sind besonders Wilkommen. Auch eine künstlerische Ader um den Heldenbogen aufzuhübschen und einige assets zu erstellen fehlt bisher. Hier gehts lang um direkt durchzustarten: [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 
 ## Installation
@@ -26,12 +26,12 @@ Wir suchen auch Verstärkung im Entwicklerteam. JS-Programmierer und Webdesigner
 In Foundry unter "Game Systems" -> "Install System" -> "Manifest URL": 
 ```
 Manifest Urls (stable):
-Foundry 09: https://gitlab.com/Feorg/ilaris-foundry ... ystem.json
+Foundry 09: https://gitlab.com/Feorg/ilaris-foundryvtt/raw/master/system.json
 
 Manifest Urls (development branches):
-Foundry 10: https://gitlab.com/Feorg/ilaris-foundry ... ystem.json
-Foundry 11: https://gitlab.com/Feorg/ilaris-foundry ... ystem.json
-Foundry 12: https://raw.githubusercontent.com/Ilari ... ystem.json
+Foundry 10: https://gitlab.com/Feorg/ilaris-foundryvtt/-/raw/6-foundry-v10/system.json
+Foundry 11: https://gitlab.com/Feorg/ilaris-foundryvtt/-/raw/6-foundry-v11/system.json
+Foundry 12: https://raw.githubusercontent.com/Ilaris-Tools/IlarisFoundryVTT/refs/heads/main/system.json
 ```
 Einfügen und installieren.
 
@@ -45,8 +45,8 @@ Für nicht allzu anspruchsvolle Spieler/innen ist das System ausgereift genug um
 
 ## Bekannte Probleme
 
-- Abfragen zur Berechnung von Fertigkeitn/Vorteilen/etc. basieren rein auf Strings: Ein Leerzeichen an der falschen Stelle kann daher die Berechnung kaputt machen => Item löschen und neu importieren, bevor ein Bug gemeldet wird.
-- Bereits gemeldete Probleme werden [hier als Issues](https://gitlab.com/Feorg/ilaris-foundryvtt/-/issues/?label_name%5B%5D=BUG) gesammelt
+- Abfragen zur Berechnung von Fertigkeiten/Vorteilen/etc. basieren rein auf Strings: Ein Leerzeichen an der falschen Stelle kann daher die Berechnung kaputt machen => Item löschen und neu importieren, bevor ein Bug gemeldet wird.
+- Bereits gemeldete Probleme werden [hier als Issues](https://github.com/Ilaris-Tools/IlarisFoundryVTT/issues?q=is%3Aissue%20state%3Aopen%20label%3Abug) gesammelt
 
 
 ### Zu beachten / FAQ
