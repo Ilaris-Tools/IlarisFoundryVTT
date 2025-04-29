@@ -3,9 +3,7 @@ import { IlarisItem } from "./item.js";
 export class CombatItem extends IlarisItem {
     async setManoevers() {
         // TODO: könnte man vlt. dynamisch machen:
-        //manoever davor mehr typen geben melee, ranged, magic, liturgie, commandos, intimidate
-        //einstellungs option für system geben, um hausregel comp pack zu verwenden statt standard ilaris
-        // alle aus dem pack und dann vorteile prüfen
+        // use _stats.compendiumSource or flags.core.sourceId to identify if already in list
 
         // Durchsucht alle packs und items in der Welt. Filtert bei packs alle packs mit dem typ Item und überprüft ob ein Item dort den typ Manoever hat.
         // Wenn ja, wird das pack geladen und die Items werden in ein Array gepusht.

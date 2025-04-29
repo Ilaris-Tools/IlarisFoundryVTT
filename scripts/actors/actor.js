@@ -28,6 +28,7 @@ export class IlarisActor extends Actor {
     }
 
     _hasVorteil(vorteilRequirements) {
+        // use _stats.compendiumSource or flags.core.sourceId to check for requirement
         return this.vorteil_allgemein.some((vorteil) => {
             return vorteilRequirements.includes(vorteil._id);
         }) || this.vorteil_kampf.some((vorteil) => {
