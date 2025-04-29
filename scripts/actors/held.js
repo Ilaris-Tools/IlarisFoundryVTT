@@ -19,12 +19,12 @@ export class HeldActor extends IlarisActor {
     }
     
     /** @override */
-    prepareData() {  // sieht jetzt gleich aus, kann in actor.js?
+    async prepareData() {  // sieht jetzt gleich aus, kann in actor.js?
         super.prepareData();
-        this._initializeActor();  // TODO: warum wird data überall durchgegeben, ist doch sowieso instanziert??
+        await this._initializeActor();  // TODO: warum wird data überall durchgegeben, ist doch sowieso instanziert??
     }
 
-    _initializeActor() {
+    async _initializeActor() {
         // NOTE: sieht aus als wäre _initialize eine methode von Actor, 
         // die man nicht einfach überschreiben sollte
         // daher umbenannt in initialiseActor
@@ -40,7 +40,7 @@ export class HeldActor extends IlarisActor {
         this._calculateProfanFertigkeiten(this);
         this._calculateUebernaturlichFertigkeiten(this);
         this._calculateUebernaturlichTalente(this); //Nach Uebernatürliche Fertigkeiten
-        this._calculateKampf(this);
+        await this._calculateKampf(this);
         this._calculateUebernatuerlichProbendiag(this);
     }
 }

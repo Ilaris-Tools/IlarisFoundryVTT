@@ -27,27 +27,32 @@ export class IlarisActor extends Actor {
         super.prepareBaseData();
     }
 
+    _checkVorteilSource(requirement,vorteil) {
+        return (vorteil.flags?.core?.sourceId && vorteil.flags.core.sourceId.includes(requirement)) ||
+        (vorteil._stats.compendiumSource && vorteil._stats.compendiumSource.includes(requirement))
+    }
+
     _hasVorteil(vorteilRequirements) {
         // use _stats.compendiumSource or flags.core.sourceId to check for requirement
-        return this.vorteil_allgemein.some((vorteil) => {
-            return vorteilRequirements.includes(vorteil._id);
-        }) || this.vorteil_kampf.some((vorteil) => {
-            return vorteilRequirements.includes(vorteil._id);
-        })  || this.vorteil_karma.some((vorteil) => {
-            return vorteilRequirements.includes(vorteil._id);
-        }) || this.vorteil_magie.some((vorteil) => {
-            return vorteilRequirements.includes(vorteil._id);
-        }) || this.vorteil_profan.some((vorteil) => {
-            return vorteilRequirements.includes(vorteil._id);
+        return this.vorteil.allgemein.some((vorteil) => {
+            return vorteilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
+        }) || this.vorteil.kampf.some((vorteil) => {
+            return vorteilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
+        })  || this.vorteil.karma.some((vorteil) => {
+            return vorteilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
+        }) || this.vorteil.magie.some((vorteil) => {
+            return vorteilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
+        }) || this.vorteil.profan.some((vorteil) => {
+            return vorteilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
         });
     }
 
     _hasKampfstilSelected(stilRequirements) {
-        return stilRequirements.includes(this.selected_kampfstil)
-        || this.vorteil_geweihtetraditionen.some((vorteil) => {
-            return stilRequirements.includes(vorteil._id);
-        }) || this.vorteil_zaubertraditionen.some((vorteil) => {
-            return stilRequirements.includes(vorteil._id);
+        return stilRequirements.includes(this.vorteil.kampfstil)
+        || this.vorteil.geweihtentradition.some((vorteil) => {
+            return vorteilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
+        }) || this.vorteil.zaubertraditionen.some((vorteil) => {
+            return vorteilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
         });
         // zauber traditionen und liturgien werden noch wie Vorteile behandelt, da noch nicht implementiert wurde einen Stil dort zu wählen, obwohl nach Regeln sowas nötig ist
     }
@@ -371,7 +376,7 @@ export class IlarisActor extends Actor {
         actor.system.abgeleitete.kap = kap;
     }
 
-    _calculateKampf(actor) {
+    async _calculateKampf(actor) {
         console.log('Berechne Kampf');
         const KK = actor.system.attribute.KK.wert;
         const sb = Math.floor(KK / 4);
@@ -391,7 +396,7 @@ export class IlarisActor extends Actor {
             actor.nahkampfwaffen.find((x) => x.system.nebenwaffe == true) ||
             actor.fernkampfwaffen.find((x) => x.system.nebenwaffe == true);
         for (let nwaffe of actor.nahkampfwaffen) {
-            nwaffe.setManoevers();
+            await nwaffe.setManoevers();
             if (nwaffe.system.manoever == undefined) {
                 console.log('Ich überschreibe Manöver');
             }
