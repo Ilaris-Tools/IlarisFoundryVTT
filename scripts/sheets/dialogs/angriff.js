@@ -220,7 +220,7 @@ export class AngriffDialog extends Dialog {
         if (manoever.vlof.selected) {
             if (manoever.vlof.offensiver_kampfstil) {
                 mod_vt -= 4;
-                text_at = text_at.concat('Volle Offensive (Offensiver Kampfstil): -4\n');
+                text_vt = text_vt.concat('Volle Offensive (Offensiver Kampfstil): -4\n');
             } else {
                 mod_vt -= 8;
                 text_vt = text_vt.concat('Volle Offensive: -8\n'); 
@@ -283,7 +283,7 @@ export class AngriffDialog extends Dialog {
             mod_at -= 4;
             mod_vt -= 4;
             text_at = text_at.concat(`${CONFIG.ILARIS.label['km_entw']}: -4\n`);
-            text_vt = text_at.concat(`${CONFIG.ILARIS.label['km_entw']}: -4\n`);
+            text_vt = text_vt.concat(`${CONFIG.ILARIS.label['km_entw']}: -4\n`);
         }
         // Gezielter Schlag km_gzsl
         let trefferzone = Number(manoever.km_gzsl.selected);
@@ -383,7 +383,7 @@ export class AngriffDialog extends Dialog {
         if (manoever.km_stag.selected) {
             if (manoever.kbak.selected) {
                 mod_at += 4;
-                text_at = text_at.concat(`${CONFIG.ILARIS.label['km_stag']}: ${gs}\n`);
+                text_at = text_at.concat(`${CONFIG.ILARIS.label['km_stag']}: +4\n`);
             }
             let gs = Number(manoever.km_stag.gs);
             mod_dm += gs;
