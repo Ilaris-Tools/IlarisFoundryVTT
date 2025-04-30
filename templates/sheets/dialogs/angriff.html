@@ -4,7 +4,11 @@
     <input type="checkbox" id="kbak" {{checked item.system.manoever.kbak.selected}} />
 </div>
 <div class="flexrow">
-    <label>{{get_label "vlof"}}</label>
+    {{#if item.system.manoever.vlof.offensiver_kampfstil}}
+        <label>{{get_label "vlofok"}}</label>
+    {{else}}
+        <label>{{get_label "vlof"}}</label>
+    {{/if}}
     <input type="checkbox" id="vlof" {{checked item.system.manoever.vlof.selected}} />
 </div>
 <div class="flexrow">

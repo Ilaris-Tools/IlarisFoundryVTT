@@ -103,6 +103,7 @@ let label = {
     kbak: 'Kombinierte Aktion (-4)',
     vldf: 'Volle Defensive (VT +4)',
     vlof: 'Volle Offensive (AT +4, VT -8)',
+    vlofok: 'Volle Offensive (AT +4, VT -4)',
     gzkl: 'Größenklasse',
     bwng: 'Bewegung',
     lcht: 'Licht',
