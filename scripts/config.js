@@ -135,6 +135,7 @@ let label = {
     km_shwl: 'Schildwall (VT -4)',
     km_stag: 'Sturmangriff (Bewegung und AT)',
     km_tdst: 'Todesstoß (AT -8)',
+    km_tdst_dm: 'Todesstoß (+2 Wunden)',
     km_uebr: 'Überrennen (Bewegung und AT)',
     km_utlf: 'Unterlaufen (VT -4)',
     fm_gzss: 'Gezielter Schuss (FK -2)',

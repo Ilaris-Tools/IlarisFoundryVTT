@@ -269,8 +269,6 @@ export class AngriffDialog extends Dialog {
         // Binden km_bind
         let binden = Number(manoever.km_bind.selected);
         if (binden > 0) {
-            mod_at += binden;
-            text_at = text_at.concat(`Binden: +${binden}\n`);
             mod_vt -= binden;
             text_vt = text_vt.concat(`Binden: -${binden}\n`);
         }
@@ -383,9 +381,11 @@ export class AngriffDialog extends Dialog {
         }
         // Sturmangriff km_stag
         if (manoever.km_stag.selected) {
-            if (manoever.kbak.selected) mod_at += 4;
+            if (manoever.kbak.selected) {
+                mod_at += 4;
+                text_at = text_at.concat(`${CONFIG.ILARIS.label['km_stag']}: ${gs}\n`);
+            }
             let gs = Number(manoever.km_stag.gs);
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_stag']}: ${gs}\n`);
             mod_dm += gs;
             text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_stag']}: ${gs}\n`);
         }
@@ -393,7 +393,7 @@ export class AngriffDialog extends Dialog {
         if (manoever.km_tdst.selected) {
             mod_at -= 8;
             text_at = text_at.concat(`${CONFIG.ILARIS.label['km_tdst']}\n`);
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_tdst']}\n`);
+            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_tdst_dm']}\n`);
         }
         // Überrennen km_uebr
         if (manoever.km_uebr.selected) {
