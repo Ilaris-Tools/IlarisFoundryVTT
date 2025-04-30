@@ -230,6 +230,9 @@
 {{#if item.system.manoever.km_aufl.possible}}
 <div class="flexrow">
     <label>{{get_label "km_aufl"}} (GS)</label>
+    <div class="flexrow">
+        <input type="checkbox" id="km_umkl" {{checked item.system.manoever.km_aufl.selected}} />
+        <label>mod:</label>
         <input
             id="km_aufl_gs"
             type="number"
@@ -237,6 +240,7 @@
             value="{{item.system.manoever.km_aufl.gs}}"
             data-dtype="Number"
         />
+    </div>
 </div>
 {{/if}} 
 
