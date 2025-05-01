@@ -320,6 +320,48 @@ let zere_choice = {
 };
 ILARIS.zere_choice = zere_choice;
 
+let waffeneigenschaften = {
+    kein_malus_nebenwaffe: 'Kein Malus als Nebenwaffe',
+    kein_reiter: 'Nicht für Reiter',
+    kopflastig: 'Kopflastig',
+    niederwerfen: 'Niederwerfen',
+    niederwerfen_4: 'Niederwerfen (-4)',
+    niederwerfen_8: 'Niederwerfen (-8)',
+    parierwaffe: 'Parierwaffe',
+    reittier: 'Reittier',
+    ruestungsbrechend: 'Rüstungsbrechend',
+    schild: 'Schild',
+    schwer_4: 'Schwer (4)',
+    schwer_8: 'Schwer (8)',
+    stationaer: 'Stationär',
+    stumpf: 'Stumpf',
+    umklammern_212: 'Umklammern (-2,12)',
+    umklammern_416: 'Umklammern (-4,16)',
+    umklammern_816: 'Umklammern (-8,16)',
+    unberechenbar: 'Unberechenbar',
+    unzerstoerbar: 'Unzerstörbar',
+    wendig: 'Wendig',
+    zerbrechlich: 'Zerbrechlich',
+    zweihaendig: 'Zweihändig',
+}
+ILARIS.waffeneigenschaften = waffeneigenschaften;
+
+let manoever = {
+    voraussetzung_type: {
+        VORTEIL: 'Vorteil',
+        WAFFENEIGENSCHAFT: 'Waffeneigenschaft',
+        STILE: "Stile"
+    },
+    manoever_type: {
+        0: "Nahkampf",
+        1: "Fernkampf",
+        2: "Magie",
+        3: "Karma",
+    },
+    voraussetzung_tooltip: "Bestimmt welche Voraussetzung(en) für das Manöver erforderlich sind. Es können mehrere Voraussetzungen angegeben werden, die dann alle erfüllt sein müssen (UND-Verknüpfung). Die Voraussetzungstypen Vorteile und Stile erlauben eine ODER-Verknüpfung, wenn im Feld Vorteile also mehrere Vorteile als Voraussetzung angegeben sind, muss der Charakter nur über einen der Vorteile verfügen. Stile (Übernatürliche und Kampf) können nicht mit den übrigen Vorteilen durch eine ODER-Verknüpfung kombiniert werden, da meist nur ein Stil gleichzeitig verwendet werden kann, siehe Regelwerk. Wenn ein Manöver durch ein Vorteil und einen Stil freigeschlatet wird, muss ein neues Manöver erstellt werden.",
+};
+ILARIS.manoever = manoever;
+
 let manoever_nahkampf = {
     kbak: {
         selected: false,
