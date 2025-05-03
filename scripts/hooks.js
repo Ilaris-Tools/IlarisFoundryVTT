@@ -233,6 +233,12 @@ Hooks.once('init', () => {
             icon: 'systems/Ilaris/assets/images/icon/swordwoman-orange.svg',
         },
     ];
+    game.settings.register('Ilaris', 'acceptChanges', {
+        name: 'Update Information',
+        config: true,
+        type: new foundry.data.fields.BooleanField(),
+        scope: 'client',
+    });
 });
 
 Hooks.on('applyActiveEffect', (actor, data, options, userId) => {
@@ -244,3 +250,69 @@ Hooks.on('applyActiveEffect', (actor, data, options, userId) => {
     console.log(options);
     return userId;
 });
+
+Hooks.once('setup', async function () {
+    console.log('starting Ilaris system',game);
+    if (!game.settings.get('Ilaris', 'acceptChanges')) {
+        showStartupDialog();
+    }
+});
+
+class MigrationMessageDialog extends foundry.applications.api.DialogV2 {
+  }
+
+const showStartupDialog = () => {
+    let content = `<p>Da es einige Änderungen gab, ist stark zu empfehlen deinen Spielercharakter, falls du einen besitzt neu von Sephrasto zu importieren.</p>`;
+    if (game.user.isGM) {
+        content += `<p>Bist du Meister oder Verwalter dieser Welt gibt dir der Button unten die Möglichkeit deine eigenen Kreaturen und NSCs automatisch updaten zu lassen.</p>`;
+    }
+    new MigrationMessageDialog({
+        window: {
+        title: 'Update Information',
+        },
+        content: content,
+        buttons: [
+        {
+            icon: 'fa fa-check',
+            label: 'Kreaturen migrieren',
+            callback: async () => {
+                await creatureMigration();
+            },
+        },
+        ],
+    }).render(true);
+};
+
+async function creatureMigration() {
+    game.settings.set('Ilaris', 'acceptChanges', true);
+    const vorteileItems = [];
+    for await (const pack of game.packs) {
+        if(pack.metadata.type == "Item") {
+            if(pack.index.contents.length > 0 && pack.index.contents[0].type == 'vorteil') {
+                vorteileItems.push(...(await pack.getDocuments()));
+            }
+        }
+    }
+    game.items.forEach(item => {
+        if(item.type == 'vorteil') {
+            vorteileItems.push(item);
+        }
+    });
+    let vorteileMap = {};
+    vorteileItems.forEach((vorteil) => {
+        vorteileMap[vorteil.name] = vorteil;
+    });
+    console.log('starting Ilaris system',vorteileMap);
+    game.actors.forEach((actor) => {
+        if(actor.type == "kreatur" || (actor.ownership[game.userId] && Object.keys(actor.ownership).length == 2)) {
+            actor.items.forEach((item) => {
+                if(item.type == "vorteil") {
+                    if(vorteileMap[item.name]) {
+                        item._stats.compendiumSource = `Compendium.Ilaris.vorteil.Item.${vorteileMap[item.name]._id}`;
+                    }
+                }
+            });
+            console.log('starting Ilaris system',actor);
+        }
+    });
+}

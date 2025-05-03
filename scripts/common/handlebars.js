@@ -18,7 +18,6 @@ function preloadHandlebarsTemplates() {
         'systems/Ilaris/templates/helper/select_fertigkeitsgruppe.html',
         'systems/Ilaris/templates/helper/select_vorteilsgruppe.html',
         'systems/Ilaris/templates/helper/select_trefferzone.html',
-        'systems/Ilaris/templates/helper/select_agnriff_typ.html',
         'systems/Ilaris/templates/chat/dreid20.html',
         'systems/Ilaris/templates/chat/probendiag_profan.html',
         'systems/Ilaris/templates/chat/probendiag_simpleformula.html',

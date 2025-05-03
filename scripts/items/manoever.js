@@ -13,7 +13,7 @@ export class ManoeverItem extends IlarisItem {
                 }
                 if(voraussetzung.type == "STILE") {
                     // gleich wie vorteile, aber macht den PR nochmal größer
-                    fulfilled.push(actor._hasVorteil(voraussetzung.value) == true);
+                    fulfilled.push(actor._hasKampfstilSelected(voraussetzung.value) == true);
                 }
             }); 
             return fulfilled.every((e) => e == true);
