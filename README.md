@@ -15,7 +15,7 @@ Ein System für [Ilaris](https://ilarisblog.wordpress.com/) zur Verwendung mit [
 
 Wir freuen uns über jegliche Hilfe. Auch Vorschläge und Kritik werden im [Forum](https://dsaforum.de/viewtopic.php?f=180&t=55746) oder [Discord](https://discord.gg/qEKBnjsspX) dankend entgegen genommen. Die Community von FoundryVTT-Ilaris Spielerinnen ist klein, daher hilft jedes Feedback insbesondere Tests und Erfahrungen mit neuen Versionen. Du hast einen Bug gefunden? Das ist toll! Her damit!
 
-Wir suchen auch Verstärkung im Entwicklerteam. JS-Programmierer und Webdesigner (oder welche die es lernen wollen) sind besonders Wilkommen. Auch eine künstlerische Ader um den Heldenbogen aufzuhübschen und einige assets zu erstellen fehlt bisher. Hier gehts lang um direkt durchzustarten: [CONTRIBUTING.md](CONTRIBUTING.md)
+Wir suchen auch Verstärkung im Entwicklerteam. JS-Programmierer und Webdesigner (oder welche die es lernen wollen) sind besonders Wilkommen. Auch eine künstlerische Ader um den Heldenbogen aufzuhübschen und einige assets zu erstellen fehlt bisher. Hier gehts lang um direkt durchzustarten: [CONTRIBUTING.md](./CONTRIBUTING.md)
 
 
 ## Installation
