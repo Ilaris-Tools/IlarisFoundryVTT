@@ -252,7 +252,6 @@ Hooks.on('applyActiveEffect', (actor, data, options, userId) => {
 });
 
 Hooks.once('setup', async function () {
-    console.log('starting Ilaris system',game);
     if (!game.settings.get('Ilaris', 'acceptChanges')) {
         showStartupDialog();
     }
@@ -302,7 +301,6 @@ async function creatureMigration() {
     vorteileItems.forEach((vorteil) => {
         vorteileMap[vorteil.name] = vorteil;
     });
-    console.log('starting Ilaris system',vorteileMap);
     game.actors.forEach((actor) => {
         if(actor.type == "kreatur" || (actor.ownership[game.userId] && Object.keys(actor.ownership).length == 2)) {
             actor.items.forEach((item) => {
@@ -312,7 +310,6 @@ async function creatureMigration() {
                     }
                 }
             });
-            console.log('starting Ilaris system',actor);
         }
     });
 }
