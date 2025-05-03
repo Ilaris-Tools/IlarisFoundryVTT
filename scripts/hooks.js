@@ -262,7 +262,7 @@ class MigrationMessageDialog extends foundry.applications.api.DialogV2 {
   }
 
 const showStartupDialog = () => {
-    let content = `<p>Da es einige Änderungen gab, ist stark zu empfehlen deinen Spielercharakter, falls du einen besitzt neu von Sephrasto zu importieren.</p>`;
+    let content = `<p>Da es einige Änderungen gab, ist stark zu empfehlen deinen Spielercharakter, falls du einen besitzt neu von Sephrasto zu importieren. Es kann sein, dass du schon einmal darauf hingewiesen wurdest, wenn du dich gerade von einem anderen Gerät anmeldest.</p>`;
     if (game.user.isGM) {
         content += `<p>Bist du Meister oder Verwalter dieser Welt gibt dir der Button unten die Möglichkeit deine eigenen Kreaturen und NSCs automatisch updaten zu lassen.</p>`;
     }
