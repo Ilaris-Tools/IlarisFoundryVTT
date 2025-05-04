@@ -1,4 +1,10 @@
 {{log 'angriff' this}}
+{{#if (ifEq actor.type "held")}}
+    <div>
+        <label>Schips: </label>
+        <label>{{radioBoxes "schips" choices_schips checked=checked_schips}}</label>
+    </div>
+{{/if}}
 <div class="flexrow">
     <label>{{get_label "kbak"}}</label>
     <input type="checkbox" id="kbak" {{checked item.system.manoever.kbak.selected}} />

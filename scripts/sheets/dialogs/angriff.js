@@ -11,6 +11,9 @@ export class AngriffDialog extends Dialog {
         const options = {template: 'systems/Ilaris/templates/sheets/dialogs/angriff.html'}
         super(dialog, options);
         // this can be probendialog (more abstract)
+        this.text_at = '';
+        this.text_vt = '';
+        this.text_dm = '';
         this.item = item;
         this.actor = actor;
         this.speaker = ChatMessage.getSpeaker({ actor: this.actor });
@@ -29,7 +32,9 @@ export class AngriffDialog extends Dialog {
             rollModes: CONFIG.Dice.rollModes,
             item: this.item,
             actor: this.actor,
-            mod_at: this.mod_at
+            mod_at: this.mod_at,
+            choices_schips: CONFIG.ILARIS.schips_choice,
+            checked_schips: '0',
         };
     }
     
@@ -43,14 +48,16 @@ export class AngriffDialog extends Dialog {
     async _angreifenKlick(html) {
         // NOTE: var names not very descriptive: 
         // at_abzuege_mod kommen vom status/gesundheit, at_mod aus ansagen, nahkampfmod?
+        let diceFormula = await this.getDiceFormula(html);
         await this.manoeverAuswaehlen(html);
-        this.updateManoeverMods(this.actor, this.item);  // durch manoever
+        this.updateManoeverMods();  // durch manoever
         this.updateStatusMods();
         this.eigenschaftenText();
+        console.log(this.text_at);
 
         let label = `Attacke (${this.item.name})`;
         let formula = 
-            `1d20 ${signed(this.item.system.at)} \
+            `${diceFormula} ${signed(this.item.system.at)} \
             ${signed(this.at_abzuege_mod)} \
             ${signed(this.item.actor.system.modifikatoren.nahkampfmod)} \
             ${signed(this.mod_at)}`;
@@ -422,9 +429,9 @@ export class AngriffDialog extends Dialog {
         this.mod_at = mod_at;
         this.mod_vt = mod_vt;
         this.mod_dm = mod_dm;
-        this.text_at = text_at;
-        this.text_vt = text_vt;
-        this.text_dm = text_dm;
+        this.text_at = this.text_at.concat(text_at);
+        this.text_vt = this.text_vt.concat(text_vt);
+        this.text_dm = this.text_dm.concat(text_dm);
         this.nodmg = nodmg;
         this.schaden = schaden;
     }
@@ -445,5 +452,33 @@ export class AngriffDialog extends Dialog {
             this.at_abzuege_mod = this.item.actor.system.abgeleitete.globalermod;
             this.vt_abzuege_mod = this.item.actor.system.abgeleitete.globalermod;
         }
+    }
+
+    getDiceFormula(html) {
+        let schipsOption = Number(html.find('input[name="schips"]:checked')[0]?.value) || 0;
+        let text = '';
+        let diceFormula = `1d20`;
+        if(schipsOption == 0) {
+            return diceFormula;
+        }
+        if (this.actor.system.schips.schips_stern == 0) {
+            this.text_at = text.concat(`Keine Schips\n`);
+            this.text_vt = text.concat(`Keine Schips\n`);
+            return diceFormula;
+        }
+
+        this.actor.update({'system.schips.schips_stern': this.actor.system.schips.schips_stern - 1});
+        if (schipsOption == 1) {
+            this.text_at = text.concat(`Schips ohne Eigenheit\n`);
+            this.text_vt = text.concat(`Schips ohne Eigenheit\n`);
+            diceFormula = `${2}d20dl${1}`;
+        } 
+        
+        if (schipsOption == 2) {
+            this.text_at = text.concat(`Schips mit Eigenschaft\n`);
+            this.text_vt = text.concat(`Schips mit Eigenschaft\n`);
+            diceFormula = `${3}d20dl${2}`;
+        }
+        return diceFormula;
     }
 }
