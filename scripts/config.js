@@ -358,6 +358,12 @@ let manoever = {
         2: "Magie",
         3: "Karma",
     },
+    selector_type: {
+        INPUT: 'Inputfeld',
+        CHECKBOX: 'Checkbox',
+        TREFFER_ZONE: 'Trefferzonendropdown',
+    },
+    selectors_tooltip: "Die Auswahl bestimmt welche Selektoren im Würfeldialog für dieses Manöver angezeigt werden. Die Auswahlen sind: Checkbox, Inputfeld, Trefferzonendropdown. Checkbox ist bei neuem Manövern standardmäßig asugewählt und gibt dir einfach nur eine Checkbox, um das Manöver zu aktivieren. Inputfeld ist ein Textfeld, in dem du einen Wert eingeben kannst. Trefferzonendropdown ist ein Dropdown, in dem du eine Trefferzone auswählen kannst.",
     voraussetzung_tooltip: "Bestimmt welche Voraussetzung(en) für das Manöver erforderlich sind. Es können mehrere Voraussetzungen angegeben werden, die dann alle erfüllt sein müssen (UND-Verknüpfung). Die Voraussetzungstypen Vorteile und Stile erlauben eine ODER-Verknüpfung, wenn im Feld Vorteile also mehrere Vorteile als Voraussetzung angegeben sind, muss der Charakter nur über einen der Vorteile verfügen. Stile (Übernatürliche und Kampf) können nicht mit den übrigen Vorteilen durch eine ODER-Verknüpfung kombiniert werden, da meist nur ein Stil gleichzeitig verwendet werden kann, siehe Regelwerk. Wenn ein Manöver durch ein Vorteil und einen Stil freigeschlatet wird, muss ein neues Manöver erstellt werden.",
 };
 ILARIS.manoever = manoever;

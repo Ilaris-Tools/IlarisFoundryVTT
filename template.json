@@ -399,6 +399,7 @@
     },
     "manoever": {
       "voraussetzungen": [],
+      "selectors": [],
       "gruppe": 0,
       "probe": "",
       "gegenprobe": "",

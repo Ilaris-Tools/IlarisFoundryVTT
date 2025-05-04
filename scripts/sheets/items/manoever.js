@@ -9,6 +9,7 @@ import { IlarisItemSheet } from './item.js';
           "value": ["VorteilID1", "VorteilID2"]
         }
       ],
+      "selectors": ["checkbox", "input", "trefferzone"]
       "gruppe": 0,
       "probe": "",
       "gegenprobe": "",

@@ -67,6 +67,17 @@
                 <hr>        
             {{/each}}
         </div>
+        <div class="manoever-selectors">
+            <div class="flexrow">
+                <div><b>Selektoren </b></div>
+                <a title="{{manoever.selectors_tooltip}}"><i class="fas fa-info"></i></a>
+            </div>
+            <div>
+                <multi-select name="system.selectors">
+                    {{selectOptions manoever.selector_type selected=item.system.selectors}}
+                </multi-select>
+            </div>
+        </div>
         <div class="flexrow">
             <label><b>Probe:</b></label>
             <input name="system.probe" value="{{item.system.probe}}" type="text" data-dtype="String" />
