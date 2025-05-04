@@ -22,17 +22,16 @@
       <div>
         <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
       </div>
-
+      <div class="status-effects">
+        {{#each actor.effects as |effect|}}
+        {{#if effect.icon}}
+        <img class="effect-control {{#if effect.active}}active{{/if}}" src="{{effect.icon}}" data-tooltip="{{effect.name}}"
+          data-status-id="{{effect.statusId}}" />
+        {{/if}}
+        {{/each}}
+      </div>
       <div id="lebensleiste">
         <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/Leben.png" data-edit="img" title="Leben"
-          height="40" width="40" />
-          {{#each (range 0 8) as |index|}}
-            <button 
-              class="triStateBtn state-{{getButtonState index ../actor.system.gesundheit.wunden ../actor.system.gesundheit.erschoepfung}}" 
-              data-state="{{getButtonState index ../actor.system.gesundheit.wunden ../actor.system.gesundheit.erschoepfung}}">
-            </button>
-          {{/each}}
-        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/Tod.png" data-edit="img" title="Tod"
           height="40" width="40" />
       </div>
       <div>
@@ -46,44 +45,48 @@
           {{/if}}
         </a>
       </div>
-      <p></p>
-      <div class="table-column">
-        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/ws.svg" data-edit="img" title="WS"
-          height="40" width="40"> </img>
-        <label>{{actor.system.abgeleitete.ws}}</label>
-        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/ws.svg" data-edit="img" title="WS*"
-          height="40" width="40" />
-        <label>{{actor.system.abgeleitete.ws_stern}}</label>
-        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/mr.svg" data-edit="img" title="MR"
-          height="40" width="40" />
-        <label class="rollable onhover" data-rolltype="simpleprobe_diag" data-name="Magierresistenz"
-          data-pw="{{actor.system.abgeleitete.mr}}">{{actor.system.abgeleitete.mr}}
-        </label>
-      </div>
-      <div>
-        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/ini.svg" data-edit="img" title="INI"
-          height="40" width="40" />
-        <label>{{actor.system.abgeleitete.ini}}</label>
-        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/gs.svg" data-edit="img" title="GS"
-          height="40" width="40" />
-        <label>{{actor.system.abgeleitete.gs}}</label>
-        <img class="profile-img" src="icons/svg/daze.svg" data-edit="img" title="DH" height="40" width="40" />
-        <label>{{actor.system.abgeleitete.dh}}</label>
+      </b>
+      <div class="icon-row">
+        <div class="icon-overlay-container">
+          <img src="/systems/Ilaris/assets/images/Ilaris/ws.svg" title="WS" />
+          <span class="overlay-label">{{actor.system.abgeleitete.ws}}</span>
+        </div>
+        <div class="icon-overlay-container">
+          <img src="/systems/Ilaris/assets/images/Ilaris/ws.svg" title="WS*" />
+          <span class="overlay-label">{{actor.system.abgeleitete.ws_stern}}</span>
+        </div>
+        <div class="icon-overlay-container rollable onhover" data-rolltype="simpleprobe_diag" data-name="Magierresistenz"
+          data-pw="{{actor.system.abgeleitete.mr}}">
+          <img src="/systems/Ilaris/assets/images/Ilaris/mr.svg" title="MR" />
+          <span class="overlay-label">{{actor.system.abgeleitete.mr}}</span>
+        </div>
+        <div class="icon-overlay-container">
+          <img src="/systems/Ilaris/assets/images/Ilaris/ini.svg" title="INI" />
+          <span class="overlay-label">{{actor.system.abgeleitete.ini}}</span>
+        </div>
+        <div class="icon-overlay-container">
+          <img src="/systems/Ilaris/assets/images/Ilaris/gs.svg" title="GS" />
+          <span class="overlay-label">{{actor.system.abgeleitete.gs}}</span>
+        </div>
+        <div class="icon-overlay-container">
+          <img src="icons/svg/daze.svg" title="DH" />
+          <span class="overlay-label">{{actor.system.abgeleitete.dh}}</span>
+        </div>
       </div>
       <br>
       <div style="font-size: 14px">
         {{#if actor.system.abgeleitete.zauberer}}
         <label class="ausklappen-trigger onhover" data-ausklappentarget="aspzugekauft"><b>AsP:</b></label>
         <label>{{actor.system.abgeleitete.asp}}&nbsp; | &nbsp;</label>
-
+    
         <label><b>gAsP:</b></label>
-        <input style="width: 25px" name="system.abgeleitete.gasp" value="{{actor.system.abgeleitete.gasp}}"
-          type="number" data-dtype="Number" />
-
+        <input style="width: 25px" name="system.abgeleitete.gasp" value="{{actor.system.abgeleitete.gasp}}" type="number"
+          data-dtype="Number" />
+    
         <label>&nbsp; | &nbsp;<b>AsP*:</b></label>
         <input style="width: 25px" name="system.abgeleitete.asp_stern" value="{{actor.system.abgeleitete.asp_stern}}"
           type="number" data-dtype="Number" />
-
+    
         <span id="ausklappen-view-aspzugekauft" style="display: none">
           <label>Zugekauft: </label>
           <input style="width: 25px" name="system.abgeleitete.asp_zugekauft"
@@ -91,19 +94,19 @@
         </span>
         <br>
         {{/if}}
-
+    
         {{#if actor.system.abgeleitete.geweihter}}
         <label class="ausklappen-trigger onhover" data-ausklappentarget="kapzugekauft"><b>KaP:</b></label>
         <label>{{actor.system.abgeleitete.kap}}&nbsp; | &nbsp;</label>
-
+    
         <label><b>gKaP:</b></label>
-        <input style="width: 25px" name="system.abgeleitete.gkap" value="{{actor.system.abgeleitete.gkap}}"
-          type="number" data-dtype="Number" />
-
+        <input style="width: 25px" name="system.abgeleitete.gkap" value="{{actor.system.abgeleitete.gkap}}" type="number"
+          data-dtype="Number" />
+    
         <label>&nbsp; | &nbsp;<b>KaP*:</b></label>
         <input style="width: 25px" name="system.abgeleitete.kap_stern" value="{{actor.system.abgeleitete.kap_stern}}"
           type="number" data-dtype="Number" />
-
+    
         <span id="ausklappen-view-kapzugekauft" style="display: none">
           <label>Zugekauft: </label>
           <input style="width: 25px" name="system.abgeleitete.kap_zugekauft"
@@ -112,7 +115,11 @@
         <br />
         {{/if}}
       </div>
-
+      <p></p>
+    
+      <div class="flexrow">
+        <b><label style="color: black; font-size: 16pt">{{actor.system.abgeleitete.globalermoddisplay}}</label></b>
+      </div>
     </div>
 
     <div class="heroattributes">
@@ -125,26 +132,22 @@
       </div>
       {{/each}}
     </div>
-    
-    
 
     <div class=herotabnavigation>
       <hr />
       <div class="sheet-tabs tabs" data-group="primary">
-        <b class="item" data-tab="attribute"><img class="profile-img"
-          src="/systems/Ilaris/assets/images/Ilaris/attribute.png" height="50" width="50" /></b>
-        <b class="item" data-tab="fertigkeiten"><img class="profile-img"
-          src="/systems/Ilaris/assets/images/Ilaris/holzbearbeitung.png" height="50" width="50" /></b>
+        <b class="item" data-tab="attribute"><img class="round-icon"
+            src="/systems/Ilaris/assets/images/Ilaris/attribute.png" height="50" width="50" /></b>
+        <b class="item" data-tab="fertigkeiten"><img class="round-icon"
+            src="/systems/Ilaris/assets/images/Ilaris/holzbearbeitung.png" height="50" width="50" /></b>
         <b class="item" data-tab="uebernatuerlich"><img class="profile-img"
-          src="/systems/Ilaris/assets/images/Ilaris/gildenmagie.png" height="50" width="50" /></b>
+            src="/systems/Ilaris/assets/images/Ilaris/gildenmagie.png" height="50" width="50" /></b>
         <b class="item" data-tab="kampf"><img class="profile-img"
-          src="/systems/Ilaris/assets/images/Ilaris/beidhaendig.png" height="50" width="50" /></b>
-        <b class="item" data-tab="inventar"><img class="profile-img"
-            src="/systems/Ilaris/assets/images/Ilaris/geld.jpg" height="50" width="50" /></b>
-        <b class="item" data-tab="notes"><img class="profile-img"
-            src="/systems/Ilaris/assets/images/Ilaris/wissen.png" height="50" width="50" /></b>
-        <b class="item" data-tab="effekte"><img class="profile-img"
-            src="/systems/Ilaris/assets/images/Ilaris/magie.png" height="50" width="50" /></b>
+            src="/systems/Ilaris/assets/images/Ilaris/beidhaendig.png" height="50" width="50" /></b>
+        <b class="item" data-tab="inventar"><img class="round-icon" src="/systems/Ilaris/assets/images/Ilaris/geld.jpg"
+            height="50" width="50" /></b>
+        <b class="item" data-tab="notes"><img class="round-icon" src="/systems/Ilaris/assets/images/Ilaris/wissen.png"
+            height="50" width="50" /></b>
       </div>
       <hr />
     </div>
@@ -165,9 +168,6 @@
         </div>
         <div class="tab" data-group="primary" data-tab="kampf">
           {{> systems/Ilaris/templates/sheets/tabs/kampf.html}}
-        </div>
-        <div class="tab" data-group="primary" data-tab="effekte">
-          {{> systems/Ilaris/templates/sheets/tabs/effekte.html}}
         </div>
         <div class="tab" data-group="primary" data-tab="inventar">
           {{> systems/Ilaris/templates/sheets/tabs/inventar.html}}

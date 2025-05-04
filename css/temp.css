@@ -1,3 +1,23 @@
+@font-face {
+  font-family: 'Crimson Text';
+  src: url('../assets/fonts/CrimsonText-Regular.ttf');
+}
+@font-face {
+  font-family: 'Aniron';
+  src: url('../assets/fonts/anirm___.ttf');
+}
+@font-face {
+  font-family: 'Andada';
+  src: url('../assets/fonts/AndadaSC-Regular.otf');
+}
+
+:root {
+  /* --font-text: "Crimson Text", serif; */
+  --font-crimson: 'Crimson Text';
+  --font-aniron: 'Aniron';
+  --font-andada: 'Andada';
+}
+
 .herosheet {
     display: grid;
     grid-template-areas: 'header header' 'sidebar navigation1'
@@ -7,6 +27,7 @@
     background-image: url(/systems/Ilaris/assets/images/Ilaris/Kasten_high_res.png);
     background-repeat: round;
     min-height: 680px;
+    font-family: var(--font-andada);
   }
   
   .heroheader {
@@ -50,8 +71,7 @@
     font-weight: bold;
     font-size: 22px;
   }
-  
-  
+    
   .herotabnavigation {
     grid-area: navigation2;
   }
@@ -90,6 +110,45 @@
     position: relative;
   }
   
+  .icon-overlay-container {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    margin: 5px;
+  }
+  
+  .icon-overlay-container img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: none;
+  }
+  
+  .overlay-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: black; /* oder schwarz, je nach Kontrast */
+    font-weight: bold;
+    font-size: 20px;
+    text-shadow: 0 0 3px black; /* besser lesbar auf hellem Hintergrund */
+    pointer-events: none;
+  }
+  
+  
+
+.status-effects {
+  display: inline-flexbox;
+  flex-direction: column;
+}
+
+  .status-effects img.effect-control {
+    background-color: transparent;
+    width: 40px;
+    height: 40px;
+}
   .hangingindent {
     padding-left: 22px ;
     text-indent: -22px ;
@@ -113,8 +172,6 @@
 
   .profile-img {
     border: none;
-    flex-flow: row;
-
   }
   
   #lebensleiste {
@@ -136,7 +193,7 @@
   
   /* Hintergrundfarbe für die ersten 4 Buttons */
   #lebensleiste .triStateBtn:nth-child(-n+5) {
-    background-color: beige;
+    background-color: #f5f5dc;
   }
   
   /* Zustand 1: Kreuz */
@@ -267,3 +324,21 @@
     background-image: url('/systems/Ilaris/assets/images/Ilaris/phex.png');
   }
   
+  .twokindrow div:nth-child(odd) {
+    background: rgba(255, 255, 255, 0.2);
+  }
+  
+  input[name="name"] {
+    border: none;
+    outline: none; /* optional, entfernt den Fokus-Rahmen */
+    background: transparent; /* optional, falls du einen transparenten Hintergrund willst */
+    text-align: center;
+    font-family: var(--font-aniron);
+    font-size: 18px;
+  }
+
+  .round-icon {
+    border-radius: 50%;
+    border-color: #573618;
+    border-width: 2px;
+  }

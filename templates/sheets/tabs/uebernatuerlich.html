@@ -133,7 +133,7 @@
         </div>
         {{#each actor.uebernatuerlich.zauber as |magtal|}}
         <div class="flexrow">
-            <a class="rollable icon-small" data-rolltype="magie_diag" data-itemid="{{magtal.id}}"><i class="fas fa-dice-d20"></i></a>
+            <a class="rollable icon-small" data-rolltype="magie_diag" data-itemid="{{magtal.id}}"><i class="custom-icon"></i></a>
             <label class="ausklappen-trigger onhover" data-ausklappentarget="{{magtal.id}}"
                 >{{magtal.name}}</label
             >
@@ -183,7 +183,7 @@
         </div>
         {{/each}} {{#each actor.uebernatuerlich.liturgien as |kartal|}}
         <div class="flexrow">
-            <a class="rollable icon-small" data-rolltype="karma_diag" data-itemid="{{kartal.id}}"><i class="fas fa-dice-d20"></i></a>
+            <a class="rollable icon-small" data-rolltype="karma_diag" data-itemid="{{kartal.id}}"><i class="custom-icon"></i></a>
             <label class="ausklappen-trigger onhover" data-ausklappentarget="{{kartal.id}}"
                 >{{kartal.name}}</label
             >
