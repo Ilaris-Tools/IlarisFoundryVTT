@@ -327,6 +327,11 @@
   .twokindrow div:nth-child(odd) {
     background: rgba(255, 255, 255, 0.2);
   }
+
+  .twokindrow {
+width: 100%;
+column-width: auto;
+  }
   
   input[name="name"] {
     border: none;
