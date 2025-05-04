@@ -32,7 +32,15 @@
       </div>
       <div id="lebensleiste">
         <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/Leben.png" data-edit="img" title="Leben"
-          height="40" width="40" />
+          height="40" width="40" />      
+        {{#each (range 0 8) as |index|}}           
+        <button
+          class="triStateBtn state-{{getButtonState index ../actor.system.gesundheit.wunden ../actor.system.gesundheit.erschoepfung}}"
+          data-state="{{getButtonState index ../actor.system.gesundheit.wunden ../actor.system.gesundheit.erschoepfung}}">     
+        </button>           
+        {{/each}}
+        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/Tod.png" data-edit="img" title="Tod" height="40"
+          width="40" />
       </div>
       <div>
         <a class="icon-small toggle-bool {{system.gesundheit.wundenignorieren}}"
