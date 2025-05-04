@@ -10,10 +10,15 @@ export class IlarisActorSheet extends ActorSheet {
         const context = super.getData();
         console.log(context)
 
-        context.enrichedBiography = await TextEditor.enrichHTML(this.actor.system.notes, {async: true});
+        context.enrichedBiography = await TextEditor.enrichHTML(this.actor.system.notes, { async: true });
+        const activeEffectIds = this.actor.effects.map(e => e.getFlag("core", "statusId") || e.id);
+    context.customStatusEffects = CONFIG.statusEffects.filter(se =>
+        activeEffectIds.includes(se.id)
+    );
         return context;
     }
-    
+
+
     activateListeners(html) {
         super.activateListeners(html);
         html.find('.ausklappen-trigger').click((ev) => this._ausklappView(ev));
@@ -102,8 +107,8 @@ export class IlarisActorSheet extends ActorSheet {
             let speaker = ChatMessage.getSpeaker({ actor: this.actor });
             await roll.evaluate({ async: true });
             const html_roll = await renderTemplate(
-                'systems/Ilaris/templates/chat/probenchat_profan.html', 
-                {title: `${label}`}
+                'systems/Ilaris/templates/chat/probenchat_profan.html',
+                { title: `${label}` }
             );
             // console.log(html_roll);
             roll.toMessage({
@@ -119,14 +124,14 @@ export class IlarisActorSheet extends ActorSheet {
         // TODO: rolltype=dialog, diagtype=nahkampf/profan/simple usw..
         let dialoge = [
             'angriff_diag',
-            'profan_fertigkeit_diag', 
-            'nahkampf_diag', 
-            'attribut_diag', 
-            'simpleprobe_diag', 
-            'simpleformula_diag', 
-            'fernkampf_diag', 
-            'freie_fertigkeit_diag', 
-            'magie_diag', 
+            'profan_fertigkeit_diag',
+            'nahkampf_diag',
+            'attribut_diag',
+            'simpleprobe_diag',
+            'simpleformula_diag',
+            'fernkampf_diag',
+            'freie_fertigkeit_diag',
+            'magie_diag',
             'karma_diag',
             'uefert_diag'
         ]
@@ -169,7 +174,7 @@ export class IlarisActorSheet extends ActorSheet {
         //     wuerfelwurf(event, this.actor);
         //     return 0;
         // } else 
-        if (rolltype == 'at') { 
+        if (rolltype == 'at') {
             // TODO: simplify this: if rolltype in [...]
             dice = '1d20';
             label = $(event.currentTarget).data('item');
@@ -362,8 +367,8 @@ export class IlarisActorSheet extends ActorSheet {
             }
             Dialog.prompt({
                 content: `Manöver stehen automatisch zur Verfügung, wenn die Vorraussetzungen erfüllt sind. Um ein neues aufbauendes Manöver zu lernen, ziehe den Entsprechenden Vorteil auf den ${bogen}.`,
-                callback: () => {},
-              });
+                callback: () => { },
+            });
         }
         else {
             super._onDropItemCreate(item);
@@ -484,10 +489,10 @@ export class IlarisActorSheet extends ActorSheet {
             game.packs.get("Ilaris.vorteile").render(true);
             Dialog.prompt({
                 content: "Du kannst Vorteile direkt aus den Kompendium Packs auf den Statblock ziehen. Für eigene Vor/Nachteile zu erstellen, die nicht im Regelwerk enthalten sind, benutze die Eigenschaften.",
-                callback: () => {},
-              });
-        } 
-        else  {
+                callback: () => { },
+            });
+        }
+        else {
             console.log('Neues generisches Item');
             console.log(itemclass);
             itemData = {
