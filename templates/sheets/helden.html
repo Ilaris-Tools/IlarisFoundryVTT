@@ -6,23 +6,14 @@
         <h1><input name="name" type="text" value="{{actor.name}}" /></h1>
 
       </div>
-      <div> {{log 'ships' this.actor.system.schips}}
-        <label class="Schips-button">
-          <input type="checkbox" />
-          <span></span>
-        </label>
-        <label class="Schips-button">
-          <input type="checkbox" />
-          <span></span>
-        </label>
-        <label class="Schips-button">
-          <input type="checkbox" />
-          <span></span>
-        </label>
-        <label class="Schips-button">
-          <input type="checkbox" />
-          <span></span>
-        </label>
+      <div class="flexrow">
+        {{#each (range 1 (add actor.system.schips.schips 1)) as |index|}}
+          {{#if (lte index ../actor.system.schips.schips_stern)}}
+            <span class="schips-button filled" name="system.schips.schips_stern"></span>
+          {{else}}
+            <span class="schips-button"></span>
+          {{/if}}
+        {{/each}}
       </div>
 
     </div>
