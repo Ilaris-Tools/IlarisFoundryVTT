@@ -301,12 +301,8 @@
     overflow: auto;
     /*     font-weight: bold; */
   }
-
-  .Schips-button input {
-    display: none;
-  }
   
-  .Schips-button span {
+  .schips-button {
     display: inline-block;
     width: 30px;
     height: 30px;
@@ -317,10 +313,14 @@
     background-position: center;
     transition: background-image 0.3s ease;
     cursor: pointer;
+    margin-right: 8px;
   }
-  
-  /* Wenn die Checkbox gecheckt ist, wird das Hintergrundbild angezeigt */
-  .Schips-button input:checked + span {
+
+  .schips-button:last-child {
+    margin-right: 0;
+  }
+
+  .filled{
     background-image: url('/systems/Ilaris/assets/images/Ilaris/phex.png');
   }
   
