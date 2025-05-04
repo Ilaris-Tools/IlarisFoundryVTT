@@ -359,8 +359,8 @@ let manoever = {
         3: "Karma",
     },
     selector_type: {
-        INPUT: 'Inputfeld',
         CHECKBOX: 'Checkbox',
+        INPUT: 'Inputfeld',
         TREFFER_ZONE: 'Trefferzonendropdown',
     },
     selectors_tooltip: "Die Auswahl bestimmt welche Selektoren im Würfeldialog für dieses Manöver angezeigt werden. Die Auswahlen sind: Checkbox, Inputfeld, Trefferzonendropdown. Checkbox ist bei neuem Manövern standardmäßig asugewählt und gibt dir einfach nur eine Checkbox, um das Manöver zu aktivieren. Inputfeld ist ein Textfeld, in dem du einen Wert eingeben kannst. Trefferzonendropdown ist ein Dropdown, in dem du eine Trefferzone auswählen kannst.",

@@ -27,6 +27,59 @@
     <input type="checkbox" id="pssl" {{checked item.system.manoever.pssl.selected}} />
 </div>
 
+<!-- eingaben -->
+<div class="flexrow">
+    <label>Reichweitenunterschied: </label>
+    <select id="rwdf" name="item.system.manoever.rwdf.selected" style="max-width: 150px">
+        {{#select item.system.manoever.rwdf.selected}}
+        <option value="0">Ideal</option>
+        <option value="1">1 Feld</option>
+        <option value="2">2 Felder</option>
+        {{/select}}
+    </select>
+</div>
+
+<div class="flexrow">
+    <label>Reaktionsanzahl: </label>
+    <input
+        id="rkaz"
+        type="number"
+        name="item.system.manoever.rkaz.selected"
+        value="{{item.system.manoever.rkaz.selected}}"
+        data-dtype="Number"
+    />
+</div>
+
+<hr>
+
+<h3>Manöver:</h3>
+{{#each item.manoever as |manoever|}}
+    <div class="flexrow">
+        <label>{{manoever.name}}</label>
+        {{#each manoever.system.selectors as |selector|}}
+            {{#if (ifEq selector "CHECKBOX")}}
+                <input
+                    type="checkbox"
+                    id="{{manoever.id}}CHECKBOX"
+                    {{#if item.manoever.[@../index].selectorValues.[@index].value}}checked{{/if}}
+                />
+            {{/if}}
+            {{#if (ifEq selector "INPUT")}}
+                <input
+                    id="{{manoever.id}}INPUT"
+                    type="number"
+                    value="{{item.manoever.[@../index].selectorValues.[@index].value}}"
+                    data-dtype="Number"
+                />
+            {{/if}}
+            {{#if (ifEq selector "TREFFER_ZONE")}}
+                <select id="{{manoever.id}}TREFFER_ZONE" name="item.manoever.{{@../index}}.selectorValues.{{@index}}.value" style="max-width: 150px">
+                    {{selectOptions ../../trefferzonen selected=item.manoever.[@../index].selectorValues.[@index].value}}
+                </select>
+            {{/if}}
+        {{/each}}
+    </div>
+{{/each}}
 {{#if item.system.manoever.km_entw.possible}}
 <div class="flexrow">
     <label>{{get_label "km_entw"}}</label>
@@ -115,21 +168,6 @@
 {{/if}} 
 
 
-
-<hr />
-<!-- eingaben -->
-<div class="flexrow">
-    <label>Reichweitenunterschied: </label>
-    <select id="rwdf" name="item.system.manoever.rwdf.selected" style="max-width: 150px">
-        {{#select item.system.manoever.rwdf.selected}}
-        <option value="0">Ideal</option>
-        <option value="1">1 Feld</option>
-        <option value="2">2 Felder</option>
-        {{/select}}
-    </select>
-</div>
-
-
 {{#if item.system.manoever.km_gzsl.possible}}
 <div class="flexrow">
     <label>{{get_label "km_gzsl"}}</label>
@@ -209,7 +247,7 @@
 {{/if}} 
 
 
-<hr/>
+<hr />
 <!-- VT -->
 
 {{#if item.system.manoever.km_ausw.possible}}
@@ -249,18 +287,6 @@
     </div>
 </div>
 {{/if}} 
-
-
-<div class="flexrow">
-    <label>Reaktionsanzahl: </label>
-    <input
-        id="rkaz"
-        type="number"
-        name="item.system.manoever.rkaz.selected"
-        value="{{item.system.manoever.rkaz.selected}}"
-        data-dtype="Number"
-    />
-</div>
 
 <hr />
 <div class="flexrow">

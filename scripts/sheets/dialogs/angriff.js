@@ -30,6 +30,7 @@ export class AngriffDialog extends Dialog {
         return {
             distance_choice: CONFIG.ILARIS.distance_choice,
             rollModes: CONFIG.Dice.rollModes,
+            trefferzonen: CONFIG.ILARIS.trefferzonen,
             item: this.item,
             actor: this.actor,
             mod_at: this.mod_at,
@@ -151,44 +152,21 @@ export class AngriffDialog extends Dialog {
         manoever.vldf.selected = html.find('#vldf')[0]?.checked || false;  // Volle Defensive
         manoever.pssl.selected = html.find('#pssl')[0]?.checked || false;  // Passierschlag pssl
         manoever.rwdf.selected = html.find('#rwdf')[0]?.value || false;  // Reichweitenunterschied
-        
-        // kampf manoever
-        manoever.km_ausw.selected = html.find('#km_ausw')[0]?.checked || false;  // Ausweichen km_ausw
-        manoever.km_rust.selected = html.find('#km_rust')[0]?.checked || false;  // Rüstungsbrecher km_rust
-        manoever.km_shsp.selected = html.find('#km_shsp')[0]?.checked || false;  // Schildspalter km_shsp
-        manoever.km_stsl.selected = html.find('#km_stsl')[0]?.checked || false;  // Stumpfer Schlag km_stsl
-        manoever.km_ever.selected = html.find('#km_ever')[0]?.checked || false;  // Entfernung verändern km_ever
-        manoever.km_umre.selected = html.find('#km_umre')[0]?.checked || false;  // Umreißen km_umre
-        manoever.km_ausf.selected = html.find('#km_ausf')[0]?.checked || false;  // Ausfall km_ausf
-        manoever.km_befr.selected = html.find('#km_befr')[0]?.checked || false;
-        manoever.km_dppl.selected = html.find('#km_dppl')[0]?.checked || false;
-        manoever.km_hmsl.selected = html.find('#km_hmsl')[0]?.checked || false;
-        manoever.km_kltz.selected = html.find('#km_kltz')[0]?.checked || false;
-        manoever.km_ndwf.selected = html.find('#km_ndwf')[0]?.checked || false;
-        manoever.km_rpst.selected = html.find('#km_rpst')[0]?.checked || false;
-        manoever.km_shwl.selected = html.find('#km_shwl')[0]?.checked || false;
-        manoever.km_stag.selected = html.find('#km_stag')[0]?.checked || false;
-        manoever.km_tdst.selected = html.find('#km_tdst')[0]?.checked || false;
-        manoever.km_uebr.selected = html.find('#km_uebr')[0]?.checked || false;
-        manoever.km_utlf.selected = html.find('#km_utlf')[0]?.checked || false;
-        manoever.km_entw.selected = html.find('#km_entw')[0]?.checked || false;  // Entwaffen km_entw
-        manoever.km_umkl.selected = html.find('#km_umkl')[0]?.checked || false; // Umklammern km_umkl
-
         manoever.rkaz.selected = html.find('#rkaz')[0]?.value || false;  // Reaktionsanzahl
-        manoever.km_bind.selected = html.find('#km_bind')[0]?.value || false;  // Binden km_bind
-        manoever.km_gzsl.selected = html.find('#km_gzsl')[0]?.value || false; // Gezielter Schlag km_gzsl
-        manoever.km_wusl.selected = html.find('#km_wusl')[0]?.value || false;  // Wuchtschlag km_wusl
-        manoever.km_umkl.mod = html.find('#km_umkl_mod')[0]?.value || false;
-        manoever.km_uebr.gs = html.find('#km_uebr_gs')[0]?.value || false;
-        manoever.km_stag.gs = html.find('#km_stag_gs')[0]?.value || false;
-        manoever.km_aufl.gs = html.find('#km_aufl_gs')[0]?.value || false; // Auflaufen lassen km_aufl
 
-        if (manoever.km_aufl.gs > 0) { // && possible?
-            manoever.km_aufl.selected = true;
-        }
         manoever.mod.selected = html.find('#modifikator')[0]?.value || false;  // Modifikator
         manoever.rllm.selected = html.find('#rollMode')[0]?.value || false;  // RollMode
         this.rollmode = this.item.system.manoever.rllm.selected;
+
+        this.item.manoever.forEach(manoever => {
+            manoever.selectorValues.forEach(selector => {
+                if(selector.key == 'CHECKBOX') {
+                    selector.value = html.find(`#${manoever.id+selector.key}`)[0]?.checked || false;
+                } else {
+                    selector.value = html.find(`#${manoever.id+selector.key}`)[0]?.value || false;
+                }
+            });
+        });
     }
     
     updateManoeverMods() {
@@ -260,6 +238,16 @@ export class AngriffDialog extends Dialog {
                 text_at = text_at.concat(`${reaktionen}. Passierschlag: -${mod_rkaz} \n`);
             }
         }
+
+        this.item.manoever.forEach(manoever => {
+            manoever.selectorValues.forEach(selector => {
+                if(selector.key == 'CHECKBOX') {
+                    console.log(manoever.name);
+                } else {
+                    console.log(manoever.name, selector.value);
+                }
+            });
+        });
         // Ausweichen km_ausw
         if (manoever.km_ausw.selected) {
             mod_vt -= 2+be;

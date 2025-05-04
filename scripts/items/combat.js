@@ -26,7 +26,12 @@ export class CombatItem extends IlarisItem {
             this.manoever = [];
             manoeverItems.forEach(manoever => {
                 if(manoever.system.gruppe == 0 && manoever._manoeverRequirementsFulfilled(this.actor, this)) {
-                    this.manoever.push(manoever);
+                    this.manoever.push({...manoever, id: manoever.name.replace(/[\s\W]/g, '_'), selectorValues: manoever.system.selectors.map(selector => {
+                        return {
+                            key: selector,
+                            value: ''
+                        };
+                    })});
                 }
             });
         }
