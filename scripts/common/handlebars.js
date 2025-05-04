@@ -225,7 +225,12 @@ function registerHandlebarsHelpers() {
     });
     
     Handlebars.registerHelper('add', function(a, b) {
-        console.log("add", a, b);
         return a + b;
+    });
+
+    Handlebars.registerHelper("getButtonState", (index, wunden, erschoepfung) => {
+        if (index < wunden) return 1;
+        if (index < wunden + erschoepfung) return 2;
+        return 0;
     });
 }
