@@ -69,14 +69,56 @@
         </div>
         <div class="manoever-selectors">
             <div class="flexrow">
-                <div><b>Selektoren </b></div>
+                <div><b>Inputs </b><a class="add-input">[+]</a><b>: </b></div>
                 <a title="{{manoever.selectors_tooltip}}"><i class="fas fa-info"></i></a>
             </div>
-            <div>
-                <multi-select name="system.selectors">
-                    {{selectOptions manoever.selector_type selected=item.system.selectors}}
-                </multi-select>
-            </div>
+            {{#each item.system.inputs}}
+                <div class="inputs">
+                    <div class="flexrow">
+                        <label><b>Inputlabel:</b></label>
+                        <input
+                            name="system.inputs.{{@index}}.label"
+                            value="{{item.system.inputs.[@index].label}}"
+                            type="text"
+                            data-dtype="String"
+                        />
+                        <a
+                            class="delete-input icon-small delete-button"
+                            data-inputid="{{@index}}"
+                            style="float: right"
+                            ><i class="fas fa-trash"></i
+                        ></a>
+                    </div>
+                    <div class="flexrow row">
+                        <label>Inputtype:</label>
+                        <select name="system.inputs.{{@index}}.field">
+                            {{selectOptions ../manoever.selector_type selected=this.field}}
+                        </select>            
+                    </div>   
+                    <div class="flexrow row">
+                        {{#if (ifEq this.field "NUMBER")}} 
+                            <div class="flexrow">
+                                <a title="{{manoever.numberInput_tooltip}}"><i class="fas fa-info"></i></a>
+                                <label>min:</label>
+                                <input
+                                    name="system.inputs.{{@index}}.min"
+                                    type="number"
+                                    value="{{this.min}}"
+                                    data-dtype="Number"
+                                />
+                                <label>max:</label>
+                                <input
+                                    name="system.inputs.{{@index}}.max"
+                                    type="number"
+                                    value="{{this.max}}"
+                                    data-dtype="Number"
+                                />
+                            </div>
+                        {{/if}}
+                    </div> 
+                </div> 
+                <hr>        
+            {{/each}}
         </div>
         <div class="flexrow">
             <label><b>Probe:</b></label>

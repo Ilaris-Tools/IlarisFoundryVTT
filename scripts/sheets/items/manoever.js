@@ -9,7 +9,23 @@ import { IlarisItemSheet } from './item.js';
           "value": ["VorteilID1", "VorteilID2"]
         }
       ],
-      "selectors": ["checkbox", "input", "trefferzone"]
+      "inputs": [
+        {
+            "label": "Checkbox",
+            "field": "CHECKBOX"
+        },
+        { 
+            label: "Auswahl",
+            field: "SELECTOR",
+            choices: ["foo", "bar", "baz"]
+        }, 
+        {
+            label: "X",
+            field: "NUMBER",
+            min: 0,
+            max: 8
+        }
+      ]
       "gruppe": 0,
       "probe": "",
       "gegenprobe": "",
@@ -64,6 +80,8 @@ export class ManoeverSheet extends IlarisItemSheet {
         super.activateListeners(html);
         html.find('.add-voraussetzung').click(() => this._onAddVoraussetzung());
         html.find('.voraussetzung-delete').click((ev) => this._ongDeleteVoraussetzun(ev));
+        html.find('.add-input').click(() => this._onAddInput());
+        html.find('.delete-input').click((ev) => this._ongDeleteInput(ev));
     }
 
     _onAddVoraussetzung() {
@@ -76,6 +94,19 @@ export class ManoeverSheet extends IlarisItemSheet {
         let eigid = $(event.currentTarget).data('voraussetzungid');
         this.document.system.voraussetzungen = Object.values(this.document.system.voraussetzungen);
         this.document.system.voraussetzungen.splice(eigid, 1);
+        this.document.render();
+    }
+
+    _onAddInput() {
+        this.document.system.inputs = Object.values(this.document.system.inputs);
+        this.document.system.inputs.push({label: 'CHECKBOX',field: ''});
+        this.document.render();
+    }
+
+    _ongDeleteInput(event) {
+        let eigid = $(event.currentTarget).data('inputid');
+        this.document.system.inputs = Object.values(this.document.system.inputs);
+        this.document.system.inputs.splice(eigid, 1);
         this.document.render();
     }
 }
