@@ -231,10 +231,10 @@ input.titel-input {
   display: flex !important;
 }
 
-.manoever-voraussetzungen {
+.manoever-einstellungen {
   margin-top: 8px;
   margin-bottom: 8px;
-  .voraussetzung {
+  .field {
     margin: 8px 16px 0 16px;
     .row {
       margin-bottom: 8px

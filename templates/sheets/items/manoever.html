@@ -16,13 +16,13 @@
                 {{selectOptions manoever.manoever_type selected=item.system.gruppe}}
             </select>
         </div>
-        <div class="manoever-voraussetzungen">
+        <div class="manoever-einstellungen">
             <div class="flexrow">
                 <div><b>Voraussetzungen </b><a class="add-voraussetzung">[+]</a><b>: </b></div>
                 <a title="{{manoever.voraussetzung_tooltip}}"><i class="fas fa-info"></i></a>
             </div>
             {{#each item.system.voraussetzungen}}
-                <div class="voraussetzung">
+                <div class="field">
                     <div class="flexrow row">
                         <input
                             name="system.voraussetzungen.{{@index}}.name"
@@ -67,13 +67,13 @@
                 <hr>        
             {{/each}}
         </div>
-        <div class="manoever-selectors">
+        <div class="manoever-einstellungen">
             <div class="flexrow">
                 <div><b>Inputs </b><a class="add-input">[+]</a><b>: </b></div>
                 <a title="{{manoever.selectors_tooltip}}"><i class="fas fa-info"></i></a>
             </div>
             {{#each item.system.inputs}}
-                <div class="inputs">
+                <div class="field">
                     <div class="flexrow">
                         <label><b>Inputlabel:</b></label>
                         <input
@@ -115,6 +115,53 @@
                                 />
                             </div>
                         {{/if}}
+                    </div> 
+                </div> 
+                <hr>        
+            {{/each}}
+        </div>
+        <div class="manoever-einstellungen">
+            <div class="flexrow">
+                <div><b>Modifikatoren </b><a class="add-modification">[+]</a><b>: </b></div>
+                <a title="{{manoever.modifications_tooltip}}"><i class="fas fa-info"></i></a>
+            </div>
+            {{#each item.system.modifications}}
+                <div class="field">
+                    <div class="flexrow">
+                        <label>Waffeneigenschaften:</label>
+                        <select name="system.modifications.{{@index}}.type">
+                            {{selectOptions ../manoever.modification_type selected=this.value}}
+                        </select>
+                        <a
+                            class="delete-modifications icon-small delete-button"
+                            data-inputid="{{@index}}"
+                            style="float: right"
+                            ><i class="fas fa-trash"></i
+                        ></a>
+                    </div>
+                    <div class="flexrow">
+                        <label>Wert:</label>
+                        <input
+                            name="system.modifications.{{@index}}.value"
+                            type="number"
+                            value="{{this.value}}"
+                            data-dtype="Number"
+                        />
+                    </div>
+                    <div class="flexrow row">
+                        <label>Operator:</label>
+                        <select name="system.modifications.{{@index}}.operator">
+                            {{selectOptions ../manoever.operator selected=this.operator}}
+                        </select>          
+                    </div>   
+                    <div class="flexrow row">
+                        <label><b>Target:</b></label>
+                        <input
+                            name="system.modifications.{{@index}}.target"
+                            value="{{this.target}}"
+                            type="text"
+                            data-dtype="String"
+                        />
                     </div> 
                 </div> 
                 <hr>        

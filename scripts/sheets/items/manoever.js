@@ -25,9 +25,17 @@ import { IlarisItemSheet } from './item.js';
             min: 0,
             max: 8
         }
-      ]
+      ],
+      "modifications": [
+        {
+            "type": DAMAGE | DEFENCE | ATTACK | INITIATIVE | LOADING_TIME | SPECIAL_RESSOURCE | WEAPON_DAMAGE,
+            "value": 0,
+            "operator": MULTIPLY | ADD (+/- values),
+            "target": "Wert zb aus Actor wie actor.system.abgeleitete.gs, der entsprechend des operator behandelt wird"
+        }
+      ],
       "gruppe": 0,
-      "probe": "",
+      "probe": "", // beschreibt nur was weiter oben durch modifications bewirkt wird
       "gegenprobe": "",
       "text": ""
     },
@@ -79,9 +87,11 @@ export class ManoeverSheet extends IlarisItemSheet {
     activateListeners(html) {
         super.activateListeners(html);
         html.find('.add-voraussetzung').click(() => this._onAddVoraussetzung());
-        html.find('.voraussetzung-delete').click((ev) => this._ongDeleteVoraussetzun(ev));
+        html.find('.voraussetzung-delete').click((ev) => this._onDeleteVoraussetzung(ev));
         html.find('.add-input').click(() => this._onAddInput());
-        html.find('.delete-input').click((ev) => this._ongDeleteInput(ev));
+        html.find('.delete-input').click((ev) => this._onDeleteInput(ev));
+        html.find('.add-modification').click(() => this._onAddModification());
+        html.find('.delete-modification').click((ev) => this._onDeleteModification(ev));
     }
 
     _onAddVoraussetzung() {
@@ -90,7 +100,7 @@ export class ManoeverSheet extends IlarisItemSheet {
         this.document.render();
     }
 
-    _ongDeleteVoraussetzun(event) {
+    _onDeleteVoraussetzung(event) {
         let eigid = $(event.currentTarget).data('voraussetzungid');
         this.document.system.voraussetzungen = Object.values(this.document.system.voraussetzungen);
         this.document.system.voraussetzungen.splice(eigid, 1);
@@ -103,10 +113,28 @@ export class ManoeverSheet extends IlarisItemSheet {
         this.document.render();
     }
 
-    _ongDeleteInput(event) {
+    _onDeleteInput(event) {
         let eigid = $(event.currentTarget).data('inputid');
         this.document.system.inputs = Object.values(this.document.system.inputs);
         this.document.system.inputs.splice(eigid, 1);
+        this.document.render();
+    }
+
+    _onAddModification() {
+        this.document.system.modifications = Object.values(this.document.system.modifications);
+        this.document.system.modifications.push({
+            type: "ATTACK",
+            value: 0,
+            operator: "ADD",
+            target: ""
+        });
+        this.document.render();
+    }
+
+    _onDeleteModification(event) {
+        let eigid = $(event.currentTarget).data('modificationid');
+        this.document.system.modifications = Object.values(this.document.system.modifications);
+        this.document.system.modifications.splice(eigid, 1);
         this.document.render();
     }
 }
