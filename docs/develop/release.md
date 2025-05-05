@@ -17,7 +17,7 @@ Vieles davon gilt auch schon für kleinere Fixes im main-Branch. Wenn du im PR d
 
 ## Packs
 Die Binaries für die Kompendien müssen in den `/packs/`-Ordnern bei Änderungen neu aus den `_source/*`-Dateien gepackt werden.
-Wir benutzen dafür das Tool [foundryvtt-cli](). 
+Wir benutzen dafür das Tool [foundryvtt-cli](https://github.com/foundryvtt/foundryvtt-cli). 
 Installiert werden kann es mit dem Befehl: 
 ```bash
 npm install -g @foundryvtt/foundryvtt-cli
