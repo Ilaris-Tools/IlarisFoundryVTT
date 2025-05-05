@@ -399,7 +399,7 @@
     },
     "manoever": {
       "voraussetzungen": [],
-      "selectors": [],
+      "selectors": ["CHECKBOX"],
       "gruppe": 0,
       "probe": "",
       "gegenprobe": "",
