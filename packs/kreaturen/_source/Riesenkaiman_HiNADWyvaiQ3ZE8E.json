@@ -1,0 +1,493 @@
+{
+  "_id": "HiNADWyvaiQ3ZE8E",
+  "name": "Riesenkaiman",
+  "type": "kreatur",
+  "img": "systems/Ilaris/assets/images/token/kreaturentypen/tier.png",
+  "system": {
+    "gesundheit": {
+      "erschoepfung": 0,
+      "wunden": 0,
+      "wundabzuege": 0,
+      "wundenignorieren": false,
+      "display": "Volle Gesundheit",
+      "hp": {
+        "max": 9,
+        "value": 9,
+        "threshold": 0
+      }
+    },
+    "energien": {
+      "asp": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      },
+      "gup": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      },
+      "kap": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      }
+    },
+    "initiative": 0,
+    "furcht": {
+      "furchtstufe": 0,
+      "furchtabzuege": 0,
+      "display": ""
+    },
+    "modifikatoren": {
+      "manuellermod": 0,
+      "nahkampfmod": 0
+    },
+    "schips": {
+      "schips": 4,
+      "schips_stern": 4
+    },
+    "attribute": {
+      "KO": {
+        "wert": 0,
+        "pw": 38
+      },
+      "MU": {
+        "wert": 0,
+        "pw": 10
+      },
+      "GE": {
+        "wert": 0,
+        "pw": null
+      },
+      "KK": {
+        "wert": 0,
+        "pw": 20
+      },
+      "IN": {
+        "wert": 0,
+        "pw": null
+      },
+      "KL": {
+        "wert": 0,
+        "pw": null
+      },
+      "CH": {
+        "wert": 0,
+        "pw": null
+      },
+      "FF": {
+        "wert": 0,
+        "pw": null
+      }
+    },
+    "edit": false,
+    "kreaturentyp": "tier",
+    "kurzbeschreibung": "gefährlicher Jäger der südlichen Gewässer",
+    "kampfwerte": {
+      "ws": 13,
+      "ws_stern": 15,
+      "ini": 4,
+      "gs": 4,
+      "koloss": null,
+      "mr": 4,
+      "gs_schwimmend": 4
+    },
+    "talente": [],
+    "freietalente": [],
+    "kampfunfaehig": "",
+    "text": "",
+    "abgeleitete": {
+      "globalermod": 0,
+      "nahkampfmoddisplay": "-",
+      "globalermoddisplay": "-"
+    }
+  },
+  "items": [
+    {
+      "_id": "CyjhiwsuqariUrMN",
+      "name": "Amphibisch",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Amphibische Wesen können an Land und im Wasser ungehindert agieren."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!HiNADWyvaiQ3ZE8E.CyjhiwsuqariUrMN"
+    },
+    {
+      "_id": "HOI6iqSjUVvkIOqQ",
+      "name": "Immunität",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Immunität (Schadensquelle): Das Wesen erleidet keinen\r\nSchaden aus der angegebenen Quelle.\r\n\r\nProfan: prof. Waffen, Stürze, Tierangriffe\r\nMagisch: mag. Waffen, Schadenszauber\r\nGeweiht: gew. Waffen, Bannstrahl\r\nDämonisch: Angriffe von Dämonen, Paktierer-Fähigkeiten\r\nElementar: Lagerfeuer (Feuer), Aquafaxius (Wasser),\r\nAngriffe von Luftelementaren (Luft),\r\nFausthieb (Humus), Kälte (Eis), Schwert (Erz)"
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!HiNADWyvaiQ3ZE8E.HOI6iqSjUVvkIOqQ"
+    },
+    {
+      "_id": "w4fEMmpJZZTnnKi1",
+      "name": "Verwundbarkeit (Eis)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Verwundbarkeit I/II/III/IV (Schadensquelle): Wann\r\nimmer die Kreatur Wunden durch diese Schadensquelle\r\nerleidet, bekommt sie 1/2/3/4 zusätzliche Wunden."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!HiNADWyvaiQ3ZE8E.w4fEMmpJZZTnnKi1"
+    },
+    {
+      "_id": "WcEPgFQM33VTXvTt",
+      "name": "Zusätzliche Attacke",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Zusätzliche Attacke I/II/III/IV: Die Kreatur kann in\r\nihrer Initiativephase 1/2/3/4 zusätzliche Aktionen Konflikt\r\nfür Attacken nutzen. Üblicherweise erfolgen die Angriffe mit\r\nunterschiedlichen Gliedmaßen."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!HiNADWyvaiQ3ZE8E.WcEPgFQM33VTXvTt"
+    },
+    {
+      "_id": "QKNQHVBbyPh4ppjT",
+      "name": "Biss",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Zerbrechlich",
+            "text": null
+          }
+        ],
+        "tp": "4W6+4",
+        "haerte": 0,
+        "rw": 0,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 8,
+        "vt": 6
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!HiNADWyvaiQ3ZE8E.QKNQHVBbyPh4ppjT"
+    },
+    {
+      "_id": "nzxrXOthLpT6waON",
+      "name": "Schwanz",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Flächenangriff (90° hinter dem Kaiman)",
+            "text": null
+          },
+          {
+            "name": " Niederwerfen",
+            "text": null
+          }
+        ],
+        "tp": "1W6+2",
+        "haerte": 0,
+        "rw": 2,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 6,
+        "vt": 2
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!HiNADWyvaiQ3ZE8E.nzxrXOthLpT6waON"
+    },
+    {
+      "_id": "r3cqQIKhTZHv5OGT",
+      "name": "Pirschen 14",
+      "type": "freiestalent",
+      "system": {
+        "text": null,
+        "pw": 0,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!HiNADWyvaiQ3ZE8E.r3cqQIKhTZHv5OGT"
+    },
+    {
+      "_id": "5z0PeA3S8rd5Kfd8",
+      "name": "Schwimmen 10",
+      "type": "freiestalent",
+      "system": {
+        "text": null,
+        "pw": 0,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!HiNADWyvaiQ3ZE8E.5z0PeA3S8rd5Kfd8"
+    },
+    {
+      "_id": "OwO1SDHSc8qrqFuo",
+      "name": "Wachsamkeit 6",
+      "type": "freiestalent",
+      "system": {
+        "text": null,
+        "pw": 0,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!HiNADWyvaiQ3ZE8E.OwO1SDHSc8qrqFuo"
+    }
+  ],
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "prototypeToken": {
+    "displayName": 20,
+    "actorLink": false,
+    "width": 1,
+    "height": 1,
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "light": {
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "coloration": 1,
+      "dim": 0,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false,
+        "type": null
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      },
+      "attenuation": 0.5,
+      "negative": false,
+      "priority": 0,
+      "color": null
+    },
+    "disposition": 1,
+    "displayBars": 50,
+    "bar1": {
+      "attribute": "gesundheit.hp"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "flags": {},
+    "randomImg": false,
+    "name": "Riesenkaiman",
+    "texture": {
+      "src": "systems/Ilaris/assets/images/token/kreaturentypen/tier.png",
+      "scaleX": 1,
+      "scaleY": 1,
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "offsetX": 0,
+      "offsetY": 0,
+      "fit": "contain",
+      "rotation": 0,
+      "tint": "#ffffff",
+      "alphaThreshold": 0.75
+    },
+    "sight": {
+      "angle": 360,
+      "enabled": false,
+      "range": 0,
+      "brightness": 1,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "appendNumber": false,
+    "prependAdjective": false,
+    "hexagonalShape": 0,
+    "detectionModes": [],
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    }
+  },
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!actors!HiNADWyvaiQ3ZE8E"
+}

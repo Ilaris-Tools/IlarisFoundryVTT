@@ -1,0 +1,579 @@
+{
+  "_id": "44BCyeJ247cMJsRL",
+  "name": "Jamuutan",
+  "type": "kreatur",
+  "img": "systems/Ilaris/assets/images/token/kreaturentypen/humanoid.png",
+  "system": {
+    "gesundheit": {
+      "erschoepfung": 0,
+      "wunden": 0,
+      "wundabzuege": 0,
+      "wundenignorieren": false,
+      "display": "Volle Gesundheit",
+      "hp": {
+        "max": 9,
+        "value": 9,
+        "threshold": 0
+      }
+    },
+    "energien": {
+      "asp": {
+        "max": 15,
+        "value": 15,
+        "threshold": 0
+      },
+      "gup": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      },
+      "kap": {
+        "max": 10,
+        "value": 10,
+        "threshold": 0
+      }
+    },
+    "initiative": 0,
+    "furcht": {
+      "furchtstufe": 0,
+      "furchtabzuege": 0,
+      "display": ""
+    },
+    "modifikatoren": {
+      "manuellermod": 0,
+      "nahkampfmod": 0
+    },
+    "schips": {
+      "schips": 4,
+      "schips_stern": 4
+    },
+    "attribute": {
+      "KO": {
+        "wert": 0,
+        "pw": null
+      },
+      "MU": {
+        "wert": 0,
+        "pw": null
+      },
+      "GE": {
+        "wert": 0,
+        "pw": null
+      },
+      "KK": {
+        "wert": 0,
+        "pw": null
+      },
+      "IN": {
+        "wert": 0,
+        "pw": null
+      },
+      "KL": {
+        "wert": 0,
+        "pw": null
+      },
+      "CH": {
+        "wert": 0,
+        "pw": null
+      },
+      "FF": {
+        "wert": 0,
+        "pw": null
+      }
+    },
+    "edit": false,
+    "kreaturentyp": "humanoid",
+    "kurzbeschreibung": "Mit Knochen und Kräuterbeutelchen behangene Schamanin der Goblins",
+    "kampfwerte": {
+      "ws": null,
+      "ws_stern": null,
+      "ini": null,
+      "gs": null,
+      "koloss": null,
+      "mr": null,
+      "gs_schwimmend": null
+    },
+    "talente": [],
+    "freietalente": [],
+    "kampfunfaehig": "",
+    "text": "",
+    "abgeleitete": {
+      "globalermod": 0,
+      "nahkampfmoddisplay": "-",
+      "globalermoddisplay": "-"
+    }
+  },
+  "items": [
+    {
+      "_id": "eha5KqOBtZayyX5P",
+      "name": "Hilfe",
+      "type": "info",
+      "system": {
+        "text": "Wenn ihr Vertrauen gewonnen wird, kann sie mit dem Rest ihrer Astralenergie bis zu drei Wunden heilen und durch einige kurze Rituale (Gesichtsbemahlung mit Tierblut, Pulver auf die Haare, Hasenpfote in die Tasche.. ) wenigstens die Motivation wieder herstellen, Ängste lindern oder für einen Tag einzelne Attribute steigern."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!44BCyeJ247cMJsRL.eha5KqOBtZayyX5P"
+    },
+    {
+      "_id": "7iHWB9A0PCUm0msD",
+      "name": "Knochenkeule",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Ritualgegenstand",
+            "text": ""
+          }
+        ],
+        "tp": "1W6+5",
+        "haerte": 0,
+        "rw": 1,
+        "lz": null,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 8,
+        "vt": 8
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!44BCyeJ247cMJsRL.7iHWB9A0PCUm0msD"
+    },
+    {
+      "_id": "9vl51wYjj2A0HBzb",
+      "name": "Geister der Stärkung",
+      "type": "freiestalent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "pw": 16,
+        "profan": false
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!44BCyeJ247cMJsRL.9vl51wYjj2A0HBzb"
+    },
+    {
+      "_id": "YY3Yt8ntjmIjhDJ6",
+      "name": "Mut der Ahnen",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Geister der Stärkung",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Die Ahnengeister stärken den Mut von bis zu 8 Gefährten. Sie erhalten eine Erleichterung von +2 auf alle MU-Proben und auf ihnen lastende Furcht-Effekte gelten als eine Stufe niedriger.\nMächtige Magie: Verdoppelt die Zahl der Ziele.\nProbenschwierigkeit: 12\nVorbereitungszeit: 16 Aktionen\nZiel: Zone\nReichweite: Berührung\nWirkungsdauer: 4 Stunden\nKosten: 16 AsP\nFertigkeiten: Eigenschaften, Geister der Stärkung\nErlernen: Smn 16; 40 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 16,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!44BCyeJ247cMJsRL.YY3Yt8ntjmIjhDJ6"
+    },
+    {
+      "_id": "VsrdwjmRZ7yhzlMH",
+      "name": "Schützende Rotte",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Geister der Stärkung",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du bemalst einen Schild mit Tieren. Proben zur Abwehr von ballistischen Zaubern (siehe S. 124) sind mit diesem Schild um +4 erleichtert. Der Schild erleidet dabei keinen Schaden.\nMächtige Magie: Der Bonus steigt um +2.\nProbenschwierigkeit: 12\nVorbereitungszeit: 16 Aktionen\nZiel: Einzelobjekt\nReichweite: Berührung\nWirkungsdauer: bis die Bindung gelöst wird\nKosten: 4 AsP, davon 1 gAsP\nFertigkeiten: Antimagie, Geister der Stärkung, Geister vertreiben, Kraft\nErlernen: Smn 18; 20 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 16,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!44BCyeJ247cMJsRL.VsrdwjmRZ7yhzlMH"
+    },
+    {
+      "_id": "4x5Je4PGpScAccoE",
+      "name": "Schutzgeist (Tier)",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Geister der Stärkung",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du bittest den Geist eines Tieres, über eine Gruppe von bis zu 8 Gefährten zu wachen. Sie erhalten einen Bonus von +1 auf alle beim entsprechenden Tier angegebenen Werte, solange sie sich nicht weiter als 1 Meile von dir entfernen. Es kann nur ein Schutzgeist gleichzeitig aktiv sein.\nMächtige Magie: Verdoppelt die Zahl der Ziele, je zwei Stufen erhöhen den Bonus um +1.\nProbenschwierigkeit: 12\nVorbereitungszeit: 1 Stunde\nZiel: Zone\nReichweite: Berührung\nWirkungsdauer: bis die Bindung gelöst wird\nKosten: 16 AsP, davon 4 gAsP\nFertigkeiten: Eigenschaften, Geister der Stärkung\nErlernen: Smn 14; 40 EP\nAnmerkung: Der Zauber muss für jedes Tier extra erlernt werden.\nSephrasto: Trage die gewählten Tiere in das Kommentarfeld ein. Wenn du mehrere Tiere wählst, dann erhöhe die EP-Kosten entsprechend. Die Tiertabelle ist in Sephrasto außerdem über die kostenlosen Tiergeist-Vorteile abgebildet; wenn du diese auswählst, erhältst du die Werte des Tiergeists im Regelanhang.",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 16,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!44BCyeJ247cMJsRL.4x5Je4PGpScAccoE"
+    },
+    {
+      "_id": "SSSbwCZx7rmzLjP3",
+      "name": "Wegzeichen",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Geister der Stärkung",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du vergräbst einen Talisman. Während der Wirkungsdauer kannst unter Aufwendung von 1 AsP erfahren, wo deine Wegzeichen liegen und diese intuitiv unterscheiden.\nProbenschwierigkeit: 12\nModifikationen: Permanenz (–4, Wirkungsdauer bis die Bindung gelöst wird, Kosten 8 AsP, davon 1 gAsP)\nSprechendes Zeichen (–4; das Zeichen kann einen kurzen Satz als Botschaft enthalten, der mit einem AG von 2 (S. 80) gelesen werden kann)\nVorbereitungszeit: 16 Aktionen\nZiel: Einzelobjekt\nReichweite: Berührung\nWirkungsdauer: 1 Tag\nKosten: 4 AsP\nFertigkeiten: Hellsicht, Geister der Stärkung, Geister rufen, Verständigung\nErlernen: Smn 14; 20 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 16,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!44BCyeJ247cMJsRL.SSSbwCZx7rmzLjP3"
+    },
+    {
+      "_id": "WWyclZ9TMwhKigVr",
+      "name": "Keulenrituale",
+      "type": "freiestalent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "pw": 12,
+        "profan": false
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!44BCyeJ247cMJsRL.WWyclZ9TMwhKigVr"
+    },
+    {
+      "_id": "zOZh4QASlaTu0N0H",
+      "name": "Apport der Keule",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Keulenrituale",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Der Ritualgegenstand kehrt fliegend mit einer Geschwindigkeit von 10 Meilen pro Stunde zu dir zurück. Er weicht Hindernissen aus oder durchbricht sie notfalls, wenn die KK von PW Keulenrituale/2 oder Umwelt/2 dafür ausreicht.\nProbenschwierigkeit: 12\nVorbereitungszeit: 0 Aktionen\nZiel: Zone\nReichweite: 1 Meile\nWirkungsdauer: augenblicklich\nKosten: 1 AsP\nFertigkeiten: Keulenrituale, Umwelt\nErlernen: Smn 18; 20 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 12,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!44BCyeJ247cMJsRL.zOZh4QASlaTu0N0H"
+    },
+    {
+      "_id": "bPHQtYdhUknWIw9f",
+      "name": "Geist der Keule",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Keulenrituale",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du bindest einen Totengeist in die Keule. Solange der Geist an die Keule gebunden ist, erfüllt er dir eine Bitte, wenn dir eine CH-Probe (16) gelingt. Die erste Bitte seit dem letzten Neumond ist nicht erschwert, aber bei jeder zusätzlichen Bitte erleidest du einen kumulativen Malus von –4. Es kann immer nur ein Wesen in der Keule gebunden sein.\nProbenschwierigkeit: 12\nVorbereitungszeit: 1 Stunde\nZiel: Knochenkeule\nReichweite: Berührung\nWirkungsdauer: bis die Bindung gelöst wird\nKosten: 4 AsP, davon 2 gAsP\nFertigkeiten: Keulenrituale, Verständigung\nErlernen: Smn 12; 40 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 12,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!44BCyeJ247cMJsRL.bPHQtYdhUknWIw9f"
+    }
+  ],
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "prototypeToken": {
+    "displayName": 20,
+    "actorLink": false,
+    "width": 1,
+    "height": 1,
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "light": {
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "coloration": 1,
+      "dim": 0,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false,
+        "type": null
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      },
+      "attenuation": 0.5,
+      "negative": false,
+      "priority": 0,
+      "color": null
+    },
+    "disposition": 1,
+    "displayBars": 50,
+    "bar1": {
+      "attribute": "gesundheit.hp"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "flags": {},
+    "randomImg": false,
+    "name": "Jamuutan",
+    "texture": {
+      "src": "systems/Ilaris/assets/images/token/kreaturentypen/humanoid.png",
+      "scaleX": 1,
+      "scaleY": 1,
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "offsetX": 0,
+      "offsetY": 0,
+      "fit": "contain",
+      "rotation": 0,
+      "tint": "#ffffff",
+      "alphaThreshold": 0.75
+    },
+    "sight": {
+      "angle": 360,
+      "enabled": false,
+      "range": 0,
+      "brightness": 1,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "appendNumber": false,
+    "prependAdjective": false,
+    "hexagonalShape": 0,
+    "detectionModes": [],
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    }
+  },
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!actors!44BCyeJ247cMJsRL"
+}

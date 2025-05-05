@@ -1,0 +1,33 @@
+{
+  "name": "Tanzen",
+  "type": "talent",
+  "img": "systems/Ilaris/assets/images/skills/profan-talent.svg",
+  "system": {
+    "text": "Mit Tanzen kannst du beim nächsten Ball eine gute Figur abgeben und so mancher Gottheit huldigen.",
+    "fertigkeit": "Darbietung"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Item.mhP7GqJD2wHTrxQ8"
+    }
+  },
+  "_id": "KgTGB7cEmzKa0Cbo",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "Ww4drILJ63YXG1Vc": 3
+  },
+  "_key": "!items!KgTGB7cEmzKa0Cbo"
+}

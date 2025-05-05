@@ -1,0 +1,36 @@
+{
+  "name": "Schalenzauber",
+  "type": "uebernatuerliche_fertigkeit",
+  "img": "systems/Ilaris/assets/images/skills/magic-skill.svg",
+  "system": {
+    "basis": 0,
+    "fw": 0,
+    "pw": 0,
+    "attribut_0": "FF",
+    "attribut_1": "IN",
+    "attribut_2": "KL",
+    "gruppe": 0,
+    "text": "Dieses Ritualinstrument aus Silber oder Mondsilber wird von Alchemisten und einigen Gildenmagiern benutzt. Hexen verwenden stattdessen einen Kessel. Die Talente gelten als Objektrituale, die passiven Effekte der Schale erfordern jedoch keine ständige Berührung.",
+    "voraussetzung": "Vorteil Tradition der Alchemisten I ODER Vorteil Tradition der Hexen I ODER Vorteil Tradition der Gildenmagier I"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "j0MfCTg9pyg598ac",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!j0MfCTg9pyg598ac"
+}

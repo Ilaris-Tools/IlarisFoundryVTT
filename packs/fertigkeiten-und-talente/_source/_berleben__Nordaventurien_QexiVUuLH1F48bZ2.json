@@ -1,0 +1,29 @@
+{
+  "name": "Überleben: Nordaventurien",
+  "type": "talent",
+  "img": "systems/Ilaris/assets/images/skills/profan-talent.svg",
+  "system": {
+    "text": "Gilt für die Region zwischen den Salamandersteinen im Norden und dem Steineichenwald und Ysilisee im Süden.",
+    "fertigkeit": "Überleben"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "QexiVUuLH1F48bZ2",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!QexiVUuLH1F48bZ2"
+}

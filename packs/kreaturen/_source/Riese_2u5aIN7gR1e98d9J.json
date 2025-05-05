@@ -1,0 +1,823 @@
+{
+  "_id": "2u5aIN7gR1e98d9J",
+  "name": "Riese",
+  "type": "kreatur",
+  "img": "systems/Ilaris/assets/images/token/kreaturentypen/mythen.png",
+  "system": {
+    "gesundheit": {
+      "erschoepfung": 0,
+      "wunden": 0,
+      "wundabzuege": 0,
+      "wundenignorieren": false,
+      "display": "Volle Gesundheit",
+      "hp": {
+        "max": 9,
+        "value": 9,
+        "threshold": 0
+      }
+    },
+    "energien": {
+      "asp": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      },
+      "gup": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      },
+      "kap": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      }
+    },
+    "initiative": 0,
+    "furcht": {
+      "furchtstufe": 0,
+      "furchtabzuege": 0,
+      "display": ""
+    },
+    "modifikatoren": {
+      "manuellermod": 0,
+      "nahkampfmod": 0
+    },
+    "schips": {
+      "schips": 4,
+      "schips_stern": 4
+    },
+    "attribute": {
+      "KO": {
+        "wert": 0,
+        "pw": 130
+      },
+      "MU": {
+        "wert": 0,
+        "pw": 20
+      },
+      "GE": {
+        "wert": 0,
+        "pw": 6
+      },
+      "KK": {
+        "wert": 0,
+        "pw": 150
+      },
+      "IN": {
+        "wert": 0,
+        "pw": null
+      },
+      "KL": {
+        "wert": 0,
+        "pw": null
+      },
+      "CH": {
+        "wert": 0,
+        "pw": null
+      },
+      "FF": {
+        "wert": 0,
+        "pw": null
+      }
+    },
+    "edit": false,
+    "kreaturentyp": "mythen",
+    "kurzbeschreibung": "Unsterblicher Gigant; sehr großer Gegner",
+    "kampfwerte": {
+      "ws": 16,
+      "ws_stern": 19,
+      "ini": 6,
+      "gs": 9,
+      "koloss": 2,
+      "mr": 16,
+      "gs_schwimmend": null
+    },
+    "talente": [],
+    "freietalente": [],
+    "kampfunfaehig": "",
+    "text": "",
+    "abgeleitete": {
+      "globalermod": 0,
+      "nahkampfmoddisplay": "-",
+      "globalermoddisplay": "-"
+    }
+  },
+  "items": [
+    {
+      "_id": "Nz2PZeV73brEm6jV",
+      "name": "Standfest",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Nach einem Sturz befindest du dich in kniender statt liegender Position."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!2u5aIN7gR1e98d9J.Nz2PZeV73brEm6jV"
+    },
+    {
+      "_id": "gnh5jGdxprAWGKCx",
+      "name": "Sturmangriff",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Erlaubt das Manöver Sturmangriff (Bewegung und AT): Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Außerdem richtet die nächste Attacke GS Trefferpunkte zusätzlich an."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!2u5aIN7gR1e98d9J.gnh5jGdxprAWGKCx"
+    },
+    {
+      "_id": "AqiM4SbadpW11c88",
+      "name": "Unaufhaltsam",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Selbst bei einer gelungenen gegnerischen Verteidigung richtest du halben Schaden an. Ausweichen vermeidet diesen Schaden. Manövereffekte wirken weiterhin nur bei gelungenen Attacken."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!2u5aIN7gR1e98d9J.AqiM4SbadpW11c88"
+    },
+    {
+      "_id": "FAamlaMIqS1VFG6S",
+      "name": "Zerstörerisch I",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Proben zum Zerstören oder Durchbrechen von Gegenständen sind um +4 erleichtert."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!2u5aIN7gR1e98d9J.FAamlaMIqS1VFG6S"
+    },
+    {
+      "_id": "4WH1frTUEHKyKZl6",
+      "name": "Zerstörerisch II",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Proben zum Zerstören oder Durchbrechen von Gegenständen sind um +4 erleichtert.\n\nErlaubt das Manöver Hammerschlag gegen Gegenstände. Bei waffenlosen Angriffen gegen Gegenstände verletzt du dich normalerweise nicht."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!2u5aIN7gR1e98d9J.4WH1frTUEHKyKZl6"
+    },
+    {
+      "_id": "8432RmPwBMDGeWRV",
+      "name": "Schreckgestalt II",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Schreckgestalt I/II/III/IV: Bei der Begegnung mit der\r\nKreatur erleidet dein Charakter einen Furcht-Effekt Stufe I/II/\r\nIII/IV (S. 46). Der Furcht-Effekt dauert an, bis der Gegner\r\nbesiegt wurde oder dein Charakter sich in sicherer Entfernung\r\nbefindet."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!2u5aIN7gR1e98d9J.8432RmPwBMDGeWRV"
+    },
+    {
+      "_id": "4Hi9Ax7FOlFQ81Ye",
+      "name": "Unbeugsamkeit",
+      "type": "eigenschaft",
+      "system": {
+        "text": ""
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!2u5aIN7gR1e98d9J.4Hi9Ax7FOlFQ81Ye"
+    },
+    {
+      "_id": "PEjnymkzg09rIgbC",
+      "name": "Willensstark II",
+      "type": "eigenschaft",
+      "system": {
+        "text": ""
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!2u5aIN7gR1e98d9J.PEjnymkzg09rIgbC"
+    },
+    {
+      "_id": "mgqhE7pQqSfTaEDV",
+      "name": "Zusätzliche Attacke",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Zusätzliche Attacke I/II/III/IV: Die Kreatur kann in\r\nihrer Initiativephase 1/2/3/4 zusätzliche Aktionen Konflikt\r\nfür Attacken nutzen. Üblicherweise erfolgen die Angriffe mit\r\nunterschiedlichen Gliedmaßen."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!2u5aIN7gR1e98d9J.mgqhE7pQqSfTaEDV"
+    },
+    {
+      "_id": "YGzwFGAu9hzdUDRc",
+      "name": "schwachpunkte",
+      "type": "info",
+      "system": {
+        "text": "Im Nacken des Riesen, vom Boden unsichtbar, liegt eine armdicke Ader direkt unter der Haut. Sie kann entweder von einem Fernkämpfer in ähnlicher Höhe mit Sinnenschärfe (28) erspäht und mit einem FK: (28) getroffen werden, oder ein tollkühner Kletterer erklimmt den Riesen (Klettern (28)). Nach einem Treffer müssen sich nur noch alle Umstehenden in Sicherheit bringen, wenn sich der Riese in Schmerzen zu Boden wirft und alles niederwalzt (in 3 Schritt Umkreis GE: oder Akrobatik 30, sonst 3W20 TP:  ). Das kostet den Riesen 1 Aktion und gibt Umstehenden die Chance auf einen Passierschlag."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!2u5aIN7gR1e98d9J.YGzwFGAu9hzdUDRc"
+    },
+    {
+      "_id": "LrBLsrcXIdC7LOBz",
+      "name": "vorgehen",
+      "type": "info",
+      "system": {
+        "text": "Eine Übermacht hält sich der Riese mit Befreiungsschlägen mit einem Baumstamm vom Leib, während er die Gegner unter sich niedertrampelt. Wegen des Vorteils Unaufhaltsam sollte seinen Angriffen unbedingt ausgewichen werden. Sollte ihm ein Fernkämpfer oder Zauberer gefährlich werden, stürmt er auf ihn zu (und trampelt alles im Weg nieder) oder bewirft ihn mit gewaltigen Felsbrocken."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!2u5aIN7gR1e98d9J.LrBLsrcXIdC7LOBz"
+    },
+    {
+      "_id": "L6JDsqPwGAf2FwtS",
+      "name": "Kampfunfähigkeit",
+      "type": "info",
+      "system": {
+        "text": "Der Riese flieht, wenn er 6 Wunden erlitten hat."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!2u5aIN7gR1e98d9J.L6JDsqPwGAf2FwtS"
+    },
+    {
+      "_id": "IvoyE382upCSWxty",
+      "name": "Faust",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Niederwerfen (-12)",
+            "text": null
+          }
+        ],
+        "tp": "2W20+5",
+        "haerte": 0,
+        "rw": 2,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 16,
+        "vt": 12
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!2u5aIN7gR1e98d9J.IvoyE382upCSWxty"
+    },
+    {
+      "_id": "TVB1UsFxXO4huRzd",
+      "name": "Trampeln",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": " Überrennen (wird nicht durch erfolgreiche VT: gestoppt)",
+            "text": null
+          },
+          {
+            "name": " Überrennen",
+            "text": null
+          },
+          {
+            "name": " Überrennen (wird nicht durch erfolgreiche VT: gestoppt",
+            "text": null
+          },
+          {
+            "name": "Flächenangriff (1 Schritt Umkreis)",
+            "text": null
+          },
+          {
+            "name": " Niederwerfen (-16)",
+            "text": null
+          }
+        ],
+        "tp": "4W20",
+        "haerte": 0,
+        "rw": 1,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 16,
+        "vt": 6
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!2u5aIN7gR1e98d9J.TVB1UsFxXO4huRzd"
+    },
+    {
+      "_id": "Mv1U3opJgiiMZ75n",
+      "name": "Baumstamm",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Flächenangriff (180° vor dem Riesen)",
+            "text": null
+          },
+          {
+            "name": " Zurückstoßen (wird nicht durch erfolgreiche VT: gestoppt)",
+            "text": null
+          },
+          {
+            "name": " Niederwerfen (-16)",
+            "text": null
+          }
+        ],
+        "tp": "3W20+10",
+        "haerte": 0,
+        "rw": 5,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 18,
+        "vt": 12
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!2u5aIN7gR1e98d9J.Mv1U3opJgiiMZ75n"
+    },
+    {
+      "_id": "JHjtf43e95SOyyUr",
+      "name": "Felsbrocken",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Flächenangriff (1 Schritt Radius um das Hauptziel)",
+            "text": null
+          },
+          {
+            "name": " Niederwerfen (-12)",
+            "text": null
+          }
+        ],
+        "tp": "3W20",
+        "haerte": 0,
+        "rw": 16,
+        "lz": 1,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 14,
+        "vt": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!2u5aIN7gR1e98d9J.JHjtf43e95SOyyUr"
+    },
+    {
+      "_id": "IT60hzQv04vFDMU2",
+      "name": "Laufen",
+      "type": "freiestalent",
+      "system": {
+        "text": "Laufen kommt in Verfolgungsjagden zu Fuß zum Einsatz, wenn du einen Verbrecher stellen oder einem Raubtier entkommen möchtest.",
+        "pw": 16,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!2u5aIN7gR1e98d9J.IT60hzQv04vFDMU2"
+    },
+    {
+      "_id": "pqHCnrPjkGluLV0r",
+      "name": "Wachsamkeit",
+      "type": "freiestalent",
+      "system": {
+        "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
+        "pw": 10,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!2u5aIN7gR1e98d9J.pqHCnrPjkGluLV0r"
+    },
+    {
+      "_id": "xswZYxVixg715gPv",
+      "name": "Zähigkeit",
+      "type": "freiestalent",
+      "system": {
+        "text": "Zähigkeit hilft dir, Schmerzen und Strapazen zu widerstehen. So kannst du trotz zahlreicher Wunden noch handlungsfähig bleiben und einen Kampf zu euren Gunsten wenden oder eine ganze Nacht hindurch wachen.",
+        "pw": 26,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!2u5aIN7gR1e98d9J.xswZYxVixg715gPv"
+    }
+  ],
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "prototypeToken": {
+    "displayName": 20,
+    "actorLink": false,
+    "width": 1,
+    "height": 1,
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "light": {
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "coloration": 1,
+      "dim": 0,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false,
+        "type": null
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      },
+      "attenuation": 0.5,
+      "negative": false,
+      "priority": 0,
+      "color": null
+    },
+    "disposition": 1,
+    "displayBars": 50,
+    "bar1": {
+      "attribute": "gesundheit.hp"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "flags": {},
+    "randomImg": false,
+    "name": "Riese",
+    "texture": {
+      "src": "systems/Ilaris/assets/images/token/kreaturentypen/mythen.png",
+      "scaleX": 1,
+      "scaleY": 1,
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "offsetX": 0,
+      "offsetY": 0,
+      "fit": "contain",
+      "rotation": 0,
+      "tint": "#ffffff",
+      "alphaThreshold": 0.75
+    },
+    "sight": {
+      "angle": 360,
+      "enabled": false,
+      "range": 0,
+      "brightness": 1,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "appendNumber": false,
+    "prependAdjective": false,
+    "hexagonalShape": 0,
+    "detectionModes": [],
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    }
+  },
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!actors!2u5aIN7gR1e98d9J"
+}

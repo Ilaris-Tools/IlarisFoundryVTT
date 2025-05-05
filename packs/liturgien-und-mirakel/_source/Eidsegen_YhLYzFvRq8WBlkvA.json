@@ -1,0 +1,41 @@
+{
+  "name": "Eidsegen",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Ordnung, Zwölfgöttlicher Ritus",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Ein freiwilliges und aufrichtiges Gelübde der Zielperson wird gesegnet. Alle Versuche, den Schwörenden zum Eidbruch zu bewegen (etwa über Betören, Überreden oder einen Imperavi), sind um –4 erschwert. Bricht der Schwörende den Eid im Vollbesitz seiner geistigen Kräfte, endet der Segen.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "16 Aktionen",
+    "ziel": "Einzelperson",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Jahr",
+    "kosten": "8 KaP",
+    "erlernen": "Pra 4; Ang, Aves, Eff, Brn, Fir, Hes, Ifi, Ing, Kor, Nan, Per, Phe, Rah, Ron, Swa, Tra, Tsa 8",
+    "pw": 0,
+    "gruppe": 20
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "YhLYzFvRq8WBlkvA",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!YhLYzFvRq8WBlkvA"
+}
