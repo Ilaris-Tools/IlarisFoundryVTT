@@ -79,6 +79,7 @@
 
 .herotabnavigation {
   grid-area: navigation2;
+  position: relative;
 }
 
 .herotab {
@@ -86,6 +87,42 @@
   margin-left: 1rem;
   margin-bottom: 20px;
   margin-right: 1rem;
+}
+
+.sheet-tabs.tabs {
+  display: flex;
+  align-items: first;
+  position: relative;
+  z-index: 1;
+  justify-content: flex-start; /* Aligns items to the left */
+}
+
+.tab-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  position: relative;
+  background-color: #00000011;
+  /* maybe inset (out for active) shaddows for 3d effect instead of darker color */
+  border-bottom: 2px solid #B87333;
+}
+
+.tab-item.active {
+  border-radius: 5px 5px 0 0;
+  border: 2px solid #c97628;
+  border-bottom: 0px;
+  background-color: #0000;
+  cursor: default;
+  z-index: 2;
+  text-shadow: none !important;
+}
+
+.tab-item:hover {
+  text-shadow: 0 0 10px var(--color-shadow-primary);
+  /* background-color: #e0e0d1; */
 }
 
 .herosidebar {
