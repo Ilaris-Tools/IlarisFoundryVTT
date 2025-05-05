@@ -359,7 +359,7 @@ export class AngriffDialog extends Dialog {
         if (manoever.km_hmsl.selected) {
             mod_at -= 8;
             text_at = text_at.concat(`${CONFIG.ILARIS.label['km_hmsl']}\n`);
-            schaden = schaden.concat(`+${schaden}`);
+            schaden = schaden.concat(` * 2`);
             text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_hmsl']}\n`);
         }
         // Klingentanz km_kltz
