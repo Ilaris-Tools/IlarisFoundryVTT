@@ -100,7 +100,7 @@ export class IlarisActorSheet extends ActorSheet {
             let roll = new Roll(formula);
             console.log(formula);
             let speaker = ChatMessage.getSpeaker({ actor: this.actor });
-            await roll.evaluate({ async: true });
+            await roll.evaluate();
             const html_roll = await renderTemplate(
                 'systems/Ilaris/templates/chat/probenchat_profan.html', 
                 {title: `${label}`}
@@ -226,7 +226,7 @@ export class IlarisActorSheet extends ActorSheet {
         // let formula = `${data.pw} + 3d20dhdl`;
         let roll = new Roll(formula);
         // roll.roll();
-        await roll.evaluate({ async: true });
+        await roll.evaluate();
         // console.log(roll);
         // let critfumble = roll.result.split(" + ")[1];
         let critfumble = roll.dice[0].results.find((a) => a.active == true).result;
