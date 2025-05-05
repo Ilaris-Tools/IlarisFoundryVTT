@@ -7,5 +7,3 @@ Um das System zu installieren, folge den Anweisungen in der
 [README des Repositories](https://github.com/ilaris-tools/ilarisfoundryvtt).
 Weitere Infos findest zu zum Beispiel in den [FAQ](faq.md) oder den 
 [Screencasts auf YouTube](https://www.youtube.com/playlist?list=PLgv_FQFVPJ-6vOKI3jrfy9d2xfqzQSE-X).
-# Ilaris für FoundryVTT
-TODO
