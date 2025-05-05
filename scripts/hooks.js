@@ -233,8 +233,8 @@ Hooks.once('init', () => {
             icon: 'systems/Ilaris/assets/images/icon/swordwoman-orange.svg',
         },
     ];
-    game.settings.register('Ilaris', 'acceptChanges', {
-        name: 'Update Information',
+    game.settings.register('Ilaris', 'acceptChangesV12_1', {
+        name: 'Update Informationen für v12.1 gelesen',
         config: true,
         type: new foundry.data.fields.BooleanField(),
         scope: 'client',
@@ -252,7 +252,7 @@ Hooks.on('applyActiveEffect', (actor, data, options, userId) => {
 });
 
 Hooks.once('setup', async function () {
-    if (!game.settings.get('Ilaris', 'acceptChanges')) {
+    if (!game.settings.get('Ilaris', 'acceptChangesV12_1')) {
         showStartupDialog();
     }
 });
@@ -261,7 +261,7 @@ class MigrationMessageDialog extends foundry.applications.api.DialogV2 {
   }
 
 const showStartupDialog = () => {
-    let content = `<p>Da es einige Änderungen gab, ist stark zu empfehlen deinen Spielercharakter, falls du einen besitzt neu von Sephrasto zu importieren. Es kann sein, dass du schon einmal darauf hingewiesen wurdest, wenn du dich gerade von einem anderen Gerät anmeldest.</p>`;
+    let content = `<p>Da es einige Änderungen gab, ist stark zu empfehlen deinen Spielercharakter, falls du einen besitzt neu von Sephrasto zu importieren. Hier ist es auch stark zu empfehlen das Sephrasto Plugin für den Foundry Export zu updaten.</p><p>Es kann sein, dass du schon einmal darauf hingewiesen wurdest, wenn du dich gerade von einem anderen Gerät anmeldest.</p>`;
     if (game.user.isGM) {
         content += `<p>Bist du die Spielleitung oder verwaltest diese Welt, gibt dir der Button unten die Möglichkeit deine eigenen Kreaturen und NSCs automatisch updaten zu lassen.</p>`;
     }
@@ -283,7 +283,7 @@ const showStartupDialog = () => {
 };
 
 async function creatureMigration() {
-    game.settings.set('Ilaris', 'acceptChanges', true);
+    game.settings.set('Ilaris', 'acceptChangesV12_1', true);
     const vorteileItems = [];
     for await (const pack of game.packs) {
         if(pack.metadata.type == "Item") {
