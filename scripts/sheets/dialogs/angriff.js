@@ -202,7 +202,7 @@ export class AngriffDialog extends Dialog {
             text_at = text_at.concat('Kombinierte Aktion: -4\n');
         }
         // Volle Offensive vlof
-        if (manoever.vlof.selected) {
+        if (manoever.vlof.selected && !manoever.pssl.selected) {
             if (manoever.vlof.offensiver_kampfstil) {
                 mod_vt -= 4;
                 text_vt = text_vt.concat('Volle Offensive (Offensiver Kampfstil): -4\n');
