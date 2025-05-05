@@ -134,6 +134,8 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  max-width: 240px;
+  min-width: 240px;
   color: black;
   font-size: 30px;
   font-weight: bold;
