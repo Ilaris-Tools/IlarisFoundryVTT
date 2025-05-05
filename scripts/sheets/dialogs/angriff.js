@@ -217,10 +217,10 @@ export class AngriffDialog extends Dialog {
             text_at = text_at.concat('Kombinierte Aktion: -4\n');
         }
         // Volle Offensive vlof
-        if (manoever.vlof.selected) {
+        if (manoever.vlof.selected && !manoever.pssl.selected) {
             if (manoever.vlof.offensiver_kampfstil) {
                 mod_vt -= 4;
-                text_at = text_at.concat('Volle Offensive (Offensiver Kampfstil): -4\n');
+                text_vt = text_vt.concat('Volle Offensive (Offensiver Kampfstil): -4\n');
             } else {
                 mod_vt -= 8;
                 text_vt = text_vt.concat('Volle Offensive: -8\n'); 
@@ -269,8 +269,6 @@ export class AngriffDialog extends Dialog {
         // Binden km_bind
         let binden = Number(manoever.km_bind.selected);
         if (binden > 0) {
-            mod_at += binden;
-            text_at = text_at.concat(`Binden: +${binden}\n`);
             mod_vt -= binden;
             text_vt = text_vt.concat(`Binden: -${binden}\n`);
         }
@@ -285,7 +283,7 @@ export class AngriffDialog extends Dialog {
             mod_at -= 4;
             mod_vt -= 4;
             text_at = text_at.concat(`${CONFIG.ILARIS.label['km_entw']}: -4\n`);
-            text_vt = text_at.concat(`${CONFIG.ILARIS.label['km_entw']}: -4\n`);
+            text_vt = text_vt.concat(`${CONFIG.ILARIS.label['km_entw']}: -4\n`);
         }
         // Gezielter Schlag km_gzsl
         let trefferzone = Number(manoever.km_gzsl.selected);
@@ -383,9 +381,11 @@ export class AngriffDialog extends Dialog {
         }
         // Sturmangriff km_stag
         if (manoever.km_stag.selected) {
-            if (manoever.kbak.selected) mod_at += 4;
+            if (manoever.kbak.selected) {
+                mod_at += 4;
+                text_at = text_at.concat(`${CONFIG.ILARIS.label['km_stag']}: +4\n`);
+            }
             let gs = Number(manoever.km_stag.gs);
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_stag']}: ${gs}\n`);
             mod_dm += gs;
             text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_stag']}: ${gs}\n`);
         }
@@ -393,7 +393,7 @@ export class AngriffDialog extends Dialog {
         if (manoever.km_tdst.selected) {
             mod_at -= 8;
             text_at = text_at.concat(`${CONFIG.ILARIS.label['km_tdst']}\n`);
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_tdst']}\n`);
+            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_tdst_dm']}\n`);
         }
         // Überrennen km_uebr
         if (manoever.km_uebr.selected) {
@@ -413,19 +413,12 @@ export class AngriffDialog extends Dialog {
             text_at = text_at.concat(`Modifikator: ${modifikator}\n`);
         }
         
-        // Riposte km_rpst
-        // NOTE: deactivated for kreaturen for now.
-        // TDOO calculate after manoever anwenden to get mods from self.
-        // if (manoever.km_rpst.selected) {
-        //     // let [mod_from_at, text_from_at] = calculate_attacke(actor, item);
-        //     // TODO: does this work like this?
-        //     // TODO: at least not for Entwaffnen combined in AT/PA
-        //     // TODO: Riposte einfach mit festem wert angeben, statt berechnen aus boxen?
-        //     mod_vt += -4 + this.mod_atmod_from_at;
-        //     text_vt = text_vt.concat(
-        //         `${CONFIG.ILARIS.label['km_rpst']}: (\n${this.text_at})\n`,
-        //     );
-        // }
+        if (item.system.manoever.km_rpst.selected) {
+            mod_vt += -4 + mod_at;
+            text_vt = text_vt.concat(
+                `${CONFIG.ILARIS.label['km_rpst']}: (\n${text_at})\n`,
+            );
+        }
         this.mod_at = mod_at;
         this.mod_vt = mod_vt;
         this.mod_dm = mod_dm;

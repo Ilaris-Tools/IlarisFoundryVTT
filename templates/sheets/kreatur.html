@@ -116,7 +116,6 @@
 
     {{#if actor.system.attribute}}
     <div class="attribute statblockreihe">
-        <!-- <b>Attribute : </b> -->
         <div class="flexrow">
             {{#each actor.system.attribute as |attribut key|}}
             <div class="attributblock flex1 flex-group-center"
@@ -137,7 +136,6 @@
 
     {{#if actor.system.kampfwerte}}
     <div class="kampfwerte statblockreihe">
-        <!-- <b>Kampfwerte: </b> -->
         {{#if actor.system.modifikatoren.nahkampfmod}}
         <div class="flexrow" style="float: right">
             <b><label style="color: {{modColor actor.system.modifikatoren.nahkampfmod}}">{{actor.system.abgeleitete.nahkampfmoddisplay}}</label></b>

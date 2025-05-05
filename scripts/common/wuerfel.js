@@ -50,7 +50,7 @@ export async function wuerfelwurf(event, actor) {
     // };
     if (rolltype == "angriff_diag") {
         let item = actor.items.get(event.currentTarget.dataset.itemid);
-        item.setManoevers();
+        await item.setManoevers();
         let d = new AngriffDialog(actor, item);
         await d.render(true);
     } else if (rolltype == 'nahkampf_diag') {
@@ -131,7 +131,7 @@ export async function wuerfelwurf(event, actor) {
                             // Binden km_bind
                             let binden = Number(item.system.manoever.km_bind.selected);
                             if (binden > 0) {
-                                mod_at += binden;
+                                mod_vt -= binden;
                                 text = text.concat(`Binden: ${binden}\n`);
                             }
                             // Attacke Manöver ausgelagert für Riposte

@@ -1,8 +1,8 @@
 {
   "id": "Ilaris",
   "title": "Ilaris",
-  "description": "Schnelle und schlanke Regeln für Aventurien",
-  "version": "0.3.20",
+  "description": "Schnelle und schlanke Regeln für das beliebteste deutsche P&P Setting.",
+  "version": "12.0.2",
   "compatibility": {
     "minimum": 12,
     "verified": 12

@@ -3,6 +3,7 @@
 -   Im Kompendium "Beispielhelden" gibt es "Alrik die leere Vorlage", die schon alle typischen Fertigkeiten ausgerüstet hat. "Alrik der Bauer" ist zur Präsentation mit Werten und Ausrüstung ausgestattet.
 -   Rüstungen werden erst berechnet, wenn sie angelegt werden. Symbol links neben dem Namen anklicken
 -   Kampfstile werden nur für die ausgerüsteten Haupt- und Nebenwaffen berechnet
+-   Es kann maximal jeweils eine Haupt- und Nebenwaffe angelegt sein. Zweihändige Waffen müssen gleichzeitig Haupt- und Nebenwaffe sein, sonst werden die Abzüge für einhändige Führung angerechnet
 -   Falls (Kampf-)manöver nicht ausgewählt werden können, kontrolliert ob die Voraussetzungen erfüllt sind (Waffeneigenschaften, Waffe ausgerüstet, Kampfstil ausgewählt, Sonderfertigkeit vorhanden)
 -   Die Manöver im Kompedium schalten die Manöver nicht frei: Das passiert über die entsprechenden Vorteile  #40
 -   Manöver für Magie und Karma sind noch nicht integriert

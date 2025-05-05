@@ -27,6 +27,37 @@ export class IlarisActor extends Actor {
         super.prepareBaseData();
     }
 
+    _checkVorteilSource(requirement,vorteil) {
+        return (vorteil.flags?.core?.sourceId && vorteil.flags.core.sourceId.includes(requirement)) ||
+        (vorteil._stats.compendiumSource && vorteil._stats.compendiumSource.includes(requirement))
+    }
+
+    _hasVorteil(vorteilRequirements) {
+        // use _stats.compendiumSource or flags.core.sourceId to check for requirement
+        return this.vorteil.allgemein.some((vorteil) => {
+            return vorteilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
+        }) || this.vorteil.kampf.some((vorteil) => {
+            return vorteilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
+        })  || this.vorteil.karma.some((vorteil) => {
+            return vorteilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
+        }) || this.vorteil.magie.some((vorteil) => {
+            return vorteilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
+        }) || this.vorteil.profan.some((vorteil) => {
+            return vorteilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
+        });
+    }
+
+    _hasKampfstilSelected(stilRequirements) {
+        return this.vorteil.kampfstil.some((vorteil) => {
+            return stilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
+        }) || this.vorteil.geweihtentradition.some((vorteil) => {
+            return stilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
+        }) || this.vorteil.zaubertraditionen.some((vorteil) => {
+            return stilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
+        });
+        // zauber traditionen und liturgien werden noch wie Vorteile behandelt, da noch nicht implementiert wurde einen Stil dort zu wählen, obwohl nach Regeln sowas nötig ist
+    }
+
     __getStatuseffectById(data, statusId) {
         let iterator = data.effects.values();
         for (const effect of iterator) {
@@ -346,7 +377,7 @@ export class IlarisActor extends Actor {
         actor.system.abgeleitete.kap = kap;
     }
 
-    _calculateKampf(actor) {
+    async _calculateKampf(actor) {
         console.log('Berechne Kampf');
         const KK = actor.system.attribute.KK.wert;
         const sb = Math.floor(KK / 4);
@@ -366,7 +397,7 @@ export class IlarisActor extends Actor {
             actor.nahkampfwaffen.find((x) => x.system.nebenwaffe == true) ||
             actor.fernkampfwaffen.find((x) => x.system.nebenwaffe == true);
         for (let nwaffe of actor.nahkampfwaffen) {
-            nwaffe.setManoevers();
+            await nwaffe.setManoevers();
             if (nwaffe.system.manoever == undefined) {
                 console.log('Ich überschreibe Manöver');
             }

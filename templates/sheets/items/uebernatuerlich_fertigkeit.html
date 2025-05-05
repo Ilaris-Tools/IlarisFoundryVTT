@@ -13,8 +13,6 @@
         </div>
         <div>
             <div class="flexrow">
-                <!-- <h6>Fertigkeit</h6> -->
-                <!-- <h6>Faktor</h6> -->
                 <h6>Attribute</h6>
                 <h6></h6>
                 <h6></h6>
@@ -23,11 +21,8 @@
                 <h6>FW</h6>
                 {{/if}}
                 <!-- !!!!Wichtig!!!!: PW geht so nicht: Er übernimmt die Berechnung nicht. Das ist auch mein Problem beim array bei den Talenten, denke ich -->
-                <!-- Was ist der Unterschied zwischen item.data und data?? Bei Label gibt er mir das gleiche aus?? -->
-                <!-- <h6>PW</h6> -->
             </div>
             <div class="flexrow">
-                <!-- <input name="data.faktor" value="{{item.data.faktor}}" type="text" data-dtype="Number"> -->
                 <select name="system.attribut_0">
                     {{#select item.system.attribut_0}} {{>
                     systems/Ilaris/templates/helper/select_attribut.html}} {{/select}}
@@ -43,12 +38,9 @@
                 {{#if hasOwner}}
                 <input name="system.fw" value="{{item.system.fw}}" type="text" data-dtype="Number" />
                 {{/if}}
-                <!-- <label> {{item.data.pw}} </label> -->
-                <!-- <label> {{data.pw}} </label> -->
             </div>
             <label>Beschreibung</label>
             <textarea rows="6" name="system.text">{{item.system.text}}</textarea>
-            <!-- {{editor content=data.text target="data.text" button=true owner=owner editable=editable}} -->
         </div>
     </div>
 </form>

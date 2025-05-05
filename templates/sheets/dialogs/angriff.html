@@ -1,10 +1,13 @@
-{{log 'angriff' this}}
 <div class="flexrow">
     <label>{{get_label "kbak"}}</label>
     <input type="checkbox" id="kbak" {{checked item.system.manoever.kbak.selected}} />
 </div>
 <div class="flexrow">
-    <label>{{get_label "vlof"}}</label>
+    {{#if item.system.manoever.vlof.offensiver_kampfstil}}
+        <label>{{get_label "vlofok"}}</label>
+    {{else}}
+        <label>{{get_label "vlof"}}</label>
+    {{/if}}
     <input type="checkbox" id="vlof" {{checked item.system.manoever.vlof.selected}} />
 </div>
 <div class="flexrow">
@@ -82,7 +85,7 @@
     <label>{{get_label "km_hmsl"}}</label>
     <input type="checkbox" id="km_hmsl" {{checked item.system.manoever.km_hmsl.selected}} />
 </div>
-{{/if}} {{#if itemsystem.manoever.km_kltz.possible}}
+{{/if}} {{#if item.system.manoever.km_kltz.possible}}
 <div class="flexrow">
     <label>{{get_label "km_kltz"}}</label>
     <input type="checkbox" id="km_kltz" {{checked item.system.manoever.km_kltz.selected}} />
@@ -174,7 +177,7 @@
         />
     </div>
 </div>
-{{/if}} {{#if manoever.km_utlf.possible}}
+{{/if}} {{#if item.system.manoever.km_utlf.possible}}
 <div class="flexrow">
     <label>{{get_label "km_utlf"}}</label>
     <input type="checkbox" id="km_utlf" {{checked item.system.manoever.km_utlf.selected}} />
@@ -226,6 +229,9 @@
 {{#if item.system.manoever.km_aufl.possible}}
 <div class="flexrow">
     <label>{{get_label "km_aufl"}} (GS)</label>
+    <div class="flexrow">
+        <input type="checkbox" id="km_umkl" {{checked item.system.manoever.km_aufl.selected}} />
+        <label>mod:</label>
         <input
             id="km_aufl_gs"
             type="number"
@@ -233,6 +239,7 @@
             value="{{item.system.manoever.km_aufl.gs}}"
             data-dtype="Number"
         />
+    </div>
 </div>
 {{/if}} 
 
@@ -250,7 +257,6 @@
 
 <hr />
 <div class="flexrow">
-    <!-- <label for="modifikator">Modifikator: </label> -->
     <label>Modifikator: </label>
     <input
         id="modifikator"

@@ -1,11 +1,9 @@
 <div class="flexrow">
     <label>Kombinierte Aktion: </label>
-    <!-- <input name="kombinierte_aktion" data-dtype="Boolean" type="checkbox" {{checked kombinierte_aktion}}> -->
     <input class="toggle-aktion" type="checkbox" id="kombinierte_aktion" unchecked />
 </div>
 <div class="flexrow">
     <label>Volle Offensive: </label>
-    <!-- <input name="volle_offensive" data-dtype="Boolean" type="checkbox" {{checked volle_offensive}}> -->
     <input class="toggle-aktion" type="checkbox" id="volle_offensive" unchecked />
 </div>
 <div class="flexrow">
@@ -28,11 +26,6 @@
     <input type="checkbox" id="km_entw" unchecked />
 </div>
 {{/if}}
-<!-- <select name="data.attribut_0">
-         {{#select data.attribut_0}}
-         {{> systems/Ilaris/templates/helper/select_attribut.html}}
-         {{/select}}
-         </select> -->
 {{#if (ifIn "km_gzsl" manoever_at)}}
 <div class="flexrow">
     <label>{{get_label "km_gzsl"}}</label>
@@ -49,7 +42,6 @@
 <div class="flexrow">
     <label>{{get_label "km_wusl"}}</label>
     <input id="km_wusl" type="number" value="0" data-dtype="Number" />
-    <!-- <input id="km_wusl" type="text" maxlength="1" pattern="[123456780-]" value=""/> -->
 </div>
 {{/if}} {{#if (ifIn "km_rust" manoever_at)}}
 <div class="flexrow">
