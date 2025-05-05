@@ -55,6 +55,13 @@ Actor: (types: Held, Kreatur) haben jeweils eigene html Templates zum ansehen un
 
 Items: Zauber, Fertigkeiten, Gegenstände, Eigenheiten, Waffen, Vorteile usw.. sind Items mit jeweiligem type. Auch hier gibt es einzelne html snippets als formular um individuelle Items zu bearbeiten.
 
+`/packs/`: Im packs ordner befinden sich die Daten fuer die im Spiel verfuegbaren Kompendien. Letztendlich befinden
+sich hier alle möglichen Ilaris-Inhalte (items, actors, effects...) wie zB Vorteile, Waffen, kreaturen.
+Foundry behandelt jeden Ordner als Datenbanktabelle mit binary Files, die sich häufig ändern. Um das ganze als Entwickler
+einfacher zu verwalten können, werden alle Einträge als .json-files in den jeweiligen _source unterordner entpackt.
+Sie müssen um live verwendet werden zu können erst wieder gepackt werden. [Mehr dazu in den docs](./docs/packs.md).
+
+
 TODO: Dateistruktur und wichtige Dateien erklären
 
 
