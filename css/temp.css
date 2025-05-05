@@ -2,10 +2,12 @@
   font-family: 'Crimson Text';
   src: url('../assets/fonts/CrimsonText-Regular.ttf');
 }
+
 @font-face {
   font-family: 'Aniron';
   src: url('../assets/fonts/anirm___.ttf');
 }
+
 @font-face {
   font-family: 'Andada';
   src: url('../assets/fonts/AndadaSC-Regular.otf');
@@ -19,331 +21,347 @@
 }
 
 .herosheet {
-    display: grid;
-    grid-template-areas: 'header header' 'sidebar navigation1'
-      'sidebar navigation2' 'sidebar tabs';
-    grid-template-rows: 100px 45px 100px 5fr;
-    grid-template-columns: 2fr 4fr;
-    background-image: url(/systems/Ilaris/assets/images/Ilaris/Kasten_high_res.png);
-    background-repeat: round;
-    min-height: 680px;
-    font-family: var(--font-andada);
-  }
-  
-  .heroheader {
-    grid-area: header;
-    justify-content: space-around;
-    align-items: center;
-    padding-left: 300px;
-    display: flex;
-    flex-direction: row;
-    background-image: url(/systems/Ilaris/assets/images/Ilaris/Kasten_high_res.png);
-    background-position: center bottom;
-    background-size: cover;
-  }
-  
-  .heroattributes {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around; /* gleichmäßige Verteilung */
-    align-items: center;
-    gap: 10px; /* Abstand zwischen den Elementen */
-  }
-  
-  
-  .attribute-wrapper {
-    position: relative;
-    width: 45px;
-    height: 45px;
-  }
-  
-  .attribute-wrapper img {
-    width: 100%;
-    height: 100%;
-  }
-  
-  .attribute-number {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: black; /* oder eine andere Farbe, je nach Hintergrund */
-    font-weight: bold;
-    font-size: 22px;
-  }
-    
-  .herotabnavigation {
-    grid-area: navigation2;
-  }
-  
-  .herotab {
-    grid-area: tabs;
-    margin-left: 1rem;
-    margin-bottom: 20px;
-    margin-right: 1rem;
-  }
+  display: grid;
+  grid-template-areas: 'header header' 'sidebar navigation1'
+    'sidebar navigation2' 'sidebar tabs';
+  grid-template-rows: 100px 45px 100px 5fr;
+  grid-template-columns: 2fr 4fr;
+  background-image: url(/systems/Ilaris/assets/images/Ilaris/Kasten_high_res.png);
+  background-repeat: round;
+  min-height: 680px;
+  font-family: var(--font-andada);
+}
 
-  .herosidebar {
-    grid-area: sidebar;
-    display: block;
-    justify-content: space-between;
-    background-image: url(/systems/Ilaris/assets/images/Ilaris/bronze_glatt.png); /* Korrekte Syntax */
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    color: black;
-    font-size: 30px;
-    font-weight: bold;
-    padding-top: 1rem;
-    text-align: center;
-    box-shadow: 8px 0 5px rgba(0,0,0,0.3);
-    z-index: 2;
-    margin-left: 1rem;
-    margin-top: -80px;
-    margin-bottom: 20px;
-    border-top-left-radius: 5px;
-    border-bottom-left-radius: 200px;
-    border-top-right-radius: 5px;
-    border-bottom-right-radius: 200px;
-    border-style: solid;
-    border-color: #B87333;
-    position: relative;
-  }
-  
-  .icon-overlay-container {
-    position: relative;
-    display: inline-block;
-    width: 50px;
-    height: 50px;
-    margin: 5px;
-  }
-  
-  .icon-overlay-container img {
-    width: 100%;
-    height: 100%;
-    display: block;
-    border: none;
-  }
-  
-  .overlay-label {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    color: black; /* oder schwarz, je nach Kontrast */
-    font-weight: bold;
-    font-size: 20px;
-    text-shadow: 0 0 3px black; /* besser lesbar auf hellem Hintergrund */
-    pointer-events: none;
-  }
-  
-  
+.heroheader {
+  grid-area: header;
+  justify-content: space-around;
+  align-items: center;
+  padding-left: 300px;
+  display: flex;
+  flex-direction: row;
+  background-image: url(/systems/Ilaris/assets/images/Ilaris/Kasten_high_res.png);
+  background-position: center bottom;
+  background-size: cover;
+}
+
+.heroattributes {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  /* gleichmäßige Verteilung */
+  align-items: center;
+  gap: 10px;
+  /* Abstand zwischen den Elementen */
+}
+
+
+.attribute-wrapper {
+  position: relative;
+  width: 45px;
+  height: 45px;
+}
+
+.attribute-wrapper img {
+  width: 100%;
+  height: 100%;
+}
+
+.attribute-number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: black;
+  /* oder eine andere Farbe, je nach Hintergrund */
+  font-weight: bold;
+  font-size: 22px;
+}
+
+.herotabnavigation {
+  grid-area: navigation2;
+}
+
+.herotab {
+  grid-area: tabs;
+  margin-left: 1rem;
+  margin-bottom: 20px;
+  margin-right: 1rem;
+}
+
+.herosidebar {
+  grid-area: sidebar;
+  display: block;
+  justify-content: space-between;
+  background-image: url(/systems/Ilaris/assets/images/Ilaris/bronze_glatt.png);
+  /* Korrekte Syntax */
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  color: black;
+  font-size: 30px;
+  font-weight: bold;
+  padding-top: 1rem;
+  text-align: center;
+  box-shadow: 8px 0 5px rgba(0, 0, 0, 0.3);
+  z-index: 2;
+  margin-left: 1rem;
+  margin-top: -80px;
+  margin-bottom: 20px;
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 200px;
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 200px;
+  border-style: solid;
+  border-color: #B87333;
+  position: relative;
+}
+
+.icon-overlay-container {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 50px;
+  margin: 5px;
+}
+
+.icon-overlay-container img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: none;
+}
+
+.overlay-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: black;
+  /* oder schwarz, je nach Kontrast */
+  font-weight: bold;
+  font-size: 20px;
+  text-shadow: 0 0 3px black;
+  /* besser lesbar auf hellem Hintergrund */
+  pointer-events: none;
+}
+
+
 
 .status-effects {
   display: inline-flexbox;
   flex-direction: column;
 }
 
-  .status-effects img.effect-control {
-    background-color: transparent;
-    width: 40px;
-    height: 40px;
+.status-effects img.effect-control {
+  background-color: transparent;
+  width: 40px;
+  height: 40px;
 }
-  .hangingindent {
-    padding-left: 22px ;
-    text-indent: -22px ;
-  }
-  
-  .custom-icon {
-    display: inline-block;
-    width: 24px;
-    height: 24px;
-    background-image: url("/systems/Ilaris/assets/images/ilaris/icon_clear.png");
-    background-size: contain;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
-  
-  #pause {
-    .fa-spin {
+
+.hangingindent {
+  padding-left: 22px;
+  text-indent: -22px;
+}
+
+.custom-icon {
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  background-image: url("/systems/Ilaris/assets/images/ilaris/icon_clear.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+#pause {
+  .fa-spin {
     content: url("/systems/Ilaris/assets/images/ilaris/icon_rot.png")
-    }
   }
+}
 
-  .profile-img {
-    border: none;
-  }
-  
-  #lebensleiste {
-    max-width: 800px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .triStateBtn {
-    width: 18px;
-    height: 15px;
-    border: 2px solid brown;
-    border-radius: 0;
-    cursor: pointer;
-    background-color: #ac3100;
-    position: relative; /* ← notwendig für absolute Positionierung der Linien */
-  }
-  
-  /* Hintergrundfarbe für die ersten 4 Buttons */
-  #lebensleiste .triStateBtn:nth-child(-n+5) {
-    background-color: #f5f5dc;
-  }
-  
-  /* Zustand 1: Kreuz */
-  .state-1::before,
-  .state-1::after {
-    content: "";
-    position: absolute;
-    top: 40%;
-    left: -15%;
-    width: 18px;
-    height: 2px;
-    background-color: black;
-  }
-  
-  .state-1::before {
-    transform: rotate(45deg);
-  }
-  
-  .state-1::after {
-    transform: rotate(-45deg);
-  }
-  
-  /* Zustand 2: einfache diagonale Linie */
-  .state-2::after {
-    content: "";
-    position: absolute;
-    top: 40%;
-    left: -15%;
-    width: 18px;
-    height: 2px;
-    background-color: black;
-    transform: rotate(135deg);
-  }
-  
-  .icon-small {
-    flex-basis: 20px;
-    flex-grow: 0;
-    flex-shrink: 0;
-    font-size: 15px;
-  }
-  
-  .flex-fest-var {
-    flex-grow: 0;
-    flex-shrink: 0;
-  }
-  
-  .item-toggle.false {
-    /* color: #b5b3a4; */
-    color: #989898;
-  }
-  .item-toggle.active {
-    /* color: #4b4a44; */
-    color: black;
-  }
-  
-  .toggle-bool.false {
-    /* color: #b5b3a4; */
-    color: #989898;
-  }
-  .toggle-bool.active {
-    /* color: #4b4a44; */
-    color: #00990d;
-  }
+.profile-img {
+  border: none;
+}
 
-  .button-icon {
-    height: 3ex;
-    border: none;
-    display: inline-block;
-    vertical-align: middle;
-  }
-  .button-icon-nahkampf {
-    height: 4ex;
-    border: none;
-    /* display:inline-block; */
-    display: block;
-    /* vertical-align:middle; */
-    margin-left: auto;
-    margin-right: auto;
-  }
-  .chat-message {
-    color: #000000;
-    font-family: var(--font-crimson);
-    /* TODO CR: Wegen Bild fragen */
-    background-image: url('../assets/images/background/hintergrund.jpg');
-  }
-  .chat-message .message-header {
-    color: #000000;
-  }
-  
-  .chat-message .message-header .flavor-text {
-    color: #000000;
-  }
-  
-  .editor {
-    height: 100% !important;
-    width: 100%;
-    overflow: auto;
-  }
-  .editor-content {
-    min-height: 50px;
-    min-height: 500px;
-    min-width: 300px;
-    height: 100% !important;
-    width: 100%;
-    overflow: auto;
-    /*     font-weight: bold; */
-  }
-  
-  .schips-button {
-    display: inline-block;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: 2px solid #333;
-    background-color: grey;
-    background-size: cover;
-    background-position: center;
-    transition: background-image 0.3s ease;
-    cursor: pointer;
-    margin-right: 8px;
-  }
+#lebensleiste {
+  max-width: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-  .schips-button:last-child {
-    margin-right: 0;
-  }
+.triStateBtn {
+  width: 18px;
+  height: 15px;
+  border: 2px solid brown;
+  border-radius: 0;
+  cursor: pointer;
+  background-color: #ac3100;
+  position: relative;
+  /* ← notwendig für absolute Positionierung der Linien */
+}
 
-  .filled{
-    background-image: url('/systems/Ilaris/assets/images/Ilaris/phex.png');
-  }
-  
-  .twokindrow div:nth-child(odd) {
-    background: rgba(255, 255, 255, 0.2);
-  }
+/* Hintergrundfarbe für die ersten 4 Buttons */
+#lebensleiste .triStateBtn:nth-child(-n+5) {
+  background-color: #f5f5dc;
+}
 
-  .twokindrow {
-width: 100%;
-column-width: auto;
-  }
-  
-  input[name="name"] {
-    border: none;
-    outline: none; /* optional, entfernt den Fokus-Rahmen */
-    background: transparent; /* optional, falls du einen transparenten Hintergrund willst */
-    text-align: center;
-    font-family: var(--font-aniron);
-    font-size: 18px;
-  }
+/* Zustand 1: Kreuz */
+.state-1::before,
+.state-1::after {
+  content: "";
+  position: absolute;
+  top: 40%;
+  left: -15%;
+  width: 18px;
+  height: 2px;
+  background-color: black;
+}
 
-  .round-icon {
-    border-radius: 50%;
-    border-color: #573618;
-    border-width: 2px;
-  }
+.state-1::before {
+  transform: rotate(45deg);
+}
+
+.state-1::after {
+  transform: rotate(-45deg);
+}
+
+/* Zustand 2: einfache diagonale Linie */
+.state-2::after {
+  content: "";
+  position: absolute;
+  top: 40%;
+  left: -15%;
+  width: 18px;
+  height: 2px;
+  background-color: black;
+  transform: rotate(135deg);
+}
+
+.icon-small {
+  flex-basis: 20px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  font-size: 15px;
+}
+
+.flex-fest-var {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.item-toggle.false {
+  /* color: #b5b3a4; */
+  color: #989898;
+}
+
+.item-toggle.active {
+  /* color: #4b4a44; */
+  color: black;
+}
+
+.toggle-bool.false {
+  /* color: #b5b3a4; */
+  color: #989898;
+}
+
+.toggle-bool.active {
+  /* color: #4b4a44; */
+  color: #00990d;
+}
+
+.button-icon {
+  height: 3ex;
+  border: none;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.button-icon-nahkampf {
+  height: 4ex;
+  border: none;
+  /* display:inline-block; */
+  display: block;
+  /* vertical-align:middle; */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.chat-message {
+  color: #000000;
+  font-family: var(--font-crimson);
+  /* TODO CR: Wegen Bild fragen */
+  background-image: url('../assets/images/background/hintergrund.jpg');
+}
+
+.chat-message .message-header {
+  color: #000000;
+}
+
+.chat-message .message-header .flavor-text {
+  color: #000000;
+}
+
+.editor {
+  height: 100% !important;
+  width: 100%;
+  overflow: auto;
+}
+
+.editor-content {
+  min-height: 50px;
+  min-height: 500px;
+  min-width: 300px;
+  height: 100% !important;
+  width: 100%;
+  overflow: auto;
+  /*     font-weight: bold; */
+}
+
+.schips-button {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #333;
+  background-color: grey;
+  background-size: cover;
+  background-position: center;
+  transition: background-image 0.3s ease;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.schips-button:last-child {
+  margin-right: 0;
+}
+
+.filled {
+  background-image: url('/systems/Ilaris/assets/images/Ilaris/phex.png');
+}
+
+.twokindrow div:nth-child(odd) {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.twokindrow {
+  width: 100%;
+  column-width: auto;
+}
+
+input[name="name"] {
+  border: none;
+  outline: none;
+  /* optional, entfernt den Fokus-Rahmen */
+  background: transparent;
+  /* optional, falls du einen transparenten Hintergrund willst */
+  text-align: center;
+  font-family: var(--font-aniron);
+  font-size: 18px;
+}
+
+.round-icon {
+  border-radius: 50%;
+  border-color: #573618;
+  border-width: 2px;
+}
