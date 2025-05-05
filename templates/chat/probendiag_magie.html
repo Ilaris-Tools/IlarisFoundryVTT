@@ -9,7 +9,6 @@
 <hr />
 <div class="flexrow">
     <label>{{get_label "kbak"}}</label>
-    <!-- <input name="kombinierte_aktion" data-dtype="Boolean" type="checkbox" {{checked kombinierte_aktion}}> -->
     <input type="checkbox" id="kbak" {{checked item.system.manoever.kbak.selected}} />
 </div>
 <hr />
@@ -31,13 +30,6 @@
 <div class="flexrow">
     <label>{{get_label "mm_mezi"}}</label>
     <input type="checkbox" id="mm_mezi" {{checked item.system.manoever.mm_mezi.selected}} />
-    <!-- <input
-        id="mm_mezi"
-        type="number"
-        name="item.data.data.manoever.mm_mezi.selected"
-        value="{{item.system.manoever.mm_mezi.selected}}"
-        data-dtype="Number"
-    /> -->
 </div>
 <hr />
 {{/if}}

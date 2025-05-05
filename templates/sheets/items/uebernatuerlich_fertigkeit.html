@@ -13,8 +13,6 @@
         </div>
         <div>
             <div class="flexrow">
-                <!-- <h6>Fertigkeit</h6> -->
-                <!-- <h6>Faktor</h6> -->
                 <h6>Attribute</h6>
                 <h6></h6>
                 <h6></h6>
@@ -23,10 +21,8 @@
                 <h6>FW</h6>
                 {{/if}}
                 <!-- !!!!Wichtig!!!!: PW geht so nicht: Er übernimmt die Berechnung nicht. Das ist auch mein Problem beim array bei den Talenten, denke ich -->
-                <!-- <h6>PW</h6> -->
             </div>
             <div class="flexrow">
-                <!-- <input name="system.faktor" value="{{item.system.faktor}}" type="text" data-dtype="Number"> -->
                 <select name="system.attribut_0">
                     {{#select item.system.attribut_0}} {{>
                     systems/Ilaris/templates/helper/select_attribut.html}} {{/select}}

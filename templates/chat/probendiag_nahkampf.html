@@ -9,12 +9,10 @@
 <hr />
 <div class="flexrow">
     <label>{{get_label "kbak"}}</label>
-    <!-- <input name="kombinierte_aktion" data-dtype="Boolean" type="checkbox" {{checked kombinierte_aktion}}> -->
     <input type="checkbox" id="kbak" {{checked item.system.manoever.kbak.selected}} />
 </div>
 <div class="flexrow">
     <label>{{get_label "vlof"}}</label>
-    <!-- <input name="volle_offensive" data-dtype="Boolean" type="checkbox" {{checked volle_offensive}}> -->
     <input type="checkbox" id="vlof" {{checked item.system.manoever.vlof.selected}} />
 </div>
 <div class="flexrow">
@@ -23,14 +21,12 @@
 </div>
 <div class="flexrow">
     <label>Reichweitenunterschied: </label>
-    <!-- <label>{{radioBoxes distance_name distance_choice checked=distance_checked}}</label> -->
     <label
         >{{radioBoxes "rwdf" distance_choice checked=item.system.manoever.rwdf.selected}}</label
     >
 </div>
 <div class="flexrow">
     <label>Reaktionsanzahl: </label>
-    <!-- <input name="data.attribute.{{key}}.wert" value="{{attribut.wert}}" type="text" data-dtype="Number"> -->
     <input
         id="rkaz"
         type="number"
@@ -63,7 +59,6 @@
 {{/if}} {{#if manoever.km_ever.possible}}
 <div class="flexrow">
     <label>{{get_label "km_ever"}}</label>
-    <!-- <input type="checkbox" id="km_ever" unchecked> -->
     <input type="checkbox" id="km_ever" {{checked item.system.manoever.km_ever.selected}} />
 </div>
 {{/if}} {{#if manoever.km_entw.possible}}
@@ -240,7 +235,6 @@
 {{/if}}
 <hr />
 <div class="flexrow">
-    <!-- <label for="modifikator">Modifikator: </label> -->
     <label>Modifikator: </label>
     <input
         id="modifikator"
