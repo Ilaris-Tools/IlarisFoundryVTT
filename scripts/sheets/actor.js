@@ -53,40 +53,111 @@ export class IlarisActorSheet extends ActorSheet {
         const itemId = event.currentTarget.dataset.itemid;
         const item = this.actor.items.get(itemId);
         console.log(item);
-        // const item = this.data.items.get(itemId);
         const toggletype = event.currentTarget.dataset.toggletype;
         let attr = `system.${toggletype}`;
+        const otherHandType = toggletype === 'hauptwaffe' ? 'nebenwaffe' : 'hauptwaffe';
+        const otherHandAttr = `system.${otherHandType}`;
+        
         if (toggletype == 'hauptwaffe' || toggletype == 'nebenwaffe') {
             let item_status = getProperty(item, attr);
-            // item.update({[attr]: !getProperty(item.data, attr)});
+            
+            // Handle two-handed ranged weapons
+            if (item_status && item.type === 'fernkampfwaffe' && item.system.eigenschaften.zweihaendig) {
+                await this._unequipWeapon(itemId);
+                return; 
+            }
+            
             if (item_status == false) {
-                for (let nwaffe of this.actor.nahkampfwaffen) {
-                    // for (let nwaffe of this.actor.data.nahkampfwaffen) {
-                    // console.log(nwaffe);
-                    if (nwaffe.system[toggletype] == true) {
-                        let change_itemId = nwaffe.id;
-                        let change_item = this.actor.items.get(change_itemId);
-                        await change_item.update({ [attr]: false });
+                // Handle switching hands for one-handed weapons
+                if ((toggletype == 'hauptwaffe' && item.system.nebenwaffe) || 
+                    (toggletype == 'nebenwaffe' && item.system.hauptwaffe)) {
+                    
+                    if (!item.system.eigenschaften.zweihaendig) {
+                        await item.update({ [otherHandAttr]: false });
                     }
                 }
-                for (let item of this.actor.fernkampfwaffen) {
-                    // console.log(item);
-                    if (item.system[toggletype] == true) {
-                        let change_itemId = item.id;
-                        let change_item = this.actor.items.get(change_itemId);
-                        await change_item.update({ [attr]: false });
-                    }
+                
+                // Unequip two-handed ranged weapons when equipping any other weapon
+                this._unequipTwoHandedRangedWeapons();
+                
+                // If equipping a two-handed weapon, unequip all other weapons
+                if (item.system.eigenschaften.zweihaendig) {
+                    this._unequipAllWeaponsExcept(itemId);
+                } else {
+                    // For one-handed weapons, only unequip from the toggled hand
+                    this._unequipHandWeapons(toggletype);
                 }
             }
-            // console.log(attr);
-            // console.log(item_status);
+            
+            // For two-handed weapons, always equip in both hands by default
+            if (item.system.eigenschaften.zweihaendig && !item_status) {
+                await item.update({ [otherHandAttr]: true });
+            }
+            
             await item.update({ [attr]: !item_status });
         } else {
             attr = `system.${toggletype}`;
             await item.update({ [attr]: !getProperty(item, attr) });
         }
-        // console.log(attr);
-        // console.log(!getProperty(item.data, attr));
+    }
+    
+    // Helper method to unequip a specific weapon from both hands
+    async _unequipWeapon(weaponId) {
+        const weapon = this.actor.items.get(weaponId);
+        if (weapon) {
+            await weapon.update({
+                "system.hauptwaffe": false,
+                "system.nebenwaffe": false
+            });
+        }
+    }
+    
+    // Helper method to unequip all two-handed ranged weapons
+    async _unequipTwoHandedRangedWeapons() {
+        for (let waffe of this.actor.fernkampfwaffen) {
+            if (waffe.system.eigenschaften.zweihaendig && 
+               (waffe.system.hauptwaffe || waffe.system.nebenwaffe)) {
+                await this._unequipWeapon(waffe.id);
+            }
+        }
+    }
+    
+    // Helper method to unequip all weapons except the specified one
+    async _unequipAllWeaponsExcept(exceptItemId) {
+        // Unequip all melee weapons except the specified one
+        for (let waffe of this.actor.nahkampfwaffen) {
+            if (waffe.id !== exceptItemId && (waffe.system.hauptwaffe || waffe.system.nebenwaffe)) {
+                await this._unequipWeapon(waffe.id);
+            }
+        }
+        
+        // Unequip all ranged weapons except the specified one
+        for (let waffe of this.actor.fernkampfwaffen) {
+            if (waffe.id !== exceptItemId && (waffe.system.hauptwaffe || waffe.system.nebenwaffe)) {
+                await this._unequipWeapon(waffe.id);
+            }
+        }
+    }
+    
+    // Helper method to unequip weapons from a specific hand
+    async _unequipHandWeapons(handType) {
+        // Unequip melee weapons from the specified hand
+        for (let waffe of this.actor.nahkampfwaffen) {
+            if (waffe.system[handType]) {
+                await this.actor.items.get(waffe.id).update({ 
+                    [`system.${handType}`]: false 
+                });
+            }
+        }
+        
+        // Unequip ranged weapons from the specified hand
+        for (let waffe of this.actor.fernkampfwaffen) {
+            if (waffe.system[handType]) {
+                await this.actor.items.get(waffe.id).update({ 
+                    [`system.${handType}`]: false 
+                });
+            }
+        }
     }
 
     async _onRollable(event) {
