@@ -3,6 +3,7 @@ import {
     get_statuseffect_by_id,
 } from '../../common/wuerfel/wuerfel_misc.js';
 import {signed} from '../../common/wuerfel/chatutilities.js'
+import { handleModifications } from './shared_dialog_helpers.js';
 
 
 export class AngriffDialog extends Dialog {
@@ -258,7 +259,7 @@ export class AngriffDialog extends Dialog {
                 }
             });
             if(check == undefined && (number == undefined || number == 0) && (trefferZoneInput == undefined || trefferZoneInput == 0)) return;
-            [mod_at,mod_vt,mod_dm,text_at,text_vt,text_dm,trefferzone,schaden] = this.handleModifications(manoever, number, check, trefferZoneInput,{mod_at,mod_vt,mod_dm,text_at,text_vt,text_dm,trefferzone,schaden});
+            [mod_at,mod_vt,mod_dm,text_at,text_vt,text_dm,trefferzone,schaden] = handleModifications(manoever, number, check, trefferZoneInput,{mod_at,mod_vt,mod_dm,text_at,text_vt,text_dm,trefferzone,schaden,context:this},CONFIG);
         });
         if(trefferzone == 0){
             let zonenroll = new Roll('1d6');
@@ -403,83 +404,5 @@ export class AngriffDialog extends Dialog {
             diceFormula = `${3}d20dl${2}`;
         }
         return diceFormula;
-    }
-
-    processModification(modification, number, manoeverName, trefferzone,rollValues) {
-        let value = number * modification.value;
-        let targetValue = 0;
-        if(modification.target) {
-            const path = modification.target.split('.');
-            targetValue = this;
-            for (const key of path) {
-                targetValue = targetValue[key];
-            }
-            if(!isNaN(targetValue)) {
-                value += targetValue;
-            }
-        }
-        let text = `${manoeverName}${trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''}: ${modification.operator === 'SUBTRACT' ? '-'+value : signed(value)}\n`;
-
-        // TODO haben wir multiply cases bei sowas wie ATTACK DAMAGE DEFENCE? Macht sowas Sinn
-        switch (modification.type) {
-            case 'ATTACK':
-                if(modification.operator === 'ADD') {
-                    rollValues.mod_at += value;
-                } else if(modification.operator === 'SUBTRACT') {
-                    rollValues.mod_at -= value;
-                }
-                rollValues.text_at = rollValues.text_at.concat(text);                
-                break;
-            case 'DAMAGE':
-                if(modification.operator === 'ADD') {
-                    rollValues.mod_dm += value;
-                } else if(modification.operator === 'SUBTRACT') {
-                    rollValues.mod_dm -= value;
-                }
-                rollValues.text_dm = rollValues.text_dm.concat(text);
-                break;
-            case 'DEFENCE':
-                if(modification.operator === 'ADD') {
-                    rollValues.mod_vt += value;
-                } else if(modification.operator === 'SUBTRACT') {
-                    rollValues.mod_vt -= value;
-                }
-                rollValues.text_vt = rollValues.text_vt.concat(text);
-                break;
-            case 'WEAPON_DAMAGE':
-                if (modification.operator === 'ADD' || modification.operator === 'SUBTRACT') {
-                    rollValues.schaden = rollValues.schaden.concat(`${modification.operator === 'SUBTRACT' ? '-' : ''}${signed(value)}`);
-                } else {
-                    rollValues.schaden = rollValues.schaden.concat(`*${value}`);
-                    text = `${manoeverName}${trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''}: ${value} * Waffenschaden\n`;
-                }
-                rollValues.text_dm = rollValues.text_dm.concat(text);
-                break;
-        }
-        return rollValues;
-    }
-
-    handleModifications(manoever, number, check, trefferZoneInput,rollValues) {
-        Object.values(manoever.system.modifications).forEach(modification => {
-            if ((check && number) || number) {
-                console.log(number);
-                this.processModification(modification, number, manoever.name, null,rollValues);
-            } else if (check) {
-                this.processModification(modification, 1, manoever.name, null,rollValues);
-            } else if (trefferZoneInput) {
-                rollValues.trefferzone = trefferZoneInput;
-                this.processModification(modification, 1, manoever.name, trefferZoneInput,rollValues);
-            }
-        });
-        return [
-            rollValues.mod_at,
-            rollValues.mod_vt,
-            rollValues.mod_dm,
-            rollValues.text_at,
-            rollValues.text_vt,
-            rollValues.text_dm,
-            rollValues.trefferzone,
-            rollValues.schaden
-        ];                        
     }
 }
