@@ -1,0 +1,29 @@
+{
+  "name": "Elementarkunde",
+  "type": "talent",
+  "img": "systems/Ilaris/assets/images/skills/profan-talent.svg",
+  "system": {
+    "text": "Elementarkunde befasst sich mit den sechs Elementen, der Elementarbeschwörung und den elementaren Zaubern.",
+    "fertigkeit": "Magiekunde"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "i29yLrkNcuQ3b07X",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!i29yLrkNcuQ3b07X"
+}

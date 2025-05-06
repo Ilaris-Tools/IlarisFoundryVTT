@@ -1,0 +1,41 @@
+{
+  "name": "Geistheilung",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Geister vertreiben, Humus",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Dein Ziel erhält 2W6+4 Heilpunkte, für jede Überschreitung der WS wird eine Wunde geheilt.",
+    "maechtig": "Erhöht die Heilpunkte um 4.",
+    "schwierigkeit": "12+Wund-Mod. des Ziels",
+    "modifikationen": "Siechtum heilen (Du stoppst die Wirkung eines Giftes oder einer Krankheit bis Stufe 16 sofort. Mächtige Magie erhöht die maximal aufgehobene Stufe um +4.)",
+    "vorbereitung": "1 Stunde",
+    "ziel": "Einzelperson",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "augenblicklich",
+    "kosten": "8 AsP",
+    "erlernen": "Smn 12",
+    "pw": 0,
+    "gruppe": 8
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "TFUwpm1aF2XFNYdl",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!TFUwpm1aF2XFNYdl"
+}

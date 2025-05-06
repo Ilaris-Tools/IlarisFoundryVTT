@@ -1,0 +1,29 @@
+{
+  "name": "Infanteriewaffen und Speere",
+  "type": "talent",
+  "img": "systems/Ilaris/assets/images/skills/battle-talent.svg",
+  "system": {
+    "text": "Verbessert den Einsatz von langen Infanteriewaffen wie Speeren, Hellebarden und Kampfstäben.",
+    "fertigkeit": "Stangenwaffen"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "GZdWK1GnWNIjKerT",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!GZdWK1GnWNIjKerT"
+}

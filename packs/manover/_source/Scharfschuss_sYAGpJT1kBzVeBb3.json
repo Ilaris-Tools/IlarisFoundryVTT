@@ -1,0 +1,32 @@
+{
+  "name": "Scharfschuss",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": [],
+    "gruppe": "1",
+    "probe": "FK -X",
+    "gegenprobe": "",
+    "text": "Der Angriff richtet X (maximal 8) Trefferpunkte mehr an."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "sYAGpJT1kBzVeBb3",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "0.3.20",
+    "createdTime": null,
+    "modifiedTime": 1745306119092,
+    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!sYAGpJT1kBzVeBb3"
+}

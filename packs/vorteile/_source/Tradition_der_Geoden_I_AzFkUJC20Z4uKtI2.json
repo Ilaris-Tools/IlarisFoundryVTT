@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Geoden I",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut IN 4, Vorteil Zauberer I",
+    "gruppe": 5,
+    "text": "Bedingungen: Sichtkontakt, Geste, kein Kontakt mit verhüttetem Material.\n\nDu kannst Zauber in der Tradition der Geoden erlernen und benutzen. Solche Zauber findest du unter den allgemeinen Zaubern, unter Dolchzauber (S. 156), Ringrituale (S. 170) und Vertrautenmagie (S. 173).\n\nDu musst dich beim Erlernen für ein bevorzugtes Element entscheiden. Geodische Zauber können nicht schriftlich weitergegeben werden."
+  },
+  "_id": "AzFkUJC20Z4uKtI2",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!AzFkUJC20Z4uKtI2"
+}

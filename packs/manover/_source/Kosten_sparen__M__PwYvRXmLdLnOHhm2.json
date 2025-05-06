@@ -1,0 +1,40 @@
+{
+  "name": "Kosten sparen (M)",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": {
+      "0": {
+        "name": "Vorteil Effizientes Zaubern",
+        "type": "VORTEIL",
+        "value": [
+          "JduwQhhEtraSUkL0"
+        ]
+      }
+    },
+    "gruppe": "2",
+    "probe": "Zauber -4",
+    "gegenprobe": "",
+    "text": "Die AsP-Kosten des Zaubers sinken um ein Viertel der Basiskosten. Die Kosten können dadurch nicht unter die Hälfte der Basiskosten sinken."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "PwYvRXmLdLnOHhm2",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "0.3.20",
+    "createdTime": null,
+    "modifiedTime": 1745304858085,
+    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!PwYvRXmLdLnOHhm2"
+}

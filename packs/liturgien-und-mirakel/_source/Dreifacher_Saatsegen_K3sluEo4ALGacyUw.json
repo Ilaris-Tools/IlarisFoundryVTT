@@ -1,0 +1,41 @@
+{
+  "name": "Dreifacher Saatsegen",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Wachstum",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Das gesegnete Feld ist vor Ernteschäden durch schlechte Witterung geschützt. Jeder Versuch, die Ernte magisch zu zerstören, ist um –4 erschwert.",
+    "maechtig": "Der Malus steigt um –2.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "1 Stunde",
+    "ziel": "Zone",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Monat",
+    "kosten": "4 KaP",
+    "erlernen": "Per 8",
+    "pw": 0,
+    "gruppe": 36
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "K3sluEo4ALGacyUw",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!K3sluEo4ALGacyUw"
+}

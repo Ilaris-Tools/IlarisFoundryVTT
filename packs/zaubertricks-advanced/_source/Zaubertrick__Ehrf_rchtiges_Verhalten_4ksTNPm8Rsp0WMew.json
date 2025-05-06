@@ -1,0 +1,41 @@
+{
+  "name": "Zaubertrick: Ehrfürchtiges Verhalten",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Einfluss",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Das Opfer, das einen niedrigeren gesellschaftlichen Status als du haben muss, spürt instinktiv, dass es jetzt angebracht wäre, demütig zurückzuweichen. Es entscheidet selbst, ob es dem nachgeht.",
+    "maechtig": "",
+    "schwierigkeit": "",
+    "modifikationen": "",
+    "vorbereitung": "",
+    "ziel": "Einzelperson",
+    "reichweite": "8 Schritt",
+    "wirkungsdauer": "augenblicklich",
+    "kosten": "1",
+    "erlernen": "",
+    "pw": 0,
+    "gruppe": -1
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "4ksTNPm8Rsp0WMew",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "Ww4drILJ63YXG1Vc": 3
+  },
+  "_key": "!items!4ksTNPm8Rsp0WMew"
+}

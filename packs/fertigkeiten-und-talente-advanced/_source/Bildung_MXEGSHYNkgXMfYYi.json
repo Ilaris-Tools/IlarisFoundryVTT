@@ -1,0 +1,40 @@
+{
+  "name": "Bildung",
+  "type": "fertigkeit",
+  "img": "systems/Ilaris/assets/images/skills/profan-skill.svg",
+  "system": {
+    "basis": 0,
+    "fw": 0,
+    "pw": 0,
+    "attribut_0": "KL",
+    "attribut_1": "KL",
+    "attribut_2": "IN",
+    "gruppe": "4",
+    "text": "Jeder Gelehrte und viele Angehörige der Oberschicht und Elite haben das Trivium der freien Künste belegt. Dies umfasst Grammatik, theoretische Rhetorik und Logik. Das weitere Studium des Quadriviums behandelt Arithmetik, Geometrie, Astronomie, Mechanik und Musiktheorie. \n\nTalente: Rechnen, Sternkunde, Mechanik, Philosophie, Sprachenkunde",
+    "pwt": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Item.uJra96scIUwKaMA8"
+    }
+  },
+  "_id": "MXEGSHYNkgXMfYYi",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "Ww4drILJ63YXG1Vc": 3
+  },
+  "_key": "!items!MXEGSHYNkgXMfYYi"
+}

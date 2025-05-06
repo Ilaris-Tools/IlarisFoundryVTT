@@ -1,0 +1,36 @@
+{
+  "name": "Gaben des Blutgeists",
+  "type": "uebernatuerliche_fertigkeit",
+  "img": "systems/Ilaris/assets/images/skills/magic-skill.svg",
+  "system": {
+    "basis": 0,
+    "fw": 0,
+    "pw": 0,
+    "attribut_0": "KO",
+    "attribut_1": "MU",
+    "attribut_2": "MU",
+    "gruppe": 0,
+    "text": "Ein Anach-Nûr isst das Herz eines frisch erlegten Tieres, um dessen Blutgeist in sich aufzunehmen und sich durch dessen Kräfte zur stärken oder sogar zu verwandeln. Doch ein unaufmerksamer Moment und der Blutgeist gewinnt die Oberhand. Dann wird der Anach-Nûr zu einer rasenden Bestie...\n  Die Tiere findest du auf Seite 160f.",
+    "voraussetzung": "Vorteil Tradition der Anach-Nurim I"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "FdIimN4eWXp2H5hT",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!FdIimN4eWXp2H5hT"
+}

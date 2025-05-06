@@ -1,0 +1,29 @@
+{
+  "name": "Zerstörerisch I",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut KK 4",
+    "gruppe": 1,
+    "text": "Proben zum Zerstören oder Durchbrechen von Gegenständen sind um +4 erleichtert."
+  },
+  "_id": "fN6AUnJ1XbbnzYrw",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!fN6AUnJ1XbbnzYrw"
+}

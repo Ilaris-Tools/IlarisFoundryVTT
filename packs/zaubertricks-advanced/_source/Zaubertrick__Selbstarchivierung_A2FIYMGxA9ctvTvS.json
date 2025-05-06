@@ -1,0 +1,41 @@
+{
+  "name": "Zaubertrick: Selbstarchivierung",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Umwelt",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Ein Buch fliegt mit einer GS von 1 zurück an die Stelle, von der du es entnommen hast. Das Buch darf maximal vor einer Stunde von dort entfernt worden sein.",
+    "maechtig": "",
+    "schwierigkeit": "",
+    "modifikationen": "",
+    "vorbereitung": "",
+    "ziel": "Einzelobjekt",
+    "reichweite": "16 Schritt",
+    "wirkungsdauer": "augenblicklich",
+    "kosten": "1",
+    "erlernen": "",
+    "pw": 0,
+    "gruppe": -1
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "A2FIYMGxA9ctvTvS",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "Ww4drILJ63YXG1Vc": 3
+  },
+  "_key": "!items!A2FIYMGxA9ctvTvS"
+}
