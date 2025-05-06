@@ -159,11 +159,12 @@ export class AngriffDialog extends Dialog {
         this.rollmode = this.item.system.manoever.rllm.selected;
 
         this.item.manoever.forEach(manoever => {
-            manoever.selectorValues.forEach(selector => {
-                if(selector.key == 'CHECKBOX') {
-                    selector.value = html.find(`#${manoever.id+selector.key}`)[0]?.checked || false;
+            manoever.inputValues.forEach(selector => {
+                if(selector.field == 'CHECKBOX') {
+                    selector.value = html.find(`#${manoever.id+selector.field}`)[0]?.checked || false;
                 } else {
-                    selector.value = html.find(`#${manoever.id+selector.key}`)[0]?.value || false;
+                    console.log(manoever.name,html.find(`#${manoever.id+selector.field}`)[0]?.value)
+                    selector.value = html.find(`#${manoever.id+selector.field}`)[0]?.value || false;
                 }
             });
         });
@@ -190,12 +191,14 @@ export class AngriffDialog extends Dialog {
         let text_vt = '';
         let text_dm = '';
         let nodmg = false;
+        let trefferzone = 0;
         // TDOO: this differ between angriff and nk/fk waffen, define get_tp() in both?
         // let schaden = item.data.data.schaden;
         let schaden = item.system.tp.replace(/[Ww]/g, "d");
         if(this.actor.type == "held") {
             schaden = item.system.schaden.replace(/[Ww]/g, "d");
         }
+        schaden = `(${schaden})`
 
         if (manoever.kbak.selected) {
             mod_at -= 4;
@@ -240,77 +243,42 @@ export class AngriffDialog extends Dialog {
         }
 
         this.item.manoever.forEach(manoever => {
-            manoever.selectorValues.forEach(selector => {
-                if(selector.key == 'CHECKBOX') {
-                    console.log(manoever.name);
-                } else {
-                    console.log(manoever.name, selector.value);
+            let check = undefined;
+            let number = undefined;
+            let trefferZoneInput = undefined;
+            manoever.inputValues.forEach(selector => {
+                if(selector.value) {
+                    if(selector.field == 'CHECKBOX') {
+                        check = selector.value;
+                    } else if(selector.field == 'NUMBER') {
+                        number = selector.value;
+                    } else {
+                        trefferZoneInput = selector.value;
+                    }
                 }
             });
+            if(check == undefined && (number == undefined || number == 0) && (trefferZoneInput == undefined || trefferZoneInput == 0)) return;
+            [mod_at,mod_vt,mod_dm,text_at,text_vt,text_dm,trefferzone,schaden] = this.handleModifications(manoever, number, check, trefferZoneInput,{mod_at,mod_vt,mod_dm,text_at,text_vt,text_dm,trefferzone,schaden});
         });
-        // Ausweichen km_ausw
-        if (manoever.km_ausw.selected) {
-            mod_vt -= 2+be;
-            text_vt = text_vt.concat(`Ausweichen: -${2+be}\n`);
-        }
-        // Auflaufen lassen km_aufl
-        if (manoever.km_aufl.selected) {
-            let gs = Number(item.system.manoever.km_aufl.gs);
-            mod_vt -= 4;
-            text_vt = text_vt.concat(`${CONFIG.ILARIS.label['km_aufl']} (${gs}): -4\n`);
-            mod_dm += gs;
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_aufl']}: ${gs}\n`)
-        }
-        // Binden km_bind
-        let binden = Number(manoever.km_bind.selected);
-        if (binden > 0) {
-            mod_vt -= binden;
-            text_vt = text_vt.concat(`Binden: -${binden}\n`);
-        }
-        // Entfernung verändern km_ever
-        if (manoever.km_ever.selected) {
-            let be = systemData.abgeleitete.be || 0
-            mod_at -= be;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_ever']}: -${be}\n`);
-        }
-        // Entwaffnen km_entw
-        if (manoever.km_entw.selected) {
-            mod_at -= 4;
-            mod_vt -= 4;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_entw']}: -4\n`);
-            text_vt = text_vt.concat(`${CONFIG.ILARIS.label['km_entw']}: -4\n`);
-        }
-        // Gezielter Schlag km_gzsl
-        let trefferzone = Number(manoever.km_gzsl.selected);
-        if (trefferzone) {
-            mod_at -= 2;
-            let txt = `${CONFIG.ILARIS.label['km_gzsl']} (${CONFIG.ILARIS.trefferzonen[trefferzone]}): -2\n`;
-            text_at = text_at.concat(txt);
-            text_dm = text_dm.concat(txt)
-        } else {
+        if(trefferzone == 0){
             let zonenroll = new Roll('1d6');
             zonenroll.evaluate();
             text_dm = text_dm.concat(
                 `Trefferzone: ${CONFIG.ILARIS.trefferzonen[zonenroll.total]}\n`,
             );
         }
+        
+        // Entfernung verändern km_ever
+        if (manoever.km_ever.selected) {
+            let be = systemData.abgeleitete.be || 0
+            mod_at -= be;
+            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_ever']}: -${be}\n`);
+        }
+     
         // Umreißen km_umre
         if (manoever.km_umre.selected) {
             text_at = text_at.concat(`${CONFIG.ILARIS.label['km_umre']}: Kein Schaden\n`);
             nodmg = true;
-        }
-        // Unterlaufen km_utlf
-        if (manoever.km_utlf.selected) {
-            mod_vt -= 4;
-            text_vt = text_vt.concat(`${CONFIG.ILARIS.label['km_utlf']}: -4\n`);
-        }
-        // Wuchtschlag km_wusl
-        let wusl = Number(manoever.km_wusl.selected);
-        if (wusl > 0) {
-            mod_dm += wusl;
-            mod_at -= wusl;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_wusl']}: -${wusl}\n`);
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_wusl']}: +${wusl}\n`);
         }
         // Rüstungsbrecher km_rust
         if (manoever.km_rust.selected) {
@@ -324,48 +292,15 @@ export class AngriffDialog extends Dialog {
             text_at = text_at.concat(`${CONFIG.ILARIS.label['km_shsp']}: +2\n`);
             text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_shsp']}\n`);
         }
-        // Schildwall km_shwl
-        if (manoever.km_shwl.selected) {
-            mod_vt -= 4;
-            text_vt = text_vt.concat(`${CONFIG.ILARIS.label['km_shwl']}: -4\n`);
-        }
         // Stumpfer Schlag km_stsl
         if (manoever.km_stsl.selected) {
             text_at = text_at.concat(`${CONFIG.ILARIS.label['km_stsl']}: Erschöpfung statt Wunde\n`);
             text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_stsl']}\n`);
         }
-        // Umklammern km_umkl
-        if (manoever.km_umkl.selected) {
-            let umkl = Number(manoever.km_umkl.mod);
-            mod_at -= umkl;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_umkl']}: -${umkl}\n`);
-        }
         // Ausfall km_ausf
         if (manoever.km_ausf.selected) {
             mod_at -= 2 + be;
             text_at = text_at.concat(`${CONFIG.ILARIS.label['km_ausf']}\n`);
-        }
-        // Befreiungsschlag km_befr
-        if (manoever.km_befr.selected) {
-            mod_at -= 4;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_befr']}\n`);
-        }
-        // Doppelangriff km_dppl
-        if (manoever.km_dppl.selected) {
-            mod_at -= 4;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_dppl']}\n`);
-        }
-        // Hammerschlag km_hmsl
-        if (manoever.km_hmsl.selected) {
-            mod_at -= 8;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_hmsl']}\n`);
-            schaden = schaden.concat(` * 2`);
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_hmsl']}\n`);
-        }
-        // Klingentanz km_kltz
-        if (manoever.km_kltz.selected) {
-            mod_at -= 4;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_kltz']}\n`);
         }
         // Niederwerfen km_ndwf
         if (manoever.km_ndwf.selected) {
@@ -417,9 +352,9 @@ export class AngriffDialog extends Dialog {
         this.mod_at = mod_at;
         this.mod_vt = mod_vt;
         this.mod_dm = mod_dm;
-        this.text_at = this.text_at.concat(text_at);
-        this.text_vt = this.text_vt.concat(text_vt);
-        this.text_dm = this.text_dm.concat(text_dm);
+        this.text_at = text_at;
+        this.text_vt = text_vt;
+        this.text_dm = text_dm;
         this.nodmg = nodmg;
         this.schaden = schaden;
     }
@@ -468,5 +403,83 @@ export class AngriffDialog extends Dialog {
             diceFormula = `${3}d20dl${2}`;
         }
         return diceFormula;
+    }
+
+    processModification(modification, number, manoeverName, trefferzone,rollValues) {
+        let value = number * modification.value;
+        let targetValue = 0;
+        if(modification.target) {
+            const path = modification.target.split('.');
+            targetValue = this;
+            for (const key of path) {
+                targetValue = targetValue[key];
+            }
+            if(!isNaN(targetValue)) {
+                value += targetValue;
+            }
+        }
+        let text = `${manoeverName}${trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''}: ${modification.operator === 'SUBTRACT' ? '-'+value : signed(value)}\n`;
+
+        // TODO haben wir multiply cases bei sowas wie ATTACK DAMAGE DEFENCE? Macht sowas Sinn
+        switch (modification.type) {
+            case 'ATTACK':
+                if(modification.operator === 'ADD') {
+                    rollValues.mod_at += value;
+                } else if(modification.operator === 'SUBTRACT') {
+                    rollValues.mod_at -= value;
+                }
+                rollValues.text_at = rollValues.text_at.concat(text);                
+                break;
+            case 'DAMAGE':
+                if(modification.operator === 'ADD') {
+                    rollValues.mod_dm += value;
+                } else if(modification.operator === 'SUBTRACT') {
+                    rollValues.mod_dm -= value;
+                }
+                rollValues.text_dm = rollValues.text_dm.concat(text);
+                break;
+            case 'DEFENCE':
+                if(modification.operator === 'ADD') {
+                    rollValues.mod_vt += value;
+                } else if(modification.operator === 'SUBTRACT') {
+                    rollValues.mod_vt -= value;
+                }
+                rollValues.text_vt = rollValues.text_vt.concat(text);
+                break;
+            case 'WEAPON_DAMAGE':
+                if (modification.operator === 'ADD' || modification.operator === 'SUBTRACT') {
+                    rollValues.schaden = rollValues.schaden.concat(`${modification.operator === 'SUBTRACT' ? '-' : ''}${signed(value)}`);
+                } else {
+                    rollValues.schaden = rollValues.schaden.concat(`*${value}`);
+                    text = `${manoeverName}${trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''}: ${value} * Waffenschaden\n`;
+                }
+                rollValues.text_dm = rollValues.text_dm.concat(text);
+                break;
+        }
+        return rollValues;
+    }
+
+    handleModifications(manoever, number, check, trefferZoneInput,rollValues) {
+        Object.values(manoever.system.modifications).forEach(modification => {
+            if ((check && number) || number) {
+                console.log(number);
+                this.processModification(modification, number, manoever.name, null,rollValues);
+            } else if (check) {
+                this.processModification(modification, 1, manoever.name, null,rollValues);
+            } else if (trefferZoneInput) {
+                rollValues.trefferzone = trefferZoneInput;
+                this.processModification(modification, 1, manoever.name, trefferZoneInput,rollValues);
+            }
+        });
+        return [
+            rollValues.mod_at,
+            rollValues.mod_vt,
+            rollValues.mod_dm,
+            rollValues.text_at,
+            rollValues.text_vt,
+            rollValues.text_dm,
+            rollValues.trefferzone,
+            rollValues.schaden
+        ];                        
     }
 }

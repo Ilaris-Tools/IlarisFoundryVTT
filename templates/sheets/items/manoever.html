@@ -128,13 +128,13 @@
             {{#each item.system.modifications}}
                 <div class="field">
                     <div class="flexrow">
-                        <label>Waffeneigenschaften:</label>
+                        <label>Modifikatortyp:</label>
                         <select name="system.modifications.{{@index}}.type">
-                            {{selectOptions ../manoever.modification_type selected=this.value}}
+                            {{selectOptions ../manoever.modification_type selected=this.type}}
                         </select>
                         <a
-                            class="delete-modifications icon-small delete-button"
-                            data-inputid="{{@index}}"
+                            class="delete-modification icon-small delete-button"
+                            data-modificationid="{{@index}}"
                             style="float: right"
                             ><i class="fas fa-trash"></i
                         ></a>

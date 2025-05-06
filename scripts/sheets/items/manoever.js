@@ -30,8 +30,8 @@ import { IlarisItemSheet } from './item.js';
         {
             "type": DAMAGE | DEFENCE | ATTACK | INITIATIVE | LOADING_TIME | SPECIAL_RESSOURCE | WEAPON_DAMAGE,
             "value": 0,
-            "operator": MULTIPLY | ADD (+/- values),
-            "target": "Wert zb aus Actor wie actor.system.abgeleitete.gs, der entsprechend des operator behandelt wird"
+            "operator": MULTIPLY | ADD (+/- values) | SUBTRACT (braucht man vermutlich nur bei Werten vor die man kein - setzen kann zb. wenn sie aus target kommen)
+            "target": "Wert zb aus Actor (99% aller Faelle aus Actor) wie actor.system.abgeleitete.gs, der entsprechend des operator behandelt wird"
         }
       ],
       "gruppe": 0,
@@ -95,34 +95,34 @@ export class ManoeverSheet extends IlarisItemSheet {
     }
 
     _onAddVoraussetzung() {
-        this.document.system.voraussetzungen = Object.values(this.document.system.voraussetzungen);
-        this.document.system.voraussetzungen.push({name: 'Neue Voraussetzung', type: 'VORTEIL', value: []});
+        this.item.system.voraussetzungen = Object.values(this.item.system.voraussetzungen);
+        this.item.system.voraussetzungen.push({name: 'Neue Voraussetzung', type: 'VORTEIL', value: []});
         this.document.render();
     }
 
     _onDeleteVoraussetzung(event) {
         let eigid = $(event.currentTarget).data('voraussetzungid');
-        this.document.system.voraussetzungen = Object.values(this.document.system.voraussetzungen);
-        this.document.system.voraussetzungen.splice(eigid, 1);
+        this.item.system.voraussetzungen = Object.values(this.item.system.voraussetzungen);
+        this.item.system.voraussetzungen.splice(eigid, 1);
         this.document.render();
     }
 
     _onAddInput() {
-        this.document.system.inputs = Object.values(this.document.system.inputs);
-        this.document.system.inputs.push({label: 'CHECKBOX',field: ''});
+        this.item.system.inputs = Object.values(this.item.system.inputs);
+        this.item.system.inputs.push({label: 'CHECKBOX',field: ''});
         this.document.render();
     }
 
     _onDeleteInput(event) {
         let eigid = $(event.currentTarget).data('inputid');
-        this.document.system.inputs = Object.values(this.document.system.inputs);
-        this.document.system.inputs.splice(eigid, 1);
+        this.item.system.inputs = Object.values(this.item.system.inputs);
+        this.item.system.inputs.splice(eigid, 1);
         this.document.render();
     }
 
     _onAddModification() {
-        this.document.system.modifications = Object.values(this.document.system.modifications);
-        this.document.system.modifications.push({
+        this.item.system.modifications = Object.values(this.item.system.modifications);
+        this.item.system.modifications.push({
             type: "ATTACK",
             value: 0,
             operator: "ADD",
@@ -133,8 +133,8 @@ export class ManoeverSheet extends IlarisItemSheet {
 
     _onDeleteModification(event) {
         let eigid = $(event.currentTarget).data('modificationid');
-        this.document.system.modifications = Object.values(this.document.system.modifications);
-        this.document.system.modifications.splice(eigid, 1);
+        this.item.system.modifications = Object.values(this.item.system.modifications);
+        this.item.system.modifications.splice(eigid, 1);
         this.document.render();
     }
 }

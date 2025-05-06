@@ -56,27 +56,29 @@
 {{#each item.manoever as |manoever|}}
     <div class="flexrow">
         <label>{{manoever.name}}</label>
-        {{#each manoever.system.inputs as |input|}}
+        {{#each manoever.inputValues as |input|}}
             {{#if (ifEq input.field "CHECKBOX")}}
                 <input
                     type="checkbox"
                     id="{{manoever.id}}CHECKBOX"
-                    {{#if item.manoever.[@../index].inputValues.[@index].value}}checked{{/if}}
+                    {{#if input.value}}checked{{/if}}
                 />
             {{/if}}
             {{#if (ifEq input.field "NUMBER")}}
+            {{log input}}
                 <input
-                    id="{{manoever.id}}INPUT"
+                    id="{{manoever.id}}NUMBER"
                     type="number"
-                    value="{{item.manoever.[@../index].inputValues.[@index].value}}"
+                    name="item.manoever.{{@../index}}.inputValues.{{@index}}.value"
+                    value="{{input.value}}"
                     data-dtype="Number"
                     {{#unless (ifEq input.min null)}}min="{{input.min}}"{{/unless}}
                     {{#if input.max}}max="{{input.max}}"{{/if}}
                 />
             {{/if}}
             {{#if (ifEq input.field "TREFFER_ZONE")}}
-                <select id="{{manoever.id}}TREFFER_ZONE" name="item.manoever.{{@../index}}.inputValues.{{@index}}.value" style="max-width: 150px">
-                    {{selectOptions ../../trefferzonen selected=item.manoever.[@../index].inputValues.[@index].value}}
+                <select id="{{manoever.id}}TREFFER_ZONE" name="input.value" style="max-width: 150px">
+                    {{selectOptions ../../trefferzonen selected=input.value}}
                 </select>
             {{/if}}
         {{/each}}
