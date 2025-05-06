@@ -93,8 +93,6 @@
                 >
                 <span>
                     {{#each item.system.eigenschaften as |val key|}}
-                    <!-- <label>{{key}}</label>
-                         <label>{{val}}</label> -->
                     <label>{{get_label key}}</label>
                     <input
                         name="system.eigenschaften.{{key}}"

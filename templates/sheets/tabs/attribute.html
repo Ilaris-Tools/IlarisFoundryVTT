@@ -42,7 +42,6 @@
     <div>
         <label><b>Allgemeine Vorteile:</b>&nbsp; | &nbsp;</label>
         {{#each actor.vorteil.allgemein}}
-        <!-- <label>key: {{@key}}</label> <label>this: {{{this}}}</label> <label>dot: {{{.}}}</label> -->
         <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}}</a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
