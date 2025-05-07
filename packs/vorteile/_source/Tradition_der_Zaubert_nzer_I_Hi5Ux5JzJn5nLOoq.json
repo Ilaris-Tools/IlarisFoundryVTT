@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Zaubertänzer I",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut GE 4, Vorteil Zauberer I",
+    "gruppe": 5,
+    "text": "Bedingungen: Sichtkontakt, Tanz, Ziele können dich sehen.\n\nDu kannst Zauber in der Tradition der Zaubertänzer erlernen und benutzen. Solche Zauber findest du unter Zaubertänze (S. 176).\n\nDie Bedingung Tanz kann nicht ignoriert werden."
+  },
+  "_id": "Hi5Ux5JzJn5nLOoq",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!Hi5Ux5JzJn5nLOoq"
+}

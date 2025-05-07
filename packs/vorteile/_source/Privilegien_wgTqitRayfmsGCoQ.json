@@ -1,0 +1,29 @@
+{
+  "name": "Privilegien",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "",
+    "gruppe": 0,
+    "text": "Unzählige Privilegien können die Leben ihrer Träger erleichtern, weswegen wir auch nicht jedes einzelne Privileg in Werte kleiden möchten.\n\nDie Kosten eines Privilegs legt der Spielleiter fest, wobei er sich an der Spielrelevanz und dem Geltungsbereich der Privilegien orientieren sollte. Zum Beispiel bringt ein eigenes Wappen keine spielrelevanten Vorteile - ganz im Gegensatz zu der Erlaubnis, in Städten Waffen zu tragen. Doch auch diese Erlaubnis verliert an Wert, wenn sie nur in Albenhus oder  am Markttag gilt. \n\n"
+  },
+  "_id": "wgTqitRayfmsGCoQ",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!wgTqitRayfmsGCoQ"
+}

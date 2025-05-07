@@ -1,0 +1,29 @@
+{
+  "name": "Abgehärtet I",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut KO 4",
+    "gruppe": 1,
+    "text": "Proben zur Abwehr von Giften und Krankheiten sind um +4 erleichtert."
+  },
+  "_id": "fC8td0XWesDmYjAG",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!fC8td0XWesDmYjAG"
+}

@@ -1,0 +1,40 @@
+{
+  "name": "Mehrere Ziele (L)",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": {
+      "0": {
+        "name": "Vorteil Geweiht I",
+        "type": "VORTEIL",
+        "value": [
+          "8QG19b6FhFxJiRBx"
+        ]
+      }
+    },
+    "gruppe": "3",
+    "probe": "Liturgie -4",
+    "gegenprobe": "",
+    "text": "Die Liturgie wirkt auf mehrere Ziele in Reichweite. Die Kosten werden für jedes Ziel einzeln bezahlt, Modifikationen wie Kosten Sparen für jedes Ziel einzeln abgerechnet."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "u5QkvS0cZRFK0mD6",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "0.3.20",
+    "createdTime": null,
+    "modifiedTime": 1745304978966,
+    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!u5QkvS0cZRFK0mD6"
+}

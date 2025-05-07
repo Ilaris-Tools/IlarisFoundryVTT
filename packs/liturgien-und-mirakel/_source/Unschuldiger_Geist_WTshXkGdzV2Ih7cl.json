@@ -1,0 +1,41 @@
+{
+  "name": "Unschuldiger Geist",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Neubeginn",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du ermöglichst dem Gesegneten einen unvoreingenommenen Blick auf eine Entscheidung oder eine Person. Der Gesegnete verliert während der Wirkungsdauer alle früheren Erinnerungen, aber auch alle negativen Eigenheiten wie Vorurteile oder andere Charakterschwächen. Solche Entscheidungen erweisen sich meist als richtig – regeltechnisch kannst er den Spielleiter diesbezüglich um einen Tipp bitten (wie mit dem Vorteil Eingebung, S. 59).",
+    "maechtig": "Je zwei Stufen ermöglichen einen zusätzlichen Tipp.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "1 Stunde",
+    "ziel": "Einzelperson",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Stunde",
+    "kosten": "8 KaP",
+    "erlernen": "Tsa 16",
+    "pw": 0,
+    "gruppe": 51
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "WTshXkGdzV2Ih7cl",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!WTshXkGdzV2Ih7cl"
+}

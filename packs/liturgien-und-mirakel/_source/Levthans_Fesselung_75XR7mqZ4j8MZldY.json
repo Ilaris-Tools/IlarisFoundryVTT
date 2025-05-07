@@ -1,0 +1,41 @@
+{
+  "name": "Levthans Fesselung",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Harmonie",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du rufst das heilige Levthansband herbei, das sich um das Ziel legt und es bindet. Das Ziel muss ein Daimonid, Dämon, Elementar, Feenwesen oder Untoter sein und die Beschwörungsschwierigkeit von maximal 24 aufweisen. Während der Fesselung ist das Ziel entrückt und zu keiner Handlung fähig, kann aber auch nicht zum Ziel von AT, Zaubern oder Liturgien werden.",
+    "maechtig": "Erhöht die Beschwörungsschwierigkeit um 4.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "4 Aktionen",
+    "ziel": "Einzelwesen",
+    "reichweite": "4 Schritt",
+    "wirkungsdauer": "1 Tag",
+    "kosten": "16 KaP",
+    "erlernen": "Rah 18",
+    "pw": 0,
+    "gruppe": 43
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "75XR7mqZ4j8MZldY",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!75XR7mqZ4j8MZldY"
+}

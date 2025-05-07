@@ -1,0 +1,32 @@
+{
+  "name": "Rüstungsbrecher (FK)",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": [],
+    "gruppe": "1",
+    "probe": "FK -4",
+    "gegenprobe": "",
+    "text": "Der Angriff ignoriert die gegnerische Rüstung und richtet SP statt TP an. Voraussetzung: Pfeile mit Waffeneigenschaft Rüstungsbrechend."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "X3fmits6gu1cpurC",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "0.3.20",
+    "createdTime": null,
+    "modifiedTime": 1745306107239,
+    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!X3fmits6gu1cpurC"
+}

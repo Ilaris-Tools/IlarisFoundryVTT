@@ -1,0 +1,41 @@
+{
+  "name": "Wand aus Erz",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Erz",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Eine 3 Schritt hohe und bis zu 4 Schritt lange Wand aus massivem Erz wächst entlang einer von dir bestimmten Linie aus dem Boden. Sie verfügt über eine Härte von 32. Sie kann mit einer Konterprobe (Klettern, 20) in 8 Aktionen überwunden werden.",
+    "maechtig": "Die Höhe steigt um 1 Schritt. Die Länge der Wand steigt um bis zu 2 Schritt. Die Härte der Wand steigt um 16.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "16 Aktionen",
+    "ziel": "Zone",
+    "reichweite": "8 Schritt",
+    "wirkungsdauer": "16 Minuten",
+    "kosten": "8 AsP",
+    "erlernen": "Geo14; Mag 18; Dru 20",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "Md3mm6gleZv4U4Sq",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!Md3mm6gleZv4U4Sq"
+}

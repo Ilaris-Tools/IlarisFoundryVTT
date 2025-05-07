@@ -1,0 +1,41 @@
+{
+  "name": "Erneuerung des Landes",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Wachstum",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Dein Gebet schwächt dämonische Verseuchung in deiner Umgebung. Auf der Skala normal/leicht verseucht/deutlich verseucht/stark verseucht/kleines Unheiligtum/mittleres Unheiligtum/mächtiges Unheiligtum sinkt das Gebiet um eine Stufe.",
+    "maechtig": "Die Verseuchung sinkt um eine weitere Stufe.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "1 Stunde",
+    "ziel": "Zone",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Jahr",
+    "kosten": "16 KaP",
+    "erlernen": "Per 18",
+    "pw": 0,
+    "gruppe": 36
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "aM61asnwCjWIWp48",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!aM61asnwCjWIWp48"
+}

@@ -1,0 +1,33 @@
+{
+  "name": "Wüste",
+  "type": "talent",
+  "img": "systems/Ilaris/assets/images/skills/profan-talent.svg",
+  "system": {
+    "text": "Wüste (verbilligt)",
+    "fertigkeit": "Überleben"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Item.5dAvUsY7BrL5DgBr"
+    }
+  },
+  "_id": "8dwFhVrkPkQIsdd3",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "Ww4drILJ63YXG1Vc": 3
+  },
+  "_key": "!items!8dwFhVrkPkQIsdd3"
+}

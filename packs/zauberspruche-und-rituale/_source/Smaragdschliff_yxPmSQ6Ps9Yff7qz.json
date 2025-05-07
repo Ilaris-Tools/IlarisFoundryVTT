@@ -1,0 +1,41 @@
+{
+  "name": "Smaragdschliff",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Erz, Kristallmagie, Kraft",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Der Zauber gleicht weitgehend dem Rundschliff, aber du kannst die spontane Modifikation Kosten sparen einmal ohne Erschwernis ausführen. Du musst die Modifikation auch ohne den Schliff beherrschen. Nicht mit anderen Schliffen kombinierbar.",
+    "maechtig": "",
+    "schwierigkeit": "",
+    "modifikationen": "",
+    "vorbereitung": "",
+    "ziel": "",
+    "reichweite": "",
+    "wirkungsdauer": "",
+    "kosten": "8 AsP, davon 4 gAsP",
+    "erlernen": "Ach 18",
+    "pw": 0,
+    "gruppe": 11
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "yxPmSQ6Ps9Yff7qz",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!yxPmSQ6Ps9Yff7qz"
+}

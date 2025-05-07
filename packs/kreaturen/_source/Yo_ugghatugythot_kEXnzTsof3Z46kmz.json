@@ -1,0 +1,954 @@
+{
+  "_id": "kEXnzTsof3Z46kmz",
+  "name": "Yo'ugghatugythot",
+  "type": "kreatur",
+  "img": "systems/Ilaris/assets/images/token/kreaturentypen/daemon.png",
+  "system": {
+    "gesundheit": {
+      "erschoepfung": 0,
+      "wunden": 0,
+      "wundabzuege": 0,
+      "wundenignorieren": false,
+      "display": "Volle Gesundheit",
+      "hp": {
+        "max": 9,
+        "value": 9,
+        "threshold": 0
+      }
+    },
+    "energien": {
+      "asp": {
+        "max": 64,
+        "value": 64,
+        "threshold": 0
+      },
+      "gup": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      },
+      "kap": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      }
+    },
+    "initiative": 0,
+    "furcht": {
+      "furchtstufe": 0,
+      "furchtabzuege": 0,
+      "display": ""
+    },
+    "modifikatoren": {
+      "manuellermod": 0,
+      "nahkampfmod": 0
+    },
+    "schips": {
+      "schips": 4,
+      "schips_stern": 4
+    },
+    "attribute": {
+      "KO": {
+        "wert": 0,
+        "pw": null
+      },
+      "MU": {
+        "wert": 0,
+        "pw": null
+      },
+      "GE": {
+        "wert": 0,
+        "pw": null
+      },
+      "KK": {
+        "wert": 0,
+        "pw": null
+      },
+      "IN": {
+        "wert": 0,
+        "pw": null
+      },
+      "KL": {
+        "wert": 0,
+        "pw": null
+      },
+      "CH": {
+        "wert": 0,
+        "pw": null
+      },
+      "FF": {
+        "wert": 0,
+        "pw": null
+      }
+    },
+    "edit": false,
+    "kreaturentyp": "daemon",
+    "kurzbeschreibung": "Der Zerreißer der Sphären; ein dreigehörnter, unabhängiger Dämon",
+    "kampfwerte": {
+      "ws": 6,
+      "ws_stern": null,
+      "ini": 6,
+      "gs": 6,
+      "koloss": null,
+      "mr": 16,
+      "gs_schwimmend": null
+    },
+    "talente": [],
+    "freietalente": [],
+    "kampfunfaehig": "",
+    "text": "",
+    "abgeleitete": {
+      "globalermod": 0,
+      "nahkampfmoddisplay": "-",
+      "globalermoddisplay": "-"
+    }
+  },
+  "items": [
+    {
+      "_id": "yrkcNyJneoMPaJAm",
+      "name": "Ausweichen in den Limbus",
+      "type": "eigenschaft",
+      "system": {
+        "text": ""
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!kEXnzTsof3Z46kmz.yrkcNyJneoMPaJAm"
+    },
+    {
+      "_id": "wlIN7ysmnIvxU2pB",
+      "name": "Limbusreisender",
+      "type": "eigenschaft",
+      "system": {
+        "text": ""
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!kEXnzTsof3Z46kmz.wlIN7ysmnIvxU2pB"
+    },
+    {
+      "_id": "KV2HDg4b4jxHh38a",
+      "name": "Astralsinn",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Astralsinn erlaubt es der Kreatur, ihre Umgebung magisch\r\nwahrzunehmen. Sie erleidet keine Abzüge durch schlechte\r\nSicht. Der Astralsinn kann durch Antimagie, zum Beispiel\r\nHellsicht trüben in der Modifikation Magie unterdrücken,\r\ngestört werden. Die Schwierigkeit dafür liegt mindestens bei\r\n20, bei mächtigen Wesen deutlich höher."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!kEXnzTsof3Z46kmz.KV2HDg4b4jxHh38a"
+    },
+    {
+      "_id": "LAczNuAbXGsv22DP",
+      "name": "Immunität (Eigenschaften, Einfluss, Hellsicht, Illusion, Umwelt, Verwandlung, Krankheiten, Gifte, Hitze, Kälte)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Immunität (Fertigkeit): Die Kreatur ist immun gegen\r\nalle Zauber, die (auch) der entsprechenden Fertigkeit\r\nzugeordnet sind. Davon ausgenommen sind Effekte, die\r\ndas Wesen nur indirekt betreffen – zum Beispiel erfasst ein\r\nOdem auch einen Dämon mit Immunität (Hellsicht) und eine\r\nImmunität (Umwelt) schützt nicht vor dem Regen, der mittels\r\nWettermeisterschaft gerufen wurde."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!kEXnzTsof3Z46kmz.LAczNuAbXGsv22DP"
+    },
+    {
+      "_id": "tZrN9FTgn5pN7v9p",
+      "name": "Körperlosigkeit",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Körperlosigkeit bedeutet, dass der Körper der Kreatur\r\nkeine lebenserhaltende Funktion hat. Selbst schwerste\r\nVerwundungen schränken sie nicht ein. Das Wesen erleidet\r\nkeine Abzüge durch Wunden und wird nicht kampfunfähig.\r\nDie neunte Wunde vernichtet aber auch eine körperlose\r\nKreatur."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!kEXnzTsof3Z46kmz.tZrN9FTgn5pN7v9p"
+    },
+    {
+      "_id": "57T38cw4sCaMSaTT",
+      "name": "Paraphysikalität",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Paraphysikalität setzt die Naturgesetze für das Wesen\r\naußer Kraft. Es kann an Wänden oder an der Decke gehen,\r\naus dem Stand auf Höchstgeschwindigkeit beschleunigen und\r\ngewaltige Sprünge vollführen. Es ist immun gegen Umreißen-,\r\nNiederwerfen-, Zurückstoßen- und Niederschmettern-Effekte."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!kEXnzTsof3Z46kmz.57T38cw4sCaMSaTT"
+    },
+    {
+      "_id": "4jtfRQFuqlKu3fKQ",
+      "name": "Resistenz I (profan)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Eine Resistenz I/II/III/IV (Schadensquelle) verringert\r\nden Schaden durch diese Schadensquelle (s.o.). Wann immer\r\ndie Kreatur Wunden erleiden würde, erleidet sie 1/2/3/4\r\nWunden weniger."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!kEXnzTsof3Z46kmz.4jtfRQFuqlKu3fKQ"
+    },
+    {
+      "_id": "l8uzUTlLM65jWzXY",
+      "name": "Schmerzimmun II",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Schmerzimmun I/II: Die erste Stufe verleiht Immunität\r\ngegen Blutungen und die Wundschmerzeffekte Betäubt und\r\nOrgantreffer. Die zweite Stufe verleiht Immunität gegen alle\r\nWundschmerzeffekte."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!kEXnzTsof3Z46kmz.l8uzUTlLM65jWzXY"
+    },
+    {
+      "_id": "GenTbhbDV1LetnNR",
+      "name": "Schreckgestalt I",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Schreckgestalt I/II/III/IV: Bei der Begegnung mit der\r\nKreatur erleidet dein Charakter einen Furcht-Effekt Stufe I/II/\r\nIII/IV (S. 46). Der Furcht-Effekt dauert an, bis der Gegner\r\nbesiegt wurde oder dein Charakter sich in sicherer Entfernung\r\nbefindet."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!kEXnzTsof3Z46kmz.GenTbhbDV1LetnNR"
+    },
+    {
+      "_id": "IQyFy4U52rnijTsq",
+      "name": "Unheilig",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Unheilige Kreaturen sind besonders anfällig gegen\r\nbestimmte karmale Wirkungen, siehe S. 91."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!kEXnzTsof3Z46kmz.IQyFy4U52rnijTsq"
+    },
+    {
+      "_id": "xeKVzOzJ8vaRntvs",
+      "name": "Verwundbarkeit I (geweihte Waffen oder Gegenstände der Gegengottheit)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Verwundbarkeit I/II/III/IV (Schadensquelle): Wann\r\nimmer die Kreatur Wunden durch diese Schadensquelle\r\nerleidet, bekommt sie 1/2/3/4 zusätzliche Wunden."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!kEXnzTsof3Z46kmz.xeKVzOzJ8vaRntvs"
+    },
+    {
+      "_id": "a7xpQFXf4JpMK8iv",
+      "name": "Limbus",
+      "type": "info",
+      "system": {
+        "text": "Im Limubs GS und INI 12 und Regeneration II."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!kEXnzTsof3Z46kmz.a7xpQFXf4JpMK8iv"
+    },
+    {
+      "_id": "QAtznhVDC9Sxx4dp",
+      "name": "Beispieldienste",
+      "type": "info",
+      "system": {
+        "text": "Beschwörer durch den Limbus transportieren (1 Stunde, 4); Gegenstand stehlen und in den Limbus befördern (, ); Limbusportal öffnen (, -4)"
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!kEXnzTsof3Z46kmz.QAtznhVDC9Sxx4dp"
+    },
+    {
+      "_id": "gfuLaCWDKI6HbJBa",
+      "name": "Beschwörung",
+      "type": "info",
+      "system": {
+        "text": "Invocatio (28), 48 AsP"
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!kEXnzTsof3Z46kmz.gfuLaCWDKI6HbJBa"
+    },
+    {
+      "_id": "DpXxigcf2eBvWOFH",
+      "name": "Krallenhieb",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [],
+        "tp": "2W6+4",
+        "haerte": 0,
+        "rw": 1,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 14,
+        "vt": 14
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!kEXnzTsof3Z46kmz.DpXxigcf2eBvWOFH"
+    },
+    {
+      "_id": "QvNTXg91A1mh50p1",
+      "name": "Pirschen",
+      "type": "freiestalent",
+      "system": {
+        "text": "Pirschen ermöglicht das Schleichen, Verstecken und Lauern in der freien Natur. Du pirschst dich auf der Jagd an einen wilden Hirsch heran, legst einen Hinterhalt an einer Reichsstraße oder beobachtest ungesehen das Lager einer Orkbande.",
+        "pw": 16,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!kEXnzTsof3Z46kmz.QvNTXg91A1mh50p1"
+    },
+    {
+      "_id": "MnUJYTWogReZgsZ5",
+      "name": "Wachsamkeit",
+      "type": "freiestalent",
+      "system": {
+        "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
+        "pw": 14,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!kEXnzTsof3Z46kmz.MnUJYTWogReZgsZ5"
+    },
+    {
+      "_id": "RzHJGDKsT3vXKIWw",
+      "name": "Kraft",
+      "type": "freiestalent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "pw": 14,
+        "profan": false
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!kEXnzTsof3Z46kmz.RzHJGDKsT3vXKIWw"
+    },
+    {
+      "_id": "Vj8VMpGEdnPI45FD",
+      "name": "Auge des Limbus",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Kraft",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du reißt eine Öffnung in die Barriere zwischen der Welt und dem Limbus. Ein Sog entsteht, in dessen Umgebung alle Wesen jede Initiativephase eine Konterprobe (KK, 16) ablegen, die um die Distanz zur Öffnung in Schritt erleichtert ist. Beim Misslingen wird es 1W6 Schritt in Richtung der Öffnung gezerrt. Wird ein Ziel durch die Öffnung gerissen, erleidet es 4W6 SP und findet sich im Limbus wieder.\nProbenschwierigkeit: 12\nModifikationen: Tor in die Niederhöllen (–16; der Strudel führt direkt in die siebte Sphäre.)\nVorbereitungszeit: 8 Aktionen\nZiel: Zone\nReichweite: 16 Schritt\nWirkungsdauer: 8 Initiativephasen\nKosten: 32 AsP\nFertigkeiten: Kraft\nErlernen: Ach, Bor, Mag 20; 60 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 14,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!kEXnzTsof3Z46kmz.Vj8VMpGEdnPI45FD"
+    },
+    {
+      "_id": "Ft6Ps9ZWb2GFXj6C",
+      "name": "Limbus versiegeln",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Kraft",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du verhinderst in einem kreisförmigen Bereich von 16 Schritt Radius sämtliche Wechsel zwischen dem Limbus und der dritten Sphäre.\nMächtige Magie: Der Radius erhöht sich um 8 Schritt.\nProbenschwierigkeit: 12\nVorbereitungszeit: 4 Aktionen\nZiel: Zone\nReichweite: 16 Schritt\nWirkungsdauer: 1 Stunde\nKosten: 8 AsP\nFertigkeiten: Kraft\nErlernen: Mag 20; 20 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 14,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!kEXnzTsof3Z46kmz.Ft6Ps9ZWb2GFXj6C"
+    },
+    {
+      "_id": "EkttklPgK3QDSi4q",
+      "name": "Oculus Astralis",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Kraft",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du wirfst einen Blick in die Welt der Magie. Während nichtmagische Gegenstände nur schwer zu erkennen sind, erscheint Magie als Ansammlung pulsierender Kraftfäden (Analysegrad 1 der Intensitätsanalyse, S. 80). Während der Wirkungsdauer kannst du deine Sinnenschärfe zur Strukturanalyse (S. 80) verwenden, wodurch du 1 Punkt Erschöpfung erleidest. Außerdem kannst du dich im Limbus orientieren.\nMächtige Magie: Der Analysegrad der Intensitätsanalyse steigt um +1.\nProbenschwierigkeit: 12\nVorbereitungszeit: 8 Aktionen\nZiel: selbst\nReichweite: Berührung\nWirkungsdauer: 16 Minuten\nKosten: 8 AsP\nFertigkeiten: Hellsicht, Kraft\nErlernen: Mag 18; 60 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 14,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!kEXnzTsof3Z46kmz.EkttklPgK3QDSi4q"
+    },
+    {
+      "_id": "LV6rDjU1QBRaG1Zg",
+      "name": "Planastrale",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Kraft",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": null,
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 14,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!kEXnzTsof3Z46kmz.LV6rDjU1QBRaG1Zg"
+    },
+    {
+      "_id": "vx94ru4pdQX0B28m",
+      "name": "Transversalis Teleport",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Kraft",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du teleportierst dich an einen beliebigen Ort. Der Ort darf maximal 4 Meilen entfernt sein und du musst schon einmal dort gewesen sein.\nMächtige Magie: Vervierfacht die Distanz.\nProbenschwierigkeit: 12\nModifikationen: Anhalter (–4; du kannst eine Person mitnehmen. Mehrfach wählbar.)\nLastenteleport (–8, Einzelobjekt; du kannst eine Last von maximal 32 Stein teleportieren.)\nVorbereitungszeit: 1 Aktion\nZiel: selbst\nReichweite: Berührung\nWirkungsdauer: augenblicklich\nKosten: 16 AsP\nFertigkeiten: Kraft\nErlernen: Mag 18; 60 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 14,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!kEXnzTsof3Z46kmz.vx94ru4pdQX0B28m"
+    },
+    {
+      "_id": "4YChnxUZqm26wO0V",
+      "name": "Verschwindibus",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Kraft",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Dein bis zu 2 Stein schweres Ziel verschwindet für die Wirkungsdauer im näheren Limbus. Der Gegenstand darf nicht magisch, geweiht, befestigt oder mit einem Lebewesen in Kontakt sein.\nMächtige Magie: Verdoppelt das maximale Gewicht.\nProbenschwierigkeit: 12\nModifikationen: Einmischen (–8; auch magische und geweihte Gegenstände können gewählt werden.)\nVorbereitungszeit: 0 Aktionen\nZiel: Einzelobjekt\nReichweite: 16 Schritt\nWirkungsdauer: 4 Minuten\nKosten: 8 AsP\nFertigkeiten: Kraft, Umwelt\nErlernen: Sch 8; Srl 16; 20 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 14,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!kEXnzTsof3Z46kmz.4YChnxUZqm26wO0V"
+    }
+  ],
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "prototypeToken": {
+    "displayName": 20,
+    "actorLink": false,
+    "width": 1,
+    "height": 1,
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "light": {
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "coloration": 1,
+      "dim": 0,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false,
+        "type": null
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      },
+      "attenuation": 0.5,
+      "negative": false,
+      "priority": 0,
+      "color": null
+    },
+    "disposition": 1,
+    "displayBars": 50,
+    "bar1": {
+      "attribute": "gesundheit.hp"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "flags": {},
+    "randomImg": false,
+    "name": "Yo'ugghatugythot",
+    "texture": {
+      "src": "systems/Ilaris/assets/images/token/kreaturentypen/daemon.png",
+      "scaleX": 1,
+      "scaleY": 1,
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "offsetX": 0,
+      "offsetY": 0,
+      "fit": "contain",
+      "rotation": 0,
+      "tint": "#ffffff",
+      "alphaThreshold": 0.75
+    },
+    "sight": {
+      "angle": 360,
+      "enabled": false,
+      "range": 0,
+      "brightness": 1,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "appendNumber": false,
+    "prependAdjective": false,
+    "hexagonalShape": 0,
+    "detectionModes": [],
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    }
+  },
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!actors!kEXnzTsof3Z46kmz"
+}

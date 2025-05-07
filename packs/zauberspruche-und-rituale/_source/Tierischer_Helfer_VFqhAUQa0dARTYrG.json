@@ -1,0 +1,41 @@
+{
+  "name": "Tierischer Helfer",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Hellsicht, Geister rufen, Verständigung",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du siehst die Gedanken des Tiers als verschwommene Bilder.",
+    "maechtig": "Zusätzlich kannst du das Tier um einen kleineren/größeren/gefährlichen Gefallen bitten. Ob das Tier den Gefallen ausführen kann und will, ist Spielleiterentscheid.",
+    "schwierigkeit": "Magieresistenz",
+    "modifikationen": "",
+    "vorbereitung": "4 Aktionen",
+    "ziel": "Tier",
+    "reichweite": "8 Schritt",
+    "wirkungsdauer": "4 Minuten",
+    "kosten": "8 AsP",
+    "erlernen": "Smn 18",
+    "pw": 0,
+    "gruppe": 7
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "VFqhAUQa0dARTYrG",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!VFqhAUQa0dARTYrG"
+}

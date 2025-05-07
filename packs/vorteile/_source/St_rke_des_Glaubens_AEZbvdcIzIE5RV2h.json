@@ -1,0 +1,29 @@
+{
+  "name": "Stärke des Glaubens",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut MU 8, Vorteil Geweiht I",
+    "gruppe": 6,
+    "text": "Gegen Angriffe von unheiligen Wesenheiten steigt deine WS um 2."
+  },
+  "_id": "AEZbvdcIzIE5RV2h",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!AEZbvdcIzIE5RV2h"
+}

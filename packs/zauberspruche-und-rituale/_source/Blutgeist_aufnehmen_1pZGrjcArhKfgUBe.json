@@ -1,0 +1,41 @@
+{
+  "name": "Blutgeist aufnehmen",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Verwandlung, Gaben des Blutgeists",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du verzehrst das frische Herz eines Tieres, um den Blutgeist des Tieres aufzunehmen. Damit beginnt die Besessenheit, die drei Effekte hat: Erstens kannst du die Zauber Stärke des Blutgeists und Körper des Blutgeists nutzen. Diese Zauber beziehen sich immer auf das aufgenommene Tier (siehe S. 160). Zweitens kannst du alle dem Tier zugeordneten allgemeinen Zauber wirken, ohne dass du sie erlernen musst. Die Probe wird dabei auf die Fertigkeit Gaben des Blutgeists abgelegt. Drittens erhältst du die Eigenheit „Gefahr des Blutes“: Wann immer du in Kontakt mit fremdem Blut kommst, kann der Blutgeist die Oberhand gewinnen. Meist gerätst du in einen mörderischen Blutrausch, aber auch teilweise oder ganze Verwandlungen oder andere, zum Tier passende Effekte sind denkbar. Positive und negative Effekte verschwinden mit dem Ende der Besessenheit. Du kannst niemals zwei Blutgeister gleichzeitig aufnehmen.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "1 Stunde",
+    "ziel": "selbst",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "bis die Bindung gelöst wird",
+    "kosten": "8 AsP, davon 8 gAsP",
+    "erlernen": "Ana 4",
+    "pw": 0,
+    "gruppe": 3
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "1pZGrjcArhKfgUBe",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!1pZGrjcArhKfgUBe"
+}

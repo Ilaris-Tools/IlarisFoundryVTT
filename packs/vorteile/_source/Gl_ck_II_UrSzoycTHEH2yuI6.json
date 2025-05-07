@@ -1,0 +1,29 @@
+{
+  "name": "Glück II",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Vorteil Glück I",
+    "gruppe": 0,
+    "text": "Deine maximalen Schicksalspunkte steigen auf 6."
+  },
+  "_id": "UrSzoycTHEH2yuI6",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!UrSzoycTHEH2yuI6"
+}
