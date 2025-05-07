@@ -370,7 +370,8 @@ let manoever = {
         INITIATIVE: "Initiative",
         LOADING_TIME: "Ladezeit/Vorbereitungszeit",
         SPECIAL_RESOURCE: "Ressource für Zauber/Liturgien",
-        WEAPON_DAMAGE: "Waffenschaden"
+        WEAPON_DAMAGE: "Waffenschaden",
+        ZERO_DAMAGE: "Kein Schaden"
     },
     operator: {
         MULTIPLY: 'Multiplizieren',

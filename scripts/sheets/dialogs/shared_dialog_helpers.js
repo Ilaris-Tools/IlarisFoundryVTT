@@ -16,10 +16,15 @@ export function processModification(modification, number, manoeverName, trefferz
         const path = modification.target.split('.');
         targetValue = rollValues.context; // Assuming context is passed in rollValues
         for (const key of path) {
-            targetValue = targetValue[key];
+            if (targetValue && targetValue[key] !== undefined) {
+                targetValue = targetValue[key];
+            } else {
+                targetValue = 0;
+                break;
+            }
         }
         if (!isNaN(targetValue)) {
-            value += targetValue;
+            value += Number(targetValue);
         }
     }
 
@@ -40,11 +45,17 @@ export function processModification(modification, number, manoeverName, trefferz
             break;
         case 'WEAPON_DAMAGE':
             if (modification.operator === 'ADD' || modification.operator === 'SUBTRACT') {
-                rollValues.schaden = rollValues.schaden.concat(`${modification.operator === 'SUBTRACT' ? '-' : ''}${signed(value)}`);
+                rollValues.schaden = rollValues.schaden.concat(`${modification.operator === 'SUBTRACT' ? '-' : '+'}${value}`);
             } else {
                 rollValues.schaden = rollValues.schaden.concat(`*${value}`);
                 text = `${manoeverName}${trefferzone ? ` (${config.ILARIS.trefferzonen[trefferzone]})` : ''}: ${value} * Waffenschaden\n`;
             }
+            rollValues.text_dm = rollValues.text_dm.concat(text);
+            break;
+        case 'ZERO_DAMAGE':
+            rollValues.schaden = '0';
+            rollValues.mod_dm = 0;
+            text = `${manoeverName}${trefferzone ? ` (${config.ILARIS.trefferzonen[trefferzone]})` : ''}: Kein Schaden\n`;
             rollValues.text_dm = rollValues.text_dm.concat(text);
             break;
     }
@@ -64,6 +75,16 @@ export function processModification(modification, number, manoeverName, trefferz
  */
 export function handleModifications(manoever, number, check, trefferZoneInput, rollValues, config) {
     console.log('call')
+    let hasZeroDamage = false;
+    
+    // First check if any modification is a ZERO_DAMAGE type
+    Object.values(manoever.system.modifications).forEach(modification => {
+        if (modification.type === 'ZERO_DAMAGE' && ((check && number) || number || check || trefferZoneInput)) {
+            hasZeroDamage = true;
+        }
+    });
+    
+    // Process each modification
     Object.values(manoever.system.modifications).forEach(modification => {
         if ((check && number) || number) {
             processModification(modification, number, manoever.name, null, rollValues, config);
@@ -74,6 +95,16 @@ export function handleModifications(manoever, number, check, trefferZoneInput, r
             processModification(modification, 1, manoever.name, trefferZoneInput, rollValues, config);
         }
     });
+    
+    // If ZERO_DAMAGE was found, override damage values
+    if (hasZeroDamage) {
+        rollValues.mod_dm = 0;
+        rollValues.schaden = '0';
+        // Add text explaining zero damage if not already present
+        if (!rollValues.text_dm.includes('Kein Schaden')) {
+            rollValues.text_dm = rollValues.text_dm.concat(`${manoever.name}: Kein Schaden\n`);
+        }
+    }
 
     return [
         rollValues.mod_at,
