@@ -13,10 +13,26 @@
         ]
       }
     },
+    "inputs": {
+      "0": {
+        "label": "",
+        "field": "CHECKBOX"
+      },
+      "1": {
+        "label": "GS",
+        "field": "NUMBER",
+        "min": null,
+        "max": null
+      }
+    },
     "gruppe": "0",
     "probe": "",
     "gegenprobe": "",
-    "text": ""
+    "text": "",
+    "selectors": [
+      "INPUT",
+      "CHECKBOX"
+    ]
   },
   "effects": [],
   "folder": null,
@@ -31,10 +47,10 @@
     "duplicateSource": null,
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "0.3.20",
+    "systemVersion": "12.0.1",
     "createdTime": 1745306187360,
-    "modifiedTime": 1745306208078,
-    "lastModifiedBy": "oz3U1cHybCRHlQTJ"
+    "modifiedTime": 1746449103958,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC"
   },
   "_key": "!items!R1Jf26hYLrGMgn63"
 }

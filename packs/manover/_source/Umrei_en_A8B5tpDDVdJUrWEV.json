@@ -4,10 +4,16 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "voraussetzungen": [],
-    "gruppe": 0,
+    "gruppe": "0",
     "probe": "AT",
     "gegenprobe": "GE oder (nur für große und sehr große Gegner) KO",
-    "text": "Dein Ziel stürzt und liegt am Boden. Das Manöver senkt den Schaden des Angriffes auf 0. Sollte der Angriff ohnehin keinen Schaden anrichten, ist das Manöver nicht möglich."
+    "text": "Dein Ziel stürzt und liegt am Boden. Das Manöver senkt den Schaden des Angriffes auf 0. Sollte der Angriff ohnehin keinen Schaden anrichten, ist das Manöver nicht möglich.",
+    "inputs": {
+      "0": {
+        "label": "",
+        "field": "CHECKBOX"
+      }
+    }
   },
   "effects": [],
   "folder": null,
@@ -16,11 +22,11 @@
   "_id": "A8B5tpDDVdJUrWEV",
   "_stats": {
     "coreVersion": "12.331",
-    "systemId": null,
-    "systemVersion": null,
+    "systemId": "Ilaris",
+    "systemVersion": "12.0.1",
     "createdTime": null,
-    "modifiedTime": null,
-    "lastModifiedBy": null,
+    "modifiedTime": 1746367771678,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
   },

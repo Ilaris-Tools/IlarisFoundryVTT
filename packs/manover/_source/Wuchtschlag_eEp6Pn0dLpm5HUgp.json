@@ -4,7 +4,15 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "voraussetzungen": [],
-    "gruppe": 0,
+    "inputs": {
+      "0": {
+        "label": "",
+        "field": "NUMBER",
+        "min": 0,
+        "max": 8
+      }
+    },
+    "gruppe": "0",
     "probe": "AT -X",
     "gegenprobe": "",
     "text": "Der Angriff richtet X (maximal 8) Trefferpunkte mehr an."
@@ -16,11 +24,11 @@
   "_id": "eEp6Pn0dLpm5HUgp",
   "_stats": {
     "coreVersion": "12.331",
-    "systemId": null,
-    "systemVersion": null,
+    "systemId": "Ilaris",
+    "systemVersion": "12.0.1",
     "createdTime": null,
-    "modifiedTime": null,
-    "lastModifiedBy": null,
+    "modifiedTime": 1746447402748,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
   },

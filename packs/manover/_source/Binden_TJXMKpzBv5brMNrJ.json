@@ -4,10 +4,18 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "voraussetzungen": [],
-    "gruppe": 0,
+    "gruppe": "0",
     "probe": "VT -X",
     "gegenprobe": "",
-    "text": "Bis zum Ende der nächsten eigenen Initiativephase sind alle Verteidigungen des Gegners um -X (maximal 8) erschwert."
+    "text": "Bis zum Ende der nächsten eigenen Initiativephase sind alle Verteidigungen des Gegners um -X (maximal 8) erschwert.",
+    "inputs": {
+      "0": {
+        "label": "",
+        "field": "NUMBER",
+        "min": null,
+        "max": null
+      }
+    }
   },
   "effects": [],
   "folder": null,
@@ -16,11 +24,11 @@
   "_id": "TJXMKpzBv5brMNrJ",
   "_stats": {
     "coreVersion": "12.331",
-    "systemId": null,
-    "systemVersion": null,
+    "systemId": "Ilaris",
+    "systemVersion": "12.0.1",
     "createdTime": null,
-    "modifiedTime": null,
-    "lastModifiedBy": null,
+    "modifiedTime": 1746367249890,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
   },

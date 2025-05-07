@@ -13,7 +13,13 @@
     "gruppe": "0",
     "probe": "AT -4",
     "gegenprobe": "",
-    "text": "Der Angriff ignoriert die gegnerische Rüstung und richtet SP statt TP an. Voraussetzung: Waffeneigenschaft Rüstungsbrechend Anmerkung: Das Manöver lohnt sich, wenn der Gegner schwere Rüstung trägt oder du mehrere Wunden anrichten kannst."
+    "text": "Der Angriff ignoriert die gegnerische Rüstung und richtet SP statt TP an. Voraussetzung: Waffeneigenschaft Rüstungsbrechend Anmerkung: Das Manöver lohnt sich, wenn der Gegner schwere Rüstung trägt oder du mehrere Wunden anrichten kannst.",
+    "inputs": {
+      "0": {
+        "label": "",
+        "field": "CHECKBOX"
+      }
+    }
   },
   "effects": [],
   "folder": null,
@@ -23,10 +29,10 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "0.3.20",
+    "systemVersion": "12.0.1",
     "createdTime": null,
-    "modifiedTime": 1745306102325,
-    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "modifiedTime": 1746367659161,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
   },

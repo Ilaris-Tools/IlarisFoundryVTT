@@ -15,7 +15,15 @@
     "gruppe": "2",
     "probe": "Zauber -4",
     "gegenprobe": "",
-    "text": "Die Wirkungsdauer des Zaubers verdoppelt sich."
+    "text": "Die Wirkungsdauer des Zaubers verdoppelt sich.",
+    "inputs": {
+      "0": {
+        "label": "",
+        "field": "NUMBER",
+        "min": 0,
+        "max": null
+      }
+    }
   },
   "effects": [],
   "folder": null,
@@ -25,10 +33,10 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "0.3.20",
+    "systemVersion": "12.0.1",
     "createdTime": null,
-    "modifiedTime": 1745306340944,
-    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "modifiedTime": 1746367821423,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
   },

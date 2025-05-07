@@ -4,6 +4,18 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "voraussetzungen": [],
+    "inputs": {
+      "0": {
+        "label": "",
+        "field": "CHECKBOX"
+      },
+      "1": {
+        "label": "GS Gegner",
+        "field": "NUMBER",
+        "min": null,
+        "max": null
+      }
+    },
     "gruppe": "0",
     "probe": "VT -4",
     "gegenprobe": "",
@@ -17,10 +29,10 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "0.3.20",
+    "systemVersion": "12.0.1",
     "createdTime": null,
-    "modifiedTime": 1745304551666,
-    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "modifiedTime": 1746446638680,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
   },
