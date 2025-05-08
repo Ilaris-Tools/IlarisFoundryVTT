@@ -86,6 +86,9 @@ export class IlarisActorSheet extends ActorSheet {
                 } else {
                     // For one-handed weapons, only unequip from the toggled hand
                     this._unequipHandWeapons(toggletype);
+                    
+                    // If a two-handed weapon is equipped in both hands, unequip it
+                    this._unequipTwoHandedWeaponsInBothHands();
                 }
             }
             
@@ -134,6 +137,25 @@ export class IlarisActorSheet extends ActorSheet {
         // Unequip all ranged weapons except the specified one
         for (let waffe of this.actor.fernkampfwaffen) {
             if (waffe.id !== exceptItemId && (waffe.system.hauptwaffe || waffe.system.nebenwaffe)) {
+                await this._unequipWeapon(waffe.id);
+            }
+        }
+    }
+    
+    // Helper method to unequip two-handed weapons that are equipped in both hands
+    async _unequipTwoHandedWeaponsInBothHands() {
+        // Check melee weapons
+        for (let waffe of this.actor.nahkampfwaffen) {
+            if (waffe.system.eigenschaften.zweihaendig && 
+                waffe.system.hauptwaffe && waffe.system.nebenwaffe) {
+                await this._unequipWeapon(waffe.id);
+            }
+        }
+        
+        // Check ranged weapons
+        for (let waffe of this.actor.fernkampfwaffen) {
+            if (waffe.system.eigenschaften.zweihaendig && 
+                waffe.system.hauptwaffe && waffe.system.nebenwaffe) {
                 await this._unequipWeapon(waffe.id);
             }
         }
