@@ -198,3 +198,50 @@ input.titel-input {
   padding-left: 22px ;
   text-indent: -22px ;
 }
+
+/* Style for valid input */
+.regex-check:valid {
+  border-color: green;
+  border-width: 2px;
+}
+
+/* Style for invalid input */
+.regex-check:invalid {
+  border-color: red;
+  border-width: 2px;
+}
+
+.validation-icon {
+  font-size: 1.2em;
+  flex: 0;
+  margin-left: 16px;
+} 
+
+.regex-check:valid + .validation-icon::before {
+  content: '✔';
+  color: green;
+}
+
+.regex-check:invalid + .validation-icon::before {
+  content: '✘';
+  color: red;
+}
+
+.multi-select {
+  display: flex !important;
+}
+
+.manoever-voraussetzungen {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  .voraussetzung {
+    margin: 8px 16px 0 16px;
+    .row {
+      margin-bottom: 8px
+    }
+    .delete-button {
+      margin-left: 8px;
+      margin-top: 2px;
+    }
+  }
+}

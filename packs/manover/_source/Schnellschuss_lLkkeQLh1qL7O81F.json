@@ -1,0 +1,40 @@
+{
+  "name": "Schnellschuss",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": {
+      "0": {
+        "name": "Vorteil Schnellziehen",
+        "type": "VORTEIL",
+        "value": [
+          "9laG7XzYtXtoqlzZ"
+        ]
+      }
+    },
+    "gruppe": "1",
+    "probe": "FK -4",
+    "gegenprobe": "",
+    "text": "Verkürzt die Vorbereitungszeit um die Hälfte. Eine Vorbereitungszeit von 1 Aktion wird zu 0 Aktionen. Die Aktion Konflikt ist von dieser Modifikation nicht betroffen. Kann bis zu zweimal pro FK eingesetzt werden."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "lLkkeQLh1qL7O81F",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "0.3.20",
+    "createdTime": null,
+    "modifiedTime": 1745306142021,
+    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!lLkkeQLh1qL7O81F"
+}

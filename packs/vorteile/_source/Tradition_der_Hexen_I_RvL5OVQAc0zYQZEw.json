@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Hexen I",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut IN 4, Vorteil Zauberer I",
+    "gruppe": 5,
+    "text": "Bedingungen: Sichtkontakt, Geste, Bodenkontakt.\n\nDu kannst Zauber in der Tradition der Hexen erlernen und benutzen. Solche Zauber findest du unter den allgemeinen Zaubern, unter Hexenflüche (S. 166), Schalenzauber (S. 171) und Vertrautenmagie (S. 173).\n\nDie Komponente Bodenkontakt kann nur ignoriert werden, wenn du zumindest über indirekten Bodenkontakt verfügst (z.B. in einem mehrstöckigen Haus)."
+  },
+  "_id": "RvL5OVQAc0zYQZEw",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!RvL5OVQAc0zYQZEw"
+}

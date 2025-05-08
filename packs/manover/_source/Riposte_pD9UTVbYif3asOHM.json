@@ -1,0 +1,40 @@
+{
+  "name": "Riposte",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": {
+      "0": {
+        "name": "Vorteil Parierwaffenkampf III",
+        "type": "STILE",
+        "value": [
+          "hGCvvY1IdUvKC5N8"
+        ]
+      }
+    },
+    "gruppe": "0",
+    "probe": "VT -4",
+    "gegenprobe": "",
+    "text": "Du fügst dem Angreifer den Waffenschaden deiner Waffe zu. Die Riposte ist kombinierbar mit Attackemanövern, die in diesem Fall die Verteidigung zusätzlich erschweren. Zum Beispiel wäre eine Kombination aus Riposte und Hammerschlag um –12 erschwert, würde aber doppelten Schaden anrichten. Voraussetzung: Kampf im Parrierwaffen-Stil; keine Riposte seit letztem Beginn einer eigenen Initiativephase"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "pD9UTVbYif3asOHM",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "0.3.20",
+    "createdTime": null,
+    "modifiedTime": 1745305350713,
+    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!pD9UTVbYif3asOHM"
+}

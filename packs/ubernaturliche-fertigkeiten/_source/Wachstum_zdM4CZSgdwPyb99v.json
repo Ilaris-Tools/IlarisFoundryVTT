@@ -1,0 +1,36 @@
+{
+  "name": "Wachstum",
+  "type": "uebernatuerliche_fertigkeit",
+  "img": "systems/Ilaris/assets/images/skills/karmal-skill.svg",
+  "system": {
+    "basis": 0,
+    "fw": 0,
+    "pw": 0,
+    "attribut_0": "CH",
+    "attribut_1": "FF",
+    "attribut_2": "KL",
+    "gruppe": 1,
+    "text": "Viele ländliche Perainegeweihte beteiligen sich an der bäuerlichen Arbeit und segnen Felder und Jungtiere.",
+    "voraussetzung": "Vorteil Tradition der Perainegeweihten I"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "zdM4CZSgdwPyb99v",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!zdM4CZSgdwPyb99v"
+}

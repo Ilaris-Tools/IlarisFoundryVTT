@@ -1,0 +1,41 @@
+{
+  "name": "Thesiskristall",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Kraft, Kristallmagie",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du speicherst die Struktur eines Zaubers für 20 EP in einen Kristall. Andere Zauberer können den Zauber aus dieser Struktur erlernen, sofern sie über die Kristallomantische Tradition I verfügen.",
+    "maechtig": "Du kannst auch Zauber für 40/60/80/beliebig viele EP speichern.",
+    "schwierigkeit": "12",
+    "modifikationen": "Permanenz (Wirkungsdauer bis die Bindung gelöst wird, 8 AsP, davon 1 gAsP)",
+    "vorbereitung": "1 Stunde",
+    "ziel": "Einzelobjekt",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Jahr",
+    "kosten": "8 AsP",
+    "erlernen": "Ach 16",
+    "pw": 0,
+    "gruppe": 11
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "V1LFzBniDepznQco",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!V1LFzBniDepznQco"
+}

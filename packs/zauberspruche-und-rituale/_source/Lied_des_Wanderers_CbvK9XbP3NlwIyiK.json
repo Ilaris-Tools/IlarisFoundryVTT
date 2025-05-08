@@ -1,0 +1,41 @@
+{
+  "name": "Lied des Wanderers",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Eigenschaften, Zaubermelodien",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Das Lied stärkt das Durchhaltevermögen eines müden Wanderers. Der Zuhörer mit dem geringsten DH (siehe S. 34) in 4 Schritt Radius erhält ein verdoppeltes DH* und der Intervall, in dem er durch körperliche Anstrengung Erschöpfung verursacht, verdoppelt sich.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "16 Aktionen",
+    "ziel": "Zone",
+    "reichweite": "4 Schritt",
+    "wirkungsdauer": "8 Stunden",
+    "kosten": "4 AsP",
+    "erlernen": "Bard 12",
+    "pw": 0,
+    "gruppe": 18
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "CbvK9XbP3NlwIyiK",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!CbvK9XbP3NlwIyiK"
+}

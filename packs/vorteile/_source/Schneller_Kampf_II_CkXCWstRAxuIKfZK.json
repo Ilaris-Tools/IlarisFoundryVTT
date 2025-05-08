@@ -1,0 +1,29 @@
+{
+  "name": "Schneller Kampf II",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut GE 6, Vorteil Schneller Kampf I",
+    "gruppe": 3,
+    "text": "Du erhältst AT +1.\n\nDu kannst in eine Halbschwertstellung wechseln, um deine Waffe in einer um 1 kleineren Reichweite zu führen. Der Wechsel in die Stellung oder zurück geschieht in einer Freien Aktion."
+  },
+  "_id": "CkXCWstRAxuIKfZK",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!CkXCWstRAxuIKfZK"
+}

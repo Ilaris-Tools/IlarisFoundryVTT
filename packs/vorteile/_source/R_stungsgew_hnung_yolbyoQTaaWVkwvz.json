@@ -1,0 +1,29 @@
+{
+  "name": "Rüstungsgewöhnung",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut KO 6",
+    "gruppe": 2,
+    "text": "Die BE aller Rüstungen ist um 1 gesenkt."
+  },
+  "_id": "yolbyoQTaaWVkwvz",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!yolbyoQTaaWVkwvz"
+}

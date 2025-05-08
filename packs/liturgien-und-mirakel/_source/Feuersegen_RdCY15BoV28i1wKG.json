@@ -1,0 +1,41 @@
+{
+  "name": "Feuersegen",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Heiliges Feuer, Zwölfgöttlicher Ritus",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Eine kleine Flamme entsteht in deiner Hand. Die Flamme und ein mit ihr entzündetes Feuer wird durch Wind oder Regen nicht gelöscht.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "2 Aktionen",
+    "ziel": "Zone",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Stunde",
+    "kosten": "1 KaP",
+    "erlernen": "Ang, Ing 4; Aves, Brn, Fir, Hes, Ifi, Kor, Nan, Per, Phe, Pra, Rah, Ron, Swa, Tra, Tsa 8; Eff 12",
+    "pw": 0,
+    "gruppe": 20
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "RdCY15BoV28i1wKG",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!RdCY15BoV28i1wKG"
+}

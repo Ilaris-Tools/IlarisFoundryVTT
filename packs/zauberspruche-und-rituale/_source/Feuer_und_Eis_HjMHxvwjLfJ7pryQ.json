@@ -1,0 +1,41 @@
+{
+  "name": "Feuer und Eis",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Eis, Feuer, Schalenzauber",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du kannst die Schale auf eine Temperatur zwischen niederhöllische Kälte und der Hitze einer Eisenschmelze einstellen.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "4 Aktionen",
+    "ziel": "Schale der Alchemie",
+    "reichweite": "2 Schritt",
+    "wirkungsdauer": "1 Stunde",
+    "kosten": "1 AsP",
+    "erlernen": "Alch 16; Mag 18",
+    "pw": 0,
+    "gruppe": 14
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "HjMHxvwjLfJ7pryQ",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!HjMHxvwjLfJ7pryQ"
+}

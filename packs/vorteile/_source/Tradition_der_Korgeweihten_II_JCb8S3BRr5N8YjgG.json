@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Korgeweihten II",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut MU 6, Vorteil Tradition der Korgeweihten I",
+    "gruppe": 7,
+    "text": "Korgeweihte werden durch erlittene Wunden eher noch gefährlicher. Der Wundmalus schränkt dich beim Wirken von Liturgien nicht ein. Kannst du den Wundmalus ohnehin ignorieren, sind Liturgien um den halben Wundmalus erleichtert."
+  },
+  "_id": "JCb8S3BRr5N8YjgG",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!JCb8S3BRr5N8YjgG"
+}

@@ -1,0 +1,40 @@
+{
+  "name": "Opferung (Durro-dûn)",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": {
+      "0": {
+        "name": "Vorteil Tradition der Durro-dun III",
+        "type": "STILE",
+        "value": [
+          "Mx4S7igqV9FVX9uB"
+        ]
+      }
+    },
+    "gruppe": "2",
+    "probe": "Zauber +4",
+    "gegenprobe": "",
+    "text": "Ein Opfer erleichtert den Zauber um +4. Die Tierkrieger opfern den Geistern ihr Blut und fügen sich dabei eine Wunde zu, deren Auswirkungen bei der Probe für den Zauber ignoriert werden.\nVoraussetzung: Tradition der Durro-dûn III und Verwendung dieser Tradition"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "JpicYM6ltrKtAq3F",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "0.3.20",
+    "createdTime": null,
+    "modifiedTime": 1745305107025,
+    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!JpicYM6ltrKtAq3F"
+}

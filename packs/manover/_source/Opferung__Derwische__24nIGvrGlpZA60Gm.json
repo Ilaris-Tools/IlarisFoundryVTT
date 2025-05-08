@@ -1,0 +1,40 @@
+{
+  "name": "Opferung (Derwische)",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": {
+      "0": {
+        "name": "Vorteil Tradition der Derwische III",
+        "type": "STILE",
+        "value": [
+          "3VdRd8eusFojWQZa"
+        ]
+      }
+    },
+    "gruppe": "2",
+    "probe": "Zauber +4",
+    "gegenprobe": "",
+    "text": "Ein Opfer erleichtert den Zauber um +4. Derwische legen ihre ganze Kraft in den Zauber und erleiden danach 2 Punkte Erschöpfung.\nVoraussetzung: Tradition der Derwische III und Verwendung dieser Tradition"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "24nIGvrGlpZA60Gm",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "0.3.20",
+    "createdTime": null,
+    "modifiedTime": 1745305096279,
+    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!24nIGvrGlpZA60Gm"
+}

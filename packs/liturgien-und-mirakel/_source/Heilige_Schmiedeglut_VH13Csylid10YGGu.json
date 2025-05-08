@@ -1,0 +1,41 @@
+{
+  "name": "Heilige Schmiedeglut",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Heiliges Feuer",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Ein Feuer wird so heiß, dass es zum Schmieden genutzt werden kann (Temperaturstufe Lava, S. 35). Mit dieser Liturgie und einigen transportablen Werkzeugen kannst du Bedingungen schaffen, die einer archaischen Schmiede entsprechen (S. 62).",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "Allmacht der Lohe (–4, Einzelobjekt, 8 KaP; statt des Feuers erhitzt du direkt ein Metallstück von bis zu 8 Stein.)",
+    "vorbereitung": "4 Minuten",
+    "ziel": "Zone",
+    "reichweite": "2 Schritt",
+    "wirkungsdauer": "4 Stunden",
+    "kosten": "4 KaP",
+    "erlernen": "Ing 12; Ang 14",
+    "pw": 0,
+    "gruppe": 33
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "VH13Csylid10YGGu",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!VH13Csylid10YGGu"
+}

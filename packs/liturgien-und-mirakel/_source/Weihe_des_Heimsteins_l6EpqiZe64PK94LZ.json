@@ -1,0 +1,41 @@
+{
+  "name": "Weihe des Heimsteins",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Heim und Herd",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du segnest einen Heimstein, der in die Unterkunft eingebaut wird. Solange sich die Bewohner in der Unterkunft befinden und an die Gesetze Travias halten, können sie die Auswirkung negativer sozialer Eigenheiten ignorieren. Außerdem bleibt die Unterkunft vor den Naturgewalten verschont. Letzteres gilt nicht, wenn die Unterkunft in einem besonders gefährdeten Gebiet errichtet wurde.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "8 Stunden",
+    "ziel": "Einzelobjekt",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "bis die Unterkunft deutlich umgebaut wird",
+    "kosten": "16 KaP",
+    "erlernen": "Tra 8",
+    "pw": 0,
+    "gruppe": 48
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "l6EpqiZe64PK94LZ",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!l6EpqiZe64PK94LZ"
+}

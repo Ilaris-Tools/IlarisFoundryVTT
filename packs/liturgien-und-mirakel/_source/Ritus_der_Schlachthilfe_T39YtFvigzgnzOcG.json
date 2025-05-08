@@ -1,0 +1,41 @@
+{
+  "name": "Ritus der Schlachthilfe",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Heerführung",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Während du meditierst, kann deine Schwertseele einem Gefährten im Kampf beistehen. Sie erscheint als geisterhafte Walküre und kann 8 Angriffe oder Paraden führen. Die Schwertseele verwendet deine Kampfwerte und -fähigkeiten, ohne Abzüge durch Einschränkungen oder andere negative Effekte. Erfordert Konzentration.",
+    "maechtig": "4 weitere Angriffe oder Paraden sind möglich.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "1 Aktion",
+    "ziel": "Einzelperson",
+    "reichweite": "1 Meile",
+    "wirkungsdauer": "16 Initiativphasen",
+    "kosten": "8 KaP",
+    "erlernen": "Ron 18",
+    "pw": 0,
+    "gruppe": 46
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "T39YtFvigzgnzOcG",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!T39YtFvigzgnzOcG"
+}

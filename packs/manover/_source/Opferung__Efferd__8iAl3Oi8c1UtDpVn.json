@@ -1,0 +1,40 @@
+{
+  "name": "Opferung (Efferd)",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": {
+      "0": {
+        "name": "Vorteil Tradition der Efferdgeweihten III",
+        "type": "STILE",
+        "value": [
+          "6Gzp4DDQI3CSaUYP"
+        ]
+      }
+    },
+    "gruppe": "3",
+    "probe": "Liturgie +4",
+    "gegenprobe": "",
+    "text": "Ein rituelles Opfer erleichtert die Liturgie um +4. Der Opfergegenstand wird dabei verbraucht, zerstört oder verschwindet. Efferdgeweihte opfern Perlen, Aquamarine oder Gwen-Petryl-Steine. Solche Opfergaben werden von Tempeln in begrenzten Mengen weitergegeben.\nVoraussetzung: Tradition der Efferdgeweihten III und Verwendung dieser Tradition\nAnmerkung: Opfergegenstände sollten nicht so häufig sein, dass jede zweite Liturgie mit dieser Modifikation gewirkt wird. Umgekehrt sollten sie nicht so selten sein, dass die Modifikation nie eingesetzt werden kann. Als Richtwert gilt eine Opferung alle zwei Spielabende."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "8iAl3Oi8c1UtDpVn",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "0.3.20",
+    "createdTime": null,
+    "modifiedTime": 1745305119611,
+    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!8iAl3Oi8c1UtDpVn"
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Scharfsinnig II",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut KL 6",
+    "gruppe": 1,
+    "text": "Proben bei einer Ermittlung oder Recherche sind um +2 erleichtert.\n\nBei Recherchen erhältst du einen zusätzlichen Informationsgrad, wenn der gewertete Würfel eine 12 oder höher zeigt."
+  },
+  "_id": "p5XjDqav98vnQ3DZ",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!p5XjDqav98vnQ3DZ"
+}

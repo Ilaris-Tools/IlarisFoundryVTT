@@ -1,0 +1,40 @@
+{
+  "name": "Liturgische Technik ignorieren",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": {
+      "0": {
+        "name": "Vorteil Geweiht I",
+        "type": "VORTEIL",
+        "value": [
+          "8QG19b6FhFxJiRBx"
+        ]
+      }
+    },
+    "gruppe": "3",
+    "probe": "Liturgie -4",
+    "gegenprobe": "",
+    "text": "Du ignorierst eine der bei der Tradition angeführten Bedingungen. Ignorierst du die Bedingung Sicht, musst du das Ziel auf eine andere Art und Weise wahrnehmen."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "8H6H0dU5Uw4i1u2o",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "0.3.20",
+    "createdTime": null,
+    "modifiedTime": 1745304874536,
+    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!8H6H0dU5Uw4i1u2o"
+}
