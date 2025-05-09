@@ -1,0 +1,29 @@
+{
+  "name": "Bändiger der Elemente",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut CH 4",
+    "gruppe": 4,
+    "text": "Bei Elementaren sinkt die Erschwernis für schwierige und anmaßende Dienste (S. 81) um eine Stufe."
+  },
+  "_id": "aapNDU9k5aPu6mfD",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!aapNDU9k5aPu6mfD"
+}

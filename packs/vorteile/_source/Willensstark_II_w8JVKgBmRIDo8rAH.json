@@ -1,0 +1,29 @@
+{
+  "name": "Willensstark II",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut MU 6",
+    "gruppe": 1,
+    "text": "Deine MR steigt um 4 Punkte.\n\nAuf dich wirkende Furcht-Effekte (S. 46) zählen als eine Stufe niedriger."
+  },
+  "_id": "w8JVKgBmRIDo8rAH",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!w8JVKgBmRIDo8rAH"
+}

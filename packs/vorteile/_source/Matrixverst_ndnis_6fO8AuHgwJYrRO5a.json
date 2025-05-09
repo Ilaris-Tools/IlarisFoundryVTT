@@ -1,0 +1,29 @@
+{
+  "name": "Matrixverständnis",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut FF 6",
+    "gruppe": 4,
+    "text": "Der erste wirkende Zauber, der bei der Artefakterschaffung misslingt, darf einmal wiederholt werden.\n\nBei Strukturanalysen (S. 80) erhältst du einen zusätzlichen Analysegrad, wenn der gewertete Würfel eine 12 oder höher zeigt."
+  },
+  "_id": "6fO8AuHgwJYrRO5a",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!6fO8AuHgwJYrRO5a"
+}

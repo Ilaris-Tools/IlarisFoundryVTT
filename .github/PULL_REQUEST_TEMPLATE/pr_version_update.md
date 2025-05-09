@@ -7,3 +7,5 @@
 - [ ] Sind sonstige Anpassungen der Dokumentation nötig?
 - [ ] Ist das Update eine Erwähnung im Forum wert?
 - [ ] Branch `foundryvtt-v*` vom letzten kompatiblen stand anlegen wenn eine ältere FoundryVTT version nicht mehr supported wird.
+- - [ ] In der system.json, die alte Versionsnummer verwenden und die download url anpassen
+- - [ ] In der Readme die manifest url anpassen und ggf. ein spoiler nach ganz oben setzen, das dies nicht die neuste version ist.

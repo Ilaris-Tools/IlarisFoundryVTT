@@ -1,0 +1,33 @@
+{
+  "name": "Gebirge",
+  "type": "talent",
+  "img": "systems/Ilaris/assets/images/skills/profan-talent.svg",
+  "system": {
+    "text": "Gebirge (verbilligt)",
+    "fertigkeit": "Überleben"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Item.wgt1xl2XkLb98YAL"
+    }
+  },
+  "_id": "TgJb1HpzwX5fgUe0",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "Ww4drILJ63YXG1Vc": 3
+  },
+  "_key": "!items!TgJb1HpzwX5fgUe0"
+}

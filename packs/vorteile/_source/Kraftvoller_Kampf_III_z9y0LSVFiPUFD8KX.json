@@ -1,0 +1,29 @@
+{
+  "name": "Kraftvoller Kampf III",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut KK 8, Vorteil Kraftvoller Kampf II",
+    "gruppe": 3,
+    "text": "Dein Waffenschaden steigt um +1.\n\nErlaubt das Manöver Befreiungsschlag (AT -4): Du führst eine Attacke aus, die sich (samt anderen Manövern) gegen alle Ziele in einem Winkel von 180° vor dir richtet. Jedem Ziel steht eine eigene Verteidigung zu."
+  },
+  "_id": "z9y0LSVFiPUFD8KX",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!z9y0LSVFiPUFD8KX"
+}

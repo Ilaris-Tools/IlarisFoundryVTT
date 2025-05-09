@@ -1,0 +1,41 @@
+{
+  "name": "Ewige Jugend",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Harmonie, Neubeginn",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Der Gesegnete behält Zeit seines Lebens ein jugendliches Aussehen. Frevelt der Gesegnete gegen die segenspendende Gottheit, setzt die natürliche Alterung wieder ein.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "Ewige Schönheit (–8, 32 KaP, Wirkungsdauer augenblicklich; verbessert das Aussehen des Gesegneten. Eine Eigenheit, die sich auf Hässlichkeit bezieht, verschwindet oder er erhält eine Eigenheit, die sich auf seine Schönheit bezieht.)",
+    "vorbereitung": "1 Tag",
+    "ziel": "Einzelperson",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "bis die Bindung gelöst wird",
+    "kosten": "16 KaP, davon 4 gKaP",
+    "erlernen": "Rah, Tsa 16",
+    "pw": 0,
+    "gruppe": 43
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "Ejjj3YoCkEua7uEr",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!Ejjj3YoCkEua7uEr"
+}

@@ -1,0 +1,41 @@
+{
+  "name": "Krabbelnder Schrecken",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Dämonisch, Verständigung",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Dein Opfer wird von einer Myriade Insekten und Kleintieren bedeckt. Misslingt eine Konterprobe (Willenskraft, 16), ist es handlungsunfähig. Gelingt die Konterprobe, sind alle Proben um –4 erschwert.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "Objekt verfluchen (–4, Einzelobjekt, 8 AsP; um das Objekt zu berühren, muss eine Konterprobe (MU, 16) bestanden werden.)",
+    "vorbereitung": "8 Aktionen",
+    "ziel": "Einzelperson",
+    "reichweite": "16 Schritt",
+    "wirkungsdauer": "16 Initiativphasen",
+    "kosten": "16 AsP",
+    "erlernen": "Hex 18; Bor, Mag 20",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "DUHdFMwgQ69rEMoc",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!DUHdFMwgQ69rEMoc"
+}

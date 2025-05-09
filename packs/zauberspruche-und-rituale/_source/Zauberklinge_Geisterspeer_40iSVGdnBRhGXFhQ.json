@@ -1,0 +1,41 @@
+{
+  "name": "Zauberklinge Geisterspeer",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Kraft, Verwandlung",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Die verzauberte Waffe gilt während der Wirkungsdauer als magisch.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "Schnellverzauberung (–4, 2 Aktionen, Wirkungsdauer 1 Stunde)\nPersonalisierung (–4; der Zauber wirkt nur, solange der beim Zaubern gewählte Träger die Waffe führt.)\nNamenssigille (–8; erfordert den wahren Namen eines Dämons. Wann immer der Dämon Wunden durch diese Waffe erleidet, erleidet er eine zusätzliche Wunde.)\nPermanenz (–4, Wirkungsdauer bis die Bindung gelöst wird, 16 AsP, davon 2 gAsP)",
+    "vorbereitung": "16 Aktionen",
+    "ziel": "Einzelobjekt",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Woche",
+    "kosten": "8 AsP",
+    "erlernen": "Ach, Mag 18; Elf, Hex, Geo, Dru 20",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "40iSVGdnBRhGXFhQ",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!40iSVGdnBRhGXFhQ"
+}

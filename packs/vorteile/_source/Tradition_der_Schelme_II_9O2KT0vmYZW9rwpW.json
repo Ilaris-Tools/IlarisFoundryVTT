@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Schelme II",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut IN 6, Vorteil Tradition der Schelme I",
+    "gruppe": 5,
+    "text": "Schelmenmagie umgeht den geistigen Widerstand ihrer Ziele. Wenn ein Zauber gegen die Magieresistenz wirkt, ist er um +2 erleichtert."
+  },
+  "_id": "9O2KT0vmYZW9rwpW",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!9O2KT0vmYZW9rwpW"
+}

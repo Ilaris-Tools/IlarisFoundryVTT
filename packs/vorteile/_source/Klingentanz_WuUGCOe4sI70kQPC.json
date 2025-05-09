@@ -1,0 +1,29 @@
+{
+  "name": "Klingentanz",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut IN 10",
+    "gruppe": 2,
+    "text": "Erlaubt das Manöver Klingentanz (AT -4): Wenn der Angriff gelingt, darfst du sofort noch einmal angreifen. Dieser Folgeangriff ist nicht erschwert."
+  },
+  "_id": "WuUGCOe4sI70kQPC",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!WuUGCOe4sI70kQPC"
+}

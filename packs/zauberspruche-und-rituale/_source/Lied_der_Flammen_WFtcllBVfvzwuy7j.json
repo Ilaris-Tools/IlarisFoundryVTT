@@ -1,0 +1,41 @@
+{
+  "name": "Lied der Flammen",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Feuer, Verwandlung, Zaubermelodien",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Flammen im Radius von 4 Schritt lodern heller und spenden mehr Wärme. In ihrer Umgebung steigt die Temperaturstufe um eins (siehe S. 35).",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "Innere Wärme (–8; auch ohne Feuer steigt die Temperaturstufe für alle Zuhörer um eins.)",
+    "vorbereitung": "16 Aktionen",
+    "ziel": "Zone",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Stunde",
+    "kosten": "8 AsP",
+    "erlernen": "Bard 16",
+    "pw": 0,
+    "gruppe": 18
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "WFtcllBVfvzwuy7j",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!WFtcllBVfvzwuy7j"
+}

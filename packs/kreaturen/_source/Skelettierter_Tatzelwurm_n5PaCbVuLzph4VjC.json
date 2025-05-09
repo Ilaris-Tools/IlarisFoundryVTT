@@ -1,0 +1,535 @@
+{
+  "_id": "n5PaCbVuLzph4VjC",
+  "name": "Skelettierter Tatzelwurm",
+  "type": "kreatur",
+  "img": "systems/Ilaris/assets/images/token/kreaturentypen/untot.png",
+  "system": {
+    "gesundheit": {
+      "erschoepfung": 0,
+      "wunden": 0,
+      "wundabzuege": 0,
+      "wundenignorieren": false,
+      "display": "Volle Gesundheit",
+      "hp": {
+        "max": 9,
+        "value": 9,
+        "threshold": 0
+      }
+    },
+    "energien": {
+      "asp": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      },
+      "gup": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      },
+      "kap": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      }
+    },
+    "initiative": 0,
+    "furcht": {
+      "furchtstufe": 0,
+      "furchtabzuege": 0,
+      "display": ""
+    },
+    "modifikatoren": {
+      "manuellermod": 0,
+      "nahkampfmod": 0
+    },
+    "schips": {
+      "schips": 4,
+      "schips_stern": 4
+    },
+    "attribute": {
+      "KO": {
+        "wert": 0,
+        "pw": 28
+      },
+      "MU": {
+        "wert": 0,
+        "pw": null
+      },
+      "GE": {
+        "wert": 0,
+        "pw": null
+      },
+      "KK": {
+        "wert": 0,
+        "pw": 26
+      },
+      "IN": {
+        "wert": 0,
+        "pw": null
+      },
+      "KL": {
+        "wert": 0,
+        "pw": null
+      },
+      "CH": {
+        "wert": 0,
+        "pw": null
+      },
+      "FF": {
+        "wert": 0,
+        "pw": null
+      }
+    },
+    "edit": false,
+    "kreaturentyp": "untot",
+    "kurzbeschreibung": "Necrophagion. Stinkender, untoter Vertreter der niederen Drachen; großer Gegner",
+    "kampfwerte": {
+      "ws": 8,
+      "ws_stern": 10,
+      "ini": 2,
+      "gs": 3,
+      "koloss": 1,
+      "mr": 8,
+      "gs_schwimmend": null
+    },
+    "talente": [],
+    "freietalente": [],
+    "kampfunfaehig": "",
+    "text": "",
+    "abgeleitete": {
+      "globalermod": 0,
+      "nahkampfmoddisplay": "-",
+      "globalermoddisplay": "-"
+    }
+  },
+  "items": [
+    {
+      "_id": "rPGDPa9mhq5D4CYx",
+      "name": "Standfest",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Nach einem Sturz befindest du dich in kniender statt liegender Position."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!n5PaCbVuLzph4VjC.rPGDPa9mhq5D4CYx"
+    },
+    {
+      "_id": "tM05c0S3cCokincU",
+      "name": "Unaufhaltsam",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Selbst bei einer gelungenen gegnerischen Verteidigung richtest du halben Schaden an. Ausweichen vermeidet diesen Schaden. Manövereffekte wirken weiterhin nur bei gelungenen Attacken."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!n5PaCbVuLzph4VjC.tM05c0S3cCokincU"
+    },
+    {
+      "_id": "fGpkmh5F65HatsD4",
+      "name": "Aura (Gestank, Zähigkeit (16) jede Initiativephase, –2 auf körperliche Proben (kumulativ) für 1 Tag)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Gestank kann durch ein ordentliches Bad beseitigt werden. Danach klingt die Erschwernis langsam ab"
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!n5PaCbVuLzph4VjC.fGpkmh5F65HatsD4"
+    },
+    {
+      "_id": "rrMcM7TMcgsdn61r",
+      "name": "Resistenz I (Feuer, Stich)",
+      "type": "eigenschaft",
+      "system": {
+        "text": ""
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!n5PaCbVuLzph4VjC.rrMcM7TMcgsdn61r"
+    },
+    {
+      "_id": "H1nvWruY1RlP2ItK",
+      "name": "Zusätzliche Attacke I",
+      "type": "eigenschaft",
+      "system": {
+        "text": ""
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!n5PaCbVuLzph4VjC.H1nvWruY1RlP2ItK"
+    },
+    {
+      "_id": "dCcdtYEM1yxro9FW",
+      "name": "Biss",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Zerbrechlich",
+            "text": ""
+          }
+        ],
+        "tp": "3W6+5",
+        "haerte": 0,
+        "rw": 1,
+        "lz": null,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 13,
+        "vt": 4
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!n5PaCbVuLzph4VjC.dCcdtYEM1yxro9FW"
+    },
+    {
+      "_id": "LuIPgqdmJwPSbBYW",
+      "name": "Klauen",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Niederwerfen -4",
+            "text": ""
+          }
+        ],
+        "tp": "2W6+4",
+        "haerte": 0,
+        "rw": 1,
+        "lz": null,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 10,
+        "vt": 6
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!n5PaCbVuLzph4VjC.LuIPgqdmJwPSbBYW"
+    },
+    {
+      "_id": "vJ9FlnFygnuG0m8r",
+      "name": "Schwanz",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Niederwerfen",
+            "text": ""
+          },
+          {
+            "name": "Flächenangriff (180* Hinter dem Skelett)",
+            "text": ""
+          }
+        ],
+        "tp": "1W6+4",
+        "haerte": 0,
+        "rw": 2,
+        "lz": null,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 8,
+        "vt": 4
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!n5PaCbVuLzph4VjC.vJ9FlnFygnuG0m8r"
+    },
+    {
+      "_id": "FTff2dhm236yj6Nh",
+      "name": "Pirschen",
+      "type": "freiestalent",
+      "system": {
+        "text": "",
+        "pw": 0,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!n5PaCbVuLzph4VjC.FTff2dhm236yj6Nh"
+    },
+    {
+      "_id": "7iXaZ0kqXzO3e5O2",
+      "name": "Wachsamkeit",
+      "type": "freiestalent",
+      "system": {
+        "text": "",
+        "pw": 8,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!n5PaCbVuLzph4VjC.7iXaZ0kqXzO3e5O2"
+    }
+  ],
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "prototypeToken": {
+    "displayName": 20,
+    "actorLink": false,
+    "width": 1,
+    "height": 1,
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "light": {
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "coloration": 1,
+      "dim": 0,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false,
+        "type": null
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      },
+      "attenuation": 0.5,
+      "negative": false,
+      "priority": 0,
+      "color": null
+    },
+    "disposition": 1,
+    "displayBars": 50,
+    "bar1": {
+      "attribute": "gesundheit.hp"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "flags": {},
+    "randomImg": false,
+    "name": "Skelettierter Tatzelwurm",
+    "texture": {
+      "src": "systems/Ilaris/assets/images/token/kreaturentypen/untot.png",
+      "scaleX": 1,
+      "scaleY": 1,
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "offsetX": 0,
+      "offsetY": 0,
+      "fit": "contain",
+      "rotation": 0,
+      "tint": "#ffffff",
+      "alphaThreshold": 0.75
+    },
+    "sight": {
+      "angle": 360,
+      "enabled": false,
+      "range": 0,
+      "brightness": 1,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "appendNumber": false,
+    "prependAdjective": false,
+    "hexagonalShape": 0,
+    "detectionModes": [],
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    }
+  },
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!actors!n5PaCbVuLzph4VjC"
+}

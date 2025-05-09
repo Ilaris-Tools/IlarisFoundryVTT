@@ -1,0 +1,41 @@
+{
+  "name": "Bindung des Dolches",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Dolchzauber, Kraft",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du stellst eine enge magische Bindung zu deinem Ritualgegenstand (ein Dolch für Druiden, eine Sichel für Geoden) her, welche die Voraussetzung für alle weiteren Talente dieser Fertigkeit ist. Außerdem wird der Ritualgegenstand unzerbrechlich und gilt als magische Waffe.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "8 Stunden",
+    "ziel": "Ritualgegenstand",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "permanent",
+    "kosten": "16 AsP",
+    "erlernen": "Dru 4; Geo 12",
+    "pw": 0,
+    "gruppe": 1
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "TrNtrlZWxVR9gHsB",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!TrNtrlZWxVR9gHsB"
+}

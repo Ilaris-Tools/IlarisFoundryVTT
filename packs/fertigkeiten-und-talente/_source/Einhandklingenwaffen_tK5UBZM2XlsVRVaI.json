@@ -1,0 +1,29 @@
+{
+  "name": "Einhandklingenwaffen",
+  "type": "talent",
+  "img": "systems/Ilaris/assets/images/skills/battle-talent.svg",
+  "system": {
+    "text": "Verbessert den Einsatz einhändig geführter Klingenwaffen wie Schwertern, Säbeln und Fechtwaffen.",
+    "fertigkeit": "Klingenwaffen"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "tK5UBZM2XlsVRVaI",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!tK5UBZM2XlsVRVaI"
+}

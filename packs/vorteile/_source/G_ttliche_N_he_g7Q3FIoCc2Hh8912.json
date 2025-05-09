@@ -1,0 +1,29 @@
+{
+  "name": "Göttliche Nähe",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut IN 10, Vorteil Geweiht I",
+    "gruppe": 6,
+    "text": "Du regenerierst 1 zusätzlichen KaP pro Nacht."
+  },
+  "_id": "g7Q3FIoCc2Hh8912",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!g7Q3FIoCc2Hh8912"
+}

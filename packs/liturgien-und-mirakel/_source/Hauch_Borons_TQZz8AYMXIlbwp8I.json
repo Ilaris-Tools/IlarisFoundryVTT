@@ -1,0 +1,41 @@
+{
+  "name": "Hauch Borons",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Schlaf",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Deine Umgebung wird im Radius von 8 Schritt von absoluter Dunkelheit erfüllt, die dich selbst nicht einschränkt. Das Gebiet gilt als geweihter Boden. Die Liturgie gilt zusätzlich als Konterprobe (12) gegen Lichtzauber, die bei Gelingen aufgehoben werden.",
+    "maechtig": "Mit zwei Stufen gilt der Boden als heilig.",
+    "schwierigkeit": "12",
+    "modifikationen": "Begleiter (–4, Wirkungsdauer 4 Minuten; die Dunkelheit bewegt sich mit dir.)",
+    "vorbereitung": "16 Aktionen",
+    "ziel": "Zone",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Stunde",
+    "kosten": "8 KaP",
+    "erlernen": "Brn 14",
+    "pw": 0,
+    "gruppe": 21
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "TQZz8AYMXIlbwp8I",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!TQZz8AYMXIlbwp8I"
+}

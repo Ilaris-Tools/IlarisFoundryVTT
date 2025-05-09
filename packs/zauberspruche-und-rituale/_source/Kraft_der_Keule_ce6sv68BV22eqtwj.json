@@ -1,0 +1,41 @@
+{
+  "name": "Kraft der Keule",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Keulenrituale, Kraft",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Gegen \"Geister\" – also Wesen der Kategorie Dämon, Elementar, Untoter, Feenwesen – steigt der Waffenschaden der Keule um +2.",
+    "maechtig": "Der Bonus steigt um +1.",
+    "schwierigkeit": "12",
+    "modifikationen": "Permanenz (Wirkungsdauer bis die Bindung gelöst wird, Kosten 8 AsP, davon 1 gAsP)",
+    "vorbereitung": "16 Aktionen",
+    "ziel": "Knochenkeule",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Stunde",
+    "kosten": "8 AsP",
+    "erlernen": "Smn 14",
+    "pw": 0,
+    "gruppe": 10
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "ce6sv68BV22eqtwj",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!ce6sv68BV22eqtwj"
+}

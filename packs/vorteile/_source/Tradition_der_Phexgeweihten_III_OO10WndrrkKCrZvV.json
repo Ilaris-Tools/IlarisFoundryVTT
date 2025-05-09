@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Phexgeweihten III",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut IN 8, Vorteil Tradition der Phexgeweihten II",
+    "gruppe": 7,
+    "text": "Erlaubt die spontane Modifikation Opferung (Liturgie +4): Ein rituelles Opfer erleichtert die Liturgie um +4. Der Opfergegenstand wird dabei verbraucht, zerstört oder verschwindet. Phexgeweihte opfern einen wertvollen Besitz."
+  },
+  "_id": "OO10WndrrkKCrZvV",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!OO10WndrrkKCrZvV"
+}

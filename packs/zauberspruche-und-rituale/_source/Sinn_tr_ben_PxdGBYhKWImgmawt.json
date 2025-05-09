@@ -1,0 +1,41 @@
+{
+  "name": "Sinn trüben",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Eigenschaften, Hexenflüche",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Bei deinem Opfer trübt sich ein Sinn deiner Wahl. Alle Tätigkeiten, die den Einsatz dieses Sinnes benötigen, sind um –4 erschwert.",
+    "maechtig": "Der Malus steigt um –4.",
+    "schwierigkeit": "Magieresistenz",
+    "modifikationen": "",
+    "vorbereitung": "4 Aktionen",
+    "ziel": "Einzelperson",
+    "reichweite": "8 Schritt",
+    "wirkungsdauer": "1 Tag",
+    "kosten": "16 AsP",
+    "erlernen": "Hex 12",
+    "pw": 0,
+    "gruppe": 9
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "PxdGBYhKWImgmawt",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!PxdGBYhKWImgmawt"
+}
