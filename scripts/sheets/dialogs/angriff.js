@@ -184,12 +184,7 @@ export class AngriffDialog extends Dialog {
         let text_dm = '';
         let nodmg = false;
         let trefferzone = 0;
-        // TDOO: this differ between angriff and nk/fk waffen, define get_tp() in both?
-        // let schaden = item.data.data.schaden;
-        let schaden = item.system.tp.replace(/[Ww]/g, "d");
-        if(this.actor.type == "held") {
-            schaden = item.system.schaden.replace(/[Ww]/g, "d");
-        }
+        let schaden = item.getTp();
         schaden = `(${schaden})`
 
         if (manoever.kbak.selected) {
@@ -273,28 +268,6 @@ export class AngriffDialog extends Dialog {
             );
         }
         
-        // Schildspalter km_shsp
-        if (manoever.km_shsp.selected) {
-            mod_at += 2;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_shsp']}: +2\n`);
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_shsp']}\n`);
-        }
-        // Niederwerfen km_ndwf
-        if (manoever.km_ndwf.selected) {
-            mod_at -= 4;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_ndwf']}\n`);
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_ndwf']}\n`)
-            nodmg = true; // TODO: error message if already true?
-        }
-        
-        // Todesstoß km_tdst
-        if (manoever.km_tdst.selected) {
-            mod_at -= 8;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_tdst']}\n`);
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_tdst_dm']}\n`);
-        }
-        
-
         // Modifikator
         let modifikator = Number(manoever.mod.selected);
         if (modifikator != 0) {

@@ -32,6 +32,10 @@ export class NahkampfwaffeSheet extends IlarisItemSheet {
         });
     }
 
+    getTp() {
+        return this.document.system.schaden?.replace(/[Ww]/g, "d") || "";
+    }
+
     // getData() {
     //     const data = super.getData();
     //     return data;
