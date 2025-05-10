@@ -32,7 +32,7 @@
         "affectedByInput": true
       }
     },
-    "gruppe": "0",
+    "gruppe": "4",
     "probe": "VT -4",
     "gegenprobe": "",
     "text": "Der Verteidiger fügt dem Angreifer seinen Waffenschaden plus die GS des Angreifers zu. Voraussetzungen: größere Reichweite; Gegner kombiniert die Aktionen Bewegung und Konflikt; die Bewegung muss vor dem Angriff ausgeführt werden."
@@ -47,7 +47,7 @@
     "systemId": "Ilaris",
     "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746877596940,
+    "modifiedTime": 1746879139740,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

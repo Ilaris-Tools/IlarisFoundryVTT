@@ -19,7 +19,7 @@
         "affectedByInput": true
       }
     },
-    "gruppe": "0",
+    "gruppe": "4",
     "probe": "VT -2-BE",
     "gegenprobe": "",
     "text": "Der Verteidiger entgeht dem Angriff und seinen Auswirkungen vollständig. Ausweichen ist die sinnvollste waffenlose Abwehr gegen Bewaffnete (Siehe Waffeneigenschaft Zerbrechlich auf S. 47)."
@@ -34,7 +34,7 @@
     "systemId": "Ilaris",
     "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746877680152,
+    "modifiedTime": 1746879146912,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
