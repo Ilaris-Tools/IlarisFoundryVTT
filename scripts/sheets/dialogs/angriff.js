@@ -263,6 +263,9 @@ export class AngriffDialog extends Dialog {
                 text_vt = text_vt.concat(
                     `${manoever.name}: (\n${text_at})\n`,
                 );
+                text_dm = text_dm.concat(
+                    `${manoever.name}: (\n${text_at})\n`,
+                );
             }
         });
 
