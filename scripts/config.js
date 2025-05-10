@@ -372,17 +372,52 @@ let manoever = {
         LOADING_TIME: "Ladezeit/Vorbereitungszeit",
         SPECIAL_RESOURCE: "Ressource für Zauber/Liturgien",
         WEAPON_DAMAGE: "Waffenschaden",
-        ZERO_DAMAGE: "Kein Schaden"
+        ZERO_DAMAGE: "Kein Schaden",
+        CHANGE_DAMAGE_TYPE: "Schadenstyp ändern",
+        ARMOR_BREAKING: "Rüstung ignorieren",
+        SPECIAL_TEXT: "Spezialeffekt"
     },
     operator: {
         MULTIPLY: 'Multiplizieren',
         ADD: 'Addieren',
         SUBTRACT: 'Subtrahieren'
     },
-    modifications_tooltip: "Mit den Modifikatoren bestimmst du was dein Manöver überhaupt macht. Empfehlung ist den Operator Subtrahieren nur wenn nötig einzusetzen (eine -1 liest sich schneller als Subtrahieren), zb. wenn in Target der Belastungswert (actor.system.abgeleitet.be) gesucht wird und abgezogen werden soll. Als Bespiel der Wuchtschlag besitzt einen Modifikator mit Typ Angriff/Fernkampf mit einem Wert von -1 und einem Operator Addieren und einen Modifikator mit Typ Schaden mit einem Wert von 1 und einem Operator Addieren. Damit werden Angriffe mit dem Wuchtschlag wenn du in seinem Inputfeld 2 einträgst mit -2AT und +2TP modifiziert.",
-    numberInput_tooltip: "Hier kannst du minimal und maximal Wert des Inputfelds angeben. Du kannst diese Felder auch beide leer, dann ist das Inputfeld nicht limitiert bzw nur in eine Richtung limitiert.",
-    selectors_tooltip: "Die Auswahl bestimmt welche Selektoren im Würfeldialog für dieses Manöver angezeigt werden. Die Auswahlen sind: Checkbox, Inputfeld, Trefferzonendropdown. Checkbox ist bei neuem Manövern standardmäßig asugewählt und gibt dir einfach nur eine Checkbox, um das Manöver zu aktivieren. Inputfeld ist ein Textfeld, in dem du einen Wert eingeben kannst. Trefferzonendropdown ist ein Dropdown, in dem du eine Trefferzone auswählen kannst.",
-    voraussetzung_tooltip: "Bestimmt welche Voraussetzung(en) für das Manöver erforderlich sind. Es können mehrere Voraussetzungen angegeben werden, die dann alle erfüllt sein müssen (UND-Verknüpfung). Die Voraussetzungstypen Vorteile und Stile erlauben eine ODER-Verknüpfung, wenn im Feld Vorteile also mehrere Vorteile als Voraussetzung angegeben sind, muss der Charakter nur über einen der Vorteile verfügen. Stile (Übernatürliche und Kampf) können nicht mit den übrigen Vorteilen durch eine ODER-Verknüpfung kombiniert werden, da meist nur ein Stil gleichzeitig verwendet werden kann, siehe Regelwerk. Wenn ein Manöver durch ein Vorteil und einen Stil freigeschlatet wird, muss ein neues Manöver erstellt werden.",
+    labels: {
+        prerequisites: "Voraussetzungen",
+        prerequisitesDescription: "Lege hier fest, welche Voraussetzungen erfüllt sein müssen, um dieses Manöver nutzen zu können.",
+        prerequisiteType: "Voraussetzungtyp",
+        prerequisiteDescription: "Voraussetzung Beschreibung",
+        advantages: "Vorteile",
+        styles: "Stile",
+        weaponProperties: "Waffeneigenschaften",
+        inputs: "Inputs",
+        inputsDescription: "Hier legst du fest, welche Eingabefelder im Würfeldialog für dieses Manöver angezeigt werden:",
+        inputTypes: {
+            checkbox: "Checkbox - Eine einfache Ja/Nein Auswahl",
+            number: "Nummerinputfeld - Ein Feld für Zahleneingaben",
+            hitZone: "Trefferzonendropdown - Auswahl einer spezifischen Trefferzone"
+        },
+        inputLabel: "Inputlabel",
+        inputType: "Inputtype",
+        numberLimits: "Zahlenbegrenzung",
+        min: "Min",
+        max: "Max",
+        modifications: "Modifikatoren",
+        modificationsDescription: "Hier definierst du die Effekte des Manövers. Empfehlungen:",
+        modificationsHints: [
+            "Verwende \"Subtrahieren\" nur wenn nötig (z.B. für Belastungswert, wenn du das Feld Target verwendest)",
+            "Eine -1 ist leichter zu lesen als \"Subtrahieren\"",
+            "Beispiel Wuchtschlag: AT -1 (Addieren) und Schaden +1 (Addieren)"
+        ],
+        modificationType: "Modifikatortyp",
+        value: "Wert",
+        operator: "Operator",
+        target: "Target",
+        targetPlaceholder: "z.B. actor.system.abgeleitete.be",
+        affectedByInput: "Wird von Input beeinflusst",
+        affectedByInputDescription: "Wenn aktiviert, wird der Wert mit der Eingabe multipliziert",
+        specialEffect: "Spezialeffekt beschreiben"
+    }
 };
 ILARIS.manoever = manoever;
 

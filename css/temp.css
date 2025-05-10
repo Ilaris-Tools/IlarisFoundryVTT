@@ -245,3 +245,26 @@ input.titel-input {
     }
   }
 }
+
+.flexrow {
+  margin: 4px 0;
+  align-items: center;
+}
+
+.flexrow label {
+  min-width: 150px;
+}
+
+input[type="text"]:focus, 
+input[type="number"]:focus, 
+select:focus, 
+textarea:focus {
+    border-color: #782e22;
+    box-shadow: 0 0 3px rgba(120, 46, 34, 0.3);
+}
+
+hr {
+  margin: 16px 0;
+  border: 0;
+  border-top: 1px solid #353535;
+} 

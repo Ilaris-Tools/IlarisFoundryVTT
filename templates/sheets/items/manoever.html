@@ -1,201 +1,21 @@
 {{log 'manoever' this}}
 <form class="{{cssClass}}">
-    <div>
-        <div>
-            <header class="sheet-header">
-                <div class="header-fields">
-                    <h1 class="charname">
-                        <input name="name" type="text" value="{{item.name}}" />
-                    </h1>
-                </div>
-            </header>
-        </div>
-        <div class="flexrow">
+    <div class="manoever-sheet">
+        <header class="sheet-header">
+            <div class="header-fields">
+                <h1 class="charname">
+                    <input name="name" type="text" value="{{item.name}}" placeholder="Manövername" />
+                </h1>
+            </div>
+        </header>
+
+        <div class="flexrow section">
             <label><b>Manövertyp:</b></label>
             <select name="system.gruppe">
                 {{selectOptions manoever.manoever_type selected=item.system.gruppe}}
             </select>
         </div>
-        <div class="manoever-einstellungen">
-            <div class="flexrow">
-                <div><b>Voraussetzungen </b><a class="add-voraussetzung">[+]</a><b>: </b></div>
-                <a title="{{manoever.voraussetzung_tooltip}}"><i class="fas fa-info"></i></a>
-            </div>
-            {{#each item.system.voraussetzungen}}
-                <div class="field">
-                    <div class="flexrow row">
-                        <input
-                            name="system.voraussetzungen.{{@index}}.name"
-                            value="{{this.name}}"
-                            type="text"
-                            data-dtype="String"
-                        />
-                        <a
-                            class="voraussetzung-delete icon-small delete-button"
-                            data-voraussetzungid="{{@index}}"
-                            style="float: right"
-                            ><i class="fas fa-trash"></i
-                        ></a>
-                    </div>
-                    <div class="flexrow row">
-                        <label>Voraussetzungtyp:</label>
-                        <select name="system.voraussetzungen.{{@index}}.type">
-                            {{selectOptions ../manoever.voraussetzung_type selected=this.type}}
-                        </select> 
-                    </div>   
-                    <div class="flexrow row">
-                        {{#if (ifEq this.type "VORTEIL")}} 
-                            <label>Vorteile:</label>
-                            <multi-select name="system.voraussetzungen.{{@index}}.value">
-                                {{selectOptions ../vorteile selected=this.value valueAttr="key" labelAttr="label"}}
-                            </multi-select>
-                        {{/if}}
-                        {{#if (ifEq this.type "STILE")}}
-                            <label>Stile:</label> 
-                            <multi-select name="system.voraussetzungen.{{@index}}.value">
-                                {{selectOptions ../stile selected=this.value valueAttr="key" labelAttr="label"}}
-                            </multi-select>
-                        {{/if}}
-                        {{#if (ifEq this.type "WAFFENEIGENSCHAFT")}} 
-                            <label>Waffeneigenschaften:</label>
-                            <select name="system.voraussetzungen.{{@index}}.value">
-                                {{selectOptions ../waffeneigenschaften selected=this.value}}
-                            </select>
-                        {{/if}}
-                    </div> 
-                </div> 
-                <hr>        
-            {{/each}}
-        </div>
-        <div class="manoever-einstellungen">
-            <div class="flexrow">
-                <div><b>Inputs </b><a class="add-input">[+]</a><b>: </b></div>
-                <a title="{{manoever.selectors_tooltip}}"><i class="fas fa-info"></i></a>
-            </div>
-            {{#each item.system.inputs}}
-                <div class="field">
-                    <div class="flexrow">
-                        <label><b>Inputlabel:</b></label>
-                        <input
-                            name="system.inputs.{{@index}}.label"
-                            value="{{this.label}}"
-                            type="text"
-                            data-dtype="String"
-                        />
-                        <a
-                            class="delete-input icon-small delete-button"
-                            data-inputid="{{@index}}"
-                            style="float: right"
-                            ><i class="fas fa-trash"></i
-                        ></a>
-                    </div>
-                    <div class="flexrow row">
-                        <label>Inputtype:</label>
-                        <select name="system.inputs.{{@index}}.field">
-                            {{selectOptions ../manoever.selector_type selected=this.field}}
-                        </select>            
-                    </div>   
-                    <div class="flexrow row">
-                        {{#if (ifEq this.field "NUMBER")}} 
-                            <div class="flexrow">
-                                <a title="{{manoever.numberInput_tooltip}}"><i class="fas fa-info"></i></a>
-                                <label>min:</label>
-                                <input
-                                    name="system.inputs.{{@index}}.min"
-                                    type="number"
-                                    value="{{this.min}}"
-                                    data-dtype="Number"
-                                />
-                                <label>max:</label>
-                                <input
-                                    name="system.inputs.{{@index}}.max"
-                                    type="number"
-                                    value="{{this.max}}"
-                                    data-dtype="Number"
-                                />
-                            </div>
-                        {{/if}}
-                    </div> 
-                </div> 
-                <hr>        
-            {{/each}}
-        </div>
-        <div class="manoever-einstellungen">
-            <div class="flexrow">
-                <div><b>Modifikatoren </b><a class="add-modification">[+]</a><b>: </b></div>
-                <a title="{{manoever.modifications_tooltip}}"><i class="fas fa-info"></i></a>
-            </div>
-            {{#each item.system.modifications}}
-                <div class="field">
-                    <div class="flexrow">
-                        <label>Modifikatortyp:</label>
-                        <select name="system.modifications.{{@index}}.type">
-                            {{selectOptions ../manoever.modification_type selected=this.type}}
-                        </select>
-                        <a
-                            class="delete-modification icon-small delete-button"
-                            data-modificationid="{{@index}}"
-                            style="float: right"
-                            ><i class="fas fa-trash"></i
-                        ></a>
-                    </div>
-                    <div class="flexrow">
-                        <label>Wert:</label>
-                        {{#if (ifEq this.type "CHANGE_DAMAGE_TYPE")}}
-                            <select name="system.modifications.{{@index}}.value">
-                                {{selectOptions ../schadenstypen selected=this.value}}
-                            </select>
-                        {{else if (ifEq this.type "SPECIAL_TEXT")}}
-                            <input
-                                name="system.modifications.{{@index}}.value"
-                                type="text"
-                                value="{{this.value}}"
-                                data-dtype="String"
-                            />
-                        {{else}}
-                            {{#unless (ifEq this.type "ARMOR_BREAKING")}}
-                                <input
-                                    name="system.modifications.{{@index}}.value"
-                                    type="number"
-                                    value="{{this.value}}"
-                                    data-dtype="Number"
-                                />
-                            {{/unless}}
-                        {{/if}}
-                    </div>
-                    <div class="flexrow row">
-                        {{#unless (or (ifEq this.type "CHANGE_DAMAGE_TYPE") (ifEq this.type "ARMOR_BREAKING") (ifEq this.type "SPECIAL_TEXT"))}}
-                            <label>Operator:</label>
-                            <select name="system.modifications.{{@index}}.operator">
-                                {{selectOptions ../manoever.operator selected=this.operator}}
-                            </select>          
-                        {{/unless}}
-                    </div>   
-                    <div class="flexrow row">
-                        {{#unless (or (ifEq this.type "CHANGE_DAMAGE_TYPE") (ifEq this.type "ARMOR_BREAKING") (ifEq this.type "SPECIAL_TEXT"))}}
-                            <label><b>Target:</b></label>
-                            <input
-                                name="system.modifications.{{@index}}.target"
-                                value="{{this.target}}"
-                                type="text"
-                                data-dtype="String"
-                            />
-                        {{/unless}}
-                    </div>
-                    <div class="flexrow row">
-                        {{#unless (or (ifEq this.type "CHANGE_DAMAGE_TYPE") (ifEq this.type "ARMOR_BREAKING") (ifEq this.type "SPECIAL_TEXT"))}}
-                            <label><b>Wird von Input beeinflusst:</b></label>
-                            <input
-                                type="checkbox"
-                                name="system.modifications.{{@index}}.affectedByInput"
-                                {{checked this.affectedByInput}}
-                            />
-                        {{/unless}}
-                    </div>
-                </div> 
-                <hr>        
-            {{/each}}
-        </div>
+
         <div class="flexrow">
             <label><b>Probe:</b></label>
             <input name="system.probe" value="{{item.system.probe}}" type="text" data-dtype="String" />
@@ -212,6 +32,211 @@
         <div>
             <label><b>Beschreibung:</b></label>
             <textarea rows="8" name="system.text">{{item.system.text}}</textarea>
+        </div>
+
+        <div class="manoever-section">
+            <div class="section-header">
+                <div><b>{{manoever.labels.prerequisites}} </b><a class="add-voraussetzung">[+]</a></div>
+            </div>
+            <div class="section-description">
+                {{manoever.labels.prerequisitesDescription}}
+            </div>
+            {{#each item.system.voraussetzungen}}
+                <div class="field">
+                    <div class="flexrow row">
+                        <input
+                            name="system.voraussetzungen.{{@index}}.name"
+                            value="{{this.name}}"
+                            type="text"
+                            data-dtype="String"
+                            placeholder="{{../manoever.labels.prerequisiteDescription}}"
+                        />
+                        <a
+                            class="voraussetzung-delete icon-small delete-button"
+                            data-voraussetzungid="{{@index}}"
+                            ><i class="fas fa-trash"></i
+                        ></a>
+                    </div>
+                    <div class="flexrow row">
+                        <label>{{../manoever.labels.prerequisiteType}}:</label>
+                        <select name="system.voraussetzungen.{{@index}}.type">
+                            {{selectOptions ../manoever.voraussetzung_type selected=this.type}}
+                        </select> 
+                    </div>   
+                    <div class="flexrow row">
+                        {{#if (ifEq this.type "VORTEIL")}} 
+                            <label>{{../manoever.labels.advantages}}:</label>
+                            <multi-select name="system.voraussetzungen.{{@index}}.value">
+                                {{selectOptions ../vorteile selected=this.value valueAttr="key" labelAttr="label"}}
+                            </multi-select>
+                        {{/if}}
+                        {{#if (ifEq this.type "STILE")}}
+                            <label>{{../manoever.labels.styles}}:</label> 
+                            <multi-select name="system.voraussetzungen.{{@index}}.value">
+                                {{selectOptions ../stile selected=this.value valueAttr="key" labelAttr="label"}}
+                            </multi-select>
+                        {{/if}}
+                        {{#if (ifEq this.type "WAFFENEIGENSCHAFT")}} 
+                            <label>{{../manoever.labels.weaponProperties}}:</label>
+                            <select name="system.voraussetzungen.{{@index}}.value">
+                                {{selectOptions ../waffeneigenschaften selected=this.value}}
+                            </select>
+                        {{/if}}
+                    </div> 
+                </div> 
+                <hr>        
+            {{/each}}
+        </div>
+
+        <div class="manoever-section">
+            <div class="section-header">
+                <div><b>{{manoever.labels.inputs}} </b><a class="add-input">[+]</a></div>
+            </div>
+            <div class="section-description">
+                {{manoever.labels.inputsDescription}}
+                <ul>
+                    <li>{{manoever.labels.inputTypes.checkbox}}</li>
+                    <li>{{manoever.labels.inputTypes.number}}</li>
+                    <li>{{manoever.labels.inputTypes.hitZone}}</li>
+                </ul>
+            </div>
+            {{#each item.system.inputs}}
+                <div class="field">
+                    <div class="flexrow">
+                        <label><b>{{../manoever.labels.inputLabel}}:</b></label>
+                        <input
+                            name="system.inputs.{{@index}}.label"
+                            value="{{this.label}}"
+                            type="text"
+                            data-dtype="String"
+                            placeholder="{{../manoever.labels.inputLabel}}"
+                        />
+                        <a
+                            class="delete-input icon-small delete-button"
+                            data-inputid="{{@index}}"
+                            ><i class="fas fa-trash"></i
+                        ></a>
+                    </div>
+                    <div class="flexrow row">
+                        <label>{{../manoever.labels.inputType}}:</label>
+                        <select name="system.inputs.{{@index}}.field">
+                            {{selectOptions ../manoever.selector_type selected=this.field}}
+                        </select>            
+                    </div>   
+                    <div class="flexrow row">
+                        {{#if (ifEq this.field "NUMBER")}} 
+                            <div class="flexrow number-limits">
+                                <label>{{../manoever.labels.numberLimits}}:</label>
+                                <div class="number-input-group">
+                                    <label>{{../manoever.labels.min}}:</label>
+                                    <input
+                                        name="system.inputs.{{@index}}.min"
+                                        type="number"
+                                        value="{{this.min}}"
+                                        data-dtype="Number"
+                                    />
+                                </div>
+                                <div class="number-input-group">
+                                    <label>{{../manoever.labels.max}}:</label>
+                                    <input
+                                        name="system.inputs.{{@index}}.max"
+                                        type="number"
+                                        value="{{this.max}}"
+                                        data-dtype="Number"
+                                    />
+                                </div>
+                            </div>
+                        {{/if}}
+                    </div> 
+                </div> 
+                <hr>        
+            {{/each}}
+        </div>
+
+        <div class="manoever-section">
+            <div class="section-header">
+                <div><b>{{manoever.labels.modifications}} </b><a class="add-modification">[+]</a></div>
+            </div>
+            <div class="section-description">
+                {{manoever.labels.modificationsDescription}}
+                <ul>
+                    {{#each manoever.labels.modificationsHints}}
+                        <li>{{this}}</li>
+                    {{/each}}
+                </ul>
+            </div>
+            {{#each item.system.modifications}}
+                <div class="field">
+                    <div class="flexrow">
+                        <label>{{../manoever.labels.modificationType}}:</label>
+                        <select name="system.modifications.{{@index}}.type">
+                            {{selectOptions ../manoever.modification_type selected=this.type}}
+                        </select>
+                        <a
+                            class="delete-modification icon-small delete-button"
+                            data-modificationid="{{@index}}"
+                            ><i class="fas fa-trash"></i
+                        ></a>
+                    </div>
+                    <div class="flexrow">
+                        <label>{{../manoever.labels.value}}:</label>
+                        {{#if (ifEq this.type "CHANGE_DAMAGE_TYPE")}}
+                            <select name="system.modifications.{{@index}}.value">
+                                {{selectOptions ../schadenstypen selected=this.value}}
+                            </select>
+                        {{else if (ifEq this.type "SPECIAL_TEXT")}}
+                            <input
+                                name="system.modifications.{{@index}}.value"
+                                type="text"
+                                value="{{this.value}}"
+                                data-dtype="String"
+                                placeholder="{{../manoever.labels.specialEffect}}"
+                            />
+                        {{else}}
+                            {{#unless (ifEq this.type "ARMOR_BREAKING")}}
+                                <input
+                                    name="system.modifications.{{@index}}.value"
+                                    type="number"
+                                    value="{{this.value}}"
+                                    data-dtype="Number"
+                                />
+                            {{/unless}}
+                        {{/if}}
+                    </div>
+                    <div class="flexrow row">
+                        {{#unless (or (ifEq this.type "CHANGE_DAMAGE_TYPE") (ifEq this.type "ARMOR_BREAKING") (ifEq this.type "SPECIAL_TEXT"))}}
+                            <label>{{../manoever.labels.operator}}:</label>
+                            <select name="system.modifications.{{@index}}.operator">
+                                {{selectOptions ../manoever.operator selected=this.operator}}
+                            </select>          
+                        {{/unless}}
+                    </div>   
+                    <div class="flexrow row">
+                        {{#unless (or (ifEq this.type "CHANGE_DAMAGE_TYPE") (ifEq this.type "ARMOR_BREAKING") (ifEq this.type "SPECIAL_TEXT"))}}
+                            <label><b>{{../manoever.labels.target}}:</b></label>
+                            <input
+                                name="system.modifications.{{@index}}.target"
+                                value="{{this.target}}"
+                                type="text"
+                                data-dtype="String"
+                                placeholder="{{../manoever.labels.targetPlaceholder}}"
+                            />
+                        {{/unless}}
+                    </div>
+                    <div class="flexrow row">
+                        {{#unless (or (ifEq this.type "CHANGE_DAMAGE_TYPE") (ifEq this.type "ARMOR_BREAKING") (ifEq this.type "SPECIAL_TEXT"))}}
+                            <label><b>{{../manoever.labels.affectedByInput}}:</b></label>
+                            <input
+                                type="checkbox"
+                                name="system.modifications.{{@index}}.affectedByInput"
+                                {{checked this.affectedByInput}}
+                            />
+                            <span class="checkbox-description">{{../manoever.labels.affectedByInputDescription}}</span>
+                        {{/unless}}
+                    </div>
+                </div> 
+                <hr>        
+            {{/each}}
         </div>
     </div>
 </form>
