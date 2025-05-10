@@ -146,16 +146,18 @@
                                 {{selectOptions ../schadenstypen selected=this.value}}
                             </select>
                         {{else}}
-                            <input
-                                name="system.modifications.{{@index}}.value"
-                                type="number"
-                                value="{{this.value}}"
-                                data-dtype="Number"
-                            />
+                            {{#unless (ifEq this.type "ARMOR_BREAKING")}}
+                                <input
+                                    name="system.modifications.{{@index}}.value"
+                                    type="number"
+                                    value="{{this.value}}"
+                                    data-dtype="Number"
+                                />
+                            {{/unless}}
                         {{/if}}
                     </div>
                     <div class="flexrow row">
-                        {{#unless (ifEq this.type "CHANGE_DAMAGE_TYPE")}}
+                        {{#unless (or (ifEq this.type "CHANGE_DAMAGE_TYPE") (ifEq this.type "ARMOR_BREAKING"))}}
                             <label>Operator:</label>
                             <select name="system.modifications.{{@index}}.operator">
                                 {{selectOptions ../manoever.operator selected=this.operator}}
@@ -163,7 +165,7 @@
                         {{/unless}}
                     </div>   
                     <div class="flexrow row">
-                        {{#unless (ifEq this.type "CHANGE_DAMAGE_TYPE")}}
+                        {{#unless (or (ifEq this.type "CHANGE_DAMAGE_TYPE") (ifEq this.type "ARMOR_BREAKING"))}}
                             <label><b>Target:</b></label>
                             <input
                                 name="system.modifications.{{@index}}.target"

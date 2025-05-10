@@ -760,5 +760,5 @@ let schadenstypen = {
     HUMUS: "Humus",
     LUFT: "Luft",
     WASSER: "Wasser"
-  }
-  ILARIS.schadenstypen = schadenstypen;
+}
+ILARIS.schadenstypen = schadenstypen;

@@ -11,6 +11,11 @@ describe('processModification', () => {
                 3: 'Arm',
                 4: 'Leg',
             },
+            schadenstypen: {
+                FEUER: 'Feuer',
+                EIS: 'Eis',
+                PROFAN: 'Profan'
+            },
         },
     };
 
@@ -25,6 +30,11 @@ describe('processModification', () => {
             schaden: '',
         };
         global.signed = mockSigned;
+        mockConfig.ILARIS.schadenstypen = {
+            FEUER: 'Feuer',
+            EIS: 'Eis',
+            PROFAN: 'Profan'
+        };
     });
 
     afterEach(() => {
@@ -123,6 +133,46 @@ describe('processModification', () => {
 
         expect(rollValues.mod_at).toBe(14); // (2 * 2) + 5 = 14
         expect(rollValues.text_at).toContain('Test Manoever: +14');
+    });
+
+    it('should handle CHANGE_DAMAGE_TYPE type', () => {
+        const modification = { type: 'CHANGE_DAMAGE_TYPE', value: 'FEUER' };
+        processModification(modification, 1, 'Test Manoever', null, rollValues, mockConfig);
+
+        expect(rollValues.text_dm).toContain('Test Manoever: Schadenstyp zu Feuer');
+        // Should not modify any other values
+        expect(rollValues.mod_dm).toBe(0);
+        expect(rollValues.schaden).toBe('');
+    });
+
+    it('should handle CHANGE_DAMAGE_TYPE type with trefferzone', () => {
+        const modification = { type: 'CHANGE_DAMAGE_TYPE', value: 'EIS' };
+        processModification(modification, 1, 'Test Manoever', 1, rollValues, mockConfig);
+
+        expect(rollValues.text_dm).toContain('Test Manoever (Head): Schadenstyp zu Eis');
+        // Should not modify any other values
+        expect(rollValues.mod_dm).toBe(0);
+        expect(rollValues.schaden).toBe('');
+    });
+
+    it('should handle ARMOR_BREAKING type', () => {
+        const modification = { type: 'ARMOR_BREAKING' };
+        processModification(modification, 1, 'Test Manoever', null, rollValues, mockConfig);
+
+        expect(rollValues.text_dm).toContain('Test Manoever: Ignoriert Rüstung');
+        // Should not modify any other values
+        expect(rollValues.mod_dm).toBe(0);
+        expect(rollValues.schaden).toBe('');
+    });
+
+    it('should handle ARMOR_BREAKING type with trefferzone', () => {
+        const modification = { type: 'ARMOR_BREAKING' };
+        processModification(modification, 1, 'Test Manoever', 2, rollValues, mockConfig);
+
+        expect(rollValues.text_dm).toContain('Test Manoever (Torso): Ignoriert Rüstung');
+        // Should not modify any other values
+        expect(rollValues.mod_dm).toBe(0);
+        expect(rollValues.schaden).toBe('');
     });
 });
 

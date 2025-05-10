@@ -263,6 +263,8 @@ export class AngriffDialog extends Dialog {
                 }
             }
         });
+
+        // Trefferzone if not set by manoever
         if(trefferzone == 0){
             let zonenroll = new Roll('1d6');
             zonenroll.evaluate();
