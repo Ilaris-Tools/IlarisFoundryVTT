@@ -12,16 +12,25 @@
         ]
       }
     },
-    "gruppe": "0",
-    "probe": "VT -4",
-    "gegenprobe": "",
-    "text": "Wenn die Verteidigung gelingt, darfst du in der nächsten eigenen Initiativephase eine Freie Aktion nutzen, um deinen Gegner (ein weiteres Mal) anzugreifen. Voraussetzungen: Kampf im Schnellen Stil; kein Unterlaufen seit letztem Beginn einer eigenen Initiativephase",
     "inputs": {
       "0": {
         "label": "",
         "field": "CHECKBOX"
       }
-    }
+    },
+    "modifications": {
+      "0": {
+        "type": "DEFENCE",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
+    "gruppe": "0",
+    "probe": "VT -4",
+    "gegenprobe": "",
+    "text": "Wenn die Verteidigung gelingt, darfst du in der nächsten eigenen Initiativephase eine Freie Aktion nutzen, um deinen Gegner (ein weiteres Mal) anzugreifen. Voraussetzungen: Kampf im Schnellen Stil; kein Unterlaufen seit letztem Beginn einer eigenen Initiativephase"
   },
   "effects": [],
   "folder": null,
@@ -31,9 +40,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.1",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746367775857,
+    "modifiedTime": 1746878498863,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

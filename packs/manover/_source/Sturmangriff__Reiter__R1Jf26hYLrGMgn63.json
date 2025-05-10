@@ -25,6 +25,15 @@
         "max": null
       }
     },
+    "modifications": {
+      "0": {
+        "type": "DAMAGE",
+        "value": 1,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
     "gruppe": "0",
     "probe": "",
     "gegenprobe": "",
@@ -47,9 +56,9 @@
     "duplicateSource": null,
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.1",
+    "systemVersion": "12.0.2",
     "createdTime": 1745306187360,
-    "modifiedTime": 1746449103958,
+    "modifiedTime": 1746878381496,
     "lastModifiedBy": "FAZTz2Txaxttf8zC"
   },
   "_key": "!items!R1Jf26hYLrGMgn63"

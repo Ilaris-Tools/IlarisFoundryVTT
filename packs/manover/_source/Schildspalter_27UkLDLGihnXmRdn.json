@@ -4,16 +4,32 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "voraussetzungen": [],
-    "gruppe": "0",
-    "probe": "AT +2",
-    "gegenprobe": "",
-    "text": "Du fügst dem Schild deines Gegners deinen Waffenschaden zu. Voraussetzung: Gegner führt Schild.",
     "inputs": {
       "0": {
         "label": "",
         "field": "CHECKBOX"
       }
-    }
+    },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": 2,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      },
+      "1": {
+        "type": "SPECIAL_TEXT",
+        "value": "Schaden auf Schild",
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
+    "gruppe": "0",
+    "probe": "AT +2",
+    "gegenprobe": "",
+    "text": "Du fügst dem Schild deines Gegners deinen Waffenschaden zu. Voraussetzung: Gegner führt Schild."
   },
   "effects": [],
   "folder": null,
@@ -23,9 +39,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.1",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746367682511,
+    "modifiedTime": 1746878273898,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

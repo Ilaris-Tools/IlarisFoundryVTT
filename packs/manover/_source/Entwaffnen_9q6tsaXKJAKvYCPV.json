@@ -4,16 +4,39 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "voraussetzungen": [],
-    "gruppe": "0",
-    "probe": "AT -4; VT -4",
-    "gegenprobe": "KK",
-    "text": "Dem Ziel wird eine Waffe deiner Wahl entrissen, die danach zwischen den Kämpfern am Boden liegt. Das Aufheben der Waffe benötigt eine Aktion Konflikt; falls ein anderer Kämpfer das in einer Reaktion verhindern möchte, ist zusätzlich eine vergleichende GE-Probe (I) notwendig. Das Manöver senkt den Schaden des Angriffes auf 0. Sollte der Angriff ohnehin keinen Schaden anrichten – etwa durch andere Manöver – ist das Manöver nicht möglich.",
     "inputs": {
       "0": {
         "label": "",
         "field": "CHECKBOX"
       }
-    }
+    },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      },
+      "1": {
+        "type": "DEFENCE",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      },
+      "2": {
+        "type": "ZERO_DAMAGE",
+        "value": 0,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
+    "gruppe": "0",
+    "probe": "AT -4; VT -4",
+    "gegenprobe": "KK",
+    "text": "Dem Ziel wird eine Waffe deiner Wahl entrissen, die danach zwischen den Kämpfern am Boden liegt. Das Aufheben der Waffe benötigt eine Aktion Konflikt; falls ein anderer Kämpfer das in einer Reaktion verhindern möchte, ist zusätzlich eine vergleichende GE-Probe (I) notwendig. Das Manöver senkt den Schaden des Angriffes auf 0. Sollte der Angriff ohnehin keinen Schaden anrichten – etwa durch andere Manöver – ist das Manöver nicht möglich."
   },
   "effects": [],
   "folder": null,
@@ -23,9 +46,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.1",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746367264226,
+    "modifiedTime": 1746878641190,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

@@ -16,16 +16,25 @@
         ]
       }
     },
-    "gruppe": "2",
-    "probe": "Zauber +4",
-    "gegenprobe": "",
-    "text": "Die Kosten des Zaubers steigen um die Hälfte der Basiskosten, dafür ist der Zauber um 4 Punkte erleichtert. Kann nur einmal pro Zauber eingesetzt werden. Voraussetzungen: Tradition der Anach-nûrim, Borbaradianer, Druiden, Hexen oder Schelme (jeweils) III und Verwendung dieser Tradition",
     "inputs": {
       "0": {
         "label": "",
         "field": "CHECKBOX"
       }
-    }
+    },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": 0,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
+    "gruppe": "2",
+    "probe": "Zauber +4",
+    "gegenprobe": "",
+    "text": "Die Kosten des Zaubers steigen um die Hälfte der Basiskosten, dafür ist der Zauber um 4 Punkte erleichtert. Kann nur einmal pro Zauber eingesetzt werden. Voraussetzungen: Tradition der Anach-nûrim, Borbaradianer, Druiden, Hexen oder Schelme (jeweils) III und Verwendung dieser Tradition"
   },
   "effects": [],
   "folder": null,
@@ -35,9 +44,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.1",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746367272660,
+    "modifiedTime": 1746878007204,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

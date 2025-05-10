@@ -12,16 +12,32 @@
         ]
       }
     },
-    "gruppe": "0",
-    "probe": "AT -4",
-    "gegenprobe": "KK",
-    "text": "Dein Ziel stürzt und liegt am Boden.",
     "inputs": {
       "0": {
         "label": "",
         "field": "CHECKBOX"
       }
-    }
+    },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      },
+      "1": {
+        "type": "SPECIAL_TEXT",
+        "value": "Ziel wird niedergeworfen",
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
+    "gruppe": "0",
+    "probe": "AT -4",
+    "gegenprobe": "KK",
+    "text": "Dein Ziel stürzt und liegt am Boden."
   },
   "effects": [],
   "folder": null,
@@ -31,9 +47,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.1",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746367399379,
+    "modifiedTime": 1746878187506,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

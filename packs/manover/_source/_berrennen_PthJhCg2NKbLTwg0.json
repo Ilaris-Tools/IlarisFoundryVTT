@@ -12,16 +12,25 @@
         ]
       }
     },
-    "gruppe": "0",
-    "probe": "Bewegung und AT",
-    "gegenprobe": "",
-    "text": "Das Reittier stürmt in die gegnerische Formation. Seine Attacke trifft (samt anderen Manövern) alle Gegner in seiner Bahn, bis es durch mindestens 2 erfolgreiche Verteidigungen gestoppt wird. Außerdem richtet die Attacke GS Trefferpunkte zusätzlich an. Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Voraussetzungen: Kampf im Reiterkampfstil; GS Schritt Anlauf; Ziele sind in einer kleineren Größenklasse als das Reittier",
     "inputs": {
       "0": {
         "label": "",
         "field": "CHECKBOX"
       }
-    }
+    },
+    "modifications": {
+      "0": {
+        "type": "DAMAGE",
+        "value": 1,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
+    "gruppe": "0",
+    "probe": "Bewegung und AT",
+    "gegenprobe": "",
+    "text": "Das Reittier stürmt in die gegnerische Formation. Seine Attacke trifft (samt anderen Manövern) alle Gegner in seiner Bahn, bis es durch mindestens 2 erfolgreiche Verteidigungen gestoppt wird. Außerdem richtet die Attacke GS Trefferpunkte zusätzlich an. Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Voraussetzungen: Kampf im Reiterkampfstil; GS Schritt Anlauf; Ziele sind in einer kleineren Größenklasse als das Reittier"
   },
   "effects": [],
   "folder": null,
@@ -31,9 +40,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.1",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746367758443,
+    "modifiedTime": 1746878435425,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

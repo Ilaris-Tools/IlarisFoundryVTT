@@ -10,6 +10,15 @@
         "field": "TREFFER_ZONE"
       }
     },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": -2,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
     "gruppe": "0",
     "probe": "AT -2",
     "gegenprobe": "",
@@ -23,9 +32,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.1",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746448914125,
+    "modifiedTime": 1746878019203,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

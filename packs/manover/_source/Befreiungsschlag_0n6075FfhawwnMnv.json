@@ -12,16 +12,32 @@
         ]
       }
     },
-    "gruppe": "0",
-    "probe": "AT -4",
-    "gegenprobe": "",
-    "text": "Du führst eine Attacke aus, die sich (samt anderen Manövern) gegen alle Ziele in einem Winkel von 180° vor dir richtet. Jedem Ziel steht eine eigene Verteidigung zu. Voraussetzungen: Kampf im Kraftvollen Stil; kein Befreiungsschlag seit letztem Beginn einer eigenen Initiativephase",
     "inputs": {
       "0": {
         "label": "",
         "field": "CHECKBOX"
       }
-    }
+    },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      },
+      "1": {
+        "type": "SPECIAL_TEXT",
+        "value": "Du triffst mehrere Ziele",
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
+    "gruppe": "0",
+    "probe": "AT -4",
+    "gegenprobe": "",
+    "text": "Du führst eine Attacke aus, die sich (samt anderen Manövern) gegen alle Ziele in einem Winkel von 180° vor dir richtet. Jedem Ziel steht eine eigene Verteidigung zu. Voraussetzungen: Kampf im Kraftvollen Stil; kein Befreiungsschlag seit letztem Beginn einer eigenen Initiativephase"
   },
   "effects": [],
   "folder": null,
@@ -31,9 +47,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.1",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746367243428,
+    "modifiedTime": 1746878618482,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

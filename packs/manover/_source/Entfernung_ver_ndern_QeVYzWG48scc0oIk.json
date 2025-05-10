@@ -4,16 +4,25 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "voraussetzungen": [],
-    "gruppe": "0",
-    "probe": "AT -BE",
-    "gegenprobe": "",
-    "text": "Du kannst dich aus dem Nahkampf lösen, ohne Passierschläge zu riskieren. Besonderheiten: Beim Spiel mit Bodenplänen erhält das Ziel in dieser Runde keine Passierschläge durch deine Bewegung.",
     "inputs": {
       "0": {
         "label": "",
         "field": "CHECKBOX"
       }
-    }
+    },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": 0,
+        "operator": "SUBTRACT",
+        "target": "actor.system.abgeleitete.be",
+        "affectedByInput": true
+      }
+    },
+    "gruppe": "0",
+    "probe": "AT -BE",
+    "gegenprobe": "",
+    "text": "Du kannst dich aus dem Nahkampf lösen, ohne Passierschläge zu riskieren. Besonderheiten: Beim Spiel mit Bodenplänen erhält das Ziel in dieser Runde keine Passierschläge durch deine Bewegung."
   },
   "effects": [],
   "folder": null,
@@ -23,9 +32,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.1",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746367258697,
+    "modifiedTime": 1746877951094,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

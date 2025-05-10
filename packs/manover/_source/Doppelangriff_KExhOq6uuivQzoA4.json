@@ -12,16 +12,25 @@
         ]
       }
     },
-    "gruppe": "0",
-    "probe": "2 x AT -4",
-    "gegenprobe": "",
-    "text": "Du führst mit beiden Händen je eine Attacke –4 aus. Beide Angriffe sind unabhängig voneinander; sie werden separat ausgewürfelt, können sich gegen verschiedene Ziele richten und mit unterschiedlichen Manövern versehen werden. Voraussetzungen: Kampf im Beidhändigen Stil; kein Doppelangriff seit letztem Beginn einer eigenen Initiativephase",
     "inputs": {
       "0": {
         "label": "",
         "field": "CHECKBOX"
       }
-    }
+    },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
+    "gruppe": "0",
+    "probe": "2 x AT -4",
+    "gegenprobe": "",
+    "text": "Du führst mit beiden Händen je eine Attacke –4 aus. Beide Angriffe sind unabhängig voneinander; sie werden separat ausgewürfelt, können sich gegen verschiedene Ziele richten und mit unterschiedlichen Manövern versehen werden. Voraussetzungen: Kampf im Beidhändigen Stil; kein Doppelangriff seit letztem Beginn einer eigenen Initiativephase"
   },
   "effects": [],
   "folder": null,
@@ -31,9 +40,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.1",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746367254591,
+    "modifiedTime": 1746877927644,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

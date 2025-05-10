@@ -16,6 +16,22 @@
         "max": null
       }
     },
+    "modifications": {
+      "0": {
+        "type": "DEFENCE",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": false
+      },
+      "1": {
+        "type": "DAMAGE",
+        "value": 1,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
     "gruppe": "0",
     "probe": "VT -4",
     "gegenprobe": "",
@@ -29,9 +45,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.1",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746446638680,
+    "modifiedTime": 1746877596940,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

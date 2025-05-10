@@ -103,7 +103,7 @@
             {{#each item.system.inputs}}
                 <div class="field">
                     <div class="flexrow">
-                        <label><b>{{../manoever.labels.inputLabel}}:</b></label>
+                        <label class="label"><b>{{../manoever.labels.inputLabel}}:</b></label>
                         <input
                             name="system.inputs.{{@index}}.label"
                             value="{{this.label}}"
@@ -126,7 +126,7 @@
                     <div class="flexrow row">
                         {{#if (ifEq this.field "NUMBER")}} 
                             <div class="flexrow number-limits">
-                                <label>{{../manoever.labels.numberLimits}}:</label>
+                                <label class="label">{{../manoever.labels.numberLimits}}:</label>
                                 <div class="number-input-group">
                                     <label>{{../manoever.labels.min}}:</label>
                                     <input

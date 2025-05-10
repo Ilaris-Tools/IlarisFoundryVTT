@@ -18,6 +18,22 @@
         "field": "CHECKBOX"
       }
     },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": 2,
+        "operator": "SUBTRACT",
+        "target": "actor.system.abgeleitete.be",
+        "affectedByInput": true
+      },
+      "1": {
+        "type": "SPECIAL_TEXT",
+        "value": "Dein Ziel muss zurückweichen und sich auf dich konzentrieren",
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
     "gruppe": "0",
     "probe": "AT -2-BE",
     "gegenprobe": "",
@@ -31,9 +47,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.1",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746446650245,
+    "modifiedTime": 1746878600314,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

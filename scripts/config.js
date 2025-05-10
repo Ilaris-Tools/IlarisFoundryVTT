@@ -415,7 +415,7 @@ let manoever = {
         target: "Target",
         targetPlaceholder: "z.B. actor.system.abgeleitete.be",
         affectedByInput: "Wird von Input beeinflusst",
-        affectedByInputDescription: "Wenn aktiviert, wird der Wert mit der Eingabe multipliziert",
+        affectedByInputDescription: "Wenn aktiviert, wird der Wert mit der Eingabe multipliziert, falls ein Inputfeld vorhanden ist. Eine Checkbox wirkt sich nie auf den Wert aus.",
         specialEffect: "Spezialeffekt beschreiben"
     }
 };
