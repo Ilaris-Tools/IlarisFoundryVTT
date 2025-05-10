@@ -251,6 +251,17 @@ export class AngriffDialog extends Dialog {
             });
             if(check == undefined && (number == undefined || number == 0) && (trefferZoneInput == undefined || trefferZoneInput == 0)) return;
             [mod_at,mod_vt,mod_dm,text_at,text_vt,text_dm,trefferzone,schaden] = handleModifications(manoever, number, check, trefferZoneInput,{mod_at,mod_vt,mod_dm,text_at,text_vt,text_dm,trefferzone,schaden,context:this},CONFIG);
+            // Sturmangriff und Überrennen hardcoded for now
+            if (manoever.kbak.selected) {
+                if(manoever.name == 'Sturmangriff') {
+                    mod_at += 4;
+                    text_at = text_at.concat(`${CONFIG.ILARIS.label['km_stag']}: +4\n`);
+                }
+                if(manoever.name == 'Überrennen') {
+                    mod_at += 4;
+                    text_at = text_at.concat(`${CONFIG.ILARIS.label['km_uebr']}: +4\n`);
+                }
+            }
         });
         if(trefferzone == 0){
             let zonenroll = new Roll('1d6');
@@ -258,19 +269,6 @@ export class AngriffDialog extends Dialog {
             text_dm = text_dm.concat(
                 `Trefferzone: ${CONFIG.ILARIS.trefferzonen[zonenroll.total]}\n`,
             );
-        }
-        
-        // Entfernung verändern km_ever
-        if (manoever.km_ever.selected) {
-            let be = systemData.abgeleitete.be || 0
-            mod_at -= be;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_ever']}: -${be}\n`);
-        }
-     
-        // Umreißen km_umre
-        if (manoever.km_umre.selected) {
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_umre']}: Kein Schaden\n`);
-            nodmg = true;
         }
         // Rüstungsbrecher km_rust
         if (manoever.km_rust.selected) {
@@ -284,16 +282,6 @@ export class AngriffDialog extends Dialog {
             text_at = text_at.concat(`${CONFIG.ILARIS.label['km_shsp']}: +2\n`);
             text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_shsp']}\n`);
         }
-        // Stumpfer Schlag km_stsl
-        if (manoever.km_stsl.selected) {
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_stsl']}: Erschöpfung statt Wunde\n`);
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_stsl']}\n`);
-        }
-        // Ausfall km_ausf
-        if (manoever.km_ausf.selected) {
-            mod_at -= 2 + be;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_ausf']}\n`);
-        }
         // Niederwerfen km_ndwf
         if (manoever.km_ndwf.selected) {
             mod_at -= 4;
@@ -301,30 +289,14 @@ export class AngriffDialog extends Dialog {
             text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_ndwf']}\n`)
             nodmg = true; // TODO: error message if already true?
         }
-        // Sturmangriff km_stag
-        if (manoever.km_stag.selected) {
-            if (manoever.kbak.selected) {
-                mod_at += 4;
-                text_at = text_at.concat(`${CONFIG.ILARIS.label['km_stag']}: +4\n`);
-            }
-            let gs = Number(manoever.km_stag.gs);
-            mod_dm += gs;
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_stag']}: ${gs}\n`);
-        }
+        
         // Todesstoß km_tdst
         if (manoever.km_tdst.selected) {
             mod_at -= 8;
             text_at = text_at.concat(`${CONFIG.ILARIS.label['km_tdst']}\n`);
             text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_tdst_dm']}\n`);
         }
-        // Überrennen km_uebr
-        if (manoever.km_uebr.selected) {
-            if (manoever.kbak.selected) mod_at += 4;
-            let gs = Number(manoever.km_uebr.gs);
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_uebr']} (${gs})\n`);
-            mod_dm += gs;
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_uebr']}: ${gs}\n`);
-        }
+        
 
         // Modifikator
         let modifikator = Number(manoever.mod.selected);
