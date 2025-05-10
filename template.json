@@ -140,7 +140,7 @@
         "geld"
       ],
       "getragen": 0,
-      "notes": "Hallo"
+      "notes": ""
     },
     "nsc": {
       "templates": [
@@ -155,7 +155,7 @@
         "geld"
       ],
       "getragen": 0,
-      "notes": "Ich bin ein NSC"
+      "notes": ""
     },
     "kreatur": {
       "templates": [

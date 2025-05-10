@@ -2,19 +2,33 @@ import { IlarisActor } from "./actor.js";
 
 export class HeldActor extends IlarisActor {
 
-    async _preCreate(data, options, user) {
+    constructor(data, options) {
+        // this is a workaround to force actor link to be set even when
+        // created through proxy. remove the proxy and this constructor
         foundry.utils.mergeObject(data, {
-            'token.bar1': { attribute: 'gesundheit.hp' },
-            'token.displayName': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
-            'token.displayBars': CONST.TOKEN_DISPLAY_MODES.ALWAYS,
-            'token.disposition': CONST.TOKEN_DISPOSITIONS.FRIENDLY,
-            'token.name': data.name
+            "prototypeToken.actorLink": true
+        });
+        super(data, options);
+    }
+
+    async _preCreate(data, options, user) {
+        // TDOO: this seems not to be executed when created from "new actor"
+        // button. Looks like its bypassed by the proxy (remove proxy?)
+        console.log("HeldActor._preCreate()")
+        console.log(data)
+        foundry.utils.mergeObject(data, {
+            'prototypeToken.bar1': { attribute: 'gesundheit.hp' },
+            'prototypeToken.displayName': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
+            'prototypeToken.displayBars': CONST.TOKEN_DISPLAY_MODES.ALWAYS,
+            'prototypeToken.disposition': CONST.TOKEN_DISPOSITIONS.FRIENDLY,
+            'prototypeToken.name': data.name,
+            'prototypeToken.actorLink': true,
         });
         data.img = 'systems/Ilaris/assets/images/token/kreaturentypen/humanoid.png';
-        data.token.vision = true;
-        data.token.actorLink = true;
-        data.token.brightSight = 15;
-        data.token.dimSight = 5;
+        data.prototypeToken.vision = true;
+        data.prototypeToken.actorLink = true;
+        data.prototypeToken.brightSight = 15;
+        data.prototypeToken.dimSight = 5;
         await super._preCreate(data, options, user);  // IlarisActor._preCreate() -> Actor._preCreate()
     }
     
