@@ -127,7 +127,8 @@ export class ManoeverSheet extends IlarisItemSheet {
             type: "ATTACK",
             value: 0,
             operator: "ADD",
-            target: ""
+            target: "",
+            affectedByInput: true
         });
         this.document.render();
     }

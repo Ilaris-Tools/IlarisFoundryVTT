@@ -9,7 +9,7 @@
  * @returns {Object} Updated rollValues.
  */
 export function processModification(modification, number, manoeverName, trefferzone, rollValues, config) {
-    let value = number * modification.value;
+    let value = modification.affectedByInput ? number * modification.value : modification.value;
     let targetValue = 0;
 
     if (modification.target) {

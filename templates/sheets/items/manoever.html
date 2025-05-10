@@ -181,7 +181,17 @@
                                 data-dtype="String"
                             />
                         {{/unless}}
-                    </div> 
+                    </div>
+                    <div class="flexrow row">
+                        {{#unless (or (ifEq this.type "CHANGE_DAMAGE_TYPE") (ifEq this.type "ARMOR_BREAKING") (ifEq this.type "SPECIAL_TEXT"))}}
+                            <label><b>Wird von Input beeinflusst:</b></label>
+                            <input
+                                type="checkbox"
+                                name="system.modifications.{{@index}}.affectedByInput"
+                                {{checked this.affectedByInput}}
+                            />
+                        {{/unless}}
+                    </div>
                 </div> 
                 <hr>        
             {{/each}}
