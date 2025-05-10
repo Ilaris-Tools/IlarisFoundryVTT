@@ -257,6 +257,13 @@ export class AngriffDialog extends Dialog {
                     text_at = text_at.concat(`${CONFIG.ILARIS.label['km_uebr']}: +4\n`);
                 }
             }
+            // Riposte hardcoded for now
+            if (manoever.name == 'Riposte') {
+                mod_vt += mod_at;
+                text_vt = text_vt.concat(
+                    `${manoever.name}: (\n${text_at})\n`,
+                );
+            }
         });
 
         // Trefferzone if not set by manoever
@@ -277,12 +284,6 @@ export class AngriffDialog extends Dialog {
             text_at = text_at.concat(`Modifikator: ${modifikator}\n`);
         }
         
-        if (item.system.manoever.km_rpst.selected) {
-            mod_vt += -4 + mod_at;
-            text_vt = text_vt.concat(
-                `${CONFIG.ILARIS.label['km_rpst']}: (\n${text_at})\n`,
-            );
-        }
         this.mod_at = mod_at;
         this.mod_vt = mod_vt;
         this.mod_dm = mod_dm;

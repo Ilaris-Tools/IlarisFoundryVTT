@@ -30,12 +30,23 @@ export class CombatItem extends IlarisItem {
                         ...manoever,
                         id: manoever.name.replace(/[\s\W]/g, '_'), 
                         inputValues: Object.values(manoever.system.inputs).map(input => {
-                        return {
-                            ...input,
-                            value: ''
-                        };
-                    })});
+                            return {
+                                ...input,
+                                value: ''
+                            };
+                        })
+                    });
                 }
+            });
+            
+            // Sort maneuvers by gruppe (0 before 4) and then by name
+            this.manoever.sort((a, b) => {
+                // First sort by gruppe
+                if (a.system.gruppe !== b.system.gruppe) {
+                    return a.system.gruppe - b.system.gruppe;
+                }
+                // Then sort by name
+                return a.name.localeCompare(b.name);
             });
         }
         if("fernkampfwaffe" === this.type  || ("angriff" === this.type && this.system.typ === "Fern")) {
