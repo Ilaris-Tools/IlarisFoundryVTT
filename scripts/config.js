@@ -354,10 +354,10 @@ let manoever = {
     },
     manoever_type: {
         0: "Nahkampf Angriff",
-        1: "Nahkampf Verteidigung",
-        2: "Fernkampf",
-        3: "Magie",
-        4: "Karma",
+        1: "Fernkampf",
+        2: "Magie",
+        3: "Karma",
+        4: "Nahkampf Verteidigung",
     },
     selector_type: {
         CHECKBOX: 'Checkbox',
