@@ -262,23 +262,31 @@ class MigrationMessageDialog extends foundry.applications.api.DialogV2 {
 
 const showStartupDialog = () => {
     let content = `<p>Da es einige Änderungen gab, ist stark zu empfehlen deinen Spielercharakter, falls du einen besitzt neu von Sephrasto zu importieren. Hier ist es auch stark zu empfehlen das Sephrasto Plugin für den Foundry Export zu updaten.</p><p>Es kann sein, dass du schon einmal darauf hingewiesen wurdest, wenn du dich gerade von einem anderen Gerät anmeldest.</p>`;
+    let buttons = [
+        {
+            label: 'Verstanden',
+            callback: async () => {
+                game.settings.set('Ilaris', 'acceptChangesV12_1', true);
+            },
+        }
+    ];
     if (game.user.isGM) {
         content += `<p>Bist du die Spielleitung oder verwaltest diese Welt, gibt dir der Button unten die Möglichkeit deine eigenen Kreaturen und NSCs automatisch updaten zu lassen.</p>`;
-    }
-    new MigrationMessageDialog({
-        window: {
-        title: 'Update Information',
-        },
-        content: content,
-        buttons: [
-        {
+        buttons.push({
             icon: 'fa fa-check',
             label: 'Kreaturen migrieren',
             callback: async () => {
                 await creatureMigration();
             },
+        });
+    }
+    console.log("Migration Dialog",buttons);
+    new MigrationMessageDialog({
+        window: {
+        title: 'Update Information',
         },
-        ],
+        content: content,
+        buttons: buttons,
     }).render(true);
 };
 

@@ -3,6 +3,7 @@ import {
     get_statuseffect_by_id,
 } from '../../common/wuerfel/wuerfel_misc.js';
 import {signed} from '../../common/wuerfel/chatutilities.js'
+import { handleModifications } from './shared_dialog_helpers.js';
 
 
 export class AngriffDialog extends Dialog {
@@ -11,6 +12,9 @@ export class AngriffDialog extends Dialog {
         const options = {template: 'systems/Ilaris/templates/sheets/dialogs/angriff.html'}
         super(dialog, options);
         // this can be probendialog (more abstract)
+        this.text_at = '';
+        this.text_vt = '';
+        this.text_dm = '';
         this.item = item;
         this.actor = actor;
         this.speaker = ChatMessage.getSpeaker({ actor: this.actor });
@@ -27,9 +31,12 @@ export class AngriffDialog extends Dialog {
         return {
             distance_choice: CONFIG.ILARIS.distance_choice,
             rollModes: CONFIG.Dice.rollModes,
+            trefferzonen: CONFIG.ILARIS.trefferzonen,
             item: this.item,
             actor: this.actor,
-            mod_at: this.mod_at
+            mod_at: this.mod_at,
+            choices_schips: CONFIG.ILARIS.schips_choice,
+            checked_schips: '0',
         };
     }
     
@@ -43,14 +50,16 @@ export class AngriffDialog extends Dialog {
     async _angreifenKlick(html) {
         // NOTE: var names not very descriptive: 
         // at_abzuege_mod kommen vom status/gesundheit, at_mod aus ansagen, nahkampfmod?
+        let diceFormula = await this.getDiceFormula(html);
         await this.manoeverAuswaehlen(html);
-        this.updateManoeverMods(this.actor, this.item);  // durch manoever
+        this.updateManoeverMods();  // durch manoever
         this.updateStatusMods();
         this.eigenschaftenText();
+        console.log(this.text_at);
 
         let label = `Attacke (${this.item.name})`;
         let formula = 
-            `1d20 ${signed(this.item.system.at)} \
+            `${diceFormula} ${signed(this.item.system.at)} \
             ${signed(this.at_abzuege_mod)} \
             ${signed(this.item.actor.system.modifikatoren.nahkampfmod)} \
             ${signed(this.mod_at)}`;
@@ -109,15 +118,6 @@ export class AngriffDialog extends Dialog {
         let eigenschaften = Object.values(this.item.system.eigenschaften).map(e => e.name);
         let vorteile = this.actor.vorteil.kampf.map(v => v.name);
 
-        manoever.km_rust.possible = eigenschaften.includes("Rüstungsbrechend");
-        manoever.km_stsl.possible = eigenschaften.includes("Stumpf");
-        manoever.km_umkl.possible = true;
-        manoever.km_ausf.possible = vorteile.includes("Ausfall");
-        manoever.km_hmsl.possible = vorteile.includes('Hammerschlag');
-        manoever.km_kltz.possible = vorteile.includes('Klingentanz');
-        manoever.km_ndwf.possible = vorteile.includes('Niederwerfen');
-        manoever.km_stag.possible = vorteile.includes('Sturmangriff');
-        manoever.km_tdst.possible = vorteile.includes('Todesstoß');
         manoever.vlof.offensiver_kampfstil =vorteile.includes('Offensiver Kampfstil');
         manoever.kwut = vorteile.includes('Kalte Wut');
     }
@@ -144,44 +144,22 @@ export class AngriffDialog extends Dialog {
         manoever.vldf.selected = html.find('#vldf')[0]?.checked || false;  // Volle Defensive
         manoever.pssl.selected = html.find('#pssl')[0]?.checked || false;  // Passierschlag pssl
         manoever.rwdf.selected = html.find('#rwdf')[0]?.value || false;  // Reichweitenunterschied
-        
-        // kampf manoever
-        manoever.km_ausw.selected = html.find('#km_ausw')[0]?.checked || false;  // Ausweichen km_ausw
-        manoever.km_rust.selected = html.find('#km_rust')[0]?.checked || false;  // Rüstungsbrecher km_rust
-        manoever.km_shsp.selected = html.find('#km_shsp')[0]?.checked || false;  // Schildspalter km_shsp
-        manoever.km_stsl.selected = html.find('#km_stsl')[0]?.checked || false;  // Stumpfer Schlag km_stsl
-        manoever.km_ever.selected = html.find('#km_ever')[0]?.checked || false;  // Entfernung verändern km_ever
-        manoever.km_umre.selected = html.find('#km_umre')[0]?.checked || false;  // Umreißen km_umre
-        manoever.km_ausf.selected = html.find('#km_ausf')[0]?.checked || false;  // Ausfall km_ausf
-        manoever.km_befr.selected = html.find('#km_befr')[0]?.checked || false;
-        manoever.km_dppl.selected = html.find('#km_dppl')[0]?.checked || false;
-        manoever.km_hmsl.selected = html.find('#km_hmsl')[0]?.checked || false;
-        manoever.km_kltz.selected = html.find('#km_kltz')[0]?.checked || false;
-        manoever.km_ndwf.selected = html.find('#km_ndwf')[0]?.checked || false;
-        manoever.km_rpst.selected = html.find('#km_rpst')[0]?.checked || false;
-        manoever.km_shwl.selected = html.find('#km_shwl')[0]?.checked || false;
-        manoever.km_stag.selected = html.find('#km_stag')[0]?.checked || false;
-        manoever.km_tdst.selected = html.find('#km_tdst')[0]?.checked || false;
-        manoever.km_uebr.selected = html.find('#km_uebr')[0]?.checked || false;
-        manoever.km_utlf.selected = html.find('#km_utlf')[0]?.checked || false;
-        manoever.km_entw.selected = html.find('#km_entw')[0]?.checked || false;  // Entwaffen km_entw
-        manoever.km_umkl.selected = html.find('#km_umkl')[0]?.checked || false; // Umklammern km_umkl
-
         manoever.rkaz.selected = html.find('#rkaz')[0]?.value || false;  // Reaktionsanzahl
-        manoever.km_bind.selected = html.find('#km_bind')[0]?.value || false;  // Binden km_bind
-        manoever.km_gzsl.selected = html.find('#km_gzsl')[0]?.value || false; // Gezielter Schlag km_gzsl
-        manoever.km_wusl.selected = html.find('#km_wusl')[0]?.value || false;  // Wuchtschlag km_wusl
-        manoever.km_umkl.mod = html.find('#km_umkl_mod')[0]?.value || false;
-        manoever.km_uebr.gs = html.find('#km_uebr_gs')[0]?.value || false;
-        manoever.km_stag.gs = html.find('#km_stag_gs')[0]?.value || false;
-        manoever.km_aufl.gs = html.find('#km_aufl_gs')[0]?.value || false; // Auflaufen lassen km_aufl
 
-        if (manoever.km_aufl.gs > 0) { // && possible?
-            manoever.km_aufl.selected = true;
-        }
         manoever.mod.selected = html.find('#modifikator')[0]?.value || false;  // Modifikator
         manoever.rllm.selected = html.find('#rollMode')[0]?.value || false;  // RollMode
         this.rollmode = this.item.system.manoever.rllm.selected;
+
+        this.item.manoever.forEach(manoever => {
+            manoever.inputValues.forEach(selector => {
+                if(selector.field == 'CHECKBOX') {
+                    selector.value = html.find(`#${manoever.id+selector.field}`)[0]?.checked || false;
+                } else {
+                    console.log(manoever.name,html.find(`#${manoever.id+selector.field}`)[0]?.value)
+                    selector.value = html.find(`#${manoever.id+selector.field}`)[0]?.value || false;
+                }
+            });
+        });
     }
     
     updateManoeverMods() {
@@ -205,12 +183,9 @@ export class AngriffDialog extends Dialog {
         let text_vt = '';
         let text_dm = '';
         let nodmg = false;
-        // TDOO: this differ between angriff and nk/fk waffen, define get_tp() in both?
-        // let schaden = item.data.data.schaden;
-        let schaden = item.system.tp.replace(/[Ww]/g, "d");
-        if(this.actor.type == "held") {
-            schaden = item.system.schaden.replace(/[Ww]/g, "d");
-        }
+        let trefferzone = 0;
+        let schaden = item.getTp();
+        schaden = `(${schaden})`
 
         if (manoever.kbak.selected) {
             mod_at -= 4;
@@ -253,157 +228,56 @@ export class AngriffDialog extends Dialog {
                 text_at = text_at.concat(`${reaktionen}. Passierschlag: -${mod_rkaz} \n`);
             }
         }
-        // Ausweichen km_ausw
-        if (manoever.km_ausw.selected) {
-            mod_vt -= 2+be;
-            text_vt = text_vt.concat(`Ausweichen: -${2+be}\n`);
-        }
-        // Auflaufen lassen km_aufl
-        if (manoever.km_aufl.selected) {
-            let gs = Number(item.system.manoever.km_aufl.gs);
-            mod_vt -= 4;
-            text_vt = text_vt.concat(`${CONFIG.ILARIS.label['km_aufl']} (${gs}): -4\n`);
-            mod_dm += gs;
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_aufl']}: ${gs}\n`)
-        }
-        // Binden km_bind
-        let binden = Number(manoever.km_bind.selected);
-        if (binden > 0) {
-            mod_vt -= binden;
-            text_vt = text_vt.concat(`Binden: -${binden}\n`);
-        }
-        // Entfernung verändern km_ever
-        if (manoever.km_ever.selected) {
-            let be = systemData.abgeleitete.be || 0
-            mod_at -= be;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_ever']}: -${be}\n`);
-        }
-        // Entwaffnen km_entw
-        if (manoever.km_entw.selected) {
-            mod_at -= 4;
-            mod_vt -= 4;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_entw']}: -4\n`);
-            text_vt = text_vt.concat(`${CONFIG.ILARIS.label['km_entw']}: -4\n`);
-        }
-        // Gezielter Schlag km_gzsl
-        let trefferzone = Number(manoever.km_gzsl.selected);
-        if (trefferzone) {
-            mod_at -= 2;
-            let txt = `${CONFIG.ILARIS.label['km_gzsl']} (${CONFIG.ILARIS.trefferzonen[trefferzone]}): -2\n`;
-            text_at = text_at.concat(txt);
-            text_dm = text_dm.concat(txt)
-        } else {
+
+        this.item.manoever.forEach(manoever => {
+            let check = undefined;
+            let number = undefined;
+            let trefferZoneInput = undefined;
+            manoever.inputValues.forEach(selector => {
+                if(selector.value) {
+                    if(selector.field == 'CHECKBOX') {
+                        check = selector.value;
+                    } else if(selector.field == 'NUMBER') {
+                        number = selector.value;
+                    } else {
+                        trefferZoneInput = selector.value;
+                    }
+                }
+            });
+            if(check == undefined && (number == undefined || number == 0) && (trefferZoneInput == undefined || trefferZoneInput == 0)) return;
+            [mod_at,mod_vt,mod_dm,text_at,text_vt,text_dm,trefferzone,schaden] = handleModifications(manoever, number, check, trefferZoneInput,{mod_at,mod_vt,mod_dm,text_at,text_vt,text_dm,trefferzone,schaden,context:this},CONFIG);
+            // Sturmangriff und Überrennen hardcoded for now
+            if (manoever.kbak.selected) {
+                if(manoever.name == 'Sturmangriff') {
+                    mod_at += 4;
+                    text_at = text_at.concat(`${CONFIG.ILARIS.label['km_stag']}: +4\n`);
+                }
+                if(manoever.name == 'Überrennen') {
+                    mod_at += 4;
+                    text_at = text_at.concat(`${CONFIG.ILARIS.label['km_uebr']}: +4\n`);
+                }
+            }
+            // Riposte hardcoded for now
+            if (manoever.name == 'Riposte') {
+                mod_vt += mod_at;
+                text_vt = text_vt.concat(
+                    `${manoever.name}: (\n${text_at})\n`,
+                );
+                text_dm = text_dm.concat(
+                    `${manoever.name}: (\n${text_at})\n`,
+                );
+            }
+        });
+
+        // Trefferzone if not set by manoever
+        if(trefferzone == 0){
             let zonenroll = new Roll('1d6');
             zonenroll.evaluate();
             text_dm = text_dm.concat(
                 `Trefferzone: ${CONFIG.ILARIS.trefferzonen[zonenroll.total]}\n`,
             );
         }
-        // Umreißen km_umre
-        if (manoever.km_umre.selected) {
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_umre']}: Kein Schaden\n`);
-            nodmg = true;
-        }
-        // Unterlaufen km_utlf
-        if (manoever.km_utlf.selected) {
-            mod_vt -= 4;
-            text_vt = text_vt.concat(`${CONFIG.ILARIS.label['km_utlf']}: -4\n`);
-        }
-        // Wuchtschlag km_wusl
-        let wusl = Number(manoever.km_wusl.selected);
-        if (wusl > 0) {
-            mod_dm += wusl;
-            mod_at -= wusl;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_wusl']}: -${wusl}\n`);
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_wusl']}: +${wusl}\n`);
-        }
-        // Rüstungsbrecher km_rust
-        if (manoever.km_rust.selected) {
-            mod_at -= 4;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_rust']}: -4\n`);
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_rust']}\n`);
-        }
-        // Schildspalter km_shsp
-        if (manoever.km_shsp.selected) {
-            mod_at += 2;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_shsp']}: +2\n`);
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_shsp']}\n`);
-        }
-        // Schildwall km_shwl
-        if (manoever.km_shwl.selected) {
-            mod_vt -= 4;
-            text_vt = text_vt.concat(`${CONFIG.ILARIS.label['km_shwl']}: -4\n`);
-        }
-        // Stumpfer Schlag km_stsl
-        if (manoever.km_stsl.selected) {
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_stsl']}: Erschöpfung statt Wunde\n`);
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_stsl']}\n`);
-        }
-        // Umklammern km_umkl
-        if (manoever.km_umkl.selected) {
-            let umkl = Number(manoever.km_umkl.mod);
-            mod_at -= umkl;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_umkl']}: -${umkl}\n`);
-        }
-        // Ausfall km_ausf
-        if (manoever.km_ausf.selected) {
-            mod_at -= 2 + be;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_ausf']}\n`);
-        }
-        // Befreiungsschlag km_befr
-        if (manoever.km_befr.selected) {
-            mod_at -= 4;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_befr']}\n`);
-        }
-        // Doppelangriff km_dppl
-        if (manoever.km_dppl.selected) {
-            mod_at -= 4;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_dppl']}\n`);
-        }
-        // Hammerschlag km_hmsl
-        if (manoever.km_hmsl.selected) {
-            mod_at -= 8;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_hmsl']}\n`);
-            schaden = schaden.concat(`+${schaden}`);
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_hmsl']}\n`);
-        }
-        // Klingentanz km_kltz
-        if (manoever.km_kltz.selected) {
-            mod_at -= 4;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_kltz']}\n`);
-        }
-        // Niederwerfen km_ndwf
-        if (manoever.km_ndwf.selected) {
-            mod_at -= 4;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_ndwf']}\n`);
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_ndwf']}\n`)
-            nodmg = true; // TODO: error message if already true?
-        }
-        // Sturmangriff km_stag
-        if (manoever.km_stag.selected) {
-            if (manoever.kbak.selected) {
-                mod_at += 4;
-                text_at = text_at.concat(`${CONFIG.ILARIS.label['km_stag']}: +4\n`);
-            }
-            let gs = Number(manoever.km_stag.gs);
-            mod_dm += gs;
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_stag']}: ${gs}\n`);
-        }
-        // Todesstoß km_tdst
-        if (manoever.km_tdst.selected) {
-            mod_at -= 8;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_tdst']}\n`);
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_tdst_dm']}\n`);
-        }
-        // Überrennen km_uebr
-        if (manoever.km_uebr.selected) {
-            if (manoever.kbak.selected) mod_at += 4;
-            let gs = Number(manoever.km_uebr.gs);
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_uebr']} (${gs})\n`);
-            mod_dm += gs;
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_uebr']}: ${gs}\n`);
-        }
-
+        
         // Modifikator
         let modifikator = Number(manoever.mod.selected);
         if (modifikator != 0) {
@@ -413,12 +287,6 @@ export class AngriffDialog extends Dialog {
             text_at = text_at.concat(`Modifikator: ${modifikator}\n`);
         }
         
-        if (item.system.manoever.km_rpst.selected) {
-            mod_vt += -4 + mod_at;
-            text_vt = text_vt.concat(
-                `${CONFIG.ILARIS.label['km_rpst']}: (\n${text_at})\n`,
-            );
-        }
         this.mod_at = mod_at;
         this.mod_vt = mod_vt;
         this.mod_dm = mod_dm;
@@ -445,5 +313,33 @@ export class AngriffDialog extends Dialog {
             this.at_abzuege_mod = this.item.actor.system.abgeleitete.globalermod;
             this.vt_abzuege_mod = this.item.actor.system.abgeleitete.globalermod;
         }
+    }
+
+    getDiceFormula(html) {
+        let schipsOption = Number(html.find('input[name="schips"]:checked')[0]?.value) || 0;
+        let text = '';
+        let diceFormula = `1d20`;
+        if(schipsOption == 0) {
+            return diceFormula;
+        }
+        if (this.actor.system.schips.schips_stern == 0) {
+            this.text_at = text.concat(`Keine Schips\n`);
+            this.text_vt = text.concat(`Keine Schips\n`);
+            return diceFormula;
+        }
+
+        this.actor.update({'system.schips.schips_stern': this.actor.system.schips.schips_stern - 1});
+        if (schipsOption == 1) {
+            this.text_at = text.concat(`Schips ohne Eigenheit\n`);
+            this.text_vt = text.concat(`Schips ohne Eigenheit\n`);
+            diceFormula = `${2}d20dl${1}`;
+        } 
+        
+        if (schipsOption == 2) {
+            this.text_at = text.concat(`Schips mit Eigenschaft\n`);
+            this.text_vt = text.concat(`Schips mit Eigenschaft\n`);
+            diceFormula = `${3}d20dl${2}`;
+        }
+        return diceFormula;
     }
 }

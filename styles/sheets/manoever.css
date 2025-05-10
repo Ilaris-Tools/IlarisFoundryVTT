@@ -1,0 +1,61 @@
+.manoever-sheet {
+    padding: 8px;
+}
+
+.section-header {
+    margin: 16px 0 8px 0;
+    padding-bottom: 4px;
+    border-bottom: 2px solid #782e22;
+}
+
+.section-description {
+    margin: 8px 0;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.section-description ul {
+    margin: 4px 0 4px 20px;
+}
+
+.field {
+    margin: 12px 0;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: 4px;
+}
+
+.delete-button {
+    margin-left: 8px;
+    color: #782e22;
+}
+
+.delete-button:hover {
+    color: #a33d2d;
+}
+
+.number-limits {
+    gap: 12px;
+}
+
+.number-input-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.number-input-group input {
+    width: 60px;
+}
+
+.checkbox-description {
+    margin-left: 8px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.manoever-section {
+    margin-bottom: 24px;
+}

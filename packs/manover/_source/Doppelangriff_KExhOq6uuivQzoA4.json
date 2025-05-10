@@ -12,6 +12,21 @@
         ]
       }
     },
+    "inputs": {
+      "0": {
+        "label": "",
+        "field": "CHECKBOX"
+      }
+    },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
     "gruppe": "0",
     "probe": "2 x AT -4",
     "gegenprobe": "",
@@ -25,10 +40,10 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "0.3.20",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1745304606025,
-    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "modifiedTime": 1746877927644,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
   },

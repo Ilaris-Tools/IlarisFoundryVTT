@@ -15,7 +15,15 @@
     "gruppe": "1",
     "probe": "FK -4",
     "gegenprobe": "",
-    "text": "Verkürzt die Vorbereitungszeit um die Hälfte. Eine Vorbereitungszeit von 1 Aktion wird zu 0 Aktionen. Die Aktion Konflikt ist von dieser Modifikation nicht betroffen. Kann bis zu zweimal pro FK eingesetzt werden."
+    "text": "Verkürzt die Vorbereitungszeit um die Hälfte. Eine Vorbereitungszeit von 1 Aktion wird zu 0 Aktionen. Die Aktion Konflikt ist von dieser Modifikation nicht betroffen. Kann bis zu zweimal pro FK eingesetzt werden.",
+    "inputs": {
+      "0": {
+        "label": "",
+        "field": "NUMBER",
+        "min": 0,
+        "max": 2
+      }
+    }
   },
   "effects": [],
   "folder": null,
@@ -25,10 +33,10 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "0.3.20",
+    "systemVersion": "12.0.1",
     "createdTime": null,
-    "modifiedTime": 1745306142021,
-    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "modifiedTime": 1746367711092,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
   },
