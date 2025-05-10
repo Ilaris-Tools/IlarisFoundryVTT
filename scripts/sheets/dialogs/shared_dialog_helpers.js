@@ -58,6 +58,10 @@ export function processModification(modification, number, manoeverName, trefferz
             text = `${manoeverName}${trefferzone ? ` (${config.ILARIS.trefferzonen[trefferzone]})` : ''}: Kein Schaden\n`;
             rollValues.text_dm = rollValues.text_dm.concat(text);
             break;
+        case 'CHANGE_DAMAGE_TYPE':
+            text = `${manoeverName}${trefferzone ? ` (${config.ILARIS.trefferzonen[trefferzone]})` : ''}: Schadenstyp zu ${config.ILARIS.schadenstypen[modification.value]}\n`;
+            rollValues.text_dm = rollValues.text_dm.concat(text);
+            break;
     }
 
     return rollValues;

@@ -141,27 +141,37 @@
                     </div>
                     <div class="flexrow">
                         <label>Wert:</label>
-                        <input
-                            name="system.modifications.{{@index}}.value"
-                            type="number"
-                            value="{{this.value}}"
-                            data-dtype="Number"
-                        />
+                        {{#if (ifEq this.type "CHANGE_DAMAGE_TYPE")}}
+                            <select name="system.modifications.{{@index}}.value">
+                                {{selectOptions ../schadenstypen selected=this.value}}
+                            </select>
+                        {{else}}
+                            <input
+                                name="system.modifications.{{@index}}.value"
+                                type="number"
+                                value="{{this.value}}"
+                                data-dtype="Number"
+                            />
+                        {{/if}}
                     </div>
                     <div class="flexrow row">
-                        <label>Operator:</label>
-                        <select name="system.modifications.{{@index}}.operator">
-                            {{selectOptions ../manoever.operator selected=this.operator}}
-                        </select>          
+                        {{#unless (ifEq this.type "CHANGE_DAMAGE_TYPE")}}
+                            <label>Operator:</label>
+                            <select name="system.modifications.{{@index}}.operator">
+                                {{selectOptions ../manoever.operator selected=this.operator}}
+                            </select>          
+                        {{/unless}}
                     </div>   
                     <div class="flexrow row">
-                        <label><b>Target:</b></label>
-                        <input
-                            name="system.modifications.{{@index}}.target"
-                            value="{{this.target}}"
-                            type="text"
-                            data-dtype="String"
-                        />
+                        {{#unless (ifEq this.type "CHANGE_DAMAGE_TYPE")}}
+                            <label><b>Target:</b></label>
+                            <input
+                                name="system.modifications.{{@index}}.target"
+                                value="{{this.target}}"
+                                type="text"
+                                data-dtype="String"
+                            />
+                        {{/unless}}
                     </div> 
                 </div> 
                 <hr>        

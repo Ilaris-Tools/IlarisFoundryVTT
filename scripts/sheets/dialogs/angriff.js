@@ -118,15 +118,6 @@ export class AngriffDialog extends Dialog {
         let eigenschaften = Object.values(this.item.system.eigenschaften).map(e => e.name);
         let vorteile = this.actor.vorteil.kampf.map(v => v.name);
 
-        manoever.km_rust.possible = eigenschaften.includes("Rüstungsbrechend");
-        manoever.km_stsl.possible = eigenschaften.includes("Stumpf");
-        manoever.km_umkl.possible = true;
-        manoever.km_ausf.possible = vorteile.includes("Ausfall");
-        manoever.km_hmsl.possible = vorteile.includes('Hammerschlag');
-        manoever.km_kltz.possible = vorteile.includes('Klingentanz');
-        manoever.km_ndwf.possible = vorteile.includes('Niederwerfen');
-        manoever.km_stag.possible = vorteile.includes('Sturmangriff');
-        manoever.km_tdst.possible = vorteile.includes('Todesstoß');
         manoever.vlof.offensiver_kampfstil =vorteile.includes('Offensiver Kampfstil');
         manoever.kwut = vorteile.includes('Kalte Wut');
     }

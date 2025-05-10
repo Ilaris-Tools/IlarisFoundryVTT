@@ -746,3 +746,19 @@ let angriff_typ = {
     Fern:"Fernkampf",
 }
 ILARIS.angriff_typ = angriff_typ;
+
+let schadenstypen = {
+    PROFAN: "Profan",
+    STUMPF: "Stumpf",
+    STICH: "Stich",
+    SCHARF: "Scharf",
+    MAGISCH: "Magisch",
+    GEWEIHT: "Geweiht",
+    EIS: "Eis",
+    ERZ: "Erz",
+    FEUER: "Feuer",
+    HUMUS: "Humus",
+    LUFT: "Luft",
+    WASSER: "Wasser"
+  }
+  ILARIS.schadenstypen = schadenstypen;
