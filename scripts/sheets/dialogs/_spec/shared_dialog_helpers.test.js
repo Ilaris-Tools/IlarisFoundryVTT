@@ -174,6 +174,26 @@ describe('processModification', () => {
         expect(rollValues.mod_dm).toBe(0);
         expect(rollValues.schaden).toBe('');
     });
+
+    it('should handle SPECIAL_TEXT type', () => {
+        const modification = { type: 'SPECIAL_TEXT', value: 'Gegner wird zu Boden geworfen' };
+        processModification(modification, 1, 'Test Manoever', null, rollValues, mockConfig);
+
+        expect(rollValues.text_dm).toContain('Test Manoever: Gegner wird zu Boden geworfen');
+        // Should not modify any other values
+        expect(rollValues.mod_dm).toBe(0);
+        expect(rollValues.schaden).toBe('');
+    });
+
+    it('should handle SPECIAL_TEXT type with trefferzone', () => {
+        const modification = { type: 'SPECIAL_TEXT', value: 'Schild wird zerstört' };
+        processModification(modification, 1, 'Test Manoever', 2, rollValues, mockConfig);
+
+        expect(rollValues.text_dm).toContain('Test Manoever (Torso): Schild wird zerstört');
+        // Should not modify any other values
+        expect(rollValues.mod_dm).toBe(0);
+        expect(rollValues.schaden).toBe('');
+    });
 });
 
 describe('handleModifications', () => {

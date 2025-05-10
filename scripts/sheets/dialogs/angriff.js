@@ -272,12 +272,7 @@ export class AngriffDialog extends Dialog {
                 `Trefferzone: ${CONFIG.ILARIS.trefferzonen[zonenroll.total]}\n`,
             );
         }
-        // Rüstungsbrecher km_rust
-        if (manoever.km_rust.selected) {
-            mod_at -= 4;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_rust']}: -4\n`);
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_rust']}\n`);
-        }
+        
         // Schildspalter km_shsp
         if (manoever.km_shsp.selected) {
             mod_at += 2;

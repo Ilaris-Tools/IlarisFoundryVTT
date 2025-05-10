@@ -66,6 +66,10 @@ export function processModification(modification, number, manoeverName, trefferz
             text = `${manoeverName}${trefferzone ? ` (${config.ILARIS.trefferzonen[trefferzone]})` : ''}: Ignoriert Rüstung\n`;
             rollValues.text_dm = rollValues.text_dm.concat(text);
             break;
+        case 'SPECIAL_TEXT':
+            text = `${manoeverName}${trefferzone ? ` (${config.ILARIS.trefferzonen[trefferzone]})` : ''}: ${modification.value}\n`;
+            rollValues.text_dm = rollValues.text_dm.concat(text);
+            break;
     }
 
     return rollValues;
