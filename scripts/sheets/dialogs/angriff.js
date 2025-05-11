@@ -9,7 +9,11 @@ import { handleModifications } from './shared_dialog_helpers.js';
 export class AngriffDialog extends Dialog {
     constructor(actor, item) {
         const dialog = {title: `Kampf: ${item.name}`};
-        const options = {template: 'systems/Ilaris/templates/sheets/dialogs/angriff.html'}
+        const options = {
+            template: 'systems/Ilaris/templates/sheets/dialogs/angriff.html',
+            width: 700,
+            height: 'auto'
+        };
         super(dialog, options);
         // this can be probendialog (more abstract)
         this.text_at = '';
