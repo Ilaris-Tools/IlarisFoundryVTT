@@ -55,7 +55,6 @@ export class AngriffDialog extends Dialog {
         this.updateManoeverMods();  // durch manoever
         this.updateStatusMods();
         this.eigenschaftenText();
-        console.log(this.text_at);
 
         let label = `Attacke (${this.item.name})`;
         let formula = 
@@ -72,21 +71,15 @@ export class AngriffDialog extends Dialog {
             true,
             this.fumble_val,
         );
-        // this.close();
     }
 
     async _verteidigenKlick(html) {
         await this.manoeverAuswaehlen(html);
-        this.updateManoeverMods(this.actor, this.item);  // durch manoever
-        console.log(this.mod_vt);
+        this.updateManoeverMods(this.actor, this.item);
         this.updateStatusMods();
         let label = `Verteidigung (${this.item.name})`;
         let formula = `1d20 + ${this.item.system.vt} ${signed(this.vt_abzuege_mod)} ${signed(this.item.actor.system.modifikatoren.nahkampfmod)} ${signed(this.mod_vt)}`;
-        // console.log(formula);
-        // console.log(this.vt_abzuege_mod);
         await roll_crit_message(formula, label, this.text_vt, this.speaker, this.rollmode, true, this.fumble_val);
-        // TODO: wird unberechenbar auch auf VT gezählt?
-        // this.close();
     }
 
     async _schadenKlick(html){
@@ -100,11 +93,9 @@ export class AngriffDialog extends Dialog {
             formula = "0";
         }
         await roll_crit_message(formula, label, this.text_dm, this.speaker, this.rollmode, false);
-        // this.close()
     }
 
     eigenschaftenText() {
-        console.log(this.item);
         if (!this.item.system.eigenschaften.length > 0) {
             return;
         }
@@ -113,9 +104,7 @@ export class AngriffDialog extends Dialog {
     }
 
     aufbauendeManoeverAktivieren() {
-        console.log(this.actor)
         let manoever = this.item.system.manoever;
-        let eigenschaften = Object.values(this.item.system.eigenschaften).map(e => e.name);
         let vorteile = this.actor.vorteil.kampf.map(v => v.name);
 
         manoever.vlof.offensiver_kampfstil =vorteile.includes('Offensiver Kampfstil');
@@ -135,8 +124,6 @@ export class AngriffDialog extends Dialog {
         TODO: alle simplen booleans könnten einfach in eine loop statt einzeln aufgeschrieben werden
         */
         let manoever = this.item.system.manoever;
-        
-        // manoeverIds = ['kbak', 'vlof', 'vldf', 'pssl']
 
         // allgemeine optionen
         manoever.kbak.selected = html.find('#kbak')[0]?.checked || false;  // Kombinierte Aktion

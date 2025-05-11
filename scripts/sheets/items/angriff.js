@@ -66,9 +66,4 @@ export class AngriffSheet extends IlarisItemSheet {
             ""
         ];
     }
-
-    getTp() {
-        return this.document.system.tp?.replace(/[Ww]/g, "d") || "";
-    }
-
 }
