@@ -17,6 +17,13 @@
         "operator": "ADD",
         "target": "",
         "affectedByInput": true
+      },
+      "1": {
+        "type": "SPECIAL_TEXT",
+        "value": "Trefferzone gewählt",
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
       }
     },
     "gruppe": "0",
@@ -34,7 +41,7 @@
     "systemId": "Ilaris",
     "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746878019203,
+    "modifiedTime": 1746944135146,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
