@@ -170,7 +170,6 @@ export class AngriffDialog extends Dialog {
         let nodmg = {name: '', value: false};
         let trefferzone = 0;
         let schaden = this.item.getTp();
-        schaden = `(${schaden})`
 
         if (manoever.kbak.selected) {
             mod_at -= 4;

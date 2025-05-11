@@ -10,7 +10,7 @@ import {signed} from '../../common/wuerfel/chatutilities.js'
  * @returns {Object} Updated rollValues.
  */
 export function processModification(modification, number, manoeverName, trefferzone, rollValues, config) {
-    let value = modification.affectedByInput ? number * modification.value : modification.value;
+    let value = modification.value;
     let targetValue = 0;
 
     if (modification.target) {
@@ -28,6 +28,7 @@ export function processModification(modification, number, manoeverName, trefferz
             value += Number(targetValue);
         }
     }
+    value = modification.affectedByInput ? number * value : value;
 
     let text = `${manoeverName}${trefferzone ? ` (${config.ILARIS.trefferzonen[trefferzone]})` : ''}: ${modification.operator === 'SUBTRACT' ? '-' + value : signed(value)}\n`;
 
@@ -47,8 +48,9 @@ export function processModification(modification, number, manoeverName, trefferz
         case 'WEAPON_DAMAGE':
             if (modification.operator === 'ADD' || modification.operator === 'SUBTRACT') {
                 rollValues.schaden = rollValues.schaden.concat(`${modification.operator === 'SUBTRACT' ? '-' : '+'}${value}`);
+                text = `${manoeverName}${trefferzone ? ` (${config.ILARIS.trefferzonen[trefferzone]})` : ''}: ${modification.operator === 'SUBTRACT' ? '-' + value : signed(value)} Waffenschaden\n`;
             } else {
-                rollValues.schaden = rollValues.schaden.concat(`*${value}`);
+                rollValues.schaden = `(${rollValues.schaden})*${value}`;
                 text = `${manoeverName}${trefferzone ? ` (${config.ILARIS.trefferzonen[trefferzone]})` : ''}: ${value} * Waffenschaden\n`;
             }
             rollValues.text_dm = rollValues.text_dm.concat(text);
@@ -95,8 +97,14 @@ export function handleModifications(manoever, number, check, trefferZoneInput, r
         }
     });
     
-    // Process each modification
-    Object.values(manoever.system.modifications).forEach(modification => {
+    // Sort modifications by operator type: ADD/SUBTRACT first, then MULTIPLY
+    const sortedModifications = Object.values(manoever.system.modifications).sort((a, b) => {
+        const operatorOrder = { 'ADD': 0, 'SUBTRACT': 0, 'MULTIPLY': 1 };
+        return operatorOrder[a.operator] - operatorOrder[b.operator];
+    });
+    
+    // Process each modification in sorted order
+    sortedModifications.forEach(modification => {
         if ((check && number) || number) {
             processModification(modification, number, manoever.name, null, rollValues, config);
         } else if (check) {
