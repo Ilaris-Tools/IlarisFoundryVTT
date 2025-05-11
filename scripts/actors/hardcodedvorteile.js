@@ -148,39 +148,50 @@ export function geweihter(actor) {
 }
 
 export function getKampfstile(actor) {
-    let kampfstile = ['ohne'];
-    if (actor.vorteil.kampfstil.find((x) => x.name.includes('Beidhändiger Kampf')))
-        kampfstile.push('bhk');
-    if (actor.vorteil.kampfstil.find((x) => x.name.includes('Kraftvoller Kampf')))
-        kampfstile.push('kvk');
-    if (actor.vorteil.kampfstil.find((x) => x.name.includes('Parierwaffenkampf')))
-        kampfstile.push('pwk');
-    if (actor.vorteil.kampfstil.find((x) => x.name.includes('Reiterkampf')))
-        kampfstile.push('rtk');
-    if (actor.vorteil.kampfstil.find((x) => x.name.includes('Schildkampf')))
-        kampfstile.push('shk');
-    if (actor.vorteil.kampfstil.find((x) => x.name.includes('Schneller Kampf')))
-        kampfstile.push('snk');
+    let kampfstile = [{ name: CONFIG.ILARIS.label['ohne'], key: 'ohne', stufe: 0 }];
+    
+    // Group kampfstile by their base name (without the level suffix)
+    const kampfstilGroups = actor.vorteil.kampfstil.reduce((groups, stil) => {
+        const baseName = stil.name.replace(/ [IV]+$/, '');
+        if (!groups[baseName]) {
+            groups[baseName] = [];
+        }
+        groups[baseName].push(stil);
+        return groups;
+    }, {});
+
+    // Add the highest level of each kampfstil group
+    Object.values(kampfstilGroups).forEach(stile => {
+        const highestStil = stile.reduce((prev, current) => {
+            const prevStufe = getKampfstilStufe(prev.name);
+            const currentStufe = getKampfstilStufe(current.name);
+            return currentStufe > prevStufe ? current : prev;
+        });
+        
+        kampfstile.push({ 
+            name: highestStil.name, 
+            key: highestStil._stats.compendiumSource,
+            stufe: getKampfstilStufe(highestStil.name)
+        });
+    });
+    
     return kampfstile;
 }
 
-export function getKampfstilStufe(stil, actor) {
-    // "bhk": "Beidhändiger Kampf",
-    // "kvk": "Kraftvoller Kampf",
-    // "pwk": "Parierwaffenkampf",
-    // "rtk": "Reiterkampf",
-    // "shk": "Schildkampf",
-    // "snk": "Schneller Kampf"
-    let stufe = 0;
-    if (actor.vorteil.kampfstil.find((x) => x.name == `${CONFIG.ILARIS.label[stil]} I`))
-        stufe = 1;
-    if (actor.vorteil.kampfstil.find((x) => x.name == `${CONFIG.ILARIS.label[stil]} II`))
-        stufe = 2;
-    if (actor.vorteil.kampfstil.find((x) => x.name == `${CONFIG.ILARIS.label[stil]} III`))
-        stufe = 3;
-    if (actor.vorteil.kampfstil.find((x) => x.name == `${CONFIG.ILARIS.label[stil]} IV`))
-        stufe = 4;
-    return stufe;
+export function getKampfstilStufe(kampfstilName) {
+    // Match Roman numerals at the end of the string, allowing for space before
+    const match = kampfstilName.match(/ (I{1,3}|IV)$/);
+    if (!match) return 0;
+    
+    // Convert Roman numeral to number
+    const romanToNum = {
+        'I': 1,
+        'II': 2,
+        'III': 3,
+        'IV': 4
+    };
+    
+    return romanToNum[match[1]] || 0;
 }
 
 export function getAngepasst(angepasst_string, actor) {
@@ -498,4 +509,8 @@ export function karmaOpferungPossible(actor) {
         possible = true;
     }
     return possible;
+}
+
+export function getSelectedKampfstil(selectedValue, kampfstile) {
+    return kampfstile.find(k => k.key === selectedValue) ?? kampfstile[0];
 }

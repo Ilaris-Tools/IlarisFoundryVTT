@@ -384,7 +384,7 @@ let manoever = {
     },
     labels: {
         prerequisites: "Voraussetzungen",
-        prerequisitesDescription: "Lege hier fest, welche Voraussetzungen erfüllt sein müssen, um dieses Manöver nutzen zu können.",
+        prerequisitesDescription: "Lege hier fest, welche Voraussetzungen erfüllt sein müssen, um dieses Manöver nutzen zu können. Bestimmt welche Voraussetzung(en) für das Manöver erforderlich sind. Es können mehrere Voraussetzungen angegeben werden, die dann alle erfüllt sein müssen (UND-Verknüpfung). Die Voraussetzungstypen Vorteile und Stile erlauben eine ODER-Verknüpfung, wenn im Feld Vorteile also mehrere Vorteile als Voraussetzung angegeben sind, muss der Charakter nur über einen der Vorteile verfügen. Stile (Übernatürliche und Kampf) können nicht mit den übrigen Vorteilen durch eine ODER-Verknüpfung kombiniert werden, da meist nur ein Stil gleichzeitig verwendet werden kann, siehe Regelwerk. Wenn ein Manöver durch ein Vorteil und einen Stil freigeschlatet wird, muss ein neues Manöver erstellt werden.",
         prerequisiteType: "Voraussetzungtyp",
         prerequisiteDescription: "Voraussetzung Beschreibung",
         advantages: "Vorteile",

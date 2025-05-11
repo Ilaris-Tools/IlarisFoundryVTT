@@ -11,9 +11,7 @@
     >
     <div>
         <select class="selected-kampfstil" name="system.misc.selected_kampfstil">
-            {{#select actor.system.misc.selected_kampfstil}} {{#each actor.misc.kampfstile_list}}
-            <option value="{{this}}">{{get_label this}}</option>
-            {{/each}} {{/select}}
+            {{selectOptions actor.misc.kampfstile_list selected=actor.system.misc.selected_kampfstil nameAttr="key" labelAttr="name"}}
         </select>
     </div>
     <div>
