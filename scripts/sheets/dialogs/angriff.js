@@ -50,9 +50,9 @@ export class AngriffDialog extends Dialog {
     async _angreifenKlick(html) {
         // NOTE: var names not very descriptive: 
         // at_abzuege_mod kommen vom status/gesundheit, at_mod aus ansagen, nahkampfmod?
-        let diceFormula = await this.getDiceFormula(html);
+        let diceFormula = this.getDiceFormula(html);
         await this.manoeverAuswaehlen(html);
-        this.updateManoeverMods();  // durch manoever
+        await this.updateManoeverMods();  // durch manoever
         this.updateStatusMods();
         this.eigenschaftenText();
 
@@ -75,23 +75,20 @@ export class AngriffDialog extends Dialog {
 
     async _verteidigenKlick(html) {
         await this.manoeverAuswaehlen(html);
-        this.updateManoeverMods(this.actor, this.item);
+        await this.updateManoeverMods();
         this.updateStatusMods();
         let label = `Verteidigung (${this.item.name})`;
-        let formula = `1d20 + ${this.item.system.vt} ${signed(this.vt_abzuege_mod)} ${signed(this.item.actor.system.modifikatoren.nahkampfmod)} ${signed(this.mod_vt)}`;
+        let diceFormula = this.getDiceFormula(html);
+        let formula = `${diceFormula} ${signed(this.vt_abzuege_mod)} ${signed(this.item.actor.system.modifikatoren.nahkampfmod)} ${signed(this.mod_vt)}`;
         await roll_crit_message(formula, label, this.text_vt, this.speaker, this.rollmode, true, this.fumble_val);
     }
 
     async _schadenKlick(html){
         await this.manoeverAuswaehlen(html);
-        this.updateManoeverMods(html);
+        await this.updateManoeverMods();
         // Rollmode
         let label = `Schaden (${this.item.name})`;
         let formula = `${this.schaden} ${signed(this.mod_dm)}`;
-        console.log(formula);
-        if (this.nodmg) {
-            formula = "0";
-        }
         await roll_crit_message(formula, label, this.text_dm, this.speaker, this.rollmode, false);
     }
 
@@ -111,7 +108,7 @@ export class AngriffDialog extends Dialog {
         manoever.kwut = vorteile.includes('Kalte Wut');
     }
 
-    manoeverAuswaehlen(html)  {
+    async manoeverAuswaehlen(html)  {
         /* parsed den angriff dialog und schreibt entsprechende werte 
         in die waffen items. Ersetzt ehemalige angriffUpdate aus angriff_prepare.js
         TODO: kann ggf. mit manoeverAnwenden zusammengelegt werden?
@@ -149,7 +146,7 @@ export class AngriffDialog extends Dialog {
         });
     }
     
-    updateManoeverMods() {
+    async updateManoeverMods() {
         /* geht ausgewählte manöver durch und schreibt summe in 
         this.mod_at und this.text_at
         ersetzt teile der callback funktion aus wuerfel.js und calculate_attacke aus attacke_prepare.js
@@ -158,10 +155,7 @@ export class AngriffDialog extends Dialog {
         // item.at_mod, item.vt_mod, item.at_text item.vt_text schreibt oder sowas?
         // #31
         */
-        let systemData = this.item.actor.system;
-        let item = this.item;
         let manoever = this.item.system.manoever;
-        let be = systemData.abgeleitete.be || 0;
 
         let mod_at = 0;
         let mod_vt = 0;
@@ -169,9 +163,9 @@ export class AngriffDialog extends Dialog {
         let text_at = '';
         let text_vt = '';
         let text_dm = '';
-        let nodmg = false;
+        let nodmg = {name: '', value: false};
         let trefferzone = 0;
-        let schaden = item.getTp();
+        let schaden = this.item.getTp();
         schaden = `(${schaden})`
 
         if (manoever.kbak.selected) {
@@ -216,11 +210,11 @@ export class AngriffDialog extends Dialog {
             }
         }
 
-        this.item.manoever.forEach(manoever => {
+        this.item.manoever.forEach(dynamicManoever => {
             let check = undefined;
             let number = undefined;
             let trefferZoneInput = undefined;
-            manoever.inputValues.forEach(selector => {
+            dynamicManoever.inputValues.forEach(selector => {
                 if(selector.value) {
                     if(selector.field == 'CHECKBOX') {
                         check = selector.value;
@@ -232,34 +226,44 @@ export class AngriffDialog extends Dialog {
                 }
             });
             if(check == undefined && (number == undefined || number == 0) && (trefferZoneInput == undefined || trefferZoneInput == 0)) return;
-            [mod_at,mod_vt,mod_dm,text_at,text_vt,text_dm,trefferzone,schaden] = handleModifications(manoever, number, check, trefferZoneInput,{mod_at,mod_vt,mod_dm,text_at,text_vt,text_dm,trefferzone,schaden,context:this},CONFIG);
+            [mod_at,mod_vt,mod_dm,text_at,text_vt,text_dm,trefferzone,schaden,nodmg] = handleModifications(dynamicManoever, number, check, trefferZoneInput,{mod_at,mod_vt,mod_dm,text_at,text_vt,text_dm,trefferzone,schaden,nodmg,context:this},CONFIG);
             // Sturmangriff und Überrennen hardcoded for now
             if (manoever.kbak.selected) {
-                if(manoever.name == 'Sturmangriff') {
+                if(dynamicManoever.name == 'Sturmangriff') {
                     mod_at += 4;
-                    text_at = text_at.concat(`${CONFIG.ILARIS.label['km_stag']}: +4\n`);
+                    text_at = text_at.concat(`${dynamicManoever.name}: +4\n`);
                 }
-                if(manoever.name == 'Überrennen') {
+                if(dynamicManoever.name == 'Überrennen') {
                     mod_at += 4;
-                    text_at = text_at.concat(`${CONFIG.ILARIS.label['km_uebr']}: +4\n`);
+                    text_at = text_at.concat(`${dynamicManoever.name}: +4\n`);
                 }
             }
             // Riposte hardcoded for now
-            if (manoever.name == 'Riposte') {
+            if (dynamicManoever.name == 'Riposte') {
                 mod_vt += mod_at;
                 text_vt = text_vt.concat(
-                    `${manoever.name}: (\n${text_at})\n`,
+                    `${dynamicManoever.name}: (\n${text_at})\n`,
                 );
                 text_dm = text_dm.concat(
-                    `${manoever.name}: (\n${text_at})\n`,
+                    `${dynamicManoever.name}: (\n${text_at})\n`,
                 );
             }
         });
 
+        // If ZERO_DAMAGE was found, override damage values
+        if (nodmg.value) {
+            mod_dm = 0;
+            schaden = '0';
+            // Add text explaining zero damage if not already present
+            if (!text_dm.includes('Kein Schaden')) {
+                text_dm = text_dm.concat(`${nodmg.name}: Kein Schaden\n`);
+            }
+        }
+
         // Trefferzone if not set by manoever
         if(trefferzone == 0){
             let zonenroll = new Roll('1d6');
-            zonenroll.evaluate();
+            await zonenroll.evaluate();
             text_dm = text_dm.concat(
                 `Trefferzone: ${CONFIG.ILARIS.trefferzonen[zonenroll.total]}\n`,
             );
@@ -280,7 +284,6 @@ export class AngriffDialog extends Dialog {
         this.text_at = text_at;
         this.text_vt = text_vt;
         this.text_dm = text_dm;
-        this.nodmg = nodmg;
         this.schaden = schaden;
     }
 

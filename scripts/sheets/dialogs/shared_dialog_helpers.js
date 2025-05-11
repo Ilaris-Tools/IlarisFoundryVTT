@@ -1,3 +1,4 @@
+import {signed} from '../../common/wuerfel/chatutilities.js'
 /**
  * Processes a single modification and updates the rollValues object.
  * @param {Object} modification - The modification object.
@@ -85,14 +86,12 @@ export function processModification(modification, number, manoeverName, trefferz
  * @param {Object} config - The CONFIG object for localization.
  * @returns {Array} Updated roll values.
  */
-export function handleModifications(manoever, number, check, trefferZoneInput, rollValues, config) {
-    console.log('call')
-    let hasZeroDamage = false;
-    
+export function handleModifications(manoever, number, check, trefferZoneInput, rollValues, config) {    
     // First check if any modification is a ZERO_DAMAGE type
     Object.values(manoever.system.modifications).forEach(modification => {
         if (modification.type === 'ZERO_DAMAGE' && ((check && number) || number || check || trefferZoneInput)) {
-            hasZeroDamage = true;
+            rollValues.nodmg.name = manoever.name;
+            rollValues.nodmg.value = true;
         }
     });
     
@@ -107,16 +106,6 @@ export function handleModifications(manoever, number, check, trefferZoneInput, r
             processModification(modification, 1, manoever.name, trefferZoneInput, rollValues, config);
         }
     });
-    
-    // If ZERO_DAMAGE was found, override damage values
-    if (hasZeroDamage) {
-        rollValues.mod_dm = 0;
-        rollValues.schaden = '0';
-        // Add text explaining zero damage if not already present
-        if (!rollValues.text_dm.includes('Kein Schaden')) {
-            rollValues.text_dm = rollValues.text_dm.concat(`${manoever.name}: Kein Schaden\n`);
-        }
-    }
 
     return [
         rollValues.mod_at,
@@ -126,6 +115,7 @@ export function handleModifications(manoever, number, check, trefferZoneInput, r
         rollValues.text_vt,
         rollValues.text_dm,
         rollValues.trefferzone,
-        rollValues.schaden
+        rollValues.schaden,
+        rollValues.nodmg
     ];
 }
