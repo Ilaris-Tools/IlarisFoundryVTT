@@ -11,7 +11,7 @@ export class AngriffDialog extends Dialog {
         const dialog = {title: `Kampf: ${item.name}`};
         const options = {
             template: 'systems/Ilaris/templates/sheets/dialogs/angriff.html',
-            width: 700,
+            width: 500,
             height: 'auto'
         };
         super(dialog, options);
@@ -46,9 +46,29 @@ export class AngriffDialog extends Dialog {
     
     activateListeners(html) {
         super.activateListeners(html);
+        console.log(html.find(".maneuver-header"));
+
         html.find(".angreifen").click(ev => this._angreifenKlick(html));
         html.find(".verteidigen").click(ev => this._verteidigenKlick(html));
         html.find(".schaden").click(ev => this._schadenKlick(html));
+        // Add expand/collapse functionality
+        html.find(".maneuver-header").click(ev => {
+            console.log('maneuver-header clicked');
+            const header = ev.currentTarget;
+            const grid = header.nextElementSibling;
+            header.classList.toggle("collapsed");
+            grid.classList.toggle("collapsed");
+        });
+
+        // Update has-value class when inputs change
+        html.find(".maneuver-item input, .maneuver-item select").change(ev => {
+            const item = ev.currentTarget.closest(".maneuver-item");
+            const hasValue = Array.from(item.querySelectorAll("input, select")).some(input => {
+                if (input.type === "checkbox") return input.checked;
+                return input.value && input.value !== "0";
+            });
+            item.classList.toggle("has-value", hasValue);
+        });
     }
 
     async _angreifenKlick(html) {
