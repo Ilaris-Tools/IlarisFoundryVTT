@@ -6,10 +6,9 @@ import {signed} from '../../common/wuerfel/chatutilities.js'
  * @param {string} manoeverName - The name of the maneuver.
  * @param {string|null} trefferzone - The hit zone (optional).
  * @param {Object} rollValues - The object containing roll values to be updated.
- * @param {Object} config - The CONFIG object for localization.
  * @returns {Object} Updated rollValues.
  */
-export function processModification(modification, number, manoeverName, trefferzone, rollValues, config) {
+export function processModification(modification, number, manoeverName, trefferzone, rollValues) {
     let value = modification.value;
     let targetValue = 0;
 
@@ -30,7 +29,7 @@ export function processModification(modification, number, manoeverName, trefferz
     }
     value = modification.affectedByInput ? number * value : value;
 
-    let text = `${manoeverName}${trefferzone ? ` (${config.ILARIS.trefferzonen[trefferzone]})` : ''}: ${modification.operator === 'SUBTRACT' ? '-' + value : signed(value)}\n`;
+    let text = `${manoeverName}${trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''}: ${modification.operator === 'SUBTRACT' ? '-' + value : signed(value)}\n`;
 
     switch (modification.type) {
         case 'ATTACK':
@@ -48,29 +47,29 @@ export function processModification(modification, number, manoeverName, trefferz
         case 'WEAPON_DAMAGE':
             if (modification.operator === 'ADD' || modification.operator === 'SUBTRACT') {
                 rollValues.schaden = rollValues.schaden.concat(`${modification.operator === 'SUBTRACT' ? '-' : '+'}${value}`);
-                text = `${manoeverName}${trefferzone ? ` (${config.ILARIS.trefferzonen[trefferzone]})` : ''}: ${modification.operator === 'SUBTRACT' ? '-' + value : signed(value)} Waffenschaden\n`;
+                text = `${manoeverName}${trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''}: ${modification.operator === 'SUBTRACT' ? '-' + value : signed(value)} Waffenschaden\n`;
             } else {
                 rollValues.schaden = `(${rollValues.schaden})*${value}`;
-                text = `${manoeverName}${trefferzone ? ` (${config.ILARIS.trefferzonen[trefferzone]})` : ''}: ${value} * Waffenschaden\n`;
+                text = `${manoeverName}${trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''}: ${value} * Waffenschaden\n`;
             }
             rollValues.text_dm = rollValues.text_dm.concat(text);
             break;
         case 'ZERO_DAMAGE':
             rollValues.schaden = '0';
             rollValues.mod_dm = 0;
-            text = `${manoeverName}${trefferzone ? ` (${config.ILARIS.trefferzonen[trefferzone]})` : ''}: Kein Schaden\n`;
+            text = `${manoeverName}${trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''}: Kein Schaden\n`;
             rollValues.text_dm = rollValues.text_dm.concat(text);
             break;
         case 'CHANGE_DAMAGE_TYPE':
-            text = `${manoeverName}${trefferzone ? ` (${config.ILARIS.trefferzonen[trefferzone]})` : ''}: Schadenstyp zu ${config.ILARIS.schadenstypen[modification.value]}\n`;
+            text = `${manoeverName}${trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''}: Schadenstyp zu ${CONFIG.ILARIS.schadenstypen[modification.value]}\n`;
             rollValues.text_dm = rollValues.text_dm.concat(text);
             break;
         case 'ARMOR_BREAKING':
-            text = `${manoeverName}${trefferzone ? ` (${config.ILARIS.trefferzonen[trefferzone]})` : ''}: Ignoriert Rüstung\n`;
+            text = `${manoeverName}${trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''}: Ignoriert Rüstung\n`;
             rollValues.text_dm = rollValues.text_dm.concat(text);
             break;
         case 'SPECIAL_TEXT':
-            text = `${manoeverName}${trefferzone ? ` (${config.ILARIS.trefferzonen[trefferzone]})` : ''}: ${modification.value}\n`;
+            text = `${manoeverName}${trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''}: ${modification.value}\n`;
             rollValues.text_dm = rollValues.text_dm.concat(text);
             break;
     }
@@ -80,38 +79,34 @@ export function processModification(modification, number, manoeverName, trefferz
 
 /**
  * Handles multiple modifications and updates roll values accordingly.
- * @param {Object} manoever - The maneuver object containing modifications.
- * @param {number} number - The multiplier for the modification value.
- * @param {boolean} check - A flag indicating whether the modification is checked.
- * @param {string|null} trefferZoneInput - The hit zone input (optional).
+ * @param {Object} allModifications - The modifications to be processed.
  * @param {Object} rollValues - The object containing roll values to be updated.
- * @param {Object} config - The CONFIG object for localization.
  * @returns {Array} Updated roll values.
  */
-export function handleModifications(manoever, number, check, trefferZoneInput, rollValues, config) {    
-    // First check if any modification is a ZERO_DAMAGE type
-    Object.values(manoever.system.modifications).forEach(modification => {
-        if (modification.type === 'ZERO_DAMAGE' && ((check && number) || number || check || trefferZoneInput)) {
+export function handleModifications(allModifications, rollValues) {   
+    // Sort all modifications by operator type
+    allModifications.sort((a, b) => {
+        const operatorOrder = { 'ADD': 0, 'SUBTRACT': 0, 'MULTIPLY': 1 };
+        return operatorOrder[a.modification.operator] - operatorOrder[b.modification.operator];
+    });
+     
+    // First check for ZERO_DAMAGE
+    allModifications.forEach(({modification, manoever}) => {
+        if (modification.type === 'ZERO_DAMAGE') {
             rollValues.nodmg.name = manoever.name;
             rollValues.nodmg.value = true;
         }
     });
-    
-    // Sort modifications by operator type: ADD/SUBTRACT first, then MULTIPLY
-    const sortedModifications = Object.values(manoever.system.modifications).sort((a, b) => {
-        const operatorOrder = { 'ADD': 0, 'SUBTRACT': 0, 'MULTIPLY': 1 };
-        return operatorOrder[a.operator] - operatorOrder[b.operator];
-    });
-    
-    // Process each modification in sorted order
-    sortedModifications.forEach(modification => {
+
+    // Process all modifications in sorted order
+    allModifications.forEach(({modification, manoever: dynamicManoever, number, check, trefferZoneInput}) => {
         if ((check && number) || number) {
-            processModification(modification, number, manoever.name, null, rollValues, config);
+            processModification(modification, number, dynamicManoever.name, null, rollValues);
         } else if (check) {
-            processModification(modification, 1, manoever.name, null, rollValues, config);
+            processModification(modification, 1, dynamicManoever.name, null, rollValues);
         } else if (trefferZoneInput) {
             rollValues.trefferzone = trefferZoneInput;
-            processModification(modification, 1, manoever.name, trefferZoneInput, rollValues, config);
+            processModification(modification, 1, dynamicManoever.name, trefferZoneInput, rollValues);
         }
     });
 
