@@ -28,13 +28,10 @@ describe('processModification', () => {
             text_vt: '',
             text_dm: '',
             schaden: '',
+            nodmg: {name: '', value: false},
         };
         global.signed = mockSigned;
-        mockConfig.ILARIS.schadenstypen = {
-            FEUER: 'Feuer',
-            EIS: 'Eis',
-            PROFAN: 'Profan'
-        };
+        global.CONFIG = mockConfig;
     });
 
     afterEach(() => {
@@ -42,7 +39,7 @@ describe('processModification', () => {
     });
 
     it('should handle ATTACK type with ADD operator', () => {
-        const modification = { type: 'ATTACK', operator: 'ADD', value: 5 };
+        const modification = { type: 'ATTACK', operator: 'ADD', value: 5, affectedByInput: true };
         processModification(modification, 2, 'Test Manoever', null, rollValues, mockConfig);
 
         expect(rollValues.mod_at).toBe(10);
@@ -58,7 +55,7 @@ describe('processModification', () => {
     });
 
     it('should handle DAMAGE type with ADD operator', () => {
-        const modification = { type: 'DAMAGE', operator: 'ADD', value: 4 };
+        const modification = { type: 'DAMAGE', operator: 'ADD', value: 4, affectedByInput: true };
         processModification(modification, 2, 'Test Manoever', null, rollValues, mockConfig);
 
         expect(rollValues.mod_dm).toBe(8);
@@ -66,7 +63,7 @@ describe('processModification', () => {
     });
 
     it('should handle DAMAGE type with SUBTRACT operator', () => {
-        const modification = { type: 'DAMAGE', operator: 'SUBTRACT', value: 2 };
+        const modification = { type: 'DAMAGE', operator: 'SUBTRACT', value: 2, affectedByInput: true };
         processModification(modification, 3, 'Test Manoever', null, rollValues, mockConfig);
 
         expect(rollValues.mod_dm).toBe(-6);
@@ -74,7 +71,7 @@ describe('processModification', () => {
     });
 
     it('should handle DEFENCE type with ADD operator', () => {
-        const modification = { type: 'DEFENCE', operator: 'ADD', value: 7 };
+        const modification = { type: 'DEFENCE', operator: 'ADD', value: 7, affectedByInput: true };
         processModification(modification, 1, 'Test Manoever', null, rollValues, mockConfig);
 
         expect(rollValues.mod_vt).toBe(7);
@@ -82,7 +79,7 @@ describe('processModification', () => {
     });
 
     it('should handle DEFENCE type with SUBTRACT operator', () => {
-        const modification = { type: 'DEFENCE', operator: 'SUBTRACT', value: 5 };
+        const modification = { type: 'DEFENCE', operator: 'SUBTRACT', value: 5, affectedByInput: true };
         processModification(modification, 2, 'Test Manoever', null, rollValues, mockConfig);
 
         expect(rollValues.mod_vt).toBe(-10);
@@ -90,7 +87,7 @@ describe('processModification', () => {
     });
 
     it('should handle WEAPON_DAMAGE type with ADD operator', () => {
-        const modification = { type: 'WEAPON_DAMAGE', operator: 'ADD', value: 3 };
+        const modification = { type: 'WEAPON_DAMAGE', operator: 'ADD', value: 3, affectedByInput: true };
         processModification(modification, 1, 'Test Manoever', null, rollValues, mockConfig);
 
         expect(rollValues.schaden).toContain('+3');
@@ -98,7 +95,7 @@ describe('processModification', () => {
     });
 
     it('should handle WEAPON_DAMAGE type with SUBTRACT operator', () => {
-        const modification = { type: 'WEAPON_DAMAGE', operator: 'SUBTRACT', value: 2 };
+        const modification = { type: 'WEAPON_DAMAGE', operator: 'SUBTRACT', value: 2, affectedByInput: true };
         processModification(modification, 2, 'Test Manoever', null, rollValues, mockConfig);
 
         expect(rollValues.schaden).toContain('-4');
@@ -106,7 +103,7 @@ describe('processModification', () => {
     });
 
     it('should handle WEAPON_DAMAGE type with multiplication', () => {
-        const modification = { type: 'WEAPON_DAMAGE', operator: 'MULTIPLY', value: 2 };
+        const modification = { type: 'WEAPON_DAMAGE', operator: 'MULTIPLY', value: 2, affectedByInput: true };
         processModification(modification, 3, 'Test Manoever', 1, rollValues, mockConfig);
 
         expect(rollValues.schaden).toContain('*6');
@@ -118,7 +115,7 @@ describe('processModification', () => {
         rollValues.mod_dm = 5;
         rollValues.schaden = '+3';
         
-        const modification = { type: 'ZERO_DAMAGE', operator: 'ADD', value: 0 };
+        const modification = { type: 'ZERO_DAMAGE', operator: 'ADD', value: 0, affectedByInput: true };
         processModification(modification, 1, 'Test Manoever', null, rollValues, mockConfig);
 
         expect(rollValues.schaden).toBe('0');
@@ -128,7 +125,7 @@ describe('processModification', () => {
 
     it('should handle modifications with a target property', () => {
         rollValues.context = { someNestedValue: 5 };
-        const modification = { type: 'ATTACK', operator: 'ADD', value: 2, target: 'someNestedValue' };
+        const modification = { type: 'ATTACK', operator: 'ADD', value: 2, target: 'someNestedValue', affectedByInput: true };
         processModification(modification, 2, 'Test Manoever', null, rollValues, mockConfig);
 
         expect(rollValues.mod_at).toBe(14); // (2 * 2) + 5 = 14
@@ -146,7 +143,7 @@ describe('processModification', () => {
     });
 
     it('should handle CHANGE_DAMAGE_TYPE type with trefferzone', () => {
-        const modification = { type: 'CHANGE_DAMAGE_TYPE', value: 'EIS' };
+        const modification = { type: 'CHANGE_DAMAGE_TYPE', value: 'EIS', affectedByInput: true };
         processModification(modification, 1, 'Test Manoever', 1, rollValues, mockConfig);
 
         expect(rollValues.text_dm).toContain('Test Manoever (Head): Schadenstyp zu Eis');
@@ -156,7 +153,7 @@ describe('processModification', () => {
     });
 
     it('should handle ARMOR_BREAKING type', () => {
-        const modification = { type: 'ARMOR_BREAKING' };
+        const modification = { type: 'ARMOR_BREAKING', affectedByInput: true };
         processModification(modification, 1, 'Test Manoever', null, rollValues, mockConfig);
 
         expect(rollValues.text_dm).toContain('Test Manoever: Ignoriert Rüstung');
@@ -166,7 +163,7 @@ describe('processModification', () => {
     });
 
     it('should handle ARMOR_BREAKING type with trefferzone', () => {
-        const modification = { type: 'ARMOR_BREAKING' };
+        const modification = { type: 'ARMOR_BREAKING', affectedByInput: true };
         processModification(modification, 1, 'Test Manoever', 2, rollValues, mockConfig);
 
         expect(rollValues.text_dm).toContain('Test Manoever (Torso): Ignoriert Rüstung');
@@ -176,7 +173,7 @@ describe('processModification', () => {
     });
 
     it('should handle SPECIAL_TEXT type', () => {
-        const modification = { type: 'SPECIAL_TEXT', value: 'Gegner wird zu Boden geworfen' };
+        const modification = { type: 'SPECIAL_TEXT', value: 'Gegner wird zu Boden geworfen', affectedByInput: true };
         processModification(modification, 1, 'Test Manoever', null, rollValues, mockConfig);
 
         expect(rollValues.text_dm).toContain('Test Manoever: Gegner wird zu Boden geworfen');
@@ -186,7 +183,7 @@ describe('processModification', () => {
     });
 
     it('should handle SPECIAL_TEXT type with trefferzone', () => {
-        const modification = { type: 'SPECIAL_TEXT', value: 'Schild wird zerstört' };
+        const modification = { type: 'SPECIAL_TEXT', value: 'Schild wird zerstört', affectedByInput: true };
         processModification(modification, 1, 'Test Manoever', 2, rollValues, mockConfig);
 
         expect(rollValues.text_dm).toContain('Test Manoever (Torso): Schild wird zerstört');
@@ -198,16 +195,6 @@ describe('processModification', () => {
 
 describe('handleModifications', () => {
     let rollValues;
-    const mockConfig = {
-        ILARIS: {
-            trefferzonen: {
-                1: 'Head',
-                2: 'Torso',
-                3: 'Arm',
-                4: 'Leg',
-            },
-        },
-    };
     
     beforeEach(() => {
         rollValues = {
@@ -217,47 +204,134 @@ describe('handleModifications', () => {
             text_at: '',
             text_vt: '',
             text_dm: '',
-            schaden: '',
+            schaden: '1W6',
             trefferzone: null,
+            nodmg: {name: '', value: false},
             context: {}
+        };
+        global.CONFIG = {
+            ILARIS: {
+                trefferzonen: {
+                    1: 'Head',
+                    2: 'Torso',
+                    3: 'Arm',
+                    4: 'Leg',
+                },
+            },
         };
         global.signed = value => (value >= 0 ? `+${value}` : `${value}`);
     });
     
-    it('should handle multiple modifications correctly', () => {
-        const manoever = {
-            name: 'Test Manoever',
-            system: {
-                modifications: [
-                    { type: 'ATTACK', operator: 'ADD', value: 2 },
-                    { type: 'DAMAGE', operator: 'ADD', value: 3 }
-                ]
+    it('should handle multiple modifications in correct order (ADD/SUBTRACT before MULTIPLY)', () => {
+        const allModifications = [
+            {
+                modification: { type: 'WEAPON_DAMAGE', operator: 'MULTIPLY', value: 2 },
+                manoever: { name: 'Test Multiply' },
+                number: 1,
+                check: true
+            },
+            {
+                modification: { type: 'WEAPON_DAMAGE', operator: 'ADD', value: 3 },
+                manoever: { name: 'Test Add' },
+                number: 1,
+                check: true
             }
-        };
+        ];
         
-        const result = handleModifications(manoever, 2, true, null, rollValues, mockConfig);
+        const result = handleModifications(allModifications, rollValues);
         
-        expect(result[0]).toBe(4); // mod_at
-        expect(result[2]).toBe(6); // mod_dm
+        expect(result[7]).toBe('(1W6+3)*2'); // schaden should show ADD before MULTIPLY
     });
-    
-    it('should override damage values when ZERO_DAMAGE is present', () => {
-        const manoever = {
-            name: 'Zero Damage Manoever',
-            system: {
-                modifications: [
-                    { type: 'ATTACK', operator: 'ADD', value: 2 },
-                    { type: 'DAMAGE', operator: 'ADD', value: 3 },
-                    { type: 'ZERO_DAMAGE', operator: 'ADD', value: 0 }
-                ]
+
+    it('should handle ZERO_DAMAGE type overriding other modifications', () => {
+        const allModifications = [
+            {
+                modification: { type: 'WEAPON_DAMAGE', operator: 'ADD', value: 3 },
+                manoever: { name: 'Test Add' },
+                number: 1,
+                check: true
+            },
+            {
+                modification: { type: 'ZERO_DAMAGE', operator: 'ADD', value: 0 },
+                manoever: { name: 'Zero Damage' },
+                number: 1,
+                check: true
             }
-        };
+        ];
         
-        const result = handleModifications(manoever, 1, true, null, rollValues, mockConfig);
+        const result = handleModifications(allModifications, rollValues);
         
-        expect(result[0]).toBe(2); // mod_at (still applied)
-        expect(result[2]).toBe(0); // mod_dm (reset to 0)
-        expect(result[7]).toBe('0'); // schaden (set to 0)
-        expect(result[5]).toContain('Kein Schaden'); // text_dm
+        expect(result[7]).toBe('0'); // schaden
+        expect(result[2]).toBe(0); // mod_dm
+        expect(result[8].value).toBe(true); // nodmg.value
+        expect(result[8].name).toBe('Zero Damage'); // nodmg.name
+    });
+
+    it('should handle modifications with number input', () => {
+        const allModifications = [
+            {
+                modification: { type: 'ATTACK', operator: 'ADD', value: 2, affectedByInput: true },
+                manoever: { name: 'Test Number' },
+                number: 3,
+                check: false
+            }
+        ];
+        
+        const result = handleModifications(allModifications, rollValues);
+        
+        expect(result[0]).toBe(6); // mod_at should be 2 * 3
+    });
+
+    it('should handle modifications with checkbox input', () => {
+        const allModifications = [
+            {
+                modification: { type: 'DEFENCE', operator: 'ADD', value: 2, affectedByInput: false },
+                manoever: { name: 'Test Checkbox' },
+                number: undefined,
+                check: true
+            }
+        ];
+        
+        const result = handleModifications(allModifications, rollValues);
+        
+        expect(result[1]).toBe(2); // mod_vt
+    });
+
+    it('should handle modifications with trefferzone input', () => {
+        const allModifications = [
+            {
+                modification: { type: 'DAMAGE', operator: 'ADD', value: 2 },
+                manoever: { name: 'Test Zone' },
+                number: undefined,
+                check: undefined,
+                trefferZoneInput: 1
+            }
+        ];
+        
+        const result = handleModifications(allModifications, rollValues);
+        
+        expect(result[6]).toBe(1); // trefferzone
+        expect(result[5]).toContain('Head'); // text_dm should include zone name
+    });
+
+    it('should preserve modification order within same operator type', () => {
+        const allModifications = [
+            {
+                modification: { type: 'ATTACK', operator: 'ADD', value: 2 },
+                manoever: { name: 'First Add' },
+                number: 1,
+                check: true
+            },
+            {
+                modification: { type: 'ATTACK', operator: 'ADD', value: 3 },
+                manoever: { name: 'Second Add' },
+                number: 1,
+                check: true
+            }
+        ];
+        
+        const result = handleModifications(allModifications, rollValues);
+        
+        expect(result[3]).toMatch(/First Add.*Second Add/s); // text_at should preserve order
     });
 });

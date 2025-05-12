@@ -8,7 +8,8 @@
         "name": "Vorteil Kraftvoller Kampf III",
         "type": "STILE",
         "value": [
-          "z9y0LSVFiPUFD8KX"
+          "z9y0LSVFiPUFD8KX",
+          "qH9tCjuz6XfJAMHQ"
         ]
       }
     },
@@ -49,7 +50,7 @@
     "systemId": "Ilaris",
     "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746878618482,
+    "modifiedTime": 1746955064527,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

@@ -8,7 +8,8 @@
         "name": "Vorteil Beidhändiger Kampf III",
         "type": "STILE",
         "value": [
-          "bF3alIwhi05gpBeK"
+          "bF3alIwhi05gpBeK",
+          "xRANX8wW3HmMFMcL"
         ]
       }
     },
@@ -42,7 +43,7 @@
     "systemId": "Ilaris",
     "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746877927644,
+    "modifiedTime": 1746955078170,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

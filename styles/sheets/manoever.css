@@ -2,6 +2,15 @@
     padding: 8px;
 }
 
+/* Make the dialog wider */
+.app.window-app.dialog.angriff {
+    min-width: 600px !important;
+}
+
+.app.window-app.dialog.angriff .window-content {
+    padding: 16px;
+}
+
 .section-header {
     margin: 16px 0 8px 0;
     padding-bottom: 4px;
@@ -58,4 +67,71 @@
 
 .manoever-section {
     margin-bottom: 24px;
+}
+
+.maneuver-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+
+    h3 {
+        width: 100%;
+    }
+}
+
+.maneuver-header i {
+    transition: transform 0.2s ease;
+}
+
+.maneuver-header.collapsed i {
+    transform: rotate(-180deg);
+}
+
+.maneuver-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin: 16px 0;
+    transition: max-height 0.3s ease-out;
+}
+
+.maneuver-grid.collapsed {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.maneuver-grid.collapsed .maneuver-item:not(.has-value) {
+    display: none;
+}
+
+.maneuver-item {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: 4px;
+    flex-wrap: wrap;
+}
+
+.maneuver-item.has-value {
+    background: rgba(120, 46, 34, 0.05);
+}
+
+.maneuver-item label {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.maneuver-item input[type="checkbox"] {
+    margin-left: 8px;
+}
+
+.maneuver-item input[type="number"],
+.maneuver-item select {
+    width: 100%;
+    max-width: 150px;
 }

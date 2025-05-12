@@ -52,38 +52,45 @@
 
 <hr>
 
-<h3>Manöver:</h3>
-{{#each item.manoever as |manoever|}}
-    <div class="flexrow">
-        <label>{{manoever.name}}</label>
-        {{#each manoever.inputValues as |input|}}
-            {{#if (ifEq input.field "CHECKBOX")}}
-                <input
-                    type="checkbox"
-                    id="{{manoever.id}}CHECKBOX"
-                    {{#if input.value}}checked{{/if}}
-                />
-            {{/if}}
-            {{#if (ifEq input.field "NUMBER")}}
-            {{log input}}
-                <input
-                    id="{{manoever.id}}NUMBER"
-                    type="number"
-                    name="item.manoever.{{@../index}}.inputValues.{{@index}}.value"
-                    value="{{input.value}}"
-                    data-dtype="Number"
-                    {{#unless (ifEq input.min null)}}min="{{input.min}}"{{/unless}}
-                    {{#if input.max}}max="{{input.max}}"{{/if}}
-                />
-            {{/if}}
-            {{#if (ifEq input.field "TREFFER_ZONE")}}
-                <select id="{{manoever.id}}TREFFER_ZONE" name="input.value" style="max-width: 150px">
-                    {{selectOptions ../../trefferzonen selected=input.value}}
-                </select>
-            {{/if}}
+<div>
+    <div class="maneuver-header collapsed">
+        <h3>Manöver:</h3>
+        <i class="fas fa-chevron-down"></i>
+    </div>
+    <div class="maneuver-grid collapsed">
+        {{#each item.manoever as |manoever|}}
+            <div class="maneuver-item {{#if (or (some manoever.inputValues "value") (some manoever.inputValues "checked"))}}has-value{{/if}}">
+                <label>{{manoever.name}} ({{manoever.system.probe}})</label>
+                {{#each manoever.inputValues as |input|}}
+                    {{#if (ifEq input.field "CHECKBOX")}}
+                        <input
+                            type="checkbox"
+                            id="{{manoever.id}}CHECKBOX"
+                            {{#if input.value}}checked{{/if}}
+                        />
+                    {{/if}}
+                    {{#if (ifEq input.field "NUMBER")}}
+                    {{log input}}
+                        <input
+                            id="{{manoever.id}}NUMBER"
+                            type="number"
+                            name="item.manoever.{{@../index}}.inputValues.{{@index}}.value"
+                            value="{{input.value}}"
+                            data-dtype="Number"
+                            {{#unless (ifEq input.min null)}}min="{{input.min}}"{{/unless}}
+                            {{#if input.max}}max="{{input.max}}"{{/if}}
+                        />
+                    {{/if}}
+                    {{#if (ifEq input.field "TREFFER_ZONE")}}
+                        <select id="{{manoever.id}}TREFFER_ZONE" name="input.value" style="max-width: 150px">
+                            {{selectOptions ../../trefferzonen selected=input.value}}
+                        </select>
+                    {{/if}}
+                {{/each}}
+            </div>
         {{/each}}
     </div>
-{{/each}}
+</div>
 
 <hr />
 <div class="flexrow">

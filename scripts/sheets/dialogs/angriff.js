@@ -9,7 +9,11 @@ import { handleModifications } from './shared_dialog_helpers.js';
 export class AngriffDialog extends Dialog {
     constructor(actor, item) {
         const dialog = {title: `Kampf: ${item.name}`};
-        const options = {template: 'systems/Ilaris/templates/sheets/dialogs/angriff.html'}
+        const options = {
+            template: 'systems/Ilaris/templates/sheets/dialogs/angriff.html',
+            width: 500,
+            height: 'auto'
+        };
         super(dialog, options);
         // this can be probendialog (more abstract)
         this.text_at = '';
@@ -42,9 +46,27 @@ export class AngriffDialog extends Dialog {
     
     activateListeners(html) {
         super.activateListeners(html);
+
         html.find(".angreifen").click(ev => this._angreifenKlick(html));
         html.find(".verteidigen").click(ev => this._verteidigenKlick(html));
         html.find(".schaden").click(ev => this._schadenKlick(html));
+        // Add expand/collapse functionality
+        html.find(".maneuver-header").click(ev => {
+            const header = ev.currentTarget;
+            const grid = header.nextElementSibling;
+            header.classList.toggle("collapsed");
+            grid.classList.toggle("collapsed");
+        });
+
+        // Update has-value class when inputs change
+        html.find(".maneuver-item input, .maneuver-item select").change(ev => {
+            const item = ev.currentTarget.closest(".maneuver-item");
+            const hasValue = Array.from(item.querySelectorAll("input, select")).some(input => {
+                if (input.type === "checkbox") return input.checked;
+                return input.value && input.value !== "0";
+            });
+            item.classList.toggle("has-value", hasValue);
+        });
     }
 
     async _angreifenKlick(html) {
@@ -147,14 +169,6 @@ export class AngriffDialog extends Dialog {
     }
     
     async updateManoeverMods() {
-        /* geht ausgewählte manöver durch und schreibt summe in 
-        this.mod_at und this.text_at
-        ersetzt teile der callback funktion aus wuerfel.js und calculate_attacke aus attacke_prepare.js
-
-        // TODO: das wäre vlt. ne gute item.manoeverAnwenden() die dann 
-        // item.at_mod, item.vt_mod, item.at_text item.vt_text schreibt oder sowas?
-        // #31
-        */
         let manoever = this.item.system.manoever;
 
         let mod_at = 0;
@@ -166,8 +180,8 @@ export class AngriffDialog extends Dialog {
         let nodmg = {name: '', value: false};
         let trefferzone = 0;
         let schaden = this.item.getTp();
-        schaden = `(${schaden})`
 
+        // Handle standard maneuvers first
         if (manoever.kbak.selected) {
             mod_at -= 4;
             text_at = text_at.concat('Kombinierte Aktion: -4\n');
@@ -210,6 +224,8 @@ export class AngriffDialog extends Dialog {
             }
         }
 
+        // Collect all modifications from all maneuvers
+        const allModifications = [];
         this.item.manoever.forEach(dynamicManoever => {
             let check = undefined;
             let number = undefined;
@@ -226,8 +242,19 @@ export class AngriffDialog extends Dialog {
                 }
             });
             if(check == undefined && (number == undefined || number == 0) && (trefferZoneInput == undefined || trefferZoneInput == 0)) return;
-            [mod_at,mod_vt,mod_dm,text_at,text_vt,text_dm,trefferzone,schaden,nodmg] = handleModifications(dynamicManoever, number, check, trefferZoneInput,{mod_at,mod_vt,mod_dm,text_at,text_vt,text_dm,trefferzone,schaden,nodmg,context:this},CONFIG);
-            // Sturmangriff und Überrennen hardcoded for now
+
+            // Add valid modifications to the collection
+            Object.values(dynamicManoever.system.modifications).forEach(modification => {
+                allModifications.push({
+                    modification,
+                    manoever: dynamicManoever,
+                    number,
+                    check,
+                    trefferZoneInput
+                });
+            });
+
+            // Handle special cases
             if (manoever.kbak.selected) {
                 if(dynamicManoever.name == 'Sturmangriff') {
                     mod_at += 4;
@@ -238,7 +265,6 @@ export class AngriffDialog extends Dialog {
                     text_at = text_at.concat(`${dynamicManoever.name}: +4\n`);
                 }
             }
-            // Riposte hardcoded for now
             if (dynamicManoever.name == 'Riposte') {
                 mod_vt += mod_at;
                 text_vt = text_vt.concat(
@@ -249,6 +275,19 @@ export class AngriffDialog extends Dialog {
                 );
             }
         });
+
+        // Process all modifications in order
+        [
+            mod_at,
+            mod_vt,
+            mod_dm,
+            text_at,
+            text_vt,
+            text_dm,
+            trefferzone,
+            schaden,
+            nodmg
+        ] = handleModifications(allModifications, {mod_at,mod_vt,mod_dm,text_at,text_vt,text_dm,trefferzone,schaden,nodmg,context: this});
 
         // If ZERO_DAMAGE was found, override damage values
         if (nodmg.value) {
