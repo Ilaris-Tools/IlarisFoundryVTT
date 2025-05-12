@@ -148,11 +148,18 @@ export function geweihter(actor) {
 }
 
 export function getKampfstile(actor) {
-    let kampfstile = [{ name: CONFIG.ILARIS.label['ohne'], key: 'ohne', stufe: 0 }];
+    let kampfstile = {
+        'ohne': { 
+            name: CONFIG.ILARIS.label['ohne'], 
+            key: 'ohne', 
+            stufe: 0, 
+            sources: [] 
+        }
+    };
     
     // Group kampfstile by their base name (without the level suffix)
     const kampfstilGroups = actor.vorteil.kampfstil.reduce((groups, stil) => {
-        const baseName = stil.name.replace(/ [IV]+$/, '');
+        const baseName = stil.name.replace(/ [IV]+.*$/, '');
         if (!groups[baseName]) {
             groups[baseName] = [];
         }
@@ -168,19 +175,24 @@ export function getKampfstile(actor) {
             return currentStufe > prevStufe ? current : prev;
         });
         
-        kampfstile.push({ 
-            name: highestStil.name, 
+        // Collect all compendium sources for this kampfstil group
+        const sources = stile.map(stil => stil._stats.compendiumSource);
+        
+        // Add to kampfstile object using the key as property name
+        kampfstile[highestStil._stats.compendiumSource] = {
+            name: highestStil.name.replace(/ [IV]+.*$/, ''),
             key: highestStil._stats.compendiumSource,
-            stufe: getKampfstilStufe(highestStil.name)
-        });
+            stufe: getKampfstilStufe(highestStil.name),
+            sources: sources
+        };
     });
     
     return kampfstile;
 }
 
 export function getKampfstilStufe(kampfstilName) {
-    // Match Roman numerals at the end of the string, allowing for space before
-    const match = kampfstilName.match(/ (I{1,3}|IV)$/);
+    // Match Roman numerals followed by optional text, allowing for space before
+    const match = kampfstilName.match(/ (I{1,3}|IV).*$/);
     if (!match) return 0;
     
     // Convert Roman numeral to number
@@ -512,5 +524,5 @@ export function karmaOpferungPossible(actor) {
 }
 
 export function getSelectedKampfstil(selectedValue, kampfstile) {
-    return kampfstile.find(k => k.key === selectedValue) ?? kampfstile[0];
+    return kampfstile[selectedValue] ?? kampfstile['ohne'];
 }

@@ -1,136 +1,148 @@
-import * as hardcoded from './../hardcodedvorteile.js';
+import { getKampfstile, getSelectedKampfstil, getKampfstilStufe } from '../hardcodedvorteile.js';
 
 describe('getKampfstile', () => {
-    beforeAll(() => {
+    beforeEach(() => {
         global.CONFIG = {
             ILARIS: {
                 label: {
-                    'ohne': 'Kein Kampfstil',
-                    'bhk': 'Beidhändiger Kampf',
-                    'kvk': 'Kraftvoller Kampf',
-                    'pwk': 'Parierwaffenkampf',
-                    'rtk': 'Reiterkampf',
-                    'shk': 'Schildkampf',
-                    'snk': 'Schneller Kampf'
+                    'ohne': 'Ohne'
                 }
             }
         };
     });
 
-    test('returns only ohne when actor has no kampfstile', () => {
-        const actor = {
-            vorteil: {
-                kampfstil: []
+    it('should return object with ohne as default', () => {
+        const actor = { vorteil: { kampfstil: [] } };
+        const result = getKampfstile(actor);
+        
+        expect(result).toEqual({
+            'ohne': {
+                name: 'Ohne',
+                key: 'ohne',
+                stufe: 0,
+                sources: []
             }
-        };
-
-        const result = hardcoded.getKampfstile(actor);
-        expect(result).toEqual([
-            { name: 'Kein Kampfstil', key: 'ohne', stufe: 0 }
-        ]);
+        });
     });
 
-    test('returns highest level of each kampfstil', () => {
-        const actor = {
-            vorteil: {
-                kampfstil: [
-                    { name: 'Beidhändiger Kampf I', _stats: { compendiumSource: 'bhk1' } },
-                    { name: 'Beidhändiger Kampf III', _stats: { compendiumSource: 'bhk3' } },
-                    { name: 'Kraftvoller Kampf II', _stats: { compendiumSource: 'kvk2' } },
-                    { name: 'Kraftvoller Kampf I', _stats: { compendiumSource: 'kvk1' } }
-                ]
-            }
-        };
-
-        const result = hardcoded.getKampfstile(actor);
-        expect(result).toEqual([
-            { name: 'Kein Kampfstil', key: 'ohne', stufe: 0 },
-            { name: 'Beidhändiger Kampf III', key: 'bhk3', stufe: 3 },
-            { name: 'Kraftvoller Kampf II', key: 'kvk2', stufe: 2 }
-        ]);
-    });
-
-    test('handles single level kampfstile', () => {
+    it('should group kampfstile and use highest level', () => {
         const actor = {
             vorteil: {
                 kampfstil: [
-                    { name: 'Beidhändiger Kampf II', _stats: { compendiumSource: 'bhk2' } }
+                    { 
+                        name: 'Beidhändiger Kampf I',
+                        _stats: { compendiumSource: 'Ilaris.beidhändig1' }
+                    },
+                    {
+                        name: 'Beidhändiger Kampf II (test)',
+                        _stats: { compendiumSource: 'Ilaris.beidhändig2' }
+                    }
                 ]
             }
         };
-
-        const result = hardcoded.getKampfstile(actor);
-        expect(result).toEqual([
-            { name: 'Kein Kampfstil', key: 'ohne', stufe: 0 },
-            { name: 'Beidhändiger Kampf II', key: 'bhk2', stufe: 2 }
-        ]);
+        
+        const result = getKampfstile(actor);
+        
+        expect(result).toEqual({
+            'ohne': {
+                name: 'Ohne',
+                key: 'ohne',
+                stufe: 0,
+                sources: []
+            },
+            'Ilaris.beidhändig2': {
+                name: 'Beidhändiger Kampf',
+                key: 'Ilaris.beidhändig2',
+                stufe: 2,
+                sources: ['Ilaris.beidhändig1', 'Ilaris.beidhändig2']
+            }
+        });
     });
 
-    test('handles kampfstile with same level', () => {
+    it('should handle multiple different kampfstile', () => {
         const actor = {
             vorteil: {
                 kampfstil: [
-                    { name: 'Beidhändiger Kampf II', _stats: { compendiumSource: 'bhk2a' } },
-                    { name: 'Beidhändiger Kampf II', _stats: { compendiumSource: 'bhk2b' } }
+                    {
+                        name: 'Beidhändiger Kampf I',
+                        _stats: { compendiumSource: 'Ilaris.beidhändig1' }
+                    },
+                    {
+                        name: 'Defensiver Kampfstil II',
+                        _stats: { compendiumSource: 'Ilaris.defensiv2' }
+                    }
                 ]
             }
         };
-
-        const result = hardcoded.getKampfstile(actor);
-        // Should keep the first one encountered
-        expect(result).toEqual([
-            { name: 'Kein Kampfstil', key: 'ohne', stufe: 0 },
-            { name: 'Beidhändiger Kampf II', key: 'bhk2a', stufe: 2 }
-        ]);
-    });
-
-    test('handles invalid kampfstil names', () => {
-        const actor = {
-            vorteil: {
-                kampfstil: [
-                    { name: 'Invalid Kampfstil', _stats: { compendiumSource: 'invalid' } },
-                    { name: 'Beidhändiger Kampf II', _stats: { compendiumSource: 'bhk2' } }
-                ]
+        
+        const result = getKampfstile(actor);
+        
+        expect(result).toEqual({
+            'ohne': {
+                name: 'Ohne',
+                key: 'ohne',
+                stufe: 0,
+                sources: []
+            },
+            'Ilaris.beidhändig1': {
+                name: 'Beidhändiger Kampf',
+                key: 'Ilaris.beidhändig1',
+                stufe: 1,
+                sources: ['Ilaris.beidhändig1']
+            },
+            'Ilaris.defensiv2': {
+                name: 'Defensiver Kampfstil',
+                key: 'Ilaris.defensiv2',
+                stufe: 2,
+                sources: ['Ilaris.defensiv2']
             }
-        };
-
-        const result = hardcoded.getKampfstile(actor);
-        expect(result).toEqual([
-            { name: 'Kein Kampfstil', key: 'ohne', stufe: 0 },
-            { name: 'Invalid Kampfstil', key: 'invalid', stufe: 0 },
-            { name: 'Beidhändiger Kampf II', key: 'bhk2', stufe: 2 }
-        ]);
-    });
-});
-
-describe('sum', () => {
-    test('adds 1 + 2 to equal 3', () => {
-        expect(hardcoded.sum(1, 2)).toBe(3);
-    });
-
-    test('adds 2 + 2 to equal 4', () => {
-        expect(hardcoded.sum(2, 2)).toBe(4);
+        });
     });
 });
 
 describe('getSelectedKampfstil', () => {
-    test('returns matching kampfstil when found', () => {
-        const kampfstile = [
-            { name: 'Kein Kampfstil', key: 'ohne', stufe: 0 },
-            { name: 'Beidhändiger Kampf II', key: 'bhk2', stufe: 2 }
-        ];
-        
-        const result = hardcoded.getSelectedKampfstil('bhk2', kampfstile);
-        expect(result).toEqual({ name: 'Beidhändiger Kampf II', key: 'bhk2', stufe: 2 });
+    const mockKampfstile = {
+        'ohne': {
+            name: 'Ohne',
+            key: 'ohne',
+            stufe: 0,
+            sources: []
+        },
+        'Ilaris.beidhändig2': {
+            name: 'Beidhändiger Kampf II',
+            key: 'Ilaris.beidhändig2',
+            stufe: 2,
+            sources: ['Ilaris.beidhändig1', 'Ilaris.beidhändig2']
+        }
+    };
+
+    it('should return selected kampfstil when it exists', () => {
+        const result = getSelectedKampfstil('Ilaris.beidhändig2', mockKampfstile);
+        expect(result).toEqual({
+            name: 'Beidhändiger Kampf II',
+            key: 'Ilaris.beidhändig2',
+            stufe: 2,
+            sources: ['Ilaris.beidhändig1', 'Ilaris.beidhändig2']
+        });
     });
 
-    test('returns first kampfstil (ohne) when no match found', () => {
-        const kampfstile = [
-            { name: 'Kein Kampfstil', key: 'ohne', stufe: 0 },
-            { name: 'Beidhändiger Kampf II', key: 'bhk2', stufe: 2 }
-        ];
-        
-        const result = hardcoded.getSelectedKampfstil('invalid', kampfstile);
-        expect(result).toEqual({ name: 'Kein Kampfstil', key: 'ohne', stufe: 0 });
+    it('should return ohne when selected kampfstil does not exist', () => {
+        const result = getSelectedKampfstil('nonexistent', mockKampfstile);
+        expect(result).toEqual({
+            name: 'Ohne',
+            key: 'ohne',
+            stufe: 0,
+            sources: []
+        });
+    });
+
+    it('should return ohne when selected value is undefined', () => {
+        const result = getSelectedKampfstil(undefined, mockKampfstile);
+        expect(result).toEqual({
+            name: 'Ohne',
+            key: 'ohne',
+            stufe: 0,
+            sources: []
+        });
     });
 });

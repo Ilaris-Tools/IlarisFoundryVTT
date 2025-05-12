@@ -48,7 +48,8 @@ export class IlarisActor extends Actor {
     }
 
     _hasKampfstilSelected(stilRequirements) {
-        return stilRequirements.some(requirement => this.system.misc.selected_kampfstil.includes(requirement))
+        return stilRequirements.some(requirement => 
+            hardcoded.getSelectedKampfstil(this.system.misc.selected_kampfstil,this.misc.kampfstile_list).sources.some(source => source.includes(requirement)))
         || this.vorteil.geweihtentradition.some((vorteil) => {
             return stilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
         }) || this.vorteil.zaubertraditionen.some((vorteil) => {
