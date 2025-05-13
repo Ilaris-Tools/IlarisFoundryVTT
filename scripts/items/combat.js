@@ -43,6 +43,21 @@ export class CombatItem extends IlarisItem {
             });
         }
         if("fernkampfwaffe" === this.type  || ("angriff" === this.type && this.system.typ === "Fern")) {
+            this.manoever = [];
+            manoeverItems.forEach(manoever => {
+                if((manoever.system.gruppe == 1) && manoever._manoeverRequirementsFulfilled(this.actor, this)) {
+                    this.manoever.push({
+                        ...manoever,
+                        id: manoever.name.replace(/[\s\W]/g, '_'), 
+                        inputValues: Object.values(manoever.system.inputs).map(input => {
+                            return {
+                                ...input,
+                                value: ''
+                            };
+                        })
+                    });
+                }
+            });
         }
     }
 }

@@ -795,5 +795,18 @@ let schadenstypen = {
     HUMUS: "Humus",
     LUFT: "Luft",
     WASSER: "Wasser"
-}
+};
 ILARIS.schadenstypen = schadenstypen;
+
+let combat_dialog = {
+    labels: {
+        angriffNah: "Nahkampfangriff",
+        nahkampfwaffe: "Nahkampfangriff",
+        angriffFern: "Fernkampfangriff",
+        fernkampfwaffe: "Fernkampfangriff",
+        magie: "Magie",
+        liturgie: "Liturgie",
+        anrufung: "Anrufung"
+    }
+};
+ILARIS.combat_dialog = combat_dialog;
