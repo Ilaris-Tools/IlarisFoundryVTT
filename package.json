@@ -8,14 +8,18 @@
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.0.0",
     "lodash": "^4.17.21",
     "nedb": "^1.8.0",
     "prettier": "^2.5.1",
     "xml2js": "^0.4.23"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "prettier": "./node_modules/.bin/prettier --write ."
+    "test": "echo \"Warn: no test specified\" && exit 0",
+    "lint": "eslint --fix .",
+    "prettier": "prettier --write .",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
