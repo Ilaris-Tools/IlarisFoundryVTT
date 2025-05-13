@@ -268,17 +268,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
             mod_at -= 4;
             text_at = text_at.concat(`${CONFIG.ILARIS.label['brtn']}\n`);
         }
-
-
-
-
-
-
-
-
-
-
-
+        
         // Reichweite erhöhen fm_rwrh
         // let reichweite = Number(manoever.fm_rwrh.selected);
         // if (reichweite > 0) {
@@ -287,129 +277,9 @@ export class FernkampfAngriffDialog extends CombatDialog {
         //         `${manoever.rw[reichweite]} (${reichweite}x)\n`,
         //     );
         // }
-        // // Scharfschuss fm_srfs
-        // let scharfschuss = Number(manoever.fm_srfs.selected);
-        // if (scharfschuss) {
-        //     mod_fk -= scharfschuss;
-        //     text = text.concat(
-        //         `${CONFIG.ILARIS.label['fm_srfs']}: ${scharfschuss}\n`,
-        //     );
-        // }
-        // // Zielen fm_zlen    "ruhige_hand": false,
-        // let zielen = manoever.fm_zlen.selected;
-        // let ruhige_hand = manoever.fm_zlen.ruhige_hand;
-        // if (zielen && ruhige_hand) {
-        //     mod_fk += 4;
-        //     text = text.concat(
-        //         `${CONFIG.ILARIS.label['fm_zlen']} (Ruhige Hand)\n`,
-        //     );
-        // } else if (zielen) {
-        //     mod_fk += 2;
-        //     text = text.concat(`${CONFIG.ILARIS.label['fm_zlen']}\n`);
-        // }
-        // // Meisterschuss fm_msts
-        // let meisterschuss = manoever.fm_msts.selected;
-        // if (meisterschuss) {
-        //     mod_fk -= 8;
-        //     text = text.concat(`${CONFIG.ILARIS.label['fm_msts']}\n`);
-        // }
-        // // Rüstungsbrecher fm_rust
-        // let ruestungsbrecher = manoever.fm_rust.selected;
-        // if (ruestungsbrecher) {
-        //     mod_fk -= 4;
-        //     text = text.concat(`${CONFIG.ILARIS.label['fm_rust']}\n`);
-        // }
-        // // Schnellschuss fm_snls
-        // let schnellschuss = Number(manoever.fm_snls.selected);
-        // console.log(`WERT VON SCHNELLSCHUSS: ${schnellschuss}`);
-        // if (schnellschuss > 0) {
-        //     mod_fk -= 4 * schnellschuss;
-        //     text = text.concat(
-        //         `${CONFIG.ILARIS.label['fm_snls']} (${schnellschuss})\n`,
-        //     );
-        // }
-        // // Modifikator
-        // let modifikator = Number(manoever.mod.selected);
-        // if (modifikator != 0) {
-        //     mod_fk += modifikator;
-        //     text = text.concat(`Modifikator: ${modifikator}\n`);
-        // }
-        // // Rollmode
-        // let rollmode = manoever.rllm.selected;
-        // let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`;
-        // // let formula = `${dice_form} + ${pw} + ${globalermod} + ${nahkampfmod} + ${mod_at}`;
-        // let fk_abzuege_mod = 0;
-        // if (wundabzuegemod < 0 && manoever.kwut) {
-        //     text = text.concat(`(Kalte Wut)\n`);
-        //     fk_abzuege_mod = furchtmod;
-        // } else {
-        //     fk_abzuege_mod = globalermod;
-        // }
-        // let formula = `${dice_form} + ${pw} + ${fk_abzuege_mod} + ${mod_fk}`;
-        // // let formula = `${dice_form} + ${pw} + ${globalermod} + ${mod_fk}`;
-        // // Critfumble & Message
-        // let label = `Attacke (${item.name})`;
-        // await roll_crit_message(
-        //     formula,
-        //     label,
-        //     text,
-        //     speaker,
-        //     rollmode,
-        //     true,
-        //     fumble_val,
-        // );
-
-
-        // await fernkampfUpdate(html, actor, item);
-        // // Gezielter Schlag km_gzss
-        // let trefferzone = Number(manoever.fm_gzss.selected);
-        // if (trefferzone) {
-        //     text = text.concat(
-        //         `${CONFIG.ILARIS.label['fm_gzss']}: ${CONFIG.ILARIS.trefferzonen[trefferzone]}\n`,
-        //     );
-        // } else {
-        //     let zonenroll = new Roll('1d6');
-        //     await zonenroll.evaluate({ async: true });
-        //     // let zonenroll = Math.floor(Math.random() * 6 + 1);
-        //     text = text.concat(
-        //         `Trefferzone: ${CONFIG.ILARIS.trefferzonen[zonenroll.total]}\n`,
-        //     );
-        // }
-        // // Scharfschuss fm_srfs
-        // let fm_srfs = Number(manoever.fm_srfs.selected);
-        // if (fm_srfs > 0) {
-        //     mod_schaden += fm_srfs;
-        //     text = text.concat(
-        //         `${CONFIG.ILARIS.label['fm_srfs']}: ${fm_srfs}\n`,
-        //     );
-        // }
-        // // Rüstungsbrecher fm_rust
-        // let ruestungsbrecher = manoever.fm_rust.selected;
-        // if (ruestungsbrecher) {
-        //     text = text.concat(`${CONFIG.ILARIS.label['fm_rust']}\n`);
-        // }
-        // // Meisterschuss fm_msts
-        // let meisterschuss = manoever.fm_msts.selected;
-        // if (meisterschuss) {
-        //     text = text.concat(`${CONFIG.ILARIS.label['fm_msts']}\n`);
-        // }
-        // // // Modifikator
-        // // let modifikator = Number(item.data.data.manoever.mod.selected);
-        // // if (modifikator != 0) {
-        // //     mod_schaden += modifikator;
-        // //     text = text.concat(`Modifikator: ${modifikator}\n`);
-        // // }
-        // // Rollmode
-        // let rollmode = manoever.rllm.selected;
-        // let formula = `${schaden} + ${mod_schaden}`;
-        // let label = `Schaden (${item.name})`;
-        // // Critfumble & Message
-        // await roll_crit_message(formula, label, text, speaker, rollmode, false);
-       
-
-
 
         // Collect all modifications from all maneuvers
+        let ruhige_hand = manoever.fm_zlen.ruhige_hand;
         const allModifications = [];
         this.item.manoever.forEach(dynamicManoever => {
             let check = undefined;
@@ -438,6 +308,14 @@ export class FernkampfAngriffDialog extends CombatDialog {
                     trefferZoneInput
                 });
             });
+
+            // ruhige hand & zielen hardcoded
+            if (manoever.name == 'Zielen' && ruhige_hand) {
+                mod_fk += 2;
+                text = text.concat(
+                    `${manoever.name} (Ruhige Hand)\n`,
+                );
+            }
         });
 
         // Process all modifications in order

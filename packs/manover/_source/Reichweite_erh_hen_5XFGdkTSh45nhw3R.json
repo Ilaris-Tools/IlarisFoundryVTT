@@ -4,10 +4,6 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "voraussetzungen": [],
-    "gruppe": "1",
-    "probe": "FK -4",
-    "gegenprobe": "",
-    "text": "Die Reichweite deines Fernkampfangriffes verdoppelt sich. Kann bis zu zweimal pro Angriff eingesetzt werden.",
     "inputs": {
       "0": {
         "label": "",
@@ -15,7 +11,20 @@
         "min": 0,
         "max": 2
       }
-    }
+    },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
+    "gruppe": "1",
+    "probe": "FK -4",
+    "gegenprobe": "",
+    "text": "Die Reichweite deines Fernkampfangriffes verdoppelt sich. Kann bis zu zweimal pro Angriff eingesetzt werden."
   },
   "effects": [],
   "folder": null,
@@ -25,9 +34,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.1",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746367497143,
+    "modifiedTime": 1747163452226,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
