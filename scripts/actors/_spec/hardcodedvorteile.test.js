@@ -1,4 +1,4 @@
-import { getKampfstile, getSelectedKampfstil, getKampfstilStufe } from '../hardcodedvorteile.js';
+import { getKampfstile, getSelectedStil, getKampfstilStufe } from '../hardcodedvorteile.js';
 
 describe('getKampfstile', () => {
     beforeEach(() => {
@@ -100,7 +100,7 @@ describe('getKampfstile', () => {
     });
 });
 
-describe('getSelectedKampfstil', () => {
+describe('getSelectedStil', () => {
     const mockKampfstile = {
         'ohne': {
             name: 'Ohne',
@@ -117,7 +117,7 @@ describe('getSelectedKampfstil', () => {
     };
 
     it('should return selected kampfstil when it exists', () => {
-        const result = getSelectedKampfstil('Ilaris.beidhändig2', mockKampfstile);
+        const result = getSelectedStil('Ilaris.beidhändig2', mockKampfstile);
         expect(result).toEqual({
             name: 'Beidhändiger Kampf II',
             key: 'Ilaris.beidhändig2',
@@ -127,7 +127,7 @@ describe('getSelectedKampfstil', () => {
     });
 
     it('should return ohne when selected kampfstil does not exist', () => {
-        const result = getSelectedKampfstil('nonexistent', mockKampfstile);
+        const result = getSelectedStil('nonexistent', mockKampfstile);
         expect(result).toEqual({
             name: 'Ohne',
             key: 'ohne',
@@ -137,7 +137,7 @@ describe('getSelectedKampfstil', () => {
     });
 
     it('should return ohne when selected value is undefined', () => {
-        const result = getSelectedKampfstil(undefined, mockKampfstile);
+        const result = getSelectedStil(undefined, mockKampfstile);
         expect(result).toEqual({
             name: 'Ohne',
             key: 'ohne',

@@ -523,6 +523,56 @@ export function karmaOpferungPossible(actor) {
     return possible;
 }
 
-export function getSelectedKampfstil(selectedValue, kampfstile) {
-    return kampfstile[selectedValue] ?? kampfstile['ohne'];
+export function getSelectedStil(selectedValue, stile) {
+    return stile[selectedValue] ?? stile['ohne'];
+}
+
+export function getUebernatuerlicheStile(actor) {
+    let stile = {
+        'ohne': { 
+            name: CONFIG.ILARIS.label['ohne'], 
+            key: 'ohne', 
+            stufe: 0, 
+            sources: [] 
+        }
+    };
+    
+    // Combine both geweihtentradition and zaubertraditionen
+    const allTraditions = [
+        ...actor.vorteil.geweihtentradition.map(t => ({...t, type: 'geweiht'})),
+        ...actor.vorteil.zaubertraditionen.map(t => ({...t, type: 'zauber'}))
+    ];
+
+    // Group traditions by their base name (without the level suffix)
+    const traditionGroups = allTraditions.reduce((groups, tradition) => {
+        const baseName = tradition.name.replace(/ [IV]+.*$/, '');
+        if (!groups[baseName]) {
+            groups[baseName] = [];
+        }
+        groups[baseName].push(tradition);
+        return groups;
+    }, {});
+
+    // Add the highest level of each tradition group
+    Object.values(traditionGroups).forEach(traditions => {
+        const highestTradition = traditions.reduce((prev, current) => {
+            const prevStufe = getKampfstilStufe(prev.name);
+            const currentStufe = getKampfstilStufe(current.name);
+            return currentStufe > prevStufe ? current : prev;
+        });
+        
+        // Collect all compendium sources for this tradition group
+        const sources = traditions.map(tradition => tradition._stats.compendiumSource);
+        
+        // Add to stile object using the key as property name
+        stile[highestTradition._stats.compendiumSource] = {
+            name: highestTradition.name.replace(/ [IV]+.*$/, ''),
+            key: highestTradition._stats.compendiumSource,
+            stufe: getKampfstilStufe(highestTradition.name),
+            sources: sources,
+            type: highestTradition.type
+        };
+    });
+    
+    return stile;
 }

@@ -92,7 +92,7 @@ let label = {
     zweihaendig: 'Zweihändig',
     erschoepfung: 'Erschöpfung',
     // Kampfstile
-    ohne: 'Kein Kampfstil',
+    ohne: 'Kein Stil',
     bhk: 'Beidhändiger Kampf',
     kvk: 'Kraftvoller Kampf',
     pwk: 'Parierwaffenkampf',

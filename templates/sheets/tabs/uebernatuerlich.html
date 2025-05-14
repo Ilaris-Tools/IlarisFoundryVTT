@@ -68,6 +68,15 @@
         {{/if}}
     </span>
 
+    {{#if (or actor.vorteil.zaubertraditionen actor.vorteil.geweihtentradition)}}
+    <div>
+        <label><b>Aktive Übernatürliche Tradition:</b></label>
+        <select class="selected-uebernatuerlicher-stil" name="system.misc.selected_uebernatuerlicher_stil">
+            {{selectOptions actor.misc.uebernatuerliche_stile_list selected=actor.system.misc.selected_uebernatuerlicher_stil nameAttr="key" labelAttr="name"}}
+        </select>
+    </div>
+    {{/if}}
+
     <h2>Fertigkeiten</h2>
     <a class="item-create" data-itemclass="uebernatuerliche_fertigkeit"
         ><i class="fas fa-plus"></i>Neue Übernatürliche Fertigkeit</a
