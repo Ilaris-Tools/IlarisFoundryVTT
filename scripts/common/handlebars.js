@@ -220,4 +220,16 @@ function registerHandlebarsHelpers() {
     Handlebars.registerHelper('multMinusOne', function (numb) {
         return -1 * numb;
     });
+
+    /**
+     * Handlebars helper to colorize probe values, highlighting positive values in green and negative values in red.
+     * @param {string} probe - The probe string (e.g., "AT -2" or "AT -X, TP +X" or "PA +2, AT +2")
+     * @returns {string} HTML string with colorized values
+     */
+    Handlebars.registerHelper('colorizeProbe', function(probe) {
+        return probe.replace(/([+-]\d+|[+-]X)/g, match => {
+            const color = match.startsWith('+') ? 'color: green;' : 'color: red;';
+            return `<span style="${color}">${match}</span>`;
+        });
+    });
 }

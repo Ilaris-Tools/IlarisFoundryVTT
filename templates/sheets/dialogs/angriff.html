@@ -60,7 +60,7 @@
     <div class="maneuver-grid collapsed">
         {{#each item.manoever as |manoever|}}
             <div class="maneuver-item {{#if (or (some manoever.inputValues "value") (some manoever.inputValues "checked"))}}has-value{{/if}}">
-                <label>{{manoever.name}} ({{manoever.system.probe}})</label>
+                <label>{{manoever.name}} ({{{colorizeProbe manoever.system.probe}}})</label>
                 {{#each manoever.inputValues as |input|}}
                     {{#if (ifEq input.field "CHECKBOX")}}
                         <input
