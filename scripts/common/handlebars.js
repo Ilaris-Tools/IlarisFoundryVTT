@@ -223,12 +223,12 @@ function registerHandlebarsHelpers() {
 
     /**
      * Handlebars helper to colorize probe values, highlighting positive values in green and negative values in red.
-     * @param {string} probe - The probe string (e.g., "AT -2" or "AT -X, TP +X" or "PA +2, AT +2")
+     * @param {string} probe - The probe string (e.g., "AT -2" or "AT -X, TP +X" or "PA +2, AT +2" or "AT -2-BE" or "TP +GS")
      * @returns {string} HTML string with colorized values
      */
     Handlebars.registerHelper('colorizeProbe', function(probe) {
-        return probe.replace(/([+-]\d+|[+-]X)/g, match => {
-            const color = match.startsWith('+') ? 'color: green;' : 'color: red;';
+        return probe.replace(/([+-][^\s,)]+)/g, match => {
+            const color = match.startsWith('+') ? 'color: #006400;' : 'color: #8B0000;'; // Dark green and dark red
             return `<span style="${color}">${match}</span>`;
         });
     });
