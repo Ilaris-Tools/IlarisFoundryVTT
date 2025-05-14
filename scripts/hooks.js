@@ -22,10 +22,10 @@ import { EigenschaftSheet } from './sheets/items/eigenschaft.js';
 import { InfoSheet } from './sheets/items/info.js';
 import { AngriffSheet } from './sheets/items/angriff.js';
 import { FreiesTalentSheet } from './sheets/items/freies_talent.js';
+import { ManeuverPacksSettings } from './settings/ManeuverPacksSettings.js';
 
 Hooks.once('init', () => {
     // CONFIG.debug.hooks = true;
-
     // ACTORS
     CONFIG.Actor.documentClass = IlarisActorProxy;  // TODO: Proxy
     Actors.unregisterSheet('core', ActorSheet);
@@ -239,6 +239,29 @@ Hooks.once('init', () => {
         type: new foundry.data.fields.BooleanField(),
         scope: 'client',
     });
+    // Register maneuver packs setting
+    game.settings.register('Ilaris', 'manoeverPacks', {
+        name: 'Manöver Kompendien',
+        hint: 'Hier kannst du die Kompendien auswählen, die Manöver enthalten. Dadurch bestimmst du, welche Manöver du in Kampfdialogen sehen kannst.',
+        scope: 'world',
+        config: false, // Hide from settings menu since we use custom menu
+        type: String,
+        default: '["Ilaris.manover"]', // Default to Ilaris.manoever pack
+        onChange: value => {
+            // Notify that maneuver packs have changed
+            Hooks.callAll('ilarisManoeverPacksChanged', JSON.parse(value));
+        }
+    });
+
+    // Register the settings menu
+    game.settings.registerMenu('Ilaris', 'manoeverPacksMenu', {
+        name: 'Manöver Kompendien',
+        label: 'Manöver Kompendien Konfigurieren',
+        hint: 'Hier kannst du die Kompendien auswählen, die Manöver enthalten. Dadurch bestimmst du, welche Manöver du in Kampfdialogen sehen kannst.',
+        icon: 'fas fa-book',
+        type: ManeuverPacksSettings,
+        restricted: true
+    });
 });
 
 Hooks.on('applyActiveEffect', (actor, data, options, userId) => {
@@ -262,23 +285,31 @@ class MigrationMessageDialog extends foundry.applications.api.DialogV2 {
 
 const showStartupDialog = () => {
     let content = `<p>Da es einige Änderungen gab, ist stark zu empfehlen deinen Spielercharakter, falls du einen besitzt neu von Sephrasto zu importieren. Hier ist es auch stark zu empfehlen das Sephrasto Plugin für den Foundry Export zu updaten.</p><p>Es kann sein, dass du schon einmal darauf hingewiesen wurdest, wenn du dich gerade von einem anderen Gerät anmeldest.</p>`;
+    let buttons = [
+        {
+            label: 'Verstanden',
+            callback: async () => {
+                game.settings.set('Ilaris', 'acceptChangesV12_1', true);
+            },
+        }
+    ];
     if (game.user.isGM) {
         content += `<p>Bist du die Spielleitung oder verwaltest diese Welt, gibt dir der Button unten die Möglichkeit deine eigenen Kreaturen und NSCs automatisch updaten zu lassen.</p>`;
-    }
-    new MigrationMessageDialog({
-        window: {
-        title: 'Update Information',
-        },
-        content: content,
-        buttons: [
-        {
+        buttons.push({
             icon: 'fa fa-check',
             label: 'Kreaturen migrieren',
             callback: async () => {
                 await creatureMigration();
             },
+        });
+    }
+    console.log("Migration Dialog",buttons);
+    new MigrationMessageDialog({
+        window: {
+        title: 'Update Information',
         },
-        ],
+        content: content,
+        buttons: buttons,
     }).render(true);
 };
 

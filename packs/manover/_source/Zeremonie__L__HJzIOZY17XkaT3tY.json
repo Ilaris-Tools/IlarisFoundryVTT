@@ -21,7 +21,13 @@
     "gruppe": "3",
     "probe": "Liturgie +X",
     "gegenprobe": "",
-    "text": "Du kannst die Vorbereitungszeit freiwillig um 1 Minute/Stunde/Tag/Woche/Monat/Jahr erhöhen, wodurch die Liturgie um +4/6/8/10/12/14 erleichtert ist. Die Vorbereitungszeit muss dadurch mindestens verdoppelt werden. Voraussetzung: Tradition der Boron-, Hesinde-, Ifirn-, Peraine-, Praios-, Travia- oder Tsageweihten (jeweils) III und Verwendung dieser Tradition"
+    "text": "Du kannst die Vorbereitungszeit freiwillig um 1 Minute/Stunde/Tag/Woche/Monat/Jahr erhöhen, wodurch die Liturgie um +4/6/8/10/12/14 erleichtert ist. Die Vorbereitungszeit muss dadurch mindestens verdoppelt werden. Voraussetzung: Tradition der Boron-, Hesinde-, Ifirn-, Peraine-, Praios-, Travia- oder Tsageweihten (jeweils) III und Verwendung dieser Tradition",
+    "inputs": {
+      "0": {
+        "label": "",
+        "field": "CHECKBOX"
+      }
+    }
   },
   "effects": [],
   "folder": null,
@@ -31,10 +37,10 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "0.3.20",
+    "systemVersion": "12.0.1",
     "createdTime": null,
-    "modifiedTime": 1745306590103,
-    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "modifiedTime": 1746367861129,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
   },
