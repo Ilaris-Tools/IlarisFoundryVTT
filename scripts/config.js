@@ -1,6 +1,9 @@
 export const ILARIS = {};
 
 let stat_desc = {
+
+
+    
     ws: {
         name: 'Wundschwelle',
         short: "WS",
