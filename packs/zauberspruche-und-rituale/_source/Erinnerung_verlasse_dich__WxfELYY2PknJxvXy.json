@@ -1,0 +1,41 @@
+{
+  "name": "Erinnerung verlasse dich!",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Dämonisch, Einfluss",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Dein Ziel verliert sämtliche Erinnerung an sein voriges Leben und kann sich später nicht an Ereignisse während der Wirkungsdauer erinnern.",
+    "maechtig": "",
+    "schwierigkeit": "Magieresistenz",
+    "modifikationen": "",
+    "vorbereitung": "1 Aktion",
+    "ziel": "Einzelperson",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "4 Stunden",
+    "kosten": "16 AsP",
+    "erlernen": "Bor 16; Mag 18",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "WxfELYY2PknJxvXy",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!WxfELYY2PknJxvXy"
+}

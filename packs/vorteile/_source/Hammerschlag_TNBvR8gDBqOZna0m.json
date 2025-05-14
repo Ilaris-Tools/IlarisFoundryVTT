@@ -1,0 +1,29 @@
+{
+  "name": "Hammerschlag",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut KK 8",
+    "gruppe": 2,
+    "text": "Erlaubt das Manöver Hammerschlag (AT -8): Der Angriff richtet doppelten Waffenschaden an. Zusätzliche TP aus Kommandos, anderen Manövern usw. werden nicht verdoppelt."
+  },
+  "_id": "TNBvR8gDBqOZna0m",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!TNBvR8gDBqOZna0m"
+}

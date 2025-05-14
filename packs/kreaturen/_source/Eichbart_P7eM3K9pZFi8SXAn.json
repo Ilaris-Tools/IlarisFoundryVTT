@@ -1,0 +1,933 @@
+{
+  "_id": "P7eM3K9pZFi8SXAn",
+  "name": "Eichbart",
+  "type": "kreatur",
+  "img": "systems/Ilaris/assets/images/token/kreaturentypen/elementar.png",
+  "system": {
+    "gesundheit": {
+      "erschoepfung": 0,
+      "wunden": 0,
+      "wundabzuege": 0,
+      "wundenignorieren": false,
+      "display": "Volle Gesundheit",
+      "hp": {
+        "max": 9,
+        "value": 9,
+        "threshold": 0
+      }
+    },
+    "energien": {
+      "asp": {
+        "max": 128,
+        "value": 128,
+        "threshold": 0
+      },
+      "gup": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      },
+      "kap": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      }
+    },
+    "initiative": 0,
+    "furcht": {
+      "furchtstufe": 0,
+      "furchtabzuege": 0,
+      "display": ""
+    },
+    "modifikatoren": {
+      "manuellermod": 0,
+      "nahkampfmod": 0
+    },
+    "schips": {
+      "schips": 4,
+      "schips_stern": 4
+    },
+    "attribute": {
+      "KO": {
+        "wert": 0,
+        "pw": null
+      },
+      "MU": {
+        "wert": 0,
+        "pw": null
+      },
+      "GE": {
+        "wert": 0,
+        "pw": null
+      },
+      "KK": {
+        "wert": 0,
+        "pw": null
+      },
+      "IN": {
+        "wert": 0,
+        "pw": null
+      },
+      "KL": {
+        "wert": 0,
+        "pw": null
+      },
+      "CH": {
+        "wert": 0,
+        "pw": null
+      },
+      "FF": {
+        "wert": 0,
+        "pw": null
+      }
+    },
+    "edit": false,
+    "kreaturentyp": "elementar",
+    "kurzbeschreibung": "Meister des Humus und Hüter der Weisheit; sehr großer Gegner",
+    "kampfwerte": {
+      "ws": 16,
+      "ws_stern": null,
+      "ini": 6,
+      "gs": 3,
+      "koloss": 2,
+      "mr": 20,
+      "gs_schwimmend": null
+    },
+    "talente": [],
+    "freietalente": [],
+    "kampfunfaehig": "",
+    "text": "",
+    "abgeleitete": {
+      "globalermod": 0,
+      "nahkampfmoddisplay": "-",
+      "globalermoddisplay": "-"
+    }
+  },
+  "items": [
+    {
+      "_id": "vxAFYtuMt8Ae5TtE",
+      "name": "Regeneration I",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Regeneration I/II/III/IV erlaubt der Kreatur, in jeder\r\nInitiativephase 1/2/3/4 Wunden zu schließen."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!P7eM3K9pZFi8SXAn.vxAFYtuMt8Ae5TtE"
+    },
+    {
+      "_id": "BQ7Ob9wPTPeQTWZp",
+      "name": "Tarnung(im Wald)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Tarnung: Das Wesen kann sich seiner Umgebung\r\nanpassen, zum Beispiel durch eine Farbänderung der Haut.\r\nBei Heimlichkeits-Proben erhält es keinen Malus durch ein\r\nfehlendes Versteck."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!P7eM3K9pZFi8SXAn.BQ7Ob9wPTPeQTWZp"
+    },
+    {
+      "_id": "5JeTihwxdfrzF2mO",
+      "name": "Zusätzliche Attacke",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Zusätzliche Attacke I/II/III/IV: Die Kreatur kann in\r\nihrer Initiativephase 1/2/3/4 zusätzliche Aktionen Konflikt\r\nfür Attacken nutzen. Üblicherweise erfolgen die Angriffe mit\r\nunterschiedlichen Gliedmaßen."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!P7eM3K9pZFi8SXAn.5JeTihwxdfrzF2mO"
+    },
+    {
+      "_id": "DamUgD0f8m2iLP7K",
+      "name": "Astralsinn",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Astralsinn erlaubt es der Kreatur, ihre Umgebung magisch\r\nwahrzunehmen. Sie erleidet keine Abzüge durch schlechte\r\nSicht. Der Astralsinn kann durch Antimagie, zum Beispiel\r\nHellsicht trüben in der Modifikation Magie unterdrücken,\r\ngestört werden. Die Schwierigkeit dafür liegt mindestens bei\r\n20, bei mächtigen Wesen deutlich höher."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!P7eM3K9pZFi8SXAn.DamUgD0f8m2iLP7K"
+    },
+    {
+      "_id": "Q4WWJnb7m97OM1l4",
+      "name": "Immunität (eigenes Element, Eigenschaften, Hellsicht, Illusion, Umwelt, Verwandlung, Krankheiten, Gifte, Hitze, Kälte)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Immunität (Schadensquelle): Das Wesen erleidet keinen\r\nSchaden aus der angegebenen Quelle.\r\n\r\nProfan: prof. Waffen, Stürze, Tierangriffe\r\nMagisch: mag. Waffen, Schadenszauber\r\nGeweiht: gew. Waffen, Bannstrahl\r\nDämonisch: Angriffe von Dämonen, Paktierer-Fähigkeiten\r\nElementar: Lagerfeuer (Feuer), Aquafaxius (Wasser),\r\nAngriffe von Luftelementaren (Luft),\r\nFausthieb (Humus), Kälte (Eis), Schwert (Erz)"
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!P7eM3K9pZFi8SXAn.Q4WWJnb7m97OM1l4"
+    },
+    {
+      "_id": "bO6XhJwG1caR3NUs",
+      "name": "Körperlosigkeit",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Körperlosigkeit bedeutet, dass der Körper der Kreatur\r\nkeine lebenserhaltende Funktion hat. Selbst schwerste\r\nVerwundungen schränken sie nicht ein. Das Wesen erleidet\r\nkeine Abzüge durch Wunden und wird nicht kampfunfähig.\r\nDie neunte Wunde vernichtet aber auch eine körperlose\r\nKreatur."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!P7eM3K9pZFi8SXAn.bO6XhJwG1caR3NUs"
+    },
+    {
+      "_id": "B8zvShI3viOMvWwS",
+      "name": "Resistenz II (profan)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Eine Resistenz I/II/III/IV (Schadensquelle) verringert\r\nden Schaden durch diese Schadensquelle (s.o.). Wann immer\r\ndie Kreatur Wunden erleiden würde, erleidet sie 1/2/3/4\r\nWunden weniger."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!P7eM3K9pZFi8SXAn.B8zvShI3viOMvWwS"
+    },
+    {
+      "_id": "QR4hy1GccgqPscaj",
+      "name": "Schmerzimmun II",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Schmerzimmun I/II: Die erste Stufe verleiht Immunität\r\ngegen Blutungen und die Wundschmerzeffekte Betäubt und\r\nOrgantreffer. Die zweite Stufe verleiht Immunität gegen alle\r\nWundschmerzeffekte."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!P7eM3K9pZFi8SXAn.QR4hy1GccgqPscaj"
+    },
+    {
+      "_id": "VWRk068i8mBns2mp",
+      "name": "Verwundbarkeit I (Gegenelement)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Verwundbarkeit I/II/III/IV (Schadensquelle): Wann\r\nimmer die Kreatur Wunden durch diese Schadensquelle\r\nerleidet, bekommt sie 1/2/3/4 zusätzliche Wunden."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!P7eM3K9pZFi8SXAn.VWRk068i8mBns2mp"
+    },
+    {
+      "_id": "NSJQuYAQpc1RyLqw",
+      "name": "Beispieldienste",
+      "type": "info",
+      "system": {
+        "text": "Beratung zu Heilkunde (, ); Pflanzen oder Humusmagie (1 Tag, -4); Augen des Waldes (Eichbart hält durch die Augen aller Waldbewohner Ausschau) (1 Tag, ); Gedächtnis des Waldes (Eichbart berichtet detailliert von einem Ereignis zu Lebzeiten der Waldbewohner) (, )"
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!P7eM3K9pZFi8SXAn.NSJQuYAQpc1RyLqw"
+    },
+    {
+      "_id": "mBXD4f4MwsMzEHS1",
+      "name": "Beschwörung",
+      "type": "info",
+      "system": {
+        "text": "Herbeirufung des Humus (32), 64 AsP"
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!P7eM3K9pZFi8SXAn.mBXD4f4MwsMzEHS1"
+    },
+    {
+      "_id": "1VBtxNp8QJB4vK23",
+      "name": "Rankengriff",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Fesseln",
+            "text": null
+          },
+          {
+            "name": " Umklammern (-4",
+            "text": null
+          },
+          {
+            "name": " 24)",
+            "text": null
+          }
+        ],
+        "tp": "2W6+2",
+        "haerte": 0,
+        "rw": 8,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 24,
+        "vt": 16
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!P7eM3K9pZFi8SXAn.1VBtxNp8QJB4vK23"
+    },
+    {
+      "_id": "hFyCynJAL0bGScS7",
+      "name": "Asthieb",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": " Stumpf",
+            "text": null
+          },
+          {
+            "name": "Niederwerfen (-8)",
+            "text": null
+          }
+        ],
+        "tp": "3W6+4",
+        "haerte": 0,
+        "rw": 2,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 24,
+        "vt": 16
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!P7eM3K9pZFi8SXAn.hFyCynJAL0bGScS7"
+    },
+    {
+      "_id": "KWzgVl4KY3bkX1gU",
+      "name": "Holzbearbeitung",
+      "type": "freiestalent",
+      "system": {
+        "text": "Mit Holzbearbeitung fertigst du Schilde, Bögen oder ein improvisiertes Floß an, reparierst eine Zugbrücke oder flickst ein Leck in einem Schiff.",
+        "pw": 22,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!P7eM3K9pZFi8SXAn.KWzgVl4KY3bkX1gU"
+    },
+    {
+      "_id": "8vk6dCMUtRFoUDBr",
+      "name": "Mittelaventurien (Überleben)",
+      "type": "freiestalent",
+      "system": {
+        "text": null,
+        "pw": 20,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!P7eM3K9pZFi8SXAn.8vk6dCMUtRFoUDBr"
+    },
+    {
+      "_id": "6FpB5MgmicK9OqUH",
+      "name": "Pflanzenkunde",
+      "type": "freiestalent",
+      "system": {
+        "text": "Pflanzenkundige erforschen die vielen nützlichen, gefährlichen oder wundersamen Pflanzen Aventuriens. Sie sammeln die Kräuter für eine Heilsalbe, kennen die Gefahr von Jagdgras und finden essbare Früchte oder Wurzeln.",
+        "pw": 26,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!P7eM3K9pZFi8SXAn.6FpB5MgmicK9OqUH"
+    },
+    {
+      "_id": "DTaiGOBK0p1kwxO1",
+      "name": "Pirschen",
+      "type": "freiestalent",
+      "system": {
+        "text": "Pirschen ermöglicht das Schleichen, Verstecken und Lauern in der freien Natur. Du pirschst dich auf der Jagd an einen wilden Hirsch heran, legst einen Hinterhalt an einer Reichsstraße oder beobachtest ungesehen das Lager einer Orkbande.",
+        "pw": 20,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!P7eM3K9pZFi8SXAn.DTaiGOBK0p1kwxO1"
+    },
+    {
+      "_id": "XlIuUzuM11khGLO3",
+      "name": "Sinnenschärfe",
+      "type": "freiestalent",
+      "system": {
+        "text": "Sinnenschärfe ist die aktive Verwendung deiner Sinne, um einen Kollaborateur in einem geschäftigen Wirtshaus zu belauschen, die Flagge eines nahenden Schiffes zu erkennen oder die Nadel im Heuhaufen zu finden.",
+        "pw": 20,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!P7eM3K9pZFi8SXAn.XlIuUzuM11khGLO3"
+    },
+    {
+      "_id": "5bsOZnQPAWh1uUwa",
+      "name": "Tierkunde 2",
+      "type": "freiestalent",
+      "system": {
+        "text": null,
+        "pw": 4,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!P7eM3K9pZFi8SXAn.5bsOZnQPAWh1uUwa"
+    },
+    {
+      "_id": "dtxh85QAiUaVkWXt",
+      "name": "Tobrien (Gebräuche)",
+      "type": "freiestalent",
+      "system": {
+        "text": null,
+        "pw": 16,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!P7eM3K9pZFi8SXAn.dtxh85QAiUaVkWXt"
+    },
+    {
+      "_id": "1AFif6OoNqS66QJN",
+      "name": "Wachsamkeit",
+      "type": "freiestalent",
+      "system": {
+        "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
+        "pw": 20,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!P7eM3K9pZFi8SXAn.1AFif6OoNqS66QJN"
+    },
+    {
+      "_id": "ptZEhO8OpXtbT2gu",
+      "name": "Zähigkeit",
+      "type": "freiestalent",
+      "system": {
+        "text": "Zähigkeit hilft dir, Schmerzen und Strapazen zu widerstehen. So kannst du trotz zahlreicher Wunden noch handlungsfähig bleiben und einen Kampf zu euren Gunsten wenden oder eine ganze Nacht hindurch wachen.",
+        "pw": 20,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!P7eM3K9pZFi8SXAn.ptZEhO8OpXtbT2gu"
+    },
+    {
+      "_id": "aO4EDBsuVdqiwsch",
+      "name": "Humus",
+      "type": "freiestalent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "pw": 24,
+        "profan": false
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!P7eM3K9pZFi8SXAn.aO4EDBsuVdqiwsch"
+    },
+    {
+      "_id": "K0oapqUlAA1cW6qJ",
+      "name": "Alle",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Humus",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 24,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!P7eM3K9pZFi8SXAn.K0oapqUlAA1cW6qJ"
+    }
+  ],
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "prototypeToken": {
+    "displayName": 20,
+    "actorLink": false,
+    "width": 1,
+    "height": 1,
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "light": {
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "coloration": 1,
+      "dim": 0,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false,
+        "type": null
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      },
+      "attenuation": 0.5,
+      "negative": false,
+      "priority": 0,
+      "color": null
+    },
+    "disposition": 1,
+    "displayBars": 50,
+    "bar1": {
+      "attribute": "gesundheit.hp"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "flags": {},
+    "randomImg": false,
+    "name": "Eichbart",
+    "texture": {
+      "src": "systems/Ilaris/assets/images/token/kreaturentypen/elementar.png",
+      "scaleX": 1,
+      "scaleY": 1,
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "offsetX": 0,
+      "offsetY": 0,
+      "fit": "contain",
+      "rotation": 0,
+      "tint": "#ffffff",
+      "alphaThreshold": 0.75
+    },
+    "sight": {
+      "angle": 360,
+      "enabled": false,
+      "range": 0,
+      "brightness": 1,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "appendNumber": false,
+    "prependAdjective": false,
+    "hexagonalShape": 0,
+    "detectionModes": [],
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    }
+  },
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!actors!P7eM3K9pZFi8SXAn"
+}

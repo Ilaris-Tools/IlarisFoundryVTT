@@ -50,7 +50,7 @@ export async function wuerfelwurf(event, actor) {
     // };
     if (rolltype == "angriff_diag") {
         let item = actor.items.get(event.currentTarget.dataset.itemid);
-        item.setManoevers();
+        await item.setManoevers();
         let d = new AngriffDialog(actor, item);
         await d.render(true);
     } else if (rolltype == 'nahkampf_diag') {
@@ -131,7 +131,7 @@ export async function wuerfelwurf(event, actor) {
                             // Binden km_bind
                             let binden = Number(item.system.manoever.km_bind.selected);
                             if (binden > 0) {
-                                mod_at += binden;
+                                mod_vt -= binden;
                                 text = text.concat(`Binden: ${binden}\n`);
                             }
                             // Attacke Manöver ausgelagert für Riposte
@@ -322,7 +322,6 @@ export async function wuerfelwurf(event, actor) {
                             }
                             // Hammerschlag km_hmsl
                             if (item.system.manoever.km_hmsl.selected) {
-                                schaden = schaden.concat(`+${schaden}`);
                                 text = text.concat(`${CONFIG.ILARIS.label['km_hmsl']}\n`);
                             }
                             // Niederwerfen km_ndwf
@@ -354,6 +353,12 @@ export async function wuerfelwurf(event, actor) {
                             // Rollmode
                             let rollmode = item.system.manoever.rllm.selected;
                             let formula = `${schaden} + ${mod_schaden}`;
+                            // Wenn Hammerschlag aktiv ist, wird nur der Basiswaffenschaden verdoppelt
+                            if (item.system.manoever.km_hmsl.selected) {
+                                formula = `(${schaden}) * 2 + ${mod_schaden}`;
+                            } else {
+                                formula = `${schaden} + ${mod_schaden}`;
+                            }
                             let label = `Schaden (${item.name})`;
                             // Critfumble & Message
                             await roll_crit_message(formula, label, text, speaker, rollmode, false);
@@ -381,7 +386,7 @@ export async function wuerfelwurf(event, actor) {
         pw = item.system.fk;
         // console.log(item);
         // let manoever_at = item._data.data.manoever_at;
-        let schaden = item.system.schaden;
+        let schaden = item.system.schaden.replace(/[Ww]/g,'d');
         // console.log(item.data.data);
         // console.log(item._data.data.manoever_at);
         // let gzkl_checked = "0",

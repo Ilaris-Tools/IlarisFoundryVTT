@@ -29,3 +29,14 @@ node_modules
 #.eslintrc
 # tsconfig.json
 #jsconfig.json
+
+# binary files in /packs are required in release but can be ignored during dev
+# use foundryvtt-cli to build them from /packs/*/_source files
+/packs/*/*.db
+/packs/*/*.ldb
+/packs/*/*.log
+/packs/*/CURRENT
+/packs/*/LOG
+/packs/*/LOG.old
+/packs/*/LOCK
+/packs/*/MANIFEST-*

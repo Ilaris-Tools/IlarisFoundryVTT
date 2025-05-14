@@ -1,0 +1,41 @@
+{
+  "name": "Flammenschwert",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Feuer, Stabzauber, Verwandlung, Umwelt",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Dein Stab verwandelt sich in eine feurige Klinge. Die Kampfwerte entsprechen einem gewöhnlichen Schwert, aber es verursacht Feuerschaden und Nachbrennen (S. 98). Der Zauber endet vorzeitig, wenn du den Stab nicht mehr berührst.",
+    "maechtig": "Erhöht die TP um +2.",
+    "schwierigkeit": "12",
+    "modifikationen": "Schwebendes Schwert (16 Schritt, 16 AsP; du kannst das Schwert mit 4 Schritt pro Initiativephase fernsteuern. Der Angriffswert entspricht dem PW der benutzten Fertigkeit. Das Schwert kann nur Aktionen Konflikt und nur Basismanöver ausführen. Du musst das Schwert nicht berühren, aber der Zauber benötigt Konzentration.)",
+    "vorbereitung": "1 Aktion",
+    "ziel": "Zauberstab",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "16 Initiativphasen",
+    "kosten": "8 AsP",
+    "erlernen": "Mag 16",
+    "pw": 0,
+    "gruppe": 15
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "6Le0B028zxoqgr7e",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!6Le0B028zxoqgr7e"
+}

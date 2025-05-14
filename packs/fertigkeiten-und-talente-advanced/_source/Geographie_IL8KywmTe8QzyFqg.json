@@ -1,0 +1,34 @@
+{
+  "name": "Geographie",
+  "type": "talent",
+  "img": "systems/Ilaris/assets/images/skills/profan-talent.svg",
+  "system": {
+    "text": "Geographie befasst sich nicht nur mit Reiserouten und fernen Ländern, sondern auch mit dem Sternenhimmel, der Kartographie und Navigation. Ein Geograph kann Schatzkarten lesen und anfertigen, die Position eines Schiffes bestimmen und Sternenkonstellationen deuten.",
+    "fertigkeit": "Naturkunde"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Compendium.Ilaris.fertigkeiten-und-talente.o1tdLZSh3InhYPXc"
+    }
+  },
+  "_id": "IL8KywmTe8QzyFqg",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3,
+    "Ww4drILJ63YXG1Vc": 3
+  },
+  "_key": "!items!IL8KywmTe8QzyFqg"
+}

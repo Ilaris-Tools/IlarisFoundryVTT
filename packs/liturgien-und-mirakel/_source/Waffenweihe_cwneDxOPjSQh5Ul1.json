@@ -1,0 +1,41 @@
+{
+  "name": "Waffenweihe",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Magiebann, Heiliges Feuer, Heerführung, Tod, Gutes Gold",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du segnest eine Waffe. Diese gilt als geweiht.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "1 Stunde",
+    "ziel": "Einzelobjekt",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "bis die Bindung gelöst wird",
+    "kosten": "8 KaP, davon 2 gKaP",
+    "erlernen": "Ron 12; Ang, Ing, Kor 14; Brn, Pra 18",
+    "pw": 0,
+    "gruppe": 22
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "cwneDxOPjSQh5Ul1",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!cwneDxOPjSQh5Ul1"
+}

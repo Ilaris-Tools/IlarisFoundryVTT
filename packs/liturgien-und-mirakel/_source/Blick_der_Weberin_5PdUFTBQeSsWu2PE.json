@@ -1,0 +1,41 @@
+{
+  "name": "Blick der Weberin",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Magie",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du analysierst die Kraftfäden eines arkanen Artefakts oder eines magischen Wesens. Das entspricht einem AG von 2 für die Strukturanalyse (mehr dazu siehe S. 80).",
+    "maechtig": "Der AG steigt um 1.",
+    "schwierigkeit": "16",
+    "modifikationen": "",
+    "vorbereitung": "1 Stunde",
+    "ziel": "Einzelobjekt, Einzelwesen",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "augenblicklich",
+    "kosten": "8 KaP",
+    "erlernen": "Hes 12",
+    "pw": 0,
+    "gruppe": 30
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "5PdUFTBQeSsWu2PE",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!5PdUFTBQeSsWu2PE"
+}

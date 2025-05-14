@@ -1,0 +1,29 @@
+{
+  "name": "Beeindruckendes Wunder",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut IN 8, Vorteil Geweiht I",
+    "gruppe": 6,
+    "text": "Bei Mirakeln verleiht die Modifikation Mächtige Liturgie einen Bonus von +4 statt +2."
+  },
+  "_id": "pRajdj7fhl7HY71x",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!pRajdj7fhl7HY71x"
+}

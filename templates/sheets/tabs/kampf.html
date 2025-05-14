@@ -30,8 +30,8 @@
             <label class="icon-small" style="float: right"></label>
         </div>
         {{#each actor.nahkampfwaffen as |nwaffe key|}}
-        <div class="flexrow">
-            <a class="rollable icon-small" data-rolltype="nahkampf_diag" data-itemid="{{nwaffe.id}}"
+        <div class="flexrow"> 
+            <a class="rollable icon-small" data-rolltype="angriff_diag" data-itemid="{{nwaffe.id}}"
                 ><i class="fas fa-dice-d20"></i
             ></a>
             <a
@@ -93,7 +93,7 @@
             <hr />
             <div>
                 <label><b>Schaden:</b></label>
-                <label>{{nwaffe.system.dice_anzahl}}d6+{{nwaffe.system.dice_plus}}</label>
+                <label>{{nwaffe.system.schaden}}</label>
             </div>
             <div>
                 <label><b>Fertigkeit:</b></label>
@@ -217,7 +217,7 @@
             <hr />
             <div>
                 <label><b>Schaden:</b></label>
-                <label>{{fwaffe.system.dice_anzahl}}d6+{{fwaffe.system.dice_plus}}</label>
+                <label>{{fwaffe.system.schaden}}</label>
             </div>
             <div>
                 <label><b>Fertigkeit:</b></label>

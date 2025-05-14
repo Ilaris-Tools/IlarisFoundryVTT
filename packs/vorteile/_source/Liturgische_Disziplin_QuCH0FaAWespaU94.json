@@ -1,0 +1,29 @@
+{
+  "name": "Liturgische Disziplin",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut KL 8, Vorteil Geweiht I",
+    "gruppe": 6,
+    "text": "Ermöglicht die spontane Modifikation Kosten sparen (Liturgie -4): Die Kosten der Liturgie sinken um ein Viertel der Basiskosten. Die Kosten können dadurch nicht unter die Hälfte der Basiskosten sinken."
+  },
+  "_id": "QuCH0FaAWespaU94",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!QuCH0FaAWespaU94"
+}

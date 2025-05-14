@@ -1,0 +1,59 @@
+{
+  "name": "Knüppel",
+  "type": "nahkampfwaffe",
+  "system": {
+    "haerte": 5,
+    "beschaedigung": 0,
+    "tp": "1W6+2",
+    "fertigkeit": "Hiebwaffen",
+    "talent": "Einhandhiebwaffen",
+    "rw": 1,
+    "hauptwaffe": false,
+    "nebenwaffe": false,
+    "eigenschaften": {
+      "kopflastig": true,
+      "niederwerfen": false,
+      "parierwaffe": false,
+      "reittier": false,
+      "ruestungsbrechend": false,
+      "schild": false,
+      "schwer_4": false,
+      "schwer_8": false,
+      "stumpf": true,
+      "unberechenbar": false,
+      "unzerstoerbar": false,
+      "wendig": false,
+      "zerbrechlich": false,
+      "zweihaendig": false,
+      "kein_malus_nebenwaffe": false
+    },
+    "text": "",
+    "aufbewahrungs_ort": "mitführend",
+    "bewahrt_auf": [],
+    "gewicht_summe": 0,
+    "gewicht": 1,
+    "preis": 1,
+    "wm_at": -1,
+    "wm_vt": -1
+  },
+  "_id": "O8FpFbI31SxEoKHG",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!O8FpFbI31SxEoKHG"
+}

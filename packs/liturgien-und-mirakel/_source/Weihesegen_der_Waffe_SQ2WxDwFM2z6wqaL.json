@@ -1,0 +1,41 @@
+{
+  "name": "Weihesegen der Waffe",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Gutes Gold, Heerführung",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du kannst vier Nahkampfwaffen weihen.",
+    "maechtig": "Du weihst zwei weitere Waffen.",
+    "schwierigkeit": "12",
+    "modifikationen": "Heeressegen (–8, 32 KaP; du segnest alle Waffen in einem Radius von 64 Schritt.)",
+    "vorbereitung": "16 Aktionen",
+    "ziel": "Zone",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Tag",
+    "kosten": "8 KaP",
+    "erlernen": "Ron 12; Kor 14",
+    "pw": 0,
+    "gruppe": 46
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "SQ2WxDwFM2z6wqaL",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!SQ2WxDwFM2z6wqaL"
+}

@@ -1,0 +1,41 @@
+{
+  "name": "Nackedei",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Umwelt",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Sämtliche Stoffkleidung des Opfers fällt plötzlich zu Boden. Metallische Rüstung ist nicht betroffen.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "Blechdose (–8; der Zauber betrifft auch Rüstungsteile aus Metall.)\nAbsatteln (–8; der Zauber betrifft auch Pferdegeschirr und Sattelgurte, wenn dein Ziel ein Reiter ist.)",
+    "vorbereitung": "0 Aktionen",
+    "ziel": "Einzelperson",
+    "reichweite": "8 Schritt",
+    "wirkungsdauer": "augenblicklich",
+    "kosten": "8 AsP",
+    "erlernen": "Sch 12",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "ViGjD6qz7RxTYPhX",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!ViGjD6qz7RxTYPhX"
+}

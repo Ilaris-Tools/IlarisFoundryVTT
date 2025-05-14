@@ -1,0 +1,41 @@
+{
+  "name": "Langer Arm",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Stabzauber, Umwelt",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "An der Spitze des Stabs entsteht eine astrale Hand, die du steuern kannst. Mit ihr kannst du gefährliche Versuche durchführen und Zauber mit der Reichweite Berührung wirken. Der Zauber endet vorzeitig, wenn du den Stab nicht mehr berührst.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "0 Aktionen",
+    "ziel": "Zauberstab",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Stunde",
+    "kosten": "1 AsP",
+    "erlernen": "Mag 14",
+    "pw": 0,
+    "gruppe": 15
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "DwZrbzL3xsGZUSvL",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!DwZrbzL3xsGZUSvL"
+}

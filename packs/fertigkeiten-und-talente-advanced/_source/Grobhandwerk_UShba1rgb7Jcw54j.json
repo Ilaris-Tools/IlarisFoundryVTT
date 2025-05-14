@@ -1,0 +1,40 @@
+{
+  "_id": "UShba1rgb7Jcw54j",
+  "name": "Grobhandwerk",
+  "type": "fertigkeit",
+  "img": "systems/Ilaris/assets/images/skills/profan-skill.svg",
+  "system": {
+    "basis": 0,
+    "fw": 0,
+    "pw": 0,
+    "attribut_0": "KO",
+    "attribut_1": "KO",
+    "attribut_2": "KO",
+    "gruppe": "6",
+    "text": "[Gruppiert]\nAlle handwerklichen Tätigkeiten, die auch unter großen Anstrengungen noch eine ruhige Hand erfordern, fallen unter Grobhandwerk.\n\nTalente: Schmieden, Zimmermann, Landwirtschaft (verbilligt), Steinmetz (verbilligt)",
+    "pwt": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Item.s6hiNOjCBrdPjAFn"
+    }
+  },
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "Ww4drILJ63YXG1Vc": 3
+  },
+  "_key": "!items!UShba1rgb7Jcw54j"
+}

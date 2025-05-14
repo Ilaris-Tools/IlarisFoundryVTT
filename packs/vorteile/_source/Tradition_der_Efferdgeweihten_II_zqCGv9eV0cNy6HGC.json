@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Efferdgeweihten II",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut IN 6, Vorteil Tradition der Efferdgeweihten I",
+    "gruppe": 7,
+    "text": "Efferdgeweihte sind so wechselhaft wie das Meer. Im Zustand besonders starker Emotionen sind Liturgien um 2–4 Punkte erleichtert."
+  },
+  "_id": "zqCGv9eV0cNy6HGC",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!zqCGv9eV0cNy6HGC"
+}

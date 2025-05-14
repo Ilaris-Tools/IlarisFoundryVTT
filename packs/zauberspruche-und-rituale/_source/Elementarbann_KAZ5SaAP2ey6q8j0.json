@@ -1,0 +1,41 @@
+{
+  "name": "Elementarbann",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Antimagie, Eis, Erz, Feuer, Humus, Luft, Wasser",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Wirkt gegen Zauber der Fertigkeiten Eis, Erz, Feuer, Humus, Luft und Wasser, sowie gegen Elementare, in die keine gAsP geflossen sind. Spezielle Antimagie-Modifikationen siehe S. 126.",
+    "maechtig": "",
+    "schwierigkeit": "",
+    "modifikationen": "",
+    "vorbereitung": "",
+    "ziel": "",
+    "reichweite": "",
+    "wirkungsdauer": "",
+    "kosten": "",
+    "erlernen": "Dru, Elf, Geo, Mag 18",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "KAZ5SaAP2ey6q8j0",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!KAZ5SaAP2ey6q8j0"
+}

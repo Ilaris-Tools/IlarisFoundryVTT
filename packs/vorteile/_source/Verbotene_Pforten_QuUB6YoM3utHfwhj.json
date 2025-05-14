@@ -1,0 +1,29 @@
+{
+  "name": "Verbotene Pforten",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut KO 6",
+    "gruppe": 4,
+    "text": "Mit diesem Vorteil kannst du deine Zauber mit deiner Lebenskraft speisen. Wenn du nicht über ausreichend AsP für einen Zauber verfügst, kannst du dir selbst Wunden zufügen. Jede dieser Wunden stellt WS+4 AsP für deinen Zauber zur Verfügung, überschüssige AsP verfallen. Verwendest du zudem die Tradition der Borbaradianer, kannst du sogar WS+8 AsP pro Wunde nutzen. Die eigene Lebenskraft kann jedoch niemals genutzt werden, um sich selbst zu heilen. Die Verbotenen Pforten können übrigens keine gAsP zur Verfügung stellen – gAsP müssen immer vom Zaubernden selbst stammen."
+  },
+  "_id": "QuUB6YoM3utHfwhj",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!QuUB6YoM3utHfwhj"
+}
