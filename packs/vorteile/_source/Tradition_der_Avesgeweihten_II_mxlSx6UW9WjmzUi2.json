@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Avesgeweihten II",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut MU 6, Vorteil Tradition der Avesgeweihten I",
+    "gruppe": 7,
+    "text": "Avesgeweihte sind ständig in Bewegung. Wenn du eine Liturgie vorbereitest, kannst du zusätzlich zur Aktion Konzentration die Aktion Bewegung nutzen."
+  },
+  "_id": "mxlSx6UW9WjmzUi2",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!mxlSx6UW9WjmzUi2"
+}

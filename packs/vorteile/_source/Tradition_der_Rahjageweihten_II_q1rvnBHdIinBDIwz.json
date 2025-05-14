@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Rahjageweihten II",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut CH 6, Vorteil Tradition der Rahjageweihten I",
+    "gruppe": 7,
+    "text": "Rahjgeweihte schätzen den Rausch, egal ob durch Alkohol, Sex, Tanz, einen Ausritt oder schieren Nervenkitzel. In berauschtem Zustand sind Liturgien um 2­4 Punkte erleichtert."
+  },
+  "_id": "q1rvnBHdIinBDIwz",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!q1rvnBHdIinBDIwz"
+}

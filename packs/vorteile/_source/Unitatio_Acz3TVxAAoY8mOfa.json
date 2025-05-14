@@ -1,0 +1,29 @@
+{
+  "name": "Unitatio",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut IN 4",
+    "gruppe": 4,
+    "text": "Der Vorteil ermöglicht es dir, mit anderen Kennern dieses Vorteils einen Zauberzirkel zu bilden. Alle Teilnehmer des Zirkels müssen sich berühren und willens sein, ihre Astralenergie zu teilen.\nSolange der Zirkel besteht, können die Teilnehmer die Regeln zur Zusammenarbeit (S. 8) nutzen, um sich gegenseitig beim Zaubern zu unterstützen. Üblicherweise sind dabei maximal vier Helfer möglich, welche die Probe des Zaubernden um jeweils +2 erleichtern können. Allerdings werden Elfensippen und manchen Hexenzirkeln noch viel mächtigere Unitatio-Zauberei nachgesagt.\nZusätzlich werden die Zauberkosten aller Teilnehmer gleichmäßig auf den gesamten Zirkel aufgeteilt. Sollte ein Teilungsrest übrigbleiben oder ein Teilnehmer über zu wenige AsP verfügen, muss der Zaubernde diese Kosten tragen. Nur gAsP muss der Zaubernde stets selbst tragen."
+  },
+  "_id": "Acz3TVxAAoY8mOfa",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!Acz3TVxAAoY8mOfa"
+}

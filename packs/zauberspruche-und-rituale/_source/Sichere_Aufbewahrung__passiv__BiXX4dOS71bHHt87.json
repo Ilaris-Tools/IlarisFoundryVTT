@@ -1,0 +1,41 @@
+{
+  "name": "Sichere Aufbewahrung (passiv)",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Schalenzauber",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "In der Schale aufbewahrte Substanzen verderben oder zersetzen sich nicht. Du kannst so auch explosive Materialien sicher transportieren.",
+    "maechtig": "",
+    "schwierigkeit": "",
+    "modifikationen": "",
+    "vorbereitung": "",
+    "ziel": "",
+    "reichweite": "",
+    "wirkungsdauer": "",
+    "kosten": "",
+    "erlernen": "Alch 14; Hex 16",
+    "pw": 0,
+    "gruppe": 14
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "BiXX4dOS71bHHt87",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!BiXX4dOS71bHHt87"
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Borbaradianer II",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut MU 6, Vorteil Tradition der Borbaradianer I",
+    "gruppe": 5,
+    "text": "Borbaradianische Zauber sind chaotisch und instabil. Du kannst Zauberproben mit 1W20 statt mit 3W20 ablegen. Dadurch verbessern sich deine Chancen bei besonders gewagten Zaubern."
+  },
+  "_id": "Sw2PYJkAfxqjPhDS",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!Sw2PYJkAfxqjPhDS"
+}

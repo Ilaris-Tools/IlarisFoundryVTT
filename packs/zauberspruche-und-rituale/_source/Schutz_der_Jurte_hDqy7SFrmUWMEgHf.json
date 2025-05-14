@@ -1,0 +1,41 @@
+{
+  "name": "Schutz der Jurte",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Antimagie, Geister der Stärkung",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du schützt einen abgeschlossenen Raum, wie eine Jurte oder einer Höhle, mit bis zu 16 Schritt Radius vor übernatürlichen Wesen. Dämonen, Daimonoiden und Untote können den Raum nicht betreten, wenn ihre Beschwörungsschwierigkeit bei maximal 20 liegt, bei Geistern und Feenwesen entscheidet der Spielleiter. Innerhalb des Raumes erleiden alle genannten Wesenheiten 1 Wunde pro Initiativephase. Wenn ein beweglicher Raum wie eine Jurte verzaubert wird, wirkt der Zauber unabhängig vom Ort, an dem die Jurte steht.",
+    "maechtig": "Die maximale Beschwörungsschwierigkeit steigt um +4.",
+    "schwierigkeit": "12",
+    "modifikationen": "Permanenz (–4, Wirkungsdauer bis die Bindung gelöst wird, 16 AsP, davon 2 gAsP)",
+    "vorbereitung": "1 Stunde",
+    "ziel": "Zone",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Woche",
+    "kosten": "16 AsP",
+    "erlernen": "Smn 14",
+    "pw": 0,
+    "gruppe": 5
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "hDqy7SFrmUWMEgHf",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!hDqy7SFrmUWMEgHf"
+}

@@ -1,0 +1,41 @@
+{
+  "name": "Nebelwand und Morgendunst",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Luft, Umwelt, Wasser",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du erzeugst eine nahezu undurchsichtige Nebelwolke mit etwa 8 Schritt Radius und beliebiger, auch komplizierter, Form. Wind beeinflusst die Wolke nicht.",
+    "maechtig": "Verdoppelt den Radius.",
+    "schwierigkeit": "12",
+    "modifikationen": "Dunst (–4; nur dünner Dunst erscheint, aber der Radius vervierfacht sich.)\nNebelbilder (–8; du kannst die Form der Nebelwolke stets verändern.)\nGeisternebel (–4, im Nebel bilden sich schreckliche Fratzen, die bei misslungener Konterprobe (MU, 16) einen Furcht-Effekt Stufe 1 verursachen.)\nBegleiter (–4; die Wolke bewegt sich mit dir.)",
+    "vorbereitung": "2 Aktionen",
+    "ziel": "Zone",
+    "reichweite": "8 Schritt",
+    "wirkungsdauer": "2 Stunden",
+    "kosten": "8 AsP",
+    "erlernen": "Elf 12; Ach, Dru, Geo, Srl16; Mag, Hex 20",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "Uz5kKD0zRKWvqiaH",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!Uz5kKD0zRKWvqiaH"
+}

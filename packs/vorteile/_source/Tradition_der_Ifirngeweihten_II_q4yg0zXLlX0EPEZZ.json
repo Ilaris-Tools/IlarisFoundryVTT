@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Ifirngeweihten II",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut IN 6, Vorteil Tradition der Ifirngeweihten I",
+    "gruppe": 7,
+    "text": "Ifirngeweihte durchstreifen die Lande und helfen denen, die in Not geraten sind. Liturgien, von denen nur andere (aber sie selbst nicht) profitieren, sind um +2 erleichtert."
+  },
+  "_id": "q4yg0zXLlX0EPEZZ",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!q4yg0zXLlX0EPEZZ"
+}

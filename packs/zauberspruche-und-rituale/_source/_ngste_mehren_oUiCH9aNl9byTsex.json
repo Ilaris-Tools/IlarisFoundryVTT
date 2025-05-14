@@ -1,0 +1,41 @@
+{
+  "name": "Ängste mehren",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Einfluss, Hexenflüche",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Das Opfer leidet an einer Angst deiner Wahl. Wird die Angst ausgelöst, steht es unter einem Furcht-Effekt Stufe 1. Litt das Opfer bereits zuvor an dieser Angst, steigt die Stufe des Furcht-Effekts um 1.",
+    "maechtig": "Der Furcht-Effekt steigt um eine Stufe.",
+    "schwierigkeit": "Magieresistenz",
+    "modifikationen": "",
+    "vorbereitung": "4 Aktionen",
+    "ziel": "Einzelperson",
+    "reichweite": "8 Schritt",
+    "wirkungsdauer": "1 Woche",
+    "kosten": "8 AsP",
+    "erlernen": "Hex 12",
+    "pw": 0,
+    "gruppe": 9
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "oUiCH9aNl9byTsex",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!oUiCH9aNl9byTsex"
+}

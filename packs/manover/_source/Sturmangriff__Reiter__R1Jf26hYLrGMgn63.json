@@ -1,0 +1,40 @@
+{
+  "name": "Sturmangriff (Reiter)",
+  "type": "manoever",
+  "_id": "R1Jf26hYLrGMgn63",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": {
+      "0": {
+        "name": "Vorteil Reiterkampf I",
+        "type": "STILE",
+        "value": [
+          "xkdSuhUa9idYrypQ"
+        ]
+      }
+    },
+    "gruppe": "0",
+    "probe": "",
+    "gegenprobe": "",
+    "text": ""
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "oz3U1cHybCRHlQTJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "0.3.20",
+    "createdTime": 1745306187360,
+    "modifiedTime": 1745306208078,
+    "lastModifiedBy": "oz3U1cHybCRHlQTJ"
+  },
+  "_key": "!items!R1Jf26hYLrGMgn63"
+}

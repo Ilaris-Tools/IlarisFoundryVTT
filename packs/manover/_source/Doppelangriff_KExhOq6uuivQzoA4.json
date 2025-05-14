@@ -1,0 +1,40 @@
+{
+  "name": "Doppelangriff",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": {
+      "0": {
+        "name": "Vorteil Beidhändiger Kampf III",
+        "type": "STILE",
+        "value": [
+          "bF3alIwhi05gpBeK"
+        ]
+      }
+    },
+    "gruppe": "0",
+    "probe": "2 x AT -4",
+    "gegenprobe": "",
+    "text": "Du führst mit beiden Händen je eine Attacke –4 aus. Beide Angriffe sind unabhängig voneinander; sie werden separat ausgewürfelt, können sich gegen verschiedene Ziele richten und mit unterschiedlichen Manövern versehen werden. Voraussetzungen: Kampf im Beidhändigen Stil; kein Doppelangriff seit letztem Beginn einer eigenen Initiativephase"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "KExhOq6uuivQzoA4",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "0.3.20",
+    "createdTime": null,
+    "modifiedTime": 1745304606025,
+    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!KExhOq6uuivQzoA4"
+}

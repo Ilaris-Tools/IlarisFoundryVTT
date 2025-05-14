@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Durro-dun III",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut MU 8, Vorteil Tradition der Durro-dun II",
+    "gruppe": 5,
+    "text": "Erlaubt die spontane Modifikation Opferung (Zauber +4): Ein Opfer erleichtert den Zauber um +4. Die Tierkrieger opfern den Geistern ihr Blut und fügen sich dabei eine Wunde zu, deren Auswirkungen bei der Probe für den Zauber ignoriert werden."
+  },
+  "_id": "Mx4S7igqV9FVX9uB",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!Mx4S7igqV9FVX9uB"
+}

@@ -1,0 +1,33 @@
+{
+  "name": "Persönlichkeit einschätzen",
+  "type": "talent",
+  "img": "systems/Ilaris/assets/images/skills/profan-talent.svg",
+  "system": {
+    "text": "Persönlichkeit einschätzen gibt Kenntnisse über die Natur einer Person und kann Eigenheiten aufzeigen.",
+    "fertigkeit": "Menschenkenntnis"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Item.SDL0P9OH2sapZhoQ"
+    }
+  },
+  "_id": "BbkTxJTzppli1r3D",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "Ww4drILJ63YXG1Vc": 3
+  },
+  "_key": "!items!BbkTxJTzppli1r3D"
+}

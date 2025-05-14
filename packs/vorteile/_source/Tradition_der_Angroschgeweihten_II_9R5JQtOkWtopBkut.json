@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Angroschgeweihten II",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut FF 6, Vorteil Tradition der Angroschgeweihten I",
+    "gruppe": 7,
+    "text": "Angroschgeweihte dienen dem Herren des Feuers und des Erzes. Unterirdisch sind alle Liturgien um 2–4 Punkte erleichtert."
+  },
+  "_id": "9R5JQtOkWtopBkut",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!9R5JQtOkWtopBkut"
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Niederwerfen",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut KK 4",
+    "gruppe": 2,
+    "text": "Erlaubt das Manöver Niederwerfen (AT -4): Gegenprobe: KK. Dein Ziel stürzt und liegt am Boden."
+  },
+  "_id": "Fh4aGtx9D0flsKKe",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!Fh4aGtx9D0flsKKe"
+}

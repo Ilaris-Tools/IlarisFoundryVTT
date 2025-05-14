@@ -1,0 +1,41 @@
+{
+  "name": "Melodie des Zauberschutzes",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Antimagie, Eigenschaften, Zaubermelodien",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Magieresistenz-Proben aller Zuhörer im Radius von 4 Schritt sind um +2 erleichtert. Erfordert Konzentration, erlaubt Aufrechterhalten.",
+    "maechtig": "Erhöht den Bonus um +1.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "1 Aktion",
+    "ziel": "Zone",
+    "reichweite": "4 Schritt",
+    "wirkungsdauer": "16 Initiativphasen",
+    "kosten": "4 AsP",
+    "erlernen": "Bard 16",
+    "pw": 0,
+    "gruppe": 18
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "yiw8a7C9ghZLaOXN",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!yiw8a7C9ghZLaOXN"
+}
