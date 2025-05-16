@@ -33,6 +33,13 @@ function registerHandlebarsHelpers() {
         return fertAttr;
     });
 
+    Handlebars.registerHelper('some', function(array, prop) {
+        return array.some(item => {
+            if (prop === 'checked') return item.value;
+            return item.value && item.value !== '0';
+        });
+    });
+
     Handlebars.registerHelper('AttributeFertigkeit_from_data', function (attrArray) {
         // console.log(attrArray);
         const fertAttr = attrArray.attribut_0.concat(
