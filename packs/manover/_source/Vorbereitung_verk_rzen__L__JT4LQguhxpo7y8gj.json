@@ -16,13 +16,9 @@
     "probe": "Liturgie -4",
     "gegenprobe": "",
     "text": "Die Vorbereitungszeit der Liturgie halbiert sich. Eine Vorbereitungszeit von 1 Aktion wird zu 0 Aktionen. Die Aktion Konflikt ist von dieser Modifikation nicht betroffen.",
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "NUMBER",
-        "min": 0,
-        "max": null
-      }
+    "input": {
+      "label": "",
+      "field": "NUMBER"
     }
   },
   "effects": [],

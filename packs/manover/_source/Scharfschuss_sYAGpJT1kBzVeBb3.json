@@ -8,13 +8,9 @@
     "probe": "FK -X",
     "gegenprobe": "",
     "text": "Der Angriff richtet X (maximal 8) Trefferpunkte mehr an.",
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "NUMBER",
-        "min": 0,
-        "max": 8
-      }
+    "input": {
+      "label": "",
+      "field": "NUMBER"
     }
   },
   "effects": [],

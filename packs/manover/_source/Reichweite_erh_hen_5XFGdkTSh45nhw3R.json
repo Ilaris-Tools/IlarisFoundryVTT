@@ -8,13 +8,9 @@
     "probe": "FK -4",
     "gegenprobe": "",
     "text": "Die Reichweite deines Fernkampfangriffes verdoppelt sich. Kann bis zu zweimal pro Angriff eingesetzt werden.",
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "NUMBER",
-        "min": 0,
-        "max": 2
-      }
+    "input": {
+      "label": "",
+      "field": "NUMBER"
     }
   },
   "effects": [],

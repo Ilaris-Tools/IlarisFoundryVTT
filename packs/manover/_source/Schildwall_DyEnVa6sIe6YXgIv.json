@@ -13,12 +13,6 @@
         ]
       }
     },
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "CHECKBOX"
-      }
-    },
     "modifications": {
       "0": {
         "type": "DEFENCE",
@@ -31,7 +25,11 @@
     "gruppe": "4",
     "probe": "VT -4",
     "gegenprobe": "",
-    "text": "Du kannst einen Angriff auf einen benachbarten Verbündeten abwehren. Das Manöver erfolgt vor der Verteidigung des Verbündeten. Voraussetzungen: Kampf im Schildkampf-Stil; kein Schildwall seit letztem Beginn einer eigenen Initiativephase"
+    "text": "Du kannst einen Angriff auf einen benachbarten Verbündeten abwehren. Das Manöver erfolgt vor der Verteidigung des Verbündeten. Voraussetzungen: Kampf im Schildkampf-Stil; kein Schildwall seit letztem Beginn einer eigenen Initiativephase",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    }
   },
   "effects": [],
   "folder": null,

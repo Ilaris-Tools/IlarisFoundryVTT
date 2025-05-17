@@ -89,8 +89,6 @@ export class ManoeverSheet extends IlarisItemSheet {
         super.activateListeners(html);
         html.find('.add-voraussetzung').click(() => this._onAddVoraussetzung());
         html.find('.voraussetzung-delete').click((ev) => this._onDeleteVoraussetzung(ev));
-        html.find('.add-input').click(() => this._onAddInput());
-        html.find('.delete-input').click((ev) => this._onDeleteInput(ev));
         html.find('.add-modification').click(() => this._onAddModification());
         html.find('.delete-modification').click((ev) => this._onDeleteModification(ev));
     }
@@ -105,19 +103,6 @@ export class ManoeverSheet extends IlarisItemSheet {
         let eigid = $(event.currentTarget).data('voraussetzungid');
         this.item.system.voraussetzungen = Object.values(this.item.system.voraussetzungen);
         this.item.system.voraussetzungen.splice(eigid, 1);
-        this.document.render();
-    }
-
-    _onAddInput() {
-        this.item.system.inputs = Object.values(this.item.system.inputs);
-        this.item.system.inputs.push({label: 'CHECKBOX',field: ''});
-        this.document.render();
-    }
-
-    _onDeleteInput(event) {
-        let eigid = $(event.currentTarget).data('inputid');
-        this.item.system.inputs = Object.values(this.item.system.inputs);
-        this.item.system.inputs.splice(eigid, 1);
         this.document.render();
     }
 

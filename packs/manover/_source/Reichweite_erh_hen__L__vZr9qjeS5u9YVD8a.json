@@ -16,13 +16,9 @@
     "probe": "Liturgie -4",
     "gegenprobe": "",
     "text": "Die Reichweite der Liturgie verdoppelt sich. Die Reichweite Berührung wird zu 2 Schritt.",
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "NUMBER",
-        "min": 0,
-        "max": 8
-      }
+    "input": {
+      "label": "",
+      "field": "NUMBER"
     }
   },
   "effects": [],

@@ -157,14 +157,12 @@ export class AngriffDialog extends Dialog {
         this.rollmode = this.item.system.manoever.rllm.selected;
 
         this.item.manoever.forEach(manoever => {
-            manoever.inputValues.forEach(selector => {
-                if(selector.field == 'CHECKBOX') {
-                    selector.value = html.find(`#${manoever.id+selector.field}`)[0]?.checked || false;
-                } else {
-                    console.log(manoever.name,html.find(`#${manoever.id+selector.field}`)[0]?.value)
-                    selector.value = html.find(`#${manoever.id+selector.field}`)[0]?.value || false;
-                }
-            });
+            if(manoever.inputValue.field == 'CHECKBOX') {
+                manoever.inputValue.value = html.find(`#${manoever.id+manoever.inputValue.field}`)[0]?.checked || false;
+            } else {
+                console.log(manoever.inputValue.name,html.find(`#${manoever.id+manoever.inputValue.field}`)[0]?.value)
+                manoever.inputValue.value = html.find(`#${manoever.id+manoever.inputValue.field}`)[0]?.value || false;
+            }
         });
     }
     
@@ -230,17 +228,15 @@ export class AngriffDialog extends Dialog {
             let check = undefined;
             let number = undefined;
             let trefferZoneInput = undefined;
-            dynamicManoever.inputValues.forEach(selector => {
-                if(selector.value) {
-                    if(selector.field == 'CHECKBOX') {
-                        check = selector.value;
-                    } else if(selector.field == 'NUMBER') {
-                        number = selector.value;
-                    } else {
-                        trefferZoneInput = selector.value;
-                    }
+            if(dynamicManoever.inputValue.value) {
+                if(dynamicManoever.inputValue.field == 'CHECKBOX') {
+                    check = dynamicManoever.inputValue.value;
+                } else if(dynamicManoever.inputValue.field == 'NUMBER') {
+                    number = dynamicManoever.inputValue.value;
+                } else {
+                    trefferZoneInput = dynamicManoever.inputValue.value;
                 }
-            });
+            }
             if(check == undefined && (number == undefined || number == 0) && (trefferZoneInput == undefined || trefferZoneInput == 0)) return;
 
             // Add valid modifications to the collection

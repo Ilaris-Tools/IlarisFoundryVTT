@@ -13,12 +13,6 @@
         ]
       }
     },
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "CHECKBOX"
-      }
-    },
     "modifications": {
       "0": {
         "type": "ATTACK",
@@ -31,7 +25,11 @@
     "gruppe": "0",
     "probe": "2 x AT -4",
     "gegenprobe": "",
-    "text": "Du führst mit beiden Händen je eine Attacke –4 aus. Beide Angriffe sind unabhängig voneinander; sie werden separat ausgewürfelt, können sich gegen verschiedene Ziele richten und mit unterschiedlichen Manövern versehen werden. Voraussetzungen: Kampf im Beidhändigen Stil; kein Doppelangriff seit letztem Beginn einer eigenen Initiativephase"
+    "text": "Du führst mit beiden Händen je eine Attacke –4 aus. Beide Angriffe sind unabhängig voneinander; sie werden separat ausgewürfelt, können sich gegen verschiedene Ziele richten und mit unterschiedlichen Manövern versehen werden. Voraussetzungen: Kampf im Beidhändigen Stil; kein Doppelangriff seit letztem Beginn einer eigenen Initiativephase",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    }
   },
   "effects": [],
   "folder": null,

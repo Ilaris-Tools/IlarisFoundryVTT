@@ -12,18 +12,14 @@
         ]
       }
     },
-    "inputs": {
-      "1": {
-        "label": "",
-        "field": "NUMBER",
-        "min": null,
-        "max": null
-      }
-    },
     "gruppe": "3",
     "probe": "Liturgie -4",
     "gegenprobe": "",
-    "text": "Du ignorierst eine der bei der Tradition angeführten Bedingungen. Ignorierst du die Bedingung Sicht, musst du das Ziel auf eine andere Art und Weise wahrnehmen."
+    "text": "Du ignorierst eine der bei der Tradition angeführten Bedingungen. Ignorierst du die Bedingung Sicht, musst du das Ziel auf eine andere Art und Weise wahrnehmen.",
+    "input": {
+      "label": "",
+      "field": "NUMBER"
+    }
   },
   "effects": [],
   "folder": null,

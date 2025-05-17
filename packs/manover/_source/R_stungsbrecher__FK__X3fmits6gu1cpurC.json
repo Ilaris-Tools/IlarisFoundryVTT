@@ -8,11 +8,9 @@
     "probe": "FK -4",
     "gegenprobe": "",
     "text": "Der Angriff ignoriert die gegnerische Rüstung und richtet SP statt TP an. Voraussetzung: Pfeile mit Waffeneigenschaft Rüstungsbrechend.",
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "CHECKBOX"
-      }
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
     }
   },
   "effects": [],

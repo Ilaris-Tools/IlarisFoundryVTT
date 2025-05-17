@@ -13,12 +13,6 @@
         ]
       }
     },
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "CHECKBOX"
-      }
-    },
     "modifications": {
       "0": {
         "type": "DEFENCE",
@@ -31,7 +25,11 @@
     "gruppe": "4",
     "probe": "VT -4",
     "gegenprobe": "",
-    "text": "Wenn die Verteidigung gelingt, darfst du in der nächsten eigenen Initiativephase eine Freie Aktion nutzen, um deinen Gegner (ein weiteres Mal) anzugreifen. Voraussetzungen: Kampf im Schnellen Stil; kein Unterlaufen seit letztem Beginn einer eigenen Initiativephase"
+    "text": "Wenn die Verteidigung gelingt, darfst du in der nächsten eigenen Initiativephase eine Freie Aktion nutzen, um deinen Gegner (ein weiteres Mal) anzugreifen. Voraussetzungen: Kampf im Schnellen Stil; kein Unterlaufen seit letztem Beginn einer eigenen Initiativephase",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    }
   },
   "effects": [],
   "folder": null,

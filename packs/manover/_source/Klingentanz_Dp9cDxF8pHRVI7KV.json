@@ -12,12 +12,6 @@
         ]
       }
     },
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "CHECKBOX"
-      }
-    },
     "modifications": {
       "0": {
         "type": "ATTACK",
@@ -37,7 +31,11 @@
     "gruppe": "0",
     "probe": "AT -4",
     "gegenprobe": "",
-    "text": "Wenn der Angriff gelingt, darfst du sofort noch einmal angreifen. Dieser Folgeangriff ist nicht erschwert. Besonderheit: Bei einer Kombination von Klingentanz und Befreiungsschlag muss jedes Ziel getroffen werden, damit der Klingentanz gelingt. Voraussetzung: Kein Klingentanz seit letztem Beginn einer eigenen Initiativephase"
+    "text": "Wenn der Angriff gelingt, darfst du sofort noch einmal angreifen. Dieser Folgeangriff ist nicht erschwert. Besonderheit: Bei einer Kombination von Klingentanz und Befreiungsschlag muss jedes Ziel getroffen werden, damit der Klingentanz gelingt. Voraussetzung: Kein Klingentanz seit letztem Beginn einer eigenen Initiativephase",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    }
   },
   "effects": [],
   "folder": null,

@@ -4,12 +4,6 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "voraussetzungen": [],
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "CHECKBOX"
-      }
-    },
     "modifications": {
       "0": {
         "type": "ATTACK",
@@ -36,7 +30,11 @@
     "gruppe": "0",
     "probe": "AT -4; VT -4",
     "gegenprobe": "KK",
-    "text": "Dem Ziel wird eine Waffe deiner Wahl entrissen, die danach zwischen den Kämpfern am Boden liegt. Das Aufheben der Waffe benötigt eine Aktion Konflikt; falls ein anderer Kämpfer das in einer Reaktion verhindern möchte, ist zusätzlich eine vergleichende GE-Probe (I) notwendig. Das Manöver senkt den Schaden des Angriffes auf 0. Sollte der Angriff ohnehin keinen Schaden anrichten – etwa durch andere Manöver – ist das Manöver nicht möglich."
+    "text": "Dem Ziel wird eine Waffe deiner Wahl entrissen, die danach zwischen den Kämpfern am Boden liegt. Das Aufheben der Waffe benötigt eine Aktion Konflikt; falls ein anderer Kämpfer das in einer Reaktion verhindern möchte, ist zusätzlich eine vergleichende GE-Probe (I) notwendig. Das Manöver senkt den Schaden des Angriffes auf 0. Sollte der Angriff ohnehin keinen Schaden anrichten – etwa durch andere Manöver – ist das Manöver nicht möglich.",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    }
   },
   "effects": [],
   "folder": null,

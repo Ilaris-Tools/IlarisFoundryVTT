@@ -17,7 +17,7 @@
         </div>
 
         <div class="flexrow">
-            <label><b>Probentext:</b></label>
+            <label><b>Kurzbeschreibung:</b></label>
             <input name="system.probe" value="{{item.system.probe}}" type="text" data-dtype="String" />
         </div>
         <div class="flexrow">
@@ -100,57 +100,54 @@
                     <li>{{manoever.labels.inputTypes.hitZone}}</li>
                 </ul>
             </div>
-            {{#each item.system.inputs}}
-                <div class="field">
-                    <div class="flexrow">
-                        <label class="label"><b>{{../manoever.labels.inputLabel}}:</b></label>
-                        <input
-                            name="system.inputs.{{@index}}.label"
-                            value="{{this.label}}"
-                            type="text"
-                            data-dtype="String"
-                            placeholder="{{../manoever.labels.inputLabel}}"
-                        />
-                        <a
-                            class="delete-input icon-small delete-button"
-                            data-inputid="{{@index}}"
-                            ><i class="fas fa-trash"></i
-                        ></a>
-                    </div>
-                    <div class="flexrow row">
-                        <label>{{../manoever.labels.inputType}}:</label>
-                        <select name="system.inputs.{{@index}}.field">
-                            {{selectOptions ../manoever.selector_type selected=this.field}}
-                        </select>            
-                    </div>   
-                    <div class="flexrow row">
-                        {{#if (ifEq this.field "NUMBER")}} 
-                            <div class="flexrow number-limits">
-                                <label class="label">{{../manoever.labels.numberLimits}}:</label>
-                                <div class="number-input-group">
-                                    <label>{{../manoever.labels.min}}:</label>
-                                    <input
-                                        name="system.inputs.{{@index}}.min"
-                                        type="number"
-                                        value="{{this.min}}"
-                                        data-dtype="Number"
-                                    />
-                                </div>
-                                <div class="number-input-group">
-                                    <label>{{../manoever.labels.max}}:</label>
-                                    <input
-                                        name="system.inputs.{{@index}}.max"
-                                        type="number"
-                                        value="{{this.max}}"
-                                        data-dtype="Number"
-                                    />
-                                </div>
+            <div class="field">
+                <div class="flexrow">
+                    <label class="label"><b>{{../manoever.labels.inputLabel}}:</b></label>
+                    <input
+                        name="system.inputs.{{@index}}.label"
+                        value="{{this.label}}"
+                        type="text"
+                        data-dtype="String"
+                        placeholder="{{../manoever.labels.inputLabel}}"
+                    />
+                    <a
+                        class="delete-input icon-small delete-button"
+                        data-inputid="{{@index}}"
+                        ><i class="fas fa-trash"></i
+                    ></a>
+                </div>
+                <div class="flexrow row">
+                    <label>{{../manoever.labels.inputType}}:</label>
+                    <select name="system.inputs.{{@index}}.field">
+                        {{selectOptions ../manoever.selector_type selected=this.field}}
+                    </select>            
+                </div>   
+                <div class="flexrow row">
+                    {{#if (ifEq this.field "NUMBER")}} 
+                        <div class="flexrow number-limits">
+                            <label class="label">{{../manoever.labels.numberLimits}}:</label>
+                            <div class="number-input-group">
+                                <label>{{../manoever.labels.min}}:</label>
+                                <input
+                                    name="system.inputs.{{@index}}.min"
+                                    type="number"
+                                    value="{{this.min}}"
+                                    data-dtype="Number"
+                                />
                             </div>
-                        {{/if}}
-                    </div> 
+                            <div class="number-input-group">
+                                <label>{{../manoever.labels.max}}:</label>
+                                <input
+                                    name="system.inputs.{{@index}}.max"
+                                    type="number"
+                                    value="{{this.max}}"
+                                    data-dtype="Number"
+                                />
+                            </div>
+                        </div>
+                    {{/if}}
                 </div> 
-                <hr>        
-            {{/each}}
+            </div> 
         </div>
 
         <div class="manoever-section">
