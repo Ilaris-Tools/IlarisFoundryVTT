@@ -89,35 +89,48 @@ export class ManoeverSheet extends IlarisItemSheet {
         html.find('.delete-modification').click((ev) => this._onDeleteModification(ev));
     }
 
-    _onAddVoraussetzung() {
-        this.item.system.voraussetzungen = Object.values(this.item.system.voraussetzungen);
-        this.item.system.voraussetzungen.push({name: 'Neue Voraussetzung', type: 'VORTEIL', value: []});
-        this.document.render();
+    async _onAddVoraussetzung() {
+        const voraussetzungen = Object.values(this.item.system.voraussetzungen);
+        voraussetzungen.push({name: 'Neue Voraussetzung', type: 'VORTEIL', value: []});
+        
+        await this.item.update({
+            'system.voraussetzungen': voraussetzungen
+        });
     }
 
-    _onDeleteVoraussetzung(event) {
+    async _onDeleteVoraussetzung(event) {
         let eigid = $(event.currentTarget).data('voraussetzungid');
-        this.item.system.voraussetzungen = Object.values(this.item.system.voraussetzungen);
-        this.item.system.voraussetzungen.splice(eigid, 1);
-        this.document.render();
+        const voraussetzungen = Object.values(this.item.system.voraussetzungen);
+        voraussetzungen.splice(eigid, 1);
+        
+        // Update the item with the new voraussetzungen array
+        await this.item.update({
+            'system.voraussetzungen': voraussetzungen
+        });
     }
 
-    _onAddModification() {
-        this.item.system.modifications = Object.values(this.item.system.modifications);
-        this.item.system.modifications.push({
+    async _onAddModification() {
+        const modifications = Object.values(this.item.system.modifications);
+        modifications.push({
             type: "ATTACK",
             value: 0,
             operator: "ADD",
             target: "",
             affectedByInput: true
         });
-        this.document.render();
+        
+        await this.item.update({
+            'system.modifications': modifications
+        });
     }
 
-    _onDeleteModification(event) {
+    async _onDeleteModification(event) {
         let eigid = $(event.currentTarget).data('modificationid');
-        this.item.system.modifications = Object.values(this.item.system.modifications);
-        this.item.system.modifications.splice(eigid, 1);
-        this.document.render();
+        const modifications = Object.values(this.item.system.modifications);
+        modifications.splice(eigid, 1);
+        
+        await this.item.update({
+            'system.modifications': modifications
+        });
     }
 }
