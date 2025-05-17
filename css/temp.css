@@ -268,3 +268,14 @@ hr {
   border: 0;
   border-top: 1px solid #353535;
 } 
+
+.system-pack {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #782e22;  /* Using the same red color as in manoever.css */
+}
+
+.system-pack input[type="checkbox"] {
+  transform: scale(1.2);  /* Make the checkbox slightly bigger too */
+  margin-right: 10px;  /* Add some space after the bigger checkbox */
+} 

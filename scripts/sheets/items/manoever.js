@@ -55,20 +55,16 @@ export class ManoeverSheet extends IlarisItemSheet {
         const vorteile = [];
         const stile = [];
 
-        // Durchsucht alle packs und items in der Welt. Filtert bei packs alle packs mit dem typ Item und überprüft ob ein Item dort den typ vorteil hat.
-        // Wenn ja, wird das pack geladen und die Items werden in ein Array gepusht. Anschließend werden die Vorteile sortiert nach gruppe
-        for await (const pack of game.packs) {
-            if(pack.metadata.type == "Item") {
-                if(pack.index.contents.length > 0 && pack.index.contents[0].type == 'vorteil') {
-                    vorteileItems.push(...(await pack.getDocuments()));
-                }
+        // Get selected vorteile packs from settings
+        const selectedPacks = JSON.parse(game.settings.get('Ilaris', 'vorteilePacks'));
+        
+        // Get vorteile from selected packs
+        for (const packId of selectedPacks) {
+            const pack = game.packs.get(packId);
+            if (pack) {
+                vorteileItems.push(...(await pack.getDocuments()));
             }
         }
-        game.items.forEach(item => {
-            if(item.type == 'vorteil') {
-                vorteileItems.push(item);
-            }
-        });
         vorteileItems.forEach((vorteil) => {
             if(vorteil.system.gruppe == 3 || vorteil.system.gruppe == 5 || vorteil.system.gruppe == 7) {
                 stile.push({key: vorteil._id, label: vorteil.name});
