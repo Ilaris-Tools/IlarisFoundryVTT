@@ -7,7 +7,11 @@
     "gruppe": "1",
     "probe": "FK +2",
     "gegenprobe": "",
-    "text": "Erhöht die Vorbereitungszeit um 1 Aktion. Ruhige Hand (S. 42) verdoppelt den Bonus."
+    "text": "Erhöht die Vorbereitungszeit um 1 Aktion. Ruhige Hand (S. 42) verdoppelt den Bonus.",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    }
   },
   "effects": [],
   "folder": null,
@@ -17,10 +21,10 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "0.3.20",
+    "systemVersion": "12.0.1",
     "createdTime": null,
-    "modifiedTime": 1745306612326,
-    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "modifiedTime": 1746367874213,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
   },

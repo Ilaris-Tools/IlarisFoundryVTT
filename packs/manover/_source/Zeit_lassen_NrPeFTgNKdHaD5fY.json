@@ -21,7 +21,11 @@
     "gruppe": "2",
     "probe": "Zauber +2",
     "gegenprobe": "",
-    "text": "Verdoppelt die Vorbereitungszeit, aber erleichtert den Zauber um +2. Eine Vorbereitungszeit von 0 Aktionen wird zu 1 Aktion. Kann einmal pro Zauber eingesetzt werden und wirkt nicht auf Zauber mit frei wählbarer Vorbereitungszeit. Voraussetzung: Verwendung der Alchemistischen, Elfischen, Geodischen, Gildenmagischen, Kristallomantischen, Zauberbardischen oder Scharlatanischen Repräsentation (III)."
+    "text": "Verdoppelt die Vorbereitungszeit, aber erleichtert den Zauber um +2. Eine Vorbereitungszeit von 0 Aktionen wird zu 1 Aktion. Kann einmal pro Zauber eingesetzt werden und wirkt nicht auf Zauber mit frei wählbarer Vorbereitungszeit. Voraussetzung: Verwendung der Alchemistischen, Elfischen, Geodischen, Gildenmagischen, Kristallomantischen, Zauberbardischen oder Scharlatanischen Repräsentation (III).",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    }
   },
   "effects": [],
   "folder": null,
@@ -31,10 +35,10 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "0.3.20",
+    "systemVersion": "12.0.1",
     "createdTime": null,
-    "modifiedTime": 1745306519652,
-    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "modifiedTime": 1746367856061,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
   },

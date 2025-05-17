@@ -4,10 +4,23 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "voraussetzungen": [],
-    "gruppe": "0",
+    "modifications": {
+      "0": {
+        "type": "DEFENCE",
+        "value": 2,
+        "operator": "SUBTRACT",
+        "target": "actor.system.abgeleitete.be",
+        "affectedByInput": true
+      }
+    },
+    "gruppe": "4",
     "probe": "VT -2-BE",
     "gegenprobe": "",
-    "text": "Der Verteidiger entgeht dem Angriff und seinen Auswirkungen vollständig. Ausweichen ist die sinnvollste waffenlose Abwehr gegen Bewaffnete (Siehe Waffeneigenschaft Zerbrechlich auf S. 47)."
+    "text": "Der Verteidiger entgeht dem Angriff und seinen Auswirkungen vollständig. Ausweichen ist die sinnvollste waffenlose Abwehr gegen Bewaffnete (Siehe Waffeneigenschaft Zerbrechlich auf S. 47).",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    }
   },
   "effects": [],
   "folder": null,
@@ -17,10 +30,10 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "0.3.20",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1745304569883,
-    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "modifiedTime": 1746879146912,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
   },

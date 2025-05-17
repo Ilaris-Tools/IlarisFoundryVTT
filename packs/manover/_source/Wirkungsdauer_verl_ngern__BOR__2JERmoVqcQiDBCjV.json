@@ -16,7 +16,11 @@
     "gruppe": "2",
     "probe": "",
     "gegenprobe": "",
-    "text": ""
+    "text": "",
+    "input": {
+      "label": "",
+      "field": "NUMBER"
+    }
   },
   "effects": [],
   "folder": null,
@@ -31,10 +35,10 @@
     "duplicateSource": null,
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "0.3.20",
+    "systemVersion": "12.0.1",
     "createdTime": 1745306359594,
-    "modifiedTime": 1745306385251,
-    "lastModifiedBy": "oz3U1cHybCRHlQTJ"
+    "modifiedTime": 1746367817945,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC"
   },
   "_key": "!items!2JERmoVqcQiDBCjV"
 }

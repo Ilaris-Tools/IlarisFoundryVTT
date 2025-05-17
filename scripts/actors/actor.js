@@ -397,7 +397,6 @@ export class IlarisActor extends Actor {
             actor.nahkampfwaffen.find((x) => x.system.nebenwaffe == true) ||
             actor.fernkampfwaffen.find((x) => x.system.nebenwaffe == true);
         for (let nwaffe of actor.nahkampfwaffen) {
-            await nwaffe.setManoevers();
             if (nwaffe.system.manoever == undefined) {
                 console.log('Ich überschreibe Manöver');
             }
