@@ -390,8 +390,8 @@ let manoever = {
         advantages: "Vorteile",
         styles: "Stile",
         weaponProperties: "Waffeneigenschaften",
-        inputs: "Inputs",
-        inputsDescription: "Hier legst du fest, welche Eingabefelder im Würfeldialog für dieses Manöver angezeigt werden:",
+        input: "Input",
+        inputDescription: "Hier legst du fest, welches Eingabefeld im Würfeldialog für dieses Manöver angezeigt werden soll:",
         inputTypes: {
             checkbox: "Checkbox - Eine einfache Ja/Nein Auswahl",
             number: "Nummerneingabefeld - Ein Feld für Zahleneingaben",

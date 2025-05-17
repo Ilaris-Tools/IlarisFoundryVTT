@@ -55,11 +55,14 @@
 <div>
     <div class="maneuver-header collapsed">
         <h3>Manöver:</h3>
-        <div><h4>Ausklappen</h4><i class="fas fa-chevron-down"></i></div>
+        <div class="toggle-display">
+            <h4>Ausklappen</h4>
+            <i class="fas fa-chevron-down"></i>
+        </div>
     </div>
     <div class="maneuver-grid collapsed">
         {{#each item.manoever as |manoever|}}
-            <div class="maneuver-item {{#if (or (some manoever.inputValue "value") (some manoever.inputValue "checked"))}}has-value{{/if}}">
+            <div class="maneuver-item {{#if (or manoever.inputValue.value manoever.inputValue.checked)}}has-value{{/if}}">
                 <label>{{manoever.name}} ({{manoever.system.probe}})</label>
                 {{#if (ifEq manoever.inputValue.field "CHECKBOX")}}
                     <input
@@ -85,7 +88,7 @@
                 {{/if}}
                 {{#if (ifEq manoever.inputValue.field "TREFFER_ZONE")}}
                     <select id="{{manoever.id}}TREFFER_ZONE" name="manoever.inputValue.value" style="max-width: 150px">
-                        {{selectOptions ../../trefferzonen selected=manoever.inputValue.value}}
+                        {{selectOptions ../trefferzonen selected=manoever.inputValue.value}}
                     </select>
                 {{/if}}
             </div>

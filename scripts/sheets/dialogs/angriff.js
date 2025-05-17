@@ -50,12 +50,19 @@ export class AngriffDialog extends Dialog {
         html.find(".angreifen").click(ev => this._angreifenKlick(html));
         html.find(".verteidigen").click(ev => this._verteidigenKlick(html));
         html.find(".schaden").click(ev => this._schadenKlick(html));
+        
         // Add expand/collapse functionality
         html.find(".maneuver-header").click(ev => {
             const header = ev.currentTarget;
             const grid = header.nextElementSibling;
+            const isCollapsed = header.classList.contains("collapsed");
+            const text = header.querySelector("h4");
+            
             header.classList.toggle("collapsed");
             grid.classList.toggle("collapsed");
+            
+            // Update text based on state
+            text.textContent = isCollapsed ? "Einklappen" : "Ausklappen";
         });
 
         // Update has-value class when inputs change

@@ -90,10 +90,10 @@
 
         <div class="manoever-section">
             <div class="section-header">
-                <div><b>{{manoever.labels.inputs}} </b><a class="add-input">[+]</a></div>
+                <b>{{manoever.labels.input}} </b>
             </div>
             <div class="section-description">
-                {{manoever.labels.inputsDescription}}
+                {{manoever.labels.inputDescription}}
                 <ul>
                     <li>{{manoever.labels.inputTypes.checkbox}}</li>
                     <li>{{manoever.labels.inputTypes.number}}</li>
@@ -102,45 +102,40 @@
             </div>
             <div class="field">
                 <div class="flexrow">
-                    <label class="label"><b>{{../manoever.labels.inputLabel}}:</b></label>
+                    <label class="label"><b>{{manoever.labels.inputLabel}}:</b></label>
                     <input
-                        name="system.inputs.{{@index}}.label"
-                        value="{{this.label}}"
+                        name="system.input.label"
+                        value="{{item.system.input.label}}"
                         type="text"
                         data-dtype="String"
-                        placeholder="{{../manoever.labels.inputLabel}}"
+                        placeholder="{{manoever.labels.inputLabel}}"
                     />
-                    <a
-                        class="delete-input icon-small delete-button"
-                        data-inputid="{{@index}}"
-                        ><i class="fas fa-trash"></i
-                    ></a>
                 </div>
                 <div class="flexrow row">
-                    <label>{{../manoever.labels.inputType}}:</label>
-                    <select name="system.inputs.{{@index}}.field">
-                        {{selectOptions ../manoever.selector_type selected=this.field}}
+                    <label>{{manoever.labels.inputType}}:</label>
+                    <select name="system.input.field">
+                        {{selectOptions manoever.selector_type selected=item.system.input.field}}
                     </select>            
                 </div>   
                 <div class="flexrow row">
-                    {{#if (ifEq this.field "NUMBER")}} 
+                    {{#if (ifEq item.system.input.field "NUMBER")}} 
                         <div class="flexrow number-limits">
-                            <label class="label">{{../manoever.labels.numberLimits}}:</label>
+                            <label class="label">{{manoever.labels.numberLimits}}:</label>
                             <div class="number-input-group">
-                                <label>{{../manoever.labels.min}}:</label>
+                                <label>{{manoever.labels.min}}:</label>
                                 <input
-                                    name="system.inputs.{{@index}}.min"
+                                    name="system.input.min"
                                     type="number"
-                                    value="{{this.min}}"
+                                    value="{{item.system.input.min}}"
                                     data-dtype="Number"
                                 />
                             </div>
                             <div class="number-input-group">
-                                <label>{{../manoever.labels.max}}:</label>
+                                <label>{{manoever.labels.max}}:</label>
                                 <input
-                                    name="system.inputs.{{@index}}.max"
+                                    name="system.input.max"
                                     type="number"
-                                    value="{{this.max}}"
+                                    value="{{item.system.input.max}}"
                                     data-dtype="Number"
                                 />
                             </div>

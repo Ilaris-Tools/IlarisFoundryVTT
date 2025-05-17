@@ -26,7 +26,9 @@
     "text": "Der Angriff richtet X (maximal 8) Trefferpunkte mehr an.",
     "input": {
       "label": "",
-      "field": "NUMBER"
+      "field": "NUMBER",
+      "min": 0,
+      "max": 8
     }
   },
   "effects": [],

@@ -152,3 +152,17 @@
     25% { transform: translateX(-2px); }
     75% { transform: translateX(2px); }
 }
+
+.toggle-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.toggle-display h4 {
+    margin: 0;
+}
+
+.toggle-display i {
+    font-size: 0.9em;
+}
