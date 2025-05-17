@@ -13,12 +13,8 @@
       }
     },
     "inputs": {
-      "0": {
-        "label": "",
-        "field": "CHECKBOX"
-      },
       "1": {
-        "label": "GS",
+        "label": "",
         "field": "NUMBER",
         "min": null,
         "max": null

@@ -361,8 +361,8 @@ let manoever = {
     },
     selector_type: {
         CHECKBOX: 'Checkbox',
-        NUMBER: 'Nummerinputfeld',
-        TREFFER_ZONE: 'Trefferzonendropdown',
+        NUMBER: 'Nummerneingabefeld',
+        TREFFER_ZONE: 'Trefferzonenauswahl',
     },
     modification_type: {
         DAMAGE: "Schaden",
@@ -394,8 +394,8 @@ let manoever = {
         inputsDescription: "Hier legst du fest, welche Eingabefelder im Würfeldialog für dieses Manöver angezeigt werden:",
         inputTypes: {
             checkbox: "Checkbox - Eine einfache Ja/Nein Auswahl",
-            number: "Nummerinputfeld - Ein Feld für Zahleneingaben",
-            hitZone: "Trefferzonendropdown - Auswahl einer spezifischen Trefferzone"
+            number: "Nummerneingabefeld - Ein Feld für Zahleneingaben",
+            hitZone: "Trefferzonenauswahl - Auswahl einer spezifischen Trefferzone"
         },
         inputLabel: "Inputlabel",
         inputType: "Inputtype",
@@ -416,7 +416,7 @@ let manoever = {
         targetPlaceholder: "z.B. actor.system.abgeleitete.be",
         affectedByInput: "Wird von Input beeinflusst",
         affectedByInputDescription: "Wenn aktiviert, wird der Wert mit der Eingabe multipliziert, falls ein Inputfeld vorhanden ist. Eine Checkbox wirkt sich nie auf den Wert aus.",
-        specialEffect: "Spezialeffekt beschreiben"
+        specialEffect: "Spezialeffekt beschreiben, der als Text beim Schadenswurf angezeigt wird"
     }
 };
 ILARIS.manoever = manoever;
@@ -794,6 +794,7 @@ let schadenstypen = {
     FEUER: "Feuer",
     HUMUS: "Humus",
     LUFT: "Luft",
-    WASSER: "Wasser"
+    WASSER: "Wasser",
+    DAEMONISCH: "Dämonisch",
 }
 ILARIS.schadenstypen = schadenstypen;
