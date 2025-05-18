@@ -12,6 +12,7 @@ export class VorteilePacksSettings extends FormApplication {
 
     getData(options) {
         const currentSelection = JSON.parse(game.settings.get('Ilaris', 'vorteilePacks'));
+        const manoeverSelection = JSON.parse(game.settings.get('Ilaris', 'manoeverPacks'));
         
         // Get all available packs that contain vorteile
         const availablePacks = [];
@@ -30,7 +31,9 @@ export class VorteilePacksSettings extends FormApplication {
                         availablePacks.push({
                             id: pack.collection,
                             name: pack.metadata.label,
-                            selected: currentSelection.includes(pack.collection)
+                            selected: currentSelection.includes(pack.collection),
+                            disabled: manoeverSelection.includes(pack.collection),
+                            disabledReason: manoeverSelection.includes(pack.collection) ? 'Dieses Kompendium wird bereits als Manöver-Kompendium verwendet' : ''
                         });
                     }
                 }
@@ -48,5 +51,14 @@ export class VorteilePacksSettings extends FormApplication {
             .map(([key, _]) => key);
 
         await game.settings.set('Ilaris', 'vorteilePacks', JSON.stringify(selectedPacks));
+    }
+
+    activateListeners(html) {
+        super.activateListeners(html);
+        html.find('button[name="reset"]').click(async (event) => {
+            event.preventDefault();
+            await game.settings.set('Ilaris', 'vorteilePacks', JSON.stringify(['Ilaris.vorteile']));
+            this.render(true);
+        });
     }
 } 
