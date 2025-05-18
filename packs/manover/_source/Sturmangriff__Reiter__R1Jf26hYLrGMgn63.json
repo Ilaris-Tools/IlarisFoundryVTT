@@ -13,18 +13,6 @@
         ]
       }
     },
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "CHECKBOX"
-      },
-      "1": {
-        "label": "GS",
-        "field": "NUMBER",
-        "min": null,
-        "max": null
-      }
-    },
     "modifications": {
       "0": {
         "type": "DAMAGE",
@@ -41,7 +29,11 @@
     "selectors": [
       "INPUT",
       "CHECKBOX"
-    ]
+    ],
+    "input": {
+      "label": "GS",
+      "field": "NUMBER"
+    }
   },
   "effects": [],
   "folder": null,

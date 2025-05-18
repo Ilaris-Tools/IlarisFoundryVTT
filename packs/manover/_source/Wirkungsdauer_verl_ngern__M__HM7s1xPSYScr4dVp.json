@@ -16,13 +16,9 @@
     "probe": "Zauber -4",
     "gegenprobe": "",
     "text": "Die Wirkungsdauer des Zaubers verdoppelt sich.",
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "NUMBER",
-        "min": 0,
-        "max": null
-      }
+    "input": {
+      "label": "",
+      "field": "NUMBER"
     }
   },
   "effects": [],

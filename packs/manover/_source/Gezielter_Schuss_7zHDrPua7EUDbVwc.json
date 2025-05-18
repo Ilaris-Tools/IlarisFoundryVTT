@@ -4,13 +4,16 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "voraussetzungen": [],
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "TREFFER_ZONE"
-      }
-    },
-    "modifications": {
+    "gruppe": "1",
+    "probe": "FK -2",
+    "gegenprobe": "",
+    "text": "Du bestimmst, an welcher Trefferzone (S. 33) du den Gegner triffst. Nur beim Spiel mit Trefferzonen.",
+    "input": {
+      "label": "",
+      "field": "TREFFER_ZONE"
+    }
+  },
+  "modifications": {
       "0": {
         "type": "ATTACK",
         "value": -2,
@@ -19,11 +22,6 @@
         "affectedByInput": true
       }
     },
-    "gruppe": "1",
-    "probe": "FK -2",
-    "gegenprobe": "",
-    "text": "Du bestimmst, an welcher Trefferzone (S. 33) du den Gegner triffst. Nur beim Spiel mit Trefferzonen."
-  },
   "effects": [],
   "folder": null,
   "sort": 0,

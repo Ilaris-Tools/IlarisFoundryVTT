@@ -4,14 +4,6 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "voraussetzungen": [],
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "NUMBER",
-        "min": 0,
-        "max": 8
-      }
-    },
     "modifications": {
       "0": {
         "type": "ATTACK",
@@ -31,7 +23,13 @@
     "gruppe": "0",
     "probe": "AT -X",
     "gegenprobe": "",
-    "text": "Der Angriff richtet X (maximal 8) Trefferpunkte mehr an."
+    "text": "Der Angriff richtet X (maximal 8) Trefferpunkte mehr an.",
+    "input": {
+      "label": "",
+      "field": "NUMBER",
+      "min": 0,
+      "max": 8
+    }
   },
   "effects": [],
   "folder": null,

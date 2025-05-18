@@ -12,12 +12,6 @@
         ]
       }
     },
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "CHECKBOX"
-      }
-    },
     "modifications": {
       "0": {
         "type": "ATTACK",
@@ -37,7 +31,11 @@
     "gruppe": "0",
     "probe": "AT -4",
     "gegenprobe": "KK",
-    "text": "Dein Ziel stürzt und liegt am Boden."
+    "text": "Dein Ziel stürzt und liegt am Boden.",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    }
   },
   "effects": [],
   "folder": null,

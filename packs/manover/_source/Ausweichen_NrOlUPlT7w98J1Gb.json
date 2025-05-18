@@ -4,12 +4,6 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "voraussetzungen": [],
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "CHECKBOX"
-      }
-    },
     "modifications": {
       "0": {
         "type": "DEFENCE",
@@ -22,7 +16,11 @@
     "gruppe": "4",
     "probe": "VT -2-BE",
     "gegenprobe": "",
-    "text": "Der Verteidiger entgeht dem Angriff und seinen Auswirkungen vollständig. Ausweichen ist die sinnvollste waffenlose Abwehr gegen Bewaffnete (Siehe Waffeneigenschaft Zerbrechlich auf S. 47)."
+    "text": "Der Verteidiger entgeht dem Angriff und seinen Auswirkungen vollständig. Ausweichen ist die sinnvollste waffenlose Abwehr gegen Bewaffnete (Siehe Waffeneigenschaft Zerbrechlich auf S. 47).",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    }
   },
   "effects": [],
   "folder": null,

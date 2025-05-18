@@ -12,11 +12,9 @@
         ]
       }
     },
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "CHECKBOX"
-      }
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
     },
     "modifications": {
       "0": {

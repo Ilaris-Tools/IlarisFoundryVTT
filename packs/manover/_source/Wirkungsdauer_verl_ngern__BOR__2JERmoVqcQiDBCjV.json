@@ -17,13 +17,9 @@
     "probe": "",
     "gegenprobe": "",
     "text": "",
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "NUMBER",
-        "min": null,
-        "max": null
-      }
+    "input": {
+      "label": "",
+      "field": "NUMBER"
     }
   },
   "effects": [],

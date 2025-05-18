@@ -1,12 +1,12 @@
 <form>
     <div class="form-group">
-        <label>Verfügbare Manöver Kompendien:</label>
+        <label>Verfügbare Vorteile Kompendien:</label>
         {{#each packs}}
         <div class="form-group pack-entry">
             <div class="pack-row">
-                <label class="checkbox {{#if (eq this.id 'Ilaris.manover')}}system-pack{{/if}} {{#if this.disabled}}disabled{{/if}}">
+                <label class="checkbox {{#if (eq this.id 'Ilaris.vorteile')}}system-pack{{/if}} {{#if this.disabled}}disabled{{/if}}">
                     <input type="checkbox" name="{{this.id}}" {{#if this.selected}}checked{{/if}} {{#if this.disabled}}disabled title="{{this.disabledReason}}"{{/if}}>
-                    {{#if (eq this.id 'Ilaris.manover')}}
+                    {{#if (eq this.id 'Ilaris.vorteile')}}
                         {{this.name}} von Ilaris
                     {{else}}
                         {{this.name}}

@@ -4,15 +4,16 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "voraussetzungen": [],
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "NUMBER",
-        "min": 0,
-        "max": 2
-      }
-    },
-    "modifications": {
+    "gruppe": "1",
+    "probe": "FK -4",
+    "gegenprobe": "",
+    "text": "Die Reichweite deines Fernkampfangriffes verdoppelt sich. Kann bis zu zweimal pro Angriff eingesetzt werden.",
+    "input": {
+      "label": "",
+      "field": "NUMBER"
+    }
+  },
+  "modifications": {
       "0": {
         "type": "ATTACK",
         "value": -4,
@@ -21,11 +22,6 @@
         "affectedByInput": true
       }
     },
-    "gruppe": "1",
-    "probe": "FK -4",
-    "gegenprobe": "",
-    "text": "Die Reichweite deines Fernkampfangriffes verdoppelt sich. Kann bis zu zweimal pro Angriff eingesetzt werden."
-  },
   "effects": [],
   "folder": null,
   "sort": 0,

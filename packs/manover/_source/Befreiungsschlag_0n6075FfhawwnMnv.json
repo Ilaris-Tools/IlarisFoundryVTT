@@ -12,12 +12,6 @@
         ]
       }
     },
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "CHECKBOX"
-      }
-    },
     "modifications": {
       "0": {
         "type": "ATTACK",
@@ -37,7 +31,11 @@
     "gruppe": "0",
     "probe": "AT -4",
     "gegenprobe": "",
-    "text": "Du führst eine Attacke aus, die sich (samt anderen Manövern) gegen alle Ziele in einem Winkel von 180° vor dir richtet. Jedem Ziel steht eine eigene Verteidigung zu. Voraussetzungen: Kampf im Kraftvollen Stil; kein Befreiungsschlag seit letztem Beginn einer eigenen Initiativephase"
+    "text": "Du führst eine Attacke aus, die sich (samt anderen Manövern) gegen alle Ziele in einem Winkel von 180° vor dir richtet. Jedem Ziel steht eine eigene Verteidigung zu. Voraussetzungen: Kampf im Kraftvollen Stil; kein Befreiungsschlag seit letztem Beginn einer eigenen Initiativephase",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    }
   },
   "effects": [],
   "folder": null,
