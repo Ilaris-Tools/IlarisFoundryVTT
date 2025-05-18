@@ -12,12 +12,6 @@
         ]
       }
     },
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "CHECKBOX"
-      }
-    },
     "modifications": {
       "0": {
         "type": "ATTACK",
@@ -37,7 +31,11 @@
     "gruppe": "0",
     "probe": "AT -8",
     "gegenprobe": "",
-    "text": "Der Angriff richtet zwei zusätzliche Wunden an, auch wenn der Schaden zu gering ist, um Wunden anzurichten."
+    "text": "Der Angriff richtet zwei zusätzliche Wunden an, auch wenn der Schaden zu gering ist, um Wunden anzurichten.",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    }
   },
   "effects": [],
   "folder": null,

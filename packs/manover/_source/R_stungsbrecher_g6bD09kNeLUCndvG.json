@@ -10,12 +10,6 @@
         "value": "ruestungsbrechend"
       }
     },
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "CHECKBOX"
-      }
-    },
     "modifications": {
       "0": {
         "type": "ATTACK",
@@ -35,7 +29,11 @@
     "gruppe": "0",
     "probe": "AT -4",
     "gegenprobe": "",
-    "text": "Der Angriff ignoriert die gegnerische Rüstung und richtet SP statt TP an. Voraussetzung: Waffeneigenschaft Rüstungsbrechend Anmerkung: Das Manöver lohnt sich, wenn der Gegner schwere Rüstung trägt oder du mehrere Wunden anrichten kannst."
+    "text": "Der Angriff ignoriert die gegnerische Rüstung und richtet SP statt TP an. Voraussetzung: Waffeneigenschaft Rüstungsbrechend Anmerkung: Das Manöver lohnt sich, wenn der Gegner schwere Rüstung trägt oder du mehrere Wunden anrichten kannst.",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    }
   },
   "effects": [],
   "folder": null,

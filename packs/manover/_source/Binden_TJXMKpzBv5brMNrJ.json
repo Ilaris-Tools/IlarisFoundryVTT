@@ -4,14 +4,6 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "voraussetzungen": [],
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "NUMBER",
-        "min": null,
-        "max": null
-      }
-    },
     "modifications": {
       "0": {
         "type": "DEFENCE",
@@ -24,7 +16,11 @@
     "gruppe": "4",
     "probe": "VT -X",
     "gegenprobe": "",
-    "text": "Bis zum Ende der nächsten eigenen Initiativephase sind alle Verteidigungen des Gegners um -X (maximal 8) erschwert."
+    "text": "Bis zum Ende der nächsten eigenen Initiativephase sind alle Verteidigungen des Gegners um -X (maximal 8) erschwert.",
+    "input": {
+      "label": "",
+      "field": "NUMBER"
+    }
   },
   "effects": [],
   "folder": null,

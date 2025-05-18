@@ -16,17 +16,9 @@
     "probe": "Zauber -4",
     "gegenprobe": "",
     "text": "Du ignorierst eine der bei der Tradition angeführten Bedingungen. Ignorierst du die Bedingung Sicht, musst du das Ziel auf eine andere Art und Weise wahrnehmen.",
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "CHECKBOX"
-      },
-      "1": {
-        "label": "GS",
-        "field": "NUMBER",
-        "min": null,
-        "max": null
-      }
+    "input": {
+      "label": "GS",
+      "field": "NUMBER"
     }
   },
   "effects": [],

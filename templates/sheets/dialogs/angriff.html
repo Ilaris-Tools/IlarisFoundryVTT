@@ -55,38 +55,42 @@
 <div>
     <div class="maneuver-header collapsed">
         <h3>Manöver:</h3>
-        <i class="fas fa-chevron-down"></i>
+        <div class="toggle-display">
+            <h4>Ausklappen</h4>
+            <i class="fas fa-chevron-down"></i>
+        </div>
     </div>
     <div class="maneuver-grid collapsed">
         {{#each item.manoever as |manoever|}}
-            <div class="maneuver-item {{#if (or (some manoever.inputValues "value") (some manoever.inputValues "checked"))}}has-value{{/if}}">
+            <div class="maneuver-item {{#if (or manoever.inputValue.value manoever.inputValue.checked)}}has-value{{/if}}">
                 <label>{{manoever.name}} ({{manoever.system.probe}})</label>
-                {{#each manoever.inputValues as |input|}}
-                    {{#if (ifEq input.field "CHECKBOX")}}
-                        <input
-                            type="checkbox"
-                            id="{{manoever.id}}CHECKBOX"
-                            {{#if input.value}}checked{{/if}}
-                        />
-                    {{/if}}
-                    {{#if (ifEq input.field "NUMBER")}}
-                    {{log input}}
-                        <input
-                            id="{{manoever.id}}NUMBER"
-                            type="number"
-                            name="item.manoever.{{@../index}}.inputValues.{{@index}}.value"
-                            value="{{input.value}}"
-                            data-dtype="Number"
-                            {{#unless (ifEq input.min null)}}min="{{input.min}}"{{/unless}}
-                            {{#if input.max}}max="{{input.max}}"{{/if}}
-                        />
-                    {{/if}}
-                    {{#if (ifEq input.field "TREFFER_ZONE")}}
-                        <select id="{{manoever.id}}TREFFER_ZONE" name="input.value" style="max-width: 150px">
-                            {{selectOptions ../../trefferzonen selected=input.value}}
-                        </select>
-                    {{/if}}
-                {{/each}}
+                {{#if (ifEq manoever.inputValue.field "CHECKBOX")}}
+                    <input
+                        type="checkbox"
+                        id="{{manoever.id}}CHECKBOX"
+                        {{#if manoever.inputValue.value}}checked{{/if}}
+                    />
+                {{/if}}
+                {{#if (ifEq manoever.inputValue.field "NUMBER")}}
+                    <input
+                        id="{{manoever.id}}NUMBER"
+                        type="number"
+                        name="item.manoever.{{@../index}}.inputValue.value"
+                        value="{{manoever.inputValue.value}}"
+                        data-dtype="Number"
+                        class="number-input"
+                        {{#unless (ifEq manoever.inputValue.min null)}}min="{{manoever.inputValue.min}}" data-has-min="true"{{/unless}}
+                        {{#if manoever.inputValue.max}}max="{{manoever.inputValue.max}}" data-has-max="true"{{/if}}
+                        oninput="this.classList.toggle('out-of-bounds', 
+                            (this.dataset.hasMin === 'true' && Number(this.value) < Number(this.min)) || 
+                            (this.dataset.hasMax === 'true' && Number(this.value) > Number(this.max)))"
+                    />
+                {{/if}}
+                {{#if (ifEq manoever.inputValue.field "TREFFER_ZONE")}}
+                    <select id="{{manoever.id}}TREFFER_ZONE" name="manoever.inputValue.value" style="max-width: 150px">
+                        {{selectOptions ../trefferzonen selected=manoever.inputValue.value}}
+                    </select>
+                {{/if}}
             </div>
         {{/each}}
     </div>

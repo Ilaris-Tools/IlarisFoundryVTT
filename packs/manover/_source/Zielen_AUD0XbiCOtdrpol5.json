@@ -4,13 +4,16 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "voraussetzungen": [],
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "CHECKBOX"
-      }
-    },
-    "modifications": {
+    "gruppe": "1",
+    "probe": "FK +2",
+    "gegenprobe": "",
+    "text": "Erhöht die Vorbereitungszeit um 1 Aktion. Ruhige Hand (S. 42) verdoppelt den Bonus.",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    }
+  },
+  "modifications": {
       "0": {
         "type": "ATTACK",
         "value": 2,
@@ -19,11 +22,6 @@
         "affectedByInput": true
       }
     },
-    "gruppe": "1",
-    "probe": "FK +2",
-    "gegenprobe": "",
-    "text": "Erhöht die Vorbereitungszeit um 1 Aktion. Ruhige Hand (S. 42) verdoppelt den Bonus."
-  },
   "effects": [],
   "folder": null,
   "sort": 0,

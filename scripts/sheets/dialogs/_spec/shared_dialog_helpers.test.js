@@ -6,10 +6,12 @@ describe('processModification', () => {
     const mockConfig = {
         ILARIS: {
             trefferzonen: {
-                1: 'Head',
-                2: 'Torso',
-                3: 'Arm',
-                4: 'Leg',
+                1: 'Beine',
+                2: 'Schildarm',
+                3: 'Schwertarm',
+                4: 'Bauch',
+                5: 'Brust',
+                6: 'Kopf'
             },
             schadenstypen: {
                 FEUER: 'Feuer',
@@ -146,7 +148,7 @@ describe('processModification', () => {
         const modification = { type: 'CHANGE_DAMAGE_TYPE', value: 'EIS', affectedByInput: true };
         processModification(modification, 1, 'Test Manoever', 1, rollValues, mockConfig);
 
-        expect(rollValues.text_dm).toContain('Test Manoever (Head): Schadenstyp zu Eis');
+        expect(rollValues.text_dm).toContain('Test Manoever (Beine): Schadenstyp zu Eis');
         // Should not modify any other values
         expect(rollValues.mod_dm).toBe(0);
         expect(rollValues.schaden).toBe('');
@@ -166,7 +168,7 @@ describe('processModification', () => {
         const modification = { type: 'ARMOR_BREAKING', affectedByInput: true };
         processModification(modification, 1, 'Test Manoever', 2, rollValues, mockConfig);
 
-        expect(rollValues.text_dm).toContain('Test Manoever (Torso): Ignoriert Rüstung');
+        expect(rollValues.text_dm).toContain('Test Manoever (Schildarm): Ignoriert Rüstung');
         // Should not modify any other values
         expect(rollValues.mod_dm).toBe(0);
         expect(rollValues.schaden).toBe('');
@@ -186,7 +188,7 @@ describe('processModification', () => {
         const modification = { type: 'SPECIAL_TEXT', value: 'Schild wird zerstört', affectedByInput: true };
         processModification(modification, 1, 'Test Manoever', 2, rollValues, mockConfig);
 
-        expect(rollValues.text_dm).toContain('Test Manoever (Torso): Schild wird zerstört');
+        expect(rollValues.text_dm).toContain('Test Manoever (Bauch): Schild wird zerstört');
         // Should not modify any other values
         expect(rollValues.mod_dm).toBe(0);
         expect(rollValues.schaden).toBe('');
@@ -212,10 +214,12 @@ describe('handleModifications', () => {
         global.CONFIG = {
             ILARIS: {
                 trefferzonen: {
-                    1: 'Head',
-                    2: 'Torso',
-                    3: 'Arm',
-                    4: 'Leg',
+                    1: 'Beine',
+                    2: 'Schildarm',
+                    3: 'Schwertarm',
+                    4: 'Bauch',
+                    5: 'Brust',
+                    6: 'Kopf'
                 },
             },
         };
@@ -311,7 +315,7 @@ describe('handleModifications', () => {
         const result = handleModifications(allModifications, rollValues);
         
         expect(result[6]).toBe(1); // trefferzone
-        expect(result[5]).toContain('Head'); // text_dm should include zone name
+        expect(result[5]).toContain('Kopf'); // text_dm should include zone name
     });
 
     it('should preserve modification order within same operator type', () => {
