@@ -35,31 +35,6 @@ export class AngriffDialog extends CombatDialog {
     activateListeners(html) {
         super.activateListeners(html);
         html.find(".verteidigen").click(ev => this._verteidigenKlick(html));
-        html.find(".schaden").click(ev => this._schadenKlick(html));
-        
-        // Add expand/collapse functionality
-        html.find(".maneuver-header").click(ev => {
-            const header = ev.currentTarget;
-            const grid = header.nextElementSibling;
-            const isCollapsed = header.classList.contains("collapsed");
-            const text = header.querySelector("h4");
-            
-            header.classList.toggle("collapsed");
-            grid.classList.toggle("collapsed");
-            
-            // Update text based on state
-            text.textContent = isCollapsed ? "Einklappen" : "Ausklappen";
-        });
-
-        // Update has-value class when inputs change
-        html.find(".maneuver-item input, .maneuver-item select").change(ev => {
-            const item = ev.currentTarget.closest(".maneuver-item");
-            const hasValue = Array.from(item.querySelectorAll("input, select")).some(input => {
-                if (input.type === "checkbox") return input.checked;
-                return input.value && input.value !== "0";
-            });
-            item.classList.toggle("has-value", hasValue);
-        });
     }
 
     async _angreifenKlick(html) {
@@ -139,16 +114,8 @@ export class AngriffDialog extends CombatDialog {
 
         manoever.mod.selected = html.find('#modifikator')[0]?.value || false;  // Modifikator
         manoever.rllm.selected = html.find('#rollMode')[0]?.value || false;  // RollMode
-        this.rollmode = this.item.system.manoever.rllm.selected;
 
-        this.item.manoever.forEach(manoever => {
-            if(manoever.inputValue.field == 'CHECKBOX') {
-                manoever.inputValue.value = html.find(`#${manoever.id+manoever.inputValue.field}`)[0]?.checked || false;
-            } else {
-                console.log(manoever.inputValue.name,html.find(`#${manoever.id+manoever.inputValue.field}`)[0]?.value)
-                manoever.inputValue.value = html.find(`#${manoever.id+manoever.inputValue.field}`)[0]?.value || false;
-            }
-        });
+        super.manoeverAuswaehlen(html);
     }
     
     async updateManoeverMods() {
