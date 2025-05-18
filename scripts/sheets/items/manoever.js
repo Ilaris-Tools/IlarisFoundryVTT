@@ -65,11 +65,13 @@ export class ManoeverSheet extends IlarisItemSheet {
                 vorteileItems.push(...(await pack.getDocuments()));
             }
         }
-        vorteileItems.forEach((vorteil) => {
-            if(vorteil.system.gruppe == 3 || vorteil.system.gruppe == 5 || vorteil.system.gruppe == 7) {
-                stile.push({key: vorteil._id, label: vorteil.name});
-            } else {
-                vorteile.push({key: vorteil._id, label: vorteil.name});
+        vorteileItems.forEach((item) => {
+            if(item.type === 'vorteil') {
+                if(item.system.gruppe == 3 || item.system.gruppe == 5 || item.system.gruppe == 7) {
+                    stile.push({key: item._id, label: item.name});
+                } else {
+                    vorteile.push({key: item._id, label: item.name});
+                }
             }
         });
         vorteile.sort((a, b) => (a.label > b.label ? 1 : b.label > a.label ? -1 : 0));
@@ -78,6 +80,7 @@ export class ManoeverSheet extends IlarisItemSheet {
         data.stile = stile;
         data.waffeneigenschaften = CONFIG.ILARIS.waffeneigenschaften;
         data.schadenstypen = CONFIG.ILARIS.schadenstypen;
+        console.log(data);
         return data;
     }
 

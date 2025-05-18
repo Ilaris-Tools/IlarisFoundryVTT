@@ -5,7 +5,11 @@
         <div class="form-group">
             <label class="checkbox {{#if (eq this.id 'Ilaris.vorteile')}}system-pack{{/if}}">
                 <input type="checkbox" name="{{this.id}}" {{#if this.selected}}checked{{/if}}>
-                {{this.name}} von Ilaris
+                {{#if (eq this.id 'Ilaris.vorteile')}}
+                    {{this.name}} von Ilaris
+                {{else}}
+                    {{this.name}}
+                {{/if}}
             </label>
         </div>
         {{/each}}
