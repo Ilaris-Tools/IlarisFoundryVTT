@@ -16,11 +16,9 @@
     "probe": "Zauber -4",
     "gegenprobe": "",
     "text": "Der Zauber wirkt auf mehrere Ziele in Reichweite. Die Kosten werden für jedes Ziel einzeln bezahlt, Modifikationen wie Kosten Sparen für jedes Ziel einzeln abgerechnet. Richtet sich der Zauber gegen die MR, steht jedem unfreiwilligen Ziel eine eigene MR-Probe zu, um dem Zauber zu widerstehen.",
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "CHECKBOX"
-      }
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
     }
   },
   "effects": [],

@@ -16,13 +16,9 @@
     "probe": "FK -4",
     "gegenprobe": "",
     "text": "Verkürzt die Vorbereitungszeit um die Hälfte. Eine Vorbereitungszeit von 1 Aktion wird zu 0 Aktionen. Die Aktion Konflikt ist von dieser Modifikation nicht betroffen. Kann bis zu zweimal pro FK eingesetzt werden.",
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "NUMBER",
-        "min": 0,
-        "max": 2
-      }
+    "input": {
+      "label": "",
+      "field": "NUMBER"
     }
   },
   "effects": [],

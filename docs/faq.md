@@ -1,20 +1,24 @@
 # Zu beachten
 
--   Im Kompendium "Beispielhelden" gibt es "Alrik die leere Vorlage", die schon alle typischen Fertigkeiten ausgerüstet hat. "Alrik der Bauer" ist zur Präsentation mit Werten und Ausrüstung ausgestattet.
+- Im Kompendium "Beispielhelden" gibt es "Alrik die leere Vorlage", die schon alle typischen Fertigkeiten ausgerüstet
+    hat. "Alrik der Bauer" ist zur Präsentation mit Werten und Ausrüstung ausgestattet.
 -   Rüstungen werden erst berechnet, wenn sie angelegt werden. Symbol links neben dem Namen anklicken
 -   Kampfstile werden nur für die ausgerüsteten Haupt- und Nebenwaffen berechnet
--   Es kann maximal jeweils eine Haupt- und Nebenwaffe angelegt sein. Zweihändige Waffen müssen gleichzeitig Haupt- und Nebenwaffe sein, sonst werden die Abzüge für einhändige Führung angerechnet
--   Falls (Kampf-)manöver nicht ausgewählt werden können, kontrolliert ob die Voraussetzungen erfüllt sind (Waffeneigenschaften, Waffe ausgerüstet, Kampfstil ausgewählt, Sonderfertigkeit vorhanden)
+-   Es kann maximal jeweils eine Haupt- und Nebenwaffe angelegt sein. Zweihändige Waffen müssen gleichzeitig Haupt- und
+    Nebenwaffe sein, sonst werden die Abzüge für einhändige Führung angerechnet
+-   Falls (Kampf-)manöver nicht ausgewählt werden können, kontrolliert ob die Voraussetzungen erfüllt sind
+    (Waffeneigenschaften, Waffe ausgerüstet, Kampfstil ausgewählt, Sonderfertigkeit vorhanden)
 -   Die Manöver im Kompedium schalten die Manöver nicht frei: Das passiert über die entsprechenden Vorteile  #40
 -   Manöver für Magie und Karma sind noch nicht integriert
--   Der Einsatz von Schicksalspunkten funktioniert nur, wenn Schicksalspunkte vorhanden sind. Ansonsten wird ohne Meldung eine normale 3W20 Probe geworfen
+-   Der Einsatz von Schicksalspunkten funktioniert nur, wenn Schicksalspunkte vorhanden sind. Ansonsten wird ohne
+    Meldung eine normale 3W20 Probe geworfen
 -   Astral- und Karmapunkte werden nur angezeigt, wenn die Vorteile Zauberer oder Geweiht aktiviert sind
 -   Der Zukauf von AsP und KaP kann durch einen Mausklick auf das Label AsP/KaP eingestellt werden
 -   Einzelne Boni und Mali können noch nicht verteilt werden!
 
 # Häufige Fragen
 
-**Wie kann ich meinen mit Sephrasto generierten Charakter in Foundry nutzen?**
+## Wie kann ich meinen mit Sephrasto generierten Charakter in Foundry nutzen?
 Aktiviere in den Einstellungen von Sephrasto das FoundryVTT Plugin.
 Im Heldeneditor besteht nun neben dem Speichern und Exportieren als PDF auch
 die Möglichkeit eines Exports für Foundry. Die dabei gespeicherte .json-Datei
@@ -27,7 +31,8 @@ kannst du einfach in eine Szene oder ein Kompendium in Foundry ziehen.
 
 **Warum bekomme ich Abzüge wenn ich eine Zweihandwaffe ausrüste?**
 Es kann maximal jeweils eine Haupt- und Nebenwaffe angelegt sein.
-Zweihändige Waffen müssen gleichzeitig Haupt- und Nebenwaffe sein, sonst werden die Abzüge für einhändige Führung angerechnet
+Zweihändige Waffen müssen gleichzeitig Haupt- und Nebenwaffe sein, sonst werden die Abzüge für 
+einhändige Führung angerechnet
 
 
 **Was hat es mit dem Gewicht im Inventar auf sich?**

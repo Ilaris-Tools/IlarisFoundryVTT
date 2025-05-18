@@ -16,11 +16,9 @@
     "probe": "Liturgie -4",
     "gegenprobe": "",
     "text": "Die Liturgie wirkt auf mehrere Ziele in Reichweite. Die Kosten werden für jedes Ziel einzeln bezahlt, Modifikationen wie Kosten Sparen für jedes Ziel einzeln abgerechnet.",
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "CHECKBOX"
-      }
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
     }
   },
   "effects": [],

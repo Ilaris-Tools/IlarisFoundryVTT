@@ -13,18 +13,14 @@
         ]
       }
     },
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "NUMBER",
-        "min": null,
-        "max": null
-      }
-    },
     "gruppe": "2",
     "probe": "",
     "gegenprobe": "",
-    "text": ""
+    "text": "",
+    "input": {
+      "label": "",
+      "field": "NUMBER"
+    }
   },
   "effects": [],
   "folder": null,

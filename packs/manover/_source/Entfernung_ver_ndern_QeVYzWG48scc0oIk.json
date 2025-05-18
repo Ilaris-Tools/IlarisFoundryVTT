@@ -4,12 +4,6 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "voraussetzungen": [],
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "CHECKBOX"
-      }
-    },
     "modifications": {
       "0": {
         "type": "ATTACK",
@@ -22,7 +16,11 @@
     "gruppe": "0",
     "probe": "AT -BE",
     "gegenprobe": "",
-    "text": "Du kannst dich aus dem Nahkampf lösen, ohne Passierschläge zu riskieren. Besonderheiten: Beim Spiel mit Bodenplänen erhält das Ziel in dieser Runde keine Passierschläge durch deine Bewegung."
+    "text": "Du kannst dich aus dem Nahkampf lösen, ohne Passierschläge zu riskieren. Besonderheiten: Beim Spiel mit Bodenplänen erhält das Ziel in dieser Runde keine Passierschläge durch deine Bewegung.",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    }
   },
   "effects": [],
   "folder": null,

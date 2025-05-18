@@ -8,11 +8,9 @@
     "probe": "FK +2",
     "gegenprobe": "",
     "text": "Erhöht die Vorbereitungszeit um 1 Aktion. Ruhige Hand (S. 42) verdoppelt den Bonus.",
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "CHECKBOX"
-      }
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
     }
   },
   "effects": [],

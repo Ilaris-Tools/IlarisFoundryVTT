@@ -50,12 +50,19 @@ export class AngriffDialog extends Dialog {
         html.find(".angreifen").click(ev => this._angreifenKlick(html));
         html.find(".verteidigen").click(ev => this._verteidigenKlick(html));
         html.find(".schaden").click(ev => this._schadenKlick(html));
+        
         // Add expand/collapse functionality
         html.find(".maneuver-header").click(ev => {
             const header = ev.currentTarget;
             const grid = header.nextElementSibling;
+            const isCollapsed = header.classList.contains("collapsed");
+            const text = header.querySelector("h4");
+            
             header.classList.toggle("collapsed");
             grid.classList.toggle("collapsed");
+            
+            // Update text based on state
+            text.textContent = isCollapsed ? "Einklappen" : "Ausklappen";
         });
 
         // Update has-value class when inputs change
@@ -157,14 +164,12 @@ export class AngriffDialog extends Dialog {
         this.rollmode = this.item.system.manoever.rllm.selected;
 
         this.item.manoever.forEach(manoever => {
-            manoever.inputValues.forEach(selector => {
-                if(selector.field == 'CHECKBOX') {
-                    selector.value = html.find(`#${manoever.id+selector.field}`)[0]?.checked || false;
-                } else {
-                    console.log(manoever.name,html.find(`#${manoever.id+selector.field}`)[0]?.value)
-                    selector.value = html.find(`#${manoever.id+selector.field}`)[0]?.value || false;
-                }
-            });
+            if(manoever.inputValue.field == 'CHECKBOX') {
+                manoever.inputValue.value = html.find(`#${manoever.id+manoever.inputValue.field}`)[0]?.checked || false;
+            } else {
+                console.log(manoever.inputValue.name,html.find(`#${manoever.id+manoever.inputValue.field}`)[0]?.value)
+                manoever.inputValue.value = html.find(`#${manoever.id+manoever.inputValue.field}`)[0]?.value || false;
+            }
         });
     }
     
@@ -230,17 +235,15 @@ export class AngriffDialog extends Dialog {
             let check = undefined;
             let number = undefined;
             let trefferZoneInput = undefined;
-            dynamicManoever.inputValues.forEach(selector => {
-                if(selector.value) {
-                    if(selector.field == 'CHECKBOX') {
-                        check = selector.value;
-                    } else if(selector.field == 'NUMBER') {
-                        number = selector.value;
-                    } else {
-                        trefferZoneInput = selector.value;
-                    }
+            if(dynamicManoever.inputValue.value) {
+                if(dynamicManoever.inputValue.field == 'CHECKBOX') {
+                    check = dynamicManoever.inputValue.value;
+                } else if(dynamicManoever.inputValue.field == 'NUMBER') {
+                    number = dynamicManoever.inputValue.value;
+                } else {
+                    trefferZoneInput = dynamicManoever.inputValue.value;
                 }
-            });
+            }
             if(check == undefined && (number == undefined || number == 0) && (trefferZoneInput == undefined || trefferZoneInput == 0)) return;
 
             // Add valid modifications to the collection

@@ -10,12 +10,6 @@
         "value": "stumpf"
       }
     },
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "CHECKBOX"
-      }
-    },
     "modifications": {
       "0": {
         "type": "CHANGE_DAMAGE_TYPE",
@@ -28,7 +22,11 @@
     "gruppe": "0",
     "probe": "AT",
     "gegenprobe": "",
-    "text": "Der Angriff verursacht Erschöpfung statt Wunden. Wird das Ziel kampfunfähig, erleidet es keine Blutung. Voraussetzung: Waffeneigenschaft Stumpf."
+    "text": "Der Angriff verursacht Erschöpfung statt Wunden. Wird das Ziel kampfunfähig, erleidet es keine Blutung. Voraussetzung: Waffeneigenschaft Stumpf.",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    }
   },
   "effects": [],
   "folder": null,

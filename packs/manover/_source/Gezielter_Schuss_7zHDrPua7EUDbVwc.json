@@ -8,11 +8,9 @@
     "probe": "FK -2",
     "gegenprobe": "",
     "text": "Du bestimmst, an welcher Trefferzone (S. 33) du den Gegner triffst. Nur beim Spiel mit Trefferzonen.",
-    "inputs": {
-      "0": {
-        "label": "",
-        "field": "TREFFER_ZONE"
-      }
+    "input": {
+      "label": "",
+      "field": "TREFFER_ZONE"
     }
   },
   "effects": [],
