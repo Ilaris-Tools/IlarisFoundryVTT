@@ -285,17 +285,15 @@ export class FernkampfAngriffDialog extends CombatDialog {
             let check = undefined;
             let number = undefined;
             let trefferZoneInput = undefined;
-            dynamicManoever.inputValues.forEach(selector => {
-                if(selector.value) {
-                    if(selector.field == 'CHECKBOX') {
-                        check = selector.value;
-                    } else if(selector.field == 'NUMBER') {
-                        number = selector.value;
-                    } else {
-                        trefferZoneInput = selector.value;
-                    }
+            if(dynamicManoever.inputValue.value) {
+                if(dynamicManoever.inputValue.field == 'CHECKBOX') {
+                    check = dynamicManoever.inputValue.value;
+                } else if(dynamicManoever.inputValue.field == 'NUMBER') {
+                    number = dynamicManoever.inputValue.value;
+                } else {
+                    trefferZoneInput = dynamicManoever.inputValue.value;
                 }
-            });
+            }
             if(check == undefined && (number == undefined || number == 0) && (trefferZoneInput == undefined || trefferZoneInput == 0)) return;
 
             // Add valid modifications to the collection
