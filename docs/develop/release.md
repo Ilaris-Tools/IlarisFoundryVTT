@@ -18,12 +18,15 @@ Vieles davon gilt auch schon für kleinere Fixes im main-Branch. Wenn du im PR d
 ## Packs
 Die Binaries für die Kompendien müssen in den `/packs/`-Ordnern bei Änderungen neu aus den `_source/*`-Dateien gepackt werden.
 Wir benutzen dafür das Tool [foundryvtt-cli](https://github.com/foundryvtt/foundryvtt-cli). 
-Installiert werden kann es mit dem Befehl: 
+Installiert (und konfiguriert) werden kann es mit den Befehlen: 
 ```bash
 npm install -g @foundryvtt/foundryvtt-cli
+fvtt configure set dataPath "path/to/data/folder/"
+fvtt package workon Ilaris
 ```
-Danach steht der Befehl `fvtt` zur verfügung (ansonten `npx @foundryvtt/foundryvtt-cli`) mit dem unter anderem packs gepackt und entpackt werden können.
-Um mit `fvtt` auch das richtige System zu bearbeiten, ist ggf. noch ein `fvtt set dataPath "path/to/data/folder/"` und `fvtt workon Ilaris` noetig.
+Das `-g` installiert das tool global ohne den Zusatz ist das Tool nur im jeweiligen Projekt verwendbar.
+Danach steht der Befehl `fvtt` zur Verfügung (falls nicht: `npx @foundryvtt/foundryvtt-cli`) mit dem unter anderem packs gepackt und entpackt werden können.
+
 ### Binaries Packen
 
 Wenn zB die json files von Vorteilen geändert wurden, kann das pack so neu gepackt werden: 

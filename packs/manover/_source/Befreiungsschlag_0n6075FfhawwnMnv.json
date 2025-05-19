@@ -8,8 +8,25 @@
         "name": "Vorteil Kraftvoller Kampf III",
         "type": "STILE",
         "value": [
-          "z9y0LSVFiPUFD8KX"
+          "z9y0LSVFiPUFD8KX",
+          "qH9tCjuz6XfJAMHQ"
         ]
+      }
+    },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      },
+      "1": {
+        "type": "SPECIAL_TEXT",
+        "value": "Du triffst mehrere Ziele",
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
       }
     },
     "modifications": {
@@ -47,7 +64,7 @@
     "systemId": "Ilaris",
     "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1747081332280,
+    "modifiedTime": 1746955064527,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
