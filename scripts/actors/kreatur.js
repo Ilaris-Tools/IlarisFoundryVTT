@@ -56,4 +56,15 @@ export class KreaturActor extends IlarisActor {
         }
     }
 
+    _hasKampfstilSelected(stilRequirements) {
+        return this.vorteil.kampfstil.some((vorteil) => {
+            return stilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
+        }) || this.vorteil.geweihtentradition.some((vorteil) => {
+            return stilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
+        }) || this.vorteil.zaubertraditionen.some((vorteil) => {
+            return stilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
+        });
+        // zauber traditionen und liturgien werden noch wie Vorteile behandelt, da noch nicht implementiert wurde einen Stil dort zu wählen, obwohl nach Regeln sowas nötig ist
+    }
+
 }
