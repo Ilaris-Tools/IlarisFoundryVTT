@@ -4,10 +4,30 @@
   "img": "icons/svg/item-bag.svg",
   "system": {
     "voraussetzungen": [],
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": -2,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      },
+      "1": {
+        "type": "SPECIAL_TEXT",
+        "value": "Trefferzone gewählt",
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
     "gruppe": "0",
     "probe": "AT -2",
     "gegenprobe": "",
-    "text": "Du bestimmst, an welcher Trefferzone (S. 33) du den Gegner triffst. Nur beim Spiel mit Trefferzonen."
+    "text": "Du bestimmst, an welcher Trefferzone (S. 33) du den Gegner triffst. Nur beim Spiel mit Trefferzonen.",
+    "input": {
+      "label": "",
+      "field": "TREFFER_ZONE"
+    }
   },
   "effects": [],
   "folder": null,
@@ -17,10 +37,10 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "0.3.20",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1745304681474,
-    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "modifiedTime": 1746944135146,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
   },

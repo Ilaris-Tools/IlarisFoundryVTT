@@ -231,10 +231,10 @@ input.titel-input {
   display: flex !important;
 }
 
-.manoever-voraussetzungen {
+.manoever-einstellungen {
   margin-top: 8px;
   margin-bottom: 8px;
-  .voraussetzung {
+  .field {
     margin: 8px 16px 0 16px;
     .row {
       margin-bottom: 8px
@@ -245,3 +245,69 @@ input.titel-input {
     }
   }
 }
+
+.flexrow {
+  margin: 4px 0;
+  align-items: center;
+}
+
+.flexrow .label {
+  min-width: 150px;
+}
+
+input[type="text"]:focus, 
+input[type="number"]:focus, 
+select:focus, 
+textarea:focus {
+    border-color: #782e22;
+    box-shadow: 0 0 3px rgba(120, 46, 34, 0.3);
+}
+
+hr {
+  margin: 16px 0;
+  border: 0;
+  border-top: 1px solid #353535;
+} 
+
+.system-pack {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #782e22;  /* Using the same red color as in manoever.css */
+}
+
+.system-pack input[type="checkbox"] {
+  transform: scale(1.2);  /* Make the checkbox slightly bigger too */
+  margin-right: 10px;  /* Add some space after the bigger checkbox */
+}
+
+.pack-entry {
+    margin-bottom: 4px;
+}
+
+.pack-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.checkbox.disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.checkbox.disabled input[type="checkbox"] {
+    cursor: not-allowed;
+}
+
+.disabled-reason {
+    font-style: italic;
+    color: #782e22;
+    font-size: 0.9em;
+} 

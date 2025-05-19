@@ -16,7 +16,11 @@
     "gruppe": "2",
     "probe": "",
     "gegenprobe": "",
-    "text": ""
+    "text": "",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    }
   },
   "effects": [],
   "folder": null,
@@ -31,10 +35,10 @@
     "duplicateSource": null,
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "0.3.20",
+    "systemVersion": "12.0.1",
     "createdTime": 1745305026339,
-    "modifiedTime": 1745305042234,
-    "lastModifiedBy": "oz3U1cHybCRHlQTJ"
+    "modifiedTime": 1746367384196,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC"
   },
   "_key": "!items!W6dea1atCL8UAupT"
 }
