@@ -1,0 +1,41 @@
+{
+  "name": "Seelenfeuer",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Kraft, Ringrituale",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Kalt leuchtendes Licht schießt in einem Radius von 4 Schritt aus dem Boden. Es erstarrt in der von dir gewünschten Form und verbrennt alle Humanoiden, die es berühren, mit 2W6 SP pro Initiativephase.",
+    "maechtig": "Erhöht den Schaden um +4 SP und den Radius um 2 Schritt.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "1 Aktion",
+    "ziel": "Zone",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "4 Initiativphasen",
+    "kosten": "16 AsP",
+    "erlernen": "Geo 16",
+    "pw": 0,
+    "gruppe": 13
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "QkRPoYl037LeA7Pi",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!QkRPoYl037LeA7Pi"
+}

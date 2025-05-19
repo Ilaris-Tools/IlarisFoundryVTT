@@ -1,0 +1,29 @@
+{
+  "name": "Semipermanenz",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut FF 8",
+    "gruppe": 4,
+    "text": "Du kannst semipermanente Artefakte erschaffen (S. 78)."
+  },
+  "_id": "myPhEA1DBJ7EbfT2",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!myPhEA1DBJ7EbfT2"
+}

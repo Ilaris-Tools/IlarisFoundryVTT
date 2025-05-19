@@ -17,7 +17,6 @@ function preloadHandlebarsTemplates() {
         'systems/Ilaris/templates/helper/select_attribut.html',
         'systems/Ilaris/templates/helper/select_fertigkeitsgruppe.html',
         'systems/Ilaris/templates/helper/select_vorteilsgruppe.html',
-        'systems/Ilaris/templates/helper/select_manoever.html',
         'systems/Ilaris/templates/helper/select_trefferzone.html',
         'systems/Ilaris/templates/chat/dreid20.html',
         'systems/Ilaris/templates/chat/probendiag_profan.html',
@@ -32,6 +31,13 @@ function registerHandlebarsHelpers() {
     Handlebars.registerHelper('AttributeFertigkeit', function (attrArray) {
         const fertAttr = attrArray[0].concat('/', attrArray[1], '/', attrArray[2]);
         return fertAttr;
+    });
+
+    Handlebars.registerHelper('some', function(array, prop) {
+        return array.some(item => {
+            if (prop === 'checked') return item.value;
+            return item.value && item.value !== '0';
+        });
     });
 
     Handlebars.registerHelper('AttributeFertigkeit_from_data', function (attrArray) {
@@ -100,7 +106,7 @@ function registerHandlebarsHelpers() {
 
     Handlebars.registerHelper('translate_formula', function (formula) {
         if (formula) {
-            return formula.replace("W", "d");
+            return formula.replace(/[Ww]/g, "d");
         }
         return null;
     });

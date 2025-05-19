@@ -1,0 +1,41 @@
+{
+  "name": "Großer Geisterbann",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Antimagie, Geister vertreiben",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Hiermit bannst du beschworene Wesenheiten, in die keine gAsP geflossen sind (wie nicht gebundene Elementare und Dämonen).",
+    "maechtig": "",
+    "schwierigkeit": "Beschwörungsschwierigkeit des zu bannenden Wesens",
+    "modifikationen": "Geisterkerker (+4; das Wesen wird nicht verbannt, sondern permanent in ein Gefäß gesperrt. Wird das Gefäß geöffnet oder zerstört, ist das Wesen frei und meist sehr wütend auf den Schamanen und/oder den Befreier.)\nGebundene Geister (Entspricht dem allgemeinen Zauber Destructibo (S. 126))\nGeister vertreiben (Entspricht dem allgemeinen Zauber Geister austreiben (S. 127))",
+    "vorbereitung": "8 Aktionen",
+    "ziel": "Beschworenes Wesen",
+    "reichweite": "4 Schritt",
+    "wirkungsdauer": "augenblicklich",
+    "kosten": "halbe Basiskosten der Beschwörung",
+    "erlernen": "Smn 16",
+    "pw": 0,
+    "gruppe": 8
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "uZAlWr19crb42gau",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!uZAlWr19crb42gau"
+}

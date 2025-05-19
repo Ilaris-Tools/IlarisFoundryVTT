@@ -1,0 +1,41 @@
+{
+  "name": "Desintegratus Pulverstaub",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Verwandlung",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Von deiner Hand geht 8 Schritt weit eine kegelförmige (15°) Welle astraler Kraft aus, die Gegenstände beschädigt. Der Kegel ist am Ende 2 Schritt breit. Der Schaden reicht aus, um alle Gegenstände bis zur Stabilität einer stabilen Holztür zu zerstören. Lebewesen, magische und geweihte Gegenstände sind gegen den Zauber immun und schützen andere Gegenstände hinter ihnen.",
+    "maechtig": "Gegenstände bis zu einer Metallwaffe/Rüstung/dicke Stahlstangen/Hauswand werden zerstört.",
+    "schwierigkeit": "12",
+    "modifikationen": "Hand der Vernichtung (–4, Einzelobjekt, 4 AsP; nur ein maximal apfelgroßer Gegenstand ist betroffen.)",
+    "vorbereitung": "2 Aktionen",
+    "ziel": "Zone",
+    "reichweite": "8 Schritt",
+    "wirkungsdauer": "augenblicklich",
+    "kosten": "16 AsP",
+    "erlernen": "Mag 18; Alch 20",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "jIaqVDsgqgw38EoT",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!jIaqVDsgqgw38EoT"
+}

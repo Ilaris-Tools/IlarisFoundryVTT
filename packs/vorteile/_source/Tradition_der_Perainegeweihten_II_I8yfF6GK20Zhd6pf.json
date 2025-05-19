@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Perainegeweihten II",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut CH 6, Vorteil Tradition der Perainegeweihten I",
+    "gruppe": 7,
+    "text": "Perainegeweihte sind oft das Herz der Gemeinschaft. Wird eine Liturgie mit der Modifikation Mehrere Ziele gesprochen, ist sie zusätzlich um +2 erleichtert."
+  },
+  "_id": "I8yfF6GK20Zhd6pf",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!I8yfF6GK20Zhd6pf"
+}

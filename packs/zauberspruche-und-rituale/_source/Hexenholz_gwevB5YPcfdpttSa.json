@@ -1,0 +1,41 @@
+{
+  "name": "Hexenholz",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Umwelt",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du kannst einen Gegenstand mit einer KK von 2 anheben und mit maximal 4 Schritt pro Initiativephase durch die Luft fliegen lassen. Besonders komplizierte und feine Bewegungen sind um bis zu 8 Punkte erschwert. Erfordert Konzentration.",
+    "maechtig": "Erhöht KK und die Schritte pro Initiativephase um +2.",
+    "schwierigkeit": "12",
+    "modifikationen": "Unsichtbarer Hieb (Wirkungsdauer augenblicklich, 4 AsP; der Zauber fügt einem Objekt 2W6 SP zu. Mächtige Magie erhöht den Schaden um +4.)\nMagische Abwehr (–4, wird in einer Reaktion gewirkt, Wirkungsdauer augenblicklich, 4 AsP; die Zauberprobe gilt als VT gegen einen Nahkampfangriff in Reichweite.)\nFesselfeld (–8, 32 AsP; in einer Zone von 4 Schritt Radius wird die Bewegung jedes unbelebten Objekts mit einer KK von 2 behindert, was Kampfhandlungen mit Waffen fast unmöglich macht.)",
+    "vorbereitung": "1 Aktion",
+    "ziel": "Einzelobjekt",
+    "reichweite": "8 Schritt",
+    "wirkungsdauer": "4 Minuten",
+    "kosten": "4 AsP",
+    "erlernen": "Hex 8",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "gwevB5YPcfdpttSa",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!gwevB5YPcfdpttSa"
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Phexgeweihten II",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut IN 6, Vorteil Tradition der Phexgeweihten I",
+    "gruppe": 7,
+    "text": "Phexgeweihte vertrauen auf ihr Können, aber manchmal auch auf ihr Glück. Statt mit 3W20 kannst du Proben beim Wirken von Liturgien auch mit 1W20 ablegen. Dadurch verbessern sich deine Chancen bei besonders gewagten Liturgien."
+  },
+  "_id": "GT77p7TArRHYCCj1",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!GT77p7TArRHYCCj1"
+}

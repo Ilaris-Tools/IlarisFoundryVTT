@@ -1,0 +1,29 @@
+{
+  "name": "Alchemistische Analyse",
+  "type": "talent",
+  "img": "systems/Ilaris/assets/images/skills/profan-talent.svg",
+  "system": {
+    "text": "Mit einer alchemistischen Analyse kannst du feststellen, ob eine verstaubte Phiole einen Heiltrank oder ein tödliches Gift enthält und ob es sich bei dem schwarzen Erz tatsächlich um Endurium handelt.",
+    "fertigkeit": "Alchemie"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "YFOITszS3GDmZi20",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!YFOITszS3GDmZi20"
+}

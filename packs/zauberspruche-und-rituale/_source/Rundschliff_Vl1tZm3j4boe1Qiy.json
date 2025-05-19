@@ -1,0 +1,41 @@
+{
+  "name": "Rundschliff",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Erz, Kristallmagie, Kraft",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du versiehst einen gebundenen Kristall mit einem Rundschliff. Wann immer du mit Hilfe dieses Kristalls einen Zauber wirkst, kannst du die spontane Modifikation Mehrere Ziele ohne Erschwernis ausführen. Nicht mit anderen Schliffen kombinierbar.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "4 Stunden",
+    "ziel": "gebundener Kristall",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "bis die Bindung gelöst wird",
+    "kosten": "8 AsP, davon 2 gAsP",
+    "erlernen": "Ach 14",
+    "pw": 0,
+    "gruppe": 11
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "Vl1tZm3j4boe1Qiy",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!Vl1tZm3j4boe1Qiy"
+}

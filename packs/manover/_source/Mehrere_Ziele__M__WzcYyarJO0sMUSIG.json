@@ -1,0 +1,44 @@
+{
+  "name": "Mehrere Ziele (M)",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": {
+      "0": {
+        "name": "Vorteil Zauberer I",
+        "type": "VORTEIL",
+        "value": [
+          "ClPMi6Au35vgyndN"
+        ]
+      }
+    },
+    "gruppe": "2",
+    "probe": "Zauber -4",
+    "gegenprobe": "",
+    "text": "Der Zauber wirkt auf mehrere Ziele in Reichweite. Die Kosten werden für jedes Ziel einzeln bezahlt, Modifikationen wie Kosten Sparen für jedes Ziel einzeln abgerechnet. Richtet sich der Zauber gegen die MR, steht jedem unfreiwilligen Ziel eine eigene MR-Probe zu, um dem Zauber zu widerstehen.",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "WzcYyarJO0sMUSIG",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "12.0.1",
+    "createdTime": null,
+    "modifiedTime": 1746367390613,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!WzcYyarJO0sMUSIG"
+}

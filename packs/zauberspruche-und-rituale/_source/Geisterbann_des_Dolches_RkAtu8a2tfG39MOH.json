@@ -1,0 +1,41 @@
+{
+  "name": "Geisterbann des Dolches",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Antimagie, Dolchzauber, Verständigung",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du ziehst mit deinem Ritualgegenstand einen Kreis von maximal 8 Schritt Radius. Geister können diese Linie nicht übertreten.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "4 Aktionen",
+    "ziel": "Zone",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Stunde",
+    "kosten": "4 AsP",
+    "erlernen": "Dru 16",
+    "pw": 0,
+    "gruppe": 1
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "RkAtu8a2tfG39MOH",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!RkAtu8a2tfG39MOH"
+}

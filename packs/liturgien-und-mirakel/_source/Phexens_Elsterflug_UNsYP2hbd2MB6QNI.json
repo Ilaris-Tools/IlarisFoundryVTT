@@ -1,0 +1,41 @@
+{
+  "name": "Phexens Elsterflug",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Nächtlicher Schatten",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Das mit dieser Liturgie belegte Objekt von maximal 0,5 Stein Gewicht wird an Phexens Sternenhimmel entrückt. Es kehrt nach spätestens einem Jahr als Sternschnuppe zurück oder verbleibt am Sternenhimmel.",
+    "maechtig": "Verdoppelt das maximale Gewicht.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "4 Aktionen",
+    "ziel": "Einzelobjekt",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "bis zu 1 Jahr",
+    "kosten": "8 KaP",
+    "erlernen": "Phe 14",
+    "pw": 0,
+    "gruppe": 39
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "UNsYP2hbd2MB6QNI",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!UNsYP2hbd2MB6QNI"
+}

@@ -1,0 +1,36 @@
+{
+  "name": "Sichere Heimkehr",
+  "type": "uebernatuerliche_fertigkeit",
+  "img": "systems/Ilaris/assets/images/skills/karmal-skill.svg",
+  "system": {
+    "basis": 0,
+    "fw": 0,
+    "pw": 0,
+    "attribut_0": "CH",
+    "attribut_1": "KO",
+    "attribut_2": "MU",
+    "gruppe": 1,
+    "text": "Manche Geweihte der Travia begeben sich als Wildgänse selbst auf Wanderschaft, um auch den Heimatlosen die Vorzüge eines geregelten Lebens nahe zu bringen. Auch Thorwaler Traviageweihte segnen Reisende auf der großen Fahrt, sodass sie wohlbehalten zurückkehren mögen.",
+    "voraussetzung": "Vorteil Tradition der Traviageweihten I"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "8LkS5j71tYhGyRZs",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!8LkS5j71tYhGyRZs"
+}

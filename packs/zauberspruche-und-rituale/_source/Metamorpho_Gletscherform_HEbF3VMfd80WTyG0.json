@@ -1,0 +1,41 @@
+{
+  "name": "Metamorpho Gletscherform",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Eis, Verwandlung",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du formst Eis mit bloßen Händen in die wundersamsten Formen. Die Kosten, Zauberdauer und Modifikationen Mächtige Magie sind Meisterentscheid. Beispiele:\n4 AsP, 1x Mächtige Magie, 4 Aktionen: Du formst einen Eiszapfen um zu einer einfachen Waffe aus Eis (identische Werte, aber zerbrechlich).\n8 AsP, keine Mächtige Magie, eine halbe Stunde: Ein Eisblock wird zu einem Iglu.\n16 AsP, 2x Mächtige Magie, 1 Stunde: Du ziehst eine einfache Brücke über eine Eisspalte.\n128+ AsP, 4x Mächtige Magie, 1 Woche: Du errichtest einen Eispalast, wie ihn die Firnelfen bewohnen.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "Schnee (–4; du kannst auch mit Schnee arbeiten, der dabei zu Eis wird.)\nWasser (–8; du kannst auch mit Wasser arbeiten, das dabei gefriert.)\nPermanenz (–4, ein Viertel der Basiskosten als gAsP; das so geformte Eis schmilzt auch bei hohen Temperaturen nicht mehr.)",
+    "vorbereitung": "nach Vorhaben",
+    "ziel": "Einzelobjekt",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "bis die Bindung gelöst wird",
+    "kosten": "nach Vorhaben",
+    "erlernen": "Elf 16; Dru, Mag 20",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "HEbF3VMfd80WTyG0",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!HEbF3VMfd80WTyG0"
+}

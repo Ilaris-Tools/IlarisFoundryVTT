@@ -1,0 +1,41 @@
+{
+  "name": "Menetekel Flammenschrift",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Illusion",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du lässt bis zu 64 Schriftzeichen mit einer Länge von bis zu 8 Schritt Gesamtgröße erscheinen. Die Zeichen sehen wie Flammenlinien, verschmiertes Blut oder astrales Glühen oder Ähnliches aus und sind eine Illusion (Sicht).",
+    "maechtig": "Die Zahl der Schriftzeichen und deren maximale Größe verdoppelt sich.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "8 Aktionen",
+    "ziel": "Zone",
+    "reichweite": "32 Schritt",
+    "wirkungsdauer": "1 Stunde",
+    "kosten": "4 AsP",
+    "erlernen": "Mag, Srl 14",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "6nML3Ewk8mAQ24GU",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!6nML3Ewk8mAQ24GU"
+}

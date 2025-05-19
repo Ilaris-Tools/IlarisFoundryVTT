@@ -1,0 +1,29 @@
+{
+  "name": "Angepasst I",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "",
+    "gruppe": 0,
+    "text": "Durch deine Spezies oder langjährige Erfahrung hast du dich an eine bestimmte Umgebung oder Umweltbedingung gewöhnt. Abzüge durch diese Umgebung (Beispiele auf S. 38), insbesondere im Kampf, sinken für dich um 1 Stufe.\n\nDie Kosten für Angepasst I legt der Spielleiter fest, wobei er sich an der Häufigkeit der Umgebung orientieren sollte. Zu allgemein gefasste Umgebungen wie „unsicherer Untergrund“ sollte er nicht zulassen.\n\n"
+  },
+  "_id": "GwD28RvMC0gdPfAB",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!GwD28RvMC0gdPfAB"
+}

@@ -86,6 +86,7 @@ class Exporter:
             "data": {
                 "dice_anzahl": int(item["@W6"]),
                 "dice_plus": int(item["@plus"]),
+                "tp": item['tp'],
                 "haerte": int(item["@haerte"]),
                 "fertigkeit": item["@fertigkeit"],
                 "talent": item["@talent"],
@@ -134,6 +135,7 @@ class Exporter:
             "data": {
                 "dice_anzahl": int(item["@W6"]),
                 "dice_plus": int(item["@plus"]),
+                "tp": item['tp'],
                 "haerte": int(item["@haerte"]),
                 "fertigkeit": item["@fertigkeit"],
                 "talent": item["@talent"],

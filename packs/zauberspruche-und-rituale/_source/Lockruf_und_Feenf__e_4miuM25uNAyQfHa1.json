@@ -1,0 +1,41 @@
+{
+  "name": "Lockruf und Feenfüße",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Illusion, Umwelt",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Einem kleinen, maximal 1 Stein schweren Objekt wachsen Feenfüße und es läuft zu dir. Die Feenfüße sind eine Illusion (Sicht).",
+    "maechtig": "Verdoppelt das Gewicht.",
+    "schwierigkeit": "12",
+    "modifikationen": "Da lang! (–4; du kannst ein anderes Ziel als dich selbst angeben.)\nErbsenparade (–4; der Zauber betrifft eine Gruppe von Gegenständen, die zusammen nicht mehr wiegen als das Maximalgewicht.)\nFeenflügel (–8; das Objekt fliegt zu dir.)",
+    "vorbereitung": "0 Aktionen",
+    "ziel": "Einzelobjekt",
+    "reichweite": "8 Schritt",
+    "wirkungsdauer": "augenblicklich",
+    "kosten": "4 AsP",
+    "erlernen": "Sch 12",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "4miuM25uNAyQfHa1",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!4miuM25uNAyQfHa1"
+}

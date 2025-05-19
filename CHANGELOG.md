@@ -1,7 +1,18 @@
 # Changelog
 
-## v12.0.0: 
-Update auf Foundry12
+## v12
+### v12.1
+- packs werden als source files getrackt
+- TODO
+### v12.0
+#### v12.0.1
+- Fix #44: Fehlermeldung im Talentsheet
+- Fix #45: Uebernatuerliche Fertigkeiten bearbeiten
+#### v12.0.0
+- FoundryVTT v12 Unterstuetzung
+- Projektumzug auf GitHub (neue URL zum Installieren)
+- Neue Versionierung: Die erste Stelle ist die neuste unterstuetzten Foundry Version
+
 
 ## v0.0.20: 
 Vorteile auf Kreaturensheet ziehen gefixt.

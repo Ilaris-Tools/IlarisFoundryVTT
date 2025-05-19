@@ -1,0 +1,41 @@
+{
+  "name": "Claudibus Clavistibor",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Verwandlung",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du verriegelst und stärkst eine Tür. Sie kann nicht normal geöffnet werden und Versuche, das Schloss zu öffnen, sind um –4 erschwert. Die Härte der Tür steigt um 8 Punkte.",
+    "maechtig": "Der Malus steigt um –2, die Härte um +4.",
+    "schwierigkeit": "12",
+    "modifikationen": "Permanenz (–4, Wirkungsdauer bis die Bindung gelöst wird, 8 AsP, davon 2 gAsP)\nAktive Versiegelung (–4; der Zauber endet nicht, wenn die Tür auf- und zugeschlossen wird.)\nSchlüsselmeister (–4; du kannst bis zu 8 Personen oder Schlüssel nennen, für die der Zauber nicht wirkt.)\nDie Priesterkaiser kommen! (–8, 8 AsP; der Zauber betrifft alle Türen, die du in den nächsten 16 Initiativphasen berührst.)",
+    "vorbereitung": "1 Aktion",
+    "ziel": "Einzelobjekt",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Stunde",
+    "kosten": "4 AsP",
+    "erlernen": "Mag 12; Hex, Srl 14; Alch 16; Dru, Elf, Sch 20",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "5RHZ56cFeNm7uu2j",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!5RHZ56cFeNm7uu2j"
+}

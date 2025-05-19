@@ -1,0 +1,50 @@
+{
+  "name": "Zeremonie (L)",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": {
+      "0": {
+        "name": "Vorteil Tradition der Borongeweihten III ODER Vorteil Tradition der Hesindegeweihten III ODER Vorteil Tradition der Ifirngeweihten III ODER Vorteil Tradition der Perainegeweihten III ODER Vorteil Tradition der Praiosgeweihten III ODER Vorteil Tradition der Traviageweihten III ODER Vorteil Tradition der Tsageweihten III",
+        "type": "STILE",
+        "value": [
+          "vjpZYQmlvxQZpGCI",
+          "C9zOmpJXaGhzvr9O",
+          "Fmakq6ThAOKbkiUj",
+          "BxmVvmo4roCYqhqD",
+          "946kZsaTjD8cy95Z",
+          "dsTlsXoOynr3G4pH",
+          "sJXI6rZO9abcYXai"
+        ]
+      }
+    },
+    "gruppe": "3",
+    "probe": "Liturgie +X",
+    "gegenprobe": "",
+    "text": "Du kannst die Vorbereitungszeit freiwillig um 1 Minute/Stunde/Tag/Woche/Monat/Jahr erhöhen, wodurch die Liturgie um +4/6/8/10/12/14 erleichtert ist. Die Vorbereitungszeit muss dadurch mindestens verdoppelt werden. Voraussetzung: Tradition der Boron-, Hesinde-, Ifirn-, Peraine-, Praios-, Travia- oder Tsageweihten (jeweils) III und Verwendung dieser Tradition",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "HJzIOZY17XkaT3tY",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "12.0.1",
+    "createdTime": null,
+    "modifiedTime": 1746367861129,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!HJzIOZY17XkaT3tY"
+}

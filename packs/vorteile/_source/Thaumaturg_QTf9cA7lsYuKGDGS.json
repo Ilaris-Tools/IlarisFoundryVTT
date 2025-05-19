@@ -1,0 +1,29 @@
+{
+  "name": "Thaumaturg",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut FF 10",
+    "gruppe": 4,
+    "text": "Artefakte kosten nur die halben gAsP. Außerdem können Thaumaturgen weitere Vorteile zur Artefaktherstellung nutzen: Mit Kraftlinienmagie kannst du ortsgebundene Artefakte erschaffen, ohne gAsP aufzuwenden. Mit Meister der Wünsche/Meister der Seelenlosen kannst du Elementare/Dämonen in Artefakte binden. Beim Auslösen solcher Artefakte ist keine Beherrschungsprobe nötig, solange diese nicht schwieriger wäre als die vom Erschaffer abgelegte Beherrschungsprobe (z.B. durch einen schwierigeren Dienst). "
+  },
+  "_id": "QTf9cA7lsYuKGDGS",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!QTf9cA7lsYuKGDGS"
+}

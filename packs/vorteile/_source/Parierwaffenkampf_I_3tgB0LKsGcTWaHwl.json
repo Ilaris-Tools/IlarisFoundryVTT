@@ -1,0 +1,29 @@
+{
+  "name": "Parierwaffenkampf I",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut GE 4",
+    "gruppe": 3,
+    "text": "Bedingungen: Parierwaffe, nicht beritten.\n\nDu kannst gegen humanoide Gegner –1 Erschwernis aus Manövern ignorieren."
+  },
+  "_id": "3tgB0LKsGcTWaHwl",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!3tgB0LKsGcTWaHwl"
+}

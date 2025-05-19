@@ -1,0 +1,29 @@
+{
+  "name": "Liebling der Gottheit",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut KL 10, Vorteil Geweiht I",
+    "gruppe": 6,
+    "text": "Zeigt der gewertete Würfel bei einer Liturgie eine 16 oder höher, kostet diese keine KaP und erhält eine zusätzliche Stufe Mächtige Liturgie."
+  },
+  "_id": "rC0cXe2oVUaUwWf5",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!rC0cXe2oVUaUwWf5"
+}
