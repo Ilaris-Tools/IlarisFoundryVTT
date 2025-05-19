@@ -1131,7 +1131,7 @@
   ],
   "effects": [],
   "folder": null,
-  "sort": 0,
+  "sort": 1800000,
   "flags": {
     "core": {
       "sourceId": "Actor.Vb8ON8tmyNTGlMuw"
@@ -1143,8 +1143,8 @@
     "systemId": null,
     "systemVersion": null,
     "createdTime": null,
-    "modifiedTime": null,
-    "lastModifiedBy": null,
+    "modifiedTime": 1747089889172,
+    "lastModifiedBy": "oa0cULjciXK52aoL",
     "compendiumSource": null,
     "duplicateSource": null
   },
