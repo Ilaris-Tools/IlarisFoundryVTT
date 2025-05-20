@@ -8,8 +8,7 @@
         "name": "Vorteil Schildkampf III",
         "type": "STILE",
         "value": [
-          "VPQmyQJnYwSumAzG",
-          "X5Gyc7qN9mltgbZ5"
+          "VPQmyQJnYwSumAzG"
         ]
       }
     },
@@ -41,7 +40,7 @@
     "systemId": "Ilaris",
     "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746955104089,
+    "modifiedTime": 1747081356635,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

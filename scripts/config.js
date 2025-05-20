@@ -92,7 +92,7 @@ let label = {
     zweihaendig: 'Zweihändig',
     erschoepfung: 'Erschöpfung',
     // Kampfstile
-    ohne: 'Kein Kampfstil',
+    ohne: 'Kein Stil',
     bhk: 'Beidhändiger Kampf',
     kvk: 'Kraftvoller Kampf',
     pwk: 'Parierwaffenkampf',
@@ -798,3 +798,16 @@ let schadenstypen = {
     DAEMONISCH: "Dämonisch",
 }
 ILARIS.schadenstypen = schadenstypen;
+
+let combat_dialog = {
+    labels: {
+        angriffNah: "Nahkampfangriff",
+        nahkampfwaffe: "Nahkampfangriff",
+        angriffFern: "Fernkampfangriff",
+        fernkampfwaffe: "Fernkampfangriff",
+        magie: "Magie",
+        liturgie: "Liturgie",
+        anrufung: "Anrufung"
+    }
+};
+ILARIS.combat_dialog = combat_dialog;
