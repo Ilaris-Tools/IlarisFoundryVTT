@@ -22,6 +22,15 @@
         "affectedByInput": true
       }
     },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
     "gruppe": "0",
     "probe": "2 x AT -4",
     "gegenprobe": "",

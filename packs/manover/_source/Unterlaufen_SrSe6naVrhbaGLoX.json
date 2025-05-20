@@ -8,8 +8,7 @@
         "name": "Vorteil Schneller Kampf III",
         "type": "STILE",
         "value": [
-          "ARB91fHPkKPOahOE",
-          "xrciE4bjoz0K038q"
+          "ARB91fHPkKPOahOE"
         ]
       }
     },
@@ -41,7 +40,7 @@
     "systemId": "Ilaris",
     "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746953983855,
+    "modifiedTime": 1747080326558,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
