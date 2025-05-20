@@ -178,13 +178,15 @@ export function getKampfstile(actor) {
         // Collect all compendium sources for this kampfstil group
         const sources = stile.map(stil => stil._stats.compendiumSource);
         
-        // Add to kampfstile object using the key as property name
-        kampfstile[highestStil._stats.compendiumSource] = {
-            name: highestStil.name.replace(/ [IV]+.*$/, ''),
-            key: highestStil._stats.compendiumSource,
-            stufe: getKampfstilStufe(highestStil.name),
-            sources: sources
-        };
+        // Only add if all sources are non-null and highestStil has a compendium source
+        if(sources.every(source => source !== null)) {
+            kampfstile[highestStil._stats.compendiumSource] = {
+                name: highestStil.name.replace(/ [IV]+.*$/, ''),
+                key: highestStil._stats.compendiumSource,
+                stufe: getKampfstilStufe(highestStil.name),
+                sources: sources
+            };
+        }
     });
     
     return kampfstile;
@@ -565,13 +567,15 @@ export function getUebernatuerlicheStile(actor) {
         const sources = traditions.map(tradition => tradition._stats.compendiumSource);
         
         // Add to stile object using the key as property name
-        stile[highestTradition._stats.compendiumSource] = {
-            name: highestTradition.name.replace(/ [IV]+.*$/, ''),
-            key: highestTradition._stats.compendiumSource,
-            stufe: getKampfstilStufe(highestTradition.name),
-            sources: sources,
-            type: highestTradition.type
-        };
+        if(sources.every(source => source !== null)) {
+            stile[highestTradition._stats.compendiumSource] = {
+                name: highestTradition.name.replace(/ [IV]+.*$/, ''),
+                key: highestTradition._stats.compendiumSource,
+                stufe: getKampfstilStufe(highestTradition.name),
+                sources: sources,
+                type: highestTradition.type
+            };
+        }
     });
     
     return stile;
