@@ -1,5 +1,25 @@
 import {signed} from '../../common/wuerfel/chatutilities.js'
 /**
+ * Applies the specified operator to the current value
+ * @param {number} currentValue - The current value to modify
+ * @param {number} value - The value to apply
+ * @param {string} operator - The operator to use (DIVIDE, MULTIPLY, ADD, SUBTRACT)
+ * @returns {number} The result of the operation
+ */
+export function applyOperator(currentValue, value, operator) {
+    switch(operator) {
+        case 'DIVIDE':
+            return currentValue / value;
+        case 'MULTIPLY':
+            return currentValue * value;
+        case 'ADD':
+            return currentValue + value;
+        case 'SUBTRACT':
+            return currentValue - value;
+    }
+}
+
+/**
  * Processes a single modification and updates the rollValues object.
  * @param {Object} modification - The modification object.
  * @param {number} number - The multiplier for the modification value.
@@ -29,25 +49,42 @@ export function processModification(modification, number, manoeverName, trefferz
     }
     value = modification.affectedByInput ? number * value : value;
 
-    let text = `${manoeverName}${trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''}: ${modification.operator === 'SUBTRACT' ? '-' + value : signed(value)}\n`;
+    let text;
+    switch(modification.operator) {
+        case 'DIVIDE':
+            text = `${manoeverName}${trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''}: ${signed(value)} / \n`;
+            break;
+        case 'MULTIPLY':
+            text = `${manoeverName}${trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''}: ${signed(value)} * \n`;
+            break;
+        case 'ADD':
+            text = `${manoeverName}${trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''}: ${signed(value)}\n`;
+            break;
+        case 'SUBTRACT':
+            text = `${manoeverName}${trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''}: -${value}\n`;
+            break;
+    }
 
     switch (modification.type) {
         case 'ATTACK':
-            rollValues.mod_at += modification.operator === 'ADD' ? value : -value;
+            rollValues.mod_at = applyOperator(rollValues.mod_at, value, modification.operator);
             rollValues.text_at = rollValues.text_at.concat(text);
             break;
         case 'DAMAGE':
-            rollValues.mod_dm += modification.operator === 'ADD' ? value : -value;
+            rollValues.mod_dm = applyOperator(rollValues.mod_dm, value, modification.operator);
             rollValues.text_dm = rollValues.text_dm.concat(text);
             break;
         case 'DEFENCE':
-            rollValues.mod_vt += modification.operator === 'ADD' ? value : -value;
+            rollValues.mod_vt = applyOperator(rollValues.mod_vt, value, modification.operator);
             rollValues.text_vt = rollValues.text_vt.concat(text);
             break;
         case 'WEAPON_DAMAGE':
             if (modification.operator === 'ADD' || modification.operator === 'SUBTRACT') {
                 rollValues.schaden = rollValues.schaden.concat(`${modification.operator === 'SUBTRACT' ? '-' : '+'}${value}`);
                 text = `${manoeverName}${trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''}: ${modification.operator === 'SUBTRACT' ? '-' + value : signed(value)} Waffenschaden\n`;
+            } else if (modification.operator === 'DIVIDE') {
+                rollValues.schaden = `(${rollValues.schaden})/${value}`;
+                text = `${manoeverName}${trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''}: ${value} / Waffenschaden\n`;
             } else {
                 rollValues.schaden = `(${rollValues.schaden})*${value}`;
                 text = `${manoeverName}${trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''}: ${value} * Waffenschaden\n`;
@@ -72,6 +109,14 @@ export function processModification(modification, number, manoeverName, trefferz
             text = `${manoeverName}${trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''}: ${modification.value}\n`;
             rollValues.text_dm = rollValues.text_dm.concat(text);
             break;
+        case 'SPECIAL_RESSOURCE':
+            let originalValue = rollValues.mod_ressource;
+            rollValues.mod_ressource = applyOperator(rollValues.mod_ressource, value, modification.operator);
+            let usedValue = originalValue - rollValues.mod_ressource;
+
+            text = `${manoeverName}${trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''}: ${signed(usedValue)} (von ${originalValue})\n`;
+            rollValues.text_ressource = rollValues.text_ressource.concat(text);
+            break;
     }
 
     return rollValues;
@@ -86,7 +131,7 @@ export function processModification(modification, number, manoeverName, trefferz
 export function handleModifications(allModifications, rollValues) {   
     // Sort all modifications by operator type
     allModifications.sort((a, b) => {
-        const operatorOrder = { 'ADD': 0, 'SUBTRACT': 0, 'MULTIPLY': 1 };
+        const operatorOrder = { 'ADD': 0, 'SUBTRACT': 0, 'MULTIPLY': 1, 'DIVIDE': 1 };
         return operatorOrder[a.modification.operator] - operatorOrder[b.modification.operator];
     });
      
@@ -114,9 +159,11 @@ export function handleModifications(allModifications, rollValues) {
         rollValues.mod_at,
         rollValues.mod_vt,
         rollValues.mod_dm,
+        rollValues.mod_ressource,
         rollValues.text_at,
         rollValues.text_vt,
         rollValues.text_dm,
+        rollValues.text_ressource,
         rollValues.trefferzone,
         rollValues.schaden,
         rollValues.nodmg

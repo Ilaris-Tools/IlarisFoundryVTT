@@ -380,7 +380,8 @@ let manoever = {
     operator: {
         MULTIPLY: 'Multiplizieren',
         ADD: 'Addieren',
-        SUBTRACT: 'Subtrahieren'
+        SUBTRACT: 'Subtrahieren',
+        DIVIDE: 'Dividieren'
     },
     labels: {
         prerequisites: "Voraussetzungen",
