@@ -13,22 +13,6 @@
       "field": "CHECKBOX"
     }
   },
-  "modifications": {
-      "0": {
-        "type": "ATTACK",
-        "value": -4,
-        "operator": "ADD",
-        "target": "",
-        "affectedByInput": true
-      },
-      "1": {
-        "type": "SPECIAL_TEXT",
-        "value": "Ignoriert Rüstung",
-        "operator": "ADD",
-        "target": "",
-        "affectedByInput": true
-      }
-    },
   "effects": [],
   "folder": null,
   "sort": 0,
@@ -37,9 +21,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.2",
+    "systemVersion": "12.0.1",
     "createdTime": null,
-    "modifiedTime": 1747163769969,
+    "modifiedTime": 1746367663256,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

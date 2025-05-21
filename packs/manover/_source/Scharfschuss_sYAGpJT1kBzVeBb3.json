@@ -15,22 +15,6 @@
       "max": 8
     }
   },
-  "modifications": {
-      "0": {
-        "type": "ATTACK",
-        "value": -1,
-        "operator": "ADD",
-        "target": "",
-        "affectedByInput": true
-      },
-      "1": {
-        "type": "DAMAGE",
-        "value": 1,
-        "operator": "ADD",
-        "target": "",
-        "affectedByInput": true
-      }
-    },
   "effects": [],
   "folder": null,
   "sort": 0,
@@ -39,9 +23,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.2",
+    "systemVersion": "12.0.1",
     "createdTime": null,
-    "modifiedTime": 1747163501401,
+    "modifiedTime": 1746367672628,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
