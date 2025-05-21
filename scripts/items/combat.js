@@ -41,6 +41,64 @@ export class CombatItem extends IlarisItem {
             });
         }
         if("fernkampfwaffe" === this.type  || ("angriff" === this.type && this.system.typ === "Fern")) {
+            this.manoever = [];
+            packItems.forEach(item => {
+                if(item.type === 'manoever' && item.system.gruppe == 1 && item._manoeverRequirementsFulfilled(this.actor, this)) {
+                    this.manoever.push({
+                        ...item,
+                        id: item.name.replace(/[\s\W]/g, '_'), 
+                        inputValue: {
+                            ...item.system.input,
+                            value: ''
+                        }
+                    });
+                }
+            });
+        }
+        if("zauber" === this.type) {
+            this.manoever = [];
+            packItems.forEach(item => {
+                if(item.type === 'manoever' && item.system.gruppe == 2 && item._manoeverRequirementsFulfilled(this.actor, this)) {
+                    this.manoever.push({
+                        ...item,
+                        id: item.name.replace(/[\s\W]/g, '_'), 
+                        inputValue: {
+                            ...item.system.input,
+                            value: ''
+                        }
+                    });
+                }   
+            });
+        }
+        if("liturgie" === this.type) {
+            this.manoever = [];
+            packItems.forEach(item => {
+                if(item.type === 'manoever' && item.system.gruppe == 3 && item._manoeverRequirementsFulfilled(this.actor, this)) {
+                    this.manoever.push({
+                        ...item,
+                        id: item.name.replace(/[\s\W]/g, '_'), 
+                        inputValue: {
+                            ...item.system.input,
+                            value: ''
+                        }
+                    });
+                }
+            }); 
+        }
+        if("anrufung" === this.type) {
+            this.manoever = [];
+            packItems.forEach(item => {
+                if(item.type === 'manoever' && item.system.gruppe == 4 && item._manoeverRequirementsFulfilled(this.actor, this)) {
+                    this.manoever.push({
+                        ...item,
+                        id: item.name.replace(/[\s\W]/g, '_'), 
+                        inputValue: {
+                            ...item.system.input,
+                            value: ''
+                        }
+                    });      
+                }
+            });
         }
     }
 }

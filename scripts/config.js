@@ -92,7 +92,7 @@ let label = {
     zweihaendig: 'Zweihändig',
     erschoepfung: 'Erschöpfung',
     // Kampfstile
-    ohne: 'Kein Kampfstil',
+    ohne: 'Kein Stil',
     bhk: 'Beidhändiger Kampf',
     kvk: 'Kraftvoller Kampf',
     pwk: 'Parierwaffenkampf',
@@ -367,7 +367,7 @@ let manoever = {
     modification_type: {
         DAMAGE: "Schaden",
         DEFENCE: "Verteidigung",
-        ATTACK: "Angriff/Fernkampf",
+        ATTACK: "Angriff/Fernkampf/Übernatürlich Fertigkeiten",
         INITIATIVE: "Initiative",
         LOADING_TIME: "Ladezeit/Vorbereitungszeit",
         SPECIAL_RESOURCE: "Ressource für Zauber/Liturgien",
@@ -380,7 +380,8 @@ let manoever = {
     operator: {
         MULTIPLY: 'Multiplizieren',
         ADD: 'Addieren',
-        SUBTRACT: 'Subtrahieren'
+        SUBTRACT: 'Subtrahieren',
+        DIVIDE: 'Dividieren'
     },
     labels: {
         prerequisites: "Voraussetzungen",
@@ -798,3 +799,16 @@ let schadenstypen = {
     DAEMONISCH: "Dämonisch",
 }
 ILARIS.schadenstypen = schadenstypen;
+
+let combat_dialog = {
+    labels: {
+        angriffNah: "Nahkampfangriff",
+        nahkampfwaffe: "Nahkampfangriff",
+        angriffFern: "Fernkampfangriff",
+        fernkampfwaffe: "Fernkampfangriff",
+        magie: "Magie",
+        liturgie: "Liturgie",
+        anrufung: "Anrufung"
+    }
+};
+ILARIS.combat_dialog = combat_dialog;
