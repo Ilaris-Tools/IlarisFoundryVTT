@@ -1,0 +1,90 @@
+{{log 'angriff' this}}
+<div>
+    <label>Anzahl W20: </label>
+    <label>{{radioBoxes "xd20" choices_xd20 checked=checked_xd20}}</label>
+</div>
+{{#if (ifEq actor.type "held")}}
+    <div>
+        <label>Schips: </label>
+        <label>{{radioBoxes "schips" choices_schips checked=checked_schips}}</label>
+    </div>
+{{/if}}
+<div class="flexrow">
+    <label>{{get_label "kbak"}}</label>
+    <input type="checkbox" id="kbak" {{checked item.system.manoever.kbak.selected}} />
+</div>
+<hr>
+
+<div>
+    <div class="maneuver-header collapsed">
+        <h3>Manöver:</h3>
+        <div class="toggle-display">
+            <h4>Ausklappen</h4>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </div>
+    <div class="maneuver-grid collapsed">
+        {{#each item.manoever as |manoever|}}
+            <div class="maneuver-item {{#if (or manoever.inputValue.value manoever.inputValue.checked)}}has-value{{/if}}">
+                <label>{{manoever.name}} ({{manoever.system.probe}})</label>
+                {{#if (ifEq manoever.inputValue.field "CHECKBOX")}}
+                    <input
+                        type="checkbox"
+                        id="{{manoever.id}}CHECKBOX"
+                        {{#if manoever.inputValue.value}}checked{{/if}}
+                    />
+                {{/if}}
+                {{#if (ifEq manoever.inputValue.field "NUMBER")}}
+                    <input
+                        id="{{manoever.id}}NUMBER"
+                        type="number"
+                        name="item.manoever.{{@../index}}.inputValue.value"
+                        value="{{manoever.inputValue.value}}"
+                        data-dtype="Number"
+                        class="number-input"
+                        {{#unless (ifEq manoever.inputValue.min null)}}min="{{manoever.inputValue.min}}" data-has-min="true"{{/unless}}
+                        {{#if manoever.inputValue.max}}max="{{manoever.inputValue.max}}" data-has-max="true"{{/if}}
+                        oninput="this.classList.toggle('out-of-bounds', 
+                            (this.dataset.hasMin === 'true' && Number(this.value) < Number(this.min)) || 
+                            (this.dataset.hasMax === 'true' && Number(this.value) > Number(this.max)))"
+                    />
+                {{/if}}
+                {{#if (ifEq manoever.inputValue.field "TREFFER_ZONE")}}
+                    <select id="{{manoever.id}}TREFFER_ZONE" name="manoever.inputValue.value" style="max-width: 150px">
+                        {{selectOptions ../trefferzonen selected=manoever.inputValue.value}}
+                    </select>
+                {{/if}}
+            </div>
+        {{/each}}
+    </div>
+</div>
+
+<hr />
+<div class="flexrow">
+    <label>Modifikator: </label>
+    <input
+        id="modifikator"
+        type="number"
+        name="item.system.manoever.mod.selected"
+        value="{{item.system.manoever.mod.selected}}"
+        data-dtype="Number"
+    />
+</div>
+<div class="flexrow">
+    <label>Würfelmodus: </label>
+    <select id="rollMode">
+        {{selectOptions rollModes selected=item.system.manoever.rllm.selected localize=true}}
+    </select>
+</div>
+<hr />
+<div class="flexrow">
+    <button style="max-width: 150px" class="angreifen" type="button">
+        <i>
+            <img
+                class="button-icon-nahkampf"
+                src="systems/Ilaris/assets/game-icons.net/book-cover.png"
+            />
+        </i>
+        Wirken
+    </button>
+</div>

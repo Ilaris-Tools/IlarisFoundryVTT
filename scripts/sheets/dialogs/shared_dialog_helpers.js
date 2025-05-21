@@ -9,9 +9,9 @@ import {signed} from '../../common/wuerfel/chatutilities.js'
 export function applyOperator(currentValue, value, operator) {
     switch(operator) {
         case 'DIVIDE':
-            return currentValue / value;
+            return Math.ceil(currentValue / value);
         case 'MULTIPLY':
-            return currentValue * value;
+            return Math.ceil(currentValue * value);
         case 'ADD':
             return currentValue + value;
         case 'SUBTRACT':
@@ -28,7 +28,7 @@ export function applyOperator(currentValue, value, operator) {
  * @param {Object} rollValues - The object containing roll values to be updated.
  * @returns {Object} Updated rollValues.
  */
-export function processModification(modification, number, manoeverName, trefferzone, rollValues) {
+export function processModification(modification, number, manoeverName, trefferzone, rollValues, originalRessourceCost) {
     let value = modification.value;
     let targetValue = 0;
 
@@ -109,12 +109,30 @@ export function processModification(modification, number, manoeverName, trefferz
             text = `${manoeverName}${trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''}: ${modification.value}\n`;
             rollValues.text_dm = rollValues.text_dm.concat(text);
             break;
-        case 'SPECIAL_RESSOURCE':
-            let originalValue = rollValues.mod_ressource;
-            rollValues.mod_ressource = applyOperator(rollValues.mod_ressource, value, modification.operator);
-            let usedValue = originalValue - rollValues.mod_ressource;
+        case 'SPECIAL_RESOURCE':
+            let result;
+            if (modification.operator === 'MULTIPLY') {
+                result = originalRessourceCost * value;
+                if (value < 1) {
+                    result = result * -1;
+                } else {
+                    result = result - originalRessourceCost; 
+                }
+                rollValues.mod_ressource = rollValues.mod_ressource + result;
+            } else if (modification.operator === 'DIVIDE') {
+                result = originalRessourceCost / value;
+                if (value < 1) {
+                    result = result - originalRessourceCost;  
+                } else {
+                    result = result * -1;
+                }
+                rollValues.mod_ressource = rollValues.mod_ressource + result;
+            } else {
+                result = value;
+                rollValues.mod_ressource = applyOperator(rollValues.mod_ressource, value, modification.operator);
+            }
 
-            text = `${manoeverName}${trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''}: ${signed(usedValue)} (von ${originalValue})\n`;
+            text = `${manoeverName}${trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''}: ${modification.operator === 'SUBTRACT' ? '-'+result : signed(result)} Energiekosten\n`;
             rollValues.text_ressource = rollValues.text_ressource.concat(text);
             break;
     }
@@ -143,12 +161,13 @@ export function handleModifications(allModifications, rollValues) {
         }
     });
 
+    const originalRessourceCost = rollValues.mod_ressource || 0;
     // Process all modifications in sorted order
     allModifications.forEach(({modification, manoever: dynamicManoever, number, check, trefferZoneInput}) => {
         if ((check && number) || number) {
-            processModification(modification, number, dynamicManoever.name, null, rollValues);
+            processModification(modification, number, dynamicManoever.name, null, rollValues, originalRessourceCost);
         } else if (check) {
-            processModification(modification, 1, dynamicManoever.name, null, rollValues);
+            processModification(modification, 1, dynamicManoever.name, null, rollValues, originalRessourceCost);
         } else if (trefferZoneInput) {
             rollValues.trefferzone = trefferZoneInput;
             processModification(modification, 1, dynamicManoever.name, trefferZoneInput, rollValues);

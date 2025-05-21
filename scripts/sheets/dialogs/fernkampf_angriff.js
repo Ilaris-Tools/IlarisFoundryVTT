@@ -47,7 +47,15 @@ export class FernkampfAngriffDialog extends CombatDialog {
     
     activateListeners(html) {
         super.activateListeners(html);
-        html.find(".verteidigen").click(ev => this._verteidigenKlick(html));
+        html.find(".schaden").click(ev => this._schadenKlick(html));
+    }
+
+    eigenschaftenText() {
+        if (!this.item.system.eigenschaften.length > 0) {
+            return;
+        }
+        this.text_at += "\nEigenschaften: ";
+        this.text_at += this.item.system.eigenschaften.map(e => e.name).join(", ");
     }
 
     async _angreifenKlick(html) {
@@ -72,6 +80,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
             this.rollmode,
             true,
             this.fumble_val,
+            12
         );
     }
 
@@ -120,9 +129,11 @@ export class FernkampfAngriffDialog extends CombatDialog {
         let mod_at = 0;
         let mod_vt = 0;
         let mod_dm = 0;
+        let mod_ressource = 0;
         let text_at = '';
         let text_vt = '';
         let text_dm = '';
+        let text_ressource = '';
         let nodmg = {name: '', value: false};
         let trefferzone = 0;
         let schaden = this.item.getTp();
@@ -321,13 +332,15 @@ export class FernkampfAngriffDialog extends CombatDialog {
             mod_at,
             mod_vt,
             mod_dm,
+            mod_ressource,
             text_at,
             text_vt,
             text_dm,
+            text_ressource,
             trefferzone,
             schaden,
             nodmg
-        ] = handleModifications(allModifications, {mod_at,mod_vt,mod_dm,text_at,text_vt,text_dm,trefferzone,schaden,nodmg,context: this});
+        ] = handleModifications(allModifications, {mod_at,mod_vt,mod_dm,mod_ressource: null,text_at,text_vt,text_dm,text_ressource: null,trefferzone,schaden,nodmg,context: this});
 
         // If ZERO_DAMAGE was found, override damage values
         if (nodmg.value) {
