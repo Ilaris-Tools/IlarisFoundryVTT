@@ -4,6 +4,7 @@ import {
 import {signed} from '../../common/wuerfel/chatutilities.js'
 import { handleModifications } from './shared_dialog_helpers.js';
 import { CombatDialog } from './combat_dialog.js';
+import * as hardcoded from '../../actors/hardcodedvorteile.js';
 
 export class UebernatuerlichDialog extends CombatDialog {
     constructor(actor,item) {
@@ -79,7 +80,9 @@ export class UebernatuerlichDialog extends CombatDialog {
             ${signed(this.mod_at)}`;
 
         // Show roll result
-        let isSuccess = await roll_crit_message(
+        let isSuccess = false;
+        let is16OrHigher = false;
+        [isSuccess,is16OrHigher] = await roll_crit_message(
             formula,
             label,
             this.text_at + '\n' + this.text_ressource,
@@ -97,6 +100,9 @@ export class UebernatuerlichDialog extends CombatDialog {
         }
         // Calculate cost based on success
         let cost = isSuccess ? this.mod_ressource : Math.ceil(this.item.system.kosten / costModifier);
+        
+        // Apply all cost modifications from advantages and styles
+        cost = hardcoded.calculateModifiedCost(this.actor, this.item, isSuccess, is16OrHigher, cost);
             
         // Update resources
         await this.actor.update({

@@ -1,4 +1,12 @@
-import { getKampfstile, getSelectedStil, getKampfstilStufe } from '../hardcodedvorteile.js';
+import { getKampfstile, getSelectedStil, getKampfstilStufe, calculateModifiedCost } from '../hardcodedvorteile.js';
+
+jest.mock('../hardcodedvorteile.js', () => ({
+    ...jest.requireActual('../hardcodedvorteile.js'),
+    getSelectedStil: jest.fn().mockImplementation(() => ({
+        name: 'ohne',
+        stufe: 0
+    }))
+}));
 
 describe('getKampfstile', () => {
     beforeEach(() => {
@@ -144,5 +152,97 @@ describe('getSelectedStil', () => {
             stufe: 0,
             sources: []
         });
+    });
+});
+
+describe('calculateModifiedCost', () => {
+    let mockActor;
+    let mockItem;
+
+    beforeEach(() => {
+        // Mock actor setup
+        mockActor = {
+            type: 'held',
+            vorteil: {
+                karma: [],
+                magic: []
+            }
+        };
+
+        // Mock item setup
+        mockItem = {
+            type: 'zauber',
+            system: {
+                kosten: '4'
+            }
+        };
+
+        // Mock getSelectedStil function to handle actor argument
+        global.getSelectedStil = jest.fn().mockImplementation((actor) => ({
+            name: 'ohne',
+            stufe: 0
+        }));
+    });
+
+    it('should return unmodified cost when no advantages apply', () => {
+        const result = calculateModifiedCost(mockActor, mockItem, true, false, 4);
+        expect(result).toBe(4);
+    });
+
+    it('should reduce cost by 1/4 for Durro-Dun style level 2', () => {
+        global.getSelectedStil.mockReturnValue({
+            name: 'Durro-Dun',
+            stufe: 2
+        });
+        const result = calculateModifiedCost(mockActor, mockItem, true, false, 4);
+        expect(result).toBe(3); // 4 - ceil(4/4)
+    });
+
+    it('should make liturgy cost 0 with Liebling der Gottheit on 16+ success', () => {
+        mockActor.vorteil.karma.push({ name: 'Liebling der Gottheit' });
+        mockItem.type = 'liturgie';
+        const result = calculateModifiedCost(mockActor, mockItem, true, true, 4);
+        expect(result).toBe(0);
+    });
+
+    it('should not modify liturgy cost with Liebling der Gottheit on success below 16', () => {
+        mockActor.vorteil.karma.push({ name: 'Liebling der Gottheit' });
+        mockItem.type = 'liturgie';
+        const result = calculateModifiedCost(mockActor, mockItem, true, false, 4);
+        expect(result).toBe(4);
+    });
+
+    it('should reduce spell cost by half with Mühelose Magie on 16+ success', () => {
+        mockActor.vorteil.magic.push({ name: 'Mühelose Magie' });
+        mockItem.type = 'zauber';
+        const result = calculateModifiedCost(mockActor, mockItem, true, true, 4);
+        expect(result).toBe(2); // 4 - ceil(4/2)
+    });
+
+    it('should not modify spell cost with Mühelose Magie on success below 16', () => {
+        mockActor.vorteil.magic.push({ name: 'Mühelose Magie' });
+        mockItem.type = 'zauber';
+        const result = calculateModifiedCost(mockActor, mockItem, true, false, 4);
+        expect(result).toBe(4);
+    });
+
+    it('should never return a cost below 0', () => {
+        mockActor.vorteil.karma.push({ name: 'Liebling der Gottheit' });
+        mockItem.type = 'liturgie';
+        const result = calculateModifiedCost(mockActor, mockItem, true, true, 1);
+        expect(result).toBe(0);
+    });
+
+    it('should apply Durro-Dun reduction before other advantages', () => {
+        global.getSelectedStil.mockReturnValue({
+            name: 'Durro-Dun',
+            stufe: 2
+        });
+        mockActor.vorteil.magic.push({ name: 'Mühelose Magie' });
+        mockItem.type = 'zauber';
+        const result = calculateModifiedCost(mockActor, mockItem, true, true, 8);
+        // First reduces by 1/4 of base (8/4 = 2), then by half of base (8/2 = 4)
+        // 8 - 2 - 4 = 2
+        expect(result).toBe(2);
     });
 });

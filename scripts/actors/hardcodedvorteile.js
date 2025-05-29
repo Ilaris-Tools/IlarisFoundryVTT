@@ -580,3 +580,42 @@ export function getUebernatuerlicheStile(actor) {
     
     return stile;
 }
+
+/**
+ * Calculates the modified cost for supernatural abilities (spells and liturgies) based on various advantages
+ * 
+ * Currently handles the following hardcoded advantages:
+ * - Durro-Dun style (level 2+): Reduces cost by 1/4 of base cost
+ * - Liebling der Gottheit: Makes liturgies free if success roll is 16+
+ * - Mühelose Magie: Reduces spell cost by half of base cost if success roll is 16+
+ * 
+ * @param {Actor} actor - The actor performing the supernatural ability
+ * @param {Item} item - The spell or liturgy being cast
+ * @param {boolean} isSuccess - Whether the casting was successful
+ * @param {boolean} is16OrHigher - Whether the success roll was 16 or higher
+ * @param {number} currentCost - The current cost before modifications
+ * @returns {number} The final modified cost (never below 0)
+ */
+export function calculateModifiedCost(actor, item, isSuccess, is16OrHigher, currentCost) {
+    let cost = currentCost;
+    const baseKosten = parseInt(item.system.kosten.match(/\d+/)?.[0] || '0', 10);
+
+    // Check for Durro-Dun style reduction
+    const selectedStil = getSelectedStil(actor);
+    if (selectedStil?.name === 'Durro-Dun' && selectedStil.stufe >= 2) {
+        cost = Math.max(0, cost - Math.ceil(baseKosten / 4));
+    }
+
+    // If success with 16 or higher and has Liebling der Gottheit, cost is 0
+    if(isSuccess && is16OrHigher && actor.type == 'held' && item.type == 'liturgie' && 
+       actor.vorteil.karma.some(v => v.name == 'Liebling der Gottheit')) {
+        cost = 0;
+    }
+    // If success with 16 or higher and has Mühelose Magie, cost is reduced by half of base cost
+    else if(isSuccess && is16OrHigher && actor.type == 'held' && item.type == 'zauber' && 
+       actor.vorteil.magic.some(v => v.name == 'Mühelose Magie')) {
+        cost = Math.max(0, cost - Math.ceil(baseKosten / 2));
+    }
+
+    return cost;
+}

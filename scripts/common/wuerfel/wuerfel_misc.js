@@ -23,6 +23,7 @@ export async function roll_crit_message(
     let fumble = false;
     let crit = false;
     let isSuccess = false;
+    let is16OrHigher = false;
     if (crit_eval) {
         let critfumble = roll.dice[0].results.find((a) => a.active == true).result;
         if (critfumble == 20) {
@@ -33,13 +34,17 @@ export async function roll_crit_message(
         if (success_val && result._total >= success_val && !fumble && !crit) {
             isSuccess = true;
         }
+        if (result._total >= 16) {
+            is16OrHigher = true;
+        }
     }
     const html_roll = await renderTemplate('systems/Ilaris/templates/chat/probenchat_profan.html', {
         title: `${label}`,
         text: text,
         crit: crit,
         fumble: fumble,
-        success: isSuccess
+        success: isSuccess,
+        is16OrHigher: is16OrHigher
     });
     let roll_msg = roll.toMessage(
         {
@@ -51,7 +56,7 @@ export async function roll_crit_message(
             //     create: false
         },
     );
-    return isSuccess || crit;
+    return [isSuccess || crit,is16OrHigher];
 }
 
 export function calculate_diceschips(html, text, actor) {
