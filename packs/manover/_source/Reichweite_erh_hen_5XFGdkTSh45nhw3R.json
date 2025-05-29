@@ -11,9 +11,8 @@
     "input": {
       "label": "",
       "field": "NUMBER"
-    }
-  },
-  "modifications": {
+    },
+    "modifications": {
       "0": {
         "type": "ATTACK",
         "value": -4,
@@ -21,7 +20,8 @@
         "target": "",
         "affectedByInput": true
       }
-    },
+    }
+  },
   "effects": [],
   "folder": null,
   "sort": 0,

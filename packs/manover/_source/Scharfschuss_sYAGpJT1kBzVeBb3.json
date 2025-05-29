@@ -13,9 +13,8 @@
       "field": "NUMBER",
       "min": 0,
       "max": 8
-    }
-  },
-  "modifications": {
+    },
+    "modifications": {
       "0": {
         "type": "ATTACK",
         "value": -1,
@@ -30,7 +29,8 @@
         "target": "",
         "affectedByInput": true
       }
-    },
+    }
+  },
   "effects": [],
   "folder": null,
   "sort": 0,
