@@ -10,7 +10,18 @@
     "text": "Die Reichweite deines Fernkampfangriffes verdoppelt sich. Kann bis zu zweimal pro Angriff eingesetzt werden.",
     "input": {
       "label": "",
-      "field": "NUMBER"
+      "field": "NUMBER",
+      "min": 0,
+      "max": 2
+    },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
     }
   },
   "effects": [],
@@ -21,9 +32,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.1",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746367497143,
+    "modifiedTime": 1747163452226,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
