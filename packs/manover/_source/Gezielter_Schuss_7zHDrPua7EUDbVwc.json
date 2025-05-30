@@ -11,6 +11,15 @@
     "input": {
       "label": "",
       "field": "TREFFER_ZONE"
+    },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": -2,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
     }
   },
   "modifications": {
