@@ -10,10 +10,11 @@
     "text": "Die Reichweite deines Fernkampfangriffes verdoppelt sich. Kann bis zu zweimal pro Angriff eingesetzt werden.",
     "input": {
       "label": "",
-      "field": "NUMBER"
-    }
-  },
-  "modifications": {
+      "field": "NUMBER",
+      "min": 0,
+      "max": 2
+    },
+    "modifications": {
       "0": {
         "type": "ATTACK",
         "value": -4,
@@ -21,7 +22,8 @@
         "target": "",
         "affectedByInput": true
       }
-    },
+    }
+  },
   "effects": [],
   "folder": null,
   "sort": 0,

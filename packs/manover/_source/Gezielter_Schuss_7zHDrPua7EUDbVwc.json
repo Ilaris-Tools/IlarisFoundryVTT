@@ -22,15 +22,6 @@
       }
     }
   },
-  "modifications": {
-      "0": {
-        "type": "ATTACK",
-        "value": -2,
-        "operator": "ADD",
-        "target": "",
-        "affectedByInput": true
-      }
-    },
   "effects": [],
   "folder": null,
   "sort": 0,

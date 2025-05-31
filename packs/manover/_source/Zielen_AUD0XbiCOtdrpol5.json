@@ -11,9 +11,8 @@
     "input": {
       "label": "",
       "field": "CHECKBOX"
-    }
-  },
-  "modifications": {
+    },
+    "modifications": {
       "0": {
         "type": "ATTACK",
         "value": 2,
@@ -21,7 +20,8 @@
         "target": "",
         "affectedByInput": true
       }
-    },
+    }
+  },
   "effects": [],
   "folder": null,
   "sort": 0,
