@@ -258,7 +258,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
     
         // Beritten brtn  Reiterkampf II rtk
         let beritten = manoever.brtn.selected;
-        let selectedKampfstil = hardcoded.getSelectedKampfstil(this.actor.system.misc?.selected_kampfstil ?? 'ohne', this.actor.misc.kampfstile_list);
+        let selectedKampfstil = hardcoded.getSelectedStil(this.actor.system.misc?.selected_kampfstil ?? 'ohne', this.actor.misc.kampfstile_list);
         let reiterkampf = selectedKampfstil.name.includes('Reiterkampf') && selectedKampfstil.stufe >= 2;
         if (beritten && reiterkampf) {
             text_at = text_at.concat(
@@ -268,15 +268,6 @@ export class FernkampfAngriffDialog extends CombatDialog {
             mod_at -= 4;
             text_at = text_at.concat(`${CONFIG.ILARIS.label['brtn']}\n`);
         }
-        
-        // Reichweite erhöhen fm_rwrh
-        // let reichweite = Number(manoever.fm_rwrh.selected);
-        // if (reichweite > 0) {
-        //     mod_fk -= 4 * reichweite;
-        //     text = text.concat(
-        //         `${manoever.rw[reichweite]} (${reichweite}x)\n`,
-        //     );
-        // }
 
         // Collect all modifications from all maneuvers
         let ruhige_hand = manoever.fm_zlen.ruhige_hand;

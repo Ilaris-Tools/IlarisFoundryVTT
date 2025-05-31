@@ -311,3 +311,9 @@ hr {
     color: #782e22;
     font-size: 0.9em;
 } 
+
+.error-highlight {
+  color: #ff0000;
+  text-decoration: underline wavy #ff0000;
+  cursor: help;
+}

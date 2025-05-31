@@ -42,7 +42,11 @@
     <div>
         <label><b>Allgemeine Vorteile:</b>&nbsp; | &nbsp;</label>
         {{#each actor.vorteil.allgemein}}
-        <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}}</a>
+        <a class="item-edit {{#unless this._stats.compendiumSource}}error-highlight{{/unless}}" 
+           data-itemid="{{this.id}}"
+           {{#unless this._stats.compendiumSource}}title="Am Vorteil stimmt etwas nicht. Bitte füge den Vorteil neu hinzu"{{/unless}}> 
+           {{this.name}}
+        </a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
     </div>
@@ -50,7 +54,11 @@
     <div>
         <label><b>Profane Vorteile:</b>&nbsp; | &nbsp;</label>
         {{#each actor.vorteil.profan}}
-        <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
+        <a class="item-edit {{#unless this._stats.compendiumSource}}error-highlight{{/unless}}" 
+           data-itemid="{{this.id}}"
+           {{#unless this._stats.compendiumSource}}title="Am Vorteil stimmt etwas nicht. Bitte füge den Vorteil neu hinzu"{{/unless}}> 
+           {{this.name}} 
+        </a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
     </div>

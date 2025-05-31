@@ -49,13 +49,9 @@ export class IlarisActor extends Actor {
 
     _hasKampfstilSelected(stilRequirements) {
         return stilRequirements.some(requirement => 
-            hardcoded.getSelectedKampfstil(this.system.misc.selected_kampfstil,this.misc.kampfstile_list).sources.some(source => source.includes(requirement)))
-        || this.vorteil.geweihtentradition.some((vorteil) => {
-            return stilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
-        }) || this.vorteil.zaubertraditionen.some((vorteil) => {
-            return stilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
-        });
-        // zauber traditionen und liturgien werden noch wie Vorteile behandelt, da noch nicht implementiert wurde einen Stil dort zu wählen, obwohl nach Regeln sowas nötig ist
+            hardcoded.getSelectedStil(this.system.misc.selected_kampfstil,this.misc.kampfstile_list).sources.some(source => source.includes(requirement)))
+        || stilRequirements.some(requirement => 
+            hardcoded.getSelectedStil(this.system.misc.selected_uebernatuerlicher_stil,this.misc.uebernatuerliche_stile_list).sources.some(source => source.includes(requirement)));
     }
 
     __getStatuseffectById(data, statusId) {
@@ -388,7 +384,13 @@ export class IlarisActor extends Actor {
         let kampfstile = hardcoded.getKampfstile(actor);
         // data.misc.selected_kampfstil = "ohne";
         actor.misc.kampfstile_list = kampfstile;
-        let selected_kampfstil = hardcoded.getSelectedKampfstil(actor.system.misc?.selected_kampfstil ?? 'ohne', kampfstile);
+        let selected_kampfstil = hardcoded.getSelectedStil(actor.system.misc?.selected_kampfstil ?? 'ohne', kampfstile);
+
+        // Handle supernatural styles
+        let uebernatuerliche_stile = hardcoded.getUebernatuerlicheStile(actor);
+        actor.misc.uebernatuerliche_stile_list = uebernatuerliche_stile;
+        let selected_uebernatuerlicher_stil = hardcoded.getSelectedStil(actor.system.misc?.selected_uebernatuerlicher_stil ?? 'ohne', uebernatuerliche_stile);
+
         let HAUPTWAFFE =
             actor.nahkampfwaffen.find((x) => x.system.hauptwaffe == true) ||
             actor.fernkampfwaffen.find((x) => x.system.hauptwaffe == true);
