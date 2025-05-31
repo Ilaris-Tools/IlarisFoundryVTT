@@ -2,6 +2,7 @@ import { IlarisItem } from "./item.js";
 import { ManoeverItem } from "./manoever.js";
 import { AngriffItem } from "./angriff.js";
 import { WaffeItem } from "./waffe.js";
+import { CombatItem } from "./combat.js";
 
 const handler = {
     construct(_, args) {
@@ -11,6 +12,10 @@ const handler = {
             case "nahkampfwaffe":
             case "fernkampfwaffe":    
                 return new WaffeItem(...args);
+            case "zauber":
+            case "liturgie":    
+            case "anrufung":    
+                return new CombatItem(...args);    
             case "manoever":
                 return new ManoeverItem(...args);
             default:
