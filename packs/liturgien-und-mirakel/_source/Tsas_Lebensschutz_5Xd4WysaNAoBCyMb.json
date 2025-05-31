@@ -1,0 +1,41 @@
+{
+  "name": "Tsas Lebensschutz",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Friede, Neubeginn",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Verstirbt der Gesegnete während der Wirkung der Liturgie, erscheint ein überraschend stabiles  Ei an einem sicheren Ort in der Nähe. Nach einer Stunde schlüpft der Gesegnete aus dem Ei und erreicht innerhalb einer Woche seine ursprüngliche Größe (währenddessen Einschränkungen nach Spielleiterentscheid). Das Aussehen ähnelt seinem früheren Aussehen, kleinere Veränderungen wie eine bunte Haarsträhne sind aber wahrscheinlich. Die Wirkung der Liturgie kann nur einmal ausgelöst werden, dann endet ihre Wirkung.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "Permanenz (–8, Wirkungsdauer bis die Bindung gelöst wird, Kosten 16 KaP, davon 8 gKaP)",
+    "vorbereitung": "16 Aktionen",
+    "ziel": "Einzelperson",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Tag",
+    "kosten": "16 KaP",
+    "erlernen": "Tsa 16",
+    "pw": 0,
+    "gruppe": 50
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "5Xd4WysaNAoBCyMb",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!5Xd4WysaNAoBCyMb"
+}

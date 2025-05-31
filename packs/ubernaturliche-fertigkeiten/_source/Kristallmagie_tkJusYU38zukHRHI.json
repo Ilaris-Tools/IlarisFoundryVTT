@@ -1,0 +1,36 @@
+{
+  "name": "Kristallmagie",
+  "type": "uebernatuerliche_fertigkeit",
+  "img": "systems/Ilaris/assets/images/skills/magic-skill.svg",
+  "system": {
+    "basis": 0,
+    "fw": 0,
+    "pw": 0,
+    "attribut_0": "FF",
+    "attribut_1": "IN",
+    "attribut_2": "KL",
+    "gruppe": 0,
+    "text": "Die Magie eines Kristallomanten steht und fällt mit seinen gebundenen Kristallen, da ohne den passenden Kristall eine wichtige Bedingung der kristallomantischen Repräsentation nicht erfüllt ist. Jeder Kristall ist dabei einer Fertigkeit zugeordnet, die der Kristallomant fortan ohne Einschränkungen oder sogar mit bedeutenden Vorteilen nutzen kann. Nur die Kristallmagie selbst benötigt keinen Kristall. Die Kristalle und andere nützliche Gegenstände kann der Kristallomant in seinem magischen Schuppenbeutel transportieren, der etwa 4 Liter fasst. Alle Talente gelten als Objektrituale, die passiven Effekte des Schuppenbeutels erfordern aber keine ständige Berührung.",
+    "voraussetzung": "Vorteil Tradition der Kristallomanten I"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "tkJusYU38zukHRHI",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!tkJusYU38zukHRHI"
+}

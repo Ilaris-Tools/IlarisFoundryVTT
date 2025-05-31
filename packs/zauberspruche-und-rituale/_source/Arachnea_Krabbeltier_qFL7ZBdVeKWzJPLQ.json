@@ -1,0 +1,41 @@
+{
+  "name": "Arachnea Krabbeltier",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Verständigung",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Alle Insekten, Spinnen, Maden und anderen wirbellosen Tiere in einem Radius von 64 Schritt streben auf dein Ziel zu und fallen dort über alles her, was in ihr Fressschema passt.",
+    "maechtig": "Verdoppelt den Radius.",
+    "schwierigkeit": "12",
+    "modifikationen": "Maraskaner Verhältnisse (–8, Wirkungsdauer 1 Woche, 32 AsP)\nArtenkunde (–4; du kannst den Zauber auf eine bestimmte Art von Wesen beschränken oder eine Art ausnehmen)",
+    "vorbereitung": "16 Aktionen",
+    "ziel": "Zone",
+    "reichweite": "16 Schritt",
+    "wirkungsdauer": "8 Stunden",
+    "kosten": "16 AsP",
+    "erlernen": "Mag 20",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "qFL7ZBdVeKWzJPLQ",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!qFL7ZBdVeKWzJPLQ"
+}

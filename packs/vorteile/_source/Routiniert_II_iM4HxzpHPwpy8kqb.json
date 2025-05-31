@@ -1,0 +1,29 @@
+{
+  "name": "Routiniert II",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut FF 6",
+    "gruppe": 1,
+    "text": "Die Basiszeit zur Herstellung handwerklicher Produkte, zur Wundversorgung und zum Schlösser knacken verkürzt sich um ein Viertel des unmodifizierten Werts.\n\nBei Proben auf Alchemie, Handwerk, Heilkunde und Verschlagenheit gelten Patzer als gewöhnlich misslungen."
+  },
+  "_id": "iM4HxzpHPwpy8kqb",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!iM4HxzpHPwpy8kqb"
+}

@@ -1,0 +1,41 @@
+{
+  "name": "Gardianum Zauberschild",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Antimagie, Kraft",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du erschaffst eine unsichtbare und immaterielle Schutzkuppel mit dir als Zentrum und 2 Schritt Radius. Schadenszauber werden von der Kuppel abgefangen, die nach 8 Beschädigungen zusammenbricht (Härte 2).",
+    "maechtig": "Die Härte steigt um +1.",
+    "schwierigkeit": "12",
+    "modifikationen": "Schild gegen Dämonen (–4; Dämonen mit einer Beschwörungsschwierigkeit von maximal 20 können die Kuppel nicht durchschreiten. Mächtige Magie erhöht die maximale Beschwörungsschwierigkeit um 4. Angriffe des Dämonen werden vom Gardianum abgefangen, der dabei als Koloss II gilt (S. 96). Du kannst einen Dämon mit dem Gardianum zurückdrängen, wenn dir eine vergleichende KK-Probe gelingt. Umgekehrt ist das nicht möglich.),\nPersönlicher Schild (–4, Wirkungsdauer 1 Stunde; der Zauber legt sich als zweite Haut um den Zauberer.)",
+    "vorbereitung": "0 Aktionen",
+    "ziel": "Zone",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "4 Minuten",
+    "kosten": "8 AsP",
+    "erlernen": "Elf, Mag 12; Ach 14; Dru, Geo, Hex 16",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "qGECjOQRFHLARhpI",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!qGECjOQRFHLARhpI"
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Schnellziehen",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut FF 8",
+    "gruppe": 2,
+    "text": "Erlaubt das Manöver Schnellschuss (FK -4) im Fernkampf: Verkürzt die Vorbereitungszeit um die Hälfte. Eine Vorbereitungszeit von 1 Aktion wird zu 0 Aktionen. Die Aktion Konflikt ist von dieser Modifikation nicht betroffen. Kann bis zu zweimal pro FK eingesetzt werden.\n\nNahkampf- und Wurfwaffen können in einer freien Aktion gezogen werden."
+  },
+  "_id": "9laG7XzYtXtoqlzZ",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!9laG7XzYtXtoqlzZ"
+}

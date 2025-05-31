@@ -12,12 +12,19 @@ export class IlarisItemSheet extends ItemSheet {
     }
 
     _onItemDelete(event) {
-        console.log('ItemDelete');
-        console.log(event);
-        console.log(this.actor);
         const itemID = event.currentTarget.dataset.itemid;
-        console.log(itemID);
-        this.actor.deleteEmbeddedDocuments('Item', [itemID]);
+        if (!itemID) {
+            ui.notifications?.warn("Cannot delete item: No item ID found");
+            return;
+        }
+
+        if (this.actor) {
+            // If item is embedded in an actor, delete it from the actor
+            this.actor.deleteEmbeddedDocuments('Item', [itemID]);
+        } else {
+            // If item is not embedded, delete the item itself
+            this.item.delete();
+        }
     }
 
     // activateListeners(html) {

@@ -1,0 +1,29 @@
+{
+  "name": "Reflexschuss",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut FF 6",
+    "gruppe": 2,
+    "text": "Im Fernkampf sinken Abzüge durch Bewegung oder Wind um 1 Stufe."
+  },
+  "_id": "qVK4M851hrv2MlTT",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!qVK4M851hrv2MlTT"
+}

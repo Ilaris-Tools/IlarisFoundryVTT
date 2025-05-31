@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Schamanen II",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut IN 6, Vorteil Tradition der Schamanen I",
+    "gruppe": 5,
+    "text": "Schamanen binden oft einen beträchtlichen Teil ihrer Astralenergie in ihre Zauber. Wenn du mindestens 2/4/8/16 gAsP gebunden hast, sind deine Zauber um +1/+2/+3/+4 erleichtert."
+  },
+  "_id": "2m2rKJrUU1w7VSyK",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!2m2rKJrUU1w7VSyK"
+}

@@ -1,0 +1,33 @@
+{
+  "name": "Kraftakt",
+  "type": "talent",
+  "img": "systems/Ilaris/assets/images/skills/profan-talent.svg",
+  "system": {
+    "text": "Ein Kraftakt ist nötig, wenn schwere Lasten angehoben oder getragen werden sollen. Auch das Eintreten von Türen fällt hierunter.",
+    "fertigkeit": "Athletik"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Item.rVxApV5LBO6At676"
+    }
+  },
+  "_id": "smlWNNunG3T1uWfB",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "Ww4drILJ63YXG1Vc": 3
+  },
+  "_key": "!items!smlWNNunG3T1uWfB"
+}

@@ -1,0 +1,41 @@
+{
+  "name": "Für die Göttin, für Rondra!",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Ehre",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Die Macht der Göttin erfüllt dich, während du einen Sturmangriff durchführst (S. 40). Der erste Sturmangriff während der Wirkungsdauer trifft alle Gegner in deiner Bahn, bis du durch mindestens 2 erfolgreiche Verteidigungen gestoppt wirst. Alle AT gelten als Angriffe zum Niederwerfen.",
+    "maechtig": "Die AT ist um +1 erleichtert.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "0 Aktionen",
+    "ziel": "selbst",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "16 Initiativphasen",
+    "kosten": "8 KaP",
+    "erlernen": "Ron 14",
+    "pw": 0,
+    "gruppe": 45
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "n5eCPnT97wKyRYbc",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!n5eCPnT97wKyRYbc"
+}

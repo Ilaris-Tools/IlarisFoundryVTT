@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Paktierer III",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut MU 8, Vorteil Tradition der Paktierer II",
+    "gruppe": 8,
+    "text": "Erlaubt die spontane Modifikation Opferung (Anrufung +4): Das rituelle Opfer eines intelligenten Wesens erleichtert die Anrufung um +4, ein Geweihter der Gegengottheit verdoppelt den Bonus sogar."
+  },
+  "_id": "cEGPW9j8RhsuMQ8N",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!cEGPW9j8RhsuMQ8N"
+}

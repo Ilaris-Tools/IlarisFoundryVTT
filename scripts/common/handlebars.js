@@ -17,7 +17,6 @@ function preloadHandlebarsTemplates() {
         'systems/Ilaris/templates/helper/select_attribut.html',
         'systems/Ilaris/templates/helper/select_fertigkeitsgruppe.html',
         'systems/Ilaris/templates/helper/select_vorteilsgruppe.html',
-        'systems/Ilaris/templates/helper/select_manoever.html',
         'systems/Ilaris/templates/helper/select_trefferzone.html',
         'systems/Ilaris/templates/chat/dreid20.html',
         'systems/Ilaris/templates/chat/probendiag_profan.html',
@@ -32,6 +31,13 @@ function registerHandlebarsHelpers() {
     Handlebars.registerHelper('AttributeFertigkeit', function (attrArray) {
         const fertAttr = attrArray[0].concat('/', attrArray[1], '/', attrArray[2]);
         return fertAttr;
+    });
+
+    Handlebars.registerHelper('some', function(array, prop) {
+        return array.some(item => {
+            if (prop === 'checked') return item.value;
+            return item.value && item.value !== '0';
+        });
     });
 
     Handlebars.registerHelper('AttributeFertigkeit_from_data', function (attrArray) {
@@ -100,7 +106,7 @@ function registerHandlebarsHelpers() {
 
     Handlebars.registerHelper('translate_formula', function (formula) {
         if (formula) {
-            return formula.replace("W", "d");
+            return formula.replace(/[Ww]/g, "d");
         }
         return null;
     });
@@ -213,5 +219,17 @@ function registerHandlebarsHelpers() {
 
     Handlebars.registerHelper('multMinusOne', function (numb) {
         return -1 * numb;
+    });
+
+    /**
+     * Handlebars helper to colorize probe values, highlighting positive values in green and negative values in red.
+     * @param {string} probe - The probe string (e.g., "AT -2" or "AT -X, TP +X" or "PA +2, AT +2" or "AT -2-BE" or "TP +GS")
+     * @returns {string} HTML string with colorized values
+     */
+    Handlebars.registerHelper('colorizeProbe', function(probe) {
+        return probe.replace(/([+-][^\s,)]+)/g, match => {
+            const color = match.startsWith('+') ? 'color: #006400;' : 'color: #8B0000;'; // Dark green and dark red
+            return `<span style="${color}">${match}</span>`;
+        });
     });
 }

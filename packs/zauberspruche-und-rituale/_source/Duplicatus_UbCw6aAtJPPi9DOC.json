@@ -1,0 +1,41 @@
+{
+  "name": "Duplicatus",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Illusion",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Ein mit dir verschwimmender Doppelgänger erscheint und verwirrt deine Gegner. Bei Nah- und Fernkampfangriffen wird ausgewürfelt, ob der Angriff dich oder einen Doppelgänger trifft. Der Doppelgänger ist eine Illusion (Sicht).",
+    "maechtig": "Erschafft einen weiteren Doppelgänger.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "1 Aktion",
+    "ziel": "Einzelperson",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "16 Initiativphasen",
+    "kosten": "8 AsP",
+    "erlernen": "Mag, Srl 14",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "UbCw6aAtJPPi9DOC",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!UbCw6aAtJPPi9DOC"
+}

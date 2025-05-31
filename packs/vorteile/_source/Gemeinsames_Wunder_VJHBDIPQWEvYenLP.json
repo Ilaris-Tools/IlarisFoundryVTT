@@ -1,0 +1,29 @@
+{
+  "name": "Gemeinsames Wunder",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut IN 4, Vorteil Geweiht I",
+    "gruppe": 6,
+    "text": "Der Vorteil ermöglicht es dir, mit anderen Kennern dieses Vorteils einen Liturgiezirkel zu bilden. Alle Teilnehmer des Zirkels müssen sich berühren und willens sein, ihre Karmaenergie zu teilen.\nSolange der Zirkel besteht, können die Teilnehmer die Regeln zur Zusammenarbeit (S. 8) nutzen, um sich gegenseitig bei Liturgien zu unterstützen. Üblicherweise sind dabei maximal vier Helfer möglich, welche die Probe des Wirkenden um jeweils +2 erleichtern können.\nZusätzlich werden die Liturgiekosten aller Teilnehmer gleichmäßig auf den gesamten Zirkel aufgeteilt. Sollte ein Teilungsrest übrigbleiben oder ein Teilnehmer über zu wenige KaP verfügen, muss der Wirkende diese Kosten tragen. Nur gKaP muss der Wirkende stets selbst tragen."
+  },
+  "_id": "VJHBDIPQWEvYenLP",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!VJHBDIPQWEvYenLP"
+}

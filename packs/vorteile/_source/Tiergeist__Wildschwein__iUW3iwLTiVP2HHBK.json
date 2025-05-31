@@ -1,0 +1,29 @@
+{
+  "name": "Tiergeist (Wildschwein)",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Vorteil Tradition der Anach-Nurim I ODER Vorteil Tradition der Durro-dun I ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Affe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Bär) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Elefant) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Eule) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Falke) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fischotter) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Fuchs/Mungo) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Gebirgsbock) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Löwe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Mammut) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Rabe) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Schlange) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Stier) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wildkatze/Panther) ODER Vorteil Tradition der Schamanen I, Kein Vorteil Tiergeist (Wolf/Khoramsbestie) ODER Vorteil Tradition der Schamanen I",
+    "gruppe": 4,
+    "text": "Archetyp: Sammler\nWertebonus: Pflanzenkunde, Tierkunde, Überleben, Wachsamkeit, KO\nVerwandlung: Schnauze (2W6 TP waffenlos, Sinnenschärfe und Wachsamkeit +4, wenn der Geruchssinn gefragt ist), Fell (+1 RS, Pirschen +4)\nZauber: Abvenenum, Eins mit der Natur, Kusch!, Standfest, Zaubernahrung\n\n"
+  },
+  "_id": "iUW3iwLTiVP2HHBK",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!iUW3iwLTiVP2HHBK"
+}

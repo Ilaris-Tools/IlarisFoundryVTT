@@ -1,0 +1,41 @@
+{
+  "name": "Sinesigill Unerkannt",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Antimagie, Illusion",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Während der Wirkungsdauer ist dein Gildensiegel von einer Illusion (Sicht) verdeckt und auch vor ungezielter Hellsicht verborgen.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "Fremde Hand (–4, Einzelperson)",
+    "vorbereitung": "16 Aktionen",
+    "ziel": "selbst",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "8 Stunden",
+    "kosten": "4 AsP",
+    "erlernen": "Mag 20",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "AqLnap8AuDbSQshD",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!AqLnap8AuDbSQshD"
+}

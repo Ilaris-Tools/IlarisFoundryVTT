@@ -1,0 +1,41 @@
+{
+  "name": "Projektimago Ebenbild",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Illusion",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du lässt eine Illusion (Sicht und Gehör) deiner selbst an einem Ort erscheinen, den du schon einmal gesehen haben musst. Die Illusion bewegt sich während der Wirkungsdauer genau wie du.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "4 Aktionen",
+    "ziel": "Zone",
+    "reichweite": "4 Meilen",
+    "wirkungsdauer": "16 Initiativphasen",
+    "kosten": "8 AsP",
+    "erlernen": "Srl 16; Ach, Mag 20",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "clDrcgk7fdpvzXiG",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!clDrcgk7fdpvzXiG"
+}

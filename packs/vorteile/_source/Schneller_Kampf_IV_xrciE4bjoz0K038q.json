@@ -1,0 +1,29 @@
+{
+  "name": "Schneller Kampf IV",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut GE 10, Vorteil Schneller Kampf III",
+    "gruppe": 3,
+    "text": "Bedingung: zwei weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung des Kampfstils verwendet werden. "
+  },
+  "_id": "xrciE4bjoz0K038q",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!xrciE4bjoz0K038q"
+}
