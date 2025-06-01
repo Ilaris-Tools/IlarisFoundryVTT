@@ -13,6 +13,22 @@
       "field": "NUMBER",
       "min": 0,
       "max": 8
+    },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": -1,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      },
+      "1": {
+        "type": "DAMAGE",
+        "value": 1,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
     }
   },
   "effects": [],

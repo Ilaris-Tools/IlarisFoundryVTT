@@ -19,6 +19,22 @@
     "input": {
       "label": "",
       "field": "CHECKBOX"
+    },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": -8,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      },
+      "1": {
+        "type": "SPECIAL_TEXT",
+        "value": "zwei zusätzliche Wunden",
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
     }
   },
   "effects": [],
