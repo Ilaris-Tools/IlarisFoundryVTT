@@ -79,18 +79,31 @@ export class UebernatuerlichDialog extends CombatDialog {
             ${signed(this.at_abzuege_mod)} \
             ${signed(this.mod_at)}`;
 
+        // Parse difficulty from item's schwierigkeit
+        let difficulty = null;
+        let additionalText = '';
+        const schwierigkeit = this.item.system.schwierigkeit;
+        if (schwierigkeit) {
+            const parsedDifficulty = parseInt(schwierigkeit);
+            if (!isNaN(parsedDifficulty)) {
+                difficulty = parsedDifficulty;
+            } else {
+                additionalText = `\n${schwierigkeit}`;
+            }
+        }
+
         // Show roll result
         let isSuccess = false;
         let is16OrHigher = false;
         [isSuccess,is16OrHigher] = await roll_crit_message(
             formula,
             label,
-            this.text_at + '\n' + this.text_ressource,
+            this.text_at + '\n' + this.text_ressource + additionalText,
             this.speaker,
             this.rollmode,
             true,
             this.fumble_val,
-            12
+            difficulty
         );
 
         let costModifier = 2;
