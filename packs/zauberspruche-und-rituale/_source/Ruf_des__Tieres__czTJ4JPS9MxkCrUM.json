@@ -1,0 +1,41 @@
+{
+  "name": "Ruf des (Tieres)",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Einfluss, Verständigung, Gaben des Odun",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du rufst ein Exemplar deines Tiers herbei. Befindet sich ein Wesen dieser Art in einem Radius von 4 Meilen, eilt es herbei. Du kannst dieses Wesen um einen Gefallen bitten, das dieses wenn möglich erfüllen wird. Dann trollt sich das Wesen.",
+    "maechtig": "Verdoppelt den Radius und die Zahl der herbeieilenden Wesen.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "16 Aktionen",
+    "ziel": "Zone",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Stunde",
+    "kosten": "16 AsP",
+    "erlernen": "Dur 14",
+    "pw": 0,
+    "gruppe": 4
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "czTJ4JPS9MxkCrUM",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!czTJ4JPS9MxkCrUM"
+}

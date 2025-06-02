@@ -1,0 +1,41 @@
+{
+  "name": "Segensreicher Neuanfang",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Neubeginn",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du segnest ein neues Unternehmen. Der Gesegnete erhält während der Wirkungsdauer die Eigenheit „Euphorisch für [Unternehmen]: Du widmest dich mit Elan der bevorstehenden Aufgabe und vergisst dabei alles um dich herum.“ Für den ersten Einsatz der Eigenheit bezahlt er keinen Schicksalspunkt. Für gesegnete NSC gelten die Vorschläge von S. 16.",
+    "maechtig": "Für je zwei Stufen kostet ein weiterer Einsatz der Eigenheit keinen Schicksalspunkt.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "16 Aktionen",
+    "ziel": "Einzelperson",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Woche",
+    "kosten": "8 KaP",
+    "erlernen": "Tsa 14",
+    "pw": 0,
+    "gruppe": 51
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "rpjtUGnOwy4rCKyQ",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!rpjtUGnOwy4rCKyQ"
+}

@@ -1,0 +1,41 @@
+{
+  "name": "Tanz der Jagd",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Eigenschaften, Zaubertänze",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Der Tanz schärft die Jagdinstinkte der Zuhörer. Alle Zuhörer in einem Radius von 4 Schritt erhalten eine Erleichterung +2 auf Pirschen, Überleben, Tierkunde und GE-Proben.",
+    "maechtig": "Der Bonus steigt um +1.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "1 Stunde",
+    "ziel": "Zone",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Tag",
+    "kosten": "16 AsP",
+    "erlernen": "Ztz 16",
+    "pw": 0,
+    "gruppe": 19
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "9Cpmaz77F6XMECsd",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!9Cpmaz77F6XMECsd"
+}

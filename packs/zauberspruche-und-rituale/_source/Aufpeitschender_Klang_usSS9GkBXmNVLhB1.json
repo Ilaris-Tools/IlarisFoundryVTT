@@ -1,0 +1,41 @@
+{
+  "name": "Aufpeitschender Klang",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Eigenschaften, Zaubermelodien",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du entlockst deinem Instrument einen elektrisierenden Ton. Wenn das Ziel die nächste Probe auf eine körperliche Aktivität (z.B. Laufen, Nahkampfangriff) ablegt, ist diese um +2 erleichtert.",
+    "maechtig": "Der Bonus steigt um +1",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "0 Aktionen",
+    "ziel": "Einzelperson",
+    "reichweite": "8 Schritt",
+    "wirkungsdauer": "4 Initiativphasen",
+    "kosten": "4 AsP",
+    "erlernen": "Bard 12",
+    "pw": 0,
+    "gruppe": 18
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "usSS9GkBXmNVLhB1",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!usSS9GkBXmNVLhB1"
+}

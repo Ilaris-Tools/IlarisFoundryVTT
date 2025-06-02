@@ -86,14 +86,33 @@
     </div>
     {{/if}}
     
-    {{#if actor.vorteile}}
     <div class="vorteile statblockreihe">
         <b>Vorteile: </b>
-            {{#each actor.vorteile as |vorteil|}}
+            {{#each actor.vorteil.allgemein as |vorteil|}}
+                <a class="item-edit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
+            {{/each}}
+            {{#each actor.vorteil.profan as |vorteil|}}
+                <a class="item-edit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
+            {{/each}}
+            {{#each actor.vorteil.kampf as |vorteil|}}
+                <a class="item-edit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
+            {{/each}}
+            {{#each actor.vorteil.kampfstil as |vorteil|}}
+                <a class="item-edit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
+            {{/each}}
+            {{#each actor.vorteil.magie as |vorteil|}}
+                <a class="item-edit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
+            {{/each}}
+            {{#each actor.vorteil.zaubertraditionen as |vorteil|}}
+                <a class="item-edit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
+            {{/each}}
+            {{#each actor.vorteil.karma as |vorteil|}}
+                <a class="item-edit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
+            {{/each}}
+            {{#each actor.vorteil.geweihtentradition as |vorteil|}}
                 <a class="item-edit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
             {{/each}}
     </div>
-    {{/if}}
 
     {{#if actor.system.attribute}}
     <div class="attribute statblockreihe">
@@ -155,13 +174,23 @@
         <b>Angriffe: </b>
         {{#each actor.angriffe as |angriff key|}}
         <div class="flexrow">
+            {{#if (waffe_ist_fernkampf angriff) }}
+            <a 
+                class="rollable icon-small" 
+                data-rolltype="fernkampf_diag" 
+                data-itemid="{{angriff.id}}"
+            >
+                <i class="fas fa-dice-d20"></i>
+            </a>
+            {{else}}
             <a 
                 class="rollable icon-small" 
                 data-rolltype="angriff_diag" 
                 data-itemid="{{angriff.id}}"
             >
                 <i class="fas fa-dice-d20"></i>
-            </a>
+            {{/if}}
+            
                     
             <label><b><a class="item-edit" data-itemid="{{angriff.id}}">{{angriff.name}} </a></b></label>
             {{#if (waffe_ist_fernkampf angriff) }}

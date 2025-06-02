@@ -68,6 +68,15 @@
         {{/if}}
     </span>
 
+    {{#if (or actor.vorteil.zaubertraditionen actor.vorteil.geweihtentradition)}}
+    <div>
+        <label><b>Aktive Übernatürliche Tradition:</b></label>
+        <select class="selected-uebernatuerlicher-stil" name="system.misc.selected_uebernatuerlicher_stil">
+            {{selectOptions actor.misc.uebernatuerliche_stile_list selected=actor.system.misc.selected_uebernatuerlicher_stil nameAttr="key" labelAttr="name"}}
+        </select>
+    </div>
+    {{/if}}
+
     <h2>Fertigkeiten</h2>
     <a class="item-create" data-itemclass="uebernatuerliche_fertigkeit"
         ><i class="fas fa-plus"></i>Neue Übernatürliche Fertigkeit</a
@@ -239,7 +248,11 @@
     <div>
         <label><b>Magische Traditionen:</b>&nbsp; | &nbsp;</label>
         {{#each actor.vorteil.zaubertraditionen}}
-        <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
+        <a class="item-edit {{#unless this._stats.compendiumSource}}error-highlight{{/unless}}" 
+           data-itemid="{{this.id}}"
+           {{#unless this._stats.compendiumSource}}title="Am Vorteil stimmt etwas nicht. Bitte füge den Vorteil neu hinzu"{{/unless}}> 
+           {{this.name}} 
+        </a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
     </div>
@@ -247,7 +260,11 @@
     <div>
         <label><b>Magische Vorrteile:</b>&nbsp; | &nbsp;</label>
         {{#each actor.vorteil.magie}}
-        <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
+        <a class="item-edit {{#unless this._stats.compendiumSource}}error-highlight{{/unless}}" 
+           data-itemid="{{this.id}}"
+           {{#unless this._stats.compendiumSource}}title="Am Vorteil stimmt etwas nicht. Bitte füge den Vorteil neu hinzu"{{/unless}}> 
+           {{this.name}} 
+        </a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
     </div>
@@ -255,7 +272,11 @@
     <div>
         <label><b>Karmale Traditionen:</b>&nbsp; | &nbsp;</label>
         {{#each actor.vorteil.geweihtentradition}}
-        <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
+        <a class="item-edit {{#unless this._stats.compendiumSource}}error-highlight{{/unless}}" 
+           data-itemid="{{this.id}}"
+           {{#unless this._stats.compendiumSource}}title="Am Vorteil stimmt etwas nicht. Bitte füge den Vorteil neu hinzu"{{/unless}}> 
+           {{this.name}} 
+        </a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
     </div>
@@ -263,7 +284,11 @@
     <div>
         <label><b>Karmale Vorteile:</b>&nbsp; | &nbsp;</label>
         {{#each actor.vorteil.karma}}
-        <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
+        <a class="item-edit {{#unless this._stats.compendiumSource}}error-highlight{{/unless}}" 
+           data-itemid="{{this.id}}"
+           {{#unless this._stats.compendiumSource}}title="Am Vorteil stimmt etwas nicht. Bitte füge den Vorteil neu hinzu"{{/unless}}> 
+           {{this.name}} 
+        </a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
     </div>

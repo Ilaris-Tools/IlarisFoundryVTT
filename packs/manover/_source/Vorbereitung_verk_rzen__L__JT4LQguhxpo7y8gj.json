@@ -1,0 +1,44 @@
+{
+  "name": "Vorbereitung verkürzen (L)",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": {
+      "0": {
+        "name": "Vorteil Geweiht I",
+        "type": "VORTEIL",
+        "value": [
+          "8QG19b6FhFxJiRBx"
+        ]
+      }
+    },
+    "gruppe": "3",
+    "probe": "Liturgie -4",
+    "gegenprobe": "",
+    "text": "Die Vorbereitungszeit der Liturgie halbiert sich. Eine Vorbereitungszeit von 1 Aktion wird zu 0 Aktionen. Die Aktion Konflikt ist von dieser Modifikation nicht betroffen.",
+    "input": {
+      "label": "",
+      "field": "NUMBER"
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "JT4LQguhxpo7y8gj",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "12.0.1",
+    "createdTime": null,
+    "modifiedTime": 1746367795246,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!JT4LQguhxpo7y8gj"
+}

@@ -1,0 +1,41 @@
+{
+  "name": "Gletscherwand",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Eis",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Eine 3 Schritt hohe und bis zu 4 Schritt lange Wand aus blankem Eis wächst entlang einer von dir bestimmten Linie aus dem Boden. Sie verfügt über eine Härte von 16. Wer sich der Wand nähert, erleidet bei misslungener Konterprobe (KO, 12) Erfrieren (S. 98).",
+    "maechtig": "Die Härte der Wand steigt um 8, die maximale Länge um 2 Schritt und die Höhe um 1 Schritt.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "16 Aktionen",
+    "ziel": "Zone",
+    "reichweite": "8 Schritt",
+    "wirkungsdauer": "16 Minuten",
+    "kosten": "8 AsP",
+    "erlernen": "Dru 16; Mag 18",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "GOVA4g6e7Zp0pJFB",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!GOVA4g6e7Zp0pJFB"
+}

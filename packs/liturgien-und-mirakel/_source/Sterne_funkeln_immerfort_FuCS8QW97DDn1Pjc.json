@@ -1,0 +1,41 @@
+{
+  "name": "Sterne funkeln immerfort",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Licht, Nächtlicher Schatten, Seefahrt, Stiller Wanderer, Wildnis, Wissen",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Dein Ziel kann selbst durch Wolken und Nebel die Sterne erkennen. Proben zur Orientierung sind um +4 erleichtert.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "16 Aktionen",
+    "ziel": "Einzelperson",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "4 Stunden",
+    "kosten": "4 KaP",
+    "erlernen": "Aves, Fir, Ifi, Pra 8; Phe 12; Eff, Hes, Nan, Swa 14",
+    "pw": 0,
+    "gruppe": 25
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "FuCS8QW97DDn1Pjc",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!FuCS8QW97DDn1Pjc"
+}

@@ -1,0 +1,44 @@
+{
+  "name": "Opferung (Aves)",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": {
+      "0": {
+        "name": "Vorteil Tradition der Avesgeweihten III",
+        "type": "STILE",
+        "value": [
+          "H1VkW48XMRWWJJYH"
+        ]
+      }
+    },
+    "gruppe": "3",
+    "probe": "Liturgie +4",
+    "gegenprobe": "",
+    "text": "Ein rituelles Opfer erleichtert die Liturgie um +4. Der Opfergegenstand wird dabei verbraucht, zerstört oder verschwindet. Avesgeweihte opfern die Feder eines Zugvogels, dessen Weg der Geweihte auf seinen Reisen kreuzt.\nVoraussetzung: Tradition der Avesgeweihten III und Verwendung dieser Tradition\nAnmerkung: Opfergegenstände sollten nicht so häufig sein, dass jede zweite Liturgie mit dieser Modifikation gewirkt wird. Umgekehrt sollten sie nicht so selten sein, dass die Modifikation nie eingesetzt werden kann. Als Richtwert gilt eine Opferung alle zwei Spielabende.",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "88xoKRFPitUMoOKX",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "12.0.1",
+    "createdTime": null,
+    "modifiedTime": 1746367412363,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!88xoKRFPitUMoOKX"
+}

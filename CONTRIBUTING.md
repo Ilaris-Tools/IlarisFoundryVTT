@@ -1,4 +1,7 @@
-Ein technischer Überblick und Hinweise zur Mitarbeit am Projekt. Die Dokumentation der FoundryVTT-API alleine macht es nicht gerade einfach direkt in den chaotischen Code dieses Projekts einzusteigen. Diese Hinweise und Anleitungen sollen etwas Hilfestellung geben. 
+Ein technischer Überblick und Hinweise zur Mitarbeit am Projekt. 
+Die Dokumentation der FoundryVTT-API alleine macht es nicht gerade einfach direkt in den chaotischen Code dieses Projekts einzusteigen. 
+Diese Hinweise und Anleitungen sollen etwas Hilfestellung geben.
+Wenn du noch nicht mit Foundry gearbeitet hast lohnt sich vielleicht ein Blick auf die Zusammenfassung von Konzepten und Begriffen in [Foundry Basics](docs/foundry-basics.md).
 
 
 ## Installation für Entwickler
@@ -47,8 +50,14 @@ Actor: (types: Held, Kreatur) haben jeweils eigene html Templates zum ansehen un
 
 Items: Zauber, Fertigkeiten, Gegenstände, Eigenheiten, Waffen, Vorteile usw.. sind Items mit jeweiligem type. Auch hier gibt es einzelne html snippets als formular um individuelle Items zu bearbeiten.
 
-TODO: Dateistruktur und wichtige Dateien erklären
+`/packs/`: Im packs ordner befinden sich die Daten fuer die im Spiel verfuegbaren Kompendien. Letztendlich befinden
+sich hier alle möglichen Ilaris-Inhalte (items, actors, effects...) wie zB Vorteile, Waffen, kreaturen.
+Foundry behandelt jeden Ordner als Datenbanktabelle mit binary Files, die sich häufig ändern. Um das ganze als Entwickler
+einfacher zu verwalten können, werden alle Einträge als .json-files in den jeweiligen _source unterordner entpackt.
+Sie müssen um live verwendet werden zu können erst wieder gepackt werden. [Mehr dazu in den docs](./docs/packs.md).
 
+
+TODO: Dateistruktur und wichtige Dateien erklären
 
 
 

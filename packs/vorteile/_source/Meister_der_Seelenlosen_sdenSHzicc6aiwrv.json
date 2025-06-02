@@ -1,0 +1,29 @@
+{
+  "name": "Meister der Seelenlosen",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut MU 6",
+    "gruppe": 4,
+    "text": "Wann immer ein gebundenes unheiliges Wesen (S. 81) seinen Dienst erfüllt hat, kannst du für die Hälfte der Basisbeschwörungskosten einen zusätzlichen Dienst erbitten."
+  },
+  "_id": "sdenSHzicc6aiwrv",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!sdenSHzicc6aiwrv"
+}

@@ -1,0 +1,41 @@
+{
+  "name": "Ruf zur Ruhe",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Vergessen",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Dein Ziel verliert das Bedürfnis zu sprechen, solange du nicht sprichst, außer es gelingt ihm eine Konterprobe (Willenskraft, 20).",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "4 Aktionen",
+    "ziel": "Einzelperson",
+    "reichweite": "32 Schritt",
+    "wirkungsdauer": "1 Woche",
+    "kosten": "4 KaP",
+    "erlernen": "Brn 12",
+    "pw": 0,
+    "gruppe": 23
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "9NROCoVC6b1vBzSj",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!9NROCoVC6b1vBzSj"
+}
