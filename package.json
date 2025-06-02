@@ -17,7 +17,8 @@
     "lodash": "^4.17.21",
     "nedb": "^1.8.0",
     "prettier": "^2.5.1",
-    "xml2js": "^0.4.23"
+    "xml2js": "^0.4.23",
+    "@foundryvtt/foundryvtt-cli": "^1.0.4"
   },
   "scripts": {
     "test": "echo \"Warn: no test specified\" && exit 0",
@@ -27,7 +28,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ilaris-tools/IlarisFoundryvtt.git"
+    "url": "git+https://github.com/Ilaris-Tools/IlarisFoundryVTT.git"
   },
   "author": "",
   "bugs": {
