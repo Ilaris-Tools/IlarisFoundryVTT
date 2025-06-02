@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Druiden I",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut KL 4, Vorteil Zauberer I",
+    "gruppe": 5,
+    "text": "Bedingungen: Sichtkontakt, Geste, kein Kontakt mit verhüttetem Material.\n\nDu kannst Zauber in der Tradition der Druiden erlernen und benutzen. Solche Zauber findest du unter den allgemeinen Zaubern und unter Dolchzauber (S. 156).\n\nDruidische Zauber können nicht schriftlich weitergegeben werden."
+  },
+  "_id": "cvZnVCdMFPiGfW8B",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!cvZnVCdMFPiGfW8B"
+}

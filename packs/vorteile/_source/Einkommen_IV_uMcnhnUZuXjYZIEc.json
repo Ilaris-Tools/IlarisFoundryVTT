@@ -1,0 +1,29 @@
+{
+  "name": "Einkommen IV",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Vorteil Einkommen III",
+    "gruppe": 0,
+    "text": "Deine Familie, Organisation oder ein persönlicher Mäzen stellt dir ein monatliches Einkommen von 256 Dukaten zur Verfügung, die du beispielsweise über eine Filiale der Nordlandbank oder ein Ordenshaus beziehen kannst. Fern der Zivilisation kannst du nicht auf dein Einkommen zugreifen. Das Einkommen reicht aus, um die Lebenserhaltungskosten eines Angehörigen der Elite zu decken."
+  },
+  "_id": "uMcnhnUZuXjYZIEc",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!uMcnhnUZuXjYZIEc"
+}

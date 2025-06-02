@@ -1,0 +1,33 @@
+{
+  "name": "Südaventurien",
+  "type": "talent",
+  "img": "systems/Ilaris/assets/images/skills/profan-talent.svg",
+  "system": {
+    "text": "Nördlich von Drôl und Thalusien.",
+    "fertigkeit": "Überleben"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Item.hLMZuMgX1ZVJpzSn"
+    }
+  },
+  "_id": "MGGXnSgXHYk8nPp8",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "Ww4drILJ63YXG1Vc": 3
+  },
+  "_key": "!items!MGGXnSgXHYk8nPp8"
+}

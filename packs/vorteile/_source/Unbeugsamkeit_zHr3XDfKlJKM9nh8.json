@@ -1,0 +1,29 @@
+{
+  "name": "Unbeugsamkeit",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut MU 10",
+    "gruppe": 1,
+    "text": "Deine MR steigt um MU/2 Punkte.\n\nMit einer Aktion Konflikt und einer Konterprobe (MU, 16) kannst du einen auf dir liegenden Zauber abschütteln. Anschließend erleidest du einen Punkt Erschöpfung."
+  },
+  "_id": "zHr3XDfKlJKM9nh8",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!zHr3XDfKlJKM9nh8"
+}

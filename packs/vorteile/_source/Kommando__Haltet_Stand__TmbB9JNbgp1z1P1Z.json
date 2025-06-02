@@ -1,0 +1,29 @@
+{
+  "name": "Kommando: Haltet Stand!",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut CH 4",
+    "gruppe": 2,
+    "text": "Furcht-Effekte für Mitstreiter zählen als eine Stufe niedriger."
+  },
+  "_id": "TmbB9JNbgp1z1P1Z",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!TmbB9JNbgp1z1P1Z"
+}

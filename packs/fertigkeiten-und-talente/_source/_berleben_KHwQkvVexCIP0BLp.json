@@ -1,0 +1,36 @@
+{
+  "name": "Überleben",
+  "type": "fertigkeit",
+  "img": "systems/Ilaris/assets/images/skills/profan-skill.svg",
+  "system": {
+    "basis": 0,
+    "fw": 0,
+    "pw": 0,
+    "attribut_0": "FF",
+    "attribut_1": "GE",
+    "attribut_2": "KO",
+    "gruppe": 5,
+    "text": "Hierunter fallen alle Fähigkeiten, die zum Überleben in der Wildnis erforderlich sind. Du kannst dich orientieren oder einen Lagerplatz, Nahrung und Wasser finden. Außerdem bist du mit typischen Gefahren der Wildnis vertraut und kannst tierische und menschliche Fährten deuten und ihnen folgen.\nDieses Wissen ist rein praktisch; exotische Tiere, Monster oder seltene Heilpflanzen fallen nicht in diesen Bereich.",
+    "pwt": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "KHwQkvVexCIP0BLp",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!KHwQkvVexCIP0BLp"
+}

@@ -1,0 +1,41 @@
+{
+  "name": "Weisheitssegen",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Wissen, Zwölfgöttlicher Ritus",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Proben des Gesegneten auf KL sind um +4 erleichtert, alle Fertigkeiten mit KL um +2.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "4 Aktionen",
+    "ziel": "Einzelperson",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Stunde",
+    "kosten": "4 KaP",
+    "erlernen": "Hes, Nan 4; Ang, Aves, Brn, Eff, Fir, Ifi, Ing, Kor, Per, Phe, Pra, Rah, Ron, Tra, Tsa Swa 8",
+    "pw": 0,
+    "gruppe": 20
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "u4jCIlm06Zhprhbn",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!u4jCIlm06Zhprhbn"
+}

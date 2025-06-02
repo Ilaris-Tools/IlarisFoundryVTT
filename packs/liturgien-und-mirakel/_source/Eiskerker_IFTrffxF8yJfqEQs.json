@@ -1,0 +1,41 @@
+{
+  "name": "Eiskerker",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Winter",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Das Ziel wird von einem Eiskerker mit einer Härte von 16 eingeschlossen, wenn ihm keine Konterprobe (KK, 20) gelingt.",
+    "maechtig": "Die Härte steigt um +8.",
+    "schwierigkeit": "12",
+    "modifikationen": "Eisgrab (–8, Wirkungsdauer bis die Bindung gelöst wird, Kosten 16 KaP, davon 2 gKaP; verdoppelt die Härte und erlaubt keine Konterprobe.)",
+    "vorbereitung": "2 Aktionen",
+    "ziel": "Einzelwesen",
+    "reichweite": "16 Schritt",
+    "wirkungsdauer": "1 Stunde",
+    "kosten": "8 KaP",
+    "erlernen": "Fir 16",
+    "pw": 0,
+    "gruppe": 29
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "IFTrffxF8yJfqEQs",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!IFTrffxF8yJfqEQs"
+}

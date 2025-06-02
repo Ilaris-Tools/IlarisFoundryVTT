@@ -1,0 +1,41 @@
+{
+  "name": "Bund der Schwerter",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Heerführung",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du wählst bis zu 8 Mitstreiter. Bis zum Ende der Schlacht spürst du, in welcher Richtung und ungefährer Entfernung sie sich befinden. Du fühlst auch ihren Tod.",
+    "maechtig": "Du spürst, wenn die Mitstreiter kampfunfähig werden/eine Wunde erleiden/sie auf übermächtige Gegner treffen.",
+    "schwierigkeit": "12",
+    "modifikationen": "Permanenz (–4, Kosten 4 KaP, davon 2 gKaP, Wirkungsdauer bis die Bindung gelöst wird; der Bund wirkt immer, wenn einer der Mitglieder in einem Kampf gerät.)",
+    "vorbereitung": "16 Aktionen",
+    "ziel": "Zone",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "8 Stunden",
+    "kosten": "4 KaP",
+    "erlernen": "Ron 14",
+    "pw": 0,
+    "gruppe": 46
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "RQdCN8JsRuGM9RQy",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!RQdCN8JsRuGM9RQy"
+}

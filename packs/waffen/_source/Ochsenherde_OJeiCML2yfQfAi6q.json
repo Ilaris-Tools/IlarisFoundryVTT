@@ -1,0 +1,59 @@
+{
+  "name": "Ochsenherde",
+  "type": "nahkampfwaffe",
+  "system": {
+    "haerte": 8,
+    "beschaedigung": 0,
+    "tp": "4W6+1",
+    "fertigkeit": "Hiebwaffen",
+    "talent": "Einhandhiebwaffen",
+    "rw": 1,
+    "hauptwaffe": false,
+    "nebenwaffe": false,
+    "eigenschaften": {
+      "kopflastig": true,
+      "niederwerfen": false,
+      "parierwaffe": false,
+      "reittier": false,
+      "ruestungsbrechend": false,
+      "schild": false,
+      "schwer_4": false,
+      "schwer_8": true,
+      "stumpf": false,
+      "unberechenbar": true,
+      "unzerstoerbar": false,
+      "wendig": false,
+      "zerbrechlich": false,
+      "zweihaendig": false,
+      "kein_malus_nebenwaffe": false
+    },
+    "text": "",
+    "aufbewahrungs_ort": "mitführend",
+    "bewahrt_auf": [],
+    "gewicht_summe": 0,
+    "gewicht": 1,
+    "preis": 250,
+    "wm_at": -3,
+    "wm_vt": -3
+  },
+  "_id": "OJeiCML2yfQfAi6q",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!OJeiCML2yfQfAi6q"
+}

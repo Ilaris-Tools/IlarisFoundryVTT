@@ -1,0 +1,41 @@
+{
+  "name": "Astralspeicher (passiv)",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Stabzauber",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du lässt 8 gAsP in den Stab fließen. Fortan wird der Zauberstab zu einem Speicher für Astralenergie. In einem einstündigen Ritual kannst du eigene Astralenergie in den Stab einspeichern, wobei 2 zusätzliche AsP verloren gehen. Zusätzlich wählst du einen Zauber pro 4 volle Punkte PW Stabzauber. Bis zum nächsten Aufladen kannst du die Kosten für diese Zauber teilweise oder ganz aus dem Astralspeicher bezahlen. Der Astralspeicher kann maximal 32 AsP fassen.",
+    "maechtig": "",
+    "schwierigkeit": "",
+    "modifikationen": "",
+    "vorbereitung": "",
+    "ziel": "",
+    "reichweite": "",
+    "wirkungsdauer": "",
+    "kosten": "",
+    "erlernen": "Mag 18",
+    "pw": 0,
+    "gruppe": 15
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "vbr4fslCCTk48CfC",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!vbr4fslCCTk48CfC"
+}

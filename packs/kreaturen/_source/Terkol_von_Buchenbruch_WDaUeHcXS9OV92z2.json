@@ -1,0 +1,938 @@
+{
+  "_id": "WDaUeHcXS9OV92z2",
+  "name": "Terkol von Buchenbruch",
+  "type": "kreatur",
+  "img": "systems/Ilaris/assets/images/token/kreaturentypen/humanoid.png",
+  "system": {
+    "gesundheit": {
+      "erschoepfung": 0,
+      "wunden": 0,
+      "wundabzuege": 0,
+      "wundenignorieren": false,
+      "display": "Volle Gesundheit",
+      "hp": {
+        "max": 9,
+        "value": 9,
+        "threshold": 0
+      }
+    },
+    "energien": {
+      "asp": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      },
+      "gup": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      },
+      "kap": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      }
+    },
+    "initiative": 0,
+    "furcht": {
+      "furchtstufe": 0,
+      "furchtabzuege": 0,
+      "display": ""
+    },
+    "modifikatoren": {
+      "manuellermod": 0,
+      "nahkampfmod": 0
+    },
+    "schips": {
+      "schips": 4,
+      "schips_stern": 4
+    },
+    "attribute": {
+      "KO": {
+        "wert": 0,
+        "pw": 12
+      },
+      "MU": {
+        "wert": 0,
+        "pw": 14
+      },
+      "GE": {
+        "wert": 0,
+        "pw": 12
+      },
+      "KK": {
+        "wert": 0,
+        "pw": 12
+      },
+      "IN": {
+        "wert": 0,
+        "pw": 12
+      },
+      "KL": {
+        "wert": 0,
+        "pw": 8
+      },
+      "CH": {
+        "wert": 0,
+        "pw": 16
+      },
+      "FF": {
+        "wert": 0,
+        "pw": 6
+      }
+    },
+    "edit": false,
+    "kreaturentyp": "humanoid",
+    "kurzbeschreibung": "Weidener Raubritter, Anführer einer Räuberbande",
+    "kampfwerte": {
+      "ws": 5,
+      "ws_stern": 7,
+      "ini": 10,
+      "gs": 5,
+      "koloss": null,
+      "mr": 13,
+      "gs_schwimmend": null
+    },
+    "talente": [],
+    "freietalente": [],
+    "kampfunfaehig": "",
+    "text": "",
+    "abgeleitete": {
+      "globalermod": 0,
+      "nahkampfmoddisplay": "-",
+      "globalermoddisplay": "-"
+    }
+  },
+  "items": [
+    {
+      "_id": "Fab8CoTL8K81suCU",
+      "name": "Kraftvoller Kampf II",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Dein Waffenschaden steigt um +1.\n\nDu kannst in eine Halbschwertstellung wechseln, um deine Waffe in einer um eins kleineren Reichweite zu führen. Der Wechsel in die Stellung oder zurück geschieht in einer Freien Aktion."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!WDaUeHcXS9OV92z2.Fab8CoTL8K81suCU"
+    },
+    {
+      "_id": "QCMSWbHCtHHE5RqV",
+      "name": "Reiterkampf I",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Bedingung: beritten.\n\nDu erhältst Waffenschaden +1, AT +1 und VT +1.\n\nErlaubt das Manöver Sturmangriff (Bewegung und AT) mit dem Pferd: Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Außerdem richtet die nächste Attacke GS Trefferpunkte zusätzlich an."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!WDaUeHcXS9OV92z2.QCMSWbHCtHHE5RqV"
+    },
+    {
+      "_id": "mIerwkb6KOzsU0eW",
+      "name": "Defensiver Kampfstil",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Volle Defensive (S. 36) ist für dich eine einfache Aktion. Dadurch könntest du beispielsweise zusätzlich die Aktion Konflikt wählen, um eine AT –4 ausführen."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!WDaUeHcXS9OV92z2.mIerwkb6KOzsU0eW"
+    },
+    {
+      "_id": "hk5Jy7feLN66i2cC",
+      "name": "Kommando: Formiert Euch!",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Alle Mitstreiter erhalten VT +1."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!WDaUeHcXS9OV92z2.hk5Jy7feLN66i2cC"
+    },
+    {
+      "_id": "UAzt8jCLZRxZC7i7",
+      "name": "Kommando: Haltet Stand!",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Furcht-Effekte für Mitstreiter zählen als eine Stufe niedriger."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!WDaUeHcXS9OV92z2.UAzt8jCLZRxZC7i7"
+    },
+    {
+      "_id": "WQUo4CakUsIqTmj1",
+      "name": "Kommando: Keine Gefangenen!",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Alle Mitstreiter erhalten TP +2."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!WDaUeHcXS9OV92z2.WQUo4CakUsIqTmj1"
+    },
+    {
+      "_id": "j74xjd2rwq4jrSxx",
+      "name": "Niederwerfen",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Erlaubt das Manöver Niederwerfen (AT -4): Gegenprobe: KK. Dein Ziel stürzt und liegt am Boden."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!WDaUeHcXS9OV92z2.j74xjd2rwq4jrSxx"
+    },
+    {
+      "_id": "jIhxmg7GUlaoIJuD",
+      "name": "Sturmangriff",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Erlaubt das Manöver Sturmangriff (Bewegung und AT): Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Außerdem richtet die nächste Attacke GS Trefferpunkte zusätzlich an."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!WDaUeHcXS9OV92z2.jIhxmg7GUlaoIJuD"
+    },
+    {
+      "_id": "nGEGFPGTy2p91rEz",
+      "name": "Durchatmen",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Einmal zwischen zwei Ruhephasen kannst du eine Aktion Konzentration aufwenden und eine Zähigkeits-Probe (16) ablegen. Gelingt die Probe, regenerierst du sofort 1 Wunde oder 2 Erschöpfung, die du im laufenden Kampf erlitten hast."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!WDaUeHcXS9OV92z2.nGEGFPGTy2p91rEz"
+    },
+    {
+      "_id": "i05Mqrggbv2Moh7k",
+      "name": "Standfest",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Nach einem Sturz befindest du dich in kniender statt liegender Position."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!WDaUeHcXS9OV92z2.i05Mqrggbv2Moh7k"
+    },
+    {
+      "_id": "3Lf7Pe1aa5wR7s93",
+      "name": "Willensstark I",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Deine MR steigt um 4 Punkte."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!WDaUeHcXS9OV92z2.3Lf7Pe1aa5wR7s93"
+    },
+    {
+      "_id": "9Lu2GFUJUnXBFPI7",
+      "name": "Abgehärtet I",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Proben zur Abwehr von Giften und Krankheiten sind um +4 erleichtert."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!WDaUeHcXS9OV92z2.9Lu2GFUJUnXBFPI7"
+    },
+    {
+      "_id": "Pt7dU5Zj2Hvfhg9u",
+      "name": "Soziale Anpassungsfähigkeit",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Du bist immun gegen alle Auswirkungen durch ungewohnte Umgebung (S. 55)."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!WDaUeHcXS9OV92z2.Pt7dU5Zj2Hvfhg9u"
+    },
+    {
+      "_id": "ZgX1cTqyJIroQ4uX",
+      "name": "Eindrucksvoll II",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "In Rededuellen sind Proben auf Betören und Einschüchtern um +2 erleichtert.\n\nBei Proben auf Betören, Einschüchtern und Gebräuche gelten Patzer als gewöhnlich misslungen, außer sie entstehen durch eine ungewohnte Umgebung (S. 55)."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!WDaUeHcXS9OV92z2.ZgX1cTqyJIroQ4uX"
+    },
+    {
+      "_id": "0MtVylKXOHStWP3C",
+      "name": "eigenschaft",
+      "type": "eigenschaft",
+      "system": {
+        "text": ""
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!WDaUeHcXS9OV92z2.0MtVylKXOHStWP3C"
+    },
+    {
+      "_id": "dmW867iR3zzuBVlG",
+      "name": "Quelle",
+      "type": "info",
+      "system": {
+        "text": "AoE S. 89"
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!WDaUeHcXS9OV92z2.dmW867iR3zzuBVlG"
+    },
+    {
+      "_id": "yClCvZz79ABYTQ7s",
+      "name": "Hand",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Stumpf",
+            "text": ""
+          },
+          {
+            "name": "Zerbrechlich",
+            "text": ""
+          }
+        ],
+        "tp": "1W6+1",
+        "haerte": 0,
+        "rw": 0,
+        "lz": null,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 8,
+        "vt": 8
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!WDaUeHcXS9OV92z2.yClCvZz79ABYTQ7s"
+    },
+    {
+      "_id": "YKkatFmt7Ma6CbaV",
+      "name": "Wolfschnitter",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [],
+        "tp": "2W6+5",
+        "haerte": 0,
+        "rw": 1,
+        "lz": null,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 16,
+        "vt": 14
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!WDaUeHcXS9OV92z2.YKkatFmt7Ma6CbaV"
+    },
+    {
+      "_id": "DMQymGu5c3m5mVbi",
+      "name": "Schwert+Schild",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Wendig",
+            "text": ""
+          }
+        ],
+        "tp": "2W6+3",
+        "haerte": 0,
+        "rw": 0,
+        "lz": null,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 14,
+        "vt": 16
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!WDaUeHcXS9OV92z2.DMQymGu5c3m5mVbi"
+    },
+    {
+      "_id": "Tbj8UFLF8u1Nl0Gg",
+      "name": "Anführen",
+      "type": "freiestalent",
+      "system": {
+        "text": "",
+        "pw": 15,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!WDaUeHcXS9OV92z2.Tbj8UFLF8u1Nl0Gg"
+    },
+    {
+      "_id": "THgvQqzdGM1KcDoj",
+      "name": "Einschüchtern",
+      "type": "freiestalent",
+      "system": {
+        "text": "",
+        "pw": 15,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!WDaUeHcXS9OV92z2.THgvQqzdGM1KcDoj"
+    },
+    {
+      "_id": "jiS633BgxwJmo6Do",
+      "name": "Menschenkenntnis",
+      "type": "freiestalent",
+      "system": {
+        "text": "",
+        "pw": 12,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!WDaUeHcXS9OV92z2.jiS633BgxwJmo6Do"
+    },
+    {
+      "_id": "97iMcvIo4oiaBQL9",
+      "name": "Wachsamkeit",
+      "type": "freiestalent",
+      "system": {
+        "text": "",
+        "pw": 12,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!WDaUeHcXS9OV92z2.97iMcvIo4oiaBQL9"
+    },
+    {
+      "_id": "RyoI0klqLL3Wu0ys",
+      "name": "Überreden",
+      "type": "freiestalent",
+      "system": {
+        "text": "",
+        "pw": 13,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!WDaUeHcXS9OV92z2.RyoI0klqLL3Wu0ys"
+    }
+  ],
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "prototypeToken": {
+    "displayName": 20,
+    "actorLink": false,
+    "width": 1,
+    "height": 1,
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "light": {
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "coloration": 1,
+      "dim": 0,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false,
+        "type": null
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      },
+      "attenuation": 0.5,
+      "negative": false,
+      "priority": 0,
+      "color": null
+    },
+    "disposition": 1,
+    "displayBars": 50,
+    "bar1": {
+      "attribute": "gesundheit.hp"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "flags": {},
+    "randomImg": false,
+    "name": "Terkol von Buchenbruch",
+    "texture": {
+      "src": "systems/Ilaris/assets/images/token/kreaturentypen/humanoid.png",
+      "scaleX": 1,
+      "scaleY": 1,
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "offsetX": 0,
+      "offsetY": 0,
+      "fit": "contain",
+      "rotation": 0,
+      "tint": "#ffffff",
+      "alphaThreshold": 0.75
+    },
+    "sight": {
+      "angle": 360,
+      "enabled": false,
+      "range": 0,
+      "brightness": 1,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "appendNumber": false,
+    "prependAdjective": false,
+    "hexagonalShape": 0,
+    "detectionModes": [],
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    }
+  },
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!actors!WDaUeHcXS9OV92z2"
+}

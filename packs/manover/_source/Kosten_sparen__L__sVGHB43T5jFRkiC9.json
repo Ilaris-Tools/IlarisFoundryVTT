@@ -1,0 +1,44 @@
+{
+  "name": "Kosten sparen (L)",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": {
+      "0": {
+        "name": "Vorteil Liturgische Disziplin",
+        "type": "VORTEIL",
+        "value": [
+          "QuCH0FaAWespaU94"
+        ]
+      }
+    },
+    "gruppe": "3",
+    "probe": "Liturgie -4",
+    "gegenprobe": "",
+    "text": "Die Kosten der Liturgie sinken um ein Viertel der Basiskosten. Die Kosten können dadurch nicht unter die Hälfte der Basiskosten sinken.",
+    "input": {
+      "label": "",
+      "field": "NUMBER"
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "sVGHB43T5jFRkiC9",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "12.0.1",
+    "createdTime": null,
+    "modifiedTime": 1746448933506,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!sVGHB43T5jFRkiC9"
+}

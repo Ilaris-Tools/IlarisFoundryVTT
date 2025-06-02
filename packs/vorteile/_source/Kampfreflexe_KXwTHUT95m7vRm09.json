@@ -1,0 +1,29 @@
+{
+  "name": "Kampfreflexe",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut IN 4",
+    "gruppe": 2,
+    "text": "Deine INI steigt um 4 Punkte."
+  },
+  "_id": "KXwTHUT95m7vRm09",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!KXwTHUT95m7vRm09"
+}

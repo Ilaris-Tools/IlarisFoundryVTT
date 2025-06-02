@@ -1,0 +1,41 @@
+{
+  "name": "Blick in die Gedanken",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Hellsicht",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du siehst die Gedanken deines Ziels als verschwommene Bilder vor dir. Weiß das Ziel, dass seine Gedanken gelesen werden, kann es dich mit einer Konterprobe (Willenskraft, 20) in die Irre führen.\nMächtige Liturgie: Du erhältst einen deutlichen/klaren Einblick in die Gedanken deines Ziels.",
+    "maechtig": "",
+    "schwierigkeit": "Magieresistenz",
+    "modifikationen": "Kampfsinn (nur Elf, –4; du kannst die AT des Gegners vorhersehen, VT gegen diesen Gegner sind um +4 erleichtert.)\nTraumreise (–4, Wirkungsdauer 1 Stunde; du kannst an den Träumen des Ziels teilhaben.)\nVerhandlungssinn (nicht Elf, –4, Wirkungsdauer 1 Stunde; du kannst die Argumente und Absichten deines Ziels vorhersehen, gesellschaftliche Proben sind um +2 erleichtert.)",
+    "vorbereitung": "4 Aktionen",
+    "ziel": "Einzelperson",
+    "reichweite": "4 Schritt",
+    "wirkungsdauer": "16 Initiativphasen",
+    "kosten": "8 AsP",
+    "erlernen": "Elf, Mag 14; Dru, Hex 16; Geo 18",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "1Qt0yUVsHXZhhJT9",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!1Qt0yUVsHXZhhJT9"
+}

@@ -1,0 +1,34 @@
+{
+  "name": "Wagen, zweispännig",
+  "type": "gegenstand",
+  "system": {
+    "haerte": 0,
+    "beschaedigung": 0,
+    "aufbewahrungs_ort": "mitführend",
+    "bewahrt_auf": [],
+    "gewicht_summe": 0,
+    "gewicht": -512,
+    "preis": 0,
+    "text": ""
+  },
+  "_id": "FhfQAYFDVRU70uaG",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!FhfQAYFDVRU70uaG"
+}

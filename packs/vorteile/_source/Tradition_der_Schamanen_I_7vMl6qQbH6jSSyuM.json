@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Schamanen I",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut IN 4, Vorteil Zauberer I",
+    "gruppe": 5,
+    "text": "Bedingungen: Sichtkontakt, Geste oder Tanz, gesprochene oder gesungene Formel.\n\nDu kannst Zauber in der Tradition der Schamanen erlernen und benutzen. Solche Zauber findest du unter Geister d. Stärkung (S. 162), Geister d. Zorns, Geister rufen, Geister vertreiben und Keulenrituale (S. 167).\n\nVerärgert der Nutznießer eines positiven schamanischen Zaubers den entsprechenden Geist, endet der Zauber sofort (Spielleiterentscheid)."
+  },
+  "_id": "7vMl6qQbH6jSSyuM",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!7vMl6qQbH6jSSyuM"
+}

@@ -11,9 +11,7 @@
     >
     <div>
         <select class="selected-kampfstil" name="system.misc.selected_kampfstil">
-            {{#select actor.system.misc.selected_kampfstil}} {{#each actor.misc.kampfstile_list}}
-            <option value="{{this}}">{{get_label this}}</option>
-            {{/each}} {{/select}}
+            {{selectOptions actor.misc.kampfstile_list selected=actor.system.misc.selected_kampfstil nameAttr="key" labelAttr="name"}}
         </select>
     </div>
     <div>
@@ -31,7 +29,7 @@
         </div>
         {{#each actor.nahkampfwaffen as |nwaffe key|}}
         <div class="flexrow">
-            <a class="rollable icon-small" data-rolltype="nahkampf_diag" data-itemid="{{nwaffe.id}}"
+            <a class="rollable icon-small" data-rolltype="angriff_diag" data-itemid="{{nwaffe.id}}"
                 ><i class="fas fa-dice-d20"></i
             ></a>
             <a
@@ -93,7 +91,7 @@
             <hr />
             <div>
                 <label><b>Schaden:</b></label>
-                <label>{{nwaffe.system.dice_anzahl}}d6+{{nwaffe.system.dice_plus}}</label>
+                <label>{{nwaffe.system.schaden}}</label>
             </div>
             <div>
                 <label><b>Fertigkeit:</b></label>
@@ -217,7 +215,7 @@
             <hr />
             <div>
                 <label><b>Schaden:</b></label>
-                <label>{{fwaffe.system.dice_anzahl}}d6+{{fwaffe.system.dice_plus}}</label>
+                <label>{{fwaffe.system.schaden}}</label>
             </div>
             <div>
                 <label><b>Fertigkeit:</b></label>
@@ -338,7 +336,11 @@
     <div>
         <label><b>Kampfvorteile:</b>&nbsp; | &nbsp;</label>
         {{#each actor.vorteil.kampf}}
-        <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
+        <a class="item-edit {{#unless this._stats.compendiumSource}}error-highlight{{/unless}}" 
+           data-itemid="{{this.id}}" 
+           {{#unless this._stats.compendiumSource}}title="Am Vorteil stimmt etwas nicht. Bitte füge den Vorteil neu hinzu"{{/unless}}> 
+           {{this.name}} 
+        </a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
     </div>
@@ -346,7 +348,11 @@
     <div>
         <label><b>Kampfstile:</b>&nbsp; | &nbsp;</label>
         {{#each actor.vorteil.kampfstil}}
-        <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
+        <a class="item-edit {{#unless this._stats.compendiumSource}}error-highlight{{/unless}}" 
+           data-itemid="{{this.id}}"
+           {{#unless this._stats.compendiumSource}}title="Am Vorteil stimmt etwas nicht. Bitte füge den Vorteil neu hinzu"{{/unless}}> 
+           {{this.name}} 
+        </a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
     </div>

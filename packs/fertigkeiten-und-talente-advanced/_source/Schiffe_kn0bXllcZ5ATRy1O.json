@@ -1,0 +1,33 @@
+{
+  "name": "Schiffe",
+  "type": "talent",
+  "img": "systems/Ilaris/assets/images/skills/profan-talent.svg",
+  "system": {
+    "text": "Schiffe umfasst alles was in den Aufgabenbereich eines Matrosen auf einem Segel- oder Ruderschiff fällt.",
+    "fertigkeit": "Seefahrt"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Item.jvS2wbJkuCpFbiYC"
+    }
+  },
+  "_id": "kn0bXllcZ5ATRy1O",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "Ww4drILJ63YXG1Vc": 3
+  },
+  "_key": "!items!kn0bXllcZ5ATRy1O"
+}

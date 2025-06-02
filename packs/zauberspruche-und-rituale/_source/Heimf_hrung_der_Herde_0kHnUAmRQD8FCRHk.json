@@ -1,0 +1,41 @@
+{
+  "name": "Heimführung der Herde",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Geister der Stärkung, Geister rufen, Verständigung",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Alle Tiere in einem Radius von 4 Meilen, die dir gehören, kommen zu dir.",
+    "maechtig": "Verdoppelt den Radius.",
+    "schwierigkeit": "12",
+    "modifikationen": "Namensruf (–4; der Ruf betrifft nur ein bestimmtes Tier in 8 Meilen Radius)",
+    "vorbereitung": "16 Aktionen",
+    "ziel": "Zone",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "augenblicklich",
+    "kosten": "8 AsP",
+    "erlernen": "Smn 14",
+    "pw": 0,
+    "gruppe": 5
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "0kHnUAmRQD8FCRHk",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!0kHnUAmRQD8FCRHk"
+}

@@ -1,0 +1,41 @@
+{
+  "name": "Parinors Vermächtnis",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Wachstum",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Die gesegnete Pflanze wächst doppelt so schnell, bis sie zu einem prächtigen Exemplar ihrer Art geworden ist.",
+    "maechtig": "Die Pflanze wächst dreimal/viermal/fünfmal/sechsmal so schnell.",
+    "schwierigkeit": "12",
+    "modifikationen": "Heilkraut (–4, 4 KaP; innerhalb einer Stunde wächst aus einem Samen eine durchschnittliche Heilpflanze.)",
+    "vorbereitung": "4 Minuten",
+    "ziel": "Pflanze",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "permanent",
+    "kosten": "8 KaP",
+    "erlernen": "Per 16",
+    "pw": 0,
+    "gruppe": 36
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "ZvJrQdKlJPODMQDp",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!ZvJrQdKlJPODMQDp"
+}

@@ -92,7 +92,7 @@ let label = {
     zweihaendig: 'Zweihändig',
     erschoepfung: 'Erschöpfung',
     // Kampfstile
-    ohne: 'Kein Kampfstil',
+    ohne: 'Kein Stil',
     bhk: 'Beidhändiger Kampf',
     kvk: 'Kraftvoller Kampf',
     pwk: 'Parierwaffenkampf',
@@ -103,6 +103,7 @@ let label = {
     kbak: 'Kombinierte Aktion (-4)',
     vldf: 'Volle Defensive (VT +4)',
     vlof: 'Volle Offensive (AT +4, VT -8)',
+    vlofok: 'Volle Offensive (AT +4, VT -4)',
     gzkl: 'Größenklasse',
     bwng: 'Bewegung',
     lcht: 'Licht',
@@ -134,6 +135,7 @@ let label = {
     km_shwl: 'Schildwall (VT -4)',
     km_stag: 'Sturmangriff (Bewegung und AT)',
     km_tdst: 'Todesstoß (AT -8)',
+    km_tdst_dm: 'Todesstoß (+2 Wunden)',
     km_uebr: 'Überrennen (Bewegung und AT)',
     km_utlf: 'Unterlaufen (VT -4)',
     fm_gzss: 'Gezielter Schuss (FK -2)',
@@ -317,6 +319,107 @@ let zere_choice = {
     6: '1 Jahr',
 };
 ILARIS.zere_choice = zere_choice;
+
+let waffeneigenschaften = {
+    kein_malus_nebenwaffe: 'Kein Malus als Nebenwaffe',
+    kein_reiter: 'Nicht für Reiter',
+    kopflastig: 'Kopflastig',
+    niederwerfen: 'Niederwerfen',
+    niederwerfen_4: 'Niederwerfen (-4)',
+    niederwerfen_8: 'Niederwerfen (-8)',
+    parierwaffe: 'Parierwaffe',
+    reittier: 'Reittier',
+    ruestungsbrechend: 'Rüstungsbrechend',
+    schild: 'Schild',
+    schwer_4: 'Schwer (4)',
+    schwer_8: 'Schwer (8)',
+    stationaer: 'Stationär',
+    stumpf: 'Stumpf',
+    umklammern_212: 'Umklammern (-2,12)',
+    umklammern_416: 'Umklammern (-4,16)',
+    umklammern_816: 'Umklammern (-8,16)',
+    unberechenbar: 'Unberechenbar',
+    unzerstoerbar: 'Unzerstörbar',
+    wendig: 'Wendig',
+    zerbrechlich: 'Zerbrechlich',
+    zweihaendig: 'Zweihändig',
+}
+ILARIS.waffeneigenschaften = waffeneigenschaften;
+
+let manoever = {
+    voraussetzung_type: {
+        VORTEIL: 'Vorteil',
+        WAFFENEIGENSCHAFT: 'Waffeneigenschaft',
+        STILE: "Stile"
+    },
+    manoever_type: {
+        0: "Nahkampf Angriff",
+        1: "Fernkampf",
+        2: "Magie",
+        3: "Karma",
+        4: "Nahkampf Verteidigung",
+    },
+    selector_type: {
+        CHECKBOX: 'Checkbox',
+        NUMBER: 'Nummerneingabefeld',
+        TREFFER_ZONE: 'Trefferzonenauswahl',
+    },
+    modification_type: {
+        DAMAGE: "Schaden",
+        DEFENCE: "Verteidigung",
+        ATTACK: "Angriff/Fernkampf",
+        INITIATIVE: "Initiative",
+        LOADING_TIME: "Ladezeit/Vorbereitungszeit",
+        SPECIAL_RESOURCE: "Ressource für Zauber/Liturgien",
+        WEAPON_DAMAGE: "Waffenschaden",
+        ZERO_DAMAGE: "Kein Schaden",
+        CHANGE_DAMAGE_TYPE: "Schadenstyp ändern",
+        ARMOR_BREAKING: "Rüstung ignorieren",
+        SPECIAL_TEXT: "Spezialeffekt"
+    },
+    operator: {
+        MULTIPLY: 'Multiplizieren',
+        ADD: 'Addieren',
+        SUBTRACT: 'Subtrahieren'
+    },
+    labels: {
+        prerequisites: "Voraussetzungen",
+        prerequisitesDescription: "Lege hier fest, welche Voraussetzungen erfüllt sein müssen, um dieses Manöver nutzen zu können.",
+        prerequisiteType: "Voraussetzungtyp",
+        prerequisiteDescription: "Voraussetzung Beschreibung",
+        advantages: "Vorteile",
+        styles: "Stile",
+        weaponProperties: "Waffeneigenschaften",
+        input: "Input",
+        inputDescription: "Hier legst du fest, welches Eingabefeld im Würfeldialog für dieses Manöver angezeigt werden soll:",
+        inputTypes: {
+            checkbox: "Checkbox - Eine einfache Ja/Nein Auswahl",
+            number: "Nummerneingabefeld - Ein Feld für Zahleneingaben",
+            hitZone: "Trefferzonenauswahl - Auswahl einer spezifischen Trefferzone"
+        },
+        inputLabel: "Inputlabel",
+        inputType: "Inputtype",
+        numberLimits: "Zahlenbegrenzung",
+        min: "Min",
+        max: "Max",
+        modifications: "Modifikatoren",
+        modificationsDescription: "Hier definierst du die Effekte des Manövers. Empfehlungen:",
+        modificationsHints: [
+            "Verwende \"Subtrahieren\" nur wenn nötig (z.B. für Belastungswert, wenn du das Feld Target verwendest)",
+            "Eine -1 ist leichter zu lesen als \"Subtrahieren\"",
+            "Beispiel Wuchtschlag: AT -1 (Addieren) und Schaden +1 (Addieren)"
+        ],
+        modificationType: "Modifikatortyp",
+        value: "Wert",
+        operator: "Operator",
+        target: "Target",
+        targetPlaceholder: "z.B. actor.system.abgeleitete.be",
+        affectedByInput: "Wird von Input beeinflusst",
+        affectedByInputDescription: "Wenn aktiviert, wird der Wert mit der Eingabe multipliziert, falls ein Inputfeld vorhanden ist. Eine Checkbox wirkt sich nie auf den Wert aus.",
+        specialEffect: "Spezialeffekt beschreiben, der als Text beim Schadenswurf angezeigt wird"
+    }
+};
+ILARIS.manoever = manoever;
 
 let manoever_nahkampf = {
     kbak: {
@@ -672,3 +775,39 @@ let kreatur_item_options = {
     info:"Info"
 };
 ILARIS.kreatur_item_options = kreatur_item_options;
+
+let angriff_typ = {
+    Nah:"Nahkampf",
+    Fern:"Fernkampf",
+}
+ILARIS.angriff_typ = angriff_typ;
+
+let schadenstypen = {
+    PROFAN: "Profan",
+    STUMPF: "Stumpf",
+    STICH: "Stich",
+    SCHARF: "Scharf",
+    MAGISCH: "Magisch",
+    GEWEIHT: "Geweiht",
+    EIS: "Eis",
+    ERZ: "Erz",
+    FEUER: "Feuer",
+    HUMUS: "Humus",
+    LUFT: "Luft",
+    WASSER: "Wasser",
+    DAEMONISCH: "Dämonisch",
+}
+ILARIS.schadenstypen = schadenstypen;
+
+let combat_dialog = {
+    labels: {
+        angriffNah: "Nahkampfangriff",
+        nahkampfwaffe: "Nahkampfangriff",
+        angriffFern: "Fernkampfangriff",
+        fernkampfwaffe: "Fernkampfangriff",
+        magie: "Magie",
+        liturgie: "Liturgie",
+        anrufung: "Anrufung"
+    }
+};
+ILARIS.combat_dialog = combat_dialog;

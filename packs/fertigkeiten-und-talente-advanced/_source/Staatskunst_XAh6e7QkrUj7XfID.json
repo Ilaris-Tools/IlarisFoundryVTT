@@ -1,0 +1,33 @@
+{
+  "_id": "XAh6e7QkrUj7XfID",
+  "name": "Staatskunst",
+  "type": "talent",
+  "img": "systems/Ilaris/assets/images/skills/profan-talent.svg",
+  "system": {
+    "text": "Mit Staatskunde wird der politische Alltag, sowie das Wissen über aktuelle Herrschaftsstrukturen, geltendes Recht und die Heraldik geregelt.",
+    "fertigkeit": "Diplomatie"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Item.gN7ug2XFncVvxs1p"
+    }
+  },
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "Ww4drILJ63YXG1Vc": 3
+  },
+  "_key": "!items!XAh6e7QkrUj7XfID"
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Tsageweihten II",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut IN 6, Vorteil Tradition der Tsageweihten I",
+    "gruppe": 7,
+    "text": "Tsageweihte sind schnell entschlossen und spontan. Wird eine Liturgie mit der Modifikation Vorbereitungszeit verkürzen gewirkt, ist sie zusätzlich um +2 erleichtert."
+  },
+  "_id": "9L3RluWQs40GXu2q",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!9L3RluWQs40GXu2q"
+}

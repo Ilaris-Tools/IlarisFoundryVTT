@@ -1,0 +1,29 @@
+{
+  "name": "Aufmerksamkeit",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut IN 8",
+    "gruppe": 2,
+    "text": "Misslingt deinem Gegner eine Verteidigung gegen dich, die mit einem Manöver verstärkt wurde, darfst du sofort einen Passierschlag gegen ihn ausführen. Pro Runde kannst du die erste Verteidigung gegen einen Passierschlag als Freie Reaktion ausführen."
+  },
+  "_id": "hjS3zaiPRw0nycOD",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!hjS3zaiPRw0nycOD"
+}

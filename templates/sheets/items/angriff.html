@@ -14,21 +14,42 @@
             <label>Härte: 
                 <input type="number" name="system.haerte" value="{{item.system.haerte}}" />
             </label>
-            <label>Ladezeit: 
-                <input type="number" name="system.lz" value="{{item.system.lz}}" />
-            </label>
+            {{#if (ifEq item.system.typ "Fern")}}
+                <label>Ladezeit: 
+                    <input type="number" name="system.lz" value="{{item.system.lz}}" />
+                </label>
+            {{/if}}
             <label>Reichweite: 
                 <input type="number" name="system.rw" value="{{item.system.rw}}" />
             </label>
+            <label><div>Angrifftyp:</div> 
+                <select name="system.typ">
+                    {{selectOptions angrifftypen selected=item.system.typ}}
+                </select>
+            </label>
+        </div>
+        <div class="flexrow">
             <label>Attacke: 
                 <input type="number" name="system.at" value="{{item.system.at}}" />
             </label>
-            <label>Verteidigung: 
-                <input type="number" name="system.vt" value="{{item.system.vt}}" />
-            </label>
+            {{#if (ifEq item.system.typ "Nah")}}
+                <label>Verteidigung: 
+                    <input type="number" name="system.vt" value="{{item.system.vt}}" />
+                </label>
+            {{/if}}
             <label>Trefferpunkte: 
-                <input type="text" name="system.tp" value="{{item.system.tp}}" />
-            </label>
+                <div class="flexrow">
+                    <input 
+                        class="regex-check" 
+                        pattern="^\d+[WwDd]\d{1,2}([\+\-]?\d*)?$"
+                        title="TP der Waffe in Schema xWy+/-z Anzahl Würfel x, Würfelkürzel W,w,D oder d, Seitenanzahl y, +/- Modifikator und Modifikator z" 
+                        type="text" 
+                        name="system.tp" 
+                        value="{{item.system.tp}}" 
+                    />
+                    <span class="validation-icon"></span>
+                </div>
+            </label>            
         </div>
         <div>
             <b>Eigenschaften </b><a class="add-eigenschaft" data-itemclass="Neue Eigenschaft">[+]</a><b>: </b>

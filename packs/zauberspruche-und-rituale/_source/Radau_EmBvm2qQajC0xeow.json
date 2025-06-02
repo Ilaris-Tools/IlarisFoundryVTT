@@ -1,0 +1,41 @@
+{
+  "name": "Radau",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Luft, Umwelt",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du verzauberst deinen Besen, sodass er ein zufälliges Ziel in einem Radius von 8 Schritt angreift (INI 8, RW 1, AT 8, TP 2W6). Fällt bei einer AT eine 1–4 (wird für den Besen passiv gewürfelt: bei einer VT eine 17–20), sucht sich der Besen ein neues Ziel. Während der Wirkungsdauer ist der Besen unzerbrechlich und magisch.",
+    "maechtig": "AT und TP steigen um +2.",
+    "schwierigkeit": "12",
+    "modifikationen": "Gezielte Wut (–4, Einzelwesen; der Besen greift nur ein von dir vorbestimmtes Ziel an.)",
+    "vorbereitung": "1 Aktion",
+    "ziel": "Einzelobjekt (Hexenbesen)",
+    "reichweite": "16 Schritt",
+    "wirkungsdauer": "16 Initiativphasen",
+    "kosten": "8 AsP",
+    "erlernen": "Hex 12",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "EmBvm2qQajC0xeow",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!EmBvm2qQajC0xeow"
+}

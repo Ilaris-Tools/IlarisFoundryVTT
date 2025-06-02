@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Gildenmagier III",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut KL 8, Vorteil Tradition der Gildenmagier II",
+    "gruppe": 5,
+    "text": "Erlaubt die spontane Modifikation Zeit lassen (Zauber +2): Verdoppelt die Vorbereitungszeit, aber erleichtert den Zauber um +2. Eine Vorbereitungszeit von 0 Aktionen wird zu 1 Aktion. Kann einmal pro Zauber eingesetzt werden und wirkt nicht auf Zauber mit frei wählbarer Vorbereitungszeit."
+  },
+  "_id": "zpsHiYBMdIJmoO65",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!zpsHiYBMdIJmoO65"
+}
