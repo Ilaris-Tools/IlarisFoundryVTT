@@ -1,11 +1,11 @@
-import { IlarisActorSheet } from './actor.js';
+import { IlarisActorSheet } from './actor.js'
 
 export class HeldenSheet extends IlarisActorSheet {
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             // classes: ["ilaris", "sheet"],
             classes: ['ilaris'],
-            template: 'systems/Ilaris/templates/sheets/helden.html',
+            template: 'systems/Ilaris/templates/sheets/helden.hbs',
             // width: 720,
             // height: 800,
             // resizable: false,
@@ -16,6 +16,6 @@ export class HeldenSheet extends IlarisActorSheet {
                     initial: 'fertigkeiten',
                 },
             ],
-        });
+        })
     }
 }
