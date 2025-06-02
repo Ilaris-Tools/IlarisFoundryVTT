@@ -2,7 +2,8 @@
 
 FoundryVTT wird als Webapp, auf einem Server (oder Home-PC) ausgeführt, dafür muss eine Lizenz erworben werden. Das Ilaris als `System` für FoundryVTT (dieses Projekt), kann über eine url direkt aus der Weboberfläche als Erweiterung installiert werden. Oder auf dem Server direkt nach `foundrydata/systems/` oder `foundrydata/Data/systems` geklont werden siehe [Entwicklerinstallation](CONTRIBUTING.md).
 
-Einige Begriffe aus dem FoundryVTT-Jargon kurz erklärt: 
+Einige Begriffe aus dem FoundryVTT-Jargon kurz erklärt:
+
 - **module**: Eigenständiges Plugin, das optional zu beliebigen oder bestimmten Systemen installiert werden kann. zB: [Dice so Nice](https://foundryvtt.com/packages/dice-so-nice/) für animierte 3D Würfel.
 - **system**: Das Regelsystem von dem als Kernkomponente nur eins geladen wird. Enthält Datenstrukturen, Spiellogik, Heldenbögen, Würfeldialoge usw.. zB: Ilaris
 - **world**: Spielwelten gehören idR zu einem bestimmten system und beinhalten Karten, Helden, Kreaturen, Notizen usw.. Spielleiter können bei laufendem Betrieb zwischen Spielwelten (auch mit versch. systems) wechseln. zB: Mittwochrunde

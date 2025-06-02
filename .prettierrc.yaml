@@ -7,5 +7,6 @@ overrides:
     - files:
           - '*.json'
           - '*.css'
+          - '*.md'
       options:
           tabWidth: 2
