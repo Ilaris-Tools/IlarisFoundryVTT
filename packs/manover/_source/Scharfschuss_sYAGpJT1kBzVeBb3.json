@@ -7,7 +7,29 @@
     "gruppe": "1",
     "probe": "FK -X",
     "gegenprobe": "",
-    "text": "Der Angriff richtet X (maximal 8) Trefferpunkte mehr an."
+    "text": "Der Angriff richtet X (maximal 8) Trefferpunkte mehr an.",
+    "input": {
+      "label": "",
+      "field": "NUMBER",
+      "min": 0,
+      "max": 8
+    },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": -1,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      },
+      "1": {
+        "type": "DAMAGE",
+        "value": 1,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    }
   },
   "effects": [],
   "folder": null,
@@ -17,10 +39,10 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "0.3.20",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1745306119092,
-    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "modifiedTime": 1747163501401,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
   },

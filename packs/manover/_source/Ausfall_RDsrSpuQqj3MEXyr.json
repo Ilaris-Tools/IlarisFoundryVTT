@@ -12,10 +12,30 @@
         ]
       }
     },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": 2,
+        "operator": "SUBTRACT",
+        "target": "actor.system.abgeleitete.be",
+        "affectedByInput": true
+      },
+      "1": {
+        "type": "SPECIAL_TEXT",
+        "value": "Dein Ziel muss zurückweichen und sich auf dich konzentrieren",
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
     "gruppe": "0",
     "probe": "AT -2-BE",
     "gegenprobe": "",
-    "text": "Das Ziel muss in einer Freien Reaktion bis zu 2 Schritt zurückweichen, du folgst in einer Freien Aktion. Möchte es in seiner nächsten Initiativephase einen anderen Gegner als dich angreifen, darfst du einen Passierschlag ausführen."
+    "text": "Das Ziel muss in einer Freien Reaktion bis zu 2 Schritt zurückweichen, du folgst in einer Freien Aktion. Möchte es in seiner nächsten Initiativephase einen anderen Gegner als dich angreifen, darfst du einen Passierschlag ausführen.",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    }
   },
   "effects": [],
   "folder": null,
@@ -25,10 +45,10 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "0.3.20",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1745304557272,
-    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "modifiedTime": 1746878600314,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
   },

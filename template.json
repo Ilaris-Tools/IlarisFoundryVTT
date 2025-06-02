@@ -399,6 +399,11 @@
     },
     "manoever": {
       "voraussetzungen": [],
+      "input": {
+        "label": "Checkbox",
+        "field": "CHECKBOX"
+      },
+      "modifications": [],
       "gruppe": 0,
       "probe": "",
       "gegenprobe": "",

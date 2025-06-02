@@ -11,9 +11,7 @@
     >
     <div>
         <select class="selected-kampfstil" name="system.misc.selected_kampfstil">
-            {{#select actor.system.misc.selected_kampfstil}} {{#each actor.misc.kampfstile_list}}
-            <option value="{{this}}">{{get_label this}}</option>
-            {{/each}} {{/select}}
+            {{selectOptions actor.misc.kampfstile_list selected=actor.system.misc.selected_kampfstil nameAttr="key" labelAttr="name"}}
         </select>
     </div>
     <div>
@@ -30,7 +28,7 @@
             <label class="icon-small" style="float: right"></label>
         </div>
         {{#each actor.nahkampfwaffen as |nwaffe key|}}
-        <div class="flexrow"> 
+        <div class="flexrow">
             <a class="rollable icon-small" data-rolltype="angriff_diag" data-itemid="{{nwaffe.id}}"
                 ><i class="fas fa-dice-d20"></i
             ></a>
@@ -338,7 +336,11 @@
     <div>
         <label><b>Kampfvorteile:</b>&nbsp; | &nbsp;</label>
         {{#each actor.vorteil.kampf}}
-        <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
+        <a class="item-edit {{#unless this._stats.compendiumSource}}error-highlight{{/unless}}" 
+           data-itemid="{{this.id}}" 
+           {{#unless this._stats.compendiumSource}}title="Am Vorteil stimmt etwas nicht. Bitte füge den Vorteil neu hinzu"{{/unless}}> 
+           {{this.name}} 
+        </a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
     </div>
@@ -346,7 +348,11 @@
     <div>
         <label><b>Kampfstile:</b>&nbsp; | &nbsp;</label>
         {{#each actor.vorteil.kampfstil}}
-        <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
+        <a class="item-edit {{#unless this._stats.compendiumSource}}error-highlight{{/unless}}" 
+           data-itemid="{{this.id}}"
+           {{#unless this._stats.compendiumSource}}title="Am Vorteil stimmt etwas nicht. Bitte füge den Vorteil neu hinzu"{{/unless}}> 
+           {{this.name}} 
+        </a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
     </div>

@@ -7,7 +7,27 @@
     "gruppe": "1",
     "probe": "FK -4",
     "gegenprobe": "",
-    "text": "Der Angriff ignoriert die gegnerische Rüstung und richtet SP statt TP an. Voraussetzung: Pfeile mit Waffeneigenschaft Rüstungsbrechend."
+    "text": "Der Angriff ignoriert die gegnerische Rüstung und richtet SP statt TP an. Voraussetzung: Pfeile mit Waffeneigenschaft Rüstungsbrechend.",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      },
+      "1": {
+        "type": "SPECIAL_TEXT",
+        "value": "Ignoriert Rüstung",
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    }
   },
   "effects": [],
   "folder": null,
@@ -17,10 +37,10 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "0.3.20",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1745306107239,
-    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "modifiedTime": 1747163769969,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
   },

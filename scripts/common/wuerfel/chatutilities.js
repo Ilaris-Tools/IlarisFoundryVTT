@@ -18,6 +18,9 @@ export function multiplyString(reichweite, multiplier) {
 export function signed(i) {
     if (i < 0) { 
         return `${i}`
+    } else if (i > 0) {
+        return `+${i}`
     } else {
-        return `+${i}`}
+        return ''
+    }
 };

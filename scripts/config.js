@@ -92,7 +92,7 @@ let label = {
     zweihaendig: 'Zweihändig',
     erschoepfung: 'Erschöpfung',
     // Kampfstile
-    ohne: 'Kein Kampfstil',
+    ohne: 'Kein Stil',
     bhk: 'Beidhändiger Kampf',
     kvk: 'Kraftvoller Kampf',
     pwk: 'Parierwaffenkampf',
@@ -353,12 +353,71 @@ let manoever = {
         STILE: "Stile"
     },
     manoever_type: {
-        0: "Nahkampf",
+        0: "Nahkampf Angriff",
         1: "Fernkampf",
         2: "Magie",
         3: "Karma",
+        4: "Nahkampf Verteidigung",
     },
-    voraussetzung_tooltip: "Bestimmt welche Voraussetzung(en) für das Manöver erforderlich sind. Es können mehrere Voraussetzungen angegeben werden, die dann alle erfüllt sein müssen (UND-Verknüpfung). Die Voraussetzungstypen Vorteile und Stile erlauben eine ODER-Verknüpfung, wenn im Feld Vorteile also mehrere Vorteile als Voraussetzung angegeben sind, muss der Charakter nur über einen der Vorteile verfügen. Stile (Übernatürliche und Kampf) können nicht mit den übrigen Vorteilen durch eine ODER-Verknüpfung kombiniert werden, da meist nur ein Stil gleichzeitig verwendet werden kann, siehe Regelwerk. Wenn ein Manöver durch ein Vorteil und einen Stil freigeschlatet wird, muss ein neues Manöver erstellt werden.",
+    selector_type: {
+        CHECKBOX: 'Checkbox',
+        NUMBER: 'Nummerneingabefeld',
+        TREFFER_ZONE: 'Trefferzonenauswahl',
+    },
+    modification_type: {
+        DAMAGE: "Schaden",
+        DEFENCE: "Verteidigung",
+        ATTACK: "Angriff/Fernkampf",
+        INITIATIVE: "Initiative",
+        LOADING_TIME: "Ladezeit/Vorbereitungszeit",
+        SPECIAL_RESOURCE: "Ressource für Zauber/Liturgien",
+        WEAPON_DAMAGE: "Waffenschaden",
+        ZERO_DAMAGE: "Kein Schaden",
+        CHANGE_DAMAGE_TYPE: "Schadenstyp ändern",
+        ARMOR_BREAKING: "Rüstung ignorieren",
+        SPECIAL_TEXT: "Spezialeffekt"
+    },
+    operator: {
+        MULTIPLY: 'Multiplizieren',
+        ADD: 'Addieren',
+        SUBTRACT: 'Subtrahieren'
+    },
+    labels: {
+        prerequisites: "Voraussetzungen",
+        prerequisitesDescription: "Lege hier fest, welche Voraussetzungen erfüllt sein müssen, um dieses Manöver nutzen zu können.",
+        prerequisiteType: "Voraussetzungtyp",
+        prerequisiteDescription: "Voraussetzung Beschreibung",
+        advantages: "Vorteile",
+        styles: "Stile",
+        weaponProperties: "Waffeneigenschaften",
+        input: "Input",
+        inputDescription: "Hier legst du fest, welches Eingabefeld im Würfeldialog für dieses Manöver angezeigt werden soll:",
+        inputTypes: {
+            checkbox: "Checkbox - Eine einfache Ja/Nein Auswahl",
+            number: "Nummerneingabefeld - Ein Feld für Zahleneingaben",
+            hitZone: "Trefferzonenauswahl - Auswahl einer spezifischen Trefferzone"
+        },
+        inputLabel: "Inputlabel",
+        inputType: "Inputtype",
+        numberLimits: "Zahlenbegrenzung",
+        min: "Min",
+        max: "Max",
+        modifications: "Modifikatoren",
+        modificationsDescription: "Hier definierst du die Effekte des Manövers. Empfehlungen:",
+        modificationsHints: [
+            "Verwende \"Subtrahieren\" nur wenn nötig (z.B. für Belastungswert, wenn du das Feld Target verwendest)",
+            "Eine -1 ist leichter zu lesen als \"Subtrahieren\"",
+            "Beispiel Wuchtschlag: AT -1 (Addieren) und Schaden +1 (Addieren)"
+        ],
+        modificationType: "Modifikatortyp",
+        value: "Wert",
+        operator: "Operator",
+        target: "Target",
+        targetPlaceholder: "z.B. actor.system.abgeleitete.be",
+        affectedByInput: "Wird von Input beeinflusst",
+        affectedByInputDescription: "Wenn aktiviert, wird der Wert mit der Eingabe multipliziert, falls ein Inputfeld vorhanden ist. Eine Checkbox wirkt sich nie auf den Wert aus.",
+        specialEffect: "Spezialeffekt beschreiben, der als Text beim Schadenswurf angezeigt wird"
+    }
 };
 ILARIS.manoever = manoever;
 
@@ -722,3 +781,33 @@ let angriff_typ = {
     Fern:"Fernkampf",
 }
 ILARIS.angriff_typ = angriff_typ;
+
+let schadenstypen = {
+    PROFAN: "Profan",
+    STUMPF: "Stumpf",
+    STICH: "Stich",
+    SCHARF: "Scharf",
+    MAGISCH: "Magisch",
+    GEWEIHT: "Geweiht",
+    EIS: "Eis",
+    ERZ: "Erz",
+    FEUER: "Feuer",
+    HUMUS: "Humus",
+    LUFT: "Luft",
+    WASSER: "Wasser",
+    DAEMONISCH: "Dämonisch",
+}
+ILARIS.schadenstypen = schadenstypen;
+
+let combat_dialog = {
+    labels: {
+        angriffNah: "Nahkampfangriff",
+        nahkampfwaffe: "Nahkampfangriff",
+        angriffFern: "Fernkampfangriff",
+        fernkampfwaffe: "Fernkampfangriff",
+        magie: "Magie",
+        liturgie: "Liturgie",
+        anrufung: "Anrufung"
+    }
+};
+ILARIS.combat_dialog = combat_dialog;
