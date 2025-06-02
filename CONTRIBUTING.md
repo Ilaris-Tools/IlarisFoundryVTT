@@ -12,14 +12,9 @@ Wenn du noch nicht mit Foundry gearbeitet hast lohnt sich vielleicht ein Blick a
 - Dieses Repository in den `foundrydata/Data/systems` Ordner clonen. (ggf. in "Ilaris" umbenennen?)
 - `develop` oder Feature-Branch auschecken und foundry neu starten
 
-### Visual Studio Code
-
-TODO: workspace file anlegen mit run tasks für foundry und tests?
-
-
-#### Empfohlene Plugins
-- [Unit Tests: Jest Runner](https://marketplace.visualstudio.com/items?itemName=Orta.vscode-jest)
-- [Code Formatting: Prettier](https://marketplace.visualstudio.com/items/?itemName=esbenp.prettier-vscode)
+In der Dokumentation finden sich weitere Schritte zum
+[Einrichten von VS Code](./docs/develop/tools.md#vs-code)
+und einiger [Entwicklertools](./docs/deveolop/tools.md#husky-pre-commit).
 
 
 ## Versionen und Workflow
