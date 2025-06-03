@@ -63,17 +63,14 @@ export async function wuerfelwurf(event, actor) {
         const attribut_name = $(event.currentTarget).data('attribut')
         label = CONFIG.ILARIS.label[attribut_name]
         pw = systemData.attribute[attribut_name].pw
-        const html = await renderTemplate(
-            'systems/Ilaris/templates/chat/probendiag_attribut.html',
-            {
-                choices_xd20: CONFIG.ILARIS.xd20_choice,
-                checked_xd20: '1',
-                choices_schips: CONFIG.ILARIS.schips_choice,
-                checked_schips: '0',
-                rollModes: CONFIG.Dice.rollModes,
-                defaultRollMode: game.settings.get('core', 'rollMode'),
-            },
-        )
+        const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_attribut.hbs', {
+            choices_xd20: CONFIG.ILARIS.xd20_choice,
+            checked_xd20: '1',
+            choices_schips: CONFIG.ILARIS.schips_choice,
+            checked_schips: '0',
+            rollModes: CONFIG.Dice.rollModes,
+            defaultRollMode: game.settings.get('core', 'rollMode'),
+        })
         let d = new Dialog(
             {
                 title: 'Attributsprobe',
@@ -139,7 +136,7 @@ export async function wuerfelwurf(event, actor) {
         for (const [i, tal] of array_talente.entries()) {
             talent_list[i] = tal.name
         }
-        const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_profan.html', {
+        const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_profan.hbs', {
             choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: '1',
             choices_schips: CONFIG.ILARIS.schips_choice,
@@ -227,17 +224,14 @@ export async function wuerfelwurf(event, actor) {
     } else if (rolltype == 'freie_fertigkeit_diag') {
         label = $(event.currentTarget).data('fertigkeit')
         pw = Number($(event.currentTarget).data('pw')) * 8 - 2
-        const html = await renderTemplate(
-            'systems/Ilaris/templates/chat/probendiag_attribut.html',
-            {
-                choices_xd20: CONFIG.ILARIS.xd20_choice,
-                checked_xd20: '1',
-                choices_schips: CONFIG.ILARIS.schips_choice,
-                checked_schips: '0',
-                rollModes: CONFIG.Dice.rollModes,
-                defaultRollMode: game.settings.get('core', 'rollMode'),
-            },
-        )
+        const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_attribut.hbs', {
+            choices_xd20: CONFIG.ILARIS.xd20_choice,
+            checked_xd20: '1',
+            choices_schips: CONFIG.ILARIS.schips_choice,
+            checked_schips: '0',
+            rollModes: CONFIG.Dice.rollModes,
+            defaultRollMode: game.settings.get('core', 'rollMode'),
+        })
         let d = new Dialog(
             {
                 title: 'Freie Fertigkeitsprobe',
@@ -298,7 +292,7 @@ export async function wuerfelwurf(event, actor) {
         label = $(event.currentTarget).data('name')
         let formula = $(event.currentTarget).data('formula')
         const html = await renderTemplate(
-            'systems/Ilaris/templates/chat/probendiag_simpleformula.html',
+            'systems/Ilaris/templates/chat/probendiag_simpleformula.hbs',
             {
                 rollModes: CONFIG.Dice.rollModes,
                 defaultRollMode: game.settings.get('core', 'rollMode'),
@@ -354,17 +348,14 @@ export async function wuerfelwurf(event, actor) {
         if ($(event.currentTarget).data('xd20') == '0') {
             xd20 = '0'
         }
-        const html = await renderTemplate(
-            'systems/Ilaris/templates/chat/probendiag_attribut.html',
-            {
-                choices_xd20: CONFIG.ILARIS.xd20_choice,
-                checked_xd20: xd20,
-                choices_schips: CONFIG.ILARIS.schips_choice,
-                checked_schips: '0',
-                rollModes: CONFIG.Dice.rollModes,
-                defaultRollMode: game.settings.get('core', 'rollMode'),
-            },
-        )
+        const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_attribut.hbs', {
+            choices_xd20: CONFIG.ILARIS.xd20_choice,
+            checked_xd20: xd20,
+            choices_schips: CONFIG.ILARIS.schips_choice,
+            checked_schips: '0',
+            rollModes: CONFIG.Dice.rollModes,
+            defaultRollMode: game.settings.get('core', 'rollMode'),
+        })
         let d = new Dialog(
             {
                 title: 'Probe ( ' + label + ')',
@@ -429,7 +420,7 @@ export async function wuerfelwurf(event, actor) {
         let item = actor.items.get(itemId)
         console.log(item)
         pw = item.system.pw
-        const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_magie.html', {
+        const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_magie.hbs', {
             choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: '1',
             choices_schips: CONFIG.ILARIS.schips_choice,
@@ -669,7 +660,7 @@ export async function wuerfelwurf(event, actor) {
         let item = actor.items.get(itemId)
         console.log(item)
         pw = item.system.pw
-        const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_karma.html', {
+        const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_karma.hbs', {
             choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: '1',
             choices_schips: CONFIG.ILARIS.schips_choice,

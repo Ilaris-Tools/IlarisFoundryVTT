@@ -3,7 +3,7 @@ export class ManeuverPacksSettings extends FormApplication {
         return foundry.utils.mergeObject(super.defaultOptions, {
             id: 'maneuver-packs-settings',
             title: 'Manöver Kompendien Einstellungen',
-            template: 'systems/Ilaris/templates/settings/maneuver-packs.html',
+            template: 'systems/Ilaris/templates/settings/maneuver-packs.hbs',
             width: 500,
             height: 'auto',
             closeOnSubmit: true,

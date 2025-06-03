@@ -29,7 +29,7 @@ export async function roll_crit_message(
             fumble = true
         }
     }
-    const html_roll = await renderTemplate('systems/Ilaris/templates/chat/probenchat_profan.html', {
+    const html_roll = await renderTemplate('systems/Ilaris/templates/chat/probenchat_profan.hbs', {
         title: `${label}`,
         text: text,
         crit: crit,

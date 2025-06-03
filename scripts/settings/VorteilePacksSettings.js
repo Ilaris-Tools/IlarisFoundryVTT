@@ -3,7 +3,7 @@ export class VorteilePacksSettings extends FormApplication {
         return foundry.utils.mergeObject(super.defaultOptions, {
             id: 'vorteile-packs-settings',
             title: 'Vorteile Kompendien Einstellungen',
-            template: 'systems/Ilaris/templates/settings/vorteile-packs.html',
+            template: 'systems/Ilaris/templates/settings/vorteile-packs.hbs',
             width: 500,
             height: 'auto',
             closeOnSubmit: true,
