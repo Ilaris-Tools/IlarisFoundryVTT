@@ -1,18 +1,18 @@
-import { IlarisItemSheet } from './item.js';
+import { IlarisItemSheet } from './item.js'
 
 export class UebernatuerlichFertigkeitSheet extends IlarisItemSheet {
     async getData() {
-        const data = super.getData();
+        const data = super.getData()
         if (data.hasOwner) {
-            data.fertigkeit_list = this.item.actor.misc.uebernatuerlich_fertigkeit_list;
+            data.fertigkeit_list = this.item.actor.misc.uebernatuerlich_fertigkeit_list
         }
-        return data;
+        return data
     }
 
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             // classes: ["ilaris", "sheet"],
-            template: 'systems/Ilaris/templates/sheets/items/uebernatuerlich_fertigkeit.html',
+            template: 'systems/Ilaris/templates/sheets/items/uebernatuerlich_fertigkeit.hbs',
             // width: 720,
             // height: 800,
             // resizable: false,
@@ -23,7 +23,7 @@ export class UebernatuerlichFertigkeitSheet extends IlarisItemSheet {
             //         initial: "fertigkeiten",
             //     },
             // ]
-        });
+        })
     }
 
     // getData() {

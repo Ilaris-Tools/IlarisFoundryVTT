@@ -1,10 +1,10 @@
-import { IlarisItemSheet } from './item.js';
+import { IlarisItemSheet } from './item.js'
 
 export class FreieFertigkeitSheet extends IlarisItemSheet {
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             // classes: ["ilaris", "sheet"],
-            template: 'systems/Ilaris/templates/sheets/items/freie_fertigkeit.html',
+            template: 'systems/Ilaris/templates/sheets/items/freie_fertigkeit.hbs',
             // width: 720,
             // height: 800,
             // resizable: false,
@@ -15,7 +15,7 @@ export class FreieFertigkeitSheet extends IlarisItemSheet {
             //         initial: "fertigkeiten",
             //     },
             // ]
-        });
+        })
     }
 
     // getData() {

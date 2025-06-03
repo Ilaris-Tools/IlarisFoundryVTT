@@ -1,19 +1,19 @@
-import { IlarisItemSheet } from './item.js';
+import { IlarisItemSheet } from './item.js'
 
 export class UebernatuerlichTalentSheet extends IlarisItemSheet {
     async getData() {
-        const data = super.getData();
+        const data = super.getData()
         if (data.hasOwner) {
-            data.fertigkeit_list = this.item.actor.misc.uebernatuerlich_fertigkeit_list;
-            console.log(data);
+            data.fertigkeit_list = this.item.actor.misc.uebernatuerlich_fertigkeit_list
+            console.log(data)
         }
-        return data;
+        return data
     }
 
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             // classes: ["ilaris", "sheet"],
-            template: 'systems/Ilaris/templates/sheets/items/uebernatuerlich_talent.html',
+            template: 'systems/Ilaris/templates/sheets/items/uebernatuerlich_talent.hbs',
             // width: 720,
             // height: 800,
             // resizable: false,
@@ -24,7 +24,7 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
             //         initial: "fertigkeiten",
             //     },
             // ]
-        });
+        })
     }
 
     // getData() {

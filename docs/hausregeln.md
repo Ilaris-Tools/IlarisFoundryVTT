@@ -11,7 +11,6 @@ Was möglich ist und wie es funktioniert ist im Folgendem beschrieben.
 > bearbeitet werden, aber diese werden bei Updates möglicherweise wieder
 > überschrieben. Es empfiehlt sich eigene Kompendien anzulegen.
 
-
 ## Vorteile
 
 Ilaris-Vorteile stehen als [Kompendium](foundry-basics.md) zur Verfügung
@@ -23,7 +22,6 @@ sind. Die Vorteile selbst erscheinen auf dem Charakterblatt aber haben (noch)
 keinen direkten Einfluss auf Regelmechaniken. Sie eignen sich aber als
 Vorraussetzung für eigene Manöver, die dann im Würfeldialog zur Auswahl stehen
 und Proben beeinflussen können.
-
 
 ## Manöver
 

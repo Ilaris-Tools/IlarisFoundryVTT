@@ -1,29 +1,29 @@
 export class IlarisItemSheet extends ItemSheet {
     // Setze ich das an der richtigen Stelle?
     async getData() {
-        const data = super.getData();
-        data.hasOwner = this.item.actor != null;
-        return data;
+        const data = super.getData()
+        data.hasOwner = this.item.actor != null
+        return data
     }
 
     activateListeners(html) {
-        super.activateListeners(html);
-        html.find('.item-delete').click((ev) => this._onItemDelete(ev));
+        super.activateListeners(html)
+        html.find('.item-delete').click((ev) => this._onItemDelete(ev))
     }
 
     _onItemDelete(event) {
-        const itemID = event.currentTarget.dataset.itemid;
+        const itemID = event.currentTarget.dataset.itemid
         if (!itemID) {
-            ui.notifications?.warn("Cannot delete item: No item ID found");
-            return;
+            ui.notifications?.warn('Cannot delete item: No item ID found')
+            return
         }
 
         if (this.actor) {
             // If item is embedded in an actor, delete it from the actor
-            this.actor.deleteEmbeddedDocuments('Item', [itemID]);
+            this.actor.deleteEmbeddedDocuments('Item', [itemID])
         } else {
             // If item is not embedded, delete the item itself
-            this.item.delete();
+            this.item.delete()
         }
     }
 

@@ -1,10 +1,10 @@
-import { IlarisItemSheet } from './item.js';
+import { IlarisItemSheet } from './item.js'
 
 export class FertigkeitSheet extends IlarisItemSheet {
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ['ilaris', 'sheet', 'item', 'skill'],
-            template: 'systems/Ilaris/templates/sheets/items/fertigkeit.html',
+            template: 'systems/Ilaris/templates/sheets/items/fertigkeit.hbs',
             // width: 720,
             // height: 800,
             // resizable: false,
@@ -15,7 +15,7 @@ export class FertigkeitSheet extends IlarisItemSheet {
             //         initial: "fertigkeiten",
             //     },
             // ]
-        });
+        })
     }
 
     // getData() {
