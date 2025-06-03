@@ -1,0 +1,41 @@
+{
+  "name": "Objektsegen",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Zwölfgöttlicher Ritus",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du segnest ein Objekt bis zur Größe eines Rucksacks oder eine Substanz mit bis zu 8 Litern Volumen. Das Objekt gilt als geweiht.",
+    "maechtig": "Verdoppelt die Größe des Objekts bzw. das Volumen.",
+    "schwierigkeit": "12",
+    "modifikationen": "Bauwerk (–8; du kannst größere Objekte wie Brücken oder Stollen segnen. Kosten und Wirkungsdauer sind deutlich höher und Spielleiterentscheid.)",
+    "vorbereitung": "4 Minuten",
+    "ziel": "Einzelobjekt",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Tag",
+    "kosten": "4 KaP",
+    "erlernen": "Ang, Aves, Brn, Eff, Fir, Hes, Ifi, Ing,  Kor, Nan, Per, Phe, Pra, Rah, Ron, Tra, Tsa, Swa 8",
+    "pw": 0,
+    "gruppe": 20
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "v4RZ7MGQwUXC9Uq7",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!v4RZ7MGQwUXC9Uq7"
+}

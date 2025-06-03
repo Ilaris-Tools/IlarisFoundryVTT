@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Hesindegeweihten I",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut KL 4, Vorteil Geweiht I, Kein Vorteil Tradition der Praiosgeweihten I, Kein Vorteil Tradition der Rondrageweihten I, Kein Vorteil Tradition der Borongeweihten I, Kein Vorteil Tradition der Phexgeweihten I, Kein Vorteil Tradition der Efferdgeweihten I, Kein Vorteil Tradition der Ingerimmgeweihten I, Kein Vorteil Tradition der Angroschgeweihten I, Kein Vorteil Tradition der Perainegeweihten I, Kein Vorteil Tradition der Firungeweihten I, Kein Vorteil Tradition der Rahjageweihten I, Kein Vorteil Tradition der Tsageweihten I, Kein Vorteil Tradition der Traviageweihten I, Kein Vorteil Tradition der Swafnirgeweihten I, Kein Vorteil Tradition der Ifirngeweihten I, Kein Vorteil Tradition der Nandusgeweihten I, Kein Vorteil Tradition der Korgeweihten I, Kein Vorteil Tradition der Avesgeweihten I",
+    "gruppe": 7,
+    "text": "Bedingungen: Sichtkontakt, Geste, gesprochenes oder gesungenes Gebet.\n\nDu kannst Liturgien in der Tradition der Hesindegeweihten erlernen und benutzen. Solche Liturgien findest du unter den allgemeinen Liturgien, unter Magie und Wissen (ab S. 187).\n\nLiturgien sind um 2-8 Punkte erschwert, wenn ihr Einsatz gegen die Prinzipien des Geweihten verstößt."
+  },
+  "_id": "k8mg6FE7CnjnA72k",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!k8mg6FE7CnjnA72k"
+}

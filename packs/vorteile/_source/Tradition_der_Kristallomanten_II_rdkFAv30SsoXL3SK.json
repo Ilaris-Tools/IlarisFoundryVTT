@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Kristallomanten II",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut KL 6, Vorteil Tradition der Kristallomanten I",
+    "gruppe": 5,
+    "text": "Durch das Studium der Edelsteine gelten Kristallomanten als herausragende Artefaktmagier. Zauber zur Artefakterschaffung und zur magischen Analyse sind um +2 erleichtert."
+  },
+  "_id": "rdkFAv30SsoXL3SK",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!rdkFAv30SsoXL3SK"
+}

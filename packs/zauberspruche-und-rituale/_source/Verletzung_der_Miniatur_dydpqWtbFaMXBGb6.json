@@ -1,0 +1,41 @@
+{
+  "name": "Verletzung der Miniatur",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Dolchzauber, Verständigung",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du fügst dir mit dem Dolch selbst eine oder mehrere Wunden zu. Das Opfer deiner Minitatur der Herrschaft (s.o.) erleidet genau so viele Wunden. Sollte das Opfer durch diese Wunden sterben, kann es eine Konterprobe (KO, 16) ablegen, um die Wunden abzuwehren.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "8 Aktionen",
+    "ziel": "Miniatur der Herrschaft",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "augenblicklich",
+    "kosten": "8 AsP",
+    "erlernen": "Dru 18",
+    "pw": 0,
+    "gruppe": 1
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "dydpqWtbFaMXBGb6",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!dydpqWtbFaMXBGb6"
+}

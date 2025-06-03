@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Zauberbarden I",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut CH 4, Vorteil Zauberer I",
+    "gruppe": 5,
+    "text": "Bedingungen: Sichtkontakt, Instrumentenspiel, Ziel kann dich hören.\n\nDu kannst Zauber in der Tradition der Zauberbarden erlernen und benutzen. Solche Zauber findest du unter Zaubermelodien (S. 174).\n\nDie Bedingung Instrumentenspiel kann nicht ignoriert werden."
+  },
+  "_id": "6ITTNIBzJFXVI24y",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!6ITTNIBzJFXVI24y"
+}

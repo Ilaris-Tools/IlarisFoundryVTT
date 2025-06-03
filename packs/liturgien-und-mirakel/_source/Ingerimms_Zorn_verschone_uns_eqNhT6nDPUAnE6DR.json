@@ -1,0 +1,41 @@
+{
+  "name": "Ingerimms Zorn verschone uns",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Heiliges Erz",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Der Stein des Ingerimm erscheint. Im Radius von 8 Meilen um diesen unbeweglichen Stein sind alle Lebewesen und Bauwerke vor den elementaren Kräften des Feuers und des Erzes (Brände, Steinschlag, Erdbeben, Vulkanausbrüche) geschützt.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "4 Minuten",
+    "ziel": "Einzelobjekt",
+    "reichweite": "dereweit",
+    "wirkungsdauer": "1 Woche",
+    "kosten": "32 KaP",
+    "erlernen": "Ang, Ing 16",
+    "pw": 0,
+    "gruppe": 32
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "eqNhT6nDPUAnE6DR",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!eqNhT6nDPUAnE6DR"
+}

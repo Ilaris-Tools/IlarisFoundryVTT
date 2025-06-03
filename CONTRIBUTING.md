@@ -12,14 +12,9 @@ Wenn du noch nicht mit Foundry gearbeitet hast lohnt sich vielleicht ein Blick a
 - Dieses Repository in den `foundrydata/Data/systems` Ordner clonen. (ggf. in "Ilaris" umbenennen?)
 - `develop` oder Feature-Branch auschecken und foundry neu starten
 
-### Visual Studio Code
-
-TODO: workspace file anlegen mit run tasks für foundry und tests?
-
-
-#### Empfohlene Plugins
-- [Unit Tests: Jest Runner](https://marketplace.visualstudio.com/items?itemName=Orta.vscode-jest)
-- [Code Formatting: Prettier](https://marketplace.visualstudio.com/items/?itemName=esbenp.prettier-vscode)
+In der Dokumentation finden sich weitere Schritte zum
+[Einrichten von VS Code](./docs/develop/tools.md#vs-code)
+und einiger [Entwicklertools](./docs/deveolop/tools.md#husky-pre-commit).
 
 
 ## Versionen und Workflow
@@ -54,6 +49,13 @@ In der template.json steht die grobe Datenstruktur für Actors und Items. Es kö
 Actor: (types: Held, Kreatur) haben jeweils eigene html Templates zum ansehen und bearbeiten (ActorSheets). In den (zwei) actor.js files stehen hooks und methoden für die actors und das UI
 
 Items: Zauber, Fertigkeiten, Gegenstände, Eigenheiten, Waffen, Vorteile usw.. sind Items mit jeweiligem type. Auch hier gibt es einzelne html snippets als formular um individuelle Items zu bearbeiten.
+
+`/packs/`: Im packs ordner befinden sich die Daten fuer die im Spiel verfuegbaren Kompendien. Letztendlich befinden
+sich hier alle möglichen Ilaris-Inhalte (items, actors, effects...) wie zB Vorteile, Waffen, kreaturen.
+Foundry behandelt jeden Ordner als Datenbanktabelle mit binary Files, die sich häufig ändern. Um das ganze als Entwickler
+einfacher zu verwalten können, werden alle Einträge als .json-files in den jeweiligen _source unterordner entpackt.
+Sie müssen um live verwendet werden zu können erst wieder gepackt werden. [Mehr dazu in den docs](./docs/packs.md).
+
 
 TODO: Dateistruktur und wichtige Dateien erklären
 

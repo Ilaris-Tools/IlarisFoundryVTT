@@ -1,0 +1,1189 @@
+{
+  "_id": "I61YVh6wAaK6kqOA",
+  "name": "Firndorn",
+  "type": "kreatur",
+  "img": "systems/Ilaris/assets/images/token/kreaturentypen/elementar.png",
+  "system": {
+    "gesundheit": {
+      "erschoepfung": 0,
+      "wunden": 0,
+      "wundabzuege": 0,
+      "wundenignorieren": false,
+      "display": "Volle Gesundheit",
+      "hp": {
+        "max": 9,
+        "value": 9,
+        "threshold": 0
+      }
+    },
+    "energien": {
+      "asp": {
+        "max": 64,
+        "value": 64,
+        "threshold": 0
+      },
+      "gup": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      },
+      "kap": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      }
+    },
+    "initiative": 0,
+    "furcht": {
+      "furchtstufe": 0,
+      "furchtabzuege": 0,
+      "display": ""
+    },
+    "modifikatoren": {
+      "manuellermod": 0,
+      "nahkampfmod": 0
+    },
+    "schips": {
+      "schips": 4,
+      "schips_stern": 4
+    },
+    "attribute": {
+      "KO": {
+        "wert": 0,
+        "pw": null
+      },
+      "MU": {
+        "wert": 0,
+        "pw": null
+      },
+      "GE": {
+        "wert": 0,
+        "pw": null
+      },
+      "KK": {
+        "wert": 0,
+        "pw": null
+      },
+      "IN": {
+        "wert": 0,
+        "pw": null
+      },
+      "KL": {
+        "wert": 0,
+        "pw": null
+      },
+      "CH": {
+        "wert": 0,
+        "pw": null
+      },
+      "FF": {
+        "wert": 0,
+        "pw": null
+      }
+    },
+    "edit": false,
+    "kreaturentyp": "elementar",
+    "kurzbeschreibung": "menschenhassender und mörderischer Dschinn des Eises",
+    "kampfwerte": {
+      "ws": 9,
+      "ws_stern": null,
+      "ini": 14,
+      "gs": 8,
+      "koloss": null,
+      "mr": 12,
+      "gs_schwimmend": null
+    },
+    "talente": [],
+    "freietalente": [],
+    "kampfunfaehig": "",
+    "text": "",
+    "abgeleitete": {
+      "globalermod": 0,
+      "nahkampfmoddisplay": "-",
+      "globalermoddisplay": "-"
+    }
+  },
+  "items": [
+    {
+      "_id": "GVBlMVFycv9Vvqxz",
+      "name": "Aura",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Aura (Art, Probe, Intervall, Auswirkung) stellt einen\r\nschädlichen Flächeneffekt dar, der rund um die Kreatur wirkt.\r\nDie Stichworte in der Klammer geben die Art der Aura an\r\nund welche Probe wie oft abgelegt werden muss, um ihrer\r\nAuswirkung zu widerstehen. Diese Probe ist für jeden Schritt\r\nEntfernung von der Kreatur um +1 erleichtert."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.GVBlMVFycv9Vvqxz"
+    },
+    {
+      "_id": "LxydWm35MrGRlqox",
+      "name": "Tarnung",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Tarnung: Das Wesen kann sich seiner Umgebung\r\nanpassen, zum Beispiel durch eine Farbänderung der Haut.\r\nBei Heimlichkeits-Proben erhält es keinen Malus durch ein\r\nfehlendes Versteck."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.LxydWm35MrGRlqox"
+    },
+    {
+      "_id": "i0vA5l5ISdzoqljY",
+      "name": "Astralsinn",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Astralsinn erlaubt es der Kreatur, ihre Umgebung magisch\r\nwahrzunehmen. Sie erleidet keine Abzüge durch schlechte\r\nSicht. Der Astralsinn kann durch Antimagie, zum Beispiel\r\nHellsicht trüben in der Modifikation Magie unterdrücken,\r\ngestört werden. Die Schwierigkeit dafür liegt mindestens bei\r\n20, bei mächtigen Wesen deutlich höher."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.i0vA5l5ISdzoqljY"
+    },
+    {
+      "_id": "ET9J2QM7Dzuliyc6",
+      "name": "Immunität (eigenes Element, Eigenschaften, Hellsicht, Illusion, Umwelt, Verwandlung, Krankheiten, Gifte, Hitze, Kälte)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Immunität (Schadensquelle): Das Wesen erleidet keinen\r\nSchaden aus der angegebenen Quelle.\r\n\r\nProfan: prof. Waffen, Stürze, Tierangriffe\r\nMagisch: mag. Waffen, Schadenszauber\r\nGeweiht: gew. Waffen, Bannstrahl\r\nDämonisch: Angriffe von Dämonen, Paktierer-Fähigkeiten\r\nElementar: Lagerfeuer (Feuer), Aquafaxius (Wasser),\r\nAngriffe von Luftelementaren (Luft),\r\nFausthieb (Humus), Kälte (Eis), Schwert (Erz)"
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.ET9J2QM7Dzuliyc6"
+    },
+    {
+      "_id": "s5ZvLQHKFaSmz0BW",
+      "name": "Körperlosigkeit",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Körperlosigkeit bedeutet, dass der Körper der Kreatur\r\nkeine lebenserhaltende Funktion hat. Selbst schwerste\r\nVerwundungen schränken sie nicht ein. Das Wesen erleidet\r\nkeine Abzüge durch Wunden und wird nicht kampfunfähig.\r\nDie neunte Wunde vernichtet aber auch eine körperlose\r\nKreatur."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.s5ZvLQHKFaSmz0BW"
+    },
+    {
+      "_id": "QfOHi8Bnw21iT4iU",
+      "name": "Resistenz II (profan)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Eine Resistenz I/II/III/IV (Schadensquelle) verringert\r\nden Schaden durch diese Schadensquelle (s.o.). Wann immer\r\ndie Kreatur Wunden erleiden würde, erleidet sie 1/2/3/4\r\nWunden weniger."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.QfOHi8Bnw21iT4iU"
+    },
+    {
+      "_id": "o45iAtc25BAP4ZF1",
+      "name": "Schmerzimmun II",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Schmerzimmun I/II: Die erste Stufe verleiht Immunität\r\ngegen Blutungen und die Wundschmerzeffekte Betäubt und\r\nOrgantreffer. Die zweite Stufe verleiht Immunität gegen alle\r\nWundschmerzeffekte."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.o45iAtc25BAP4ZF1"
+    },
+    {
+      "_id": "VfDlH2l7UdyvXO9d",
+      "name": "Verwundbarkeit I (Gegenelement)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Verwundbarkeit I/II/III/IV (Schadensquelle): Wann\r\nimmer die Kreatur Wunden durch diese Schadensquelle\r\nerleidet, bekommt sie 1/2/3/4 zusätzliche Wunden."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.VfDlH2l7UdyvXO9d"
+    },
+    {
+      "_id": "lXf6r8RjgELnvNtw",
+      "name": "Beispieldienste",
+      "type": "info",
+      "system": {
+        "text": "Beratung bei einem Attentat (, 4); Bau von Fallen im Eis (z.B. verdeckte Gletscherspalten) (, ); Lebewesen in der Nähe suchen und töten (, -4)"
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.lXf6r8RjgELnvNtw"
+    },
+    {
+      "_id": "2LjirkWELVeuu6zT",
+      "name": "Beschwörung",
+      "type": "info",
+      "system": {
+        "text": "Herbeirufung des Eises (24), 32 AsP"
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.2LjirkWELVeuu6zT"
+    },
+    {
+      "_id": "JIF3BvIOOsLFpGzl",
+      "name": "Eisdorn",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Erfrieren",
+            "text": null
+          },
+          {
+            "name": " Todesstoß",
+            "text": null
+          }
+        ],
+        "tp": "2W6",
+        "haerte": 0,
+        "rw": 0,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 16,
+        "vt": 12
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.JIF3BvIOOsLFpGzl"
+    },
+    {
+      "_id": "WffAdOXkBUodmstJ",
+      "name": "Hagelsturm",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Stumpf",
+            "text": null
+          }
+        ],
+        "tp": "2W6+4",
+        "haerte": 0,
+        "rw": 8,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 0,
+        "vt": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.WffAdOXkBUodmstJ"
+    },
+    {
+      "_id": "2LFmUvS3JyJxQUJA",
+      "name": "Geographie",
+      "type": "freiestalent",
+      "system": {
+        "text": "Geographie befasst sich nicht nur mit Reiserouten und fernen Ländern, sondern auch mit dem Sternenhimmel, der Kartographie und Navigation. Ein Geograph kann Schatzkarten lesen und anfertigen, die Position eines Schiffes bestimmen und Sternenkonstellationen deuten.",
+        "pw": 8,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.2LFmUvS3JyJxQUJA"
+    },
+    {
+      "_id": "qMhK4RFq0gerd8Nt",
+      "name": "Hoher Norden (Überleben)",
+      "type": "freiestalent",
+      "system": {
+        "text": null,
+        "pw": 12,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.qMhK4RFq0gerd8Nt"
+    },
+    {
+      "_id": "T3ZCbxiwmfIm9igY",
+      "name": "Nordaventurien (Gebräuche)",
+      "type": "freiestalent",
+      "system": {
+        "text": null,
+        "pw": 8,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.T3ZCbxiwmfIm9igY"
+    },
+    {
+      "_id": "8xob1NyQSPAXbCyU",
+      "name": "Pirschen",
+      "type": "freiestalent",
+      "system": {
+        "text": "Pirschen ermöglicht das Schleichen, Verstecken und Lauern in der freien Natur. Du pirschst dich auf der Jagd an einen wilden Hirsch heran, legst einen Hinterhalt an einer Reichsstraße oder beobachtest ungesehen das Lager einer Orkbande.",
+        "pw": 20,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.8xob1NyQSPAXbCyU"
+    },
+    {
+      "_id": "uP0hj5NVRmr8hijH",
+      "name": "Sinnenschärfe",
+      "type": "freiestalent",
+      "system": {
+        "text": "Sinnenschärfe ist die aktive Verwendung deiner Sinne, um einen Kollaborateur in einem geschäftigen Wirtshaus zu belauschen, die Flagge eines nahenden Schiffes zu erkennen oder die Nadel im Heuhaufen zu finden.",
+        "pw": 16,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.uP0hj5NVRmr8hijH"
+    },
+    {
+      "_id": "GkH7qpg0YfXpk8UK",
+      "name": "Tierkunde",
+      "type": "freiestalent",
+      "system": {
+        "text": "Tierkunde bedeutet die Kenntnis der aventurischen Fauna. Dein Charakter kann einen Schleimfleck als Spur einer Riesenamöbe erkennen, einen gereizten Bären beruhigen und kennt die Schwachstelle eines Tatzelwurms.",
+        "pw": 16,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.GkH7qpg0YfXpk8UK"
+    },
+    {
+      "_id": "aE8yWwhK3yCvUw8p",
+      "name": "Wachsamkeit",
+      "type": "freiestalent",
+      "system": {
+        "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
+        "pw": 16,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.aE8yWwhK3yCvUw8p"
+    },
+    {
+      "_id": "ZEc30bOfkhZ1wA2E",
+      "name": "Zähigkeit",
+      "type": "freiestalent",
+      "system": {
+        "text": "Zähigkeit hilft dir, Schmerzen und Strapazen zu widerstehen. So kannst du trotz zahlreicher Wunden noch handlungsfähig bleiben und einen Kampf zu euren Gunsten wenden oder eine ganze Nacht hindurch wachen.",
+        "pw": 12,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.ZEc30bOfkhZ1wA2E"
+    },
+    {
+      "_id": "vTH6p6V9R4KRxdFO",
+      "name": "Eis",
+      "type": "freiestalent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "pw": 16,
+        "profan": false
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.vTH6p6V9R4KRxdFO"
+    },
+    {
+      "_id": "j2VYAKQ1Ecj6xpZf",
+      "name": "Corpofrigo Kälteschock",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Eis",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du entziehst deinem Opfer die Körperwärme, bis sich sein Körper mit Raureif überzieht. Seine GS sinkt auf die Hälfte und alle Athletik-Proben zur Bewegung sind um –4 erschwert.\nMächtige Magie: Die GS sinkt auf ein Viertel/Achtel/Sechzehntel/Zweiunddreißigstel und der Malus steigt um –2.\nProbenschwierigkeit: Magieresistenz\nVorbereitungszeit: 1 Aktion\nZiel: Einzelwesen\nReichweite: 32 Schritt\nWirkungsdauer: 8 Initiativephasen\nKosten: 4 AsP\nFertigkeiten: Eigenschaften, Eis\nErlernen: Ach, Dru 12; Mag 16; Alch 18; 40 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 16,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.j2VYAKQ1Ecj6xpZf"
+    },
+    {
+      "_id": "hmF0xZ7nmRpDF9wM",
+      "name": "Frigifaxius",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Eis",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Eine Strahl aus elementarem Eis fügt dem Ziel 4W6 TP zu und verursacht Erfrieren (S. 98). Ballistischer Zauber.\nMächtige Magie: Die TP steigen um 2W6.\nProbenschwierigkeit: 12\nModifikationen: Gezielter Strahl (–4; du kannst die Trefferzone bestimmen.)\nVorbereitungszeit: 1 Aktion\nZiel: Einzelwesen, Einzelobjekt\nReichweite: 16 Schritt\nWirkungsdauer: augenblicklich\nKosten: 16 AsP\nFertigkeiten: Eis\nErlernen: Ach, Dru, Mag 18; 40 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 16,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.hmF0xZ7nmRpDF9wM"
+    },
+    {
+      "_id": "CjraUNmAPtDSOACz",
+      "name": "Frigisphaero",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Eis",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du erschaffst eine elementare Kugel, die du mit Konzentration und Blickkontakt 16 Schritt pro Initiativephase bewegen kannst. Die Kugel explodiert, wenn du die Konzentration oder den Blickkontakt verlierst, du sie absichtlich zündest oder die Wirkungsdauer endet. Die Explosion richtet 4W6 TP an und verursacht Erfrieren (S. 98). Pro Schritt Entfernung fällt der niedrigste Würfel weg.\nMächtige Magie: Die TP steigen um 1W6.\nProbenschwierigkeit: 12\nModifikationen: Vorgegebene Bewegung (–4; du gibst der Kugel die Bewegung bis zur Explosion vor, Konzentration und Blickkontakt zur Kugel sind nicht nötig.)\nVorbereitungszeit: 2 Aktionen\nZiel: Zone\nReichweite: 2 Schritt\nWirkungsdauer: 2 Initiativephasen\nKosten: 16 AsP\nFertigkeiten: Eis\nErlernen: Ach, Mag 18; Dru 20; 60 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 16,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.CjraUNmAPtDSOACz"
+    },
+    {
+      "_id": "bu1saLajZq8ZEE7z",
+      "name": "Glacioflumen Fluss aus Eis",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Eis",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du erzeugst eine dünne Schicht aus Eis auf dem Boden. Die Schicht gilt als eisiger Untergrund, was alle Proben im Kampf und zum Stehenbleiben um –4 erschwert. Ihre Fläche beträgt 16 Rechtschritt, ihre Form kannst du bestimmen.\nMächtige Magie: Verdoppelt die Fläche.\nProbenschwierigkeit: 12\nVorbereitungszeit: 2 Aktionen\nZiel: Zone\nReichweite: 16 Schritt\nWirkungsdauer: 4 Minuten\nKosten: 8 AsP\nFertigkeiten: Eis\nErlernen: Elf 20; 20 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 16,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.bu1saLajZq8ZEE7z"
+    },
+    {
+      "_id": "aUWt68DjUp1zG7VD",
+      "name": "Gletscherwand",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Eis",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Eine 3 Schritt hohe und bis zu 4 Schritt lange Wand aus blankem Eis wächst entlang einer von dir bestimmten Linie aus dem Boden. Sie verfügt über eine Härte von 16. Wer sich der Wand nähert, erleidet bei misslungener Konterprobe (KO, 12) Erfrieren (S. 98).\nMächtige Magie: Die Härte der Wand steigt um 8, die maximale Länge um 2 Schritt und die Höhe um 1 Schritt.\nProbenschwierigkeit: 12\nVorbereitungszeit: 16 Aktionen\nZiel: Zone\nReichweite: 8 Schritt\nWirkungsdauer: 16 Minuten\nKosten: 8 AsP\nFertigkeiten: Eis\nErlernen: Dru 16; Mag 18; 40 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 16,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.aUWt68DjUp1zG7VD"
+    },
+    {
+      "_id": "tmMEeUpxR7upKZMw",
+      "name": "Manifesto Element",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Eis",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du beschwörst eine etwa faustgroße Menge oder kleine Manifestation des Elements herbei, mit dem du den Zauber wirkst. Sie verschwindet nach dem Ende der Wirkungsdauer.\nFertigkeit Eis: Du kannst zum Beispiel einen Schneeball oder einen Eiszapfen erscheinen lassen, ein Getränk kühlen, oder deine Körpertemperatur etwas senken.\nFertigkeit Erz: Du kannst zum Beispiel eine Hand voll Sand oder einen Stein erscheinen lassen oder das Gewicht eines Gegenstandes kurzzeitig etwas erhöhen.\nFertigkeit Feuer: Du kannst zum Beispiel eine kleine Flamme über deiner Hand tanzen lassen, deine Körpertemperatur etwas erhöhen, eine Pfeife anzünden  oder einen Funkenschwarm erzeugen.\nFertigkeit Humus: Du kannst zum Beispiel eine Knospe erblühen lassen, eine Hand voll Kuhmist herbeizaubern, ein Gänseblümchen erscheinen lassen, oder einen kleinen Kratzer schließen.\nFertigkeit Luft: Du kannst zum Beispiel einen frischen Windhauch rufen, einen Wohlgeruch erzeugen, oder einen kleinen Luftwirbel erschaffen.\nFertigkeit Wasser: Du kannst zum Beispiel einen Becher mit Wasser füllen, deine Hände abspülen, eine Pfütze bilden oder tagsüber einen kleinen Regenbogen glitzern lassen.\nProbenschwierigkeit: 12\nModifikationen: Demanifesto (–4; du kannst die Manifestation nach Belieben verschwinden und wieder auftauchen lassen.)\nVorbereitungszeit: 4 Aktionen\nZiel: Zone\nReichweite: Berührung\nWirkungsdauer: 1 Stunde\nKosten: 2 AsP\nFertigkeiten: Eis, Erz, Feuer, Humus, Luft, Wasser\nErlernen: Ach, Alch 8; Dru, Geo, Mag 14; Hex, Srl 18; Elf 20; 20 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 16,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.tmMEeUpxR7upKZMw"
+    },
+    {
+      "_id": "G29HROWPqDD6miaN",
+      "name": "Metamorpho Gletscherform",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Eis",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du formst Eis mit bloßen Händen in die wundersamsten Formen. Die Kosten, Zauberdauer und Modifikationen Mächtige Magie sind Meisterentscheid. Beispiele:\n4 AsP, 1x Mächtige Magie, 4 Aktionen: Du formst einen Eiszapfen um zu einer einfachen Waffe aus Eis (identische Werte, aber zerbrechlich).\n8 AsP, keine Mächtige Magie, eine halbe Stunde: Ein Eisblock wird zu einem Iglu.\n16 AsP, 2x Mächtige Magie, 1 Stunde: Du ziehst eine einfache Brücke über eine Eisspalte.\n128+ AsP, 4x Mächtige Magie, 1 Woche: Du errichtest einen Eispalast, wie ihn die Firnelfen bewohnen.\nProbenschwierigkeit: 12\nModifikationen: Schnee (–4; du kannst auch mit Schnee arbeiten, der dabei zu Eis wird.)\nWasser (–8; du kannst auch mit Wasser arbeiten, das dabei gefriert.)\nPermanenz (–4, ein Viertel der Basiskosten als gAsP; das so geformte Eis schmilzt auch bei hohen Temperaturen nicht mehr.)\nVorbereitungszeit: nach Vorhaben\nZiel: Einzelobjekt\nReichweite: Berührung\nWirkungsdauer: bis die Bindung gelöst wird\nKosten: nach Vorhaben\nFertigkeiten: Eis, Verwandlung\nErlernen: Elf 16; Dru, Mag 20; 60 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 16,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.G29HROWPqDD6miaN"
+    },
+    {
+      "_id": "8tkBBCVYnriIeJ1A",
+      "name": "Pfeil des Eises",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Eis",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du verzauberst einen Pfeil (oder Bolzen oder Wurfwaffe), sodass er im Flug die Macht des Elements freisetzt. Der Pfeil verursacht Eisschaden und Erfrieren (S. 98). Unbelebte Gegenstände werden bei einem Treffer mit Eis überzogen.\nProbenschwierigkeit: 12\nModifikationen: Geschütz (–4; du verzauberst ein größeres Geschoss wie das einer Balliste.)\nPermanenz (–4, 4 AsP, davon 1 gAsP, Wirkungsdauer bis die Bindung gelöst wird oder der Pfeil verschossen wurde)\nVorbereitungszeit: 1 Aktion\nZiel: Einzelobjekt\nReichweite: Berührung\nWirkungsdauer: 8 Initiativephasen\nKosten: 4 AsP\nFertigkeiten: Eis\nErlernen: Elf 18; 40 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 16,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.8tkBBCVYnriIeJ1A"
+    },
+    {
+      "_id": "ieqPXfKv773D4Olj",
+      "name": "Stillstand",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Eis",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du erschaffst eine Zone mit 8 Schritt Radius, die alle Bewegungen außer deiner verlangsamt. Andere Ziele verlieren ihre nächste Aktion, wenn sie eine andere Aktion als Konzentration nutzen. Trifft eine Waffe ein Wesen in der Zone, richtet sie nur halben Schaden an.\nProbenschwierigkeit: 12\nModifikationen: Begleiter (–4; die Zone bewegt sich mit dir.)\nVorbereitungszeit: 4 Aktionen\nZiel: Zone\nReichweite: Berührung\nWirkungsdauer: 16 Initiativephasen\nKosten: 16 AsP\nFertigkeiten: Eis, Umwelt\nErlernen: Ach 16; 60 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 16,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!I61YVh6wAaK6kqOA.ieqPXfKv773D4Olj"
+    }
+  ],
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "prototypeToken": {
+    "displayName": 20,
+    "actorLink": false,
+    "width": 1,
+    "height": 1,
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "light": {
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "coloration": 1,
+      "dim": 0,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false,
+        "type": null
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      },
+      "attenuation": 0.5,
+      "negative": false,
+      "priority": 0,
+      "color": null
+    },
+    "disposition": 1,
+    "displayBars": 50,
+    "bar1": {
+      "attribute": "gesundheit.hp"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "flags": {},
+    "randomImg": false,
+    "name": "Firndorn",
+    "texture": {
+      "src": "systems/Ilaris/assets/images/token/kreaturentypen/elementar.png",
+      "scaleX": 1,
+      "scaleY": 1,
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "offsetX": 0,
+      "offsetY": 0,
+      "fit": "contain",
+      "rotation": 0,
+      "tint": "#ffffff",
+      "alphaThreshold": 0.75
+    },
+    "sight": {
+      "angle": 360,
+      "enabled": false,
+      "range": 0,
+      "brightness": 1,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "appendNumber": false,
+    "prependAdjective": false,
+    "hexagonalShape": 0,
+    "detectionModes": [],
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    }
+  },
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!actors!I61YVh6wAaK6kqOA"
+}

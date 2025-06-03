@@ -1,0 +1,41 @@
+{
+  "name": "Lach dich gesund",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Einfluss, Humus",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du erzählst deinem Ziel einen hervorragenden Witz, der es in einen kichernden Rauschzustand versetzt. Währenddessen erhält es 2W6+4 Heilpunkte. Für jede Überschreitung der WS wird eine Wunde geheilt. Das Ziel muss dir vertrauen und du kannst dich nicht selbst mit dem Zauber belegen.",
+    "maechtig": "Erhöht die Heilpunkte um 4.",
+    "schwierigkeit": "12+Wund-Mod des Ziels",
+    "modifikationen": "Tanz dich wach (–4; du tanzt gemeinsam mit deinem Ziel, das statt Wunden Erschöpfung regeneriert.)",
+    "vorbereitung": "8 Aktionen",
+    "ziel": "Einzelperson",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "4 Minuten",
+    "kosten": "8 AsP",
+    "erlernen": "Sch 14",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "4lcBRuKLBaZKfcD2",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!4lcBRuKLBaZKfcD2"
+}

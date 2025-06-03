@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Praiosgeweihten IV",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut CH 10, Vorteil Tradition der Praiosgeweihten III",
+    "gruppe": 7,
+    "text": "Bedingung: 2 weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung der Tradition verwendet werden. "
+  },
+  "_id": "zsFicHRsZZZx8oo5",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!zsFicHRsZZZx8oo5"
+}

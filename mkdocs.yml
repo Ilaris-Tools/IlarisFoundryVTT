@@ -18,3 +18,4 @@ nav:
   - FoundryVTT: index.md
   - Grundlagen: foundry-basics.md
   - FAQ: faq.md
+  - Release: develop/release.md

@@ -1,0 +1,29 @@
+{
+  "name": "Astrale Regeneration",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut KO 4",
+    "gruppe": 4,
+    "text": "Du regenerierst 1 zusätzlichen AsP pro Nacht."
+  },
+  "_id": "JufQc8nAloD5k1pN",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!JufQc8nAloD5k1pN"
+}

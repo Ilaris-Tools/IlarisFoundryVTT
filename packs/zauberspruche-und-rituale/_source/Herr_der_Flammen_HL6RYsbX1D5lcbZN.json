@@ -1,0 +1,41 @@
+{
+  "name": "Herr der Flammen",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Feuer, Ringrituale",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du kannst ein bestehendes Feuer bis zur Größe einer Fackel formen oder verlöschen lassen. Die Verformung geschieht mit einer GS von 8 Schritt pro Initiativephase und benötigt Konzentration.",
+    "maechtig": "Du kannst ein Feuer bis zur Größe eines Kaminfeuers/eines großen Lagerfeuers/eines Scheiterhaufens/eines brennenden Schiffes manipulieren.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "4 Aktionen",
+    "ziel": "Einzelobjekt",
+    "reichweite": "16 Schritt",
+    "wirkungsdauer": "8 Initiativphasen",
+    "kosten": "8 AsP",
+    "erlernen": "Geo 14",
+    "pw": 0,
+    "gruppe": 13
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "HL6RYsbX1D5lcbZN",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!HL6RYsbX1D5lcbZN"
+}

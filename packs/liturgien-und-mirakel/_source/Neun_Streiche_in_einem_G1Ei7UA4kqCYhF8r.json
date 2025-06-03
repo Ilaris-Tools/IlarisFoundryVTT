@@ -1,0 +1,41 @@
+{
+  "name": "Neun Streiche in einem",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Guter Kampf",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du wirfst die Kraft des Gnadenlosen in deinen nächsten Angriff. Trifft dieser Angriff, richtest du für jeden bisherigen Treffer gegen das Ziel in diesem Kampf 1W6 TP zusätzlich an. Das Maximum liegt bei 8W6 TP.",
+    "maechtig": "Der Angriff ist um +2 erleichtert.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "0 Aktionen",
+    "ziel": "selbst",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "augenblicklich",
+    "kosten": "8 KaP",
+    "erlernen": "Kor 18",
+    "pw": 0,
+    "gruppe": 54
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "G1Ei7UA4kqCYhF8r",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!G1Ei7UA4kqCYhF8r"
+}

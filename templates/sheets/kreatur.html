@@ -174,13 +174,23 @@
         <b>Angriffe: </b>
         {{#each actor.angriffe as |angriff key|}}
         <div class="flexrow">
+            {{#if (waffe_ist_fernkampf angriff) }}
+            <a 
+                class="rollable icon-small" 
+                data-rolltype="fernkampf_diag" 
+                data-itemid="{{angriff.id}}"
+            >
+                <i class="fas fa-dice-d20"></i>
+            </a>
+            {{else}}
             <a 
                 class="rollable icon-small" 
                 data-rolltype="angriff_diag" 
                 data-itemid="{{angriff.id}}"
             >
                 <i class="fas fa-dice-d20"></i>
-            </a>
+            {{/if}}
+            
                     
             <label><b><a class="item-edit" data-itemid="{{angriff.id}}">{{angriff.name}} </a></b></label>
             {{#if (waffe_ist_fernkampf angriff) }}

@@ -1,0 +1,29 @@
+{
+  "name": "Todesstoß",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut GE 8",
+    "gruppe": 2,
+    "text": "Erlaubt das Manöver Todesstoß (AT -8): Der Angriff richtet zwei zusätzliche Wunden an, auch wenn der Schaden zu gering ist, um Wunden anzurichten."
+  },
+  "_id": "g6VXAVTbafARlmJ5",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!g6VXAVTbafARlmJ5"
+}

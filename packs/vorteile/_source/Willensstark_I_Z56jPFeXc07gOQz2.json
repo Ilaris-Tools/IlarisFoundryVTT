@@ -1,0 +1,29 @@
+{
+  "name": "Willensstark I",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut MU 4",
+    "gruppe": 1,
+    "text": "Deine MR steigt um 4 Punkte."
+  },
+  "_id": "Z56jPFeXc07gOQz2",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!Z56jPFeXc07gOQz2"
+}

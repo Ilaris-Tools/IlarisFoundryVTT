@@ -1,0 +1,168 @@
+.manoever-sheet {
+    padding: 8px;
+}
+
+/* Make the dialog wider */
+.app.window-app.dialog.angriff {
+    min-width: 600px !important;
+}
+
+.app.window-app.dialog.angriff .window-content {
+    padding: 16px;
+}
+
+.section-header {
+    margin: 16px 0 8px 0;
+    padding-bottom: 4px;
+    border-bottom: 2px solid #782e22;
+}
+
+.section-description {
+    margin: 8px 0;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.section-description ul {
+    margin: 4px 0 4px 20px;
+}
+
+.field {
+    margin: 12px 0;
+    padding: 8px;
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: 4px;
+}
+
+.delete-button {
+    margin-left: 8px;
+    color: #782e22;
+}
+
+.delete-button:hover {
+    color: #a33d2d;
+}
+
+.number-limits {
+    gap: 12px;
+}
+
+.number-input-group {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.number-input-group input {
+    width: 60px;
+}
+
+.checkbox-description {
+    margin-left: 8px;
+    font-size: 0.9em;
+    color: #666;
+}
+
+.manoever-section {
+    margin-bottom: 24px;
+}
+
+.maneuver-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    cursor: pointer;
+
+    h3 {
+        width: 100%;
+    }
+}
+
+.maneuver-header i {
+    transition: transform 0.2s ease;
+}
+
+.maneuver-header.collapsed i {
+    transform: rotate(-180deg);
+}
+
+.maneuver-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+    margin: 16px 0;
+    transition: max-height 0.3s ease-out;
+}
+
+.maneuver-grid.collapsed {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.maneuver-grid.collapsed .maneuver-item:not(.has-value) {
+    display: none;
+}
+
+.maneuver-item {
+    display: flex;
+    flex-direction: row;
+    gap: 8px;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: 4px;
+    flex-wrap: wrap;
+}
+
+.maneuver-item.has-value {
+    background: rgba(120, 46, 34, 0.05);
+}
+
+.maneuver-item label {
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.maneuver-item input[type="checkbox"] {
+    margin-left: 8px;
+}
+
+.maneuver-item input[type="number"],
+.maneuver-item select {
+    width: 100%;
+    max-width: 150px;
+}
+
+.number-input {
+    transition: all 0.2s ease-in-out;
+}
+
+.number-input.out-of-bounds {
+    background-color: rgba(255, 0, 0, 0.1);
+    border-color: #ff0000;
+    color: #ff0000;
+    animation: shake 0.5s;
+}
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-2px); }
+    75% { transform: translateX(2px); }
+}
+
+.toggle-display {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.toggle-display h4 {
+    margin: 0;
+}
+
+.toggle-display i {
+    font-size: 0.9em;
+}
