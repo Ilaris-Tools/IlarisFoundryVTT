@@ -267,16 +267,15 @@
         <div>
             <label><b>Magische Traditionen:</b>&nbsp; | &nbsp;</label>
             {{#each actor.vorteil.zaubertraditionen}}
-                <a
-                    class='item-edit{{unless this._stats.compendiumSource " error-highlight"}}'
-                    data-itemid='{{this.id}}'
-                    {{unless
-                        this._stats.compendiumSource
-                        'title="Am Vorteil stimmt etwas nicht. Bitte füge den Vorteil neu hinzu"'
-                    }}
-                >
-                    {{this.name}}
-                </a>
+                {{#if this._stats.compendiumSource}}
+                    <a class='item-edit' data-itemid='{{this.id}}'>{{this.name}}</a>
+                {{else}}
+                    <a
+                        class='item-edit error-highlight'
+                        data-itemid='{{this.id}}'
+                        title='Am Vorteil stimmt etwas nicht. Bitte füge den Vorteil neu hinzu'
+                    >{{this.name}}</a>
+                {{/if}}
                 <a class='item-delete' data-itemid='{{this.id}}'><i class='fas fa-trash'></i></a>
                 &nbsp; | &nbsp;
             {{/each}}
@@ -287,16 +286,15 @@
         <div>
             <label><b>Magische Vorrteile:</b>&nbsp; | &nbsp;</label>
             {{#each actor.vorteil.magie}}
-                <a
-                    class='item-edit{{unless this._stats.compendiumSource " error-highlight"}}'
-                    data-itemid='{{this.id}}'
-                    {{unless
-                        this._stats.compendiumSource
-                        'title="Am Vorteil stimmt etwas nicht. Bitte füge den Vorteil neu hinzu"'
-                    }}
-                >
-                    {{this.name}}
-                </a>
+                {{#if this._stats.compendiumSource}}
+                    <a class='item-edit' data-itemid='{{this.id}}'>{{this.name}}</a>
+                {{else}}
+                    <a
+                        class='item-edit error-highlight'
+                        data-itemid='{{this.id}}'
+                        title='Am Vorteil stimmt etwas nicht. Bitte füge den Vorteil neu hinzu'
+                    >{{this.name}}</a>
+                {{/if}}
                 <a class='item-delete' data-itemid='{{this.id}}'><i class='fas fa-trash'></i></a>
                 &nbsp; | &nbsp;
             {{/each}}
@@ -306,16 +304,15 @@
         <div>
             <label><b>Karmale Traditionen:</b>&nbsp; | &nbsp;</label>
             {{#each actor.vorteil.geweihtentradition}}
-                <a
-                    class='item-edit{{unless this._stats.compendiumSource " error-highlight"}}'
-                    data-itemid='{{this.id}}'
-                    {{unless
-                        this._stats.compendiumSource
-                        'title="Am Vorteil stimmt etwas nicht. Bitte füge den Vorteil neu hinzu"'
-                    }}
-                >
-                    {{this.name}}
-                </a>
+                {{#if this._stats.compendiumSource}}
+                    <a class='item-edit' data-itemid='{{this.id}}'>{{this.name}}</a>
+                {{else}}
+                    <a
+                        class='item-edit error-highlight'
+                        data-itemid='{{this.id}}'
+                        title='Am Vorteil stimmt etwas nicht. Bitte füge den Vorteil neu hinzu'
+                    >{{this.name}}</a>
+                {{/if}}
                 <a class='item-delete' data-itemid='{{this.id}}'><i class='fas fa-trash'></i></a>
                 &nbsp; | &nbsp;
             {{/each}}
@@ -325,16 +322,15 @@
         <div>
             <label><b>Karmale Vorteile:</b>&nbsp; | &nbsp;</label>
             {{#each actor.vorteil.karma}}
-                <a
-                    class='item-edit{{unless this._stats.compendiumSource " error-highlight"}}'
-                    data-itemid='{{this.id}}'
-                    {{unless
-                        this._stats.compendiumSource
-                        'title="Am Vorteil stimmt etwas nicht. Bitte füge den Vorteil neu hinzu"'
-                    }}
-                >
-                    {{this.name}}
-                </a>
+                {{#if this._stats.compendiumSource}}
+                    <a class='item-edit' data-itemid='{{this.id}}'>{{this.name}}</a>
+                {{else}}
+                    <a
+                        class='item-edit error-highlight'
+                        data-itemid='{{this.id}}'
+                        title='Am Vorteil stimmt etwas nicht. Bitte füge den Vorteil neu hinzu'
+                    >{{this.name}}</a>
+                {{/if}}
                 <a class='item-delete' data-itemid='{{this.id}}'><i class='fas fa-trash'></i></a>
                 &nbsp; | &nbsp;
             {{/each}}
