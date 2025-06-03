@@ -29,3 +29,5 @@ node_modules
 #.eslintrc
 # tsconfig.json
 #jsconfig.json
+
+.vscode/tasks-scripts/developer.env
