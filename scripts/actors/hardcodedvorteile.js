@@ -525,7 +525,24 @@ export function karmaOpferungPossible(actor) {
     return possible;
 }
 
-export function getSelectedStil(selectedValue, stile) {
+export function getSelectedStil(actor, stilType) {
+    // Only process for held-type actors
+    if (actor.type !== 'held') {
+        return null;
+    }
+
+    // Determine which stil list and selected value to use based on type
+    let selectedValue, stile;
+    if (stilType === 'kampf') {
+        selectedValue = actor.system.misc?.selected_kampfstil ?? 'ohne';
+        stile = actor.misc.kampfstile_list;
+    } else if (stilType === 'uebernatuerlich') {
+        selectedValue = actor.system.misc?.selected_uebernatuerlicher_stil ?? 'ohne';
+        stile = actor.misc.uebernatuerliche_stile_list;
+    } else {
+        return null;
+    }
+
     return stile[selectedValue] ?? stile['ohne'];
 }
 
@@ -598,11 +615,16 @@ export function getUebernatuerlicheStile(actor) {
  */
 export function calculateModifiedCost(actor, item, isSuccess, is16OrHigher, currentCost) {
     let cost = currentCost;
-    const baseKosten = parseInt(item.system.kosten.match(/\d+/)?.[0] || '0', 10);
+    const baseKosten = item.system.kosten.match(/\d+/)?.[0] || 0;
 
-    // Check for Durro-Dun style reduction
-    const selectedStil = getSelectedStil(actor);
-    if (selectedStil?.name === 'Durro-Dun' && selectedStil.stufe >= 2) {
+    const hasDurroDunII = actor.type === 'kreatur' ?
+        (actor.vorteil.allgemein.some(v => v.name.includes("Durro-Dun II")) ||
+        actor.vorteil.magie.some(v => v.name.includes("Durro-Dun II")) ||
+        actor.vorteil.zaubertraditionen.some(v => v.name.includes("Durro-Dun II"))) :
+        (getSelectedStil(actor.system.misc?.selected_uebernatuerlicher_stil ?? 'ohne', actor.misc.uebernatuerliche_stile_list)?.name === 'Durro-Dun' && 
+        getSelectedStil(actor.system.misc?.selected_uebernatuerlicher_stil ?? 'ohne', actor.misc.uebernatuerliche_stile_list).stufe >= 2);
+
+    if (hasDurroDunII) {
         cost = Math.max(0, cost - Math.ceil(baseKosten / 4));
     }
 

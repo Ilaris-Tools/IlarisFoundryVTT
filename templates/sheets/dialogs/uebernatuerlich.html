@@ -1,4 +1,4 @@
-{{log 'angriff' this}}
+{{log 'uebernatuerlich' this}}
 <div>
     <label>Anzahl W20: </label>
     <label>{{radioBoxes "xd20" choices_xd20 checked=checked_xd20}}</label>
@@ -13,6 +13,28 @@
     <label>{{get_label "kbak"}}</label>
     <input type="checkbox" id="kbak" {{checked item.system.manoever.kbak.selected}} />
 </div>
+{{#if hasBlutmagie}}
+    <div class="flexrow">
+        <label>Blutmagie:</label>
+        <input type="number" id="blutmagie" name="item.system.manoever.blutmagie.value" value="{{item.system.manoever.blutmagie.value}}" data-dtype="Number" min="0" />
+    </div>
+    <div class="description">
+        Trage die Zusatz AsP für dein Opfer hier ein. Ein zauberkundiges Opfer stellt 8 x WS AsP, ein humanoides Opfer 4 x WS AsP und ein profanes Tier WS AsP zur Verfügung.
+    </div>
+{{/if}}
+{{#if hasVerbotenePforten}}
+    <div class="flexrow">
+        <label>Verbotene Pforten:</label>
+        <div style="margin-right: 10px;">
+            <label>{{radioBoxes "verbotene_pforten_toggle" choices_verbotene_pforten checked="4"}}</label>
+        </div>
+        <input type="number" id="verbotene_pforten" name="item.system.manoever.verbotene_pforten.value" value="{{item.system.manoever.verbotene_pforten.value}}" data-dtype="Number" min="0" style="margin-right: 10px;" />
+        <span id="verbotene_pforten_estimate" style="color: var(--color-text-dark-secondary);">0 AsP</span>
+    </div>
+    <div class="description">
+        Wähle aus wie viel AsP pro Wunde du erhältst und gib ein wie viele Wunden du dir zufügst.
+    </div>
+{{/if}}
 <hr>
 
 <div>

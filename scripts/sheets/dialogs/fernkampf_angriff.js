@@ -269,8 +269,15 @@ export class FernkampfAngriffDialog extends CombatDialog {
     
         // Beritten brtn  Reiterkampf II rtk
         let beritten = manoever.brtn.selected;
-        let selectedKampfstil = hardcoded.getSelectedStil(this.actor.system.misc?.selected_kampfstil ?? 'ohne', this.actor.misc.kampfstile_list);
-        let reiterkampf = selectedKampfstil.name.includes('Reiterkampf') && selectedKampfstil.stufe >= 2;
+        let reiterkampf = false;
+        if (this.actor.type === 'kreatur') {
+            reiterkampf = this.actor.vorteil.kampf.some(v => v.name === 'Reiterkampf II') ||
+            this.actor.vorteil.allgemein.some(v => v.name === 'Reiterkampf II') || 
+            this.actor.vorteil.kampfstil.some(v => v.name === 'Reiterkampf II');
+        } else {
+            let selectedKampfstil = hardcoded.getSelectedStil(this.actor, 'kampf');
+            reiterkampf = selectedKampfstil.name.includes('Reiterkampf') && selectedKampfstil.stufe >= 2;
+        }
         if (beritten && reiterkampf) {
             text_at = text_at.concat(
                 `${CONFIG.ILARIS.label['brtn']} (Reiterkampf)\n`,

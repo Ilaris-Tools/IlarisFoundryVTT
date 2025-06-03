@@ -21,17 +21,58 @@ export class UebernatuerlichDialog extends CombatDialog {
         this.text_ressource = '';
         this.item = item;
         this.actor = actor;
+        console.log('actor',this.actor)
         this.speaker = ChatMessage.getSpeaker({ actor: this.actor });
         this.rollmode = game.settings.get("core", "rollMode");  // public, private.... 
         this.item.system.manoever.rllm.selected = game.settings.get("core", "rollMode");  // TODO: either manoever or dialog property.
+        this.item.system.manoever.blutmagie = this.item.system.manoever.blutmagie || {};
+        this.item.system.manoever.verbotene_pforten = this.item.system.manoever.verbotene_pforten || {};
         this.fumble_val = 1;
         this.aufbauendeManoeverAktivieren()
     }
 
-    async getData () { // damit wird das template gefüttert
+    activateListeners(html) {
+        super.activateListeners(html);
+
+        const updateEstimate = () => {
+            const wounds = Number(html.find('#verbotene_pforten')[0]?.value) || 0;
+            const multiplier = Number(html.find('input[name="verbotene_pforten_toggle"]:checked')[0]?.value) || 4;
+            const ws = this.actor.type === 'held' ? 
+                this.actor.system.abgeleitete.ws :
+                this.actor.system.kampfwerte.ws;
+            
+            const estimate = wounds * (ws + multiplier);
+            html.find('#verbotene_pforten_estimate').text(`${estimate} AsP`);
+        };
+        
+        // Add event listeners for both the radio buttons and number input
+        html.find('input[name="verbotene_pforten_toggle"]').change(updateEstimate);
+        html.find('#verbotene_pforten').on('input', updateEstimate);
+        
+        // Initial update
+        updateEstimate();
+    }
+
+    async getData() { // damit wird das template gefüttert
+        const hasBlutmagie = this.actor.vorteil.magie.some(v => v.name === "Blutmagie") && this.item.type === 'zauber';
+
+        const hasVerbotenePforten = this.actor.vorteil.magie.some(v => v.name === "Verbotene Pforten") || 
+            (this.actor.type === 'kreatur' ? 
+                (this.actor.vorteil.allgemein.some(v => v.name.includes("Borbaradianer")) ||
+                this.actor.vorteil.magie.some(v => v.name.includes("Borbaradianer")) ||
+                this.actor.vorteil.zaubertraditionen.some(v => v.name.includes("Borbaradianer"))) :
+                (hardcoded.getSelectedStil(this.actor, 'uebernatuerlich')?.name.includes("Borbaradianer"))
+            ) && this.item.type === 'zauber';
+
         return {
             choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: '1',
+            choices_verbotene_pforten: {
+                4: "1 Vorteil (WS+4)",
+                8: "2 Vorteile (WS+8)"
+            },
+            hasBlutmagie,
+            hasVerbotenePforten,
             ...(await super.getData()),
         };
     }
@@ -117,28 +158,32 @@ export class UebernatuerlichDialog extends CombatDialog {
         // Apply all cost modifications from advantages and styles
         cost = hardcoded.calculateModifiedCost(this.actor, this.item, isSuccess, is16OrHigher, cost);
             
-        // Update resources
-        await this.actor.update({
+        // Update resources and apply wounds if using Verbotene Pforten
+        const updates = {
             [resourcePath]: currentResource - cost
-        });
+        };
+
+        // Apply wounds from Verbotene Pforten if any
+        if (this.item.system.manoever.verbotene_pforten?.wounds) {
+            const wounds = this.item.system.manoever.verbotene_pforten.wounds;
+            updates['system.gesundheit.wunden'] = this.actor.system.gesundheit.wunden + wounds;
+        }
+
+        await this.actor.update(updates);
     }
 
     async manoeverAuswaehlen(html)  {
-        /* parsed den angriff dialog und schreibt entsprechende werte 
-        in die waffen items. Ersetzt ehemalige angriffUpdate aus angriff_prepare.js
-        TODO: kann ggf. mit manoeverAnwenden zusammengelegt werden?
-        TODO: kann evt in ein abstraktes waffen item verschoben werden oder
-        in einn abstrakten angriffsdialog für allgemeine manöver wunden etc, und spezifisch
-        überschrieben werden.. 
-        TODO: könnte das nicht direkt via template passieren für einen großteil der werte? 
-        sodass ne form direkt die werte vom item ändert und keine update funktion braucht?
-        dann wäre die ganze funktion hier nicht nötig.
-        TODO: alle simplen booleans könnten einfach in eine loop statt einzeln aufgeschrieben werden
-        */
         let manoever = this.item.system.manoever;
 
         // allgemeine optionen
         manoever.kbak.selected = html.find('#kbak')[0]?.checked || false;  // Kombinierte Aktion
+        
+        // Get values from Blutmagie and Verbotene Pforten if they exist
+        manoever.blutmagie.value = Number(html.find('#blutmagie')[0]?.value) || 0;
+        manoever.verbotene_pforten = {
+            multiplier: Number(html.find('input[name="verbotene_pforten_toggle"]:checked')[0]?.value) || 4,
+            wounds: Number(html.find('#verbotene_pforten')[0]?.value) || 0
+        };
 
         manoever.mod.selected = html.find('#modifikator')[0]?.value || false;  // Modifikator
         manoever.rllm.selected = html.find('#rollMode')[0]?.value || false;  // RollMode
@@ -160,6 +205,22 @@ export class UebernatuerlichDialog extends CombatDialog {
         let nodmg = {name: '', value: false};
         let trefferzone = 0;
         let fumble_val = 1;
+
+        // Get the minimum available resource based on actor and item type
+        let availableResource;
+        if(this.actor.type == 'held') {
+            if(this.item.type === 'zauber') {
+                availableResource = this.actor.system.abgeleitete.asp_stern;
+            } else {
+                availableResource = this.actor.system.abgeleitete.kap_stern;
+            }
+        } else {
+            if(this.item.type === 'zauber') {
+                availableResource = this.actor.system.energien.asp.value;
+            } else {
+                availableResource = this.actor.system.energien.kap.value;
+            }
+        }
 
         // Kombinierte Aktion kbak
         if (manoever.kbak.selected) {
@@ -219,6 +280,38 @@ export class UebernatuerlichDialog extends CombatDialog {
             text_vt = text_vt.concat(`Modifikator: ${modifikator}\n`);
             text_at = text_at.concat(`Modifikator: ${modifikator}\n`);
         }
+
+        // Handle Blutmagie and Verbotene Pforten
+        if (manoever.blutmagie?.value || manoever.verbotene_pforten?.wounds) {
+            // Handle Blutmagie
+            if (manoever.blutmagie?.value) {
+                const maxReduction = mod_ressource - availableResource;
+                const blutmagieReduction = Math.min(maxReduction, manoever.blutmagie.value);
+                if (blutmagieReduction > 0) {
+                    mod_ressource -= blutmagieReduction;
+                    text_ressource = text_ressource.concat(`Blutmagie: -${blutmagieReduction} AsP\n`);
+                }
+            }
+
+            // Handle Verbotene Pforten
+            if (manoever.verbotene_pforten?.wounds) {
+                const ws = this.actor.type === 'held' ? 
+                    this.actor.system.abgeleitete.ws :
+                    this.actor.system.kampfwerte.ws;
+                const multiplier = manoever.verbotene_pforten.multiplier;
+                console.log('multiplier',multiplier)
+                const wounds = manoever.verbotene_pforten.wounds;
+                const verbotenePfortenReduction = (ws + multiplier) * wounds;
+                
+                const maxReduction = mod_ressource - availableResource;
+                const actualReduction = Math.min(maxReduction, verbotenePfortenReduction);
+                if (actualReduction > 0) {
+                    mod_ressource -= actualReduction;
+                    text_ressource = text_ressource.concat(`Verbotene Pforten (${wounds} Wunden): -${actualReduction} AsP (zeigt nur aufgebrauchte AsP an, Rest verfällt)\n`);
+                }
+            }
+        }
+        
         console.log('mod_ressource',mod_ressource)
         this.mod_at = mod_at;
         this.mod_vt = mod_vt;
