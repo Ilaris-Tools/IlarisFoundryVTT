@@ -118,7 +118,7 @@ export function processModification(modification, number, manoeverName, trefferz
                 } else {
                     result = result - originalRessourceCost; 
                 }
-                rollValues.mod_ressource = rollValues.mod_ressource + result;
+                rollValues.mod_energy = rollValues.mod_energy + result;
             } else if (modification.operator === 'DIVIDE') {
                 result = originalRessourceCost / value;
                 if (value < 1) {
@@ -126,14 +126,14 @@ export function processModification(modification, number, manoeverName, trefferz
                 } else {
                     result = result * -1;
                 }
-                rollValues.mod_ressource = rollValues.mod_ressource + result;
+                rollValues.mod_energy = rollValues.mod_energy + result;
             } else {
                 result = value;
-                rollValues.mod_ressource = applyOperator(rollValues.mod_ressource, value, modification.operator);
+                rollValues.mod_energy = applyOperator(rollValues.mod_energy, value, modification.operator);
             }
 
             text = `${manoeverName}${trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''}: ${modification.operator === 'SUBTRACT' ? '-'+result : signed(result)} Energiekosten\n`;
-            rollValues.text_ressource = rollValues.text_ressource.concat(text);
+            rollValues.text_energy = rollValues.text_energy.concat(text);
             break;
     }
 
@@ -161,7 +161,7 @@ export function handleModifications(allModifications, rollValues) {
         }
     });
 
-    const originalRessourceCost = rollValues.mod_ressource || 0;
+    const originalRessourceCost = rollValues.mod_energy || 0;
     // Process all modifications in sorted order
     allModifications.forEach(({modification, manoever: dynamicManoever, number, check, trefferZoneInput}) => {
         if ((check && number) || number) {
@@ -178,11 +178,11 @@ export function handleModifications(allModifications, rollValues) {
         rollValues.mod_at,
         rollValues.mod_vt,
         rollValues.mod_dm,
-        rollValues.mod_ressource,
+        rollValues.mod_energy,
         rollValues.text_at,
         rollValues.text_vt,
         rollValues.text_dm,
-        rollValues.text_ressource,
+        rollValues.text_energy,
         rollValues.trefferzone,
         rollValues.schaden,
         rollValues.nodmg

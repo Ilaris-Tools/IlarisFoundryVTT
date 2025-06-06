@@ -109,4 +109,15 @@
         </i>
         Wirken
     </button>
+    {{#if isNonStandardDifficulty}}
+    <button style="max-width: 150px" class="energie-abrechnen" type="button" title="Dieser Button ist sichtbar, weil die Schwierigkeit des Übernatürlichen Talents von der Magieresistenz oder anderen Faktoren abhängt.">
+        <i>
+            <img
+                class="button-icon-nahkampf"
+                src="systems/Ilaris/assets/game-icons.net/bottled-bolt.svg"
+            />
+        </i>
+        Energie abrechnen
+    </button>
+    {{/if}}
 </div>

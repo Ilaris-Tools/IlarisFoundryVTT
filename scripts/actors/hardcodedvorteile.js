@@ -1,3 +1,5 @@
+import { sanitizeEnergyCost } from '../common/utilities.js';
+
 //TODO delete, is a function for test setup
 export function sum(a, b) {
     return a + b;
@@ -615,7 +617,7 @@ export function getUebernatuerlicheStile(actor) {
  */
 export function calculateModifiedCost(actor, item, isSuccess, is16OrHigher, currentCost) {
     let cost = currentCost;
-    const baseKosten = item.system.kosten.match(/\d+/)?.[0] || 0;
+    const baseKosten = sanitizeEnergyCost(item.system.kosten);
 
     const hasDurroDunII = actor.type === 'kreatur' ?
         (actor.vorteil.allgemein.some(v => v.name.includes("Durro-Dun II")) ||
@@ -635,7 +637,7 @@ export function calculateModifiedCost(actor, item, isSuccess, is16OrHigher, curr
     }
     // If success with 16 or higher and has Mühelose Magie, cost is reduced by half of base cost
     else if(isSuccess && is16OrHigher && actor.type == 'held' && item.type == 'zauber' && 
-       actor.vorteil.magic.some(v => v.name == 'Mühelose Magie')) {
+       actor.vorteil.magie.some(v => v.name == 'Mühelose Magie')) {
         cost = Math.max(0, cost - Math.ceil(baseKosten / 2));
     }
 

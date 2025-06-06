@@ -5,6 +5,7 @@ import {signed} from '../../common/wuerfel/chatutilities.js'
 import { handleModifications } from './shared_dialog_helpers.js';
 import { CombatDialog } from './combat_dialog.js';
 import * as hardcoded from '../../actors/hardcodedvorteile.js';
+import { sanitizeEnergyCost } from '../../common/utilities.js';
 
 export class UebernatuerlichDialog extends CombatDialog {
     constructor(actor,item) {
@@ -18,7 +19,8 @@ export class UebernatuerlichDialog extends CombatDialog {
         // this can be probendialog (more abstract)
         this.text_at = '';
         this.text_dm = '';
-        this.text_ressource = '';
+        this.text_energy = '';
+        this.is16OrHigher = false;
         this.item = item;
         this.actor = actor;
         console.log('actor',this.actor)
@@ -33,7 +35,7 @@ export class UebernatuerlichDialog extends CombatDialog {
 
     activateListeners(html) {
         super.activateListeners(html);
-
+        
         const updateEstimate = () => {
             const wounds = Number(html.find('#verbotene_pforten')[0]?.value) || 0;
             const multiplier = Number(html.find('input[name="verbotene_pforten_toggle"]:checked')[0]?.value) || 4;
@@ -48,6 +50,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         // Add event listeners for both the radio buttons and number input
         html.find('input[name="verbotene_pforten_toggle"]').change(updateEstimate);
         html.find('#verbotene_pforten').on('input', updateEstimate);
+        html.find(".energie-abrechnen").click(ev => this._energieAbrechnenKlick(html));
         
         // Initial update
         updateEstimate();
@@ -64,6 +67,8 @@ export class UebernatuerlichDialog extends CombatDialog {
                 (hardcoded.getSelectedStil(this.actor, 'uebernatuerlich')?.name.includes("Borbaradianer"))
             ) && this.item.type === 'zauber';
 
+        const isNonStandardDifficulty = isNaN(parseInt(this.item.system.schwierigkeit));
+
         return {
             choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: '1',
@@ -73,6 +78,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             },
             hasBlutmagie,
             hasVerbotenePforten,
+            isNonStandardDifficulty,
             ...(await super.getData()),
         };
     }
@@ -87,34 +93,12 @@ export class UebernatuerlichDialog extends CombatDialog {
         await this.updateManoeverMods();  // durch manoever
         this.updateStatusMods();
 
-        // Check if we have enough resources
-        let currentResource;
-        let resourcePath;
-        if(this.actor.type == 'held') {
-            if(this.item.type === 'zauber') {
-                currentResource = this.actor.system.abgeleitete.asp_stern;
-                resourcePath = 'system.abgeleitete.asp_stern';
-            } else {
-                currentResource = this.actor.system.abgeleitete.kap_stern;
-                resourcePath = 'system.abgeleitete.kap_stern';
-            }
-        } else {
-            if(this.item.type === 'zauber') {
-                currentResource = this.actor.system.energien.asp.value;
-                resourcePath = 'system.energien.asp.value';
-            } else {
-                currentResource = this.actor.system.energien.kap.value;
-                resourcePath = 'system.energien.kap.value';
-            }
-        }
-
-        // If not enough resources, show error and return
-        if (currentResource < this.mod_ressource) {
-            ui.notifications.error(`Nicht genug Ressourcen! Benötigt: ${this.mod_ressource}, Vorhanden: ${currentResource}`);
+        // Initialize and check energy values
+        if (!this.initializeEnergyValues()) {
             return;
         }
 
-        let label = `${this.item.name} (GesamtKosten: ${this.mod_ressource} Energie)`;
+        let label = `${this.item.name} (GesamtKosten: ${this.mod_energy} Energie)`;
         let formula = 
             `${diceFormula} ${signed(this.item.system.pw)} \
             ${signed(this.at_abzuege_mod)} \
@@ -139,7 +123,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         [isSuccess,is16OrHigher] = await roll_crit_message(
             formula,
             label,
-            this.text_at + '\n' + this.text_ressource + additionalText,
+            this.text_at + '\n' + this.text_energy + additionalText,
             this.speaker,
             this.rollmode,
             true,
@@ -147,20 +131,64 @@ export class UebernatuerlichDialog extends CombatDialog {
             difficulty
         );
 
+        this.is16OrHigher = is16OrHigher;
+        if(difficulty) {
+            await this.applyEnergyCost(isSuccess, is16OrHigher);
+        }
+    }
+
+    async _energieAbrechnenKlick(html) {
+        // Initialize and check energy values
+        if (!await this.initializeEnergyValues()) {
+            return;
+        }
+        
+        await this.applyEnergyCost(true, this.is16OrHigher);
+    }
+
+    async initializeEnergyValues() {
+        // Check if we have enough resources
+        if(this.actor.type == 'held') {
+            if(this.item.type === 'zauber') {
+                this.currentEnergy = this.actor.system.abgeleitete.asp_stern;
+                this.energyPath = 'system.abgeleitete.asp_stern';
+            } else {
+                this.currentEnergy = this.actor.system.abgeleitete.kap_stern;
+                this.energyPath = 'system.abgeleitete.kap_stern';
+            }
+        } else {
+            if(this.item.type === 'zauber') {
+                this.currentEnergy = this.actor.system.energien.asp.value;
+                this.energyPath = 'system.energien.asp.value';
+            } else {
+                this.currentEnergy = this.actor.system.energien.kap.value;
+                this.energyPath = 'system.energien.kap.value';
+            }
+        }
+
+        // If not enough resources, show error and return
+        if (this.currentEnergy < sanitizeEnergyCost(this.item.system.kosten)) {
+            ui.notifications.error(`Nicht genug Ressourcen! Benötigt: ${sanitizeEnergyCost(this.item.system.kosten)}, Vorhanden: ${this.currentEnergy}`);
+            return false;
+        }
+        return true;
+    }
+
+    async applyEnergyCost(isSuccess, is16OrHigher) {
         let costModifier = 2;
         // hardcoded failed liturgie cost
         if(this.actor.type == 'held' && this.item.type == 'liturgie' && this.actor.vorteil.karma.some(v => v.name == 'Liturgische Sorgfalt')) {
             costModifier = 4;
         }
         // Calculate cost based on success
-        let cost = isSuccess ? this.mod_ressource : Math.ceil(this.item.system.kosten / costModifier);
+        let cost = isSuccess ? sanitizeEnergyCost(this.item.system.kosten) : Math.ceil(sanitizeEnergyCost(this.item.system.kosten) / costModifier);
         
         // Apply all cost modifications from advantages and styles
         cost = hardcoded.calculateModifiedCost(this.actor, this.item, isSuccess, is16OrHigher, cost);
-            
+        
         // Update resources and apply wounds if using Verbotene Pforten
         const updates = {
-            [resourcePath]: currentResource - cost
+            [this.energyPath]: this.currentEnergy - cost
         };
 
         // Apply wounds from Verbotene Pforten if any
@@ -196,29 +224,29 @@ export class UebernatuerlichDialog extends CombatDialog {
         let mod_at = 0;
         let mod_vt = 0;
         let mod_dm = 0;
-        let mod_ressource = parseInt(this.item.system.kosten.match(/\d+/)?.[0] || '0', 10);
+        let mod_energy = sanitizeEnergyCost(this.item.system.kosten);
         let text_at = '';
         let text_vt = '';
         let text_dm = '';
-        let text_ressource = '';
+        let text_energy = '';
         let schaden = null;
         let nodmg = {name: '', value: false};
         let trefferzone = 0;
         let fumble_val = 1;
 
         // Get the minimum available resource based on actor and item type
-        let availableResource;
+        let availableEnergy;
         if(this.actor.type == 'held') {
             if(this.item.type === 'zauber') {
-                availableResource = this.actor.system.abgeleitete.asp_stern;
+                availableEnergy = this.actor.system.abgeleitete.asp_stern;
             } else {
-                availableResource = this.actor.system.abgeleitete.kap_stern;
+                availableEnergy = this.actor.system.abgeleitete.kap_stern;
             }
         } else {
             if(this.item.type === 'zauber') {
-                availableResource = this.actor.system.energien.asp.value;
+                availableEnergy = this.actor.system.energien.asp.value;
             } else {
-                availableResource = this.actor.system.energien.kap.value;
+                availableEnergy = this.actor.system.energien.kap.value;
             }
         }
 
@@ -262,15 +290,15 @@ export class UebernatuerlichDialog extends CombatDialog {
             mod_at,
             mod_vt,
             mod_dm,
-            mod_ressource,
+            mod_energy,
             text_at,
             text_vt,
             text_dm,
-            text_ressource,
+            text_energy,
             trefferzone,
             schaden,
             nodmg
-        ] = handleModifications(allModifications, {mod_at,mod_vt,mod_dm,mod_ressource,text_at,text_vt,text_dm,text_ressource,trefferzone,schaden:null,nodmg:null,context: this});
+        ] = handleModifications(allModifications, {mod_at,mod_vt,mod_dm,mod_energy,text_at,text_vt,text_dm,text_energy,trefferzone,schaden:null,nodmg:null,context: this});
         
         // Modifikator
         let modifikator = Number(manoever.mod.selected);
@@ -285,11 +313,11 @@ export class UebernatuerlichDialog extends CombatDialog {
         if (manoever.blutmagie?.value || manoever.verbotene_pforten?.wounds) {
             // Handle Blutmagie
             if (manoever.blutmagie?.value) {
-                const maxReduction = mod_ressource - availableResource;
+                const maxReduction = mod_energy - availableEnergy;
                 const blutmagieReduction = Math.min(maxReduction, manoever.blutmagie.value);
                 if (blutmagieReduction > 0) {
-                    mod_ressource -= blutmagieReduction;
-                    text_ressource = text_ressource.concat(`Blutmagie: -${blutmagieReduction} AsP\n`);
+                    mod_energy -= blutmagieReduction;
+                    text_energy = text_energy.concat(`Blutmagie: -${blutmagieReduction} AsP\n`);
                 }
             }
 
@@ -303,24 +331,24 @@ export class UebernatuerlichDialog extends CombatDialog {
                 const wounds = manoever.verbotene_pforten.wounds;
                 const verbotenePfortenReduction = (ws + multiplier) * wounds;
                 
-                const maxReduction = mod_ressource - availableResource;
+                const maxReduction = mod_energy - availableEnergy;
                 const actualReduction = Math.min(maxReduction, verbotenePfortenReduction);
                 if (actualReduction > 0) {
-                    mod_ressource -= actualReduction;
-                    text_ressource = text_ressource.concat(`Verbotene Pforten (${wounds} Wunden): -${actualReduction} AsP (zeigt nur aufgebrauchte AsP an, Rest verfällt)\n`);
+                    mod_energy -= actualReduction;
+                    text_energy = text_energy.concat(`Verbotene Pforten (${wounds} Wunden): -${actualReduction} AsP (zeigt nur aufgebrauchte AsP an, Rest verfällt)\n`);
                 }
             }
         }
         
-        console.log('mod_ressource',mod_ressource)
+        console.log('mod_energy',mod_energy)
         this.mod_at = mod_at;
         this.mod_vt = mod_vt;
         this.mod_dm = mod_dm;
-        this.mod_ressource = mod_ressource;
+        this.mod_energy = mod_energy;
         this.text_at = text_at;
         this.text_vt = text_vt;
         this.text_dm = text_dm;
-        this.text_ressource = text_ressource;
+        this.text_energy = text_energy;
         this.schaden = schaden;
         this.fumble_val = fumble_val;
     }
