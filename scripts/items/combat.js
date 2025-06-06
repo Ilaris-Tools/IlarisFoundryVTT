@@ -1,6 +1,18 @@
 import { IlarisItem } from "./item.js";
 
 export class CombatItem extends IlarisItem {
+    // Create a maneuver object from an item
+    _createManeuverFromItem(item) {
+        return {
+            ...item,
+            id: item.name.replace(/[\s\W]/g, '_'),
+            inputValue: {
+                ...item.system.input,
+                value: ''
+            }
+        };
+    }
+
     async setManoevers() {
         // Get selected maneuver packs from settings
         const selectedPacks = JSON.parse(game.settings.get('Ilaris', 'manoeverPacks'));
@@ -19,14 +31,7 @@ export class CombatItem extends IlarisItem {
             this.manoever = [];
             packItems.forEach(item => {
                 if (item.type === 'manoever' && (item.system.gruppe == 0 || item.system.gruppe == 4) && item._manoeverRequirementsFulfilled(this.actor, this)) {
-                    this.manoever.push({
-                        ...item,
-                        id: item.name.replace(/[\s\W]/g, '_'), 
-                        inputValue: {
-                            ...item.system.input,
-                            value: ''
-                        }
-                    });
+                    this.manoever.push(this._createManeuverFromItem(item));
                 }
             });
             
@@ -44,14 +49,7 @@ export class CombatItem extends IlarisItem {
             this.manoever = [];
             packItems.forEach(item => {
                 if(item.type === 'manoever' && item.system.gruppe == 1 && item._manoeverRequirementsFulfilled(this.actor, this)) {
-                    this.manoever.push({
-                        ...item,
-                        id: item.name.replace(/[\s\W]/g, '_'), 
-                        inputValue: {
-                            ...item.system.input,
-                            value: ''
-                        }
-                    });
+                    this.manoever.push(this._createManeuverFromItem(item));
                 }
             });
         }
@@ -59,14 +57,7 @@ export class CombatItem extends IlarisItem {
             this.manoever = [];
             packItems.forEach(item => {
                 if(item.type === 'manoever' && item.system.gruppe == 2 && item._manoeverRequirementsFulfilled(this.actor, this)) {
-                    this.manoever.push({
-                        ...item,
-                        id: item.name.replace(/[\s\W]/g, '_'), 
-                        inputValue: {
-                            ...item.system.input,
-                            value: ''
-                        }
-                    });
+                    this.manoever.push(this._createManeuverFromItem(item));
                 }   
             });
         }
@@ -74,14 +65,7 @@ export class CombatItem extends IlarisItem {
             this.manoever = [];
             packItems.forEach(item => {
                 if(item.type === 'manoever' && item.system.gruppe == 3 && item._manoeverRequirementsFulfilled(this.actor, this)) {
-                    this.manoever.push({
-                        ...item,
-                        id: item.name.replace(/[\s\W]/g, '_'), 
-                        inputValue: {
-                            ...item.system.input,
-                            value: ''
-                        }
-                    });
+                    this.manoever.push(this._createManeuverFromItem(item));
                 }
             }); 
         }
@@ -89,15 +73,8 @@ export class CombatItem extends IlarisItem {
             this.manoever = [];
             packItems.forEach(item => {
                 if(item.type === 'manoever' && item.system.gruppe == 4 && item._manoeverRequirementsFulfilled(this.actor, this)) {
-                    this.manoever.push({
-                        ...item,
-                        id: item.name.replace(/[\s\W]/g, '_'), 
-                        inputValue: {
-                            ...item.system.input,
-                            value: ''
-                        }
-                    });      
-                }
+                    this.manoever.push(this._createManeuverFromItem(item));
+                }      
             });
         }
     }
