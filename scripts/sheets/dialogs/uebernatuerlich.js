@@ -206,6 +206,10 @@ export class UebernatuerlichDialog extends CombatDialog {
         // allgemeine optionen
         manoever.kbak.selected = html.find('#kbak')[0]?.checked || false;  // Kombinierte Aktion
         
+        // Initialize blutmagie and verbotene_pforten if they don't exist
+        manoever.blutmagie = manoever.blutmagie || {};
+        manoever.verbotene_pforten = manoever.verbotene_pforten || {};
+        
         // Get values from Blutmagie and Verbotene Pforten if they exist
         manoever.blutmagie.value = Number(html.find('#blutmagie')[0]?.value) || 0;
         manoever.verbotene_pforten = {
