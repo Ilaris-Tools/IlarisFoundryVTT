@@ -94,7 +94,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         this.updateStatusMods();
 
         // Initialize and check energy values
-        if (!this.initializeEnergyValues()) {
+        if (!await this.initializeEnergyValues()) {
             return;
         }
 
