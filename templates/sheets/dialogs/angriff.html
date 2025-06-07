@@ -1,143 +1,155 @@
 {{log 'angriff' this}}
-{{#if (ifEq actor.type "held")}}
-    <div>
-        <label>Schips: </label>
-        <label>{{radioBoxes "schips" choices_schips checked=checked_schips}}</label>
-    </div>
-{{/if}}
-<div class="flexrow">
-    <label>{{get_label "kbak"}}</label>
-    <input type="checkbox" id="kbak" {{checked item.system.manoever.kbak.selected}} />
-</div>
-<div class="flexrow">
-    {{#if item.system.manoever.vlof.offensiver_kampfstil}}
-        <label>{{get_label "vlofok"}}</label>
-    {{else}}
-        <label>{{get_label "vlof"}}</label>
-    {{/if}}
-    <input type="checkbox" id="vlof" {{checked item.system.manoever.vlof.selected}} />
-</div>
-<div class="flexrow">
-    <label>{{get_label "vldf"}}</label>
-    <input type="checkbox" id="vldf" {{checked item.system.manoever.vldf.selected}} />
-</div>
 
-<div class="flexrow">
-    <label>Passierschlag: </label>
-    <input type="checkbox" id="pssl" {{checked item.system.manoever.pssl.selected}} />
-</div>
+<div class="combat-dialog-container">
+    <!-- Left Column - Main Controls -->
+    <div class="left-column">
+        {{#if (ifEq actor.type "held")}}
+            <div>
+                <label>Schips: </label>
+                <label>{{radioBoxes "schips" choices_schips checked=checked_schips}}</label>
+            </div>
+        {{/if}}
+        <div class="flexrow">
+            <label>{{get_label "kbak"}}</label>
+            <input type="checkbox" id="kbak" {{checked item.system.manoever.kbak.selected}} />
+        </div>
+        <div class="flexrow">
+            {{#if item.system.manoever.vlof.offensiver_kampfstil}}
+                <label>{{get_label "vlofok"}}</label>
+            {{else}}
+                <label>{{get_label "vlof"}}</label>
+            {{/if}}
+            <input type="checkbox" id="vlof" {{checked item.system.manoever.vlof.selected}} />
+        </div>
+        <div class="flexrow">
+            <label>{{get_label "vldf"}}</label>
+            <input type="checkbox" id="vldf" {{checked item.system.manoever.vldf.selected}} />
+        </div>
 
-<!-- eingaben -->
-<div class="flexrow">
-    <label>Reichweitenunterschied: </label>
-    <select id="rwdf" name="item.system.manoever.rwdf.selected" style="max-width: 150px">
-        {{#select item.system.manoever.rwdf.selected}}
-        <option value="0">Ideal</option>
-        <option value="1">1 Feld</option>
-        <option value="2">2 Felder</option>
-        {{/select}}
-    </select>
-</div>
+        <div class="flexrow">
+            <label>Passierschlag: </label>
+            <input type="checkbox" id="pssl" {{checked item.system.manoever.pssl.selected}} />
+        </div>
 
-<div class="flexrow">
-    <label>Reaktionsanzahl: </label>
-    <input
-        id="rkaz"
-        type="number"
-        name="item.system.manoever.rkaz.selected"
-        value="{{item.system.manoever.rkaz.selected}}"
-        data-dtype="Number"
-    />
-</div>
+        <!-- eingaben -->
+        <div class="flexrow">
+            <label>Reichweitenunterschied: </label>
+            <select id="rwdf" name="item.system.manoever.rwdf.selected" style="max-width: 150px">
+                <option value="0" {{#if (eq item.system.manoever.rwdf.selected "0")}}selected{{/if}}>Ideal</option>
+                <option value="1" {{#if (eq item.system.manoever.rwdf.selected "1")}}selected{{/if}}>1 Feld</option>
+                <option value="2" {{#if (eq item.system.manoever.rwdf.selected "2")}}selected{{/if}}>2 Felder</option>
+            </select>
+        </div>
 
-<hr>
+        <div class="flexrow">
+            <label>Reaktionsanzahl: </label>
+            <input
+                id="rkaz"
+                type="number"
+                name="item.system.manoever.rkaz.selected"
+                value="{{item.system.manoever.rkaz.selected}}"
+                data-dtype="Number"
+            />
+        </div>
 
-<div>
-    <div class="maneuver-header collapsed">
-        <h3>Manöver:</h3>
-        <div class="toggle-display">
-            <h4>Ausklappen</h4>
-            <i class="fas fa-chevron-down"></i>
+        <hr>
+
+        <div>
+            <div class="maneuver-header collapsed">
+                <h3>Manöver:</h3>
+                <div class="toggle-display">
+                    <h4>Ausklappen</h4>
+                    <i class="fas fa-chevron-down"></i>
+                </div>
+            </div>
+            <div class="maneuver-grid collapsed">
+                {{#each item.manoever as |manoever|}}
+                    <div class="maneuver-item {{#if (or manoever.inputValue.value manoever.inputValue.checked)}}has-value{{/if}}">
+                        <label>{{manoever.name}} ({{manoever.system.probe}})</label>
+                        {{#if (ifEq manoever.inputValue.field "CHECKBOX")}}
+                            <input
+                                type="checkbox"
+                                id="{{manoever.id}}CHECKBOX"
+                                {{#if manoever.inputValue.value}}checked{{/if}}
+                            />
+                        {{/if}}
+                        {{#if (ifEq manoever.inputValue.field "NUMBER")}}
+                            <input
+                                id="{{manoever.id}}NUMBER"
+                                type="number"
+                                name="item.manoever.{{@../index}}.inputValue.value"
+                                value="{{manoever.inputValue.value}}"
+                                data-dtype="Number"
+                                class="number-input"
+                                {{#unless (ifEq manoever.inputValue.min null)}}min="{{manoever.inputValue.min}}" data-has-min="true"{{/unless}}
+                                {{#if manoever.inputValue.max}}max="{{manoever.inputValue.max}}" data-has-max="true"{{/if}}
+                                oninput="this.classList.toggle('out-of-bounds', 
+                                    (this.dataset.hasMin === 'true' && Number(this.value) < Number(this.min)) || 
+                                    (this.dataset.hasMax === 'true' && Number(this.value) > Number(this.max)))"
+                            />
+                        {{/if}}
+                        {{#if (ifEq manoever.inputValue.field "TREFFER_ZONE")}}
+                            <select id="{{manoever.id}}TREFFER_ZONE" name="manoever.inputValue.value" style="max-width: 150px">
+                                {{selectOptions ../trefferzonen selected=manoever.inputValue.value}}
+                            </select>
+                        {{/if}}
+                    </div>
+                {{/each}}
+            </div>
+        </div>
+
+        <hr />
+        <div class="flexrow">
+            <label>Modifikator: </label>
+            <input
+                id="modifikator"
+                type="number"
+                name="item.system.manoever.mod.selected"
+                value="{{item.system.manoever.mod.selected}}"
+                data-dtype="Number"
+            />
+        </div>
+        <div class="flexrow">
+            <label>Würfelmodus: </label>
+            <select id="rollMode">
+                {{selectOptions rollModes selected=item.system.manoever.rllm.selected localize=true}}
+            </select>
+        </div>
+
+        <hr />
+        <div class="flexrow">
+            <button style="max-width: 150px" class="angreifen" type="button">
+                <i>
+                    <img
+                        class="button-icon-nahkampf"
+                        src="systems/Ilaris/assets/game-icons.net/sword-clash.png"
+                    />
+                </i>
+                Angriff
+            </button>
+            <button style="max-width: 150px" class="verteidigen" type="button">
+                <i
+                    ><img
+                        class="button-icon-nahkampf"
+                        src="systems/Ilaris/assets/game-icons.net/shield-opposition.png"
+                /></i>
+                Verteidigung
+            </button>
+            <button style="max-width: 150px" type="button" class="schaden">
+                <i
+                    ><img
+                        class="button-icon-nahkampf"
+                        src="systems/Ilaris/assets/game-icons.net/bloody-sword.png"
+                /></i>
+                Schaden
+            </button>
         </div>
     </div>
-    <div class="maneuver-grid collapsed">
-        {{#each item.manoever as |manoever|}}
-            <div class="maneuver-item {{#if (or manoever.inputValue.value manoever.inputValue.checked)}}has-value{{/if}}">
-                <label>{{manoever.name}} ({{manoever.system.probe}})</label>
-                {{#if (ifEq manoever.inputValue.field "CHECKBOX")}}
-                    <input
-                        type="checkbox"
-                        id="{{manoever.id}}CHECKBOX"
-                        {{#if manoever.inputValue.value}}checked{{/if}}
-                    />
-                {{/if}}
-                {{#if (ifEq manoever.inputValue.field "NUMBER")}}
-                    <input
-                        id="{{manoever.id}}NUMBER"
-                        type="number"
-                        name="item.manoever.{{@../index}}.inputValue.value"
-                        value="{{manoever.inputValue.value}}"
-                        data-dtype="Number"
-                        class="number-input"
-                        {{#unless (ifEq manoever.inputValue.min null)}}min="{{manoever.inputValue.min}}" data-has-min="true"{{/unless}}
-                        {{#if manoever.inputValue.max}}max="{{manoever.inputValue.max}}" data-has-max="true"{{/if}}
-                        oninput="this.classList.toggle('out-of-bounds', 
-                            (this.dataset.hasMin === 'true' && Number(this.value) < Number(this.min)) || 
-                            (this.dataset.hasMax === 'true' && Number(this.value) > Number(this.max)))"
-                    />
-                {{/if}}
-                {{#if (ifEq manoever.inputValue.field "TREFFER_ZONE")}}
-                    <select id="{{manoever.id}}TREFFER_ZONE" name="manoever.inputValue.value" style="max-width: 150px">
-                        {{selectOptions ../trefferzonen selected=manoever.inputValue.value}}
-                    </select>
-                {{/if}}
-            </div>
-        {{/each}}
-    </div>
-</div>
 
-<hr />
-<div class="flexrow">
-    <label>Modifikator: </label>
-    <input
-        id="modifikator"
-        type="number"
-        name="item.system.manoever.mod.selected"
-        value="{{item.system.manoever.mod.selected}}"
-        data-dtype="Number"
-    />
-</div>
-<div class="flexrow">
-    <label>Würfelmodus: </label>
-    <select id="rollMode">
-        {{selectOptions rollModes selected=item.system.manoever.rllm.selected localize=true}}
-    </select>
-</div>
-<hr />
-<div class="flexrow">
-    <button style="max-width: 150px" class="angreifen" type="button">
-        <i>
-            <img
-                class="button-icon-nahkampf"
-                src="systems/Ilaris/assets/game-icons.net/sword-clash.png"
-            />
-        </i>
-        Angriff
-    </button>
-    <button style="max-width: 150px" class="verteidigen" type="button">
-        <i
-            ><img
-                class="button-icon-nahkampf"
-                src="systems/Ilaris/assets/game-icons.net/shield-opposition.png"
-        /></i>
-        Verteidigung
-    </button>
-    <button style="max-width: 150px" type="button" class="schaden">
-        <i
-            ><img
-                class="button-icon-nahkampf"
-                src="systems/Ilaris/assets/game-icons.net/bloody-sword.png"
-        /></i>
-        Schaden
-    </button>
+    <!-- Right Column - Modifier Summary -->
+    <div class="right-column">
+        <div id="modifier-summary" class="modifier-summary-container">
+            <!-- This will be populated by JavaScript -->
+        </div>
+    </div>
 </div>
