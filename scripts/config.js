@@ -367,7 +367,7 @@ let manoever = {
     modification_type: {
         DAMAGE: "Schaden",
         DEFENCE: "Verteidigung",
-        ATTACK: "Angriff/Fernkampf",
+        ATTACK: "Angriff/Fernkampf/Übernatürlich Fertigkeiten",
         INITIATIVE: "Initiative",
         LOADING_TIME: "Ladezeit/Vorbereitungszeit",
         SPECIAL_RESOURCE: "Ressource für Zauber/Liturgien",
@@ -380,7 +380,8 @@ let manoever = {
     operator: {
         MULTIPLY: 'Multiplizieren',
         ADD: 'Addieren',
-        SUBTRACT: 'Subtrahieren'
+        SUBTRACT: 'Subtrahieren',
+        DIVIDE: 'Dividieren'
     },
     labels: {
         prerequisites: "Voraussetzungen",

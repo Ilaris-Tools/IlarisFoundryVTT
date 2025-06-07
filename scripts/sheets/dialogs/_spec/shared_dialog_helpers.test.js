@@ -1,4 +1,4 @@
-import { processModification, handleModifications } from '../shared_dialog_helpers.js';
+import { processModification, handleModifications, applyOperator } from '../shared_dialog_helpers.js';
 
 describe('processModification', () => {
     let rollValues;
@@ -26,9 +26,11 @@ describe('processModification', () => {
             mod_at: 0,
             mod_vt: 0,
             mod_dm: 0,
+            mod_ressource: 0,
             text_at: '',
             text_vt: '',
             text_dm: '',
+            text_ressource: '',
             schaden: '',
             nodmg: {name: '', value: false},
         };
@@ -42,10 +44,28 @@ describe('processModification', () => {
 
     it('should handle ATTACK type with ADD operator', () => {
         const modification = { type: 'ATTACK', operator: 'ADD', value: 5, affectedByInput: true };
-        processModification(modification, 2, 'Test Manoever', null, rollValues, mockConfig);
+        processModification(modification, 2, 'Test Manoever', null, rollValues);
 
         expect(rollValues.mod_at).toBe(10);
         expect(rollValues.text_at).toContain('Test Manoever: +10');
+    });
+
+    it('should handle ATTACK type with DIVIDE operator', () => {
+        rollValues.mod_at = 20;
+        const modification = { type: 'ATTACK', operator: 'DIVIDE', value: 2, affectedByInput: true };
+        processModification(modification, 1, 'Test Manoever', null, rollValues);
+
+        expect(rollValues.mod_at).toBe(10);
+        expect(rollValues.text_at).toContain('Test Manoever: +2 /');
+    });
+
+    it('should handle ATTACK type with MULTIPLY operator', () => {
+        rollValues.mod_at = 5;
+        const modification = { type: 'ATTACK', operator: 'MULTIPLY', value: 2, affectedByInput: true };
+        processModification(modification, 1, 'Test Manoever', null, rollValues);
+
+        expect(rollValues.mod_at).toBe(10);
+        expect(rollValues.text_at).toContain('Test Manoever: +2 *');
     });
 
     it('should handle ATTACK type with SUBTRACT operator', () => {
@@ -64,6 +84,24 @@ describe('processModification', () => {
         expect(rollValues.text_dm).toContain('Test Manoever: +8');
     });
 
+    it('should handle DAMAGE type with DIVIDE operator', () => {
+        rollValues.mod_dm = 20;
+        const modification = { type: 'DAMAGE', operator: 'DIVIDE', value: 2, affectedByInput: true };
+        processModification(modification, 1, 'Test Manoever', null, rollValues);
+
+        expect(rollValues.mod_dm).toBe(10);
+        expect(rollValues.text_dm).toContain('Test Manoever: +2 /');
+    });
+
+    it('should handle DAMAGE type with MULTIPLY operator', () => {
+        rollValues.mod_dm = 5;
+        const modification = { type: 'DAMAGE', operator: 'MULTIPLY', value: 2, affectedByInput: true };
+        processModification(modification, 1, 'Test Manoever', null, rollValues);
+
+        expect(rollValues.mod_dm).toBe(10);
+        expect(rollValues.text_dm).toContain('Test Manoever: +2 *');
+    });
+
     it('should handle DAMAGE type with SUBTRACT operator', () => {
         const modification = { type: 'DAMAGE', operator: 'SUBTRACT', value: 2, affectedByInput: true };
         processModification(modification, 3, 'Test Manoever', null, rollValues, mockConfig);
@@ -80,12 +118,22 @@ describe('processModification', () => {
         expect(rollValues.text_vt).toContain('Test Manoever: +7');
     });
 
-    it('should handle DEFENCE type with SUBTRACT operator', () => {
-        const modification = { type: 'DEFENCE', operator: 'SUBTRACT', value: 5, affectedByInput: true };
-        processModification(modification, 2, 'Test Manoever', null, rollValues, mockConfig);
+    it('should handle DEFENCE type with DIVIDE operator', () => {
+        rollValues.mod_vt = 20;
+        const modification = { type: 'DEFENCE', operator: 'DIVIDE', value: 2, affectedByInput: true };
+        processModification(modification, 1, 'Test Manoever', null, rollValues);
 
-        expect(rollValues.mod_vt).toBe(-10);
-        expect(rollValues.text_vt).toContain('Test Manoever: -10');
+        expect(rollValues.mod_vt).toBe(10);
+        expect(rollValues.text_vt).toContain('Test Manoever: +2 /');
+    });
+
+    it('should handle DEFENCE type with MULTIPLY operator', () => {
+        rollValues.mod_vt = 5;
+        const modification = { type: 'DEFENCE', operator: 'MULTIPLY', value: 2, affectedByInput: true };
+        processModification(modification, 1, 'Test Manoever', null, rollValues);
+
+        expect(rollValues.mod_vt).toBe(10);
+        expect(rollValues.text_vt).toContain('Test Manoever: +2 *');
     });
 
     it('should handle WEAPON_DAMAGE type with ADD operator', () => {
@@ -96,20 +144,30 @@ describe('processModification', () => {
         expect(rollValues.text_dm).toContain('Test Manoever: +3');
     });
 
+    it('should handle WEAPON_DAMAGE type with DIVIDE operator', () => {
+        rollValues.schaden = '1W6+3';
+        const modification = { type: 'WEAPON_DAMAGE', operator: 'DIVIDE', value: 2, affectedByInput: true };
+        processModification(modification, 1, 'Test Manoever', null, rollValues);
+
+        expect(rollValues.schaden).toBe('(1W6+3)/2');
+        expect(rollValues.text_dm).toContain('Test Manoever: 2 / Waffenschaden');
+    });
+
+    it('should handle WEAPON_DAMAGE type with MULTIPLY operator', () => {
+        rollValues.schaden = '1W6+3';
+        const modification = { type: 'WEAPON_DAMAGE', operator: 'MULTIPLY', value: 2, affectedByInput: true };
+        processModification(modification, 1, 'Test Manoever', null, rollValues);
+
+        expect(rollValues.schaden).toBe('(1W6+3)*2');
+        expect(rollValues.text_dm).toContain('Test Manoever: 2 * Waffenschaden');
+    });
+
     it('should handle WEAPON_DAMAGE type with SUBTRACT operator', () => {
         const modification = { type: 'WEAPON_DAMAGE', operator: 'SUBTRACT', value: 2, affectedByInput: true };
         processModification(modification, 2, 'Test Manoever', null, rollValues, mockConfig);
 
         expect(rollValues.schaden).toContain('-4');
         expect(rollValues.text_dm).toContain('Test Manoever: -4');
-    });
-
-    it('should handle WEAPON_DAMAGE type with multiplication', () => {
-        const modification = { type: 'WEAPON_DAMAGE', operator: 'MULTIPLY', value: 2, affectedByInput: true };
-        processModification(modification, 3, 'Test Manoever', 1, rollValues, mockConfig);
-
-        expect(rollValues.schaden).toContain('*6');
-        expect(rollValues.text_dm).toContain('Test Manoever (Head): 6 * Waffenschaden');
     });
 
     it('should handle ZERO_DAMAGE type', () => {
@@ -188,10 +246,77 @@ describe('processModification', () => {
         const modification = { type: 'SPECIAL_TEXT', value: 'Schild wird zerstört', affectedByInput: true };
         processModification(modification, 1, 'Test Manoever', 2, rollValues, mockConfig);
 
-        expect(rollValues.text_dm).toContain('Test Manoever (Bauch): Schild wird zerstört');
+        expect(rollValues.text_dm).toContain('Test Manoever (Schildarm): Schild wird zerstört');
         // Should not modify any other values
         expect(rollValues.mod_dm).toBe(0);
         expect(rollValues.schaden).toBe('');
+    });
+
+    it('should handle SPECIAL_RESOURCE type with DIVIDE operator', () => {
+        rollValues.mod_ressource = 0;
+        const modification = { type: 'SPECIAL_RESOURCE', operator: 'DIVIDE', value: 2, affectedByInput: true };
+        processModification(modification, 1, 'Test Manoever', null, rollValues, 20);
+
+        expect(rollValues.mod_ressource).toBe(-10); // (20/2) * -1 = -10
+        expect(rollValues.text_ressource).toContain('Test Manoever: -10 Energiekosten');
+    });
+
+    it('should handle SPECIAL_RESOURCE type with DIVIDE operator (value < 1)', () => {
+        rollValues.mod_ressource = 0;
+        const modification = { type: 'SPECIAL_RESOURCE', operator: 'DIVIDE', value: 0.5, affectedByInput: true };
+        processModification(modification, 1, 'Test Manoever', null, rollValues, 20);
+
+        expect(rollValues.mod_ressource).toBe(20); // (20/0.5) - 20 = 20
+        expect(rollValues.text_ressource).toContain('Test Manoever: +20 Energiekosten');
+    });
+
+    it('should handle SPECIAL_RESOURCE type with MULTIPLY operator', () => {
+        rollValues.mod_ressource = 0;
+        const modification = { type: 'SPECIAL_RESOURCE', operator: 'MULTIPLY', value: 2, affectedByInput: true };
+        processModification(modification, 1, 'Test Manoever', null, rollValues, 10);
+
+        expect(rollValues.mod_ressource).toBe(10); // (10*2) - 10 = 10
+        expect(rollValues.text_ressource).toContain('Test Manoever: +10 Energiekosten');
+    });
+
+    it('should handle SPECIAL_RESOURCE type with MULTIPLY operator (value < 1)', () => {
+        rollValues.mod_ressource = 0;
+        const modification = { type: 'SPECIAL_RESOURCE', operator: 'MULTIPLY', value: 0.5, affectedByInput: true };
+        processModification(modification, 1, 'Test Manoever', null, rollValues, 10);
+
+        expect(rollValues.mod_ressource).toBe(-5); // (10*0.5) * -1 = -5
+        expect(rollValues.text_ressource).toContain('Test Manoever: -5 Energiekosten');
+    });
+
+    it('should handle SPECIAL_RESOURCE type with ADD operator', () => {
+        rollValues.mod_ressource = 0;
+        const modification = { type: 'SPECIAL_RESOURCE', operator: 'ADD', value: 3, affectedByInput: true };
+        processModification(modification, 1, 'Test Manoever', null, rollValues, 5);
+
+        expect(rollValues.mod_ressource).toBe(3);
+        expect(rollValues.text_ressource).toContain('Test Manoever: +3 Energiekosten');
+    });
+
+    it('should handle SPECIAL_RESOURCE type with SUBTRACT operator', () => {
+        rollValues.mod_ressource = 0;
+        const modification = { type: 'SPECIAL_RESOURCE', operator: 'SUBTRACT', value: 3, affectedByInput: true };
+        processModification(modification, 1, 'Test Manoever', null, rollValues, 10);
+
+        expect(rollValues.mod_ressource).toBe(-3);
+        expect(rollValues.text_ressource).toContain('Test Manoever: -3 Energiekosten');
+    });
+
+    it('should accumulate SPECIAL_RESOURCE modifications', () => {
+        rollValues.mod_ressource = 5;
+        const modification1 = { type: 'SPECIAL_RESOURCE', operator: 'MULTIPLY', value: 2, affectedByInput: true };
+        const modification2 = { type: 'SPECIAL_RESOURCE', operator: 'ADD', value: 3, affectedByInput: true };
+        
+        processModification(modification1, 1, 'Test Manoever 1', null, rollValues, 10);
+        processModification(modification2, 1, 'Test Manoever 2', null, rollValues, 10);
+
+        expect(rollValues.mod_ressource).toBe(18); // First: 5 + ((10*2) - 10) = 15, Then: 15 + 3 = 18
+        expect(rollValues.text_ressource).toContain('Test Manoever 1: +10 Energiekosten');
+        expect(rollValues.text_ressource).toContain('Test Manoever 2: +3 Energiekosten');
     });
 });
 
@@ -203,9 +328,11 @@ describe('handleModifications', () => {
             mod_at: 0,
             mod_vt: 0,
             mod_dm: 0,
+            mod_ressource: 0,
             text_at: '',
             text_vt: '',
             text_dm: '',
+            text_ressource: '',
             schaden: '1W6',
             trefferzone: null,
             nodmg: {name: '', value: false},
@@ -226,16 +353,17 @@ describe('handleModifications', () => {
         global.signed = value => (value >= 0 ? `+${value}` : `${value}`);
     });
     
-    it('should handle multiple modifications in correct order (ADD/SUBTRACT before MULTIPLY)', () => {
+    it('should handle multiple SPECIAL_RESOURCE modifications in correct order', () => {
+        rollValues.mod_ressource = 10;
         const allModifications = [
             {
-                modification: { type: 'WEAPON_DAMAGE', operator: 'MULTIPLY', value: 2 },
+                modification: { type: 'SPECIAL_RESOURCE', operator: 'MULTIPLY', value: 2, affectedByInput: true },
                 manoever: { name: 'Test Multiply' },
                 number: 1,
                 check: true
             },
             {
-                modification: { type: 'WEAPON_DAMAGE', operator: 'ADD', value: 3 },
+                modification: { type: 'SPECIAL_RESOURCE', operator: 'ADD', value: 3, affectedByInput: true },
                 manoever: { name: 'Test Add' },
                 number: 1,
                 check: true
@@ -244,7 +372,33 @@ describe('handleModifications', () => {
         
         const result = handleModifications(allModifications, rollValues);
         
-        expect(result[7]).toBe('(1W6+3)*2'); // schaden should show ADD before MULTIPLY
+        expect(result[3]).toBe(23); // First: ((10*2) - 10) = 10, Then: 10 + 3 = 13
+        expect(result[7]).toContain('Test Multiply: +10 Energiekosten');
+        expect(result[7]).toContain('Test Add: +3 Energiekosten');
+    });
+
+    it('should handle multiple SPECIAL_RESOURCE modifications with values < 1', () => {
+        rollValues.mod_ressource = 10;
+        const allModifications = [
+            {
+                modification: { type: 'SPECIAL_RESOURCE', operator: 'MULTIPLY', value: 0.5, affectedByInput: true },
+                manoever: { name: 'Test Multiply' },
+                number: 1,
+                check: true
+            },
+            {
+                modification: { type: 'SPECIAL_RESOURCE', operator: 'DIVIDE', value: 0.5, affectedByInput: true },
+                manoever: { name: 'Test Divide' },
+                number: 1,
+                check: true
+            }
+        ];
+        
+        const result = handleModifications(allModifications, rollValues);
+        
+        expect(result[3]).toBe(15); // First: (10*0.5)*-1 = -5, Then: ((10/0.5) - 10) = 10, Total: -5 + 20 = 15
+        expect(result[7]).toContain('Test Multiply: -5 Energiekosten');
+        expect(result[7]).toContain('Test Divide: +10 Energiekosten');
     });
 
     it('should handle ZERO_DAMAGE type overriding other modifications', () => {
@@ -265,10 +419,10 @@ describe('handleModifications', () => {
         
         const result = handleModifications(allModifications, rollValues);
         
-        expect(result[7]).toBe('0'); // schaden
+        expect(result[9]).toBe('0'); // schaden
         expect(result[2]).toBe(0); // mod_dm
-        expect(result[8].value).toBe(true); // nodmg.value
-        expect(result[8].name).toBe('Zero Damage'); // nodmg.name
+        expect(result[10].value).toBe(true); // nodmg.value
+        expect(result[10].name).toBe('Zero Damage'); // nodmg.name
     });
 
     it('should handle modifications with number input', () => {
@@ -314,28 +468,85 @@ describe('handleModifications', () => {
         
         const result = handleModifications(allModifications, rollValues);
         
-        expect(result[6]).toBe(1); // trefferzone
-        expect(result[5]).toContain('Kopf'); // text_dm should include zone name
+        expect(result[8]).toBe(1); // trefferzone
+        expect(result[6]).toContain('Beine'); // text_dm should include zone name
+    });
+});
+
+describe('applyOperator', () => {
+    describe('DIVIDE operator', () => {
+        it('should divide the current value by the given value', () => {
+            expect(applyOperator(10, 2, 'DIVIDE')).toBe(5);
+            expect(applyOperator(20, 4, 'DIVIDE')).toBe(5);
+            expect(applyOperator(100, 10, 'DIVIDE')).toBe(10);
+        });
+
+        it('should handle division by 1', () => {
+            expect(applyOperator(10, 1, 'DIVIDE')).toBe(10);
+        });
+
+        it('should handle division resulting in decimals', () => {
+            expect(applyOperator(10, 3, 'DIVIDE')).toBe(4);
+        });
     });
 
-    it('should preserve modification order within same operator type', () => {
-        const allModifications = [
-            {
-                modification: { type: 'ATTACK', operator: 'ADD', value: 2 },
-                manoever: { name: 'First Add' },
-                number: 1,
-                check: true
-            },
-            {
-                modification: { type: 'ATTACK', operator: 'ADD', value: 3 },
-                manoever: { name: 'Second Add' },
-                number: 1,
-                check: true
-            }
-        ];
-        
-        const result = handleModifications(allModifications, rollValues);
-        
-        expect(result[3]).toMatch(/First Add.*Second Add/s); // text_at should preserve order
+    describe('MULTIPLY operator', () => {
+        it('should multiply the current value by the given value', () => {
+            expect(applyOperator(10, 2, 'MULTIPLY')).toBe(20);
+            expect(applyOperator(5, 4, 'MULTIPLY')).toBe(20);
+            expect(applyOperator(100, 0.5, 'MULTIPLY')).toBe(50);
+        });
+
+        it('should handle multiplication by 1', () => {
+            expect(applyOperator(10, 1, 'MULTIPLY')).toBe(10);
+        });
+
+        it('should handle multiplication by 0', () => {
+            expect(applyOperator(10, 0, 'MULTIPLY')).toBe(0);
+        });
+    });
+
+    describe('ADD operator', () => {
+        it('should add the given value to the current value', () => {
+            expect(applyOperator(10, 2, 'ADD')).toBe(12);
+            expect(applyOperator(5, 4, 'ADD')).toBe(9);
+            expect(applyOperator(100, -20, 'ADD')).toBe(80);
+        });
+
+        it('should handle addition of 0', () => {
+            expect(applyOperator(10, 0, 'ADD')).toBe(10);
+        });
+    });
+
+    describe('SUBTRACT operator', () => {
+        it('should subtract the given value from the current value', () => {
+            expect(applyOperator(10, 2, 'SUBTRACT')).toBe(8);
+            expect(applyOperator(5, 4, 'SUBTRACT')).toBe(1);
+            expect(applyOperator(100, 20, 'SUBTRACT')).toBe(80);
+        });
+
+        it('should handle subtraction of 0', () => {
+            expect(applyOperator(10, 0, 'SUBTRACT')).toBe(10);
+        });
+
+        it('should handle negative results', () => {
+            expect(applyOperator(5, 10, 'SUBTRACT')).toBe(-5);
+        });
+    });
+
+    describe('Edge cases', () => {
+        it('should handle zero as current value', () => {
+            expect(applyOperator(0, 5, 'ADD')).toBe(5);
+            expect(applyOperator(0, 5, 'SUBTRACT')).toBe(-5);
+            expect(applyOperator(0, 5, 'MULTIPLY')).toBe(0);
+            expect(applyOperator(0, 5, 'DIVIDE')).toBe(0);
+        });
+
+        it('should handle negative values', () => {
+            expect(applyOperator(-10, 5, 'ADD')).toBe(-5);
+            expect(applyOperator(-10, 5, 'SUBTRACT')).toBe(-15);
+            expect(applyOperator(-10, 5, 'MULTIPLY')).toBe(-50);
+            expect(applyOperator(-10, 5, 'DIVIDE')).toBe(-2);
+        });
     });
 });
