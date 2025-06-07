@@ -222,6 +222,19 @@ export class UebernatuerlichDialog extends CombatDialog {
         await super.manoeverAuswaehlen(html);
     }
     
+    /**
+     * Calculates the number of wounds needed to provide enough energy
+     * @param {number} ws - Wundschwelle of the character
+     * @param {number} multiplier - Selected multiplier (4 or 8)
+     * @param {number} energyNeeded - Amount of energy still needed
+     * @returns {number} Number of wounds required
+     */
+    calculateRequiredWounds(ws, multiplier, energyNeeded) {
+        if (energyNeeded <= 0) return 0;
+        const energyPerWound = ws + multiplier;
+        return Math.ceil(energyNeeded / energyPerWound);
+    }
+
     async updateManoeverMods() {
         let manoever = this.item.system.manoever;
 
@@ -333,13 +346,12 @@ export class UebernatuerlichDialog extends CombatDialog {
                     this.actor.system.kampfwerte.ws;
                 const multiplier = manoever.verbotene_pforten.multiplier;
                 
-                // Calculate required wounds based on remaining energy needed
+                // Calculate required wounds using the extracted method
                 const remainingEnergyNeeded = mod_energy - availableEnergy;
-                const energyPerWound = ws + multiplier;
-                this.calculatedWounds = Math.ceil(remainingEnergyNeeded / energyPerWound);
+                this.calculatedWounds = this.calculateRequiredWounds(ws, multiplier, remainingEnergyNeeded);
                 
                 if (this.calculatedWounds > 0) {
-                    const verbotenePfortenReduction = energyPerWound * this.calculatedWounds;
+                    const verbotenePfortenReduction = (ws + multiplier) * this.calculatedWounds;
                     mod_energy -= verbotenePfortenReduction;
                     text_energy = text_energy.concat(`Verbotene Pforten (${this.calculatedWounds} Wunden): -${verbotenePfortenReduction} AsP\n`);
                 }
