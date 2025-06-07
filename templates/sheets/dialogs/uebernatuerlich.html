@@ -28,7 +28,7 @@
         <div style="margin-right: 10px;">
             <label>{{radioBoxes "verbotene_pforten_toggle" choices_verbotene_pforten checked="4"}}</label>
         </div>
-        <input type="number" id="verbotene_pforten" name="item.system.manoever.verbotene_pforten.value" value="{{item.system.manoever.verbotene_pforten.value}}" data-dtype="Number" min="0" style="margin-right: 10px;" />
+        <input type="checkbox" id="verbotene_pforten" name="item.system.manoever.verbotene_pforten.value" {{checked item.system.manoever.verbotene_pforten.value}} style="margin-right: 10px;" />
         <span id="verbotene_pforten_estimate" style="color: var(--color-text-dark-secondary);">0 AsP</span>
     </div>
     <div class="description">

@@ -29,6 +29,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         this.item.system.manoever.rllm.selected = game.settings.get("core", "rollMode");  // TODO: either manoever or dialog property.
         this.item.system.manoever.blutmagie = this.item.system.manoever.blutmagie || {};
         this.item.system.manoever.verbotene_pforten = this.item.system.manoever.verbotene_pforten || {};
+        this.calculatedWounds = 0;
         this.fumble_val = 1;
         this.aufbauendeManoeverAktivieren()
     }
@@ -192,9 +193,8 @@ export class UebernatuerlichDialog extends CombatDialog {
         };
 
         // Apply wounds from Verbotene Pforten if any
-        if (this.item.system.manoever.verbotene_pforten?.wounds) {
-            const wounds = this.item.system.manoever.verbotene_pforten.wounds;
-            updates['system.gesundheit.wunden'] = this.actor.system.gesundheit.wunden + wounds;
+        if (this.item.system.manoever.verbotene_pforten?.activated && this.calculatedWounds > 0) {
+            updates['system.gesundheit.wunden'] = this.actor.system.gesundheit.wunden + this.calculatedWounds;
         }
 
         await this.actor.update(updates);
@@ -214,7 +214,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         manoever.blutmagie.value = Number(html.find('#blutmagie')[0]?.value) || 0;
         manoever.verbotene_pforten = {
             multiplier: Number(html.find('input[name="verbotene_pforten_toggle"]:checked')[0]?.value) || 4,
-            wounds: Number(html.find('#verbotene_pforten')[0]?.value) || 0
+            activated: html.find('#verbotene_pforten')[0]?.checked || false
         };
 
         manoever.mod.selected = html.find('#modifikator')[0]?.value || false;  // Modifikator
@@ -314,11 +314,12 @@ export class UebernatuerlichDialog extends CombatDialog {
         }
 
         // Handle Blutmagie and Verbotene Pforten
-        if (manoever.blutmagie?.value || manoever.verbotene_pforten?.wounds) {
+        if (manoever.blutmagie?.value || manoever.verbotene_pforten?.activated) {
+            const energyNeeded = mod_energy - availableEnergy;
+            
             // Handle Blutmagie
             if (manoever.blutmagie?.value) {
-                const maxReduction = mod_energy - availableEnergy;
-                const blutmagieReduction = Math.min(maxReduction, manoever.blutmagie.value);
+                const blutmagieReduction = Math.min(energyNeeded, manoever.blutmagie.value);
                 if (blutmagieReduction > 0) {
                     mod_energy -= blutmagieReduction;
                     text_energy = text_energy.concat(`Blutmagie: -${blutmagieReduction} AsP\n`);
@@ -326,20 +327,21 @@ export class UebernatuerlichDialog extends CombatDialog {
             }
 
             // Handle Verbotene Pforten
-            if (manoever.verbotene_pforten?.wounds) {
+            if (manoever.verbotene_pforten?.activated) {
                 const ws = this.actor.type === 'held' ? 
                     this.actor.system.abgeleitete.ws :
                     this.actor.system.kampfwerte.ws;
                 const multiplier = manoever.verbotene_pforten.multiplier;
-                console.log('multiplier',multiplier)
-                const wounds = manoever.verbotene_pforten.wounds;
-                const verbotenePfortenReduction = (ws + multiplier) * wounds;
                 
-                const maxReduction = mod_energy - availableEnergy;
-                const actualReduction = Math.min(maxReduction, verbotenePfortenReduction);
-                if (actualReduction > 0) {
-                    mod_energy -= actualReduction;
-                    text_energy = text_energy.concat(`Verbotene Pforten (${wounds} Wunden): -${actualReduction} AsP (zeigt nur aufgebrauchte AsP an, Rest verfällt)\n`);
+                // Calculate required wounds based on remaining energy needed
+                const remainingEnergyNeeded = mod_energy - availableEnergy;
+                const energyPerWound = ws + multiplier;
+                this.calculatedWounds = Math.ceil(remainingEnergyNeeded / energyPerWound);
+                
+                if (this.calculatedWounds > 0) {
+                    const verbotenePfortenReduction = energyPerWound * this.calculatedWounds;
+                    mod_energy -= verbotenePfortenReduction;
+                    text_energy = text_energy.concat(`Verbotene Pforten (${this.calculatedWounds} Wunden): -${verbotenePfortenReduction} AsP\n`);
                 }
             }
         }
