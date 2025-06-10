@@ -105,38 +105,7 @@
                     {{/each}}
                 </span>
             </div>
-            {{#if hasOwner}}
-            <label class="flex-fest-var" style="flex-basis: 100px"><b>Eigene Mod.: </b></label>
-            <div class="flexrow">
-                <label class="flex-fest-var" style="flex-basis: 100px"><b>WM: </b></label>
-                <div class="flexrow">
-                    <input
-                        name="system.mod_at"
-                        value="{{item.system.mod_at}}"
-                        type="text"
-                        data-dtype="Number"
-                    />
-                    <label class="flex-fest-var" style="flex-basis: 1px"><b>/</b></label>
-                    <input
-                        name="system.mod_vt"
-                        value="{{item.system.mod_vt}}"
-                        type="text"
-                        data-dtype="Number"
-                    />
-                </div>
-            </div>
-            <div class="flexrow">
-                <label class="flex-fest-var" style="flex-basis: 100px"
-                    ><b>Schadensbonus: </b></label
-                >
-                <input
-                    name="system.mod_schaden"
-                    value="{{item.system.mod_schaden}}"
-                    type="text"
-                    data-dtype="String"
-                />
-            </div>
-            {{/if}}
+
             <label><b>Beschreibung: </b></label>
             <textarea rows="6" name="system.text">{{item.system.text}}</textarea>
             <div class="flexrow">

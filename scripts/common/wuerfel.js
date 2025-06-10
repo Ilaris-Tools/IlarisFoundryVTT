@@ -429,6 +429,9 @@ export async function wuerfelwurf(event, actor) {
         let item = actor.items.get(itemId);
         console.log(item);
         pw = item.system.pw;
+        // Generate unique dialog ID to avoid conflicts when multiple dialogs are open
+        const dialogId = `dialog-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+        
         const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_magie.html', {
             choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: '1',
@@ -439,6 +442,7 @@ export async function wuerfelwurf(event, actor) {
             defaultRollMode: game.settings.get("core", "rollMode"),
             manoever: item.system.manoever,
             item: item,
+            dialogId: dialogId,
             // pw: pw
         });
         let d = new Dialog(
@@ -450,7 +454,7 @@ export async function wuerfelwurf(event, actor) {
                         icon: '<i><img class="button-icon-nahkampf" src="systems/Ilaris/assets/game-icons.net/book-cover.png"></i>',
                         label: 'Zaubern',
                         callback: async (html) => {
-                            await magieUpdate(html, actor, item);
+                            await magieUpdate(html, actor, item, dialogId);
                             let fumble_val = 1;
                             let dice_number = 0;
                             let discard_l = 0;
@@ -459,6 +463,7 @@ export async function wuerfelwurf(event, actor) {
                                 html,
                                 text,
                                 actor,
+                                dialogId,
                             );
                             // Kombinierte Aktion kbak
                             if (item.system.manoever.kbak.selected) {

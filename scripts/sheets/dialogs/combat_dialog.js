@@ -66,11 +66,12 @@ export class CombatDialog extends Dialog {
         this.rollmode = this.item.system.manoever.rllm.selected;
 
         this.item.manoever.forEach(manoever => {
+            const elementId = `${manoever.id}${manoever.inputValue.field}-${this.dialogId}`;
             if(manoever.inputValue.field == 'CHECKBOX') {
-                manoever.inputValue.value = html.find(`#${manoever.id+manoever.inputValue.field}`)[0]?.checked || false;
+                manoever.inputValue.value = html.find(`#${elementId}`)[0]?.checked || false;
             } else {
-                console.log(manoever.inputValue.name,html.find(`#${manoever.id+manoever.inputValue.field}`)[0]?.value)
-                manoever.inputValue.value = html.find(`#${manoever.id+manoever.inputValue.field}`)[0]?.value || false;
+                console.log(manoever.inputValue.name,html.find(`#${elementId}`)[0]?.value)
+                manoever.inputValue.value = html.find(`#${elementId}`)[0]?.value || false;
             }
         });
     }

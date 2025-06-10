@@ -1109,7 +1109,8 @@ export class IlarisActor extends Actor {
                     item_list.push(item);
                 } else item_list_tmp.push(item);
                 // for migration from dice_anzahl and dice_plus to tp
-                if(item.system.dice_plus || item.system.dice_anzahl) {
+                // Only migrate if tp is not set yet AND old fields exist
+                if(!item.system.tp && (item.system.dice_plus || item.system.dice_anzahl)) {
                     item.system.tp = `${item.system.dice_anzahl}W6${item.system.dice_plus < 0 ? '' : '+'}${item.system.dice_plus}`;
                     delete item.system.dice_anzahl;
                     delete item.system.dice_plus;
@@ -1125,7 +1126,8 @@ export class IlarisActor extends Actor {
                     item_list.push(item);
                 } else item_list_tmp.push(item);
                 // for migration from dice_anzahl and dice_plus to tp
-                if(item.system.dice_plus || item.system.dice_anzahl) {
+                // Only migrate if tp is not set yet AND old fields exist
+                if(!item.system.tp && (item.system.dice_plus || item.system.dice_anzahl)) {
                     item.system.tp = `${item.system.dice_anzahl}W6${item.system.dice_plus < 0 ? '' : '+'}${item.system.dice_plus}`;
                     delete item.system.dice_anzahl;
                     delete item.system.dice_plus;
