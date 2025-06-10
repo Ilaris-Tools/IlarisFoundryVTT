@@ -246,6 +246,22 @@ input.titel-input {
   }
 }
 
+.maximum-load-exceeded-left, 
+.maximum-load-exceeded-middle, 
+.maximum-load-exceeded-right {
+  border: red;
+  border-style: solid;
+}
+.maximum-load-exceeded-left {
+  border-width: 3px 0 3px 3px
+}
+.maximum-load-exceeded-middle{
+  border-width: 3px 0 3px 0
+}
+.maximum-load-exceeded-right {
+  border-width: 3px 3px 3px 0
+}
+
 .flexrow {
   margin: 4px 0;
   align-items: center;
