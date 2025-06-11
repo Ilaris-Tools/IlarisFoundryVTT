@@ -469,10 +469,8 @@ export class IlarisActorSheet extends ActorSheet {
         }
     }
 
-    _onItemCreate(event) {
+    async _onItemCreate(event) {
         console.log('ItemCreate');
-        // console.log(event);
-        // console.log($(event.currentTarget));
         let itemclass = $(event.currentTarget).data('itemclass');
         //ansehen: DomStringMap. Beide Varianten liefern das gleiche.
         //Welche ist besser und warum?
@@ -585,8 +583,7 @@ export class IlarisActorSheet extends ActorSheet {
                 content: "Du kannst Vorteile direkt aus den Kompendium Packs auf den Statblock ziehen. Für eigene Vor/Nachteile zu erstellen, die nicht im Regelwerk enthalten sind, benutze die Eigenschaften.",
                 callback: () => {},
               });
-        } 
-        else  {
+        } else {
             console.log('Neues generisches Item');
             console.log(itemclass);
             itemData = {
@@ -596,35 +593,12 @@ export class IlarisActorSheet extends ActorSheet {
             };
             console.log(itemData);
         }
-        // console.log(this.actor);
-        // console.log(this.actor.data);
-        // console.log(this.actor.data.data);
 
-        // Actor#createEmbeddedDocuments
-        console.log(itemData);
-        this.actor.createEmbeddedDocuments('Item', [itemData]);
-        // await this.actor.createOwnedItem(itemData);
-        // return this.actor.createOwnedItem(itemData);
-
-        // // event.preventDefault();
-        // const header = event.currentTarget;
-        // // Get the type of item to create.
-        // const type = header.dataset.type;
-        // // Grab any data associated with this control.
-        // const data = duplicate(header.dataset);
-        // // Initialize a default name.
-        // const name = `New ${type.capitalize()}`;
-        // // Prepare the item object.
-        // const itemData = {
-        //     name: name,
-        //     type: type,
-        //     data: data
-        // };
-        // // Remove the type from the dataset since it's in the itemData.type prop.
-        // delete itemData.data["type"];
-
-        // // Finally, create the item!
-        // return this.actor.createOwnedItem(itemData);   }
+        // Create the item and render its sheet
+        const created = await this.actor.createEmbeddedDocuments('Item', [itemData]);
+        if (created && created.length > 0) {
+            created[0].sheet.render(true);
+        }
     }
 
     _onItemEdit(event) {
