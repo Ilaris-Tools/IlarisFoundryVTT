@@ -1,0 +1,33 @@
+{
+  "name": "Fährtensuchen",
+  "type": "talent",
+  "img": "systems/Ilaris/assets/images/skills/profan-talent.svg",
+  "system": {
+    "text": "Fährtensuchen ermöglicht es Fährten aufzuspüren und zu folgen. Erfahrene Jäger können schätzen, wie alt die Fährte ist und wie schwer das Wesen sein muss.",
+    "fertigkeit": "Jagd"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Item.vpMPi3ElwxCVravL"
+    }
+  },
+  "_id": "Mop6QbCVxKlUX6Zc",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "Ww4drILJ63YXG1Vc": 3
+  },
+  "_key": "!items!Mop6QbCVxKlUX6Zc"
+}

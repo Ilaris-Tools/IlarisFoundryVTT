@@ -1,0 +1,29 @@
+{
+  "name": "Unaufhaltsam",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut KK 10",
+    "gruppe": 2,
+    "text": "Selbst bei einer gelungenen gegnerischen Verteidigung richtest du halben Schaden an. Ausweichen vermeidet diesen Schaden. Manövereffekte wirken weiterhin nur bei gelungenen Attacken."
+  },
+  "_id": "vKRIVVFWnUkcf12b",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!vKRIVVFWnUkcf12b"
+}

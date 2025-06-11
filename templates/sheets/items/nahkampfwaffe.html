@@ -14,21 +14,15 @@
         <div>
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis: 100px"><b>Schaden: </b></label>
-                <div class="flexrow">
-                    <input
-                        name="system.dice_anzahl"
-                        value="{{item.system.dice_anzahl}}"
-                        type="text"
-                        data-dtype="Number"
-                    />
-                    <label class="flex-fest-var" style="flex-basis: 40px">d6+</label>
-                    <input
-                        name="system.dice_plus"
-                        value="{{item.system.dice_plus}}"
-                        type="text"
-                        data-dtype="Number"
-                    />
-                </div>
+                <input 
+                    class="regex-check" 
+                    pattern="^\d+[WwDd]\d{1,2}([\+\-]?\d*)?$"
+                    title="TP der Waffe in Schema xWy+/-z Anzahl Würfel x, Würfelkürzel W,w,D oder d, Seitenanzahl y, +/- Modifikator und Modifikator z" 
+                    type="text" 
+                    name="system.tp" 
+                    value="{{item.system.tp}}"
+                />
+                <span class="validation-icon"></span>
             </div>
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis: 100px"><b>Fertigkeit: </b></label>

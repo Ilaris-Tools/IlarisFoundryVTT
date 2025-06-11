@@ -1,0 +1,41 @@
+{
+  "name": "Goldene Rüstung",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Licht",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du hüllst dich in eine Aureole gleißenden Lichts, das deine Gegner blendet. Sämtliche Nah- und Fernkampfangriffe und alle Zauber auf dich sind um –2 erschwert.",
+    "maechtig": "Erhöht den Malus um –1.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "",
+    "ziel": "selbst",
+    "reichweite": "Berührung\nVorbereitungszeit: 2 Aktionen",
+    "wirkungsdauer": "4 Minuten",
+    "kosten": "8 KaP",
+    "erlernen": "Pra 12",
+    "pw": 0,
+    "gruppe": 40
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "lsDlcXVMdgRo3J1n",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!lsDlcXVMdgRo3J1n"
+}

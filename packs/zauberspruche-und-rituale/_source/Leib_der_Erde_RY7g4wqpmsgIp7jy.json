@@ -1,0 +1,41 @@
+{
+  "name": "Leib der Erde",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Humus, Verwandlung",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du harmonierst mit dem Element Humus. Du bist immun gegen Gifte und Humusschaden.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "Reise in die Erde (–4; du kannst dich mit 2 Schritt pro Initiativephase durch Holz und Erde bewegen, als würdest du darin tauchen. Im Humus brauchst du nicht zu atmen.)\nBegleiter (–4; der Zauber betrifft auch eine weitere Person, mit der du permanent Hautkontakt halten musst.)\nLeib aus Humus (–8; Deine Kreaturenklasse wird zu \"Elementar\" mit allen entsprechenden Eigenschaften (S. 99). Du kannst während der Wirkungsdauer keine Zauber wirken.)",
+    "vorbereitung": "8 Aktionen",
+    "ziel": "selbst",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Stunde",
+    "kosten": "16 AsP",
+    "erlernen": "Geo, Hex 16; Elf, Dru, Mag 20",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "RY7g4wqpmsgIp7jy",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!RY7g4wqpmsgIp7jy"
+}

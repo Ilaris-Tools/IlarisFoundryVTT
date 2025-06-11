@@ -26,7 +26,6 @@ export class IlarisActorSheet extends ActorSheet {
         html.find('.item-toggle').click((ev) => this._onToggleItem(ev));
         html.find('.toggle-bool').click((ev) => this._onToggleBool(ev));
         html.find('.hp-update').change((ev) => this._onHpUpdate(ev));
-        // html.find('.selected-kampfstil').change(ev => this._onSelectedKampfstil(ev));
     }
 
     _ausklappView(event) {
@@ -53,40 +52,133 @@ export class IlarisActorSheet extends ActorSheet {
         const itemId = event.currentTarget.dataset.itemid;
         const item = this.actor.items.get(itemId);
         console.log(item);
-        // const item = this.data.items.get(itemId);
         const toggletype = event.currentTarget.dataset.toggletype;
         let attr = `system.${toggletype}`;
+        const otherHandType = toggletype === 'hauptwaffe' ? 'nebenwaffe' : 'hauptwaffe';
+        const otherHandAttr = `system.${otherHandType}`;
+        
         if (toggletype == 'hauptwaffe' || toggletype == 'nebenwaffe') {
             let item_status = getProperty(item, attr);
-            // item.update({[attr]: !getProperty(item.data, attr)});
+            
+            // Handle two-handed ranged weapons
+            if (item_status && item.type === 'fernkampfwaffe' && item.system.eigenschaften.zweihaendig) {
+                await this._unequipWeapon(itemId);
+                return; 
+            }
+            
             if (item_status == false) {
-                for (let nwaffe of this.actor.nahkampfwaffen) {
-                    // for (let nwaffe of this.actor.data.nahkampfwaffen) {
-                    // console.log(nwaffe);
-                    if (nwaffe.system[toggletype] == true) {
-                        let change_itemId = nwaffe.id;
-                        let change_item = this.actor.items.get(change_itemId);
-                        await change_item.update({ [attr]: false });
+                // Handle switching hands for one-handed weapons
+                if ((toggletype == 'hauptwaffe' && item.system.nebenwaffe) || 
+                    (toggletype == 'nebenwaffe' && item.system.hauptwaffe)) {
+                    
+                    if (!item.system.eigenschaften.zweihaendig) {
+                        await item.update({ [otherHandAttr]: false });
                     }
                 }
-                for (let item of this.actor.fernkampfwaffen) {
-                    // console.log(item);
-                    if (item.system[toggletype] == true) {
-                        let change_itemId = item.id;
-                        let change_item = this.actor.items.get(change_itemId);
-                        await change_item.update({ [attr]: false });
-                    }
+                
+                // Unequip two-handed ranged weapons when equipping any other weapon
+                this._unequipTwoHandedRangedWeapons();
+                
+                // If equipping a two-handed weapon, unequip all other weapons
+                if (item.system.eigenschaften.zweihaendig) {
+                    this._unequipAllWeaponsExcept(itemId);
+                } else {
+                    // For one-handed weapons, only unequip from the toggled hand
+                    this._unequipHandWeapons(toggletype);
+                    
+                    // If a two-handed weapon is equipped in both hands, unequip it
+                    this._unequipTwoHandedWeaponsInBothHands();
                 }
             }
-            // console.log(attr);
-            // console.log(item_status);
+            
+            // For two-handed weapons, always equip in both hands by default
+            if (item.system.eigenschaften.zweihaendig && !item_status) {
+                await item.update({ [otherHandAttr]: true });
+            }
+            
             await item.update({ [attr]: !item_status });
         } else {
             attr = `system.${toggletype}`;
             await item.update({ [attr]: !getProperty(item, attr) });
         }
-        // console.log(attr);
-        // console.log(!getProperty(item.data, attr));
+    }
+    
+    // Helper method to unequip a specific weapon from both hands
+    async _unequipWeapon(weaponId) {
+        const weapon = this.actor.items.get(weaponId);
+        if (weapon) {
+            await weapon.update({
+                "system.hauptwaffe": false,
+                "system.nebenwaffe": false
+            });
+        }
+    }
+    
+    // Helper method to unequip all two-handed ranged weapons
+    async _unequipTwoHandedRangedWeapons() {
+        for (let waffe of this.actor.fernkampfwaffen) {
+            if (waffe.system.eigenschaften.zweihaendig && 
+               (waffe.system.hauptwaffe || waffe.system.nebenwaffe)) {
+                await this._unequipWeapon(waffe.id);
+            }
+        }
+    }
+    
+    // Helper method to unequip all weapons except the specified one
+    async _unequipAllWeaponsExcept(exceptItemId) {
+        // Unequip all melee weapons except the specified one
+        for (let waffe of this.actor.nahkampfwaffen) {
+            if (waffe.id !== exceptItemId && (waffe.system.hauptwaffe || waffe.system.nebenwaffe)) {
+                await this._unequipWeapon(waffe.id);
+            }
+        }
+        
+        // Unequip all ranged weapons except the specified one
+        for (let waffe of this.actor.fernkampfwaffen) {
+            if (waffe.id !== exceptItemId && (waffe.system.hauptwaffe || waffe.system.nebenwaffe)) {
+                await this._unequipWeapon(waffe.id);
+            }
+        }
+    }
+    
+    // Helper method to unequip two-handed weapons that are equipped in both hands
+    async _unequipTwoHandedWeaponsInBothHands() {
+        // Check melee weapons
+        for (let waffe of this.actor.nahkampfwaffen) {
+            if (waffe.system.eigenschaften.zweihaendig && 
+                waffe.system.hauptwaffe && waffe.system.nebenwaffe) {
+                await this._unequipWeapon(waffe.id);
+            }
+        }
+        
+        // Check ranged weapons
+        for (let waffe of this.actor.fernkampfwaffen) {
+            if (waffe.system.eigenschaften.zweihaendig && 
+                waffe.system.hauptwaffe && waffe.system.nebenwaffe) {
+                await this._unequipWeapon(waffe.id);
+            }
+        }
+    }
+    
+    // Helper method to unequip weapons from a specific hand
+    async _unequipHandWeapons(handType) {
+        // Unequip melee weapons from the specified hand
+        for (let waffe of this.actor.nahkampfwaffen) {
+            if (waffe.system[handType]) {
+                await this.actor.items.get(waffe.id).update({ 
+                    [`system.${handType}`]: false 
+                });
+            }
+        }
+        
+        // Unequip ranged weapons from the specified hand
+        for (let waffe of this.actor.fernkampfwaffen) {
+            if (waffe.system[handType]) {
+                await this.actor.items.get(waffe.id).update({ 
+                    [`system.${handType}`]: false 
+                });
+            }
+        }
     }
 
     async _onRollable(event) {
@@ -100,7 +192,7 @@ export class IlarisActorSheet extends ActorSheet {
             let roll = new Roll(formula);
             console.log(formula);
             let speaker = ChatMessage.getSpeaker({ actor: this.actor });
-            await roll.evaluate({ async: true });
+            await roll.evaluate();
             const html_roll = await renderTemplate(
                 'systems/Ilaris/templates/chat/probenchat_profan.html', 
                 {title: `${label}`}
@@ -188,7 +280,7 @@ export class IlarisActorSheet extends ActorSheet {
         } else if (rolltype == 'schaden') {
             label = $(event.currentTarget).data('item');
             label = `Schaden (${label})`;
-            pw = $(event.currentTarget).data('pw');
+            pw = $(event.currentTarget).data('pw').replace(/[Ww]/g, "d");;
         } else if (rolltype == 'attribut') {
             const attribut_name = $(event.currentTarget).data('attribut');
             label = CONFIG.ILARIS.label[attribut_name];
@@ -226,7 +318,7 @@ export class IlarisActorSheet extends ActorSheet {
         // let formula = `${data.pw} + 3d20dhdl`;
         let roll = new Roll(formula);
         // roll.roll();
-        await roll.evaluate({ async: true });
+        await roll.evaluate();
         // console.log(roll);
         // let critfumble = roll.result.split(" + ")[1];
         let critfumble = roll.dice[0].results.find((a) => a.active == true).result;
@@ -351,6 +443,13 @@ export class IlarisActorSheet extends ActorSheet {
         this.actor.update({ 'system.misc.selected_kampfstil': selected_kampfstil });
     }
 
+    _onSelectedUebernatuerlichenStil(event) {
+        console.log('_onSelectedUebernatuerlichenStil');
+        let selected_stil = event.target.value;
+        console.log(selected_stil);
+        this.actor.system.misc.selected_uebernatuerlicher_stil = selected_stil;
+        this.actor.update({ 'system.misc.selected_uebernatuerlicher_stil': selected_stil });
+    }
 
     _onDropItemCreate(item) {
         if (item.type == "manoever") {
@@ -370,10 +469,8 @@ export class IlarisActorSheet extends ActorSheet {
         }
     }
 
-    _onItemCreate(event) {
+    async _onItemCreate(event) {
         console.log('ItemCreate');
-        // console.log(event);
-        // console.log($(event.currentTarget));
         let itemclass = $(event.currentTarget).data('itemclass');
         //ansehen: DomStringMap. Beide Varianten liefern das gleiche.
         //Welche ist besser und warum?
@@ -486,8 +583,7 @@ export class IlarisActorSheet extends ActorSheet {
                 content: "Du kannst Vorteile direkt aus den Kompendium Packs auf den Statblock ziehen. Für eigene Vor/Nachteile zu erstellen, die nicht im Regelwerk enthalten sind, benutze die Eigenschaften.",
                 callback: () => {},
               });
-        } 
-        else  {
+        } else {
             console.log('Neues generisches Item');
             console.log(itemclass);
             itemData = {
@@ -497,35 +593,12 @@ export class IlarisActorSheet extends ActorSheet {
             };
             console.log(itemData);
         }
-        // console.log(this.actor);
-        // console.log(this.actor.data);
-        // console.log(this.actor.data.data);
 
-        // Actor#createEmbeddedDocuments
-        console.log(itemData);
-        this.actor.createEmbeddedDocuments('Item', [itemData]);
-        // await this.actor.createOwnedItem(itemData);
-        // return this.actor.createOwnedItem(itemData);
-
-        // // event.preventDefault();
-        // const header = event.currentTarget;
-        // // Get the type of item to create.
-        // const type = header.dataset.type;
-        // // Grab any data associated with this control.
-        // const data = duplicate(header.dataset);
-        // // Initialize a default name.
-        // const name = `New ${type.capitalize()}`;
-        // // Prepare the item object.
-        // const itemData = {
-        //     name: name,
-        //     type: type,
-        //     data: data
-        // };
-        // // Remove the type from the dataset since it's in the itemData.type prop.
-        // delete itemData.data["type"];
-
-        // // Finally, create the item!
-        // return this.actor.createOwnedItem(itemData);   }
+        // Create the item and render its sheet
+        const created = await this.actor.createEmbeddedDocuments('Item', [itemData]);
+        if (created && created.length > 0) {
+            created[0].sheet.render(true);
+        }
     }
 
     _onItemEdit(event) {

@@ -1,0 +1,41 @@
+{
+  "name": "Warnende Kugel",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Hellsicht, Kugelzauber",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Die Kugel leuchtet auf, falls sich eine feindlich gesinnte Person in weniger als 16 Schritt Entfernung befindet und ihr eine Konterprobe (MR, 12) misslingt.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "4 Aktionen",
+    "ziel": "Kristallkugel",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Stunde",
+    "kosten": "4 AsP",
+    "erlernen": "Srl 14; Mag 20",
+    "pw": 0,
+    "gruppe": 12
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "TQsc3yN9s8GRXAKx",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!TQsc3yN9s8GRXAKx"
+}

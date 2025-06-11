@@ -1,0 +1,36 @@
+{
+  "name": "Trommelrituale",
+  "type": "uebernatuerliche_fertigkeit",
+  "img": "systems/Ilaris/assets/images/skills/magic-skill.svg",
+  "system": {
+    "basis": 0,
+    "fw": 0,
+    "pw": 0,
+    "attribut_0": "IN",
+    "attribut_1": "FF",
+    "attribut_2": "KO",
+    "gruppe": 0,
+    "text": "Die Derwische rufen mit ihren Trommelritualen ihren Gott Rashtullah an und stärken so ihre rechtgläubigen Mitstreiter.",
+    "voraussetzung": "Vorteil Tradition der Derwische I"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "iE2FDwpiQLASergC",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!iE2FDwpiQLASergC"
+}

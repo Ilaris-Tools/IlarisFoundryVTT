@@ -1,0 +1,41 @@
+{
+  "name": "Stärke des Blutgeists",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Eigenschaften, Gaben des Blutgeists",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Der Blutgeist stärkt dich. Du erhältst einen Bonus von +2 auf alle bei dem Tier des Blutgeists angegebenen Werte (S. 160).",
+    "maechtig": "Der Bonus steigt um +1.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "4 Aktionen",
+    "ziel": "selbst",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Stunde",
+    "kosten": "4 AsP",
+    "erlernen": "Ana 8",
+    "pw": 0,
+    "gruppe": 3
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "meGyyNQ5ucGfxDd6",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!meGyyNQ5ucGfxDd6"
+}

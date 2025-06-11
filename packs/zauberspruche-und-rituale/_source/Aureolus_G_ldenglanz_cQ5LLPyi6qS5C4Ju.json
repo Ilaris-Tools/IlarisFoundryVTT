@@ -1,0 +1,41 @@
+{
+  "name": "Aureolus Güldenglanz",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Illusion",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Eine feste Oberfläche von bis zu einem Rechtschritt sieht so aus, als wäre sie aus purem Gold. Dabei handelt es sich um eine Illusion (Sicht).",
+    "maechtig": "Verdoppelt die Fläche.",
+    "schwierigkeit": "12",
+    "modifikationen": "Farbenspiel (–4; du kannst auch eine andere Farbe oder ein Muster wählen.)\nWasserfläche (–4; du kannst auch andere Oberflächen wie deine Haut verzaubern.)",
+    "vorbereitung": "2 Aktionen",
+    "ziel": "Einzelobjekt",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Tag",
+    "kosten": "2 AsP",
+    "erlernen": "Srl 12; Mag 16",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "cQ5LLPyi6qS5C4Ju",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!cQ5LLPyi6qS5C4Ju"
+}

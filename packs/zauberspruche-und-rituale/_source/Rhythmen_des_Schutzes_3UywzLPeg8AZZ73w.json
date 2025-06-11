@@ -1,0 +1,41 @@
+{
+  "name": "Rhythmen des Schutzes",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Eigenschaften, Trommelrituale",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Die sanften Rhythmen erhöhen die Magieresistenz. Alle Zuhörer im Radius von 4 Schritt erhalten eine Erleichterung von +4 auf die MR.",
+    "maechtig": "Der Bonus steigt um +1.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "1 Stunde",
+    "ziel": "Zone",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Tag",
+    "kosten": "16 AsP",
+    "erlernen": "Der 16",
+    "pw": 0,
+    "gruppe": 16
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "3UywzLPeg8AZZ73w",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!3UywzLPeg8AZZ73w"
+}

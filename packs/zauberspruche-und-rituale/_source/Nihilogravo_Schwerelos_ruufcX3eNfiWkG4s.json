@@ -1,0 +1,41 @@
+{
+  "name": "Nihilogravo Schwerelos",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Umwelt",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du hebst in einer Zone von 4 Schritt Radius die Schwerkraft auf. Nach unten wird die Zone vom Boden (oder der Wasseroberfläche) begrenzt, nach oben hin ist sie unbegrenzt. Wer sie verlässt, unterliegt sofort wieder der Schwerkraft.",
+    "maechtig": "Der Radius steigt um 2 Schritt.",
+    "schwierigkeit": "12",
+    "modifikationen": "Begleiter (–4; die Zone bewegt sich mit dir.)\nLevitation (–8, selbst, 8 AsP; statt einer Zone bist nur du selbst betroffen.)",
+    "vorbereitung": "8 Aktionen",
+    "ziel": "Zone",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "4 Minuten",
+    "kosten": "16 AsP",
+    "erlernen": "Mag, Sch 18; Alch 20",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "ruufcX3eNfiWkG4s",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!ruufcX3eNfiWkG4s"
+}

@@ -1,0 +1,1205 @@
+{
+  "_id": "tICz2QUpFctIPCOk",
+  "name": "Al‘Jallahir",
+  "type": "kreatur",
+  "img": "systems/Ilaris/assets/images/token/kreaturentypen/elementar.png",
+  "system": {
+    "gesundheit": {
+      "erschoepfung": 0,
+      "wunden": 0,
+      "wundabzuege": 0,
+      "wundenignorieren": false,
+      "display": "Volle Gesundheit",
+      "hp": {
+        "max": 9,
+        "value": 9,
+        "threshold": 0
+      }
+    },
+    "energien": {
+      "asp": {
+        "max": 64,
+        "value": 64,
+        "threshold": 0
+      },
+      "gup": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      },
+      "kap": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      }
+    },
+    "initiative": 0,
+    "furcht": {
+      "furchtstufe": 0,
+      "furchtabzuege": 0,
+      "display": ""
+    },
+    "modifikatoren": {
+      "manuellermod": 0,
+      "nahkampfmod": 0
+    },
+    "schips": {
+      "schips": 4,
+      "schips_stern": 4
+    },
+    "attribute": {
+      "KO": {
+        "wert": 0,
+        "pw": null
+      },
+      "MU": {
+        "wert": 0,
+        "pw": null
+      },
+      "GE": {
+        "wert": 0,
+        "pw": null
+      },
+      "KK": {
+        "wert": 0,
+        "pw": null
+      },
+      "IN": {
+        "wert": 0,
+        "pw": null
+      },
+      "KL": {
+        "wert": 0,
+        "pw": null
+      },
+      "CH": {
+        "wert": 0,
+        "pw": null
+      },
+      "FF": {
+        "wert": 0,
+        "pw": null
+      }
+    },
+    "edit": false,
+    "kreaturentyp": "elementar",
+    "kurzbeschreibung": "leidenschaftlicher Anführer und Dschinn des Feuers",
+    "kampfwerte": {
+      "ws": 8,
+      "ws_stern": null,
+      "ini": 14,
+      "gs": 10,
+      "koloss": null,
+      "mr": 12,
+      "gs_schwimmend": null
+    },
+    "talente": [],
+    "freietalente": [],
+    "kampfunfaehig": "",
+    "text": "",
+    "abgeleitete": {
+      "globalermod": 0,
+      "nahkampfmoddisplay": "-",
+      "globalermoddisplay": "-"
+    }
+  },
+  "items": [
+    {
+      "_id": "xzsHDfTfdallfec6",
+      "name": "Kommando: Formiert Euch!",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Alle Mitstreiter erhalten VT +1."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.xzsHDfTfdallfec6"
+    },
+    {
+      "_id": "VFPZLr0XYdLQichj",
+      "name": "Kommando: Haltet Stand!",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Furcht-Effekte für Mitstreiter zählen als eine Stufe niedriger."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.VFPZLr0XYdLQichj"
+    },
+    {
+      "_id": "lNWoj0rCKxZFOsBk",
+      "name": "Kommando: Keine Gefangenen!",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Alle Mitstreiter erhalten TP +2."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.lNWoj0rCKxZFOsBk"
+    },
+    {
+      "_id": "xvGCPb8V6HLce7Vh",
+      "name": "Kommando: Kennt Keinen Schmerz!",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Alle Mitstreiter erhalten WS +1."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.xvGCPb8V6HLce7Vh"
+    },
+    {
+      "_id": "J6hpzImfaH60l4FE",
+      "name": "Resistenz",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Eine Resistenz I/II/III/IV (Schadensquelle) verringert\r\nden Schaden durch diese Schadensquelle (s.o.). Wann immer\r\ndie Kreatur Wunden erleiden würde, erleidet sie 1/2/3/4\r\nWunden weniger."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.J6hpzImfaH60l4FE"
+    },
+    {
+      "_id": "9cR2pelCzPdJAao4",
+      "name": "Schreckgestalt I",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Schreckgestalt I/II/III/IV: Bei der Begegnung mit der\r\nKreatur erleidet dein Charakter einen Furcht-Effekt Stufe I/II/\r\nIII/IV (S. 46). Der Furcht-Effekt dauert an, bis der Gegner\r\nbesiegt wurde oder dein Charakter sich in sicherer Entfernung\r\nbefindet."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.9cR2pelCzPdJAao4"
+    },
+    {
+      "_id": "Vl9NZIZbiztf5LaG",
+      "name": "Astralsinn",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Astralsinn erlaubt es der Kreatur, ihre Umgebung magisch\r\nwahrzunehmen. Sie erleidet keine Abzüge durch schlechte\r\nSicht. Der Astralsinn kann durch Antimagie, zum Beispiel\r\nHellsicht trüben in der Modifikation Magie unterdrücken,\r\ngestört werden. Die Schwierigkeit dafür liegt mindestens bei\r\n20, bei mächtigen Wesen deutlich höher."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.Vl9NZIZbiztf5LaG"
+    },
+    {
+      "_id": "fugHS2bIfDIzzjGb",
+      "name": "Immunität (eigenes Element, Eigenschaften, Hellsicht, Illusion, Umwelt, Verwandlung, Krankheiten, Gifte, Hitze, Kälte)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Immunität (Schadensquelle): Das Wesen erleidet keinen\r\nSchaden aus der angegebenen Quelle.\r\n\r\nProfan: prof. Waffen, Stürze, Tierangriffe\r\nMagisch: mag. Waffen, Schadenszauber\r\nGeweiht: gew. Waffen, Bannstrahl\r\nDämonisch: Angriffe von Dämonen, Paktierer-Fähigkeiten\r\nElementar: Lagerfeuer (Feuer), Aquafaxius (Wasser),\r\nAngriffe von Luftelementaren (Luft),\r\nFausthieb (Humus), Kälte (Eis), Schwert (Erz)"
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.fugHS2bIfDIzzjGb"
+    },
+    {
+      "_id": "kgcDL8kwhUWzQS2W",
+      "name": "Körperlosigkeit",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Körperlosigkeit bedeutet, dass der Körper der Kreatur\r\nkeine lebenserhaltende Funktion hat. Selbst schwerste\r\nVerwundungen schränken sie nicht ein. Das Wesen erleidet\r\nkeine Abzüge durch Wunden und wird nicht kampfunfähig.\r\nDie neunte Wunde vernichtet aber auch eine körperlose\r\nKreatur."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.kgcDL8kwhUWzQS2W"
+    },
+    {
+      "_id": "hRxxTBIvGNa47Sbd",
+      "name": "Schmerzimmun II",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Schmerzimmun I/II: Die erste Stufe verleiht Immunität\r\ngegen Blutungen und die Wundschmerzeffekte Betäubt und\r\nOrgantreffer. Die zweite Stufe verleiht Immunität gegen alle\r\nWundschmerzeffekte."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.hRxxTBIvGNa47Sbd"
+    },
+    {
+      "_id": "6DcIrXL3FXIVxRuj",
+      "name": "Verwundbarkeit I (Gegenelement)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Verwundbarkeit I/II/III/IV (Schadensquelle): Wann\r\nimmer die Kreatur Wunden durch diese Schadensquelle\r\nerleidet, bekommt sie 1/2/3/4 zusätzliche Wunden."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.6DcIrXL3FXIVxRuj"
+    },
+    {
+      "_id": "3mxvhI8AddOyTPRi",
+      "name": "Beispieldienste",
+      "type": "info",
+      "system": {
+        "text": "Kommandos im Kampf (1 Stunde, +4); (, ); Soldaten in die Schlacht führen (, ); Kampfeslust entfachen (-1 Furchtstufe für alle Verbündeten in Rufweite, 1 Stunde, -4) (, )"
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.3mxvhI8AddOyTPRi"
+    },
+    {
+      "_id": "syLwmdsEVRP8AWv2",
+      "name": "Beschwörung",
+      "type": "info",
+      "system": {
+        "text": "Herbeirufung des Feuers (24), 32 AsP"
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.syLwmdsEVRP8AWv2"
+    },
+    {
+      "_id": "1AfmRq43dlyZrDvt",
+      "name": "Flammensäbel",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Nachbrennen",
+            "text": null
+          }
+        ],
+        "tp": "4W6",
+        "haerte": 0,
+        "rw": 2,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 16,
+        "vt": 12
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.1AfmRq43dlyZrDvt"
+    },
+    {
+      "_id": "yc9GJud6t5gDzXun",
+      "name": "Anführen",
+      "type": "freiestalent",
+      "system": {
+        "text": "Mit Anführen leitest und motivierst du Untergebene. Du kannst mit Anführen Löscharbeiten oder eine Truppe von Kämpfern koordinieren, um ihnen so Vorteile zu verschaffen (S. 46). Gerade in großen Schlachten entscheidet der Heerführer über Sieg oder Niederlage.",
+        "pw": 16,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.yc9GJud6t5gDzXun"
+    },
+    {
+      "_id": "Ya5k4Nx66L4roicE",
+      "name": "Betören",
+      "type": "freiestalent",
+      "system": {
+        "text": "Beim Betören nutzt du deine persönliche Ausstrahlung, um zu bekommen, was du willst. Das reicht von Kleinigkeiten wie einem Freibier bis zum Verrat geheimer Staatsinformationen.",
+        "pw": 12,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.Ya5k4Nx66L4roicE"
+    },
+    {
+      "_id": "GRXfjRmLmkqnpiDp",
+      "name": "Einschüchtern",
+      "type": "freiestalent",
+      "system": {
+        "text": "Einschüchtern jagt dem Gegenüber Angst ein und bringt ihn so zu einer gewünschten Handlung. Die Probe wird oft vergleichend gegen den MU oder die Menschenkenntnis des Gegenübers abgelegt.",
+        "pw": 16,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.GRXfjRmLmkqnpiDp"
+    },
+    {
+      "_id": "tDeeOVi2akk1oDmP",
+      "name": "Tulamidenlande (Gebräuche)",
+      "type": "freiestalent",
+      "system": {
+        "text": null,
+        "pw": 12,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.tDeeOVi2akk1oDmP"
+    },
+    {
+      "_id": "v7iqGuEjJTIB3aGl",
+      "name": "Rhetorik",
+      "type": "freiestalent",
+      "system": {
+        "text": "Rhetorik beinhaltet zahlreiche Fähigkeiten und Kniffe, um die eigenen Argumente wirkungsvoll einzusetzen und die des Gegenüber zu entkräften. Du kannst Rhetorik nur einsetzen, wenn dein Charakter von seinem Standpunkt überzeugt ist - dreiste Lügen fallen unter Überreden.",
+        "pw": 12,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.v7iqGuEjJTIB3aGl"
+    },
+    {
+      "_id": "6gMkAE9v1Yev9w1D",
+      "name": "Sinnenschärfe",
+      "type": "freiestalent",
+      "system": {
+        "text": "Sinnenschärfe ist die aktive Verwendung deiner Sinne, um einen Kollaborateur in einem geschäftigen Wirtshaus zu belauschen, die Flagge eines nahenden Schiffes zu erkennen oder die Nadel im Heuhaufen zu finden.",
+        "pw": 12,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.6gMkAE9v1Yev9w1D"
+    },
+    {
+      "_id": "GgmzziipSW7t3emC",
+      "name": "Wachsamkeit",
+      "type": "freiestalent",
+      "system": {
+        "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
+        "pw": 14,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.GgmzziipSW7t3emC"
+    },
+    {
+      "_id": "medYUgcnXi2IcdEJ",
+      "name": "Feuer",
+      "type": "freiestalent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "pw": 16,
+        "profan": false
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.medYUgcnXi2IcdEJ"
+    },
+    {
+      "_id": "syU5RrvMNfNOcfmY",
+      "name": "Caldofrigo heiß und kalt",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Feuer",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du veränderst die Temperaturstufe (S. 35) eines Objektes um zwei Stufen.\nMächtige Magie: Du veränderst die Temperatur um eine weitere Stufe.\nProbenschwierigkeit: 12\nModifikationen: Zone (–4, selbst, 32 AsP; der Zauber betrifft einen Radius von 8 Schritt um dich herum.)\nFerne Zone (–8, Zone, 8 Schritt, 32 AsP)\nVorbereitungszeit: 16 Aktionen\nZiel: Einzelobjekt\nReichweite: Berührung\nWirkungsdauer: 16 Minuten\nKosten: 8 AsP\nFertigkeiten: Eis, Feuer, Umwelt (Zone), Verwandlung\nErlernen: Ach, Dru, Mag 16; Alch, Geo, Srl 18; 60 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 16,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.syU5RrvMNfNOcfmY"
+    },
+    {
+      "_id": "YKkZI9tTOFHII19q",
+      "name": "Ignifaxius Flammenstrahl",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Feuer",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Eine Flammenlanze fügt dem Ziel 4W6 TP zu und verursacht Nachbrennen (S. 98). Ballistischer Zauber.\nMächtige Magie: Die TP steigen um 2W6.\nProbenschwierigkeit: 12\nModifikationen: Gezielter Strahl (–4; du kannst die Trefferzone bestimmen.)\nVorbereitungszeit: 1 Aktion\nZiel: Einzelwesen, Einzelobjekt\nReichweite: 16 Schritt\nWirkungsdauer: augenblicklich\nKosten: 16 AsP\nFertigkeiten: Feuer\nErlernen: Mag 14; Ach 18; Dru, Srl 20; 40 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 16,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.YKkZI9tTOFHII19q"
+    },
+    {
+      "_id": "ldyYyBdKfdpVlF2S",
+      "name": "Ignifugo Feuerbann",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Feuer",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du löschst ein Feuer bis zur Größe eines Kaminfeuers.\nMächtige Magie: Du kannst ein Feuer bis zur Größe eines großen Lagerfeuers/eines Scheiterhaufens/eines brennenden Schiffes/einer brennenden Häusergruppe löschen.\nProbenschwierigkeit: 12\nModifikationen: Feuerdiebstahl (–4, Wirkungsdauer 1 Stunde, 1 AsP; du kannst ein maximal fackelgroßes Feuer von seiner alten Quelle nehmen und in deiner Hand mit dir tragen.)\nSelbstlöschung (–4, 0 Aktionen, 4 AsP; du löschst dich selbst.)\nVorbereitungszeit: 2 Aktionen\nZiel: Zone\nReichweite: 32 Schritt\nWirkungsdauer: augenblicklich\nKosten: 8 AsP\nFertigkeiten: Feuer, Umwelt\nErlernen: Dru 14; Alch, Geo, Sch, Srl 16; Mag 18; 40 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 16,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.ldyYyBdKfdpVlF2S"
+    },
+    {
+      "_id": "tLBLgYMg9e8ObgRp",
+      "name": "Ignisphaero",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Feuer",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du erschaffst eine elementare Kugel, die du mit Konzentration und Blickkontakt 16 Schritt pro Initiativephase bewegen kannst. Die Kugel explodiert, wenn du die Konzentration oder den Blickkontakt verlierst, du sie absichtlich zündest oder die Wirkungsdauer endet. Die Explosion richtet 4W6 TP an und verursacht Nachbrennen (S. 98). Pro Schritt Entfernung fällt der niedrigste Würfel weg.\nMächtige Magie: Die TP steigen um 1W6.\nProbenschwierigkeit: 12\nModifikationen: Vorgegebene Bewegung (–4; du gibst der Kugel die Bewegung bis zur Explosion vor, Konzentration und Blickkontakt zur Kugel sind nicht nötig.)\nVorbereitungszeit: 2 Aktionen\nZiel: Zone\nReichweite: 2 Schritt\nWirkungsdauer: 2 Initiativephasen\nKosten: 16 AsP\nFertigkeiten: Feuer\nErlernen: Mag 18; Ach, Geo 20; 60 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 16,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.tLBLgYMg9e8ObgRp"
+    },
+    {
+      "_id": "BiUQvecTncN1pSHw",
+      "name": "Leib des Feuers",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Feuer",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du harmonierst mit dem Element Feuer. Du bist immun gegen Hitze und Feuerschaden.\nProbenschwierigkeit: 12\nModifikationen: Reise ins Feuer (–4; du kannst dich mit 1 Schritt pro Initiativephase durch Feuer und Lava bewegen, als würdest du darin tauchen. Im Feuer brauchst du nicht zu atmen.)\nBegleiter (–4; der Zauber betrifft auch eine weitere Person, mit der du permanent Hautkontakt halten musst.)\nLeib aus Feuer (–8; Deine Kreaturenklasse wird zu \"Elementar\" mit allen entsprechenden Eigenschaften (S. 99). Du kannst während der Wirkungsdauer keine Zauber wirken.)\nVorbereitungszeit: 8 Aktionen\nZiel: selbst\nReichweite: Berührung\nWirkungsdauer: 1 Stunde\nKosten: 16 AsP\nFertigkeiten: Feuer, Verwandlung\nErlernen: Geo, Hex 16; Alch, Elf, Dru, Mag 20; 60 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 16,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.BiUQvecTncN1pSHw"
+    },
+    {
+      "_id": "9C0MASifO5tJIRgS",
+      "name": "Manifesto Element",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Feuer",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du beschwörst eine etwa faustgroße Menge oder kleine Manifestation des Elements herbei, mit dem du den Zauber wirkst. Sie verschwindet nach dem Ende der Wirkungsdauer.\nFertigkeit Eis: Du kannst zum Beispiel einen Schneeball oder einen Eiszapfen erscheinen lassen, ein Getränk kühlen, oder deine Körpertemperatur etwas senken.\nFertigkeit Erz: Du kannst zum Beispiel eine Hand voll Sand oder einen Stein erscheinen lassen oder das Gewicht eines Gegenstandes kurzzeitig etwas erhöhen.\nFertigkeit Feuer: Du kannst zum Beispiel eine kleine Flamme über deiner Hand tanzen lassen, deine Körpertemperatur etwas erhöhen, eine Pfeife anzünden  oder einen Funkenschwarm erzeugen.\nFertigkeit Humus: Du kannst zum Beispiel eine Knospe erblühen lassen, eine Hand voll Kuhmist herbeizaubern, ein Gänseblümchen erscheinen lassen, oder einen kleinen Kratzer schließen.\nFertigkeit Luft: Du kannst zum Beispiel einen frischen Windhauch rufen, einen Wohlgeruch erzeugen, oder einen kleinen Luftwirbel erschaffen.\nFertigkeit Wasser: Du kannst zum Beispiel einen Becher mit Wasser füllen, deine Hände abspülen, eine Pfütze bilden oder tagsüber einen kleinen Regenbogen glitzern lassen.\nProbenschwierigkeit: 12\nModifikationen: Demanifesto (–4; du kannst die Manifestation nach Belieben verschwinden und wieder auftauchen lassen.)\nVorbereitungszeit: 4 Aktionen\nZiel: Zone\nReichweite: Berührung\nWirkungsdauer: 1 Stunde\nKosten: 2 AsP\nFertigkeiten: Eis, Erz, Feuer, Humus, Luft, Wasser\nErlernen: Ach, Alch 8; Dru, Geo, Mag 14; Hex, Srl 18; Elf 20; 20 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 16,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.9C0MASifO5tJIRgS"
+    },
+    {
+      "_id": "VI8ddLwjMap6oI5g",
+      "name": "Pfeil des Feuers",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Feuer",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du verzauberst einen Pfeil (oder Bolzen oder Wurfwaffe), sodass er im Flug die Macht des Elements freisetzt. Der Pfeil verursacht Feuerschaden und Nachbrennen (S. 98). Unbelebte Gegenstände gehen bei einem Treffer in Flammen auf.\nProbenschwierigkeit: 12\nModifikationen: Geschütz (–4; du verzauberst ein größeres Geschoss wie das einer Balliste.)\nPermanenz (–4, 4 AsP, davon 1 gAsP, Wirkungsdauer bis die Bindung gelöst wird oder der Pfeil verschossen wurde)\nVorbereitungszeit: 1 Aktion\nZiel: Einzelobjekt\nReichweite: Berührung\nWirkungsdauer: 8 Initiativephasen\nKosten: 4 AsP\nFertigkeiten: Feuer\nErlernen: Mag 20; 40 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 16,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.VI8ddLwjMap6oI5g"
+    },
+    {
+      "_id": "k55sbXVDDsP69rmm",
+      "name": "Wand aus Feuer",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Feuer",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": null,
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 16,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.k55sbXVDDsP69rmm"
+    },
+    {
+      "_id": "yRu0PP2HYyD41d8u",
+      "name": "Warmes Blut",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Feuer",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Durch diesen Zauber siehst du die Wärmestrahlung deiner Umgebung. Kaltes erscheint schwarz bis grünblau, Warmblüter sind gelb und Feuer ist orange bis tiefrot.\nProbenschwierigkeit: 12\nVorbereitungszeit: 4 Aktionen\nZiel: selbst\nReichweite: Berührung\nWirkungsdauer: 1 Stunde\nKosten: 4 AsP\nFertigkeiten: Eigenschaften, Feuer, Hellsicht\nErlernen: Ach 8; Alch 20; 20 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 16,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!tICz2QUpFctIPCOk.yRu0PP2HYyD41d8u"
+    }
+  ],
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "prototypeToken": {
+    "displayName": 20,
+    "actorLink": false,
+    "width": 1,
+    "height": 1,
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "light": {
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "coloration": 1,
+      "dim": 0,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false,
+        "type": null
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      },
+      "attenuation": 0.5,
+      "negative": false,
+      "priority": 0,
+      "color": null
+    },
+    "disposition": 1,
+    "displayBars": 50,
+    "bar1": {
+      "attribute": "gesundheit.hp"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "flags": {},
+    "randomImg": false,
+    "name": "Al‘Jallahir",
+    "texture": {
+      "src": "systems/Ilaris/assets/images/token/kreaturentypen/elementar.png",
+      "scaleX": 1,
+      "scaleY": 1,
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "offsetX": 0,
+      "offsetY": 0,
+      "fit": "contain",
+      "rotation": 0,
+      "tint": "#ffffff",
+      "alphaThreshold": 0.75
+    },
+    "sight": {
+      "angle": 360,
+      "enabled": false,
+      "range": 0,
+      "brightness": 1,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "appendNumber": false,
+    "prependAdjective": false,
+    "hexagonalShape": 0,
+    "detectionModes": [],
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    }
+  },
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!actors!tICz2QUpFctIPCOk"
+}

@@ -1,0 +1,41 @@
+{
+  "name": "Essenzkonzentration",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Schalenzauber, Verwandlung",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du konzentrierst zwei alchemistische Produkte der gleichen Art zu einem. Das entstehende Produkt verfügt über die freiwilligen Modifikationen beider Ausgangsprodukte, höchstens aber 4 Modifikationen. Darüber hinausgehende Modifikationen verfallen - du entscheidest welche.",
+    "maechtig": "Verzehnfacht die (verbesserte) Haltbarkeit und erlaubt eine weitere Modifikation.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "4 Stunden",
+    "ziel": "zwei Elixiere",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "augenblicklich",
+    "kosten": "8 AsP",
+    "erlernen": "Alch 18",
+    "pw": 0,
+    "gruppe": 14
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "QgMsUfNpsFyUS9Hu",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!QgMsUfNpsFyUS9Hu"
+}

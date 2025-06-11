@@ -1,0 +1,40 @@
+{
+  "name": "Überleben",
+  "type": "fertigkeit",
+  "img": "systems/Ilaris/assets/images/skills/profan-skill.svg",
+  "system": {
+    "basis": 0,
+    "fw": 0,
+    "pw": 0,
+    "attribut_0": "GE",
+    "attribut_1": "FF",
+    "attribut_2": "KO",
+    "gruppe": "5",
+    "text": "Hierunter fallen alle Fähigkeiten, die zum Überleben in der Wildnis erforderlich sind. Du kannst dich orientieren oder einen Lagerplatz und Wasser finden. Außerdem bist du mit typischen Gefahren der Wildnis vertraut, kannst Seile sicher befestigen und durch Kundschaften verhindern, dass Mitstreiter den Treibsand übersehen oder das Krokodil für einen begehbaren Baumstamm halten. Die Talente sind nach aventurischen Regionen aufgeteilt, Talente von überlagerten Regionen gelten immer vorrangig. \n\nTalente: Hoher Norden (nördlich der Salamandersteine), Nordaventurien (nördlich von Steineichenwald und Ysilsee), Mittelaventurien (nördlich von Eisenwald, Phecanowald und Raschtulswall), Südaventurien (nördlich von Drôl und Thalusien), Tiefer Süden (südlich davon) sowie die überlagerten Regionen Maraskan (verbilligt), Wüste (verbilligt), Gebirge (verbilligt), Meer (verbilligt), Eiswüste (verbilligt) und Höhlen (verbilligt).",
+    "pwt": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Item.6LpaIp8iMX65Z8gH"
+    }
+  },
+  "_id": "segiszsNQ2FrB8lP",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "Ww4drILJ63YXG1Vc": 3
+  },
+  "_key": "!items!segiszsNQ2FrB8lP"
+}

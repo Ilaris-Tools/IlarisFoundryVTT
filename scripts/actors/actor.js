@@ -27,6 +27,33 @@ export class IlarisActor extends Actor {
         super.prepareBaseData();
     }
 
+    _checkVorteilSource(requirement,vorteil) {
+        return (vorteil.flags?.core?.sourceId && vorteil.flags.core.sourceId.includes(requirement)) ||
+        (vorteil._stats.compendiumSource && vorteil._stats.compendiumSource.includes(requirement))
+    }
+
+    _hasVorteil(vorteilRequirements) {
+        // use _stats.compendiumSource or flags.core.sourceId to check for requirement
+        return this.vorteil.allgemein.some((vorteil) => {
+            return vorteilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
+        }) || this.vorteil.kampf.some((vorteil) => {
+            return vorteilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
+        })  || this.vorteil.karma.some((vorteil) => {
+            return vorteilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
+        }) || this.vorteil.magie.some((vorteil) => {
+            return vorteilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
+        }) || this.vorteil.profan.some((vorteil) => {
+            return vorteilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
+        });
+    }
+
+    _hasKampfstilSelected(stilRequirements) {
+        return stilRequirements.some(requirement => 
+            hardcoded.getSelectedStil(this.system.misc.selected_kampfstil,this.misc.kampfstile_list).sources.some(source => source.includes(requirement)))
+        || stilRequirements.some(requirement => 
+            hardcoded.getSelectedStil(this.system.misc.selected_uebernatuerlicher_stil,this.misc.uebernatuerliche_stile_list).sources.some(source => source.includes(requirement)));
+    }
+
     __getStatuseffectById(data, statusId) {
         let iterator = data.effects.values();
         for (const effect of iterator) {
@@ -346,7 +373,7 @@ export class IlarisActor extends Actor {
         actor.system.abgeleitete.kap = kap;
     }
 
-    _calculateKampf(actor) {
+    async _calculateKampf(actor) {
         console.log('Berechne Kampf');
         const KK = actor.system.attribute.KK.wert;
         const sb = Math.floor(KK / 4);
@@ -357,8 +384,13 @@ export class IlarisActor extends Actor {
         let kampfstile = hardcoded.getKampfstile(actor);
         // data.misc.selected_kampfstil = "ohne";
         actor.misc.kampfstile_list = kampfstile;
-        let selected_kampfstil = actor.system.misc?.selected_kampfstil ?? 'ohne';
-        console.log(kampfstile);
+        let selected_kampfstil = hardcoded.getSelectedStil(actor.system.misc?.selected_kampfstil ?? 'ohne', kampfstile);
+
+        // Handle supernatural styles
+        let uebernatuerliche_stile = hardcoded.getUebernatuerlicheStile(actor);
+        actor.misc.uebernatuerliche_stile_list = uebernatuerliche_stile;
+        let selected_uebernatuerlicher_stil = hardcoded.getSelectedStil(actor.system.misc?.selected_uebernatuerlicher_stil ?? 'ohne', uebernatuerliche_stile);
+
         let HAUPTWAFFE =
             actor.nahkampfwaffen.find((x) => x.system.hauptwaffe == true) ||
             actor.fernkampfwaffen.find((x) => x.system.hauptwaffe == true);
@@ -392,7 +424,6 @@ export class IlarisActor extends Actor {
             let hauptwaffe = nwaffe.system.hauptwaffe;
             let nebenwaffe = nwaffe.system.nebenwaffe;
             let schaden = 0;
-            schaden += Number(nwaffe.system.dice_plus);
             // let kopflastig = eigenschaften.includes("Kopflastig");
             schaden += sb;
             if (kopflastig) {
@@ -479,98 +510,10 @@ export class IlarisActor extends Actor {
             // if (!isNaN(mod_schaden)) { schaden += mod_schaden;}
             nwaffe.system.at = at;
             nwaffe.system.vt = vt;
-            nwaffe.system.schaden = `${nwaffe.system.dice_anzahl}d6+${schaden}`;
+            nwaffe.system.schaden = `${nwaffe.system.tp}${schaden < 0 ? schaden : '+'+schaden}`;
             if (typeof mod_schaden !== 'undefined' && mod_schaden !== null && mod_schaden !== '') {
-                nwaffe.system.schaden = `${nwaffe.system.dice_anzahl}d6+${schaden}+${mod_schaden}`;
+                nwaffe.system.schaden = `${nwaffe.system.tp}${mod_schaden < 0 ? mod_schaden : '+'+mod_schaden}`;
             }
-            // if (nwaffe.data.data.eigenschaften.ruestungsbrechend) {
-            //     // manoever_at.push("km_rust");
-            //     // manoever_at.km_rust.possible = true;
-            //     nwaffe.data.data.manoever.km_rust.possible = true;
-            // }
-            // nwaffe.data.data.manoever.km_rust.possible = nwaffe.data.data.eigenschaften.ruestungsbrechend == "true";
-            nwaffe.system.manoever.km_rust.possible =
-                nwaffe.system.eigenschaften.ruestungsbrechend;
-            // if (nwaffe.data.data.eigenschaften.stumpf) {
-            //     manoever_at.push("km_stsl");
-            //     // manoever_at.km_stsl.possible = true;
-            // }
-            // console.log(nwaffe.data.data.eigenschaften.stumpf);
-            // console.log(nwaffe.data.data.eigenschaften.stumpf == "true");
-            // nwaffe.data.data.manoever.km_stsl.possible = nwaffe.data.data.eigenschaften.stumpf == "true";
-            nwaffe.system.manoever.km_stsl.possible = nwaffe.system.eigenschaften.stumpf;
-            if (nebenwaffe && hauptwaffe) {
-                if (
-                    HAUPTWAFFE.system.talent == 'Unbewaffnet' &&
-                    NEBENWAFFE.system.talent == 'Unbewaffnet'
-                ) {
-                    // manoever_at.push("km_umkl");
-                    // manoever_at.km_umkl.possible = true;
-                    nwaffe.system.manoever.km_umkl.possible = true;
-                }
-            } else {
-                nwaffe.system.manoever.km_umkl.possible = false;
-            }
-            // if (data.data.vorteil.kampf.find(x => x.name == "Ausfall")) {
-            //     manoever_at.push("km_ausf");
-            //     // manoever_at.km_ausf.possible = true;
-            // }
-            nwaffe.system.manoever.km_ausf.possible = actor.vorteil.kampf.some(
-                (x) => x.name == 'Ausfall',
-            );
-            // nwaffe.data.data.manoever.km_ausf.possible = data.data.vorteil.kampf.includes(x => x.name == "Ausfall");
-            // console.log("data.data.vorteil.kampf:");
-            // console.log(data.data.vorteil.kampf);
-            // console.log(data.data.vorteil.kampf.includes(x => x.name == "Ausfall"));
-            // console.log(data.data.vorteil.kampf.find(x => x.name == "Ausfall"));
-            // console.log(data.data.vorteil.kampf.indexOf(x => x.name == "Ausfall"));
-            // console.log(data.data.vorteil.kampf.indexOf(x => x.name == "Ausfall") > -1);
-            // console.log(data.data.vorteil.kampf.some(x => x.name == "Ausfall"));
-            // if (data.data.vorteil.kampf.find(x => x.name == "Hammerschlag")) {
-            //     manoever_at.push("km_hmsl");
-            //     // manoever_at.km_hmsl.possible = true;
-            // }
-            nwaffe.system.manoever.km_hmsl.possible = actor.vorteil.kampf.some(
-                (x) => x.name == 'Hammerschlag',
-            );
-            // nwaffe.data.data.manoever.km_hmsl.possible = data.data.vorteil.kampf.includes(x => x.name == "Hammerschlag");
-            // if (data.data.vorteil.kampf.find(x => x.name == "Klingentanz")) {
-            //     manoever_at.push("km_kltz");
-            //     // manoever_at.km_kltz.possible = true;
-            // }
-            nwaffe.system.manoever.km_kltz.possible = actor.vorteil.kampf.some(
-                (x) => x.name == 'Klingentanz',
-            );
-            // nwaffe.data.data.manoever.km_kltz.possible = data.data.vorteil.kampf.includes(x => x.name == "Klingentanz");
-            // if (data.data.vorteil.kampf.find(x => x.name == "Niederwerfen")) {
-            //     manoever_at.push("km_ndwf");
-            //     // manoever_at.km_ndwf.possible = true;
-            // }
-            nwaffe.system.manoever.km_ndwf.possible = actor.vorteil.kampf.some(
-                (x) => x.name == 'Niederwerfen',
-            );
-            // nwaffe.data.data.manoever.km_ndwf.possible = data.data.vorteil.kampf.includes(x => x.name == "Niederwerfen");
-            // if (data.data.vorteil.kampf.find(x => x.name == "Sturmangriff")) {
-            //     manoever_at.push("km_stag");
-            //     // manoever_at.km_stag.possible = true;
-            // }
-            nwaffe.system.manoever.km_stag.possible = actor.vorteil.kampf.some(
-                (x) => x.name == 'Sturmangriff',
-            );
-            // nwaffe.data.data.manoever.km_stag.possible = data.data.vorteil.kampf.includes(x => x.name == "Sturmangriff");
-            // if (data.data.vorteil.kampf.find(x => x.name == "Todesstoß")) {
-            //     manoever_at.push("km_tdst");
-            //     // manoever_at.km_tdst.possible = true;
-            // }
-            nwaffe.system.manoever.km_tdst.possible = actor.vorteil.kampf.some(
-                (x) => x.name == 'Todesstoß',
-            );
-            // nwaffe.data.data.manoever.km_tdst.possible = data.data.vorteil.kampf.includes(x => x.name == "Todesstoß");
-            // console.log(`AT: ${at} | VT: ${vt}`);
-            // console.log(pw);
-            // nwaffe.data.data.manoever_at = manoever_at;
-            // nwaffe.data.data.manoever_vt = manoever_vt;
-            // console.log(nwaffe.data.data.manoever);
             nwaffe.system.manoever.vlof.offensiver_kampfstil = actor.vorteil.kampf.some(
                 (x) => x.name == 'Offensiver Kampfstil',
             );
@@ -601,7 +544,6 @@ export class IlarisActor extends Actor {
             let hauptwaffe = fwaffe.system.hauptwaffe;
             let nebenwaffe = fwaffe.system.nebenwaffe;
             let schaden = 0;
-            schaden += Number(fwaffe.system.dice_plus);
             let fk = 0;
             let fertigkeit = fwaffe.system.fertigkeit;
             let talent = fwaffe.system.talent;
@@ -644,9 +586,9 @@ export class IlarisActor extends Actor {
                     fwaffe.system.fk = '-';
                 }
             }
-            fwaffe.system.schaden = `${fwaffe.system.dice_anzahl}d6+${schaden}`;
+            fwaffe.system.schaden = `${fwaffe.system.tp}`;
             if (typeof mod_schaden !== 'undefined' && mod_schaden !== null && mod_schaden !== '') {
-                fwaffe.system.schaden = `${fwaffe.system.dice_anzahl}d6+${schaden}+${mod_schaden}`;
+                fwaffe.system.schaden = `${fwaffe.system.tp}${mod_schaden < 0 ? mod_schaden : '+'+mod_schaden}`;
             }
 
             // if (data.data.vorteil.kampf.find(x => x.name.includes("Defensiver Kampfstil"))) item.data.data.manoever.vldf.possible = true;
@@ -700,13 +642,11 @@ export class IlarisActor extends Actor {
         // "rtk": "Reiterkampf",
         // "shk": "Schildkampf",
         // "snk": "Schneller Kampf"
-        let stufe = hardcoded.getKampfstilStufe(selected_kampfstil, actor);
         if (
-            selected_kampfstil == 'bhk' &&
+            selected_kampfstil.name.includes('Beidhändiger Kampf') &&
             typeof HAUPTWAFFE != 'undefined' &&
             typeof NEBENWAFFE != 'undefined'
         ) {
-            console.log(CONFIG.ILARIS.label[selected_kampfstil]);
             let nahkampfwaffe = true;
             let einhaendig = false;
             let kein_schild = false;
@@ -747,12 +687,12 @@ export class IlarisActor extends Actor {
             if (nahkampfwaffe && einhaendig && kein_schild && kein_reiter && unterschiedlich) {
                 let at_hw = 0;
                 let at_nw = 0;
-                if (stufe >= 1) {
+                if (selected_kampfstil.stufe >= 1) {
                     console.log('Stufe 1');
                     at_hw += 1;
                     at_nw += 1;
                 }
-                if (stufe >= 2) {
+                if (selected_kampfstil.stufe >= 2) {
                     console.log('Stufe 2');
                     at_hw += 1;
                     at_nw += 1;
@@ -761,22 +701,15 @@ export class IlarisActor extends Actor {
                         NEBENWAFFE.system.vt += 4;
                     }
                 }
-                if (stufe >= 3) {
+                if (selected_kampfstil.stufe >= 3) {
                     console.log('Stufe 3');
                     at_hw += 1;
                     at_nw += 1;
-                    HAUPTWAFFE.system.manoever.km_dppl.possible = true;
-                    NEBENWAFFE.system.manoever.km_dppl.possible = true;
-                    // HAUPTWAFFE.data.data.manoever_at.push("km_dppl");
-                    // NEBENWAFFE.data.data.manoever_at.push("km_dppl");
-                    // HAUPTWAFFE.data.manoever_at.km_dppl.possible = true;
-                    // NEBENWAFFE.data.manoever_at.km_dppl.possible = true;
                 }
                 HAUPTWAFFE.system.at += at_hw;
                 NEBENWAFFE.system.at += at_nw;
             }
-        } else if (selected_kampfstil == 'kvk') {
-            console.log(CONFIG.ILARIS.label[selected_kampfstil]);
+        } else if (selected_kampfstil.name.includes('Kraftvoller Kampf')) {
             let hauptwaffe = false;
             let nebenwaffe = false;
             let WAFFE = null;
@@ -797,28 +730,24 @@ export class IlarisActor extends Actor {
                 if (WAFFE.type == 'nahkampfwaffe') {
                     if (WAFFE.system.eigenschaften.reittier == false) {
                         let schaden = 0;
-                        if (stufe >= 1) {
+                        if (selected_kampfstil.stufe >= 1) {
                             console.log('Stufe 1');
                             schaden += 1;
                         }
-                        if (stufe >= 2) {
+                        if (selected_kampfstil.stufe >= 2) {
                             console.log('Stufe 2');
                             schaden += 1;
                         }
-                        if (stufe >= 3) {
+                        if (selected_kampfstil.stufe >= 3) {
                             console.log('Stufe 3');
                             schaden += 1;
-                            WAFFE.system.manoever.km_befr.possible = true;
-                            // WAFFE.data.data.manoever_at.push("km_befr");
-                            // WAFFE.data.manoever_at.km_befr.possible=true;
                         }
                         schaden = '+'.concat(schaden);
                         WAFFE.system.schaden = WAFFE.system.schaden.concat(schaden);
                     }
                 }
             }
-        } else if (selected_kampfstil == 'pwk') {
-            console.log(CONFIG.ILARIS.label[selected_kampfstil]);
+        } else if (selected_kampfstil.name.includes('Parierwaffenkampf')) {
             let hauptwaffe = false;
             let nebenwaffe = false;
             let parierwaffe = false;
@@ -849,10 +778,10 @@ export class IlarisActor extends Actor {
                 fernkampf = true;
             }
             if (parierwaffe && !fernkampf && !reittier) {
-                if (stufe >= 1) {
+                if (selected_kampfstil.stufe >= 1) {
                     console.log('Stufe 1');
                 }
-                if (stufe >= 2) {
+                if (selected_kampfstil.stufe >= 2) {
                     console.log('Stufe 2');
                     if (nebenwaffe) {
                         if (!NEBENWAFFE.system.eigenschaften.kein_malus_nebenwaffe) {
@@ -861,13 +790,13 @@ export class IlarisActor extends Actor {
                         }
                     }
                 }
-                if (stufe >= 3) {
+                if (selected_kampfstil.stufe >= 3) {
                     console.log('Stufe 3');
                     if (hauptwaffe) HAUPTWAFFE.system.manoever.km_rpst.possible = true;
                     if (nebenwaffe) NEBENWAFFE.system.manoever.km_rpst.possible = true;
                 }
             }
-        } else if (selected_kampfstil == 'rtk') {
+        } else if (selected_kampfstil.name.includes('Reiterkampf')) {
             console.log(CONFIG.ILARIS.label[selected_kampfstil]);
             let hauptwaffe = false;
             let nebenwaffe = false;
@@ -888,19 +817,19 @@ export class IlarisActor extends Actor {
                 let schaden = 0;
                 let at = 0;
                 let vt = 0;
-                if (stufe >= 1) {
+                if (selected_kampfstil.stufe >= 1) {
                     console.log('Stufe 1 (Hauptwaffe)');
                     schaden += 1;
                     at += 1;
                     vt += 1;
                 }
-                if (stufe >= 2) {
+                if (selected_kampfstil.stufe >= 2) {
                     console.log('Stufe 2 (Hauptwaffe)');
                     schaden += 1;
                     at += 1;
                     vt += 1;
                 }
-                if (stufe >= 3) {
+                if (selected_kampfstil.stufe >= 3) {
                     console.log('Stufe 3 (Hauptwaffe)');
                     schaden += 1;
                     at += 1;
@@ -958,7 +887,7 @@ export class IlarisActor extends Actor {
                 NEBENWAFFE.system.vt += vt;
                 NEBENWAFFE.system.schaden = NEBENWAFFE.system.schaden.concat(schaden);
             }
-        } else if (selected_kampfstil == 'shk') {
+        } else if (selected_kampfstil.name.includes('Schildkampf')) {
             console.log(CONFIG.ILARIS.label[selected_kampfstil]);
             let hauptwaffe = false;
             let nebenwaffe = false;
@@ -977,29 +906,27 @@ export class IlarisActor extends Actor {
             }
             if (hauptwaffe && HAUPTWAFFE.type == 'nahkampfwaffe' && schild) {
                 let vt = 0;
-                if (stufe >= 1) {
+                if (selected_kampfstil.stufe >= 1) {
                     console.log('Stufe 1 (Hauptwaffe)');
                     vt += 1;
                 }
-                if (stufe >= 2) {
+                if (selected_kampfstil.stufe >= 2) {
                     console.log('Stufe 2 (Hauptwaffe)');
                     vt += 1;
                 }
-                if (stufe >= 3) {
+                if (selected_kampfstil.stufe >= 3) {
                     console.log('Stufe 3 (Hauptwaffe)');
                     vt += 1;
-                    HAUPTWAFFE.system.manoever.km_shwl.possible = true;
-                    // HAUPTWAFFE.data.data.manoever_vt.push("km_shwl");
                 }
                 HAUPTWAFFE.system.vt += vt;
             }
             if (nebenwaffe && NEBENWAFFE.type == 'nahkampfwaffe' && schild) {
                 let vt = 0;
-                if (stufe >= 1) {
+                if (selected_kampfstil.stufe >= 1) {
                     console.log('Stufe 1 (Nebenwaffe)');
                     vt += 1;
                 }
-                if (stufe >= 2) {
+                if (selected_kampfstil.stufe >= 2) {
                     console.log('Stufe 2 (Nebenwaffe)');
                     vt += 1;
                     if (
@@ -1010,16 +937,13 @@ export class IlarisActor extends Actor {
                         NEBENWAFFE.system.at += 4;
                     }
                 }
-                if (stufe >= 3) {
+                if (selected_kampfstil.stufe >= 3) {
                     console.log('Stufe 3 (Nebenwaffe)');
                     vt += 1;
-                    NEBENWAFFE.system.manoever.km_shwl.possible = true;
-                    // NEBENWAFFE.data.data.manoever_vt.push("km_shwl");
                 }
                 NEBENWAFFE.system.vt += vt;
             }
-        } else if (selected_kampfstil == 'snk') {
-            console.log(CONFIG.ILARIS.label[selected_kampfstil]);
+        } else if (selected_kampfstil.name.includes('Schneller Kampf')) {
             let hauptwaffe = false;
             let nebenwaffe = false;
             let WAFFE = null;
@@ -1052,19 +976,17 @@ export class IlarisActor extends Actor {
             if (WAFFE) {
                 console.log('step 4');
                 let at = 0;
-                if (stufe >= 1) {
+                if (selected_kampfstil.stufe >= 1) {
                     console.log('Stufe 1');
                     at += 1;
                 }
-                if (stufe >= 2) {
+                if (selected_kampfstil.stufe >= 2) {
                     console.log('Stufe 2');
                     at += 1;
                 }
-                if (stufe >= 3) {
+                if (selected_kampfstil.stufe >= 3) {
                     console.log('Stufe 3');
                     at += 1;
-                    WAFFE.system.manoever.km_utlf.possible = true;
-                    // WAFFE.data.data.manoever_vt.push("km_utlf");
                 }
                 WAFFE.system.at += at;
             }
@@ -1180,23 +1102,34 @@ export class IlarisActor extends Actor {
                 ruestungen.push(item);
             } else if (item.type == 'nahkampfwaffe') {
                 // console.log("Nahkampfwaffe gefunden");
-                // console.log(i);
                 item.system.bewahrt_auf = [];
                 if (item.system.gewicht < 0) {
                     item.system.gewicht_summe = 0;
                     speicherplatz_list.push(item.name);
                     item_list.push(item);
                 } else item_list_tmp.push(item);
+                // for migration from dice_anzahl and dice_plus to tp
+                if(item.system.dice_plus || item.system.dice_anzahl) {
+                    item.system.tp = `${item.system.dice_anzahl}W6${item.system.dice_plus < 0 ? '' : '+'}${item.system.dice_plus}`;
+                    delete item.system.dice_anzahl;
+                    delete item.system.dice_plus;
+                }
                 nahkampfwaffen.push(item);
             } else if (item.type == 'fernkampfwaffe') {
                 // console.log("Fernkampfwaffe gefunden");
-                // console.log(i);
+                console.log(item);
                 item.system.bewahrt_auf = [];
                 if (item.system.gewicht < 0) {
                     item.system.gewicht_summe = 0;
                     speicherplatz_list.push(item.name);
                     item_list.push(item);
                 } else item_list_tmp.push(item);
+                // for migration from dice_anzahl and dice_plus to tp
+                if(item.system.dice_plus || item.system.dice_anzahl) {
+                    item.system.tp = `${item.system.dice_anzahl}W6${item.system.dice_plus < 0 ? '' : '+'}${item.system.dice_plus}`;
+                    delete item.system.dice_anzahl;
+                    delete item.system.dice_plus;
+                }
                 fernkampfwaffen.push(item);
             } else if (item.type == 'gegenstand') {
                 item.system.bewahrt_auf = [];
@@ -1229,7 +1162,6 @@ export class IlarisActor extends Actor {
             else if (item.type == 'anrufung') {
                 anrufung_talente.push(item);
             } else if (item.type == 'vorteil') {
-                if (actor.type == "kreatur") vorteile.push(item);
                 if (item.system.gruppe == 0) vorteil_allgemein.push(item);
                 else if (item.system.gruppe == 1) vorteil_profan.push(item);
                 else if (item.system.gruppe == 2) vorteil_kampf.push(item);
@@ -1325,7 +1257,6 @@ export class IlarisActor extends Actor {
         vorteil_geweihtetraditionen.sort((a, b) =>
             a.name > b.name ? 1 : b.name > a.name ? -1 : 0,
         );
-        vorteile.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
         eigenheiten.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0));
         freie_uebernatuerliche_fertigkeiten.sort((a, b) =>
         a.system.gruppe > b.system.gruppe
@@ -1410,7 +1341,6 @@ export class IlarisActor extends Actor {
         if (actor.type == "kreatur") {
             actor.eigenschaften = eigenschaften;
             actor.angriffe = angriffe;
-            actor.vorteile = vorteile;
             actor.infos = infos;
             actor.freietalente = freietalente;
             actor.uebernatuerlich.fertigkeiten = freie_uebernatuerliche_fertigkeiten;

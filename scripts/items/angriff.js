@@ -1,12 +1,7 @@
-import { IlarisItem } from "./item.js";
+import { CombatItem } from "./combat.js";
 
-export class AngriffItem extends IlarisItem {
-    setManoevers() {
-        // TODO: könnte man vlt. dynamisch machen:
-        // alle aus dem pack und dann vorteile prüfen
-        console.log(this)
-        this.system.manoever.kbak = {selected: false}
-        // TODO: deepcopy from config hier rein und filtern 
-        // oder possible flag setzen je nach vorteilen des owners.
+export class AngriffItem extends CombatItem {
+    getTp() {
+        return this.system.tp?.replace(/[Ww]/g, "d") || "";
     }
 }

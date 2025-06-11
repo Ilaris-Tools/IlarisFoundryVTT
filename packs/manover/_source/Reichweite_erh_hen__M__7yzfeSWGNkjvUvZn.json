@@ -1,0 +1,44 @@
+{
+  "name": "Reichweite erhöhen (M)",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": {
+      "0": {
+        "name": "Vorteil Zauberer I",
+        "type": "VORTEIL",
+        "value": [
+          "ClPMi6Au35vgyndN"
+        ]
+      }
+    },
+    "gruppe": "2",
+    "probe": "Zauber -4",
+    "gegenprobe": "",
+    "text": "Die Reichweite des Zaubers verdoppelt sich. Die Reichweite Berührung wird zu 2 Schritt.",
+    "input": {
+      "label": "",
+      "field": "NUMBER"
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "7yzfeSWGNkjvUvZn",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "12.0.1",
+    "createdTime": null,
+    "modifiedTime": 1746367645145,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!7yzfeSWGNkjvUvZn"
+}

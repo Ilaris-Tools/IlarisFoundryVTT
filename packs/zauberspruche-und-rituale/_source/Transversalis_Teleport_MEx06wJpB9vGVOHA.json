@@ -1,0 +1,41 @@
+{
+  "name": "Transversalis Teleport",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Kraft",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du teleportierst dich an einen beliebigen Ort. Der Ort darf maximal 4 Meilen entfernt sein und du musst schon einmal dort gewesen sein.",
+    "maechtig": "Vervierfacht die Distanz.",
+    "schwierigkeit": "12",
+    "modifikationen": "Anhalter (–4; du kannst eine Person mitnehmen. Mehrfach wählbar.)\nLastenteleport (–8, Einzelobjekt; du kannst eine Last von maximal 32 Stein teleportieren.)",
+    "vorbereitung": "1 Aktion",
+    "ziel": "selbst",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "augenblicklich",
+    "kosten": "16 AsP",
+    "erlernen": "Mag 18",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "MEx06wJpB9vGVOHA",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!MEx06wJpB9vGVOHA"
+}

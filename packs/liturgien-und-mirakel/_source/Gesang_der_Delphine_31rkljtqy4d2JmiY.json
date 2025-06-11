@@ -1,0 +1,41 @@
+{
+  "name": "Gesang der Delphine",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Wind und Wogen",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Die von dir gesegnete Person erhält den Vorteil Tierempathie (Delphine für Eff oder Pottwale für Swa) und erleidet keine Erschöpfung durch den Einsatz dieser Gabe. Beherrscht sie die Gabe bereits, sind damit verbundene Proben um +4 erleichtert. Segnest du dich selbst, kannst du notwendige Proben auf Wind und Wogen statt auf Überleben ablegen.",
+    "maechtig": "Der Vorteil gilt für alle Walartigen/Fische/Meeresbewohner.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "16 Aktionen",
+    "ziel": "Einzelperson",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Stunde",
+    "kosten": "4 KaP",
+    "erlernen": "Eff, Swa 16",
+    "pw": 0,
+    "gruppe": 26
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "31rkljtqy4d2JmiY",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!31rkljtqy4d2JmiY"
+}

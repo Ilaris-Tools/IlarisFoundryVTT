@@ -1,0 +1,41 @@
+{
+  "name": "Brazoraghs Hieb",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Eigenschaften, Geister des Zorns",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Die so verzauberte Nahkampfwaffe gilt als magisch und verursacht Niederwerfen.",
+    "maechtig": "Waffenschaden +1.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "1 Stunde",
+    "ziel": "Einzelobjekt",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "bis die Bindung gelöst wird",
+    "kosten": "16 AsP, davon 4 gAsP",
+    "erlernen": "Smn 20",
+    "pw": 0,
+    "gruppe": 6
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "ap7DIMYTNnDQ04Rh",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!ap7DIMYTNnDQ04Rh"
+}

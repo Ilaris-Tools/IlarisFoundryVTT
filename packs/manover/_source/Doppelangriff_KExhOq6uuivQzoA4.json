@@ -1,0 +1,63 @@
+{
+  "name": "Doppelangriff",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": {
+      "0": {
+        "name": "Vorteil Beidhändiger Kampf III",
+        "type": "STILE",
+        "value": [
+          "bF3alIwhi05gpBeK",
+          "xRANX8wW3HmMFMcL"
+        ]
+      }
+    },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
+    "gruppe": "0",
+    "probe": "2 x AT -4",
+    "gegenprobe": "",
+    "text": "Du führst mit beiden Händen je eine Attacke –4 aus. Beide Angriffe sind unabhängig voneinander; sie werden separat ausgewürfelt, können sich gegen verschiedene Ziele richten und mit unterschiedlichen Manövern versehen werden. Voraussetzungen: Kampf im Beidhändigen Stil; kein Doppelangriff seit letztem Beginn einer eigenen Initiativephase",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "KExhOq6uuivQzoA4",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "12.0.2",
+    "createdTime": null,
+    "modifiedTime": 1746955078170,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!KExhOq6uuivQzoA4"
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Gegenhalten",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut MU 8",
+    "gruppe": 2,
+    "text": "Wenn du eine Attacke abwehrst, die mit einem Manöver verstärkt wurde, darfst du sofort einen Passierschlag gegen den Angreifer ausführen."
+  },
+  "_id": "TgS7BPqAW7CZvFVb",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!TgS7BPqAW7CZvFVb"
+}

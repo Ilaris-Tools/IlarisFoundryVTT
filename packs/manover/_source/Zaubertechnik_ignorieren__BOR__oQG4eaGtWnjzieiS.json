@@ -1,0 +1,44 @@
+{
+  "name": "Zaubertechnik ignorieren (BOR)",
+  "type": "manoever",
+  "_id": "oQG4eaGtWnjzieiS",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": {
+      "0": {
+        "name": "Vorteil Tradition der Borbaradianer I",
+        "type": "STILE",
+        "value": [
+          "lzuXkaoR5Ka009eQ"
+        ]
+      }
+    },
+    "gruppe": "2",
+    "probe": "",
+    "gegenprobe": "",
+    "text": "",
+    "input": {
+      "label": "GS",
+      "field": "NUMBER"
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "oz3U1cHybCRHlQTJ": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "12.0.1",
+    "createdTime": 1745306426791,
+    "modifiedTime": 1746367848062,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC"
+  },
+  "_key": "!items!oQG4eaGtWnjzieiS"
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Tsageweihten III",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut IN 8, Vorteil Tradition der Tsageweihten II",
+    "gruppe": 7,
+    "text": "Erlaubt die spontane Modifikation Zeremonie (Liturgie +X): Du kannst die Vorbereitungszeit freiwillig um 1 Minute/Stunde/Tag/Woche/Monat/Jahr erhöhen, wodurch die Liturgie um +4/6/8/10/12/14 erleichtert ist. Die Vorbereitungszeit muss dadurch mindestens verdoppelt werden."
+  },
+  "_id": "sJXI6rZO9abcYXai",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!sJXI6rZO9abcYXai"
+}

@@ -1,0 +1,41 @@
+{
+  "name": "Blick durch fremde Augen",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Hellsicht, Verständigung",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du blickst während der Wirkungsdauer durch die Augen deines Opfers, das davon nichts ahnt. Du kannst nur Opfer verzaubern, die du sehr gut kennst oder von denen du ein Körperteil besitzt.",
+    "maechtig": "Es reicht, wenn dir das Ziel persönlich bekannt ist/du es eine Weile beobachtet hast/du es vom Hörensagen kennst.",
+    "schwierigkeit": "Magieresistenz",
+    "modifikationen": "Mehrere Sinne (–4; du teilst einen weiteren Sinn mit dem Opfer. Mehrfach wählbar.)\nFremder Zauber (–8; du kannst während der Wirkungsdauer aus den Augen deines Opfers zaubern. Du musst dabei selbstverständlich auf Gesten und Formeln verzichten.)",
+    "vorbereitung": "4 Minuten",
+    "ziel": "Einzelwesen",
+    "reichweite": "16 Meilen",
+    "wirkungsdauer": "1 Stunde",
+    "kosten": "8 AsP",
+    "erlernen": "Dru, Sch 18; Mag 20",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "XNh9izsTJSBQVInc",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!XNh9izsTJSBQVInc"
+}

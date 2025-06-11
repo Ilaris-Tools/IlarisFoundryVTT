@@ -1,0 +1,41 @@
+{
+  "name": "Anrufung der Winde",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Seefahrt, Wind und Wogen",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Im Radius von 1 Meile kannst du den Wind auf einer Skala von windstill/leichte Brise/steife Brise/Sturm/Orkan um zwei Stufen verändern und seine Richtung lenken.",
+    "maechtig": "Verändert den Wind um eine weitere Stufe und verdoppelt den Radius.",
+    "schwierigkeit": "12",
+    "modifikationen": "Windhauch (0 Aktionen, Wirkungsdauer augenblicklich, 1 KaP; ein kurzer Windstoß weht giftige Dämpfe fort oder löscht ein kleines Feuer.)",
+    "vorbereitung": "4 Minuten",
+    "ziel": "Zone",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "8 Stunden",
+    "kosten": "16 KaP",
+    "erlernen": "Eff, Swa 14",
+    "pw": 0,
+    "gruppe": 25
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "NqBWlrFSt9lrjpja",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!NqBWlrFSt9lrjpja"
+}

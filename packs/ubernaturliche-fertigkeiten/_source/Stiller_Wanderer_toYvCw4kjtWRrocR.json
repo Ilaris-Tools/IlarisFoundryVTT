@@ -1,0 +1,36 @@
+{
+  "name": "Stiller Wanderer",
+  "type": "uebernatuerliche_fertigkeit",
+  "img": "systems/Ilaris/assets/images/skills/karmal-skill.svg",
+  "system": {
+    "basis": 0,
+    "fw": 0,
+    "pw": 0,
+    "attribut_0": "IN",
+    "attribut_1": "KO",
+    "attribut_2": "MU",
+    "gruppe": 1,
+    "text": "Andere Avesgeweihte wandern auf den Spuren von dessen göttlichen Vaters Phex' und ziehen unerkannt durch die Welt. Sie vertrauen auf die Macht des Schicksals und die Tatsache, dass oft auch kleine Taten den Lauf der Welt ändern können.",
+    "voraussetzung": "Vorteil Tradition der Avesgeweihten I"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "toYvCw4kjtWRrocR",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!toYvCw4kjtWRrocR"
+}

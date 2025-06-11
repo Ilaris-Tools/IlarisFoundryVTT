@@ -1,0 +1,41 @@
+{
+  "name": "Bann der Keule (passiv)",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Keulenrituale",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du lässt 2/4/6/8 gAsP in die Keule fließen. Fortan sind alle Beherrschungsproben für Elementare oder für Untote und Dämonen um +1/2/3/4 erleichtert. Du kannst die gAsP und gewählte Kreaturenklasse in einem einwöchigen Ritual, das 16 AsP kostet, verändern.",
+    "maechtig": "",
+    "schwierigkeit": "",
+    "modifikationen": "",
+    "vorbereitung": "",
+    "ziel": "",
+    "reichweite": "",
+    "wirkungsdauer": "",
+    "kosten": "",
+    "erlernen": "Smn 14",
+    "pw": 0,
+    "gruppe": 10
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "XV7V57jXdj7j1lAO",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!XV7V57jXdj7j1lAO"
+}

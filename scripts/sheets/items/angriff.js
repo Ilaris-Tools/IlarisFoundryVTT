@@ -1,6 +1,12 @@
 import { IlarisItemSheet } from './item.js';
 
 export class AngriffSheet extends IlarisItemSheet {
+    async getData () {
+        const data = await super.getData();
+        data.angrifftypen = CONFIG.ILARIS.angriff_typ;
+        return data;
+    }
+
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             template: 'systems/Ilaris/templates/sheets/items/angriff.html',
@@ -45,6 +51,7 @@ export class AngriffSheet extends IlarisItemSheet {
     _onDelEigenschaft(event){
         let eigid = $(event.currentTarget).data('eigenschaftid');
         //console.log(`remove: ${eigid}`);
+        this.document.system.eigenschaften = Object.values(this.document.system.eigenschaften);
         this.document.system.eigenschaften.splice(eigid, 1);
         this.document.render();
     }
@@ -59,5 +66,4 @@ export class AngriffSheet extends IlarisItemSheet {
             ""
         ];
     }
-
 }

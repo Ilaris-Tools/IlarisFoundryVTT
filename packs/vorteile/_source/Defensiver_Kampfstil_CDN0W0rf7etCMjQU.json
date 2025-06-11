@@ -1,0 +1,29 @@
+{
+  "name": "Defensiver Kampfstil",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut IN 6",
+    "gruppe": 2,
+    "text": "Volle Defensive (S. 36) ist für dich eine einfache Aktion. Dadurch könntest du beispielsweise zusätzlich die Aktion Konflikt wählen, um eine AT –4 ausführen."
+  },
+  "_id": "CDN0W0rf7etCMjQU",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!CDN0W0rf7etCMjQU"
+}
