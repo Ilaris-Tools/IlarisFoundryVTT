@@ -2,8 +2,42 @@ export class IlarisItemSheet extends ItemSheet {
     // Setze ich das an der richtigen Stelle?
     async getData() {
         const data = super.getData();
-        data.hasOwner = this.item.actor != null;
+        // Items sind editierbar, wenn der Actor einem Spieler gehört
+        // UND der Actor nicht mehr im Compendium ist (pack == null bedeutet "in der World")
+        const hasActor = this.item.actor != null;
+        const isOwner = this.item.actor?.isOwner;
+        const notInPack = this.item.actor?.pack == null;
+        
+        data.hasOwner = hasActor && isOwner && notInPack;
+        
         return data;
+    }
+
+    async _updateObject(event, formData) {
+        try {
+            // Try normal update first
+            const result = await super._updateObject(event, formData);
+            
+            // If super failed, try direct update with proper method for embedded items
+            if (!result) {
+                let directResult;
+                if (this.item.isEmbedded) {
+                    // For embedded items, update through the parent Actor
+                    directResult = await this.item.actor.updateEmbeddedDocuments("Item", [
+                        {_id: this.item.id, ...formData}
+                    ]);
+                } else {
+                    // For standalone items, update directly
+                    directResult = await this.item.update(formData);
+                }
+                return directResult;
+            }
+            
+            return result;
+        } catch (error) {
+            console.error("Item update failed:", error);
+            throw error;
+        }
     }
 
     activateListeners(html) {

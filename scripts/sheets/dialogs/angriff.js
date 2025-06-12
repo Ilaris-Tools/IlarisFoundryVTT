@@ -29,7 +29,15 @@ export class AngriffDialog extends CombatDialog {
         if (this.item.system.eigenschaften.unberechenbar) {
             this.fumble_val = 2;
         }
+        // Generate unique dialog ID to avoid conflicts when multiple dialogs are open
+        this.dialogId = `dialog-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
         this.aufbauendeManoeverAktivieren()
+    }
+
+    getData() {
+        let data = super.getData();
+        data.dialogId = this.dialogId;
+        return data;
     }
     
     activateListeners(html) {
@@ -105,15 +113,15 @@ export class AngriffDialog extends CombatDialog {
         let manoever = this.item.system.manoever;
 
         // allgemeine optionen
-        manoever.kbak.selected = html.find('#kbak')[0]?.checked || false;  // Kombinierte Aktion
-        manoever.vlof.selected = html.find('#vlof')[0]?.checked || false;  // Volle Offensive
-        manoever.vldf.selected = html.find('#vldf')[0]?.checked || false;  // Volle Defensive
-        manoever.pssl.selected = html.find('#pssl')[0]?.checked || false;  // Passierschlag pssl
-        manoever.rwdf.selected = html.find('#rwdf')[0]?.value || false;  // Reichweitenunterschied
-        manoever.rkaz.selected = html.find('#rkaz')[0]?.value || false;  // Reaktionsanzahl
+        manoever.kbak.selected = html.find(`#kbak-${this.dialogId}`)[0]?.checked || false;  // Kombinierte Aktion
+        manoever.vlof.selected = html.find(`#vlof-${this.dialogId}`)[0]?.checked || false;  // Volle Offensive
+        manoever.vldf.selected = html.find(`#vldf-${this.dialogId}`)[0]?.checked || false;  // Volle Defensive
+        manoever.pssl.selected = html.find(`#pssl-${this.dialogId}`)[0]?.checked || false;  // Passierschlag pssl
+        manoever.rwdf.selected = html.find(`#rwdf-${this.dialogId}`)[0]?.value || false;  // Reichweitenunterschied
+        manoever.rkaz.selected = html.find(`#rkaz-${this.dialogId}`)[0]?.value || false;  // Reaktionsanzahl
 
-        manoever.mod.selected = html.find('#modifikator')[0]?.value || false;  // Modifikator
-        manoever.rllm.selected = html.find('#rollMode')[0]?.value || false;  // RollMode
+        manoever.mod.selected = html.find(`#modifikator-${this.dialogId}`)[0]?.value || false;  // Modifikator
+        manoever.rllm.selected = html.find(`#rollMode-${this.dialogId}`)[0]?.value || false;  // RollMode
 
         super.manoeverAuswaehlen(html);
     }

@@ -6,8 +6,7 @@
         <div class="flexrow">
             <label><b>Kategorie:</b></label>
             <select name="system.gruppe">
-                {{#select item.system.gruppe}} {{>
-                systems/Ilaris/templates/helper/select_vorteilsgruppe.html}} {{/select}}
+                {{selectOptions vorteilsgruppen selected=item.system.gruppe valueAttr="value" labelAttr="label"}}
             </select>
         </div>
         <div class="flexrow">

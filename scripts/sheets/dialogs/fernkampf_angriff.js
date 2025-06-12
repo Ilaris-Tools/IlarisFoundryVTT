@@ -28,11 +28,13 @@ export class FernkampfAngriffDialog extends CombatDialog {
         if (this.item.system.eigenschaften.unberechenbar) {
             this.fumble_val = 2;
         }
+        // Generate unique dialog ID to avoid conflicts when multiple dialogs are open
+        this.dialogId = `dialog-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
         this.aufbauendeManoeverAktivieren()
     }
 
     async getData () { // damit wird das template gefüttert
-        return {
+        let data = {
             rw_choice: this.item.system.manoever.rw,
             rw_checked: this.item.system.manoever.fm_rwrh.selected,
             gzkl_choice: CONFIG.ILARIS.gzkl_choice,
@@ -43,6 +45,8 @@ export class FernkampfAngriffDialog extends CombatDialog {
             kgtl_choice: CONFIG.ILARIS.kgtl_choice,
             ...(await super.getData()),
         };
+        data.dialogId = this.dialogId;
+        return data;
     }
     
     activateListeners(html) {
@@ -99,18 +103,18 @@ export class FernkampfAngriffDialog extends CombatDialog {
         let manoever = this.item.system.manoever;
 
         // allgemeine optionen
-        manoever.kbak.selected = html.find('#kbak')[0]?.checked || false;  // Kombinierte Aktion
-        manoever.gzkl.selected = html.find('#gzkl')[0]?.value || false; // Größenklasse
-        manoever.bwng.selected = html.find('#bwng')[0]?.value || false; // Bewegung
-        manoever.lcht.selected = html.find('#lcht')[0]?.value || false; // Lichtverhältnisse
-        manoever.wttr.selected = html.find('#wttr')[0]?.value || false; // Wetter
-        manoever.dckg.selected = html.find('#dckg')[0]?.value || false; // Deckung
-        manoever.kgtl.selected = html.find('#kgtl')[0]?.value || false; // Kampfgetümmel 
-        manoever.brtn.selected = html.find('#brtn')[0]?.checked; // Beritten
-        manoever.fm_gzss.selected = html.find('#fm_gzss')[0]?.checked || false; // Reflexschuss
+        manoever.kbak.selected = html.find(`#kbak-${this.dialogId}`)[0]?.checked || false;  // Kombinierte Aktion
+        manoever.gzkl.selected = html.find(`#gzkl-${this.dialogId}`)[0]?.value || false; // Größenklasse
+        manoever.bwng.selected = html.find(`#bwng-${this.dialogId}`)[0]?.value || false; // Bewegung
+        manoever.lcht.selected = html.find(`#lcht-${this.dialogId}`)[0]?.value || false; // Lichtverhältnisse
+        manoever.wttr.selected = html.find(`#wttr-${this.dialogId}`)[0]?.value || false; // Wetter
+        manoever.dckg.selected = html.find(`#dckg-${this.dialogId}`)[0]?.value || false; // Deckung
+        manoever.kgtl.selected = html.find(`#kgtl-${this.dialogId}`)[0]?.value || false; // Kampfgetümmel 
+        manoever.brtn.selected = html.find(`#brtn-${this.dialogId}`)[0]?.checked; // Beritten
+        manoever.fm_gzss.selected = html.find(`#fm_gzss-${this.dialogId}`)[0]?.checked || false; // Reflexschuss
 
-        manoever.mod.selected = html.find('#modifikator')[0]?.value || false;  // Modifikator
-        manoever.rllm.selected = html.find('#rollMode')[0]?.value || false;  // RollMode
+        manoever.mod.selected = html.find(`#modifikator-${this.dialogId}`)[0]?.value || false;  // Modifikator
+        manoever.rllm.selected = html.find(`#rollMode-${this.dialogId}`)[0]?.value || false;  // RollMode
         await super.manoeverAuswaehlen(html);
     }
     

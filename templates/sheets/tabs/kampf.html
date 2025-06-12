@@ -11,7 +11,7 @@
     >
     <div>
         <select class="selected-kampfstil" name="system.misc.selected_kampfstil">
-            {{selectOptions actor.misc.kampfstile_list selected=actor.system.misc.selected_kampfstil nameAttr="key" labelAttr="name"}}
+            {{selectOptions actor.misc.kampfstile_list selected=actor.system.misc.selected_kampfstil valueAttr="key" labelAttr="name"}}
         </select>
     </div>
     <div>
@@ -118,19 +118,6 @@
             <div>
                 <label><b>Beschädigung:</b></label>
                 <label>{{nwaffe.system.beschaedigung}}</label>
-            </div>
-            <div>
-                <label><b>Eigene Modifikatoren</b></label>
-            </div>
-            <div>
-                <label><b>WM:</b></label>
-                <label>{{nwaffe.system.mod_at}}</label>
-                <label><b>/</b></label>
-                <label>{{nwaffe.system.mod_vt}}</label>
-            </div>
-            <div>
-                <label><b>Schadensbonus:</b></label>
-                <label>{{nwaffe.system.mod_schaden}}</label>
             </div>
             <div>
                 <label><b>Beschreibung:</b></label
@@ -240,17 +227,6 @@
             <div>
                 <label><b>Beschädigung:</b></label>
                 <label>{{fwaffe.system.beschaedigung}}</label>
-            </div>
-            <div>
-                <label><b>Eigene Modifikatoren</b></label>
-            </div>
-            <div>
-                <label><b>WM:</b></label>
-                <label>{{fwaffe.system.mod_fk}}</label>
-            </div>
-            <div>
-                <label><b>Schadensbonus:</b></label>
-                <label>{{fwaffe.system.mod_schaden}}</label>
             </div>
             <div>
                 <label><b>Beschreibung:</b></label
