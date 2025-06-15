@@ -29,6 +29,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         this.item.system.manoever.rllm.selected = game.settings.get("core", "rollMode");  // TODO: either manoever or dialog property.
         this.item.system.manoever.blutmagie = this.item.system.manoever.blutmagie || {};
         this.item.system.manoever.verbotene_pforten = this.item.system.manoever.verbotene_pforten || {};
+        this.item.system.manoever.set_energy_cost = this.item.system.manoever.set_energy_cost || {};
         this.calculatedWounds = 0;
         this.fumble_val = 1;
         this.aufbauendeManoeverAktivieren()
@@ -36,11 +37,15 @@ export class UebernatuerlichDialog extends CombatDialog {
 
     activateListeners(html) {
         super.activateListeners(html);
-        html.find(".energie-abrechnen").click(ev => this._energieAbrechnenKlick(html));
+        html.find(".energie-abrechnen").click(ev => {
+            const isSuccess = ev.currentTarget.dataset.isSuccess === 'true';
+            this._energieAbrechnenKlick(html, isSuccess);
+        });
     }
 
     async getData() { // damit wird das template gefüttert
         const hasBlutmagie = this.actor.vorteil.magie.some(v => v.name === "Blutmagie") && this.item.type === 'zauber';
+        const canSetEnergyCost = this.actor.vorteil?.magie?.some(v => v.name === "Unitatio") || false;
 
         const hasVerbotenePforten = this.actor.vorteil.magie.some(v => v.name === "Verbotene Pforten") || 
             (this.actor.type === 'kreatur' ? 
@@ -62,6 +67,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             hasBlutmagie,
             hasVerbotenePforten,
             isNonStandardDifficulty,
+            canSetEnergyCost,
             ...(await super.getData()),
         };
     }
@@ -120,13 +126,13 @@ export class UebernatuerlichDialog extends CombatDialog {
         }
     }
 
-    async _energieAbrechnenKlick(html) {
+    async _energieAbrechnenKlick(html, isSuccess) {
         // Initialize and check energy values
         if (!await this.initializeEnergyValues()) {
             return;
         }
         
-        await this.applyEnergyCost(true, this.is16OrHigher);
+        await this.applyEnergyCost(isSuccess, this.is16OrHigher);
     }
 
     async initializeEnergyValues() {
@@ -151,8 +157,7 @@ export class UebernatuerlichDialog extends CombatDialog {
 
         // If not enough resources, show error and return
         if (this.currentEnergy < this.mod_energy) {
-            ui.notifications.error(`Nicht genug Ressourcen! Benötigt: ${this.mod_energy}, Vorhanden: ${this.currentEnergy}`);
-            return false;
+            ui.notifications.error(`Nicht genug Ressourcen! Benötigt: ${this.mod_energy}, Vorhanden: ${this.currentEnergy}. Unter bestimmten Voraussetzungen zieht dir das System einfach Energie ab, bis du bei 0 angelangt bist. Du kannst diese Information nach eigenem Ermessen weiterverwenden.`);
         }
         return true;
     }
@@ -198,6 +203,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             multiplier: Number(html.find('input[name="verbotene_pforten_toggle"]:checked')[0]?.value) || 4,
             activated: html.find('#verbotene_pforten')[0]?.checked || false
         };
+        manoever.set_energy_cost.value = Number(html.find('input[name="energyOverride"]')[0]?.value) || 0;
 
         manoever.mod.selected = html.find('#modifikator')[0]?.value || false;  // Modifikator
         manoever.rllm.selected = html.find('#rollMode')[0]?.value || false;  // RollMode
@@ -346,6 +352,9 @@ export class UebernatuerlichDialog extends CombatDialog {
         console.log('mod_energy',mod_energy)
         // Ensure mod_energy is never less than 0
         mod_energy = Math.max(0, mod_energy);
+        if(manoever.set_energy_cost.value) {
+            mod_energy = manoever.set_energy_cost.value;
+        }
         this.mod_at = mod_at;
         this.mod_vt = mod_vt;
         this.mod_dm = mod_dm;

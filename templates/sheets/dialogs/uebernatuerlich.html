@@ -34,6 +34,15 @@
         Wähle aus wie viel AsP pro Wunde du erhältst.
     </div>
 {{/if}}
+{{#if canSetEnergyCost}}
+    <div class="flexrow">
+        <label>Energiekosten (frei wählbar):</label>
+        <input type="number" name="item.system.manoever.energyOverride" min="0" placeholder="Energie frei setzen" />
+    </div>
+    <div class="description">
+        Mit diesem Feld kannst du die Energiekosten nach Belieben festlegen.
+    </div>
+{{/if}}
 <hr>
 
 {{#if item.manoever.length}}
@@ -111,7 +120,7 @@
         Wirken
     </button>
     {{#if isNonStandardDifficulty}}
-    <button style="max-width: 150px" class="energie-abrechnen" type="button" title="Dieser Button ist sichtbar, weil die Schwierigkeit des Übernatürlichen Talents von der Magieresistenz oder anderen Faktoren abhängt.">
+    <button style="max-width: 150px" class="energie-abrechnen" type="button" data-is-success="true" title="Dieser Button ist sichtbar, weil die Schwierigkeit des Übernatürlichen Talents von der Magieresistenz oder anderen Faktoren abhängt.">
         <i>
             <img
                 class="button-icon-nahkampf"
@@ -120,6 +129,16 @@
             />
         </i>
         Energie abrechnen
+    </button>
+    <button style="max-width: 150px" class="energie-abrechnen" type="button" data-is-success="false" title="Dieser Button ist sichtbar, weil die Schwierigkeit des Übernatürlichen Talents von der Magieresistenz oder anderen Faktoren abhängt.">
+        <i>
+            <img
+                class="button-icon-nahkampf"
+                src="systems/Ilaris/assets/game-icons.net/bottled-bolt.svg"
+                style="filter: brightness(0);"
+            />
+        </i>
+        Energie abrechnen (Misslungen)
     </button>
     {{/if}}
 </div>
