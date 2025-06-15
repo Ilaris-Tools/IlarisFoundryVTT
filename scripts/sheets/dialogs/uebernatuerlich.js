@@ -127,6 +127,7 @@ export class UebernatuerlichDialog extends CombatDialog {
     }
 
     async _energieAbrechnenKlick(html, isSuccess) {
+        await this.updateManoeverMods();  // durch manoever
         // Initialize and check energy values
         if (!await this.initializeEnergyValues()) {
             return;
