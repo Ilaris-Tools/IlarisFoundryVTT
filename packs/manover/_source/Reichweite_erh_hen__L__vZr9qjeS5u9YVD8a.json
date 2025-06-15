@@ -21,7 +21,7 @@
     "modifications": {
       "0": {
         "type": "ATTACK",
-        "value": -2,
+        "value": -4,
         "operator": "ADD",
         "target": "",
         "affectedByInput": true

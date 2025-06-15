@@ -44,6 +44,7 @@ export async function roll_crit_message(
         crit: crit,
         fumble: fumble,
         success: isSuccess,
+        noSuccess: success_val && !isSuccess,
         is16OrHigher: is16OrHigher
     });
     let roll_msg = roll.toMessage(

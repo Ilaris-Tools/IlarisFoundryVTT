@@ -37,9 +37,6 @@ export class UebernatuerlichDialog extends CombatDialog {
     activateListeners(html) {
         super.activateListeners(html);
         html.find(".energie-abrechnen").click(ev => this._energieAbrechnenKlick(html));
-        
-        // Initial update
-        updateEstimate();
     }
 
     async getData() { // damit wird das template gefüttert
@@ -84,7 +81,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             return;
         }
 
-        let label = `${this.item.name} (GesamtKosten: ${this.mod_energy} Energie)`;
+        let label = `${this.item.name} (Gesamt Kosten: ${this.mod_energy} Energie)`;
         let formula = 
             `${diceFormula} ${signed(this.item.system.pw)} \
             ${signed(this.at_abzuege_mod)} \
