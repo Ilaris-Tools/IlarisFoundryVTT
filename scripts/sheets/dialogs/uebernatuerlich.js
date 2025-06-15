@@ -36,21 +36,6 @@ export class UebernatuerlichDialog extends CombatDialog {
 
     activateListeners(html) {
         super.activateListeners(html);
-        
-        const updateEstimate = () => {
-            const wounds = Number(html.find('#verbotene_pforten')[0]?.value) || 0;
-            const multiplier = Number(html.find('input[name="verbotene_pforten_toggle"]:checked')[0]?.value) || 4;
-            const ws = this.actor.type === 'held' ? 
-                this.actor.system.abgeleitete.ws :
-                this.actor.system.kampfwerte.ws;
-            
-            const estimate = wounds * (ws + multiplier);
-            html.find('#verbotene_pforten_estimate').text(`${estimate} AsP`);
-        };
-        
-        // Add event listeners for both the radio buttons and number input
-        html.find('input[name="verbotene_pforten_toggle"]').change(updateEstimate);
-        html.find('#verbotene_pforten').on('input', updateEstimate);
         html.find(".energie-abrechnen").click(ev => this._energieAbrechnenKlick(html));
         
         // Initial update
@@ -168,8 +153,8 @@ export class UebernatuerlichDialog extends CombatDialog {
         }
 
         // If not enough resources, show error and return
-        if (this.currentEnergy < sanitizeEnergyCost(this.item.system.kosten)) {
-            ui.notifications.error(`Nicht genug Ressourcen! Benötigt: ${sanitizeEnergyCost(this.item.system.kosten)}, Vorhanden: ${this.currentEnergy}`);
+        if (this.currentEnergy < this.mod_energy) {
+            ui.notifications.error(`Nicht genug Ressourcen! Benötigt: ${this.mod_energy}, Vorhanden: ${this.currentEnergy}`);
             return false;
         }
         return true;
@@ -182,14 +167,14 @@ export class UebernatuerlichDialog extends CombatDialog {
             costModifier = 4;
         }
         // Calculate cost based on success
-        let cost = isSuccess ? sanitizeEnergyCost(this.item.system.kosten) : Math.ceil(sanitizeEnergyCost(this.item.system.kosten) / costModifier);
+        let cost = isSuccess ? this.mod_energy : Math.ceil(sanitizeEnergyCost(this.item.system.kosten) / costModifier);
         
         // Apply all cost modifications from advantages and styles
         cost = hardcoded.calculateModifiedCost(this.actor, this.item, isSuccess, is16OrHigher, cost);
         
         // Update resources and apply wounds if using Verbotene Pforten
         const updates = {
-            [this.energyPath]: this.currentEnergy - cost
+            [this.energyPath]: Math.max(0, this.currentEnergy - cost)
         };
 
         // Apply wounds from Verbotene Pforten if any
@@ -352,13 +337,18 @@ export class UebernatuerlichDialog extends CombatDialog {
                 
                 if (this.calculatedWounds > 0) {
                     const verbotenePfortenReduction = (ws + multiplier) * this.calculatedWounds;
-                    mod_energy -= verbotenePfortenReduction;
-                    text_energy = text_energy.concat(`Verbotene Pforten (${this.calculatedWounds} Wunden): -${verbotenePfortenReduction} AsP\n`);
+                    // Ensure mod_energy doesn't go below availableEnergy
+                    const maxReduction = mod_energy - availableEnergy;
+                    const actualReduction = Math.min(verbotenePfortenReduction, maxReduction);
+                    mod_energy -= actualReduction;
+                    text_energy = text_energy.concat(`Verbotene Pforten (${this.calculatedWounds} Wunden): +${verbotenePfortenReduction} AsP\n`);
                 }
             }
         }
         
         console.log('mod_energy',mod_energy)
+        // Ensure mod_energy is never less than 0
+        mod_energy = Math.max(0, mod_energy);
         this.mod_at = mod_at;
         this.mod_vt = mod_vt;
         this.mod_dm = mod_dm;
