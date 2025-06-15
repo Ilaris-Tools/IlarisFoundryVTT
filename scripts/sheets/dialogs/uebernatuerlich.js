@@ -83,8 +83,11 @@ export class UebernatuerlichDialog extends CombatDialog {
         this.updateStatusMods();
 
         // Initialize and check energy values
-        if (!await this.initializeEnergyValues()) {
-            return;
+        await this.initializeEnergyValues();
+
+         // If not enough resources, show erro
+         if (this.currentEnergy < this.mod_energy) {
+            ui.notifications.error(`Nicht genug Ressourcen! Benötigt: ${this.mod_energy}, Vorhanden: ${this.currentEnergy}. Unter bestimmten Voraussetzungen zieht dir das System einfach Energie ab, bis du bei 0 angelangt bist. Du kannst diese Information nach eigenem Ermessen weiterverwenden.`);
         }
 
         let label = `${this.item.name} (Gesamt Kosten: ${this.mod_energy} Energie)`;
@@ -127,13 +130,30 @@ export class UebernatuerlichDialog extends CombatDialog {
     }
 
     async _energieAbrechnenKlick(html, isSuccess) {
+        await this.manoeverAuswaehlen(html);
         await this.updateManoeverMods();  // durch manoever
         // Initialize and check energy values
-        if (!await this.initializeEnergyValues()) {
-            return;
+        await this.initializeEnergyValues();
+
+        await this.applyEnergyCost(isSuccess, this.is16OrHigher);
+
+        // If not enough resources, show erro
+        if (this.currentEnergy < this.endCost) {
+            ui.notifications.error(`Nicht genug Ressourcen! Benötigt: ${this.endCost}, Vorhanden: ${this.currentEnergy}. Unter bestimmten Voraussetzungen zieht dir das System einfach Energie ab, bis du bei 0 angelangt bist. Du kannst diese Information nach eigenem Ermessen weiterverwenden.`);
         }
         
-        await this.applyEnergyCost(isSuccess, this.is16OrHigher);
+        // Create chat message with energy cost information
+        const label = `${this.item.name} (Kosten: ${this.endCost} Energie)`;
+        const html_roll = await renderTemplate('systems/Ilaris/templates/chat/probenchat_profan.html', {
+            title: label,
+            text: isSuccess ? this.text_energy : ''
+        });
+        
+        await ChatMessage.create({
+            speaker: this.speaker,
+            content: html_roll,
+            type: CONST.CHAT_MESSAGE_STYLES.OTHER
+        });
     }
 
     async initializeEnergyValues() {
@@ -155,12 +175,6 @@ export class UebernatuerlichDialog extends CombatDialog {
                 this.energyPath = 'system.energien.kap.value';
             }
         }
-
-        // If not enough resources, show error and return
-        if (this.currentEnergy < this.mod_energy) {
-            ui.notifications.error(`Nicht genug Ressourcen! Benötigt: ${this.mod_energy}, Vorhanden: ${this.currentEnergy}. Unter bestimmten Voraussetzungen zieht dir das System einfach Energie ab, bis du bei 0 angelangt bist. Du kannst diese Information nach eigenem Ermessen weiterverwenden.`);
-        }
-        return true;
     }
 
     async applyEnergyCost(isSuccess, is16OrHigher) {
@@ -185,6 +199,8 @@ export class UebernatuerlichDialog extends CombatDialog {
             updates['system.gesundheit.wunden'] = this.actor.system.gesundheit.wunden + this.calculatedWounds;
         }
 
+        this.endCost = cost;
+
         await this.actor.update(updates);
     }
 
@@ -197,6 +213,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         // Initialize blutmagie and verbotene_pforten if they don't exist
         manoever.blutmagie = manoever.blutmagie || {};
         manoever.verbotene_pforten = manoever.verbotene_pforten || {};
+        manoever.set_energy_cost = manoever.set_energy_cost || { value: 0 };
         
         // Get values from Blutmagie and Verbotene Pforten if they exist
         manoever.blutmagie.value = Number(html.find('#blutmagie')[0]?.value) || 0;
@@ -353,7 +370,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         console.log('mod_energy',mod_energy)
         // Ensure mod_energy is never less than 0
         mod_energy = Math.max(0, mod_energy);
-        if(manoever.set_energy_cost.value) {
+        if(manoever.set_energy_cost?.value) {
             mod_energy = manoever.set_energy_cost.value;
         }
         this.mod_at = mod_at;
