@@ -29,22 +29,6 @@
         "affectedByInput": true
       }
     },
-    "modifications": {
-      "0": {
-        "type": "ATTACK",
-        "value": -4,
-        "operator": "ADD",
-        "target": "",
-        "affectedByInput": true
-      },
-      "1": {
-        "type": "SPECIAL_TEXT",
-        "value": "Du triffst mehrere Ziele",
-        "operator": "ADD",
-        "target": "",
-        "affectedByInput": true
-      }
-    },
     "gruppe": "0",
     "probe": "AT -4",
     "gegenprobe": "",

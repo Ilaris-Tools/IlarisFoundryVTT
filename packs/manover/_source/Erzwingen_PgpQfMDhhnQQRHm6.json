@@ -19,8 +19,15 @@
     "modifications": {
       "0": {
         "type": "ATTACK",
-        "value": 0,
+        "value": -4,
         "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      },
+      "1": {
+        "type": "SPECIAL_RESOURCE",
+        "value": 1.5,
+        "operator": "MULTIPLY",
         "target": "",
         "affectedByInput": true
       }
