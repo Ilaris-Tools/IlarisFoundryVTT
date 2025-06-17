@@ -38,12 +38,10 @@ describe('getKampfstile', () => {
             vorteil: {
                 kampfstil: [
                     { 
-                        name: 'Beidhändiger Kampf I',
-                        _stats: { compendiumSource: 'Ilaris.beidhändig1' }
+                        name: 'Beidhändiger Kampf I'
                     },
                     {
-                        name: 'Beidhändiger Kampf II (test)',
-                        _stats: { compendiumSource: 'Ilaris.beidhändig2' }
+                        name: 'Beidhändiger Kampf II (test)'
                     }
                 ]
             }
@@ -58,11 +56,11 @@ describe('getKampfstile', () => {
                 stufe: 0,
                 sources: []
             },
-            'Ilaris.beidhändig2': {
+            'Beidhändiger Kampf': {
                 name: 'Beidhändiger Kampf',
-                key: 'Ilaris.beidhändig2',
+                key: 'Beidhändiger Kampf II (test)',
                 stufe: 2,
-                sources: ['Ilaris.beidhändig1', 'Ilaris.beidhändig2']
+                sources: ['Beidhändiger Kampf I', 'Beidhändiger Kampf II (test)']
             }
         });
     });
@@ -72,12 +70,10 @@ describe('getKampfstile', () => {
             vorteil: {
                 kampfstil: [
                     {
-                        name: 'Beidhändiger Kampf I',
-                        _stats: { compendiumSource: 'Ilaris.beidhändig1' }
+                        name: 'Beidhändiger Kampf I'
                     },
                     {
-                        name: 'Defensiver Kampfstil II',
-                        _stats: { compendiumSource: 'Ilaris.defensiv2' }
+                        name: 'Defensiver Kampfstil II'
                     }
                 ]
             }
@@ -92,17 +88,17 @@ describe('getKampfstile', () => {
                 stufe: 0,
                 sources: []
             },
-            'Ilaris.beidhändig1': {
+            'Beidhändiger Kampf': {
                 name: 'Beidhändiger Kampf',
-                key: 'Ilaris.beidhändig1',
+                key: 'Beidhändiger Kampf I',
                 stufe: 1,
-                sources: ['Ilaris.beidhändig1']
+                sources: ['Beidhändiger Kampf I']
             },
-            'Ilaris.defensiv2': {
+            'Defensiver Kampfstil': {
                 name: 'Defensiver Kampfstil',
-                key: 'Ilaris.defensiv2',
+                key: 'Defensiver Kampfstil II',
                 stufe: 2,
-                sources: ['Ilaris.defensiv2']
+                sources: ['Defensiver Kampfstil II']
             }
         });
     });

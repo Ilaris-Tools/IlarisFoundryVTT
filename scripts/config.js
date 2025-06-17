@@ -385,12 +385,7 @@ let manoever = {
     },
     labels: {
         prerequisites: "Voraussetzungen",
-        prerequisitesDescription: "Lege hier fest, welche Voraussetzungen erfüllt sein müssen, um dieses Manöver nutzen zu können.",
-        prerequisiteType: "Voraussetzungtyp",
-        prerequisiteDescription: "Voraussetzung Beschreibung",
-        advantages: "Vorteile",
-        styles: "Stile",
-        weaponProperties: "Waffeneigenschaften",
+        prerequisitesDescription: "Die Voraussetzungen sind an Sephrasto angelehnt und werden auch entsprechen im System behandelt. Wird ein Vorteil nicht richtig geschrieben, kann und wird das Manöver nicht angezeigt. In naher Zukunft wird es die Möglichkeit geben Hausregeln von Sephrasto direkt in Foundry zu übertragen, ab diesem Zeitpunkt solltest du auch einfach die Regeln aus Sephrasto importierten bevor du hier etwas veränderst.",
         input: "Input",
         inputDescription: "Hier legst du fest, welches Eingabefeld im Würfeldialog für dieses Manöver angezeigt werden soll:",
         inputTypes: {
