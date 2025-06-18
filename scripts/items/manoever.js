@@ -22,9 +22,12 @@ export class ManoeverItem extends IlarisItem {
 
                 switch(type) {
                     case "Waffeneigenschaft":
-                        return item.system.eigenschaften[value] === true;
+                        // Find the key where the value matches
+                        const eigenschaftKey = Object.entries(CONFIG.ILARIS.waffeneigenschaften)
+                            .find(([key, val]) => val === value)?.[0];
+                        return item.system.eigenschaften[eigenschaftKey];
                     case "Vorteil":
-                        return actor._hasVorteil(value) === true;
+                        return actor._hasVorteil(value);
                     default:
                         return false;
                 }

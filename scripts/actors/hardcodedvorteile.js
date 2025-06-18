@@ -185,7 +185,7 @@ export function getKampfstile(actor) {
         if(sources.every(source => source !== null)) {
             kampfstile[name] = {
                 name: name,
-                key: highestStil.name,
+                key: name,
                 stufe: getKampfstilStufe(highestStil.name),
                 sources: sources
             };
@@ -591,7 +591,7 @@ export function getUebernatuerlicheStile(actor) {
         if(sources.every(source => source !== null)) {
             stile[name] = {
                 name: name,
-                key: highestTradition.name,
+                key: name,
                 stufe: getKampfstilStufe(highestTradition.name),
                 sources: sources,
                 type: highestTradition.type

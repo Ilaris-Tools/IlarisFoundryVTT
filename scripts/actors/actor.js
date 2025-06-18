@@ -29,7 +29,7 @@ export class IlarisActor extends Actor {
 
     _checkVorteilSource(requirement, vorteil) {
         // For Stile (gruppe 3, 5, or 7) on held-type actors, check with getSelectedStil
-        if (this.type === "held" && [3, 5, 7].includes(vorteil.system.gruppe)) {
+        if (this.type === "held" && [3, 5, 7].includes(Number(vorteil.system.gruppe))) {
             return hardcoded.getSelectedStil(this, 'kampf')?.sources.some(source => source === requirement) ||
                    hardcoded.getSelectedStil(this, 'uebernatuerlich')?.sources.some(source => source === requirement);
         }
