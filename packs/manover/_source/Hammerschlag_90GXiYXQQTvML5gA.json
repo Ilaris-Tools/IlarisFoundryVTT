@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Hammerschlag",
-        "type": "VORTEIL",
-        "value": [
-          "TNBvR8gDBqOZna0m"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Hammerschlag",
     "modifications": {
       "0": {
         "type": "ATTACK",

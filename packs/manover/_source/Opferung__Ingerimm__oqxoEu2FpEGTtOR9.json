@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Tradition der Ingerimmgeweihten III",
-        "type": "STILE",
-        "value": [
-          "E3yPW6OGUgXyqqXo"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Tradition der Ingerimmgeweihten III",
     "input": {
       "label": "",
       "field": "CHECKBOX"

@@ -3,16 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Kraftvoller Kampf III",
-        "type": "STILE",
-        "value": [
-          "z9y0LSVFiPUFD8KX",
-          "qH9tCjuz6XfJAMHQ"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Kraftvoller Kampf III",
     "modifications": {
       "0": {
         "type": "ATTACK",

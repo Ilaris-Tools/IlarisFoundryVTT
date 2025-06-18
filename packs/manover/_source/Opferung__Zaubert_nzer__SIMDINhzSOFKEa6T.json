@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Tradition der Zaubertänzer III",
-        "type": "STILE",
-        "value": [
-          "FAzUpfNtPe1x3ZcA"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Tradition der Zaubertänzer III",
     "input": {
       "label": "",
       "field": "CHECKBOX"

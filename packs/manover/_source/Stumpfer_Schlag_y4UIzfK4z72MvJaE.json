@@ -3,13 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Waffeneigenschaft Stumpf",
-        "type": "WAFFENEIGENSCHAFT",
-        "value": "stumpf"
-      }
-    },
+    "voraussetzungen": "Waffeneigenschaft Stumpf",
     "modifications": {
       "0": {
         "type": "CHANGE_DAMAGE_TYPE",

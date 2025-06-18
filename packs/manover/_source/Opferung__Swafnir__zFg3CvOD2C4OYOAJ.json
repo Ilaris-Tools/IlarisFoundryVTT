@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Tradition der Swafnirgeweihten III",
-        "type": "STILE",
-        "value": [
-          "5ThP3ZpFkoeIGlWB"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Tradition der Swafnirgeweihten III",
     "input": {
       "label": "",
       "field": "CHECKBOX"

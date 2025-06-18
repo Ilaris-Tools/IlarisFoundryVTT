@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Tradition der Derwische III",
-        "type": "STILE",
-        "value": [
-          "3VdRd8eusFojWQZa"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Tradition der Derwische III",
     "input": {
       "label": "",
       "field": "CHECKBOX"

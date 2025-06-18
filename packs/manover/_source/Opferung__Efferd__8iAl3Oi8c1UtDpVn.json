@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Tradition der Efferdgeweihten III",
-        "type": "STILE",
-        "value": [
-          "6Gzp4DDQI3CSaUYP"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Tradition der Efferdgeweihten III",
     "input": {
       "label": "",
       "field": "CHECKBOX"

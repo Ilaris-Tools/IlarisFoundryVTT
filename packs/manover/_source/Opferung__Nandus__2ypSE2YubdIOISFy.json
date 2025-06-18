@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Tradition der Nandusgeweihten III",
-        "type": "STILE",
-        "value": [
-          "qcldxNRxpoilGHm6"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Tradition der Nandusgeweihten III",
     "input": {
       "label": "",
       "field": "CHECKBOX"

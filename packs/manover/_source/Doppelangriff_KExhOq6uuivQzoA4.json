@@ -3,16 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Beidhändiger Kampf III",
-        "type": "STILE",
-        "value": [
-          "bF3alIwhi05gpBeK",
-          "xRANX8wW3HmMFMcL"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Beidhändiger Kampf III",
     "modifications": {
       "0": {
         "type": "ATTACK",

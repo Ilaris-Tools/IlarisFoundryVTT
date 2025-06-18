@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Tradition der Phexgeweihten III",
-        "type": "STILE",
-        "value": [
-          "OO10WndrrkKCrZvV"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Tradition der Phexgeweihten III",
     "input": {
       "label": "",
       "field": "CHECKBOX"

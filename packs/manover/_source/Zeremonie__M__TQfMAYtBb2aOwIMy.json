@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Tradition der Schamanen III",
-        "type": "STILE",
-        "value": [
-          "BcL9m2FjPgNOdwgT"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Tradition der Schamanen III",
     "input": {
       "label": "",
       "field": "NUMBER",
