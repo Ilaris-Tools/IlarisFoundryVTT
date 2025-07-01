@@ -19,12 +19,13 @@ export const registerIlarisGameSettings = () => {
         config: true,
     },{ 
         settingsName: IlarisGameSettingNames.weaponSpaceRequirement,
-        name: 'Platzbedarf von Waffen anzeigen',
-        hint: 'Der Platzbedarf der Waffe wird nun "0" sein',
+        name: 'Platzbedarf von Waffen berücksichtigen',
+        hint: 'Wird der Platzbedarf der Waffe nicht berücksichtigt wird dieser nicht angezeigt und mit "0" behandelt.\n\nÄnderung dieser Einstellungen benötigt einen Neustart von Foundry',
         scope: Scope.World,
         type: Boolean,
         default: true,
         config: true,
+        requiresReload: true,
     },{ 
         // Register maneuver packs setting
         settingsName: IlarisGameSettingNames.manoeverPacks,
@@ -60,7 +61,8 @@ export const registerIlarisGameSettings = () => {
             type: setting.type,
             scope: setting.scope,
             default: setting.default,
-            onChange: setting.onChange
+            onChange: setting.onChange,
+            requiresReload: setting.requiresReload
         })
     });
 

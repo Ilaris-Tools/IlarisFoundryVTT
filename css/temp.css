@@ -333,3 +333,7 @@ hr {
   text-decoration: underline wavy #ff0000;
   cursor: help;
 }
+
+.notes {
+  white-space: pre-line;
+}

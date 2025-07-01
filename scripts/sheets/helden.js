@@ -21,11 +21,6 @@ export class HeldenSheet extends IlarisActorSheet {
     }
 
     async getData(){
-        const value = {
-            ...(await super.getData()),
-            isWeaponSpaceRequirementActive: game.settings.get(settings.ConfigureGameSettingsCategories.Ilaris, settings.IlarisGameSettingNames.weaponSpaceRequirement)
-        };
-    
         return {
             ...(await super.getData()),
             isWeaponSpaceRequirementActive: game.settings.get(settings.ConfigureGameSettingsCategories.Ilaris, settings.IlarisGameSettingNames.weaponSpaceRequirement)
