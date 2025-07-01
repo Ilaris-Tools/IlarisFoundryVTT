@@ -3,7 +3,7 @@ import { getKampfstile, getSelectedStil, beTraglast } from '../hardcodedvorteile
 jest.mock('./../../settings/configure-game-settings.js', () => ({}));
 
 
-describe('ardcodedvorteile.js', ()=> {
+describe('hardcodedvorteile.js', ()=> {
     describe('getKampfstile', () => {
         beforeEach(() => {
             global.CONFIG = {
