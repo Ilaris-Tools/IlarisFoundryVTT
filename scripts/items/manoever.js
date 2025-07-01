@@ -6,17 +6,17 @@ export class ManoeverItem extends IlarisItem {
             return true;
         }
 
-        // Split by ODER first to get OR conditions
-        const orGroups = this.system.voraussetzungen.split(" ODER ");
+        // First split by comma to get AND conditions
+        const andConditions = this.system.voraussetzungen.split(",").map(c => c.trim());
         
-        // Check if any of the OR groups is fulfilled
-        return orGroups.some(group => {
-            // Split by comma to get AND conditions
-            const andConditions = group.split(",").map(c => c.trim());
+        // For each AND condition, check if any of its OR parts is fulfilled
+        return andConditions.every(andCondition => {
+            // Split by ODER to get OR conditions
+            const orParts = andCondition.split(" ODER ");
             
-            // All conditions in an AND group must be true
-            return andConditions.every(condition => {
-                const parts = condition.split(" ");
+            // Check if any of the OR parts is fulfilled
+            return orParts.some(condition => {
+                const parts = condition.trim().split(" ");
                 const type = parts[0];
                 const value = parts.slice(1).join(" ");
 
@@ -25,7 +25,7 @@ export class ManoeverItem extends IlarisItem {
                         // Find the key where the value matches
                         const eigenschaftKey = Object.entries(CONFIG.ILARIS.waffeneigenschaften)
                             .find(([key, val]) => val === value)?.[0];
-                        return item.system.eigenschaften[eigenschaftKey];
+                        return eigenschaftKey ? item.system.eigenschaften[eigenschaftKey] : false;
                     case "Vorteil":
                         return actor._hasVorteil(value);
                     default:
