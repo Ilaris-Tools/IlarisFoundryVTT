@@ -240,6 +240,13 @@ Hooks.once('init', () => {
         type: new foundry.data.fields.BooleanField(),
         scope: 'client',
     });
+    game.settings.register('Ilaris', 'realFumbleCrits', {
+        name: 'Echte Patzer und Krits',
+        hint: 'Die Worldsetting ist für alle gedacht, die es nicht mögen, dass eine 1 kein Patzer ist, weil die Probe mit einem Würfelwurf von 1 gelungen wäre oder es kein Krit mit 20 ist, weil die Probe mehr als eine 20 benötigen würde.',
+        config: true,
+        type: new foundry.data.fields.BooleanField(),
+        scope: 'world',
+    });
     // Register maneuver packs setting
     game.settings.register('Ilaris', 'manoeverPacks', {
         name: 'Manöver Kompendien',
