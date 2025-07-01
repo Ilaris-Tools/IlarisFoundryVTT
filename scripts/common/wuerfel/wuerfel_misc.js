@@ -38,7 +38,9 @@ export async function roll_crit_message(
             is16OrHigher = true;
         }
     }
-    const html_roll = await renderTemplate('systems/Ilaris/templates/chat/probenchat_profan.html', {
+
+    let templatePath = 'systems/Ilaris/templates/chat/probenchat_profan.html';
+    let templateData = {
         title: `${label}`,
         text: text,
         crit: crit,
@@ -46,7 +48,20 @@ export async function roll_crit_message(
         success: isSuccess,
         noSuccess: success_val && !isSuccess,
         is16OrHigher: is16OrHigher
-    });
+    };
+
+    // If this is a spell result, use the spell_result template
+    if (label.startsWith('Zauber (')) {
+        templatePath = 'systems/Ilaris/templates/chat/spell_result.html';
+        const cost = text.match(/Kosten: (\d+) AsP/)?.[1] || 0;
+        templateData = {
+            success: isSuccess || crit,
+            cost: cost,
+            costModifier: fumble ? 4 : 2
+        };
+    }
+
+    const html_roll = await renderTemplate(templatePath, templateData);
     let roll_msg = roll.toMessage(
         {
             speaker: speaker,
@@ -54,10 +69,9 @@ export async function roll_crit_message(
         },
         {
             rollMode: rollmode,
-            //     create: false
         },
     );
-    return [isSuccess || crit,is16OrHigher];
+    return [isSuccess || crit, is16OrHigher];
 }
 
 export function calculate_diceschips(html, text, actor) {

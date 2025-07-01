@@ -90,7 +90,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             ui.notifications.error(`Nicht genug Ressourcen! Benötigt: ${this.mod_energy}, Vorhanden: ${this.currentEnergy}. Unter bestimmten Voraussetzungen zieht dir das System einfach Energie ab, bis du bei 0 angelangt bist. Du kannst diese Information nach eigenem Ermessen weiterverwenden.`);
         }
 
-        let label = `${this.item.name} (Gesamt Kosten: ${this.mod_energy} Energie)`;
+        let label = `${this.item.name} (Gesamt Kosten: ${this.mod_energy} Energie (dies sind nicht die Endkosten))`;
         let formula = 
             `${diceFormula} ${signed(this.item.system.pw)} \
             ${signed(this.at_abzuege_mod)} \
@@ -202,6 +202,20 @@ export class UebernatuerlichDialog extends CombatDialog {
         this.endCost = cost;
 
         await this.actor.update(updates);
+
+        // Create chat message with energy cost information
+        const label = `${this.item.name} (Kosten: ${this.endCost} AsP)`;
+        const html_roll = await renderTemplate('systems/Ilaris/templates/chat/spell_result.html', {
+            success: isSuccess,
+            cost: this.endCost,
+            costModifier: costModifier
+        });
+        
+        await ChatMessage.create({
+            speaker: this.speaker,
+            content: html_roll,
+            type: CONST.CHAT_MESSAGE_TYPES.OTHER
+        });
     }
 
     async manoeverAuswaehlen(html)  {
