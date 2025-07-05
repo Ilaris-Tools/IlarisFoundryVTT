@@ -19,8 +19,8 @@ export const registerIlarisGameSettings = () => {
         config: true,
     },{ 
         settingsName: IlarisGameSettingNames.weaponSpaceRequirement,
-        name: 'Platzbedarf von Waffen berücksichtigen',
-        hint: 'Wird der Platzbedarf der Waffe nicht berücksichtigt wird dieser nicht angezeigt und mit "0" behandelt.\n\nÄnderung dieser Einstellungen benötigt einen Neustart von Foundry',
+        name: 'Platzbedarf von Ausrüstung berücksichtigen',
+        hint: 'Platzbedarf ist eine Hausregel aus Ilaris Advanced. Ohne Haken wird der Platzbedarf nicht angezeigt und in Berechnungen als 0 angenommen. \nÄnderung dieser Einstellungen benötigt einen Neustart von Foundry',
         scope: Scope.World,
         type: Boolean,
         default: true,
