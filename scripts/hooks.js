@@ -22,8 +22,8 @@ import { EigenschaftSheet } from './sheets/items/eigenschaft.js';
 import { InfoSheet } from './sheets/items/info.js';
 import { AngriffSheet } from './sheets/items/angriff.js';
 import { FreiesTalentSheet } from './sheets/items/freies_talent.js';
-import { ManeuverPacksSettings } from './settings/ManeuverPacksSettings.js';
-import { VorteilePacksSettings } from './settings/VorteilePacksSettings.js';
+import { registerIlarisGameSettings } from './settings/configure-game-settings.js'
+import { IlarisGameSettingNames, ConfigureGameSettingsCategories } from './settings/configure-game-settings.model.js'
 
 Hooks.once('init', () => {
     // CONFIG.debug.hooks = true;
@@ -261,39 +261,8 @@ Hooks.once('init', () => {
         }
     });
 
-    // Register the settings menu for maneuvers
-    game.settings.registerMenu('Ilaris', 'manoeverPacksMenu', {
-        name: 'Manöver Kompendien',
-        label: 'Manöver Kompendien Konfigurieren',
-        hint: 'Hier kannst du die Kompendien auswählen, die Manöver enthalten. Dadurch bestimmst du, welche Manöver du in Kampfdialogen sehen kannst.',
-        icon: 'fas fa-book',
-        type: ManeuverPacksSettings,
-        restricted: true
-    });
-
-    // Register vorteile packs setting
-    game.settings.register('Ilaris', 'vorteilePacks', {
-        name: 'Vorteile Kompendien',
-        hint: 'Hier kannst du die Kompendien auswählen, die Vorteile enthalten.',
-        scope: 'world',
-        config: false, // Hide from settings menu since we use custom menu
-        type: String,
-        default: '["Ilaris.vorteile"]', // Default to Ilaris.vorteile pack
-        onChange: value => {
-            // Notify that vorteile packs have changed
-            Hooks.callAll('ilarisVorteilePacksChanged', JSON.parse(value));
-        }
-    });
-
-    // Register the settings menu for vorteile
-    game.settings.registerMenu('Ilaris', 'vorteilePacksMenu', {
-        name: 'Vorteile Kompendien',
-        label: 'Vorteile Kompendien Konfigurieren',
-        hint: 'Hier kannst du die Kompendien auswählen, die Vorteile enthalten.',
-        icon: 'fas fa-book',
-        type: VorteilePacksSettings,
-        restricted: true
-    });
+    
+    registerIlarisGameSettings();
 });
 
 Hooks.on('applyActiveEffect', (actor, data, options, userId) => {
@@ -307,7 +276,7 @@ Hooks.on('applyActiveEffect', (actor, data, options, userId) => {
 });
 
 Hooks.once('setup', async function () {
-    if (!game.settings.get('Ilaris', 'acceptChangesV12_1')) {
+    if (!game.settings.get(ConfigureGameSettingsCategories.Ilaris, IlarisGameSettingNames.acceptChangesV12_1)) {
         showStartupDialog();
     }
 });
@@ -346,7 +315,7 @@ const showStartupDialog = () => {
 };
 
 async function creatureMigration() {
-    game.settings.set('Ilaris', 'acceptChangesV12_1', true);
+    game.settings.set(ConfigureGameSettingsCategories.Ilaris, IlarisGameSettingNames.acceptChangesV12_1, true);
     const vorteileItems = [];
     for await (const pack of game.packs) {
         if(pack.metadata.type == "Item") {

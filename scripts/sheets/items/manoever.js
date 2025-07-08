@@ -1,4 +1,5 @@
 import { IlarisItemSheet } from './item.js';
+import {IlarisGameSettingNames, ConfigureGameSettingsCategories} from './../../settings/configure-game-settings.model.js';
 
 /* template.json
     "manoever": {
@@ -56,7 +57,7 @@ export class ManoeverSheet extends IlarisItemSheet {
         const stile = [];
 
         // Get selected vorteile packs from settings
-        const selectedPacks = JSON.parse(game.settings.get('Ilaris', 'vorteilePacks'));
+        const selectedPacks = JSON.parse(game.settings.get(ConfigureGameSettingsCategories.Ilaris, IlarisGameSettingNames.vorteilePacks));
         
         // Get vorteile from selected packs
         for (const packId of selectedPacks) {

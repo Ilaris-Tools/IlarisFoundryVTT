@@ -1,3 +1,5 @@
+import {IlarisGameSettingNames, ConfigureGameSettingsCategories} from './configure-game-settings.model.js';
+
 export class ManeuverPacksSettings extends FormApplication {
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
@@ -11,8 +13,8 @@ export class ManeuverPacksSettings extends FormApplication {
     }
 
     getData(options) {
-        const currentSelection = JSON.parse(game.settings.get('Ilaris', 'manoeverPacks'));
-        const vorteileSelection = JSON.parse(game.settings.get('Ilaris', 'vorteilePacks'));
+        const currentSelection = JSON.parse(game.settings.get(ConfigureGameSettingsCategories.Ilaris, IlarisGameSettingNames.manoeverPacks));
+        const vorteileSelection = JSON.parse(game.settings.get(ConfigureGameSettingsCategories.Ilaris,IlarisGameSettingNames.vorteilePacks));
         
         // Get all available packs that contain maneuvers
         const availablePacks = [];
@@ -50,14 +52,14 @@ export class ManeuverPacksSettings extends FormApplication {
             .filter(([_, value]) => value)
             .map(([key, _]) => key);
 
-        await game.settings.set('Ilaris', 'manoeverPacks', JSON.stringify(selectedPacks));
+        await game.settings.set(ConfigureGameSettingsCategories.Ilaris, IlarisGameSettingNames.manoeverPacks, JSON.stringify(selectedPacks));
     }
 
     activateListeners(html) {
         super.activateListeners(html);
         html.find('button[name="reset"]').click(async (event) => {
             event.preventDefault();
-            await game.settings.set('Ilaris', 'manoeverPacks', JSON.stringify(['Ilaris.manover']));
+            await game.settings.set(ConfigureGameSettingsCategories.Ilaris, IlarisGameSettingNames.manoeverPacks, JSON.stringify(['Ilaris.manover']));
             this.render(true);
         });
     }
