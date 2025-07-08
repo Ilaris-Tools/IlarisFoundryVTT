@@ -1,49 +1,111 @@
-import { getKampfstile, getSelectedStil, getKampfstilStufe } from '../hardcodedvorteile.js';
+import { getKampfstile, getSelectedStil, beTraglast } from '../hardcodedvorteile.js';
 
-describe('getKampfstile', () => {
-    beforeEach(() => {
-        global.CONFIG = {
-            ILARIS: {
-                label: {
-                    'ohne': 'Ohne'
+jest.mock('./../../settings/configure-game-settings.js', () => ({}));
+
+
+describe('hardcodedvorteile.js', ()=> {
+    describe('getKampfstile', () => {
+        beforeEach(() => {
+            global.CONFIG = {
+                ILARIS: {
+                    label: {
+                        'ohne': 'Ohne'
+                    }
                 }
-            }
-        };
-    });
+            };
+        });
 
-    it('should return object with ohne as default', () => {
-        const actor = { vorteil: { kampfstil: [] } };
-        const result = getKampfstile(actor);
-        
-        expect(result).toEqual({
-            'ohne': {
-                name: 'Ohne',
-                key: 'ohne',
-                stufe: 0,
-                sources: []
-            }
+        it('should return object with ohne as default', () => {
+            const actor = { vorteil: { kampfstil: [] } };
+            const result = getKampfstile(actor);
+            
+            expect(result).toEqual({
+                'ohne': {
+                    name: 'Ohne',
+                    key: 'ohne',
+                    stufe: 0,
+                    sources: []
+                }
+            });
+        });
+
+        it('should group kampfstile and use highest level', () => {
+            const actor = {
+                vorteil: {
+                    kampfstil: [
+                        { 
+                            name: 'Beidhändiger Kampf I',
+                            _stats: { compendiumSource: 'Ilaris.beidhändig1' }
+                        },
+                        {
+                            name: 'Beidhändiger Kampf II (test)',
+                            _stats: { compendiumSource: 'Ilaris.beidhändig2' }
+                        }
+                    ]
+                }
+            };
+            
+            const result = getKampfstile(actor);
+            
+            expect(result).toEqual({
+                'ohne': {
+                    name: 'Ohne',
+                    key: 'ohne',
+                    stufe: 0,
+                    sources: []
+                },
+                'Ilaris.beidhändig2': {
+                    name: 'Beidhändiger Kampf',
+                    key: 'Ilaris.beidhändig2',
+                    stufe: 2,
+                    sources: ['Ilaris.beidhändig1', 'Ilaris.beidhändig2']
+                }
+            });
+        });
+
+        it('should handle multiple different kampfstile', () => {
+            const actor = {
+                vorteil: {
+                    kampfstil: [
+                        {
+                            name: 'Beidhändiger Kampf I',
+                            _stats: { compendiumSource: 'Ilaris.beidhändig1' }
+                        },
+                        {
+                            name: 'Defensiver Kampfstil II',
+                            _stats: { compendiumSource: 'Ilaris.defensiv2' }
+                        }
+                    ]
+                }
+            };
+            
+            const result = getKampfstile(actor);
+            
+            expect(result).toEqual({
+                'ohne': {
+                    name: 'Ohne',
+                    key: 'ohne',
+                    stufe: 0,
+                    sources: []
+                },
+                'Ilaris.beidhändig1': {
+                    name: 'Beidhändiger Kampf',
+                    key: 'Ilaris.beidhändig1',
+                    stufe: 1,
+                    sources: ['Ilaris.beidhändig1']
+                },
+                'Ilaris.defensiv2': {
+                    name: 'Defensiver Kampfstil',
+                    key: 'Ilaris.defensiv2',
+                    stufe: 2,
+                    sources: ['Ilaris.defensiv2']
+                }
+            });
         });
     });
 
-    it('should group kampfstile and use highest level', () => {
-        const actor = {
-            vorteil: {
-                kampfstil: [
-                    { 
-                        name: 'Beidhändiger Kampf I',
-                        _stats: { compendiumSource: 'Ilaris.beidhändig1' }
-                    },
-                    {
-                        name: 'Beidhändiger Kampf II (test)',
-                        _stats: { compendiumSource: 'Ilaris.beidhändig2' }
-                    }
-                ]
-            }
-        };
-        
-        const result = getKampfstile(actor);
-        
-        expect(result).toEqual({
+    describe('getSelectedStil', () => {
+        const mockKampfstile = {
             'ohne': {
                 name: 'Ohne',
                 key: 'ohne',
@@ -51,98 +113,92 @@ describe('getKampfstile', () => {
                 sources: []
             },
             'Ilaris.beidhändig2': {
-                name: 'Beidhändiger Kampf',
+                name: 'Beidhändiger Kampf II',
                 key: 'Ilaris.beidhändig2',
                 stufe: 2,
                 sources: ['Ilaris.beidhändig1', 'Ilaris.beidhändig2']
             }
-        });
-    });
-
-    it('should handle multiple different kampfstile', () => {
-        const actor = {
-            vorteil: {
-                kampfstil: [
-                    {
-                        name: 'Beidhändiger Kampf I',
-                        _stats: { compendiumSource: 'Ilaris.beidhändig1' }
-                    },
-                    {
-                        name: 'Defensiver Kampfstil II',
-                        _stats: { compendiumSource: 'Ilaris.defensiv2' }
-                    }
-                ]
-            }
         };
-        
-        const result = getKampfstile(actor);
-        
-        expect(result).toEqual({
-            'ohne': {
+
+        it('should return selected kampfstil when it exists', () => {
+            const result = getSelectedStil('Ilaris.beidhändig2', mockKampfstile);
+            expect(result).toEqual({
+                name: 'Beidhändiger Kampf II',
+                key: 'Ilaris.beidhändig2',
+                stufe: 2,
+                sources: ['Ilaris.beidhändig1', 'Ilaris.beidhändig2']
+            });
+        });
+
+        it('should return ohne when selected kampfstil does not exist', () => {
+            const result = getSelectedStil('nonexistent', mockKampfstile);
+            expect(result).toEqual({
                 name: 'Ohne',
                 key: 'ohne',
                 stufe: 0,
                 sources: []
-            },
-            'Ilaris.beidhändig1': {
-                name: 'Beidhändiger Kampf',
-                key: 'Ilaris.beidhändig1',
-                stufe: 1,
-                sources: ['Ilaris.beidhändig1']
-            },
-            'Ilaris.defensiv2': {
-                name: 'Defensiver Kampfstil',
-                key: 'Ilaris.defensiv2',
-                stufe: 2,
-                sources: ['Ilaris.defensiv2']
+            });
+        });
+
+        it('should return ohne when selected value is undefined', () => {
+            const result = getSelectedStil(undefined, mockKampfstile);
+            expect(result).toEqual({
+                name: 'Ohne',
+                key: 'ohne',
+                stufe: 0,
+                sources: []
+            });
+        });
+    });
+
+    describe('beTraglast', () => {
+        let settingsGetMockValue = -1;
+        global.game = {
+            settings: {
+                get: jest.fn().mockImplementation(()=>{
+                    return settingsGetMockValue;
+                })
             }
-        });
-    });
-});
-
-describe('getSelectedStil', () => {
-    const mockKampfstile = {
-        'ohne': {
-            name: 'Ohne',
-            key: 'ohne',
-            stufe: 0,
-            sources: []
-        },
-        'Ilaris.beidhändig2': {
-            name: 'Beidhändiger Kampf II',
-            key: 'Ilaris.beidhändig2',
-            stufe: 2,
-            sources: ['Ilaris.beidhändig1', 'Ilaris.beidhändig2']
         }
-    };
-
-    it('should return selected kampfstil when it exists', () => {
-        const result = getSelectedStil('Ilaris.beidhändig2', mockKampfstile);
-        expect(result).toEqual({
-            name: 'Beidhändiger Kampf II',
-            key: 'Ilaris.beidhändig2',
-            stufe: 2,
-            sources: ['Ilaris.beidhändig1', 'Ilaris.beidhändig2']
+        it('world settings weapon space requirement is disable', () => {
+            settingsGetMockValue = false;
+            expect(beTraglast(settingsGetMockValue)).toBe(0);
         });
-    });
 
-    it('should return ohne when selected kampfstil does not exist', () => {
-        const result = getSelectedStil('nonexistent', mockKampfstile);
-        expect(result).toEqual({
-            name: 'Ohne',
-            key: 'ohne',
-            stufe: 0,
-            sources: []
-        });
-    });
-
-    it('should return ohne when selected value is undefined', () => {
-        const result = getSelectedStil(undefined, mockKampfstile);
-        expect(result).toEqual({
-            name: 'Ohne',
-            key: 'ohne',
-            stufe: 0,
-            sources: []
-        });
+        test.each`
+        description | systemData | reslut
+        ${'weight diff < 0'} | ${{
+            getragen: 13,
+            abgeleitete: {
+                traglast: 17,
+                traglast_intervall: 18,
+            }
+        }} | ${0} 
+        ${'weight diff = 0'} | ${{
+            getragen: 2233,
+            abgeleitete: {
+                traglast: 2233,
+                traglast_intervall: 18,
+            }
+        }} | ${0} 
+        ${'weight diff > 0 && ceil == floor'} | ${{
+            getragen: 53,
+            abgeleitete: {
+                traglast: 17,
+                traglast_intervall: 6,
+            }
+        }} | ${6} 
+        ${'weight diff = 0 && ceil != floor'} | ${{
+            getragen: 53,
+            abgeleitete: {
+                traglast: 21,
+                traglast_intervall: 12,
+            }
+        }} | ${3} 
+    
+        `('$description',({systemData, reslut}) => {
+            settingsGetMockValue = true;
+            expect(beTraglast(systemData)).toBe(reslut);
+            });
     });
 });

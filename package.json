@@ -21,7 +21,7 @@
     "@foundryvtt/foundryvtt-cli": "^1.0.4"
   },
   "scripts": {
-    "test": "echo \"Warn: no test specified\" && exit 0",
+    "test": "jest",
     "lint": "eslint --fix .",
     "prettier": "prettier --write .",
     "prepare": "husky"
