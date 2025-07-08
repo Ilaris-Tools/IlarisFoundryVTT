@@ -1,9 +1,49 @@
-## VS Code
+# VS Code
+## Einrichtung
+Die Einrichtung der IDE kann mit dem VS Code [Task](#task): [_Setup IDE_](#vs-code-task-setup-ide) erleichtert werden.
 
-#### Empfohlene Plugins
+
+### Empfohlene Plugins
 
 -   [Unit Tests: Jest Runner](https://marketplace.visualstudio.com/items?itemName=Orta.vscode-jest)
 -   [Code Formatting: Prettier](https://marketplace.visualstudio.com/items/?itemName=esbenp.prettier-vscode)
+- [Darstellung von Github Emojis](https://marketplace.visualstudio.com/items?itemName=bierner.markdown-emoji)
+
+## Task
+Mit einem VS Code Task können definierte Aufgaben erledigt werden, z.b. ein Skript ausführen, einen Prozess starten. Das passiert alles innerhalb von VS Code ohne jedesmal den entsprechenden Befehl im Terminel etc einzugeben.
+
+### Ausführen von Tasks
+Ein Task kann via _Terminal -> Run Task_ und dort den entsprechenden Task auswählen und somit ausführen.
+
+### Definition von Tasks
+In der Datei _.vscode/tasks.json_ werden die Tasks definiert. Hier wird für einen Task angegeben was gemacht werden soll. Ein Skript ausgeführt werden, ein npm Befehl... 
+
+Wird ein Skript benötigt werden diese unterhalb des _.vscode_ Ordners unter _tasks-scripts/\<skriptname>_ abgelegt.
+
+:warning: Falls Linux und Windows unterschiedliche Befehle/Syntax benötigen müssen verschiedene Skripte erstellt werden.
+### Verfügbare Tasks
+#### IDE einrichten<a id="vs-code-task-setup-ide"></a> 
+- Taskname: Setup IDE
+- Konfiguration: --
+- Verwendung: Einrichten der IDE
+
+#### Foundry starten
+- Taskname: _Start foundry_
+- Konfiguration: Damit der Task ausgeführt werden kann muss eine _developer.env_ basierend auf dem Template _developer.template.env_ und dem Betriebssystem neben der _developer.template.env_  im Ordner _tasks-scripts/start-foundry_ erstellt werden. Den Inhalt für das nicht benötigte Betriebssystem entfernen. Je nach Betriebssystem kann der Eintrag folgendermaßen aussehen (<span style="color:green">Muss angepasst werden in den Beispielen</span>):
+    <details>
+    <summary>Windows</summary>
+
+    REM FoundryVTT Configuration  
+    set PATH_TO_FOUNDRY=<span style="color:green">C:\Program Files\Foundry Virtual Tabletop\\</span>      
+    set FILE_TO_START_FOUNDRY=<span style="color:green">Foundry Virtual Tabletop.exe</span>
+    </details>
+
+    <details>
+    <summary>Linux</summary>
+    PATH_TO_FOUNDRY="<span style="color:green">Downloads/FoundryVTT-12.331/</span>"
+    FILE_TO_START_FOUNDRY="<span style="color:green">./foundryvtt</span>"
+    </details>      
+- Verwendung: Starten von Foundry direkt aus VS Code heraus. 
 
 ## Entwicklertools
 
