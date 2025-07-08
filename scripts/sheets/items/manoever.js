@@ -1,4 +1,5 @@
 import { IlarisItemSheet } from './item.js';
+import {IlarisGameSettingNames, ConfigureGameSettingsCategories} from './../../settings/configure-game-settings.model.js';
 
 /* template.json
     "manoever": {

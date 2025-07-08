@@ -1,7 +1,7 @@
 {
   "name": "ilaris-foundryvtt",
   "description": "Ein System für [Ilaris](https://ilarisblog.wordpress.com/) zur Verwendung mit [FoundryVTT](https://foundryvtt.com/).",
-  "version": "0.0.1",
+  "version": "v12.1.0",
   "main": "",
   "type": "module",
   "devDependencies": {
@@ -11,23 +11,29 @@
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.0.0",
     "jest": "^29.7.0",
     "lodash": "^4.17.21",
     "nedb": "^1.8.0",
     "prettier": "^2.5.1",
-    "xml2js": "^0.4.23"
+    "xml2js": "^0.4.23",
+    "@foundryvtt/foundryvtt-cli": "^1.0.4"
   },
   "scripts": {
     "test": "jest",
-    "prettier": "./node_modules/.bin/prettier --write ."
+    "lint": "eslint --fix .",
+    "prettier": "prettier --write .",
+    "prepare": "husky"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/Feorg/ilaris-foundryvtt.git"
+    "url": "git+https://github.com/Ilaris-Tools/IlarisFoundryVTT.git"
   },
   "author": "",
   "bugs": {
-    "url": "https://gitlab.com/Feorg/ilaris-foundryvtt/issues"
+    "url": "https://github.com/Ilaris-Tools/IlarisFoundryVTT/issues"
   },
-  "homepage": "https://gitlab.com/Feorg/ilaris-foundryvtt#readme"
+  "homepage": "https://github.com/Ilaris-Tools/IlarisFoundryVTT",
+  "license": "MIT"
 }

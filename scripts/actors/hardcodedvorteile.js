@@ -1,10 +1,10 @@
 import { sanitizeEnergyCost } from '../common/utilities.js';
+import * as settings from './../settings/index.js';
 
 //TODO delete, is a function for test setup
 export function sum(a, b) {
     return a + b;
   }
-
 
 export function behinderung(be, systemData) {
     // let pw = data.profan.fertigkeiten.find(x => x.name == fertigkeit)?.data.pw;
@@ -21,10 +21,17 @@ export function behinderung(be, systemData) {
 }
 
 export function beTraglast(systemData) {
+    let be_mod = 0;
+    let weaponSpaceRequirement = game.settings.get(settings.ConfigureGameSettingsCategories.Ilaris, settings.IlarisGameSettingNames.weaponSpaceRequirement);
+
+    if(!weaponSpaceRequirement){
+        return be_mod;
+    }
+
     let summeGewicht = systemData.getragen;
     let traglast = systemData.abgeleitete.traglast;
     let intervall = systemData.abgeleitete.traglast_intervall;
-    let be_mod = 0;
+   
     let gewicht_diff = summeGewicht - traglast;
     if (gewicht_diff > 0) {
         let div_floor = Math.floor(gewicht_diff / intervall);

@@ -1,4 +1,6 @@
 import { IlarisItem } from "./item.js";
+import {IlarisGameSettingNames, ConfigureGameSettingsCategories} from './../settings/configure-game-settings.model.js';
+
 
 export class CombatItem extends IlarisItem {
     // Create a maneuver object from an item
@@ -15,7 +17,7 @@ export class CombatItem extends IlarisItem {
 
     async setManoevers() {
         // Get selected maneuver packs from settings
-        const selectedPacks = JSON.parse(game.settings.get('Ilaris', 'manoeverPacks'));
+        const selectedPacks = JSON.parse(game.settings.get(ConfigureGameSettingsCategories.Ilaris, IlarisGameSettingNames.manoeverPacks));
         
         // Get maneuvers from selected packs
         const packItems = [];
