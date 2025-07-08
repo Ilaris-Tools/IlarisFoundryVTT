@@ -234,33 +234,6 @@ Hooks.once('init', () => {
             icon: 'systems/Ilaris/assets/images/icon/swordwoman-orange.svg',
         },
     ];
-    game.settings.register('Ilaris', 'acceptChangesV12_1', {
-        name: 'Update Informationen für v12.1 gelesen',
-        config: true,
-        type: new foundry.data.fields.BooleanField(),
-        scope: 'client',
-    });
-    game.settings.register('Ilaris', 'realFumbleCrits', {
-        name: 'Echte Patzer und Krits',
-        hint: 'Die Worldsetting ist für alle gedacht, die es nicht mögen, dass eine 1 kein Patzer ist, weil die Probe mit einem Würfelwurf von 1 gelungen wäre oder es kein Krit mit 20 ist, weil die Probe mehr als eine 20 benötigen würde.',
-        config: true,
-        type: new foundry.data.fields.BooleanField(),
-        scope: 'world',
-    });
-    // Register maneuver packs setting
-    game.settings.register('Ilaris', 'manoeverPacks', {
-        name: 'Manöver Kompendien',
-        hint: 'Hier kannst du die Kompendien auswählen, die Manöver enthalten. Dadurch bestimmst du, welche Manöver du in Kampfdialogen sehen kannst.',
-        scope: 'world',
-        config: false, // Hide from settings menu since we use custom menu
-        type: String,
-        default: '["Ilaris.manover"]', // Default to Ilaris.manoever pack
-        onChange: value => {
-            // Notify that maneuver packs have changed
-            Hooks.callAll('ilarisManoeverPacksChanged', JSON.parse(value));
-        }
-    });
-
     
     registerIlarisGameSettings();
 });

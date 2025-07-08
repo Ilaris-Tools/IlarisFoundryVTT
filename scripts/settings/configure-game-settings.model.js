@@ -8,7 +8,8 @@ export const IlarisGameSettingNames = {
     acceptChangesV12_1: 'acceptChangesV12_1',
     weaponSpaceRequirement: 'weaponSpaceRequirement',
     manoeverPacks: 'manoeverPacks',
-    vorteilePacks: 'vorteilePacks'
+    vorteilePacks: 'vorteilePacks',
+    realFumbleCrits: 'realFumbleCrits'
 }
 
 export const IlarisGameSettingsMenuNames = {
