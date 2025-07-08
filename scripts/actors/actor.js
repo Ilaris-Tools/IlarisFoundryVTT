@@ -853,13 +853,13 @@ export class IlarisActor extends Actor {
                 let schaden = 0;
                 let at = 0;
                 let vt = 0;
-                if (stufe >= 1) {
+                if (selected_kampfstil.stufe >= 1) {
                     console.log('Stufe 1 (Nebenwaffe)');
                     schaden += 1;
                     at += 1;
                     vt += 1;
                 }
-                if (stufe >= 2) {
+                if (selected_kampfstil.stufe >= 2) {
                     console.log('Stufe 2 (Nebenwaffe)');
                     schaden += 1;
                     at += 1;
@@ -872,7 +872,7 @@ export class IlarisActor extends Actor {
                         vt += 4;
                     }
                 }
-                if (stufe >= 3) {
+                if (selected_kampfstil.stufe >= 3) {
                     console.log('Stufe 3 (Nebenwaffe)');
                     schaden += 1;
                     at += 1;
