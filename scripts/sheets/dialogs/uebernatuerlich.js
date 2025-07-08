@@ -152,7 +152,10 @@ export class UebernatuerlichDialog extends CombatDialog {
         await ChatMessage.create({
             speaker: this.speaker,
             content: html_roll,
-            type: CONST.CHAT_MESSAGE_STYLES.OTHER
+            type: 5, // CONST.CHAT_MESSAGE_TYPES.ROLL
+            whisper: this.rollmode === "gmroll" ? ChatMessage.getWhisperRecipients("GM") : 
+                    this.rollmode === "selfroll" ? [game.user.id] : undefined,
+            blind: this.rollmode === "blindroll"
         });
     }
 
@@ -214,7 +217,10 @@ export class UebernatuerlichDialog extends CombatDialog {
         await ChatMessage.create({
             speaker: this.speaker,
             content: html_roll,
-            type: CONST.CHAT_MESSAGE_TYPES.OTHER
+            type: 5, // CONST.CHAT_MESSAGE_TYPES.ROLL
+            whisper: this.rollmode === "gmroll" ? ChatMessage.getWhisperRecipients("GM") : 
+                    this.rollmode === "selfroll" ? [game.user.id] : undefined,
+            blind: this.rollmode === "blindroll"
         });
     }
 

@@ -20,7 +20,7 @@ describe('roll_crit_message', () => {
         // Mock game settings - default to false for realFumbleCrits
         global.game = {
             settings: {
-                get: jest.fn().mockReturnValue(false) // realFumbleCrits default to true
+                get: jest.fn().mockReturnValue(false)
             }
         };
 
@@ -44,55 +44,84 @@ describe('roll_crit_message', () => {
         };
     });
 
-    test('should identify critical success on natural 20 with success_val', async () => {
-        mockRoll.dice[0].results[0].result = 20;
-        mockRoll.evaluate.mockResolvedValue({ _total: 25 });
+    describe('with realFumbleCrits disabled (default)', () => {
+        test('should identify critical success on natural 20 when total meets success_val', async () => {
+            mockRoll.dice[0].results[0].result = 20;
+            mockRoll.evaluate.mockResolvedValue({ _total: 25 }); // 20 + 5 bonuses
 
-        await roll_crit_message('1d20+5', 'Test Roll', '', null, 'roll', true, 1, 15);
+            await roll_crit_message('1d20+5', 'Test Roll', '', null, 'roll', true, 1, 20);
 
-        expect(global.renderTemplate).toHaveBeenCalledWith(
-            'systems/Ilaris/templates/chat/probenchat_profan.html',
-            expect.objectContaining({ crit: true })
-        );
+            expect(global.renderTemplate).toHaveBeenCalledWith(
+                'systems/Ilaris/templates/chat/probenchat_profan.html',
+                expect.objectContaining({ crit: true })
+            );
+        });
+
+        test('should not identify critical success when total cannot meet success_val', async () => {
+            mockRoll.dice[0].results[0].result = 20;
+            mockRoll.evaluate.mockResolvedValue({ _total: 25 }); // 20 + 5 bonuses
+
+            await roll_crit_message('1d20+5', 'Test Roll', '', null, 'roll', true, 1, 30);
+
+            expect(global.renderTemplate).toHaveBeenCalledWith(
+                'systems/Ilaris/templates/chat/probenchat_profan.html',
+                expect.not.objectContaining({ crit: true })
+            );
+        });
+
+        test('should identify fumble when total would fail success_val', async () => {
+            mockRoll.dice[0].results[0].result = 1;
+            mockRoll.evaluate.mockResolvedValue({ _total: 6 }); // 1 + 5 bonuses
+
+            await roll_crit_message('1d20+5', 'Test Roll', '', null, 'roll', true, 1, 15);
+
+            expect(global.renderTemplate).toHaveBeenCalledWith(
+                'systems/Ilaris/templates/chat/probenchat_profan.html',
+                expect.objectContaining({ fumble: true })
+            );
+        });
+
+        test('should not identify fumble when total would still meet success_val', async () => {
+            mockRoll.dice[0].results[0].result = 1;
+            mockRoll.evaluate.mockResolvedValue({ _total: 16 }); // 1 + 15 bonuses
+
+            await roll_crit_message('1d20+15', 'Test Roll', '', null, 'roll', true, 1, 5);
+
+            expect(global.renderTemplate).toHaveBeenCalledWith(
+                'systems/Ilaris/templates/chat/probenchat_profan.html',
+                expect.not.objectContaining({ fumble: true })
+            );
+        });
     });
 
-    test('should not identify critical success on natural 20 if target number is too high', async () => {
-        mockRoll.dice[0].results[0].result = 20;
-        const bonuses = 5;
-        mockRoll.evaluate.mockResolvedValue({ _total: 25 }); // 20 + 5 bonuses
+    describe('with realFumbleCrits enabled', () => {
+        beforeEach(() => {
+            game.settings.get.mockReturnValue(true);
+        });
 
-        await roll_crit_message('1d20+5', 'Test Roll', '', null, 'roll', true, 1, 30); // Target number higher than possible
+        test('should always identify critical success on natural 20', async () => {
+            mockRoll.dice[0].results[0].result = 20;
+            mockRoll.evaluate.mockResolvedValue({ _total: 25 }); // 20 + 5 bonuses
 
-        expect(global.renderTemplate).toHaveBeenCalledWith(
-            'systems/Ilaris/templates/chat/probenchat_profan.html',
-            expect.not.objectContaining({ crit: true })
-        );
-    });
+            await roll_crit_message('1d20+5', 'Test Roll', '', null, 'roll', true, 1, 30); // Impossible target
 
-    test('should identify fumble on roll <= fumble_val if target number is high enough', async () => {
-        mockRoll.dice[0].results[0].result = 1;
-        const bonuses = 5;
-        mockRoll.evaluate.mockResolvedValue({ _total: 6 }); // 1 + 5 bonuses
+            expect(global.renderTemplate).toHaveBeenCalledWith(
+                'systems/Ilaris/templates/chat/probenchat_profan.html',
+                expect.objectContaining({ crit: true })
+            );
+        });
 
-        await roll_crit_message('1d20+5', 'Test Roll', '', null, 'roll', true, 1, 15);
+        test('should always identify fumble on fumble value', async () => {
+            mockRoll.dice[0].results[0].result = 1;
+            mockRoll.evaluate.mockResolvedValue({ _total: 16 }); // 1 + 15 bonuses
 
-        expect(global.renderTemplate).toHaveBeenCalledWith(
-            'systems/Ilaris/templates/chat/probenchat_profan.html',
-            expect.objectContaining({ fumble: true })
-        );
-    });
+            await roll_crit_message('1d20+15', 'Test Roll', '', null, 'roll', true, 1, 5); // Easy target
 
-    test('should not identify fumble if target number is too low', async () => {
-        mockRoll.dice[0].results[0].result = 1;
-        const bonuses = 15;
-        mockRoll.evaluate.mockResolvedValue({ _total: 16 }); // 1 + 15 bonuses
-
-        await roll_crit_message('1d20+15', 'Test Roll', '', null, 'roll', true, 1, 5); // Target number lower than minimum possible
-
-        expect(global.renderTemplate).toHaveBeenCalledWith(
-            'systems/Ilaris/templates/chat/probenchat_profan.html',
-            expect.not.objectContaining({ fumble: true })
-        );
+            expect(global.renderTemplate).toHaveBeenCalledWith(
+                'systems/Ilaris/templates/chat/probenchat_profan.html',
+                expect.objectContaining({ fumble: true })
+            );
+        });
     });
 
     test('should handle normal success with success_val', async () => {
@@ -128,21 +157,6 @@ describe('roll_crit_message', () => {
         expect(global.renderTemplate).toHaveBeenCalledWith(
             'systems/Ilaris/templates/chat/probenchat_profan.html',
             expect.not.objectContaining({ crit: true })
-        );
-    });
-
-    test('should use realFumbleCrits when enabled', async () => {
-        // Enable realFumbleCrits for this test only
-        game.settings.get.mockReturnValue(true);
-
-        mockRoll.dice[0].results[0].result = 20;
-        mockRoll.evaluate.mockResolvedValue({ _total: 25 });
-
-        await roll_crit_message('1d20+5', 'Test Roll', '', null, 'roll', true, 1, 30); // Even with impossible target
-
-        expect(global.renderTemplate).toHaveBeenCalledWith(
-            'systems/Ilaris/templates/chat/probenchat_profan.html',
-            expect.objectContaining({ crit: true })
         );
     });
 

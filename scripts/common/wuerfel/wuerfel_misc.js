@@ -59,7 +59,7 @@ export async function roll_crit_message(
         if (success_val && result._total >= success_val && !fumble && !crit) {
             isSuccess = true;
         }
-        if (result._total >= 16) {
+        if (roll.dice[0].results.find((a) => a.active == true).result >= 16) {
             is16OrHigher = true;
         }
     }
@@ -71,7 +71,7 @@ export async function roll_crit_message(
         crit: crit,
         fumble: fumble,
         success: isSuccess,
-        noSuccess: success_val && !isSuccess,
+        noSuccess: success_val && !isSuccess && !crit && !fumble,
         is16OrHigher: is16OrHigher
     };
 
