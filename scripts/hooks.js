@@ -234,7 +234,6 @@ Hooks.once('init', () => {
             icon: 'systems/Ilaris/assets/images/icon/swordwoman-orange.svg',
         },
     ];
-
     
     registerIlarisGameSettings();
 });
