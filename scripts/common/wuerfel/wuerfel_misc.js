@@ -24,29 +24,69 @@ export async function roll_crit_message(
     let crit = false;
     let isSuccess = false;
     let is16OrHigher = false;
+    let realFumbleCrits = game.settings.get('Ilaris', 'realFumbleCrits');
+
     if (crit_eval) {
         let critfumble = roll.dice[0].results.find((a) => a.active == true).result;
-        if (critfumble == 20) {
-            crit = true;
-        } else if (critfumble <= fumble_val) {
-            fumble = true;
-        } 
+        if (realFumbleCrits) {
+            if (critfumble == 20) {
+                crit = true;
+            } else if (critfumble <= fumble_val) {
+                fumble = true;
+            }
+        } else {
+            if (success_val) {
+                // For rolls with a target number, apply the same logic
+                const bonuses = result._total - critfumble;
+                const maxPossibleResult = 20 + bonuses;
+                const minPossibleResult = 1 + bonuses;
+
+                if (critfumble == 20 && maxPossibleResult >= success_val) {
+                    crit = true;
+                } else if (critfumble <= fumble_val && minPossibleResult + (fumble_val - 1) < success_val) {
+                    fumble = true;
+                }
+            } else {
+                // For rolls without a target number, use the original logic
+                if (critfumble == 20) {
+                    crit = true;
+                } else if (critfumble <= fumble_val) {
+                    fumble = true;
+                }
+            }
+        }
+
         if (success_val && result._total >= success_val && !fumble && !crit) {
             isSuccess = true;
         }
-        if (result._total >= 16) {
+        if (roll.dice[0].results.find((a) => a.active == true).result >= 16) {
             is16OrHigher = true;
         }
     }
-    const html_roll = await renderTemplate('systems/Ilaris/templates/chat/probenchat_profan.html', {
+
+    let templatePath = 'systems/Ilaris/templates/chat/probenchat_profan.html';
+    let templateData = {
         title: `${label}`,
         text: text,
         crit: crit,
         fumble: fumble,
         success: isSuccess,
-        noSuccess: success_val && !isSuccess,
+        noSuccess: success_val && !isSuccess && !crit && !fumble,
         is16OrHigher: is16OrHigher
-    });
+    };
+
+    // If this is a spell result, use the spell_result template
+    if (label.startsWith('Zauber (')) {
+        templatePath = 'systems/Ilaris/templates/chat/spell_result.html';
+        const cost = text.match(/Kosten: (\d+) AsP/)?.[1] || 0;
+        templateData = {
+            success: isSuccess || crit,
+            cost: cost,
+            costModifier: fumble ? 4 : 2
+        };
+    }
+
+    const html_roll = await renderTemplate(templatePath, templateData);
     let roll_msg = roll.toMessage(
         {
             speaker: speaker,
@@ -54,10 +94,9 @@ export async function roll_crit_message(
         },
         {
             rollMode: rollmode,
-            //     create: false
         },
     );
-    return [isSuccess || crit,is16OrHigher];
+    return [isSuccess || crit, is16OrHigher];
 }
 
 export function calculate_diceschips(html, text, actor) {

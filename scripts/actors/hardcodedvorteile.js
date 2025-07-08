@@ -6,6 +6,7 @@ export function sum(a, b) {
     return a + b;
   }
 
+
 export function behinderung(be, systemData) {
     // let pw = data.profan.fertigkeiten.find(x => x.name == fertigkeit)?.data.pw;
     let rg = systemData.vorteil.kampf.find((x) => x.name == 'Rüstungsgewöhnung');

@@ -52,6 +52,12 @@ export const registerIlarisGameSettings = () => {
             // Notify that vorteile packs have changed
             Hooks.callAll('ilarisVorteilePacksChanged', JSON.parse(value));
         }
+    }, {
+        name: 'Echte Patzer und Krits',
+        hint: 'Die Worldsetting ist für alle gedacht, die es nicht mögen, dass eine 1 kein Patzer ist, weil die Probe mit einem Würfelwurf von 1 gelungen wäre oder es kein Krit mit 20 ist, weil die Probe mehr als eine 20 benötigen würde.',
+        config: true,
+        type: new foundry.data.fields.BooleanField(),
+        scope: 'world',
     }
 ].forEach((setting)=>{
         game.settings.register(ConfigureGameSettingsCategories.Ilaris, setting.settingsName, {
