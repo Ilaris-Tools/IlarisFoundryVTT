@@ -1,4 +1,4 @@
-import { getKampfstile, getSelectedStil, getKampfstilStufe, calculateModifiedCost,beTraglast } from '../hardcodedvorteile.js';
+import { getKampfstile, getSelectedStil, getKampfstilStufe, calculateModifiedCost, beTraglast } from '../hardcodedvorteile.js';
 
 jest.mock('../hardcodedvorteile.js', () => ({
     ...jest.requireActual('../hardcodedvorteile.js'),
@@ -124,7 +124,7 @@ describe('hardcodedvorteile.js', ()=> {
                 name: 'Beidhändiger Kampf II',
                 key: 'Ilaris.beidhändig2',
                 stufe: 2,
-                sources: ['Ilaris.beidhändig1', 'Ilaris.beidhändig2']
+                sources: ['Beidhändiger Kampf I', 'Beidhändiger Kampf II (test)']
             }
         };
 

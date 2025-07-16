@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Niederwerfen",
-        "type": "VORTEIL",
-        "value": [
-          "Fh4aGtx9D0flsKKe"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Niederwerfen",
     "modifications": {
       "0": {
         "type": "ATTACK",

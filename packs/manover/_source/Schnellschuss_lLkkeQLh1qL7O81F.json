@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Schnellziehen",
-        "type": "VORTEIL",
-        "value": [
-          "9laG7XzYtXtoqlzZ"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Schnellziehen",
     "gruppe": "1",
     "probe": "FK -4",
     "gegenprobe": "",

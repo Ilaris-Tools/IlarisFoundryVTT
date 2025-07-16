@@ -3,13 +3,7 @@ import {IlarisGameSettingNames, ConfigureGameSettingsCategories} from './../../s
 
 /* template.json
     "manoever": {
-      "voraussetzungen": [
-        {
-          "name": "Voraussetzung Beschreibung",
-          "type": "VORTEIL | WAFFENEIGENSCHAFT | STIL",
-          "value": ["VorteilID1", "VorteilID2"]
-        }
-      ],
+      "voraussetzungen": "Vorteil Name1",
       "inputs": [
         {
             "label": "Checkbox",
@@ -52,34 +46,6 @@ export class ManoeverSheet extends IlarisItemSheet {
     async getData () {
         const data = await super.getData();
         data.manoever = CONFIG.ILARIS.manoever;
-        const vorteileItems = [];
-        const vorteile = [];
-        const stile = [];
-
-        // Get selected vorteile packs from settings
-        const selectedPacks = JSON.parse(game.settings.get(ConfigureGameSettingsCategories.Ilaris, IlarisGameSettingNames.vorteilePacks));
-        
-        // Get vorteile from selected packs
-        for (const packId of selectedPacks) {
-            const pack = game.packs.get(packId);
-            if (pack) {
-                vorteileItems.push(...(await pack.getDocuments()));
-            }
-        }
-        vorteileItems.forEach((item) => {
-            if(item.type === 'vorteil') {
-                if(item.system.gruppe == 3 || item.system.gruppe == 5 || item.system.gruppe == 7) {
-                    stile.push({key: item._id, label: item.name});
-                } else {
-                    vorteile.push({key: item._id, label: item.name});
-                }
-            }
-        });
-        vorteile.sort((a, b) => (a.label > b.label ? 1 : b.label > a.label ? -1 : 0));
-        stile.sort((a, b) => (a.label > b.label ? 1 : b.label > a.label ? -1 : 0));
-        data.vorteile = vorteile;
-        data.stile = stile;
-        data.waffeneigenschaften = CONFIG.ILARIS.waffeneigenschaften;
         data.schadenstypen = CONFIG.ILARIS.schadenstypen;
         console.log(data);
         return data;
@@ -87,30 +53,8 @@ export class ManoeverSheet extends IlarisItemSheet {
 
     activateListeners(html) {
         super.activateListeners(html);
-        html.find('.add-voraussetzung').click(() => this._onAddVoraussetzung());
-        html.find('.voraussetzung-delete').click((ev) => this._onDeleteVoraussetzung(ev));
         html.find('.add-modification').click(() => this._onAddModification());
         html.find('.delete-modification').click((ev) => this._onDeleteModification(ev));
-    }
-
-    async _onAddVoraussetzung() {
-        const voraussetzungen = Object.values(this.item.system.voraussetzungen);
-        voraussetzungen.push({name: 'Neue Voraussetzung', type: 'VORTEIL', value: []});
-        
-        await this.item.update({
-            'system.voraussetzungen': voraussetzungen
-        });
-    }
-
-    async _onDeleteVoraussetzung(event) {
-        let eigid = $(event.currentTarget).data('voraussetzungid');
-        const voraussetzungen = Object.values(this.item.system.voraussetzungen);
-        voraussetzungen.splice(eigid, 1);
-        
-        // Update the item with the new voraussetzungen array
-        await this.item.update({
-            'system.voraussetzungen': voraussetzungen
-        });
     }
 
     async _onAddModification() {

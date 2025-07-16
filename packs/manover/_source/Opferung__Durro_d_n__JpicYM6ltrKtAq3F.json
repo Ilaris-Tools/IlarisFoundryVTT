@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Tradition der Durro-dun III",
-        "type": "STILE",
-        "value": [
-          "Mx4S7igqV9FVX9uB"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Tradition der Durro-dun III",
     "input": {
       "label": "",
       "field": "CHECKBOX"

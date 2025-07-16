@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Tradition der Korgeweihten III",
-        "type": "STILE",
-        "value": [
-          "PMCt9q9adnErQkIZ"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Tradition der Korgeweihten III",
     "input": {
       "label": "",
       "field": "CHECKBOX"

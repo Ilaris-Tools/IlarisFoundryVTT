@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Zauberer I",
-        "type": "VORTEIL",
-        "value": [
-          "ClPMi6Au35vgyndN"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I",
     "input": {
       "label": "",
       "field": "CHECKBOX"

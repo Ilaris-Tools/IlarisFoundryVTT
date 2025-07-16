@@ -3,21 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Tradition der Alchemisten III ODER Vorteil Tradition der Elfen III ODER Vorteil Tradition der Geoden III ODER Vorteil Tradition der Gildenmagier III ODER Vorteil Tradition der Kristallomanten III ODER Vorteil Tradition der Scharlatane III ODER Vorteil Tradition der Zauberbarden III",
-        "type": "STILE",
-        "value": [
-          "7vgrOlJe57lhVG3I",
-          "EPtoZPYzgDy0rtgt",
-          "xYI4qlIjjVvqn6TV",
-          "zpsHiYBMdIJmoO65",
-          "VxEMDoj71l2kLwF6",
-          "aZFG9z07KLboPNt7",
-          "GMHhdocHx4bxySCW"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Tradition der Alchemisten III ODER Vorteil Tradition der Elfen III ODER Vorteil Tradition der Geoden III ODER Vorteil Tradition der Gildenmagier III ODER Vorteil Tradition der Kristallomanten III ODER Vorteil Tradition der Scharlatane III ODER Vorteil Tradition der Zauberbarden III",
     "input": {
       "label": "",
       "field": "CHECKBOX"

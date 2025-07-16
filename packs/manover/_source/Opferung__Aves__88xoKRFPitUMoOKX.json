@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Tradition der Avesgeweihten III",
-        "type": "STILE",
-        "value": [
-          "H1VkW48XMRWWJJYH"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Tradition der Avesgeweihten III",
     "input": {
       "label": "",
       "field": "CHECKBOX"

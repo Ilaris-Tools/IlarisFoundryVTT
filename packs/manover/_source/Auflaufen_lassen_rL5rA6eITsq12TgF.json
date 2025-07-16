@@ -3,7 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": [],
+    "voraussetzungen": "",
     "modifications": {
       "0": {
         "type": "DEFENCE",

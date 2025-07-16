@@ -3,19 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Tradition der Borbaradianer III ODER Vorteil Tradition der Druiden III ODER Vorteil Tradition der Hexen III ODER Vorteil Tradition der Schelme III ODER Vorteil Tradition der Anach-Nurim III",
-        "type": "STILE",
-        "value": [
-          "UP3uTYQpdEVD6ysd",
-          "tcu0JAH7fibiQqmv",
-          "SRMqPBuwfvvsBEps",
-          "D2ibw1obHT4sVbjg",
-          "btIEuTuGPswLD1Mm"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Tradition der Borbaradianer III ODER Vorteil Tradition der Druiden III ODER Vorteil Tradition der Hexen III ODER Vorteil Tradition der Schelme III ODER Vorteil Tradition der Anach-Nurim III",
     "modifications": {
       "0": {
         "type": "ATTACK",

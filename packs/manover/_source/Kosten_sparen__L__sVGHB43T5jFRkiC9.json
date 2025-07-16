@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Liturgische Disziplin",
-        "type": "VORTEIL",
-        "value": [
-          "QuCH0FaAWespaU94"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Liturgische Disziplin",
     "input": {
       "label": "",
       "field": "NUMBER",

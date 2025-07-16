@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Effizientes Zaubern",
-        "type": "VORTEIL",
-        "value": [
-          "JduwQhhEtraSUkL0"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Effizientes Zaubern",
     "input": {
       "label": "",
       "field": "NUMBER",

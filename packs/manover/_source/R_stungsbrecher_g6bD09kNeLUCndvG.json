@@ -3,13 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Waffeneigenschaft Rüstungsbrechend",
-        "type": "WAFFENEIGENSCHAFT",
-        "value": "ruestungsbrechend"
-      }
-    },
+    "voraussetzungen": "Waffeneigenschaft Rüstungsbrechend",
     "modifications": {
       "0": {
         "type": "ATTACK",

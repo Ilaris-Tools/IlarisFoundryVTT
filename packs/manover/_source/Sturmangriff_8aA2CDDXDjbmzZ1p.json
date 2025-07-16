@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Sturmangriff",
-        "type": "VORTEIL",
-        "value": [
-          "4kn6dwkko8jM3rxS"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Sturmangriff ODER Vorteil Reiterkampf I",
     "modifications": {
       "0": {
         "type": "DAMAGE",

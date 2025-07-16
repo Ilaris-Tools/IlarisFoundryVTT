@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Geweiht I",
-        "type": "VORTEIL",
-        "value": [
-          "8QG19b6FhFxJiRBx"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Geweiht I",
     "input": {
       "label": "",
       "field": "CHECKBOX"

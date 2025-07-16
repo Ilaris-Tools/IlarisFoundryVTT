@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Tradition der Rahjageweihten III",
-        "type": "STILE",
-        "value": [
-          "9Tt8YgdAOyxskAUN"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Tradition der Rahjageweihten III",
     "input": {
       "label": "",
       "field": "CHECKBOX"
