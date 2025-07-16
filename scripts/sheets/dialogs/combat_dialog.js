@@ -81,7 +81,7 @@ export class CombatDialog extends Dialog {
         }
     }
 
-    getDiceFormula(html) {
+    getDiceFormula(html,xd20_choice) {
         let schipsOption = Number(html.find(`input[name="schips-${this.dialogId}"]:checked`)[0]?.value) || 0;
         let text = '';
         let diceFormula = xd20_choice ?? '1d20';
