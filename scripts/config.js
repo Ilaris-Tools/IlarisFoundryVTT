@@ -807,3 +807,37 @@ let combat_dialog = {
     }
 };
 ILARIS.combat_dialog = combat_dialog;
+
+// Configuration objects for select helpers to replace deprecated {{#select}}
+let vorteilsgruppen = [
+    { value: "0", label: "Allgemein" },
+    { value: "1", label: "Profan" },
+    { value: "2", label: "Kampf" },
+    { value: "3", label: "Kampfstil" },
+    { value: "4", label: "Magie" },
+    { value: "5", label: "Zauber Traditionen" },
+    { value: "6", label: "Karma" },
+    { value: "7", label: "Geweihte Traditionen" }
+];
+ILARIS.vorteilsgruppen = vorteilsgruppen;
+
+let fertigkeitsgruppen = [
+    { value: "0", label: "Nahkampf" },
+    { value: "1", label: "Fernkampf" },
+    { value: "2", label: "Körper" },
+    { value: "3", label: "Gesellschaft" },
+    { value: "4", label: "Wissen" },
+    { value: "5", label: "Natur" },
+    { value: "6", label: "Handwerk" }
+];
+ILARIS.fertigkeitsgruppen = fertigkeitsgruppen;
+
+
+
+let stufen = [
+    { value: "1", label: "1" },
+    { value: "2", label: "2" },
+    { value: "3", label: "3" }
+];
+ILARIS.stufen = stufen;
+

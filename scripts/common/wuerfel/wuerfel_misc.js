@@ -99,15 +99,18 @@ export async function roll_crit_message(
     return [isSuccess || crit, is16OrHigher];
 }
 
-export function calculate_diceschips(html, text, actor) {
+export function calculate_diceschips(html, text, actor, dialogId = '') {
     // let text = "";
-    let xd20_check = html.find("input[name='xd20']");
+    const xd20Name = dialogId ? `xd20-${dialogId}` : 'xd20';
+    const schipsName = dialogId ? `schips-${dialogId}` : 'schips';
+    
+    let xd20_check = html.find(`input[name='${xd20Name}']`);
     let xd20 = 0;
     for (let i of xd20_check) {
         if (i.checked) xd20 = i.value;
     }
     // console.log(xd20);
-    let schips_check = html.find("input[name='schips']");
+    let schips_check = html.find(`input[name='${schipsName}']`);
     let schips = 0;
     for (let i of schips_check) {
         if (i.checked) schips = i.value;

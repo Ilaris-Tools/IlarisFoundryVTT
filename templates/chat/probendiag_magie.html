@@ -1,15 +1,18 @@
 <div>
     <label>Anzahl W20: </label>
-    <label>{{radioBoxes "xd20" choices_xd20 checked=checked_xd20}}</label>
+    <label><input type="radio" name="xd20-{{dialogId}}" value="0" {{#if (ifEq checked_xd20 "0")}}checked{{/if}}> 1W20</label>
+    <label><input type="radio" name="xd20-{{dialogId}}" value="1" {{#if (ifEq checked_xd20 "1")}}checked{{/if}}> 3W20</label>
 </div>
 <div>
     <label>Schips: </label>
-    <label>{{radioBoxes "schips" choices_schips checked=checked_schips}}</label>
+    <label><input type="radio" name="schips-{{dialogId}}" value="0" {{#if (ifEq checked_schips "0")}}checked{{/if}}> Kein Schips</label>
+    <label><input type="radio" name="schips-{{dialogId}}" value="1" {{#if (ifEq checked_schips "1")}}checked{{/if}}> Schips ohne Eigenheit</label>
+    <label><input type="radio" name="schips-{{dialogId}}" value="2" {{#if (ifEq checked_schips "2")}}checked{{/if}}> Schips mit Eigenheit</label>
 </div>
 <hr />
 <div class="flexrow">
     <label>{{get_label "kbak"}}</label>
-    <input type="checkbox" id="kbak" {{checked item.system.manoever.kbak.selected}} />
+    <input type="checkbox" id="kbak-{{dialogId}}" {{checked item.system.manoever.kbak.selected}} />
 </div>
 <hr />
 <!-- mächtige magie -->
@@ -17,7 +20,7 @@
 <div class="flexrow">
     <label>{{get_label "mm_mama"}}</label>
     <input
-        id="mm_mama"
+        id="mm_mama-{{dialogId}}"
         type="number"
         name="item.system.manoever.mm_mama.selected"
         value="{{item.system.manoever.mm_mama.selected}}"
@@ -29,7 +32,7 @@
 {{#if manoever.mm_mezi.possible}}
 <div class="flexrow">
     <label>{{get_label "mm_mezi"}}</label>
-    <input type="checkbox" id="mm_mezi" {{checked item.system.manoever.mm_mezi.selected}} />
+    <input type="checkbox" id="mm_mezi-{{dialogId}}" {{checked item.system.manoever.mm_mezi.selected}} />
 </div>
 <hr />
 {{/if}}
@@ -38,7 +41,7 @@
 <div class="flexrow">
     <label>{{get_label "mm_rwrh"}}</label>
     <input
-        id="mm_rwrh"
+        id="mm_rwrh-{{dialogId}}"
         type="number"
         name="item.system.manoever.mm_rwrh.selected"
         value="{{item.system.manoever.mm_rwrh.selected}}"
@@ -51,7 +54,7 @@
 <div class="flexrow">
     <label>{{get_label "mm_ztig"}}</label>
     <input
-        id="mm_ztig"
+        id="mm_ztig-{{dialogId}}"
         type="number"
         name="item.system.manoever.mm_ztig.selected"
         value="{{item.system.manoever.mm_ztig.selected}}"
@@ -65,7 +68,7 @@
 <div class="flexrow">
     <label>{{get_label "mm_vbvk"}}</label>
     <input
-        id="mm_vbvk"
+        id="mm_vbvk-{{dialogId}}"
         type="number"
         name="item.system.manoever.mm_vbvk.selected"
         value="{{item.system.manoever.mm_vbvk.selected}}"
@@ -78,7 +81,7 @@
 <div class="flexrow">
     <label>{{get_label "mm_wkvl"}}</label>
     <input
-        id="mm_wkvl"
+        id="mm_wkvl-{{dialogId}}"
         type="number"
         name="item.system.manoever.mm_wkvl.selected"
         value="{{item.system.manoever.mm_wkvl.selected}}"
@@ -90,7 +93,7 @@
 {{#if manoever.mm_ztls.possible}}
 <div class="flexrow">
     <label>{{get_label "mm_ztls"}}</label>
-    <input type="checkbox" id="mm_ztls" {{checked item.system.manoever.mm_ztls.selected}} />
+    <input type="checkbox" id="mm_ztls-{{dialogId}}" {{checked item.system.manoever.mm_ztls.selected}} />
 </div>
 {{/if}}
 {{/if}}
@@ -98,7 +101,7 @@
 {{#if manoever.mm_erzw.possible}}
 <div class="flexrow">
     <label>{{get_label "mm_erzw"}}</label>
-    <input type="checkbox" id="mm_erzw" {{checked item.system.manoever.mm_erzw.selected}} />
+    <input type="checkbox" id="mm_erzw-{{dialogId}}" {{checked item.system.manoever.mm_erzw.selected}} />
 </div>
 {{/if}}
 <!-- Kosten sparen -->
@@ -107,7 +110,7 @@
 <div class="flexrow">
     <label>{{get_label "mm_kosp"}}</label>
     <input
-        id="mm_kosp"
+        id="mm_kosp-{{dialogId}}"
         type="number"
         name="item.system.manoever.mm_kosp.selected"
         value="{{item.system.manoever.mm_kosp.selected}}"
@@ -119,7 +122,7 @@
 {{#if manoever.mm_zere.possible}}
 <div class="flexrow">
     <label>{{get_label "mm_zere"}}</label>
-    <select id="mm_zere">
+    <select id="mm_zere-{{dialogId}}">
         {{selectOptions zere_choice selected=item.system.manoever.mm_zere.selected
         localize=true}}
     </select>
@@ -129,14 +132,14 @@
 {{#if manoever.mm_opfe.possible}}
 <div class="flexrow">
     <label>{{get_label "mm_opfe"}}</label>
-    <input type="checkbox" id="mm_opfe" {{checked item.system.manoever.mm_opfe.selected}} />
+    <input type="checkbox" id="mm_opfe-{{dialogId}}" {{checked item.system.manoever.mm_opfe.selected}} />
 </div>
 {{/if}}
 <hr />
 <div class="flexrow">
     <label>Modifikator: </label>
     <input
-        id="modifikator"
+        id="modifikator-{{dialogId}}"
         type="number"
         name="item.system.manoever.mod.selected"
         value="{{item.system.manoever.mod.selected}}"
@@ -145,7 +148,7 @@
 </div>
 <div class="flexrow">
     <label>Würfelmodus: </label>
-    <select id="rollMode">
+    <select id="rollMode-{{dialogId}}">
         {{selectOptions rollModes selected=item.system.manoever.rllm.selected localize=true}}
     </select>
 </div>

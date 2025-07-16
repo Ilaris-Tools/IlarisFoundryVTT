@@ -13,23 +13,13 @@
         <div class="flexrow">
             <label><b>Stufe:</b></label>
             <select name="system.stufe">
-                {{#select item.system.stufe}}
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                {{/select}}
+                {{selectOptions stufen selected=item.system.stufe valueAttr="value" labelAttr="label"}}
             </select>
         </div>
         <div class="flexrow">
             <label><b>Gruppe:</b></label>
             <select name="system.gruppe">
-                {{#select item.system.gruppe}}
-                <option value="0">Sprachen</option>
-                <option value="1">Schriften</option>
-                <option value="2">Berufe</option>
-                <option value="3">Freizeit</option>
-                <option value="4">Anderes</option>
-                {{/select}}
+                {{selectOptions freieFertigkeitsgruppen selected=item.system.gruppe valueAttr="value" labelAttr="label"}}
             </select>
         </div>
         <div>

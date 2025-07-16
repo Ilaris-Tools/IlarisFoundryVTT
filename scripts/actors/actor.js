@@ -853,13 +853,13 @@ export class IlarisActor extends Actor {
                 let schaden = 0;
                 let at = 0;
                 let vt = 0;
-                if (stufe >= 1) {
+                if (selected_kampfstil.stufe >= 1) {
                     console.log('Stufe 1 (Nebenwaffe)');
                     schaden += 1;
                     at += 1;
                     vt += 1;
                 }
-                if (stufe >= 2) {
+                if (selected_kampfstil.stufe >= 2) {
                     console.log('Stufe 2 (Nebenwaffe)');
                     schaden += 1;
                     at += 1;
@@ -872,7 +872,7 @@ export class IlarisActor extends Actor {
                         vt += 4;
                     }
                 }
-                if (stufe >= 3) {
+                if (selected_kampfstil.stufe >= 3) {
                     console.log('Stufe 3 (Nebenwaffe)');
                     schaden += 1;
                     at += 1;
@@ -1109,7 +1109,8 @@ export class IlarisActor extends Actor {
                     item_list.push(item);
                 } else item_list_tmp.push(item);
                 // for migration from dice_anzahl and dice_plus to tp
-                if(item.system.dice_plus || item.system.dice_anzahl) {
+                // Only migrate if tp is not set yet AND old fields exist
+                if(!item.system.tp && (item.system.dice_plus || item.system.dice_anzahl)) {
                     item.system.tp = `${item.system.dice_anzahl}W6${item.system.dice_plus < 0 ? '' : '+'}${item.system.dice_plus}`;
                     delete item.system.dice_anzahl;
                     delete item.system.dice_plus;
@@ -1125,7 +1126,8 @@ export class IlarisActor extends Actor {
                     item_list.push(item);
                 } else item_list_tmp.push(item);
                 // for migration from dice_anzahl and dice_plus to tp
-                if(item.system.dice_plus || item.system.dice_anzahl) {
+                // Only migrate if tp is not set yet AND old fields exist
+                if(!item.system.tp && (item.system.dice_plus || item.system.dice_anzahl)) {
                     item.system.tp = `${item.system.dice_anzahl}W6${item.system.dice_plus < 0 ? '' : '+'}${item.system.dice_plus}`;
                     delete item.system.dice_anzahl;
                     delete item.system.dice_plus;
