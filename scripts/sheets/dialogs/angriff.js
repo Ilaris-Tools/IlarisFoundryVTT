@@ -29,8 +29,6 @@ export class AngriffDialog extends CombatDialog {
         if (this.item.system.eigenschaften.unberechenbar) {
             this.fumble_val = 2;
         }
-        // Generate unique dialog ID to avoid conflicts when multiple dialogs are open
-        this.dialogId = `dialog-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
         this.aufbauendeManoeverAktivieren()
     }
 
@@ -84,6 +82,7 @@ export class AngriffDialog extends CombatDialog {
         await this.manoeverAuswaehlen(html);
         await this.updateManoeverMods();
         this.updateStatusMods();
+        console.log(this.text_vt,this.mod_vt)
         let label = `Verteidigung (${this.item.name})`;
         let diceFormula = this.getDiceFormula(html);
         let formula = `${diceFormula} ${signed(this.item.system.vt)} ${signed(this.vt_abzuege_mod)} ${signed(this.item.actor.system.modifikatoren.nahkampfmod)} ${signed(this.mod_vt)}`;

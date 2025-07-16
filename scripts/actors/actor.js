@@ -27,9 +27,15 @@ export class IlarisActor extends Actor {
         super.prepareBaseData();
     }
 
-    _checkVorteilSource(requirement,vorteil) {
-        return (vorteil.flags?.core?.sourceId && vorteil.flags.core.sourceId.includes(requirement)) ||
-        (vorteil._stats.compendiumSource && vorteil._stats.compendiumSource.includes(requirement))
+    _checkVorteilSource(requirement, vorteil) {
+        // For Stile (gruppe 3, 5, or 7) on held-type actors, check with getSelectedStil
+        if (this.type === "held" && [3, 5, 7].includes(Number(vorteil.system.gruppe))) {
+            return hardcoded.getSelectedStil(this, 'kampf')?.sources.some(source => source === requirement) ||
+                   hardcoded.getSelectedStil(this, 'uebernatuerlich')?.sources.some(source => source === requirement);
+        }
+
+        // For all other cases, just check if the requirement matches the vorteil name
+        return vorteil.name === requirement;
     }
 
     _hasVorteil(vorteilRequirement) {
@@ -44,12 +50,13 @@ export class IlarisActor extends Actor {
             return this._checkVorteilSource(vorteilRequirement,vorteil);
         }) || this.vorteil.profan.some((vorteil) => {
             return this._checkVorteilSource(vorteilRequirement,vorteil);
-        }) || this._hasKampfstilSelected(vorteilRequirement);
-    }
-
-    _hasKampfstilSelected(stilRequirement) {
-        return hardcoded.getSelectedStil(this, 'kampf')?.sources.some(source => source.includes(stilRequirement))
-        || hardcoded.getSelectedStil(this, 'uebernatuerlich')?.sources.some(source => source.includes(stilRequirement));
+        }) || this.vorteil.kampfstil.some((vorteil) => {
+            return this._checkVorteilSource(vorteilRequirement, vorteil);
+        }) || this.vorteil.zaubertraditionen.some((vorteil) => {
+            return this._checkVorteilSource(vorteilRequirement, vorteil);
+        }) || this.vorteil.geweihtentradition.some((vorteil) => {
+            return this._checkVorteilSource(vorteilRequirement, vorteil);
+        });
     }
 
     __getStatuseffectById(data, statusId) {
