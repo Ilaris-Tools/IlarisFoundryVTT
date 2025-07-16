@@ -32,26 +32,24 @@ export class IlarisActor extends Actor {
         (vorteil._stats.compendiumSource && vorteil._stats.compendiumSource.includes(requirement))
     }
 
-    _hasVorteil(vorteilRequirements) {
+    _hasVorteil(vorteilRequirement) {
         // use _stats.compendiumSource or flags.core.sourceId to check for requirement
         return this.vorteil.allgemein.some((vorteil) => {
-            return vorteilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
+            return this._checkVorteilSource(vorteilRequirement,vorteil);
         }) || this.vorteil.kampf.some((vorteil) => {
-            return vorteilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
+            return this._checkVorteilSource(vorteilRequirement,vorteil);
         })  || this.vorteil.karma.some((vorteil) => {
-            return vorteilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
+            return this._checkVorteilSource(vorteilRequirement,vorteil);
         }) || this.vorteil.magie.some((vorteil) => {
-            return vorteilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
+            return this._checkVorteilSource(vorteilRequirement,vorteil);
         }) || this.vorteil.profan.some((vorteil) => {
-            return vorteilRequirements.some(requirement => this._checkVorteilSource(requirement,vorteil));
-        });
+            return this._checkVorteilSource(vorteilRequirement,vorteil);
+        }) || this._hasKampfstilSelected(vorteilRequirement);
     }
 
-    _hasKampfstilSelected(stilRequirements) {
-        return stilRequirements.some(requirement => 
-            hardcoded.getSelectedStil(this, 'kampf')?.sources.some(source => source.includes(requirement)))
-        || stilRequirements.some(requirement => 
-            hardcoded.getSelectedStil(this, 'uebernatuerlich')?.sources.some(source => source.includes(requirement)));
+    _hasKampfstilSelected(stilRequirement) {
+        return hardcoded.getSelectedStil(this, 'kampf')?.sources.some(source => source.includes(stilRequirement))
+        || hardcoded.getSelectedStil(this, 'uebernatuerlich')?.sources.some(source => source.includes(stilRequirement));
     }
 
     __getStatuseffectById(data, statusId) {
