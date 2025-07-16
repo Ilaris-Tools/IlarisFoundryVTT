@@ -1,34 +1,37 @@
 <div>
     <label>Anzahl W20: </label>
-    <label>{{radioBoxes "xd20" choices_xd20 checked=checked_xd20}}</label>
+    <label><input type="radio" name="xd20-{{dialogId}}" value="0" {{#if (ifEq checked_xd20 "0")}}checked{{/if}}> 1W20</label>
+    <label><input type="radio" name="xd20-{{dialogId}}" value="1" {{#if (ifEq checked_xd20 "1")}}checked{{/if}}> 3W20</label>
 </div>
 <div>
     <label>Schips: </label>
-    <label>{{radioBoxes "schips" choices_schips checked=checked_schips}}</label>
+    <label><input type="radio" name="schips-{{dialogId}}" value="0" {{#if (ifEq checked_schips "0")}}checked{{/if}}> Kein Schips</label>
+    <label><input type="radio" name="schips-{{dialogId}}" value="1" {{#if (ifEq checked_schips "1")}}checked{{/if}}> Schips ohne Eigenheit</label>
+    <label><input type="radio" name="schips-{{dialogId}}" value="2" {{#if (ifEq checked_schips "2")}}checked{{/if}}> Schips mit Eigenheit</label>
 </div>
 <hr />
 <div class="flexrow">
     <label>{{get_label "kbak"}}</label>
-    <input type="checkbox" id="kbak" {{checked item.system.manoever.kbak.selected}} />
+    <input type="checkbox" id="kbak-{{dialogId}}" {{checked item.system.manoever.kbak.selected}} />
 </div>
 <div class="flexrow">
     <label>{{get_label "vlof"}}</label>
-    <input type="checkbox" id="vlof" {{checked item.system.manoever.vlof.selected}} />
+    <input type="checkbox" id="vlof-{{dialogId}}" {{checked item.system.manoever.vlof.selected}} />
 </div>
 <div class="flexrow">
     <label>{{get_label "vldf"}}</label>
-    <input type="checkbox" id="vldf" {{checked item.system.manoever.vldf.selected}} />
+    <input type="checkbox" id="vldf-{{dialogId}}" {{checked item.system.manoever.vldf.selected}} />
 </div>
 <div class="flexrow">
     <label>Reichweitenunterschied: </label>
-    <label
-        >{{radioBoxes "rwdf" distance_choice checked=item.system.manoever.rwdf.selected}}</label
-    >
+    <label><input type="radio" name="rwdf-{{dialogId}}" value="0" {{#if (ifEq item.system.manoever.rwdf.selected "0")}}checked{{/if}}> Ideal</label>
+    <label><input type="radio" name="rwdf-{{dialogId}}" value="1" {{#if (ifEq item.system.manoever.rwdf.selected "1")}}checked{{/if}}> 1 Feld</label>
+    <label><input type="radio" name="rwdf-{{dialogId}}" value="2" {{#if (ifEq item.system.manoever.rwdf.selected "2")}}checked{{/if}}> 2 Felder</label>
 </div>
 <div class="flexrow">
     <label>Reaktionsanzahl: </label>
     <input
-        id="rkaz"
+        id="rkaz-{{dialogId}}"
         type="number"
         name="item.system.manoever.rkaz.selected"
         value="{{item.system.manoever.rkaz.selected}}"
@@ -36,7 +39,7 @@
     />
     <div class="flexrow">
         <label>Passierschlag: </label>
-        <input type="checkbox" id="pssl" {{checked item.system.manoever.pssl.selected}} />
+        <input type="checkbox" id="pssl-{{dialogId}}" {{checked item.system.manoever.pssl.selected}} />
     </div>
 </div>
 <hr />
@@ -237,7 +240,7 @@
 <div class="flexrow">
     <label>Modifikator: </label>
     <input
-        id="modifikator"
+        id="modifikator-{{dialogId}}"
         type="number"
         name="item.system.manoever.mod.selected"
         value="{{item.system.manoever.mod.selected}}"
@@ -246,7 +249,7 @@
 </div>
 <div class="flexrow">
     <label>Würfelmodus: </label>
-    <select id="rollMode">
+    <select id="rollMode-{{dialogId}}">
         {{selectOptions rollModes selected=item.system.manoever.rllm.selected localize=true}}
     </select>
 </div>

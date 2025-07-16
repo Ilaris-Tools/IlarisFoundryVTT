@@ -57,10 +57,12 @@ export class CombatDialog extends Dialog {
         this.rollmode = this.item.system.manoever.rllm.selected;
 
         this.item.manoever.forEach(manoever => {
+            const elementId = `${manoever.id}${manoever.inputValue.field}-${this.dialogId}`;
             if(manoever.inputValue.field == 'CHECKBOX') {
-                manoever.inputValue.value = html.find(`#${manoever.id+manoever.inputValue.field}`)[0]?.checked || false;
+                manoever.inputValue.value = html.find(`#${elementId}`)[0]?.checked || false;
             } else {
-                manoever.inputValue.value = html.find(`#${manoever.id+manoever.inputValue.field}`)[0]?.value || false;
+                console.log(manoever.inputValue.name,html.find(`#${elementId}`)[0]?.value)
+                manoever.inputValue.value = html.find(`#${elementId}`)[0]?.value || false;
             }
         });
     }
@@ -79,8 +81,8 @@ export class CombatDialog extends Dialog {
         }
     }
 
-    getDiceFormula(html,xd20_choice) {
-        let schipsOption = Number(html.find('input[name="schips"]:checked')[0]?.value) || 0;
+    getDiceFormula(html) {
+        let schipsOption = Number(html.find(`input[name="schips-${this.dialogId}"]:checked`)[0]?.value) || 0;
         let text = '';
         let diceFormula = xd20_choice ?? '1d20';
         if(schipsOption == 0) {

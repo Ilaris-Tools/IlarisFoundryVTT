@@ -19,7 +19,7 @@
   (Und dann die anderen ausblenden? Oder ein neues Array einführen, in welchem für alle Waffen die Manöverlisten gespeichert werden?)
 */
 
-export function nahkampfUpdate(html, actor, item) {
+export function nahkampfUpdate(html, actor, item, dialogId = '') {
     /* schreibt alle inputs aus dem nahkampf_angriff template in ein objekt
     */
     // async function nahkampfUpdate(html, actor, item) {
@@ -28,19 +28,23 @@ export function nahkampfUpdate(html, actor, item) {
     let checked = false;
     let updateData = { manoever: {} };
     // Kombinierte Aktion
-    checked = html.find('#kbak')[0].checked;
+    const kbakSelector = dialogId ? `#kbak-${dialogId}` : '#kbak';
+    checked = html.find(kbakSelector)[0].checked;
     item.system.manoever.kbak.selected = checked;
     Object.assign(updateData, { manoever: { kabak: { selected: checked } } });
     // Volle Offensive
-    checked = html.find('#vlof')[0].checked;
+    const vlofSelector = dialogId ? `#vlof-${dialogId}` : '#vlof';
+    checked = html.find(vlofSelector)[0].checked;
     item.system.manoever.vlof.selected = checked;
     Object.assign(updateData, { manoever: { vlof: { selected: checked } } });
     // Volle Defensive
-    checked = html.find('#vldf')[0].checked;
+    const vldfSelector = dialogId ? `#vldf-${dialogId}` : '#vldf';
+    checked = html.find(vldfSelector)[0].checked;
     item.system.manoever.vldf.selected = checked;
     Object.assign(updateData, { manoever: { vldf: { selected: checked } } });
     // Reichweitenunterschied
-    let rwdf_check = html.find("input[name='rwdf']");
+    const rwdfSelector = dialogId ? `input[name='rwdf-${dialogId}']` : `input[name='rwdf']`;
+    let rwdf_check = html.find(rwdfSelector);
     for (let i of rwdf_check) {
         if (i.checked) checked = i.value;
     }
