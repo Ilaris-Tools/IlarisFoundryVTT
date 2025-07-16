@@ -53,6 +53,8 @@ export const registerIlarisGameSettings = () => {
             Hooks.callAll('ilarisVorteilePacksChanged', JSON.parse(value));
         }
     }, {
+        // Register real fumble crits setting
+        settingsName: IlarisGameSettingNames.realFumbleCrits,
         name: 'Echte Patzer und Krits',
         hint: 'Die Worldsetting ist für alle gedacht, die es nicht mögen, dass eine 1 kein Patzer ist, weil die Probe mit einem Würfelwurf von 1 gelungen wäre oder es kein Krit mit 20 ist, weil die Probe mehr als eine 20 benötigen würde.',
         config: true,
