@@ -1,4 +1,5 @@
 import { IlarisItemSheet } from './item.js';
+import {IlarisGameSettingNames, ConfigureGameSettingsCategories} from './../../settings/configure-game-settings.model.js';
 
 /* template.json
     "manoever": {
@@ -28,9 +29,9 @@ import { IlarisItemSheet } from './item.js';
       ],
       "modifications": [
         {
-            "type": DAMAGE | DEFENCE | ATTACK | INITIATIVE | LOADING_TIME | SPECIAL_RESSOURCE | WEAPON_DAMAGE | CHANGE_DAMAGE_TYPE,
+            "type": DAMAGE | DEFENCE | ATTACK | INITIATIVE | LOADING_TIME | SPECIAL_RESSOURCE | WEAPON_DAMAGE | CHANGE_DAMAGE_TYPE | ZERO_DAMAGE | ARMOR_BREAKING | SPECIAL_TEXT,
             "value": 0,
-            "operator": MULTIPLY | ADD (+/- values) | SUBTRACT (braucht man vermutlich nur bei Werten vor die man kein - setzen kann zb. wenn sie aus target kommen)
+            "operator": MULTIPLY | ADD (+/- values) | SUBTRACT (braucht man vermutlich nur bei Werten vor die man kein - setzen kann zb. wenn sie aus target kommen) | DIVIDE
             "target": "Wert zb aus Actor (99% aller Faelle aus Actor) wie actor.system.abgeleitete.gs, der entsprechend des operator behandelt wird"
         }
       ],
@@ -56,7 +57,7 @@ export class ManoeverSheet extends IlarisItemSheet {
         const stile = [];
 
         // Get selected vorteile packs from settings
-        const selectedPacks = JSON.parse(game.settings.get('Ilaris', 'vorteilePacks'));
+        const selectedPacks = JSON.parse(game.settings.get(ConfigureGameSettingsCategories.Ilaris, IlarisGameSettingNames.vorteilePacks));
         
         // Get vorteile from selected packs
         for (const packId of selectedPacks) {

@@ -16,7 +16,6 @@ export class CombatDialog extends Dialog {
         super.activateListeners(html);
 
         html.find(".angreifen").click(ev => this._angreifenKlick(html));
-        html.find(".schaden").click(ev => this._schadenKlick(html));
         // Add expand/collapse functionality
         html.find(".maneuver-header").click(ev => {
             const header = ev.currentTarget;
@@ -40,14 +39,6 @@ export class CombatDialog extends Dialog {
             });
             item.classList.toggle("has-value", hasValue);
         });
-    }
-
-    eigenschaftenText() {
-        if (!this.item.system.eigenschaften.length > 0) {
-            return;
-        }
-        this.text_at += "\nEigenschaften: ";
-        this.text_at += this.item.system.eigenschaften.map(e => e.name).join(", ");
     }
 
     aufbauendeManoeverAktivieren() {
@@ -93,7 +84,7 @@ export class CombatDialog extends Dialog {
     getDiceFormula(html) {
         let schipsOption = Number(html.find(`input[name="schips-${this.dialogId}"]:checked`)[0]?.value) || 0;
         let text = '';
-        let diceFormula = `1d20`;
+        let diceFormula = xd20_choice ?? '1d20';
         if(schipsOption == 0) {
             return diceFormula;
         }

@@ -1,3 +1,6 @@
+import {IlarisGameSettingNames, ConfigureGameSettingsCategories} from './configure-game-settings.model.js';
+
+
 export class VorteilePacksSettings extends FormApplication {
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
@@ -11,8 +14,8 @@ export class VorteilePacksSettings extends FormApplication {
     }
 
     getData(options) {
-        const currentSelection = JSON.parse(game.settings.get('Ilaris', 'vorteilePacks'));
-        const manoeverSelection = JSON.parse(game.settings.get('Ilaris', 'manoeverPacks'));
+        const currentSelection = JSON.parse(game.settings.get(ConfigureGameSettingsCategories.Ilaris, IlarisGameSettingNames.vorteilePacks));
+        const manoeverSelection = JSON.parse(game.settings.get(ConfigureGameSettingsCategories.Ilaris, IlarisGameSettingNames.manoeverPacks));
         
         // Get all available packs that contain vorteile
         const availablePacks = [];
@@ -50,14 +53,14 @@ export class VorteilePacksSettings extends FormApplication {
             .filter(([_, value]) => value)
             .map(([key, _]) => key);
 
-        await game.settings.set('Ilaris', 'vorteilePacks', JSON.stringify(selectedPacks));
+        await game.settings.set(ConfigureGameSettingsCategories.Ilaris, IlarisGameSettingNames.vorteilePacks, JSON.stringify(selectedPacks));
     }
 
     activateListeners(html) {
         super.activateListeners(html);
         html.find('button[name="reset"]').click(async (event) => {
             event.preventDefault();
-            await game.settings.set('Ilaris', 'vorteilePacks', JSON.stringify(['Ilaris.vorteile']));
+            await game.settings.set(ConfigureGameSettingsCategories.Ilaris, IlarisGameSettingNames.vorteilePacks, JSON.stringify(['Ilaris.vorteile']));
             this.render(true);
         });
     }

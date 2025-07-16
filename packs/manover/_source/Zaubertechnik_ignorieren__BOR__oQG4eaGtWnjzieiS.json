@@ -13,14 +13,25 @@
         ]
       }
     },
+    "input": {
+      "label": "",
+      "field": "NUMBER",
+      "min": 0,
+      "max": null
+    },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
     "gruppe": "2",
     "probe": "",
     "gegenprobe": "",
-    "text": "",
-    "input": {
-      "label": "GS",
-      "field": "NUMBER"
-    }
+    "text": ""
   },
   "effects": [],
   "folder": null,
@@ -35,9 +46,9 @@
     "duplicateSource": null,
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.1",
+    "systemVersion": "12.0.2",
     "createdTime": 1745306426791,
-    "modifiedTime": 1746367848062,
+    "modifiedTime": 1747814256122,
     "lastModifiedBy": "FAZTz2Txaxttf8zC"
   },
   "_key": "!items!oQG4eaGtWnjzieiS"

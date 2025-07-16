@@ -1,5 +1,6 @@
 import {AngriffDialog} from "../sheets/dialogs/angriff.js";
 import {FernkampfAngriffDialog} from "../sheets/dialogs/fernkampf_angriff.js";
+import {UebernatuerlichDialog} from "../sheets/dialogs/uebernatuerlich.js";
 import { nahkampfUpdate, calculate_attacke } from './wuerfel/nahkampf_prepare.js';
 import { fernkampfUpdate } from './wuerfel/fernkampf_prepare.js';
 import { magieUpdate } from './wuerfel/magie_prepare.js';
@@ -58,6 +59,12 @@ export async function wuerfelwurf(event, actor) {
         let item = actor.items.get(event.currentTarget.dataset.itemid);
         await item.setManoevers();
         let d = new FernkampfAngriffDialog(actor, item);
+        await d.render(true);
+    } else if (rolltype == 'magie_diag' || rolltype == 'karma_diag') {
+        let item = actor.items.get(event.currentTarget.dataset.itemid);
+        await item.setManoevers();
+        console.log('item',item)
+        let d = new UebernatuerlichDialog(actor, item);
         await d.render(true);
     } else if (rolltype == 'attribut_diag') {
         const attribut_name = $(event.currentTarget).data('attribut');

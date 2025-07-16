@@ -12,14 +12,25 @@
         ]
       }
     },
+    "input": {
+      "label": "",
+      "field": "NUMBER",
+      "min": 0,
+      "max": null
+    },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
     "gruppe": "2",
     "probe": "Zauber -4",
     "gegenprobe": "",
-    "text": "Die Vorbereitungszeit des Zaubers halbiert sich. Eine Vorbereitungszeit von 1 Aktion wird zu 0 Aktionen. Die Aktion Konflikt ist von dieser Modifikation nicht betroffen.",
-    "input": {
-      "label": "",
-      "field": "NUMBER"
-    }
+    "text": "Die Vorbereitungszeit des Zaubers halbiert sich. Eine Vorbereitungszeit von 1 Aktion wird zu 0 Aktionen. Die Aktion Konflikt ist von dieser Modifikation nicht betroffen."
   },
   "effects": [],
   "folder": null,
@@ -29,9 +40,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.1",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746367802312,
+    "modifiedTime": 1747814171304,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

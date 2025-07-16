@@ -1,3 +1,6 @@
+import { sanitizeEnergyCost } from '../common/utilities.js';
+import * as settings from './../settings/index.js';
+
 //TODO delete, is a function for test setup
 export function sum(a, b) {
     return a + b;
@@ -19,10 +22,17 @@ export function behinderung(be, systemData) {
 }
 
 export function beTraglast(systemData) {
+    let be_mod = 0;
+    let weaponSpaceRequirement = game.settings.get(settings.ConfigureGameSettingsCategories.Ilaris, settings.IlarisGameSettingNames.weaponSpaceRequirement);
+
+    if(!weaponSpaceRequirement){
+        return be_mod;
+    }
+
     let summeGewicht = systemData.getragen;
     let traglast = systemData.abgeleitete.traglast;
     let intervall = systemData.abgeleitete.traglast_intervall;
-    let be_mod = 0;
+   
     let gewicht_diff = summeGewicht - traglast;
     if (gewicht_diff > 0) {
         let div_floor = Math.floor(gewicht_diff / intervall);
@@ -525,7 +535,24 @@ export function karmaOpferungPossible(actor) {
     return possible;
 }
 
-export function getSelectedStil(selectedValue, stile) {
+export function getSelectedStil(actor, stilType) {
+    // Only process for held-type actors
+    if (actor.type !== 'held') {
+        return null;
+    }
+
+    // Determine which stil list and selected value to use based on type
+    let selectedValue, stile;
+    if (stilType === 'kampf') {
+        selectedValue = actor.system.misc?.selected_kampfstil ?? 'ohne';
+        stile = actor.misc.kampfstile_list;
+    } else if (stilType === 'uebernatuerlich') {
+        selectedValue = actor.system.misc?.selected_uebernatuerlicher_stil ?? 'ohne';
+        stile = actor.misc.uebernatuerliche_stile_list;
+    } else {
+        return null;
+    }
+
     return stile[selectedValue] ?? stile['ohne'];
 }
 
@@ -579,4 +606,48 @@ export function getUebernatuerlicheStile(actor) {
     });
     
     return stile;
+}
+
+/**
+ * Calculates the modified cost for supernatural abilities (spells and liturgies) based on various advantages
+ * 
+ * Currently handles the following hardcoded advantages:
+ * - Durro-Dun style (level 2+): Reduces cost by 1/4 of base cost
+ * - Liebling der Gottheit: Makes liturgies free if success roll is 16+
+ * - Mühelose Magie: Reduces spell cost by half of base cost if success roll is 16+
+ * 
+ * @param {Actor} actor - The actor performing the supernatural ability
+ * @param {Item} item - The spell or liturgy being cast
+ * @param {boolean} isSuccess - Whether the casting was successful
+ * @param {boolean} is16OrHigher - Whether the success roll was 16 or higher
+ * @param {number} currentCost - The current cost before modifications
+ * @returns {number} The final modified cost (never below 0)
+ */
+export function calculateModifiedCost(actor, item, isSuccess, is16OrHigher, currentCost) {
+    let cost = currentCost;
+    const baseKosten = sanitizeEnergyCost(item.system.kosten);
+
+    const hasDurroDunII = actor.type === 'kreatur' ?
+        (actor.vorteil.allgemein.some(v => v.name.includes("Durro-Dun II")) ||
+        actor.vorteil.magie.some(v => v.name.includes("Durro-Dun II")) ||
+        actor.vorteil.zaubertraditionen.some(v => v.name.includes("Durro-Dun II"))) :
+        (getSelectedStil(actor.system.misc?.selected_uebernatuerlicher_stil ?? 'ohne', actor.misc.uebernatuerliche_stile_list)?.name === 'Durro-Dun' && 
+        getSelectedStil(actor.system.misc?.selected_uebernatuerlicher_stil ?? 'ohne', actor.misc.uebernatuerliche_stile_list).stufe >= 2);
+
+    if (hasDurroDunII) {
+        cost = Math.max(0, cost - Math.ceil(baseKosten / 4));
+    }
+
+    // If success with 16 or higher and has Liebling der Gottheit, cost is 0
+    if(isSuccess && is16OrHigher && actor.type == 'held' && item.type == 'liturgie' && 
+       actor.vorteil.karma.some(v => v.name == 'Liebling der Gottheit')) {
+        cost = 0;
+    }
+    // If success with 16 or higher and has Mühelose Magie, cost is reduced by half of base cost
+    else if(isSuccess && is16OrHigher && actor.type == 'held' && item.type == 'zauber' && 
+       actor.vorteil.magie.some(v => v.name == 'Mühelose Magie')) {
+        cost = Math.max(0, cost - Math.ceil(baseKosten / 2));
+    }
+
+    return cost;
 }

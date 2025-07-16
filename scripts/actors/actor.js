@@ -49,9 +49,9 @@ export class IlarisActor extends Actor {
 
     _hasKampfstilSelected(stilRequirements) {
         return stilRequirements.some(requirement => 
-            hardcoded.getSelectedStil(this.system.misc.selected_kampfstil,this.misc.kampfstile_list).sources.some(source => source.includes(requirement)))
+            hardcoded.getSelectedStil(this, 'kampf')?.sources.some(source => source.includes(requirement)))
         || stilRequirements.some(requirement => 
-            hardcoded.getSelectedStil(this.system.misc.selected_uebernatuerlicher_stil,this.misc.uebernatuerliche_stile_list).sources.some(source => source.includes(requirement)));
+            hardcoded.getSelectedStil(this, 'uebernatuerlich')?.sources.some(source => source.includes(requirement)));
     }
 
     __getStatuseffectById(data, statusId) {
@@ -384,12 +384,12 @@ export class IlarisActor extends Actor {
         let kampfstile = hardcoded.getKampfstile(actor);
         // data.misc.selected_kampfstil = "ohne";
         actor.misc.kampfstile_list = kampfstile;
-        let selected_kampfstil = hardcoded.getSelectedStil(actor.system.misc?.selected_kampfstil ?? 'ohne', kampfstile);
+        let selected_kampfstil = hardcoded.getSelectedStil(actor, 'kampf');
 
         // Handle supernatural styles
         let uebernatuerliche_stile = hardcoded.getUebernatuerlicheStile(actor);
         actor.misc.uebernatuerliche_stile_list = uebernatuerliche_stile;
-        let selected_uebernatuerlicher_stil = hardcoded.getSelectedStil(actor.system.misc?.selected_uebernatuerlicher_stil ?? 'ohne', uebernatuerliche_stile);
+        let selected_uebernatuerlicher_stil = hardcoded.getSelectedStil(actor, 'uebernatuerlich');
 
         let HAUPTWAFFE =
             actor.nahkampfwaffen.find((x) => x.system.hauptwaffe == true) ||

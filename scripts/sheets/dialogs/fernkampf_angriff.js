@@ -51,7 +51,15 @@ export class FernkampfAngriffDialog extends CombatDialog {
     
     activateListeners(html) {
         super.activateListeners(html);
-        html.find(".verteidigen").click(ev => this._verteidigenKlick(html));
+        html.find(".schaden").click(ev => this._schadenKlick(html));
+    }
+
+    eigenschaftenText() {
+        if (!this.item.system.eigenschaften.length > 0) {
+            return;
+        }
+        this.text_at += "\nEigenschaften: ";
+        this.text_at += this.item.system.eigenschaften.map(e => e.name).join(", ");
     }
 
     async _angreifenKlick(html) {
@@ -76,6 +84,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
             this.rollmode,
             true,
             this.fumble_val,
+            12
         );
     }
 
@@ -124,9 +133,11 @@ export class FernkampfAngriffDialog extends CombatDialog {
         let mod_at = 0;
         let mod_vt = 0;
         let mod_dm = 0;
+        let mod_energy = 0;
         let text_at = '';
         let text_vt = '';
         let text_dm = '';
+        let text_energy = '';
         let nodmg = {name: '', value: false};
         let trefferzone = 0;
         let schaden = this.item.getTp();
@@ -262,8 +273,15 @@ export class FernkampfAngriffDialog extends CombatDialog {
     
         // Beritten brtn  Reiterkampf II rtk
         let beritten = manoever.brtn.selected;
-        let selectedKampfstil = hardcoded.getSelectedStil(this.actor.system.misc?.selected_kampfstil ?? 'ohne', this.actor.misc.kampfstile_list);
-        let reiterkampf = selectedKampfstil.name.includes('Reiterkampf') && selectedKampfstil.stufe >= 2;
+        let reiterkampf = false;
+        if (this.actor.type === 'kreatur') {
+            reiterkampf = this.actor.vorteil.kampf.some(v => v.name === 'Reiterkampf II') ||
+            this.actor.vorteil.allgemein.some(v => v.name === 'Reiterkampf II') || 
+            this.actor.vorteil.kampfstil.some(v => v.name === 'Reiterkampf II');
+        } else {
+            let selectedKampfstil = hardcoded.getSelectedStil(this.actor, 'kampf');
+            reiterkampf = selectedKampfstil.name.includes('Reiterkampf') && selectedKampfstil.stufe >= 2;
+        }
         if (beritten && reiterkampf) {
             text_at = text_at.concat(
                 `${CONFIG.ILARIS.label['brtn']} (Reiterkampf)\n`,
@@ -316,13 +334,15 @@ export class FernkampfAngriffDialog extends CombatDialog {
             mod_at,
             mod_vt,
             mod_dm,
+            mod_energy,
             text_at,
             text_vt,
             text_dm,
+            text_energy,
             trefferzone,
             schaden,
             nodmg
-        ] = handleModifications(allModifications, {mod_at,mod_vt,mod_dm,text_at,text_vt,text_dm,trefferzone,schaden,nodmg,context: this});
+        ] = handleModifications(allModifications, {mod_at,mod_vt,mod_dm,mod_energy: null,text_at,text_vt,text_dm,text_energy: null,trefferzone,schaden,nodmg,context: this});
 
         // If ZERO_DAMAGE was found, override damage values
         if (nodmg.value) {
