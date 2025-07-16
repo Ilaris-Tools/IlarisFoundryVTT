@@ -82,7 +82,6 @@ export class AngriffDialog extends CombatDialog {
         await this.manoeverAuswaehlen(html);
         await this.updateManoeverMods();
         this.updateStatusMods();
-        console.log(this.text_vt,this.mod_vt)
         let label = `Verteidigung (${this.item.name})`;
         let diceFormula = this.getDiceFormula(html);
         let formula = `${diceFormula} ${signed(this.item.system.vt)} ${signed(this.vt_abzuege_mod)} ${signed(this.item.actor.system.modifikatoren.nahkampfmod)} ${signed(this.mod_vt)}`;
