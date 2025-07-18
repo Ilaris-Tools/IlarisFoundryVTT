@@ -1,5 +1,8 @@
-import { IlarisItemSheet } from './item.js';
-import {IlarisGameSettingNames, ConfigureGameSettingsCategories} from './../../settings/configure-game-settings.model.js';
+import { IlarisItemSheet } from './item.js'
+import {
+    IlarisGameSettingNames,
+    ConfigureGameSettingsCategories,
+} from './../../settings/configure-game-settings.model.js'
 
 /* template.json
     "manoever": {
@@ -40,45 +43,45 @@ export class ManoeverSheet extends IlarisItemSheet {
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             template: 'systems/Ilaris/templates/sheets/items/manoever.html',
-        });
+        })
     }
 
-    async getData () {
-        const data = await super.getData();
-        data.manoever = CONFIG.ILARIS.manoever;
-        data.schadenstypen = CONFIG.ILARIS.schadenstypen;
-        console.log(data);
-        return data;
+    async getData() {
+        const data = await super.getData()
+        data.manoever = CONFIG.ILARIS.manoever
+        data.schadenstypen = CONFIG.ILARIS.schadenstypen
+        console.log(data)
+        return data
     }
 
     activateListeners(html) {
-        super.activateListeners(html);
-        html.find('.add-modification').click(() => this._onAddModification());
-        html.find('.delete-modification').click((ev) => this._onDeleteModification(ev));
+        super.activateListeners(html)
+        html.find('.add-modification').click(() => this._onAddModification())
+        html.find('.delete-modification').click((ev) => this._onDeleteModification(ev))
     }
 
     async _onAddModification() {
-        const modifications = Object.values(this.item.system.modifications);
+        const modifications = Object.values(this.item.system.modifications)
         modifications.push({
-            type: "ATTACK",
+            type: 'ATTACK',
             value: 0,
-            operator: "ADD",
-            target: "",
-            affectedByInput: true
-        });
-        
+            operator: 'ADD',
+            target: '',
+            affectedByInput: true,
+        })
+
         await this.item.update({
-            'system.modifications': modifications
-        });
+            'system.modifications': modifications,
+        })
     }
 
     async _onDeleteModification(event) {
-        let eigid = $(event.currentTarget).data('modificationid');
-        const modifications = Object.values(this.item.system.modifications);
-        modifications.splice(eigid, 1);
-        
+        let eigid = $(event.currentTarget).data('modificationid')
+        const modifications = Object.values(this.item.system.modifications)
+        modifications.splice(eigid, 1)
+
         await this.item.update({
-            'system.modifications': modifications
-        });
+            'system.modifications': modifications,
+        })
     }
 }

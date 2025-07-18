@@ -4,6 +4,6 @@
  * @returns {number} - The sanitized cost as a number, defaults to 0 if invalid
  */
 export function sanitizeEnergyCost(cost) {
-    if (typeof cost === 'number') return cost;
-    return parseInt(cost?.match(/\d+/)?.[0] || '0', 10);
-} 
+    if (typeof cost === 'number') return cost
+    return parseInt(cost?.match(/\d+/)?.[0] || '0', 10)
+}
