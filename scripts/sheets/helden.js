@@ -6,7 +6,7 @@ export class HeldenSheet extends IlarisActorSheet {
         return foundry.utils.mergeObject(super.defaultOptions, {
             // classes: ["ilaris", "sheet"],
             classes: ['ilaris'],
-            template: 'systems/Ilaris/templates/sheets/helden.html',
+            template: 'systems/Ilaris/templates/sheets/helden.hbs',
             // width: 720,
             // height: 800,
             // resizable: false,
