@@ -19,26 +19,6 @@ export class AngriffSheet extends IlarisItemSheet {
         html.find('.add-eigenschaft').click((ev) => this._onAddEigenschaft(ev));
         html.find('.del-eigenschaft').click((ev) => this._onDelEigenschaft(ev));
     }
-
-    // _getSubmitData(updateData={}) {
-    //     const data = super._getSubmitData(updateData);
-    //     // dirty workaround for v9 to turn objects back into arrays. 
-    //     // In V10 a datamodel with schema should solve this, by directly using arrays
-    //     console.log("data");
-    //     console.log(data);
-    //     let eigenschaften = [];
-    //     for (const [key, value] of Object.entries(data)) {
-    //         if (key.startsWith("system.eigenschaften") && key.endsWith("name")) {
-    //             var idx = key.split(".")[2];
-    //             eigenschaften.push({name: value, text: data[`system.eigenschaften.${idx}.text`]})
-    //             delete data[key];
-    //             delete data[`system.eigenschaften.${idx}.text`]
-    //         }
-    //     }
-    //     console.log(eigenschaften);
-    //     data["system.eigenschaften"] = eigenschaften;
-    //     return data;
-    // }
     
     _onAddEigenschaft(event) {
         //let item = this.document.data;
@@ -48,12 +28,19 @@ export class AngriffSheet extends IlarisItemSheet {
         this.document.render();
     }
 
-    _onDelEigenschaft(event){
+    async _onDelEigenschaft(event){
         let eigid = $(event.currentTarget).data('eigenschaftid');
-        //console.log(`remove: ${eigid}`);
         this.document.system.eigenschaften = Object.values(this.document.system.eigenschaften);
         this.document.system.eigenschaften.splice(eigid, 1);
-        this.document.render();
+        
+        // Update the embedded item through the parent actor
+        if (this.document.isEmbedded) {
+            await this.document.actor.updateEmbeddedDocuments("Item", [
+                {_id: this.document.id, "system.eigenschaften": this.document.system.eigenschaften}
+            ]);
+        } else {
+            await this.document.update({"system.eigenschaften": this.document.system.eigenschaften});
+        }
     }
 
     getPossibleManoevers(){
