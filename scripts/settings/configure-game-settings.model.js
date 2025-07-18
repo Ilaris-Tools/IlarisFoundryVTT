@@ -1,7 +1,7 @@
 export const ConfigureGameSettingsCategories = {
     All: 'All',
     Core: 'Core',
-    Ilaris: 'Ilaris'
+    Ilaris: 'Ilaris',
 }
 
 export const IlarisGameSettingNames = {
@@ -9,10 +9,10 @@ export const IlarisGameSettingNames = {
     weaponSpaceRequirement: 'weaponSpaceRequirement',
     manoeverPacks: 'manoeverPacks',
     vorteilePacks: 'vorteilePacks',
-    realFumbleCrits: 'realFumbleCrits'
+    realFumbleCrits: 'realFumbleCrits',
 }
 
 export const IlarisGameSettingsMenuNames = {
     manoeverPacksMenu: 'manoeverPacksMenu',
-    vorteilePacksMenu: 'vorteilePacksMenu'
+    vorteilePacksMenu: 'vorteilePacksMenu',
 }
