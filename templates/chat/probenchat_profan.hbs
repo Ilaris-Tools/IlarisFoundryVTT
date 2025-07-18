@@ -1,16 +1,18 @@
 <div>
     <h2>{{title}}</h2>
     {{#if text}}
-    <div style="white-space: pre-wrap">{{{text}}}</div>
-    {{/if}} {{#if crit}}
-    <h3 style="color: #18520b"><strong>Triumph</strong></h3>
-    {{/if}} {{#if fumble}}
-    <h3 style="color: #aa0200" ;><strong>Patzer</strong></h3>
+        <div style='white-space: pre-wrap'>{{{text}}}</div>
+    {{/if}}
+    {{#if crit}}
+        <h3 style='color: #18520b'><strong>Triumph</strong></h3>
+    {{/if}}
+    {{#if fumble}}
+        <h3 style='color: #aa0200' ;><strong>Patzer</strong></h3>
     {{/if}}
     {{#if success}}
-    <h3 style="color: #2e7d32"><strong>Erfolg</strong></h3>
+        <h3 style='color: #2e7d32'><strong>Erfolg</strong></h3>
     {{/if}}
     {{#if noSuccess}}
-    <h3 style="color: #c62828"><strong>Misslungen</strong></h3>
+        <h3 style='color: #c62828'><strong>Misslungen</strong></h3>
     {{/if}}
 </div>

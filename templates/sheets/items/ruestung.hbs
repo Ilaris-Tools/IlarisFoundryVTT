@@ -1,18 +1,18 @@
 {{log 'ruestung' this}}
-<form class="{{cssClass}}">
+<form class='{{cssClass}}'>
     <div>
         <div>
-            <header class="sheet-header">
-                <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
-                <div class="header-fields">
-                    <h1 class="charname">
-                        <input name="name" type="text" value="{{item.name}}" />
+            <header class='sheet-header'>
+                <img class='profile-img' src='{{item.img}}' data-edit='img' title='{{item.name}}' />
+                <div class='header-fields'>
+                    <h1 class='charname'>
+                        <input name='name' type='text' value='{{item.name}}' />
                     </h1>
                 </div>
             </header>
         </div>
         <div>
-            <div class="flexrow">
+            <div class='flexrow'>
                 <h6>RS</h6>
                 <h6>BE</h6>
                 <h6>Bein</h6>
@@ -22,93 +22,105 @@
                 <h6>Brust</h6>
                 <h6>Kopf</h6>
             </div>
-            <div class="flexrow">
-                <input name="system.rs" value="{{item.system.rs}}" type="text" data-dtype="Number" />
-                <input name="system.be" value="{{item.system.be}}" type="text" data-dtype="Number" />
+            <div class='flexrow'>
                 <input
-                    name="system.rs_beine"
-                    value="{{item.system.rs_beine}}"
-                    type="text"
-                    data-dtype="Number"
+                    name='system.rs'
+                    value='{{item.system.rs}}'
+                    type='text'
+                    data-dtype='Number'
                 />
                 <input
-                    name="system.rs_larm"
-                    value="{{item.system.rs_larm}}"
-                    type="text"
-                    data-dtype="Number"
+                    name='system.be'
+                    value='{{item.system.be}}'
+                    type='text'
+                    data-dtype='Number'
                 />
                 <input
-                    name="system.rs_rarm"
-                    value="{{item.system.rs_rarm}}"
-                    type="text"
-                    data-dtype="Number"
+                    name='system.rs_beine'
+                    value='{{item.system.rs_beine}}'
+                    type='text'
+                    data-dtype='Number'
                 />
                 <input
-                    name="system.rs_bauch"
-                    value="{{item.system.rs_bauch}}"
-                    type="text"
-                    data-dtype="Number"
+                    name='system.rs_larm'
+                    value='{{item.system.rs_larm}}'
+                    type='text'
+                    data-dtype='Number'
                 />
                 <input
-                    name="system.rs_brust"
-                    value="{{item.system.rs_brust}}"
-                    type="text"
-                    data-dtype="Number"
+                    name='system.rs_rarm'
+                    value='{{item.system.rs_rarm}}'
+                    type='text'
+                    data-dtype='Number'
                 />
                 <input
-                    name="system.rs_kopf"
-                    value="{{item.system.rs_kopf}}"
-                    type="text"
-                    data-dtype="Number"
+                    name='system.rs_bauch'
+                    value='{{item.system.rs_bauch}}'
+                    type='text'
+                    data-dtype='Number'
+                />
+                <input
+                    name='system.rs_brust'
+                    value='{{item.system.rs_brust}}'
+                    type='text'
+                    data-dtype='Number'
+                />
+                <input
+                    name='system.rs_kopf'
+                    value='{{item.system.rs_kopf}}'
+                    type='text'
+                    data-dtype='Number'
                 />
             </div>
             <h5>Gesundheit</h5>
-            <div class="flexrow">
+            <div class='flexrow'>
                 <label>Härte</label>
                 <input
-                    name="system.haerte"
-                    value="{{item.system.haerte}}"
-                    type="text"
-                    data-dtype="Number"
+                    name='system.haerte'
+                    value='{{item.system.haerte}}'
+                    type='text'
+                    data-dtype='Number'
                 />
                 <label>Beschädigung</label>
                 <input
-                    name="system.beschaedigung"
-                    value="{{item.system.beschaedigung}}"
-                    type="text"
-                    data-dtype="Number"
+                    name='system.beschaedigung'
+                    value='{{item.system.beschaedigung}}'
+                    type='text'
+                    data-dtype='Number'
                 />
             </div>
             <label>Beschreibung</label>
-            <textarea rows="6" name="system.text">{{item.system.text}}</textarea>
-            <div class="flexrow">
-                <label class="flex-fest-var" style="flex-basis: 100px"
-                    ><b>{{get_label "gewicht"}}: </b></label
-                >
+            <textarea rows='6' name='system.text'>{{item.system.text}}</textarea>
+            <div class='flexrow'>
+                <label class='flex-fest-var' style='flex-basis: 100px'><b>{{get_label 'gewicht'}}:
+                    </b></label>
                 <input
-                    name="system.gewicht"
-                    value="{{item.system.gewicht}}"
-                    type="text"
-                    data-dtype="Number"
+                    name='system.gewicht'
+                    value='{{item.system.gewicht}}'
+                    type='text'
+                    data-dtype='Number'
                 />
             </div>
-            <div class="flexrow">
-                <label class="flex-fest-var" style="flex-basis: 100px"><b>Preis: </b></label>
+            <div class='flexrow'>
+                <label class='flex-fest-var' style='flex-basis: 100px'><b>Preis: </b></label>
                 <input
-                    name="system.preis"
-                    value="{{item.system.preis}}"
-                    type="text"
-                    data-dtype="Number"
+                    name='system.preis'
+                    value='{{item.system.preis}}'
+                    type='text'
+                    data-dtype='Number'
                 />
-                <label class="flex-fest-var" style="flex-basis: 100px"><b>ST </b></label>
+                <label class='flex-fest-var' style='flex-basis: 100px'><b>ST </b></label>
             </div>
             {{#if hasOwner}}
-            <label class="flex-fest-var" style="flex-basis: 100px"><b>Aufbewahrungsort: </b></label>
-            <select name="system.aufbewahrungs_ort">
-                {{#select item.system.aufbewahrungs_ort}} {{#each speicherplatz_list as |ort|}}
-                <option value="{{ort}}">{{ort}}</option>
-                {{/each}} {{/select}}
-            </select>
+                <label class='flex-fest-var' style='flex-basis: 100px'><b>Aufbewahrungsort:
+                    </b></label>
+                <select name='system.aufbewahrungs_ort'>
+                    {{#select item.system.aufbewahrungs_ort}}
+                        {{#each speicherplatz_list as |ort|}}
+                            <option value='{{ort}}'>{{ort}}</option>
+                        {{/each}}
+                    {{/select}}
+                </select>
             {{/if}}
         </div>
     </div>

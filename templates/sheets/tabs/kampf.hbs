@@ -1,249 +1,245 @@
 {{log 'kampf' this}}
 <div>
     {{#if actor.system.modifikatoren.nahkampfmod}}
-    <div class="flexrow" style="float: right">
-        <b><label style="color: {{modColor actor.system.modifikatoren.nahkampfmod}}">{{actor.system.abgeleitete.nahkampfmoddisplay}}</label></b>
-    </div>
+        <div class='flexrow' style='float: right'>
+            <b><label
+                    style='color: {{modColor actor.system.modifikatoren.nahkampfmod}}'
+                >{{actor.system.abgeleitete.nahkampfmoddisplay}}</label></b>
+        </div>
     {{/if}}
     <h2>Nahkampfwaffen</h2>
-    <a class="item-create" data-itemclass="nahkampfwaffe"
-        ><i class="fas fa-plus"></i>Neue Nahkampfwaffe</a
-    >
+    <a class='item-create' data-itemclass='nahkampfwaffe'><i class='fas fa-plus'></i>Neue
+        Nahkampfwaffe</a>
     <div>
-        <select class="selected-kampfstil" name="system.misc.selected_kampfstil">
-            {{selectOptions actor.misc.kampfstile_list selected=actor.system.misc.selected_kampfstil valueAttr="key" labelAttr="name"}}
+        <select class='selected-kampfstil' name='system.misc.selected_kampfstil'>
+            {{selectOptions
+                actor.misc.kampfstile_list
+                selected=actor.system.misc.selected_kampfstil
+                valueAttr='key'
+                labelAttr='name'
+            }}
         </select>
     </div>
     <div>
-        <div class="flexrow">
-            <label class="icon-small"></label>
-            <label class="icon-small"><b>HW</b></label>
-            <label class="icon-small"><b>NW</b></label>
+        <div class='flexrow'>
+            <label class='icon-small'></label>
+            <label class='icon-small'><b>HW</b></label>
+            <label class='icon-small'><b>NW</b></label>
             <label><b>Name</b></label>
             <label><b>RW</b></label>
             <label><b>AT</b></label>
             <label><b>VT</b></label>
             <label><b>Schaden</b></label>
-            <label class="icon-small" style="float: right"></label>
-            <label class="icon-small" style="float: right"></label>
+            <label class='icon-small' style='float: right'></label>
+            <label class='icon-small' style='float: right'></label>
         </div>
         {{#each actor.nahkampfwaffen as |nwaffe key|}}
-        <div class="flexrow">
-            <a class="rollable icon-small" data-rolltype="angriff_diag" data-itemid="{{nwaffe.id}}"
-                ><i class="fas fa-dice-d20"></i
-            ></a>
-            <a
-                class="icon-small item-toggle {{nwaffe.system.hauptwaffe}}"
-                data-itemid="{{nwaffe.id}}"
-                data-toggletype="hauptwaffe"
-                ><i class="far fa-hand-paper"></i
-            ></a>
-            <a
-                class="icon-small item-toggle {{nwaffe.system.nebenwaffe}}"
-                data-itemid="{{nwaffe.id}}"
-                data-toggletype="nebenwaffe"
-                ><i class="far fa-hand-paper"></i
-            ></a>
-            <label class="ausklappen-trigger onhover" data-ausklappentarget="{{nwaffe.id}}"
-                >{{nwaffe.name}}</label
-            >
-            <label>{{nwaffe.system.rw}}</label>
-            <label
-                class="rollable onhover"
-                data-rolltype="at"
-                data-pw="{{nwaffe.system.at}}"
-                data-item="{{nwaffe.name}}"
-                data-itemid="{{nwaffe.id}}"
-                >{{nwaffe.system.at}}</label
-            >
-            <label
-                class="rollable onhover"
-                data-rolltype="vt"
-                data-pw="{{nwaffe.system.vt}}"
-                data-item="{{nwaffe.name}}"
-                data-itemid="{{nwaffe.id}}"
-                >{{nwaffe.system.vt}}</label
-            >
-            <label
-                class="rollable onhover"
-                data-rolltype="schaden"
-                data-pw="{{nwaffe.system.schaden}}"
-                data-item="{{nwaffe.name}}"
-                data-itemid="{{nwaffe.id}}"
-                >{{nwaffe.system.schaden}}</label
-            >
-            <a
-                class="item-edit icon-small"
-                data-itemclass="nahkampfwaffe"
-                data-itemid="{{nwaffe.id}}"
-                style="float: right"
-                ><i class="fas fa-edit"></i
-            ></a>
-            <a
-                class="item-delete icon-small"
-                data-itemclass="nahkampfwaffe"
-                data-itemid="{{nwaffe.id}}"
-                style="float: right"
-                ><i class="fas fa-trash"></i
-            ></a>
-        </div>
-        <div id="ausklappen-view-{{nwaffe.id}}" style="display: none">
-            <hr />
-            <div>
-                <label><b>Schaden:</b></label>
-                <label>{{nwaffe.system.schaden}}</label>
+            <div class='flexrow'>
+                <a
+                    class='rollable icon-small'
+                    data-rolltype='angriff_diag'
+                    data-itemid='{{nwaffe.id}}'
+                ><i class='fas fa-dice-d20'></i></a>
+                <a
+                    class='icon-small item-toggle {{nwaffe.system.hauptwaffe}}'
+                    data-itemid='{{nwaffe.id}}'
+                    data-toggletype='hauptwaffe'
+                ><i class='far fa-hand-paper'></i></a>
+                <a
+                    class='icon-small item-toggle {{nwaffe.system.nebenwaffe}}'
+                    data-itemid='{{nwaffe.id}}'
+                    data-toggletype='nebenwaffe'
+                ><i class='far fa-hand-paper'></i></a>
+                <label
+                    class='ausklappen-trigger onhover'
+                    data-ausklappentarget='{{nwaffe.id}}'
+                >{{nwaffe.name}}</label>
+                <label>{{nwaffe.system.rw}}</label>
+                <label
+                    class='rollable onhover'
+                    data-rolltype='at'
+                    data-pw='{{nwaffe.system.at}}'
+                    data-item='{{nwaffe.name}}'
+                    data-itemid='{{nwaffe.id}}'
+                >{{nwaffe.system.at}}</label>
+                <label
+                    class='rollable onhover'
+                    data-rolltype='vt'
+                    data-pw='{{nwaffe.system.vt}}'
+                    data-item='{{nwaffe.name}}'
+                    data-itemid='{{nwaffe.id}}'
+                >{{nwaffe.system.vt}}</label>
+                <label
+                    class='rollable onhover'
+                    data-rolltype='schaden'
+                    data-pw='{{nwaffe.system.schaden}}'
+                    data-item='{{nwaffe.name}}'
+                    data-itemid='{{nwaffe.id}}'
+                >{{nwaffe.system.schaden}}</label>
+                <a
+                    class='item-edit icon-small'
+                    data-itemclass='nahkampfwaffe'
+                    data-itemid='{{nwaffe.id}}'
+                    style='float: right'
+                ><i class='fas fa-edit'></i></a>
+                <a
+                    class='item-delete icon-small'
+                    data-itemclass='nahkampfwaffe'
+                    data-itemid='{{nwaffe.id}}'
+                    style='float: right'
+                ><i class='fas fa-trash'></i></a>
             </div>
-            <div>
-                <label><b>Fertigkeit:</b></label>
-                <label>{{nwaffe.system.fertigkeit}}</label>
+            <div id='ausklappen-view-{{nwaffe.id}}' style='display: none'>
+                <hr />
+                <div>
+                    <label><b>Schaden:</b></label>
+                    <label>{{nwaffe.system.schaden}}</label>
+                </div>
+                <div>
+                    <label><b>Fertigkeit:</b></label>
+                    <label>{{nwaffe.system.fertigkeit}}</label>
+                </div>
+                <div>
+                    <label><b>Talent:</b></label>
+                    <label>{{nwaffe.system.talent}}</label>
+                </div>
+                <div>
+                    <label><b>Eigenschaften:</b></label>
+                    <label>{{waffeneigenschaften_string nwaffe}}</label>
+                </div>
+                <div>
+                    <label><b>WM:</b></label>
+                    <label>{{nwaffe.system.wm_at}}</label>
+                    <label><b>/</b></label>
+                    <label>{{nwaffe.system.wm_vt}}</label>
+                </div>
+                <div>
+                    <label><b>Härte:</b></label>
+                    <label>{{nwaffe.system.haerte}}</label>
+                </div>
+                <div>
+                    <label><b>Beschädigung:</b></label>
+                    <label>{{nwaffe.system.beschaedigung}}</label>
+                </div>
+                <div>
+                    <label><b>Beschreibung:</b></label><br />
+                    <label style='white-space: pre-line'>{{nwaffe.system.text}}</label>
+                </div>
+                <hr />
             </div>
-            <div>
-                <label><b>Talent:</b></label>
-                <label>{{nwaffe.system.talent}}</label>
-            </div>
-            <div>
-                <label><b>Eigenschaften:</b></label>
-                <label>{{waffeneigenschaften_string nwaffe}}</label>
-            </div>
-            <div>
-                <label><b>WM:</b></label>
-                <label>{{nwaffe.system.wm_at}}</label>
-                <label><b>/</b></label>
-                <label>{{nwaffe.system.wm_vt}}</label>
-            </div>
-            <div>
-                <label><b>Härte:</b></label>
-                <label>{{nwaffe.system.haerte}}</label>
-            </div>
-            <div>
-                <label><b>Beschädigung:</b></label>
-                <label>{{nwaffe.system.beschaedigung}}</label>
-            </div>
-            <div>
-                <label><b>Beschreibung:</b></label
-                ><br />
-                <label style="white-space: pre-line">{{nwaffe.system.text}}</label>
-            </div>
-            <hr />
-        </div>
         {{/each}}
     </div>
     <br />
 
     <h2>Fernkampfwaffen</h2>
-    <a class="item-create" data-itemclass="fernkampfwaffe"
-        ><i class="fas fa-plus"></i>Neue Fernkampfwaffe</a
-    >
+    <a class='item-create' data-itemclass='fernkampfwaffe'><i class='fas fa-plus'></i>Neue
+        Fernkampfwaffe</a>
     <div>
-        <div class="flexrow">
-            <label class="icon-small"></label>
-            <label class="icon-small"><b>HW</b></label>
-            <label class="icon-small"><b>NW</b></label>
+        <div class='flexrow'>
+            <label class='icon-small'></label>
+            <label class='icon-small'><b>HW</b></label>
+            <label class='icon-small'><b>NW</b></label>
             <label><b>Name</b></label>
             <label><b>RW</b></label>
             <label><b>LZ</b></label>
             <label><b>FK</b></label>
             <label><b>Schaden</b></label>
-            <label class="icon-small" style="float: right"></label>
-            <label class="icon-small" style="float: right"></label>
+            <label class='icon-small' style='float: right'></label>
+            <label class='icon-small' style='float: right'></label>
         </div>
         {{#each actor.fernkampfwaffen as |fwaffe key|}}
-        <div class="flexrow">
-            <a class="rollable icon-small" data-rolltype="fernkampf_diag" data-itemid="{{fwaffe.id}}"
-                ><i class="fas fa-dice-d20"></i
-            ></a>
-            <a
-                class="icon-small item-toggle {{fwaffe.system.hauptwaffe}}"
-                data-itemid="{{fwaffe.id}}"
-                data-toggletype="hauptwaffe"
-                ><i class="far fa-hand-paper"></i
-            ></a>
-            <a
-                class="icon-small item-toggle {{fwaffe.system.nebenwaffe}}"
-                data-itemid="{{fwaffe.id}}"
-                data-toggletype="nebenwaffe"
-                ><i class="far fa-hand-paper"></i
-            ></a>
-            <label class="ausklappen-trigger onhover" data-ausklappentarget="{{fwaffe.id}}"
-                >{{fwaffe.name}}</label
-            >
-            <label>{{fwaffe.system.rw}}</label>
-            <label>{{fwaffe.system.lz}}</label>
-            <label
-                class="rollable onhover"
-                data-rolltype="fk"
-                data-pw="{{fwaffe.system.fk}}"
-                data-item="{{fwaffe.name}}"
-                >{{fwaffe.system.fk}}</label
-            >
-            <label
-                class="rollable onhover"
-                data-rolltype="schaden"
-                data-pw="{{fwaffe.system.schaden}}"
-                data-item="{{fwaffe.name}}"
-                >{{fwaffe.system.schaden}}</label
-            >
-            <a
-                class="item-edit icon-small"
-                data-itemclass="fernkampfwaffe"
-                data-itemid="{{fwaffe.id}}"
-                style="float: right"
-                ><i class="fas fa-edit"></i
-            ></a>
-            <a
-                class="item-delete icon-small"
-                data-itemclass="fernkampfwaffe"
-                data-itemid="{{fwaffe.id}}"
-                style="float: right"
-                ><i class="fas fa-trash"></i
-            ></a>
-        </div>
-        <div id="ausklappen-view-{{fwaffe.id}}" style="display: none">
-            <hr />
-            <div>
-                <label><b>Schaden:</b></label>
-                <label>{{fwaffe.system.schaden}}</label>
+            <div class='flexrow'>
+                <a
+                    class='rollable icon-small'
+                    data-rolltype='fernkampf_diag'
+                    data-itemid='{{fwaffe.id}}'
+                ><i class='fas fa-dice-d20'></i></a>
+                <a
+                    class='icon-small item-toggle {{fwaffe.system.hauptwaffe}}'
+                    data-itemid='{{fwaffe.id}}'
+                    data-toggletype='hauptwaffe'
+                ><i class='far fa-hand-paper'></i></a>
+                <a
+                    class='icon-small item-toggle {{fwaffe.system.nebenwaffe}}'
+                    data-itemid='{{fwaffe.id}}'
+                    data-toggletype='nebenwaffe'
+                ><i class='far fa-hand-paper'></i></a>
+                <label
+                    class='ausklappen-trigger onhover'
+                    data-ausklappentarget='{{fwaffe.id}}'
+                >{{fwaffe.name}}</label>
+                <label>{{fwaffe.system.rw}}</label>
+                <label>{{fwaffe.system.lz}}</label>
+                <label
+                    class='rollable onhover'
+                    data-rolltype='fk'
+                    data-pw='{{fwaffe.system.fk}}'
+                    data-item='{{fwaffe.name}}'
+                >{{fwaffe.system.fk}}</label>
+                <label
+                    class='rollable onhover'
+                    data-rolltype='schaden'
+                    data-pw='{{fwaffe.system.schaden}}'
+                    data-item='{{fwaffe.name}}'
+                >{{fwaffe.system.schaden}}</label>
+                <a
+                    class='item-edit icon-small'
+                    data-itemclass='fernkampfwaffe'
+                    data-itemid='{{fwaffe.id}}'
+                    style='float: right'
+                ><i class='fas fa-edit'></i></a>
+                <a
+                    class='item-delete icon-small'
+                    data-itemclass='fernkampfwaffe'
+                    data-itemid='{{fwaffe.id}}'
+                    style='float: right'
+                ><i class='fas fa-trash'></i></a>
             </div>
-            <div>
-                <label><b>Fertigkeit:</b></label>
-                <label>{{fwaffe.system.fertigkeit}}</label>
+            <div id='ausklappen-view-{{fwaffe.id}}' style='display: none'>
+                <hr />
+                <div>
+                    <label><b>Schaden:</b></label>
+                    <label>{{fwaffe.system.schaden}}</label>
+                </div>
+                <div>
+                    <label><b>Fertigkeit:</b></label>
+                    <label>{{fwaffe.system.fertigkeit}}</label>
+                </div>
+                <div>
+                    <label><b>Talent:</b></label>
+                    <label>{{fwaffe.system.talent}}</label>
+                </div>
+                <div>
+                    <label><b>Eigenschaften:</b></label>
+                    <label>{{waffeneigenschaften_string this}}</label>
+                </div>
+                <div>
+                    <label><b>WM:</b></label>
+                    <label>{{fwaffe.system.wm_fk}}</label>
+                </div>
+                <div>
+                    <label><b>Härte:</b></label>
+                    <label>{{fwaffe.system.haerte}}</label>
+                </div>
+                <div>
+                    <label><b>Beschädigung:</b></label>
+                    <label>{{fwaffe.system.beschaedigung}}</label>
+                </div>
+                <div>
+                    <label><b>Beschreibung:</b></label><br />
+                    <label style='white-space: pre-line'>{{fwaffe.system.text}}</label>
+                </div>
+                <hr />
             </div>
-            <div>
-                <label><b>Talent:</b></label>
-                <label>{{fwaffe.system.talent}}</label>
-            </div>
-            <div>
-                <label><b>Eigenschaften:</b></label>
-                <label>{{waffeneigenschaften_string this}}</label>
-            </div>
-            <div>
-                <label><b>WM:</b></label>
-                <label>{{fwaffe.system.wm_fk}}</label>
-            </div>
-            <div>
-                <label><b>Härte:</b></label>
-                <label>{{fwaffe.system.haerte}}</label>
-            </div>
-            <div>
-                <label><b>Beschädigung:</b></label>
-                <label>{{fwaffe.system.beschaedigung}}</label>
-            </div>
-            <div>
-                <label><b>Beschreibung:</b></label
-                ><br />
-                <label style="white-space: pre-line">{{fwaffe.system.text}}</label>
-            </div>
-            <hr />
-        </div>
         {{/each}}
     </div>
     <br />
 
     <h2>Rüstungen</h2>
-    <a class="item-create" data-itemclass="ruestung"><i class="fas fa-plus"></i>Neue Rüstung</a>
+    <a class='item-create' data-itemclass='ruestung'><i class='fas fa-plus'></i>Neue Rüstung</a>
     <div>
-        <div class="flexrow">
-            <h6 class="icon-small"><i class="fas fa-shield-alt"></i></h6>
+        <div class='flexrow'>
+            <h6 class='icon-small'><i class='fas fa-shield-alt'></i></h6>
             <h6>Name</h6>
             <h6>RS</h6>
             <h6>BE</h6>
@@ -253,45 +249,42 @@
             <h6>Bauch</h6>
             <h6>Brust</h6>
             <h6>Kopf</h6>
-            <h6 class="icon-small"></h6>
-            <h6 class="icon-small"></h6>
+            <h6 class='icon-small'></h6>
+            <h6 class='icon-small'></h6>
         </div>
         {{#each actor.ruestungen as |ruestung key|}}
-        <div class="flexrow">
-            <a
-                class="icon-small item-toggle {{ruestung.system.aktiv}}"
-                data-itemid="{{ruestung.id}}"
-                data-toggletype="aktiv"
-                ><i class="fas fa-shield-alt"></i
-            ></a>
-            <label>{{ruestung.name}}</label>
-            <label>{{ruestung.system.rs}}</label>
-            <label>{{ruestung.system.be}}</label>
-            <label>{{ruestung.system.rs_beine}}</label>
-            <label>{{ruestung.system.rs_larm}}</label>
-            <label>{{ruestung.system.rs_rarm}}</label>
-            <label>{{ruestung.system.rs_bauch}}</label>
-            <label>{{ruestung.system.rs_brust}}</label>
-            <label>{{ruestung.system.rs_kopf}}</label>
-            <a
-                class="item-edit icon-small"
-                data-itemclass="ruestung"
-                data-itemid="{{ruestung.id}}"
-                style="float: right"
-                ><i class="fas fa-edit"></i
-            ></a>
-            <a
-                class="item-delete icon-small"
-                data-itemclass="ruestung"
-                data-itemid="{{ruestung.id}}"
-                style="float: right"
-                ><i class="fas fa-trash"></i
-            ></a>
-        </div>
+            <div class='flexrow'>
+                <a
+                    class='icon-small item-toggle {{ruestung.system.aktiv}}'
+                    data-itemid='{{ruestung.id}}'
+                    data-toggletype='aktiv'
+                ><i class='fas fa-shield-alt'></i></a>
+                <label>{{ruestung.name}}</label>
+                <label>{{ruestung.system.rs}}</label>
+                <label>{{ruestung.system.be}}</label>
+                <label>{{ruestung.system.rs_beine}}</label>
+                <label>{{ruestung.system.rs_larm}}</label>
+                <label>{{ruestung.system.rs_rarm}}</label>
+                <label>{{ruestung.system.rs_bauch}}</label>
+                <label>{{ruestung.system.rs_brust}}</label>
+                <label>{{ruestung.system.rs_kopf}}</label>
+                <a
+                    class='item-edit icon-small'
+                    data-itemclass='ruestung'
+                    data-itemid='{{ruestung.id}}'
+                    style='float: right'
+                ><i class='fas fa-edit'></i></a>
+                <a
+                    class='item-delete icon-small'
+                    data-itemclass='ruestung'
+                    data-itemid='{{ruestung.id}}'
+                    style='float: right'
+                ><i class='fas fa-trash'></i></a>
+            </div>
         {{/each}}
         <hr />
-        <div class="flexrow">
-            <label class="icon-small"></label>
+        <div class='flexrow'>
+            <label class='icon-small'></label>
             <label>Gesamt (WS*)</label>
             <label>{{actor.system.abgeleitete.ws_stern}}</label>
             <label>{{actor.system.abgeleitete.be}}</label>
@@ -301,34 +294,35 @@
             <label>{{actor.system.abgeleitete.ws_bauch}}</label>
             <label>{{actor.system.abgeleitete.ws_brust}}</label>
             <label>{{actor.system.abgeleitete.ws_kopf}}</label>
-            <label class="icon-small"></label>
-            <label class="icon-small"></label>
+            <label class='icon-small'></label>
+            <label class='icon-small'></label>
         </div>
     </div>
     <br />
 
     <h2>Vorteile</h2>
     {{#if actor.vorteil.kampf}}
-    <div>
-        <label><b>Kampfvorteile:</b>&nbsp; | &nbsp;</label>
-        {{#each actor.vorteil.kampf}}
-        <a class="item-edit" 
-           data-itemid="{{this.id}}"> 
-           {{this.name}} 
-        </a>
-        <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
-        &nbsp; | &nbsp; {{/each}}
-    </div>
-    {{/if}} {{#if actor.vorteil.kampfstil}}
-    <div>
-        <label><b>Kampfstile:</b>&nbsp; | &nbsp;</label>
-        {{#each actor.vorteil.kampfstil}}
-        <a class="item-edit" 
-           data-itemid="{{this.id}}"> 
-           {{this.name}} 
-        </a>
-        <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
-        &nbsp; | &nbsp; {{/each}}
-    </div>
+        <div>
+            <label><b>Kampfvorteile:</b>&nbsp; | &nbsp;</label>
+            {{#each actor.vorteil.kampf}}
+                <a class='item-edit' data-itemid='{{this.id}}'>
+                    {{this.name}}
+                </a>
+                <a class='item-delete' data-itemid='{{this.id}}'><i class='fas fa-trash'></i></a>
+                &nbsp; | &nbsp;
+            {{/each}}
+        </div>
+    {{/if}}
+    {{#if actor.vorteil.kampfstil}}
+        <div>
+            <label><b>Kampfstile:</b>&nbsp; | &nbsp;</label>
+            {{#each actor.vorteil.kampfstil}}
+                <a class='item-edit' data-itemid='{{this.id}}'>
+                    {{this.name}}
+                </a>
+                <a class='item-delete' data-itemid='{{this.id}}'><i class='fas fa-trash'></i></a>
+                &nbsp; | &nbsp;
+            {{/each}}
+        </div>
     {{/if}}
 </div>
