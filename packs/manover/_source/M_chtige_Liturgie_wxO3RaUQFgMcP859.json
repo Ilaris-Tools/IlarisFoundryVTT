@@ -3,23 +3,26 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
+    "voraussetzungen": "Vorteil Geweiht I",
+    "input": {
+      "label": "",
+      "field": "NUMBER",
+      "min": 0,
+      "max": null
+    },
+    "modifications": {
       "0": {
-        "name": "Vorteil Geweiht I",
-        "type": "VORTEIL",
-        "value": [
-          "8QG19b6FhFxJiRBx"
-        ]
+        "type": "ATTACK",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
       }
     },
     "gruppe": "3",
     "probe": "Liturgie -4",
     "gegenprobe": "",
-    "text": "Verstärkt die Wirkung der Liturgie (siehe Liturgie). Zusätzlich steigt die Schwierigkeit von Konterproben (S. 124) gegen die Liturgie um +4 Punkte.",
-    "input": {
-      "label": "",
-      "field": "NUMBER"
-    }
+    "text": "Verstärkt die Wirkung der Liturgie (siehe Liturgie). Zusätzlich steigt die Schwierigkeit von Konterproben (S. 124) gegen die Liturgie um +4 Punkte."
   },
   "effects": [],
   "folder": null,
@@ -29,9 +32,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.1",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746448963450,
+    "modifiedTime": 1747813775968,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

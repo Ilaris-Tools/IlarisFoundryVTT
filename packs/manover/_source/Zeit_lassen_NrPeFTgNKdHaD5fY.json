@@ -3,29 +3,24 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
+    "voraussetzungen": "Vorteil Tradition der Alchemisten III ODER Vorteil Tradition der Elfen III ODER Vorteil Tradition der Geoden III ODER Vorteil Tradition der Gildenmagier III ODER Vorteil Tradition der Kristallomanten III ODER Vorteil Tradition der Scharlatane III ODER Vorteil Tradition der Zauberbarden III",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    },
+    "modifications": {
       "0": {
-        "name": "Vorteil Tradition der Alchemisten III ODER Vorteil Tradition der Elfen III ODER Vorteil Tradition der Geoden III ODER Vorteil Tradition der Gildenmagier III ODER Vorteil Tradition der Kristallomanten III ODER Vorteil Tradition der Scharlatane III ODER Vorteil Tradition der Zauberbarden III",
-        "type": "STILE",
-        "value": [
-          "7vgrOlJe57lhVG3I",
-          "EPtoZPYzgDy0rtgt",
-          "xYI4qlIjjVvqn6TV",
-          "zpsHiYBMdIJmoO65",
-          "VxEMDoj71l2kLwF6",
-          "aZFG9z07KLboPNt7",
-          "GMHhdocHx4bxySCW"
-        ]
+        "type": "ATTACK",
+        "value": 2,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": false
       }
     },
     "gruppe": "2",
     "probe": "Zauber +2",
     "gegenprobe": "",
-    "text": "Verdoppelt die Vorbereitungszeit, aber erleichtert den Zauber um +2. Eine Vorbereitungszeit von 0 Aktionen wird zu 1 Aktion. Kann einmal pro Zauber eingesetzt werden und wirkt nicht auf Zauber mit frei wählbarer Vorbereitungszeit. Voraussetzung: Verwendung der Alchemistischen, Elfischen, Geodischen, Gildenmagischen, Kristallomantischen, Zauberbardischen oder Scharlatanischen Repräsentation (III).",
-    "input": {
-      "label": "",
-      "field": "CHECKBOX"
-    }
+    "text": "Verdoppelt die Vorbereitungszeit, aber erleichtert den Zauber um +2. Eine Vorbereitungszeit von 0 Aktionen wird zu 1 Aktion. Kann einmal pro Zauber eingesetzt werden und wirkt nicht auf Zauber mit frei wählbarer Vorbereitungszeit. Voraussetzung: Verwendung der Alchemistischen, Elfischen, Geodischen, Gildenmagischen, Kristallomantischen, Zauberbardischen oder Scharlatanischen Repräsentation (III)."
   },
   "effects": [],
   "folder": null,
@@ -35,9 +30,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.1",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746367856061,
+    "modifiedTime": 1747814303244,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

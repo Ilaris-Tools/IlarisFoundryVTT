@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Ausfall",
-        "type": "VORTEIL",
-        "value": [
-          "gHmsU24FcdGSB5Xe"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Ausfall",
     "modifications": {
       "0": {
         "type": "ATTACK",

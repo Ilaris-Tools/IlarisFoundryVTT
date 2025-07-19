@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Schnellziehen",
-        "type": "VORTEIL",
-        "value": [
-          "9laG7XzYtXtoqlzZ"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Schnellziehen",
     "gruppe": "1",
     "probe": "FK -4",
     "gegenprobe": "",
@@ -19,15 +11,6 @@
     "input": {
       "label": "",
       "field": "NUMBER"
-    },
-    "modifications": {
-      "0": {
-        "type": "ATTACK",
-        "value": -4,
-        "operator": "ADD",
-        "target": "",
-        "affectedByInput": true
-      }
     }
   },
   "effects": [],
@@ -38,9 +21,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.2",
+    "systemVersion": "12.0.1",
     "createdTime": null,
-    "modifiedTime": 1747163531084,
+    "modifiedTime": 1746367711092,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

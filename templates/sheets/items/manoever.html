@@ -36,56 +36,22 @@
 
         <div class="manoever-section">
             <div class="section-header">
-                <div><b>{{manoever.labels.prerequisites}} </b><a class="add-voraussetzung">[+]</a></div>
+                <div><b>{{manoever.labels.prerequisites}}</b></div>
             </div>
             <div class="section-description">
                 {{manoever.labels.prerequisitesDescription}}
             </div>
-            {{#each item.system.voraussetzungen}}
-                <div class="field">
-                    <div class="flexrow row">
-                        <input
-                            name="system.voraussetzungen.{{@index}}.name"
-                            value="{{this.name}}"
-                            type="text"
-                            data-dtype="String"
-                            placeholder="{{../manoever.labels.prerequisiteDescription}}"
-                        />
-                        <a
-                            class="voraussetzung-delete icon-small delete-button"
-                            data-voraussetzungid="{{@index}}"
-                            ><i class="fas fa-trash"></i
-                        ></a>
-                    </div>
-                    <div class="flexrow row">
-                        <label>{{../manoever.labels.prerequisiteType}}:</label>
-                        <select name="system.voraussetzungen.{{@index}}.type">
-                            {{selectOptions ../manoever.voraussetzung_type selected=this.type}}
-                        </select> 
-                    </div>   
-                    <div class="flexrow row">
-                        {{#if (ifEq this.type "VORTEIL")}} 
-                            <label>{{../manoever.labels.advantages}}:</label>
-                            <multi-select name="system.voraussetzungen.{{@index}}.value">
-                                {{selectOptions ../vorteile selected=this.value valueAttr="key" labelAttr="label"}}
-                            </multi-select>
-                        {{/if}}
-                        {{#if (ifEq this.type "STILE")}}
-                            <label>{{../manoever.labels.styles}}:</label> 
-                            <multi-select name="system.voraussetzungen.{{@index}}.value">
-                                {{selectOptions ../stile selected=this.value valueAttr="key" labelAttr="label"}}
-                            </multi-select>
-                        {{/if}}
-                        {{#if (ifEq this.type "WAFFENEIGENSCHAFT")}} 
-                            <label>{{../manoever.labels.weaponProperties}}:</label>
-                            <select name="system.voraussetzungen.{{@index}}.value">
-                                {{selectOptions ../waffeneigenschaften selected=this.value}}
-                            </select>
-                        {{/if}}
-                    </div> 
-                </div> 
-                <hr>        
-            {{/each}}
+            <div class="field">
+                <div class="flexrow">
+                    <input
+                        name="system.voraussetzungen"
+                        value="{{item.system.voraussetzungen}}"
+                        type="text"
+                        data-dtype="String"
+                        placeholder=""
+                    />
+                </div>
+            </div>
         </div>
 
         <div class="manoever-section">

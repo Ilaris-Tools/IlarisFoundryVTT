@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Meisterschuss",
-        "type": "VORTEIL",
-        "value": [
-          "OGWqFIsN20vzpOjf"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Meisterschuss",
     "gruppe": "1",
     "probe": "FK -8",
     "gegenprobe": "",
@@ -45,9 +37,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.2",
+    "systemVersion": "12.0.1",
     "createdTime": null,
-    "modifiedTime": 1747163434911,
+    "modifiedTime": 1746367395078,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

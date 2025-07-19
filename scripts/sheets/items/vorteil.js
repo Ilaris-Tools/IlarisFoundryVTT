@@ -1,4 +1,4 @@
-import { IlarisItemSheet } from './item.js';
+import { IlarisItemSheet } from './item.js'
 
 export class VorteilSheet extends IlarisItemSheet {
     static get defaultOptions() {
@@ -15,13 +15,17 @@ export class VorteilSheet extends IlarisItemSheet {
             //         initial: "fertigkeiten",
             //     },
             // ]
-        });
+        })
     }
 
-    // getData() {
-    //     const data = super.getData();
-    //     return data;
-    // }
+    async getData() {
+        const data = await super.getData()
+
+        // Prepare configuration arrays for selectOptions helper
+        data.vorteilsgruppen = CONFIG.ILARIS.vorteilsgruppen
+
+        return data
+    }
 
     // _getHeaderButtons() {
     //     let buttons = super._getHeaderButtons();

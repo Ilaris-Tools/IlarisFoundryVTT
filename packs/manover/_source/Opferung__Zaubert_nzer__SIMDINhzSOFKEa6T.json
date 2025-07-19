@@ -3,23 +3,24 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
+    "voraussetzungen": "Vorteil Tradition der Zaubertänzer III",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    },
+    "modifications": {
       "0": {
-        "name": "Vorteil Tradition der Zaubertänzer III",
-        "type": "STILE",
-        "value": [
-          "FAzUpfNtPe1x3ZcA"
-        ]
+        "type": "ATTACK",
+        "value": 4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
       }
     },
     "gruppe": "2",
     "probe": "Zauber +4",
     "gegenprobe": "",
-    "text": "Ein Opfer erleichtert den Zauber um +4. Zaubertänzer legen ihre ganze Kraft in den Zauber und erleiden danach 2 Punkte Erschöpfung.\nVoraussetzung: Tradition der Zaubertänzer III und Verwendung dieser Tradition",
-    "input": {
-      "label": "",
-      "field": "CHECKBOX"
-    }
+    "text": "Ein Opfer erleichtert den Zauber um +4. Zaubertänzer legen ihre ganze Kraft in den Zauber und erleiden danach 2 Punkte Erschöpfung.\nVoraussetzung: Tradition der Zaubertänzer III und Verwendung dieser Tradition"
   },
   "effects": [],
   "folder": null,
@@ -29,9 +30,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.1",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746448987364,
+    "modifiedTime": 1747814045494,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

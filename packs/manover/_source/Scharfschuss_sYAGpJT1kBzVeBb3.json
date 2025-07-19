@@ -3,7 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": [],
+    "voraussetzungen": "",
     "gruppe": "1",
     "probe": "FK -X",
     "gegenprobe": "",
@@ -39,9 +39,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.2",
+    "systemVersion": "12.0.1",
     "createdTime": null,
-    "modifiedTime": 1747163501401,
+    "modifiedTime": 1746367672628,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Klingentanz",
-        "type": "VORTEIL",
-        "value": [
-          "WuUGCOe4sI70kQPC"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Klingentanz",
     "modifications": {
       "0": {
         "type": "ATTACK",

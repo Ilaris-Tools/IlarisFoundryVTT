@@ -1,13 +1,13 @@
-import { IlarisItemSheet } from './item.js';
+import { IlarisItemSheet } from './item.js'
 
 export class UebernatuerlichTalentSheet extends IlarisItemSheet {
     async getData() {
-        const data = super.getData();
+        const data = super.getData()
         if (data.hasOwner) {
-            data.fertigkeit_list = this.item.actor.misc.uebernatuerlich_fertigkeit_list;
-            console.log(data);
+            data.fertigkeit_list = this.item.actor.misc.uebernatuerlich_fertigkeit_list
+            console.log(data)
         }
-        return data;
+        return data
     }
 
     static get defaultOptions() {
@@ -24,7 +24,7 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
             //         initial: "fertigkeiten",
             //     },
             // ]
-        });
+        })
     }
 
     // getData() {

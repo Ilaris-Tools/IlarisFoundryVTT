@@ -3,23 +3,33 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
+    "voraussetzungen": "Vorteil Tradition der Schamanen III",
+    "input": {
+      "label": "",
+      "field": "NUMBER",
+      "min": 0,
+      "max": 5
+    },
+    "modifications": {
       "0": {
-        "name": "Vorteil Tradition der Schamanen III",
-        "type": "STILE",
-        "value": [
-          "BcL9m2FjPgNOdwgT"
-        ]
+        "type": "ATTACK",
+        "value": 4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": false
+      },
+      "1": {
+        "type": "ATTACK",
+        "value": 2,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
       }
     },
     "gruppe": "2",
     "probe": "Zauber +X",
     "gegenprobe": "",
-    "text": "Du kannst die Vorbereitungszeit freiwillig um 1 Minute/Stunde/Tag/Woche/Monat/Jahr erhöhen, wodurch der Zauber um +4/6/8/10/12/14 erleichtert ist. Die Vorbereitungszeit muss dadurch mindestens verdoppelt werden. Voraussetzung: Tradition der Schamanen III und Verwendung dieser Tradition.",
-    "input": {
-      "label": "",
-      "field": "CHECKBOX"
-    }
+    "text": "Du kannst die Vorbereitungszeit freiwillig um 1 Minute/Stunde/Tag/Woche/Monat/Jahr erhöhen, wodurch der Zauber um +4/6/8/10/12/14 erleichtert ist. Die Vorbereitungszeit muss dadurch mindestens verdoppelt werden. Voraussetzung: Tradition der Schamanen III und Verwendung dieser Tradition."
   },
   "effects": [],
   "folder": null,
@@ -29,9 +39,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.1",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746367865198,
+    "modifiedTime": 1747814403123,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

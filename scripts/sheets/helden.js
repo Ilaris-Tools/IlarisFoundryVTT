@@ -1,5 +1,5 @@
-import { IlarisActorSheet } from './actor.js';
-import * as settings from './../settings/index.js';
+import { IlarisActorSheet } from './actor.js'
+import * as settings from './../settings/index.js'
 
 export class HeldenSheet extends IlarisActorSheet {
     static get defaultOptions() {
@@ -17,13 +17,16 @@ export class HeldenSheet extends IlarisActorSheet {
                     initial: 'fertigkeiten',
                 },
             ],
-        });
+        })
     }
 
-    async getData(){
+    async getData() {
         return {
             ...(await super.getData()),
-            isWeaponSpaceRequirementActive: game.settings.get(settings.ConfigureGameSettingsCategories.Ilaris, settings.IlarisGameSettingNames.weaponSpaceRequirement)
-        };
+            isWeaponSpaceRequirementActive: game.settings.get(
+                settings.ConfigureGameSettingsCategories.Ilaris,
+                settings.IlarisGameSettingNames.weaponSpaceRequirement,
+            ),
+        }
     }
 }

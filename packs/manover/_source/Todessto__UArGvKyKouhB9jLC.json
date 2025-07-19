@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Todesstoß",
-        "type": "VORTEIL",
-        "value": [
-          "g6VXAVTbafARlmJ5"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Todesstoß",
     "modifications": {
       "0": {
         "type": "ATTACK",

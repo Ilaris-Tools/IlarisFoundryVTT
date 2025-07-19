@@ -3,23 +3,24 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
+    "voraussetzungen": "Vorteil Geweiht I",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    },
+    "modifications": {
       "0": {
-        "name": "Vorteil Geweiht I",
-        "type": "VORTEIL",
-        "value": [
-          "8QG19b6FhFxJiRBx"
-        ]
+        "type": "ATTACK",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
       }
     },
     "gruppe": "3",
     "probe": "Liturgie -4",
     "gegenprobe": "",
-    "text": "Die Liturgie wirkt auf mehrere Ziele in Reichweite. Die Kosten werden für jedes Ziel einzeln bezahlt, Modifikationen wie Kosten Sparen für jedes Ziel einzeln abgerechnet.",
-    "input": {
-      "label": "",
-      "field": "CHECKBOX"
-    }
+    "text": "Die Liturgie wirkt auf mehrere Ziele in Reichweite. Die Kosten werden für jedes Ziel einzeln bezahlt, Modifikationen wie Kosten Sparen für jedes Ziel einzeln abgerechnet."
   },
   "effects": [],
   "folder": null,
@@ -29,9 +30,9 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.1",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1746367374681,
+    "modifiedTime": 1747813837032,
     "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null

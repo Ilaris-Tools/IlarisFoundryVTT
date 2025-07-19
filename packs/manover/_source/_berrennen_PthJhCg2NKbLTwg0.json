@@ -3,15 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
-      "0": {
-        "name": "Vorteil Reiterkampf III",
-        "type": "STILE",
-        "value": [
-          "6x4ObNLdZ4ou5qT8"
-        ]
-      }
-    },
+    "voraussetzungen": "Vorteil Reiterkampf III",
     "input": {
       "label": "",
       "field": "CHECKBOX"

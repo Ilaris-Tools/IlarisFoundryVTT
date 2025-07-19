@@ -11,7 +11,7 @@
     >
     <div>
         <select class="selected-kampfstil" name="system.misc.selected_kampfstil">
-            {{selectOptions actor.misc.kampfstile_list selected=actor.system.misc.selected_kampfstil nameAttr="key" labelAttr="name"}}
+            {{selectOptions actor.misc.kampfstile_list selected=actor.system.misc.selected_kampfstil valueAttr="key" labelAttr="name"}}
         </select>
     </div>
     <div>
@@ -118,19 +118,6 @@
             <div>
                 <label><b>Beschädigung:</b></label>
                 <label>{{nwaffe.system.beschaedigung}}</label>
-            </div>
-            <div>
-                <label><b>Eigene Modifikatoren</b></label>
-            </div>
-            <div>
-                <label><b>WM:</b></label>
-                <label>{{nwaffe.system.mod_at}}</label>
-                <label><b>/</b></label>
-                <label>{{nwaffe.system.mod_vt}}</label>
-            </div>
-            <div>
-                <label><b>Schadensbonus:</b></label>
-                <label>{{nwaffe.system.mod_schaden}}</label>
             </div>
             <div>
                 <label><b>Beschreibung:</b></label
@@ -242,17 +229,6 @@
                 <label>{{fwaffe.system.beschaedigung}}</label>
             </div>
             <div>
-                <label><b>Eigene Modifikatoren</b></label>
-            </div>
-            <div>
-                <label><b>WM:</b></label>
-                <label>{{fwaffe.system.mod_fk}}</label>
-            </div>
-            <div>
-                <label><b>Schadensbonus:</b></label>
-                <label>{{fwaffe.system.mod_schaden}}</label>
-            </div>
-            <div>
                 <label><b>Beschreibung:</b></label
                 ><br />
                 <label style="white-space: pre-line">{{fwaffe.system.text}}</label>
@@ -336,9 +312,8 @@
     <div>
         <label><b>Kampfvorteile:</b>&nbsp; | &nbsp;</label>
         {{#each actor.vorteil.kampf}}
-        <a class="item-edit {{#unless this._stats.compendiumSource}}error-highlight{{/unless}}" 
-           data-itemid="{{this.id}}" 
-           {{#unless this._stats.compendiumSource}}title="Am Vorteil stimmt etwas nicht. Bitte füge den Vorteil neu hinzu"{{/unless}}> 
+        <a class="item-edit" 
+           data-itemid="{{this.id}}"> 
            {{this.name}} 
         </a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
@@ -348,9 +323,8 @@
     <div>
         <label><b>Kampfstile:</b>&nbsp; | &nbsp;</label>
         {{#each actor.vorteil.kampfstil}}
-        <a class="item-edit {{#unless this._stats.compendiumSource}}error-highlight{{/unless}}" 
-           data-itemid="{{this.id}}"
-           {{#unless this._stats.compendiumSource}}title="Am Vorteil stimmt etwas nicht. Bitte füge den Vorteil neu hinzu"{{/unless}}> 
+        <a class="item-edit" 
+           data-itemid="{{this.id}}"> 
            {{this.name}} 
         </a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>

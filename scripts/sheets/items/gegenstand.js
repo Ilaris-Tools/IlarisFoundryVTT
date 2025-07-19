@@ -1,12 +1,12 @@
-import { IlarisItemSheet } from './item.js';
+import { IlarisItemSheet } from './item.js'
 
 export class GegenstandSheet extends IlarisItemSheet {
     async getData() {
-        const data = await super.getData();
+        const data = await super.getData()
         if (data.hasOwner) {
-            data.speicherplatz_list = this.item.actor.misc.speicherplatz_list;
+            data.speicherplatz_list = this.item.actor.misc.speicherplatz_list
         }
-        return data;
+        return data
     }
 
     static get defaultOptions() {
@@ -23,7 +23,7 @@ export class GegenstandSheet extends IlarisItemSheet {
             //         initial: "fertigkeiten",
             //     },
             // ]
-        });
+        })
     }
 
     // getData() {
