@@ -1,6 +1,6 @@
 # Zu beachten
 
-- Im Kompendium "Beispielhelden" gibt es "Alrik die leere Vorlage", die schon alle typischen Fertigkeiten ausgerüstet
+-   Im Kompendium "Beispielhelden" gibt es "Alrik die leere Vorlage", die schon alle typischen Fertigkeiten ausgerüstet
     hat. "Alrik der Bauer" ist zur Präsentation mit Werten und Ausrüstung ausgestattet.
 -   Rüstungen werden erst berechnet, wenn sie angelegt werden. Symbol links neben dem Namen anklicken
 -   Kampfstile werden nur für die ausgerüsteten Haupt- und Nebenwaffen berechnet
@@ -8,7 +8,7 @@
     Nebenwaffe sein, sonst werden die Abzüge für einhändige Führung angerechnet
 -   Falls (Kampf-)manöver nicht ausgewählt werden können, kontrolliert ob die Voraussetzungen erfüllt sind
     (Waffeneigenschaften, Waffe ausgerüstet, Kampfstil ausgewählt, Sonderfertigkeit vorhanden)
--   Die Manöver im Kompedium schalten die Manöver nicht frei: Das passiert über die entsprechenden Vorteile  #40
+-   Die Manöver im Kompedium schalten die Manöver nicht frei: Das passiert über die entsprechenden Vorteile #40
 -   Manöver für Magie und Karma sind noch nicht integriert
 -   Der Einsatz von Schicksalspunkten funktioniert nur, wenn Schicksalspunkte vorhanden sind. Ansonsten wird ohne
     Meldung eine normale 3W20 Probe geworfen
@@ -19,6 +19,7 @@
 # Häufige Fragen
 
 ## Wie kann ich meinen mit Sephrasto generierten Charakter in Foundry nutzen?
+
 Aktiviere in den Einstellungen von Sephrasto das FoundryVTT Plugin.
 Im Heldeneditor besteht nun neben dem Speichern und Exportieren als PDF auch
 die Möglichkeit eines Exports für Foundry. Die dabei gespeicherte .json-Datei
@@ -28,14 +29,13 @@ kannst du einfach in eine Szene oder ein Kompendium in Foundry ziehen.
 > leider auch das Inventar oder aktuelle Ressourcen mit ein. Wir arbeiten an
 > einem "intelligenteren" Update.
 
-
 **Warum bekomme ich Abzüge wenn ich eine Zweihandwaffe ausrüste?**
 Es kann maximal jeweils eine Haupt- und Nebenwaffe angelegt sein.
-Zweihändige Waffen müssen gleichzeitig Haupt- und Nebenwaffe sein, sonst werden die Abzüge für 
+Zweihändige Waffen müssen gleichzeitig Haupt- und Nebenwaffe sein, sonst werden die Abzüge für
 einhändige Führung angerechnet
 
-
 **Was hat es mit dem Gewicht im Inventar auf sich?**
+
 -   Zur Traglast werden die Regeln aus [Ilaris Advanced](https://dsaforum.de/viewtopic.php?f=180&t=49412) verwendet.
 -   Tragend: Gegenstände an der Person, deren Gewicht nicht berücksichtigt wird (zB getragene Kleidung)
 -   Mitführend: Gegenstände an der Person, deren Gewicht berücksichtigt wird

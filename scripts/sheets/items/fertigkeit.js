@@ -1,4 +1,4 @@
-import { IlarisItemSheet } from './item.js';
+import { IlarisItemSheet } from './item.js'
 
 export class FertigkeitSheet extends IlarisItemSheet {
     static get defaultOptions() {
@@ -15,7 +15,7 @@ export class FertigkeitSheet extends IlarisItemSheet {
             //         initial: "fertigkeiten",
             //     },
             // ]
-        });
+        })
     }
 
     // getData() {

@@ -1,12 +1,12 @@
-import { IlarisItemSheet } from './item.js';
+import { IlarisItemSheet } from './item.js'
 
 export class UebernatuerlichFertigkeitSheet extends IlarisItemSheet {
     async getData() {
-        const data = super.getData();
+        const data = super.getData()
         if (data.hasOwner) {
-            data.fertigkeit_list = this.item.actor.misc.uebernatuerlich_fertigkeit_list;
+            data.fertigkeit_list = this.item.actor.misc.uebernatuerlich_fertigkeit_list
         }
-        return data;
+        return data
     }
 
     static get defaultOptions() {
@@ -23,7 +23,7 @@ export class UebernatuerlichFertigkeitSheet extends IlarisItemSheet {
             //         initial: "fertigkeiten",
             //     },
             // ]
-        });
+        })
     }
 
     // getData() {

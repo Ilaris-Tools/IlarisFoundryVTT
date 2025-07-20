@@ -1,12 +1,12 @@
-import { IlarisItemSheet } from './item.js';
+import { IlarisItemSheet } from './item.js'
 
 export class RuestungSheet extends IlarisItemSheet {
     async getData() {
-        const data = super.getData();
+        const data = super.getData()
         if (data.hasOwner) {
-            data.speicherplatz_list = this.item.actor.misc.speicherplatz_list;
+            data.speicherplatz_list = this.item.actor.misc.speicherplatz_list
         }
-        return data;
+        return data
     }
 
     static get defaultOptions() {
@@ -23,7 +23,7 @@ export class RuestungSheet extends IlarisItemSheet {
             //         initial: "fertigkeiten",
             //     },
             // ]
-        });
+        })
     }
 
     // getData() {
