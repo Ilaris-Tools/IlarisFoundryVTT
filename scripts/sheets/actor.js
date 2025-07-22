@@ -208,7 +208,7 @@ export class IlarisActorSheet extends ActorSheet {
             let speaker = ChatMessage.getSpeaker({ actor: this.actor })
             await roll.evaluate()
             const html_roll = await renderTemplate(
-                'systems/Ilaris/templates/chat/probenchat_profan.html',
+                'systems/Ilaris/templates/chat/probenchat_profan.hbs',
                 { title: `${label}` },
             )
             // console.log(html_roll);
@@ -350,7 +350,7 @@ export class IlarisActorSheet extends ActorSheet {
         //     fumble: fumble
         // };
         // // console.log(templateData);
-        // let template = 'systems/Ilaris/templates/chat/dreid20.html';
+        // let template = 'systems/Ilaris/templates/chat/dreid20.hbs';
         // renderTemplate(template, templateData, roll).then(content => {
         //     if (formula != null) {
         //         roll.toMessage({
@@ -363,7 +363,7 @@ export class IlarisActorSheet extends ActorSheet {
         // console.log(speaker.alias);
         // console.log(this.actor.id);
         const html_roll = await renderTemplate(
-            'systems/Ilaris/templates/chat/probenchat_profan.html',
+            'systems/Ilaris/templates/chat/probenchat_profan.hbs',
             {
                 // user: speaker.alias,
                 // user: this.actor.id,
@@ -635,7 +635,7 @@ export class IlarisActorSheet extends ActorSheet {
     // _onItemDelete(event) {
     //     console.log('ItemDelete');
     //     const itemID = event.currentTarget.dataset.itemid;
-    //     const html = await renderTemplate('systems/Ilaris/templates/chat/yesno.html', {
+    //     const html = await renderTemplate('systems/Ilaris/templates/chat/yesno.hbs', {
     //     });
     //     let d = new Dialog(
     //         {

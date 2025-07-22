@@ -180,7 +180,7 @@ export class NahkampfDialog extends Dialog {
             fumble: fumble,
         }
         // console.log(templateData);
-        let template = 'systems/Ilaris/templates/chat/dreid20.html'
+        let template = 'systems/Ilaris/templates/chat/dreid20.hbs'
         renderTemplate(template, templateData, roll).then((content) => {
             if (formula != null) {
                 roll.toMessage({

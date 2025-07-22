@@ -9,7 +9,7 @@ export class UebernatuerlichDialog extends CombatDialog {
     constructor(actor, item) {
         const dialog = { title: `Übernatürliche Fertigkeit: ${item.name}` }
         const options = {
-            template: 'systems/Ilaris/templates/sheets/dialogs/uebernatuerlich.html',
+            template: 'systems/Ilaris/templates/sheets/dialogs/uebernatuerlich.hbs',
             width: 500,
             height: 'auto',
         }
@@ -154,7 +154,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         // Create chat message with energy cost information
         const label = `${this.item.name} (Kosten: ${this.endCost} Energie)`
         const html_roll = await renderTemplate(
-            'systems/Ilaris/templates/chat/probenchat_profan.html',
+            'systems/Ilaris/templates/chat/probenchat_profan.hbs',
             {
                 title: label,
                 text: isSuccess ? this.text_energy : '',
@@ -231,7 +231,7 @@ export class UebernatuerlichDialog extends CombatDialog {
 
         // Create chat message with energy cost information
         const label = `${this.item.name} (Kosten: ${this.endCost} AsP)`
-        const html_roll = await renderTemplate('systems/Ilaris/templates/chat/spell_result.html', {
+        const html_roll = await renderTemplate('systems/Ilaris/templates/chat/spell_result.hbs', {
             success: isSuccess,
             cost: this.endCost,
             costModifier: costModifier,

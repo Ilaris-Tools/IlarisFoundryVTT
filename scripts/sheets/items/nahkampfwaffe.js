@@ -23,7 +23,7 @@ export class NahkampfwaffeSheet extends IlarisItemSheet {
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             // classes: ["ilaris", "sheet"],
-            template: 'systems/Ilaris/templates/sheets/items/nahkampfwaffe.html',
+            template: 'systems/Ilaris/templates/sheets/items/nahkampfwaffe.hbs',
             // width: 720,
             // height: 800,
             // resizable: false,

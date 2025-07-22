@@ -9,7 +9,7 @@ export class AngriffSheet extends IlarisItemSheet {
 
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
-            template: 'systems/Ilaris/templates/sheets/items/angriff.html',
+            template: 'systems/Ilaris/templates/sheets/items/angriff.hbs',
         })
     }
 
