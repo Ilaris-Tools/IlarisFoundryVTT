@@ -1,90 +1,96 @@
 {{log 'angriff' this}}
-<form class='{{cssClass}}'>
+<form class="{{cssClass}}">
     <div>
         <div>
-            <header class='sheet-header'>
-                <div class='header-fields'>
-                    <h1 class='charname'>
-                        <input name='name' type='text' value='{{item.name}}' />
+            <header class="sheet-header">
+                <div class="header-fields">
+                    <h1 class="charname">
+                        <input name="name" type="text" value="{{item.name}}" />
                     </h1>
                 </div>
             </header>
         </div>
-        <div class='flexrow'>
-            <label>Härte:
-                <input type='number' name='system.haerte' value='{{item.system.haerte}}' />
+        <div class="flexrow">
+            <label>
+                Härte:
+                <input type="number" name="system.haerte" value="{{item.system.haerte}}" />
             </label>
             {{#if (ifEq item.system.typ 'Fern')}}
-                <label>Ladezeit:
-                    <input type='number' name='system.lz' value='{{item.system.lz}}' />
-                </label>
-            {{/if}}
-            <label>Reichweite:
-                <input type='number' name='system.rw' value='{{item.system.rw}}' />
+            <label>
+                Ladezeit:
+                <input type="number" name="system.lz" value="{{item.system.lz}}" />
             </label>
-            <label><div>Angrifftyp:</div>
-                <select name='system.typ'>
+            {{/if}}
+            <label>
+                Reichweite:
+                <input type="number" name="system.rw" value="{{item.system.rw}}" />
+            </label>
+            <label>
+                <div>Angrifftyp:</div>
+                <select name="system.typ">
                     {{selectOptions angrifftypen selected=item.system.typ}}
                 </select>
             </label>
         </div>
-        <div class='flexrow'>
-            <label>Attacke:
-                <input type='number' name='system.at' value='{{item.system.at}}' />
+        <div class="flexrow">
+            <label>
+                Attacke:
+                <input type="number" name="system.at" value="{{item.system.at}}" />
             </label>
             {{#if (ifEq item.system.typ 'Nah')}}
-                <label>Verteidigung:
-                    <input type='number' name='system.vt' value='{{item.system.vt}}' />
-                </label>
+            <label>
+                Verteidigung:
+                <input type="number" name="system.vt" value="{{item.system.vt}}" />
+            </label>
             {{/if}}
-            <label>Trefferpunkte:
-                <div class='flexrow'>
+            <label>
+                Trefferpunkte:
+                <div class="flexrow">
                     <input
-                        class='regex-check'
-                        pattern='^\\\\\\d+[WwDd]\d{1,2}([\+\-]?\d*)?$'
-                        title='TP der Waffe in Schema xWy+/-z Anzahl Würfel x, Würfelkürzel W,w,D oder d, Seitenanzahl y, +/- Modifikator und Modifikator z'
-                        type='text'
-                        name='system.tp'
-                        value='{{item.system.tp}}'
+                        class="regex-check"
+                        pattern="^\\\\\\\\d+[WwDd]\d{1,2}([\+\-]?\d*)?$"
+                        title="TP der Waffe in Schema xWy+/-z Anzahl Würfel x, Würfelkürzel W,w,D oder d, Seitenanzahl y, +/- Modifikator und Modifikator z"
+                        type="text"
+                        name="system.tp"
+                        value="{{item.system.tp}}"
                     />
-                    <span class='validation-icon'></span>
+                    <span class="validation-icon"></span>
                 </div>
             </label>
         </div>
         <div>
-            <b>Eigenschaften </b><a
-                class='add-eigenschaft'
-                data-itemclass='Neue Eigenschaft'
-            >[+]</a><b>: </b>
+            <b>Eigenschaften</b>
+            <a class="add-eigenschaft" data-itemclass="Neue Eigenschaft">[+]</a>
+            <b>:</b>
             {{#each item.system.eigenschaften as |eig key|}}
-                <div class='flexrow'>
-                    <div class='flex1'>
-                        <input
-                            name='system.eigenschaften.{{key}}.name'
-                            type='text'
-                            value='{{eig.name}}'
-                        />
-                    </div>
-                    <div class='flex2'>
-                        <input
-                            name='system.eigenschaften.{{key}}.text'
-                            type='text'
-                            value='{{eig.text}}'
-                        />
-                    </div>
-                    <div class='flex0'>
-                        <a class='del-eigenschaft' data-eigenschaftid='{{key}}'><i
-                                class='fas fa-trash'
-                            ></i></a>
-                    </div>
+            <div class="flexrow">
+                <div class="flex1">
+                    <input
+                        name="system.eigenschaften.{{key}}.name"
+                        type="text"
+                        value="{{eig.name}}"
+                    />
                 </div>
+                <div class="flex2">
+                    <input
+                        name="system.eigenschaften.{{key}}.text"
+                        type="text"
+                        value="{{eig.text}}"
+                    />
+                </div>
+                <div class="flex0">
+                    <a class="del-eigenschaft" data-eigenschaftid="{{key}}">
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </div>
+            </div>
             {{/each}}
         </div>
         <hr />
-        <a class='item-delete' data-itemid='{{item._id}}'>
-            <button class='clickable' type='button'>
+        <a class="item-delete" data-itemid="{{item._id}}">
+            <button class="clickable" type="button">
                 Löschen
-                <i class='fas fa-trash'></i>
+                <i class="fas fa-trash"></i>
             </button>
         </a>
     </div>

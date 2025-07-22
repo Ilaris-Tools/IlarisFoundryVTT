@@ -4,7 +4,12 @@
         <header class="sheet-header">
             <div class="header-fields">
                 <h1 class="charname">
-                    <input name="name" type="text" value="{{item.name}}" placeholder="Manövername" />
+                    <input
+                        name="name"
+                        type="text"
+                        value="{{item.name}}"
+                        placeholder="Manövername"
+                    />
                 </h1>
             </div>
         </header>
@@ -18,7 +23,12 @@
 
         <div class="flexrow">
             <label><b>Kurzbeschreibung:</b></label>
-            <input name="system.probe" value="{{item.system.probe}}" type="text" data-dtype="String" />
+            <input
+                name="system.probe"
+                value="{{item.system.probe}}"
+                type="text"
+                data-dtype="String"
+            />
         </div>
         <div class="flexrow">
             <label><b>Gegenprobe:</b></label>
@@ -38,9 +48,7 @@
             <div class="section-header">
                 <div><b>{{manoever.labels.prerequisites}}</b></div>
             </div>
-            <div class="section-description">
-                {{manoever.labels.prerequisitesDescription}}
-            </div>
+            <div class="section-description">{{manoever.labels.prerequisitesDescription}}</div>
             <div class="field">
                 <div class="flexrow">
                     <input
@@ -56,7 +64,7 @@
 
         <div class="manoever-section">
             <div class="section-header">
-                <b>{{manoever.labels.input}} </b>
+                <b>{{manoever.labels.input}}</b>
             </div>
             <div class="section-description">
                 {{manoever.labels.inputDescription}}
@@ -81,119 +89,127 @@
                     <label>{{manoever.labels.inputType}}:</label>
                     <select name="system.input.field">
                         {{selectOptions manoever.selector_type selected=item.system.input.field}}
-                    </select>            
-                </div>   
+                    </select>
+                </div>
                 <div class="flexrow row">
-                    {{#if (ifEq item.system.input.field "NUMBER")}} 
-                        <div class="flexrow number-limits">
-                            <label class="label">{{manoever.labels.numberLimits}}:</label>
-                            <div class="number-input-group">
-                                <label>{{manoever.labels.min}}:</label>
-                                <input
-                                    name="system.input.min"
-                                    type="number"
-                                    value="{{item.system.input.min}}"
-                                    data-dtype="Number"
-                                />
-                            </div>
-                            <div class="number-input-group">
-                                <label>{{manoever.labels.max}}:</label>
-                                <input
-                                    name="system.input.max"
-                                    type="number"
-                                    value="{{item.system.input.max}}"
-                                    data-dtype="Number"
-                                />
-                            </div>
+                    {{#if (ifEq item.system.input.field "NUMBER")}}
+                    <div class="flexrow number-limits">
+                        <label class="label">{{manoever.labels.numberLimits}}:</label>
+                        <div class="number-input-group">
+                            <label>{{manoever.labels.min}}:</label>
+                            <input
+                                name="system.input.min"
+                                type="number"
+                                value="{{item.system.input.min}}"
+                                data-dtype="Number"
+                            />
                         </div>
+                        <div class="number-input-group">
+                            <label>{{manoever.labels.max}}:</label>
+                            <input
+                                name="system.input.max"
+                                type="number"
+                                value="{{item.system.input.max}}"
+                                data-dtype="Number"
+                            />
+                        </div>
+                    </div>
                     {{/if}}
-                </div> 
-            </div> 
+                </div>
+            </div>
         </div>
 
         <div class="manoever-section">
             <div class="section-header">
-                <div><b>{{manoever.labels.modifications}} </b><a class="add-modification">[+]</a></div>
+                <div>
+                    <b>{{manoever.labels.modifications}}</b>
+                    <a class="add-modification">[+]</a>
+                </div>
             </div>
             <div class="section-description">
                 {{manoever.labels.modificationsDescription}}
                 <ul>
                     {{#each manoever.labels.modificationsHints}}
-                        <li>{{this}}</li>
+                    <li>{{this}}</li>
                     {{/each}}
                 </ul>
             </div>
             {{#each item.system.modifications}}
-                <div class="field">
-                    <div class="flexrow">
-                        <label>{{../manoever.labels.modificationType}}:</label>
-                        <select name="system.modifications.{{@index}}.type">
-                            {{selectOptions ../manoever.modification_type selected=this.type}}
-                        </select>
-                        <a
-                            class="delete-modification icon-small delete-button"
-                            data-modificationid="{{@index}}"
-                            ><i class="fas fa-trash"></i
-                        ></a>
-                    </div>
-                    <div class="flexrow">
-                        <label>{{../manoever.labels.value}}:</label>
-                        {{#if (ifEq this.type "CHANGE_DAMAGE_TYPE")}}
-                            <select name="system.modifications.{{@index}}.value">
-                                {{selectOptions ../schadenstypen selected=this.value}}
-                            </select>
-                        {{else if (ifEq this.type "SPECIAL_TEXT")}}
-                            <input
-                                name="system.modifications.{{@index}}.value"
-                                type="text"
-                                value="{{this.value}}"
-                                data-dtype="String"
-                                placeholder="{{../manoever.labels.specialEffect}}"
-                            />
-                        {{else}}
-                            {{#unless (ifEq this.type "ARMOR_BREAKING")}}
-                                <input
-                                    name="system.modifications.{{@index}}.value"
-                                    type="number"
-                                    value="{{this.value}}"
-                                    data-dtype="Number"
-                                />
-                            {{/unless}}
-                        {{/if}}
-                    </div>
-                    <div class="flexrow row">
-                        {{#unless (or (ifEq this.type "CHANGE_DAMAGE_TYPE") (ifEq this.type "ARMOR_BREAKING") (ifEq this.type "SPECIAL_TEXT"))}}
-                            <label>{{../manoever.labels.operator}}:</label>
-                            <select name="system.modifications.{{@index}}.operator">
-                                {{selectOptions ../manoever.operator selected=this.operator}}
-                            </select>          
-                        {{/unless}}
-                    </div>   
-                    <div class="flexrow row">
-                        {{#unless (or (ifEq this.type "CHANGE_DAMAGE_TYPE") (ifEq this.type "ARMOR_BREAKING") (ifEq this.type "SPECIAL_TEXT"))}}
-                            <label><b>{{../manoever.labels.target}}:</b></label>
-                            <input
-                                name="system.modifications.{{@index}}.target"
-                                value="{{this.target}}"
-                                type="text"
-                                data-dtype="String"
-                                placeholder="{{../manoever.labels.targetPlaceholder}}"
-                            />
-                        {{/unless}}
-                    </div>
-                    <div class="flexrow row">
-                        {{#unless (or (ifEq this.type "CHANGE_DAMAGE_TYPE") (ifEq this.type "ARMOR_BREAKING") (ifEq this.type "SPECIAL_TEXT"))}}
-                            <label><b>{{../manoever.labels.affectedByInput}}:</b></label>
-                            <input
-                                type="checkbox"
-                                name="system.modifications.{{@index}}.affectedByInput"
-                                {{checked this.affectedByInput}}
-                            />
-                            <span class="checkbox-description">{{../manoever.labels.affectedByInputDescription}}</span>
-                        {{/unless}}
-                    </div>
-                </div> 
-                <hr>        
+            <div class="field">
+                <div class="flexrow">
+                    <label>{{../manoever.labels.modificationType}}:</label>
+                    <select name="system.modifications.{{@index}}.type">
+                        {{selectOptions ../manoever.modification_type selected=this.type}}
+                    </select>
+                    <a
+                        class="delete-modification icon-small delete-button"
+                        data-modificationid="{{@index}}"
+                    >
+                        <i class="fas fa-trash"></i>
+                    </a>
+                </div>
+                <div class="flexrow">
+                    <label>{{../manoever.labels.value}}:</label>
+                    {{#if (ifEq this.type "CHANGE_DAMAGE_TYPE")}}
+                    <select name="system.modifications.{{@index}}.value">
+                        {{selectOptions ../schadenstypen selected=this.value}}
+                    </select>
+                    {{else if (ifEq this.type "SPECIAL_TEXT")}}
+                    <input
+                        name="system.modifications.{{@index}}.value"
+                        type="text"
+                        value="{{this.value}}"
+                        data-dtype="String"
+                        placeholder="{{../manoever.labels.specialEffect}}"
+                    />
+                    {{else}} {{#unless (ifEq this.type "ARMOR_BREAKING")}}
+                    <input
+                        name="system.modifications.{{@index}}.value"
+                        type="number"
+                        value="{{this.value}}"
+                        data-dtype="Number"
+                    />
+                    {{/unless}} {{/if}}
+                </div>
+                <div class="flexrow row">
+                    {{#unless (or (ifEq this.type "CHANGE_DAMAGE_TYPE") (ifEq this.type
+                    "ARMOR_BREAKING") (ifEq this.type "SPECIAL_TEXT"))}}
+                    <label>{{../manoever.labels.operator}}:</label>
+                    <select name="system.modifications.{{@index}}.operator">
+                        {{selectOptions ../manoever.operator selected=this.operator}}
+                    </select>
+                    {{/unless}}
+                </div>
+                <div class="flexrow row">
+                    {{#unless (or (ifEq this.type "CHANGE_DAMAGE_TYPE") (ifEq this.type
+                    "ARMOR_BREAKING") (ifEq this.type "SPECIAL_TEXT"))}}
+                    <label><b>{{../manoever.labels.target}}:</b></label>
+                    <input
+                        name="system.modifications.{{@index}}.target"
+                        value="{{this.target}}"
+                        type="text"
+                        data-dtype="String"
+                        placeholder="{{../manoever.labels.targetPlaceholder}}"
+                    />
+                    {{/unless}}
+                </div>
+                <div class="flexrow row">
+                    {{#unless (or (ifEq this.type "CHANGE_DAMAGE_TYPE") (ifEq this.type
+                    "ARMOR_BREAKING") (ifEq this.type "SPECIAL_TEXT"))}}
+                    <label><b>{{../manoever.labels.affectedByInput}}:</b></label>
+                    <input
+                        type="checkbox"
+                        name="system.modifications.{{@index}}.affectedByInput"
+                        {{checked
+                        this.affectedByInput}}
+                    />
+                    <span class="checkbox-description">
+                        {{../manoever.labels.affectedByInputDescription}}
+                    </span>
+                    {{/unless}}
+                </div>
+            </div>
+            <hr />
             {{/each}}
         </div>
     </div>

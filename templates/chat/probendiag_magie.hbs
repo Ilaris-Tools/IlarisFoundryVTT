@@ -1,13 +1,28 @@
 <div>
-    <label>Anzahl W20: </label>
-    <label><input type="radio" name="xd20-{{dialogId}}" value="0" {{#if (ifEq checked_xd20 "0")}}checked{{/if}}> 1W20</label>
-    <label><input type="radio" name="xd20-{{dialogId}}" value="1" {{#if (ifEq checked_xd20 "1")}}checked{{/if}}> 3W20</label>
+    <label>Anzahl W20:</label>
+    <label>
+        <input type="radio" name="xd20-{{dialogId}}" value="0" {{#if (ifEq checked_xd20
+        "0")}}checked{{/if}}> 1W20
+    </label>
+    <label>
+        <input type="radio" name="xd20-{{dialogId}}" value="1" {{#if (ifEq checked_xd20
+        "1")}}checked{{/if}}> 3W20
+    </label>
 </div>
 <div>
-    <label>Schips: </label>
-    <label><input type="radio" name="schips-{{dialogId}}" value="0" {{#if (ifEq checked_schips "0")}}checked{{/if}}> Kein Schips</label>
-    <label><input type="radio" name="schips-{{dialogId}}" value="1" {{#if (ifEq checked_schips "1")}}checked{{/if}}> Schips ohne Eigenheit</label>
-    <label><input type="radio" name="schips-{{dialogId}}" value="2" {{#if (ifEq checked_schips "2")}}checked{{/if}}> Schips mit Eigenheit</label>
+    <label>Schips:</label>
+    <label>
+        <input type="radio" name="schips-{{dialogId}}" value="0" {{#if (ifEq checked_schips
+        "0")}}checked{{/if}}> Kein Schips
+    </label>
+    <label>
+        <input type="radio" name="schips-{{dialogId}}" value="1" {{#if (ifEq checked_schips
+        "1")}}checked{{/if}}> Schips ohne Eigenheit
+    </label>
+    <label>
+        <input type="radio" name="schips-{{dialogId}}" value="2" {{#if (ifEq checked_schips
+        "2")}}checked{{/if}}> Schips mit Eigenheit
+    </label>
 </div>
 <hr />
 <div class="flexrow">
@@ -32,7 +47,12 @@
 {{#if manoever.mm_mezi.possible}}
 <div class="flexrow">
     <label>{{get_label "mm_mezi"}}</label>
-    <input type="checkbox" id="mm_mezi-{{dialogId}}" {{checked item.system.manoever.mm_mezi.selected}}>
+    <input
+        type="checkbox"
+        id="mm_mezi-{{dialogId}}"
+        {{checked
+        item.system.manoever.mm_mezi.selected}}
+    />
 </div>
 <hr />
 {{/if}}
@@ -62,7 +82,7 @@
     />
 </div>
 {{/if}}
-<hr/>
+<hr />
 <!-- Vorbereitung verkürzen -->
 {{#if manoever.mm_vbvk.possible}}
 <div class="flexrow">
@@ -88,20 +108,29 @@
         data-dtype="Number"
     />
 </div>
-<hr/>
+<hr />
 <!-- Zeit lassen -->
 {{#if manoever.mm_ztls.possible}}
 <div class="flexrow">
     <label>{{get_label "mm_ztls"}}</label>
-    <input type="checkbox" id="mm_ztls-{{dialogId}}" {{checked item.system.manoever.mm_ztls.selected}} >
+    <input
+        type="checkbox"
+        id="mm_ztls-{{dialogId}}"
+        {{checked
+        item.system.manoever.mm_ztls.selected}}
+    />
 </div>
-{{/if}}
-{{/if}}
+{{/if}} {{/if}}
 <!-- Erzwingen -->
 {{#if manoever.mm_erzw.possible}}
 <div class="flexrow">
     <label>{{get_label "mm_erzw"}}</label>
-    <input type="checkbox" id="mm_erzw-{{dialogId}}" {{checked item.system.manoever.mm_erzw.selected}} >
+    <input
+        type="checkbox"
+        id="mm_erzw-{{dialogId}}"
+        {{checked
+        item.system.manoever.mm_erzw.selected}}
+    />
 </div>
 {{/if}}
 <!-- Kosten sparen -->
@@ -123,8 +152,7 @@
 <div class="flexrow">
     <label>{{get_label "mm_zere"}}</label>
     <select id="mm_zere-{{dialogId}}">
-        {{selectOptions zere_choice selected=item.system.manoever.mm_zere.selected
-        localize=true}}
+        {{selectOptions zere_choice selected=item.system.manoever.mm_zere.selected localize=true}}
     </select>
 </div>
 {{/if}}
@@ -132,12 +160,17 @@
 {{#if manoever.mm_opfe.possible}}
 <div class="flexrow">
     <label>{{get_label "mm_opfe"}}</label>
-    <input type="checkbox" id="mm_opfe-{{dialogId}}" {{checked item.system.manoever.mm_opfe.selected}} >
+    <input
+        type="checkbox"
+        id="mm_opfe-{{dialogId}}"
+        {{checked
+        item.system.manoever.mm_opfe.selected}}
+    />
 </div>
 {{/if}}
 <hr />
 <div class="flexrow">
-    <label>Modifikator: </label>
+    <label>Modifikator:</label>
     <input
         id="modifikator-{{dialogId}}"
         type="number"
@@ -147,7 +180,7 @@
     />
 </div>
 <div class="flexrow">
-    <label>Würfelmodus: </label>
+    <label>Würfelmodus:</label>
     <select id="rollMode-{{dialogId}}">
         {{selectOptions rollModes selected=item.system.manoever.rllm.selected localize=true}}
     </select>
