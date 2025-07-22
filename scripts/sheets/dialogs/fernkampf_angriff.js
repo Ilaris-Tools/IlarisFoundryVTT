@@ -8,7 +8,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
     constructor(actor, item) {
         const dialog = { title: `Fernkampfangriff: ${item.name}` }
         const options = {
-            template: 'systems/Ilaris/templates/sheets/dialogs/fernkampf_angriff.html',
+            template: 'systems/Ilaris/templates/sheets/dialogs/fernkampf_angriff.hbs',
             width: 500,
             height: 'auto',
         }

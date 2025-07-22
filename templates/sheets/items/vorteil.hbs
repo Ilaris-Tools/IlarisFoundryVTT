@@ -1,0 +1,38 @@
+{{log 'vorteil' this}}
+<form class='{{cssClass}}'>
+    <div>
+        <input class='titel-input' name='name' type='text' value='{{item.name}}' />
+        <hr />
+        <div class='flexrow'>
+            <label><b>Kategorie:</b></label>
+            <select name='system.gruppe'>
+                {{selectOptions
+                    vorteilsgruppen
+                    selected=item.system.gruppe
+                    valueAttr='value'
+                    labelAttr='label'
+                }}
+            </select>
+        </div>
+        <div class='flexrow'>
+            <label><b>Voraussetzung:</b></label>
+            <input
+                name='system.voraussetzung'
+                value='{{item.system.voraussetzung}}'
+                type='text'
+                data-dtype='String'
+            />
+        </div>
+        <div>
+            <label><b>Beschreibung:</b></label>
+            <textarea rows='8' name='system.text'>{{item.system.text}}</textarea>
+        </div>
+        <hr />
+        <a class='item-delete' data-itemid='{{item._id}}'>
+            <button class='clickable' type='button'>
+                Vorteil Löschen
+                <i class='fas fa-trash'></i>
+            </button>
+        </a>
+    </div>
+</form>

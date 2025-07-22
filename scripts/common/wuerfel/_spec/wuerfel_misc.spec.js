@@ -54,7 +54,7 @@ describe('roll_crit_message', () => {
             await roll_crit_message('1d20+5', 'Test Roll', '', null, 'roll', true, 1, 20)
 
             expect(global.renderTemplate).toHaveBeenCalledWith(
-                'systems/Ilaris/templates/chat/probenchat_profan.html',
+                'systems/Ilaris/templates/chat/probenchat_profan.hbs',
                 expect.objectContaining({ crit: true }),
             )
         })
@@ -66,7 +66,7 @@ describe('roll_crit_message', () => {
             await roll_crit_message('1d20+5', 'Test Roll', '', null, 'roll', true, 1, 30)
 
             expect(global.renderTemplate).toHaveBeenCalledWith(
-                'systems/Ilaris/templates/chat/probenchat_profan.html',
+                'systems/Ilaris/templates/chat/probenchat_profan.hbs',
                 expect.not.objectContaining({ crit: true }),
             )
         })
@@ -78,7 +78,7 @@ describe('roll_crit_message', () => {
             await roll_crit_message('1d20+5', 'Test Roll', '', null, 'roll', true, 1, 15)
 
             expect(global.renderTemplate).toHaveBeenCalledWith(
-                'systems/Ilaris/templates/chat/probenchat_profan.html',
+                'systems/Ilaris/templates/chat/probenchat_profan.hbs',
                 expect.objectContaining({ fumble: true }),
             )
         })
@@ -90,7 +90,7 @@ describe('roll_crit_message', () => {
             await roll_crit_message('1d20+15', 'Test Roll', '', null, 'roll', true, 1, 5)
 
             expect(global.renderTemplate).toHaveBeenCalledWith(
-                'systems/Ilaris/templates/chat/probenchat_profan.html',
+                'systems/Ilaris/templates/chat/probenchat_profan.hbs',
                 expect.not.objectContaining({ fumble: true }),
             )
         })
@@ -108,7 +108,7 @@ describe('roll_crit_message', () => {
             await roll_crit_message('1d20+5', 'Test Roll', '', null, 'roll', true, 1, 30) // Impossible target
 
             expect(global.renderTemplate).toHaveBeenCalledWith(
-                'systems/Ilaris/templates/chat/probenchat_profan.html',
+                'systems/Ilaris/templates/chat/probenchat_profan.hbs',
                 expect.objectContaining({ crit: true }),
             )
         })
@@ -120,7 +120,7 @@ describe('roll_crit_message', () => {
             await roll_crit_message('1d20+15', 'Test Roll', '', null, 'roll', true, 1, 5) // Easy target
 
             expect(global.renderTemplate).toHaveBeenCalledWith(
-                'systems/Ilaris/templates/chat/probenchat_profan.html',
+                'systems/Ilaris/templates/chat/probenchat_profan.hbs',
                 expect.objectContaining({ fumble: true }),
             )
         })
@@ -133,7 +133,7 @@ describe('roll_crit_message', () => {
         await roll_crit_message('1d20+5', 'Test Roll', '', null, 'roll', true, 1, 15)
 
         expect(global.renderTemplate).toHaveBeenCalledWith(
-            'systems/Ilaris/templates/chat/probenchat_profan.html',
+            'systems/Ilaris/templates/chat/probenchat_profan.hbs',
             expect.objectContaining({ success: true }),
         )
     })
@@ -145,7 +145,7 @@ describe('roll_crit_message', () => {
         await roll_crit_message('1d20+5', 'Test Roll', '', null, 'roll', true, 1, 15)
 
         expect(global.renderTemplate).toHaveBeenCalledWith(
-            'systems/Ilaris/templates/chat/probenchat_profan.html',
+            'systems/Ilaris/templates/chat/probenchat_profan.hbs',
             expect.objectContaining({ noSuccess: true }),
         )
     })
@@ -157,7 +157,7 @@ describe('roll_crit_message', () => {
         await roll_crit_message('1d20+5', 'Test Roll', '', null, 'roll', false)
 
         expect(global.renderTemplate).toHaveBeenCalledWith(
-            'systems/Ilaris/templates/chat/probenchat_profan.html',
+            'systems/Ilaris/templates/chat/probenchat_profan.hbs',
             expect.not.objectContaining({ crit: true }),
         )
     })
@@ -178,7 +178,7 @@ describe('roll_crit_message', () => {
         )
 
         expect(global.renderTemplate).toHaveBeenCalledWith(
-            'systems/Ilaris/templates/chat/spell_result.html',
+            'systems/Ilaris/templates/chat/spell_result.hbs',
             expect.objectContaining({
                 success: true,
                 cost: '15',

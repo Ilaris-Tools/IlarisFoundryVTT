@@ -13,7 +13,7 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             // classes: ["ilaris", "sheet"],
-            template: 'systems/Ilaris/templates/sheets/items/uebernatuerlich_talent.html',
+            template: 'systems/Ilaris/templates/sheets/items/uebernatuerlich_talent.hbs',
             // width: 720,
             // height: 800,
             // resizable: false,
