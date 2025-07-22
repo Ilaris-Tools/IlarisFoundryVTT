@@ -21,7 +21,7 @@ export class FernkampfwaffeSheet extends IlarisItemSheet {
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             // classes: ["ilaris", "sheet"],
-            template: 'systems/Ilaris/templates/sheets/items/fernkampfwaffe.html',
+            template: 'systems/Ilaris/templates/sheets/items/fernkampfwaffe.hbs',
             // width: 720,
             // height: 800,
             // resizable: false,

@@ -67,7 +67,7 @@ export async function roll_crit_message(
         }
     }
 
-    let templatePath = 'systems/Ilaris/templates/chat/probenchat_profan.html'
+    let templatePath = 'systems/Ilaris/templates/chat/probenchat_profan.hbs'
     let templateData = {
         title: `${label}`,
         text: text,
@@ -80,7 +80,7 @@ export async function roll_crit_message(
 
     // If this is a spell result, use the spell_result template
     if (label.startsWith('Zauber (')) {
-        templatePath = 'systems/Ilaris/templates/chat/spell_result.html'
+        templatePath = 'systems/Ilaris/templates/chat/spell_result.hbs'
         const cost = text.match(/Kosten: (\d+) AsP/)?.[1] || 0
         templateData = {
             success: isSuccess || crit,
