@@ -5,7 +5,7 @@ export class KreaturSheet extends IlarisActorSheet {
         return foundry.utils.mergeObject(super.defaultOptions, {
             // classes: ["ilaris", "sheet"],
             classes: ['ilaris'],
-            template: 'systems/Ilaris/templates/sheets/kreatur.html',
+            template: 'systems/Ilaris/templates/sheets/kreatur.hbs',
             tabs: [
                 {
                     navSelector: '.sheet-tabs',
@@ -29,7 +29,7 @@ export class KreaturSheet extends IlarisActorSheet {
         } else if (clicktype == 'addanyitem') {
             // not used.. dropdown for itemcreate (actor) is used instead of another dialog
             const html = await renderTemplate(
-                'systems/Ilaris/templates/sheets/dialogs/addkreaturitem.html',
+                'systems/Ilaris/templates/sheets/dialogs/addkreaturitem.hbs',
                 {},
             )
             let d = new Dialog({

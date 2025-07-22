@@ -7,7 +7,7 @@ export class AngriffDialog extends CombatDialog {
     constructor(actor, item) {
         const dialog = { title: `Kampf: ${item.name}` }
         const options = {
-            template: 'systems/Ilaris/templates/sheets/dialogs/angriff.html',
+            template: 'systems/Ilaris/templates/sheets/dialogs/angriff.hbs',
             width: 500,
             height: 'auto',
         }

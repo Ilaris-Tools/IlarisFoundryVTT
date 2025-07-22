@@ -42,7 +42,7 @@ import {
 export class ManoeverSheet extends IlarisItemSheet {
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
-            template: 'systems/Ilaris/templates/sheets/items/manoever.html',
+            template: 'systems/Ilaris/templates/sheets/items/manoever.hbs',
         })
     }
 
