@@ -9,3 +9,8 @@ overrides:
           - '*.css'
       options:
           tabWidth: 2
+    - files: '*.hbs'
+      options:
+          parser: 'html'
+          htmlWhitespaceSensitivity: 'ignore'
+          embeddedLanguageFormatting: 'off'
