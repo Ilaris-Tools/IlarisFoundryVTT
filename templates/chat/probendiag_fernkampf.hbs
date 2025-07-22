@@ -1,13 +1,13 @@
 <div>
     <label>Anzahl W20: </label>
-    <label><input type="radio" name="xd20-{{dialogId}}" value="0" {{#if (ifEq checked_xd20 "0")}}checked{{/if}} /> 1W20</label>
-    <label><input type="radio" name="xd20-{{dialogId}}" value="1" {{#if (ifEq checked_xd20 "1")}}checked{{/if}} /> 3W20</label>
+    <label><input type="radio" name="xd20-{{dialogId}}" value="0" {{#if (ifEq checked_xd20 "0")}}checked{{/if}}> 1W20</label>
+    <label><input type="radio" name="xd20-{{dialogId}}" value="1" {{#if (ifEq checked_xd20 "1")}}checked{{/if}}> 3W20</label>
 </div>
 <div>
     <label>Schips: </label>
-    <label><input type="radio" name="schips-{{dialogId}}" value="0" {{#if (ifEq checked_schips "0")}}checked{{/if}} /> Kein Schips</label>
-    <label><input type="radio" name="schips-{{dialogId}}" value="1" {{#if (ifEq checked_schips "1")}}checked{{/if}} /> Schips ohne Eigenheit</label>
-    <label><input type="radio" name="schips-{{dialogId}}" value="2" {{#if (ifEq checked_schips "2")}}checked{{/if}} /> Schips mit Eigenheit</label>
+    <label><input type="radio" name="schips-{{dialogId}}" value="0" {{#if (ifEq checked_schips "0")}}checked{{/if}}> Kein Schips</label>
+    <label><input type="radio" name="schips-{{dialogId}}" value="1" {{#if (ifEq checked_schips "1")}}checked{{/if}}> Schips ohne Eigenheit</label>
+    <label><input type="radio" name="schips-{{dialogId}}" value="2" {{#if (ifEq checked_schips "2")}}checked{{/if}}> Schips mit Eigenheit</label>
 </div>
 <hr />
 <div class="flexrow">
@@ -95,8 +95,8 @@
 {{/if}} {{#if manoever.fm_snls.possible}}
 <div class="flexrow">
     <label>{{get_label "fm_snls"}}</label>
-    <label><input type="radio" name="fm_snls-{{dialogId}}" value="0" {{#if (ifEq item.system.manoever.fm_snls.selected "0")}}checked{{/if}} /> Normal</label>
-    <label><input type="radio" name="fm_snls-{{dialogId}}" value="1" {{#if (ifEq item.system.manoever.fm_snls.selected "1")}}checked{{/if}} /> Schnellladen</label>
+    <label><input type="radio" name="fm_snls-{{dialogId}}" value="0" {{#if (ifEq item.system.manoever.fm_snls.selected "0")}}checked{{/if}}> Normal</label>
+    <label><input type="radio" name="fm_snls-{{dialogId}}" value="1" {{#if (ifEq item.system.manoever.fm_snls.selected "1")}}checked{{/if}}> Schnellladen</label>
 </div>
 {{/if}}
 <hr />
