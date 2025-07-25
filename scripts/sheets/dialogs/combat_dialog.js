@@ -10,6 +10,9 @@ export class CombatDialog extends Dialog {
             mod_at: this.mod_at,
             choices_schips: CONFIG.ILARIS.schips_choice,
             checked_schips: '0',
+            dialogId: (this.dialogId = `dialog-${Date.now()}-${Math.random()
+                .toString(36)
+                .substring(2, 11)}`),
         }
     }
 
