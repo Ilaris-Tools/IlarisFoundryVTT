@@ -1,40 +1,32 @@
 {{log 'freie fertigkeit' this}}
-<form class='{{cssClass}}'>
+<form class="{{cssClass}}">
     <div>
         <div>
-            <header class='sheet-header'>
-                <div class='header-fields'>
-                    <h1 class='charname'>
-                        <input name='name' type='text' value='{{item.name}}' />
+            <header class="sheet-header">
+                <div class="header-fields">
+                    <h1 class="charname">
+                        <input name="name" type="text" value="{{item.name}}" />
                     </h1>
                 </div>
             </header>
         </div>
-        <div class='flexrow'>
+        <div class="flexrow">
             <label><b>Stufe:</b></label>
-            <select name='system.stufe'>
-                {{selectOptions
-                    stufen
-                    selected=item.system.stufe
-                    valueAttr='value'
-                    labelAttr='label'
-                }}
+            <select name="system.stufe">
+                {{selectOptions stufen selected=item.system.stufe valueAttr='value'
+                labelAttr='label' }}
             </select>
         </div>
-        <div class='flexrow'>
+        <div class="flexrow">
             <label><b>Gruppe:</b></label>
-            <select name='system.gruppe'>
-                {{selectOptions
-                    freieFertigkeitsgruppen
-                    selected=item.system.gruppe
-                    valueAttr='value'
-                    labelAttr='label'
-                }}
+            <select name="system.gruppe">
+                {{selectOptions freieFertigkeitsgruppen selected=item.system.gruppe
+                valueAttr='value' labelAttr='label' }}
             </select>
         </div>
         <div>
             <label><b>Beschreibung:</b></label>
-            <textarea name='system.text'>{{item.system.text}}</textarea>
+            <textarea name="system.text">{{item.system.text}}</textarea>
         </div>
     </div>
 </form>

@@ -36,7 +36,12 @@
                     systems/Ilaris/templates/helper/select_attribut.hbs}} {{/select}}
                 </select>
                 {{#if hasOwner}}
-                <input name="system.fw" value="{{item.system.fw}}" type="text" data-dtype="Number" />
+                <input
+                    name="system.fw"
+                    value="{{item.system.fw}}"
+                    type="text"
+                    data-dtype="Number"
+                />
                 {{/if}}
             </div>
             <label>Beschreibung</label>
