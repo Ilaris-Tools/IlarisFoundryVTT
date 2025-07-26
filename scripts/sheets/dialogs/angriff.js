@@ -118,14 +118,25 @@ export class AngriffDialog extends CombatDialog {
                 !t.document.hidden, // Not hidden
         )
 
+        // Log tokens for debugging
+        console.log('Current token:', token)
+        tokens.forEach((t) => {
+            console.log('Found nearby token:', {
+                name: t.name,
+                actor: t.actor,
+                disposition: t.document.disposition, // -1 hostile, 0 neutral, 1 friendly
+                document: t.document,
+            })
+        })
+
         // Calculate distances and create content
         let content = `<div style="max-height: 400px; overflow-y: auto;">
             <table style="width: 100%;">
                 <thead>
                     <tr>
                         <th>Name</th>
-                        <th>Entfernung</th>
                         <th>Felder</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
                 <tbody>`
@@ -133,18 +144,40 @@ export class AngriffDialog extends CombatDialog {
         tokens.forEach((t) => {
             const ray = new Ray(token.center, t.center)
             const distance = canvas.grid.measureDistances([{ ray }], { gridSpaces: true })[0]
-            const pixels = Math.round(ray.distance)
             const fields = Math.round(distance)
+
+            // Determine disposition
+            let disposition = ''
+            let dispositionClass = ''
+            switch (t.document.disposition) {
+                case -1:
+                    disposition = 'Feindlich'
+                    dispositionClass = 'hostile'
+                    break
+                case 0:
+                    disposition = 'Neutral'
+                    dispositionClass = 'neutral'
+                    break
+                case 1:
+                    disposition = 'Freundlich'
+                    dispositionClass = 'friendly'
+                    break
+            }
 
             content += `
                 <tr>
                     <td>${t.name}</td>
-                    <td>${pixels}px</td>
                     <td>${fields}</td>
+                    <td class="${dispositionClass}">${disposition}</td>
                 </tr>`
         })
 
-        content += `</tbody></table></div>`
+        content += `</tbody></table></div>
+        <style>
+            .hostile { color: #ff4444; }
+            .neutral { color: #ffaa00; }
+            .friendly { color: #44ff44; }
+        </style>`
 
         // Create and render the dialog
         new Dialog({
