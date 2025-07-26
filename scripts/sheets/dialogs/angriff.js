@@ -130,7 +130,11 @@ export class AngriffDialog extends CombatDialog {
         })
 
         // Calculate distances and create content
-        let content = `<div style="max-height: 400px; overflow-y: auto;">
+        let content = `
+        <div style="max-height: 400px; overflow-y: auto;">
+            <div id="selected-actors" style="margin-bottom: 10px; min-height: 20px;">
+                <strong>Ausgewählte Akteure:</strong> <span id="selection-list">Keine</span>
+            </div>
             <table style="width: 100%;">
                 <thead>
                     <tr>
@@ -165,7 +169,7 @@ export class AngriffDialog extends CombatDialog {
             }
 
             content += `
-                <tr>
+                <tr class="actor-row" data-token-id="${t.id}" data-actor-id="${t.actor.id}">
                     <td>${t.name}</td>
                     <td>${fields}</td>
                     <td class="${dispositionClass}">${disposition}</td>
@@ -179,19 +183,76 @@ export class AngriffDialog extends CombatDialog {
             .friendly { color: #44ff44; }
             table th { padding: 5px; }
             table td { padding: 3px 5px; }
+            .actor-row { cursor: pointer; }
+            .actor-row:hover { background-color: rgba(0, 0, 0, 0.1); }
+            .actor-row.selected { 
+                background-color: rgba(0, 150, 255, 0.2);
+            }
+            #selected-actors {
+                padding: 5px;
+                border-radius: 3px;
+            }
         </style>`
 
         // Create and render the dialog
-        new Dialog({
+        const d = new Dialog({
             title: 'Nahe Akteure',
             content: content,
             buttons: {
+                select: {
+                    label: 'Auswählen',
+                    callback: (html) => {
+                        const selectedIds = Array.from(
+                            html[0].querySelectorAll('.actor-row.selected'),
+                        ).map((row) => ({
+                            tokenId: row.dataset.tokenId,
+                            actorId: row.dataset.actorId,
+                            name: row.cells[0].textContent,
+                            distance: parseInt(row.cells[1].textContent),
+                        }))
+                        console.log('Selected actors:', selectedIds)
+                        // Here you can handle the selected actors
+                        // For now, we just log them
+                    },
+                },
                 close: {
                     label: 'Schließen',
                 },
             },
-            default: 'close',
-        }).render(true)
+            default: 'select',
+            render: (html) => {
+                // Store selected actors
+                const selectedActors = new Set()
+
+                // Handle row clicks using Foundry's event system
+                html.find('.actor-row').on('click', function (event) {
+                    const tokenId = this.dataset.tokenId
+
+                    // Toggle selection
+                    $(this).toggleClass('selected')
+                    if ($(this).hasClass('selected')) {
+                        selectedActors.add(tokenId)
+                    } else {
+                        selectedActors.delete(tokenId)
+                    }
+
+                    // Update selection display
+                    const selectionList = html.find('#selection-list')
+                    if (selectedActors.size === 0) {
+                        selectionList.text('Keine')
+                    } else {
+                        const selectedNames = html
+                            .find('.actor-row.selected')
+                            .map(function () {
+                                return $(this).find('td').first().text()
+                            })
+                            .get()
+                        selectionList.text(selectedNames.join(', '))
+                    }
+                })
+            },
+        })
+        d.render(true)
     }
 
     aufbauendeManoeverAktivieren() {
