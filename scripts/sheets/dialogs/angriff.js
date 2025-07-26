@@ -63,6 +63,8 @@ export class AngriffDialog extends CombatDialog {
             ${signed(this.at_abzuege_mod)} \
             ${signed(this.item.actor.system.modifikatoren.nahkampfmod)} \
             ${signed(this.mod_at)}`
+
+        // First send the attack roll message
         await roll_crit_message(
             formula,
             label,
@@ -72,6 +74,93 @@ export class AngriffDialog extends CombatDialog {
             true,
             this.fumble_val,
         )
+
+        // If we have selected targets, send them defense prompts
+        if (this.selectedActors && this.selectedActors.length > 0) {
+            for (const target of this.selectedActors) {
+                const targetActor = game.actors.get(target.actorId)
+                if (!targetActor) continue
+
+                // Find main and secondary weapons
+                const mainWeapon = targetActor.items.find(
+                    (item) => item.type === 'nahkampfwaffe' && item.system.hauptwaffe === true,
+                )
+
+                const secondaryWeapon = targetActor.items.find(
+                    (item) =>
+                        item.type === 'nahkampfwaffe' &&
+                        item.system.nebenwaffe === true &&
+                        (!mainWeapon || item.id !== mainWeapon.id), // Don't include if it's the same as main weapon
+                )
+
+                // Create defense buttons HTML
+                let buttonsHtml = ''
+                if (mainWeapon) {
+                    buttonsHtml += `
+                        <button class="defend-button" data-actor-id="${targetActor.id}" data-weapon-id="${mainWeapon.id}" data-distance="${target.distance}" style="margin: 0 5px 5px 0;">
+                            <i class="fas fa-shield-alt"></i>
+                            Verteidigen mit ${mainWeapon.name}
+                        </button>`
+                }
+                if (secondaryWeapon) {
+                    buttonsHtml += `
+                        <button class="defend-button" data-actor-id="${targetActor.id}" data-weapon-id="${secondaryWeapon.id}" data-distance="${target.distance}" style="margin: 0 5px 5px 0;">
+                            <i class="fas fa-shield-alt"></i>
+                            Verteidigen mit ${secondaryWeapon.name}
+                        </button>`
+                }
+
+                // If no weapons found, add a warning
+                if (!buttonsHtml) {
+                    buttonsHtml =
+                        '<p style="color: #aa0000;">Keine Haupt- oder Nebenwaffe gefunden.</p>'
+                }
+
+                // Create defense prompt message content
+                const content = `
+                    <div class="defense-prompt" style="padding: 10px;">
+                        <p>${this.actor.name} greift dich mit ${this.item.name} an!</p>
+                        <p>Entfernung: ${target.distance} Felder</p>
+                        <div class="defense-buttons" style="display: flex; flex-wrap: wrap;">
+                            ${buttonsHtml}
+                        </div>
+                    </div>
+                `
+
+                // Send the message to chat
+                const chatData = {
+                    user: game.user.id,
+                    speaker: ChatMessage.getSpeaker({ actor: targetActor }),
+                    content: content,
+                    whisper: [
+                        game.users.find((u) => u.character?.id === targetActor.id)?.id,
+                    ].filter((id) => id),
+                }
+                await ChatMessage.create(chatData)
+            }
+
+            // Add a click handler for the defend buttons
+            Hooks.once('renderChatMessage', (message, html) => {
+                html.find('.defend-button').click(async function () {
+                    const actorId = this.dataset.actorId
+                    const weaponId = this.dataset.weaponId
+                    const distance = parseInt(this.dataset.distance)
+                    const actor = game.actors.get(actorId)
+                    if (!actor) return
+
+                    // Get the specific weapon that was clicked
+                    const weapon = actor.items.get(weaponId)
+                    if (!weapon) {
+                        ui.notifications.warn('Die gewählte Waffe wurde nicht gefunden.')
+                        return
+                    }
+
+                    // Create and render defense dialog
+                    const d = new AngriffDialog(actor, weapon)
+                    d.render(true)
+                })
+            })
+        }
     }
 
     async _verteidigenKlick(html) {
