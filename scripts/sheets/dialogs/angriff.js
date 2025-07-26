@@ -134,9 +134,9 @@ export class AngriffDialog extends CombatDialog {
             <table style="width: 100%;">
                 <thead>
                     <tr>
-                        <th>Name</th>
-                        <th>Felder</th>
-                        <th>Status</th>
+                        <th style="text-align: left;">Name</th>
+                        <th style="text-align: left;">Felder</th>
+                        <th style="text-align: left;">Status</th>
                     </tr>
                 </thead>
                 <tbody>`
@@ -177,6 +177,8 @@ export class AngriffDialog extends CombatDialog {
             .hostile { color: #ff4444; }
             .neutral { color: #ffaa00; }
             .friendly { color: #44ff44; }
+            table th { padding: 5px; }
+            table td { padding: 3px 5px; }
         </style>`
 
         // Create and render the dialog
