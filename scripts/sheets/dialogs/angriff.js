@@ -10,6 +10,7 @@ export class AngriffDialog extends CombatDialog {
             template: 'systems/Ilaris/templates/sheets/dialogs/angriff.hbs',
             width: 500,
             height: 'auto',
+            classes: ['angriff-dialog'],
         }
         super(dialog, options)
         // this can be probendialog (more abstract)
@@ -144,7 +145,7 @@ export class AngriffDialog extends CombatDialog {
                     </tr>
                 </thead>
                 <tbody>
-                    <tr class="actor-row current-actor" data-token-id="${token.id}" data-actor-id="${token.actor.id}">
+                    <tr class="actor-row current-actor" data-token-id="${token.id}" data-actor-id="${token.actor.id}" data-distance="0">
                         <td><i class="fas fa-user"></i> ${token.name}</td>
                         <td>0</td>
                         <td>Selbst</td>
@@ -177,7 +178,7 @@ export class AngriffDialog extends CombatDialog {
             }
 
             content += `
-                <tr class="actor-row" data-token-id="${t.id}" data-actor-id="${t.actor.id}">
+                <tr class="actor-row" data-token-id="${t.id}" data-actor-id="${t.actor.id}" data-distance="${fields}">
                     <td>${t.name}</td>
                     <td>${fields}</td>
                     <td class="${dispositionClass}">${disposition}</td>
@@ -228,12 +229,15 @@ export class AngriffDialog extends CombatDialog {
                         ).map((row) => ({
                             tokenId: row.dataset.tokenId,
                             actorId: row.dataset.actorId,
-                            name: row.cells[0].textContent,
-                            distance: parseInt(row.cells[1].textContent),
+                            name: row.cells[0].textContent.trim(),
+                            distance: parseInt(row.dataset.distance),
                         }))
-                        console.log('Selected actors:', selectedIds)
-                        // Here you can handle the selected actors
-                        // For now, we just log them
+
+                        // Store selected actors in the class instance
+                        this.selectedActors = selectedIds
+
+                        // Update the main dialog to show selected actors
+                        this.updateSelectedActorsDisplay(html)
                     },
                 },
                 close: {
@@ -268,7 +272,7 @@ export class AngriffDialog extends CombatDialog {
                         const selectedNames = html
                             .find('.actor-row.selected')
                             .map(function () {
-                                return $(this).find('td').first().text()
+                                return $(this).find('td').first().text().trim()
                             })
                             .get()
                         selectionList.text(selectedNames.join(', '))
@@ -277,6 +281,36 @@ export class AngriffDialog extends CombatDialog {
             },
         })
         d.render(true)
+    }
+
+    updateSelectedActorsDisplay(html) {
+        // Get the parent dialog element that contains the original angriff.hbs content
+        const parentDialog = $(html[0]).closest('.app.window-app').parent().find('.angriff-dialog')
+
+        // Find or create the selected actors display
+        let selectedActorsDiv = parentDialog.find('.selected-actors-display')
+
+        if (selectedActorsDiv.length === 0) {
+            // If the div doesn't exist, create and insert it before the first hr
+            selectedActorsDiv = $(`
+                <div class="selected-actors-display" style="margin: 10px 0;">
+                    <div style="font-weight: bold; margin-bottom: 5px;">Ausgewählte Ziele:</div>
+                    <div class="selected-actors-list"></div>
+                </div>
+            `)
+            parentDialog.find('hr').first().before(selectedActorsDiv)
+        }
+
+        // Update the selected actors list
+        const listDiv = selectedActorsDiv.find('.selected-actors-list')
+        if (!this.selectedActors || this.selectedActors.length === 0) {
+            listDiv.html('<i>Keine Ziele ausgewählt</i>')
+        } else {
+            const actorsList = this.selectedActors
+                .map((actor) => `<div>${actor.name} (${actor.distance} Felder)</div>`)
+                .join('')
+            listDiv.html(actorsList)
+        }
     }
 
     aufbauendeManoeverAktivieren() {
