@@ -1,15 +1,15 @@
 {{log 'eigenschaft' this}}
-<form class='{{cssClass}}'>
+<form class="{{cssClass}}">
     <div>
-        <input class='titel-input' name='name' type='text' value='{{item.name}}' />
+        <input class="titel-input" name="name" type="text" value="{{item.name}}" />
         <hr />
-        <label>Beschreibung: </label>
-        <textarea rows='8' name='system.text'>{{item.system.text}}</textarea>
+        <label>Beschreibung:</label>
+        <textarea rows="8" name="system.text">{{item.system.text}}</textarea>
         <hr />
-        <a class='item-delete' data-itemid='{{item._id}}'>
-            <button class='clickable' type='button'>
+        <a class="item-delete" data-itemid="{{item._id}}">
+            <button class="clickable" type="button">
                 Eigenschaft Löschen
-                <i class='fas fa-trash'></i>
+                <i class="fas fa-trash"></i>
             </button>
         </a>
     </div>
