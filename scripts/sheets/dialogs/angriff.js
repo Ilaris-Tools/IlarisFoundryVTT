@@ -143,7 +143,15 @@ export class AngriffDialog extends CombatDialog {
                         <th style="text-align: left;">Status</th>
                     </tr>
                 </thead>
-                <tbody>`
+                <tbody>
+                    <tr class="actor-row current-actor" data-token-id="${token.id}" data-actor-id="${token.actor.id}">
+                        <td><i class="fas fa-user"></i> ${token.name}</td>
+                        <td>0</td>
+                        <td>Selbst</td>
+                    </tr>
+                    <tr class="separator">
+                        <td colspan="3"><hr style="margin: 5px 0;"></td>
+                    </tr>`
 
         tokens.forEach((t) => {
             const ray = new Ray(token.center, t.center)
@@ -188,6 +196,19 @@ export class AngriffDialog extends CombatDialog {
             .actor-row.selected { 
                 background-color: rgba(0, 150, 255, 0.2);
             }
+            .current-actor {
+                background-color: rgba(0, 0, 0, 0.05);
+            }
+            .current-actor.selected {
+                background-color: rgba(0, 150, 255, 0.3);
+            }
+            .separator {
+                background: none !important;
+                cursor: default !important;
+            }
+            .separator:hover {
+                background: none !important;
+            }
             #selected-actors {
                 padding: 5px;
                 border-radius: 3px;
@@ -226,6 +247,9 @@ export class AngriffDialog extends CombatDialog {
 
                 // Handle row clicks using Foundry's event system
                 html.find('.actor-row').on('click', function (event) {
+                    // Don't handle clicks on the separator
+                    if ($(this).hasClass('separator')) return
+
                     const tokenId = this.dataset.tokenId
 
                     // Toggle selection
