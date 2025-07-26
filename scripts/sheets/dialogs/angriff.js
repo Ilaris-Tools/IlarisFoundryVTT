@@ -37,6 +37,7 @@ export class AngriffDialog extends CombatDialog {
         super.activateListeners(html)
         html.find('.schaden').click((ev) => this._schadenKlick(html))
         html.find('.verteidigen').click((ev) => this._verteidigenKlick(html))
+        html.find('.show-nearby').click((ev) => this._showNearbyActors(html))
     }
 
     eigenschaftenText() {
@@ -99,6 +100,63 @@ export class AngriffDialog extends CombatDialog {
         let label = `Schaden (${this.item.name})`
         let formula = `${this.schaden} ${signed(this.mod_dm)}`
         await roll_crit_message(formula, label, this.text_dm, this.speaker, this.rollmode, false)
+    }
+
+    async _showNearbyActors(html) {
+        // Get the token for the current actor
+        const token = this.actor.getActiveTokens()[0]
+        if (!token) {
+            ui.notifications.warn('Kein Token für diesen Akteur auf der Szene gefunden.')
+            return
+        }
+
+        // Get all tokens on the current scene
+        const tokens = canvas.tokens.placeables.filter(
+            (t) =>
+                t.actor && // Has an actor
+                t.id !== token.id && // Not the current token
+                !t.document.hidden, // Not hidden
+        )
+
+        // Calculate distances and create content
+        let content = `<div style="max-height: 400px; overflow-y: auto;">
+            <table style="width: 100%;">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Entfernung</th>
+                        <th>Felder</th>
+                    </tr>
+                </thead>
+                <tbody>`
+
+        tokens.forEach((t) => {
+            const ray = new Ray(token.center, t.center)
+            const distance = canvas.grid.measureDistances([{ ray }], { gridSpaces: true })[0]
+            const pixels = Math.round(ray.distance)
+            const fields = Math.round(distance)
+
+            content += `
+                <tr>
+                    <td>${t.name}</td>
+                    <td>${pixels}px</td>
+                    <td>${fields}</td>
+                </tr>`
+        })
+
+        content += `</tbody></table></div>`
+
+        // Create and render the dialog
+        new Dialog({
+            title: 'Nahe Akteure',
+            content: content,
+            buttons: {
+                close: {
+                    label: 'Schließen',
+                },
+            },
+            default: 'close',
+        }).render(true)
     }
 
     aufbauendeManoeverAktivieren() {
