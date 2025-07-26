@@ -4,15 +4,19 @@ import { handleModifications } from './shared_dialog_helpers.js'
 import { CombatDialog } from './combat_dialog.js'
 
 export class AngriffDialog extends CombatDialog {
-    constructor(actor, item) {
-        const dialog = { title: `Kampf: ${item.name}` }
-        const options = {
+    constructor(actor, item, options = {}) {
+        const title = options.isDefenseMode
+            ? `Verteidigung gegen ${options.attackingActor?.name || 'Unbekannt'} (${item.name})`
+            : `Kampf: ${item.name}`
+
+        const dialog = { title }
+        const dialogOptions = {
             template: 'systems/Ilaris/templates/sheets/dialogs/angriff.hbs',
             width: 500,
             height: 'auto',
             classes: ['angriff-dialog'],
         }
-        super(dialog, options)
+        super(dialog, dialogOptions)
         // this can be probendialog (more abstract)
         this.text_at = ''
         this.text_vt = ''
@@ -26,11 +30,15 @@ export class AngriffDialog extends CombatDialog {
         if (this.item.system.eigenschaften.unberechenbar) {
             this.fumble_val = 2
         }
+        this.isDefenseMode = options.isDefenseMode || false
+        this.attackingActor = options.attackingActor || null
         this.aufbauendeManoeverAktivieren()
     }
 
     getData() {
         let data = super.getData()
+        data.isDefenseMode = this.isDefenseMode
+        data.attackingActor = this.attackingActor
         return data
     }
 
@@ -39,6 +47,13 @@ export class AngriffDialog extends CombatDialog {
         html.find('.schaden').click((ev) => this._schadenKlick(html))
         html.find('.verteidigen').click((ev) => this._verteidigenKlick(html))
         html.find('.show-nearby').click((ev) => this._showNearbyActors(html))
+
+        // If in defense mode, disable attack-related buttons
+        if (this.isDefenseMode) {
+            html.find('.angreifen').prop('disabled', true).css('opacity', '0.5')
+            html.find('.schaden').prop('disabled', true).css('opacity', '0.5')
+            html.find('.show-nearby').prop('disabled', true).css('opacity', '0.5')
+        }
     }
 
     eigenschaftenText() {
@@ -97,14 +112,14 @@ export class AngriffDialog extends CombatDialog {
                 let buttonsHtml = ''
                 if (mainWeapon) {
                     buttonsHtml += `
-                        <button class="defend-button" data-actor-id="${targetActor.id}" data-weapon-id="${mainWeapon.id}" data-distance="${target.distance}" style="margin: 0 5px 5px 0;">
+                        <button class="defend-button" data-actor-id="${targetActor.id}" data-weapon-id="${mainWeapon.id}" data-distance="${target.distance}" data-attacker-id="${this.actor.id}" style="margin: 0 5px 5px 0;">
                             <i class="fas fa-shield-alt"></i>
                             Verteidigen mit ${mainWeapon.name}
                         </button>`
                 }
                 if (secondaryWeapon) {
                     buttonsHtml += `
-                        <button class="defend-button" data-actor-id="${targetActor.id}" data-weapon-id="${secondaryWeapon.id}" data-distance="${target.distance}" style="margin: 0 5px 5px 0;">
+                        <button class="defend-button" data-actor-id="${targetActor.id}" data-weapon-id="${secondaryWeapon.id}" data-distance="${target.distance}" data-attacker-id="${this.actor.id}" style="margin: 0 5px 5px 0;">
                             <i class="fas fa-shield-alt"></i>
                             Verteidigen mit ${secondaryWeapon.name}
                         </button>`
@@ -145,7 +160,9 @@ export class AngriffDialog extends CombatDialog {
                     const actorId = this.dataset.actorId
                     const weaponId = this.dataset.weaponId
                     const distance = parseInt(this.dataset.distance)
+                    const attackerId = this.dataset.attackerId
                     const actor = game.actors.get(actorId)
+                    const attackingActor = game.actors.get(attackerId)
                     if (!actor) return
 
                     // Get the specific weapon that was clicked
@@ -155,8 +172,11 @@ export class AngriffDialog extends CombatDialog {
                         return
                     }
 
-                    // Create and render defense dialog
-                    const d = new AngriffDialog(actor, weapon)
+                    // Create and render defense dialog with defense mode options
+                    const d = new AngriffDialog(actor, weapon, {
+                        isDefenseMode: true,
+                        attackingActor: attackingActor,
+                    })
                     d.render(true)
                 })
             })
