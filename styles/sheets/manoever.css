@@ -90,17 +90,17 @@
 }
 
 .maneuver-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-    margin: 16px 0;
-    transition: max-height 0.3s ease-out;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 16px 0;
+  transition: max-height 0.3s ease-out;
 }
 
 .maneuver-grid.collapsed {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
 }
 
 .maneuver-grid.collapsed .maneuver-item:not(.has-value) {
@@ -108,45 +108,45 @@
 }
 
 .maneuver-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 8px;
-    padding: 4px 0;
-    background: none;
-    border-radius: 0;
-    min-height: auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  padding: 4px 0;
+  background: none;
+  border-radius: 0;
+  min-height: auto;
 }
 
 .maneuver-item.has-value {
-    background: none;
+  background: none;
 }
 
 .maneuver-item label {
-    font-weight: normal;
-    flex: 1;
-    margin: 0;
-    line-height: 1.3;
+  font-weight: normal;
+  flex: 1;
+  margin: 0;
+  line-height: 1.3;
 }
 
-.maneuver-item input[type="checkbox"] {
-    flex: 0 0 auto;
-    margin: 0;
-    order: 1;
+.maneuver-item input[type='checkbox'] {
+  flex: 0 0 auto;
+  margin: 0;
+  order: 1;
 }
 
-.maneuver-item input[type="number"] {
-    flex: 0 0 auto;
-    width: 80px;
-    margin: 0;
-    order: 1;
+.maneuver-item input[type='number'] {
+  flex: 0 0 auto;
+  width: 80px;
+  margin: 0;
+  order: 1;
 }
 
 .maneuver-item select {
-    flex: 0 0 auto;
-    max-width: 150px;
-    margin: 0;
-    order: 1;
+  flex: 0 0 auto;
+  max-width: 150px;
+  margin: 0;
+  order: 1;
 }
 
 .number-input {
@@ -189,173 +189,173 @@
 
 /* Modifier Summary Styling */
 .modifier-summary-container {
-    margin: 16px 0;
-    padding: 12px;
-    background: rgba(120, 46, 34, 0.03);
-    border: 1px solid rgba(120, 46, 34, 0.2);
-    border-radius: 8px;
+  margin: 16px 0;
+  padding: 12px;
+  background: rgba(120, 46, 34, 0.03);
+  border: 1px solid rgba(120, 46, 34, 0.2);
+  border-radius: 8px;
 }
 
 .modifier-summary h4 {
-    margin: 0 0 12px 0;
-    padding-bottom: 8px;
-    border-bottom: 1px solid rgba(120, 46, 34, 0.3);
-    color: #782e22;
-    font-weight: bold;
+  margin: 0 0 12px 0;
+  padding-bottom: 8px;
+  border-bottom: 1px solid rgba(120, 46, 34, 0.3);
+  color: #782e22;
+  font-weight: bold;
 }
 
 .modifier-list {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
 }
 
 .modifier-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 6px 8px;
-    border-radius: 4px;
-    font-size: 0.9em;
-    transition: background-color 0.2s ease;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 8px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  transition: background-color 0.2s ease;
 }
 
 .modifier-item span {
-    font-weight: bold;
-    margin-left: auto;
-    padding-left: 8px;
+  font-weight: bold;
+  margin-left: auto;
+  padding-left: 8px;
 }
 
 .modifier-item.base-value {
-    background: rgba(0, 0, 0, 0.05);
-    font-weight: 500;
+  background: rgba(0, 0, 0, 0.05);
+  font-weight: 500;
 }
 
 .modifier-item.positive {
-    background: rgba(0, 150, 0, 0.1);
-    color: #006400;
+  background: rgba(0, 150, 0, 0.1);
+  color: #006400;
 }
 
 .modifier-item.negative {
-    background: rgba(220, 0, 0, 0.1);
-    color: #8B0000;
+  background: rgba(220, 0, 0, 0.1);
+  color: #8b0000;
 }
 
 .modifier-item.neutral {
-    background: rgba(0, 0, 0, 0.02);
-    color: #333;
+  background: rgba(0, 0, 0, 0.02);
+  color: #333;
 }
 
 .modifier-item.total {
-    background: rgba(120, 46, 34, 0.1);
-    color: #782e22;
-    font-weight: bold;
-    border: 1px solid rgba(120, 46, 34, 0.3);
-    margin-top: 4px;
+  background: rgba(120, 46, 34, 0.1);
+  color: #782e22;
+  font-weight: bold;
+  border: 1px solid rgba(120, 46, 34, 0.3);
+  margin-top: 4px;
 }
 
 .modifier-item.total.positive {
-    background: rgba(0, 150, 0, 0.15);
-    color: #006400;
-    border-color: rgba(0, 150, 0, 0.3);
+  background: rgba(0, 150, 0, 0.15);
+  color: #006400;
+  border-color: rgba(0, 150, 0, 0.3);
 }
 
 .modifier-item.total.negative {
-    background: rgba(220, 0, 0, 0.15);
-    color: #8B0000;
-    border-color: rgba(220, 0, 0, 0.3);
+  background: rgba(220, 0, 0, 0.15);
+  color: #8b0000;
+  border-color: rgba(220, 0, 0, 0.3);
 }
 
 .modifier-item.total.neutral {
-    background: rgba(0, 0, 0, 0.05) !important;
-    color: #333 !important;
-    border-color: rgba(0, 0, 0, 0.2) !important;
+  background: rgba(0, 0, 0, 0.05) !important;
+  color: #333 !important;
+  border-color: rgba(0, 0, 0, 0.2) !important;
 }
 
 .modifier-section {
-    font-weight: bold;
-    margin: 8px 0 4px 0;
-    color: #782e22;
-    font-size: 0.9em;
+  font-weight: bold;
+  margin: 8px 0 4px 0;
+  color: #782e22;
+  font-size: 0.9em;
 }
 
 .modifier-item.maneuver {
-    margin-left: 12px;
-    font-size: 0.85em;
-    border-left: 3px solid rgba(120, 46, 34, 0.3);
+  margin-left: 12px;
+  font-size: 0.85em;
+  border-left: 3px solid rgba(120, 46, 34, 0.3);
 }
 
 .modifier-summary hr {
-    border: none;
-    border-top: 1px solid rgba(120, 46, 34, 0.2);
-    margin: 8px 0;
+  border: none;
+  border-top: 1px solid rgba(120, 46, 34, 0.2);
+  margin: 8px 0;
 }
 
 /* Animation for modifier updates */
 .modifier-item {
-    animation: fadeIn 0.3s ease-in-out;
+  animation: fadeIn 0.3s ease-in-out;
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-2px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+  from {
+    opacity: 0;
+    transform: translateY(-2px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* Combat Dialog Two-Column Layout */
 .combat-dialog-container {
-    display: flex;
-    gap: 20px;
-    height: 100%;
+  display: flex;
+  gap: 20px;
+  height: 100%;
 }
 
 .left-column {
-    flex: 1;
-    min-width: 400px;
+  flex: 1;
+  min-width: 400px;
 }
 
 .right-column {
-    flex: 0 0 300px;
-    background: rgba(0, 0, 0, 0.05);
-    border-left: 1px solid rgba(120, 46, 34, 0.2);
-    padding: 15px;
-    border-radius: 5px;
+  flex: 0 0 300px;
+  background: rgba(0, 0, 0, 0.05);
+  border-left: 1px solid rgba(120, 46, 34, 0.2);
+  padding: 15px;
+  border-radius: 5px;
 }
 
 /* Keep the modifier summary sticky in the right column */
 .right-column .modifier-summary-container {
-    position: sticky;
-    top: 0;
-    margin: 0;
+  position: sticky;
+  top: 0;
+  margin: 0;
 }
 
 /* Multiple summaries layout */
 .all-summaries {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 .all-summaries .modifier-summary {
-    margin: 0;
+  margin: 0;
 }
 
 .attack-summary h4 {
-    color: #8B0000;
-    border-bottom-color: #8B0000;
+  color: #8b0000;
+  border-bottom-color: #8b0000;
 }
 
 .defense-summary h4 {
-    color: #006400;
-    border-bottom-color: #006400;
+  color: #006400;
+  border-bottom-color: #006400;
 }
 
 .damage-summary h4 {
-    color: #FF6B00;
-    border-bottom-color: #FF6B00;
+  color: #ff6b00;
+  border-bottom-color: #ff6b00;
 }
