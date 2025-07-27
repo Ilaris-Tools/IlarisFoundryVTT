@@ -308,10 +308,43 @@ export class AngriffDialog extends CombatDialog {
         // Ensure we have both rolls
         if (!this.lastDefenseRoll || !this.attackRoll) return
 
-        // Compare the rolls
-        const attackTotal = this.attackRoll.roll.total
-        const defenseTotal = this.lastDefenseRoll.roll.total
-        const defenderWins = defenseTotal >= attackTotal
+        // Compare the rolls based on special conditions first
+        let defenderWins = false
+        let reason = ''
+
+        // Both rolled crits or both rolled fumbles - highest value wins
+        if (
+            (this.attackRoll.crit && this.lastDefenseRoll.crit) ||
+            (this.attackRoll.fumble && this.lastDefenseRoll.fumble)
+        ) {
+            defenderWins = this.lastDefenseRoll.roll.total >= this.attackRoll.roll.total
+            reason = 'Höchster Wurf gewinnt'
+        }
+        // Attacker rolled crit - attacker wins
+        else if (this.attackRoll.crit) {
+            defenderWins = false
+            reason = 'Kritischer Treffer'
+        }
+        // Defender rolled crit - defender wins
+        else if (this.lastDefenseRoll.crit) {
+            defenderWins = true
+            reason = 'Kritische Verteidigung'
+        }
+        // Attacker rolled fumble - defender wins
+        else if (this.attackRoll.fumble) {
+            defenderWins = true
+            reason = 'Patzer beim Angriff'
+        }
+        // Defender rolled fumble - attacker wins
+        else if (this.lastDefenseRoll.fumble) {
+            defenderWins = false
+            reason = 'Patzer bei der Verteidigung'
+        }
+        // Normal comparison - defender wins ties
+        else {
+            defenderWins = this.lastDefenseRoll.roll.total >= this.attackRoll.roll.total
+            reason = defenderWins ? 'Erfolgreiche Verteidigung' : 'Erfolgreicher Angriff'
+        }
 
         // Prepare the result message
         let resultText = `<div class="attack-resolution" style="padding: 10px;">
@@ -330,7 +363,10 @@ export class AngriffDialog extends CombatDialog {
             </div>`
         }
 
-        // Add any special conditions (crits, fumbles)
+        // Add the reason for the result
+        resultText += `<div style="font-style: italic; margin-top: 5px;">${reason}</div>`
+
+        // Add any special conditions that occurred
         if (this.attackRoll.crit) {
             resultText += `<div style="color: #44aa44; font-style: italic;">Kritischer Treffer!</div>`
         }
