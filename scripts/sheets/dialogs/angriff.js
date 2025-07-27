@@ -1,4 +1,8 @@
-import { roll_crit_message, get_statuseffect_by_id } from '../../common/wuerfel/wuerfel_misc.js'
+import {
+    roll_crit_message,
+    get_statuseffect_by_id,
+    evaluate_roll_with_crit,
+} from '../../common/wuerfel/wuerfel_misc.js'
 import { signed } from '../../common/wuerfel/chatutilities.js'
 import { handleModifications } from './shared_dialog_helpers.js'
 import { CombatDialog } from './combat_dialog.js'
@@ -77,15 +81,26 @@ export class AngriffDialog extends CombatDialog {
             ${signed(this.item.actor.system.modifikatoren.nahkampfmod)} \
             ${signed(this.mod_at)}`
 
-        // First send the attack roll message
-        await roll_crit_message(
+        // Use the new evaluation function
+        const rollResult = await evaluate_roll_with_crit(
             formula,
             label,
             this.text_at,
-            this.speaker,
-            this.rollmode,
-            true,
+            null, // success_val
             this.fumble_val,
+            true, // crit_eval
+        )
+
+        // Send the chat message
+        const html_roll = await renderTemplate(rollResult.templatePath, rollResult.templateData)
+        await rollResult.roll.toMessage(
+            {
+                speaker: this.speaker,
+                flavor: html_roll,
+            },
+            {
+                rollMode: this.rollmode,
+            },
         )
 
         // If we have selected targets, send them defense prompts
@@ -190,24 +205,57 @@ export class AngriffDialog extends CombatDialog {
         let formula = `${diceFormula} ${signed(this.item.system.vt)} ${signed(
             this.vt_abzuege_mod,
         )} ${signed(this.item.actor.system.modifikatoren.nahkampfmod)} ${signed(this.mod_vt)}`
-        await roll_crit_message(
+
+        // Use the new evaluation function
+        const rollResult = await evaluate_roll_with_crit(
             formula,
             label,
             this.text_vt,
-            this.speaker,
-            this.rollmode,
-            true,
+            null, // success_val
             this.fumble_val,
+            true, // crit_eval
+        )
+
+        // Send the chat message
+        const html_roll = await renderTemplate(rollResult.templatePath, rollResult.templateData)
+        await rollResult.roll.toMessage(
+            {
+                speaker: this.speaker,
+                flavor: html_roll,
+            },
+            {
+                rollMode: this.rollmode,
+            },
         )
     }
 
     async _schadenKlick(html) {
         await this.manoeverAuswaehlen(html)
         await this.updateManoeverMods()
-        // Rollmode
         let label = `Schaden (${this.item.name})`
         let formula = `${this.schaden} ${signed(this.mod_dm)}`
-        await roll_crit_message(formula, label, this.text_dm, this.speaker, this.rollmode, false)
+
+        // Use the new evaluation function for damage (no crit evaluation)
+        const rollResult = await evaluate_roll_with_crit(
+            formula,
+            label,
+            this.text_dm,
+            null, // success_val
+            1, // fumble_val not used since crit_eval is false
+            false, // crit_eval
+        )
+
+        // Send the chat message
+        const html_roll = await renderTemplate(rollResult.templatePath, rollResult.templateData)
+        await rollResult.roll.toMessage(
+            {
+                speaker: this.speaker,
+                flavor: html_roll,
+            },
+            {
+                rollMode: this.rollmode,
+            },
+        )
     }
 
     async _showNearbyActors(html) {
