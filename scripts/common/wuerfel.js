@@ -52,17 +52,14 @@ export async function wuerfelwurf(event, actor) {
     // };
     if (rolltype == 'angriff_diag') {
         let item = actor.items.get(event.currentTarget.dataset.itemid)
-        await item.setManoevers()
         let d = new AngriffDialog(actor, item)
         await d.render(true)
     } else if (rolltype == 'fernkampf_diag') {
         let item = actor.items.get(event.currentTarget.dataset.itemid)
-        await item.setManoevers()
         let d = new FernkampfAngriffDialog(actor, item)
         await d.render(true)
     } else if (rolltype == 'magie_diag' || rolltype == 'karma_diag') {
         let item = actor.items.get(event.currentTarget.dataset.itemid)
-        await item.setManoevers()
         console.log('item', item)
         let d = new UebernatuerlichDialog(actor, item)
         await d.render(true)

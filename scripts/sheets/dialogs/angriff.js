@@ -27,15 +27,13 @@ export class AngriffDialog extends CombatDialog {
         this.rollmode = game.settings.get('core', 'rollMode') // public, private....
         this.item.system.manoever.rllm.selected = game.settings.get('core', 'rollMode') // TODO: either manoever or dialog property.
         this.fumble_val = 1
-        if (this.item.system.eigenschaften.unberechenbar) {
-            this.fumble_val = 2
-        }
+        if (this.item.system.eigenschaften.unberechenbar) this.fumble_val = 2
         this.isDefenseMode = options.isDefenseMode || false
         this.attackingActor = options.attackingActor || null
         this.aufbauendeManoeverAktivieren()
     }
 
-    getData() {
+    async getData() {
         let data = super.getData()
         data.isDefenseMode = this.isDefenseMode
         data.attackingActor = this.attackingActor
