@@ -34,6 +34,7 @@ export class AngriffDialog extends CombatDialog {
         if (this.item.system.eigenschaften.unberechenbar) this.fumble_val = 2
         this.isDefenseMode = options.isDefenseMode || false
         this.attackingActor = options.attackingActor || null
+        this.attackRoll = options.attackRoll || null // Store the attack roll if provided
         this.aufbauendeManoeverAktivieren()
     }
 
@@ -91,17 +92,49 @@ export class AngriffDialog extends CombatDialog {
             true, // crit_eval
         )
 
+        // Determine if we should hide the roll result
+        const hideRoll = this.selectedActors && this.selectedActors.length > 0
+
+        // Modify template data to hide results if needed
+        const templateData = hideRoll
+            ? {
+                  ...rollResult.templateData,
+                  // Hide specific results but keep flavor text
+                  success: false,
+                  fumble: false,
+                  crit: false,
+                  is16OrHigher: false,
+                  noSuccess: false,
+                  // Add a message indicating hidden roll
+                  text:
+                      rollResult.templateData.text +
+                      '\nErgebnis verborgen bis alle Verteidigungen abgeschlossen sind.',
+              }
+            : rollResult.templateData
+
         // Send the chat message
-        const html_roll = await renderTemplate(rollResult.templatePath, rollResult.templateData)
+        const html_roll = await renderTemplate(rollResult.templatePath, templateData)
         await rollResult.roll.toMessage(
             {
                 speaker: this.speaker,
                 flavor: html_roll,
+                blind: hideRoll, // Make the roll blind if we have targets
+                whisper: hideRoll ? [game.user.id] : [], // Only whisper to GM if hidden
             },
             {
-                rollMode: this.rollmode,
+                rollMode: hideRoll ? 'gmroll' : this.rollmode,
             },
         )
+
+        // Store the roll result for later use with defense rolls
+        if (hideRoll) {
+            this.lastAttackRoll = {
+                roll: rollResult.roll,
+                success: rollResult.success,
+                is16OrHigher: rollResult.is16OrHigher,
+                templateData: rollResult.templateData,
+            }
+        }
 
         // If we have selected targets, send them defense prompts
         if (this.selectedActors && this.selectedActors.length > 0) {
@@ -185,10 +218,11 @@ export class AngriffDialog extends CombatDialog {
                         return
                     }
 
-                    // Create and render defense dialog with defense mode options
+                    // Create and render defense dialog with defense mode options and attack roll
                     const d = new AngriffDialog(actor, weapon, {
                         isDefenseMode: true,
                         attackingActor: attackingActor,
+                        attackRoll: rollResult, // Pass the attack roll to the defense dialog
                     })
                     d.render(true)
                 })
@@ -216,17 +250,112 @@ export class AngriffDialog extends CombatDialog {
             true, // crit_eval
         )
 
-        // Send the chat message
-        const html_roll = await renderTemplate(rollResult.templatePath, rollResult.templateData)
-        await rollResult.roll.toMessage(
-            {
-                speaker: this.speaker,
-                flavor: html_roll,
-            },
-            {
-                rollMode: this.rollmode,
-            },
-        )
+        // In defense mode, always hide the roll result initially
+        if (this.isDefenseMode) {
+            const templateData = {
+                ...rollResult.templateData,
+                // Hide specific results
+                success: false,
+                fumble: false,
+                crit: false,
+                is16OrHigher: false,
+                noSuccess: false,
+                // Add a message indicating hidden roll
+                text: rollResult.templateData.text + '\nVerteidigungsergebnis verborgen.',
+            }
+
+            // Send the hidden defense roll
+            const html_roll = await renderTemplate(rollResult.templatePath, templateData)
+            await rollResult.roll.toMessage(
+                {
+                    speaker: this.speaker,
+                    flavor: html_roll,
+                    blind: true,
+                    whisper: [game.user.id],
+                },
+                {
+                    rollMode: 'gmroll',
+                },
+            )
+
+            // Store the defense roll result
+            this.lastDefenseRoll = {
+                roll: rollResult.roll,
+                success: rollResult.success,
+                is16OrHigher: rollResult.is16OrHigher,
+                templateData: rollResult.templateData,
+                actor: this.actor,
+            }
+
+            // Resolve the attack vs defense
+            await this.resolveAttackVsDefense()
+        } else {
+            // Normal defense roll (not in response to an attack)
+            const html_roll = await renderTemplate(rollResult.templatePath, rollResult.templateData)
+            await rollResult.roll.toMessage(
+                {
+                    speaker: this.speaker,
+                    flavor: html_roll,
+                },
+                {
+                    rollMode: this.rollmode,
+                },
+            )
+        }
+    }
+
+    async resolveAttackVsDefense() {
+        // Ensure we have both rolls
+        if (!this.lastDefenseRoll || !this.attackRoll) return
+
+        // Compare the rolls
+        const attackTotal = this.attackRoll.roll.total
+        const defenseTotal = this.lastDefenseRoll.roll.total
+        const defenderWins = defenseTotal >= attackTotal
+
+        // Prepare the result message
+        let resultText = `<div class="attack-resolution" style="padding: 10px;">
+            <h3 style="margin-bottom: 10px;">Kampfergebnis</h3>
+            <div style="margin-bottom: 5px;">
+                <strong>${this.attackingActor.name}</strong> greift <strong>${this.lastDefenseRoll.actor.name}</strong> an
+            </div>`
+
+        if (defenderWins) {
+            resultText += `<div style="color: #44aa44; font-weight: bold; margin-top: 10px;">
+                ${this.lastDefenseRoll.actor.name} wehrt den Angriff erfolgreich ab!
+            </div>`
+        } else {
+            resultText += `<div style="color: #aa4444; font-weight: bold; margin-top: 10px;">
+                ${this.attackingActor.name} durchbricht die Verteidigung!
+            </div>`
+        }
+
+        // Add any special conditions (crits, fumbles)
+        if (this.attackRoll.crit) {
+            resultText += `<div style="color: #44aa44; font-style: italic;">Kritischer Treffer!</div>`
+        }
+        if (this.attackRoll.fumble) {
+            resultText += `<div style="color: #aa4444; font-style: italic;">Patzer beim Angriff!</div>`
+        }
+        if (this.lastDefenseRoll.crit) {
+            resultText += `<div style="color: #44aa44; font-style: italic;">Kritische Verteidigung!</div>`
+        }
+        if (this.lastDefenseRoll.fumble) {
+            resultText += `<div style="color: #aa4444; font-style: italic;">Patzer bei der Verteidigung!</div>`
+        }
+
+        resultText += '</div>'
+
+        // Send the resolution message
+        await ChatMessage.create({
+            content: resultText,
+            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+        })
+
+        // Clean up the stored rolls
+        this.lastDefenseRoll = null
+        this.attackRoll = null
     }
 
     async _schadenKlick(html) {
