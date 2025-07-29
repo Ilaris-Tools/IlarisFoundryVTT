@@ -157,8 +157,8 @@ jobs:
         name: 🚀 Deploy to Foundry Server
         runs-on: ubuntu-latest
         needs: validate
-        # Deploy bei: Push auf main/master/develop ODER manueller workflow_dispatch (von jedem Branch)
-        if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop') || github.event_name == 'workflow_dispatch' }}
+        # Deploy bei: Push auf main/master/develop ODER manual workflow_dispatch ODER manual rerun
+        if: ${{ (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop')) || github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.actor != 'dependabot[bot]') }}
 
         steps:
             - name: 🔍 Determine deployment context
