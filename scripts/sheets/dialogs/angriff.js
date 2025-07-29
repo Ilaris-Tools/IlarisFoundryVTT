@@ -421,6 +421,40 @@ export class AngriffDialog extends CombatDialog {
                 rollMode: this.rollmode,
             },
         )
+
+        // Apply damage to selected targets if any
+        if (this.selectedActors && this.selectedActors.length > 0) {
+            for (const target of this.selectedActors) {
+                const targetActor = game.actors.get(target.actorId)
+                if (!targetActor) continue
+
+                // Get the damage value and WS* of the target
+                const damage = rollResult.roll.total
+                const ws_stern = targetActor.system.abgeleitete.ws_stern
+
+                // Calculate how many times damage exceeds WS*
+                const woundsToAdd = Math.floor(damage / ws_stern)
+
+                if (woundsToAdd > 0) {
+                    // Get current wounds
+                    const currentWunden = targetActor.system.gesundheit.wunden || 0
+
+                    // Update wounds
+                    await targetActor.update({
+                        'system.gesundheit.wunden': currentWunden + woundsToAdd,
+                    })
+
+                    // Send a message to chat about the wounds
+                    await ChatMessage.create({
+                        content: `${targetActor.name} erleidet ${woundsToAdd} Wunde${
+                            woundsToAdd > 1 ? 'n' : ''
+                        }! (Schaden: ${damage}, WS*: ${ws_stern})`,
+                        speaker: this.speaker,
+                        type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+                    })
+                }
+            }
+        }
     }
 
     async _showNearbyActors(html) {
