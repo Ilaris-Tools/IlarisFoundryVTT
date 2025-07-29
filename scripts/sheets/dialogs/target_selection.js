@@ -1,8 +1,13 @@
 export class TargetSelectionDialog extends Dialog {
     constructor(actor, onSelectionComplete) {
-        super({
+        const dialog = {
             title: 'Nahe Akteure',
-            content: '', // Will be populated in getData
+        }
+        const dialogOptions = {
+            template: 'systems/Ilaris/templates/sheets/dialogs/target_selection.hbs',
+            width: 500,
+            height: 'auto',
+            classes: ['target-selection-dialog'],
             buttons: {
                 select: {
                     label: 'Auswählen',
@@ -14,7 +19,9 @@ export class TargetSelectionDialog extends Dialog {
             },
             default: 'select',
             render: (html) => this._activateListeners(html),
-        })
+        }
+
+        super(dialog, dialogOptions)
         this.actor = actor
         this.selectedActors = new Set()
     }
@@ -35,93 +42,48 @@ export class TargetSelectionDialog extends Dialog {
                 !t.document.hidden, // Not hidden
         )
 
-        // Calculate distances and create content
-        let content = `
-        <div style="max-height: 400px; overflow-y: auto;">
-            <div id="selected-actors" style="margin-bottom: 10px; min-height: 20px;">
-                <strong>Ausgewählte Akteure:</strong> <span id="selection-list">Keine</span>
-            </div>
-            <table style="width: 100%;">
-                <thead>
-                    <tr>
-                        <th style="text-align: left;">Name</th>
-                        <th style="text-align: left;">Felder</th>
-                        <th style="text-align: left;">Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr class="actor-row current-actor" data-token-id="${token.id}" data-actor-id="${token.actor.id}" data-distance="0">
-                        <td><i class="fas fa-user"></i> ${token.name}</td>
-                        <td>0</td>
-                        <td>Selbst</td>
-                    </tr>
-                    <tr class="separator">
-                        <td colspan="3"><hr style="margin: 5px 0;"></td>
-                    </tr>`
+        // Prepare data for the template
+        const templateData = {
+            currentToken: {
+                id: token.id,
+                actorId: token.actor.id,
+                name: token.name,
+            },
+            tokens: tokens.map((t) => {
+                const ray = new Ray(token.center, t.center)
+                const distance = Math.round(
+                    canvas.grid.measureDistances([{ ray }], { gridSpaces: true })[0],
+                )
 
-        tokens.forEach((t) => {
-            const ray = new Ray(token.center, t.center)
-            const distance = canvas.grid.measureDistances([{ ray }], { gridSpaces: true })[0]
-            const fields = Math.round(distance)
+                let disposition = ''
+                let dispositionClass = ''
+                switch (t.document.disposition) {
+                    case -1:
+                        disposition = 'Feindlich'
+                        dispositionClass = 'hostile'
+                        break
+                    case 0:
+                        disposition = 'Neutral'
+                        dispositionClass = 'neutral'
+                        break
+                    case 1:
+                        disposition = 'Freundlich'
+                        dispositionClass = 'friendly'
+                        break
+                }
 
-            // Determine disposition
-            let disposition = ''
-            let dispositionClass = ''
-            switch (t.document.disposition) {
-                case -1:
-                    disposition = 'Feindlich'
-                    dispositionClass = 'hostile'
-                    break
-                case 0:
-                    disposition = 'Neutral'
-                    dispositionClass = 'neutral'
-                    break
-                case 1:
-                    disposition = 'Freundlich'
-                    dispositionClass = 'friendly'
-                    break
-            }
+                return {
+                    id: t.id,
+                    actorId: t.actor.id,
+                    name: t.name,
+                    distance: distance,
+                    disposition: disposition,
+                    dispositionClass: dispositionClass,
+                }
+            }),
+        }
 
-            content += `
-                <tr class="actor-row" data-token-id="${t.id}" data-actor-id="${t.actor.id}" data-distance="${fields}">
-                    <td>${t.name}</td>
-                    <td>${fields}</td>
-                    <td class="${dispositionClass}">${disposition}</td>
-                </tr>`
-        })
-
-        content += `</tbody></table></div>
-        <style>
-            .hostile { color: #ff4444; }
-            .neutral { color: #ffaa00; }
-            .friendly { color: #44ff44; }
-            table th { padding: 5px; }
-            table td { padding: 3px 5px; }
-            .actor-row { cursor: pointer; }
-            .actor-row:hover { background-color: rgba(0, 0, 0, 0.1); }
-            .actor-row.selected { 
-                background-color: rgba(0, 150, 255, 0.2);
-            }
-            .current-actor {
-                background-color: rgba(0, 0, 0, 0.05);
-            }
-            .current-actor.selected {
-                background-color: rgba(0, 150, 255, 0.3);
-            }
-            .separator {
-                background: none !important;
-                cursor: default !important;
-            }
-            .separator:hover {
-                background: none !important;
-            }
-            #selected-actors {
-                padding: 5px;
-                border-radius: 3px;
-            }
-        </style>`
-
-        return { content }
+        return templateData
     }
 
     _activateListeners(html) {
