@@ -10,22 +10,12 @@ export class TargetSelectionDialog extends Dialog {
             classes: ['target-selection-dialog'],
             buttons: {},
             default: 'select',
-            render: (html) => {
-                this._activateListeners(html)
-                // Add button listeners
-                html.find('.dialog-button').on('click', (event) => {
-                    const button = event.currentTarget.dataset.button
-                    if (button === 'select') {
-                        this._handleSelection(html, onSelectionComplete)
-                    }
-                    this.close()
-                })
-            },
         }
 
         super(dialog, dialogOptions)
         this.actor = actor
         this.selectedActors = new Set()
+        this.onSelectionComplete = onSelectionComplete
     }
 
     async getData() {
@@ -88,7 +78,17 @@ export class TargetSelectionDialog extends Dialog {
         return templateData
     }
 
-    _activateListeners(html) {
+    activateListeners(html) {
+        super.activateListeners(html)
+
+        // Add button listeners
+        html.find('.submit').on('click', (event) => {
+            this._handleSelection(html, this.onSelectionComplete)
+            this.close()
+        })
+        html.find('.close').on('click', (event) => {
+            this.close()
+        })
         // Handle row clicks using Foundry's event system
         html.find('.actor-row').on('click', (event) => {
             const row = event.currentTarget

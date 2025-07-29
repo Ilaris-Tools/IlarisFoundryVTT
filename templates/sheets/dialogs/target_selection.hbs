@@ -1,39 +1,39 @@
 <div id="selected-actors" style="margin-bottom: 10px; min-height: 20px;">
-        <strong>Ausgewählte Akteure:</strong> <span id="selection-list">Keine</span>
-    </div>
-    <table style="width: 100%;">
-        <thead>
-            <tr>
-                <th style="text-align: left;">Name</th>
-                <th style="text-align: left;">Felder</th>
-                <th style="text-align: left;">Status</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr class="actor-row current-actor" data-token-id="{{currentToken.id}}" data-actor-id="{{currentToken.actorId}}" data-distance="0">
-                <td><i class="fas fa-user"></i> {{currentToken.name}}</td>
-                <td>0</td>
-                <td>Selbst</td>
-            </tr>
-            <tr class="separator">
-                <td colspan="3"><hr style="margin: 5px 0;"></td>
-            </tr>
-            {{#each tokens}}
-            <tr class="actor-row" data-token-id="{{this.id}}" data-actor-id="{{this.actorId}}" data-distance="{{this.distance}}">
-                <td>{{this.name}}</td>
-                <td>{{this.distance}}</td>
-                <td class="{{this.dispositionClass}}">{{this.disposition}}</td>
-            </tr>
-            {{/each}}
-        </tbody>
-    </table>
+    <strong>Ausgewählte Akteure:</strong> <span id="selection-list">Keine</span>
+</div>
+<table style="width: 100%;">
+    <thead>
+        <tr>
+            <th style="text-align: left;">Name</th>
+            <th style="text-align: left;">Felder</th>
+            <th style="text-align: left;">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="actor-row current-actor" data-token-id="{{currentToken.id}}" data-actor-id="{{currentToken.actorId}}" data-distance="0">
+            <td><i class="fas fa-user"></i> {{currentToken.name}}</td>
+            <td>0</td>
+            <td>Selbst</td>
+        </tr>
+        <tr class="separator">
+            <td colspan="3"><hr style="margin: 5px 0;"></td>
+        </tr>
+        {{#each tokens}}
+        <tr class="actor-row" data-token-id="{{this.id}}" data-actor-id="{{this.actorId}}" data-distance="{{this.distance}}">
+            <td>{{this.name}}</td>
+            <td>{{this.distance}}</td>
+            <td class="{{this.dispositionClass}}">{{this.disposition}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
 
-<div class="dialog-buttons">
-    <button class="dialog-button" data-button="select">
+<div class="flexrow">
+    <button class="submit" type="button">
         <i class="fas fa-check"></i>
         Auswählen
     </button>
-    <button class="dialog-button" data-button="close">
+    <button class="close" type="button">
         <i class="fas fa-times"></i>
         Schließen
     </button>
