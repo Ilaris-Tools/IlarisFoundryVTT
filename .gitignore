@@ -44,4 +44,5 @@ node_modules
 # Test coverage reports
 /coverage/
 
-.vscode/tasks-scripts/developer.env
+.vscode/tasks-scripts/start-foundry/developer.env
+*.code-workspace
