@@ -4,12 +4,12 @@
         {{#each packs}}
         <div class="form-group pack-entry">
             <div class="pack-row">
-                <label class="checkbox {{#if (eq this.id 'Ilaris.manover')}}system-pack{{/if}} {{#if this.disabled}}disabled{{/if}}">
-                    <input type="checkbox" name="{{this.id}}" {{#if this.selected}}checked{{/if}} {{#if this.disabled}}disabled title="{{this.disabledReason}}"{{/if}}>
-                    {{#if (eq this.id 'Ilaris.manover')}}
-                        {{this.name}} von Ilaris
-                    {{else}}
-                        {{this.name}}
+                <label
+                    class="checkbox {{#if (eq this.id 'Ilaris.manover')}}system-pack{{/if}} {{#if this.disabled}}disabled{{/if}}"
+                >
+                    <input type="checkbox" name="{{this.id}}" {{#if this.selected}}checked{{/if}}
+                    {{#if this.disabled}}disabled title="{{this.disabledReason}}"{{/if}}> {{#if (eq
+                    this.id 'Ilaris.manover')}} {{this.name}} von Ilaris {{else}} {{this.name}}
                     {{/if}}
                 </label>
                 {{#if this.disabled}}
@@ -21,10 +21,12 @@
     </div>
     <div class="form-group">
         <button type="submit" name="submit">
-            <i class="far fa-save"></i> Speichern
+            <i class="far fa-save"></i>
+            Speichern
         </button>
         <button type="button" name="reset">
-            <i class="fas fa-undo"></i> Zurücksetzen
+            <i class="fas fa-undo"></i>
+            Zurücksetzen
         </button>
     </div>
-</form> 
+</form>

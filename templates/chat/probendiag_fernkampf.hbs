@@ -1,13 +1,28 @@
 <div>
-    <label>Anzahl W20: </label>
-    <label><input type="radio" name="xd20-{{dialogId}}" value="0" {{#if (ifEq checked_xd20 "0")}}checked{{/if}}> 1W20</label>
-    <label><input type="radio" name="xd20-{{dialogId}}" value="1" {{#if (ifEq checked_xd20 "1")}}checked{{/if}}> 3W20</label>
+    <label>Anzahl W20:</label>
+    <label>
+        <input type="radio" name="xd20-{{dialogId}}" value="0" {{#if (ifEq checked_xd20
+        "0")}}checked{{/if}}> 1W20
+    </label>
+    <label>
+        <input type="radio" name="xd20-{{dialogId}}" value="1" {{#if (ifEq checked_xd20
+        "1")}}checked{{/if}}> 3W20
+    </label>
 </div>
 <div>
-    <label>Schips: </label>
-    <label><input type="radio" name="schips-{{dialogId}}" value="0" {{#if (ifEq checked_schips "0")}}checked{{/if}}> Kein Schips</label>
-    <label><input type="radio" name="schips-{{dialogId}}" value="1" {{#if (ifEq checked_schips "1")}}checked{{/if}}> Schips ohne Eigenheit</label>
-    <label><input type="radio" name="schips-{{dialogId}}" value="2" {{#if (ifEq checked_schips "2")}}checked{{/if}}> Schips mit Eigenheit</label>
+    <label>Schips:</label>
+    <label>
+        <input type="radio" name="schips-{{dialogId}}" value="0" {{#if (ifEq checked_schips
+        "0")}}checked{{/if}}> Kein Schips
+    </label>
+    <label>
+        <input type="radio" name="schips-{{dialogId}}" value="1" {{#if (ifEq checked_schips
+        "1")}}checked{{/if}}> Schips ohne Eigenheit
+    </label>
+    <label>
+        <input type="radio" name="schips-{{dialogId}}" value="2" {{#if (ifEq checked_schips
+        "2")}}checked{{/if}}> Schips mit Eigenheit
+    </label>
 </div>
 <hr />
 <div class="flexrow">
@@ -57,8 +72,7 @@
 <div class="flexrow">
     <label>{{get_label "fm_rwrh"}}</label>
     <select id="fm_rwrh">
-        {{selectOptions manoever.rw selected=item.system.manoever.fm_rwrh.selected
-        localize=true}}
+        {{selectOptions manoever.rw selected=item.system.manoever.fm_rwrh.selected localize=true}}
     </select>
 </div>
 <hr />
@@ -95,13 +109,19 @@
 {{/if}} {{#if manoever.fm_snls.possible}}
 <div class="flexrow">
     <label>{{get_label "fm_snls"}}</label>
-    <label><input type="radio" name="fm_snls-{{dialogId}}" value="0" {{#if (ifEq item.system.manoever.fm_snls.selected "0")}}checked{{/if}}> Normal</label>
-    <label><input type="radio" name="fm_snls-{{dialogId}}" value="1" {{#if (ifEq item.system.manoever.fm_snls.selected "1")}}checked{{/if}}> Schnellladen</label>
+    <label>
+        <input type="radio" name="fm_snls-{{dialogId}}" value="0" {{#if (ifEq
+        item.system.manoever.fm_snls.selected "0")}}checked{{/if}}> Normal
+    </label>
+    <label>
+        <input type="radio" name="fm_snls-{{dialogId}}" value="1" {{#if (ifEq
+        item.system.manoever.fm_snls.selected "1")}}checked{{/if}}> Schnellladen
+    </label>
 </div>
 {{/if}}
 <hr />
 <div class="flexrow">
-    <label>Modifikator: </label>
+    <label>Modifikator:</label>
     <input
         id="modifikator-{{dialogId}}"
         type="number"
@@ -111,7 +131,7 @@
     />
 </div>
 <div class="flexrow">
-    <label>Würfelmodus: </label>
+    <label>Würfelmodus:</label>
     <select id="rollMode">
         {{selectOptions rollModes selected=item.system.manoever.rllm.selected localize=true}}
     </select>

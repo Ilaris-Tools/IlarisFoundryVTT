@@ -30,7 +30,6 @@ export class AngriffDialog extends CombatDialog {
 
     getData() {
         let data = super.getData()
-        data.dialogId = this.dialogId
         return data
     }
 

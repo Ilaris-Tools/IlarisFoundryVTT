@@ -1,19 +1,28 @@
 <div class="flexrow">
-    <label>Kombinierte Aktion: </label>
+    <label>Kombinierte Aktion:</label>
     <input class="toggle-aktion" type="checkbox" id="kombinierte_aktion" unchecked />
 </div>
 <div class="flexrow">
-    <label>Volle Offensive: </label>
+    <label>Volle Offensive:</label>
     <input class="toggle-aktion" type="checkbox" id="volle_offensive" unchecked />
 </div>
 <div class="flexrow">
-    <label>Reichweitenunterschied: </label>
-    <label><input type="radio" name="distance_name-{{dialogId}}" value="0" {{#if (ifEq distance_checked "0")}}checked{{/if}}> Ideal</label>
-    <label><input type="radio" name="distance_name-{{dialogId}}" value="1" {{#if (ifEq distance_checked "1")}}checked{{/if}}> 1 Feld</label>
-    <label><input type="radio" name="distance_name-{{dialogId}}" value="2" {{#if (ifEq distance_checked "2")}}checked{{/if}}> 2 Felder</label>
+    <label>Reichweitenunterschied:</label>
+    <label>
+        <input type="radio" name="distance_name-{{dialogId}}" value="0" {{#if (ifEq distance_checked
+        "0")}}checked{{/if}}> Ideal
+    </label>
+    <label>
+        <input type="radio" name="distance_name-{{dialogId}}" value="1" {{#if (ifEq distance_checked
+        "1")}}checked{{/if}}> 1 Feld
+    </label>
+    <label>
+        <input type="radio" name="distance_name-{{dialogId}}" value="2" {{#if (ifEq distance_checked
+        "2")}}checked{{/if}}> 2 Felder
+    </label>
 </div>
 <div class="flexrow">
-    <label>Reaktionsanzahl: </label>
+    <label>Reaktionsanzahl:</label>
     <input id="reaktionsanzahl" type="number" value="0" data-dtype="Number" />
 </div>
 <hr />
@@ -27,8 +36,7 @@
     <label>{{get_label "km_entw"}}</label>
     <input type="checkbox" id="km_entw" unchecked />
 </div>
-{{/if}}
-{{#if (ifIn "km_gzsl" manoever_at)}}
+{{/if}} {{#if (ifIn "km_gzsl" manoever_at)}}
 <div class="flexrow">
     <label>{{get_label "km_gzsl"}}</label>
     <select id="km_gzsl" name="km_gzsl">
@@ -99,7 +107,7 @@
 <div class="flexrow">
     <label>{{get_label "km_stag"}}</label>
     <input type="checkbox" id="km_stag" unchecked />
-    <label>GS: </label>
+    <label>GS:</label>
     <input id="km_stag_gs" type="number" value="0" data-dtype="Number" />
 </div>
 {{/if}} {{#if (ifIn "km_tdst" manoever_at)}}
@@ -111,7 +119,7 @@
 <div class="flexrow">
     <label>{{get_label "km_uebr"}}</label>
     <input type="checkbox" id="km_uebr" unchecked />
-    <label>GS: </label>
+    <label>GS:</label>
     <input id="km_uebr_gs" type="number" value="0" data-dtype="Number" />
 </div>
 {{/if}} {{#if (ifIn "km_utlf" manoever_at)}}
@@ -121,11 +129,11 @@
 {{/if}}
 <hr />
 <div class="flexrow">
-    <label for="modifikator">Modifikator: </label>
+    <label for="modifikator">Modifikator:</label>
     <input id="modifikator" type="number" value="0" data-dtype="Number" />
 </div>
 <div class="flexrow">
-    <label>Würfelmodus: </label>
+    <label>Würfelmodus:</label>
     <select id="rollMode">
         {{selectOptions rollModes selected=defaultRollMode localize=true}}
     </select>
