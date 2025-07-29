@@ -8,17 +8,19 @@ export class TargetSelectionDialog extends Dialog {
             width: 500,
             height: 'auto',
             classes: ['target-selection-dialog'],
-            buttons: {
-                select: {
-                    label: 'Auswählen',
-                    callback: (html) => this._handleSelection(html, onSelectionComplete),
-                },
-                close: {
-                    label: 'Schließen',
-                },
-            },
+            buttons: {},
             default: 'select',
-            render: (html) => this._activateListeners(html),
+            render: (html) => {
+                this._activateListeners(html)
+                // Add button listeners
+                html.find('.dialog-button').on('click', (event) => {
+                    const button = event.currentTarget.dataset.button
+                    if (button === 'select') {
+                        this._handleSelection(html, onSelectionComplete)
+                    }
+                    this.close()
+                })
+            },
         }
 
         super(dialog, dialogOptions)
