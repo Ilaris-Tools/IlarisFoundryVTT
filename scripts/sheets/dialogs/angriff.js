@@ -36,6 +36,7 @@ export class AngriffDialog extends CombatDialog {
     activateListeners(html) {
         super.activateListeners(html)
         html.find('.verteidigen').click((ev) => this._verteidigenKlick(html))
+        html.find('.schaden').click((ev) => this._schadenKlick(html))
 
         // Store a reference to prevent multiple updates
         this._updateTimeout = null
@@ -63,6 +64,27 @@ export class AngriffDialog extends CombatDialog {
 
         // Initial display update
         setTimeout(() => this.updateModifierDisplay(html), 500)
+
+        // Add event listeners for clickable summary sections
+        this.addSummaryClickListeners(html)
+    }
+
+    addSummaryClickListeners(html) {
+        // Use event delegation since the summary elements are dynamically created
+        html.find('#modifier-summary').on('click', '.clickable-summary.angreifen', (ev) => {
+            ev.preventDefault()
+            this._angreifenKlick(html)
+        })
+
+        html.find('#modifier-summary').on('click', '.clickable-summary.verteidigen', (ev) => {
+            ev.preventDefault()
+            this._verteidigenKlick(html)
+        })
+
+        html.find('#modifier-summary').on('click', '.clickable-summary.schaden', (ev) => {
+            ev.preventDefault()
+            this._schadenKlick(html)
+        })
     }
 
     /**
@@ -140,8 +162,14 @@ export class AngriffDialog extends CombatDialog {
      * Creates attack roll summary
      */
     getAttackSummary(baseAT, statusMods, nahkampfMods, diceFormula) {
-        let summary = '<div class="modifier-summary attack-summary">'
-        summary += '<h4>🗡️ Angriffswurf:</h4>'
+        // Calculate totals first for the heading
+        const maneuverMod = this.mod_at || 0
+        const totalMod = maneuverMod + statusMods + nahkampfMods
+        const finalAT = baseAT + totalMod
+        const finalFormula = finalAT >= 0 ? `${diceFormula}+${finalAT}` : `${diceFormula}${finalAT}`
+
+        let summary = '<div class="modifier-summary attack-summary clickable-summary angreifen">'
+        summary += `<h4>🗡️ Angriff: ${finalFormula}</h4>`
         summary += '<div class="modifier-list">'
 
         // Base AT
@@ -175,11 +203,6 @@ export class AngriffDialog extends CombatDialog {
             })
         }
 
-        // Calculate totals
-        const maneuverMod = this.mod_at || 0
-        const totalMod = maneuverMod + statusMods + nahkampfMods
-        const finalAT = baseAT + totalMod
-
         summary += '<hr>'
 
         // Show total modifiers if any exist
@@ -189,11 +212,6 @@ export class AngriffDialog extends CombatDialog {
             summary += `<div class="modifier-item total ${totalModColor}"><strong>Addierte Modifikatoren: ${totalModSign}${totalMod}</strong></div>`
         }
 
-        // Show final attack roll - always neutral
-        const finalFormula =
-            totalMod >= 0 ? `${diceFormula}+${finalAT}` : `${diceFormula}${finalAT}`
-        summary += `<div class="modifier-item total neutral"><strong>Finaler Wurf: ${finalFormula}</strong></div>`
-
         summary += '</div></div>'
         return summary
     }
@@ -202,15 +220,21 @@ export class AngriffDialog extends CombatDialog {
      * Creates defense roll summary
      */
     getDefenseSummary(baseVT, statusMods, nahkampfMods, diceFormula) {
-        let summary = '<div class="modifier-summary defense-summary">'
-        summary += '<h4>🛡️ Verteidigung:</h4>'
+        // Calculate totals first for the heading
+        const vtStatusMods = this.vt_abzuege_mod || 0
+        const maneuverMod = this.mod_vt || 0
+        const totalMod = maneuverMod + vtStatusMods + nahkampfMods
+        const finalVT = baseVT + totalMod
+        const finalFormula = finalVT >= 0 ? `${diceFormula}+${finalVT}` : `${diceFormula}${finalVT}`
+
+        let summary = '<div class="modifier-summary defense-summary clickable-summary verteidigen">'
+        summary += `<h4>🛡️ Verteidigung: ${finalFormula}</h4>`
         summary += '<div class="modifier-list">'
 
         // Base VT
         summary += `<div class="modifier-item base-value">Basis VT: <span>${baseVT}</span></div>`
 
         // Status modifiers for defense
-        const vtStatusMods = this.vt_abzuege_mod || 0
         if (vtStatusMods !== 0) {
             const statusColor = vtStatusMods > 0 ? 'positive' : 'negative'
             const statusSign = vtStatusMods > 0 ? '+' : ''
@@ -238,11 +262,6 @@ export class AngriffDialog extends CombatDialog {
             })
         }
 
-        // Calculate totals
-        const maneuverMod = this.mod_vt || 0
-        const totalMod = maneuverMod + vtStatusMods + nahkampfMods
-        const finalVT = baseVT + totalMod
-
         summary += '<hr>'
 
         // Show total modifiers if any exist
@@ -252,11 +271,6 @@ export class AngriffDialog extends CombatDialog {
             summary += `<div class="modifier-item total ${totalModColor}"><strong>Addierte Modifikatoren: ${totalModSign}${totalMod}</strong></div>`
         }
 
-        // Show final defense roll - always neutral
-        const finalFormula =
-            totalMod >= 0 ? `${diceFormula}+${finalVT}` : `${diceFormula}${finalVT}`
-        summary += `<div class="modifier-item total neutral"><strong>Finaler Wurf: ${finalFormula}</strong></div>`
-
         summary += '</div></div>'
         return summary
     }
@@ -265,12 +279,22 @@ export class AngriffDialog extends CombatDialog {
      * Creates damage roll summary
      */
     getDamageSummary() {
-        let summary = '<div class="modifier-summary damage-summary">'
-        summary += '<h4>🩸 Schaden:</h4>'
+        // Calculate totals first for the heading
+        const baseDamage = this.schaden || this.item.getTp()
+        const maneuverMod = this.mod_dm || 0
+        let finalFormula
+        if (maneuverMod === 0) {
+            finalFormula = baseDamage
+        } else {
+            const sign = maneuverMod > 0 ? '+' : ''
+            finalFormula = `${baseDamage} ${sign}${maneuverMod}`
+        }
+
+        let summary = '<div class="modifier-summary damage-summary clickable-summary schaden">'
+        summary += `<h4>🩸 Schaden: ${finalFormula}</h4>`
         summary += '<div class="modifier-list">'
 
         // Base damage
-        const baseDamage = this.schaden || this.item.getTp()
         summary += `<div class="modifier-item base-value">Basis Schaden: <span>${baseDamage}</span></div>`
 
         // Parse text_dm for maneuver modifiers
@@ -279,6 +303,14 @@ export class AngriffDialog extends CombatDialog {
             const lines = this.text_dm.trim().split('\n')
             lines.forEach((line) => {
                 if (line.trim()) {
+                    // Skip trefferzone lines if Gezielter Schlag is not active
+                    if (
+                        !this.isGezieltSchlagActive() &&
+                        (line.includes('Trefferzone:') || line.includes('Gezielter Schlag:'))
+                    ) {
+                        return
+                    }
+
                     let color = 'neutral'
                     if (line.includes('+')) color = 'positive'
                     else if (line.includes('-')) color = 'negative'
@@ -295,18 +327,6 @@ export class AngriffDialog extends CombatDialog {
         }
 
         summary += '<hr>'
-
-        // Show final damage roll
-        const maneuverMod = this.mod_dm || 0
-        let finalFormula
-        if (maneuverMod === 0) {
-            finalFormula = baseDamage
-        } else {
-            const sign = maneuverMod > 0 ? '+' : ''
-            finalFormula = `${baseDamage} ${sign}${maneuverMod}`
-        }
-
-        summary += `<div class="modifier-item total neutral"><strong>Finaler Wurf: ${finalFormula}</strong></div>`
 
         summary += '</div></div>'
         return summary
@@ -549,8 +569,8 @@ export class AngriffDialog extends CombatDialog {
             }
         }
 
-        // Trefferzone if not set by manoever
-        if (trefferzone == 0) {
+        // Trefferzone if not set by manoever but Gezielter Schlag is active
+        if (trefferzone == 0 && this.isGezieltSchlagActive()) {
             let zonenroll = new Roll('1d6')
             await zonenroll.evaluate()
             text_dm = text_dm.concat(
@@ -589,6 +609,21 @@ export class AngriffDialog extends CombatDialog {
             this.vt_abzuege_mod = this.item.actor.system.abgeleitete.globalermod
         }
         super.updateStatusMods()
+    }
+
+    eigenschaftenText() {
+        if (!this.item.system.eigenschaften.length > 0) {
+            return
+        }
+        this.text_at += '\nEigenschaften: '
+        this.text_at += this.item.system.eigenschaften.map((e) => e.name).join(', ')
+    }
+
+    isGezieltSchlagActive() {
+        // Check if Gezielter Schlag (km_gzsl) maneuver is selected
+        return (
+            this.item.system.manoever.km_gzsl && this.item.system.manoever.km_gzsl.selected !== '0'
+        )
     }
 
     /**
