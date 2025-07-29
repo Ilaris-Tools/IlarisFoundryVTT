@@ -48,7 +48,6 @@ export class FernkampfAngriffDialog extends CombatDialog {
     activateListeners(html) {
         super.activateListeners(html)
         html.find('.schaden').click((ev) => this._schadenKlick(html))
-        html.find('.show-nearby').click((ev) => this._showNearbyActors(html))
     }
 
     eigenschaftenText() {

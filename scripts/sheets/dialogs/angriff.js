@@ -49,7 +49,6 @@ export class AngriffDialog extends CombatDialog {
         super.activateListeners(html)
         html.find('.schaden').click((ev) => this._schadenKlick(html))
         html.find('.verteidigen').click((ev) => this._verteidigenKlick(html))
-        html.find('.show-nearby').click((ev) => this._showNearbyActors(html))
 
         // If in defense mode, disable attack-related buttons
         if (this.isDefenseMode) {

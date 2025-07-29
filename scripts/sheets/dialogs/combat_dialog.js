@@ -44,6 +44,7 @@ export class CombatDialog extends Dialog {
             })
             item.classList.toggle('has-value', hasValue)
         })
+        html.find('.show-nearby').click((ev) => this._showNearbyActors(html))
     }
 
     aufbauendeManoeverAktivieren() {
