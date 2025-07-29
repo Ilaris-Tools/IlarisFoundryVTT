@@ -157,10 +157,8 @@ jobs:
         name: 🚀 Deploy to Foundry Server
         runs-on: ubuntu-latest
         needs: validate
-        # Deploy bei: Push auf main/master/develop ODER manueller workflow_dispatch
-        if: |
-            (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop')) ||
-            (github.event_name == 'workflow_dispatch')
+        # Deploy bei: Push auf main/master/develop ODER manueller workflow_dispatch (von jedem Branch)
+        if: ${{ github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop') || github.event_name == 'workflow_dispatch' }}
 
         steps:
             - name: 🔍 Determine deployment context
@@ -290,57 +288,12 @@ jobs:
                   echo "   - File permission problems"
                   echo "   - Disk space issues"
 
-    # Job für den Fall dass Secrets fehlen
-    secrets-check:
-        name: 🔒 Check Deployment Secrets
-        runs-on: ubuntu-latest
-        if: |
-            (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop')) ||
-            (github.event_name == 'workflow_dispatch')
 
-        steps:
-            - name: 🔍 Verify Secrets
-              run: |
-                  echo "🔒 Checking deployment secrets..."
-
-                  MISSING_SECRETS=""
-
-                  if [ -z "${{ secrets.HOST }}" ]; then
-                    MISSING_SECRETS="$MISSING_SECRETS HOST"
-                  fi
-
-                  if [ -z "${{ secrets.USERNAME }}" ]; then
-                    MISSING_SECRETS="$MISSING_SECRETS USERNAME"
-                  fi
-
-                  if [ -z "${{ secrets.SSH_PRIVATE_KEY }}" ]; then
-                    MISSING_SECRETS="$MISSING_SECRETS SSH_PRIVATE_KEY"
-                  fi
-
-                  if [ -z "${{ secrets.PORT }}" ]; then
-                    MISSING_SECRETS="$MISSING_SECRETS PORT"
-                  fi
-
-                  if [ -n "$MISSING_SECRETS" ]; then
-                    echo "❌ Missing secrets:$MISSING_SECRETS"
-                    echo ""
-                    echo "📋 To enable automatic deployment, add these secrets:"
-                    echo "   Repository → Settings → Secrets and variables → Actions"
-                    echo ""
-                    echo "   HOST: Your server IP address"
-                    echo "   USERNAME: foundry"
-                    echo "   SSH_PRIVATE_KEY: Contents of ~/.ssh/github_actions private key"
-                    echo "   PORT: SSH port (usually 22)"
-                    echo ""
-                    echo "ℹ️ Until secrets are added, only validation will run"
-                  else
-                    echo "✅ All deployment secrets are configured"
-                  fi
 
     summary:
         name: 📊 Deployment Summary
         runs-on: ubuntu-latest
-        needs: [validate, deploy, secrets-check]
+        needs: [validate, deploy]
         if: always()
 
         steps:
@@ -351,7 +304,6 @@ jobs:
                   echo ""
                   echo "🔍 Validation: ${{ needs.validate.result }}"
                   echo "🚀 Deployment: ${{ needs.deploy.result }}"
-                  echo "🔒 Secrets Check: ${{ needs.secrets-check.result }}"
                   echo ""
 
                   if [ "${{ needs.validate.outputs.system-version }}" != "" ]; then
