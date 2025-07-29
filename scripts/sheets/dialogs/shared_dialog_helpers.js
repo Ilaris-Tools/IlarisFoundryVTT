@@ -129,12 +129,14 @@ export function processModification(
                 trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''
             }: Schadenstyp zu ${CONFIG.ILARIS.schadenstypen[modification.value]}\n`
             rollValues.text_dm = rollValues.text_dm.concat(text)
+            rollValues.damageType = CONFIG.ILARIS.schadenstypen[modification.value]
             break
         case 'ARMOR_BREAKING':
             text = `${manoeverName}${
                 trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''
             }: Ignoriert Rüstung\n`
             rollValues.text_dm = rollValues.text_dm.concat(text)
+            rollValues.trueDamage = true
             break
         case 'SPECIAL_TEXT':
             text = `${manoeverName}${
@@ -249,5 +251,7 @@ export function handleModifications(allModifications, rollValues) {
         rollValues.trefferzone,
         rollValues.schaden,
         rollValues.nodmg,
+        rollValues.damageType,
+        rollValues.trueDamage,
     ]
 }

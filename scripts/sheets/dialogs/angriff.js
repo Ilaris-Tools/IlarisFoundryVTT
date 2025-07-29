@@ -425,7 +425,12 @@ export class AngriffDialog extends CombatDialog {
         // Apply damage to selected targets if any
         if (this.selectedActors && this.selectedActors.length > 0) {
             for (const target of this.selectedActors) {
-                await this.applyDamageToTarget(target, rollResult.roll.total)
+                await this.applyDamageToTarget(
+                    target,
+                    rollResult.roll.total,
+                    this.damageType,
+                    this.trueDamage,
+                )
             }
         }
     }
@@ -434,32 +439,39 @@ export class AngriffDialog extends CombatDialog {
      * Applies damage to a target actor and calculates wounds based on WS*
      * @param {Object} target - The target object containing actorId
      * @param {number} damage - The total damage to apply
+     * @param {string} damageType - The type of damage being dealt
+     * @param {boolean} trueDamage - If true, damage ignores WS* calculation
      * @private
      */
-    async applyDamageToTarget(target, damage) {
+    async applyDamageToTarget(target, damage, damageType = 'normal', trueDamage = false) {
         const targetActor = game.actors.get(target.actorId)
         if (!targetActor) return
 
         // Get WS* of the target
         const ws_stern = targetActor.system.abgeleitete.ws_stern
 
-        // Calculate how many times damage exceeds WS*
-        const woundsToAdd = Math.floor(damage / ws_stern)
+        // Calculate wounds based on whether it's true damage
+        const woundsToAdd = trueDamage ? Math.floor(damage / ws) : Math.floor(damage / ws_stern)
 
         if (woundsToAdd > 0) {
-            // Get current wounds
-            const currentWunden = targetActor.system.gesundheit.wunden || 0
+            // Get current value and update the appropriate stat based on damage type
+            const currentValue =
+                damageType === 'STUMPF'
+                    ? targetActor.system.gesundheit.erschoepfung || 0
+                    : targetActor.system.gesundheit.wunden || 0
 
-            // Update wounds
             await targetActor.update({
-                'system.gesundheit.wunden': currentWunden + woundsToAdd,
+                [`system.gesundheit.${damageType === 'STUMPF' ? 'erschoepfung' : 'wunden'}`]:
+                    currentValue + (damageType === 'STUMPF' ? damage : woundsToAdd),
             })
 
-            // Send a message to chat about the wounds
+            // Send a message to chat
             await ChatMessage.create({
-                content: `${targetActor.name} erleidet ${woundsToAdd} Wunde${
-                    woundsToAdd > 1 ? 'n' : ''
-                }! (Schaden: ${damage}, WS*: ${ws_stern})`,
+                content: `${targetActor.name} erleidet ${woundsToAdd} Einschränkung${
+                    woundsToAdd > 1 ? 'en' : ''
+                }! (${
+                    damageType ? CONFIG.ILARIS.schadenstypen[damageType] : ''
+                } Schaden: ${damage}${!trueDamage ? `, WS*: ${ws_stern}` : ''})`,
                 speaker: this.speaker,
                 type: CONST.CHAT_MESSAGE_TYPES.OTHER,
             })
@@ -726,6 +738,8 @@ export class AngriffDialog extends CombatDialog {
         let nodmg = { name: '', value: false }
         let trefferzone = 0
         let schaden = this.item.getTp()
+        let damageType = 'normal'
+        let trueDamage = false
 
         // Handle standard maneuvers first
         if (manoever.kbak.selected) {
@@ -834,6 +848,8 @@ export class AngriffDialog extends CombatDialog {
             trefferzone,
             schaden,
             nodmg,
+            damageType,
+            trueDamage,
         ] = handleModifications(allModifications, {
             mod_at,
             mod_vt,
@@ -846,6 +862,8 @@ export class AngriffDialog extends CombatDialog {
             trefferzone,
             schaden,
             nodmg,
+            damageType,
+            trueDamage,
             context: this,
         })
 
@@ -884,6 +902,8 @@ export class AngriffDialog extends CombatDialog {
         this.text_vt = text_vt
         this.text_dm = text_dm
         this.schaden = schaden
+        this.damageType = damageType
+        this.trueDamage = trueDamage
     }
 
     updateStatusMods() {
