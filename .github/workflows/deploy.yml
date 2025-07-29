@@ -21,6 +21,10 @@ on:
         options:
         - main
         - develop
+      deploy_pr:
+        description: 'Deploy a specific Pull Request (enter PR number)'
+        required: false
+        type: string
 
 env:
   SYSTEM_NAME: "ilaris"
@@ -153,20 +157,25 @@ jobs:
     name: 🚀 Deploy to Foundry Server  
     runs-on: ubuntu-latest
     needs: validate
-    # Deploy bei: Push auf main/master/develop ODER Pull Request auf develop
+    # Deploy bei: Push auf main/master/develop ODER manueller workflow_dispatch
     if: |
-      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop') ||
-      (github.event_name == 'pull_request' && github.base_ref == 'develop')
+      (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop')) ||
+      (github.event_name == 'workflow_dispatch')
     
     steps:
     - name: 🔍 Determine deployment context
       id: context
       run: |
-        if [ "${{ github.event_name }}" == "pull_request" ]; then
-          echo "deployment_type=pr-test" >> $GITHUB_OUTPUT
-          echo "branch=${{ github.head_ref }}" >> $GITHUB_OUTPUT
+        if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ -n "${{ inputs.deploy_pr }}" ]; then
+          echo "deployment_type=pr-manual" >> $GITHUB_OUTPUT
+          echo "branch=pr-${{ inputs.deploy_pr }}" >> $GITHUB_OUTPUT
           echo "target=develop" >> $GITHUB_OUTPUT
-          echo "🔄 Pull Request deployment: ${{ github.head_ref }} → develop"
+          echo "🔄 Manual PR deployment: PR #${{ inputs.deploy_pr }}"
+        elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+          echo "deployment_type=manual" >> $GITHUB_OUTPUT
+          echo "branch=${{ inputs.target_branch }}" >> $GITHUB_OUTPUT
+          echo "target=${{ inputs.target_branch }}" >> $GITHUB_OUTPUT
+          echo "🔄 Manual deployment: ${{ inputs.target_branch }} branch"
         elif [ "${{ github.ref }}" == "refs/heads/develop" ]; then
           echo "deployment_type=develop" >> $GITHUB_OUTPUT
           echo "branch=develop" >> $GITHUB_OUTPUT  
@@ -200,14 +209,19 @@ jobs:
           
           # Branch bestimmen
           TARGET_BRANCH="${{ steps.context.outputs.branch }}"
-          if [ "${{ github.event_name }}" == "pull_request" ]; then
-            # Bei Pull Request: den PR branch auschecken
-            echo "🔄 Fetching PR branch: ${{ github.head_ref }}"
-            git fetch origin "${{ github.head_ref }}"
-            git checkout "${{ github.head_ref }}"
-            git reset --hard "origin/${{ github.head_ref }}"
+          if [ "${{ steps.context.outputs.deployment_type }}" == "pr-manual" ]; then
+            # Bei manuellem PR deployment: PR info von GitHub API holen und branch auschecken
+            PR_NUMBER="${{ inputs.deploy_pr }}"
+            echo "🔄 Fetching PR #$PR_NUMBER info..."
+            PR_BRANCH=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+              "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUMBER" | \
+              jq -r '.head.ref')
+            echo "🔄 PR branch: $PR_BRANCH"
+            git fetch origin "$PR_BRANCH"
+            git checkout "$PR_BRANCH"
+            git reset --hard "origin/$PR_BRANCH"
           else
-            # Bei normalem Push: entsprechenden branch auschecken
+            # Bei normalem Push oder manuellem Deployment: entsprechenden branch auschecken
             echo "🔄 Fetching branch: $TARGET_BRANCH"
             git fetch origin "$TARGET_BRANCH"
             git checkout "$TARGET_BRANCH"
@@ -248,9 +262,12 @@ jobs:
         echo "🔄 Type: ${{ steps.context.outputs.deployment_type }}"
         echo "🌿 Branch: ${{ steps.context.outputs.branch }}"
         
-        if [ "${{ steps.context.outputs.deployment_type }}" == "pr-test" ]; then
-          echo "🧪 PR Test Deployment complete - test your changes!"
-          echo "⚠️  This is a test deployment from PR #${{ github.event.number }}"
+        if [ "${{ steps.context.outputs.deployment_type }}" == "pr-manual" ]; then
+          echo "🧪 Manual PR Deployment complete - test your changes!"
+          echo "⚠️  This is a manual deployment from PR #${{ inputs.deploy_pr }}"
+        elif [ "${{ steps.context.outputs.deployment_type }}" == "manual" ]; then
+          echo "🔄 Manual Deployment complete"
+          echo "🔧 Manual deployment of ${{ inputs.target_branch }} branch"
         elif [ "${{ steps.context.outputs.deployment_type }}" == "develop" ]; then
           echo "🧪 Development Deployment complete"
           echo "🔄 Latest develop branch changes are now live"
@@ -278,8 +295,8 @@ jobs:
     name: 🔒 Check Deployment Secrets
     runs-on: ubuntu-latest
     if: |
-      (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop') ||
-      (github.event_name == 'pull_request' && github.base_ref == 'develop')
+      (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop')) ||
+      (github.event_name == 'workflow_dispatch')
     
     steps:
     - name: 🔍 Verify Secrets
