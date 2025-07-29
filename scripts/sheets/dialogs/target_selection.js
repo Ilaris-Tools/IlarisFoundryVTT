@@ -122,7 +122,7 @@ export class TargetSelectionDialog extends Dialog {
     }
 
     _handleSelection(html, onSelectionComplete) {
-        const selectedIds = Array.from(html[0].querySelectorAll('.actor-row.selected')).map(
+        const selectedIds = Array.from(html[2].querySelectorAll('.actor-row.selected')).map(
             (row) => ({
                 tokenId: row.dataset.tokenId,
                 actorId: row.dataset.actorId,
