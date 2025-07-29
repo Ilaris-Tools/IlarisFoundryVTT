@@ -174,6 +174,11 @@ jobs:
                     echo "branch=${{ inputs.target_branch }}" >> $GITHUB_OUTPUT
                     echo "target=${{ inputs.target_branch }}" >> $GITHUB_OUTPUT
                     echo "🔄 Manual deployment: ${{ inputs.target_branch }} branch"
+                  elif [ "${{ github.event_name }}" == "pull_request" ]; then
+                    echo "deployment_type=pr-deploy" >> $GITHUB_OUTPUT
+                    echo "branch=${{ github.head_ref }}" >> $GITHUB_OUTPUT
+                    echo "target=${{ github.base_ref }}" >> $GITHUB_OUTPUT
+                    echo "🔄 PR deployment: ${{ github.head_ref }} → ${{ github.base_ref }}"
                   elif [ "${{ github.ref }}" == "refs/heads/develop" ]; then
                     echo "deployment_type=develop" >> $GITHUB_OUTPUT
                     echo "branch=develop" >> $GITHUB_OUTPUT  
@@ -218,6 +223,12 @@ jobs:
                         git fetch origin "$PR_BRANCH"
                         git checkout "$PR_BRANCH"
                         git reset --hard "origin/$PR_BRANCH"
+                      elif [ "${{ steps.context.outputs.deployment_type }}" == "pr-deploy" ]; then
+                        # Bei PR deployment: PR branch direkt auschecken
+                        echo "🔄 Fetching PR branch: $TARGET_BRANCH"
+                        git fetch origin "$TARGET_BRANCH"
+                        git checkout "$TARGET_BRANCH"
+                        git reset --hard "origin/$TARGET_BRANCH"
                       else
                         # Bei normalem Push oder manuellem Deployment: entsprechenden branch auschecken
                         echo "🔄 Fetching branch: $TARGET_BRANCH"
@@ -263,6 +274,9 @@ jobs:
                   if [ "${{ steps.context.outputs.deployment_type }}" == "pr-manual" ]; then
                     echo "🧪 Manual PR Deployment complete - test your changes!"
                     echo "⚠️  This is a manual deployment from PR #${{ inputs.deploy_pr }}"
+                  elif [ "${{ steps.context.outputs.deployment_type }}" == "pr-deploy" ]; then
+                    echo "🧪 PR Branch Deployment complete - test your changes!"
+                    echo "⚠️  This is a deployment from PR branch: ${{ steps.context.outputs.branch }}"
                   elif [ "${{ steps.context.outputs.deployment_type }}" == "manual" ]; then
                     echo "🔄 Manual Deployment complete"
                     echo "🔧 Manual deployment of ${{ inputs.target_branch }} branch"
