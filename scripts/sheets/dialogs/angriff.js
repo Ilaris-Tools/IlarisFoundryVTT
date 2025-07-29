@@ -474,6 +474,17 @@ export class AngriffDialog extends CombatDialog {
                 speaker: this.speaker,
                 type: CONST.CHAT_MESSAGE_TYPES.OTHER,
             })
+        } else {
+            // Send a message when damage wasn't high enough
+            await ChatMessage.create({
+                content: `${
+                    targetActor.name
+                } erleidet keine Einschränkungen - der Schaden (${damage}) war nicht hoch genug${
+                    !trueDamage ? ` im Vergleich zu WS* (${ws_stern})` : ''
+                }.`,
+                speaker: this.speaker,
+                type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+            })
         }
     }
 
