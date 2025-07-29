@@ -1,14 +1,14 @@
 <div>
     <h2>{{title}}</h2>
     {{#if success}}
-        <h3 style='color: #2e7d32'><strong>Das Wirken ist dir gelungen</strong></h3>
+    <h3 style="color: #2e7d32"><strong>Das Wirken ist dir gelungen</strong></h3>
     {{else}}
-        <h3 style='color: #c62828'><strong>Das Wirken ist dir nicht gelungen</strong></h3>
+    <h3 style="color: #c62828"><strong>Das Wirken ist dir nicht gelungen</strong></h3>
     {{/if}}
     <div>
         <p>Du zahlst die folgenden Kosten für den Zauber: {{cost}} AsP</p>
         {{#if multiplier}}
-            <p>({{multiplier}}x Basiskosten)</p>
+        <p>({{multiplier}}x Basiskosten)</p>
         {{/if}}
     </div>
 </div>

@@ -115,7 +115,7 @@
   "languages": [],
   "grid": {
     "distance": 1,
-    "units":"m"
+    "units": "m"
   },
   "primaryTokenAttribute": "gesundheit.hp",
   "secondaryTokenAttribute": null,

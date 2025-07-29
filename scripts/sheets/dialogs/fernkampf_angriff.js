@@ -26,7 +26,6 @@ export class FernkampfAngriffDialog extends CombatDialog {
             this.fumble_val = 2
         }
         // Generate unique dialog ID to avoid conflicts when multiple dialogs are open
-        this.dialogId = `dialog-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
         this.aufbauendeManoeverAktivieren()
     }
 
@@ -43,7 +42,6 @@ export class FernkampfAngriffDialog extends CombatDialog {
             kgtl_choice: CONFIG.ILARIS.kgtl_choice,
             ...(await super.getData()),
         }
-        data.dialogId = this.dialogId
         return data
     }
 
