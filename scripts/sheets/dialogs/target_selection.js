@@ -42,9 +42,12 @@ export class TargetSelectionDialog extends Dialog {
                 name: token.name,
             },
             tokens: tokens.map((t) => {
-                const ray = new Ray(token.center, t.center)
+                const waypoints = [
+                    { x: token.center.x, y: token.center.y },
+                    { x: t.center.x, y: t.center.y },
+                ]
                 const distance = Math.round(
-                    canvas.grid.measureDistances([{ ray }], { gridSpaces: true })[0],
+                    canvas.grid.measurePath(waypoints, { gridSpaces: true }).distance,
                 )
 
                 let disposition = ''
