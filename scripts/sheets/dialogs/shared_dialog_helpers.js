@@ -184,6 +184,66 @@ export function processModification(
 }
 
 /**
+ * Applies damage to a target actor and calculates wounds based on WS*
+ * @param {Object} target - The target object containing actorId
+ * @param {number} damage - The total damage to apply
+ * @param {string} damageType - The type of damage being dealt
+ * @param {boolean} trueDamage - If true, damage ignores WS* calculation
+ * @param {Object} speaker - The speaker object for chat messages
+ */
+export async function applyDamageToTarget(
+    target,
+    damage,
+    damageType = 'normal',
+    trueDamage = false,
+    speaker,
+) {
+    const targetActor = game.actors.get(target.actorId)
+    if (!targetActor) return
+
+    // Get WS* of the target
+    const ws_stern = targetActor.system.abgeleitete.ws_stern
+
+    // Calculate wounds based on whether it's true damage
+    const woundsToAdd = trueDamage ? Math.floor(damage / ws) : Math.floor(damage / ws_stern)
+
+    if (woundsToAdd > 0) {
+        // Get current value and update the appropriate stat based on damage type
+        const currentValue =
+            damageType === 'STUMPF'
+                ? targetActor.system.gesundheit.erschoepfung || 0
+                : targetActor.system.gesundheit.wunden || 0
+
+        await targetActor.update({
+            [`system.gesundheit.${damageType === 'STUMPF' ? 'erschoepfung' : 'wunden'}`]:
+                currentValue + (damageType === 'STUMPF' ? damage : woundsToAdd),
+        })
+
+        // Send a message to chat
+        await ChatMessage.create({
+            content: `${targetActor.name} erleidet ${woundsToAdd} Einschränkung${
+                woundsToAdd > 1 ? 'en' : ''
+            }! (${damageType ? CONFIG.ILARIS.schadenstypen[damageType] : ''} Schaden: ${damage}${
+                !trueDamage ? `, WS*: ${ws_stern}` : ''
+            })`,
+            speaker: speaker,
+            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+        })
+    } else {
+        // Send a message when damage wasn't high enough
+        await ChatMessage.create({
+            content: `${
+                targetActor.name
+            } erleidet keine Einschränkungen - der Schaden (${damage}) war nicht hoch genug${
+                !trueDamage ? ` im Vergleich zu WS* (${ws_stern})` : ''
+            }.`,
+            speaker: speaker,
+            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+        })
+    }
+}
+
+/**
  * Handles multiple modifications and updates roll values accordingly.
  * @param {Object} allModifications - The modifications to be processed.
  * @param {Object} rollValues - The object containing roll values to be updated.

@@ -4,7 +4,7 @@ import {
     evaluate_roll_with_crit,
 } from '../../common/wuerfel/wuerfel_misc.js'
 import { signed } from '../../common/wuerfel/chatutilities.js'
-import { handleModifications } from './shared_dialog_helpers.js'
+import { handleModifications, applyDamageToTarget } from './shared_dialog_helpers.js'
 import { CombatDialog } from './combat_dialog.js'
 
 export class AngriffDialog extends CombatDialog {
@@ -424,67 +424,14 @@ export class AngriffDialog extends CombatDialog {
         // Apply damage to selected targets if any
         if (this.selectedActors && this.selectedActors.length > 0) {
             for (const target of this.selectedActors) {
-                await this.applyDamageToTarget(
+                await applyDamageToTarget(
                     target,
                     rollResult.roll.total,
                     this.damageType,
                     this.trueDamage,
+                    this.speaker,
                 )
             }
-        }
-    }
-
-    /**
-     * Applies damage to a target actor and calculates wounds based on WS*
-     * @param {Object} target - The target object containing actorId
-     * @param {number} damage - The total damage to apply
-     * @param {string} damageType - The type of damage being dealt
-     * @param {boolean} trueDamage - If true, damage ignores WS* calculation
-     * @private
-     */
-    async applyDamageToTarget(target, damage, damageType = 'normal', trueDamage = false) {
-        const targetActor = game.actors.get(target.actorId)
-        if (!targetActor) return
-
-        // Get WS* of the target
-        const ws_stern = targetActor.system.abgeleitete.ws_stern
-
-        // Calculate wounds based on whether it's true damage
-        const woundsToAdd = trueDamage ? Math.floor(damage / ws) : Math.floor(damage / ws_stern)
-
-        if (woundsToAdd > 0) {
-            // Get current value and update the appropriate stat based on damage type
-            const currentValue =
-                damageType === 'STUMPF'
-                    ? targetActor.system.gesundheit.erschoepfung || 0
-                    : targetActor.system.gesundheit.wunden || 0
-
-            await targetActor.update({
-                [`system.gesundheit.${damageType === 'STUMPF' ? 'erschoepfung' : 'wunden'}`]:
-                    currentValue + (damageType === 'STUMPF' ? damage : woundsToAdd),
-            })
-
-            // Send a message to chat
-            await ChatMessage.create({
-                content: `${targetActor.name} erleidet ${woundsToAdd} Einschränkung${
-                    woundsToAdd > 1 ? 'en' : ''
-                }! (${
-                    damageType ? CONFIG.ILARIS.schadenstypen[damageType] : ''
-                } Schaden: ${damage}${!trueDamage ? `, WS*: ${ws_stern}` : ''})`,
-                speaker: this.speaker,
-                type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-            })
-        } else {
-            // Send a message when damage wasn't high enough
-            await ChatMessage.create({
-                content: `${
-                    targetActor.name
-                } erleidet keine Einschränkungen - der Schaden (${damage}) war nicht hoch genug${
-                    !trueDamage ? ` im Vergleich zu WS* (${ws_stern})` : ''
-                }.`,
-                speaker: this.speaker,
-                type: CONST.CHAT_MESSAGE_TYPES.OTHER,
-            })
         }
     }
 
