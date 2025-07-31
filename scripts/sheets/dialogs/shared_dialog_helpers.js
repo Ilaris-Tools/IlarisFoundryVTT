@@ -194,7 +194,7 @@ export function processModification(
 export async function applyDamageToTarget(
     target,
     damage,
-    damageType = 'normal',
+    damageType = 'PROFAN',
     trueDamage = false,
     speaker,
 ) {
@@ -227,7 +227,7 @@ export async function applyDamageToTarget(
                 !trueDamage ? `, WS*: ${ws_stern}` : ''
             })`,
             speaker: speaker,
-            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+            style: CONST.CHAT_MESSAGE_STYLES.OTHER,
         })
     } else {
         // Send a message when damage wasn't high enough
@@ -238,7 +238,7 @@ export async function applyDamageToTarget(
                 !trueDamage ? ` im Vergleich zu WS* (${ws_stern})` : ''
             }.`,
             speaker: speaker,
-            type: CONST.CHAT_MESSAGE_TYPES.OTHER,
+            style: CONST.CHAT_MESSAGE_STYLES.OTHER,
         })
     }
 }
