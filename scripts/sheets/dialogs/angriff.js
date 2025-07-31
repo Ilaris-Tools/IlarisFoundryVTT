@@ -303,9 +303,13 @@ export class AngriffDialog extends CombatDialog {
         }
     }
 
-    async resolveAttackVsDefense() {
+    async resolveAttackVsDefense(overrideAttackRoll = null) {
         // Ensure we have both rolls
         if (!this.lastDefenseRoll || !this.attackRoll) return
+
+        // Get the attack total to use
+        const attackTotal =
+            overrideAttackRoll !== null ? overrideAttackRoll : this.attackRoll.roll.total
 
         // Compare the rolls based on special conditions first
         let defenderWins = false
@@ -316,7 +320,7 @@ export class AngriffDialog extends CombatDialog {
             (this.attackRoll.crit && this.lastDefenseRoll.crit) ||
             (this.attackRoll.fumble && this.lastDefenseRoll.fumble)
         ) {
-            defenderWins = this.lastDefenseRoll.roll.total >= this.attackRoll.roll.total
+            defenderWins = this.lastDefenseRoll.roll.total >= attackTotal
             reason = 'Höchster Wurf gewinnt'
         }
         // Attacker rolled crit - attacker wins
@@ -341,7 +345,7 @@ export class AngriffDialog extends CombatDialog {
         }
         // Normal comparison - defender wins ties
         else {
-            defenderWins = this.lastDefenseRoll.roll.total >= this.attackRoll.roll.total
+            defenderWins = this.lastDefenseRoll.roll.total >= attackTotal
             reason = defenderWins ? 'Erfolgreiche Verteidigung' : 'Erfolgreicher Angriff'
         }
 
