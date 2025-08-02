@@ -89,7 +89,40 @@ export class FernkampfAngriffDialog extends CombatDialog {
         // Rollmode
         let label = `Schaden (${this.item.name})`
         let formula = `${this.schaden} ${signed(this.mod_dm)}`
-        await roll_crit_message(formula, label, this.text_dm, this.speaker, this.rollmode, false)
+        // Use the new evaluation function for damage (no crit evaluation)
+        const rollResult = await evaluate_roll_with_crit(
+            formula,
+            label,
+            this.text_dm,
+            null, // success_val
+            1, // fumble_val not used since crit_eval is false
+            false, // crit_eval
+        )
+
+        // Send the chat message
+        const html_roll = await renderTemplate(rollResult.templatePath, rollResult.templateData)
+        await rollResult.roll.toMessage(
+            {
+                speaker: this.speaker,
+                flavor: html_roll,
+            },
+            {
+                rollMode: this.rollmode,
+            },
+        )
+
+        // Apply damage to selected targets if any
+        if (this.selectedActors && this.selectedActors.length > 0) {
+            for (const target of this.selectedActors) {
+                await applyDamageToTarget(
+                    target,
+                    rollResult.roll.total,
+                    this.damageType,
+                    this.trueDamage,
+                    this.speaker,
+                )
+            }
+        }
     }
 
     async manoeverAuswaehlen(html) {
