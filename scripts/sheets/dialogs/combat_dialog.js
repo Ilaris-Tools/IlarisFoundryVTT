@@ -45,6 +45,51 @@ export class CombatDialog extends Dialog {
             item.classList.toggle('has-value', hasValue)
         })
         html.find('.show-nearby').click((ev) => this._showNearbyActors(html))
+
+        // Colorize numbers in maneuver labels
+        this.colorizeManeuverNumbers(html)
+    }
+
+    colorizeManeuverNumbers(html) {
+        // Apply to both maneuver labels and other labels in the dialog
+        html.find('.maneuver-item label, .flexrow label').each((index, label) => {
+            let text = label.textContent
+
+            // Find all parentheses content
+            text = text.replace(/(\([^)]+\))/g, (parenthesesContent) => {
+                // Count positive and negative numbers/variables in this parentheses
+                const positiveMatches = (parenthesesContent.match(/\+\s*(\d+|[A-Z]+)/g) || [])
+                    .length
+                const negativeMatches = (parenthesesContent.match(/\-\s*(\d+|[A-Z]+)/g) || [])
+                    .length
+
+                // Determine dominant color
+                let dominantClass = ''
+                if (negativeMatches > positiveMatches) {
+                    dominantClass = 'maneuver-negative'
+                } else if (positiveMatches > negativeMatches) {
+                    dominantClass = 'maneuver-positive'
+                }
+
+                // Make the entire parentheses bold and colored
+                if (dominantClass) {
+                    return `<strong class="${dominantClass}">${parenthesesContent}</strong>`
+                } else {
+                    return `<strong>${parenthesesContent}</strong>`
+                }
+            })
+
+            // Handle numbers/variables outside of parentheses
+            text = text.replace(/([\+\-]\s*(\d+|[A-Z]+))(?![^<]*<\/strong>)/g, (match) => {
+                const isPositive = match.includes('+')
+                const cssClass = isPositive ? 'maneuver-positive' : 'maneuver-negative'
+                return `<span class="${cssClass}">${match}</span>`
+            })
+
+            if (text !== label.textContent) {
+                label.innerHTML = text
+            }
+        })
     }
 
     aufbauendeManoeverAktivieren() {

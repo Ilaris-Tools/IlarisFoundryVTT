@@ -83,7 +83,6 @@ Hooks.once('init', () => {
             changes: [{ key: 'system.furcht.furchtstufe', mode: 5, priority: 1, value: 1 }],
             isTemporary: 0,
             icon: 'systems/Ilaris/assets/images/icon/terror-yellow.svg',
-            // tint: "#ffcc00"
         },
         {
             id: 'Furcht2',

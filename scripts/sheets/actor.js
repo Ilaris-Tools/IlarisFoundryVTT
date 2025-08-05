@@ -27,7 +27,15 @@ export class IlarisActorSheet extends ActorSheet {
         // html.find('.item-toggle').click(this._onToggleItem.bind(this));
         html.find('.item-toggle').click((ev) => this._onToggleItem(ev))
         html.find('.toggle-bool').click((ev) => this._onToggleBool(ev))
-        html.find('.hp-update').change((ev) => this._onHpUpdate(ev))
+        html.find('.hp-update').on('input change', (ev) => this._onHpUpdate(ev))
+
+        // Add listeners for wound and exhaustion fields on hero sheets (input for real-time updates)
+        html.find('input[name="system.gesundheit.wunden"]').on('input', (ev) =>
+            this._onHealthValueChange(ev),
+        )
+        html.find('input[name="system.gesundheit.erschoepfung"]').on('input', (ev) =>
+            this._onHealthValueChange(ev),
+        )
     }
 
     _ausklappView(event) {
@@ -47,6 +55,49 @@ export class IlarisActorSheet extends ActorSheet {
         let attr = `${togglevariable}`
         let bool_status = getProperty(this.actor, attr)
         await this.actor.update({ [attr]: !bool_status })
+
+        // Update open combat dialogs if wound penalties were toggled
+        if (togglevariable === 'system.gesundheit.wundenignorieren') {
+            this._updateOpenCombatDialogs()
+        }
+    }
+
+    _updateOpenCombatDialogs() {
+        // Find all open dialogs that belong to this actor
+        const openDialogs = Object.values(ui.windows).filter((dialog) => {
+            return (
+                (dialog.constructor.name === 'AngriffDialog' ||
+                    dialog.constructor.name === 'FernkampfAngriffDialog' ||
+                    dialog.constructor.name === 'UebernatuerlichDialog') &&
+                dialog.actor?.id === this.actor.id
+            )
+        })
+
+        // Update modifier display in each combat dialog
+        openDialogs.forEach((dialog) => {
+            if (typeof dialog.updateModifierDisplay === 'function') {
+                // AngriffDialog has sophisticated modifier display
+                const html = dialog.element
+                if (html && html.length > 0) {
+                    dialog.updateModifierDisplay(html)
+                }
+            } else {
+                // For other dialogs, just refresh their render to pick up the new wound penalty status
+                dialog.render(false)
+            }
+        })
+    }
+
+    _onHealthValueChange(event) {
+        // Update open combat dialogs when wound or exhaustion values change on hero sheets
+        // Use debouncing to prevent too many rapid updates while typing
+        if (this._healthUpdateTimeout) {
+            clearTimeout(this._healthUpdateTimeout)
+        }
+
+        this._healthUpdateTimeout = setTimeout(() => {
+            this._updateOpenCombatDialogs()
+        }, 300)
     }
 
     async _onToggleItem(event) {
@@ -427,6 +478,16 @@ export class IlarisActorSheet extends ActorSheet {
         // this.actor.token.actor.data.data.gesundheit.hp.value = new_hp;
         // this.actor.token?.refresh();
         console.log(this.actor)
+
+        // Update open combat dialogs when wounds or exhaustion change (with debouncing)
+        if (this._hpUpdateTimeout) {
+            clearTimeout(this._hpUpdateTimeout)
+        }
+
+        this._hpUpdateTimeout = setTimeout(() => {
+            this._updateOpenCombatDialogs()
+        }, 300)
+
         // let token = this.actor.token;
         // console.log(token);
         // this.actor.token.update();

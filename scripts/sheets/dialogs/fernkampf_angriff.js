@@ -382,8 +382,8 @@ export class FernkampfAngriffDialog extends CombatDialog {
             }
         }
 
-        // Trefferzone if not set by manoever
-        if (trefferzone == 0) {
+        // Trefferzone if not set by manoever but a trefferzone maneuver is active
+        if (trefferzone == 0 && this.isGezieltSchlagActive()) {
             let zonenroll = new Roll('1d6')
             await zonenroll.evaluate()
             text_dm = text_dm.concat(
@@ -408,5 +408,13 @@ export class FernkampfAngriffDialog extends CombatDialog {
         this.text_dm = text_dm
         this.schaden = schaden
         this.fumble_val = fumble_val
+    }
+
+    isGezieltSchlagActive() {
+        // Check if any trefferzone-related maneuver is selected
+        // For ranged combat, this might be different maneuvers, but using same logic for consistency
+        return (
+            this.item.system.manoever.km_gzsl && this.item.system.manoever.km_gzsl.selected !== '0'
+        )
     }
 }
