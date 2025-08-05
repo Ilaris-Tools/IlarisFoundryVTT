@@ -325,6 +325,10 @@
   border-left: 1px solid rgba(120, 46, 34, 0.2);
   padding: 15px;
   border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  min-height: auto;
 }
 
 /* Keep the modifier summary sticky in the right column */
