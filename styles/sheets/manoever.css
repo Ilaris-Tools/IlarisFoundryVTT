@@ -359,6 +359,17 @@
   border-bottom-color: #006400;
 }
 
+/* Positive and negative number styling for maneuver labels and inputs */
+.maneuver-positive,
+input.maneuver-positive {
+  color: #006400 !important; /* Dark green */
+}
+
+.maneuver-negative,
+input.maneuver-negative {
+  color: #8b0000 !important; /* Dark red */
+}
+
 .damage-summary h4 {
   color: #cc4400;
   border-bottom-color: #cc4400;
