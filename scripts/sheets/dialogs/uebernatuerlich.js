@@ -272,8 +272,8 @@ export class UebernatuerlichDialog extends CombatDialog {
         manoever.set_energy_cost.value =
             Number(html.find('input[name="energyOverride"]')[0]?.value) || 0
 
-        manoever.mod.selected = html.find('#modifikator')[0]?.value || false // Modifikator
-        manoever.rllm.selected = html.find('#rollMode')[0]?.value || false // RollMode
+        manoever.mod.selected = html.find(`#modifikator-${this.dialogId}`)[0]?.value || false // Modifikator
+        manoever.rllm.selected = html.find(`#rollMode-${this.dialogId}`)[0]?.value || false // RollMode
         await super.manoeverAuswaehlen(html)
     }
 

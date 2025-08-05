@@ -111,7 +111,7 @@
         <div class="flexrow">
             <label>Modifikator: </label>
             <input
-                id="modifikator"
+                id="modifikator-{{dialogId}}"
                 type="number"
                 name="item.system.manoever.mod.selected"
                 value="{{item.system.manoever.mod.selected}}"
@@ -120,7 +120,7 @@
         </div>
         <div class="flexrow">
             <label>Würfelmodus: </label>
-            <select id="rollMode">
+            <select id="rollMode-{{dialogId}}">
                 {{selectOptions rollModes selected=item.system.manoever.rllm.selected localize=true}}
             </select>
         </div>
