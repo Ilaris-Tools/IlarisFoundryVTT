@@ -1025,27 +1025,6 @@ export class IlarisActor extends Actor {
             item.system.manoever =
                 item.system.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_magie)
             console.log(item.system)
-            // mm_erzw: 'Erzwingen',
-            if (hardcoded.magieErzwingenPossible(actor)) {
-                console.log('Erzwingen aktiviert')
-                item.system.manoever.mm_erzw.possible = true
-            }
-            // mm_kosp: 'Kosten sparen',
-            if (hardcoded.magieKostenSparenPossible(actor)) {
-                item.system.manoever.mm_kosp.possible = true
-            }
-            // mm_ztls: 'Zeit lassen',
-            if (hardcoded.magieZeitLassenPossible(actor)) {
-                item.system.manoever.mm_ztls.possible = true
-            }
-            // mm_zere: 'Zeremonie',
-            if (hardcoded.magieZeremoniePossible(actor)) {
-                item.system.manoever.mm_zere.possible = true
-            }
-            // mm_opfe: 'Opferung',
-            if (hardcoded.magieOpferungPossible(actor)) {
-                item.system.manoever.mm_opfe.possible = true
-            }
         }
         for (let item of actor.uebernatuerlich.liturgien) {
             if (item.system.manoever == undefined) {
@@ -1054,18 +1033,6 @@ export class IlarisActor extends Actor {
             item.system.manoever =
                 item.system.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_karma)
             console.log(item.system)
-            // mm_kosp: 'Kosten sparen',
-            if (hardcoded.karmaKostenSparenPossible(actor)) {
-                item.system.manoever.lm_kosp.possible = true
-            }
-            // mm_zere: 'Zeremonie',
-            if (hardcoded.karmaZeremoniePossible(actor)) {
-                item.system.manoever.lm_zere.possible = true
-            }
-            // mm_opfe: 'Opferung',
-            if (hardcoded.karmaOpferungPossible(actor)) {
-                item.system.manoever.lm_opfe.possible = true
-            }
         }
     }
     _sortItems(actor) {

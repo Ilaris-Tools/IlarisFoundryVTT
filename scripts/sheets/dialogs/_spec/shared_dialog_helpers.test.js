@@ -30,11 +30,11 @@ describe('processModification', () => {
             mod_at: 0,
             mod_vt: 0,
             mod_dm: 0,
-            mod_ressource: 0,
+            mod_energy: 0,
             text_at: '',
             text_vt: '',
             text_dm: '',
-            text_ressource: '',
+            text_energy: '',
             schaden: '',
             nodmg: { name: '', value: false },
         }
@@ -321,7 +321,7 @@ describe('processModification', () => {
     })
 
     it('should handle SPECIAL_RESOURCE type with DIVIDE operator', () => {
-        rollValues.mod_ressource = 0
+        rollValues.mod_energy = 0
         const modification = {
             type: 'SPECIAL_RESOURCE',
             operator: 'DIVIDE',
@@ -330,12 +330,12 @@ describe('processModification', () => {
         }
         processModification(modification, 1, 'Test Manoever', null, rollValues, 20)
 
-        expect(rollValues.mod_ressource).toBe(-10) // (20/2) * -1 = -10
-        expect(rollValues.text_ressource).toContain('Test Manoever: -10 Energiekosten')
+        expect(rollValues.mod_energy).toBe(-10) // (20/2) * -1 = -10
+        expect(rollValues.text_energy).toContain('Test Manoever: -10 Energiekosten')
     })
 
     it('should handle SPECIAL_RESOURCE type with DIVIDE operator (value < 1)', () => {
-        rollValues.mod_ressource = 0
+        rollValues.mod_energy = 0
         const modification = {
             type: 'SPECIAL_RESOURCE',
             operator: 'DIVIDE',
@@ -344,12 +344,12 @@ describe('processModification', () => {
         }
         processModification(modification, 1, 'Test Manoever', null, rollValues, 20)
 
-        expect(rollValues.mod_ressource).toBe(20) // (20/0.5) - 20 = 20
-        expect(rollValues.text_ressource).toContain('Test Manoever: +20 Energiekosten')
+        expect(rollValues.mod_energy).toBe(20) // (20/0.5) - 20 = 20
+        expect(rollValues.text_energy).toContain('Test Manoever: +20 Energiekosten')
     })
 
     it('should handle SPECIAL_RESOURCE type with MULTIPLY operator', () => {
-        rollValues.mod_ressource = 0
+        rollValues.mod_energy = 0
         const modification = {
             type: 'SPECIAL_RESOURCE',
             operator: 'MULTIPLY',
@@ -358,12 +358,12 @@ describe('processModification', () => {
         }
         processModification(modification, 1, 'Test Manoever', null, rollValues, 10)
 
-        expect(rollValues.mod_ressource).toBe(10) // (10*2) - 10 = 10
-        expect(rollValues.text_ressource).toContain('Test Manoever: +10 Energiekosten')
+        expect(rollValues.mod_energy).toBe(10) // (10*2) - 10 = 10
+        expect(rollValues.text_energy).toContain('Test Manoever: +10 Energiekosten')
     })
 
     it('should handle SPECIAL_RESOURCE type with MULTIPLY operator (value < 1)', () => {
-        rollValues.mod_ressource = 0
+        rollValues.mod_energy = 0
         const modification = {
             type: 'SPECIAL_RESOURCE',
             operator: 'MULTIPLY',
@@ -372,12 +372,12 @@ describe('processModification', () => {
         }
         processModification(modification, 1, 'Test Manoever', null, rollValues, 10)
 
-        expect(rollValues.mod_ressource).toBe(-5) // (10*0.5) * -1 = -5
-        expect(rollValues.text_ressource).toContain('Test Manoever: -5 Energiekosten')
+        expect(rollValues.mod_energy).toBe(-5) // (10*0.5) * -1 = -5
+        expect(rollValues.text_energy).toContain('Test Manoever: -5 Energiekosten')
     })
 
     it('should handle SPECIAL_RESOURCE type with ADD operator', () => {
-        rollValues.mod_ressource = 0
+        rollValues.mod_energy = 0
         const modification = {
             type: 'SPECIAL_RESOURCE',
             operator: 'ADD',
@@ -386,12 +386,12 @@ describe('processModification', () => {
         }
         processModification(modification, 1, 'Test Manoever', null, rollValues, 5)
 
-        expect(rollValues.mod_ressource).toBe(3)
-        expect(rollValues.text_ressource).toContain('Test Manoever: +3 Energiekosten')
+        expect(rollValues.mod_energy).toBe(3)
+        expect(rollValues.text_energy).toContain('Test Manoever: +3 Energiekosten')
     })
 
     it('should handle SPECIAL_RESOURCE type with SUBTRACT operator', () => {
-        rollValues.mod_ressource = 0
+        rollValues.mod_energy = 0
         const modification = {
             type: 'SPECIAL_RESOURCE',
             operator: 'SUBTRACT',
@@ -400,12 +400,12 @@ describe('processModification', () => {
         }
         processModification(modification, 1, 'Test Manoever', null, rollValues, 10)
 
-        expect(rollValues.mod_ressource).toBe(-3)
-        expect(rollValues.text_ressource).toContain('Test Manoever: -3 Energiekosten')
+        expect(rollValues.mod_energy).toBe(-3)
+        expect(rollValues.text_energy).toContain('Test Manoever: -3 Energiekosten')
     })
 
     it('should accumulate SPECIAL_RESOURCE modifications', () => {
-        rollValues.mod_ressource = 5
+        rollValues.mod_energy = 5
         const modification1 = {
             type: 'SPECIAL_RESOURCE',
             operator: 'MULTIPLY',
@@ -422,9 +422,9 @@ describe('processModification', () => {
         processModification(modification1, 1, 'Test Manoever 1', null, rollValues, 10)
         processModification(modification2, 1, 'Test Manoever 2', null, rollValues, 10)
 
-        expect(rollValues.mod_ressource).toBe(18) // First: 5 + ((10*2) - 10) = 15, Then: 15 + 3 = 18
-        expect(rollValues.text_ressource).toContain('Test Manoever 1: +10 Energiekosten')
-        expect(rollValues.text_ressource).toContain('Test Manoever 2: +3 Energiekosten')
+        expect(rollValues.mod_energy).toBe(18) // First: 5 + ((10*2) - 10) = 15, Then: 15 + 3 = 18
+        expect(rollValues.text_energy).toContain('Test Manoever 1: +10 Energiekosten')
+        expect(rollValues.text_energy).toContain('Test Manoever 2: +3 Energiekosten')
     })
 })
 
@@ -436,11 +436,11 @@ describe('handleModifications', () => {
             mod_at: 0,
             mod_vt: 0,
             mod_dm: 0,
-            mod_ressource: 0,
+            mod_energy: 0,
             text_at: '',
             text_vt: '',
             text_dm: '',
-            text_ressource: '',
+            text_energy: '',
             schaden: '1W6',
             trefferzone: null,
             nodmg: { name: '', value: false },
@@ -462,7 +462,7 @@ describe('handleModifications', () => {
     })
 
     it('should handle multiple SPECIAL_RESOURCE modifications in correct order', () => {
-        rollValues.mod_ressource = 10
+        rollValues.mod_energy = 10
         const allModifications = [
             {
                 modification: {
@@ -496,7 +496,7 @@ describe('handleModifications', () => {
     })
 
     it('should handle multiple SPECIAL_RESOURCE modifications with values < 1', () => {
-        rollValues.mod_ressource = 10
+        rollValues.mod_energy = 10
         const allModifications = [
             {
                 modification: {
