@@ -302,8 +302,6 @@ jobs:
                   echo "   - File permission problems"
                   echo "   - Disk space issues"
 
-
-
     summary:
         name: 📊 Deployment Summary
         runs-on: ubuntu-latest
