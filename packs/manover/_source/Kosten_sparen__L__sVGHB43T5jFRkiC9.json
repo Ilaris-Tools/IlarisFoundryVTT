@@ -3,13 +3,27 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
+    "voraussetzungen": "Vorteil Liturgische Disziplin",
+    "input": {
+      "label": "",
+      "field": "NUMBER",
+      "min": 0,
+      "max": 2
+    },
+    "modifications": {
       "0": {
-        "name": "Vorteil Liturgische Disziplin",
-        "type": "VORTEIL",
-        "value": [
-          "QuCH0FaAWespaU94"
-        ]
+        "type": "ATTACK",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      },
+      "1": {
+        "type": "SPECIAL_RESOURCE",
+        "value": 0.25,
+        "operator": "MULTIPLY",
+        "target": "",
+        "affectedByInput": true
       }
     },
     "gruppe": "3",
@@ -25,10 +39,10 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "0.3.20",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1745304840060,
-    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "modifiedTime": 1747770830812,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
   },

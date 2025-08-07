@@ -3,19 +3,25 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
+    "voraussetzungen": "Vorteil Sturmangriff ODER Vorteil Reiterkampf I",
+    "modifications": {
       "0": {
-        "name": "Vorteil Sturmangriff",
-        "type": "VORTEIL",
-        "value": [
-          "4kn6dwkko8jM3rxS"
-        ]
+        "type": "DAMAGE",
+        "value": 1,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
       }
     },
     "gruppe": "0",
     "probe": "Bewegung und AT",
     "gegenprobe": "",
-    "text": "Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Außerdem richtet die nächste Attacke GS Trefferpunkte zusätzlich an. Voraussetzungen: Vorteil Sturmangriff oder Reiterkampf I und Kampf in diesem Stil; die Bewegung muss vor dem Angriff ausgeführt werden. Anmerkung: Sturzflugangriffe von fliegenden Gegnern folgen denselben Regeln. Bei besonders kleinen Gegnern oder kurzem Anlauf sollte der Spielleiter den Schaden verringern."
+    "text": "Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Außerdem richtet die nächste Attacke GS Trefferpunkte zusätzlich an. Voraussetzungen: Vorteil Sturmangriff oder Reiterkampf I und Kampf in diesem Stil; die Bewegung muss vor dem Angriff ausgeführt werden. Anmerkung: Sturzflugangriffe von fliegenden Gegnern folgen denselben Regeln. Bei besonders kleinen Gegnern oder kurzem Anlauf sollte der Spielleiter den Schaden verringern.",
+    "selectors": ["INPUT", "CHECKBOX"],
+    "input": {
+      "label": "GS",
+      "field": "NUMBER"
+    }
   },
   "effects": [],
   "folder": null,
@@ -25,10 +31,10 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "0.3.20",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1745306170474,
-    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "modifiedTime": 1746878353909,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
   },

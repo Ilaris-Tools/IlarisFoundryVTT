@@ -17,7 +17,7 @@
   ],
   "scripts": [],
   "esmodules": ["scripts/hooks.js"],
-  "styles": ["css/temp.css"],
+  "styles": ["css/temp.css", "styles/sheets/manoever.css"],
   "packs": [
     {
       "label": "Beispiel Helden",
@@ -115,7 +115,7 @@
   "languages": [],
   "grid": {
     "distance": 1,
-    "units":"m"
+    "units": "m"
   },
   "primaryTokenAttribute": "gesundheit.hp",
   "secondaryTokenAttribute": null,

@@ -1,18 +1,18 @@
-import { IlarisItemSheet } from './item.js';
+import { IlarisItemSheet } from './item.js'
 
 export class GegenstandSheet extends IlarisItemSheet {
     async getData() {
-        const data = await super.getData();
+        const data = await super.getData()
         if (data.hasOwner) {
-            data.speicherplatz_list = this.item.actor.misc.speicherplatz_list;
+            data.speicherplatz_list = this.item.actor.misc.speicherplatz_list
         }
-        return data;
+        return data
     }
 
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             // classes: ["ilaris", "sheet"],
-            template: 'systems/Ilaris/templates/sheets/items/gegenstand.html',
+            template: 'systems/Ilaris/templates/sheets/items/gegenstand.hbs',
             // width: 720,
             // height: 800,
             // resizable: false,
@@ -23,7 +23,7 @@ export class GegenstandSheet extends IlarisItemSheet {
             //         initial: "fertigkeiten",
             //     },
             // ]
-        });
+        })
     }
 
     // getData() {

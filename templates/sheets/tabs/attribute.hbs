@@ -1,0 +1,76 @@
+{{log 'attribute' this}}
+<div>
+    <h2>Attribute</h2>
+    <div>
+        <div class="flexrow">
+            <label class="icon-small"></label>
+            <h6></h6>
+            <h6>Wert</h6>
+            <h6>PW</h6>
+        </div>
+        {{#each actor.system.attribute as |attribut key|}}
+        <div class="flexrow">
+            <a class="rollable icon-small" data-rolltype="attribut_diag" data-attribut="{{key}}"
+                ><i class="custom-icon"></i
+            ></a>
+            <label>{{get_label key}}</label>
+            <input
+                name="system.attribute.{{key}}.wert"
+                value="{{attribut.wert}}"
+                type="text"
+                data-dtype="Number"
+            />
+            <label class="rollable onhover" data-rolltype="attribut" data-attribut="{{key}}"
+                >{{attribut.pw}}</label
+            >
+        </div>
+        {{/each}}
+    </div>
+    <br />
+    <h2>Eigenheiten</h2>
+    <a class="item-create" data-itemclass="eigenheit"><i class="fas fa-plus"></i>Neue Eigenheit</a>
+    <div>
+        {{#each actor.eigenheiten}}
+        <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}}</a>
+        <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
+        &nbsp; | &nbsp; {{/each}}
+    </div>
+    <br />
+    <br />
+    <h2>Vorteile</h2>
+    {{#if actor.vorteil.allgemein}}
+    <div>
+        <label><b>Allgemeine Vorteile:</b>&nbsp; | &nbsp;</label>
+        {{#each actor.vorteil.allgemein}}
+        <a class="item-edit {{#unless this._stats.compendiumSource}}error-highlight{{/unless}}" 
+           data-itemid="{{this.id}}"
+           {{#unless this._stats.compendiumSource}}title="Am Vorteil stimmt etwas nicht. Bitte füge den Vorteil neu hinzu"{{/unless}}> 
+           {{this.name}}
+        </a>
+        <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
+        &nbsp; | &nbsp; {{/each}}
+    </div>
+    {{/if}} {{#if actor.vorteil.profan}}
+    <div>
+        <label><b>Profane Vorteile:</b>&nbsp; | &nbsp;</label>
+        {{#each actor.vorteil.profan}}
+        <a class="item-edit" 
+           data-itemid="{{this.id}}"> 
+           {{this.name}} 
+        </a>
+        <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
+        &nbsp; | &nbsp; {{/each}}
+    </div>
+    {{/if}} {{#if actor.unsorted}}
+    <br />
+    <hr />
+    <hr />
+    <label><b>Unsorted Items:</b>&nbsp; | &nbsp;</label>
+    {{#each actor.unsorted}}
+    <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
+    <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
+    &nbsp; | &nbsp; {{/each}}
+    <hr />
+    <hr />
+    {{/if}}
+</div>

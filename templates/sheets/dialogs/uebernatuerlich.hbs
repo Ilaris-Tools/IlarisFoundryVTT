@@ -1,0 +1,174 @@
+{{log 'uebernatuerlich' this}}
+<div>
+    <label>Anzahl W20:</label>
+    <label>{{radioBoxes "xd20" choices_xd20 checked=checked_xd20}}</label>
+</div>
+{{#if (ifEq actor.type "held")}}
+<div>
+    <label>Schips:</label>
+    <label>{{radioBoxes "schips" choices_schips checked=checked_schips}}</label>
+</div>
+{{/if}}
+<div class="flexrow">
+    <label>{{get_label "kbak"}}</label>
+    <input type="checkbox" id="kbak" {{checked item.system.manoever.kbak.selected}} />
+</div>
+{{#if hasBlutmagie}}
+<div class="flexrow">
+    <label>Blutmagie:</label>
+    <input
+        type="number"
+        id="blutmagie"
+        name="item.system.manoever.blutmagie.value"
+        value="{{item.system.manoever.blutmagie.value}}"
+        data-dtype="Number"
+        min="0"
+    />
+</div>
+<div class="description">
+    Trage die Zusatz AsP für dein Opfer hier ein. Ein zauberkundiges Opfer stellt 8 x WS AsP, ein
+    humanoides Opfer 4 x WS AsP und ein profanes Tier WS AsP zur Verfügung.
+</div>
+{{/if}} {{#if hasVerbotenePforten}}
+<div class="flexrow">
+    <label>Verbotene Pforten:</label>
+    <div style="margin-right: 10px">
+        <label>
+            {{radioBoxes "verbotene_pforten_toggle" choices_verbotene_pforten checked="4"}}
+        </label>
+    </div>
+    <input
+        type="checkbox"
+        id="verbotene_pforten"
+        name="item.system.manoever.verbotene_pforten.value"
+        {{checked
+        item.system.manoever.verbotene_pforten.value}}
+        style="margin-right: 10px"
+    />
+</div>
+<div class="description">Wähle aus wie viel AsP pro Wunde du erhältst.</div>
+{{/if}} {{#if canSetEnergyCost}}
+<div class="flexrow">
+    <label>Energiekosten (frei wählbar):</label>
+    <input
+        type="number"
+        name="item.system.manoever.energyOverride"
+        min="0"
+        placeholder="Energie frei setzen"
+    />
+</div>
+<div class="description">Mit diesem Feld kannst du die Energiekosten nach Belieben festlegen.</div>
+{{/if}}
+<hr />
+
+{{#if item.manoever.length}}
+<div>
+    <div class="maneuver-header collapsed">
+        <h3>Manöver:</h3>
+        <div class="toggle-display">
+            <h4>Ausklappen</h4>
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </div>
+    <div class="maneuver-grid collapsed">
+        {{#each item.manoever as |manoever|}}
+        <div
+            class="maneuver-item {{#if (or manoever.inputValue.value manoever.inputValue.checked)}}has-value{{/if}}"
+        >
+            <label>{{manoever.name}} ({{manoever.system.probe}})</label>
+            {{#if (ifEq manoever.inputValue.field "CHECKBOX")}}
+                <input 
+                    type="checkbox" 
+                    id="{{manoever.id}}CHECKBOX-{{../dialogId}}" {{#if manoever.inputValue.value}}checked{{/if}} /> 
+            {{/if}}
+            {{#if (ifEq manoever.inputValue.field "NUMBER")}}
+                <input 
+                id="{{manoever.id}}NUMBER-{{../dialogId}}"
+                type="number" name="item.manoever.{{@../index}}.inputValue.value"
+                value="{{manoever.inputValue.value}}" 
+                data-dtype="Number" 
+                class="number-input" 
+                {{#unless (ifEq manoever.inputValue.min null)}}min="{{manoever.inputValue.min}}" data-has-min="true"{{/unless}} 
+                {{#if manoever.inputValue.max}}max="{{manoever.inputValue.max}}" data-has-max="true"{{/if}}
+                oninput="this.classList.toggle('out-of-bounds', (this.dataset.hasMin === 'true' &&
+                Number(this.value) < Number(this.min)) || (this.dataset.hasMax === 'true' &&
+                Number(this.value) > Number(this.max)))" />
+            {{/if}}
+            {{#if (ifEq manoever.inputValue.field "TREFFER_ZONE")}}
+            <select
+                id="{{manoever.id}}TREFFER_ZONE-{{../dialogId}}"
+                name="manoever.inputValue.value"
+                style="max-width: 150px"
+            >
+                {{selectOptions ../trefferzonen selected=manoever.inputValue.value}}
+            </select>
+            {{/if}}
+        </div>
+        {{/each}}
+    </div>
+</div>
+{{/if}}
+
+<hr />
+<div class="flexrow">
+    <label>Modifikator:</label>
+    <input
+        id="modifikator-{{dialogId}}"
+        type="number"
+        name="item.system.manoever.mod.selected"
+        value="{{item.system.manoever.mod.selected}}"
+        data-dtype="Number"
+    />
+</div>
+<div class="flexrow">
+    <label>Würfelmodus:</label>
+    <select id="rollMode-{{dialogId}}">
+        {{selectOptions rollModes selected=item.system.manoever.rllm.selected localize=true}}
+    </select>
+</div>
+<hr />
+<div class="flexrow">
+    <button style="max-width: 150px" class="angreifen" type="button">
+        <i>
+            <img
+                class="button-icon-nahkampf"
+                src="systems/Ilaris/assets/game-icons.net/book-cover.png"
+            />
+        </i>
+        Wirken
+    </button>
+    {{#if isNonStandardDifficulty}}
+    <button
+        style="max-width: 150px"
+        class="energie-abrechnen"
+        type="button"
+        data-is-success="true"
+        title="Dieser Button ist sichtbar, weil die Schwierigkeit des Übernatürlichen Talents von der Magieresistenz oder anderen Faktoren abhängt."
+    >
+        <i>
+            <img
+                class="button-icon-nahkampf"
+                src="systems/Ilaris/assets/game-icons.net/bottled-bolt.svg"
+                style="filter: brightness(0)"
+            />
+        </i>
+        Energie abrechnen
+    </button>
+    <button
+        style="max-width: 150px"
+        class="energie-abrechnen"
+        type="button"
+        data-is-success="false"
+        title="Dieser Button ist sichtbar, weil die Schwierigkeit des Übernatürlichen Talents von der Magieresistenz oder anderen Faktoren abhängt."
+    >
+        <i>
+            <img
+                class="button-icon-nahkampf"
+                src="systems/Ilaris/assets/game-icons.net/bottled-bolt.svg"
+                style="filter: brightness(0)"
+            />
+        </i>
+        Energie abrechnen (Misslungen)
+    </button>
+    {{/if}}
+</div>

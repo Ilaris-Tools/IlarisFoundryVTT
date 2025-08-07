@@ -184,8 +184,6 @@
   pointer-events: none;
 }
 
-
-
 .status-effects {
   display: inline-flexbox;
   flex-direction: column;
@@ -427,4 +425,371 @@ input[name="name"] {
       margin-top: 2px;
     }
   }
+}
+
+
+.ilaris {
+  /* font-family: var(--font-crimson); */
+  /* background: url("../assets/images/background/Kasten_high_res.JPG"); /\*ersetzt so die Statusleiste!*\/ */
+  /* background-image: url("../assets/images/background/Kasten_high_res.JPG"); */
+  /* mix-blend-mode: multiply; */
+}
+
+.window-app .window-content {
+  font-family: var(--font-crimson);
+  /* TODO CR: Wegen Bild fragen */
+  background-image: url('../assets/images/background/hintergrund.jpg');
+}
+
+.tabs {
+  font-family: var(--font-andada);
+}
+
+.ilaris h2 {
+  font-family: var(--font-aniron);
+}
+
+.button-icon {
+  height: 3ex;
+  border: none;
+  display: inline-block;
+  vertical-align: middle;
+}
+.button-icon-nahkampf {
+  height: 4ex;
+  border: none;
+  /* display:inline-block; */
+  display: block;
+  /* vertical-align:middle; */
+  margin-left: auto;
+  margin-right: auto;
+}
+.chat-message {
+  color: #000000;
+  font-family: var(--font-crimson);
+  /* TODO CR: Wegen Bild fragen */
+  background-image: url('../assets/images/background/hintergrund.jpg');
+}
+.chat-message .message-header {
+  color: #000000;
+}
+
+.chat-message .message-header .flavor-text {
+  color: #000000;
+}
+
+.editor {
+  height: 100% !important;
+  width: 100%;
+  overflow: auto;
+}
+.editor-content {
+  min-height: 50px;
+  min-height: 500px;
+  min-width: 300px;
+  height: 100% !important;
+  width: 100%;
+  overflow: auto;
+  /*     font-weight: bold; */
+}
+
+.icon-small {
+  flex-basis: 20px;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.flex-fest-var {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.item-toggle.false {
+  /* color: #b5b3a4; */
+  color: #989898;
+}
+.item-toggle.active {
+  /* color: #4b4a44; */
+  color: black;
+}
+
+.toggle-bool.false {
+  /* color: #b5b3a4; */
+  color: #989898;
+}
+.toggle-bool.active {
+  /* color: #4b4a44; */
+  color: #990000;
+}
+
+.onhover:hover {
+  /* background-color: #b32019; */
+  /* text-shadow: 0 0 8px #b32019; */
+  text-shadow: 0 0 8px red;
+}
+
+.twokindrow div:nth-child(odd) {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.kreatur-sheet input {
+  border: none;
+}
+
+.ilaris .titel-input {
+  font-size: 32px;
+  border: None;
+  color: rgb(83, 0, 0);
+  font-family: var(--font-andada);
+}
+
+input.titel-input {
+  font-size: 32px;
+  color: rgb(83, 0, 0);
+  font-family: var(--font-andada);
+}
+
+.kreatur-sheet .plus-button {
+  color: rgb(54, 37, 37);
+  font-size: 18px;
+}
+
+.attributblock h2 {
+  font-family: var(--font-aniron);
+  font-size: 14px;
+  color: rgb(54, 37, 37); /*rgb(83, 0, 0);*/
+  border: none;
+}
+
+.kreatur-header textarea {
+  border: none;
+  resize: none;
+  font-family: var(--font-crimson);
+}
+
+.statblockreihe {
+  background-color: rgba(247, 68, 37, 0.13);
+  padding: 10px;
+  border-top: solid darkred 2px;
+}
+
+.statblockreihe input {
+  width: 40px;
+  height: 16px;
+  background: rgba(250, 250, 250, 0.2);
+}
+
+/* Erste Gehversuche Michael*/
+
+/* --------------------------------------- */
+/*  Ilaris Sheet                           */
+/* --------------------------------------- */
+.ilaris {
+  min-width: 360px;
+  min-height: 320px;
+}
+.ilaris form > * {
+  flex: 0;
+}
+.ilaris .form-group.description {
+  flex: 1;
+}
+.ilaris .form-group.description label {
+  height: 24px;
+}
+.ilaris .form-group.description textarea {
+  height: calc(100% - 24px);
+  resize: none;
+}
+
+.hangingindent {
+  padding-left: 22px;
+  text-indent: -22px;
+}
+
+/* Style for valid input */
+.regex-check:valid {
+  border-color: green;
+  border-width: 2px;
+}
+
+/* Style for invalid input */
+.regex-check:invalid {
+  border-color: red;
+  border-width: 2px;
+}
+
+.validation-icon {
+  font-size: 1.2em;
+  flex: 0;
+  margin-left: 16px;
+}
+
+.regex-check:valid + .validation-icon::before {
+  content: '✔';
+  color: green;
+}
+
+.regex-check:invalid + .validation-icon::before {
+  content: '✘';
+  color: red;
+}
+
+.multi-select {
+  display: flex !important;
+}
+
+.manoever-einstellungen {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  .field {
+    margin: 8px 16px 0 16px;
+    .row {
+      margin-bottom: 8px;
+    }
+    .delete-button {
+      margin-left: 8px;
+      margin-top: 2px;
+    }
+  }
+}
+
+.maximum-load-exceeded-left,
+.maximum-load-exceeded-middle,
+.maximum-load-exceeded-right {
+  border: red;
+  border-style: solid;
+}
+.maximum-load-exceeded-left {
+  border-width: 3px 0 3px 3px;
+}
+.maximum-load-exceeded-middle {
+  border-width: 3px 0 3px 0;
+}
+.maximum-load-exceeded-right {
+  border-width: 3px 3px 3px 0;
+}
+
+.flexrow {
+  margin: 4px 0;
+  align-items: center;
+}
+
+.flexrow .label {
+  min-width: 150px;
+}
+
+input[type='text']:focus,
+input[type='number']:focus,
+select:focus,
+textarea:focus {
+  border-color: #782e22;
+  box-shadow: 0 0 3px rgba(120, 46, 34, 0.3);
+}
+
+hr {
+  margin: 16px 0;
+  border: 0;
+  border-top: 1px solid #353535;
+}
+
+.system-pack {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #782e22; /* Using the same red color as in manoever.css */
+}
+
+.system-pack input[type='checkbox'] {
+  transform: scale(1.2); /* Make the checkbox slightly bigger too */
+  margin-right: 10px; /* Add some space after the bigger checkbox */
+}
+
+.pack-entry {
+  margin-bottom: 4px;
+}
+
+.pack-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.checkbox.disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.checkbox.disabled input[type='checkbox'] {
+  cursor: not-allowed;
+}
+
+.disabled-reason {
+  font-style: italic;
+  color: #782e22;
+  font-size: 0.9em;
+}
+
+.error-highlight {
+  color: #ff0000;
+  text-decoration: underline wavy #ff0000;
+  cursor: help;
+}
+
+.notes {
+  white-space: pre-line;
+}
+
+/* Clickable Summary Sections */
+.clickable-summary {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.clickable-summary:hover {
+  transform: translateY(-1px);
+}
+
+.clickable-summary h4 {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.clickable-summary.angreifen:hover {
+  border-color: #8b0000;
+  box-shadow: 0 0 8px rgba(139, 0, 0, 0.3);
+}
+
+.clickable-summary.angreifen:hover h4 {
+  color: #8b0000 !important;
+  text-shadow: 0 0 3px rgba(139, 0, 0, 0.5);
+}
+
+.clickable-summary.verteidigen:hover {
+  border-color: #006400;
+  box-shadow: 0 0 8px rgba(0, 100, 0, 0.3);
+}
+
+.clickable-summary.verteidigen:hover h4 {
+  color: #006400 !important;
+  text-shadow: 0 0 3px rgba(0, 100, 0, 0.5);
+}
+
+.clickable-summary.schaden:hover {
+  border-color: #cc4400;
+  box-shadow: 0 0 8px rgba(204, 68, 0, 0.3);
+}
+
+.clickable-summary.schaden:hover h4 {
+  color: #cc4400 !important;
+  text-shadow: 0 0 3px rgba(204, 68, 0, 0.5);
 }

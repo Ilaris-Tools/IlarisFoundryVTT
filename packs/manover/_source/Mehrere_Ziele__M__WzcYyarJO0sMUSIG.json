@@ -3,13 +3,18 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": {
+    "voraussetzungen": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    },
+    "modifications": {
       "0": {
-        "name": "Vorteil Zauberer I",
-        "type": "VORTEIL",
-        "value": [
-          "ClPMi6Au35vgyndN"
-        ]
+        "type": "ATTACK",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
       }
     },
     "gruppe": "2",
@@ -25,10 +30,10 @@
   "_stats": {
     "coreVersion": "12.331",
     "systemId": "Ilaris",
-    "systemVersion": "0.3.20",
+    "systemVersion": "12.0.2",
     "createdTime": null,
-    "modifiedTime": 1745305003233,
-    "lastModifiedBy": "oz3U1cHybCRHlQTJ",
+    "modifiedTime": 1747813847059,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
   },

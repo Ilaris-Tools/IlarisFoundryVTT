@@ -1,10 +1,6 @@
 {
   "Actor": {
-    "types": [
-      "held",
-      "kreatur",
-      "nsc"
-    ],
+    "types": ["held", "kreatur", "nsc"],
     "templates": {
       "gesundheit": {
         "gesundheit": {
@@ -285,11 +281,7 @@
       }
     },
     "nahkampfwaffe": {
-      "templates": [
-        "gesundheit",
-        "waffe",
-        "gegenstand"
-      ],
+      "templates": ["gesundheit", "waffe", "gegenstand"],
       "wm_at": 0,
       "wm_vt": 0,
       "eigenschaften": {
@@ -311,11 +303,7 @@
       }
     },
     "fernkampfwaffe": {
-      "templates": [
-        "gesundheit",
-        "waffe",
-        "gegenstand"
-      ],
+      "templates": ["gesundheit", "waffe", "gegenstand"],
       "wm_fk": 0,
       "lz": 0,
       "eigenschaften": {
@@ -334,10 +322,7 @@
       }
     },
     "ruestung": {
-      "templates": [
-        "gesundheit",
-        "gegenstand"
-      ],
+      "templates": ["gesundheit", "gegenstand"],
       "rs": 0,
       "be": 0,
       "rs_beine": 0,
@@ -350,16 +335,11 @@
       "text": ""
     },
     "gegenstand": {
-      "templates": [
-        "gesundheit",
-        "gegenstand"
-      ],
+      "templates": ["gesundheit", "gegenstand"],
       "text": ""
     },
     "fertigkeit": {
-      "templates": [
-        "fertigkeit"
-      ],
+      "templates": ["fertigkeit"],
       "pwt": 0
     },
     "talent": {
@@ -367,25 +347,17 @@
       "fertigkeit": ""
     },
     "uebernatuerliche_fertigkeit": {
-      "templates": [
-        "fertigkeit"
-      ],
+      "templates": ["fertigkeit"],
       "voraussetzung": ""
     },
     "liturgie": {
-      "templates": [
-        "uebernatuerlich_talent"
-      ]
+      "templates": ["uebernatuerlich_talent"]
     },
     "zauber": {
-      "templates": [
-        "uebernatuerlich_talent"
-      ]
+      "templates": ["uebernatuerlich_talent"]
     },
     "anrufung": {
-      "templates": [
-        "uebernatuerlich_talent"
-      ]
+      "templates": ["uebernatuerlich_talent"]
     },
     "freie_fertigkeit": {
       "stufe": 1,
@@ -399,6 +371,11 @@
     },
     "manoever": {
       "voraussetzungen": [],
+      "input": {
+        "label": "Checkbox",
+        "field": "CHECKBOX"
+      },
+      "modifications": [],
       "gruppe": 0,
       "probe": "",
       "gegenprobe": "",

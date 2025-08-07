@@ -1,59 +1,351 @@
-import {
-    roll_crit_message,
-    get_statuseffect_by_id,
-} from '../../common/wuerfel/wuerfel_misc.js';
-import {signed} from '../../common/wuerfel/chatutilities.js'
+import { roll_crit_message, get_statuseffect_by_id } from '../../common/wuerfel/wuerfel_misc.js'
+import { signed } from '../../common/wuerfel/chatutilities.js'
+import { handleModifications } from './shared_dialog_helpers.js'
+import { CombatDialog } from './combat_dialog.js'
 
-
-export class AngriffDialog extends Dialog {
+export class AngriffDialog extends CombatDialog {
     constructor(actor, item) {
-        const dialog = {title: `Kampf: ${item.name}`};
-        const options = {template: 'systems/Ilaris/templates/sheets/dialogs/angriff.html'}
-        super(dialog, options);
+        const dialog = { title: `Kampf: ${item.name}` }
+        const options = {
+            template: 'systems/Ilaris/templates/sheets/dialogs/angriff.hbs',
+            width: 800,
+            height: 'auto',
+        }
+        super(dialog, options)
         // this can be probendialog (more abstract)
-        this.item = item;
-        this.actor = actor;
-        this.speaker = ChatMessage.getSpeaker({ actor: this.actor });
-        this.rollmode = game.settings.get("core", "rollMode");  // public, private.... 
-        this.item.system.manoever.rllm.selected = game.settings.get("core", "rollMode");  // TODO: either manoever or dialog property.
-        this.fumble_val = 1;
+        this.text_at = ''
+        this.text_vt = ''
+        this.text_dm = ''
+        this.item = item
+        this.actor = actor
+        this.speaker = ChatMessage.getSpeaker({ actor: this.actor })
+        this.rollmode = game.settings.get('core', 'rollMode') // public, private....
+        this.item.system.manoever.rllm.selected = game.settings.get('core', 'rollMode') // TODO: either manoever or dialog property.
+        this.fumble_val = 1
         if (this.item.system.eigenschaften.unberechenbar) {
-            this.fumble_val = 2;
+            this.fumble_val = 2
         }
         this.aufbauendeManoeverAktivieren()
     }
 
-    async getData () { // damit wird das template gefüttert
-        return {
-            distance_choice: CONFIG.ILARIS.distance_choice,
-            rollModes: CONFIG.Dice.rollModes,
-            item: this.item,
-            actor: this.actor,
-            mod_at: this.mod_at
-        };
+    getData() {
+        let data = super.getData()
+        return data
     }
-    
+
     activateListeners(html) {
-        super.activateListeners(html);
-        html.find(".angreifen").click(ev => this._angreifenKlick(html));
-        html.find(".verteidigen").click(ev => this._verteidigenKlick(html));
-        html.find(".schaden").click(ev => this._schadenKlick(html));
+        super.activateListeners(html)
+        html.find('.verteidigen').click((ev) => this._verteidigenKlick(html))
+        html.find('.schaden').click((ev) => this._schadenKlick(html))
+
+        // Store a reference to prevent multiple updates
+        this._updateTimeout = null
+
+        // Find the modifier summary element (should now exist in template)
+        this._modifierElement = html.find('#modifier-summary')
+
+        if (this._modifierElement.length === 0) {
+            console.warn('MODIFIER DISPLAY: Element nicht im Template gefunden')
+            return
+        }
+
+        // Add listeners for real-time modifier updates with debouncing
+        html.find('input, select').on('change input', () => {
+            // Clear previous timeout
+            if (this._updateTimeout) {
+                clearTimeout(this._updateTimeout)
+            }
+
+            // Set new timeout to debounce rapid changes
+            this._updateTimeout = setTimeout(() => {
+                this.updateModifierDisplay(html)
+            }, 300)
+        })
+
+        // Initial display update
+        setTimeout(() => this.updateModifierDisplay(html), 500)
+
+        // Add event listeners for clickable summary sections
+        this.addSummaryClickListeners(html)
+    }
+
+    addSummaryClickListeners(html) {
+        // Use event delegation since the summary elements are dynamically created
+        html.find('#modifier-summary').on('click', '.clickable-summary.angreifen', (ev) => {
+            ev.preventDefault()
+            this._angreifenKlick(html)
+        })
+
+        html.find('#modifier-summary').on('click', '.clickable-summary.verteidigen', (ev) => {
+            ev.preventDefault()
+            this._verteidigenKlick(html)
+        })
+
+        html.find('#modifier-summary').on('click', '.clickable-summary.schaden', (ev) => {
+            ev.preventDefault()
+            this._schadenKlick(html)
+        })
+    }
+
+    /**
+     * Updates the modifier display in real-time
+     */
+    async updateModifierDisplay(html) {
+        try {
+            // Use the stored reference instead of searching for the element
+            if (!this._modifierElement || this._modifierElement.length === 0) {
+                console.warn('MODIFIER DISPLAY: Element-Referenz nicht verfügbar')
+                return
+            }
+
+            // Show loading state
+            this._modifierElement.html(
+                '<div class="modifier-summary"><h4>Würfelwurf Zusammenfassungen:</h4><div class="modifier-item neutral">Wird berechnet...</div></div>',
+            )
+
+            // Temporarily parse values to calculate modifiers
+            await this.manoeverAuswaehlen(html)
+            await this.updateManoeverMods()
+            await this.updateStatusMods()
+
+            // Get base values
+            const baseAT = this.item.system.at || 0
+            const baseVT = this.item.system.vt || 0
+            const statusMods = this.actor.system.abgeleitete.globalermod || 0
+            const nahkampfMods = this.actor.system.modifikatoren.nahkampfmod || 0
+
+            // Get dice formula
+            const diceFormula = this.getDiceFormula(html)
+
+            // Create all summaries
+            const summaries = this.getAllModifierSummaries(
+                baseAT,
+                baseVT,
+                statusMods,
+                nahkampfMods,
+                diceFormula,
+            )
+
+            // Update the display element
+            this._modifierElement.html(summaries)
+        } catch (error) {
+            console.error('MODIFIER DISPLAY: Fehler beim Update:', error)
+            // Show error state
+            if (this._modifierElement && this._modifierElement.length > 0) {
+                this._modifierElement.html(
+                    '<div class="modifier-summary"><h4>Würfelwurf Zusammenfassungen:</h4><div class="modifier-item neutral">Fehler beim Berechnen...</div></div>',
+                )
+            }
+        }
+    }
+
+    /**
+     * Creates formatted summaries for all three roll types
+     */
+    getAllModifierSummaries(baseAT, baseVT, statusMods, nahkampfMods, diceFormula) {
+        let allSummaries = '<div class="all-summaries">'
+
+        // Attack Summary
+        allSummaries += this.getAttackSummary(baseAT, statusMods, nahkampfMods, diceFormula)
+
+        // Defense Summary
+        allSummaries += this.getDefenseSummary(baseVT, statusMods, nahkampfMods, diceFormula)
+
+        // Damage Summary
+        allSummaries += this.getDamageSummary()
+
+        allSummaries += '</div>'
+        return allSummaries
+    }
+
+    /**
+     * Creates attack roll summary
+     */
+    getAttackSummary(baseAT, statusMods, nahkampfMods, diceFormula) {
+        // Calculate totals first for the heading
+        const maneuverMod = this.mod_at || 0
+        const totalMod = maneuverMod + statusMods + nahkampfMods
+        const finalAT = baseAT + totalMod
+        const finalFormula = finalAT >= 0 ? `${diceFormula}+${finalAT}` : `${diceFormula}${finalAT}`
+
+        let summary = '<div class="modifier-summary attack-summary clickable-summary angreifen">'
+        summary += `<h4>🗡️ Angriff: ${finalFormula}</h4>`
+        summary += '<div class="modifier-list">'
+
+        // Base AT
+        summary += `<div class="modifier-item base-value">Basis AT: <span>${baseAT}</span></div>`
+
+        // Status modifiers
+        if (statusMods !== 0) {
+            const statusColor = statusMods > 0 ? 'positive' : 'negative'
+            const statusSign = statusMods > 0 ? '+' : ''
+            summary += `<div class="modifier-item ${statusColor}">Status (Wunden/Furcht): <span>${statusSign}${statusMods}</span></div>`
+        }
+
+        // Nahkampf token modifiers
+        if (nahkampfMods !== 0) {
+            const nahkampfColor = nahkampfMods > 0 ? 'positive' : 'negative'
+            const nahkampfSign = nahkampfMods > 0 ? '+' : ''
+            summary += `<div class="modifier-item ${nahkampfColor}">Token Status: <span>${nahkampfSign}${nahkampfMods}</span></div>`
+        }
+
+        // Parse text_at for maneuver modifiers
+        if (this.text_at && this.text_at.trim()) {
+            summary += '<div class="modifier-section">Manöver:</div>'
+            const lines = this.text_at.trim().split('\n')
+            lines.forEach((line) => {
+                if (line.trim()) {
+                    let color = 'neutral'
+                    if (line.includes('+')) color = 'positive'
+                    else if (line.includes('-')) color = 'negative'
+                    summary += `<div class="modifier-item maneuver ${color}">${line}</div>`
+                }
+            })
+        }
+
+        summary += '<hr>'
+
+        // Show total modifiers if any exist
+        if (totalMod !== 0) {
+            const totalModColor = totalMod > 0 ? 'positive' : 'negative'
+            const totalModSign = totalMod > 0 ? '+' : ''
+            summary += `<div class="modifier-item total ${totalModColor}"><strong>Addierte Modifikatoren: ${totalModSign}${totalMod}</strong></div>`
+        }
+
+        summary += '</div></div>'
+        return summary
+    }
+
+    /**
+     * Creates defense roll summary
+     */
+    getDefenseSummary(baseVT, statusMods, nahkampfMods, diceFormula) {
+        // Calculate totals first for the heading
+        const vtStatusMods = this.vt_abzuege_mod || 0
+        const maneuverMod = this.mod_vt || 0
+        const totalMod = maneuverMod + vtStatusMods + nahkampfMods
+        const finalVT = baseVT + totalMod
+        const finalFormula = finalVT >= 0 ? `${diceFormula}+${finalVT}` : `${diceFormula}${finalVT}`
+
+        let summary = '<div class="modifier-summary defense-summary clickable-summary verteidigen">'
+        summary += `<h4>🛡️ Verteidigung: ${finalFormula}</h4>`
+        summary += '<div class="modifier-list">'
+
+        // Base VT
+        summary += `<div class="modifier-item base-value">Basis VT: <span>${baseVT}</span></div>`
+
+        // Status modifiers for defense
+        if (vtStatusMods !== 0) {
+            const statusColor = vtStatusMods > 0 ? 'positive' : 'negative'
+            const statusSign = vtStatusMods > 0 ? '+' : ''
+            summary += `<div class="modifier-item ${statusColor}">Status (Wunden/Furcht): <span>${statusSign}${vtStatusMods}</span></div>`
+        }
+
+        // Nahkampf token modifiers
+        if (nahkampfMods !== 0) {
+            const nahkampfColor = nahkampfMods > 0 ? 'positive' : 'negative'
+            const nahkampfSign = nahkampfMods > 0 ? '+' : ''
+            summary += `<div class="modifier-item ${nahkampfColor}">Token Status: <span>${nahkampfSign}${nahkampfMods}</span></div>`
+        }
+
+        // Parse text_vt for maneuver modifiers
+        if (this.text_vt && this.text_vt.trim()) {
+            summary += '<div class="modifier-section">Manöver:</div>'
+            const lines = this.text_vt.trim().split('\n')
+            lines.forEach((line) => {
+                if (line.trim()) {
+                    let color = 'neutral'
+                    if (line.includes('+')) color = 'positive'
+                    else if (line.includes('-')) color = 'negative'
+                    summary += `<div class="modifier-item maneuver ${color}">${line}</div>`
+                }
+            })
+        }
+
+        summary += '<hr>'
+
+        // Show total modifiers if any exist
+        if (totalMod !== 0) {
+            const totalModColor = totalMod > 0 ? 'positive' : 'negative'
+            const totalModSign = totalMod > 0 ? '+' : ''
+            summary += `<div class="modifier-item total ${totalModColor}"><strong>Addierte Modifikatoren: ${totalModSign}${totalMod}</strong></div>`
+        }
+
+        summary += '</div></div>'
+        return summary
+    }
+
+    /**
+     * Creates damage roll summary
+     */
+    getDamageSummary() {
+        // Calculate totals first for the heading
+        const baseDamage = this.schaden || this.item.getTp()
+        const maneuverMod = this.mod_dm || 0
+        let finalFormula
+        if (maneuverMod === 0) {
+            finalFormula = baseDamage
+        } else {
+            const sign = maneuverMod > 0 ? '+' : ''
+            finalFormula = `${baseDamage} ${sign}${maneuverMod}`
+        }
+
+        let summary = '<div class="modifier-summary damage-summary clickable-summary schaden">'
+        summary += `<h4>🩸 Schaden: ${finalFormula}</h4>`
+        summary += '<div class="modifier-list">'
+
+        // Base damage
+        summary += `<div class="modifier-item base-value">Basis Schaden: <span>${baseDamage}</span></div>`
+
+        // Parse text_dm for maneuver modifiers
+        if (this.text_dm && this.text_dm.trim()) {
+            summary += '<div class="modifier-section">Modifikatoren:</div>'
+            const lines = this.text_dm.trim().split('\n')
+            lines.forEach((line) => {
+                if (line.trim()) {
+                    // Skip trefferzone lines if Gezielter Schlag is not active
+                    if (
+                        !this.isGezieltSchlagActive() &&
+                        (line.includes('Trefferzone:') || line.includes('Gezielter Schlag:'))
+                    ) {
+                        return
+                    }
+
+                    let color = 'neutral'
+                    if (line.includes('+')) color = 'positive'
+                    else if (line.includes('-')) color = 'negative'
+                    else if (line.includes('Kein Schaden')) color = 'negative'
+
+                    // Clean up trefferzone text
+                    let cleanedLine = line.trim()
+                    cleanedLine = cleanedLine.replace(/\s*Trefferzone gewählt$/i, '')
+                    cleanedLine = cleanedLine.replace(/\s*gewählt$/i, '')
+
+                    summary += `<div class="modifier-item maneuver ${color}">${cleanedLine}</div>`
+                }
+            })
+        }
+
+        summary += '<hr>'
+
+        summary += '</div></div>'
+        return summary
     }
 
     async _angreifenKlick(html) {
-        // NOTE: var names not very descriptive: 
+        // NOTE: var names not very descriptive:
         // at_abzuege_mod kommen vom status/gesundheit, at_mod aus ansagen, nahkampfmod?
-        await this.manoeverAuswaehlen(html);
-        this.updateManoeverMods(this.actor, this.item);  // durch manoever
-        this.updateStatusMods();
-        this.eigenschaftenText();
+        let diceFormula = this.getDiceFormula(html)
+        await this.manoeverAuswaehlen(html)
+        await this.updateManoeverMods() // durch manoever
+        this.updateStatusMods()
+        this.eigenschaftenText()
 
-        let label = `Attacke (${this.item.name})`;
-        let formula = 
-            `1d20 ${signed(this.item.system.at)} \
+        let label = `Attacke (${this.item.name})`
+        let formula = `${diceFormula} ${signed(this.item.system.at)} \
             ${signed(this.at_abzuege_mod)} \
             ${signed(this.item.actor.system.modifikatoren.nahkampfmod)} \
-            ${signed(this.mod_at)}`;
+            ${signed(this.mod_at)}`
         await roll_crit_message(
             formula,
             label,
@@ -62,67 +354,47 @@ export class AngriffDialog extends Dialog {
             this.rollmode,
             true,
             this.fumble_val,
-        );
-        // this.close();
+        )
     }
 
     async _verteidigenKlick(html) {
-        await this.manoeverAuswaehlen(html);
-        this.updateManoeverMods(this.actor, this.item);  // durch manoever
-        console.log(this.mod_vt);
-        this.updateStatusMods();
-        let label = `Verteidigung (${this.item.name})`;
-        let formula = `1d20 + ${this.item.system.vt} ${signed(this.vt_abzuege_mod)} ${signed(this.item.actor.system.modifikatoren.nahkampfmod)} ${signed(this.mod_vt)}`;
-        // console.log(formula);
-        // console.log(this.vt_abzuege_mod);
-        await roll_crit_message(formula, label, this.text_vt, this.speaker, this.rollmode, true, this.fumble_val);
-        // TODO: wird unberechenbar auch auf VT gezählt?
-        // this.close();
+        await this.manoeverAuswaehlen(html)
+        await this.updateManoeverMods()
+        this.updateStatusMods()
+        let label = `Verteidigung (${this.item.name})`
+        let diceFormula = this.getDiceFormula(html)
+        let formula = `${diceFormula} ${signed(this.item.system.vt)} ${signed(
+            this.vt_abzuege_mod,
+        )} ${signed(this.item.actor.system.modifikatoren.nahkampfmod)} ${signed(this.mod_vt)}`
+        await roll_crit_message(
+            formula,
+            label,
+            this.text_vt,
+            this.speaker,
+            this.rollmode,
+            true,
+            this.fumble_val,
+        )
     }
 
-    async _schadenKlick(html){
-        await this.manoeverAuswaehlen(html);
-        this.updateManoeverMods(html);
+    async _schadenKlick(html) {
+        await this.manoeverAuswaehlen(html)
+        await this.updateManoeverMods()
         // Rollmode
-        let label = `Schaden (${this.item.name})`;
-        let formula = `${this.schaden} ${signed(this.mod_dm)}`;
-        console.log(formula);
-        if (this.nodmg) {
-            formula = "0";
-        }
-        await roll_crit_message(formula, label, this.text_dm, this.speaker, this.rollmode, false);
-        // this.close()
-    }
-
-    eigenschaftenText() {
-        console.log(this.item);
-        if (!this.item.system.eigenschaften.length > 0) {
-            return;
-        }
-        this.text_at += "\nEigenschaften: ";
-        this.text_at += this.item.system.eigenschaften.map(e => e.name).join(", ");
+        let label = `Schaden (${this.item.name})`
+        let formula = `${this.schaden} ${signed(this.mod_dm)}`
+        await roll_crit_message(formula, label, this.text_dm, this.speaker, this.rollmode, false)
     }
 
     aufbauendeManoeverAktivieren() {
-        console.log(this.actor)
-        let manoever = this.item.system.manoever;
-        let eigenschaften = Object.values(this.item.system.eigenschaften).map(e => e.name);
-        let vorteile = this.actor.vorteil.kampf.map(v => v.name);
+        let manoever = this.item.system.manoever
+        let vorteile = this.actor.vorteil.kampf.map((v) => v.name)
 
-        manoever.km_rust.possible = eigenschaften.includes("Rüstungsbrechend");
-        manoever.km_stsl.possible = eigenschaften.includes("Stumpf");
-        manoever.km_umkl.possible = true;
-        manoever.km_ausf.possible = vorteile.includes("Ausfall");
-        manoever.km_hmsl.possible = vorteile.includes('Hammerschlag');
-        manoever.km_kltz.possible = vorteile.includes('Klingentanz');
-        manoever.km_ndwf.possible = vorteile.includes('Niederwerfen');
-        manoever.km_stag.possible = vorteile.includes('Sturmangriff');
-        manoever.km_tdst.possible = vorteile.includes('Todesstoß');
-        manoever.vlof.offensiver_kampfstil =vorteile.includes('Offensiver Kampfstil');
-        manoever.kwut = vorteile.includes('Kalte Wut');
+        manoever.vlof.offensiver_kampfstil = vorteile.includes('Offensiver Kampfstil')
+        super.aufbauendeManoeverAktivieren()
     }
 
-    manoeverAuswaehlen(html)  {
+    async manoeverAuswaehlen(html) {
         /* parsed den angriff dialog und schreibt entsprechende werte 
         in die waffen items. Ersetzt ehemalige angriffUpdate aus angriff_prepare.js
         TODO: kann ggf. mit manoeverAnwenden zusammengelegt werden?
@@ -134,316 +406,285 @@ export class AngriffDialog extends Dialog {
         dann wäre die ganze funktion hier nicht nötig.
         TODO: alle simplen booleans könnten einfach in eine loop statt einzeln aufgeschrieben werden
         */
-        let manoever = this.item.system.manoever;
-        
-        // manoeverIds = ['kbak', 'vlof', 'vldf', 'pssl']
+        let manoever = this.item.system.manoever
 
         // allgemeine optionen
-        manoever.kbak.selected = html.find('#kbak')[0]?.checked || false;  // Kombinierte Aktion
-        manoever.vlof.selected = html.find('#vlof')[0]?.checked || false;  // Volle Offensive
-        manoever.vldf.selected = html.find('#vldf')[0]?.checked || false;  // Volle Defensive
-        manoever.pssl.selected = html.find('#pssl')[0]?.checked || false;  // Passierschlag pssl
-        manoever.rwdf.selected = html.find('#rwdf')[0]?.value || false;  // Reichweitenunterschied
-        
-        // kampf manoever
-        manoever.km_ausw.selected = html.find('#km_ausw')[0]?.checked || false;  // Ausweichen km_ausw
-        manoever.km_rust.selected = html.find('#km_rust')[0]?.checked || false;  // Rüstungsbrecher km_rust
-        manoever.km_shsp.selected = html.find('#km_shsp')[0]?.checked || false;  // Schildspalter km_shsp
-        manoever.km_stsl.selected = html.find('#km_stsl')[0]?.checked || false;  // Stumpfer Schlag km_stsl
-        manoever.km_ever.selected = html.find('#km_ever')[0]?.checked || false;  // Entfernung verändern km_ever
-        manoever.km_umre.selected = html.find('#km_umre')[0]?.checked || false;  // Umreißen km_umre
-        manoever.km_ausf.selected = html.find('#km_ausf')[0]?.checked || false;  // Ausfall km_ausf
-        manoever.km_befr.selected = html.find('#km_befr')[0]?.checked || false;
-        manoever.km_dppl.selected = html.find('#km_dppl')[0]?.checked || false;
-        manoever.km_hmsl.selected = html.find('#km_hmsl')[0]?.checked || false;
-        manoever.km_kltz.selected = html.find('#km_kltz')[0]?.checked || false;
-        manoever.km_ndwf.selected = html.find('#km_ndwf')[0]?.checked || false;
-        manoever.km_rpst.selected = html.find('#km_rpst')[0]?.checked || false;
-        manoever.km_shwl.selected = html.find('#km_shwl')[0]?.checked || false;
-        manoever.km_stag.selected = html.find('#km_stag')[0]?.checked || false;
-        manoever.km_tdst.selected = html.find('#km_tdst')[0]?.checked || false;
-        manoever.km_uebr.selected = html.find('#km_uebr')[0]?.checked || false;
-        manoever.km_utlf.selected = html.find('#km_utlf')[0]?.checked || false;
-        manoever.km_entw.selected = html.find('#km_entw')[0]?.checked || false;  // Entwaffen km_entw
-        manoever.km_umkl.selected = html.find('#km_umkl')[0]?.checked || false; // Umklammern km_umkl
+        manoever.kbak.selected = html.find(`#kbak-${this.dialogId}`)[0]?.checked || false // Kombinierte Aktion
+        manoever.vlof.selected = html.find(`#vlof-${this.dialogId}`)[0]?.checked || false // Volle Offensive
+        manoever.vldf.selected = html.find(`#vldf-${this.dialogId}`)[0]?.checked || false // Volle Defensive
+        manoever.pssl.selected = html.find(`#pssl-${this.dialogId}`)[0]?.checked || false // Passierschlag pssl
+        manoever.rwdf.selected = html.find(`#rwdf-${this.dialogId}`)[0]?.value || false // Reichweitenunterschied
+        manoever.rkaz.selected = html.find(`#rkaz-${this.dialogId}`)[0]?.value || false // Reaktionsanzahl
 
-        manoever.rkaz.selected = html.find('#rkaz')[0]?.value || false;  // Reaktionsanzahl
-        manoever.km_bind.selected = html.find('#km_bind')[0]?.value || false;  // Binden km_bind
-        manoever.km_gzsl.selected = html.find('#km_gzsl')[0]?.value || false; // Gezielter Schlag km_gzsl
-        manoever.km_wusl.selected = html.find('#km_wusl')[0]?.value || false;  // Wuchtschlag km_wusl
-        manoever.km_umkl.mod = html.find('#km_umkl_mod')[0]?.value || false;
-        manoever.km_uebr.gs = html.find('#km_uebr_gs')[0]?.value || false;
-        manoever.km_stag.gs = html.find('#km_stag_gs')[0]?.value || false;
-        manoever.km_aufl.gs = html.find('#km_aufl_gs')[0]?.value || false; // Auflaufen lassen km_aufl
+        manoever.mod.selected = html.find(`#modifikator-${this.dialogId}`)[0]?.value || false // Modifikator
+        manoever.rllm.selected = html.find(`#rollMode-${this.dialogId}`)[0]?.value || false // RollMode
 
-        if (manoever.km_aufl.gs > 0) { // && possible?
-            manoever.km_aufl.selected = true;
-        }
-        manoever.mod.selected = html.find('#modifikator')[0]?.value || false;  // Modifikator
-        manoever.rllm.selected = html.find('#rollMode')[0]?.value || false;  // RollMode
-        this.rollmode = this.item.system.manoever.rllm.selected;
+        super.manoeverAuswaehlen(html)
     }
-    
-    updateManoeverMods() {
-        /* geht ausgewählte manöver durch und schreibt summe in 
-        this.mod_at und this.text_at
-        ersetzt teile der callback funktion aus wuerfel.js und calculate_attacke aus attacke_prepare.js
 
-        // TODO: das wäre vlt. ne gute item.manoeverAnwenden() die dann 
-        // item.at_mod, item.vt_mod, item.at_text item.vt_text schreibt oder sowas?
-        // #31
-        */
-        let systemData = this.item.actor.system;
-        let item = this.item;
-        let manoever = this.item.system.manoever;
-        let be = systemData.abgeleitete.be || 0;
+    async updateManoeverMods() {
+        let manoever = this.item.system.manoever
 
-        let mod_at = 0;
-        let mod_vt = 0;
-        let mod_dm = 0;
-        let text_at = '';
-        let text_vt = '';
-        let text_dm = '';
-        let nodmg = false;
-        // TDOO: this differ between angriff and nk/fk waffen, define get_tp() in both?
-        // let schaden = item.data.data.schaden;
-        let schaden = item.system.tp.replace(/[Ww]/g, "d");
-        if(this.actor.type == "held") {
-            schaden = item.system.schaden.replace(/[Ww]/g, "d");
-        }
+        let mod_at = 0
+        let mod_vt = 0
+        let mod_dm = 0
+        let mod_energy = 0
+        let text_at = ''
+        let text_vt = ''
+        let text_dm = ''
+        let text_energy = ''
+        let nodmg = { name: '', value: false }
+        let trefferzone = 0
+        let schaden = this.item.getTp()
 
+        // Handle standard maneuvers first
         if (manoever.kbak.selected) {
-            mod_at -= 4;
-            text_at = text_at.concat('Kombinierte Aktion: -4\n');
+            mod_at -= 4
+            text_at = text_at.concat('Kombinierte Aktion: -4\n')
         }
         // Volle Offensive vlof
         if (manoever.vlof.selected && !manoever.pssl.selected) {
             if (manoever.vlof.offensiver_kampfstil) {
-                mod_vt -= 4;
-                text_vt = text_vt.concat('Volle Offensive (Offensiver Kampfstil): -4\n');
+                mod_vt -= 4
+                text_vt = text_vt.concat('Volle Offensive (Offensiver Kampfstil): -4\n')
             } else {
-                mod_vt -= 8;
-                text_vt = text_vt.concat('Volle Offensive: -8\n'); 
+                mod_vt -= 8
+                text_vt = text_vt.concat('Volle Offensive: -8\n')
             }
-            mod_at += 4;
-            text_at = text_at.concat('Volle Offensive: +4\n');
+            mod_at += 4
+            text_at = text_at.concat('Volle Offensive: +4\n')
         }
         // Volle Defensive vldf
         if (manoever.vldf.selected) {
-            mod_vt += 4;
-            text_vt = text_vt.concat('Volle Defensive +4\n');
+            mod_vt += 4
+            text_vt = text_vt.concat('Volle Defensive +4\n')
         }
         // Reichweitenunterschiede rwdf
-        let reichweite = Number(manoever.rwdf.selected);
+        let reichweite = Number(manoever.rwdf.selected)
         if (reichweite > 0) {
-            let mod_rwdf = 2 * Number(reichweite);
-            mod_at -= mod_rwdf;
-            mod_vt -= mod_rwdf;
-            text_at = text_at.concat(`Reichweitenunterschied: ${mod_rwdf}\n`);
-            text_vt = text_vt.concat(`Reichweitenunterschied: ${mod_rwdf}\n`);
+            let mod_rwdf = 2 * Number(reichweite)
+            mod_at -= mod_rwdf
+            mod_vt -= mod_rwdf
+            text_at = text_at.concat(`Reichweitenunterschied: ${mod_rwdf}\n`)
+            text_vt = text_vt.concat(`Reichweitenunterschied: ${mod_rwdf}\n`)
         }
         // Passierschlag pssl & Anzahl Reaktionen rkaz
-        let reaktionen = Number(manoever.rkaz.selected);
+        let reaktionen = Number(manoever.rkaz.selected)
         if (reaktionen > 0) {
-            let mod_rkaz = 4 * reaktionen;
-            mod_vt -= mod_rkaz;
-            text_vt = text_vt.concat(`${reaktionen}. Reaktion: -${mod_rkaz}\n`);
+            let mod_rkaz = 4 * reaktionen
+            mod_vt -= mod_rkaz
+            text_vt = text_vt.concat(`${reaktionen}. Reaktion: -${mod_rkaz}\n`)
             if (manoever.pssl.selected) {
-                mod_at -= mod_rkaz;
-                text_at = text_at.concat(`${reaktionen}. Passierschlag: -${mod_rkaz} \n`);
+                mod_at -= mod_rkaz
+                text_at = text_at.concat(`${reaktionen}. Passierschlag: -${mod_rkaz} \n`)
             }
         }
-        // Ausweichen km_ausw
-        if (manoever.km_ausw.selected) {
-            mod_vt -= 2+be;
-            text_vt = text_vt.concat(`Ausweichen: -${2+be}\n`);
+
+        // Collect all modifications from all maneuvers
+        const allModifications = []
+        this.item.manoever.forEach((dynamicManoever) => {
+            let check = undefined
+            let number = undefined
+            let trefferZoneInput = undefined
+            if (dynamicManoever.inputValue.value) {
+                if (dynamicManoever.inputValue.field == 'CHECKBOX') {
+                    check = dynamicManoever.inputValue.value
+                } else if (dynamicManoever.inputValue.field == 'NUMBER') {
+                    number = dynamicManoever.inputValue.value
+                } else {
+                    trefferZoneInput = dynamicManoever.inputValue.value
+                }
+            }
+            if (
+                check == undefined &&
+                (number == undefined || number == 0) &&
+                (trefferZoneInput == undefined || trefferZoneInput == 0)
+            )
+                return
+
+            // Add valid modifications to the collection
+            Object.values(dynamicManoever.system.modifications).forEach((modification) => {
+                allModifications.push({
+                    modification,
+                    manoever: dynamicManoever,
+                    number,
+                    check,
+                    trefferZoneInput,
+                })
+            })
+
+            // Handle special cases
+            if (manoever.kbak.selected) {
+                if (dynamicManoever.name == 'Sturmangriff') {
+                    mod_at += 4
+                    text_at = text_at.concat(`${dynamicManoever.name}: +4\n`)
+                }
+                if (dynamicManoever.name == 'Überrennen') {
+                    mod_at += 4
+                    text_at = text_at.concat(`${dynamicManoever.name}: +4\n`)
+                }
+            }
+            if (dynamicManoever.name == 'Riposte') {
+                mod_vt += mod_at
+                text_vt = text_vt.concat(`${dynamicManoever.name}: (\n${text_at})\n`)
+                text_dm = text_dm.concat(`${dynamicManoever.name}: (\n${text_at})\n`)
+            }
+        })
+
+        // Process all modifications in order
+        ;[
+            mod_at,
+            mod_vt,
+            mod_dm,
+            mod_energy,
+            text_at,
+            text_vt,
+            text_dm,
+            text_energy,
+            trefferzone,
+            schaden,
+            nodmg,
+        ] = handleModifications(allModifications, {
+            mod_at,
+            mod_vt,
+            mod_dm,
+            mod_energy: null,
+            text_at,
+            text_vt,
+            text_dm,
+            text_energy: null,
+            trefferzone,
+            schaden,
+            nodmg,
+            context: this,
+        })
+
+        // If ZERO_DAMAGE was found, override damage values
+        if (nodmg.value) {
+            mod_dm = 0
+            schaden = '0'
+            // Add text explaining zero damage if not already present
+            if (!text_dm.includes('Kein Schaden')) {
+                text_dm = text_dm.concat(`${nodmg.name}: Kein Schaden\n`)
+            }
         }
-        // Auflaufen lassen km_aufl
-        if (manoever.km_aufl.selected) {
-            let gs = Number(item.system.manoever.km_aufl.gs);
-            mod_vt -= 4;
-            text_vt = text_vt.concat(`${CONFIG.ILARIS.label['km_aufl']} (${gs}): -4\n`);
-            mod_dm += gs;
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_aufl']}: ${gs}\n`)
-        }
-        // Binden km_bind
-        let binden = Number(manoever.km_bind.selected);
-        if (binden > 0) {
-            mod_vt -= binden;
-            text_vt = text_vt.concat(`Binden: -${binden}\n`);
-        }
-        // Entfernung verändern km_ever
-        if (manoever.km_ever.selected) {
-            let be = systemData.abgeleitete.be || 0
-            mod_at -= be;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_ever']}: -${be}\n`);
-        }
-        // Entwaffnen km_entw
-        if (manoever.km_entw.selected) {
-            mod_at -= 4;
-            mod_vt -= 4;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_entw']}: -4\n`);
-            text_vt = text_vt.concat(`${CONFIG.ILARIS.label['km_entw']}: -4\n`);
-        }
-        // Gezielter Schlag km_gzsl
-        let trefferzone = Number(manoever.km_gzsl.selected);
-        if (trefferzone) {
-            mod_at -= 2;
-            let txt = `${CONFIG.ILARIS.label['km_gzsl']} (${CONFIG.ILARIS.trefferzonen[trefferzone]}): -2\n`;
-            text_at = text_at.concat(txt);
-            text_dm = text_dm.concat(txt)
-        } else {
-            let zonenroll = new Roll('1d6');
-            zonenroll.evaluate();
+
+        // Trefferzone if not set by manoever but Gezielter Schlag is active
+        if (trefferzone == 0 && this.isGezieltSchlagActive()) {
+            let zonenroll = new Roll('1d6')
+            await zonenroll.evaluate()
             text_dm = text_dm.concat(
                 `Trefferzone: ${CONFIG.ILARIS.trefferzonen[zonenroll.total]}\n`,
-            );
-        }
-        // Umreißen km_umre
-        if (manoever.km_umre.selected) {
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_umre']}: Kein Schaden\n`);
-            nodmg = true;
-        }
-        // Unterlaufen km_utlf
-        if (manoever.km_utlf.selected) {
-            mod_vt -= 4;
-            text_vt = text_vt.concat(`${CONFIG.ILARIS.label['km_utlf']}: -4\n`);
-        }
-        // Wuchtschlag km_wusl
-        let wusl = Number(manoever.km_wusl.selected);
-        if (wusl > 0) {
-            mod_dm += wusl;
-            mod_at -= wusl;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_wusl']}: -${wusl}\n`);
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_wusl']}: +${wusl}\n`);
-        }
-        // Rüstungsbrecher km_rust
-        if (manoever.km_rust.selected) {
-            mod_at -= 4;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_rust']}: -4\n`);
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_rust']}\n`);
-        }
-        // Schildspalter km_shsp
-        if (manoever.km_shsp.selected) {
-            mod_at += 2;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_shsp']}: +2\n`);
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_shsp']}\n`);
-        }
-        // Schildwall km_shwl
-        if (manoever.km_shwl.selected) {
-            mod_vt -= 4;
-            text_vt = text_vt.concat(`${CONFIG.ILARIS.label['km_shwl']}: -4\n`);
-        }
-        // Stumpfer Schlag km_stsl
-        if (manoever.km_stsl.selected) {
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_stsl']}: Erschöpfung statt Wunde\n`);
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_stsl']}\n`);
-        }
-        // Umklammern km_umkl
-        if (manoever.km_umkl.selected) {
-            let umkl = Number(manoever.km_umkl.mod);
-            mod_at -= umkl;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_umkl']}: -${umkl}\n`);
-        }
-        // Ausfall km_ausf
-        if (manoever.km_ausf.selected) {
-            mod_at -= 2 + be;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_ausf']}\n`);
-        }
-        // Befreiungsschlag km_befr
-        if (manoever.km_befr.selected) {
-            mod_at -= 4;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_befr']}\n`);
-        }
-        // Doppelangriff km_dppl
-        if (manoever.km_dppl.selected) {
-            mod_at -= 4;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_dppl']}\n`);
-        }
-        // Hammerschlag km_hmsl
-        if (manoever.km_hmsl.selected) {
-            mod_at -= 8;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_hmsl']}\n`);
-            schaden = schaden.concat(`+${schaden}`);
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_hmsl']}\n`);
-        }
-        // Klingentanz km_kltz
-        if (manoever.km_kltz.selected) {
-            mod_at -= 4;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_kltz']}\n`);
-        }
-        // Niederwerfen km_ndwf
-        if (manoever.km_ndwf.selected) {
-            mod_at -= 4;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_ndwf']}\n`);
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_ndwf']}\n`)
-            nodmg = true; // TODO: error message if already true?
-        }
-        // Sturmangriff km_stag
-        if (manoever.km_stag.selected) {
-            if (manoever.kbak.selected) {
-                mod_at += 4;
-                text_at = text_at.concat(`${CONFIG.ILARIS.label['km_stag']}: +4\n`);
-            }
-            let gs = Number(manoever.km_stag.gs);
-            mod_dm += gs;
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_stag']}: ${gs}\n`);
-        }
-        // Todesstoß km_tdst
-        if (manoever.km_tdst.selected) {
-            mod_at -= 8;
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_tdst']}\n`);
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_tdst_dm']}\n`);
-        }
-        // Überrennen km_uebr
-        if (manoever.km_uebr.selected) {
-            if (manoever.kbak.selected) mod_at += 4;
-            let gs = Number(manoever.km_uebr.gs);
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['km_uebr']} (${gs})\n`);
-            mod_dm += gs;
-            text_dm = text_dm.concat(`${CONFIG.ILARIS.label['km_uebr']}: ${gs}\n`);
+            )
         }
 
         // Modifikator
-        let modifikator = Number(manoever.mod.selected);
+        let modifikator = Number(manoever.mod.selected)
         if (modifikator != 0) {
-            mod_vt += modifikator;
-            mod_at += modifikator;
-            text_vt = text_vt.concat(`Modifikator: ${modifikator}\n`);
-            text_at = text_at.concat(`Modifikator: ${modifikator}\n`);
+            mod_vt += modifikator
+            mod_at += modifikator
+            text_vt = text_vt.concat(`Modifikator: ${modifikator}\n`)
+            text_at = text_at.concat(`Modifikator: ${modifikator}\n`)
         }
-        
-        if (item.system.manoever.km_rpst.selected) {
-            mod_vt += -4 + mod_at;
-            text_vt = text_vt.concat(
-                `${CONFIG.ILARIS.label['km_rpst']}: (\n${text_at})\n`,
-            );
-        }
-        this.mod_at = mod_at;
-        this.mod_vt = mod_vt;
-        this.mod_dm = mod_dm;
-        this.text_at = text_at;
-        this.text_vt = text_vt;
-        this.text_dm = text_dm;
-        this.nodmg = nodmg;
-        this.schaden = schaden;
+
+        this.mod_at = mod_at
+        this.mod_vt = mod_vt
+        this.mod_dm = mod_dm
+        this.text_at = text_at
+        this.text_vt = text_vt
+        this.text_dm = text_dm
+        this.schaden = schaden
     }
 
     updateStatusMods() {
         /* aus gesundheit und furcht wird at- und vt_abzuege_mod
         berechnet.
-        */ 
-        this.at_abzuege_mod = 0;
-        this.vt_abzuege_mod = 0;
+        */
+        this.vt_abzuege_mod = 0
 
         if (this.item.actor.system.gesundheit.wundabzuege < 0 && this.item.system.manoever.kwut) {
-            this.text_at = this.text_at.concat(`(Kalte Wut)\n`);
-            this.at_abzuege_mod = this.item.actor.system.abgeleitete.furchtabzuege;
-            this.text_vt = this.text_at.concat(`(Kalte Wut)\n`);
-            this.vt_abzuege_mod = this.item.actor.system.abgeleitete.furchtabzuege;
+            this.text_vt = this.text_at.concat(`(Kalte Wut)\n`)
+            this.vt_abzuege_mod = this.item.actor.system.abgeleitete.furchtabzuege
         } else {
-            this.at_abzuege_mod = this.item.actor.system.abgeleitete.globalermod;
-            this.vt_abzuege_mod = this.item.actor.system.abgeleitete.globalermod;
+            this.vt_abzuege_mod = this.item.actor.system.abgeleitete.globalermod
         }
+        super.updateStatusMods()
+    }
+
+    eigenschaftenText() {
+        if (!this.item.system.eigenschaften.length > 0) {
+            return
+        }
+        this.text_at += '\nEigenschaften: '
+        this.text_at += this.item.system.eigenschaften.map((e) => e.name).join(', ')
+    }
+
+    isGezieltSchlagActive() {
+        // Check if Gezielter Schlag (km_gzsl) maneuver is selected
+        return (
+            this.item.system.manoever.km_gzsl && this.item.system.manoever.km_gzsl.selected !== '0'
+        )
+    }
+
+    /**
+     * Creates a formatted summary of all attack modifiers
+     */
+    getModifierSummary(baseAT, statusMods, nahkampfMods, diceFormula) {
+        let summary = '<div class="modifier-summary">'
+        summary += '<h4>Angriffswurf Zusammenfassung:</h4>'
+        summary += '<div class="modifier-list">'
+
+        // Base AT
+        summary += `<div class="modifier-item base-value">Basis AT: <span>${baseAT}</span></div>`
+
+        // Status modifiers
+        if (statusMods !== 0) {
+            const statusColor = statusMods > 0 ? 'positive' : 'negative'
+            const statusSign = statusMods > 0 ? '+' : ''
+            summary += `<div class="modifier-item ${statusColor}">Status (Wunden/Furcht): <span>${statusSign}${statusMods}</span></div>`
+        }
+
+        // Nahkampf token modifiers
+        if (nahkampfMods !== 0) {
+            const nahkampfColor = nahkampfMods > 0 ? 'positive' : 'negative'
+            const nahkampfSign = nahkampfMods > 0 ? '+' : ''
+            summary += `<div class="modifier-item ${nahkampfColor}">Token Status: <span>${nahkampfSign}${nahkampfMods}</span></div>`
+        }
+
+        // Parse text_at for maneuver modifiers
+        if (this.text_at && this.text_at.trim()) {
+            summary += '<div class="modifier-section">Manöver:</div>'
+            const lines = this.text_at.trim().split('\n')
+            lines.forEach((line) => {
+                if (line.trim()) {
+                    let color = 'neutral'
+                    if (line.includes('+')) color = 'positive'
+                    else if (line.includes('-')) color = 'negative'
+                    summary += `<div class="modifier-item maneuver ${color}">${line}</div>`
+                }
+            })
+        }
+
+        // Calculate totals
+        const maneuverMod = this.mod_at || 0
+        const totalMod = maneuverMod + statusMods + nahkampfMods
+        const finalAT = baseAT + totalMod
+
+        summary += '<hr>'
+
+        // Show total modifiers if any exist
+        if (totalMod !== 0) {
+            const totalModColor = totalMod > 0 ? 'positive' : 'negative'
+            const totalModSign = totalMod > 0 ? '+' : ''
+            summary += `<div class="modifier-item total ${totalModColor}"><strong>Addierte Modifikatoren: ${totalModSign}${totalMod}</strong></div>`
+        }
+
+        // Show final AT value with dice formula - always neutral
+        const finalFormula =
+            totalMod >= 0 ? `${diceFormula}+${finalAT}` : `${diceFormula}${finalAT}`
+        summary += `<div class="modifier-item total neutral"><strong>Finaler Wurf: ${finalFormula}</strong></div>`
+
+        summary += '</div></div>'
+        return summary
     }
 }

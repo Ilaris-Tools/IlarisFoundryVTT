@@ -40,3 +40,9 @@ node_modules
 /packs/*/LOG.old
 /packs/*/LOCK
 /packs/*/MANIFEST-*
+
+# Test coverage reports
+/coverage/
+
+.vscode/tasks-scripts/start-foundry/developer.env
+*.code-workspace
