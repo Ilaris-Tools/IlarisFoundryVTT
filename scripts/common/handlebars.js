@@ -233,17 +233,17 @@ function registerHandlebarsHelpers() {
         return -1 * numb
     })
 
-    Handlebars.registerHelper('range', function(start, end) {
+    Handlebars.registerHelper('range', function (start, end) {
         let result = []
         for (let i = start; i < end; i++) {
             result.push(i)
         }
         return result
-    });
-    
-    Handlebars.registerHelper('add', function(a, b) {
+    })
+
+    Handlebars.registerHelper('add', function (a, b) {
         return a + b
-    });
+    })
 
     Handlebars.registerHelper('getButtonState', (index, wunden, erschoepfung) => {
         if (index < wunden) return 1
