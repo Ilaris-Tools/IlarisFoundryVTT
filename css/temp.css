@@ -1,29 +1,30 @@
 @font-face {
-  font-family: 'Crimson Text';
-  src: url('../assets/fonts/CrimsonText-Regular.ttf');
+  font-family: "Crimson Text";
+  src: url("../assets/fonts/CrimsonText-Regular.ttf");
 }
 
 @font-face {
-  font-family: 'Aniron';
-  src: url('../assets/fonts/anirm___.ttf');
+  font-family: "Aniron";
+  src: url("../assets/fonts/anirm___.ttf");
 }
 
 @font-face {
-  font-family: 'Andada';
-  src: url('../assets/fonts/AndadaSC-Regular.otf');
+  font-family: "Andada";
+  src: url("../assets/fonts/AndadaSC-Regular.otf");
 }
 
 :root {
   /* --font-text: "Crimson Text", serif; */
-  --font-crimson: 'Crimson Text';
-  --font-aniron: 'Aniron';
-  --font-andada: 'Andada';
+  --font-crimson: "Crimson Text";
+  --font-aniron: "Aniron";
+  --font-andada: "Andada";
 }
 
 .herosheet {
   display: grid;
-  grid-template-areas: 'header header' 'sidebar navigation1'
-    'sidebar navigation2' 'sidebar tabs';
+  grid-template-areas:
+    "header header" "sidebar navigation1"
+    "sidebar navigation2" "sidebar tabs";
   grid-template-rows: 100px 45px 100px 5fr;
   grid-template-columns: 2fr 4fr;
   background-image: url(/systems/Ilaris/assets/images/Ilaris/Kasten_high_res.png);
@@ -53,7 +54,6 @@
   gap: 10px;
   /* Abstand zwischen den Elementen */
 }
-
 
 .attribute-wrapper {
   position: relative;
@@ -108,7 +108,7 @@
   position: relative;
   background-color: #00000011;
   /* maybe inset (out for active) shaddows for 3d effect instead of darker color */
-  border-bottom: 2px solid #B87333;
+  border-bottom: 2px solid #b87333;
 }
 
 .tab-item.active {
@@ -152,7 +152,7 @@
   border-top-right-radius: 5px;
   border-bottom-right-radius: 200px;
   border-style: solid;
-  border-color: #B87333;
+  border-color: #b87333;
   position: relative;
 }
 
@@ -213,7 +213,7 @@
 
 #pause {
   .fa-spin {
-    content: url("/systems/Ilaris/assets/images/ilaris/icon_rot.png")
+    content: url("/systems/Ilaris/assets/images/ilaris/icon_rot.png");
   }
 }
 
@@ -240,7 +240,7 @@
 }
 
 /* Hintergrundfarbe für die ersten 4 Buttons */
-#lebensleiste .triStateBtn:nth-child(-n+5) {
+#lebensleiste .triStateBtn:nth-child(-n + 5) {
   background-color: #f5f5dc;
 }
 
@@ -329,7 +329,7 @@
   color: #000000;
   font-family: var(--font-crimson);
   /* TODO CR: Wegen Bild fragen */
-  background-image: url('../assets/images/background/hintergrund.jpg');
+  background-image: url("../assets/images/background/hintergrund.jpg");
 }
 
 .chat-message .message-header {
@@ -375,7 +375,7 @@
 }
 
 .filled {
-  background-image: url('/systems/Ilaris/assets/images/Ilaris/phex.png');
+  background-image: url("/systems/Ilaris/assets/images/Ilaris/phex.png");
 }
 
 .twokindrow div:nth-child(odd) {
@@ -404,8 +404,8 @@ input[name="name"] {
   border-width: 2px;
 }
 
-.regex-check:invalid+.validation-icon::before {
-  content: '✘';
+.regex-check:invalid + .validation-icon::before {
+  content: "✘";
   color: red;
 }
 
@@ -421,7 +421,7 @@ input[name="name"] {
     margin: 8px 16px 0 16px;
 
     .row {
-      margin-bottom: 8px
+      margin-bottom: 8px;
     }
 
     .delete-button {
@@ -434,7 +434,7 @@ input[name="name"] {
 .window-app .window-content {
   font-family: var(--font-crimson);
   /* TODO CR: Wegen Bild fragen */
-  background-image: url('../assets/images/background/hintergrund.jpg');
+  background-image: url("../assets/images/background/hintergrund.jpg");
 }
 
 .tabs {
@@ -466,7 +466,7 @@ input[name="name"] {
   color: #000000;
   font-family: var(--font-crimson);
   /* TODO CR: Wegen Bild fragen */
-  background-image: url('../assets/images/background/hintergrund.jpg');
+  background-image: url("../assets/images/background/hintergrund.jpg");
 }
 
 .chat-message .message-header {
@@ -592,7 +592,7 @@ input.titel-input {
   min-height: 320px;
 }
 
-.ilaris form>* {
+.ilaris form > * {
   flex: 0;
 }
 
@@ -632,13 +632,13 @@ input.titel-input {
   margin-left: 16px;
 }
 
-.regex-check:valid+.validation-icon::before {
-  content: '✔';
+.regex-check:valid + .validation-icon::before {
+  content: "✔";
   color: green;
 }
 
-.regex-check:invalid+.validation-icon::before {
-  content: '✘';
+.regex-check:invalid + .validation-icon::before {
+  content: "✘";
   color: red;
 }
 
@@ -692,8 +692,8 @@ input.titel-input {
   min-width: 150px;
 }
 
-input[type='text']:focus,
-input[type='number']:focus,
+input[type="text"]:focus,
+input[type="number"]:focus,
 select:focus,
 textarea:focus {
   border-color: #782e22;
@@ -713,7 +713,7 @@ hr {
   /* Using the same red color as in manoever.css */
 }
 
-.system-pack input[type='checkbox'] {
+.system-pack input[type="checkbox"] {
   transform: scale(1.2);
   /* Make the checkbox slightly bigger too */
   margin-right: 10px;
@@ -742,7 +742,7 @@ hr {
   cursor: not-allowed;
 }
 
-.checkbox.disabled input[type='checkbox'] {
+.checkbox.disabled input[type="checkbox"] {
   cursor: not-allowed;
 }
 
