@@ -94,7 +94,8 @@
   align-items: first;
   position: relative;
   z-index: 1;
-  justify-content: flex-start; /* Aligns items to the left */
+  justify-content: flex-start;
+  /* Aligns items to the left */
 }
 
 .tab-item {
@@ -403,7 +404,7 @@ input[name="name"] {
   border-width: 2px;
 }
 
-.regex-check:invalid + .validation-icon::before {
+.regex-check:invalid+.validation-icon::before {
   content: '✘';
   color: red;
 }
@@ -415,24 +416,19 @@ input[name="name"] {
 .manoever-voraussetzungen {
   margin-top: 8px;
   margin-bottom: 8px;
+
   .voraussetzung {
     margin: 8px 16px 0 16px;
+
     .row {
       margin-bottom: 8px
     }
+
     .delete-button {
       margin-left: 8px;
       margin-top: 2px;
     }
   }
-}
-
-
-.ilaris {
-  /* font-family: var(--font-crimson); */
-  /* background: url("../assets/images/background/Kasten_high_res.JPG"); /\*ersetzt so die Statusleiste!*\/ */
-  /* background-image: url("../assets/images/background/Kasten_high_res.JPG"); */
-  /* mix-blend-mode: multiply; */
 }
 
 .window-app .window-content {
@@ -455,6 +451,7 @@ input[name="name"] {
   display: inline-block;
   vertical-align: middle;
 }
+
 .button-icon-nahkampf {
   height: 4ex;
   border: none;
@@ -464,12 +461,14 @@ input[name="name"] {
   margin-left: auto;
   margin-right: auto;
 }
+
 .chat-message {
   color: #000000;
   font-family: var(--font-crimson);
   /* TODO CR: Wegen Bild fragen */
   background-image: url('../assets/images/background/hintergrund.jpg');
 }
+
 .chat-message .message-header {
   color: #000000;
 }
@@ -483,6 +482,7 @@ input[name="name"] {
   width: 100%;
   overflow: auto;
 }
+
 .editor-content {
   min-height: 50px;
   min-height: 500px;
@@ -508,6 +508,7 @@ input[name="name"] {
   /* color: #b5b3a4; */
   color: #989898;
 }
+
 .item-toggle.active {
   /* color: #4b4a44; */
   color: black;
@@ -517,6 +518,7 @@ input[name="name"] {
   /* color: #b5b3a4; */
   color: #989898;
 }
+
 .toggle-bool.active {
   /* color: #4b4a44; */
   color: #990000;
@@ -557,7 +559,8 @@ input.titel-input {
 .attributblock h2 {
   font-family: var(--font-aniron);
   font-size: 14px;
-  color: rgb(54, 37, 37); /*rgb(83, 0, 0);*/
+  color: rgb(54, 37, 37);
+  /*rgb(83, 0, 0);*/
   border: none;
 }
 
@@ -588,15 +591,19 @@ input.titel-input {
   min-width: 360px;
   min-height: 320px;
 }
-.ilaris form > * {
+
+.ilaris form>* {
   flex: 0;
 }
+
 .ilaris .form-group.description {
   flex: 1;
 }
+
 .ilaris .form-group.description label {
   height: 24px;
 }
+
 .ilaris .form-group.description textarea {
   height: calc(100% - 24px);
   resize: none;
@@ -625,12 +632,12 @@ input.titel-input {
   margin-left: 16px;
 }
 
-.regex-check:valid + .validation-icon::before {
+.regex-check:valid+.validation-icon::before {
   content: '✔';
   color: green;
 }
 
-.regex-check:invalid + .validation-icon::before {
+.regex-check:invalid+.validation-icon::before {
   content: '✘';
   color: red;
 }
@@ -642,11 +649,14 @@ input.titel-input {
 .manoever-einstellungen {
   margin-top: 8px;
   margin-bottom: 8px;
+
   .field {
     margin: 8px 16px 0 16px;
+
     .row {
       margin-bottom: 8px;
     }
+
     .delete-button {
       margin-left: 8px;
       margin-top: 2px;
@@ -660,12 +670,15 @@ input.titel-input {
   border: red;
   border-style: solid;
 }
+
 .maximum-load-exceeded-left {
   border-width: 3px 0 3px 3px;
 }
+
 .maximum-load-exceeded-middle {
   border-width: 3px 0 3px 0;
 }
+
 .maximum-load-exceeded-right {
   border-width: 3px 3px 3px 0;
 }
@@ -696,12 +709,15 @@ hr {
 .system-pack {
   font-weight: bold;
   font-size: 1.2em;
-  color: #782e22; /* Using the same red color as in manoever.css */
+  color: #782e22;
+  /* Using the same red color as in manoever.css */
 }
 
 .system-pack input[type='checkbox'] {
-  transform: scale(1.2); /* Make the checkbox slightly bigger too */
-  margin-right: 10px; /* Add some space after the bigger checkbox */
+  transform: scale(1.2);
+  /* Make the checkbox slightly bigger too */
+  margin-right: 10px;
+  /* Add some space after the bigger checkbox */
 }
 
 .pack-entry {
