@@ -1,197 +1,154 @@
 {{log 'actor-sheet' this}}
 <form class="{{cssClass}}">
-  <div class=herosheet>
-    <div class=heroheader>
-      <div>
-        <h1><input name="name" type="text" value="{{actor.name}}" /></h1>
-
-      </div>
-      <div class="flexrow">
-        {{#each (range 1 (add actor.system.schips.schips 1)) as |index|}}
-          {{#if (lte index ../actor.system.schips.schips_stern)}}
-            <span class="schips-button filled" name="system.schips.schips_stern"></span>
-          {{else}}
-            <span class="schips-button"></span>
-          {{/if}}
-        {{/each}}
-      </div>
-
+    <div>
+        <div>
+            <div style="float: left">
+                <img
+                    class="profile-img"
+                    src="{{actor.img}}"
+                    data-edit="img"
+                    title="{{actor.name}}"
+                    height="100"
+                    width="100"
+                />
+            </div>
+            <div style="float: left">
+                <input name="name" type="text" value="{{actor.name}}" />
+                <div class="flexrow">
+                    <label>Erschöpfung:</label>
+                    <input
+                        class="hp-update"
+                        name="system.gesundheit.erschoepfung"
+                        value="{{actor.system.gesundheit.erschoepfung}}"
+                        type="text"
+                        data-dtype="Number"
+                    />
+                </div>
+                <div class="flexrow">
+                    <label>Wunden:</label>
+                    <input
+                        class="hp-update"
+                        name="system.gesundheit.wunden"
+                        value="{{actor.system.gesundheit.wunden}}"
+                        type="text"
+                        data-dtype="Number"
+                    />
+                </div>
+                <div class="flexrow"></div>
+                <a
+                    class="icon-small toggle-bool {{actor.system.gesundheit.wundenignorieren}}"
+                    data-togglevariable="system.gesundheit.wundenignorieren"
+                >
+                    Wundabzüge ignorieren {{#if actor.system.gesundheit.wundenignorieren}}
+                    (aktiviert) {{else}} (nicht aktiv) {{/if}}
+                </a>
+            </div>
+        </div>
+        {{log 'ships' this.actor.system.schips}}
+        <div style="float: left">
+            <div class="flexrow">
+                <label>Schip:</label>
+                <label>{{actor.system.schips.schips}}</label>
+                <label>Schip*:</label>
+                <input
+                    name="system.schips.schips_stern"
+                    value="{{actor.system.schips.schips_stern}}"
+                    type="text"
+                    data-dtype="Number"
+                />
+            </div>
+            <div class="flexrow">
+                <label>WS:</label>
+                <label>{{actor.system.abgeleitete.ws}}</label>
+                <label>WS*:</label>
+                <label>{{actor.system.abgeleitete.ws_stern}}</label>
+            </div>
+            <div class="flexrow">
+                <label>MR:</label>
+                <label
+                    class="rollable onhover"
+                    data-rolltype="simpleprobe_diag"
+                    data-name="Magierresistenz"
+                    data-pw="{{actor.system.abgeleitete.mr}}"
+                >
+                    {{actor.system.abgeleitete.mr}}
+                </label>
+                <label>INI:</label>
+                <label>{{actor.system.abgeleitete.ini}}</label>
+            </div>
+            <div class="flexrow">
+                <label>GS*:</label>
+                <label>{{actor.system.abgeleitete.gs}}</label>
+                <label>DH*:</label>
+                <label>{{actor.system.abgeleitete.dh}}</label>
+            </div>
+            <div class="flexrow">
+                <label>-</label>
+            </div>
+        </div>
     </div>
-
-    <div class="herosidebar">
-      <div>
-        <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
-      </div>
-      <div class="status-effects">
-        {{#each actor.effects as |effect|}}
-        {{#if effect.icon}}
-        <img class="effect-control {{#if effect.active}}active{{/if}}" src="{{effect.icon}}" data-tooltip="{{effect.name}}"
-          data-status-id="{{effect.statusId}}" />
-        {{/if}}
-        {{/each}}
-      </div>
-      <div id="lebensleiste">
-        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/Leben.png" data-edit="img" title="Leben"
-          height="40" width="40" />      
-        {{#each (range 0 8) as |index|}}           
-        <button
-          class="triStateBtn state-{{getButtonState index ../actor.system.gesundheit.wunden ../actor.system.gesundheit.erschoepfung}}"
-          data-state="{{getButtonState index ../actor.system.gesundheit.wunden ../actor.system.gesundheit.erschoepfung}}">     
-        </button>           
-        {{/each}}
-        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/Tod.png" data-edit="img" title="Tod" height="40"
-          width="40" />
-      </div>
-      <div>
-        <a class="icon-small toggle-bool {{system.gesundheit.wundenignorieren}}"
-          data-togglevariable="system.gesundheit.wundenignorieren">
-          Wundabzüge
-          {{#if actor.system.gesundheit.wundenignorieren}}
-          ignorieren
-          {{else}}
-          nicht ignorieren
-          {{/if}}
-        </a>
-      </div>
-      </b>
-      <div class="icon-row">
-        <div class="icon-overlay-container">
-          <img src="/systems/Ilaris/assets/images/Ilaris/ws.svg" title="WS" />
-          <span class="overlay-label">{{actor.system.abgeleitete.ws}}</span>
-        </div>
-        <div class="icon-overlay-container">
-          <img src="/systems/Ilaris/assets/images/Ilaris/ws.svg" title="WS*" />
-          <span class="overlay-label">{{actor.system.abgeleitete.ws_stern}}</span>
-        </div>
-        <div class="icon-overlay-container rollable onhover" data-rolltype="simpleprobe_diag" data-name="Magierresistenz"
-          data-pw="{{actor.system.abgeleitete.mr}}">
-          <img src="/systems/Ilaris/assets/images/Ilaris/mr.svg" title="MR" />
-          <span class="overlay-label">{{actor.system.abgeleitete.mr}}</span>
-        </div>
-        <div class="icon-overlay-container">
-          <img src="/systems/Ilaris/assets/images/Ilaris/ini.svg" title="INI" />
-          <span class="overlay-label">{{actor.system.abgeleitete.ini}}</span>
-        </div>
-        <div class="icon-overlay-container">
-          <img src="/systems/Ilaris/assets/images/Ilaris/gs.svg" title="GS" />
-          <span class="overlay-label">{{actor.system.abgeleitete.gs}}</span>
-        </div>
-        <div class="icon-overlay-container">
-          <img src="icons/svg/daze.svg" title="DH" />
-          <span class="overlay-label">{{actor.system.abgeleitete.dh}}</span>
-        </div>
-      </div>
-      <br>
-      <div style="font-size: 14px">
-        {{#if actor.system.abgeleitete.zauberer}}
-        <label class="ausklappen-trigger onhover" data-ausklappentarget="aspzugekauft"><b>AsP:</b></label>
-        <label>{{actor.system.abgeleitete.asp}}&nbsp; | &nbsp;</label>
-    
-        <label><b>gAsP:</b></label>
-        <input style="width: 25px" name="system.abgeleitete.gasp" value="{{actor.system.abgeleitete.gasp}}" type="number"
-          data-dtype="Number" />
-    
-        <label>&nbsp; | &nbsp;<b>AsP*:</b></label>
-        <input style="width: 25px" name="system.abgeleitete.asp_stern" value="{{actor.system.abgeleitete.asp_stern}}"
-          type="number" data-dtype="Number" />
-    
-        <span id="ausklappen-view-aspzugekauft" style="display: none">
-          <label>Zugekauft: </label>
-          <input style="width: 25px" name="system.abgeleitete.asp_zugekauft"
-            value="{{actor.system.abgeleitete.asp_zugekauft}}" type="number" data-dtype="Number" />
-        </span>
-        <br>
-        {{/if}}
-    
-        {{#if actor.system.abgeleitete.geweihter}}
-        <label class="ausklappen-trigger onhover" data-ausklappentarget="kapzugekauft"><b>KaP:</b></label>
-        <label>{{actor.system.abgeleitete.kap}}&nbsp; | &nbsp;</label>
-    
-        <label><b>gKaP:</b></label>
-        <input style="width: 25px" name="system.abgeleitete.gkap" value="{{actor.system.abgeleitete.gkap}}" type="number"
-          data-dtype="Number" />
-    
-        <label>&nbsp; | &nbsp;<b>KaP*:</b></label>
-        <input style="width: 25px" name="system.abgeleitete.kap_stern" value="{{actor.system.abgeleitete.kap_stern}}"
-          type="number" data-dtype="Number" />
-    
-        <span id="ausklappen-view-kapzugekauft" style="display: none">
-          <label>Zugekauft: </label>
-          <input style="width: 25px" name="system.abgeleitete.kap_zugekauft"
-            value="{{actor.system.abgeleitete.kap_zugekauft}}" type="number" data-dtype="Number" />
-        </span>
-        <br />
-        {{/if}}
-      </div>
-      <p></p>
-    
-      <div class="flexrow">
-        <b><label style="color: black; font-size: 16pt">{{actor.system.abgeleitete.globalermoddisplay}}</label></b>
-      </div>
-    </div>
-
-    <div class="heroattributes">
-      {{#each actor.system.attribute as |attribut key|}}
-      <div class="attribute-wrapper">
-        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/{{key}}.png" title="{{key}}" />
-        <label class="attribute-number rollable onhover" data-rolltype="attribut" data-attribut="{{key}}">
-          {{attribut.pw}}
+    <div style="float: left"></div>
+    <div class="flexrow">
+        <label
+            style="{{#if actor.system.gesundheit.wundenignorieren }}text-decoration:line-through;{{/if}}"
+        >
+            {{actor.system.gesundheit.display}}
         </label>
-      </div>
-      {{/each}}
     </div>
-
-    <div class=herotabnavigation>
-      <hr />
-      <div class="sheet-tabs tabs" data-group="primary">
-        <b class="tab-item" data-tab="attribute">
-          <img class="round-icon" src="/systems/Ilaris/assets/images/Ilaris/attribute.png" height="20" width="20" />
-          Attribute
-        </b>
-        <b class="tab-item" data-tab="fertigkeiten">
-          <img class="round-icon" src="/systems/Ilaris/assets/images/Ilaris/holzbearbeitung.png" height="20" width="20" />
-          Fertigkeiten
-        </b>
-        <b class="tab-item" data-tab="uebernatuerlich">
-          <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/gildenmagie.png" height="20" width="20" />
-          Übernatürlich
-        </b>
-        <b class="tab-item" data-tab="kampf">
-          <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/beidhaendig.png" height="20" width="20" />
-          Kampf
-        </b>
-        <b class="tab-item" data-tab="inventar">
-          <img class="round-icon" src="/systems/Ilaris/assets/images/Ilaris/geld.jpg" height="20" width="20" />
-          Inventar
-        </b>
-        <b class="tab-item" data-tab="notes">
-          <img class="round-icon" src="/systems/Ilaris/assets/images/Ilaris/wissen.png" height="20" width="20" />
-          Notizen
-        </b>
-      </div>
+    <div class="flexrow">
+        <label>{{actor.system.furcht.display}}</label>
     </div>
-
-    <div class=herotab>
-      <div class="sheet-body">
+    <div class="flexrow">
+        <input
+            class="flex0"
+            name="system.modifikatoren.manuellermod"
+            value="{{actor.system.modifikatoren.manuellermod}}"
+            type="text"
+            data-dtype="Number"
+        />
+        <label>auf alle Proben (Manuell)</label>
+    </div>
+    <hr />
+    <div class="flexrow">
+        <b>
+            <label style="color: {{modColor actor.system.abgeleitete.globalermod}}">
+                {{actor.system.abgeleitete.globalermoddisplay}}
+            </label>
+        </b>
+    </div>
+    <div style="clear: both"></div>
+    <hr />
+    <div class="sheet-tabs tabs" data-group="primary">
+        <b class="item" data-tab="attribute">Attribute</b>
+        <b class="item" data-tab="fertigkeiten">Fertigkeiten</b>
+        <b class="item" data-tab="uebernatuerlich">Magie & Karma</b>
+        <b class="item" data-tab="kampf">Kampf</b>
+        <b class="item" data-tab="inventar">Inventar</b>
+        <b class="item" data-tab="notes">Notizen</b>
+        <b class="item" data-tab="effekte">Effekte</b>
+    </div>
+    <hr />
+    <div class="sheet-body">
         <div class="tab" data-group="primary" data-tab="notes">
-          {{> systems/Ilaris/templates/sheets/tabs/notes.hbs}}
+            {{> systems/Ilaris/templates/sheets/tabs/notes.hbs}}
         </div>
         <div class="tab" data-group="primary" data-tab="attribute">
-          {{> systems/Ilaris/templates/sheets/tabs/attribute.hbs}}
+            {{> systems/Ilaris/templates/sheets/tabs/attribute.hbs}}
         </div>
         <div class="tab" data-group="primary" data-tab="fertigkeiten">
-          {{> systems/Ilaris/templates/sheets/tabs/fertigkeiten.hbs}}
+            {{> systems/Ilaris/templates/sheets/tabs/fertigkeiten.hbs}}
         </div>
         <div class="tab" data-group="primary" data-tab="uebernatuerlich">
-          {{> systems/Ilaris/templates/sheets/tabs/uebernatuerlich.hbs}}
+            {{> systems/Ilaris/templates/sheets/tabs/uebernatuerlich.hbs}}
         </div>
         <div class="tab" data-group="primary" data-tab="kampf">
-          {{> systems/Ilaris/templates/sheets/tabs/kampf.hbs}}
+            {{> systems/Ilaris/templates/sheets/tabs/kampf.hbs}}
+        </div>
+        <div class="tab" data-group="primary" data-tab="effekte">
+            {{> systems/Ilaris/templates/sheets/tabs/effekte.hbs}}
         </div>
         <div class="tab" data-group="primary" data-tab="inventar">
-          {{> systems/Ilaris/templates/sheets/tabs/inventar.hbs}}
+            {{> systems/Ilaris/templates/sheets/tabs/inventar.hbs}}
         </div>
-      </div>
     </div>
-  </div>
 </form>
