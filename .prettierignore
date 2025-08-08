@@ -4,3 +4,4 @@ packs/**/*
 
 ## Ignore hbs files because they are making many problems
 *.hbs
+*.css
