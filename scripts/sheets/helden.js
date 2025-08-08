@@ -39,7 +39,7 @@ export class HeldenSheet extends IlarisActorSheet {
     async _schipsClick(ev) {
         console.log(ev)
         if (ev.currentTarget.className.includes('filled')) {
-            await this.actor.update({ 
+            await this.actor.update({
                 'system.schips.schips_stern': this.actor.system.schips.schips_stern - 1,
             })
         } else {
@@ -67,24 +67,28 @@ export class HeldenSheet extends IlarisActorSheet {
         await this.actor.update({
             'system.gesundheit.wunden': wunden,
             'system.gesundheit.erschoepfung': erschoepfung,
-        });
+        })
 
         console.log(`Updated states: Wunden = ${wunden}, Erschöpfung = ${erschoepfung}`)
         this.render()
     }
 
     activateListeners(html) {
-        super.activateListeners(html);
+        super.activateListeners(html)
         html.find('.schips-button').click((ev) => this._schipsClick(ev))
         html.find('.triStateBtn').click((ev) => this._triStateClick(ev))
     }
 
     async _schipsClick(ev) {
-        console.log(ev);
+        console.log(ev)
         if (ev.currentTarget.className.includes('filled')) {
-            await this.actor.update({ 'system.schips.schips_stern': this.actor.system.schips.schips_stern - 1 })
+            await this.actor.update({
+                'system.schips.schips_stern': this.actor.system.schips.schips_stern - 1,
+            })
         } else {
-            await this.actor.update({ 'system.schips.schips_stern': this.actor.system.schips.schips_stern + 1 })
+            await this.actor.update({
+                'system.schips.schips_stern': this.actor.system.schips.schips_stern + 1,
+            })
         }
         this.render()
     }
@@ -100,13 +104,13 @@ export class HeldenSheet extends IlarisActorSheet {
 
         // Update the actor's data
         const buttons = Array.from(ev.currentTarget.parentElement.querySelectorAll('.triStateBtn'))
-        const wunden = buttons.filter(btn => btn.dataset.state == 1).length
-        const erschoepfung = buttons.filter(btn => btn.dataset.state == 2).length
+        const wunden = buttons.filter((btn) => btn.dataset.state == 1).length
+        const erschoepfung = buttons.filter((btn) => btn.dataset.state == 2).length
 
         await this.actor.update({
             'system.gesundheit.wunden': wunden,
             'system.gesundheit.erschoepfung': erschoepfung,
-        });
+        })
 
         console.log(`Updated states: Wunden = ${wunden}, Erschöpfung = ${erschoepfung}`)
         this.render()
