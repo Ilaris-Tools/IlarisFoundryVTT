@@ -6,13 +6,13 @@ import {
     beTraglast,
 } from '../hardcodedvorteile.js'
 
-jest.mock('../hardcodedvorteile.js', () => ({
-    ...jest.requireActual('../hardcodedvorteile.js'),
-    getSelectedStil: jest.fn().mockImplementation(() => ({
-        name: 'ohne',
-        stufe: 0,
-    })),
-}))
+// jest.mock('../hardcodedvorteile.js', () => ({
+//     ...jest.requireActual('../hardcodedvorteile.js'),
+//     getSelectedStil: jest.fn().mockImplementation(() => ({
+//         name: 'ohne',
+//         stufe: 0,
+//     })),
+// }))
 
 jest.mock('./../../settings/configure-game-settings.js', () => ({}))
 
@@ -67,11 +67,11 @@ describe('hardcodedvorteile.js', () => {
                     stufe: 0,
                     sources: [],
                 },
-                'Ilaris.beidhändig2': {
+                'Beidhändiger Kampf': {
                     name: 'Beidhändiger Kampf',
-                    key: 'Ilaris.beidhändig2',
+                    key: 'Beidhändiger Kampf',
                     stufe: 2,
-                    sources: ['Ilaris.beidhändig1', 'Ilaris.beidhändig2'],
+                    sources: ['Beidhändiger Kampf I', 'Beidhändiger Kampf II (test)'],
                 },
             })
         })
@@ -101,17 +101,17 @@ describe('hardcodedvorteile.js', () => {
                     stufe: 0,
                     sources: [],
                 },
-                'Ilaris.beidhändig1': {
+                'Beidhändiger Kampf': {
                     name: 'Beidhändiger Kampf',
-                    key: 'Ilaris.beidhändig1',
+                    key: 'Beidhändiger Kampf',
                     stufe: 1,
-                    sources: ['Ilaris.beidhändig1'],
+                    sources: ['Beidhändiger Kampf I'],
                 },
-                'Ilaris.defensiv2': {
+                'Defensiver Kampfstil': {
                     name: 'Defensiver Kampfstil',
-                    key: 'Ilaris.defensiv2',
+                    key: 'Defensiver Kampfstil',
                     stufe: 2,
-                    sources: ['Ilaris.defensiv2'],
+                    sources: ['Defensiver Kampfstil II'],
                 },
             })
         })
@@ -120,47 +120,71 @@ describe('hardcodedvorteile.js', () => {
     describe('getSelectedStil', () => {
         const mockKampfstile = {
             ohne: {
-                name: 'Ohne',
+                name: 'ohne',
                 key: 'ohne',
                 stufe: 0,
                 sources: [],
             },
-            'Ilaris.beidhändig2': {
+            'Beidhändiger Kampf': {
                 name: 'Beidhändiger Kampf II',
-                key: 'Ilaris.beidhändig2',
+                key: 'Beidhändiger Kampf',
                 stufe: 2,
                 sources: ['Beidhändiger Kampf I', 'Beidhändiger Kampf II (test)'],
             },
         }
+        // Mock actor setup
+        let mockActor = {
+            type: 'held',
+            vorteil: {
+                karma: [],
+                magie: [],
+            },
+            system: {
+                misc: {
+                    selected_uebernatuerlicher_stil: undefined,
+                    selected_kampfstil: undefined,
+                },
+            },
+            misc: {
+                uebernatuerliche_stile_list: {
+                    ohne: {
+                        name: 'ohne',
+                        key: 'ohne',
+                        stufe: 0,
+                        sources: [],
+                    },
+                },
+                kampfstile_list: mockKampfstile,
+            },
+        }
 
         it('should return selected kampfstil when it exists', () => {
-            const result = getSelectedStil('Ilaris.beidhändig2', mockKampfstile)
-            expect(result).toEqual({
-                name: 'Beidhändiger Kampf II',
-                key: 'Ilaris.beidhändig2',
-                stufe: 2,
-                sources: ['Ilaris.beidhändig1', 'Ilaris.beidhändig2'],
-            })
+            mockActor.system.misc.selected_kampfstil = 'Beidhändiger Kampf'
+            const result = getSelectedStil(mockActor, 'kampf')
+            expect(result).toEqual(mockKampfstile['Beidhändiger Kampf'])
         })
 
-        it('should return ohne when selected kampfstil does not exist', () => {
-            const result = getSelectedStil('nonexistent', mockKampfstile)
-            expect(result).toEqual({
-                name: 'Ohne',
-                key: 'ohne',
-                stufe: 0,
-                sources: [],
-            })
+        it('should return ohne if not existing', () => {
+            mockActor.system.misc.selected_kampfstil = 'Something'
+            const result = getSelectedStil(mockActor, 'kampf')
+            expect(result).toEqual(mockKampfstile['ohne'])
         })
 
-        it('should return ohne when selected value is undefined', () => {
-            const result = getSelectedStil(undefined, mockKampfstile)
-            expect(result).toEqual({
-                name: 'Ohne',
-                key: 'ohne',
-                stufe: 0,
-                sources: [],
-            })
+        it('should return null if no stil selected for requested type', () => {
+            mockActor.system.misc.selected_uebernatuerlicher_stil = 'Beidhändiger Kampf'
+            const result = getSelectedStil(mockActor, 'uebernatuerlich')
+            expect(result).toEqual(mockActor.misc.uebernatuerliche_stile_list['ohne'])
+        })
+
+        it('should return null if actor not held', () => {
+            mockActor.type = 'kreatur'
+            const result = getSelectedStil(mockActor, 'kampf')
+            expect(result).toEqual(null)
+        })
+
+        it('should return null if wrong type requested', () => {
+            const result = getSelectedStil(mockActor, 'something')
+            expect(result).toEqual(null)
         })
     })
 
@@ -225,7 +249,15 @@ describe('calculateModifiedCost', () => {
             type: 'held',
             vorteil: {
                 karma: [],
-                magic: [],
+                magie: [],
+            },
+            system: {
+                misc: {
+                    selected_uebernatuerlicher_stil: 'ohne',
+                },
+            },
+            misc: {
+                uebernatuerliche_stile_list: [],
             },
         }
 
@@ -236,12 +268,6 @@ describe('calculateModifiedCost', () => {
                 kosten: '4',
             },
         }
-
-        // Mock getSelectedStil function to handle actor argument
-        global.getSelectedStil = jest.fn().mockImplementation((actor) => ({
-            name: 'ohne',
-            stufe: 0,
-        }))
     })
 
     it('should return unmodified cost when no advantages apply', () => {
@@ -250,10 +276,13 @@ describe('calculateModifiedCost', () => {
     })
 
     it('should reduce cost by 1/4 for Durro-Dun style level 2', () => {
-        global.getSelectedStil.mockReturnValue({
-            name: 'Durro-Dun',
-            stufe: 2,
-        })
+        mockActor.misc.uebernatuerliche_stile_list = {
+            'Durro-Dun': {
+                name: 'Durro-Dun',
+                stufe: 2,
+            },
+        }
+        mockActor.system.misc.selected_uebernatuerlicher_stil = 'Durro-Dun'
         const result = calculateModifiedCost(mockActor, mockItem, true, false, 4)
         expect(result).toBe(3) // 4 - ceil(4/4)
     })
@@ -273,14 +302,14 @@ describe('calculateModifiedCost', () => {
     })
 
     it('should reduce spell cost by half with Mühelose Magie on 16+ success', () => {
-        mockActor.vorteil.magic.push({ name: 'Mühelose Magie' })
+        mockActor.vorteil.magie.push({ name: 'Mühelose Magie' })
         mockItem.type = 'zauber'
         const result = calculateModifiedCost(mockActor, mockItem, true, true, 4)
         expect(result).toBe(2) // 4 - ceil(4/2)
     })
 
     it('should not modify spell cost with Mühelose Magie on success below 16', () => {
-        mockActor.vorteil.magic.push({ name: 'Mühelose Magie' })
+        mockActor.vorteil.magie.push({ name: 'Mühelose Magie' })
         mockItem.type = 'zauber'
         const result = calculateModifiedCost(mockActor, mockItem, true, false, 4)
         expect(result).toBe(4)
@@ -294,12 +323,16 @@ describe('calculateModifiedCost', () => {
     })
 
     it('should apply Durro-Dun reduction before other advantages', () => {
-        global.getSelectedStil.mockReturnValue({
-            name: 'Durro-Dun',
-            stufe: 2,
-        })
-        mockActor.vorteil.magic.push({ name: 'Mühelose Magie' })
+        mockActor.misc.uebernatuerliche_stile_list = {
+            'Durro-Dun': {
+                name: 'Durro-Dun',
+                stufe: 2,
+            },
+        }
+        mockActor.system.misc.selected_uebernatuerlicher_stil = 'Durro-Dun'
+        mockActor.vorteil.magie.push({ name: 'Mühelose Magie' })
         mockItem.type = 'zauber'
+        mockItem.system.kosten = 8
         const result = calculateModifiedCost(mockActor, mockItem, true, true, 8)
         // First reduces by 1/4 of base (8/4 = 2), then by half of base (8/2 = 4)
         // 8 - 2 - 4 = 2
