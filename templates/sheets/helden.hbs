@@ -1,5 +1,4 @@
 {{log 'actor-sheet' this}}
-<form class="{{cssClass}}">
   <div class=herosheet>
     <div class=heroheader>
       <div>
@@ -8,39 +7,39 @@
       </div>
       <div class="flexrow">
         {{#each (range 1 (add actor.system.schips.schips 1)) as |index|}}
-          {{#if (lte index ../actor.system.schips.schips_stern)}}
-            <span class="schips-button filled" name="system.schips.schips_stern"></span>
-          {{else}}
-            <span class="schips-button"></span>
-          {{/if}}
+        {{#if (lte index ../actor.system.schips.schips_stern)}}
+        <span class="schips-button filled" name="system.schips.schips_stern"></span>
+        {{else}}
+        <span class="schips-button"></span>
+        {{/if}}
         {{/each}}
       </div>
 
     </div>
 
-    <div class="herosidebar">
+    <div class="herosidebar">    
       <div>
         <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
       </div>
       <div class="status-effects">
         {{#each actor.effects as |effect|}}
         {{#if effect.icon}}
-        <img class="effect-control {{#if effect.active}}active{{/if}}" src="{{effect.icon}}" data-tooltip="{{effect.name}}"
-          data-status-id="{{effect.statusId}}" />
+        <img class="effect-control {{#if effect.active}}active{{/if}}" src="{{effect.icon}}"
+          data-tooltip="{{effect.name}}" data-status-id="{{effect.statusId}}" />
         {{/if}}
         {{/each}}
       </div>
       <div id="lebensleiste">
         <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/Leben.png" data-edit="img" title="Leben"
-          height="40" width="40" />      
-        {{#each (range 0 8) as |index|}}           
+          height="40" width="40" />
+        {{#each (range 0 8) as |index|}}
         <button
           class="triStateBtn state-{{getButtonState index ../actor.system.gesundheit.wunden ../actor.system.gesundheit.erschoepfung}}"
-          data-state="{{getButtonState index ../actor.system.gesundheit.wunden ../actor.system.gesundheit.erschoepfung}}">     
-        </button>           
+          data-state="{{getButtonState index ../actor.system.gesundheit.wunden ../actor.system.gesundheit.erschoepfung}}">
+        </button>
         {{/each}}
-        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/Tod.png" data-edit="img" title="Tod" height="40"
-          width="40" />
+        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/Tod.png" data-edit="img" title="Tod"
+          height="40" width="40" />
       </div>
       <div>
         <a class="icon-small toggle-bool {{system.gesundheit.wundenignorieren}}"
@@ -63,8 +62,8 @@
           <img src="/systems/Ilaris/assets/images/Ilaris/ws.svg" title="WS*" />
           <span class="overlay-label">{{actor.system.abgeleitete.ws_stern}}</span>
         </div>
-        <div class="icon-overlay-container rollable onhover" data-rolltype="simpleprobe_diag" data-name="Magierresistenz"
-          data-pw="{{actor.system.abgeleitete.mr}}">
+        <div class="icon-overlay-container rollable onhover" data-rolltype="simpleprobe_diag"
+          data-name="Magierresistenz" data-pw="{{actor.system.abgeleitete.mr}}">
           <img src="/systems/Ilaris/assets/images/Ilaris/mr.svg" title="MR" />
           <span class="overlay-label">{{actor.system.abgeleitete.mr}}</span>
         </div>
@@ -86,15 +85,15 @@
         {{#if actor.system.abgeleitete.zauberer}}
         <label class="ausklappen-trigger onhover" data-ausklappentarget="aspzugekauft"><b>AsP:</b></label>
         <label>{{actor.system.abgeleitete.asp}}&nbsp; | &nbsp;</label>
-    
+
         <label><b>gAsP:</b></label>
-        <input style="width: 25px" name="system.abgeleitete.gasp" value="{{actor.system.abgeleitete.gasp}}" type="number"
-          data-dtype="Number" />
-    
+        <input style="width: 25px" name="system.abgeleitete.gasp" value="{{actor.system.abgeleitete.gasp}}"
+          type="number" data-dtype="Number" />
+
         <label>&nbsp; | &nbsp;<b>AsP*:</b></label>
         <input style="width: 25px" name="system.abgeleitete.asp_stern" value="{{actor.system.abgeleitete.asp_stern}}"
           type="number" data-dtype="Number" />
-    
+
         <span id="ausklappen-view-aspzugekauft" style="display: none">
           <label>Zugekauft: </label>
           <input style="width: 25px" name="system.abgeleitete.asp_zugekauft"
@@ -102,19 +101,19 @@
         </span>
         <br>
         {{/if}}
-    
+
         {{#if actor.system.abgeleitete.geweihter}}
         <label class="ausklappen-trigger onhover" data-ausklappentarget="kapzugekauft"><b>KaP:</b></label>
         <label>{{actor.system.abgeleitete.kap}}&nbsp; | &nbsp;</label>
-    
+
         <label><b>gKaP:</b></label>
-        <input style="width: 25px" name="system.abgeleitete.gkap" value="{{actor.system.abgeleitete.gkap}}" type="number"
-          data-dtype="Number" />
-    
+        <input style="width: 25px" name="system.abgeleitete.gkap" value="{{actor.system.abgeleitete.gkap}}"
+          type="number" data-dtype="Number" />
+
         <label>&nbsp; | &nbsp;<b>KaP*:</b></label>
         <input style="width: 25px" name="system.abgeleitete.kap_stern" value="{{actor.system.abgeleitete.kap_stern}}"
           type="number" data-dtype="Number" />
-    
+
         <span id="ausklappen-view-kapzugekauft" style="display: none">
           <label>Zugekauft: </label>
           <input style="width: 25px" name="system.abgeleitete.kap_zugekauft"
@@ -124,7 +123,7 @@
         {{/if}}
       </div>
       <p></p>
-    
+
       <div class="flexrow">
         <b><label style="color: black; font-size: 16pt">{{actor.system.abgeleitete.globalermoddisplay}}</label></b>
       </div>
@@ -133,8 +132,8 @@
     <div class="heroattributes">
       {{#each actor.system.attribute as |attribut key|}}
       <div class="attribute-wrapper">
-        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/{{key}}.png" title="{{key}}" />
-        <label class="attribute-number rollable onhover" data-rolltype="attribut" data-attribut="{{key}}">
+        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/{{key}}.png"/>
+        <label class="attribute-number rollable onhover" data-rolltype="attribut" data-attribut="{{key}}"  title="{{key}}">
           {{attribut.pw}}
         </label>
       </div>
@@ -149,7 +148,8 @@
           Attribute
         </b>
         <b class="tab-item" data-tab="fertigkeiten">
-          <img class="round-icon" src="/systems/Ilaris/assets/images/Ilaris/holzbearbeitung.png" height="20" width="20" />
+          <img class="round-icon" src="/systems/Ilaris/assets/images/Ilaris/holzbearbeitung.png" height="20"
+            width="20" />
           Fertigkeiten
         </b>
         <b class="tab-item" data-tab="uebernatuerlich">
@@ -173,6 +173,12 @@
 
     <div class=herotab>
       <div class="sheet-body">
+        <div class="tab" data-group="primary" data-tab="kampf">
+          {{> systems/Ilaris/templates/sheets/tabs/kampf.hbs}}
+        </div>
+        <div class="tab" data-group="primary" data-tab="inventar">
+          {{> systems/Ilaris/templates/sheets/tabs/inventar.hbs}}
+        </div>
         <div class="tab" data-group="primary" data-tab="notes">
           {{> systems/Ilaris/templates/sheets/tabs/notes.hbs}}
         </div>
@@ -185,13 +191,6 @@
         <div class="tab" data-group="primary" data-tab="uebernatuerlich">
           {{> systems/Ilaris/templates/sheets/tabs/uebernatuerlich.hbs}}
         </div>
-        <div class="tab" data-group="primary" data-tab="kampf">
-          {{> systems/Ilaris/templates/sheets/tabs/kampf.hbs}}
-        </div>
-        <div class="tab" data-group="primary" data-tab="inventar">
-          {{> systems/Ilaris/templates/sheets/tabs/inventar.hbs}}
-        </div>
       </div>
     </div>
   </div>
-</form>
