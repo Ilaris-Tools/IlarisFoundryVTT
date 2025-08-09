@@ -81,6 +81,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
             this.fumble_val,
             12,
         )
+        super._updateSchipsStern(html)
     }
 
     async _schadenKlick(html) {

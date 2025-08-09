@@ -130,6 +130,16 @@ export class CombatDialog extends Dialog {
         }
     }
 
+    _updateSchipsStern(html) {
+        const schipsOption =
+            Number(html.find(`input[name="schips-${this.dialogId}"]:checked`)[0]?.value) || 0
+        if (schipsOption !== 0 && this.actor.system.schips.schips_stern > 0) {
+            this.actor.update({
+                'system.schips.schips_stern': this.actor.system.schips.schips_stern - 1,
+            })
+        }
+    }
+
     getDiceFormula(html, xd20_choice) {
         let schipsOption =
             Number(html.find(`input[name="schips-${this.dialogId}"]:checked`)[0]?.value) || 0
@@ -144,9 +154,6 @@ export class CombatDialog extends Dialog {
             return diceFormula
         }
 
-        this.actor.update({
-            'system.schips.schips_stern': this.actor.system.schips.schips_stern - 1,
-        })
         if (schipsOption == 1) {
             this.text_at = text.concat(`Schips ohne Eigenheit\n`)
             this.text_vt = text.concat(`Schips ohne Eigenheit\n`)

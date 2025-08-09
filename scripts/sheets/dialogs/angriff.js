@@ -355,6 +355,8 @@ export class AngriffDialog extends CombatDialog {
             true,
             this.fumble_val,
         )
+        super._updateSchipsStern(html)
+        this.updateModifierDisplay(html)
     }
 
     async _verteidigenKlick(html) {
@@ -375,6 +377,8 @@ export class AngriffDialog extends CombatDialog {
             true,
             this.fumble_val,
         )
+        super._updateSchipsStern(html)
+        this.updateModifierDisplay(html)
     }
 
     async _schadenKlick(html) {

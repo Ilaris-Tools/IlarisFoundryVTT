@@ -134,6 +134,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         if (difficulty) {
             await this.applyEnergyCost(isSuccess, is16OrHigher)
         }
+        super._updateSchipsStern(html)
     }
 
     async _energieAbrechnenKlick(html, isSuccess) {
