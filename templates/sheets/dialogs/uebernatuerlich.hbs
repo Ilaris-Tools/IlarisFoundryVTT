@@ -6,7 +6,11 @@
 {{#if (ifEq actor.type "held")}}
 <div>
     <label>Schips:</label>
+    {{#if actor.system.schips.schips_stern}}
     <label>{{radioBoxes "schips" choices_schips checked=checked_schips}}</label>
+    {{else}}
+    <label class="warning">Keine Schips verfügbar!</label>
+    {{/if}}
 </div>
 {{/if}}
 <div class="flexrow">
