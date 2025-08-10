@@ -388,12 +388,33 @@
 }
 
 .twokindrow div:nth-child(odd) {
-  background: rgba(255, 255, 255, 0.2);
+  background-color: #ece3cd;
 }
 
 .twokindrow {
   width: 100%;
   column-width: auto;
+  background-color: #e5c4a9;
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  /* Tabellenzellen zusammenführen */
+}
+
+tr:nth-child(4n+1) {
+  background-color: #e5c4a9;
+}
+
+tr:not(:nth-child(4n+1)) {
+    background-color: #ece3cd;
+
+}
+
+.table th {
+  color: black; /* Hier deine Wunschfarbe */
+  text-shadow: none;
 }
 
 input[name="name"] {
@@ -435,4 +456,20 @@ input[name="name"] {
       margin-top: 2px;
     }
   }
+}
+
+/* Erzwinge native Spinner (sofern Browser sie unterstützt) */
+input[type="number"] {
+  appearance: auto !important;
+  -webkit-appearance: auto !important;
+  -moz-appearance: auto !important;
+}
+
+/* WebKit-Pseudo-Elemente (Chrome, Edge, Safari) */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: auto !important;
+  appearance: auto !important;
+  margin: 0 !important;
+  display: inline-block !important;
 }
