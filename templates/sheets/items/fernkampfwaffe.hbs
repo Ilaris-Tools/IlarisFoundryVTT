@@ -67,26 +67,6 @@
                     />
                 </div>
             </div>
-            <div class="flexrow">
-                <label class="flex-fest-var" style="flex-basis: 100px"><b>Härte:</b></label>
-                <div class="flexrow">
-                    <input
-                        name="system.haerte"
-                        value="{{item.system.haerte}}"
-                        type="text"
-                        data-dtype="String"
-                    />
-                    <label class="flex-fest-var" style="flex-basis: 100px">
-                        <b>Beschädigung:</b>
-                    </label>
-                    <input
-                        name="system.beschaedigung"
-                        value="{{item.system.beschaedigung}}"
-                        type="text"
-                        data-dtype="String"
-                    />
-                </div>
-            </div>
             <!-- "kein_reiter": false,
                  "niederwerfen": false,
                  "niederwerfen_4": false,
@@ -245,38 +225,7 @@
                 />
             </div>
             {{/if}}
-
-            <label><b>Beschreibung:</b></label>
-            <textarea name="system.text">{{item.system.text}}</textarea>
-            <div class="flexrow">
-                <label class="flex-fest-var" style="flex-basis: 100px">
-                    <b>{{get_label 'gewicht'}}:</b>
-                </label>
-                <input
-                    name="system.gewicht"
-                    value="{{item.system.gewicht}}"
-                    type="text"
-                    data-dtype="Number"
-                />
-            </div>
-            <div class="flexrow">
-                <label class="flex-fest-var" style="flex-basis: 100px"><b>Preis:</b></label>
-                <input
-                    name="system.preis"
-                    value="{{item.system.preis}}"
-                    type="text"
-                    data-dtype="Number"
-                />
-                <label class="flex-fest-var" style="flex-basis: 100px"><b>ST</b></label>
-            </div>
-            {{#if hasOwner}}
-            <label class="flex-fest-var" style="flex-basis: 100px"><b>Aufbewahrungsort:</b></label>
-            <select name="system.aufbewahrungs_ort">
-                {{#select item.system.aufbewahrungs_ort}} {{#each speicherplatz_list as |ort|}}
-                <option value="{{ort}}">{{ort}}</option>
-                {{/each}} {{/select}}
-            </select>
-            {{/if}}
+        {{> systems/Ilaris/templates/sheets/items/base_item_layout.hbs}}
         </div>
     </div>
 </form>
