@@ -56,19 +56,18 @@
     <div style="font-size: 14px">
       {{#if actor.system.abgeleitete.zauberer}}
       <label class="ausklappen-trigger onhover" data-ausklappentarget="aspzugekauft"><b>AsP:</b></label>
-      <label>{{actor.system.abgeleitete.asp}}&nbsp; | &nbsp;</label>
+      <label>{{actor.system.abgeleitete.asp}}&nbsp;</label>
 
       <label><b>gAsP:</b></label>
-      <input style="width: 25px" name="system.abgeleitete.gasp" value="{{actor.system.abgeleitete.gasp}}" type="number"
-        data-dtype="Number" />
+      <input style="width: 3em" name="system.abgeleitete.gasp" value="{{actor.system.abgeleitete.gasp}}" type="number"/>
 
-      <label>&nbsp; | &nbsp;<b>AsP*:</b></label>
-      <input style="width: 25px" name="system.abgeleitete.asp_stern" value="{{actor.system.abgeleitete.asp_stern}}"
+      <label>&nbsp;<b>AsP*:</b></label>
+      <input style="width: 3em" name="system.abgeleitete.asp_stern" value="{{actor.system.abgeleitete.asp_stern}}"
         type="number" data-dtype="Number" />
 
       <span id="ausklappen-view-aspzugekauft" style="display: none">
         <label>Zugekauft: </label>
-        <input style="width: 25px" name="system.abgeleitete.asp_zugekauft"
+        <input style="width: 3em" name="system.abgeleitete.asp_zugekauft"
           value="{{actor.system.abgeleitete.asp_zugekauft}}" type="number" data-dtype="Number" />
       </span>
       <br>
@@ -76,19 +75,19 @@
 
       {{#if actor.system.abgeleitete.geweihter}}
       <label class="ausklappen-trigger onhover" data-ausklappentarget="kapzugekauft"><b>KaP:</b></label>
-      <label>{{actor.system.abgeleitete.kap}}&nbsp; | &nbsp;</label>
+      <label>{{actor.system.abgeleitete.kap}}&nbsp;</label>
 
       <label><b>gKaP:</b></label>
-      <input style="width: 25px" name="system.abgeleitete.gkap" value="{{actor.system.abgeleitete.gkap}}" type="number"
+      <input style="width: 3em" name="system.abgeleitete.gkap" value="{{actor.system.abgeleitete.gkap}}" type="number"
         data-dtype="Number" />
 
-      <label>&nbsp; | &nbsp;<b>KaP*:</b></label>
-      <input style="width: 25px" name="system.abgeleitete.kap_stern" value="{{actor.system.abgeleitete.kap_stern}}"
+      <label>&nbsp;<b>KaP*:</b></label>
+      <input style="width: 3em" name="system.abgeleitete.kap_stern" value="{{actor.system.abgeleitete.kap_stern}}"
         type="number" data-dtype="Number" />
 
       <span id="ausklappen-view-kapzugekauft" style="display: none">
         <label>Zugekauft: </label>
-        <input style="width: 25px" name="system.abgeleitete.kap_zugekauft"
+        <input style="width: 3em" name="system.abgeleitete.kap_zugekauft"
           value="{{actor.system.abgeleitete.kap_zugekauft}}" type="number" data-dtype="Number" />
       </span>
       <br />
@@ -135,8 +134,7 @@
     {{#each actor.system.attribute as |attribut key|}}
     <div class="attribute-wrapper">
       <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/{{key}}.png" />
-      <label class="attribute-number rollable onhover" data-rolltype="attribut" data-attribut="{{key}}" title="{{key}}"
-        style="text-shadow: 2px 2px 2px rgb(255, 255, 255);">
+      <label class="attribute-number rollable onhover" data-rolltype="attribut" data-attribut="{{key}}" title="{{key}}">
         {{attribut.pw}}
       </label>
     </div>

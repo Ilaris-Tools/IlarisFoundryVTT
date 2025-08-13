@@ -75,6 +75,11 @@
   /* oder eine andere Farbe, je nach Hintergrund */
   font-weight: bold;
   font-size: 22px;
+  text-shadow: 2px 2px 2px rgb(255, 255, 255);
+}
+
+.attribute-number:hover {
+  text-shadow: 0 0 10px var(--color-shadow-primary);
 }
 
 .herotabnavigation {
@@ -125,6 +130,11 @@
 }
 
 .tab-item:hover {
+  text-shadow: 0 0 10px var(--color-shadow-primary);
+  /* background-color: #e0e0d1; */
+}
+
+.ausklappen-trigger:hover {
   text-shadow: 0 0 10px var(--color-shadow-primary);
   /* background-color: #e0e0d1; */
 }
@@ -224,6 +234,10 @@
   .fa-spin {
     content: url("/systems/Ilaris/assets/images/ilaris/icon_rot.png")
   }
+}
+
+#logo {
+  content: url("/systems/Ilaris/assets/images/ilaris/Ilaris.png")
 }
 
 .profile-img {

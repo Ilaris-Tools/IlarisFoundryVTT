@@ -1,43 +1,17 @@
 {{log 'ue' this}}
-<div>
-    <span>
-        {{#if actor.system.abgeleitete.zauberer}}
-        <label class="ausklappen-trigger onhover" data-ausklappentarget="aspzugekauft"><b>AsP:</b></label>
-        <label>{{actor.system.abgeleitete.asp}}&nbsp; | &nbsp;</label>
-        <label><b>gAsP:</b></label>
-        <input style="width: 25px" name="system.abgeleitete.gasp" value="{{actor.system.abgeleitete.gasp}}" type="text"
-            data-dtype="Number" />
-        <label>&nbsp; | &nbsp;<b>AsP*:</b></label>
-        <input style="width: 25px" name="system.abgeleitete.asp_stern" value="{{actor.system.abgeleitete.asp_stern}}"
-            type="text" data-dtype="Number" />
-        <span id="ausklappen-view-aspzugekauft" style="display: none">
-            <label>Zugekauft: </label>
-            <input style="width: 25px" name="system.abgeleitete.asp_zugekauft"
-                value="{{actor.system.abgeleitete.asp_zugekauft}}" type="text" data-dtype="Number" />
-        </span>
-        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{/if}} {{#if
-        actor.system.abgeleitete.geweihter}}
-        <label class="ausklappen-trigger onhover" data-ausklappentarget="kapzugekauft"><b>KaP:</b></label>
-        <label>{{actor.system.abgeleitete.kap}}&nbsp; | &nbsp;</label>
-        <label><b>gKaP:</b></label>
-        <input style="width: 25px" name="system.abgeleitete.gkap" value="{{actor.system.abgeleitete.gkap}}" type="text"
-            data-dtype="Number" />
-        <label>&nbsp; | &nbsp;<b>KaP*:</b></label>
-        <input style="width: 25px" name="system.abgeleitete.kap_stern" value="{{actor.system.abgeleitete.kap_stern}}"
-            type="text" data-dtype="Number" />
-        <span id="ausklappen-view-kapzugekauft" style="display: none">
-            <label>Zugekauft: </label>
-            <input style="width: 25px" name="system.abgeleitete.kap_zugekauft"
-                value="{{actor.system.abgeleitete.kap_zugekauft}}" type="text" data-dtype="Number" />
-        </span>
-        <br />
-        {{/if}}
-    </span>
 <h2>Fertigkeiten</h2>
+{{#if (or actor.vorteil.zaubertraditionen actor.vorteil.geweihtentradition)}}
+<div>
+    <label><b>Aktive Übernatürliche Tradition:</b></label>
+    <select class="selected-uebernatuerlicher-stil" name="system.misc.selected_uebernatuerlicher_stil">
+        {{selectOptions actor.misc.uebernatuerliche_stile_list
+        selected=actor.system.misc.selected_uebernatuerlicher_stil valueAttr="key" labelAttr="name"}}
+    </select>
+</div>
+{{/if}}
 <a class="item-create" data-itemclass="uebernatuerliche_fertigkeit">
     <i class="fas fa-plus"></i> Neue Übernatürliche Fertigkeit
 </a>
-
 <table class="table" style="font-size:10pt; width: 100%; border-collapse: collapse; margin-top: 0.5em;">
     <thead>
         <tr>
