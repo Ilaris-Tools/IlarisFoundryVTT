@@ -21,15 +21,6 @@
     <div>
       <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
     </div>
-    <div class="status-effects">
-      {{#each actor.effects as |effect|}}
-      {{#if effect.icon}}
-      <img class="effect-control {{#if effect.active}}active{{/if}}" src="{{effect.icon}}"
-        data-tooltip="{{effect.name}}" data-status-id="{{effect.statusId}}" />
-      {{/if}}
-      {{/each}}
-    </div>
-    <p> </p>
     <div class="attribute-grid">
       {{#each actor.system.attribute as |attribut key|}}
       <div class="attribute-wrapper">
@@ -53,16 +44,16 @@
       </div>
       <div class="icon-overlay-container rollable onhover" data-rolltype="simpleprobe_diag" data-name="Magierresistenz"
         data-pw="{{actor.system.abgeleitete.mr}}">
-  <img src="/systems/Ilaris/assets/images/Ilaris/mr.png" title="MR"
-    onmouseover="this.nextElementSibling.style.textShadow='0 0 5px red';"
-    onmouseout="this.nextElementSibling.style.textShadow='none';"/>
-          <span class="overlay-label">{{actor.system.abgeleitete.mr}}</span>
+        <img src="/systems/Ilaris/assets/images/Ilaris/mr.png" title="MR"
+          onmouseover="this.nextElementSibling.style.textShadow='0 0 5px red';"
+          onmouseout="this.nextElementSibling.style.textShadow='none';" />
+        <span class="overlay-label">{{actor.system.abgeleitete.mr}}</span>
       </div>
       <div class="icon-overlay-container">
         <img src="/systems/Ilaris/assets/images/Ilaris/ini.png" title="INI" />
         <span class="overlay-label">{{actor.system.abgeleitete.ini}}</span>
       </div>
-      <div class="icon-overlay-container">   <img src="/systems/Ilaris/assets/images/Ilaris/gs.svg" title="GS" />
+      <div class="icon-overlay-container"> <img src="/systems/Ilaris/assets/images/Ilaris/gs.svg" title="GS" />
         <span class="overlay-label">{{actor.system.abgeleitete.gs}}</span>
       </div>
       <div class="icon-overlay-container">
@@ -140,6 +131,14 @@
       {{/each}}
       <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/Tod.png" data-edit="img" title="Tod"
         height="50" width="50" />
+    </div>
+    <div class="status-effects">
+      {{#each actor.effects as |effect|}}
+      {{#if effect.icon}}
+      <img class="effect-control {{#if effect.active}}active{{/if}}" src="{{effect.icon}}"
+        data-tooltip="{{effect.name}}" data-status-id="{{effect.statusId}}" />
+      {{/if}}
+      {{/each}}
     </div>
   </div>
 
