@@ -4,3 +4,7 @@ packs/**/*
 
 ## Ignore hbs files because they are making many problems
 *.hbs
+
+## Ignore local folders
+coverage
+node_modules
