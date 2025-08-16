@@ -46,19 +46,23 @@
 
 .heroattributes {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: space-around;
   /* gleichmäßige Verteilung */
   align-items: center;
-  gap: 10px;
-  /* Abstand zwischen den Elementen */
+  padding-top: 5px;
 }
 
+.attribute-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr); /* 4 Spalten */
+  gap: 0.05rem;
+}
 
 .attribute-wrapper {
   position: relative;
-  width: 45px;
-  height: 45px;
+  width: 55px;
+  height: 55px;
 }
 
 .attribute-wrapper img {
@@ -178,9 +182,8 @@
 .icon-overlay-container {
   position: relative;
   display: inline-block;
-  width: 50px;
-  height: 50px;
-  margin: 5px;
+  width: 55px;
+  height: 55px;
 }
 
 .icon-overlay-container img {
@@ -199,7 +202,7 @@
   /* oder schwarz, je nach Kontrast */
   font-weight: bold;
   font-size: 20px;
-  text-shadow: 0 0 3px black;
+  text-shadow: 0 0 2px black;
   /* besser lesbar auf hellem Hintergrund */
   pointer-events: none;
 }
@@ -252,8 +255,8 @@
 }
 
 .triStateBtn {
-  width: 18px;
-  height: 15px;
+  width: 30px;
+  height: 30px;
   border: 2px solid brown;
   border-radius: 0;
   cursor: pointer;
@@ -272,10 +275,10 @@
 .state-1::after {
   content: "";
   position: absolute;
-  top: 40%;
-  left: -15%;
-  width: 18px;
-  height: 2px;
+  top: 45%;
+  left: -7%;
+  width: 30px;
+  height: 4px;
   background-color: black;
 }
 
@@ -291,10 +294,10 @@
 .state-2::after {
   content: "";
   position: absolute;
-  top: 40%;
-  left: -15%;
-  width: 18px;
-  height: 2px;
+  top: 45%;
+  left: -7%;
+  width: 30px;
+  height: 4px;
   background-color: black;
   transform: rotate(135deg);
 }
