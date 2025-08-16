@@ -662,6 +662,7 @@ let angriff_typ = {
 ILARIS.angriff_typ = angriff_typ
 
 let schadenstypen = {
+    NORMAL: '',
     PROFAN: 'Profan',
     STUMPF: 'Stumpf',
     STICH: 'Stich',

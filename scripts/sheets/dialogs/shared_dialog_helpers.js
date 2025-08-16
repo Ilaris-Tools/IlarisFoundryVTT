@@ -198,7 +198,7 @@ export async function applyDamageToTarget(
     trueDamage = false,
     speaker,
 ) {
-    const targetActor = game.actors.get(target.actorId)
+    const targetActor = game.actors.get(target.actorId || target._id)
     if (!targetActor) return
 
     // Get WS* of the target
@@ -223,20 +223,14 @@ export async function applyDamageToTarget(
         await ChatMessage.create({
             content: `${targetActor.name} erleidet ${woundsToAdd} Einschränkung${
                 woundsToAdd > 1 ? 'en' : ''
-            }! (${damageType ? CONFIG.ILARIS.schadenstypen[damageType] : ''} Schaden: ${damage}${
-                !trueDamage ? `, WS*: ${ws_stern}` : ''
-            })`,
+            }! (${damageType ? CONFIG.ILARIS.schadenstypen[damageType] : ''} Schaden: ${damage})`,
             speaker: speaker,
             style: CONST.CHAT_MESSAGE_STYLES.OTHER,
         })
     } else {
         // Send a message when damage wasn't high enough
         await ChatMessage.create({
-            content: `${
-                targetActor.name
-            } erleidet keine Einschränkungen - der Schaden (${damage}) war nicht hoch genug${
-                !trueDamage ? ` im Vergleich zu WS* (${ws_stern})` : ''
-            }.`,
+            content: `${targetActor.name} erleidet keine Einschränkungen - der Schaden (${damage}) war nicht hoch genug.`,
             speaker: speaker,
             style: CONST.CHAT_MESSAGE_STYLES.OTHER,
         })

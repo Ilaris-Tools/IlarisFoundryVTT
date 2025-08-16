@@ -43,7 +43,9 @@ export class AngriffDialog extends CombatDialog {
         let data = super.getData()
         data.isDefenseMode = this.isDefenseMode
         data.attackingActor = this.attackingActor
-        console.log(this.attackingActor)
+        if (this.isDefenseMode && this.attackingActor) {
+            this.selectedActors = [this.attackingActor]
+        }
         return data
     }
 
@@ -106,9 +108,17 @@ export class AngriffDialog extends CombatDialog {
 
         html.find('#modifier-summary').on('click', '.clickable-summary.schaden', (ev) => {
             ev.preventDefault()
-            if (!this.isDefenseMode) {
+            if (!this.isDefenseMode && !this.riposte) {
                 this._schadenKlick(html)
             }
+        })
+    }
+
+    addDamageSummaryClickListeners(html) {
+        html.find('#modifier-summary').off('click', '.clickable-summary.schaden')
+        html.find('#modifier-summary').on('click', '.clickable-summary.schaden', (ev) => {
+            ev.preventDefault()
+            this._schadenKlick(html)
         })
     }
 
@@ -130,7 +140,7 @@ export class AngriffDialog extends CombatDialog {
 
             // Temporarily parse values to calculate modifiers
             await this.manoeverAuswaehlen(html)
-            await this.updateManoeverMods()
+            await this.updateManoeverMods(html)
             await this.updateStatusMods()
 
             // Get base values
@@ -367,7 +377,7 @@ export class AngriffDialog extends CombatDialog {
         // at_abzuege_mod kommen vom status/gesundheit, at_mod aus ansagen, nahkampfmod?
         let diceFormula = this.getDiceFormula(html)
         await this.manoeverAuswaehlen(html)
-        await this.updateManoeverMods() // durch manoever
+        await this.updateManoeverMods(html) // durch manoever
         this.updateStatusMods()
         this.eigenschaftenText()
 
@@ -527,7 +537,7 @@ export class AngriffDialog extends CombatDialog {
 
     async _verteidigenKlick(html) {
         await this.manoeverAuswaehlen(html)
-        await this.updateManoeverMods()
+        await this.updateManoeverMods(html)
         this.updateStatusMods()
         let label = `Verteidigung (${this.item.name})`
         let diceFormula = this.getDiceFormula(html)
@@ -695,7 +705,7 @@ export class AngriffDialog extends CombatDialog {
 
     async _schadenKlick(html) {
         await this.manoeverAuswaehlen(html)
-        await this.updateManoeverMods()
+        await this.updateManoeverMods(html)
         let label = `Schaden (${this.item.name})`
         let formula = `${this.schaden} ${signed(this.mod_dm)}`
 
@@ -771,7 +781,7 @@ export class AngriffDialog extends CombatDialog {
         super.manoeverAuswaehlen(html)
     }
 
-    async updateManoeverMods() {
+    async updateManoeverMods(html) {
         let manoever = this.item.system.manoever
 
         let mod_at = 0
@@ -785,7 +795,7 @@ export class AngriffDialog extends CombatDialog {
         let nodmg = { name: '', value: false }
         let trefferzone = 0
         let schaden = this.item.getTp()
-        let damageType = 'normal'
+        let damageType = 'NORMAL'
         let trueDamage = false
 
         // Handle standard maneuvers first
@@ -877,6 +887,7 @@ export class AngriffDialog extends CombatDialog {
             }
             if (dynamicManoever.name == 'Riposte') {
                 this.riposte = true
+                this.addDamageSummaryClickListeners(html)
                 mod_vt += mod_at
                 text_vt = text_vt.concat(`${dynamicManoever.name}: (\n${text_at})\n`)
                 text_dm = text_dm.concat(`${dynamicManoever.name}: (\n${text_at})\n`)
