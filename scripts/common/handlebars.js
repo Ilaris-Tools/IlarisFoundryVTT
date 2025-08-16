@@ -13,6 +13,14 @@ function preloadHandlebarsTemplates() {
         'systems/Ilaris/templates/sheets/tabs/uebernatuerlich.hbs',
         'systems/Ilaris/templates/sheets/tabs/notes.hbs',
         'systems/Ilaris/templates/sheets/tabs/effekte.hbs',
+
+        'systems/Ilaris/templates/sheets/tabs/inventory/carrying.hbs',
+        'systems/Ilaris/templates/sheets/tabs/inventory/finances.hbs',
+        'systems/Ilaris/templates/sheets/tabs/inventory/handcart.hbs',
+        'systems/Ilaris/templates/sheets/tabs/inventory/supporting.hbs',
+
+        'systems/Ilaris/templates/sheets/items/base_item_layout.hbs',
+
         // "systems/Ilaris/templates/sheets/items/ruestung.hbs",
         'systems/Ilaris/templates/helper/select_attribut.hbs',
         'systems/Ilaris/templates/helper/select_fertigkeitsgruppe.hbs',
