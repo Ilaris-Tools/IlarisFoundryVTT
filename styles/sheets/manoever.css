@@ -354,6 +354,11 @@
   border-bottom-color: #8b0000;
 }
 
+.disabled {
+  color: #666666 !important;
+  border-bottom-color: #666666 !important;
+}
+
 .defense-summary h4 {
   color: #006400;
   border-bottom-color: #006400;

@@ -60,6 +60,23 @@
                 data-dtype="Number"
             />
         </div>
+        <hr>
+        <div class="flexrow" style="margin: 10px 0; justify-content: space-between; align-items: flex-start;">
+            <div class="selected-actors-display" style="flex: 1;">
+                <div class="selected-actors-list">
+                    {{#if selectedActors.length}}
+                        <div style="font-weight: bold; margin-bottom: 5px;">Ausgewählte Ziele:</div>
+                        {{#each selectedActors}}
+                            <div>{{this.name}} ({{this.distance}} Distanz)</div>
+                        {{/each}}
+                    {{/if}}
+                </div>
+            </div>
+            <button style="max-width: 150px" type="button" class="show-nearby">
+                <i class="fas fa-users"></i>
+                Andere Akteure
+            </button>
+        </div>
 
         <hr>
 
@@ -124,8 +141,6 @@
                 {{selectOptions rollModes selected=item.system.manoever.rllm.selected localize=true}}
             </select>
         </div>
-
-
     </div>
 
     <!-- Right Column - Modifier Summary -->
@@ -134,56 +149,4 @@
             <!-- This will be populated by JavaScript -->
         </div>
     </div>
-</div>
-
-<hr />
-<div class="flexrow">
-    <label>Modifikator:</label>
-    <input
-        id="modifikator-{{dialogId}}"
-        type="number"
-        name="item.system.manoever.mod.selected"
-        value="{{item.system.manoever.mod.selected}}"
-        data-dtype="Number"
-    />
-</div>
-<div class="flexrow">
-    <label>Würfelmodus:</label>
-    <select id="rollMode-{{dialogId}}">
-        {{selectOptions rollModes selected=item.system.manoever.rllm.selected localize=true}}
-    </select>
-</div>
-<hr />
-<div class="flexrow">
-    <button style="max-width: 150px" class="angreifen" type="button">
-        <i>
-            <img
-                class="button-icon-nahkampf"
-                src="systems/Ilaris/assets/game-icons.net/sword-clash.png"
-            />
-        </i>
-        Angriff
-    </button>
-    <button style="max-width: 150px" class="verteidigen" type="button">
-        <i>
-            <img
-                class="button-icon-nahkampf"
-                src="systems/Ilaris/assets/game-icons.net/shield-opposition.png"
-            />
-        </i>
-        Verteidigung
-    </button>
-    <button style="max-width: 150px" type="button" class="schaden">
-        <i>
-            <img
-                class="button-icon-nahkampf"
-                src="systems/Ilaris/assets/game-icons.net/bloody-sword.png"
-            />
-        </i>
-        Schaden
-    </button>
-    <button style="max-width: 150px" type="button" class="show-nearby">
-        <i class="fas fa-users"></i>
-        Nahe Akteure
-    </button>
 </div>

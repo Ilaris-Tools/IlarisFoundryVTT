@@ -27,6 +27,7 @@ export class AngriffDialog extends CombatDialog {
         this.text_dm = ''
         this.item = item
         this.actor = actor
+        this.riposte = false
         this.speaker = ChatMessage.getSpeaker({ actor: this.actor })
         this.rollmode = game.settings.get('core', 'rollMode') // public, private....
         this.item.system.manoever.rllm.selected = game.settings.get('core', 'rollMode') // TODO: either manoever or dialog property.
@@ -42,6 +43,7 @@ export class AngriffDialog extends CombatDialog {
         let data = super.getData()
         data.isDefenseMode = this.isDefenseMode
         data.attackingActor = this.attackingActor
+        console.log(this.attackingActor)
         return data
     }
 
@@ -92,7 +94,9 @@ export class AngriffDialog extends CombatDialog {
         // Use event delegation since the summary elements are dynamically created
         html.find('#modifier-summary').on('click', '.clickable-summary.angreifen', (ev) => {
             ev.preventDefault()
-            this._angreifenKlick(html)
+            if (!this.isDefenseMode) {
+                this._angreifenKlick(html)
+            }
         })
 
         html.find('#modifier-summary').on('click', '.clickable-summary.verteidigen', (ev) => {
@@ -102,7 +106,9 @@ export class AngriffDialog extends CombatDialog {
 
         html.find('#modifier-summary').on('click', '.clickable-summary.schaden', (ev) => {
             ev.preventDefault()
-            this._schadenKlick(html)
+            if (!this.isDefenseMode) {
+                this._schadenKlick(html)
+            }
         })
     }
 
@@ -187,8 +193,10 @@ export class AngriffDialog extends CombatDialog {
         const finalAT = baseAT + totalMod
         const finalFormula = finalAT >= 0 ? `${diceFormula}+${finalAT}` : `${diceFormula}${finalAT}`
 
-        let summary = '<div class="modifier-summary attack-summary clickable-summary angreifen">'
-        summary += `<h4>🗡️ Angriff: ${finalFormula}</h4>`
+        const isClickableStyle = this.isDefenseMode ? '' : 'clickable-summary'
+        const isDisabledStyle = this.isDefenseMode ? 'disabled' : ''
+        let summary = `<div class="modifier-summary attack-summary ${isClickableStyle} angreifen">`
+        summary += `<h4 class="${isDisabledStyle}">🗡️ Angriff: ${finalFormula}</h4>`
         summary += '<div class="modifier-list">'
 
         // Base AT
@@ -309,8 +317,11 @@ export class AngriffDialog extends CombatDialog {
             finalFormula = `${baseDamage} ${sign}${maneuverMod}`
         }
 
-        let summary = '<div class="modifier-summary damage-summary clickable-summary schaden">'
-        summary += `<h4>🩸 Schaden: ${finalFormula}</h4>`
+        const isClickableStyle = this.isDefenseMode && !this.riposte ? '' : 'clickable-summary'
+        const isDisabledStyle = this.isDefenseMode && !this.riposte ? 'disabled' : ''
+
+        let summary = `<div class="modifier-summary damage-summary ${isClickableStyle} schaden">`
+        summary += `<h4 class="${isDisabledStyle}">🩸 Schaden: ${finalFormula}</h4>`
         summary += '<div class="modifier-list">'
 
         // Base damage
@@ -465,7 +476,7 @@ export class AngriffDialog extends CombatDialog {
                 const content = `
                     <div class="defense-prompt" style="padding: 10px;">
                         <p>${this.actor.name} greift dich mit ${this.item.name} an!</p>
-                        <p>Entfernung: ${target.distance} Felder</p>
+                        <p>Entfernung: ${target.distance} Distanz</p>
                         <div class="defense-buttons" style="display: flex; flex-wrap: wrap;">
                             ${buttonsHtml}
                         </div>
@@ -865,6 +876,7 @@ export class AngriffDialog extends CombatDialog {
                 }
             }
             if (dynamicManoever.name == 'Riposte') {
+                this.riposte = true
                 mod_vt += mod_at
                 text_vt = text_vt.concat(`${dynamicManoever.name}: (\n${text_at})\n`)
                 text_dm = text_dm.concat(`${dynamicManoever.name}: (\n${text_at})\n`)

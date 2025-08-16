@@ -21,7 +21,6 @@ export class HeldenSheet extends IlarisActorSheet {
     }
 
     async getData() {
-        debugger
         return {
             ...(await super.getData()),
             isWeaponSpaceRequirementActive: game.settings.get(

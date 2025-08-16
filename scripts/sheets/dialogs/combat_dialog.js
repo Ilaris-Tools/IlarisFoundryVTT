@@ -14,6 +14,7 @@ export class CombatDialog extends Dialog {
             dialogId: (this.dialogId = `dialog-${Date.now()}-${Math.random()
                 .toString(36)
                 .substring(2, 11)}`),
+            selectedActors: this.selectedActors || [],
         }
     }
 
@@ -145,30 +146,11 @@ export class CombatDialog extends Dialog {
         // Get the parent dialog element that contains the original angriff.hbs content
         const parentDialog = $(html[0]).closest('.app.window-app').parent().find('.angriff-dialog')
 
-        // Find or create the selected actors display
+        // Find the selected actors display
         let selectedActorsDiv = parentDialog.find('.selected-actors-display')
 
-        if (selectedActorsDiv.length === 0) {
-            // If the div doesn't exist, create and insert it before the first hr
-            selectedActorsDiv = $(`
-                <div class="selected-actors-display" style="margin: 10px 0;">
-                    <div style="font-weight: bold; margin-bottom: 5px;">Ausgewählte Ziele:</div>
-                    <div class="selected-actors-list"></div>
-                </div>
-            `)
-            parentDialog.find('hr').first().before(selectedActorsDiv)
-        }
-
-        // Update the selected actors list
-        const listDiv = selectedActorsDiv.find('.selected-actors-list')
-        if (!this.selectedActors || this.selectedActors.length === 0) {
-            listDiv.html('<i>Keine Ziele ausgewählt</i>')
-        } else {
-            const actorsList = this.selectedActors
-                .map((actor) => `<div>${actor.name} (${actor.distance} Felder)</div>`)
-                .join('')
-            listDiv.html(actorsList)
-        }
+        // Re-render the dialog to update the template
+        this.render(true)
     }
 
     getDiceFormula(html, xd20_choice) {

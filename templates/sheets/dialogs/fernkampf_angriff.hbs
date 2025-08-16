@@ -1,4 +1,5 @@
-{{log 'angriff' this}} {{#if (ifEq actor.type "held")}}
+{{log 'angriff' this}}
+{{#if (ifEq actor.type "held")}}
 <div>
     <label>Schips:</label>
     <label>
@@ -58,6 +59,23 @@
 <div class="flexrow">
     <label>{{get_label "brtn"}}</label>
     <input type="checkbox" id="brtn-{{dialogId}}" {{checked item.system.manoever.brtn.selected}} />
+</div>
+<hr />
+<div class="flexrow" style="margin: 10px 0; justify-content: space-between; align-items: flex-start;">
+    <div class="selected-actors-display" style="flex: 1;">
+        <div class="selected-actors-list">
+            {{#if selectedActors.length}}
+                <div style="font-weight: bold; margin-bottom: 5px;">Ausgewählte Ziele:</div>
+                {{#each selectedActors}}
+                    <div>{{this.name}} ({{this.distance}} Distanz)</div>
+                {{/each}}
+            {{/if}}
+        </div>
+    </div>
+    <button style="max-width: 150px" type="button" class="show-nearby">
+        <i class="fas fa-users"></i>
+        Andere Akteure
+    </button>
 </div>
 <hr />
 
@@ -147,8 +165,5 @@
         </i>
         Schaden
     </button>
-    <button style="max-width: 150px" type="button" class="show-nearby">
-        <i class="fas fa-users"></i>
-        Ziele auswählen
-    </button>
+
 </div>
