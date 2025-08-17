@@ -1,4 +1,8 @@
-import { roll_crit_message, get_statuseffect_by_id } from '../../common/wuerfel/wuerfel_misc.js'
+import {
+    roll_crit_message,
+    get_statuseffect_by_id,
+    evaluate_roll_with_crit,
+} from '../../common/wuerfel/wuerfel_misc.js'
 import { signed } from '../../common/wuerfel/chatutilities.js'
 import { handleModifications } from './shared_dialog_helpers.js'
 import { CombatDialog } from './combat_dialog.js'
@@ -71,16 +75,18 @@ export class FernkampfAngriffDialog extends CombatDialog {
         let formula = `${diceFormula} ${signed(this.item.system.fk)} \
             ${signed(this.at_abzuege_mod)} \
             ${signed(this.mod_at)}`
-        await roll_crit_message(
+
+        // Use the new evaluation function
+        const rollResult = await evaluate_roll_with_crit(
             formula,
             label,
             this.text_at,
-            this.speaker,
-            this.rollmode,
-            true,
+            12, // success_val
             this.fumble_val,
-            12,
+            true, // crit_eval
         )
+
+        await this.handleTargetSelection(rollResult, 'ranged')
     }
 
     async _schadenKlick(html) {
