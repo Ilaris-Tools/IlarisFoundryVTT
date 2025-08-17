@@ -115,7 +115,6 @@ export class CombatDialog extends Dialog {
             if (manoever.inputValue.field == 'CHECKBOX') {
                 manoever.inputValue.value = html.find(`#${elementId}`)[0]?.checked || false
             } else {
-                console.log(manoever.inputValue.name, html.find(`#${elementId}`)[0]?.value)
                 manoever.inputValue.value = html.find(`#${elementId}`)[0]?.value || false
             }
         })
