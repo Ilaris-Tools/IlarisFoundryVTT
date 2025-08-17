@@ -4,7 +4,7 @@ import {
     evaluate_roll_with_crit,
 } from '../../common/wuerfel/wuerfel_misc.js'
 import { signed } from '../../common/wuerfel/chatutilities.js'
-import { handleModifications } from './shared_dialog_helpers.js'
+import { handleModifications, applyDamageToTarget } from './shared_dialog_helpers.js'
 import { CombatDialog } from './combat_dialog.js'
 import * as hardcoded from '../../actors/hardcodedvorteile.js'
 
