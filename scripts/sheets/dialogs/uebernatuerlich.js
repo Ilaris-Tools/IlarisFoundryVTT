@@ -61,7 +61,9 @@ export class UebernatuerlichDialog extends CombatDialog {
                       ?.name.includes('Borbaradianer')) &&
                 this.item.type === 'zauber')
 
-        const isNonStandardDifficulty = isNaN(parseInt(this.item.system.schwierigkeit))
+        const difficulty = +this.item.system.schwierigkeit
+        console.log('difficulty', difficulty, isNaN(difficulty))
+        const isNonStandardDifficulty = isNaN(difficulty)
 
         return {
             choices_xd20: CONFIG.ILARIS.xd20_choice,
@@ -267,11 +269,18 @@ export class UebernatuerlichDialog extends CombatDialog {
         manoever.blutmagie.value = Number(html.find('#blutmagie')[0]?.value) || 0
         manoever.verbotene_pforten = {
             multiplier:
-                Number(html.find('input[name="verbotene_pforten_toggle"]:checked')[0]?.value) || 4,
+                Number(
+                    html.find(
+                        'input[name="item.system.manoever.verbotene_pforten_toggle"]:checked',
+                    )[0]?.value,
+                ) || 4,
             activated: html.find('#verbotene_pforten')[0]?.checked || false,
         }
         manoever.set_energy_cost.value =
-            Number(html.find('input[name="energyOverride"]')[0]?.value) || 0
+            Number(html.find('input[name="item.system.manoever.energyOverride"]')[0]?.value) || 0
+
+        console.log('manoever', manoever.set_energy_cost.value)
+        // Get values from the HTML elements
 
         manoever.mod.selected = html.find(`#modifikator-${this.dialogId}`)[0]?.value || false // Modifikator
         manoever.rllm.selected = html.find(`#rollMode-${this.dialogId}`)[0]?.value || false // RollMode
@@ -445,6 +454,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         console.log('mod_energy', mod_energy)
         // Ensure mod_energy is never less than 0
         mod_energy = Math.max(0, mod_energy)
+        console.log('mod_energy', manoever.set_energy_cost?.value)
         if (manoever.set_energy_cost?.value) {
             mod_energy = manoever.set_energy_cost.value
         }
