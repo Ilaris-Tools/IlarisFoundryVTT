@@ -396,7 +396,8 @@ export class AngriffDialog extends CombatDialog {
             this.fumble_val,
             true, // crit_eval
         )
-
+        super._updateSchipsStern(html)
+        this.updateModifierDisplay(html)
         await this.handleTargetSelection(rollResult, 'melee')
     }
 
@@ -566,6 +567,8 @@ export class AngriffDialog extends CombatDialog {
         // Clean up the stored rolls
         this.lastDefenseRoll = null
         this.attackRoll = null
+        super._updateSchipsStern(html)
+        this.updateModifierDisplay(html)
     }
 
     async _schadenKlick(html) {

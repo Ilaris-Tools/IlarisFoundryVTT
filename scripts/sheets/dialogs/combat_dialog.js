@@ -154,33 +154,44 @@ export class CombatDialog extends Dialog {
         this.render(true)
     }
 
+    _updateSchipsStern(html) {
+        const schipsOption =
+            Number(html.find(`input[name="schips-${this.dialogId}"]:checked`)[0]?.value) || 0
+        if (schipsOption !== 0 && this.actor.system.schips.schips_stern > 0) {
+            this.actor.update({
+                'system.schips.schips_stern': this.actor.system.schips.schips_stern - 1,
+            })
+        }
+    }
+
     getDiceFormula(html, xd20_choice) {
         let schipsOption =
             Number(html.find(`input[name="schips-${this.dialogId}"]:checked`)[0]?.value) || 0
         let text = ''
-        let diceFormula = xd20_choice ?? '1d20'
+        let diceFormula = `${xd20_choice}d20${xd20_choice == 1 ? '' : 'dl1dh1'}`
         if (schipsOption == 0) {
-            return diceFormula
+            return `${xd20_choice}d20${xd20_choice == 1 ? '' : 'dl1dh1'}`
         }
         if (this.actor.system.schips.schips_stern == 0) {
             this.text_at = text.concat(`Keine Schips\n`)
             this.text_vt = text.concat(`Keine Schips\n`)
-            return diceFormula
+            return `${xd20_choice}d20${xd20_choice == 1 ? '' : 'dl1dh1'}`
         }
 
-        this.actor.update({
-            'system.schips.schips_stern': this.actor.system.schips.schips_stern - 1,
-        })
         if (schipsOption == 1) {
             this.text_at = text.concat(`Schips ohne Eigenheit\n`)
             this.text_vt = text.concat(`Schips ohne Eigenheit\n`)
-            diceFormula = `${2}d20dl${1}`
+            diceFormula = `${xd20_choice + 1}d20${xd20_choice == 1 ? '' : 'dh1'}${
+                xd20_choice == 1 ? 'dl1' : 'dl2'
+            }`
         }
 
         if (schipsOption == 2) {
             this.text_at = text.concat(`Schips mit Eigenschaft\n`)
             this.text_vt = text.concat(`Schips mit Eigenschaft\n`)
-            diceFormula = `${3}d20dl${2}`
+            diceFormula = `${xd20_choice + 2}d20${xd20_choice == 1 ? '' : 'dh1'}${
+                xd20_choice == 1 ? 'dl2' : 'dl3'
+            }`
         }
         return diceFormula
     }

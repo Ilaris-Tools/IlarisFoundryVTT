@@ -87,6 +87,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
         )
 
         await this.handleTargetSelection(rollResult, 'ranged')
+        super._updateSchipsStern(html)
     }
 
     async _schadenKlick(html) {

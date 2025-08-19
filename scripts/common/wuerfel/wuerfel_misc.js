@@ -196,6 +196,7 @@ export async function evaluate_roll_with_crit(
 export function calculate_diceschips(html, text, actor, dialogId = '') {
     // let text = "";
     const xd20Name = dialogId ? `xd20-${dialogId}` : 'xd20'
+    console.log(xd20Name)
     const schipsName = dialogId ? `schips-${dialogId}` : 'schips'
 
     let xd20_check = html.find(`input[name='${xd20Name}']`)

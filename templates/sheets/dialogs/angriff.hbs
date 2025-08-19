@@ -5,6 +5,7 @@
     <div class="left-column">
         {{#if (ifEq actor.type "held")}}
             <label>Schips:</label>
+            {{#if actor.system.schips.schips_stern}}
             <label>
                 <input type="radio" name="schips-{{dialogId}}" value="0" {{#if (ifEq checked_schips
                 "0")}}checked{{/if}} /> Kein Schips
@@ -17,6 +18,9 @@
                 <input type="radio" name="schips-{{dialogId}}" value="2" {{#if (ifEq checked_schips
                 "2")}}checked{{/if}} /> Schips mit Eigenheit
             </label>
+            {{else}}
+            <label class="warning">Keine Schips verfügbar!</label>
+            {{/if}}
         {{/if}}
         <div class="flexrow">
             <label>{{get_label "kbak"}}</label>

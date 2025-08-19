@@ -26,6 +26,7 @@ export async function wuerfelwurf(event, actor) {
     let nahkampfmod = systemData.modifikatoren.nahkampfmod
     let pw = 0
     let label = 'Probe'
+    let dialogId = `dialog-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`
     // let groupName_xd20 = "xd20";
     // let choices_xd20 = {
     //     "0": "1W20",
@@ -74,6 +75,7 @@ export async function wuerfelwurf(event, actor) {
             checked_schips: '0',
             rollModes: CONFIG.Dice.rollModes,
             defaultRollMode: game.settings.get('core', 'rollMode'),
+            dialogId: dialogId,
         })
         let d = new Dialog(
             {
@@ -92,6 +94,7 @@ export async function wuerfelwurf(event, actor) {
                                 html,
                                 text,
                                 actor,
+                                dialogId,
                             )
                             let hohequalitaet = 0
                             if (html.find('#hohequalitaet').length > 0) {
@@ -140,7 +143,6 @@ export async function wuerfelwurf(event, actor) {
         for (const [i, tal] of array_talente.entries()) {
             talent_list[i] = tal.name
         }
-        const dialogId = `dialog-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
         const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_profan.hbs', {
             choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: '1',
@@ -173,6 +175,7 @@ export async function wuerfelwurf(event, actor) {
                                 html,
                                 text,
                                 actor,
+                                dialogId,
                             )
                             let talent_specific = 0
                             let talent = ''
@@ -232,7 +235,6 @@ export async function wuerfelwurf(event, actor) {
     } else if (rolltype == 'freie_fertigkeit_diag') {
         label = $(event.currentTarget).data('fertigkeit')
         pw = Number($(event.currentTarget).data('pw')) * 8 - 2
-        const dialogId2 = `dialog-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
         const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_attribut.hbs', {
             choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: '1',
@@ -240,7 +242,7 @@ export async function wuerfelwurf(event, actor) {
             checked_schips: '0',
             rollModes: CONFIG.Dice.rollModes,
             defaultRollMode: game.settings.get('core', 'rollMode'),
-            dialogId: dialogId2,
+            dialogId: dialogId,
         })
         let d = new Dialog(
             {
@@ -259,7 +261,7 @@ export async function wuerfelwurf(event, actor) {
                                 html,
                                 text,
                                 actor,
-                                dialogId2,
+                                dialogId,
                             )
                             let hohequalitaet = 0
                             if (html.find(`#hohequalitaet-${dialogId2}`).length > 0) {
@@ -306,13 +308,12 @@ export async function wuerfelwurf(event, actor) {
     } else if (rolltype == 'simpleformula_diag') {
         label = $(event.currentTarget).data('name')
         let formula = $(event.currentTarget).data('formula')
-        const dialogId3 = `dialog-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`
         const html = await renderTemplate(
             'systems/Ilaris/templates/chat/probendiag_simpleformula.hbs',
             {
                 rollModes: CONFIG.Dice.rollModes,
                 defaultRollMode: game.settings.get('core', 'rollMode'),
-                dialogId: dialogId3,
+                dialogId: dialogId,
             },
         )
         console.log('hier')
@@ -327,18 +328,16 @@ export async function wuerfelwurf(event, actor) {
                         callback: async (html) => {
                             let text = ''
                             let modifikator = 0
-                            if (html.find(`#modifikator-${dialogId3}`).length > 0) {
-                                modifikator = Number(
-                                    html.find(`#modifikator-${dialogId3}`)[0].value,
-                                )
+                            if (html.find(`#modifikator-${dialogId}`).length > 0) {
+                                modifikator = Number(html.find(`#modifikator-${dialogId}`)[0].value)
                                 if (modifikator != 0) {
                                     text = text.concat(`Modifikator: ${modifikator}\n`)
                                     formula = formula + '+' + modifikator
                                 }
                             }
                             let rollmode = ''
-                            if (html.find(`#rollMode-${dialogId3}`).length > 0) {
-                                rollmode = html.find(`#rollMode-${dialogId3}`)[0].value
+                            if (html.find(`#rollMode-${dialogId}`).length > 0) {
+                                rollmode = html.find(`#rollMode-${dialogId}`)[0].value
                             }
                             await roll_crit_message(formula, label, text, speaker, rollmode, false)
                         },
@@ -374,6 +373,7 @@ export async function wuerfelwurf(event, actor) {
             checked_schips: '0',
             rollModes: CONFIG.Dice.rollModes,
             defaultRollMode: game.settings.get('core', 'rollMode'),
+            dialogId: dialogId,
         })
         let d = new Dialog(
             {
@@ -392,6 +392,7 @@ export async function wuerfelwurf(event, actor) {
                                 html,
                                 text,
                                 actor,
+                                dialogId,
                             )
                             let hohequalitaet = 0
                             if (html.find('#hohequalitaet').length > 0) {
