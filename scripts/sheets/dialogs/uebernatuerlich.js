@@ -82,7 +82,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         // NOTE: var names not very descriptive:
         // at_abzuege_mod kommen vom status/gesundheit, at_mod aus ansagen, nahkampfmod?
         let xd20_choice = Number(html.find('input[name="xd20"]:checked')[0]?.value) || 0
-        xd20_choice = xd20_choice == 0 ? '1d20' : '3d20dl1dh1'
+        xd20_choice = xd20_choice == 0 ? 1 : 3
         let diceFormula = this.getDiceFormula(html, xd20_choice)
         await this.manoeverAuswaehlen(html)
         await this.updateManoeverMods() // durch manoever
@@ -134,6 +134,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         if (difficulty) {
             await this.applyEnergyCost(isSuccess, is16OrHigher)
         }
+        super._updateSchipsStern(html)
     }
 
     async _energieAbrechnenKlick(html, isSuccess) {
