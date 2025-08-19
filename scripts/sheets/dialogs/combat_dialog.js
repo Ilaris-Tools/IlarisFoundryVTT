@@ -259,14 +259,34 @@ export class CombatDialog extends Dialog {
                 let buttonsHtml = ''
                 if (mainWeapon) {
                     buttonsHtml += `
-                        <button class="defend-button" data-actor-id="${targetActor.id}" data-weapon-id="${mainWeapon.id}" data-distance="${target.distance}" data-attacker-id="${this.actor.id}" style="margin: 0 5px 5px 0;">
+                        <button class="defend-button" data-actor-id="${
+                            targetActor.id
+                        }" data-weapon-id="${mainWeapon.id}" data-distance="${
+                        target.distance
+                    }" data-attacker-id="${
+                        this.actor.id
+                    }" data-attack-type="${attackType}" data-roll-result='${encodeURIComponent(
+                        JSON.stringify(rollResult, (key, value) =>
+                            typeof value === 'function' ? undefined : value,
+                        ),
+                    )}' style="margin: 0 5px 5px 0;">
                             <i class="fas fa-shield-alt"></i>
                             Verteidigen mit ${mainWeapon.name}
                         </button>`
                 }
                 if (secondaryWeapon) {
                     buttonsHtml += `
-                        <button class="defend-button" data-actor-id="${targetActor.id}" data-weapon-id="${secondaryWeapon.id}" data-distance="${target.distance}" data-attacker-id="${this.actor.id}" style="margin: 0 5px 5px 0;">
+                        <button class="defend-button" data-actor-id="${
+                            targetActor.id
+                        }" data-weapon-id="${secondaryWeapon.id}" data-distance="${
+                        target.distance
+                    }" data-attacker-id="${
+                        this.actor.id
+                    }" data-attack-type="${attackType}" data-roll-result='${encodeURIComponent(
+                        JSON.stringify(rollResult, (key, value) =>
+                            typeof value === 'function' ? undefined : value,
+                        ),
+                    )}' style="margin: 0 5px 5px 0;">
                             <i class="fas fa-shield-alt"></i>
                             Verteidigen mit ${secondaryWeapon.name}
                         </button>`
@@ -302,14 +322,23 @@ export class CombatDialog extends Dialog {
             }
 
             // Add a click handler for the defend buttons
-            Hooks.once('renderChatMessage', (message, html) => {
+            Hooks.on('renderChatMessage', (message, html) => {
                 html.find('.defend-button').click(async function () {
                     const actorId = this.dataset.actorId
                     const weaponId = this.dataset.weaponId
                     const distance = parseInt(this.dataset.distance)
                     const attackerId = this.dataset.attackerId
+                    const attackType = this.dataset.attackType
+                    let rollResult
+                    try {
+                        rollResult = JSON.parse(decodeURIComponent(this.dataset.rollResult))
+                    } catch (e) {
+                        ui.notifications.error('Fehler beim Parsen des Angriffs-Wurfs.')
+                        return
+                    }
                     const actor = game.actors.get(actorId)
                     const attackingActor = game.actors.get(attackerId)
+                    console.log(actor)
                     if (!actor) return
 
                     // Get the specific weapon that was clicked
@@ -335,4 +364,44 @@ export class CombatDialog extends Dialog {
             })
         }
     }
+}
+
+// Register the renderChatMessage hook ONCE at the top level (not inside the class or method)
+if (!window._ilarisDefendButtonHookRegistered) {
+    window._ilarisDefendButtonHookRegistered = true
+    Hooks.on('renderChatMessage', (message, html) => {
+        html.find('.defend-button').click(async function () {
+            const actorId = this.dataset.actorId
+            const weaponId = this.dataset.weaponId
+            const distance = parseInt(this.dataset.distance)
+            const attackerId = this.dataset.attackerId
+            const attackType = this.dataset.attackType
+            let rollResult
+            try {
+                rollResult = JSON.parse(decodeURIComponent(this.dataset.rollResult))
+            } catch (e) {
+                ui.notifications.error('Fehler beim Parsen des Angriffs-Wurfs.')
+                return
+            }
+            const actor = game.actors.get(actorId)
+            const attackingActor = game.actors.get(attackerId)
+            if (!actor) return
+            const weapon = actor.items.get(weaponId)
+            if (!weapon) {
+                ui.notifications.warn('Die gewählte Waffe wurde nicht gefunden.')
+                return
+            }
+            if (attackType === 'ranged') {
+                if (rollResult.roll && typeof rollResult.roll === 'object') {
+                    rollResult.roll._total = 28
+                }
+            }
+            const d = new AngriffDialog(actor, weapon, {
+                isDefenseMode: true,
+                attackingActor: attackingActor,
+                attackRoll: rollResult,
+            })
+            d.render(true)
+        })
+    })
 }
