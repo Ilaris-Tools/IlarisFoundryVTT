@@ -16,7 +16,11 @@
         {{#if ../isWeaponSpaceRequirementActive}}
             <label>{{item.system.gewicht}}</label>
         {{/if}}
-        <label>{{item.system}}</label>
+        <label>
+            {{#if (ifEq item.system.quantity
+        undefined)}}-213{{else}}{{item.system.quantity}}{{/if}}
+            
+            </label>
         <a class="item-edit icon-small" data-itemid="{{item.id}}"><i class="fas fa-edit"></i></a>
         <a class="item-delete icon-small" data-itemid="{{item.id}}"><i class="fas fa-trash"></i></a>
     </div>
