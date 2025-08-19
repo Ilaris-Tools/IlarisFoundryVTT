@@ -234,7 +234,11 @@ export class CombatDialog extends Dialog {
         }
 
         // If we have selected targets and the attack was successful, send them defense prompts
-        if (this.selectedActors && this.selectedActors.length > 0 && rollResult.success) {
+        if (
+            this.selectedActors &&
+            this.selectedActors.length > 0 &&
+            ((rollResult.success && attackType === 'ranged') || attackType === 'melee')
+        ) {
             for (const target of this.selectedActors) {
                 const targetActor = game.actors.get(target.actorId)
                 if (!targetActor) continue
