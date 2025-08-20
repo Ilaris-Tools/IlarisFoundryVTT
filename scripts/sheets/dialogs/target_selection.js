@@ -134,6 +134,17 @@ export class TargetSelectionDialog extends Dialog {
             }),
         )
 
+        // Update Foundry's targeting system to sync with dialog selection
+        try {
+            const targetTokenIds = selectedIds.map((target) => target.tokenId)
+            game.user.updateTokenTargets(targetTokenIds)
+            console.log(
+                `Updated Foundry targets to match dialog selection: ${targetTokenIds.length} targets`,
+            )
+        } catch (error) {
+            console.warn('Could not update Foundry token targets:', error)
+        }
+
         if (onSelectionComplete) {
             onSelectionComplete(selectedIds)
         }
