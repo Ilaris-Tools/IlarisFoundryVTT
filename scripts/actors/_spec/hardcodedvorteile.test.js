@@ -334,8 +334,7 @@ describe('calculateModifiedCost', () => {
         mockItem.type = 'zauber'
         mockItem.system.kosten = 8
         const result = calculateModifiedCost(mockActor, mockItem, true, true, 8)
-        // First reduces by 1/4 of base (8/4 = 2), then by half of base (8/2 = 4)
-        // 8 - 2 - 4 = 2
-        expect(result).toBe(2)
+        // First reduces by 1/4 of base (8/4 = 2), then by half ((8-2) / 2 = 3)
+        expect(result).toBe(3)
     })
 })

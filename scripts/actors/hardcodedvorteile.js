@@ -345,7 +345,7 @@ export function calculateModifiedCost(actor, item, isSuccess, is16OrHigher, curr
     ) {
         cost = 0
     }
-    // If success with 16 or higher and has Mühelose Magie, cost is reduced by half of base cost
+    // If success with 16 or higher and has Mühelose Magie, cost is reduced by half of cost
     else if (
         isSuccess &&
         is16OrHigher &&
@@ -353,7 +353,7 @@ export function calculateModifiedCost(actor, item, isSuccess, is16OrHigher, curr
         item.type == 'zauber' &&
         actor.vorteil.magie.some((v) => v.name == 'Mühelose Magie')
     ) {
-        cost = Math.max(0, cost - Math.ceil(baseKosten / 2))
+        cost = Math.max(0, Math.ceil(cost / 2))
     }
 
     return cost
