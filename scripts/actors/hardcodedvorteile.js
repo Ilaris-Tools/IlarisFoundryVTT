@@ -329,7 +329,7 @@ export function calculateModifiedCost(actor, item, isSuccess, is16OrHigher, curr
             ? actor.vorteil.allgemein.some((v) => v.name.includes('Durro-Dun II')) ||
               actor.vorteil.magie.some((v) => v.name.includes('Durro-Dun II')) ||
               actor.vorteil.zaubertraditionen.some((v) => v.name.includes('Durro-Dun II'))
-            : selectedStil?.name === 'Durro-Dun' && selectedStil.stufe >= 2
+            : selectedStil?.name.includes('Durro') && selectedStil.stufe >= 2
 
     if (hasDurroDunII) {
         cost = Math.max(0, cost - Math.ceil(baseKosten / 4))
