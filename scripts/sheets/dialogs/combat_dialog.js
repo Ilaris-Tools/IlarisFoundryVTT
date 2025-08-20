@@ -1,6 +1,61 @@
 import { AngriffDialog } from './angriff.js'
 
 export class CombatDialog extends Dialog {
+    constructor(dialogData, options) {
+        super(dialogData, options)
+    }
+
+    /**
+     * Initialize selectedActors from Foundry's game.user.targets
+     * This should be called after actor and item are set
+     */
+    _initializeSelectedActorsFromTargets() {
+        if (!this.selectedActors && game.user.targets && game.user.targets.size > 0) {
+            this.selectedActors = []
+
+            for (const token of game.user.targets) {
+                // Calculate distance from the acting token to the target token
+                let distance = 'Unbekannt'
+
+                // Try to get distance from token document
+                const actorTokens = this.actor?.getActiveTokens()
+                if (actorTokens && actorTokens.length > 0 && token) {
+                    const actorToken = actorTokens[0]
+                    try {
+                        const dx = Math.abs(actorToken.x - token.x)
+                        const dy = Math.abs(actorToken.y - token.y)
+                        const gridDistance = Math.max(dx, dy) / canvas.grid.size
+                        distance = `${Math.round(gridDistance)}`
+                    } catch (error) {
+                        console.warn('Could not calculate distance to target:', error)
+                        distance = 'Unbekannt'
+                    }
+                } else if (this.actor?.token && token) {
+                    // Fallback to actor.token if available
+                    try {
+                        const dx = Math.abs(this.actor.token.x - token.x)
+                        const dy = Math.abs(this.actor.token.y - token.y)
+                        const gridDistance = Math.max(dx, dy) / canvas.grid.size
+                        distance = `${Math.round(gridDistance)}`
+                    } catch (error) {
+                        console.warn('Could not calculate distance to target:', error)
+                        distance = 'Unbekannt'
+                    }
+                }
+
+                this.selectedActors.push({
+                    actorId: token.actor?.id,
+                    name: token.actor?.name || token.name,
+                    distance: distance,
+                })
+            }
+
+            console.log(
+                `Auto-populated ${this.selectedActors.length} targets from Foundry selection`,
+            )
+        }
+    }
+
     async getData() {
         await this.item.setManoevers()
         // damit wird das template gefüttert

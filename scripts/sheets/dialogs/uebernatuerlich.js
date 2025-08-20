@@ -21,6 +21,10 @@ export class UebernatuerlichDialog extends CombatDialog {
         this.is16OrHigher = false
         this.item = item
         this.actor = actor
+
+        // Initialize selected actors from Foundry targets after actor/item are set
+        this._initializeSelectedActorsFromTargets()
+
         console.log('actor', this.actor)
         this.speaker = ChatMessage.getSpeaker({ actor: this.actor })
         this.rollmode = game.settings.get('core', 'rollMode') // public, private....
