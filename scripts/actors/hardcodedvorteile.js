@@ -319,9 +319,16 @@ export function getUebernatuerlicheStile(actor) {
  * @param {number} currentCost - The current cost before modifications
  * @returns {number} The final modified cost (never below 0)
  */
-export function calculateModifiedCost(actor, item, isSuccess, is16OrHigher, currentCost) {
+export function calculateModifiedCost(
+    actor,
+    item,
+    isSuccess,
+    is16OrHigher,
+    currentCost,
+    energyOverride = 0,
+) {
     let cost = currentCost
-    const baseKosten = sanitizeEnergyCost(item.system.kosten)
+    const baseKosten = energyOverride > 0 ? energyOverride : sanitizeEnergyCost(item.system.kosten)
 
     const selectedStil = getSelectedStil(actor, 'uebernatuerlich')
     const hasDurroDunII =

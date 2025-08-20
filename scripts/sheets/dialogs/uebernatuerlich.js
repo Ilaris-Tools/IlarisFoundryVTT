@@ -215,7 +215,14 @@ export class UebernatuerlichDialog extends CombatDialog {
             : Math.ceil(sanitizeEnergyCost(this.item.system.kosten) / costModifier)
 
         // Apply all cost modifications from advantages and styles
-        cost = hardcoded.calculateModifiedCost(this.actor, this.item, isSuccess, is16OrHigher, cost)
+        cost = hardcoded.calculateModifiedCost(
+            this.actor,
+            this.item,
+            isSuccess,
+            is16OrHigher,
+            cost,
+            this.energy_override,
+        )
 
         // Update resources and apply wounds if using Verbotene Pforten
         const updates = {
@@ -307,6 +314,10 @@ export class UebernatuerlichDialog extends CombatDialog {
         let mod_vt = 0
         let mod_dm = 0
         let mod_energy = sanitizeEnergyCost(this.item.system.kosten)
+        if (manoever.set_energy_cost?.value) {
+            mod_energy = manoever.set_energy_cost.value
+            this.energy_override = manoever.set_energy_cost.value
+        }
         let text_at = ''
         let text_vt = ''
         let text_dm = ''
@@ -454,10 +465,6 @@ export class UebernatuerlichDialog extends CombatDialog {
         console.log('mod_energy', mod_energy)
         // Ensure mod_energy is never less than 0
         mod_energy = Math.max(0, mod_energy)
-        console.log('mod_energy', manoever.set_energy_cost?.value)
-        if (manoever.set_energy_cost?.value) {
-            mod_energy = manoever.set_energy_cost.value
-        }
         this.mod_at = mod_at
         this.mod_vt = mod_vt
         this.mod_dm = mod_dm
