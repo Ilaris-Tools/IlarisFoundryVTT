@@ -254,25 +254,36 @@ export class CombatDialog extends Dialog {
                 const targetActor = game.actors.get(target.actorId)
                 if (!targetActor) continue
 
-                // Find main and secondary weapons
-                const mainWeapon = targetActor.items.find(
-                    (item) => item.type === 'nahkampfwaffe' && item.system.hauptwaffe === true,
-                )
+                let weapons = []
 
-                const secondaryWeapon = targetActor.items.find(
-                    (item) =>
-                        item.type === 'nahkampfwaffe' &&
-                        item.system.nebenwaffe === true &&
-                        (!mainWeapon || item.id !== mainWeapon.id), // Don't include if it's the same as main weapon
-                )
+                // Check if this is a creature (has angriffe) or a regular actor (has nahkampfwaffen)
+                if (targetActor.type === 'kreatur' && targetActor.angriffe) {
+                    // For creatures, use all their angriffe as weapons
+                    weapons = targetActor.angriffe
+                } else {
+                    // For regular actors, find main and secondary weapons
+                    const mainWeapon = targetActor.items.find(
+                        (item) => item.type === 'nahkampfwaffe' && item.system.hauptwaffe === true,
+                    )
+
+                    const secondaryWeapon = targetActor.items.find(
+                        (item) =>
+                            item.type === 'nahkampfwaffe' &&
+                            item.system.nebenwaffe === true &&
+                            (!mainWeapon || item.id !== mainWeapon.id), // Don't include if it's the same as main weapon
+                    )
+
+                    if (mainWeapon) weapons.push(mainWeapon)
+                    if (secondaryWeapon) weapons.push(secondaryWeapon)
+                }
 
                 // Create defense buttons HTML
                 let buttonsHtml = ''
-                if (mainWeapon) {
+                for (const weapon of weapons) {
                     buttonsHtml += `
                         <button class="defend-button" data-actor-id="${
                             targetActor.id
-                        }" data-weapon-id="${mainWeapon.id}" data-distance="${
+                        }" data-weapon-id="${weapon.id}" data-distance="${
                         target.distance
                     }" data-attacker-id="${
                         this.actor.id
@@ -282,24 +293,7 @@ export class CombatDialog extends Dialog {
                         ),
                     )}' style="margin: 0 5px 5px 0;">
                             <i class="fas fa-shield-alt"></i>
-                            Verteidigen mit ${mainWeapon.name}
-                        </button>`
-                }
-                if (secondaryWeapon) {
-                    buttonsHtml += `
-                        <button class="defend-button" data-actor-id="${
-                            targetActor.id
-                        }" data-weapon-id="${secondaryWeapon.id}" data-distance="${
-                        target.distance
-                    }" data-attacker-id="${
-                        this.actor.id
-                    }" data-attack-type="${attackType}" data-roll-result='${encodeURIComponent(
-                        JSON.stringify(rollResult, (key, value) =>
-                            typeof value === 'function' ? undefined : value,
-                        ),
-                    )}' style="margin: 0 5px 5px 0;">
-                            <i class="fas fa-shield-alt"></i>
-                            Verteidigen mit ${secondaryWeapon.name}
+                            Verteidigen mit ${weapon.name}
                         </button>`
                 }
 
@@ -347,13 +341,21 @@ export class CombatDialog extends Dialog {
                         ui.notifications.error('Fehler beim Parsen des Angriffs-Wurfs.')
                         return
                     }
+
                     const actor = game.actors.get(actorId)
                     const attackingActor = game.actors.get(attackerId)
-                    console.log(actor)
                     if (!actor) return
 
                     // Get the specific weapon that was clicked
-                    const weapon = actor.items.get(weaponId)
+                    let weapon
+                    if (actor.type === 'kreatur' && actor.angriffe) {
+                        // For creatures, find the weapon in angriffe array
+                        weapon = actor.angriffe.find((angriff) => angriff.id === weaponId)
+                    } else {
+                        // For regular actors, find the weapon in items
+                        weapon = actor.items.get(weaponId)
+                    }
+
                     if (!weapon) {
                         ui.notifications.warn('Die gewählte Waffe wurde nicht gefunden.')
                         return
