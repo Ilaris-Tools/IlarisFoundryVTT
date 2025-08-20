@@ -277,12 +277,12 @@ describe('calculateModifiedCost', () => {
 
     it('should reduce cost by 1/4 for Durro-Dun style level 2', () => {
         mockActor.misc.uebernatuerliche_stile_list = {
-            'Durro-Dun': {
-                name: 'Durro-Dun',
+            'Tradition der Durro-Dun': {
+                name: 'Tradition der Durro-Dun',
                 stufe: 2,
             },
         }
-        mockActor.system.misc.selected_uebernatuerlicher_stil = 'Durro-Dun'
+        mockActor.system.misc.selected_uebernatuerlicher_stil = 'Tradition der Durro-Dun'
         const result = calculateModifiedCost(mockActor, mockItem, true, false, 4)
         expect(result).toBe(3) // 4 - ceil(4/4)
     })
@@ -322,14 +322,14 @@ describe('calculateModifiedCost', () => {
         expect(result).toBe(0)
     })
 
-    it('should apply Durro-Dun reduction before other advantages', () => {
+    it('should apply Tradition der Durro-Dun reduction before other advantages', () => {
         mockActor.misc.uebernatuerliche_stile_list = {
-            'Durro-Dun': {
-                name: 'Durro-Dun',
+            'Tradition der Durro-Dun': {
+                name: 'Tradition der Durro-Dun',
                 stufe: 2,
             },
         }
-        mockActor.system.misc.selected_uebernatuerlicher_stil = 'Durro-Dun'
+        mockActor.system.misc.selected_uebernatuerlicher_stil = 'Tradition der Durro-Dun'
         mockActor.vorteil.magie.push({ name: 'Mühelose Magie' })
         mockItem.type = 'zauber'
         mockItem.system.kosten = 8
