@@ -380,56 +380,6 @@ export class CombatDialog extends Dialog {
                 }
                 await ChatMessage.create(chatData)
             }
-
-            // Add a click handler for the defend buttons
-            Hooks.on('renderChatMessage', (message, html) => {
-                html.find('.defend-button').click(async function () {
-                    const actorId = this.dataset.actorId
-                    const weaponId = this.dataset.weaponId
-                    const distance = parseInt(this.dataset.distance)
-                    const attackerId = this.dataset.attackerId
-                    const attackType = this.dataset.attackType
-                    let rollResult
-                    try {
-                        rollResult = JSON.parse(decodeURIComponent(this.dataset.rollResult))
-                    } catch (e) {
-                        ui.notifications.error('Fehler beim Parsen des Angriffs-Wurfs.')
-                        return
-                    }
-
-                    const actor = game.actors.get(actorId)
-                    const attackingActor = game.actors.get(attackerId)
-                    if (!actor) return
-
-                    // Get the specific weapon that was clicked
-                    let weapon
-                    if (actor.type === 'kreatur' && actor.angriffe) {
-                        // For creatures, find the weapon in angriffe array
-                        weapon = actor.angriffe.find((angriff) => angriff.id === weaponId)
-                    } else {
-                        // For regular actors, find the weapon in items
-                        weapon = actor.items.get(weaponId)
-                    }
-
-                    if (!weapon) {
-                        ui.notifications.warn('Die gewählte Waffe wurde nicht gefunden.')
-                        return
-                    }
-
-                    // For ranged attacks, override the roll total to 28
-                    if (attackType === 'ranged') {
-                        rollResult.roll._total = 28
-                    }
-
-                    // Create and render defense dialog with defense mode options and attack roll
-                    const d = new AngriffDialog(actor, weapon, {
-                        isDefenseMode: true,
-                        attackingActor: attackingActor,
-                        attackRoll: rollResult, // Pass the attack roll to the defense dialog
-                    })
-                    d.render(true)
-                })
-            })
         }
     }
 }
@@ -454,7 +404,17 @@ if (!window._ilarisDefendButtonHookRegistered) {
             const actor = game.actors.get(actorId)
             const attackingActor = game.actors.get(attackerId)
             if (!actor) return
-            const weapon = actor.items.get(weaponId)
+
+            // Get the specific weapon that was clicked
+            let weapon
+            if (actor.type === 'kreatur' && actor.angriffe) {
+                // For creatures, find the weapon in angriffe array
+                weapon = actor.angriffe.find((angriff) => angriff.id === weaponId)
+            } else {
+                // For regular actors, find the weapon in items
+                weapon = actor.items.get(weaponId)
+            }
+
             if (!weapon) {
                 ui.notifications.warn('Die gewählte Waffe wurde nicht gefunden.')
                 return
