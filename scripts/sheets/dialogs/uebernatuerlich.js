@@ -100,7 +100,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             )
         }
 
-        let label = `${this.item.name} (Gesamt Kosten: ${this.mod_energy} Energie (dies sind nicht die Endkosten))`
+        let label = `${this.item.name} (Gesamt Kosten: ${this.mod_energy} Energie (das sind noch nicht die endgültigen Kosten des Zaubers))`
         let formula = `${diceFormula} ${signed(this.item.system.pw)} \
             ${signed(this.at_abzuege_mod)} \
             ${signed(this.mod_at)}`
