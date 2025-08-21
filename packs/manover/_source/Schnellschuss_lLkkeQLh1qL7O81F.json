@@ -11,6 +11,22 @@
     "input": {
       "label": "",
       "field": "NUMBER"
+    },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      },
+      "1": {
+        "type": "LOADING_TIME",
+        "value": -0.5,
+        "operator": "MULTIPLY",
+        "target": "",
+        "affectedByInput": true
+      }
     }
   },
   "effects": [],

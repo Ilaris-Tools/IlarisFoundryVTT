@@ -252,4 +252,22 @@ function registerHandlebarsHelpers() {
             return `<span style="${color}">${match}</span>`
         })
     })
+
+    /**
+     * Get the correct probe display for a maneuver, accounting for special cases like Ruhige Hand
+     * @param {Object} manoever - The maneuver object
+     * @param {Object} item - The weapon item
+     * @returns {string} The correct probe text to display
+     */
+    Handlebars.registerHelper('getManoeverProbe', function (manoever, item) {
+        let probeText = manoever.system.probe
+
+        // Special case for "Zielen" with "Ruhige Hand"
+        if (manoever.name === 'Zielen' && item?.system?.manoever?.fm_zlen?.ruhige_hand) {
+            // Replace +2 with +4 for Ruhige Hand
+            probeText = probeText.replace(/FK \+2/, 'FK +4')
+        }
+
+        return probeText
+    })
 }
