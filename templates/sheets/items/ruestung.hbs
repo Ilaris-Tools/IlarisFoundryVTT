@@ -73,53 +73,7 @@
                 />
             </div>
             <h5>Gesundheit</h5>
-            <div class="flexrow">
-                <label>Härte</label>
-                <input
-                    name="system.haerte"
-                    value="{{item.system.haerte}}"
-                    type="text"
-                    data-dtype="Number"
-                />
-                <label>Beschädigung</label>
-                <input
-                    name="system.beschaedigung"
-                    value="{{item.system.beschaedigung}}"
-                    type="text"
-                    data-dtype="Number"
-                />
-            </div>
-            <label>Beschreibung</label>
-            <textarea rows="6" name="system.text">{{item.system.text}}</textarea>
-            <div class="flexrow">
-                <label class="flex-fest-var" style="flex-basis: 100px">
-                    <b>{{get_label 'gewicht'}}:</b>
-                </label>
-                <input
-                    name="system.gewicht"
-                    value="{{item.system.gewicht}}"
-                    type="text"
-                    data-dtype="Number"
-                />
-            </div>
-            <div class="flexrow">
-                <label class="flex-fest-var" style="flex-basis: 100px"><b>Preis:</b></label>
-                <input
-                    name="system.preis"
-                    value="{{item.system.preis}}"
-                    type="text"
-                    data-dtype="Number"
-                />
-                <label class="flex-fest-var" style="flex-basis: 100px"><b>ST</b></label>
-            </div>
-            {{#if hasOwner}}
-            <label class="flex-fest-var" style="flex-basis: 100px"><b>Aufbewahrungsort:</b></label>
-            <select name="system.aufbewahrungs_ort">
-                {{#select item.system.aufbewahrungs_ort}} {{#each speicherplatz_list as |ort|}}
-                <option value="{{ort}}">{{ort}}</option>
-                {{/each}} {{/select}}
-            </select>
-            {{/if}}
+            {{> systems/Ilaris/templates/sheets/items/base_item_layout.hbs}}
         </div>
     </div>
 </form>

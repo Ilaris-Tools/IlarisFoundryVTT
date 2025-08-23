@@ -120,43 +120,61 @@ export class CombatDialog extends Dialog {
         /* aus gesundheit und furcht wird at- und vt_abzuege_mod
         berechnet.
         */
+        // TODO: das ignorieren von Wunden ist nicht so gut gelöst,
+        // da der Modifier wie hoch der Wundabzug ist einfach auf 0 gesetzt wird
+        // deshalb wird hier der Modifier noch neu berechnet damit man den Vorteil von Kalter Wut zeigen kann
         this.at_abzuege_mod = 0
 
-        if (this.item.actor.system.gesundheit.wundabzuege < 0 && this.item.system.manoever.kwut) {
-            this.text_at = this.text_at.concat(`(Kalte Wut)\n`)
-            this.at_abzuege_mod = this.item.actor.system.abgeleitete.furchtabzuege
-        } else {
-            this.at_abzuege_mod = this.item.actor.system.abgeleitete.globalermod
+        if (
+            this.actor.system.gesundheit.wundenignorieren &&
+            this.actor.system.gesundheit.wunden > 2
+        ) {
+            const wundabzuege = (this.actor.system.gesundheit.wunden - 2) * 2
+            this.text_at = this.text_at.concat(
+                `Bonus durch Kalte Wut oder ähnliches: +${wundabzuege} (im Globalenmod verrechnet)\n`,
+            )
+        }
+        this.at_abzuege_mod = this.actor.system.abgeleitete.globalermod
+    }
+
+    _updateSchipsStern(html) {
+        const schipsOption =
+            Number(html.find(`input[name="schips-${this.dialogId}"]:checked`)[0]?.value) || 0
+        if (schipsOption !== 0 && this.actor.system.schips.schips_stern > 0) {
+            this.actor.update({
+                'system.schips.schips_stern': this.actor.system.schips.schips_stern - 1,
+            })
         }
     }
 
-    getDiceFormula(html, xd20_choice) {
+    getDiceFormula(html, xd20_choice = 1) {
         let schipsOption =
             Number(html.find(`input[name="schips-${this.dialogId}"]:checked`)[0]?.value) || 0
         let text = ''
-        let diceFormula = xd20_choice ?? '1d20'
+        let diceFormula = `${xd20_choice}d20${xd20_choice == 1 ? '' : 'dl1dh1'}`
         if (schipsOption == 0) {
-            return diceFormula
+            return `${xd20_choice}d20${xd20_choice == 1 ? '' : 'dl1dh1'}`
         }
         if (this.actor.system.schips.schips_stern == 0) {
             this.text_at = text.concat(`Keine Schips\n`)
             this.text_vt = text.concat(`Keine Schips\n`)
-            return diceFormula
+            return `${xd20_choice}d20${xd20_choice == 1 ? '' : 'dl1dh1'}`
         }
 
-        this.actor.update({
-            'system.schips.schips_stern': this.actor.system.schips.schips_stern - 1,
-        })
         if (schipsOption == 1) {
             this.text_at = text.concat(`Schips ohne Eigenheit\n`)
             this.text_vt = text.concat(`Schips ohne Eigenheit\n`)
-            diceFormula = `${2}d20dl${1}`
+            diceFormula = `${xd20_choice + 1}d20${xd20_choice == 1 ? '' : 'dh1'}${
+                xd20_choice == 1 ? 'dl1' : 'dl2'
+            }`
         }
 
         if (schipsOption == 2) {
             this.text_at = text.concat(`Schips mit Eigenschaft\n`)
             this.text_vt = text.concat(`Schips mit Eigenschaft\n`)
-            diceFormula = `${3}d20dl${2}`
+            diceFormula = `${xd20_choice + 2}d20${xd20_choice == 1 ? '' : 'dh1'}${
+                xd20_choice == 1 ? 'dl2' : 'dl3'
+            }`
         }
         return diceFormula
     }

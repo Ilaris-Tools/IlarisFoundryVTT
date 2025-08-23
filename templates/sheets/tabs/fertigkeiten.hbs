@@ -95,7 +95,10 @@
         {{#if actor.profan.talente_unsorted}}
         <hr />
         <hr />
-        <label><b>Talente ohne passende Fertigkeit:</b>&nbsp; | &nbsp;</label>
+        <label>
+            <b>Talente ohne passende Fertigkeit:</b>
+            &nbsp; | &nbsp;
+        </label>
         {{#each actor.profan.talente_unsorted as |unsortal|}}
         <a class="item-edit" data-itemclass="talent" data-itemid="{{unsortal.id}}">
             {{unsortal.name}}

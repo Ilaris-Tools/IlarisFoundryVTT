@@ -56,6 +56,16 @@ export function processModification(
     }
     value = modification.affectedByInput ? number * value : value
 
+    // Special case for "Zielen" with "Ruhige Hand"
+    let isZielenMitRuhigeHand = false
+    if (manoeverName === 'Zielen' && rollValues.context) {
+        const ruhigeHand = rollValues.context.item?.system?.manoever?.fm_zlen?.ruhige_hand
+        if (ruhigeHand && modification.type === 'ATTACK') {
+            value = value * 2 // Double the bonus with Ruhige Hand
+            isZielenMitRuhigeHand = true
+        }
+    }
+
     let text
     switch (modification.operator) {
         case 'DIVIDE':
@@ -69,7 +79,7 @@ export function processModification(
             }: ${signed(value)} * \n`
             break
         case 'ADD':
-            text = `${manoeverName}${
+            text = `${manoeverName}${isZielenMitRuhigeHand ? ' (Ruhige Hand)' : ''}${
                 trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''
             }: ${signed(value)}\n`
             break
@@ -147,17 +157,17 @@ export function processModification(
             if (modification.operator === 'MULTIPLY') {
                 result = originalRessourceCost * value
                 if (value < 1) {
-                    result = result * -1
+                    result = Math.ceil(result) * -1
                 } else {
-                    result = result - originalRessourceCost
+                    result = Math.ceil(result) - originalRessourceCost
                 }
                 rollValues.mod_energy = rollValues.mod_energy + result
             } else if (modification.operator === 'DIVIDE') {
                 result = originalRessourceCost / value
                 if (value < 1) {
-                    result = result - originalRessourceCost
+                    result = Math.ceil(result) - originalRessourceCost
                 } else {
-                    result = result * -1
+                    result = Math.ceil(result) * -1
                 }
                 rollValues.mod_energy = rollValues.mod_energy + result
             } else {

@@ -224,17 +224,23 @@
     <h2>Vorteile</h2>
     {{#if actor.vorteil.kampf}}
     <div>
-        <label><b>Kampfvorteile:</b>&nbsp; | &nbsp;</label>
+        <label>
+            <b>Kampfvorteile:</b>
+            &nbsp; | &nbsp;
+        </label>
         {{#each actor.vorteil.kampf}}
-        <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
+        <a class="item-edit" data-itemid="{{this.id}}">{{this.name}}</a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
     </div>
     {{/if}} {{#if actor.vorteil.kampfstil}}
     <div>
-        <label><b>Kampfstile:</b>&nbsp; | &nbsp;</label>
+        <label>
+            <b>Kampfstile:</b>
+            &nbsp; | &nbsp;
+        </label>
         {{#each actor.vorteil.kampfstil}}
-        <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}} </a>
+        <a class="item-edit" data-itemid="{{this.id}}">{{this.name}}</a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
     </div>

@@ -5,8 +5,25 @@
 </div>
 {{#if (ifEq actor.type "held")}}
 <div>
-    <label>Schips:</label>
-    <label>{{radioBoxes "schips" choices_schips checked=checked_schips}}</label>
+    {{#if (ifEq actor.type "held")}}
+        <label>Schips:</label>
+        {{#if actor.system.schips.schips_stern}}
+        <label>
+            <input type="radio" name="schips-{{dialogId}}" value="0" {{#if (ifEq checked_schips
+            "0")}}checked{{/if}} /> Kein Schips
+        </label>
+        <label>
+            <input type="radio" name="schips-{{dialogId}}" value="1" {{#if (ifEq checked_schips
+            "1")}}checked{{/if}} /> Schips ohne Eigenheit
+        </label>
+        <label>
+            <input type="radio" name="schips-{{dialogId}}" value="2" {{#if (ifEq checked_schips
+            "2")}}checked{{/if}} /> Schips mit Eigenheit
+        </label>
+        {{else}}
+        <label class="warning">Keine Schips verfügbar!</label>
+        {{/if}}
+    {{/if}}
 </div>
 {{/if}}
 <div class="flexrow">
@@ -49,7 +66,7 @@
 <div class="description">Wähle aus wie viel AsP pro Wunde du erhältst.</div>
 {{/if}} {{#if canSetEnergyCost}}
 <div class="flexrow">
-    <label>Energiekosten (frei wählbar):</label>
+    <label>Basisenergiekosten (frei wählbar):</label>
     <input
         type="number"
         name="item.system.manoever.energyOverride"
@@ -57,7 +74,7 @@
         placeholder="Energie frei setzen"
     />
 </div>
-<div class="description">Mit diesem Feld kannst du die Energiekosten nach Belieben festlegen.</div>
+<div class="description">Mit diesem Feld kannst du die Basisenergiekosten nach Belieben festlegen. Gedacht für den Unitatio (und dadurch ist dieses Feld erst verfügbar), weil der Vorteil eher mäßig gut umsetzbar ist.</div>
 {{/if}}
 <hr />
 
@@ -75,7 +92,7 @@
         <div
             class="maneuver-item {{#if (or manoever.inputValue.value manoever.inputValue.checked)}}has-value{{/if}}"
         >
-            <label>{{manoever.name}} ({{manoever.system.probe}})</label>
+            <label>{{manoever.name}} ({{getManoeverProbe manoever ../item}})</label>
             {{#if (ifEq manoever.inputValue.field "CHECKBOX")}}
                 <input 
                     type="checkbox" 

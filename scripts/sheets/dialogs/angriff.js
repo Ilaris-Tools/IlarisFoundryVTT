@@ -355,6 +355,8 @@ export class AngriffDialog extends CombatDialog {
             true,
             this.fumble_val,
         )
+        super._updateSchipsStern(html)
+        this.updateModifierDisplay(html)
     }
 
     async _verteidigenKlick(html) {
@@ -375,6 +377,8 @@ export class AngriffDialog extends CombatDialog {
             true,
             this.fumble_val,
         )
+        super._updateSchipsStern(html)
+        this.updateModifierDisplay(html)
     }
 
     async _schadenKlick(html) {
@@ -602,12 +606,16 @@ export class AngriffDialog extends CombatDialog {
         */
         this.vt_abzuege_mod = 0
 
-        if (this.item.actor.system.gesundheit.wundabzuege < 0 && this.item.system.manoever.kwut) {
-            this.text_vt = this.text_at.concat(`(Kalte Wut)\n`)
-            this.vt_abzuege_mod = this.item.actor.system.abgeleitete.furchtabzuege
-        } else {
-            this.vt_abzuege_mod = this.item.actor.system.abgeleitete.globalermod
+        if (
+            this.actor.system.gesundheit.wundenignorieren &&
+            this.actor.system.gesundheit.wunden > 2
+        ) {
+            const wundabzuege = (this.actor.system.gesundheit.wunden - 2) * 2
+            this.text_vt = this.text_vt.concat(
+                `Bonus durch Kalte Wut oder ähnliches: +${wundabzuege} (im Globalenmod verrechnet)\n`,
+            )
         }
+        this.vt_abzuege_mod = this.actor.system.abgeleitete.globalermod
         super.updateStatusMods()
     }
 

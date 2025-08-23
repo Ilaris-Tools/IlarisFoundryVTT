@@ -81,6 +81,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
             this.fumble_val,
             12,
         )
+        super._updateSchipsStern(html)
     }
 
     async _schadenKlick(html) {
@@ -271,7 +272,6 @@ export class FernkampfAngriffDialog extends CombatDialog {
         }
 
         // Collect all modifications from all maneuvers
-        let ruhige_hand = manoever.fm_zlen.ruhige_hand
         const allModifications = []
         this.item.manoever.forEach((dynamicManoever) => {
             let check = undefined
@@ -303,12 +303,6 @@ export class FernkampfAngriffDialog extends CombatDialog {
                     trefferZoneInput,
                 })
             })
-
-            // ruhige hand & zielen hardcoded
-            if (manoever.name == 'Zielen' && ruhige_hand) {
-                mod_fk += 2
-                text = text.concat(`${manoever.name} (Ruhige Hand)\n`)
-            }
         })
 
         // Process all modifications in order
