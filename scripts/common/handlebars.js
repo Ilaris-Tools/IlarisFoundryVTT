@@ -240,6 +240,24 @@ function registerHandlebarsHelpers() {
     Handlebars.registerHelper('multMinusOne', function (numb) {
         return -1 * numb
     })
+    
+    Handlebars.registerHelper('range', function(start, end) {
+        let result = [];
+        for (let i = start; i < end; i++) {
+            result.push(i);
+        }
+        return result;
+    })
+    
+    Handlebars.registerHelper('add', function(a, b) {
+        return a + b;
+    })
+
+    Handlebars.registerHelper("getButtonState", (index, wunden, erschoepfung) => {
+        if (index < wunden) return 1;
+        if (index < wunden + erschoepfung) return 2;
+        return 0;
+    })
 
     /**
      * Handlebars helper to colorize probe values, highlighting positive values in green and negative values in red.
