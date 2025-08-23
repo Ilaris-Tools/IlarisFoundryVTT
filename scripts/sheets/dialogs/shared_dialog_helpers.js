@@ -149,17 +149,17 @@ export function processModification(
             if (modification.operator === 'MULTIPLY') {
                 result = originalRessourceCost * value
                 if (value < 1) {
-                    result = result * -1
+                    result = Math.ceil(result) * -1
                 } else {
-                    result = result - originalRessourceCost
+                    result = Math.ceil(result) - originalRessourceCost
                 }
                 rollValues.mod_energy = rollValues.mod_energy + result
             } else if (modification.operator === 'DIVIDE') {
                 result = originalRessourceCost / value
                 if (value < 1) {
-                    result = result - originalRessourceCost
+                    result = Math.ceil(result) - originalRessourceCost
                 } else {
-                    result = result * -1
+                    result = Math.ceil(result) * -1
                 }
                 rollValues.mod_energy = rollValues.mod_energy + result
             } else {

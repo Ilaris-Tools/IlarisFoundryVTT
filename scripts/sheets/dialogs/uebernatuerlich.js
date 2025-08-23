@@ -65,7 +65,9 @@ export class UebernatuerlichDialog extends CombatDialog {
                       ?.name.includes('Borbaradianer')) &&
                 this.item.type === 'zauber')
 
-        const isNonStandardDifficulty = isNaN(parseInt(this.item.system.schwierigkeit))
+        const difficulty = +this.item.system.schwierigkeit
+        console.log('difficulty', difficulty, isNaN(difficulty))
+        const isNonStandardDifficulty = isNaN(difficulty)
 
         return {
             choices_xd20: CONFIG.ILARIS.xd20_choice,
@@ -102,7 +104,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             )
         }
 
-        let label = `${this.item.name} (Gesamt Kosten: ${this.mod_energy} Energie (dies sind nicht die Endkosten))`
+        let label = `${this.item.name} (Gesamt Kosten: ${this.mod_energy} Energie (das sind noch nicht die endgültigen Kosten des Zaubers))`
         let formula = `${diceFormula} ${signed(this.item.system.pw)} \
             ${signed(this.at_abzuege_mod)} \
             ${signed(this.mod_at)}`
@@ -217,7 +219,14 @@ export class UebernatuerlichDialog extends CombatDialog {
             : Math.ceil(sanitizeEnergyCost(this.item.system.kosten) / costModifier)
 
         // Apply all cost modifications from advantages and styles
-        cost = hardcoded.calculateModifiedCost(this.actor, this.item, isSuccess, is16OrHigher, cost)
+        cost = hardcoded.calculateModifiedCost(
+            this.actor,
+            this.item,
+            isSuccess,
+            is16OrHigher,
+            cost,
+            this.energy_override,
+        )
 
         // Update resources and apply wounds if using Verbotene Pforten
         const updates = {
@@ -271,11 +280,18 @@ export class UebernatuerlichDialog extends CombatDialog {
         manoever.blutmagie.value = Number(html.find('#blutmagie')[0]?.value) || 0
         manoever.verbotene_pforten = {
             multiplier:
-                Number(html.find('input[name="verbotene_pforten_toggle"]:checked')[0]?.value) || 4,
+                Number(
+                    html.find(
+                        'input[name="item.system.manoever.verbotene_pforten_toggle"]:checked',
+                    )[0]?.value,
+                ) || 4,
             activated: html.find('#verbotene_pforten')[0]?.checked || false,
         }
         manoever.set_energy_cost.value =
-            Number(html.find('input[name="energyOverride"]')[0]?.value) || 0
+            Number(html.find('input[name="item.system.manoever.energyOverride"]')[0]?.value) || 0
+
+        console.log('manoever', manoever.set_energy_cost.value)
+        // Get values from the HTML elements
 
         manoever.mod.selected = html.find(`#modifikator-${this.dialogId}`)[0]?.value || false // Modifikator
         manoever.rllm.selected = html.find(`#rollMode-${this.dialogId}`)[0]?.value || false // RollMode
@@ -302,6 +318,10 @@ export class UebernatuerlichDialog extends CombatDialog {
         let mod_vt = 0
         let mod_dm = 0
         let mod_energy = sanitizeEnergyCost(this.item.system.kosten)
+        if (manoever.set_energy_cost?.value) {
+            mod_energy = manoever.set_energy_cost.value
+            this.energy_override = manoever.set_energy_cost.value
+        }
         let text_at = ''
         let text_vt = ''
         let text_dm = ''
@@ -449,9 +469,6 @@ export class UebernatuerlichDialog extends CombatDialog {
         console.log('mod_energy', mod_energy)
         // Ensure mod_energy is never less than 0
         mod_energy = Math.max(0, mod_energy)
-        if (manoever.set_energy_cost?.value) {
-            mod_energy = manoever.set_energy_cost.value
-        }
         this.mod_at = mod_at
         this.mod_vt = mod_vt
         this.mod_dm = mod_dm

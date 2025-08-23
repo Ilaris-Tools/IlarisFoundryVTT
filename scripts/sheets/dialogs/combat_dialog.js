@@ -179,14 +179,21 @@ export class CombatDialog extends Dialog {
         /* aus gesundheit und furcht wird at- und vt_abzuege_mod
         berechnet.
         */
+        // TODO: das ignorieren von Wunden ist nicht so gut gelöst,
+        // da der Modifier wie hoch der Wundabzug ist einfach auf 0 gesetzt wird
+        // deshalb wird hier der Modifier noch neu berechnet damit man den Vorteil von Kalter Wut zeigen kann
         this.at_abzuege_mod = 0
 
-        if (this.item.actor.system.gesundheit.wundabzuege < 0 && this.item.system.manoever.kwut) {
-            this.text_at = this.text_at.concat(`(Kalte Wut)\n`)
-            this.at_abzuege_mod = this.item.actor.system.abgeleitete.furchtabzuege
-        } else {
-            this.at_abzuege_mod = this.item.actor.system.abgeleitete.globalermod
+        if (
+            this.actor.system.gesundheit.wundenignorieren &&
+            this.actor.system.gesundheit.wunden > 2
+        ) {
+            const wundabzuege = (this.actor.system.gesundheit.wunden - 2) * 2
+            this.text_at = this.text_at.concat(
+                `Bonus durch Kalte Wut oder ähnliches: +${wundabzuege} (im Globalenmod verrechnet)\n`,
+            )
         }
+        this.at_abzuege_mod = this.actor.system.abgeleitete.globalermod
     }
 
     async _showNearbyActors(html) {

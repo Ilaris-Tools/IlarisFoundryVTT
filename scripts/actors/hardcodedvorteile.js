@@ -319,9 +319,16 @@ export function getUebernatuerlicheStile(actor) {
  * @param {number} currentCost - The current cost before modifications
  * @returns {number} The final modified cost (never below 0)
  */
-export function calculateModifiedCost(actor, item, isSuccess, is16OrHigher, currentCost) {
+export function calculateModifiedCost(
+    actor,
+    item,
+    isSuccess,
+    is16OrHigher,
+    currentCost,
+    energyOverride = 0,
+) {
     let cost = currentCost
-    const baseKosten = sanitizeEnergyCost(item.system.kosten)
+    const baseKosten = energyOverride > 0 ? energyOverride : sanitizeEnergyCost(item.system.kosten)
 
     const selectedStil = getSelectedStil(actor, 'uebernatuerlich')
     const hasDurroDunII =
@@ -329,7 +336,7 @@ export function calculateModifiedCost(actor, item, isSuccess, is16OrHigher, curr
             ? actor.vorteil.allgemein.some((v) => v.name.includes('Durro-Dun II')) ||
               actor.vorteil.magie.some((v) => v.name.includes('Durro-Dun II')) ||
               actor.vorteil.zaubertraditionen.some((v) => v.name.includes('Durro-Dun II'))
-            : selectedStil?.name === 'Durro-Dun' && selectedStil.stufe >= 2
+            : selectedStil?.name.includes('Durro') && selectedStil.stufe >= 2
 
     if (hasDurroDunII) {
         cost = Math.max(0, cost - Math.ceil(baseKosten / 4))
@@ -345,7 +352,7 @@ export function calculateModifiedCost(actor, item, isSuccess, is16OrHigher, curr
     ) {
         cost = 0
     }
-    // If success with 16 or higher and has Mühelose Magie, cost is reduced by half of base cost
+    // If success with 16 or higher and has Mühelose Magie, cost is reduced by half of cost
     else if (
         isSuccess &&
         is16OrHigher &&
@@ -353,7 +360,7 @@ export function calculateModifiedCost(actor, item, isSuccess, is16OrHigher, curr
         item.type == 'zauber' &&
         actor.vorteil.magie.some((v) => v.name == 'Mühelose Magie')
     ) {
-        cost = Math.max(0, cost - Math.ceil(baseKosten / 2))
+        cost = Math.max(0, Math.ceil(cost / 2))
     }
 
     return cost
