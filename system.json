@@ -119,7 +119,7 @@
   },
   "primaryTokenAttribute": "gesundheit.hp",
   "secondaryTokenAttribute": null,
-  "background": "assets/images/background/splash.jpg",
+  "background": "/systems/Ilaris/assets/images/background/splash.jpg",
   "url": "https://gitlab.com/Feorg/ilaris-foundryvtt",
   "manifest": "https://raw.githubusercontent.com/Ilaris-Tools/IlarisFoundryVTT/refs/heads/main/system.json",
   "download": "https://github.com/Ilaris-Tools/IlarisFoundryVTT/archive/refs/heads/main.zip",

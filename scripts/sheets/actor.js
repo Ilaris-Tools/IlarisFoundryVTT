@@ -44,7 +44,7 @@ export class IlarisActorSheet extends ActorSheet {
         const targetId = 'ausklappen-view-'.concat(targetkey)
         var toggleView = document.getElementById(targetId)
         if (toggleView.style.display === 'none') {
-            toggleView.style.display = 'block'
+            toggleView.style.display = 'table-row'
         } else {
             toggleView.style.display = 'none'
         }
