@@ -555,3 +555,169 @@ input[type="number"]::-webkit-inner-spin-button {
   color: #cc4400 !important;
   text-shadow: 0 0 3px rgba(204, 68, 0, 0.5);
 }
+
+.kreatur-sheet input {
+  border: none;
+}
+
+.ilaris .titel-input {
+  font-size: 32px;
+  border: None;
+  color: rgb(83, 0, 0);
+  font-family: var(--font-andada);
+}
+
+input.titel-input {
+  font-size: 32px;
+  color: rgb(83, 0, 0);
+  font-family: var(--font-andada);
+}
+
+.kreatur-sheet .plus-button {
+  color: rgb(54, 37, 37);
+  font-size: 18px;
+}
+
+.attributblock h2 {
+  font-family: var(--font-aniron);
+  font-size: 14px;
+  color: rgb(54, 37, 37); /*rgb(83, 0, 0);*/
+  border: none;
+}
+
+.kreatur-header textarea {
+  border: none;
+  resize: none;
+  font-family: var(--font-crimson);
+}
+
+.statblockreihe {
+  background-color: rgba(247, 68, 37, 0.13);
+  padding: 10px;
+  border-top: solid darkred 2px;
+}
+
+.statblockreihe input {
+  width: 40px;
+  height: 16px;
+  background: rgba(250, 250, 250, 0.2);
+}
+
+/* --------------------------------------- */
+/*  Ilaris Sheet                           */
+/* --------------------------------------- */
+.ilaris {
+  min-width: 360px;
+  min-height: 320px;
+}
+.ilaris form > * {
+  flex: 0;
+}
+.ilaris .form-group.description {
+  flex: 1;
+}
+.ilaris .form-group.description label {
+  height: 24px;
+}
+.ilaris .form-group.description textarea {
+  height: calc(100% - 24px);
+  resize: none;
+}
+
+.validation-icon {
+  font-size: 1.2em;
+  flex: 0;
+  margin-left: 16px;
+}
+
+.maximum-load-exceeded-left,
+.maximum-load-exceeded-middle,
+.maximum-load-exceeded-right {
+  border: red;
+  border-style: solid;
+}
+.maximum-load-exceeded-left {
+  border-width: 3px 0 3px 3px;
+}
+.maximum-load-exceeded-middle {
+  border-width: 3px 0 3px 0;
+}
+.maximum-load-exceeded-right {
+  border-width: 3px 3px 3px 0;
+}
+
+.flexrow {
+  margin: 4px 0;
+  align-items: center;
+}
+
+.flexrow .label {
+  min-width: 150px;
+}
+
+put[type='text']:focus,
+input[type='number']:focus,
+select:focus,
+textarea:focus {
+  border-color: #782e22;
+  box-shadow: 0 0 3px rgba(120, 46, 34, 0.3);
+}
+
+hr {
+  margin: 16px 0;
+  border: 0;
+  border-top: 1px solid #353535;
+}
+
+.system-pack {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #782e22; /* Using the same red color as in manoever.css */
+}
+
+.system-pack input[type='checkbox'] {
+  transform: scale(1.2); /* Make the checkbox slightly bigger too */
+  margin-right: 10px; /* Add some space after the bigger checkbox */
+}
+
+.pack-entry {
+  margin-bottom: 4px;
+}
+
+.pack-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.checkbox.disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.checkbox.disabled input[type='checkbox'] {
+  cursor: not-allowed;
+}
+
+.disabled-reason {
+  font-style: italic;
+  color: #782e22;
+  font-size: 0.9em;
+}
+
+.error-highlight {
+  color: #ff0000;
+  text-decoration: underline wavy #ff0000;
+  cursor: help;
+}
+
+.notes {
+  white-space: pre-line;
+}
