@@ -82,8 +82,9 @@
   text-shadow: 2px 2px 2px rgb(255, 255, 255);
 }
 
-.attribute-number:hover {
-  text-shadow: 0 0 10px var(--color-shadow-primary);
+.rollable:hover {
+  filter: drop-shadow(0 0 5px red) drop-shadow(0 0 10px rgb(255, 60, 0));
+  text-shadow: 0 0 5px red;
 }
 
 .herotabnavigation {
@@ -154,6 +155,7 @@
   padding-top: 1rem;
   text-align: center;
   box-shadow: 8px 0 5px rgba(0, 0, 0, 0.3);
+  text-shadow: 0 0 5px beige;
   margin-left: 0.5rem;
   margin-top: -80px;
   margin-bottom: 20px;
@@ -163,6 +165,7 @@
   border-bottom-right-radius: 200px;
   display: flex;
   flex-direction: column;
+  gap: 10px;
   max-width: 240px;
   min-width: 240px;
   min-height: 600px;

@@ -32,7 +32,6 @@
       </div>
       {{/each}}
     </div>
-    <p> </p>
     <div class="icon-row">
       <div class="icon-overlay-container">
         <img src="/systems/Ilaris/assets/images/Ilaris/ws.svg" title="WS" />
@@ -44,9 +43,7 @@
       </div>
       <div class="icon-overlay-container rollable onhover" data-rolltype="simpleprobe_diag" data-name="Magierresistenz"
         data-pw="{{actor.system.abgeleitete.mr}}">
-        <img src="/systems/Ilaris/assets/images/Ilaris/mr.png" title="MR"
-          onmouseover="this.nextElementSibling.style.textShadow='0 0 5px red';"
-          onmouseout="this.nextElementSibling.style.textShadow='none';" />
+        <img src="/systems/Ilaris/assets/images/Ilaris/mr.png" title="MR" />
         <span class="overlay-label">{{actor.system.abgeleitete.mr}}</span>
       </div>
       <div class="icon-overlay-container">
@@ -61,7 +58,6 @@
         <span class="overlay-label">{{actor.system.abgeleitete.dh}}</span>
       </div>
     </div>
-    <p> </p>
     <div style="font-size: 14px">
       {{#if actor.system.abgeleitete.zauberer}}
       <label class="ausklappen-trigger onhover" data-ausklappentarget="aspzugekauft"><b>AsP:</b></label>
@@ -100,7 +96,6 @@
         <input style="width: 3em" name="system.abgeleitete.kap_zugekauft"
           value="{{actor.system.abgeleitete.kap_zugekauft}}" type="number" data-dtype="Number" />
       </span>
-      <br />
       {{/if}}
     </div>
     <div>
@@ -108,15 +103,23 @@
         data-togglevariable="system.gesundheit.wundenignorieren">
         Wundabzüge
         {{#if actor.system.gesundheit.wundenignorieren}}
-        ignorieren
+        <span style="text-shadow: 0 0 5px red;">ignorieren</span>
         {{else}}
-        nicht ignorieren
+        <span style="text-shadow: 0 0 5px beige;">nicht ignorieren</span>
         {{/if}}
       </a>
     </div>
-    <div class="flexrow">
-      <b><label style="color: black; font-size: 16pt">{{actor.system.abgeleitete.globalermoddisplay}}</label></b>
+
+    <div style="color: black; font-size: 16pt">
+      <label class="ausklappen-trigger onhover" data-ausklappentarget="manuellermod"><b>globaler <br> Modifikator:</b></label>
+        {{actor.system.abgeleitete.globalermod}}</label></b>
+        <span id="ausklappen-view-manuellermod" style="display: none">
+        <label style="color: black; font-size: 12pt">manueller Modifikator: </label>
+      <input style="width: 3em" font-size:"5px" name="system.modifikatoren.manuellermod"
+        value="{{actor.system.modifikatoren.manuellermod}}" type="number" data-dtype="Number" />
+      </span>
     </div>
+
   </div>
 
   <div class="heroattributes">
