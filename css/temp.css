@@ -230,7 +230,7 @@
   display: inline-block;
   width: 24px;
   height: 24px;
-  background-image: url("/systems/Ilaris/assets/images/ilaris/icon_clear.png");
+  background-image: url("/systems/Ilaris/assets/images/ilaris/icon_clear.webp");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -243,7 +243,8 @@
 }
 
 #logo {
-  content: url("/systems/Ilaris/assets/images/ilaris/Ilaris.png")
+  content: url("/systems/Ilaris/assets/images/ilaris/Ilaris.png");
+  filter: drop-shadow(0 0 10px grey) drop-shadow(0 0 20px silver);
 }
 
 .profile-img {
