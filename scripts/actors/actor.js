@@ -383,7 +383,11 @@ export class IlarisActor extends Actor {
         asp += Number(actor.system.abgeleitete.asp_zugekauft) || 0
         asp -= Number(actor.system.abgeleitete.gasp) || 0
         actor.system.abgeleitete.asp = asp
-        actor.system.abgeleitete.asp_stern = Number(actor.system.abgeleitete.asp_stern) || asp
+        actor.system.abgeleitete.asp_stern =
+            actor.system.abgeleitete.asp_stern !== null &&
+            actor.system.abgeleitete.asp_stern !== undefined
+                ? Number(actor.system.abgeleitete.asp_stern)
+                : asp
         // let kap = 0;
         // kap = hardcoded.geweihter(kap, data);
         let kap = hardcoded.geweihter(actor)
@@ -391,7 +395,11 @@ export class IlarisActor extends Actor {
         kap += Number(actor.system.abgeleitete.kap_zugekauft) || 0
         kap -= Number(actor.system.abgeleitete.gkap) || 0
         actor.system.abgeleitete.kap = kap
-        actor.system.abgeleitete.kap_stern = Number(actor.system.abgeleitete.kap_stern) || kap
+        actor.system.abgeleitete.kap_stern =
+            actor.system.abgeleitete.kap_stern !== null &&
+            actor.system.abgeleitete.kap_stern !== undefined
+                ? Number(actor.system.abgeleitete.kap_stern)
+                : kap
     }
 
     async _calculateKampf(actor) {
