@@ -18,13 +18,15 @@
     "lodash": "^4.17.21",
     "nedb": "^1.8.0",
     "prettier": "^2.5.1",
+    "svgo": "^4.0.0",
     "xml2js": "^0.4.23"
   },
   "scripts": {
     "test": "jest",
     "lint": "eslint --fix .",
     "prettier": "prettier --write .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "optimize-svgs": "node scripts/optimize-svgs.js"
   },
   "repository": {
     "type": "git",
