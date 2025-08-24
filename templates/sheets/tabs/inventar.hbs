@@ -1,5 +1,38 @@
 {{log 'inventar' this}}
-{{> systems/Ilaris/templates/sheets/tabs/inventory/finances.hbs}}
+<div class="flexrow">
+    <label>Dukaten</label>
+    <input
+        name="system.geld.dukaten"
+        value="{{actor.system.geld.dukaten}}"
+        type="text"
+        data-dtype="Number"
+    />
+    <label>Silbertaler</label>
+    <input
+        name="system.geld.silbertaler"
+        value="{{actor.system.geld.silbertaler}}"
+        type="text"
+        data-dtype="Number"
+    />
+    <label>Heller</label>
+    <input
+        name="system.geld.heller"
+        value="{{actor.system.geld.heller}}"
+        type="text"
+        data-dtype="Number"
+    />
+    <label>Kreuzer</label>
+    <input
+        name="system.geld.kreuzer"
+        value="{{actor.system.geld.kreuzer}}"
+        type="text"
+        data-dtype="Number"
+    />
+    <button class="clickable" data-clicktype="shorten_money" type="button">
+        zusammenrechnen
+    </button>
+</div>
+
 <br />
 
 <a class="item-create" data-itemclass="gegenstand">
