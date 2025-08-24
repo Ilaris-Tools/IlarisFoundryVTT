@@ -451,9 +451,26 @@ input[name="name"] {
   border-width: 2px;
 }
 
+.regex-check:valid + .validation-icon::before {
+  content: '✔';
+  color: green;
+}
+
+/* Style for valid input */
+.regex-check:valid {
+  border-color: green;
+  border-width: 2px;
+}
+
 .regex-check:invalid + .validation-icon::before {
   content: '✘';
   color: red;
+}
+
+/* Style for invalid input */
+.regex-check:invalid {
+  border-color: red;
+  border-width: 2px;
 }
 
 .multi-select {
@@ -489,4 +506,52 @@ input[type="number"]::-webkit-inner-spin-button {
   appearance: auto !important;
   margin: 0 !important;
   display: inline-block !important;
+}
+
+/* Clickable Summary Sections */
+.clickable-summary {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.clickable-summary:hover {
+  transform: translateY(-1px);
+}
+
+.clickable-summary h4 {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.clickable-summary.angreifen:hover {
+  border-color: #8b0000;
+  box-shadow: 0 0 8px rgba(139, 0, 0, 0.3);
+}
+
+.clickable-summary.angreifen:hover h4 {
+  color: #8b0000 !important;
+  text-shadow: 0 0 3px rgba(139, 0, 0, 0.5);
+}
+
+.clickable-summary.verteidigen:hover {
+  border-color: #006400;
+  box-shadow: 0 0 8px rgba(0, 100, 0, 0.3);
+}
+
+.clickable-summary.verteidigen:hover h4 {
+  color: #006400 !important;
+  text-shadow: 0 0 3px rgba(0, 100, 0, 0.5);
+}
+
+.clickable-summary.schaden:hover {
+  border-color: #cc4400;
+  box-shadow: 0 0 8px rgba(204, 68, 0, 0.3);
+}
+
+.clickable-summary.schaden:hover h4 {
+  color: #cc4400 !important;
+  text-shadow: 0 0 3px rgba(204, 68, 0, 0.5);
 }
