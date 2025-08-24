@@ -81,4 +81,22 @@ kann, prüft `prettier` nur die Formatierung unterstützt dabei aber auch andere
 json, markdown, html und css. Eine konkrete Datei oder Verzeichnis, kann man zum Beispiel mit
 folgenden Befehlen checken oder direkt korrigieren:
 
+### SVG Optimization
+
+Das System enthält ein Skript zur Optimierung von SVG-Dateien, das unnötige Metadaten, Inkscape/Sodipodi-spezifische Attribute und aufgeblähte Inline-Styles entfernt.
+
+**Verwendung:**
+```bash
+npm run optimize-svgs
+```
+
+**Was wird optimiert:**
+- Entfernung von Inkscape/Sodipodi Metadaten
+- Bereinigung unnötiger Namespaces
+- Minimierung von Inline-Styles
+- Entfernung von Kommentaren und ungenutzten Definitionen
+- Komprimierung der SVG-Struktur
+
+Das Skript verarbeitet alle SVG-Dateien im `assets/` Verzeichnis und reduziert typischerweise die Dateigröße um 50-70% ohne Qualitätsverlust.
+
 ### GH Actions (CI/CD)
