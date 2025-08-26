@@ -1,13 +1,13 @@
 export const label = {
     // Attribute
-    ko: 'Konstitution',
-    mu: 'Mut',
-    ge: 'Gewandheit',
-    kk: 'Körperkraft',
-    in: 'Intuition',
-    kl: 'Klugheit',
-    ch: 'Charisma',
-    ff: 'Fingerfertigkeit',
+    KO: 'Konstitution',
+    MU: 'Mut',
+    GE: 'Gewandheit',
+    KK: 'Körperkraft',
+    IN: 'Intuition',
+    KL: 'Klugheit',
+    CH: 'Charisma',
+    FF: 'Fingerfertigkeit',
     // Kampfwerte
     ws: 'Wundschwelle',
     ws_stern: 'Effektive Wundschwelle',
