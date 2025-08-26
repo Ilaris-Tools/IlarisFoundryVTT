@@ -23,10 +23,9 @@
     </div>
     <div class="attribute-grid">
       {{#each actor.system.attribute as |attribut key|}}
-      <div class="attribute-wrapper">
+      <div class="attribute-wrapper rollable onhover" data-rolltype="attribut" data-attribut="{{key}}" title="{{key}}">
         <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/{{key}}.png" />
-        <label class="attribute-number rollable onhover" data-rolltype="attribut" data-attribut="{{key}}"
-          title="{{key}}">
+        <label class="attribute-number">
           {{attribut.pw}}
         </label>
       </div>
