@@ -74,15 +74,14 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  color: black;
+  transform: translate(-50%, -50%);  color: black;
   /* oder eine andere Farbe, je nach Hintergrund */
   font-weight: bold;
   font-size: 22px;
   text-shadow: 2px 2px 2px rgb(255, 255, 255);
 }
 
-.attribute-number:hover {
+.attribute-wrapper:hover .attribute-number {
   text-shadow: 0 0 10px var(--color-shadow-primary);
 }
 
