@@ -17509,7 +17509,7 @@
         "typ": "0",
         "voraussetzungen": "",
         "probe": "AT -4; VT -4",
-        "gegenprobe": "KK"
+        "gegenprobe": "kk"
       },
       {
         "#text": "Du bestimmst, an welcher Trefferzone (S. 33) du den Gegner triffst. Nur beim Spiel mit Trefferzonen.",
@@ -17621,7 +17621,7 @@
         "typ": "0",
         "voraussetzungen": "Vorteil Niederwerfen",
         "probe": "AT -4",
-        "gegenprobe": "KK"
+        "gegenprobe": "kk"
       },
       {
         "#text": "Du fügst dem Angreifer den Waffenschaden deiner Waffe zu. Die Riposte ist kombinierbar mit Attackemanövern, die in diesem Fall die Verteidigung zusätzlich erschweren. Zum Beispiel wäre eine Kombination aus Riposte und Hammerschlag um –12 erschwert, würde aber doppelten Schaden anrichten.\nVoraussetzung: Kampf im Parrierwaffen-Stil; keine Riposte seit letztem Beginn einer eigenen Initiativephase",
@@ -18317,7 +18317,7 @@
         "typ": "8",
         "voraussetzungen": "Fertigkeit 'Autorität' 1",
         "probe": "",
-        "gegenprobe": "MU"
+        "gegenprobe": "mu"
       },
       {
         "#text": "Du kannst bis zu 4 Mitstreitern in Hörweite den Bonus eines Kommandovorteils (s.u.) für diesen Kampf verleihen. Hohe Qualität (S. 7) vervierfacht die Zahl der Mitstreiter. Jeder Kämpfer kann nur von einem Anführen-Effekt gleichzeitig profitieren.\n    Der Effekt endet am Ende des Kampfes, bei Kampfunfähigkeit des Anführers oder wenn dieser neue Befehle ruft. Der Anführer selbst profitiert nicht von Kommandos.",

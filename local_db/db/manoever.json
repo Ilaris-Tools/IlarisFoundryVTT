@@ -36,7 +36,7 @@
       "voraussetzungen": "",
       "gruppe": 0,
       "probe": "AT -4; VT -4",
-      "gegenprobe": "KK"
+      "gegenprobe": "kk"
     }
   },
   {
@@ -176,7 +176,7 @@
       "voraussetzungen": "Vorteil Niederwerfen",
       "gruppe": 0,
       "probe": "AT -4",
-      "gegenprobe": "KK"
+      "gegenprobe": "kk"
     }
   },
   {
@@ -1046,7 +1046,7 @@
       "voraussetzungen": "Fertigkeit 'Autorität' 1",
       "gruppe": 8,
       "probe": "",
-      "gegenprobe": "MU"
+      "gegenprobe": "mu"
     }
   },
   {
