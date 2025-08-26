@@ -86,16 +86,18 @@ folgenden Befehlen checken oder direkt korrigieren:
 Das System enthält ein Skript zur Optimierung von SVG-Dateien, das unnötige Metadaten, Inkscape/Sodipodi-spezifische Attribute und aufgeblähte Inline-Styles entfernt.
 
 **Verwendung:**
+
 ```bash
 npm run optimize-svgs
 ```
 
 **Was wird optimiert:**
-- Entfernung von Inkscape/Sodipodi Metadaten
-- Bereinigung unnötiger Namespaces
-- Minimierung von Inline-Styles
-- Entfernung von Kommentaren und ungenutzten Definitionen
-- Komprimierung der SVG-Struktur
+
+-   Entfernung von Inkscape/Sodipodi Metadaten
+-   Bereinigung unnötiger Namespaces
+-   Minimierung von Inline-Styles
+-   Entfernung von Kommentaren und ungenutzten Definitionen
+-   Komprimierung der SVG-Struktur
 
 Das Skript verarbeitet alle SVG-Dateien im `assets/` Verzeichnis und reduziert typischerweise die Dateigröße um 50-70% ohne Qualitätsverlust.
 

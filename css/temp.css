@@ -39,7 +39,7 @@
   padding-right: -100px;
   display: flex;
   flex-direction: row;
-  background-image: url(/systems/Ilaris/assets/images/Ilaris/Pergamentrolle.png);
+  background-image: url("../assets/images/Ilaris/Pergamentrolle.png");
   background-size: cover;
   background-repeat: round;
 }
@@ -74,15 +74,14 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  color: black;
+  transform: translate(-50%, -50%);  color: black;
   /* oder eine andere Farbe, je nach Hintergrund */
   font-weight: bold;
   font-size: 22px;
   text-shadow: 2px 2px 2px rgb(255, 255, 255);
 }
 
-.attribute-number:hover {
+.attribute-wrapper:hover .attribute-number {
   text-shadow: 0 0 10px var(--color-shadow-primary);
 }
 
@@ -227,7 +226,7 @@
   display: inline-block;
   width: 24px;
   height: 24px;
-  background-image: url("/systems/Ilaris/assets/images/ilaris/icon_clear.png");
+  background-image: url("../assets/images/Ilaris/icon_clear.png");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -235,12 +234,12 @@
 
 #pause {
   .fa-spin {
-    content: url("/systems/Ilaris/assets/images/ilaris/icon_rot.png")
+    content: url("../assets/images/Ilaris/icon_rot.png")
   }
 }
 
 #logo {
-  content: url("/systems/Ilaris/assets/images/ilaris/Ilaris.png")
+  content: url("../assets/images/Ilaris/Ilaris.png")
 }
 
 .profile-img {
@@ -401,7 +400,7 @@
 }
 
 .filled {
-  background-image: url('/systems/Ilaris/assets/images/Ilaris/phex.svg');
+  background-image: url('../assets/images/Ilaris/phex.svg');
 }
 
 .twokindrow div:nth-child(odd) {
