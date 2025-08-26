@@ -63,7 +63,6 @@
         style="margin-right: 10px"
     />
 </div>
-<div class="description">Wähle aus wie viel AsP pro Wunde du erhältst.</div>
 {{/if}} {{#if canSetEnergyCost}}
 <div class="flexrow">
     <label>Basisenergiekosten (frei wählbar):</label>
@@ -74,7 +73,7 @@
         placeholder="Energie frei setzen"
     />
 </div>
-<div class="description">Mit diesem Feld kannst du die Basisenergiekosten nach Belieben festlegen. Gedacht für den Unitatio (und dadurch ist dieses Feld erst verfügbar), weil der Vorteil eher mäßig gut umsetzbar ist.</div>
+<div class="description">Mit diesem Feld kannst du die Basisenergiekosten nach Belieben festlegen.</div>
 {{/if}}
 <hr />
 <div class="flexrow" style="margin: 10px 0; justify-content: space-between; align-items: flex-start;">
@@ -109,7 +108,7 @@
         <div
             class="maneuver-item {{#if (or manoever.inputValue.value manoever.inputValue.checked)}}has-value{{/if}}"
         >
-            <label>{{manoever.name}} ({{manoever.system.probe}})</label>
+            <label>{{manoever.name}} ({{getManoeverProbe manoever ../item}})</label>
             {{#if (ifEq manoever.inputValue.field "CHECKBOX")}}
                 <input 
                     type="checkbox" 

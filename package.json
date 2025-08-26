@@ -7,24 +7,26 @@
   "devDependencies": {
     "@babel/core": "^7.26.10",
     "@babel/preset-env": "^7.26.9",
+    "@foundryvtt/foundryvtt-cli": "^1.0.4",
     "babel-jest": "^29.7.0",
     "eslint": "^7.32.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-prettier": "^4.0.0",
     "husky": "^9.1.7",
-    "lint-staged": "^16.0.0",
     "jest": "^29.7.0",
+    "lint-staged": "^16.0.0",
     "lodash": "^4.17.21",
     "nedb": "^1.8.0",
     "prettier": "^2.5.1",
-    "xml2js": "^0.4.23",
-    "@foundryvtt/foundryvtt-cli": "^1.0.4"
+    "svgo": "^4.0.0",
+    "xml2js": "^0.4.23"
   },
   "scripts": {
     "test": "jest",
     "lint": "eslint --fix .",
     "prettier": "prettier --write .",
-    "prepare": "husky"
+    "prepare": "husky",
+    "optimize-svgs": "node scripts/optimize-svgs.js"
   },
   "repository": {
     "type": "git",

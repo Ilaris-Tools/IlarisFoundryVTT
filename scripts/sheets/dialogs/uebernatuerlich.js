@@ -97,14 +97,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         // Initialize and check energy values
         await this.initializeEnergyValues()
 
-        // If not enough resources, show erro
-        if (this.currentEnergy < this.mod_energy) {
-            ui.notifications.error(
-                `Nicht genug Ressourcen! Benötigt: ${this.mod_energy}, Vorhanden: ${this.currentEnergy}. Unter bestimmten Voraussetzungen zieht dir das System einfach Energie ab, bis du bei 0 angelangt bist. Du kannst diese Information nach eigenem Ermessen weiterverwenden.`,
-            )
-        }
-
-        let label = `${this.item.name} (Gesamt Kosten: ${this.mod_energy} Energie (das sind noch nicht die endgültigen Kosten des Zaubers))`
+        let label = `${this.item.name}`
         let formula = `${diceFormula} ${signed(this.item.system.pw)} \
             ${signed(this.at_abzuege_mod)} \
             ${signed(this.mod_at)}`
@@ -139,6 +132,12 @@ export class UebernatuerlichDialog extends CombatDialog {
         this.is16OrHigher = is16OrHigher
         if (difficulty) {
             await this.applyEnergyCost(isSuccess, is16OrHigher)
+            // If not enough resources, show erro
+            if (this.currentEnergy < this.endCost) {
+                ui.notifications.error(
+                    `Nicht genug Ressourcen! Benötigt: ${this.endCost}, Vorhanden: ${this.currentEnergy}. Unter bestimmten Voraussetzungen zieht dir das System einfach Energie ab, bis du bei 0 angelangt bist. Du kannst diese Information nach eigenem Ermessen weiterverwenden.`,
+                )
+            }
         }
         super._updateSchipsStern(html)
     }
