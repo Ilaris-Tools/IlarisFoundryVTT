@@ -571,9 +571,9 @@
     "name": "Handgemenge",
     "type": "fertigkeit",
     "data": {
-      "attribut_0": "GE",
-      "attribut_1": "KK",
-      "attribut_2": "MU",
+      "attribut_0": "ge",
+      "attribut_1": "kk",
+      "attribut_2": "mu",
       "gruppe": 0,
       "text": "Auf Handgemenge würfelst du bei allen waffenlosen Nahkampftechniken, im Umgang mit Handgemengewaffen wie Messern, Dolchen, Schlagstöcken und bei der Verwendung von Schilden."
     }
@@ -582,9 +582,9 @@
     "name": "Hiebwaffen",
     "type": "fertigkeit",
     "data": {
-      "attribut_0": "GE",
-      "attribut_1": "KK",
-      "attribut_2": "MU",
+      "attribut_0": "ge",
+      "attribut_1": "kk",
+      "attribut_2": "mu",
       "gruppe": 0,
       "text": "Mit der Fertigkeit Hiebwaffen führst du alle Arten von stumpfen und scharfen Hiebwaffen, wie Keulen, Äxte und Hämmer. "
     }
@@ -593,9 +593,9 @@
     "name": "Klingenwaffen",
     "type": "fertigkeit",
     "data": {
-      "attribut_0": "GE",
-      "attribut_1": "KK",
-      "attribut_2": "MU",
+      "attribut_0": "ge",
+      "attribut_1": "kk",
+      "attribut_2": "mu",
       "gruppe": 0,
       "text": "Im Kampf mit allen Varianten von Schwertern, Säbeln und Fechtwaffen werden Proben auf die Fertigkeit Klingenwaffen abgelegt. Dolche gehören nicht zu den Klingenwaffen - sie werden mit der Fertigkeit Handgemenge genutzt."
     }
@@ -604,9 +604,9 @@
     "name": "Stangenwaffen",
     "type": "fertigkeit",
     "data": {
-      "attribut_0": "GE",
-      "attribut_1": "KK",
-      "attribut_2": "MU",
+      "attribut_0": "ge",
+      "attribut_1": "kk",
+      "attribut_2": "mu",
       "gruppe": 0,
       "text": "Alle Waffen mit einem langen Schaft gelten als Stangenwaffen. Zu den klassischen Stangenwaffen zählen Speere, Hellebarden und der Schnitter. Zusätzlich werden Kampfstäbe und die Lanzen berittener Kämpfer werden mit diesem Talent genutzt."
     }
@@ -615,9 +615,9 @@
     "name": "Schusswaffen",
     "type": "fertigkeit",
     "data": {
-      "attribut_0": "FF",
-      "attribut_1": "IN",
-      "attribut_2": "KK",
+      "attribut_0": "ff",
+      "attribut_1": "in",
+      "attribut_2": "kk",
       "gruppe": 1,
       "text": "Mit der Fertigkeit Schusswaffen bedienst du alle Waffen, mit denen Geschosse auf den Gegner abgefeuert werden. Dazu gehören so verbreitete Schusswaffen wie der Bogen oder die Armbrust, aber auch das Blasrohr."
     }
@@ -626,9 +626,9 @@
     "name": "Wurfwaffen",
     "type": "fertigkeit",
     "data": {
-      "attribut_0": "FF",
-      "attribut_1": "IN",
-      "attribut_2": "KK",
+      "attribut_0": "ff",
+      "attribut_1": "in",
+      "attribut_2": "kk",
       "gruppe": 1,
       "text": "Als Wurfwaffen gelten sämtliche geworfenen Geschosse wie Diskusse oder Wurfspeere. Zusätzlich umfassen sie kurze Wurfwaffen, zu denen Dolche, Wurfsterne und improvisierte Geschosse wie einen Stein oder eine Flasche gehören."
     }
@@ -637,9 +637,9 @@
     "name": "Athletik",
     "type": "fertigkeit",
     "data": {
-      "attribut_0": "GE",
-      "attribut_1": "KK",
-      "attribut_2": "KO",
+      "attribut_0": "ge",
+      "attribut_1": "kk",
+      "attribut_2": "ko",
       "gruppe": 2,
       "text": "Athletik umfasst alle Aktivitäten, bei denen der Charakter seinen gesamten Körper kurz- oder längerfristig koordiniert einsetzen muss."
     }
@@ -648,9 +648,9 @@
     "name": "Heimlichkeit",
     "type": "fertigkeit",
     "data": {
-      "attribut_0": "MU",
-      "attribut_1": "IN",
-      "attribut_2": "GE",
+      "attribut_0": "mu",
+      "attribut_1": "in",
+      "attribut_2": "ge",
       "gruppe": 2,
       "text": "Heimlichkeit ermöglicht es deinem Charakter, ungehört und ungesehen zu bleiben. Die Probe wird häufig vergleichend gegen die Wachsamkeit deines Kontrahenten gewürfelt."
     }
@@ -659,9 +659,9 @@
     "name": "Selbstbeherrschung",
     "type": "fertigkeit",
     "data": {
-      "attribut_0": "MU",
-      "attribut_1": "MU",
-      "attribut_2": "KO",
+      "attribut_0": "mu",
+      "attribut_1": "mu",
+      "attribut_2": "ko",
       "gruppe": 2,
       "text": "Selbstbeherrschung erlaubt es dir, widrige Umstände, körperliche Schmerzen oder andere Ablenkungen zu ignorieren und dich auf das einzig Wichtige zu konzentrieren."
     }
@@ -670,9 +670,9 @@
     "name": "Wahrnehmung",
     "type": "fertigkeit",
     "data": {
-      "attribut_0": "IN",
-      "attribut_1": "IN",
-      "attribut_2": "KL",
+      "attribut_0": "in",
+      "attribut_1": "in",
+      "attribut_2": "kl",
       "gruppe": 2,
       "text": "Wahrnehmung ist die Fähigkeit, selbst kleinste Sinneseindrücke wahrzunehmen und richtig zu interpretieren."
     }
@@ -681,9 +681,9 @@
     "name": "Autorität",
     "type": "fertigkeit",
     "data": {
-      "attribut_0": "CH",
-      "attribut_1": "KL",
-      "attribut_2": "MU",
+      "attribut_0": "ch",
+      "attribut_1": "kl",
+      "attribut_2": "mu",
       "gruppe": 3,
       "text": "Autorität erlaubt es deinem Charakter, sich Respekt zu verschaffen und seinen Willen durchzusetzen."
     }
@@ -692,9 +692,9 @@
     "name": "Beeinflussung",
     "type": "fertigkeit",
     "data": {
-      "attribut_0": "CH",
-      "attribut_1": "CH",
-      "attribut_2": "IN",
+      "attribut_0": "ch",
+      "attribut_1": "ch",
+      "attribut_2": "in",
       "gruppe": 3,
       "text": "Hierunter fallen sämtliche Techniken, um das Gegenüber zu einer gewünschten Handlung zu bewegen. Dabei werden Betören und Überreden oft als vergleichende Proben gegen die Menschenkenntnis des Opfers gewürfelt."
     }
@@ -703,9 +703,9 @@
     "name": "Gebräuche",
     "type": "fertigkeit",
     "data": {
-      "attribut_0": "CH",
-      "attribut_1": "IN",
-      "attribut_2": "KL",
+      "attribut_0": "ch",
+      "attribut_1": "in",
+      "attribut_2": "kl",
       "gruppe": 3,
       "text": "Gebräuche stellt das Wissen um fremde und vertraute Kulturen sowie die dort herrschenden gesellschaftlichen Normen dar. Wie heißt der Markgrafen und wie sprichst du ihn an? In welchem Viertel findest du eine vertrauenswürdige Herberge, verschwiegene Schläger oder die neuesten Gerüchte? Wie funktioniert das Kamelspiel und auf welches Getränk könntest du deinen Gegner einladen? Herrscht in der nächsten Stadt ein Waffenverbot und wie streng wird es ausgelegt? Gebräuche beantwortet all diese Fragen und verhindert, dass du unangenehm auffällst."
     }
@@ -714,9 +714,9 @@
     "name": "Derekunde",
     "type": "fertigkeit",
     "data": {
-      "attribut_0": "KL",
-      "attribut_1": "IN",
-      "attribut_2": "FF",
+      "attribut_0": "kl",
+      "attribut_1": "in",
+      "attribut_2": "ff",
       "gruppe": 4,
       "text": "Darunter fällt das theoretische Wissen über Natur, Tiere und Pflanzen, sowie um die Geographie."
     }
@@ -725,9 +725,9 @@
     "name": "Mythenkunde",
     "type": "fertigkeit",
     "data": {
-      "attribut_0": "KL",
-      "attribut_1": "KL",
-      "attribut_2": "IN",
+      "attribut_0": "kl",
+      "attribut_1": "kl",
+      "attribut_2": "in",
       "gruppe": 4,
       "text": "Mythenkunde ist das Wissen über die Götter und ihre Diener, sowohl die eigene Religion, als auch – weniger genau – fremde Religionen betreffend. Zusätzlich gehört dazu die Kenntnis der Geschichte sowie bekannter Sagen und Legenden, was meist schwer voneinander zu trennen ist."
     }
@@ -736,9 +736,9 @@
     "name": "Magiekunde",
     "type": "fertigkeit",
     "data": {
-      "attribut_0": "KL",
-      "attribut_1": "KL",
-      "attribut_2": "MU",
+      "attribut_0": "kl",
+      "attribut_1": "kl",
+      "attribut_2": "mu",
       "gruppe": 4,
       "text": "Die astrale Kraft durchzieht die ganze Welt und wird seit Jahrtausenden von Zauberern genutzt. Magiekunde ist das theoretische Wissen über diese Kraft und ihre Verwendung."
     }
@@ -747,9 +747,9 @@
     "name": "Überleben",
     "type": "fertigkeit",
     "data": {
-      "attribut_0": "FF",
-      "attribut_1": "GE",
-      "attribut_2": "KO",
+      "attribut_0": "ff",
+      "attribut_1": "ge",
+      "attribut_2": "ko",
       "gruppe": 5,
       "text": "Hierunter fallen alle Fähigkeiten, die zum Überleben in der Wildnis erforderlich sind. Du kannst dich orientieren oder einen Lagerplatz, Nahrung und Wasser finden. Außerdem bist du mit typischen Gefahren der Wildnis vertraut und kannst tierische und menschliche Fährten deuten und ihnen folgen.\nDieses Wissen ist rein praktisch; exotische Tiere, Monster oder seltene Heilpflanzen fallen nicht in diesen Bereich."
     }
@@ -758,9 +758,9 @@
     "name": "Verschlagenheit",
     "type": "fertigkeit",
     "data": {
-      "attribut_0": "FF",
-      "attribut_1": "IN",
-      "attribut_2": "MU",
+      "attribut_0": "ff",
+      "attribut_1": "in",
+      "attribut_2": "mu",
       "gruppe": 6,
       "text": "Verschlagenheit ist das Handwerk von zwielichtigen Gestalten, die Diebstahl, Falschsspiel und Einbruch nicht scheuen."
     }
@@ -769,9 +769,9 @@
     "name": "Alchemie",
     "type": "fertigkeit",
     "data": {
-      "attribut_0": "FF",
-      "attribut_1": "FF",
-      "attribut_2": "KL",
+      "attribut_0": "ff",
+      "attribut_1": "ff",
+      "attribut_2": "kl",
       "gruppe": 6,
       "text": "Alchemie ist die Wissenschaft von der Umwandlung der Stoffe. Mit ihr kannst du nützliche Tränke herstellen oder unbekannte Gebräue analysieren; für beides ist aber zumindest ein einfacher Analysekoffer notwendig."
     }
@@ -780,9 +780,9 @@
     "name": "Heilkunde",
     "type": "fertigkeit",
     "data": {
-      "attribut_0": "CH",
-      "attribut_1": "FF",
-      "attribut_2": "KL",
+      "attribut_0": "ch",
+      "attribut_1": "ff",
+      "attribut_2": "kl",
       "gruppe": 6,
       "text": "Ein Heilkundiger bekämpft tödliche Blutungen, heimtückische Gifte sowie langwierige Krankheiten und hilft seinen Gefährten so, wieder auf die Beine zu kommen. "
     }
@@ -791,9 +791,9 @@
     "name": "Handwerk",
     "type": "fertigkeit",
     "data": {
-      "attribut_0": "FF",
-      "attribut_1": "FF",
-      "attribut_2": "KK",
+      "attribut_0": "ff",
+      "attribut_1": "ff",
+      "attribut_2": "kk",
       "gruppe": 6,
       "text": "Mit Handwerk schmiedest du Waffen und Rüstungen, fertigst filigrane Mechaniken und stabile Truhen."
     }

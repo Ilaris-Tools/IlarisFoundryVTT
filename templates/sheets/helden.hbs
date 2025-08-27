@@ -23,10 +23,9 @@
     </div>
     <div class="attribute-grid">
       {{#each actor.system.attribute as |attribut key|}}
-      <div class="attribute-wrapper">
+      <div class="attribute-wrapper rollable onhover" data-rolltype="attribut" data-attribut="{{key}}" title="{{key}}">
         <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/{{key}}.webp" />
-        <label class="attribute-number rollable onhover" data-rolltype="attribut" data-attribut="{{key}}"
-          title="{{key}}">
+        <label class="attribute-number">
           {{attribut.pw}}
         </label>
       </div>
@@ -124,7 +123,7 @@
       <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/Leben.webp" data-edit="img" title="Leben"
         height="50" width="50" />
       {{#each (range 0 8) as |index|}}
-      <button
+      <button type="button"
         class="triStateBtn state-{{getButtonState index ../actor.system.gesundheit.wunden ../actor.system.gesundheit.erschoepfung}}"
         data-state="{{getButtonState index ../actor.system.gesundheit.wunden ../actor.system.gesundheit.erschoepfung}}">
       </button>
