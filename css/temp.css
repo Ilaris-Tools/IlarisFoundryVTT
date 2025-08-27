@@ -227,7 +227,7 @@
   display: inline-block;
   width: 24px;
   height: 24px;
-  background-image: url("/systems/Ilaris/assets/images/ilaris/icon_clear.webp");
+  background-image: url("/systems/Ilaris/assets/images/Ilaris/icon_clear.webp");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -235,12 +235,12 @@
 
 #pause {
   .fa-spin {
-    content: url("/systems/Ilaris/assets/images/ilaris/icon_rot.webp")
+    content: url("/systems/Ilaris/assets/images/Ilaris/icon_rot.webp")
   }
 }
 
 #logo {
-  content: url("/systems/Ilaris/assets/images/ilaris/Ilaris.webp")
+  content: url("/systems/Ilaris/assets/images/Ilaris/Ilaris.webp")
 }
 
 .profile-img {
