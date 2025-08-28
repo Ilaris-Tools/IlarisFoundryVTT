@@ -336,7 +336,7 @@ export class IlarisActor extends Actor {
         } else if (systemData.abgeleitete.globalermod > 0) {
             systemData.abgeleitete.globalermoddisplay += `+`
         }
-        systemData.abgeleitete.globalermoddisplay += `${systemData.abgeleitete.globalermod} auf alle Proben (insgesamt)`
+        systemData.abgeleitete.globalermoddisplay += `${systemData.abgeleitete.globalermod} auf alle Proben`
     }
 
     _calculateAbgeleitete(actor) {
