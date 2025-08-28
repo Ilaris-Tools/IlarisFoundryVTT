@@ -61,7 +61,8 @@
       </div>
     </div>
     <p> </p>
-    <div style="font-size: 14px">
+    <div style="color: #dfcea1;">
+      <div style="font-size: 14px">
       {{#if actor.system.abgeleitete.zauberer}}
       <label class="ausklappen-trigger onhover" data-ausklappentarget="aspzugekauft"><b>AsP:</b></label>
       <label>{{actor.system.abgeleitete.asp}}&nbsp;</label>
@@ -114,12 +115,13 @@
       </a>
     </div>
     <div class="flexrow">
-      <b><label style="color: black; font-size: 16pt">{{actor.system.abgeleitete.globalermoddisplay}}</label></b>
+      <b><label style=" font-size: 16pt">{{actor.system.abgeleitete.globalermoddisplay}}</label></b>
     </div>
     <div class="flexrow" style="margin-top: 0.5em; font-size: 14px; width: 200px">
       <label><b>Manueller Mod:</b></label>
       <input name="system.modifikatoren.manuellermod" value="{{actor.system.modifikatoren.manuellermod}}"
         type="number" data-dtype="Number"/>
+    </div>
     </div>
   </div>
 
