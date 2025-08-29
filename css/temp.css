@@ -39,11 +39,7 @@
   padding-right: -100px;
   display: flex;
   flex-direction: row;
-<<<<<<< HEAD
   background-image: url(/systems/Ilaris/assets/images/Ilaris/Pergamentrolle.webp);
-=======
-  background-image: url("../assets/images/Ilaris/Pergamentrolle.png");
->>>>>>> develop
   background-size: cover;
   background-repeat: round;
 }
@@ -87,6 +83,11 @@
 
 .attribute-wrapper:hover .attribute-number {
   text-shadow: 0 0 10px var(--color-shadow-primary);
+}
+
+.attribute-wrapper:hover {
+  filter: drop-shadow(0 0 8px var(--color-shadow-primary));
+  transform: scale(1.1);
 }
 
 .herotabnavigation {
@@ -228,12 +229,43 @@
 
 .custom-icon {
   display: inline-block;
-  width: 24px;
-  height: 24px;
+  width: 32px;
+  height: 32px;
   background-image: url("../assets/images/Ilaris/icon_clear.webp");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.custom-icon:hover {
+  filter: drop-shadow(0 0 8px var(--color-shadow-primary));
+  transform: scale(1.1);
+}
+
+/* Make the table cell containing the custom-icon larger and clickable */
+td.rollable.icon-small {
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  padding-right: 8px;
+}
+
+/* Edit and delete icon styling with hover effects */
+.fas.fa-edit,
+.fas.fa-trash {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding-right: 8px;
+}
+
+.fas.fa-edit:hover,
+.fas.fa-trash:hover {
+  filter: drop-shadow(0 0 8px var(--color-shadow-primary));
+  transform: scale(1.1);
 }
 
 #pause {
@@ -401,6 +433,11 @@
 
 .schips-button:last-child {
   margin-right: 0;
+}
+
+.schips-button:hover {
+  filter: drop-shadow(0 0 8px var(--color-shadow-primary));
+  transform: scale(1.1);
 }
 
 .filled {
