@@ -39,7 +39,7 @@
   padding-right: -100px;
   display: flex;
   flex-direction: row;
-  background-image: url(/systems/Ilaris/assets/images/Ilaris/Pergamentrolle.webp);
+  background-image: url(/systems/Ilaris/assets/images/Ilaris/Pergamentrolle.webp?v=1);
   background-size: cover;
   background-repeat: round;
 }
@@ -186,7 +186,7 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background-image: url("../assets/images/Ilaris/bronze_glatt.webp");
+  background-image: url("../assets/images/Ilaris/bronze_glatt.webp?v=1");
   background-size: cover;
   border-radius: inherit;
 }
@@ -239,7 +239,7 @@
   display: inline-block;
   width: 32px;
   height: 32px;
-  background-image: url("../assets/images/Ilaris/icon_clear.webp");
+  background-image: url("../assets/images/Ilaris/icon_clear.webp?v=1");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -278,12 +278,12 @@ td.rollable.icon-small {
 
 #pause {
   .fa-spin {
-    content: url("../assets/images/Ilaris/icon_rot.webp")
+    content: url("../assets/images/Ilaris/icon_rot.webp?v=1")
   }
 }
 
 #logo {
-  content: url("../assets/images/Ilaris/Ilaris.webp")
+  content: url("../assets/images/Ilaris/Ilaris.webp?v=1")
 }
 
 .profile-img {
