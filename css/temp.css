@@ -90,6 +90,14 @@
   transform: scale(1.1);
 }
 
+/* special case for MR */
+.icon-row .attribute-wrapper {
+  width: auto;          /* stop forcing 100% width */
+  flex: 0 0 auto;       /* don't stretch across the row */
+  display: inline-flex; /* keep image + label aligned */
+  align-items: center;
+}
+
 .herotabnavigation {
   grid-area: navigation2;
   position: relative;

@@ -41,12 +41,12 @@
         <img src="/systems/Ilaris/assets/images/Ilaris/wsstern.webp" title="WS*" />
         <span class="overlay-label">{{actor.system.abgeleitete.ws_stern}}</span>
       </div>
-      <div class="icon-overlay-container rollable onhover" data-rolltype="simpleprobe_diag" data-name="Magierresistenz"
-        data-pw="{{actor.system.abgeleitete.mr}}">
-        <img src="/systems/Ilaris/assets/images/Ilaris/mr.webp" title="MR"
-          onmouseover="this.nextElementSibling.style.textShadow='0 0 5px red';"
-          onmouseout="this.nextElementSibling.style.textShadow='none';" />
-        <span class="overlay-label">{{actor.system.abgeleitete.mr}}</span>
+      <div class="attribute-wrapper rollable onhover" data-rolltype="simpleprobe_diag" data-name="Magierresistenz"
+      data-pw="{{actor.system.abgeleitete.mr}}">
+        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/mr.webp" />
+        <label class="attribute-number">
+          {{actor.system.abgeleitete.mr}}
+        </label>
       </div>
       <div class="icon-overlay-container">
         <img src="/systems/Ilaris/assets/images/Ilaris/ini.webp" title="INI" />
@@ -61,51 +61,48 @@
       </div>
     </div>
     <p> </p>
-    <div style="color: #dfcea1;">
-      <div style="font-size: 14px">
-      {{#if actor.system.abgeleitete.zauberer}}
-      <label class="ausklappen-trigger onhover" data-ausklappentarget="aspzugekauft"><b>AsP:</b></label>
-      <label>{{actor.system.abgeleitete.asp}}&nbsp;</label>
-
-      <label><b>gAsP:</b></label>
-      <input style="width: 3em" name="system.abgeleitete.gasp" value="{{actor.system.abgeleitete.gasp}}"
-        type="number" />
-
-      <label>&nbsp;<b>AsP*:</b></label>
-      <input style="width: 3em" name="system.abgeleitete.asp_stern" value="{{actor.system.abgeleitete.asp_stern}}"
-        type="number" data-dtype="Number" />
-
-      <span id="ausklappen-view-aspzugekauft" style="display: none">
-        <label>Zugekauft: </label>
-        <input style="width: 3em" name="system.abgeleitete.asp_zugekauft"
-          value="{{actor.system.abgeleitete.asp_zugekauft}}" type="number" data-dtype="Number" />
-      </span>
-      <br>
-      {{/if}}
-
-      {{#if actor.system.abgeleitete.geweihter}}
-      <label class="ausklappen-trigger onhover" data-ausklappentarget="kapzugekauft"><b>KaP:</b></label>
-      <label>{{actor.system.abgeleitete.kap}}&nbsp;</label>
-
-      <label><b>gKaP:</b></label>
-      <input style="width: 3em" name="system.abgeleitete.gkap" value="{{actor.system.abgeleitete.gkap}}" type="number"
-        data-dtype="Number" />
-
-      <label>&nbsp;<b>KaP*:</b></label>
-      <input style="width: 3em" name="system.abgeleitete.kap_stern" value="{{actor.system.abgeleitete.kap_stern}}"
-        type="number" data-dtype="Number" />
-
-      <span id="ausklappen-view-kapzugekauft" style="display: none">
-        <label>Zugekauft: </label>
-        <input style="width: 3em" name="system.abgeleitete.kap_zugekauft"
-          value="{{actor.system.abgeleitete.kap_zugekauft}}" type="number" data-dtype="Number" />
-      </span>
-      <br />
-      {{/if}}
+    <div style="color: #efe6d8;">
+      <div style="font-size: 12px">
+        {{#if actor.system.abgeleitete.zauberer}}
+          <label class="ausklappen-trigger onhover" data-ausklappentarget="aspzugekauft" style="margin-right: 0.5em;"><b>AsP:</b></label>
+          <label style="margin-right: 0.5em;">{{actor.system.abgeleitete.asp}}</label>
+    
+          <label style="margin-right: 0.1em;"><b>gAsP:</b></label>
+          <input style="color: #efe6d8; background-color: transparent; width: 3em; margin-right: 0.5em;" name="system.abgeleitete.gasp" value="{{actor.system.abgeleitete.gasp}}" type="number" />
+    
+          <label style="margin-right: 0.1em;"><b>AsP*:</b></label>
+          <input style="color: #efe6d8; background-color: transparent; width: 3em; margin-right: 0.5em;" name="system.abgeleitete.asp_stern" value="{{actor.system.abgeleitete.asp_stern}}" type="number" data-dtype="Number" />
+    
+          <span id="ausklappen-view-aspzugekauft" style="display: none; margin-left: 0.5em;">
+            <label style="margin-right: 0.1em;">Zugekauft:</label>
+            <input style="color: #efe6d8; background-color: transparent; width: 3em;" name="system.abgeleitete.asp_zugekauft" value="{{actor.system.abgeleitete.asp_zugekauft}}" type="number" data-dtype="Number" />
+          </span>
+          <br>
+        {{/if}}
+    
+        {{#if actor.system.abgeleitete.geweihter}}
+          <label class="ausklappen-trigger onhover" data-ausklappentarget="kapzugekauft" style="margin-right: 0.5em;"><b>KaP:</b></label>
+          <label style="margin-right: 0.5em;">{{actor.system.abgeleitete.kap}}</label>
+    
+          <label style="margin-right: 0.1em;"><b>gKaP:</b></label>
+          <input style="color: #efe6d8; background-color: transparent; width: 3em; margin-right: 0.5em;" name="system.abgeleitete.gkap" value="{{actor.system.abgeleitete.gkap}}" type="number" data-dtype="Number" />
+    
+          <label style="margin-right: 0.1em;"><b>KaP*:</b></label>
+          <input style="color: #efe6d8; background-color: transparent; width: 3em; margin-right: 0.5em;" name="system.abgeleitete.kap_stern" value="{{actor.system.abgeleitete.kap_stern}}" type="number" data-dtype="Number" />
+    
+          <span id="ausklappen-view-kapzugekauft" style="display: none; margin-left: 0.5em;">
+            <label style="margin-right: 0.1em;">Zugekauft:</label>
+            <input style="color: #efe6d8; background-color: transparent; width: 3em;" name="system.abgeleitete.kap_zugekauft" value="{{actor.system.abgeleitete.kap_zugekauft}}" type="number" data-dtype="Number" />
+          </span>
+          <br />
+        {{/if}}
+      </div>
     </div>
-    <div>
+    
+    <div style="style="color: #efe6d8; margin-top: 1.5em; font-size: 12px;">
       <a class="icon-small toggle-bool {{system.gesundheit.wundenignorieren}}"
-        data-togglevariable="system.gesundheit.wundenignorieren">
+        data-togglevariable="system.gesundheit.wundenignorieren"
+        style="color: {{#if actor.system.gesundheit.wundenignorieren}}#efe6d8{{else}}#000000{{/if}};">
         Wundabzüge
         {{#if actor.system.gesundheit.wundenignorieren}}
         ignorieren
@@ -114,13 +111,17 @@
         {{/if}}
       </a>
     </div>
-    <div class="flexrow">
-      <b><label style=" font-size: 16pt">{{actor.system.abgeleitete.globalermoddisplay}}</label></b>
+    <div class="flexrow" style="color: #efe6d8; margin-top: 0.5em; font-size: 12px;">
+      <b><label style=" font-size: 12pt">{{actor.system.abgeleitete.globalermoddisplay}}</label></b>
     </div>
-    <div class="flexrow" style="margin-top: 0.5em; font-size: 14px; width: 200px">
+    <div style="color: #efe6d8; margin-top: 0.5em; font-size: 12px;">
       <label><b>Manueller Mod:</b></label>
-      <input name="system.modifikatoren.manuellermod" value="{{actor.system.modifikatoren.manuellermod}}"
-        type="number" data-dtype="Number"/>
+      <input style="color: #efe6d8; background-color: transparent; width: 3em" 
+             name="system.modifikatoren.manuellermod"
+             value="{{actor.system.modifikatoren.manuellermod}}"
+             type="number"
+             data-dtype="Number";
+             />
     </div>
     </div>
   </div>
