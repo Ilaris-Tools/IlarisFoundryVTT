@@ -24,7 +24,7 @@
     <div class="attribute-grid">
       {{#each actor.system.attribute as |attribut key|}}
       <div class="attribute-wrapper rollable onhover" data-rolltype="attribut" data-attribut="{{key}}" title="{{key}}">
-        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/{{key}}.png" />
+        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/{{key}}.webp" />
         <label class="attribute-number">
           {{attribut.pw}}
         </label>
@@ -38,25 +38,25 @@
         <span class="overlay-label">{{actor.system.abgeleitete.ws}}</span>
       </div>
       <div class="icon-overlay-container">
-        <img src="/systems/Ilaris/assets/images/Ilaris/wsstern.png" title="WS*" />
+        <img src="/systems/Ilaris/assets/images/Ilaris/wsstern.webp" title="WS*" />
         <span class="overlay-label">{{actor.system.abgeleitete.ws_stern}}</span>
       </div>
       <div class="icon-overlay-container rollable onhover" data-rolltype="simpleprobe_diag" data-name="Magierresistenz"
         data-pw="{{actor.system.abgeleitete.mr}}">
-        <img src="/systems/Ilaris/assets/images/Ilaris/mr.png" title="MR"
+        <img src="/systems/Ilaris/assets/images/Ilaris/mr.webp" title="MR"
           onmouseover="this.nextElementSibling.style.textShadow='0 0 5px red';"
           onmouseout="this.nextElementSibling.style.textShadow='none';" />
         <span class="overlay-label">{{actor.system.abgeleitete.mr}}</span>
       </div>
       <div class="icon-overlay-container">
-        <img src="/systems/Ilaris/assets/images/Ilaris/ini.png" title="INI" />
+        <img src="/systems/Ilaris/assets/images/Ilaris/ini.webp" title="INI" />
         <span class="overlay-label">{{actor.system.abgeleitete.ini}}</span>
       </div>
       <div class="icon-overlay-container"> <img src="/systems/Ilaris/assets/images/Ilaris/gs.svg" title="GS" />
         <span class="overlay-label">{{actor.system.abgeleitete.gs}}</span>
       </div>
       <div class="icon-overlay-container">
-        <img src="/systems/Ilaris/assets/images/Ilaris/DH.png" title="DH" />
+        <img src="/systems/Ilaris/assets/images/Ilaris/DH.webp" title="DH" />
         <span class="overlay-label">{{actor.system.abgeleitete.dh}}</span>
       </div>
     </div>
@@ -132,7 +132,7 @@
 
   <div class="heroattributes">
     <div id="lebensleiste">
-      <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/Leben.png" data-edit="img" title="Leben"
+      <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/Leben.webp" data-edit="img" title="Leben"
         height="50" width="50" />
       {{#each (range 0 8) as |index|}}
       <button type="button"
@@ -140,7 +140,7 @@
         data-state="{{getButtonState index ../actor.system.gesundheit.wunden ../actor.system.gesundheit.erschoepfung}}">
       </button>
       {{/each}}
-      <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/Tod.png" data-edit="img" title="Tod"
+      <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/Tod.webp" data-edit="img" title="Tod"
         height="50" width="50" />
     </div>
     <div class="status-effects">
@@ -157,27 +157,27 @@
     <hr />
     <div class="sheet-tabs tabs" data-group="primary">
       <b class="tab-item" data-tab="attribute">
-        <img class="round-icon" src="/systems/Ilaris/assets/images/Ilaris/attribute.png" height="20" width="20" />
+        <img class="round-icon" src="/systems/Ilaris/assets/images/Ilaris/attribute.webp" height="20" width="20" />
         Attribute
       </b>
       <b class="tab-item" data-tab="fertigkeiten">
-        <img class="round-icon" src="/systems/Ilaris/assets/images/Ilaris/holzbearbeitung.png" height="20" width="20" />
+        <img class="round-icon" src="/systems/Ilaris/assets/images/Ilaris/holzbearbeitung.webp" height="20" width="20" />
         Fertigkeiten
       </b>
       <b class="tab-item" data-tab="uebernatuerlich">
-        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/gildenmagie.png" height="20" width="20" />
+        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/gildenmagie.webp" height="20" width="20" />
         Übernatürlich
       </b>
       <b class="tab-item" data-tab="kampf">
-        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/beidhaendig.png" height="20" width="20" />
+        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/beidhaendig.webp" height="20" width="20" />
         Kampf
       </b>
       <b class="tab-item" data-tab="inventar">
-        <img class="round-icon" src="/systems/Ilaris/assets/images/Ilaris/Inventar.png" height="20" width="20" />
+        <img class="round-icon" src="/systems/Ilaris/assets/images/Ilaris/Inventar.webp" height="20" width="20" />
         Inventar
       </b>
       <b class="tab-item" data-tab="notes">
-        <img class="round-icon" src="/systems/Ilaris/assets/images/Ilaris/Feder.png" height="20" width="20" />
+        <img class="round-icon" src="/systems/Ilaris/assets/images/Ilaris/Feder.webp" height="20" width="20" />
         Notizen
       </b>
     </div>
