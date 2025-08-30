@@ -9,7 +9,6 @@
 -   Packs werden als source files getrackt
 -   Komplett überarbeitetes Charaktersheet mit neuem Design und verbesserter Benutzeroberfläche
 -   Neue farbige Anzeige von Modifikatoren im Kampfdialog (grün/rot je nach Bonus/Malus)
--   Modifikatoren werden nun im Kampfdialog angezeigt
 -   Überarbeiteter Kampfdialog mit Echtzeit-Zusammenfassung für Angriffs-, Verteidigungs- und Schadenswürfe
 -   Dynamische Manöver-Auswahl in Kampfdialogen (#Hausregelmanöver)
 -   Archetypen-Unterstützung hinzugefügt
