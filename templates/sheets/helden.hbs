@@ -97,33 +97,31 @@
           <br />
         {{/if}}
       </div>
-    </div>
-    
-    <div style="style="color: #efe6d8; margin-top: 1.5em; font-size: 12px;">
-      <a class="icon-small toggle-bool {{system.gesundheit.wundenignorieren}}"
-        data-togglevariable="system.gesundheit.wundenignorieren"
-        style="color: {{#if actor.system.gesundheit.wundenignorieren}}#efe6d8{{else}}#000000{{/if}};">
-        Wundabzüge
-        {{#if actor.system.gesundheit.wundenignorieren}}
-        ignorieren
-        {{else}}
-        nicht ignorieren
-        {{/if}}
-      </a>
-    </div>
-    <div class="flexrow" style="color: #efe6d8; margin-top: 0.5em; font-size: 12px;">
-      <b><label style=" font-size: 12pt">{{actor.system.abgeleitete.globalermoddisplay}}</label></b>
-    </div>
-    <div style="color: #efe6d8; margin-top: 0.5em; font-size: 12px;">
-      <label><b>Manueller Mod:</b></label>
-      <input style="color: #efe6d8; background-color: transparent; width: 3em" 
-             name="system.modifikatoren.manuellermod"
-             value="{{actor.system.modifikatoren.manuellermod}}"
-             type="number"
-             data-dtype="Number";
-             />
-    </div>
-    </div>
+      <div style="margin-top: 1.5em; font-size: 12px;">
+        <a class="icon-small toggle-bool {{system.gesundheit.wundenignorieren}}"
+          data-togglevariable="system.gesundheit.wundenignorieren"
+          style="color: {{#if actor.system.gesundheit.wundenignorieren}}#efe6d8{{else}}#000000{{/if}};">
+          Wundabzüge
+          {{#if actor.system.gesundheit.wundenignorieren}}
+          ignorieren
+          {{else}}
+          nicht ignorieren
+          {{/if}}
+        </a>
+      </div>
+      <div class="flexrow" style="margin-top: 0.5em; font-size: 12px;">
+        <b><label style=" font-size: 12pt">{{actor.system.abgeleitete.globalermoddisplay}}</label></b>
+      </div>
+      <div style="margin-top: 0.5em; font-size: 12px;">
+        <label><b>Manueller Mod:</b></label>
+        <input style="color: #efe6d8; background-color: transparent; width: 3em" 
+              name="system.modifikatoren.manuellermod"
+              value="{{actor.system.modifikatoren.manuellermod}}"
+              type="number"
+              data-dtype="Number";
+              />
+      </div>
+    </div>    
   </div>
 
   <div class="heroattributes">
