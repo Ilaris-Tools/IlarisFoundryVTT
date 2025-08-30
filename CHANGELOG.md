@@ -4,8 +4,36 @@
 
 ### v12.1
 
--   packs werden als source files getrackt
--   TODO
+#### Features
+
+-   Packs werden als source files getrackt
+-   Komplett überarbeitetes Charaktersheet mit neuem Design und verbesserter Benutzeroberfläche
+-   Neue farbige Anzeige von Modifikatoren im Kampfdialog (grün/rot je nach Bonus/Malus)
+-   Modifikatoren werden nun im Kampfdialog angezeigt
+-   Überarbeiteter Kampfdialog mit Echtzeit-Zusammenfassung für Angriffs-, Verteidigungs- und Schadenswürfe
+-   Dynamische Manöver-Auswahl in Kampfdialogen (#Hausregelmanöver)
+-   Archetypen-Unterstützung hinzugefügt
+-   Kreaturen-Kompendium geupdated
+-   Fernkampf-Dialog verbessert
+-   Kampfstil-Auswahl überarbeitet
+-   Platzbedarf als Welteinstellung konfigurierbar
+-   Automatisches Öffnen von Items bei Erstellung
+-   Waffen-Handhabung (ein-/zweihändig) überarbeitet
+-   wiederhergestellte Firefox-Unterstützung
+-   SVG-Optimierung für bessere Performance
+-   PNG zu WebP konvertiert für geringere Dateigröße
+-   Test-Framework hinzugefügt
+-   GitHub Actions und CI/CD Pipeline eingerichtet
+-   Deployment-Skripte für automatische Veröffentlichung
+-   ESLint und Prettier für Codequalität
+-   Husky Pre-Commit Hooks hinzugefügt
+
+#### Bugfixes
+
+-   Fix: Notizen werden korrekt gespeichert
+-   Fix: Dialoge haben mit IDs, damit sind die Dialoge unabhängig von einander und haben keine Überbleibsel von davor Geöffneten
+-   Fix: Angriffseigenschaften löschen und Kurzbeschreibung speichern
+-   Fix: Volle Offensive wird nicht mehr bei Passierschlag angewendet
 
 ### v12.0
 
