@@ -77,7 +77,10 @@ export class IlarisActor extends Actor {
     __getStatuseffectById(data, statusId) {
         let iterator = data.effects.values()
         for (const effect of iterator) {
-            if (effect.flags.core.statusId == statusId) {
+            console.log(effect.statuses)
+            // Get the first entry from the Set
+            const firstStatus = effect.statuses.values().next().value
+            if (firstStatus == statusId) {
                 return true
             }
         }
