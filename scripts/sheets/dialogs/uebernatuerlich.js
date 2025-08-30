@@ -4,6 +4,10 @@ import { handleModifications } from './shared_dialog_helpers.js'
 import { CombatDialog } from './combat_dialog.js'
 import * as hardcoded from '../../actors/hardcodedvorteile.js'
 import { sanitizeEnergyCost, isNumericCost } from '../../common/utilities.js'
+import {
+    IlarisGameSettingNames,
+    ConfigureGameSettingsCategories,
+} from '../../settings/configure-game-settings.model.js'
 
 export class UebernatuerlichDialog extends CombatDialog {
     constructor(actor, item) {
@@ -47,7 +51,14 @@ export class UebernatuerlichDialog extends CombatDialog {
         const hasBlutmagie =
             this.actor.vorteil.magie.some((v) => v.name === 'Blutmagie') &&
             this.item.type === 'zauber'
+
+        const restrictEnergyCostSetting = game.settings.get(
+            ConfigureGameSettingsCategories.Ilaris,
+            IlarisGameSettingNames.restrictEnergyCostSetting,
+        )
+
         const canSetEnergyCost =
+            !restrictEnergyCostSetting ||
             this.actor.vorteil?.magie?.some((v) => v.name === 'Unitatio') ||
             !isNumericCost(this.item.system.kosten)
 
