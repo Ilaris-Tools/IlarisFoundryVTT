@@ -3,6 +3,7 @@ import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
 } from './../settings/configure-game-settings.model.js'
+import { ILARIS } from '../config.js'
 
 export class CombatItem extends IlarisItem {
     // Create a maneuver object from an item
@@ -18,11 +19,13 @@ export class CombatItem extends IlarisItem {
     }
 
     async setManoevers() {
+        // TODO: this needs to be changed sooner than later, system is not the right place for this
         this.system.manoever = {
             kbak: { selected: false },
             mod: { selected: false },
             rllm: { selected: game.settings.get('core', 'rollMode') },
         }
+
         // Get selected maneuver packs from settings
         const selectedPacks = JSON.parse(
             game.settings.get(
@@ -45,6 +48,7 @@ export class CombatItem extends IlarisItem {
             'nahkampfwaffe' === this.type ||
             ('angriff' === this.type && this.system.typ === 'Nah')
         ) {
+            this.system.manoever = ILARIS.manoever_nahkampf
             this.manoever = []
             packItems.forEach((item) => {
                 if (
@@ -70,6 +74,9 @@ export class CombatItem extends IlarisItem {
             'fernkampfwaffe' === this.type ||
             ('angriff' === this.type && this.system.typ === 'Fern')
         ) {
+            // Add specific properties for fernkampfwaffe or angriff with Fern type
+            this.system.manoever = ILARIS.manoever_fernkampf
+
             this.manoever = []
             packItems.forEach((item) => {
                 if (
