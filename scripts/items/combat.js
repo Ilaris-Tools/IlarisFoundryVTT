@@ -18,6 +18,11 @@ export class CombatItem extends IlarisItem {
     }
 
     async setManoevers() {
+        this.system.manoever = {
+            kbak: { selected: false },
+            mod: { selected: false },
+            rllm: { selected: game.settings.get('core', 'rollMode') },
+        }
         // Get selected maneuver packs from settings
         const selectedPacks = JSON.parse(
             game.settings.get(

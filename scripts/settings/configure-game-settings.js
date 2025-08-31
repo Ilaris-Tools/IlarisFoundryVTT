@@ -78,7 +78,7 @@ export const registerIlarisGameSettings = () => {
             config: true,
             type: new foundry.data.fields.BooleanField(),
             scope: 'world',
-            default: true,
+            default: false,
         },
     ].forEach((setting) => {
         game.settings.register(ConfigureGameSettingsCategories.Ilaris, setting.settingsName, {
