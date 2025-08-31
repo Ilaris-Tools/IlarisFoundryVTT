@@ -70,6 +70,16 @@ export const registerIlarisGameSettings = () => {
             type: new foundry.data.fields.BooleanField(),
             scope: 'world',
         },
+        {
+            // Register restrict energy cost setting
+            settingsName: IlarisGameSettingNames.restrictEnergyCostSetting,
+            name: 'Energiekosten-Einstellung einschränken',
+            hint: 'Wenn aktiviert, können Energiekosten nur bei Unitatio-Vorteil oder nicht-numerischen Kosten gesetzt werden. Wenn deaktiviert, können Energiekosten immer manuell gesetzt werden.',
+            config: true,
+            type: new foundry.data.fields.BooleanField(),
+            scope: 'world',
+            default: false,
+        },
     ].forEach((setting) => {
         game.settings.register(ConfigureGameSettingsCategories.Ilaris, setting.settingsName, {
             name: setting.name,

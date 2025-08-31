@@ -66,6 +66,7 @@ export async function wuerfelwurf(event, actor) {
         await item.setManoevers()
         console.log('item', item)
         let d = new UebernatuerlichDialog(actor, item)
+
         await d.render(true)
     } else if (rolltype == 'attribut_diag') {
         const attribut_name = $(event.currentTarget).data('attribut')

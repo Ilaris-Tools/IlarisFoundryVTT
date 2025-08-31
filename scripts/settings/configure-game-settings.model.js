@@ -10,6 +10,7 @@ export const IlarisGameSettingNames = {
     manoeverPacks: 'manoeverPacks',
     vorteilePacks: 'vorteilePacks',
     realFumbleCrits: 'realFumbleCrits',
+    restrictEnergyCostSetting: 'restrictEnergyCostSetting',
 }
 
 export const IlarisGameSettingsMenuNames = {
