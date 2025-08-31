@@ -22,6 +22,7 @@ export class CombatItem extends IlarisItem {
             kbak: { selected: false },
             mod: { selected: false },
             rllm: { selected: game.settings.get('core', 'rollMode') },
+            vlof: { selected: false, offensiver_kampfstil: false },
         }
         // Get selected maneuver packs from settings
         const selectedPacks = JSON.parse(
