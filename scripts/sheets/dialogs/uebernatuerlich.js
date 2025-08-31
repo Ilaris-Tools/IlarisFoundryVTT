@@ -74,8 +74,7 @@ export class UebernatuerlichDialog extends CombatDialog {
                 this.item.type === 'zauber')
 
         const difficulty = +this.item.system.schwierigkeit
-        console.log('difficulty', difficulty, isNaN(difficulty))
-        const isNonStandardDifficulty = isNaN(difficulty)
+        const isNonStandardDifficulty = isNaN(difficulty) || !difficulty
 
         return {
             choices_xd20: CONFIG.ILARIS.xd20_choice,
