@@ -23,6 +23,15 @@
             <label><b>Beschreibung:</b></label>
             <textarea rows="8" name="system.text">{{item.system.text}}</textarea>
         </div>
+        <div class="flexrow">
+            <label><b>Script (nur Kampfstile unterstützt):</b></label>
+            <input
+                name="system.script"
+                value="{{item.system.script}}"
+                type="text"
+                data-dtype="String"
+            />
+        </div>
         <hr />
         <a class="item-delete" data-itemid="{{item._id}}">
             <button class="clickable" type="button">

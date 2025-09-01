@@ -367,7 +367,8 @@
     "vorteil": {
       "voraussetzung": "",
       "gruppe": 0,
-      "text": ""
+      "text": "",
+      "script": ""
     },
     "manoever": {
       "voraussetzungen": [],
