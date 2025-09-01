@@ -38,6 +38,7 @@ describe('hardcodedvorteile.js', () => {
                     key: 'ohne',
                     stufe: 0,
                     sources: [],
+                    modifiers: [0, 0, 0, 0, 0],
                 },
             })
         })
@@ -49,10 +50,16 @@ describe('hardcodedvorteile.js', () => {
                         {
                             name: 'Beidhändiger Kampf I',
                             _stats: { compendiumSource: 'Ilaris.beidhändig1' },
+                            system: {
+                                script: 'modifyKampfstil("Beidhändiger Kampf", 1, 0, 0, 0, 0)',
+                            },
                         },
                         {
                             name: 'Beidhändiger Kampf II (test)',
                             _stats: { compendiumSource: 'Ilaris.beidhändig2' },
+                            system: {
+                                script: 'modifyKampfstil("Beidhändiger Kampf", 1, 0, 0, 0, 0)',
+                            },
                         },
                     ],
                 },
@@ -66,12 +73,14 @@ describe('hardcodedvorteile.js', () => {
                     key: 'ohne',
                     stufe: 0,
                     sources: [],
+                    modifiers: [0, 0, 0, 0, 0],
                 },
                 'Beidhändiger Kampf': {
                     name: 'Beidhändiger Kampf',
                     key: 'Beidhändiger Kampf',
                     stufe: 2,
                     sources: ['Beidhändiger Kampf I', 'Beidhändiger Kampf II (test)'],
+                    modifiers: [2, 0, 0, 0, 0],
                 },
             })
         })
@@ -100,18 +109,21 @@ describe('hardcodedvorteile.js', () => {
                     key: 'ohne',
                     stufe: 0,
                     sources: [],
+                    modifiers: [0, 0, 0, 0, 0],
                 },
                 'Beidhändiger Kampf': {
                     name: 'Beidhändiger Kampf',
                     key: 'Beidhändiger Kampf',
                     stufe: 1,
                     sources: ['Beidhändiger Kampf I'],
+                    modifiers: [0, 0, 0, 0, 0],
                 },
                 'Defensiver Kampfstil': {
                     name: 'Defensiver Kampfstil',
                     key: 'Defensiver Kampfstil',
                     stufe: 2,
                     sources: ['Defensiver Kampfstil II'],
+                    modifiers: [0, 0, 0, 0, 0],
                 },
             })
         })

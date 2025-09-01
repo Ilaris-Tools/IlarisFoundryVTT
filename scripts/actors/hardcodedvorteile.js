@@ -166,6 +166,7 @@ export function getKampfstile(actor) {
             key: 'ohne',
             stufe: 0,
             sources: [],
+            modifiers: [0, 0, 0, 0, 0], // Default no modifiers
         },
     }
 
@@ -190,6 +191,17 @@ export function getKampfstile(actor) {
         // Collect all compendium sources for this kampfstil group
         const sources = stile.map((stil) => stil.name)
 
+        // Accumulate script modifiers from all kampfstile in this group
+        const accumulatedModifiers = [0, 0, 0, 0, 0]
+        stile.forEach((stil) => {
+            const modifiers = parseKampfstilScript(stil.system?.script, stil.name)
+            if (modifiers) {
+                for (let i = 0; i < 5; i++) {
+                    accumulatedModifiers[i] += modifiers[i]
+                }
+            }
+        })
+
         // Only add if all sources are non-null and highestStil has a compendium source
         const name = highestStil.name.replace(/ [IV]+.*$/, '')
         if (sources.every((source) => source !== null)) {
@@ -198,6 +210,7 @@ export function getKampfstile(actor) {
                 key: name,
                 stufe: getKampfstilStufe(highestStil.name),
                 sources: sources,
+                modifiers: accumulatedModifiers,
             }
         }
     })
@@ -219,6 +232,44 @@ export function getKampfstilStufe(kampfstilName) {
     }
 
     return romanToNum[match[1]] || 0
+}
+
+/**
+ * Parses a kampfstil script string to extract modifyKampfstil modifiers
+ * @param {string} script - The script string (e.g., "modifyKampfstil('Beidhändiger Kampf', 1, 0, 0, 0)")
+ * @param {string} kampfstilName - The name of the kampfstil for error logging
+ * @returns {number[]|null} Array of 5 numbers representing the modifiers, or null if parsing failed
+ */
+export function parseKampfstilScript(script, kampfstilName) {
+    if (!script || typeof script !== 'string') {
+        return null
+    }
+
+    // Match modifyKampfstil function call with 5 numeric parameters (can be negative)
+    const regex =
+        /modifyKampfstil\s*\(\s*['"](.*?)['"],\s*(-?\d+),\s*(-?\d+),\s*(-?\d+),\s*(-?\d+),?\s*(-?\d+)?\s*\)/
+    const match = script.match(regex)
+
+    if (!match) {
+        return null
+    }
+
+    // Extract the numeric values, defaulting the 6th parameter to 0 if not present
+    const modifiers = [
+        parseInt(match[2], 10),
+        parseInt(match[3], 10),
+        parseInt(match[4], 10),
+        parseInt(match[5], 10),
+        parseInt(match[6] || '0', 10),
+    ]
+
+    // Validate that all values are integers
+    if (modifiers.some(isNaN)) {
+        console.warn(`Invalid modifiers in kampfstil script for ${kampfstilName}: ${script}`)
+        return null
+    }
+
+    return modifiers
 }
 
 export function getAngepasst(angepasst_string, actor) {
