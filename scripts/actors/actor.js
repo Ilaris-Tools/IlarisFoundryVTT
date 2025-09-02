@@ -674,7 +674,13 @@ export class IlarisActor extends Actor {
         // "snk": "Schneller Kampf"
         if (
             selected_kampfstil.name.includes('Beidhändiger Kampf') &&
-            weaponRequirement.usesTwoMeleeWeapons(HAUPTWAFFE, NEBENWAFFE)
+            weaponRequirement.usesTwoMeleeWeapons(HAUPTWAFFE, NEBENWAFFE) &&
+            !weaponRequirement.anyWeaponNeedsToMeetRequirement(
+                HAUPTWAFFE,
+                NEBENWAFFE,
+                'reittier',
+            ) &&
+            !weaponRequirement.anyWeaponNeedsToMeetRequirement(HAUPTWAFFE, NEBENWAFFE, 'schild')
         ) {
             let at_hw = selected_kampfstil.modifiers.at
             let at_nw = selected_kampfstil.modifiers.at

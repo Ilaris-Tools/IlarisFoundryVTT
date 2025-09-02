@@ -22,19 +22,10 @@ export function usesSingleMeleeWeapon(hauptWaffe, nebenWaffe, ridingAllowed = fa
     return waffe
 }
 
-export function usesTwoMeleeWeapons(
-    hauptWaffe,
-    nebenWaffe,
-    ridingAllowed = false,
-    shieldAllowed = false,
-) {
+export function usesTwoMeleeWeapons(hauptWaffe, nebenWaffe) {
     if (typeof hauptWaffe == 'undefined' || typeof nebenWaffe == 'undefined') return false
     if (hauptWaffe.id == nebenWaffe.id) return false
     if (hauptWaffe.type != 'nahkampfwaffe' || nebenWaffe.type != 'nahkampfwaffe') return false
-    if (!ridingAllowed && anyWeaponNeedsToMeetRequirement(hauptWaffe, nebenWaffe, 'reittier'))
-        return false
-    if (!shieldAllowed && anyWeaponNeedsToMeetRequirement(hauptWaffe, nebenWaffe, 'schild'))
-        return false
     return true
 }
 

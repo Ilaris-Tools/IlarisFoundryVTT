@@ -107,41 +107,6 @@ describe('weapon-requirements.js', () => {
             const result = usesTwoMeleeWeapons(mockMeleeWeapon1, mockMeleeWeapon2)
             expect(result).toBe(true)
         })
-
-        it('should return false when one weapon requires riding but riding is not allowed', () => {
-            const result = usesTwoMeleeWeapons(mockRidingWeapon, mockMeleeWeapon2, false)
-            expect(result).toBe(false)
-        })
-
-        it('should return true when one weapon requires riding and riding is allowed', () => {
-            const result = usesTwoMeleeWeapons(mockRidingWeapon, mockMeleeWeapon2, true)
-            expect(result).toBe(true)
-        })
-
-        it('should return false when one weapon requires shield but shield is not allowed', () => {
-            const result = usesTwoMeleeWeapons(mockShieldWeapon, mockMeleeWeapon2, false, false)
-            expect(result).toBe(false)
-        })
-
-        it('should return true when one weapon requires shield and shield is allowed', () => {
-            const result = usesTwoMeleeWeapons(mockShieldWeapon, mockMeleeWeapon2, false, true)
-            expect(result).toBe(true)
-        })
-
-        it('should return false when weapon requires both riding and shield but only one is allowed', () => {
-            const result = usesTwoMeleeWeapons(
-                mockRidingShieldWeapon,
-                mockMeleeWeapon2,
-                true,
-                false,
-            )
-            expect(result).toBe(false)
-        })
-
-        it('should return true when weapon requires both riding and shield and both are allowed', () => {
-            const result = usesTwoMeleeWeapons(mockRidingShieldWeapon, mockMeleeWeapon2, true, true)
-            expect(result).toBe(true)
-        })
     })
 
     describe('anyWeaponNeedsToMeetRequirement', () => {
