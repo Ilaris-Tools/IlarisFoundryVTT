@@ -765,7 +765,7 @@ export class IlarisActor extends Actor {
                 NEBENWAFFE.system.vt += vt
             }
         } else if (selected_kampfstil.name.includes('Schneller Kampf')) {
-            let waffe = usesSingleMeleeWeapon(HAUPTWAFFE, NEBENWAFFE)
+            let waffe = weaponRequirement.usesSingleMeleeWeapon(HAUPTWAFFE, NEBENWAFFE)
             if (waffe) {
                 waffe.system.at += selected_kampfstil.modifiers.at
             }
