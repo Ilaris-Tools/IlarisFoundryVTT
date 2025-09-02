@@ -1,8 +1,10 @@
+import { at } from 'lodash'
 import {
     usesSingleMeleeWeapon,
     usesTwoMeleeWeapons,
     anyWeaponNeedsToMeetRequirement,
-} from '../weapon-requirements.js'
+    ignoreSideWeaponMalus,
+} from '../weapon-utils.js'
 
 describe('weapon-requirements.js', () => {
     // Mock weapon objects for testing
@@ -11,18 +13,30 @@ describe('weapon-requirements.js', () => {
         type,
         system: {
             eigenschaften,
+            at: 0,
+            vt: 0,
         },
     })
 
-    const mockMeleeWeapon1 = createMockWeapon('weapon1', 'nahkampfwaffe', {})
-    const mockMeleeWeapon2 = createMockWeapon('weapon2', 'nahkampfwaffe', {})
-    const mockSameWeapon = createMockWeapon('weapon1', 'nahkampfwaffe', {})
-    const mockRangedWeapon = createMockWeapon('ranged1', 'fernkampfwaffe', {})
-    const mockRidingWeapon = createMockWeapon('riding1', 'nahkampfwaffe', { reittier: true })
-    const mockShieldWeapon = createMockWeapon('shield1', 'nahkampfwaffe', { schild: true })
+    const mockMeleeWeapon1 = createMockWeapon('weapon1', 'nahkampfwaffe', { at: 0, vt: 0 })
+    const mockMeleeWeapon2 = createMockWeapon('weapon2', 'nahkampfwaffe', { at: 0, vt: 0 })
+    const mockSameWeapon = createMockWeapon('weapon1', 'nahkampfwaffe', { at: 0, vt: 0 })
+    const mockRangedWeapon = createMockWeapon('ranged1', 'fernkampfwaffe', { at: 0, vt: 0 })
+    const mockRidingWeapon = createMockWeapon('riding1', 'nahkampfwaffe', {
+        reittier: true,
+        at: 0,
+        vt: 0,
+    })
+    const mockShieldWeapon = createMockWeapon('shield1', 'nahkampfwaffe', {
+        schild: true,
+        at: 0,
+        vt: 0,
+    })
     const mockRidingShieldWeapon = createMockWeapon('ridingShield1', 'nahkampfwaffe', {
         reittier: true,
         schild: true,
+        at: 0,
+        vt: 0,
     })
 
     describe('usesSingleMeleeWeapon', () => {
@@ -212,6 +226,40 @@ describe('weapon-requirements.js', () => {
                 'customProperty',
             )
             expect(result).toBe(true)
+        })
+    })
+
+    describe('ignoreSideWeaponMalus', () => {
+        it('should not apply bonus if kein_malus_nebenwaffe is true', () => {
+            const nebenwaffe = createMockWeapon('nebenwaffe', 'nahkampfwaffe', {
+                kein_malus_nebenwaffe: true,
+            })
+            ignoreSideWeaponMalus(nebenwaffe)
+            expect(nebenwaffe.system.at).toBe(0)
+            expect(nebenwaffe.system.vt).toBe(0)
+        })
+
+        it('should apply bonus if kein_malus_nebenwaffe is false', () => {
+            const nebenwaffe = createMockWeapon('nebenwaffe', 'nahkampfwaffe', {
+                kein_malus_nebenwaffe: false,
+            })
+            ignoreSideWeaponMalus(nebenwaffe)
+            expect(nebenwaffe.system.at).toBe(4)
+            expect(nebenwaffe.system.vt).toBe(4)
+        })
+
+        it('should not apply bonus if weapon is undefined', () => {
+            const result = ignoreSideWeaponMalus(undefined)
+            expect(result).toBeUndefined()
+        })
+
+        it('should apply bonus if weapon has schild property', () => {
+            const nebenwaffe = createMockWeapon('nebenwaffe', 'nahkampfwaffe', {
+                schild: true,
+            })
+            ignoreSideWeaponMalus(nebenwaffe, 'schild')
+            expect(nebenwaffe.system.at).toBe(4)
+            expect(nebenwaffe.system.vt).toBe(4)
         })
     })
 })

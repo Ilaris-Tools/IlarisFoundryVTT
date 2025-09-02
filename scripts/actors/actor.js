@@ -1,5 +1,5 @@
 import * as hardcoded from './hardcodedvorteile.js'
-import * as weaponRequirement from './weapon-requirements.js'
+import * as weaponUtils from './weapon-utils.js'
 
 export class IlarisActor extends Actor {
     async _preCreate(data, options, user) {
@@ -674,26 +674,19 @@ export class IlarisActor extends Actor {
         // "snk": "Schneller Kampf"
         if (
             selected_kampfstil.name.includes('Beidhändiger Kampf') &&
-            weaponRequirement.usesTwoMeleeWeapons(HAUPTWAFFE, NEBENWAFFE) &&
-            !weaponRequirement.anyWeaponNeedsToMeetRequirement(
-                HAUPTWAFFE,
-                NEBENWAFFE,
-                'reittier',
-            ) &&
-            !weaponRequirement.anyWeaponNeedsToMeetRequirement(HAUPTWAFFE, NEBENWAFFE, 'schild')
+            weaponUtils.usesTwoMeleeWeapons(HAUPTWAFFE, NEBENWAFFE) &&
+            !weaponUtils.anyWeaponNeedsToMeetRequirement(HAUPTWAFFE, NEBENWAFFE, 'reittier') &&
+            !weaponUtils.anyWeaponNeedsToMeetRequirement(HAUPTWAFFE, NEBENWAFFE, 'schild')
         ) {
             let at_hw = selected_kampfstil.modifiers.at
             let at_nw = selected_kampfstil.modifiers.at
             if (selected_kampfstil.stufe >= 2) {
-                if (!NEBENWAFFE.system.eigenschaften.kein_malus_nebenwaffe) {
-                    at_nw += 4
-                    NEBENWAFFE.system.vt += 4
-                }
+                weaponUtils.ignoreSideWeaponMalus(NEBENWAFFE)
             }
             HAUPTWAFFE.system.at += at_hw
             NEBENWAFFE.system.at += at_nw
         } else if (selected_kampfstil.name.includes('Kraftvoller Kampf')) {
-            let waffe = weaponRequirement.usesSingleMeleeWeapon(HAUPTWAFFE, NEBENWAFFE)
+            let waffe = weaponUtils.usesSingleMeleeWeapon(HAUPTWAFFE, NEBENWAFFE)
             if (waffe) {
                 let schaden = selected_kampfstil.modifiers.damage
                 schaden = '+'.concat(schaden)
@@ -701,24 +694,15 @@ export class IlarisActor extends Actor {
             }
         } else if (
             selected_kampfstil.name.includes('Parierwaffenkampf') &&
-            weaponRequirement.anyWeaponNeedsToMeetRequirement(
-                HAUPTWAFFE,
-                NEBENWAFFE,
-                'parierwaffe',
-            ) &&
-            !weaponRequirement.anyWeaponNeedsToMeetRequirement(HAUPTWAFFE, NEBENWAFFE, 'reittier')
+            weaponUtils.anyWeaponNeedsToMeetRequirement(HAUPTWAFFE, NEBENWAFFE, 'parierwaffe') &&
+            !weaponUtils.anyWeaponNeedsToMeetRequirement(HAUPTWAFFE, NEBENWAFFE, 'reittier')
         ) {
             if (selected_kampfstil.stufe >= 2) {
-                if (nebenwaffe) {
-                    if (!NEBENWAFFE.system.eigenschaften.kein_malus_nebenwaffe) {
-                        NEBENWAFFE.system.at += 4
-                        NEBENWAFFE.system.vt += 4
-                    }
-                }
+                weaponUtils.ignoreSideWeaponMalus(NEBENWAFFE, 'parierwaffe')
             }
         } else if (
             selected_kampfstil.name.includes('Reiterkampf') &&
-            weaponRequirement.anyWeaponNeedsToMeetRequirement(HAUPTWAFFE, NEBENWAFFE, 'reittier')
+            weaponUtils.anyWeaponNeedsToMeetRequirement(HAUPTWAFFE, NEBENWAFFE, 'reittier')
         ) {
             let schaden = selected_kampfstil.modifiers.damage
             let at = selected_kampfstil.modifiers.at
@@ -742,40 +726,27 @@ export class IlarisActor extends Actor {
                     NEBENWAFFE.system.schaden = NEBENWAFFE.system.schaden.concat(schaden)
                 }
                 if (selected_kampfstil.stufe >= 2) {
-                    if (
-                        !NEBENWAFFE.system.eigenschaften.kein_malus_nebenwaffe &&
-                        NEBENWAFFE.system.eigenschaften.reittier
-                    ) {
-                        at += 4
-                        vt += 4
-                    }
+                    weaponUtils.ignoreSideWeaponMalus(NEBENWAFFE, 'reittier')
                 }
             }
         } else if (
             selected_kampfstil.name.includes('Schildkampf') &&
-            weaponRequirement.anyWeaponNeedsToMeetRequirement(HAUPTWAFFE, NEBENWAFFE, 'schild')
+            weaponUtils.anyWeaponNeedsToMeetRequirement(HAUPTWAFFE, NEBENWAFFE, 'schild')
         ) {
             let vt = selected_kampfstil.modifiers.vt
             if (HAUPTWAFFE && HAUPTWAFFE.type == 'nahkampfwaffe') {
                 HAUPTWAFFE.system.vt += vt
             }
-            if (HAUPTWAFFE.id != NEBENWAFFE.id) {
+            if (HAUPTWAFFE && NEBENWAFFE && HAUPTWAFFE.id != NEBENWAFFE.id) {
                 if (NEBENWAFFE && NEBENWAFFE.type == 'nahkampfwaffe') {
                     NEBENWAFFE.system.vt += vt
                 }
                 if (selected_kampfstil.stufe >= 2) {
-                    if (
-                        !NEBENWAFFE.system.eigenschaften.kein_malus_nebenwaffe &&
-                        NEBENWAFFE.system.eigenschaften.schild
-                    ) {
-                        vt += 4
-                        NEBENWAFFE.system.at += 4
-                    }
+                    weaponUtils.ignoreSideWeaponMalus(NEBENWAFFE, 'schild')
                 }
-                NEBENWAFFE.system.vt += vt
             }
         } else if (selected_kampfstil.name.includes('Schneller Kampf')) {
-            let waffe = weaponRequirement.usesSingleMeleeWeapon(HAUPTWAFFE, NEBENWAFFE)
+            let waffe = weaponUtils.usesSingleMeleeWeapon(HAUPTWAFFE, NEBENWAFFE)
             if (waffe) {
                 waffe.system.at += selected_kampfstil.modifiers.at
             }

@@ -42,3 +42,12 @@ export function anyWeaponNeedsToMeetRequirement(hauptWaffe, nebenWaffe, requirem
     }
     return false
 }
+
+export function ignoreSideWeaponMalus(nebenwaffe, waffenEigenschaft = '') {
+    if (!nebenwaffe) return
+    if (nebenwaffe.system.eigenschaften.kein_malus_nebenwaffe) return
+    if (waffenEigenschaft && !nebenwaffe.system.eigenschaften[waffenEigenschaft]) return
+
+    nebenwaffe.system.at += 4
+    nebenwaffe.system.vt += 4
+}
