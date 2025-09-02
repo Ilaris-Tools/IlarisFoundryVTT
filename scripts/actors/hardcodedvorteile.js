@@ -166,7 +166,7 @@ export function getKampfstile(actor) {
             key: 'ohne',
             stufe: 0,
             sources: [],
-            modifiers: [0, 0, 0, 0, 0], // Default no modifiers
+            modifiers: { at: 0, vt: 0, damage: 0, rw: 0, be: 0 }, // Default no modifiers
         },
     }
 
@@ -192,13 +192,15 @@ export function getKampfstile(actor) {
         const sources = stile.map((stil) => stil.name)
 
         // Accumulate script modifiers from all kampfstile in this group
-        const accumulatedModifiers = [0, 0, 0, 0, 0]
+        const accumulatedModifiers = { at: 0, vt: 0, damage: 0, rw: 0, be: 0 }
         stile.forEach((stil) => {
             const modifiers = parseKampfstilScript(stil.system?.script, stil.name)
             if (modifiers) {
-                for (let i = 0; i < 5; i++) {
-                    accumulatedModifiers[i] += modifiers[i]
-                }
+                accumulatedModifiers.at += modifiers[0]
+                accumulatedModifiers.vt += modifiers[1]
+                accumulatedModifiers.damage += modifiers[2]
+                accumulatedModifiers.rw += modifiers[3]
+                accumulatedModifiers.be += modifiers[4]
             }
         })
 

@@ -38,7 +38,7 @@ describe('hardcodedvorteile.js', () => {
                     key: 'ohne',
                     stufe: 0,
                     sources: [],
-                    modifiers: [0, 0, 0, 0, 0],
+                    modifiers: { at: 0, vt: 0, damage: 0, rw: 0, be: 0 },
                 },
             })
         })
@@ -73,14 +73,14 @@ describe('hardcodedvorteile.js', () => {
                     key: 'ohne',
                     stufe: 0,
                     sources: [],
-                    modifiers: [0, 0, 0, 0, 0],
+                    modifiers: { at: 0, vt: 0, damage: 0, rw: 0, be: 0 },
                 },
                 'Beidhändiger Kampf': {
                     name: 'Beidhändiger Kampf',
                     key: 'Beidhändiger Kampf',
                     stufe: 2,
                     sources: ['Beidhändiger Kampf I', 'Beidhändiger Kampf II (test)'],
-                    modifiers: [2, 0, 0, 0, 0],
+                    modifiers: { at: 2, vt: 0, damage: 0, rw: 0, be: 0 },
                 },
             })
         })
@@ -109,21 +109,21 @@ describe('hardcodedvorteile.js', () => {
                     key: 'ohne',
                     stufe: 0,
                     sources: [],
-                    modifiers: [0, 0, 0, 0, 0],
+                    modifiers: { at: 0, vt: 0, damage: 0, rw: 0, be: 0 },
                 },
                 'Beidhändiger Kampf': {
                     name: 'Beidhändiger Kampf',
                     key: 'Beidhändiger Kampf',
                     stufe: 1,
                     sources: ['Beidhändiger Kampf I'],
-                    modifiers: [0, 0, 0, 0, 0],
+                    modifiers: { at: 0, vt: 0, damage: 0, rw: 0, be: 0 },
                 },
                 'Defensiver Kampfstil': {
                     name: 'Defensiver Kampfstil',
                     key: 'Defensiver Kampfstil',
                     stufe: 2,
                     sources: ['Defensiver Kampfstil II'],
-                    modifiers: [0, 0, 0, 0, 0],
+                    modifiers: { at: 0, vt: 0, damage: 0, rw: 0, be: 0 },
                 },
             })
         })

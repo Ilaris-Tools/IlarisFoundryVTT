@@ -1,4 +1,5 @@
 import * as hardcoded from './hardcodedvorteile.js'
+import * as weaponRequirement from './weapon-requirements.js'
 
 export class IlarisActor extends Actor {
     async _preCreate(data, options, user) {
@@ -673,226 +674,64 @@ export class IlarisActor extends Actor {
         // "snk": "Schneller Kampf"
         if (
             selected_kampfstil.name.includes('Beidhändiger Kampf') &&
-            typeof HAUPTWAFFE != 'undefined' &&
-            typeof NEBENWAFFE != 'undefined'
+            weaponRequirement.usesTwoMeleeWeapons(HAUPTWAFFE, NEBENWAFFE)
         ) {
-            let nahkampfwaffe = true
-            let einhaendig = false
-            let kein_schild = false
-            let unterschiedlich = false
-            let kein_reiter = false
-            if (HAUPTWAFFE.type == 'nahkampfwaffe' && NEBENWAFFE.type == 'nahkampfwaffe') {
-                nahkampfwaffe = true
-            }
-            if (HAUPTWAFFE.id != NEBENWAFFE.id) {
-                unterschiedlich = true
-            }
-            if (
-                !(
-                    HAUPTWAFFE.system.eigenschaften.zweihaendig ||
-                    NEBENWAFFE.system.eigenschaften.zweihaendig
-                )
-            ) {
-                einhaendig = true
-            }
-            if (nahkampfwaffe) {
-                if (
-                    !(
-                        HAUPTWAFFE.system.eigenschaften.schild ||
-                        NEBENWAFFE.system.eigenschaften.schild
-                    )
-                ) {
-                    kein_schild = true
-                }
-                if (
-                    !(
-                        HAUPTWAFFE.system.eigenschaften.reittier ||
-                        NEBENWAFFE.system.eigenschaften.reittier
-                    )
-                ) {
-                    kein_reiter = true
+            let at_hw = selected_kampfstil.modifiers.at
+            let at_nw = selected_kampfstil.modifiers.at
+            if (selected_kampfstil.stufe >= 2) {
+                if (!NEBENWAFFE.system.eigenschaften.kein_malus_nebenwaffe) {
+                    at_nw += 4
+                    NEBENWAFFE.system.vt += 4
                 }
             }
-            if (nahkampfwaffe && einhaendig && kein_schild && kein_reiter && unterschiedlich) {
-                let at_hw = 0
-                let at_nw = 0
-                if (selected_kampfstil.stufe >= 1) {
-                    console.log('Stufe 1')
-                    at_hw += 1
-                    at_nw += 1
-                }
-                if (selected_kampfstil.stufe >= 2) {
-                    console.log('Stufe 2')
-                    at_hw += 1
-                    at_nw += 1
+            HAUPTWAFFE.system.at += at_hw
+            NEBENWAFFE.system.at += at_nw
+        } else if (selected_kampfstil.name.includes('Kraftvoller Kampf')) {
+            let waffe = weaponRequirement.usesSingleMeleeWeapon(HAUPTWAFFE, NEBENWAFFE)
+            if (waffe) {
+                let schaden = selected_kampfstil.modifiers.damage
+                schaden = '+'.concat(schaden)
+                waffe.system.schaden = waffe.system.schaden.concat(schaden)
+            }
+        } else if (
+            selected_kampfstil.name.includes('Parierwaffenkampf') &&
+            weaponRequirement.anyWeaponNeedsToMeetRequirement(
+                HAUPTWAFFE,
+                NEBENWAFFE,
+                'parierwaffe',
+            ) &&
+            !weaponRequirement.anyWeaponNeedsToMeetRequirement(HAUPTWAFFE, NEBENWAFFE, 'reittier')
+        ) {
+            if (selected_kampfstil.stufe >= 2) {
+                if (nebenwaffe) {
                     if (!NEBENWAFFE.system.eigenschaften.kein_malus_nebenwaffe) {
-                        at_nw += 4
+                        NEBENWAFFE.system.at += 4
                         NEBENWAFFE.system.vt += 4
                     }
                 }
-                if (selected_kampfstil.stufe >= 3) {
-                    console.log('Stufe 3')
-                    at_hw += 1
-                    at_nw += 1
-                }
-                HAUPTWAFFE.system.at += at_hw
-                NEBENWAFFE.system.at += at_nw
             }
-        } else if (selected_kampfstil.name.includes('Kraftvoller Kampf')) {
-            let hauptwaffe = false
-            let nebenwaffe = false
-            let WAFFE = null
-            if (typeof HAUPTWAFFE != 'undefined') hauptwaffe = true
-            if (typeof NEBENWAFFE != 'undefined') nebenwaffe = true
-            if (hauptwaffe && nebenwaffe) {
-                if (HAUPTWAFFE.id == NEBENWAFFE.id) {
-                    WAFFE = HAUPTWAFFE
-                }
-            }
-            if (hauptwaffe && !nebenwaffe) {
-                WAFFE = HAUPTWAFFE
-            }
-            if (!hauptwaffe && nebenwaffe) {
-                WAFFE = NEBENWAFFE
-            }
-            if (WAFFE) {
-                if (WAFFE.type == 'nahkampfwaffe') {
-                    if (WAFFE.system.eigenschaften.reittier == false) {
-                        let schaden = 0
-                        if (selected_kampfstil.stufe >= 1) {
-                            console.log('Stufe 1')
-                            schaden += 1
-                        }
-                        if (selected_kampfstil.stufe >= 2) {
-                            console.log('Stufe 2')
-                            schaden += 1
-                        }
-                        if (selected_kampfstil.stufe >= 3) {
-                            console.log('Stufe 3')
-                            schaden += 1
-                        }
-                        schaden = '+'.concat(schaden)
-                        WAFFE.system.schaden = WAFFE.system.schaden.concat(schaden)
-                    }
-                }
-            }
-        } else if (selected_kampfstil.name.includes('Parierwaffenkampf')) {
-            let hauptwaffe = false
-            let nebenwaffe = false
-            let parierwaffe = false
-            let fernkampf = false
-            let reittier = false
-            if (typeof HAUPTWAFFE != 'undefined') hauptwaffe = true
-            if (typeof NEBENWAFFE != 'undefined') nebenwaffe = true
-            if (hauptwaffe && HAUPTWAFFE.type == 'nahkampfwaffe') {
-                if (HAUPTWAFFE.system.eigenschaften.parierwaffe) {
-                    parierwaffe = true
-                }
-                if (HAUPTWAFFE.system.eigenschaften.reittier) {
-                    reittier = true
-                }
-            }
-            if (nebenwaffe && NEBENWAFFE.type == 'nahkampfwaffe') {
-                if (NEBENWAFFE.system.eigenschaften.parierwaffe) {
-                    parierwaffe = true
-                }
-                if (NEBENWAFFE.system.eigenschaften.reittier) {
-                    reittier = true
-                }
-            }
-            if (hauptwaffe && HAUPTWAFFE.type == 'fernkampfwaffe') {
-                fernkampf = true
-            }
-            if (nebenwaffe && NEBENWAFFE.type == 'fernkampfwaffe') {
-                fernkampf = true
-            }
-            if (parierwaffe && !fernkampf && !reittier) {
-                if (selected_kampfstil.stufe >= 1) {
-                    console.log('Stufe 1')
-                }
-                if (selected_kampfstil.stufe >= 2) {
-                    console.log('Stufe 2')
-                    if (nebenwaffe) {
-                        if (!NEBENWAFFE.system.eigenschaften.kein_malus_nebenwaffe) {
-                            NEBENWAFFE.system.at += 4
-                            NEBENWAFFE.system.vt += 4
-                        }
-                    }
-                }
-                if (selected_kampfstil.stufe >= 3) {
-                    console.log('Stufe 3')
-                    if (hauptwaffe) HAUPTWAFFE.system.manoever.km_rpst.possible = true
-                    if (nebenwaffe) NEBENWAFFE.system.manoever.km_rpst.possible = true
-                }
-            }
-        } else if (selected_kampfstil.name.includes('Reiterkampf')) {
-            console.log(CONFIG.ILARIS.label[selected_kampfstil])
-            let hauptwaffe = false
-            let nebenwaffe = false
-            let reittier = false
-            if (typeof HAUPTWAFFE != 'undefined') hauptwaffe = true
-            if (typeof NEBENWAFFE != 'undefined') nebenwaffe = true
-            if (hauptwaffe && HAUPTWAFFE.type == 'nahkampfwaffe') {
-                if (HAUPTWAFFE.system.eigenschaften.reittier) {
-                    reittier = true
-                }
-            }
-            if (nebenwaffe && NEBENWAFFE.type == 'nahkampfwaffe') {
-                if (NEBENWAFFE.system.eigenschaften.reittier) {
-                    reittier = true
-                }
-            }
-            if (reittier && hauptwaffe && HAUPTWAFFE.type == 'nahkampfwaffe') {
-                let schaden = 0
-                let at = 0
-                let vt = 0
-                if (selected_kampfstil.stufe >= 1) {
-                    console.log('Stufe 1 (Hauptwaffe)')
-                    schaden += 1
-                    at += 1
-                    vt += 1
-                }
-                if (selected_kampfstil.stufe >= 2) {
-                    console.log('Stufe 2 (Hauptwaffe)')
-                    schaden += 1
-                    at += 1
-                    vt += 1
-                }
-                if (selected_kampfstil.stufe >= 3) {
-                    console.log('Stufe 3 (Hauptwaffe)')
-                    schaden += 1
-                    at += 1
-                    vt += 1
-                    if (HAUPTWAFFE.system.eigenschaften.reittier)
-                        HAUPTWAFFE.system.manoever.km_uebr.possible = true
-                    // if (HAUPTWAFFE.data.data.eigenschaften.reittier) HAUPTWAFFE.data.data.manoever_at.push("km_uebr");
-                    // if (HAUPTWAFFE.data.eigenschaften.reittier) HAUPTWAFFE.data.manoever_at.km_uebr.possible=true;
-                }
-                schaden = '+'.concat(schaden)
+        } else if (
+            selected_kampfstil.name.includes('Reiterkampf') &&
+            weaponRequirement.anyWeaponNeedsToMeetRequirement(HAUPTWAFFE, NEBENWAFFE, 'reittier')
+        ) {
+            let schaden = selected_kampfstil.modifiers.damage
+            let at = selected_kampfstil.modifiers.at
+            let vt = selected_kampfstil.modifiers.vt
+            let be = selected_kampfstil.modifiers.be
+            schaden = '+'.concat(schaden)
+            if (HAUPTWAFFE && HAUPTWAFFE.type == 'nahkampfwaffe') {
                 HAUPTWAFFE.system.at += at
                 HAUPTWAFFE.system.vt += vt
                 HAUPTWAFFE.system.schaden = HAUPTWAFFE.system.schaden.concat(schaden)
             }
-            if (
-                reittier &&
-                nebenwaffe &&
-                NEBENWAFFE.type == 'nahkampfwaffe' &&
-                (!hauptwaffe || HAUPTWAFFE.id != NEBENWAFFE.id)
-            ) {
-                let schaden = 0
-                let at = 0
-                let vt = 0
-                if (selected_kampfstil.stufe >= 1) {
-                    console.log('Stufe 1 (Nebenwaffe)')
-                    schaden += 1
-                    at += 1
-                    vt += 1
+
+            if (HAUPTWAFFE.id != NEBENWAFFE.id) {
+                if (NEBENWAFFE && NEBENWAFFE.type == 'nahkampfwaffe') {
+                    NEBENWAFFE.system.at += at
+                    NEBENWAFFE.system.vt += vt
+                    NEBENWAFFE.system.schaden = NEBENWAFFE.system.schaden.concat(schaden)
                 }
                 if (selected_kampfstil.stufe >= 2) {
-                    console.log('Stufe 2 (Nebenwaffe)')
-                    schaden += 1
-                    at += 1
-                    vt += 1
                     if (
                         !NEBENWAFFE.system.eigenschaften.kein_malus_nebenwaffe &&
                         NEBENWAFFE.system.eigenschaften.reittier
@@ -901,63 +740,20 @@ export class IlarisActor extends Actor {
                         vt += 4
                     }
                 }
-                if (selected_kampfstil.stufe >= 3) {
-                    console.log('Stufe 3 (Nebenwaffe)')
-                    schaden += 1
-                    at += 1
-                    vt += 1
-                    if (NEBENWAFFE.system.eigenschaften.reittier)
-                        NEBENWAFFE.system.manoever.km_uebr.possible = true
-                    // if (NEBENWAFFE.data.data.eigenschaften.reittier) NEBENWAFFE.data.data.manoever_at.push("km_uebr");
-                    // if (NEBENWAFFE.data.eigenschaften.reittier) NEBENWAFFE.data.manoever_at.km_uebr.possible=true;
-                }
-                schaden = '+'.concat(schaden)
-                NEBENWAFFE.system.at += at
-                NEBENWAFFE.system.vt += vt
-                NEBENWAFFE.system.schaden = NEBENWAFFE.system.schaden.concat(schaden)
             }
-        } else if (selected_kampfstil.name.includes('Schildkampf')) {
-            console.log(CONFIG.ILARIS.label[selected_kampfstil])
-            let hauptwaffe = false
-            let nebenwaffe = false
-            let schild = false
-            if (typeof HAUPTWAFFE != 'undefined') hauptwaffe = true
-            if (typeof NEBENWAFFE != 'undefined') nebenwaffe = true
-            if (hauptwaffe && HAUPTWAFFE.type == 'nahkampfwaffe') {
-                if (HAUPTWAFFE.system.eigenschaften.schild) {
-                    schild = true
-                }
-            }
-            if (nebenwaffe && NEBENWAFFE.type == 'nahkampfwaffe') {
-                if (NEBENWAFFE.system.eigenschaften.schild) {
-                    schild = true
-                }
-            }
-            if (hauptwaffe && HAUPTWAFFE.type == 'nahkampfwaffe' && schild) {
-                let vt = 0
-                if (selected_kampfstil.stufe >= 1) {
-                    console.log('Stufe 1 (Hauptwaffe)')
-                    vt += 1
-                }
-                if (selected_kampfstil.stufe >= 2) {
-                    console.log('Stufe 2 (Hauptwaffe)')
-                    vt += 1
-                }
-                if (selected_kampfstil.stufe >= 3) {
-                    console.log('Stufe 3 (Hauptwaffe)')
-                    vt += 1
-                }
+        } else if (
+            selected_kampfstil.name.includes('Schildkampf') &&
+            weaponRequirement.anyWeaponNeedsToMeetRequirement(HAUPTWAFFE, NEBENWAFFE, 'schild')
+        ) {
+            let vt = selected_kampfstil.modifiers.vt
+            if (HAUPTWAFFE && HAUPTWAFFE.type == 'nahkampfwaffe') {
                 HAUPTWAFFE.system.vt += vt
             }
-            if (nebenwaffe && NEBENWAFFE.type == 'nahkampfwaffe' && schild) {
-                let vt = 0
-                if (selected_kampfstil.stufe >= 1) {
-                    console.log('Stufe 1 (Nebenwaffe)')
-                    vt += 1
+            if (HAUPTWAFFE.id != NEBENWAFFE.id) {
+                if (NEBENWAFFE && NEBENWAFFE.type == 'nahkampfwaffe') {
+                    NEBENWAFFE.system.vt += vt
                 }
                 if (selected_kampfstil.stufe >= 2) {
-                    console.log('Stufe 2 (Nebenwaffe)')
-                    vt += 1
                     if (
                         !NEBENWAFFE.system.eigenschaften.kein_malus_nebenwaffe &&
                         NEBENWAFFE.system.eigenschaften.schild
@@ -966,58 +762,12 @@ export class IlarisActor extends Actor {
                         NEBENWAFFE.system.at += 4
                     }
                 }
-                if (selected_kampfstil.stufe >= 3) {
-                    console.log('Stufe 3 (Nebenwaffe)')
-                    vt += 1
-                }
                 NEBENWAFFE.system.vt += vt
             }
         } else if (selected_kampfstil.name.includes('Schneller Kampf')) {
-            let hauptwaffe = false
-            let nebenwaffe = false
-            let WAFFE = null
-            if (typeof HAUPTWAFFE != 'undefined') hauptwaffe = true
-            if (typeof NEBENWAFFE != 'undefined') nebenwaffe = true
-            if (hauptwaffe && !nebenwaffe && HAUPTWAFFE.type == 'nahkampfwaffe') {
-                console.log('Hauptwaffe nahkampf')
-                if (!HAUPTWAFFE.system.eigenschaften.reittier) {
-                    WAFFE = HAUPTWAFFE
-                    console.log('step 1')
-                }
-            } else if (!hauptwaffe && nebenwaffe && NEBENWAFFE.type == 'nahkampfwaffe') {
-                console.log('Nebenwaffe nahkampf')
-                if (!NEBENWAFFE.system.eigenschaften.reittier) {
-                    WAFFE = NEBENWAFFE
-                    console.log('step 2')
-                }
-            } else if (
-                hauptwaffe &&
-                nebenwaffe &&
-                HAUPTWAFFE.type == 'nahkampfwaffe' &&
-                HAUPTWAFFE.id == NEBENWAFFE.id
-            ) {
-                console.log('Nahkampfwaffen identisch')
-                if (!HAUPTWAFFE.system.eigenschaften.reittier) {
-                    WAFFE = HAUPTWAFFE
-                    console.log('step 3')
-                }
-            }
-            if (WAFFE) {
-                console.log('step 4')
-                let at = 0
-                if (selected_kampfstil.stufe >= 1) {
-                    console.log('Stufe 1')
-                    at += 1
-                }
-                if (selected_kampfstil.stufe >= 2) {
-                    console.log('Stufe 2')
-                    at += 1
-                }
-                if (selected_kampfstil.stufe >= 3) {
-                    console.log('Stufe 3')
-                    at += 1
-                }
-                WAFFE.system.at += at
+            let waffe = usesSingleMeleeWeapon(HAUPTWAFFE, NEBENWAFFE)
+            if (waffe) {
+                waffe.system.at += selected_kampfstil.modifiers.at
             }
         }
     }
