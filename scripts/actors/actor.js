@@ -717,8 +717,12 @@ export class IlarisActor extends Actor {
             let schaden = selected_kampfstil.modifiers.damage
             let at = selected_kampfstil.modifiers.at
             let vt = selected_kampfstil.modifiers.vt
-            let be = selected_kampfstil.modifiers.be
+            let beReduction = selected_kampfstil.modifiers.be
             schaden = '+'.concat(schaden)
+
+            if (be > 0) {
+                be -= beReduction
+            }
             if (HAUPTWAFFE && HAUPTWAFFE.type == 'nahkampfwaffe') {
                 HAUPTWAFFE.system.at += at
                 HAUPTWAFFE.system.vt += vt

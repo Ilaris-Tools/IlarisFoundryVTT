@@ -17,7 +17,7 @@ export function usesSingleMeleeWeapon(hauptWaffe, nebenWaffe, ridingAllowed = fa
     if (!hauptWaffeSelected && nebenWaffeSelected) {
         waffe = nebenWaffe
     }
-    if (waffe.system.eigenschaften && waffe.system.eigenschaften.reittier && !ridingAllowed)
+    if (!ridingAllowed && anyWeaponNeedsToMeetRequirement(hauptWaffe, nebenWaffe, 'reittier'))
         return null
     return waffe
 }
