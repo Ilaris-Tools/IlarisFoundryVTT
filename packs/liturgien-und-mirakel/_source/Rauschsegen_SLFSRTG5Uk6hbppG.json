@@ -1,0 +1,41 @@
+{
+  "name": "Rauschsegen",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Rausch, Schlaf",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Die gesegneten Rauschmittel entfalten stärkere Wirkung bei geringeren Nebenwirkungen und machen nicht mehr abhängig.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "16 Aktionen",
+    "ziel": "Einzelobjekt",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Tag",
+    "kosten": "1 KaP",
+    "erlernen": "Brn, Rah 12",
+    "pw": 0,
+    "gruppe": 21
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "SLFSRTG5Uk6hbppG",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!SLFSRTG5Uk6hbppG"
+}

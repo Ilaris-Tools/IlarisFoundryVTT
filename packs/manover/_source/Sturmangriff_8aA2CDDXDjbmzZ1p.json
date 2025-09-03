@@ -1,0 +1,46 @@
+{
+  "name": "Sturmangriff",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": "Vorteil Sturmangriff ODER Vorteil Reiterkampf I",
+    "modifications": {
+      "0": {
+        "type": "DAMAGE",
+        "value": 1,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
+    "gruppe": "0",
+    "probe": "Bewegung und AT",
+    "gegenprobe": "",
+    "text": "Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Außerdem richtet die nächste Attacke GS Trefferpunkte zusätzlich an. Voraussetzungen: Vorteil Sturmangriff oder Reiterkampf I und Kampf in diesem Stil; die Bewegung muss vor dem Angriff ausgeführt werden. Anmerkung: Sturzflugangriffe von fliegenden Gegnern folgen denselben Regeln. Bei besonders kleinen Gegnern oder kurzem Anlauf sollte der Spielleiter den Schaden verringern.",
+    "selectors": ["INPUT", "CHECKBOX"],
+    "input": {
+      "label": "GS",
+      "field": "NUMBER"
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "8aA2CDDXDjbmzZ1p",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "12.0.2",
+    "createdTime": null,
+    "modifiedTime": 1746878353909,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!8aA2CDDXDjbmzZ1p"
+}

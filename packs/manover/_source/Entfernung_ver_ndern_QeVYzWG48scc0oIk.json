@@ -1,0 +1,45 @@
+{
+  "name": "Entfernung verändern",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": "",
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": 0,
+        "operator": "SUBTRACT",
+        "target": "actor.system.abgeleitete.be",
+        "affectedByInput": true
+      }
+    },
+    "gruppe": "0",
+    "probe": "AT -BE",
+    "gegenprobe": "",
+    "text": "Du kannst dich aus dem Nahkampf lösen, ohne Passierschläge zu riskieren. Besonderheiten: Beim Spiel mit Bodenplänen erhält das Ziel in dieser Runde keine Passierschläge durch deine Bewegung.",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "QeVYzWG48scc0oIk",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "12.0.2",
+    "createdTime": null,
+    "modifiedTime": 1746877951094,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!QeVYzWG48scc0oIk"
+}

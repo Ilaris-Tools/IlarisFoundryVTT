@@ -1,0 +1,79 @@
+{{log 'ruestung' this}}
+<form class="{{cssClass}}">
+    <div>
+        <div>
+            <header class="sheet-header">
+                <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" />
+                <div class="header-fields">
+                    <h1 class="charname">
+                        <input name="name" type="text" value="{{item.name}}" />
+                    </h1>
+                </div>
+            </header>
+        </div>
+        <div>
+            <div class="flexrow">
+                <h6>RS</h6>
+                <h6>BE</h6>
+                <h6>Bein</h6>
+                <h6>l. Arm</h6>
+                <h6>r. Arm</h6>
+                <h6>Bauch</h6>
+                <h6>Brust</h6>
+                <h6>Kopf</h6>
+            </div>
+            <div class="flexrow">
+                <input
+                    name="system.rs"
+                    value="{{item.system.rs}}"
+                    type="text"
+                    data-dtype="Number"
+                />
+                <input
+                    name="system.be"
+                    value="{{item.system.be}}"
+                    type="text"
+                    data-dtype="Number"
+                />
+                <input
+                    name="system.rs_beine"
+                    value="{{item.system.rs_beine}}"
+                    type="text"
+                    data-dtype="Number"
+                />
+                <input
+                    name="system.rs_larm"
+                    value="{{item.system.rs_larm}}"
+                    type="text"
+                    data-dtype="Number"
+                />
+                <input
+                    name="system.rs_rarm"
+                    value="{{item.system.rs_rarm}}"
+                    type="text"
+                    data-dtype="Number"
+                />
+                <input
+                    name="system.rs_bauch"
+                    value="{{item.system.rs_bauch}}"
+                    type="text"
+                    data-dtype="Number"
+                />
+                <input
+                    name="system.rs_brust"
+                    value="{{item.system.rs_brust}}"
+                    type="text"
+                    data-dtype="Number"
+                />
+                <input
+                    name="system.rs_kopf"
+                    value="{{item.system.rs_kopf}}"
+                    type="text"
+                    data-dtype="Number"
+                />
+            </div>
+            <h5>Gesundheit</h5>
+            {{> systems/Ilaris/templates/sheets/items/base_item_layout.hbs}}
+        </div>
+    </div>
+</form>

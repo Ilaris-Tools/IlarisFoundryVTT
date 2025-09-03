@@ -1,0 +1,33 @@
+{
+  "name": "Hüttenkunde",
+  "type": "talent",
+  "img": "systems/Ilaris/assets/images/skills/profan-talent.svg",
+  "system": {
+    "text": "Unter Hüttenkunde fällt die Herstellung von Glas, (magischen) Metallen und Legierungen, sowie die Beurteilung ihrer Qualität und ihres Werts.",
+    "fertigkeit": "Alchemie"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Item.ZEPZqLBC3P7tmKqt"
+    }
+  },
+  "_id": "tRJvU0OOHvLaUz2i",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "Ww4drILJ63YXG1Vc": 3
+  },
+  "_key": "!items!tRJvU0OOHvLaUz2i"
+}

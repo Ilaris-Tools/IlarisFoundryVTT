@@ -1,0 +1,33 @@
+{
+  "name": "Landwirtschaft",
+  "type": "talent",
+  "img": "systems/Ilaris/assets/images/skills/profan-talent.svg",
+  "system": {
+    "text": "Mit Landwirtschaft bestellst du die Felder, baust Weinreben an und bist bewandert in der Viehzucht, dem Schlachten, dem Gerben von Fellen und Herstellen von Trophäen.",
+    "fertigkeit": "Grobhandwerk"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Item.sEzCV487PrGtF3ws"
+    }
+  },
+  "_id": "HhIeGObdDKSNDaEM",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "Ww4drILJ63YXG1Vc": 3
+  },
+  "_key": "!items!HhIeGObdDKSNDaEM"
+}

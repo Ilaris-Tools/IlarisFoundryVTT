@@ -1,0 +1,41 @@
+{
+  "name": "Wachender Stein",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Hellsicht, Kristallmagie",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du kannst einen Blick durch einen gebundenen Kristall werfen. Dem Kristall ist dabei nichts anzumerken.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "8 Aktionen",
+    "ziel": "gebundener Kristall",
+    "reichweite": "1 Meile",
+    "wirkungsdauer": "1 Stunde",
+    "kosten": "8 AsP",
+    "erlernen": "Ach 18",
+    "pw": 0,
+    "gruppe": 11
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "KrzuSbUy7qxXe28S",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!KrzuSbUy7qxXe28S"
+}

@@ -1,0 +1,21 @@
+site_name: Ilaris FoundryVTT System
+site_url: https://ilaris-tools.github.io/IlarisFoundryVTT/
+
+theme:
+    name: material
+    language: de
+    palette:
+        primary: deep orange
+        accent: indigo
+    features:
+        - navigation.expand
+        - navigation.top
+        - search.highlight
+        - search.suggest
+        - content.code.copy
+
+nav:
+    - FoundryVTT: index.md
+    - Grundlagen: foundry-basics.md
+    - FAQ: faq.md
+    - Release: develop/release.md

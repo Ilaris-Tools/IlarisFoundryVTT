@@ -1,0 +1,41 @@
+{
+  "name": "Objectofixo",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Temporal, Verwandlung",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du fixierst einen Gegenstand von maximal 2 Stein auf einer waagrechten Fläche. Er kann nicht bewegt werden.",
+    "maechtig": "Das maximale Gewicht verdoppelt sich.",
+    "schwierigkeit": "12",
+    "modifikationen": "Bilderhaken (–4; du fixierst einen Gegenstand an einer senkrechten Fläche)\nSpinnenfest (–8; du fixierst einen Gegenstand unter einer waagrechten Fläche.)\nLufthaken (–12; du fixierst einen Gegenstand in der Luft.)",
+    "vorbereitung": "4 Aktionen",
+    "ziel": "Einzelobjekt",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "4 Stunden",
+    "kosten": "4 AsP",
+    "erlernen": "Ach 14; Mag 16; Alch 18",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "0syzyeDBXLfVCoQV",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!0syzyeDBXLfVCoQV"
+}

@@ -1,0 +1,41 @@
+{
+  "name": "Haut des Chamäleons",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Neubeginn",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Nach dem Willen Tsas ändern sich deine Haare, Gesichtszüge und Körperbau soweit, dass du nicht mehr als du selbst zu erkennen bist (Details sind Spielleiterentscheid). Du behältst dabei dein Geschlecht und bist immer noch demselben Kulturkreis zuzuordnen.",
+    "maechtig": "Für je zwei Stufen kannst du auch den Kulturkreis/das Geschlecht verändern.",
+    "schwierigkeit": "12",
+    "modifikationen": "Fremdverwandlung (–4, Einzelperson; verwandelt ein freiwilliges Ziel)",
+    "vorbereitung": "4 Aktionen",
+    "ziel": "selbst",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Stunde",
+    "kosten": "8 KaP",
+    "erlernen": "Tsa 18",
+    "pw": 0,
+    "gruppe": 51
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "5JXmmq8ywW7w4kQd",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!5JXmmq8ywW7w4kQd"
+}

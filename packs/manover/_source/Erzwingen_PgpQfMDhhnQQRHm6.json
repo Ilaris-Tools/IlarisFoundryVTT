@@ -1,0 +1,52 @@
+{
+  "name": "Erzwingen",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": "Vorteil Tradition der Borbaradianer III ODER Vorteil Tradition der Druiden III ODER Vorteil Tradition der Hexen III ODER Vorteil Tradition der Schelme III ODER Vorteil Tradition der Anach-Nurim III",
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      },
+      "1": {
+        "type": "SPECIAL_RESOURCE",
+        "value": 1.5,
+        "operator": "MULTIPLY",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
+    "gruppe": "2",
+    "probe": "Zauber +4",
+    "gegenprobe": "",
+    "text": "Die Kosten des Zaubers steigen um die Hälfte der Basiskosten, dafür ist der Zauber um 4 Punkte erleichtert. Kann nur einmal pro Zauber eingesetzt werden. Voraussetzungen: Tradition der Anach-nûrim, Borbaradianer, Druiden, Hexen oder Schelme (jeweils) III und Verwendung dieser Tradition",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    }
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "PgpQfMDhhnQQRHm6",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "12.0.2",
+    "createdTime": null,
+    "modifiedTime": 1746878007204,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!PgpQfMDhhnQQRHm6"
+}

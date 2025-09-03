@@ -1,0 +1,1099 @@
+{
+  "_id": "EC9A9DiT12yeMqXJ",
+  "name": "Elymelusinias",
+  "type": "kreatur",
+  "img": "systems/Ilaris/assets/images/token/kreaturentypen/daemon.png",
+  "system": {
+    "gesundheit": {
+      "erschoepfung": 0,
+      "wunden": 0,
+      "wundabzuege": 0,
+      "wundenignorieren": false,
+      "display": "Volle Gesundheit",
+      "hp": {
+        "max": 9,
+        "value": 9,
+        "threshold": 0
+      }
+    },
+    "energien": {
+      "asp": {
+        "max": 128,
+        "value": 128,
+        "threshold": 0
+      },
+      "gup": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      },
+      "kap": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      }
+    },
+    "initiative": 0,
+    "furcht": {
+      "furchtstufe": 0,
+      "furchtabzuege": 0,
+      "display": ""
+    },
+    "modifikatoren": {
+      "manuellermod": 0,
+      "nahkampfmod": 0
+    },
+    "schips": {
+      "schips": 4,
+      "schips_stern": 4
+    },
+    "attribute": {
+      "KO": {
+        "wert": 0,
+        "pw": null
+      },
+      "MU": {
+        "wert": 0,
+        "pw": null
+      },
+      "GE": {
+        "wert": 0,
+        "pw": null
+      },
+      "KK": {
+        "wert": 0,
+        "pw": null
+      },
+      "IN": {
+        "wert": 0,
+        "pw": null
+      },
+      "KL": {
+        "wert": 0,
+        "pw": null
+      },
+      "CH": {
+        "wert": 0,
+        "pw": null
+      },
+      "FF": {
+        "wert": 0,
+        "pw": null
+      }
+    },
+    "edit": false,
+    "kreaturentyp": "daemon",
+    "kurzbeschreibung": "Der Bote der Tiefe; dreigehörnter Diener Charyptoroths",
+    "kampfwerte": {
+      "ws": 8,
+      "ws_stern": null,
+      "ini": 8,
+      "gs": 6,
+      "koloss": null,
+      "mr": 12,
+      "gs_schwimmend": 10
+    },
+    "talente": [],
+    "freietalente": [],
+    "kampfunfaehig": "",
+    "text": "",
+    "abgeleitete": {
+      "globalermod": 0,
+      "nahkampfmoddisplay": "-",
+      "globalermoddisplay": "-"
+    }
+  },
+  "items": [
+    {
+      "_id": "NPbgdSSdmg4MLy7r",
+      "name": "Amphibisches Wesen",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Amphibische Wesen können an Land und im Wasser ungehindert agieren."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.NPbgdSSdmg4MLy7r"
+    },
+    {
+      "_id": "sSdh4sQ6jeGQfS0h",
+      "name": "Regeneration I",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Regeneration I/II/III/IV erlaubt der Kreatur, in jeder\r\nInitiativephase 1/2/3/4 Wunden zu schließen."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.sSdh4sQ6jeGQfS0h"
+    },
+    {
+      "_id": "ptG3eX5r60IJCeVJ",
+      "name": "Tarnung (im Wasser)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Tarnung: Das Wesen kann sich seiner Umgebung\r\nanpassen, zum Beispiel durch eine Farbänderung der Haut.\r\nBei Heimlichkeits-Proben erhält es keinen Malus durch ein\r\nfehlendes Versteck."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.ptG3eX5r60IJCeVJ"
+    },
+    {
+      "_id": "aK7YixigLiCj84Xx",
+      "name": "Astralsinn",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Astralsinn erlaubt es der Kreatur, ihre Umgebung magisch\r\nwahrzunehmen. Sie erleidet keine Abzüge durch schlechte\r\nSicht. Der Astralsinn kann durch Antimagie, zum Beispiel\r\nHellsicht trüben in der Modifikation Magie unterdrücken,\r\ngestört werden. Die Schwierigkeit dafür liegt mindestens bei\r\n20, bei mächtigen Wesen deutlich höher."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.aK7YixigLiCj84Xx"
+    },
+    {
+      "_id": "XrTKuylYtan3TKQZ",
+      "name": "Immunität (Eigenschaften, Einfluss, Hellsicht, Illusion, Umwelt, Verwandlung, Krankheiten, Gifte, Hitze, Kälte)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Immunität (Fertigkeit): Die Kreatur ist immun gegen\r\nalle Zauber, die (auch) der entsprechenden Fertigkeit\r\nzugeordnet sind. Davon ausgenommen sind Effekte, die\r\ndas Wesen nur indirekt betreffen – zum Beispiel erfasst ein\r\nOdem auch einen Dämon mit Immunität (Hellsicht) und eine\r\nImmunität (Umwelt) schützt nicht vor dem Regen, der mittels\r\nWettermeisterschaft gerufen wurde."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.XrTKuylYtan3TKQZ"
+    },
+    {
+      "_id": "09jUeItLFVqTt64o",
+      "name": "Körperlosigkeit",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Körperlosigkeit bedeutet, dass der Körper der Kreatur\r\nkeine lebenserhaltende Funktion hat. Selbst schwerste\r\nVerwundungen schränken sie nicht ein. Das Wesen erleidet\r\nkeine Abzüge durch Wunden und wird nicht kampfunfähig.\r\nDie neunte Wunde vernichtet aber auch eine körperlose\r\nKreatur."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.09jUeItLFVqTt64o"
+    },
+    {
+      "_id": "8F6k5GC8OZridO6O",
+      "name": "Paraphysikalität",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Paraphysikalität setzt die Naturgesetze für das Wesen\r\naußer Kraft. Es kann an Wänden oder an der Decke gehen,\r\naus dem Stand auf Höchstgeschwindigkeit beschleunigen und\r\ngewaltige Sprünge vollführen. Es ist immun gegen Umreißen-,\r\nNiederwerfen-, Zurückstoßen- und Niederschmettern-Effekte."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.8F6k5GC8OZridO6O"
+    },
+    {
+      "_id": "CKfMT6bD41Y4bXKv",
+      "name": "Resistenz I (profan)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Eine Resistenz I/II/III/IV (Schadensquelle) verringert\r\nden Schaden durch diese Schadensquelle (s.o.). Wann immer\r\ndie Kreatur Wunden erleiden würde, erleidet sie 1/2/3/4\r\nWunden weniger."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.CKfMT6bD41Y4bXKv"
+    },
+    {
+      "_id": "epfg7zPDGrDyOfpl",
+      "name": "Schmerzimmun II",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Schmerzimmun I/II: Die erste Stufe verleiht Immunität\r\ngegen Blutungen und die Wundschmerzeffekte Betäubt und\r\nOrgantreffer. Die zweite Stufe verleiht Immunität gegen alle\r\nWundschmerzeffekte."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.epfg7zPDGrDyOfpl"
+    },
+    {
+      "_id": "XvrWWzNImBgwPsBR",
+      "name": "Schreckgestalt I",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Schreckgestalt I/II/III/IV: Bei der Begegnung mit der\r\nKreatur erleidet dein Charakter einen Furcht-Effekt Stufe I/II/\r\nIII/IV (S. 46). Der Furcht-Effekt dauert an, bis der Gegner\r\nbesiegt wurde oder dein Charakter sich in sicherer Entfernung\r\nbefindet."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.XvrWWzNImBgwPsBR"
+    },
+    {
+      "_id": "sFwlg4Sum5zTBvQP",
+      "name": "Unheilig",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Unheilige Kreaturen sind besonders anfällig gegen\r\nbestimmte karmale Wirkungen, siehe S. 91."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.sFwlg4Sum5zTBvQP"
+    },
+    {
+      "_id": "fj6ervxAAlDyx45n",
+      "name": "Verwundbarkeit I (geweihte Waffen oder Gegenstände der Gegengottheit)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Verwundbarkeit I/II/III/IV (Schadensquelle): Wann\r\nimmer die Kreatur Wunden durch diese Schadensquelle\r\nerleidet, bekommt sie 1/2/3/4 zusätzliche Wunden."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.fj6ervxAAlDyx45n"
+    },
+    {
+      "_id": "YdfiMrhxSIUcHzcD",
+      "name": "Beispieldienste",
+      "type": "info",
+      "system": {
+        "text": "Preisgeben von Informationen (lohnende Beute für Piraten, gute Fischgründe oder Meeresströmungen) (, 4); Gegenstand auf dem Meeresgrund oder einem Schiff suchen und stehlen (1 Tag, ); Wasserleichen erheben (, -4)"
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.YdfiMrhxSIUcHzcD"
+    },
+    {
+      "_id": "0DEQhbXEDgrKcH1h",
+      "name": "Beschwörung",
+      "type": "info",
+      "system": {
+        "text": "Invocatio (28), 48 AsP"
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.0DEQhbXEDgrKcH1h"
+    },
+    {
+      "_id": "msWZnk6gn9RdMEED",
+      "name": "Stab",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [],
+        "tp": "2W6+2",
+        "haerte": 0,
+        "rw": 2,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 14,
+        "vt": 14
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.msWZnk6gn9RdMEED"
+    },
+    {
+      "_id": "c9Yr8tlyVRL1JtbV",
+      "name": "Geographie",
+      "type": "freiestalent",
+      "system": {
+        "text": "Geographie befasst sich nicht nur mit Reiserouten und fernen Ländern, sondern auch mit dem Sternenhimmel, der Kartographie und Navigation. Ein Geograph kann Schatzkarten lesen und anfertigen, die Position eines Schiffes bestimmen und Sternenkonstellationen deuten.",
+        "pw": 16,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.c9Yr8tlyVRL1JtbV"
+    },
+    {
+      "_id": "Y0e72HfwhxezzcvG",
+      "name": "Pirschen",
+      "type": "freiestalent",
+      "system": {
+        "text": "Pirschen ermöglicht das Schleichen, Verstecken und Lauern in der freien Natur. Du pirschst dich auf der Jagd an einen wilden Hirsch heran, legst einen Hinterhalt an einer Reichsstraße oder beobachtest ungesehen das Lager einer Orkbande.",
+        "pw": 16,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.Y0e72HfwhxezzcvG"
+    },
+    {
+      "_id": "NTXhfOcGW2zfd1EJ",
+      "name": "Menschenkenntnis",
+      "type": "freiestalent",
+      "system": {
+        "text": "Menschenkenntnis ist deine Fähigkeit, die Absichten deines Gegenüber zu durchschauen. Damit enttarnst du Lügen und falsche Annäherungsversuche.",
+        "pw": 14,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.NTXhfOcGW2zfd1EJ"
+    },
+    {
+      "_id": "LetzvUaEkhxnKy4m",
+      "name": "Schwimmen",
+      "type": "freiestalent",
+      "system": {
+        "text": "Schwimmen erlaubt eine schnellere Fortbewegung im Wasser und längere Tauchgänge.",
+        "pw": 20,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.LetzvUaEkhxnKy4m"
+    },
+    {
+      "_id": "QyuYvf3HGD1XYt03",
+      "name": "Überreden",
+      "type": "freiestalent",
+      "system": {
+        "text": "Überreden bedeutet den geschickten Einsatz von Übertreibungen, Unwahrheiten oder Lügen, um das Gegenüber zumindest kurzfristig zu beeinflussen. Mit Überreden feilschst du am Marktplatz, bestichst eine Stadtwache oder infiltrierst ein Borbaradianerkloster.",
+        "pw": 16,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.QyuYvf3HGD1XYt03"
+    },
+    {
+      "_id": "V1NSWPo6hXJAcdlU",
+      "name": "Überleben (Meer)",
+      "type": "freiestalent",
+      "system": {
+        "text": "Gilt für den Einsatz auf großen Gewässern wie zum Beispiel dem Perlenmeer.",
+        "pw": 20,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.V1NSWPo6hXJAcdlU"
+    },
+    {
+      "_id": "tQsy3jBwApfO3vyA",
+      "name": "Wachsamkeit",
+      "type": "freiestalent",
+      "system": {
+        "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
+        "pw": 12,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.tQsy3jBwApfO3vyA"
+    },
+    {
+      "_id": "iE9zOVUii2wO1ony",
+      "name": "Dämonisch",
+      "type": "freiestalent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "pw": 18,
+        "profan": false
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.iE9zOVUii2wO1ony"
+    },
+    {
+      "_id": "TxjyywK0YTqoHnqZ",
+      "name": "Alle",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Dämonisch",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 18,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.TxjyywK0YTqoHnqZ"
+    },
+    {
+      "_id": "U4bs2PswspuOrQ1O",
+      "name": "Brenne toter Stoff!",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Dämonisch",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du entzündest ein magisches Feuer, das 2W6 SP pro Initiativephase auf einem unbelebten Ziel anrichtet. Das Feuer brennt auf brennbaren Materialien auch nach dem Ende der Wirkungsdauer weiter.\nMächtige Magie: Je zwei Stufen erhöhen die SP um 1W6.\nProbenschwierigkeit: 12\nModifikationen: Flammeninferno (–8, 32 AsP; das Feuer breitet sich mit etwa 1 Schritt pro Initiativephase aus.)\nVorbereitungszeit: 1 Aktion\nZiel: Einzelobjekt\nReichweite: Berührung\nWirkungsdauer: 8 Initiativephasen\nKosten: 8 AsP\nFertigkeiten: Feuer, Verwandlung\nErlernen: Bor 12; Alch, Geo 14; Ach, Mag 18; Srl 20; 40 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 18,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.U4bs2PswspuOrQ1O"
+    },
+    {
+      "_id": "Gi5ylCUccgGCX7vw",
+      "name": "Kulminatio Kugelblitz",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Dämonisch",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du schießt einen erratischen Kugelblitz auf dein Ziel. Der Kugelblitz nähert sich dem Ziel 4 Initiativephasen lang mit 3W6 Schritt pro Initiativephase (einmal auswürfeln). Wenn er das Ziel erreicht, richtet er 1W20 SP an.\nMächtige Magie: Die SP steigen um 4.\nProbenschwierigkeit:12\nModifikationen: Schneller Blitz (–4; der Blitz bewegt sich um 1W6 Schritt schneller. Mehrfach wählbar.)\nWächter (–4, Wirkungsdauer 1 Stunde, nur Ach; der Kugelblitz verharrt still und verfolgt das erste Wesen (außer dir), das sich ihm auf weniger als 8 Schritt nähert.)\nWolke von A‘Tall (–8, 16 Aktionen, Zone, Wirkungsdauer 1 Stunde, 32 AsP; dir folgt eine Gewitterwolke. Auf dein Kommando lösen sich einmalig 2W6 Kugelblitze aus ihr.)\nVorbereitungszeit: 2 Aktionen\nZiel: Einzelwesen\nReichweite: 32 Schritt\nWirkungsdauer: augenblicklich\nKosten: 8 AsP\nFertigkeiten: Umwelt\nErlernen: Ach, Mag 20; 40 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 18,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.Gi5ylCUccgGCX7vw"
+    },
+    {
+      "_id": "02v74mJDMTvh28pP",
+      "name": "Skelettarius",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Dämonisch",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": null,
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 18,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.02v74mJDMTvh28pP"
+    },
+    {
+      "_id": "vs691dufF0tRSXvG",
+      "name": "Totes handle!",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Dämonisch",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du erschaffst aus einer Leiche einen untoten Diener (mehr zu Beschwörungen siehe S. 81). Der Untote hat sich nach 1 Stunde an seine Existenz gewöhnt und ist einsatzfähig.\nProbenschwierigkeit: nach Untotem\nVorbereitungszeit: frei wählbar\nZiel: Material für einen einzelnen Untoten\nWirkungsdauer: bis die Bindung gelöst wird\nKosten: nach Untotem, ein Viertel der Basiskosten als gAsP\nFertigkeiten: Dämonisch\nErlernen: Bor, Mag 18; 60 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 18,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.vs691dufF0tRSXvG"
+    },
+    {
+      "_id": "vMwvV81lvtCctznx",
+      "name": "Weiches Erstarre!",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Dämonisch",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du lässt bis zu 8 Raumschritt Luft, Wasser oder ein anderes „weiches“ Material zu einer festen, harten Masse mit einer Härte von 8 erstarren. Lebende Materie, oder Material, das ein Wesen berührt, kann nicht beeinflusst werden.\nMächtige Magie: Die Härte steigt um +4.\nProbenschwierigkeit: 12\nVorbereitungszeit: 2 Aktionen\nZiel: Zone\nReichweite: Berührung\nWirkungsdauer: 1 Stunde\nKosten: 8 AsP\nFertigkeiten: Erz, Verwandlung\nErlernen: Bor 14; Dru, Geo 16; Ach, Alch, Mag 18; 60 EP",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 18,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!EC9A9DiT12yeMqXJ.vMwvV81lvtCctznx"
+    }
+  ],
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "prototypeToken": {
+    "displayName": 20,
+    "actorLink": false,
+    "width": 1,
+    "height": 1,
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "light": {
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "coloration": 1,
+      "dim": 0,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false,
+        "type": null
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      },
+      "attenuation": 0.5,
+      "negative": false,
+      "priority": 0,
+      "color": null
+    },
+    "disposition": 1,
+    "displayBars": 50,
+    "bar1": {
+      "attribute": "gesundheit.hp"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "flags": {},
+    "randomImg": false,
+    "name": "Elymelusinias",
+    "texture": {
+      "src": "systems/Ilaris/assets/images/token/kreaturentypen/daemon.png",
+      "scaleX": 1,
+      "scaleY": 1,
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "offsetX": 0,
+      "offsetY": 0,
+      "fit": "contain",
+      "rotation": 0,
+      "tint": "#ffffff",
+      "alphaThreshold": 0.75
+    },
+    "sight": {
+      "angle": 360,
+      "enabled": false,
+      "range": 0,
+      "brightness": 1,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "appendNumber": false,
+    "prependAdjective": false,
+    "hexagonalShape": 0,
+    "detectionModes": [],
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    }
+  },
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!actors!EC9A9DiT12yeMqXJ"
+}

@@ -1,0 +1,41 @@
+{
+  "name": "Fluch des (Tieres)",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Einfluss, Geister des Zorns",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Ein zorniger Tiergeist straft das Ziel. Es erleidet einen Malus von –2 auf alle Werte, die dem Tier zugeordnet sind (S. 160).",
+    "maechtig": "Der Malus steigt um –1.",
+    "schwierigkeit": "Magieresistenz",
+    "modifikationen": "Permanenz (–4, Wirkungsdauer bis die Bindung gelöst wird, 16 AsP, davon 2 gAsP)",
+    "vorbereitung": "16 Aktionen",
+    "ziel": "Einzelperson",
+    "reichweite": "32 Schritt",
+    "wirkungsdauer": "1 Tag",
+    "kosten": "8 AsP",
+    "erlernen": "Smn 16",
+    "pw": 0,
+    "gruppe": 6
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "0Gh93so7R1bWBR9P",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!0Gh93so7R1bWBR9P"
+}

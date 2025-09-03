@@ -1,0 +1,17 @@
+{{log 'gegenstand' this}}
+<form class="{{cssClass}}">
+    <div>
+        <div>
+            <header class="sheet-header">
+                <div class="header-fields">
+                    <h1 class="charname">
+                        <input name="name" type="text" value="{{item.name}}" />
+                    </h1>
+                </div>
+            </header>
+        </div>
+        <div>
+            {{> systems/Ilaris/templates/sheets/items/base_item_layout.hbs}}
+        </div>
+    </div>
+</form>

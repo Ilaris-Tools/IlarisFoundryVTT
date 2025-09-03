@@ -1,174 +1,56 @@
-export const ILARIS = {};
+import { label } from './config/label.js'
+
+export const ILARIS = {}
 
 let stat_desc = {
     ws: {
         name: 'Wundschwelle',
-        short: "WS",
-        text: "Schaden der erforderlich ist um eine Wunde zu verursachen (ohne Rüstung)."
+        short: 'WS',
+        text: 'Schaden der erforderlich ist um eine Wunde zu verursachen (ohne Rüstung).',
     },
     ws_stern: {
         name: 'Effektive Wundschwelle',
         short: 'WS*',
-        text: 'Schaden der erforderlich ist um eine Wunde zu verursachen (mit Rüstung).'
+        text: 'Schaden der erforderlich ist um eine Wunde zu verursachen (mit Rüstung).',
     },
     ini: {
         name: 'Initiative',
-        short: "INI"
+        short: 'INI',
     },
-    koloss: { // TODO: move to eigenschaften? #18
+    koloss: {
+        // TODO: move to eigenschaften? #18
         name: 'Koloss',
         short: 'KOL',
     },
     gs: {
         name: 'Geschwindigkeit',
-        short: "GS"
+        short: 'GS',
     },
     gs_schwimmend: {
         name: 'Geschwindigkeit (schwimmend)',
-        short: 'GSS'
+        short: 'GSS',
     },
     gs_fliegend: {
         name: 'Geschwindigkeit (fliegend)',
-        short: 'GSF'
+        short: 'GSF',
     },
     gs_reitend: {
         name: 'Geschwindigkeit (reitend)',
-        short: 'GSR'
+        short: 'GSR',
     },
-    schips: { // TODO: remove schips completly? #19
+    schips: {
+        // TODO: remove schips completly? #19
         name: 'Schicksalspunkte',
-        short: "SIP"
+        short: 'SIP',
     },
     mr: {
         name: 'Magieresistenz',
-        short: "MR"
-    }
+        short: 'MR',
+    },
 }
-ILARIS.stat_desc = stat_desc;
+ILARIS.stat_desc = stat_desc
 
-let label = {
-    // Attribute
-    KO: 'Konstitution',
-    MU: 'Mut',
-    GE: 'Gewandheit',
-    KK: 'Körperkraft',
-    IN: 'Intuition',
-    KL: 'Klugheit',
-    CH: 'Charisma',
-    FF: 'Fingerfertigkeit',
-    // Kampfwerte
-    ws: 'Wundschwelle',
-    ws_stern: 'Effektive Wundschwelle',
-    ini: 'Initiative',
-    koloss: 'Koloss',
-    gs: 'Geschwindigkeit',
-    gss: 'Geschwindigkeit (schwimmend)',
-    gsf: 'Geschwindigkeit (fliegend)',
-    gsr: 'Geschwindigkeit (reitend)',
-    schips: 'Schicksalspunkte',
-    mr: 'Magieresistenz',
-    // Waffeneigenschaften
-    kein_malus_nebenwaffe: 'Kein Malus als Nebenwaffe',
-    kein_reiter: 'Nicht für Reiter',
-    kopflastig: 'Kopflastig',
-    niederwerfen: 'Niederwerfen',
-    niederwerfen_4: 'Niederwerfen (-4)',
-    niederwerfen_8: 'Niederwerfen (-8)',
-    parierwaffe: 'Parierwaffe',
-    reittier: 'Reittier',
-    ruestungsbrechend: 'Rüstungsbrechend',
-    schild: 'Schild',
-    schwer_4: 'Schwer (4)',
-    schwer_8: 'Schwer (8)',
-    stationaer: 'Stationär',
-    stumpf: 'Stumpf',
-    umklammern_212: 'Umklammern (-2,12)',
-    umklammern_416: 'Umklammern (-4,16)',
-    umklammern_816: 'Umklammern (-8,16)',
-    unberechenbar: 'Unberechenbar',
-    unzerstoerbar: 'Unzerstörbar',
-    wendig: 'Wendig',
-    zerbrechlich: 'Zerbrechlich',
-    zweihaendig: 'Zweihändig',
-    erschoepfung: 'Erschöpfung',
-    // Kampfstile
-    ohne: 'Kein Kampfstil',
-    bhk: 'Beidhändiger Kampf',
-    kvk: 'Kraftvoller Kampf',
-    pwk: 'Parierwaffenkampf',
-    rtk: 'Reiterkampf',
-    shk: 'Schildkampf',
-    snk: 'Schneller Kampf',
-    // Kampfabkürzungen
-    kbak: 'Kombinierte Aktion (-4)',
-    vldf: 'Volle Defensive (VT +4)',
-    vlof: 'Volle Offensive (AT +4, VT -8)',
-    gzkl: 'Größenklasse',
-    bwng: 'Bewegung',
-    lcht: 'Licht',
-    wttr: 'Wetter',
-    dckg: 'Deckung',
-    kgtl: 'Kampfgetümmel',
-    brtn: 'Beritten',
-    kwut: 'Kalte Wut',
-    // kampfmanoever
-    km_ausw: 'Ausweichen (VT -2-BE)',
-    km_bind: 'Binden (VT -X)',
-    km_ever: 'Entfernung verändern (AT -BE)',
-    km_entw: 'Entwaffnen (AT -4 oder VT -4)',
-    km_gzsl: 'Gezielter Schlag (AT -2)',
-    km_umre: 'Umreißen (AT)',
-    km_wusl: 'Wuchtschlag (AT -X, TP +X)',
-    km_aufl: 'Auflaufen lassen (VT -4)',
-    km_rust: 'Rüstungsbrecher (AT -4)',
-    km_shsp: 'Schildspalter (AT +2)',
-    km_stsl: 'Stumpfer Schlag (AT)',
-    km_umkl: 'Umklammern (AT -X)',
-    km_ausf: 'Ausfall (AT -2-BE)',
-    km_befr: 'Befreiungsschlag (AT -4)',
-    km_dppl: 'Doppelangriff (zwei AT -4)',
-    km_hmsl: 'Hammerschlag (AT -8)',
-    km_kltz: 'Klingentanz (AT -4)',
-    km_ndwf: 'Niederwerfen (AT -4)',
-    km_rpst: 'Riposte (VT -4)',
-    km_shwl: 'Schildwall (VT -4)',
-    km_stag: 'Sturmangriff (Bewegung und AT)',
-    km_tdst: 'Todesstoß (AT -8)',
-    km_uebr: 'Überrennen (Bewegung und AT)',
-    km_utlf: 'Unterlaufen (VT -4)',
-    fm_gzss: 'Gezielter Schuss (FK -2)',
-    fm_rwrh: 'Reichweite erhöhen (FK -4)',
-    fm_srfs: 'Scharfschuss (FK -X)',
-    fm_zlen: 'Zielen (FK +2)',
-    fm_msts: 'Meisterschuss (FK -8)',
-    fm_rust: 'Rüstungsbrecher (FK -4)',
-    fm_snls: 'Schnellschuss (FK -4)',
-    // magiemanöver
-    mm_mama: 'Mächtige Magie (-4)',
-    mm_mezi: 'Mehrere Ziele (-4)',
-    mm_rwrh: 'Reichweite erhöhen (-4)',
-    mm_vbvk: 'Vorbereitung verkürzen (-4)',
-    mm_wkvl: 'Wirkungsdauer verlängern (-4)',
-    mm_ztig: 'Zaubertechnik ignorieren (-4)',
-    mm_erzw: 'Erzwingen (+4)',
-    mm_kosp: 'Kosten sparen (-4)',
-    mm_ztls: 'Zeit lassen (+2)',
-    mm_zere: 'Zeremonie (+X)',
-    mm_opfe: 'Opferung (+4)',
-    // karmamanöver
-    lm_mali: 'Mächtige Liturgie (-4)',
-    lm_mezi: 'Mehrere Ziele (-4)',
-    lm_ltig: 'Liturgische Technik ignorieren (-4)',
-    lm_rwrh: 'Reichweite erhöhen (-4)',
-    lm_vbvk: 'Vorbereitung verkürzen (-4)',
-    lm_wkvl: 'Wirkungsdauer verlängern (-4)',
-    lm_kosp: 'Kosten sparen (-4)',
-    lm_zere: 'Zeremonie (+X)',
-    lm_opfe: 'Opferung (-4)',
-    // sonstige
-    gewicht: 'Platzbedarf',
-};
-ILARIS.label = label;
+ILARIS.label = label
 
 let trefferzonen = {
     0: 'keine',
@@ -179,8 +61,8 @@ let trefferzonen = {
     5: 'Brust',
     6: 'Kopf',
     7: 'andere',
-};
-ILARIS.trefferzonen = trefferzonen;
+}
+ILARIS.trefferzonen = trefferzonen
 
 let freie_fertigkeiten = {
     0: 'Sprachen',
@@ -188,21 +70,21 @@ let freie_fertigkeiten = {
     2: 'Berufe',
     3: 'Freizeit',
     4: 'Anderes',
-};
-ILARIS.freie_fertigkeiten = freie_fertigkeiten;
+}
+ILARIS.freie_fertigkeiten = freie_fertigkeiten
 
 let xd20_choice = {
     0: '1W20',
     1: '3W20',
-};
-ILARIS.xd20_choice = xd20_choice;
+}
+ILARIS.xd20_choice = xd20_choice
 
 let schips_choice = {
     0: 'Ohne',
     1: 'ohne Eigenheit',
     2: 'mit Eigenheit',
-};
-ILARIS.schips_choice = schips_choice;
+}
+ILARIS.schips_choice = schips_choice
 
 let zeroToEightObj = {
     0: '0',
@@ -214,16 +96,16 @@ let zeroToEightObj = {
     6: '6',
     7: '7',
     8: '8',
-};
-ILARIS.zeroToEightObj = zeroToEightObj;
+}
+ILARIS.zeroToEightObj = zeroToEightObj
 
 // Reichweite (Nahkampf)
 let distance_choice = {
     0: 'ideal',
     1: '1 Feld',
     2: '2 Felder',
-};
-ILARIS.distance_choice = distance_choice;
+}
+ILARIS.distance_choice = distance_choice
 
 // Größenklassen
 let gzkl_choice = {
@@ -233,8 +115,8 @@ let gzkl_choice = {
     3: 'klein (Wolf, Reh)',
     4: 'sehr klein (Fasan, Hase)',
     5: 'winzig (Maus)',
-};
-ILARIS.gzkl_choice = gzkl_choice;
+}
+ILARIS.gzkl_choice = gzkl_choice
 
 // Lichtverhältnisse
 let lcht_choice = {
@@ -243,16 +125,16 @@ let lcht_choice = {
     2: 'Mondlicht',
     3: 'Sternenlicht',
     4: 'Blind',
-};
-ILARIS.lcht_choice = lcht_choice;
+}
+ILARIS.lcht_choice = lcht_choice
 
 // Wetterverhältnisse
 let wttr_choice = {
     0: 'still',
     1: 'Wind',
     2: 'Sturm',
-};
-ILARIS.wttr_choice = wttr_choice;
+}
+ILARIS.wttr_choice = wttr_choice
 
 // Bewegung
 let bwng_choice = {
@@ -260,32 +142,32 @@ let bwng_choice = {
     1: 'schnell (laufender Mensch)',
     2: 'sehr schnell (Pferd)',
     3: 'extrem schnell (Vogel)',
-};
-ILARIS.bwng_choice = bwng_choice;
+}
+ILARIS.bwng_choice = bwng_choice
 
 // Deckung
 let dckg_choice = {
     0: 'keine',
     '-1': 'halbe Deckung',
     '-2': 'Dreivierteldeckung',
-};
-ILARIS.dckg_choice = dckg_choice;
+}
+ILARIS.dckg_choice = dckg_choice
 
 // Kampfgetümmel
 let kgtl_choice = {
     0: 'Freistehendes Ziel',
     1: 'im offenen Feld',
     2: 'im beengten Raum',
-};
-ILARIS.kgtl_choice = kgtl_choice;
+}
+ILARIS.kgtl_choice = kgtl_choice
 
 // Schnellschuss
 let fm_snls_choice = {
     0: 'kein',
     1: '1x',
     2: '2x',
-};
-ILARIS.fm_snls_choice = fm_snls_choice;
+}
+ILARIS.fm_snls_choice = fm_snls_choice
 
 // // Zaubertechnik ignorieren
 // let mm_zaig_choice = {
@@ -315,13 +197,113 @@ let zere_choice = {
     4: '1 Woche',
     5: '1 Monat',
     6: '1 Jahr',
-};
-ILARIS.zere_choice = zere_choice;
+}
+ILARIS.zere_choice = zere_choice
+
+let waffeneigenschaften = {
+    kein_malus_nebenwaffe: 'Kein Malus als Nebenwaffe',
+    kein_reiter: 'Nicht für Reiter',
+    kopflastig: 'Kopflastig',
+    niederwerfen: 'Niederwerfen',
+    niederwerfen_4: 'Niederwerfen (-4)',
+    niederwerfen_8: 'Niederwerfen (-8)',
+    parierwaffe: 'Parierwaffe',
+    reittier: 'Reittier',
+    ruestungsbrechend: 'Rüstungsbrechend',
+    schild: 'Schild',
+    schwer_4: 'Schwer (4)',
+    schwer_8: 'Schwer (8)',
+    stationaer: 'Stationär',
+    stumpf: 'Stumpf',
+    umklammern_212: 'Umklammern (-2,12)',
+    umklammern_416: 'Umklammern (-4,16)',
+    umklammern_816: 'Umklammern (-8,16)',
+    unberechenbar: 'Unberechenbar',
+    unzerstoerbar: 'Unzerstörbar',
+    wendig: 'Wendig',
+    zerbrechlich: 'Zerbrechlich',
+    zweihaendig: 'Zweihändig',
+}
+ILARIS.waffeneigenschaften = waffeneigenschaften
+
+let manoever = {
+    voraussetzung_type: {
+        VORTEIL: 'Vorteil',
+        WAFFENEIGENSCHAFT: 'Waffeneigenschaft',
+        STILE: 'Stile',
+    },
+    manoever_type: {
+        0: 'Nahkampf Angriff',
+        1: 'Fernkampf',
+        2: 'Magie',
+        3: 'Karma',
+        4: 'Nahkampf Verteidigung',
+    },
+    selector_type: {
+        CHECKBOX: 'Checkbox',
+        NUMBER: 'Nummerneingabefeld',
+        TREFFER_ZONE: 'Trefferzonenauswahl',
+    },
+    modification_type: {
+        DAMAGE: 'Schaden',
+        DEFENCE: 'Verteidigung',
+        ATTACK: 'Angriff/Fernkampf/Übernatürlich Fertigkeiten',
+        INITIATIVE: 'Initiative',
+        LOADING_TIME: 'Ladezeit/Vorbereitungszeit',
+        SPECIAL_RESOURCE: 'Ressource für Zauber/Liturgien',
+        WEAPON_DAMAGE: 'Waffenschaden',
+        ZERO_DAMAGE: 'Kein Schaden',
+        CHANGE_DAMAGE_TYPE: 'Schadenstyp ändern',
+        ARMOR_BREAKING: 'Rüstung ignorieren',
+        SPECIAL_TEXT: 'Spezialeffekt',
+    },
+    operator: {
+        MULTIPLY: 'Multiplizieren',
+        ADD: 'Addieren',
+        SUBTRACT: 'Subtrahieren',
+        DIVIDE: 'Dividieren',
+    },
+    labels: {
+        prerequisites: 'Voraussetzungen',
+        prerequisitesDescription:
+            'Die Voraussetzungen sind an Sephrasto angelehnt und werden auch entsprechen im System behandelt. Wird ein Vorteil nicht richtig geschrieben, kann und wird das Manöver nicht angezeigt. In naher Zukunft wird es die Möglichkeit geben Hausregeln von Sephrasto direkt in Foundry zu übertragen, ab diesem Zeitpunkt solltest du auch einfach die Regeln aus Sephrasto importierten bevor du hier etwas veränderst.',
+        input: 'Input',
+        inputDescription:
+            'Hier legst du fest, welches Eingabefeld im Würfeldialog für dieses Manöver angezeigt werden soll:',
+        inputTypes: {
+            checkbox: 'Checkbox - Eine einfache Ja/Nein Auswahl',
+            number: 'Nummerneingabefeld - Ein Feld für Zahleneingaben',
+            hitZone: 'Trefferzonenauswahl - Auswahl einer spezifischen Trefferzone',
+        },
+        inputLabel: 'Inputlabel',
+        inputType: 'Inputtype',
+        numberLimits: 'Zahlenbegrenzung',
+        min: 'Min',
+        max: 'Max',
+        modifications: 'Modifikatoren',
+        modificationsDescription: 'Hier definierst du die Effekte des Manövers. Empfehlungen:',
+        modificationsHints: [
+            'Verwende "Subtrahieren" nur wenn nötig (z.B. für Belastungswert, wenn du das Feld Target verwendest)',
+            'Eine -1 ist leichter zu lesen als "Subtrahieren"',
+            'Beispiel Wuchtschlag: AT -1 (Addieren) und Schaden +1 (Addieren)',
+        ],
+        modificationType: 'Modifikatortyp',
+        value: 'Wert',
+        operator: 'Operator',
+        target: 'Target',
+        targetPlaceholder: 'z.B. actor.system.abgeleitete.be',
+        affectedByInput: 'Wird von Input beeinflusst',
+        affectedByInputDescription:
+            'Wenn aktiviert, wird der Wert mit der Eingabe multipliziert, falls ein Inputfeld vorhanden ist. Eine Checkbox wirkt sich nie auf den Wert aus.',
+        specialEffect: 'Spezialeffekt beschreiben, der als Text beim Schadenswurf angezeigt wird',
+    },
+}
+ILARIS.manoever = manoever
 
 let manoever_nahkampf = {
-    kbak: {
-        selected: false,
-    },
+    kbak: { selected: false },
+    mod: { selected: false },
+    rllm: { selected: '' },
     vlof: {
         selected: false,
         offensiver_kampfstil: false,
@@ -338,131 +320,16 @@ let manoever_nahkampf = {
     pssl: {
         selected: false,
     },
-    kwut: false,
-    km_ausw: {
-        possible: true,
-        selected: false,
-    },
-    km_bind: {
-        possible: true,
-        selected: 0,
-    },
-    km_ever: {
-        possible: true,
-        selected: false,
-    },
-    km_entw: {
-        possible: true,
-        selected_at: false,
-        selected_vt: false,
-    },
-    km_gzsl: {
-        possible: true,
-        selected: '0',
-    },
-    km_umre: {
-        possible: true,
-        selected: false,
-    },
-    km_wusl: {
-        possible: true,
-        selected: 0,
-    },
-    km_aufl: {
-        possible: true,
-        selected: false,
-        gs: 0,
-    },
-    km_rust: {
-        possible: false,
-        selected: false,
-    },
-    km_shsp: {
-        possible: true,
-        selected: false,
-    },
-    km_stsl: {
-        possible: false,
-        selected: false,
-    },
-    km_umkl: {
-        possible: false,
-        selected: false,
-        mod: 0,
-    },
-    km_ausf: {
-        possible: false,
-        selected: false,
-    },
-    km_befr: {
-        possible: false,
-        selected: false,
-    },
-    km_dppl: {
-        possible: false,
-        selected: false,
-    },
-    km_hmsl: {
-        possible: false,
-        selected: false,
-    },
-    km_kltz: {
-        possible: false,
-        selected: false,
-    },
-    km_ndwf: {
-        possible: false,
-        selected: false,
-    },
-    km_rpst: {
-        possible: false,
-        selected: false,
-    },
-    km_shwl: {
-        possible: false,
-        selected: false,
-    },
-    km_stag: {
-        possible: false,
-        selected: false,
-        gs: 0,
-    },
-    km_tdst: {
-        possible: false,
-        selected: false,
-    },
-    km_uebr: {
-        possible: false,
-        selected: false,
-        gs: 0,
-    },
-    km_utlf: {
-        possible: false,
-        selected: false,
-    },
-    mod: {
-        selected: '0',
-    },
-    rllm: {
-        selected: 'roll',
-    },
-};
-ILARIS.manoever_nahkampf = manoever_nahkampf;
+}
+ILARIS.manoever_nahkampf = manoever_nahkampf
 
 let manoever_fernkampf = {
-    kbak: {
-        selected: false,
-    },
-    // "vldf": {
-    //     "possible": false,
-    //     "selected": false
-    // },
+    kbak: { selected: false },
+    mod: { selected: false },
+    rllm: { selected: '' },
     gzkl: {
         selected: '2',
     },
-    // "umge": {
-    //     "selected": "0"
-    // },
     bwng: {
         selected: '0',
     },
@@ -489,186 +356,95 @@ let manoever_fernkampf = {
         1: '2 Schritt',
         2: '3 Schritt',
     },
-    kwut: false,
     fm_gzss: {
-        possible: true,
-        selected: '0',
-    },
-    fm_rwrh: {
-        possible: true,
-        selected: '0',
-    },
-    fm_srfs: {
-        possible: true,
-        selected: '0',
-    },
-    fm_zlen: {
-        possible: true,
-        ruhige_hand: false,
         selected: false,
     },
-    fm_msts: {
-        possible: false,
-        selected: false,
-    },
-    fm_rust: {
-        possible: false,
-        selected: false,
-    },
-    fm_snls: {
-        possible: false,
-        selected: '0',
-    },
-    mod: {
-        selected: '0',
-    },
-    rllm: {
-        selected: 'roll',
-    },
-};
-ILARIS.manoever_fernkampf = manoever_fernkampf;
+}
+ILARIS.manoever_fernkampf = manoever_fernkampf
 
-let manoever_magie = {
-    // kombinierte aktion
-    kbak: {
-        selected: false,
-    },
-    // mm_mama: 'Mächtige Magie',
-    mm_mama: {
-        possible: true,
-        selected: '0',
-    },
-    // mm_mezi: 'Mehrere Ziele',
-    mm_mezi: {
-        possible: true,
-        selected: false,
-    },
-    // mm_rwrh: 'Reichweite erhöhen',
-    mm_rwrh: {
-        possible: true,
-        selected: '0',
-    },
-    // mm_vbvk: 'Vorbereitung verkürzen',
-    mm_vbvk: {
-        possible: true,
-        selected: '0',
-    },
-    // mm_wkvl: 'Wirkungsdauer verlängern',
-    mm_wkvl: {
-        possible: true,
-        selected: '0',
-    },
-    // mm_ztig: 'Zaubertechnik ignorieren',
-    mm_ztig: {
-        possible: true,
-        selected: '0',
-    },
-    // mm_erzw: 'Erzwingen',
-    mm_erzw: {
-        possible: false,
-        selected: false,
-    },
-    // mm_kosp: 'Kosten sparen',
-    mm_kosp: {
-        possible: false,
-        selected: '0',
-    },
-    // mm_ztls: 'Zeit lassen',
-    mm_ztls: {
-        possible: false,
-        selected: false,
-    },
-    // mm_zere: 'Zeremonie',
-    mm_zere: {
-        possible: false,
-        selected: '0',
-    },
-    // mm_opfe: 'Opferung',
-    mm_opfe: {
-        possible: false,
-        selected: false,
-    },
-    // modifikator
-    mod: {
-        selected: '0',
-    },
-    // rollmode
-    rllm: {
-        selected: 'roll',
-    }
-};
-ILARIS.manoever_magie = manoever_magie;
-
-let manoever_karma = {
-    // kombinierta aktion
-    kbak: {
-        selected: false,
-    },
-    // lm_mali: 'Mächtige Liturgie',
-    lm_mali: {
-        possible: true,
-        selected: '0',
-    },
-    // lm_mezi: 'Mehrere Ziele',
-    lm_mezi: {
-        possible: true,
-        selected: false,
-    },
-    // lm_ltig: 'Liturgische Technik ignorieren',
-    lm_ltig: {
-        possible: true,
-        selected: '0',
-    },
-    // lm_rwrh: 'Reichweite erhöhen',
-    lm_rwrh: {
-        possible: true,
-        selected: '0',
-    },
-    // lm_vbvk: 'Vorbereitung verkürzen',
-    lm_vbvk: {
-        possible: true,
-        selected: '0',
-    },
-    // lm_wkvl: 'Wirkungsdauer verlängern',
-    lm_wkvl: {
-        possible: true,
-        selected: '0',
-    },
-    // lm_kosp: 'Kosten sparen',
-    lm_kosp: {
-        possible: false,
-        selected: '0',
-    },
-    // lm_zere: 'Zeremonie',
-    lm_zere: {
-        possible: false,
-        selected: '0',
-    },
-    // lm_opfe: 'Opferung',
-    lm_opfe: {
-        possible: false,
-        selected: false,
-    },
-    // modifikator
-    mod: {
-        selected: '0',
-    },
-    // rollmode
-    rllm: {
-        selected: 'roll',
-    },
-};
-ILARIS.manoever_karma = manoever_karma;
+let manoever_ueber = {
+    kbak: { selected: false },
+    mod: { selected: false },
+    rllm: { selected: '' },
+}
+ILARIS.manoever_ueber = manoever_ueber
 
 let kreatur_item_options = {
-    angriff:"Angriff",
-    eigenschaft:"Eigenschaft",
-    vorteil:"Vorteil",
-    freiestalent:"Fertigkeit",
-    uebernatfreiestalent:"Übernat. Fertigkeit",
-    zauber:"Zauber",
-    liturgie:"Liturgie",
-    anrufung:"Anrufung",
-    info:"Info"
-};
-ILARIS.kreatur_item_options = kreatur_item_options;
+    angriff: 'Angriff',
+    eigenschaft: 'Eigenschaft',
+    vorteil: 'Vorteil',
+    freiestalent: 'Fertigkeit',
+    uebernatfreiestalent: 'Übernat. Fertigkeit',
+    zauber: 'Zauber',
+    liturgie: 'Liturgie',
+    anrufung: 'Anrufung',
+    info: 'Info',
+}
+ILARIS.kreatur_item_options = kreatur_item_options
+
+let angriff_typ = {
+    Nah: 'Nahkampf',
+    Fern: 'Fernkampf',
+}
+ILARIS.angriff_typ = angriff_typ
+
+let schadenstypen = {
+    PROFAN: 'Profan',
+    STUMPF: 'Stumpf',
+    STICH: 'Stich',
+    SCHARF: 'Scharf',
+    MAGISCH: 'Magisch',
+    GEWEIHT: 'Geweiht',
+    EIS: 'Eis',
+    ERZ: 'Erz',
+    FEUER: 'Feuer',
+    HUMUS: 'Humus',
+    LUFT: 'Luft',
+    WASSER: 'Wasser',
+    DAEMONISCH: 'Dämonisch',
+}
+ILARIS.schadenstypen = schadenstypen
+
+let combat_dialog = {
+    labels: {
+        angriffNah: 'Nahkampfangriff',
+        nahkampfwaffe: 'Nahkampfangriff',
+        angriffFern: 'Fernkampfangriff',
+        fernkampfwaffe: 'Fernkampfangriff',
+        magie: 'Magie',
+        liturgie: 'Liturgie',
+        anrufung: 'Anrufung',
+    },
+}
+ILARIS.combat_dialog = combat_dialog
+
+// Configuration objects for select helpers to replace deprecated {{#select}}
+let vorteilsgruppen = [
+    { value: '0', label: 'Allgemein' },
+    { value: '1', label: 'Profan' },
+    { value: '2', label: 'Kampf' },
+    { value: '3', label: 'Kampfstil' },
+    { value: '4', label: 'Magie' },
+    { value: '5', label: 'Zauber Traditionen' },
+    { value: '6', label: 'Karma' },
+    { value: '7', label: 'Geweihte Traditionen' },
+]
+ILARIS.vorteilsgruppen = vorteilsgruppen
+
+let fertigkeitsgruppen = [
+    { value: '0', label: 'Nahkampf' },
+    { value: '1', label: 'Fernkampf' },
+    { value: '2', label: 'Körper' },
+    { value: '3', label: 'Gesellschaft' },
+    { value: '4', label: 'Wissen' },
+    { value: '5', label: 'Natur' },
+    { value: '6', label: 'Handwerk' },
+]
+ILARIS.fertigkeitsgruppen = fertigkeitsgruppen
+
+let stufen = [
+    { value: '1', label: '1' },
+    { value: '2', label: '2' },
+    { value: '3', label: '3' },
+]
+ILARIS.stufen = stufen

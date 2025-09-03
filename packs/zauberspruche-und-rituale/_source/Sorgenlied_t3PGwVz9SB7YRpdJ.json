@@ -1,0 +1,41 @@
+{
+  "name": "Sorgenlied",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Elfenlieder, Hellsicht, Verständigung",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Das Lied vermittelt dir einen vagen Eindruck vom Wohlergehen des Zieles, mit dem du befreundet sein musst. Ist es gesund, krank oder befindet sich in Gefahr? Ist es zufrieden mit seinem Leben?",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "1 Stunde",
+    "ziel": "Einzelperson",
+    "reichweite": "dereweit",
+    "wirkungsdauer": "augenblicklich",
+    "kosten": "1 AsP",
+    "erlernen": "Elf 8",
+    "pw": 0,
+    "gruppe": 2
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "t3PGwVz9SB7YRpdJ",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!t3PGwVz9SB7YRpdJ"
+}

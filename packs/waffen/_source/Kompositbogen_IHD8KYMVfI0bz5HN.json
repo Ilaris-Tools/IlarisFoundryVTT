@@ -1,0 +1,56 @@
+{
+  "name": "Kompositbogen",
+  "type": "fernkampfwaffe",
+  "system": {
+    "haerte": 3,
+    "beschaedigung": 0,
+    "tp": "2W6+3",
+    "fertigkeit": "Schusswaffen",
+    "talent": "Bögen",
+    "rw": 32,
+    "hauptwaffe": false,
+    "nebenwaffe": false,
+    "eigenschaften": {
+      "kein_reiter": false,
+      "niederwerfen": false,
+      "niederwerfen_4": false,
+      "niederwerfen_8": false,
+      "schwer_4": false,
+      "schwer_8": false,
+      "stationaer": false,
+      "stumpf": false,
+      "umklammern_212": false,
+      "umklammern_416": false,
+      "umklammern_816": false,
+      "zweihaendig": true
+    },
+    "text": "",
+    "aufbewahrungs_ort": "mitführend",
+    "bewahrt_auf": [],
+    "gewicht_summe": 0,
+    "gewicht": 2,
+    "preis": 0,
+    "wm_fk": 0,
+    "lz": 1
+  },
+  "_id": "IHD8KYMVfI0bz5HN",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!IHD8KYMVfI0bz5HN"
+}

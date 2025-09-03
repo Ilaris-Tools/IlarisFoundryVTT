@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Geoden II",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut IN 6, Vorteil Tradition der Geoden I",
+    "gruppe": 5,
+    "text": "Geoden gelten als die fähigsten Elementaristen Aventuriens. Wenn du einen Zauber mit deinem bevorzugten Element wirkst, kannst du eine Basismodifikation (z.B. 1x Mächtige Magie) ohne Erschwernis ausführen."
+  },
+  "_id": "l5hFCgypviJiS4t2",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!l5hFCgypviJiS4t2"
+}

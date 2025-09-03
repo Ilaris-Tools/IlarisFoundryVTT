@@ -1,0 +1,60 @@
+<label><b>Beschreibung:</b></label>
+<textarea rows="8" name="system.text">{{item.system.text}}</textarea>
+<div class="flexrow">
+    <label class="flex-fest-var" style="flex-basis: 100px"><b>Härte:</b></label>
+    <div class="flexrow">
+        <input
+            name="system.haerte"
+            value="{{item.system.haerte}}"
+            type="text"
+            data-dtype="String"
+        />
+        <label class="flex-fest-var" style="flex-basis: 100px; margin-left: 10px">
+            <b>Beschädigung:</b>
+        </label>
+        <input
+            name="system.beschaedigung"
+            value="{{item.system.beschaedigung}}"
+            type="text"
+            data-dtype="String"
+        />
+    </div>
+</div>
+<div class="flexrow">
+    <label class="flex-fest-var" style="flex-basis: 100px">
+        <b>{{get_label 'gewicht'}}:</b>
+    </label>
+    <input
+        name="system.gewicht"
+        value="{{item.system.gewicht}}"
+        type="text"
+        data-dtype="Number"
+    />
+    {{!-- <label class="flex-fest-var" style="flex-basis: 100px; margin-left: 10px">
+        <b>{{get_label 'quantity'}}:</b>
+    </label>
+    <input
+        name="system.quantity"
+        value="{{item.system.quantity}}"
+        type="text"
+        data-dtype="Number"
+    /> --}}
+</div>
+ <div class="flexrow">
+    <label class="flex-fest-var" style="flex-basis: 100px"><b>Preis:</b></label>
+    <input
+        name="system.preis"
+        value="{{item.system.preis}}"
+        type="text"
+        data-dtype="Number"
+    />
+    <label class="flex-fest-var" style="flex-basis: 100px; margin-left: 10px"><b>ST</b></label>
+</div>
+{{#if hasOwner}}
+    <label class="flex-fest-var" style="flex-basis: 100px"><b>Aufbewahrungsort:</b></label>
+    <select name="system.aufbewahrungs_ort">
+        {{#select item.system.aufbewahrungs_ort}} {{#each speicherplatz_list as |ort|}}
+        <option value="{{ort}}">{{ort}}</option>
+        {{/each}} {{/select}}
+    </select>
+{{/if}}

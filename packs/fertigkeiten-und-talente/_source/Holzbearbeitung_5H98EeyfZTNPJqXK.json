@@ -1,0 +1,29 @@
+{
+  "name": "Holzbearbeitung",
+  "type": "talent",
+  "img": "systems/Ilaris/assets/images/skills/profan-talent.svg",
+  "system": {
+    "text": "Mit Holzbearbeitung fertigst du Schilde, Bögen oder ein improvisiertes Floß an, reparierst eine Zugbrücke oder flickst ein Leck in einem Schiff.",
+    "fertigkeit": "Handwerk"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "5H98EeyfZTNPJqXK",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!5H98EeyfZTNPJqXK"
+}

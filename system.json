@@ -2,7 +2,7 @@
   "id": "Ilaris",
   "title": "Ilaris",
   "description": "Schnelle und schlanke Regeln für das beliebteste deutsche P&P Setting.",
-  "version": "12.0.2",
+  "version": "12.1.2",
   "compatibility": {
     "minimum": 12,
     "verified": 12
@@ -17,7 +17,7 @@
   ],
   "scripts": [],
   "esmodules": ["scripts/hooks.js"],
-  "styles": ["css/temp.css"],
+  "styles": ["css/temp.css", "styles/sheets/manoever.css"],
   "packs": [
     {
       "label": "Beispiel Helden",
@@ -115,11 +115,11 @@
   "languages": [],
   "grid": {
     "distance": 1,
-    "units":"m"
+    "units": "m"
   },
   "primaryTokenAttribute": "gesundheit.hp",
   "secondaryTokenAttribute": null,
-  "background": "assets/images/background/splash.jpg",
+  "background": "/systems/Ilaris/assets/images/background/splash.jpg",
   "url": "https://gitlab.com/Feorg/ilaris-foundryvtt",
   "manifest": "https://raw.githubusercontent.com/Ilaris-Tools/IlarisFoundryVTT/refs/heads/main/system.json",
   "download": "https://github.com/Ilaris-Tools/IlarisFoundryVTT/archive/refs/heads/main.zip",

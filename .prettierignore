@@ -1,0 +1,7 @@
+## Ingore packs because we only change something in the jsons if we really need to and they are otherwise handled by the foundry cli packing and unpacking
+packs/
+packs/**/* 
+
+## Ignore hbs files because they are making many problems
+*.hbs
+*.css

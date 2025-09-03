@@ -1,0 +1,47 @@
+{
+  "name": "Mächtige Magie",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I",
+    "input": {
+      "label": "",
+      "field": "NUMBER",
+      "min": 0,
+      "max": null
+    },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
+    "gruppe": "2",
+    "probe": "Zauber -4",
+    "gegenprobe": "",
+    "text": "Verstärkt die Wirkung des Zaubers (siehe Zauber). Zusätzlich steigt die Schwierigkeit von Konterproben (S. 124) gegen den Zauber um +4 Punkte."
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "4qLl0orvGPHIreef",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "12.0.2",
+    "createdTime": null,
+    "modifiedTime": 1747813789309,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!4qLl0orvGPHIreef"
+}

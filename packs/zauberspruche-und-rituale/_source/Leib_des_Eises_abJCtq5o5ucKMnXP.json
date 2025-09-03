@@ -1,0 +1,41 @@
+{
+  "name": "Leib des Eises",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Eis, Verwandlung",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du harmonierst mit dem Element Eis. Du bist immun gegen Kälte und Eisschaden.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "Reise ins Eis (–4; du kannst dich mit 1 Schritt pro Initiativephase in Eis und Schnee bewegen, als würdest du darin tauchen. Im Eis brauchst du nicht zu atmen.)\nBegleiter (–4; der Zauber betrifft auch eine weitere Person, mit der du permanent Hautkontakt halten musst.)\nLeib aus Eis (–8; Deine Kreaturenklasse wird zu \"Elementar\" mit allen entsprechenden Eigenschaften (S. 99). Du kannst während der Wirkungsdauer keine Zauber wirken.)",
+    "vorbereitung": "8 Aktionen",
+    "ziel": "selbst",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Stunde",
+    "kosten": "16 AsP",
+    "erlernen": "Ach, Elf 18; Dru 20",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "abJCtq5o5ucKMnXP",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!abJCtq5o5ucKMnXP"
+}

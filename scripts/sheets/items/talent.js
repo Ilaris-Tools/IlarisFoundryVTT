@@ -1,21 +1,21 @@
-import { IlarisItemSheet } from './item.js';
+import { IlarisItemSheet } from './item.js'
 
 export class TalentSheet extends IlarisItemSheet {
     async getData() {
-        const data = super.getData();
+        const data = super.getData()
         if (data.hasOwner) {
-            data.fertigkeit_list = this.item.actor.misc.profan_fertigkeit_list;
+            data.fertigkeit_list = this.item.actor.misc.profan_fertigkeit_list
         }
         // console.log("In item.js");
         // console.log(data.actor);
         // console.log(data);
-        return data;
+        return data
     }
 
     static get defaultOptions() {
         return foundry.utils.mergeObject(super.defaultOptions, {
             classes: ['ilaris', 'sheet', 'item', 'talent'],
-            template: 'systems/Ilaris/templates/sheets/items/talent.html',
+            template: 'systems/Ilaris/templates/sheets/items/talent.hbs',
             // width: 720,
             // height: 800,
             // resizable: false,
@@ -26,7 +26,7 @@ export class TalentSheet extends IlarisItemSheet {
             //         initial: "fertigkeiten",
             //     },
             // ]
-        });
+        })
     }
 
     // getData() {
