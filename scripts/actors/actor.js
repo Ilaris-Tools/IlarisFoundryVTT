@@ -674,7 +674,7 @@ export class IlarisActor extends Actor {
         // "snk": "Schneller Kampf"
         if (
             selected_kampfstil.name.includes('Beidhändiger Kampf') &&
-            weaponUtils.usesTwoMeleeWeapons(HAUPTWAFFE, NEBENWAFFE) &&
+            weaponUtils.usesTwoWeapons(HAUPTWAFFE, NEBENWAFFE) &&
             !weaponUtils.anyWeaponNeedsToMeetRequirement(HAUPTWAFFE, NEBENWAFFE, 'reittier') &&
             !weaponUtils.anyWeaponNeedsToMeetRequirement(HAUPTWAFFE, NEBENWAFFE, 'schild')
         ) {
@@ -686,7 +686,7 @@ export class IlarisActor extends Actor {
             HAUPTWAFFE.system.at += at_hw
             NEBENWAFFE.system.at += at_nw
         } else if (selected_kampfstil.name.includes('Kraftvoller Kampf')) {
-            let waffe = weaponUtils.usesSingleMeleeWeapon(HAUPTWAFFE, NEBENWAFFE)
+            let waffe = weaponUtils.usesSingleWeapon(HAUPTWAFFE, NEBENWAFFE)
             if (waffe) {
                 let schaden = selected_kampfstil.modifiers.damage
                 schaden = '+'.concat(schaden)
@@ -746,7 +746,7 @@ export class IlarisActor extends Actor {
                 }
             }
         } else if (selected_kampfstil.name.includes('Schneller Kampf')) {
-            let waffe = weaponUtils.usesSingleMeleeWeapon(HAUPTWAFFE, NEBENWAFFE)
+            let waffe = weaponUtils.usesSingleWeapon(HAUPTWAFFE, NEBENWAFFE)
             if (waffe) {
                 waffe.system.at += selected_kampfstil.modifiers.at
             }
