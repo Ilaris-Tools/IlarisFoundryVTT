@@ -74,6 +74,7 @@ describe('hardcodedvorteile.js', () => {
                     stufe: 0,
                     sources: [],
                     modifiers: { at: 0, vt: 0, damage: 0, rw: 0, be: 0 },
+                    bedingungen: '',
                 },
                 'Beidhändiger Kampf': {
                     name: 'Beidhändiger Kampf',
@@ -81,6 +82,7 @@ describe('hardcodedvorteile.js', () => {
                     stufe: 2,
                     sources: ['Beidhändiger Kampf I', 'Beidhändiger Kampf II (test)'],
                     modifiers: { at: 2, vt: 0, damage: 0, rw: 0, be: 0 },
+                    bedingungen: '',
                 },
             })
         })
@@ -110,6 +112,7 @@ describe('hardcodedvorteile.js', () => {
                     stufe: 0,
                     sources: [],
                     modifiers: { at: 0, vt: 0, damage: 0, rw: 0, be: 0 },
+                    bedingungen: '',
                 },
                 'Beidhändiger Kampf': {
                     name: 'Beidhändiger Kampf',
@@ -117,6 +120,7 @@ describe('hardcodedvorteile.js', () => {
                     stufe: 1,
                     sources: ['Beidhändiger Kampf I'],
                     modifiers: { at: 0, vt: 0, damage: 0, rw: 0, be: 0 },
+                    bedingungen: '',
                 },
                 'Defensiver Kampfstil': {
                     name: 'Defensiver Kampfstil',
@@ -124,6 +128,7 @@ describe('hardcodedvorteile.js', () => {
                     stufe: 2,
                     sources: ['Defensiver Kampfstil II'],
                     modifiers: { at: 0, vt: 0, damage: 0, rw: 0, be: 0 },
+                    bedingungen: '',
                 },
             })
         })
