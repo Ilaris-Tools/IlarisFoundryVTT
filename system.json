@@ -121,7 +121,7 @@
   "secondaryTokenAttribute": null,
   "background": "/systems/Ilaris/assets/images/background/splash.jpg",
   "url": "https://gitlab.com/Feorg/ilaris-foundryvtt",
-  "manifest": "https://raw.githubusercontent.com/Ilaris-Tools/IlarisFoundryVTT/refs/heads/main/system.json",
-  "download": "https://github.com/Ilaris-Tools/IlarisFoundryVTT/archive/refs/heads/main.zip",
+  "manifest": "https://raw.githubusercontent.com/Ilaris-Tools/IlarisFoundryVTT/refs/heads/foundry-v12/system.json",
+  "download": "https://github.com/Ilaris-Tools/IlarisFoundryVTT/archive/refs/heads/foundry-v12.zip",
   "license": ""
 }
