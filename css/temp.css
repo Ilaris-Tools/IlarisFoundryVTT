@@ -39,7 +39,7 @@
   padding-right: -100px;
   display: flex;
   flex-direction: row;
-  background-image: url("../assets/images/Ilaris/Pergamentrolle.png");
+  background-image: url(/systems/Ilaris/assets/images/Ilaris/Pergamentrolle.webp);
   background-size: cover;
   background-repeat: round;
 }
@@ -88,6 +88,14 @@
 .attribute-wrapper:hover {
   filter: drop-shadow(0 0 8px var(--color-shadow-primary));
   transform: scale(1.1);
+}
+
+/* special case for MR */
+.icon-row .attribute-wrapper {
+  width: auto;          /* stop forcing 100% width */
+  flex: 0 0 auto;       /* don't stretch across the row */
+  display: inline-flex; /* keep image + label aligned */
+  align-items: center;
 }
 
 .herotabnavigation {
@@ -178,7 +186,7 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background-image: url("../assets/images/Ilaris/bronze_glatt.png");
+  background-image: url("../assets/images/Ilaris/bronze_glatt.webp");
   background-size: cover;
   border-radius: inherit;
 }
@@ -231,7 +239,7 @@
   display: inline-block;
   width: 32px;
   height: 32px;
-  background-image: url("../assets/images/Ilaris/icon_clear.png");
+  background-image: url("../assets/images/Ilaris/icon_clear.webp");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
@@ -270,12 +278,12 @@ td.rollable.icon-small {
 
 #pause {
   .fa-spin {
-    content: url("../assets/images/Ilaris/icon_rot.png")
+    content: url("../assets/images/Ilaris/icon_rot.webp")
   }
 }
 
 #logo {
-  content: url("../assets/images/Ilaris/Ilaris.png")
+  content: url("../assets/images/Ilaris/Ilaris.webp")
 }
 
 .profile-img {

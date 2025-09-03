@@ -36,6 +36,15 @@ b) damit sich in jedem Teil des Codes mehrere Leute zurechtfinden.
 
 Damit die Features zeitnah mit Infos zum Update für Nutzer verfügbar sind muss der develop branch regelmäßig in den main branch gemerged werden.
 Als Faustregel bekommt ein PR develop->main eine neue Version und entspricht einem Meilenstein.
+
+Für PRs in den main-Branch stehen verschiedene Templates zur Verfügung:
+
+-   **Minor Release**: Grundlegende manuelle Tests und technische Checkliste
+-   **Major Release**: Umfangreiche manuelle Tests und erweiterte technische Checkliste
+-   **Versionsupdate**: Reine technische Checkliste ohne manuelle Tests
+
+Die Templates enthalten manuelle Testfälle für Charaktererstellung, Kampfsystem, Browser-Kompatibilität und andere kritische Funktionen um Bugs vor Releases zu vermeiden.
+
 Checklist für ein größeres Versionsupdate:
 
 -   Neue Version in system.json (zB `x.1.x` auf `x.2.x`)

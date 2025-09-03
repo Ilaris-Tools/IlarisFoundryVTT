@@ -153,8 +153,6 @@ export class CombatDialog extends Dialog {
     aufbauendeManoeverAktivieren() {
         let manoever = this.item.system.manoever
         let vorteile = this.actor.vorteil.kampf.map((v) => v.name)
-
-        manoever.kwut = vorteile.includes('Kalte Wut')
     }
 
     async manoeverAuswaehlen(html) {

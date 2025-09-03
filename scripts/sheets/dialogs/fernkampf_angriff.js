@@ -41,7 +41,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
         // damit wird das template gefüttert
         let data = {
             rw_choice: this.item.system.manoever.rw,
-            rw_checked: this.item.system.manoever.fm_rwrh.selected,
+            rw_checked: false,
             gzkl_choice: CONFIG.ILARIS.gzkl_choice,
             lcht_choice: CONFIG.ILARIS.lcht_choice,
             wttr_choice: CONFIG.ILARIS.wttr_choice,
