@@ -39,6 +39,7 @@ describe('hardcodedvorteile.js', () => {
                     stufe: 0,
                     sources: [],
                     modifiers: { at: 0, vt: 0, damage: 0, rw: 0, be: 0 },
+                    bedingungen: '',
                 },
             })
         })
