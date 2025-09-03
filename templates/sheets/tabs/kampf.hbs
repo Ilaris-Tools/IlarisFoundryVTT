@@ -8,11 +8,14 @@
     {{/if}}
     <h2>Nahkampfwaffen</h2>
     <a class="item-create" data-itemclass="nahkampfwaffe"><i class="fas fa-plus"></i>Neue Nahkampfwaffe</a>
-    <div>
+    <div style="display: flex; align-items: center; gap: 10px;">
         <select class="selected-kampfstil" name="system.misc.selected_kampfstil">
             {{selectOptions actor.misc.kampfstile_list selected=actor.system.misc.selected_kampfstil}}
         </select>
-
+        <label style="display: flex; align-items: center; gap: 5px;">
+            <input type="checkbox" name="system.misc.ist_beritten" {{checked actor.system.misc.ist_beritten}} />
+            Beritten
+        </label>
     </div>
     <table class="table">
         <thead>

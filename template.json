@@ -48,6 +48,13 @@
           "nahkampfmod": 0
         }
       },
+      "misc": {
+        "misc": {
+          "selected_kampfstil": "ohne",
+          "selected_uebernatuerlicher_stil": "ohne",
+          "ist_beritten": false
+        }
+      },
       "initiative": {
         "initiative": 0
       },
@@ -133,6 +140,7 @@
         "initiative",
         "furcht",
         "modifikatoren",
+        "misc",
         "geld"
       ],
       "getragen": 0,
@@ -148,6 +156,7 @@
         "initiative",
         "furcht",
         "modifikatoren",
+        "misc",
         "geld"
       ],
       "getragen": 0,
@@ -368,7 +377,8 @@
       "voraussetzung": "",
       "gruppe": 0,
       "text": "",
-      "script": ""
+      "script": "",
+      "bedingungen": ""
     },
     "manoever": {
       "voraussetzungen": [],
