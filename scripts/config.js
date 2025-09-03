@@ -301,9 +301,9 @@ let manoever = {
 ILARIS.manoever = manoever
 
 let manoever_nahkampf = {
-    kbak: {
-        selected: false,
-    },
+    kbak: { selected: false },
+    mod: { selected: false },
+    rllm: { selected: '' },
     vlof: {
         selected: false,
         offensiver_kampfstil: false,
@@ -320,131 +320,16 @@ let manoever_nahkampf = {
     pssl: {
         selected: false,
     },
-    kwut: false,
-    km_ausw: {
-        possible: true,
-        selected: false,
-    },
-    km_bind: {
-        possible: true,
-        selected: 0,
-    },
-    km_ever: {
-        possible: true,
-        selected: false,
-    },
-    km_entw: {
-        possible: true,
-        selected_at: false,
-        selected_vt: false,
-    },
-    km_gzsl: {
-        possible: true,
-        selected: '0',
-    },
-    km_umre: {
-        possible: true,
-        selected: false,
-    },
-    km_wusl: {
-        possible: true,
-        selected: 0,
-    },
-    km_aufl: {
-        possible: true,
-        selected: false,
-        gs: 0,
-    },
-    km_rust: {
-        possible: false,
-        selected: false,
-    },
-    km_shsp: {
-        possible: true,
-        selected: false,
-    },
-    km_stsl: {
-        possible: false,
-        selected: false,
-    },
-    km_umkl: {
-        possible: false,
-        selected: false,
-        mod: 0,
-    },
-    km_ausf: {
-        possible: false,
-        selected: false,
-    },
-    km_befr: {
-        possible: false,
-        selected: false,
-    },
-    km_dppl: {
-        possible: false,
-        selected: false,
-    },
-    km_hmsl: {
-        possible: false,
-        selected: false,
-    },
-    km_kltz: {
-        possible: false,
-        selected: false,
-    },
-    km_ndwf: {
-        possible: false,
-        selected: false,
-    },
-    km_rpst: {
-        possible: false,
-        selected: false,
-    },
-    km_shwl: {
-        possible: false,
-        selected: false,
-    },
-    km_stag: {
-        possible: false,
-        selected: false,
-        gs: 0,
-    },
-    km_tdst: {
-        possible: false,
-        selected: false,
-    },
-    km_uebr: {
-        possible: false,
-        selected: false,
-        gs: 0,
-    },
-    km_utlf: {
-        possible: false,
-        selected: false,
-    },
-    mod: {
-        selected: '0',
-    },
-    rllm: {
-        selected: 'roll',
-    },
 }
 ILARIS.manoever_nahkampf = manoever_nahkampf
 
 let manoever_fernkampf = {
-    kbak: {
-        selected: false,
-    },
-    // "vldf": {
-    //     "possible": false,
-    //     "selected": false
-    // },
+    kbak: { selected: false },
+    mod: { selected: false },
+    rllm: { selected: '' },
     gzkl: {
         selected: '2',
     },
-    // "umge": {
-    //     "selected": "0"
-    // },
     bwng: {
         selected: '0',
     },
@@ -471,176 +356,18 @@ let manoever_fernkampf = {
         1: '2 Schritt',
         2: '3 Schritt',
     },
-    kwut: false,
     fm_gzss: {
-        possible: true,
-        selected: '0',
-    },
-    fm_rwrh: {
-        possible: true,
-        selected: '0',
-    },
-    fm_srfs: {
-        possible: true,
-        selected: '0',
-    },
-    fm_zlen: {
-        possible: true,
-        ruhige_hand: false,
         selected: false,
-    },
-    fm_msts: {
-        possible: false,
-        selected: false,
-    },
-    fm_rust: {
-        possible: false,
-        selected: false,
-    },
-    fm_snls: {
-        possible: false,
-        selected: '0',
-    },
-    mod: {
-        selected: '0',
-    },
-    rllm: {
-        selected: 'roll',
     },
 }
 ILARIS.manoever_fernkampf = manoever_fernkampf
 
-let manoever_magie = {
-    // kombinierte aktion
-    kbak: {
-        selected: false,
-    },
-    // mm_mama: 'Mächtige Magie',
-    mm_mama: {
-        possible: true,
-        selected: '0',
-    },
-    // mm_mezi: 'Mehrere Ziele',
-    mm_mezi: {
-        possible: true,
-        selected: false,
-    },
-    // mm_rwrh: 'Reichweite erhöhen',
-    mm_rwrh: {
-        possible: true,
-        selected: '0',
-    },
-    // mm_vbvk: 'Vorbereitung verkürzen',
-    mm_vbvk: {
-        possible: true,
-        selected: '0',
-    },
-    // mm_wkvl: 'Wirkungsdauer verlängern',
-    mm_wkvl: {
-        possible: true,
-        selected: '0',
-    },
-    // mm_ztig: 'Zaubertechnik ignorieren',
-    mm_ztig: {
-        possible: true,
-        selected: '0',
-    },
-    // mm_erzw: 'Erzwingen',
-    mm_erzw: {
-        possible: false,
-        selected: false,
-    },
-    // mm_kosp: 'Kosten sparen',
-    mm_kosp: {
-        possible: false,
-        selected: '0',
-    },
-    // mm_ztls: 'Zeit lassen',
-    mm_ztls: {
-        possible: false,
-        selected: false,
-    },
-    // mm_zere: 'Zeremonie',
-    mm_zere: {
-        possible: false,
-        selected: '0',
-    },
-    // mm_opfe: 'Opferung',
-    mm_opfe: {
-        possible: false,
-        selected: false,
-    },
-    // modifikator
-    mod: {
-        selected: '0',
-    },
-    // rollmode
-    rllm: {
-        selected: 'roll',
-    },
+let manoever_ueber = {
+    kbak: { selected: false },
+    mod: { selected: false },
+    rllm: { selected: '' },
 }
-ILARIS.manoever_magie = manoever_magie
-
-let manoever_karma = {
-    // kombinierta aktion
-    kbak: {
-        selected: false,
-    },
-    // lm_mali: 'Mächtige Liturgie',
-    lm_mali: {
-        possible: true,
-        selected: '0',
-    },
-    // lm_mezi: 'Mehrere Ziele',
-    lm_mezi: {
-        possible: true,
-        selected: false,
-    },
-    // lm_ltig: 'Liturgische Technik ignorieren',
-    lm_ltig: {
-        possible: true,
-        selected: '0',
-    },
-    // lm_rwrh: 'Reichweite erhöhen',
-    lm_rwrh: {
-        possible: true,
-        selected: '0',
-    },
-    // lm_vbvk: 'Vorbereitung verkürzen',
-    lm_vbvk: {
-        possible: true,
-        selected: '0',
-    },
-    // lm_wkvl: 'Wirkungsdauer verlängern',
-    lm_wkvl: {
-        possible: true,
-        selected: '0',
-    },
-    // lm_kosp: 'Kosten sparen',
-    lm_kosp: {
-        possible: false,
-        selected: '0',
-    },
-    // lm_zere: 'Zeremonie',
-    lm_zere: {
-        possible: false,
-        selected: '0',
-    },
-    // lm_opfe: 'Opferung',
-    lm_opfe: {
-        possible: false,
-        selected: false,
-    },
-    // modifikator
-    mod: {
-        selected: '0',
-    },
-    // rollmode
-    rllm: {
-        selected: 'roll',
-    },
-}
-ILARIS.manoever_karma = manoever_karma
+ILARIS.manoever_ueber = manoever_ueber
 
 let kreatur_item_options = {
     angriff: 'Angriff',
