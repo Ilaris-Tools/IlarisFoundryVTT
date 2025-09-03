@@ -18,7 +18,10 @@ export function usesTwoWeapons(hauptWaffe, nebenWaffe, type = 'nahkampfwaffe') {
     if (typeof hauptWaffe == 'undefined' || typeof nebenWaffe == 'undefined') return false
     if (hauptWaffe.id == nebenWaffe.id) return false
     if (hauptWaffe.type != type || nebenWaffe.type != type) return false
-    if (hauptWaffe.system.zweihaendig === true || nebenWaffe.system.zweihaendig === true)
+    if (
+        hauptWaffe.system.eigenschaften.zweihaendig === true ||
+        nebenWaffe.system.eigenschaften.zweihaendig === true
+    )
         return false
     return true
 }
@@ -104,7 +107,7 @@ export function checkComatStyleConditions(bedingungen, hauptWaffe, nebenWaffe, a
 
         // Check weapon skill (Fertigkeit)
         if (lowerCondition.startsWith('fertigkeit ')) {
-            const fertigkeit = condition.substring(11).trim()
+            const fertigkeit = condition.substring(11).trim().toLowerCase()
             let hasSkill = false
             if (hauptWaffe && hauptWaffe.system && hauptWaffe.system.fertigkeit === fertigkeit)
                 hasSkill = true
@@ -116,7 +119,7 @@ export function checkComatStyleConditions(bedingungen, hauptWaffe, nebenWaffe, a
 
         // Check for negated weapon properties (kein <Waffeneigenschaft>)
         if (lowerCondition.startsWith('kein ')) {
-            const eigenschaft = condition.substring(5).trim()
+            const eigenschaft = condition.substring(5).trim().toLowerCase()
             if (anyWeaponNeedsToMeetRequirement(hauptWaffe, nebenWaffe, eigenschaft)) return false
             continue
         }

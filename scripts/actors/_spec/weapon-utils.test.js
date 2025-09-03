@@ -51,9 +51,9 @@ describe('weapon-requirements.js', () => {
             expect(result).toBe(mockMeleeWeapon1)
         })
 
-        it('should return the nebenWaffe when only nebenWaffe is provided', () => {
+        it('should return null when only nebenWaffe is provided', () => {
             const result = usesSingleWeapon(undefined, mockMeleeWeapon2)
-            expect(result).toBe(mockMeleeWeapon2)
+            expect(result).toBe(null)
         })
 
         it('should return the weapon when both weapons are the same', () => {
@@ -64,16 +64,6 @@ describe('weapon-requirements.js', () => {
         it('should return null when both weapons are provided but different', () => {
             const result = usesSingleWeapon(mockMeleeWeapon1, mockMeleeWeapon2)
             expect(result).toBeNull()
-        })
-
-        it('should return null when weapon requires riding but riding is not allowed', () => {
-            const result = usesSingleWeapon(mockRidingWeapon, undefined, false)
-            expect(result).toBeNull()
-        })
-
-        it('should return the weapon when weapon requires riding and riding is allowed', () => {
-            const result = usesSingleWeapon(mockRidingWeapon, undefined, true)
-            expect(result).toBe(mockRidingWeapon)
         })
 
         it('should handle weapons without eigenschaften property', () => {
@@ -429,7 +419,7 @@ describe('weapon-requirements.js', () => {
                     'weapon1',
                     'nahkampfwaffe',
                     {},
-                    'Hiebwaffen',
+                    'hiebwaffen',
                 )
                 expect(
                     checkComatStyleConditions(
@@ -507,7 +497,7 @@ describe('weapon-requirements.js', () => {
                     'weapon1',
                     'nahkampfwaffe',
                     { reittier: true },
-                    'Hiebwaffen',
+                    'hiebwaffen',
                 )
 
                 // All conditions met

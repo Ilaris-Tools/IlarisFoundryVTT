@@ -193,8 +193,10 @@ export function getKampfstile(actor) {
 
         // Accumulate script modifiers from all kampfstile in this group
         const accumulatedModifiers = { at: 0, vt: 0, damage: 0, rw: 0, be: 0 }
+        let bedingungen = ''
         stile.forEach((stil) => {
             const modifiers = parseKampfstilScript(stil.system?.script, stil.name)
+            bedingungen += stil.system?.bedingungen || ''
             if (modifiers) {
                 accumulatedModifiers.at += modifiers[0]
                 accumulatedModifiers.vt += modifiers[1]
@@ -213,6 +215,7 @@ export function getKampfstile(actor) {
                 stufe: getKampfstilStufe(highestStil.name),
                 sources: sources,
                 modifiers: accumulatedModifiers,
+                bedingungen: bedingungen.trim(),
             }
         }
     })
