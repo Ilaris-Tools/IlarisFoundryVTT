@@ -654,15 +654,7 @@ export class IlarisActor extends Actor {
             fwaffe.system.manoever.lcht.angepasst = lcht_angepasst
         }
 
-        // "ohne": "Kein Kampfstil",
-        // "bhk": "Beidhändiger Kampf",
-        // "kvk": "Kraftvoller Kampf",
-        // "pwk": "Parierwaffenkampf",
-        // "rtk": "Reiterkampf",
-        // "shk": "Schildkampf",
-        // "snk": "Schneller Kampf"
         if (
-            selected_kampfstil.name.includes('Beidhändiger Kampf') &&
             weaponUtils.checkComatStyleConditions(
                 selected_kampfstil.bedingungen,
                 HAUPTWAFFE,
@@ -670,77 +662,69 @@ export class IlarisActor extends Actor {
                 this.system.misc.ist_beritten,
             )
         ) {
-            let at_hw = selected_kampfstil.modifiers.at
-            let at_nw = selected_kampfstil.modifiers.at
-            if (selected_kampfstil.stufe >= 2) {
-                weaponUtils.ignoreSideWeaponMalus(NEBENWAFFE)
-            }
-            HAUPTWAFFE.system.at += at_hw
-            NEBENWAFFE.system.at += at_nw
-        } else if (selected_kampfstil.name.includes('Kraftvoller Kampf')) {
-            let waffe = weaponUtils.usesSingleWeapon(HAUPTWAFFE, NEBENWAFFE)
-            if (waffe) {
+            if (selected_kampfstil.name.includes('Beidhändiger Kampf')) {
+                let at_hw = selected_kampfstil.modifiers.at
+                let at_nw = selected_kampfstil.modifiers.at
+                if (selected_kampfstil.stufe >= 2) {
+                    weaponUtils.ignoreSideWeaponMalus(NEBENWAFFE)
+                }
+                HAUPTWAFFE.system.at += at_hw
+                NEBENWAFFE.system.at += at_nw
+            } else if (selected_kampfstil.name.includes('Kraftvoller Kampf')) {
+                let waffe = weaponUtils.usesSingleWeapon(HAUPTWAFFE, NEBENWAFFE)
+                if (waffe) {
+                    let schaden = selected_kampfstil.modifiers.damage
+                    schaden = '+'.concat(schaden)
+                    waffe.system.schaden = waffe.system.schaden.concat(schaden)
+                }
+            } else if (selected_kampfstil.name.includes('Parierwaffenkampf')) {
+                if (selected_kampfstil.stufe >= 2) {
+                    weaponUtils.ignoreSideWeaponMalus(NEBENWAFFE, 'parierwaffe')
+                }
+            } else if (selected_kampfstil.name.includes('Reiterkampf')) {
                 let schaden = selected_kampfstil.modifiers.damage
+                let at = selected_kampfstil.modifiers.at
+                let vt = selected_kampfstil.modifiers.vt
+                let beReduction = selected_kampfstil.modifiers.be
                 schaden = '+'.concat(schaden)
-                waffe.system.schaden = waffe.system.schaden.concat(schaden)
-            }
-        } else if (
-            selected_kampfstil.name.includes('Parierwaffenkampf') &&
-            weaponUtils.anyWeaponNeedsToMeetRequirement(HAUPTWAFFE, NEBENWAFFE, 'parierwaffe') &&
-            !weaponUtils.anyWeaponNeedsToMeetRequirement(HAUPTWAFFE, NEBENWAFFE, 'reittier')
-        ) {
-            if (selected_kampfstil.stufe >= 2) {
-                weaponUtils.ignoreSideWeaponMalus(NEBENWAFFE, 'parierwaffe')
-            }
-        } else if (
-            selected_kampfstil.name.includes('Reiterkampf') &&
-            weaponUtils.anyWeaponNeedsToMeetRequirement(HAUPTWAFFE, NEBENWAFFE, 'reittier')
-        ) {
-            let schaden = selected_kampfstil.modifiers.damage
-            let at = selected_kampfstil.modifiers.at
-            let vt = selected_kampfstil.modifiers.vt
-            let beReduction = selected_kampfstil.modifiers.be
-            schaden = '+'.concat(schaden)
 
-            if (be > 0) {
-                be -= beReduction
-            }
-            if (HAUPTWAFFE && HAUPTWAFFE.type == 'nahkampfwaffe') {
-                HAUPTWAFFE.system.at += at
-                HAUPTWAFFE.system.vt += vt
-                HAUPTWAFFE.system.schaden = HAUPTWAFFE.system.schaden.concat(schaden)
-            }
+                if (be > 0) {
+                    be -= beReduction
+                }
+                if (HAUPTWAFFE && HAUPTWAFFE.type == 'nahkampfwaffe') {
+                    HAUPTWAFFE.system.at += at
+                    HAUPTWAFFE.system.vt += vt
+                    HAUPTWAFFE.system.schaden = HAUPTWAFFE.system.schaden.concat(schaden)
+                }
 
-            if (HAUPTWAFFE.id != NEBENWAFFE.id) {
-                if (NEBENWAFFE && NEBENWAFFE.type == 'nahkampfwaffe') {
-                    NEBENWAFFE.system.at += at
-                    NEBENWAFFE.system.vt += vt
-                    NEBENWAFFE.system.schaden = NEBENWAFFE.system.schaden.concat(schaden)
+                if (HAUPTWAFFE.id != NEBENWAFFE.id) {
+                    if (NEBENWAFFE && NEBENWAFFE.type == 'nahkampfwaffe') {
+                        NEBENWAFFE.system.at += at
+                        NEBENWAFFE.system.vt += vt
+                        NEBENWAFFE.system.schaden = NEBENWAFFE.system.schaden.concat(schaden)
+                    }
+                    if (selected_kampfstil.stufe >= 2) {
+                        weaponUtils.ignoreSideWeaponMalus(NEBENWAFFE, 'reittier')
+                    }
                 }
-                if (selected_kampfstil.stufe >= 2) {
-                    weaponUtils.ignoreSideWeaponMalus(NEBENWAFFE, 'reittier')
+            } else if (selected_kampfstil.name.includes('Schildkampf')) {
+                let vt = selected_kampfstil.modifiers.vt
+                if (HAUPTWAFFE && HAUPTWAFFE.type == 'nahkampfwaffe') {
+                    HAUPTWAFFE.system.vt += vt
                 }
-            }
-        } else if (
-            selected_kampfstil.name.includes('Schildkampf') &&
-            weaponUtils.anyWeaponNeedsToMeetRequirement(HAUPTWAFFE, NEBENWAFFE, 'schild')
-        ) {
-            let vt = selected_kampfstil.modifiers.vt
-            if (HAUPTWAFFE && HAUPTWAFFE.type == 'nahkampfwaffe') {
-                HAUPTWAFFE.system.vt += vt
-            }
-            if (HAUPTWAFFE && NEBENWAFFE && HAUPTWAFFE.id != NEBENWAFFE.id) {
-                if (NEBENWAFFE && NEBENWAFFE.type == 'nahkampfwaffe') {
-                    NEBENWAFFE.system.vt += vt
+                if (HAUPTWAFFE && NEBENWAFFE && HAUPTWAFFE.id != NEBENWAFFE.id) {
+                    if (NEBENWAFFE && NEBENWAFFE.type == 'nahkampfwaffe') {
+                        NEBENWAFFE.system.vt += vt
+                    }
+                    if (selected_kampfstil.stufe >= 2) {
+                        weaponUtils.ignoreSideWeaponMalus(NEBENWAFFE, 'schild')
+                    }
                 }
-                if (selected_kampfstil.stufe >= 2) {
-                    weaponUtils.ignoreSideWeaponMalus(NEBENWAFFE, 'schild')
+            } else if (selected_kampfstil.name.includes('Schneller Kampf')) {
+                let waffe = weaponUtils.usesSingleWeapon(HAUPTWAFFE, NEBENWAFFE)
+                if (waffe) {
+                    waffe.system.at += selected_kampfstil.modifiers.at
                 }
-            }
-        } else if (selected_kampfstil.name.includes('Schneller Kampf')) {
-            let waffe = weaponUtils.usesSingleWeapon(HAUPTWAFFE, NEBENWAFFE)
-            if (waffe) {
-                waffe.system.at += selected_kampfstil.modifiers.at
             }
         }
     }
