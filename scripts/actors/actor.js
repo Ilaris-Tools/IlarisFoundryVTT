@@ -1,3 +1,4 @@
+import { method } from 'lodash'
 import * as hardcoded from './hardcodedvorteile.js'
 import * as weaponUtils from './weapon-utils.js'
 
@@ -662,22 +663,58 @@ export class IlarisActor extends Actor {
                 this.system.misc.ist_beritten,
             )
         ) {
-            let schaden = ''
-            if (selected_kampfstil.modifiers.schaden > 0) {
-                schaden += '+' + selected_kampfstil.modifiers.schaden
+            // Execute foundryScript method calls if they exist
+            if (
+                selected_kampfstil.foundryScriptMethods &&
+                selected_kampfstil.foundryScriptMethods.length > 0
+            ) {
+                // Initialize array to store method results if it doesn't exist
+                let methodResults = []
+
+                for (const methodCall of selected_kampfstil.foundryScriptMethods) {
+                    try {
+                        // Create a function that has access to weapon-utils methods and executes the method call
+                        const executeMethod = new Function(
+                            'weaponUtils',
+                            'HAUPTWAFFE',
+                            'NEBENWAFFE',
+                            'selected_kampfstil',
+                            'actor',
+                            `return weaponUtils.${methodCall}`,
+                        )
+                        const result = executeMethod(
+                            weaponUtils,
+                            HAUPTWAFFE,
+                            NEBENWAFFE,
+                            selected_kampfstil,
+                            actor,
+                        )
+
+                        // Store the result with the method call for reference
+                        methodResults.push(result)
+
+                        console.log(`Kampfstil method ${methodCall} returned:`, result)
+                    } catch (error) {
+                        console.warn(`Failed to execute kampfstil method: ${methodCall}`, error)
+                    }
+                }
             }
             if (be > 0) {
                 be -= selected_kampfstil.modifiers.be
             }
-            if (HAUPTWAFFE) {
-                HAUPTWAFFE.system.at += selected_kampfstil.modifiers.at
-                HAUPTWAFFE.system.vt += selected_kampfstil.modifiers.vt
-                HAUPTWAFFE.system.schaden = HAUPTWAFFE.system.schaden.concat(schaden)
-            }
-            if (NEBENWAFFE && HAUPTWAFFE.id != NEBENWAFFE.id) {
-                NEBENWAFFE.system.at += selected_kampfstil.modifiers.at
-                NEBENWAFFE.system.vt += selected_kampfstil.modifiers.vt
-                NEBENWAFFE.system.schaden = NEBENWAFFE.system.schaden.concat(schaden)
+            if (methodResults && methodResults.length > 0 && methodResults.includes('ranged')) {
+                weaponUtils.applyModifierToWeapons(
+                    HAUPTWAFFE,
+                    NEBENWAFFE,
+                    selected_kampfstil.modifiers,
+                    true,
+                )
+            } else {
+                weaponUtils.applyModifierToWeapons(
+                    HAUPTWAFFE,
+                    NEBENWAFFE,
+                    selected_kampfstil.modifiers,
+                )
             }
         }
     }

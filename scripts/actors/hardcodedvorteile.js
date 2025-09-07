@@ -168,6 +168,7 @@ export function getKampfstile(actor) {
             sources: [],
             modifiers: { at: 0, vt: 0, damage: 0, rw: 0, be: 0 }, // Default no modifiers
             bedingungen: '',
+            foundryScriptMethods: [], // Default no methods
         },
     }
 
@@ -195,6 +196,7 @@ export function getKampfstile(actor) {
         // Accumulate script modifiers from all kampfstile in this group
         const accumulatedModifiers = { at: 0, vt: 0, damage: 0, rw: 0, be: 0 }
         let bedingungen = ''
+        let foundryScriptMethods = []
         stile.forEach((stil) => {
             const modifiers = parseKampfstilScript(stil.system?.script, stil.name)
             bedingungen += stil.system?.bedingungen || ''
@@ -204,6 +206,15 @@ export function getKampfstile(actor) {
                 accumulatedModifiers.damage += modifiers[2]
                 accumulatedModifiers.rw += modifiers[3]
                 accumulatedModifiers.be += modifiers[4]
+            }
+
+            // Parse foundryScript to extract method calls
+            if (stil.system?.foundryScript && typeof stil.system.foundryScript === 'string') {
+                const methodCalls = stil.system.foundryScript
+                    .split(';')
+                    .map((methodCall) => methodCall.trim())
+                    .filter((methodCall) => methodCall.length > 0)
+                foundryScriptMethods.push(...methodCalls)
             }
         })
 
@@ -217,6 +228,7 @@ export function getKampfstile(actor) {
                 sources: sources,
                 modifiers: accumulatedModifiers,
                 bedingungen: bedingungen.trim(),
+                foundryScriptMethods: [...new Set(foundryScriptMethods)], // Remove duplicates
             }
         }
     })

@@ -56,6 +56,37 @@ export function ignoreSideWeaponMalus(nebenwaffe, waffenEigenschaft = '') {
     nebenwaffe.system.vt += 4
 }
 
+export function affectsRangedWeaponOnly() {
+    return 'ranged'
+}
+
+export function applyModifierToWeapons(hauptWaffe, nebenWaffe, modifiers, affectRanged = false) {
+    let schaden = ''
+    if (modifiers.schaden > 0) {
+        schaden += '+' + modifiers.schaden
+    }
+    if (hauptWaffe) {
+        if (affectRanged && hauptWaffe.type === 'fernkampfwaffe') {
+            hauptWaffe.system.fk += modifiers.at
+            hauptWaffe.system.schaden = hauptWaffe.system.schaden.concat(schaden)
+        } else {
+            hauptWaffe.system.at += modifiers.at
+            hauptWaffe.system.vt += modifiers.vt
+            hauptWaffe.system.schaden = hauptWaffe.system.schaden.concat(schaden)
+        }
+    }
+    if (nebenWaffe && hauptWaffe.id != nebenWaffe.id) {
+        if (affectRanged && nebenWaffe.type === 'fernkampfwaffe') {
+            nebenWaffe.system.fk += modifiers.at
+            nebenWaffe.system.schaden = nebenWaffe.system.schaden.concat(schaden)
+        } else {
+            nebenWaffe.system.at += modifiers.at
+            nebenWaffe.system.vt += modifiers.vt
+            nebenWaffe.system.schaden = nebenWaffe.system.schaden.concat(schaden)
+        }
+    }
+}
+
 export function checkComatStyleConditions(bedingungen, hauptWaffe, nebenWaffe, actorBeritten) {
     if (!hauptWaffe) return false
     if (!bedingungen || bedingungen.trim() === '') return true

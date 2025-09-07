@@ -378,7 +378,8 @@
       "gruppe": 0,
       "text": "",
       "script": "",
-      "bedingungen": ""
+      "bedingungen": "",
+      "foundryScript": ""
     },
     "manoever": {
       "voraussetzungen": [],

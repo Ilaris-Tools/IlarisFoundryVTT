@@ -40,6 +40,7 @@ describe('hardcodedvorteile.js', () => {
                     sources: [],
                     modifiers: { at: 0, vt: 0, damage: 0, rw: 0, be: 0 },
                     bedingungen: '',
+                    foundryScriptMethods: [],
                 },
             })
         })
@@ -76,6 +77,7 @@ describe('hardcodedvorteile.js', () => {
                     sources: [],
                     modifiers: { at: 0, vt: 0, damage: 0, rw: 0, be: 0 },
                     bedingungen: '',
+                    foundryScriptMethods: [],
                 },
                 'Beidhändiger Kampf': {
                     name: 'Beidhändiger Kampf',
@@ -84,6 +86,7 @@ describe('hardcodedvorteile.js', () => {
                     sources: ['Beidhändiger Kampf I', 'Beidhändiger Kampf II (test)'],
                     modifiers: { at: 2, vt: 0, damage: 0, rw: 0, be: 0 },
                     bedingungen: '',
+                    foundryScriptMethods: [],
                 },
             })
         })
@@ -114,6 +117,7 @@ describe('hardcodedvorteile.js', () => {
                     sources: [],
                     modifiers: { at: 0, vt: 0, damage: 0, rw: 0, be: 0 },
                     bedingungen: '',
+                    foundryScriptMethods: [],
                 },
                 'Beidhändiger Kampf': {
                     name: 'Beidhändiger Kampf',
@@ -122,6 +126,7 @@ describe('hardcodedvorteile.js', () => {
                     sources: ['Beidhändiger Kampf I'],
                     modifiers: { at: 0, vt: 0, damage: 0, rw: 0, be: 0 },
                     bedingungen: '',
+                    foundryScriptMethods: [],
                 },
                 'Defensiver Kampfstil': {
                     name: 'Defensiver Kampfstil',
@@ -130,6 +135,7 @@ describe('hardcodedvorteile.js', () => {
                     sources: ['Defensiver Kampfstil II'],
                     modifiers: { at: 0, vt: 0, damage: 0, rw: 0, be: 0 },
                     bedingungen: '',
+                    foundryScriptMethods: [],
                 },
             })
         })
