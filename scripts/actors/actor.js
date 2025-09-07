@@ -662,69 +662,22 @@ export class IlarisActor extends Actor {
                 this.system.misc.ist_beritten,
             )
         ) {
-            if (selected_kampfstil.name.includes('Beidhändiger Kampf')) {
-                let at_hw = selected_kampfstil.modifiers.at
-                let at_nw = selected_kampfstil.modifiers.at
-                if (selected_kampfstil.stufe >= 2) {
-                    weaponUtils.ignoreSideWeaponMalus(NEBENWAFFE)
-                }
-                HAUPTWAFFE.system.at += at_hw
-                NEBENWAFFE.system.at += at_nw
-            } else if (selected_kampfstil.name.includes('Kraftvoller Kampf')) {
-                let waffe = weaponUtils.usesSingleWeapon(HAUPTWAFFE, NEBENWAFFE)
-                if (waffe) {
-                    let schaden = selected_kampfstil.modifiers.damage
-                    schaden = '+'.concat(schaden)
-                    waffe.system.schaden = waffe.system.schaden.concat(schaden)
-                }
-            } else if (selected_kampfstil.name.includes('Parierwaffenkampf')) {
-                if (selected_kampfstil.stufe >= 2) {
-                    weaponUtils.ignoreSideWeaponMalus(NEBENWAFFE, 'parierwaffe')
-                }
-            } else if (selected_kampfstil.name.includes('Reiterkampf')) {
-                let schaden = selected_kampfstil.modifiers.damage
-                let at = selected_kampfstil.modifiers.at
-                let vt = selected_kampfstil.modifiers.vt
-                let beReduction = selected_kampfstil.modifiers.be
-                schaden = '+'.concat(schaden)
-
-                if (be > 0) {
-                    be -= beReduction
-                }
-                if (HAUPTWAFFE && HAUPTWAFFE.type == 'nahkampfwaffe') {
-                    HAUPTWAFFE.system.at += at
-                    HAUPTWAFFE.system.vt += vt
-                    HAUPTWAFFE.system.schaden = HAUPTWAFFE.system.schaden.concat(schaden)
-                }
-
-                if (HAUPTWAFFE.id != NEBENWAFFE.id) {
-                    if (NEBENWAFFE && NEBENWAFFE.type == 'nahkampfwaffe') {
-                        NEBENWAFFE.system.at += at
-                        NEBENWAFFE.system.vt += vt
-                        NEBENWAFFE.system.schaden = NEBENWAFFE.system.schaden.concat(schaden)
-                    }
-                    if (selected_kampfstil.stufe >= 2) {
-                        weaponUtils.ignoreSideWeaponMalus(NEBENWAFFE, 'reittier')
-                    }
-                }
-            } else if (selected_kampfstil.name.includes('Schildkampf')) {
-                let vt = selected_kampfstil.modifiers.vt
-                if (HAUPTWAFFE && HAUPTWAFFE.type == 'nahkampfwaffe') {
-                    HAUPTWAFFE.system.vt += vt
-                }
-                if (HAUPTWAFFE && NEBENWAFFE && HAUPTWAFFE.id != NEBENWAFFE.id) {
-                    if (NEBENWAFFE && NEBENWAFFE.type == 'nahkampfwaffe') {
-                        NEBENWAFFE.system.vt += vt
-                    }
-                    if (selected_kampfstil.stufe >= 2) {
-                        weaponUtils.ignoreSideWeaponMalus(NEBENWAFFE, 'schild')
-                    }
-                }
-            } else if (selected_kampfstil.name.includes('Schneller Kampf')) {
-                let waffe = weaponUtils.usesSingleWeapon(HAUPTWAFFE, NEBENWAFFE)
-                if (waffe) {
-                    waffe.system.at += selected_kampfstil.modifiers.at
-                }
+            let schaden = ''
+            if (selected_kampfstil.modifiers.schaden > 0) {
+                schaden += '+' + selected_kampfstil.modifiers.schaden
+            }
+            if (be > 0) {
+                be -= selected_kampfstil.modifiers.be
+            }
+            if (HAUPTWAFFE) {
+                HAUPTWAFFE.system.at += selected_kampfstil.modifiers.at
+                HAUPTWAFFE.system.vt += selected_kampfstil.modifiers.vt
+                HAUPTWAFFE.system.schaden = HAUPTWAFFE.system.schaden.concat(schaden)
+            }
+            if (NEBENWAFFE && HAUPTWAFFE.id != NEBENWAFFE.id) {
+                NEBENWAFFE.system.at += selected_kampfstil.modifiers.at
+                NEBENWAFFE.system.vt += selected_kampfstil.modifiers.vt
+                NEBENWAFFE.system.schaden = NEBENWAFFE.system.schaden.concat(schaden)
             }
         }
     }

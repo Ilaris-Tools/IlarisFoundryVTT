@@ -23,8 +23,9 @@
             <label><b>Beschreibung:</b></label>
             <textarea rows="8" name="system.text">{{item.system.text}}</textarea>
         </div>
+        {{#if (ifEq item.system.gruppe "3")}}
         <div class="flexrow">
-            <label><b>Script (nur Kampfstile unterstützt):</b></label>
+            <label><b>Script:</b></label>
             <input
                 name="system.script"
                 value="{{item.system.script}}"
@@ -33,7 +34,7 @@
             />
         </div>
         <div class="flexrow">
-            <label><b>Bedingungen (nur Kampfstile unterstützt):</b></label>
+            <label><b>Bedingungen:</b></label>
             <input
                 name="system.bedingungen"
                 value="{{item.system.bedingungen}}"
@@ -41,6 +42,7 @@
                 data-dtype="String"
             />
         </div>
+        {{/if}}
         <hr />
         <a class="item-delete" data-itemid="{{item._id}}">
             <button class="clickable" type="button">

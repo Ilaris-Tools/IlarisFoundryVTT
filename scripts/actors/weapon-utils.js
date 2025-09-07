@@ -125,8 +125,7 @@ export function checkComatStyleConditions(bedingungen, hauptWaffe, nebenWaffe, a
         }
 
         // Check weapon properties (direct <Waffeneigenschaft>)
-        if (!anyWeaponNeedsToMeetRequirement(hauptWaffe, nebenWaffe, condition.toLowerCase()))
-            return false
+        if (!anyWeaponNeedsToMeetRequirement(hauptWaffe, nebenWaffe, lowerCondition)) return false
     }
 
     return true
