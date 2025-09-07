@@ -1,4 +1,3 @@
-import { method } from 'lodash'
 import * as hardcoded from './hardcodedvorteile.js'
 import * as weaponUtils from './weapon-utils.js'
 

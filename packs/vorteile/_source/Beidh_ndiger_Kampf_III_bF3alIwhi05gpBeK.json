@@ -4,7 +4,10 @@
   "system": {
     "voraussetzung": "Attribut GE 8, Vorteil Beidhändiger Kampf II",
     "gruppe": 3,
-    "text": "Du erhältst AT +1.\n\nErlaubt das Manöver Doppelangriff (2x AT -4): Du führst mit beiden Händen je eine Attacke –4 aus. Beide Angriffe sind unabhängig voneinander; sie werden separat ausgewürfelt, können sich gegen verschiedene Ziele richten und mit unterschiedlichen Manövern versehen werden."
+    "text": "Du erhältst AT +1.\n\nErlaubt das Manöver Doppelangriff (2x AT -4): Du führst mit beiden Händen je eine Attacke –4 aus. Beide Angriffe sind unabhängig voneinander; sie werden separat ausgewürfelt, können sich gegen verschiedene Ziele richten und mit unterschiedlichen Manövern versehen werden.",
+    "script": "modifyKampfstil('Beidhändiger Kampf', 1, 0, 0, 0)",
+    "bedingungen": "",
+    "foundryScript": ""
   },
   "_id": "bF3alIwhi05gpBeK",
   "effects": [],

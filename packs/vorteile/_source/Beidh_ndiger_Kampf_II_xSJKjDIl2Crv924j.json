@@ -4,7 +4,10 @@
   "system": {
     "voraussetzung": "Attribut GE 6, Vorteil Beidhändiger Kampf I",
     "gruppe": 3,
-    "text": "Du erhältst AT +1.\n\nDeine zweite Waffe ignoriert die übliche Erschwernis für Nebenwaffen. Dadurch kannst du den vollen Nutzen aus zwei unterschiedlichen Waffen ziehen. Falls du dennoch zwei identische Waffen nutzt, kannst du den ersten (bzw. mit Wendigen Waffen zweiten) Passierschlag zwischen zwei INI-Phasen als Freie Reaktion ausführen."
+    "text": "Du erhältst AT +1.\n\nDeine zweite Waffe ignoriert die übliche Erschwernis für Nebenwaffen. Dadurch kannst du den vollen Nutzen aus zwei unterschiedlichen Waffen ziehen. Falls du dennoch zwei identische Waffen nutzt, kannst du den ersten (bzw. mit Wendigen Waffen zweiten) Passierschlag zwischen zwei INI-Phasen als Freie Reaktion ausführen.",
+    "script": "modifyKampfstil('Beidhändiger Kampf', 1, 0, 0, 0)",
+    "bedingungen": "",
+    "foundryScript": "ignoreSideWeaponMalus(NEBENWAFFE)"
   },
   "_id": "xSJKjDIl2Crv924j",
   "effects": [],

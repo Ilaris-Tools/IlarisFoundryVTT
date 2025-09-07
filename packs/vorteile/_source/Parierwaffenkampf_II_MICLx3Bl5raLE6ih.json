@@ -4,7 +4,10 @@
   "system": {
     "voraussetzung": "Attribut GE 6, Vorteil Parierwaffenkampf I",
     "gruppe": 3,
-    "text": "Du kannst gegen humanoide Gegner –1 Erschwernis aus Manövern ignorieren.\n\nDeine Parierwaffe ignoriert die üblichen Erschwernisse für Nebenwaffen (S. 39). Wenn ideale Kampfbedingungen herrschen – du also keine Erschwernisse durch Position, Untergrund und Licht erleidest – verbessert sich deine Position um eine Stufe (S. 38)."
+    "text": "Du kannst gegen humanoide Gegner –1 Erschwernis aus Manövern ignorieren.\n\nDeine Parierwaffe ignoriert die üblichen Erschwernisse für Nebenwaffen (S. 39). Wenn ideale Kampfbedingungen herrschen – du also keine Erschwernisse durch Position, Untergrund und Licht erleidest – verbessert sich deine Position um eine Stufe (S. 38).",
+    "script": "",
+    "bedingungen": "",
+    "foundryScript": "ignoreSideWeaponMalus(NEBENWAFFE, 'Parierwaffe')"
   },
   "_id": "MICLx3Bl5raLE6ih",
   "effects": [],

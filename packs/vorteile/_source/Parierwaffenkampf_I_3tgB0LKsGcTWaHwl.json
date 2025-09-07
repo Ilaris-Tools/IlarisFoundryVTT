@@ -4,7 +4,10 @@
   "system": {
     "voraussetzung": "Attribut GE 4",
     "gruppe": 3,
-    "text": "Bedingungen: Parierwaffe, nicht beritten.\n\nDu kannst gegen humanoide Gegner –1 Erschwernis aus Manövern ignorieren."
+    "text": "Bedingungen: Parierwaffe, nicht beritten.\n\nDu kannst gegen humanoide Gegner –1 Erschwernis aus Manövern ignorieren.",
+    "script": "",
+    "bedingungen": "Parierwaffe, nicht beritten",
+    "foundryScript": ""
   },
   "_id": "3tgB0LKsGcTWaHwl",
   "effects": [],

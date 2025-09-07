@@ -4,7 +4,10 @@
   "system": {
     "voraussetzung": "Attribut GE 6 ODER Attribut KK 6, Vorteil Reiterkampf I",
     "gruppe": 3,
-    "text": "Du erhältst Waffenschaden +1, AT +1 und VT +1.\n\nDein Reittier ignoriert die üblichen Erschwernisse für Nebenwaffen (S. 39) und im Reiterkampf ist die BE durch Rüstungen um 1 gesenkt. Außerdem ignorierst du im Fernkampf du den Malus für berittene Schützen (S. 46)."
+    "text": "Du erhältst Waffenschaden +1, AT +1 und VT +1.\n\nDein Reittier ignoriert die üblichen Erschwernisse für Nebenwaffen (S. 39) und im Reiterkampf ist die BE durch Rüstungen um 1 gesenkt. Außerdem ignorierst du im Fernkampf du den Malus für berittene Schützen (S. 46).",
+    "script": "modifyKampfstil('Reiterkampf', 1, 1, 1, 0, 1)",
+    "bedingungen": "",
+    "foundryScript": "ignoreSideWeaponMalus(NEBENWAFFE, 'Reittier')"
   },
   "_id": "PNud3GEskJqQ1Gmx",
   "effects": [],

@@ -4,7 +4,10 @@
   "system": {
     "voraussetzung": "Attribut KK 10, Vorteil Schildkampf III",
     "gruppe": 3,
-    "text": "Bedingung: zwei weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung des Kampfstils verwendet werden. "
+    "text": "Bedingung: zwei weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung des Kampfstils verwendet werden. ",
+    "script": "",
+    "bedingungen": "",
+    "foundryScript": ""
   },
   "_id": "X5Gyc7qN9mltgbZ5",
   "effects": [],
