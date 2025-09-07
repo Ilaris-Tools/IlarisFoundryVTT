@@ -663,12 +663,12 @@ export class IlarisActor extends Actor {
             )
         ) {
             // Execute foundryScript method calls if they exist
+            let methodResults = []
             if (
                 selected_kampfstil.foundryScriptMethods &&
                 selected_kampfstil.foundryScriptMethods.length > 0
             ) {
                 // Initialize array to store method results if it doesn't exist
-                let methodResults = []
 
                 for (const methodCall of selected_kampfstil.foundryScriptMethods) {
                     try {
