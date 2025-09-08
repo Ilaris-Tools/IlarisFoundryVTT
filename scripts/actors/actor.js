@@ -557,9 +557,7 @@ export class IlarisActor extends Actor {
             fwaffe.system.manoever =
                 fwaffe.system.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_fernkampf)
             let kein_reiter = fwaffe.system.eigenschaften.kein_reiter
-            let reittier =
-                HAUPTWAFFE?.system.eigenschaften?.reittier ||
-                NEBENWAFFE?.system.eigenschaften?.reittier
+            let ist_beritten = this.system.misc.ist_beritten
             let niederwerfen = fwaffe.system.eigenschaften.niederwerfen
             let niederwerfen_4 = fwaffe.system.eigenschaften.niederwerfen_4
             let niederwerfen_8 = fwaffe.system.eigenschaften.niederwerfen_8
@@ -606,12 +604,13 @@ export class IlarisActor extends Actor {
                 fk += mod_fk
             }
             fwaffe.system.fk = fk
+            if (ist_beritten) fwaffe.system.fk = -4
             if (zweihaendig && ((hauptwaffe && !nebenwaffe) || (!hauptwaffe && nebenwaffe))) {
                 fwaffe.system.fk = '-'
             } else if (kein_reiter && (hauptwaffe || nebenwaffe)) {
                 // let reittier = false;
                 // let reittier = HAUPTWAFFE?.data.data.eigenschaften?.reittier || NEBENWAFFE?.data.data.eigenschaften?.reittier;
-                if (reittier && kein_reiter) {
+                if (ist_beritten && kein_reiter) {
                     fwaffe.system.fk = '-'
                 }
             }
@@ -629,7 +628,6 @@ export class IlarisActor extends Actor {
                 fwaffe.system.manoever.rflx = true
             if (hardcoded.getKampfstilStufe('rtk', actor) >= 2)
                 fwaffe.system.manoever.brtn.rtk = true
-            if (reittier) fwaffe.system.manoever.brtn.selected = true
             // get status effects
             // licht lcht
             // console.log("bevor get_status_effects");
@@ -664,6 +662,7 @@ export class IlarisActor extends Actor {
         ) {
             // Execute foundryScript method calls if they exist
             let methodResults = []
+            let ist_beritten = this.system.misc.ist_beritten
             if (
                 selected_kampfstil.foundryScriptMethods &&
                 selected_kampfstil.foundryScriptMethods.length > 0
@@ -678,7 +677,7 @@ export class IlarisActor extends Actor {
                             'HAUPTWAFFE',
                             'NEBENWAFFE',
                             'selected_kampfstil',
-                            'actor',
+                            'ist_beritten',
                             `return weaponUtils.${methodCall}`,
                         )
                         const result = executeMethod(
@@ -686,7 +685,7 @@ export class IlarisActor extends Actor {
                             HAUPTWAFFE,
                             NEBENWAFFE,
                             selected_kampfstil,
-                            actor,
+                            ist_beritten,
                         )
 
                         // Store the result with the method call for reference

@@ -87,6 +87,16 @@ export function applyModifierToWeapons(hauptWaffe, nebenWaffe, modifiers, affect
     }
 }
 
+export function ignoreMountedRangePenalty(hauptWaffe, nebenWaffe, ist_beritten) {
+    if (!ist_beritten) return
+    if (hauptWaffe && hauptWaffe.type === 'fernkampfwaffe') {
+        hauptWaffe.system.fk += 4
+    }
+    if (nebenWaffe && hauptWaffe.id != nebenWaffe.id && nebenWaffe.type === 'fernkampfwaffe') {
+        nebenWaffe.system.fk += 4
+    }
+}
+
 export function checkComatStyleConditions(bedingungen, hauptWaffe, nebenWaffe, actorBeritten) {
     if (!hauptWaffe) return false
     if (!bedingungen || bedingungen.trim() === '') return true
