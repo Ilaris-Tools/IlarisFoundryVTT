@@ -150,9 +150,19 @@ export function checkCombatStyleConditions(bedingungen, hauptWaffe, nebenWaffe, 
         if (lowerCondition.startsWith('fertigkeit ')) {
             const fertigkeit = condition.substring(11).trim().toLowerCase()
             let hasSkill = false
-            if (hauptWaffe && hauptWaffe.system && hauptWaffe.system.fertigkeit === fertigkeit)
+            if (
+                hauptWaffe &&
+                hauptWaffe.system &&
+                typeof hauptWaffe.system.fertigkeit === 'string' &&
+                hauptWaffe.system.fertigkeit.toLowerCase() === fertigkeit
+            )
                 hasSkill = true
-            if (nebenWaffe && nebenWaffe.system && nebenWaffe.system.fertigkeit === fertigkeit)
+            if (
+                nebenWaffe &&
+                nebenWaffe.system &&
+                typeof nebenWaffe.system.fertigkeit === 'string' &&
+                nebenWaffe.system.fertigkeit.toLowerCase() === fertigkeit
+            )
                 hasSkill = true
             if (!hasSkill) return false
             continue
