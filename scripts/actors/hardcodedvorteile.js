@@ -199,7 +199,12 @@ export function getKampfstile(actor) {
         let foundryScriptMethods = []
         stile.forEach((stil) => {
             const modifiers = parseKampfstilScript(stil.system?.script, stil.name)
-            bedingungen += stil.system?.bedingungen || ''
+            const stilBedingungen = stil.system?.bedingungen || ''
+            if (stilBedingungen && bedingungen) {
+                bedingungen += ', ' + stilBedingungen
+            } else if (stilBedingungen) {
+                bedingungen = stilBedingungen
+            }
             if (modifiers) {
                 accumulatedModifiers.at += modifiers[0]
                 accumulatedModifiers.vt += modifiers[1]
