@@ -763,3 +763,21 @@ hr {
 .notes {
   white-space: pre-line;
 }
+
+/* Sync kampfstile button styling */
+.sync-kampfstile {
+  color: #4f4f4f;
+  cursor: pointer;
+  margin-left: 10px;
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+.sync-kampfstile:hover {
+  color: #2e5c8a;
+  transform: scale(1.1);
+}
+
+.sync-kampfstile i {
+  margin-right: 3px;
+}

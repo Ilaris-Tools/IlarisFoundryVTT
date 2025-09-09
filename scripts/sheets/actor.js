@@ -1,4 +1,8 @@
 import { wuerfelwurf } from '../common/wuerfel.js'
+import {
+    IlarisGameSettingNames,
+    ConfigureGameSettingsCategories,
+} from '../settings/configure-game-settings.model.js'
 
 export class IlarisActorSheet extends ActorSheet {
     /*
@@ -36,6 +40,9 @@ export class IlarisActorSheet extends ActorSheet {
         html.find('input[name="system.gesundheit.erschoepfung"]').on('input', (ev) =>
             this._onHealthValueChange(ev),
         )
+
+        // Add listener for sync kampfstile button
+        html.find('.sync-kampfstile').click((ev) => this._onSyncKampfstile(ev))
     }
 
     _ausklappView(event) {
@@ -693,50 +700,110 @@ export class IlarisActorSheet extends ActorSheet {
         item.sheet.render(true)
     }
 
-    // _onItemDelete(event) {
-    //     console.log('ItemDelete');
-    //     const itemID = event.currentTarget.dataset.itemid;
-    //     const html = await renderTemplate('systems/Ilaris/templates/chat/yesno.hbs', {
-    //     });
-    //     let d = new Dialog(
-    //         {
-    //             title: 'Wirklich Löschen?',
-    //             content: html,
-    //             buttons: {
-    //                 one: {
-    //                     icon: '<i><img class="button-icon-nahkampf" src="systems/Ilaris/assets/game-icons.net/book-cover.png"></i>',
-    //                     label: 'Löschen',
-    //                     callback: () => {
-    //                         await this.actor.deleteEmbeddedDocuments('Item', [itemID]),
-    //                     }
-    //                 },
-    //                 two: {
-    //                     icon: '<i class="fas fa-times"></i>',
-    //                     label: 'Abbrechen',
-    //                     callback: () => console.log('Abbruch'),
-    //                 },
-    //             },
-    //         },
-    //         {
-    //             jQuery: true,
-    //         },
-    //     );
-    //     d.render(true);
-    // }
-
     _onItemDelete(event) {
         console.log('ItemDelete')
         const itemID = event.currentTarget.dataset.itemid
-        // const li = $(event.currentTarget).parents(".item");
-        // console.log(event.currentTarget);
-        // console.log($(event.currentTarget));
-        // console.log(li);
-        // console.log(li.data);
-        // console.log(event.currentTarget.dataset.itemclass);
-        // console.log(event.currentTarget.dataset.itemid);
-        // this.actor.deleteOwnedItem(li.data("itemId"));
-        // this.actor.deleteOwnedItem(itemID);
         this.actor.deleteEmbeddedDocuments('Item', [itemID])
         // li.slideUp(200, () => this.render(false));
+    }
+
+    async _onSyncKampfstile(event) {
+        console.log('Sync Kampfstile')
+
+        try {
+            // Get selected vorteile packs from settings
+            const selectedPacks = JSON.parse(
+                game.settings.get(
+                    ConfigureGameSettingsCategories.Ilaris,
+                    IlarisGameSettingNames.vorteilePacks,
+                ),
+            )
+
+            if (!selectedPacks || selectedPacks.length === 0) {
+                ui.notifications.warn(
+                    'Keine Vorteile-Kompendien konfiguriert. Bitte in den Welteneinstellungen konfigurieren.',
+                )
+                return
+            }
+
+            // Get all kampfstil vorteile from the actor
+            const kampfstileItems = this.actor.items.filter(
+                (item) => item.type === 'vorteil' && item.system.gruppe == 3, // Kampfvorteile group
+            )
+
+            console.log(kampfstileItems)
+
+            if (kampfstileItems.length === 0) {
+                ui.notifications.info('Keine Kampfstile zum Synchronisieren gefunden.')
+                return
+            }
+
+            let updatedCount = 0
+            const updatePromises = []
+
+            // Get items from selected compendium packs
+            for (const packId of selectedPacks) {
+                const pack = game.packs.get(packId)
+                if (!pack) continue
+
+                const packItems = await pack.getDocuments()
+
+                for (const kampfstilItem of kampfstileItems) {
+                    // Find matching item in compendium by name
+                    const compendiumItem = packItems.find(
+                        (packItem) =>
+                            packItem.name === kampfstilItem.name && packItem.type === 'vorteil',
+                    )
+
+                    console.log(`Checking Kampfstil: ${compendiumItem?.name || 'Not Found'}`)
+
+                    if (compendiumItem) {
+                        // Check if update is needed by comparing key fields
+                        const needsUpdate = this._needsKampfstilUpdate(
+                            kampfstilItem,
+                            compendiumItem,
+                        )
+
+                        if (needsUpdate) {
+                            // Prepare update data
+                            const updateData = {
+                                _id: kampfstilItem.id,
+                                'system.text': compendiumItem.system.text,
+                                'system.script': compendiumItem.system.script,
+                                'system.bedingungen': compendiumItem.system.bedingungen,
+                                'system.foundryScript': compendiumItem.system.foundryScript,
+                                'system.voraussetzung': compendiumItem.system.voraussetzung,
+                            }
+
+                            updatePromises.push(updateData)
+                            updatedCount++
+                            console.log(`Updating ${kampfstilItem.name}`)
+                        }
+                    }
+                }
+            }
+
+            // Apply all updates at once
+            if (updatePromises.length > 0) {
+                await this.actor.updateEmbeddedDocuments('Item', updatePromises)
+                ui.notifications.info(`${updatedCount} Kampfstile erfolgreich synchronisiert.`)
+            } else {
+                ui.notifications.info('Alle Kampfstile sind bereits aktuell.')
+            }
+        } catch (error) {
+            console.error('Error syncing kampfstile:', error)
+            ui.notifications.error('Fehler beim Synchronisieren der Kampfstile.')
+        }
+    }
+
+    _needsKampfstilUpdate(actorItem, compendiumItem) {
+        // Compare key fields to determine if update is needed
+        return (
+            actorItem.system.text !== compendiumItem.system.text ||
+            actorItem.system.script !== compendiumItem.system.script ||
+            actorItem.system.bedingungen !== compendiumItem.system.bedingungen ||
+            actorItem.system.foundryScript !== compendiumItem.system.foundryScript ||
+            actorItem.system.voraussetzung !== compendiumItem.system.voraussetzung
+        )
     }
 }
