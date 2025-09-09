@@ -263,22 +263,46 @@ export function parseKampfstilScript(script, kampfstilName) {
         return null
     }
 
-    // Match modifyKampfstil function call with 5 numeric parameters (can be negative)
-    const regex =
-        /modifyKampfstil\s*\(\s*['"](.*?)['"],\s*(-?\d+),\s*(-?\d+),\s*(-?\d+),\s*(-?\d+),?\s*(-?\d+)?\s*\)/
-    const match = script.match(regex)
-
-    if (!match) {
+    // Check that the script starts with modifyKampfstil(
+    const funcPrefix = 'modifyKampfstil('
+    const startIdx = script.indexOf(funcPrefix)
+    if (startIdx === -1) {
         return null
     }
 
-    // Extract the numeric values, defaulting the 6th parameter to 0 if not present
+    // Extract the argument list inside the parentheses
+    const argsStart = script.indexOf('(', startIdx) + 1
+    const argsEnd = script.lastIndexOf(')')
+    if (argsStart === 0 || argsEnd === -1 || argsEnd <= argsStart) {
+        return null
+    }
+    const argsStr = script.slice(argsStart, argsEnd)
+
+    // Split arguments, handling quoted string for the first argument
+    // First argument: quoted string (single or double quotes)
+    const quoteMatch = argsStr.match(/^\s*(['"])(.*?)\1\s*,/)
+    if (!quoteMatch) {
+        return null
+    }
+    const nameArg = quoteMatch[2]
+    // Remove the first argument from the string
+    const restArgsStr = argsStr.slice(quoteMatch[0].length)
+
+    // Split remaining arguments by comma, trim spaces
+    const numArgs = restArgsStr.split(',').map(s => s.trim()).filter(s => s.length > 0)
+
+    // We expect 4 or 5 numeric arguments (the 5th is optional)
+    if (numArgs.length < 4 || numArgs.length > 5) {
+        return null
+    }
+
+    // Parse numeric arguments, default 5th to 0 if missing
     const modifiers = [
-        parseInt(match[2], 10),
-        parseInt(match[3], 10),
-        parseInt(match[4], 10),
-        parseInt(match[5], 10),
-        parseInt(match[6] || '0', 10),
+        parseInt(numArgs[0], 10),
+        parseInt(numArgs[1], 10),
+        parseInt(numArgs[2], 10),
+        parseInt(numArgs[3], 10),
+        parseInt(numArgs[4] || '0', 10),
     ]
 
     // Validate that all values are integers
