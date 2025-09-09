@@ -39,7 +39,7 @@
   padding-right: -100px;
   display: flex;
   flex-direction: row;
-  background-image: url(/systems/Ilaris/assets/images/Ilaris/Pergamentrolle.png);
+  background-image: url(/systems/Ilaris/assets/images/Ilaris/Pergamentrolle.webp);
   background-size: cover;
   background-repeat: round;
 }
@@ -74,16 +74,28 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%, -50%);
-  color: black;
+  transform: translate(-50%, -50%);  color: black;
   /* oder eine andere Farbe, je nach Hintergrund */
   font-weight: bold;
   font-size: 22px;
   text-shadow: 2px 2px 2px rgb(255, 255, 255);
 }
 
-.attribute-number:hover {
+.attribute-wrapper:hover .attribute-number {
   text-shadow: 0 0 10px var(--color-shadow-primary);
+}
+
+.attribute-wrapper:hover {
+  filter: drop-shadow(0 0 8px var(--color-shadow-primary));
+  transform: scale(1.1);
+}
+
+/* special case for MR */
+.icon-row .attribute-wrapper {
+  width: auto;          /* stop forcing 100% width */
+  flex: 0 0 auto;       /* don't stretch across the row */
+  display: inline-flex; /* keep image + label aligned */
+  align-items: center;
 }
 
 .herotabnavigation {
@@ -174,7 +186,7 @@
   position: absolute;
   inset: 0;
   z-index: -1;
-  background-image: url("../assets/images/Ilaris/bronze_glatt.png");
+  background-image: url("../assets/images/Ilaris/bronze_glatt.webp");
   background-size: cover;
   border-radius: inherit;
 }
@@ -225,22 +237,53 @@
 
 .custom-icon {
   display: inline-block;
-  width: 24px;
-  height: 24px;
-  background-image: url("/systems/Ilaris/assets/images/ilaris/icon_clear.png");
+  width: 32px;
+  height: 32px;
+  background-image: url("../assets/images/Ilaris/icon_clear.webp");
   background-size: contain;
   background-repeat: no-repeat;
   background-position: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.custom-icon:hover {
+  filter: drop-shadow(0 0 8px var(--color-shadow-primary));
+  transform: scale(1.1);
+}
+
+/* Make the table cell containing the custom-icon larger and clickable */
+td.rollable.icon-small {
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  padding-right: 8px;
+}
+
+/* Edit and delete icon styling with hover effects */
+.fas.fa-edit,
+.fas.fa-trash {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding-right: 8px;
+}
+
+.fas.fa-edit:hover,
+.fas.fa-trash:hover {
+  filter: drop-shadow(0 0 8px var(--color-shadow-primary));
+  transform: scale(1.1);
 }
 
 #pause {
   .fa-spin {
-    content: url("/systems/Ilaris/assets/images/ilaris/icon_rot.png")
+    content: url("../assets/images/Ilaris/icon_rot.webp")
   }
 }
 
 #logo {
-  content: url("/systems/Ilaris/assets/images/ilaris/Ilaris.png")
+  content: url("../assets/images/Ilaris/Ilaris.webp")
 }
 
 .profile-img {
@@ -400,8 +443,13 @@
   margin-right: 0;
 }
 
+.schips-button:hover {
+  filter: drop-shadow(0 0 8px var(--color-shadow-primary));
+  transform: scale(1.1);
+}
+
 .filled {
-  background-image: url('/systems/Ilaris/assets/images/Ilaris/phex.svg');
+  background-image: url('../assets/images/Ilaris/phex.svg');
 }
 
 .twokindrow div:nth-child(odd) {
@@ -710,12 +758,6 @@ hr {
   font-style: italic;
   color: #782e22;
   font-size: 0.9em;
-}
-
-.error-highlight {
-  color: #ff0000;
-  text-decoration: underline wavy #ff0000;
-  cursor: help;
 }
 
 .notes {

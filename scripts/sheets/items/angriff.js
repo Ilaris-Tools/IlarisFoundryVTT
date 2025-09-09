@@ -47,13 +47,4 @@ export class AngriffSheet extends IlarisItemSheet {
             })
         }
     }
-
-    getPossibleManoevers() {
-        /* liste von verfügbarer manövern für diesen Angriff (ProbenDialog)
-        Kombination aus allgemeinen, (waffeneigenschaften) und kampfvorteilen
-        NOTE: Waffeneigenschaften sind automatische Effekte und Vorteile erlauben Manöver.
-        */
-        CONFIG.ILARIS.manoever_nahkampf
-        let manoevers = ['']
-    }
 }

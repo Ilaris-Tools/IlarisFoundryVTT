@@ -77,7 +77,10 @@ export class IlarisActor extends Actor {
     __getStatuseffectById(data, statusId) {
         let iterator = data.effects.values()
         for (const effect of iterator) {
-            if (effect.flags.core.statusId == statusId) {
+            console.log(effect.statuses)
+            // Get the first entry from the Set
+            const firstStatus = effect.statuses.values().next().value
+            if (firstStatus == statusId) {
                 return true
             }
         }
@@ -336,7 +339,7 @@ export class IlarisActor extends Actor {
         } else if (systemData.abgeleitete.globalermod > 0) {
             systemData.abgeleitete.globalermoddisplay += `+`
         }
-        systemData.abgeleitete.globalermoddisplay += `${systemData.abgeleitete.globalermod} auf alle Proben (insgesamt)`
+        systemData.abgeleitete.globalermoddisplay += `${systemData.abgeleitete.globalermod} auf alle Proben`
     }
 
     _calculateAbgeleitete(actor) {
@@ -547,7 +550,6 @@ export class IlarisActor extends Actor {
             nwaffe.system.manoever.vlof.offensiver_kampfstil = actor.vorteil.kampf.some(
                 (x) => x.name == 'Offensiver Kampfstil',
             )
-            nwaffe.system.manoever.kwut = actor.vorteil.kampf.some((x) => x.name == 'Kalte Wut')
         }
 
         for (let fwaffe of actor.fernkampfwaffen) {
@@ -618,15 +620,6 @@ export class IlarisActor extends Actor {
                     mod_schaden < 0 ? mod_schaden : '+' + mod_schaden
                 }`
             }
-
-            // if (data.data.vorteil.kampf.find(x => x.name.includes("Defensiver Kampfstil"))) item.data.data.manoever.vldf.possible = true;
-            if (actor.vorteil.kampf.find((x) => x.name.includes('Schnellziehen')))
-                fwaffe.system.manoever.fm_snls.possible = true
-            if (actor.vorteil.kampf.find((x) => x.name.includes('Ruhige Hand')))
-                fwaffe.system.manoever.fm_zlen.ruhige_hand = true
-            if (actor.vorteil.kampf.find((x) => x.name.includes('Meisterschuss')))
-                fwaffe.system.manoever.fm_msts.possible = true
-            if (true) fwaffe.system.manoever.fm_rust.possible = true
             let rw = fwaffe.system.rw
             fwaffe.system.manoever.rw['0'] = `${rw} Schritt`
             fwaffe.system.manoever.rw['1'] = `${2 * rw} Schritt`
@@ -658,7 +651,6 @@ export class IlarisActor extends Actor {
             let lcht_angepasst = hardcoded.getAngepasst('Dunkelheit', actor)
             // console.log(`licht angepasst: ${lcht_angepasst}`);
             fwaffe.system.manoever.lcht.angepasst = lcht_angepasst
-            fwaffe.system.manoever.kwut = actor.vorteil.kampf.some((x) => x.name == 'Kalte Wut')
         }
 
         // "ohne": "Kein Kampfstil",

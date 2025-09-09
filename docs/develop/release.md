@@ -16,6 +16,22 @@ Vieles davon gilt auch schon für kleinere Fixes im main-Branch. Wenn du im PR d
 
 ## Testcases
 
+Für manuelle Testfälle stehen jetzt PR-Templates zur Verfügung:
+
+-   **Minor Release**: [PR Template für Minor Releases](../../.github/PULL_REQUEST_TEMPLATE/pr_minor_release.md) - Enthält grundlegende manuelle Tests für kleinere Releases
+-   **Major Release**: [PR Template für Major Releases](../../.github/PULL_REQUEST_TEMPLATE/pr_major_release.md) - Enthält umfangreiche manuelle Tests für größere Releases
+
+Diese Templates enthalten Checklisten für:
+
+-   Charaktererstellung und Import/Export (Sephrasto Integration)
+-   Charaktersheet-Funktionalität und Bearbeitung
+-   Kreaturenverwaltung und Kompendium-Tests
+-   Browser-Kompatibilität
+-   Kampfsystem (Manöver, Zauber, Energieverwaltung)
+-   Systemeinstellungen und Konfiguration (bei Major Releases)
+
+Die Templates können direkt bei der PR-Erstellung ausgewählt werden und erlauben das Abhaken der getesteten Bereiche.
+
 ## Packs
 
 Die Binaries für die Kompendien müssen in den `/packs/`-Ordnern bei Änderungen neu aus den `_source/*`-Dateien gepackt werden.
