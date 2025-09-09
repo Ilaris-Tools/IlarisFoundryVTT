@@ -604,7 +604,7 @@ export class IlarisActor extends Actor {
                 fk += mod_fk
             }
             fwaffe.system.fk = fk
-            if (ist_beritten) fwaffe.system.fk = -4
+            if (ist_beritten) fwaffe.system.fk -= 4
             if (zweihaendig && ((hauptwaffe && !nebenwaffe) || (!hauptwaffe && nebenwaffe))) {
                 fwaffe.system.fk = '-'
             } else if (kein_reiter && (hauptwaffe || nebenwaffe)) {
