@@ -441,28 +441,8 @@ export class AngriffDialog extends CombatDialog {
         let trefferzone = 0
         let schaden = this.item.getTp()
 
-        // Handle standard maneuvers first
-        if (manoever.kbak.selected) {
-            mod_at -= 4
-            text_at = text_at.concat('Kombinierte Aktion: -4\n')
-        }
-        // Volle Offensive vlof
-        if (manoever.vlof.selected && !manoever.pssl.selected) {
-            if (manoever.vlof.offensiver_kampfstil) {
-                mod_vt -= 4
-                text_vt = text_vt.concat('Volle Offensive (Offensiver Kampfstil): -4\n')
-            } else {
-                mod_vt -= 8
-                text_vt = text_vt.concat('Volle Offensive: -8\n')
-            }
-            mod_at += 4
-            text_at = text_at.concat('Volle Offensive: +4\n')
-        }
-        // Volle Defensive vldf
-        if (manoever.vldf.selected) {
-            mod_vt += 4
-            text_vt = text_vt.concat('Volle Defensive +4\n')
-        }
+        // Note: Tactical options (Kombinierte Aktion, Volle Offensive/Defensive)
+        // are moved after handleModifications so they don't affect Riposte
         // Reichweitenunterschiede rwdf
         let reichweite = Number(manoever.rwdf.selected)
         if (reichweite > 0) {
@@ -530,51 +510,6 @@ export class AngriffDialog extends CombatDialog {
             }
         })
 
-        // Handle Riposte special rule: attack maneuver penalties also apply to defense
-        const riposteManeuver = this.item.manoever.find(
-            (m) => m.name === 'Riposte' && m.inputValue.value,
-        )
-        if (riposteManeuver) {
-            // Calculate total attack penalties from maneuvers (not base modifiers like reactions)
-            let attackManeuverPenalties = 0
-            this.item.manoever.forEach((dynamicManoever) => {
-                // Check if maneuver is actually active (not just having a default value)
-                let isActive = false
-                if (dynamicManoever.inputValue.field == 'CHECKBOX') {
-                    isActive = dynamicManoever.inputValue.value === true
-                } else if (dynamicManoever.inputValue.field == 'NUMBER') {
-                    isActive = dynamicManoever.inputValue.value > 0
-                } else if (dynamicManoever.inputValue.field == 'TREFFER_ZONE') {
-                    isActive = dynamicManoever.inputValue.value > 0 // 0 = "keine"
-                }
-
-                if (dynamicManoever.name !== 'Riposte' && isActive) {
-                    let number = 1 // Default for checkbox maneuvers
-                    if (dynamicManoever.inputValue.field == 'NUMBER') {
-                        number = dynamicManoever.inputValue.value || 0
-                    }
-
-                    Object.values(dynamicManoever.system.modifications).forEach((modification) => {
-                        if (
-                            modification.type === 'ATTACK' &&
-                            modification.operator === 'ADD' &&
-                            modification.value < 0
-                        ) {
-                            const finalValue = modification.affectedByInput
-                                ? number * modification.value
-                                : modification.value
-                            attackManeuverPenalties += finalValue
-                        }
-                    })
-                }
-            })
-
-            if (attackManeuverPenalties < 0) {
-                mod_vt += attackManeuverPenalties
-                text_vt = text_vt.concat(`Riposte (Attackemanöver): ${attackManeuverPenalties}\n`)
-            }
-        }
-
         // Process all modifications in order
         ;[
             mod_at,
@@ -602,6 +537,38 @@ export class AngriffDialog extends CombatDialog {
             nodmg,
             context: this,
         })
+
+        // Handle Riposte special rule: attack maneuver penalties also apply to defense
+        const riposteManeuver = this.item.manoever.find(
+            (m) => m.name === 'Riposte' && m.inputValue.value,
+        )
+        if (riposteManeuver && mod_at < 0) {
+            mod_vt += mod_at
+            text_vt = text_vt.concat(`Riposte (Attackemanöver): ${mod_at}\n`)
+        }
+
+        // Handle tactical options after handleModifications (so they don't affect Riposte)
+        if (manoever.kbak.selected) {
+            mod_at -= 4
+            text_at = text_at.concat('Kombinierte Aktion: -4\n')
+        }
+        // Volle Offensive vlof
+        if (manoever.vlof.selected && !manoever.pssl.selected) {
+            if (manoever.vlof.offensiver_kampfstil) {
+                mod_vt -= 4
+                text_vt = text_vt.concat('Volle Offensive (Offensiver Kampfstil): -4\n')
+            } else {
+                mod_vt -= 8
+                text_vt = text_vt.concat('Volle Offensive: -8\n')
+            }
+            mod_at += 4
+            text_at = text_at.concat('Volle Offensive: +4\n')
+        }
+        // Volle Defensive vldf
+        if (manoever.vldf.selected) {
+            mod_vt += 4
+            text_vt = text_vt.concat('Volle Defensive +4\n')
+        }
 
         // If ZERO_DAMAGE was found, override damage values
         if (nodmg.value) {
