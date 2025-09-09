@@ -289,7 +289,10 @@ export function parseKampfstilScript(script, kampfstilName) {
     const restArgsStr = argsStr.slice(quoteMatch[0].length)
 
     // Split remaining arguments by comma, trim spaces
-    const numArgs = restArgsStr.split(',').map(s => s.trim()).filter(s => s.length > 0)
+    const numArgs = restArgsStr
+        .split(',')
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0)
 
     // We expect 4 or 5 numeric arguments (the 5th is optional)
     if (numArgs.length < 4 || numArgs.length > 5) {
