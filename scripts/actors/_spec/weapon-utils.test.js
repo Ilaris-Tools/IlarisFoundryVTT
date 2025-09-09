@@ -3,7 +3,7 @@ import {
     usesTwoWeapons,
     anyWeaponNeedsToMeetRequirement,
     ignoreSideWeaponMalus,
-    checkComatStyleConditions,
+    checkCombatStyleConditions,
 } from '../weapon-utils.js'
 
 describe('weapon-requirements.js', () => {
@@ -272,24 +272,24 @@ describe('weapon-requirements.js', () => {
 
         it('should return true for empty or null conditions', () => {
             const mockWeapon = createMockWeapon('weapon1')
-            expect(checkComatStyleConditions('', mockWeapon, undefined, false)).toBe(true)
-            expect(checkComatStyleConditions(null, mockWeapon, undefined, false)).toBe(true)
-            expect(checkComatStyleConditions('   ', mockWeapon, undefined, false)).toBe(true)
+            expect(checkCombatStyleConditions('', mockWeapon, undefined, false)).toBe(true)
+            expect(checkCombatStyleConditions(null, mockWeapon, undefined, false)).toBe(true)
+            expect(checkCombatStyleConditions('   ', mockWeapon, undefined, false)).toBe(true)
         })
 
         it('should return false when hauptWaffe is undefined', () => {
-            expect(checkComatStyleConditions('beritten', undefined, undefined, true)).toBe(false)
-            expect(checkComatStyleConditions('reittier', undefined, undefined, false)).toBe(false)
-            expect(checkComatStyleConditions('', undefined, undefined, false)).toBe(false)
+            expect(checkCombatStyleConditions('beritten', undefined, undefined, true)).toBe(false)
+            expect(checkCombatStyleConditions('reittier', undefined, undefined, false)).toBe(false)
+            expect(checkCombatStyleConditions('', undefined, undefined, false)).toBe(false)
         })
 
         describe('mounted status conditions', () => {
             it('should check "beritten" condition correctly', () => {
                 const mockWeapon = createMockWeapon('weapon1')
-                expect(checkComatStyleConditions('beritten', mockWeapon, undefined, true)).toBe(
+                expect(checkCombatStyleConditions('beritten', mockWeapon, undefined, true)).toBe(
                     true,
                 )
-                expect(checkComatStyleConditions('beritten', mockWeapon, undefined, false)).toBe(
+                expect(checkCombatStyleConditions('beritten', mockWeapon, undefined, false)).toBe(
                     false,
                 )
             })
@@ -297,10 +297,10 @@ describe('weapon-requirements.js', () => {
             it('should check "nicht beritten" condition correctly', () => {
                 const mockWeapon = createMockWeapon('weapon1')
                 expect(
-                    checkComatStyleConditions('nicht beritten', mockWeapon, undefined, false),
+                    checkCombatStyleConditions('nicht beritten', mockWeapon, undefined, false),
                 ).toBe(true)
                 expect(
-                    checkComatStyleConditions('nicht beritten', mockWeapon, undefined, true),
+                    checkCombatStyleConditions('nicht beritten', mockWeapon, undefined, true),
                 ).toBe(false)
             })
         })
@@ -309,10 +309,10 @@ describe('weapon-requirements.js', () => {
             it('should check "einzelne waffe" condition correctly', () => {
                 const singleWeapon = createMockWeapon('weapon1')
                 expect(
-                    checkComatStyleConditions('einzelne waffe', singleWeapon, undefined, false),
+                    checkCombatStyleConditions('einzelne waffe', singleWeapon, undefined, false),
                 ).toBe(true)
                 expect(
-                    checkComatStyleConditions(
+                    checkCombatStyleConditions(
                         'einzelne nahkampfwaffe',
                         singleWeapon,
                         undefined,
@@ -320,12 +320,12 @@ describe('weapon-requirements.js', () => {
                     ),
                 ).toBe(true)
                 expect(
-                    checkComatStyleConditions('einzelne waffe', singleWeapon, singleWeapon, false),
+                    checkCombatStyleConditions('einzelne waffe', singleWeapon, singleWeapon, false),
                 ).toBe(true)
 
                 const mockWeapon = createMockWeapon('weapon2')
                 expect(
-                    checkComatStyleConditions('einzelne waffe', singleWeapon, mockWeapon, false),
+                    checkCombatStyleConditions('einzelne waffe', singleWeapon, mockWeapon, false),
                 ).toBe(false)
             })
 
@@ -333,10 +333,10 @@ describe('weapon-requirements.js', () => {
                 const weapon1 = createMockWeapon('weapon1')
                 const weapon2 = createMockWeapon('weapon2')
                 expect(
-                    checkComatStyleConditions('zwei einhändige waffen', weapon1, weapon2, false),
+                    checkCombatStyleConditions('zwei einhändige waffen', weapon1, weapon2, false),
                 ).toBe(true)
                 expect(
-                    checkComatStyleConditions(
+                    checkCombatStyleConditions(
                         'zwei einhändige nahkampfwaffen',
                         weapon1,
                         weapon2,
@@ -344,14 +344,14 @@ describe('weapon-requirements.js', () => {
                     ),
                 ).toBe(true)
                 expect(
-                    checkComatStyleConditions('zwei einhändige waffen', weapon1, undefined, false),
+                    checkCombatStyleConditions('zwei einhändige waffen', weapon1, undefined, false),
                 ).toBe(false)
             })
 
             it('should check "einzelne fernkampfwaffe" condition correctly', () => {
                 const rangedWeapon = createMockWeapon('ranged1', 'fernkampfwaffe')
                 expect(
-                    checkComatStyleConditions(
+                    checkCombatStyleConditions(
                         'einzelne fernkampfwaffe',
                         rangedWeapon,
                         undefined,
@@ -359,7 +359,7 @@ describe('weapon-requirements.js', () => {
                     ),
                 ).toBe(true)
                 expect(
-                    checkComatStyleConditions(
+                    checkCombatStyleConditions(
                         'einzelne fernkampfwaffe',
                         undefined,
                         rangedWeapon,
@@ -369,7 +369,7 @@ describe('weapon-requirements.js', () => {
 
                 const sameRangedWeapon = createMockWeapon('ranged2', 'fernkampfwaffe')
                 expect(
-                    checkComatStyleConditions(
+                    checkCombatStyleConditions(
                         'einzelne fernkampfwaffe',
                         rangedWeapon,
                         sameRangedWeapon,
@@ -379,7 +379,7 @@ describe('weapon-requirements.js', () => {
 
                 const meleeWeapon = createMockWeapon('melee1', 'nahkampfwaffe')
                 expect(
-                    checkComatStyleConditions(
+                    checkCombatStyleConditions(
                         'einzelne fernkampfwaffe',
                         meleeWeapon,
                         undefined,
@@ -392,7 +392,7 @@ describe('weapon-requirements.js', () => {
                 const rangedWeapon1 = createMockWeapon('ranged1', 'fernkampfwaffe')
                 const rangedWeapon2 = createMockWeapon('ranged2', 'fernkampfwaffe')
                 expect(
-                    checkComatStyleConditions(
+                    checkCombatStyleConditions(
                         'zwei einhändige fernkampfwaffen',
                         rangedWeapon1,
                         rangedWeapon2,
@@ -402,7 +402,7 @@ describe('weapon-requirements.js', () => {
 
                 const sameRangedWeapon = createMockWeapon('ranged1', 'fernkampfwaffe')
                 expect(
-                    checkComatStyleConditions(
+                    checkCombatStyleConditions(
                         'zwei einhändige fernkampfwaffen',
                         rangedWeapon1,
                         sameRangedWeapon,
@@ -421,7 +421,7 @@ describe('weapon-requirements.js', () => {
                     'hiebwaffen',
                 )
                 expect(
-                    checkComatStyleConditions(
+                    checkCombatStyleConditions(
                         'Fertigkeit Hiebwaffen',
                         weaponWithSkill,
                         undefined,
@@ -429,7 +429,7 @@ describe('weapon-requirements.js', () => {
                     ),
                 ).toBe(true)
                 expect(
-                    checkComatStyleConditions(
+                    checkCombatStyleConditions(
                         'Fertigkeit Hiebwaffen',
                         undefined,
                         weaponWithSkill,
@@ -437,7 +437,7 @@ describe('weapon-requirements.js', () => {
                     ),
                 ).toBe(false)
                 expect(
-                    checkComatStyleConditions(
+                    checkCombatStyleConditions(
                         'Fertigkeit Stichwaffen',
                         weaponWithSkill,
                         undefined,
@@ -453,15 +453,15 @@ describe('weapon-requirements.js', () => {
                     reittier: true,
                 })
                 expect(
-                    checkComatStyleConditions('reittier', weaponWithReittier, undefined, false),
+                    checkCombatStyleConditions('reittier', weaponWithReittier, undefined, false),
                 ).toBe(true)
                 expect(
-                    checkComatStyleConditions('reittier', undefined, weaponWithReittier, false),
+                    checkCombatStyleConditions('reittier', undefined, weaponWithReittier, false),
                 ).toBe(false)
 
                 const weaponWithoutReittier = createMockWeapon('weapon2', 'nahkampfwaffe', {})
                 expect(
-                    checkComatStyleConditions('reittier', weaponWithoutReittier, undefined, false),
+                    checkCombatStyleConditions('reittier', weaponWithoutReittier, undefined, false),
                 ).toBe(false)
             })
 
@@ -470,7 +470,7 @@ describe('weapon-requirements.js', () => {
                     reittier: true,
                 })
                 expect(
-                    checkComatStyleConditions(
+                    checkCombatStyleConditions(
                         'kein reittier',
                         weaponWithReittier,
                         undefined,
@@ -480,7 +480,7 @@ describe('weapon-requirements.js', () => {
 
                 const weaponWithoutReittier = createMockWeapon('weapon2', 'nahkampfwaffe', {})
                 expect(
-                    checkComatStyleConditions(
+                    checkCombatStyleConditions(
                         'kein reittier',
                         weaponWithoutReittier,
                         undefined,
@@ -501,7 +501,7 @@ describe('weapon-requirements.js', () => {
 
                 // All conditions met
                 expect(
-                    checkComatStyleConditions(
+                    checkCombatStyleConditions(
                         'beritten, reittier, Fertigkeit Hiebwaffen',
                         weaponWithReittier,
                         undefined,
@@ -511,7 +511,7 @@ describe('weapon-requirements.js', () => {
 
                 // One condition not met
                 expect(
-                    checkComatStyleConditions(
+                    checkCombatStyleConditions(
                         'beritten, reittier, Fertigkeit Hiebwaffen',
                         weaponWithReittier,
                         undefined,
@@ -524,7 +524,7 @@ describe('weapon-requirements.js', () => {
                     reittier: true,
                 })
                 expect(
-                    checkComatStyleConditions(
+                    checkCombatStyleConditions(
                         'reittier, kein schild',
                         weaponWithoutSchild,
                         undefined,
@@ -537,7 +537,7 @@ describe('weapon-requirements.js', () => {
                     schild: true,
                 })
                 expect(
-                    checkComatStyleConditions(
+                    checkCombatStyleConditions(
                         'reittier, kein schild',
                         weaponWithSchild,
                         undefined,
@@ -551,7 +551,7 @@ describe('weapon-requirements.js', () => {
                     reittier: true,
                 })
                 expect(
-                    checkComatStyleConditions(
+                    checkCombatStyleConditions(
                         ' beritten , reittier ',
                         weaponWithReittier,
                         undefined,
@@ -564,14 +564,14 @@ describe('weapon-requirements.js', () => {
         describe('case sensitivity', () => {
             it('should handle case-insensitive keywords but preserve property case', () => {
                 const mockWeapon = createMockWeapon('weapon1')
-                expect(checkComatStyleConditions('BERITTEN', mockWeapon, undefined, true)).toBe(
+                expect(checkCombatStyleConditions('BERITTEN', mockWeapon, undefined, true)).toBe(
                     true,
                 )
                 expect(
-                    checkComatStyleConditions('Nicht Beritten', mockWeapon, undefined, false),
+                    checkCombatStyleConditions('Nicht Beritten', mockWeapon, undefined, false),
                 ).toBe(true)
                 expect(
-                    checkComatStyleConditions(
+                    checkCombatStyleConditions(
                         'EINZELNE WAFFE',
                         createMockWeapon('weapon1'),
                         undefined,
@@ -583,7 +583,7 @@ describe('weapon-requirements.js', () => {
                     reittier: true,
                 })
                 expect(
-                    checkComatStyleConditions(
+                    checkCombatStyleConditions(
                         'KEIN reittier',
                         weaponWithReittier,
                         undefined,

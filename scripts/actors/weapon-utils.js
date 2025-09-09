@@ -97,7 +97,7 @@ export function ignoreMountedRangePenalty(hauptWaffe, nebenWaffe, ist_beritten) 
     }
 }
 
-export function checkComatStyleConditions(bedingungen, hauptWaffe, nebenWaffe, actorBeritten) {
+export function checkCombatStyleConditions(bedingungen, hauptWaffe, nebenWaffe, actorBeritten) {
     if (!hauptWaffe) return false
     if (!bedingungen || bedingungen.trim() === '') return true
 

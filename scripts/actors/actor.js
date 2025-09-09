@@ -653,7 +653,7 @@ export class IlarisActor extends Actor {
         }
 
         if (
-            weaponUtils.checkComatStyleConditions(
+            weaponUtils.checkCombatStyleConditions(
                 selected_kampfstil.bedingungen,
                 HAUPTWAFFE,
                 NEBENWAFFE,
