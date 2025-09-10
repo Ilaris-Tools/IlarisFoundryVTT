@@ -50,7 +50,8 @@ export function anyWeaponNeedsToMeetRequirement(hauptWaffe, nebenWaffe, requirem
 export function ignoreSideWeaponMalus(nebenwaffe, waffenEigenschaft = '') {
     if (!nebenwaffe) return
     if (nebenwaffe.system.eigenschaften.kein_malus_nebenwaffe) return
-    if (waffenEigenschaft && !nebenwaffe.system.eigenschaften[waffenEigenschaft]) return
+    if (waffenEigenschaft && !nebenwaffe.system.eigenschaften[waffenEigenschaft.toLowerCase()])
+        return
 
     nebenwaffe.system.at += 4
     nebenwaffe.system.vt += 4
@@ -62,14 +63,15 @@ export function affectsRangedWeaponOnly() {
 
 export function applyModifierToWeapons(hauptWaffe, nebenWaffe, modifiers, affectRanged = false) {
     let schaden = ''
-    if (modifiers.schaden > 0) {
-        schaden += '+' + modifiers.schaden
+    if (modifiers.damage > 0) {
+        schaden += '+' + modifiers.damage
     }
     if (hauptWaffe) {
         if (affectRanged && hauptWaffe.type === 'fernkampfwaffe') {
             hauptWaffe.system.fk += modifiers.at
             hauptWaffe.system.schaden = hauptWaffe.system.schaden.concat(schaden)
-        } else {
+        }
+        if (hauptWaffe.type === 'nahkampfwaffe') {
             hauptWaffe.system.at += modifiers.at
             hauptWaffe.system.vt += modifiers.vt
             hauptWaffe.system.schaden = hauptWaffe.system.schaden.concat(schaden)
@@ -79,7 +81,8 @@ export function applyModifierToWeapons(hauptWaffe, nebenWaffe, modifiers, affect
         if (affectRanged && nebenWaffe.type === 'fernkampfwaffe') {
             nebenWaffe.system.fk += modifiers.at
             nebenWaffe.system.schaden = nebenWaffe.system.schaden.concat(schaden)
-        } else {
+        }
+        if (nebenWaffe.type === 'nahkampfwaffe') {
             nebenWaffe.system.at += modifiers.at
             nebenWaffe.system.vt += modifiers.vt
             nebenWaffe.system.schaden = nebenWaffe.system.schaden.concat(schaden)

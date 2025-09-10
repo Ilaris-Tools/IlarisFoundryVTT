@@ -233,7 +233,7 @@ export function getKampfstile(actor) {
                 sources: sources,
                 modifiers: accumulatedModifiers,
                 bedingungen: bedingungen.trim(),
-                foundryScriptMethods: [...new Set(foundryScriptMethods)], // Remove duplicates
+                foundryScriptMethods: foundryScriptMethods, // Remove duplicates
             }
         }
     })
