@@ -441,49 +441,6 @@ export class AngriffDialog extends CombatDialog {
         let trefferzone = 0
         let schaden = this.item.getTp()
 
-        // Handle standard maneuvers first
-        if (manoever.kbak.selected) {
-            mod_at -= 4
-            text_at = text_at.concat('Kombinierte Aktion: -4\n')
-        }
-        // Volle Offensive vlof
-        if (manoever.vlof.selected && !manoever.pssl.selected) {
-            if (manoever.vlof.offensiver_kampfstil) {
-                mod_vt -= 4
-                text_vt = text_vt.concat('Volle Offensive (Offensiver Kampfstil): -4\n')
-            } else {
-                mod_vt -= 8
-                text_vt = text_vt.concat('Volle Offensive: -8\n')
-            }
-            mod_at += 4
-            text_at = text_at.concat('Volle Offensive: +4\n')
-        }
-        // Volle Defensive vldf
-        if (manoever.vldf.selected) {
-            mod_vt += 4
-            text_vt = text_vt.concat('Volle Defensive +4\n')
-        }
-        // Reichweitenunterschiede rwdf
-        let reichweite = Number(manoever.rwdf.selected)
-        if (reichweite > 0) {
-            let mod_rwdf = 2 * Number(reichweite)
-            mod_at -= mod_rwdf
-            mod_vt -= mod_rwdf
-            text_at = text_at.concat(`Reichweitenunterschied: ${mod_rwdf}\n`)
-            text_vt = text_vt.concat(`Reichweitenunterschied: ${mod_rwdf}\n`)
-        }
-        // Passierschlag pssl & Anzahl Reaktionen rkaz
-        let reaktionen = Number(manoever.rkaz.selected)
-        if (reaktionen > 0) {
-            let mod_rkaz = 4 * reaktionen
-            mod_vt -= mod_rkaz
-            text_vt = text_vt.concat(`${reaktionen}. Reaktion: -${mod_rkaz}\n`)
-            if (manoever.pssl.selected) {
-                mod_at -= mod_rkaz
-                text_at = text_at.concat(`${reaktionen}. Passierschlag: -${mod_rkaz} \n`)
-            }
-        }
-
         // Collect all modifications from all maneuvers
         const allModifications = []
         this.item.manoever.forEach((dynamicManoever) => {
@@ -562,6 +519,67 @@ export class AngriffDialog extends CombatDialog {
             nodmg,
             context: this,
         })
+
+        if (this.item.system.manoverausgleich > 0) {
+            // Manöverausgleich only applies to negative modifiers and only brings them up to 0
+            let at_ausgleich = 0
+            let vt_ausgleich = 0
+
+            if (mod_at < 0) {
+                at_ausgleich = Math.min(this.item.system.manoverausgleich, Math.abs(mod_at))
+                mod_at += at_ausgleich
+                text_at = text_at.concat(`Manöverausgleich: +${at_ausgleich}\n`)
+            }
+
+            if (mod_vt < 0) {
+                vt_ausgleich = Math.min(this.item.system.manoverausgleich, Math.abs(mod_vt))
+                mod_vt += vt_ausgleich
+                text_vt = text_vt.concat(`Manöverausgleich: +${vt_ausgleich}\n`)
+            }
+        }
+
+        // Handle standard maneuvers first
+        if (manoever.kbak.selected) {
+            mod_at -= 4
+            text_at = text_at.concat('Kombinierte Aktion: -4\n')
+        }
+        // Volle Offensive vlof
+        if (manoever.vlof.selected && !manoever.pssl.selected) {
+            if (manoever.vlof.offensiver_kampfstil) {
+                mod_vt -= 4
+                text_vt = text_vt.concat('Volle Offensive (Offensiver Kampfstil): -4\n')
+            } else {
+                mod_vt -= 8
+                text_vt = text_vt.concat('Volle Offensive: -8\n')
+            }
+            mod_at += 4
+            text_at = text_at.concat('Volle Offensive: +4\n')
+        }
+        // Volle Defensive vldf
+        if (manoever.vldf.selected) {
+            mod_vt += 4
+            text_vt = text_vt.concat('Volle Defensive +4\n')
+        }
+        // Reichweitenunterschiede rwdf
+        let reichweite = Number(manoever.rwdf.selected)
+        if (reichweite > 0) {
+            let mod_rwdf = 2 * Number(reichweite)
+            mod_at -= mod_rwdf
+            mod_vt -= mod_rwdf
+            text_at = text_at.concat(`Reichweitenunterschied: ${mod_rwdf}\n`)
+            text_vt = text_vt.concat(`Reichweitenunterschied: ${mod_rwdf}\n`)
+        }
+        // Passierschlag pssl & Anzahl Reaktionen rkaz
+        let reaktionen = Number(manoever.rkaz.selected)
+        if (reaktionen > 0) {
+            let mod_rkaz = 4 * reaktionen
+            mod_vt -= mod_rkaz
+            text_vt = text_vt.concat(`${reaktionen}. Reaktion: -${mod_rkaz}\n`)
+            if (manoever.pssl.selected) {
+                mod_at -= mod_rkaz
+                text_at = text_at.concat(`${reaktionen}. Passierschlag: -${mod_rkaz} \n`)
+            }
+        }
 
         // If ZERO_DAMAGE was found, override damage values
         if (nodmg.value) {
