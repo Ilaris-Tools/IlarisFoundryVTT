@@ -63,7 +63,9 @@ export class AngriffDialog extends CombatDialog {
         })
 
         // Initial display update
-        setTimeout(() => this.updateModifierDisplay(html), 500)
+        setTimeout(() => {
+            this.updateModifierDisplay(html)
+        }, 500)
 
         // Add event listeners for clickable summary sections
         this.addSummaryClickListeners(html)

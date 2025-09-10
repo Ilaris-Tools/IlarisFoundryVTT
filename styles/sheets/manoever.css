@@ -374,3 +374,21 @@ input.maneuver-negative {
   color: #cc4400;
   border-bottom-color: #cc4400;
 }
+
+/* ZERO_DAMAGE conflict styling */
+.maneuver-item.disabled-conflict {
+  opacity: 0.5;
+  background-color: rgba(139, 0, 0, 0.1);
+  border: 1px solid rgba(139, 0, 0, 0.3);
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.maneuver-item.disabled-conflict input[type="checkbox"] {
+  cursor: not-allowed;
+}
+
+.maneuver-item.disabled-conflict label {
+  color: #8b0000;
+  font-style: italic;
+}
