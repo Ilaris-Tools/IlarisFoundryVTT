@@ -64,6 +64,12 @@
                 data-dtype="Number"
             />
         </div>
+        {{#if item.system.manoverausgleich.overcomplicated}}
+        <div class="flexrow">
+            <label>{{get_label "vldf"}}</label>
+            <input type="checkbox" id="isHumanoid-{{dialogId}}" {{checked isHumanoid}} />
+        </div>
+        {{/if}}
 
         <hr>
 

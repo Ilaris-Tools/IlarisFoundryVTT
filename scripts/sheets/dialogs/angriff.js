@@ -22,6 +22,7 @@ export class AngriffDialog extends CombatDialog {
         this.rollmode = game.settings.get('core', 'rollMode') // public, private....
         this.item.system.manoever.rllm.selected = game.settings.get('core', 'rollMode') // TODO: either manoever or dialog property.
         this.fumble_val = 1
+        this.isHumanoid = false
         if (this.item.system.eigenschaften.unberechenbar) {
             this.fumble_val = 2
         }
@@ -30,6 +31,7 @@ export class AngriffDialog extends CombatDialog {
 
     getData() {
         let data = super.getData()
+        data.isHumanoid = this.isHumanoid
         return data
     }
 
@@ -423,6 +425,8 @@ export class AngriffDialog extends CombatDialog {
         manoever.mod.selected = html.find(`#modifikator-${this.dialogId}`)[0]?.value || false // Modifikator
         manoever.rllm.selected = html.find(`#rollMode-${this.dialogId}`)[0]?.value || false // RollMode
 
+        this.isHumanoid = html.find(`#isHumanoid-${this.dialogId}`)[0]?.checked || false // isHumanoid
+
         super.manoeverAuswaehlen(html)
     }
 
@@ -520,19 +524,22 @@ export class AngriffDialog extends CombatDialog {
             context: this,
         })
 
-        if (this.item.system.manoverausgleich > 0) {
+        if (
+            this.item.system.manoverausgleich.value > 0 &&
+            (!this.item.system.manoverausgleich.overcomplicated || this.isHumanoid)
+        ) {
             // Manöverausgleich only applies to negative modifiers and only brings them up to 0
             let at_ausgleich = 0
             let vt_ausgleich = 0
 
             if (mod_at < 0) {
-                at_ausgleich = Math.min(this.item.system.manoverausgleich, Math.abs(mod_at))
+                at_ausgleich = Math.min(this.item.system.manoverausgleich.value, Math.abs(mod_at))
                 mod_at += at_ausgleich
                 text_at = text_at.concat(`Manöverausgleich: +${at_ausgleich}\n`)
             }
 
             if (mod_vt < 0) {
-                vt_ausgleich = Math.min(this.item.system.manoverausgleich, Math.abs(mod_vt))
+                vt_ausgleich = Math.min(this.item.system.manoverausgleich.value, Math.abs(mod_vt))
                 mod_vt += vt_ausgleich
                 text_vt = text_vt.concat(`Manöverausgleich: +${vt_ausgleich}\n`)
             }

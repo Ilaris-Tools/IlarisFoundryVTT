@@ -237,7 +237,10 @@
         "nebenwaffe": false,
         "eigenschaften": [],
         "text": "",
-        "manoverausgleich": 0
+        "manoverausgleich": {
+          "value": 0,
+          "overcomplicated": true
+        }
       },
       "fertigkeit": {
         "basis": 0,

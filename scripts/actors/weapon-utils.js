@@ -97,12 +97,14 @@ export function ignoreMountedRangePenalty(hauptWaffe, nebenWaffe, ist_beritten) 
     }
 }
 
-export function manoverAusgleich(hauptWaffe, nebenWaffe, ausgleich) {
+export function manoverAusgleich(hauptWaffe, nebenWaffe, ausgleich, overcomplicated = true) {
     if (hauptWaffe) {
-        hauptWaffe.system.manoverausgleich += ausgleich
+        hauptWaffe.system.manoverausgleich.value += ausgleich
+        hauptWaffe.system.manoverausgleich.overcomplicated = overcomplicated
     }
     if (nebenWaffe && hauptWaffe.id != nebenWaffe.id) {
-        nebenWaffe.system.manoverausgleich += ausgleich
+        nebenWaffe.system.manoverausgleich.value += ausgleich
+        nebenWaffe.system.manoverausgleich.overcomplicated = overcomplicated
     }
 }
 
