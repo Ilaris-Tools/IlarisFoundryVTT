@@ -288,4 +288,13 @@ function registerHandlebarsHelpers() {
 
         return probeText
     })
+
+    /**
+     * Handlebars helper to access game settings from templates
+     * @param {string} settingKey - The setting key to retrieve
+     * @returns {*} The setting value
+     */
+    Handlebars.registerHelper('gameSetting', function (settingKey) {
+        return game.settings.get('Ilaris', settingKey)
+    })
 }

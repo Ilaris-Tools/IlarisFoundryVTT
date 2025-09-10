@@ -80,6 +80,16 @@ export const registerIlarisGameSettings = () => {
             scope: 'world',
             default: false,
         },
+        {
+            // Register hide sync kampfstile button setting
+            settingsName: IlarisGameSettingNames.hideSyncKampfstileButton,
+            name: 'Kampfstil-Synchronisation Button ausblenden',
+            hint: 'Wenn aktiviert, wird der Button "Vorteile mit Kompendium-Vorteilen Synchronisieren" auf dem Kampf-Tab ausgeblendet.',
+            config: true,
+            type: new foundry.data.fields.BooleanField(),
+            scope: 'client',
+            default: false,
+        },
     ].forEach((setting) => {
         game.settings.register(ConfigureGameSettingsCategories.Ilaris, setting.settingsName, {
             name: setting.name,
