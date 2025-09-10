@@ -26,7 +26,8 @@
     "lint": "eslint --fix .",
     "prettier": "prettier --write .",
     "prepare": "husky",
-    "optimize-svgs": "node scripts/optimize-svgs.js"
+    "optimize-svgs": "node scripts/optimize-svgs.js",
+    "pack-all": "node utils/pack-all.js"
   },
   "repository": {
     "type": "git",
