@@ -27,7 +27,8 @@
     "prettier": "prettier --write .",
     "prepare": "husky",
     "optimize-svgs": "node scripts/optimize-svgs.js",
-    "pack-all": "node utils/pack-all.js"
+    "pack-all": "node utils/pack-all.js",
+    "start-foundry": "npm run pack-all && fvtt launch"
   },
   "repository": {
     "type": "git",
