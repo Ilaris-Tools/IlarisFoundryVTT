@@ -97,6 +97,15 @@ export function ignoreMountedRangePenalty(hauptWaffe, nebenWaffe, ist_beritten) 
     }
 }
 
+export function manoverAusgleich(hauptWaffe, nebenWaffe, ausgleich) {
+    if (hauptWaffe) {
+        hauptWaffe.system.manoverausgleich += ausgleich
+    }
+    if (nebenWaffe && hauptWaffe.id != nebenWaffe.id) {
+        nebenWaffe.system.manoverausgleich += ausgleich
+    }
+}
+
 export function checkCombatStyleConditions(bedingungen, hauptWaffe, nebenWaffe, actorBeritten) {
     if (!hauptWaffe) return false
     if (!bedingungen || bedingungen.trim() === '') return true

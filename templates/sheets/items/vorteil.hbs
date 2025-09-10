@@ -57,9 +57,10 @@
         <div class="flexrow">
             <label><b>Foundry Script:</b><i class="fas fa-info-circle" 
                title="Zur Zeit kannst du hier die folgenden Methoden eintragen:
-- ignoreSideWeaponMalus(NEBENWAFFE, <beliebiege Waffeneigenschaft oder leer lassen>), damit ignorierst du Erschwernisse für deine Nebenwaffe, falls eine Eigenschaft angegeben ist, wird nur ignoriert wenn die Waffe die Voraussetzung erfüllt
+- ignoreSideWeaponMalus(NW, <beliebiege Waffeneigenschaft oder leer lassen>), damit ignorierst du Erschwernisse für deine Nebenwaffe, falls eine Eigenschaft angegeben ist, wird nur ignoriert wenn die Waffe die Voraussetzung erfüllt
 - affectsRangedWeaponOnly(), damit wirken sich die Modifier des Scriptes von Sephrasto nur auf Fernkampfwaffen aus (der VT Modifier wirkt sich damit nicht mehr aus)
-- ignoreMountedRangePenalty(HAUPTWAFFE,NEBENWAFFE,ist_beritten), damit wird der Malus für Fernkampfwaffen im berittenen Kampf ignoriert"
+- ignoreMountedRangePenalty(HW,NW,ist_beritten), damit wird der Malus für Fernkampfwaffen im berittenen Kampf ignoriert
+- manoverAusgleich(HW,NW,0), damit wird der Manöverausgleich für den Kampfstil gesetzt (der dritte Parameter ist der Manöverausgleichwert)"
                style="margin-left: 5px; cursor: help;"></i></label>
             <input
                 name="system.foundryScript"

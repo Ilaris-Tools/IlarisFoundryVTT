@@ -7,7 +7,7 @@
     "text": "Du erhältst Waffenschaden +1, AT +1 und VT +1.\n\nDein Reittier ignoriert die üblichen Erschwernisse für Nebenwaffen (S. 39) und im Reiterkampf ist die BE durch Rüstungen um 1 gesenkt. Außerdem ignorierst du im Fernkampf du den Malus für berittene Schützen (S. 46).",
     "script": "modifyKampfstil('Reiterkampf', 1, 1, 1, 0, 1)",
     "bedingungen": "",
-    "foundryScript": "ignoreSideWeaponMalus(NEBENWAFFE, 'Reittier');ignoreMountedRangePenalty(HAUPTWAFFE,NEBENWAFFE,ist_beritten)"
+    "foundryScript": "ignoreSideWeaponMalus(NW, 'Reittier');ignoreMountedRangePenalty(HW,NW,ist_beritten)"
   },
   "_id": "PNud3GEskJqQ1Gmx",
   "effects": [],

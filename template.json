@@ -236,7 +236,8 @@
         "hauptwaffe": false,
         "nebenwaffe": false,
         "eigenschaften": [],
-        "text": ""
+        "text": "",
+        "manoverausgleich": 0
       },
       "fertigkeit": {
         "basis": 0,

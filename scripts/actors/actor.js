@@ -424,10 +424,10 @@ export class IlarisActor extends Actor {
         actor.misc.uebernatuerliche_stile_list = uebernatuerliche_stile
         let selected_uebernatuerlicher_stil = hardcoded.getSelectedStil(actor, 'uebernatuerlich')
 
-        let HAUPTWAFFE =
+        let HW =
             actor.nahkampfwaffen.find((x) => x.system.hauptwaffe == true) ||
             actor.fernkampfwaffen.find((x) => x.system.hauptwaffe == true)
-        let NEBENWAFFE =
+        let NW =
             actor.nahkampfwaffen.find((x) => x.system.nebenwaffe == true) ||
             actor.fernkampfwaffen.find((x) => x.system.nebenwaffe == true)
         for (let nwaffe of actor.nahkampfwaffen) {
@@ -655,8 +655,8 @@ export class IlarisActor extends Actor {
         if (
             weaponUtils.checkCombatStyleConditions(
                 selected_kampfstil.bedingungen,
-                HAUPTWAFFE,
-                NEBENWAFFE,
+                HW,
+                NW,
                 this.system.misc.ist_beritten,
             )
         ) {
@@ -674,16 +674,16 @@ export class IlarisActor extends Actor {
                         // Create a function that has access to weapon-utils methods and executes the method call
                         const executeMethod = new Function(
                             'weaponUtils',
-                            'HAUPTWAFFE',
-                            'NEBENWAFFE',
+                            'HW',
+                            'NW',
                             'selected_kampfstil',
                             'ist_beritten',
                             `return weaponUtils.${methodCall}`,
                         )
                         const result = executeMethod(
                             weaponUtils,
-                            HAUPTWAFFE,
-                            NEBENWAFFE,
+                            HW,
+                            NW,
                             selected_kampfstil,
                             ist_beritten,
                         )
@@ -701,18 +701,9 @@ export class IlarisActor extends Actor {
                 be -= selected_kampfstil.modifiers.be
             }
             if (methodResults && methodResults.length > 0 && methodResults.includes('ranged')) {
-                weaponUtils.applyModifierToWeapons(
-                    HAUPTWAFFE,
-                    NEBENWAFFE,
-                    selected_kampfstil.modifiers,
-                    true,
-                )
+                weaponUtils.applyModifierToWeapons(HW, NW, selected_kampfstil.modifiers, true)
             } else {
-                weaponUtils.applyModifierToWeapons(
-                    HAUPTWAFFE,
-                    NEBENWAFFE,
-                    selected_kampfstil.modifiers,
-                )
+                weaponUtils.applyModifierToWeapons(HW, NW, selected_kampfstil.modifiers)
             }
         }
     }
