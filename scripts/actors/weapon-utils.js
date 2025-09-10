@@ -162,7 +162,7 @@ export function checkCombatStyleConditions(bedingungen, hauptWaffe, nebenWaffe, 
 
         // Check weapon skill (Fertigkeit)
         if (lowerCondition.startsWith('fertigkeit ')) {
-            const fertigkeit = condition.substring(12).trim().toLowerCase()
+            const fertigkeit = lowerCondition.substring(12).trim()
             let hasSkill = false
             if (
                 hauptWaffe &&
@@ -184,7 +184,7 @@ export function checkCombatStyleConditions(bedingungen, hauptWaffe, nebenWaffe, 
 
         // Check for negated weapon properties (kein <Waffeneigenschaft>)
         if (lowerCondition.startsWith('kein ')) {
-            const eigenschaft = condition.substring(5).trim().toLowerCase()
+            const eigenschaft = lowerCondition.substring(5).trim()
             if (anyWeaponNeedsToMeetRequirement(hauptWaffe, nebenWaffe, eigenschaft)) return false
             continue
         }

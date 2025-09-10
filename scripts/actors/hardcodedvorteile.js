@@ -285,11 +285,16 @@ export function parseKampfstilScript(script, kampfstilName) {
 
     // Split arguments, handling quoted string for the first argument
     // First argument: quoted string (single or double quotes)
-    const quoteMatch = argsStr.match(/^\s*(['"])(.*?)\1\s*,/)
+    // Try matching single-quoted string
+    let quoteMatch = argsStr.match(/^\s*'([^']*)'\s*,/)
+    if (!quoteMatch) {
+        // Try matching double-quoted string
+        quoteMatch = argsStr.match(/^\s*"([^"]*)"\s*,/)
+    }
     if (!quoteMatch) {
         return null
     }
-    const nameArg = quoteMatch[2]
+    const nameArg = quoteMatch[1]
     // Remove the first argument from the string
     const restArgsStr = argsStr.slice(quoteMatch[0].length)
 
