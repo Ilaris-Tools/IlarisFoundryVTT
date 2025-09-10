@@ -25,7 +25,9 @@
         </div>
         {{#if (ifEq item.system.gruppe "3")}}
         <div class="flexrow">
-            <label><b>Script:</b></label>
+            <label><b>Script:</b><i class="fas fa-info-circle" 
+               title="Hier kannst du das Sephrasto Script modifyKampfstil('Kampfstilname', 1, 1, 1, 0, 0) eintragen. Die Parameter modifizieren deine Werte in der folgenden Reihenfolge: AT, VT, DMG, RW, BE"
+               style="margin-left: 5px; cursor: help;"></i></label>
             <input
                 name="system.script"
                 value="{{item.system.script}}"
@@ -34,7 +36,17 @@
             />
         </div>
         <div class="flexrow">
-            <label><b>Bedingungen:</b></label>
+            <label><b>Bedingungen:</b><i class="fas fa-info-circle" 
+               title="Die Bedingungen bestimmen darüber welche Voraussetzungen erfüllt sein müssen damit der Kampfstil aktiv ist. Der hier eingetragene Text wird dabei von Foundry ausgewertet. Im folgenden findest du einige Tipps wie sich Bedingungen zusammensetzen können:
+               - ein leeres Feld bedeutet, dass der Kampfstil immer aktiv sein kann
+               - einzelne Bedingungen sind mit einem Komma zu trennen (z.B. 'beritten, Schild')
+               - 'beritten' und 'nicht beritten' geben an ob ein Charakter beritten ist oder nicht
+               - wenn eine Waffe eine Waffeneigenschaft vorweisen muss, dann wird einfach die Waffeneigenschaft genannt (z.B. 'Schild', 'Parierwaffe', 'Wendig', usw.)
+               - Waffe oder Nahkampfwaffe referenzieren auf eine getragene Nahkampfwaffe, Fernkampfwaffe auf eine getragene Fernkampfwaffe
+               - du kannst mit 'einzelne' angeben, dass eine der obengenannten Waffen getragen wird und nicht mehr
+               - zwei Waffen/Nahkampfwaffen/Fernkampfwaffen referenzieren auf zwei getragene Waffen dieser Art
+               - mit 'Fertigkeit: <Fertigkeitsname>' kannst du angeben, dass die Waffe eine bestimmte Fertigkeit verwenden muss (z.B. 'Fertigkeit: Wurfwaffen')"
+               style="margin-left: 5px; cursor: help;"></i></label>
             <input
                 name="system.bedingungen"
                 value="{{item.system.bedingungen}}"
