@@ -29,7 +29,7 @@ export class CombatItem extends IlarisItem {
         // Split by pattern: ) followed by capital letter (start of new modification)
         // Use lookbehind to keep the closing parenthesis
         const modifications = modifikationenString
-            .split(/(?<=\))\s*(?=[A-ZÄÖÜ])/)
+            .split(/(?<=\))\s*(?=[A-Z\u00C0-\u00FF])/)
             .map((mod) => mod.trim())
             .filter((mod) => mod.length > 0)
 
@@ -61,10 +61,10 @@ export class CombatItem extends IlarisItem {
                 if (param.match(/^[+\-–—]?\d+$/)) {
                     // Difficulty modifier (ERSCHWERNIS) - accepts +, -, en dash (–), em dash (—)
                     erschwernis = parseInt(param.replace(/[–—]/g, '-'))
-                } else if (param.match(/^\d+\s*g(AsP|KaP)$/i)) {
+                } else if (param.match(/^\d+\s*g(AsP|KaP|Energie|Eng)$/i)) {
                     // Permanent resource cost (PKOSTEN)
                     pkosten = param
-                } else if (param.match(/^\d+\s*(AsP|KaP)$/i)) {
+                } else if (param.match(/^\d+\s*(AsP|KaP|Energie|Eng)$/i)) {
                     // Resource cost (KOSTEN)
                     kosten = param
                 } else if (param.toLowerCase().includes('wirkungsdauer')) {
@@ -77,27 +77,6 @@ export class CombatItem extends IlarisItem {
                 ) {
                     // Target (ZIEL)
                     ziel = param
-                } else {
-                    // Fall back to position-based parsing
-                    switch (index) {
-                        case 0:
-                            if (param.match(/^[+\-–—]?\d+$/)) {
-                                erschwernis = parseInt(param.replace(/[–—]/g, '-'))
-                            }
-                            break
-                        case 1:
-                            ziel = param
-                            break
-                        case 2:
-                            wirkungsdauer = param
-                            break
-                        case 3:
-                            if (!kosten) kosten = param
-                            break
-                        case 4:
-                            if (!pkosten) pkosten = param
-                            break
-                    }
                 }
             })
 
