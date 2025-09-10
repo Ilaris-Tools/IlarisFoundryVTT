@@ -18,6 +18,34 @@
   "scripts": [],
   "esmodules": ["scripts/hooks.js"],
   "styles": ["css/temp.css", "styles/sheets/manoever.css"],
+  "packFolders": [
+    {
+      "name": "Charaktere",
+      "sorting": "a",
+      "color": "#FF6B6B",
+      "packs": ["beispiel-helden", "kreaturen"],
+      "folders": []
+    },
+    {
+      "name": "Vanilla-Ilaris",
+      "sorting": "a",
+      "color": "#4ECDC4",
+      "packs": [
+        "fertigkeiten-und-talente",
+        "fertigkeiten-und-talente-advanced",
+        "ubernaturliche-fertigkeiten",
+        "vorteile",
+        "liturgien-und-mirakel",
+        "zauberspruche-und-rituale",
+        "zaubertricks-advanced",
+        "waffen",
+        "gegenstande",
+        "manover",
+        "macro-tools"
+      ],
+      "folders": []
+    }
+  ],
   "packs": [
     {
       "label": "Beispiel Helden",
@@ -48,20 +76,6 @@
       "system": "Ilaris"
     },
     {
-      "label": "Liturgien und Mirakel",
-      "type": "Item",
-      "name": "liturgien-und-mirakel",
-      "path": "./packs/liturgien-und-mirakel",
-      "system": "Ilaris"
-    },
-    {
-      "label": "Manöver",
-      "type": "Item",
-      "name": "manover",
-      "path": "./packs/manover",
-      "system": "Ilaris"
-    },
-    {
       "label": "Übernatürliche Fertigkeiten",
       "type": "Item",
       "name": "ubernaturliche-fertigkeiten",
@@ -73,6 +87,27 @@
       "type": "Item",
       "name": "vorteile",
       "path": "./packs/vorteile",
+      "system": "Ilaris"
+    },
+    {
+      "label": "Liturgien und Mirakel",
+      "type": "Item",
+      "name": "liturgien-und-mirakel",
+      "path": "./packs/liturgien-und-mirakel",
+      "system": "Ilaris"
+    },
+    {
+      "label": "Zaubersprüche und Rituale",
+      "type": "Item",
+      "name": "zauberspruche-und-rituale",
+      "path": "./packs/zauberspruche-und-rituale",
+      "system": "Ilaris"
+    },
+    {
+      "label": "Zaubertricks (ADVANCED)",
+      "type": "Item",
+      "name": "zaubertricks-advanced",
+      "path": "./packs/zaubertricks-advanced",
       "system": "Ilaris"
     },
     {
@@ -90,17 +125,10 @@
       "system": "Ilaris"
     },
     {
-      "label": "Zaubersprüche und Rituale",
+      "label": "Manöver",
       "type": "Item",
-      "name": "zauberspruche-und-rituale",
-      "path": "./packs/zauberspruche-und-rituale",
-      "system": "Ilaris"
-    },
-    {
-      "label": "Zaubertricks (ADVANCED)",
-      "type": "Item",
-      "name": "zaubertricks-advanced",
-      "path": "./packs/zaubertricks-advanced",
+      "name": "manover",
+      "path": "./packs/manover",
       "system": "Ilaris"
     },
     {
