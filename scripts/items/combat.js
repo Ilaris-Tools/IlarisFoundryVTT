@@ -114,7 +114,7 @@ export class CombatItem extends IlarisItem {
                 system: {
                     gruppe: this.type === 'zauber' ? 2 : this.type === 'liturgie' ? 3 : 4,
                     probe: erschwernis,
-                    text: modString || name.trim(),
+                    text: content || name.trim(),
                     modifications: {},
                     input: {
                         field: fieldType,

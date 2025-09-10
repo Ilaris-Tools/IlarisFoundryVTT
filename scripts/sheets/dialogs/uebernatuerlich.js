@@ -8,6 +8,7 @@ import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
 } from '../../settings/configure-game-settings.model.js'
+import { ILARIS } from '../../config.js'
 
 export class UebernatuerlichDialog extends CombatDialog {
     constructor(actor, item) {
@@ -272,6 +273,7 @@ export class UebernatuerlichDialog extends CombatDialog {
     }
 
     async manoeverAuswaehlen(html) {
+        this.item.system.manoever = ILARIS.manoever_fernkampf
         let manoever = this.item.system.manoever
 
         // allgemeine optionen
