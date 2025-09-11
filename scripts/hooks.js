@@ -259,12 +259,12 @@ Hooks.once('init', () => {
     registerIlarisGameSettings()
 })
 
-Hooks.on('applyActiveEffect', (actor, data, options, userId) => {
-    console.log(data)
-    console.log(actor)
-    console.log('EFFECT!!! ')
-    data.changes = []
-    console.log(actor)
-    console.log(options)
-    return userId
-})
+// Hooks.on('applyActiveEffect', (actor, data, options, userId) => {
+//     console.log(data)
+//     console.log(actor)
+//     console.log('EFFECT!!! ')
+//     data.changes = []  // This was breaking effects by clearing all changes
+//     console.log(actor)
+//     console.log(options)
+//     return userId
+// })

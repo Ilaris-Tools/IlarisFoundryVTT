@@ -48,15 +48,6 @@ export function beTraglast(systemData) {
     return be_mod
 }
 
-export function wundschwelle(ws, actor) {
-    if (actor.vorteil.profan.find((x) => x.name == 'Unverwüstlich')) ws += 1
-    // let uv = data.vorteil.profan.find(x => x.name == "Unverwüstlich");
-    // let nr = data.vorteil.allgemein.find(x => x.name == "Natürliche Rüstung");
-    // if (uv) ws += 1;
-    // if (nr) ws += 1;
-    return ws
-}
-
 export function wundschwelleStern(ws, actor) {
     if (actor.vorteil.allgemein.find((x) => x.name == 'Natürliche Rüstung')) ws += 1
     return ws
@@ -70,28 +61,10 @@ export function globalermod(systemData) {
     )
 }
 
-export function initiative(ini, actor) {
-    let kr = actor.vorteil.kampf.find((x) => x.name == 'Kampfreflexe')
-    if (kr) ini += 4
-    return ini
-}
-
 export function magieresistenz(mr, actor) {
-    let wsI = actor.vorteil.profan.find((x) => x.name == 'Willensstark I')
-    let wsII = actor.vorteil.profan.find((x) => x.name == 'Willensstark II')
     let ub = actor.vorteil.profan.find((x) => x.name == 'Unbeugsamkeit')
-    if (wsI) mr += 4
-    if (wsII) mr += 4
     if (ub) mr += Math.round(actor.system.attribute.MU.wert / 2)
     return mr
-}
-
-export function geschwindigkeit(gs, actor) {
-    let fI = actor.vorteil.profan.find((x) => x.name == 'Flink I')
-    let fII = actor.vorteil.profan.find((x) => x.name == 'Flink II')
-    if (fI) gs += 1
-    if (fII) gs += 1
-    return gs
 }
 
 export function durchhalte(actor) {
@@ -107,56 +80,10 @@ export function durchhalte(actor) {
     return dh
 }
 
-// export function schips(sch, data) {
-export function schips(actor) {
-    let schips = 4
-    if (actor.vorteil.allgemein.find((x) => x.name == 'Glück I')) schips = 5
-    if (actor.vorteil.allgemein.find((x) => x.name == 'Glück II')) schips = 6
-    // let gI = data.vorteil.allgemein.find(x => x.name == "Glück I");
-    // let gII = data.vorteil.allgemein.find(x => x.name == "Glück II");
-    // if (gI) sch += 1;
-    // if (gII) sch += 1;
-    return schips
-}
-
 // export function zauberer(asp, data) {
 export function zauberer(actor) {
-    let asp = 0
-    if (actor.vorteil.allgemein.find((x) => x.name == 'Zauberer I')) asp = 8
-    if (actor.vorteil.allgemein.find((x) => x.name == 'Zauberer II')) asp = 16
-    if (actor.vorteil.allgemein.find((x) => x.name == 'Zauberer III')) asp = 24
-    if (actor.vorteil.allgemein.find((x) => x.name == 'Zauberer IV')) asp = 32
     if (actor.vorteil.magie.find((x) => x.name == 'Gefäß der Sterne'))
-        asp += 4 + actor.system.attribute.CH.wert
-    // let zI = data.vorteil.allgemein.find(x => x.name == "Zauberer I");
-    // let zII = data.vorteil.allgemein.find(x => x.name == "Zauberer II");
-    // let zIII = data.vorteil.allgemein.find(x => x.name == "Zauberer III");
-    // let zIV = data.vorteil.allgemein.find(x => x.name == "Zauberer IV");
-    // let gds = data.vorteil.magie.find(x => x.name == "Gefäß der Sterne");
-    // if (zI) asp += 8;
-    // if (zII) asp += 8;
-    // if (zIII) asp += 8;
-    // if (zIV) asp += 8;
-    // if (gds) asp += 4 + data.data.attribute.CH.wert;
-    return asp
-}
-
-// export function geweihter(kap, data) {
-export function geweihter(actor) {
-    let kap = 0
-    if (actor.vorteil.allgemein.find((x) => x.name == 'Geweiht I')) kap = 8
-    if (actor.vorteil.allgemein.find((x) => x.name == 'Geweiht II')) kap = 16
-    if (actor.vorteil.allgemein.find((x) => x.name == 'Geweiht III')) kap = 24
-    if (actor.vorteil.allgemein.find((x) => x.name == 'Geweiht IV')) kap = 32
-    // let gI = data.vorteil.allgemein.find(x => x.name == "Geweiht I");
-    // let gII = data.vorteil.allgemein.find(x => x.name == "Geweiht II");
-    // let gIII = data.vorteil.allgemein.find(x => x.name == "Geweiht III");
-    // let gIV = data.vorteil.allgemein.find(x => x.name == "Geweiht IV");
-    // if (gI) kap += 8;
-    // if (gII) kap += 8;
-    // if (gIII) kap += 8;
-    // if (gIV) kap += 8;
-    return kap
+        actor.system.abgeleitete.asp += 4 + actor.system.attribute.CH.wert
 }
 
 export function getKampfstile(actor) {

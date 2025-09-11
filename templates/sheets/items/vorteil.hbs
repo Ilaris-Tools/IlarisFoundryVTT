@@ -23,6 +23,10 @@
             <label><b>Beschreibung:</b></label>
             <textarea rows="8" name="system.text">{{item.system.text}}</textarea>
         </div>
+        
+        <!-- Include the effects section partial -->
+        {{> "systems/Ilaris/templates/helper/effects-section.hbs"}}
+        
         <hr />
         <a class="item-delete" data-itemid="{{item._id}}">
             <button class="clickable" type="button">

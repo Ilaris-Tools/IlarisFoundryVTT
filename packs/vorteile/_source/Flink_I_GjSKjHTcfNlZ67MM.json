@@ -3,24 +3,68 @@
   "type": "vorteil",
   "system": {
     "voraussetzung": "Attribut GE 4",
-    "gruppe": 1,
+    "gruppe": "1",
     "text": "Deine GS steigt um einen Punkt."
   },
   "_id": "GjSKjHTcfNlZ67MM",
-  "effects": [],
+  "effects": [
+    {
+      "name": "GS+1",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "changes": [
+        {
+          "key": "system.abgeleitete.gs",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "transfer": true,
+      "img": "icons/svg/aura.svg",
+      "_id": "plSYpZBHgzmQohTc",
+      "type": "base",
+      "system": {},
+      "description": "",
+      "origin": null,
+      "tint": "#ffffff",
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.1.2",
+        "createdTime": 1757614065764,
+        "modifiedTime": 1757617182357,
+        "lastModifiedBy": "FAZTz2Txaxttf8zC"
+      },
+      "_key": "!items.effects!GjSKjHTcfNlZ67MM.plSYpZBHgzmQohTc"
+    }
+  ],
   "_stats": {
     "coreVersion": "12.331",
-    "systemId": null,
-    "systemVersion": null,
+    "systemId": "Ilaris",
+    "systemVersion": "12.1.2",
     "createdTime": null,
-    "modifiedTime": null,
-    "lastModifiedBy": null,
+    "modifiedTime": 1757616583687,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
   },
   "img": "icons/svg/item-bag.svg",
   "folder": null,
-  "sort": 0,
+  "sort": 9400000,
   "ownership": {
     "default": 0
   },

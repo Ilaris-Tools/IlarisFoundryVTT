@@ -25,6 +25,47 @@ export class IlarisActor extends Actor {
     prepareBaseData() {
         console.log('prepareBaseData')
         super.prepareBaseData()
+
+        // Calculate all base derived values before effects are applied
+        if (this.system.attribute && this.system.abgeleitete) {
+            // Base Initiative
+            if (this.system.attribute.IN?.wert !== undefined) {
+                this.system.abgeleitete.ini = this.system.attribute.IN.wert
+            }
+
+            // Base Magic Resistance
+            if (this.system.attribute.MU?.wert !== undefined) {
+                this.system.abgeleitete.mr = 4 + Math.floor(this.system.attribute.MU.wert / 4)
+            }
+
+            // Base GS (Geschwindigkeit)
+            if (this.system.attribute.GE?.wert !== undefined) {
+                this.system.abgeleitete.gs = 4 + Math.floor(this.system.attribute.GE.wert / 4)
+            }
+
+            // Base Traglast and Traglast Intervall
+            if (this.system.attribute.KK?.wert !== undefined) {
+                let kk = this.system.attribute.KK.wert
+                this.system.abgeleitete.traglast_intervall = kk >= 1 ? kk : 1
+                this.system.abgeleitete.traglast = kk >= 1 ? 2 * kk : 1
+            }
+
+            // Base Durchhaltevermögen (will be modified by hardcoded later)
+            if (this.system.attribute.KO?.wert !== undefined) {
+                // Basic formula before hardcoded modifications
+                this.system.abgeleitete.dh = this.system.attribute.KO.wert
+                this.system.abgeleitete.ws = 4 + Math.floor(actor.system.attribute.KO.wert / 4)
+            }
+
+            // Base ASP (will be modified by hardcoded and zugekauft/gasp later)
+            this.system.abgeleitete.asp = 0
+
+            // Base KAP (will be modified by hardcoded and zugekauft/gkap later)
+            this.system.abgeleitete.kap = 0
+
+            // Calculate base SchiPs
+            this.system.schips.schips = 4
+        }
     }
 
     _checkVorteilSource(requirement, vorteil) {
@@ -285,8 +326,7 @@ export class IlarisActor extends Actor {
 
     _calculateWundschwellenRuestung(actor) {
         console.log('Berechne Rüstung')
-        let ws = 4 + Math.floor(actor.system.attribute.KO.wert / 4)
-        ws = hardcoded.wundschwelle(ws, actor)
+        let ws = actor.system.abgeleitete.ws || 4 + Math.floor(actor.system.attribute.KO.wert / 4)
         // let ws_stern = ws;
         let ws_stern = hardcoded.wundschwelleStern(ws, actor)
         let be = 0
@@ -344,44 +384,44 @@ export class IlarisActor extends Actor {
 
     _calculateAbgeleitete(actor) {
         console.log('Berechne abgeleitete Werte')
-        let ini = actor.system.attribute.IN.wert
-        ini = hardcoded.initiative(ini, actor)
+
+        // Apply hardcoded modifications to base values (which may have been modified by effects)
+
+        // Initiative: apply hardcoded modifications
+        let ini = actor.system.abgeleitete.ini || 0
         actor.system.abgeleitete.ini = ini
         actor.system.initiative = ini + 0.5
-        let mr = 4 + Math.floor(actor.system.attribute.MU.wert / 4)
+
+        // Magic Resistance: apply hardcoded modifications
+        let mr = actor.system.abgeleitete.mr || 0
         mr = hardcoded.magieresistenz(mr, actor)
         actor.system.abgeleitete.mr = mr
-        let traglast_intervall = actor.system.attribute.KK.wert
-        traglast_intervall = traglast_intervall >= 1 ? traglast_intervall : 1
-        actor.system.abgeleitete.traglast_intervall = traglast_intervall
-        let traglast = 2 * actor.system.attribute.KK.wert
-        traglast = traglast >= 1 ? traglast : 1
-        actor.system.abgeleitete.traglast = traglast
+
+        // Calculate carried weight (this is dynamic, not a base value)
         let summeGewicht = 0
         for (let i of actor.inventar.mitfuehrend) {
             summeGewicht += i.system.gewicht
         }
         actor.system.getragen = summeGewicht
+
+        // Calculate BE modification from carried weight
         let be_mod = hardcoded.beTraglast(actor.system)
         actor.system.abgeleitete.be += be_mod
         actor.system.abgeleitete.be_traglast = be_mod
+
+        // Durchhaltevermögen: apply hardcoded modifications
         let dh = hardcoded.durchhalte(actor)
-        // let dh = systemData.attribute.KO.wert - (2 * systemData.abgeleitete.be);
-        // dh = hardcoded.durchhalte(dh, systemData);
-        // dh = (dh > 1) ? dh : 1;
         actor.system.abgeleitete.dh = dh
-        let gs = 4 + Math.floor(actor.system.attribute.GE.wert / 4)
-        gs = hardcoded.geschwindigkeit(gs, actor)
+
+        // Geschwindigkeit: apply hardcoded modifications and BE reduction
+        let gs = actor.system.abgeleitete.gs || 0
         gs -= actor.system.abgeleitete.be
         gs = gs >= 1 ? gs : 1
         actor.system.abgeleitete.gs = gs
-        // let schips = 4;
-        // schips = hardcoded.schips(schips, data);
-        let schips = hardcoded.schips(actor)
-        actor.system.schips.schips = schips
-        // let asp = 0;
-        // asp = hardcoded.zauberer(asp, data);
-        let asp = hardcoded.zauberer(actor)
+
+        // ASP: apply hardcoded modifications and add/subtract purchased/spent values
+        let asp = actor.system.abgeleitete.asp || 0
+        hardcoded.zauberer(actor)
         actor.system.abgeleitete.zauberer = asp > 0 ? true : false
         asp += Number(actor.system.abgeleitete.asp_zugekauft) || 0
         asp -= Number(actor.system.abgeleitete.gasp) || 0
@@ -391,9 +431,9 @@ export class IlarisActor extends Actor {
             actor.system.abgeleitete.asp_stern !== undefined
                 ? Number(actor.system.abgeleitete.asp_stern)
                 : asp
-        // let kap = 0;
-        // kap = hardcoded.geweihter(kap, data);
-        let kap = hardcoded.geweihter(actor)
+
+        // KAP: apply hardcoded modifications and add/subtract purchased/spent values
+        let kap = actor.system.abgeleitete.kap || 0
         actor.system.abgeleitete.geweihter = kap > 0 ? true : false
         kap += Number(actor.system.abgeleitete.kap_zugekauft) || 0
         kap -= Number(actor.system.abgeleitete.gkap) || 0
