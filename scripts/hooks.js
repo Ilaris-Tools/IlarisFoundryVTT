@@ -27,6 +27,7 @@ import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
 } from './settings/configure-game-settings.model.js'
+import { XmlCharacterImporter } from './common/xml_character_importer.js'
 
 Hooks.once('init', () => {
     // CONFIG.debug.hooks = true;
@@ -267,4 +268,68 @@ Hooks.on('applyActiveEffect', (actor, data, options, userId) => {
     console.log(actor)
     console.log(options)
     return userId
+})
+
+Hooks.on('getSceneControlButtons', (controls) => {
+    // Add character import button to the notes/journal control
+    const notesControl = controls.find((c) => c.name === 'notes')
+    if (notesControl) {
+        notesControl.tools.push({
+            name: 'import-xml-character',
+            title: 'XML Character Import',
+            icon: 'fas fa-file-import',
+            button: true,
+            onClick: () => XmlCharacterImporter.showImportDialog(),
+        })
+    }
+})
+
+Hooks.on('renderActorDirectory', (app, html) => {
+    // Add XML import button to the actors directory header
+    const header = html.find('.directory-header')
+    if (header.length > 0) {
+        const importButton = $(`
+            <button class="import-xml-character" title="Import Character from XML">
+                <i class="fas fa-file-import"></i> Import XML
+            </button>
+        `)
+
+        importButton.click(() => XmlCharacterImporter.showImportDialog())
+        header.append(importButton)
+    }
+
+    // Add sync buttons to each actor entry
+    html.find('.directory-item.actor').each((i, element) => {
+        const $element = $(element)
+        const actorId = $element.data('document-id')
+        const actor = game.actors.get(actorId)
+
+        if (actor && actor.type === 'held') {
+            // Only add sync button to character actors
+            const syncButton = $(`
+                <button class="sync-xml-character" title="Sync Character with XML" data-actor-id="${actorId}">
+                    <i class="fas fa-sync-alt"></i>
+                </button>
+            `)
+
+            syncButton.click(async (event) => {
+                event.stopPropagation() // Prevent opening the actor sheet
+                const targetActor = game.actors.get(actorId)
+                if (targetActor) {
+                    await XmlCharacterImporter.showSyncDialog(targetActor)
+                }
+            })
+
+            // Insert the sync button before the existing controls
+            const controls = $element.find('.directory-item-controls')
+            if (controls.length > 0) {
+                syncButton.prependTo(controls)
+            } else {
+                // If no controls exist, create them
+                const newControls = $('<div class="directory-item-controls"></div>')
+                newControls.append(syncButton)
+                $element.append(newControls)
+            }
+        }
+    })
 })
