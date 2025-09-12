@@ -1,4 +1,7 @@
-import { ILARIS } from '../config.js'
+import {
+    IlarisGameSettingNames,
+    ConfigureGameSettingsCategories,
+} from './../settings/configure-game-settings.model.js'
 
 /**
  * XML Character Importer for Ilaris System
@@ -132,7 +135,7 @@ export class XmlCharacterImporter {
             }
         })
 
-        // Extract talents - we'll separate regular talents from supernatural talents during processing
+        // Extract talents - determine type during XML parsing
         const talentNodes = xmlDoc.querySelectorAll('Talente > Talent')
         talentNodes.forEach((talent) => {
             const name = talent.getAttribute('name')
@@ -203,7 +206,7 @@ export class XmlCharacterImporter {
             characterData.notes = notesNode.textContent || ''
         }
 
-        console.log('Parsed character data:', characterData)
+        console.debug('Parsed character data:', characterData)
         return characterData
     }
 
@@ -336,7 +339,7 @@ export class XmlCharacterImporter {
             }
         }
 
-        console.log('Actor update data:', updates)
+        console.debug('Actor update data:', updates)
         return updates
     }
 
@@ -356,8 +359,6 @@ export class XmlCharacterImporter {
             'liturgie',
             'anrufung',
             'vorteil',
-            'nahkampfwaffe',
-            'fernkampfwaffe',
             'manoever',
         ]
 
@@ -387,7 +388,7 @@ export class XmlCharacterImporter {
                 preservedItemTypes.includes(item.type) || !characterItemTypes.includes(item.type),
         )
 
-        console.log(
+        console.debug(
             `Sync: Removing ${itemsToDelete.length} character items, preserving ${preservedItems.length} inventory items`,
         )
 
@@ -399,7 +400,7 @@ export class XmlCharacterImporter {
         // Add new items with XML import flag
         await this.addItemsToActor(actor, characterData, true)
 
-        console.log(`Sync complete: Added new character data, preserved inventory and notes`)
+        console.debug(`Sync complete: Added new character data, preserved inventory and notes`)
     }
 
     /**
@@ -514,7 +515,7 @@ export class XmlCharacterImporter {
         for (const supernaturalSkill of characterData.supernaturalSkills) {
             // Only include supernatural skills that are required by supernatural talents
             if (!requiredSupernaturalSkills.has(supernaturalSkill.name)) {
-                console.log(
+                console.debug(
                     `Skipping supernatural skill ${supernaturalSkill.name} - not required by any supernatural talent`,
                 )
                 continue
@@ -611,8 +612,22 @@ export class XmlCharacterImporter {
 
         // Add user-selected advantage packs from world settings
         try {
-            const selectedVorteilePacks = game.settings.get('Ilaris', 'selectedVorteilePacks') || []
-            selectedVorteilePacks.forEach((packId) => compendiumsToSearch.add(packId))
+            const selectedVorteilePacks = JSON.parse(
+                game.settings.get(
+                    ConfigureGameSettingsCategories.Ilaris,
+                    IlarisGameSettingNames.vorteilePacks,
+                ) || '[]',
+            )
+            console.log('Selected Vorteile Packs from settings:', selectedVorteilePacks)
+            // Ensure it's an array before calling forEach
+            if (Array.isArray(selectedVorteilePacks)) {
+                selectedVorteilePacks.forEach((packId) => compendiumsToSearch.add(packId))
+            } else {
+                console.warn(
+                    'selectedVorteilePacks setting is not an array:',
+                    selectedVorteilePacks,
+                )
+            }
         } catch (error) {
             console.warn('Could not load selectedVorteilePacks setting:', error)
         }
@@ -621,10 +636,11 @@ export class XmlCharacterImporter {
         game.packs.forEach((pack) => {
             // Only include world compendiums (not system compendiums already added)
             if (pack.metadata.packageType === 'world') {
-                compendiumsToSearch.add(pack.id)
+                compendiumsToSearch.add(pack.metadata.id)
             }
         })
 
+        console.log('xxxxxxxxxxxxxxxx', compendiumsToSearch)
         for (const compendiumId of compendiumsToSearch) {
             const pack = game.packs.get(compendiumId)
             if (!pack) {
