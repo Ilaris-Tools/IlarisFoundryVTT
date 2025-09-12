@@ -396,7 +396,8 @@
       "wm": 0,
       "typ": "Nah",
       "at": 0,
-      "vt": 0
+      "vt": 0,
+      "angriffmanover": []
     },
     "info": {
       "text": ""

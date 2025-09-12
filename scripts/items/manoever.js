@@ -6,6 +6,9 @@ export class ManoeverItem extends IlarisItem {
             return true
         }
 
+        if (item.system.angriffmanover && item.system.angriffmanover.length > 0) {
+            return item.system.angriffmanover.includes(this.name)
+        }
         // First split by comma to get AND conditions
         const andConditions = this.system.voraussetzungen.split(',').map((c) => c.trim())
 
