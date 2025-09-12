@@ -76,6 +76,7 @@ export class XmlCharacterImporter {
             name: '',
             attributes: {},
             skills: [],
+            supernaturalSkills: [],
             talents: [],
             advantages: [],
             weapons: [],
@@ -127,6 +128,19 @@ export class XmlCharacterImporter {
             const value = parseInt(skill.getAttribute('wert')) || 0
             if (name) {
                 characterData.skills.push({ name, value })
+            }
+        })
+
+        // Extract supernatural skills (Übernatürliche Fertigkeiten)
+        const supernaturalSkillNodes = xmlDoc.querySelectorAll(
+            'ÜbernatürlicheFertigkeiten > ÜbernatürlicheFertigkeit',
+        )
+        supernaturalSkillNodes.forEach((skill) => {
+            const name = skill.getAttribute('name')
+            const value = parseInt(skill.getAttribute('wert')) || 0
+
+            if (name) {
+                characterData.supernaturalSkills.push({ name, value })
             }
         })
 
@@ -441,6 +455,47 @@ export class XmlCharacterImporter {
             }
         }
 
+        // Process supernatural skills (Übernatürliche Fertigkeiten)
+        for (const supernaturalSkill of characterData.supernaturalSkills) {
+            const foundSkill = await this.findItemInCompendium(
+                supernaturalSkill.name,
+                'uebernatuerliche_fertigkeit',
+            )
+            if (foundSkill) {
+                const skillData = foundSkill.toObject()
+                skillData.system.fw = supernaturalSkill.value
+                skillData.system.basis = 0 // Reset basis value from XML
+                if (markAsImported) {
+                    skillData.flags = { ilaris: { xmlImported: true } }
+                }
+                itemsToCreate.push(skillData)
+            } else {
+                // Try to create a custom supernatural skill if not found
+                console.warn(
+                    `Supernatural skill not found in compendium: ${supernaturalSkill.name}, creating custom skill`,
+                )
+                const customSkill = {
+                    name: supernaturalSkill.name,
+                    type: 'uebernatuerliche_fertigkeit',
+                    system: {
+                        fw: supernaturalSkill.value,
+                        basis: 0,
+                        pw: 0,
+                        attribut_0: 'KO',
+                        attribut_1: 'KO',
+                        attribut_2: 'KO',
+                        gruppe: -1,
+                        text: 'Imported from XML',
+                        voraussetzung: '',
+                    },
+                }
+                if (markAsImported) {
+                    customSkill.flags = { ilaris: { xmlImported: true } }
+                }
+                itemsToCreate.push(customSkill)
+            }
+        }
+
         // Process weapons
         for (const weapon of characterData.weapons) {
             if (weapon.name && weapon.name !== 'Hand') {
@@ -482,6 +537,7 @@ export class XmlCharacterImporter {
             'Ilaris.fertigkeiten-und-talente-advanced',
             'Ilaris.vorteile',
             'Ilaris.waffen',
+            'Ilaris.ubernaturliche-fertigkeiten',
         ]
 
         for (const compendiumId of compendiumsToSearch) {
