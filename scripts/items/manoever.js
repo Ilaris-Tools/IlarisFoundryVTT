@@ -6,6 +6,7 @@ export class ManoeverItem extends IlarisItem {
             return true
         }
 
+        // bypass other requirements of the manover is in the angriffmanover list of the item
         if (item.system.angriffmanover && item.system.angriffmanover.length > 0) {
             return item.system.angriffmanover.includes(this.name)
         }

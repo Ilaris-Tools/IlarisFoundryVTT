@@ -72,7 +72,7 @@ export class AngriffSheet extends IlarisItemSheet {
         const currentManeuvers = [...(this.document.system.angriffmanover || [])]
 
         // Check if maneuver is already selected
-        if (currentManeuvers.some((m) => m.id === selectedId)) {
+        if (currentManeuvers.some((m) => m === selectedName)) {
             ui.notifications.warn('Dieses Manöver ist bereits ausgewählt.')
             select.value = '' // Reset dropdown
             return

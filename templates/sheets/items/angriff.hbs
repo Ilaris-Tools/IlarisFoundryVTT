@@ -93,7 +93,7 @@
             <!-- Selected maneuvers as chips -->
             <div class="maneuver-chips" style="margin-top: 5px; margin-bottom: 5px;">
                 {{#each item.system.angriffmanover as |maneuver|}}
-                <span class="maneuver-chip" data-maneuver-id="{{maneuver.id}}">
+                <span class="maneuver-chip" data-maneuver="{{maneuver}}">
                     {{maneuver}}
                     <i class="fas fa-times remove-maneuver" data-maneuver="{{maneuver}}" title="Manöver entfernen"></i>
                 </span>
