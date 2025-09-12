@@ -244,14 +244,14 @@ export class XmlCharacterImporter {
 
         // Map XML attributes to Foundry system
         const attributeMapping = {
-            KO: 'KO',
-            MU: 'MU',
-            GE: 'GE',
-            KK: 'KK',
-            IN: 'IN',
-            KL: 'KL',
             CH: 'CH',
             FF: 'FF',
+            GE: 'GE',
+            IN: 'IN',
+            KK: 'KK',
+            KL: 'KL',
+            KO: 'KO',
+            MU: 'MU',
         }
 
         Object.entries(attributeMapping).forEach(([xmlName, systemName]) => {
@@ -295,14 +295,14 @@ export class XmlCharacterImporter {
 
         // Map XML attributes to Foundry system
         const attributeMapping = {
-            KO: 'KO',
-            MU: 'MU',
-            GE: 'GE',
-            KK: 'KK',
-            IN: 'IN',
-            KL: 'KL',
             CH: 'CH',
             FF: 'FF',
+            GE: 'GE',
+            IN: 'IN',
+            KK: 'KK',
+            KL: 'KL',
+            KO: 'KO',
+            MU: 'MU',
         }
 
         Object.entries(attributeMapping).forEach(([xmlName, systemName]) => {
@@ -433,9 +433,9 @@ export class XmlCharacterImporter {
                         fw: skill.value,
                         basis: 0,
                         pw: 0,
-                        attribut_0: 'KO',
-                        attribut_1: 'KO',
-                        attribut_2: 'KO',
+                        attribut_0: 'CH',
+                        attribut_1: 'CH',
+                        attribut_2: 'CH',
                         gruppe: -1,
                         text: 'Imported from XML',
                     },
@@ -545,9 +545,9 @@ export class XmlCharacterImporter {
                         fw: supernaturalSkill.value,
                         basis: 0,
                         pw: 0,
-                        attribut_0: 'KO',
-                        attribut_1: 'KO',
-                        attribut_2: 'KO',
+                        attribut_0: 'CH',
+                        attribut_1: 'CH',
+                        attribut_2: 'CH',
                         gruppe: -1,
                         text: 'Imported from XML',
                         voraussetzung: '',
