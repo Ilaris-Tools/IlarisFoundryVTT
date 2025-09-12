@@ -78,6 +78,7 @@ export class XmlCharacterImporter {
             skills: [],
             supernaturalSkills: [],
             talents: [],
+            supernaturalTalents: [], // Add supernatural talents (zauber/liturgie)
             advantages: [],
             weapons: [],
             energies: {},
@@ -131,7 +132,19 @@ export class XmlCharacterImporter {
             }
         })
 
-        // Extract supernatural skills (Übernatürliche Fertigkeiten)
+        // Extract talents - we'll separate regular talents from supernatural talents during processing
+        const talentNodes = xmlDoc.querySelectorAll('Talente > Talent')
+        talentNodes.forEach((talent) => {
+            const name = talent.getAttribute('name')
+            if (name) {
+                // Add to both arrays for now - we'll determine type during processing
+                characterData.talents.push({ name })
+                characterData.supernaturalTalents.push({ name })
+            }
+        })
+
+        // Filter supernatural skills - only include those with positive values
+        // The required skills will be determined when we match supernatural talents
         const supernaturalSkillNodes = xmlDoc.querySelectorAll(
             'ÜbernatürlicheFertigkeiten > ÜbernatürlicheFertigkeit',
         )
@@ -139,17 +152,8 @@ export class XmlCharacterImporter {
             const name = skill.getAttribute('name')
             const value = parseInt(skill.getAttribute('wert')) || 0
 
-            if (name) {
+            if (name && value > 0) {
                 characterData.supernaturalSkills.push({ name, value })
-            }
-        })
-
-        // Extract talents
-        const talentNodes = xmlDoc.querySelectorAll('Talente > Talent')
-        talentNodes.forEach((talent) => {
-            const name = talent.getAttribute('name')
-            if (name) {
-                characterData.talents.push({ name })
             }
         })
 
@@ -427,8 +431,44 @@ export class XmlCharacterImporter {
             }
         }
 
-        // Process talents
+        // First pass: Process supernatural talents (zauber and liturgie) and collect required supernatural skills
+        const requiredSupernaturalSkills = new Set()
+        const processedTalents = new Set()
+
+        for (const supernaturalTalent of characterData.supernaturalTalents) {
+            // Check if this talent is a supernatural talent (zauber or liturgie)
+            const foundSpell = await this.findItemInCompendium(supernaturalTalent.name, [
+                'zauber',
+                'liturgie',
+            ])
+            if (foundSpell) {
+                const talentData = foundSpell.toObject()
+                if (markAsImported) {
+                    talentData.flags = { ilaris: { xmlImported: true } }
+                }
+                itemsToCreate.push(talentData)
+                processedTalents.add(supernaturalTalent.name)
+
+                // Extract required supernatural skills from the talent's fertigkeiten property
+                if (talentData.system && talentData.system.fertigkeiten) {
+                    const skillNames = talentData.system.fertigkeiten
+                        .split(',')
+                        .map((name) => name.trim())
+                    skillNames.forEach((skillName) => {
+                        if (skillName) {
+                            requiredSupernaturalSkills.add(skillName)
+                        }
+                    })
+                }
+            }
+        }
+
+        // Second pass: Process regular talents (but skip those already processed as supernatural talents)
         for (const talent of characterData.talents) {
+            if (processedTalents.has(talent.name)) {
+                continue // Skip talents already processed as supernatural talents
+            }
+
             const foundTalent = await this.findItemInCompendium(talent.name, 'talent')
             if (foundTalent) {
                 const talentData = foundTalent.toObject()
@@ -455,8 +495,16 @@ export class XmlCharacterImporter {
             }
         }
 
-        // Process supernatural skills (Übernatürliche Fertigkeiten)
+        // Process supernatural skills (Übernatürliche Fertigkeiten) - only those required by supernatural talents
         for (const supernaturalSkill of characterData.supernaturalSkills) {
+            // Only include supernatural skills that are required by supernatural talents
+            if (!requiredSupernaturalSkills.has(supernaturalSkill.name)) {
+                console.log(
+                    `Skipping supernatural skill ${supernaturalSkill.name} - not required by any supernatural talent`,
+                )
+                continue
+            }
+
             const foundSkill = await this.findItemInCompendium(
                 supernaturalSkill.name,
                 'uebernatuerliche_fertigkeit',
@@ -538,6 +586,8 @@ export class XmlCharacterImporter {
             'Ilaris.vorteile',
             'Ilaris.waffen',
             'Ilaris.ubernaturliche-fertigkeiten',
+            'Ilaris.zauberspruche-und-rituale',
+            'Ilaris.liturgien-und-mirakel',
         ]
 
         for (const compendiumId of compendiumsToSearch) {
