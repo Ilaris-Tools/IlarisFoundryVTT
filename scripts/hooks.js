@@ -290,7 +290,7 @@ Hooks.on('renderActorDirectory', (app, html) => {
     if (header.length > 0) {
         const importButton = $(`
             <button class="import-xml-character" title="Import Character from XML">
-                <i class="fas fa-file-import"></i> Import XML
+                <i class="fas fa-file-import"></i> Import Character from XML
             </button>
         `)
 
@@ -307,9 +307,9 @@ Hooks.on('renderActorDirectory', (app, html) => {
         if (actor && actor.type === 'held') {
             // Only add sync button to character actors
             const syncButton = $(`
-                <button class="sync-xml-character" title="Sync Character with XML" data-actor-id="${actorId}">
-                    <i class="fas fa-sync-alt"></i>
-                </button>
+                <div class="sync-xml-character onhover" title="Sync Character with XML" data-actor-id="${actorId}">
+                    <i class="fas fa-sync-alt onhover"></i>
+                </div>
             `)
 
             syncButton.click(async (event) => {

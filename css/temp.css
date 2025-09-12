@@ -90,6 +90,13 @@
   transform: scale(1.1);
 }
 
+.onhover:hover {
+  /* background-color: #b32019; */
+  /* text-shadow: 0 0 8px #b32019; */
+  text-shadow: 0 0 8px red;
+  cursor: pointer;
+}
+
 /* special case for MR */
 .icon-row .attribute-wrapper {
   width: auto;          /* stop forcing 100% width */
@@ -232,52 +239,29 @@
 
 /* XML Character Import Button Styles */
 .import-xml-character {
-    background: #4b4a44;
     border: 1px solid #000;
     border-radius: 3px;
-    color: #f0f0e0;
     padding: 4px 8px;
-    margin-left: 5px;
-    font-size: 12px;
+    width: calc(100% - 10px);
     cursor: pointer;
     display: inline-flex;
     align-items: center;
     gap: 4px;
 }
 
-.import-xml-character:hover {
-    background: #5a5a52;
-    box-shadow: 0 0 6px inset rgba(255, 255, 255, 0.2);
-}
-
-.import-xml-character i {
-    font-size: 10px;
-}
-
 /* XML Character Sync Button Styles */
+.directory-item-controls {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 16px;
+}
 .sync-xml-character {
-    background: #2d4a2d;
-    border: 1px solid #1a331a;
-    border-radius: 2px;
-    color: #e0f0e0;
-    padding: 2px 4px;
-    margin-right: 2px;
-    font-size: 10px;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
+    font-size: 20px;
+    width: 60px;
+    display: flex;
     justify-content: center;
-    width: 20px;
-    height: 20px;
-}
-
-.sync-xml-character:hover {
-    background: #3d5a3d;
-    box-shadow: 0 0 4px inset rgba(255, 255, 255, 0.3);
-}
-
-.sync-xml-character i {
-    font-size: 8px;
+    height: 48px;
+    align-items: center;
 }
 
 .hangingindent {
