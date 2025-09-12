@@ -361,16 +361,31 @@ export class XmlCharacterImporter {
             'manoever',
         ]
 
-        // Define which item types should be preserved (inventory items)
-        const preservedItemTypes = ['gegenstand', 'ruestung']
+        // Define which item types should be preserved (inventory and equipment items)
+        const preservedItemTypes = [
+            'gegenstand', // Regular items/objects
+            'ruestung', // Armor pieces
+            'nahkampfwaffe', // Melee weapons
+            'fernkampfwaffe', // Ranged weapons
+            // Add any other inventory-related item types that should be preserved
+        ]
 
-        // Get items that should be removed (all character-related items)
+        // Get items that should be removed (only character-related items, preserve everything else)
         const itemsToDelete = actor.items
-            .filter((item) => characterItemTypes.includes(item.type))
+            .filter((item) => {
+                // Only delete items that are explicitly character-related AND not marked for preservation
+                return (
+                    characterItemTypes.includes(item.type) &&
+                    !preservedItemTypes.includes(item.type)
+                )
+            })
             .map((item) => item.id)
 
-        // Get items that will be preserved
-        const preservedItems = actor.items.filter((item) => preservedItemTypes.includes(item.type))
+        // Get items that will be preserved (both explicit preserved types and any other types not in character types)
+        const preservedItems = actor.items.filter(
+            (item) =>
+                preservedItemTypes.includes(item.type) || !characterItemTypes.includes(item.type),
+        )
 
         console.log(
             `Sync: Removing ${itemsToDelete.length} character items, preserving ${preservedItems.length} inventory items`,
@@ -579,8 +594,11 @@ export class XmlCharacterImporter {
     async findItemInCompendium(itemName, itemType) {
         const typesToSearch = Array.isArray(itemType) ? itemType : [itemType]
 
-        // Search in all relevant compendiums
-        const compendiumsToSearch = [
+        // Build compendium list dynamically
+        const compendiumsToSearch = new Set()
+
+        // Always include core system compendiums
+        const coreCompendiums = [
             'Ilaris.fertigkeiten-und-talente',
             'Ilaris.fertigkeiten-und-talente-advanced',
             'Ilaris.vorteile',
@@ -589,6 +607,23 @@ export class XmlCharacterImporter {
             'Ilaris.zauberspruche-und-rituale',
             'Ilaris.liturgien-und-mirakel',
         ]
+        coreCompendiums.forEach((id) => compendiumsToSearch.add(id))
+
+        // Add user-selected advantage packs from world settings
+        try {
+            const selectedVorteilePacks = game.settings.get('Ilaris', 'selectedVorteilePacks') || []
+            selectedVorteilePacks.forEach((packId) => compendiumsToSearch.add(packId))
+        } catch (error) {
+            console.warn('Could not load selectedVorteilePacks setting:', error)
+        }
+
+        // Search through all world compendiums for relevant item types
+        game.packs.forEach((pack) => {
+            // Only include world compendiums (not system compendiums already added)
+            if (pack.metadata.packageType === 'world') {
+                compendiumsToSearch.add(pack.id)
+            }
+        })
 
         for (const compendiumId of compendiumsToSearch) {
             const pack = game.packs.get(compendiumId)
