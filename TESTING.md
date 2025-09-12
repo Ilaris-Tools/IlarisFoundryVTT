@@ -25,12 +25,6 @@ CONFIG.Dice.randomUniform = () => 0.5
 -   Angriffstaster, Fertigkeitsproben und Schadenswürfe mit vorhersagbaren Ergebnissen testen
 -   Nützlich zur Überprüfung von Kampfberechnungen und Manövereffekten
 
-### 3. Weitere Test-Optionen
-
--   **Dice So Nice! Modul**: Hat eingebaute Optionen für vorbestimmte Ergebnisse
--   **Let Me Roll That For You Modul**: Erlaubt manuelle Eingabe spezifischer Würfelergebnisse
--   **Makros**: Können erstellt werden um die Roll-Klasse temporär zu überschreiben
-
 ---
 
 _Hinweis: Diese Methoden sind nur für Entwicklung und Tests gedacht. Stelle immer das normale Würfelverhalten für echtes Spielen wieder her._
