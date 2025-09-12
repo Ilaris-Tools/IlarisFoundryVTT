@@ -290,7 +290,7 @@ Hooks.on('renderActorDirectory', (app, html) => {
     if (header.length > 0) {
         const importButton = $(`
             <button class="import-xml-character" title="Import Character from XML">
-                <i class="fas fa-file-import"></i> Import Character from XML
+                <i class="fas fa-file-import"></i> Import Charakter XML
             </button>
         `)
 
