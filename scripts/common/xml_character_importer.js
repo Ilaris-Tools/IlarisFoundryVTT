@@ -618,7 +618,6 @@ export class XmlCharacterImporter {
                     IlarisGameSettingNames.vorteilePacks,
                 ) || '[]',
             )
-            console.log('Selected Vorteile Packs from settings:', selectedVorteilePacks)
             // Ensure it's an array before calling forEach
             if (Array.isArray(selectedVorteilePacks)) {
                 selectedVorteilePacks.forEach((packId) => compendiumsToSearch.add(packId))
@@ -640,7 +639,6 @@ export class XmlCharacterImporter {
             }
         })
 
-        console.log('xxxxxxxxxxxxxxxx', compendiumsToSearch)
         for (const compendiumId of compendiumsToSearch) {
             const pack = game.packs.get(compendiumId)
             if (!pack) {
