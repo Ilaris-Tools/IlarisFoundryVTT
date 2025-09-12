@@ -304,8 +304,8 @@ Hooks.on('renderActorDirectory', (app, html) => {
         const actorId = $element.data('document-id')
         const actor = game.actors.get(actorId)
 
-        if (actor && actor.type === 'held') {
-            // Only add sync button to character actors
+        if (actor && actor.type === 'held' && actor.isOwner) {
+            // Only add sync button to character actors that the user owns
             const syncButton = $(`
                 <div class="sync-xml-character onhover" title="Sync Character with XML" data-actor-id="${actorId}">
                     <i class="fas fa-sync-alt onhover"></i>
