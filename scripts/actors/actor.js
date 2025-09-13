@@ -31,13 +31,11 @@ export class IlarisActor extends Actor {
     _checkVorteilSource(requirement, vorteil) {
         // For Stile (gruppe 3, 5, or 7) on held-type actors, check with getSelectedStil
         if (this.type === 'held' && [3, 5, 7].includes(Number(vorteil.system.gruppe))) {
+            const kampfStil = hardcoded.getSelectedStil(this, 'kampf')
+            const ueberStil = hardcoded.getSelectedStil(this, 'uebernatuerlich')
             return (
-                hardcoded
-                    .getSelectedStil(this, 'kampf')
-                    ?.sources.some((source) => source === requirement) ||
-                hardcoded
-                    .getSelectedStil(this, 'uebernatuerlich')
-                    ?.sources.some((source) => source === requirement)
+                (kampfStil.active && kampfStil?.sources.some((source) => source === requirement)) ||
+                (ueberStil.active && ueberStil?.sources.some((source) => source === requirement))
             )
         }
 
@@ -663,6 +661,7 @@ export class IlarisActor extends Actor {
             // Execute foundryScript method calls if they exist
             let methodResults = []
             let ist_beritten = this.system.misc.ist_beritten
+            selected_kampfstil.active = true
             if (
                 selected_kampfstil.foundryScriptMethods &&
                 selected_kampfstil.foundryScriptMethods.length > 0
@@ -705,6 +704,8 @@ export class IlarisActor extends Actor {
             } else {
                 weaponUtils.applyModifierToWeapons(HW, NW, selected_kampfstil.modifiers)
             }
+        } else {
+            selected_kampfstil.active = false
         }
     }
 
