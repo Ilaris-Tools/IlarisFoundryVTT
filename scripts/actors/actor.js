@@ -28,47 +28,53 @@ export class IlarisActor extends Actor {
         super.prepareBaseData()
     }
 
-    _checkVorteilSource(requirement, vorteil) {
+    _checkVorteilSource(requirement, vorteil, item) {
         // For Stile (gruppe 3, 5, or 7) on held-type actors, check with getSelectedStil
         if (this.type === 'held' && [3, 5, 7].includes(Number(vorteil.system.gruppe))) {
-            const kampfStil = hardcoded.getSelectedStil(this, 'kampf')
-            const ueberStil = hardcoded.getSelectedStil(this, 'uebernatuerlich')
-            return (
-                (kampfStil.active && kampfStil?.sources.some((source) => source === requirement)) ||
-                (ueberStil.active && ueberStil?.sources.some((source) => source === requirement))
-            )
+            if (item.system.hauptwaffe || item.system.nebenwaffe) {
+                const kampfStil = hardcoded.getSelectedStil(this, 'kampf')
+                const ueberStil = hardcoded.getSelectedStil(this, 'uebernatuerlich')
+                return (
+                    (kampfStil.active &&
+                        kampfStil?.sources.some((source) => source === requirement)) ||
+                    (ueberStil.active &&
+                        ueberStil?.sources.some((source) => source === requirement))
+                )
+            } else {
+                return false
+            }
         }
 
         // For all other cases, just check if the requirement matches the vorteil name
         return vorteil.name === requirement
     }
 
-    _hasVorteil(vorteilRequirement) {
+    _hasVorteil(vorteilRequirement, item) {
         // use _stats.compendiumSource or flags.core.sourceId to check for requirement
         return (
             this.vorteil.allgemein.some((vorteil) => {
-                return this._checkVorteilSource(vorteilRequirement, vorteil)
+                return this._checkVorteilSource(vorteilRequirement, vorteil, item)
             }) ||
             this.vorteil.kampf.some((vorteil) => {
-                return this._checkVorteilSource(vorteilRequirement, vorteil)
+                return this._checkVorteilSource(vorteilRequirement, vorteil, item)
             }) ||
             this.vorteil.karma.some((vorteil) => {
-                return this._checkVorteilSource(vorteilRequirement, vorteil)
+                return this._checkVorteilSource(vorteilRequirement, vorteil, item)
             }) ||
             this.vorteil.magie.some((vorteil) => {
-                return this._checkVorteilSource(vorteilRequirement, vorteil)
+                return this._checkVorteilSource(vorteilRequirement, vorteil, item)
             }) ||
             this.vorteil.profan.some((vorteil) => {
-                return this._checkVorteilSource(vorteilRequirement, vorteil)
+                return this._checkVorteilSource(vorteilRequirement, vorteil, item)
             }) ||
             this.vorteil.kampfstil.some((vorteil) => {
-                return this._checkVorteilSource(vorteilRequirement, vorteil)
+                return this._checkVorteilSource(vorteilRequirement, vorteil, item)
             }) ||
             this.vorteil.zaubertraditionen.some((vorteil) => {
-                return this._checkVorteilSource(vorteilRequirement, vorteil)
+                return this._checkVorteilSource(vorteilRequirement, vorteil, item)
             }) ||
             this.vorteil.geweihtentradition.some((vorteil) => {
-                return this._checkVorteilSource(vorteilRequirement, vorteil)
+                return this._checkVorteilSource(vorteilRequirement, vorteil, item)
             })
         )
     }

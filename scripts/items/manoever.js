@@ -28,7 +28,7 @@ export class ManoeverItem extends IlarisItem {
                         ).find(([key, val]) => val === value)?.[0]
                         return eigenschaftKey ? item.system.eigenschaften[eigenschaftKey] : false
                     case 'Vorteil':
-                        return actor._hasVorteil(value)
+                        return actor._hasVorteil(value, item)
                     default:
                         return false
                 }
