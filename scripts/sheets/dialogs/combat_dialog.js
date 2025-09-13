@@ -44,8 +44,8 @@ export class CombatDialog extends Dialog {
             item.classList.toggle('has-value', hasValue)
         })
 
-        // Add specific listener for maneuver checkboxes to handle ZERO_DAMAGE conflicts
-        html.find('.maneuver-item input[type="checkbox"]').on('change', () => {
+        // Add specific listener for maneuver to handle ZERO_DAMAGE conflicts
+        html.find('.maneuver-item input, .maneuver-item select').on('change', () => {
             this.handleZeroDamageConflicts(html)
         })
 
