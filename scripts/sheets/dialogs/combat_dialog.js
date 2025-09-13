@@ -214,23 +214,38 @@ export class CombatDialog extends Dialog {
 
         // Find the currently selected ZERO_DAMAGE maneuver (if any)
         const selectedZeroDamage = zeroDamageManeuvers.find((manoever) => {
-            const elementId = `${manoever.id}CHECKBOX-${this.dialogId}`
+            const elementId = `${manoever.id}${manoever.inputValue.field}-${this.dialogId}`
             const element = html.find(`#${elementId}`)[0]
-            return element?.checked
+            if (manoever.inputValue.field === 'CHECKBOX') {
+                return element?.checked
+            } else if (manoever.inputValue.field === 'NUMBER') {
+                return element?.value && element.value !== '0'
+            } else if (manoever.inputValue.field === 'SELECTOR') {
+                return element?.value && element.value !== '0' && element.value !== ''
+            }
+            return false
         })
 
         // Update the state of all ZERO_DAMAGE maneuvers
         zeroDamageManeuvers.forEach((manoever) => {
-            const elementId = `${manoever.id}CHECKBOX-${this.dialogId}`
+            const elementId = `${manoever.id}${manoever.inputValue.field}-${this.dialogId}`
             const element = html.find(`#${elementId}`)[0]
 
             if (!element) return
 
             if (selectedZeroDamage && selectedZeroDamage.id !== manoever.id) {
-                // Disable other ZERO_DAMAGE maneuvers and uncheck them
+                // Disable other ZERO_DAMAGE maneuvers and reset them
                 element.disabled = true
-                element.checked = false
-                manoever.inputValue.value = false
+                if (manoever.inputValue.field === 'CHECKBOX') {
+                    element.checked = false
+                    manoever.inputValue.value = false
+                } else if (manoever.inputValue.field === 'NUMBER') {
+                    element.value = '0'
+                    manoever.inputValue.value = '0'
+                } else if (manoever.inputValue.field === 'SELECTOR') {
+                    element.value = '0'
+                    manoever.inputValue.value = '0'
+                }
 
                 // Add visual indication
                 const maneuverItem = element.closest('.maneuver-item')
