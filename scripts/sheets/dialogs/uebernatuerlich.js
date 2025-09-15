@@ -14,7 +14,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         const dialog = { title: `Übernatürliche Fertigkeit: ${item.name}` }
         const options = {
             template: 'systems/Ilaris/templates/sheets/dialogs/uebernatuerlich.hbs',
-            width: 500,
+            width: 900,
             height: 'auto',
         }
         super(dialog, options)
@@ -40,10 +40,286 @@ export class UebernatuerlichDialog extends CombatDialog {
 
     activateListeners(html) {
         super.activateListeners(html)
-        html.find('.energie-abrechnen').click((ev) => {
-            const isSuccess = ev.currentTarget.dataset.isSuccess === 'true'
-            this._energieAbrechnenKlick(html, isSuccess)
+
+        // Store modifier element reference for performance
+        this._modifierElement = html.find('#modifier-summary')
+
+        // Store a reference to prevent multiple updates
+        this._updateTimeout = null
+
+        if (this._modifierElement.length === 0) {
+            console.warn('MAGIE MODIFIER DISPLAY: Element nicht im Template gefunden')
+            return
+        }
+
+        // Add listeners for real-time modifier updates with debouncing
+        html.find('input, select').on('change input', () => {
+            // Clear previous timeout
+            if (this._updateTimeout) {
+                clearTimeout(this._updateTimeout)
+            }
+
+            // Set new timeout to debounce rapid changes
+            this._updateTimeout = setTimeout(() => {
+                this.updateModifierDisplay(html)
+            }, 300)
         })
+
+        // Add summary click listeners
+        this.addSummaryClickListeners(html)
+
+        // Initial display update
+        setTimeout(() => this.updateModifierDisplay(html), 500)
+    }
+
+    /**
+     * Adds click listeners to summary sections for quick actions
+     */
+    addSummaryClickListeners(html) {
+        // Use event delegation since the summary elements are dynamically created
+        html.find('#modifier-summary').on('click', '.clickable-summary.angreifen', (ev) => {
+            ev.preventDefault()
+            this._angreifenKlick(html)
+        })
+
+        html.find('#modifier-summary').on('click', '.clickable-summary.energie-erfolg', (ev) => {
+            ev.preventDefault()
+            this._energieAbrechnenKlick(html, true)
+        })
+
+        html.find('#modifier-summary').on(
+            'click',
+            '.clickable-summary.energie-misserfolg',
+            (ev) => {
+                ev.preventDefault()
+                this._energieAbrechnenKlick(html, false)
+            },
+        )
+    }
+
+    /**
+     * Updates the modifier display in real-time
+     */
+    async updateModifierDisplay(html) {
+        try {
+            // Use the stored reference instead of searching for the element
+            if (!this._modifierElement || this._modifierElement.length === 0) {
+                console.warn('MODIFIER DISPLAY: Element-Referenz nicht verfügbar')
+                return
+            }
+
+            // Show loading state
+            this._modifierElement.html(
+                '<div class="modifier-summary"><h4>Würfelwurf Zusammenfassungen:</h4><div class="modifier-item neutral">Wird berechnet...</div></div>',
+            )
+
+            // Temporarily parse values to calculate modifiers
+            await this.manoeverAuswaehlen(html)
+            await this.updateManoeverMods()
+            await this.updateStatusMods()
+
+            // Get base values
+            const basePW = this.item.system.pw || 0
+            const statusMods = this.actor.system.abgeleitete.globalermod || 0
+            const nahkampfMods = this.actor.system.modifikatoren.nahkampfmod || 0
+
+            // Get dice formula
+            let xd20_choice = Number(html.find('input[name="xd20"]:checked')[0]?.value) || 0
+            xd20_choice = xd20_choice == 0 ? 1 : 3
+            const diceFormula = this.getDiceFormula(html, xd20_choice)
+
+            // Create all summaries
+            const summaries = this.getAllModifierSummaries(
+                basePW,
+                statusMods,
+                nahkampfMods,
+                diceFormula,
+            )
+
+            // Update the display element
+            this._modifierElement.html(summaries)
+        } catch (error) {
+            console.error('MODIFIER DISPLAY: Fehler beim Update:', error)
+            // Show error state
+            if (this._modifierElement && this._modifierElement.length > 0) {
+                this._modifierElement.html(
+                    '<div class="modifier-summary"><h4>Würfelwurf Zusammenfassungen:</h4><div class="modifier-item neutral">Fehler beim Berechnen...</div></div>',
+                )
+            }
+        }
+    }
+
+    /**
+     * Creates formatted summaries for all roll types
+     */
+    getAllModifierSummaries(basePW, statusMods, nahkampfMods, diceFormula) {
+        let allSummaries = '<div class="all-summaries">'
+
+        // Talent/Spell Summary
+        allSummaries += this.getTalentSummary(basePW, statusMods, nahkampfMods, diceFormula)
+
+        // Energy Cost Summary
+        allSummaries += this.getEnergySummary()
+
+        allSummaries += '</div>'
+        return allSummaries
+    }
+
+    /**
+     * Creates talent/spell roll summary
+     */
+    getTalentSummary(basePW, statusMods, nahkampfMods, diceFormula) {
+        // Calculate totals first for the heading
+        const maneuverMod = this.mod_at || 0
+        const totalMod = maneuverMod + statusMods + nahkampfMods
+        const finalPW = basePW + totalMod
+        const finalFormula = finalPW >= 0 ? `${diceFormula}+${finalPW}` : `${diceFormula}${finalPW}`
+
+        const itemType = this.item.type === 'zauber' ? 'Zauber' : 'Liturgie'
+        const icon = this.item.type === 'zauber' ? '🔮' : '✨'
+
+        let summary = '<div class="modifier-summary talent-summary clickable-summary angreifen">'
+        summary += `<h4>${icon} ${itemType}: ${finalFormula}</h4>`
+        summary += '<div class="modifier-list">'
+
+        // Base PW
+        summary += `<div class="modifier-item base-value">Basis PW: <span>${basePW}</span></div>`
+
+        // Difficulty
+        const schwierigkeit = this.item.system.schwierigkeit
+        if (schwierigkeit) {
+            const parsedDifficulty = parseInt(schwierigkeit)
+            if (!isNaN(parsedDifficulty)) {
+                summary += `<div class="modifier-item base-value">Schwierigkeit: <span>${parsedDifficulty}</span></div>`
+            } else {
+                summary += `<div class="modifier-item neutral">Schwierigkeit: <span>${schwierigkeit}</span></div>`
+            }
+        }
+
+        // Status modifiers
+        if (statusMods !== 0) {
+            const statusColor = statusMods > 0 ? 'positive' : 'negative'
+            const statusSign = statusMods > 0 ? '+' : ''
+            summary += `<div class="modifier-item ${statusColor}">Status (Wunden/Furcht): <span>${statusSign}${statusMods}</span></div>`
+        }
+
+        // Nahkampf token modifiers
+        if (nahkampfMods !== 0) {
+            const nahkampfColor = nahkampfMods > 0 ? 'positive' : 'negative'
+            const nahkampfSign = nahkampfMods > 0 ? '+' : ''
+            summary += `<div class="modifier-item ${nahkampfColor}">Token Status: <span>${nahkampfSign}${nahkampfMods}</span></div>`
+        }
+
+        // Parse text_at for maneuver modifiers
+        if (this.text_at && this.text_at.trim()) {
+            summary += '<div class="modifier-section">Manöver:</div>'
+            const lines = this.text_at.trim().split('\n')
+            lines.forEach((line) => {
+                if (line.trim()) {
+                    let color = 'neutral'
+                    if (line.includes('+')) color = 'positive'
+                    else if (line.includes('-')) color = 'negative'
+                    summary += `<div class="modifier-item maneuver ${color}">${line}</div>`
+                }
+            })
+        }
+
+        summary += '<hr>'
+
+        // Show total modifiers if any exist
+        if (totalMod !== 0) {
+            const totalModColor = totalMod > 0 ? 'positive' : 'negative'
+            const totalModSign = totalMod > 0 ? '+' : ''
+            summary += `<div class="modifier-item total ${totalModColor}"><strong>Addierte Modifikatoren: ${totalModSign}${totalMod}</strong></div>`
+        }
+
+        summary += '</div></div>'
+        return summary
+    }
+
+    /**
+     * Creates energy cost summary
+     */
+    getEnergySummary() {
+        // Calculate energy cost
+        const baseEnergy = this.mod_energy || 0
+        const energyType = this.item.type === 'zauber' ? 'AsP' : 'KaP'
+        const icon = this.item.type === 'zauber' ? '⚡' : '🙏'
+
+        let summary = '<div class="modifier-summary energy-summary">'
+        summary += `<h4>${icon} Energiekosten: ${baseEnergy} ${energyType}</h4>`
+        summary += '<div class="modifier-list">'
+
+        // Base energy cost
+        const originalCost = this.item.system.kosten || 0
+        summary += `<div class="modifier-item base-value">Basis Kosten: <span>${originalCost} ${energyType}</span></div>`
+
+        // Parse text_energy for energy modifiers
+        if (this.text_energy && this.text_energy.trim()) {
+            summary += '<div class="modifier-section">Modifikatoren:</div>'
+            const lines = this.text_energy.trim().split('\n')
+            lines.forEach((line) => {
+                if (line.trim()) {
+                    let color = 'neutral'
+                    // For energy costs, negative modifiers (cost reduction) are good (green)
+                    // and positive modifiers (cost increase) are bad (red)
+                    if (line.includes('-')) color = 'positive'
+                    // Cost reduction = green
+                    else if (line.includes('+')) color = 'negative' // Cost increase = red
+                    summary += `<div class="modifier-item maneuver ${color}">${line}</div>`
+                }
+            })
+        }
+
+        // Show available energy
+        let availableEnergy
+        if (this.actor.type == 'held') {
+            if (this.item.type === 'zauber') {
+                availableEnergy = this.actor.system.abgeleitete.asp_stern
+            } else {
+                availableEnergy = this.actor.system.abgeleitete.kap_stern
+            }
+        } else {
+            if (this.item.type === 'zauber') {
+                availableEnergy = this.actor.system.energien.asp.value
+            } else {
+                availableEnergy = this.actor.system.energien.kap.value
+            }
+        }
+
+        summary += '<hr>'
+        summary += `<div class="modifier-item base-value">Verfügbar: <span>${availableEnergy} ${energyType}</span></div>`
+
+        // Check if enough energy is available
+        if (baseEnergy > availableEnergy) {
+            const shortage = baseEnergy - availableEnergy
+            summary += `<div class="modifier-item negative"><strong>Fehlend: ${shortage} ${energyType}</strong></div>`
+        } else {
+            const remaining = availableEnergy - baseEnergy
+            summary += `<div class="modifier-item positive">Verbleibend: <span>${remaining} ${energyType}</span></div>`
+        }
+
+        summary += '</div>'
+
+        // Add energy accounting buttons for non-standard difficulty spells
+        const difficulty = +this.item.system.schwierigkeit
+        const isNonStandardDifficulty = isNaN(difficulty) || !difficulty
+
+        if (isNonStandardDifficulty) {
+            summary += '<hr>'
+            summary += '<div class="modifier-section">Energie abrechnen:</div>'
+            summary +=
+                '<div class="clickable-summary energie-erfolg" style="cursor: pointer; padding: 8px; margin: 4px 0; background: rgba(0, 150, 0, 0.1); border: 1px solid rgba(0, 150, 0, 0.3); border-radius: 4px; text-align: center;">'
+            summary += '✅ Erfolgreich gewirkt'
+            summary += '</div>'
+            summary +=
+                '<div class="clickable-summary energie-misserfolg" style="cursor: pointer; padding: 8px; margin: 4px 0; background: rgba(220, 0, 0, 0.1); border: 1px solid rgba(220, 0, 0, 0.3); border-radius: 4px; text-align: center;">'
+            summary += '❌ Misslungen'
+            summary += '</div>'
+        }
+
+        summary += '</div>'
+        return summary
     }
 
     async getData() {
@@ -272,7 +548,22 @@ export class UebernatuerlichDialog extends CombatDialog {
     }
 
     async manoeverAuswaehlen(html) {
+        // Ensure manoever exists
+        if (!this.item.system.manoever) {
+            this.item.system.manoever = {}
+        }
         let manoever = this.item.system.manoever
+
+        // Ensure all required manoever properties exist
+        if (!manoever.kbak) {
+            manoever.kbak = { selected: false }
+        }
+        if (!manoever.mod) {
+            manoever.mod = { selected: 0 }
+        }
+        if (!manoever.rllm) {
+            manoever.rllm = { selected: game.settings.get('core', 'rollMode') }
+        }
 
         // allgemeine optionen
         manoever.kbak.selected = html.find('#kbak')[0]?.checked || false // Kombinierte Aktion
@@ -299,8 +590,10 @@ export class UebernatuerlichDialog extends CombatDialog {
         console.log('manoever', manoever.set_energy_cost.value)
         // Get values from the HTML elements
 
-        manoever.mod.selected = html.find(`#modifikator-${this.dialogId}`)[0]?.value || false // Modifikator
-        manoever.rllm.selected = html.find(`#rollMode-${this.dialogId}`)[0]?.value || false // RollMode
+        manoever.mod.selected = Number(html.find(`#modifikator-${this.dialogId}`)[0]?.value) || 0 // Modifikator
+        manoever.rllm.selected =
+            html.find(`#rollMode-${this.dialogId}`)[0]?.value ||
+            game.settings.get('core', 'rollMode') // RollMode
         await super.manoeverAuswaehlen(html)
     }
 

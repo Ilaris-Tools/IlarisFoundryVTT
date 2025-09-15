@@ -9,7 +9,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
         const dialog = { title: `Fernkampfangriff: ${item.name}` }
         const options = {
             template: 'systems/Ilaris/templates/sheets/dialogs/fernkampf_angriff.hbs',
-            width: 500,
+            width: 900,
             height: 'auto',
         }
         super(dialog, options)
@@ -48,6 +48,233 @@ export class FernkampfAngriffDialog extends CombatDialog {
     activateListeners(html) {
         super.activateListeners(html)
         html.find('.schaden').click((ev) => this._schadenKlick(html))
+
+        // Store modifier element reference for performance
+        this._modifierElement = html.find('#modifier-summary')
+
+        // Store a reference to prevent multiple updates
+        this._updateTimeout = null
+
+        if (this._modifierElement.length === 0) {
+            console.warn('FERNKAMPF MODIFIER DISPLAY: Element nicht im Template gefunden')
+            return
+        }
+
+        // Add listeners for real-time modifier updates with debouncing
+        html.find('input, select').on('change input', () => {
+            // Clear previous timeout
+            if (this._updateTimeout) {
+                clearTimeout(this._updateTimeout)
+            }
+
+            // Set new timeout to debounce rapid changes
+            this._updateTimeout = setTimeout(() => {
+                this.updateModifierDisplay(html)
+            }, 300)
+        })
+
+        // Add summary click listeners
+        this.addSummaryClickListeners(html)
+
+        // Initial display update
+        setTimeout(() => this.updateModifierDisplay(html), 500)
+    }
+
+    /**
+     * Adds click listeners to summary sections for quick actions
+     */
+    addSummaryClickListeners(html) {
+        // Use event delegation since the summary elements are dynamically created
+        html.find('#modifier-summary').on('click', '.clickable-summary.angreifen', (ev) => {
+            ev.preventDefault()
+            this._angreifenKlick(html)
+        })
+
+        html.find('#modifier-summary').on('click', '.clickable-summary.schaden', (ev) => {
+            ev.preventDefault()
+            this._schadenKlick(html)
+        })
+    }
+
+    /**
+     * Updates the modifier display in real-time
+     */
+    async updateModifierDisplay(html) {
+        try {
+            // Use the stored reference instead of searching for the element
+            if (!this._modifierElement || this._modifierElement.length === 0) {
+                console.warn('MODIFIER DISPLAY: Element-Referenz nicht verfügbar')
+                return
+            }
+
+            // Show loading state
+            this._modifierElement.html(
+                '<div class="modifier-summary"><h4>Würfelwurf Zusammenfassungen:</h4><div class="modifier-item neutral">Wird berechnet...</div></div>',
+            )
+
+            // Temporarily parse values to calculate modifiers
+            await this.manoeverAuswaehlen(html)
+            await this.updateManoeverMods()
+            await this.updateStatusMods()
+
+            // Get base values
+            const baseFK = this.item.system.fk || 0
+            const statusMods = this.actor.system.abgeleitete.globalermod || 0
+            const nahkampfMods = this.actor.system.modifikatoren.nahkampfmod || 0
+
+            // Get dice formula
+            const diceFormula = this.getDiceFormula(html)
+
+            // Create all summaries
+            const summaries = this.getAllModifierSummaries(
+                baseFK,
+                statusMods,
+                nahkampfMods,
+                diceFormula,
+            )
+
+            // Update the display element
+            this._modifierElement.html(summaries)
+        } catch (error) {
+            console.error('MODIFIER DISPLAY: Fehler beim Update:', error)
+            // Show error state
+            if (this._modifierElement && this._modifierElement.length > 0) {
+                this._modifierElement.html(
+                    '<div class="modifier-summary"><h4>Würfelwurf Zusammenfassungen:</h4><div class="modifier-item neutral">Fehler beim Berechnen...</div></div>',
+                )
+            }
+        }
+    }
+
+    /**
+     * Creates formatted summaries for all roll types
+     */
+    getAllModifierSummaries(baseFK, statusMods, nahkampfMods, diceFormula) {
+        let allSummaries = '<div class="all-summaries">'
+
+        // Attack Summary
+        allSummaries += this.getAttackSummary(baseFK, statusMods, nahkampfMods, diceFormula)
+
+        // Damage Summary
+        allSummaries += this.getDamageSummary()
+
+        allSummaries += '</div>'
+        return allSummaries
+    }
+
+    /**
+     * Creates attack roll summary
+     */
+    getAttackSummary(baseFK, statusMods, nahkampfMods, diceFormula) {
+        // Calculate totals first for the heading
+        const maneuverMod = this.mod_at || 0
+        const totalMod = maneuverMod + statusMods + nahkampfMods
+        const finalFK = baseFK + totalMod
+        const finalFormula = finalFK >= 0 ? `${diceFormula}+${finalFK}` : `${diceFormula}${finalFK}`
+
+        let summary = '<div class="modifier-summary attack-summary clickable-summary angreifen">'
+        summary += `<h4>🏹 Fernkampf: ${finalFormula}</h4>`
+        summary += '<div class="modifier-list">'
+
+        // Base FK
+        summary += `<div class="modifier-item base-value">Basis FK: <span>${baseFK}</span></div>`
+
+        // Status modifiers
+        if (statusMods !== 0) {
+            const statusColor = statusMods > 0 ? 'positive' : 'negative'
+            const statusSign = statusMods > 0 ? '+' : ''
+            summary += `<div class="modifier-item ${statusColor}">Status (Wunden/Furcht): <span>${statusSign}${statusMods}</span></div>`
+        }
+
+        // Nahkampf token modifiers
+        if (nahkampfMods !== 0) {
+            const nahkampfColor = nahkampfMods > 0 ? 'positive' : 'negative'
+            const nahkampfSign = nahkampfMods > 0 ? '+' : ''
+            summary += `<div class="modifier-item ${nahkampfColor}">Token Status: <span>${nahkampfSign}${nahkampfMods}</span></div>`
+        }
+
+        // Parse text_at for maneuver modifiers
+        if (this.text_at && this.text_at.trim()) {
+            summary += '<div class="modifier-section">Manöver:</div>'
+            const lines = this.text_at.trim().split('\n')
+            lines.forEach((line) => {
+                if (line.trim()) {
+                    let color = 'neutral'
+                    if (line.includes('+')) color = 'positive'
+                    else if (line.includes('-')) color = 'negative'
+                    summary += `<div class="modifier-item maneuver ${color}">${line}</div>`
+                }
+            })
+        }
+
+        summary += '<hr>'
+
+        // Show total modifiers if any exist
+        if (totalMod !== 0) {
+            const totalModColor = totalMod > 0 ? 'positive' : 'negative'
+            const totalModSign = totalMod > 0 ? '+' : ''
+            summary += `<div class="modifier-item total ${totalModColor}"><strong>Addierte Modifikatoren: ${totalModSign}${totalMod}</strong></div>`
+        }
+
+        summary += '</div></div>'
+        return summary
+    }
+
+    /**
+     * Creates damage roll summary
+     */
+    getDamageSummary() {
+        // Calculate totals first for the heading
+        const baseDamage = this.schaden || this.item.getTp()
+        const maneuverMod = this.mod_dm || 0
+        let finalFormula
+        if (maneuverMod === 0) {
+            finalFormula = baseDamage
+        } else {
+            const sign = maneuverMod > 0 ? '+' : ''
+            finalFormula = `${baseDamage} ${sign}${maneuverMod}`
+        }
+
+        let summary = '<div class="modifier-summary damage-summary clickable-summary schaden">'
+        summary += `<h4>🩸 Schaden: ${finalFormula}</h4>`
+        summary += '<div class="modifier-list">'
+
+        // Base damage
+        summary += `<div class="modifier-item base-value">Basis Schaden: <span>${baseDamage}</span></div>`
+
+        // Parse text_dm for maneuver modifiers
+        if (this.text_dm && this.text_dm.trim()) {
+            summary += '<div class="modifier-section">Modifikatoren:</div>'
+            const lines = this.text_dm.trim().split('\n')
+            lines.forEach((line) => {
+                if (line.trim()) {
+                    // Skip trefferzone lines if Gezielter Schlag is not active
+                    if (
+                        !this.isGezieltSchlagActive() &&
+                        (line.includes('Trefferzone:') || line.includes('Gezielter Schlag:'))
+                    ) {
+                        return
+                    }
+
+                    let color = 'neutral'
+                    if (line.includes('+')) color = 'positive'
+                    else if (line.includes('-')) color = 'negative'
+                    else if (line.includes('Kein Schaden')) color = 'negative'
+
+                    // Clean up trefferzone text
+                    let cleanedLine = line.trim()
+                    cleanedLine = cleanedLine.replace(/\s*Trefferzone gewählt$/i, '')
+                    cleanedLine = cleanedLine.replace(/\s*gewählt$/i, '')
+
+                    summary += `<div class="modifier-item maneuver ${color}">${cleanedLine}</div>`
+                }
+            })
+        }
+
+        summary += '<hr>'
+
+        summary += '</div></div>'
+        return summary
     }
 
     eigenschaftenText() {

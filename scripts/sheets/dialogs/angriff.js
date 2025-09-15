@@ -8,7 +8,7 @@ export class AngriffDialog extends CombatDialog {
         const dialog = { title: `Kampf: ${item.name}` }
         const options = {
             template: 'systems/Ilaris/templates/sheets/dialogs/angriff.hbs',
-            width: 800,
+            width: 900,
             height: 'auto',
         }
         super(dialog, options)

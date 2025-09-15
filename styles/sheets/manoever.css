@@ -2,12 +2,8 @@
   padding: 8px;
 }
 
-/* Make the dialog wider */
-.app.window-app.dialog.angriff {
-  min-width: 600px !important;
-}
-
-.app.window-app.dialog.angriff .window-content {
+/* Combat dialog styling */
+.app.window-app.dialog .window-content {
   padding: 16px;
 }
 
@@ -320,7 +316,7 @@
 }
 
 .right-column {
-  flex: 0 0 300px;
+  flex: 0 0 350px;
   background: rgba(0, 0, 0, 0.05);
   border-left: 1px solid rgba(120, 46, 34, 0.2);
   padding: 15px;
@@ -373,4 +369,30 @@ input.maneuver-negative {
 .damage-summary h4 {
   color: #cc4400;
   border-bottom-color: #cc4400;
+}
+
+.energy-summary h4 {
+  color: #4169e1;
+  border-bottom-color: #4169e1;
+}
+
+.talent-summary h4 {
+  color: #8a2be2;
+  border-bottom-color: #8a2be2;
+}
+
+/* Clickable summary styling */
+.clickable-summary {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.clickable-summary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.clickable-summary:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
 }
