@@ -91,8 +91,6 @@
 }
 
 .onhover:hover {
-  /* background-color: #b32019; */
-  /* text-shadow: 0 0 8px #b32019; */
   text-shadow: 0 0 8px red;
   cursor: pointer;
 }
