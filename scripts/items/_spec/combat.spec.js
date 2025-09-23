@@ -64,7 +64,7 @@ describe('CombatItem', () => {
             expect(firstMod.system.gruppe).toBe(2) // zauber
             expect(firstMod.system.probe).toBe(-4)
             expect(firstMod.system.text).toBe(
-                '–4; auch ungefährliche, aber unangenehme Inhalte wie Salz im Meerwasser werden entfernt.',
+                'auch ungefährliche, aber unangenehme Inhalte wie Salz im Meerwasser werden entfernt.',
             )
             expect(firstMod.system.modificationData.erschwernis).toBe(-4)
 
@@ -85,7 +85,7 @@ describe('CombatItem', () => {
             expect(secondMod.system.gruppe).toBe(2) // zauber
             expect(secondMod.system.probe).toBe(-4)
             expect(secondMod.system.text).toBe(
-                '–4, Wirkungsdauer 8 Stunden; du reinigst auch alles, was dem Essen hinzugefügt wird.',
+                'Wirkungsdauer 8 Stunden;du reinigst auch alles, was dem Essen hinzugefügt wird.',
             )
             expect(secondMod.system.modificationData.erschwernis).toBe(-4)
             expect(secondMod.system.modificationData.wirkungsdauer).toBe('Wirkungsdauer 8 Stunden')
@@ -141,7 +141,7 @@ describe('CombatItem', () => {
             expect(adamantenquader.system.gruppe).toBe(2) // zauber
             expect(adamantenquader.system.probe).toBe(-4)
             expect(adamantenquader.system.text).toBe(
-                '–4; das maximale Gewicht wird verdoppelt. Mehrfach wählbar.',
+                'das maximale Gewicht wird verdoppelt. Mehrfach wählbar.',
             )
             expect(adamantenquader.system.modificationData.erschwernis).toBe(-4)
             expect(adamantenquader.system.input.field).toBe('NUMBER') // Should be NUMBER because description contains "Mehrfach wählbar"
@@ -163,7 +163,7 @@ describe('CombatItem', () => {
             expect(kristallglanz.system.gruppe).toBe(2) // zauber
             expect(kristallglanz.system.probe).toBe(-4)
             expect(kristallglanz.system.text).toBe(
-                '–4; während der Wirkungsdauer erscheint die Oberfläche des Materials wie die eines beliebigen anderen erzenen Materials.',
+                'während der Wirkungsdauer erscheint die Oberfläche des Materials wie die eines beliebigen anderen erzenen Materials.',
             )
             expect(kristallglanz.system.modificationData.erschwernis).toBe(-4)
             expect(kristallglanz.system.input.field).toBe('CHECKBOX') // Should be CHECKBOX because description doesn't contain "Mehrfach wählbar"
@@ -185,7 +185,7 @@ describe('CombatItem', () => {
             expect(zauberklinge.system.gruppe).toBe(2) // zauber
             expect(zauberklinge.system.probe).toBe(-4)
             expect(zauberklinge.system.text).toBe(
-                '–4; während der Wirkungsdauer gilt die Waffe als magisch.',
+                'während der Wirkungsdauer gilt die Waffe als magisch.',
             )
             expect(zauberklinge.system.modificationData.erschwernis).toBe(-4)
             expect(zauberklinge.system.input.field).toBe('CHECKBOX') // Should be CHECKBOX because description doesn't contain "Mehrfach wählbar"
