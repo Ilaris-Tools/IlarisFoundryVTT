@@ -105,7 +105,7 @@ function registerHandlebarsHelpers() {
     })
 
     Handlebars.registerHelper('waffe_ist_fernkampf', function (waffe) {
-        return waffe.typ == 'Fern'
+        return waffe.system.typ == 'Fern'
     })
 
     Handlebars.registerHelper('ist_nicht_leer', function (object) {
