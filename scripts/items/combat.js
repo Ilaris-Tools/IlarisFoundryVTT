@@ -53,6 +53,7 @@ export class CombatItem extends IlarisItem {
             let wirkungsdauer = ''
             let kosten = ''
             let pkosten = ''
+            const nonErschwernisParams = []
 
             paramParts.forEach((param, index) => {
                 if (!param || param === '') return
@@ -64,12 +65,15 @@ export class CombatItem extends IlarisItem {
                 } else if (param.match(/^\d+\s*g(AsP|KaP|Energie|Eng)$/i)) {
                     // Permanent resource cost (PKOSTEN)
                     pkosten = param
+                    nonErschwernisParams.push(param)
                 } else if (param.match(/^\d+\s*(AsP|KaP|Energie|Eng)$/i)) {
                     // Resource cost (KOSTEN)
                     kosten = param
+                    nonErschwernisParams.push(param)
                 } else if (param.toLowerCase().includes('wirkungsdauer')) {
                     // Duration (WIRKUNGSDAUER)
                     wirkungsdauer = param
+                    nonErschwernisParams.push(param)
                 } else if (
                     param.match(
                         /^(einzelziel|einzelobjekt|zone|einzelperson|selbst|berührung|bereich)/i,
@@ -77,8 +81,18 @@ export class CombatItem extends IlarisItem {
                 ) {
                     // Target (ZIEL)
                     ziel = param
+                    nonErschwernisParams.push(param)
+                } else {
+                    // Other parameters that aren't erschwernis
+                    nonErschwernisParams.push(param)
                 }
             })
+
+            // Reconstruct content without erschwernis for text display
+            const contentWithoutErschwernis =
+                nonErschwernisParams.length > 0
+                    ? nonErschwernisParams.join(', ') + (description ? ';' + description : '')
+                    : description
 
             // Determine input field type based on description
             const isMehrfachWaehlbar = description.toLowerCase().includes('mehrfach wählbar')
@@ -93,7 +107,7 @@ export class CombatItem extends IlarisItem {
                 system: {
                     gruppe: this.type === 'zauber' ? 2 : this.type === 'liturgie' ? 3 : 4,
                     probe: erschwernis,
-                    text: content || name.trim(),
+                    text: contentWithoutErschwernis || name.trim(),
                     modifications: {},
                     input: {
                         field: fieldType,
