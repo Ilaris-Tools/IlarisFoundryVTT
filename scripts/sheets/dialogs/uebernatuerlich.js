@@ -72,87 +72,48 @@ export class UebernatuerlichDialog extends CombatDialog {
         setTimeout(() => this.updateModifierDisplay(html), 500)
     }
 
-    /**
-     * Adds click listeners to summary sections for quick actions
-     */
-    addSummaryClickListeners(html) {
-        // Use event delegation since the summary elements are dynamically created
-        html.find('#modifier-summary').on('click', '.clickable-summary.angreifen', (ev) => {
-            ev.preventDefault()
-            this._angreifenKlick(html)
-        })
-
-        html.find('#modifier-summary').on('click', '.clickable-summary.energie-erfolg', (ev) => {
-            ev.preventDefault()
-            this._energieAbrechnenKlick(html, true)
-        })
-
-        html.find('#modifier-summary').on(
-            'click',
-            '.clickable-summary.energie-misserfolg',
-            (ev) => {
-                ev.preventDefault()
-                this._energieAbrechnenKlick(html, false)
+    getSummaryClickActions(html) {
+        return [
+            {
+                selector: '.clickable-summary.angreifen',
+                handler: (html) => this._angreifenKlick(html),
             },
-        )
+            {
+                selector: '.clickable-summary.energie-erfolg',
+                handler: (html) => this._energieAbrechnenKlick(html, true),
+            },
+            {
+                selector: '.clickable-summary.energie-misserfolg',
+                handler: (html) => this._energieAbrechnenKlick(html, false),
+            },
+        ]
     }
 
     /**
-     * Updates the modifier display in real-time
+     * Returns base values specific to UebernatuerlichDialog
      */
-    async updateModifierDisplay(html) {
-        try {
-            // Use the stored reference instead of searching for the element
-            if (!this._modifierElement || this._modifierElement.length === 0) {
-                console.warn('MODIFIER DISPLAY: Element-Referenz nicht verfügbar')
-                return
-            }
-
-            // Show loading state
-            this._modifierElement.html(
-                '<div class="modifier-summary"><h4>Würfelwurf Zusammenfassungen:</h4><div class="modifier-item neutral">Wird berechnet...</div></div>',
-            )
-
-            // Temporarily parse values to calculate modifiers
-            await this.manoeverAuswaehlen(html)
-            await this.updateManoeverMods()
-            await this.updateStatusMods()
-
-            // Get base values
-            const basePW = this.item.system.pw || 0
-            const statusMods = this.actor.system.abgeleitete.globalermod || 0
-            const nahkampfMods = this.actor.system.modifikatoren.nahkampfmod || 0
-
-            // Get dice formula
-            let xd20_choice = Number(html.find('input[name="xd20"]:checked')[0]?.value) || 0
-            xd20_choice = xd20_choice == 0 ? 1 : 3
-            const diceFormula = this.getDiceFormula(html, xd20_choice)
-
-            // Create all summaries
-            const summaries = this.getAllModifierSummaries(
-                basePW,
-                statusMods,
-                nahkampfMods,
-                diceFormula,
-            )
-
-            // Update the display element
-            this._modifierElement.html(summaries)
-        } catch (error) {
-            console.error('MODIFIER DISPLAY: Fehler beim Update:', error)
-            // Show error state
-            if (this._modifierElement && this._modifierElement.length > 0) {
-                this._modifierElement.html(
-                    '<div class="modifier-summary"><h4>Würfelwurf Zusammenfassungen:</h4><div class="modifier-item neutral">Fehler beim Berechnen...</div></div>',
-                )
-            }
+    getBaseValues() {
+        return {
+            basePW: this.item.system.pw || 0,
         }
+    }
+
+    /**
+     * Override getDiceFormula to handle the special xd20 logic for supernatural abilities
+     */
+    getDiceFormula(html, xd20_choice = null) {
+        if (xd20_choice === null) {
+            xd20_choice = Number(html.find('input[name="xd20"]:checked')[0]?.value) || 0
+            xd20_choice = xd20_choice == 0 ? 1 : 3
+        }
+        return super.getDiceFormula(html, xd20_choice)
     }
 
     /**
      * Creates formatted summaries for all roll types
      */
-    getAllModifierSummaries(basePW, statusMods, nahkampfMods, diceFormula) {
+    getAllModifierSummaries(baseValues, statusMods, nahkampfMods, diceFormula) {
+        const { basePW } = baseValues
         let allSummaries = '<div class="all-summaries">'
 
         // Talent/Spell Summary

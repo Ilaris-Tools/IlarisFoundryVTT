@@ -80,76 +80,33 @@ export class FernkampfAngriffDialog extends CombatDialog {
         setTimeout(() => this.updateModifierDisplay(html), 500)
     }
 
-    /**
-     * Adds click listeners to summary sections for quick actions
-     */
-    addSummaryClickListeners(html) {
-        // Use event delegation since the summary elements are dynamically created
-        html.find('#modifier-summary').on('click', '.clickable-summary.angreifen', (ev) => {
-            ev.preventDefault()
-            this._angreifenKlick(html)
-        })
-
-        html.find('#modifier-summary').on('click', '.clickable-summary.schaden', (ev) => {
-            ev.preventDefault()
-            this._schadenKlick(html)
-        })
+    getSummaryClickActions(html) {
+        return [
+            {
+                selector: '.clickable-summary.angreifen',
+                handler: (html) => this._angreifenKlick(html),
+            },
+            {
+                selector: '.clickable-summary.schaden',
+                handler: (html) => this._schadenKlick(html),
+            },
+        ]
     }
 
     /**
-     * Updates the modifier display in real-time
+     * Returns base values specific to FernkampfAngriffDialog
      */
-    async updateModifierDisplay(html) {
-        try {
-            // Use the stored reference instead of searching for the element
-            if (!this._modifierElement || this._modifierElement.length === 0) {
-                console.warn('MODIFIER DISPLAY: Element-Referenz nicht verfügbar')
-                return
-            }
-
-            // Show loading state
-            this._modifierElement.html(
-                '<div class="modifier-summary"><h4>Würfelwurf Zusammenfassungen:</h4><div class="modifier-item neutral">Wird berechnet...</div></div>',
-            )
-
-            // Temporarily parse values to calculate modifiers
-            await this.manoeverAuswaehlen(html)
-            await this.updateManoeverMods()
-            await this.updateStatusMods()
-
-            // Get base values
-            const baseFK = this.item.system.fk || 0
-            const statusMods = this.actor.system.abgeleitete.globalermod || 0
-            const nahkampfMods = this.actor.system.modifikatoren.nahkampfmod || 0
-
-            // Get dice formula
-            const diceFormula = this.getDiceFormula(html)
-
-            // Create all summaries
-            const summaries = this.getAllModifierSummaries(
-                baseFK,
-                statusMods,
-                nahkampfMods,
-                diceFormula,
-            )
-
-            // Update the display element
-            this._modifierElement.html(summaries)
-        } catch (error) {
-            console.error('MODIFIER DISPLAY: Fehler beim Update:', error)
-            // Show error state
-            if (this._modifierElement && this._modifierElement.length > 0) {
-                this._modifierElement.html(
-                    '<div class="modifier-summary"><h4>Würfelwurf Zusammenfassungen:</h4><div class="modifier-item neutral">Fehler beim Berechnen...</div></div>',
-                )
-            }
+    getBaseValues() {
+        return {
+            baseFK: this.item.system.fk || 0,
         }
     }
 
     /**
      * Creates formatted summaries for all roll types
      */
-    getAllModifierSummaries(baseFK, statusMods, nahkampfMods, diceFormula) {
+    getAllModifierSummaries(baseValues, statusMods, nahkampfMods, diceFormula) {
+        const { baseFK } = baseValues
         let allSummaries = '<div class="all-summaries">'
 
         // Attack Summary

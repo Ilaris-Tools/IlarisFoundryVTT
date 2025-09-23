@@ -186,10 +186,7 @@
 /* Modifier Summary Styling */
 .modifier-summary-container {
   margin: 16px 0;
-  padding: 12px;
-  background: rgba(120, 46, 34, 0.03);
-  border: 1px solid rgba(120, 46, 34, 0.2);
-  border-radius: 8px;
+  /* Removed padding, background, and border-radius - clean container for individual sections */
 }
 
 .modifier-summary h4 {
@@ -317,14 +314,12 @@
 
 .right-column {
   flex: 0 0 350px;
-  background: rgba(0, 0, 0, 0.05);
-  border-left: 1px solid rgba(120, 46, 34, 0.2);
   padding: 15px;
-  border-radius: 5px;
   display: flex;
   flex-direction: column;
   height: fit-content;
   min-height: auto;
+  /* Removed background, border-left, and border-radius for cleaner look */
 }
 
 /* Keep the modifier summary sticky in the right column */
@@ -338,16 +333,31 @@
 .all-summaries {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 20px; /* Increased gap between sections */
 }
 
 .all-summaries .modifier-summary {
   margin: 0;
+  padding: 12px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.attack-summary {
+  border-left: 4px solid #8b0000 !important;
+  border-color: rgba(139, 0, 0, 0.3) !important;
 }
 
 .attack-summary h4 {
   color: #8b0000;
   border-bottom-color: #8b0000;
+}
+
+.defense-summary {
+  border-left: 4px solid #006400 !important;
+  border-color: rgba(0, 100, 0, 0.3) !important;
 }
 
 .defense-summary h4 {
@@ -366,14 +376,29 @@ input.maneuver-negative {
   color: #8b0000 !important; /* Dark red */
 }
 
+.damage-summary {
+  border-left: 4px solid #cc4400 !important;
+  border-color: rgba(204, 68, 0, 0.3) !important;
+}
+
 .damage-summary h4 {
   color: #cc4400;
   border-bottom-color: #cc4400;
 }
 
+.energy-summary {
+  border-left: 4px solid #4169e1 !important;
+  border-color: rgba(65, 105, 225, 0.3) !important;
+}
+
 .energy-summary h4 {
   color: #4169e1;
   border-bottom-color: #4169e1;
+}
+
+.talent-summary {
+  border-left: 4px solid #8a2be2 !important;
+  border-color: rgba(138, 43, 226, 0.3) !important;
 }
 
 .talent-summary h4 {
