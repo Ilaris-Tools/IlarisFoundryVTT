@@ -221,8 +221,8 @@ Hooks.once('init', () => {
             duration: [],
             changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 9, value: +4 }],
             isTemporary: 0,
-            icon: 'systems/Ilaris/assets/images/icon/swordwoman-green.svg',
-            // tint: "#CC00CC"
+            img: 'systems/Ilaris/assets/images/icon/swordwoman1.svg',
+            flags: { Ilaris: { cssClass: 'status-effect-red' } },
         },
         {
             id: 'Nahkampf2',
@@ -232,7 +232,8 @@ Hooks.once('init', () => {
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 10, value: +2 },
             ],
             isTemporary: 0,
-            icon: 'systems/Ilaris/assets/images/icon/swordwoman-light-green.svg',
+            img: 'systems/Ilaris/assets/images/icon/swordwoman1.svg',
+            flags: { Ilaris: { cssClass: 'status-effect-green' } },
         },
         {
             id: 'Nahkampf3',
@@ -242,7 +243,8 @@ Hooks.once('init', () => {
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 12, value: -2 },
             ],
             isTemporary: 0,
-            icon: 'systems/Ilaris/assets/images/icon/swordwoman-yellow.svg',
+            img: 'systems/Ilaris/assets/images/icon/swordwoman1.svg',
+            flags: { Ilaris: { cssClass: 'status-effect-yellow' } },
         },
         {
             id: 'Nahkampf4',
@@ -252,7 +254,8 @@ Hooks.once('init', () => {
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 13, value: -4 },
             ],
             isTemporary: 0,
-            icon: 'systems/Ilaris/assets/images/icon/swordwoman-orange.svg',
+            img: 'systems/Ilaris/assets/images/icon/swordwoman1.svg',
+            flags: { Ilaris: { cssClass: 'status-effect-orange' } },
         },
     ]
 
@@ -267,4 +270,34 @@ Hooks.on('applyActiveEffect', (actor, data, options, userId) => {
     console.log(actor)
     console.log(options)
     return userId
+})
+
+// Hook to apply CSS classes to status effect icons
+Hooks.on('renderTokenHUD', (app, html, data) => {
+    const statusEffects = html.find('.status-effects .effect-control')
+    statusEffects.each(function () {
+        const img = $(this)
+        const effectId = img.data('status-id')
+
+        // Find the effect configuration
+        const effect = CONFIG.statusEffects.find((e) => e.id === effectId)
+        if (effect && effect.flags?.Ilaris?.cssClass) {
+            img.addClass(effect.flags.Ilaris.cssClass)
+        }
+    })
+})
+
+// Hook to apply CSS classes to status effects in actor sheets
+Hooks.on('renderActorSheet', (app, html, data) => {
+    const statusEffects = html.find('.status-effects .effect-control')
+    statusEffects.each(function () {
+        const img = $(this)
+        const effectId = img.data('status-id')
+
+        // Find the effect configuration
+        const effect = CONFIG.statusEffects.find((e) => e.id === effectId)
+        if (effect && effect.flags?.Ilaris?.cssClass) {
+            img.addClass(effect.flags.Ilaris.cssClass)
+        }
+    })
 })
