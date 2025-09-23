@@ -90,6 +90,11 @@
   transform: scale(1.1);
 }
 
+.onhover:hover {
+  text-shadow: 0 0 8px red;
+  cursor: pointer;
+}
+
 /* special case for MR */
 .icon-row .attribute-wrapper {
   width: auto;          /* stop forcing 100% width */
