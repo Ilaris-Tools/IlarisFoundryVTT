@@ -288,4 +288,19 @@ function registerHandlebarsHelpers() {
 
         return probeText
     })
+
+    /**
+     * Handlebars helper to sort an object alphabetically by its keys
+     * @param {Object} object - The object to sort
+     * @returns {Array} Array of [key, value] pairs sorted alphabetically by key
+     */
+    Handlebars.registerHelper('sortAlphabetically', function (object) {
+        if (!object || typeof object !== 'object') {
+            return []
+        }
+
+        return Object.entries(object).sort(([keyA], [keyB]) => {
+            return keyA.localeCompare(keyB)
+        })
+    })
 }
