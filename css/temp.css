@@ -678,20 +678,10 @@ input.titel-input {
   margin-left: 16px;
 }
 
-.maximum-load-exceeded-left,
-.maximum-load-exceeded-middle,
-.maximum-load-exceeded-right {
-  border: red;
-  border-style: solid;
-}
-.maximum-load-exceeded-left {
-  border-width: 3px 0 3px 3px;
-}
-.maximum-load-exceeded-middle {
-  border-width: 3px 0 3px 0;
-}
-.maximum-load-exceeded-right {
-  border-width: 3px 3px 3px 0;
+.maximum-load-exceeded {
+  display: flex;
+  justify-content: center;
+  border: red 3px solid;
 }
 
 .flexrow {
