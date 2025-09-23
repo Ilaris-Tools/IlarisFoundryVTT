@@ -87,6 +87,7 @@ export class XmlCharacterImporter {
             energies: {},
             experience: { total: 0, spent: 0 },
             description: {},
+            eigenheiten: [], // Character quirks/traits
             notes: '',
         }
 
@@ -102,6 +103,31 @@ export class XmlCharacterImporter {
                 'Kurzbeschreibung',
             )
             characterData.description.finanzen = this.getTextContent(description, 'Finanzen')
+
+            // Extract eigenheiten (character quirks/traits)
+            const eigenheitenNodes = description.querySelectorAll('Eigenheiten > Eigenheit')
+            eigenheitenNodes.forEach((eigenheitNode) => {
+                const eigenheitText = eigenheitNode.textContent.trim()
+                if (eigenheitText) {
+                    let name, text
+
+                    // Check if the eigenheit has a name (contains ":")
+                    const colonIndex = eigenheitText.indexOf(':')
+                    if (colonIndex > 0) {
+                        name = eigenheitText.substring(0, colonIndex).trim()
+                        text = eigenheitText.substring(colonIndex + 1).trim()
+                    } else {
+                        // No colon, use first word as name and full text as content
+                        const firstWord = eigenheitText.split(/\s+/)[0]
+                        name = firstWord
+                        text = eigenheitText
+                    }
+
+                    if (name && text) {
+                        characterData.eigenheiten.push({ name, text })
+                    }
+                }
+            })
         }
 
         // Extract attributes
@@ -360,6 +386,7 @@ export class XmlCharacterImporter {
             'anrufung',
             'vorteil',
             'manoever',
+            // Note: eigenheit is NOT included here - they are preserved and only replaced on exact duplicates
         ]
 
         // Define which item types should be preserved (inventory and equipment items)
@@ -578,6 +605,52 @@ export class XmlCharacterImporter {
                     console.warn(`Weapon not found in compendium: ${weapon.name}`)
                 }
             }
+        }
+
+        // Process eigenheiten (character quirks/traits) with duplicate detection
+        const eigenheitenToDelete = []
+
+        for (const eigenheit of characterData.eigenheiten) {
+            // Normalize text for comparison (remove newlines, extra spaces)
+            const normalizedImportText = eigenheit.text.replace(/\s+/g, ' ').trim()
+
+            // Check for existing eigenheiten with same name and text
+            const existingEigenheit = actor.items.find(
+                (item) =>
+                    item.type === 'eigenheit' &&
+                    item.name === eigenheit.name &&
+                    item.system.text &&
+                    item.system.text.replace(/\s+/g, ' ').trim() === normalizedImportText,
+            )
+
+            if (existingEigenheit) {
+                // Mark existing eigenheit for deletion (will be replaced)
+                eigenheitenToDelete.push(existingEigenheit.id)
+                console.debug(
+                    `Found duplicate eigenheit "${eigenheit.name}", will replace existing one`,
+                )
+            }
+
+            // Create new eigenheit item
+            const eigenheitData = {
+                name: eigenheit.name,
+                type: 'eigenheit',
+                system: {
+                    text: eigenheit.text,
+                },
+            }
+
+            if (markAsImported) {
+                eigenheitData.flags = { ilaris: { xmlImported: true } }
+            }
+
+            itemsToCreate.push(eigenheitData)
+        }
+
+        // Delete duplicate eigenheiten before creating new ones
+        if (eigenheitenToDelete.length > 0) {
+            await actor.deleteEmbeddedDocuments('Item', eigenheitenToDelete)
+            console.debug(`Deleted ${eigenheitenToDelete.length} duplicate eigenheiten`)
         }
 
         // Create all items at once
