@@ -229,7 +229,7 @@
             &nbsp; | &nbsp;
         </label>
         {{#each actor.vorteil.kampf}}
-        <a class="item-edit" data-itemid="{{this.id}}" title="{{this.system.text}}">{{this.name}}</a>
+        <a class="item-edit" data-itemid="{{this.id}}" data-tooltip="{{{this.system.text}}}">{{this.name}}</a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
     </div>
@@ -240,7 +240,7 @@
             &nbsp; | &nbsp;
         </label>
         {{#each actor.vorteil.kampfstil}}
-        <a class="item-edit" data-itemid="{{this.id}}" title="{{this.system.text}}">{{this.name}}</a>
+        <a class="item-edit" data-itemid="{{this.id}}" data-tooltip="{{{this.system.text}}}">{{this.name}}</a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
     </div>

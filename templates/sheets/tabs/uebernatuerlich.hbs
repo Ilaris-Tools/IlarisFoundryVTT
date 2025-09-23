@@ -165,7 +165,7 @@
         <label><b>Magische Traditionen:</b>&nbsp; | &nbsp;</label>
         {{#each actor.vorteil.zaubertraditionen}}
         <a class="item-edit"
-            data-itemid="{{this.id}}" title="{{this.system.text}}">
+            data-itemid="{{this.id}}" data-tooltip="{{{this.system.text}}}">
             {{this.name}}
         </a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
@@ -176,7 +176,7 @@
         <label><b>Magische Vorrteile:</b>&nbsp; | &nbsp;</label>
         {{#each actor.vorteil.magie}}
         <a class="item-edit"
-            data-itemid="{{this.id}}" title="{{this.system.text}}">
+            data-itemid="{{this.id}}" data-tooltip="{{{this.system.text}}}">
             {{this.name}}
         </a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
@@ -187,7 +187,7 @@
         <label><b>Karmale Traditionen:</b>&nbsp; | &nbsp;</label>
         {{#each actor.vorteil.geweihtentradition}}
         <a class="item-edit"
-            data-itemid="{{this.id}}" title="{{this.system.text}}">
+            data-itemid="{{this.id}}" data-tooltip="{{{this.system.text}}}">
             {{this.name}}
         </a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
@@ -198,7 +198,7 @@
         <label><b>Karmale Vorteile:</b>&nbsp; | &nbsp;</label>
         {{#each actor.vorteil.karma}}
         <a class="item-edit"
-            data-itemid="{{this.id}}" title="{{this.system.text}}">
+            data-itemid="{{this.id}}" data-tooltip="{{{this.system.text}}}">
             {{this.name}}
         </a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
