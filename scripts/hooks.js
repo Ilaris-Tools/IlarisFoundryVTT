@@ -273,7 +273,7 @@ Hooks.on('applyActiveEffect', (actor, data, options, userId) => {
 Hooks.on('getSceneControlButtons', (controls) => {
     // Add character import button to the notes/journal control
     const notesControl = controls.find((c) => c.name === 'notes')
-    if (notesControl) {
+    if (notesControl && game.user.can('ACTOR_CREATE') && game.user.can('FILES_UPLOAD')) {
         notesControl.tools.push({
             name: 'import-xml-character',
             title: 'XML Character Import',
@@ -285,27 +285,35 @@ Hooks.on('getSceneControlButtons', (controls) => {
 })
 
 Hooks.on('renderActorDirectory', (app, html) => {
-    // Add XML import button to the actors directory header
-    const header = html.find('.directory-header')
-    if (header.length > 0) {
-        const importButton = $(`
-            <button class="import-xml-character" title="Import Character from XML">
-                <i class="fas fa-file-import"></i> Import Charakter XML
-            </button>
-        `)
+    // Add XML import button to the actors directory header (only if user can create actors and upload files)
+    if (game.user.can('ACTOR_CREATE') && game.user.can('FILES_UPLOAD')) {
+        const header = html.find('.directory-header')
+        if (header.length > 0) {
+            const importButton = $(`
+                <button class="import-xml-character" title="Import Character from XML">
+                    <i class="fas fa-file-import"></i> Import Charakter XML
+                </button>
+            `)
 
-        importButton.click(() => XmlCharacterImporter.showImportDialog())
-        header.append(importButton)
+            importButton.click(() => XmlCharacterImporter.showImportDialog())
+            header.append(importButton)
+        }
     }
 
-    // Add sync buttons to each actor entry
+    // Add sync buttons to each actor entry (only if user owns the actor, can create actors, and can upload files)
     html.find('.directory-item.actor').each((i, element) => {
         const $element = $(element)
         const actorId = $element.data('document-id')
         const actor = game.actors.get(actorId)
 
-        if (actor && actor.type === 'held' && actor.isOwner) {
-            // Only add sync button to character actors that the user owns
+        if (
+            actor &&
+            actor.type === 'held' &&
+            actor.isOwner &&
+            game.user.can('ACTOR_CREATE') &&
+            game.user.can('FILES_UPLOAD')
+        ) {
+            // Only add sync button to character actors that the user owns and has create/upload permissions
             const syncButton = $(`
                 <div class="sync-xml-character onhover" title="Sync Character with XML" data-actor-id="${actorId}">
                     <i class="fas fa-sync-alt onhover"></i>
