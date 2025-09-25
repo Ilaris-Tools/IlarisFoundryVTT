@@ -16,6 +16,13 @@
 -   Im Inventar wird nun die Anzahl eines Elements angezeigt
 -   Beim Hinzufügen eines Items kann die Anzahl mit angegeben werden
 -   Anzeige für optionale Weltregel "Platzbedarf" kompakter
+-   Fügt Charakter-Import-Button im Aktorentab für XML-Datein direkt aus Sephrasto hinzu (man braucht kein Foundry-Plugin mehr)
+    -   Spieler müssen die Berechtigung erhalten Dateien Uploaden zu dürfen und Charaktere erstellen zu dürfen, sonst sind die neuen Knöpfe nicht verfügbar
+-   Charakter-Sync-Button an jedem Charakter, der einem gehört. Damit kann einfach der Charakter mit der neuen XML-Datei aus Sephrasto geupdatet werden
+    -   dabei werden keine Waffen oder andere Inventargegenstände in Foundry verändert,
+    -   die Notizen werden nicht verändert
+    -   Eigenheiten werden vereint
+    -   die in Sephrasto hinzugefügten Waffen/Inventargegenstände/Notizen werden ignoriert (Bewusste Entscheidung Charakter Verwaltung in Sephrasto, Inventar und Notiz Verwaltung in Foundry)
 
 ### v12.1
 
