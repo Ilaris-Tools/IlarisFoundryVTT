@@ -16,6 +16,93 @@ export class CombatDialog extends Dialog {
         }
     }
 
+    /**
+     * Generic updateModifierDisplay method that works for all combat dialogs
+     * Subclasses should implement getBaseValues() and getAllModifierSummaries()
+     */
+    async updateModifierDisplay(html) {
+        try {
+            // Use the stored reference instead of searching for the element
+            if (!this._modifierElement || this._modifierElement.length === 0) {
+                console.warn('MODIFIER DISPLAY: Element-Referenz nicht verfügbar')
+                return
+            }
+
+            // Show loading state
+            this._modifierElement.html(
+                '<div class="modifier-summary"><h4>Würfelwurf Zusammenfassungen:</h4><div class="modifier-item neutral">Wird berechnet...</div></div>',
+            )
+
+            // Temporarily parse values to calculate modifiers
+            await this.manoeverAuswaehlen(html)
+            await this.updateManoeverMods()
+            await this.updateStatusMods()
+
+            // Get base values (subclass specific)
+            const baseValues = this.getBaseValues()
+            const statusMods = this.actor.system.abgeleitete.globalermod || 0
+            const nahkampfMods = this.actor.system.modifikatoren.nahkampfmod || 0
+
+            // Get dice formula
+            const diceFormula = this.getDiceFormula(html)
+
+            // Create all summaries (subclass specific)
+            const summaries = this.getAllModifierSummaries(
+                baseValues,
+                statusMods,
+                nahkampfMods,
+                diceFormula,
+            )
+
+            // Update the display element
+            this._modifierElement.html(summaries)
+        } catch (error) {
+            console.error('MODIFIER DISPLAY: Fehler beim Update:', error)
+            // Show error state
+            if (this._modifierElement && this._modifierElement.length > 0) {
+                this._modifierElement.html(
+                    '<div class="modifier-summary"><h4>Würfelwurf Zusammenfassungen:</h4><div class="modifier-item neutral">Fehler beim Berechnen...</div></div>',
+                )
+            }
+        }
+    }
+
+    /**
+     * Subclasses should override this to return their specific base values
+     */
+    getBaseValues() {
+        throw new Error('getBaseValues() must be implemented by subclass')
+    }
+
+    /**
+     * Subclasses should override this to return their specific modifier summaries
+     */
+    getAllModifierSummaries(baseValues, statusMods, nahkampfMods, diceFormula) {
+        throw new Error('getAllModifierSummaries() must be implemented by subclass')
+    }
+
+    /**
+     * Generic method to add summary click listeners
+     * Subclasses can override getSummaryClickActions() to specify their own actions
+     */
+    addSummaryClickListeners(html) {
+        const actions = this.getSummaryClickActions(html)
+
+        actions.forEach((action) => {
+            html.find('#modifier-summary').on('click', action.selector, (ev) => {
+                ev.preventDefault()
+                action.handler(html)
+            })
+        })
+    }
+
+    /**
+     * Subclasses should override this to return their specific click actions
+     */
+    getSummaryClickActions(html) {
+        return []
+    }
+
     activateListeners(html) {
         super.activateListeners(html)
 

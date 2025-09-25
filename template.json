@@ -80,11 +80,11 @@
       },
       "attribute": {
         "attribute": {
-          "KO": {
+          "CH": {
             "wert": 0,
             "pw": 0
           },
-          "MU": {
+          "FF": {
             "wert": 0,
             "pw": 0
           },
@@ -92,11 +92,11 @@
             "wert": 0,
             "pw": 0
           },
-          "KK": {
+          "IN": {
             "wert": 0,
             "pw": 0
           },
-          "IN": {
+          "KK": {
             "wert": 0,
             "pw": 0
           },
@@ -104,11 +104,11 @@
             "wert": 0,
             "pw": 0
           },
-          "CH": {
+          "KO": {
             "wert": 0,
             "pw": 0
           },
-          "FF": {
+          "MU": {
             "wert": 0,
             "pw": 0
           }
@@ -396,7 +396,8 @@
       "wm": 0,
       "typ": "Nah",
       "at": 0,
-      "vt": 0
+      "vt": 0,
+      "angriffmanover": []
     },
     "info": {
       "text": ""
