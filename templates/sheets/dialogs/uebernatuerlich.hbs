@@ -95,7 +95,11 @@
         <div
             class="maneuver-item {{#if (or manoever.inputValue.value manoever.inputValue.checked)}}has-value{{/if}}"
         >
-            <label>{{manoever.name}} ({{getManoeverProbe manoever ../item}})</label>
+            <label>{{manoever.name}} ({{getManoeverProbe manoever ../item}})
+                {{#if (contains manoever.id "mod")}}
+                <label>: {{manoever.system.text}}</label>
+                {{/if}}
+            </label>
             {{#if (ifEq manoever.inputValue.field "CHECKBOX")}}
                 <input 
                     type="checkbox" 
