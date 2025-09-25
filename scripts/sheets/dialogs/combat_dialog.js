@@ -131,6 +131,20 @@ export class CombatDialog extends Dialog {
             item.classList.toggle('has-value', hasValue)
         })
 
+        // Add specific listener for maneuver to handle ZERO_DAMAGE conflicts
+        html.find('.maneuver-item input, .maneuver-item select').on('change', () => {
+            this.handleZeroDamageConflicts(html)
+        })
+
+        // Initial conflict check on dialog load
+        // The 500ms timeout provides a safety buffer to ensure that:
+        // - All maneuver checkboxes have been created and are queryable
+        // - The dialog's HTML structure is completely built
+        // - Any initial values or states have been properly set
+        setTimeout(() => {
+            this.handleZeroDamageConflicts(html)
+        }, 500)
+
         // Colorize numbers in maneuver labels
         this.colorizeManeuverNumbers(html)
     }
@@ -262,5 +276,83 @@ export class CombatDialog extends Dialog {
             }`
         }
         return diceFormula
+    }
+
+    /**
+     * Checks if a maneuver has ZERO_DAMAGE modification
+     */
+    hasZeroDamageModification(manoever) {
+        if (!manoever.system?.modifications) return false
+        return Object.values(manoever.system.modifications).some(
+            (mod) => mod.type === 'ZERO_DAMAGE',
+        )
+    }
+
+    /**
+     * Handles ZERO_DAMAGE maneuver conflicts by disabling other ZERO_DAMAGE maneuvers when one is selected
+     */
+    handleZeroDamageConflicts(html) {
+        // Find all ZERO_DAMAGE maneuvers
+        const zeroDamageManeuvers = this.item.manoever.filter((manoever) =>
+            this.hasZeroDamageModification(manoever),
+        )
+
+        if (zeroDamageManeuvers.length <= 1) return // No conflicts possible
+
+        // Find the currently selected ZERO_DAMAGE maneuver (if any)
+        const selectedZeroDamage = zeroDamageManeuvers.find((manoever) => {
+            const elementId = `${manoever.id}${manoever.inputValue.field}-${this.dialogId}`
+            const element = html.find(`#${elementId}`)[0]
+            if (manoever.inputValue.field === 'CHECKBOX') {
+                return element?.checked
+            } else if (manoever.inputValue.field === 'NUMBER') {
+                return element?.value && element.value !== '0'
+            } else if (manoever.inputValue.field === 'SELECTOR') {
+                return element?.value && element.value !== '0' && element.value !== ''
+            }
+            return false
+        })
+
+        // Update the state of all ZERO_DAMAGE maneuvers
+        zeroDamageManeuvers.forEach((manoever) => {
+            const elementId = `${manoever.id}${manoever.inputValue.field}-${this.dialogId}`
+            const element = html.find(`#${elementId}`)[0]
+
+            if (!element) return
+
+            if (selectedZeroDamage && selectedZeroDamage.id !== manoever.id) {
+                // Disable other ZERO_DAMAGE maneuvers and reset them
+                element.disabled = true
+                if (manoever.inputValue.field === 'CHECKBOX') {
+                    element.checked = false
+                    manoever.inputValue.value = false
+                } else if (manoever.inputValue.field === 'NUMBER') {
+                    element.value = '0'
+                    manoever.inputValue.value = '0'
+                } else if (manoever.inputValue.field === 'SELECTOR') {
+                    element.value = '0'
+                    manoever.inputValue.value = '0'
+                }
+
+                // Add visual indication
+                const maneuverItem = element.closest('.maneuver-item')
+                if (maneuverItem) {
+                    maneuverItem.classList.add('disabled-conflict')
+                    // Add tooltip or title to explain why it's disabled
+                    element.title =
+                        'Kann nicht mit anderen Manövern kombiniert werden, die den Schaden auf 0 setzen'
+                }
+            } else {
+                // Enable this maneuver
+                element.disabled = false
+                element.title = ''
+
+                // Remove visual indication
+                const maneuverItem = element.closest('.maneuver-item')
+                if (maneuverItem) {
+                    maneuverItem.classList.remove('disabled-conflict')
+                }
+            }
+        })
     }
 }
