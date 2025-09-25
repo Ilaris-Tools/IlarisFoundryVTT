@@ -2,6 +2,7 @@
 <!-- (Gewicht wird nicht berücksichtigt) -->
 <div class="flexrow">
     <label><b>Name</b></label>
+    <label><b>{{get_label "quantity"}}</b></label>
     {{#if isWeaponSpaceRequirementActive}}
         <label><b>{{get_label "gewicht"}}:&nbsp;&nbsp;</b></label>
         <label data-tooltip="{{get_label 'tooltipCapacityLimitCarry'}}" class="{{#if (ifGt actor.system.getragen actor.system.abgeleitete.traglast)}}maximum-load-exceeded{{/if}}"><b> {{actor.system.getragen}} / {{actor.system.abgeleitete.traglast}} ({{actor.system.abgeleitete.traglast_intervall}})</b></label>
@@ -14,6 +15,7 @@
     {{#each actor.inventar.mitfuehrend as |item key|}}
     <div class="flexrow">
         <label>{{item.name}}</label>
+        <label>{{item.system.quantity}}</label>
         {{#if ../isWeaponSpaceRequirementActive}}
             <label>{{item.system.gewicht}}</label>
             <label></label>

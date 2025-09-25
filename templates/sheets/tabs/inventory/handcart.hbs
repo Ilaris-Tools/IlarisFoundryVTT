@@ -5,7 +5,8 @@
     ><i class="fas fa-trash"></i
 ></a>
 <div class="flexrow">
-   <label><b>Name</b></label>
+    <label><b>Name</b></label>
+    <label><b>{{get_label "quantity"}}</b></label>
     {{#if ../isWeaponSpaceRequirementActive}}
         <label><b>{{get_label "gewicht"}}</b></label>
         <label data-tooltip="{{get_label 'tooltipCapacityLimitHandcart'}}" class="{{#if (ifGt itemContainer.system.gewicht_summe (multMinusOne itemContainer.system.gewicht))}}maximum-load-exceeded{{/if}}"><b> {{itemContainer.system.gewicht_summe}} / {{multMinusOne itemContainer.system.gewicht}}</b></label>
@@ -18,6 +19,7 @@
     {{#each itemContainer.system.bewahrt_auf as |item key|}}
     <div class="flexrow">
         <label>{{item.name}}</label>
+        <label>{{item.system.quantity}}</label>
         {{#if ../../isWeaponSpaceRequirementActive}}
             <label>{{item.system.gewicht}}</label>
             <label></label>
