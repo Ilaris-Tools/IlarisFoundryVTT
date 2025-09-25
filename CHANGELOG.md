@@ -13,6 +13,8 @@
     dann etwaige Voraussetzungen wie Waffeneigenschaften und Vorteile. Damit können Monster erstellt werden mit unterschiedlichen Manövern pro Angriff
 -   Übernatürliche Talente Modifikationen (zB. Adamantquader) werden beim öffnen des Übernatürlichen Dialoges automatisch als Manöver generiert, der Parser rechnet mit dem üblichen Schema aus Sephrasto für Modifikationen
 -   Manöver, die mit dem ZERO_DAMAGE Modifikator in Foundry versehen sind, können wie in den Ilaris Regeln nicht miteinander kombiniert werden
+-   Im Inventar wird nun die Anzahl eines Elements angezeigt
+-   Beim Hinzufügen eines Items kann die Anzahl mit angegeben werden
 
 ### v12.1
 
