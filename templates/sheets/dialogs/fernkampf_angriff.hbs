@@ -1,24 +1,29 @@
-{{log 'angriff' this}} {{#if (ifEq actor.type "held")}}
-<div>
-    <label>Schips:</label>
-    {{#if actor.system.schips.schips_stern}}
-    <label>
-        <input type="radio" name="schips-{{dialogId}}" value="0" {{#if (ifEq checked_schips
-        "0")}}checked{{/if}} /> Kein Schips
-    </label>
-    <label>
-        <input type="radio" name="schips-{{dialogId}}" value="1" {{#if (ifEq checked_schips
-        "1")}}checked{{/if}} /> Schips ohne Eigenheit
-    </label>
-    <label>
-        <input type="radio" name="schips-{{dialogId}}" value="2" {{#if (ifEq checked_schips
-        "2")}}checked{{/if}} /> Schips mit Eigenheit
-    </label>
-    {{else}}
-    <label class="warning">Keine Schips verfügbar!</label>
-    {{/if}}
-</div>
-{{/if}}
+{{log 'angriff' this}}
+
+<div class="combat-dialog-container">
+    <!-- Left Column - Main Controls -->
+    <div class="left-column">
+        {{#if (ifEq actor.type "held")}}
+        <div>
+            <label>Schips:</label>
+            {{#if actor.system.schips.schips_stern}}
+            <label>
+                <input type="radio" name="schips-{{dialogId}}" value="0" {{#if (ifEq checked_schips
+                "0")}}checked{{/if}} /> Kein Schips
+            </label>
+            <label>
+                <input type="radio" name="schips-{{dialogId}}" value="1" {{#if (ifEq checked_schips
+                "1")}}checked{{/if}} /> Schips ohne Eigenheit
+            </label>
+            <label>
+                <input type="radio" name="schips-{{dialogId}}" value="2" {{#if (ifEq checked_schips
+                "2")}}checked{{/if}} /> Schips mit Eigenheit
+            </label>
+            {{else}}
+            <label class="warning">Keine Schips verfügbar!</label>
+            {{/if}}
+        </div>
+        {{/if}}
 <div class="flexrow">
     <label>{{get_label "kbak"}}</label>
     <input type="checkbox" id="kbak-{{dialogId}}" {{checked item.system.manoever.kbak.selected}} />
@@ -127,24 +132,13 @@
         {{selectOptions rollModes selected=item.system.manoever.rllm.selected localize=true}}
     </select>
 </div>
-<hr />
-<div class="flexrow">
-    <button style="max-width: 150px" class="angreifen" type="button">
-        <i>
-            <img
-                class="button-icon-nahkampf"
-                src="systems/Ilaris/assets/game-icons.net/sword-clash.png"
-            />
-        </i>
-        Angriff
-    </button>
-    <button style="max-width: 150px" type="button" class="schaden">
-        <i>
-            <img
-                class="button-icon-nahkampf"
-                src="systems/Ilaris/assets/game-icons.net/bloody-sword.png"
-            />
-        </i>
-        Schaden
-    </button>
+
+    </div>
+
+    <!-- Right Column - Modifier Summary -->
+    <div class="right-column">
+        <div id="modifier-summary" class="modifier-summary-container">
+            <!-- This will be populated by JavaScript -->
+        </div>
+    </div>
 </div>

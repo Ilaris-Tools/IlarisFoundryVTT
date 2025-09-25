@@ -10,6 +10,19 @@ export class IlarisActorSheet extends ActorSheet {
       Und welche Items soll ich nehmen? Actor, data, oder direkt?
       Ansehen, was references und was copys sind.
     */
+
+    static get defaultOptions() {
+        return foundry.utils.mergeObject(super.defaultOptions, {
+            classes: ['ilaris', 'sheet', 'actor'],
+            width: 850,
+            height: 750,
+            tabs: [
+                { navSelector: '.sheet-tabs', contentSelector: '.sheet-body', initial: 'kampf' },
+            ],
+            scrollY: ['.herotab'], // Preserves scroll position for scrollable tab content!
+        })
+    }
+
     async getData() {
         const context = super.getData()
         console.log(context)

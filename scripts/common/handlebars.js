@@ -105,7 +105,7 @@ function registerHandlebarsHelpers() {
     })
 
     Handlebars.registerHelper('waffe_ist_fernkampf', function (waffe) {
-        return waffe.typ == 'Fern'
+        return waffe.system.typ == 'Fern'
     })
 
     Handlebars.registerHelper('ist_nicht_leer', function (object) {
@@ -145,6 +145,10 @@ function registerHandlebarsHelpers() {
 
     Handlebars.registerHelper('ifEq', function (arg1, arg2) {
         return arg1 == arg2
+    })
+
+    Handlebars.registerHelper('contains', function (arg1, arg2) {
+        return arg1.includes(arg2)
     })
 
     //if arg1 greater then arg2
@@ -296,5 +300,20 @@ function registerHandlebarsHelpers() {
      */
     Handlebars.registerHelper('gameSetting', function (settingKey) {
         return game.settings.get('Ilaris', settingKey)
+    })
+
+    /**
+     * Handlebars helper to sort an object alphabetically by its keys
+     * @param {Object} object - The object to sort
+     * @returns {Array} Array of [key, value] pairs sorted alphabetically by key
+     */
+    Handlebars.registerHelper('sortAlphabetically', function (object) {
+        if (!object || typeof object !== 'object') {
+            return []
+        }
+
+        return Object.entries(object).sort(([keyA], [keyB]) => {
+            return keyA.localeCompare(keyB)
+        })
     })
 }
