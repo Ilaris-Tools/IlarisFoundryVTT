@@ -154,7 +154,10 @@ export function processModification(
             break
         case 'SPECIAL_RESOURCE':
             let result
-            if (modification.operator === 'MULTIPLY') {
+            if (modification.operator === 'SET') {
+                result = value
+                rollValues.mod_energy = result
+            } else if (modification.operator === 'MULTIPLY') {
                 result = originalRessourceCost * value
                 if (value < 1) {
                     result = Math.ceil(result) * -1
@@ -200,7 +203,7 @@ export function processModification(
 export function handleModifications(allModifications, rollValues) {
     // Sort all modifications by operator type
     allModifications.sort((a, b) => {
-        const operatorOrder = { ADD: 0, SUBTRACT: 0, MULTIPLY: 1, DIVIDE: 1 }
+        const operatorOrder = { ADD: 0, SUBTRACT: 0, SET: 0, MULTIPLY: 1, DIVIDE: 1 }
         return operatorOrder[a.modification.operator] - operatorOrder[b.modification.operator]
     })
 

@@ -8,6 +8,7 @@ import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
 } from '../../settings/configure-game-settings.model.js'
+import { ILARIS } from '../../config.js'
 
 export class UebernatuerlichDialog extends CombatDialog {
     constructor(actor, item) {
@@ -511,7 +512,7 @@ export class UebernatuerlichDialog extends CombatDialog {
     async manoeverAuswaehlen(html) {
         // Ensure manoever exists
         if (!this.item.system.manoever) {
-            this.item.system.manoever = {}
+            this.item.system.manoever = ILARIS.manoever_ueber
         }
         let manoever = this.item.system.manoever
 
