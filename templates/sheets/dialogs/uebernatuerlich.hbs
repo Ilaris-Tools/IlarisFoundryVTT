@@ -1,8 +1,12 @@
 {{log 'uebernatuerlich' this}}
-<div>
-    <label>Anzahl W20:</label>
-    <label>{{radioBoxes "xd20" choices_xd20 checked=checked_xd20}}</label>
-</div>
+
+<div class="combat-dialog-container">
+    <!-- Left Column - Main Controls -->
+    <div class="left-column">
+        <div>
+            <label>Anzahl W20:</label>
+            <label>{{radioBoxes "xd20" choices_xd20 checked=checked_xd20}}</label>
+        </div>
 {{#if (ifEq actor.type "held")}}
 <div>
     {{#if (ifEq actor.type "held")}}
@@ -146,49 +150,13 @@
         {{selectOptions rollModes selected=item.system.manoever.rllm.selected localize=true}}
     </select>
 </div>
-<hr />
-<div class="flexrow">
-    <button style="max-width: 150px" class="angreifen" type="button">
-        <i>
-            <img
-                class="button-icon-nahkampf"
-                src="systems/Ilaris/assets/game-icons.net/book-cover.png"
-            />
-        </i>
-        Wirken
-    </button>
-    {{#if isNonStandardDifficulty}}
-    <button
-        style="max-width: 150px"
-        class="energie-abrechnen"
-        type="button"
-        data-is-success="true"
-        title="Dieser Button ist sichtbar, weil die Schwierigkeit des Übernatürlichen Talents von der Magieresistenz oder anderen Faktoren abhängt."
-    >
-        <i>
-            <img
-                class="button-icon-nahkampf"
-                src="systems/Ilaris/assets/game-icons.net/bottled-bolt.svg"
-                style="filter: brightness(0)"
-            />
-        </i>
-        Energie abrechnen
-    </button>
-    <button
-        style="max-width: 150px"
-        class="energie-abrechnen"
-        type="button"
-        data-is-success="false"
-        title="Dieser Button ist sichtbar, weil die Schwierigkeit des Übernatürlichen Talents von der Magieresistenz oder anderen Faktoren abhängt."
-    >
-        <i>
-            <img
-                class="button-icon-nahkampf"
-                src="systems/Ilaris/assets/game-icons.net/bottled-bolt.svg"
-                style="filter: brightness(0)"
-            />
-        </i>
-        Energie abrechnen (Misslungen)
-    </button>
-    {{/if}}
+
+    </div>
+
+    <!-- Right Column - Modifier Summary -->
+    <div class="right-column">
+        <div id="modifier-summary" class="modifier-summary-container">
+            <!-- This will be populated by JavaScript -->
+        </div>
+    </div>
 </div>

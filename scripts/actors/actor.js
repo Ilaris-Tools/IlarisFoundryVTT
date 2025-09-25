@@ -808,8 +808,6 @@ export class IlarisActor extends Actor {
                         }
                     }
                 }
-                if (selected_kampfstil.stufe >= 3) {
-                }
             }
         } else if (selected_kampfstil.name.includes('Reiterkampf')) {
             console.log(CONFIG.ILARIS.label[selected_kampfstil])
