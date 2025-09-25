@@ -2,6 +2,15 @@
 
 ## v12
 
+### v12.2
+
+#### Features
+
+-  Würfeldialog für Fernkampf mit Modifikator-Vorschau
+-  Würfeldialog für Übernatürliche Talente mit Modifikator- und Energieverbrauch-Vorschau
+-  Würfeldialoge Nahkampf/Fernkampf/Übernatürlich bessere visuelle Trennung der Vorschau
+
+
 ### v12.1
 
 #### Features
