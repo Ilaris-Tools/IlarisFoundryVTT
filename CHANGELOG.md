@@ -15,6 +15,7 @@
 -   Manöver, die mit dem ZERO_DAMAGE Modifikator in Foundry versehen sind, können wie in den Ilaris Regeln nicht miteinander kombiniert werden
 -   Im Inventar wird nun die Anzahl eines Elements angezeigt
 -   Beim Hinzufügen eines Items kann die Anzahl mit angegeben werden
+-   Anzeige für optionale Weltregel "Platzbedarf" kompakter
 
 ### v12.1
 
