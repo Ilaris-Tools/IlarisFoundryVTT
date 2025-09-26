@@ -673,7 +673,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         })
 
         if (manoeverAmount > 1) {
-            text_at = text_at.concat(`Gildenmagier 2: ${+2}\n`)
+            text_at = text_at.concat(`Gildenmagier 2: +${2}\n`)
             mod_at += 2
         }
 
