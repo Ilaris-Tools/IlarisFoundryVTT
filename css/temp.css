@@ -235,6 +235,33 @@
   height: 40px;
 }
 
+/* XML Character Import Button Styles */
+.import-xml-character {
+    border: 1px solid #000;
+    border-radius: 3px;
+    padding: 4px 8px;
+    width: calc(100% - 10px);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* XML Character Sync Button Styles */
+.directory-item-controls {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 16px;
+}
+.sync-xml-character {
+    font-size: 20px;
+    width: 60px;
+    display: flex;
+    justify-content: center;
+    height: 48px;
+    align-items: center;
+}
+
 .hangingindent {
   padding-left: 22px;
   text-indent: -22px;
