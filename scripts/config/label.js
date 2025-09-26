@@ -1,3 +1,5 @@
+import { labelInventory } from './label_inventory.js'
+
 export const label = {
     // Attribute
     KO: 'Konstitution',
@@ -120,7 +122,6 @@ export const label = {
     lm_kosp: 'Kosten sparen (-4)',
     lm_zere: 'Zeremonie (+X)',
     lm_opfe: 'Opferung (-4)',
-    // Inventar
-    gewicht: 'Platzbedarf',
-    quantity: 'Anzahl',
+
+    ...labelInventory,
 }

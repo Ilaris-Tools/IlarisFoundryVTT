@@ -29,6 +29,14 @@
     -   (kein) <beliebige Waffeneigenschaft> (Der Kampfstil benötigt mindestens eine Waffe mit der aufgelisteten Waffeneigenschaft oder verbietet beiden Waffen eine Eigenschaft)
     -   oder beliebige Kombinationen, der oben genannten Voraussetungen getrennt durch Kommas
 -   Kampfstile können als Fernkampf-Kampfstile geflaggt werden wodurch der AT-Modifier des Stiles nur auf Fernkampfwaffen zählt
+-   Anzeige für optionale Weltregel "Platzbedarf" kompakter
+-   Fügt Charakter-Import-Button im Aktorentab für XML-Datein direkt aus Sephrasto hinzu (man braucht kein Foundry-Plugin mehr)
+    -   Spieler müssen die Berechtigung erhalten Dateien Uploaden zu dürfen und Charaktere erstellen zu dürfen, sonst sind die neuen Knöpfe nicht verfügbar
+-   Charakter-Sync-Button an jedem Charakter, der einem gehört. Damit kann einfach der Charakter mit der neuen XML-Datei aus Sephrasto geupdatet werden
+    -   dabei werden keine Waffen oder andere Inventargegenstände in Foundry verändert,
+    -   die Notizen werden nicht verändert
+    -   Eigenheiten werden vereint
+    -   die in Sephrasto hinzugefügten Waffen/Inventargegenstände/Notizen werden ignoriert (Bewusste Entscheidung Charakter Verwaltung in Sephrasto, Inventar und Notiz Verwaltung in Foundry)
 
 ### v12.1
 
