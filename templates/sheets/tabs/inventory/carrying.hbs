@@ -2,13 +2,12 @@
 <!-- (Gewicht wird nicht berücksichtigt) -->
 <div class="flexrow">
     <label><b>Name</b></label>
+    <label><b>{{get_label "quantity"}}</b></label>
     {{#if isWeaponSpaceRequirementActive}}
-        <label><b>{{get_label "gewicht"}}</b></label>
-        <label class="{{#if (ifGt actor.system.getragen actor.system.abgeleitete.traglast)}}maximum-load-exceeded-left{{/if}}"><b>{{actor.system.getragen}}</b></label>
-        <label class="{{#if (ifGt actor.system.getragen actor.system.abgeleitete.traglast)}}maximum-load-exceeded-middle{{/if}}"><b>/</b></label>
-        <label class="{{#if (ifGt actor.system.getragen actor.system.abgeleitete.traglast)}}maximum-load-exceeded-middle{{/if}}"><b>{{actor.system.abgeleitete.traglast}}</b></label>
-        <label class="{{#if (ifGt actor.system.getragen actor.system.abgeleitete.traglast)}}maximum-load-exceeded-right{{/if}}"><b>({{actor.system.abgeleitete.traglast_intervall}})</b></label>
+        <label><b>{{get_label "gewicht"}}:&nbsp;&nbsp;</b></label>
+        <label data-tooltip="{{get_label 'tooltipCapacityLimitCarry'}}" class="{{#if (ifGt actor.system.getragen actor.system.abgeleitete.traglast)}}maximum-load-exceeded{{/if}}"><b> {{actor.system.getragen}} / {{actor.system.abgeleitete.traglast}} ({{actor.system.abgeleitete.traglast_intervall}})</b></label>
     {{/if}}
+    <label></label>
     <label class="icon-small"></label>
     <label class="icon-small"></label>
 </div>
@@ -16,15 +15,16 @@
     {{#each actor.inventar.mitfuehrend as |item key|}}
     <div class="flexrow">
         <label>{{item.name}}</label>
+        <label>{{item.system.quantity}}</label>
         {{#if ../isWeaponSpaceRequirementActive}}
             <label>{{item.system.gewicht}}</label>
+            <label></label>
         {{/if}}
-        <label></label>
-        <label></label>
-        <label></label>
+
         <label></label>
         <a class="item-edit icon-small" data-itemid="{{item.id}}"><i class="fas fa-edit"></i></a>
         <a class="item-delete icon-small" data-itemid="{{item.id}}"><i class="fas fa-trash"></i></a>
     </div>
     {{/each}}
 </div>
+maximum-load-exceeded

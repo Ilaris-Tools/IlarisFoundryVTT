@@ -105,7 +105,7 @@ function registerHandlebarsHelpers() {
     })
 
     Handlebars.registerHelper('waffe_ist_fernkampf', function (waffe) {
-        return waffe.typ == 'Fern'
+        return waffe.system.typ == 'Fern'
     })
 
     Handlebars.registerHelper('ist_nicht_leer', function (object) {
@@ -145,6 +145,10 @@ function registerHandlebarsHelpers() {
 
     Handlebars.registerHelper('ifEq', function (arg1, arg2) {
         return arg1 == arg2
+    })
+
+    Handlebars.registerHelper('contains', function (arg1, arg2) {
+        return arg1.includes(arg2)
     })
 
     //if arg1 greater then arg2
