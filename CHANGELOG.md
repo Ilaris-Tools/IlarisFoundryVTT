@@ -16,6 +16,7 @@
 -   Im Inventar wird nun die Anzahl eines Elements angezeigt
 -   Beim Hinzufügen eines Items kann die Anzahl mit angegeben werden
 -   Anzeige für optionale Weltregel "Platzbedarf" kompakter
+-   Gildenmagier 2 Bonus
 
 ### v12.1
 
