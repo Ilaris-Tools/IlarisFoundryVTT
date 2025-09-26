@@ -22,11 +22,11 @@
       <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
     </div>
     <div class="attribute-grid">
-      {{#each actor.system.attribute as |attribut key|}}
-      <div class="attribute-wrapper rollable onhover" data-rolltype="attribut" data-attribut="{{key}}" title="{{key}}">
-        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/{{key}}.webp" />
+      {{#each (sortAlphabetically actor.system.attribute) as |attributPair|}}
+      <div class="attribute-wrapper rollable onhover" data-rolltype="attribut" data-attribut="{{attributPair.[0]}}" title="{{attributPair.[0]}}">
+        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/{{attributPair.[0]}}.webp" />
         <label class="attribute-number">
-          {{attribut.pw}}
+          {{attributPair.[1].pw}}
         </label>
       </div>
       {{/each}}
@@ -43,8 +43,8 @@
       </div>
       <div class="attribute-wrapper rollable onhover" data-rolltype="simpleprobe_diag" data-name="Magierresistenz"
       data-pw="{{actor.system.abgeleitete.mr}}">
-        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/mr.webp" />
-        <label class="attribute-number">
+        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/mr.webp" title="MR" />
+        <label class="attribute-number" title="MR">
           {{actor.system.abgeleitete.mr}}
         </label>
       </div>
