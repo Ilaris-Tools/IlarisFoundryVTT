@@ -16,7 +16,7 @@ export class AngriffDialog extends CombatDialog {
         const dialog = { title }
         const dialogOptions = {
             template: 'systems/Ilaris/templates/sheets/dialogs/angriff.hbs',
-            width: 800,
+            width: 900,
             height: 'auto',
             classes: ['angriff-dialog'],
         }
@@ -90,7 +90,9 @@ export class AngriffDialog extends CombatDialog {
         })
 
         // Initial display update
-        setTimeout(() => this.updateModifierDisplay(html), 500)
+        setTimeout(() => {
+            this.updateModifierDisplay(html)
+        }, 500)
 
         // Add event listeners for clickable summary sections
         this.addSummaryClickListeners(html)
@@ -125,9 +127,25 @@ export class AngriffDialog extends CombatDialog {
             this._schadenKlick(html)
         })
     }
+    getSummaryClickActions(html) {
+        return [
+            {
+                selector: '.clickable-summary.angreifen',
+                handler: (html) => this._angreifenKlick(html),
+            },
+            {
+                selector: '.clickable-summary.verteidigen',
+                handler: (html) => this._verteidigenKlick(html),
+            },
+            {
+                selector: '.clickable-summary.schaden',
+                handler: (html) => this._schadenKlick(html),
+            },
+        ]
+    }
 
     /**
-     * Updates the modifier display in real-time
+     * Returns base values specific to AngriffDialog
      */
     async updateModifierDisplay(html) {
         try {
@@ -178,10 +196,18 @@ export class AngriffDialog extends CombatDialog {
         }
     }
 
+    getBaseValues() {
+        return {
+            baseAT: this.item.system.at || 0,
+            baseVT: this.item.system.vt || 0,
+        }
+    }
+
     /**
      * Creates formatted summaries for all three roll types
      */
-    getAllModifierSummaries(baseAT, baseVT, statusMods, nahkampfMods, diceFormula) {
+    getAllModifierSummaries(baseValues, statusMods, nahkampfMods, diceFormula) {
+        const { baseAT, baseVT } = baseValues
         let allSummaries = '<div class="all-summaries">'
 
         // Attack Summary
@@ -670,28 +696,8 @@ export class AngriffDialog extends CombatDialog {
         let damageType = 'NORMAL'
         let trueDamage = false
 
-        // Handle standard maneuvers first
-        if (manoever.kbak.selected) {
-            mod_at -= 4
-            text_at = text_at.concat('Kombinierte Aktion: -4\n')
-        }
-        // Volle Offensive vlof
-        if (manoever.vlof.selected && !manoever.pssl.selected) {
-            if (manoever.vlof.offensiver_kampfstil) {
-                mod_vt -= 4
-                text_vt = text_vt.concat('Volle Offensive (Offensiver Kampfstil): -4\n')
-            } else {
-                mod_vt -= 8
-                text_vt = text_vt.concat('Volle Offensive: -8\n')
-            }
-            mod_at += 4
-            text_at = text_at.concat('Volle Offensive: +4\n')
-        }
-        // Volle Defensive vldf
-        if (manoever.vldf.selected) {
-            mod_vt += 4
-            text_vt = text_vt.concat('Volle Defensive +4\n')
-        }
+        // Note: Tactical options (Kombinierte Aktion, Volle Offensive/Defensive)
+        // are moved after handleModifications so they don't affect Riposte
         // Reichweitenunterschiede rwdf
         let reichweite = Number(manoever.rwdf.selected)
         if (reichweite > 0) {
@@ -706,10 +712,10 @@ export class AngriffDialog extends CombatDialog {
         if (reaktionen > 0) {
             let mod_rkaz = 4 * reaktionen
             mod_vt -= mod_rkaz
-            text_vt = text_vt.concat(`${reaktionen}. Reaktion: -${mod_rkaz}\n`)
+            text_vt = text_vt.concat(`${reaktionen + 1}. Reaktion: -${mod_rkaz}\n`)
             if (manoever.pssl.selected) {
                 mod_at -= mod_rkaz
-                text_at = text_at.concat(`${reaktionen}. Passierschlag: -${mod_rkaz} \n`)
+                text_at = text_at.concat(`${reaktionen + 1}. Passierschlag: -${mod_rkaz} \n`)
             }
         }
 
@@ -757,13 +763,6 @@ export class AngriffDialog extends CombatDialog {
                     text_at = text_at.concat(`${dynamicManoever.name}: +4\n`)
                 }
             }
-            if (dynamicManoever.name == 'Riposte') {
-                this.riposte = true
-                this.addDamageSummaryClickListeners(html)
-                mod_vt += mod_at
-                text_vt = text_vt.concat(`${dynamicManoever.name}: (\n${text_at})\n`)
-                text_dm = text_dm.concat(`${dynamicManoever.name}: (\n${text_at})\n`)
-            }
         })
 
         // Process all modifications in order
@@ -797,6 +796,38 @@ export class AngriffDialog extends CombatDialog {
             trueDamage,
             context: this,
         })
+
+        // Handle Riposte special rule: attack maneuver penalties also apply to defense
+        const riposteManeuver = this.item.manoever.find(
+            (m) => m.name === 'Riposte' && m.inputValue.value,
+        )
+        if (riposteManeuver && mod_at < 0) {
+            mod_vt += mod_at
+            text_vt = text_vt.concat(`Riposte (Attackemanöver): ${mod_at}\n`)
+        }
+
+        // Handle tactical options after handleModifications (so they don't affect Riposte)
+        if (manoever.kbak.selected) {
+            mod_at -= 4
+            text_at = text_at.concat('Kombinierte Aktion: -4\n')
+        }
+        // Volle Offensive vlof
+        if (manoever.vlof.selected && !manoever.pssl.selected) {
+            if (manoever.vlof.offensiver_kampfstil) {
+                mod_vt -= 4
+                text_vt = text_vt.concat('Volle Offensive (Offensiver Kampfstil): -4\n')
+            } else {
+                mod_vt -= 8
+                text_vt = text_vt.concat('Volle Offensive: -8\n')
+            }
+            mod_at += 4
+            text_at = text_at.concat('Volle Offensive: +4\n')
+        }
+        // Volle Defensive vldf
+        if (manoever.vldf.selected) {
+            mod_vt += 4
+            text_vt = text_vt.concat('Volle Defensive +4\n')
+        }
 
         // If ZERO_DAMAGE was found, override damage values
         if (nodmg.value) {
