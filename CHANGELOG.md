@@ -16,6 +16,7 @@
 -   Im Inventar wird nun die Anzahl eines Elements angezeigt
 -   Beim Hinzufügen eines Items kann die Anzahl mit angegeben werden
 -   Anzeige für optionale Weltregel "Platzbedarf" kompakter
+-   Gildenmagier 2 Bonus
 -   Fügt Charakter-Import-Button im Aktorentab für XML-Datein direkt aus Sephrasto hinzu (man braucht kein Foundry-Plugin mehr)
     -   Spieler müssen die Berechtigung erhalten Dateien Uploaden zu dürfen und Charaktere erstellen zu dürfen, sonst sind die neuen Knöpfe nicht verfügbar
 -   Charakter-Sync-Button an jedem Charakter, der einem gehört. Damit kann einfach der Charakter mit der neuen XML-Datei aus Sephrasto geupdatet werden
