@@ -17,7 +17,7 @@
   ],
   "scripts": [],
   "esmodules": ["scripts/hooks.js"],
-  "styles": ["css/temp.css", "styles/sheets/manoever.css", "css/status-effects.css"],
+  "styles": ["css/temp.css", "styles/sheets/manoever.css"],
   "packs": [
     {
       "label": "Beispiel Helden",
