@@ -808,11 +808,6 @@ export class IlarisActor extends Actor {
                         }
                     }
                 }
-                if (selected_kampfstil.stufe >= 3) {
-                    console.log('Stufe 3')
-                    if (hauptwaffe) HAUPTWAFFE.system.manoever.km_rpst.possible = true
-                    if (nebenwaffe) NEBENWAFFE.system.manoever.km_rpst.possible = true
-                }
             }
         } else if (selected_kampfstil.name.includes('Reiterkampf')) {
             console.log(CONFIG.ILARIS.label[selected_kampfstil])
