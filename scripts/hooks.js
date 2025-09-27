@@ -79,184 +79,196 @@ Hooks.once('init', () => {
     CONFIG.statusEffects = [
         {
             id: 'Furcht1',
-            label: 'Furcht I',
+            name: 'Furcht I',
             duration: [],
             changes: [{ key: 'system.furcht.furchtstufe', mode: 5, priority: 1, value: 1 }],
             isTemporary: 0,
-            icon: 'systems/Ilaris/assets/images/icon/terror-yellow.svg',
+            img: 'systems/Ilaris/assets/images/icon/terror.svg',
+            tint: '#FFFF00',
         },
         {
             id: 'Furcht2',
-            label: 'Furcht II',
+            name: 'Furcht II',
             duration: [],
             changes: [{ key: 'system.furcht.furchtstufe', mode: 4, priority: 2, value: 2 }],
             isTemporary: 0,
-            icon: 'systems/Ilaris/assets/images/icon/terror-orange.svg',
+            img: 'systems/Ilaris/assets/images/icon/terror.svg',
+            tint: '#FF8000',
         },
         {
             id: 'Furcht3',
-            label: 'Furcht III',
+            name: 'Furcht III',
             duration: [],
             changes: [{ key: 'system.furcht.furchtstufe', mode: 4, priority: 3, value: 3 }],
             isTemporary: 0,
-            icon: 'systems/Ilaris/assets/images/icon/terror-red.svg',
+            img: 'systems/Ilaris/assets/images/icon/terror.svg',
+            tint: '#FF0000',
         },
         {
             id: 'Furcht4',
-            label: 'Furcht IV',
+            name: 'Furcht IV',
             duration: [],
             changes: [{ key: 'system.furcht.furchtstufe', mode: 4, priority: 4, value: 4 }],
             isTemporary: 0,
-            icon: 'systems/Ilaris/assets/images/icon/terror-purple.svg',
+            img: 'systems/Ilaris/assets/images/icon/terror.svg',
+            tint: '#8000FF',
         },
         {
             id: 'schlechtesicht1',
-            label: 'Schlechte Sicht (Dämmerung)',
+            name: 'Schlechte Sicht (Dämmerung)',
             duration: [],
             changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 4, value: -2 }],
             isTemporary: 0,
-            icon: 'systems/Ilaris/assets/images/icon/sight-disabled-yellow.svg',
+            img: 'systems/Ilaris/assets/images/icon/sight-disabled.svg',
+            tint: '#FFFF00',
         },
         {
             id: 'schlechtesicht2',
-            label: 'Schlechte Sicht (Mondlicht)',
+            name: 'Schlechte Sicht (Mondlicht)',
             duration: [],
             changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 6, value: -4 }],
             isTemporary: 0,
-            icon: 'systems/Ilaris/assets/images/icon/sight-disabled-orange.svg',
+            img: 'systems/Ilaris/assets/images/icon/sight-disabled.svg',
+            tint: '#FF8000',
         },
         {
             id: 'schlechtesicht3',
-            label: 'Schlechte Sicht (Sternenlicht)',
+            name: 'Schlechte Sicht (Sternenlicht)',
             duration: [],
             changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 7, value: -8 }],
             isTemporary: 0,
-            icon: 'systems/Ilaris/assets/images/icon/sight-disabled-red.svg',
+            img: 'systems/Ilaris/assets/images/icon/sight-disabled.svg',
+            tint: '#FF0000',
         },
         {
             id: 'schlechtesicht4',
-            label: 'Schlechte Sicht (Blind)',
+            name: 'Schlechte Sicht (Blind)',
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 8, value: -16 },
             ],
             isTemporary: 0,
-            icon: 'systems/Ilaris/assets/images/icon/sight-disabled-purple.svg',
+            img: 'systems/Ilaris/assets/images/icon/sight-disabled.svg',
+            tint: '#8000FF',
         },
         {
             id: 'untergrund1',
-            label: 'Unsicherer Untergrund (knietiefes Wasser)',
+            name: 'Unsicherer Untergrund (knietiefes Wasser)',
             duration: [],
             changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 4, value: -2 }],
             isTemporary: 0,
-            icon: 'systems/Ilaris/assets/images/icon/sticky-boot-yellow.svg',
+            img: 'systems/Ilaris/assets/images/icon/sticky-boot.svg',
+            tint: '#FFFF00',
         },
         {
             id: 'untergrund2',
-            label: 'Unsicherer Untergrund (eisglatt, hüfttiefes Wasser)',
+            name: 'Unsicherer Untergrund (eisglatt, hüfttiefes Wasser)',
             duration: [],
             changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 6, value: -4 }],
             isTemporary: 0,
-            icon: 'systems/Ilaris/assets/images/icon/sticky-boot-orange.svg',
+            img: 'systems/Ilaris/assets/images/icon/sticky-boot.svg',
+            tint: '#FF8000',
         },
         {
             id: 'untergrund3',
-            label: 'Unsicherer Untergrund (schultertiefes Wasser)',
+            name: 'Unsicherer Untergrund (schultertiefes Wasser)',
             duration: [],
             changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 7, value: -8 }],
             isTemporary: 0,
-            icon: 'systems/Ilaris/assets/images/icon/sticky-boot-red.svg',
+            img: 'systems/Ilaris/assets/images/icon/sticky-boot.svg',
+            tint: '#FF0000',
         },
         {
             id: 'untergrund4',
-            label: 'Unsicherer Untergrund (Drahtseil)',
+            name: 'Unsicherer Untergrund (Drahtseil)',
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 8, value: -16 },
             ],
             isTemporary: 0,
-            icon: 'systems/Ilaris/assets/images/icon/sticky-boot-purple.svg',
+            img: 'systems/Ilaris/assets/images/icon/sticky-boot.svg',
+            tint: '#8000FF',
         },
         {
             id: 'Position1',
-            label: 'Sehr vorteilhafte Position',
+            name: 'Sehr vorteilhafte Position',
             duration: [],
             changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 9, value: +4 }],
             isTemporary: 0,
-            icon: 'systems/Ilaris/assets/images/icon/hill-fort-green.svg',
-            // tint: "#CC00CC"
+            img: 'systems/Ilaris/assets/images/icon/hill-fort-green.svg',
         },
         {
             id: 'Position2',
-            label: 'Vorteilhafte Position',
+            name: 'Vorteilhafte Position',
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 10, value: +2 },
             ],
             isTemporary: 0,
-            icon: 'systems/Ilaris/assets/images/icon/hill-conquest-light-green.svg',
+            img: 'systems/Ilaris/assets/images/icon/hill-conquest-light-green.svg',
         },
         {
             id: 'Position3',
-            label: 'Schlechte Position (Kniend)',
+            name: 'Schlechte Position (Kniend)',
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 12, value: -2 },
             ],
             isTemporary: 0,
-            icon: 'systems/Ilaris/assets/images/icon/kneeling-yellow.svg',
+            img: 'systems/Ilaris/assets/images/icon/kneeling-yellow.svg',
         },
         {
             id: 'Position4',
-            label: 'Sehr schlechte Position (Liegend)',
+            name: 'Sehr schlechte Position (Liegend)',
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 13, value: -4 },
             ],
             isTemporary: 0,
-            icon: 'systems/Ilaris/assets/images/icon/falling-orange.svg',
+            img: 'systems/Ilaris/assets/images/icon/falling-orange.svg',
         },
         {
             id: 'Nahkampf1',
-            label: 'Nahkampf +4',
+            name: 'Nahkampf +4',
             duration: [],
             changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 9, value: +4 }],
             isTemporary: 0,
-            img: 'systems/Ilaris/assets/images/icon/swordwoman1.svg',
-            flags: { Ilaris: { cssClass: 'status-effect-red' } },
+            img: 'systems/Ilaris/assets/images/icon/swordwoman.svg',
+            tint: '#00FF00',
         },
         {
             id: 'Nahkampf2',
-            label: 'Nahkampf +2',
+            name: 'Nahkampf +2',
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 10, value: +2 },
             ],
             isTemporary: 0,
-            img: 'systems/Ilaris/assets/images/icon/swordwoman1.svg',
-            flags: { Ilaris: { cssClass: 'status-effect-green' } },
+            img: 'systems/Ilaris/assets/images/icon/swordwoman.svg',
+            tint: '#FFFF00',
         },
         {
             id: 'Nahkampf3',
-            label: 'Nahkampf -2',
+            name: 'Nahkampf -2',
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 12, value: -2 },
             ],
             isTemporary: 0,
-            img: 'systems/Ilaris/assets/images/icon/swordwoman1.svg',
-            flags: { Ilaris: { cssClass: 'status-effect-yellow' } },
+            img: 'systems/Ilaris/assets/images/icon/swordwoman.svg',
+            tint: '#FF8000',
         },
         {
             id: 'Nahkampf4',
-            label: 'Nahkampf -4',
+            name: 'Nahkampf -4',
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 13, value: -4 },
             ],
             isTemporary: 0,
-            img: 'systems/Ilaris/assets/images/icon/swordwoman1.svg',
-            flags: { Ilaris: { cssClass: 'status-effect-orange' } },
+            img: 'systems/Ilaris/assets/images/icon/swordwoman.svg',
+            tint: '#FF0000',
+            //flags.core.overlay = true for overlay icon
         },
     ]
 
@@ -273,35 +285,77 @@ Hooks.on('applyActiveEffect', (actor, data, options, userId) => {
     return userId
 })
 
-// Hook to apply CSS classes to status effect icons
+// Force apply tint colors to status effect picker icons using direct CSS styling
 Hooks.on('renderTokenHUD', (app, html, data) => {
-    const statusEffects = html.find('.status-effects .effect-control')
-    statusEffects.each(function () {
-        const img = $(this)
-        const effectId = img.data('status-id')
+    console.log('TokenHUD rendered, looking for status effects...')
 
-        // Find the effect configuration
-        const effect = CONFIG.statusEffects.find((e) => e.id === effectId)
-        if (effect && effect.flags?.Ilaris?.cssClass) {
-            img.addClass(effect.flags.Ilaris.cssClass)
+    // Wait for DOM to be ready
+    setTimeout(() => {
+        // Look for the status effects container
+        const statusEffectsContainer = html.find('.status-effects')
+        console.log('Status effects container found:', statusEffectsContainer.length)
+
+        if (statusEffectsContainer.length > 0) {
+            // Find all effect controls within the status effects container
+            const effectControls = statusEffectsContainer.find('.effect-control')
+            console.log('Effect controls found:', effectControls.length)
+
+            effectControls.each((index, control) => {
+                const $control = $(control)
+                const statusId = $control.data('status-id')
+
+                console.log(`Processing control ${index}: statusId=${statusId}`)
+                console.log($control[0]) // Log the actual DOM element
+
+                // Find the matching status effect configuration
+                const statusConfig = CONFIG.statusEffects.find((effect) => effect.id === statusId)
+
+                if (statusConfig && statusConfig.tint) {
+                    console.log(`Applying tint ${statusConfig.tint} to status ${statusId}`)
+
+                    // Apply filter to change only the white SVG fill to the desired color
+                    const filterValue = getFilterForColor(statusConfig.tint)
+                    $control.css({
+                        filter: filterValue,
+                        '-webkit-filter': filterValue,
+                    })
+
+                    // Force override with !important using attr
+                    $control.attr(
+                        'style',
+                        ($control.attr('style') || '') +
+                            `; filter: ${filterValue} !important;` +
+                            `; -webkit-filter: ${filterValue} !important;`,
+                    )
+
+                    $control.addClass('ilaris-tinted')
+                } else if (statusConfig) {
+                    console.log(`Status ${statusId} found but no tint:`, statusConfig)
+                } else {
+                    console.log(`No status config found for ${statusId}`)
+                }
+            })
         }
-    })
+    }, 100)
 })
 
-// Hook to apply CSS classes to status effects in actor sheets
-Hooks.on('renderActorSheet', (app, html, data) => {
-    const statusEffects = html.find('.status-effects .effect-control')
-    statusEffects.each(function () {
-        const img = $(this)
-        const effectId = img.data('status-id')
-
-        // Find the effect configuration
-        const effect = CONFIG.statusEffects.find((e) => e.id === effectId)
-        if (effect && effect.flags?.Ilaris?.cssClass) {
-            img.addClass(effect.flags.Ilaris.cssClass)
-        }
-    })
-})
+// Helper function to create CSS filters that convert white SVG to specific colors
+function getFilterForColor(hexColor) {
+    switch (hexColor.toUpperCase()) {
+        case '#FF0000': // Red
+            return 'brightness(0) saturate(100%) invert(13%) sepia(94%) saturate(7151%) hue-rotate(5deg) brightness(98%) contrast(118%)'
+        case '#00FF00': // Green
+            return 'brightness(0) saturate(100%) invert(50%) sepia(89%) saturate(1174%) hue-rotate(88deg) brightness(118%) contrast(119%)'
+        case '#FFFF00': // Yellow
+            return 'brightness(0) saturate(100%) invert(85%) sepia(89%) saturate(1629%) hue-rotate(357deg) brightness(102%) contrast(104%)'
+        case '#FF8000': // Orange
+            return 'brightness(0) saturate(100%) invert(42%) sepia(93%) saturate(1352%) hue-rotate(15deg) brightness(119%) contrast(119%)'
+        case '#8000FF': // Violet
+            return 'brightness(0) saturate(100%) invert(27%) sepia(93%) saturate(7395%) hue-rotate(270deg) brightness(96%) contrast(128%)'
+        default:
+            return 'none'
+    }
+}
 
 Hooks.on('getSceneControlButtons', (controls) => {
     // Add character import button to the notes/journal control
