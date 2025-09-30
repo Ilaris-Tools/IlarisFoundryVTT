@@ -24,6 +24,7 @@
     -   die Notizen werden nicht verändert
     -   Eigenheiten werden vereint
     -   die in Sephrasto hinzugefügten Waffen/Inventargegenstände/Notizen werden ignoriert (Bewusste Entscheidung Charakter Verwaltung in Sephrasto, Inventar und Notiz Verwaltung in Foundry)
+-   löscht einige überflüssige SVGs und benutzt die Tint Property von Foundry, um diese zu färben, was Assets und Bandbreit einspart
 
 ### v12.1
 
