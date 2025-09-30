@@ -29,6 +29,15 @@ import {
 } from './settings/configure-game-settings.model.js'
 import { XmlCharacterImporter } from './common/xml_character_importer.js'
 
+// Status effect tint colors
+const STATUS_EFFECT_COLORS = {
+    YELLOW: '#FFFF00', // Light penalty/warning
+    ORANGE: '#FF8000', // Medium penalty
+    RED: '#FF0000', // Heavy penalty/danger
+    VIOLET: '#8000FF', // Extreme penalty/maximum severity
+    GREEN: '#00FF00', // Positive effect/bonus
+}
+
 Hooks.once('init', () => {
     // CONFIG.debug.hooks = true;
     // ACTORS
@@ -84,7 +93,7 @@ Hooks.once('init', () => {
             changes: [{ key: 'system.furcht.furchtstufe', mode: 5, priority: 1, value: 1 }],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/terror.svg',
-            tint: '#FFFF00',
+            tint: STATUS_EFFECT_COLORS.YELLOW,
         },
         {
             id: 'Furcht2',
@@ -93,7 +102,7 @@ Hooks.once('init', () => {
             changes: [{ key: 'system.furcht.furchtstufe', mode: 4, priority: 2, value: 2 }],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/terror.svg',
-            tint: '#FF8000',
+            tint: STATUS_EFFECT_COLORS.ORANGE,
         },
         {
             id: 'Furcht3',
@@ -102,7 +111,7 @@ Hooks.once('init', () => {
             changes: [{ key: 'system.furcht.furchtstufe', mode: 4, priority: 3, value: 3 }],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/terror.svg',
-            tint: '#FF0000',
+            tint: STATUS_EFFECT_COLORS.RED,
         },
         {
             id: 'Furcht4',
@@ -111,7 +120,7 @@ Hooks.once('init', () => {
             changes: [{ key: 'system.furcht.furchtstufe', mode: 4, priority: 4, value: 4 }],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/terror.svg',
-            tint: '#8000FF',
+            tint: STATUS_EFFECT_COLORS.VIOLET,
         },
         {
             id: 'schlechtesicht1',
@@ -120,7 +129,7 @@ Hooks.once('init', () => {
             changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 4, value: -2 }],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/sight-disabled.svg',
-            tint: '#FFFF00',
+            tint: STATUS_EFFECT_COLORS.YELLOW,
         },
         {
             id: 'schlechtesicht2',
@@ -129,7 +138,7 @@ Hooks.once('init', () => {
             changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 6, value: -4 }],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/sight-disabled.svg',
-            tint: '#FF8000',
+            tint: STATUS_EFFECT_COLORS.ORANGE,
         },
         {
             id: 'schlechtesicht3',
@@ -138,7 +147,7 @@ Hooks.once('init', () => {
             changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 7, value: -8 }],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/sight-disabled.svg',
-            tint: '#FF0000',
+            tint: STATUS_EFFECT_COLORS.RED,
         },
         {
             id: 'schlechtesicht4',
@@ -149,7 +158,7 @@ Hooks.once('init', () => {
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/sight-disabled.svg',
-            tint: '#8000FF',
+            tint: STATUS_EFFECT_COLORS.VIOLET,
         },
         {
             id: 'untergrund1',
@@ -158,7 +167,7 @@ Hooks.once('init', () => {
             changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 4, value: -2 }],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/sticky-boot.svg',
-            tint: '#FFFF00',
+            tint: STATUS_EFFECT_COLORS.YELLOW,
         },
         {
             id: 'untergrund2',
@@ -167,7 +176,7 @@ Hooks.once('init', () => {
             changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 6, value: -4 }],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/sticky-boot.svg',
-            tint: '#FF8000',
+            tint: STATUS_EFFECT_COLORS.ORANGE,
         },
         {
             id: 'untergrund3',
@@ -176,7 +185,7 @@ Hooks.once('init', () => {
             changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 7, value: -8 }],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/sticky-boot.svg',
-            tint: '#FF0000',
+            tint: STATUS_EFFECT_COLORS.RED,
         },
         {
             id: 'untergrund4',
@@ -187,7 +196,7 @@ Hooks.once('init', () => {
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/sticky-boot.svg',
-            tint: '#8000FF',
+            tint: STATUS_EFFECT_COLORS.VIOLET,
         },
         {
             id: 'Position1',
@@ -234,7 +243,7 @@ Hooks.once('init', () => {
             changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 9, value: +4 }],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/swordwoman.svg',
-            tint: '#00FF00',
+            tint: STATUS_EFFECT_COLORS.GREEN,
         },
         {
             id: 'Nahkampf2',
@@ -245,7 +254,7 @@ Hooks.once('init', () => {
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/swordwoman.svg',
-            tint: '#FFFF00',
+            tint: STATUS_EFFECT_COLORS.YELLOW,
         },
         {
             id: 'Nahkampf3',
@@ -256,7 +265,7 @@ Hooks.once('init', () => {
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/swordwoman.svg',
-            tint: '#FF8000',
+            tint: STATUS_EFFECT_COLORS.ORANGE,
         },
         {
             id: 'Nahkampf4',
@@ -267,7 +276,7 @@ Hooks.once('init', () => {
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/swordwoman.svg',
-            tint: '#FF0000',
+            tint: STATUS_EFFECT_COLORS.RED,
             //flags.core.overlay = true for overlay icon
         },
     ]
@@ -342,15 +351,15 @@ Hooks.on('renderTokenHUD', (app, html, data) => {
 // Helper function to create CSS filters that convert white SVG to specific colors
 function getFilterForColor(hexColor) {
     switch (hexColor.toUpperCase()) {
-        case '#FF0000': // Red
+        case STATUS_EFFECT_COLORS.RED: // Red
             return 'brightness(0) saturate(100%) invert(13%) sepia(94%) saturate(7151%) hue-rotate(5deg) brightness(98%) contrast(118%)'
-        case '#00FF00': // Green
+        case STATUS_EFFECT_COLORS.GREEN: // Green
             return 'brightness(0) saturate(100%) invert(50%) sepia(89%) saturate(1174%) hue-rotate(88deg) brightness(118%) contrast(119%)'
-        case '#FFFF00': // Yellow
+        case STATUS_EFFECT_COLORS.YELLOW: // Yellow
             return 'brightness(0) saturate(100%) invert(85%) sepia(89%) saturate(1629%) hue-rotate(357deg) brightness(102%) contrast(104%)'
-        case '#FF8000': // Orange
+        case STATUS_EFFECT_COLORS.ORANGE: // Orange
             return 'brightness(0) saturate(100%) invert(42%) sepia(93%) saturate(1352%) hue-rotate(15deg) brightness(119%) contrast(119%)'
-        case '#8000FF': // Violet
+        case STATUS_EFFECT_COLORS.VIOLET: // Violet
             return 'brightness(0) saturate(100%) invert(27%) sepia(93%) saturate(7395%) hue-rotate(270deg) brightness(96%) contrast(128%)'
         default:
             return 'none'
