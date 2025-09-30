@@ -706,9 +706,9 @@ export class IlarisActor extends Actor {
                 be -= selected_kampfstil.modifiers.be
             }
             if (methodResults && methodResults.length > 0 && methodResults.includes('ranged')) {
-                weaponUtils.applyModifierToWeapons(HW, NW, selected_kampfstil.modifiers, true)
+                weaponUtils.applyModifierToWeapons(HW, NW, be, selected_kampfstil.modifiers, true)
             } else {
-                weaponUtils.applyModifierToWeapons(HW, NW, selected_kampfstil.modifiers)
+                weaponUtils.applyModifierToWeapons(HW, NW, be, selected_kampfstil.modifiers)
             }
         } else {
             selected_kampfstil.active = false

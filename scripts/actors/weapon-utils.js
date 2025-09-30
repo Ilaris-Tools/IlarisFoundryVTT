@@ -61,30 +61,46 @@ export function affectsRangedWeaponOnly() {
     return 'ranged'
 }
 
-export function applyModifierToWeapons(hauptWaffe, nebenWaffe, modifiers, affectRanged = false) {
+export function applyModifierToWeapons(
+    hauptWaffe,
+    nebenWaffe,
+    belastung,
+    modifiers,
+    affectRanged = false,
+) {
     let schaden = ''
-    if (modifiers.damage > 0) {
-        schaden += '+' + modifiers.damage
+    let bonusFromBeReduction = 0
+    if (belastung > 0 && modifiers.be !== 0) {
+        bonusFromBeReduction = Math.min(modifiers.be, belastung)
+    }
+    if (modifiers.damage !== 0) {
+        schaden += modifiers.damage > 0 ? '+' + modifiers.damage : modifiers.damage
     }
     if (hauptWaffe) {
         if (affectRanged && hauptWaffe.type === 'fernkampfwaffe') {
             hauptWaffe.system.fk += modifiers.at
+            hauptWaffe.system.fk += bonusFromBeReduction
             hauptWaffe.system.schaden = hauptWaffe.system.schaden.concat(schaden)
         }
         if (hauptWaffe.type === 'nahkampfwaffe') {
             hauptWaffe.system.at += modifiers.at
             hauptWaffe.system.vt += modifiers.vt
+            hauptWaffe.system.at += bonusFromBeReduction
+            hauptWaffe.system.vt += bonusFromBeReduction
             hauptWaffe.system.schaden = hauptWaffe.system.schaden.concat(schaden)
         }
     }
-    if (nebenWaffe && hauptWaffe.id != nebenWaffe.id) {
+    if (nebenWaffe && hauptWaffe && hauptWaffe.id != nebenWaffe.id) {
         if (affectRanged && nebenWaffe.type === 'fernkampfwaffe') {
             nebenWaffe.system.fk += modifiers.at
+            nebenWaffe.system.fk += bonusFromBeReduction
             nebenWaffe.system.schaden = nebenWaffe.system.schaden.concat(schaden)
         }
         if (nebenWaffe.type === 'nahkampfwaffe') {
             nebenWaffe.system.at += modifiers.at
             nebenWaffe.system.vt += modifiers.vt
+            nebenWaffe.system.at += bonusFromBeReduction
+            nebenWaffe.system.vt += bonusFromBeReduction
             nebenWaffe.system.schaden = nebenWaffe.system.schaden.concat(schaden)
         }
     }

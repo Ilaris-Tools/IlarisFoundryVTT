@@ -4,6 +4,7 @@ import {
     anyWeaponNeedsToMeetRequirement,
     ignoreSideWeaponMalus,
     checkCombatStyleConditions,
+    applyModifierToWeapons,
 } from '../weapon-utils.js'
 
 describe('weapon-requirements.js', () => {
@@ -590,6 +591,262 @@ describe('weapon-requirements.js', () => {
                         false,
                     ),
                 ).toBe(false)
+            })
+        })
+    })
+
+    describe('applyModifierToWeapons', () => {
+        let hauptWaffe, nebenWaffe
+
+        beforeEach(() => {
+            // Mock main weapon (nahkampfwaffe)
+            hauptWaffe = {
+                id: 'main-weapon-1',
+                type: 'nahkampfwaffe',
+                system: {
+                    at: 10,
+                    vt: 8,
+                    schaden: '1W6+2',
+                },
+            }
+
+            // Mock side weapon (nahkampfwaffe)
+            nebenWaffe = {
+                id: 'side-weapon-1',
+                type: 'nahkampfwaffe',
+                system: {
+                    at: 8,
+                    vt: 6,
+                    schaden: '1W6',
+                },
+            }
+        })
+
+        describe('BE reduction logic', () => {
+            it('should apply full BE reduction when belastung is higher than modifiers.be', () => {
+                const modifiers = { at: 2, vt: 1, be: 3, damage: 0 }
+                const belastung = 5
+
+                applyModifierToWeapons(hauptWaffe, nebenWaffe, belastung, modifiers)
+
+                // Base modifiers + BE reduction (3)
+                expect(hauptWaffe.system.at).toBe(15) // 10 + 2 + 3
+                expect(hauptWaffe.system.vt).toBe(12) // 8 + 1 + 3
+                expect(nebenWaffe.system.at).toBe(13) // 8 + 2 + 3
+                expect(nebenWaffe.system.vt).toBe(10) // 6 + 1 + 3
+            })
+
+            it('should cap BE reduction at available belastung', () => {
+                const modifiers = { at: 1, vt: 1, be: 5, damage: 0 }
+                const belastung = 2
+
+                applyModifierToWeapons(hauptWaffe, nebenWaffe, belastung, modifiers)
+
+                // Base modifiers + capped BE reduction (2)
+                expect(hauptWaffe.system.at).toBe(13) // 10 + 1 + 2
+                expect(hauptWaffe.system.vt).toBe(11) // 8 + 1 + 2
+                expect(nebenWaffe.system.at).toBe(11) // 8 + 1 + 2
+                expect(nebenWaffe.system.vt).toBe(9) // 6 + 1 + 2
+            })
+
+            it('should not apply BE reduction when belastung is 0', () => {
+                const modifiers = { at: 2, vt: 1, be: 3, damage: 0 }
+                const belastung = 0
+
+                applyModifierToWeapons(hauptWaffe, nebenWaffe, belastung, modifiers)
+
+                // Only base modifiers, no BE reduction
+                expect(hauptWaffe.system.at).toBe(12) // 10 + 2
+                expect(hauptWaffe.system.vt).toBe(9) // 8 + 1
+                expect(nebenWaffe.system.at).toBe(10) // 8 + 2
+                expect(nebenWaffe.system.vt).toBe(7) // 6 + 1
+            })
+
+            it('should not apply BE reduction when modifiers.be is 0', () => {
+                const modifiers = { at: 2, vt: 1, be: 0, damage: 0 }
+                const belastung = 3
+
+                applyModifierToWeapons(hauptWaffe, nebenWaffe, belastung, modifiers)
+
+                // Only base modifiers, no BE reduction
+                expect(hauptWaffe.system.at).toBe(12) // 10 + 2
+                expect(hauptWaffe.system.vt).toBe(9) // 8 + 1
+                expect(nebenWaffe.system.at).toBe(10) // 8 + 2
+                expect(nebenWaffe.system.vt).toBe(7) // 6 + 1
+            })
+        })
+
+        describe('ranged weapons', () => {
+            beforeEach(() => {
+                hauptWaffe = {
+                    id: 'ranged-weapon-1',
+                    type: 'fernkampfwaffe',
+                    system: {
+                        fk: 12,
+                        schaden: '1W6+1',
+                    },
+                }
+
+                nebenWaffe = {
+                    id: 'ranged-weapon-2',
+                    type: 'fernkampfwaffe',
+                    system: {
+                        fk: 10,
+                        schaden: '1W6',
+                    },
+                }
+            })
+
+            it('should apply modifiers to ranged weapons when affectRanged is true', () => {
+                const modifiers = { at: 3, vt: 0, be: 2, damage: 1 }
+                const belastung = 4
+
+                applyModifierToWeapons(hauptWaffe, nebenWaffe, belastung, modifiers, true)
+
+                // FK gets at modifier + BE reduction
+                expect(hauptWaffe.system.fk).toBe(17) // 12 + 3 + 2
+                expect(hauptWaffe.system.schaden).toBe('1W6+1+1')
+                expect(nebenWaffe.system.fk).toBe(15) // 10 + 3 + 2
+                expect(nebenWaffe.system.schaden).toBe('1W6+1')
+            })
+
+            it('should not apply modifiers to ranged weapons when affectRanged is false', () => {
+                const modifiers = { at: 3, vt: 0, be: 2, damage: 1 }
+                const belastung = 4
+
+                applyModifierToWeapons(hauptWaffe, nebenWaffe, belastung, modifiers, false)
+
+                // Should remain unchanged
+                expect(hauptWaffe.system.fk).toBe(12)
+                expect(hauptWaffe.system.schaden).toBe('1W6+1')
+                expect(nebenWaffe.system.fk).toBe(10)
+                expect(nebenWaffe.system.schaden).toBe('1W6')
+            })
+        })
+
+        describe('damage modifiers', () => {
+            it('should append damage bonus to weapon damage', () => {
+                const modifiers = { at: 0, vt: 0, be: 0, damage: 3 }
+                const belastung = 0
+
+                applyModifierToWeapons(hauptWaffe, nebenWaffe, belastung, modifiers)
+
+                expect(hauptWaffe.system.schaden).toBe('1W6+2+3')
+                expect(nebenWaffe.system.schaden).toBe('1W6+3')
+            })
+
+            it('should not modify damage when damage modifier is 0', () => {
+                const modifiers = { at: 2, vt: 1, be: 0, damage: 0 }
+                const belastung = 0
+
+                applyModifierToWeapons(hauptWaffe, nebenWaffe, belastung, modifiers)
+
+                expect(hauptWaffe.system.schaden).toBe('1W6+2')
+                expect(nebenWaffe.system.schaden).toBe('1W6')
+            })
+        })
+
+        describe('single weapon scenarios', () => {
+            it('should only modify hauptWaffe when nebenWaffe is undefined', () => {
+                const modifiers = { at: 2, vt: 1, be: 1, damage: 0 }
+                const belastung = 2
+
+                applyModifierToWeapons(hauptWaffe, undefined, belastung, modifiers)
+
+                expect(hauptWaffe.system.at).toBe(13) // 10 + 2 + 1
+                expect(hauptWaffe.system.vt).toBe(10) // 8 + 1 + 1
+            })
+
+            it('should not modify nebenWaffe when it has same id as hauptWaffe', () => {
+                nebenWaffe.id = hauptWaffe.id // Same weapon in both hands
+                const originalAt = nebenWaffe.system.at
+                const originalVt = nebenWaffe.system.vt
+
+                const modifiers = { at: 2, vt: 1, be: 1, damage: 0 }
+                const belastung = 2
+
+                applyModifierToWeapons(hauptWaffe, nebenWaffe, belastung, modifiers)
+
+                // Only hauptWaffe should be modified
+                expect(hauptWaffe.system.at).toBe(13) // 10 + 2 + 1
+                expect(hauptWaffe.system.vt).toBe(10) // 8 + 1 + 1
+
+                // nebenWaffe should remain unchanged since it's the same weapon
+                expect(nebenWaffe.system.at).toBe(originalAt)
+                expect(nebenWaffe.system.vt).toBe(originalVt)
+            })
+        })
+
+        describe('mixed weapon types', () => {
+            it('should handle hauptWaffe as melee and nebenWaffe as ranged', () => {
+                nebenWaffe = {
+                    id: 'ranged-weapon-1',
+                    type: 'fernkampfwaffe',
+                    system: {
+                        fk: 10,
+                        schaden: '1W6',
+                    },
+                }
+
+                const modifiers = { at: 2, vt: 1, be: 1, damage: 0 }
+                const belastung = 2
+
+                // Test with affectRanged = false
+                applyModifierToWeapons(hauptWaffe, nebenWaffe, belastung, modifiers, false)
+
+                // Melee weapon should be modified
+                expect(hauptWaffe.system.at).toBe(13) // 10 + 2 + 1
+                expect(hauptWaffe.system.vt).toBe(10) // 8 + 1 + 1
+
+                // Ranged weapon should remain unchanged
+                expect(nebenWaffe.system.fk).toBe(10)
+
+                // Reset and test with affectRanged = true
+                nebenWaffe.system.fk = 10 // Reset
+                applyModifierToWeapons(hauptWaffe, nebenWaffe, belastung, modifiers, true)
+
+                // Ranged weapon should now be modified
+                expect(nebenWaffe.system.fk).toBe(13) // 10 + 2 + 1
+            })
+        })
+
+        describe('edge cases', () => {
+            it('should handle undefined hauptWaffe gracefully', () => {
+                const modifiers = { at: 2, vt: 1, be: 1, damage: 0 }
+                const belastung = 2
+
+                expect(() => {
+                    applyModifierToWeapons(undefined, nebenWaffe, belastung, modifiers)
+                }).not.toThrow()
+            })
+
+            it('should handle negative modifiers', () => {
+                const modifiers = { at: -2, vt: -1, be: 1, damage: -1 }
+                const belastung = 2
+
+                applyModifierToWeapons(hauptWaffe, nebenWaffe, belastung, modifiers)
+
+                expect(hauptWaffe.system.at).toBe(9) // 10 - 2 + 1
+                expect(hauptWaffe.system.vt).toBe(8) // 8 - 1 + 1
+                expect(hauptWaffe.system.schaden).toBe('1W6+2-1')
+            })
+
+            it('should handle zero values for all parameters', () => {
+                const modifiers = { at: 0, vt: 0, be: 0, damage: 0 }
+                const belastung = 0
+
+                const originalHauptAt = hauptWaffe.system.at
+                const originalHauptVt = hauptWaffe.system.vt
+                const originalNebenAt = nebenWaffe.system.at
+                const originalNebenVt = nebenWaffe.system.vt
+
+                applyModifierToWeapons(hauptWaffe, nebenWaffe, belastung, modifiers)
+
+                // Values should remain unchanged
+                expect(hauptWaffe.system.at).toBe(originalHauptAt)
+                expect(hauptWaffe.system.vt).toBe(originalHauptVt)
+                expect(nebenWaffe.system.at).toBe(originalNebenAt)
+                expect(nebenWaffe.system.vt).toBe(originalNebenVt)
             })
         })
     })
