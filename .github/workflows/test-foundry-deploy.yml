@@ -160,7 +160,7 @@ jobs:
                       echo "🌿 Branch: develop"
 
                       # Zum Repository-Verzeichnis wechseln
-                      cd /home/foundry/ilaris-foundry || {
+                      cd /home/leo/docker/foundryvtt-public/foundry/data || {
                         echo "❌ Repository directory not found"
                         exit 1
                       }
@@ -222,7 +222,7 @@ jobs:
                   echo "   - Foundry VTT test service issues (foundry-test)"
                   echo "   - File permission problems"
                   echo "   - Disk space issues"
-                  echo "   - Test data directory issues (/home/foundry/foundrydata-test)"
+                  echo "   - Test data directory issues (/home/leo/docker/foundryvtt-public/foundry/data)"
 
     summary:
         name: 📊 Test Deployment Summary
