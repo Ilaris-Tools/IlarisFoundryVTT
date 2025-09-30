@@ -9,8 +9,9 @@ on:
     workflow_dispatch:
 
 env:
-    SYSTEM_NAME: 'ilaris'
-    SYSTEM_PATH: '/home/foundry/foundrydata/Data/systems/ilaris'
+    SYSTEM_NAME: 'Ilaris'
+    SYSTEM_PATH: '/home/leo/docker/foundryvtt-internal/foundry/data/Data/systems/Ilaris'
+
 
 jobs:
     validate:
