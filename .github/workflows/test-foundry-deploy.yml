@@ -160,7 +160,7 @@ jobs:
                       echo "🌿 Branch: develop"
 
                       # Zum Repository-Verzeichnis wechseln
-                      cd /home/leo/docker/foundryvtt-public/foundry/data || {
+                      cd /home/leo/docker/foundryvtt-public/foundry/git || {
                         echo "❌ Repository directory not found"
                         exit 1
                       }
@@ -183,7 +183,7 @@ jobs:
                         # Fallback: Manuelles TEST Deployment
                         sudo systemctl stop foundry-test
                         
-                        SYSTEM_PATH="/home/leo/docker/foundryvtt-internal/foundry/data/Data/systems/Ilaris"
+                        SYSTEM_PATH="/home/leo/docker/foundryvtt-public/foundry/data/Data/systems/Ilaris"
                         mkdir -p "$(dirname "$SYSTEM_PATH")"
                         rm -rf "$SYSTEM_PATH"
                         mkdir -p "$SYSTEM_PATH"
@@ -222,7 +222,7 @@ jobs:
                   echo "   - Foundry VTT test service issues (foundry-test)"
                   echo "   - File permission problems"
                   echo "   - Disk space issues"
-                  echo "   - Test data directory issues (/home/leo/docker/foundryvtt-public/foundry/data)"
+                  echo "   - Test git repository issues (/home/leo/docker/foundryvtt-public/foundry/git)"
 
     summary:
         name: 📊 Test Deployment Summary
