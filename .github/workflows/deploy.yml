@@ -179,7 +179,7 @@ jobs:
                       echo "🌿 Branch: ${{ steps.context.outputs.branch }}"
 
                       # Zum Repository-Verzeichnis wechseln
-                      cd /home/foundry/ilaris-foundry || {
+                      cd /home/leo/docker/foundryvtt-internal/foundry/data || {
                         echo "❌ Repository directory not found"
                         exit 1
                       }
