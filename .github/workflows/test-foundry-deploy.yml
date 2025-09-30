@@ -176,14 +176,14 @@ jobs:
                         echo "📋 Using deploy.sh script for TEST deployment"
                         chmod +x deploy.sh
                         # Deploy script mit TEST-Parametern aufrufen
-                        FOUNDRY_SERVICE="foundry-test" FOUNDRY_DATA_PATH="/home/foundry/foundrydata-test" ./deploy.sh
+                        FOUNDRY_SERVICE="foundry-test" FOUNDRY_DATA_PATH="/home/leo/docker/foundryvtt-internal/foundry/data" ./deploy.sh
                       else
                         echo "📋 Deploy script not found, running manual TEST deployment..."
                         
                         # Fallback: Manuelles TEST Deployment
                         sudo systemctl stop foundry-test
                         
-                        SYSTEM_PATH="/home/foundry/foundrydata-test/Data/systems/Ilaris"
+                        SYSTEM_PATH="/home/leo/docker/foundryvtt-internal/foundry/data/Data/systems/Ilaris"
                         mkdir -p "$(dirname "$SYSTEM_PATH")"
                         rm -rf "$SYSTEM_PATH"
                         mkdir -p "$SYSTEM_PATH"

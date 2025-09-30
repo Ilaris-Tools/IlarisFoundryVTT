@@ -203,7 +203,7 @@ jobs:
                         # Fallback: Manuelles Deployment
                         sudo systemctl stop foundry
                         
-                        SYSTEM_PATH="/home/foundry/foundrydata/Data/systems/Ilaris"
+                        SYSTEM_PATH="/home/leo/docker/foundryvtt-internal/foundry/data/Data/systems/Ilaris"
                         mkdir -p "$(dirname "$SYSTEM_PATH")"
                         rm -rf "$SYSTEM_PATH"
                         mkdir -p "$SYSTEM_PATH"
