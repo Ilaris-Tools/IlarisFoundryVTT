@@ -5,8 +5,8 @@
     "voraussetzung": "Attribut GE 4",
     "gruppe": 3,
     "text": "Bedingungen: einzelne Nahkampfwaffe, nicht beritten.\n\nDu erhältst AT +1.",
-    "script": "modifyKampfstil('Schneller Kampf', 1, 0, 0, 0)",
-    "bedingungen": "einzelne Nahkampfwaffe, nicht beritten",
+    "sephrastoScript": "modifyKampfstil('Schneller Kampf', 1, 0, 0, 0)",
+    "stilBedingungen": "einzelne Nahkampfwaffe, nicht beritten",
     "foundryScript": ""
   },
   "_id": "c0FloeYpY5MFtehs",

@@ -674,6 +674,19 @@ describe('weapon-requirements.js', () => {
                 expect(nebenWaffe.system.at).toBe(10) // 8 + 2
                 expect(nebenWaffe.system.vt).toBe(7) // 6 + 1
             })
+
+            it('should apply BE reduction when modifiers.be is  belastung', () => {
+                const modifiers = { at: 2, vt: 1, be: 3, damage: 0 }
+                const belastung = 3
+
+                applyModifierToWeapons(hauptWaffe, nebenWaffe, belastung, modifiers)
+
+                // Only base modifiers, no BE reduction
+                expect(hauptWaffe.system.at).toBe(15) // 10 + 5
+                expect(hauptWaffe.system.vt).toBe(12) // 8 + 4
+                expect(nebenWaffe.system.at).toBe(13) // 8 + 5
+                expect(nebenWaffe.system.vt).toBe(10) // 6 + 4
+            })
         })
 
         describe('ranged weapons', () => {

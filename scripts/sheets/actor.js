@@ -782,8 +782,8 @@ export class IlarisActorSheet extends ActorSheet {
                             const updateData = {
                                 _id: kampfstilItem.id,
                                 'system.text': compendiumItem.system.text,
-                                'system.script': compendiumItem.system.script,
-                                'system.bedingungen': compendiumItem.system.bedingungen,
+                                'system.sephrastoScript': compendiumItem.system.sephrastoScript,
+                                'system.stilBedingungen': compendiumItem.system.stilBedingungen,
                                 'system.foundryScript': compendiumItem.system.foundryScript,
                                 'system.voraussetzung': compendiumItem.system.voraussetzung,
                             }
@@ -813,8 +813,8 @@ export class IlarisActorSheet extends ActorSheet {
         // Compare key fields to determine if update is needed
         return (
             actorItem.system.text !== compendiumItem.system.text ||
-            actorItem.system.script !== compendiumItem.system.script ||
-            actorItem.system.bedingungen !== compendiumItem.system.bedingungen ||
+            actorItem.system.sephrastoScript !== compendiumItem.system.sephrastoScript ||
+            actorItem.system.stilBedingungen !== compendiumItem.system.stilBedingungen ||
             actorItem.system.foundryScript !== compendiumItem.system.foundryScript ||
             actorItem.system.voraussetzung !== compendiumItem.system.voraussetzung
         )

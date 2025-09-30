@@ -5,8 +5,8 @@
     "voraussetzung": "Attribut KK 6, Vorteil Kraftvoller Kampf I",
     "gruppe": 3,
     "text": "Dein Waffenschaden steigt um +1.\n\nDu kannst in eine Halbschwertstellung wechseln, um deine Waffe in einer um eins kleineren Reichweite zu führen. Der Wechsel in die Stellung oder zurück geschieht in einer Freien Aktion.",
-    "script": "modifyKampfstil('Kraftvoller Kampf', 0, 0, 1, 0)",
-    "bedingungen": "",
+    "sephrastoScript": "modifyKampfstil('Kraftvoller Kampf', 0, 0, 1, 0)",
+    "stilBedingungen": "",
     "foundryScript": ""
   },
   "_id": "MN67OV7ErHrw0Ou0",

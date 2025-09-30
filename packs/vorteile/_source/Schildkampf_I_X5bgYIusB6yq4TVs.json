@@ -5,8 +5,8 @@
     "voraussetzung": "Attribut KK 4",
     "gruppe": 3,
     "text": "Bedingung: Schild.\n\nDu erhältst VT +1.",
-    "script": "modifyKampfstil('Schildkampf', 0, 1, 0, 0)",
-    "bedingungen": "Schild",
+    "sephrastoScript": "modifyKampfstil('Schildkampf', 0, 1, 0, 0)",
+    "stilBedingungen": "Schild",
     "foundryScript": ""
   },
   "_id": "X5bgYIusB6yq4TVs",

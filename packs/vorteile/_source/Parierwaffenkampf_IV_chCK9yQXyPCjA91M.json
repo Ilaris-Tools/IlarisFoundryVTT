@@ -5,8 +5,8 @@
     "voraussetzung": "Attribut GE 10, Vorteil Parierwaffenkampf III",
     "gruppe": 3,
     "text": "Bedingung: zwei weitere Attribute auf insgesamt 16.\n\n8 Punkte können zur Verbesserung des Kampfstils verwendet werden. ",
-    "script": "",
-    "bedingungen": "",
+    "sephrastoScript": "",
+    "stilBedingungen": "",
     "foundryScript": ""
   },
   "_id": "chCK9yQXyPCjA91M",

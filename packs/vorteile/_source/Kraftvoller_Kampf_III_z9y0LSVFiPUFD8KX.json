@@ -5,8 +5,8 @@
     "voraussetzung": "Attribut KK 8, Vorteil Kraftvoller Kampf II",
     "gruppe": 3,
     "text": "Dein Waffenschaden steigt um +1.\n\nErlaubt das Manöver Befreiungsschlag (AT -4): Du führst eine Attacke aus, die sich (samt anderen Manövern) gegen alle Ziele in einem Winkel von 180° vor dir richtet. Jedem Ziel steht eine eigene Verteidigung zu.",
-    "script": "modifyKampfstil('Kraftvoller Kampf', 0, 0, 1, 0)",
-    "bedingungen": "",
+    "sephrastoScript": "modifyKampfstil('Kraftvoller Kampf', 0, 0, 1, 0)",
+    "stilBedingungen": "",
     "foundryScript": ""
   },
   "_id": "z9y0LSVFiPUFD8KX",

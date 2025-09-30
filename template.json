@@ -382,8 +382,8 @@
       "voraussetzung": "",
       "gruppe": 0,
       "text": "",
-      "script": "",
-      "bedingungen": "",
+      "sephrastoScript": "",
+      "stilBedingungen": "",
       "foundryScript": ""
     },
     "manoever": {

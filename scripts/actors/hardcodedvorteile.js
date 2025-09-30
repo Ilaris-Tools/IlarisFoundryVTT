@@ -167,7 +167,7 @@ export function getKampfstile(actor) {
             stufe: 0,
             sources: [],
             modifiers: { at: 0, vt: 0, damage: 0, rw: 0, be: 0 }, // Default no modifiers
-            bedingungen: '',
+            stilBedingungen: '',
             foundryScriptMethods: [], // Default no methods
         },
     }
@@ -198,8 +198,8 @@ export function getKampfstile(actor) {
         let bedingungen = ''
         let foundryScriptMethods = []
         stile.forEach((stil) => {
-            const modifiers = parseKampfstilScript(stil.system?.script, stil.name)
-            const stilBedingungen = stil.system?.bedingungen || ''
+            const modifiers = parseKampfstilScript(stil.system?.sephrastoScript, stil.name)
+            const stilBedingungen = stil.system?.stilBedingungen || ''
             if (stilBedingungen && bedingungen) {
                 bedingungen += ', ' + stilBedingungen
             } else if (stilBedingungen) {
@@ -232,7 +232,7 @@ export function getKampfstile(actor) {
                 stufe: getKampfstilStufe(highestStil.name),
                 sources: sources,
                 modifiers: accumulatedModifiers,
-                bedingungen: bedingungen.trim(),
+                stilBedingungen: stilBedingungen.trim(),
                 foundryScriptMethods: foundryScriptMethods, // Remove duplicates
             }
         }

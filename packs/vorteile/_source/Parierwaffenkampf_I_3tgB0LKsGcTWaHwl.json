@@ -5,8 +5,8 @@
     "voraussetzung": "Attribut GE 4",
     "gruppe": 3,
     "text": "Bedingungen: Parierwaffe, nicht beritten.\n\nDu kannst gegen humanoide Gegner –1 Erschwernis aus Manövern ignorieren.",
-    "script": "",
-    "bedingungen": "Parierwaffe, nicht beritten",
+    "sephrastoScript": "",
+    "stilBedingungen": "Parierwaffe, nicht beritten",
     "foundryScript": "manoverAusgleich(HW,NW,1)"
   },
   "_id": "3tgB0LKsGcTWaHwl",

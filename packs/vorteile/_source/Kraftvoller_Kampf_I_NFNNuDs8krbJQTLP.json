@@ -5,8 +5,8 @@
     "voraussetzung": "Attribut KK 4",
     "gruppe": 3,
     "text": "Bedingungen: einzelne Nahkampfwaffe, nicht beritten.\n\nDein Waffenschaden steigt um +1.",
-    "script": "modifyKampfstil('Kraftvoller Kampf', 0, 0, 1, 0)",
-    "bedingungen": "einzelne Nahkampfwaffe, nicht beritten",
+    "sephrastoScript": "modifyKampfstil('Kraftvoller Kampf', 0, 0, 1, 0)",
+    "stilBedingungen": "einzelne Nahkampfwaffe, nicht beritten",
     "foundryScript": ""
   },
   "_id": "NFNNuDs8krbJQTLP",
