@@ -80,6 +80,7 @@ export function applyModifierToWeapons(
         if (affectRanged && hauptWaffe.type === 'fernkampfwaffe') {
             hauptWaffe.system.fk += modifiers.at
             hauptWaffe.system.fk += bonusFromBeReduction
+            hauptWaffe.system.rw += modifiers.rw
             hauptWaffe.system.schaden = hauptWaffe.system.schaden.concat(schaden)
         }
         if (hauptWaffe.type === 'nahkampfwaffe') {
@@ -87,6 +88,7 @@ export function applyModifierToWeapons(
             hauptWaffe.system.vt += modifiers.vt
             hauptWaffe.system.at += bonusFromBeReduction
             hauptWaffe.system.vt += bonusFromBeReduction
+            hauptWaffe.system.rw += modifiers.rw
             hauptWaffe.system.schaden = hauptWaffe.system.schaden.concat(schaden)
         }
     }
@@ -94,6 +96,7 @@ export function applyModifierToWeapons(
         if (affectRanged && nebenWaffe.type === 'fernkampfwaffe') {
             nebenWaffe.system.fk += modifiers.at
             nebenWaffe.system.fk += bonusFromBeReduction
+            nebenWaffe.system.rw += modifiers.rw
             nebenWaffe.system.schaden = nebenWaffe.system.schaden.concat(schaden)
         }
         if (nebenWaffe.type === 'nahkampfwaffe') {
@@ -101,6 +104,7 @@ export function applyModifierToWeapons(
             nebenWaffe.system.vt += modifiers.vt
             nebenWaffe.system.at += bonusFromBeReduction
             nebenWaffe.system.vt += bonusFromBeReduction
+            nebenWaffe.system.rw += modifiers.rw
             nebenWaffe.system.schaden = nebenWaffe.system.schaden.concat(schaden)
         }
     }
