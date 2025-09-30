@@ -25,27 +25,33 @@
         </div>
         {{#if (ifEq item.system.gruppe "3")}}
         <div class="flexrow">
-            <label><b>Script:</b><i class="fas fa-info-circle" 
+            <label><b>Sephrasto Script:</b><i class="fas fa-info-circle" 
                title="Hier kannst du das Sephrasto Script modifyKampfstil('Kampfstilname', 1, 1, 1, 0, 0) eintragen. Die Parameter modifizieren deine Werte in der folgenden Reihenfolge: AT, VT, DMG, RW, BE"
                style="margin-left: 5px; cursor: help;"></i></label>
             <input
-                name="system.script"
-                value="{{item.system.script}}"
+                name="system.sephrastoScript"
+                value="{{item.system.sephrastoScript}}"
                 type="text"
                 data-dtype="String"
             />
         </div>
         <div class="flexrow">
-            <label><b>Bedingungen:</b><i class="fas fa-info-circle" 
-               title="Die Bedingungen bestimmen darüber welche Voraussetzungen erfüllt sein müssen damit der Kampfstil aktiv ist. Der hier eingetragene Text wird dabei von Foundry ausgewertet. Im folgenden findest du einige Tipps wie sich Bedingungen zusammensetzen können:
-               - ein leeres Feld bedeutet, dass der Kampfstil immer aktiv sein kann
-               - einzelne Bedingungen sind mit einem Komma zu trennen (z.B. 'beritten, Schild')
-               - 'beritten' und 'nicht beritten' geben an ob ein Charakter beritten ist oder nicht
-               - wenn eine Waffe eine Waffeneigenschaft vorweisen muss, dann wird einfach die Waffeneigenschaft genannt (z.B. 'Schild', 'Parierwaffe', 'Wendig', usw.)
-               - Waffe oder Nahkampfwaffe referenzieren auf eine getragene Nahkampfwaffe, Fernkampfwaffe auf eine getragene Fernkampfwaffe
-               - du kannst mit 'einzelne' angeben, dass eine der obengenannten Waffen getragen wird und nicht mehr
-               - zwei Waffen/Nahkampfwaffen/Fernkampfwaffen referenzieren auf zwei getragene Waffen dieser Art
-               - mit 'Fertigkeit: <Fertigkeitsname>' kannst du angeben, dass die Waffe eine bestimmte Fertigkeit verwenden muss (z.B. 'Fertigkeit: Wurfwaffen')"
+            <label><b>Stilbedingungen:</b><i class="fas fa-info-circle" 
+               data-tooltip="<div style='max-width: 400px; text-align: left;'>
+                   <h4 style='margin: 0 0 10px 0; color: #4b5563;'>Kampfstil Bedingungen</h4>
+                   <p style='margin: 0 0 10px 0;'>Die Stilbedingungen bestimmen, welche Voraussetzungen erfüllt sein müssen, damit der Kampfstil aktiv ist:</p>
+                   <ul style='margin: 0; padding-left: 20px;'>
+                       <li style='margin-bottom: 5px;'><strong>Leeres Feld:</strong> Kampfstil ist immer aktiv</li>
+                       <li style='margin-bottom: 5px;'><strong>Trennung:</strong> Einzelne Bedingungen mit Komma trennen<br><em>Beispiel: 'beritten, Schild'</em></li>
+                       <li style='margin-bottom: 5px;'><strong>Reittier:</strong> 'beritten' oder 'nicht beritten'</li>
+                       <li style='margin-bottom: 5px;'><strong>Waffeneigenschaften:</strong> Direkt angeben<br><em>Beispiele: 'Schild', 'Parierwaffe', 'Wendig'</em></li>
+                       <li style='margin-bottom: 5px;'><strong>Waffentypen:</strong><br>
+                           • 'nahkampfwaffe' oder 'fernkampfwaffe'<br>
+                           • 'einzelne nahkampfwaffe' = nur eine Nahkampfwaffe<br>
+                           • 'zwei einhändige nahkampfwaffen' = zwei Waffen</li>
+                       <li style='margin-bottom: 5px;'><strong>Fertigkeiten:</strong> 'Fertigkeit <Name>'<br><em>Beispiel: 'Fertigkeit Wurfwaffen'</em></li>
+                   </ul>
+               </div>"
                style="margin-left: 5px; cursor: help;"></i></label>
             <input
                 name="system.bedingungen"
@@ -56,11 +62,35 @@
         </div>
         <div class="flexrow">
             <label><b>Foundry Script:</b><i class="fas fa-info-circle" 
-               title="Zur Zeit kannst du hier die folgenden Methoden eintragen:
-- ignoreSideWeaponMalus(NW, <beliebiege Waffeneigenschaft oder leer lassen>), damit ignorierst du Erschwernisse für deine Nebenwaffe, falls eine Eigenschaft angegeben ist, wird nur ignoriert wenn die Waffe die Voraussetzung erfüllt
-- affectsRangedWeaponOnly(), damit wirken sich die Modifier des Scriptes von Sephrasto nur auf Fernkampfwaffen aus (der VT Modifier wirkt sich damit nicht mehr aus)
-- ignoreMountedRangePenalty(HW,NW,ist_beritten), damit wird der Malus für Fernkampfwaffen im berittenen Kampf ignoriert
-- manoverAusgleich(HW,NW,0), damit wird der Manöverausgleich für den Kampfstil gesetzt (der dritte Parameter ist der Manöverausgleichwert)"
+               data-tooltip="<div style='max-width: 500px; text-align: left;'>
+                   <h4 style='margin: 0 0 10px 0; color: #4b5563;'>Foundry Script Methoden</h4>
+                   <p style='margin: 0 0 10px 0;'>Verfügbare Methoden für Kampfstil-Modifikationen:</p>
+                   <ul style='margin: 0; padding-left: 20px;'>
+                       <li style='margin-bottom: 8px;'>
+                           <strong>ignoreSideWeaponMalus(NW, Eigenschaft)</strong><br>
+                           <em>Ignoriert Erschwernisse für Nebenwaffe</em><br>
+                           <small>Parameter: NW = Nebenwaffe, Eigenschaft optional</small>
+                       </li>
+                       <li style='margin-bottom: 8px;'>
+                           <strong>affectsRangedWeaponOnly()</strong><br>
+                           <em>Modifier wirken nur auf Fernkampfwaffen</em><br>
+                           <small>VT-Modifier wird deaktiviert</small>
+                       </li>
+                       <li style='margin-bottom: 8px;'>
+                           <strong>ignoreMountedRangePenalty(HW, NW, ist_beritten)</strong><br>
+                           <em>Ignoriert Fernkampf-Malus beim Reiten</em><br>
+                           <small>Parameter: HW = Hauptwaffe, NW = Nebenwaffe</small>
+                       </li>
+                       <li style='margin-bottom: 8px;'>
+                           <strong>manoverAusgleich(HW, NW, Wert)</strong><br>
+                           <em>Setzt Manöverausgleich für Kampfstil</em><br>
+                           <small>Wert = Manöverausgleichwert (Zahl)</small>
+                       </li>
+                   </ul>
+                   <p style='margin: 10px 0 0 0; font-weight: bold; color: #dc2626;'>
+                       ⚠️ Mehrere Methoden mit Semikolon trennen
+                   </p>
+               </div>"
                style="margin-left: 5px; cursor: help;"></i></label>
             <input
                 name="system.foundryScript"
