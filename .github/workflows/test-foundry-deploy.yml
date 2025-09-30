@@ -12,8 +12,8 @@ on:
                 type: boolean
 
 env:
-    SYSTEM_NAME: 'ilaris'
-    SYSTEM_PATH: '/home/foundry/foundrydata-test/Data/systems/ilaris'
+    SYSTEM_NAME: 'Ilaris'
+    SYSTEM_PATH: '/home/leo/docker/foundryvtt-public/foundry/data/Data/systems/Ilaris'
 
 jobs:
     validate:
@@ -160,7 +160,7 @@ jobs:
                       echo "🌿 Branch: develop"
 
                       # Zum Repository-Verzeichnis wechseln
-                      cd /home/foundry/ilaris-foundry || {
+                      cd /home/leo/docker/foundryvtt-public/foundry/git || {
                         echo "❌ Repository directory not found"
                         exit 1
                       }
@@ -176,24 +176,32 @@ jobs:
                         echo "📋 Using deploy.sh script for TEST deployment"
                         chmod +x deploy.sh
                         # Deploy script mit TEST-Parametern aufrufen
-                        FOUNDRY_SERVICE="foundry-test" FOUNDRY_DATA_PATH="/home/foundry/foundrydata-test" ./deploy.sh
+                        FOUNDRY_SERVICE="foundry-test" FOUNDRY_DATA_PATH="/home/leo/docker/foundryvtt-internal/foundry/data" ./deploy.sh
                       else
                         echo "📋 Deploy script not found, running manual TEST deployment..."
                         
                         # Fallback: Manuelles TEST Deployment
-                        sudo systemctl stop foundry-test
+                        # Foundry Test stoppen (ohne sudo)
+                        systemctl --user stop foundry-test 2>/dev/null || echo "⚠️ Could not stop foundry-test service (may not be running)"
                         
-                        SYSTEM_PATH="/home/foundry/foundrydata-test/Data/systems/Ilaris"
+                        SYSTEM_PATH="/home/leo/docker/foundryvtt-public/foundry/data/Data/systems/Ilaris"
                         mkdir -p "$(dirname "$SYSTEM_PATH")"
-                        rm -rf "$SYSTEM_PATH"
+                        
+                        # Dateien mit korrekten Berechtigungen entfernen
+                        if [ -d "$SYSTEM_PATH" ]; then
+                          chmod -R u+w "$SYSTEM_PATH" 2>/dev/null || true
+                          rm -rf "$SYSTEM_PATH"
+                        fi
+                        
                         mkdir -p "$SYSTEM_PATH"
                         
                         rsync -av --exclude='.git' --exclude='.github' --exclude='README.md' --exclude='*.md' --exclude='.gitignore' . "$SYSTEM_PATH/"
                         
-                        chown -R foundry:foundry "$SYSTEM_PATH"
+                        # Berechtigungen setzen
                         chmod -R 755 "$SYSTEM_PATH"
                         
-                        sudo systemctl start foundry-test
+                        # Foundry Test starten
+                        systemctl --user start foundry-test 2>/dev/null || echo "⚠️ Could not start foundry-test service"
                         
                         echo "✅ Manual TEST deployment completed"
                       fi
@@ -222,7 +230,7 @@ jobs:
                   echo "   - Foundry VTT test service issues (foundry-test)"
                   echo "   - File permission problems"
                   echo "   - Disk space issues"
-                  echo "   - Test data directory issues (/home/foundry/foundrydata-test)"
+                  echo "   - Test git repository issues (/home/leo/docker/foundryvtt-public/foundry/git)"
 
     summary:
         name: 📊 Test Deployment Summary
