@@ -201,19 +201,27 @@ jobs:
                         echo "📋 Deploy script not found, running manual deployment..."
                         
                         # Fallback: Manuelles Deployment
-                        sudo systemctl stop foundry
+                        # Foundry stoppen (ohne sudo)
+                        systemctl --user stop foundry 2>/dev/null || echo "⚠️ Could not stop foundry service (may not be running)"
                         
                         SYSTEM_PATH="/home/leo/docker/foundryvtt-internal/foundry/data/Data/systems/Ilaris"
                         mkdir -p "$(dirname "$SYSTEM_PATH")"
-                        rm -rf "$SYSTEM_PATH"
+                        
+                        # Dateien mit korrekten Berechtigungen entfernen
+                        if [ -d "$SYSTEM_PATH" ]; then
+                          chmod -R u+w "$SYSTEM_PATH" 2>/dev/null || true
+                          rm -rf "$SYSTEM_PATH"
+                        fi
+                        
                         mkdir -p "$SYSTEM_PATH"
                         
                         rsync -av --exclude='.git' --exclude='.github' --exclude='README.md' --exclude='*.md' --exclude='.gitignore' . "$SYSTEM_PATH/"
                         
-                        chown -R foundry:foundry "$SYSTEM_PATH"
+                        # Berechtigungen setzen
                         chmod -R 755 "$SYSTEM_PATH"
                         
-                        sudo systemctl start foundry
+                        # Foundry starten
+                        systemctl --user start foundry 2>/dev/null || echo "⚠️ Could not start foundry service"
                         
                         echo "✅ Manual deployment completed"
                       fi
