@@ -658,7 +658,7 @@ export class IlarisActor extends Actor {
 
         if (
             weaponUtils.checkCombatStyleConditions(
-                selected_kampfstil.stilBedingungen,
+                selected_kampfstil?.stilBedingungen,
                 HW,
                 NW,
                 this.system.misc.ist_beritten,
