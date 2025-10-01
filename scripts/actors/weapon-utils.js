@@ -73,39 +73,52 @@ export function applyModifierToWeapons(
     if (belastung > 0 && modifiers.be !== 0) {
         bonusFromBeReduction = Math.min(modifiers.be, belastung)
     }
+    console.log('Bonus from BE reduction: ' + bonusFromBeReduction)
     if (modifiers.damage !== 0) {
         schaden += modifiers.damage > 0 ? '+' + modifiers.damage : modifiers.damage
     }
     if (hauptWaffe) {
         if (affectRanged && hauptWaffe.type === 'fernkampfwaffe') {
             hauptWaffe.system.fk += modifiers.at
-            hauptWaffe.system.fk += bonusFromBeReduction
             hauptWaffe.system.rw += modifiers.rw
             hauptWaffe.system.schaden = hauptWaffe.system.schaden.concat(schaden)
         }
         if (hauptWaffe.type === 'nahkampfwaffe') {
             hauptWaffe.system.at += modifiers.at
             hauptWaffe.system.vt += modifiers.vt
-            hauptWaffe.system.at += bonusFromBeReduction
-            hauptWaffe.system.vt += bonusFromBeReduction
             hauptWaffe.system.rw += modifiers.rw
             hauptWaffe.system.schaden = hauptWaffe.system.schaden.concat(schaden)
+        }
+        if (hauptWaffe.system.fk) {
+            hauptWaffe.system.fk += bonusFromBeReduction
+        }
+        if (hauptWaffe.system.at) {
+            hauptWaffe.system.at += bonusFromBeReduction
+        }
+        if (hauptWaffe.system.vt) {
+            hauptWaffe.system.vt += bonusFromBeReduction
         }
     }
     if (nebenWaffe && hauptWaffe && hauptWaffe.id != nebenWaffe.id) {
         if (affectRanged && nebenWaffe.type === 'fernkampfwaffe') {
             nebenWaffe.system.fk += modifiers.at
-            nebenWaffe.system.fk += bonusFromBeReduction
             nebenWaffe.system.rw += modifiers.rw
             nebenWaffe.system.schaden = nebenWaffe.system.schaden.concat(schaden)
         }
         if (nebenWaffe.type === 'nahkampfwaffe') {
             nebenWaffe.system.at += modifiers.at
             nebenWaffe.system.vt += modifiers.vt
-            nebenWaffe.system.at += bonusFromBeReduction
-            nebenWaffe.system.vt += bonusFromBeReduction
             nebenWaffe.system.rw += modifiers.rw
             nebenWaffe.system.schaden = nebenWaffe.system.schaden.concat(schaden)
+        }
+        if (nebenWaffe.system.fk) {
+            nebenWaffe.system.fk += bonusFromBeReduction
+        }
+        if (nebenWaffe.system.at) {
+            nebenWaffe.system.at += bonusFromBeReduction
+        }
+        if (nebenWaffe.system.vt) {
+            nebenWaffe.system.vt += bonusFromBeReduction
         }
     }
 }

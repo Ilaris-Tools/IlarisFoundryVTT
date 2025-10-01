@@ -232,7 +232,7 @@ export function getKampfstile(actor) {
                 stufe: getKampfstilStufe(highestStil.name),
                 sources: sources,
                 modifiers: accumulatedModifiers,
-                stilBedingungen: stilBedingungen.trim(),
+                stilBedingungen: bedingungen.trim(),
                 foundryScriptMethods: foundryScriptMethods, // Remove duplicates
             }
         }

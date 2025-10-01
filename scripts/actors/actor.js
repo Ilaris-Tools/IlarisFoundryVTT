@@ -702,13 +702,13 @@ export class IlarisActor extends Actor {
                     }
                 }
             }
-            if (be > 0) {
-                be -= selected_kampfstil.modifiers.be
-            }
             if (methodResults && methodResults.length > 0 && methodResults.includes('ranged')) {
                 weaponUtils.applyModifierToWeapons(HW, NW, be, selected_kampfstil.modifiers, true)
             } else {
                 weaponUtils.applyModifierToWeapons(HW, NW, be, selected_kampfstil.modifiers)
+            }
+            if (be > 0) {
+                be -= selected_kampfstil.modifiers.be
             }
         } else {
             selected_kampfstil.active = false

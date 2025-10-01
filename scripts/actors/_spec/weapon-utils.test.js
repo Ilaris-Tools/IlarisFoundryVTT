@@ -723,16 +723,16 @@ describe('weapon-requirements.js', () => {
                 expect(nebenWaffe.system.schaden).toBe('1W6+1')
             })
 
-            it('should not apply modifiers to ranged weapons when affectRanged is false', () => {
+            it('should not apply modifiers, but be reduction, to ranged weapons when affectRanged is false', () => {
                 const modifiers = { at: 3, vt: 0, be: 2, damage: 1 }
                 const belastung = 4
 
                 applyModifierToWeapons(hauptWaffe, nebenWaffe, belastung, modifiers, false)
 
                 // Should remain unchanged
-                expect(hauptWaffe.system.fk).toBe(12)
+                expect(hauptWaffe.system.fk).toBe(14)
                 expect(hauptWaffe.system.schaden).toBe('1W6+1')
-                expect(nebenWaffe.system.fk).toBe(10)
+                expect(nebenWaffe.system.fk).toBe(12)
                 expect(nebenWaffe.system.schaden).toBe('1W6')
             })
         })
@@ -811,8 +811,8 @@ describe('weapon-requirements.js', () => {
                 expect(hauptWaffe.system.at).toBe(13) // 10 + 2 + 1
                 expect(hauptWaffe.system.vt).toBe(10) // 8 + 1 + 1
 
-                // Ranged weapon should remain unchanged
-                expect(nebenWaffe.system.fk).toBe(10)
+                // Ranged weapon should remain unchanged only BE reduction applies
+                expect(nebenWaffe.system.fk).toBe(11)
 
                 // Reset and test with affectRanged = true
                 nebenWaffe.system.fk = 10 // Reset
