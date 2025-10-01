@@ -86,8 +86,7 @@ export function applyModifierToWeapons(
             hauptWaffe.system.fk += modifiers.at
             hauptWaffe.system.rw += modifiers.rw
             hauptWaffe.system.schaden = hauptWaffe.system.schaden.concat(schaden)
-        }
-        if (hauptWaffe.type === 'nahkampfwaffe') {
+        } else if (hauptWaffe.type === 'nahkampfwaffe') {
             hauptWaffe.system.at += modifiers.at
             hauptWaffe.system.vt += modifiers.vt
             hauptWaffe.system.rw += modifiers.rw
@@ -108,8 +107,7 @@ export function applyModifierToWeapons(
             nebenWaffe.system.fk += modifiers.at
             nebenWaffe.system.rw += modifiers.rw
             nebenWaffe.system.schaden = nebenWaffe.system.schaden.concat(schaden)
-        }
-        if (nebenWaffe.type === 'nahkampfwaffe') {
+        } else if (nebenWaffe.type === 'nahkampfwaffe') {
             nebenWaffe.system.at += modifiers.at
             nebenWaffe.system.vt += modifiers.vt
             nebenWaffe.system.rw += modifiers.rw
