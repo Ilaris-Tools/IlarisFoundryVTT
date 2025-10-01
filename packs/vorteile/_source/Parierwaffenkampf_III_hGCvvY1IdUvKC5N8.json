@@ -7,7 +7,7 @@
     "text": "Du kannst gegen humanoide Gegner –1 Erschwernis aus Manövern ignorieren.\n\nErlaubt das Manöver Riposte (VT -4): Du fügst dem Angreifer den Waffenschaden deiner Waffe zu. Die Riposte ist kombinierbar mit Attackemanövern, die in diesem Fall die Verteidigung zusätzlich erschweren. Zum Beispiel wäre eine Kombination aus Riposte und Hammerschlag um –12 erschwert, würde aber doppelten Schaden anrichten.",
     "sephrastoScript": "",
     "stilBedingungen": "",
-    "foundryScript": "manoverAusgleich(HW,NW,1)"
+    "foundryScript": "manoverAusgleich(1)"
   },
   "_id": "hGCvvY1IdUvKC5N8",
   "effects": [],

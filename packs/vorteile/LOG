@@ -1,5 +1,5 @@
-2025/09/30-23:05:08.523 2a2c Delete type=3 #1
-2025/09/30-23:05:08.534 1ec4 Level-0 table #5: started
-2025/09/30-23:05:08.540 1ec4 Level-0 table #5: 111957 bytes OK
-2025/09/30-23:05:08.540 1ec4 Delete type=0 #3
-2025/09/30-23:05:08.542 1ec4 Manual compaction at level-0 from '!items!0PK4RwdgxrvzqJ32' @ 72057594037927935 : 1 .. '!items!zvm32TogThFFDgTw' @ 0 : 0; will stop at (end)
+2025/10/01-11:00:42.826 dbc Delete type=3 #1
+2025/10/01-11:00:42.838 ae8 Level-0 table #5: started
+2025/10/01-11:00:42.844 ae8 Level-0 table #5: 111907 bytes OK
+2025/10/01-11:00:42.844 ae8 Delete type=0 #3
+2025/10/01-11:00:42.844 ae8 Manual compaction at level-0 from '!items!0PK4RwdgxrvzqJ32' @ 72057594037927935 : 1 .. '!items!zvm32TogThFFDgTw' @ 0 : 0; will stop at (end)

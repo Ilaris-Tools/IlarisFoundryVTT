@@ -7,7 +7,7 @@
     "text": "Du erhältst VT +1.\n\nDein Schild ignoriert die übliche Erschwernis für Nebenwaffen (S. 39). Außerdem kannst du die erste VT zwischen zwei Initiativphasen als Freie Reaktion ausführen.",
     "sephrastoScript": "modifyKampfstil('Schildkampf', 0, 1, 0, 0)",
     "stilBedingungen": "",
-    "foundryScript": "ignoreSideWeaponMalus(NW, 'Schild')"
+    "foundryScript": "ignoreSideWeaponMalus('Schild')"
   },
   "_id": "JiCWTTC19BJI7qOY",
   "effects": [],
