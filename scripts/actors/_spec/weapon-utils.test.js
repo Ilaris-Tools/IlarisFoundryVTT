@@ -225,7 +225,7 @@ describe('weapon-requirements.js', () => {
             const nebenwaffe = createMockWeapon('nebenwaffe', 'nahkampfwaffe', {
                 kein_malus_nebenwaffe: true,
             })
-            ignoreSideWeaponMalus(nebenwaffe)
+            ignoreSideWeaponMalus(undefined, nebenwaffe, false)
             expect(nebenwaffe.system.at).toBe(0)
             expect(nebenwaffe.system.vt).toBe(0)
         })
@@ -234,13 +234,13 @@ describe('weapon-requirements.js', () => {
             const nebenwaffe = createMockWeapon('nebenwaffe', 'nahkampfwaffe', {
                 kein_malus_nebenwaffe: false,
             })
-            ignoreSideWeaponMalus(nebenwaffe)
+            ignoreSideWeaponMalus(undefined, nebenwaffe, false)
             expect(nebenwaffe.system.at).toBe(4)
             expect(nebenwaffe.system.vt).toBe(4)
         })
 
         it('should not apply bonus if weapon is undefined', () => {
-            const result = ignoreSideWeaponMalus(undefined)
+            const result = ignoreSideWeaponMalus(undefined, undefined, false)
             expect(result).toBeUndefined()
         })
 
@@ -248,7 +248,7 @@ describe('weapon-requirements.js', () => {
             const nebenwaffe = createMockWeapon('nebenwaffe', 'nahkampfwaffe', {
                 schild: true,
             })
-            ignoreSideWeaponMalus(nebenwaffe, 'schild')
+            ignoreSideWeaponMalus(undefined, nebenwaffe, false, 'schild')
             expect(nebenwaffe.system.at).toBe(4)
             expect(nebenwaffe.system.vt).toBe(4)
         })

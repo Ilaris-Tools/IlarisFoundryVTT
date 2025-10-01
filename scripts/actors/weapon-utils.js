@@ -47,17 +47,22 @@ export function anyWeaponNeedsToMeetRequirement(hauptWaffe, nebenWaffe, requirem
     return false
 }
 
-export function ignoreSideWeaponMalus(nebenwaffe, waffenEigenschaft = '') {
-    if (!nebenwaffe) return
-    if (nebenwaffe.system.eigenschaften.kein_malus_nebenwaffe) return
-    if (waffenEigenschaft && !nebenwaffe.system.eigenschaften[waffenEigenschaft.toLowerCase()])
+export function ignoreSideWeaponMalus(
+    hauptWaffe,
+    nebenWaffe,
+    ist_beritten,
+    waffenEigenschaft = '',
+) {
+    if (!nebenWaffe) return
+    if (nebenWaffe.system.eigenschaften.kein_malus_nebenwaffe) return
+    if (waffenEigenschaft && !nebenWaffe.system.eigenschaften[waffenEigenschaft.toLowerCase()])
         return
 
-    nebenwaffe.system.at += 4
-    nebenwaffe.system.vt += 4
+    nebenWaffe.system.at += 4
+    nebenWaffe.system.vt += 4
 }
 
-export function affectsRangedWeaponOnly() {
+export function affectsRangedWeaponOnly(hauptWaffe, nebenWaffe, ist_beritten) {
     return 'ranged'
 }
 
@@ -73,7 +78,6 @@ export function applyModifierToWeapons(
     if (belastung > 0 && modifiers.be !== 0) {
         bonusFromBeReduction = Math.min(modifiers.be, belastung)
     }
-    console.log('Bonus from BE reduction: ' + bonusFromBeReduction)
     if (modifiers.damage !== 0) {
         schaden += modifiers.damage > 0 ? '+' + modifiers.damage : modifiers.damage
     }
@@ -133,7 +137,13 @@ export function ignoreMountedRangePenalty(hauptWaffe, nebenWaffe, ist_beritten) 
     }
 }
 
-export function manoverAusgleich(hauptWaffe, nebenWaffe, ausgleich, overcomplicated = true) {
+export function manoverAusgleich(
+    hauptWaffe,
+    nebenWaffe,
+    ist_beritten,
+    ausgleich,
+    overcomplicated = true,
+) {
     if (hauptWaffe) {
         hauptWaffe.system.manoverausgleich.value += ausgleich
         hauptWaffe.system.manoverausgleich.overcomplicated = overcomplicated

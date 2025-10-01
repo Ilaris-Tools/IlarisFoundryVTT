@@ -676,6 +676,28 @@ export class IlarisActor extends Actor {
 
                 for (const methodCall of selected_kampfstil.foundryScriptMethods) {
                     try {
+                        // Parse method name and user parameters from the method call
+                        const methodMatch = methodCall.match(/^(\w+)\((.*)\)$/)
+                        if (!methodMatch) {
+                            console.warn(
+                                `Invalid method format: ${methodCall}. Expected format: methodName(userParams)`,
+                            )
+                            continue
+                        }
+
+                        const methodName = methodMatch[1]
+                        const userParams = methodMatch[2].trim()
+
+                        // Build the full method call with automatic static parameters
+                        let fullMethodCall
+                        if (userParams) {
+                            // User provided additional parameters - append them after the static ones
+                            fullMethodCall = `${methodName}(HW, NW, ist_beritten, ${userParams})`
+                        } else {
+                            // No user parameters - just use the static ones
+                            fullMethodCall = `${methodName}(HW, NW, ist_beritten)`
+                        }
+
                         // Create a function that has access to weapon-utils methods and executes the method call
                         const executeMethod = new Function(
                             'weaponUtils',
@@ -683,7 +705,7 @@ export class IlarisActor extends Actor {
                             'NW',
                             'selected_kampfstil',
                             'ist_beritten',
-                            `return weaponUtils.${methodCall}`,
+                            `return weaponUtils.${fullMethodCall}`,
                         )
                         const result = executeMethod(
                             weaponUtils,
@@ -693,10 +715,16 @@ export class IlarisActor extends Actor {
                             ist_beritten,
                         )
 
+                        console.log(`Executing kampfstil method: ${fullMethodCall}`)
+                        console.log('Result:', result)
+
                         // Store the result with the method call for reference
                         methodResults.push(result)
 
-                        console.log(`Kampfstil method ${methodCall} returned:`, result)
+                        console.log(
+                            `Kampfstil method ${methodCall} -> ${fullMethodCall} returned:`,
+                            result,
+                        )
                     } catch (error) {
                         console.warn(`Failed to execute kampfstil method: ${methodCall}`, error)
                     }
