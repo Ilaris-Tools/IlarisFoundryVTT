@@ -53,14 +53,16 @@ describe('hardcodedvorteile.js', () => {
                             name: 'Beidhändiger Kampf I',
                             _stats: { compendiumSource: 'Ilaris.beidhändig1' },
                             system: {
-                                script: 'modifyKampfstil("Beidhändiger Kampf", 1, 0, 0, 0, 0)',
+                                sephrastoScript:
+                                    'modifyKampfstil("Beidhändiger Kampf", 1, 0, 0, 0, 0)',
                             },
                         },
                         {
                             name: 'Beidhändiger Kampf II (test)',
                             _stats: { compendiumSource: 'Ilaris.beidhändig2' },
                             system: {
-                                script: 'modifyKampfstil("Beidhändiger Kampf", 1, 0, 0, 0, 0)',
+                                sephrastoScript:
+                                    'modifyKampfstil("Beidhändiger Kampf", 1, 0, 0, 0, 0)',
                             },
                         },
                     ],
