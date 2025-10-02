@@ -667,6 +667,7 @@ export class IlarisActor extends Actor {
             // Execute foundryScript method calls if they exist
             let methodResults = []
             let ist_beritten = this.system.misc.ist_beritten
+            actor.misc.selected_kampfstil_conditions_not_met = ''
             selected_kampfstil.active = true
             if (
                 selected_kampfstil.foundryScriptMethods &&
@@ -740,6 +741,7 @@ export class IlarisActor extends Actor {
             }
         } else {
             selected_kampfstil.active = false
+            actor.misc.selected_kampfstil_conditions_not_met = selected_kampfstil.stilBedingungen
         }
     }
 

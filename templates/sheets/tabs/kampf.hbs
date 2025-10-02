@@ -16,6 +16,13 @@
             Beritten
         </label>
     </div>
+
+    {{#if actor.misc.selected_kampfstil_conditions_not_met}}
+        <div style="margin-top: 8px; padding: 8px; background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 4px; color: #721c24;">
+            <i class="fas fa-exclamation-triangle" style="color: #dc3545; margin-right: 5px;"></i>
+            <strong>Kampfstil inaktiv:</strong> {{actor.misc.selected_kampfstil_conditions_not_met}}
+        </div>
+    {{/if}}
     <h2>Nahkampfwaffen</h2>
     <a class="item-create" data-itemclass="nahkampfwaffe"><i class="fas fa-plus"></i>Neue Nahkampfwaffe</a>
     <table class="table">
