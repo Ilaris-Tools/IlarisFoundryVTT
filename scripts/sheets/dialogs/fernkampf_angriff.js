@@ -274,7 +274,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
         // Rollmode
         let label = `Schaden (${this.item.name})`
         let formula = `${this.schaden} ${signed(this.mod_dm)}`
-        await roll_crit_message(formula, label, this.text_dm, this.speaker, this.rollmode, false)
+        await roll_crit_message(formula, label, this.text_dm, this.speaker, this.rollmode, false, 0)
     }
 
     async manoeverAuswaehlen(html) {
