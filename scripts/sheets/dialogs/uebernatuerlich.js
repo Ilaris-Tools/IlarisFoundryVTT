@@ -612,14 +612,9 @@ export class UebernatuerlichDialog extends CombatDialog {
             }
         }
 
-        // Kombinierte Aktion kbak
-        if (manoever.kbak.selected) {
-            mod_at -= 4
-            text_at = text_at.concat('Kombinierte Aktion\n')
-        }
-
         // Collect all modifications from all maneuvers
         const allModifications = []
+        let manoeverAmount = 0
         this.item.manoever.forEach((dynamicManoever) => {
             let check = undefined
             let number = undefined
@@ -640,6 +635,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             )
                 return
 
+            manoeverAmount++
             // Add valid modifications to the collection
             Object.values(dynamicManoever.system.modifications).forEach((modification) => {
                 allModifications.push({
@@ -679,6 +675,17 @@ export class UebernatuerlichDialog extends CombatDialog {
             nodmg: null,
             context: this,
         })
+
+        if (manoeverAmount > 1) {
+            text_at = text_at.concat(`Gildenmagier 2: +${2}\n`)
+            mod_at += 2
+        }
+
+        // Kombinierte Aktion kbak
+        if (manoever.kbak.selected) {
+            mod_at -= 4
+            text_at = text_at.concat('Kombinierte Aktion\n')
+        }
 
         // Modifikator
         let modifikator = Number(manoever.mod.selected)

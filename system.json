@@ -2,7 +2,7 @@
   "id": "Ilaris",
   "title": "Ilaris",
   "description": "Schnelle und schlanke Regeln für das beliebteste deutsche P&P Setting.",
-  "version": "12.1.6",
+  "version": "12.2.0",
   "compatibility": {
     "minimum": 12,
     "verified": 12
@@ -13,11 +13,57 @@
     },
     {
       "name": "kleinerIrrer (Arne Strehlow)"
+    },
+    {
+      "name": "Siebenstreich"
+    },
+    {
+      "name": "lekugler"
+    },
+    {
+      "name": "Meadrief"
+    },
+    {
+      "name": "Hannibal-X"
+    },
+    {
+      "name": "Manaaan"
+    },
+    {
+      "name": "lukruh"
     }
   ],
   "scripts": [],
   "esmodules": ["scripts/hooks.js"],
   "styles": ["css/temp.css", "styles/sheets/manoever.css"],
+  "packFolders": [
+    {
+      "name": "Charaktere",
+      "sorting": "a",
+      "color": "#FF6B6B",
+      "packs": ["beispiel-helden", "kreaturen"],
+      "folders": []
+    },
+    {
+      "name": "Ilaris",
+      "sorting": "a",
+      "color": "#4ECDC4",
+      "packs": [
+        "fertigkeiten-und-talente",
+        "fertigkeiten-und-talente-advanced",
+        "ubernaturliche-fertigkeiten",
+        "vorteile",
+        "liturgien-und-mirakel",
+        "zauberspruche-und-rituale",
+        "zaubertricks-advanced",
+        "waffen",
+        "gegenstande",
+        "manover",
+        "macro-tools"
+      ],
+      "folders": []
+    }
+  ],
   "packs": [
     {
       "label": "Beispiel Helden",
