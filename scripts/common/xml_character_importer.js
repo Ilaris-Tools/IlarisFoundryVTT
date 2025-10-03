@@ -45,12 +45,20 @@ export class XmlCharacterImporter {
      * Update an existing actor with XML data
      * @param {Actor} actor - The existing actor to update
      * @param {string} xmlContent - The XML content as a string
+     * @param {string} fileName - The name of the XML file being imported
      * @returns {Promise<Actor>} The updated actor
      */
-    async updateActorFromXml(actor, xmlContent) {
+    async updateActorFromXml(actor, xmlContent, fileName = 'XML file') {
         try {
             const xmlDoc = this.xmlParser.parseFromString(xmlContent, 'text/xml')
             const characterData = this.parseCharacterXml(xmlDoc)
+
+            // Show confirmation dialog with details of what will be changed
+            const confirmed = await this.showSyncConfirmationDialog(actor, characterData, fileName)
+            if (!confirmed) {
+                ui.notifications.info('Charakter-Synchronisation vom Benutzer abgebrochen.')
+                return actor
+            }
 
             // Update actor system data (attributes, energies, etc.)
             const updates = await this.createActorUpdatesFromXml(characterData)
@@ -60,7 +68,7 @@ export class XmlCharacterImporter {
             // but preserve inventory items (gegenstand type items without XML flag)
             await this.syncAllCharacterItems(actor, characterData)
 
-            ui.notifications.info(`Character "${actor.name}" synced successfully!`)
+            ui.notifications.info(`Charakter "${actor.name}" erfolgreich synchronisiert!`)
             return actor
         } catch (error) {
             console.error('Error syncing character from XML:', error)
@@ -754,6 +762,108 @@ export class XmlCharacterImporter {
     }
 
     /**
+     * Show confirmation dialog before syncing character data
+     * @param {Actor} actor - The actor that will be updated
+     * @param {Object} characterData - The parsed character data from XML
+     * @param {string} fileName - The name of the XML file
+     * @returns {Promise<boolean>} True if user confirms, false if cancelled
+     */
+    async showSyncConfirmationDialog(actor, characterData, fileName) {
+        // Count current items that will be affected
+        const currentSkills = actor.items.filter((item) => item.type === 'fertigkeit').length
+        const currentTalents = actor.items.filter((item) =>
+            ['talent', 'zauber', 'liturgie'].includes(item.type),
+        ).length
+        const currentAdvantages = actor.items.filter((item) => item.type === 'vorteil').length
+        const currentSupernaturalSkills = actor.items.filter(
+            (item) => item.type === 'uebernatuerliche_fertigkeit',
+        ).length
+
+        // Count preserved items
+        const preservedInventory = actor.items.filter((item) =>
+            ['gegenstand', 'ruestung', 'nahkampfwaffe', 'fernkampfwaffe'].includes(item.type),
+        ).length
+        const preservedEigenheiten = actor.items.filter((item) => item.type === 'eigenheit').length
+
+        // Count new items from XML
+        const newSkills = characterData.skills.length
+        const newTalents =
+            characterData.talents.length +
+            characterData.supernaturalTalents.filter((t) =>
+                characterData.talents.every((regular) => regular.name !== t.name),
+            ).length
+        const newAdvantages = characterData.advantages.length
+        const newSupernaturalSkills = characterData.supernaturalSkills.filter(
+            (skill) => skill.value > 0,
+        ).length
+
+        const dialogContent = `
+            <div style="margin-bottom: 15px;">
+                <h3>Charakter-Synchronisation bestätigen</h3>
+                <p><strong>Datei:</strong> ${fileName}</p>
+                <p><strong>Charakter:</strong> ${actor.name} → ${characterData.name}</p>
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <h4 style="color: #d32f2f; margin-bottom: 8px;">⚠️ Wird ERSETZT:</h4>
+                <ul style="margin-left: 20px; margin-bottom: 0;">
+                    <li><strong>Charaktername:</strong> "${actor.name}" → "${characterData.name}"</li>
+                    <li><strong>Attribute:</strong> Alle Attributwerte werden aktualisiert</li>
+                    <li><strong>Energien:</strong> AsP-, KaP-, GuP-Werte werden aktualisiert</li>
+                    <li><strong>Fertigkeiten:</strong> ${currentSkills} aktuell → ${newSkills} aus XML</li>
+                    <li><strong>Talente:</strong> ${currentTalents} aktuell → ${newTalents} aus XML</li>
+                    <li><strong>Vorteile:</strong> ${currentAdvantages} aktuell → ${newAdvantages} aus XML</li>
+                    <li><strong>Übernatürliche Fertigkeiten:</strong> ${currentSupernaturalSkills} aktuell → ${newSupernaturalSkills} aus XML</li>
+                    <li><strong>Eigenheiten:</strong> Nur Duplikate werden ersetzt, Bestehende bleiben erhalten, neue werden hinzugefügt</li>
+                </ul>
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <h4 style="color: #2e7d32; margin-bottom: 8px;">✅ Bleibt ERHALTEN:</h4>
+                <ul style="margin-left: 20px; margin-bottom: 0;">
+                    <li><strong>Inventar-Gegenstände:</strong> ${preservedInventory} Gegenstände (Waffen, Rüstungen, Objekte)</li>
+                    <li><strong>Charakternotizen:</strong> Manuelle Notizen werden nicht überschrieben</li>
+                    <li><strong>Eigenheiten:</strong> ${preservedEigenheiten} bestehende (keine Duplikate bleiben erhalten)</li>
+                    <li><strong>Charakterbogen-Einstellungen:</strong> UI-Einstellungen, eigene Anpassungen</li>
+                </ul>
+            </div>
+            
+            <div style="background-color: #fff3cd; border: 1px solid #ffeaa7; padding: 10px; border-radius: 4px; margin-bottom: 15px;">
+                <strong>⚠️ Warnung:</strong> Diese Aktion kann nicht rückgängig gemacht werden! Alle aktuellen Fertigkeiten, Talente und Vorteile werden durch die Daten aus der XML-Datei ersetzt.
+            </div>
+            
+            <p><strong>Sind Sie sicher, dass Sie den Charakter "${actor.name}" mit der XML-Datei "${fileName}" synchronisieren möchten?</strong></p>
+        `
+
+        return new Promise((resolve) => {
+            new Dialog(
+                {
+                    title: 'Charakter-Synchronisation bestätigen',
+                    content: dialogContent,
+                    buttons: {
+                        yes: {
+                            icon: '<i class="fas fa-sync-alt"></i>',
+                            label: 'Charakter synchronisieren',
+                            callback: () => resolve(true),
+                        },
+                        no: {
+                            icon: '<i class="fas fa-times"></i>',
+                            label: 'Abbrechen',
+                            callback: () => resolve(false),
+                        },
+                    },
+                    default: 'no',
+                    close: () => resolve(false),
+                },
+                {
+                    width: 600,
+                    height: 'auto',
+                },
+            ).render(true)
+        })
+    }
+
+    /**
      * Show file upload dialog for XML import
      */
     static async showImportDialog() {
@@ -818,6 +928,7 @@ export class XmlCharacterImporter {
                         const updatedActor = await importer.updateActorFromXml(
                             actor,
                             e.target.result,
+                            file.name,
                         )
                         resolve(updatedActor)
                     } catch (error) {
