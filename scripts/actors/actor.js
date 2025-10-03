@@ -1040,7 +1040,6 @@ export class IlarisActor extends Actor {
             actor.infos = infos
             actor.freietalente = freietalente
             actor.uebernatuerlich.fertigkeiten = freie_uebernatuerliche_fertigkeiten
-            actor.kreaturItemOptions = foundry.utils.duplicate(CONFIG.ILARIS.kreatur_item_options)
         }
     }
 }

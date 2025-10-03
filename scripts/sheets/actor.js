@@ -3,6 +3,7 @@ import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
 } from '../settings/configure-game-settings.model.js'
+import { ILARIS } from '../config.js'
 
 export class IlarisActorSheet extends ActorSheet {
     /*
@@ -567,126 +568,47 @@ export class IlarisActorSheet extends ActorSheet {
     async _onItemCreate(event) {
         console.log('ItemCreate')
         let itemclass = $(event.currentTarget).data('itemclass')
-        //ansehen: DomStringMap. Beide Varianten liefern das gleiche.
-        //Welche ist besser und warum?
-        // console.log($(event.currentTarget).data("itemclass"));
-        // console.log(event.currentTarget.dataset.itemclass);
+        console.log(itemclass)
 
-        // Das koennte extrem verkuerzt werden, wenn man einfach die namen (ggf. data) als
-        // dict schreibt und itemData = {name: names[type], data: datas[type], type: type}
-        // statt den ganzen ifs benutzt..
-        let itemData = {}
-        if (itemclass == 'ruestung') {
-            console.log('Neue Rüstung')
-            itemData = {
-                name: 'Neue Rüstung',
-                type: 'ruestung',
-                system: {},
-            }
-        } else if (itemclass == 'nahkampfwaffe') {
-            console.log('Neue Nahkampfwaffe')
-            itemData = {
-                name: 'Waffe',
-                type: itemclass,
-                system: {},
-            }
-        } else if (itemclass == 'fernkampfwaffe') {
-            console.log('Neue Fernkampfwaffe')
-            itemData = {
-                name: 'Waffe',
-                type: itemclass,
-                system: {},
-            }
-        } else if (itemclass == 'fertigkeit') {
-            console.log('Neue Fertigkeit')
-            itemData = {
-                name: 'Fertigkeit',
-                type: 'fertigkeit',
-                system: {},
-            }
-        } else if (itemclass == 'talent') {
-            console.log('Neues Talent')
-            itemData = {
-                name: 'Talent',
-                type: 'talent',
-                system: {},
-            }
-        } else if (itemclass == 'freie_fertigkeit') {
-            console.log('Neue freie Fertigkeit')
-            itemData = {
-                name: 'freie Fertigkeit',
-                type: 'freie_fertigkeit',
-                system: {
-                    stufe: 1,
-                    gruppe: 4,
-                },
-            }
-        } else if (itemclass == 'uebernatuerliche_fertigkeit') {
-            console.log('Neue übernatürliche Fertigkeit')
-            itemData = {
-                name: 'Fertigkeit',
-                type: 'uebernatuerliche_fertigkeit',
-                system: {},
-            }
-        } else if (itemclass == 'zauber') {
-            console.log('Neuer Zauber')
-            itemData = {
-                name: 'Zauber',
-                type: 'zauber',
-                system: {},
-            }
-        } else if (itemclass == 'liturgie') {
-            console.log('Neue Liturgie')
-            itemData = {
-                name: 'Liturgie',
-                type: 'liturgie',
-                system: {},
-            }
-        } else if (itemclass == 'eigenheit') {
-            console.log('Neue Eigenheit')
-            itemData = {
-                name: 'eigenheit',
-                type: 'eigenheit',
-                system: {},
-            }
-        } else if (itemclass == 'gegenstand') {
-            console.log('Neuer Gegenstand')
-            itemData = {
-                name: 'gegenstand',
-                type: 'gegenstand',
-                system: {},
-            }
-        } else if (itemclass == 'freiestalent') {
-            console.log('Neues freies Talent')
-            itemData = {
-                name: 'Neue Kreaturenfertigkeit',
-                type: 'freiestalent',
-                system: {},
-            }
-            console.log($(event.currentTarget).data('profan'))
-            itemData.system.profan = $(event.currentTarget).data('profan')
-        } else if (itemclass == 'uebernatfreiestalent') {
-            itemData = {
-                name: 'Neue Kreaturenfertigkeit',
-                type: 'freiestalent',
-                system: {},
-            }
-            itemData.system.profan = false
-        } else if (itemclass == 'vorteil') {
+        // Get item templates from config
+        const itemTemplates = ILARIS.itemTemplates
+
+        // Handle special case for vorteil
+        if (itemclass === 'vorteil') {
             game.packs.get('Ilaris.vorteile').render(true)
             Dialog.prompt({
                 content:
                     'Du kannst Vorteile direkt aus den Kompendium Packs auf den Statblock ziehen. Für eigene Vor/Nachteile zu erstellen, die nicht im Regelwerk enthalten sind, benutze die Eigenschaften.',
                 callback: () => {},
             })
-        } else {
-            console.log('Neues generisches Item')
+            return
+        }
+
+        // Get template or use generic fallback
+        const template = itemTemplates[itemclass] || {
+            name: 'Neues generisches Item',
+            type: itemclass,
+            system: {},
+            logMessage: 'Neues generisches Item',
+        }
+
+        console.log(template.logMessage)
+
+        // Create base item data
+        let itemData = {
+            name: template.name,
+            type: template.type,
+            system: { ...template.system },
+        }
+
+        // Apply custom handler if present
+        if (template.customHandler) {
+            template.customHandler(itemData, event)
+        }
+
+        // Log for generic items
+        if (!itemTemplates[itemclass]) {
             console.log(itemclass)
-            itemData = {
-                name: 'Neues generisches Item',
-                type: itemclass,
-                system: {},
-            }
             console.log(itemData)
         }
 

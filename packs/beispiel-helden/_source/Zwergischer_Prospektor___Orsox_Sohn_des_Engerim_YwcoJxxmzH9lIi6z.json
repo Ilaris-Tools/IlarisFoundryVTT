@@ -16,15 +16,19 @@
       }
     },
     "attribute": {
-      "KO": {
-        "wert": 5,
+      "CH": {
+        "wert": 3,
         "pw": 0
       },
-      "MU": {
-        "wert": 4,
+      "FF": {
+        "wert": 8,
         "pw": 0
       },
       "GE": {
+        "wert": 4,
+        "pw": 0
+      },
+      "IN": {
         "wert": 4,
         "pw": 0
       },
@@ -32,20 +36,16 @@
         "wert": 6,
         "pw": 0
       },
-      "IN": {
-        "wert": 4,
-        "pw": 0
-      },
       "KL": {
         "wert": 3,
         "pw": 0
       },
-      "CH": {
-        "wert": 3,
+      "KO": {
+        "wert": 5,
         "pw": 0
       },
-      "FF": {
-        "wert": 8,
+      "MU": {
+        "wert": 4,
         "pw": 0
       }
     },
@@ -82,6 +82,11 @@
       "manuellermod": 0,
       "nahkampfmod": 0
     },
+    "misc": {
+      "selected_kampfstil": "ohne",
+      "selected_uebernatuerlicher_stil": "ohne",
+      "ist_beritten": false
+    },
     "geld": {
       "dukaten": 0,
       "silbertaler": 0,
@@ -89,10 +94,7 @@
       "kreuzer": 0
     },
     "getragen": 1,
-    "notes": "",
-    "misc": {
-      "selected_kampfstil": "kvk"
-    }
+    "notes": ""
   },
   "prototypeToken": {
     "name": "Zwergischer Prospektor - Orsox Sohn des Engerim",
@@ -216,9 +218,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "KK 4",
+        "voraussetzung": "Attribut KK 4",
         "gruppe": 3,
-        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>+1 Waffenschaden</body>"
+        "text": "Bedingungen: einzelne Nahkampfwaffe, nicht beritten.\n\nDein Waffenschaden steigt um +1.",
+        "sephrastoScript": "modifyKampfstil('Kraftvoller Kampf', 0, 0, 1, 0)",
+        "stilBedingungen": "einzelne Nahkampfwaffe, nicht beritten",
+        "foundryScript": ""
       },
       "effects": [],
       "folder": null,
@@ -227,12 +232,12 @@
       "_stats": {
         "compendiumSource": "Compendium.Ilaris.vorteil.Item.NFNNuDs8krbJQTLP",
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "12.343",
         "systemId": "Ilaris",
-        "systemVersion": "12.0.2",
+        "systemVersion": "12.2.0",
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
+        "modifiedTime": 1759478698342,
+        "lastModifiedBy": "bRsoRPItEVb33T1L"
       },
       "ownership": {},
       "_key": "!actors.items!YwcoJxxmzH9lIi6z.uHgTUXiU6B1gV7sE"
@@ -243,9 +248,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "KK 6; Kraftvoller Kampf I",
+        "voraussetzung": "Attribut KK 6, Vorteil Kraftvoller Kampf I",
         "gruppe": 3,
-        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>+1 Waffenschaden<br><br>Du kannst in eine Halbschwertstellung wechseln, um deine Waffe in einer um eins kleineren Reichweite zu führen. Der Wechsel in die Stellung oder zurück geschieht in einer Freien Aktion.</body>"
+        "text": "Dein Waffenschaden steigt um +1.\n\nDu kannst in eine Halbschwertstellung wechseln, um deine Waffe in einer um eins kleineren Reichweite zu führen. Der Wechsel in die Stellung oder zurück geschieht in einer Freien Aktion.",
+        "sephrastoScript": "modifyKampfstil('Kraftvoller Kampf', 0, 0, 1, 0)",
+        "stilBedingungen": "",
+        "foundryScript": ""
       },
       "effects": [],
       "folder": null,
@@ -254,12 +262,12 @@
       "_stats": {
         "compendiumSource": "Compendium.Ilaris.vorteil.Item.MN67OV7ErHrw0Ou0",
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "12.343",
         "systemId": "Ilaris",
-        "systemVersion": "12.0.2",
+        "systemVersion": "12.2.0",
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
+        "modifiedTime": 1759478698342,
+        "lastModifiedBy": "bRsoRPItEVb33T1L"
       },
       "ownership": {},
       "_key": "!actors.items!YwcoJxxmzH9lIi6z.6ICaGwFY4kWk4iRM"
@@ -1935,12 +1943,12 @@
   "_stats": {
     "compendiumSource": null,
     "duplicateSource": null,
-    "coreVersion": "12.331",
+    "coreVersion": "12.343",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.2",
+    "systemVersion": "12.2.0",
     "createdTime": 1747089283487,
-    "modifiedTime": 1747089889172,
-    "lastModifiedBy": "oa0cULjciXK52aoL"
+    "modifiedTime": 1759478700560,
+    "lastModifiedBy": "bRsoRPItEVb33T1L"
   },
   "_id": "YwcoJxxmzH9lIi6z",
   "sort": 1200000,

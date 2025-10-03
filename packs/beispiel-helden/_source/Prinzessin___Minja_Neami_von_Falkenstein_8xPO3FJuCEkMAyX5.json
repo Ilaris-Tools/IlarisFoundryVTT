@@ -16,11 +16,11 @@
       }
     },
     "attribute": {
-      "KO": {
-        "wert": 4,
+      "CH": {
+        "wert": 6,
         "pw": 0
       },
-      "MU": {
+      "FF": {
         "wert": 4,
         "pw": 0
       },
@@ -28,23 +28,23 @@
         "wert": 6,
         "pw": 0
       },
-      "KK": {
-        "wert": 1,
-        "pw": 0
-      },
       "IN": {
         "wert": 6,
+        "pw": 0
+      },
+      "KK": {
+        "wert": 1,
         "pw": 0
       },
       "KL": {
         "wert": 1,
         "pw": 0
       },
-      "CH": {
-        "wert": 6,
+      "KO": {
+        "wert": 4,
         "pw": 0
       },
-      "FF": {
+      "MU": {
         "wert": 4,
         "pw": 0
       }
@@ -82,6 +82,11 @@
       "manuellermod": 0,
       "nahkampfmod": 0
     },
+    "misc": {
+      "selected_kampfstil": "ohne",
+      "selected_uebernatuerlicher_stil": "ohne",
+      "ist_beritten": false
+    },
     "geld": {
       "dukaten": 0,
       "silbertaler": 0,
@@ -89,10 +94,7 @@
       "kreuzer": 0
     },
     "getragen": 1,
-    "notes": "",
-    "misc": {
-      "selected_kampfstil": "kvk"
-    }
+    "notes": ""
   },
   "items": [
     {
@@ -1917,12 +1919,12 @@
   "_stats": {
     "compendiumSource": null,
     "duplicateSource": null,
-    "coreVersion": "12.331",
+    "coreVersion": "12.343",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.2",
+    "systemVersion": "12.2.0",
     "createdTime": 1747089431890,
-    "modifiedTime": 1747089889172,
-    "lastModifiedBy": "oa0cULjciXK52aoL"
+    "modifiedTime": 1759478649391,
+    "lastModifiedBy": "bRsoRPItEVb33T1L"
   },
   "ownership": {
     "default": 0,

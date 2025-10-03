@@ -99,6 +99,99 @@ let zeroToEightObj = {
 }
 ILARIS.zeroToEightObj = zeroToEightObj
 
+// Item creation templates for different item types
+let itemTemplates = {
+    ruestung: {
+        name: 'Neue Rüstung',
+        type: 'ruestung',
+        system: {},
+        logMessage: 'Neue Rüstung',
+    },
+    nahkampfwaffe: {
+        name: 'Waffe',
+        type: 'nahkampfwaffe',
+        system: {},
+        logMessage: 'Neue Nahkampfwaffe',
+    },
+    fernkampfwaffe: {
+        name: 'Waffe',
+        type: 'fernkampfwaffe',
+        system: {},
+        logMessage: 'Neue Fernkampfwaffe',
+    },
+    fertigkeit: {
+        name: 'Fertigkeit',
+        type: 'fertigkeit',
+        system: {},
+        logMessage: 'Neue Fertigkeit',
+    },
+    talent: {
+        name: 'Talent',
+        type: 'talent',
+        system: {},
+        logMessage: 'Neues Talent',
+    },
+    freie_fertigkeit: {
+        name: 'freie Fertigkeit',
+        type: 'freie_fertigkeit',
+        system: {
+            stufe: 1,
+            gruppe: 4,
+        },
+        logMessage: 'Neue freie Fertigkeit',
+    },
+    uebernatuerliche_fertigkeit: {
+        name: 'Fertigkeit',
+        type: 'uebernatuerliche_fertigkeit',
+        system: {},
+        logMessage: 'Neue übernatürliche Fertigkeit',
+    },
+    zauber: {
+        name: 'Zauber',
+        type: 'zauber',
+        system: {},
+        logMessage: 'Neuer Zauber',
+    },
+    liturgie: {
+        name: 'Liturgie',
+        type: 'liturgie',
+        system: {},
+        logMessage: 'Neue Liturgie',
+    },
+    eigenheit: {
+        name: 'eigenheit',
+        type: 'eigenheit',
+        system: {},
+        logMessage: 'Neue Eigenheit',
+    },
+    gegenstand: {
+        name: 'gegenstand',
+        type: 'gegenstand',
+        system: {},
+        logMessage: 'Neuer Gegenstand',
+    },
+    freiestalent: {
+        name: 'Neue Kreaturenfertigkeit',
+        type: 'freiestalent',
+        system: {},
+        logMessage: 'Neues freies Talent',
+        customHandler: (itemData, event) => {
+            console.log($(event.currentTarget).data('profan'))
+            itemData.system.profan = $(event.currentTarget).data('profan')
+        },
+    },
+    uebernatfreiestalent: {
+        name: 'Neue Kreaturenfertigkeit',
+        type: 'freiestalent',
+        system: {},
+        logMessage: 'Neues übernatürliches freies Talent',
+        customHandler: (itemData) => {
+            itemData.system.profan = false
+        },
+    },
+}
+ILARIS.itemTemplates = itemTemplates
+
 // Reichweite (Nahkampf)
 let distance_choice = {
     0: 'ideal',

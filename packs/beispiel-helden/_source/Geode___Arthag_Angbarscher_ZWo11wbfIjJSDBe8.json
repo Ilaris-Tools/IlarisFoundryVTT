@@ -16,36 +16,36 @@
       }
     },
     "attribute": {
-      "KO": {
-        "wert": 4,
-        "pw": 0
-      },
-      "MU": {
-        "wert": 1,
-        "pw": 0
-      },
-      "GE": {
-        "wert": 1,
-        "pw": 0
-      },
-      "KK": {
-        "wert": 4,
-        "pw": 0
-      },
-      "IN": {
-        "wert": 6,
-        "pw": 0
-      },
-      "KL": {
-        "wert": 4,
-        "pw": 0
-      },
       "CH": {
         "wert": 6,
         "pw": 0
       },
       "FF": {
         "wert": 4,
+        "pw": 0
+      },
+      "GE": {
+        "wert": 1,
+        "pw": 0
+      },
+      "IN": {
+        "wert": 6,
+        "pw": 0
+      },
+      "KK": {
+        "wert": 4,
+        "pw": 0
+      },
+      "KL": {
+        "wert": 4,
+        "pw": 0
+      },
+      "KO": {
+        "wert": 4,
+        "pw": 0
+      },
+      "MU": {
+        "wert": 1,
         "pw": 0
       }
     },
@@ -67,7 +67,9 @@
       "dh": 0,
       "traglast_intervall": 0,
       "traglast": 0,
-      "asp_zugekauft": 0
+      "asp_zugekauft": 0,
+      "gasp": null,
+      "asp_stern": 32
     },
     "schips": {
       "schips": 4,
@@ -83,6 +85,11 @@
       "manuellermod": 0,
       "nahkampfmod": 0
     },
+    "misc": {
+      "selected_kampfstil": "ohne",
+      "selected_uebernatuerlicher_stil": "ohne",
+      "ist_beritten": false
+    },
     "geld": {
       "dukaten": 0,
       "silbertaler": 0,
@@ -90,10 +97,7 @@
       "kreuzer": 0
     },
     "getragen": 1,
-    "notes": "",
-    "misc": {
-      "selected_kampfstil": "kvk"
-    }
+    "notes": ""
   },
   "prototypeToken": {
     "name": "Geode - Arthag Angbarscher",
@@ -2610,12 +2614,12 @@
   "_stats": {
     "compendiumSource": null,
     "duplicateSource": null,
-    "coreVersion": "12.331",
+    "coreVersion": "12.343",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.2",
+    "systemVersion": "12.2.0",
     "createdTime": 1747089740273,
-    "modifiedTime": 1747089889172,
-    "lastModifiedBy": "oa0cULjciXK52aoL"
+    "modifiedTime": 1759478597083,
+    "lastModifiedBy": "bRsoRPItEVb33T1L"
   },
   "_id": "ZWo11wbfIjJSDBe8",
   "sort": 100000,

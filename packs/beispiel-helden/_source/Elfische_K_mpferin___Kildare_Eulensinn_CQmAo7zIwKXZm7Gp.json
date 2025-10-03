@@ -16,36 +16,36 @@
       }
     },
     "attribute": {
-      "KO": {
-        "wert": 4,
-        "pw": 0
-      },
-      "MU": {
-        "wert": 5,
-        "pw": 0
-      },
-      "GE": {
-        "wert": 8,
-        "pw": 0
-      },
-      "KK": {
-        "wert": 4,
-        "pw": 0
-      },
-      "IN": {
-        "wert": 5,
-        "pw": 0
-      },
-      "KL": {
-        "wert": 2,
-        "pw": 0
-      },
       "CH": {
         "wert": 3,
         "pw": 0
       },
       "FF": {
         "wert": 4,
+        "pw": 0
+      },
+      "GE": {
+        "wert": 8,
+        "pw": 0
+      },
+      "IN": {
+        "wert": 5,
+        "pw": 0
+      },
+      "KK": {
+        "wert": 4,
+        "pw": 0
+      },
+      "KL": {
+        "wert": 2,
+        "pw": 0
+      },
+      "KO": {
+        "wert": 4,
+        "pw": 0
+      },
+      "MU": {
+        "wert": 5,
         "pw": 0
       }
     },
@@ -67,7 +67,9 @@
       "dh": 0,
       "traglast_intervall": 0,
       "traglast": 0,
-      "asp_zugekauft": 0
+      "asp_zugekauft": 0,
+      "gasp": null,
+      "asp_stern": 24
     },
     "schips": {
       "schips": 4,
@@ -83,6 +85,11 @@
       "manuellermod": 0,
       "nahkampfmod": 0
     },
+    "misc": {
+      "selected_kampfstil": "ohne",
+      "selected_uebernatuerlicher_stil": "ohne",
+      "ist_beritten": false
+    },
     "geld": {
       "dukaten": 0,
       "silbertaler": 0,
@@ -90,10 +97,7 @@
       "kreuzer": 0
     },
     "getragen": 1,
-    "notes": "",
-    "misc": {
-      "selected_kampfstil": "kvk"
-    }
+    "notes": ""
   },
   "prototypeToken": {
     "name": "Elfische Kämpferin - Kildare Eulensinn",
@@ -460,9 +464,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "GE 4",
+        "voraussetzung": "Attribut GE 4",
         "gruppe": 3,
-        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>+1 AT</body>"
+        "text": "Bedingungen: einzelne Nahkampfwaffe, nicht beritten.\n\nDu erhältst AT +1.",
+        "sephrastoScript": "modifyKampfstil('Schneller Kampf', 1, 0, 0, 0)",
+        "stilBedingungen": "einzelne Nahkampfwaffe, nicht beritten",
+        "foundryScript": ""
       },
       "effects": [],
       "folder": null,
@@ -471,12 +478,12 @@
       "_stats": {
         "compendiumSource": "Compendium.Ilaris.vorteil.Item.c0FloeYpY5MFtehs",
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "12.343",
         "systemId": "Ilaris",
-        "systemVersion": "12.0.2",
+        "systemVersion": "12.2.0",
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
+        "modifiedTime": 1759478582371,
+        "lastModifiedBy": "bRsoRPItEVb33T1L"
       },
       "ownership": {},
       "_key": "!actors.items!CQmAo7zIwKXZm7Gp.W5k2lrv4XEYo2epc"
@@ -487,9 +494,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "GE 6; Schneller Kampf I",
+        "voraussetzung": "Attribut GE 6, Vorteil Schneller Kampf I",
         "gruppe": 3,
-        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>+1 AT<br><br>Du kannst in eine Halbschwertstellung wechseln, um deine Waffe in einer um 1 kleineren Reichweite zu führen. Der Wechsel in die Stellung oder zurück geschieht in einer Freien Aktion.</body>"
+        "text": "Du erhältst AT +1.\n\nDu kannst in eine Halbschwertstellung wechseln, um deine Waffe in einer um 1 kleineren Reichweite zu führen. Der Wechsel in die Stellung oder zurück geschieht in einer Freien Aktion.",
+        "sephrastoScript": "modifyKampfstil('Schneller Kampf', 1, 0, 0, 0)",
+        "stilBedingungen": "",
+        "foundryScript": ""
       },
       "effects": [],
       "folder": null,
@@ -498,12 +508,12 @@
       "_stats": {
         "compendiumSource": "Compendium.Ilaris.vorteil.Item.CkXCWstRAxuIKfZK",
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "12.343",
         "systemId": "Ilaris",
-        "systemVersion": "12.0.2",
+        "systemVersion": "12.2.0",
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
+        "modifiedTime": 1759478582371,
+        "lastModifiedBy": "bRsoRPItEVb33T1L"
       },
       "ownership": {},
       "_key": "!actors.items!CQmAo7zIwKXZm7Gp.suVtWTSPgRUdrjqU"
@@ -3089,12 +3099,12 @@
   "_stats": {
     "compendiumSource": null,
     "duplicateSource": null,
-    "coreVersion": "12.331",
+    "coreVersion": "12.343",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.2",
+    "systemVersion": "12.2.0",
     "createdTime": 1747089337085,
-    "modifiedTime": 1747089889172,
-    "lastModifiedBy": "oa0cULjciXK52aoL"
+    "modifiedTime": 1759478584378,
+    "lastModifiedBy": "bRsoRPItEVb33T1L"
   },
   "_id": "CQmAo7zIwKXZm7Gp",
   "sort": 1100000,
