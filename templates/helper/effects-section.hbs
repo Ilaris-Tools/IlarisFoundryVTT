@@ -1,0 +1,47 @@
+<!-- Effects Section -->
+<hr />
+<div class="effects-section">
+    <div class="flexrow">
+        <label><b>Aktive Effekte:</b></label>
+        <a class="effect-control" data-action="create" title="Neuen Effekt erstellen">
+            <button class="clickable" type="button">
+                <i class="fas fa-plus"></i> Effekt hinzufügen
+            </button>
+        </a>
+    </div>
+    
+    {{#if effects.length}}
+    <div class="effects-list">
+        {{#each effects as |effect|}}
+        <div class="effect-item flexrow" data-effect-id="{{effect._id}}">
+            <div class="effect-image">
+                <img src="{{effect.icon}}" alt="{{effect.name}}" width="24" height="24"/>
+            </div>
+            <div class="effect-name">
+                <strong>{{effect.name}}</strong>
+                {{#if effect.disabled}}<em>(Deaktiviert)</em>{{/if}}
+            </div>
+            <div class="effect-controls">
+                <a class="effect-control" data-action="edit" data-effect-id="{{effect._id}}" title="Effekt bearbeiten">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a class="effect-control" data-action="toggle" data-effect-id="{{effect._id}}" title="Effekt aktivieren/deaktivieren">
+                    {{#if effect.disabled}}
+                        <i class="fas fa-eye-slash"></i>
+                    {{else}}
+                        <i class="fas fa-eye"></i>
+                    {{/if}}
+                </a>
+                <a class="effect-control" data-action="delete" data-effect-id="{{effect._id}}" title="Effekt löschen">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    {{else}}
+    <div class="no-effects">
+        <em>Keine aktiven Effekte vorhanden.</em>
+    </div>
+    {{/if}}
+</div>
