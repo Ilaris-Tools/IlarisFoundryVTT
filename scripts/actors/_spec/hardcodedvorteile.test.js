@@ -38,6 +38,9 @@ describe('hardcodedvorteile.js', () => {
                     key: 'ohne',
                     stufe: 0,
                     sources: [],
+                    modifiers: { at: 0, vt: 0, damage: 0, rw: 0, be: 0 },
+                    stilBedingungen: '',
+                    foundryScriptMethods: [],
                 },
             })
         })
@@ -49,10 +52,18 @@ describe('hardcodedvorteile.js', () => {
                         {
                             name: 'Beidhändiger Kampf I',
                             _stats: { compendiumSource: 'Ilaris.beidhändig1' },
+                            system: {
+                                sephrastoScript:
+                                    'modifyKampfstil("Beidhändiger Kampf", 1, 0, 0, 0, 0)',
+                            },
                         },
                         {
                             name: 'Beidhändiger Kampf II (test)',
                             _stats: { compendiumSource: 'Ilaris.beidhändig2' },
+                            system: {
+                                sephrastoScript:
+                                    'modifyKampfstil("Beidhändiger Kampf", 1, 0, 0, 0, 0)',
+                            },
                         },
                     ],
                 },
@@ -66,12 +77,18 @@ describe('hardcodedvorteile.js', () => {
                     key: 'ohne',
                     stufe: 0,
                     sources: [],
+                    modifiers: { at: 0, vt: 0, damage: 0, rw: 0, be: 0 },
+                    stilBedingungen: '',
+                    foundryScriptMethods: [],
                 },
                 'Beidhändiger Kampf': {
                     name: 'Beidhändiger Kampf',
                     key: 'Beidhändiger Kampf',
                     stufe: 2,
                     sources: ['Beidhändiger Kampf I', 'Beidhändiger Kampf II (test)'],
+                    modifiers: { at: 2, vt: 0, damage: 0, rw: 0, be: 0 },
+                    stilBedingungen: '',
+                    foundryScriptMethods: [],
                 },
             })
         })
@@ -100,18 +117,27 @@ describe('hardcodedvorteile.js', () => {
                     key: 'ohne',
                     stufe: 0,
                     sources: [],
+                    modifiers: { at: 0, vt: 0, damage: 0, rw: 0, be: 0 },
+                    stilBedingungen: '',
+                    foundryScriptMethods: [],
                 },
                 'Beidhändiger Kampf': {
                     name: 'Beidhändiger Kampf',
                     key: 'Beidhändiger Kampf',
                     stufe: 1,
                     sources: ['Beidhändiger Kampf I'],
+                    modifiers: { at: 0, vt: 0, damage: 0, rw: 0, be: 0 },
+                    stilBedingungen: '',
+                    foundryScriptMethods: [],
                 },
                 'Defensiver Kampfstil': {
                     name: 'Defensiver Kampfstil',
                     key: 'Defensiver Kampfstil',
                     stufe: 2,
                     sources: ['Defensiver Kampfstil II'],
+                    modifiers: { at: 0, vt: 0, damage: 0, rw: 0, be: 0 },
+                    stilBedingungen: '',
+                    foundryScriptMethods: [],
                 },
             })
         })

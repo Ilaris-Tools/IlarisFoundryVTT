@@ -4,7 +4,10 @@
   "system": {
     "voraussetzung": "Attribut GE 8, Vorteil Schneller Kampf II",
     "gruppe": 3,
-    "text": "Du erhältst AT +1.\n\nErlaubt das Manöver Unterlaufen (VT -4): Wenn die Verteidigung gelingt, darfst du in der nächsten eigenen Initiativephase eine Freie Aktion nutzen, um deinen Gegner (ein weiteres Mal) anzugreifen."
+    "text": "Du erhältst AT +1.\n\nErlaubt das Manöver Unterlaufen (VT -4): Wenn die Verteidigung gelingt, darfst du in der nächsten eigenen Initiativephase eine Freie Aktion nutzen, um deinen Gegner (ein weiteres Mal) anzugreifen.",
+    "sephrastoScript": "modifyKampfstil('Schneller Kampf', 1, 0, 0, 0)",
+    "stilBedingungen": "",
+    "foundryScript": ""
   },
   "_id": "ARB91fHPkKPOahOE",
   "effects": [],

@@ -4,7 +4,10 @@
   "system": {
     "voraussetzung": "Attribut GE 6, Vorteil Schneller Kampf I",
     "gruppe": 3,
-    "text": "Du erhältst AT +1.\n\nDu kannst in eine Halbschwertstellung wechseln, um deine Waffe in einer um 1 kleineren Reichweite zu führen. Der Wechsel in die Stellung oder zurück geschieht in einer Freien Aktion."
+    "text": "Du erhältst AT +1.\n\nDu kannst in eine Halbschwertstellung wechseln, um deine Waffe in einer um 1 kleineren Reichweite zu führen. Der Wechsel in die Stellung oder zurück geschieht in einer Freien Aktion.",
+    "sephrastoScript": "modifyKampfstil('Schneller Kampf', 1, 0, 0, 0)",
+    "stilBedingungen": "",
+    "foundryScript": ""
   },
   "_id": "CkXCWstRAxuIKfZK",
   "effects": [],

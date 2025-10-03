@@ -70,6 +70,16 @@ export class HeldenSheet extends IlarisActorSheet {
         })
 
         console.log(`Updated states: Wunden = ${wunden}, Erschöpfung = ${erschoepfung}`)
+
+        // Update open combat dialogs when wounds or exhaustion change (with debouncing)
+        if (this._triStateUpdateTimeout) {
+            clearTimeout(this._triStateUpdateTimeout)
+        }
+
+        this._triStateUpdateTimeout = setTimeout(() => {
+            this._updateOpenCombatDialogs()
+        }, 300)
+
         this.render()
     }
 }

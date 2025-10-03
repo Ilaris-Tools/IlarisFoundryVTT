@@ -87,6 +87,28 @@
             {{/each}}
         </div>
         <hr />
+        <div>
+            <b>Angriffs-Manöver:</b>
+            
+            <!-- Selected maneuvers as chips -->
+            <div class="maneuver-chips" style="margin-top: 5px; margin-bottom: 5px;">
+                {{#each item.system.angriffmanover as |maneuver|}}
+                <span class="maneuver-chip" data-maneuver="{{maneuver}}">
+                    {{maneuver}}
+                    <i class="fas fa-times remove-maneuver" data-maneuver="{{maneuver}}" title="Manöver entfernen"></i>
+                </span>
+                {{/each}}
+            </div>
+            
+            <!-- Dropdown for adding maneuvers -->
+            <select class="maneuver-selector" style="width: 100%;">
+                <option value="">-- Manöver hinzufügen --</option>
+                {{#each availableManeuvers as |maneuver|}}
+                <option value="{{maneuver.id}}" data-name="{{maneuver.name}}">{{maneuver.name}}</option>
+                {{/each}}
+            </select>
+        </div>
+        <hr />
         <a class="item-delete" data-itemid="{{item._id}}">
             <button class="clickable" type="button">
                 Löschen

@@ -4,7 +4,10 @@
   "system": {
     "voraussetzung": "Attribut KK 6, Vorteil Schildkampf I",
     "gruppe": 3,
-    "text": "Du erhältst VT +1.\n\nDein Schild ignoriert die übliche Erschwernis für Nebenwaffen (S. 39). Außerdem kannst du die erste VT zwischen zwei Initiativphasen als Freie Reaktion ausführen."
+    "text": "Du erhältst VT +1.\n\nDein Schild ignoriert die übliche Erschwernis für Nebenwaffen (S. 39). Außerdem kannst du die erste VT zwischen zwei Initiativphasen als Freie Reaktion ausführen.",
+    "sephrastoScript": "modifyKampfstil('Schildkampf', 0, 1, 0, 0)",
+    "stilBedingungen": "",
+    "foundryScript": "ignoreSideWeaponMalus('Schild')"
   },
   "_id": "JiCWTTC19BJI7qOY",
   "effects": [],

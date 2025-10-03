@@ -11,6 +11,7 @@ export const IlarisGameSettingNames = {
     vorteilePacks: 'vorteilePacks',
     realFumbleCrits: 'realFumbleCrits',
     restrictEnergyCostSetting: 'restrictEnergyCostSetting',
+    hideSyncKampfstileButton: 'hideSyncKampfstileButton',
 }
 
 export const IlarisGameSettingsMenuNames = {
