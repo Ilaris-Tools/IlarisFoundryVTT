@@ -15,6 +15,20 @@
 -   Manöver, die mit dem ZERO_DAMAGE Modifikator in Foundry versehen sind, können wie in den Ilaris Regeln nicht miteinander kombiniert werden
 -   Im Inventar wird nun die Anzahl eines Elements angezeigt
 -   Beim Hinzufügen eines Items kann die Anzahl mit angegeben werden
+-   Foundry Kampfstile benutzen das Sephrasto Kampfstile Script, um AT/VT/DMG/RW/BE Boni dynamisch zu handhaben
+-   Kampfstil-Manöver sind nur noch aktiv, wenn die Waffenvoraussetungen des Kampfstiles erfüllt sind
+-   Kampfstile können Foundry eigenen Scripte erhalten, die folgende Dinge dynamisch handeln:
+    -   Nebenhandwaffen-Erschwernis auch für bestimmte Waffeneigenschaften (zb Schildkampf)
+    -   Ausgleich von Manövererschwernissen
+    -   Berittener Fernkampfmalus ausgelichen
+-   Waffenvoraussetzungen für Kampfstile frei definierbar zb sind die folgende Beispiele möglich:
+    -   Fertigkeit Hiebwaffen (der Kampfstil setzt Waffe mit der Fertigkeit Hiebwaffen voraus)
+    -   Fernkampfwaffe/einzelne Fernkampfwaffe/zwei einhändige Fernkampfwaffen (Der Name ist Programm damit können auch Kampfstile für den Fernkampf angelegt werden)
+    -   Nahkampfwaffe/einzelne Nahkampfwaffe/zwei einhändige Nahkampfwaffen (Der Klassiker)
+    -   (nicht) beritten (Der Kampfstil setzt beritten oder nicht beritten voraus)
+    -   (kein) <beliebige Waffeneigenschaft> (Der Kampfstil benötigt mindestens eine Waffe mit der aufgelisteten Waffeneigenschaft oder verbietet beiden Waffen eine Eigenschaft)
+    -   oder beliebige Kombinationen, der oben genannten Voraussetungen getrennt durch Kommas
+-   Kampfstile können als Fernkampf-Kampfstile geflaggt werden wodurch der AT-Modifier des Stiles nur auf Fernkampfwaffen zählt
 -   Anzeige für optionale Weltregel "Platzbedarf" kompakter
 -   Gildenmagier 2 Bonus
 -   Fügt Charakter-Import-Button im Aktorentab für XML-Datein direkt aus Sephrasto hinzu (man braucht kein Foundry-Plugin mehr)

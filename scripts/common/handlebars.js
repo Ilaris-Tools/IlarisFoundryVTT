@@ -294,6 +294,15 @@ function registerHandlebarsHelpers() {
     })
 
     /**
+     * Handlebars helper to access game settings from templates
+     * @param {string} settingKey - The setting key to retrieve
+     * @returns {*} The setting value
+     */
+    Handlebars.registerHelper('gameSetting', function (settingKey) {
+        return game.settings.get('Ilaris', settingKey)
+    })
+
+    /**
      * Handlebars helper to sort an object alphabetically by its keys
      * @param {Object} object - The object to sort
      * @returns {Array} Array of [key, value] pairs sorted alphabetically by key

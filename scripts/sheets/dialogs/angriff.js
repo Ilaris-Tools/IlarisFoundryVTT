@@ -22,6 +22,7 @@ export class AngriffDialog extends CombatDialog {
         this.rollmode = game.settings.get('core', 'rollMode') // public, private....
         this.item.system.manoever.rllm.selected = game.settings.get('core', 'rollMode') // TODO: either manoever or dialog property.
         this.fumble_val = 1
+        this.isHumanoid = false
         if (this.item.system.eigenschaften.unberechenbar) {
             this.fumble_val = 2
         }
@@ -30,6 +31,7 @@ export class AngriffDialog extends CombatDialog {
 
     getData() {
         let data = super.getData()
+        data.isHumanoid = this.isHumanoid
         return data
     }
 
@@ -383,6 +385,8 @@ export class AngriffDialog extends CombatDialog {
         manoever.mod.selected = html.find(`#modifikator-${this.dialogId}`)[0]?.value || false // Modifikator
         manoever.rllm.selected = html.find(`#rollMode-${this.dialogId}`)[0]?.value || false // RollMode
 
+        this.isHumanoid = html.find(`#isHumanoid-${this.dialogId}`)[0]?.checked || false // isHumanoid
+
         super.manoeverAuswaehlen(html)
     }
 
@@ -400,29 +404,6 @@ export class AngriffDialog extends CombatDialog {
         let nodmg = { name: '', value: false }
         let trefferzone = 0
         let schaden = this.item.getTp()
-
-        // Note: Tactical options (Kombinierte Aktion, Volle Offensive/Defensive)
-        // are moved after handleModifications so they don't affect Riposte
-        // Reichweitenunterschiede rwdf
-        let reichweite = Number(manoever.rwdf.selected)
-        if (reichweite > 0) {
-            let mod_rwdf = 2 * Number(reichweite)
-            mod_at -= mod_rwdf
-            mod_vt -= mod_rwdf
-            text_at = text_at.concat(`Reichweitenunterschied: ${mod_rwdf}\n`)
-            text_vt = text_vt.concat(`Reichweitenunterschied: ${mod_rwdf}\n`)
-        }
-        // Passierschlag pssl & Anzahl Reaktionen rkaz
-        let reaktionen = Number(manoever.rkaz.selected)
-        if (reaktionen > 0) {
-            let mod_rkaz = 4 * reaktionen
-            mod_vt -= mod_rkaz
-            text_vt = text_vt.concat(`${reaktionen + 1}. Reaktion: -${mod_rkaz}\n`)
-            if (manoever.pssl.selected) {
-                mod_at -= mod_rkaz
-                text_at = text_at.concat(`${reaktionen + 1}. Passierschlag: -${mod_rkaz} \n`)
-            }
-        }
 
         // Collect all modifications from all maneuvers
         const allModifications = []
@@ -498,6 +479,28 @@ export class AngriffDialog extends CombatDialog {
             context: this,
         })
 
+        if (
+            this.item.system.manoverausgleich.value > 0 &&
+            (!this.item.system.manoverausgleich.overcomplicated || this.isHumanoid)
+        ) {
+            // Manöverausgleich only applies to negative modifiers and only brings them up to 0
+            let at_ausgleich = 0
+            let vt_ausgleich = 0
+
+            if (mod_at < 0) {
+                at_ausgleich = Math.min(this.item.system.manoverausgleich.value, Math.abs(mod_at))
+                mod_at += at_ausgleich
+                text_at = text_at.concat(`Manöverausgleich: +${at_ausgleich}\n`)
+            }
+
+            if (mod_vt < 0) {
+                vt_ausgleich = Math.min(this.item.system.manoverausgleich.value, Math.abs(mod_vt))
+                mod_vt += vt_ausgleich
+                text_vt = text_vt.concat(`Manöverausgleich: +${vt_ausgleich}\n`)
+            }
+        }
+
+        // Handle standard maneuvers first
         // Handle Riposte special rule: attack maneuver penalties also apply to defense
         const riposteManeuver = this.item.manoever.find(
             (m) => m.name === 'Riposte' && m.inputValue.value,
@@ -528,6 +531,26 @@ export class AngriffDialog extends CombatDialog {
         if (manoever.vldf.selected) {
             mod_vt += 4
             text_vt = text_vt.concat('Volle Defensive +4\n')
+        }
+        // Reichweitenunterschiede rwdf
+        let reichweite = Number(manoever.rwdf.selected)
+        if (reichweite > 0) {
+            let mod_rwdf = 2 * Number(reichweite)
+            mod_at -= mod_rwdf
+            mod_vt -= mod_rwdf
+            text_at = text_at.concat(`Reichweitenunterschied: ${mod_rwdf}\n`)
+            text_vt = text_vt.concat(`Reichweitenunterschied: ${mod_rwdf}\n`)
+        }
+        // Passierschlag pssl & Anzahl Reaktionen rkaz
+        let reaktionen = Number(manoever.rkaz.selected)
+        if (reaktionen > 0) {
+            let mod_rkaz = 4 * reaktionen
+            mod_vt -= mod_rkaz
+            text_vt = text_vt.concat(`${reaktionen}. Reaktion: -${mod_rkaz}\n`)
+            if (manoever.pssl.selected) {
+                mod_at -= mod_rkaz
+                text_at = text_at.concat(`${reaktionen}. Passierschlag: -${mod_rkaz} \n`)
+            }
         }
 
         // If ZERO_DAMAGE was found, override damage values

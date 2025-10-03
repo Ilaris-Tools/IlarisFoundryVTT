@@ -58,6 +58,7 @@ export const label = {
     vldf: 'Volle Defensive (VT +4)',
     vlof: 'Volle Offensive (AT +4, VT -8)',
     vlofok: 'Volle Offensive (AT +4, VT -4)',
+    isHumanoid: 'Ziel ist humanoid',
     gzkl: 'Größenklasse',
     bwng: 'Bewegung',
     lcht: 'Licht',
