@@ -4,7 +4,10 @@
   "system": {
     "voraussetzung": "Attribut GE 4",
     "gruppe": 3,
-    "text": "Bedingungen: zwei einhändige Waffen, kein Schild, nicht beritten.\n\nDu erhältst AT +1."
+    "text": "Bedingungen: zwei einhändige Waffen, kein Schild, nicht beritten.\n\nDu erhältst AT +1.",
+    "sephrastoScript": "modifyKampfstil('Beidhändiger Kampf', 1, 0, 0, 0)",
+    "stilBedingungen": "zwei einhändige Waffen, kein Schild, nicht beritten",
+    "foundryScript": ""
   },
   "_id": "3VwW7yR2NJXcQNa6",
   "effects": [],

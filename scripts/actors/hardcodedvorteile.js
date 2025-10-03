@@ -93,6 +93,9 @@ export function getKampfstile(actor) {
             key: 'ohne',
             stufe: 0,
             sources: [],
+            modifiers: { at: 0, vt: 0, damage: 0, rw: 0, be: 0 }, // Default no modifiers
+            stilBedingungen: '',
+            foundryScriptMethods: [], // Default no methods
         },
     }
 
@@ -117,6 +120,36 @@ export function getKampfstile(actor) {
         // Collect all compendium sources for this kampfstil group
         const sources = stile.map((stil) => stil.name)
 
+        // Accumulate script modifiers from all kampfstile in this group
+        const accumulatedModifiers = { at: 0, vt: 0, damage: 0, rw: 0, be: 0 }
+        let bedingungen = ''
+        let foundryScriptMethods = []
+        stile.forEach((stil) => {
+            const modifiers = parseKampfstilScript(stil.system?.sephrastoScript, stil.name)
+            const stilBedingungen = stil.system?.stilBedingungen || ''
+            if (stilBedingungen && bedingungen) {
+                bedingungen += ', ' + stilBedingungen
+            } else if (stilBedingungen) {
+                bedingungen = stilBedingungen
+            }
+            if (modifiers) {
+                accumulatedModifiers.at += modifiers[0]
+                accumulatedModifiers.vt += modifiers[1]
+                accumulatedModifiers.damage += modifiers[2]
+                accumulatedModifiers.rw += modifiers[3]
+                accumulatedModifiers.be += modifiers[4]
+            }
+
+            // Parse foundryScript to extract method calls
+            if (stil.system?.foundryScript && typeof stil.system.foundryScript === 'string') {
+                const methodCalls = stil.system.foundryScript
+                    .split(';')
+                    .map((methodCall) => methodCall.trim())
+                    .filter((methodCall) => methodCall.length > 0)
+                foundryScriptMethods.push(...methodCalls)
+            }
+        })
+
         // Only add if all sources are non-null and highestStil has a compendium source
         const name = highestStil.name.replace(/ [IV]+.*$/, '')
         if (sources.every((source) => source !== null)) {
@@ -125,6 +158,9 @@ export function getKampfstile(actor) {
                 key: name,
                 stufe: getKampfstilStufe(highestStil.name),
                 sources: sources,
+                modifiers: accumulatedModifiers,
+                stilBedingungen: bedingungen.trim(),
+                foundryScriptMethods: foundryScriptMethods, // Remove duplicates
             }
         }
     })
@@ -146,6 +182,76 @@ export function getKampfstilStufe(kampfstilName) {
     }
 
     return romanToNum[match[1]] || 0
+}
+
+/**
+ * Parses a kampfstil script string to extract modifyKampfstil modifiers
+ * @param {string} script - The script string (e.g., "modifyKampfstil('Beidhändiger Kampf', 1, 0, 0, 0)")
+ * @param {string} kampfstilName - The name of the kampfstil for error logging
+ * @returns {number[]|null} Array of 5 numbers representing the modifiers, or null if parsing failed
+ */
+export function parseKampfstilScript(script, kampfstilName) {
+    if (!script || typeof script !== 'string') {
+        return null
+    }
+
+    // Check that the script starts with modifyKampfstil(
+    const funcPrefix = 'modifyKampfstil('
+    const startIdx = script.indexOf(funcPrefix)
+    if (startIdx === -1) {
+        return null
+    }
+
+    // Extract the argument list inside the parentheses
+    const argsStart = script.indexOf('(', startIdx) + 1
+    const argsEnd = script.lastIndexOf(')')
+    if (argsStart === 0 || argsEnd === -1 || argsEnd <= argsStart) {
+        return null
+    }
+    const argsStr = script.slice(argsStart, argsEnd)
+
+    // Split arguments, handling quoted string for the first argument
+    // First argument: quoted string (single or double quotes)
+    // Try matching single-quoted string
+    let quoteMatch = argsStr.match(/^\s*'([^']*)'\s*,/)
+    if (!quoteMatch) {
+        // Try matching double-quoted string
+        quoteMatch = argsStr.match(/^\s*"([^"]*)"\s*,/)
+    }
+    if (!quoteMatch) {
+        return null
+    }
+    const nameArg = quoteMatch[1]
+    // Remove the first argument from the string
+    const restArgsStr = argsStr.slice(quoteMatch[0].length)
+
+    // Split remaining arguments by comma, trim spaces
+    const numArgs = restArgsStr
+        .split(',')
+        .map((s) => s.trim())
+        .filter((s) => s.length > 0)
+
+    // We expect 4 or 5 numeric arguments (the 5th is optional)
+    if (numArgs.length < 4 || numArgs.length > 5) {
+        return null
+    }
+
+    // Parse numeric arguments, default 5th to 0 if missing
+    const modifiers = [
+        parseInt(numArgs[0], 10),
+        parseInt(numArgs[1], 10),
+        parseInt(numArgs[2], 10),
+        parseInt(numArgs[3], 10),
+        parseInt(numArgs[4] || '0', 10),
+    ]
+
+    // Validate that all values are integers
+    if (modifiers.some(isNaN)) {
+        console.warn(`Invalid modifiers in kampfstil script for ${kampfstilName}: ${script}`)
+        return null
+    }
+
+    return modifiers
 }
 
 export function getAngepasst(angepasst_string, actor) {

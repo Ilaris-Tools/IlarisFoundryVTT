@@ -274,7 +274,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
         // Rollmode
         let label = `Schaden (${this.item.name})`
         let formula = `${this.schaden} ${signed(this.mod_dm)}`
-        await roll_crit_message(formula, label, this.text_dm, this.speaker, this.rollmode, false)
+        await roll_crit_message(formula, label, this.text_dm, this.speaker, this.rollmode, false, 0)
     }
 
     async manoeverAuswaehlen(html) {
@@ -299,7 +299,6 @@ export class FernkampfAngriffDialog extends CombatDialog {
         manoever.wttr.selected = html.find(`#wttr-${this.dialogId}`)[0]?.value || false // Wetter
         manoever.dckg.selected = html.find(`#dckg-${this.dialogId}`)[0]?.value || false // Deckung
         manoever.kgtl.selected = html.find(`#kgtl-${this.dialogId}`)[0]?.value || false // Kampfgetümmel
-        manoever.brtn.selected = html.find(`#brtn-${this.dialogId}`)[0]?.checked // Beritten
         manoever.fm_gzss.selected = html.find(`#fm_gzss-${this.dialogId}`)[0]?.checked || false // Reflexschuss
 
         manoever.mod.selected = html.find(`#modifikator-${this.dialogId}`)[0]?.value || false // Modifikator
@@ -433,26 +432,6 @@ export class FernkampfAngriffDialog extends CombatDialog {
             text_at = text_at.concat(
                 `${CONFIG.ILARIS.label['kgtl']}: ${CONFIG.ILARIS.kgtl_choice[kampfgetuemmel]}\n`,
             )
-        }
-
-        // Beritten brtn  Reiterkampf II rtk
-        let beritten = manoever.brtn.selected
-        let reiterkampf = false
-        if (this.actor.type === 'kreatur') {
-            reiterkampf =
-                this.actor.vorteil.kampf.some((v) => v.name === 'Reiterkampf II') ||
-                this.actor.vorteil.allgemein.some((v) => v.name === 'Reiterkampf II') ||
-                this.actor.vorteil.kampfstil.some((v) => v.name === 'Reiterkampf II')
-        } else {
-            let selectedKampfstil = hardcoded.getSelectedStil(this.actor, 'kampf')
-            reiterkampf =
-                selectedKampfstil.name.includes('Reiterkampf') && selectedKampfstil.stufe >= 2
-        }
-        if (beritten && reiterkampf) {
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['brtn']} (Reiterkampf)\n`)
-        } else if (beritten) {
-            mod_at -= 4
-            text_at = text_at.concat(`${CONFIG.ILARIS.label['brtn']}\n`)
         }
 
         // Collect all modifications from all maneuvers

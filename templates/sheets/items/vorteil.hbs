@@ -27,6 +27,102 @@
         <!-- Include the effects section partial -->
         {{> "systems/Ilaris/templates/helper/effects-section.hbs"}}
         
+        {{#if (ifEq item.system.gruppe "3")}}
+        <div class="flexrow">
+            <label><b>Sephrasto Script:</b><i class="fas fa-info-circle" 
+               data-tooltip="<div style='max-width: 400px; text-align: left;'>
+                   <h4 style='margin: 0 0 10px 0; color: #4b5563;'>Sephrasto Script</h4>
+                   <p style='margin: 0 0 10px 0;'>Hier kannst du das Sephrasto Script für Kampfstil-Modifikationen eintragen:</p>
+                   <div style='background-color: #f3f4f6; padding: 10px; border-radius: 4px; margin: 10px 0;'>
+                       <code style='font-family: monospace; color: #1f2937;'>modifyKampfstil('Kampfstilname', 1, 1, 1, 0, 0)</code>
+                       Alle Modifikatoren, außer BE, gelten nur für Nahkampfwaffen, außer du nutzt unten das foundryScript affectsRangedWeaponOnly().
+                   </div>
+                   <p style='margin: 0 0 10px 0;'><strong>Parameter-Reihenfolge:</strong></p>
+                   <ol style='margin: 0; padding-left: 20px;'>
+                       <li style='margin-bottom: 3px;'><strong>AT</strong> - Attacke Modifikator</li>
+                       <li style='margin-bottom: 3px;'><strong>VT</strong> - Verteidigung Modifikator</li>
+                       <li style='margin-bottom: 3px;'><strong>DMG</strong> - Schaden Modifikator</li>
+                       <li style='margin-bottom: 3px;'><strong>RW</strong> - Reichweite Modifikator</li>
+                       <li style='margin-bottom: 3px;'><strong>BE</strong> - Belastung Modifikator</li>
+                   </ol>
+               </div>"
+               style="margin-left: 5px; cursor: help;"></i></label>
+            <input
+                name="system.sephrastoScript"
+                value="{{item.system.sephrastoScript}}"
+                type="text"
+                data-dtype="String"
+            />
+        </div>
+        <div class="flexrow">
+            <label><b>Stilbedingungen:</b><i class="fas fa-info-circle" 
+               data-tooltip="<div style='max-width: 400px; text-align: left;'>
+                   <h4 style='margin: 0 0 10px 0; color: #4b5563;'>Kampfstil Bedingungen</h4>
+                   <p style='margin: 0 0 10px 0;'>Die Stilbedingungen bestimmen, welche Voraussetzungen erfüllt sein müssen, damit der Kampfstil aktiv ist:</p>
+                   <ul style='margin: 0; padding-left: 20px;'>
+                       <li style='margin-bottom: 5px;'><strong>Leeres Feld:</strong> Kampfstil ist immer aktiv</li>
+                       <li style='margin-bottom: 5px;'><strong>Trennung:</strong> Einzelne Bedingungen mit Komma trennen<br><em>Beispiel: 'beritten, Schild'</em></li>
+                       <li style='margin-bottom: 5px;'><strong>Reittier:</strong> 'beritten' oder 'nicht beritten'</li>
+                       <li style='margin-bottom: 5px;'><strong>Waffeneigenschaften:</strong> Direkt angeben<br><em>Beispiele: 'Schild', 'Parierwaffe', 'Wendig'</em></li>
+                       <li style='margin-bottom: 5px;'><strong>Waffentypen:</strong><br>
+                           • 'nahkampfwaffe' oder 'fernkampfwaffe'<br>
+                           • 'einzelne nahkampfwaffe' = nur eine Nahkampfwaffe<br>
+                           • 'zwei einhändige nahkampfwaffen' = zwei Waffen</li>
+                       <li style='margin-bottom: 5px;'><strong>Fertigkeiten:</strong> 'Fertigkeit <Name>'<br><em>Beispiel: 'Fertigkeit Wurfwaffen'</em></li>
+                   </ul>
+               </div>"
+               style="margin-left: 5px; cursor: help;"></i></label>
+            <input
+                name="system.stilBedingungen"
+                value="{{item.system.stilBedingungen}}"
+                type="text"
+                data-dtype="String"
+            />
+        </div>
+        <div class="flexrow">
+            <label><b>Foundry Script:</b><i class="fas fa-info-circle" 
+               data-tooltip="<div style='max-width: 500px; text-align: left;'>
+                   <h4 style='margin: 0 0 10px 0; color: #4b5563;'>Foundry Script Methoden</h4>
+                   <p style='margin: 0 0 10px 0;'>Verfügbare Methoden für Kampfstil-Modifikationen.</p>
+                   <ul style='margin: 0; padding-left: 20px;'>
+                       <li style='margin-bottom: 8px;'>
+                           <strong>ignoreSideWeaponMalus(Eigenschaft)</strong><br>
+                           <em>Ignoriert Erschwernisse für Nebenwaffe</em><br>
+                           <small>Parameter: Eigenschaft (optional)</small><br>
+                           <code style='background: #f3f4f6; padding: 2px 4px; font-size: 11px;'>ignoreSideWeaponMalus('Wendig')</code>
+                       </li>
+                       <li style='margin-bottom: 8px;'>
+                           <strong>affectsRangedWeaponOnly()</strong><br>
+                           <em>Modifier wirken nur auf Fernkampfwaffen</em><br>
+                           <small>Keine zusätzlichen Parameter</small><br>
+                           <code style='background: #f3f4f6; padding: 2px 4px; font-size: 11px;'>affectsRangedWeaponOnly()</code>
+                       </li>
+                       <li style='margin-bottom: 8px;'>
+                           <strong>ignoreMountedRangePenalty()</strong><br>
+                           <em>Ignoriert Fernkampf-Malus beim Reiten</em><br>
+                           <small>Keine zusätzlichen Parameter</small><br>
+                           <code style='background: #f3f4f6; padding: 2px 4px; font-size: 11px;'>ignoreMountedRangePenalty()</code>
+                       </li>
+                       <li style='margin-bottom: 8px;'>
+                           <strong>manoverAusgleich(Wert)</strong><br>
+                           <em>Setzt Manöverausgleich für Kampfstil</em><br>
+                           <small>Parameter: Wert = Manöverausgleichwert (Zahl)</small><br>
+                           <code style='background: #f3f4f6; padding: 2px 4px; font-size: 11px;'>manoverAusgleich(2)</code>
+                       </li>
+                   </ul>
+                   <p style='margin: 10px 0 0 0; font-weight: bold; color: #dc2626;'>
+                       ⚠️ Mehrere Methoden mit Semikolon trennen
+                   </p>
+               </div>"
+               style="margin-left: 5px; cursor: help;"></i></label>
+            <input
+                name="system.foundryScript"
+                value="{{item.system.foundryScript}}"
+                type="text"
+                data-dtype="String"
+            />
+        </div>
+        {{/if}}
         <hr />
         <a class="item-delete" data-itemid="{{item._id}}">
             <button class="clickable" type="button">
