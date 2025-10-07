@@ -656,13 +656,15 @@ export class IlarisActor extends Actor {
             fwaffe.system.manoever.lcht.angepasst = lcht_angepasst
         }
 
+        actor.misc.selected_kampfstil_conditions_not_met = ''
+
         if (
             weaponUtils.checkCombatStyleConditions(
                 selected_kampfstil?.stilBedingungen,
                 HW,
                 NW,
                 this.system.misc.ist_beritten,
-                actor.misc.selected_kampfstil_conditions_not_met,
+                actor,
             )
         ) {
             // Execute foundryScript method calls if they exist

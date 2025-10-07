@@ -159,11 +159,11 @@ export function checkCombatStyleConditions(
     hauptWaffe,
     nebenWaffe,
     actorBeritten,
-    notMetConditions,
+    actor,
 ) {
     let conditionsMet = []
     if (!hauptWaffe) {
-        notMetConditions += 'Keine Hauptwaffe ausgewählt.'
+        actor.misc.selected_kampfstil_conditions_not_met += 'Keine Hauptwaffe ausgewählt.'
         return false
     }
     if (!bedingungen || bedingungen.trim() === '') {
@@ -178,13 +178,14 @@ export function checkCombatStyleConditions(
         // Check mounted status
         if (lowerCondition === 'beritten') {
             if (!actorBeritten) {
-                notMetConditions += 'Der Charakter ist nicht beritten.'
+                actor.misc.selected_kampfstil_conditions_not_met +=
+                    'Der Charakter ist nicht beritten.'
                 conditionsMet.push(false)
             }
         }
         if (lowerCondition === 'nicht beritten') {
             if (actorBeritten) {
-                notMetConditions += 'Der Charakter ist beritten.'
+                actor.misc.selected_kampfstil_conditions_not_met += 'Der Charakter ist beritten.'
                 conditionsMet.push(false)
             }
         }
@@ -192,7 +193,8 @@ export function checkCombatStyleConditions(
         // Check weapon type/count
         if (lowerCondition === 'einzelne waffe' || lowerCondition === 'einzelne nahkampfwaffe') {
             if (!usesSingleWeapon(hauptWaffe, nebenWaffe)) {
-                notMetConditions += 'Es wird nicht eine einzelne Nahkampfwaffe verwendet.'
+                actor.misc.selected_kampfstil_conditions_not_met +=
+                    'Es wird nicht eine einzelne Nahkampfwaffe verwendet.'
                 conditionsMet.push(false)
             }
         }
@@ -201,32 +203,37 @@ export function checkCombatStyleConditions(
             lowerCondition === 'zwei einhändige nahkampfwaffen'
         ) {
             if (!usesTwoWeapons(hauptWaffe, nebenWaffe)) {
-                notMetConditions += 'Es werden nicht zwei einhändige Nahkampfwaffen verwendet.'
+                actor.misc.selected_kampfstil_conditions_not_met +=
+                    'Es werden nicht zwei einhändige Nahkampfwaffen verwendet.'
                 conditionsMet.push(false)
             }
         }
         if (lowerCondition === 'einzelne fernkampfwaffe') {
             // Check if using single ranged weapon
             if (!usesSingleWeapon(hauptWaffe, nebenWaffe, 'fernkampfwaffe')) {
-                notMetConditions += 'Es wird nicht eine einzelne Fernkampfwaffe verwendet.'
+                actor.misc.selected_kampfstil_conditions_not_met +=
+                    'Es wird nicht eine einzelne Fernkampfwaffe verwendet.'
                 conditionsMet.push(false)
             }
         }
         if (lowerCondition === 'zwei einhändige fernkampfwaffen') {
             if (!usesTwoWeapons(hauptWaffe, nebenWaffe, 'fernkampfwaffe')) {
-                notMetConditions += 'Es werden nicht zwei einhändige Fernkampfwaffen verwendet.'
+                actor.misc.selected_kampfstil_conditions_not_met +=
+                    'Es werden nicht zwei einhändige Fernkampfwaffen verwendet.'
                 conditionsMet.push(false)
             }
         }
         if (lowerCondition === 'nahkampfwaffe') {
             if (!usesOneWeaponOfType(hauptWaffe, nebenWaffe)) {
-                notMetConditions += 'Es wird nicht mindestens eine Nahkampfwaffe verwendet.'
+                actor.misc.selected_kampfstil_conditions_not_met +=
+                    'Es wird nicht mindestens eine Nahkampfwaffe verwendet.'
                 conditionsMet.push(false)
             }
         }
         if (lowerCondition === 'fernkampfwaffe') {
             if (!usesOneWeaponOfType(hauptWaffe, nebenWaffe, 'fernkampfwaffe')) {
-                notMetConditions += 'Es wird nicht mindestens eine Fernkampfwaffe verwendet.'
+                actor.misc.selected_kampfstil_conditions_not_met +=
+                    'Es wird nicht mindestens eine Fernkampfwaffe verwendet.'
                 conditionsMet.push(false)
             }
         }
@@ -250,7 +257,7 @@ export function checkCombatStyleConditions(
             )
                 hasSkill = true
             if (!hasSkill) {
-                notMetConditions += `Keine der Waffen verwendet die Fertigkeit "${fertigkeit}".`
+                actor.misc.selected_kampfstil_conditions_not_met += `Keine der Waffen verwendet die Fertigkeit "${fertigkeit}".`
                 conditionsMet.push(false)
             }
         }
@@ -259,7 +266,7 @@ export function checkCombatStyleConditions(
         if (lowerCondition.startsWith('kein ')) {
             const eigenschaft = lowerCondition.substring(5).trim()
             if (anyWeaponNeedsToMeetRequirement(hauptWaffe, nebenWaffe, eigenschaft)) {
-                notMetConditions += `Eine der Waffen verwendet die verbotene Waffeneigenschaft "${eigenschaft}".`
+                actor.misc.selected_kampfstil_conditions_not_met += `Eine der Waffen verwendet die verbotene Waffeneigenschaft "${eigenschaft}".`
                 conditionsMet.push(false)
             }
         }
@@ -281,11 +288,11 @@ export function checkCombatStyleConditions(
             lowerCondition !== 'fernkampfwaffe'
         ) {
             if (!anyWeaponNeedsToMeetRequirement(hauptWaffe, nebenWaffe, lowerCondition)) {
-                notMetConditions += `Eine der Waffen verwendet die benötigte Waffeneigenschaft "${lowerCondition}".`
+                actor.misc.selected_kampfstil_conditions_not_met += `Eine der Waffen verwendet die benötigte Waffeneigenschaft "${lowerCondition}".`
                 conditionsMet.push(false)
             }
         }
     }
-    console.log('Bedingungen geprüft. Ergebnis:', conditionsMet)
+    console.log('Bedingungen geprüft. Ergebnis:', actor.misc.selected_kampfstil_conditions_not_met)
     return conditionsMet.length === 0 || conditionsMet.every((met) => met === true)
 }
