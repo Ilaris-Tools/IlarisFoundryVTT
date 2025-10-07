@@ -555,6 +555,7 @@ export class IlarisActor extends Actor {
             nwaffe.system.manoever.vlof.offensiver_kampfstil = actor.vorteil.kampf.some(
                 (x) => x.name == 'Offensiver Kampfstil',
             )
+            nwaffe.system.rw_mod = nwaffe.system.rw
         }
 
         for (let fwaffe of actor.fernkampfwaffen) {
@@ -625,6 +626,7 @@ export class IlarisActor extends Actor {
                 }`
             }
             let rw = fwaffe.system.rw
+            fwaffe.system.rw_mod = rw
             fwaffe.system.manoever.rw['0'] = `${rw} Schritt`
             fwaffe.system.manoever.rw['1'] = `${2 * rw} Schritt`
             fwaffe.system.manoever.rw['2'] = `${4 * rw} Schritt`

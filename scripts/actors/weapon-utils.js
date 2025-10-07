@@ -84,13 +84,13 @@ export function applyModifierToWeapons(
     if (hauptWaffe) {
         if (affectRanged && hauptWaffe.type === 'fernkampfwaffe') {
             hauptWaffe.system.fk += modifiers.at
-            hauptWaffe.system.rw += modifiers.rw
+            hauptWaffe.system.rw_mod += modifiers.rw
             hauptWaffe.system.schaden = hauptWaffe.system.schaden.concat(schaden)
         }
         if (!affectRanged && hauptWaffe.type === 'nahkampfwaffe') {
             hauptWaffe.system.at += modifiers.at
             hauptWaffe.system.vt += modifiers.vt
-            hauptWaffe.system.rw += modifiers.rw
+            hauptWaffe.system.rw_mod += modifiers.rw
             hauptWaffe.system.schaden = hauptWaffe.system.schaden.concat(schaden)
         }
         if (hauptWaffe.system.fk) {
@@ -106,13 +106,13 @@ export function applyModifierToWeapons(
     if (nebenWaffe && hauptWaffe && hauptWaffe.id != nebenWaffe.id) {
         if (affectRanged && nebenWaffe.type === 'fernkampfwaffe') {
             nebenWaffe.system.fk += modifiers.at
-            nebenWaffe.system.rw += modifiers.rw
+            nebenWaffe.system.rw_mod += modifiers.rw
             nebenWaffe.system.schaden = nebenWaffe.system.schaden.concat(schaden)
         }
         if (!affectRanged && nebenWaffe.type === 'nahkampfwaffe') {
             nebenWaffe.system.at += modifiers.at
             nebenWaffe.system.vt += modifiers.vt
-            nebenWaffe.system.rw += modifiers.rw
+            nebenWaffe.system.rw_mod += modifiers.rw
             nebenWaffe.system.schaden = nebenWaffe.system.schaden.concat(schaden)
         }
         if (nebenWaffe.system.fk) {
