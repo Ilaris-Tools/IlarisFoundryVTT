@@ -672,7 +672,12 @@ export class UebernatuerlichDialog extends CombatDialog {
             context: this,
         })
 
-        if (manoeverAmount > 1) {
+        const selectedStil = getSelectedStil(actor, 'uebernatuerlich')
+        if (
+            manoeverAmount > 1 &&
+            selectedStil?.name.includes('Gildenmagier') &&
+            selectedStil.stufe >= 2
+        ) {
             text_at = text_at.concat(`Gildenmagier 2: +${2}\n`)
             mod_at += 2
         }
