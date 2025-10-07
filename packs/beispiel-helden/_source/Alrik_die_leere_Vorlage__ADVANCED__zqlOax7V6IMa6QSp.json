@@ -1448,7 +1448,7 @@
       }
     },
     "texture": {
-      "src": "systems/Ilaris/assets/images/token/kreaturentypen/humanoid.png",
+      "src": "systems/Ilaris/assets/images/token/kreaturentypen/humanoid.jpg",
       "tint": "#ffffff",
       "scaleX": 1,
       "scaleY": 1,

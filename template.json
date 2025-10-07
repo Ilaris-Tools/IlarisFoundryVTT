@@ -173,6 +173,7 @@
         "attribute",
         "initiative"
       ],
+      "additemtype": "angriff",
       "edit": false,
       "kreaturentyp": "humanoid",
       "kurzbeschreibung": "",

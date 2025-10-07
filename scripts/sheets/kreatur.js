@@ -16,6 +16,12 @@ export class KreaturSheet extends IlarisActorSheet {
         })
     }
 
+    async getData() {
+        const context = await super.getData()
+        context.kreaturItemOptions = foundry.utils.duplicate(CONFIG.ILARIS.kreatur_item_options)
+        return context
+    }
+
     async _onClickable(event) {
         super._onClickable(event)
         let clicktype = $(event.currentTarget).data('clicktype')
