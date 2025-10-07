@@ -154,9 +154,21 @@ export function manoverAusgleich(
     }
 }
 
-export function checkCombatStyleConditions(bedingungen, hauptWaffe, nebenWaffe, actorBeritten) {
-    if (!hauptWaffe) return false
-    if (!bedingungen || bedingungen.trim() === '') return true
+export function checkCombatStyleConditions(
+    bedingungen,
+    hauptWaffe,
+    nebenWaffe,
+    actorBeritten,
+    notMetConditions,
+) {
+    let conditionsMet = []
+    if (!hauptWaffe) {
+        notMetConditions += 'Keine Hauptwaffe ausgewählt.'
+        return false
+    }
+    if (!bedingungen || bedingungen.trim() === '') {
+        return true
+    }
 
     const conditions = bedingungen.split(',').map((condition) => condition.trim())
 
@@ -165,42 +177,58 @@ export function checkCombatStyleConditions(bedingungen, hauptWaffe, nebenWaffe, 
 
         // Check mounted status
         if (lowerCondition === 'beritten') {
-            if (!actorBeritten) return false
-            continue
+            if (!actorBeritten) {
+                notMetConditions += 'Der Charakter ist nicht beritten.'
+                conditionsMet.push(false)
+            }
         }
         if (lowerCondition === 'nicht beritten') {
-            if (actorBeritten) return false
-            continue
+            if (actorBeritten) {
+                notMetConditions += 'Der Charakter ist beritten.'
+                conditionsMet.push(false)
+            }
         }
 
         // Check weapon type/count
         if (lowerCondition === 'einzelne waffe' || lowerCondition === 'einzelne nahkampfwaffe') {
-            if (!usesSingleWeapon(hauptWaffe, nebenWaffe)) return false
-            continue
+            if (!usesSingleWeapon(hauptWaffe, nebenWaffe)) {
+                notMetConditions += 'Es wird nicht eine einzelne Nahkampfwaffe verwendet.'
+                conditionsMet.push(false)
+            }
         }
         if (
             lowerCondition === 'zwei einhändige waffen' ||
             lowerCondition === 'zwei einhändige nahkampfwaffen'
         ) {
-            if (!usesTwoWeapons(hauptWaffe, nebenWaffe)) return false
-            continue
+            if (!usesTwoWeapons(hauptWaffe, nebenWaffe)) {
+                notMetConditions += 'Es werden nicht zwei einhändige Nahkampfwaffen verwendet.'
+                conditionsMet.push(false)
+            }
         }
         if (lowerCondition === 'einzelne fernkampfwaffe') {
             // Check if using single ranged weapon
-            if (!usesSingleWeapon(hauptWaffe, nebenWaffe, 'fernkampfwaffe')) return false
-            continue
+            if (!usesSingleWeapon(hauptWaffe, nebenWaffe, 'fernkampfwaffe')) {
+                notMetConditions += 'Es wird nicht eine einzelne Fernkampfwaffe verwendet.'
+                conditionsMet.push(false)
+            }
         }
         if (lowerCondition === 'zwei einhändige fernkampfwaffen') {
-            if (!usesTwoWeapons(hauptWaffe, nebenWaffe, 'fernkampfwaffe')) return false
-            continue
+            if (!usesTwoWeapons(hauptWaffe, nebenWaffe, 'fernkampfwaffe')) {
+                notMetConditions += 'Es werden nicht zwei einhändige Fernkampfwaffen verwendet.'
+                conditionsMet.push(false)
+            }
         }
         if (lowerCondition === 'nahkampfwaffe') {
-            if (!usesOneWeaponOfType(hauptWaffe, nebenWaffe)) return false
-            continue
+            if (!usesOneWeaponOfType(hauptWaffe, nebenWaffe)) {
+                notMetConditions += 'Es wird nicht mindestens eine Nahkampfwaffe verwendet.'
+                conditionsMet.push(false)
+            }
         }
         if (lowerCondition === 'fernkampfwaffe') {
-            if (!usesOneWeaponOfType(hauptWaffe, nebenWaffe, 'fernkampfwaffe')) return false
-            continue
+            if (!usesOneWeaponOfType(hauptWaffe, nebenWaffe, 'fernkampfwaffe')) {
+                notMetConditions += 'Es wird nicht mindestens eine Fernkampfwaffe verwendet.'
+                conditionsMet.push(false)
+            }
         }
 
         // Check weapon skill (Fertigkeit)
@@ -221,20 +249,43 @@ export function checkCombatStyleConditions(bedingungen, hauptWaffe, nebenWaffe, 
                 nebenWaffe.system.fertigkeit.toLowerCase() === fertigkeit
             )
                 hasSkill = true
-            if (!hasSkill) return false
-            continue
+            if (!hasSkill) {
+                notMetConditions += `Keine der Waffen verwendet die Fertigkeit "${fertigkeit}".`
+                conditionsMet.push(false)
+            }
         }
 
         // Check for negated weapon properties (kein <Waffeneigenschaft>)
         if (lowerCondition.startsWith('kein ')) {
             const eigenschaft = lowerCondition.substring(5).trim()
-            if (anyWeaponNeedsToMeetRequirement(hauptWaffe, nebenWaffe, eigenschaft)) return false
-            continue
+            if (anyWeaponNeedsToMeetRequirement(hauptWaffe, nebenWaffe, eigenschaft)) {
+                notMetConditions += `Eine der Waffen verwendet die verbotene Waffeneigenschaft "${eigenschaft}".`
+                conditionsMet.push(false)
+            }
         }
 
         // Check weapon properties (direct <Waffeneigenschaft>)
-        if (!anyWeaponNeedsToMeetRequirement(hauptWaffe, nebenWaffe, lowerCondition)) return false
+        // Only check if it's not one of the special conditions we handled above
+        if (
+            !lowerCondition.startsWith('fertigkeit ') &&
+            !lowerCondition.startsWith('kein ') &&
+            lowerCondition !== 'beritten' &&
+            lowerCondition !== 'nicht beritten' &&
+            lowerCondition !== 'einzelne waffe' &&
+            lowerCondition !== 'einzelne nahkampfwaffe' &&
+            lowerCondition !== 'zwei einhändige waffen' &&
+            lowerCondition !== 'zwei einhändige nahkampfwaffen' &&
+            lowerCondition !== 'einzelne fernkampfwaffe' &&
+            lowerCondition !== 'zwei einhändige fernkampfwaffen' &&
+            lowerCondition !== 'nahkampfwaffe' &&
+            lowerCondition !== 'fernkampfwaffe'
+        ) {
+            if (!anyWeaponNeedsToMeetRequirement(hauptWaffe, nebenWaffe, lowerCondition)) {
+                notMetConditions += `Eine der Waffen verwendet die benötigte Waffeneigenschaft "${lowerCondition}".`
+                conditionsMet.push(false)
+            }
+        }
     }
-
-    return true
+    console.log('Bedingungen geprüft. Ergebnis:', conditionsMet)
+    return conditionsMet.length === 0 || conditionsMet.every((met) => met === true)
 }
