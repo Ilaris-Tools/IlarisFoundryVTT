@@ -270,38 +270,59 @@ describe('weapon-requirements.js', () => {
                 vt: 0,
             },
         })
+        const actor = () => ({ misc: { selected_kampfstil_conditions_not_met: '' } })
 
         it('should return true for empty or null conditions', () => {
             const mockWeapon = createMockWeapon('weapon1')
-            expect(checkCombatStyleConditions('', mockWeapon, undefined, false)).toBe(true)
-            expect(checkCombatStyleConditions(null, mockWeapon, undefined, false)).toBe(true)
-            expect(checkCombatStyleConditions('   ', mockWeapon, undefined, false)).toBe(true)
+            expect(checkCombatStyleConditions('', mockWeapon, undefined, false, actor())).toBe(true)
+            expect(checkCombatStyleConditions(null, mockWeapon, undefined, false, actor())).toBe(
+                true,
+            )
+            expect(checkCombatStyleConditions('   ', mockWeapon, undefined, false, actor())).toBe(
+                true,
+            )
         })
 
         it('should return false when hauptWaffe is undefined', () => {
-            expect(checkCombatStyleConditions('beritten', undefined, undefined, true)).toBe(false)
-            expect(checkCombatStyleConditions('reittier', undefined, undefined, false)).toBe(false)
-            expect(checkCombatStyleConditions('', undefined, undefined, false)).toBe(false)
+            expect(
+                checkCombatStyleConditions('beritten', undefined, undefined, true, actor()),
+            ).toBe(false)
+            expect(
+                checkCombatStyleConditions('reittier', undefined, undefined, false, actor()),
+            ).toBe(false)
+            expect(checkCombatStyleConditions('', undefined, undefined, false, actor())).toBe(false)
         })
 
         describe('mounted status conditions', () => {
             it('should check "beritten" condition correctly', () => {
                 const mockWeapon = createMockWeapon('weapon1')
-                expect(checkCombatStyleConditions('beritten', mockWeapon, undefined, true)).toBe(
-                    true,
-                )
-                expect(checkCombatStyleConditions('beritten', mockWeapon, undefined, false)).toBe(
-                    false,
-                )
+                expect(
+                    checkCombatStyleConditions('beritten', mockWeapon, undefined, true, actor()),
+                ).toBe(true)
+                expect(
+                    checkCombatStyleConditions('beritten', mockWeapon, undefined, false, actor()),
+                ).toBe(false)
             })
 
             it('should check "nicht beritten" condition correctly', () => {
                 const mockWeapon = createMockWeapon('weapon1')
                 expect(
-                    checkCombatStyleConditions('nicht beritten', mockWeapon, undefined, false),
+                    checkCombatStyleConditions(
+                        'nicht beritten',
+                        mockWeapon,
+                        undefined,
+                        false,
+                        actor(),
+                    ),
                 ).toBe(true)
                 expect(
-                    checkCombatStyleConditions('nicht beritten', mockWeapon, undefined, true),
+                    checkCombatStyleConditions(
+                        'nicht beritten',
+                        mockWeapon,
+                        undefined,
+                        true,
+                        actor(),
+                    ),
                 ).toBe(false)
             })
         })
@@ -310,7 +331,13 @@ describe('weapon-requirements.js', () => {
             it('should check "einzelne waffe" condition correctly', () => {
                 const singleWeapon = createMockWeapon('weapon1')
                 expect(
-                    checkCombatStyleConditions('einzelne waffe', singleWeapon, undefined, false),
+                    checkCombatStyleConditions(
+                        'einzelne waffe',
+                        singleWeapon,
+                        undefined,
+                        false,
+                        actor(),
+                    ),
                 ).toBe(true)
                 expect(
                     checkCombatStyleConditions(
@@ -318,15 +345,28 @@ describe('weapon-requirements.js', () => {
                         singleWeapon,
                         undefined,
                         false,
+                        actor(),
                     ),
                 ).toBe(true)
                 expect(
-                    checkCombatStyleConditions('einzelne waffe', singleWeapon, singleWeapon, false),
+                    checkCombatStyleConditions(
+                        'einzelne waffe',
+                        singleWeapon,
+                        singleWeapon,
+                        false,
+                        actor(),
+                    ),
                 ).toBe(true)
 
                 const mockWeapon = createMockWeapon('weapon2')
                 expect(
-                    checkCombatStyleConditions('einzelne waffe', singleWeapon, mockWeapon, false),
+                    checkCombatStyleConditions(
+                        'einzelne waffe',
+                        singleWeapon,
+                        mockWeapon,
+                        false,
+                        actor(),
+                    ),
                 ).toBe(false)
             })
 
@@ -334,7 +374,13 @@ describe('weapon-requirements.js', () => {
                 const weapon1 = createMockWeapon('weapon1')
                 const weapon2 = createMockWeapon('weapon2')
                 expect(
-                    checkCombatStyleConditions('zwei einhändige waffen', weapon1, weapon2, false),
+                    checkCombatStyleConditions(
+                        'zwei einhändige waffen',
+                        weapon1,
+                        weapon2,
+                        false,
+                        actor(),
+                    ),
                 ).toBe(true)
                 expect(
                     checkCombatStyleConditions(
@@ -342,10 +388,17 @@ describe('weapon-requirements.js', () => {
                         weapon1,
                         weapon2,
                         false,
+                        actor(),
                     ),
                 ).toBe(true)
                 expect(
-                    checkCombatStyleConditions('zwei einhändige waffen', weapon1, undefined, false),
+                    checkCombatStyleConditions(
+                        'zwei einhändige waffen',
+                        weapon1,
+                        undefined,
+                        false,
+                        actor(),
+                    ),
                 ).toBe(false)
             })
 
@@ -357,6 +410,7 @@ describe('weapon-requirements.js', () => {
                         rangedWeapon,
                         undefined,
                         false,
+                        actor(),
                     ),
                 ).toBe(true)
                 expect(
@@ -365,6 +419,7 @@ describe('weapon-requirements.js', () => {
                         undefined,
                         rangedWeapon,
                         false,
+                        actor(),
                     ),
                 ).toBe(false)
 
@@ -375,6 +430,7 @@ describe('weapon-requirements.js', () => {
                         rangedWeapon,
                         sameRangedWeapon,
                         false,
+                        actor(),
                     ),
                 ).toBe(false)
 
@@ -385,6 +441,7 @@ describe('weapon-requirements.js', () => {
                         meleeWeapon,
                         undefined,
                         false,
+                        actor(),
                     ),
                 ).toBe(false)
             })
@@ -398,6 +455,7 @@ describe('weapon-requirements.js', () => {
                         rangedWeapon1,
                         rangedWeapon2,
                         false,
+                        actor(),
                     ),
                 ).toBe(true)
 
@@ -408,12 +466,14 @@ describe('weapon-requirements.js', () => {
                         rangedWeapon1,
                         sameRangedWeapon,
                         false,
+                        actor(),
                     ),
                 ).toBe(false)
             })
         })
 
         describe('weapon skill conditions', () => {
+            const actor = () => ({ misc: { selected_kampfstil_conditions_not_met: '' } })
             it('should check "Fertigkeit" condition correctly', () => {
                 const weaponWithSkill = createMockWeaponWithSkill(
                     'weapon1',
@@ -427,6 +487,7 @@ describe('weapon-requirements.js', () => {
                         weaponWithSkill,
                         undefined,
                         false,
+                        actor(),
                     ),
                 ).toBe(true)
                 expect(
@@ -435,6 +496,7 @@ describe('weapon-requirements.js', () => {
                         undefined,
                         weaponWithSkill,
                         false,
+                        actor(),
                     ),
                 ).toBe(false)
                 expect(
@@ -443,26 +505,46 @@ describe('weapon-requirements.js', () => {
                         weaponWithSkill,
                         undefined,
                         false,
+                        actor(),
                     ),
                 ).toBe(false)
             })
         })
 
         describe('weapon property conditions', () => {
+            const actor = () => ({ misc: { selected_kampfstil_conditions_not_met: '' } })
             it('should check positive weapon properties correctly', () => {
                 const weaponWithReittier = createMockWeapon('weapon1', 'nahkampfwaffe', {
                     reittier: true,
                 })
                 expect(
-                    checkCombatStyleConditions('reittier', weaponWithReittier, undefined, false),
+                    checkCombatStyleConditions(
+                        'reittier',
+                        weaponWithReittier,
+                        undefined,
+                        false,
+                        actor(),
+                    ),
                 ).toBe(true)
                 expect(
-                    checkCombatStyleConditions('reittier', undefined, weaponWithReittier, false),
+                    checkCombatStyleConditions(
+                        'reittier',
+                        undefined,
+                        weaponWithReittier,
+                        false,
+                        actor(),
+                    ),
                 ).toBe(false)
 
                 const weaponWithoutReittier = createMockWeapon('weapon2', 'nahkampfwaffe', {})
                 expect(
-                    checkCombatStyleConditions('reittier', weaponWithoutReittier, undefined, false),
+                    checkCombatStyleConditions(
+                        'reittier',
+                        weaponWithoutReittier,
+                        undefined,
+                        false,
+                        actor(),
+                    ),
                 ).toBe(false)
             })
 
@@ -476,6 +558,7 @@ describe('weapon-requirements.js', () => {
                         weaponWithReittier,
                         undefined,
                         false,
+                        actor(),
                     ),
                 ).toBe(false)
 
@@ -486,12 +569,14 @@ describe('weapon-requirements.js', () => {
                         weaponWithoutReittier,
                         undefined,
                         false,
+                        actor(),
                     ),
                 ).toBe(true)
             })
         })
 
         describe('multiple conditions', () => {
+            const actor = () => ({ misc: { selected_kampfstil_conditions_not_met: '' } })
             it('should check multiple conditions separated by commas', () => {
                 const weaponWithReittier = createMockWeaponWithSkill(
                     'weapon1',
@@ -507,6 +592,7 @@ describe('weapon-requirements.js', () => {
                         weaponWithReittier,
                         undefined,
                         true,
+                        actor(),
                     ),
                 ).toBe(true)
 
@@ -517,6 +603,7 @@ describe('weapon-requirements.js', () => {
                         weaponWithReittier,
                         undefined,
                         false,
+                        actor(),
                     ),
                 ).toBe(false)
 
@@ -530,6 +617,7 @@ describe('weapon-requirements.js', () => {
                         weaponWithoutSchild,
                         undefined,
                         false,
+                        actor(),
                     ),
                 ).toBe(true)
 
@@ -543,6 +631,7 @@ describe('weapon-requirements.js', () => {
                         weaponWithSchild,
                         undefined,
                         false,
+                        actor(),
                     ),
                 ).toBe(false)
             })
@@ -557,19 +646,27 @@ describe('weapon-requirements.js', () => {
                         weaponWithReittier,
                         undefined,
                         true,
+                        actor(),
                     ),
                 ).toBe(true)
             })
         })
 
         describe('case sensitivity', () => {
+            const actor = () => ({ misc: { selected_kampfstil_conditions_not_met: '' } })
             it('should handle case-insensitive keywords but preserve property case', () => {
                 const mockWeapon = createMockWeapon('weapon1')
-                expect(checkCombatStyleConditions('BERITTEN', mockWeapon, undefined, true)).toBe(
-                    true,
-                )
                 expect(
-                    checkCombatStyleConditions('Nicht Beritten', mockWeapon, undefined, false),
+                    checkCombatStyleConditions('BERITTEN', mockWeapon, undefined, true, actor()),
+                ).toBe(true)
+                expect(
+                    checkCombatStyleConditions(
+                        'Nicht Beritten',
+                        mockWeapon,
+                        undefined,
+                        false,
+                        actor(),
+                    ),
                 ).toBe(true)
                 expect(
                     checkCombatStyleConditions(
@@ -577,6 +674,7 @@ describe('weapon-requirements.js', () => {
                         createMockWeapon('weapon1'),
                         undefined,
                         false,
+                        actor(),
                     ),
                 ).toBe(true)
 
@@ -589,6 +687,7 @@ describe('weapon-requirements.js', () => {
                         weaponWithReittier,
                         undefined,
                         false,
+                        actor(),
                     ),
                 ).toBe(false)
             })
