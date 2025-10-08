@@ -480,6 +480,7 @@ export class AngriffDialog extends CombatDialog {
         })
 
         if (
+            this.item.system.manoverausgleich &&
             this.item.system.manoverausgleich.value > 0 &&
             (!this.item.system.manoverausgleich.overcomplicated || this.isHumanoid)
         ) {
