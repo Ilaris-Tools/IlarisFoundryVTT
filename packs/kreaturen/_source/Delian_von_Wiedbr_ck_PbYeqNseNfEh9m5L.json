@@ -110,9 +110,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
-        "text": "Du erhältst AT +1.\n\nErlaubt das Manöver Unterlaufen (VT -4): Wenn die Verteidigung gelingt, darfst du in der nächsten eigenen Initiativephase eine Freie Aktion nutzen, um deinen Gegner (ein weiteres Mal) anzugreifen."
+        "voraussetzung": "Attribut GE 8, Vorteil Schneller Kampf II",
+        "gruppe": 3,
+        "text": "Du erhältst AT +1.\n\nErlaubt das Manöver Unterlaufen (VT -4): Wenn die Verteidigung gelingt, darfst du in der nächsten eigenen Initiativephase eine Freie Aktion nutzen, um deinen Gegner (ein weiteres Mal) anzugreifen.",
+        "sephrastoScript": "modifyKampfstil('Schneller Kampf', 1, 0, 0, 0)",
+        "stilBedingungen": "",
+        "foundryScript": ""
       },
       "effects": [],
       "_stats": {
@@ -139,8 +142,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KO 6",
+        "gruppe": 2,
         "text": "Die BE aller Rüstungen ist um 1 gesenkt."
       },
       "effects": [],
@@ -168,8 +171,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut MU 4",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Ausfall (AT -2 -BE): Das Ziel muss in einer Freien Reaktion bis zu 2 Schritt zurückweichen, du folgst in einer Freien Aktion. Möchte es in seiner nächsten Initiativephase einen anderen Gegner als dich angreifen, darfst du einen Passierschlag ausführen."
       },
       "effects": [],
@@ -197,8 +200,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KL 6",
+        "gruppe": 1,
         "text": "Proben bei einer Ermittlung oder Recherche sind um +2 erleichtert.\n\nBei Recherchen erhältst du einen zusätzlichen Informationsgrad, wenn der gewertete Würfel eine 12 oder höher zeigt."
       },
       "effects": [],
@@ -226,8 +229,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut IN 8",
+        "gruppe": 2,
         "text": "Misslingt deinem Gegner eine Verteidigung gegen dich, die mit einem Manöver verstärkt wurde, darfst du sofort einen Passierschlag gegen ihn ausführen. Pro Runde kannst du die erste Verteidigung gegen einen Passierschlag als Freie Reaktion ausführen."
       },
       "effects": [],
@@ -255,8 +258,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut CH 4",
+        "gruppe": 2,
         "text": "Furcht-Effekte für Mitstreiter zählen als eine Stufe niedriger."
       },
       "effects": [],
@@ -284,8 +287,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KK 4",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Niederwerfen (AT -4): Gegenprobe: KK. Dein Ziel stürzt und liegt am Boden."
       },
       "effects": [],

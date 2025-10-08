@@ -168,9 +168,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
-        "text": "Dein Waffenschaden steigt um +1.\n\nErlaubt das Manöver Befreiungsschlag (AT -4): Du führst eine Attacke aus, die sich (samt anderen Manövern) gegen alle Ziele in einem Winkel von 180° vor dir richtet. Jedem Ziel steht eine eigene Verteidigung zu."
+        "voraussetzung": "Attribut KK 8, Vorteil Kraftvoller Kampf II",
+        "gruppe": 3,
+        "text": "Dein Waffenschaden steigt um +1.\n\nErlaubt das Manöver Befreiungsschlag (AT -4): Du führst eine Attacke aus, die sich (samt anderen Manövern) gegen alle Ziele in einem Winkel von 180° vor dir richtet. Jedem Ziel steht eine eigene Verteidigung zu.",
+        "sephrastoScript": "modifyKampfstil('Kraftvoller Kampf', 0, 0, 1, 0)",
+        "stilBedingungen": "",
+        "foundryScript": ""
       },
       "effects": [],
       "_stats": {
@@ -197,9 +200,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
-        "text": "Du erhältst VT +1.\n\nDein Schild ignoriert die übliche Erschwernis für Nebenwaffen (S. 39). Außerdem kannst du die erste VT zwischen zwei Initiativephasen als Freie Reaktion ausführen."
+        "voraussetzung": "Attribut KK 6, Vorteil Schildkampf I",
+        "gruppe": 3,
+        "text": "Du erhältst VT +1.\n\nDein Schild ignoriert die übliche Erschwernis für Nebenwaffen (S. 39). Außerdem kannst du die erste VT zwischen zwei Initiativphasen als Freie Reaktion ausführen.",
+        "sephrastoScript": "modifyKampfstil('Schildkampf', 0, 1, 0, 0)",
+        "stilBedingungen": "",
+        "foundryScript": "ignoreSideWeaponMalus('Schild')"
       },
       "effects": [],
       "_stats": {
@@ -226,9 +232,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
-        "text": "Du erhältst Waffenschaden +1, AT +1 und VT +1.\n\nDein Reittier ignoriert die üblichen Erschwernisse für Nebenwaffen (S. 39) und im Reiterkampf ist die BE durch Rüstungen um 1 gesenkt. Außerdem ignorierst du im Fernkampf du den Malus für berittene Schützen (S. 46)."
+        "voraussetzung": "Attribut GE 6 ODER Attribut KK 6, Vorteil Reiterkampf I",
+        "gruppe": 3,
+        "text": "Du erhältst Waffenschaden +1, AT +1 und VT +1.\n\nDein Reittier ignoriert die üblichen Erschwernisse für Nebenwaffen (S. 39) und im Reiterkampf ist die BE durch Rüstungen um 1 gesenkt. Außerdem ignorierst du im Fernkampf du den Malus für berittene Schützen (S. 46).",
+        "sephrastoScript": "modifyKampfstil('Reiterkampf', 1, 1, 1, 0, 1)",
+        "stilBedingungen": "",
+        "foundryScript": "ignoreSideWeaponMalus('Reittier');ignoreMountedRangePenalty()"
       },
       "effects": [],
       "_stats": {
@@ -255,8 +264,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut IN 4",
+        "gruppe": 2,
         "text": "Deine INI steigt um 4 Punkte."
       },
       "effects": [],
@@ -284,8 +293,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut CH 4",
+        "gruppe": 2,
         "text": "Furcht-Effekte für Mitstreiter zählen als eine Stufe niedriger."
       },
       "effects": [],
@@ -313,8 +322,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut MU 6",
+        "gruppe": 2,
         "text": "Der Verteidigungs-Malus durch volle Offensive sinkt auf -4."
       },
       "effects": [],
@@ -342,8 +351,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KO 6",
+        "gruppe": 2,
         "text": "Die BE aller Rüstungen ist um 1 gesenkt."
       },
       "effects": [],
@@ -371,8 +380,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KK 6",
+        "gruppe": 2,
         "text": "Deine unbewaffneten Angriffe erhalten die Waffeneigenschaften Kopflastig und Wendig (S. 47)."
       },
       "effects": [],

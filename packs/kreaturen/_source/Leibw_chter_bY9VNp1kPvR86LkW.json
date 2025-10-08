@@ -110,9 +110,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
-        "text": "Du erhältst VT +1.\n\nErlaubt das Manöver Schildwall (VT -4): Du kannst einen Angriff auf einen benachbarten Verbündeten abwehren. Das Manöver erfolgt vor der Verteidigung des Verbündeten."
+        "voraussetzung": "Attribut KK 8, Vorteil Schildkampf II",
+        "gruppe": 3,
+        "text": "Du erhältst VT +1.\n\nErlaubt das Manöver Schildwall (VT -4): Du kannst einen Angriff auf einen benachbarten Verbündeten abwehren. Das Manöver erfolgt vor der Verteidigung des Verbündeten.",
+        "sephrastoScript": "modifyKampfstil('Schildkampf', 0, 1, 0, 0)",
+        "stilBedingungen": "",
+        "foundryScript": ""
       },
       "effects": [],
       "_stats": {
@@ -139,8 +142,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut IN 8",
+        "gruppe": 2,
         "text": "Misslingt deinem Gegner eine Verteidigung gegen dich, die mit einem Manöver verstärkt wurde, darfst du sofort einen Passierschlag gegen ihn ausführen. Pro Runde kannst du die erste Verteidigung gegen einen Passierschlag als Freie Reaktion ausführen."
       },
       "effects": [],
@@ -168,8 +171,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut MU 4",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Ausfall (AT -2 -BE): Das Ziel muss in einer Freien Reaktion bis zu 2 Schritt zurückweichen, du folgst in einer Freien Aktion. Möchte es in seiner nächsten Initiativephase einen anderen Gegner als dich angreifen, darfst du einen Passierschlag ausführen."
       },
       "effects": [],
@@ -197,8 +200,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut IN 6",
+        "gruppe": 2,
         "text": "Volle Defensive (S. 36) ist für dich eine einfache Aktion. Dadurch könntest du beispielsweise zusätzlich die Aktion Konflikt wählen, um eine AT –4 ausführen."
       },
       "effects": [],
@@ -226,8 +229,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut IN 4",
+        "gruppe": 2,
         "text": "Deine INI steigt um 4 Punkte."
       },
       "effects": [],
@@ -255,8 +258,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KK 4",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Niederwerfen (AT -4): Gegenprobe: KK. Dein Ziel stürzt und liegt am Boden."
       },
       "effects": [],
@@ -284,8 +287,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut GE 4",
+        "gruppe": 2,
         "text": "Nach einem Sturz befindest du dich in kniender statt liegender Position."
       },
       "effects": [],
@@ -313,8 +316,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut GE 6",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Sturmangriff (Bewegung und AT): Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Außerdem richtet die nächste Attacke GS Trefferpunkte zusätzlich an."
       },
       "effects": [],
@@ -342,8 +345,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KK 6",
+        "gruppe": 2,
         "text": "Deine unbewaffneten Angriffe erhalten die Waffeneigenschaften Kopflastig und Wendig (S. 47)."
       },
       "effects": [],
@@ -371,8 +374,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut GE 4",
+        "gruppe": 1,
         "text": "Deine GS steigt um einen Punkt."
       },
       "effects": [],
@@ -400,8 +403,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut GE 6",
+        "gruppe": 1,
         "text": "Deine GS steigt um einen Punkt.\n\nBei Athletikproben gelten Patzer als gewöhnlich misslungen."
       },
       "effects": [],
@@ -429,8 +432,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut IN 4",
+        "gruppe": 1,
         "text": "In Rededuellen sind Proben auf Rhetorik und Überreden um +2 erleichtert."
       },
       "effects": [],
@@ -458,8 +461,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut IN 6",
+        "gruppe": 1,
         "text": "In Rededuellen sind Proben auf Rhetorik und Überreden um +2 erleichtert.\n\nBei Proben auf Überreden, Rhetorik und Menschenkenntnis gelten Patzer als gewöhnlich misslungen, außer sie entstehen durch eine ungewohnte Umgebung (S. 55)."
       },
       "effects": [],

@@ -109,7 +109,9 @@
       "name": "Magieabweisend",
       "type": "eigenschaft",
       "system": {
-        "text": ""
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Zauber wirken auf dich deutlich schwächer. Du ignorierst bei allen Zaubern eine Stufe der spontanen Modifikation Mächtige Magie. Zauber ohne Mächtige Magie haben auf dich keine Wirkung."
       },
       "effects": [],
       "_stats": {
@@ -163,7 +165,20 @@
       "name": "Tarnung",
       "type": "eigenschaft",
       "system": {
-        "text": "Tarnung: Das Wesen kann sich seiner Umgebung\r\nanpassen, zum Beispiel durch eine Farbänderung der Haut.\r\nBei Heimlichkeits-Proben erhält es keinen Malus durch ein\r\nfehlendes Versteck."
+        "fertigkeiten": "Illusion, Vertrautenmagie",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Dein Vertrautentier erhält die Eigenschaft Tarnung (S. 98).",
+        "maechtig": "",
+        "schwierigkeit": "12",
+        "modifikationen": "",
+        "vorbereitung": "0 Aktionen",
+        "ziel": "selbst",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "1 Stunde",
+        "kosten": "1 AsP",
+        "erlernen": "Hex 14, Geo 18",
+        "pw": 0,
+        "gruppe": 17
       },
       "effects": [],
       "_stats": {
