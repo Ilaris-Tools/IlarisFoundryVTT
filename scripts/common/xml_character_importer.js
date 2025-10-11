@@ -23,6 +23,13 @@ export class XmlCharacterImporter {
             const xmlDoc = this.xmlParser.parseFromString(xmlContent, 'text/xml')
             const characterData = this.parseCharacterXml(xmlDoc)
 
+            // Show confirmation dialog with details of what will be imported and what's missing
+            const confirmed = await this.showImportConfirmationDialog(characterData, fileName)
+            if (!confirmed) {
+                ui.notifications.info('Charakter-Import vom Benutzer abgebrochen.')
+                return null
+            }
+
             // Create base actor data
             const actorData = await this.createActorDataFromXml(characterData, fileName)
 
@@ -762,6 +769,99 @@ export class XmlCharacterImporter {
     }
 
     /**
+     * Show confirmation dialog before importing character data
+     * @param {Object} characterData - The parsed character data from XML
+     * @param {string} fileName - The name of the XML file
+     * @returns {Promise<boolean>} True if user confirms, false if cancelled
+     */
+    async showImportConfirmationDialog(characterData, fileName) {
+        // Check what items will be found vs missing in compendiums
+        const importAnalysis = await this.analyzeImportData(characterData)
+
+        const dialogContent = `
+            <div style="margin-bottom: 15px;">
+                <h3>Charakter-Import bestätigen</h3>
+                <p><strong>Datei:</strong> ${fileName}</p>
+                <p><strong>Charakter:</strong> ${characterData.name}</p>
+            </div>
+            
+            <div style="margin-bottom: 15px;">
+                <h4 style="color: #2e7d32; margin-bottom: 8px;">✅ Wird IMPORTIERT:</h4>
+                <ul style="margin-left: 20px; margin-bottom: 0;">
+                    <li><strong>Charaktername:</strong> "${characterData.name}"</li>
+                    <li><strong>Attribute:</strong> ${
+                        Object.keys(characterData.attributes).length
+                    } Attribute (${Object.keys(characterData.attributes).join(', ')})</li>
+                    <li><strong>Energien:</strong> ${
+                        Object.keys(characterData.energies).length
+                    } Energien (${Object.keys(characterData.energies).join(', ')})</li>
+                    <li><strong>Fertigkeiten:</strong> ${importAnalysis.skills.found.length}/${
+            characterData.skills.length
+        } gefunden</li>
+                    <li><strong>Talente:</strong> ${importAnalysis.talents.found.length}/${
+            importAnalysis.talents.total
+        } gefunden</li>
+                    <li><strong>Vorteile:</strong> ${importAnalysis.advantages.found.length}/${
+            characterData.advantages.length
+        } gefunden</li>
+                    <li><strong>Übernatürliche Fertigkeiten:</strong> ${
+                        importAnalysis.supernaturalSkills.found.length
+                    }/${importAnalysis.supernaturalSkills.total} gefunden</li>
+                    <li><strong>Waffen:</strong> ${importAnalysis.weapons.found.length}/${
+            characterData.weapons.filter((w) => w.name && w.name !== 'Hand').length
+        } gefunden</li>
+                    <li><strong>Eigenheiten:</strong> ${
+                        characterData.eigenheiten.length
+                    } Eigenheiten</li>
+                    ${
+                        characterData.experience.total > 0
+                            ? `<li><strong>Erfahrung:</strong> ${characterData.experience.total} Gesamt, ${characterData.experience.spent} Ausgegeben</li>`
+                            : ''
+                    }
+                    ${characterData.notes ? '<li><strong>Notizen:</strong> Enthalten</li>' : ''}
+                </ul>
+            </div>
+            
+            ${this.generateMissingItemsWarning(importAnalysis)}
+            
+            <div style="background-color: #e8f5e8; border: 1px solid #4caf50; padding: 10px; border-radius: 4px; margin-bottom: 15px;">
+                <strong>ℹ️ Hinweis:</strong> Nicht gefundene Items werden nicht importiert. Damit alles korrekt importiert wird, stellen Sie sicher, dass die benötigten Items in Kompendien vorhanden sind.
+            </div>
+            
+            <p><strong>Möchten Sie den Charakter "${
+                characterData.name
+            }" aus der XML-Datei "${fileName}" importieren?</strong></p>
+        `
+
+        return new Promise((resolve) => {
+            new Dialog(
+                {
+                    title: 'Charakter-Import bestätigen',
+                    content: dialogContent,
+                    buttons: {
+                        yes: {
+                            icon: '<i class="fas fa-download"></i>',
+                            label: 'Charakter importieren',
+                            callback: () => resolve(true),
+                        },
+                        no: {
+                            icon: '<i class="fas fa-times"></i>',
+                            label: 'Abbrechen',
+                            callback: () => resolve(false),
+                        },
+                    },
+                    default: 'yes',
+                    close: () => resolve(false),
+                },
+                {
+                    width: 650,
+                    height: 'auto',
+                },
+            ).render(true)
+        })
+    }
+
+    /**
      * Show confirmation dialog before syncing character data
      * @param {Actor} actor - The actor that will be updated
      * @param {Object} characterData - The parsed character data from XML
@@ -861,6 +961,168 @@ export class XmlCharacterImporter {
                 },
             ).render(true)
         })
+    }
+
+    /**
+     * Analyze what items will be found vs missing in compendiums
+     * @param {Object} characterData - The parsed character data from XML
+     * @returns {Promise<Object>} Analysis of what will be found vs missing
+     */
+    async analyzeImportData(characterData) {
+        const analysis = {
+            skills: { found: [], missing: [] },
+            talents: { found: [], missing: [], total: 0 },
+            advantages: { found: [], missing: [] },
+            supernaturalSkills: { found: [], missing: [], total: 0 },
+            weapons: { found: [], missing: [] },
+        }
+
+        // Analyze skills
+        for (const skill of characterData.skills) {
+            const found = await this.findItemInCompendium(skill.name, 'fertigkeit')
+            if (found) {
+                analysis.skills.found.push(skill.name)
+            } else {
+                analysis.skills.missing.push(skill.name)
+            }
+        }
+
+        // Analyze talents (both regular and supernatural)
+        const processedTalentNames = new Set()
+
+        // Check supernatural talents first
+        for (const supernaturalTalent of characterData.supernaturalTalents) {
+            if (!processedTalentNames.has(supernaturalTalent.name)) {
+                const found = await this.findItemInCompendium(supernaturalTalent.name, [
+                    'zauber',
+                    'liturgie',
+                ])
+                if (found) {
+                    analysis.talents.found.push(supernaturalTalent.name)
+                    processedTalentNames.add(supernaturalTalent.name)
+                }
+            }
+        }
+
+        // Check regular talents (skip those already processed as supernatural)
+        for (const talent of characterData.talents) {
+            if (!processedTalentNames.has(talent.name)) {
+                const found = await this.findItemInCompendium(talent.name, 'talent')
+                if (found) {
+                    analysis.talents.found.push(talent.name)
+                } else {
+                    analysis.talents.missing.push(talent.name)
+                }
+                processedTalentNames.add(talent.name)
+            }
+        }
+
+        analysis.talents.total = processedTalentNames.size
+
+        // Analyze advantages
+        for (const advantage of characterData.advantages) {
+            const found = await this.findItemInCompendium(advantage.name, 'vorteil')
+            if (found) {
+                analysis.advantages.found.push(advantage.name)
+            } else {
+                analysis.advantages.missing.push(advantage.name)
+            }
+        }
+
+        // Analyze supernatural skills (only those with positive values)
+        const supernaturalSkillsWithValues = characterData.supernaturalSkills.filter(
+            (skill) => skill.value > 0,
+        )
+        analysis.supernaturalSkills.total = supernaturalSkillsWithValues.length
+
+        for (const supernaturalSkill of supernaturalSkillsWithValues) {
+            const found = await this.findItemInCompendium(
+                supernaturalSkill.name,
+                'uebernatuerliche_fertigkeit',
+            )
+            if (found) {
+                analysis.supernaturalSkills.found.push(supernaturalSkill.name)
+            } else {
+                analysis.supernaturalSkills.missing.push(supernaturalSkill.name)
+            }
+        }
+
+        // Analyze weapons (exclude 'Hand' weapons)
+        const validWeapons = characterData.weapons.filter(
+            (weapon) => weapon.name && weapon.name !== 'Hand',
+        )
+        for (const weapon of validWeapons) {
+            const found = await this.findItemInCompendium(weapon.name, [
+                'nahkampfwaffe',
+                'fernkampfwaffe',
+            ])
+            if (found) {
+                analysis.weapons.found.push(weapon.name)
+            } else {
+                analysis.weapons.missing.push(weapon.name)
+            }
+        }
+
+        return analysis
+    }
+
+    /**
+     * Generate warning section for missing items
+     * @param {Object} analysis - The analysis from analyzeImportData
+     * @returns {string} HTML string for missing items warning
+     */
+    generateMissingItemsWarning(analysis) {
+        const missingItems = []
+
+        if (analysis.skills.missing.length > 0) {
+            missingItems.push(
+                `<li><strong>Fertigkeiten:</strong> ${analysis.skills.missing.join(', ')}</li>`,
+            )
+        }
+
+        if (analysis.talents.missing.length > 0) {
+            missingItems.push(
+                `<li><strong>Talente:</strong> ${analysis.talents.missing.join(', ')}</li>`,
+            )
+        }
+
+        if (analysis.advantages.missing.length > 0) {
+            missingItems.push(
+                `<li><strong>Vorteile:</strong> ${analysis.advantages.missing.join(', ')}</li>`,
+            )
+        }
+
+        if (analysis.supernaturalSkills.missing.length > 0) {
+            missingItems.push(
+                `<li><strong>Übernatürliche Fertigkeiten:</strong> ${analysis.supernaturalSkills.missing.join(
+                    ', ',
+                )}</li>`,
+            )
+        }
+
+        if (analysis.weapons.missing.length > 0) {
+            missingItems.push(
+                `<li><strong>Waffen:</strong> ${analysis.weapons.missing.join(', ')}</li>`,
+            )
+        }
+
+        if (missingItems.length === 0) {
+            return `
+                <div style="margin-bottom: 15px;">
+                    <h4 style="color: #2e7d32; margin-bottom: 8px;">✅ Perfekte Übereinstimmung!</h4>
+                    <p style="margin-left: 20px; margin-bottom: 0; color: #2e7d32;">Alle Items wurden in den Kompendien gefunden.</p>
+                </div>
+            `
+        }
+
+        return `
+            <div style="margin-bottom: 15px;">
+                <h4 style="color: #f57c00; margin-bottom: 8px;">⚠️ Nicht gefunden:</h4>
+                <ul style="margin-left: 20px; margin-bottom: 0; color: #f57c00;">
+                    ${missingItems.join('')}
+                </ul>
+            </div>
+        `
     }
 
     /**
