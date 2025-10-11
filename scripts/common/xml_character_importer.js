@@ -2,6 +2,7 @@ import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
 } from './../settings/configure-game-settings.model.js'
+import { XmlCharacterImportDialogs } from './xml-character-import-dialogs.js'
 
 /**
  * XML Character Importer for Ilaris System
@@ -24,7 +25,12 @@ export class XmlCharacterImporter {
             const characterData = this.parseCharacterXml(xmlDoc)
 
             // Show confirmation dialog with details of what will be imported and what's missing
-            const confirmed = await this.showImportConfirmationDialog(characterData, fileName)
+            const importAnalysis = await this.analyzeImportData(characterData)
+            const confirmed = await XmlCharacterImportDialogs.showImportConfirmationDialog(
+                characterData,
+                fileName,
+                importAnalysis,
+            )
             if (!confirmed) {
                 ui.notifications.info('Charakter-Import vom Benutzer abgebrochen.')
                 return null
@@ -61,7 +67,11 @@ export class XmlCharacterImporter {
             const characterData = this.parseCharacterXml(xmlDoc)
 
             // Show confirmation dialog with details of what will be changed
-            const confirmed = await this.showSyncConfirmationDialog(actor, characterData, fileName)
+            const confirmed = await XmlCharacterImportDialogs.showSyncConfirmationDialog(
+                actor,
+                characterData,
+                fileName,
+            )
             if (!confirmed) {
                 ui.notifications.info('Charakter-Synchronisation vom Benutzer abgebrochen.')
                 return actor
@@ -683,67 +693,35 @@ export class XmlCharacterImporter {
     async findItemInCompendium(itemName, itemType) {
         const typesToSearch = Array.isArray(itemType) ? itemType : [itemType]
 
-        // Build compendium list dynamically
-        const compendiumsToSearch = new Set()
+        // Search through ALL compendium packs that have items (both system and world)
+        const compendiumsToSearch = []
 
-        // Always include core system compendiums
-        const coreCompendiums = [
-            'Ilaris.fertigkeiten-und-talente',
-            'Ilaris.fertigkeiten-und-talente-advanced',
-            'Ilaris.vorteile',
-            'Ilaris.waffen',
-            'Ilaris.ubernaturliche-fertigkeiten',
-            'Ilaris.zauberspruche-und-rituale',
-            'Ilaris.liturgien-und-mirakel',
-        ]
-        coreCompendiums.forEach((id) => compendiumsToSearch.add(id))
-
-        // Add user-selected advantage packs from world settings
-        try {
-            const selectedVorteilePacks = JSON.parse(
-                game.settings.get(
-                    ConfigureGameSettingsCategories.Ilaris,
-                    IlarisGameSettingNames.vorteilePacks,
-                ) || '[]',
-            )
-            // Ensure it's an array before calling forEach
-            if (Array.isArray(selectedVorteilePacks)) {
-                selectedVorteilePacks.forEach((packId) => compendiumsToSearch.add(packId))
-            } else {
-                console.warn(
-                    'selectedVorteilePacks setting is not an array:',
-                    selectedVorteilePacks,
-                )
-            }
-        } catch (error) {
-            console.warn('Could not load selectedVorteilePacks setting:', error)
-        }
-
-        // Search through all world compendiums for relevant item types
-        game.packs.forEach((pack) => {
-            // Only include world compendiums (not system compendiums already added)
-            if (pack.metadata.packageType === 'world') {
-                compendiumsToSearch.add(pack.metadata.id)
-            }
-        })
-
-        for (const compendiumId of compendiumsToSearch) {
-            const pack = game.packs.get(compendiumId)
-            if (!pack) {
-                console.warn(`Compendium not found: ${compendiumId}`)
-                continue
-            }
-
+        // Get all compendium packs and filter for those that contain items
+        for (const pack of game.packs) {
             try {
-                // Load the compendium index
+                // Load the compendium index to check if it has items
                 await pack.getIndex()
 
+                // Only include packs that have items and are item-type packs
+                if (pack.index && pack.index.size > 0 && pack.documentName === 'Item') {
+                    compendiumsToSearch.push(pack)
+                }
+            } catch (error) {
+                console.warn(`Could not load compendium ${pack.metadata.id}:`, error)
+            }
+        }
+
+        for (const pack of compendiumsToSearch) {
+            try {
                 // Search for item by name and type
                 for (const indexEntry of pack.index) {
                     // Try exact match first
                     if (indexEntry.name === itemName && typesToSearch.includes(indexEntry.type)) {
                         const item = await pack.getDocument(indexEntry._id)
                         if (item) {
+                            console.debug(
+                                `Found item "${itemName}" in compendium "${pack.metadata.label}" (${pack.metadata.id})`,
+                            )
                             return item
                         }
                     }
@@ -755,212 +733,20 @@ export class XmlCharacterImporter {
                     ) {
                         const item = await pack.getDocument(indexEntry._id)
                         if (item) {
+                            console.debug(
+                                `Found item "${itemName}" (case-insensitive) in compendium "${pack.metadata.label}" (${pack.metadata.id})`,
+                            )
                             return item
                         }
                     }
                 }
             } catch (error) {
-                console.warn(`Error searching compendium ${compendiumId}:`, error)
+                console.warn(`Error searching compendium ${pack.metadata.id}:`, error)
                 continue
             }
         }
 
         return null
-    }
-
-    /**
-     * Show confirmation dialog before importing character data
-     * @param {Object} characterData - The parsed character data from XML
-     * @param {string} fileName - The name of the XML file
-     * @returns {Promise<boolean>} True if user confirms, false if cancelled
-     */
-    async showImportConfirmationDialog(characterData, fileName) {
-        // Check what items will be found vs missing in compendiums
-        const importAnalysis = await this.analyzeImportData(characterData)
-
-        const dialogContent = `
-            <div style="margin-bottom: 15px;">
-                <h3>Charakter-Import bestätigen</h3>
-                <p><strong>Datei:</strong> ${fileName}</p>
-                <p><strong>Charakter:</strong> ${characterData.name}</p>
-            </div>
-            
-            <div style="margin-bottom: 15px;">
-                <h4 style="color: #2e7d32; margin-bottom: 8px;">✅ Wird IMPORTIERT:</h4>
-                <ul style="margin-left: 20px; margin-bottom: 0;">
-                    <li><strong>Charaktername:</strong> "${characterData.name}"</li>
-                    <li><strong>Attribute:</strong> ${
-                        Object.keys(characterData.attributes).length
-                    } Attribute (${Object.keys(characterData.attributes).join(', ')})</li>
-                    <li><strong>Energien:</strong> ${
-                        Object.keys(characterData.energies).length
-                    } Energien (${Object.keys(characterData.energies).join(', ')})</li>
-                    <li><strong>Fertigkeiten:</strong> ${importAnalysis.skills.found.length}/${
-            characterData.skills.length
-        } gefunden</li>
-                    <li><strong>Talente:</strong> ${importAnalysis.talents.found.length}/${
-            importAnalysis.talents.total
-        } gefunden</li>
-                    <li><strong>Vorteile:</strong> ${importAnalysis.advantages.found.length}/${
-            characterData.advantages.length
-        } gefunden</li>
-                    <li><strong>Übernatürliche Fertigkeiten:</strong> ${
-                        importAnalysis.supernaturalSkills.found.length
-                    }/${importAnalysis.supernaturalSkills.total} gefunden</li>
-                    <li><strong>Waffen:</strong> ${importAnalysis.weapons.found.length}/${
-            characterData.weapons.filter((w) => w.name && w.name !== 'Hand').length
-        } gefunden</li>
-                    <li><strong>Eigenheiten:</strong> ${
-                        characterData.eigenheiten.length
-                    } Eigenheiten</li>
-                    ${
-                        characterData.experience.total > 0
-                            ? `<li><strong>Erfahrung:</strong> ${characterData.experience.total} Gesamt, ${characterData.experience.spent} Ausgegeben</li>`
-                            : ''
-                    }
-                    ${characterData.notes ? '<li><strong>Notizen:</strong> Enthalten</li>' : ''}
-                </ul>
-            </div>
-            
-            ${this.generateMissingItemsWarning(importAnalysis)}
-            
-            <div style="background-color: #e8f5e8; border: 1px solid #4caf50; padding: 10px; border-radius: 4px; margin-bottom: 15px;">
-                <strong>ℹ️ Hinweis:</strong> Nicht gefundene Items werden nicht importiert. Damit alles korrekt importiert wird, stellen Sie sicher, dass die benötigten Items in Kompendien vorhanden sind.
-            </div>
-            
-            <p><strong>Möchten Sie den Charakter "${
-                characterData.name
-            }" aus der XML-Datei "${fileName}" importieren?</strong></p>
-        `
-
-        return new Promise((resolve) => {
-            new Dialog(
-                {
-                    title: 'Charakter-Import bestätigen',
-                    content: dialogContent,
-                    buttons: {
-                        yes: {
-                            icon: '<i class="fas fa-download"></i>',
-                            label: 'Charakter importieren',
-                            callback: () => resolve(true),
-                        },
-                        no: {
-                            icon: '<i class="fas fa-times"></i>',
-                            label: 'Abbrechen',
-                            callback: () => resolve(false),
-                        },
-                    },
-                    default: 'yes',
-                    close: () => resolve(false),
-                },
-                {
-                    width: 650,
-                    height: 'auto',
-                },
-            ).render(true)
-        })
-    }
-
-    /**
-     * Show confirmation dialog before syncing character data
-     * @param {Actor} actor - The actor that will be updated
-     * @param {Object} characterData - The parsed character data from XML
-     * @param {string} fileName - The name of the XML file
-     * @returns {Promise<boolean>} True if user confirms, false if cancelled
-     */
-    async showSyncConfirmationDialog(actor, characterData, fileName) {
-        // Count current items that will be affected
-        const currentSkills = actor.items.filter((item) => item.type === 'fertigkeit').length
-        const currentTalents = actor.items.filter((item) =>
-            ['talent', 'zauber', 'liturgie'].includes(item.type),
-        ).length
-        const currentAdvantages = actor.items.filter((item) => item.type === 'vorteil').length
-        const currentSupernaturalSkills = actor.items.filter(
-            (item) => item.type === 'uebernatuerliche_fertigkeit',
-        ).length
-
-        // Count preserved items
-        const preservedInventory = actor.items.filter((item) =>
-            ['gegenstand', 'ruestung', 'nahkampfwaffe', 'fernkampfwaffe'].includes(item.type),
-        ).length
-        const preservedEigenheiten = actor.items.filter((item) => item.type === 'eigenheit').length
-
-        // Count new items from XML
-        const newSkills = characterData.skills.length
-        const newTalents =
-            characterData.talents.length +
-            characterData.supernaturalTalents.filter((t) =>
-                characterData.talents.every((regular) => regular.name !== t.name),
-            ).length
-        const newAdvantages = characterData.advantages.length
-        const newSupernaturalSkills = characterData.supernaturalSkills.filter(
-            (skill) => skill.value > 0,
-        ).length
-
-        const dialogContent = `
-            <div style="margin-bottom: 15px;">
-                <h3>Charakter-Synchronisation bestätigen</h3>
-                <p><strong>Datei:</strong> ${fileName}</p>
-                <p><strong>Charakter:</strong> ${actor.name} → ${characterData.name}</p>
-            </div>
-            
-            <div style="margin-bottom: 15px;">
-                <h4 style="color: #d32f2f; margin-bottom: 8px;">⚠️ Wird ERSETZT:</h4>
-                <ul style="margin-left: 20px; margin-bottom: 0;">
-                    <li><strong>Charaktername:</strong> "${actor.name}" → "${characterData.name}"</li>
-                    <li><strong>Attribute:</strong> Alle Attributwerte werden aktualisiert</li>
-                    <li><strong>Energien:</strong> AsP-, KaP-, GuP-Werte werden aktualisiert</li>
-                    <li><strong>Fertigkeiten:</strong> ${currentSkills} aktuell → ${newSkills} aus XML</li>
-                    <li><strong>Talente:</strong> ${currentTalents} aktuell → ${newTalents} aus XML</li>
-                    <li><strong>Vorteile:</strong> ${currentAdvantages} aktuell → ${newAdvantages} aus XML</li>
-                    <li><strong>Übernatürliche Fertigkeiten:</strong> ${currentSupernaturalSkills} aktuell → ${newSupernaturalSkills} aus XML</li>
-                    <li><strong>Eigenheiten:</strong> Nur Duplikate werden ersetzt, Bestehende bleiben erhalten, neue werden hinzugefügt</li>
-                </ul>
-            </div>
-            
-            <div style="margin-bottom: 15px;">
-                <h4 style="color: #2e7d32; margin-bottom: 8px;">✅ Bleibt ERHALTEN:</h4>
-                <ul style="margin-left: 20px; margin-bottom: 0;">
-                    <li><strong>Inventar-Gegenstände:</strong> ${preservedInventory} Gegenstände (Waffen, Rüstungen, Objekte)</li>
-                    <li><strong>Charakternotizen:</strong> Manuelle Notizen werden nicht überschrieben</li>
-                    <li><strong>Eigenheiten:</strong> ${preservedEigenheiten} bestehende (keine Duplikate bleiben erhalten)</li>
-                    <li><strong>Charakterbogen-Einstellungen:</strong> UI-Einstellungen, eigene Anpassungen</li>
-                </ul>
-            </div>
-            
-            <div style="background-color: #fff3cd; border: 1px solid #ffeaa7; padding: 10px; border-radius: 4px; margin-bottom: 15px;">
-                <strong>⚠️ Warnung:</strong> Diese Aktion kann nicht rückgängig gemacht werden! Alle aktuellen Fertigkeiten, Talente und Vorteile werden durch die Daten aus der XML-Datei ersetzt.
-            </div>
-            
-            <p><strong>Sind Sie sicher, dass Sie den Charakter "${actor.name}" mit der XML-Datei "${fileName}" synchronisieren möchten?</strong></p>
-        `
-
-        return new Promise((resolve) => {
-            new Dialog(
-                {
-                    title: 'Charakter-Synchronisation bestätigen',
-                    content: dialogContent,
-                    buttons: {
-                        yes: {
-                            icon: '<i class="fas fa-sync-alt"></i>',
-                            label: 'Charakter synchronisieren',
-                            callback: () => resolve(true),
-                        },
-                        no: {
-                            icon: '<i class="fas fa-times"></i>',
-                            label: 'Abbrechen',
-                            callback: () => resolve(false),
-                        },
-                    },
-                    default: 'no',
-                    close: () => resolve(false),
-                },
-                {
-                    width: 600,
-                    height: 'auto',
-                },
-            ).render(true)
-        })
     }
 
     /**
@@ -1047,11 +833,7 @@ export class XmlCharacterImporter {
             }
         }
 
-        // Analyze weapons (exclude 'Hand' weapons)
-        const validWeapons = characterData.weapons.filter(
-            (weapon) => weapon.name && weapon.name !== 'Hand',
-        )
-        for (const weapon of validWeapons) {
+        for (const weapon of characterData.weapons) {
             const found = await this.findItemInCompendium(weapon.name, [
                 'nahkampfwaffe',
                 'fernkampfwaffe',
@@ -1067,102 +849,10 @@ export class XmlCharacterImporter {
     }
 
     /**
-     * Generate warning section for missing items
-     * @param {Object} analysis - The analysis from analyzeImportData
-     * @returns {string} HTML string for missing items warning
-     */
-    generateMissingItemsWarning(analysis) {
-        const missingItems = []
-
-        if (analysis.skills.missing.length > 0) {
-            missingItems.push(
-                `<li><strong>Fertigkeiten:</strong> ${analysis.skills.missing.join(', ')}</li>`,
-            )
-        }
-
-        if (analysis.talents.missing.length > 0) {
-            missingItems.push(
-                `<li><strong>Talente:</strong> ${analysis.talents.missing.join(', ')}</li>`,
-            )
-        }
-
-        if (analysis.advantages.missing.length > 0) {
-            missingItems.push(
-                `<li><strong>Vorteile:</strong> ${analysis.advantages.missing.join(', ')}</li>`,
-            )
-        }
-
-        if (analysis.supernaturalSkills.missing.length > 0) {
-            missingItems.push(
-                `<li><strong>Übernatürliche Fertigkeiten:</strong> ${analysis.supernaturalSkills.missing.join(
-                    ', ',
-                )}</li>`,
-            )
-        }
-
-        if (analysis.weapons.missing.length > 0) {
-            missingItems.push(
-                `<li><strong>Waffen:</strong> ${analysis.weapons.missing.join(', ')}</li>`,
-            )
-        }
-
-        if (missingItems.length === 0) {
-            return `
-                <div style="margin-bottom: 15px;">
-                    <h4 style="color: #2e7d32; margin-bottom: 8px;">✅ Perfekte Übereinstimmung!</h4>
-                    <p style="margin-left: 20px; margin-bottom: 0; color: #2e7d32;">Alle Items wurden in den Kompendien gefunden.</p>
-                </div>
-            `
-        }
-
-        return `
-            <div style="margin-bottom: 15px;">
-                <h4 style="color: #f57c00; margin-bottom: 8px;">⚠️ Nicht gefunden:</h4>
-                <ul style="margin-left: 20px; margin-bottom: 0; color: #f57c00;">
-                    ${missingItems.join('')}
-                </ul>
-            </div>
-        `
-    }
-
-    /**
      * Show file upload dialog for XML import
      */
     static async showImportDialog() {
-        const input = document.createElement('input')
-        input.type = 'file'
-        input.accept = '.xml'
-        input.style.display = 'none'
-
-        return new Promise((resolve) => {
-            input.onchange = async (event) => {
-                const file = event.target.files[0]
-                if (!file) {
-                    resolve(null)
-                    return
-                }
-
-                const reader = new FileReader()
-                reader.onload = async (e) => {
-                    try {
-                        const importer = new XmlCharacterImporter()
-                        const actor = await importer.importCharacterFromXml(
-                            e.target.result,
-                            file.name,
-                        )
-                        resolve(actor)
-                    } catch (error) {
-                        console.error('Import failed:', error)
-                        resolve(null)
-                    }
-                }
-                reader.readAsText(file)
-            }
-
-            document.body.appendChild(input)
-            input.click()
-            document.body.removeChild(input)
-        })
+        return await XmlCharacterImportDialogs.showImportDialog()
     }
 
     /**
@@ -1170,40 +860,6 @@ export class XmlCharacterImporter {
      * @param {Actor} actor - The actor to sync
      */
     static async showSyncDialog(actor) {
-        const input = document.createElement('input')
-        input.type = 'file'
-        input.accept = '.xml'
-        input.style.display = 'none'
-
-        return new Promise((resolve) => {
-            input.onchange = async (event) => {
-                const file = event.target.files[0]
-                if (!file) {
-                    resolve(null)
-                    return
-                }
-
-                const reader = new FileReader()
-                reader.onload = async (e) => {
-                    try {
-                        const importer = new XmlCharacterImporter()
-                        const updatedActor = await importer.updateActorFromXml(
-                            actor,
-                            e.target.result,
-                            file.name,
-                        )
-                        resolve(updatedActor)
-                    } catch (error) {
-                        console.error('Sync failed:', error)
-                        resolve(null)
-                    }
-                }
-                reader.readAsText(file)
-            }
-
-            document.body.appendChild(input)
-            input.click()
-            document.body.removeChild(input)
-        })
+        return await XmlCharacterImportDialogs.showSyncDialog(actor)
     }
 }
