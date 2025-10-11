@@ -26,6 +26,7 @@ function preloadHandlebarsTemplates() {
         'systems/Ilaris/templates/helper/select_fertigkeitsgruppe.hbs',
         'systems/Ilaris/templates/helper/select_vorteilsgruppe.hbs',
         'systems/Ilaris/templates/helper/select_trefferzone.hbs',
+        'systems/Ilaris/templates/helper/effects-section.hbs',
         'systems/Ilaris/templates/chat/dreid20.hbs',
         'systems/Ilaris/templates/chat/probendiag_profan.hbs',
         'systems/Ilaris/templates/chat/probendiag_simpleformula.hbs',

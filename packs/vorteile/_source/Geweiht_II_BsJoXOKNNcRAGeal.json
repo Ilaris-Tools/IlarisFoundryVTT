@@ -3,24 +3,68 @@
   "type": "vorteil",
   "system": {
     "voraussetzung": "Vorteil Geweiht I",
-    "gruppe": 0,
+    "gruppe": "0",
     "text": "Du verfügst über 16 Karmapunkte und kannst kirchliche Traditionen erlernen."
   },
   "_id": "BsJoXOKNNcRAGeal",
-  "effects": [],
+  "effects": [
+    {
+      "name": "Geweiht II",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "changes": [
+        {
+          "key": "system.abgeleitete.kap",
+          "mode": 2,
+          "value": "8",
+          "priority": null
+        }
+      ],
+      "transfer": true,
+      "img": "icons/svg/aura.svg",
+      "_id": "tzZOiM0OE8tnS8Wx",
+      "type": "base",
+      "system": {},
+      "description": "",
+      "origin": null,
+      "tint": "#ffffff",
+      "statuses": [],
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.1.2",
+        "createdTime": 1757618058090,
+        "modifiedTime": 1757618074774,
+        "lastModifiedBy": "FAZTz2Txaxttf8zC"
+      },
+      "_key": "!items.effects!BsJoXOKNNcRAGeal.tzZOiM0OE8tnS8Wx"
+    }
+  ],
   "_stats": {
     "coreVersion": "12.331",
-    "systemId": null,
-    "systemVersion": null,
+    "systemId": "Ilaris",
+    "systemVersion": "12.1.2",
     "createdTime": null,
-    "modifiedTime": null,
-    "lastModifiedBy": null,
+    "modifiedTime": 1757618076650,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
   },
   "img": "icons/svg/item-bag.svg",
   "folder": null,
-  "sort": 0,
+  "sort": 6600000,
   "ownership": {
     "default": 0
   },
