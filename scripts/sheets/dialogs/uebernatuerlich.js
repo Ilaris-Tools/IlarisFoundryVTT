@@ -569,6 +569,10 @@ export class UebernatuerlichDialog extends CombatDialog {
             return true
         }
 
+        if (this.actor.uebernatuerlich.zauber.some((z) => z.name === 'Blut des Dolches (passiv)')) {
+            return true
+        }
+
         // Borbaradianer tradition access (only for spells)
         if (this.item.type === 'zauber') {
             if (this.actor.type === 'kreatur') {

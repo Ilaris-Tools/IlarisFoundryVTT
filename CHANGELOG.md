@@ -38,6 +38,7 @@
     -   Eigenheiten werden vereint
     -   die in Sephrasto hinzugefügten **Waffen/Inventargegenstände/Notizen werden ignoriert** (Bewusste Entscheidung Charakter Verwaltung in Sephrasto, Inventar und Notiz Verwaltung in Foundry)
 -   löscht einige überflüssige SVGs und benutzt die Tint Property von Foundry, um diese zu färben, was Assets und Bandbreit einspart
+-   Verbotene Pforten freischalten mit Zauber "Blut des Dolches"
 
 ### v12.1
 
