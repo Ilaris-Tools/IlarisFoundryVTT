@@ -364,6 +364,8 @@ export class UebernatuerlichDialog extends CombatDialog {
                     `Nicht genug Ressourcen! Benötigt: ${this.endCost}, Vorhanden: ${this.currentEnergy}. Unter bestimmten Voraussetzungen zieht dir das System einfach Energie ab, bis du bei 0 angelangt bist. Du kannst diese Information nach eigenem Ermessen weiterverwenden.`,
                 )
             }
+            // Refresh dialog data after energy application
+            await this.refreshActorData()
         }
         super._updateSchipsStern(html)
     }
@@ -382,6 +384,9 @@ export class UebernatuerlichDialog extends CombatDialog {
                 `Nicht genug Ressourcen! Benötigt: ${this.endCost}, Vorhanden: ${this.currentEnergy}. Unter bestimmten Voraussetzungen zieht dir das System einfach Energie ab, bis du bei 0 angelangt bist. Du kannst diese Information nach eigenem Ermessen weiterverwenden.`,
             )
         }
+
+        // Refresh dialog data after energy application
+        await this.refreshActorData()
 
         // Create chat message with energy cost information
         const label = `${this.item.name} (Kosten: ${this.endCost} Energie)`
@@ -606,6 +611,32 @@ export class UebernatuerlichDialog extends CombatDialog {
         if (energyNeeded <= 0) return 0
         const energyPerWound = ws + multiplier
         return Math.ceil(energyNeeded / energyPerWound)
+    }
+
+    /**
+     * Refreshes the dialog's actor reference and updates displays after actor changes
+     */
+    async refreshActorData() {
+        // Get the updated actor from the game
+        const updatedActor = game.actors.get(this.actor.id)
+        if (updatedActor) {
+            // Update the dialog's actor reference
+            this.actor = updatedActor
+
+            // Update energy values based on the refreshed actor
+            await this.initializeEnergyValues()
+
+            // Update the modifier display if it exists
+            const html = this.element
+            if (
+                html &&
+                html.length > 0 &&
+                this._modifierElement &&
+                this._modifierElement.length > 0
+            ) {
+                this.updateModifierDisplay(html)
+            }
+        }
     }
 
     async updateManoeverMods() {
