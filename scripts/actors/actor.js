@@ -31,14 +31,18 @@ export class IlarisActor extends Actor {
     _checkVorteilSource(requirement, vorteil, item) {
         // For Stile (gruppe 3, 5, or 7) on held-type actors, check with getSelectedStil
         if (this.type === 'held' && [3, 5, 7].includes(Number(vorteil.system.gruppe))) {
-            if (item.system.hauptwaffe || item.system.nebenwaffe) {
+            if (
+                item.system.hauptwaffe ||
+                item.system.nebenwaffe ||
+                item.type === 'zauber' ||
+                item.type === 'liturgie'
+            ) {
                 const kampfStil = hardcoded.getSelectedStil(this, 'kampf')
                 const ueberStil = hardcoded.getSelectedStil(this, 'uebernatuerlich')
                 return (
                     (kampfStil.active &&
                         kampfStil?.sources.some((source) => source === requirement)) ||
-                    (ueberStil.active &&
-                        ueberStil?.sources.some((source) => source === requirement))
+                    ueberStil?.sources.some((source) => source === requirement)
                 )
             } else {
                 return false
