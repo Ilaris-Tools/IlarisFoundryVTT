@@ -449,8 +449,8 @@ export class XmlCharacterImporter {
             await actor.deleteEmbeddedDocuments('Item', itemsToDelete)
         }
 
-        // Add new items with XML import flag
-        await this.addItemsToActor(actor, characterData, true)
+        // Add new items with XML import flag (skip inventory items for sync)
+        await this.addItemsToActor(actor, characterData, true, true)
 
         console.debug(`Sync complete: Added new character data, preserved inventory and notes`)
     }
@@ -460,8 +460,14 @@ export class XmlCharacterImporter {
      * @param {Actor} actor - The created actor
      * @param {Object} characterData - Parsed character data
      * @param {boolean} markAsImported - Whether to flag items as XML imported
+     * @param {boolean} skipInventoryItems - Whether to skip weapons and armor (for sync operations)
      */
-    async addItemsToActor(actor, characterData, markAsImported = false) {
+    async addItemsToActor(
+        actor,
+        characterData,
+        markAsImported = false,
+        skipInventoryItems = false,
+    ) {
         const itemsToCreate = []
 
         // Process skills
@@ -612,24 +618,28 @@ export class XmlCharacterImporter {
             }
         }
 
-        // Process weapons
-        for (const weapon of characterData.weapons) {
-            if (weapon.name && weapon.name !== 'Hand') {
-                // Skip empty or hand weapons
-                const foundWeapon = await this.findItemInCompendium(weapon.name, [
-                    'nahkampfwaffe',
-                    'fernkampfwaffe',
-                ])
-                if (foundWeapon) {
-                    const weaponData = foundWeapon.toObject()
-                    if (markAsImported) {
-                        weaponData.flags = { ilaris: { xmlImported: true } }
+        // Process weapons (skip during sync operations to preserve existing inventory)
+        if (!skipInventoryItems) {
+            for (const weapon of characterData.weapons) {
+                if (weapon.name && weapon.name !== 'Hand') {
+                    // Skip empty or hand weapons
+                    const foundWeapon = await this.findItemInCompendium(weapon.name, [
+                        'nahkampfwaffe',
+                        'fernkampfwaffe',
+                    ])
+                    if (foundWeapon) {
+                        const weaponData = foundWeapon.toObject()
+                        if (markAsImported) {
+                            weaponData.flags = { ilaris: { xmlImported: true } }
+                        }
+                        itemsToCreate.push(weaponData)
+                    } else {
+                        console.warn(`Weapon not found in compendium: ${weapon.name}`)
                     }
-                    itemsToCreate.push(weaponData)
-                } else {
-                    console.warn(`Weapon not found in compendium: ${weapon.name}`)
                 }
             }
+        } else {
+            console.debug('Skipping weapons during sync - preserving existing inventory')
         }
 
         // Process eigenheiten (character quirks/traits) with duplicate detection
