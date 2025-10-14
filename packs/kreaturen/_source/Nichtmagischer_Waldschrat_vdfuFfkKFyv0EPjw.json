@@ -110,9 +110,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
-        "text": "Dein Waffenschaden steigt um +1.\n\nErlaubt das Manöver Befreiungsschlag (AT -4): Du führst eine Attacke aus, die sich (samt anderen Manövern) gegen alle Ziele in einem Winkel von 180° vor dir richtet. Jedem Ziel steht eine eigene Verteidigung zu."
+        "voraussetzung": "Attribut KK 8, Vorteil Kraftvoller Kampf II",
+        "gruppe": 3,
+        "text": "Dein Waffenschaden steigt um +1.\n\nErlaubt das Manöver Befreiungsschlag (AT -4): Du führst eine Attacke aus, die sich (samt anderen Manövern) gegen alle Ziele in einem Winkel von 180° vor dir richtet. Jedem Ziel steht eine eigene Verteidigung zu.",
+        "sephrastoScript": "modifyKampfstil('Kraftvoller Kampf', 0, 0, 1, 0)",
+        "stilBedingungen": "",
+        "foundryScript": ""
       },
       "effects": [],
       "_stats": {
@@ -139,8 +142,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KO 8",
+        "gruppe": 2,
         "text": "Du fügst +1W6 Trefferpunkte zu. Du aktivierst den Effekt in einer Freien Aktion. Der Effekt endet, wenn du auf einen Schlag zwei Wunden erleidest oder nach KO Initiativephasen. Dann erleidest du einen Punkt Erschöpfung."
       },
       "effects": [],
@@ -168,8 +171,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut GE 4",
+        "gruppe": 2,
         "text": "Nach einem Sturz befindest du dich in kniender statt liegender Position."
       },
       "effects": [],

@@ -110,8 +110,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KK 4",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Niederwerfen (AT -4): Gegenprobe: KK. Dein Ziel stürzt und liegt am Boden."
       },
       "effects": [],
@@ -139,8 +139,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut GE 4",
+        "gruppe": 2,
         "text": "Nach einem Sturz befindest du dich in kniender statt liegender Position."
       },
       "effects": [],
@@ -168,8 +168,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut GE 6",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Sturmangriff (Bewegung und AT): Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Außerdem richtet die nächste Attacke GS Trefferpunkte zusätzlich an."
       },
       "effects": [],
@@ -196,7 +196,9 @@
       "name": "Tierempathie",
       "type": "eigenschaft",
       "system": {
-        "text": ""
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Mit der Gabe der Tierempathie kannst du das Talent Überleben verwenden, um die Gedanken von Tieren zu verstehen. Zusätzlich kannst du ihnen sogar einfache Botschaften zukommen lassen. Nach dem aktiven Einsatz der Gabe erleidest du 1 Punkt Erschöpfung.\n\nDie Kosten dieses Vorteils hängen von der Größe der Gruppe von Tieren ab, mit denen du kommunizieren kannst, und dem möglichen Spielnutzen dieser Fähigkeit. Beispiele wären:\n- Fische: Du kannst mit allen Fischen kommunizieren (20 EP).\n- Vögel: Du kannst mit allen Vögeln kommunizieren (40 EP).\n- Alle Tiere: Du kannst mit allen Tieren kommunizieren (60 EP).\n\n"
       },
       "effects": [],
       "_stats": {
