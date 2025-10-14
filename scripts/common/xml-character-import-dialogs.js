@@ -42,7 +42,7 @@ export class XmlCharacterImportDialogs {
                         importAnalysis.supernaturalSkills.found.length
                     }/${importAnalysis.supernaturalSkills.total} gefunden</li>
                     <li><strong>Waffen:</strong> ${importAnalysis.weapons.found.length}/${
-            characterData.weapons.filter((w) => w.name && w.name !== 'Hand').length
+            characterData.weapons.filter((w) => w.name).length
         } gefunden</li>
                     <li><strong>Eigenheiten:</strong> ${
                         characterData.eigenheiten.length
