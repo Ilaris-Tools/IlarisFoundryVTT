@@ -204,6 +204,17 @@
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
     </div>
+    {{/if}} {{#if actor.vorteil.tiergeist}}
+    <div>
+        <label><b>Tiergeist:</b>&nbsp; | &nbsp;</label>
+        {{#each actor.vorteil.tiergeist}}
+        <a class="item-edit"
+            data-itemid="{{this.id}}" data-tooltip="{{{this.system.text}}}">
+            {{this.name}}
+        </a>
+        <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
+        &nbsp; | &nbsp; {{/each}}
+    </div>
     {{/if}}
 </div>
 
