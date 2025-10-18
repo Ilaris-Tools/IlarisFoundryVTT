@@ -22,7 +22,8 @@
     "gruppe": "2",
     "probe": "Zauber -4",
     "gegenprobe": "",
-    "text": "Du ignorierst eine der bei der Tradition angeführten Bedingungen. Ignorierst du die Bedingung Sicht, musst du das Ziel auf eine andere Art und Weise wahrnehmen."
+    "text": "Du ignorierst eine der bei der Tradition angeführten Bedingungen. Ignorierst du die Bedingung Sicht, musst du das Ziel auf eine andere Art und Weise wahrnehmen.",
+    "isBaseManover": true
   },
   "effects": [],
   "folder": null,

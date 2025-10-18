@@ -20,7 +20,8 @@
     "gruppe": "2",
     "probe": "Zauber +4",
     "gegenprobe": "",
-    "text": "Ein Opfer erleichtert den Zauber um +4. Derwische legen ihre ganze Kraft in den Zauber und erleiden danach 2 Punkte Erschöpfung.\nVoraussetzung: Tradition der Derwische III und Verwendung dieser Tradition"
+    "text": "Ein Opfer erleichtert den Zauber um +4. Derwische legen ihre ganze Kraft in den Zauber und erleiden danach 2 Punkte Erschöpfung.\nVoraussetzung: Tradition der Derwische III und Verwendung dieser Tradition",
+    "isBaseManover": false
   },
   "effects": [],
   "folder": null,

@@ -27,7 +27,8 @@
         "target": "",
         "affectedByInput": true
       }
-    }
+    },
+    "isBaseManover": false
   },
   "effects": [],
   "folder": null,

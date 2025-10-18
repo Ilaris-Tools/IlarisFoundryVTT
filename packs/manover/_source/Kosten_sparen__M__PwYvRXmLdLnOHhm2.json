@@ -29,7 +29,8 @@
     "gruppe": "2",
     "probe": "Zauber -4",
     "gegenprobe": "",
-    "text": "Die AsP-Kosten des Zaubers sinken um ein Viertel der Basiskosten. Die Kosten können dadurch nicht unter die Hälfte der Basiskosten sinken."
+    "text": "Die AsP-Kosten des Zaubers sinken um ein Viertel der Basiskosten. Die Kosten können dadurch nicht unter die Hälfte der Basiskosten sinken.",
+    "isBaseManover": false
   },
   "effects": [],
   "folder": null,

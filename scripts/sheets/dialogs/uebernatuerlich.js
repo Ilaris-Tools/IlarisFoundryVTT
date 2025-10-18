@@ -665,6 +665,9 @@ export class UebernatuerlichDialog extends CombatDialog {
         // Collect all modifications from all maneuvers
         const allModifications = []
         let manoeverAmount = 0
+        let baseManoverCount = 0
+        const selectedBaseManoever = new Set()
+
         this.item.manoever.forEach((dynamicManoever) => {
             let check = undefined
             let number = undefined
@@ -686,6 +689,12 @@ export class UebernatuerlichDialog extends CombatDialog {
                 return
 
             manoeverAmount++
+
+            // Count unique base maneuvers for Gildenmagier II bonus
+            if (dynamicManoever.system.isBaseManover) {
+                selectedBaseManoever.add(dynamicManoever.name)
+            }
+
             // Add valid modifications to the collection
             Object.values(dynamicManoever.system.modifications).forEach((modification) => {
                 allModifications.push({
@@ -697,6 +706,8 @@ export class UebernatuerlichDialog extends CombatDialog {
                 })
             })
         })
+
+        baseManoverCount = selectedBaseManoever.size
 
         // Process all modifications in order
         ;[
@@ -739,6 +750,25 @@ export class UebernatuerlichDialog extends CombatDialog {
             mod_at += modifikator
             text_vt = text_vt.concat(`Modifikator: ${modifikator}\n`)
             text_at = text_at.concat(`Modifikator: ${modifikator}\n`)
+        }
+
+        // Gildenmagier II Bonus: +2 wenn mindestens 2 verschiedene Basismanöver verwendet werden
+        if (baseManoverCount >= 2) {
+            // Check if actor has Gildenmagier II advantage
+            const hasGildenmagierII =
+                this.actor.type === 'held' &&
+                this.item.type === 'zauber' &&
+                this.actor.vorteil?.magie?.some(
+                    (v) =>
+                        v.name === 'Tradition der Gildenmagier II' ||
+                        v.name === 'Tradition der Gildenmagier III' ||
+                        v.name === 'Tradition der Gildenmagier IV',
+                )
+
+            if (hasGildenmagierII) {
+                mod_at += 2
+                text_at = text_at.concat(`Gildenmagier II (${baseManoverCount} Basismanöver): +2\n`)
+            }
         }
 
         // Handle Blutmagie and Verbotene Pforten

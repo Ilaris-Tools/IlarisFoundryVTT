@@ -20,7 +20,8 @@
     "gruppe": "3",
     "probe": "Liturgie +4",
     "gegenprobe": "",
-    "text": "Ein rituelles Opfer erleichtert die Liturgie um +4. Der Opfergegenstand wird dabei verbraucht, zerstört oder verschwindet. Firungeweihte opfern besondere Beute oder Trophäen.\nVoraussetzung: Tradition der Firungeweihten III und Verwendung dieser Tradition\nAnmerkung: Opfergegenstände sollten nicht so häufig sein, dass jede zweite Liturgie mit dieser Modifikation gewirkt wird. Umgekehrt sollten sie nicht so selten sein, dass die Modifikation nie eingesetzt werden kann. Als Richtwert gilt eine Opferung alle zwei Spielabende."
+    "text": "Ein rituelles Opfer erleichtert die Liturgie um +4. Der Opfergegenstand wird dabei verbraucht, zerstört oder verschwindet. Firungeweihte opfern besondere Beute oder Trophäen.\nVoraussetzung: Tradition der Firungeweihten III und Verwendung dieser Tradition\nAnmerkung: Opfergegenstände sollten nicht so häufig sein, dass jede zweite Liturgie mit dieser Modifikation gewirkt wird. Umgekehrt sollten sie nicht so selten sein, dass die Modifikation nie eingesetzt werden kann. Als Richtwert gilt eine Opferung alle zwei Spielabende.",
+    "isBaseManover": false
   },
   "effects": [],
   "folder": null,

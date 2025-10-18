@@ -20,7 +20,8 @@
     "input": {
       "label": "",
       "field": "NUMBER"
-    }
+    },
+    "isBaseManover": true
   },
   "effects": [],
   "folder": null,
