@@ -83,7 +83,7 @@ describe('UebernatuerlichDialog canSetEnergyCost logic', () => {
 describe('Gildenmagier II Bonus logic', () => {
     // Mock the logic for counting base maneuvers
     function countBaseManoever(maneuvers) {
-        const selectedBaseManoever = new Set()
+        let baseManoverCount = 0
         maneuvers.forEach((manoever) => {
             // Check if maneuver is selected (has a value)
             const hasValue =
@@ -92,10 +92,10 @@ describe('Gildenmagier II Bonus logic', () => {
                 (manoever.inputValue.field === 'TREFFER_ZONE' && manoever.inputValue.value > 0)
 
             if (hasValue && manoever.system.isBaseManover) {
-                selectedBaseManoever.add(manoever.name)
+                baseManoverCount++
             }
         })
-        return selectedBaseManoever.size
+        return baseManoverCount
     }
 
     function shouldApplyGildenmagierBonus(actor, item, baseManoverCount) {
@@ -156,7 +156,7 @@ describe('Gildenmagier II Bonus logic', () => {
             expect(countBaseManoever(maneuvers)).toBe(1)
         })
 
-        it('should count unique base maneuvers only once', () => {
+        it('should count each base maneuver', () => {
             const maneuvers = [
                 createMockManoever('Mächtige Magie', true, 'NUMBER', 3),
                 createMockManoever('Mehrere Ziele', true, 'CHECKBOX', true),

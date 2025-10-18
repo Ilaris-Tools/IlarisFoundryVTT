@@ -666,7 +666,6 @@ export class UebernatuerlichDialog extends CombatDialog {
         const allModifications = []
         let manoeverAmount = 0
         let baseManoverCount = 0
-        const selectedBaseManoever = new Set()
 
         this.item.manoever.forEach((dynamicManoever) => {
             let check = undefined
@@ -690,9 +689,9 @@ export class UebernatuerlichDialog extends CombatDialog {
 
             manoeverAmount++
 
-            // Count unique base maneuvers for Gildenmagier II bonus
+            // Count base maneuvers for Gildenmagier II bonus
             if (dynamicManoever.system.isBaseManover) {
-                selectedBaseManoever.add(dynamicManoever.name)
+                baseManoverCount++
             }
 
             // Add valid modifications to the collection
@@ -706,8 +705,6 @@ export class UebernatuerlichDialog extends CombatDialog {
                 })
             })
         })
-
-        baseManoverCount = selectedBaseManoever.size
 
         // Process all modifications in order
         ;[
@@ -767,7 +764,7 @@ export class UebernatuerlichDialog extends CombatDialog {
 
             if (hasGildenmagierII) {
                 mod_at += 2
-                text_at = text_at.concat(`Gildenmagier II (${baseManoverCount} Basismanöver): +2\n`)
+                text_at = text_at.concat('Gildenmagier II: +2\n')
             }
         }
 
