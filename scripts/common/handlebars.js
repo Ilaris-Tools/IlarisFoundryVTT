@@ -1,3 +1,5 @@
+import { formatDiceFormula } from './utilities.js'
+
 export const initializeHandlebars = () => {
     registerHandlebarsHelpers()
     preloadHandlebarsTemplates()
@@ -330,45 +332,6 @@ function registerHandlebarsHelpers() {
      * - 1d20 → 1W20 - simple single die
      */
     Handlebars.registerHelper('formatDiceFormula', function (diceFormula) {
-        if (!diceFormula || typeof diceFormula !== 'string') {
-            return diceFormula
-        }
-
-        // Extract the dice count and modifiers using regex
-        const match = diceFormula.match(/^(\d+)d(\d+)(dl(\d+))?(dh(\d+))?/)
-        if (!match) {
-            return diceFormula // Return original if pattern doesn't match
-        }
-
-        const diceCount = parseInt(match[1])
-        const diceSides = match[2]
-        const dropLowest = match[4] ? parseInt(match[4]) : 0
-        const dropHighest = match[6] ? parseInt(match[6]) : 0
-
-        // Build the base display (convert 'd' to 'W' for German)
-        let display = `${diceCount}W${diceSides}`
-
-        // Determine modifiers
-        const modifiers = []
-
-        // Check for median (drop both lowest and highest)
-        if (dropLowest > 0 && dropHighest > 0) {
-            modifiers.push('Median')
-        }
-
-        // Check for schip (drop lowest but not highest, or specific patterns)
-        if (dropLowest > 0 && dropHighest === 0) {
-            modifiers.push('Schip')
-        } else if (dropLowest > 1 && dropHighest > 0) {
-            // Pattern like 4d20dl2dh1 has both median and schip
-            modifiers.push('Schip')
-        }
-
-        // Add modifiers to display if any exist
-        if (modifiers.length > 0) {
-            display += ` (${modifiers.join(', ')})`
-        }
-
-        return display
+        return formatDiceFormula(diceFormula)
     })
 }
