@@ -750,19 +750,9 @@ export class UebernatuerlichDialog extends CombatDialog {
         }
 
         // Gildenmagier II Bonus: +2 wenn mindestens 2 verschiedene Basismanöver verwendet werden
-        if (baseManoverCount >= 2) {
-            // Check if actor has Gildenmagier II advantage
-            const hasGildenmagierII =
-                this.actor.type === 'held' &&
-                this.item.type === 'zauber' &&
-                this.actor.vorteil?.magie?.some(
-                    (v) =>
-                        v.name === 'Tradition der Gildenmagier II' ||
-                        v.name === 'Tradition der Gildenmagier III' ||
-                        v.name === 'Tradition der Gildenmagier IV',
-                )
-
-            if (hasGildenmagierII) {
+        if (baseManoverCount >= 2 && this.actor.type === 'held' && this.item.type === 'zauber') {
+            const selectedStil = hardcoded.getSelectedStil(this.actor, 'uebernatuerlich')
+            if (selectedStil?.name.includes('Gildenmagier') && selectedStil.stufe >= 2) {
                 mod_at += 2
                 text_at = text_at.concat('Gildenmagier II: +2\n')
             }

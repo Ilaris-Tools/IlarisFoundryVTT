@@ -98,18 +98,17 @@ describe('Gildenmagier II Bonus logic', () => {
         return baseManoverCount
     }
 
-    function shouldApplyGildenmagierBonus(actor, item, baseManoverCount) {
-        return (
+    function shouldApplyGildenmagierBonus(actor, item, baseManoverCount, selectedStil = null) {
+        if (
             baseManoverCount >= 2 &&
             actor.type === 'held' &&
             item.type === 'zauber' &&
-            actor.vorteil?.magie?.some(
-                (v) =>
-                    v.name === 'Tradition der Gildenmagier II' ||
-                    v.name === 'Tradition der Gildenmagier III' ||
-                    v.name === 'Tradition der Gildenmagier IV',
-            )
-        )
+            selectedStil?.name.includes('Gildenmagier') &&
+            selectedStil.stufe >= 2
+        ) {
+            return true
+        }
+        return false
     }
 
     const createMockManoever = (name, isBase, inputField, inputValue) => ({
@@ -167,75 +166,88 @@ describe('Gildenmagier II Bonus logic', () => {
     })
 
     describe('applying Gildenmagier II bonus', () => {
-        const createActor = (hasGildenmagierII, type = 'held') => ({
-            type,
-            vorteil: {
-                magie: hasGildenmagierII ? [{ name: 'Tradition der Gildenmagier II' }] : [],
-            },
-        })
-
+        const createActor = (type = 'held') => ({ type })
         const createItem = (type = 'zauber') => ({ type })
+        const createStil = (name, stufe) => ({ name, stufe })
 
         it('should apply bonus with 2 base maneuvers and Gildenmagier II', () => {
-            const actor = createActor(true)
+            const actor = createActor()
             const item = createItem('zauber')
             const baseCount = 2
+            const stil = createStil('Tradition der Gildenmagier', 2)
 
-            expect(shouldApplyGildenmagierBonus(actor, item, baseCount)).toBe(true)
+            expect(shouldApplyGildenmagierBonus(actor, item, baseCount, stil)).toBe(true)
         })
 
         it('should not apply bonus with only 1 base maneuver', () => {
-            const actor = createActor(true)
+            const actor = createActor()
             const item = createItem('zauber')
             const baseCount = 1
+            const stil = createStil('Tradition der Gildenmagier', 2)
 
-            expect(shouldApplyGildenmagierBonus(actor, item, baseCount)).toBe(false)
+            expect(shouldApplyGildenmagierBonus(actor, item, baseCount, stil)).toBe(false)
         })
 
-        it('should not apply bonus without Gildenmagier II advantage', () => {
-            const actor = createActor(false)
+        it('should not apply bonus without Gildenmagier style', () => {
+            const actor = createActor()
             const item = createItem('zauber')
             const baseCount = 2
+            const stil = createStil('Tradition der Elfen', 3)
 
-            expect(shouldApplyGildenmagierBonus(actor, item, baseCount)).toBe(false)
+            expect(shouldApplyGildenmagierBonus(actor, item, baseCount, stil)).toBe(false)
+        })
+
+        it('should not apply bonus with Gildenmagier I (stufe < 2)', () => {
+            const actor = createActor()
+            const item = createItem('zauber')
+            const baseCount = 2
+            const stil = createStil('Tradition der Gildenmagier', 1)
+
+            expect(shouldApplyGildenmagierBonus(actor, item, baseCount, stil)).toBe(false)
         })
 
         it('should not apply bonus for liturgies', () => {
-            const actor = createActor(true)
+            const actor = createActor()
             const item = createItem('liturgie')
             const baseCount = 2
+            const stil = createStil('Tradition der Gildenmagier', 2)
 
-            expect(shouldApplyGildenmagierBonus(actor, item, baseCount)).toBe(false)
+            expect(shouldApplyGildenmagierBonus(actor, item, baseCount, stil)).toBe(false)
         })
 
         it('should apply bonus with Gildenmagier III', () => {
-            const actor = {
-                type: 'held',
-                vorteil: { magie: [{ name: 'Tradition der Gildenmagier III' }] },
-            }
+            const actor = createActor()
             const item = createItem('zauber')
             const baseCount = 2
+            const stil = createStil('Tradition der Gildenmagier', 3)
 
-            expect(shouldApplyGildenmagierBonus(actor, item, baseCount)).toBe(true)
+            expect(shouldApplyGildenmagierBonus(actor, item, baseCount, stil)).toBe(true)
         })
 
         it('should apply bonus with Gildenmagier IV', () => {
-            const actor = {
-                type: 'held',
-                vorteil: { magie: [{ name: 'Tradition der Gildenmagier IV' }] },
-            }
+            const actor = createActor()
             const item = createItem('zauber')
             const baseCount = 3
+            const stil = createStil('Tradition der Gildenmagier', 4)
 
-            expect(shouldApplyGildenmagierBonus(actor, item, baseCount)).toBe(true)
+            expect(shouldApplyGildenmagierBonus(actor, item, baseCount, stil)).toBe(true)
         })
 
         it('should not apply bonus for creatures', () => {
-            const actor = createActor(true, 'kreatur')
+            const actor = createActor('kreatur')
+            const item = createItem('zauber')
+            const baseCount = 2
+            const stil = createStil('Tradition der Gildenmagier', 2)
+
+            expect(shouldApplyGildenmagierBonus(actor, item, baseCount, stil)).toBe(false)
+        })
+
+        it('should not apply bonus when selectedStil is null', () => {
+            const actor = createActor()
             const item = createItem('zauber')
             const baseCount = 2
 
-            expect(shouldApplyGildenmagierBonus(actor, item, baseCount)).toBe(false)
+            expect(shouldApplyGildenmagierBonus(actor, item, baseCount, null)).toBe(false)
         })
     })
 })
