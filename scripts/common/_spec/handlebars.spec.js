@@ -42,33 +42,13 @@ describe('handlebars', () => {
     })
 
     describe('formatDiceFormula', () => {
-        describe('standard dice formulas', () => {
-            test.each`
-                description                             | input           | expected
-                ${'3d20dl1dh1 -> 3W20 (Median)'}        | ${'3d20dl1dh1'} | ${'3W20 (Median)'}
-                ${'2d20dl1 -> 2W20 (Schip)'}            | ${'2d20dl1'}    | ${'2W20 (Schip)'}
-                ${'3d20dl2 -> 3W20 (Schip)'}            | ${'3d20dl2'}    | ${'3W20 (Schip)'}
-                ${'4d20dl2dh1 -> 4W20 (Median, Schip)'} | ${'4d20dl2dh1'} | ${'4W20 (Median, Schip)'}
-                ${'1d20 -> 1W20'}                       | ${'1d20'}       | ${'1W20'}
-                ${'5d20dl3dh1 -> 5W20 (Median, Schip)'} | ${'5d20dl3dh1'} | ${'5W20 (Median, Schip)'}
-                ${'2d6 -> 2W6'}                         | ${'2d6'}        | ${'2W6'}
-                ${'1d6 -> 1W6'}                         | ${'1d6'}        | ${'1W6'}
-            `('$description', ({ input, expected }) => {
-                expect(helpers.formatDiceFormula(input)).toBe(expected)
-            })
-        })
+        test('should be registered and delegate to utility function', () => {
+            // Test that the helper is registered
+            expect(helpers.formatDiceFormula).toBeDefined()
 
-        describe('edge cases', () => {
-            test.each`
-                description                       | input        | expected
-                ${'null returns null'}            | ${null}      | ${null}
-                ${'undefined returns undefined'}  | ${undefined} | ${undefined}
-                ${'empty string returns empty'}   | ${''}        | ${''}
-                ${'invalid format returns input'} | ${'invalid'} | ${'invalid'}
-                ${'invalid format returns input'} | ${'abc123'}  | ${'abc123'}
-            `('$description', ({ input, expected }) => {
-                expect(helpers.formatDiceFormula(input)).toBe(expected)
-            })
+            // Test a basic case to ensure it delegates correctly
+            expect(helpers.formatDiceFormula('3d20dl1dh1')).toBe('3W20 (Median)')
+            expect(helpers.formatDiceFormula('1d20')).toBe('1W20')
         })
     })
 })
