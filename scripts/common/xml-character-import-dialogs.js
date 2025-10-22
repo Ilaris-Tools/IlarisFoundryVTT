@@ -44,6 +44,9 @@ export class XmlCharacterImportDialogs {
                     <li><strong>Waffen:</strong> ${importAnalysis.weapons.found.length}/${
             characterData.weapons.filter((w) => w.name).length
         } gefunden</li>
+                    <li><strong>Rüstungen:</strong> ${importAnalysis.armors.found.length}/${
+            characterData.armors.filter((a) => a.name).length
+        } werden erstellt</li>
                     <li><strong>Eigenheiten:</strong> ${
                         characterData.eigenheiten.length
                     } Eigenheiten</li>
@@ -234,6 +237,12 @@ export class XmlCharacterImportDialogs {
         if (analysis.weapons.missing.length > 0) {
             missingItems.push(
                 `<li><strong>Waffen:</strong> ${analysis.weapons.missing.join(', ')}</li>`,
+            )
+        }
+
+        if (analysis.armors.missing.length > 0) {
+            missingItems.push(
+                `<li><strong>Rüstungen:</strong> ${analysis.armors.missing.join(', ')}</li>`,
             )
         }
 
