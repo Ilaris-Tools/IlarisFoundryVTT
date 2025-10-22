@@ -109,6 +109,7 @@ export class XmlCharacterImporter {
             supernaturalTalents: [], // Add supernatural talents (zauber/liturgie)
             advantages: [],
             weapons: [],
+            armors: [], // Add armors (Rüstungen)
             energies: {},
             experience: { total: 0, spent: 0 },
             description: {},
@@ -239,6 +240,24 @@ export class XmlCharacterImporter {
                     wmVt: parseInt(weapon.getAttribute('wmVt')) || 0,
                 }
                 characterData.weapons.push(weaponData)
+            }
+        })
+
+        // Extract armors
+        const armorNodes = xmlDoc.querySelectorAll('Objekte > Rüstungen > Rüstung')
+        armorNodes.forEach((armor) => {
+            const name = armor.getAttribute('name')
+            if (name && name.trim()) {
+                const armorData = {
+                    name,
+                    rs_beine: parseInt(armor.getAttribute('rsBeine')) || 0,
+                    rs_larm: parseInt(armor.getAttribute('rsLArm')) || 0,
+                    rs_rarm: parseInt(armor.getAttribute('rsRArm')) || 0,
+                    rs_bauch: parseInt(armor.getAttribute('rsBauch')) || 0,
+                    rs_brust: parseInt(armor.getAttribute('rsBrust')) || 0,
+                    rs_kopf: parseInt(armor.getAttribute('rsKopf')) || 0,
+                }
+                characterData.armors.push(armorData)
             }
         })
 
@@ -641,6 +660,57 @@ export class XmlCharacterImporter {
             console.debug('Skipping weapons during sync - preserving existing inventory')
         }
 
+        // Process armors (skip during sync operations to preserve existing inventory)
+        // Armors are created directly from XML data, not looked up in compendium
+        if (!skipInventoryItems) {
+            for (const armor of characterData.armors) {
+                if (armor.name) {
+                    // Calculate total RS (sum of all body part RS values)
+                    const totalRs =
+                        armor.rs_beine +
+                        armor.rs_larm +
+                        armor.rs_rarm +
+                        armor.rs_bauch +
+                        armor.rs_brust +
+                        armor.rs_kopf
+
+                    // Create armor item directly from XML data
+                    const armorData = {
+                        name: armor.name,
+                        type: 'ruestung',
+                        system: {
+                            haerte: 0,
+                            beschaedigung: 0,
+                            aufbewahrungs_ort: 'mitführend',
+                            bewahrt_auf: [],
+                            gewicht_summe: 0,
+                            gewicht: 0,
+                            preis: 0,
+                            rs: totalRs,
+                            be: 0, // BE not provided in XML, defaults to 0
+                            rs_beine: armor.rs_beine,
+                            rs_larm: armor.rs_larm,
+                            rs_rarm: armor.rs_rarm,
+                            rs_bauch: armor.rs_bauch,
+                            rs_brust: armor.rs_brust,
+                            rs_kopf: armor.rs_kopf,
+                            aktiv: false,
+                            text: '',
+                        },
+                    }
+
+                    if (markAsImported) {
+                        armorData.flags = { ilaris: { xmlImported: true } }
+                    }
+
+                    itemsToCreate.push(armorData)
+                    console.debug(`Created armor from XML: ${armor.name}`)
+                }
+            }
+        } else {
+            console.debug('Skipping armors during sync - preserving existing inventory')
+        }
+
         // Process eigenheiten (character quirks/traits) with duplicate detection
         const eigenheitenToDelete = []
 
@@ -826,6 +896,7 @@ export class XmlCharacterImporter {
             advantages: { found: [], missing: [] },
             supernaturalSkills: { found: [], missing: [], total: 0 },
             weapons: { found: [], missing: [] },
+            armors: { found: [], missing: [] }, // Armors are always created from XML, not looked up
         }
 
         // Analyze skills
@@ -905,6 +976,12 @@ export class XmlCharacterImporter {
             } else {
                 analysis.weapons.missing.push(weapon.name)
             }
+        }
+
+        // Analyze armors - armors are always created directly from XML, not looked up in compendium
+        // So all armors are considered "found" (will be created)
+        for (const armor of characterData.armors) {
+            analysis.armors.found.push(armor.name)
         }
 
         return analysis
