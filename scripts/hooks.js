@@ -18,6 +18,7 @@ import { FreieFertigkeitSheet } from './sheets/items/freie_fertigkeit.js'
 import { VorteilSheet } from './sheets/items/vorteil.js'
 import { ManoeverSheet } from './sheets/items/manoever.js'
 import { EigenheitSheet } from './sheets/items/eigenheit.js'
+import { UpdateNotifications } from './common/update-notifications.js'
 import { EigenschaftSheet } from './sheets/items/eigenschaft.js'
 import { InfoSheet } from './sheets/items/info.js'
 import { AngriffSheet } from './sheets/items/angriff.js'
@@ -436,4 +437,16 @@ Hooks.on('renderActorDirectory', (app, html) => {
             }
         }
     })
+})
+
+/* -------------------------------------------- */
+/*  Ready Hook                                  */
+/* -------------------------------------------- */
+
+Hooks.once('ready', async function () {
+    // Make UpdateNotifications available globally for debugging
+    window.UpdateNotifications = UpdateNotifications
+
+    // Check and show update notifications
+    UpdateNotifications.checkAndShowUpdates()
 })

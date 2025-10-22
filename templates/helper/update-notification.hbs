@@ -1,0 +1,35 @@
+<div class="update-notification-content">
+    <div class="update-header">
+        {{#if isFirstTime}}
+            <div>
+                <h2>Willkommen bei Ilaris Foundry!</h2>
+                <p>Hier sind die aktuellen Features der Version <strong>{{currentVersion}}</strong>:</p>
+            </div>
+        {{else}}
+            <div>
+                <i class="fas fa-rocket"></i>
+                <h2>Ilaris wurde aktualisiert!</h2>
+                <p>Das System wurde auf Version <strong>{{currentVersion}}</strong> aktualisiert. Hier sind die Neuerungen:</p>
+            </div>
+        {{/if}}
+    </div>
+
+    {{#if hasChangelog}}
+        <div class="changelog-content">
+            {{#each changelog}}
+                <div class="changelog-section">
+                    <h3>{{this.title}}</h3>
+                    <div class="changelog-markdown">{{this.content}}</div>
+                </div>
+            {{/each}}
+        </div>
+    {{else}}
+        <div class="no-changelog">
+            <p>Für diese Version sind keine detaillierten Changelog-Informationen verfügbar.</p>
+        </div>
+    {{/if}}
+
+    <div class="update-footer">
+        <p><em>Diese Meldung wird nur einmal pro Update angezeigt.</em></p>
+    </div>
+</div>

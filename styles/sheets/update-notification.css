@@ -1,0 +1,179 @@
+/* Update Notification Dialog Styles */
+.ilaris-update-notification .window-content {
+    padding: 0;
+    background: #f5f5dc;
+}
+
+.update-notification-content {
+    padding: 20px;
+    font-family: 'Signika', sans-serif;
+}
+
+/* Header Styles */
+.update-header {
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 16px;
+    background: #ece3cd;
+    border-radius: 8px;
+    color: #2c3e50;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-left: 4px solid #782e22;
+}
+
+.welcome-header {
+    background: #e5c4a9;
+    border-left: 4px solid #00990d;
+}
+
+.update-header i {
+    font-size: 1.8em;
+    margin-bottom: 12px;
+    display: block;
+    color: #782e22;
+}
+
+.update-header h2 {
+    margin: 0 0 8px 0;
+    font-size: 1.5em;
+    font-weight: 600;
+    color: #2c3e50;
+}
+
+.update-header p {
+    margin: 0;
+    font-size: 1em;
+    line-height: 1.4;
+    color: #4b4a44;
+}
+
+/* Changelog Styles */
+.changelog-content {
+    max-height: 448px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+.changelog-section {
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: 4px;
+    padding: 16px;
+    margin-bottom: 16px;
+    border-left: 3px solid #782e22;
+}
+
+.changelog-section:last-child {
+    margin-bottom: 0;
+}
+
+.changelog-section h3 {
+    margin: 0 0 12px 0;
+    color: #2c3e50;
+    font-size: 1.2em;
+    font-weight: 600;
+    padding-bottom: 4px;
+    border-bottom: 1px solid #782e22;
+}
+
+.changelog-markdown {
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    line-height: 1.4;
+    white-space: pre-wrap;
+    background: rgba(0, 0, 0, 0.05);
+    padding: 12px;
+    border-radius: 4px;
+    color: #2c3e50;
+}
+
+/* No changelog message */
+.no-changelog {
+    text-align: center;
+    padding: 32px 16px;
+    background: rgba(0, 0, 0, 0.02);
+    border-radius: 4px;
+    color: #989898;
+    font-style: italic;
+}
+
+/* Footer */
+.update-footer {
+    text-align: center;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid #782e22;
+}
+
+.update-footer p {
+    margin: 0;
+    color: #989898;
+    font-size: 0.85em;
+    font-style: italic;
+}
+
+/* Dialog Button Customization */
+.ilaris-update-notification .dialog-buttons {
+    background: #ece3cd;
+    padding: 12px 16px;
+    border-top: 1px solid #782e22;
+}
+
+.ilaris-update-notification .dialog-button {
+    background: #782e22;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+}
+
+.ilaris-update-notification .dialog-button:hover {
+    background: #a33d2d;
+}
+
+.ilaris-update-notification .dialog-button i {
+    margin-right: 6px;
+}
+
+/* Scrollbar Styling */
+.changelog-content::-webkit-scrollbar {
+    width: 6px;
+}
+
+.changelog-content::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+}
+
+.changelog-content::-webkit-scrollbar-thumb {
+    background: #782e22;
+    border-radius: 3px;
+}
+
+.changelog-content::-webkit-scrollbar-thumb:hover {
+    background: #a33d2d;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .update-notification-content {
+        padding: 12px;
+    }
+    
+    .update-header {
+        padding: 12px;
+    }
+    
+    .update-header h2 {
+        font-size: 1.3em;
+    }
+    
+    .changelog-section {
+        padding: 12px;
+    }
+    
+    .changelog-content {
+        max-height: 280px;
+    }
+}

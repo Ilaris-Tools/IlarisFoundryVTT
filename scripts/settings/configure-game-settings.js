@@ -90,6 +90,16 @@ export const registerIlarisGameSettings = () => {
             scope: 'client',
             default: true,
         },
+        {
+            // Register last seen version setting for update notifications
+            settingsName: IlarisGameSettingNames.lastSeenVersion,
+            name: 'Zuletzt gesehene Version',
+            hint: 'Die zuletzt gesehene Systemversion für Update-Benachrichtigungen.',
+            config: false,
+            type: new foundry.data.fields.StringField(),
+            scope: 'client',
+            default: '0.0.0',
+        },
     ].forEach((setting) => {
         game.settings.register(ConfigureGameSettingsCategories.Ilaris, setting.settingsName, {
             name: setting.name,
