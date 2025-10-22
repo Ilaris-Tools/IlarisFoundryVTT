@@ -248,14 +248,25 @@ export class XmlCharacterImporter {
         armorNodes.forEach((armor) => {
             const name = armor.getAttribute('name')
             if (name && name.trim()) {
+                // Parse RS values from slash-separated format: "3/3/3/3/3/3"
+                // Format: beine/larm/rarm/bauch/brust/kopf
+                const rsString = armor.getAttribute('rs') || '0/0/0/0/0/0'
+                const rsValues = rsString.split('/').map((val) => parseInt(val.trim()) || 0)
+
+                // Ensure we have exactly 6 values, pad with zeros if necessary
+                while (rsValues.length < 6) {
+                    rsValues.push(0)
+                }
+
                 const armorData = {
                     name,
-                    rs_beine: parseInt(armor.getAttribute('rsBeine')) || 0,
-                    rs_larm: parseInt(armor.getAttribute('rsLArm')) || 0,
-                    rs_rarm: parseInt(armor.getAttribute('rsRArm')) || 0,
-                    rs_bauch: parseInt(armor.getAttribute('rsBauch')) || 0,
-                    rs_brust: parseInt(armor.getAttribute('rsBrust')) || 0,
-                    rs_kopf: parseInt(armor.getAttribute('rsKopf')) || 0,
+                    rs_beine: rsValues[0],
+                    rs_larm: rsValues[1],
+                    rs_rarm: rsValues[2],
+                    rs_bauch: rsValues[3],
+                    rs_brust: rsValues[4],
+                    rs_kopf: rsValues[5],
+                    be: parseInt(armor.getAttribute('be')) || 0,
                 }
                 characterData.armors.push(armorData)
             }
@@ -665,14 +676,17 @@ export class XmlCharacterImporter {
         if (!skipInventoryItems) {
             for (const armor of characterData.armors) {
                 if (armor.name) {
-                    // Calculate total RS (sum of all body part RS values)
-                    const totalRs =
+                    // Calculate sum of all body part RS values
+                    const sumRs =
                         armor.rs_beine +
                         armor.rs_larm +
                         armor.rs_rarm +
                         armor.rs_bauch +
                         armor.rs_brust +
                         armor.rs_kopf
+
+                    // Calculate average RS (sum divided by 6)
+                    const averageRs = Math.round(sumRs / 6)
 
                     // Create armor item directly from XML data
                     const armorData = {
@@ -686,8 +700,8 @@ export class XmlCharacterImporter {
                             gewicht_summe: 0,
                             gewicht: 0,
                             preis: 0,
-                            rs: totalRs,
-                            be: 0, // BE not provided in XML, defaults to 0
+                            rs: averageRs,
+                            be: armor.be || 0,
                             rs_beine: armor.rs_beine,
                             rs_larm: armor.rs_larm,
                             rs_rarm: armor.rs_rarm,
