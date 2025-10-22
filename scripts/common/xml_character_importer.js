@@ -685,8 +685,8 @@ export class XmlCharacterImporter {
                         armor.rs_brust +
                         armor.rs_kopf
 
-                    // Calculate average RS (sum divided by 6)
-                    const averageRs = Math.round(sumRs / 6)
+                    // Calculate average RS (sum divided by 6, rounded up)
+                    const averageRs = Math.ceil(sumRs / 6)
 
                     // Create armor item directly from XML data
                     const armorData = {
