@@ -115,6 +115,7 @@ export class XmlCharacterImporter {
             description: {},
             eigenheiten: [], // Character quirks/traits
             notes: '',
+            freeSkills: [], // Free skills (Freie Fertigkeiten)
         }
 
         // Extract basic character info
@@ -184,6 +185,16 @@ export class XmlCharacterImporter {
             const value = parseInt(skill.getAttribute('wert')) || 0
             if (name) {
                 characterData.skills.push({ name, value })
+            }
+        })
+
+        // Extract free skills (Freie Fertigkeiten)
+        const freeSkillNodes = xmlDoc.querySelectorAll('FreieFertigkeiten > FreieFertigkeit')
+        freeSkillNodes.forEach((freeSkill) => {
+            const name = freeSkill.getAttribute('name')
+            const value = parseInt(freeSkill.getAttribute('wert')) || 0
+            if (name) {
+                characterData.freeSkills.push({ name, value })
             }
         })
 
@@ -533,6 +544,23 @@ export class XmlCharacterImporter {
                 }
                 itemsToCreate.push(customSkill)
             }
+        }
+
+        // Process free skills (Freie Fertigkeiten)
+        // These do not exist in compendiums, so we always create them directly
+        for (const freeSkill of characterData.freeSkills) {
+            const freeSkillData = {
+                name: freeSkill.name,
+                type: 'freie_fertigkeit',
+                system: {
+                    stufe: freeSkill.value,
+                    gruppe: '1',
+                },
+            }
+            if (markAsImported) {
+                freeSkillData.flags = { ilaris: { xmlImported: true } }
+            }
+            itemsToCreate.push(freeSkillData)
         }
 
         // First pass: Process supernatural talents (zauber and liturgie) and collect required supernatural skills
@@ -911,6 +939,7 @@ export class XmlCharacterImporter {
             supernaturalSkills: { found: [], missing: [], total: 0 },
             weapons: { found: [], missing: [] },
             armors: { found: [], missing: [] }, // Armors are always created from XML, not looked up
+            freeSkills: { total: 0 }, // Free skills are always created directly
         }
 
         // Analyze skills
@@ -997,6 +1026,8 @@ export class XmlCharacterImporter {
         for (const armor of characterData.armors) {
             analysis.armors.found.push(armor.name)
         }
+        // Count free skills (these are always created directly, no compendium lookup needed)
+        analysis.freeSkills.total = characterData.freeSkills.length
 
         return analysis
     }

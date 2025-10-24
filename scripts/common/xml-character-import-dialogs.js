@@ -41,6 +41,9 @@ export class XmlCharacterImportDialogs {
                     <li><strong>Übernatürliche Fertigkeiten:</strong> ${
                         importAnalysis.supernaturalSkills.found.length
                     }/${importAnalysis.supernaturalSkills.total} gefunden</li>
+                    <li><strong>Freie Fertigkeiten:</strong> ${
+                        importAnalysis.freeSkills.total
+                    } Freie Fertigkeiten</li>
                     <li><strong>Waffen:</strong> ${importAnalysis.weapons.found.length}/${
             characterData.weapons.filter((w) => w.name).length
         } gefunden</li>
@@ -115,6 +118,9 @@ export class XmlCharacterImportDialogs {
         const currentSupernaturalSkills = actor.items.filter(
             (item) => item.type === 'uebernatuerliche_fertigkeit',
         ).length
+        const currentFreeSkills = actor.items.filter(
+            (item) => item.type === 'freie_fertigkeit',
+        ).length
 
         // Count preserved items
         const preservedInventory = actor.items.filter((item) =>
@@ -133,6 +139,7 @@ export class XmlCharacterImportDialogs {
         const newSupernaturalSkills = characterData.supernaturalSkills.filter(
             (skill) => skill.value > 0,
         ).length
+        const newFreeSkills = characterData.freeSkills.length
 
         const dialogContent = `
             <div style="margin-bottom: 15px;">
@@ -151,6 +158,7 @@ export class XmlCharacterImportDialogs {
                     <li><strong>Talente:</strong> ${currentTalents} aktuell → ${newTalents} aus XML</li>
                     <li><strong>Vorteile:</strong> ${currentAdvantages} aktuell → ${newAdvantages} aus XML</li>
                     <li><strong>Übernatürliche Fertigkeiten:</strong> ${currentSupernaturalSkills} aktuell → ${newSupernaturalSkills} aus XML</li>
+                    <li><strong>Freie Fertigkeiten:</strong> ${currentFreeSkills} aktuell → ${newFreeSkills} aus XML</li>
                     <li><strong>Eigenheiten:</strong> Nur Duplikate werden ersetzt, Bestehende bleiben erhalten, neue werden hinzugefügt</li>
                 </ul>
             </div>
