@@ -47,6 +47,9 @@ export class XmlCharacterImportDialogs {
                     <li><strong>Waffen:</strong> ${importAnalysis.weapons.found.length}/${
             characterData.weapons.filter((w) => w.name).length
         } gefunden</li>
+                    <li><strong>Rüstungen:</strong> ${importAnalysis.armors.found.length}/${
+            characterData.armors.filter((a) => a.name).length
+        } werden erstellt</li>
                     <li><strong>Eigenheiten:</strong> ${
                         characterData.eigenheiten.length
                     } Eigenheiten</li>
@@ -164,10 +167,15 @@ export class XmlCharacterImportDialogs {
                 <h4 style="color: #2e7d32; margin-bottom: 8px;">✅ Bleibt ERHALTEN:</h4>
                 <ul style="margin-left: 20px; margin-bottom: 0;">
                     <li><strong>Inventar-Gegenstände:</strong> ${preservedInventory} Gegenstände (Waffen, Rüstungen, Objekte)</li>
+                    <li><strong>Finanzen:</strong> Geld wird nicht aus der XML übernommen</li>
                     <li><strong>Charakternotizen:</strong> Manuelle Notizen werden nicht überschrieben</li>
                     <li><strong>Eigenheiten:</strong> ${preservedEigenheiten} bestehende (keine Duplikate bleiben erhalten)</li>
                     <li><strong>Charakterbogen-Einstellungen:</strong> UI-Einstellungen, eigene Anpassungen</li>
                 </ul>
+            </div>
+            
+            <div style="background-color: #e3f2fd; border: 1px solid #2196f3; padding: 10px; border-radius: 4px; margin-bottom: 15px;">
+                <strong>ℹ️ Design-Philosophie:</strong> Sephrasto ist der Charakterverwalter (Werte, Fertigkeiten, Talente), während Foundry der Inventarverwalter ist (Waffen, Rüstungen, Gegenstände, Geld). Die Synchronisation aktualisiert nur Charakterwerte und -fähigkeiten, aber nicht das Inventar.
             </div>
             
             <div style="background-color: #fff3cd; border: 1px solid #ffeaa7; padding: 10px; border-radius: 4px; margin-bottom: 15px;">
@@ -242,6 +250,12 @@ export class XmlCharacterImportDialogs {
         if (analysis.weapons.missing.length > 0) {
             missingItems.push(
                 `<li><strong>Waffen:</strong> ${analysis.weapons.missing.join(', ')}</li>`,
+            )
+        }
+
+        if (analysis.armors.missing.length > 0) {
+            missingItems.push(
+                `<li><strong>Rüstungen:</strong> ${analysis.armors.missing.join(', ')}</li>`,
             )
         }
 
