@@ -276,5 +276,6 @@ export function handleModifications(allModifications, rollValues) {
         rollValues.trefferzone,
         rollValues.schaden,
         rollValues.nodmg,
+        originalRessourceCost,
     ]
 }
