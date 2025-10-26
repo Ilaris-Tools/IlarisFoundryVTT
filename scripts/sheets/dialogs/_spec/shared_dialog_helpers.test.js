@@ -448,7 +448,7 @@ describe('processModification', () => {
         expect(result.rollValues.mod_energy).toBe(15)
         expect(result.originalRessourceCost).toBe(15) // Should be updated to the SET value
         expect(result.rollValues.text_energy).toContain(
-            'Test Manoever: Setzt Energiekosten auf 15 als Basiswert',
+            'Test Manoever: Setzt die Basiskosten auf 15 Energie',
         )
     })
 
@@ -490,7 +490,7 @@ describe('processModification', () => {
         expect(result2.rollValues.mod_energy).toBe(40)
         expect(result2.originalRessourceCost).toBe(20) // Should remain the SET value
         expect(result2.rollValues.text_energy).toContain(
-            'Set Base Cost: Setzt Energiekosten auf 20 als Basiswert',
+            'Set Base Cost: Setzt die Basiskosten auf 20 Energie',
         )
         expect(result2.rollValues.text_energy).toContain('Multiply Cost: +20 Energiekosten')
     })
@@ -715,7 +715,7 @@ describe('handleModifications', () => {
 
         // Processing order: SET (sets to 25), ADD (25 + 5 = 30), MULTIPLY (uses originalRessourceCost of 25: (25*2) - 25 = 25, so 30 + 25 = 55)
         expect(result[3]).toBe(55) // mod_energy
-        expect(result[7]).toContain('Set Base: Setzt Energiekosten auf 25 als Basiswert')
+        expect(result[7]).toContain('Set Base: Setzt die Basiskosten auf 25 Energie')
         expect(result[7]).toContain('Add Extra: +5 Energiekosten')
         expect(result[7]).toContain('Double Cost: +25 Energiekosten')
     })
