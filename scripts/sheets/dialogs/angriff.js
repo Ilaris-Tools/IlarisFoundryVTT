@@ -441,28 +441,8 @@ export class AngriffDialog extends CombatDialog {
         let trefferzone = 0
         let schaden = this.item.getTp()
 
-        // Handle standard maneuvers first
-        if (manoever.kbak.selected) {
-            mod_at -= 4
-            text_at = text_at.concat('Kombinierte Aktion: -4\n')
-        }
-        // Volle Offensive vlof
-        if (manoever.vlof.selected && !manoever.pssl.selected) {
-            if (manoever.vlof.offensiver_kampfstil) {
-                mod_vt -= 4
-                text_vt = text_vt.concat('Volle Offensive (Offensiver Kampfstil): -4\n')
-            } else {
-                mod_vt -= 8
-                text_vt = text_vt.concat('Volle Offensive: -8\n')
-            }
-            mod_at += 4
-            text_at = text_at.concat('Volle Offensive: +4\n')
-        }
-        // Volle Defensive vldf
-        if (manoever.vldf.selected) {
-            mod_vt += 4
-            text_vt = text_vt.concat('Volle Defensive +4\n')
-        }
+        // Note: Tactical options (Kombinierte Aktion, Volle Offensive/Defensive)
+        // are moved after handleModifications so they don't affect Riposte
         // Reichweitenunterschiede rwdf
         let reichweite = Number(manoever.rwdf.selected)
         if (reichweite > 0) {
@@ -477,10 +457,10 @@ export class AngriffDialog extends CombatDialog {
         if (reaktionen > 0) {
             let mod_rkaz = 4 * reaktionen
             mod_vt -= mod_rkaz
-            text_vt = text_vt.concat(`${reaktionen}. Reaktion: -${mod_rkaz}\n`)
+            text_vt = text_vt.concat(`${reaktionen + 1}. Reaktion: -${mod_rkaz}\n`)
             if (manoever.pssl.selected) {
                 mod_at -= mod_rkaz
-                text_at = text_at.concat(`${reaktionen}. Passierschlag: -${mod_rkaz} \n`)
+                text_at = text_at.concat(`${reaktionen + 1}. Passierschlag: -${mod_rkaz} \n`)
             }
         }
 
@@ -528,11 +508,6 @@ export class AngriffDialog extends CombatDialog {
                     text_at = text_at.concat(`${dynamicManoever.name}: +4\n`)
                 }
             }
-            if (dynamicManoever.name == 'Riposte') {
-                mod_vt += mod_at
-                text_vt = text_vt.concat(`${dynamicManoever.name}: (\n${text_at})\n`)
-                text_dm = text_dm.concat(`${dynamicManoever.name}: (\n${text_at})\n`)
-            }
         })
 
         // Process all modifications in order
@@ -562,6 +537,38 @@ export class AngriffDialog extends CombatDialog {
             nodmg,
             context: this,
         })
+
+        // Handle Riposte special rule: attack maneuver penalties also apply to defense
+        const riposteManeuver = this.item.manoever.find(
+            (m) => m.name === 'Riposte' && m.inputValue.value,
+        )
+        if (riposteManeuver && mod_at < 0) {
+            mod_vt += mod_at
+            text_vt = text_vt.concat(`Riposte (Attackemanöver): ${mod_at}\n`)
+        }
+
+        // Handle tactical options after handleModifications (so they don't affect Riposte)
+        if (manoever.kbak.selected) {
+            mod_at -= 4
+            text_at = text_at.concat('Kombinierte Aktion: -4\n')
+        }
+        // Volle Offensive vlof
+        if (manoever.vlof.selected && !manoever.pssl.selected) {
+            if (manoever.vlof.offensiver_kampfstil) {
+                mod_vt -= 4
+                text_vt = text_vt.concat('Volle Offensive (Offensiver Kampfstil): -4\n')
+            } else {
+                mod_vt -= 8
+                text_vt = text_vt.concat('Volle Offensive: -8\n')
+            }
+            mod_at += 4
+            text_at = text_at.concat('Volle Offensive: +4\n')
+        }
+        // Volle Defensive vldf
+        if (manoever.vldf.selected) {
+            mod_vt += 4
+            text_vt = text_vt.concat('Volle Defensive +4\n')
+        }
 
         // If ZERO_DAMAGE was found, override damage values
         if (nodmg.value) {

@@ -7,28 +7,11 @@ on:
         branches: [develop]
         types: [opened, synchronize, reopened]
     workflow_dispatch:
-        inputs:
-            force_deploy:
-                description: 'Force deployment (skip some validations)'
-                required: false
-                default: false
-                type: boolean
-            target_branch:
-                description: 'Branch to deploy'
-                required: false
-                default: 'main'
-                type: choice
-                options:
-                    - main
-                    - develop
-            deploy_pr:
-                description: 'Deploy a specific Pull Request (enter PR number)'
-                required: false
-                type: string
 
 env:
-    SYSTEM_NAME: 'ilaris'
-    SYSTEM_PATH: '/home/foundry/foundrydata/Data/systems/ilaris'
+    SYSTEM_NAME: 'Ilaris'
+    SYSTEM_PATH: '/home/leo/docker/foundryvtt-internal/foundry/data/Data/systems/Ilaris'
+
 
 jobs:
     validate:
@@ -164,30 +147,21 @@ jobs:
             - name: 🔍 Determine deployment context
               id: context
               run: |
-                  if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ -n "${{ inputs.deploy_pr }}" ]; then
-                    echo "deployment_type=pr-manual" >> $GITHUB_OUTPUT
-                    echo "branch=pr-${{ inputs.deploy_pr }}" >> $GITHUB_OUTPUT
-                    echo "target=develop" >> $GITHUB_OUTPUT
-                    echo "🔄 Manual PR deployment: PR #${{ inputs.deploy_pr }}"
-                  elif [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+                  if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
                     echo "deployment_type=manual" >> $GITHUB_OUTPUT
-                    echo "branch=${{ inputs.target_branch }}" >> $GITHUB_OUTPUT
-                    echo "target=${{ inputs.target_branch }}" >> $GITHUB_OUTPUT
-                    echo "🔄 Manual deployment: ${{ inputs.target_branch }} branch"
+                    echo "branch=${{ github.ref_name }}" >> $GITHUB_OUTPUT
+                    echo "🔄 Manual deployment: ${{ github.ref_name }} branch"
                   elif [ "${{ github.event_name }}" == "pull_request" ]; then
                     echo "deployment_type=pr-deploy" >> $GITHUB_OUTPUT
                     echo "branch=${{ github.head_ref }}" >> $GITHUB_OUTPUT
-                    echo "target=${{ github.base_ref }}" >> $GITHUB_OUTPUT
                     echo "🔄 PR deployment: ${{ github.head_ref }} → ${{ github.base_ref }}"
                   elif [ "${{ github.ref }}" == "refs/heads/develop" ]; then
                     echo "deployment_type=develop" >> $GITHUB_OUTPUT
                     echo "branch=develop" >> $GITHUB_OUTPUT  
-                    echo "target=develop" >> $GITHUB_OUTPUT
                     echo "🧪 Development deployment: develop branch"
                   else
                     echo "deployment_type=production" >> $GITHUB_OUTPUT
                     echo "branch=main" >> $GITHUB_OUTPUT
-                    echo "target=main" >> $GITHUB_OUTPUT
                     echo "🚀 Production deployment: main branch"
                   fi
 
@@ -205,37 +179,18 @@ jobs:
                       echo "🌿 Branch: ${{ steps.context.outputs.branch }}"
 
                       # Zum Repository-Verzeichnis wechseln
-                      cd /home/foundry/ilaris-foundry || {
+                      cd /home/leo/docker/foundryvtt-internal/foundry/git || {
                         echo "❌ Repository directory not found"
                         exit 1
                       }
 
                       # Branch bestimmen
                       TARGET_BRANCH="${{ steps.context.outputs.branch }}"
-                      if [ "${{ steps.context.outputs.deployment_type }}" == "pr-manual" ]; then
-                        # Bei manuellem PR deployment: PR info von GitHub API holen und branch auschecken
-                        PR_NUMBER="${{ inputs.deploy_pr }}"
-                        echo "🔄 Fetching PR #$PR_NUMBER info..."
-                        PR_BRANCH=$(curl -s -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
-                          "https://api.github.com/repos/${{ github.repository }}/pulls/$PR_NUMBER" | \
-                          jq -r '.head.ref')
-                        echo "🔄 PR branch: $PR_BRANCH"
-                        git fetch origin "$PR_BRANCH"
-                        git checkout "$PR_BRANCH"
-                        git reset --hard "origin/$PR_BRANCH"
-                      elif [ "${{ steps.context.outputs.deployment_type }}" == "pr-deploy" ]; then
-                        # Bei PR deployment: PR branch direkt auschecken
-                        echo "🔄 Fetching PR branch: $TARGET_BRANCH"
-                        git fetch origin "$TARGET_BRANCH"
-                        git checkout "$TARGET_BRANCH"
-                        git reset --hard "origin/$TARGET_BRANCH"
-                      else
-                        # Bei normalem Push oder manuellem Deployment: entsprechenden branch auschecken
-                        echo "🔄 Fetching branch: $TARGET_BRANCH"
-                        git fetch origin "$TARGET_BRANCH"
-                        git checkout "$TARGET_BRANCH"
-                        git reset --hard "origin/$TARGET_BRANCH"
-                      fi
+                      # Entsprechenden branch auschecken
+                      echo "🔄 Fetching branch: $TARGET_BRANCH"
+                      git fetch origin "$TARGET_BRANCH"
+                      git checkout "$TARGET_BRANCH"
+                      git reset --hard "origin/$TARGET_BRANCH"
 
                       # Prüfen ob Deploy-Script existiert
                       if [ -f "deploy.sh" ]; then
@@ -246,19 +201,27 @@ jobs:
                         echo "📋 Deploy script not found, running manual deployment..."
                         
                         # Fallback: Manuelles Deployment
-                        sudo systemctl stop foundry
+                        # Foundry stoppen (ohne sudo)
+                        systemctl --user stop foundry 2>/dev/null || echo "⚠️ Could not stop foundry service (may not be running)"
                         
-                        SYSTEM_PATH="/home/foundry/foundrydata/Data/systems/Ilaris"
+                        SYSTEM_PATH="/home/leo/docker/foundryvtt-internal/foundry/data/Data/systems/Ilaris"
                         mkdir -p "$(dirname "$SYSTEM_PATH")"
-                        rm -rf "$SYSTEM_PATH"
+                        
+                        # Dateien mit korrekten Berechtigungen entfernen
+                        if [ -d "$SYSTEM_PATH" ]; then
+                          chmod -R u+w "$SYSTEM_PATH" 2>/dev/null || true
+                          rm -rf "$SYSTEM_PATH"
+                        fi
+                        
                         mkdir -p "$SYSTEM_PATH"
                         
                         rsync -av --exclude='.git' --exclude='.github' --exclude='README.md' --exclude='*.md' --exclude='.gitignore' . "$SYSTEM_PATH/"
                         
-                        chown -R foundry:foundry "$SYSTEM_PATH"
+                        # Berechtigungen setzen
                         chmod -R 755 "$SYSTEM_PATH"
                         
-                        sudo systemctl start foundry
+                        # Foundry starten
+                        systemctl --user start foundry 2>/dev/null || echo "⚠️ Could not start foundry service"
                         
                         echo "✅ Manual deployment completed"
                       fi
@@ -271,15 +234,12 @@ jobs:
                   echo "🔄 Type: ${{ steps.context.outputs.deployment_type }}"
                   echo "🌿 Branch: ${{ steps.context.outputs.branch }}"
 
-                  if [ "${{ steps.context.outputs.deployment_type }}" == "pr-manual" ]; then
-                    echo "🧪 Manual PR Deployment complete - test your changes!"
-                    echo "⚠️  This is a manual deployment from PR #${{ inputs.deploy_pr }}"
-                  elif [ "${{ steps.context.outputs.deployment_type }}" == "pr-deploy" ]; then
+                  if [ "${{ steps.context.outputs.deployment_type }}" == "pr-deploy" ]; then
                     echo "🧪 PR Branch Deployment complete - test your changes!"
                     echo "⚠️  This is a deployment from PR branch: ${{ steps.context.outputs.branch }}"
                   elif [ "${{ steps.context.outputs.deployment_type }}" == "manual" ]; then
                     echo "🔄 Manual Deployment complete"
-                    echo "🔧 Manual deployment of ${{ inputs.target_branch }} branch"
+                    echo "🔧 Manual deployment of ${{ steps.context.outputs.branch }} branch"
                   elif [ "${{ steps.context.outputs.deployment_type }}" == "develop" ]; then
                     echo "🧪 Development Deployment complete"
                     echo "🔄 Latest develop branch changes are now live"
