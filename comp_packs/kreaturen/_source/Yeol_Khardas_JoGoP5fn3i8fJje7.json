@@ -1,0 +1,1369 @@
+{
+  "_id": "JoGoP5fn3i8fJje7",
+  "name": "Yeol-Khardas",
+  "type": "kreatur",
+  "img": "systems/Ilaris/assets/images/token/kreaturentypen/daemon.png",
+  "system": {
+    "gesundheit": {
+      "erschoepfung": 0,
+      "wunden": 0,
+      "wundabzuege": 0,
+      "wundenignorieren": false,
+      "display": "Volle Gesundheit",
+      "hp": {
+        "max": 9,
+        "value": 9,
+        "threshold": 0
+      }
+    },
+    "energien": {
+      "asp": {
+        "max": 64,
+        "value": 64,
+        "threshold": 0
+      },
+      "gup": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      },
+      "kap": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      }
+    },
+    "initiative": 0,
+    "furcht": {
+      "furchtstufe": 0,
+      "furchtabzuege": 0,
+      "display": ""
+    },
+    "modifikatoren": {
+      "manuellermod": 0,
+      "nahkampfmod": 0
+    },
+    "schips": {
+      "schips": 4,
+      "schips_stern": 4
+    },
+    "attribute": {
+      "KO": {
+        "wert": 0,
+        "pw": null
+      },
+      "MU": {
+        "wert": 0,
+        "pw": null
+      },
+      "GE": {
+        "wert": 0,
+        "pw": null
+      },
+      "KK": {
+        "wert": 0,
+        "pw": null
+      },
+      "IN": {
+        "wert": 0,
+        "pw": null
+      },
+      "KL": {
+        "wert": 0,
+        "pw": null
+      },
+      "CH": {
+        "wert": 0,
+        "pw": null
+      },
+      "FF": {
+        "wert": 0,
+        "pw": null
+      }
+    },
+    "edit": false,
+    "kreaturentyp": "daemon",
+    "kurzbeschreibung": "Der Meister des Bades; viergehörnter Diener Belkelels",
+    "kampfwerte": {
+      "ws": 11,
+      "ws_stern": null,
+      "ini": 6,
+      "gs": 8,
+      "koloss": null,
+      "mr": 12,
+      "gs_schwimmend": 12
+    },
+    "talente": [],
+    "freietalente": [],
+    "kampfunfaehig": "",
+    "text": "",
+    "abgeleitete": {
+      "globalermod": 0,
+      "nahkampfmoddisplay": "-",
+      "globalermoddisplay": "-"
+    }
+  },
+  "items": [
+    {
+      "_id": "2I9CDwb2Z4PzqKPD",
+      "name": "Amphibisch",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Amphibische Wesen können an Land und im Wasser ungehindert agieren."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.2I9CDwb2Z4PzqKPD"
+    },
+    {
+      "_id": "z7cD0NYgz71OTbzw",
+      "name": "Regeneration I",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Regeneration I/II/III/IV erlaubt der Kreatur, in jeder\r\nInitiativephase 1/2/3/4 Wunden zu schließen."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.z7cD0NYgz71OTbzw"
+    },
+    {
+      "_id": "ajt0jmA9bHaGifJP",
+      "name": "Tarnung (im Wasser)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Tarnung: Das Wesen kann sich seiner Umgebung\r\nanpassen, zum Beispiel durch eine Farbänderung der Haut.\r\nBei Heimlichkeits-Proben erhält es keinen Malus durch ein\r\nfehlendes Versteck."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.ajt0jmA9bHaGifJP"
+    },
+    {
+      "_id": "CI5kB13ZKfybTLt3",
+      "name": "Zusätzliche Attacke",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Zusätzliche Attacke I/II/III/IV: Die Kreatur kann in\r\nihrer Initiativephase 1/2/3/4 zusätzliche Aktionen Konflikt\r\nfür Attacken nutzen. Üblicherweise erfolgen die Angriffe mit\r\nunterschiedlichen Gliedmaßen."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.CI5kB13ZKfybTLt3"
+    },
+    {
+      "_id": "IiSbmF6SEcXPGdf1",
+      "name": "Astralsinn",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Astralsinn erlaubt es der Kreatur, ihre Umgebung magisch\r\nwahrzunehmen. Sie erleidet keine Abzüge durch schlechte\r\nSicht. Der Astralsinn kann durch Antimagie, zum Beispiel\r\nHellsicht trüben in der Modifikation Magie unterdrücken,\r\ngestört werden. Die Schwierigkeit dafür liegt mindestens bei\r\n20, bei mächtigen Wesen deutlich höher."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.IiSbmF6SEcXPGdf1"
+    },
+    {
+      "_id": "NxaXviLa2v8v4BVi",
+      "name": "Immunität (Eigenschaften, Einfluss, Hellsicht, Illusion, Umwelt, Verwandlung, Krankheiten, Gifte, Hitze, Kälte)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Immunität (Fertigkeit): Die Kreatur ist immun gegen\r\nalle Zauber, die (auch) der entsprechenden Fertigkeit\r\nzugeordnet sind. Davon ausgenommen sind Effekte, die\r\ndas Wesen nur indirekt betreffen – zum Beispiel erfasst ein\r\nOdem auch einen Dämon mit Immunität (Hellsicht) und eine\r\nImmunität (Umwelt) schützt nicht vor dem Regen, der mittels\r\nWettermeisterschaft gerufen wurde."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.NxaXviLa2v8v4BVi"
+    },
+    {
+      "_id": "7INCyxvzFh7KIUpO",
+      "name": "Körperlosigkeit",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Körperlosigkeit bedeutet, dass der Körper der Kreatur\r\nkeine lebenserhaltende Funktion hat. Selbst schwerste\r\nVerwundungen schränken sie nicht ein. Das Wesen erleidet\r\nkeine Abzüge durch Wunden und wird nicht kampfunfähig.\r\nDie neunte Wunde vernichtet aber auch eine körperlose\r\nKreatur."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.7INCyxvzFh7KIUpO"
+    },
+    {
+      "_id": "ATujxYbn7WYscdqO",
+      "name": "Paraphysikalität",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Paraphysikalität setzt die Naturgesetze für das Wesen\r\naußer Kraft. Es kann an Wänden oder an der Decke gehen,\r\naus dem Stand auf Höchstgeschwindigkeit beschleunigen und\r\ngewaltige Sprünge vollführen. Es ist immun gegen Umreißen-,\r\nNiederwerfen-, Zurückstoßen- und Niederschmettern-Effekte."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.ATujxYbn7WYscdqO"
+    },
+    {
+      "_id": "vAEJUqEReX7dCQng",
+      "name": "Resistenz I (profan)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Eine Resistenz I/II/III/IV (Schadensquelle) verringert\r\nden Schaden durch diese Schadensquelle (s.o.). Wann immer\r\ndie Kreatur Wunden erleiden würde, erleidet sie 1/2/3/4\r\nWunden weniger."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.vAEJUqEReX7dCQng"
+    },
+    {
+      "_id": "4jsYzO0nEwcg8lKx",
+      "name": "Schmerzimmun II",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Schmerzimmun I/II: Die erste Stufe verleiht Immunität\r\ngegen Blutungen und die Wundschmerzeffekte Betäubt und\r\nOrgantreffer. Die zweite Stufe verleiht Immunität gegen alle\r\nWundschmerzeffekte."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.4jsYzO0nEwcg8lKx"
+    },
+    {
+      "_id": "XfFSW0nl0WLuOvBi",
+      "name": "Schreckgestalt I",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Schreckgestalt I/II/III/IV: Bei der Begegnung mit der\r\nKreatur erleidet dein Charakter einen Furcht-Effekt Stufe I/II/\r\nIII/IV (S. 46). Der Furcht-Effekt dauert an, bis der Gegner\r\nbesiegt wurde oder dein Charakter sich in sicherer Entfernung\r\nbefindet."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.XfFSW0nl0WLuOvBi"
+    },
+    {
+      "_id": "Sdxe8LyDYpSZAihr",
+      "name": "Unheilig",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Unheilige Kreaturen sind besonders anfällig gegen\r\nbestimmte karmale Wirkungen, siehe S. 91."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.Sdxe8LyDYpSZAihr"
+    },
+    {
+      "_id": "WWDM5Hq1AJSrIO3F",
+      "name": "Verwundbarkeit I (geweihte Waffen oder Gegenstände der Gegengottheit)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Verwundbarkeit I/II/III/IV (Schadensquelle): Wann\r\nimmer die Kreatur Wunden durch diese Schadensquelle\r\nerleidet, bekommt sie 1/2/3/4 zusätzliche Wunden."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.WWDM5Hq1AJSrIO3F"
+    },
+    {
+      "_id": "NVScDL0lI1Vz5x4l",
+      "name": "Beispieldienste",
+      "type": "info",
+      "system": {
+        "text": "Verführerische Konversation mit den Badenden (1 Stunde, 4); Erotische Wassermassage für mehrere Badende (1 Stunde, ); Fluten eines Bades mit warmem Wasser (, -4)"
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.NVScDL0lI1Vz5x4l"
+    },
+    {
+      "_id": "G8KpdV4UK4pOKSNa",
+      "name": "Beschwörung",
+      "type": "info",
+      "system": {
+        "text": "Invocatio (28), 48 AsP"
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.G8KpdV4UK4pOKSNa"
+    },
+    {
+      "_id": "lxC4WwSS6DJsXEgV",
+      "name": "Wasserstrahl",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Ertränken",
+            "text": null
+          },
+          {
+            "name": " Ertränken",
+            "text": null
+          },
+          {
+            "name": "Zurückstoßen",
+            "text": null
+          }
+        ],
+        "tp": "2W6+4",
+        "haerte": 0,
+        "rw": 8,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 0,
+        "vt": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.lxC4WwSS6DJsXEgV"
+    },
+    {
+      "_id": "OUmklxYJDzNjVtyk",
+      "name": "Tentakel",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": " Ersäufen (Ein umklammertes Ziel wird unter Wasser gezogen und erleidet in jeder INI: phase 1 Punkt Erschöpfung. Der Dämon kann bis zu zwei Ziele gleichzeitig unter Wasser halten.\n",
+            "text": null
+          },
+          {
+            "name": "Umklammern (-4",
+            "text": null
+          },
+          {
+            "name": " 16)",
+            "text": null
+          }
+        ],
+        "tp": "2W6",
+        "haerte": 0,
+        "rw": 2,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 16,
+        "vt": 8
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.OUmklxYJDzNjVtyk"
+    },
+    {
+      "_id": "bRizzAu4YtqJu0nt",
+      "name": "Gebräuche",
+      "type": "freiestalent",
+      "system": {
+        "text": null,
+        "pw": 16,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.bRizzAu4YtqJu0nt"
+    },
+    {
+      "_id": "U2p8ux54yJmLEiFZ",
+      "name": "Menschenkenntnis",
+      "type": "freiestalent",
+      "system": {
+        "text": "Menschenkenntnis ist deine Fähigkeit, die Absichten deines Gegenüber zu durchschauen. Damit enttarnst du Lügen und falsche Annäherungsversuche.",
+        "pw": 14,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.U2p8ux54yJmLEiFZ"
+    },
+    {
+      "_id": "D35YnWyxKHnC7Yju",
+      "name": "Pirschen",
+      "type": "freiestalent",
+      "system": {
+        "text": "Pirschen ermöglicht das Schleichen, Verstecken und Lauern in der freien Natur. Du pirschst dich auf der Jagd an einen wilden Hirsch heran, legst einen Hinterhalt an einer Reichsstraße oder beobachtest ungesehen das Lager einer Orkbande.",
+        "pw": 14,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.D35YnWyxKHnC7Yju"
+    },
+    {
+      "_id": "3zdRTXhLGr6WJvwJ",
+      "name": "Schwimmen",
+      "type": "freiestalent",
+      "system": {
+        "text": "Schwimmen erlaubt eine schnellere Fortbewegung im Wasser und längere Tauchgänge.",
+        "pw": 20,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.3zdRTXhLGr6WJvwJ"
+    },
+    {
+      "_id": "2cbaXoNf3eln9dY4",
+      "name": "Wachsamkeit",
+      "type": "freiestalent",
+      "system": {
+        "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
+        "pw": 12,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.2cbaXoNf3eln9dY4"
+    },
+    {
+      "_id": "pppuicjli4KC5SQn",
+      "name": "Dämonisch",
+      "type": "freiestalent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "pw": 16,
+        "profan": false
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.pppuicjli4KC5SQn"
+    },
+    {
+      "_id": "C6dJJaacOoK7PEB7",
+      "name": "Aquafaxius",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Wasser",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Eine Strahl aus elementarem Wasser fügt dem Ziel 4W6 TP zu und verursacht Ertränken (S. 98). Ballistischer Zauber.",
+        "maechtig": "Die TP steigen um 2W6.",
+        "schwierigkeit": "12",
+        "modifikationen": "Gezielter Strahl (–4; du kannst die Trefferzone bestimmen.)",
+        "vorbereitung": "1 Aktion",
+        "ziel": "Einzelwesen, Einzelobjekt",
+        "reichweite": "16 Schritt",
+        "wirkungsdauer": "augenblicklich",
+        "kosten": "16 AsP",
+        "erlernen": "Ach, Dru, Geo, Mag 18",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.C6dJJaacOoK7PEB7"
+    },
+    {
+      "_id": "OGaRjlpC5kCSZULT",
+      "name": "Aquasphaero",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Wasser",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du erschaffst eine elementare Kugel, die du mit Konzentration und Blickkontakt 16 Schritt pro Initiativephase bewegen kannst. Die Kugel explodiert, wenn du die Konzentration oder den Blickkontakt verlierst, du sie absichtlich zündest oder die Wirkungsdauer endet. Die Explosion richtet 4W6 TP an und verursacht Ertränken (S. 98). Pro Schritt Entfernung fällt der niedrigste Würfel weg.",
+        "maechtig": "Die TP steigen um 1W6.",
+        "schwierigkeit": "12",
+        "modifikationen": "Vorgegebene Bewegung (–4; du gibst der Kugel die Bewegung bis zur Explosion vor, Konzentration und Blickkontakt zur Kugel sind nicht nötig.)",
+        "vorbereitung": "2 Aktionen",
+        "ziel": "Zone",
+        "reichweite": "2 Schritt",
+        "wirkungsdauer": "2 Initiativphasen",
+        "kosten": "16 AsP",
+        "erlernen": "Ach, Mag 18; Geo, Dru 20",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.OGaRjlpC5kCSZULT"
+    },
+    {
+      "_id": "dgrZnxc3mFtZ2Xyu",
+      "name": "Caldofrigo heiß und kalt",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Eis, Feuer, Umwelt, Verwandlung",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du veränderst die Temperaturstufe (S. 35) eines Objektes um zwei Stufen.",
+        "maechtig": "Du veränderst die Temperatur um eine weitere Stufe.",
+        "schwierigkeit": "12",
+        "modifikationen": "Zone (–4, selbst, 32 AsP; der Zauber betrifft einen Radius von 8 Schritt um dich herum.)\nFerne Zone (–8, Zone, 8 Schritt, 32 AsP)",
+        "vorbereitung": "16 Aktionen",
+        "ziel": "Einzelobjekt",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "16 Minuten",
+        "kosten": "8 AsP",
+        "erlernen": "Ach, Dru, Mag 16; Alch, Geo, Srl 18",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.dgrZnxc3mFtZ2Xyu"
+    },
+    {
+      "_id": "OENViUokE6EDhVRY",
+      "name": "Hartes schmelze!",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Dämonisch, Verwandlung, Wasser",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du verzauberst eine kopfgroße Menge an hartem Material, sodass es formbar wie Wachs wird. Nach dem Ende der Wirkungsdauer erstarrt das Material in seiner aktuellen Form.",
+        "maechtig": "Verdoppelt die Menge.",
+        "schwierigkeit": "12",
+        "modifikationen": "",
+        "vorbereitung": "1 Aktion",
+        "ziel": "Einzelobjekt oder Teilobjekt",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "16 Minuten",
+        "kosten": "8 AsP",
+        "erlernen": "Bor 14; Ach, Dru, Geo 16; Alch, Mag 18",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.OENViUokE6EDhVRY"
+    },
+    {
+      "_id": "YOegfaCat66YB2CR",
+      "name": "Macht über den Regen",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Luft, Ringrituale, Umwelt, Wasser",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Das Wetter in einer Zone von bis zu 1 Meile Radius verändert sich nach deinem Willen. Du kannst folgende Skalen um insgesamt zwei Stufen verändern:\nNiederschlag: trocken/Nieselregen/Regen/starker Regen/Wolkenbruch\nWind: windstill/leichte Brise/steife Brise/Sturm/Orkan\nTemperatur: heiß/warm/mittel/kühl/kalt.",
+        "maechtig": "Du kannst die Skalen um eine weitere Stufe verändern.",
+        "schwierigkeit": "12",
+        "modifikationen": "",
+        "vorbereitung": "4 Minuten",
+        "ziel": "Zone",
+        "reichweite": "1 Meile",
+        "wirkungsdauer": "1 Stunde",
+        "kosten": "32 AsP",
+        "erlernen": "Geo 14",
+        "pw": 0,
+        "gruppe": 13
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.YOegfaCat66YB2CR"
+    },
+    {
+      "_id": "SQs7k7n57m4GJuhP",
+      "name": "Mahlstrom",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Umwelt, Wasser",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du erzeugst einen Strudel im Wasser. Wesen in der Umgebung müssen jede Initiativephase eine Konterprobe (Schwimmen, 16) ablegen, die um die Distanz zum Zentrum in Schritt erleichtert ist. Beim Misslingen wird es 4 Schritt näher ins Zentrum des Mahlstroms gezogen. Im Zentrum erleidet jedes Ziel 4W6 SP und wird in die Tiefe gezogen.",
+        "maechtig": "",
+        "schwierigkeit": "12",
+        "modifikationen": "Schiffverschlinger (–4, 4 Minuten, Wirkungsdauer 1 Stunde, 64 AsP; der Strudel ist so groß, dass er sogar Schiffe verschlingen kann. Die Konterprobe ist nur um 1 pro 8 Schritt Distanz erleichtert.)",
+        "vorbereitung": "8 Aktionen",
+        "ziel": "Zone",
+        "reichweite": "64 Schritt",
+        "wirkungsdauer": "16 Initiativphasen",
+        "kosten": "16 AsP",
+        "erlernen": "Dru 18; Geo, Mag 20",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.SQs7k7n57m4GJuhP"
+    },
+    {
+      "_id": "KlihuZWsOoKGpNyY",
+      "name": "Manifesto Element",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Eis, Erz, Feuer, Humus, Luft, Wasser",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du beschwörst eine etwa faustgroße Menge oder kleine Manifestation des Elements herbei, mit dem du den Zauber wirkst. Sie verschwindet nach dem Ende der Wirkungsdauer.\nFertigkeit Eis: Du kannst zum Beispiel einen Schneeball oder einen Eiszapfen erscheinen lassen, ein Getränk kühlen, oder deine Körpertemperatur etwas senken.\nFertigkeit Erz: Du kannst zum Beispiel eine Hand voll Sand oder einen Stein erscheinen lassen oder das Gewicht eines Gegenstandes kurzzeitig etwas erhöhen.\nFertigkeit Feuer: Du kannst zum Beispiel eine kleine Flamme über deiner Hand tanzen lassen, deine Körpertemperatur etwas erhöhen, eine Pfeife anzünden  oder einen Funkenschwarm erzeugen.\nFertigkeit Humus: Du kannst zum Beispiel eine Knospe erblühen lassen, eine Hand voll Kuhmist herbeizaubern, ein Gänseblümchen erscheinen lassen, oder einen kleinen Kratzer schließen.\nFertigkeit Luft: Du kannst zum Beispiel einen frischen Windhauch rufen, einen Wohlgeruch erzeugen, oder einen kleinen Luftwirbel erschaffen.\nFertigkeit Wasser: Du kannst zum Beispiel einen Becher mit Wasser füllen, deine Hände abspülen, eine Pfütze bilden oder tagsüber einen kleinen Regenbogen glitzern lassen.",
+        "maechtig": "",
+        "schwierigkeit": "12",
+        "modifikationen": "Demanifesto (–4; du kannst die Manifestation nach Belieben verschwinden und wieder auftauchen lassen.)",
+        "vorbereitung": "4 Aktionen",
+        "ziel": "Zone",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "1 Stunde",
+        "kosten": "2 AsP",
+        "erlernen": "Ach, Alch 8; Dru, Geo, Mag 14; Hex, Srl 18; Elf 20",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.KlihuZWsOoKGpNyY"
+    },
+    {
+      "_id": "l1jVqMOYODxVyq6q",
+      "name": "Nebelleib",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Luft, Verwandlung, Wasser",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du verwandelst dich in Nebel, während deine Ausrüstung zurückbleibt. In deiner Nebelgestalt bist du immun gegen profanen Schaden, kannst durch schmalste Öffnungen dringen und mit deiner gewöhnlichen GS bis zu 8 Schritt über dem Boden fliegen. Dafür kannst du nicht mit anderen Wesen kommunizieren, keine Zauber wirken und musst bei starkem Wind Willenskraft-Proben ablegen, um nicht weggeweht zu werden.",
+        "maechtig": "Deine GS steigt um +4.",
+        "schwierigkeit": "12",
+        "modifikationen": "",
+        "vorbereitung": "8 Aktionen",
+        "ziel": "selbst",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "1 Stunde",
+        "kosten": "16 AsP",
+        "erlernen": "Dru, Geo 18",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.l1jVqMOYODxVyq6q"
+    },
+    {
+      "_id": "iGb24jk8Olssc10Y",
+      "name": "Nebelwand und Morgendunst",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Luft, Umwelt, Wasser",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du erzeugst eine nahezu undurchsichtige Nebelwolke mit etwa 8 Schritt Radius und beliebiger, auch komplizierter, Form. Wind beeinflusst die Wolke nicht.",
+        "maechtig": "Verdoppelt den Radius.",
+        "schwierigkeit": "12",
+        "modifikationen": "Dunst (–4; nur dünner Dunst erscheint, aber der Radius vervierfacht sich.)\nNebelbilder (–8; du kannst die Form der Nebelwolke stets verändern.)\nGeisternebel (–4, im Nebel bilden sich schreckliche Fratzen, die bei misslungener Konterprobe (MU, 16) einen Furcht-Effekt Stufe 1 verursachen.)\nBegleiter (–4; die Wolke bewegt sich mit dir.)",
+        "vorbereitung": "2 Aktionen",
+        "ziel": "Zone",
+        "reichweite": "8 Schritt",
+        "wirkungsdauer": "2 Stunden",
+        "kosten": "8 AsP",
+        "erlernen": "Elf 12; Ach, Dru, Geo, Srl16; Mag, Hex 20",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.iGb24jk8Olssc10Y"
+    },
+    {
+      "_id": "Ft3y6BVVDaCTBQcO",
+      "name": "Sapefacta",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Dämonisch",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": null,
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 16,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.Ft3y6BVVDaCTBQcO"
+    },
+    {
+      "_id": "uNrcKCretJU9qiz8",
+      "name": "Wand aus Wasser",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Dämonisch",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": null,
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 16,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.uNrcKCretJU9qiz8"
+    },
+    {
+      "_id": "H0ckln9DJ3rxIsCA",
+      "name": "Wellenlauf",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Eigenschaften, Wasser",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Wasser ist für dich ein fester Untergrund. Du erleidest keine Abzüge durch ungünstige Position und wirst nicht durch Wellen und Strömungen beeinflusst. Erlaubt Aufrechterhalten.",
+        "maechtig": "",
+        "schwierigkeit": "12",
+        "modifikationen": "Sinken (–4; du kannst die Zauberwirkung nach Belieben unterdrücken und wieder aktiv werden lassen. Bei Aktivierung unter Wasser wirst du an die Wasseroberfläche gehoben.)\nWasserwand (–8; du kannst selbst an Wasserfällen hochklettern, wofür einfache Klettern-Proben anfallen.)",
+        "vorbereitung": "2 Aktionen",
+        "ziel": "selbst",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "4 Minuten",
+        "kosten": "4 AsP",
+        "erlernen": "Dru, Geo 12; Elf 14; Ach, Mag 20",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!JoGoP5fn3i8fJje7.H0ckln9DJ3rxIsCA"
+    }
+  ],
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "prototypeToken": {
+    "displayName": 20,
+    "actorLink": false,
+    "width": 1,
+    "height": 1,
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "light": {
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "coloration": 1,
+      "dim": 0,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false,
+        "type": null
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      },
+      "attenuation": 0.5,
+      "negative": false,
+      "priority": 0,
+      "color": null
+    },
+    "disposition": 1,
+    "displayBars": 50,
+    "bar1": {
+      "attribute": "gesundheit.hp"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "flags": {},
+    "randomImg": false,
+    "name": "Yeol-Khardas",
+    "texture": {
+      "src": "systems/Ilaris/assets/images/token/kreaturentypen/daemon.png",
+      "scaleX": 1,
+      "scaleY": 1,
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "offsetX": 0,
+      "offsetY": 0,
+      "fit": "contain",
+      "rotation": 0,
+      "tint": "#ffffff",
+      "alphaThreshold": 0.75
+    },
+    "sight": {
+      "angle": 360,
+      "enabled": false,
+      "range": 0,
+      "brightness": 1,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "appendNumber": false,
+    "prependAdjective": false,
+    "hexagonalShape": 0,
+    "detectionModes": [],
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    }
+  },
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!actors!JoGoP5fn3i8fJje7"
+}

@@ -69,91 +69,91 @@
       "label": "Beispiel Helden",
       "type": "Actor",
       "name": "beispiel-helden",
-      "path": "./packs/beispiel-helden",
+      "path": "./comp_packs/beispiel-helden",
       "system": "Ilaris"
     },
     {
       "label": "Kreaturen",
       "type": "Actor",
       "name": "kreaturen",
-      "path": "./packs/kreaturen",
+      "path": "./comp_packs/kreaturen",
       "system": "Ilaris"
     },
     {
       "label": "Fertigkeiten und Talente",
       "type": "Item",
       "name": "fertigkeiten-und-talente",
-      "path": "./packs/fertigkeiten-und-talente",
+      "path": "./comp_packs/fertigkeiten-und-talente",
       "system": "Ilaris"
     },
     {
       "label": "Fertigkeiten und Talente (ADVANCED)",
       "type": "Item",
       "name": "fertigkeiten-und-talente-advanced",
-      "path": "./packs/fertigkeiten-und-talente-advanced",
+      "path": "./comp_packs/fertigkeiten-und-talente-advanced",
       "system": "Ilaris"
     },
     {
       "label": "Liturgien und Mirakel",
       "type": "Item",
       "name": "liturgien-und-mirakel",
-      "path": "./packs/liturgien-und-mirakel",
+      "path": "./comp_packs/liturgien-und-mirakel",
       "system": "Ilaris"
     },
     {
       "label": "Manöver",
       "type": "Item",
       "name": "manover",
-      "path": "./packs/manover",
+      "path": "./comp_packs/manover",
       "system": "Ilaris"
     },
     {
       "label": "Übernatürliche Fertigkeiten",
       "type": "Item",
       "name": "ubernaturliche-fertigkeiten",
-      "path": "./packs/ubernaturliche-fertigkeiten",
+      "path": "./comp_packs/ubernaturliche-fertigkeiten",
       "system": "Ilaris"
     },
     {
       "label": "Vorteile",
       "type": "Item",
       "name": "vorteile",
-      "path": "./packs/vorteile",
+      "path": "./comp_packs/vorteile",
       "system": "Ilaris"
     },
     {
       "label": "Waffen",
       "type": "Item",
       "name": "waffen",
-      "path": "./packs/waffen",
+      "path": "./comp_packs/waffen",
       "system": "Ilaris"
     },
     {
       "label": "Gegenstände",
       "type": "Item",
       "name": "gegenstande",
-      "path": "./packs/gegenstande",
+      "path": "./comp_packs/gegenstande",
       "system": "Ilaris"
     },
     {
       "label": "Zaubersprüche und Rituale",
       "type": "Item",
       "name": "zauberspruche-und-rituale",
-      "path": "./packs/zauberspruche-und-rituale",
+      "path": "./comp_packs/zauberspruche-und-rituale",
       "system": "Ilaris"
     },
     {
       "label": "Zaubertricks (ADVANCED)",
       "type": "Item",
       "name": "zaubertricks-advanced",
-      "path": "./packs/zaubertricks-advanced",
+      "path": "./comp_packs/zaubertricks-advanced",
       "system": "Ilaris"
     },
     {
       "label": "Macro-Tools",
       "type": "Macro",
       "name": "macro-tools",
-      "path": "packs/macro-tools",
+      "path": "comp_packs/macro-tools",
       "system": "Ilaris"
     }
   ],
