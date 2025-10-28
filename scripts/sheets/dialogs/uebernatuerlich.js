@@ -711,6 +711,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             trefferzone,
             schaden,
             nodmg,
+            this.energy_override,
         ] = handleModifications(allModifications, {
             mod_at,
             mod_vt,
