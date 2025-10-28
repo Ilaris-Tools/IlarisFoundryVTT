@@ -27,7 +27,8 @@
     "input": {
       "label": "GS Gegner",
       "field": "NUMBER"
-    }
+    },
+    "isBaseManover": true
   },
   "effects": [],
   "folder": null,

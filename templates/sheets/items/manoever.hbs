@@ -21,6 +21,18 @@
             </select>
         </div>
 
+        <div class="flexrow section">
+            <label><b>Basismanöver:</b></label>
+            <input
+                type="checkbox"
+                name="system.isBaseManover"
+                {{checked item.system.isBaseManover}}
+            />
+            <span class="checkbox-description">
+                Ist dies ein Basismanöver? (Relevant für Gildenmagier II Bonus)
+            </span>
+        </div>
+
         <div class="flexrow">
             <label><b>Kurzbeschreibung:</b></label>
             <input

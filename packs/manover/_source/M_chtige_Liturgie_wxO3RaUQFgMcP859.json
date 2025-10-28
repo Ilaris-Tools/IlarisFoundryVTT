@@ -22,7 +22,8 @@
     "gruppe": "3",
     "probe": "Liturgie -4",
     "gegenprobe": "",
-    "text": "Verstärkt die Wirkung der Liturgie (siehe Liturgie). Zusätzlich steigt die Schwierigkeit von Konterproben (S. 124) gegen die Liturgie um +4 Punkte."
+    "text": "Verstärkt die Wirkung der Liturgie (siehe Liturgie). Zusätzlich steigt die Schwierigkeit von Konterproben (S. 124) gegen die Liturgie um +4 Punkte.",
+    "isBaseManover": true
   },
   "effects": [],
   "folder": null,

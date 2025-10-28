@@ -20,7 +20,8 @@
     "gruppe": "2",
     "probe": "Zauber +2",
     "gegenprobe": "",
-    "text": "Verdoppelt die Vorbereitungszeit, aber erleichtert den Zauber um +2. Eine Vorbereitungszeit von 0 Aktionen wird zu 1 Aktion. Kann einmal pro Zauber eingesetzt werden und wirkt nicht auf Zauber mit frei wählbarer Vorbereitungszeit. Voraussetzung: Verwendung der Alchemistischen, Elfischen, Geodischen, Gildenmagischen, Kristallomantischen, Zauberbardischen oder Scharlatanischen Repräsentation (III)."
+    "text": "Verdoppelt die Vorbereitungszeit, aber erleichtert den Zauber um +2. Eine Vorbereitungszeit von 0 Aktionen wird zu 1 Aktion. Kann einmal pro Zauber eingesetzt werden und wirkt nicht auf Zauber mit frei wählbarer Vorbereitungszeit. Voraussetzung: Verwendung der Alchemistischen, Elfischen, Geodischen, Gildenmagischen, Kristallomantischen, Zauberbardischen oder Scharlatanischen Repräsentation (III).",
+    "isBaseManover": false
   },
   "effects": [],
   "folder": null,

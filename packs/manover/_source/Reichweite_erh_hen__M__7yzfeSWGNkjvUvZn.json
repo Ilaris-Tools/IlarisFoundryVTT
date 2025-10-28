@@ -22,7 +22,8 @@
     "gruppe": "2",
     "probe": "Zauber -4",
     "gegenprobe": "",
-    "text": "Die Reichweite des Zaubers verdoppelt sich. Die Reichweite Berührung wird zu 2 Schritt."
+    "text": "Die Reichweite des Zaubers verdoppelt sich. Die Reichweite Berührung wird zu 2 Schritt.",
+    "isBaseManover": true
   },
   "effects": [],
   "folder": null,
