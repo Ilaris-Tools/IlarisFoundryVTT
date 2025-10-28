@@ -109,11 +109,13 @@ export class XmlCharacterImporter {
             supernaturalTalents: [], // Add supernatural talents (zauber/liturgie)
             advantages: [],
             weapons: [],
+            armors: [], // Add armors (Rüstungen)
             energies: {},
             experience: { total: 0, spent: 0 },
             description: {},
             eigenheiten: [], // Character quirks/traits
             notes: '',
+            freeSkills: [], // Free skills (Freie Fertigkeiten)
         }
 
         // Extract basic character info
@@ -186,6 +188,16 @@ export class XmlCharacterImporter {
             }
         })
 
+        // Extract free skills (Freie Fertigkeiten)
+        const freeSkillNodes = xmlDoc.querySelectorAll('FreieFertigkeiten > FreieFertigkeit')
+        freeSkillNodes.forEach((freeSkill) => {
+            const name = freeSkill.getAttribute('name')
+            const value = parseInt(freeSkill.getAttribute('wert')) || 0
+            if (name) {
+                characterData.freeSkills.push({ name, value })
+            }
+        })
+
         // Extract talents - determine type during XML parsing
         const talentNodes = xmlDoc.querySelectorAll('Talente > Talent')
         talentNodes.forEach((talent) => {
@@ -239,6 +251,35 @@ export class XmlCharacterImporter {
                     wmVt: parseInt(weapon.getAttribute('wmVt')) || 0,
                 }
                 characterData.weapons.push(weaponData)
+            }
+        })
+
+        // Extract armors
+        const armorNodes = xmlDoc.querySelectorAll('Objekte > Rüstungen > Rüstung')
+        armorNodes.forEach((armor) => {
+            const name = armor.getAttribute('name')
+            if (name && name.trim()) {
+                // Parse RS values from slash-separated format: "3/3/3/3/3/3"
+                // Format: beine/larm/rarm/bauch/brust/kopf
+                const rsString = armor.getAttribute('rs') || '0/0/0/0/0/0'
+                const rsValues = rsString.split('/').map((val) => parseInt(val.trim()) || 0)
+
+                // Ensure we have exactly 6 values, pad with zeros if necessary
+                while (rsValues.length < 6) {
+                    rsValues.push(0)
+                }
+
+                const armorData = {
+                    name,
+                    rs_beine: rsValues[0],
+                    rs_larm: rsValues[1],
+                    rs_rarm: rsValues[2],
+                    rs_bauch: rsValues[3],
+                    rs_brust: rsValues[4],
+                    rs_kopf: rsValues[5],
+                    be: parseInt(armor.getAttribute('be')) || 0,
+                }
+                characterData.armors.push(armorData)
             }
         })
 
@@ -505,6 +546,23 @@ export class XmlCharacterImporter {
             }
         }
 
+        // Process free skills (Freie Fertigkeiten)
+        // These do not exist in compendiums, so we always create them directly
+        for (const freeSkill of characterData.freeSkills) {
+            const freeSkillData = {
+                name: freeSkill.name,
+                type: 'freie_fertigkeit',
+                system: {
+                    stufe: freeSkill.value,
+                    gruppe: '1',
+                },
+            }
+            if (markAsImported) {
+                freeSkillData.flags = { ilaris: { xmlImported: true } }
+            }
+            itemsToCreate.push(freeSkillData)
+        }
+
         // First pass: Process supernatural talents (zauber and liturgie) and collect required supernatural skills
         const requiredSupernaturalSkills = new Set()
         const processedTalents = new Set()
@@ -639,6 +697,60 @@ export class XmlCharacterImporter {
             }
         } else {
             console.debug('Skipping weapons during sync - preserving existing inventory')
+        }
+
+        // Process armors (skip during sync operations to preserve existing inventory)
+        // Armors are created directly from XML data, not looked up in compendium
+        if (!skipInventoryItems) {
+            for (const armor of characterData.armors) {
+                if (armor.name) {
+                    // Calculate sum of all body part RS values
+                    const sumRs =
+                        armor.rs_beine +
+                        armor.rs_larm +
+                        armor.rs_rarm +
+                        armor.rs_bauch +
+                        armor.rs_brust +
+                        armor.rs_kopf
+
+                    // Calculate average RS (sum divided by 6, rounded up)
+                    const averageRs = Math.ceil(sumRs / 6)
+
+                    // Create armor item directly from XML data
+                    const armorData = {
+                        name: armor.name,
+                        type: 'ruestung',
+                        system: {
+                            haerte: 0,
+                            beschaedigung: 0,
+                            aufbewahrungs_ort: 'mitführend',
+                            bewahrt_auf: [],
+                            gewicht_summe: 0,
+                            gewicht: 0,
+                            preis: 0,
+                            rs: averageRs,
+                            be: armor.be || 0,
+                            rs_beine: armor.rs_beine,
+                            rs_larm: armor.rs_larm,
+                            rs_rarm: armor.rs_rarm,
+                            rs_bauch: armor.rs_bauch,
+                            rs_brust: armor.rs_brust,
+                            rs_kopf: armor.rs_kopf,
+                            aktiv: false,
+                            text: '',
+                        },
+                    }
+
+                    if (markAsImported) {
+                        armorData.flags = { ilaris: { xmlImported: true } }
+                    }
+
+                    itemsToCreate.push(armorData)
+                    console.debug(`Created armor from XML: ${armor.name}`)
+                }
+            }
+        } else {
+            console.debug('Skipping armors during sync - preserving existing inventory')
         }
 
         // Process eigenheiten (character quirks/traits) with duplicate detection
@@ -826,6 +938,8 @@ export class XmlCharacterImporter {
             advantages: { found: [], missing: [] },
             supernaturalSkills: { found: [], missing: [], total: 0 },
             weapons: { found: [], missing: [] },
+            armors: { found: [], missing: [] }, // Armors are always created from XML, not looked up
+            freeSkills: { total: 0 }, // Free skills are always created directly
         }
 
         // Analyze skills
@@ -906,6 +1020,14 @@ export class XmlCharacterImporter {
                 analysis.weapons.missing.push(weapon.name)
             }
         }
+
+        // Analyze armors - armors are always created directly from XML, not looked up in compendium
+        // So all armors are considered "found" (will be created)
+        for (const armor of characterData.armors) {
+            analysis.armors.found.push(armor.name)
+        }
+        // Count free skills (these are always created directly, no compendium lookup needed)
+        analysis.freeSkills.total = characterData.freeSkills.length
 
         return analysis
     }
