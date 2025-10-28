@@ -2,6 +2,7 @@ import { roll_crit_message, get_statuseffect_by_id } from '../../common/wuerfel/
 import { signed } from '../../common/wuerfel/chatutilities.js'
 import { handleModifications } from './shared_dialog_helpers.js'
 import { CombatDialog } from './combat_dialog.js'
+import { formatDiceFormula } from '../../common/utilities.js'
 
 export class AngriffDialog extends CombatDialog {
     constructor(actor, item) {
@@ -128,7 +129,9 @@ export class AngriffDialog extends CombatDialog {
         const maneuverMod = this.mod_at || 0
         const totalMod = maneuverMod + statusMods + nahkampfMods
         const finalAT = baseAT + totalMod
-        const finalFormula = finalAT >= 0 ? `${diceFormula}+${finalAT}` : `${diceFormula}${finalAT}`
+        const formattedDice = formatDiceFormula(diceFormula)
+        const finalFormula =
+            finalAT >= 0 ? `${formattedDice}+${finalAT}` : `${formattedDice}${finalAT}`
 
         let summary = '<div class="modifier-summary attack-summary clickable-summary angreifen">'
         summary += `<h4>🗡️ Angriff: ${finalFormula}</h4>`
@@ -187,7 +190,9 @@ export class AngriffDialog extends CombatDialog {
         const maneuverMod = this.mod_vt || 0
         const totalMod = maneuverMod + vtStatusMods + nahkampfMods
         const finalVT = baseVT + totalMod
-        const finalFormula = finalVT >= 0 ? `${diceFormula}+${finalVT}` : `${diceFormula}${finalVT}`
+        const formattedDice = formatDiceFormula(diceFormula)
+        const finalFormula =
+            finalVT >= 0 ? `${formattedDice}+${finalVT}` : `${formattedDice}${finalVT}`
 
         let summary = '<div class="modifier-summary defense-summary clickable-summary verteidigen">'
         summary += `<h4>🛡️ Verteidigung: ${finalFormula}</h4>`

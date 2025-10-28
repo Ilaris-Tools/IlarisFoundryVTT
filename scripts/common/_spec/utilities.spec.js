@@ -1,4 +1,4 @@
-import { sanitizeEnergyCost, isNumericCost } from '../utilities.js'
+import { sanitizeEnergyCost, isNumericCost, formatDiceFormula } from '../utilities.js'
 
 describe('sanitizeEnergyCost', () => {
     it('should return number input unchanged', () => {
@@ -64,5 +64,60 @@ describe('isNumericCost', () => {
         expect(isNumericCost(undefined)).toBe(false)
         expect(isNumericCost({})).toBe(false)
         expect(isNumericCost([])).toBe(false)
+    })
+})
+
+describe('formatDiceFormula', () => {
+    describe('standard dice formulas', () => {
+        it('should format 3d20dl1dh1 as 3W20 (Median)', () => {
+            expect(formatDiceFormula('3d20dl1dh1')).toBe('3W20 (Median)')
+        })
+
+        it('should format 2d20dl1 as 2W20 (Schip)', () => {
+            expect(formatDiceFormula('2d20dl1')).toBe('2W20 (Schip)')
+        })
+
+        it('should format 3d20dl2 as 3W20 (Schip)', () => {
+            expect(formatDiceFormula('3d20dl2')).toBe('3W20 (Schip)')
+        })
+
+        it('should format 4d20dl2dh1 as 4W20 (Median, Schip)', () => {
+            expect(formatDiceFormula('4d20dl2dh1')).toBe('4W20 (Median, Schip)')
+        })
+
+        it('should format 1d20 as 1W20', () => {
+            expect(formatDiceFormula('1d20')).toBe('1W20')
+        })
+
+        it('should format 5d20dl3dh1 as 5W20 (Median, Schip)', () => {
+            expect(formatDiceFormula('5d20dl3dh1')).toBe('5W20 (Median, Schip)')
+        })
+
+        it('should format 2d6 as 2W6', () => {
+            expect(formatDiceFormula('2d6')).toBe('2W6')
+        })
+
+        it('should format 1d6 as 1W6', () => {
+            expect(formatDiceFormula('1d6')).toBe('1W6')
+        })
+    })
+
+    describe('edge cases', () => {
+        it('should return null for null input', () => {
+            expect(formatDiceFormula(null)).toBe(null)
+        })
+
+        it('should return undefined for undefined input', () => {
+            expect(formatDiceFormula(undefined)).toBe(undefined)
+        })
+
+        it('should return empty string for empty string', () => {
+            expect(formatDiceFormula('')).toBe('')
+        })
+
+        it('should return original string for invalid format', () => {
+            expect(formatDiceFormula('invalid')).toBe('invalid')
+            expect(formatDiceFormula('abc123')).toBe('abc123')
+        })
     })
 })
