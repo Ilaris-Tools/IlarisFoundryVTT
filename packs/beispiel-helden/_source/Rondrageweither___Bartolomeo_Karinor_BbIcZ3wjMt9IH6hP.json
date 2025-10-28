@@ -16,36 +16,36 @@
       }
     },
     "attribute": {
-      "KO": {
-        "wert": 4,
-        "pw": 0
-      },
-      "MU": {
-        "wert": 5,
-        "pw": 0
-      },
-      "GE": {
-        "wert": 3,
-        "pw": 0
-      },
-      "KK": {
-        "wert": 6,
-        "pw": 0
-      },
-      "IN": {
-        "wert": 4,
-        "pw": 0
-      },
-      "KL": {
-        "wert": 2,
-        "pw": 0
-      },
       "CH": {
         "wert": 3,
         "pw": 0
       },
       "FF": {
         "wert": 2,
+        "pw": 0
+      },
+      "GE": {
+        "wert": 3,
+        "pw": 0
+      },
+      "IN": {
+        "wert": 4,
+        "pw": 0
+      },
+      "KK": {
+        "wert": 6,
+        "pw": 0
+      },
+      "KL": {
+        "wert": 2,
+        "pw": 0
+      },
+      "KO": {
+        "wert": 4,
+        "pw": 0
+      },
+      "MU": {
+        "wert": 5,
         "pw": 0
       }
     },
@@ -69,7 +69,7 @@
       "traglast": 0,
       "kap_zugekauft": 0,
       "gkap": null,
-      "kap_stern": null
+      "kap_stern": 16
     },
     "schips": {
       "schips": 4,
@@ -85,6 +85,11 @@
       "manuellermod": 0,
       "nahkampfmod": 0
     },
+    "misc": {
+      "selected_kampfstil": "ohne",
+      "selected_uebernatuerlicher_stil": "ohne",
+      "ist_beritten": false
+    },
     "geld": {
       "dukaten": 0,
       "silbertaler": 0,
@@ -92,10 +97,7 @@
       "kreuzer": 0
     },
     "getragen": 1,
-    "notes": "",
-    "misc": {
-      "selected_kampfstil": "kvk"
-    }
+    "notes": ""
   },
   "prototypeToken": {
     "name": "Bartolomeo Karinor",
@@ -246,9 +248,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "KK 4",
+        "voraussetzung": "Attribut KK 4",
         "gruppe": 3,
-        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>+1 Waffenschaden</body>"
+        "text": "Bedingungen: einzelne Nahkampfwaffe, nicht beritten.\n\nDein Waffenschaden steigt um +1.",
+        "sephrastoScript": "modifyKampfstil('Kraftvoller Kampf', 0, 0, 1, 0)",
+        "stilBedingungen": "einzelne Nahkampfwaffe, nicht beritten",
+        "foundryScript": ""
       },
       "effects": [],
       "folder": null,
@@ -257,12 +262,12 @@
       "_stats": {
         "compendiumSource": "Compendium.Ilaris.vorteil.Item.NFNNuDs8krbJQTLP",
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "12.343",
         "systemId": "Ilaris",
-        "systemVersion": "12.0.2",
+        "systemVersion": "12.2.0",
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
+        "modifiedTime": 1759478669455,
+        "lastModifiedBy": "bRsoRPItEVb33T1L"
       },
       "ownership": {},
       "_key": "!actors.items!BbIcZ3wjMt9IH6hP.W8SmZOgWE4AlDWOg"
@@ -273,9 +278,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "KK 6; Kraftvoller Kampf I",
+        "voraussetzung": "Attribut KK 6, Vorteil Kraftvoller Kampf I",
         "gruppe": 3,
-        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>+1 Waffenschaden<br><br>Du kannst in eine Halbschwertstellung wechseln, um deine Waffe in einer um eins kleineren Reichweite zu führen. Der Wechsel in die Stellung oder zurück geschieht in einer Freien Aktion.</body>"
+        "text": "Dein Waffenschaden steigt um +1.\n\nDu kannst in eine Halbschwertstellung wechseln, um deine Waffe in einer um eins kleineren Reichweite zu führen. Der Wechsel in die Stellung oder zurück geschieht in einer Freien Aktion.",
+        "sephrastoScript": "modifyKampfstil('Kraftvoller Kampf', 0, 0, 1, 0)",
+        "stilBedingungen": "",
+        "foundryScript": ""
       },
       "effects": [],
       "folder": null,
@@ -284,12 +292,12 @@
       "_stats": {
         "compendiumSource": "Compendium.Ilaris.vorteil.Item.MN67OV7ErHrw0Ou0",
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "12.343",
         "systemId": "Ilaris",
-        "systemVersion": "12.0.2",
+        "systemVersion": "12.2.0",
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
+        "modifiedTime": 1759478669455,
+        "lastModifiedBy": "bRsoRPItEVb33T1L"
       },
       "ownership": {},
       "_key": "!actors.items!BbIcZ3wjMt9IH6hP.oPIpPMo1enqopgVa"
@@ -2671,12 +2679,12 @@
   "_stats": {
     "compendiumSource": null,
     "duplicateSource": null,
-    "coreVersion": "12.331",
+    "coreVersion": "12.343",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.2",
+    "systemVersion": "12.2.0",
     "createdTime": 1746797786729,
-    "modifiedTime": 1747089889172,
-    "lastModifiedBy": "oa0cULjciXK52aoL"
+    "modifiedTime": 1759478670845,
+    "lastModifiedBy": "bRsoRPItEVb33T1L"
   },
   "_id": "BbIcZ3wjMt9IH6hP",
   "sort": 1300000,

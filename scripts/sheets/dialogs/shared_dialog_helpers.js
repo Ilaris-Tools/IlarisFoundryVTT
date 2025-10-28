@@ -26,7 +26,8 @@ export function applyOperator(currentValue, value, operator) {
  * @param {string} manoeverName - The name of the maneuver.
  * @param {string|null} trefferzone - The hit zone (optional).
  * @param {Object} rollValues - The object containing roll values to be updated.
- * @returns {Object} Updated rollValues.
+ * @param {number} originalRessourceCost - The original resource cost.
+ * @returns {Object} Object containing updated rollValues and originalRessourceCost.
  */
 export function processModification(
     modification,
@@ -159,6 +160,7 @@ export function processModification(
             if (modification.operator === 'SET') {
                 result = value
                 rollValues.mod_energy = result
+                originalRessourceCost = result
             } else if (modification.operator === 'MULTIPLY') {
                 result = originalRessourceCost * value
                 if (value < 1) {
@@ -184,16 +186,20 @@ export function processModification(
                 )
             }
 
-            text = `${manoeverName}${
-                trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''
-            }: ${
-                modification.operator === 'SUBTRACT' ? '-' + result : signed(result)
-            } Energiekosten\n`
+            if (modification.operator === 'SET') {
+                text = `${manoeverName}: Setzt die Basiskosten auf ${result} Energie\n`
+            } else {
+                text = `${manoeverName}${
+                    trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''
+                }: ${
+                    modification.operator === 'SUBTRACT' ? '-' + result : signed(result)
+                } Energiekosten\n`
+            }
             rollValues.text_energy = rollValues.text_energy.concat(text)
             break
     }
 
-    return rollValues
+    return { rollValues, originalRessourceCost }
 }
 
 /**
@@ -271,12 +277,13 @@ export function handleModifications(allModifications, rollValues) {
         }
     })
 
-    const originalRessourceCost = rollValues.mod_energy || 0
+    let originalRessourceCost = rollValues.mod_energy || 0
     // Process all modifications in sorted order
     allModifications.forEach(
         ({ modification, manoever: dynamicManoever, number, check, trefferZoneInput }) => {
+            let result
             if ((check && number) || number) {
-                processModification(
+                result = processModification(
                     modification,
                     number,
                     dynamicManoever.name,
@@ -284,8 +291,10 @@ export function handleModifications(allModifications, rollValues) {
                     rollValues,
                     originalRessourceCost,
                 )
+                rollValues = result.rollValues
+                originalRessourceCost = result.originalRessourceCost
             } else if (check) {
-                processModification(
+                result = processModification(
                     modification,
                     1,
                     dynamicManoever.name,
@@ -293,15 +302,20 @@ export function handleModifications(allModifications, rollValues) {
                     rollValues,
                     originalRessourceCost,
                 )
+                rollValues = result.rollValues
+                originalRessourceCost = result.originalRessourceCost
             } else if (trefferZoneInput) {
                 rollValues.trefferzone = trefferZoneInput
-                processModification(
+                result = processModification(
                     modification,
                     1,
                     dynamicManoever.name,
                     trefferZoneInput,
                     rollValues,
+                    originalRessourceCost,
                 )
+                rollValues = result.rollValues
+                originalRessourceCost = result.originalRessourceCost
             }
         },
     )
@@ -320,5 +334,6 @@ export function handleModifications(allModifications, rollValues) {
         rollValues.nodmg,
         rollValues.damageType,
         rollValues.trueDamage,
+        originalRessourceCost,
     ]
 }

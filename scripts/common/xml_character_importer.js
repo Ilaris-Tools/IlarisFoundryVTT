@@ -2,6 +2,7 @@ import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
 } from './../settings/configure-game-settings.model.js'
+import { XmlCharacterImportDialogs } from './xml-character-import-dialogs.js'
 
 /**
  * XML Character Importer for Ilaris System
@@ -22,6 +23,18 @@ export class XmlCharacterImporter {
         try {
             const xmlDoc = this.xmlParser.parseFromString(xmlContent, 'text/xml')
             const characterData = this.parseCharacterXml(xmlDoc)
+
+            // Show confirmation dialog with details of what will be imported and what's missing
+            const importAnalysis = await this.analyzeImportData(characterData)
+            const confirmed = await XmlCharacterImportDialogs.showImportConfirmationDialog(
+                characterData,
+                fileName,
+                importAnalysis,
+            )
+            if (!confirmed) {
+                ui.notifications.info('Charakter-Import vom Benutzer abgebrochen.')
+                return null
+            }
 
             // Create base actor data
             const actorData = await this.createActorDataFromXml(characterData, fileName)
@@ -45,12 +58,24 @@ export class XmlCharacterImporter {
      * Update an existing actor with XML data
      * @param {Actor} actor - The existing actor to update
      * @param {string} xmlContent - The XML content as a string
+     * @param {string} fileName - The name of the XML file being imported
      * @returns {Promise<Actor>} The updated actor
      */
-    async updateActorFromXml(actor, xmlContent) {
+    async updateActorFromXml(actor, xmlContent, fileName = 'XML file') {
         try {
             const xmlDoc = this.xmlParser.parseFromString(xmlContent, 'text/xml')
             const characterData = this.parseCharacterXml(xmlDoc)
+
+            // Show confirmation dialog with details of what will be changed
+            const confirmed = await XmlCharacterImportDialogs.showSyncConfirmationDialog(
+                actor,
+                characterData,
+                fileName,
+            )
+            if (!confirmed) {
+                ui.notifications.info('Charakter-Synchronisation vom Benutzer abgebrochen.')
+                return actor
+            }
 
             // Update actor system data (attributes, energies, etc.)
             const updates = await this.createActorUpdatesFromXml(characterData)
@@ -60,7 +85,7 @@ export class XmlCharacterImporter {
             // but preserve inventory items (gegenstand type items without XML flag)
             await this.syncAllCharacterItems(actor, characterData)
 
-            ui.notifications.info(`Character "${actor.name}" synced successfully!`)
+            ui.notifications.info(`Charakter "${actor.name}" erfolgreich synchronisiert!`)
             return actor
         } catch (error) {
             console.error('Error syncing character from XML:', error)
@@ -84,11 +109,13 @@ export class XmlCharacterImporter {
             supernaturalTalents: [], // Add supernatural talents (zauber/liturgie)
             advantages: [],
             weapons: [],
+            armors: [], // Add armors (Rüstungen)
             energies: {},
             experience: { total: 0, spent: 0 },
             description: {},
             eigenheiten: [], // Character quirks/traits
             notes: '',
+            freeSkills: [], // Free skills (Freie Fertigkeiten)
         }
 
         // Extract basic character info
@@ -161,6 +188,16 @@ export class XmlCharacterImporter {
             }
         })
 
+        // Extract free skills (Freie Fertigkeiten)
+        const freeSkillNodes = xmlDoc.querySelectorAll('FreieFertigkeiten > FreieFertigkeit')
+        freeSkillNodes.forEach((freeSkill) => {
+            const name = freeSkill.getAttribute('name')
+            const value = parseInt(freeSkill.getAttribute('wert')) || 0
+            if (name) {
+                characterData.freeSkills.push({ name, value })
+            }
+        })
+
         // Extract talents - determine type during XML parsing
         const talentNodes = xmlDoc.querySelectorAll('Talente > Talent')
         talentNodes.forEach((talent) => {
@@ -214,6 +251,35 @@ export class XmlCharacterImporter {
                     wmVt: parseInt(weapon.getAttribute('wmVt')) || 0,
                 }
                 characterData.weapons.push(weaponData)
+            }
+        })
+
+        // Extract armors
+        const armorNodes = xmlDoc.querySelectorAll('Objekte > Rüstungen > Rüstung')
+        armorNodes.forEach((armor) => {
+            const name = armor.getAttribute('name')
+            if (name && name.trim()) {
+                // Parse RS values from slash-separated format: "3/3/3/3/3/3"
+                // Format: beine/larm/rarm/bauch/brust/kopf
+                const rsString = armor.getAttribute('rs') || '0/0/0/0/0/0'
+                const rsValues = rsString.split('/').map((val) => parseInt(val.trim()) || 0)
+
+                // Ensure we have exactly 6 values, pad with zeros if necessary
+                while (rsValues.length < 6) {
+                    rsValues.push(0)
+                }
+
+                const armorData = {
+                    name,
+                    rs_beine: rsValues[0],
+                    rs_larm: rsValues[1],
+                    rs_rarm: rsValues[2],
+                    rs_bauch: rsValues[3],
+                    rs_brust: rsValues[4],
+                    rs_kopf: rsValues[5],
+                    be: parseInt(armor.getAttribute('be')) || 0,
+                }
+                characterData.armors.push(armorData)
             }
         })
 
@@ -424,8 +490,8 @@ export class XmlCharacterImporter {
             await actor.deleteEmbeddedDocuments('Item', itemsToDelete)
         }
 
-        // Add new items with XML import flag
-        await this.addItemsToActor(actor, characterData, true)
+        // Add new items with XML import flag (skip inventory items for sync)
+        await this.addItemsToActor(actor, characterData, true, true)
 
         console.debug(`Sync complete: Added new character data, preserved inventory and notes`)
     }
@@ -435,8 +501,14 @@ export class XmlCharacterImporter {
      * @param {Actor} actor - The created actor
      * @param {Object} characterData - Parsed character data
      * @param {boolean} markAsImported - Whether to flag items as XML imported
+     * @param {boolean} skipInventoryItems - Whether to skip weapons and armor (for sync operations)
      */
-    async addItemsToActor(actor, characterData, markAsImported = false) {
+    async addItemsToActor(
+        actor,
+        characterData,
+        markAsImported = false,
+        skipInventoryItems = false,
+    ) {
         const itemsToCreate = []
 
         // Process skills
@@ -472,6 +544,23 @@ export class XmlCharacterImporter {
                 }
                 itemsToCreate.push(customSkill)
             }
+        }
+
+        // Process free skills (Freie Fertigkeiten)
+        // These do not exist in compendiums, so we always create them directly
+        for (const freeSkill of characterData.freeSkills) {
+            const freeSkillData = {
+                name: freeSkill.name,
+                type: 'freie_fertigkeit',
+                system: {
+                    stufe: freeSkill.value,
+                    gruppe: '1',
+                },
+            }
+            if (markAsImported) {
+                freeSkillData.flags = { ilaris: { xmlImported: true } }
+            }
+            itemsToCreate.push(freeSkillData)
         }
 
         // First pass: Process supernatural talents (zauber and liturgie) and collect required supernatural skills
@@ -587,24 +676,81 @@ export class XmlCharacterImporter {
             }
         }
 
-        // Process weapons
-        for (const weapon of characterData.weapons) {
-            if (weapon.name && weapon.name !== 'Hand') {
-                // Skip empty or hand weapons
-                const foundWeapon = await this.findItemInCompendium(weapon.name, [
-                    'nahkampfwaffe',
-                    'fernkampfwaffe',
-                ])
-                if (foundWeapon) {
-                    const weaponData = foundWeapon.toObject()
-                    if (markAsImported) {
-                        weaponData.flags = { ilaris: { xmlImported: true } }
+        // Process weapons (skip during sync operations to preserve existing inventory)
+        if (!skipInventoryItems) {
+            for (const weapon of characterData.weapons) {
+                if (weapon.name) {
+                    // Skip empty weapons
+                    const foundWeapon = await this.findWeaponInCompendium(weapon.id)
+                    if (foundWeapon) {
+                        const weaponData = foundWeapon.toObject()
+                        if (markAsImported) {
+                            weaponData.flags = { ilaris: { xmlImported: true } }
+                        }
+                        itemsToCreate.push(weaponData)
+                    } else {
+                        console.warn(
+                            `Weapon not found in compendium: ${weapon.name} (ID: ${weapon.id})`,
+                        )
                     }
-                    itemsToCreate.push(weaponData)
-                } else {
-                    console.warn(`Weapon not found in compendium: ${weapon.name}`)
                 }
             }
+        } else {
+            console.debug('Skipping weapons during sync - preserving existing inventory')
+        }
+
+        // Process armors (skip during sync operations to preserve existing inventory)
+        // Armors are created directly from XML data, not looked up in compendium
+        if (!skipInventoryItems) {
+            for (const armor of characterData.armors) {
+                if (armor.name) {
+                    // Calculate sum of all body part RS values
+                    const sumRs =
+                        armor.rs_beine +
+                        armor.rs_larm +
+                        armor.rs_rarm +
+                        armor.rs_bauch +
+                        armor.rs_brust +
+                        armor.rs_kopf
+
+                    // Calculate average RS (sum divided by 6, rounded up)
+                    const averageRs = Math.ceil(sumRs / 6)
+
+                    // Create armor item directly from XML data
+                    const armorData = {
+                        name: armor.name,
+                        type: 'ruestung',
+                        system: {
+                            haerte: 0,
+                            beschaedigung: 0,
+                            aufbewahrungs_ort: 'mitführend',
+                            bewahrt_auf: [],
+                            gewicht_summe: 0,
+                            gewicht: 0,
+                            preis: 0,
+                            rs: averageRs,
+                            be: armor.be || 0,
+                            rs_beine: armor.rs_beine,
+                            rs_larm: armor.rs_larm,
+                            rs_rarm: armor.rs_rarm,
+                            rs_bauch: armor.rs_bauch,
+                            rs_brust: armor.rs_brust,
+                            rs_kopf: armor.rs_kopf,
+                            aktiv: false,
+                            text: '',
+                        },
+                    }
+
+                    if (markAsImported) {
+                        armorData.flags = { ilaris: { xmlImported: true } }
+                    }
+
+                    itemsToCreate.push(armorData)
+                    console.debug(`Created armor from XML: ${armor.name}`)
+                }
+            }
+        } else {
+            console.debug('Skipping armors during sync - preserving existing inventory')
         }
 
         // Process eigenheiten (character quirks/traits) with duplicate detection
@@ -660,6 +806,62 @@ export class XmlCharacterImporter {
     }
 
     /**
+     * Find a weapon in the compendiums by matching XML weapon ID with compendium item name
+     * @param {string} weaponId - Weapon ID from XML to match with compendium item name
+     * @returns {Promise<Item|null>} Found weapon or null
+     */
+    async findWeaponInCompendium(weaponId) {
+        if (!weaponId) {
+            return null
+        }
+
+        // Search through ALL compendium packs that have items (both system and world)
+        const compendiumsToSearch = []
+
+        // Get all compendium packs and filter for those that contain items
+        for (const pack of game.packs) {
+            try {
+                // Load the compendium index to check if it has items
+                await pack.getIndex()
+
+                // Only include packs that have items and are item-type packs
+                if (pack.index && pack.index.size > 0 && pack.documentName === 'Item') {
+                    compendiumsToSearch.push(pack)
+                }
+            } catch (error) {
+                console.warn(`Could not load compendium ${pack.metadata.id}:`, error)
+            }
+        }
+
+        for (const pack of compendiumsToSearch) {
+            try {
+                // Search for weapon items where the compendium item name matches the XML weapon ID
+                for (const indexEntry of pack.index) {
+                    // Check if this is a weapon type and if the name matches the weaponId
+                    if (
+                        (indexEntry.type === 'nahkampfwaffe' ||
+                            indexEntry.type === 'fernkampfwaffe') &&
+                        indexEntry.name === weaponId
+                    ) {
+                        const item = await pack.getDocument(indexEntry._id)
+                        if (item) {
+                            console.debug(
+                                `Found weapon with ID match: "${weaponId}" in compendium "${pack.metadata.label}" (${pack.metadata.id})`,
+                            )
+                            return item
+                        }
+                    }
+                }
+            } catch (error) {
+                console.warn(`Error searching compendium ${pack.metadata.id}:`, error)
+                continue
+            }
+        }
+
+        return null
+    }
+
+    /**
      * Find an item in the compendiums by name and type
      * @param {string} itemName - Name of the item to find
      * @param {string|Array} itemType - Type(s) of the item
@@ -668,67 +870,35 @@ export class XmlCharacterImporter {
     async findItemInCompendium(itemName, itemType) {
         const typesToSearch = Array.isArray(itemType) ? itemType : [itemType]
 
-        // Build compendium list dynamically
-        const compendiumsToSearch = new Set()
+        // Search through ALL compendium packs that have items (both system and world)
+        const compendiumsToSearch = []
 
-        // Always include core system compendiums
-        const coreCompendiums = [
-            'Ilaris.fertigkeiten-und-talente',
-            'Ilaris.fertigkeiten-und-talente-advanced',
-            'Ilaris.vorteile',
-            'Ilaris.waffen',
-            'Ilaris.ubernaturliche-fertigkeiten',
-            'Ilaris.zauberspruche-und-rituale',
-            'Ilaris.liturgien-und-mirakel',
-        ]
-        coreCompendiums.forEach((id) => compendiumsToSearch.add(id))
-
-        // Add user-selected advantage packs from world settings
-        try {
-            const selectedVorteilePacks = JSON.parse(
-                game.settings.get(
-                    ConfigureGameSettingsCategories.Ilaris,
-                    IlarisGameSettingNames.vorteilePacks,
-                ) || '[]',
-            )
-            // Ensure it's an array before calling forEach
-            if (Array.isArray(selectedVorteilePacks)) {
-                selectedVorteilePacks.forEach((packId) => compendiumsToSearch.add(packId))
-            } else {
-                console.warn(
-                    'selectedVorteilePacks setting is not an array:',
-                    selectedVorteilePacks,
-                )
-            }
-        } catch (error) {
-            console.warn('Could not load selectedVorteilePacks setting:', error)
-        }
-
-        // Search through all world compendiums for relevant item types
-        game.packs.forEach((pack) => {
-            // Only include world compendiums (not system compendiums already added)
-            if (pack.metadata.packageType === 'world') {
-                compendiumsToSearch.add(pack.metadata.id)
-            }
-        })
-
-        for (const compendiumId of compendiumsToSearch) {
-            const pack = game.packs.get(compendiumId)
-            if (!pack) {
-                console.warn(`Compendium not found: ${compendiumId}`)
-                continue
-            }
-
+        // Get all compendium packs and filter for those that contain items
+        for (const pack of game.packs) {
             try {
-                // Load the compendium index
+                // Load the compendium index to check if it has items
                 await pack.getIndex()
 
+                // Only include packs that have items and are item-type packs
+                if (pack.index && pack.index.size > 0 && pack.documentName === 'Item') {
+                    compendiumsToSearch.push(pack)
+                }
+            } catch (error) {
+                console.warn(`Could not load compendium ${pack.metadata.id}:`, error)
+            }
+        }
+
+        for (const pack of compendiumsToSearch) {
+            try {
                 // Search for item by name and type
                 for (const indexEntry of pack.index) {
                     // Try exact match first
                     if (indexEntry.name === itemName && typesToSearch.includes(indexEntry.type)) {
                         const item = await pack.getDocument(indexEntry._id)
                         if (item) {
+                            console.debug(
+                                `Found item "${itemName}" in compendium "${pack.metadata.label}" (${pack.metadata.id})`,
+                            )
                             return item
                         }
                     }
@@ -740,12 +910,15 @@ export class XmlCharacterImporter {
                     ) {
                         const item = await pack.getDocument(indexEntry._id)
                         if (item) {
+                            console.debug(
+                                `Found item "${itemName}" (case-insensitive) in compendium "${pack.metadata.label}" (${pack.metadata.id})`,
+                            )
                             return item
                         }
                     }
                 }
             } catch (error) {
-                console.warn(`Error searching compendium ${compendiumId}:`, error)
+                console.warn(`Error searching compendium ${pack.metadata.id}:`, error)
                 continue
             }
         }
@@ -754,43 +927,116 @@ export class XmlCharacterImporter {
     }
 
     /**
+     * Analyze what items will be found vs missing in compendiums
+     * @param {Object} characterData - The parsed character data from XML
+     * @returns {Promise<Object>} Analysis of what will be found vs missing
+     */
+    async analyzeImportData(characterData) {
+        const analysis = {
+            skills: { found: [], missing: [] },
+            talents: { found: [], missing: [], total: 0 },
+            advantages: { found: [], missing: [] },
+            supernaturalSkills: { found: [], missing: [], total: 0 },
+            weapons: { found: [], missing: [] },
+            armors: { found: [], missing: [] }, // Armors are always created from XML, not looked up
+            freeSkills: { total: 0 }, // Free skills are always created directly
+        }
+
+        // Analyze skills
+        for (const skill of characterData.skills) {
+            const found = await this.findItemInCompendium(skill.name, 'fertigkeit')
+            if (found) {
+                analysis.skills.found.push(skill.name)
+            } else {
+                analysis.skills.missing.push(skill.name)
+            }
+        }
+
+        // Analyze talents (both regular and supernatural)
+        const processedTalentNames = new Set()
+
+        // Check supernatural talents first
+        for (const supernaturalTalent of characterData.supernaturalTalents) {
+            if (!processedTalentNames.has(supernaturalTalent.name)) {
+                const found = await this.findItemInCompendium(supernaturalTalent.name, [
+                    'zauber',
+                    'liturgie',
+                ])
+                if (found) {
+                    analysis.talents.found.push(supernaturalTalent.name)
+                    processedTalentNames.add(supernaturalTalent.name)
+                }
+            }
+        }
+
+        // Check regular talents (skip those already processed as supernatural)
+        for (const talent of characterData.talents) {
+            if (!processedTalentNames.has(talent.name)) {
+                const found = await this.findItemInCompendium(talent.name, 'talent')
+                if (found) {
+                    analysis.talents.found.push(talent.name)
+                } else {
+                    analysis.talents.missing.push(talent.name)
+                }
+                processedTalentNames.add(talent.name)
+            }
+        }
+
+        analysis.talents.total = processedTalentNames.size
+
+        // Analyze advantages
+        for (const advantage of characterData.advantages) {
+            const found = await this.findItemInCompendium(advantage.name, 'vorteil')
+            if (found) {
+                analysis.advantages.found.push(advantage.name)
+            } else {
+                analysis.advantages.missing.push(advantage.name)
+            }
+        }
+
+        // Analyze supernatural skills (only those with positive values)
+        const supernaturalSkillsWithValues = characterData.supernaturalSkills.filter(
+            (skill) => skill.value > 0,
+        )
+        analysis.supernaturalSkills.total = supernaturalSkillsWithValues.length
+
+        for (const supernaturalSkill of supernaturalSkillsWithValues) {
+            const found = await this.findItemInCompendium(
+                supernaturalSkill.name,
+                'uebernatuerliche_fertigkeit',
+            )
+            if (found) {
+                analysis.supernaturalSkills.found.push(supernaturalSkill.name)
+            } else {
+                analysis.supernaturalSkills.missing.push(supernaturalSkill.name)
+            }
+        }
+
+        for (const weapon of characterData.weapons) {
+            const found = await this.findWeaponInCompendium(weapon.id)
+            if (found) {
+                analysis.weapons.found.push(weapon.name)
+            } else {
+                analysis.weapons.missing.push(weapon.name)
+            }
+        }
+
+        // Analyze armors - armors are always created directly from XML, not looked up in compendium
+        // So all armors are considered "found" (will be created)
+        for (const armor of characterData.armors) {
+            analysis.armors.found.push(armor.name)
+        }
+        // Count free skills (these are always created directly, no compendium lookup needed)
+        analysis.freeSkills.total = characterData.freeSkills.length
+
+        return analysis
+    }
+
+    /**
      * Show file upload dialog for XML import
      */
     static async showImportDialog() {
-        const input = document.createElement('input')
-        input.type = 'file'
-        input.accept = '.xml'
-        input.style.display = 'none'
-
-        return new Promise((resolve) => {
-            input.onchange = async (event) => {
-                const file = event.target.files[0]
-                if (!file) {
-                    resolve(null)
-                    return
-                }
-
-                const reader = new FileReader()
-                reader.onload = async (e) => {
-                    try {
-                        const importer = new XmlCharacterImporter()
-                        const actor = await importer.importCharacterFromXml(
-                            e.target.result,
-                            file.name,
-                        )
-                        resolve(actor)
-                    } catch (error) {
-                        console.error('Import failed:', error)
-                        resolve(null)
-                    }
-                }
-                reader.readAsText(file)
-            }
-
-            document.body.appendChild(input)
-            input.click()
-            document.body.removeChild(input)
-        })
+        return await XmlCharacterImportDialogs.showImportDialog()
     }
 
     /**
@@ -798,39 +1044,6 @@ export class XmlCharacterImporter {
      * @param {Actor} actor - The actor to sync
      */
     static async showSyncDialog(actor) {
-        const input = document.createElement('input')
-        input.type = 'file'
-        input.accept = '.xml'
-        input.style.display = 'none'
-
-        return new Promise((resolve) => {
-            input.onchange = async (event) => {
-                const file = event.target.files[0]
-                if (!file) {
-                    resolve(null)
-                    return
-                }
-
-                const reader = new FileReader()
-                reader.onload = async (e) => {
-                    try {
-                        const importer = new XmlCharacterImporter()
-                        const updatedActor = await importer.updateActorFromXml(
-                            actor,
-                            e.target.result,
-                        )
-                        resolve(updatedActor)
-                    } catch (error) {
-                        console.error('Sync failed:', error)
-                        resolve(null)
-                    }
-                }
-                reader.readAsText(file)
-            }
-
-            document.body.appendChild(input)
-            input.click()
-            document.body.removeChild(input)
-        })
+        return await XmlCharacterImportDialogs.showSyncDialog(actor)
     }
 }

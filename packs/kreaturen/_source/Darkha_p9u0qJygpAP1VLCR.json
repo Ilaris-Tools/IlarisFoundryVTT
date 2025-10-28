@@ -110,8 +110,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut GE 6",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Sturmangriff (Bewegung und AT): Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Außerdem richtet die nächste Attacke GS Trefferpunkte zusätzlich an."
       },
       "effects": [],
@@ -689,20 +689,20 @@
       "type": "zauber",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "fertigkeiten": "Dämonisch",
+        "fertigkeiten": "Eigenschaften",
         "fertigkeit_ausgewaehlt": "auto",
-        "text": "Dein Ziel erleidet eine plötzliche Muskelschwäche. Wenn es anstrengende Bewegungen unternimmt (Laufen, Kämpfen), erleidet es alle DH* Initiativephasen 1 Punkt Erschöpfung.\nProbenschwierigkeit: Magieresistenz\nVorbereitungszeit: 2 Aktionen\nZiel: Einzelwesen\nReichweite: 16 Schritt\nWirkungsdauer: 16 Initiativephasen\nKosten: 8 AsP\nFertigkeiten: Eigenschaften\nErlernen: Alch, Mag 16; Elf, Hex 20; 40 EP",
+        "text": "Dein Ziel erleidet eine plötzliche Muskelschwäche. Wenn es anstrengende Bewegungen unternimmt (Laufen, Kämpfen), erleidet es alle DH* Initiativephasen 1 Punkt Erschöpfung.",
         "maechtig": "",
-        "schwierigkeit": "",
+        "schwierigkeit": "Magieresistenz",
         "modifikationen": "",
-        "vorbereitung": "",
-        "ziel": "",
-        "reichweite": "",
-        "wirkungsdauer": "",
-        "kosten": "",
-        "erlernen": "",
-        "pw": 8,
-        "gruppe": -1
+        "vorbereitung": "2 Aktionen",
+        "ziel": "Einzelwesen",
+        "reichweite": "16 Schritt",
+        "wirkungsdauer": "16 Initiativphasen",
+        "kosten": "8 AsP",
+        "erlernen": "Alch, Mag 16; Elf, Hex 20",
+        "pw": 0,
+        "gruppe": 0
       },
       "effects": [],
       "_stats": {

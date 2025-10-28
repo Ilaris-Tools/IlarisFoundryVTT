@@ -83,6 +83,7 @@
 
 .attribute-wrapper:hover .attribute-number {
   text-shadow: 0 0 10px var(--color-shadow-primary);
+  cursor: pointer;
 }
 
 .attribute-wrapper:hover {

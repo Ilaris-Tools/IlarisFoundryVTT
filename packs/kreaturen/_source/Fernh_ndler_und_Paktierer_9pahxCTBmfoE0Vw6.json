@@ -110,8 +110,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KO 4",
+        "gruppe": 2,
         "text": "Einmal zwischen zwei Ruhephasen kannst du eine Aktion Konzentration aufwenden und eine Zähigkeits-Probe (16) ablegen. Gelingt die Probe, regenerierst du sofort 1 Wunde oder 2 Erschöpfung, die du im laufenden Kampf erlitten hast."
       },
       "effects": [],
@@ -139,8 +139,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut CH 4",
+        "gruppe": 1,
         "text": "In Rededuellen sind Proben auf Betören und Einschüchtern um +2 erleichtert."
       },
       "effects": [],
@@ -168,8 +168,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut CH 6",
+        "gruppe": 1,
         "text": "In Rededuellen sind Proben auf Betören und Einschüchtern um +2 erleichtert.\n\nBei Proben auf Betören, Einschüchtern und Gebräuche gelten Patzer als gewöhnlich misslungen, außer sie entstehen durch eine ungewohnte Umgebung (S. 55)."
       },
       "effects": [],
@@ -197,8 +197,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut IN 4",
+        "gruppe": 1,
         "text": "In Rededuellen sind Proben auf Rhetorik und Überreden um +2 erleichtert."
       },
       "effects": [],
@@ -226,8 +226,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut IN 6",
+        "gruppe": 1,
         "text": "In Rededuellen sind Proben auf Rhetorik und Überreden um +2 erleichtert.\n\nBei Proben auf Überreden, Rhetorik und Menschenkenntnis gelten Patzer als gewöhnlich misslungen, außer sie entstehen durch eine ungewohnte Umgebung (S. 55)."
       },
       "effects": [],
@@ -255,8 +255,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut MU 4, Vorteil Paktierer I",
+        "gruppe": 8,
         "text": "Die Fertigkeit Dämonische Hilfe (Erzdämon) kann erlernt und benutzt werden. Proben auf Dämonische Hilfe (Erzdämon) werden mit 1W20 gewürfelt."
       },
       "effects": [],
@@ -283,7 +283,9 @@
       "name": "Gefahreninstinkt",
       "type": "eigenschaft",
       "system": {
-        "text": ""
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Mit der Gabe Gefahreninstinkt kannst du mit dem Talent Wachsamkeit auch Gefahren erfassen, die mit gewöhnlichen Sinnen nicht wahrzunehmen sind. Dazu gehören etwa magische Fallen oder eine bald losbrechende Lawine. Ist die Gefahr auch mit gewöhnlichen Sinnen wahrnehmbar erhältst du eine Erleichterung von +4."
       },
       "effects": [],
       "_stats": {
@@ -337,7 +339,9 @@
       "name": "Willensstark I",
       "type": "eigenschaft",
       "system": {
-        "text": ""
+        "voraussetzung": "Attribut MU 4",
+        "gruppe": 1,
+        "text": "Deine MR steigt um 4 Punkte."
       },
       "effects": [],
       "_stats": {

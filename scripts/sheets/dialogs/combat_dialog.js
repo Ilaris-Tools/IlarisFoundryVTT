@@ -219,6 +219,20 @@ export class CombatDialog extends Dialog {
             this.handleZeroDamageConflicts(html)
         }, 500)
 
+        // Add specific listener for maneuver to handle ZERO_DAMAGE conflicts
+        html.find('.maneuver-item input, .maneuver-item select').on('change', () => {
+            this.handleZeroDamageConflicts(html)
+        })
+
+        // Initial conflict check on dialog load
+        // The 500ms timeout provides a safety buffer to ensure that:
+        // - All maneuver checkboxes have been created and are queryable
+        // - The dialog's HTML structure is completely built
+        // - Any initial values or states have been properly set
+        setTimeout(() => {
+            this.handleZeroDamageConflicts(html)
+        }, 500)
+
         // Colorize numbers in maneuver labels
         this.colorizeManeuverNumbers(html)
     }

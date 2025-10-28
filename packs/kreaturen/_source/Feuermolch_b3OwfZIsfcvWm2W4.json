@@ -136,7 +136,9 @@
       "name": "Angepasst (Dunkelheit) I",
       "type": "eigenschaft",
       "system": {
-        "text": ""
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Durch deine Spezies oder langjährige Erfahrung hast du dich an Dunkelheit gewöhnt. Abzüge durch schlechte Lichtverhältnisse, insbesondere im Kampf, sinken für dich um 1 Stufe."
       },
       "effects": [],
       "_stats": {

@@ -110,8 +110,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut GE 6",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Sturmangriff (Bewegung und AT): Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Außerdem richtet die nächste Attacke GS Trefferpunkte zusätzlich an."
       },
       "effects": [],
@@ -138,7 +138,9 @@
       "name": "Magiegespür",
       "type": "eigenschaft",
       "system": {
-        "text": ""
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "In der Nähe astraler Kräfte überfällt dich ein Frösteln, du hörst sphärische Klänge oder ein Farbschleier legt sich über die Umgebung. Mit dem Talent Sinnenschärfe kannst du Intensitätsanalysen (S. 80) von magischen Gegenständen durchführen. Nach dem aktiven Einsatz der Gabe erleidest du 1 Punkt Erschöpfung."
       },
       "effects": [],
       "_stats": {

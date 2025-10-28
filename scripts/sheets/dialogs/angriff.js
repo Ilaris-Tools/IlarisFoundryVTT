@@ -146,52 +146,10 @@ export class AngriffDialog extends CombatDialog {
     /**
      * Returns base values specific to AngriffDialog
      */
-    async updateModifierDisplay(html) {
-        try {
-            // Use the stored reference instead of searching for the element
-            if (!this._modifierElement || this._modifierElement.length === 0) {
-                console.warn('MODIFIER DISPLAY: Element-Referenz nicht verfügbar')
-                return
-            }
-
-            // Show loading state
-            this._modifierElement.html(
-                '<div class="modifier-summary"><h4>Würfelwurf Zusammenfassungen:</h4><div class="modifier-item neutral">Wird berechnet...</div></div>',
-            )
-
-            // Temporarily parse values to calculate modifiers
-            await this.manoeverAuswaehlen(html)
-            await this.updateManoeverMods(html)
-            await this.updateStatusMods()
-
-            // Get base values
-            const baseAT = this.item.system.at || 0
-            const baseVT = this.item.system.vt || 0
-            const statusMods = this.actor.system.abgeleitete.globalermod || 0
-            const nahkampfMods = this.actor.system.modifikatoren.nahkampfmod || 0
-
-            // Get dice formula
-            const diceFormula = this.getDiceFormula(html)
-
-            // Create all summaries
-            const summaries = this.getAllModifierSummaries(
-                baseAT,
-                baseVT,
-                statusMods,
-                nahkampfMods,
-                diceFormula,
-            )
-
-            // Update the display element
-            this._modifierElement.html(summaries)
-        } catch (error) {
-            console.error('MODIFIER DISPLAY: Fehler beim Update:', error)
-            // Show error state
-            if (this._modifierElement && this._modifierElement.length > 0) {
-                this._modifierElement.html(
-                    '<div class="modifier-summary"><h4>Würfelwurf Zusammenfassungen:</h4><div class="modifier-item neutral">Fehler beim Berechnen...</div></div>',
-                )
-            }
+    getBaseValues() {
+        return {
+            baseAT: this.item.system.at || 0,
+            baseVT: this.item.system.vt || 0,
         }
     }
     getBaseValues() {
@@ -782,6 +740,7 @@ export class AngriffDialog extends CombatDialog {
         })
 
         if (
+            this.item.system.manoverausgleich &&
             this.item.system.manoverausgleich.value > 0 &&
             (!this.item.system.manoverausgleich.overcomplicated || this.isHumanoid)
         ) {

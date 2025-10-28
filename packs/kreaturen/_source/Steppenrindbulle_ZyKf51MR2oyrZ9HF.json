@@ -110,8 +110,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut GE 6",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Sturmangriff (Bewegung und AT): Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Außerdem richtet die nächste Attacke GS Trefferpunkte zusätzlich an."
       },
       "effects": [],
@@ -139,8 +139,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut GE 4",
+        "gruppe": 2,
         "text": "Nach einem Sturz befindest du dich in kniender statt liegender Position."
       },
       "effects": [],
@@ -168,8 +168,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KK 10",
+        "gruppe": 2,
         "text": "Selbst bei einer gelungenen gegnerischen Verteidigung richtest du halben Schaden an. Ausweichen vermeidet diesen Schaden. Manövereffekte wirken weiterhin nur bei gelungenen Attacken."
       },
       "effects": [],

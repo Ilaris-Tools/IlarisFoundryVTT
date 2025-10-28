@@ -110,9 +110,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
-        "text": "Du erhältst Waffenschaden +1, AT +1 und VT +1.\n\nErlaubt das Manöver Überrennen (Bewegung und AT) mit dem Pferd: Das Reittier stürmt in die gegnerische Formation. Seine Attacke trifft (samt anderen Manövern) alle Gegner in seiner Bahn, bis es durch mindestens 2 erfolgreiche Verteidigungen gestoppt wird. Außerdem richtet die Attacke GS Trefferpunkte zusätzlich an. Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert."
+        "voraussetzung": "Attribut GE 8 ODER Attribut KK 8, Vorteil Reiterkampf II",
+        "gruppe": 3,
+        "text": "Du erhältst Waffenschaden +1, AT +1 und VT +1.\n\nErlaubt das Manöver Überrennen (Bewegung und AT) mit dem Pferd: Das Reittier stürmt in die gegnerische Formation. Seine Attacke trifft (samt anderen Manövern) alle Gegner in seiner Bahn, bis es durch mindestens 2 erfolgreiche Verteidigungen gestoppt wird. Außerdem richtet die Attacke GS Trefferpunkte zusätzlich an. Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert.",
+        "sephrastoScript": "modifyKampfstil('Reiterkampf', 1, 1, 1, 0)",
+        "stilBedingungen": "",
+        "foundryScript": ""
       },
       "effects": [],
       "_stats": {
@@ -139,9 +142,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
-        "text": "Du erhältst VT +1.\n\nErlaubt das Manöver Schildwall (VT -4): Du kannst einen Angriff auf einen benachbarten Verbündeten abwehren. Das Manöver erfolgt vor der Verteidigung des Verbündeten."
+        "voraussetzung": "Attribut KK 8, Vorteil Schildkampf II",
+        "gruppe": 3,
+        "text": "Du erhältst VT +1.\n\nErlaubt das Manöver Schildwall (VT -4): Du kannst einen Angriff auf einen benachbarten Verbündeten abwehren. Das Manöver erfolgt vor der Verteidigung des Verbündeten.",
+        "sephrastoScript": "modifyKampfstil('Schildkampf', 0, 1, 0, 0)",
+        "stilBedingungen": "",
+        "foundryScript": ""
       },
       "effects": [],
       "_stats": {
@@ -168,9 +174,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
-        "text": "Dein Waffenschaden steigt um +1.\n\nErlaubt das Manöver Befreiungsschlag (AT -4): Du führst eine Attacke aus, die sich (samt anderen Manövern) gegen alle Ziele in einem Winkel von 180° vor dir richtet. Jedem Ziel steht eine eigene Verteidigung zu."
+        "voraussetzung": "Attribut KK 8, Vorteil Kraftvoller Kampf II",
+        "gruppe": 3,
+        "text": "Dein Waffenschaden steigt um +1.\n\nErlaubt das Manöver Befreiungsschlag (AT -4): Du führst eine Attacke aus, die sich (samt anderen Manövern) gegen alle Ziele in einem Winkel von 180° vor dir richtet. Jedem Ziel steht eine eigene Verteidigung zu.",
+        "sephrastoScript": "modifyKampfstil('Kraftvoller Kampf', 0, 0, 1, 0)",
+        "stilBedingungen": "",
+        "foundryScript": ""
       },
       "effects": [],
       "_stats": {
@@ -197,8 +206,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut MU 4",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Ausfall (AT -2 -BE): Das Ziel muss in einer Freien Reaktion bis zu 2 Schritt zurückweichen, du folgst in einer Freien Aktion. Möchte es in seiner nächsten Initiativephase einen anderen Gegner als dich angreifen, darfst du einen Passierschlag ausführen."
       },
       "effects": [],
@@ -226,8 +235,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut CH 4",
+        "gruppe": 2,
         "text": "Furcht-Effekte für Mitstreiter zählen als eine Stufe niedriger."
       },
       "effects": [],
@@ -255,8 +264,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KK 8",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Hammerschlag (AT -8): Der Angriff richtet doppelten Waffenschaden an. Zusätzliche TP aus Kommandos, anderen Manövern usw. werden nicht verdoppelt."
       },
       "effects": [],
@@ -284,8 +293,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut IN 4",
+        "gruppe": 2,
         "text": "Deine INI steigt um 4 Punkte."
       },
       "effects": [],
@@ -313,8 +322,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KK 8",
+        "gruppe": 1,
         "text": "Einschüchtern-Proben im Kampf sind um +4 erleichtert und du kannst ohne zusätzliche Erschwernis bis zu 4 Gegner einschüchtern."
       },
       "effects": [],
@@ -342,8 +351,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KK 4",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Niederwerfen (AT -4): Gegenprobe: KK. Dein Ziel stürzt und liegt am Boden."
       },
       "effects": [],
@@ -371,8 +380,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut MU 6",
+        "gruppe": 2,
         "text": "Der Verteidigungs-Malus durch volle Offensive sinkt auf -4."
       },
       "effects": [],
@@ -400,8 +409,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KO 6",
+        "gruppe": 2,
         "text": "Die BE aller Rüstungen ist um 1 gesenkt."
       },
       "effects": [],
@@ -429,8 +438,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KO 4",
+        "gruppe": 2,
         "text": "Einmal zwischen zwei Ruhephasen kannst du eine Aktion Konzentration aufwenden und eine Zähigkeits-Probe (16) ablegen. Gelingt die Probe, regenerierst du sofort 1 Wunde oder 2 Erschöpfung, die du im laufenden Kampf erlitten hast."
       },
       "effects": [],
@@ -458,8 +467,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KO 4",
+        "gruppe": 1,
         "text": "Proben zur Abwehr von Giften und Krankheiten sind um +4 erleichtert."
       },
       "effects": [],
@@ -487,8 +496,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KO 6",
+        "gruppe": 1,
         "text": "Proben zur Abwehr von Giften und Krankheiten sind um +4 erleichtert und das Durchhaltevermögen (S. 19) steigt um 2."
       },
       "effects": [],
@@ -516,8 +525,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut CH 4",
+        "gruppe": 1,
         "text": "In Rededuellen sind Proben auf Betören und Einschüchtern um +2 erleichtert."
       },
       "effects": [],

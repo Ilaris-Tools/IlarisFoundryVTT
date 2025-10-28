@@ -1,0 +1,41 @@
+{
+  "name": "Armatrutz (Tiergeist)",
+  "type": "zauber",
+  "_id": "13XdV65sbIKTAdYf",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Gaben des Odun, Gaben des Blutgeists",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Der RS deines Zieles steigt um 1.",
+    "maechtig": "Je zwei Stufen verleihen +1 RS.",
+    "schwierigkeit": "12",
+    "modifikationen": "Körperschild (–4, 1 AsP; der Armatrutz schützt nur eine Trefferzone.)",
+    "vorbereitung": "1 Aktion",
+    "ziel": "Einzelperson",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "4 Minuten",
+    "kosten": "4 AsP",
+    "erlernen": "Elf, Mag 12; Alch 16; Dru, Hex 18",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "bRsoRPItEVb33T1L": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.343",
+    "systemId": "Ilaris",
+    "systemVersion": "12.2.0",
+    "createdTime": 1760386576691,
+    "modifiedTime": 1760386576691,
+    "lastModifiedBy": "bRsoRPItEVb33T1L"
+  },
+  "_key": "!items!13XdV65sbIKTAdYf"
+}
