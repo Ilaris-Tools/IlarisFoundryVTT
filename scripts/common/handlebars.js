@@ -147,6 +147,10 @@ function registerHandlebarsHelpers() {
         return arg1 == arg2
     })
 
+    Handlebars.registerHelper('contains', function (arg1, arg2) {
+        return arg1.includes(arg2)
+    })
+
     //if arg1 greater then arg2
     Handlebars.registerHelper('ifGt', function (arg1, arg2) {
         if (Number.isInteger(arg1) && Number.isInteger(arg2)) {
@@ -287,6 +291,15 @@ function registerHandlebarsHelpers() {
         }
 
         return probeText
+    })
+
+    /**
+     * Handlebars helper to access game settings from templates
+     * @param {string} settingKey - The setting key to retrieve
+     * @returns {*} The setting value
+     */
+    Handlebars.registerHelper('gameSetting', function (settingKey) {
+        return game.settings.get('Ilaris', settingKey)
     })
 
     /**

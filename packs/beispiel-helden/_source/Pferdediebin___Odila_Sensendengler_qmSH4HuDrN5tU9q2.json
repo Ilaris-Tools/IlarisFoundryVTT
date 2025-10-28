@@ -16,23 +16,23 @@
       }
     },
     "attribute": {
-      "KO": {
-        "wert": 5,
+      "CH": {
+        "wert": 4,
         "pw": 0
       },
-      "MU": {
-        "wert": 4,
+      "FF": {
+        "wert": 6,
         "pw": 0
       },
       "GE": {
         "wert": 6,
         "pw": 0
       },
-      "KK": {
+      "IN": {
         "wert": 5,
         "pw": 0
       },
-      "IN": {
+      "KK": {
         "wert": 5,
         "pw": 0
       },
@@ -40,12 +40,12 @@
         "wert": 2,
         "pw": 0
       },
-      "CH": {
-        "wert": 4,
+      "KO": {
+        "wert": 5,
         "pw": 0
       },
-      "FF": {
-        "wert": 6,
+      "MU": {
+        "wert": 4,
         "pw": 0
       }
     },
@@ -82,6 +82,11 @@
       "manuellermod": 0,
       "nahkampfmod": 0
     },
+    "misc": {
+      "selected_kampfstil": "ohne",
+      "selected_uebernatuerlicher_stil": "ohne",
+      "ist_beritten": false
+    },
     "geld": {
       "dukaten": 0,
       "silbertaler": 0,
@@ -89,10 +94,7 @@
       "kreuzer": 0
     },
     "getragen": 1,
-    "notes": "",
-    "misc": {
-      "selected_kampfstil": "ohne"
-    }
+    "notes": ""
   },
   "prototypeToken": {
     "name": "Pferdediebin - Odila Sensendengler",
@@ -297,9 +299,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "GE 4 oder KK 4",
+        "voraussetzung": "Attribut GE 4 ODER Attribut KK 4",
         "gruppe": 3,
-        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>+1 AT, VT, Waffenschaden<br><br>Erlaubt das Manöver Sturmangriff mit dem Reittier.</body>"
+        "text": "Bedingung: beritten.\n\nDu erhältst Waffenschaden +1, AT +1 und VT +1.\n\nErlaubt das Manöver Sturmangriff (Bewegung und AT) mit dem Pferd: Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Außerdem richtet die nächste Attacke GS Trefferpunkte zusätzlich an.",
+        "sephrastoScript": "modifyKampfstil('Reiterkampf', 1, 1, 1, 0)",
+        "stilBedingungen": "beritten",
+        "foundryScript": ""
       },
       "effects": [],
       "folder": null,
@@ -308,12 +313,12 @@
       "_stats": {
         "compendiumSource": "Compendium.Ilaris.vorteil.Item.xkdSuhUa9idYrypQ",
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "12.343",
         "systemId": "Ilaris",
-        "systemVersion": "12.0.2",
+        "systemVersion": "12.2.0",
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
+        "modifiedTime": 1759478639112,
+        "lastModifiedBy": "bRsoRPItEVb33T1L"
       },
       "ownership": {},
       "_key": "!actors.items!qmSH4HuDrN5tU9q2.nAxQ8YAwYuQbPUwQ"
@@ -324,9 +329,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "KK 4",
+        "voraussetzung": "Attribut KK 4",
         "gruppe": 3,
-        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>+1 VT</body>"
+        "text": "Bedingung: Schild.\n\nDu erhältst VT +1.",
+        "sephrastoScript": "modifyKampfstil('Schildkampf', 0, 1, 0, 0)",
+        "stilBedingungen": "Schild",
+        "foundryScript": ""
       },
       "effects": [],
       "folder": null,
@@ -335,12 +343,12 @@
       "_stats": {
         "compendiumSource": "Compendium.Ilaris.vorteil.Item.X5bgYIusB6yq4TVs",
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "12.343",
         "systemId": "Ilaris",
-        "systemVersion": "12.0.2",
+        "systemVersion": "12.2.0",
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
+        "modifiedTime": 1759478639112,
+        "lastModifiedBy": "bRsoRPItEVb33T1L"
       },
       "ownership": {},
       "_key": "!actors.items!qmSH4HuDrN5tU9q2.IWiTKkv3S7rqZjhH"

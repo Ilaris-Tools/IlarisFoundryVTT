@@ -1,0 +1,41 @@
+{
+  "name": "Aeropulvis sanfter Fall (Tiergeist)",
+  "type": "zauber",
+  "_id": "i00EpjkchdqaZ3HR",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Gaben des Odun, Gaben des Blutgeists",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Halbiert die effektive Höhe eines Sturzes oder Sprunges (kumulativ zur Akrobatik-Probe).",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "4 Aktionen",
+    "ziel": "selbst",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "16 Initiativphasen",
+    "kosten": "8 AsP",
+    "erlernen": "Geo 16; Elf 18; Mag 20",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "bRsoRPItEVb33T1L": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.343",
+    "systemId": "Ilaris",
+    "systemVersion": "12.2.0",
+    "createdTime": 1760386526772,
+    "modifiedTime": 1760386526772,
+    "lastModifiedBy": "bRsoRPItEVb33T1L"
+  },
+  "_key": "!items!i00EpjkchdqaZ3HR"
+}

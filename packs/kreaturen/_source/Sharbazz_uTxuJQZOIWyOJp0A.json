@@ -110,8 +110,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut CH 6",
+        "gruppe": 2,
         "text": "Alle Mitstreiter erhalten VT +1."
       },
       "effects": [],
@@ -139,8 +139,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut CH 8",
+        "gruppe": 2,
         "text": "Alle Mitstreiter erhalten TP +2."
       },
       "effects": [],
@@ -168,8 +168,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KK 4",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Niederwerfen (AT -4): Gegenprobe: KK. Dein Ziel stürzt und liegt am Boden."
       },
       "effects": [],
@@ -197,8 +197,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut GE 6",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Sturmangriff (Bewegung und AT): Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Außerdem richtet die nächste Attacke GS Trefferpunkte zusätzlich an."
       },
       "effects": [],
@@ -824,20 +824,20 @@
       "type": "zauber",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "fertigkeiten": "Dämonisch",
+        "fertigkeiten": "Eigenschaften",
         "fertigkeit_ausgewaehlt": "auto",
-        "text": "Dein Ziel erleidet eine plötzliche Muskelschwäche. Wenn es anstrengende Bewegungen unternimmt (Laufen, Kämpfen), erleidet es alle DH* Initiativephasen 1 Punkt Erschöpfung.\nProbenschwierigkeit: Magieresistenz\nVorbereitungszeit: 2 Aktionen\nZiel: Einzelwesen\nReichweite: 16 Schritt\nWirkungsdauer: 16 Initiativephasen\nKosten: 8 AsP\nFertigkeiten: Eigenschaften\nErlernen: Alch, Mag 16; Elf, Hex 20; 40 EP",
+        "text": "Dein Ziel erleidet eine plötzliche Muskelschwäche. Wenn es anstrengende Bewegungen unternimmt (Laufen, Kämpfen), erleidet es alle DH* Initiativephasen 1 Punkt Erschöpfung.",
         "maechtig": "",
-        "schwierigkeit": "",
+        "schwierigkeit": "Magieresistenz",
         "modifikationen": "",
-        "vorbereitung": "",
-        "ziel": "",
-        "reichweite": "",
-        "wirkungsdauer": "",
-        "kosten": "",
-        "erlernen": "",
-        "pw": 12,
-        "gruppe": -1
+        "vorbereitung": "2 Aktionen",
+        "ziel": "Einzelwesen",
+        "reichweite": "16 Schritt",
+        "wirkungsdauer": "16 Initiativphasen",
+        "kosten": "8 AsP",
+        "erlernen": "Alch, Mag 16; Elf, Hex 20",
+        "pw": 0,
+        "gruppe": 0
       },
       "effects": [],
       "_stats": {
@@ -864,20 +864,20 @@
       "type": "zauber",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "fertigkeiten": "Dämonisch",
+        "fertigkeiten": "Dämonisch, Eigenschaften, Einfluss",
         "fertigkeit_ausgewaehlt": "auto",
-        "text": "Dein Ziel verfällt in einen Kampfrausch. Es erhält die Vorteile Kalte Wut und Offensiver Kampfstil (S. 43) und nutzt in jeder Aktion volle Offensive. Sind keine Gegner mehr da, greift es auch Verbündete an.\nMächtige Magie: Die AT steigt um +1.\nProbenschwierigkeit: Magieresistenz\nVorbereitungszeit: 1 Aktion\nZiel: Einzelperson\nReichweite: Berührung\nWirkungsdauer: 16 Initiativephasen\nKosten: 8 AsP\nFertigkeiten: Dämonisch, Eigenschaften, Einfluss\nErlernen: Alch, Mag 16; Ach, Bor 18; 40 EP",
-        "maechtig": "",
-        "schwierigkeit": "",
+        "text": "Dein Ziel verfällt in einen Kampfrausch. Es erhält die Vorteile Kalte Wut und Offensiver Kampfstil (S. 42) und nutzt in jeder Aktion volle Offensive. Sind keine Gegner mehr da, greift es auch Verbündete an.",
+        "maechtig": "Die AT steigt um +1.",
+        "schwierigkeit": "Magieresistenz",
         "modifikationen": "",
-        "vorbereitung": "",
-        "ziel": "",
-        "reichweite": "",
-        "wirkungsdauer": "",
-        "kosten": "",
-        "erlernen": "",
-        "pw": 12,
-        "gruppe": -1
+        "vorbereitung": "1 Aktion",
+        "ziel": "Einzelperson",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "16 Initiativphasen",
+        "kosten": "8 AsP",
+        "erlernen": "Alch, Mag 16; Ach, Bor 18",
+        "pw": 0,
+        "gruppe": 0
       },
       "effects": [],
       "_stats": {

@@ -110,8 +110,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KK 10",
+        "gruppe": 2,
         "text": "Selbst bei einer gelungenen gegnerischen Verteidigung richtest du halben Schaden an. Ausweichen vermeidet diesen Schaden. Manövereffekte wirken weiterhin nur bei gelungenen Attacken."
       },
       "effects": [],
@@ -192,7 +192,9 @@
       "name": "Willensstark II",
       "type": "eigenschaft",
       "system": {
-        "text": ""
+        "voraussetzung": "Attribut MU 6",
+        "gruppe": 1,
+        "text": "Deine MR steigt um 4 Punkte.\n\nAuf dich wirkende Furcht-Effekte (S. 46) zählen als eine Stufe niedriger."
       },
       "effects": [],
       "_stats": {

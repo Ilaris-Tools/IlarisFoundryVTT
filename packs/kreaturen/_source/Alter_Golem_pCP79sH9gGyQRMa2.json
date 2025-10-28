@@ -110,8 +110,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KK 4",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Niederwerfen (AT -4): Gegenprobe: KK. Dein Ziel stürzt und liegt am Boden."
       },
       "effects": [],
@@ -139,8 +139,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut GE 4",
+        "gruppe": 2,
         "text": "Nach einem Sturz befindest du dich in kniender statt liegender Position."
       },
       "effects": [],
@@ -168,8 +168,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut GE 6",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Sturmangriff (Bewegung und AT): Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Außerdem richtet die nächste Attacke GS Trefferpunkte zusätzlich an."
       },
       "effects": [],
@@ -250,7 +250,20 @@
       "name": "Tarnung",
       "type": "eigenschaft",
       "system": {
-        "text": "Tarnung: Das Wesen kann sich seiner Umgebung\r\nanpassen, zum Beispiel durch eine Farbänderung der Haut.\r\nBei Heimlichkeits-Proben erhält es keinen Malus durch ein\r\nfehlendes Versteck."
+        "fertigkeiten": "Illusion, Vertrautenmagie",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Dein Vertrautentier erhält die Eigenschaft Tarnung (S. 98).",
+        "maechtig": "",
+        "schwierigkeit": "12",
+        "modifikationen": "",
+        "vorbereitung": "0 Aktionen",
+        "ziel": "selbst",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "1 Stunde",
+        "kosten": "1 AsP",
+        "erlernen": "Hex 14, Geo 18",
+        "pw": 0,
+        "gruppe": 17
       },
       "effects": [],
       "_stats": {
@@ -277,7 +290,9 @@
       "name": "Geisterpanzer",
       "type": "eigenschaft",
       "system": {
-        "text": ""
+        "voraussetzung": "Attribut MU 8",
+        "gruppe": 1,
+        "text": "Gegen direkten Schaden aus Zaubern wie Fulminictus, Ignisphaero oder Hexengalle kannst du deinen MU als WS verwenden."
       },
       "effects": [],
       "_stats": {

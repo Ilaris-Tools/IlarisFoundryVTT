@@ -110,8 +110,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut GE 4",
+        "gruppe": 2,
         "text": "Nach einem Sturz befindest du dich in kniender statt liegender Position."
       },
       "effects": [],
@@ -165,7 +165,9 @@
       "name": "Angepasst (Wasser) II",
       "type": "eigenschaft",
       "system": {
-        "text": ""
+        "voraussetzung": "Vorteil Angepasst (Wasser) I",
+        "gruppe": 0,
+        "text": "Durch deine Spezies oder langjährige Erfahrung hast du dich an Wasser gewöhnt. Abzüge durch duch knietiefes- und hüfttiefes Wasser und unter Wasser, insbesondere im Kampf, sinken für dich um 2 Stufen."
       },
       "effects": [],
       "_stats": {

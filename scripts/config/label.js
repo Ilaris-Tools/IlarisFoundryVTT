@@ -1,3 +1,5 @@
+import { labelInventory } from './label_inventory.js'
+
 export const label = {
     // Attribute
     KO: 'Konstitution',
@@ -56,6 +58,7 @@ export const label = {
     vldf: 'Volle Defensive (VT +4)',
     vlof: 'Volle Offensive (AT +4, VT -8)',
     vlofok: 'Volle Offensive (AT +4, VT -4)',
+    isHumanoid: 'Ziel ist humanoid',
     gzkl: 'Größenklasse',
     bwng: 'Bewegung',
     lcht: 'Licht',
@@ -119,7 +122,6 @@ export const label = {
     lm_kosp: 'Kosten sparen (-4)',
     lm_zere: 'Zeremonie (+X)',
     lm_opfe: 'Opferung (-4)',
-    // Inventar
-    gewicht: 'Platzbedarf',
-    quantity: 'Anzahl',
+
+    ...labelInventory,
 }

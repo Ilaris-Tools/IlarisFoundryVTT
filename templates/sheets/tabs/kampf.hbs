@@ -6,14 +6,25 @@
                 style="color: {{modColor actor.system.modifikatoren.nahkampfmod}}">{{actor.system.abgeleitete.nahkampfmoddisplay}}</label></b>
     </div>
     {{/if}}
-    <h2>Nahkampfwaffen</h2>
-    <a class="item-create" data-itemclass="nahkampfwaffe"><i class="fas fa-plus"></i>Neue Nahkampfwaffe</a>
-    <div>
+    <h2>Kampfstil und Beritten</h2>
+    <div style="display: flex; align-items: center; gap: 10px;">
         <select class="selected-kampfstil" name="system.misc.selected_kampfstil">
             {{selectOptions actor.misc.kampfstile_list selected=actor.system.misc.selected_kampfstil}}
         </select>
-
+        <label style="display: flex; align-items: center; gap: 5px;">
+            <input type="checkbox" name="system.misc.ist_beritten" {{checked actor.system.misc.ist_beritten}} />
+            Beritten
+        </label>
     </div>
+
+    {{#if actor.misc.selected_kampfstil_conditions_not_met}}
+        <div style="margin-top: 8px; padding: 8px; background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 4px; color: #721c24;">
+            <i class="fas fa-exclamation-triangle" style="color: #dc3545; margin-right: 5px;"></i>
+            <strong>Kampfstil inaktiv:</strong> {{actor.misc.selected_kampfstil_conditions_not_met}}
+        </div>
+    {{/if}}
+    <h2>Nahkampfwaffen</h2>
+    <a class="item-create" data-itemclass="nahkampfwaffe"><i class="fas fa-plus"></i>Neue Nahkampfwaffe</a>
     <table class="table">
         <thead>
             <tr>
@@ -50,7 +61,7 @@
                     </a>
                 </td>
                 <td class="ausklappen-trigger onhover" data-ausklappentarget="{{nwaffe.id}}">{{nwaffe.name}}</td>
-                <td>{{nwaffe.system.rw}}</td>
+                <td>{{nwaffe.system.rw_mod}}</td>
                 <td class="rollable onhover" data-rolltype="at" data-pw="{{nwaffe.system.at}}"
                     data-item="{{nwaffe.name}}" data-itemid="{{nwaffe.id}}">
                     {{nwaffe.system.at}}
@@ -124,7 +135,7 @@
                     <td><a class="icon-small item-toggle {{fwaffe.system.nebenwaffe}}" data-itemid="{{fwaffe.id}}"
                             data-toggletype="nebenwaffe"><i class="far fa-hand-paper"></i></a></td>
                     <td class="ausklappen-trigger onhover" data-ausklappentarget="{{fwaffe.id}}">{{fwaffe.name}}</td>
-                    <td>{{fwaffe.system.rw}}</td>
+                    <td>{{fwaffe.system.rw_mod}}</td>
                     <td>{{fwaffe.system.lz}}</td>
                     <td class="rollable onhover" data-rolltype="fk" data-pw="{{fwaffe.system.fk}}"
                         data-item="{{fwaffe.name}}">{{fwaffe.system.fk}}</td>
@@ -243,6 +254,11 @@
         <a class="item-edit" data-itemid="{{this.id}}" data-tooltip="{{{this.system.text}}}">{{this.name}}</a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
+        {{#unless (gameSetting "hideSyncKampfstileButton")}}
+        <a class="sync-kampfstile clickable" title="Synchronisiere Kampfstile mit Kompendium. Du kannst den Button in den Gamesettings deaktivieren. Schließe das Heldensheet falls der Button noch sichtbar ist und öffne es wieder.">
+            <i class="fas fa-sync-alt"></i> Vorteile mit Kompendium-Vorteilen Synchronisieren
+        </a>
+        {{/unless}}
     </div>
     {{/if}}
 </div>

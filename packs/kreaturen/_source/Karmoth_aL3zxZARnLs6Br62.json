@@ -110,8 +110,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut MU 8",
+        "gruppe": 2,
         "text": "Wenn du eine Attacke abwehrst, die mit einem Manöver verstärkt wurde, darfst du sofort einen Passierschlag gegen den Angreifer ausführen."
       },
       "effects": [],
@@ -139,8 +139,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KK 4",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Niederwerfen (AT -4): Gegenprobe: KK. Dein Ziel stürzt und liegt am Boden."
       },
       "effects": [],
@@ -168,8 +168,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut MU 6",
+        "gruppe": 2,
         "text": "Der Verteidigungs-Malus durch volle Offensive sinkt auf -4."
       },
       "effects": [],
@@ -197,8 +197,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut GE 6",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Sturmangriff (Bewegung und AT): Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Außerdem richtet die nächste Attacke GS Trefferpunkte zusätzlich an."
       },
       "effects": [],
@@ -226,8 +226,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KK 10",
+        "gruppe": 2,
         "text": "Selbst bei einer gelungenen gegnerischen Verteidigung richtest du halben Schaden an. Ausweichen vermeidet diesen Schaden. Manövereffekte wirken weiterhin nur bei gelungenen Attacken."
       },
       "effects": [],
@@ -335,7 +335,9 @@
       "name": "Unbeugsamkeit",
       "type": "eigenschaft",
       "system": {
-        "text": ""
+        "voraussetzung": "Attribut MU 10",
+        "gruppe": 1,
+        "text": "Deine MR steigt um MU/2 Punkte.\n\nMit einer Aktion Konflikt und einer Konterprobe (MU, 16) kannst du einen auf dir liegenden Zauber abschütteln. Anschließend erleidest du einen Punkt Erschöpfung."
       },
       "effects": [],
       "_stats": {

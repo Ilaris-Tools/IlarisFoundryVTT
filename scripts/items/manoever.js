@@ -6,6 +6,10 @@ export class ManoeverItem extends IlarisItem {
             return true
         }
 
+        // bypass other requirements of the manover is in the angriffmanover list of the item
+        if (item.system.angriffmanover && item.system.angriffmanover.length > 0) {
+            return item.system.angriffmanover.includes(this.name)
+        }
         // First split by comma to get AND conditions
         const andConditions = this.system.voraussetzungen.split(',').map((c) => c.trim())
 
@@ -28,7 +32,7 @@ export class ManoeverItem extends IlarisItem {
                         ).find(([key, val]) => val === value)?.[0]
                         return eigenschaftKey ? item.system.eigenschaften[eigenschaftKey] : false
                     case 'Vorteil':
-                        return actor._hasVorteil(value)
+                        return actor._hasVorteil(value, item)
                     default:
                         return false
                 }

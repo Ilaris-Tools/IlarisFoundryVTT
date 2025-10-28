@@ -8,13 +8,14 @@ import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
 } from '../../settings/configure-game-settings.model.js'
+import { ILARIS } from '../../config.js'
 
 export class UebernatuerlichDialog extends CombatDialog {
     constructor(actor, item) {
         const dialog = { title: `Übernatürliche Fertigkeit: ${item.name}` }
         const options = {
             template: 'systems/Ilaris/templates/sheets/dialogs/uebernatuerlich.hbs',
-            width: 500,
+            width: 900,
             height: 'auto',
         }
         super(dialog, options)
@@ -40,10 +41,236 @@ export class UebernatuerlichDialog extends CombatDialog {
 
     activateListeners(html) {
         super.activateListeners(html)
-        html.find('.energie-abrechnen').click((ev) => {
-            const isSuccess = ev.currentTarget.dataset.isSuccess === 'true'
-            this._energieAbrechnenKlick(html, isSuccess)
+
+        // Store modifier element reference for performance
+        this._modifierElement = html.find('#modifier-summary')
+
+        // Store a reference to prevent multiple updates
+        this._updateTimeout = null
+
+        if (this._modifierElement.length === 0) {
+            console.warn('MAGIE MODIFIER DISPLAY: Element nicht im Template gefunden')
+            return
+        }
+
+        // Add listeners for real-time modifier updates with debouncing
+        html.find('input, select').on('change input', () => {
+            // Clear previous timeout
+            if (this._updateTimeout) {
+                clearTimeout(this._updateTimeout)
+            }
+
+            // Set new timeout to debounce rapid changes
+            this._updateTimeout = setTimeout(() => {
+                this.updateModifierDisplay(html)
+            }, 300)
         })
+
+        // Add summary click listeners
+        this.addSummaryClickListeners(html)
+
+        // Initial display update
+        setTimeout(() => this.updateModifierDisplay(html), 500)
+    }
+
+    getSummaryClickActions(html) {
+        return [
+            {
+                selector: '.clickable-summary.angreifen',
+                handler: (html) => this._angreifenKlick(html),
+            },
+            {
+                selector: '.clickable-summary.energie-erfolg',
+                handler: (html) => this._energieAbrechnenKlick(html, true),
+            },
+            {
+                selector: '.clickable-summary.energie-misserfolg',
+                handler: (html) => this._energieAbrechnenKlick(html, false),
+            },
+        ]
+    }
+
+    /**
+     * Returns base values specific to UebernatuerlichDialog
+     */
+    getBaseValues() {
+        return {
+            basePW: this.item.system.pw || 0,
+        }
+    }
+
+    /**
+     * Override getDiceFormula to handle the special xd20 logic for supernatural abilities
+     */
+    getDiceFormula(html, xd20_choice = null) {
+        if (xd20_choice === null) {
+            xd20_choice = Number(html.find('input[name="xd20"]:checked')[0]?.value) || 0
+            xd20_choice = xd20_choice == 0 ? 1 : 3
+        }
+        return super.getDiceFormula(html, xd20_choice)
+    }
+
+    /**
+     * Creates formatted summaries for all roll types
+     */
+    getAllModifierSummaries(baseValues, statusMods, nahkampfMods, diceFormula) {
+        const { basePW } = baseValues
+        let allSummaries = '<div class="all-summaries">'
+
+        // Talent/Spell Summary
+        allSummaries += this.getTalentSummary(basePW, statusMods, nahkampfMods, diceFormula)
+
+        // Energy Cost Summary
+        allSummaries += this.getEnergySummary()
+
+        allSummaries += '</div>'
+        return allSummaries
+    }
+
+    /**
+     * Creates talent/spell roll summary
+     */
+    getTalentSummary(basePW, statusMods, nahkampfMods, diceFormula) {
+        // Calculate totals first for the heading
+        const maneuverMod = this.mod_at || 0
+        const totalMod = maneuverMod + statusMods + nahkampfMods
+        const finalPW = basePW + totalMod
+        const finalFormula = finalPW >= 0 ? `${diceFormula}+${finalPW}` : `${diceFormula}${finalPW}`
+
+        const itemType = this.item.type === 'zauber' ? 'Zauber' : 'Liturgie'
+        const icon = this.item.type === 'zauber' ? '🔮' : '✨'
+
+        let summary = '<div class="modifier-summary talent-summary clickable-summary angreifen">'
+        summary += `<h4>${icon} ${itemType}: ${finalFormula}</h4>`
+        summary += '<div class="modifier-list">'
+
+        // Base PW
+        summary += `<div class="modifier-item base-value">Basis PW: <span>${basePW}</span></div>`
+
+        // Difficulty
+        const schwierigkeit = this.item.system.schwierigkeit
+        if (schwierigkeit) {
+            const parsedDifficulty = parseInt(schwierigkeit)
+            if (!isNaN(parsedDifficulty)) {
+                summary += `<div class="modifier-item base-value">Schwierigkeit: <span>${parsedDifficulty}</span></div>`
+            } else {
+                summary += `<div class="modifier-item neutral">Schwierigkeit: <span>${schwierigkeit}</span></div>`
+            }
+        }
+
+        // Status modifiers
+        if (statusMods !== 0) {
+            const statusColor = statusMods > 0 ? 'positive' : 'negative'
+            const statusSign = statusMods > 0 ? '+' : ''
+            summary += `<div class="modifier-item ${statusColor}">Status (Wunden/Furcht): <span>${statusSign}${statusMods}</span></div>`
+        }
+
+        // Nahkampf token modifiers
+        if (nahkampfMods !== 0) {
+            const nahkampfColor = nahkampfMods > 0 ? 'positive' : 'negative'
+            const nahkampfSign = nahkampfMods > 0 ? '+' : ''
+            summary += `<div class="modifier-item ${nahkampfColor}">Token Status: <span>${nahkampfSign}${nahkampfMods}</span></div>`
+        }
+
+        // Parse text_at for maneuver modifiers
+        if (this.text_at && this.text_at.trim()) {
+            summary += '<div class="modifier-section">Manöver:</div>'
+            const lines = this.text_at.trim().split('\n')
+            lines.forEach((line) => {
+                if (line.trim()) {
+                    let color = 'neutral'
+                    if (line.includes('+')) color = 'positive'
+                    else if (line.includes('-')) color = 'negative'
+                    summary += `<div class="modifier-item maneuver ${color}">${line}</div>`
+                }
+            })
+        }
+
+        summary += '<hr>'
+
+        // Show total modifiers if any exist
+        if (totalMod !== 0) {
+            const totalModColor = totalMod > 0 ? 'positive' : 'negative'
+            const totalModSign = totalMod > 0 ? '+' : ''
+            summary += `<div class="modifier-item total ${totalModColor}"><strong>Addierte Modifikatoren: ${totalModSign}${totalMod}</strong></div>`
+        }
+
+        summary += '</div></div>'
+        return summary
+    }
+
+    /**
+     * Creates energy cost summary
+     */
+    getEnergySummary() {
+        // Calculate energy cost
+        const baseEnergy = this.mod_energy || 0
+        const icon = '⚡'
+
+        let summary = '<div class="modifier-summary energy-summary">'
+        summary += `<h4>${icon} Energiekosten: ${baseEnergy} Energie</h4>`
+        summary += '<div class="modifier-list">'
+
+        // Base energy cost
+        let originalCost = sanitizeEnergyCost(this.item.system.kosten) || 0
+        if (this.energy_override) {
+            originalCost = this.energy_override
+        }
+        summary += `<div class="modifier-item base-value">Basiskosten: <span>${originalCost} Energie</span></div>`
+
+        // Parse text_energy for energy modifiers
+        if (this.text_energy && this.text_energy.trim()) {
+            summary += '<div class="modifier-section">Modifikatoren:</div>'
+            const lines = this.text_energy.trim().split('\n')
+            lines.forEach((line) => {
+                if (line.trim()) {
+                    let color = 'neutral'
+                    // For energy costs, negative modifiers (cost reduction) are good (green)
+                    // and positive modifiers (cost increase) are bad (red)
+                    if (line.includes('-')) color = 'positive'
+                    // Cost reduction = green
+                    else if (line.includes('+')) color = 'negative' // Cost increase = red
+                    summary += `<div class="modifier-item maneuver ${color}">${line}</div>`
+                }
+            })
+        }
+
+        // Show available energy
+        const availableEnergy = this.getAvailableEnergy()
+
+        summary += '<hr>'
+        summary += `<div class="modifier-item base-value">Verfügbar: <span>${availableEnergy} Energie</span></div>`
+
+        // Check if enough energy is available
+        if (baseEnergy > availableEnergy) {
+            const shortage = baseEnergy - availableEnergy
+            summary += `<div class="modifier-item negative"><strong>Fehlend: ${shortage} Energie</strong></div>`
+        } else {
+            const remaining = availableEnergy - baseEnergy
+            summary += `<div class="modifier-item positive">Verbleibend: <span>${remaining} Energie</span></div>`
+        }
+
+        summary += '</div>'
+
+        // Add energy accounting buttons for non-standard difficulty spells
+        const difficulty = +this.item.system.schwierigkeit
+        const isNonStandardDifficulty = isNaN(difficulty) || !difficulty
+
+        if (isNonStandardDifficulty) {
+            summary += '<hr>'
+            summary += '<div class="modifier-section">Energie abrechnen:</div>'
+            summary +=
+                '<div class="clickable-summary energie-erfolg" style="cursor: pointer; padding: 8px; margin: 4px 0; background: rgba(0, 150, 0, 0.1); border: 1px solid rgba(0, 150, 0, 0.3); border-radius: 4px; text-align: center;">'
+            summary += '✅ Erfolgreich gewirkt'
+            summary += '</div>'
+            summary +=
+                '<div class="clickable-summary energie-misserfolg" style="cursor: pointer; padding: 8px; margin: 4px 0; background: rgba(220, 0, 0, 0.1); border: 1px solid rgba(220, 0, 0, 0.3); border-radius: 4px; text-align: center;">'
+            summary += '❌ Misslungen'
+            summary += '</div>'
+        }
+
+        summary += '</div>'
+        return summary
     }
 
     async getData() {
@@ -60,18 +287,9 @@ export class UebernatuerlichDialog extends CombatDialog {
         const canSetEnergyCost =
             !restrictEnergyCostSetting ||
             this.actor.vorteil?.magie?.some((v) => v.name === 'Unitatio') ||
-            !isNumericCost(this.item.system.kosten)
+            !isNumericCost(sanitizeEnergyCost(this.item.system.kosten))
 
-        const hasVerbotenePforten =
-            this.actor.vorteil.magie.some((v) => v.name === 'Verbotene Pforten') ||
-            ((this.actor.type === 'kreatur'
-                ? this.actor.vorteil.allgemein.some((v) => v.name.includes('Borbaradianer')) ||
-                  this.actor.vorteil.magie.some((v) => v.name.includes('Borbaradianer')) ||
-                  this.actor.vorteil.zaubertraditionen.some((v) => v.name.includes('Borbaradianer'))
-                : hardcoded
-                      .getSelectedStil(this.actor, 'uebernatuerlich')
-                      ?.name.includes('Borbaradianer')) &&
-                this.item.type === 'zauber')
+        const hasVerbotenePforten = this.hasVerbotenePfortenAccess()
 
         const difficulty = +this.item.system.schwierigkeit
         const isNonStandardDifficulty = isNaN(difficulty) || !difficulty
@@ -80,6 +298,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: '1',
             choices_verbotene_pforten: {
+                0: 'Deaktiviert',
                 4: '1 Vorteil (WS+4)',
                 8: '2 Vorteile (WS+8)',
             },
@@ -145,6 +364,8 @@ export class UebernatuerlichDialog extends CombatDialog {
                     `Nicht genug Ressourcen! Benötigt: ${this.endCost}, Vorhanden: ${this.currentEnergy}. Unter bestimmten Voraussetzungen zieht dir das System einfach Energie ab, bis du bei 0 angelangt bist. Du kannst diese Information nach eigenem Ermessen weiterverwenden.`,
                 )
             }
+            // Refresh dialog data after energy application
+            await this.refreshActorData()
         }
         super._updateSchipsStern(html)
     }
@@ -163,6 +384,9 @@ export class UebernatuerlichDialog extends CombatDialog {
                 `Nicht genug Ressourcen! Benötigt: ${this.endCost}, Vorhanden: ${this.currentEnergy}. Unter bestimmten Voraussetzungen zieht dir das System einfach Energie ab, bis du bei 0 angelangt bist. Du kannst diese Information nach eigenem Ermessen weiterverwenden.`,
             )
         }
+
+        // Refresh dialog data after energy application
+        await this.refreshActorData()
 
         // Create chat message with energy cost information
         const label = `${this.item.name} (Kosten: ${this.endCost} Energie)`
@@ -272,7 +496,22 @@ export class UebernatuerlichDialog extends CombatDialog {
     }
 
     async manoeverAuswaehlen(html) {
+        // Ensure manoever exists
+        if (!this.item.system.manoever) {
+            this.item.system.manoever = ILARIS.manoever_ueber
+        }
         let manoever = this.item.system.manoever
+
+        // Ensure all required manoever properties exist
+        if (!manoever.kbak) {
+            manoever.kbak = { selected: false }
+        }
+        if (!manoever.mod) {
+            manoever.mod = { selected: 0 }
+        }
+        if (!manoever.rllm) {
+            manoever.rllm = { selected: game.settings.get('core', 'rollMode') }
+        }
 
         // allgemeine optionen
         manoever.kbak.selected = html.find('#kbak')[0]?.checked || false // Kombinierte Aktion
@@ -284,14 +523,13 @@ export class UebernatuerlichDialog extends CombatDialog {
 
         // Get values from Blutmagie and Verbotene Pforten if they exist
         manoever.blutmagie.value = Number(html.find('#blutmagie')[0]?.value) || 0
+
+        // For verbotene_pforten, check if a radio button is selected (not the default "0")
+        const verbotenePfortenValue = html.find('input[name="verbotene_pforten_toggle"]:checked')[0]
+            ?.value
         manoever.verbotene_pforten = {
-            multiplier:
-                Number(
-                    html.find(
-                        'input[name="item.system.manoever.verbotene_pforten_toggle"]:checked',
-                    )[0]?.value,
-                ) || 4,
-            activated: html.find('#verbotene_pforten')[0]?.checked || false,
+            multiplier: Number(verbotenePfortenValue) || 4,
+            activated: verbotenePfortenValue !== undefined && verbotenePfortenValue !== '0',
         }
         manoever.set_energy_cost.value =
             Number(html.find('input[name="item.system.manoever.energyOverride"]')[0]?.value) || 0
@@ -299,9 +537,67 @@ export class UebernatuerlichDialog extends CombatDialog {
         console.log('manoever', manoever.set_energy_cost.value)
         // Get values from the HTML elements
 
-        manoever.mod.selected = html.find(`#modifikator-${this.dialogId}`)[0]?.value || false // Modifikator
-        manoever.rllm.selected = html.find(`#rollMode-${this.dialogId}`)[0]?.value || false // RollMode
+        manoever.mod.selected = Number(html.find(`#modifikator-${this.dialogId}`)[0]?.value) || 0 // Modifikator
+        manoever.rllm.selected =
+            html.find(`#rollMode-${this.dialogId}`)[0]?.value ||
+            game.settings.get('core', 'rollMode') // RollMode
         await super.manoeverAuswaehlen(html)
+    }
+
+    /**
+     * Gets the available energy for the current actor and item type
+     * @returns {number} Available energy (AsP or KaP)
+     */
+    getAvailableEnergy() {
+        if (this.actor.type == 'held') {
+            if (this.item.type === 'zauber') {
+                return this.actor.system.abgeleitete.asp_stern
+            } else {
+                return this.actor.system.abgeleitete.kap_stern
+            }
+        } else {
+            if (this.item.type === 'zauber') {
+                return this.actor.system.energien.asp.value
+            } else {
+                return this.actor.system.energien.kap.value
+            }
+        }
+    }
+
+    /**
+     * Determines whether the actor has access to Verbotene Pforten functionality
+     * @returns {boolean} True if the actor can use Verbotene Pforten
+     */
+    hasVerbotenePfortenAccess() {
+        // Direct advantage "Verbotene Pforten"
+        if (this.actor.vorteil.magie.some((v) => v.name === 'Verbotene Pforten')) {
+            return true
+        }
+
+        if (this.actor.uebernatuerlich.zauber.some((z) => z.name === 'Blut des Dolches (passiv)')) {
+            return true
+        }
+
+        // Borbaradianer tradition access (only for spells)
+        if (this.item.type === 'zauber') {
+            if (this.actor.type === 'kreatur') {
+                // For creatures, check in all advantage categories
+                return (
+                    this.actor.vorteil.allgemein.some((v) => v.name.includes('Borbaradianer')) ||
+                    this.actor.vorteil.magie.some((v) => v.name.includes('Borbaradianer')) ||
+                    this.actor.vorteil.zaubertraditionen.some((v) =>
+                        v.name.includes('Borbaradianer'),
+                    )
+                )
+            } else {
+                // For heroes, check selected style
+                return hardcoded
+                    .getSelectedStil(this.actor, 'uebernatuerlich')
+                    ?.name.includes('Borbaradianer')
+            }
+        }
+
+        return false
     }
 
     /**
@@ -315,6 +611,32 @@ export class UebernatuerlichDialog extends CombatDialog {
         if (energyNeeded <= 0) return 0
         const energyPerWound = ws + multiplier
         return Math.ceil(energyNeeded / energyPerWound)
+    }
+
+    /**
+     * Refreshes the dialog's actor reference and updates displays after actor changes
+     */
+    async refreshActorData() {
+        // Get the updated actor from the game
+        const updatedActor = game.actors.get(this.actor.id)
+        if (updatedActor) {
+            // Update the dialog's actor reference
+            this.actor = updatedActor
+
+            // Update energy values based on the refreshed actor
+            await this.initializeEnergyValues()
+
+            // Update the modifier display if it exists
+            const html = this.element
+            if (
+                html &&
+                html.length > 0 &&
+                this._modifierElement &&
+                this._modifierElement.length > 0
+            ) {
+                this.updateModifierDisplay(html)
+            }
+        }
     }
 
     async updateManoeverMods() {
@@ -338,29 +660,11 @@ export class UebernatuerlichDialog extends CombatDialog {
         let fumble_val = 1
 
         // Get the minimum available resource based on actor and item type
-        let availableEnergy
-        if (this.actor.type == 'held') {
-            if (this.item.type === 'zauber') {
-                availableEnergy = this.actor.system.abgeleitete.asp_stern
-            } else {
-                availableEnergy = this.actor.system.abgeleitete.kap_stern
-            }
-        } else {
-            if (this.item.type === 'zauber') {
-                availableEnergy = this.actor.system.energien.asp.value
-            } else {
-                availableEnergy = this.actor.system.energien.kap.value
-            }
-        }
-
-        // Kombinierte Aktion kbak
-        if (manoever.kbak.selected) {
-            mod_at -= 4
-            text_at = text_at.concat('Kombinierte Aktion\n')
-        }
+        const availableEnergy = this.getAvailableEnergy()
 
         // Collect all modifications from all maneuvers
         const allModifications = []
+        let manoeverAmount = 0
         this.item.manoever.forEach((dynamicManoever) => {
             let check = undefined
             let number = undefined
@@ -381,6 +685,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             )
                 return
 
+            manoeverAmount++
             // Add valid modifications to the collection
             Object.values(dynamicManoever.system.modifications).forEach((modification) => {
                 allModifications.push({
@@ -406,6 +711,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             trefferzone,
             schaden,
             nodmg,
+            this.energy_override,
         ] = handleModifications(allModifications, {
             mod_at,
             mod_vt,
@@ -420,6 +726,12 @@ export class UebernatuerlichDialog extends CombatDialog {
             nodmg: null,
             context: this,
         })
+
+        // Kombinierte Aktion kbak
+        if (manoever.kbak.selected) {
+            mod_at -= 4
+            text_at = text_at.concat('Kombinierte Aktion\n')
+        }
 
         // Modifikator
         let modifikator = Number(manoever.mod.selected)

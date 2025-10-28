@@ -12,7 +12,6 @@ env:
     SYSTEM_NAME: 'Ilaris'
     SYSTEM_PATH: '/home/leo/docker/foundryvtt-internal/foundry/data/Data/systems/Ilaris'
 
-
 jobs:
     validate:
         name: 🔍 Validate System Files

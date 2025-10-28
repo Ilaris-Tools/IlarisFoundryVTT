@@ -110,8 +110,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut CH 4",
+        "gruppe": 2,
         "text": "Furcht-Effekte für Mitstreiter zählen als eine Stufe niedriger."
       },
       "effects": [],
@@ -139,8 +139,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KK 8",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Hammerschlag (AT -8): Der Angriff richtet doppelten Waffenschaden an. Zusätzliche TP aus Kommandos, anderen Manövern usw. werden nicht verdoppelt."
       },
       "effects": [],
@@ -168,8 +168,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KK 4",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Niederwerfen (AT -4): Gegenprobe: KK. Dein Ziel stürzt und liegt am Boden."
       },
       "effects": [],
@@ -197,8 +197,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut GE 4",
+        "gruppe": 2,
         "text": "Nach einem Sturz befindest du dich in kniender statt liegender Position."
       },
       "effects": [],
@@ -226,8 +226,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut GE 6",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Sturmangriff (Bewegung und AT): Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Außerdem richtet die nächste Attacke GS Trefferpunkte zusätzlich an."
       },
       "effects": [],
@@ -281,7 +281,9 @@
       "name": "Willensstark II",
       "type": "eigenschaft",
       "system": {
-        "text": ""
+        "voraussetzung": "Attribut MU 6",
+        "gruppe": 1,
+        "text": "Deine MR steigt um 4 Punkte.\n\nAuf dich wirkende Furcht-Effekte (S. 46) zählen als eine Stufe niedriger."
       },
       "effects": [],
       "_stats": {
@@ -308,7 +310,9 @@
       "name": "Geisterpanzer",
       "type": "eigenschaft",
       "system": {
-        "text": ""
+        "voraussetzung": "Attribut MU 8",
+        "gruppe": 1,
+        "text": "Gegen direkten Schaden aus Zaubern wie Fulminictus, Ignisphaero oder Hexengalle kannst du deinen MU als WS verwenden."
       },
       "effects": [],
       "_stats": {
@@ -335,7 +339,9 @@
       "name": "Unbeugsamkeit",
       "type": "eigenschaft",
       "system": {
-        "text": ""
+        "voraussetzung": "Attribut MU 10",
+        "gruppe": 1,
+        "text": "Deine MR steigt um MU/2 Punkte.\n\nMit einer Aktion Konflikt und einer Konterprobe (MU, 16) kannst du einen auf dir liegenden Zauber abschütteln. Anschließend erleidest du einen Punkt Erschöpfung."
       },
       "effects": [],
       "_stats": {

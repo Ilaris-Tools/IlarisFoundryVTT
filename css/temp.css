@@ -83,6 +83,7 @@
 
 .attribute-wrapper:hover .attribute-number {
   text-shadow: 0 0 10px var(--color-shadow-primary);
+  cursor: pointer;
 }
 
 .attribute-wrapper:hover {
@@ -233,6 +234,33 @@
   background-color: transparent;
   width: 40px;
   height: 40px;
+}
+
+/* XML Character Import Button Styles */
+.import-xml-character {
+    border: 1px solid #000;
+    border-radius: 3px;
+    padding: 4px 8px;
+    width: calc(100% - 10px);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+/* XML Character Sync Button Styles */
+.directory-item-controls {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 16px;
+}
+.sync-xml-character {
+    font-size: 20px;
+    width: 60px;
+    display: flex;
+    justify-content: center;
+    height: 48px;
+    align-items: center;
 }
 
 .hangingindent {
@@ -683,20 +711,10 @@ input.titel-input {
   margin-left: 16px;
 }
 
-.maximum-load-exceeded-left,
-.maximum-load-exceeded-middle,
-.maximum-load-exceeded-right {
-  border: red;
-  border-style: solid;
-}
-.maximum-load-exceeded-left {
-  border-width: 3px 0 3px 3px;
-}
-.maximum-load-exceeded-middle {
-  border-width: 3px 0 3px 0;
-}
-.maximum-load-exceeded-right {
-  border-width: 3px 3px 3px 0;
+.maximum-load-exceeded {
+  display: flex;
+  justify-content: center;
+  border: red 3px solid;
 }
 
 .flexrow {
@@ -767,4 +785,43 @@ hr {
 
 .notes {
   white-space: pre-line;
+}
+
+/* Sync kampfstile button styling */
+.sync-kampfstile {
+  color: #4f4f4f;
+  cursor: pointer;
+  margin-left: 10px;
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+.sync-kampfstile:hover {
+  color: #2e5c8a;
+  transform: scale(1.1);
+}
+
+.sync-kampfstile i {
+  margin-right: 3px;
+}
+
+/* Maneuver chip-based selector styling */
+.maneuver-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    min-height: 20px;
+    margin-bottom: 8px;
+}
+
+.maneuver-chip {
+    border: 1px solid #3b3b3a;
+    border-radius: 16px;
+    padding: 4px 8px;
+}
+
+.maneuver-chip .remove-maneuver {
+    cursor: pointer;
+    font-size: 10px;
+    padding-left: 4px;
 }

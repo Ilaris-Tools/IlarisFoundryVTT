@@ -110,9 +110,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
-        "text": "Dein Waffenschaden steigt um +1.\n\nDu kannst in eine Halbschwertstellung wechseln, um deine Waffe in einer um eins kleineren Reichweite zu führen. Der Wechsel in die Stellung oder zurück geschieht in einer Freien Aktion."
+        "voraussetzung": "Attribut KK 6, Vorteil Kraftvoller Kampf I",
+        "gruppe": 3,
+        "text": "Dein Waffenschaden steigt um +1.\n\nDu kannst in eine Halbschwertstellung wechseln, um deine Waffe in einer um eins kleineren Reichweite zu führen. Der Wechsel in die Stellung oder zurück geschieht in einer Freien Aktion.",
+        "sephrastoScript": "modifyKampfstil('Kraftvoller Kampf', 0, 0, 1, 0)",
+        "stilBedingungen": "",
+        "foundryScript": ""
       },
       "effects": [],
       "_stats": {
@@ -168,8 +171,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KK 4",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Niederwerfen (AT -4): Gegenprobe: KK. Dein Ziel stürzt und liegt am Boden."
       },
       "effects": [],
@@ -197,8 +200,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut MU 6",
+        "gruppe": 2,
         "text": "Der Verteidigungs-Malus durch volle Offensive sinkt auf -4."
       },
       "effects": [],
@@ -226,8 +229,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KO 6",
+        "gruppe": 2,
         "text": "Die BE aller Rüstungen ist um 1 gesenkt."
       },
       "effects": [],
@@ -255,8 +258,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KK 6",
+        "gruppe": 2,
         "text": "Deine unbewaffneten Angriffe erhalten die Waffeneigenschaften Kopflastig und Wendig (S. 47)."
       },
       "effects": [],
@@ -310,7 +313,9 @@
       "name": "Resistenz gegen Kälte",
       "type": "eigenschaft",
       "system": {
-        "text": ""
+        "voraussetzung": "",
+        "gruppe": 0,
+        "text": "Verschiebt die Temperaturstufe bei niedrigen Temperaturen um eine Stufe in Richtung normal."
       },
       "effects": [],
       "_stats": {

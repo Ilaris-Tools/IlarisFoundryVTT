@@ -16,36 +16,36 @@
       }
     },
     "attribute": {
-      "KO": {
-        "wert": 3,
-        "pw": 0
-      },
-      "MU": {
-        "wert": 6,
-        "pw": 0
-      },
-      "GE": {
-        "wert": 3,
-        "pw": 0
-      },
-      "KK": {
-        "wert": 6,
-        "pw": 0
-      },
-      "IN": {
-        "wert": 4,
-        "pw": 0
-      },
-      "KL": {
-        "wert": 2,
-        "pw": 0
-      },
       "CH": {
         "wert": 4,
         "pw": 0
       },
       "FF": {
         "wert": 2,
+        "pw": 0
+      },
+      "GE": {
+        "wert": 3,
+        "pw": 0
+      },
+      "IN": {
+        "wert": 4,
+        "pw": 0
+      },
+      "KK": {
+        "wert": 6,
+        "pw": 0
+      },
+      "KL": {
+        "wert": 2,
+        "pw": 0
+      },
+      "KO": {
+        "wert": 3,
+        "pw": 0
+      },
+      "MU": {
+        "wert": 6,
         "pw": 0
       }
     },
@@ -82,6 +82,11 @@
       "manuellermod": 0,
       "nahkampfmod": 0
     },
+    "misc": {
+      "selected_kampfstil": "ohne",
+      "selected_uebernatuerlicher_stil": "ohne",
+      "ist_beritten": false
+    },
     "geld": {
       "dukaten": 0,
       "silbertaler": 0,
@@ -89,10 +94,7 @@
       "kreuzer": 0
     },
     "getragen": 1,
-    "notes": "",
-    "misc": {
-      "selected_kampfstil": "ohne"
-    }
+    "notes": ""
   },
   "prototypeToken": {
     "name": "Rondriak der Stoische",
@@ -405,9 +407,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "GE 4 oder KK 4",
+        "voraussetzung": "Attribut GE 4 ODER Attribut KK 4",
         "gruppe": 3,
-        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>+1 AT, VT, Waffenschaden<br><br>Erlaubt das Manöver Sturmangriff mit dem Reittier.</body>"
+        "text": "Bedingung: beritten.\n\nDu erhältst Waffenschaden +1, AT +1 und VT +1.\n\nErlaubt das Manöver Sturmangriff (Bewegung und AT) mit dem Pferd: Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Außerdem richtet die nächste Attacke GS Trefferpunkte zusätzlich an.",
+        "sephrastoScript": "modifyKampfstil('Reiterkampf', 1, 1, 1, 0)",
+        "stilBedingungen": "beritten",
+        "foundryScript": ""
       },
       "effects": [],
       "folder": null,
@@ -416,12 +421,12 @@
       "_stats": {
         "compendiumSource": "Compendium.Ilaris.vorteil.Item.xkdSuhUa9idYrypQ",
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "12.343",
         "systemId": "Ilaris",
-        "systemVersion": "12.0.2",
+        "systemVersion": "12.2.0",
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
+        "modifiedTime": 1759478662206,
+        "lastModifiedBy": "bRsoRPItEVb33T1L"
       },
       "ownership": {},
       "_key": "!actors.items!cvxImC3CrpLkAJEi.QRH9ApMUJHOUBuhs"
@@ -432,9 +437,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "GE 6 oder KK 6; Reiterkampf I",
+        "voraussetzung": "Attribut GE 6 ODER Attribut KK 6, Vorteil Reiterkampf I",
         "gruppe": 3,
-        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>+1 AT, VT, Waffenschaden<br><br>Dein Reittier ignoriert die üblichen Erschwernisse für Nebenwaffen (S.&nbsp;39) und im Reiterkampf ist die BE durch Rüstungen um 1 gesenkt. Außerdem ignorierst du im Fernkampf du den Malus für berittene Schützen (S.&nbsp;46).</body>"
+        "text": "Du erhältst Waffenschaden +1, AT +1 und VT +1.\n\nDein Reittier ignoriert die üblichen Erschwernisse für Nebenwaffen (S. 39) und im Reiterkampf ist die BE durch Rüstungen um 1 gesenkt. Außerdem ignorierst du im Fernkampf du den Malus für berittene Schützen (S. 46).",
+        "sephrastoScript": "modifyKampfstil('Reiterkampf', 1, 1, 1, 0, 1)",
+        "stilBedingungen": "",
+        "foundryScript": "ignoreSideWeaponMalus('Reittier');ignoreMountedRangePenalty()"
       },
       "effects": [],
       "folder": null,
@@ -443,12 +451,12 @@
       "_stats": {
         "compendiumSource": "Compendium.Ilaris.vorteil.Item.PNud3GEskJqQ1Gmx",
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "12.343",
         "systemId": "Ilaris",
-        "systemVersion": "12.0.2",
+        "systemVersion": "12.2.0",
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
+        "modifiedTime": 1759478662206,
+        "lastModifiedBy": "bRsoRPItEVb33T1L"
       },
       "ownership": {},
       "_key": "!actors.items!cvxImC3CrpLkAJEi.eWjTSTN4q9yMFkyf"
@@ -459,9 +467,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "KK 4",
+        "voraussetzung": "Attribut KK 4",
         "gruppe": 3,
-        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>+1 VT</body>"
+        "text": "Bedingung: Schild.\n\nDu erhältst VT +1.",
+        "sephrastoScript": "modifyKampfstil('Schildkampf', 0, 1, 0, 0)",
+        "stilBedingungen": "Schild",
+        "foundryScript": ""
       },
       "effects": [],
       "folder": null,
@@ -470,12 +481,12 @@
       "_stats": {
         "compendiumSource": "Compendium.Ilaris.vorteil.Item.X5bgYIusB6yq4TVs",
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "12.343",
         "systemId": "Ilaris",
-        "systemVersion": "12.0.2",
+        "systemVersion": "12.2.0",
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
+        "modifiedTime": 1759478662206,
+        "lastModifiedBy": "bRsoRPItEVb33T1L"
       },
       "ownership": {},
       "_key": "!actors.items!cvxImC3CrpLkAJEi.YAdWHxZw5uNh6bZ0"
@@ -486,9 +497,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "KK 6; Schildkampf I",
+        "voraussetzung": "Attribut KK 6, Vorteil Schildkampf I",
         "gruppe": 3,
-        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>+1 VT<br><br>Dein Schild ignoriert die übliche Erschwernis für Nebenwaffen (S.&nbsp;39). Außerdem kannst du die erste VT zwischen zwei Initiativephasen als Freie Reaktion ausführen.</body>"
+        "text": "Du erhältst VT +1.\n\nDein Schild ignoriert die übliche Erschwernis für Nebenwaffen (S. 39). Außerdem kannst du die erste VT zwischen zwei Initiativphasen als Freie Reaktion ausführen.",
+        "sephrastoScript": "modifyKampfstil('Schildkampf', 0, 1, 0, 0)",
+        "stilBedingungen": "",
+        "foundryScript": "ignoreSideWeaponMalus('Schild')"
       },
       "effects": [],
       "folder": null,
@@ -497,12 +511,12 @@
       "_stats": {
         "compendiumSource": "Compendium.Ilaris.vorteil.Item.JiCWTTC19BJI7qOY",
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "12.343",
         "systemId": "Ilaris",
-        "systemVersion": "12.0.2",
+        "systemVersion": "12.2.0",
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
+        "modifiedTime": 1759478662206,
+        "lastModifiedBy": "bRsoRPItEVb33T1L"
       },
       "ownership": {},
       "_key": "!actors.items!cvxImC3CrpLkAJEi.lSHCgfg3T2ikRstq"

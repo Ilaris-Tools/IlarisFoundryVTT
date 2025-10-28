@@ -8,7 +8,7 @@ export class AngriffDialog extends CombatDialog {
         const dialog = { title: `Kampf: ${item.name}` }
         const options = {
             template: 'systems/Ilaris/templates/sheets/dialogs/angriff.hbs',
-            width: 800,
+            width: 900,
             height: 'auto',
         }
         super(dialog, options)
@@ -22,6 +22,7 @@ export class AngriffDialog extends CombatDialog {
         this.rollmode = game.settings.get('core', 'rollMode') // public, private....
         this.item.system.manoever.rllm.selected = game.settings.get('core', 'rollMode') // TODO: either manoever or dialog property.
         this.fumble_val = 1
+        this.isHumanoid = false
         if (this.item.system.eigenschaften.unberechenbar) {
             this.fumble_val = 2
         }
@@ -30,6 +31,7 @@ export class AngriffDialog extends CombatDialog {
 
     getData() {
         let data = super.getData()
+        data.isHumanoid = this.isHumanoid
         return data
     }
 
@@ -63,86 +65,46 @@ export class AngriffDialog extends CombatDialog {
         })
 
         // Initial display update
-        setTimeout(() => this.updateModifierDisplay(html), 500)
+        setTimeout(() => {
+            this.updateModifierDisplay(html)
+        }, 500)
 
         // Add event listeners for clickable summary sections
         this.addSummaryClickListeners(html)
     }
 
-    addSummaryClickListeners(html) {
-        // Use event delegation since the summary elements are dynamically created
-        html.find('#modifier-summary').on('click', '.clickable-summary.angreifen', (ev) => {
-            ev.preventDefault()
-            this._angreifenKlick(html)
-        })
-
-        html.find('#modifier-summary').on('click', '.clickable-summary.verteidigen', (ev) => {
-            ev.preventDefault()
-            this._verteidigenKlick(html)
-        })
-
-        html.find('#modifier-summary').on('click', '.clickable-summary.schaden', (ev) => {
-            ev.preventDefault()
-            this._schadenKlick(html)
-        })
+    getSummaryClickActions(html) {
+        return [
+            {
+                selector: '.clickable-summary.angreifen',
+                handler: (html) => this._angreifenKlick(html),
+            },
+            {
+                selector: '.clickable-summary.verteidigen',
+                handler: (html) => this._verteidigenKlick(html),
+            },
+            {
+                selector: '.clickable-summary.schaden',
+                handler: (html) => this._schadenKlick(html),
+            },
+        ]
     }
 
     /**
-     * Updates the modifier display in real-time
+     * Returns base values specific to AngriffDialog
      */
-    async updateModifierDisplay(html) {
-        try {
-            // Use the stored reference instead of searching for the element
-            if (!this._modifierElement || this._modifierElement.length === 0) {
-                console.warn('MODIFIER DISPLAY: Element-Referenz nicht verfügbar')
-                return
-            }
-
-            // Show loading state
-            this._modifierElement.html(
-                '<div class="modifier-summary"><h4>Würfelwurf Zusammenfassungen:</h4><div class="modifier-item neutral">Wird berechnet...</div></div>',
-            )
-
-            // Temporarily parse values to calculate modifiers
-            await this.manoeverAuswaehlen(html)
-            await this.updateManoeverMods()
-            await this.updateStatusMods()
-
-            // Get base values
-            const baseAT = this.item.system.at || 0
-            const baseVT = this.item.system.vt || 0
-            const statusMods = this.actor.system.abgeleitete.globalermod || 0
-            const nahkampfMods = this.actor.system.modifikatoren.nahkampfmod || 0
-
-            // Get dice formula
-            const diceFormula = this.getDiceFormula(html)
-
-            // Create all summaries
-            const summaries = this.getAllModifierSummaries(
-                baseAT,
-                baseVT,
-                statusMods,
-                nahkampfMods,
-                diceFormula,
-            )
-
-            // Update the display element
-            this._modifierElement.html(summaries)
-        } catch (error) {
-            console.error('MODIFIER DISPLAY: Fehler beim Update:', error)
-            // Show error state
-            if (this._modifierElement && this._modifierElement.length > 0) {
-                this._modifierElement.html(
-                    '<div class="modifier-summary"><h4>Würfelwurf Zusammenfassungen:</h4><div class="modifier-item neutral">Fehler beim Berechnen...</div></div>',
-                )
-            }
+    getBaseValues() {
+        return {
+            baseAT: this.item.system.at || 0,
+            baseVT: this.item.system.vt || 0,
         }
     }
 
     /**
      * Creates formatted summaries for all three roll types
      */
-    getAllModifierSummaries(baseAT, baseVT, statusMods, nahkampfMods, diceFormula) {
+    getAllModifierSummaries(baseValues, statusMods, nahkampfMods, diceFormula) {
+        const { baseAT, baseVT } = baseValues
         let allSummaries = '<div class="all-summaries">'
 
         // Attack Summary
@@ -387,7 +349,7 @@ export class AngriffDialog extends CombatDialog {
         // Rollmode
         let label = `Schaden (${this.item.name})`
         let formula = `${this.schaden} ${signed(this.mod_dm)}`
-        await roll_crit_message(formula, label, this.text_dm, this.speaker, this.rollmode, false)
+        await roll_crit_message(formula, label, this.text_dm, this.speaker, this.rollmode, false, 0)
     }
 
     aufbauendeManoeverAktivieren() {
@@ -423,6 +385,8 @@ export class AngriffDialog extends CombatDialog {
         manoever.mod.selected = html.find(`#modifikator-${this.dialogId}`)[0]?.value || false // Modifikator
         manoever.rllm.selected = html.find(`#rollMode-${this.dialogId}`)[0]?.value || false // RollMode
 
+        this.isHumanoid = html.find(`#isHumanoid-${this.dialogId}`)[0]?.checked || false // isHumanoid
+
         super.manoeverAuswaehlen(html)
     }
 
@@ -440,29 +404,6 @@ export class AngriffDialog extends CombatDialog {
         let nodmg = { name: '', value: false }
         let trefferzone = 0
         let schaden = this.item.getTp()
-
-        // Note: Tactical options (Kombinierte Aktion, Volle Offensive/Defensive)
-        // are moved after handleModifications so they don't affect Riposte
-        // Reichweitenunterschiede rwdf
-        let reichweite = Number(manoever.rwdf.selected)
-        if (reichweite > 0) {
-            let mod_rwdf = 2 * Number(reichweite)
-            mod_at -= mod_rwdf
-            mod_vt -= mod_rwdf
-            text_at = text_at.concat(`Reichweitenunterschied: ${mod_rwdf}\n`)
-            text_vt = text_vt.concat(`Reichweitenunterschied: ${mod_rwdf}\n`)
-        }
-        // Passierschlag pssl & Anzahl Reaktionen rkaz
-        let reaktionen = Number(manoever.rkaz.selected)
-        if (reaktionen > 0) {
-            let mod_rkaz = 4 * reaktionen
-            mod_vt -= mod_rkaz
-            text_vt = text_vt.concat(`${reaktionen + 1}. Reaktion: -${mod_rkaz}\n`)
-            if (manoever.pssl.selected) {
-                mod_at -= mod_rkaz
-                text_at = text_at.concat(`${reaktionen + 1}. Passierschlag: -${mod_rkaz} \n`)
-            }
-        }
 
         // Collect all modifications from all maneuvers
         const allModifications = []
@@ -538,6 +479,29 @@ export class AngriffDialog extends CombatDialog {
             context: this,
         })
 
+        if (
+            this.item.system.manoverausgleich &&
+            this.item.system.manoverausgleich.value > 0 &&
+            (!this.item.system.manoverausgleich.overcomplicated || this.isHumanoid)
+        ) {
+            // Manöverausgleich only applies to negative modifiers and only brings them up to 0
+            let at_ausgleich = 0
+            let vt_ausgleich = 0
+
+            if (mod_at < 0) {
+                at_ausgleich = Math.min(this.item.system.manoverausgleich.value, Math.abs(mod_at))
+                mod_at += at_ausgleich
+                text_at = text_at.concat(`Manöverausgleich: +${at_ausgleich}\n`)
+            }
+
+            if (mod_vt < 0) {
+                vt_ausgleich = Math.min(this.item.system.manoverausgleich.value, Math.abs(mod_vt))
+                mod_vt += vt_ausgleich
+                text_vt = text_vt.concat(`Manöverausgleich: +${vt_ausgleich}\n`)
+            }
+        }
+
+        // Handle standard maneuvers first
         // Handle Riposte special rule: attack maneuver penalties also apply to defense
         const riposteManeuver = this.item.manoever.find(
             (m) => m.name === 'Riposte' && m.inputValue.value,
@@ -568,6 +532,26 @@ export class AngriffDialog extends CombatDialog {
         if (manoever.vldf.selected) {
             mod_vt += 4
             text_vt = text_vt.concat('Volle Defensive +4\n')
+        }
+        // Reichweitenunterschiede rwdf
+        let reichweite = Number(manoever.rwdf.selected)
+        if (reichweite > 0) {
+            let mod_rwdf = 2 * Number(reichweite)
+            mod_at -= mod_rwdf
+            mod_vt -= mod_rwdf
+            text_at = text_at.concat(`Reichweitenunterschied: ${mod_rwdf}\n`)
+            text_vt = text_vt.concat(`Reichweitenunterschied: ${mod_rwdf}\n`)
+        }
+        // Passierschlag pssl & Anzahl Reaktionen rkaz
+        let reaktionen = Number(manoever.rkaz.selected)
+        if (reaktionen > 0) {
+            let mod_rkaz = 4 * reaktionen
+            mod_vt -= mod_rkaz
+            text_vt = text_vt.concat(`${reaktionen}. Reaktion: -${mod_rkaz}\n`)
+            if (manoever.pssl.selected) {
+                mod_at -= mod_rkaz
+                text_at = text_at.concat(`${reaktionen}. Passierschlag: -${mod_rkaz} \n`)
+            }
         }
 
         // If ZERO_DAMAGE was found, override damage values
