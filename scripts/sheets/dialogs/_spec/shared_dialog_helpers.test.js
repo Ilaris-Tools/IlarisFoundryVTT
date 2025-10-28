@@ -419,12 +419,80 @@ describe('processModification', () => {
             affectedByInput: true,
         }
 
-        processModification(modification1, 1, 'Test Manoever 1', null, rollValues, 10)
-        processModification(modification2, 1, 'Test Manoever 2', null, rollValues, 10)
+        let result1 = processModification(modification1, 1, 'Test Manoever 1', null, rollValues, 10)
+        rollValues = result1.rollValues
+        let result2 = processModification(
+            modification2,
+            1,
+            'Test Manoever 2',
+            null,
+            rollValues,
+            result1.originalRessourceCost,
+        )
 
-        expect(rollValues.mod_energy).toBe(18) // First: 5 + ((10*2) - 10) = 15, Then: 15 + 3 = 18
-        expect(rollValues.text_energy).toContain('Test Manoever 1: +10 Energiekosten')
-        expect(rollValues.text_energy).toContain('Test Manoever 2: +3 Energiekosten')
+        expect(result2.rollValues.mod_energy).toBe(18) // First: 5 + ((10*2) - 10) = 15, Then: 15 + 3 = 18
+        expect(result2.rollValues.text_energy).toContain('Test Manoever 1: +10 Energiekosten')
+        expect(result2.rollValues.text_energy).toContain('Test Manoever 2: +3 Energiekosten')
+    })
+
+    it('should handle SPECIAL_RESOURCE type with SET operator and modify originalRessourceCost', () => {
+        rollValues.mod_energy = 0
+        const modification = {
+            type: 'SPECIAL_RESOURCE',
+            operator: 'SET',
+            value: 15,
+            affectedByInput: true,
+        }
+        const result = processModification(modification, 1, 'Test Manoever', null, rollValues, 10)
+
+        expect(result.rollValues.mod_energy).toBe(15)
+        expect(result.originalRessourceCost).toBe(15) // Should be updated to the SET value
+        expect(result.rollValues.text_energy).toContain(
+            'Test Manoever: Setzt die Basiskosten auf 15 Energie',
+        )
+    })
+
+    it('should use updated originalRessourceCost after SET operation for subsequent modifications', () => {
+        rollValues.mod_energy = 0
+
+        // First modification: SET operation that changes originalRessourceCost
+        const setModification = {
+            type: 'SPECIAL_RESOURCE',
+            operator: 'SET',
+            value: 20,
+            affectedByInput: true,
+        }
+
+        // Second modification: MULTIPLY operation that should use the new originalRessourceCost
+        const multiplyModification = {
+            type: 'SPECIAL_RESOURCE',
+            operator: 'MULTIPLY',
+            value: 2,
+            affectedByInput: true,
+        }
+
+        // Process SET modification
+        let result1 = processModification(setModification, 1, 'Set Base Cost', null, rollValues, 10)
+        rollValues = result1.rollValues
+
+        // Process MULTIPLY modification using updated originalRessourceCost
+        let result2 = processModification(
+            multiplyModification,
+            1,
+            'Multiply Cost',
+            null,
+            rollValues,
+            result1.originalRessourceCost,
+        )
+
+        // After SET: mod_energy = 20, originalRessourceCost = 20
+        // After MULTIPLY: mod_energy = 20 + ((20*2) - 20) = 20 + 20 = 40
+        expect(result2.rollValues.mod_energy).toBe(40)
+        expect(result2.originalRessourceCost).toBe(20) // Should remain the SET value
+        expect(result2.rollValues.text_energy).toContain(
+            'Set Base Cost: Setzt die Basiskosten auf 20 Energie',
+        )
+        expect(result2.rollValues.text_energy).toContain('Multiply Cost: +20 Energiekosten')
     })
 })
 
@@ -603,6 +671,53 @@ describe('handleModifications', () => {
 
         expect(result[8]).toBe(1) // trefferzone
         expect(result[6]).toContain('Beine') // text_dm should include zone name
+    })
+
+    it('should handle SPECIAL_RESOURCE SET operation followed by other operations', () => {
+        rollValues.mod_energy = 5 // Starting with some energy cost
+        const allModifications = [
+            {
+                modification: {
+                    type: 'SPECIAL_RESOURCE',
+                    operator: 'SET',
+                    value: 25,
+                    affectedByInput: true,
+                },
+                manoever: { name: 'Set Base' },
+                number: 1,
+                check: true,
+            },
+            {
+                modification: {
+                    type: 'SPECIAL_RESOURCE',
+                    operator: 'MULTIPLY',
+                    value: 2,
+                    affectedByInput: true,
+                },
+                manoever: { name: 'Double Cost' },
+                number: 1,
+                check: true,
+            },
+            {
+                modification: {
+                    type: 'SPECIAL_RESOURCE',
+                    operator: 'ADD',
+                    value: 5,
+                    affectedByInput: true,
+                },
+                manoever: { name: 'Add Extra' },
+                number: 1,
+                check: true,
+            },
+        ]
+
+        const result = handleModifications(allModifications, rollValues)
+
+        // Processing order: SET (sets to 25), ADD (25 + 5 = 30), MULTIPLY (uses originalRessourceCost of 25: (25*2) - 25 = 25, so 30 + 25 = 55)
+        expect(result[3]).toBe(55) // mod_energy
+        expect(result[7]).toContain('Set Base: Setzt die Basiskosten auf 25 Energie')
+        expect(result[7]).toContain('Add Extra: +5 Energiekosten')
+        expect(result[7]).toContain('Double Cost: +25 Energiekosten')
     })
 })
 
