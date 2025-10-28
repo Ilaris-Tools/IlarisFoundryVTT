@@ -140,12 +140,14 @@ export function processModification(
                 trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''
             }: Schadenstyp zu ${CONFIG.ILARIS.schadenstypen[modification.value]}\n`
             rollValues.text_dm = rollValues.text_dm.concat(text)
+            rollValues.damageType = CONFIG.ILARIS.schadenstypen[modification.value]
             break
         case 'ARMOR_BREAKING':
             text = `${manoeverName}${
                 trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''
             }: Ignoriert Rüstung\n`
             rollValues.text_dm = rollValues.text_dm.concat(text)
+            rollValues.trueDamage = true
             break
         case 'SPECIAL_TEXT':
             text = `${manoeverName}${
@@ -198,6 +200,60 @@ export function processModification(
     }
 
     return { rollValues, originalRessourceCost }
+}
+
+/**
+ * Applies damage to a target actor and calculates wounds based on WS*
+ * @param {Object} target - The target object containing actorId
+ * @param {number} damage - The total damage to apply
+ * @param {string} damageType - The type of damage being dealt
+ * @param {boolean} trueDamage - If true, damage ignores WS* calculation
+ * @param {Object} speaker - The speaker object for chat messages
+ */
+export async function applyDamageToTarget(
+    target,
+    damage,
+    damageType = 'PROFAN',
+    trueDamage = false,
+    speaker,
+) {
+    const targetActor = game.actors.get(target.actorId || target._id)
+    if (!targetActor) return
+
+    // Get WS* of the target
+    const ws_stern = targetActor.system.abgeleitete.ws_stern
+
+    // Calculate wounds based on whether it's true damage
+    const woundsToAdd = trueDamage ? Math.floor(damage / ws) : Math.floor(damage / ws_stern)
+
+    if (woundsToAdd > 0) {
+        // Get current value and update the appropriate stat based on damage type
+        const currentValue =
+            damageType === 'STUMPF'
+                ? targetActor.system.gesundheit.erschoepfung || 0
+                : targetActor.system.gesundheit.wunden || 0
+
+        await targetActor.update({
+            [`system.gesundheit.${damageType === 'STUMPF' ? 'erschoepfung' : 'wunden'}`]:
+                currentValue + (damageType === 'STUMPF' ? damage : woundsToAdd),
+        })
+
+        // Send a message to chat
+        await ChatMessage.create({
+            content: `${targetActor.name} erleidet ${woundsToAdd} Einschränkung${
+                woundsToAdd > 1 ? 'en' : ''
+            }! (${damageType ? CONFIG.ILARIS.schadenstypen[damageType] : ''} Schaden: ${damage})`,
+            speaker: speaker,
+            style: CONST.CHAT_MESSAGE_STYLES.OTHER,
+        })
+    } else {
+        // Send a message when damage wasn't high enough
+        await ChatMessage.create({
+            content: `${targetActor.name} erleidet keine Einschränkungen - der Schaden (${damage}) war nicht hoch genug.`,
+            speaker: speaker,
+            style: CONST.CHAT_MESSAGE_STYLES.OTHER,
+        })
+    }
 }
 
 /**
@@ -276,6 +332,8 @@ export function handleModifications(allModifications, rollValues) {
         rollValues.trefferzone,
         rollValues.schaden,
         rollValues.nodmg,
+        rollValues.damageType,
+        rollValues.trueDamage,
         originalRessourceCost,
     ]
 }
