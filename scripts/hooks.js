@@ -380,6 +380,56 @@ Hooks.on('getSceneControlButtons', (controls) => {
     }
 })
 
+// Extend Scene Config with environment settings in Basic tab
+Hooks.on('renderSceneConfig', async (app, html, data) => {
+    // Check if already injected (to avoid duplicates when dialog is re-opened)
+    if (html.find('.ilaris-environment-setting').length > 0) {
+        return
+    }
+
+    // Get existing environment settings from scene flags
+    const environment = app.object.getFlag('Ilaris', 'sceneConditions') || {
+        lcht: '0', // Lichtverhältnisse
+        wttr: '0', // Wetter
+    }
+
+    // Prepare template data
+    const templateData = {
+        environment: environment,
+        lcht_choice: CONFIG.ILARIS.lcht_choice,
+        wttr_choice: CONFIG.ILARIS.wttr_choice,
+    }
+
+    // Render the template
+    const environmentHTML = await renderTemplate(
+        'systems/Ilaris/templates/settings/scene_environment_fields.hbs',
+        templateData,
+    )
+
+    // Simply append to the basic tab (within ambience group)
+    const basicTab = html.find('.tab[data-tab="basic"][data-group="ambience"]')
+    basicTab.append(
+        '<hr style="margin: 1.5em 0; border: none; border-top: 2px solid var(--color-border-light-primary);">',
+    )
+    basicTab.append(environmentHTML)
+})
+
+// Handle Scene Config form submission to save environment settings
+Hooks.on('closeSceneConfig', async (app, html) => {
+    const formData = new FormDataExtended(html.find('form')[0]).object
+
+    // Extract environment settings (only scene-specific: light and weather)
+    const sceneConditions = {
+        lcht: String(formData['flags.Ilaris.sceneConditions.lcht'] || '0'),
+        wttr: String(formData['flags.Ilaris.sceneConditions.wttr'] || '0'),
+    }
+
+    // Save to scene flags (only if the form was submitted, not cancelled)
+    if (app.object && formData.submit !== undefined) {
+        await app.object.setFlag('Ilaris', 'sceneConditions', sceneConditions)
+    }
+})
+
 Hooks.on('renderActorDirectory', (app, html) => {
     // Add XML import button to the actors directory header (only if user can create actors and upload files)
     if (game.user.can('ACTOR_CREATE') && game.user.can('FILES_UPLOAD')) {
@@ -436,4 +486,19 @@ Hooks.on('renderActorDirectory', (app, html) => {
             }
         }
     })
+})
+
+// Add Automatisierung heading in settings, pretty scuffed solution but i did not manage to add a seperate category to the settings without adding a new module
+Hooks.on('renderSettingsConfig', (app, html) => {
+    // Find the first Automatisierung setting
+    const automationSetting = html
+        .find('[name="Ilaris.useSceneEnvironment"]')
+        .closest('.form-group')
+
+    if (automationSetting.length > 0) {
+        // Insert a heading before it
+        automationSetting.before(
+            '<h3 class="setting-header" style="border-bottom: 1px solid var(--color-border-light-primary); padding: 0.5em 0; margin-top: 1em;">Automatisierung</h3>',
+        )
+    }
 })
