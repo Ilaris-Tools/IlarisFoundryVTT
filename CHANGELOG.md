@@ -2,6 +2,12 @@
 
 ## v12
 
+### v12.2.1
+
+#### Fixes
+
+-   Importer speichert zugekaufte und gebundene Energie an der richtigen Stelle
+
 ### v12.2
 
 #### Features
