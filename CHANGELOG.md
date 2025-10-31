@@ -6,7 +6,7 @@
 
 #### Fixes
 
--   updates importer to save bought energy and bound energy properly
+-   Importer speichert zugekaufte und gebundene Energie an der richtigen Stelle
 
 ### v12.2
 
