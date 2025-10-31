@@ -2,6 +2,12 @@
 
 ## v12
 
+### v12.2.1
+
+#### Fixes
+
+-   updates importer to save bought energy and bound energy properly
+
 ### v12.2
 
 #### Features
