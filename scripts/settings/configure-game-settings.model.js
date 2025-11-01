@@ -14,6 +14,11 @@ export const IlarisGameSettingNames = {
     hideSyncKampfstileButton: 'hideSyncKampfstileButton',
 }
 
+// the heading for Automatisierung gets added via hooks.js
+export const IlarisAutomatisierungSettingNames = {
+    useSceneEnvironment: 'useSceneEnvironment',
+}
+
 export const IlarisGameSettingsMenuNames = {
     manoeverPacksMenu: 'manoeverPacksMenu',
     vorteilePacksMenu: 'vorteilePacksMenu',
