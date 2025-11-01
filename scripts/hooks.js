@@ -473,7 +473,7 @@ Hooks.on('renderActorDirectory', (app, html) => {
     })
 })
 
-// Add Automatisierung heading in settings, pretty scuffed solution but i did not manage to add a seperate category to the settings without adding a new module
+// Add Automatisierung heading in settings, pretty scuffed solution but i did not manage to add a separate category to the settings without adding a new module
 Hooks.on('renderSettingsConfig', (app, html) => {
     // Find the first Automatisierung setting
     const automationSetting = html
