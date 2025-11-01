@@ -414,22 +414,7 @@ Hooks.on('renderSceneConfig', async (app, html, data) => {
     basicTab.append(environmentHTML)
 })
 
-// Handle Scene Config form submission to save environment settings
-Hooks.on('closeSceneConfig', async (app, html) => {
-    const formData = new FormDataExtended(html.find('form')[0]).object
-
-    // Extract environment settings (only scene-specific: light and weather)
-    const sceneConditions = {
-        lcht: String(formData['flags.Ilaris.sceneConditions.lcht'] || '0'),
-        wttr: String(formData['flags.Ilaris.sceneConditions.wttr'] || '0'),
-    }
-
-    // Save to scene flags (only if the form was submitted, not cancelled)
-    if (app.object && formData.submit !== undefined) {
-        await app.object.setFlag('Ilaris', 'sceneConditions', sceneConditions)
-    }
-})
-
+// (Removed: closeSceneConfig hook is unnecessary; rely on Foundry's native form handling)
 Hooks.on('renderActorDirectory', (app, html) => {
     // Add XML import button to the actors directory header (only if user can create actors and upload files)
     if (game.user.can('ACTOR_CREATE') && game.user.can('FILES_UPLOAD')) {
