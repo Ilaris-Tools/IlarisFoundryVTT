@@ -330,7 +330,8 @@ let manoever = {
         1: 'Fernkampf',
         2: 'Magie',
         3: 'Karma',
-        4: 'Nahkampf Verteidigung',
+        13: 'Nahkampf Verteidigung',
+        6: 'Anrufung',
     },
     selector_type: {
         CHECKBOX: 'Checkbox',

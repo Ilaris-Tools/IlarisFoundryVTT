@@ -215,7 +215,8 @@
       "eigenschaft",
       "angriff",
       "info",
-      "freiestalent"
+      "freiestalent",
+      "waffeneigenschaft"
     ],
     "templates": {
       "gesundheit": {
@@ -238,7 +239,7 @@
         "rw_mod": 0,
         "hauptwaffe": false,
         "nebenwaffe": false,
-        "eigenschaften": [],
+        "eigenschaftenList": [],
         "text": "",
         "manoverausgleich": {
           "value": 0,
@@ -389,7 +390,7 @@
       "foundryScript": ""
     },
     "manoever": {
-      "voraussetzungen": [],
+      "voraussetzungen": "",
       "input": {
         "label": "Checkbox",
         "field": "CHECKBOX"
@@ -425,6 +426,12 @@
       "text": "",
       "pw": "",
       "profan": true
+    },
+    "waffeneigenschaft": {
+      "name": "",
+      "sephrastoScript": "",
+      "foundryScript": "",
+      "text": ""
     }
   }
 }
