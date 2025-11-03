@@ -229,7 +229,7 @@ export class XMLRuleImporter {
 
     /**
      * Extract übernatürliche Talente (zauber, liturgie, anrufung) from XML data
-     * Filters Talent elements that contain magic-related content
+     * Filters Talent elements by kategorie != 0
      * @returns {Array} Array of Foundry uebernatuerlich_talent items
      */
     extractUebernatuerlicheTalente() {
@@ -248,43 +248,18 @@ export class XMLRuleImporter {
             let liturgieCount = 0
             let anrufungCount = 0
 
-            // Filter for spell-like talents by content analysis
-            const magicKeywords = [
-                'zauber',
-                'magie',
-                'ritual',
-                'liturgie',
-                'anrufung',
-                'beschwörung',
-            ]
-            const spellLikeTalents = talentElements.filter((element) => {
+            // Filter for übernatürliche talents by kategorie != 0
+            const uebernatuerlicheTalentElements = talentElements.filter((element) => {
                 const attrs = element.$ || element
-                const name = (attrs.name || element.name || '').toLowerCase()
-                const text = (element._ || '').toLowerCase()
-
-                // Include if contains magic keywords and exclude theoretical/practice talents
-                const hasMagicKeywords = magicKeywords.some(
-                    (keyword) => name.includes(keyword) || text.includes(keyword),
-                )
-
-                const isTheoretical =
-                    name.includes('theorie') ||
-                    name.includes('praxis') ||
-                    name.includes('kunde') ||
-                    name.includes('willenskraft')
-
-                return (
-                    hasMagicKeywords &&
-                    !isTheoretical &&
-                    (text.includes('zauber') ||
-                        text.includes('liturgie') ||
-                        text.includes('anrufung'))
-                )
+                const kategorie = parseInt(attrs.kategorie || element.kategorie) || 0
+                return kategorie !== 0
             })
 
-            console.log(`Found ${spellLikeTalents.length} spell-like talents after filtering`)
+            console.log(
+                `Found ${uebernatuerlicheTalentElements.length} übernatürliche talents after kategorie filtering`,
+            )
 
-            spellLikeTalents.forEach((element, index) => {
+            uebernatuerlicheTalentElements.forEach((element, index) => {
                 try {
                     const talent = this.convertUebernatuerlicheTalentToFoundryItem(element)
                     if (talent) {
@@ -395,9 +370,6 @@ export class XMLRuleImporter {
 
         // Additional XML fields for different types
         const voraussetzungen = attrs.voraussetzungen || element.voraussetzungen || ''
-        const steigerungsfaktor = attrs.steigerungsfaktor || element.steigerungsfaktor || ''
-        const kampffertigkeit = attrs.kampffertigkeit || element.kampffertigkeit || false
-        const talentegruppieren = attrs.talentegruppieren || element.talentegruppieren || false
         const script = attrs.script || element.script || ''
 
         let systemData = {}
@@ -485,14 +457,10 @@ export class XMLRuleImporter {
                 } else {
                     systemData.wm_vt = wm
                 }
-                systemData.eigenschaften =
-                    this.initializeNahkampfwaffeEigenschaften(eigenschaftenList)
             } else if (itemType === 'fernkampfwaffe') {
                 // For fernkampfwaffe: wm applies to wm_fk, and we need lz
                 systemData.wm_fk = wm
                 systemData.lz = parseInt(attrs.lz || element.lz) || 0
-                systemData.eigenschaften =
-                    this.initializeFernkampfwaffeEigenschaften(eigenschaftenList)
             }
         } else if (itemType === 'ruestung') {
             // Handle Rüstung items
@@ -591,76 +559,6 @@ export class XMLRuleImporter {
             _key: `!items!${foundryId}`,
         }
 
-        // Type-specific logging
-        if (itemType === 'fertigkeit') {
-            const kategorie = parseInt(element.kategorie) || 0
-            const attribute = element.attribute || 'KO|KO|KO'
-            console.log(
-                `Converted Fertigkeit: ${name} (kategorie: ${kategorie}, attributes: ${attribute}, kampffertigkeit: ${kampffertigkeit})`,
-            )
-        } else if (itemType === 'uebernatuerliche_fertigkeit') {
-            const kategorie = parseInt(element.kategorie) || 0
-            const attribute = element.attribute || 'KO|KO|KO'
-            console.log(
-                `Converted ÜbernatürlicheFertigkeit: ${name} (kategorie: ${kategorie}, attributes: ${attribute}, voraussetzungen: ${voraussetzungen.substring(
-                    0,
-                    50,
-                )}${voraussetzungen.length > 50 ? '...' : ''})`,
-            )
-        } else if (itemType === 'waffeneigenschaft') {
-            console.log(
-                `Converted Waffeneigenschaft: ${name} (script: ${
-                    script ? 'present' : 'none'
-                }, text length: ${text.length})`,
-            )
-        } else if (itemType === 'nahkampfwaffe') {
-            const tp = systemData.tp
-            const wm_at = systemData.wm_at
-            const eigenschaften = systemData.eigenschaftenList.join(', ')
-            console.log(
-                `Converted Nahkampfwaffe: ${name} (TP: ${tp}, WM_AT/VT: ${wm_at}, Eigenschaften: [${eigenschaften}])`,
-            )
-        } else if (itemType === 'fernkampfwaffe') {
-            const tp = systemData.tp
-            const wm_fk = systemData.wm_fk
-            const lz = systemData.lz
-            const eigenschaften = systemData.eigenschaftenList.join(', ')
-            console.log(
-                `Converted Fernkampfwaffe: ${name} (TP: ${tp}, WM_FK: ${wm_fk}, LZ: ${lz}, Eigenschaften: [${eigenschaften}])`,
-            )
-        } else if (itemType === 'ruestung') {
-            const rs_parts = [
-                `Beine: ${systemData.rs_beine}`,
-                `LArm: ${systemData.rs_larm}`,
-                `RArm: ${systemData.rs_rarm}`,
-                `Bauch: ${systemData.rs_bauch}`,
-                `Brust: ${systemData.rs_brust}`,
-                `Kopf: ${systemData.rs_kopf}`,
-            ].join(', ')
-            console.log(`Converted Rüstung: ${name} (${rs_parts})`)
-        } else if (itemType === 'talent') {
-            const fertigkeit = systemData.fertigkeit
-            console.log(
-                `Converted Talent: ${name} (Fertigkeit: ${fertigkeit}, Text length: ${text.length})`,
-            )
-        } else if (itemType === 'zauber' || itemType === 'liturgie' || itemType === 'anrufung') {
-            const fertigkeiten = systemData.fertigkeiten
-            const schwierigkeit = systemData.schwierigkeit
-            const typeLabel = itemType.charAt(0).toUpperCase() + itemType.slice(1)
-            console.log(
-                `Converted ${typeLabel}: ${name} (Fertigkeiten: ${fertigkeiten}, Schwierigkeit: ${schwierigkeit})`,
-            )
-        } else if (itemType === 'manoever') {
-            const gruppe = systemData.gruppe
-            const probe = systemData.probe
-            const voraussetzungen = systemData.voraussetzungen // Already a string, no need to join
-            console.log(
-                `Converted Manöver: ${name} (Gruppe: ${gruppe}, Probe: ${probe}, Voraussetzungen: ${
-                    voraussetzungen || 'none'
-                })`,
-            )
-        }
-
         return foundryItem
     }
 
@@ -741,22 +639,30 @@ export class XMLRuleImporter {
 
     /**
      * Convert a single übernatürliches Talent XML element to Foundry item format
-     * Determines type based on text content analysis: zauber, liturgie, or anrufung
+     * Determines type based on kategorie: 1=zauber, 2=liturgie, 3=anrufung
      * @param {Object} element - XML Talent element (parsed by xml2js)
      * @returns {Object} Foundry uebernatuerlich_talent item
      */
     convertUebernatuerlicheTalentToFoundryItem(element) {
-        const text = (element._ || '').toLowerCase()
         const attrs = element.$ || element
-        const name = attrs.name || element.name || 'Unknown'
+        const kategorie = parseInt(attrs.kategorie || element.kategorie) || 1
 
-        // Determine type based on text content
+        // Determine type based on kategorie
         let itemType = 'zauber' // Default to zauber
 
-        if (text.includes('liturgie') || text.includes('götter') || text.includes('gebet')) {
-            itemType = 'liturgie'
-        } else if (text.includes('anrufung') || text.includes('dämon')) {
-            itemType = 'anrufung'
+        switch (kategorie) {
+            case 1:
+                itemType = 'zauber'
+                break
+            case 2:
+                itemType = 'liturgie'
+                break
+            case 3:
+                itemType = 'anrufung'
+                break
+            default:
+                itemType = 'zauber' // Fallback to zauber
+                break
         }
 
         return this.convertXMLElementToFoundryItem(element, itemType, 'ÜbernatürlichesTalent')
@@ -913,384 +819,10 @@ export class XMLRuleImporter {
     }
 
     /**
-     * Initialize eigenschaften object for nahkampfwaffe based on eigenschaftenList
-     * @param {Array} eigenschaftenList - List of eigenschaften names
-     * @returns {Object} Eigenschaften object with boolean flags
-     */
-    initializeNahkampfwaffeEigenschaften(eigenschaftenList) {
-        const eigenschaften = {
-            kopflastig: false,
-            niederwerfen: false,
-            parierwaffe: false,
-            reittier: false,
-            ruestungsbrechend: false,
-            schild: false,
-            schwer_4: false,
-            schwer_8: false,
-            stumpf: false,
-            unberechenbar: false,
-            unzerstoerbar: false,
-            wendig: false,
-            zerbrechlich: false,
-            zweihaendig: false,
-            kein_malus_nebenwaffe: false,
-        }
-
-        // Map XML eigenschaften names to Foundry property names
-        eigenschaftenList.forEach((eigenschaft) => {
-            const normalized = eigenschaft.toLowerCase().replace(/[\s-]/g, '_')
-            switch (normalized) {
-                case 'kopflastig':
-                    eigenschaften.kopflastig = true
-                    break
-                case 'niederwerfen':
-                    eigenschaften.niederwerfen = true
-                    break
-                case 'parierwaffe':
-                    eigenschaften.parierwaffe = true
-                    break
-                case 'reittier':
-                    eigenschaften.reittier = true
-                    break
-                case 'rüstungsbrechend':
-                    eigenschaften.ruestungsbrechend = true
-                    break
-                case 'schild':
-                    eigenschaften.schild = true
-                    break
-                case 'schwer':
-                    eigenschaften.schwer_4 = true
-                    break // Default to schwer_4
-                case 'stumpf':
-                    eigenschaften.stumpf = true
-                    break
-                case 'unberechenbar':
-                    eigenschaften.unberechenbar = true
-                    break
-                case 'unzerstörbar':
-                    eigenschaften.unzerstoerbar = true
-                    break
-                case 'wendig':
-                    eigenschaften.wendig = true
-                    break
-                case 'zerbrechlich':
-                    eigenschaften.zerbrechlich = true
-                    break
-                case 'zweihändig':
-                    eigenschaften.zweihaendig = true
-                    break
-                case 'kein_malus_als_nebenwaffe':
-                    eigenschaften.kein_malus_nebenwaffe = true
-                    break
-            }
-        })
-
-        return eigenschaften
-    }
-
-    /**
-     * Initialize eigenschaften object for fernkampfwaffe based on eigenschaftenList
-     * @param {Array} eigenschaftenList - List of eigenschaften names
-     * @returns {Object} Eigenschaften object with boolean flags
-     */
-    initializeFernkampfwaffeEigenschaften(eigenschaftenList) {
-        const eigenschaften = {
-            kein_reiter: false,
-            niederwerfen: false,
-            niederwerfen_4: false,
-            niederwerfen_8: false,
-            schwer_4: false,
-            schwer_8: false,
-            stationaer: false,
-            stumpf: false,
-            umklammern_212: false,
-            umklammern_416: false,
-            umklammern_816: false,
-            zweihaendig: false,
-        }
-
-        // Map XML eigenschaften names to Foundry property names
-        eigenschaftenList.forEach((eigenschaft) => {
-            const normalized = eigenschaft.toLowerCase().replace(/[\s-]/g, '_')
-            switch (normalized) {
-                case 'kein_reittier':
-                    eigenschaften.kein_reiter = true
-                    break
-                case 'niederwerfen':
-                    eigenschaften.niederwerfen = true
-                    break
-                case 'schwer':
-                    eigenschaften.schwer_4 = true
-                    break // Default to schwer_4
-                case 'stationär':
-                    eigenschaften.stationaer = true
-                    break
-                case 'stumpf':
-                    eigenschaften.stumpf = true
-                    break
-                case 'umklammern':
-                    eigenschaften.umklammern_212 = true
-                    break // Default variant
-                case 'zweihändig':
-                    eigenschaften.zweihaendig = true
-                    break
-            }
-        })
-
-        return eigenschaften
-    }
-
-    /**
-     * Generic method to save items to JSON file
-     * @param {Array} items - Array of items to save
-     * @param {string} outputPath - Path to save the JSON file
-     * @param {string} itemTypeName - Name of item type for logging
-     */
-    saveItemsToJSON(items, outputPath, itemTypeName) {
-        try {
-            fs.writeFileSync(outputPath, JSON.stringify(items, null, 2), 'utf8')
-            console.log(`Saved ${items.length} ${itemTypeName} to ${outputPath}`)
-        } catch (error) {
-            console.error(`Error saving ${itemTypeName} to JSON:`, error)
-            throw error
-        }
-    }
-
-    /**
-     * Save fertigkeiten to JSON file
-     * @param {Array} fertigkeiten - Array of fertigkeit items
-     * @param {string} outputPath - Path to save the JSON file
-     */
-    saveFertigkeitenToJSON(fertigkeiten, outputPath) {
-        this.saveItemsToJSON(fertigkeiten, outputPath, 'Fertigkeiten')
-    }
-
-    /**
-     * Save uebernatuerliche fertigkeiten to JSON file
-     * @param {Array} uebernatuerlicheFertigkeiten - Array of uebernatuerliche_fertigkeit items
-     * @param {string} outputPath - Path to save the JSON file
-     */
-    saveUebernatuerlicheFertigkeitenToJSON(uebernatuerlicheFertigkeiten, outputPath) {
-        this.saveItemsToJSON(uebernatuerlicheFertigkeiten, outputPath, 'ÜbernatürlicheFertigkeiten')
-    }
-
-    /**
-     * Save waffeneigenschaften to JSON file
-     * @param {Array} waffeneigenschaften - Array of waffeneigenschaft items
-     * @param {string} outputPath - Path to save the JSON file
-     */
-    saveWaffeneigenschaftenToJSON(waffeneigenschaften, outputPath) {
-        this.saveItemsToJSON(waffeneigenschaften, outputPath, 'Waffeneigenschaften')
-    }
-
-    /**
-     * Save waffen to JSON file
-     * @param {Array} waffen - Array of nahkampfwaffe and fernkampfwaffe items
-     * @param {string} outputPath - Path to save the JSON file
-     */
-    saveWaffenToJSON(waffen, outputPath) {
-        this.saveItemsToJSON(waffen, outputPath, 'Waffen')
-    }
-
-    /**
-     * Save Rüstung items to JSON file
-     * @param {Array} ruestungen - Array of Foundry ruestung items
-     * @param {string} outputPath - Path to save the JSON file
-     */
-    saveRuestungenToJSON(ruestungen, outputPath) {
-        this.saveItemsToJSON(ruestungen, outputPath, 'Rüstungen')
-    }
-
-    /**
-     * Save Talent items to JSON file
-     * @param {Array} talente - Array of Foundry talent items
-     * @param {string} outputPath - Path to save the JSON file
-     */
-    saveTalenteToJSON(talente, outputPath) {
-        this.saveItemsToJSON(talente, outputPath, 'Talente')
-    }
-
-    /**
-     * Complete import process for Fertigkeiten
-     * @param {string} outputPath - Path to save the converted items
-     * @returns {Array} Array of converted fertigkeit items
-     */
-    async importFertigkeiten(outputPath = './imported_fertigkeiten.json') {
-        console.log('Starting Fertigkeit import process...')
-
-        await this.loadXML()
-        const fertigkeiten = this.extractFertigkeiten()
-
-        if (outputPath) {
-            this.saveFertigkeitenToJSON(fertigkeiten, outputPath)
-        }
-
-        console.log('Fertigkeit import process completed successfully')
-        return fertigkeiten
-    }
-
-    /**
-     * Complete import process for ÜbernatürlicheFertigkeiten
-     * @param {string} outputPath - Path to save the converted items
-     * @returns {Array} Array of converted uebernatuerliche_fertigkeit items
-     */
-    async importUebernatuerlicheFertigkeiten(
-        outputPath = './imported_uebernatuerliche_fertigkeiten.json',
-    ) {
-        console.log('Starting ÜbernatürlicheFertigkeit import process...')
-
-        await this.loadXML()
-        const uebernatuerlicheFertigkeiten = this.extractUebernatuerlicheFertigkeiten()
-
-        if (outputPath) {
-            this.saveUebernatuerlicheFertigkeitenToJSON(uebernatuerlicheFertigkeiten, outputPath)
-        }
-
-        console.log('ÜbernatürlicheFertigkeit import process completed successfully')
-        return uebernatuerlicheFertigkeiten
-    }
-
-    /**
-     * Complete import process for Waffeneigenschaften
-     * @param {string} outputPath - Path to save the converted items
-     * @returns {Array} Array of converted waffeneigenschaft items
-     */
-    async importWaffeneigenschaften(outputPath = './imported_waffeneigenschaften.json') {
-        console.log('Starting Waffeneigenschaft import process...')
-
-        await this.loadXML()
-        const waffeneigenschaften = this.extractWaffeneigenschaften()
-
-        if (outputPath) {
-            this.saveWaffeneigenschaftenToJSON(waffeneigenschaften, outputPath)
-        }
-
-        console.log('Waffeneigenschaft import process completed successfully')
-        return waffeneigenschaften
-    }
-
-    /**
-     * Complete import process for Waffen
-     * @param {string} outputPath - Path to save the converted items
-     * @returns {Array} Array of converted nahkampfwaffe and fernkampfwaffe items
-     */
-    async importWaffen(outputPath = './imported_waffen.json') {
-        console.log('Starting Waffen import process...')
-
-        await this.loadXML()
-        const waffen = this.extractWaffen()
-
-        if (outputPath) {
-            this.saveWaffenToJSON(waffen, outputPath)
-        }
-
-        console.log('Waffen import process completed successfully')
-        return waffen
-    }
-
-    /**
-     * Import Rüstung elements from XML file and save to JSON
-     * @param {string} outputPath - Path to save the converted ruestung items
-     * @returns {Array} Array of converted ruestung items
-     */
-    async importRuestungen(outputPath = './imported_ruestungen.json') {
-        console.log('Starting Rüstungen import process...')
-
-        await this.loadXML()
-        const ruestungen = this.extractRuestungen()
-
-        if (outputPath) {
-            this.saveRuestungenToJSON(ruestungen, outputPath)
-        }
-
-        console.log('Rüstungen import process completed successfully')
-        return ruestungen
-    }
-
-    /**
-     * Import Talent elements from XML file and save to JSON
-     * Only processes and imports Talents with kategorie=0
-     * @param {string} outputPath - Path to save the converted talent items
-     * @returns {Array} Array of converted talent items
-     */
-    async importTalente(outputPath = './imported_talente.json') {
-        console.log('Starting Talente import process...')
-
-        await this.loadXML()
-        const talente = this.extractTalente()
-
-        if (outputPath) {
-            this.saveTalenteToJSON(talente, outputPath)
-        }
-
-        console.log('Talente import process completed successfully')
-        return talente
-    }
-
-    /**
-     * Save übernatürliche Talent items to JSON file
-     * @param {Array} uebernatuerlicheTalente - Array of Foundry uebernatuerlich_talent items
-     * @param {string} outputPath - Path to save the JSON file
-     */
-    saveUebernatuerlicheTalenteToJSON(uebernatuerlicheTalente, outputPath) {
-        this.saveItemsToJSON(uebernatuerlicheTalente, outputPath, 'ÜbernatürlicheTalente')
-    }
-
-    /**
-     * Import übernatürliche Talent elements from XML file and save to JSON
-     * Processes and imports Talents with kategorie 1, 2, or 3 (zauber, liturgie, anrufung)
-     * @param {string} outputPath - Path to save the converted übernatürliche talent items
-     * @returns {Array} Array of converted übernatürliche talent items
-     */
-    async importUebernatuerlicheTalente(outputPath = './imported_uebernatuerliche_talente.json') {
-        console.log('Starting übernatürliche Talente import process...')
-
-        await this.loadXML()
-        const uebernatuerlicheTalente = this.extractUebernatuerlicheTalente()
-
-        if (outputPath) {
-            this.saveUebernatuerlicheTalenteToJSON(uebernatuerlicheTalente, outputPath)
-        }
-
-        console.log('Übernatürliche Talente import process completed successfully')
-        return uebernatuerlicheTalente
-    }
-
-    /**
-     * Save Manöver items to JSON file
-     * @param {Array} manoever - Array of Foundry manoever items
-     * @param {string} outputPath - Path to save the JSON file
-     */
-    saveManoeverToJSON(manoever, outputPath) {
-        this.saveItemsToJSON(manoever, outputPath, 'Manöver')
-    }
-
-    /**
-     * Import Manöver elements from XML file and save to JSON
-     * Processes and imports Manöver with typ 0, 1, 2, 3, or 6
-     * @param {string} outputPath - Path to save the converted manöver items
-     * @returns {Array} Array of converted manöver items
-     */
-    async importManoever(outputPath = './imported_manoever.json') {
-        console.log('Starting Manöver import process...')
-
-        await this.loadXML()
-        const manoever = this.extractManoever()
-
-        if (outputPath) {
-            this.saveManoeverToJSON(manoever, outputPath)
-        }
-
-        console.log('Manöver import process completed successfully')
-        return manoever
-    }
-
-    /**
      * Complete import process for the entire XML file - imports all supported element types
-     * @param {string} outputDir - Directory to save the converted items (optional)
      * @returns {Object} Object containing arrays of all imported item types
      */
-    async importAllFromXML(outputDir = './') {
+    async importAllFromXML() {
         console.log('Starting complete XML import process...')
 
         await this.loadXML()
@@ -1311,10 +843,6 @@ export class XMLRuleImporter {
         console.log('\n--- Importing Fertigkeiten ---')
         try {
             results.fertigkeiten = this.extractFertigkeiten()
-            if (results.fertigkeiten.length > 0 && outputDir) {
-                const fertigkeitPath = `${outputDir}/imported_fertigkeiten.json`
-                this.saveFertigkeitenToJSON(results.fertigkeiten, fertigkeitPath)
-            }
         } catch (error) {
             console.error('Error importing Fertigkeiten:', error.message)
         }
@@ -1323,13 +851,6 @@ export class XMLRuleImporter {
         console.log('\n--- Importing ÜbernatürlicheFertigkeiten ---')
         try {
             results.uebernatuerlicheFertigkeiten = this.extractUebernatuerlicheFertigkeiten()
-            if (results.uebernatuerlicheFertigkeiten.length > 0 && outputDir) {
-                const uebernatuerlichePath = `${outputDir}/imported_uebernatuerliche_fertigkeiten.json`
-                this.saveUebernatuerlicheFertigkeitenToJSON(
-                    results.uebernatuerlicheFertigkeiten,
-                    uebernatuerlichePath,
-                )
-            }
         } catch (error) {
             console.error('Error importing ÜbernatürlicheFertigkeiten:', error.message)
         }
@@ -1338,13 +859,6 @@ export class XMLRuleImporter {
         console.log('\n--- Importing Waffeneigenschaften ---')
         try {
             results.waffeneigenschaften = this.extractWaffeneigenschaften()
-            if (results.waffeneigenschaften.length > 0 && outputDir) {
-                const waffeneigenschaftPath = `${outputDir}/imported_waffeneigenschaften.json`
-                this.saveWaffeneigenschaftenToJSON(
-                    results.waffeneigenschaften,
-                    waffeneigenschaftPath,
-                )
-            }
         } catch (error) {
             console.error('Error importing Waffeneigenschaften:', error.message)
         }
@@ -1353,10 +867,6 @@ export class XMLRuleImporter {
         console.log('\n--- Importing Waffen ---')
         try {
             results.waffen = this.extractWaffen()
-            if (results.waffen.length > 0 && outputDir) {
-                const waffenPath = `${outputDir}/imported_waffen.json`
-                this.saveWaffenToJSON(results.waffen, waffenPath)
-            }
         } catch (error) {
             console.error('Error importing Waffen:', error.message)
         }
@@ -1365,10 +875,6 @@ export class XMLRuleImporter {
         console.log('\n--- Importing Rüstungen ---')
         try {
             results.ruestungen = this.extractRuestungen()
-            if (results.ruestungen.length > 0 && outputDir) {
-                const ruestungenPath = `${outputDir}/imported_ruestungen.json`
-                this.saveRuestungenToJSON(results.ruestungen, ruestungenPath)
-            }
         } catch (error) {
             console.error('Error importing Rüstungen:', error.message)
         }
@@ -1377,10 +883,6 @@ export class XMLRuleImporter {
         console.log('\n--- Importing Talente ---')
         try {
             results.talente = this.extractTalente()
-            if (results.talente.length > 0 && outputDir) {
-                const talentePath = `${outputDir}/imported_talente.json`
-                this.saveTalenteToJSON(results.talente, talentePath)
-            }
         } catch (error) {
             console.error('Error importing Talente:', error.message)
         }
@@ -1389,13 +891,6 @@ export class XMLRuleImporter {
         console.log('\n--- Importing Übernatürliche Talente ---')
         try {
             results.uebernatuerlicheTalente = this.extractUebernatuerlicheTalente()
-            if (results.uebernatuerlicheTalente.length > 0 && outputDir) {
-                const uebernatuerlicheTalentePath = `${outputDir}/imported_uebernatuerliche_talente.json`
-                this.saveUebernatuerlicheTalenteToJSON(
-                    results.uebernatuerlicheTalente,
-                    uebernatuerlicheTalentePath,
-                )
-            }
         } catch (error) {
             console.error('Error importing Übernatürliche Talente:', error.message)
         }
@@ -1404,10 +899,6 @@ export class XMLRuleImporter {
         console.log('\n--- Importing Manöver ---')
         try {
             results.manoever = this.extractManoever()
-            if (results.manoever.length > 0 && outputDir) {
-                const manoeverPath = `${outputDir}/imported_manoever.json`
-                this.saveManoeverToJSON(results.manoever, manoeverPath)
-            }
         } catch (error) {
             console.error('Error importing Manöver:', error.message)
         }
@@ -1443,106 +934,15 @@ export class XMLRuleImporter {
 }
 
 /**
- * Standalone function to import fertigkeiten from XML file
- * @param {string} xmlFilePath - Path to XML file
- * @param {string} outputPath - Path to save converted items (optional)
- * @returns {Array} Array of converted fertigkeit items
- */
-export async function importFertigkeitenFromXML(xmlFilePath, outputPath) {
-    const importer = new XMLRuleImporter(xmlFilePath)
-    return await importer.importFertigkeiten(outputPath)
-}
-
-/**
- * Standalone function to import uebernatuerliche fertigkeiten from XML file
- * @param {string} xmlFilePath - Path to XML file
- * @param {string} outputPath - Path to save converted items (optional)
- * @returns {Array} Array of converted uebernatuerliche_fertigkeit items
- */
-export async function importUebernatuerlicheFertigkeitenFromXML(xmlFilePath, outputPath) {
-    const importer = new XMLRuleImporter(xmlFilePath)
-    return await importer.importUebernatuerlicheFertigkeiten(outputPath)
-}
-
-/**
- * Standalone function to import waffeneigenschaften from XML file
- * @param {string} xmlFilePath - Path to XML file
- * @param {string} outputPath - Path to save converted items (optional)
- * @returns {Array} Array of converted waffeneigenschaft items
- */
-export async function importWaffeneigenschaftenFromXML(xmlFilePath, outputPath) {
-    const importer = new XMLRuleImporter(xmlFilePath)
-    return await importer.importWaffeneigenschaften(outputPath)
-}
-
-/**
- * Standalone function to import waffen from XML file
- * @param {string} xmlFilePath - Path to XML file
- * @param {string} outputPath - Path to save converted items (optional)
- * @returns {Array} Array of converted nahkampfwaffe and fernkampfwaffe items
- */
-export async function importWaffenFromXML(xmlFilePath, outputPath) {
-    const importer = new XMLRuleImporter(xmlFilePath)
-    return await importer.importWaffen(outputPath)
-}
-
-/**
- * Standalone function to import Rüstungen from XML file
- * @param {string} xmlFilePath - Path to XML file
- * @param {string} outputPath - Path to save converted items (optional)
- * @returns {Array} Array of converted ruestung items
- */
-export async function importRuestungenFromXML(xmlFilePath, outputPath) {
-    const importer = new XMLRuleImporter(xmlFilePath)
-    return await importer.importRuestungen(outputPath)
-}
-
-/**
- * Standalone function to import Talente from XML file (kategorie=0 only)
- * @param {string} xmlFilePath - Path to XML file
- * @param {string} outputPath - Path to save converted items (optional)
- * @returns {Array} Array of converted talent items
- */
-export async function importTalenteFromXML(xmlFilePath, outputPath) {
-    const importer = new XMLRuleImporter(xmlFilePath)
-    return await importer.importTalente(outputPath)
-}
-
-/**
- * Standalone function to import übernatürliche talente from XML file
- * @param {string} xmlFilePath - Path to XML file
- * @param {string} outputPath - Path to save converted items (optional)
- * @returns {Array} Array of converted übernatürliche talent items
- */
-export async function importUebernatuerlicheTalenteFromXML(xmlFilePath, outputPath) {
-    const importer = new XMLRuleImporter(xmlFilePath)
-    return await importer.importUebernatuerlicheTalente(outputPath)
-}
-
-/**
- * Standalone function to import manöver from XML file
- * @param {string} xmlFilePath - Path to XML file
- * @param {string} outputPath - Path to save converted items (optional)
- * @returns {Array} Array of converted manöver items
- */
-export async function importManoeverFromXML(xmlFilePath, outputPath) {
-    const importer = new XMLRuleImporter(xmlFilePath)
-    return await importer.importManoever(outputPath)
-}
-
-/**
  * Standalone function to import everything from XML file
  * @param {string} xmlFilePath - Path to XML file
- * @param {string} outputDir - Directory to save converted items (optional)
  * @returns {Object} Object containing all imported item types
  */
-export async function importAllFromXML(xmlFilePath, outputDir) {
+export async function importAllFromXML(xmlFilePath) {
     const importer = new XMLRuleImporter(xmlFilePath)
-    return await importer.importAllFromXML(outputDir)
+    return await importer.importAllFromXML()
 }
 
-// Example usage (uncomment to run)
-// const importer = new XMLRuleImporter('./path/to/your/xml/file.xml')
-// const fertigkeiten = await importer.importFertigkeiten('./output/fertigkeiten.json')
-// const uebernatuerlicheFertigkeiten = await importer.importUebernatuerlicheFertigkeiten('./output/uebernatuerliche_fertigkeiten.json')
-// const allItems = await importer.importAllFromXML('./output/')
+// Example usage:
+// const results = await importAllFromXML('./path/to/your/xml/file.xml')
+// console.log(`Imported ${results.totalItems} items total`)
