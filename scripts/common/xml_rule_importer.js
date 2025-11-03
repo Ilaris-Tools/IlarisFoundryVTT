@@ -354,186 +354,15 @@ export class XMLRuleImporter {
     }
 
     /**
-     * Generic method to convert XML elements to Foundry items
-     * @param {Object} element - XML element (parsed by xml2js)
-     * @param {string} itemType - The Foundry item type ('fertigkeit', 'uebernatuerliche_fertigkeit', 'waffeneigenschaft')
-     * @param {string} xmlType - The XML element type for logging ('Fertigkeit', 'ÜbernatürlicheFertigkeit', 'Waffeneigenschaft')
-     * @returns {Object} Foundry item
+     * Create the base Foundry item structure
+     * @param {string} name - Item name
+     * @param {string} itemType - Foundry item type
+     * @param {Object} systemData - System-specific data
+     * @returns {Object} Base Foundry item structure
      */
-    convertXMLElementToFoundryItem(element, itemType, xmlType) {
-        // Handle different XML structures - attributes can be in $ object or direct properties
-        const attrs = element.$ || element
-
-        // Get basic attributes from the XML element
-        const name = attrs.name || element.name || `Unnamed ${xmlType}`
-        const text = element._ || ''
-
-        // Additional XML fields for different types
-        const voraussetzungen = attrs.voraussetzungen || element.voraussetzungen || ''
-        const script = attrs.script || element.script || ''
-
-        let systemData = {}
-
-        // Create type-specific system data
-        if (itemType === 'fertigkeit' || itemType === 'uebernatuerliche_fertigkeit') {
-            // Handle skill-based items (Fertigkeit and ÜbernatürlicheFertigkeit)
-            const kategorie = parseInt(attrs.kategorie || element.kategorie) || 0
-            const attribute = attrs.attribute || element.attribute || 'KO|KO|KO'
-
-            // Split attributes by "|" and assign to attribut_0, attribut_1, attribut_2
-            const attributeArray = attribute.split('|')
-            const attribut_0 = attributeArray[0] || 'KO'
-            const attribut_1 = attributeArray[1] || 'KO'
-            const attribut_2 = attributeArray[2] || 'KO'
-
-            systemData = {
-                basis: 0,
-                fw: 0,
-                pw: 0,
-                attribut_0: attribut_0,
-                attribut_1: attribut_1,
-                attribut_2: attribut_2,
-                gruppe: kategorie,
-                text: text,
-                pwt: 0,
-            }
-
-            // Add ÜbernatürlicheFertigkeit specific field
-            if (itemType === 'uebernatuerliche_fertigkeit') {
-                systemData.voraussetzung = voraussetzungen
-            }
-        } else if (itemType === 'waffeneigenschaft') {
-            // Handle Waffeneigenschaft items
-            systemData = {
-                name: name,
-                sephrastoScript: script,
-                foundryScript: '', // Empty by default, can be filled manually later
-                text: text,
-            }
-        } else if (itemType === 'nahkampfwaffe' || itemType === 'fernkampfwaffe') {
-            // Handle Waffe items (both nahkampfwaffe and fernkampfwaffe)
-
-            // Construct TP from würfel, würfelSeiten, and plus
-            const würfel = attrs.würfel || element.würfel || '0'
-            const würfelSeiten = attrs.würfelSeiten || element.würfelSeiten || '0'
-            const plus = parseInt(attrs.plus || element.plus) || 0
-            const tp = `${würfel}W${würfelSeiten}${
-                plus !== 0 ? (plus > 0 ? '+' + plus : plus) : ''
-            }`
-
-            // Parse eigenschaften from _ property (comma-separated)
-            const eigenschaftenRaw = element._ || ''
-            const eigenschaftenList = eigenschaftenRaw
-                .split(',')
-                .map((e) => e.trim())
-                .filter((e) => e.length > 0)
-
-            // Basic weapon system data (shared between both types)
-            systemData = {
-                tp: tp,
-                fertigkeit: attrs.fertigkeit || element.fertigkeit || '',
-                talent: attrs.talent || element.talent || '',
-                rw: parseInt(attrs.rw || element.rw) || 0,
-                rw_mod: 0, // Default value, not in XML
-                hauptwaffe: false, // Default value, not in XML
-                nebenwaffe: false, // Default value, not in XML
-                eigenschaftenList: eigenschaftenList,
-                text: text,
-                manoverausgleich: {
-                    value: 0, // Default value, not in XML
-                    overcomplicated: true, // Default value
-                },
-            }
-
-            // Add type-specific WM properties
-            const wm = parseInt(attrs.wm || element.wm) || 0
-            if (itemType === 'nahkampfwaffe') {
-                // For nahkampfwaffe: wm applies to wm_at, and optionally wmVt to wm_vt
-                systemData.wm_at = wm
-                // Check if wmVt is present and not null/undefined
-                const wmVt = attrs.wmVt || element.wmVt
-                if (wmVt !== null && wmVt !== undefined && wmVt !== '') {
-                    systemData.wm_vt = parseInt(wmVt) || 0
-                } else {
-                    systemData.wm_vt = wm
-                }
-            } else if (itemType === 'fernkampfwaffe') {
-                // For fernkampfwaffe: wm applies to wm_fk, and we need lz
-                systemData.wm_fk = wm
-                systemData.lz = parseInt(attrs.lz || element.lz) || 0
-            }
-        } else if (itemType === 'ruestung') {
-            // Handle Rüstung items
-            systemData = {
-                rs: 0, // Left empty as requested
-                be: 0, // Left empty as requested
-                rs_beine: parseInt(attrs.rsBeine || element.rsBeine) || 0,
-                rs_larm: parseInt(attrs.rsLArm || element.rsLArm) || 0,
-                rs_rarm: parseInt(attrs.rsRArm || element.rsRArm) || 0,
-                rs_bauch: parseInt(attrs.rsBauch || element.rsBauch) || 0,
-                rs_brust: parseInt(attrs.rsBrust || element.rsBrust) || 0,
-                rs_kopf: parseInt(attrs.rsKopf || element.rsKopf) || 0,
-                aktiv: false, // Default value, not in XML
-                text: text,
-            }
-        } else if (itemType === 'talent') {
-            // Handle Talent items (only kategorie=0 should reach here)
-            systemData = {
-                text: text,
-                fertigkeit: attrs.fertigkeiten || element.fertigkeiten || '', // XML uses 'fertigkeiten', Foundry uses 'fertigkeit'
-            }
-        } else if (itemType === 'zauber' || itemType === 'liturgie' || itemType === 'anrufung') {
-            // Handle übernatürliche Talente (zauber, liturgie, anrufung)
-            const parsedText = this.parseUebernatuerlicheTalentText(text)
-
-            systemData = {
-                typ: itemType, // Set the type field
-                fertigkeiten: attrs.fertigkeiten || element.fertigkeiten || '',
-                fertigkeit_ausgewaehlt: 'auto',
-                text: parsedText.text,
-                maechtig: parsedText.maechtig,
-                schwierigkeit: parsedText.schwierigkeit,
-                modifikationen: parsedText.modifikationen,
-                vorbereitung: parsedText.vorbereitung,
-                ziel: parsedText.ziel,
-                reichweite: parsedText.reichweite,
-                wirkungsdauer: parsedText.wirkungsdauer,
-                kosten: parsedText.kosten,
-                erlernen: parsedText.erlernen,
-                pw: 0,
-                gruppe: 0, // Set to 0 as requested
-            }
-        } else if (itemType === 'manoever') {
-            // Handle Manöver items - special logic for typ 0 based on probe content
-            const typ = parseInt(attrs.typ || element.typ) || 0
-            const probe = attrs.probe || element.probe || ''
-            const gegenprobe = attrs.gegenprobe || element.gegenprobe || ''
-            const voraussetzungen = attrs.voraussetzungen || element.voraussetzungen || ''
-
-            // Determine gruppe based on probe content for typ 0
-            let gruppe = typ
-            if (typ === 0) {
-                // For typ 0: Check if probe contains "VT" to determine if it's gruppe 13 (defense) or 0 (attack)
-                gruppe = probe.includes('VT') ? 13 : 0
-            }
-
-            systemData = {
-                voraussetzungen: voraussetzungen, // Keep as string, not array
-                input: {
-                    label: 'Checkbox',
-                    field: 'CHECKBOX',
-                },
-                modifications: [],
-                gruppe: gruppe, // Determined based on probe content for typ 0
-                probe: probe,
-                gegenprobe: gegenprobe,
-                text: text,
-            }
-        }
-
-        // Create Foundry item
+    createFoundryItem(name, itemType, systemData) {
         const foundryId = this.generateFoundryId()
-        const foundryItem = {
+        return {
             name: name,
             type: itemType,
             img: 'systems/Ilaris/assets/images/skills/profan-skill.svg',
@@ -558,8 +387,246 @@ export class XMLRuleImporter {
             },
             _key: `!items!${foundryId}`,
         }
+    }
 
-        return foundryItem
+    /**
+     * Convert skill-based XML elements (Fertigkeit and ÜbernatürlicheFertigkeit) to Foundry items
+     * @param {Object} element - XML element (parsed by xml2js)
+     * @param {string} itemType - 'fertigkeit' or 'uebernatuerliche_fertigkeit'
+     * @returns {Object} Foundry item
+     */
+    convertSkillToFoundryItem(element, itemType) {
+        const attrs = element.$ || element
+        const name = attrs.name || element.name || `Unnamed ${itemType}`
+        const text = element._ || ''
+        const voraussetzungen = attrs.voraussetzungen || element.voraussetzungen || ''
+
+        const kategorie = parseInt(attrs.kategorie || element.kategorie) || 0
+        const attribute = attrs.attribute || element.attribute || 'KO|KO|KO'
+
+        // Split attributes by "|" and assign to attribut_0, attribut_1, attribut_2
+        const attributeArray = attribute.split('|')
+        const attribut_0 = attributeArray[0] || 'KO'
+        const attribut_1 = attributeArray[1] || 'KO'
+        const attribut_2 = attributeArray[2] || 'KO'
+
+        const systemData = {
+            basis: 0,
+            fw: 0,
+            pw: 0,
+            attribut_0: attribut_0,
+            attribut_1: attribut_1,
+            attribut_2: attribut_2,
+            gruppe: kategorie,
+            text: text,
+            pwt: 0,
+        }
+
+        // Add ÜbernatürlicheFertigkeit specific field
+        if (itemType === 'uebernatuerliche_fertigkeit') {
+            systemData.voraussetzung = voraussetzungen
+        }
+
+        return this.createFoundryItem(name, itemType, systemData)
+    }
+
+    /**
+     * Convert Waffeneigenschaft XML element to Foundry item
+     * @param {Object} element - XML element (parsed by xml2js)
+     * @returns {Object} Foundry item
+     */
+    convertWaffeneigenschaftToFoundryItem(element) {
+        const attrs = element.$ || element
+        const name = attrs.name || element.name || 'Unnamed Waffeneigenschaft'
+        const text = element._ || ''
+        const script = attrs.script || element.script || ''
+
+        const systemData = {
+            name: name,
+            sephrastoScript: script,
+            foundryScript: '', // Empty by default, can be filled manually later
+            text: text,
+        }
+
+        return this.createFoundryItem(name, 'waffeneigenschaft', systemData)
+    }
+
+    /**
+     * Convert weapon XML elements (Nahkampfwaffe and Fernkampfwaffe) to Foundry items
+     * @param {Object} element - XML element (parsed by xml2js)
+     * @param {string} itemType - 'nahkampfwaffe' or 'fernkampfwaffe'
+     * @returns {Object} Foundry item
+     */
+    convertWeaponToFoundryItem(element, itemType) {
+        const attrs = element.$ || element
+        const name = attrs.name || element.name || `Unnamed ${itemType}`
+        const text = element._ || ''
+
+        // Construct TP from würfel, würfelSeiten, and plus
+        const würfel = attrs.würfel || element.würfel || '0'
+        const würfelSeiten = attrs.würfelSeiten || element.würfelSeiten || '0'
+        const plus = parseInt(attrs.plus || element.plus) || 0
+        const tp = `${würfel}W${würfelSeiten}${plus !== 0 ? (plus > 0 ? '+' + plus : plus) : ''}`
+
+        // Parse eigenschaften from _ property (comma-separated)
+        const eigenschaftenRaw = element._ || ''
+        const eigenschaftenList = eigenschaftenRaw
+            .split(',')
+            .map((e) => e.trim())
+            .filter((e) => e.length > 0)
+
+        // Basic weapon system data (shared between both types)
+        const systemData = {
+            tp: tp,
+            fertigkeit: attrs.fertigkeit || element.fertigkeit || '',
+            talent: attrs.talent || element.talent || '',
+            rw: parseInt(attrs.rw || element.rw) || 0,
+            rw_mod: 0, // Default value, not in XML
+            hauptwaffe: false, // Default value, not in XML
+            nebenwaffe: false, // Default value, not in XML
+            eigenschaftenList: eigenschaftenList,
+            text: text,
+            manoverausgleich: {
+                value: 0, // Default value, not in XML
+                overcomplicated: true, // Default value
+            },
+        }
+
+        // Add type-specific WM properties
+        const wm = parseInt(attrs.wm || element.wm) || 0
+        if (itemType === 'nahkampfwaffe') {
+            // For nahkampfwaffe: wm applies to wm_at, and optionally wmVt to wm_vt
+            systemData.wm_at = wm
+            // Check if wmVt is present and not null/undefined
+            const wmVt = attrs.wmVt || element.wmVt
+            if (wmVt !== null && wmVt !== undefined && wmVt !== '') {
+                systemData.wm_vt = parseInt(wmVt) || 0
+            } else {
+                systemData.wm_vt = wm
+            }
+        } else if (itemType === 'fernkampfwaffe') {
+            // For fernkampfwaffe: wm applies to wm_fk, and we need lz
+            systemData.wm_fk = wm
+            systemData.lz = parseInt(attrs.lz || element.lz) || 0
+        }
+
+        return this.createFoundryItem(name, itemType, systemData)
+    }
+
+    /**
+     * Convert Rüstung XML element to Foundry item
+     * @param {Object} element - XML element (parsed by xml2js)
+     * @returns {Object} Foundry item
+     */
+    convertRuestungToFoundryItem(element) {
+        const attrs = element.$ || element
+        const name = attrs.name || element.name || 'Unnamed Rüstung'
+        const text = element._ || ''
+
+        const systemData = {
+            rs: 0, // Left empty as requested
+            be: 0, // Left empty as requested
+            rs_beine: parseInt(attrs.rsBeine || element.rsBeine) || 0,
+            rs_larm: parseInt(attrs.rsLArm || element.rsLArm) || 0,
+            rs_rarm: parseInt(attrs.rsRArm || element.rsRArm) || 0,
+            rs_bauch: parseInt(attrs.rsBauch || element.rsBauch) || 0,
+            rs_brust: parseInt(attrs.rsBrust || element.rsBrust) || 0,
+            rs_kopf: parseInt(attrs.rsKopf || element.rsKopf) || 0,
+            aktiv: false, // Default value, not in XML
+            text: text,
+        }
+
+        return this.createFoundryItem(name, 'ruestung', systemData)
+    }
+
+    /**
+     * Convert Talent XML element to Foundry item
+     * @param {Object} element - XML element (parsed by xml2js)
+     * @returns {Object} Foundry item
+     */
+    convertBasicTalentToFoundryItem(element) {
+        const attrs = element.$ || element
+        const name = attrs.name || element.name || 'Unnamed Talent'
+        const text = element._ || ''
+
+        const systemData = {
+            text: text,
+            fertigkeit: attrs.fertigkeiten || element.fertigkeiten || '', // XML uses 'fertigkeiten', Foundry uses 'fertigkeit'
+        }
+
+        return this.createFoundryItem(name, 'talent', systemData)
+    }
+
+    /**
+     * Convert übernatürliche Talent XML element to Foundry item
+     * @param {Object} element - XML element (parsed by xml2js)
+     * @param {string} itemType - 'zauber', 'liturgie', or 'anrufung'
+     * @returns {Object} Foundry item
+     */
+    convertUebernatuerlicheTalentToFoundryItem(element, itemType) {
+        const attrs = element.$ || element
+        const name = attrs.name || element.name || `Unnamed ${itemType}`
+        const text = element._ || ''
+
+        const parsedText = this.parseUebernatuerlicheTalentText(text)
+
+        const systemData = {
+            typ: itemType, // Set the type field
+            fertigkeiten: attrs.fertigkeiten || element.fertigkeiten || '',
+            fertigkeit_ausgewaehlt: 'auto',
+            text: parsedText.text,
+            maechtig: parsedText.maechtig,
+            schwierigkeit: parsedText.schwierigkeit,
+            modifikationen: parsedText.modifikationen,
+            vorbereitung: parsedText.vorbereitung,
+            ziel: parsedText.ziel,
+            reichweite: parsedText.reichweite,
+            wirkungsdauer: parsedText.wirkungsdauer,
+            kosten: parsedText.kosten,
+            erlernen: parsedText.erlernen,
+            pw: 0,
+            gruppe: 0, // Set to 0 as requested
+        }
+
+        return this.createFoundryItem(name, itemType, systemData)
+    }
+
+    /**
+     * Convert Manöver XML element to Foundry item
+     * @param {Object} element - XML element (parsed by xml2js)
+     * @returns {Object} Foundry item
+     */
+    convertManoeverToFoundryItem(element) {
+        const attrs = element.$ || element
+        const name = attrs.name || element.name || 'Unnamed Manöver'
+        const text = element._ || ''
+
+        const typ = parseInt(attrs.typ || element.typ) || 0
+        const probe = attrs.probe || element.probe || ''
+        const gegenprobe = attrs.gegenprobe || element.gegenprobe || ''
+        const voraussetzungen = attrs.voraussetzungen || element.voraussetzungen || ''
+
+        // Determine gruppe based on probe content for typ 0
+        let gruppe = typ
+        if (typ === 0) {
+            // For typ 0: Check if probe contains "VT" to determine if it's gruppe 13 (defense) or 0 (attack)
+            gruppe = probe.includes('VT') ? 13 : 0
+        }
+
+        const systemData = {
+            voraussetzungen: voraussetzungen, // Keep as string, not array
+            input: {
+                label: 'Checkbox',
+                field: 'CHECKBOX',
+            },
+            modifications: [],
+            gruppe: gruppe, // Determined based on probe content for typ 0
+            probe: probe,
+            gegenprobe: gegenprobe,
+            text: text,
+        }
+
+        return this.createFoundryItem(name, 'manoever', systemData)
     }
 
     /**
@@ -568,7 +635,7 @@ export class XMLRuleImporter {
      * @returns {Object} Foundry fertigkeit item
      */
     convertFertigkeitToFoundryItem(element) {
-        return this.convertXMLElementToFoundryItem(element, 'fertigkeit', 'Fertigkeit')
+        return this.convertSkillToFoundryItem(element, 'fertigkeit')
     }
 
     /**
@@ -577,29 +644,12 @@ export class XMLRuleImporter {
      * @returns {Object} Foundry uebernatuerliche_fertigkeit item
      */
     convertUebernatuerlicheFertigkeitToFoundryItem(element) {
-        return this.convertXMLElementToFoundryItem(
-            element,
-            'uebernatuerliche_fertigkeit',
-            'ÜbernatürlicheFertigkeit',
-        )
-    }
-
-    /**
-     * Convert a single Waffeneigenschaft XML element to Foundry item format
-     * @param {Object} element - XML Waffeneigenschaft element (parsed by xml2js)
-     * @returns {Object} Foundry waffeneigenschaft item
-     */
-    convertWaffeneigenschaftToFoundryItem(element) {
-        return this.convertXMLElementToFoundryItem(
-            element,
-            'waffeneigenschaft',
-            'Waffeneigenschaft',
-        )
+        return this.convertSkillToFoundryItem(element, 'uebernatuerliche_fertigkeit')
     }
 
     /**
      * Convert a single Waffe XML element to Foundry item format
-     * Determines if it should be nahkampfwaffe or fernkampfwaffe based on lz property
+     * Determines if it should be nahkampfwaffe or fernkampfwaffe based on fk property
      * @param {Object} element - XML Waffe element (parsed by xml2js)
      * @returns {Object} Foundry nahkampfwaffe or fernkampfwaffe item
      */
@@ -607,25 +657,15 @@ export class XMLRuleImporter {
         // Determine weapon type based on fk property (0=nahkampfwaffe, 1=fernkampfwaffe)
         const fk = parseInt(element.fk) || 0
         const itemType = fk === 1 ? 'fernkampfwaffe' : 'nahkampfwaffe'
-        const xmlType = 'Waffe'
 
-        return this.convertXMLElementToFoundryItem(element, itemType, xmlType)
-    }
-
-    /**
-     * Convert a single Rüstung XML element to Foundry item format
-     * @param {Object} element - XML Rüstung element (parsed by xml2js)
-     * @returns {Object} Foundry ruestung item
-     */
-    convertRuestungToFoundryItem(element) {
-        return this.convertXMLElementToFoundryItem(element, 'ruestung', 'Rüstung')
+        return this.convertWeaponToFoundryItem(element, itemType)
     }
 
     /**
      * Convert a single Talent XML element to Foundry item format
      * Only processes Talents with kategorie=0
      * @param {Object} element - XML Talent element (parsed by xml2js)
-     * @returns {Object} Foundry talent item
+     * @returns {Object|null} Foundry talent item or null if kategorie != 0
      */
     convertTalentToFoundryItem(element) {
         // Only process Talents with kategorie=0
@@ -634,7 +674,7 @@ export class XMLRuleImporter {
             return null // Skip this talent
         }
 
-        return this.convertXMLElementToFoundryItem(element, 'talent', 'Talent')
+        return this.convertBasicTalentToFoundryItem(element)
     }
 
     /**
@@ -665,7 +705,7 @@ export class XMLRuleImporter {
                 break
         }
 
-        return this.convertXMLElementToFoundryItem(element, itemType, 'ÜbernatürlichesTalent')
+        return this.convertUebernatuerlicheTalentToFoundryItem(element, itemType)
     }
 
     /**
@@ -674,7 +714,7 @@ export class XMLRuleImporter {
      * For typ 0: determines gruppe based on probe content (VT = gruppe 13, otherwise gruppe 0)
      * Special handling: splits Manöver with "AT ... oder VT ..." into two separate items
      * @param {Object} element - XML Manöver element (parsed by xml2js)
-     * @returns {Object|Array} Foundry manoever item(s) or null if typ not supported
+     * @returns {Object|Array|null} Foundry manoever item(s) or null if typ not supported
      */
     convertManoeverToFoundryItem(element) {
         const attrs = element.$ || element
@@ -709,11 +749,7 @@ export class XMLRuleImporter {
                     modifiedElement.probe = probePart.trim()
                 }
 
-                const foundryItem = this.convertXMLElementToFoundryItem(
-                    modifiedElement,
-                    'manoever',
-                    'Manöver',
-                )
+                const foundryItem = this.convertManoeverToFoundryItem(modifiedElement)
                 if (foundryItem) {
                     // Add suffix to name to distinguish the variants
                     const isDefense = probePart.includes('VT')
@@ -726,7 +762,7 @@ export class XMLRuleImporter {
         }
 
         // Normal case: single Manöver
-        return this.convertXMLElementToFoundryItem(element, 'manoever', 'Manöver')
+        return this.convertManoeverToFoundryItem(element)
     }
 
     /**
