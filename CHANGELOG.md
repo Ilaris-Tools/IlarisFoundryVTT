@@ -8,6 +8,10 @@
 
 ### v12.2
 
+#### Breaking Change
+
+-   die Kampfstile und die Übernatürlichen Talente können nur richtig verwendet werden, wenn sie auch in ihrer aktuellsten Form auf dem Charakter liegen. Dafür muss entweder der Sync/Update-Button verwendet werden (bitte auf die nötigen Nutzer Berechtigungen achten ("Upload File", ggf "Create Actor")) oder die Vorteile/Übernatürlichen Talente müssen neu auf das Charaktersheet gezogen werden
+
 #### Features
 
 -   Würfeldialog für Fernkampf mit Modifikator-Vorschau

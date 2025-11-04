@@ -35,7 +35,11 @@
   ],
   "scripts": [],
   "esmodules": ["scripts/hooks.js"],
-  "styles": ["css/temp.css", "styles/sheets/manoever.css"],
+  "styles": [
+    "css/temp.css",
+    "styles/sheets/manoever.css",
+    "styles/dialogs/changelog-notification.css"
+  ],
   "packFolders": [
     {
       "name": "Charaktere",

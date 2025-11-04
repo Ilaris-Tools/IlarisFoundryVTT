@@ -90,6 +90,16 @@ export const registerIlarisGameSettings = () => {
             scope: 'client',
             default: true,
         },
+        {
+            // Register last seen changelog version setting
+            settingsName: IlarisGameSettingNames.lastSeenChangelogVersion,
+            name: 'Zuletzt gesehene Changelog-Version',
+            hint: 'Interne Einstellung zur Verfolgung der zuletzt angezeigten Changelog-Benachrichtigung.',
+            config: false, // Hidden from settings menu
+            type: String,
+            scope: 'client', // Each user tracks their own
+            default: '',
+        },
     ].forEach((setting) => {
         game.settings.register(ConfigureGameSettingsCategories.Ilaris, setting.settingsName, {
             name: setting.name,
