@@ -76,10 +76,10 @@ function showChangelogNotification(version, breakingChanges) {
     const content = `
         <div class="ilaris-changelog-content">
             <p><strong>Version ${version} enthält wichtige Änderungen, die deine Aufmerksamkeit erfordern:</strong></p>
-            ${breakingChanges}
             <p style="margin-top: 1em; font-style: italic;">
                 Diese Nachricht wird nur einmal angezeigt. Du kannst die vollständigen Änderungen jederzeit im CHANGELOG.md einsehen.
             </p>
+            ${breakingChanges}
         </div>
     `
 
