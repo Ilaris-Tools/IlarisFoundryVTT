@@ -105,25 +105,25 @@ export const registerIlarisGameSettings = () => {
         })
     })
     ;[
-        {
-            // Register the settings menu for maneuvers
-            settingsName: IlarisGameSettingsMenuNames.manoeverPacksMenu,
-            name: 'Manöver Kompendien',
-            label: 'Manöver Kompendien Konfigurieren',
-            hint: 'Hier kannst du die Kompendien auswählen, die Manöver enthalten. Dadurch bestimmst du, welche Manöver du in Kampfdialogen sehen kannst.',
-            icon: 'fas fa-book',
-            type: ManeuverPacksSettings,
-            restricted: true,
-        },
-        {
-            settingsName: IlarisGameSettingsMenuNames.vorteilePacksMenu,
-            name: 'Vorteile Kompendien',
-            label: 'Vorteile Kompendien Konfigurieren',
-            hint: 'Hier kannst du die Kompendien auswählen, die Vorteile enthalten.',
-            icon: 'fas fa-book',
-            type: VorteilePacksSettings,
-            restricted: true,
-        },
+        // {
+        //     // Register the settings menu for maneuvers
+        //     settingsName: IlarisGameSettingsMenuNames.manoeverPacksMenu,
+        //     name: 'Manöver Kompendien',
+        //     label: 'Manöver Kompendien Konfigurieren',
+        //     hint: 'Hier kannst du die Kompendien auswählen, die Manöver enthalten. Dadurch bestimmst du, welche Manöver du in Kampfdialogen sehen kannst.',
+        //     icon: 'fas fa-book',
+        //     type: ManeuverPacksSettings,
+        //     restricted: true,
+        // },
+        // {
+        //     settingsName: IlarisGameSettingsMenuNames.vorteilePacksMenu,
+        //     name: 'Vorteile Kompendien',
+        //     label: 'Vorteile Kompendien Konfigurieren',
+        //     hint: 'Hier kannst du die Kompendien auswählen, die Vorteile enthalten.',
+        //     icon: 'fas fa-book',
+        //     type: VorteilePacksSettings,
+        //     restricted: true,
+        // },
     ].forEach((setting) => {
         game.settings.registerMenu(ConfigureGameSettingsCategories.Ilaris, setting.settingsName, {
             name: setting.name,
