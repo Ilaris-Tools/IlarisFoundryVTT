@@ -2,11 +2,12 @@
 
 ## v12
 
-### v12.2.1
-
-#### Fixes
+### v12.2.2
 
 -   Importer speichert zugekaufte und gebundene Energie an der richtigen Stelle
+
+### v12.2.1
+
 -   Bei geweihten Beispielhelden waren die Liturigen falsch als Zauber geflaggt was dazu geführt hat, dass die Würfeldialoge nicht funktioniert haben.
 
 ### v12.2
