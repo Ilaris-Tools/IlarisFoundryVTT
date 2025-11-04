@@ -7,6 +7,7 @@
 #### Fixes
 
 -   Importer speichert zugekaufte und gebundene Energie an der richtigen Stelle
+-   Bei geweihten Beispielhelden waren die Liturigen falsch als Zauber geflaggt was dazu geführt hat, dass die Würfeldialoge nicht funktioniert haben.
 
 ### v12.2
 
