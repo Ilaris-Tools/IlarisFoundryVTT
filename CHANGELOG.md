@@ -4,6 +4,10 @@
 
 ### v12.2.3
 
+-   Importer speichert zugekaufte und gebundene Energie an der richtigen Stelle
+
+### v12.2.2
+
 -   Breaking changes dialog
 
 ### v12.2.1
