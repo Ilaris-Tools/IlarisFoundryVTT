@@ -439,10 +439,8 @@ export class XmlCharacterImporter {
                 value: characterData.energies.AsP.value,
                 threshold: 0,
             }
-            updates.system.abgeleitete = {
-                asp_zugekauft: characterData.energies.AsP.value,
-                gasp: characterData.energies.AsP.bound,
-            }
+            updates.system.abgeleitete.asp_zugekauft = characterData.energies.AsP.value
+            updates.system.abgeleitete.gasp = characterData.energies.AsP.bound
         }
 
         // Map other energies if they exist in XML
@@ -452,10 +450,8 @@ export class XmlCharacterImporter {
                 value: characterData.energies.KaP.value,
                 threshold: 0,
             }
-            updates.system.abgeleitete = {
-                kap_zugekauft: characterData.energies.KaP.value,
-                gkap: characterData.energies.KaP.bound,
-            }
+            updates.system.abgeleitete.kap_zugekauft = characterData.energies.KaP.value
+            updates.system.abgeleitete.gkap = characterData.energies.KaP.bound
         }
 
         if (characterData.energies.GuP) {
