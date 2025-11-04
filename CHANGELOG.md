@@ -4,6 +4,9 @@
 
 ### v12.2.1
 
+#### Fixes
+
+-   Breaking changes dialog
 -   Bei geweihten Beispielhelden waren die Liturigen falsch als Zauber geflaggt was dazu geführt hat, dass die Würfeldialoge nicht funktioniert haben.
 
 ### v12.2
