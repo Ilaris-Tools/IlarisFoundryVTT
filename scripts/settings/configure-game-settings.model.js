@@ -12,6 +12,7 @@ export const IlarisGameSettingNames = {
     realFumbleCrits: 'realFumbleCrits',
     restrictEnergyCostSetting: 'restrictEnergyCostSetting',
     hideSyncKampfstileButton: 'hideSyncKampfstileButton',
+    lastSeenChangelogVersion: 'lastSeenChangelogVersion',
 }
 
 export const IlarisGameSettingsMenuNames = {
