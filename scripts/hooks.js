@@ -441,6 +441,9 @@ Hooks.on('renderActorDirectory', (app, html) => {
     })
 })
 
+// Cache for hex token shapes setting
+let hexTokenShapesEnabled = false
+
 // Apply hexagonal token shapes when setting is enabled
 Hooks.on('ready', () => {
     applyHexTokenSetting()
@@ -464,11 +467,6 @@ Hooks.on('updateSetting', (setting) => {
 
 // Apply hex mask to tokens when they're drawn
 Hooks.on('drawToken', (token) => {
-    const hexTokenShapesEnabled = game.settings.get(
-        ConfigureGameSettingsCategories.Ilaris,
-        IlarisGameSettingNames.hexTokenShapes,
-    )
-
     if (hexTokenShapesEnabled) {
         applyHexMaskToToken(token)
     }
@@ -476,11 +474,6 @@ Hooks.on('drawToken', (token) => {
 
 // Apply hex mask to tokens when they're refreshed
 Hooks.on('refreshToken', (token) => {
-    const hexTokenShapesEnabled = game.settings.get(
-        ConfigureGameSettingsCategories.Ilaris,
-        IlarisGameSettingNames.hexTokenShapes,
-    )
-
     if (hexTokenShapesEnabled) {
         applyHexMaskToToken(token)
     }
@@ -490,7 +483,7 @@ Hooks.on('refreshToken', (token) => {
  * Apply or remove the hex token setting visual indicator
  */
 function applyHexTokenSetting() {
-    const hexTokenShapesEnabled = game.settings.get(
+    hexTokenShapesEnabled = game.settings.get(
         ConfigureGameSettingsCategories.Ilaris,
         IlarisGameSettingNames.hexTokenShapes,
     )
@@ -509,9 +502,17 @@ function applyHexTokenSetting() {
 function applyHexMaskToToken(token) {
     if (!token.mesh || !token.mesh.texture) return
 
-    // Check if token already has a hex mask
-    if (token.mesh.mask && token.mesh.mask._ilarisHexMask) {
-        return // Already has hex mask, no need to recreate
+    const w = token.w
+    const h = token.h
+
+    // Check if token already has a hex mask with matching dimensions
+    if (
+        token.mesh.mask &&
+        token.mesh.mask._ilarisHexMask &&
+        token.mesh.mask._maskWidth === w &&
+        token.mesh.mask._maskHeight === h
+    ) {
+        return // Already has hex mask with correct dimensions, no need to recreate
     }
 
     // Remove existing mask if any
@@ -521,8 +522,6 @@ function applyHexMaskToToken(token) {
     }
 
     // Create hexagon mask
-    const w = token.w
-    const h = token.h
     const size = Math.min(w, h) / 2
 
     const hexMask = new PIXI.Graphics()
@@ -546,6 +545,8 @@ function applyHexMaskToToken(token) {
 
     // Mark this as an Ilaris hex mask for future checks
     hexMask._ilarisHexMask = true
+    hexMask._maskWidth = w
+    hexMask._maskHeight = h
 
     // Apply mask to token mesh
     token.mesh.mask = hexMask
