@@ -509,6 +509,11 @@ function applyHexTokenSetting() {
 function applyHexMaskToToken(token) {
     if (!token.mesh || !token.mesh.texture) return
 
+    // Check if token already has a hex mask
+    if (token.mesh.mask && token.mesh.mask._ilarisHexMask) {
+        return // Already has hex mask, no need to recreate
+    }
+
     // Remove existing mask if any
     if (token.mesh.mask) {
         token.mesh.mask.destroy()
@@ -527,16 +532,20 @@ function applyHexMaskToToken(token) {
     const centerX = w / 2
     const centerY = h / 2
     const angle = (Math.PI * 2) / 6
+    const startAngle = -Math.PI / 2 // Start at top for flat-top orientation
 
-    hexMask.moveTo(centerX + size * Math.cos(0), centerY + size * Math.sin(0))
+    hexMask.moveTo(centerX + size * Math.cos(startAngle), centerY + size * Math.sin(startAngle))
 
     for (let i = 1; i <= 6; i++) {
-        const x = centerX + size * Math.cos(angle * i)
-        const y = centerY + size * Math.sin(angle * i)
+        const x = centerX + size * Math.cos(startAngle + angle * i)
+        const y = centerY + size * Math.sin(startAngle + angle * i)
         hexMask.lineTo(x, y)
     }
 
     hexMask.endFill()
+
+    // Mark this as an Ilaris hex mask for future checks
+    hexMask._ilarisHexMask = true
 
     // Apply mask to token mesh
     token.mesh.mask = hexMask
