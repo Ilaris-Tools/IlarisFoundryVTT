@@ -56,13 +56,16 @@ function parseBreakingChanges(changelogText, version) {
  */
 async function fetchChangelog() {
     try {
-        const response = await fetch('/systems/Ilaris/CHANGELOG.md')
+        // Use dynamic path based on the actual system ID
+        const systemPath = `systems/${game.system.id}/CHANGELOG.md`
+        const response = await fetch(systemPath)
         if (!response.ok) {
             throw new Error(`Failed to fetch CHANGELOG.md: ${response.statusText}`)
         }
         return await response.text()
     } catch (error) {
         console.error('Ilaris | Error fetching CHANGELOG.md:', error)
+        console.error('Ilaris | Attempted path:', `systems/${game.system.id}/CHANGELOG.md`)
         return null
     }
 }
