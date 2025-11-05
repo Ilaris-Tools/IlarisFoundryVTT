@@ -25,7 +25,7 @@
 -   die Kampfstile und die Übernatürlichen Talente können nur richtig verwendet werden, wenn sie auch in ihrer aktuellsten Form auf dem Charakter liegen. Dafür muss entweder der Sync/Update-Button verwendet werden (bitte auf die nötigen Nutzer Berechtigungen achten ("Upload File", ggf "Create Actor")) oder die Vorteile/Übernatürlichen Talente müssen neu auf das Charaktersheet gezogen werden
 -   für Charaktere mit 5.1.0 und neuer sollte der XML-Import oder der Sync-Button im Actortab verwendet werden. Bei älteren Sephrasto XMLs kommt es zu Fehlern, da sich die Datenstruktur maßgeblich unterscheidet
 -   für Charaktere, die mit älteren Sephrasto-Versionen erstellt wurden, muss weiterhin das Sephrasto-Plugin für Foundry verwendet werden und ein manuelles Update der Charakterdaten erfolgen. Dafür wie oben beschrieben den Sync-Button für den Charakterbogen aktivieren und einfach drauf drücken, den Rest erledigt Foundry
--   Bei der neuen Varinate (Sephrasto 5.1.0 + XML-Import/Actortab-Sync-Button) können auch Hausregeln verwendet werden, wenn die Hausregeln mit exakt gleichem Namen auch in Foundry vorhanden sind!
+-   Bei der neuen Variante (Sephrasto 5.1.0 + XML-Import/Actortab-Sync-Button) können auch Hausregeln verwendet werden, wenn die Hausregeln mit exakt gleichem Namen auch in Foundry vorhanden sind!
 
 #### Features
 
