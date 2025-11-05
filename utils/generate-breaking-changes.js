@@ -102,13 +102,7 @@ function cleanupOldBreakingChanges(currentVersion) {
  * @param {string} breakingChanges - The breaking changes content (HTML)
  */
 function generateHbsFile(version, breakingChanges) {
-    const template = `{{!-- 
-    Breaking Changes for version ${version}
-    Auto-generated from CHANGELOG.md - Do not edit manually
-    Generated: ${new Date().toISOString()}
---}}
-
-<div class="ilaris-changelog-content">
+    const template = `<div class="ilaris-changelog-content">
     <p><strong>Version ${version} enthält wichtige Änderungen, die deine Aufmerksamkeit erfordern:</strong></p>
     <p style="margin-top: 1em; font-style: italic;">
         Diese Nachricht wird nur einmal angezeigt. Du kannst die vollständigen Änderungen jederzeit im CHANGELOG.md einsehen.
