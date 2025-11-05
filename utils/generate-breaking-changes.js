@@ -65,6 +65,38 @@ function markdownToHtml(markdown) {
 }
 
 /**
+ * Clean up old breaking changes files
+ * @param {string} currentVersion - The current version to keep
+ */
+function cleanupOldBreakingChanges(currentVersion) {
+    const outputDir = path.join(__dirname, '..', 'templates', 'changes')
+
+    if (!fs.existsSync(outputDir)) {
+        return
+    }
+
+    const files = fs.readdirSync(outputDir)
+    const breakingChangesFiles = files.filter(
+        (f) => f.startsWith('breaking-changes-') && f.endsWith('.hbs'),
+    )
+
+    let deletedCount = 0
+    breakingChangesFiles.forEach((file) => {
+        // Keep only the current version file
+        if (file !== `breaking-changes-${currentVersion}.hbs`) {
+            const filePath = path.join(outputDir, file)
+            fs.unlinkSync(filePath)
+            console.log(`🗑️  Removed old breaking changes file: ${file}`)
+            deletedCount++
+        }
+    })
+
+    if (deletedCount > 0) {
+        console.log(`✅ Cleaned up ${deletedCount} old breaking changes file(s)`)
+    }
+}
+
+/**
  * Generate the HBS template file
  * @param {string} version - The version number
  * @param {string} breakingChanges - The breaking changes content (HTML)
@@ -90,6 +122,9 @@ function generateHbsFile(version, breakingChanges) {
     if (!fs.existsSync(outputDir)) {
         fs.mkdirSync(outputDir, { recursive: true })
     }
+
+    // Clean up old breaking changes files before generating new one
+    cleanupOldBreakingChanges(version)
 
     // Write the HBS file
     const outputPath = path.join(outputDir, `breaking-changes-${version}.hbs`)
