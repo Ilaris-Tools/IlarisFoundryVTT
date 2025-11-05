@@ -4,7 +4,7 @@
  * Script to generate a Handlebars template file with breaking changes from CHANGELOG.md
  * This should be run as part of the build/deployment process
  *
- * Usage: node scripts/generate-breaking-changes.js
+ * Usage: node utils/generate-breaking-changes.js
  */
 
 import fs from 'fs'
