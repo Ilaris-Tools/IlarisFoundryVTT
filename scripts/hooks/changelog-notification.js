@@ -53,7 +53,7 @@ function showChangelogNotification(version, content) {
                 default: true,
                 callback: async () => {
                     // Mark this version as seen
-                    await game.settings.set('Ilaris', 'lastSeenChangelogVersion', version)
+                    await game.settings.set('Ilaris', 'lastSeenBreakingChangesVersion', version)
                 },
             },
         ],
@@ -71,7 +71,7 @@ async function checkAndShowChangelogNotification() {
         const majorMinorVersion = currentVersion.split('.').slice(0, 2).join('.') // e.g., "12.2.0" -> "12.2"
 
         // Check if we've already shown this version
-        const lastSeenVersion = game.settings.get('Ilaris', 'lastSeenChangelogVersion')
+        const lastSeenVersion = game.settings.get('Ilaris', 'lastSeenBreakingChangesVersion')
 
         if (lastSeenVersion === majorMinorVersion) {
             return
@@ -82,7 +82,7 @@ async function checkAndShowChangelogNotification() {
 
         if (!breakingChangesContent) {
             // No breaking changes for this version, mark as seen
-            await game.settings.set('Ilaris', 'lastSeenChangelogVersion', majorMinorVersion)
+            await game.settings.set('Ilaris', 'lastSeenBreakingChangesVersion', majorMinorVersion)
             return
         }
 

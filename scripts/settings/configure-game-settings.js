@@ -83,10 +83,10 @@ export const registerIlarisGameSettings = () => {
             default: true,
         },
         {
-            // Register last seen changelog version setting
-            settingsName: IlarisGameSettingNames.lastSeenChangelogVersion,
-            name: 'Zuletzt gesehene Changelog-Version',
-            hint: 'Interne Einstellung zur Verfolgung der zuletzt angezeigten Changelog-Benachrichtigung.',
+            // Register last seen breaking changes version setting
+            settingsName: IlarisGameSettingNames.lastSeenBreakingChangesVersion,
+            name: 'Zuletzt gesehene Breaking Changes Version',
+            hint: 'Interne Einstellung zur Verfolgung der zuletzt angezeigten Breaking Changes Benachrichtigung.',
             config: false, // Hidden from settings menu
             type: String,
             scope: 'client', // Each user tracks their own
