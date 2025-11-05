@@ -56,16 +56,36 @@ function parseBreakingChanges(changelogText, version) {
  */
 async function fetchChangelog() {
     try {
-        // Use dynamic path based on the actual system ID
-        const systemPath = `systems/${game.system.id}/CHANGELOG.md`
-        const response = await fetch(systemPath)
-        if (!response.ok) {
-            throw new Error(`Failed to fetch CHANGELOG.md: ${response.statusText}`)
+        // Try multiple possible paths for fetching the changelog
+        const paths = [
+            // First try the local system path
+            `systems/${game.system.id}/CHANGELOG.md`,
+            // Fall back to the changelog URL from the manifest if available
+            game.system.changelog,
+        ].filter(Boolean) // Remove any undefined/null values
+
+        let lastError = null
+
+        for (const path of paths) {
+            try {
+                const response = await fetch(path)
+                if (response.ok) {
+                    return await response.text()
+                }
+                lastError = `${response.status} ${response.statusText}`
+            } catch (error) {
+                lastError = error.message
+            }
         }
-        return await response.text()
+
+        throw new Error(`Failed to fetch CHANGELOG.md from any source. Last error: ${lastError}`)
     } catch (error) {
         console.error('Ilaris | Error fetching CHANGELOG.md:', error)
-        console.error('Ilaris | Attempted path:', `systems/${game.system.id}/CHANGELOG.md`)
+        console.error(
+            'Ilaris | Attempted paths:',
+            `systems/${game.system.id}/CHANGELOG.md`,
+            game.system.changelog,
+        )
         return null
     }
 }
