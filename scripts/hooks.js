@@ -440,3 +440,105 @@ Hooks.on('renderActorDirectory', (app, html) => {
         }
     })
 })
+
+// Apply hexagonal token shapes when setting is enabled
+Hooks.on('ready', () => {
+    applyHexTokenSetting()
+})
+
+// Update when setting changes
+Hooks.on('updateSetting', (setting) => {
+    if (
+        setting.key ===
+        `${ConfigureGameSettingsCategories.Ilaris}.${IlarisGameSettingNames.hexTokenShapes}`
+    ) {
+        applyHexTokenSetting()
+        // Refresh all tokens to apply the mask
+        if (canvas.ready && canvas.tokens) {
+            canvas.tokens.placeables.forEach((token) =>
+                token.renderFlags.set({ refreshMesh: true }),
+            )
+        }
+    }
+})
+
+// Apply hex mask to tokens when they're drawn
+Hooks.on('drawToken', (token) => {
+    const hexTokenShapesEnabled = game.settings.get(
+        ConfigureGameSettingsCategories.Ilaris,
+        IlarisGameSettingNames.hexTokenShapes,
+    )
+
+    if (hexTokenShapesEnabled) {
+        applyHexMaskToToken(token)
+    }
+})
+
+// Apply hex mask to tokens when they're refreshed
+Hooks.on('refreshToken', (token) => {
+    const hexTokenShapesEnabled = game.settings.get(
+        ConfigureGameSettingsCategories.Ilaris,
+        IlarisGameSettingNames.hexTokenShapes,
+    )
+
+    if (hexTokenShapesEnabled) {
+        applyHexMaskToToken(token)
+    }
+})
+
+/**
+ * Apply or remove the hex token setting visual indicator
+ */
+function applyHexTokenSetting() {
+    const hexTokenShapesEnabled = game.settings.get(
+        ConfigureGameSettingsCategories.Ilaris,
+        IlarisGameSettingNames.hexTokenShapes,
+    )
+
+    if (hexTokenShapesEnabled) {
+        document.body.classList.add('ilaris-hex-tokens-enabled')
+    } else {
+        document.body.classList.remove('ilaris-hex-tokens-enabled')
+    }
+}
+
+/**
+ * Apply a hexagonal mask to a token
+ * @param {Token} token - The token to apply the mask to
+ */
+function applyHexMaskToToken(token) {
+    if (!token.mesh || !token.mesh.texture) return
+
+    // Remove existing mask if any
+    if (token.mesh.mask) {
+        token.mesh.mask.destroy()
+        token.mesh.mask = null
+    }
+
+    // Create hexagon mask
+    const w = token.w
+    const h = token.h
+    const size = Math.min(w, h) / 2
+
+    const hexMask = new PIXI.Graphics()
+    hexMask.beginFill(0xffffff)
+
+    // Draw hexagon (flat-top orientation)
+    const centerX = w / 2
+    const centerY = h / 2
+    const angle = (Math.PI * 2) / 6
+
+    hexMask.moveTo(centerX + size * Math.cos(0), centerY + size * Math.sin(0))
+
+    for (let i = 1; i <= 6; i++) {
+        const x = centerX + size * Math.cos(angle * i)
+        const y = centerY + size * Math.sin(angle * i)
+        hexMask.lineTo(x, y)
+    }
+
+    hexMask.endFill()
+
+    // Apply mask to token mesh
+    token.mesh.mask = hexMask
+    token.addChild(hexMask)
+}

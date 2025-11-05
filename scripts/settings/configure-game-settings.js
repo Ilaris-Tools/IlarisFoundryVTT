@@ -92,6 +92,16 @@ export const registerIlarisGameSettings = () => {
             scope: 'client', // Each user tracks their own
             default: '',
         },
+        {
+            // Register hex token shapes setting
+            settingsName: IlarisGameSettingNames.hexTokenShapes,
+            name: 'Hexagonale Token-Bilder',
+            hint: 'Wenn aktiviert, werden Charakterbilder auf Hexfeld-Karten als Hexagone zugeschnitten.',
+            config: true,
+            type: new foundry.data.fields.BooleanField(),
+            scope: 'world',
+            default: false,
+        },
     ].forEach((setting) => {
         game.settings.register(ConfigureGameSettingsCategories.Ilaris, setting.settingsName, {
             name: setting.name,

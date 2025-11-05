@@ -13,6 +13,7 @@ export const IlarisGameSettingNames = {
     restrictEnergyCostSetting: 'restrictEnergyCostSetting',
     hideSyncKampfstileButton: 'hideSyncKampfstileButton',
     lastSeenChangelogVersion: 'lastSeenChangelogVersion',
+    hexTokenShapes: 'hexTokenShapes',
 }
 
 export const IlarisGameSettingsMenuNames = {
