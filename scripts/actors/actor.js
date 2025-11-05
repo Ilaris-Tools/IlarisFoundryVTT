@@ -40,14 +40,8 @@ export class IlarisActor extends Actor {
         if (this.profan?.fertigkeiten) {
             data.fertigkeiten = {}
             for (const fertigkeit of this.profan.fertigkeiten) {
-                // Use the fertigkeit name as the key
-                // Store the system data so pw, pwt, etc. are accessible
-                data.fertigkeiten[fertigkeit.name] = {
-                    pw: fertigkeit.system.pw,
-                    pwt: fertigkeit.system.pwt,
-                    fw: fertigkeit.system.fw,
-                    ...fertigkeit.system,
-                }
+                // Use the fertigkeit name as the key and include all system properties
+                data.fertigkeiten[fertigkeit.name] = fertigkeit.system
             }
         }
 
@@ -57,12 +51,8 @@ export class IlarisActor extends Actor {
                 data.fertigkeiten = {}
             }
             for (const fertigkeit of this.uebernatuerlich.fertigkeiten) {
-                data.fertigkeiten[fertigkeit.name] = {
-                    pw: fertigkeit.system.pw,
-                    pwt: fertigkeit.system.pwt,
-                    fw: fertigkeit.system.fw,
-                    ...fertigkeit.system,
-                }
+                // Use the fertigkeit name as the key and include all system properties
+                data.fertigkeiten[fertigkeit.name] = fertigkeit.system
             }
         }
 
