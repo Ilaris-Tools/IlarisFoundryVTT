@@ -54,39 +54,39 @@ function parseBreakingChanges(changelogText, version) {
  */
 function markdownToHtml(markdown) {
     // Split into lines
-    const lines = markdown.split('\n');
-    const items = [];
-    let currentItem = null;
+    const lines = markdown.split('\n')
+    const items = []
+    let currentItem = null
     for (let line of lines) {
-        const listItemMatch = /^-\s+(.+)/.exec(line);
+        const listItemMatch = /^-\s+(.+)/.exec(line)
         if (listItemMatch) {
             // Start a new list item
             if (currentItem !== null) {
-                items.push(currentItem.trim());
+                items.push(currentItem.trim())
             }
-            currentItem = listItemMatch[1];
+            currentItem = listItemMatch[1]
         } else if (/^\s+/.test(line) && currentItem !== null) {
             // Continuation of previous list item (indented line)
-            currentItem += '\n' + line.trim();
+            currentItem += '\n' + line.trim()
         } else {
             // Not a list item or continuation; flush current item if any
             if (currentItem !== null) {
-                items.push(currentItem.trim());
-                currentItem = null;
+                items.push(currentItem.trim())
+                currentItem = null
             }
         }
     }
     // Flush last item
     if (currentItem !== null) {
-        items.push(currentItem.trim());
+        items.push(currentItem.trim())
     }
-    let html;
+    let html
     if (items.length > 0) {
-        html = '<ul>' + items.map(item => `<li>${item}</li>`).join('') + '</ul>';
+        html = '<ul>' + items.map((item) => `<li>${item}</li>`).join('') + '</ul>'
     } else {
-        html = markdown;
+        html = markdown
     }
-    return html;
+    return html
 }
 
 /**
