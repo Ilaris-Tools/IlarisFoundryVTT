@@ -82,7 +82,7 @@ function markdownToHtml(markdown) {
     }
     let html
     if (items.length > 0) {
-        html = '<ul>' + items.map((item) => `<li>${item}</li>`).join('') + '</ul>'
+        html = '<ul>\n' + items.map((item) => ` <li>${item}</li>`).join('\n') + '\n</ul>'
     } else {
         html = markdown
     }
