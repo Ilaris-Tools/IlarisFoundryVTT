@@ -1624,7 +1624,7 @@
     {
       "_id": "IT8ntJgURhWNKfOs",
       "name": "Feuersegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Heiliges Feuer, Zwölfgöttlicher Ritus",

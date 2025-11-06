@@ -2,7 +2,23 @@
 
 ## v12
 
+### v12.2.3
+
+-   Importer speichert zugekaufte und gebundene Energie an der richtigen Stelle
+
+### v12.2.2
+
+-   Breaking changes dialog
+
+### v12.2.1
+
+-   Bei geweihten Beispielhelden waren die Liturigen falsch als Zauber geflaggt was dazu geführt hat, dass die Würfeldialoge nicht funktioniert haben.
+
 ### v12.2
+
+#### Breaking Change
+
+-   die Kampfstile und die Übernatürlichen Talente können nur richtig verwendet werden, wenn sie auch in ihrer aktuellsten Form auf dem Charakter liegen. Dafür muss entweder der Sync/Update-Button verwendet werden (bitte auf die nötigen Nutzer Berechtigungen achten ("Upload File", ggf "Create Actor")) oder die Vorteile/Übernatürlichen Talente müssen neu auf das Charaktersheet gezogen werden
 
 #### Features
 
