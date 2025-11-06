@@ -686,15 +686,18 @@ export class IlarisActorSheet extends ActorSheet {
                 const packItems = await pack.getDocuments()
 
                 for (const actorItem of itemsToSync) {
-                    // Find matching item in compendium by name and type
+                    // Find matching item in compendium by name (ignore type as it might be wrong)
                     const compendiumItem = packItems.find(
-                        (packItem) =>
-                            packItem.name === actorItem.name && packItem.type === actorItem.type,
+                        (packItem) => packItem.name === actorItem.name,
                     )
 
                     if (compendiumItem) {
+                        // Check if type matches, if not we need to update
+                        const typeChanged = actorItem.type !== compendiumItem.type
+
                         // Check if update is needed by comparing key fields
-                        const needsUpdate = this._needsItemUpdate(actorItem, compendiumItem)
+                        const needsUpdate =
+                            typeChanged || this._needsItemUpdate(actorItem, compendiumItem)
 
                         if (needsUpdate) {
                             // Prepare update data based on item type
@@ -703,8 +706,16 @@ export class IlarisActorSheet extends ActorSheet {
                                 'system.text': compendiumItem.system.text,
                             }
 
-                            // Add type-specific fields
-                            if (actorItem.type === 'vorteil') {
+                            // Update type if it changed
+                            if (typeChanged) {
+                                updateData['type'] = compendiumItem.type
+                                console.log(
+                                    `Type mismatch for ${actorItem.name}: ${actorItem.type} -> ${compendiumItem.type}`,
+                                )
+                            }
+
+                            // Add type-specific fields (use compendiumItem.type since that's the correct type)
+                            if (compendiumItem.type === 'vorteil') {
                                 updateData['system.sephrastoScript'] =
                                     compendiumItem.system.sephrastoScript
                                 updateData['system.stilBedingungen'] =
@@ -714,9 +725,9 @@ export class IlarisActorSheet extends ActorSheet {
                                 updateData['system.voraussetzung'] =
                                     compendiumItem.system.voraussetzung
                             } else if (
-                                actorItem.type === 'zauber' ||
-                                actorItem.type === 'liturgie' ||
-                                actorItem.type === 'anrufung'
+                                compendiumItem.type === 'zauber' ||
+                                compendiumItem.type === 'liturgie' ||
+                                compendiumItem.type === 'anrufung'
                             ) {
                                 // Update all übernatürlich_talent template fields
                                 if (compendiumItem.system.fertigkeiten !== undefined) {
