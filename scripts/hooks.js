@@ -496,6 +496,17 @@ function applyHexTokenSetting() {
 }
 
 /**
+ * Remove and cleanup an existing mask from a token mesh
+ * @param {Token} token - The token to remove the mask from
+ */
+function removeTokenMask(token) {
+    if (token.mesh && token.mesh.mask) {
+        token.mesh.mask.destroy()
+        token.mesh.mask = null
+    }
+}
+
+/**
  * Apply a hexagonal mask to a token to clip its appearance to a hexagon shape.
  * The function creates a PIXI.Graphics hexagon and applies it as a mask to the token mesh.
  *
@@ -527,10 +538,7 @@ function applyHexMaskToToken(token) {
     }
 
     // Remove existing mask if any
-    if (token.mesh.mask) {
-        token.mesh.mask.destroy()
-        token.mesh.mask = null
-    }
+    removeTokenMask(token)
 
     // Create hexagon mask
     const size = Math.min(w, h) / 2
