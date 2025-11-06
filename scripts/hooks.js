@@ -496,10 +496,21 @@ function applyHexTokenSetting() {
 }
 
 /**
- * Apply a hexagonal mask to a token
+ * Apply a hexagonal mask to a token to clip its appearance to a hexagon shape.
+ * The function creates a PIXI.Graphics hexagon and applies it as a mask to the token mesh.
+ *
  * @param {Token} token - The token to apply the mask to
+ * @returns {void} Returns early if token mesh or texture is not available (e.g., token not yet rendered)
+ *
+ * @description
+ * The mask is cached and reused if the token dimensions haven't changed, to avoid unnecessary
+ * recreation. The mask stores internal properties for tracking:
+ * - _ilarisHexMask: Boolean flag to identify Ilaris hex masks
+ * - _maskWidth: Stored token width to detect dimension changes
+ * - _maskHeight: Stored token height to detect dimension changes
  */
 function applyHexMaskToToken(token) {
+    // Return early if token is not ready for masking (mesh or texture not yet initialized)
     if (!token.mesh || !token.mesh.texture) return
 
     const w = token.w
