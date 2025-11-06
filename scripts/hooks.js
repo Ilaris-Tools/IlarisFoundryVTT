@@ -28,6 +28,7 @@ import {
     ConfigureGameSettingsCategories,
 } from './settings/configure-game-settings.model.js'
 import { XmlCharacterImporter } from './common/xml_character_importer.js'
+import { XMLRuleImporter } from './common/xml_rule_importer.js'
 
 // Import hooks
 import './hooks/changelog-notification.js'
@@ -439,4 +440,22 @@ Hooks.on('renderActorDirectory', (app, html) => {
             }
         }
     })
+})
+
+// Add XML rule import button to the Compendium Directory
+Hooks.on('renderCompendiumDirectory', (app, html) => {
+    // Add XML import button to the compendium directory header (only if GM)
+    if (game.user.isGM) {
+        const header = html.find('.directory-header')
+        if (header.length > 0) {
+            const importButton = $(`
+                <button class="import-xml-rules" title="Import Rules from XML">
+                    <i class="fas fa-file-import"></i> Import Regeln XML
+                </button>
+            `)
+
+            importButton.click(() => XMLRuleImporter.showRuleImportDialog())
+            header.append(importButton)
+        }
+    }
 })

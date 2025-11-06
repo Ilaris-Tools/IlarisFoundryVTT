@@ -967,6 +967,335 @@ export class XMLRuleImporter {
 
         return results
     }
+
+    /**
+     * Create compendium packs for each item type with imported data
+     * Creates a folder with the XML filename and compendiums for each item type within
+     * @param {Object} importedData - Data returned from importAllFromXML()
+     * @param {string} xmlFileName - Name of the XML file (without extension) to use for folder and pack names
+     * @returns {Promise<Object>} Object containing created pack information
+     */
+    async createCompendiumPacks(importedData, xmlFileName) {
+        console.log(`\n=== Creating Compendium Packs for ${xmlFileName} ===`)
+
+        const results = {
+            folderName: xmlFileName,
+            createdPacks: [],
+            errors: [],
+        }
+
+        // Map of item types to their data and display names
+        const packDefinitions = [
+            {
+                key: 'fertigkeiten',
+                items: importedData.fertigkeiten,
+                label: 'Fertigkeiten',
+                type: 'Item',
+            },
+            {
+                key: 'uebernatuerlicheFertigkeiten',
+                items: importedData.uebernatuerlicheFertigkeiten,
+                label: 'Übernatürliche Fertigkeiten',
+                type: 'Item',
+            },
+            {
+                key: 'waffeneigenschaften',
+                items: importedData.waffeneigenschaften,
+                label: 'Waffeneigenschaften',
+                type: 'Item',
+            },
+            {
+                key: 'waffen',
+                items: importedData.waffen,
+                label: 'Waffen',
+                type: 'Item',
+            },
+            {
+                key: 'ruestungen',
+                items: importedData.ruestungen,
+                label: 'Rüstungen',
+                type: 'Item',
+            },
+            {
+                key: 'talente',
+                items: importedData.talente,
+                label: 'Talente',
+                type: 'Item',
+            },
+            {
+                key: 'uebernatuerlicheTalente',
+                items: importedData.uebernatuerlicheTalente,
+                label: 'Übernatürliche Talente',
+                type: 'Item',
+            },
+            {
+                key: 'manoever',
+                items: importedData.manoever,
+                label: 'Manöver',
+                type: 'Item',
+            },
+        ]
+
+        // First, create a folder for this XML import
+        let folder = null
+        try {
+            folder = await Folder.create({
+                name: xmlFileName,
+                type: 'Compendium',
+                color: '#4169E1', // Royal blue color
+            })
+            console.log(`✅ Created folder: ${xmlFileName}`)
+        } catch (error) {
+            console.error(`❌ Error creating folder ${xmlFileName}:`, error)
+            results.errors.push({ type: 'folder', name: xmlFileName, error: error.message })
+        }
+
+        // Create compendium packs for each item type
+        for (const packDef of packDefinitions) {
+            if (!packDef.items || packDef.items.length === 0) {
+                console.log(`⊘ Skipping ${packDef.label} (no items)`)
+                continue
+            }
+
+            try {
+                // Create pack name as "xmlFileName - Label"
+                const packName = `${xmlFileName} - ${packDef.label}`
+                const packId = `world.${xmlFileName
+                    .toLowerCase()
+                    .replace(/\s+/g, '-')}-${packDef.key.toLowerCase()}`
+
+                console.log(`Creating pack: ${packName} (${packDef.items.length} items)`)
+
+                // Create the compendium pack
+                const pack = await CompendiumCollection.createCompendium({
+                    name: packId,
+                    label: packName,
+                    type: packDef.type,
+                    folder: folder?.id,
+                    package: 'world',
+                    system: game.system.id,
+                })
+
+                console.log(`✅ Created pack: ${packName}`)
+
+                // Add items to the pack
+                const itemsToCreate = packDef.items.map((item) => {
+                    // Remove _key and _stats fields that shouldn't be in the creation data
+                    const { _key, _stats, _id, ...itemData } = item
+                    return itemData
+                })
+
+                await Item.createDocuments(itemsToCreate, { pack: pack.collection })
+                console.log(`✅ Added ${itemsToCreate.length} items to ${packName}`)
+
+                results.createdPacks.push({
+                    key: packDef.key,
+                    packId: pack.collection,
+                    label: packName,
+                    itemCount: itemsToCreate.length,
+                })
+            } catch (error) {
+                console.error(`❌ Error creating pack for ${packDef.label}:`, error)
+                results.errors.push({
+                    type: 'pack',
+                    name: packDef.label,
+                    error: error.message,
+                })
+            }
+        }
+
+        console.log('\n=== Compendium Creation Summary ===')
+        console.log(`Folder: ${results.folderName}`)
+        console.log(`Packs created: ${results.createdPacks.length}`)
+        console.log(`Errors: ${results.errors.length}`)
+
+        if (results.errors.length > 0) {
+            console.log('\nErrors encountered:')
+            results.errors.forEach((err) => {
+                console.log(`  - ${err.type} "${err.name}": ${err.error}`)
+            })
+        }
+
+        return results
+    }
+
+    /**
+     * Complete workflow: Import XML and create compendiums
+     * @param {File} xmlFile - XML file object from file upload
+     * @returns {Promise<Object>} Results of import and pack creation
+     */
+    async importAndCreatePacks(xmlFile) {
+        console.log(`\n=== Starting XML Import and Pack Creation ===`)
+        console.log(`File: ${xmlFile.name}`)
+
+        try {
+            // Extract filename without extension
+            const xmlFileName = xmlFile.name.replace(/\.[^/.]+$/, '')
+
+            // Read file content
+            const fileContent = await xmlFile.text()
+
+            // Parse XML
+            const parser = new xml2js.Parser({
+                explicitArray: false,
+                ignoreAttrs: false,
+                mergeAttrs: true,
+            })
+            this.parsedXML = await parser.parseStringPromise(fileContent)
+            console.log('✅ XML file parsed successfully')
+
+            // Import all data by calling extraction methods directly
+            const importedData = {
+                fertigkeiten: [],
+                uebernatuerlicheFertigkeiten: [],
+                waffeneigenschaften: [],
+                waffen: [],
+                ruestungen: [],
+                talente: [],
+                uebernatuerlicheTalente: [],
+                manoever: [],
+                totalItems: 0,
+            }
+
+            // Extract each type
+            console.log('\n--- Extracting data from XML ---')
+            try {
+                importedData.fertigkeiten = this.extractFertigkeiten()
+            } catch (error) {
+                console.error('Error extracting Fertigkeiten:', error.message)
+            }
+
+            try {
+                importedData.uebernatuerlicheFertigkeiten =
+                    this.extractUebernatuerlicheFertigkeiten()
+            } catch (error) {
+                console.error('Error extracting ÜbernatürlicheFertigkeiten:', error.message)
+            }
+
+            try {
+                importedData.waffeneigenschaften = this.extractWaffeneigenschaften()
+            } catch (error) {
+                console.error('Error extracting Waffeneigenschaften:', error.message)
+            }
+
+            try {
+                importedData.waffen = this.extractWaffen()
+            } catch (error) {
+                console.error('Error extracting Waffen:', error.message)
+            }
+
+            try {
+                importedData.ruestungen = this.extractRuestungen()
+            } catch (error) {
+                console.error('Error extracting Rüstungen:', error.message)
+            }
+
+            try {
+                importedData.talente = this.extractTalente()
+            } catch (error) {
+                console.error('Error extracting Talente:', error.message)
+            }
+
+            try {
+                importedData.uebernatuerlicheTalente = this.extractUebernatuerlicheTalente()
+            } catch (error) {
+                console.error('Error extracting Übernatürliche Talente:', error.message)
+            }
+
+            try {
+                importedData.manoever = this.extractManoever()
+            } catch (error) {
+                console.error('Error extracting Manöver:', error.message)
+            }
+
+            // Calculate totals
+            importedData.totalItems =
+                importedData.fertigkeiten.length +
+                importedData.uebernatuerlicheFertigkeiten.length +
+                importedData.waffeneigenschaften.length +
+                importedData.waffen.length +
+                importedData.ruestungen.length +
+                importedData.talente.length +
+                importedData.uebernatuerlicheTalente.length +
+                importedData.manoever.length
+
+            console.log(`✅ Extracted ${importedData.totalItems} items total`)
+
+            // Create compendium packs
+            const packResults = await this.createCompendiumPacks(importedData, xmlFileName)
+
+            // Show notification to user
+            if (packResults.errors.length === 0) {
+                ui.notifications.info(
+                    `Erfolgreich ${packResults.createdPacks.length} Kompendien aus ${xmlFile.name} erstellt!`,
+                )
+            } else {
+                ui.notifications.warn(
+                    `${packResults.createdPacks.length} Kompendien erstellt mit ${packResults.errors.length} Fehler(n)`,
+                )
+            }
+
+            return {
+                success: true,
+                imported: importedData,
+                packs: packResults,
+            }
+        } catch (error) {
+            console.error('Error in import and pack creation:', error)
+            ui.notifications.error(`Fehler beim Importieren der Regeln: ${error.message}`)
+            return {
+                success: false,
+                error: error.message,
+            }
+        }
+    }
+
+    /**
+     * Show file upload dialog for XML rule import
+     * Allows user to upload XML file and creates compendiums automatically
+     */
+    static async showRuleImportDialog() {
+        new Dialog({
+            title: 'Ilaris Regeln Importieren',
+            content: `
+                <form>
+                    <div class="form-group">
+                        <label>XML Datei mit Ilaris Regeln hochladen:</label>
+                        <input type="file" name="xmlFile" accept=".xml" required />
+                        <p class="notes">
+                            Wähle eine XML-Datei mit Ilaris Regeln aus.
+                            Es werden automatisch Kompendien für alle enthaltenen Regeltypen erstellt
+                            (Fertigkeiten, Talente, Waffen, Zauber, Liturgien, Manöver, etc.).
+                        </p>
+                    </div>
+                </form>
+            `,
+            buttons: {
+                import: {
+                    icon: '<i class="fas fa-file-import"></i>',
+                    label: 'Importieren',
+                    callback: async (html) => {
+                        const fileInput = html.find('input[name="xmlFile"]')[0]
+                        const file = fileInput.files[0]
+
+                        if (!file) {
+                            ui.notifications.warn('Bitte wähle eine XML-Datei aus')
+                            return
+                        }
+
+                        ui.notifications.info('Importiere Regeln...')
+                        const importer = new XMLRuleImporter()
+                        await importer.importAndCreatePacks(file)
+                    },
+                },
+                cancel: {
+                    icon: '<i class="fas fa-times"></i>',
+                    label: 'Abbrechen',
+                },
+            },
+            default: 'import',
+        }).render(true)
+    }
 }
 
 /**
@@ -982,3 +1311,6 @@ export async function importAllFromXML(xmlFilePath) {
 // Example usage:
 // const results = await importAllFromXML('./path/to/your/xml/file.xml')
 // console.log(`Imported ${results.totalItems} items total`)
+
+// Example usage for dialog:
+// XMLRuleImporter.showRuleImportDialog()
