@@ -5,6 +5,7 @@
 ### v12.2.5
 
 -   Kampfstil-Sync-Button auf dem Charaktersheet wurde ausgebaut, dafür wurde ein Sync-Button auf dem Charaktersheet eingeführt, der alle Vorteile und alle Übernatürlichen Talente mit den Kompendium-Counterparts synct
+-   auskommentiere Setting wieder reingenommen, hat zu einem Problem geführt, dass man die Dialoge nicht mehr öffnen kann
 
 ### v12.2.4
 

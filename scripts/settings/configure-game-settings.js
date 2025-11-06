@@ -25,20 +25,20 @@ export const registerIlarisGameSettings = () => {
             requiresReload: true,
         },
         // mit Regeleditor wieder gebraucht
-        // {
-        //     // Register maneuver packs setting
-        //     settingsName: IlarisGameSettingNames.manoeverPacks,
-        //     name: 'Manöver Kompendien',
-        //     hint: 'Hier kannst du die Kompendien auswählen, die Manöver enthalten. Dadurch bestimmst du, welche Manöver du in Kampfdialogen sehen kannst.',
-        //     scope: 'world',
-        //     config: false, // Hide from settings menu since we use custom menu
-        //     type: String,
-        //     default: '["Ilaris.manover"]', // Default to Ilaris.manoever pack
-        //     onChange: (value) => {
-        //         // Notify that maneuver packs have changed
-        //         Hooks.callAll('ilarisManoeverPacksChanged', JSON.parse(value))
-        //     },
-        // },
+        {
+            // Register maneuver packs setting
+            settingsName: IlarisGameSettingNames.manoeverPacks,
+            name: 'Manöver Kompendien',
+            hint: 'Hier kannst du die Kompendien auswählen, die Manöver enthalten. Dadurch bestimmst du, welche Manöver du in Kampfdialogen sehen kannst.',
+            scope: 'world',
+            config: false, // Hide from settings menu since we use custom menu
+            type: String,
+            default: '["Ilaris.manover"]', // Default to Ilaris.manoever pack
+            onChange: (value) => {
+                // Notify that maneuver packs have changed
+                Hooks.callAll('ilarisManoeverPacksChanged', JSON.parse(value))
+            },
+        },
         // {
         //     // Register vorteile packs setting
         //     settingsName: IlarisGameSettingNames.vorteilePacks,
