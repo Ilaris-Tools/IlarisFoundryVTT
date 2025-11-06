@@ -8,61 +8,23 @@ class ChangelogNotificationDialog extends foundry.applications.api.DialogV2 {
 }
 
 /**
- * Parse the CHANGELOG.md file to extract breaking changes for a specific version
- * @param {string} changelogText - The full text of the CHANGELOG.md file
- * @param {string} version - The version to extract (e.g., "12.2")
- * @returns {string|null} HTML formatted breaking changes or null if none found
+ * Fetch the pre-generated breaking changes HBS template
+ * @param {string} version - The version to fetch (e.g., "12.2")
+ * @returns {Promise<string|null>} The HTML content or null if not found
  */
-function parseBreakingChanges(changelogText, version) {
-    // Match the version section (e.g., "### v12.2")
-    const versionRegex = new RegExp(
-        `###\\s+v${version.replace('.', '\\.')}\\s*\\n[\\s\\S]*?(?=\\n###\\s+v|\\n##\\s+v|$)`,
-        'i',
-    )
-
-    const versionMatch = changelogText.match(versionRegex)
-
-    if (!versionMatch) {
-        return null
-    }
-
-    const versionSection = versionMatch[0]
-
-    // Look for "#### Breaking Change" section
-    const breakingChangeRegex = /####\s+Breaking\s+Change[^\n]*\n+([\s\S]*?)(?=\n####|\n###|$)/i
-    const breakingMatch = versionSection.match(breakingChangeRegex)
-
-    if (!breakingMatch) {
-        return null
-    }
-
-    // Extract the content after "#### Breaking Change"
-    let breakingContent = breakingMatch[1].trim()
-
-    // Convert markdown list items to HTML
-    breakingContent = breakingContent.replace(/^-\s+(.+)$/gm, '<li>$1</li>')
-
-    // Wrap in ul if there are list items
-    if (breakingContent.includes('<li>')) {
-        breakingContent = `<ul>${breakingContent}</ul>`
-    }
-
-    return breakingContent
-}
-
-/**
- * Fetch and parse the CHANGELOG.md file
- * @returns {Promise<string>} The text content of the CHANGELOG.md
- */
-async function fetchChangelog() {
+async function fetchBreakingChangesTemplate(version) {
     try {
-        const response = await fetch('/systems/Ilaris/CHANGELOG.md')
+        const templatePath = `systems/${game.system.id}/templates/changes/breaking-changes-${version}.hbs`
+        const response = await fetch(templatePath)
+
         if (!response.ok) {
-            throw new Error(`Failed to fetch CHANGELOG.md: ${response.statusText}`)
+            // No breaking changes template exists for this version
+            return null
         }
+
         return await response.text()
     } catch (error) {
-        console.error('Ilaris | Error fetching CHANGELOG.md:', error)
+        console.error('Ilaris | Error fetching breaking changes template:', error)
         return null
     }
 }
@@ -70,19 +32,9 @@ async function fetchChangelog() {
 /**
  * Show the changelog notification dialog with breaking changes
  * @param {string} version - The current system version
- * @param {string} breakingChanges - HTML formatted breaking changes
+ * @param {string} content - HTML content with breaking changes
  */
-function showChangelogNotification(version, breakingChanges) {
-    const content = `
-        <div class="ilaris-changelog-content">
-            <p><strong>Version ${version} enthält wichtige Änderungen, die deine Aufmerksamkeit erfordern:</strong></p>
-            <p style="margin-top: 1em; font-style: italic;">
-                Diese Nachricht wird nur einmal angezeigt. Du kannst die vollständigen Änderungen jederzeit im CHANGELOG.md einsehen.
-            </p>
-            ${breakingChanges}
-        </div>
-    `
-
+function showChangelogNotification(version, content) {
     new ChangelogNotificationDialog({
         window: {
             title: 'Wichtige Änderungen / Breaking Changes',
@@ -101,7 +53,7 @@ function showChangelogNotification(version, breakingChanges) {
                 default: true,
                 callback: async () => {
                     // Mark this version as seen
-                    await game.settings.set('Ilaris', 'lastSeenChangelogVersion', version)
+                    await game.settings.set('Ilaris', 'lastSeenBreakingChangesVersion', version)
                 },
             },
         ],
@@ -119,28 +71,23 @@ async function checkAndShowChangelogNotification() {
         const majorMinorVersion = currentVersion.split('.').slice(0, 2).join('.') // e.g., "12.2.0" -> "12.2"
 
         // Check if we've already shown this version
-        const lastSeenVersion = game.settings.get('Ilaris', 'lastSeenChangelogVersion')
+        const lastSeenVersion = game.settings.get('Ilaris', 'lastSeenBreakingChangesVersion')
 
         if (lastSeenVersion === majorMinorVersion) {
             return
         }
 
-        // Fetch and parse the changelog
-        const changelogText = await fetchChangelog()
-        if (!changelogText) {
-            return
-        }
+        // Fetch the pre-generated breaking changes template
+        const breakingChangesContent = await fetchBreakingChangesTemplate(majorMinorVersion)
 
-        // Extract breaking changes for this version
-        const breakingChanges = parseBreakingChanges(changelogText, majorMinorVersion)
-        if (!breakingChanges) {
-            // Still mark as seen so we don't check again
-            await game.settings.set('Ilaris', 'lastSeenChangelogVersion', majorMinorVersion)
+        if (!breakingChangesContent) {
+            // No breaking changes for this version, mark as seen
+            await game.settings.set('Ilaris', 'lastSeenBreakingChangesVersion', majorMinorVersion)
             return
         }
 
         // Show the notification
-        showChangelogNotification(majorMinorVersion, breakingChanges)
+        showChangelogNotification(majorMinorVersion, breakingChangesContent)
     } catch (error) {
         console.error('Ilaris | Error in changelog notification:', error)
     }
