@@ -24,7 +24,6 @@ export const registerIlarisGameSettings = () => {
             config: true,
             requiresReload: true,
         },
-        // mit Regeleditor wieder gebraucht
         {
             // Register maneuver packs setting
             settingsName: IlarisGameSettingNames.manoeverPacks,
@@ -39,20 +38,20 @@ export const registerIlarisGameSettings = () => {
                 Hooks.callAll('ilarisManoeverPacksChanged', JSON.parse(value))
             },
         },
-        // {
-        //     // Register vorteile packs setting
-        //     settingsName: IlarisGameSettingNames.vorteilePacks,
-        //     name: 'Vorteile Kompendien',
-        //     hint: 'Hier kannst du die Kompendien auswählen, die Vorteile enthalten.',
-        //     scope: 'world',
-        //     config: false, // Hide from settings menu since we use custom menu
-        //     type: String,
-        //     default: '["Ilaris.vorteile"]', // Default to Ilaris.vorteile pack
-        //     onChange: (value) => {
-        //         // Notify that vorteile packs have changed
-        //         Hooks.callAll('ilarisVorteilePacksChanged', JSON.parse(value))
-        //     },
-        // },
+        {
+            // Register vorteile packs setting
+            settingsName: IlarisGameSettingNames.vorteilePacks,
+            name: 'Vorteile Kompendien',
+            hint: 'Hier kannst du die Kompendien auswählen, die Vorteile enthalten.',
+            scope: 'world',
+            config: false, // Hide from settings menu since we use custom menu
+            type: String,
+            default: '["Ilaris.vorteile"]', // Default to Ilaris.vorteile pack
+            onChange: (value) => {
+                // Notify that vorteile packs have changed
+                Hooks.callAll('ilarisVorteilePacksChanged', JSON.parse(value))
+            },
+        },
         {
             // Register real fumble crits setting
             settingsName: IlarisGameSettingNames.realFumbleCrits,

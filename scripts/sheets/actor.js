@@ -646,24 +646,28 @@ export class IlarisActorSheet extends ActorSheet {
         console.log('Sync Items (Vorteile and Übernatürliche Talente)')
 
         try {
-            // Get selected vorteile packs from settings
-            const selectedPacks = JSON.parse(
-                game.settings.get(
-                    ConfigureGameSettingsCategories.Ilaris,
-                    IlarisGameSettingNames.vorteilePacks,
-                ),
-            )
+            // Get all available Item compendiums in the world
+            const selectedPacks = []
+            for (const pack of game.packs) {
+                if (pack.metadata.type === 'Item') {
+                    selectedPacks.push(pack.collection)
+                }
+            }
 
             if (!selectedPacks || selectedPacks.length === 0) {
-                ui.notifications.warn(
-                    'Keine Vorteile-Kompendien konfiguriert. Bitte in den Welteneinstellungen konfigurieren.',
-                )
+                ui.notifications.warn('Keine Item-Kompendien gefunden.')
                 return
             }
 
-            // Get all vorteile and übernatürliche fertigkeiten from the actor
+            console.log(`Found ${selectedPacks.length} Item compendiums to search`)
+
+            // Get all vorteile and übernatürliche talente from the actor
             const itemsToSync = this.actor.items.filter(
-                (item) => item.type === 'vorteil' || item.type === 'uebernatuerlicheFertigkeit',
+                (item) =>
+                    item.type === 'vorteil' ||
+                    item.type === 'zauber' ||
+                    item.type === 'liturgie' ||
+                    item.type === 'anrufung',
             )
 
             console.log(`Found ${itemsToSync.length} items to sync`)
@@ -685,6 +689,8 @@ export class IlarisActorSheet extends ActorSheet {
 
                 const packItems = await pack.getDocuments()
 
+                console.log(`Checking pack: ${pack.metadata.label} with ${packItems.length} items`)
+
                 for (const actorItem of itemsToSync) {
                     // Find matching item in compendium by name (ignore type as it might be wrong)
                     const compendiumItem = packItems.find(
@@ -698,6 +704,9 @@ export class IlarisActorSheet extends ActorSheet {
                         // Check if update is needed by comparing key fields
                         const needsUpdate =
                             typeChanged || this._needsItemUpdate(actorItem, compendiumItem)
+                        if (actorItem.name === 'Bannfluch des Heiligen Khalid') {
+                            console.log('Bannfluch des Heiligen Khalid needs update:', needsUpdate)
+                        }
 
                         if (needsUpdate) {
                             // Prepare update data based on item type
@@ -836,14 +845,7 @@ export class IlarisActorSheet extends ActorSheet {
                     actorItem.system.kosten !== compendiumItem.system.kosten) ||
                 (compendiumItem.system.erlernen !== undefined &&
                     actorItem.system.erlernen !== compendiumItem.system.erlernen)
-        } else if (actorItem.type === 'uebernatuerlicheFertigkeit') {
-            if (compendiumItem.system.voraussetzung !== undefined) {
-                needsUpdate =
-                    needsUpdate ||
-                    actorItem.system.voraussetzung !== compendiumItem.system.voraussetzung
-            }
         }
-
         return needsUpdate
     }
 
