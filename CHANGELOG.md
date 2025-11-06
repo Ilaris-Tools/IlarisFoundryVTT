@@ -2,6 +2,10 @@
 
 ## v12
 
+### v12.2.5
+
+-   Kampfstil-Sync-Button auf dem Charaktersheet wurde ausgebaut, dafür wurde ein Sync-Button auf dem Charaktersheet eingeführt, der alle Vorteile und alle Übernatürlichen Talente mit den Kompendium-Counterparts synct
+
 ### v12.2.3
 
 -   Importer speichert zugekaufte und gebundene Energie an der richtigen Stelle
