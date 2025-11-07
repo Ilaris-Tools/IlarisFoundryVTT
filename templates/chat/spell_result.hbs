@@ -1,11 +1,11 @@
 {{#if success}}
 <div class="message-content">
     <h3 style="color: #2e7d32">Das Wirken ist dir gelungen</h3>
-    <p>Du zahlst die folgenden Kosten für den Zauber: {{cost}} AsP</p>
+    <p>Du zahlst die folgenden Kosten für den Zauber: {{cost}} {{#if energyType}}{{energyType}}{{else}}AsP{{/if}}</p>
 </div>
 {{else}}
 <div class="message-content">
     <h3 style="color: #c62828">Das Wirken ist dir nicht gelungen</h3>
-    <p>Du zahlst die folgenden Kosten: {{cost}} AsP ({{costModifier}}/Basiskosten)</p>
+    <p>Du zahlst die folgenden Kosten: {{cost}} {{#if energyType}}{{energyType}}{{else}}AsP{{/if}} ({{costModifier}}/Basiskosten)</p>
 </div>
 {{/if}}
