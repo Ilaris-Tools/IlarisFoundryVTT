@@ -1255,46 +1255,56 @@ export class XMLRuleImporter {
      * Allows user to upload XML file and creates compendiums automatically
      */
     static async showRuleImportDialog() {
+        const content = await renderTemplate(
+            'systems/Ilaris/templates/importer/rule-import-dialog.hbs',
+        )
+
         new Dialog({
             title: 'Ilaris Regeln Importieren',
-            content: `
-                <form>
-                    <div class="form-group">
-                        <label>XML Datei mit Ilaris Regeln hochladen:</label>
-                        <input type="file" name="xmlFile" accept=".xml" required />
-                        <p class="notes">
-                            Wähle eine XML-Datei mit Ilaris Regeln aus.
-                            Es werden automatisch Kompendien für alle enthaltenen Regeltypen erstellt
-                            (Fertigkeiten, Talente, Waffen, Zauber, Liturgien, Manöver, etc.).
-                        </p>
-                    </div>
-                </form>
-            `,
-            buttons: {
-                import: {
-                    icon: '<i class="fas fa-file-import"></i>',
-                    label: 'Importieren',
-                    callback: async (html) => {
-                        const fileInput = html.find('input[name="xmlFile"]')[0]
-                        const file = fileInput.files[0]
-
-                        if (!file) {
-                            ui.notifications.warn('Bitte wähle eine XML-Datei aus')
-                            return
-                        }
-
-                        ui.notifications.info('Importiere Regeln...')
-                        const importer = new XMLRuleImporter()
-                        await importer.importAndCreatePacks(file)
-                    },
-                },
-                cancel: {
-                    icon: '<i class="fas fa-times"></i>',
-                    label: 'Abbrechen',
-                },
-            },
+            content: content,
+            buttons: this._getRuleImportDialogButtons(),
             default: 'import',
         }).render(true)
+    }
+
+    /**
+     * Get button configuration for rule import dialog
+     * @returns {Object} Dialog button configuration
+     * @private
+     */
+    static _getRuleImportDialogButtons() {
+        return {
+            import: {
+                icon: '<i class="fas fa-file-import"></i>',
+                label: 'Importieren',
+                callback: async (html) => {
+                    await this._handleRuleImport(html)
+                },
+            },
+            cancel: {
+                icon: '<i class="fas fa-times"></i>',
+                label: 'Abbrechen',
+            },
+        }
+    }
+
+    /**
+     * Handle the rule import process from dialog callback
+     * @param {jQuery} html - Dialog HTML content
+     * @private
+     */
+    static async _handleRuleImport(html) {
+        const fileInput = html.find('input[name="xmlFile"]')[0]
+        const file = fileInput.files[0]
+
+        if (!file) {
+            ui.notifications.warn('Bitte wähle eine XML-Datei aus')
+            return
+        }
+
+        ui.notifications.info('Importiere Regeln...')
+        const importer = new XMLRuleImporter()
+        await importer.importAndCreatePacks(file)
     }
 }
 
