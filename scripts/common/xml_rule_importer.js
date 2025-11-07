@@ -50,8 +50,6 @@ export class XMLRuleImporter {
                 ? this.parsedXML.Datenbank[xmlElementName]
                 : [this.parsedXML.Datenbank[xmlElementName]]
 
-            console.log(`Found ${elements.length} ${xmlElementName} elements in XML`)
-
             elements.forEach((element, index) => {
                 try {
                     const foundryItem = this.convertXMLElementToFoundryItem(
@@ -68,17 +66,8 @@ export class XMLRuleImporter {
                     console.error('Element data:', JSON.stringify(element, null, 2))
                 }
             })
-        } else {
-            console.warn(`No ${xmlElementName} elements found in XML`)
-            if (this.parsedXML.Datenbank) {
-                console.log(
-                    'Available elements in Datenbank:',
-                    Object.keys(this.parsedXML.Datenbank),
-                )
-            }
         }
 
-        console.log(`Successfully extracted ${extractedItems.length} ${xmlElementName} items`)
         return extractedItems
     }
 
@@ -124,8 +113,6 @@ export class XMLRuleImporter {
                 ? this.parsedXML.Datenbank.Waffe
                 : [this.parsedXML.Datenbank.Waffe]
 
-            console.log(`Found ${waffeElements.length} Waffe elements in XML`)
-
             waffeElements.forEach((element, index) => {
                 try {
                     const waffe = this.convertWaffeToFoundryItem(element)
@@ -135,17 +122,8 @@ export class XMLRuleImporter {
                     console.error('Element data:', JSON.stringify(element, null, 2))
                 }
             })
-        } else {
-            console.warn('No Waffe elements found in XML')
-            if (this.parsedXML.Datenbank) {
-                console.log(
-                    'Available elements in Datenbank:',
-                    Object.keys(this.parsedXML.Datenbank),
-                )
-            }
         }
 
-        console.log(`Successfully extracted ${waffen.length} Waffe items`)
         return waffen
     }
 
@@ -161,8 +139,6 @@ export class XMLRuleImporter {
                 ? this.parsedXML.Datenbank.Rüstung
                 : [this.parsedXML.Datenbank.Rüstung]
 
-            console.log(`Found ${ruestungElements.length} Rüstung elements in XML`)
-
             ruestungElements.forEach((element, index) => {
                 try {
                     const ruestung = this.convertRuestungToFoundryItem(element)
@@ -172,17 +148,8 @@ export class XMLRuleImporter {
                     console.error('Element data:', JSON.stringify(element, null, 2))
                 }
             })
-        } else {
-            console.warn('No Rüstung elements found in XML')
-            if (this.parsedXML.Datenbank) {
-                console.log(
-                    'Available elements in Datenbank:',
-                    Object.keys(this.parsedXML.Datenbank),
-                )
-            }
         }
 
-        console.log(`Successfully extracted ${ruestungen.length} Rüstung items`)
         return ruestungen
     }
 
@@ -199,8 +166,6 @@ export class XMLRuleImporter {
                 ? this.parsedXML.Datenbank.Talent
                 : [this.parsedXML.Datenbank.Talent]
 
-            console.log(`Found ${talentElements.length} Talent elements in XML`)
-
             talentElements.forEach((element, index) => {
                 try {
                     const talent = this.convertTalentToFoundryItem(element)
@@ -213,17 +178,8 @@ export class XMLRuleImporter {
                     console.error('Element data:', JSON.stringify(element, null, 2))
                 }
             })
-        } else {
-            console.warn('No Talent elements found in XML')
-            if (this.parsedXML.Datenbank) {
-                console.log(
-                    'Available elements in Datenbank:',
-                    Object.keys(this.parsedXML.Datenbank),
-                )
-            }
         }
 
-        console.log(`Successfully extracted ${talente.length} Talent items (kategorie=0 only)`)
         return talente
     }
 
@@ -240,10 +196,6 @@ export class XMLRuleImporter {
                 ? this.parsedXML.Datenbank.Talent
                 : [this.parsedXML.Datenbank.Talent]
 
-            console.log(
-                `Found ${talentElements.length} total Talent elements in XML for übernatürliche processing`,
-            )
-
             let zauberCount = 0
             let liturgieCount = 0
             let anrufungCount = 0
@@ -254,10 +206,6 @@ export class XMLRuleImporter {
                 const kategorie = parseInt(attrs.kategorie || element.kategorie) || 0
                 return kategorie !== 0
             })
-
-            console.log(
-                `Found ${uebernatuerlicheTalentElements.length} übernatürliche talents after kategorie filtering`,
-            )
 
             uebernatuerlicheTalentElements.forEach((element, index) => {
                 try {
@@ -279,23 +227,8 @@ export class XMLRuleImporter {
                     console.error('Element data:', JSON.stringify(element, null, 2))
                 }
             })
-
-            console.log(
-                `Extracted ${zauberCount} Zauber, ${liturgieCount} Liturgie, ${anrufungCount} Anrufung`,
-            )
-        } else {
-            console.warn('No Talent elements found in XML for übernatürliche processing')
-            if (this.parsedXML.Datenbank) {
-                console.log(
-                    'Available elements in Datenbank:',
-                    Object.keys(this.parsedXML.Datenbank),
-                )
-            }
         }
 
-        console.log(
-            `Successfully extracted ${uebernatuerlicheTalente.length} übernatürliche Talent items`,
-        )
         return uebernatuerlicheTalente
     }
 
@@ -311,8 +244,6 @@ export class XMLRuleImporter {
             const manoeverElements = Array.isArray(this.parsedXML.Datenbank['Manöver'])
                 ? this.parsedXML.Datenbank['Manöver']
                 : [this.parsedXML.Datenbank['Manöver']]
-
-            console.log(`Found ${manoeverElements.length} Manöver elements in XML`)
 
             let typCounts = { 0: 0, 1: 0, 2: 0, 3: 0, 6: 0 }
 
@@ -335,21 +266,8 @@ export class XMLRuleImporter {
                     console.error('Element data:', JSON.stringify(element, null, 2))
                 }
             })
-
-            console.log(
-                `Extracted Manöver by typ: Typ 0: ${typCounts[0]}, Typ 1: ${typCounts[1]}, Typ 2: ${typCounts[2]}, Typ 3: ${typCounts[3]}, Typ 6: ${typCounts[6]}`,
-            )
-        } else {
-            console.warn('No Manöver elements found in XML')
-            if (this.parsedXML.Datenbank) {
-                console.log(
-                    'Available elements in Datenbank:',
-                    Object.keys(this.parsedXML.Datenbank),
-                )
-            }
         }
 
-        console.log(`Successfully extracted ${manoever.length} Manöver items`)
         return manoever
     }
 
@@ -859,8 +777,6 @@ export class XMLRuleImporter {
      * @returns {Object} Object containing arrays of all imported item types
      */
     async importAllFromXML() {
-        console.log('Starting complete XML import process...')
-
         await this.loadXML()
 
         const results = {
@@ -876,7 +792,6 @@ export class XMLRuleImporter {
         }
 
         // Import Fertigkeiten
-        console.log('\n--- Importing Fertigkeiten ---')
         try {
             results.fertigkeiten = this.extractFertigkeiten()
         } catch (error) {
@@ -884,7 +799,6 @@ export class XMLRuleImporter {
         }
 
         // Import ÜbernatürlicheFertigkeiten
-        console.log('\n--- Importing ÜbernatürlicheFertigkeiten ---')
         try {
             results.uebernatuerlicheFertigkeiten = this.extractUebernatuerlicheFertigkeiten()
         } catch (error) {
@@ -892,7 +806,6 @@ export class XMLRuleImporter {
         }
 
         // Import Waffeneigenschaften
-        console.log('\n--- Importing Waffeneigenschaften ---')
         try {
             results.waffeneigenschaften = this.extractWaffeneigenschaften()
         } catch (error) {
@@ -900,7 +813,6 @@ export class XMLRuleImporter {
         }
 
         // Import Waffen
-        console.log('\n--- Importing Waffen ---')
         try {
             results.waffen = this.extractWaffen()
         } catch (error) {
@@ -908,7 +820,6 @@ export class XMLRuleImporter {
         }
 
         // Import Rüstungen
-        console.log('\n--- Importing Rüstungen ---')
         try {
             results.ruestungen = this.extractRuestungen()
         } catch (error) {
@@ -916,7 +827,6 @@ export class XMLRuleImporter {
         }
 
         // Import Talente
-        console.log('\n--- Importing Talente ---')
         try {
             results.talente = this.extractTalente()
         } catch (error) {
@@ -924,7 +834,6 @@ export class XMLRuleImporter {
         }
 
         // Import Übernatürliche Talente
-        console.log('\n--- Importing Übernatürliche Talente ---')
         try {
             results.uebernatuerlicheTalente = this.extractUebernatuerlicheTalente()
         } catch (error) {
@@ -932,7 +841,6 @@ export class XMLRuleImporter {
         }
 
         // Import Manöver
-        console.log('\n--- Importing Manöver ---')
         try {
             results.manoever = this.extractManoever()
         } catch (error) {
@@ -950,21 +858,6 @@ export class XMLRuleImporter {
             results.uebernatuerlicheTalente.length +
             results.manoever.length
 
-        // Summary
-        console.log('\n=== IMPORT SUMMARY ===')
-        console.log(`Fertigkeiten imported: ${results.fertigkeiten.length}`)
-        console.log(
-            `ÜbernatürlicheFertigkeiten imported: ${results.uebernatuerlicheFertigkeiten.length}`,
-        )
-        console.log(`Waffeneigenschaften imported: ${results.waffeneigenschaften.length}`)
-        console.log(`Waffen imported: ${results.waffen.length}`)
-        console.log(`Rüstungen imported: ${results.ruestungen.length}`)
-        console.log(`Talente imported: ${results.talente.length}`)
-        console.log(`Übernatürliche Talente imported: ${results.uebernatuerlicheTalente.length}`)
-        console.log(`Manöver imported: ${results.manoever.length}`)
-        console.log(`Total items imported: ${results.totalItems}`)
-        console.log('Complete XML import process finished successfully')
-
         return results
     }
 
@@ -976,8 +869,6 @@ export class XMLRuleImporter {
      * @returns {Promise<Object>} Object containing created pack information
      */
     async createCompendiumPacks(importedData, xmlFileName) {
-        console.log(`\n=== Creating Compendium Packs for ${xmlFileName} ===`)
-
         const results = {
             folderName: xmlFileName,
             createdPacks: [],
@@ -1044,7 +935,6 @@ export class XMLRuleImporter {
                 type: 'Compendium',
                 color: '#4169E1', // Royal blue color
             })
-            console.log(`✅ Created folder: ${xmlFileName}`)
         } catch (error) {
             console.error(`❌ Error creating folder ${xmlFileName}:`, error)
             results.errors.push({ type: 'folder', name: xmlFileName, error: error.message })
@@ -1053,7 +943,6 @@ export class XMLRuleImporter {
         // Create compendium packs for each item type
         for (const packDef of packDefinitions) {
             if (!packDef.items || packDef.items.length === 0) {
-                console.log(`⊘ Skipping ${packDef.label} (no items)`)
                 continue
             }
 
@@ -1063,8 +952,6 @@ export class XMLRuleImporter {
                 const packId = `world.${xmlFileName
                     .toLowerCase()
                     .replace(/\s+/g, '-')}-${packDef.key.toLowerCase()}`
-
-                console.log(`Creating pack: ${packName} (${packDef.items.length} items)`)
 
                 // Create the compendium pack
                 const pack = await CompendiumCollection.createCompendium({
@@ -1076,8 +963,6 @@ export class XMLRuleImporter {
                     system: game.system.id,
                 })
 
-                console.log(`✅ Created pack: ${packName}`)
-
                 // Add items to the pack
                 const itemsToCreate = packDef.items.map((item) => {
                     // Remove _key and _stats fields that shouldn't be in the creation data
@@ -1086,7 +971,6 @@ export class XMLRuleImporter {
                 })
 
                 await Item.createDocuments(itemsToCreate, { pack: pack.collection })
-                console.log(`✅ Added ${itemsToCreate.length} items to ${packName}`)
 
                 results.createdPacks.push({
                     key: packDef.key,
@@ -1104,18 +988,6 @@ export class XMLRuleImporter {
             }
         }
 
-        console.log('\n=== Compendium Creation Summary ===')
-        console.log(`Folder: ${results.folderName}`)
-        console.log(`Packs created: ${results.createdPacks.length}`)
-        console.log(`Errors: ${results.errors.length}`)
-
-        if (results.errors.length > 0) {
-            console.log('\nErrors encountered:')
-            results.errors.forEach((err) => {
-                console.log(`  - ${err.type} "${err.name}": ${err.error}`)
-            })
-        }
-
         return results
     }
 
@@ -1125,9 +997,6 @@ export class XMLRuleImporter {
      * @returns {Promise<Object>} Results of import and pack creation
      */
     async importAndCreatePacks(xmlFile) {
-        console.log(`\n=== Starting XML Import and Pack Creation ===`)
-        console.log(`File: ${xmlFile.name}`)
-
         try {
             // Extract filename without extension
             const xmlFileName = xmlFile.name.replace(/\.[^/.]+$/, '')
@@ -1142,7 +1011,6 @@ export class XMLRuleImporter {
                 mergeAttrs: true,
             })
             this.parsedXML = await parser.parseStringPromise(fileContent)
-            console.log('✅ XML file parsed successfully')
 
             // Import all data by calling extraction methods directly
             const importedData = {
@@ -1158,7 +1026,6 @@ export class XMLRuleImporter {
             }
 
             // Extract each type
-            console.log('\n--- Extracting data from XML ---')
             try {
                 importedData.fertigkeiten = this.extractFertigkeiten()
             } catch (error) {
@@ -1218,8 +1085,6 @@ export class XMLRuleImporter {
                 importedData.talente.length +
                 importedData.uebernatuerlicheTalente.length +
                 importedData.manoever.length
-
-            console.log(`✅ Extracted ${importedData.totalItems} items total`)
 
             // Create compendium packs
             const packResults = await this.createCompendiumPacks(importedData, xmlFileName)
