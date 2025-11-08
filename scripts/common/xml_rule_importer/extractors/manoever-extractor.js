@@ -12,27 +12,27 @@ export class ManoeverExtractor extends BaseExtractor {
 
     /**
      * Extract Manöver from XML data
-     * Processes Manöver with typ 0, 1, 2, 3, or 6
+     * Processes Regel with kategorie 0, 1, 2, 3, or 6
      * Special handling: splits Manöver with "AT ... oder VT ..." into two separate items
      * @returns {Array} Array of Foundry manoever items
      */
     extractManoever() {
-        const manoeverElements = this.xmlDoc.querySelectorAll('Datenbank > Manöver')
+        const regelElements = this.xmlDoc.querySelectorAll('Datenbank > Regel')
         const manoever = []
 
-        manoeverElements.forEach((element, index) => {
+        regelElements.forEach((element, index) => {
             try {
-                // Check if typ is supported
-                const typ = parseInt(element.getAttribute('typ') || '0') || 0
-                if (!SUPPORTED_MANOEVER_TYPES.includes(typ)) {
-                    return // Skip unsupported types
+                // Check if kategorie is supported
+                const kategorie = parseInt(element.getAttribute('kategorie') || '0') || 0
+                if (!SUPPORTED_MANOEVER_TYPES.includes(kategorie)) {
+                    return // Skip unsupported categories
                 }
 
                 const probe = element.getAttribute('probe') || ''
 
-                // Special case: If typ 0 and probe contains both AT and VT, create two separate Manöver
+                // Special case: If kategorie 0 and probe contains both AT and VT, create two separate Manöver
                 if (
-                    typ === 0 &&
+                    kategorie === 0 &&
                     probe.includes('AT') &&
                     probe.includes('VT') &&
                     (probe.toLowerCase().includes('oder') || probe.includes(';'))
