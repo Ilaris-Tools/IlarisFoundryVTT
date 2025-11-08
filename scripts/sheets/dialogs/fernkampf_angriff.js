@@ -98,7 +98,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
      */
     getBaseValues() {
         return {
-            baseFK: this.item.system.fk || 0,
+            baseFK: this.item.system.fk || this.item.system.at || 0,
         }
     }
 
@@ -252,7 +252,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
         this.eigenschaftenText()
 
         let label = `Fernkampf (${this.item.name})`
-        let formula = `${diceFormula} ${signed(this.item.system.fk)} \
+        let formula = `${diceFormula} ${signed(this.item.system.fk || this.item.system.at)} \
             ${signed(this.at_abzuege_mod)} \
             ${signed(this.mod_at)}`
         await roll_crit_message(
