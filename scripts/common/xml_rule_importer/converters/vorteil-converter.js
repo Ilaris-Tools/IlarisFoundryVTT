@@ -30,11 +30,15 @@ export class VorteilConverter extends BaseConverter {
 
         if (weaponMatch) {
             const weaponType = weaponMatch[1].trim()
+            const weaponTypeLower = weaponType.toLowerCase()
 
-            // Check if it's a specific weapon property (capitalized) or generic term
-            // Generic terms like "zweite Waffe" should not have parameter
-            const genericTerms = ['zweite waffe', 'zweite', 'waffe']
-            const isGeneric = genericTerms.some((term) => weaponType.toLowerCase().includes(term))
+            // Check if it's a generic term (must match exactly or start with "zweite")
+            // Generic terms like "zweite Waffe", "zweite", or just "Waffe" should not have parameter
+            const isGeneric =
+                weaponTypeLower === 'waffe' ||
+                weaponTypeLower === 'zweite' ||
+                weaponTypeLower === 'zweite waffe' ||
+                weaponTypeLower.startsWith('zweite ')
 
             if (isGeneric) {
                 return 'ignoreSideWeaponMalus()'
