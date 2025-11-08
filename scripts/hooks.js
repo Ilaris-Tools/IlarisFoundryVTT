@@ -28,7 +28,7 @@ import {
     ConfigureGameSettingsCategories,
 } from './settings/configure-game-settings.model.js'
 import { XmlCharacterImporter } from './common/xml_character_importer.js'
-import { XMLRuleImporter } from './common/xml_rule_importer.js'
+import { XMLRuleImporter } from './common/xml_rule_importer/index.js'
 
 // Import hooks
 import './hooks/changelog-notification.js'
