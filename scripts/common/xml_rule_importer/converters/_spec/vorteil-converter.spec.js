@@ -175,6 +175,12 @@ Deine Parierwaffe ignoriert die üblichen Erschwernisse für Nebenwaffen (S. 39)
                 expect(result).toBe('ignoreMountedRangePenalty()')
             })
 
+            it('should handle mounted range penalty pattern without leading "du"', () => {
+                const text = 'Du ignorierst im Fernkampf den Malus für berittene Schützen'
+                const result = converter.parseFoundryScript(text, 3)
+                expect(result).toBe('ignoreMountedRangePenalty()')
+            })
+
             it('should handle case insensitive mounted range pattern', () => {
                 const text = 'IGNORIERST DU IM FERNKAMPF DU DEN MALUS FÜR BERITTENE SCHÜTZEN'
                 const result = converter.parseFoundryScript(text, 3)

@@ -57,7 +57,7 @@ export class VorteilConverter extends BaseConverter {
 
         // Pattern 2: Mounted range penalty ignore
         const mountedRangePattern =
-            /ignorierst\s+du\s+im\s+fernkampf\s+(?:du\s+)?den\s+malus\s+für\s+berittene\s+schützen/i
+            /(?:du\s+)?ignorierst\s+(?:du\s+)?im\s+fernkampf\s+(?:du\s+)?den\s+malus\s+für\s+berittene\s+schützen/i
 
         if (mountedRangePattern.test(text)) {
             scripts.push('ignoreMountedRangePenalty()')
