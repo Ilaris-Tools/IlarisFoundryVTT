@@ -39,9 +39,7 @@
   padding-right: -100px;
   display: flex;
   flex-direction: row;
-  background-image: url(/systems/Ilaris/assets/images/Ilaris/Pergamentrolle.webp);
-  background-size: cover;
-  background-repeat: round;
+  background-color: #f5f5dc;
 }
 
 .heroattributes {
@@ -186,14 +184,20 @@
   min-height: 600px;
 }
 
-/* Gebürstete Bronze-Struktur */
+/* Gebürstete Bronze-Struktur - CSS gradient replaces image for better scaling */
 .herosidebar::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
-  background-image: url("../assets/images/Ilaris/bronze_glatt.webp");
-  background-size: cover;
+  background: linear-gradient(135deg, 
+    #cd7f32 0%, 
+    #b87333 15%, 
+    #a0662f 30%, 
+    #8b5a2b 50%, 
+    #a0662f 70%, 
+    #b87333 85%, 
+    #cd7f32 100%);
   border-radius: inherit;
 }
 
