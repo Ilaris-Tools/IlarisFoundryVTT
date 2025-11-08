@@ -5,3 +5,4 @@
 
 export { XMLParser } from './xml-parser.js'
 export { CompendiumCreator } from './compendium-creator.js'
+export { CompendiumUpdater } from './compendium-updater.js'

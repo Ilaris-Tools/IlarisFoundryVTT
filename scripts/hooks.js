@@ -449,13 +449,22 @@ Hooks.on('renderCompendiumDirectory', (app, html) => {
         const header = html.find('.directory-header')
         if (header.length > 0) {
             const importButton = $(`
-                <button class="import-xml-rules" title="Import Rules from XML">
+                <button class="import-xml-rules rule-button" title="Import Rules from XML">
                     <i class="fas fa-file-import"></i> Import Regeln XML
                 </button>
             `)
 
+            const updateButton = $(`
+                <button class="update-xml-rules rule-button" title="Update Rules from XML">
+                    <i class="fas fa-sync-alt"></i> Update Regeln XML
+                </button>
+            `)
+
             importButton.click(() => XMLRuleImporter.showRuleImportDialog())
+            updateButton.click(() => XMLRuleImporter.showRuleUpdateDialog())
+
             header.append(importButton)
+            header.append(updateButton)
         }
     }
 })

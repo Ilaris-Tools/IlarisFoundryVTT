@@ -5,6 +5,7 @@
 
 import { XMLParser } from './utils/xml-parser.js'
 import { CompendiumCreator } from './utils/compendium-creator.js'
+import { CompendiumUpdater } from './utils/compendium-updater.js'
 import { DialogHandler } from './dialog-handler.js'
 import {
     SkillExtractor,
@@ -127,6 +128,146 @@ export class XMLRuleImporter {
     }
 
     /**
+     * Update existing compendiums with XML file data
+     * @param {File} xmlFile - XML file object from file upload
+     * @returns {Promise<Object>} Results of update operations
+     */
+    async updateAndSyncPacks(xmlFile) {
+        try {
+            // Extract filename without extension
+            const xmlFileName = xmlFile.name.replace(/\.[^/.]+$/, '')
+
+            // Read and parse file content
+            const fileContent = await xmlFile.text()
+            this.xmlDoc = await XMLParser.parseXMLString(fileContent)
+
+            // Extract all data using extractors (same as import)
+            const importedData = await this.extractAllData()
+
+            // Update compendium packs
+            const updateResults = await CompendiumUpdater.updateCompendiumPacks(
+                importedData,
+                xmlFileName,
+            )
+
+            // Show notification to user
+            const totalOperations =
+                updateResults.updated.length +
+                updateResults.created.length +
+                updateResults.deleted.length
+
+            if (updateResults.errors.length === 0) {
+                ui.notifications.info(
+                    `Erfolgreich aktualisiert: ${updateResults.updated.length} aktualisiert, ${updateResults.created.length} erstellt, ${updateResults.deleted.length} gelöscht`,
+                )
+            } else {
+                ui.notifications.warn(
+                    `${totalOperations} Operationen mit ${updateResults.errors.length} Fehler(n)`,
+                )
+            }
+
+            return {
+                success: true,
+                results: updateResults,
+            }
+        } catch (error) {
+            console.error('Error in update and sync:', error)
+            ui.notifications.error(`Fehler beim Aktualisieren der Regeln: ${error.message}`)
+            return {
+                success: false,
+                error: error.message,
+            }
+        }
+    }
+
+    /**
+     * Extract all data from loaded XML
+     * @returns {Promise<Object>} Extracted data object
+     */
+    async extractAllData() {
+        const importedData = {
+            fertigkeiten: [],
+            uebernatuerlicheFertigkeiten: [],
+            waffeneigenschaften: [],
+            waffen: [],
+            ruestungen: [],
+            talente: [],
+            uebernatuerlicheTalente: [],
+            manoever: [],
+            vorteile: [],
+            totalItems: 0,
+        }
+
+        // Extract skills
+        try {
+            const skillExtractor = new SkillExtractor(this.xmlDoc)
+            const skills = skillExtractor.extract()
+            importedData.fertigkeiten = skills.fertigkeiten
+            importedData.uebernatuerlicheFertigkeiten = skills.uebernatuerlicheFertigkeiten
+        } catch (error) {
+            console.error('Error extracting skills:', error.message)
+        }
+
+        // Extract weapons
+        try {
+            const weaponExtractor = new WeaponExtractor(this.xmlDoc)
+            const weapons = weaponExtractor.extract()
+            importedData.waffeneigenschaften = weapons.waffeneigenschaften
+            importedData.waffen = weapons.waffen
+        } catch (error) {
+            console.error('Error extracting weapons:', error.message)
+        }
+
+        // Extract armor
+        try {
+            const armorExtractor = new ArmorExtractor(this.xmlDoc)
+            importedData.ruestungen = armorExtractor.extract()
+        } catch (error) {
+            console.error('Error extracting armor:', error.message)
+        }
+
+        // Extract talents
+        try {
+            const talentExtractor = new TalentExtractor(this.xmlDoc)
+            const talents = talentExtractor.extract()
+            importedData.talente = talents.talente
+            importedData.uebernatuerlicheTalente = talents.uebernatuerlicheTalente
+        } catch (error) {
+            console.error('Error extracting talents:', error.message)
+        }
+
+        // Extract manöver
+        try {
+            const manoeverExtractor = new ManoeverExtractor(this.xmlDoc)
+            importedData.manoever = manoeverExtractor.extract()
+        } catch (error) {
+            console.error('Error extracting manöver:', error.message)
+        }
+
+        // Extract vorteile
+        try {
+            const vorteilExtractor = new VorteilExtractor(this.xmlDoc)
+            importedData.vorteile = vorteilExtractor.extract()
+        } catch (error) {
+            console.error('Error extracting vorteile:', error.message)
+        }
+
+        // Calculate totals
+        importedData.totalItems =
+            importedData.fertigkeiten.length +
+            importedData.uebernatuerlicheFertigkeiten.length +
+            importedData.waffeneigenschaften.length +
+            importedData.waffen.length +
+            importedData.ruestungen.length +
+            importedData.talente.length +
+            importedData.uebernatuerlicheTalente.length +
+            importedData.manoever.length +
+            importedData.vorteile.length
+
+        return importedData
+    }
+
+    /**
      * Complete workflow: Import XML file and create compendiums
      * @param {File} xmlFile - XML file object from file upload
      * @returns {Promise<Object>} Results of import and pack creation
@@ -141,84 +282,7 @@ export class XMLRuleImporter {
             this.xmlDoc = await XMLParser.parseXMLString(fileContent)
 
             // Extract all data using extractors
-            const importedData = {
-                fertigkeiten: [],
-                uebernatuerlicheFertigkeiten: [],
-                waffeneigenschaften: [],
-                waffen: [],
-                ruestungen: [],
-                talente: [],
-                uebernatuerlicheTalente: [],
-                manoever: [],
-                vorteile: [],
-                totalItems: 0,
-            }
-
-            // Extract skills
-            try {
-                const skillExtractor = new SkillExtractor(this.xmlDoc)
-                const skills = skillExtractor.extract()
-                importedData.fertigkeiten = skills.fertigkeiten
-                importedData.uebernatuerlicheFertigkeiten = skills.uebernatuerlicheFertigkeiten
-            } catch (error) {
-                console.error('Error extracting skills:', error.message)
-            }
-
-            // Extract weapons
-            try {
-                const weaponExtractor = new WeaponExtractor(this.xmlDoc)
-                const weapons = weaponExtractor.extract()
-                importedData.waffeneigenschaften = weapons.waffeneigenschaften
-                importedData.waffen = weapons.waffen
-            } catch (error) {
-                console.error('Error extracting weapons:', error.message)
-            }
-
-            // Extract armor
-            try {
-                const armorExtractor = new ArmorExtractor(this.xmlDoc)
-                importedData.ruestungen = armorExtractor.extract()
-            } catch (error) {
-                console.error('Error extracting armor:', error.message)
-            }
-
-            // Extract talents
-            try {
-                const talentExtractor = new TalentExtractor(this.xmlDoc)
-                const talents = talentExtractor.extract()
-                importedData.talente = talents.talente
-                importedData.uebernatuerlicheTalente = talents.uebernatuerlicheTalente
-            } catch (error) {
-                console.error('Error extracting talents:', error.message)
-            }
-
-            // Extract manöver
-            try {
-                const manoeverExtractor = new ManoeverExtractor(this.xmlDoc)
-                importedData.manoever = manoeverExtractor.extract()
-            } catch (error) {
-                console.error('Error extracting manöver:', error.message)
-            }
-
-            // Extract vorteile
-            try {
-                const vorteilExtractor = new VorteilExtractor(this.xmlDoc)
-                importedData.vorteile = vorteilExtractor.extract()
-            } catch (error) {
-                console.error('Error extracting vorteile:', error.message)
-            }
-
-            // Calculate totals
-            importedData.totalItems =
-                importedData.fertigkeiten.length +
-                importedData.uebernatuerlicheFertigkeiten.length +
-                importedData.waffeneigenschaften.length +
-                importedData.waffen.length +
-                importedData.ruestungen.length +
-                importedData.talente.length +
-                importedData.uebernatuerlicheTalente.length +
-                importedData.manoever.length +
-                importedData.vorteile.length
+            const importedData = await this.extractAllData()
 
             // Create compendium packs
             const packResults = await CompendiumCreator.createCompendiumPacks(
@@ -260,6 +324,17 @@ export class XMLRuleImporter {
         await DialogHandler.showRuleImportDialog(async (file) => {
             const importer = new XMLRuleImporter()
             await importer.importAndCreatePacks(file)
+        })
+    }
+
+    /**
+     * Show file upload dialog for XML rule update
+     * Allows user to upload XML file and updates existing compendiums
+     */
+    static async showRuleUpdateDialog() {
+        await DialogHandler.showRuleImportDialog(async (file) => {
+            const importer = new XMLRuleImporter()
+            await importer.updateAndSyncPacks(file)
         })
     }
 }
