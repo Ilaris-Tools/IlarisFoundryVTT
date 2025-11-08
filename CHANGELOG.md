@@ -2,6 +2,12 @@
 
 ## v12
 
+### v12.3
+
+#### Features
+
+-   Regelimporter für Sephrasto XML (5.1.0). Der Regelimporter importiert alle Regeln in einem Regel.xml von Sephrasto in Foundry in eigene nach Foundry Items getrennte Kompendien. Nach einem Import sollten, alle Regeln auf ihre Richtigkeit überprüft werden. Vor allem Kampfstilvorteile und Manöver. In beiden Kategorien wird Patternrecognition verwendet, um bestimmte Properties in den Items automatisch zu befüllen.
+
 ### v12.2.5
 
 -   Kampfstil-Sync-Button auf dem Charaktersheet wurde ausgebaut, dafür wurde ein Sync-Button auf dem Charaktersheet eingeführt, der alle Vorteile und alle Übernatürlichen Talente mit den Kompendium-Counterparts synct
