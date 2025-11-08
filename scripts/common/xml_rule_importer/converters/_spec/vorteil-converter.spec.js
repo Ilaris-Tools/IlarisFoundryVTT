@@ -114,6 +114,22 @@ describe('VorteilConverter', () => {
                 expect(result).toBe("ignoreSideWeaponMalus('Schild')")
             })
 
+            it('should handle multi-line text with pattern in the middle', () => {
+                const text = `+1 VT
+
+Dein Schild ignoriert die übliche Erschwernis für Nebenwaffen (S. 39). Außerdem kannst du die erste VT zwischen zwei Initiativephasen als Freie Reaktion ausführen.`
+                const result = converter.parseFoundryScript(text, 3)
+                expect(result).toBe("ignoreSideWeaponMalus('Schild')")
+            })
+
+            it('should handle multi-line text with Parierwaffe', () => {
+                const text = `Bonustext hier
+
+Deine Parierwaffe ignoriert die üblichen Erschwernisse für Nebenwaffen (S. 39). Weitere Details.`
+                const result = converter.parseFoundryScript(text, 3)
+                expect(result).toBe("ignoreSideWeaponMalus('Parierwaffe')")
+            })
+
             it('should handle singular "Erschwernis" variant', () => {
                 const text = 'Dein Schild ignoriert die übliche Erschwernis für Nebenwaffen'
                 const result = converter.parseFoundryScript(text, 3)

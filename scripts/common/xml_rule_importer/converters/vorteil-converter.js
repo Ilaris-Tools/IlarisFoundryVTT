@@ -24,9 +24,12 @@ export class VorteilConverter extends BaseConverter {
             return ''
         }
 
-        // Try to extract weapon property from the beginning of the text
+        // Try to extract weapon property from the sentence containing the pattern
+        // Look for the pattern in the text and extract the sentence/line containing it
         // Pattern: "Dein(e)? [WeaponProperty] ignoriert..."
-        const weaponMatch = text.match(/^deine?\s+([^\s]+(?:\s+\w+)?)\s+ignoriert/i)
+        const weaponMatch = text.match(
+            /deine?\s+([^\s]+(?:\s+\w+)?)\s+ignoriert\s+die\s+übliche(?:n)?\s+erschwernis(?:se)?\s+für\s+nebenwaffen/i,
+        )
 
         if (weaponMatch) {
             const weaponType = weaponMatch[1].trim()
