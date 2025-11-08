@@ -9,6 +9,7 @@ export class VorteilConverter extends BaseConverter {
      * Detects multiple patterns:
      * 1. "[weapon type] ignoriert die übliche Erschwernis für Nebenwaffen"
      * 2. "ignorierst du im Fernkampf du den Malus für berittene Schützen"
+     * 3. "Du kannst [gegen X] –N Erschwernis aus Manövern ignorieren"
      * @param {string} text - The vorteil text content
      * @param {number} kategorie - The vorteil kategorie
      * @returns {string} Generated foundryScript (multiple scripts separated by semicolon) or empty string
@@ -60,6 +61,25 @@ export class VorteilConverter extends BaseConverter {
 
         if (mountedRangePattern.test(text)) {
             scripts.push('ignoreMountedRangePenalty()')
+        }
+
+        // Pattern 3: Manöver penalty reduction
+        // Pattern: "Du kannst [gegen X] –N Erschwernis aus Manövern ignorieren"
+        const manoeverPattern =
+            /du\s+kannst\s+(?:gegen\s+([^–\-]+?)\s+)?[–\-](\d+)\s+erschwernis(?:se)?\s+aus\s+manövern\s+ignorieren/i
+
+        const manoeverMatch = text.match(manoeverPattern)
+        if (manoeverMatch) {
+            const condition = manoeverMatch[1] // Optional condition like "humanoide Gegner"
+            const penaltyValue = manoeverMatch[2] // The numeric value (e.g., "1")
+
+            if (condition && condition.trim()) {
+                // Has condition: manoverAusgleich(N)
+                scripts.push(`manoverAusgleich(${penaltyValue})`)
+            } else {
+                // No condition: manoverAusgleich(N,false)
+                scripts.push(`manoverAusgleich(${penaltyValue},false)`)
+            }
         }
 
         // Join all scripts with semicolon

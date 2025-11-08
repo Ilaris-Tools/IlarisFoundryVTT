@@ -205,5 +205,83 @@ Außerdem ignorierst du im Fernkampf du den Malus für berittene Schützen (S. 4
                 expect(result).toBe('ignoreMountedRangePenalty()')
             })
         })
+
+        describe('manöver penalty reduction pattern', () => {
+            it('should detect manöver penalty with condition (gegen humanoide Gegner)', () => {
+                const text =
+                    'Du kannst gegen humanoide Gegner –1 Erschwernis aus Manövern ignorieren.'
+                const result = converter.parseFoundryScript(text, 3)
+                expect(result).toBe('manoverAusgleich(1)')
+            })
+
+            it('should detect manöver penalty without condition', () => {
+                const text = 'Du kannst –1 Erschwernis aus Manövern ignorieren.'
+                const result = converter.parseFoundryScript(text, 3)
+                expect(result).toBe('manoverAusgleich(1,false)')
+            })
+
+            it('should handle manöver penalty with different numeric values', () => {
+                const text = 'Du kannst gegen Tiere –2 Erschwernis aus Manövern ignorieren.'
+                const result = converter.parseFoundryScript(text, 3)
+                expect(result).toBe('manoverAusgleich(2)')
+            })
+
+            it('should handle manöver penalty with regular hyphen instead of em-dash', () => {
+                const text =
+                    'Du kannst gegen humanoide Gegner -1 Erschwernis aus Manövern ignorieren.'
+                const result = converter.parseFoundryScript(text, 3)
+                expect(result).toBe('manoverAusgleich(1)')
+            })
+
+            it('should handle manöver penalty in multi-line text with conditions', () => {
+                const text = `Bedingungen: Parierwaffe, nicht beritten.
+
+Du kannst gegen humanoide Gegner –1 Erschwernis aus Manövern ignorieren.`
+                const result = converter.parseFoundryScript(text, 3)
+                expect(result).toBe('manoverAusgleich(1)')
+            })
+
+            it('should handle case insensitive manöver pattern', () => {
+                const text =
+                    'DU KANNST GEGEN HUMANOIDE GEGNER –1 ERSCHWERNIS AUS MANÖVERN IGNORIEREN.'
+                const result = converter.parseFoundryScript(text, 3)
+                expect(result).toBe('manoverAusgleich(1)')
+            })
+
+            it('should handle plural "Erschwernisse"', () => {
+                const text =
+                    'Du kannst gegen humanoide Gegner –2 Erschwernisse aus Manövern ignorieren.'
+                const result = converter.parseFoundryScript(text, 3)
+                expect(result).toBe('manoverAusgleich(2)')
+            })
+        })
+
+        describe('combined patterns with manöver penalty', () => {
+            it('should combine side weapon malus and manöver penalty', () => {
+                const text = `Du kannst gegen humanoide Gegner –1 Erschwernis aus Manövern ignorieren.
+
+Deine Parierwaffe ignoriert die üblichen Erschwernisse für Nebenwaffen (S. 39). Wenn ideale Kampfbedingungen herrschen – du also keine Erschwernisse durch Position, Untergrund und Licht erleidest – verbessert sich deine Position um eine Stufe (S. 38).`
+                const result = converter.parseFoundryScript(text, 3)
+                expect(result).toBe("ignoreSideWeaponMalus('Parierwaffe');manoverAusgleich(1)")
+            })
+
+            it('should combine all three patterns', () => {
+                const text = `Du kannst gegen Tiere –2 Erschwernis aus Manövern ignorieren.
+
+Dein Schild ignoriert die übliche Erschwernis für Nebenwaffen. Außerdem ignorierst du im Fernkampf den Malus für berittene Schützen.`
+                const result = converter.parseFoundryScript(text, 3)
+                expect(result).toBe(
+                    "ignoreSideWeaponMalus('Schild');ignoreMountedRangePenalty();manoverAusgleich(2)",
+                )
+            })
+
+            it('should handle manöver penalty without condition combined with other patterns', () => {
+                const text = `Du kannst –1 Erschwernis aus Manövern ignorieren.
+
+Deine Waffe ignoriert die übliche Erschwernis für Nebenwaffen.`
+                const result = converter.parseFoundryScript(text, 3)
+                expect(result).toBe('ignoreSideWeaponMalus();manoverAusgleich(1,false)')
+            })
+        })
     })
 })
