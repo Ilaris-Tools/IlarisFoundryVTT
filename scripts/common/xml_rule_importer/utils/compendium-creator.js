@@ -5,6 +5,26 @@ import { PACK_DEFINITIONS } from '../constants.js'
  */
 export class CompendiumCreator {
     /**
+     * Sanitize a string to be valid for Foundry pack IDs
+     * Only allows alphanumeric characters, hyphens, and underscores
+     * @param {string} str - String to sanitize
+     * @returns {string} Sanitized string safe for pack IDs
+     */
+    static sanitizePackId(str) {
+        return str
+            .toLowerCase()
+            .normalize('NFD') // Decompose umlauts and accents
+            .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+            .replace(/ä/g, 'ae')
+            .replace(/ö/g, 'oe')
+            .replace(/ü/g, 'ue')
+            .replace(/ß/g, 'ss')
+            .replace(/[^a-z0-9\-_]/g, '-') // Replace invalid chars with hyphen
+            .replace(/-+/g, '-') // Replace multiple hyphens with single hyphen
+            .replace(/^-|-$/g, '') // Remove leading/trailing hyphens
+    }
+
+    /**
      * Create compendium packs from imported data
      * @param {Object} importedData - Object containing arrays of imported items by type
      * @param {string} xmlFileName - Name of the XML file (without extension) for folder/pack naming
@@ -40,9 +60,10 @@ export class CompendiumCreator {
             try {
                 // Create pack name as "xmlFileName - Label"
                 const packName = `${xmlFileName} - ${packDef.label}`
-                const packId = `world.${xmlFileName
-                    .toLowerCase()
-                    .replace(/\s+/g, '-')}-${packDef.key.toLowerCase()}`
+
+                // Sanitize the xmlFileName for use in pack ID
+                const sanitizedFileName = this.sanitizePackId(xmlFileName)
+                const packId = `world-${sanitizedFileName}-${packDef.key}`
 
                 // Create the compendium pack
                 const pack = await CompendiumCollection.createCompendium({

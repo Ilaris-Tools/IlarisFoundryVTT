@@ -18,24 +18,30 @@ import {
  * Main XML Rule Importer class
  */
 export class XMLRuleImporter {
-    constructor(xmlFilePath = null) {
-        this.xmlFilePath = xmlFilePath
-        this.parsedXML = null
+    constructor(xmlFile = null) {
+        this.xmlFile = xmlFile
+        this.xmlDoc = null
     }
 
     /**
      * Load and parse XML file
+     * @param {File} xmlFile - Browser File object (optional if provided in constructor)
      */
-    async loadXML() {
-        this.parsedXML = await XMLParser.loadAndParseXML(this.xmlFilePath)
+    async loadXML(xmlFile = null) {
+        const fileToLoad = xmlFile || this.xmlFile
+        if (!fileToLoad) {
+            throw new Error('No XML file provided')
+        }
+        this.xmlDoc = await XMLParser.loadAndParseXML(fileToLoad)
     }
 
     /**
      * Import all rule types from the loaded XML
+     * @param {File} xmlFile - Browser File object (optional if provided in constructor)
      * @returns {Object} Object containing arrays of all imported item types
      */
-    async importAllFromXML() {
-        await this.loadXML()
+    async importAllFromXML(xmlFile = null) {
+        await this.loadXML(xmlFile)
 
         const results = {
             fertigkeiten: [],
@@ -51,7 +57,7 @@ export class XMLRuleImporter {
 
         // Extract skills
         try {
-            const skillExtractor = new SkillExtractor(this.parsedXML)
+            const skillExtractor = new SkillExtractor(this.xmlDoc)
             const skills = skillExtractor.extract()
             results.fertigkeiten = skills.fertigkeiten
             results.uebernatuerlicheFertigkeiten = skills.uebernatuerlicheFertigkeiten
@@ -61,7 +67,7 @@ export class XMLRuleImporter {
 
         // Extract weapons
         try {
-            const weaponExtractor = new WeaponExtractor(this.parsedXML)
+            const weaponExtractor = new WeaponExtractor(this.xmlDoc)
             const weapons = weaponExtractor.extract()
             results.waffeneigenschaften = weapons.waffeneigenschaften
             results.waffen = weapons.waffen
@@ -71,7 +77,7 @@ export class XMLRuleImporter {
 
         // Extract armor
         try {
-            const armorExtractor = new ArmorExtractor(this.parsedXML)
+            const armorExtractor = new ArmorExtractor(this.xmlDoc)
             results.ruestungen = armorExtractor.extract()
         } catch (error) {
             console.error('Error extracting armor:', error.message)
@@ -79,7 +85,7 @@ export class XMLRuleImporter {
 
         // Extract talents
         try {
-            const talentExtractor = new TalentExtractor(this.parsedXML)
+            const talentExtractor = new TalentExtractor(this.xmlDoc)
             const talents = talentExtractor.extract()
             results.talente = talents.talente
             results.uebernatuerlicheTalente = talents.uebernatuerlicheTalente
@@ -89,7 +95,7 @@ export class XMLRuleImporter {
 
         // Extract manöver
         try {
-            const manoeverExtractor = new ManoeverExtractor(this.parsedXML)
+            const manoeverExtractor = new ManoeverExtractor(this.xmlDoc)
             results.manoever = manoeverExtractor.extract()
         } catch (error) {
             console.error('Error extracting manöver:', error.message)
@@ -121,7 +127,7 @@ export class XMLRuleImporter {
 
             // Read and parse file content
             const fileContent = await xmlFile.text()
-            this.parsedXML = await XMLParser.parseXMLString(fileContent)
+            this.xmlDoc = await XMLParser.parseXMLString(fileContent)
 
             // Extract all data using extractors
             const importedData = {
@@ -138,7 +144,7 @@ export class XMLRuleImporter {
 
             // Extract skills
             try {
-                const skillExtractor = new SkillExtractor(this.parsedXML)
+                const skillExtractor = new SkillExtractor(this.xmlDoc)
                 const skills = skillExtractor.extract()
                 importedData.fertigkeiten = skills.fertigkeiten
                 importedData.uebernatuerlicheFertigkeiten = skills.uebernatuerlicheFertigkeiten
@@ -148,7 +154,7 @@ export class XMLRuleImporter {
 
             // Extract weapons
             try {
-                const weaponExtractor = new WeaponExtractor(this.parsedXML)
+                const weaponExtractor = new WeaponExtractor(this.xmlDoc)
                 const weapons = weaponExtractor.extract()
                 importedData.waffeneigenschaften = weapons.waffeneigenschaften
                 importedData.waffen = weapons.waffen
@@ -158,7 +164,7 @@ export class XMLRuleImporter {
 
             // Extract armor
             try {
-                const armorExtractor = new ArmorExtractor(this.parsedXML)
+                const armorExtractor = new ArmorExtractor(this.xmlDoc)
                 importedData.ruestungen = armorExtractor.extract()
             } catch (error) {
                 console.error('Error extracting armor:', error.message)
@@ -166,7 +172,7 @@ export class XMLRuleImporter {
 
             // Extract talents
             try {
-                const talentExtractor = new TalentExtractor(this.parsedXML)
+                const talentExtractor = new TalentExtractor(this.xmlDoc)
                 const talents = talentExtractor.extract()
                 importedData.talente = talents.talente
                 importedData.uebernatuerlicheTalente = talents.uebernatuerlicheTalente
@@ -176,7 +182,7 @@ export class XMLRuleImporter {
 
             // Extract manöver
             try {
-                const manoeverExtractor = new ManoeverExtractor(this.parsedXML)
+                const manoeverExtractor = new ManoeverExtractor(this.xmlDoc)
                 importedData.manoever = manoeverExtractor.extract()
             } catch (error) {
                 console.error('Error extracting manöver:', error.message)
@@ -239,11 +245,11 @@ export class XMLRuleImporter {
 
 /**
  * Standalone function to import everything from XML file
- * @param {string} xmlFilePath - Path to XML file
+ * @param {File} xmlFile - Browser File object from file input
  * @returns {Promise<Object>} Object containing all imported item types
  */
-export async function importAllFromXML(xmlFilePath) {
-    const importer = new XMLRuleImporter(xmlFilePath)
+export async function importAllFromXML(xmlFile) {
+    const importer = new XMLRuleImporter(xmlFile)
     return await importer.importAllFromXML()
 }
 

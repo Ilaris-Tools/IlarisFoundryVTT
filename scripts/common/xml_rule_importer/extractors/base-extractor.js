@@ -1,52 +1,47 @@
 /**
  * Base extractor class for extracting XML elements and converting to Foundry items
+ * Works with DOM Document (consistent with xml_character_importer.js)
  */
 export class BaseExtractor {
     /**
-     * @param {Object} parsedXML - Parsed XML data from xml2js
+     * @param {Document} xmlDoc - Parsed XML DOM Document
      * @param {Object} converter - Converter instance for this extractor
      */
-    constructor(parsedXML, converter) {
-        this.parsedXML = parsedXML
+    constructor(xmlDoc, converter) {
+        this.xmlDoc = xmlDoc
         this.converter = converter
     }
 
     /**
-     * Generic method to extract elements from XML and convert to Foundry items
-     * @param {string} xmlElementName - Name of XML element to extract (e.g., 'Fertigkeit', 'ÜbernatürlicheFertigkeit')
+     * Generic method to extract elements from XML using CSS selector and convert to Foundry items
+     * @param {string} selector - CSS selector for elements (e.g., 'Datenbank > Fertigkeit')
      * @param {Function} convertFn - Conversion function to apply to each element
      * @returns {Array} Array of converted Foundry items
      */
-    extractElements(xmlElementName, convertFn) {
-        if (!this.parsedXML) {
+    extractElements(selector, convertFn) {
+        if (!this.xmlDoc) {
             throw new Error('XML not loaded.')
         }
 
         const extractedItems = []
+        const elements = this.xmlDoc.querySelectorAll(selector)
 
-        // Navigate through the XML structure to find elements
-        if (this.parsedXML.Datenbank && this.parsedXML.Datenbank[xmlElementName]) {
-            const elements = Array.isArray(this.parsedXML.Datenbank[xmlElementName])
-                ? this.parsedXML.Datenbank[xmlElementName]
-                : [this.parsedXML.Datenbank[xmlElementName]]
-
-            elements.forEach((element, index) => {
-                try {
-                    const foundryItem = convertFn(element)
-                    if (foundryItem) {
-                        // Handle both single item and array of items
-                        const items = Array.isArray(foundryItem) ? foundryItem : [foundryItem]
-                        extractedItems.push(...items)
-                    }
-                } catch (error) {
-                    console.error(
-                        `Error converting ${xmlElementName} at index ${index}:`,
-                        error.message,
-                    )
-                    console.error('Element data:', JSON.stringify(element, null, 2))
+        elements.forEach((element, index) => {
+            try {
+                const foundryItem = convertFn(element)
+                if (foundryItem) {
+                    // Handle both single item and array of items
+                    const items = Array.isArray(foundryItem) ? foundryItem : [foundryItem]
+                    extractedItems.push(...items)
                 }
-            })
-        }
+            } catch (error) {
+                console.error(
+                    `Error converting element at index ${index} (selector: ${selector}):`,
+                    error.message,
+                )
+                console.error('Element:', element)
+            }
+        })
 
         return extractedItems
     }

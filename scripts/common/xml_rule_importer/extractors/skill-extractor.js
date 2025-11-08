@@ -5,8 +5,8 @@ import { SkillConverter } from '../converters/index.js'
  * Extractor for Fertigkeit and ÜbernatürlicheFertigkeit
  */
 export class SkillExtractor extends BaseExtractor {
-    constructor(parsedXML) {
-        super(parsedXML, new SkillConverter())
+    constructor(xmlDoc) {
+        super(xmlDoc, new SkillConverter())
     }
 
     /**
@@ -14,7 +14,7 @@ export class SkillExtractor extends BaseExtractor {
      * @returns {Array} Array of Foundry fertigkeit items
      */
     extractFertigkeiten() {
-        return this.extractElements('Fertigkeit', (element) =>
+        return this.extractElements('Datenbank > Fertigkeit', (element) =>
             this.converter.convertFertigkeit(element),
         )
     }
@@ -24,7 +24,7 @@ export class SkillExtractor extends BaseExtractor {
      * @returns {Array} Array of Foundry uebernatuerliche_fertigkeit items
      */
     extractUebernatuerlicheFertigkeiten() {
-        return this.extractElements('ÜbernatürlicheFertigkeit', (element) =>
+        return this.extractElements('Datenbank > ÜbernatürlicheFertigkeit', (element) =>
             this.converter.convertUebernatuerlicheFertigkeit(element),
         )
     }

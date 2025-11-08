@@ -3,6 +3,7 @@ import { DEFAULT_FOUNDRY_ITEM_PROPS } from '../constants.js'
 /**
  * Base converter class for XML to Foundry item conversion
  * Provides common functionality for all specialized converters
+ * Works with DOM Elements directly (consistent with xml_character_importer.js)
  */
 export class BaseConverter {
     /**
@@ -44,24 +45,24 @@ export class BaseConverter {
     }
 
     /**
-     * Safely extract an attribute from an XML element
-     * @param {Object} element - XML element (parsed by xml2js)
+     * Safely extract an attribute from a DOM Element
+     * @param {Element} element - DOM Element
      * @param {string} attrName - Attribute name to extract
      * @param {*} defaultValue - Default value if attribute not found
      * @returns {*} Attribute value or default
      */
-    extractAttribute(element, attrName, defaultValue = '') {
-        const attrs = element.$ || element
-        return attrs[attrName] || element[attrName] || defaultValue
+    getAttribute(element, attrName, defaultValue = '') {
+        const value = element.getAttribute(attrName)
+        return value !== null ? value : defaultValue
     }
 
     /**
-     * Safely extract text content from an XML element
-     * @param {Object} element - XML element (parsed by xml2js)
+     * Safely extract text content from a DOM Element
+     * @param {Element} element - DOM Element
      * @returns {string} Text content or empty string
      */
-    extractText(element) {
-        return element._ || ''
+    getTextContent(element) {
+        return element.textContent ? element.textContent.trim() : ''
     }
 
     /**
@@ -85,7 +86,7 @@ export class BaseConverter {
     /**
      * Convert XML element to Foundry item
      * Must be implemented by subclasses
-     * @param {Object} element - XML element (parsed by xml2js)
+     * @param {Element} element - DOM Element
      * @returns {Object} Foundry item
      * @throws {Error} If not implemented by subclass
      */

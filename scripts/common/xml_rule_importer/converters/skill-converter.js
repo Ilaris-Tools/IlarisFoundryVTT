@@ -7,17 +7,17 @@ import { DEFAULT_SKILL_VALUES } from '../constants.js'
 export class SkillConverter extends BaseConverter {
     /**
      * Convert skill-based XML elements (Fertigkeit and ÜbernatürlicheFertigkeit) to Foundry items
-     * @param {Object} element - XML element (parsed by xml2js)
+     * @param {Element} element - DOM Element
      * @param {string} itemType - 'fertigkeit' or 'uebernatuerliche_fertigkeit'
      * @returns {Object} Foundry item
      */
     convert(element, itemType) {
-        const name = this.extractAttribute(element, 'name', `Unnamed ${itemType}`)
-        const text = this.extractText(element)
-        const voraussetzungen = this.extractAttribute(element, 'voraussetzungen')
+        const name = this.getAttribute(element, 'name', `Unnamed ${itemType}`)
+        const text = this.getTextContent(element)
+        const voraussetzungen = this.getAttribute(element, 'voraussetzungen')
 
-        const kategorie = parseInt(this.extractAttribute(element, 'kategorie', '0')) || 0
-        const attributeString = this.extractAttribute(
+        const kategorie = parseInt(this.getAttribute(element, 'kategorie', '0')) || 0
+        const attributeString = this.getAttribute(
             element,
             'attribute',
             DEFAULT_SKILL_VALUES.attribute,

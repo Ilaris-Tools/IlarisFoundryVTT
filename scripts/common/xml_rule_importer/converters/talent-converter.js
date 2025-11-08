@@ -71,13 +71,13 @@ export class TalentConverter extends BaseConverter {
      * @returns {Object} Foundry item
      */
     convertBasicTalent(element) {
-        const name = this.extractAttribute(element, 'name', 'Unnamed Talent')
-        const text = this.extractText(element)
+        const name = this.getAttribute(element, 'name', 'Unnamed Talent')
+        const text = this.getTextContent(element)
 
         const systemData = {
             ...DEFAULT_TALENT_VALUES,
             text,
-            fertigkeit: this.extractAttribute(element, 'fertigkeiten'), // XML uses 'fertigkeiten', Foundry uses 'fertigkeit'
+            fertigkeit: this.getAttribute(element, 'fertigkeiten'), // XML uses 'fertigkeiten', Foundry uses 'fertigkeit'
         }
 
         return this.createFoundryItem(name, 'talent', systemData)
@@ -90,14 +90,14 @@ export class TalentConverter extends BaseConverter {
      * @returns {Object} Foundry item
      */
     convertUebernatuerlicheTalent(element, itemType) {
-        const name = this.extractAttribute(element, 'name', `Unnamed ${itemType}`)
-        const text = this.extractText(element)
+        const name = this.getAttribute(element, 'name', `Unnamed ${itemType}`)
+        const text = this.getTextContent(element)
 
         const parsedText = this.parseUebernatuerlicheTalentText(text)
 
         const systemData = {
             typ: itemType, // Set the type field
-            fertigkeiten: this.extractAttribute(element, 'fertigkeiten'),
+            fertigkeiten: this.getAttribute(element, 'fertigkeiten'),
             fertigkeit_ausgewaehlt: 'auto',
             text: parsedText.text,
             maechtig: parsedText.maechtig,
@@ -122,7 +122,7 @@ export class TalentConverter extends BaseConverter {
      * @returns {Object} Foundry item (talent, zauber, liturgie, or anrufung)
      */
     convert(element) {
-        const kategorie = parseInt(this.extractAttribute(element, 'kategorie', '0')) || 0
+        const kategorie = parseInt(this.getAttribute(element, 'kategorie', '0')) || 0
 
         // Determine item type based on kategorie
         const itemType = TALENT_KATEGORIE_TO_TYPE[kategorie] || 'talent'

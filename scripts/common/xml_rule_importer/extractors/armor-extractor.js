@@ -5,8 +5,8 @@ import { ArmorConverter } from '../converters/index.js'
  * Extractor for Rüstung (armor)
  */
 export class ArmorExtractor extends BaseExtractor {
-    constructor(parsedXML) {
-        super(parsedXML, new ArmorConverter())
+    constructor(xmlDoc) {
+        super(xmlDoc, new ArmorConverter())
     }
 
     /**

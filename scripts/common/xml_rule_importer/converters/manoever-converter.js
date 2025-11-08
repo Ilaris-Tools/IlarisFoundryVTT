@@ -10,13 +10,13 @@ export class ManoeverConverter extends BaseConverter {
      * @returns {Object} Foundry item
      */
     convert(element) {
-        const name = this.extractAttribute(element, 'name', 'Unnamed Manöver')
-        const text = this.extractText(element)
+        const name = this.getAttribute(element, 'name', 'Unnamed Manöver')
+        const text = this.getTextContent(element)
 
-        const typ = parseInt(this.extractAttribute(element, 'typ', '0')) || 0
-        const probe = this.extractAttribute(element, 'probe')
-        const gegenprobe = this.extractAttribute(element, 'gegenprobe')
-        const voraussetzungen = this.extractAttribute(element, 'voraussetzungen')
+        const typ = parseInt(this.getAttribute(element, 'typ', '0')) || 0
+        const probe = this.getAttribute(element, 'probe')
+        const gegenprobe = this.getAttribute(element, 'gegenprobe')
+        const voraussetzungen = this.getAttribute(element, 'voraussetzungen')
 
         // Determine gruppe based on probe content for typ 0
         let gruppe = typ

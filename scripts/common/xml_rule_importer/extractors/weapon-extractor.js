@@ -5,8 +5,8 @@ import { WeaponConverter } from '../converters/index.js'
  * Extractor for Waffe and Waffeneigenschaft
  */
 export class WeaponExtractor extends BaseExtractor {
-    constructor(parsedXML) {
-        super(parsedXML, new WeaponConverter())
+    constructor(xmlDoc) {
+        super(xmlDoc, new WeaponConverter())
     }
 
     /**
@@ -14,7 +14,7 @@ export class WeaponExtractor extends BaseExtractor {
      * @returns {Array} Array of Foundry waffeneigenschaft items
      */
     extractWaffeneigenschaften() {
-        return this.extractElements('Waffeneigenschaft', (element) =>
+        return this.extractElements('Datenbank > Waffeneigenschaft', (element) =>
             this.converter.convertWaffeneigenschaft(element),
         )
     }
@@ -25,7 +25,9 @@ export class WeaponExtractor extends BaseExtractor {
      * @returns {Array} Array of Foundry nahkampfwaffe and fernkampfwaffe items
      */
     extractWaffen() {
-        return this.extractElements('Waffe', (element) => this.converter.convertWaffe(element))
+        return this.extractElements('Datenbank > Waffe', (element) =>
+            this.converter.convertWaffe(element),
+        )
     }
 
     /**
