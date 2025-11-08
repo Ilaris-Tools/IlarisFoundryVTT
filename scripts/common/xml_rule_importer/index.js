@@ -12,6 +12,7 @@ import {
     ArmorExtractor,
     TalentExtractor,
     ManoeverExtractor,
+    VorteilExtractor,
 } from './extractors/index.js'
 
 /**
@@ -52,6 +53,7 @@ export class XMLRuleImporter {
             talente: [],
             uebernatuerlicheTalente: [],
             manoever: [],
+            vorteile: [],
             totalItems: 0,
         }
 
@@ -101,6 +103,14 @@ export class XMLRuleImporter {
             console.error('Error extracting manöver:', error.message)
         }
 
+        // Extract vorteile
+        try {
+            const vorteilExtractor = new VorteilExtractor(this.xmlDoc)
+            results.vorteile = vorteilExtractor.extract()
+        } catch (error) {
+            console.error('Error extracting vorteile:', error.message)
+        }
+
         // Calculate totals
         results.totalItems =
             results.fertigkeiten.length +
@@ -110,7 +120,8 @@ export class XMLRuleImporter {
             results.ruestungen.length +
             results.talente.length +
             results.uebernatuerlicheTalente.length +
-            results.manoever.length
+            results.manoever.length +
+            results.vorteile.length
 
         return results
     }
@@ -139,6 +150,7 @@ export class XMLRuleImporter {
                 talente: [],
                 uebernatuerlicheTalente: [],
                 manoever: [],
+                vorteile: [],
                 totalItems: 0,
             }
 
@@ -188,6 +200,14 @@ export class XMLRuleImporter {
                 console.error('Error extracting manöver:', error.message)
             }
 
+            // Extract vorteile
+            try {
+                const vorteilExtractor = new VorteilExtractor(this.xmlDoc)
+                importedData.vorteile = vorteilExtractor.extract()
+            } catch (error) {
+                console.error('Error extracting vorteile:', error.message)
+            }
+
             // Calculate totals
             importedData.totalItems =
                 importedData.fertigkeiten.length +
@@ -197,7 +217,8 @@ export class XMLRuleImporter {
                 importedData.ruestungen.length +
                 importedData.talente.length +
                 importedData.uebernatuerlicheTalente.length +
-                importedData.manoever.length
+                importedData.manoever.length +
+                importedData.vorteile.length
 
             // Create compendium packs
             const packResults = await CompendiumCreator.createCompendiumPacks(

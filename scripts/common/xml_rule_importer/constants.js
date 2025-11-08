@@ -67,6 +67,12 @@ export const PACK_DEFINITIONS = [
         type: 'Item',
         xmlElement: 'Manöver',
     },
+    {
+        key: 'vorteile',
+        label: 'Vorteile',
+        type: 'Item',
+        xmlElement: 'Vorteil',
+    },
 ]
 
 /**
