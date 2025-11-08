@@ -63,7 +63,8 @@ export class CompendiumCreator {
 
                 // Sanitize the xmlFileName for use in pack ID
                 const sanitizedFileName = this.sanitizePackId(xmlFileName)
-                const packId = `world-${sanitizedFileName}-${packDef.key}`
+                const sanitizedKey = this.sanitizePackId(packDef.key)
+                const packId = `${sanitizedFileName}-${sanitizedKey}`
 
                 // Create the compendium pack
                 const pack = await CompendiumCollection.createCompendium({
