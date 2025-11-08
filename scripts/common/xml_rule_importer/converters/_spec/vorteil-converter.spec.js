@@ -160,5 +160,50 @@ Deine Parierwaffe ignoriert die üblichen Erschwernisse für Nebenwaffen (S. 39)
                 expect(result).toBe('')
             })
         })
+
+        describe('mounted range penalty pattern', () => {
+            it('should detect mounted range penalty pattern and generate script', () => {
+                const text =
+                    'Außerdem ignorierst du im Fernkampf du den Malus für berittene Schützen'
+                const result = converter.parseFoundryScript(text, 3)
+                expect(result).toBe('ignoreMountedRangePenalty()')
+            })
+
+            it('should handle mounted range penalty pattern without duplicate "du"', () => {
+                const text = 'Außerdem ignorierst du im Fernkampf den Malus für berittene Schützen'
+                const result = converter.parseFoundryScript(text, 3)
+                expect(result).toBe('ignoreMountedRangePenalty()')
+            })
+
+            it('should handle case insensitive mounted range pattern', () => {
+                const text = 'IGNORIERST DU IM FERNKAMPF DU DEN MALUS FÜR BERITTENE SCHÜTZEN'
+                const result = converter.parseFoundryScript(text, 3)
+                expect(result).toBe('ignoreMountedRangePenalty()')
+            })
+        })
+
+        describe('combined patterns', () => {
+            it('should combine side weapon malus and mounted range penalty scripts', () => {
+                const text = `+1 AT, VT, Waffenschaden
+
+Dein Reittier ignoriert die üblichen Erschwernisse für Nebenwaffen (S. 39) und im Reiterkampf ist die BE durch Rüstungen um 1 gesenkt. Außerdem ignorierst du im Fernkampf du den Malus für berittene Schützen (S. 46).`
+                const result = converter.parseFoundryScript(text, 3)
+                expect(result).toBe("ignoreSideWeaponMalus('Reittier');ignoreMountedRangePenalty()")
+            })
+
+            it('should handle both patterns in different order', () => {
+                const text = `Außerdem ignorierst du im Fernkampf den Malus für berittene Schützen. Dein Schild ignoriert die übliche Erschwernis für Nebenwaffen.`
+                const result = converter.parseFoundryScript(text, 3)
+                expect(result).toBe("ignoreSideWeaponMalus('Schild');ignoreMountedRangePenalty()")
+            })
+
+            it('should handle only mounted range penalty without side weapon pattern', () => {
+                const text = `+1 AT
+
+Außerdem ignorierst du im Fernkampf du den Malus für berittene Schützen (S. 46).`
+                const result = converter.parseFoundryScript(text, 3)
+                expect(result).toBe('ignoreMountedRangePenalty()')
+            })
+        })
     })
 })

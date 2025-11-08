@@ -5,11 +5,13 @@ import { BaseConverter } from './base-converter.js'
  */
 export class VorteilConverter extends BaseConverter {
     /**
-     * Parse text to detect side weapon malus pattern and generate foundryScript
-     * Detects pattern: "[weapon type] ignoriert die übliche Erschwernis für Nebenwaffen"
+     * Parse text to detect patterns and generate foundryScript
+     * Detects multiple patterns:
+     * 1. "[weapon type] ignoriert die übliche Erschwernis für Nebenwaffen"
+     * 2. "ignorierst du im Fernkampf du den Malus für berittene Schützen"
      * @param {string} text - The vorteil text content
      * @param {number} kategorie - The vorteil kategorie
-     * @returns {string} Generated foundryScript or empty string
+     * @returns {string} Generated foundryScript (multiple scripts separated by semicolon) or empty string
      */
     parseFoundryScript(text, kategorie) {
         // Only process for kategorie 3
@@ -17,43 +19,51 @@ export class VorteilConverter extends BaseConverter {
             return ''
         }
 
-        // Pattern to detect side weapon malus ignore
-        const pattern = /ignoriert die übliche(?:n)? erschwernis(?:se)? für nebenwaffen/i
+        const scripts = []
 
-        if (!pattern.test(text)) {
-            return ''
-        }
+        // Pattern 1: Side weapon malus ignore
+        const sideWeaponPattern = /ignoriert die übliche(?:n)? erschwernis(?:se)? für nebenwaffen/i
 
-        // Try to extract weapon property from the sentence containing the pattern
-        // Look for the pattern in the text and extract the sentence/line containing it
-        // Pattern: "Dein(e)? [WeaponProperty] ignoriert..."
-        const weaponMatch = text.match(
-            /deine?\s+([^\s]+(?:\s+\w+)?)\s+ignoriert\s+die\s+übliche(?:n)?\s+erschwernis(?:se)?\s+für\s+nebenwaffen/i,
-        )
+        if (sideWeaponPattern.test(text)) {
+            // Try to extract weapon property from the sentence containing the pattern
+            // Pattern: "Dein(e)? [WeaponProperty] ignoriert..."
+            const weaponMatch = text.match(
+                /deine?\s+([^\s]+(?:\s+\w+)?)\s+ignoriert\s+die\s+übliche(?:n)?\s+erschwernis(?:se)?\s+für\s+nebenwaffen/i,
+            )
 
-        if (weaponMatch) {
-            const weaponType = weaponMatch[1].trim()
-            const weaponTypeLower = weaponType.toLowerCase()
+            if (weaponMatch) {
+                const weaponType = weaponMatch[1].trim()
+                const weaponTypeLower = weaponType.toLowerCase()
 
-            // Check if it's a generic term (must match exactly or start with "zweite")
-            // Generic terms like "zweite Waffe", "zweite", or just "Waffe" should not have parameter
-            const isGeneric =
-                weaponTypeLower === 'waffe' ||
-                weaponTypeLower === 'zweite' ||
-                weaponTypeLower === 'zweite waffe' ||
-                weaponTypeLower.startsWith('zweite ')
+                // Check if it's a generic term (must match exactly or start with "zweite")
+                // Generic terms like "zweite Waffe", "zweite", or just "Waffe" should not have parameter
+                const isGeneric =
+                    weaponTypeLower === 'waffe' ||
+                    weaponTypeLower === 'zweite' ||
+                    weaponTypeLower === 'zweite waffe' ||
+                    weaponTypeLower.startsWith('zweite ')
 
-            if (isGeneric) {
-                return 'ignoreSideWeaponMalus()'
-            } else {
-                // Capitalize first letter for weapon property
-                const capitalizedWeapon = weaponType.charAt(0).toUpperCase() + weaponType.slice(1)
-                return `ignoreSideWeaponMalus('${capitalizedWeapon}')`
+                if (isGeneric) {
+                    scripts.push('ignoreSideWeaponMalus()')
+                } else {
+                    // Capitalize first letter for weapon property
+                    const capitalizedWeapon =
+                        weaponType.charAt(0).toUpperCase() + weaponType.slice(1)
+                    scripts.push(`ignoreSideWeaponMalus('${capitalizedWeapon}')`)
+                }
             }
         }
 
-        // Default: empty string if pattern found but weapon type couldn't be extracted
-        return ''
+        // Pattern 2: Mounted range penalty ignore
+        const mountedRangePattern =
+            /ignorierst\s+du\s+im\s+fernkampf\s+(?:du\s+)?den\s+malus\s+für\s+berittene\s+schützen/i
+
+        if (mountedRangePattern.test(text)) {
+            scripts.push('ignoreMountedRangePenalty()')
+        }
+
+        // Join all scripts with semicolon
+        return scripts.join(';')
     }
 
     /**
