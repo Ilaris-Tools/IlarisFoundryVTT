@@ -388,11 +388,8 @@ export class UebernatuerlichDialog extends CombatDialog {
         // Refresh dialog data after energy application
         await this.refreshActorData()
 
-        // Determine energy type based on item type
-        const energyType = this.item.type === 'zauber' ? 'AsP' : 'KaP'
-
         // Create chat message with energy cost information
-        const label = `${this.item.name} (Kosten: ${this.endCost} ${energyType})`
+        const label = `${this.item.name} (Kosten: ${this.endCost} Energie)`
         const html_roll = await renderTemplate(
             'systems/Ilaris/templates/chat/probenchat_profan.hbs',
             {
@@ -476,15 +473,11 @@ export class UebernatuerlichDialog extends CombatDialog {
 
         await this.actor.update(updates)
 
-        // Determine energy type based on item type
-        const energyType = this.item.type === 'zauber' ? 'AsP' : 'KaP'
-
         // Create chat message with energy cost information
         const html_roll = await renderTemplate('systems/Ilaris/templates/chat/spell_result.hbs', {
             success: isSuccess,
             cost: this.endCost,
             costModifier: costModifier,
-            energyType: energyType,
         })
 
         await ChatMessage.create({
@@ -748,9 +741,6 @@ export class UebernatuerlichDialog extends CombatDialog {
             text_at = text_at.concat(`Modifikator: ${modifikator}\n`)
         }
 
-        // Determine energy type for display text
-        const energyType = this.item.type === 'zauber' ? 'AsP' : 'KaP'
-
         // Handle Blutmagie and Verbotene Pforten
         if (manoever.blutmagie?.value || manoever.verbotene_pforten?.activated) {
             const energyNeeded = mod_energy - availableEnergy
@@ -760,9 +750,7 @@ export class UebernatuerlichDialog extends CombatDialog {
                 const blutmagieReduction = Math.min(energyNeeded, manoever.blutmagie.value)
                 if (blutmagieReduction > 0) {
                     mod_energy -= blutmagieReduction
-                    text_energy = text_energy.concat(
-                        `Blutmagie: -${blutmagieReduction} ${energyType}\n`,
-                    )
+                    text_energy = text_energy.concat(`Blutmagie: -${blutmagieReduction} Energie\n`)
                 }
             }
 
@@ -789,7 +777,7 @@ export class UebernatuerlichDialog extends CombatDialog {
                     const actualReduction = Math.min(verbotenePfortenReduction, maxReduction)
                     mod_energy -= actualReduction
                     text_energy = text_energy.concat(
-                        `Verbotene Pforten (${this.calculatedWounds} Wunden): +${verbotenePfortenReduction} ${energyType}\n`,
+                        `Verbotene Pforten (${this.calculatedWounds} Wunden): +${verbotenePfortenReduction} Energie\n`,
                     )
                 }
             }
