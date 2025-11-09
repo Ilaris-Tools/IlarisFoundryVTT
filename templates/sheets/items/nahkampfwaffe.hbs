@@ -69,18 +69,13 @@
             </div>
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis: 100px"><b>Eigenschaften:</b></label>
-                <span>
-                    {{#each item.system.eigenschaften as |val key|}}
-                    <label>{{get_label key}}</label>
-                    <input
-                        name="system.eigenschaften.{{key}}"
-                        data-dtype="Boolean"
-                        type="checkbox"
-                        {{checked val}}
-                    />
-                    <label>| &nbsp;</label>
+                <select name="system.eigenschaften" multiple style="flex: 1; min-height: 100px;">
+                    {{#each availableEigenschaften}}
+                    <option value="{{this.name}}" {{#if (includes ../item.system.eigenschaften this.name)}}selected{{/if}}>
+                        {{this.name}}
+                    </option>
                     {{/each}}
-                </span>
+                </select>
             </div>
             {{#if hasOwner}}
             <label class="flex-fest-var" style="flex-basis: 100px"><b>Eigene Mod.:</b></label>
