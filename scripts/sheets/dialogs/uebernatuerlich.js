@@ -480,7 +480,6 @@ export class UebernatuerlichDialog extends CombatDialog {
         const energyType = this.item.type === 'zauber' ? 'AsP' : 'KaP'
 
         // Create chat message with energy cost information
-        const label = `${this.item.name} (Kosten: ${this.endCost} ${energyType})`
         const html_roll = await renderTemplate('systems/Ilaris/templates/chat/spell_result.hbs', {
             success: isSuccess,
             cost: this.endCost,
