@@ -32,6 +32,11 @@ export class AngriffDialog extends CombatDialog {
     getData() {
         let data = super.getData()
         data.isHumanoid = this.isHumanoid
+        data.lcht_choice = CONFIG.ILARIS.lcht_choice
+        data.wttr_choice = CONFIG.ILARIS.wttr_choice
+        data.bwng_choice = CONFIG.ILARIS.bwng_choice
+        data.dckg_choice = CONFIG.ILARIS.dckg_choice
+        data.kgtl_choice = CONFIG.ILARIS.kgtl_choice
         return data
     }
 
@@ -382,6 +387,13 @@ export class AngriffDialog extends CombatDialog {
         manoever.rwdf.selected = html.find(`#rwdf-${this.dialogId}`)[0]?.value || false // Reichweitenunterschied
         manoever.rkaz.selected = html.find(`#rkaz-${this.dialogId}`)[0]?.value || false // Reaktionsanzahl
 
+        // Umgebungsvariablen (Environment Variables)
+        manoever.lcht.selected = html.find(`#lcht-${this.dialogId}`)[0]?.value || false // Lichtverhältnisse
+        manoever.wttr.selected = html.find(`#wttr-${this.dialogId}`)[0]?.value || false // Wetter
+        manoever.bwng.selected = html.find(`#bwng-${this.dialogId}`)[0]?.value || false // Bewegung
+        manoever.dckg.selected = html.find(`#dckg-${this.dialogId}`)[0]?.value || false // Deckung
+        manoever.kgtl.selected = html.find(`#kgtl-${this.dialogId}`)[0]?.value || false // Kampfgetümmel
+
         manoever.mod.selected = html.find(`#modifikator-${this.dialogId}`)[0]?.value || false // Modifikator
         manoever.rllm.selected = html.find(`#rollMode-${this.dialogId}`)[0]?.value || false // RollMode
 
@@ -509,6 +521,113 @@ export class AngriffDialog extends CombatDialog {
         if (riposteManeuver && mod_at < 0) {
             mod_vt += mod_at
             text_vt = text_vt.concat(`Riposte (Attackemanöver): ${mod_at}\n`)
+        }
+
+        // Umgebungsvariablen (Environment Variables)
+        // Lichtverhältnisse (Light conditions)
+        let licht = Number(manoever.lcht.selected)
+        let licht_angepasst = Number(manoever.lcht.angepasst)
+        if (licht == 4) {
+            mod_at -= 32
+            mod_vt -= 32
+            text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]}\n`)
+            text_vt = text_vt.concat(`${CONFIG.ILARIS.lcht_choice[licht]}\n`)
+        } else if (licht == 3) {
+            if (licht_angepasst == 0) {
+                mod_at -= 16
+                mod_vt -= 16
+                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]}\n`)
+                text_vt = text_vt.concat(`${CONFIG.ILARIS.lcht_choice[licht]}\n`)
+            } else if (licht_angepasst == 1) {
+                mod_at -= 8
+                mod_vt -= 8
+                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst I)\n`)
+                text_vt = text_vt.concat(`${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst I)\n`)
+            } else if (licht_angepasst == 2) {
+                mod_at -= 4
+                mod_vt -= 4
+                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst II)\n`)
+                text_vt = text_vt.concat(`${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst II)\n`)
+            }
+        } else if (licht == 2) {
+            if (licht_angepasst == 0) {
+                mod_at -= 8
+                mod_vt -= 8
+                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]}\n`)
+                text_vt = text_vt.concat(`${CONFIG.ILARIS.lcht_choice[licht]}\n`)
+            } else if (licht_angepasst == 1) {
+                mod_at -= 4
+                mod_vt -= 4
+                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst I)\n`)
+                text_vt = text_vt.concat(`${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst I)\n`)
+            } else if (licht_angepasst == 2) {
+                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst II)\n`)
+                text_vt = text_vt.concat(`${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst II)\n`)
+            }
+        } else if (licht == 1) {
+            if (licht_angepasst == 0) {
+                mod_at -= 4
+                mod_vt -= 4
+                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]}\n`)
+                text_vt = text_vt.concat(`${CONFIG.ILARIS.lcht_choice[licht]}\n`)
+            } else if (licht_angepasst == 1) {
+                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst I)\n`)
+                text_vt = text_vt.concat(`${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst I)\n`)
+            } else if (licht_angepasst == 2) {
+                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst II)\n`)
+                text_vt = text_vt.concat(`${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst II)\n`)
+            }
+        }
+
+        // Wetter (Weather) und Untergrund/Bewegung (Ground/Movement conditions)
+        let wetter = Number(manoever.wttr.selected)
+        let bewegung = Number(manoever.bwng.selected)
+
+        if (wetter > 0) {
+            mod_at -= 4 * wetter
+            mod_vt -= 4 * wetter
+            text_at = text_at.concat(`${CONFIG.ILARIS.wttr_choice[wetter]}\n`)
+            text_vt = text_vt.concat(`${CONFIG.ILARIS.wttr_choice[wetter]}\n`)
+        }
+        if (bewegung > 0) {
+            mod_at -= 4 * bewegung
+            mod_vt -= 4 * bewegung
+            text_at = text_at.concat(`${CONFIG.ILARIS.bwng_choice[bewegung]}\n`)
+            text_vt = text_vt.concat(`${CONFIG.ILARIS.bwng_choice[bewegung]}\n`)
+        }
+
+        // Deckung (Cover) - not typically used in close combat but included for completeness
+        let deckung = Number(manoever.dckg.selected)
+        if (deckung < 0) {
+            mod_at += 4 * deckung
+            mod_vt += 4 * deckung
+            text_at = text_at.concat(
+                `${CONFIG.ILARIS.label['dckg']}: ${CONFIG.ILARIS.dckg_choice[deckung]}\n`,
+            )
+            text_vt = text_vt.concat(
+                `${CONFIG.ILARIS.label['dckg']}: ${CONFIG.ILARIS.dckg_choice[deckung]}\n`,
+            )
+        }
+
+        // Kampfgetümmel (Combat Melee)
+        let kampfgetuemmel = Number(manoever.kgtl.selected)
+        if (kampfgetuemmel == 1) {
+            this.fumble_val += 1
+            text_at = text_at.concat(
+                `${CONFIG.ILARIS.label['kgtl']}: ${CONFIG.ILARIS.kgtl_choice[kampfgetuemmel]}\n`,
+            )
+            text_vt = text_vt.concat(
+                `${CONFIG.ILARIS.label['kgtl']}: ${CONFIG.ILARIS.kgtl_choice[kampfgetuemmel]}\n`,
+            )
+        }
+        if (kampfgetuemmel == 2) {
+            this.fumble_val += 3
+            text_at = text_at.concat(
+                `${CONFIG.ILARIS.label['kgtl']}: ${CONFIG.ILARIS.kgtl_choice[kampfgetuemmel]}\n`,
+            )
+            text_vt = text_vt.concat(
+                `${CONFIG.ILARIS.label['kgtl']}: ${CONFIG.ILARIS.kgtl_choice[kampfgetuemmel]}\n`,
+            )
         }
 
         // Handle tactical options after handleModifications (so they don't affect Riposte)

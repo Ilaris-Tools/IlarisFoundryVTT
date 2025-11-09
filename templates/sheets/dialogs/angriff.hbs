@@ -73,6 +73,40 @@
 
         <hr>
 
+        <!-- Umgebungsvariablen (Environment Variables) -->
+        <div class="flexrow">
+            <label>{{get_label "lcht"}}</label>
+            <select id="lcht-{{dialogId}}">
+                {{selectOptions lcht_choice selected=item.system.manoever.lcht.selected localize=true}}
+            </select>
+        </div>
+        <div class="flexrow">
+            <label>{{get_label "wttr"}}</label>
+            <select id="wttr-{{dialogId}}">
+                {{selectOptions wttr_choice selected=item.system.manoever.wttr.selected localize=true}}
+            </select>
+        </div>
+        <div class="flexrow">
+            <label>{{get_label "bwng"}}</label>
+            <select id="bwng-{{dialogId}}">
+                {{selectOptions bwng_choice selected=item.system.manoever.bwng.selected localize=true}}
+            </select>
+        </div>
+        <div class="flexrow">
+            <label>{{get_label "dckg"}}</label>
+            <select id="dckg-{{dialogId}}">
+                {{selectOptions dckg_choice selected=item.system.manoever.dckg.selected localize=true}}
+            </select>
+        </div>
+        <div class="flexrow">
+            <label>{{get_label "kgtl"}}</label>
+            <select id="kgtl-{{dialogId}}">
+                {{selectOptions kgtl_choice selected=item.system.manoever.kgtl.selected localize=true}}
+            </select>
+        </div>
+
+        <hr>
+
         <div>
             <div class="maneuver-header collapsed">
                 <h3>Manöver:</h3>

@@ -560,6 +560,26 @@ export class IlarisActor extends Actor {
                 (x) => x.name == 'Offensiver Kampfstil',
             )
             nwaffe.system.rw_mod = nwaffe.system.rw
+
+            // Get status effects for nahkampf environment variables
+            // Licht (Light conditions)
+            let ss1 = this.__getStatuseffectById(actor, 'schlechtesicht1')
+            let ss2 = this.__getStatuseffectById(actor, 'schlechtesicht2')
+            let ss3 = this.__getStatuseffectById(actor, 'schlechtesicht3')
+            let ss4 = this.__getStatuseffectById(actor, 'schlechtesicht4')
+            if (ss4) {
+                nwaffe.system.manoever.lcht.selected = 4
+            } else if (ss3) {
+                nwaffe.system.manoever.lcht.selected = 3
+            } else if (ss2) {
+                nwaffe.system.manoever.lcht.selected = 2
+            } else if (ss1) {
+                nwaffe.system.manoever.lcht.selected = 1
+            } else {
+                nwaffe.system.manoever.lcht.selected = 0
+            }
+            let lcht_angepasst = hardcoded.getAngepasst('Dunkelheit', actor)
+            nwaffe.system.manoever.lcht.angepasst = lcht_angepasst
         }
 
         for (let fwaffe of actor.fernkampfwaffen) {

@@ -413,6 +413,23 @@ let manoever_nahkampf = {
     pssl: {
         selected: false,
     },
+    // Umgebungsvariablen (Environment Variables)
+    lcht: {
+        angepasst: '0',
+        selected: '0',
+    },
+    wttr: {
+        selected: '0',
+    },
+    bwng: {
+        selected: '0',
+    },
+    dckg: {
+        selected: '0',
+    },
+    kgtl: {
+        selected: '0',
+    },
 }
 ILARIS.manoever_nahkampf = manoever_nahkampf
 
