@@ -416,6 +416,10 @@ export class AngriffDialog extends CombatDialog {
         let nodmg = { name: '', value: false }
         let trefferzone = 0
         let schaden = this.item.getTp()
+        let fumble_val = 1
+        if (this.item.system.eigenschaften.unberechenbar) {
+            fumble_val = 2
+        }
 
         // Collect all modifications from all maneuvers
         const allModifications = []
@@ -612,7 +616,7 @@ export class AngriffDialog extends CombatDialog {
         // Kampfgetümmel (Combat Melee)
         let kampfgetuemmel = Number(manoever.kgtl.selected)
         if (kampfgetuemmel == 1) {
-            this.fumble_val += 1
+            fumble_val += 1
             text_at = text_at.concat(
                 `${CONFIG.ILARIS.label['kgtl']}: ${CONFIG.ILARIS.kgtl_choice[kampfgetuemmel]}\n`,
             )
@@ -621,7 +625,7 @@ export class AngriffDialog extends CombatDialog {
             )
         }
         if (kampfgetuemmel == 2) {
-            this.fumble_val += 3
+            fumble_val += 3
             text_at = text_at.concat(
                 `${CONFIG.ILARIS.label['kgtl']}: ${CONFIG.ILARIS.kgtl_choice[kampfgetuemmel]}\n`,
             )
@@ -708,6 +712,7 @@ export class AngriffDialog extends CombatDialog {
         this.text_vt = text_vt
         this.text_dm = text_dm
         this.schaden = schaden
+        this.fumble_val = fumble_val
     }
 
     updateStatusMods() {
