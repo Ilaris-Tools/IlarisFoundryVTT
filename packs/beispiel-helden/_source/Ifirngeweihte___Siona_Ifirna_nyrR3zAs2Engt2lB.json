@@ -1423,7 +1423,7 @@
     {
       "_id": "oJHyxgA13759z594",
       "name": "Feuersegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Heiliges Feuer, Zwölfgöttlicher Ritus",
@@ -1461,7 +1461,7 @@
     {
       "_id": "UaVS7z16dFFQzOVa",
       "name": "Geburtssegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Zwölfgöttlicher Ritus, Neubeginn",
@@ -1499,7 +1499,7 @@
     {
       "_id": "6X0lQCzW3BZKRzWJ",
       "name": "Grabsegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Tod, Zwölfgöttlicher Ritus",
@@ -1537,7 +1537,7 @@
     {
       "_id": "rKQnt340ab4YH34Z",
       "name": "Heilungssegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Heilung, Zwölfgöttlicher Ritus",
@@ -1575,7 +1575,7 @@
     {
       "_id": "ZgCmOSI0qIGIWX6C",
       "name": "Speisesegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Heim und Herd, Zwölfgöttlicher Ritus",
@@ -1613,7 +1613,7 @@
     {
       "_id": "omNshLat872gvnqK",
       "name": "Tranksegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Seefahrt, Zwölfgöttlicher Ritus",
@@ -1651,7 +1651,7 @@
     {
       "_id": "CaoqbeqH65lor5RY",
       "name": "Gemeinschaft treuer Gefährten",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Fröhlicher Wanderer, Jagd, Sichere Heimkehr",
@@ -1689,7 +1689,7 @@
     {
       "_id": "6EQafuwUjOtGvcox",
       "name": "Mirakel: Wahrnehmung",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Tod, Wind und Wogen, Jagd, Heilung, Ordnung, Rausch, Sichere Heimkehr",
@@ -1727,7 +1727,7 @@
     {
       "_id": "3sCqM35kP1EK5GQx",
       "name": "Segnung des Heiligen Mikail",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Jagd",
@@ -1765,7 +1765,7 @@
     {
       "_id": "CNQbTAWgiZJPI6Ew",
       "name": "Tierempathie",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Friede, Jagd",
@@ -1803,7 +1803,7 @@
     {
       "_id": "vTU4qmlXkdquwgCD",
       "name": "Geteiltes Leid",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Heim und Herd, Wildnis",
@@ -1841,7 +1841,7 @@
     {
       "_id": "tJDFgEVEPchwalxL",
       "name": "Mirakel: Heilkunde",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Vergessen, Wildnis, Heilung, Heim und Herd, Friede",
@@ -1879,7 +1879,7 @@
     {
       "_id": "NhvYlV9a7SsRZ0Vq",
       "name": "Sichere Wanderung im Schnee",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Wildnis, Winter",
@@ -1917,7 +1917,7 @@
     {
       "_id": "HQ9dfQTcI47pBbKK",
       "name": "Zuflucht finden",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Sichere Heimkehr, Wildnis",

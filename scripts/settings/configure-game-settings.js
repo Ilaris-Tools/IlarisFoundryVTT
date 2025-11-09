@@ -15,15 +15,6 @@ export const registerIlarisGameSettings = () => {
 
     ;[
         {
-            settingsName: IlarisGameSettingNames.acceptChangesV12_1,
-            name: 'Update Informationen für v12.1 gelesen',
-            hint: '......',
-            scope: Scope.Client,
-            type: new foundry.data.fields.BooleanField(),
-            default: false,
-            config: true,
-        },
-        {
             settingsName: IlarisGameSettingNames.weaponSpaceRequirement,
             name: 'Platzbedarf berücksichtigen',
             hint: 'Platzbedarf ist eine Hausregel aus Ilaris Advanced. Ohne Haken wird der Platzbedarf nicht angezeigt und in Berechnungen als 0 angenommen. Änderung dieser Einstellungen benötigt einen Neustart von Foundry',
@@ -83,12 +74,22 @@ export const registerIlarisGameSettings = () => {
         {
             // Register hide sync kampfstile button setting
             settingsName: IlarisGameSettingNames.hideSyncKampfstileButton,
-            name: 'Kampfstil-Synchronisation Button ausblenden',
-            hint: 'Wenn aktiviert, wird der Button "Vorteile mit Kompendium-Vorteilen Synchronisieren" auf dem Kampf-Tab ausgeblendet.',
+            name: 'Charakter-Synchronisation Button ausblenden',
+            hint: 'Wenn aktiviert, wird der Button "Charakter mit Kompendium-Vorteilen Synchronisieren" auf dem Heldensheet ausgeblendet.',
             config: true,
             type: new foundry.data.fields.BooleanField(),
             scope: 'client',
             default: true,
+        },
+        {
+            // Register last seen breaking changes version setting
+            settingsName: IlarisGameSettingNames.lastSeenBreakingChangesVersion,
+            name: 'Zuletzt gesehene Breaking Changes Version',
+            hint: 'Interne Einstellung zur Verfolgung der zuletzt angezeigten Breaking Changes Benachrichtigung.',
+            config: false, // Hidden from settings menu
+            type: String,
+            scope: 'client', // Each user tracks their own
+            default: '',
         },
     ].forEach((setting) => {
         game.settings.register(ConfigureGameSettingsCategories.Ilaris, setting.settingsName, {
@@ -103,25 +104,25 @@ export const registerIlarisGameSettings = () => {
         })
     })
     ;[
-        {
-            // Register the settings menu for maneuvers
-            settingsName: IlarisGameSettingsMenuNames.manoeverPacksMenu,
-            name: 'Manöver Kompendien',
-            label: 'Manöver Kompendien Konfigurieren',
-            hint: 'Hier kannst du die Kompendien auswählen, die Manöver enthalten. Dadurch bestimmst du, welche Manöver du in Kampfdialogen sehen kannst.',
-            icon: 'fas fa-book',
-            type: ManeuverPacksSettings,
-            restricted: true,
-        },
-        {
-            settingsName: IlarisGameSettingsMenuNames.vorteilePacksMenu,
-            name: 'Vorteile Kompendien',
-            label: 'Vorteile Kompendien Konfigurieren',
-            hint: 'Hier kannst du die Kompendien auswählen, die Vorteile enthalten.',
-            icon: 'fas fa-book',
-            type: VorteilePacksSettings,
-            restricted: true,
-        },
+        // {
+        //     // Register the settings menu for maneuvers
+        //     settingsName: IlarisGameSettingsMenuNames.manoeverPacksMenu,
+        //     name: 'Manöver Kompendien',
+        //     label: 'Manöver Kompendien Konfigurieren',
+        //     hint: 'Hier kannst du die Kompendien auswählen, die Manöver enthalten. Dadurch bestimmst du, welche Manöver du in Kampfdialogen sehen kannst.',
+        //     icon: 'fas fa-book',
+        //     type: ManeuverPacksSettings,
+        //     restricted: true,
+        // },
+        // {
+        //     settingsName: IlarisGameSettingsMenuNames.vorteilePacksMenu,
+        //     name: 'Vorteile Kompendien',
+        //     label: 'Vorteile Kompendien Konfigurieren',
+        //     hint: 'Hier kannst du die Kompendien auswählen, die Vorteile enthalten.',
+        //     icon: 'fas fa-book',
+        //     type: VorteilePacksSettings,
+        //     restricted: true,
+        // },
     ].forEach((setting) => {
         game.settings.registerMenu(ConfigureGameSettingsCategories.Ilaris, setting.settingsName, {
             name: setting.name,
