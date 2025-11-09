@@ -1,10 +1,59 @@
 import { IlarisItemSheet } from './item.js'
+import { migrateWeapon, isOldEigenschaftenFormat } from '../../common/waffen-migration.js'
 
 /**
  * Base class for weapon sheets (Nahkampfwaffe and Fernkampfwaffe)
  * Provides shared functionality for weapon items
  */
 export class WaffeBaseSheet extends IlarisItemSheet {
+    /** @override */
+    async getData() {
+        const data = await super.getData()
+
+        // Add migration status flag
+        data.needsMigration = isOldEigenschaftenFormat(this.item.system.eigenschaften)
+
+        return data
+    }
+
+    /** @override */
+    activateListeners(html) {
+        super.activateListeners(html)
+
+        // Migration button
+        html.find('.migrate-eigenschaften').click(this._onMigrateEigenschaften.bind(this))
+    }
+
+    /**
+     * Handle migration button click
+     * @param {Event} event - The click event
+     * @private
+     */
+    async _onMigrateEigenschaften(event) {
+        event.preventDefault()
+
+        const button = event.currentTarget
+        button.disabled = true
+
+        try {
+            const wasMigrated = await migrateWeapon(this.item)
+
+            if (wasMigrated) {
+                ui.notifications.info(
+                    `Weapon "${this.item.name}" successfully migrated to new eigenschaften format`,
+                )
+                this.render(false)
+            } else {
+                ui.notifications.warn(`Weapon "${this.item.name}" is already in new format`)
+            }
+        } catch (error) {
+            ui.notifications.error(`Error migrating weapon: ${error.message}`)
+            console.error('Migration error:', error)
+        } finally {
+            button.disabled = false
+        }
+    }
+
     /**
      * Get all available waffeneigenschaft items from compendiums
      * @returns {Promise<Array>} Array of eigenschaft objects with name and id
