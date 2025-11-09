@@ -57,6 +57,32 @@ export class IlarisActorSheet extends ActorSheet {
 
         // Add listener for sync items button
         html.find('.sync-items').click((ev) => this._onSyncItems(ev))
+
+        // Enable drag and drop for combat items
+        html.find('.combat-draggable').each((i, li) => {
+            li.setAttribute('draggable', true)
+            li.addEventListener('dragstart', this._onDragStart.bind(this), false)
+        })
+    }
+
+    /**
+     * Handle drag start for combat items
+     * @param {DragEvent} event
+     */
+    _onDragStart(event) {
+        const li = event.currentTarget
+        const itemId = li.dataset.itemid
+
+        if (!itemId) return
+
+        const item = this.actor.items.get(itemId)
+        if (!item) return
+
+        // Create drag data
+        const dragData = item.toDragData()
+
+        // Set the drag data
+        event.dataTransfer.setData('text/plain', JSON.stringify(dragData))
     }
 
     _ausklappView(event) {

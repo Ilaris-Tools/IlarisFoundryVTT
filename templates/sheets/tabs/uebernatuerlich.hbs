@@ -78,7 +78,7 @@
         </thead>
         <tbody>
             {{#each actor.uebernatuerlich.zauber as |magtal|}}
-            <tr>
+            <tr class="combat-draggable" data-itemid="{{magtal.id}}">
                 <td class="rollable icon-small" data-rolltype="magie_diag" data-itemid="{{magtal.id}}">
                     <i class="custom-icon"></i>
                 </td>
@@ -116,7 +116,7 @@
             {{/each}}
 
             {{#each actor.uebernatuerlich.liturgien as |kartal|}}
-            <tr>
+            <tr class="combat-draggable" data-itemid="{{kartal.id}}">
                 <td class="rollable icon-small" data-rolltype="karma_diag" data-itemid="{{kartal.id}}">
                     <i class="custom-icon"></i>
                 </td>
