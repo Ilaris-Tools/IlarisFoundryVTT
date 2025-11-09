@@ -99,7 +99,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
     getBaseValues() {
         // For creature actors, fall back to system.at if system.fk is not present
         const fkValue =
-            this.item.system.fk || (this.actor.type === 'kreatur' ? this.item.system.at : 0) || 0
+            this.item.system.fk ?? (this.actor.type === 'kreatur' ? (this.item.system.at ?? 0) : 0)
         return {
             baseFK: fkValue,
         }
