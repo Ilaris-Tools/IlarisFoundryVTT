@@ -28,6 +28,7 @@
     "prepare": "husky",
     "optimize-svgs": "node scripts/optimize-svgs.js",
     "pack-all": "node utils/pack-all.js",
+    "generate-breaking-changes": "node utils/generate-breaking-changes.js",
     "start-foundry": "npm run pack-all && fvtt launch"
   },
   "repository": {

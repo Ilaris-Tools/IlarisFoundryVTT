@@ -24,35 +24,34 @@ export const registerIlarisGameSettings = () => {
             config: true,
             requiresReload: true,
         },
-        // mit Regeleditor wieder gebraucht
-        // {
-        //     // Register maneuver packs setting
-        //     settingsName: IlarisGameSettingNames.manoeverPacks,
-        //     name: 'Manöver Kompendien',
-        //     hint: 'Hier kannst du die Kompendien auswählen, die Manöver enthalten. Dadurch bestimmst du, welche Manöver du in Kampfdialogen sehen kannst.',
-        //     scope: 'world',
-        //     config: false, // Hide from settings menu since we use custom menu
-        //     type: String,
-        //     default: '["Ilaris.manover"]', // Default to Ilaris.manoever pack
-        //     onChange: (value) => {
-        //         // Notify that maneuver packs have changed
-        //         Hooks.callAll('ilarisManoeverPacksChanged', JSON.parse(value))
-        //     },
-        // },
-        // {
-        //     // Register vorteile packs setting
-        //     settingsName: IlarisGameSettingNames.vorteilePacks,
-        //     name: 'Vorteile Kompendien',
-        //     hint: 'Hier kannst du die Kompendien auswählen, die Vorteile enthalten.',
-        //     scope: 'world',
-        //     config: false, // Hide from settings menu since we use custom menu
-        //     type: String,
-        //     default: '["Ilaris.vorteile"]', // Default to Ilaris.vorteile pack
-        //     onChange: (value) => {
-        //         // Notify that vorteile packs have changed
-        //         Hooks.callAll('ilarisVorteilePacksChanged', JSON.parse(value))
-        //     },
-        // },
+        {
+            // Register maneuver packs setting
+            settingsName: IlarisGameSettingNames.manoeverPacks,
+            name: 'Manöver Kompendien',
+            hint: 'Hier kannst du die Kompendien auswählen, die Manöver enthalten. Dadurch bestimmst du, welche Manöver du in Kampfdialogen sehen kannst.',
+            scope: 'world',
+            config: false, // Hide from settings menu since we use custom menu
+            type: String,
+            default: '["Ilaris.manover"]', // Default to Ilaris.manoever pack
+            onChange: (value) => {
+                // Notify that maneuver packs have changed
+                Hooks.callAll('ilarisManoeverPacksChanged', JSON.parse(value))
+            },
+        },
+        {
+            // Register vorteile packs setting
+            settingsName: IlarisGameSettingNames.vorteilePacks,
+            name: 'Vorteile Kompendien',
+            hint: 'Hier kannst du die Kompendien auswählen, die Vorteile enthalten.',
+            scope: 'world',
+            config: false, // Hide from settings menu since we use custom menu
+            type: String,
+            default: '["Ilaris.vorteile"]', // Default to Ilaris.vorteile pack
+            onChange: (value) => {
+                // Notify that vorteile packs have changed
+                Hooks.callAll('ilarisVorteilePacksChanged', JSON.parse(value))
+            },
+        },
         {
             // Register real fumble crits setting
             settingsName: IlarisGameSettingNames.realFumbleCrits,
@@ -75,18 +74,18 @@ export const registerIlarisGameSettings = () => {
         {
             // Register hide sync kampfstile button setting
             settingsName: IlarisGameSettingNames.hideSyncKampfstileButton,
-            name: 'Kampfstil-Synchronisation Button ausblenden',
-            hint: 'Wenn aktiviert, wird der Button "Vorteile mit Kompendium-Vorteilen Synchronisieren" auf dem Kampf-Tab ausgeblendet.',
+            name: 'Charakter-Synchronisation Button ausblenden',
+            hint: 'Wenn aktiviert, wird der Button "Charakter mit Kompendium-Vorteilen Synchronisieren" auf dem Heldensheet ausgeblendet.',
             config: true,
             type: new foundry.data.fields.BooleanField(),
             scope: 'client',
             default: true,
         },
         {
-            // Register last seen changelog version setting
-            settingsName: IlarisGameSettingNames.lastSeenChangelogVersion,
-            name: 'Zuletzt gesehene Changelog-Version',
-            hint: 'Interne Einstellung zur Verfolgung der zuletzt angezeigten Changelog-Benachrichtigung.',
+            // Register last seen breaking changes version setting
+            settingsName: IlarisGameSettingNames.lastSeenBreakingChangesVersion,
+            name: 'Zuletzt gesehene Breaking Changes Version',
+            hint: 'Interne Einstellung zur Verfolgung der zuletzt angezeigten Breaking Changes Benachrichtigung.',
             config: false, // Hidden from settings menu
             type: String,
             scope: 'client', // Each user tracks their own
