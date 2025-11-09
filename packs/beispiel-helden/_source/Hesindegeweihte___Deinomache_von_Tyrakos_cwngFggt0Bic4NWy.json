@@ -16,15 +16,19 @@
       }
     },
     "attribute": {
-      "KO": {
+      "CH": {
+        "wert": 4,
+        "pw": 0
+      },
+      "FF": {
         "wert": 3,
         "pw": 0
       },
-      "MU": {
+      "GE": {
         "wert": 5,
         "pw": 0
       },
-      "GE": {
+      "IN": {
         "wert": 5,
         "pw": 0
       },
@@ -32,20 +36,16 @@
         "wert": 3,
         "pw": 0
       },
-      "IN": {
-        "wert": 5,
-        "pw": 0
-      },
       "KL": {
         "wert": 6,
         "pw": 0
       },
-      "CH": {
-        "wert": 4,
+      "KO": {
+        "wert": 3,
         "pw": 0
       },
-      "FF": {
-        "wert": 3,
+      "MU": {
+        "wert": 5,
         "pw": 0
       }
     },
@@ -67,7 +67,9 @@
       "dh": 0,
       "traglast_intervall": 0,
       "traglast": 0,
-      "kap_zugekauft": 0
+      "kap_zugekauft": 0,
+      "gkap": null,
+      "kap_stern": 24
     },
     "schips": {
       "schips": 4,
@@ -83,6 +85,11 @@
       "manuellermod": 0,
       "nahkampfmod": 0
     },
+    "misc": {
+      "selected_kampfstil": "ohne",
+      "selected_uebernatuerlicher_stil": "ohne",
+      "ist_beritten": false
+    },
     "geld": {
       "dukaten": 0,
       "silbertaler": 0,
@@ -90,10 +97,7 @@
       "kreuzer": 0
     },
     "getragen": 1,
-    "notes": "",
-    "misc": {
-      "selected_kampfstil": "kvk"
-    }
+    "notes": ""
   },
   "prototypeToken": {
     "name": "Hesindegeweihte - Deinomache von Tyrakos",
@@ -298,9 +302,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "GE 4",
+        "voraussetzung": "Attribut GE 4",
         "gruppe": 3,
-        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>+1 AT</body>"
+        "text": "Bedingungen: einzelne Nahkampfwaffe, nicht beritten.\n\nDu erhältst AT +1.",
+        "sephrastoScript": "modifyKampfstil('Schneller Kampf', 1, 0, 0, 0)",
+        "stilBedingungen": "einzelne Nahkampfwaffe, nicht beritten",
+        "foundryScript": ""
       },
       "effects": [],
       "folder": null,
@@ -309,12 +316,12 @@
       "_stats": {
         "compendiumSource": "Compendium.Ilaris.vorteil.Item.c0FloeYpY5MFtehs",
         "duplicateSource": null,
-        "coreVersion": "12.331",
+        "coreVersion": "12.343",
         "systemId": "Ilaris",
-        "systemVersion": "12.0.2",
+        "systemVersion": "12.2.0",
         "createdTime": null,
-        "modifiedTime": null,
-        "lastModifiedBy": null
+        "modifiedTime": 1759478602680,
+        "lastModifiedBy": "bRsoRPItEVb33T1L"
       },
       "ownership": {},
       "_key": "!actors.items!cwngFggt0Bic4NWy.5b1G9yLtcMzRYgud"
@@ -1587,7 +1594,7 @@
     {
       "_id": "a5PbEWKSccBEnz6e",
       "name": "Eidsegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Ordnung, Zwölfgöttlicher Ritus",
@@ -1625,7 +1632,7 @@
     {
       "_id": "6i7cUqIXz2XBSxNO",
       "name": "Göttliche Verständigung",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Zwölfgöttlicher Ritus",
@@ -1663,7 +1670,7 @@
     {
       "_id": "WWSK9rkdHLc2S0Y0",
       "name": "Grabsegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Tod, Zwölfgöttlicher Ritus",
@@ -1701,7 +1708,7 @@
     {
       "_id": "FMTZRxWeg7kGlhYT",
       "name": "Schutzsegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Schutz der Gläubigen, Zwölfgöttlicher Ritus",
@@ -1739,7 +1746,7 @@
     {
       "_id": "cXZrAs9geOc2Hjuh",
       "name": "Seelenprüfung",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Zwölfgöttlicher Ritus",
@@ -1777,7 +1784,7 @@
     {
       "_id": "IuvJxrRGiqHzisaS",
       "name": "Feuersegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Heiliges Feuer, Zwölfgöttlicher Ritus",
@@ -1815,7 +1822,7 @@
     {
       "_id": "fc7A3NlR46bQrqo6",
       "name": "Geburtssegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Zwölfgöttlicher Ritus, Neubeginn",
@@ -1853,7 +1860,7 @@
     {
       "_id": "L8e0C1oou3YqsXb7",
       "name": "Glückssegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "List, Zwölfgöttlicher Ritus",
@@ -1891,7 +1898,7 @@
     {
       "_id": "dCilXl7OamKxi4Rj",
       "name": "Harmoniesegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Harmonie, Zwölfgöttlicher Ritus",
@@ -1929,7 +1936,7 @@
     {
       "_id": "VKOhb0gGZLXoMTbM",
       "name": "Heilungssegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Heilung, Zwölfgöttlicher Ritus",
@@ -1967,7 +1974,7 @@
     {
       "_id": "2L6HbAPfpldBsFSp",
       "name": "Märtyrersegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Winter, Zwölfgöttlicher Ritus, Guter Kampf",
@@ -2005,7 +2012,7 @@
     {
       "_id": "N49DXSagT4N1DEx5",
       "name": "Speisesegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Heim und Herd, Zwölfgöttlicher Ritus",
@@ -2043,7 +2050,7 @@
     {
       "_id": "08RHifCnRvmDfC94",
       "name": "Tranksegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Seefahrt, Zwölfgöttlicher Ritus",
@@ -2081,7 +2088,7 @@
     {
       "_id": "ppELsENw98uqD8Aa",
       "name": "Weisheitssegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Wissen, Zwölfgöttlicher Ritus",
@@ -2119,7 +2126,7 @@
     {
       "_id": "SGjHMDDACXUcucxs",
       "name": "Exorzismus",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Abu al'Mada, Heiliges Feuer, Magie, Magiebann, Schutz der Gläubigen, Tod, Wind und Wogen",
@@ -2157,7 +2164,7 @@
     {
       "_id": "swAwLFfIgYR4FVbs",
       "name": "Argelions bannende Hand",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Magie, Magiebann",
@@ -2195,7 +2202,7 @@
     {
       "_id": "5MzU3U64X4EwquRT",
       "name": "Blick der Weberin",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Magie",
@@ -2233,7 +2240,7 @@
     {
       "_id": "y048gsCOpN9lCIea",
       "name": "Sicht auf Madas Welt",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Abu al'Mada, Magie, Magiebann",
@@ -2271,7 +2278,7 @@
     {
       "_id": "hSKNyq5lmu0uVmDd",
       "name": "Unverstellter Blick",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Abu al'Mada, Magie, Magiebann",
@@ -2674,12 +2681,12 @@
   "_stats": {
     "compendiumSource": null,
     "duplicateSource": null,
-    "coreVersion": "12.331",
+    "coreVersion": "12.343",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.2",
+    "systemVersion": "12.2.0",
     "createdTime": 1747090006326,
-    "modifiedTime": 1747090006326,
-    "lastModifiedBy": "oa0cULjciXK52aoL"
+    "modifiedTime": 1759478604060,
+    "lastModifiedBy": "bRsoRPItEVb33T1L"
   },
   "_id": "cwngFggt0Bic4NWy",
   "sort": 0,

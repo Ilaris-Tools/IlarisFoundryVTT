@@ -205,16 +205,18 @@ export class UebernatuerlichDialog extends CombatDialog {
     getEnergySummary() {
         // Calculate energy cost
         const baseEnergy = this.mod_energy || 0
-        const energyType = this.item.type === 'zauber' ? 'AsP' : 'KaP'
-        const icon = this.item.type === 'zauber' ? '⚡' : '🙏'
+        const icon = '⚡'
 
         let summary = '<div class="modifier-summary energy-summary">'
-        summary += `<h4>${icon} Energiekosten: ${baseEnergy} ${energyType}</h4>`
+        summary += `<h4>${icon} Energiekosten: ${baseEnergy} Energie</h4>`
         summary += '<div class="modifier-list">'
 
         // Base energy cost
-        const originalCost = this.item.system.kosten || 0
-        summary += `<div class="modifier-item base-value">Basis Kosten: <span>${originalCost} ${energyType}</span></div>`
+        let originalCost = sanitizeEnergyCost(this.item.system.kosten) || 0
+        if (this.energy_override) {
+            originalCost = this.energy_override
+        }
+        summary += `<div class="modifier-item base-value">Basiskosten: <span>${originalCost} Energie</span></div>`
 
         // Parse text_energy for energy modifiers
         if (this.text_energy && this.text_energy.trim()) {
@@ -234,31 +236,18 @@ export class UebernatuerlichDialog extends CombatDialog {
         }
 
         // Show available energy
-        let availableEnergy
-        if (this.actor.type == 'held') {
-            if (this.item.type === 'zauber') {
-                availableEnergy = this.actor.system.abgeleitete.asp_stern
-            } else {
-                availableEnergy = this.actor.system.abgeleitete.kap_stern
-            }
-        } else {
-            if (this.item.type === 'zauber') {
-                availableEnergy = this.actor.system.energien.asp.value
-            } else {
-                availableEnergy = this.actor.system.energien.kap.value
-            }
-        }
+        const availableEnergy = this.getAvailableEnergy()
 
         summary += '<hr>'
-        summary += `<div class="modifier-item base-value">Verfügbar: <span>${availableEnergy} ${energyType}</span></div>`
+        summary += `<div class="modifier-item base-value">Verfügbar: <span>${availableEnergy} Energie</span></div>`
 
         // Check if enough energy is available
         if (baseEnergy > availableEnergy) {
             const shortage = baseEnergy - availableEnergy
-            summary += `<div class="modifier-item negative"><strong>Fehlend: ${shortage} ${energyType}</strong></div>`
+            summary += `<div class="modifier-item negative"><strong>Fehlend: ${shortage} Energie</strong></div>`
         } else {
             const remaining = availableEnergy - baseEnergy
-            summary += `<div class="modifier-item positive">Verbleibend: <span>${remaining} ${energyType}</span></div>`
+            summary += `<div class="modifier-item positive">Verbleibend: <span>${remaining} Energie</span></div>`
         }
 
         summary += '</div>'
@@ -298,18 +287,9 @@ export class UebernatuerlichDialog extends CombatDialog {
         const canSetEnergyCost =
             !restrictEnergyCostSetting ||
             this.actor.vorteil?.magie?.some((v) => v.name === 'Unitatio') ||
-            !isNumericCost(this.item.system.kosten)
+            !isNumericCost(sanitizeEnergyCost(this.item.system.kosten))
 
-        const hasVerbotenePforten =
-            this.actor.vorteil.magie.some((v) => v.name === 'Verbotene Pforten') ||
-            ((this.actor.type === 'kreatur'
-                ? this.actor.vorteil.allgemein.some((v) => v.name.includes('Borbaradianer')) ||
-                  this.actor.vorteil.magie.some((v) => v.name.includes('Borbaradianer')) ||
-                  this.actor.vorteil.zaubertraditionen.some((v) => v.name.includes('Borbaradianer'))
-                : hardcoded
-                      .getSelectedStil(this.actor, 'uebernatuerlich')
-                      ?.name.includes('Borbaradianer')) &&
-                this.item.type === 'zauber')
+        const hasVerbotenePforten = this.hasVerbotenePfortenAccess()
 
         const difficulty = +this.item.system.schwierigkeit
         const isNonStandardDifficulty = isNaN(difficulty) || !difficulty
@@ -318,6 +298,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: '1',
             choices_verbotene_pforten: {
+                0: 'Deaktiviert',
                 4: '1 Vorteil (WS+4)',
                 8: '2 Vorteile (WS+8)',
             },
@@ -383,6 +364,8 @@ export class UebernatuerlichDialog extends CombatDialog {
                     `Nicht genug Ressourcen! Benötigt: ${this.endCost}, Vorhanden: ${this.currentEnergy}. Unter bestimmten Voraussetzungen zieht dir das System einfach Energie ab, bis du bei 0 angelangt bist. Du kannst diese Information nach eigenem Ermessen weiterverwenden.`,
                 )
             }
+            // Refresh dialog data after energy application
+            await this.refreshActorData()
         }
         super._updateSchipsStern(html)
     }
@@ -401,6 +384,9 @@ export class UebernatuerlichDialog extends CombatDialog {
                 `Nicht genug Ressourcen! Benötigt: ${this.endCost}, Vorhanden: ${this.currentEnergy}. Unter bestimmten Voraussetzungen zieht dir das System einfach Energie ab, bis du bei 0 angelangt bist. Du kannst diese Information nach eigenem Ermessen weiterverwenden.`,
             )
         }
+
+        // Refresh dialog data after energy application
+        await this.refreshActorData()
 
         // Create chat message with energy cost information
         const label = `${this.item.name} (Kosten: ${this.endCost} Energie)`
@@ -537,14 +523,13 @@ export class UebernatuerlichDialog extends CombatDialog {
 
         // Get values from Blutmagie and Verbotene Pforten if they exist
         manoever.blutmagie.value = Number(html.find('#blutmagie')[0]?.value) || 0
+
+        // For verbotene_pforten, check if a radio button is selected (not the default "0")
+        const verbotenePfortenValue = html.find('input[name="verbotene_pforten_toggle"]:checked')[0]
+            ?.value
         manoever.verbotene_pforten = {
-            multiplier:
-                Number(
-                    html.find(
-                        'input[name="item.system.manoever.verbotene_pforten_toggle"]:checked',
-                    )[0]?.value,
-                ) || 4,
-            activated: html.find('#verbotene_pforten')[0]?.checked || false,
+            multiplier: Number(verbotenePfortenValue) || 4,
+            activated: verbotenePfortenValue !== undefined && verbotenePfortenValue !== '0',
         }
         manoever.set_energy_cost.value =
             Number(html.find('input[name="item.system.manoever.energyOverride"]')[0]?.value) || 0
@@ -560,6 +545,62 @@ export class UebernatuerlichDialog extends CombatDialog {
     }
 
     /**
+     * Gets the available energy for the current actor and item type
+     * @returns {number} Available energy (AsP or KaP)
+     */
+    getAvailableEnergy() {
+        if (this.actor.type == 'held') {
+            if (this.item.type === 'zauber') {
+                return this.actor.system.abgeleitete.asp_stern
+            } else {
+                return this.actor.system.abgeleitete.kap_stern
+            }
+        } else {
+            if (this.item.type === 'zauber') {
+                return this.actor.system.energien.asp.value
+            } else {
+                return this.actor.system.energien.kap.value
+            }
+        }
+    }
+
+    /**
+     * Determines whether the actor has access to Verbotene Pforten functionality
+     * @returns {boolean} True if the actor can use Verbotene Pforten
+     */
+    hasVerbotenePfortenAccess() {
+        // Direct advantage "Verbotene Pforten"
+        if (this.actor.vorteil.magie.some((v) => v.name === 'Verbotene Pforten')) {
+            return true
+        }
+
+        if (this.actor.uebernatuerlich.zauber.some((z) => z.name === 'Blut des Dolches (passiv)')) {
+            return true
+        }
+
+        // Borbaradianer tradition access (only for spells)
+        if (this.item.type === 'zauber') {
+            if (this.actor.type === 'kreatur') {
+                // For creatures, check in all advantage categories
+                return (
+                    this.actor.vorteil.allgemein.some((v) => v.name.includes('Borbaradianer')) ||
+                    this.actor.vorteil.magie.some((v) => v.name.includes('Borbaradianer')) ||
+                    this.actor.vorteil.zaubertraditionen.some((v) =>
+                        v.name.includes('Borbaradianer'),
+                    )
+                )
+            } else {
+                // For heroes, check selected style
+                return hardcoded
+                    .getSelectedStil(this.actor, 'uebernatuerlich')
+                    ?.name.includes('Borbaradianer')
+            }
+        }
+
+        return false
+    }
+
+    /**
      * Calculates the number of wounds needed to provide enough energy
      * @param {number} ws - Wundschwelle of the character
      * @param {number} multiplier - Selected multiplier (4 or 8)
@@ -570,6 +611,32 @@ export class UebernatuerlichDialog extends CombatDialog {
         if (energyNeeded <= 0) return 0
         const energyPerWound = ws + multiplier
         return Math.ceil(energyNeeded / energyPerWound)
+    }
+
+    /**
+     * Refreshes the dialog's actor reference and updates displays after actor changes
+     */
+    async refreshActorData() {
+        // Get the updated actor from the game
+        const updatedActor = game.actors.get(this.actor.id)
+        if (updatedActor) {
+            // Update the dialog's actor reference
+            this.actor = updatedActor
+
+            // Update energy values based on the refreshed actor
+            await this.initializeEnergyValues()
+
+            // Update the modifier display if it exists
+            const html = this.element
+            if (
+                html &&
+                html.length > 0 &&
+                this._modifierElement &&
+                this._modifierElement.length > 0
+            ) {
+                this.updateModifierDisplay(html)
+            }
+        }
     }
 
     async updateManoeverMods() {
@@ -593,20 +660,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         let fumble_val = 1
 
         // Get the minimum available resource based on actor and item type
-        let availableEnergy
-        if (this.actor.type == 'held') {
-            if (this.item.type === 'zauber') {
-                availableEnergy = this.actor.system.abgeleitete.asp_stern
-            } else {
-                availableEnergy = this.actor.system.abgeleitete.kap_stern
-            }
-        } else {
-            if (this.item.type === 'zauber') {
-                availableEnergy = this.actor.system.energien.asp.value
-            } else {
-                availableEnergy = this.actor.system.energien.kap.value
-            }
-        }
+        const availableEnergy = this.getAvailableEnergy()
 
         // Collect all modifications from all maneuvers
         const allModifications = []
@@ -657,6 +711,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             trefferzone,
             schaden,
             nodmg,
+            this.energy_override,
         ] = handleModifications(allModifications, {
             mod_at,
             mod_vt,
@@ -671,11 +726,6 @@ export class UebernatuerlichDialog extends CombatDialog {
             nodmg: null,
             context: this,
         })
-
-        if (manoeverAmount > 1) {
-            text_at = text_at.concat(`Gildenmagier 2: +${2}\n`)
-            mod_at += 2
-        }
 
         // Kombinierte Aktion kbak
         if (manoever.kbak.selected) {

@@ -110,9 +110,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
-        "text": "Bedingung: Schild.\n\nDu erhältst VT +1."
+        "voraussetzung": "Attribut KK 4",
+        "gruppe": 3,
+        "text": "Bedingung: Schild.\n\nDu erhältst VT +1.",
+        "sephrastoScript": "modifyKampfstil('Schildkampf', 0, 1, 0, 0)",
+        "stilBedingungen": "Schild",
+        "foundryScript": ""
       },
       "effects": [],
       "_stats": {
@@ -139,9 +142,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
-        "text": "Dein Waffenschaden steigt um +1.\n\nDu kannst in eine Halbschwertstellung wechseln, um deine Waffe in einer um eins kleineren Reichweite zu führen. Der Wechsel in die Stellung oder zurück geschieht in einer Freien Aktion."
+        "voraussetzung": "Attribut KK 6, Vorteil Kraftvoller Kampf I",
+        "gruppe": 3,
+        "text": "Dein Waffenschaden steigt um +1.\n\nDu kannst in eine Halbschwertstellung wechseln, um deine Waffe in einer um eins kleineren Reichweite zu führen. Der Wechsel in die Stellung oder zurück geschieht in einer Freien Aktion.",
+        "sephrastoScript": "modifyKampfstil('Kraftvoller Kampf', 0, 0, 1, 0)",
+        "stilBedingungen": "",
+        "foundryScript": ""
       },
       "effects": [],
       "_stats": {
@@ -168,9 +174,12 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
-        "text": "Du erhältst AT +1.\n\nDu kannst in eine Halbschwertstellung wechseln, um deine Waffe in einer um 1 kleineren Reichweite zu führen. Der Wechsel in die Stellung oder zurück geschieht in einer Freien Aktion."
+        "voraussetzung": "Attribut GE 6, Vorteil Schneller Kampf I",
+        "gruppe": 3,
+        "text": "Du erhältst AT +1.\n\nDu kannst in eine Halbschwertstellung wechseln, um deine Waffe in einer um 1 kleineren Reichweite zu führen. Der Wechsel in die Stellung oder zurück geschieht in einer Freien Aktion.",
+        "sephrastoScript": "modifyKampfstil('Schneller Kampf', 1, 0, 0, 0)",
+        "stilBedingungen": "",
+        "foundryScript": ""
       },
       "effects": [],
       "_stats": {
@@ -197,8 +206,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KK 4",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Niederwerfen (AT -4): Gegenprobe: KK. Dein Ziel stürzt und liegt am Boden."
       },
       "effects": [],
@@ -226,8 +235,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KO 6",
+        "gruppe": 2,
         "text": "Die BE aller Rüstungen ist um 1 gesenkt."
       },
       "effects": [],
@@ -255,8 +264,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut IN 4",
+        "gruppe": 2,
         "text": "Deine INI steigt um 4 Punkte."
       },
       "effects": [],
@@ -284,8 +293,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut GE 4",
+        "gruppe": 2,
         "text": "Nach einem Sturz befindest du dich in kniender statt liegender Position."
       },
       "effects": [],
@@ -313,8 +322,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KK 6",
+        "gruppe": 2,
         "text": "Deine unbewaffneten Angriffe erhalten die Waffeneigenschaften Kopflastig und Wendig (S. 47)."
       },
       "effects": [],
@@ -342,8 +351,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KO 4",
+        "gruppe": 2,
         "text": "Einmal zwischen zwei Ruhephasen kannst du eine Aktion Konzentration aufwenden und eine Zähigkeits-Probe (16) ablegen. Gelingt die Probe, regenerierst du sofort 1 Wunde oder 2 Erschöpfung, die du im laufenden Kampf erlitten hast."
       },
       "effects": [],

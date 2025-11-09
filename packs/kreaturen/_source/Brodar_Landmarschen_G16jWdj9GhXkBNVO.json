@@ -110,8 +110,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KO 4",
+        "gruppe": 1,
         "text": "Proben zur Abwehr von Giften und Krankheiten sind um +4 erleichtert."
       },
       "effects": [],
@@ -139,8 +139,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KO 4",
+        "gruppe": 2,
         "text": "Einmal zwischen zwei Ruhephasen kannst du eine Aktion Konzentration aufwenden und eine Zähigkeits-Probe (16) ablegen. Gelingt die Probe, regenerierst du sofort 1 Wunde oder 2 Erschöpfung, die du im laufenden Kampf erlitten hast."
       },
       "effects": [],
@@ -168,8 +168,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut CH 6",
+        "gruppe": 1,
         "text": "In Rededuellen sind Proben auf Betören und Einschüchtern um +2 erleichtert.\n\nBei Proben auf Betören, Einschüchtern und Gebräuche gelten Patzer als gewöhnlich misslungen, außer sie entstehen durch eine ungewohnte Umgebung (S. 55)."
       },
       "effects": [],
@@ -197,8 +197,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut IN 4",
+        "gruppe": 2,
         "text": "Deine INI steigt um 4 Punkte."
       },
       "effects": [],
@@ -226,8 +226,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut CH 6",
+        "gruppe": 2,
         "text": "Alle Mitstreiter erhalten VT +1."
       },
       "effects": [],
@@ -255,8 +255,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut CH 4",
+        "gruppe": 2,
         "text": "Furcht-Effekte für Mitstreiter zählen als eine Stufe niedriger."
       },
       "effects": [],
@@ -284,8 +284,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut GE 6",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Sturmangriff (Bewegung und AT): Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Außerdem richtet die nächste Attacke GS Trefferpunkte zusätzlich an."
       },
       "effects": [],
@@ -313,8 +313,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut GE 4",
+        "gruppe": 2,
         "text": "Nach einem Sturz befindest du dich in kniender statt liegender Position."
       },
       "effects": [],
@@ -342,8 +342,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut IN 6",
+        "gruppe": 1,
         "text": "In Rededuellen sind Proben auf Rhetorik und Überreden um +2 erleichtert.\n\nBei Proben auf Überreden, Rhetorik und Menschenkenntnis gelten Patzer als gewöhnlich misslungen, außer sie entstehen durch eine ungewohnte Umgebung (S. 55)."
       },
       "effects": [],

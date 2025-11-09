@@ -2,7 +2,35 @@
 
 ## v12
 
+### v12.2.5
+
+-   Kampfstil-Sync-Button auf dem Charaktersheet wurde ausgebaut, dafür wurde ein Sync-Button auf dem Charaktersheet eingeführt, der alle Vorteile und alle Übernatürlichen Talente mit den Kompendium-Counterparts synct
+-   auskommentiere Setting wieder reingenommen, hat zu einem Problem geführt, dass man die Dialoge nicht mehr öffnen kann
+
+### v12.2.4
+
+-   fixes breaking change dialog
+
+### v12.2.3
+
+-   Importer speichert zugekaufte und gebundene Energie an der richtigen Stelle
+
+### v12.2.2
+
+-   Breaking changes dialog
+
+### v12.2.1
+
+-   Bei geweihten Beispielhelden waren die Liturigen falsch als Zauber geflaggt was dazu geführt hat, dass die Würfeldialoge nicht funktioniert haben.
+
 ### v12.2
+
+#### Breaking Change
+
+-   die Kampfstile und die Übernatürlichen Talente können nur richtig verwendet werden, wenn sie auch in ihrer aktuellsten Form auf dem Charakter liegen. Dafür muss entweder der Sync/Update-Button verwendet werden (bitte auf die nötigen Nutzer Berechtigungen achten ("Upload File", ggf "Create Actor")) oder die Vorteile/Übernatürlichen Talente müssen neu auf das Charaktersheet gezogen werden
+-   für Charaktere mit 5.1.0 und neuer sollte der XML-Import oder der Sync-Button im Actortab verwendet werden. Bei älteren Sephrasto XMLs kommt es zu Fehlern, da sich die Datenstruktur maßgeblich unterscheidet
+-   für Charaktere, die mit älteren Sephrasto-Versionen erstellt wurden, muss weiterhin das Sephrasto-Plugin für Foundry verwendet werden und ein manuelles Update der Charakterdaten erfolgen. Dafür wie oben beschrieben den Sync-Button für den Charakterbogen aktivieren und einfach drauf drücken, den Rest erledigt Foundry
+-   Bei der neuen Variante (Sephrasto 5.1.0 + XML-Import/Actortab-Sync-Button) können auch Hausregeln verwendet werden, wenn die Hausregeln mit exakt gleichem Namen auch in Foundry vorhanden sind!
 
 #### Features
 
@@ -15,7 +43,6 @@
 -   Manöver, die mit dem ZERO_DAMAGE Modifikator in Foundry versehen sind, können wie in den Ilaris Regeln nicht miteinander kombiniert werden
 -   Im Inventar wird nun die Anzahl eines Elements angezeigt
 -   Beim Hinzufügen eines Items kann die Anzahl mit angegeben werden
--   Anzeige für optionale Weltregel "Platzbedarf" kompakter
 -   Foundry Kampfstile benutzen das Sephrasto Kampfstile Script, um AT/VT/DMG/RW/BE Boni dynamisch zu handhaben
 -   Kampfstil-Manöver sind nur noch aktiv, wenn die Waffenvoraussetungen des Kampfstiles erfüllt sind
 -   Kampfstile können Foundry eigenen Scripte erhalten, die folgende Dinge dynamisch handeln:
@@ -30,15 +57,16 @@
     -   (kein) <beliebige Waffeneigenschaft> (Der Kampfstil benötigt mindestens eine Waffe mit der aufgelisteten Waffeneigenschaft oder verbietet beiden Waffen eine Eigenschaft)
     -   oder beliebige Kombinationen, der oben genannten Voraussetungen getrennt durch Kommas
 -   Kampfstile können als Fernkampf-Kampfstile geflaggt werden wodurch der AT-Modifier des Stiles nur auf Fernkampfwaffen zählt
--   Gildenmagier 2 Bonus
--   Fügt Charakter-Import-Button im Aktorentab für XML-Datein direkt aus Sephrasto hinzu (man braucht kein Foundry-Plugin mehr)
+-   Anzeige für optionale Weltregel "Platzbedarf" kompakter
+-   Fügt Charakter-Import-Button im Aktorentab für XML-Datein direkt aus Sephrasto (5.1.0) hinzu (man braucht kein Foundry-Plugin mehr)
     -   Spieler müssen die Berechtigung erhalten Dateien Uploaden zu dürfen und Charaktere erstellen zu dürfen, sonst sind die neuen Knöpfe nicht verfügbar
 -   Charakter-Sync-Button an jedem Charakter, der einem gehört. Damit kann einfach der Charakter mit der neuen XML-Datei aus Sephrasto geupdatet werden
-    -   dabei werden keine Waffen oder andere Inventargegenstände in Foundry verändert,
+    -   dabei werden **keine Waffen oder andere Inventargegenstände** in Foundry verändert,
     -   die Notizen werden nicht verändert
     -   Eigenheiten werden vereint
-    -   die in Sephrasto hinzugefügten Waffen/Inventargegenstände/Notizen werden ignoriert (Bewusste Entscheidung Charakter Verwaltung in Sephrasto, Inventar und Notiz Verwaltung in Foundry)
+    -   die in Sephrasto hinzugefügten **Waffen/Inventargegenstände/Notizen werden ignoriert** (Bewusste Entscheidung Charakter Verwaltung in Sephrasto, Inventar und Notiz Verwaltung in Foundry)
 -   löscht einige überflüssige SVGs und benutzt die Tint Property von Foundry, um diese zu färben, was Assets und Bandbreit einspart
+-   Verbotene Pforten freischalten mit Zauber "Blut des Dolches"
 
 ### v12.1
 

@@ -173,6 +173,7 @@
         "attribute",
         "initiative"
       ],
+      "additemtype": "angriff",
       "edit": false,
       "kreaturentyp": "humanoid",
       "kurzbeschreibung": "",
@@ -234,6 +235,7 @@
         "fertigkeit": "",
         "talent": "",
         "rw": 0,
+        "rw_mod": 0,
         "hauptwaffe": false,
         "nebenwaffe": false,
         "eigenschaften": [],

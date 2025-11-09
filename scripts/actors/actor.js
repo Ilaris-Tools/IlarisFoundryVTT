@@ -72,14 +72,18 @@ export class IlarisActor extends Actor {
     _checkVorteilSource(requirement, vorteil, item) {
         // For Stile (gruppe 3, 5, or 7) on held-type actors, check with getSelectedStil
         if (this.type === 'held' && [3, 5, 7].includes(Number(vorteil.system.gruppe))) {
-            if (item.system.hauptwaffe || item.system.nebenwaffe) {
+            if (
+                item.system.hauptwaffe ||
+                item.system.nebenwaffe ||
+                item.type === 'zauber' ||
+                item.type === 'liturgie'
+            ) {
                 const kampfStil = hardcoded.getSelectedStil(this, 'kampf')
                 const ueberStil = hardcoded.getSelectedStil(this, 'uebernatuerlich')
                 return (
                     (kampfStil.active &&
                         kampfStil?.sources.some((source) => source === requirement)) ||
-                    (ueberStil.active &&
-                        ueberStil?.sources.some((source) => source === requirement))
+                    ueberStil?.sources.some((source) => source === requirement)
                 )
             } else {
                 return false
@@ -595,6 +599,7 @@ export class IlarisActor extends Actor {
             nwaffe.system.manoever.vlof.offensiver_kampfstil = actor.vorteil.kampf.some(
                 (x) => x.name == 'Offensiver Kampfstil',
             )
+            nwaffe.system.rw_mod = nwaffe.system.rw
         }
 
         for (let fwaffe of actor.fernkampfwaffen) {
@@ -665,6 +670,7 @@ export class IlarisActor extends Actor {
                 }`
             }
             let rw = fwaffe.system.rw
+            fwaffe.system.rw_mod = rw
             fwaffe.system.manoever.rw['0'] = `${rw} Schritt`
             fwaffe.system.manoever.rw['1'] = `${2 * rw} Schritt`
             fwaffe.system.manoever.rw['2'] = `${4 * rw} Schritt`
@@ -696,12 +702,15 @@ export class IlarisActor extends Actor {
             fwaffe.system.manoever.lcht.angepasst = lcht_angepasst
         }
 
+        actor.misc.selected_kampfstil_conditions_not_met = ''
+
         if (
             weaponUtils.checkCombatStyleConditions(
                 selected_kampfstil?.stilBedingungen,
                 HW,
                 NW,
                 this.system.misc.ist_beritten,
+                actor,
             )
         ) {
             // Execute foundryScript method calls if they exist
@@ -781,7 +790,6 @@ export class IlarisActor extends Actor {
             }
         } else {
             selected_kampfstil.active = false
-            actor.misc.selected_kampfstil_conditions_not_met = selected_kampfstil.stilBedingungen
         }
     }
 
@@ -1080,7 +1088,6 @@ export class IlarisActor extends Actor {
             actor.infos = infos
             actor.freietalente = freietalente
             actor.uebernatuerlich.fertigkeiten = freie_uebernatuerliche_fertigkeiten
-            actor.kreaturItemOptions = foundry.utils.duplicate(CONFIG.ILARIS.kreatur_item_options)
         }
     }
 }

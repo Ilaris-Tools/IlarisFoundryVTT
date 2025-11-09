@@ -110,8 +110,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KK 10",
+        "gruppe": 2,
         "text": "Selbst bei einer gelungenen gegnerischen Verteidigung richtest du halben Schaden an. Ausweichen vermeidet diesen Schaden. Manövereffekte wirken weiterhin nur bei gelungenen Attacken."
       },
       "effects": [],

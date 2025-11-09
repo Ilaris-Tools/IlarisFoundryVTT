@@ -1,0 +1,41 @@
+{
+  "name": "Warmes Blut (Tiergeist)",
+  "type": "zauber",
+  "_id": "dP0qbmDclyFqddmX",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Gaben des Odun, Gaben des Blutgeists",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Durch diesen Zauber siehst du die Wärmestrahlung deiner Umgebung. Kaltes erscheint schwarz bis grünblau, Warmblüter sind gelb und Feuer ist orange bis tiefrot.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "4 Aktionen",
+    "ziel": "selbst",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Stunde",
+    "kosten": "4 AsP",
+    "erlernen": "Ach 8; Alch 20",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "bRsoRPItEVb33T1L": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.343",
+    "systemId": "Ilaris",
+    "systemVersion": "12.2.0",
+    "createdTime": 1760387067357,
+    "modifiedTime": 1760387067357,
+    "lastModifiedBy": "bRsoRPItEVb33T1L"
+  },
+  "_key": "!items!dP0qbmDclyFqddmX"
+}

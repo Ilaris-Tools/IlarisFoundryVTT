@@ -16,36 +16,36 @@
       }
     },
     "attribute": {
-      "KO": {
-        "wert": 2,
-        "pw": 0
-      },
-      "MU": {
-        "wert": 4,
-        "pw": 0
-      },
-      "GE": {
-        "wert": 2,
-        "pw": 0
-      },
-      "KK": {
-        "wert": 4,
-        "pw": 0
-      },
-      "IN": {
-        "wert": 6,
-        "pw": 0
-      },
-      "KL": {
-        "wert": 2,
-        "pw": 0
-      },
       "CH": {
         "wert": 4,
         "pw": 0
       },
       "FF": {
         "wert": 6,
+        "pw": 0
+      },
+      "GE": {
+        "wert": 2,
+        "pw": 0
+      },
+      "IN": {
+        "wert": 6,
+        "pw": 0
+      },
+      "KK": {
+        "wert": 4,
+        "pw": 0
+      },
+      "KL": {
+        "wert": 2,
+        "pw": 0
+      },
+      "KO": {
+        "wert": 2,
+        "pw": 0
+      },
+      "MU": {
+        "wert": 4,
         "pw": 0
       }
     },
@@ -67,7 +67,9 @@
       "dh": 0,
       "traglast_intervall": 0,
       "traglast": 0,
-      "kap_zugekauft": 0
+      "kap_zugekauft": 0,
+      "gkap": null,
+      "kap_stern": 24
     },
     "schips": {
       "schips": 4,
@@ -83,6 +85,11 @@
       "manuellermod": 0,
       "nahkampfmod": 0
     },
+    "misc": {
+      "selected_kampfstil": "ohne",
+      "selected_uebernatuerlicher_stil": "ohne",
+      "ist_beritten": false
+    },
     "geld": {
       "dukaten": 0,
       "silbertaler": 0,
@@ -90,10 +97,7 @@
       "kreuzer": 0
     },
     "getragen": 1,
-    "notes": "",
-    "misc": {
-      "selected_kampfstil": "kvk"
-    }
+    "notes": ""
   },
   "items": [
     {
@@ -1419,7 +1423,7 @@
     {
       "_id": "oJHyxgA13759z594",
       "name": "Feuersegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Heiliges Feuer, Zwölfgöttlicher Ritus",
@@ -1457,7 +1461,7 @@
     {
       "_id": "UaVS7z16dFFQzOVa",
       "name": "Geburtssegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Zwölfgöttlicher Ritus, Neubeginn",
@@ -1495,7 +1499,7 @@
     {
       "_id": "6X0lQCzW3BZKRzWJ",
       "name": "Grabsegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Tod, Zwölfgöttlicher Ritus",
@@ -1533,7 +1537,7 @@
     {
       "_id": "rKQnt340ab4YH34Z",
       "name": "Heilungssegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Heilung, Zwölfgöttlicher Ritus",
@@ -1571,7 +1575,7 @@
     {
       "_id": "ZgCmOSI0qIGIWX6C",
       "name": "Speisesegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Heim und Herd, Zwölfgöttlicher Ritus",
@@ -1609,7 +1613,7 @@
     {
       "_id": "omNshLat872gvnqK",
       "name": "Tranksegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Seefahrt, Zwölfgöttlicher Ritus",
@@ -1647,7 +1651,7 @@
     {
       "_id": "CaoqbeqH65lor5RY",
       "name": "Gemeinschaft treuer Gefährten",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Fröhlicher Wanderer, Jagd, Sichere Heimkehr",
@@ -1685,7 +1689,7 @@
     {
       "_id": "6EQafuwUjOtGvcox",
       "name": "Mirakel: Wahrnehmung",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Tod, Wind und Wogen, Jagd, Heilung, Ordnung, Rausch, Sichere Heimkehr",
@@ -1723,7 +1727,7 @@
     {
       "_id": "3sCqM35kP1EK5GQx",
       "name": "Segnung des Heiligen Mikail",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Jagd",
@@ -1761,7 +1765,7 @@
     {
       "_id": "CNQbTAWgiZJPI6Ew",
       "name": "Tierempathie",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Friede, Jagd",
@@ -1799,7 +1803,7 @@
     {
       "_id": "vTU4qmlXkdquwgCD",
       "name": "Geteiltes Leid",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Heim und Herd, Wildnis",
@@ -1837,7 +1841,7 @@
     {
       "_id": "tJDFgEVEPchwalxL",
       "name": "Mirakel: Heilkunde",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Vergessen, Wildnis, Heilung, Heim und Herd, Friede",
@@ -1875,7 +1879,7 @@
     {
       "_id": "NhvYlV9a7SsRZ0Vq",
       "name": "Sichere Wanderung im Schnee",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Wildnis, Winter",
@@ -1913,7 +1917,7 @@
     {
       "_id": "HQ9dfQTcI47pBbKK",
       "name": "Zuflucht finden",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Sichere Heimkehr, Wildnis",
@@ -2201,12 +2205,12 @@
   "_stats": {
     "compendiumSource": null,
     "duplicateSource": null,
-    "coreVersion": "12.331",
+    "coreVersion": "12.343",
     "systemId": "Ilaris",
-    "systemVersion": "12.0.2",
+    "systemVersion": "12.2.0",
     "createdTime": 1747090051459,
-    "modifiedTime": 1747090051459,
-    "lastModifiedBy": "oa0cULjciXK52aoL"
+    "modifiedTime": 1759478609911,
+    "lastModifiedBy": "bRsoRPItEVb33T1L"
   },
   "ownership": {
     "default": 0,

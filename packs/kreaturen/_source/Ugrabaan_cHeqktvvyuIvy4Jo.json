@@ -110,8 +110,8 @@
       "type": "vorteil",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "voraussetzung": "",
-        "gruppe": 0,
+        "voraussetzung": "Attribut KK 4",
+        "gruppe": 2,
         "text": "Erlaubt das Manöver Niederwerfen (AT -4): Gegenprobe: KK. Dein Ziel stürzt und liegt am Boden."
       },
       "effects": [],
@@ -629,20 +629,20 @@
       "type": "zauber",
       "img": "icons/svg/item-bag.svg",
       "system": {
-        "fertigkeiten": "Dämonisch",
+        "fertigkeiten": "Dämonisch, Verwandlung",
         "fertigkeit_ausgewaehlt": "auto",
-        "text": "Du erschaffst eine Chimäre aus zwei oder mehr Lebewesen (mehr zu Beschwörungen siehe S. 81). Eines dieser Lebewesen kann durch einen Dämon ersetzt werden. Die Chimäre hat sich nach 1 Stunde an ihre Existenz gewöhnt und ist einsatzfähig.\nProbenschwierigkeit: nach Chimäre\nVorbereitungszeit: frei wählbar\nWirkungsdauer: bis die Bindung gelöst wird\nKosten: nach Chimäre, 1/4 der Basiskosten als gAsP\nFertigkeiten: Dämonisch, Verwandlung\nErlernen: Mag 18; Hex 20; 60 EP",
+        "text": "Du erschaffst eine Chimäre aus zwei oder mehr Lebewesen (mehr zu Beschwörungen siehe S. 81). Eines dieser Lebewesen kann durch einen Dämon ersetzt werden. Die Chimäre hat sich nach 1 Stunde an ihre Existenz gewöhnt und ist einsatzfähig.",
         "maechtig": "",
-        "schwierigkeit": "",
+        "schwierigkeit": "nach Chimäre",
         "modifikationen": "",
-        "vorbereitung": "",
+        "vorbereitung": "frei wählbar",
         "ziel": "",
         "reichweite": "",
-        "wirkungsdauer": "",
-        "kosten": "",
-        "erlernen": "",
-        "pw": 14,
-        "gruppe": -1
+        "wirkungsdauer": "bis die Bindung gelöst wird",
+        "kosten": "nach Chimäre, 1/4 der Basiskosten als gAsP",
+        "erlernen": "Mag 18; Hex 20",
+        "pw": 0,
+        "gruppe": 0
       },
       "effects": [],
       "_stats": {

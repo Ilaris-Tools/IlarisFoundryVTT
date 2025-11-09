@@ -83,6 +83,7 @@
 
 .attribute-wrapper:hover .attribute-number {
   text-shadow: 0 0 10px var(--color-shadow-primary);
+  cursor: pointer;
 }
 
 .attribute-wrapper:hover {
@@ -844,6 +845,25 @@ hr {
   font-style: italic;
 }
 /* Sync kampfstile button styling */
+/* Sync items button styling */
+.sync-items {
+  color: #4f4f4f;
+  cursor: pointer;
+  margin-left: 10px;
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+.sync-items:hover {
+  color: #2e5c8a;
+  transform: scale(1.1);
+}
+
+.sync-items i {
+  margin-right: 3px;
+}
+
+/* Backward compatibility for old class name */
 .sync-kampfstile {
   color: #4f4f4f;
   cursor: pointer;
