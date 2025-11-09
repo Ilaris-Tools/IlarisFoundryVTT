@@ -30,7 +30,7 @@
     "probe": "Liturgie -4",
     "gegenprobe": "",
     "text": "Die Kosten der Liturgie sinken um ein Viertel der Basiskosten. Die Kosten können dadurch nicht unter die Hälfte der Basiskosten sinken.",
-    "isBaseManover": false
+    "isBaseManoever": false
   },
   "effects": [],
   "folder": null,

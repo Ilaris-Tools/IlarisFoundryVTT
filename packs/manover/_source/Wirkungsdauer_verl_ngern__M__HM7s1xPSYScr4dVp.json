@@ -23,7 +23,7 @@
     "probe": "Zauber -4",
     "gegenprobe": "",
     "text": "Die Wirkungsdauer des Zaubers verdoppelt sich.",
-    "isBaseManover": true
+    "isBaseManoever": true
   },
   "effects": [],
   "folder": null,

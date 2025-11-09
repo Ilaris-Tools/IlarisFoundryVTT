@@ -23,7 +23,7 @@
     "probe": "Liturgie -4",
     "gegenprobe": "",
     "text": "Die Wirkungsdauer der Liturgie verdoppelt sich.",
-    "isBaseManover": true
+    "isBaseManoever": true
   },
   "effects": [],
   "folder": null,

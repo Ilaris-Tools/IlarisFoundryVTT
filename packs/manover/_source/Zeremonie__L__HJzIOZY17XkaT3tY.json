@@ -30,7 +30,7 @@
     "probe": "Liturgie +X",
     "gegenprobe": "",
     "text": "Du kannst die Vorbereitungszeit freiwillig um 1 Minute/Stunde/Tag/Woche/Monat/Jahr erhöhen, wodurch die Liturgie um +4/6/8/10/12/14 erleichtert ist. Die Vorbereitungszeit muss dadurch mindestens verdoppelt werden. Voraussetzung: Tradition der Boron-, Hesinde-, Ifirn-, Peraine-, Praios-, Travia- oder Tsageweihten (jeweils) III und Verwendung dieser Tradition",
-    "isBaseManover": false
+    "isBaseManoever": false
   },
   "effects": [],
   "folder": null,

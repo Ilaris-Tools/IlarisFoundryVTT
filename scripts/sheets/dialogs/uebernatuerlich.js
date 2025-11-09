@@ -665,7 +665,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         // Collect all modifications from all maneuvers
         const allModifications = []
         let manoeverAmount = 0
-        let baseManoverCount = 0
+        let baseManoeverCount = 0
 
         this.item.manoever.forEach((dynamicManoever) => {
             let check = undefined
@@ -690,8 +690,8 @@ export class UebernatuerlichDialog extends CombatDialog {
             manoeverAmount++
 
             // Count base maneuvers for Gildenmagier II bonus
-            if (dynamicManoever.system.isBaseManover) {
-                baseManoverCount++
+            if (dynamicManoever.system.isBaseManoever) {
+                baseManoeverCount++
             }
 
             // Add valid modifications to the collection
@@ -751,7 +751,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         }
 
         // Gildenmagier II Bonus: +2 wenn mindestens 2 verschiedene Basismanöver verwendet werden
-        if (baseManoverCount >= 2 && this.actor.type === 'held' && this.item.type === 'zauber') {
+        if (baseManoeverCount >= 2 && this.actor.type === 'held' && this.item.type === 'zauber') {
             const selectedStil = hardcoded.getSelectedStil(this.actor, 'uebernatuerlich')
             if (selectedStil?.name.includes('Gildenmagier') && selectedStil.stufe >= 2) {
                 mod_at += 2

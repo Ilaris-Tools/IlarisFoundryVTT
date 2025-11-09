@@ -83,7 +83,7 @@ describe('UebernatuerlichDialog canSetEnergyCost logic', () => {
 describe('Gildenmagier II Bonus logic', () => {
     // Mock the logic for counting base maneuvers
     function countBaseManoever(maneuvers) {
-        let baseManoverCount = 0
+        let baseManoeverCount = 0
         maneuvers.forEach((manoever) => {
             // Check if maneuver is selected (has a value)
             const hasValue =
@@ -91,16 +91,16 @@ describe('Gildenmagier II Bonus logic', () => {
                 (manoever.inputValue.field === 'NUMBER' && manoever.inputValue.value > 0) ||
                 (manoever.inputValue.field === 'TREFFER_ZONE' && manoever.inputValue.value > 0)
 
-            if (hasValue && manoever.system.isBaseManover) {
-                baseManoverCount++
+            if (hasValue && manoever.system.isBaseManoever) {
+                baseManoeverCount++
             }
         })
-        return baseManoverCount
+        return baseManoeverCount
     }
 
-    function shouldApplyGildenmagierBonus(actor, item, baseManoverCount, selectedStil = null) {
+    function shouldApplyGildenmagierBonus(actor, item, baseManoeverCount, selectedStil = null) {
         if (
-            baseManoverCount >= 2 &&
+            baseManoeverCount >= 2 &&
             actor.type === 'held' &&
             item.type === 'zauber' &&
             selectedStil?.name.includes('Gildenmagier') &&
@@ -113,7 +113,7 @@ describe('Gildenmagier II Bonus logic', () => {
 
     const createMockManoever = (name, isBase, inputField, inputValue) => ({
         name,
-        system: { isBaseManover: isBase },
+        system: { isBaseManoever: isBase },
         inputValue: { field: inputField, value: inputValue },
     })
 
