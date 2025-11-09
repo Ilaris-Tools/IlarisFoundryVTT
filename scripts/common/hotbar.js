@@ -97,9 +97,15 @@ const event = {
     }
 };
 
-// Import and call wuerfelwurf
-const { wuerfelwurf } = await import('/systems/Ilaris/scripts/common/wuerfel.js');
-await wuerfelwurf(event, actor);`
+// Dynamically import the wuerfelwurf function
+import('/systems/Ilaris/scripts/common/wuerfel.js')
+    .then(module => {
+        module.wuerfelwurf(event, actor);
+    })
+    .catch(err => {
+        console.error('Failed to import wuerfel module:', err);
+        ui.notifications.error('Fehler beim Öffnen des Combat Dialogs.');
+    });`
 
     // Check if a macro with this name already exists
     let macro = game.macros.find((m) => m.name === macroName)
