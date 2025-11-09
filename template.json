@@ -401,7 +401,55 @@
       "name": "",
       "sephrastoScript": "",
       "foundryScript": "",
-      "text": ""
+      "text": "",
+      "kategorie": "modifier",
+      "modifiers": {
+        "at": 0,
+        "vt": 0,
+        "schaden": 0,
+        "schadenFormula": "",
+        "rw": 0
+      },
+      "conditions": [],
+      "wieldingRequirements": {
+        "hands": 1,
+        "penalties": {
+          "hauptOnly": {},
+          "nebenOnly": {},
+          "nebenWithoutExemption": {}
+        }
+      },
+      "targetEffect": {
+        "name": "",
+        "trigger": "on_hit",
+        "resistCheck": {
+          "type": "none",
+          "attackerAttribute": "",
+          "defenderAttribute": "",
+          "attackerModifier": 0,
+          "defenderModifier": 0
+        },
+        "effect": {
+          "type": "status",
+          "statusName": "",
+          "duration": "",
+          "icon": ""
+        }
+      },
+      "combatMechanics": {
+        "fumbleThreshold": null,
+        "critThreshold": null,
+        "ignoreCover": false,
+        "ignoreArmor": false,
+        "additionalDice": 0
+      },
+      "conditionalModifiers": [],
+      "actorModifiers": {
+        "initiative": 0,
+        "movement": 0,
+        "conditions": []
+      },
+      "customScript": ""
     }
   }
 }

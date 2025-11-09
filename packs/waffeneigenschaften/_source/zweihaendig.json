@@ -1,0 +1,62 @@
+{
+  "name": "Zweihändig",
+  "type": "waffeneigenschaft",
+  "img": "icons/weapons/swords/greatsword-crossguard-steel.webp",
+  "system": {
+    "beschreibung": "Die Waffe benötigt die Führung mit beiden Händen. Bei einhändiger Führung erleidest du einen Malus von -2 AT/-2 VT und die Waffe richtet -4 TP weniger an. Zweihändige Fernkampfwaffen können nicht einhändig benutzt werden.",
+    "kategorie": "wielding",
+    "modifiers": {
+      "at": 0,
+      "vt": 0,
+      "schaden": 0,
+      "schadenFormula": "",
+      "rw": 0
+    },
+    "conditions": [],
+    "wieldingRequirements": {
+      "hands": 2,
+      "penalties": {
+        "hauptOnly": {
+          "at": -2,
+          "vt": -2,
+          "schaden": -4,
+          "message": "Einhändig geführt: -2 AT/-2 VT/-4 TP"
+        },
+        "nebenOnly": {
+          "at": -6,
+          "vt": -6,
+          "schaden": -4,
+          "message": "Nur als Nebenwaffe: -6 AT/-6 VT/-4 TP"
+        },
+        "nebenWithoutExemption": null
+      }
+    },
+    "targetEffect": {
+      "name": "",
+      "trigger": "",
+      "resistCheck": {
+        "attribute": "",
+        "difficulty": 0
+      },
+      "effect": {
+        "type": "",
+        "duration": "",
+        "value": ""
+      }
+    },
+    "combatMechanics": {
+      "fumbleThreshold": null,
+      "critThreshold": null,
+      "ignoreCover": false,
+      "ignoreArmor": false,
+      "additionalDice": 0
+    },
+    "conditionalModifiers": [],
+    "actorModifiers": {
+      "initiative": 0,
+      "movement": 0,
+      "conditions": []
+    },
+    "customScript": ""
+  }
+}

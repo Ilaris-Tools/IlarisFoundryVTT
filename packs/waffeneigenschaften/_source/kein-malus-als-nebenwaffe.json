@@ -1,0 +1,52 @@
+{
+  "name": "kein Malus als Nebenwaffe",
+  "type": "waffeneigenschaft",
+  "img": "icons/weapons/daggers/dagger-winged-blue.webp",
+  "system": {
+    "beschreibung": "Diese Waffe erleidet keinen Malus, wenn sie als Nebenwaffe geführt wird.",
+    "kategorie": "passive",
+    "modifiers": {
+      "at": 0,
+      "vt": 0,
+      "schaden": 0,
+      "schadenFormula": "",
+      "rw": 0
+    },
+    "conditions": [],
+    "wieldingRequirements": {
+      "hands": 1,
+      "penalties": {
+        "hauptOnly": null,
+        "nebenOnly": null,
+        "nebenWithoutExemption": null
+      }
+    },
+    "targetEffect": {
+      "name": "",
+      "trigger": "",
+      "resistCheck": {
+        "attribute": "",
+        "difficulty": 0
+      },
+      "effect": {
+        "type": "",
+        "duration": "",
+        "value": ""
+      }
+    },
+    "combatMechanics": {
+      "fumbleThreshold": null,
+      "critThreshold": null,
+      "ignoreCover": false,
+      "ignoreArmor": false,
+      "additionalDice": 0
+    },
+    "conditionalModifiers": [],
+    "actorModifiers": {
+      "initiative": 0,
+      "movement": 0,
+      "conditions": []
+    },
+    "customScript": ""
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "name": "Reittier",
+  "type": "waffeneigenschaft",
+  "img": "icons/creatures/mammals/horse-white-full.webp",
+  "system": {
+    "beschreibung": "Ein Reittier ist Voraussetzung für den Reiterkampfstil. Angriffe mit dem Reittier sind um +4 erleichtert, wenn das Reittier in einer höheren Größenklasse als das Ziel ist.",
+    "kategorie": "passive",
+    "modifiers": {
+      "at": 0,
+      "vt": 0,
+      "schaden": 0,
+      "schadenFormula": "",
+      "rw": 0
+    },
+    "conditions": [],
+    "wieldingRequirements": {
+      "hands": 1,
+      "penalties": {
+        "hauptOnly": null,
+        "nebenOnly": null,
+        "nebenWithoutExemption": null
+      }
+    },
+    "targetEffect": {
+      "name": "",
+      "trigger": "",
+      "resistCheck": {
+        "attribute": "",
+        "difficulty": 0
+      },
+      "effect": {
+        "type": "",
+        "duration": "",
+        "value": ""
+      }
+    },
+    "combatMechanics": {
+      "fumbleThreshold": null,
+      "critThreshold": null,
+      "ignoreCover": false,
+      "ignoreArmor": false,
+      "additionalDice": 0
+    },
+    "conditionalModifiers": [],
+    "actorModifiers": {
+      "initiative": 0,
+      "movement": 0,
+      "conditions": []
+    },
+    "customScript": ""
+  }
+}
