@@ -22,9 +22,20 @@ export class FernkampfAngriffDialog extends CombatDialog {
         this.rollmode = game.settings.get('core', 'rollMode') // public, private....
         this.item.system.manoever.rllm.selected = game.settings.get('core', 'rollMode') // TODO: either manoever or dialog property.
         this.fumble_val = 1
-        if (this.item.system.eigenschaften.unberechenbar) {
+
+        // Check for Unberechenbar eigenschaft (support both formats)
+        const hasUnberechenbar = Array.isArray(this.item.system.eigenschaften)
+            ? this.item.system.eigenschaften.includes('Unberechenbar')
+            : this.item.system.eigenschaften.unberechenbar
+
+        // Use computed combat mechanics if available (new system)
+        if (this.item.system.computed?.combatMechanics?.fumbleThreshold) {
+            this.fumble_val = this.item.system.computed.combatMechanics.fumbleThreshold
+        } else if (hasUnberechenbar) {
+            // Legacy fallback
             this.fumble_val = 2
         }
+
         // Generate unique dialog ID to avoid conflicts when multiple dialogs are open
         this.aufbauendeManoeverAktivieren()
     }
@@ -235,11 +246,19 @@ export class FernkampfAngriffDialog extends CombatDialog {
     }
 
     eigenschaftenText() {
-        if (!this.item.system.eigenschaften.length > 0) {
+        if (!this.item.system.eigenschaften || this.item.system.eigenschaften.length === 0) {
             return
         }
         this.text_at += '\nEigenschaften: '
-        this.text_at += this.item.system.eigenschaften.map((e) => e.name).join(', ')
+
+        // Support both new array format (strings) and old format (objects with .name)
+        if (typeof this.item.system.eigenschaften[0] === 'string') {
+            // New format: array of strings
+            this.text_at += this.item.system.eigenschaften.join(', ')
+        } else {
+            // Old format: array of objects
+            this.text_at += this.item.system.eigenschaften.map((e) => e.name).join(', ')
+        }
     }
 
     async _angreifenKlick(html) {
