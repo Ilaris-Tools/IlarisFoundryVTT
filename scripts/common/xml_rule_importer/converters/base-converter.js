@@ -11,7 +11,7 @@ export class BaseConverter {
      * @returns {string} Random 16-character ID
      */
     generateFoundryId() {
-        return Math.random().toString(36).substr(2, 16)
+        return foundry.utils.randomID()
     }
 
     /**

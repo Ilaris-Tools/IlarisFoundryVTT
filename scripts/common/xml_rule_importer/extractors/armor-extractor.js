@@ -14,7 +14,9 @@ export class ArmorExtractor extends BaseExtractor {
      * @returns {Array} Array of Foundry ruestung items
      */
     extractRuestungen() {
-        return this.extractElements('Rüstung', (element) => this.converter.convertRuestung(element))
+        return this.extractElements('Datenbank > Rüstung', (element) =>
+            this.converter.convertRuestung(element),
+        )
     }
 
     /**

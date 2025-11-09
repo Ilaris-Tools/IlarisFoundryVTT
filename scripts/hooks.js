@@ -446,25 +446,24 @@ Hooks.on('renderActorDirectory', (app, html) => {
 Hooks.on('renderCompendiumDirectory', (app, html) => {
     // Add XML import button to the compendium directory header (only if GM)
     if (game.user.isGM) {
-        const header = html.find('.directory-header')
-        if (header.length > 0) {
-            const importButton = $(`
-                <button class="import-xml-rules rule-button" title="Import Rules from XML">
-                    <i class="fas fa-file-import"></i> Import Regeln XML
-                </button>
-            `)
+        const header = html[0].querySelector('.directory-header')
+        if (header) {
+            // Create import button
+            const importButton = document.createElement('button')
+            importButton.className = 'import-xml-rules rule-button'
+            importButton.title = 'Import Rules from XML'
+            importButton.innerHTML = '<i class="fas fa-file-import"></i> Import Regeln XML'
+            importButton.addEventListener('click', () => XMLRuleImporter.showRuleImportDialog())
 
-            const updateButton = $(`
-                <button class="update-xml-rules rule-button" title="Update Rules from XML">
-                    <i class="fas fa-sync-alt"></i> Update Regeln XML
-                </button>
-            `)
+            // Create update button
+            const updateButton = document.createElement('button')
+            updateButton.className = 'update-xml-rules rule-button'
+            updateButton.title = 'Update Rules from XML'
+            updateButton.innerHTML = '<i class="fas fa-sync-alt"></i> Update Regeln XML'
+            updateButton.addEventListener('click', () => XMLRuleImporter.showRuleUpdateDialog())
 
-            importButton.click(() => XMLRuleImporter.showRuleImportDialog())
-            updateButton.click(() => XMLRuleImporter.showRuleUpdateDialog())
-
-            header.append(importButton)
-            header.append(updateButton)
+            header.appendChild(importButton)
+            header.appendChild(updateButton)
         }
     }
 })

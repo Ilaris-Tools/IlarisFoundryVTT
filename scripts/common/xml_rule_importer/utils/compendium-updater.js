@@ -66,28 +66,35 @@ export class CompendiumUpdater {
 
     /**
      * Merge XML data with existing item, preserving Foundry-only properties
-     * @param {Object} existingItem - Existing item from compendium
+     * @param {Object} existingItem - Existing item from compendium (can be null for new items)
      * @param {Object} xmlItem - New item data from XML
      * @returns {Object} Merged item data
      */
     static mergeItemData(existingItem, xmlItem) {
         const merged = { ...xmlItem }
 
-        // Preserve Foundry-only properties from existing item
-        for (const prop of this.FOUNDRY_ONLY_PROPERTIES) {
-            if (existingItem[prop] !== undefined) {
-                merged[prop] = existingItem[prop]
+        if (existingItem) {
+            // Preserve Foundry-only properties from existing item
+            for (const prop of this.FOUNDRY_ONLY_PROPERTIES) {
+                if (existingItem[prop] !== undefined) {
+                    merged[prop] = existingItem[prop]
+                }
+
+                // Also check in system data
+                if (existingItem.system && existingItem.system[prop] !== undefined) {
+                    if (!merged.system) merged.system = {}
+                    merged.system[prop] = existingItem.system[prop]
+                }
             }
 
-            // Also check in system data
-            if (existingItem.system && existingItem.system[prop] !== undefined) {
-                if (!merged.system) merged.system = {}
-                merged.system[prop] = existingItem.system[prop]
-            }
+            // Preserve the _id for updating
+            merged._id = existingItem._id
+        } else {
+            // For new items, remove internal properties that shouldn't be in creation data
+            delete merged._id
+            delete merged._key
+            delete merged._stats
         }
-
-        // Preserve the _id for updating
-        merged._id = existingItem._id
 
         return merged
     }
@@ -172,7 +179,7 @@ export class CompendiumUpdater {
                             })
                         } else {
                             // Create new item
-                            const { _id, _key, _stats, ...itemData } = xmlItem
+                            const itemData = this.mergeItemData(null, xmlItem)
                             await Item.create(itemData, { pack: pack.collection })
 
                             results.created.push({
