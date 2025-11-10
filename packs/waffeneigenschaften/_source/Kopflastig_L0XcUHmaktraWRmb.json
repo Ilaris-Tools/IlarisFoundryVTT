@@ -1,0 +1,89 @@
+{
+  "name": "Kopflastig",
+  "type": "waffeneigenschaft",
+  "system": {
+    "name": "",
+    "sephrastoScript": "",
+    "foundryScript": "",
+    "text": "",
+    "kategorie": "modifier",
+    "modifiers": {
+      "at": 0,
+      "vt": 0,
+      "schaden": 0,
+      "schadenFormula": "@actor.system.attribute.KK.wert",
+      "rw": 0
+    },
+    "conditions": [],
+    "wieldingRequirements": {
+      "hands": 1,
+      "penalties": {
+        "hauptOnly": {
+          "at": null,
+          "vt": null
+        },
+        "nebenOnly": {
+          "at": null,
+          "vt": null
+        },
+        "nebenWithoutExemption": null
+      }
+    },
+    "targetEffect": {
+      "name": "",
+      "trigger": "",
+      "resistCheck": {
+        "type": "none",
+        "attackerAttribute": "",
+        "defenderAttribute": "",
+        "attackerModifier": 0,
+        "defenderModifier": 0,
+        "attribute": "",
+        "difficulty": 0
+      },
+      "effect": {
+        "type": "",
+        "statusName": "",
+        "duration": "",
+        "icon": "",
+        "value": ""
+      }
+    },
+    "combatMechanics": {
+      "fumbleThreshold": null,
+      "critThreshold": null,
+      "ignoreCover": false,
+      "ignoreArmor": false,
+      "additionalDice": 0
+    },
+    "conditionalModifiers": [],
+    "actorModifiers": {
+      "initiative": 0,
+      "movement": 0,
+      "conditions": []
+    },
+    "customScript": "",
+    "beschreibung": "Die Waffe kann zusätzliche Kraft besonders effizient in Schaden umwandeln. Der Schadensbonus durch hohe KK zählt für sie doppelt."
+  },
+  "_id": "L0XcUHmaktraWRmb",
+  "img": "icons/svg/item-bag.svg",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "bRsoRPItEVb33T1L": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.343",
+    "systemId": "Ilaris",
+    "systemVersion": "12.2.5",
+    "createdTime": 1762753607258,
+    "modifiedTime": 1762753726633,
+    "lastModifiedBy": "bRsoRPItEVb33T1L"
+  },
+  "_key": "!items!L0XcUHmaktraWRmb"
+}

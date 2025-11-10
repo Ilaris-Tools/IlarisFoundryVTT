@@ -69,13 +69,9 @@
             </div>
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis: 100px"><b>Eigenschaften:</b></label>
-                <select name="system.eigenschaften" multiple style="flex: 1; min-height: 100px;">
-                    {{#each availableEigenschaften}}
-                    <option value="{{this.name}}" {{#if (includes ../item.system.eigenschaften this.name)}}selected{{/if}}>
-                        {{this.name}}
-                    </option>
-                    {{/each}}
-                </select>
+                <multi-select name="system.eigenschaften">
+                    {{{selectOptions eigenschaftOptions selected=item.system.eigenschaften nameAttr="value" labelAttr="label"}}}
+                </multi-select>
             </div>
             {{#if needsMigration}}
             <div class="flexrow" style="margin-top: 5px;">

@@ -1,0 +1,92 @@
+{
+  "name": "Zweihändig",
+  "type": "waffeneigenschaft",
+  "system": {
+    "name": "",
+    "sephrastoScript": "",
+    "foundryScript": "",
+    "text": "",
+    "kategorie": "wielding",
+    "modifiers": {
+      "at": 0,
+      "vt": 0,
+      "schaden": 0,
+      "schadenFormula": "",
+      "rw": 0
+    },
+    "conditions": [],
+    "wieldingRequirements": {
+      "hands": 2,
+      "penalties": {
+        "hauptOnly": {
+          "at": 0,
+          "vt": -2
+        },
+        "nebenOnly": {
+          "at": -4,
+          "vt": -4
+        },
+        "nebenWithoutExemption": {
+          "at": -4,
+          "vt": -4
+        }
+      }
+    },
+    "targetEffect": {
+      "name": "",
+      "trigger": "",
+      "resistCheck": {
+        "type": "none",
+        "attackerAttribute": "",
+        "defenderAttribute": "",
+        "attackerModifier": 0,
+        "defenderModifier": 0,
+        "attribute": "",
+        "difficulty": 0
+      },
+      "effect": {
+        "type": "",
+        "statusName": "",
+        "duration": "",
+        "icon": "",
+        "value": ""
+      }
+    },
+    "combatMechanics": {
+      "fumbleThreshold": null,
+      "critThreshold": null,
+      "ignoreCover": false,
+      "ignoreArmor": false,
+      "additionalDice": 0
+    },
+    "conditionalModifiers": [],
+    "actorModifiers": {
+      "initiative": 0,
+      "movement": 0,
+      "conditions": []
+    },
+    "customScript": "",
+    "beschreibung": "Die Waffe muss beidhändig geführt werden. Als Nebenwaffe: -4 AT/-4 VT (außer mit Vorteil 'Beidhändiger Kampf I'). Nur Hauptwaffe: -2 VT."
+  },
+  "_id": "4oOWVH3wQNSnkr1S",
+  "img": "icons/svg/item-bag.svg",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "bRsoRPItEVb33T1L": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.343",
+    "systemId": "Ilaris",
+    "systemVersion": "12.2.5",
+    "createdTime": 1762753607310,
+    "modifiedTime": 1762753607310,
+    "lastModifiedBy": "bRsoRPItEVb33T1L"
+  },
+  "_key": "!items!4oOWVH3wQNSnkr1S"
+}

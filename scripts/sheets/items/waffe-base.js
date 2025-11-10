@@ -13,6 +13,12 @@ export class WaffeBaseSheet extends IlarisItemSheet {
         // Add migration status flag
         data.needsMigration = isOldEigenschaftenFormat(this.item.system.eigenschaften)
 
+        // Get available eigenschaften for the multiselect
+        data.availableEigenschaften = await this._getAvailableEigenschaften()
+
+        // Prepare eigenschaft options for selectOptions helper
+        data.eigenschaftOptions = this._prepareEigenschaftOptions(data.availableEigenschaften)
+
         return data
     }
 
@@ -91,6 +97,22 @@ export class WaffeBaseSheet extends IlarisItemSheet {
         eigenschaften.sort((a, b) => a.name.localeCompare(b.name))
 
         return eigenschaften
+    }
+
+    /**
+     * Prepare eigenschaft options for Foundry v12 multi-select element
+     * @param {Array} eigenschaften - Array of available eigenschaften
+     * @returns {Object} Options object formatted for multi-select
+     * @protected
+     */
+    _prepareEigenschaftOptions(eigenschaften) {
+        const options = {}
+
+        for (const eigenschaft of eigenschaften) {
+            options[eigenschaft.name] = eigenschaft.name
+        }
+
+        return options
     }
 
     /**
