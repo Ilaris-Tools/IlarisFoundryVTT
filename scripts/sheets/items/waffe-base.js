@@ -68,9 +68,13 @@ export class WaffeBaseSheet extends IlarisItemSheet {
     async _getAvailableEigenschaften() {
         const eigenschaften = []
 
-        // Search through all compendiums
-        for (const pack of game.packs) {
-            if (pack.metadata.type === 'Item') {
+        // Get configured waffeneigenschaften packs from settings
+        const selectedPacks = JSON.parse(game.settings.get('Ilaris', 'waffeneigenschaftenPacks'))
+
+        // Search through configured compendiums only
+        for (const packId of selectedPacks) {
+            const pack = game.packs.get(packId)
+            if (pack && pack.metadata.type === 'Item') {
                 const items = await pack.getDocuments()
                 for (const item of items) {
                     if (item.type === 'waffeneigenschaft') {
@@ -80,16 +84,6 @@ export class WaffeBaseSheet extends IlarisItemSheet {
                         })
                     }
                 }
-            }
-        }
-
-        // Also include eigenschaften from world items
-        for (const item of game.items) {
-            if (item.type === 'waffeneigenschaft') {
-                eigenschaften.push({
-                    name: item.name,
-                    id: item.id,
-                })
             }
         }
 
