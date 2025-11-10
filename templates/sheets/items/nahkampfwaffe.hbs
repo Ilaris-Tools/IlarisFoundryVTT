@@ -70,7 +70,7 @@
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis: 100px"><b>Eigenschaften:</b></label>
                 <multi-select name="system.eigenschaften">
-                    {{{selectOptions eigenschaftOptions selected=item.system.eigenschaften nameAttr="value" labelAttr="label"}}}
+                    {{{selectOptions availableEigenschaften selected=item.system.eigenschaften nameAttr="name" labelAttr="name"}}}
                 </multi-select>
             </div>
             {{#if needsMigration}}
