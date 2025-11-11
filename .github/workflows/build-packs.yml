@@ -1,0 +1,69 @@
+name: 🔨 Build DB for Ilaris in Foundry VTT
+
+on:
+    workflow_call:
+        inputs:
+            system_name:
+                description: 'The name of the Foundry VTT system'
+                default: 'Ilaris'
+                required: false
+                type: string
+    workflow_dispatch:
+    push: # for testing
+
+permissions:
+    contents: write
+
+env:
+    SYSTEM_NAME: ${{ inputs.system_name || 'Ilaris' }}
+
+jobs:
+    pack:
+        name: 📦 Package application
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v5
+            - uses: actions/setup-node@v6
+              with:
+                  node-version: 22
+            - name: 🚀 Install Dependencies
+              run: |
+                  npm install
+            - name: 📦 Package database files
+              run: |
+                  node utils/pack-all.js
+                  # Show folder structure in comp_packs
+                  ls -al comp_packs
+                  ls -al comp_packs/beispiel-helden
+            - name: 📂 Prepare app folder
+              run: |
+                  # Moving all files for system integration in here
+                  mkdir "${{ env.SYSTEM_NAME }}"
+                  mv -t "${{ env.SYSTEM_NAME }}" assets comp_packs css docs scripts styles templates utils
+                  mv babel.config.cjs jsconfig.json LICENSE package.json package-lock.json README.md svgo.config.js system.json template.json update-creature-items.js -t "${{ env.SYSTEM_NAME }}"
+            - name: ✍️ Define Zip name
+              id: zip-name
+              run: |
+                  SYSTEM_NAME="${{ env.SYSTEM_NAME }}"
+                  OUT="${SYSTEM_NAME}.zip"
+                  echo "file=${OUT}" >> $GITHUB_OUTPUT
+                  echo $OUT
+            - name: 📦 Zip application
+              run: |
+                  echo "Creating ${{ steps.zip-name.outputs.file }} from workspace"
+                  sudo apt-get update -y
+                  sudo apt-get install -y zip
+                  zip -r "${{ steps.zip-name.outputs.file }}" ./${{ env.SYSTEM_NAME }}
+            - name: Bump version and push tag
+              uses: laputansoft/github-tag-action@v4.6
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  tag: "0.0.1-${{ github.sha }}"
+            - name: 🎉 Release
+              uses: softprops/action-gh-release@v2
+              with:
+                  tag_name: "0.0.1-${{ github.sha }}"
+                  prerelease: true
+                  files: |
+                      CHANGELOG.md
+                      ${{ steps.zip-name.outputs.file }}
