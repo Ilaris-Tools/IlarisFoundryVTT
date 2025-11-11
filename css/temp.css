@@ -825,3 +825,11 @@ hr {
     font-size: 10px;
     padding-left: 4px;
 }
+
+/* Tooltip styling for maneuver descriptions */
+#tooltip {
+    text-align: left !important;
+    white-space: pre-line;
+    max-width: 400px;
+    line-height: 1.4;
+}
