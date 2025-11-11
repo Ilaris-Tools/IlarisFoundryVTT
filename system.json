@@ -2,7 +2,7 @@
   "id": "Ilaris",
   "title": "Ilaris",
   "description": "Schnelle und schlanke Regeln für das beliebteste deutsche P&P Setting.",
-  "version": "12.2.0",
+  "version": "12.2.5",
   "compatibility": {
     "minimum": 12,
     "verified": 12
@@ -35,7 +35,11 @@
   ],
   "scripts": [],
   "esmodules": ["scripts/hooks.js"],
-  "styles": ["css/temp.css", "styles/sheets/manoever.css"],
+  "styles": [
+    "css/temp.css",
+    "styles/sheets/manoever.css",
+    "styles/dialogs/changelog-notification.css"
+  ],
   "packFolders": [
     {
       "name": "Charaktere",
@@ -167,7 +171,7 @@
   "secondaryTokenAttribute": null,
   "background": "/systems/Ilaris/assets/images/background/splash.jpg",
   "url": "https://github.com/Ilaris-Tools/IlarisFoundryVTT/",
-  "manifest": "https://raw.githubusercontent.com/Ilaris-Tools/IlarisFoundryVTT/refs/heads/foundry-v12.1/system.json",
-  "download": "https://github.com/Ilaris-Tools/IlarisFoundryVTT/archive/refs/heads/foundry-v12.1.zip",
+  "manifest": "https://raw.githubusercontent.com/Ilaris-Tools/IlarisFoundryVTT/refs/heads/main/system.json",
+  "download": "https://github.com/Ilaris-Tools/IlarisFoundryVTT/archive/refs/heads/main.zip",
   "license": ""
 }

@@ -29,6 +29,9 @@ import {
 } from './settings/configure-game-settings.model.js'
 import { XmlCharacterImporter } from './common/xml_character_importer.js'
 
+// Import hooks
+import './hooks/changelog-notification.js'
+
 // Status effect tint colors
 const STATUS_EFFECT_COLORS = {
     YELLOW: '#FFFF00', // Light penalty/warning
