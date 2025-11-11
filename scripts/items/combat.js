@@ -2,6 +2,7 @@ import { IlarisItem } from './item.js'
 import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
+    IlarisAutomatisierungSettingNames,
 } from './../settings/configure-game-settings.model.js'
 import { ILARIS } from '../config.js'
 
@@ -198,6 +199,37 @@ export class CombatItem extends IlarisItem {
         return maneuvers
     }
 
+    /**
+     * Apply scene environment settings to the item's manoevers if available
+     * Only applies scene-specific settings: light and weather
+     * Target-specific settings (movement, cover, melee, size) remain at their defaults
+     * @private
+     */
+    _applySceneEnvironment() {
+        // Check if the feature is enabled in world settings
+        const useSceneEnvironment = game.settings.get(
+            ConfigureGameSettingsCategories.Ilaris,
+            IlarisAutomatisierungSettingNames.useSceneEnvironment,
+        )
+        if (!useSceneEnvironment) return
+
+        const scene = game.scenes.viewed
+        if (!scene) return
+
+        const environment = scene.getFlag('Ilaris', 'sceneConditions')
+        if (!environment) return
+
+        // Apply only scene-specific environment settings (light and weather)
+        if (this.system.manoever.lcht !== undefined && environment.lcht !== undefined) {
+            this.system.manoever.lcht.selected = String(environment.lcht)
+        }
+        if (this.system.manoever.wttr !== undefined && environment.wttr !== undefined) {
+            this.system.manoever.wttr.selected = String(environment.wttr)
+        }
+        // Note: Movement (bwng), Cover (dckg), Melee (kgtl), and Size (gzkl) are target-specific
+        // and should be set per-combat, not per-scene
+    }
+
     async setManoevers() {
         // TODO: this needs to be changed sooner than later, system is not the right place for this
         this.system.manoever = {
@@ -256,6 +288,9 @@ export class CombatItem extends IlarisItem {
         ) {
             // Add specific properties for fernkampfwaffe or angriff with Fern type
             this.system.manoever = ILARIS.manoever_fernkampf
+
+            // Apply scene environment settings if available
+            this._applySceneEnvironment()
 
             this.manoever = []
             packItems.forEach((item) => {

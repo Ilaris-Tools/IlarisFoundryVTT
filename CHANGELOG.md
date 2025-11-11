@@ -2,6 +2,13 @@
 
 ## v12
 
+### v12.3
+
+#### Features
+
+-   Im Szene-Config Menü gibt es jetzt eine kleine Sektion bei der man Wetter und Licht in einer Szene setzen kann.
+-   Der Fernkampfdialog übernimmt automatisch beim öffnen die eingestellten Parameter aus der Szene. (kann man in den World Settings ein und ausschalten)
+
 ### v12.2.8
 
 -   Fix: Kreaturen/NPCs haben keine übernatürlichen Manöver
