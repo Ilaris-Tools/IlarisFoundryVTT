@@ -28,6 +28,7 @@ import {
     ConfigureGameSettingsCategories,
 } from './settings/configure-game-settings.model.js'
 import { XmlCharacterImporter } from './common/xml_character_importer.js'
+import { formatDiceFormula } from './common/utilities.js'
 
 // Status effect tint colors
 const STATUS_EFFECT_COLORS = {
@@ -434,6 +435,28 @@ Hooks.on('renderActorDirectory', (app, html) => {
                 newControls.append(syncButton)
                 $element.append(newControls)
             }
+        }
+    })
+})
+
+// Format dice formulas in chat messages
+Hooks.on('renderChatMessage', (message, html, data) => {
+    // Find all dice formula elements
+    const diceFormulaElements = html.find('.dice-formula')
+
+    diceFormulaElements.each((index, element) => {
+        const $element = $(element)
+        const originalFormula = $element.text().trim()
+
+        // Extract just the dice part (before any + or -)
+        const diceFormulaMatch = originalFormula.match(/^(\d+d\d+(?:dl\d+)?(?:dh\d+)?)/)
+        if (diceFormulaMatch) {
+            const diceFormula = diceFormulaMatch[1]
+            const formattedDice = formatDiceFormula(diceFormula)
+
+            // Replace the dice part with the formatted version, keep the rest
+            const remainder = originalFormula.substring(diceFormula.length)
+            $element.text(formattedDice + remainder)
         }
     })
 })
