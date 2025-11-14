@@ -1,6 +1,26 @@
 import * as hardcoded from './hardcodedvorteile.js'
 import * as weaponUtils from './weapon-utils.js'
 
+/**
+ * Sort comparator function for sorting items by name
+ * @param {Object} a - First item to compare
+ * @param {Object} b - Second item to compare
+ * @returns {number} -1, 0, or 1 for sorting
+ */
+function sortByName(a, b) {
+    return a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+}
+
+/**
+ * Sort comparator function for sorting items by gruppe (system.gruppe)
+ * @param {Object} a - First item to compare
+ * @param {Object} b - Second item to compare
+ * @returns {number} -1, 0, or 1 for sorting
+ */
+function sortByGruppe(a, b) {
+    return a.system.gruppe > b.system.gruppe ? 1 : b.system.gruppe > a.system.gruppe ? -1 : 0
+}
+
 export class IlarisActor extends Actor {
     async _preCreate(data, options, user) {
         //this.data.update(data);  // should this be called here?
@@ -929,52 +949,36 @@ export class IlarisActor extends Actor {
                 }
             } else unsorted.push(item)
         }
-        ruestungen.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
-        nahkampfwaffen.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
-        fernkampfwaffen.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
-        item_list.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
-        item_list_tmp.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
-        uebernatuerliche_fertigkeiten.sort((a, b) =>
-            a.name > b.name ? 1 : b.name > a.name ? -1 : 0,
-        )
-        uebernatuerliche_fertigkeiten.sort((a, b) =>
-            a.system.gruppe > b.system.gruppe ? 1 : b.system.gruppe > a.system.gruppe ? -1 : 0,
-        )
+        ruestungen.sort(sortByName)
+        nahkampfwaffen.sort(sortByName)
+        fernkampfwaffen.sort(sortByName)
+        item_list.sort(sortByName)
+        item_list_tmp.sort(sortByName)
+        uebernatuerliche_fertigkeiten.sort(sortByName)
+        uebernatuerliche_fertigkeiten.sort(sortByGruppe)
         // magie_fertigkeiten.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
         // magie_fertigkeiten.sort((a, b) => (a.data.gruppe > b.data.gruppe) ? 1 : ((b.data.gruppe > a.data.gruppe) ? -1 : 0));
-        magie_talente.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
-        magie_talente.sort((a, b) =>
-            a.system.gruppe > b.system.gruppe ? 1 : b.system.gruppe > a.system.gruppe ? -1 : 0,
-        )
-        karma_talente.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
-        karma_talente.sort((a, b) =>
-            a.system.gruppe > b.system.gruppe ? 1 : b.system.gruppe > a.system.gruppe ? -1 : 0,
-        )
-        anrufung_talente.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
-        anrufung_talente.sort((a, b) =>
-            a.system.gruppe > b.system.gruppe ? 1 : b.system.gruppe > a.system.gruppe ? -1 : 0,
-        )
-        profan_fertigkeiten.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
-        profan_fertigkeiten.sort((a, b) =>
-            a.system.gruppe > b.system.gruppe ? 1 : b.system.gruppe > a.system.gruppe ? -1 : 0,
-        )
-        freie_fertigkeiten.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
-        freie_fertigkeiten.sort((a, b) =>
-            a.system.gruppe > b.system.gruppe ? 1 : b.system.gruppe > a.system.gruppe ? -1 : 0,
-        )
-        vorteil_allgemein.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
-        vorteil_profan.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
-        vorteil_kampf.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
-        vorteil_kampfstil.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
-        vorteil_magie.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
-        vorteil_zaubertraditionen.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
-        vorteil_karma.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
-        vorteil_geweihtetraditionen.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
-        vorteil_tiergeist.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
-        eigenheiten.sort((a, b) => (a.name > b.name ? 1 : b.name > a.name ? -1 : 0))
-        freie_uebernatuerliche_fertigkeiten.sort((a, b) =>
-            a.system.gruppe > b.system.gruppe ? 1 : b.system.gruppe > a.system.gruppe ? -1 : 0,
-        )
+        magie_talente.sort(sortByName)
+        magie_talente.sort(sortByGruppe)
+        karma_talente.sort(sortByName)
+        karma_talente.sort(sortByGruppe)
+        anrufung_talente.sort(sortByName)
+        anrufung_talente.sort(sortByGruppe)
+        profan_fertigkeiten.sort(sortByName)
+        profan_fertigkeiten.sort(sortByGruppe)
+        freie_fertigkeiten.sort(sortByName)
+        freie_fertigkeiten.sort(sortByGruppe)
+        vorteil_allgemein.sort(sortByName)
+        vorteil_profan.sort(sortByName)
+        vorteil_kampf.sort(sortByName)
+        vorteil_kampfstil.sort(sortByName)
+        vorteil_magie.sort(sortByName)
+        vorteil_zaubertraditionen.sort(sortByName)
+        vorteil_karma.sort(sortByName)
+        vorteil_geweihtetraditionen.sort(sortByName)
+        vorteil_tiergeist.sort(sortByName)
+        eigenheiten.sort(sortByName)
+        freie_uebernatuerliche_fertigkeiten.sort(sortByGruppe)
 
         // profan_fertigkeiten = _.sortBy( profan_fertigkeiten, 'name' );
         // profan_fertigkeiten = _.sortBy( profan_fertigkeiten, 'data.gruppe' );
