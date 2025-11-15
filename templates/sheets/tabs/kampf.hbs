@@ -254,11 +254,6 @@
         <a class="item-edit" data-itemid="{{this.id}}" data-tooltip="{{{this.system.text}}}">{{this.name}}</a>
         <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
         &nbsp; | &nbsp; {{/each}}
-        {{#unless (gameSetting "hideSyncKampfstileButton")}}
-        <a class="sync-kampfstile clickable" title="Synchronisiere Kampfstile mit Kompendium. Du kannst den Button in den Gamesettings deaktivieren. Schließe das Heldensheet falls der Button noch sichtbar ist und öffne es wieder.">
-            <i class="fas fa-sync-alt"></i> Vorteile mit Kompendium-Vorteilen Synchronisieren
-        </a>
-        {{/unless}}
     </div>
     {{/if}}
 </div>
