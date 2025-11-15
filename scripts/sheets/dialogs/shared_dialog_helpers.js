@@ -220,7 +220,8 @@ export async function applyDamageToTarget(
     const targetActor = game.actors.get(target.actorId || target._id)
     if (!targetActor) return
 
-    // Get WS* of the target
+    // Get WS and WS* of the target
+    const ws = targetActor.system.abgeleitete.ws
     const ws_stern = targetActor.system.abgeleitete.ws_stern
 
     // Calculate wounds based on whether it's true damage

@@ -1,8 +1,4 @@
-import {
-    roll_crit_message,
-    get_statuseffect_by_id,
-    evaluate_roll_with_crit,
-} from '../../common/wuerfel/wuerfel_misc.js'
+import { evaluate_roll_with_crit } from '../../common/wuerfel/wuerfel_misc.js'
 import { signed } from '../../common/wuerfel/chatutilities.js'
 import { handleModifications, applyDamageToTarget } from './shared_dialog_helpers.js'
 import { CombatDialog } from './combat_dialog.js'

@@ -1,8 +1,4 @@
-import {
-    roll_crit_message,
-    get_statuseffect_by_id,
-    evaluate_roll_with_crit,
-} from '../../common/wuerfel/wuerfel_misc.js'
+import { evaluate_roll_with_crit } from '../../common/wuerfel/wuerfel_misc.js'
 import { signed } from '../../common/wuerfel/chatutilities.js'
 import { handleModifications, applyDamageToTarget } from './shared_dialog_helpers.js'
 import { CombatDialog } from './combat_dialog.js'
@@ -146,19 +142,6 @@ export class AngriffDialog extends CombatDialog {
     /**
      * Returns base values specific to AngriffDialog
      */
-    getBaseValues() {
-        return {
-            baseAT: this.item.system.at || 0,
-            baseVT: this.item.system.vt || 0,
-        }
-    }
-    getBaseValues() {
-        return {
-            baseAT: this.item.system.at || 0,
-            baseVT: this.item.system.vt || 0,
-        }
-    }
-
     getBaseValues() {
         return {
             baseAT: this.item.system.at || 0,
