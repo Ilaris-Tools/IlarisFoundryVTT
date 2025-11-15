@@ -18,7 +18,7 @@ export async function wuerfelwurf(event, actor) {
     console.log(event)
     let speaker = ChatMessage.getSpeaker({ actor: actor })
     let systemData = actor.system
-    let rolltype = $(event.currentTarget).data('rolltype')
+    let rolltype = $(event.currentTarget).data('rolltype') || event.currentTarget.dataset.rolltype
     let globalermod = systemData.abgeleitete.globalermod
     let wundabzuegemod = systemData.gesundheit.wundabzuege
     let furchtmod = systemData.furcht.furchtabzuege
@@ -27,30 +27,7 @@ export async function wuerfelwurf(event, actor) {
     let pw = 0
     let label = 'Probe'
     let dialogId = `dialog-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`
-    // let groupName_xd20 = "xd20";
-    // let choices_xd20 = {
-    //     "0": "1W20",
-    //     "1": "3W20"
-    // };
-    // let checked_xd20 = "1";
-    // let groupName_schips = "schips";
-    // let choices_schips = {
-    //     "0": "Ohne",
-    //     "1": "ohne Eigenheit",
-    //     "2": "mit Eigenheit"
-    // };
-    // checked_schips: "0";
-    // let zeroToEightObj = {
-    //     "0": "0",
-    //     "1": "1",
-    //     "2": "2",
-    //     "3": "3",
-    //     "4": "4",
-    //     "5": "5",
-    //     "6": "6",
-    //     "7": "7",
-    //     "8": "8"
-    // };
+
     if (rolltype == 'angriff_diag') {
         let item = actor.items.get(event.currentTarget.dataset.itemid)
         await item.setManoevers()
