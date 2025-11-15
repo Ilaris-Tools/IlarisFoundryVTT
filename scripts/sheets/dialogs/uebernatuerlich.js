@@ -474,7 +474,6 @@ export class UebernatuerlichDialog extends CombatDialog {
         await this.actor.update(updates)
 
         // Create chat message with energy cost information
-        const label = `${this.item.name} (Kosten: ${this.endCost} AsP)`
         const html_roll = await renderTemplate('systems/Ilaris/templates/chat/spell_result.hbs', {
             success: isSuccess,
             cost: this.endCost,
@@ -768,7 +767,7 @@ export class UebernatuerlichDialog extends CombatDialog {
                 const blutmagieReduction = Math.min(energyNeeded, manoever.blutmagie.value)
                 if (blutmagieReduction > 0) {
                     mod_energy -= blutmagieReduction
-                    text_energy = text_energy.concat(`Blutmagie: -${blutmagieReduction} AsP\n`)
+                    text_energy = text_energy.concat(`Blutmagie: -${blutmagieReduction} Energie\n`)
                 }
             }
 
@@ -795,7 +794,7 @@ export class UebernatuerlichDialog extends CombatDialog {
                     const actualReduction = Math.min(verbotenePfortenReduction, maxReduction)
                     mod_energy -= actualReduction
                     text_energy = text_energy.concat(
-                        `Verbotene Pforten (${this.calculatedWounds} Wunden): +${verbotenePfortenReduction} AsP\n`,
+                        `Verbotene Pforten (${this.calculatedWounds} Wunden): +${verbotenePfortenReduction} Energie\n`,
                     )
                 }
             }
