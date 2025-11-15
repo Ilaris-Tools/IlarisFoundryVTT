@@ -901,3 +901,19 @@ hr {
     font-size: 10px;
     padding-left: 4px;
 }
+
+/* Hexagonal token shapes for hex grids */
+.ilaris-hex-tokens-enabled .token-image,
+.ilaris-hex-tokens-enabled .token-image img,
+.ilaris-hex-tokens-enabled .TokenConfig .profile,
+.ilaris-hex-tokens-enabled .TokenConfig img.portrait {
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+/* Apply hex shape to token images in chat and other UI elements */
+body.ilaris-hex-tokens-enabled img[data-token],
+body.ilaris-hex-tokens-enabled .token img {
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
