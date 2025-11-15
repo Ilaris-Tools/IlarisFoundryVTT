@@ -1,6 +1,6 @@
 {{log 'ue' this}}
 <h2>Fertigkeiten</h2>
-{{#if (or actor.vorteil.zaubertraditionen actor.vorteil.geweihtentradition)}}
+{{#if (or actor.vorteil.zaubertraditionen actor.vorteil.geweihtentradition actor.vorteil.tiergeist)}}
 <div>
     <label><b>Aktive Übernatürliche Tradition:</b></label>
     <select class="selected-uebernatuerlicher-stil" name="system.misc.selected_uebernatuerlicher_stil">
@@ -197,6 +197,17 @@
     <div>
         <label><b>Karmale Vorteile:</b>&nbsp; | &nbsp;</label>
         {{#each actor.vorteil.karma}}
+        <a class="item-edit"
+            data-itemid="{{this.id}}" data-tooltip="{{{this.system.text}}}">
+            {{this.name}}
+        </a>
+        <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
+        &nbsp; | &nbsp; {{/each}}
+    </div>
+    {{/if}} {{#if actor.vorteil.tiergeist}}
+    <div>
+        <label><b>Tiergeist:</b>&nbsp; | &nbsp;</label>
+        {{#each actor.vorteil.tiergeist}}
         <a class="item-edit"
             data-itemid="{{this.id}}" data-tooltip="{{{this.system.text}}}">
             {{this.name}}
