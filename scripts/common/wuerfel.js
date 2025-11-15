@@ -78,15 +78,17 @@ export async function wuerfelwurf(event, actor) {
                                 dialogId,
                             )
                             let hohequalitaet = 0
-                            if (html.find('#hohequalitaet').length > 0) {
-                                hohequalitaet = Number(html.find('#hohequalitaet')[0].value)
+                            if (html.find(`#hohequalitaet-${dialogId}`).length > 0) {
+                                hohequalitaet = Number(
+                                    html.find(`#hohequalitaet-${dialogId}`)[0].value,
+                                )
                                 if (hohequalitaet != 0) {
                                     text = text.concat(`Hohe Qualität: ${hohequalitaet}\n`)
                                 }
                             }
                             let modifikator = 0
-                            if (html.find('#modifikator').length > 0) {
-                                modifikator = Number(html.find('#modifikator')[0].value)
+                            if (html.find(`#modifikator-${dialogId}`).length > 0) {
+                                modifikator = Number(html.find(`#modifikator-${dialogId}`)[0].value)
                                 if (modifikator != 0) {
                                     text = text.concat(`Modifikator: ${modifikator}\n`)
                                 }
@@ -374,15 +376,17 @@ export async function wuerfelwurf(event, actor) {
                                 dialogId,
                             )
                             let hohequalitaet = 0
-                            if (html.find('#hohequalitaet').length > 0) {
-                                hohequalitaet = Number(html.find('#hohequalitaet')[0].value)
+                            if (html.find(`#hohequalitaet-${dialogId}`).length > 0) {
+                                hohequalitaet = Number(
+                                    html.find(`#hohequalitaet-${dialogId}`)[0].value,
+                                )
                                 if (hohequalitaet != 0) {
                                     text = text.concat(`Hohe Qualität: ${hohequalitaet}\n`)
                                 }
                             }
                             let modifikator = 0
-                            if (html.find('#modifikator').length > 0) {
-                                modifikator = Number(html.find('#modifikator')[0].value)
+                            if (html.find(`#modifikator-${dialogId}`).length > 0) {
+                                modifikator = Number(html.find(`#modifikator-${dialogId}`)[0].value)
                                 if (modifikator != 0) {
                                     text = text.concat(`Modifikator: ${modifikator}\n`)
                                 }
