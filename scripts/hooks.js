@@ -28,6 +28,7 @@ import {
     ConfigureGameSettingsCategories,
 } from './settings/configure-game-settings.model.js'
 import { XmlCharacterImporter } from './common/xml_character_importer.js'
+import { onHotbarDrop } from './common/hotbar.js'
 
 // Import hooks
 import './hooks/changelog-notification.js'
@@ -474,6 +475,11 @@ Hooks.on('renderActorDirectory', (app, html) => {
             }
         }
     })
+})
+
+// Register hotbar drop handler
+Hooks.on('hotbarDrop', (bar, data, slot) => {
+    return onHotbarDrop(bar, data, slot)
 })
 
 // Cache for hex token shapes setting

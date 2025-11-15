@@ -42,7 +42,7 @@
         </thead>
         <tbody>
             {{#each actor.nahkampfwaffen as |nwaffe key|}}
-            <tr>
+            <tr class="combat-draggable" data-itemid="{{nwaffe.id}}">
                 <td class="icon-small">
                     <a class="rollable" data-rolltype="angriff_diag" data-itemid="{{nwaffe.id}}">
                         <i class="custom-icon"></i>
@@ -127,7 +127,7 @@
             </thead>
             <tbody>
                 {{#each actor.fernkampfwaffen as |fwaffe key|}}
-                <tr>
+                <tr class="combat-draggable" data-itemid="{{fwaffe.id}}">
                     <td><a class="rollable icon-small" data-rolltype="fernkampf_diag" data-itemid="{{fwaffe.id}}"><i
                                 class="custom-icon"></i></a></td>
                     <td><a class="icon-small item-toggle {{fwaffe.system.hauptwaffe}}" data-itemid="{{fwaffe.id}}"
