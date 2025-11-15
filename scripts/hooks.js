@@ -481,6 +481,195 @@ Hooks.on('renderActorDirectory', (app, html) => {
     })
 })
 
+// Cache for hex token shapes setting
+let hexTokenShapesEnabled = false
+
+// Apply hexagonal token shapes when setting is enabled
+Hooks.on('ready', () => {
+    applyHexTokenSetting()
+})
+
+// Update when setting changes
+Hooks.on('updateSetting', (setting) => {
+    if (
+        setting.key ===
+        `${ConfigureGameSettingsCategories.Ilaris}.${IlarisGameSettingNames.hexTokenShapes}`
+    ) {
+        applyHexTokenSetting()
+        // Refresh all tokens to apply the mask
+        if (canvas.ready && canvas.tokens) {
+            canvas.tokens.placeables.forEach((token) =>
+                token.renderFlags.set({ refreshMesh: true }),
+            )
+        }
+    }
+})
+
+// Apply hex mask to tokens when they're drawn
+Hooks.on('drawToken', (token) => {
+    if (hexTokenShapesEnabled) {
+        applyHexMaskToToken(token)
+        applyTokenBorderColor(token)
+    }
+})
+
+// Apply hex mask to tokens when they're refreshed
+Hooks.on('refreshToken', (token) => {
+    if (hexTokenShapesEnabled) {
+        applyHexMaskToToken(token)
+        applyTokenBorderColor(token)
+    }
+})
+
+/**
+ * Apply or remove the hex token setting visual indicator
+ */
+function applyHexTokenSetting() {
+    hexTokenShapesEnabled = game.settings.get(
+        ConfigureGameSettingsCategories.Ilaris,
+        IlarisGameSettingNames.hexTokenShapes,
+    )
+
+    if (hexTokenShapesEnabled) {
+        document.body.classList.add('ilaris-hex-tokens-enabled')
+    } else {
+        document.body.classList.remove('ilaris-hex-tokens-enabled')
+    }
+}
+
+/**
+ * Apply custom border color to token based on Foundry's disposition system
+ * @param {Token} token - The token to apply border color to
+ */
+function applyTokenBorderColor(token) {
+    if (!token.border) return
+
+    // Use Foundry's built-in method to determine border color based on disposition
+    // This respects the token's disposition (FRIENDLY, NEUTRAL, HOSTILE) and ownership
+    const borderColor = token._getBorderColor()
+
+    // Apply the color to the token border
+    if (borderColor !== null) {
+        token.border.color = borderColor
+    }
+}
+
+/**
+ * Remove and cleanup an existing mask and border from a token mesh
+ * @param {Token} token - The token to remove the mask from
+ */
+function removeTokenMask(token) {
+    if (token.mesh && token.mesh.mask) {
+        token.mesh.mask.destroy()
+        token.mesh.mask = null
+    }
+    if (token._ilarisHexBorder) {
+        token.removeChild(token._ilarisHexBorder)
+        token._ilarisHexBorder.destroy()
+        token._ilarisHexBorder = null
+    }
+}
+
+/**
+ * Apply a hexagonal mask and border to a token to clip its appearance to a hexagon shape.
+ * The function creates a PIXI.Graphics hexagon and applies it as a mask to the token mesh,
+ * and adds a border around the hexagonal shape.
+ *
+ * @param {Token} token - The token to apply the mask and border to
+ * @returns {void} Returns early if token mesh or texture is not available (e.g., token not yet rendered)
+ *
+ * @description
+ * The mask and border are cached and reused if the token dimensions haven't changed, to avoid unnecessary
+ * recreation. The mask stores internal properties for tracking:
+ * - _ilarisHexMask: Boolean flag to identify Ilaris hex masks
+ * - _maskWidth: Stored token width to detect dimension changes
+ * - _maskHeight: Stored token height to detect dimension changes
+ * - _ilarisHexBorder: Reference to the hexagonal border graphic
+ */
+function applyHexMaskToToken(token) {
+    // Return early if token is not ready for masking (mesh or texture not yet initialized)
+    if (!token.mesh || !token.mesh.texture) return
+
+    const w = token.w
+    const h = token.h
+
+    // Check if token already has a hex mask and border with matching dimensions
+    if (
+        token.mesh.mask &&
+        token.mesh.mask._ilarisHexMask &&
+        token.mesh.mask._maskWidth === w &&
+        token.mesh.mask._maskHeight === h &&
+        token._ilarisHexBorder
+    ) {
+        return // Already has hex mask and border with correct dimensions, no need to recreate
+    }
+
+    // Remove existing mask if any
+    removeTokenMask(token)
+
+    // Create hexagon mask
+    const size = Math.min(w, h) / 2
+
+    // Draw hexagon (flat-top orientation)
+    const centerX = w / 2
+    const centerY = h / 2
+    const angle = (Math.PI * 2) / 6
+    const startAngle = -Math.PI / 2 // Start at top for flat-top orientation
+
+    // Create hexagon mask
+    const hexMask = new PIXI.Graphics()
+    hexMask.beginFill(0xffffff)
+
+    hexMask.moveTo(centerX + size * Math.cos(startAngle), centerY + size * Math.sin(startAngle))
+
+    for (let i = 1; i <= 6; i++) {
+        const x = centerX + size * Math.cos(startAngle + angle * i)
+        const y = centerY + size * Math.sin(startAngle + angle * i)
+        hexMask.lineTo(x, y)
+    }
+
+    hexMask.endFill()
+
+    // Mark this as an Ilaris hex mask for future checks
+    hexMask._ilarisHexMask = true
+    hexMask._maskWidth = w
+    hexMask._maskHeight = h
+
+    // Apply mask to token mesh
+    token.mesh.mask = hexMask
+    token.addChild(hexMask)
+
+    // Determine border colors using Foundry's built-in disposition system
+    const outerColor = 0x000000 // Black outer border
+    const innerColor = token._getBorderColor() || 0xff5500 // Use Foundry's border color, fallback to orange
+
+    // Create hexagonal border (double border)
+    const hexBorder = new PIXI.Graphics()
+
+    // Draw outer border (thicker, black)
+    hexBorder.lineStyle(6, outerColor, 1)
+    hexBorder.moveTo(centerX + size * Math.cos(startAngle), centerY + size * Math.sin(startAngle))
+    for (let i = 1; i <= 6; i++) {
+        const x = centerX + size * Math.cos(startAngle + angle * i)
+        const y = centerY + size * Math.sin(startAngle + angle * i)
+        hexBorder.lineTo(x, y)
+    }
+    hexBorder.closePath()
+
+    // Draw colored inner border (thinner, using Foundry's disposition colors)
+    hexBorder.lineStyle(3, innerColor, 1)
+    hexBorder.moveTo(centerX + size * Math.cos(startAngle), centerY + size * Math.sin(startAngle))
+    for (let i = 1; i <= 6; i++) {
+        const x = centerX + size * Math.cos(startAngle + angle * i)
+        const y = centerY + size * Math.sin(startAngle + angle * i)
+        hexBorder.lineTo(x, y)
+    }
+    hexBorder.closePath()
+
+    // Add border on top of the token
+    token.addChild(hexBorder)
+    token._ilarisHexBorder = hexBorder
+}
 // Add Automatisierung heading in settings, pretty scuffed solution but i did not manage to add a separate category to the settings without adding a new module
 Hooks.on('renderSettingsConfig', (app, html) => {
     // Find the first Automatisierung setting
