@@ -22,7 +22,8 @@
     "gruppe": "2",
     "probe": "Zauber -4",
     "gegenprobe": "",
-    "text": "Verstärkt die Wirkung des Zaubers (siehe Zauber). Zusätzlich steigt die Schwierigkeit von Konterproben (S. 124) gegen den Zauber um +4 Punkte."
+    "text": "Verstärkt die Wirkung des Zaubers (siehe Zauber). Zusätzlich steigt die Schwierigkeit von Konterproben (S. 124) gegen den Zauber um +4 Punkte.",
+    "isBaseManoever": true
   },
   "effects": [],
   "folder": null,

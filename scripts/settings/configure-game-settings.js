@@ -5,6 +5,7 @@ import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
     IlarisGameSettingsMenuNames,
+    IlarisAutomatisierungSettingNames,
 } from './configure-game-settings.model.js'
 
 export const registerIlarisGameSettings = () => {
@@ -90,6 +91,41 @@ export const registerIlarisGameSettings = () => {
             type: String,
             scope: 'client', // Each user tracks their own
             default: '',
+        },
+        {
+            // Register hex token shapes setting
+            settingsName: IlarisGameSettingNames.hexTokenShapes,
+            name: 'Hexagonale Token-Bilder',
+            hint: 'Wenn aktiviert, werden Charakterbilder auf Hexfeld-Karten als Hexagone zugeschnitten.',
+            config: true,
+            type: new foundry.data.fields.BooleanField(),
+            scope: 'world',
+            default: false,
+        },
+    ].forEach((setting) => {
+        game.settings.register(ConfigureGameSettingsCategories.Ilaris, setting.settingsName, {
+            name: setting.name,
+            hint: setting.hint,
+            config: setting.config,
+            type: setting.type,
+            scope: setting.scope,
+            default: setting.default,
+            onChange: setting.onChange,
+            requiresReload: setting.requiresReload,
+        })
+    })
+
+    // the heading for Automatisierung gets added via hooks.js
+    ;[
+        {
+            // Register use scene environment setting
+            settingsName: IlarisAutomatisierungSettingNames.useSceneEnvironment,
+            name: 'Scene-Umgebungseinstellungen verwenden',
+            hint: 'Wenn aktiviert, werden Licht und Wetter aus den Scene-Einstellungen automatisch in Fernkampf-Dialogen vorausgewählt.',
+            config: true,
+            type: new foundry.data.fields.BooleanField(),
+            scope: 'world',
+            default: true,
         },
     ].forEach((setting) => {
         game.settings.register(ConfigureGameSettingsCategories.Ilaris, setting.settingsName, {
