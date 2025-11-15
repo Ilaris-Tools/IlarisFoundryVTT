@@ -55,7 +55,7 @@ export class IlarisActor extends Actor {
             if (this.system.attribute.KO?.wert !== undefined) {
                 // Basic formula before hardcoded modifications
                 this.system.abgeleitete.dh = this.system.attribute.KO.wert
-                this.system.abgeleitete.ws = 4 + Math.floor(actor.system.attribute.KO.wert / 4)
+                this.system.abgeleitete.ws = 4 + Math.floor(this.system.attribute.KO.wert / 4)
             }
 
             // Base ASP (will be modified by hardcoded and zugekauft/gasp later)
