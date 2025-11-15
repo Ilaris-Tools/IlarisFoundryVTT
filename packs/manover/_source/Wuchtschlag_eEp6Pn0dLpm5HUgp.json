@@ -29,7 +29,8 @@
       "field": "NUMBER",
       "min": 0,
       "max": 8
-    }
+    },
+    "isBaseManoever": true
   },
   "effects": [],
   "folder": null,
