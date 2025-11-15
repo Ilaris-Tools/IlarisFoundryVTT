@@ -9,6 +9,12 @@
 -   Im Szene-Config Menü gibt es jetzt eine kleine Sektion bei der man Wetter und Licht in einer Szene setzen kann.
 -   Der Fernkampfdialog übernimmt automatisch beim öffnen die eingestellten Parameter aus der Szene. (kann man in den World Settings ein und ausschalten)
 
+### v12.2.6
+
+-   Fix: Attribute roll dialog now correctly reads modifier and high quality fields
+-   Fix: Energie im Chat einheitlich benennen
+-   Fix: Kreaturensheet Fernkampfangriff: AT-Wert wird jetzt zum Würfelergebnis addiert
+
 ### v12.2.5
 
 -   Kampfstil-Sync-Button auf dem Charaktersheet wurde ausgebaut, dafür wurde ein Sync-Button auf dem Charaktersheet eingeführt, der alle Vorteile und alle Übernatürlichen Talente mit den Kompendium-Counterparts synct
