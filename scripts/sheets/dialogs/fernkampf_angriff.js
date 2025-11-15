@@ -98,11 +98,20 @@ export class FernkampfAngriffDialog extends CombatDialog {
     }
 
     /**
+     * Gets the FK (Fernkampf/ranged combat) value for this attack.
+     * For creature actors, falls back to system.at if system.fk is not present.
+     * @returns {number} The FK value to use for the attack
+     */
+    _getFKValue() {
+        return this.item.system.fk ?? (this.actor.type === 'kreatur' ? this.item.system.at ?? 0 : 0)
+    }
+
+    /**
      * Returns base values specific to FernkampfAngriffDialog
      */
     getBaseValues() {
         return {
-            baseFK: this.item.system.fk || 0,
+            baseFK: this._getFKValue(),
         }
     }
 
@@ -256,7 +265,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
         this.eigenschaftenText()
 
         let label = `Fernkampf (${this.item.name})`
-        let formula = `${diceFormula} ${signed(this.item.system.fk)} \
+        let formula = `${diceFormula} ${signed(this._getFKValue())} \
             ${signed(this.at_abzuege_mod)} \
             ${signed(this.mod_at)}`
 
