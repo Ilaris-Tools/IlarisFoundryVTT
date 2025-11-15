@@ -7,29 +7,20 @@ import {
 /* template.json
     "manoever": {
       "voraussetzungen": "Vorteil Name1",
-      "inputs": [
-        {
-            "label": "Checkbox",
-            "field": "CHECKBOX"
+      "inputs": {
+            "label": "Checkbox | Auswahl | X",
+            "field": "CHECKBOX | SELECTOR | NUMBER",
+            "choices": ["foo", "bar", "baz"], // only for SELECTOR
+            "min": 0, // only for NUMBER
+            "max": 8  // only for NUMBER
         },
-        { 
-            label: "Auswahl",
-            field: "SELECTOR",
-            choices: ["foo", "bar", "baz"]
-        }, 
-        {
-            label: "X",
-            field: "NUMBER",
-            min: 0,
-            max: 8
-        }
-      ],
       "modifications": [
         {
             "type": DAMAGE | DEFENCE | ATTACK | INITIATIVE | LOADING_TIME | SPECIAL_RESSOURCE | WEAPON_DAMAGE | CHANGE_DAMAGE_TYPE | ZERO_DAMAGE | ARMOR_BREAKING | SPECIAL_TEXT,
             "value": 0,
             "operator": MULTIPLY | ADD (+/- values) | SUBTRACT (braucht man vermutlich nur bei Werten vor die man kein - setzen kann zb. wenn sie aus target kommen) | DIVIDE
             "target": "Wert zb aus Actor (99% aller Faelle aus Actor) wie actor.system.abgeleitete.gs, der entsprechend des operator behandelt wird"
+            "affectedByInput": true | false // ob der Wert durch den Input beeinflusst wird
         }
       ],
       "gruppe": 0,

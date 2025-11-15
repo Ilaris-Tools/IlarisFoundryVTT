@@ -28,6 +28,7 @@ import {
     ConfigureGameSettingsCategories,
 } from './settings/configure-game-settings.model.js'
 import { XmlCharacterImporter } from './common/xml_character_importer.js'
+import { XMLRuleImporter } from './common/xml_rule_importer/index.js'
 
 // Import hooks
 import './hooks/changelog-notification.js'
@@ -474,6 +475,32 @@ Hooks.on('renderActorDirectory', (app, html) => {
             }
         }
     })
+})
+
+// Add XML rule import button to the Compendium Directory
+Hooks.on('renderCompendiumDirectory', (app, html) => {
+    // Add XML import button to the compendium directory header (only if GM)
+    if (game.user.isGM) {
+        const header = html[0].querySelector('.directory-header')
+        if (header) {
+            // Create import button
+            const importButton = document.createElement('button')
+            importButton.className = 'import-xml-rules rule-button'
+            importButton.title = 'Import Rules from XML'
+            importButton.innerHTML = '<i class="fas fa-file-import"></i> Import Regeln XML'
+            importButton.addEventListener('click', () => XMLRuleImporter.showRuleImportDialog())
+
+            // Create update button
+            const updateButton = document.createElement('button')
+            updateButton.className = 'update-xml-rules rule-button'
+            updateButton.title = 'Update Rules from XML'
+            updateButton.innerHTML = '<i class="fas fa-sync-alt"></i> Update Regeln XML'
+            updateButton.addEventListener('click', () => XMLRuleImporter.showRuleUpdateDialog())
+
+            header.appendChild(importButton)
+            header.appendChild(updateButton)
+        }
+    }
 })
 
 // Cache for hex token shapes setting
