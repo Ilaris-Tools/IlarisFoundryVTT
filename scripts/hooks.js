@@ -31,6 +31,7 @@ import { XmlCharacterImporter } from './common/xml_character_importer.js'
 
 // Import hooks
 import './hooks/changelog-notification.js'
+import { registerDefenseButtonHook } from './sheets/dialogs/defense_button_hook.js'
 
 // Status effect tint colors
 const STATUS_EFFECT_COLORS = {
@@ -481,6 +482,7 @@ let hexTokenShapesEnabled = false
 
 // Apply hexagonal token shapes when setting is enabled
 Hooks.on('ready', () => {
+    registerDefenseButtonHook()
     applyHexTokenSetting()
 })
 
