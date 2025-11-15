@@ -22,10 +22,14 @@
 
 .herosheet {
   display: grid;
-  grid-template-areas: 'header header' 'sidebar navigation1'
-    'sidebar navigation2' 'sidebar tabs';
+  grid-template-areas: 
+  'sidebar header'
+  'sidebar navigation1'
+  'sidebar navigation2'
+  'sidebar tabs';
   grid-template-rows: 100px 45px 100px 5fr;
   grid-template-columns: 1fr 4fr;
+  gap: 8px;
   font-family: var(--font-andada);
   overflow-y: hidden;
     background-image: url('../assets/images/background/hintergrund.jpg');
@@ -35,8 +39,6 @@
   grid-area: header;
   justify-content: space-around;
   align-items: center;
-  padding-left: 240px;
-  padding-right: -100px;
   display: flex;
   flex-direction: row;
   background-color: #f5f5dc;
@@ -105,7 +107,6 @@
 .herotabnavigation {
   grid-area: navigation2;
   position: relative;
-  padding-right: -15px;
 }
 
 .herotab {
@@ -171,11 +172,8 @@
   text-align: center;
   box-shadow: 8px 0 5px rgba(0, 0, 0, 0.3);
   margin-left: 0.5rem;
-  margin-top: -80px;
   margin-bottom: 20px;
-  border-top-left-radius: 5px;
   border-bottom-left-radius: 200px;
-  border-top-right-radius: 5px;
   border-bottom-right-radius: 200px;
   display: flex;
   flex-direction: column;
@@ -846,4 +844,8 @@ hr {
     cursor: pointer;
     font-size: 10px;
     padding-left: 4px;
+}
+
+.window-app .window-content {
+  padding: 0;
 }
