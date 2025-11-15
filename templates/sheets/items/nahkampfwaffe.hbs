@@ -69,19 +69,17 @@
             </div>
             <div class="flexrow">
                 <label class="flex-fest-var" style="flex-basis: 100px"><b>Eigenschaften:</b></label>
-                <span>
-                    {{#each item.system.eigenschaften as |val key|}}
-                    <label>{{get_label key}}</label>
-                    <input
-                        name="system.eigenschaften.{{key}}"
-                        data-dtype="Boolean"
-                        type="checkbox"
-                        {{checked val}}
-                    />
-                    <label>| &nbsp;</label>
-                    {{/each}}
-                </span>
+                <multi-select name="system.eigenschaften">
+                    {{{selectOptions availableEigenschaften selected=item.system.eigenschaften nameAttr="name" labelAttr="name"}}}
+                </multi-select>
             </div>
+            {{#if needsMigration}}
+            <div class="flexrow" style="margin-top: 5px;">
+                <button type="button" class="migrate-eigenschaften" style="width: 100%;">
+                    <i class="fas fa-sync-alt"></i> Eigenschaften migrieren (alte → neue Format)
+                </button>
+            </div>
+            {{/if}}
             {{#if hasOwner}}
             <label class="flex-fest-var" style="flex-basis: 100px"><b>Eigene Mod.:</b></label>
             <div class="flexrow">

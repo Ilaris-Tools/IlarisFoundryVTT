@@ -316,4 +316,17 @@ function registerHandlebarsHelpers() {
             return keyA.localeCompare(keyB)
         })
     })
+
+    /**
+     * Handlebars helper to check if an array includes a value
+     * @param {Array} array - The array to check
+     * @param {*} value - The value to look for
+     * @returns {boolean} True if the array includes the value
+     */
+    Handlebars.registerHelper('includes', function (array, value) {
+        if (!Array.isArray(array)) {
+            return false
+        }
+        return array.includes(value)
+    })
 }

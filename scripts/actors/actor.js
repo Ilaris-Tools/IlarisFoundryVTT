@@ -444,118 +444,151 @@ export class IlarisActor extends Actor {
             }
             nwaffe.system.manoever =
                 nwaffe.system.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_nahkampf)
-            // TODO: ich finde die waffeneigenschaften nicht besonders elegant umgesetzt,
-            // könnte man dafür ggf. items anlegen und die iwie mit den waffen items verknüpfen?
-            let kopflastig = nwaffe.system.eigenschaften.kopflastig
-            let niederwerfen = nwaffe.system.eigenschaften.niederwerfen
-            let parierwaffe = nwaffe.system.eigenschaften.parierwaffe
-            let reittier = nwaffe.system.eigenschaften.reittier
-            let ruestungsbrechend = nwaffe.system.eigenschaften.ruestungsbrechend
-            let schild = nwaffe.system.eigenschaften.schild
-            let schwer_4 = nwaffe.system.eigenschaften.schwer_4
-            let schwer_8 = nwaffe.system.eigenschaften.schwer_8
-            let stumpf = nwaffe.system.eigenschaften.stumpf
-            let unberechenbar = nwaffe.system.eigenschaften.unberechenbar
-            let unzerstoerbar = nwaffe.system.eigenschaften.unzerstoerbar
-            let wendig = nwaffe.system.eigenschaften.wendig
-            let zerbrechlich = nwaffe.system.eigenschaften.zerbrechlich
-            let zweihaendig = nwaffe.system.eigenschaften.zweihaendig
-            let kein_malus_nebenwaffe = nwaffe.system.eigenschaften.kein_malus_nebenwaffe
-            let hauptwaffe = nwaffe.system.hauptwaffe
-            let nebenwaffe = nwaffe.system.nebenwaffe
-            let schaden = 0
-            // let kopflastig = eigenschaften.includes("Kopflastig");
-            schaden += sb
-            if (kopflastig) {
-                schaden += sb
-            }
-            let at = 0
-            let vt = 0
-            let fertigkeit = nwaffe.system.fertigkeit
-            // console.log(fertigkeit);
-            let talent = nwaffe.system.talent
-            // console.log(talent);
-            at += Number(nwaffe.system.wm_at)
-            vt += Number(nwaffe.system.wm_vt)
-            let pw = actor.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.system.pw
-            // console.log(pw);
-            let pwt = actor.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.system.pwt
-            // console.log(pwt);
-            let taltrue = actor.profan.fertigkeiten
-                .find((x) => x.name == fertigkeit)
-                ?.system.talente.find((x) => x.name == talent) // console.log(taltrue);
-            if (typeof pw !== 'undefined') {
-                // console.log(`${fertigkeit} ist defined`);
-                if (typeof taltrue !== 'undefined') {
-                    // console.log(`${talent} ist defined`);
-                    at += pwt
-                    vt += pwt
-                } else {
-                    at += pw
-                    vt += pw
+
+            // Weapon stats are now calculated in WaffeItem.prepareDerivedData()
+            // Use computed values if available, otherwise calculate legacy way
+            if (nwaffe.system.computed) {
+                // Use new data-driven system
+                let at = nwaffe.system.computed.at
+                let vt = nwaffe.system.computed.vt
+                let schaden = sb + nwaffe.system.computed.schadenBonus
+
+                // Add skill values
+                let fertigkeit = nwaffe.system.fertigkeit
+                let talent = nwaffe.system.talent
+                let pw = actor.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.system.pw
+                let pwt = actor.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.system.pwt
+                let taltrue = actor.profan.fertigkeiten
+                    .find((x) => x.name == fertigkeit)
+                    ?.system.talente.find((x) => x.name == talent)
+
+                if (typeof pw !== 'undefined') {
+                    if (typeof taltrue !== 'undefined') {
+                        at += pwt
+                        vt += pwt
+                    } else {
+                        at += pw
+                        vt += pw
+                    }
                 }
-            }
-            // let eigenschaften_array = eigenschaften.split(", ");
-            // let schwer = eigenschaften_array.find(x => x.includes("Schwer"));
-            // if (typeof schwer !== "undefined") {
-            //     if (schwer.length > 0) {
-            //         schwer = schwer.replace("(","");
-            //         schwer = schwer.replace(")","");
-            //         schwer = schwer.split(" ");
-            //         schwer = Number(schwer[1]);
-            //     }
-            // }
-            // if (!isNaN(schwer)) {
-            //     if (KK < schwer) {
-            //         at -= 2;
-            //         vt -= 2;
-            //     }
-            // }
-            // let zweihaendig = eigenschaften.includes("Zweihändig");
-            if (schwer_4 && KK < 4) {
-                at -= 2
-                vt -= 2
-            } else if (schwer_8 && KK < 8) {
-                at -= 2
-                vt -= 2
-            }
-            if (zweihaendig) {
-                if (hauptwaffe && !nebenwaffe) {
+
+                // Apply manual modifiers
+                const mod_at = nwaffe.system.mod_at
+                const mod_vt = nwaffe.system.mod_vt
+                const mod_schaden = nwaffe.system.mod_schaden
+                if (!isNaN(mod_at)) {
+                    at += mod_at
+                }
+                if (!isNaN(mod_vt)) {
+                    vt += mod_vt
+                }
+
+                nwaffe.system.at = at
+                nwaffe.system.vt = vt
+                nwaffe.system.schaden = `${nwaffe.system.tp}${
+                    schaden < 0 ? schaden : '+' + schaden
+                }`
+                if (
+                    typeof mod_schaden !== 'undefined' &&
+                    mod_schaden !== null &&
+                    mod_schaden !== ''
+                ) {
+                    nwaffe.system.schaden = `${nwaffe.system.tp}${
+                        mod_schaden < 0 ? mod_schaden : '+' + mod_schaden
+                    }`
+                }
+            } else {
+                // Legacy calculation for weapons not yet migrated
+                // This will be removed once all weapons are migrated to array-based eigenschaften
+                console.warn(`Weapon ${nwaffe.name} using legacy eigenschaften calculation`)
+
+                let kopflastig = nwaffe.system.eigenschaften.kopflastig
+                let schwer_4 = nwaffe.system.eigenschaften.schwer_4
+                let schwer_8 = nwaffe.system.eigenschaften.schwer_8
+                let zweihaendig = nwaffe.system.eigenschaften.zweihaendig
+                let kein_malus_nebenwaffe = nwaffe.system.eigenschaften.kein_malus_nebenwaffe
+                let hauptwaffe = nwaffe.system.hauptwaffe
+                let nebenwaffe = nwaffe.system.nebenwaffe
+                let schaden = sb
+
+                if (kopflastig) {
+                    schaden += sb
+                }
+
+                let at = Number(nwaffe.system.wm_at)
+                let vt = Number(nwaffe.system.wm_vt)
+                let fertigkeit = nwaffe.system.fertigkeit
+                let talent = nwaffe.system.talent
+                let pw = actor.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.system.pw
+                let pwt = actor.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.system.pwt
+                let taltrue = actor.profan.fertigkeiten
+                    .find((x) => x.name == fertigkeit)
+                    ?.system.talente.find((x) => x.name == talent)
+
+                if (typeof pw !== 'undefined') {
+                    if (typeof taltrue !== 'undefined') {
+                        at += pwt
+                        vt += pwt
+                    } else {
+                        at += pw
+                        vt += pw
+                    }
+                }
+
+                if (schwer_4 && KK < 4) {
                     at -= 2
                     vt -= 2
-                    schaden -= 4
-                } else if (!hauptwaffe && nebenwaffe) {
-                    at -= 6
-                    vt -= 6
-                    schaden -= 4
+                } else if (schwer_8 && KK < 8) {
+                    at -= 2
+                    vt -= 2
+                }
+
+                if (zweihaendig) {
+                    if (hauptwaffe && !nebenwaffe) {
+                        at -= 2
+                        vt -= 2
+                        schaden -= 4
+                    } else if (!hauptwaffe && nebenwaffe) {
+                        at -= 6
+                        vt -= 6
+                        schaden -= 4
+                    }
+                }
+
+                if (nebenwaffe && !zweihaendig && !kein_malus_nebenwaffe && !hauptwaffe) {
+                    vt -= 4
+                    at -= 4
+                }
+
+                at -= be
+                vt -= be
+
+                const mod_at = nwaffe.system.mod_at
+                const mod_vt = nwaffe.system.mod_vt
+                const mod_schaden = nwaffe.system.mod_schaden
+                if (!isNaN(mod_at)) {
+                    at += mod_at
+                }
+                if (!isNaN(mod_vt)) {
+                    vt += mod_vt
+                }
+
+                nwaffe.system.at = at
+                nwaffe.system.vt = vt
+                nwaffe.system.schaden = `${nwaffe.system.tp}${
+                    schaden < 0 ? schaden : '+' + schaden
+                }`
+                if (
+                    typeof mod_schaden !== 'undefined' &&
+                    mod_schaden !== null &&
+                    mod_schaden !== ''
+                ) {
+                    nwaffe.system.schaden = `${nwaffe.system.tp}${
+                        mod_schaden < 0 ? mod_schaden : '+' + mod_schaden
+                    }`
                 }
             }
-            if (nebenwaffe && !zweihaendig && !kein_malus_nebenwaffe && !hauptwaffe) {
-                vt -= 4
-                at -= 4
-            }
-            at -= be
-            vt -= be
-            // at += wundabzuege;
-            // vt += wundabzuege;
-            const mod_at = nwaffe.system.mod_at
-            const mod_vt = nwaffe.system.mod_vt
-            const mod_schaden = nwaffe.system.mod_schaden
-            if (!isNaN(mod_at)) {
-                at += mod_at
-            }
-            if (!isNaN(mod_vt)) {
-                vt += mod_vt
-            }
-            // if (!isNaN(mod_schaden)) { schaden += mod_schaden;}
-            nwaffe.system.at = at
-            nwaffe.system.vt = vt
-            nwaffe.system.schaden = `${nwaffe.system.tp}${schaden < 0 ? schaden : '+' + schaden}`
-            if (typeof mod_schaden !== 'undefined' && mod_schaden !== null && mod_schaden !== '') {
-                nwaffe.system.schaden = `${nwaffe.system.tp}${
-                    mod_schaden < 0 ? mod_schaden : '+' + mod_schaden
-                }`
-            }
+
             nwaffe.system.manoever.vlof.offensiver_kampfstil = actor.vorteil.kampf.some(
                 (x) => x.name == 'Offensiver Kampfstil',
             )
@@ -565,69 +598,134 @@ export class IlarisActor extends Actor {
         for (let fwaffe of actor.fernkampfwaffen) {
             fwaffe.system.manoever =
                 fwaffe.system.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_fernkampf)
-            let kein_reiter = fwaffe.system.eigenschaften.kein_reiter
-            let ist_beritten = this.system.misc.ist_beritten
-            let niederwerfen = fwaffe.system.eigenschaften.niederwerfen
-            let niederwerfen_4 = fwaffe.system.eigenschaften.niederwerfen_4
-            let niederwerfen_8 = fwaffe.system.eigenschaften.niederwerfen_8
-            let schwer_4 = fwaffe.system.eigenschaften.schwer_4
-            let schwer_8 = fwaffe.system.eigenschaften.schwer_8
-            let stationaer = fwaffe.system.eigenschaften.stationaer
-            let stumpf = fwaffe.system.eigenschaften.stumpf
-            let umklammern_212 = fwaffe.system.eigenschaften.umklammern_212
-            let umklammern_416 = fwaffe.system.eigenschaften.umklammern_416
-            let umklammern_816 = fwaffe.system.eigenschaften.umklammern_816
-            let zweihaendig = fwaffe.system.eigenschaften.zweihaendig
-            let hauptwaffe = fwaffe.system.hauptwaffe
-            let nebenwaffe = fwaffe.system.nebenwaffe
-            let schaden = 0
-            let fk = 0
-            let fertigkeit = fwaffe.system.fertigkeit
-            let talent = fwaffe.system.talent
-            fk += Number(fwaffe.system.wm_fk)
-            let pw = actor.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.system.pw
-            let pwt = actor.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.system.pwt
-            let taltrue = actor.profan.fertigkeiten
-                .find((x) => x.name == fertigkeit)
-                ?.system.talente.find((x) => x.name == talent)
-            if (typeof pw !== 'undefined') {
-                if (typeof taltrue !== 'undefined') {
-                    fk += pwt
-                } else {
-                    fk += pw
+
+            // Weapon stats are now calculated in WaffeItem.prepareDerivedData()
+            // Use computed values if available, otherwise calculate legacy way
+            if (fwaffe.system.computed) {
+                // Use new data-driven system
+                let fk = fwaffe.system.computed.fk
+
+                // Add skill values
+                let fertigkeit = fwaffe.system.fertigkeit
+                let talent = fwaffe.system.talent
+                let pw = actor.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.system.pw
+                let pwt = actor.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.system.pwt
+                let taltrue = actor.profan.fertigkeiten
+                    .find((x) => x.name == fertigkeit)
+                    ?.system.talente.find((x) => x.name == talent)
+
+                if (typeof pw !== 'undefined') {
+                    if (typeof taltrue !== 'undefined') {
+                        fk += pwt
+                    } else {
+                        fk += pw
+                    }
                 }
-            }
-            if (schwer_4 && KK < 4) {
-                fk -= 2
-            } else if (schwer_8 && KK < 8) {
-                fk -= 2
-            }
-            if (nebenwaffe && !zweihaendig && !hauptwaffe) {
-                fk -= 4
-            }
-            fk -= be
-            // fk += wundabzuege;
-            const mod_fk = fwaffe.system.mod_fk
-            const mod_schaden = fwaffe.system.mod_schaden
-            if (!isNaN(mod_fk)) {
-                fk += mod_fk
-            }
-            fwaffe.system.fk = fk
-            if (ist_beritten) fwaffe.system.fk -= 4
-            if (zweihaendig && ((hauptwaffe && !nebenwaffe) || (!hauptwaffe && nebenwaffe))) {
-                fwaffe.system.fk = '-'
-            } else if (kein_reiter && (hauptwaffe || nebenwaffe)) {
-                // let reittier = false;
-                // let reittier = HAUPTWAFFE?.data.data.eigenschaften?.reittier || NEBENWAFFE?.data.data.eigenschaften?.reittier;
-                if (ist_beritten && kein_reiter) {
+
+                // Apply manual modifiers
+                const mod_fk = fwaffe.system.mod_fk
+                const mod_schaden = fwaffe.system.mod_schaden
+                if (!isNaN(mod_fk)) {
+                    fk += mod_fk
+                }
+
+                fwaffe.system.fk = fk
+
+                // Check for special conditions
+                let ist_beritten = this.system.misc.ist_beritten
+                let zweihaendig = fwaffe.system.eigenschaften.includes('Zweihändig')
+                let kein_reiter = fwaffe.system.eigenschaften.includes('kein Reiter')
+                let hauptwaffe = fwaffe.system.hauptwaffe
+                let nebenwaffe = fwaffe.system.nebenwaffe
+
+                if (ist_beritten) fwaffe.system.fk -= 4
+
+                if (zweihaendig && ((hauptwaffe && !nebenwaffe) || (!hauptwaffe && nebenwaffe))) {
                     fwaffe.system.fk = '-'
+                } else if (kein_reiter && (hauptwaffe || nebenwaffe)) {
+                    if (ist_beritten && kein_reiter) {
+                        fwaffe.system.fk = '-'
+                    }
                 }
-            }
-            fwaffe.system.schaden = `${fwaffe.system.tp}`
-            if (typeof mod_schaden !== 'undefined' && mod_schaden !== null && mod_schaden !== '') {
-                fwaffe.system.schaden = `${fwaffe.system.tp}${
-                    mod_schaden < 0 ? mod_schaden : '+' + mod_schaden
-                }`
+
+                fwaffe.system.schaden = `${fwaffe.system.tp}`
+                if (
+                    typeof mod_schaden !== 'undefined' &&
+                    mod_schaden !== null &&
+                    mod_schaden !== ''
+                ) {
+                    fwaffe.system.schaden = `${fwaffe.system.tp}${
+                        mod_schaden < 0 ? mod_schaden : '+' + mod_schaden
+                    }`
+                }
+            } else {
+                // Legacy calculation for weapons not yet migrated
+                console.warn(`Weapon ${fwaffe.name} using legacy eigenschaften calculation`)
+
+                let kein_reiter = fwaffe.system.eigenschaften.kein_reiter
+                let ist_beritten = this.system.misc.ist_beritten
+                let schwer_4 = fwaffe.system.eigenschaften.schwer_4
+                let schwer_8 = fwaffe.system.eigenschaften.schwer_8
+                let zweihaendig = fwaffe.system.eigenschaften.zweihaendig
+                let hauptwaffe = fwaffe.system.hauptwaffe
+                let nebenwaffe = fwaffe.system.nebenwaffe
+                let fk = Number(fwaffe.system.wm_fk)
+
+                let fertigkeit = fwaffe.system.fertigkeit
+                let talent = fwaffe.system.talent
+                let pw = actor.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.system.pw
+                let pwt = actor.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.system.pwt
+                let taltrue = actor.profan.fertigkeiten
+                    .find((x) => x.name == fertigkeit)
+                    ?.system.talente.find((x) => x.name == talent)
+
+                if (typeof pw !== 'undefined') {
+                    if (typeof taltrue !== 'undefined') {
+                        fk += pwt
+                    } else {
+                        fk += pw
+                    }
+                }
+
+                if (schwer_4 && KK < 4) {
+                    fk -= 2
+                } else if (schwer_8 && KK < 8) {
+                    fk -= 2
+                }
+
+                if (nebenwaffe && !zweihaendig && !hauptwaffe) {
+                    fk -= 4
+                }
+
+                fk -= be
+
+                const mod_fk = fwaffe.system.mod_fk
+                const mod_schaden = fwaffe.system.mod_schaden
+                if (!isNaN(mod_fk)) {
+                    fk += mod_fk
+                }
+
+                fwaffe.system.fk = fk
+                if (ist_beritten) fwaffe.system.fk -= 4
+
+                if (zweihaendig && ((hauptwaffe && !nebenwaffe) || (!hauptwaffe && nebenwaffe))) {
+                    fwaffe.system.fk = '-'
+                } else if (kein_reiter && (hauptwaffe || nebenwaffe)) {
+                    if (ist_beritten && kein_reiter) {
+                        fwaffe.system.fk = '-'
+                    }
+                }
+
+                fwaffe.system.schaden = `${fwaffe.system.tp}`
+                if (
+                    typeof mod_schaden !== 'undefined' &&
+                    mod_schaden !== null &&
+                    mod_schaden !== ''
+                ) {
+                    fwaffe.system.schaden = `${fwaffe.system.tp}${
+                        mod_schaden < 0 ? mod_schaden : '+' + mod_schaden
+                    }`
+                }
             }
             let rw = fwaffe.system.rw
             fwaffe.system.rw_mod = rw
