@@ -26,6 +26,10 @@ export class UebernatuerlichDialog extends CombatDialog {
         this.is16OrHigher = false
         this.item = item
         this.actor = actor
+
+        // Initialize selected actors from Foundry targets after actor/item are set
+        this._initializeSelectedActorsFromTargets()
+
         console.log('actor', this.actor)
         this.speaker = ChatMessage.getSpeaker({ actor: this.actor })
         this.rollmode = game.settings.get('core', 'rollMode') // public, private....
@@ -401,7 +405,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         await ChatMessage.create({
             speaker: this.speaker,
             content: html_roll,
-            type: 5, // CONST.CHAT_MESSAGE_TYPES.ROLL
+            style: CONST.CHAT_MESSAGE_STYLES.ROLL,
             whisper:
                 this.rollmode === 'gmroll'
                     ? ChatMessage.getWhisperRecipients('GM')
@@ -483,7 +487,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         await ChatMessage.create({
             speaker: this.speaker,
             content: html_roll,
-            type: 5, // CONST.CHAT_MESSAGE_TYPES.ROLL
+            style: CONST.CHAT_MESSAGE_STYLES.ROLL,
             whisper:
                 this.rollmode === 'gmroll'
                     ? ChatMessage.getWhisperRecipients('GM')

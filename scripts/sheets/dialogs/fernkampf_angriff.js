@@ -1,6 +1,6 @@
-import { roll_crit_message, get_statuseffect_by_id } from '../../common/wuerfel/wuerfel_misc.js'
+import { evaluate_roll_with_crit } from '../../common/wuerfel/wuerfel_misc.js'
 import { signed } from '../../common/wuerfel/chatutilities.js'
-import { handleModifications } from './shared_dialog_helpers.js'
+import { handleModifications, applyDamageToTarget } from './shared_dialog_helpers.js'
 import { CombatDialog } from './combat_dialog.js'
 import * as hardcoded from '../../actors/hardcodedvorteile.js'
 
@@ -18,6 +18,10 @@ export class FernkampfAngriffDialog extends CombatDialog {
         this.text_dm = ''
         this.item = item
         this.actor = actor
+
+        // Initialize selected actors from Foundry targets after actor/item are set
+        this._initializeSelectedActorsFromTargets()
+
         this.speaker = ChatMessage.getSpeaker({ actor: this.actor })
         this.rollmode = game.settings.get('core', 'rollMode') // public, private....
         this.item.system.manoever.rllm.selected = game.settings.get('core', 'rollMode') // TODO: either manoever or dialog property.
@@ -264,16 +268,18 @@ export class FernkampfAngriffDialog extends CombatDialog {
         let formula = `${diceFormula} ${signed(this._getFKValue())} \
             ${signed(this.at_abzuege_mod)} \
             ${signed(this.mod_at)}`
-        await roll_crit_message(
+
+        // Use the new evaluation function
+        const rollResult = await evaluate_roll_with_crit(
             formula,
             label,
             this.text_at,
-            this.speaker,
-            this.rollmode,
-            true,
+            12, // success_val
             this.fumble_val,
-            12,
+            true, // crit_eval
         )
+
+        await this.handleTargetSelection(rollResult, 'ranged')
         super._updateSchipsStern(html)
     }
 
@@ -283,7 +289,40 @@ export class FernkampfAngriffDialog extends CombatDialog {
         // Rollmode
         let label = `Schaden (${this.item.name})`
         let formula = `${this.schaden} ${signed(this.mod_dm)}`
-        await roll_crit_message(formula, label, this.text_dm, this.speaker, this.rollmode, false, 0)
+        // Use the new evaluation function for damage (no crit evaluation)
+        const rollResult = await evaluate_roll_with_crit(
+            formula,
+            label,
+            this.text_dm,
+            null, // success_val
+            1, // fumble_val not used since crit_eval is false
+            false, // crit_eval
+        )
+
+        // Send the chat message
+        const html_roll = await renderTemplate(rollResult.templatePath, rollResult.templateData)
+        await rollResult.roll.toMessage(
+            {
+                speaker: this.speaker,
+                flavor: html_roll,
+            },
+            {
+                rollMode: this.rollmode,
+            },
+        )
+
+        // Apply damage to selected targets if any
+        if (this.selectedActors && this.selectedActors.length > 0) {
+            for (const target of this.selectedActors) {
+                await applyDamageToTarget(
+                    target,
+                    rollResult.roll.total,
+                    this.damageType,
+                    this.trueDamage,
+                    this.speaker,
+                )
+            }
+        }
     }
 
     async manoeverAuswaehlen(html) {

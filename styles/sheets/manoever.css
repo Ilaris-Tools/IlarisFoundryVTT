@@ -355,6 +355,11 @@
   border-bottom-color: #8b0000;
 }
 
+.disabled {
+  color: #666666 !important;
+  border-bottom-color: #666666 !important;
+}
+
 .defense-summary {
   border-left: 4px solid #006400 !important;
   border-color: rgba(0, 100, 0, 0.3) !important;

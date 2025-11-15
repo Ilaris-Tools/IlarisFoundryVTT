@@ -1,5 +1,64 @@
 export class CombatDialog extends Dialog {
+    constructor(dialogData, options) {
+        super(dialogData, options)
+    }
+
+    /**
+     * Initialize selectedActors from Foundry's game.user.targets
+     * This should be called after actor and item are set
+     */
+    _initializeSelectedActorsFromTargets() {
+        if (!this.selectedActors && game.user.targets && game.user.targets.size > 0) {
+            this.selectedActors = []
+
+            for (const token of game.user.targets) {
+                // Calculate distance from the acting token to the target token
+                let distance = 'Unbekannt'
+
+                // Try to get distance from token document
+                const actorTokens = this.actor?.getActiveTokens()
+                if (actorTokens && actorTokens.length > 0 && token) {
+                    const actorToken = actorTokens[0]
+                    try {
+                        const dx = Math.abs(actorToken.x - token.x)
+                        const dy = Math.abs(actorToken.y - token.y)
+                        const gridDistance = Math.max(dx, dy) / canvas.grid.size
+                        distance = `${Math.round(gridDistance)}`
+                    } catch (error) {
+                        console.warn('Could not calculate distance to target:', error)
+                        distance = 'Unbekannt'
+                    }
+                } else if (this.actor?.token && token) {
+                    // Fallback to actor.token if available
+                    try {
+                        const dx = Math.abs(this.actor.token.x - token.x)
+                        const dy = Math.abs(this.actor.token.y - token.y)
+                        const gridDistance = Math.max(dx, dy) / canvas.grid.size
+                        distance = `${Math.round(gridDistance)}`
+                    } catch (error) {
+                        console.warn('Could not calculate distance to target:', error)
+                        distance = 'Unbekannt'
+                    }
+                }
+
+                this.selectedActors.push({
+                    actorId: token.actor?.id,
+                    name: token.actor?.name || token.name,
+                    distance: distance,
+                })
+            }
+
+            console.log(
+                `Auto-populated ${this.selectedActors.length} targets from Foundry selection`,
+            )
+        }
+    }
+
     async getData() {
+        if (!this._manoeversSet) {
+            await this.item.setManoevers()
+            this._manoeversSet = true
+        }
         // damit wird das template gefüttert
         return {
             distance_choice: CONFIG.ILARIS.distance_choice,
@@ -13,6 +72,7 @@ export class CombatDialog extends Dialog {
             dialogId: (this.dialogId = `dialog-${Date.now()}-${Math.random()
                 .toString(36)
                 .substring(2, 11)}`),
+            selectedActors: this.selectedActors || [],
         }
     }
 
@@ -130,6 +190,7 @@ export class CombatDialog extends Dialog {
             })
             item.classList.toggle('has-value', hasValue)
         })
+        html.find('.show-nearby').click((ev) => this._showNearbyActors(html))
 
         // Add specific listener for maneuver to handle ZERO_DAMAGE conflicts
         html.find('.maneuver-item input, .maneuver-item select').on('change', () => {
@@ -209,7 +270,6 @@ export class CombatDialog extends Dialog {
             if (manoever.inputValue.field == 'CHECKBOX') {
                 manoever.inputValue.value = html.find(`#${elementId}`)[0]?.checked || false
             } else {
-                console.log(manoever.inputValue.name, html.find(`#${elementId}`)[0]?.value)
                 manoever.inputValue.value = html.find(`#${elementId}`)[0]?.value || false
             }
         })
@@ -234,6 +294,23 @@ export class CombatDialog extends Dialog {
             )
         }
         this.at_abzuege_mod = this.actor.system.abgeleitete.globalermod
+    }
+
+    async _showNearbyActors(html) {
+        const { TargetSelectionDialog } = await import('./target_selection.js')
+        const dialog = new TargetSelectionDialog(this.actor, (selectedActors) => {
+            this.selectedActors = selectedActors
+            this.updateSelectedActorsDisplay(html)
+        })
+        dialog.render(true)
+    }
+
+    updateSelectedActorsDisplay(html) {
+        // Get the parent dialog element that contains the original angriff.hbs content
+        const parentDialog = $(html[0]).closest('.app.window-app').parent().find('.angriff-dialog')
+
+        // Re-render the dialog to update the template
+        this.render(true)
     }
 
     _updateSchipsStern(html) {
@@ -354,5 +431,137 @@ export class CombatDialog extends Dialog {
                 }
             }
         })
+    }
+
+    async handleTargetSelection(rollResult, attackType) {
+        // Determine if we should hide the roll result
+        // Only hide roll for melee attacks with targets
+        const hideRoll =
+            attackType !== 'ranged' && this.selectedActors && this.selectedActors.length > 0
+
+        console.log(rollResult)
+        // Modify template data to hide results if needed
+        const templateData = hideRoll
+            ? {
+                  ...rollResult.templateData,
+                  // Hide specific results but keep flavor text
+                  success: false,
+                  fumble: false,
+                  crit: false,
+                  is16OrHigher: false,
+                  noSuccess: false,
+                  // Add a message indicating hidden roll
+                  text:
+                      rollResult.templateData.text +
+                      '\nErgebnis verborgen bis alle Verteidigungen abgeschlossen sind.',
+              }
+            : rollResult.templateData
+
+        // Send the chat message
+        const html_roll = await renderTemplate(rollResult.templatePath, templateData)
+        await rollResult.roll.toMessage(
+            {
+                speaker: this.speaker,
+                flavor: html_roll,
+                blind: hideRoll, // Make the roll blind if we have targets
+                whisper: hideRoll ? [game.user.id] : [], // Only whisper to GM if hidden
+            },
+            {
+                rollMode: hideRoll ? 'gmroll' : this.rollmode,
+            },
+        )
+
+        // Store the roll result for later use with defense rolls
+        if (hideRoll) {
+            this.lastAttackRoll = {
+                roll: rollResult.roll,
+                success: rollResult.success,
+                is16OrHigher: rollResult.is16OrHigher,
+                templateData: rollResult.templateData,
+            }
+        }
+
+        // If we have selected targets and the attack was successful, send them defense prompts
+        if (
+            this.selectedActors &&
+            this.selectedActors.length > 0 &&
+            ((rollResult.success && attackType === 'ranged') || attackType === 'melee')
+        ) {
+            for (const target of this.selectedActors) {
+                const targetActor = game.actors.get(target.actorId)
+                if (!targetActor) continue
+
+                let weapons = []
+
+                // Check if this is a creature (has angriffe) or a regular actor (has nahkampfwaffen)
+                if (targetActor.type === 'kreatur' && targetActor.angriffe) {
+                    // For creatures, use all their angriffe as weapons
+                    weapons = targetActor.angriffe
+                } else {
+                    // For regular actors, find main and secondary weapons
+                    const mainWeapon = targetActor.items.find(
+                        (item) => item.type === 'nahkampfwaffe' && item.system.hauptwaffe === true,
+                    )
+
+                    const secondaryWeapon = targetActor.items.find(
+                        (item) =>
+                            item.type === 'nahkampfwaffe' &&
+                            item.system.nebenwaffe === true &&
+                            (!mainWeapon || item.id !== mainWeapon.id), // Don't include if it's the same as main weapon
+                    )
+
+                    if (mainWeapon) weapons.push(mainWeapon)
+                    if (secondaryWeapon) weapons.push(secondaryWeapon)
+                }
+
+                // Create defense buttons HTML
+                let buttonsHtml = ''
+                for (const weapon of weapons) {
+                    buttonsHtml += `
+                        <button class="defend-button" data-actor-id="${
+                            targetActor.id
+                        }" data-weapon-id="${weapon.id}" data-distance="${
+                        target.distance
+                    }" data-attacker-id="${
+                        this.actor.id
+                    }" data-attack-type="${attackType}" data-roll-result='${encodeURIComponent(
+                        JSON.stringify(rollResult, (key, value) =>
+                            typeof value === 'function' ? undefined : value,
+                        ),
+                    )}' style="margin: 0 5px 5px 0;">
+                            <i class="fas fa-shield-alt"></i>
+                            Verteidigen mit ${weapon.name}
+                        </button>`
+                }
+
+                // If no weapons found, add a warning
+                if (!buttonsHtml) {
+                    buttonsHtml =
+                        '<p style="color: #aa0000;">Keine Haupt- oder Nebenwaffe gefunden.</p>'
+                }
+
+                // Create defense prompt message content
+                const content = `
+                    <div class="defense-prompt" style="padding: 10px;">
+                        <p>${this.actor.name} greift dich mit ${this.item.name} an!</p>
+                        <p>Entfernung: ${target.distance} Distanz</p>
+                        <div class="defense-buttons" style="display: flex; flex-wrap: wrap;">
+                            ${buttonsHtml}
+                        </div>
+                    </div>
+                `
+
+                // Send the message to chat
+                const chatData = {
+                    user: game.user.id,
+                    speaker: ChatMessage.getSpeaker({ actor: targetActor }),
+                    content: content,
+                    whisper: [
+                        game.users.find((u) => u.character?.id === targetActor.id)?.id,
+                    ].filter((id) => id),
+                }
+                await ChatMessage.create(chatData)
+            }
+        }
     }
 }
