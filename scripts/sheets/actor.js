@@ -55,8 +55,8 @@ export class IlarisActorSheet extends ActorSheet {
             this._onHealthValueChange(ev),
         )
 
-        // Add listener for sync kampfstile button
-        html.find('.sync-kampfstile').click((ev) => this._onSyncKampfstile(ev))
+        // Add listener for sync items button
+        html.find('.sync-items').click((ev) => this._onSyncItems(ev))
     }
 
     _ausklappView(event) {
@@ -642,34 +642,40 @@ export class IlarisActorSheet extends ActorSheet {
         // li.slideUp(200, () => this.render(false));
     }
 
-    async _onSyncKampfstile(event) {
-        console.log('Sync Kampfstile')
+    async _onSyncItems(event) {
+        console.log('Sync Items (Vorteile and Übernatürliche Talente)')
 
         try {
-            // Get selected vorteile packs from settings
-            const selectedPacks = JSON.parse(
-                game.settings.get(
-                    ConfigureGameSettingsCategories.Ilaris,
-                    IlarisGameSettingNames.vorteilePacks,
-                ),
-            )
+            // Get all available Item compendiums in the world
+            const selectedPacks = []
+            for (const pack of game.packs) {
+                if (pack.metadata.type === 'Item') {
+                    selectedPacks.push(pack.collection)
+                }
+            }
 
             if (!selectedPacks || selectedPacks.length === 0) {
-                ui.notifications.warn(
-                    'Keine Vorteile-Kompendien konfiguriert. Bitte in den Welteneinstellungen konfigurieren.',
-                )
+                ui.notifications.warn('Keine Item-Kompendien gefunden.')
                 return
             }
 
-            // Get all kampfstil vorteile from the actor
-            const kampfstileItems = this.actor.items.filter(
-                (item) => item.type === 'vorteil' && item.system.gruppe == 3, // Kampfvorteile group
+            console.log(`Found ${selectedPacks.length} Item compendiums to search`)
+
+            // Get all vorteile and übernatürliche talente from the actor
+            const itemsToSync = this.actor.items.filter(
+                (item) =>
+                    item.type === 'vorteil' ||
+                    item.type === 'zauber' ||
+                    item.type === 'liturgie' ||
+                    item.type === 'anrufung',
             )
 
-            console.log(kampfstileItems)
+            console.log(`Found ${itemsToSync.length} items to sync`)
 
-            if (kampfstileItems.length === 0) {
-                ui.notifications.info('Keine Kampfstile zum Synchronisieren gefunden.')
+            if (itemsToSync.length === 0) {
+                ui.notifications.info(
+                    'Keine Vorteile oder Übernatürliche Talente zum Synchronisieren gefunden.',
+                )
                 return
             }
 
@@ -683,36 +689,101 @@ export class IlarisActorSheet extends ActorSheet {
 
                 const packItems = await pack.getDocuments()
 
-                for (const kampfstilItem of kampfstileItems) {
-                    // Find matching item in compendium by name
+                console.log(`Checking pack: ${pack.metadata.label} with ${packItems.length} items`)
+
+                for (const actorItem of itemsToSync) {
+                    // Find matching item in compendium by name (ignore type as it might be wrong)
                     const compendiumItem = packItems.find(
-                        (packItem) =>
-                            packItem.name === kampfstilItem.name && packItem.type === 'vorteil',
+                        (packItem) => packItem.name === actorItem.name,
                     )
 
-                    console.log(`Checking Kampfstil: ${compendiumItem?.name || 'Not Found'}`)
-
                     if (compendiumItem) {
+                        // Check if type matches, if not we need to update
+                        const typeChanged = actorItem.type !== compendiumItem.type
+
                         // Check if update is needed by comparing key fields
-                        const needsUpdate = this._needsKampfstilUpdate(
-                            kampfstilItem,
-                            compendiumItem,
-                        )
+                        const needsUpdate =
+                            typeChanged || this._needsItemUpdate(actorItem, compendiumItem)
+                        if (actorItem.name === 'Bannfluch des Heiligen Khalid') {
+                            console.log('Bannfluch des Heiligen Khalid needs update:', needsUpdate)
+                        }
 
                         if (needsUpdate) {
-                            // Prepare update data
+                            // Prepare update data based on item type
                             const updateData = {
-                                _id: kampfstilItem.id,
+                                _id: actorItem.id,
                                 'system.text': compendiumItem.system.text,
-                                'system.sephrastoScript': compendiumItem.system.sephrastoScript,
-                                'system.stilBedingungen': compendiumItem.system.stilBedingungen,
-                                'system.foundryScript': compendiumItem.system.foundryScript,
-                                'system.voraussetzung': compendiumItem.system.voraussetzung,
+                            }
+
+                            // Update type if it changed
+                            if (typeChanged) {
+                                updateData['type'] = compendiumItem.type
+                                console.log(
+                                    `Type mismatch for ${actorItem.name}: ${actorItem.type} -> ${compendiumItem.type}`,
+                                )
+                            }
+
+                            // Add type-specific fields (use compendiumItem.type since that's the correct type)
+                            if (compendiumItem.type === 'vorteil') {
+                                updateData['system.sephrastoScript'] =
+                                    compendiumItem.system.sephrastoScript
+                                updateData['system.stilBedingungen'] =
+                                    compendiumItem.system.stilBedingungen
+                                updateData['system.foundryScript'] =
+                                    compendiumItem.system.foundryScript
+                                updateData['system.voraussetzung'] =
+                                    compendiumItem.system.voraussetzung
+                            } else if (
+                                compendiumItem.type === 'zauber' ||
+                                compendiumItem.type === 'liturgie' ||
+                                compendiumItem.type === 'anrufung'
+                            ) {
+                                // Update all übernatürlich_talent template fields
+                                if (compendiumItem.system.fertigkeiten !== undefined) {
+                                    updateData['system.fertigkeiten'] =
+                                        compendiumItem.system.fertigkeiten
+                                }
+                                if (compendiumItem.system.fertigkeit_ausgewaehlt !== undefined) {
+                                    updateData['system.fertigkeit_ausgewaehlt'] =
+                                        compendiumItem.system.fertigkeit_ausgewaehlt
+                                }
+                                if (compendiumItem.system.maechtig !== undefined) {
+                                    updateData['system.maechtig'] = compendiumItem.system.maechtig
+                                }
+                                if (compendiumItem.system.schwierigkeit !== undefined) {
+                                    updateData['system.schwierigkeit'] =
+                                        compendiumItem.system.schwierigkeit
+                                }
+                                if (compendiumItem.system.modifikationen !== undefined) {
+                                    updateData['system.modifikationen'] =
+                                        compendiumItem.system.modifikationen
+                                }
+                                if (compendiumItem.system.vorbereitung !== undefined) {
+                                    updateData['system.vorbereitung'] =
+                                        compendiumItem.system.vorbereitung
+                                }
+                                if (compendiumItem.system.ziel !== undefined) {
+                                    updateData['system.ziel'] = compendiumItem.system.ziel
+                                }
+                                if (compendiumItem.system.reichweite !== undefined) {
+                                    updateData['system.reichweite'] =
+                                        compendiumItem.system.reichweite
+                                }
+                                if (compendiumItem.system.wirkungsdauer !== undefined) {
+                                    updateData['system.wirkungsdauer'] =
+                                        compendiumItem.system.wirkungsdauer
+                                }
+                                if (compendiumItem.system.kosten !== undefined) {
+                                    updateData['system.kosten'] = compendiumItem.system.kosten
+                                }
+                                if (compendiumItem.system.erlernen !== undefined) {
+                                    updateData['system.erlernen'] = compendiumItem.system.erlernen
+                                }
                             }
 
                             updatePromises.push(updateData)
                             updatedCount++
-                            console.log(`Updating ${kampfstilItem.name}`)
+                            console.log(`Updating ${actorItem.name} (${actorItem.type})`)
                         }
                     }
                 }
@@ -721,24 +792,70 @@ export class IlarisActorSheet extends ActorSheet {
             // Apply all updates at once
             if (updatePromises.length > 0) {
                 await this.actor.updateEmbeddedDocuments('Item', updatePromises)
-                ui.notifications.info(`${updatedCount} Kampfstile erfolgreich synchronisiert.`)
+                ui.notifications.info(`${updatedCount} Items erfolgreich synchronisiert.`)
             } else {
-                ui.notifications.info('Alle Kampfstile sind bereits aktuell.')
+                ui.notifications.info('Alle Items sind bereits aktuell.')
             }
         } catch (error) {
-            console.error('Error syncing kampfstile:', error)
-            ui.notifications.error('Fehler beim Synchronisieren der Kampfstile.')
+            console.error('Error syncing items:', error)
+            ui.notifications.error('Fehler beim Synchronisieren der Items.')
         }
     }
 
-    _needsKampfstilUpdate(actorItem, compendiumItem) {
+    _needsItemUpdate(actorItem, compendiumItem) {
         // Compare key fields to determine if update is needed
-        return (
-            actorItem.system.text !== compendiumItem.system.text ||
-            actorItem.system.sephrastoScript !== compendiumItem.system.sephrastoScript ||
-            actorItem.system.stilBedingungen !== compendiumItem.system.stilBedingungen ||
-            actorItem.system.foundryScript !== compendiumItem.system.foundryScript ||
-            actorItem.system.voraussetzung !== compendiumItem.system.voraussetzung
-        )
+        let needsUpdate = actorItem.system.text !== compendiumItem.system.text
+
+        // Check type-specific fields
+        if (actorItem.type === 'vorteil') {
+            needsUpdate =
+                needsUpdate ||
+                actorItem.system.sephrastoScript !== compendiumItem.system.sephrastoScript ||
+                actorItem.system.stilBedingungen !== compendiumItem.system.stilBedingungen ||
+                actorItem.system.foundryScript !== compendiumItem.system.foundryScript ||
+                actorItem.system.voraussetzung !== compendiumItem.system.voraussetzung
+        } else if (
+            actorItem.type === 'zauber' ||
+            actorItem.type === 'liturgie' ||
+            actorItem.type === 'anrufung'
+        ) {
+            // Check all übernatürlich_talent template fields
+            needsUpdate =
+                needsUpdate ||
+                (compendiumItem.system.fertigkeiten !== undefined &&
+                    actorItem.system.fertigkeiten !== compendiumItem.system.fertigkeiten) ||
+                (compendiumItem.system.fertigkeit_ausgewaehlt !== undefined &&
+                    actorItem.system.fertigkeit_ausgewaehlt !==
+                        compendiumItem.system.fertigkeit_ausgewaehlt) ||
+                (compendiumItem.system.maechtig !== undefined &&
+                    actorItem.system.maechtig !== compendiumItem.system.maechtig) ||
+                (compendiumItem.system.schwierigkeit !== undefined &&
+                    actorItem.system.schwierigkeit !== compendiumItem.system.schwierigkeit) ||
+                (compendiumItem.system.modifikationen !== undefined &&
+                    actorItem.system.modifikationen !== compendiumItem.system.modifikationen) ||
+                (compendiumItem.system.vorbereitung !== undefined &&
+                    actorItem.system.vorbereitung !== compendiumItem.system.vorbereitung) ||
+                (compendiumItem.system.ziel !== undefined &&
+                    actorItem.system.ziel !== compendiumItem.system.ziel) ||
+                (compendiumItem.system.reichweite !== undefined &&
+                    actorItem.system.reichweite !== compendiumItem.system.reichweite) ||
+                (compendiumItem.system.wirkungsdauer !== undefined &&
+                    actorItem.system.wirkungsdauer !== compendiumItem.system.wirkungsdauer) ||
+                (compendiumItem.system.kosten !== undefined &&
+                    actorItem.system.kosten !== compendiumItem.system.kosten) ||
+                (compendiumItem.system.erlernen !== undefined &&
+                    actorItem.system.erlernen !== compendiumItem.system.erlernen)
+        }
+        return needsUpdate
+    }
+
+    async _onSyncKampfstile(event) {
+        // Keep the old method for backward compatibility, but redirect to new one
+        return this._onSyncItems(event)
+    }
+
+    _needsKampfstilUpdate(actorItem, compendiumItem) {
+        // Keep for backward compatibility
+        return this._needsItemUpdate(actorItem, compendiumItem)
     }
 }

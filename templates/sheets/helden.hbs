@@ -137,6 +137,13 @@
       <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/Tod.webp" data-edit="img" title="Tod"
         height="50" width="50" />
     </div>
+    {{#unless (gameSetting "hideSyncKampfstileButton")}}
+    <div style="margin-top: 0.5em; text-align: center;">
+      <a class="sync-items clickable" title="Synchronisiere alle Vorteile und Übernatürliche Talente mit ihren Kompendium-Gegenstücken. Du kannst den Button in den Gamesettings deaktivieren.">
+        <i class="fas fa-sync-alt"></i> Charakter mit Kompendium synchronisieren
+      </a>
+    </div>
+    {{/unless}}
     <div class="status-effects">
       {{#each actor.effects as |effect|}}
       {{#if effect.icon}}
