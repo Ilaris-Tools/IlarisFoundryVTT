@@ -1624,7 +1624,7 @@
     {
       "_id": "mpNhDAzuse39ddtn",
       "name": "Grabsegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Tod, Zwölfgöttlicher Ritus",
@@ -1662,7 +1662,7 @@
     {
       "_id": "NGpCxuO2wQr72DKW",
       "name": "Eidsegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Ordnung, Zwölfgöttlicher Ritus",
@@ -1700,7 +1700,7 @@
     {
       "_id": "ni6wJODy1EH4ysuP",
       "name": "Feuersegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Heiliges Feuer, Zwölfgöttlicher Ritus",
@@ -1738,7 +1738,7 @@
     {
       "_id": "bthro6wvxGjGQV0d",
       "name": "Geburtssegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Zwölfgöttlicher Ritus, Neubeginn",
@@ -1776,7 +1776,7 @@
     {
       "_id": "2r5YY9m1P4qQqeLg",
       "name": "Glückssegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "List, Zwölfgöttlicher Ritus",
@@ -1814,7 +1814,7 @@
     {
       "_id": "iiuedhzCjkNx1aaH",
       "name": "Harmoniesegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Harmonie, Zwölfgöttlicher Ritus",
@@ -1852,7 +1852,7 @@
     {
       "_id": "O44AMLuNFwaA7EdM",
       "name": "Heilungssegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Heilung, Zwölfgöttlicher Ritus",
@@ -1890,7 +1890,7 @@
     {
       "_id": "Zh1uaxnF1y2CN4t3",
       "name": "Märtyrersegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Winter, Zwölfgöttlicher Ritus, Guter Kampf",
@@ -1928,7 +1928,7 @@
     {
       "_id": "pOvAgqYX2DyREHn4",
       "name": "Schutzsegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Schutz der Gläubigen, Zwölfgöttlicher Ritus",
@@ -1966,7 +1966,7 @@
     {
       "_id": "YaOnfsI5lmDNKTti",
       "name": "Speisesegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Heim und Herd, Zwölfgöttlicher Ritus",
@@ -2004,7 +2004,7 @@
     {
       "_id": "uhA3xkE57CMqhBEN",
       "name": "Tranksegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Seefahrt, Zwölfgöttlicher Ritus",
@@ -2042,7 +2042,7 @@
     {
       "_id": "atQemPKkNq0REat5",
       "name": "Weisheitssegen",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Wissen, Zwölfgöttlicher Ritus",
@@ -2080,7 +2080,7 @@
     {
       "_id": "GFYmoJg7KKwiNgVV",
       "name": "Bannfluch des Heiligen Khalid",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Tod",
@@ -2118,7 +2118,7 @@
     {
       "_id": "IOgOrY0DZjsyyOgc",
       "name": "Exorzismus",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Abu al'Mada, Heiliges Feuer, Magie, Magiebann, Schutz der Gläubigen, Tod, Wind und Wogen",
@@ -2156,7 +2156,7 @@
     {
       "_id": "kmQo7EjHRQ8g7kjF",
       "name": "Nemekaths Geisterblick",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Tod",
@@ -2194,7 +2194,7 @@
     {
       "_id": "KX6d1F0grc2MiLEd",
       "name": "Innere Ruhe",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Ordnung, Vergessen",
@@ -2232,7 +2232,7 @@
     {
       "_id": "LiJXtcFNrLOvntfE",
       "name": "Mirakel: CH",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Vergessen, Wildnis, Wissen, Wachstum, Licht, Harmonie, Heim und Herd, Friede, Fröhlicher Wanderer",
@@ -2270,7 +2270,7 @@
     {
       "_id": "B2gRMMwrvXUWVDyX",
       "name": "Mirakel: Heilkunde",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Vergessen, Wildnis, Heilung, Heim und Herd, Friede",
@@ -2308,7 +2308,7 @@
     {
       "_id": "0MEF8fZyZAiopHlv",
       "name": "Segen der Heiligen Velvenya",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Vergessen",
@@ -2346,7 +2346,7 @@
     {
       "_id": "Q8ElXz02RqpQgJDT",
       "name": "Borons süße Gnade",
-      "type": "zauber",
+      "type": "liturgie",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "fertigkeiten": "Vergessen",

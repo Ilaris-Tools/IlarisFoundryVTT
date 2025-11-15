@@ -2,7 +2,42 @@
 
 ## v12
 
+### v12.3
+
+#### Features
+
+-   Im Szene-Config Menü gibt es jetzt eine kleine Sektion bei der man Wetter und Licht in einer Szene setzen kann.
+-   Der Fernkampfdialog übernimmt automatisch beim öffnen die eingestellten Parameter aus der Szene. (kann man in den World Settings ein und ausschalten)
+
+### v12.2.5
+
+-   Kampfstil-Sync-Button auf dem Charaktersheet wurde ausgebaut, dafür wurde ein Sync-Button auf dem Charaktersheet eingeführt, der alle Vorteile und alle Übernatürlichen Talente mit den Kompendium-Counterparts synct
+-   auskommentiere Setting wieder reingenommen, hat zu einem Problem geführt, dass man die Dialoge nicht mehr öffnen kann
+
+### v12.2.4
+
+-   fixes breaking change dialog
+
+### v12.2.3
+
+-   Importer speichert zugekaufte und gebundene Energie an der richtigen Stelle
+
+### v12.2.2
+
+-   Breaking changes dialog
+
+### v12.2.1
+
+-   Bei geweihten Beispielhelden waren die Liturigen falsch als Zauber geflaggt was dazu geführt hat, dass die Würfeldialoge nicht funktioniert haben.
+
 ### v12.2
+
+#### Breaking Change
+
+-   die Kampfstile und die Übernatürlichen Talente können nur richtig verwendet werden, wenn sie auch in ihrer aktuellsten Form auf dem Charakter liegen. Dafür muss entweder der Sync/Update-Button verwendet werden (bitte auf die nötigen Nutzer Berechtigungen achten ("Upload File", ggf "Create Actor")) oder die Vorteile/Übernatürlichen Talente müssen neu auf das Charaktersheet gezogen werden
+-   für Charaktere mit 5.1.0 und neuer sollte der XML-Import oder der Sync-Button im Actortab verwendet werden. Bei älteren Sephrasto XMLs kommt es zu Fehlern, da sich die Datenstruktur maßgeblich unterscheidet
+-   für Charaktere, die mit älteren Sephrasto-Versionen erstellt wurden, muss weiterhin das Sephrasto-Plugin für Foundry verwendet werden und ein manuelles Update der Charakterdaten erfolgen. Dafür wie oben beschrieben den Sync-Button für den Charakterbogen aktivieren und einfach drauf drücken, den Rest erledigt Foundry
+-   Bei der neuen Variante (Sephrasto 5.1.0 + XML-Import/Actortab-Sync-Button) können auch Hausregeln verwendet werden, wenn die Hausregeln mit exakt gleichem Namen auch in Foundry vorhanden sind!
 
 #### Features
 
