@@ -669,6 +669,8 @@ export class UebernatuerlichDialog extends CombatDialog {
         // Collect all modifications from all maneuvers
         const allModifications = []
         let manoeverAmount = 0
+        let baseManoeverCount = 0
+
         this.item.manoever.forEach((dynamicManoever) => {
             let check = undefined
             let number = undefined
@@ -690,6 +692,12 @@ export class UebernatuerlichDialog extends CombatDialog {
                 return
 
             manoeverAmount++
+
+            // Count base maneuvers for Gildenmagier II bonus
+            if (dynamicManoever.system.isBaseManoever) {
+                baseManoeverCount++
+            }
+
             // Add valid modifications to the collection
             Object.values(dynamicManoever.system.modifications).forEach((modification) => {
                 allModifications.push({
@@ -744,6 +752,15 @@ export class UebernatuerlichDialog extends CombatDialog {
             mod_at += modifikator
             text_vt = text_vt.concat(`Modifikator: ${modifikator}\n`)
             text_at = text_at.concat(`Modifikator: ${modifikator}\n`)
+        }
+
+        // Gildenmagier II Bonus: +2 wenn mindestens 2 verschiedene Basismanöver verwendet werden
+        if (baseManoeverCount >= 2 && this.actor.type === 'held' && this.item.type === 'zauber') {
+            const selectedStil = hardcoded.getSelectedStil(this.actor, 'uebernatuerlich')
+            if (selectedStil?.name.includes('Gildenmagier') && selectedStil.stufe >= 2) {
+                mod_at += 2
+                text_at = text_at.concat('Gildenmagier II: +2\n')
+            }
         }
 
         // Handle Blutmagie and Verbotene Pforten
