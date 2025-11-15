@@ -9,7 +9,6 @@ export class TargetSelectionDialog extends Dialog {
             height: 'auto',
             classes: ['target-selection-dialog'],
             buttons: {},
-            default: 'select',
         }
 
         super(dialog, dialogOptions)
