@@ -22,10 +22,14 @@
 
 .herosheet {
   display: grid;
-  grid-template-areas: 'header header' 'sidebar navigation1'
-    'sidebar navigation2' 'sidebar tabs';
+  grid-template-areas: 
+  'sidebar header'
+  'sidebar navigation1'
+  'sidebar navigation2'
+  'sidebar tabs';
   grid-template-rows: 100px 45px 100px 5fr;
   grid-template-columns: 1fr 4fr;
+  gap: 8px;
   font-family: var(--font-andada);
   overflow-y: hidden;
     background-image: url('../assets/images/background/hintergrund.jpg');
@@ -35,13 +39,9 @@
   grid-area: header;
   justify-content: space-around;
   align-items: center;
-  padding-left: 240px;
-  padding-right: -100px;
   display: flex;
   flex-direction: row;
-  background-image: url(/systems/Ilaris/assets/images/Ilaris/Pergamentrolle.webp);
-  background-size: cover;
-  background-repeat: round;
+  background-color: #f5f5dc;
 }
 
 .heroattributes {
@@ -107,7 +107,6 @@
 .herotabnavigation {
   grid-area: navigation2;
   position: relative;
-  padding-right: -15px;
 }
 
 .herotab {
@@ -173,11 +172,8 @@
   text-align: center;
   box-shadow: 8px 0 5px rgba(0, 0, 0, 0.3);
   margin-left: 0.5rem;
-  margin-top: -80px;
   margin-bottom: 20px;
-  border-top-left-radius: 5px;
   border-bottom-left-radius: 200px;
-  border-top-right-radius: 5px;
   border-bottom-right-radius: 200px;
   display: flex;
   flex-direction: column;
@@ -186,14 +182,20 @@
   min-height: 600px;
 }
 
-/* Gebürstete Bronze-Struktur */
+/* Gebürstete Bronze-Struktur - CSS gradient replaces image for better scaling */
 .herosidebar::before {
   content: "";
   position: absolute;
   inset: 0;
   z-index: -1;
-  background-image: url("../assets/images/Ilaris/bronze_glatt.webp");
-  background-size: cover;
+  background: linear-gradient(135deg, 
+    #cd7f32 0%, 
+    #b87333 15%, 
+    #a0662f 30%, 
+    #8b5a2b 50%, 
+    #a0662f 70%, 
+    #b87333 85%, 
+    #cd7f32 100%);
   border-radius: inherit;
 }
 
@@ -844,6 +846,9 @@ hr {
     padding-left: 4px;
 }
 
+.window-app .window-content {
+  padding: 0;
+}
 /* Hexagonal token shapes for hex grids */
 .ilaris-hex-tokens-enabled .token-image,
 .ilaris-hex-tokens-enabled .token-image img,
