@@ -399,7 +399,8 @@
       "gruppe": 0,
       "probe": "",
       "gegenprobe": "",
-      "text": ""
+      "text": "",
+      "isBaseManoever": false
     },
     "eigenheit": {
       "text": ""
