@@ -55,7 +55,10 @@ export class CombatDialog extends Dialog {
     }
 
     async getData() {
-        await this.item.setManoevers()
+        if (!this._manoeversSet) {
+            await this.item.setManoevers()
+            this._manoeversSet = true
+        }
         // damit wird das template gefüttert
         return {
             distance_choice: CONFIG.ILARIS.distance_choice,
