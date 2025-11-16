@@ -8,18 +8,16 @@ export function get_statuseffect_by_id(actor, statusId) {
     return false
 }
 
-export async function roll_crit_message(
-    formula,
-    label,
-    text,
-    speaker,
-    rollmode,
-    crit_eval = true,
-    fumble_val = 1,
-    success_val,
-) {
-    const roll = new Roll(formula)
-    const result = await roll.evaluate()
+/**
+ * Evaluates a roll for critical successes and fumbles based on Ilaris rules.
+ * @param {Roll} roll - The evaluated Foundry Roll object
+ * @param {Object} result - The roll result object
+ * @param {number} fumble_val - The fumble threshold (default 1)
+ * @param {number} success_val - The target number for success (optional)
+ * @param {boolean} crit_eval - Whether to evaluate crits/fumbles
+ * @returns {Object} Object containing crit, fumble, isSuccess, and is16OrHigher flags
+ */
+function evaluateCriticalResults(roll, result, fumble_val, success_val, crit_eval) {
     let fumble = false
     let crit = false
     let isSuccess = false
@@ -67,6 +65,21 @@ export async function roll_crit_message(
         }
     }
 
+    return { crit, fumble, isSuccess, is16OrHigher }
+}
+
+/**
+ * Prepares the template path and data for rendering roll results.
+ * @param {string} label - The roll label/title
+ * @param {string} text - The roll description text
+ * @param {boolean} crit - Whether the roll was a critical success
+ * @param {boolean} fumble - Whether the roll was a fumble
+ * @param {boolean} isSuccess - Whether the roll succeeded
+ * @param {boolean} is16OrHigher - Whether the die result was 16 or higher
+ * @param {number} success_val - The target number for success (optional)
+ * @returns {Object} Object containing templatePath and templateData
+ */
+function prepareRollTemplate(label, text, crit, fumble, isSuccess, is16OrHigher, success_val) {
     let templatePath = 'systems/Ilaris/templates/chat/probenchat_profan.hbs'
     let templateData = {
         title: `${label}`,
@@ -88,6 +101,42 @@ export async function roll_crit_message(
             costModifier: fumble ? 4 : 2,
         }
     }
+
+    return { templatePath, templateData }
+}
+
+export async function roll_crit_message(
+    formula,
+    label,
+    text,
+    speaker,
+    rollmode,
+    crit_eval = true,
+    fumble_val = 1,
+    success_val,
+) {
+    const roll = new Roll(formula)
+    const result = await roll.evaluate()
+
+    // Evaluate critical results using shared helper
+    const { crit, fumble, isSuccess, is16OrHigher } = evaluateCriticalResults(
+        roll,
+        result,
+        fumble_val,
+        success_val,
+        crit_eval,
+    )
+
+    // Prepare template data using shared helper
+    const { templatePath, templateData } = prepareRollTemplate(
+        label,
+        text,
+        crit,
+        fumble,
+        isSuccess,
+        is16OrHigher,
+        success_val,
+    )
 
     const html_roll = await renderTemplate(templatePath, templateData)
     let roll_msg = roll.toMessage(
@@ -112,75 +161,26 @@ export async function evaluate_roll_with_crit(
 ) {
     const roll = new Roll(formula)
     const result = await roll.evaluate()
-    let fumble = false
-    let crit = false
-    let isSuccess = false
-    let is16OrHigher = false
-    let realFumbleCrits = game.settings.get('Ilaris', 'realFumbleCrits')
 
-    if (crit_eval) {
-        let critfumble = roll.dice[0].results.find((a) => a.active == true).result
-        if (realFumbleCrits) {
-            if (critfumble == 20) {
-                crit = true
-            } else if (critfumble <= fumble_val) {
-                fumble = true
-            }
-        } else {
-            if (success_val) {
-                // For rolls with a target number, apply the same logic
-                const bonuses = result._total - critfumble
-                const maxPossibleResult = 20 + bonuses
-                const minPossibleResult = 1 + bonuses
+    // Evaluate critical results using shared helper
+    const { crit, fumble, isSuccess, is16OrHigher } = evaluateCriticalResults(
+        roll,
+        result,
+        fumble_val,
+        success_val,
+        crit_eval,
+    )
 
-                if (critfumble == 20 && maxPossibleResult >= success_val) {
-                    crit = true
-                } else if (
-                    critfumble <= fumble_val &&
-                    minPossibleResult + (fumble_val - 1) < success_val
-                ) {
-                    fumble = true
-                }
-            } else {
-                // For rolls without a target number, use the original logic
-                if (critfumble == 20) {
-                    crit = true
-                } else if (critfumble <= fumble_val) {
-                    fumble = true
-                }
-            }
-        }
-
-        if (success_val && result._total >= success_val && !fumble && !crit) {
-            isSuccess = true
-        }
-        if (roll.dice[0].results.find((a) => a.active == true).result >= 16) {
-            is16OrHigher = true
-        }
-    }
-
-    // Prepare chat message data
-    let templatePath = 'systems/Ilaris/templates/chat/probenchat_profan.hbs'
-    let templateData = {
-        title: `${label}`,
-        text: text,
-        crit: crit,
-        fumble: fumble,
-        success: isSuccess,
-        noSuccess: success_val && !isSuccess && !crit && !fumble,
-        is16OrHigher: is16OrHigher,
-    }
-
-    // Handle spell results
-    if (label.startsWith('Zauber (')) {
-        templatePath = 'systems/Ilaris/templates/chat/spell_result.hbs'
-        const cost = text.match(/Kosten: (\d+) AsP/)?.[1] || 0
-        templateData = {
-            success: isSuccess || crit,
-            cost: cost,
-            costModifier: fumble ? 4 : 2,
-        }
-    }
+    // Prepare template data using shared helper
+    const { templatePath, templateData } = prepareRollTemplate(
+        label,
+        text,
+        crit,
+        fumble,
+        isSuccess,
+        is16OrHigher,
+        success_val,
+    )
 
     return {
         // Original return values
