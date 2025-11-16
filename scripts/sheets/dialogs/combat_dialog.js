@@ -28,7 +28,12 @@ export class CombatDialog extends Dialog {
                         console.warn('Could not calculate distance to target:', error)
                         distance = 'Unbekannt'
                     }
-                } else if (this.actor?.token && token) {
+                } else if (
+                    this.actor?.token &&
+                    this.actor.token.x !== undefined &&
+                    this.actor.token.y !== undefined &&
+                    token
+                ) {
                     // Fallback to actor.token if available
                     try {
                         const dx = Math.abs(this.actor.token.x - token.x)
