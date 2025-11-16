@@ -47,9 +47,25 @@ export class VorteilConverter extends BaseConverter {
                 if (isGeneric) {
                     scripts.push('ignoreSideWeaponMalus()')
                 } else {
-                    // Capitalize first letter for weapon property
+                    // Capitalize weapon property:
+                    // - For single word: capitalize first letter, preserve rest
+                    // - For multiple words: capitalize first letter of first word (preserve rest),
+                    //   then apply title case to remaining words
+                    const words = weaponType.split(' ')
                     const capitalizedWeapon =
-                        weaponType.charAt(0).toUpperCase() + weaponType.slice(1)
+                        words.length === 1
+                            ? weaponType.charAt(0).toUpperCase() + weaponType.slice(1)
+                            : words[0].charAt(0).toUpperCase() +
+                              words[0].slice(1) +
+                              ' ' +
+                              words
+                                  .slice(1)
+                                  .map(
+                                      (word) =>
+                                          word.charAt(0).toUpperCase() +
+                                          word.slice(1).toLowerCase(),
+                                  )
+                                  .join(' ')
                     scripts.push(`ignoreSideWeaponMalus('${capitalizedWeapon}')`)
                 }
             }
