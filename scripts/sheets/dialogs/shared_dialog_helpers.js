@@ -236,7 +236,7 @@ export async function applyDamageToTarget(
 
         await targetActor.update({
             [`system.gesundheit.${damageType === 'STUMPF' ? 'erschoepfung' : 'wunden'}`]:
-                currentValue + (damageType === 'STUMPF' ? damage : woundsToAdd),
+                currentValue + woundsToAdd,
         })
 
         // Send a message to chat
