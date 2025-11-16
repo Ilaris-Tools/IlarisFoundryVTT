@@ -537,7 +537,7 @@ export class AngriffDialog extends CombatDialog {
         await ChatMessage.create({
             content: resultText,
             speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-            style: CONST.CHAT_MESSAGE_STYLES.OTHER,
+            type: CONST.CHAT_MESSAGE_STYLES.OTHER,
         })
 
         // Clean up the stored rolls
