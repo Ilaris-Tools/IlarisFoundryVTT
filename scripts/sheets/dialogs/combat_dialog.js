@@ -528,7 +528,7 @@ export class CombatDialog extends Dialog {
                         JSON.stringify(rollResult, (key, value) =>
                             typeof value === 'function' ? undefined : value,
                         ),
-                    )}' style="margin: 0 5px 5px 0;">
+                    )}'>
                             <i class="fas fa-shield-alt"></i>
                             Verteidigen mit ${weapon.name}
                         </button>`
@@ -551,14 +551,19 @@ export class CombatDialog extends Dialog {
                     </div>
                 `
 
-                // Send the message to chat
+                // Send the message to chat using a system speaker
                 const chatData = {
-                    user: game.user.id,
-                    speaker: ChatMessage.getSpeaker({ actor: targetActor }),
+                    speaker: { alias: 'Combat System' },
                     content: content,
                     whisper: [
                         game.users.find((u) => u.character?.id === targetActor.id)?.id,
                     ].filter((id) => id),
+                    flags: {
+                        Ilaris: {
+                            defensePrompt: true,
+                            targetActorId: targetActor.id,
+                        },
+                    },
                 }
                 await ChatMessage.create(chatData)
             }

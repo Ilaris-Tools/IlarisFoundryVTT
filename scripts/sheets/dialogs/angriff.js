@@ -435,7 +435,7 @@ export class AngriffDialog extends CombatDialog {
             }
 
             // Resolve the attack vs defense
-            await this.resolveAttackVsDefense()
+            await this.resolveAttackVsDefense(html)
         } else {
             // Normal defense roll (not in response to an attack)
             const html_roll = await renderTemplate(rollResult.templatePath, rollResult.templateData)
@@ -451,7 +451,7 @@ export class AngriffDialog extends CombatDialog {
         }
     }
 
-    async resolveAttackVsDefense(overrideAttackRoll = null) {
+    async resolveAttackVsDefense(html, overrideAttackRoll = null) {
         // Ensure we have both rolls
         if (!this.lastDefenseRoll || !this.attackRoll) return
 

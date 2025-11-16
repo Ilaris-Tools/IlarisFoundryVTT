@@ -486,6 +486,33 @@ Hooks.on('ready', () => {
     applyHexTokenSetting()
 })
 
+// Hook to handle defense prompt message visibility
+Hooks.on('renderChatMessage', (message, html, data) => {
+    // Check if this is a defense prompt message
+    const isDefensePrompt = message.flags?.Ilaris?.defensePrompt
+    if (!isDefensePrompt) return
+
+    // Check if the current user should see the content
+    const targetActorId = message.flags.Ilaris.targetActorId
+    const currentUserCharacterId = game.user.character?.id
+    const isTarget = currentUserCharacterId === targetActorId
+
+    // If the user is not the target and not the GM, hide the content
+    if (!isTarget) {
+        const contentDiv = html.find('.message-content')
+        if (contentDiv.length > 0) {
+            contentDiv.html(
+                '<p style="font-style: italic; opacity: 0.6;">Deine Verteidigungsaufforderung an einen anderen Spieler</p>',
+            )
+        }
+    }
+
+    if (isTarget) {
+        // Highlight the message for the target player
+        html.addClass('ilaris-defense-prompt-highlight')
+    }
+})
+
 // Update when setting changes
 Hooks.on('updateSetting', (setting) => {
     if (

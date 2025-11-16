@@ -11,6 +11,13 @@ export function registerDefenseButtonHook() {
         window._ilarisDefendButtonHookRegistered = true
         Hooks.on('renderChatMessage', (message, html) => {
             html.find('.defend-button').click(async function () {
+                // Remove highlighting class from the chat message and disable all buttons
+                const chatMessage = html.closest('.chat-message')
+                chatMessage.removeClass('ilaris-defense-prompt-highlight')
+
+                const allButtons = html.find('.defend-button')
+                allButtons.prop('disabled', true)
+
                 const actorId = this.dataset.actorId
                 const weaponId = this.dataset.weaponId
                 const distance = parseInt(this.dataset.distance)
