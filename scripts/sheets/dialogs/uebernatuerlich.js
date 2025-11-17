@@ -405,7 +405,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         await ChatMessage.create({
             speaker: this.speaker,
             content: html_roll,
-            style: CONST.CHAT_MESSAGE_STYLES.ROLL,
+            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
             whisper:
                 this.rollmode === 'gmroll'
                     ? ChatMessage.getWhisperRecipients('GM')
@@ -487,7 +487,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         await ChatMessage.create({
             speaker: this.speaker,
             content: html_roll,
-            style: CONST.CHAT_MESSAGE_STYLES.ROLL,
+            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
             whisper:
                 this.rollmode === 'gmroll'
                     ? ChatMessage.getWhisperRecipients('GM')

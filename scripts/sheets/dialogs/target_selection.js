@@ -1,4 +1,38 @@
+/**
+ * Dialog for selecting nearby actors/tokens as targets for combat actions.
+ * Displays all visible tokens on the current scene with their distances and dispositions,
+ * allowing the user to select one or more targets. The selection is synced with Foundry's
+ * built-in targeting system.
+ *
+ * @extends {Dialog}
+ *
+ * @example
+ * // Basic usage with callback
+ * const dialog = new TargetSelectionDialog(actor, (selectedActors) => {
+ *     console.log('Selected targets:', selectedActors);
+ *     // selectedActors is an array of objects with: tokenId, actorId, name, distance
+ * });
+ * dialog.render(true);
+ *
+ * @example
+ * // Usage in combat dialog
+ * async _showNearbyActors(html) {
+ *     const dialog = new TargetSelectionDialog(this.actor, (selectedActors) => {
+ *         this.selectedActors = selectedActors;
+ *         this.updateSelectedActorsDisplay(html);
+ *     });
+ *     dialog.render(true);
+ * }
+ */
 export class TargetSelectionDialog extends Dialog {
+    /**
+     * Creates a new target selection dialog.
+     *
+     * @param {Actor} actor - The actor who is selecting targets (used as reference point for distance calculation)
+     * @param {Function} onSelectionComplete - Callback function invoked when selection is confirmed.
+     *                                         Receives an array of selected target objects:
+     *                                         [{tokenId: string, actorId: string, name: string, distance: number}, ...]
+     */
     constructor(actor, onSelectionComplete) {
         const dialog = {
             title: 'Nahe Akteure',
@@ -11,12 +45,22 @@ export class TargetSelectionDialog extends Dialog {
             buttons: {},
         }
 
-        super(dialog, dialogOptions)
+        super({ ...dialog, ...dialogOptions })
         this.actor = actor
         this.selectedActors = new Set()
         this.onSelectionComplete = onSelectionComplete
     }
 
+    /**
+     * Prepares data for the dialog template.
+     * Retrieves all visible tokens on the current scene, calculates their distances
+     * from the actor's token, and determines their dispositions.
+     *
+     * @returns {Promise<Object|null>} Template data object containing:
+     *   - currentToken: {id, actorId, name} - The actor's token information
+     *   - tokens: Array of token objects with {id, actorId, name, distance, disposition, dispositionClass}
+     *   Returns null if the actor has no active token on the scene.
+     */
     async getData() {
         // Get the token for the current actor
         const token = this.actor.getActiveTokens()[0]
@@ -80,6 +124,15 @@ export class TargetSelectionDialog extends Dialog {
         return templateData
     }
 
+    /**
+     * Activates event listeners for the dialog.
+     * Sets up handlers for:
+     * - Submit button (confirms selection and closes dialog)
+     * - Close button (closes dialog without confirming)
+     * - Row clicks (toggles selection of individual tokens)
+     *
+     * @param {jQuery} html - The rendered HTML of the dialog
+     */
     activateListeners(html) {
         super.activateListeners(html)
 
@@ -123,15 +176,22 @@ export class TargetSelectionDialog extends Dialog {
         })
     }
 
+    /**
+     * Handles the selection confirmation when the submit button is clicked.
+     * Collects all selected tokens, syncs them with Foundry's targeting system,
+     * and invokes the onSelectionComplete callback with the selected data.
+     *
+     * @param {jQuery} html - The rendered HTML of the dialog
+     * @param {Function} onSelectionComplete - Callback to invoke with selected targets
+     * @private
+     */
     _handleSelection(html, onSelectionComplete) {
-        const selectedIds = Array.from(html[2].querySelectorAll('.actor-row.selected')).map(
-            (row) => ({
-                tokenId: row.dataset.tokenId,
-                actorId: row.dataset.actorId,
-                name: row.cells[0].textContent.trim(),
-                distance: parseInt(row.dataset.distance),
-            }),
-        )
+        const selectedIds = Array.from(html.find('.actor-row.selected')).map((row) => ({
+            tokenId: row.dataset.tokenId,
+            actorId: row.dataset.actorId,
+            name: row.cells[0].textContent.trim(),
+            distance: parseInt(row.dataset.distance),
+        }))
 
         // Update Foundry's targeting system to sync with dialog selection
         try {

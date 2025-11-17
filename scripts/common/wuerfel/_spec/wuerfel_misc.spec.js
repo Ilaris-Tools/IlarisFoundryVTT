@@ -227,6 +227,8 @@ describe('evaluate_roll_with_crit', () => {
         expect(result).toEqual({
             success: true,
             is16OrHigher: false,
+            crit: false,
+            fumble: false,
             roll: mockRoll,
             templatePath: 'systems/Ilaris/templates/chat/probenchat_profan.hbs',
             templateData: expect.objectContaining({
@@ -243,6 +245,8 @@ describe('evaluate_roll_with_crit', () => {
         const result = await evaluate_roll_with_crit('1d20+5', 'Test Roll', '', 20)
 
         expect(result.success).toBe(true)
+        expect(result.crit).toBe(true)
+        expect(result.fumble).toBe(false)
         expect(result.templateData.crit).toBe(true)
     })
 
@@ -253,6 +257,8 @@ describe('evaluate_roll_with_crit', () => {
         const result = await evaluate_roll_with_crit('1d20+5', 'Test Roll', '', 15)
 
         expect(result.success).toBe(false)
+        expect(result.crit).toBe(false)
+        expect(result.fumble).toBe(true)
         expect(result.templateData.fumble).toBe(true)
     })
 

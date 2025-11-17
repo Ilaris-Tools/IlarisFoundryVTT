@@ -6,7 +6,7 @@ import { CombatDialog } from './combat_dialog.js'
 export class AngriffDialog extends CombatDialog {
     constructor(actor, item, options = {}) {
         const title = options.isDefenseMode
-            ? `Verteidigung gegen ${options.attackingActor?.name || 'Unbekannt'} (${item.name})`
+            ? `Verteidigung gegen ${options?.attackingActor?.name || 'Unbekannt'} (${item.name})`
             : `Kampf: ${item.name}`
 
         const dialog = { title }
@@ -98,30 +98,6 @@ export class AngriffDialog extends CombatDialog {
         this.addSummaryClickListeners(html)
     }
 
-    getSummaryClickActions(html) {
-        return [
-            {
-                selector: '.clickable-summary.angreifen',
-                handler: (html) => this._angreifenKlick(html),
-            },
-            {
-                selector: '.clickable-summary.verteidigen',
-                handler: (html) => this._verteidigenKlick(html),
-            },
-            {
-                selector: '.clickable-summary.schaden',
-                handler: (html) => this._schadenKlick(html),
-            },
-        ]
-    }
-
-    addDamageSummaryClickListeners(html) {
-        html.find('#modifier-summary').off('click', '.clickable-summary.schaden')
-        html.find('#modifier-summary').on('click', '.clickable-summary.schaden', (ev) => {
-            ev.preventDefault()
-            this._schadenKlick(html)
-        })
-    }
     getSummaryClickActions(html) {
         return [
             {
@@ -518,17 +494,26 @@ export class AngriffDialog extends CombatDialog {
         resultText += `<div style="font-style: italic; margin-top: 5px;">${reason}</div>`
 
         // Add any special conditions that occurred
-        if (this.attackRoll.crit) {
-            resultText += `<div style="color: #44aa44; font-style: italic;">Kritischer Treffer!</div>`
-        }
-        if (this.attackRoll.fumble) {
-            resultText += `<div style="color: #aa4444; font-style: italic;">Patzer beim Angriff!</div>`
-        }
-        if (this.lastDefenseRoll.crit) {
-            resultText += `<div style="color: #44aa44; font-style: italic;">Kritische Verteidigung!</div>`
-        }
-        if (this.lastDefenseRoll.fumble) {
-            resultText += `<div style="color: #aa4444; font-style: italic;">Patzer bei der Verteidigung!</div>`
+        const rollMessages = [
+            {
+                roll: this.attackRoll,
+                critMsg: `<div style="color: #44aa44; font-style: italic;">Kritischer Treffer!</div>`,
+                fumbleMsg: `<div style="color: #aa4444; font-style: italic;">Patzer beim Angriff!</div>`,
+            },
+            {
+                roll: this.lastDefenseRoll,
+                critMsg: `<div style="color: #44aa44; font-style: italic;">Kritische Verteidigung!</div>`,
+                fumbleMsg: `<div style="color: #aa4444; font-style: italic;">Patzer bei der Verteidigung!</div>`,
+            },
+        ]
+
+        for (const { roll, critMsg, fumbleMsg } of rollMessages) {
+            if (roll?.crit) {
+                resultText += critMsg
+            }
+            if (roll?.fumble) {
+                resultText += fumbleMsg
+            }
         }
 
         resultText += '</div>'
@@ -750,6 +735,7 @@ export class AngriffDialog extends CombatDialog {
             (m) => m.name === 'Riposte' && m.inputValue.value,
         )
         if (riposteManeuver && mod_at < 0) {
+            this.riposte = true
             mod_vt += mod_at
             text_vt = text_vt.concat(`Riposte (Attackemanöver): ${mod_at}\n`)
         }

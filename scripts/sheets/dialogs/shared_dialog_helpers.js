@@ -209,6 +209,7 @@ export function processModification(
  * @param {string} damageType - The type of damage being dealt
  * @param {boolean} trueDamage - If true, damage ignores WS* calculation
  * @param {Object} speaker - The speaker object for chat messages
+ * @param {Object} speaker - The speaker object for chat messages
  */
 export async function applyDamageToTarget(
     target,

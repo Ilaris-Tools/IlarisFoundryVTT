@@ -12,7 +12,7 @@ export class CombatDialog extends Dialog {
             this.selectedActors = []
 
             for (const token of game.user.targets) {
-                // Calculate distance from the acting token to the target token
+                // Calculate distance from the acting token to the target token using Foundry's measurePath API
                 let distance = 'Unbekannt'
 
                 // Try to get distance from token document
@@ -20,26 +20,27 @@ export class CombatDialog extends Dialog {
                 if (actorTokens && actorTokens.length > 0 && token) {
                     const actorToken = actorTokens[0]
                     try {
-                        const dx = Math.abs(actorToken.x - token.x)
-                        const dy = Math.abs(actorToken.y - token.y)
-                        const gridDistance = Math.max(dx, dy) / canvas.grid.size
-                        distance = `${Math.round(gridDistance)}`
+                        const waypoints = [
+                            { x: actorToken.center.x, y: actorToken.center.y },
+                            { x: token.center.x, y: token.center.y },
+                        ]
+                        distance = Math.round(
+                            canvas.grid.measurePath(waypoints, { gridSpaces: true }).distance,
+                        )
                     } catch (error) {
                         console.warn('Could not calculate distance to target:', error)
                         distance = 'Unbekannt'
                     }
-                } else if (
-                    this.actor?.token &&
-                    this.actor.token.x !== undefined &&
-                    this.actor.token.y !== undefined &&
-                    token
-                ) {
+                } else if (this.actor?.token && this.actor.token.center && token && token.center) {
                     // Fallback to actor.token if available
                     try {
-                        const dx = Math.abs(this.actor.token.x - token.x)
-                        const dy = Math.abs(this.actor.token.y - token.y)
-                        const gridDistance = Math.max(dx, dy) / canvas.grid.size
-                        distance = `${Math.round(gridDistance)}`
+                        const waypoints = [
+                            { x: this.actor.token.center.x, y: this.actor.token.center.y },
+                            { x: token.center.x, y: token.center.y },
+                        ]
+                        distance = Math.round(
+                            canvas.grid.measurePath(waypoints, { gridSpaces: true }).distance,
+                        )
                     } catch (error) {
                         console.warn('Could not calculate distance to target:', error)
                         distance = 'Unbekannt'
@@ -312,7 +313,6 @@ export class CombatDialog extends Dialog {
 
     updateSelectedActorsDisplay(html) {
         // Get the parent dialog element that contains the original angriff.hbs content
-        const parentDialog = $(html[0]).closest('.app.window-app').parent().find('.angriff-dialog')
 
         // Re-render the dialog to update the template
         this.render(true)
@@ -499,7 +499,11 @@ export class CombatDialog extends Dialog {
                 let weapons = []
 
                 // Check if this is a creature (has angriffe) or a regular actor (has nahkampfwaffen)
-                if (targetActor.type === 'kreatur' && targetActor.angriffe) {
+                if (
+                    targetActor.type === 'kreatur' &&
+                    targetActor.angriffe &&
+                    Array.isArray(targetActor.angriffe)
+                ) {
                     // For creatures, use all their angriffe as weapons
                     weapons = targetActor.angriffe
                 } else {
@@ -560,9 +564,14 @@ export class CombatDialog extends Dialog {
                 const chatData = {
                     speaker: { alias: 'Combat System' },
                     content: content,
-                    whisper: [
-                        game.users.find((u) => u.character?.id === targetActor.id)?.id,
-                    ].filter((id) => id),
+                    whisper:
+                        [game.users.find((u) => u.character?.id === targetActor.id)?.id].filter(
+                            (id) => id,
+                        ).length > 0
+                            ? [
+                                  game.users.find((u) => u.character?.id === targetActor.id)?.id,
+                              ].filter((id) => id)
+                            : ChatMessage.getWhisperRecipients('GM'),
                     flags: {
                         Ilaris: {
                             defensePrompt: true,

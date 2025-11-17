@@ -151,6 +151,25 @@ export async function roll_crit_message(
     return [isSuccess || crit, is16OrHigher]
 }
 
+/**
+ * Evaluates a roll with critical success/fumble detection and prepares template data.
+ * Unlike roll_crit_message, this function doesn't post the result to chat but returns
+ * all the data needed for the caller to handle the result.
+ * @param {string} formula - The dice roll formula (e.g., "1d20+5")
+ * @param {string} label - The roll label/title
+ * @param {string} text - The roll description text
+ * @param {number} success_val - The target number for success (optional)
+ * @param {number} fumble_val - The fumble threshold (default 1)
+ * @param {boolean} crit_eval - Whether to evaluate crits/fumbles (default true)
+ * @returns {Promise<Object>} Object containing:
+ *   - success: boolean - Whether the roll succeeded (including crits)
+ *   - is16OrHigher: boolean - Whether the die result was 16 or higher
+ *   - crit: boolean - Whether the roll was a critical success
+ *   - fumble: boolean - Whether the roll was a fumble
+ *   - roll: Roll - The Foundry Roll object
+ *   - templatePath: string - Path to the appropriate template
+ *   - templateData: Object - Data for rendering the template
+ */
 export async function evaluate_roll_with_crit(
     formula,
     label,
@@ -183,10 +202,10 @@ export async function evaluate_roll_with_crit(
     )
 
     return {
-        // Original return values
         success: isSuccess || crit,
         is16OrHigher: is16OrHigher,
-        // Additional data for chat message
+        crit: crit,
+        fumble: fumble,
         roll: roll,
         templatePath: templatePath,
         templateData: templateData,

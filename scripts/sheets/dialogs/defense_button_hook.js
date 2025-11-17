@@ -11,12 +11,9 @@ export function registerDefenseButtonHook() {
         window._ilarisDefendButtonHookRegistered = true
         Hooks.on('renderChatMessage', (message, html) => {
             html.find('.defend-button').click(async function () {
-                // Remove highlighting class from the chat message and disable all buttons
-                const chatMessage = html.closest('.chat-message')
-                chatMessage.removeClass('ilaris-defense-prompt-highlight')
-
-                const allButtons = html.find('.defend-button')
-                allButtons.prop('disabled', true)
+                // Disable only the clicked button initially to prevent double-clicks
+                const clickedButton = $(this)
+                clickedButton.prop('disabled', true)
 
                 const actorId = this.dataset.actorId
                 const weaponId = this.dataset.weaponId
@@ -28,11 +25,16 @@ export function registerDefenseButtonHook() {
                     rollResult = JSON.parse(decodeURIComponent(this.dataset.rollResult))
                 } catch (e) {
                     ui.notifications.error('Fehler beim Parsen des Angriffs-Wurfs.')
+                    clickedButton.prop('disabled', false)
                     return
                 }
                 const actor = game.actors.get(actorId)
                 const attackingActor = game.actors.get(attackerId)
-                if (!actor) return
+                if (!actor) {
+                    ui.notifications.warn('Akteur wurde nicht gefunden.')
+                    clickedButton.prop('disabled', false)
+                    return
+                }
 
                 // Get the specific weapon that was clicked
                 let weapon
@@ -46,8 +48,17 @@ export function registerDefenseButtonHook() {
 
                 if (!weapon) {
                     ui.notifications.warn('Die gewählte Waffe wurde nicht gefunden.')
+                    clickedButton.prop('disabled', false)
                     return
                 }
+
+                // Validation successful - now remove highlighting and disable all buttons
+                const chatMessage = html.closest('.chat-message')
+                chatMessage.removeClass('ilaris-defense-prompt-highlight')
+
+                const allButtons = html.find('.defend-button')
+                allButtons.prop('disabled', true)
+
                 if (attackType === 'ranged') {
                     // For ranged attacks in defense mode, the roll total is fixed at 28
                     // according to the Ilaris rulebook (fixed defense roll value for ranged attacks)
