@@ -245,14 +245,14 @@ export async function applyDamageToTarget(
                 woundsToAdd > 1 ? 'en' : ''
             }! (${damageType ? CONFIG.ILARIS.schadenstypen[damageType] : ''} Schaden: ${damage})`,
             speaker: speaker,
-            style: CONST.CHAT_MESSAGE_STYLES.OTHER,
+            type: CONST.CHAT_MESSAGE_STYLES.OTHER,
         })
     } else {
         // Send a message when damage wasn't high enough
         await ChatMessage.create({
             content: `${targetActor.name} erleidet keine Einschränkungen - der Schaden (${damage}) war nicht hoch genug.`,
             speaker: speaker,
-            style: CONST.CHAT_MESSAGE_STYLES.OTHER,
+            type: CONST.CHAT_MESSAGE_STYLES.OTHER,
         })
     }
 }
