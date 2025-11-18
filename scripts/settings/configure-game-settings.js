@@ -63,6 +63,15 @@ export const registerIlarisGameSettings = () => {
             scope: 'world',
         },
         {
+            // Rename Triumph with Crit
+            settingsName: IlarisGameSettingNames.renameTriumphWithCrit,
+            name: 'Umbenennen von Triumph in Crit im Text',
+            hint: 'Die Worldsetting ist für alle gedacht, die lieber das Wort Crit verwenden anstelle von Triumph',
+            config: true,
+            type: new foundry.data.fields.BooleanField(),
+            scope: 'world',
+        },
+        {
             // Register restrict energy cost setting
             settingsName: IlarisGameSettingNames.restrictEnergyCostSetting,
             name: 'Energiekosten-Einstellung einschränken',
