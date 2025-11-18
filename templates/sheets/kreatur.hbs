@@ -112,6 +112,9 @@
                 {{#each actor.vorteil.geweihtentradition as |vorteil|}}
                     <a class="item-edit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
                 {{/each}}
+                {{#each actor.vorteil.tiergeist as |vorteil|}}
+                    <a class="item-edit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
+                {{/each}}
         </div>
 
         {{#if actor.system.attribute}}
