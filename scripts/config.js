@@ -395,7 +395,7 @@ ILARIS.manoever = manoever
 
 let manoever_nahkampf = {
     kbak: { selected: false },
-    mod: { selected: false },
+    mod: { selected: 0 },
     rllm: { selected: '' },
     vlof: {
         selected: false,
@@ -413,12 +413,15 @@ let manoever_nahkampf = {
     pssl: {
         selected: false,
     },
+    lcht: {
+        selected: '0',
+    },
 }
 ILARIS.manoever_nahkampf = manoever_nahkampf
 
 let manoever_fernkampf = {
     kbak: { selected: false },
-    mod: { selected: false },
+    mod: { selected: 0 },
     rllm: { selected: '' },
     gzkl: {
         selected: '2',
@@ -457,7 +460,7 @@ ILARIS.manoever_fernkampf = manoever_fernkampf
 
 let manoever_ueber = {
     kbak: { selected: false },
-    mod: { selected: false },
+    mod: { selected: 0 },
     rllm: { selected: '' },
 }
 ILARIS.manoever_ueber = manoever_ueber
