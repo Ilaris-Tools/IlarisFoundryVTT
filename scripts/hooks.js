@@ -538,7 +538,7 @@ Hooks.on('renderChatMessage', (message, html, data) => {
     const isTarget = currentUserCharacterId === targetActorId
 
     // If the user is not the target, hide the content
-    if (!isTarget) {
+    if (!isTarget && !game.user.isGM) {
         const contentDiv = html.find('.message-content')
         if (contentDiv.length > 0) {
             contentDiv.html(
@@ -547,7 +547,7 @@ Hooks.on('renderChatMessage', (message, html, data) => {
         }
     }
 
-    if (isTarget) {
+    if (isTarget || game.user.isGM) {
         // Highlight the message for the target player
         html.addClass('ilaris-defense-prompt-highlight')
     }

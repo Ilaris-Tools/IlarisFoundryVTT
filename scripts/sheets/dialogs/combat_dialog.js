@@ -530,6 +530,14 @@ export class CombatDialog extends Dialog {
                 ) {
                     // For creatures, use all their angriffe as weapons
                     weapons = targetActor.angriffe
+                    // Filter weapons for ranged attacks: only weapons with Schild eigenschaft can be used
+                    if (attackType === 'ranged') {
+                        weapons = weapons.filter((weapon) =>
+                            weapon.system?.eigenschaften?.find((eig) => {
+                                return eig.name === 'Schild'
+                            }),
+                        )
+                    }
                 } else {
                     // For regular actors, find main and secondary weapons
                     const mainWeapon = targetActor.items.find(
@@ -545,6 +553,13 @@ export class CombatDialog extends Dialog {
 
                     if (mainWeapon) weapons.push(mainWeapon)
                     if (secondaryWeapon) weapons.push(secondaryWeapon)
+
+                    // Filter weapons for ranged attacks: only weapons with Schild eigenschaft can be used
+                    if (attackType === 'ranged') {
+                        weapons = weapons.filter(
+                            (weapon) => weapon.system?.eigenschaften?.schild === true,
+                        )
+                    }
                 }
 
                 // Create defense buttons HTML
@@ -567,7 +582,26 @@ export class CombatDialog extends Dialog {
                         </button>`
                 }
 
-                // If no weapons found, add a warning
+                // Add Akrobatik defense button for ranged attacks
+                if (attackType === 'ranged') {
+                    buttonsHtml += `
+                        <button class="defend-button defend-akrobatik" data-actor-id="${
+                            targetActor.id
+                        }" data-weapon-id="akrobatik" data-distance="${
+                        target.distance
+                    }" data-attacker-id="${
+                        this.actor.id
+                    }" data-attack-type="${attackType}" data-roll-result='${encodeURIComponent(
+                        JSON.stringify(rollResult, (key, value) =>
+                            typeof value === 'function' ? undefined : value,
+                        ),
+                    )}'>
+                            <i class="fas fa-running"></i>
+                            Verteidigen mit Akrobatik
+                        </button>`
+                }
+
+                // If no weapons found, add a warning (only for melee or if no akrobatik for ranged)
                 if (!buttonsHtml) {
                     buttonsHtml =
                         '<p style="color: #aa0000;">Keine Haupt- oder Nebenwaffe gefunden.</p>'
