@@ -217,9 +217,50 @@ export async function applyDamageToTarget(
     trueDamage = false,
     speaker,
 ) {
+    // If the current user doesn't have permission to update the target actor,
+    // request the GM to do it via socket
     const targetActor = game.actors.get(target.actorId || target._id)
-    if (!targetActor) return
+    if (!targetActor) {
+        ui.notifications.error('Zielakteur wurde nicht gefunden.')
+        return
+    }
 
+    // Check if current user can update the target actor
+    if (!targetActor.canUserModify(game.user, 'update')) {
+        // User doesn't have permission - send socket request to GM
+        if (game.user.isGM) {
+            // This shouldn't happen, but just in case
+            console.error('GM user cannot update actor - this should not occur')
+            return
+        }
+
+        // Emit socket event for GM to handle
+        game.socket.emit('system.Ilaris', {
+            type: 'applyDamage',
+            data: {
+                targetActorId: targetActor.id,
+                damage: damage,
+                damageType: damageType,
+                trueDamage: trueDamage,
+                speaker: speaker,
+            },
+        })
+
+        // Notify the player that the request was sent
+        ui.notifications.info(`Schadensanfrage an Spielleiter gesendet für ${targetActor.name}...`)
+        return
+    }
+
+    // User has permission - apply damage directly
+    await _applyDamageDirectly(targetActor, damage, damageType, trueDamage, speaker)
+}
+
+/**
+ * Internal function that actually applies the damage to an actor
+ * This is called either directly if user has permission, or by GM via socket
+ * Exported so it can be called by the socket handler in hooks.js
+ */
+export async function _applyDamageDirectly(targetActor, damage, damageType, trueDamage, speaker) {
     // Get WS and WS* of the target
     const ws = targetActor.system.abgeleitete.ws
     const ws_stern = targetActor.system.abgeleitete.ws_stern

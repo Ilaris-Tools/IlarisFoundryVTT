@@ -484,7 +484,47 @@ let hexTokenShapesEnabled = false
 Hooks.on('ready', () => {
     registerDefenseButtonHook()
     applyHexTokenSetting()
+    setupIlarisSocket()
 })
+
+/**
+ * Set up socket listeners for Ilaris system
+ * This allows players to request the GM to perform actions they don't have permission for
+ */
+function setupIlarisSocket() {
+    game.socket.on('system.Ilaris', async (data) => {
+        // Only GM should handle these requests
+        if (!game.user.isGM) return
+
+        switch (data.type) {
+            case 'applyDamage':
+                await handleApplyDamageRequest(data.data)
+                break
+            default:
+                console.warn(`Unknown Ilaris socket request type: ${data.type}`)
+        }
+    })
+}
+
+/**
+ * Handle a damage application request from a player
+ * Only called on GM's client
+ */
+async function handleApplyDamageRequest(data) {
+    const { targetActorId, damage, damageType, trueDamage, speaker } = data
+
+    const targetActor = game.actors.get(targetActorId)
+    if (!targetActor) {
+        console.error(`Target actor ${targetActorId} not found`)
+        return
+    }
+
+    // Import the helper function
+    const { _applyDamageDirectly } = await import('./sheets/dialogs/shared_dialog_helpers.js')
+
+    // Apply damage as GM
+    await _applyDamageDirectly(targetActor, damage, damageType, trueDamage, speaker)
+}
 
 // Hook to handle defense prompt message visibility
 Hooks.on('renderChatMessage', (message, html, data) => {
