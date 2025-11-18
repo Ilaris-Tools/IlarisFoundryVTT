@@ -691,11 +691,11 @@ export class CombatDialog extends Dialog {
      * Used by both melee and ranged combat dialogs.
      */
     eigenschaftenText() {
-        if (this.item.system.eigenschaften.length === 0) {
-            return
-        }
-        this.text_at += '\nEigenschaften: '
-        this.text_at += this.item.system.eigenschaften.map((e) => e.name).join(', ')
+        // if (this.item.system.eigenschaften.length === 0) {
+        //     return
+        // }
+        // this.text_at += '\nEigenschaften: '
+        // this.text_at += this.item.system.eigenschaften.map((e) => e.name).join(', ')
     }
 
     /**
