@@ -48,6 +48,37 @@ export class IlarisActor extends Actor {
         super.prepareBaseData()
     }
 
+    /**
+     * Override getRollData to provide data for inline rolls and formulas.
+     * Makes fertigkeiten (skills) accessible via @fertigkeiten.Name.pw syntax.
+     * @returns {object} Roll data object containing system data and formatted fertigkeiten
+     */
+    getRollData() {
+        const data = super.getRollData()
+
+        // Add fertigkeiten in a format that allows @fertigkeiten.Name.pw access
+        if (this.profan?.fertigkeiten) {
+            data.fertigkeiten = {}
+            for (const fertigkeit of this.profan.fertigkeiten) {
+                // Use the fertigkeit name as the key and include all system properties
+                data.fertigkeiten[fertigkeit.name] = fertigkeit.system
+            }
+        }
+
+        // Add uebernatuerlich fertigkeiten as well
+        if (this.uebernatuerlich?.fertigkeiten) {
+            if (!data.fertigkeiten) {
+                data.fertigkeiten = {}
+            }
+            for (const fertigkeit of this.uebernatuerlich.fertigkeiten) {
+                // Use the fertigkeit name as the key and include all system properties
+                data.fertigkeiten[fertigkeit.name] = fertigkeit.system
+            }
+        }
+
+        return data
+    }
+
     _checkVorteilSource(requirement, vorteil, item) {
         // For Stile (gruppe 3, 5, or 7) on held-type actors, check with getSelectedStil
         if (this.type === 'held' && [3, 5, 7].includes(Number(vorteil.system.gruppe))) {
