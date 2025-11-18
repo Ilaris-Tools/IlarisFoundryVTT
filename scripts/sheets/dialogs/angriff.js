@@ -16,29 +16,16 @@ export class AngriffDialog extends CombatDialog {
             height: 'auto',
             classes: ['angriff-dialog'],
         }
-        super(dialog, dialogOptions)
-        // this can be probendialog (more abstract)
-        this.text_at = ''
+        super(actor, item, dialog, dialogOptions)
+
+        // Specific properties for melee combat
         this.text_vt = ''
-        this.text_dm = ''
-        this.item = item
-        this.actor = actor
-
-        // Initialize selected actors from Foundry targets after actor/item are set
-        this._initializeSelectedActorsFromTargets()
-
         this.riposte = false
-        this.speaker = ChatMessage.getSpeaker({ actor: this.actor })
-        this.rollmode = game.settings.get('core', 'rollMode') // public, private....
-        this.item.system.manoever.rllm.selected = game.settings.get('core', 'rollMode') // TODO: either manoever or dialog property.
-        this.fumble_val = 1
         this.isDefenseMode = options.isDefenseMode || false
         this.attackingActor = options.attackingActor || null
-        this.attackRoll = options.attackRoll || null // Store the attack roll if provided
+        this.attackRoll = options.attackRoll || null
         this.isHumanoid = false
-        if (this.item.system.eigenschaften.unberechenbar) {
-            this.fumble_val = 2
-        }
+
         this.aufbauendeManoeverAktivieren()
     }
 
@@ -65,37 +52,8 @@ export class AngriffDialog extends CombatDialog {
             html.find('.show-nearby').prop('disabled', true).css('opacity', '0.5')
         }
 
-        // Store a reference to prevent multiple updates
-        this._updateTimeout = null
-
-        // Find the modifier summary element (should now exist in template)
-        this._modifierElement = html.find('#modifier-summary')
-
-        if (this._modifierElement.length === 0) {
-            console.warn('MODIFIER DISPLAY: Element nicht im Template gefunden')
-            return
-        }
-
-        // Add listeners for real-time modifier updates with debouncing
-        html.find('input, select').on('change input', () => {
-            // Clear previous timeout
-            if (this._updateTimeout) {
-                clearTimeout(this._updateTimeout)
-            }
-
-            // Set new timeout to debounce rapid changes
-            this._updateTimeout = setTimeout(() => {
-                this.updateModifierDisplay(html)
-            }, 300)
-        })
-
-        // Initial display update
-        setTimeout(() => {
-            this.updateModifierDisplay(html)
-        }, 500)
-
-        // Add event listeners for clickable summary sections
-        this.addSummaryClickListeners(html)
+        // Setup modifier display with debounced listeners
+        this.setupModifierDisplay(html)
     }
 
     getSummaryClickActions(html) {
@@ -783,33 +741,27 @@ export class AngriffDialog extends CombatDialog {
             }
         }
 
-        // If ZERO_DAMAGE was found, override damage values
-        if (nodmg.value) {
-            mod_dm = 0
-            schaden = '0'
-            // Add text explaining zero damage if not already present
-            if (!text_dm.includes('Kein Schaden')) {
-                text_dm = text_dm.concat(`${nodmg.name}: Kein Schaden\n`)
-            }
-        }
+        // Apply common damage logic (zero damage, trefferzone, modifikator)
+        const updated = await this.applyCommonDamageLogic({
+            nodmg,
+            mod_dm,
+            schaden,
+            text_dm,
+            trefferzone,
+            mod_at,
+            mod_vt,
+            text_at,
+            text_vt,
+        })
 
-        // Trefferzone if not set by manoever but Gezielter Schlag is active
-        if (trefferzone == 0 && this.isGezieltSchlagActive()) {
-            let zonenroll = new Roll('1d6')
-            await zonenroll.evaluate()
-            text_dm = text_dm.concat(
-                `Trefferzone: ${CONFIG.ILARIS.trefferzonen[zonenroll.total]}\n`,
-            )
-        }
-
-        // Modifikator
-        let modifikator = Number(manoever.mod.selected)
-        if (modifikator != 0) {
-            mod_vt += modifikator
-            mod_at += modifikator
-            text_vt = text_vt.concat(`Modifikator: ${modifikator}\n`)
-            text_at = text_at.concat(`Modifikator: ${modifikator}\n`)
-        }
+        mod_dm = updated.mod_dm
+        schaden = updated.schaden
+        text_dm = updated.text_dm
+        trefferzone = updated.trefferzone
+        mod_at = updated.mod_at
+        mod_vt = updated.mod_vt
+        text_at = updated.text_at
+        text_vt = updated.text_vt
 
         this.mod_at = mod_at
         this.mod_vt = mod_vt
@@ -839,21 +791,6 @@ export class AngriffDialog extends CombatDialog {
         }
         this.vt_abzuege_mod = this.actor.system.abgeleitete.globalermod
         super.updateStatusMods()
-    }
-
-    eigenschaftenText() {
-        if (!this.item.system.eigenschaften.length > 0) {
-            return
-        }
-        this.text_at += '\nEigenschaften: '
-        this.text_at += this.item.system.eigenschaften.map((e) => e.name).join(', ')
-    }
-
-    isGezieltSchlagActive() {
-        // Check if Gezielter Schlag (km_gzsl) maneuver is selected
-        return (
-            this.item.system.manoever.km_gzsl && this.item.system.manoever.km_gzsl.selected !== '0'
-        )
     }
 
     /**

@@ -1,6 +1,24 @@
 export class CombatDialog extends Dialog {
-    constructor(dialogData, options) {
+    constructor(actor, item, dialogData, options) {
         super(dialogData, options)
+
+        // Common initialization for all combat dialogs
+        this.text_at = ''
+        this.text_dm = ''
+        this.item = item
+        this.actor = actor
+
+        // Initialize selected actors from Foundry targets after actor/item are set
+        this._initializeSelectedActorsFromTargets()
+
+        this.speaker = ChatMessage.getSpeaker({ actor: this.actor })
+        this.rollmode = game.settings.get('core', 'rollMode')
+        this.item.system.manoever.rllm.selected = game.settings.get('core', 'rollMode')
+        this.fumble_val = 1
+
+        if (this.item.system.eigenschaften.unberechenbar) {
+            this.fumble_val = 2
+        }
     }
 
     /**
@@ -582,5 +600,128 @@ export class CombatDialog extends Dialog {
                 await ChatMessage.create(chatData)
             }
         }
+    }
+
+    /**
+     * Applies common damage roll logic including zero damage handling,
+     * trefferzone rolling, and modifikator application.
+     * This helper consolidates logic shared between melee and ranged combat.
+     *
+     * @param {Object} params - Configuration object
+     * @param {Object} params.nodmg - Zero damage configuration {name: string, value: boolean}
+     * @param {number} params.mod_dm - Current damage modifier
+     * @param {string} params.schaden - Current damage value/formula
+     * @param {string} params.text_dm - Current damage text
+     * @param {number} params.trefferzone - Current trefferzone value
+     * @param {number} params.mod_at - Attack modifier
+     * @param {number} params.mod_vt - Defense modifier (optional)
+     * @param {string} params.text_at - Attack text
+     * @param {string} params.text_vt - Defense text (optional)
+     * @returns {Object} Updated values {mod_dm, schaden, text_dm, trefferzone, mod_at, mod_vt, text_at, text_vt}
+     */
+    async applyCommonDamageLogic({
+        nodmg,
+        mod_dm,
+        schaden,
+        text_dm,
+        trefferzone,
+        mod_at,
+        mod_vt,
+        text_at,
+        text_vt,
+    }) {
+        const manoever = this.item.system.manoever
+
+        // Handle ZERO_DAMAGE
+        if (nodmg.value) {
+            mod_dm = 0
+            schaden = '0'
+            if (!text_dm.includes('Kein Schaden')) {
+                text_dm = text_dm.concat(`${nodmg.name}: Kein Schaden\n`)
+            }
+        }
+
+        // Roll trefferzone if needed
+        if (trefferzone == 0 && this.isGezieltSchlagActive()) {
+            let zonenroll = new Roll('1d6')
+            await zonenroll.evaluate()
+            text_dm = text_dm.concat(
+                `Trefferzone: ${CONFIG.ILARIS.trefferzonen[zonenroll.total]}\n`,
+            )
+        }
+
+        // Apply Modifikator
+        let modifikator = Number(manoever.mod.selected)
+        if (modifikator != 0) {
+            mod_at += modifikator
+            text_at = text_at.concat(`Modifikator: ${modifikator}\n`)
+
+            if (mod_vt !== undefined) {
+                mod_vt += modifikator
+                text_vt = text_vt.concat(`Modifikator: ${modifikator}\n`)
+            }
+        }
+
+        return { mod_dm, schaden, text_dm, trefferzone, mod_at, mod_vt, text_at, text_vt }
+    }
+
+    /**
+     * Adds weapon properties text to attack description.
+     * Used by both melee and ranged combat dialogs.
+     */
+    eigenschaftenText() {
+        if (!this.item.system.eigenschaften.length > 0) {
+            return
+        }
+        this.text_at += '\nEigenschaften: '
+        this.text_at += this.item.system.eigenschaften.map((e) => e.name).join(', ')
+    }
+
+    /**
+     * Checks if the "Gezielter Schlag" (Aimed Strike) maneuver is active.
+     * Used to determine if trefferzone (hit zone) should be rolled.
+     * @returns {boolean} True if Gezielter Schlag is selected
+     */
+    isGezieltSchlagActive() {
+        return (
+            this.item.system.manoever.km_gzsl && this.item.system.manoever.km_gzsl.selected !== '0'
+        )
+    }
+
+    /**
+     * Sets up the modifier display element and listeners for real-time updates.
+     * This common setup is used by all combat dialog subclasses.
+     * @param {jQuery} html - The rendered HTML of the dialog
+     */
+    setupModifierDisplay(html) {
+        // Store modifier element reference for performance
+        this._modifierElement = html.find('#modifier-summary')
+
+        // Store a reference to prevent multiple updates
+        this._updateTimeout = null
+
+        if (this._modifierElement.length === 0) {
+            console.warn('MODIFIER DISPLAY: Element nicht im Template gefunden')
+            return
+        }
+
+        // Add listeners for real-time modifier updates with debouncing
+        html.find('input, select').on('change input', () => {
+            // Clear previous timeout
+            if (this._updateTimeout) {
+                clearTimeout(this._updateTimeout)
+            }
+
+            // Set new timeout to debounce rapid changes
+            this._updateTimeout = setTimeout(() => {
+                this.updateModifierDisplay(html)
+            }, 300)
+        })
+
+        // Add summary click listeners
+        this.addSummaryClickListeners(html)
+
+        // Initial display update
+        setTimeout(() => this.updateModifierDisplay(html), 500)
     }
 }

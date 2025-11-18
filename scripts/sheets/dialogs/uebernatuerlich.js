@@ -18,63 +18,26 @@ export class UebernatuerlichDialog extends CombatDialog {
             width: 900,
             height: 'auto',
         }
-        super(dialog, options)
-        // this can be probendialog (more abstract)
-        this.text_at = ''
-        this.text_dm = ''
+        super(actor, item, dialog, options)
+
+        // Specific properties for supernatural abilities
         this.text_energy = ''
         this.is16OrHigher = false
-        this.item = item
-        this.actor = actor
-
-        // Initialize selected actors from Foundry targets after actor/item are set
-        this._initializeSelectedActorsFromTargets()
-
-        console.log('actor', this.actor)
-        this.speaker = ChatMessage.getSpeaker({ actor: this.actor })
-        this.rollmode = game.settings.get('core', 'rollMode') // public, private....
-        this.item.system.manoever.rllm.selected = game.settings.get('core', 'rollMode') // TODO: either manoever or dialog property.
         this.item.system.manoever.blutmagie = this.item.system.manoever.blutmagie || {}
         this.item.system.manoever.verbotene_pforten =
             this.item.system.manoever.verbotene_pforten || {}
         this.item.system.manoever.set_energy_cost = this.item.system.manoever.set_energy_cost || {}
         this.calculatedWounds = 0
-        this.fumble_val = 1
+
+        console.log('actor', this.actor)
         this.aufbauendeManoeverAktivieren()
     }
 
     activateListeners(html) {
         super.activateListeners(html)
 
-        // Store modifier element reference for performance
-        this._modifierElement = html.find('#modifier-summary')
-
-        // Store a reference to prevent multiple updates
-        this._updateTimeout = null
-
-        if (this._modifierElement.length === 0) {
-            console.warn('MAGIE MODIFIER DISPLAY: Element nicht im Template gefunden')
-            return
-        }
-
-        // Add listeners for real-time modifier updates with debouncing
-        html.find('input, select').on('change input', () => {
-            // Clear previous timeout
-            if (this._updateTimeout) {
-                clearTimeout(this._updateTimeout)
-            }
-
-            // Set new timeout to debounce rapid changes
-            this._updateTimeout = setTimeout(() => {
-                this.updateModifierDisplay(html)
-            }, 300)
-        })
-
-        // Add summary click listeners
-        this.addSummaryClickListeners(html)
-
-        // Initial display update
-        setTimeout(() => this.updateModifierDisplay(html), 500)
+        // Setup modifier display with debounced listeners
+        this.setupModifierDisplay(html)
     }
 
     getSummaryClickActions(html) {
