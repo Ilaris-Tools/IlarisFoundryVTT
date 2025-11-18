@@ -45,7 +45,7 @@ export class TargetSelectionDialog extends Dialog {
             buttons: {},
         }
 
-        super({ ...dialog, ...dialogOptions })
+        super(dialog, dialogOptions)
         this.actor = actor
         this.selectedActors = new Set()
         this.onSelectionComplete = onSelectionComplete

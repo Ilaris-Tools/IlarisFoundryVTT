@@ -20,14 +20,53 @@ export function registerDefenseButtonHook() {
                 const distance = parseInt(this.dataset.distance)
                 const attackerId = this.dataset.attackerId
                 const attackType = this.dataset.attackType
+
+                // Validate required data attributes before parsing
+                if (!this.dataset.rollResult) {
+                    console.error('Defense button missing rollResult data attribute', {
+                        actorId,
+                        weaponId,
+                        attackerId,
+                        attackType,
+                    })
+                    ui.notifications.error(
+                        'Angriffsdaten fehlen. Bitte kontaktiere den Spielleiter.',
+                    )
+                    clickedButton.prop('disabled', false)
+                    return
+                }
+
                 let rollResult
                 try {
                     rollResult = JSON.parse(decodeURIComponent(this.dataset.rollResult))
                 } catch (e) {
-                    ui.notifications.error('Fehler beim Parsen des Angriffs-Wurfs.')
+                    console.error('Failed to parse rollResult data:', {
+                        error: e.message,
+                        rawData: this.dataset.rollResult,
+                        actorId,
+                        weaponId,
+                        attackerId,
+                    })
+                    ui.notifications.error(
+                        'Fehler beim Parsen des Angriffs-Wurfs. Daten sind ungültig.',
+                    )
                     clickedButton.prop('disabled', false)
                     return
                 }
+
+                // Validate parsed rollResult structure
+                if (!rollResult || !rollResult.roll) {
+                    console.error('Invalid rollResult structure:', {
+                        rollResult,
+                        actorId,
+                        weaponId,
+                        attackerId,
+                    })
+                    ui.notifications.error('Angriffswurf-Daten sind unvollständig.')
+                    clickedButton.prop('disabled', false)
+                    return
+                }
+
                 const actor = game.actors.get(actorId)
                 const attackingActor = game.actors.get(attackerId)
                 if (!actor) {
@@ -59,17 +98,26 @@ export function registerDefenseButtonHook() {
                 const allButtons = html.find('.defend-button')
                 allButtons.prop('disabled', true)
 
+                // For ranged attacks in defense mode, the roll total is fixed at 28
+                // according to the Ilaris rulebook (fixed defense roll value for ranged attacks)
+                // Create a wrapper object instead of mutating the original roll
+                let effectiveRollResult = rollResult
                 if (attackType === 'ranged') {
-                    // For ranged attacks in defense mode, the roll total is fixed at 28
-                    // according to the Ilaris rulebook (fixed defense roll value for ranged attacks)
-                    if (rollResult.roll && typeof rollResult.roll === 'object') {
-                        rollResult.roll._total = 28
+                    effectiveRollResult = {
+                        ...rollResult,
+                        roll: {
+                            ...rollResult.roll,
+                            total: 28,
+                            // Preserve the original roll for reference
+                            _originalTotal: rollResult.roll.total || rollResult.roll._total,
+                        },
                     }
                 }
+
                 const d = new AngriffDialog(actor, weapon, {
                     isDefenseMode: true,
                     attackingActor: attackingActor,
-                    attackRoll: rollResult,
+                    attackRoll: effectiveRollResult,
                 })
                 d.render(true)
             })

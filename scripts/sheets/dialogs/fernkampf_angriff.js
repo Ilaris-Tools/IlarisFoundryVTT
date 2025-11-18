@@ -319,6 +319,8 @@ export class FernkampfAngriffDialog extends CombatDialog {
         let trefferzone = 0
         let schaden = this.item.getTp()
         let fumble_val = 1
+        let damageType = 'NORMAL'
+        let trueDamage = false
 
         // Kombinierte Aktion kbak
         if (manoever.kbak.selected) {
@@ -479,6 +481,8 @@ export class FernkampfAngriffDialog extends CombatDialog {
             trefferzone,
             schaden,
             nodmg,
+            damageType,
+            trueDamage,
         ] = handleModifications(allModifications, {
             mod_at,
             mod_vt,
@@ -491,6 +495,8 @@ export class FernkampfAngriffDialog extends CombatDialog {
             trefferzone,
             schaden,
             nodmg,
+            damageType,
+            trueDamage,
             context: this,
         })
 
@@ -505,6 +511,8 @@ export class FernkampfAngriffDialog extends CombatDialog {
             mod_vt,
             text_at,
             text_vt,
+            damageType,
+            trueDamage,
         })
 
         mod_dm = updated.mod_dm
@@ -515,6 +523,8 @@ export class FernkampfAngriffDialog extends CombatDialog {
         mod_vt = updated.mod_vt
         text_at = updated.text_at
         text_vt = updated.text_vt
+        damageType = updated.damageType
+        trueDamage = updated.trueDamage
 
         this.mod_at = mod_at
         this.mod_vt = mod_vt
@@ -524,5 +534,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
         this.text_dm = text_dm
         this.schaden = schaden
         this.fumble_val = fumble_val
+        this.damageType = damageType
+        this.trueDamage = trueDamage
     }
 }

@@ -79,9 +79,15 @@ export class CombatDialog extends Dialog {
     }
 
     async getData() {
-        if (!this._manoeversSet) {
-            await this.item.setManoevers()
+        // Prevent race condition: if maneuvers are being set, wait for that to complete
+        if (this._manoeversPromise) {
+            await this._manoeversPromise
+        } else if (!this._manoeversSet) {
+            // Store the promise so concurrent calls can await it
+            this._manoeversPromise = this.item.setManoevers()
+            await this._manoeversPromise
             this._manoeversSet = true
+            this._manoeversPromise = null
         }
         // damit wird das template gefüttert
         return {
@@ -617,7 +623,9 @@ export class CombatDialog extends Dialog {
      * @param {number} params.mod_vt - Defense modifier (optional)
      * @param {string} params.text_at - Attack text
      * @param {string} params.text_vt - Defense text (optional)
-     * @returns {Object} Updated values {mod_dm, schaden, text_dm, trefferzone, mod_at, mod_vt, text_at, text_vt}
+     * @param {string} params.damageType - Damage type (optional, e.g., 'NORMAL', 'TRUE')
+     * @param {boolean} params.trueDamage - Whether damage bypasses armor (optional)
+     * @returns {Object} Updated values {mod_dm, schaden, text_dm, trefferzone, mod_at, mod_vt, text_at, text_vt, damageType, trueDamage}
      */
     async applyCommonDamageLogic({
         nodmg,
@@ -629,6 +637,8 @@ export class CombatDialog extends Dialog {
         mod_vt,
         text_at,
         text_vt,
+        damageType,
+        trueDamage,
     }) {
         const manoever = this.item.system.manoever
 
@@ -662,7 +672,18 @@ export class CombatDialog extends Dialog {
             }
         }
 
-        return { mod_dm, schaden, text_dm, trefferzone, mod_at, mod_vt, text_at, text_vt }
+        return {
+            mod_dm,
+            schaden,
+            text_dm,
+            trefferzone,
+            mod_at,
+            mod_vt,
+            text_at,
+            text_vt,
+            damageType,
+            trueDamage,
+        }
     }
 
     /**
@@ -670,7 +691,7 @@ export class CombatDialog extends Dialog {
      * Used by both melee and ranged combat dialogs.
      */
     eigenschaftenText() {
-        if (!this.item.system.eigenschaften.length > 0) {
+        if (this.item.system.eigenschaften.length === 0) {
             return
         }
         this.text_at += '\nEigenschaften: '

@@ -752,6 +752,8 @@ export class AngriffDialog extends CombatDialog {
             mod_vt,
             text_at,
             text_vt,
+            damageType,
+            trueDamage,
         })
 
         mod_dm = updated.mod_dm
@@ -762,6 +764,8 @@ export class AngriffDialog extends CombatDialog {
         mod_vt = updated.mod_vt
         text_at = updated.text_at
         text_vt = updated.text_vt
+        damageType = updated.damageType
+        trueDamage = updated.trueDamage
 
         this.mod_at = mod_at
         this.mod_vt = mod_vt

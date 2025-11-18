@@ -430,7 +430,7 @@ describe('calculate_diceschips', () => {
             return []
         })
 
-        const [text, dice_number, discard_l, discard_h] = calculate_diceschips(
+        const [, dice_number, discard_l, discard_h] = calculate_diceschips(
             mockHtml,
             'Test: ',
             mockActor,
@@ -524,11 +524,7 @@ describe('calculate_diceschips', () => {
             return []
         })
 
-        const [text, dice_number, discard_l, discard_h] = calculate_diceschips(
-            mockHtml,
-            '',
-            mockActor,
-        )
+        const [text, dice_number, discard_l] = calculate_diceschips(mockHtml, '', mockActor)
 
         expect(dice_number).toBe(1)
         expect(discard_l).toBe(0)
@@ -553,11 +549,7 @@ describe('calculate_diceschips', () => {
             return []
         })
 
-        const [text, dice_number, discard_l, discard_h] = calculate_diceschips(
-            mockHtml,
-            '',
-            mockActor,
-        )
+        const [, dice_number, discard_l, discard_h] = calculate_diceschips(mockHtml, '', mockActor)
 
         expect(dice_number).toBe(4) // 3 from xd20 + 1 from schips
         expect(discard_l).toBe(2) // 1 from xd20 + 1 from schips

@@ -497,7 +497,7 @@ Hooks.on('renderChatMessage', (message, html, data) => {
     const currentUserCharacterId = game.user.character?.id
     const isTarget = currentUserCharacterId === targetActorId
 
-    // If the user is not the target and not the GM, hide the content
+    // If the user is not the target, hide the content
     if (!isTarget) {
         const contentDiv = html.find('.message-content')
         if (contentDiv.length > 0) {
