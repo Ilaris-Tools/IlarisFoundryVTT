@@ -48,8 +48,12 @@ export class AngriffDialog extends CombatDialog {
         // If in defense mode, disable attack-related buttons
         if (this.isDefenseMode) {
             html.find('.angreifen').prop('disabled', true).css('opacity', '0.5')
-            html.find('.schaden').prop('disabled', true).css('opacity', '0.5')
             html.find('.show-nearby').prop('disabled', true).css('opacity', '0.5')
+            if (this.riposte) {
+                html.find('.schaden').prop('disabled', false).css('opacity', '1')
+            } else {
+                html.find('.schaden').prop('disabled', true).css('opacity', '0.5')
+            }
         }
 
         // Setup modifier display with debounced listeners
@@ -692,10 +696,13 @@ export class AngriffDialog extends CombatDialog {
         const riposteManeuver = this.item.manoever.find(
             (m) => m.name === 'Riposte' && m.inputValue.value,
         )
-        if (riposteManeuver && mod_at < 0) {
+        if (riposteManeuver) {
+            if (mod_at < 0) {
+                mod_vt += mod_at
+                text_vt = text_vt.concat(`Riposte (Attackemanöver): ${mod_at}\n`)
+            }
             this.riposte = true
-            mod_vt += mod_at
-            text_vt = text_vt.concat(`Riposte (Attackemanöver): ${mod_at}\n`)
+            // html.find('.schaden').prop('disabled', false).css('opacity', '1')
         }
 
         // Handle tactical options after handleModifications (so they don't affect Riposte)
