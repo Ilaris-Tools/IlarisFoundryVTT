@@ -1,6 +1,6 @@
-import { roll_crit_message, get_statuseffect_by_id } from '../../common/wuerfel/wuerfel_misc.js'
+import { evaluate_roll_with_crit } from '../../common/wuerfel/wuerfel_misc.js'
 import { signed } from '../../common/wuerfel/chatutilities.js'
-import { handleModifications } from './shared_dialog_helpers.js'
+import { handleModifications, applyDamageToTarget } from './shared_dialog_helpers.js'
 import { CombatDialog } from './combat_dialog.js'
 import * as hardcoded from '../../actors/hardcodedvorteile.js'
 import { formatDiceFormula } from '../../common/utilities.js'
@@ -13,16 +13,6 @@ export class FernkampfAngriffDialog extends CombatDialog {
             width: 900,
             height: 'auto',
         }
-        super(dialog, options)
-        // this can be probendialog (more abstract)
-        this.text_at = ''
-        this.text_dm = ''
-        this.item = item
-        this.actor = actor
-        this.speaker = ChatMessage.getSpeaker({ actor: this.actor })
-        this.rollmode = game.settings.get('core', 'rollMode') // public, private....
-        this.item.system.manoever.rllm.selected = game.settings.get('core', 'rollMode') // TODO: either manoever or dialog property.
-        this.fumble_val = 1
 
         // Check for Unberechenbar eigenschaft (support both formats)
         const hasUnberechenbar = Array.isArray(this.item.system.eigenschaften)
@@ -38,6 +28,9 @@ export class FernkampfAngriffDialog extends CombatDialog {
         }
 
         // Generate unique dialog ID to avoid conflicts when multiple dialogs are open
+        super(actor, item, dialog, options)
+
+        // Ranged combat has no specific additional properties beyond base
         this.aufbauendeManoeverAktivieren()
     }
 
@@ -61,35 +54,8 @@ export class FernkampfAngriffDialog extends CombatDialog {
         super.activateListeners(html)
         html.find('.schaden').click((ev) => this._schadenKlick(html))
 
-        // Store modifier element reference for performance
-        this._modifierElement = html.find('#modifier-summary')
-
-        // Store a reference to prevent multiple updates
-        this._updateTimeout = null
-
-        if (this._modifierElement.length === 0) {
-            console.warn('FERNKAMPF MODIFIER DISPLAY: Element nicht im Template gefunden')
-            return
-        }
-
-        // Add listeners for real-time modifier updates with debouncing
-        html.find('input, select').on('change input', () => {
-            // Clear previous timeout
-            if (this._updateTimeout) {
-                clearTimeout(this._updateTimeout)
-            }
-
-            // Set new timeout to debounce rapid changes
-            this._updateTimeout = setTimeout(() => {
-                this.updateModifierDisplay(html)
-            }, 300)
-        })
-
-        // Add summary click listeners
-        this.addSummaryClickListeners(html)
-
-        // Initial display update
-        setTimeout(() => this.updateModifierDisplay(html), 500)
+        // Setup modifier display with debounced listeners
+        this.setupModifierDisplay(html)
     }
 
     getSummaryClickActions(html) {
@@ -286,16 +252,18 @@ export class FernkampfAngriffDialog extends CombatDialog {
         let formula = `${diceFormula} ${signed(this._getFKValue())} \
             ${signed(this.at_abzuege_mod)} \
             ${signed(this.mod_at)}`
-        await roll_crit_message(
+
+        // Use the new evaluation function
+        const rollResult = await evaluate_roll_with_crit(
             formula,
             label,
             this.text_at,
-            this.speaker,
-            this.rollmode,
-            true,
+            12, // success_val
             this.fumble_val,
-            12,
+            true, // crit_eval
         )
+
+        await this.handleTargetSelection(rollResult, 'ranged')
         super._updateSchipsStern(html)
     }
 
@@ -305,7 +273,40 @@ export class FernkampfAngriffDialog extends CombatDialog {
         // Rollmode
         let label = `Schaden (${this.item.name})`
         let formula = `${this.schaden} ${signed(this.mod_dm)}`
-        await roll_crit_message(formula, label, this.text_dm, this.speaker, this.rollmode, false, 0)
+        // Use the new evaluation function for damage (no crit evaluation)
+        const rollResult = await evaluate_roll_with_crit(
+            formula,
+            label,
+            this.text_dm,
+            null, // success_val
+            1, // fumble_val not used since crit_eval is false
+            false, // crit_eval
+        )
+
+        // Send the chat message
+        const html_roll = await renderTemplate(rollResult.templatePath, rollResult.templateData)
+        await rollResult.roll.toMessage(
+            {
+                speaker: this.speaker,
+                flavor: html_roll,
+            },
+            {
+                rollMode: this.rollmode,
+            },
+        )
+
+        // Apply damage to selected targets if any
+        if (this.selectedActors && this.selectedActors.length > 0) {
+            for (const target of this.selectedActors) {
+                await applyDamageToTarget(
+                    target,
+                    rollResult.roll.total,
+                    this.damageType,
+                    this.trueDamage,
+                    this.speaker,
+                )
+            }
+        }
     }
 
     async manoeverAuswaehlen(html) {
@@ -352,6 +353,8 @@ export class FernkampfAngriffDialog extends CombatDialog {
         let trefferzone = 0
         let schaden = this.item.getTp()
         let fumble_val = 1
+        let damageType = 'NORMAL'
+        let trueDamage = false
 
         // Kombinierte Aktion kbak
         if (manoever.kbak.selected) {
@@ -512,6 +515,8 @@ export class FernkampfAngriffDialog extends CombatDialog {
             trefferzone,
             schaden,
             nodmg,
+            damageType,
+            trueDamage,
         ] = handleModifications(allModifications, {
             mod_at,
             mod_vt,
@@ -524,36 +529,36 @@ export class FernkampfAngriffDialog extends CombatDialog {
             trefferzone,
             schaden,
             nodmg,
+            damageType,
+            trueDamage,
             context: this,
         })
 
-        // If ZERO_DAMAGE was found, override damage values
-        if (nodmg.value) {
-            mod_dm = 0
-            schaden = '0'
-            // Add text explaining zero damage if not already present
-            if (!text_dm.includes('Kein Schaden')) {
-                text_dm = text_dm.concat(`${nodmg.name}: Kein Schaden\n`)
-            }
-        }
+        // Apply common damage logic (zero damage, trefferzone, modifikator)
+        const updated = await this.applyCommonDamageLogic({
+            nodmg,
+            mod_dm,
+            schaden,
+            text_dm,
+            trefferzone,
+            mod_at,
+            mod_vt,
+            text_at,
+            text_vt,
+            damageType,
+            trueDamage,
+        })
 
-        // Trefferzone if not set by manoever but a trefferzone maneuver is active
-        if (trefferzone == 0 && this.isGezieltSchlagActive()) {
-            let zonenroll = new Roll('1d6')
-            await zonenroll.evaluate()
-            text_dm = text_dm.concat(
-                `Trefferzone: ${CONFIG.ILARIS.trefferzonen[zonenroll.total]}\n`,
-            )
-        }
-
-        // Modifikator
-        let modifikator = Number(manoever.mod.selected)
-        if (modifikator != 0) {
-            mod_vt += modifikator
-            mod_at += modifikator
-            text_vt = text_vt.concat(`Modifikator: ${modifikator}\n`)
-            text_at = text_at.concat(`Modifikator: ${modifikator}\n`)
-        }
+        mod_dm = updated.mod_dm
+        schaden = updated.schaden
+        text_dm = updated.text_dm
+        trefferzone = updated.trefferzone
+        mod_at = updated.mod_at
+        mod_vt = updated.mod_vt
+        text_at = updated.text_at
+        text_vt = updated.text_vt
+        damageType = updated.damageType
+        trueDamage = updated.trueDamage
 
         this.mod_at = mod_at
         this.mod_vt = mod_vt
@@ -563,13 +568,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
         this.text_dm = text_dm
         this.schaden = schaden
         this.fumble_val = fumble_val
-    }
-
-    isGezieltSchlagActive() {
-        // Check if any trefferzone-related maneuver is selected
-        // For ranged combat, this might be different maneuvers, but using same logic for consistency
-        return (
-            this.item.system.manoever.km_gzsl && this.item.system.manoever.km_gzsl.selected !== '0'
-        )
+        this.damageType = damageType
+        this.trueDamage = trueDamage
     }
 }

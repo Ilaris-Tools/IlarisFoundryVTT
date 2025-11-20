@@ -20,6 +20,7 @@ export const IlarisGameSettingNames = {
 // the heading for Automatisierung gets added via hooks.js
 export const IlarisAutomatisierungSettingNames = {
     useSceneEnvironment: 'useSceneEnvironment',
+    useTargetSelection: 'useTargetSelection',
 }
 
 export const IlarisGameSettingsMenuNames = {

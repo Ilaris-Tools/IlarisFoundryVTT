@@ -38,7 +38,8 @@
   "styles": [
     "css/temp.css",
     "styles/sheets/manoever.css",
-    "styles/dialogs/changelog-notification.css"
+    "styles/dialogs/changelog-notification.css",
+    "styles/chat/defense-prompt.css"
   ],
   "packFolders": [
     {
