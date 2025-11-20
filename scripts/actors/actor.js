@@ -697,7 +697,7 @@ export class IlarisActor extends Actor {
                 if (zweihaendig && ((hauptwaffe && !nebenwaffe) || (!hauptwaffe && nebenwaffe))) {
                     fwaffe.system.fk = '-'
                 } else if (kein_reiter && (hauptwaffe || nebenwaffe)) {
-                    if (ist_beritten && kein_reiter) {
+                    if (ist_beritten) {
                         fwaffe.system.fk = '-'
                     }
                 }
@@ -765,7 +765,7 @@ export class IlarisActor extends Actor {
                 if (zweihaendig && ((hauptwaffe && !nebenwaffe) || (!hauptwaffe && nebenwaffe))) {
                     fwaffe.system.fk = '-'
                 } else if (kein_reiter && (hauptwaffe || nebenwaffe)) {
-                    if (ist_beritten && kein_reiter) {
+                    if (ist_beritten) {
                         fwaffe.system.fk = '-'
                     }
                 }

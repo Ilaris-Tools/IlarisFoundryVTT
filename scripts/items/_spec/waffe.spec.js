@@ -35,7 +35,6 @@ jest.mock('../combat.js', () => ({
 
 // Import the actual class we want to test
 const { WaffeItem } = require('../waffe.js')
-const { checkCondition, compareValues, evaluateFormula } = require('../utils/eigenschaft-utils.js')
 
 describe('WaffeItem', () => {
     let weapon
