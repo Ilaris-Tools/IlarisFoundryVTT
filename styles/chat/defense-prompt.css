@@ -1,0 +1,30 @@
+/* Styling for defense prompt message when highlighted for the target player */
+.chat-message.ilaris-defense-prompt-highlight {
+    border: 3px solid #ff6b00 !important;
+    box-shadow: 0 0 15px rgba(255, 107, 0, 0.7) !important;
+    animation: defense-pulse 1.5s ease-in-out infinite;
+    transform: scale(1.015);
+}
+
+/* Pulsing animation for highlighted defense message */
+@keyframes defense-pulse {
+    0% {
+        box-shadow: 0 0 15px rgba(255, 107, 0, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 25px rgba(255, 107, 0, 1);
+    }
+    100% {
+        box-shadow: 0 0 15px rgba(255, 107, 0, 0.7);
+    }
+}
+
+/* Style for defend buttons */
+.defend-button {
+    margin: 0 5px 5px 0;
+}
+
+/* Style for disabled defense buttons */
+.defend-button:disabled {
+    cursor: not-allowed !important;
+}
