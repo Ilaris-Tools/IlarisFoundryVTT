@@ -707,7 +707,6 @@ export class AngriffDialog extends CombatDialog {
                 text_vt = text_vt.concat(`Riposte (Attackemanöver): ${mod_at}\n`)
             }
             this.riposte = true
-            // html.find('.schaden').prop('disabled', false).css('opacity', '1')
         }
 
         // Handle tactical options after handleModifications (so they don't affect Riposte)
