@@ -902,6 +902,14 @@ hr {
     padding-left: 4px;
 }
 
+/* Tooltip styling for maneuver descriptions */
+#tooltip {
+    text-align: left !important;
+    white-space: pre-line;
+    max-width: 400px;
+    line-height: 1.4;
+}
+
 /* Hexagonal token shapes for hex grids */
 .ilaris-hex-tokens-enabled .token-image,
 .ilaris-hex-tokens-enabled .token-image img,

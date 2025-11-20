@@ -28,9 +28,11 @@ import {
     ConfigureGameSettingsCategories,
 } from './settings/configure-game-settings.model.js'
 import { XmlCharacterImporter } from './common/xml_character_importer.js'
+import { formatDiceFormula } from './common/utilities.js'
 
 // Import hooks
 import './hooks/changelog-notification.js'
+import { registerDefenseButtonHook } from './sheets/dialogs/defense_button_hook.js'
 
 // Status effect tint colors
 const STATUS_EFFECT_COLORS = {
@@ -538,13 +540,104 @@ Hooks.on('renderActorDirectory', (app, html) => {
     })
 })
 
+// Combined hook for chat message rendering
+Hooks.on('renderChatMessage', (message, html, data) => {
+    // Format dice formulas in chat messages
+    const diceFormulaElements = html.find('.dice-formula')
+    diceFormulaElements.each((index, element) => {
+        const $element = $(element)
+        const originalFormula = $element.text().trim()
+
+        // Extract just the dice part (before any + or -)
+        const diceFormulaMatch = originalFormula.match(/^(\d+d\d+(?:dl\d+)?(?:dh\d+)?)/)
+        if (diceFormulaMatch) {
+            const diceFormula = diceFormulaMatch[1]
+            const formattedDice = formatDiceFormula(diceFormula)
+
+            // Replace the dice part with the formatted version, keep the rest
+            const remainder = originalFormula.substring(diceFormula.length)
+            $element.text(formattedDice + remainder)
+        }
+    })
+
+    // Handle defense prompt message visibility
+    const isDefensePrompt = message.flags?.Ilaris?.defensePrompt
+    if (isDefensePrompt) {
+        // Skip if defense has already been handled
+        if (html.hasClass('defense-handled')) {
+            return
+        }
+
+        // Check if the current user should see the content
+        const targetActorId = message.flags.Ilaris.targetActorId
+        const currentUserCharacterId = game.user.character?.id
+        const isTarget = currentUserCharacterId === targetActorId
+
+        // If the user is not the target, hide the content
+        if (!isTarget && !game.user.isGM) {
+            const contentDiv = html.find('.message-content')
+            if (contentDiv.length > 0) {
+                contentDiv.html(
+                    '<p style="font-style: italic; opacity: 0.6;">Deine Verteidigungsaufforderung an einen anderen Spieler</p>',
+                )
+            }
+        }
+
+        if (isTarget || game.user.isGM) {
+            // Highlight the message for the target player
+            html.addClass('ilaris-defense-prompt-highlight')
+        }
+    }
+})
+
 // Cache for hex token shapes setting
 let hexTokenShapesEnabled = false
 
 // Apply hexagonal token shapes when setting is enabled
 Hooks.on('ready', () => {
+    registerDefenseButtonHook()
     applyHexTokenSetting()
+    setupIlarisSocket()
 })
+
+/**
+ * Set up socket listeners for Ilaris system
+ * This allows players to request the GM to perform actions they don't have permission for
+ */
+function setupIlarisSocket() {
+    game.socket.on('system.Ilaris', async (data) => {
+        // Only GM should handle these requests
+        if (!game.user.isGM) return
+
+        switch (data.type) {
+            case 'applyDamage':
+                await handleApplyDamageRequest(data.data)
+                break
+            default:
+                console.warn(`Unknown Ilaris socket request type: ${data.type}`)
+        }
+    })
+}
+
+/**
+ * Handle a damage application request from a player
+ * Only called on GM's client
+ */
+async function handleApplyDamageRequest(data) {
+    const { targetActorId, damage, damageType, trueDamage, speaker } = data
+
+    const targetActor = game.actors.get(targetActorId)
+    if (!targetActor) {
+        console.error(`Target actor ${targetActorId} not found`)
+        return
+    }
+
+    // Import the helper function
+    const { _applyDamageDirectly } = await import('./sheets/dialogs/shared_dialog_helpers.js')
+
+    // Apply damage as GM
+    await _applyDamageDirectly(targetActor, damage, damageType, trueDamage, speaker)
+}
 
 // Update when setting changes
 Hooks.on('updateSetting', (setting) => {

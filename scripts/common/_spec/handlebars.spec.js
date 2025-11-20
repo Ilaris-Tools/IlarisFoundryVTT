@@ -40,4 +40,15 @@ describe('handlebars', () => {
             })
         })
     })
+
+    describe('formatDiceFormula', () => {
+        test('should be registered and delegate to utility function', () => {
+            // Test that the helper is registered
+            expect(helpers.formatDiceFormula).toBeDefined()
+
+            // Test a basic case to ensure it delegates correctly
+            expect(helpers.formatDiceFormula('3d20dl1dh1')).toBe('3W20 (Median)')
+            expect(helpers.formatDiceFormula('1d20')).toBe('1W20')
+        })
+    })
 })
