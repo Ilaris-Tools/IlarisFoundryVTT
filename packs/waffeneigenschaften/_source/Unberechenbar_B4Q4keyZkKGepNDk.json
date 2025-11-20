@@ -44,8 +44,8 @@
       }
     },
     "combatMechanics": {
-      "fumbleThreshold": 1,
-      "critThreshold": 19,
+      "fumbleThreshold": 2,
+      "critThreshold": 20,
       "ignoreCover": false,
       "ignoreArmor": false,
       "additionalDice": 0

@@ -19,13 +19,9 @@ export function usesTwoWeapons(hauptWaffe, nebenWaffe, type = 'nahkampfwaffe') {
     if (hauptWaffe.id == nebenWaffe.id) return false
     if (hauptWaffe.type != type || nebenWaffe.type != type) return false
 
-    // Check for Zweihändig eigenschaft (support both new array and old object format)
-    const hauptZweihaendig = Array.isArray(hauptWaffe.system.eigenschaften)
-        ? hauptWaffe.system.eigenschaften.includes('Zweihändig')
-        : hauptWaffe.system.eigenschaften.zweihaendig === true
-    const nebenZweihaendig = Array.isArray(nebenWaffe.system.eigenschaften)
-        ? nebenWaffe.system.eigenschaften.includes('Zweihändig')
-        : nebenWaffe.system.eigenschaften.zweihaendig === true
+    // Check if either weapon requires two hands
+    const hauptZweihaendig = hauptWaffe.system.computed?.handsRequired === 2
+    const nebenZweihaendig = nebenWaffe.system.computed?.handsRequired === 2
 
     if (hauptZweihaendig || nebenZweihaendig) return false
     return true
@@ -39,34 +35,16 @@ export function usesOneWeaponOfType(hauptWaffe, nebenWaffe, type = 'nahkampfwaff
 }
 
 export function anyWeaponNeedsToMeetRequirement(hauptWaffe, nebenWaffe, requirement) {
+    const requirementLower = requirement.toLowerCase()
+
     if (hauptWaffe && hauptWaffe.system && hauptWaffe.system.eigenschaften) {
-        // Support both new array format and old object format
-        if (Array.isArray(hauptWaffe.system.eigenschaften)) {
-            // New format: check if eigenschaft name is in array
-            const requirementName = requirement.charAt(0).toUpperCase() + requirement.slice(1)
-            if (hauptWaffe.system.eigenschaften.includes(requirementName)) {
-                return true
-            }
-        } else {
-            // Old format: check object property
-            if (hauptWaffe.system.eigenschaften[requirement]) {
-                return true
-            }
+        if (hauptWaffe.system.eigenschaften.some((e) => e.toLowerCase() === requirementLower)) {
+            return true
         }
     }
     if (nebenWaffe && nebenWaffe.system && nebenWaffe.system.eigenschaften) {
-        // Support both new array format and old object format
-        if (Array.isArray(nebenWaffe.system.eigenschaften)) {
-            // New format: check if eigenschaft name is in array
-            const requirementName = requirement.charAt(0).toUpperCase() + requirement.slice(1)
-            if (nebenWaffe.system.eigenschaften.includes(requirementName)) {
-                return true
-            }
-        } else {
-            // Old format: check object property
-            if (nebenWaffe.system.eigenschaften[requirement]) {
-                return true
-            }
+        if (nebenWaffe.system.eigenschaften.some((e) => e.toLowerCase() === requirementLower)) {
+            return true
         }
     }
     return false
@@ -80,18 +58,14 @@ export function ignoreSideWeaponMalus(
 ) {
     if (!nebenWaffe) return
 
-    // Check for "kein Malus als Nebenwaffe" eigenschaft (support both formats)
-    const hasNoMalus = Array.isArray(nebenWaffe.system.eigenschaften)
-        ? nebenWaffe.system.eigenschaften.includes('kein Malus als Nebenwaffe')
-        : nebenWaffe.system.eigenschaften.kein_malus_nebenwaffe
-
-    if (hasNoMalus) return
+    // Check if weapon ignores nebenwaffe malus (from eigenschaft data)
+    if (nebenWaffe.system.computed?.ignoreNebenMalus) return
 
     if (waffenEigenschaft) {
-        // Check if weapon has the specified eigenschaft
-        const hasEigenschaft = Array.isArray(nebenWaffe.system.eigenschaften)
-            ? nebenWaffe.system.eigenschaften.includes(waffenEigenschaft)
-            : nebenWaffe.system.eigenschaften[waffenEigenschaft.toLowerCase()]
+        // Check if weapon has the specified eigenschaft (case-insensitive)
+        const hasEigenschaft = nebenWaffe.system.eigenschaften.some(
+            (e) => e.toLowerCase() === waffenEigenschaft.toLowerCase(),
+        )
 
         if (!hasEigenschaft) return
     }

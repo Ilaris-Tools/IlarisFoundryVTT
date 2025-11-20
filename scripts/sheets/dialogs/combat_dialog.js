@@ -20,10 +20,6 @@ export class CombatDialog extends Dialog {
         this.rollmode = game.settings.get('core', 'rollMode')
         this.item.system.manoever.rllm.selected = game.settings.get('core', 'rollMode')
         this.fumble_val = 1
-
-        if (this.item.system.eigenschaften.unberechenbar) {
-            this.fumble_val = 2
-        }
     }
 
     /**

@@ -12,7 +12,24 @@ export class WieldingProcessor extends BaseEigenschaftProcessor {
     process(eigenschaft, computed, actor, weapon) {
         const req = eigenschaft.wieldingRequirements
 
-        if (!req || req.hands !== 2) return
+        if (!req) return
+
+        // Store hands requirement
+        if (req.hands) {
+            computed.handsRequired = Math.max(computed.handsRequired || 1, req.hands)
+        }
+
+        // Store ignoreNebenMalus flag
+        if (req.ignoreNebenMalus) {
+            computed.ignoreNebenMalus = true
+        }
+
+        // Store noRider flag
+        if (req.noRider) {
+            computed.noRider = true
+        }
+
+        if (req.hands !== 2) return
 
         const isHauptOnly = weapon.system.hauptwaffe && !weapon.system.nebenwaffe
         const isNebenOnly = !weapon.system.hauptwaffe && weapon.system.nebenwaffe
@@ -26,11 +43,8 @@ export class WieldingProcessor extends BaseEigenschaftProcessor {
             } else if (isNebenOnly && req.penalties.nebenOnly) {
                 penalty = req.penalties.nebenOnly
             } else if (!isBothHands && req.penalties.nebenWithoutExemption) {
-                // Check if weapon has exemption from nebenwaffe penalty
-                const hasExemption = weapon.system.eigenschaften.includes(
-                    'kein Malus als Nebenwaffe',
-                )
-                if (!hasExemption) {
+                // Check if weapon has exemption from nebenwaffe penalty (via computed flag)
+                if (!computed.ignoreNebenMalus) {
                     penalty = req.penalties.nebenWithoutExemption
                 }
             }

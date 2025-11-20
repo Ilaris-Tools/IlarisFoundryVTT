@@ -415,6 +415,8 @@
       "conditions": [],
       "wieldingRequirements": {
         "hands": 1,
+        "ignoreNebenMalus": false,
+        "noRider": false,
         "penalties": {
           "hauptOnly": {},
           "nebenOnly": {},

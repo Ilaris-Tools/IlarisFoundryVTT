@@ -137,7 +137,7 @@ export class IlarisActorSheet extends ActorSheet {
             if (
                 item_status &&
                 item.type === 'fernkampfwaffe' &&
-                item.system.eigenschaften.zweihaendig
+                item.system.computed?.handsRequired === 2
             ) {
                 await this._unequipWeapon(itemId)
                 return
@@ -149,7 +149,7 @@ export class IlarisActorSheet extends ActorSheet {
                     (toggletype == 'hauptwaffe' && item.system.nebenwaffe) ||
                     (toggletype == 'nebenwaffe' && item.system.hauptwaffe)
                 ) {
-                    if (!item.system.eigenschaften.zweihaendig) {
+                    if (item.system.computed?.handsRequired !== 2) {
                         await item.update({ [otherHandAttr]: false })
                     }
                 }
@@ -158,7 +158,7 @@ export class IlarisActorSheet extends ActorSheet {
                 this._unequipTwoHandedRangedWeapons()
 
                 // If equipping a two-handed weapon, unequip all other weapons
-                if (item.system.eigenschaften.zweihaendig) {
+                if (item.system.computed?.handsRequired === 2) {
                     this._unequipAllWeaponsExcept(itemId)
                 } else {
                     // For one-handed weapons, only unequip from the toggled hand
@@ -170,7 +170,7 @@ export class IlarisActorSheet extends ActorSheet {
             }
 
             // For two-handed weapons, always equip in both hands by default
-            if (item.system.eigenschaften.zweihaendig && !item_status) {
+            if (item.system.computed?.handsRequired === 2 && !item_status) {
                 await item.update({ [otherHandAttr]: true })
             }
 
@@ -196,7 +196,7 @@ export class IlarisActorSheet extends ActorSheet {
     async _unequipTwoHandedRangedWeapons() {
         for (let waffe of this.actor.fernkampfwaffen) {
             if (
-                waffe.system.eigenschaften.zweihaendig &&
+                waffe.system.computed?.handsRequired === 2 &&
                 (waffe.system.hauptwaffe || waffe.system.nebenwaffe)
             ) {
                 await this._unequipWeapon(waffe.id)
@@ -226,7 +226,7 @@ export class IlarisActorSheet extends ActorSheet {
         // Check melee weapons
         for (let waffe of this.actor.nahkampfwaffen) {
             if (
-                waffe.system.eigenschaften.zweihaendig &&
+                waffe.system.computed?.handsRequired === 2 &&
                 waffe.system.hauptwaffe &&
                 waffe.system.nebenwaffe
             ) {
@@ -237,7 +237,7 @@ export class IlarisActorSheet extends ActorSheet {
         // Check ranged weapons
         for (let waffe of this.actor.fernkampfwaffen) {
             if (
-                waffe.system.eigenschaften.zweihaendig &&
+                waffe.system.computed?.handsRequired === 2 &&
                 waffe.system.hauptwaffe &&
                 waffe.system.nebenwaffe
             ) {

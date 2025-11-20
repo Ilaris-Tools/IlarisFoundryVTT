@@ -15,9 +15,8 @@ This repository is a Foundry VTT game system module to support the Ilaris rulese
 
 ## Guidelines for Copilot Suggestions
 
--   The main entry point is in `module/` (not `src/`).
+-   The main entry point is in `scripts/` (not `src/`).
 -   Use Foundry VTT API idioms: prefer hooks, game.system, and actor/item patterns.
--   Always respect localization: wrap all user-visible text in localization helpers, e.g., `game.i18n.localize()`.
 -   Never generate or modify anything in `.gitlab/` or unrelated legacy directories.
 -   Do NOT generate, remove, or rename `system.json` by hand – only modify it when required by manifest/schema change, and always keep keys sorted.
 -   For Handlebars templates:

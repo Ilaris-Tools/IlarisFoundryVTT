@@ -27,17 +27,9 @@ export class AngriffDialog extends CombatDialog {
         this.attackRoll = options.attackRoll || null
         this.isHumanoid = false
 
-        // Check for Unberechenbar eigenschaft (support both formats)
-        const hasUnberechenbar = Array.isArray(this.item.system.eigenschaften)
-            ? this.item.system.eigenschaften.includes('Unberechenbar')
-            : this.item.system.eigenschaften.unberechenbar
-
-        // Use computed combat mechanics if available (new system)
+        // Get fumble threshold from computed combat mechanics (calculated by eigenschaft system)
         if (this.item.system.computed?.combatMechanics?.fumbleThreshold) {
             this.fumble_val = this.item.system.computed.combatMechanics.fumbleThreshold
-        } else if (hasUnberechenbar) {
-            // Legacy fallback
-            this.fumble_val = 2
         }
 
         this.aufbauendeManoeverAktivieren()
@@ -826,15 +818,7 @@ export class AngriffDialog extends CombatDialog {
             return
         }
         this.text_at += '\nEigenschaften: '
-
-        // Support both new array format (strings) and old format (objects with .name)
-        if (typeof this.item.system.eigenschaften[0] === 'string') {
-            // New format: array of strings
-            this.text_at += this.item.system.eigenschaften.join(', ')
-        } else {
-            // Old format: array of objects
-            this.text_at += this.item.system.eigenschaften.map((e) => e.name).join(', ')
-        }
+        this.text_at += this.item.system.eigenschaften.join(', ')
     }
 
     isGezieltSchlagActive() {
