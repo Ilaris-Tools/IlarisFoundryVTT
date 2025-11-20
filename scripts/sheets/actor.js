@@ -4,7 +4,6 @@ import {
     ConfigureGameSettingsCategories,
 } from '../settings/configure-game-settings.model.js'
 import { ILARIS } from '../config.js'
-import { migrateWeapon } from '../common/waffen-migration.js'
 
 export class IlarisActorSheet extends ActorSheet {
     /*
