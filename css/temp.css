@@ -804,6 +804,7 @@ hr {
 }
 
 .effect-item {
+  display: flex;
   padding: 8px 12px;
   border-bottom: 1px solid #232323;
   align-items: center;

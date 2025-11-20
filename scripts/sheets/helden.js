@@ -34,6 +34,7 @@ export class HeldenSheet extends IlarisActorSheet {
         super.activateListeners(html)
         html.find('.schips-button').click((ev) => this._schipsClick(ev))
         html.find('.triStateBtn').click((ev) => this._triStateClick(ev))
+        html.find('.sync-kampfstile').click((ev) => this._onSyncKampfstile(ev))
     }
 
     async _schipsClick(ev) {
