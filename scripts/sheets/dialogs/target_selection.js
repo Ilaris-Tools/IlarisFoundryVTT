@@ -83,6 +83,7 @@ export class TargetSelectionDialog extends Dialog {
                 id: token.id,
                 actorId: token.actor.id,
                 name: token.name,
+                img: token.actor.img || 'icons/svg/mystery-man.svg',
             },
             tokens: tokens.map((t) => {
                 const waypoints = [
@@ -114,6 +115,7 @@ export class TargetSelectionDialog extends Dialog {
                     id: t.id,
                     actorId: t.actor.id,
                     name: t.name,
+                    img: t.actor.img || 'icons/svg/mystery-man.svg',
                     distance: distance,
                     disposition: disposition,
                     dispositionClass: dispositionClass,
@@ -168,7 +170,7 @@ export class TargetSelectionDialog extends Dialog {
                 const selectedNames = html
                     .find('.actor-row.selected')
                     .map(function () {
-                        return $(this).find('td').first().text().trim()
+                        return $(this).find('td').eq(1).text().trim()
                     })
                     .get()
                 selectionList.text(selectedNames.join(', '))
@@ -189,7 +191,7 @@ export class TargetSelectionDialog extends Dialog {
         const selectedIds = Array.from(html.find('.actor-row.selected')).map((row) => ({
             tokenId: row.dataset.tokenId,
             actorId: row.dataset.actorId,
-            name: row.cells[0].textContent.trim(),
+            name: row.cells[1].textContent.trim(),
             distance: parseInt(row.dataset.distance),
         }))
 

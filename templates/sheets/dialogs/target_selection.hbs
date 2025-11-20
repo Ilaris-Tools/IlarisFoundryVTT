@@ -4,6 +4,7 @@
 <table id="target-selection-table" style="width: 100%;">
     <thead>
         <tr>
+            <th style="text-align: left; width: 50px;">Bild</th>
             <th style="text-align: left;">Name</th>
             <th style="text-align: left;">Distanz</th>
             <th style="text-align: left;">Status</th>
@@ -11,15 +12,17 @@
     </thead>
     <tbody>
         <tr class="actor-row current-actor" data-token-id="{{currentToken.id}}" data-actor-id="{{currentToken.actorId}}" data-distance="0">
+            <td><img src="{{currentToken.img}}" class="actor-image" alt="{{currentToken.name}}"></td>
             <td><i class="fas fa-user"></i> {{currentToken.name}}</td>
             <td>0</td>
             <td>Selbst</td>
         </tr>
         <tr class="separator">
-            <td colspan="3"><hr style="margin: 5px 0;"></td>
+            <td colspan="4"><hr style="margin: 5px 0;"></td>
         </tr>
         {{#each tokens}}
         <tr class="actor-row" data-token-id="{{this.id}}" data-actor-id="{{this.actorId}}" data-distance="{{this.distance}}">
+            <td><img src="{{this.img}}" class="actor-image" alt="{{this.name}}"></td>
             <td>{{this.name}}</td>
             <td>{{this.distance}}</td>
             <td class="{{this.dispositionClass}}">{{this.disposition}}</td>
@@ -44,7 +47,7 @@
     .neutral { color: #ffaa00; }
     .friendly { color: #44ff44; }
     table th { padding: 5px; }
-    table td { padding: 3px 5px; }
+    table td { padding: 3px 5px; vertical-align: middle; }
     .actor-row { cursor: pointer; }
     .actor-row:hover { background-color: rgba(0, 0, 0, 0.1); }
     .actor-row.selected { 
@@ -66,5 +69,12 @@
     #selected-actors {
         padding: 5px;
         border-radius: 3px;
+    }
+    .actor-image {
+        width: 40px;
+        height: 40px;
+        border-radius: 4px;
+        object-fit: cover;
+        border: 1px solid rgba(0, 0, 0, 0.2);
     }
 </style> 

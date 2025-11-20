@@ -1,3 +1,8 @@
+import {
+    IlarisAutomatisierungSettingNames,
+    ConfigureGameSettingsCategories,
+} from '../../settings/configure-game-settings.model.js'
+
 export class CombatDialog extends Dialog {
     constructor(actor, item, dialogData, options) {
         super(dialogData, options)
@@ -26,6 +31,16 @@ export class CombatDialog extends Dialog {
      * This should be called after actor and item are set
      */
     _initializeSelectedActorsFromTargets() {
+        // Check if target selection feature is enabled
+        const useTargetSelection = game.settings.get(
+            ConfigureGameSettingsCategories.Ilaris,
+            IlarisAutomatisierungSettingNames.useTargetSelection,
+        )
+
+        if (!useTargetSelection) {
+            return
+        }
+
         if (!this.selectedActors && game.user.targets && game.user.targets.size > 0) {
             this.selectedActors = []
 
@@ -103,6 +118,10 @@ export class CombatDialog extends Dialog {
                 .toString(36)
                 .substring(2, 11)}`),
             selectedActors: this.selectedActors || [],
+            useTargetSelection: game.settings.get(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisAutomatisierungSettingNames.useTargetSelection,
+            ),
         }
     }
 
@@ -463,6 +482,27 @@ export class CombatDialog extends Dialog {
     }
 
     async handleTargetSelection(rollResult, attackType) {
+        // Check if target selection feature is enabled
+        const useTargetSelection = game.settings.get(
+            ConfigureGameSettingsCategories.Ilaris,
+            IlarisAutomatisierungSettingNames.useTargetSelection,
+        )
+
+        if (!useTargetSelection) {
+            // If target selection is disabled, just send the chat message without defense prompts
+            const html_roll = await renderTemplate(rollResult.templatePath, rollResult.templateData)
+            await rollResult.roll.toMessage(
+                {
+                    speaker: this.speaker,
+                    flavor: html_roll,
+                },
+                {
+                    rollMode: this.rollmode,
+                },
+            )
+            return
+        }
+
         // Determine if we should hide the roll result
         // Only hide roll for melee attacks with targets
         const hideRoll =

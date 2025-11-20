@@ -11,6 +11,7 @@ async function handleAkrobatikDefense(actor, rollResult, html) {
     // Validation successful - now remove highlighting and disable all buttons
     const chatMessage = html.closest('.chat-message')
     chatMessage.removeClass('ilaris-defense-prompt-highlight')
+    chatMessage.addClass('defense-handled')
 
     const allButtons = html.find('.defend-button')
     allButtons.prop('disabled', true)
@@ -301,6 +302,7 @@ export function registerDefenseButtonHook() {
                 // Validation successful - now remove highlighting and disable all buttons
                 const chatMessage = html.closest('.chat-message')
                 chatMessage.removeClass('ilaris-defense-prompt-highlight')
+                chatMessage.addClass('defense-handled')
 
                 const allButtons = html.find('.defend-button')
                 allButtons.prop('disabled', true)

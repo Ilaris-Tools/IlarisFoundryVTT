@@ -478,11 +478,10 @@ Hooks.on('renderActorDirectory', (app, html) => {
     })
 })
 
-// Format dice formulas in chat messages
+// Combined hook for chat message rendering
 Hooks.on('renderChatMessage', (message, html, data) => {
-    // Find all dice formula elements
+    // Format dice formulas in chat messages
     const diceFormulaElements = html.find('.dice-formula')
-
     diceFormulaElements.each((index, element) => {
         const $element = $(element)
         const originalFormula = $element.text().trim()
@@ -498,7 +497,37 @@ Hooks.on('renderChatMessage', (message, html, data) => {
             $element.text(formattedDice + remainder)
         }
     })
+
+    // Handle defense prompt message visibility
+    const isDefensePrompt = message.flags?.Ilaris?.defensePrompt
+    if (isDefensePrompt) {
+        // Skip if defense has already been handled
+        if (html.hasClass('defense-handled')) {
+            return
+        }
+
+        // Check if the current user should see the content
+        const targetActorId = message.flags.Ilaris.targetActorId
+        const currentUserCharacterId = game.user.character?.id
+        const isTarget = currentUserCharacterId === targetActorId
+
+        // If the user is not the target, hide the content
+        if (!isTarget && !game.user.isGM) {
+            const contentDiv = html.find('.message-content')
+            if (contentDiv.length > 0) {
+                contentDiv.html(
+                    '<p style="font-style: italic; opacity: 0.6;">Deine Verteidigungsaufforderung an einen anderen Spieler</p>',
+                )
+            }
+        }
+
+        if (isTarget || game.user.isGM) {
+            // Highlight the message for the target player
+            html.addClass('ilaris-defense-prompt-highlight')
+        }
+    }
 })
+
 // Cache for hex token shapes setting
 let hexTokenShapesEnabled = false
 
@@ -547,33 +576,6 @@ async function handleApplyDamageRequest(data) {
     // Apply damage as GM
     await _applyDamageDirectly(targetActor, damage, damageType, trueDamage, speaker)
 }
-
-// Hook to handle defense prompt message visibility
-Hooks.on('renderChatMessage', (message, html, data) => {
-    // Check if this is a defense prompt message
-    const isDefensePrompt = message.flags?.Ilaris?.defensePrompt
-    if (!isDefensePrompt) return
-
-    // Check if the current user should see the content
-    const targetActorId = message.flags.Ilaris.targetActorId
-    const currentUserCharacterId = game.user.character?.id
-    const isTarget = currentUserCharacterId === targetActorId
-
-    // If the user is not the target, hide the content
-    if (!isTarget && !game.user.isGM) {
-        const contentDiv = html.find('.message-content')
-        if (contentDiv.length > 0) {
-            contentDiv.html(
-                '<p style="font-style: italic; opacity: 0.6;">Deine Verteidigungsaufforderung an einen anderen Spieler</p>',
-            )
-        }
-    }
-
-    if (isTarget || game.user.isGM) {
-        // Highlight the message for the target player
-        html.addClass('ilaris-defense-prompt-highlight')
-    }
-})
 
 // Update when setting changes
 Hooks.on('updateSetting', (setting) => {
