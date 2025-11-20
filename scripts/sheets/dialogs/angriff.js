@@ -27,6 +27,11 @@ export class AngriffDialog extends CombatDialog {
         this.attackRoll = options.attackRoll || null
         this.isHumanoid = false
 
+        // Get fumble threshold from computed combat mechanics (calculated by eigenschaft system)
+        if (this.item.system.computed?.combatMechanics?.fumbleThreshold) {
+            this.fumble_val = this.item.system.computed.combatMechanics.fumbleThreshold
+        }
+
         this.aufbauendeManoeverAktivieren()
     }
 
@@ -806,6 +811,21 @@ export class AngriffDialog extends CombatDialog {
         }
         this.vt_abzuege_mod = this.actor.system.abgeleitete.globalermod
         super.updateStatusMods()
+    }
+
+    eigenschaftenText() {
+        if (!this.item.system.eigenschaften || this.item.system.eigenschaften.length === 0) {
+            return
+        }
+        this.text_at += '\nEigenschaften: '
+        this.text_at += this.item.system.eigenschaften.join(', ')
+    }
+
+    isGezieltSchlagActive() {
+        // Check if Gezielter Schlag (km_gzsl) maneuver is selected
+        return (
+            this.item.system.manoever.km_gzsl && this.item.system.manoever.km_gzsl.selected !== '0'
+        )
     }
 
     /**

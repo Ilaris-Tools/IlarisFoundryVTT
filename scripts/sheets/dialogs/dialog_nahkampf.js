@@ -69,8 +69,8 @@ export class NahkampfDialog extends Dialog {
         console.log(attr)
         let attr = `system.${toggletype}`
         if (toggletype == 'hauptwaffe' || toggletype == 'nebenwaffe') {
-            let item_status = getProperty(item, attr)
-            // item.update({[attr]: !getProperty(item.data, attr)});
+            let item_status = foundry.utils.getProperty(item, attr)
+            // item.update({[attr]: !foundry.utils.getProperty(item.data, attr)});
             if (item_status == false) {
                 for (let nwaffe of this.actor.nahkampfwaffen) {
                     console.log(nwaffe)
@@ -92,7 +92,7 @@ export class NahkampfDialog extends Dialog {
             await item.update({ [attr]: !item_status })
         } else {
             attr = `system.${toggletype}`
-            await item.update({ [attr]: !getProperty(item, attr) })
+            await item.update({ [attr]: !foundry.utils.getProperty(item, attr) })
         }
         // console.log(attr);
         // console.log(!getProperty(item.data, attr));

@@ -18,11 +18,12 @@ export function usesTwoWeapons(hauptWaffe, nebenWaffe, type = 'nahkampfwaffe') {
     if (typeof hauptWaffe == 'undefined' || typeof nebenWaffe == 'undefined') return false
     if (hauptWaffe.id == nebenWaffe.id) return false
     if (hauptWaffe.type != type || nebenWaffe.type != type) return false
-    if (
-        hauptWaffe.system.eigenschaften.zweihaendig === true ||
-        nebenWaffe.system.eigenschaften.zweihaendig === true
-    )
-        return false
+
+    // Check if either weapon requires two hands
+    const hauptZweihaendig = hauptWaffe.system.computed?.handsRequired === 2
+    const nebenZweihaendig = nebenWaffe.system.computed?.handsRequired === 2
+
+    if (hauptZweihaendig || nebenZweihaendig) return false
     return true
 }
 
@@ -34,13 +35,15 @@ export function usesOneWeaponOfType(hauptWaffe, nebenWaffe, type = 'nahkampfwaff
 }
 
 export function anyWeaponNeedsToMeetRequirement(hauptWaffe, nebenWaffe, requirement) {
+    const requirementLower = requirement.toLowerCase()
+
     if (hauptWaffe && hauptWaffe.system && hauptWaffe.system.eigenschaften) {
-        if (hauptWaffe.system.eigenschaften[requirement]) {
+        if (hauptWaffe.system.eigenschaften.some((e) => e.toLowerCase() === requirementLower)) {
             return true
         }
     }
     if (nebenWaffe && nebenWaffe.system && nebenWaffe.system.eigenschaften) {
-        if (nebenWaffe.system.eigenschaften[requirement]) {
+        if (nebenWaffe.system.eigenschaften.some((e) => e.toLowerCase() === requirementLower)) {
             return true
         }
     }
@@ -54,9 +57,18 @@ export function ignoreSideWeaponMalus(
     waffenEigenschaft = '',
 ) {
     if (!nebenWaffe) return
-    if (nebenWaffe.system.eigenschaften.kein_malus_nebenwaffe) return
-    if (waffenEigenschaft && !nebenWaffe.system.eigenschaften[waffenEigenschaft.toLowerCase()])
-        return
+
+    // Check if weapon ignores nebenwaffe malus (from eigenschaft data)
+    if (nebenWaffe.system.computed?.ignoreNebenMalus) return
+
+    if (waffenEigenschaft) {
+        // Check if weapon has the specified eigenschaft (case-insensitive)
+        const hasEigenschaft = nebenWaffe.system.eigenschaften.some(
+            (e) => e.toLowerCase() === waffenEigenschaft.toLowerCase(),
+        )
+
+        if (!hasEigenschaft) return
+    }
 
     nebenWaffe.system.at += 4
     nebenWaffe.system.vt += 4
