@@ -3,6 +3,7 @@ import { signed } from '../../common/wuerfel/chatutilities.js'
 import { handleModifications } from './shared_dialog_helpers.js'
 import { CombatDialog } from './combat_dialog.js'
 import * as hardcoded from '../../actors/hardcodedvorteile.js'
+import { formatDiceFormula } from '../../common/utilities.js'
 
 export class FernkampfAngriffDialog extends CombatDialog {
     constructor(actor, item) {
@@ -147,7 +148,9 @@ export class FernkampfAngriffDialog extends CombatDialog {
         const maneuverMod = this.mod_at || 0
         const totalMod = maneuverMod + statusMods + nahkampfMods
         const finalFK = baseFK + totalMod
-        const finalFormula = finalFK >= 0 ? `${diceFormula}+${finalFK}` : `${diceFormula}${finalFK}`
+        const formattedDice = formatDiceFormula(diceFormula)
+        const finalFormula =
+            finalFK >= 0 ? `${formattedDice}+${finalFK}` : `${formattedDice}${finalFK}`
 
         let summary = '<div class="modifier-summary attack-summary clickable-summary angreifen">'
         summary += `<h4>🏹 Fernkampf: ${finalFormula}</h4>`
