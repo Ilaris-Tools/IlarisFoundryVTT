@@ -787,6 +787,64 @@ hr {
   white-space: pre-line;
 }
 
+/* Effects Section Styles */
+.effects-section {
+  margin: 10px 0;
+}
+
+.effects-section label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.effects-list {
+  margin-top: 10px;
+  border: 1px solid #232323;
+  border-radius: 4px;
+}
+
+.effect-item {
+  padding: 8px 12px;
+  border-bottom: 1px solid #232323;
+  align-items: center;
+  gap: 10px;
+}
+
+.effect-item:last-child {
+  border-bottom: none;
+}
+
+.effect-image {
+  flex: 0 0 auto;
+}
+
+.effect-image img {
+  border-radius: 3px;
+  border: 1px solid #999;
+}
+
+.effect-name {
+  flex: 1;
+  font-size: 14px;
+}
+
+.effect-name em {
+  color: #666;
+  font-size: 12px;
+}
+
+.effect-controls {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 5px;
+}
+.no-effects {
+  padding: 20px;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+}
+/* Sync kampfstile button styling */
 /* Sync items button styling */
 .sync-items {
   color: #4f4f4f;
