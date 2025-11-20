@@ -34,17 +34,48 @@ describe('WieldingProcessor', () => {
     })
 
     describe('process', () => {
-        it('should not apply penalties for non-two-handed weapons', () => {
+        it('should not apply penalties for non-nebenwaffe one-handed weapons', () => {
             const eigenschaft = {
                 wieldingRequirements: {
                     hands: 1,
                 },
             }
-
+            mockWeapon.system.hauptwaffe = true
+            mockWeapon.system.nebenwaffe = false
             processor.process(eigenschaft, computed, mockActor, mockWeapon)
-
             expect(computed.at).toBe(0)
             expect(computed.vt).toBe(0)
+        })
+
+        it('should apply -4 AT/-4 VT for nebenwaffe without ignoreNebenMalus', () => {
+            const eigenschaft = {
+                wieldingRequirements: {
+                    hands: 1,
+                },
+            }
+            mockWeapon.system.hauptwaffe = false
+            mockWeapon.system.nebenwaffe = true
+            processor.process(eigenschaft, computed, mockActor, mockWeapon)
+            expect(computed.at).toBe(-4)
+            expect(computed.vt).toBe(-4)
+            expect(computed.penalties).toContain('Nebenwaffe: -4 AT/-4 VT')
+        })
+
+        it('should NOT apply -4 AT/-4 VT for nebenwaffe with ignoreNebenMalus', () => {
+            const eigenschaft = {
+                wieldingRequirements: {
+                    hands: 1,
+                    ignoreNebenMalus: true,
+                },
+            }
+            mockWeapon.system.hauptwaffe = false
+            mockWeapon.system.nebenwaffe = true
+            // Simulate computed.ignoreNebenMalus set by processor
+            computed.ignoreNebenMalus = true
+            processor.process(eigenschaft, computed, mockActor, mockWeapon)
+            expect(computed.at).toBe(0)
+            expect(computed.vt).toBe(0)
+            expect(computed.penalties).not.toContain('Nebenwaffe: -4 AT/-4 VT')
         })
 
         it('should apply hauptOnly penalties', () => {
@@ -82,8 +113,8 @@ describe('WieldingProcessor', () => {
 
             processor.process(eigenschaft, computed, mockActor, mockWeapon)
 
-            expect(computed.at).toBe(-4)
-            expect(computed.vt).toBe(-4)
+            expect(computed.at).toBe(-8)
+            expect(computed.vt).toBe(-8)
             expect(computed.penalties).toContain('Only off hand')
         })
 
@@ -107,10 +138,11 @@ describe('WieldingProcessor', () => {
             expect(computed.vt).toBe(0)
         })
 
-        it('should skip nebenWithoutExemption penalty if weapon has exemption', () => {
+        it('should skip nebenWithoutExemption penalty if weapon has ignoreNebenMalus flag', () => {
             mockWeapon.system.hauptwaffe = false
             mockWeapon.system.nebenwaffe = false
-            mockWeapon.system.eigenschaften = ['kein Malus als Nebenwaffe']
+            // Simulate computed.ignoreNebenMalus set by processor
+            computed.ignoreNebenMalus = true
 
             const eigenschaft = {
                 wieldingRequirements: {

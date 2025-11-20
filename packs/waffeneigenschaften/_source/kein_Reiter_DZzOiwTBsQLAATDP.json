@@ -6,7 +6,7 @@
     "sephrastoScript": "",
     "foundryScript": "",
     "text": "",
-    "kategorie": "passive",
+    "kategorie": "wielding",
     "modifiers": {
       "at": 0,
       "vt": 0,
@@ -17,10 +17,12 @@
     "conditions": [],
     "wieldingRequirements": {
       "hands": 1,
+      "ignoreNebenMalus": false,
+      "noRider": true,
       "penalties": {
-        "hauptOnly": null,
-        "nebenOnly": null,
-        "nebenWithoutExemption": null
+        "hauptOnly": {},
+        "nebenOnly": {},
+        "nebenWithoutExemption": {}
       }
     },
     "targetEffect": {
