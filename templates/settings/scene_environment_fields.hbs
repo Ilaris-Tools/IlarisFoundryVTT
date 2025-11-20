@@ -1,0 +1,19 @@
+<h3><i class="fas fa-cloud-sun"></i> Ilaris Umgebungseinstellungen</h3>
+<p class="notes">Konfiguriere die Umgebungsbedingungen (Licht und Wetter) für diese Scene. Diese werden automatisch in Fernkampf-Dialogen vorausgewählt, wenn das Feature in den World Settings aktiviert ist.</p>
+
+<div class="form-group ilaris-environment-setting">
+    <label>{{get_label "lcht"}}</label>
+    <select name="flags.Ilaris.sceneConditions.lcht" data-ilaris-environment="true">
+        {{selectOptions lcht_choice selected=environment.lcht localize=false}}
+    </select>
+    <p class="hint">Lichtverhältnisse auf dieser Scene</p>
+</div>
+
+<div class="form-group ilaris-environment-setting">
+    <label>{{get_label "wttr"}}</label>
+    <select name="flags.Ilaris.sceneConditions.wttr" data-ilaris-environment="true">
+        {{selectOptions wttr_choice selected=environment.wttr localize=false}}
+    </select>
+    <p class="hint">Wetterbedingungen auf dieser Scene</p>
+</div>
+

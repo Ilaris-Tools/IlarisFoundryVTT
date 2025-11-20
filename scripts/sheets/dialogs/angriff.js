@@ -1,36 +1,42 @@
-import { roll_crit_message, get_statuseffect_by_id } from '../../common/wuerfel/wuerfel_misc.js'
+import { evaluate_roll_with_crit } from '../../common/wuerfel/wuerfel_misc.js'
 import { signed } from '../../common/wuerfel/chatutilities.js'
-import { handleModifications } from './shared_dialog_helpers.js'
+import { handleModifications, applyDamageToTarget } from './shared_dialog_helpers.js'
 import { CombatDialog } from './combat_dialog.js'
+import { formatDiceFormula } from '../../common/utilities.js'
 
 export class AngriffDialog extends CombatDialog {
-    constructor(actor, item) {
-        const dialog = { title: `Kampf: ${item.name}` }
-        const options = {
+    constructor(actor, item, options = {}) {
+        const title = options.isDefenseMode
+            ? `Verteidigung gegen ${options?.attackingActor?.name || 'Unbekannt'} (${item.name})`
+            : `Kampf: ${item.name}`
+
+        const dialog = { title }
+        const dialogOptions = {
             template: 'systems/Ilaris/templates/sheets/dialogs/angriff.hbs',
             width: 900,
             height: 'auto',
+            classes: ['angriff-dialog'],
         }
-        super(dialog, options)
-        // this can be probendialog (more abstract)
-        this.text_at = ''
+        super(actor, item, dialog, dialogOptions)
+
+        // Specific properties for melee combat
         this.text_vt = ''
-        this.text_dm = ''
-        this.item = item
-        this.actor = actor
-        this.speaker = ChatMessage.getSpeaker({ actor: this.actor })
-        this.rollmode = game.settings.get('core', 'rollMode') // public, private....
-        this.item.system.manoever.rllm.selected = game.settings.get('core', 'rollMode') // TODO: either manoever or dialog property.
-        this.fumble_val = 1
+        this.riposte = false
+        this.isDefenseMode = options.isDefenseMode || false
+        this.attackingActor = options.attackingActor || null
+        this.attackRoll = options.attackRoll || null
         this.isHumanoid = false
-        if (this.item.system.eigenschaften.unberechenbar) {
-            this.fumble_val = 2
-        }
+
         this.aufbauendeManoeverAktivieren()
     }
 
-    getData() {
+    async getData() {
         let data = super.getData()
+        data.isDefenseMode = this.isDefenseMode
+        data.attackingActor = this.attackingActor
+        if (this.isDefenseMode && this.attackingActor) {
+            this.selectedActors = [this.attackingActor]
+        }
         data.isHumanoid = this.isHumanoid
         return data
     }
@@ -40,37 +46,19 @@ export class AngriffDialog extends CombatDialog {
         html.find('.verteidigen').click((ev) => this._verteidigenKlick(html))
         html.find('.schaden').click((ev) => this._schadenKlick(html))
 
-        // Store a reference to prevent multiple updates
-        this._updateTimeout = null
-
-        // Find the modifier summary element (should now exist in template)
-        this._modifierElement = html.find('#modifier-summary')
-
-        if (this._modifierElement.length === 0) {
-            console.warn('MODIFIER DISPLAY: Element nicht im Template gefunden')
-            return
+        // If in defense mode, disable attack-related buttons
+        if (this.isDefenseMode) {
+            html.find('.angreifen').prop('disabled', true).css('opacity', '0.5')
+            html.find('.show-nearby').prop('disabled', true).css('opacity', '0.5')
+            if (this.riposte) {
+                html.find('.schaden').prop('disabled', false).css('opacity', '1')
+            } else {
+                html.find('.schaden').prop('disabled', true).css('opacity', '0.5')
+            }
         }
 
-        // Add listeners for real-time modifier updates with debouncing
-        html.find('input, select').on('change input', () => {
-            // Clear previous timeout
-            if (this._updateTimeout) {
-                clearTimeout(this._updateTimeout)
-            }
-
-            // Set new timeout to debounce rapid changes
-            this._updateTimeout = setTimeout(() => {
-                this.updateModifierDisplay(html)
-            }, 300)
-        })
-
-        // Initial display update
-        setTimeout(() => {
-            this.updateModifierDisplay(html)
-        }, 500)
-
-        // Add event listeners for clickable summary sections
-        this.addSummaryClickListeners(html)
+        // Setup modifier display with debounced listeners
+        this.setupModifierDisplay(html)
     }
 
     getSummaryClickActions(html) {
@@ -128,10 +116,14 @@ export class AngriffDialog extends CombatDialog {
         const maneuverMod = this.mod_at || 0
         const totalMod = maneuverMod + statusMods + nahkampfMods
         const finalAT = baseAT + totalMod
-        const finalFormula = finalAT >= 0 ? `${diceFormula}+${finalAT}` : `${diceFormula}${finalAT}`
+        const formattedDice = formatDiceFormula(diceFormula)
+        const finalFormula =
+            finalAT >= 0 ? `${formattedDice}+${finalAT}` : `${formattedDice}${finalAT}`
 
-        let summary = '<div class="modifier-summary attack-summary clickable-summary angreifen">'
-        summary += `<h4>🗡️ Angriff: ${finalFormula}</h4>`
+        const isClickableStyle = this.isDefenseMode ? '' : 'clickable-summary'
+        const isDisabledStyle = this.isDefenseMode ? 'disabled' : ''
+        let summary = `<div class="modifier-summary attack-summary ${isClickableStyle} angreifen">`
+        summary += `<h4 class="${isDisabledStyle}">🗡️ Angriff: ${finalFormula}</h4>`
         summary += '<div class="modifier-list">'
 
         // Base AT
@@ -187,7 +179,9 @@ export class AngriffDialog extends CombatDialog {
         const maneuverMod = this.mod_vt || 0
         const totalMod = maneuverMod + vtStatusMods + nahkampfMods
         const finalVT = baseVT + totalMod
-        const finalFormula = finalVT >= 0 ? `${diceFormula}+${finalVT}` : `${diceFormula}${finalVT}`
+        const formattedDice = formatDiceFormula(diceFormula)
+        const finalFormula =
+            finalVT >= 0 ? `${formattedDice}+${finalVT}` : `${formattedDice}${finalVT}`
 
         let summary = '<div class="modifier-summary defense-summary clickable-summary verteidigen">'
         summary += `<h4>🛡️ Verteidigung: ${finalFormula}</h4>`
@@ -252,8 +246,11 @@ export class AngriffDialog extends CombatDialog {
             finalFormula = `${baseDamage} ${sign}${maneuverMod}`
         }
 
-        let summary = '<div class="modifier-summary damage-summary clickable-summary schaden">'
-        summary += `<h4>🩸 Schaden: ${finalFormula}</h4>`
+        const isClickableStyle = this.isDefenseMode && !this.riposte ? '' : 'clickable-summary'
+        const isDisabledStyle = this.isDefenseMode && !this.riposte ? 'disabled' : ''
+
+        let summary = `<div class="modifier-summary damage-summary ${isClickableStyle} schaden">`
+        summary += `<h4 class="${isDisabledStyle}">🩸 Schaden: ${finalFormula}</h4>`
         summary += '<div class="modifier-list">'
 
         // Base damage
@@ -299,7 +296,7 @@ export class AngriffDialog extends CombatDialog {
         // at_abzuege_mod kommen vom status/gesundheit, at_mod aus ansagen, nahkampfmod?
         let diceFormula = this.getDiceFormula(html)
         await this.manoeverAuswaehlen(html)
-        await this.updateManoeverMods() // durch manoever
+        await this.updateManoeverMods(html) // durch manoever
         this.updateStatusMods()
         this.eigenschaftenText()
 
@@ -308,48 +305,240 @@ export class AngriffDialog extends CombatDialog {
             ${signed(this.at_abzuege_mod)} \
             ${signed(this.item.actor.system.modifikatoren.nahkampfmod)} \
             ${signed(this.mod_at)}`
-        await roll_crit_message(
+
+        // Use the new evaluation function
+        const rollResult = await evaluate_roll_with_crit(
             formula,
             label,
             this.text_at,
-            this.speaker,
-            this.rollmode,
-            true,
+            null, // success_val
             this.fumble_val,
+            true, // crit_eval
         )
         super._updateSchipsStern(html)
         this.updateModifierDisplay(html)
+        await this.handleTargetSelection(rollResult, 'melee')
     }
 
     async _verteidigenKlick(html) {
         await this.manoeverAuswaehlen(html)
-        await this.updateManoeverMods()
+        await this.updateManoeverMods(html)
         this.updateStatusMods()
         let label = `Verteidigung (${this.item.name})`
         let diceFormula = this.getDiceFormula(html)
         let formula = `${diceFormula} ${signed(this.item.system.vt)} ${signed(
             this.vt_abzuege_mod,
         )} ${signed(this.item.actor.system.modifikatoren.nahkampfmod)} ${signed(this.mod_vt)}`
-        await roll_crit_message(
+
+        // Use the new evaluation function
+        const rollResult = await evaluate_roll_with_crit(
             formula,
             label,
             this.text_vt,
-            this.speaker,
-            this.rollmode,
-            true,
+            null, // success_val
             this.fumble_val,
+            true, // crit_eval
         )
+
+        // In defense mode, always hide the roll result initially
+        if (this.isDefenseMode) {
+            const templateData = {
+                ...rollResult.templateData,
+                // Hide specific results
+                success: false,
+                fumble: false,
+                crit: false,
+                is16OrHigher: false,
+                noSuccess: false,
+                // Add a message indicating hidden roll
+                text: rollResult.templateData.text + '\nVerteidigungsergebnis verborgen.',
+            }
+
+            // Send the hidden defense roll
+            const html_roll = await renderTemplate(rollResult.templatePath, templateData)
+            await rollResult.roll.toMessage(
+                {
+                    speaker: this.speaker,
+                    flavor: html_roll,
+                    blind: true,
+                    whisper: [game.user.id],
+                },
+                {
+                    rollMode: 'gmroll',
+                },
+            )
+
+            // Store the defense roll result
+            this.lastDefenseRoll = {
+                roll: rollResult.roll,
+                success: rollResult.success,
+                is16OrHigher: rollResult.is16OrHigher,
+                templateData: rollResult.templateData,
+                actor: this.actor,
+            }
+
+            // Resolve the attack vs defense
+            await this.resolveAttackVsDefense(html)
+        } else {
+            // Normal defense roll (not in response to an attack)
+            const html_roll = await renderTemplate(rollResult.templatePath, rollResult.templateData)
+            await rollResult.roll.toMessage(
+                {
+                    speaker: this.speaker,
+                    flavor: html_roll,
+                },
+                {
+                    rollMode: this.rollmode,
+                },
+            )
+        }
+    }
+
+    async resolveAttackVsDefense(html, overrideAttackRoll = null) {
+        // Ensure we have both rolls
+        if (!this.lastDefenseRoll || !this.attackRoll) return
+
+        // Get the attack total to use
+        const attackTotal =
+            overrideAttackRoll !== null ? overrideAttackRoll : this.attackRoll.roll.total
+
+        // Compare the rolls based on special conditions first
+        let defenderWins = false
+        let reason = ''
+
+        // Both rolled crits or both rolled fumbles - highest value wins
+        if (
+            (this.attackRoll.crit && this.lastDefenseRoll.crit) ||
+            (this.attackRoll.fumble && this.lastDefenseRoll.fumble)
+        ) {
+            defenderWins = this.lastDefenseRoll.roll.total >= attackTotal
+            reason = 'Höchster Wurf gewinnt'
+        }
+        // Attacker rolled crit - attacker wins
+        else if (this.attackRoll.crit) {
+            defenderWins = false
+            reason = 'Kritischer Treffer'
+        }
+        // Defender rolled crit - defender wins
+        else if (this.lastDefenseRoll.crit) {
+            defenderWins = true
+            reason = 'Kritische Verteidigung'
+        }
+        // Attacker rolled fumble - defender wins
+        else if (this.attackRoll.fumble) {
+            defenderWins = true
+            reason = 'Patzer beim Angriff'
+        }
+        // Defender rolled fumble - attacker wins
+        else if (this.lastDefenseRoll.fumble) {
+            defenderWins = false
+            reason = 'Patzer bei der Verteidigung'
+        }
+        // Normal comparison - defender wins ties
+        else {
+            defenderWins = this.lastDefenseRoll.roll.total >= attackTotal
+            reason = defenderWins ? 'Erfolgreiche Verteidigung' : 'Erfolgreicher Angriff'
+        }
+
+        // Prepare the result message
+        let resultText = `<div class="attack-resolution" style="padding: 10px;">
+            <h3 style="margin-bottom: 10px;">Kampfergebnis</h3>
+            <div style="margin-bottom: 5px;">
+                <strong>${this.attackingActor.name}</strong> greift <strong>${this.lastDefenseRoll.actor.name}</strong> an
+            </div>`
+
+        if (defenderWins) {
+            resultText += `<div style="color: #44aa44; font-weight: bold; margin-top: 10px;">
+                ${this.lastDefenseRoll.actor.name} wehrt den Angriff erfolgreich ab!
+            </div>`
+        } else {
+            resultText += `<div style="color: #aa4444; font-weight: bold; margin-top: 10px;">
+                ${this.attackingActor.name} durchbricht die Verteidigung!
+            </div>`
+        }
+
+        // Add the reason for the result
+        resultText += `<div style="font-style: italic; margin-top: 5px;">${reason}</div>`
+
+        // Add any special conditions that occurred
+        const rollMessages = [
+            {
+                roll: this.attackRoll,
+                critMsg: `<div style="color: #44aa44; font-style: italic;">Kritischer Treffer!</div>`,
+                fumbleMsg: `<div style="color: #aa4444; font-style: italic;">Patzer beim Angriff!</div>`,
+            },
+            {
+                roll: this.lastDefenseRoll,
+                critMsg: `<div style="color: #44aa44; font-style: italic;">Kritische Verteidigung!</div>`,
+                fumbleMsg: `<div style="color: #aa4444; font-style: italic;">Patzer bei der Verteidigung!</div>`,
+            },
+        ]
+
+        for (const { roll, critMsg, fumbleMsg } of rollMessages) {
+            if (roll?.crit) {
+                resultText += critMsg
+            }
+            if (roll?.fumble) {
+                resultText += fumbleMsg
+            }
+        }
+
+        resultText += '</div>'
+
+        // Send the resolution message
+        await ChatMessage.create({
+            content: resultText,
+            speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+            type: CONST.CHAT_MESSAGE_STYLES.OTHER,
+        })
+
+        // Clean up the stored rolls
+        this.lastDefenseRoll = null
+        this.attackRoll = null
         super._updateSchipsStern(html)
         this.updateModifierDisplay(html)
     }
 
     async _schadenKlick(html) {
         await this.manoeverAuswaehlen(html)
-        await this.updateManoeverMods()
-        // Rollmode
+        await this.updateManoeverMods(html)
         let label = `Schaden (${this.item.name})`
         let formula = `${this.schaden} ${signed(this.mod_dm)}`
-        await roll_crit_message(formula, label, this.text_dm, this.speaker, this.rollmode, false, 0)
+
+        // Use the new evaluation function for damage (no crit evaluation)
+        const rollResult = await evaluate_roll_with_crit(
+            formula,
+            label,
+            this.text_dm,
+            null, // success_val
+            1, // fumble_val not used since crit_eval is false
+            false, // crit_eval
+        )
+
+        // Send the chat message
+        const html_roll = await renderTemplate(rollResult.templatePath, rollResult.templateData)
+        await rollResult.roll.toMessage(
+            {
+                speaker: this.speaker,
+                flavor: html_roll,
+            },
+            {
+                rollMode: this.rollmode,
+            },
+        )
+
+        // Apply damage to selected targets if any
+        if (this.selectedActors && this.selectedActors.length > 0) {
+            for (const target of this.selectedActors) {
+                await applyDamageToTarget(
+                    target,
+                    rollResult.roll.total,
+                    this.damageType,
+                    this.trueDamage,
+                    this.speaker,
+                )
+            }
+        }
     }
 
     aufbauendeManoeverAktivieren() {
@@ -390,7 +579,7 @@ export class AngriffDialog extends CombatDialog {
         super.manoeverAuswaehlen(html)
     }
 
-    async updateManoeverMods() {
+    async updateManoeverMods(html) {
         let manoever = this.item.system.manoever
 
         let mod_at = 0
@@ -404,6 +593,8 @@ export class AngriffDialog extends CombatDialog {
         let nodmg = { name: '', value: false }
         let trefferzone = 0
         let schaden = this.item.getTp()
+        let damageType = 'NORMAL'
+        let trueDamage = false
 
         // Collect all modifications from all maneuvers
         const allModifications = []
@@ -464,6 +655,8 @@ export class AngriffDialog extends CombatDialog {
             trefferzone,
             schaden,
             nodmg,
+            damageType,
+            trueDamage,
         ] = handleModifications(allModifications, {
             mod_at,
             mod_vt,
@@ -476,6 +669,8 @@ export class AngriffDialog extends CombatDialog {
             trefferzone,
             schaden,
             nodmg,
+            damageType,
+            trueDamage,
             context: this,
         })
 
@@ -506,9 +701,12 @@ export class AngriffDialog extends CombatDialog {
         const riposteManeuver = this.item.manoever.find(
             (m) => m.name === 'Riposte' && m.inputValue.value,
         )
-        if (riposteManeuver && mod_at < 0) {
-            mod_vt += mod_at
-            text_vt = text_vt.concat(`Riposte (Attackemanöver): ${mod_at}\n`)
+        if (riposteManeuver) {
+            if (mod_at < 0) {
+                mod_vt += mod_at
+                text_vt = text_vt.concat(`Riposte (Attackemanöver): ${mod_at}\n`)
+            }
+            this.riposte = true
         }
 
         // Handle tactical options after handleModifications (so they don't affect Riposte)
@@ -554,33 +752,31 @@ export class AngriffDialog extends CombatDialog {
             }
         }
 
-        // If ZERO_DAMAGE was found, override damage values
-        if (nodmg.value) {
-            mod_dm = 0
-            schaden = '0'
-            // Add text explaining zero damage if not already present
-            if (!text_dm.includes('Kein Schaden')) {
-                text_dm = text_dm.concat(`${nodmg.name}: Kein Schaden\n`)
-            }
-        }
+        // Apply common damage logic (zero damage, trefferzone, modifikator)
+        const updated = await this.applyCommonDamageLogic({
+            nodmg,
+            mod_dm,
+            schaden,
+            text_dm,
+            trefferzone,
+            mod_at,
+            mod_vt,
+            text_at,
+            text_vt,
+            damageType,
+            trueDamage,
+        })
 
-        // Trefferzone if not set by manoever but Gezielter Schlag is active
-        if (trefferzone == 0 && this.isGezieltSchlagActive()) {
-            let zonenroll = new Roll('1d6')
-            await zonenroll.evaluate()
-            text_dm = text_dm.concat(
-                `Trefferzone: ${CONFIG.ILARIS.trefferzonen[zonenroll.total]}\n`,
-            )
-        }
-
-        // Modifikator
-        let modifikator = Number(manoever.mod.selected)
-        if (modifikator != 0) {
-            mod_vt += modifikator
-            mod_at += modifikator
-            text_vt = text_vt.concat(`Modifikator: ${modifikator}\n`)
-            text_at = text_at.concat(`Modifikator: ${modifikator}\n`)
-        }
+        mod_dm = updated.mod_dm
+        schaden = updated.schaden
+        text_dm = updated.text_dm
+        trefferzone = updated.trefferzone
+        mod_at = updated.mod_at
+        mod_vt = updated.mod_vt
+        text_at = updated.text_at
+        text_vt = updated.text_vt
+        damageType = updated.damageType
+        trueDamage = updated.trueDamage
 
         this.mod_at = mod_at
         this.mod_vt = mod_vt
@@ -589,6 +785,8 @@ export class AngriffDialog extends CombatDialog {
         this.text_vt = text_vt
         this.text_dm = text_dm
         this.schaden = schaden
+        this.damageType = damageType
+        this.trueDamage = trueDamage
     }
 
     updateStatusMods() {
@@ -608,21 +806,6 @@ export class AngriffDialog extends CombatDialog {
         }
         this.vt_abzuege_mod = this.actor.system.abgeleitete.globalermod
         super.updateStatusMods()
-    }
-
-    eigenschaftenText() {
-        if (!this.item.system.eigenschaften.length > 0) {
-            return
-        }
-        this.text_at += '\nEigenschaften: '
-        this.text_at += this.item.system.eigenschaften.map((e) => e.name).join(', ')
-    }
-
-    isGezieltSchlagActive() {
-        // Check if Gezielter Schlag (km_gzsl) maneuver is selected
-        return (
-            this.item.system.manoever.km_gzsl && this.item.system.manoever.km_gzsl.selected !== '0'
-        )
     }
 
     /**

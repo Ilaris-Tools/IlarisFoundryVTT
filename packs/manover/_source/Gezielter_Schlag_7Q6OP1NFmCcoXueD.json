@@ -27,7 +27,8 @@
     "input": {
       "label": "",
       "field": "TREFFER_ZONE"
-    }
+    },
+    "isBaseManoever": true
   },
   "effects": [],
   "folder": null,
