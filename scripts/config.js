@@ -522,6 +522,7 @@ let vorteilsgruppen = [
     { value: '5', label: 'Zauber Traditionen' },
     { value: '6', label: 'Karma' },
     { value: '7', label: 'Geweihte Traditionen' },
+    { value: '8', label: 'Tiergeist' },
 ]
 ILARIS.vorteilsgruppen = vorteilsgruppen
 

@@ -3,7 +3,7 @@ import { signed } from '../../common/wuerfel/chatutilities.js'
 import { handleModifications } from './shared_dialog_helpers.js'
 import { CombatDialog } from './combat_dialog.js'
 import * as hardcoded from '../../actors/hardcodedvorteile.js'
-import { sanitizeEnergyCost, isNumericCost } from '../../common/utilities.js'
+import { sanitizeEnergyCost, isNumericCost, formatDiceFormula } from '../../common/utilities.js'
 import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
@@ -102,7 +102,9 @@ export class UebernatuerlichDialog extends CombatDialog {
         const maneuverMod = this.mod_at || 0
         const totalMod = maneuverMod + statusMods + nahkampfMods
         const finalPW = basePW + totalMod
-        const finalFormula = finalPW >= 0 ? `${diceFormula}+${finalPW}` : `${diceFormula}${finalPW}`
+        const formattedDice = formatDiceFormula(diceFormula)
+        const finalFormula =
+            finalPW >= 0 ? `${formattedDice}+${finalPW}` : `${formattedDice}${finalPW}`
 
         const itemType = this.item.type === 'zauber' ? 'Zauber' : 'Liturgie'
         const icon = this.item.type === 'zauber' ? '🔮' : '✨'
