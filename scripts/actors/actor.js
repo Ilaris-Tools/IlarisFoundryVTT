@@ -470,10 +470,7 @@ export class IlarisActor extends Actor {
 
     async _calculateKampf(actor) {
         console.log('Berechne Kampf')
-        const KK = actor.system.attribute.KK.wert
-        const sb = Math.floor(KK / 4)
         // data.data.abgeleitete.sb = sb;
-        let be = actor.system.abgeleitete.be
         let nahkampfmod = actor.system.modifikatoren.nahkampfmod
         // let wundabzuege = data.data.gesundheit.wundabzuege;
         let kampfstile = hardcoded.getKampfstile(actor)
@@ -492,240 +489,24 @@ export class IlarisActor extends Actor {
         let NW =
             actor.nahkampfwaffen.find((x) => x.system.nebenwaffe == true) ||
             actor.fernkampfwaffen.find((x) => x.system.nebenwaffe == true)
-        for (let nwaffe of actor.nahkampfwaffen) {
-            if (nwaffe.system.manoever == undefined) {
-                console.log('Ich überschreibe Manöver')
-            }
-            nwaffe.system.manoever =
-                nwaffe.system.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_nahkampf)
-
-            // Weapon stats are calculated in WaffeItem.prepareDerivedData()
-            // Use computed values from the data-driven eigenschaft system
-            let at = nwaffe.system.computed.at
-            let vt = nwaffe.system.computed.vt
-            let schaden = sb + nwaffe.system.computed.schadenBonus
-
-            // Add skill values
-            let fertigkeit = nwaffe.system.fertigkeit
-            let talent = nwaffe.system.talent
-            let pw = actor.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.system.pw
-            let pwt = actor.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.system.pwt
-            let taltrue = actor.profan.fertigkeiten
-                .find((x) => x.name == fertigkeit)
-                ?.system.talente.find((x) => x.name == talent)
-
-            if (typeof pw !== 'undefined') {
-                if (typeof taltrue !== 'undefined') {
-                    at += pwt
-                    vt += pwt
-                } else {
-                    at += pw
-                    vt += pw
-                }
-            }
-
-            // Apply manual modifiers
-            const mod_at = nwaffe.system.mod_at
-            const mod_vt = nwaffe.system.mod_vt
-            const mod_schaden = nwaffe.system.mod_schaden
-            if (!isNaN(mod_at)) {
-                at += mod_at
-            }
-            if (!isNaN(mod_vt)) {
-                vt += mod_vt
-            }
-
-            nwaffe.system.at = at
-            nwaffe.system.vt = vt
-            nwaffe.system.schaden = `${nwaffe.system.tp}${schaden < 0 ? schaden : '+' + schaden}`
-            if (typeof mod_schaden !== 'undefined' && mod_schaden !== null && mod_schaden !== '') {
-                nwaffe.system.schaden = `${nwaffe.system.tp}${
-                    mod_schaden < 0 ? mod_schaden : '+' + mod_schaden
-                }`
-            }
-
-            nwaffe.system.manoever.vlof.offensiver_kampfstil = actor.vorteil.kampf.some(
-                (x) => x.name == 'Offensiver Kampfstil',
-            )
-            nwaffe.system.rw_mod = nwaffe.system.rw
-        }
 
         for (let fwaffe of actor.fernkampfwaffen) {
-            fwaffe.system.manoever =
-                fwaffe.system.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_fernkampf)
-
-            // Weapon stats are calculated in WaffeItem.prepareDerivedData()
-            // Use computed values from the data-driven eigenschaft system
-            let fk = fwaffe.system.computed.fk
-
-            // Add skill values
-            let fertigkeit = fwaffe.system.fertigkeit
-            let talent = fwaffe.system.talent
-            let pw = actor.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.system.pw
-            let pwt = actor.profan.fertigkeiten.find((x) => x.name == fertigkeit)?.system.pwt
-            let taltrue = actor.profan.fertigkeiten
-                .find((x) => x.name == fertigkeit)
-                ?.system.talente.find((x) => x.name == talent)
-
-            if (typeof pw !== 'undefined') {
-                if (typeof taltrue !== 'undefined') {
-                    fk += pwt
-                } else {
-                    fk += pw
-                }
-            }
-
-            // Apply manual modifiers
-            const mod_fk = fwaffe.system.mod_fk
             const mod_schaden = fwaffe.system.mod_schaden
-            if (!isNaN(mod_fk)) {
-                fk += mod_fk
-            }
-
-            fwaffe.system.fk = fk
-
-            // Check for special conditions
-            let ist_beritten = this.system.misc.ist_beritten
-            let zweihaendig = fwaffe.system.computed?.handsRequired === 2
-            let kein_reiter = fwaffe.system.computed?.noRider
-            let hauptwaffe = fwaffe.system.hauptwaffe
-            let nebenwaffe = fwaffe.system.nebenwaffe
-
-            if (ist_beritten) fwaffe.system.fk -= 4
-
-            if (zweihaendig && ((hauptwaffe && !nebenwaffe) || (!hauptwaffe && nebenwaffe))) {
-                fwaffe.system.fk = '-'
-            } else if (kein_reiter && (hauptwaffe || nebenwaffe)) {
-                if (ist_beritten) {
-                    fwaffe.system.fk = '-'
-                }
-            }
-
-            fwaffe.system.schaden = `${fwaffe.system.tp}`
-            if (typeof mod_schaden !== 'undefined' && mod_schaden !== null && mod_schaden !== '') {
-                fwaffe.system.schaden = `${fwaffe.system.tp}${
-                    mod_schaden < 0 ? mod_schaden : '+' + mod_schaden
-                }`
-            }
-            let rw = fwaffe.system.rw
-            fwaffe.system.rw_mod = rw
-            fwaffe.system.manoever.rw['0'] = `${rw} Schritt`
-            fwaffe.system.manoever.rw['1'] = `${2 * rw} Schritt`
-            fwaffe.system.manoever.rw['2'] = `${4 * rw} Schritt`
-            if (actor.vorteil.kampf.find((x) => x.name.includes('Reflexschuss')))
-                fwaffe.system.manoever.rflx = true
-            if (hardcoded.getKampfstilStufe('rtk', actor) >= 2)
-                fwaffe.system.manoever.brtn.rtk = true
-            // get status effects
-            // licht lcht
-            // console.log("bevor get_status_effects");
-            // console.log(data);
-            let ss1 = this.__getStatuseffectById(actor, 'schlechtesicht1')
-            let ss2 = this.__getStatuseffectById(actor, 'schlechtesicht2')
-            let ss3 = this.__getStatuseffectById(actor, 'schlechtesicht3')
-            let ss4 = this.__getStatuseffectById(actor, 'schlechtesicht4')
-            if (ss4) {
-                fwaffe.system.manoever.lcht.selected = 4
-            } else if (ss3) {
-                fwaffe.system.manoever.lcht.selected = 3
-            } else if (ss2) {
-                fwaffe.system.manoever.lcht.selected = 2
-            } else if (ss1) {
-                fwaffe.system.manoever.lcht.selected = 1
-            } else {
-                fwaffe.system.manoever.lcht.selected = 0
-            }
-            let lcht_angepasst = hardcoded.getAngepasst('Dunkelheit', actor)
-            // console.log(`licht angepasst: ${lcht_angepasst}`);
-            fwaffe.system.manoever.lcht.angepasst = lcht_angepasst
         }
 
         actor.misc.selected_kampfstil_conditions_not_met = ''
 
         if (
             weaponUtils.checkCombatStyleConditions(
-                selected_kampfstil?.stilBedingungen,
+                selected_kampfstil,
                 HW,
                 NW,
                 this.system.misc.ist_beritten,
                 actor,
             )
         ) {
-            // Execute foundryScript method calls if they exist
-            let methodResults = []
-            let ist_beritten = this.system.misc.ist_beritten
             actor.misc.selected_kampfstil_conditions_not_met = ''
             selected_kampfstil.active = true
-            if (
-                selected_kampfstil.foundryScriptMethods &&
-                selected_kampfstil.foundryScriptMethods.length > 0
-            ) {
-                // Initialize array to store method results if it doesn't exist
-
-                for (const methodCall of selected_kampfstil.foundryScriptMethods) {
-                    try {
-                        // Parse method name and user parameters from the method call
-                        const methodMatch = methodCall.match(/^(\w+)\((.*)\)$/)
-                        if (!methodMatch) {
-                            console.warn(
-                                `Invalid method format: ${methodCall}. Expected format: methodName(userParams)`,
-                            )
-                            continue
-                        }
-
-                        const methodName = methodMatch[1]
-                        const userParams = methodMatch[2].trim()
-
-                        // Build the full method call with automatic static parameters
-                        let fullMethodCall
-                        if (userParams) {
-                            // User provided additional parameters - append them after the static ones
-                            fullMethodCall = `${methodName}(HW, NW, ist_beritten, ${userParams})`
-                        } else {
-                            // No user parameters - just use the static ones
-                            fullMethodCall = `${methodName}(HW, NW, ist_beritten)`
-                        }
-
-                        // Create a function that has access to weapon-utils methods and executes the method call
-                        const executeMethod = new Function(
-                            'weaponUtils',
-                            'HW',
-                            'NW',
-                            'selected_kampfstil',
-                            'ist_beritten',
-                            `return weaponUtils.${fullMethodCall}`,
-                        )
-                        const result = executeMethod(
-                            weaponUtils,
-                            HW,
-                            NW,
-                            selected_kampfstil,
-                            ist_beritten,
-                        )
-
-                        console.log(`Executing kampfstil method: ${fullMethodCall}`)
-                        console.log('Result:', result)
-
-                        // Store the result with the method call for reference
-                        methodResults.push(result)
-
-                        console.log(
-                            `Kampfstil method ${methodCall} -> ${fullMethodCall} returned:`,
-                            result,
-                        )
-                    } catch (error) {
-                        console.warn(`Failed to execute kampfstil method: ${methodCall}`, error)
-                    }
-                }
-            }
-            if (methodResults && methodResults.length > 0 && methodResults.includes('ranged')) {
-                weaponUtils.applyModifierToWeapons(HW, NW, be, selected_kampfstil.modifiers, true)
-            } else {
-                weaponUtils.applyModifierToWeapons(HW, NW, be, selected_kampfstil.modifiers)
-            }
-            if (be > 0) {
-                be -= selected_kampfstil.modifiers.be
-            }
         } else {
             selected_kampfstil.active = false
         }

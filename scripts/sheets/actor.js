@@ -123,7 +123,8 @@ export class IlarisActorSheet extends ActorSheet {
 
     async _onToggleItem(event) {
         const itemId = event.currentTarget.dataset.itemid
-        const item = this.actor.items.get(itemId)
+        const item = foundry.utils.deepClone(this.actor.items.get(itemId))
+        let computed = foundry.utils.getProperty(item, 'system.computed')
         console.log(item)
         const toggletype = event.currentTarget.dataset.toggletype
         let attr = `system.${toggletype}`
@@ -133,6 +134,7 @@ export class IlarisActorSheet extends ActorSheet {
         if (toggletype == 'hauptwaffe' || toggletype == 'nebenwaffe') {
             let item_status = foundry.utils.getProperty(item, attr)
 
+            console.log(computed)
             // Handle two-handed ranged weapons
             if (
                 item_status &&

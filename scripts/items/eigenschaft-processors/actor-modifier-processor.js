@@ -9,7 +9,7 @@ export class ActorModifierProcessor extends BaseEigenschaftProcessor {
         return 'actor_modifier'
     }
 
-    process(eigenschaft, computed, actor, weapon) {
+    process(name, eigenschaft, computed, actor, weapon) {
         // These are processed at actor level, not weapon level
         computed.hasActorModifiers = true
     }

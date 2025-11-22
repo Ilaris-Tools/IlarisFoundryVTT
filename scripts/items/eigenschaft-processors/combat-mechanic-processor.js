@@ -9,16 +9,16 @@ export class CombatMechanicProcessor extends BaseEigenschaftProcessor {
         return 'combat_mechanic'
     }
 
-    process(eigenschaft, computed, actor, weapon) {
-        this._applyCombatMechanics(eigenschaft, computed)
-        this._registerConditionalModifiers(eigenschaft, computed)
+    process(name, eigenschaft, computed, actor, weapon) {
+        this._applyCombatMechanics(name, eigenschaft, computed)
+        this._registerConditionalModifiers(name, eigenschaft, computed)
     }
 
     /**
      * Apply combat mechanics like fumble/crit thresholds
      * @private
      */
-    _applyCombatMechanics(eigenschaft, computed) {
+    _applyCombatMechanics(name, eigenschaft, computed) {
         const mechanics = eigenschaft.combatMechanics
 
         if (!mechanics) return
@@ -49,7 +49,7 @@ export class CombatMechanicProcessor extends BaseEigenschaftProcessor {
      * Register conditional modifiers to be checked during combat
      * @private
      */
-    _registerConditionalModifiers(eigenschaft, computed) {
+    _registerConditionalModifiers(name, eigenschaft, computed) {
         const conditionalMods = eigenschaft.conditionalModifiers
 
         if (!conditionalMods || conditionalMods.length === 0) return

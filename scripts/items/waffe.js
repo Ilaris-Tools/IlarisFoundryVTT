@@ -1,6 +1,8 @@
 import { CombatItem } from './combat.js'
 import { EigenschaftCache } from './utils/eigenschaft-cache.js'
 import { ProcessorFactory } from './eigenschaft-processors/processor-factory.js'
+import * as hardcoded from './../actors/hardcodedvorteile.js'
+import * as weaponUtils from './../actors/weapon-utils.js'
 
 /**
  * Base class for weapon items (Nahkampfwaffe and Fernkampfwaffe)
@@ -27,11 +29,6 @@ export class WaffeItem extends CombatItem {
 
         // Only calculate if embedded in an actor
         if (!this.parent || this.parent.documentName !== 'Actor') return
-
-        // Only calculate if weapon is selected (hauptwaffe or nebenwaffe)
-        if (!this.system.hauptwaffe && !this.system.nebenwaffe) {
-            return
-        }
 
         // Ensure eigenschaft items are loaded
         if (!this._eigenschaftCache.isLoaded()) {
@@ -65,6 +62,7 @@ export class WaffeItem extends CombatItem {
     _calculateWeaponStats() {
         const actor = this.parent
         const system = this.system
+        const KK = actor.system.attribute.KK.wert
 
         // Initialize computed values
         system.computed = {
@@ -76,28 +74,167 @@ export class WaffeItem extends CombatItem {
             handsRequired: 1,
             ignoreNebenMalus: false,
             noRider: false,
-            penalties: [],
+            modifiers: {
+                at: [],
+                vt: [],
+                dmg: [],
+            },
             targetEffects: [],
             combatMechanics: {},
             conditionalModifiers: [],
             hasActorModifiers: false,
         }
 
+        system.schaden = `${this.system.tp}`
+        system.computed.modifiers.dmg.push(`TP: ${this.system.tp}`)
+
         // Process each eigenschaft
-        const eigenschaften = system.eigenschaften || []
+        const eigenschaften = this.system.eigenschaften || []
 
         for (const eigenschaftName of eigenschaften) {
-            this._processEigenschaft(eigenschaftName, system.computed, actor)
+            this._processEigenschaft(eigenschaftName, this.system.computed, this.parent)
         }
 
-        // Apply actor-wide modifiers (BE, wounds, etc.)
         const be = actor.system.abgeleitete?.be || 0
+        const pw = this.getPWFromActor(actor, this)
+        system.computed.at += pw
+        system.computed.vt += pw
+        system.computed.fk += pw
+
+        const isNebenOnly = !system.hauptwaffe && system.nebenwaffe
+
+        // Only apply general nebenwaffe malus if not already set by another processor
+        if (
+            isNebenOnly &&
+            !system.computed.ignoreNebenMalus &&
+            !system.computed._nebenwaffeMalusApplied
+        ) {
+            system.computed.at -= 4
+            system.computed.vt -= 4
+            system.computed.fk -= 4
+
+            system.computed.modifiers.at.push('Nebenwaffe: -4 AT/FK')
+            system.computed.modifiers.vt.push('Nebenwaffe: -4 VT')
+            system.computed._nebenwaffeMalusApplied = true
+        }
+
+        let rw = system.rw
+        system.rw_mod = rw
+        // Apply actor-wide modifiers (BE, wounds, etc.)
         system.computed.at -= be
         system.computed.vt -= be
         system.computed.fk -= be
 
+        system.computed.at += system.mod_at
+        system.computed.vt += system.mod_vt
+        system.computed.fk += system.mod_fk
+
+        let HW = undefined
+        let NW = undefined
+
+        if (this.system.hauptwaffe) {
+            HW = this
+        }
+        if (this.system.nebenwaffe) {
+            NW = this
+        }
+
+        if (this.type == 'nahkampfwaffe') {
+            let sb = Math.floor(KK / 4) || 0
+            system.computed.schadenBonus += sb
+            system.computed.modifiers.dmg.push(`SB: +${sb}`)
+            system.manoever =
+                system.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_nahkampf)
+
+            system.manoever.vlof.offensiver_kampfstil = actor.vorteil.kampf.some(
+                (x) => x.name == 'Offensiver Kampfstil',
+            )
+
+            system.at = system.computed.at
+            system.vt = system.computed.vt
+        }
+        if (this.type == 'fernkampfwaffe') {
+            system.manoever =
+                system.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_fernkampf)
+            let ist_beritten = actor.system.misc.ist_beritten
+            let zweihaendig = system.computed?.handsRequired === 2
+            let kein_reiter = system.computed?.noRider
+
+            if (ist_beritten) {
+                system.computed.fk -= 4
+                system.computed.modifiers.at.push('Beritten: -4 FK')
+            }
+
+            system.manoever.rw['0'] = `${rw} Schritt`
+            system.manoever.rw['1'] = `${2 * rw} Schritt`
+            system.manoever.rw['2'] = `${4 * rw} Schritt`
+
+            let ss1 = actor.__getStatuseffectById(actor, 'schlechtesicht1')
+            let ss2 = actor.__getStatuseffectById(actor, 'schlechtesicht2')
+            let ss3 = actor.__getStatuseffectById(actor, 'schlechtesicht3')
+            let ss4 = actor.__getStatuseffectById(actor, 'schlechtesicht4')
+            if (ss4) {
+                system.manoever.lcht.selected = 4
+            } else if (ss3) {
+                system.manoever.lcht.selected = 3
+            } else if (ss2) {
+                system.manoever.lcht.selected = 2
+            } else if (ss1) {
+                system.manoever.lcht.selected = 1
+            } else {
+                system.manoever.lcht.selected = 0
+            }
+            let lcht_angepasst = hardcoded.getAngepasst('Dunkelheit', actor)
+            // console.log(`licht angepasst: ${lcht_angepasst}`);
+            system.manoever.lcht.angepasst = lcht_angepasst
+
+            system.fk = system.computed.fk
+
+            if (zweihaendig && ((hauptwaffe && !nebenwaffe) || (!hauptwaffe && nebenwaffe))) {
+                system.fk = '-'
+            }
+            if (kein_reiter && (hauptwaffe || nebenwaffe) && ist_beritten) {
+                system.fk = '-'
+            }
+        }
+
         if (be > 0) {
-            system.computed.penalties.push(`BE: -${be}`)
+            system.computed.modifiers.at.push(`BE: -${be}`)
+            system.computed.modifiers.vt.push(`BE: -${be}`)
+        }
+
+        if (pw > 0) {
+            system.computed.modifiers.at.push(`PW: +${pw}`)
+            system.computed.modifiers.vt.push(`PW: +${pw}`)
+        }
+        if (system.wm_at) {
+            system.computed.modifiers.at.push(`WM: ${system.wm_at}`)
+        }
+        if (system.wm_fk) {
+            system.computed.modifiers.at.push(`WM: ${system.wm_fk}`)
+        }
+        if (system.wm_vt) {
+            system.computed.modifiers.vt.push(`WM: ${system.wm_vt}`)
+        }
+
+        if (system.computed.schadenBonus !== 0) {
+            system.schaden += ` ${system.computed.schadenBonus < 0 ? '-' : '+'} ${Math.abs(
+                system.computed.schadenBonus,
+            )}`
+        }
+
+        let selected_kampfstil = hardcoded.getSelectedStil(actor, 'kampf')
+
+        if (selected_kampfstil.active) {
+            console.log('Applying kampfstil:', selected_kampfstil)
+            // Refactored: execute kampfstil methods and apply modifiers
+            weaponUtils._executeKampfstilMethodsAndApplyModifiers(
+                selected_kampfstil,
+                HW,
+                NW,
+                be,
+                actor,
+            )
         }
     }
 
@@ -119,8 +256,16 @@ export class WaffeItem extends CombatItem {
 
         const eigenschaft = eigenschaftItem.system
 
+        console.log(`Processing eigenschaft "${name}" of category "${eigenschaft.kategorie}"`)
         // Process using the appropriate processor based on kategorie
-        this._processorFactory.process(eigenschaft.kategorie, eigenschaft, computed, actor, this)
+        this._processorFactory.process(
+            eigenschaft.kategorie,
+            name,
+            eigenschaft,
+            computed,
+            actor,
+            this,
+        )
     }
 
     /**
@@ -137,5 +282,29 @@ export class WaffeItem extends CombatItem {
         if (changed.system?.eigenschaften) {
             this._eigenschaftCache.clear()
         }
+    }
+
+    getPWFromActor(actor, weapon) {
+        // Add skill values
+        console.log('getPWFromActor called')
+        let fertigkeit = weapon.system.fertigkeit
+        let talent = weapon.system.talent
+        let actorFertigkeit = actor.items.find(
+            (x) => x.name == fertigkeit && x.type == 'fertigkeit',
+        )
+        let actorTalent = actor.items.find((x) => x.name == talent && x.type == 'talent')
+        let pw = actorFertigkeit?.system.pw || 0
+        let pwt = actorFertigkeit?.system.pwt || 0
+        console.log('PW:', pw, 'PWT:', pwt)
+        console.log('PW:', pw, 'PWT:', pwt, 'Talent gefunden:', actorTalent)
+        if (typeof pw !== 'undefined') {
+            if (actorTalent) {
+                return pwt
+            } else {
+                return pw
+            }
+        }
+
+        return 0
     }
 }

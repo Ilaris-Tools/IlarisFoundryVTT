@@ -41,9 +41,17 @@
         <hr />
         
         <h3>Führungs-Anforderungen</h3>
-        <div class="flexrow">
+        <div class="flexrow" style="align-items: center;">
             <label class="flex-fest-var" style="flex-basis: 120px"><b>Benötigte Hände:</b></label>
-            <input name="system.wieldingRequirements.hands" value="{{item.system.wieldingRequirements.hands}}" type="number" data-dtype="Number" min="1" max="2" />
+            <input name="system.wieldingRequirements.hands" value="{{item.system.wieldingRequirements.hands}}" type="number" data-dtype="Number" min="1" max="2" style="width: 50px; margin-right: 20px;" />
+            <label style="display: flex; align-items: center; margin-right: 20px;">
+                <input name="system.wieldingRequirements.ignoreNebenMalus" type="checkbox" {{checked item.system.wieldingRequirements.ignoreNebenMalus}} />
+                <span style="margin-left: 5px;">Kein Malus als Nebenwaffe</span>
+            </label>
+            <label style="display: flex; align-items: center;">
+                <input name="system.wieldingRequirements.noRider" type="checkbox" {{checked item.system.wieldingRequirements.noRider}} />
+                <span style="margin-left: 5px;">Nicht reitbar</span>
+            </label>
         </div>
         
         <div style="margin-top: 10px;">

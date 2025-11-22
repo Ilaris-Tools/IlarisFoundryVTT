@@ -63,15 +63,15 @@
                 <td class="ausklappen-trigger onhover" data-ausklappentarget="{{nwaffe.id}}">{{nwaffe.name}}</td>
                 <td>{{nwaffe.system.rw_mod}}</td>
                 <td class="rollable onhover" data-rolltype="at" data-pw="{{nwaffe.system.at}}"
-                    data-item="{{nwaffe.name}}" data-itemid="{{nwaffe.id}}">
+                    data-item="{{nwaffe.name}}" data-itemid="{{nwaffe.id}}" data-tooltip="{{nwaffe.system.computed.modifiers.at}}">
                     {{nwaffe.system.at}}
                 </td>
                 <td class="rollable onhover" data-rolltype="vt" data-pw="{{nwaffe.system.vt}}"
-                    data-item="{{nwaffe.name}}" data-itemid="{{nwaffe.id}}">
+                    data-item="{{nwaffe.name}}" data-itemid="{{nwaffe.id}}" data-tooltip="{{nwaffe.system.computed.modifiers.vt}}">
                     {{nwaffe.system.vt}}
                 </td>
                 <td class="rollable onhover" data-rolltype="schaden" data-pw="{{nwaffe.system.schaden}}"
-                    data-item="{{nwaffe.name}}" data-itemid="{{nwaffe.id}}">
+                    data-item="{{nwaffe.name}}" data-itemid="{{nwaffe.id}}" data-tooltip="{{nwaffe.system.computed.modifiers.dmg}}">
                     {{nwaffe.system.schaden}}
                 </td>
                 <td class="icon-small">

@@ -244,6 +244,25 @@
         "manoverausgleich": {
           "value": 0,
           "overcomplicated": true
+        },
+        "computed": {
+          "at": 0,
+          "vt": 0,
+          "fk": 0,
+          "schadenBonus": 0,
+          "rw": 0,
+          "handsRequired": 1,
+          "ignoreNebenMalus": false,
+          "noRider": false,
+          "modifiers": {
+            "at": [],
+            "vt": [],
+            "dmg": []
+          },
+          "targetEffects": [],
+          "combatMechanics": {},
+          "conditionalModifiers": [],
+          "hasActorModifiers": false
         }
       },
       "fertigkeit": {

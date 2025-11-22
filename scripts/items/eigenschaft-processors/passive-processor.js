@@ -9,7 +9,7 @@ export class PassiveProcessor extends BaseEigenschaftProcessor {
         return 'passive'
     }
 
-    process(eigenschaft, computed, actor, weapon) {
+    process(name, eigenschaft, computed, actor, weapon) {
         // Passive eigenschaften don't modify stats directly
         // They are checked by name in other parts of the code
     }

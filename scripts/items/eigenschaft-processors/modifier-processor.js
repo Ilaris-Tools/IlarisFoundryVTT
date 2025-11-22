@@ -10,17 +10,18 @@ export class ModifierProcessor extends BaseEigenschaftProcessor {
         return 'modifier'
     }
 
-    process(eigenschaft, computed, actor, weapon) {
-        this._applyBasicModifiers(eigenschaft, computed, actor)
-        this._applyConditionalModifiers(eigenschaft, computed, actor)
+    process(name, eigenschaft, computed, actor, weapon) {
+        this._applyBasicModifiers(name, eigenschaft, computed, actor)
+        this._applyConditionalModifiers(name, eigenschaft, computed, actor)
     }
 
     /**
      * Apply basic numeric and formula-based modifiers
      * @private
      */
-    _applyBasicModifiers(eigenschaft, computed, actor) {
+    _applyBasicModifiers(name, eigenschaft, computed, actor) {
         const mods = eigenschaft.modifiers || {}
+        console.log(`ModifierProcessor applying basic modifiers for:`, eigenschaft, mods)
 
         // Simple numeric modifiers
         computed.at += mods.at || 0
@@ -28,10 +29,11 @@ export class ModifierProcessor extends BaseEigenschaftProcessor {
         computed.schadenBonus += mods.schaden || 0
         computed.rw += mods.rw || 0
 
-        // Formula-based modifiers (e.g., "@actor.system.attribute.KK.wert")
+        // Formula-based modifiers (e.g., "@actor.system.attribute.KK.wert" always with Math.floor(value/4))
         if (mods.schadenFormula) {
-            const value = evaluateFormula(mods.schadenFormula, actor)
+            const value = Math.floor(evaluateFormula(mods.schadenFormula, actor) / 4)
             computed.schadenBonus += value
+            computed.modifiers.dmg.push(`${name}: ${value}`)
         }
     }
 
@@ -39,7 +41,7 @@ export class ModifierProcessor extends BaseEigenschaftProcessor {
      * Apply conditional modifiers based on conditions
      * @private
      */
-    _applyConditionalModifiers(eigenschaft, computed, actor) {
+    _applyConditionalModifiers(name, eigenschaft, computed, actor) {
         // Check conditions
         if (eigenschaft.conditions && eigenschaft.conditions.length > 0) {
             for (const condition of eigenschaft.conditions) {
@@ -51,7 +53,9 @@ export class ModifierProcessor extends BaseEigenschaftProcessor {
                     computed.schadenBonus += penalties.schaden || 0
 
                     if (penalties.message) {
-                        computed.penalties.push(penalties.message)
+                        computed.modifiers.at.push(penalties.message)
+                        computed.modifiers.vt.push(penalties.message)
+                        computed.modifiers.dmg.push(penalties.message)
                     }
                 }
             }

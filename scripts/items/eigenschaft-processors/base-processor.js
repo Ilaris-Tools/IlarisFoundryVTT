@@ -11,7 +11,7 @@ export class BaseEigenschaftProcessor {
      * @param {Object} weapon - The weapon item
      * @abstract
      */
-    process(eigenschaft, computed, actor, weapon) {
+    process(name, eigenschaft, computed, actor, weapon) {
         throw new Error('process() must be implemented by subclass')
     }
 

@@ -54,11 +54,15 @@ export class ProcessorFactory {
      * @param {Actor} actor - The owning actor
      * @param {Object} weapon - The weapon item
      */
-    process(kategorie, eigenschaft, computed, actor, weapon) {
+    process(kategorie, name, eigenschaft, computed, actor, weapon) {
+        console.log(`ProcessorFactory.process called for kategorie: ${kategorie}`)
         const processor = this.getProcessor(kategorie)
 
         if (processor) {
-            processor.process(eigenschaft, computed, actor, weapon)
+            console.log(
+                `Using processor: ${processor.constructor.name} for kategorie: ${kategorie}`,
+            )
+            processor.process(name, eigenschaft, computed, actor, weapon)
         } else {
             // Fallback: Try custom script if present
             if (eigenschaft.customScript) {

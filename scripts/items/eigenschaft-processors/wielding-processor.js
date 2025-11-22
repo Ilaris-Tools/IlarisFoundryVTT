@@ -9,9 +9,10 @@ export class WieldingProcessor extends BaseEigenschaftProcessor {
         return 'wielding'
     }
 
-    process(eigenschaft, computed, actor, weapon) {
+    process(name, eigenschaft, computed, actor, weapon) {
         const req = eigenschaft.wieldingRequirements
 
+        if (!weapon.system.hauptwaffe && !weapon.system.nebenwaffe) return
         if (!req) return
 
         // Store flags first
@@ -28,14 +29,6 @@ export class WieldingProcessor extends BaseEigenschaftProcessor {
         const isHauptOnly = weapon.system.hauptwaffe && !weapon.system.nebenwaffe
         const isNebenOnly = !weapon.system.hauptwaffe && weapon.system.nebenwaffe
         const isBothHands = weapon.system.hauptwaffe && weapon.system.nebenwaffe
-
-        // Only apply general nebenwaffe malus if not already set by another processor
-        if (isNebenOnly && !computed.ignoreNebenMalus && !computed._nebenwaffeMalusApplied) {
-            computed.at -= 4
-            computed.vt -= 4
-            computed.penalties.push('Nebenwaffe: -4 AT/-4 VT')
-            computed._nebenwaffeMalusApplied = true
-        }
 
         // Apply two-handed weapon specific penalties
         if (req.hands === 2) {
@@ -55,11 +48,10 @@ export class WieldingProcessor extends BaseEigenschaftProcessor {
             if (penalty) {
                 computed.at += penalty.at || 0
                 computed.vt += penalty.vt || 0
-                computed.schadenBonus += penalty.schaden || 0
-
-                if (penalty.message) {
-                    computed.penalties.push(penalty.message)
-                }
+                computed.schadenBonus -= 4
+                computed.modifiers.dmg.push(`${name}: -4`)
+                computed.modifiers.at.push(`${name}: ${penalty.at || 0}`)
+                computed.modifiers.vt.push(`${name}: ${penalty.vt || 0}`)
             }
         }
     }

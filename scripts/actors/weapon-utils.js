@@ -167,7 +167,7 @@ export function manoverAusgleich(
 }
 
 export function checkCombatStyleConditions(
-    bedingungen,
+    kampfstil,
     hauptWaffe,
     nebenWaffe,
     actorBeritten,
@@ -178,12 +178,15 @@ export function checkCombatStyleConditions(
         actor.misc.selected_kampfstil_conditions_not_met += 'Keine Hauptwaffe ausgewählt.'
         return false
     }
-    if (!bedingungen || bedingungen.trim() === '') {
+    if (!kampfstil || kampfstil.key === 'ohne') {
+        return false
+    }
+
+    if (!kampfstil?.stilBedingungen || kampfstil.stilBedingungen.trim() === '') {
         return true
     }
 
-    const conditions = bedingungen.split(',').map((condition) => condition.trim())
-
+    const conditions = kampfstil.stilBedingungen.split(',').map((condition) => condition.trim())
     for (const condition of conditions) {
         const lowerCondition = condition.toLowerCase()
 
@@ -307,4 +310,64 @@ export function checkCombatStyleConditions(
     }
     console.log('Bedingungen geprüft. Ergebnis:', actor.misc.selected_kampfstil_conditions_not_met)
     return conditionsMet.length === 0 || conditionsMet.every((met) => met === true)
+}
+
+/**
+ * Execute kampfstil foundryScript methods and apply modifiers to weapons
+ * @param {Object} selected_kampfstil - The selected kampfstil object
+ * @param {Object} HW - Hauptwaffe
+ * @param {Object} NW - Nebenwaffe
+ * @param {number} be - BE value
+ */
+export function _executeKampfstilMethodsAndApplyModifiers(selected_kampfstil, HW, NW, be, actor) {
+    let methodResults = []
+    let ist_beritten = actor.system.misc.ist_beritten
+    if (
+        selected_kampfstil.foundryScriptMethods &&
+        selected_kampfstil.foundryScriptMethods.length > 0
+    ) {
+        for (const methodCall of selected_kampfstil.foundryScriptMethods) {
+            try {
+                const methodMatch = methodCall.match(/^(\w+)\((.*)\)$/)
+                if (!methodMatch) {
+                    console.warn(
+                        `Invalid method format: ${methodCall}. Expected format: methodName(userParams)`,
+                    )
+                    continue
+                }
+                const methodName = methodMatch[1]
+                const userParams = methodMatch[2].trim()
+                let fullMethodCall
+                if (userParams) {
+                    fullMethodCall = `${methodName}(HW, NW, ist_beritten, ${userParams})`
+                } else {
+                    fullMethodCall = `${methodName}(HW, NW, ist_beritten)`
+                }
+                const executeMethod = new Function(
+                    'weaponUtils',
+                    'HW',
+                    'NW',
+                    'selected_kampfstil',
+                    'ist_beritten',
+                    `return weaponUtils.${fullMethodCall}`,
+                )
+                const result = executeMethod(weaponUtils, HW, NW, selected_kampfstil, ist_beritten)
+                console.log(`Executing kampfstil method: ${fullMethodCall}`)
+                console.log('Result:', result)
+                methodResults.push(result)
+                console.log(`Kampfstil method ${methodCall} -> ${fullMethodCall} returned:`, result)
+            } catch (error) {
+                console.warn(`Failed to execute kampfstil method: ${methodCall}`, error)
+            }
+        }
+    }
+    if (methodResults && methodResults.length > 0 && methodResults.includes('ranged')) {
+        applyModifierToWeapons(HW, NW, be, selected_kampfstil.modifiers, true)
+    } else {
+        applyModifierToWeapons(HW, NW, be, selected_kampfstil.modifiers)
+    }
+    if (be > 0) {
+        be -= selected_kampfstil.modifiers.be
+    }
+    return methodResults
 }
