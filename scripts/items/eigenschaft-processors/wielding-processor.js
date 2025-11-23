@@ -12,10 +12,10 @@ export class WieldingProcessor extends BaseEigenschaftProcessor {
     process(name, eigenschaft, computed, actor, weapon) {
         const req = eigenschaft.wieldingRequirements
 
-        if (!weapon.system.hauptwaffe && !weapon.system.nebenwaffe) return
         if (!req) return
 
         // Store flags first
+        console.log('Processing wielding for weapon:', weapon.name, 'with requirements:', req)
         if (req.hands) {
             computed.handsRequired = Math.max(computed.handsRequired || 1, req.hands)
         }
@@ -31,6 +31,7 @@ export class WieldingProcessor extends BaseEigenschaftProcessor {
         const isBothHands = weapon.system.hauptwaffe && weapon.system.nebenwaffe
 
         // Apply two-handed weapon specific penalties
+        if (!weapon.system.hauptwaffe && !weapon.system.nebenwaffe) return
         if (req.hands === 2) {
             let penalty = null
 

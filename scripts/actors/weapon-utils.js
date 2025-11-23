@@ -70,8 +70,11 @@ export function ignoreSideWeaponMalus(
         if (!hasEigenschaft) return
     }
 
-    nebenWaffe.system.at += 4
-    nebenWaffe.system.vt += 4
+    nebenWaffe.system.computed.at += 4
+    nebenWaffe.system.computed.vt += 4
+
+    nebenWaffe.system.computed.modifiers.at.push('Nebenwaffe Malus ignoriert: +4 AT')
+    nebenWaffe.system.computed.modifiers.vt.push('Nebenwaffe Malus ignoriert: +4 VT')
 }
 
 export function affectsRangedWeaponOnly(hauptWaffe, nebenWaffe, ist_beritten) {
@@ -82,50 +85,113 @@ export function applyModifierToWeapons(
     hauptWaffe,
     nebenWaffe,
     belastung,
-    modifiers,
+    selected_kampfstil,
     affectRanged = false,
 ) {
-    let schaden = ''
+    let schaden = 0
     let bonusFromBeReduction = 0
+    const modifiers = selected_kampfstil.modifiers
     if (belastung > 0 && modifiers.be !== 0) {
         bonusFromBeReduction = Math.min(modifiers.be, belastung)
     }
     if (modifiers.damage !== 0) {
-        schaden += modifiers.damage > 0 ? '+' + modifiers.damage : modifiers.damage
+        schaden += modifiers.damage
     }
     if (hauptWaffe) {
         if (affectRanged && hauptWaffe.type === 'fernkampfwaffe') {
-            hauptWaffe.system.fk += modifiers.at
-            hauptWaffe.system.rw_mod += modifiers.rw
-            hauptWaffe.system.schaden = hauptWaffe.system.schaden.concat(schaden)
+            hauptWaffe.system.computed.fk += modifiers.at
+            hauptWaffe.system.computed.rw += modifiers.rw
+            hauptWaffe.system.computed.schadenBonus += schaden
+
+            if (modifiers.at) {
+                hauptWaffe.system.computed.modifiers.at.push(
+                    `${selected_kampfstil.name}: ${modifiers.at}`,
+                )
+            }
+            if (modifiers.damage) {
+                hauptWaffe.system.computed.modifiers.dmg.push(
+                    `${selected_kampfstil.name}: ${modifiers.damage}`,
+                )
+            }
         }
         if (!affectRanged && hauptWaffe.type === 'nahkampfwaffe') {
-            hauptWaffe.system.at += modifiers.at
-            hauptWaffe.system.vt += modifiers.vt
-            hauptWaffe.system.rw_mod += modifiers.rw
-            hauptWaffe.system.schaden = hauptWaffe.system.schaden.concat(schaden)
+            hauptWaffe.system.computed.at += modifiers.at
+            hauptWaffe.system.computed.vt += modifiers.vt
+            hauptWaffe.system.computed.rw += modifiers.rw
+            hauptWaffe.system.computed.schadenBonus += schaden
+
+            if (modifiers.at) {
+                hauptWaffe.system.computed.modifiers.at.push(
+                    `${selected_kampfstil.name}: ${modifiers.at}`,
+                )
+            }
+            if (modifiers.damage) {
+                hauptWaffe.system.computed.modifiers.dmg.push(
+                    `${selected_kampfstil.name}: ${modifiers.damage}`,
+                )
+            }
+            if (modifiers.vt) {
+                hauptWaffe.system.computed.modifiers.vt.push(
+                    `${selected_kampfstil.name}: ${modifiers.vt}`,
+                )
+            }
         }
-        if (hauptWaffe.system.fk) {
-            hauptWaffe.system.fk += bonusFromBeReduction
+        if (hauptWaffe.system.computed.fk) {
+            hauptWaffe.system.computed.fk += bonusFromBeReduction
         }
-        if (hauptWaffe.system.at) {
-            hauptWaffe.system.at += bonusFromBeReduction
+        if (hauptWaffe.system.computed.at) {
+            hauptWaffe.system.computed.at += bonusFromBeReduction
         }
-        if (hauptWaffe.system.vt) {
-            hauptWaffe.system.vt += bonusFromBeReduction
+        if (hauptWaffe.system.computed.vt) {
+            hauptWaffe.system.computed.vt += bonusFromBeReduction
+        }
+        if (bonusFromBeReduction) {
+            hauptWaffe.system.computed.modifiers.at.push(
+                `${selected_kampfstil.name}: ${bonusFromBeReduction} BE Bonus`,
+            )
+            hauptWaffe.system.computed.modifiers.vt.push(
+                `${selected_kampfstil.name}: ${bonusFromBeReduction} BE Bonus`,
+            )
         }
     }
     if (nebenWaffe && hauptWaffe && hauptWaffe.id != nebenWaffe.id) {
         if (affectRanged && nebenWaffe.type === 'fernkampfwaffe') {
-            nebenWaffe.system.fk += modifiers.at
-            nebenWaffe.system.rw_mod += modifiers.rw
-            nebenWaffe.system.schaden = nebenWaffe.system.schaden.concat(schaden)
+            nebenWaffe.system.computed.fk += modifiers.at
+            nebenWaffe.system.computed.rw += modifiers.rw
+            nebenWaffe.system.computed.schadenBonus += schaden
+
+            if (modifiers.at) {
+                nebenWaffe.system.computed.modifiers.at.push(
+                    `${selected_kampfstil.name}: ${modifiers.at}`,
+                )
+            }
+            if (modifiers.damage) {
+                nebenWaffe.system.computed.modifiers.dmg.push(
+                    `${selected_kampfstil.name}: ${modifiers.damage}`,
+                )
+            }
         }
         if (!affectRanged && nebenWaffe.type === 'nahkampfwaffe') {
-            nebenWaffe.system.at += modifiers.at
-            nebenWaffe.system.vt += modifiers.vt
-            nebenWaffe.system.rw_mod += modifiers.rw
-            nebenWaffe.system.schaden = nebenWaffe.system.schaden.concat(schaden)
+            nebenWaffe.system.computed.at += modifiers.at
+            nebenWaffe.system.computed.vt += modifiers.vt
+            nebenWaffe.system.computed.rw += modifiers.rw
+            nebenWaffe.system.computed.schadenBonus += schaden
+
+            if (modifiers.at) {
+                nebenWaffe.system.computed.modifiers.at.push(
+                    `${selected_kampfstil.name}: ${modifiers.at}`,
+                )
+            }
+            if (modifiers.damage) {
+                nebenWaffe.system.computed.modifiers.dmg.push(
+                    `${selected_kampfstil.name}: ${modifiers.damage}`,
+                )
+            }
+            if (modifiers.vt) {
+                nebenWaffe.system.computed.modifiers.vt.push(
+                    `${selected_kampfstil.name}: ${modifiers.vt}`,
+                )
+            }
         }
         if (nebenWaffe.system.fk) {
             nebenWaffe.system.fk += bonusFromBeReduction
@@ -136,16 +202,26 @@ export function applyModifierToWeapons(
         if (nebenWaffe.system.vt) {
             nebenWaffe.system.vt += bonusFromBeReduction
         }
+        if (bonusFromBeReduction) {
+            nebenWaffe.system.computed.modifiers.at.push(
+                `${selected_kampfstil.name}: ${bonusFromBeReduction} BE Bonus`,
+            )
+            nebenWaffe.system.computed.modifiers.vt.push(
+                `${selected_kampfstil.name}: ${bonusFromBeReduction} BE Bonus`,
+            )
+        }
     }
 }
 
 export function ignoreMountedRangePenalty(hauptWaffe, nebenWaffe, ist_beritten) {
     if (!ist_beritten) return
     if (hauptWaffe && hauptWaffe.type === 'fernkampfwaffe') {
-        hauptWaffe.system.fk += 4
+        hauptWaffe.system.computed.fk += 4
+        hauptWaffe.system.computed.modifiers.at.push('Beritten: +4 FK')
     }
     if (nebenWaffe && hauptWaffe.id != nebenWaffe.id && nebenWaffe.type === 'fernkampfwaffe') {
-        nebenWaffe.system.fk += 4
+        nebenWaffe.system.computed.fk += 4
+        nebenWaffe.system.computed.modifiers.at.push('Beritten: +4 FK')
     }
 }
 
@@ -362,9 +438,9 @@ export function _executeKampfstilMethodsAndApplyModifiers(selected_kampfstil, HW
         }
     }
     if (methodResults && methodResults.length > 0 && methodResults.includes('ranged')) {
-        applyModifierToWeapons(HW, NW, be, selected_kampfstil.modifiers, true)
+        applyModifierToWeapons(HW, NW, be, selected_kampfstil, true)
     } else {
-        applyModifierToWeapons(HW, NW, be, selected_kampfstil.modifiers)
+        applyModifierToWeapons(HW, NW, be, selected_kampfstil)
     }
     if (be > 0) {
         be -= selected_kampfstil.modifiers.be

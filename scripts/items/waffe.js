@@ -23,9 +23,8 @@ export class WaffeItem extends CombatItem {
      * Prepare derived data for the weapon
      * Calculates combat stats based on eigenschaften and actor context
      */
-    prepareDerivedData() {
+    prepareWeapon() {
         console.log('WaffeItem.prepareDerivedData called for', this.name)
-        super.prepareDerivedData()
 
         // Only calculate if embedded in an actor
         if (!this.parent || this.parent.documentName !== 'Actor') return
@@ -33,6 +32,7 @@ export class WaffeItem extends CombatItem {
         // Ensure eigenschaft items are loaded
         if (!this._eigenschaftCache.isLoaded()) {
             // Queue loading for next tick
+            console.log('Queuing eigenschaft load for weapon:', this.name)
             this._queueEigenschaftLoad()
             return
         }
@@ -56,6 +56,103 @@ export class WaffeItem extends CombatItem {
     }
 
     /**
+     * Apply modifiers to the weapon's computed stats
+     * @param {Object} actor - The owning actor
+     * @private
+     */
+    _applyModifiers(actor) {
+        const system = this.system
+
+        system.schaden = `${this.system.tp}`
+        system.computed.modifiers.dmg.push(`TP: ${this.system.tp}`)
+
+        const pw = this.getPWFromActor(actor, this)
+        system.computed.at += pw
+        system.computed.vt += pw
+        system.computed.fk += pw
+
+        system.computed.at += system.mod_at
+        system.computed.vt += system.mod_vt
+        system.computed.fk += system.mod_fk
+        if (pw > 0) {
+            system.computed.modifiers.at.push(`PW: +${pw}`)
+            system.computed.modifiers.vt.push(`PW: +${pw}`)
+        }
+        if (system.wm_at) {
+            system.computed.modifiers.at.push(`WM: ${system.wm_at}`)
+        }
+        if (system.wm_fk) {
+            system.computed.modifiers.at.push(`WM: ${system.wm_fk}`)
+        }
+        if (system.wm_vt) {
+            system.computed.modifiers.vt.push(`WM: ${system.wm_vt}`)
+        }
+        if (system.mod_at) {
+            system.computed.modifiers.at.push(`Mod: ${system.mod_at}`)
+        }
+        if (system.mod_vt) {
+            system.computed.modifiers.vt.push(`Mod: ${system.mod_vt}`)
+        }
+        if (system.mod_fk) {
+            system.computed.modifiers.fk.push(`Mod: ${system.mod_fk}`)
+        }
+    }
+
+    /**
+     * Apply actor-wide modifiers (BE, wounds, etc.) to the weapon's computed stats
+     * @param {Object} actor - The owning actor
+     * @private
+     */
+    _applyActorModifiers(actor) {
+        const system = this.system
+        const be = actor.system.abgeleitete?.be || 0
+        const wundabzuege = actor.system.gesundheit?.wundabzuege || 0
+        const wundenignorieren = actor.system.gesundheit?.wundenignorieren || 0
+
+        system.computed.at -= be
+        system.computed.vt -= be
+        system.computed.fk -= be
+
+        if (be > 0) {
+            system.computed.modifiers.at.push(`BE: -${be}`)
+            system.computed.modifiers.vt.push(`BE: -${be}`)
+        }
+
+        if (wundabzuege && !wundenignorieren) {
+            system.computed.at -= wundabzuege
+            system.computed.vt -= wundabzuege
+            system.computed.fk -= wundabzuege
+            system.computed.modifiers.at.push(`Wunden: -${wundabzuege}`)
+            system.computed.modifiers.vt.push(`Wunden: -${wundabzuege}`)
+            system.computed.modifiers.fk.push(`Wunden: -${wundabzuege}`)
+        }
+    }
+
+    /**
+     * Apply the Nebenwaffe malus to the weapon's computed stats if applicable
+     * @private
+     */
+    _applyNebenwaffeMalus() {
+        const system = this.system
+        const isNebenOnly = !system.hauptwaffe && system.nebenwaffe
+
+        // Only apply general nebenwaffe malus if not already set by another processor
+        if (
+            isNebenOnly &&
+            !system.computed.ignoreNebenMalus &&
+            !system.computed._nebenwaffeMalusApplied
+        ) {
+            system.computed.at -= 4
+            system.computed.vt -= 4
+            system.computed.fk -= 4
+
+            system.computed.modifiers.at.push('Nebenwaffe: -4 AT/FK')
+            system.computed.modifiers.vt.push('Nebenwaffe: -4 VT')
+            system.computed._nebenwaffeMalusApplied = true
+        }
+    }
+
+    /**
      * Calculate weapon combat statistics (synchronous)
      * @private
      */
@@ -63,6 +160,9 @@ export class WaffeItem extends CombatItem {
         const actor = this.parent
         const system = this.system
         const KK = actor.system.attribute.KK.wert
+        const be = actor.system.abgeleitete?.be || 0
+        let rw = system.rw
+        system.rw_mod = rw
 
         // Initialize computed values
         system.computed = {
@@ -85,49 +185,16 @@ export class WaffeItem extends CombatItem {
             hasActorModifiers: false,
         }
 
-        system.schaden = `${this.system.tp}`
-        system.computed.modifiers.dmg.push(`TP: ${this.system.tp}`)
+        this._applyModifiers(actor)
+        this._applyActorModifiers(actor)
 
         // Process each eigenschaft
         const eigenschaften = this.system.eigenschaften || []
-
         for (const eigenschaftName of eigenschaften) {
             this._processEigenschaft(eigenschaftName, this.system.computed, this.parent)
         }
 
-        const be = actor.system.abgeleitete?.be || 0
-        const pw = this.getPWFromActor(actor, this)
-        system.computed.at += pw
-        system.computed.vt += pw
-        system.computed.fk += pw
-
-        const isNebenOnly = !system.hauptwaffe && system.nebenwaffe
-
-        // Only apply general nebenwaffe malus if not already set by another processor
-        if (
-            isNebenOnly &&
-            !system.computed.ignoreNebenMalus &&
-            !system.computed._nebenwaffeMalusApplied
-        ) {
-            system.computed.at -= 4
-            system.computed.vt -= 4
-            system.computed.fk -= 4
-
-            system.computed.modifiers.at.push('Nebenwaffe: -4 AT/FK')
-            system.computed.modifiers.vt.push('Nebenwaffe: -4 VT')
-            system.computed._nebenwaffeMalusApplied = true
-        }
-
-        let rw = system.rw
-        system.rw_mod = rw
-        // Apply actor-wide modifiers (BE, wounds, etc.)
-        system.computed.at -= be
-        system.computed.vt -= be
-        system.computed.fk -= be
-
-        system.computed.at += system.mod_at
-        system.computed.vt += system.mod_vt
-        system.computed.fk += system.mod_fk
+        this._applyNebenwaffeMalus()
 
         let HW = undefined
         let NW = undefined
@@ -149,16 +216,11 @@ export class WaffeItem extends CombatItem {
             system.manoever.vlof.offensiver_kampfstil = actor.vorteil.kampf.some(
                 (x) => x.name == 'Offensiver Kampfstil',
             )
-
-            system.at = system.computed.at
-            system.vt = system.computed.vt
         }
         if (this.type == 'fernkampfwaffe') {
             system.manoever =
                 system.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_fernkampf)
             let ist_beritten = actor.system.misc.ist_beritten
-            let zweihaendig = system.computed?.handsRequired === 2
-            let kein_reiter = system.computed?.noRider
 
             if (ist_beritten) {
                 system.computed.fk -= 4
@@ -187,46 +249,10 @@ export class WaffeItem extends CombatItem {
             let lcht_angepasst = hardcoded.getAngepasst('Dunkelheit', actor)
             // console.log(`licht angepasst: ${lcht_angepasst}`);
             system.manoever.lcht.angepasst = lcht_angepasst
-
-            system.fk = system.computed.fk
-
-            if (zweihaendig && ((hauptwaffe && !nebenwaffe) || (!hauptwaffe && nebenwaffe))) {
-                system.fk = '-'
-            }
-            if (kein_reiter && (hauptwaffe || nebenwaffe) && ist_beritten) {
-                system.fk = '-'
-            }
-        }
-
-        if (be > 0) {
-            system.computed.modifiers.at.push(`BE: -${be}`)
-            system.computed.modifiers.vt.push(`BE: -${be}`)
-        }
-
-        if (pw > 0) {
-            system.computed.modifiers.at.push(`PW: +${pw}`)
-            system.computed.modifiers.vt.push(`PW: +${pw}`)
-        }
-        if (system.wm_at) {
-            system.computed.modifiers.at.push(`WM: ${system.wm_at}`)
-        }
-        if (system.wm_fk) {
-            system.computed.modifiers.at.push(`WM: ${system.wm_fk}`)
-        }
-        if (system.wm_vt) {
-            system.computed.modifiers.vt.push(`WM: ${system.wm_vt}`)
-        }
-
-        if (system.computed.schadenBonus !== 0) {
-            system.schaden += ` ${system.computed.schadenBonus < 0 ? '-' : '+'} ${Math.abs(
-                system.computed.schadenBonus,
-            )}`
         }
 
         let selected_kampfstil = hardcoded.getSelectedStil(actor, 'kampf')
-
         if (selected_kampfstil.active) {
-            console.log('Applying kampfstil:', selected_kampfstil)
             // Refactored: execute kampfstil methods and apply modifiers
             weaponUtils._executeKampfstilMethodsAndApplyModifiers(
                 selected_kampfstil,
@@ -235,6 +261,31 @@ export class WaffeItem extends CombatItem {
                 be,
                 actor,
             )
+        }
+        if (system.computed.schadenBonus !== 0) {
+            system.schaden += ` ${system.computed.schadenBonus < 0 ? '-' : '+'} ${Math.abs(
+                system.computed.schadenBonus,
+            )}`
+        }
+        if (this.type == 'nahkampfwaffe') {
+            system.at = system.computed.at
+            system.vt = system.computed.vt
+        }
+        if (this.type == 'fernkampfwaffe') {
+            let ist_beritten = actor.system.misc.ist_beritten
+            let zweihaendig = system.computed?.handsRequired === 2
+            let kein_reiter = system.computed?.noRider
+
+            system.fk = system.computed.fk
+
+            if (zweihaendig && ((HW && !NW) || (!HW && NW))) {
+                system.fk = '-'
+                system.computed.modifiers.at = ['Waffe zweihändig, aber einhändig geführt']
+            }
+            if (kein_reiter && ist_beritten) {
+                system.fk = '-'
+                system.computed.modifiers.at = ['Waffe nicht reitend, aber beritten']
+            }
         }
     }
 

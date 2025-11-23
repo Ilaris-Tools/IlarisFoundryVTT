@@ -468,7 +468,7 @@ export class IlarisActor extends Actor {
                 : kap
     }
 
-    async _calculateKampf(actor) {
+    _calculateKampf(actor) {
         console.log('Berechne Kampf')
         // data.data.abgeleitete.sb = sb;
         let nahkampfmod = actor.system.modifikatoren.nahkampfmod
@@ -490,10 +490,6 @@ export class IlarisActor extends Actor {
             actor.nahkampfwaffen.find((x) => x.system.nebenwaffe == true) ||
             actor.fernkampfwaffen.find((x) => x.system.nebenwaffe == true)
 
-        for (let fwaffe of actor.fernkampfwaffen) {
-            const mod_schaden = fwaffe.system.mod_schaden
-        }
-
         actor.misc.selected_kampfstil_conditions_not_met = ''
 
         if (
@@ -509,6 +505,12 @@ export class IlarisActor extends Actor {
             selected_kampfstil.active = true
         } else {
             selected_kampfstil.active = false
+        }
+
+        for (let waffe of actor.items.filter(
+            (i) => i.type === 'fernkampfwaffe' || i.type === 'nahkampfwaffe',
+        )) {
+            waffe.prepareWeapon()
         }
     }
 
