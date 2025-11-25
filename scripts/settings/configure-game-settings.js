@@ -127,6 +127,16 @@ export const registerIlarisGameSettings = () => {
             scope: 'world',
             default: true,
         },
+        {
+            // Register use target selection setting
+            settingsName: IlarisAutomatisierungSettingNames.useTargetSelection,
+            name: 'Zielauswahl-System verwenden',
+            hint: 'Wenn aktiviert, werden in Kampfdialogen die Zielauswahl-Funktion und automatische Verteidigungsaufforderungen angezeigt.',
+            config: true,
+            type: new foundry.data.fields.BooleanField(),
+            scope: 'world',
+            default: false,
+        },
     ].forEach((setting) => {
         game.settings.register(ConfigureGameSettingsCategories.Ilaris, setting.settingsName, {
             name: setting.name,
