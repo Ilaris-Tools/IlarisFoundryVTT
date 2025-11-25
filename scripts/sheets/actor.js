@@ -307,6 +307,7 @@ export class IlarisActorSheet extends ActorSheet {
             'magie_diag',
             'karma_diag',
             'uefert_diag',
+            'fertigkeit_diag',
         ]
         console.log('rolltype')
         console.log(rolltype)

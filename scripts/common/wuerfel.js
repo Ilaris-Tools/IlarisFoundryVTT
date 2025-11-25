@@ -1,6 +1,7 @@
 import { AngriffDialog } from '../sheets/dialogs/angriff.js'
 import { FernkampfAngriffDialog } from '../sheets/dialogs/fernkampf_angriff.js'
 import { UebernatuerlichDialog } from '../sheets/dialogs/uebernatuerlich.js'
+import { FertigkeitDialog } from '../sheets/dialogs/fertigkeit.js'
 import { nahkampfUpdate, calculate_attacke } from './wuerfel/nahkampf_prepare.js'
 import { fernkampfUpdate } from './wuerfel/fernkampf_prepare.js'
 import { magieUpdate } from './wuerfel/magie_prepare.js'
@@ -65,6 +66,57 @@ export async function wuerfelwurf(event, actor) {
         let d = new UebernatuerlichDialog(actor, item)
 
         await d.render(true)
+    } else if (rolltype == 'fertigkeit_diag') {
+        // Unified skill/attribute dialog with preview
+        const probeType = $(event.currentTarget).data('probetype') || 'fertigkeit'
+
+        if (probeType === 'attribut') {
+            const attribut_name = $(event.currentTarget).data('attribut')
+            const label = CONFIG.ILARIS.label[attribut_name]
+            const pw = systemData.attribute[attribut_name].pw
+
+            let d = new FertigkeitDialog(actor, {
+                probeType: 'attribut',
+                fertigkeitKey: attribut_name,
+                fertigkeitName: label,
+                pw: pw,
+            })
+            await d.render(true)
+        } else if (probeType === 'freie_fertigkeit') {
+            const fertigkeitName = $(event.currentTarget).data('fertigkeit')
+            const stufe = Number($(event.currentTarget).data('pw'))
+            const pw = stufe * 8 - 2
+
+            let d = new FertigkeitDialog(actor, {
+                probeType: 'freie_fertigkeit',
+                fertigkeitKey: null,
+                fertigkeitName: fertigkeitName,
+                pw: pw,
+            })
+            await d.render(true)
+        } else {
+            // Regular skill (fertigkeit)
+            const fertigkeit = $(event.currentTarget).data('fertigkeit')
+            const fertigkeitData = actor.profan.fertigkeiten[fertigkeit]
+            const fertigkeitName = fertigkeitData.name
+            const pw = fertigkeitData.system.pw
+
+            // Build talent list
+            const talentList = {}
+            const talente = fertigkeitData.system.talente || []
+            for (const [i, tal] of talente.entries()) {
+                talentList[i] = tal.name
+            }
+
+            let d = new FertigkeitDialog(actor, {
+                probeType: 'fertigkeit',
+                fertigkeitKey: fertigkeit,
+                fertigkeitName: fertigkeitName,
+                pw: pw,
+                talentList: talentList,
+            })
+            await d.render(true)
+        }
     } else if (rolltype == 'attribut_diag') {
         const attribut_name = $(event.currentTarget).data('attribut')
         label = CONFIG.ILARIS.label[attribut_name]
