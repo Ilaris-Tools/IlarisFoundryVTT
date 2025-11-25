@@ -297,13 +297,10 @@ export class IlarisActorSheet extends ActorSheet {
         // TODO: rolltype=dialog, diagtype=nahkampf/profan/simple usw..
         let dialoge = [
             'angriff_diag',
-            'profan_fertigkeit_diag',
             'nahkampf_diag',
-            'attribut_diag',
             'simpleprobe_diag',
             'simpleformula_diag',
             'fernkampf_diag',
-            'freie_fertigkeit_diag',
             'magie_diag',
             'karma_diag',
             'uefert_diag',
@@ -316,38 +313,6 @@ export class IlarisActorSheet extends ActorSheet {
             wuerfelwurf(event, this.actor)
             return 0
         }
-        // if (rolltype == 'profan_fertigkeit_diag') {
-        //     wuerfelwurf(event, this.actor);
-        //     return 0;
-        // } else if (rolltype == 'nahkampf_diag') {
-        //     wuerfelwurf(event, this.actor);
-        //     return 0;
-        // } else if (rolltype == 'attribut_diag') {
-        //     wuerfelwurf(event, this.actor);
-        //     return 0;
-        // } else if (rolltype == 'simpleprobe_diag') {
-        //     wuerfelwurf(event, this.actor);
-        //     return 0;
-        // } else if (rolltype == 'simpleformula_diag') {
-        //     wuerfelwurf(event, this.actor);
-        //     return 0;
-        // } else if (rolltype == 'fernkampf_diag') {
-        //     wuerfelwurf(event, this.actor);
-        //     return 0;
-        // } else if (rolltype == 'freie_fertigkeit_diag') {
-        //     wuerfelwurf(event, this.actor);
-        //     return 0;
-        // } else if (rolltype == 'magie_diag') {
-        //     wuerfelwurf(event, this.actor);
-        //     return 0;
-        // } else if (rolltype == 'karma_diag') {
-        //     wuerfelwurf(event, this.actor);
-        //     return 0;
-        // } else if (rolltype == 'uefert_diag') {
-        //     console.log(event);
-        //     wuerfelwurf(event, this.actor);
-        //     return 0;
-        // } else
         if (rolltype == 'at') {
             // TODO: simplify this: if rolltype in [...]
             dice = '1d20'
