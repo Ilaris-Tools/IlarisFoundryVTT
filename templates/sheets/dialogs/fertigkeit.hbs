@@ -1,0 +1,93 @@
+{{log 'fertigkeit' this}}
+
+<div class="combat-dialog-container">
+    <!-- Left Column - Main Controls -->
+    <div class="left-column">
+        <div>
+            <label>Anzahl W20:</label>
+            <label>
+                <input type="radio" name="xd20-{{dialogId}}" value="0" {{#if (ifEq checked_xd20 "0")}}checked{{/if}} /> 1W20
+            </label>
+            <label>
+                <input type="radio" name="xd20-{{dialogId}}" value="1" {{#if (ifEq checked_xd20 "1")}}checked{{/if}} /> 3W20
+            </label>
+        </div>
+
+        {{#if (ifEq actor.type "held")}}
+        <div>
+            <label>Schips:</label>
+            {{#if hasSchips}}
+            <label>
+                <input type="radio" name="schips-{{dialogId}}" value="0" {{#if (ifEq checked_schips "0")}}checked{{/if}} /> Kein Schips
+            </label>
+            <label>
+                <input type="radio" name="schips-{{dialogId}}" value="1" {{#if (ifEq checked_schips "1")}}checked{{/if}} /> Schips ohne Eigenheit
+            </label>
+            <label>
+                <input type="radio" name="schips-{{dialogId}}" value="2" {{#if (ifEq checked_schips "2")}}checked{{/if}} /> Schips mit Eigenheit
+            </label>
+            {{else}}
+            <label class="warning">Keine Schips verfügbar!</label>
+            {{/if}}
+        </div>
+        {{/if}}
+
+        <hr />
+
+        {{#if hasTalents}}
+        <div class="talent-warning" style="color: #b8860b; font-style: italic; margin-bottom: 0.5em;">
+            <i class="fas fa-exclamation-triangle"></i> Hinweis: Kein Talent ausgewählt
+        </div>
+        <div class="flexrow">
+            <label>Talent:</label>
+            <select id="talent-{{dialogId}}" style="max-width: 200px;">
+                <option value="-2">ohne Talent</option>
+                <option value="-1">mit Talent</option>
+                {{#each talentList as |talentName key|}}
+                <option value="{{key}}">{{talentName}}</option>
+                {{/each}}
+            </select>
+        </div>
+        {{/if}}
+
+        <div class="flexrow">
+            <label>Hohe Qualität:</label>
+            <input
+                id="hohequalitaet-{{dialogId}}"
+                type="number"
+                value="0"
+                data-dtype="Number"
+                min="0"
+                style="max-width: 80px;"
+            />
+        </div>
+
+        <div class="flexrow">
+            <label>Modifikator:</label>
+            <input
+                id="modifikator-{{dialogId}}"
+                type="number"
+                value="0"
+                data-dtype="Number"
+                style="max-width: 80px;"
+            />
+        </div>
+
+        <hr />
+
+        <div class="flexrow">
+            <label>Würfelmodus:</label>
+            <select id="rollMode-{{dialogId}}">
+                {{selectOptions rollModes selected=defaultRollMode localize=true}}
+            </select>
+        </div>
+    </div>
+
+    <!-- Right Column - Modifier Summary -->
+    <div class="right-column">
+        <div id="modifier-summary" class="modifier-summary-container">
+            <!-- This will be populated by JavaScript -->
+        </div>
+    </div>
+</div>
+
