@@ -431,7 +431,6 @@
         "schadenFormula": "",
         "rw": 0
       },
-      "conditions": [],
       "wieldingRequirements": {
         "hands": 1,
         "ignoreNebenMalus": false,
@@ -440,6 +439,17 @@
           "hauptOnly": {},
           "nebenOnly": {},
           "nebenWithoutExemption": {}
+        },
+        "condition": {
+          "type": "attribute_check",
+          "attribute": "KK",
+          "operator": "<",
+          "value": 0,
+          "onFailure": {
+            "at": 0,
+            "vt": 0,
+            "schaden": 0
+          }
         }
       },
       "targetEffect": {

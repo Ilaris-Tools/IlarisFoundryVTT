@@ -14,8 +14,14 @@
       "schadenFormula": "",
       "rw": 0
     },
-    "conditions": [
-      {
+    "wieldingRequirements": {
+      "hands": 1,
+      "penalties": {
+        "hauptOnly": null,
+        "nebenOnly": null,
+        "nebenWithoutExemption": null
+      },
+      "conditions": {
         "type": "attribute_check",
         "attribute": "KK",
         "operator": "<",
@@ -23,17 +29,8 @@
         "onFailure": {
           "at": -4,
           "vt": -4,
-          "schaden": 0,
-          "message": "KK < 8: -4 AT/VT"
+          "schaden": 0
         }
-      }
-    ],
-    "wieldingRequirements": {
-      "hands": 1,
-      "penalties": {
-        "hauptOnly": null,
-        "nebenOnly": null,
-        "nebenWithoutExemption": null
       }
     },
     "targetEffect": {

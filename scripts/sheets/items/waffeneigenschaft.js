@@ -23,6 +23,55 @@ export class WaffeneigenschaftSheet extends IlarisItemSheet {
             { value: 'passive', label: 'Passiv' },
         ]
 
+        // Attribute options
+        data.attribute = [
+            { value: 'KK', label: 'KK' },
+            { value: 'KO', label: 'KO' },
+            { value: 'GE', label: 'GE' },
+            { value: 'IN', label: 'IN' },
+            { value: 'CH', label: 'CH' },
+            { value: 'MU', label: 'MU' },
+            { value: 'KL', label: 'KL' },
+            { value: 'FF', label: 'FF' },
+        ]
+
+        // Attribute options with empty option
+        data.attributeMitLeer = [{ value: '', label: '-' }, ...data.attribute]
+
+        // Operator options
+        data.operatoren = [
+            { value: '<', label: '<' },
+            { value: '<=', label: '<=' },
+            { value: '>', label: '>' },
+            { value: '>=', label: '>=' },
+            { value: '==', label: '==' },
+            { value: '!=', label: '!=' },
+        ]
+
+        // Condition type options
+        data.bedingungsTypen = [{ value: 'attribute_check', label: 'Attribut-Prüfung' }]
+
+        // Target effect trigger options
+        data.ausloeser = [
+            { value: '', label: 'Kein' },
+            { value: 'on_hit', label: 'Bei Treffer' },
+            { value: 'on_crit', label: 'Bei Kritischem Treffer' },
+        ]
+
+        // Resist check type options
+        data.widerstandsprobeTypen = [
+            { value: 'none', label: 'Keine' },
+            { value: 'attribute_vs_attribute', label: 'Attribut vs Attribut' },
+        ]
+
+        // Effect type options
+        data.effektTypen = [
+            { value: '', label: 'Kein' },
+            { value: 'status', label: 'Status' },
+            { value: 'condition', label: 'Zustand' },
+            { value: 'grapple', label: 'Umklammerung' },
+        ]
+
         return data
     }
 

@@ -74,6 +74,47 @@
             </div>
         </div>
         
+        <div style="margin-top: 10px;">
+            <label><b>Mali (Nebenwaffe ohne Ausnahme):</b></label>
+            <div class="flexrow" style="margin-left: 20px;">
+                <label class="flex-fest-var" style="flex-basis: 60px">AT:</label>
+                <input name="system.wieldingRequirements.penalties.nebenWithoutExemption.at" value="{{item.system.wieldingRequirements.penalties.nebenWithoutExemption.at}}" type="number" data-dtype="Number" />
+                <label class="flex-fest-var" style="flex-basis: 60px; margin-left: 10px;">VT:</label>
+                <input name="system.wieldingRequirements.penalties.nebenWithoutExemption.vt" value="{{item.system.wieldingRequirements.penalties.nebenWithoutExemption.vt}}" type="number" data-dtype="Number" />
+            </div>
+        </div>
+        
+        <div style="margin-top: 10px;">
+            <label><b>Bedingungs-Prüfung:</b></label>
+            <div class="flexrow" style="margin-left: 20px;">
+                <label class="flex-fest-var" style="flex-basis: 60px">Typ:</label>
+                <select name="system.wieldingRequirements.condition.type" style="width: 150px;">
+                    {{selectOptions bedingungsTypen selected=item.system.wieldingRequirements.condition.type valueAttr='value' labelAttr='label'}}
+                </select>
+            </div>
+            <div class="flexrow" style="margin-left: 20px; margin-top: 5px;">
+                <label class="flex-fest-var" style="flex-basis: 60px">Attribut:</label>
+                <select name="system.wieldingRequirements.condition.attribute" style="width: 80px;">
+                    {{selectOptions attribute selected=item.system.wieldingRequirements.condition.attribute valueAttr='value' labelAttr='label'}}
+                </select>
+                <label class="flex-fest-var" style="flex-basis: 80px; margin-left: 10px;">Operator:</label>
+                <select name="system.wieldingRequirements.condition.operator" style="width: 60px;">
+                    {{selectOptions operatoren selected=item.system.wieldingRequirements.condition.operator valueAttr='value' labelAttr='label'}}
+                </select>
+                <label class="flex-fest-var" style="flex-basis: 50px; margin-left: 10px;">Wert:</label>
+                <input name="system.wieldingRequirements.condition.value" value="{{item.system.wieldingRequirements.condition.value}}" type="number" data-dtype="Number" style="width: 60px;" />
+            </div>
+            <div class="flexrow" style="margin-left: 20px; margin-top: 5px;">
+                <label class="flex-fest-var" style="flex-basis: 100px">Bei Fehlschlag:</label>
+                <label class="flex-fest-var" style="flex-basis: 40px;">AT:</label>
+                <input name="system.wieldingRequirements.condition.onFailure.at" value="{{item.system.wieldingRequirements.condition.onFailure.at}}" type="number" data-dtype="Number" style="width: 50px;" />
+                <label class="flex-fest-var" style="flex-basis: 40px; margin-left: 10px;">VT:</label>
+                <input name="system.wieldingRequirements.condition.onFailure.vt" value="{{item.system.wieldingRequirements.condition.onFailure.vt}}" type="number" data-dtype="Number" style="width: 50px;" />
+                <label class="flex-fest-var" style="flex-basis: 60px; margin-left: 10px;">Schaden:</label>
+                <input name="system.wieldingRequirements.condition.onFailure.schaden" value="{{item.system.wieldingRequirements.condition.onFailure.schaden}}" type="number" data-dtype="Number" style="width: 50px;" />
+            </div>
+        </div>
+        
         <hr />
         
         <h3>Kampfmechaniken</h3>
@@ -97,6 +138,10 @@
                 <span style="margin-left: 5px;"><b>Ignoriert Rüstung</b></span>
             </label>
         </div>
+        <div class="flexrow">
+            <label class="flex-fest-var" style="flex-basis: 150px"><b>Zusätzliche Würfel:</b></label>
+            <input name="system.combatMechanics.additionalDice" value="{{item.system.combatMechanics.additionalDice}}" type="number" data-dtype="Number" placeholder="z.B. 1" />
+        </div>
         
         <hr />
         
@@ -108,38 +153,75 @@
         <div class="flexrow">
             <label class="flex-fest-var" style="flex-basis: 120px"><b>Auslöser:</b></label>
             <select name="system.targetEffect.trigger">
-                <option value="" {{#unless item.system.targetEffect.trigger}}selected{{/unless}}>Kein</option>
-                <option value="on_hit" {{#if (eq item.system.targetEffect.trigger "on_hit")}}selected{{/if}}>Bei Treffer</option>
-                <option value="on_crit" {{#if (eq item.system.targetEffect.trigger "on_crit")}}selected{{/if}}>Bei Kritischem Treffer</option>
+                {{selectOptions ausloeser selected=item.system.targetEffect.trigger valueAttr='value' labelAttr='label'}}
             </select>
         </div>
         
         <div style="margin-top: 10px;">
             <label><b>Widerstandsprobe:</b></label>
             <div class="flexrow" style="margin-left: 20px;">
-                <label class="flex-fest-var" style="flex-basis: 80px">Attribut:</label>
-                <select name="system.targetEffect.resistCheck.attribute">
-                    <option value="" {{#unless item.system.targetEffect.resistCheck.attribute}}selected{{/unless}}>Kein</option>
-                    <option value="KK" {{#if (eq item.system.targetEffect.resistCheck.attribute "KK")}}selected{{/if}}>KK</option>
-                    <option value="KO" {{#if (eq item.system.targetEffect.resistCheck.attribute "KO")}}selected{{/if}}>KO</option>
-                    <option value="GE" {{#if (eq item.system.targetEffect.resistCheck.attribute "GE")}}selected{{/if}}>GE</option>
+                <label class="flex-fest-var" style="flex-basis: 60px">Typ:</label>
+                <select name="system.targetEffect.resistCheck.type" style="width: 120px;">
+                    {{selectOptions widerstandsprobeTypen selected=item.system.targetEffect.resistCheck.type valueAttr='value' labelAttr='label'}}
                 </select>
-                <label class="flex-fest-var" style="flex-basis: 100px; margin-left: 10px;">Modifikator:</label>
-                <input name="system.targetEffect.resistCheck.difficulty" value="{{item.system.targetEffect.resistCheck.difficulty}}" type="number" data-dtype="Number" style="width: 80px;" />
+            </div>
+            <div class="flexrow" style="margin-left: 20px; margin-top: 5px;">
+                <label class="flex-fest-var" style="flex-basis: 120px">Angreifer-Attribut:</label>
+                <select name="system.targetEffect.resistCheck.attackerAttribute" style="width: 80px;">
+                    {{selectOptions attributeMitLeer selected=item.system.targetEffect.resistCheck.attackerAttribute valueAttr='value' labelAttr='label'}}
+                </select>
+                <label class="flex-fest-var" style="flex-basis: 80px; margin-left: 10px;">Modifikator:</label>
+                <input name="system.targetEffect.resistCheck.attackerModifier" value="{{item.system.targetEffect.resistCheck.attackerModifier}}" type="number" data-dtype="Number" style="width: 60px;" />
+            </div>
+            <div class="flexrow" style="margin-left: 20px; margin-top: 5px;">
+                <label class="flex-fest-var" style="flex-basis: 120px">Verteidiger-Attribut:</label>
+                <select name="system.targetEffect.resistCheck.defenderAttribute" style="width: 80px;">
+                    {{selectOptions attributeMitLeer selected=item.system.targetEffect.resistCheck.defenderAttribute valueAttr='value' labelAttr='label'}}
+                </select>
+                <label class="flex-fest-var" style="flex-basis: 80px; margin-left: 10px;">Modifikator:</label>
+                <input name="system.targetEffect.resistCheck.defenderModifier" value="{{item.system.targetEffect.resistCheck.defenderModifier}}" type="number" data-dtype="Number" style="width: 60px;" />
             </div>
         </div>
         
         <div class="flexrow" style="margin-top: 5px;">
             <label class="flex-fest-var" style="flex-basis: 120px"><b>Effekt-Typ:</b></label>
             <select name="system.targetEffect.effect.type">
-                <option value="" {{#unless item.system.targetEffect.effect.type}}selected{{/unless}}>Kein</option>
-                <option value="condition" {{#if (eq item.system.targetEffect.effect.type "condition")}}selected{{/if}}>Zustand</option>
-                <option value="grapple" {{#if (eq item.system.targetEffect.effect.type "grapple")}}selected{{/if}}>Umklammerung</option>
+                {{selectOptions effektTypen selected=item.system.targetEffect.effect.type valueAttr='value' labelAttr='label'}}
             </select>
         </div>
         <div class="flexrow">
-            <label class="flex-fest-var" style="flex-basis: 120px"><b>Effekt-Wert:</b></label>
-            <input name="system.targetEffect.effect.value" value="{{item.system.targetEffect.effect.value}}" type="text" data-dtype="String" placeholder="z.B. Liegend" />
+            <label class="flex-fest-var" style="flex-basis: 120px"><b>Status-Name:</b></label>
+            <input name="system.targetEffect.effect.statusName" value="{{item.system.targetEffect.effect.statusName}}" type="text" data-dtype="String" placeholder="z.B. Liegend" />
+        </div>
+        <div class="flexrow">
+            <label class="flex-fest-var" style="flex-basis: 120px"><b>Dauer:</b></label>
+            <input name="system.targetEffect.effect.duration" value="{{item.system.targetEffect.effect.duration}}" type="text" data-dtype="String" placeholder="z.B. 1 Runde" />
+        </div>
+        <div class="flexrow">
+            <label class="flex-fest-var" style="flex-basis: 120px"><b>Icon:</b></label>
+            <input name="system.targetEffect.effect.icon" value="{{item.system.targetEffect.effect.icon}}" type="text" data-dtype="String" placeholder="z.B. icons/svg/falling.svg" />
+        </div>
+        
+        <hr />
+        
+        <h3>Bedingte Modifikatoren</h3>
+        <div>
+            <p><i>Bedingte Modifikatoren werden als Array gespeichert (system.conditionalModifiers)</i></p>
+        </div>
+        
+        <hr />
+        
+        <h3>Akteur-Modifikatoren</h3>
+        <div class="flexrow">
+            <label class="flex-fest-var" style="flex-basis: 120px"><b>Initiative:</b></label>
+            <input name="system.actorModifiers.initiative" value="{{item.system.actorModifiers.initiative}}" type="number" data-dtype="Number" />
+        </div>
+        <div class="flexrow">
+            <label class="flex-fest-var" style="flex-basis: 120px"><b>Bewegung:</b></label>
+            <input name="system.actorModifiers.movement" value="{{item.system.actorModifiers.movement}}" type="number" data-dtype="Number" />
+        </div>
+        <div>
+            <p><i>Akteur-Bedingungen werden als Array gespeichert (system.actorModifiers.conditions)</i></p>
         </div>
         
         <hr />

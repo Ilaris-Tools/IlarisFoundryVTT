@@ -26,6 +26,10 @@ export class WieldingProcessor extends BaseEigenschaftProcessor {
             computed.noRider = true
         }
 
+        if (req.condition) {
+            this.handleCondition(req.condition, computed, actor, weapon)
+        }
+
         const isHauptOnly = weapon.system.hauptwaffe && !weapon.system.nebenwaffe
         const isNebenOnly = !weapon.system.hauptwaffe && weapon.system.nebenwaffe
         const isBothHands = weapon.system.hauptwaffe && weapon.system.nebenwaffe
@@ -53,6 +57,59 @@ export class WieldingProcessor extends BaseEigenschaftProcessor {
                 computed.modifiers.dmg.push(`${name}: -4`)
                 computed.modifiers.at.push(`${name}: ${penalty.at || 0}`)
                 computed.modifiers.vt.push(`${name}: ${penalty.vt || 0}`)
+            }
+        }
+    }
+
+    handleCondition(condition, computed, actor, weapon) {
+        // Example condition handling: currently only supports strength requirement
+        if (condition.type === 'attribute_check') {
+            const attributeValue = actor.system.attribute.attribute[condition.attribute].wert || 0
+            let checkPassed = false
+            switch (condition.operator) {
+                case '<':
+                    checkPassed = attributeValue < condition.value
+                    break
+                case '<=':
+                    checkPassed = attributeValue <= condition.value
+                    break
+                case '>':
+                    checkPassed = attributeValue > condition.value
+                    break
+                case '>=':
+                    checkPassed = attributeValue >= condition.value
+                    break
+                case '==':
+                    checkPassed = attributeValue == condition.value
+                    break
+                case '!=':
+                    checkPassed = attributeValue != condition.value
+                    break
+            }
+            if (!checkPassed && condition.onFailure) {
+                // Apply penalty for not meeting strength requirement
+                const penalty = condition.onFailure
+                computed.at += penalty.at || 0
+                computed.vt += penalty.vt || 0
+                computed.schadenBonus += penalty.schaden || 0
+
+                if (penalty.schaden) {
+                    computed.modifiers.dmg.push(
+                        `${condition.attribute} Voraussetzung nicht erfüllt: ${
+                            penalty.schaden || 0
+                        }`,
+                    )
+                }
+                if (penalty.at) {
+                    computed.modifiers.at.push(
+                        `${condition.attribute} Voraussetzung nicht erfüllt: ${penalty.at || 0}`,
+                    )
+                }
+                if (penalty.vt) {
+                    computed.modifiers.vt.push(
+                        `${condition.attribute} Voraussetzung nicht erfüllt: ${penalty.vt || 0}`,
+                    )
+                }
             }
         }
     }
