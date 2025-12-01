@@ -12,7 +12,8 @@ export class ModifierProcessor extends BaseEigenschaftProcessor {
 
     process(name, eigenschaft, computed, actor, weapon) {
         this._applyBasicModifiers(name, eigenschaft, computed, actor)
-        this._applyConditionalModifiers(name, eigenschaft, computed, actor)
+        this._applyCombatMechanics(name, eigenschaft, computed)
+        this._registerConditionalModifiers(name, eigenschaft, computed)
     }
 
     /**
@@ -38,27 +39,44 @@ export class ModifierProcessor extends BaseEigenschaftProcessor {
     }
 
     /**
-     * Apply conditional modifiers based on conditions
+     * Apply combat mechanics like fumble/crit thresholds
      * @private
      */
-    _applyConditionalModifiers(name, eigenschaft, computed, actor) {
-        // Check conditions
-        if (eigenschaft.conditions && eigenschaft.conditions.length > 0) {
-            for (const condition of eigenschaft.conditions) {
-                if (checkCondition(condition, actor)) {
-                    // Condition is true (failure condition met), apply penalties
-                    const penalties = condition.onFailure || {}
-                    computed.at += penalties.at || 0
-                    computed.vt += penalties.vt || 0
-                    computed.schadenBonus += penalties.schaden || 0
+    _applyCombatMechanics(name, eigenschaft, computed) {
+        const mods = eigenschaft.modifiers || {}
 
-                    if (penalties.message) {
-                        computed.modifiers.at.push(penalties.message)
-                        computed.modifiers.vt.push(penalties.message)
-                        computed.modifiers.dmg.push(penalties.message)
-                    }
-                }
-            }
+        if (mods.fumbleThreshold !== null && mods.fumbleThreshold !== undefined) {
+            computed.combatMechanics.fumbleThreshold = mods.fumbleThreshold
         }
+
+        if (mods.critThreshold !== null && mods.critThreshold !== undefined) {
+            computed.combatMechanics.critThreshold = mods.critThreshold
+        }
+
+        if (mods.ignoreCover) {
+            computed.combatMechanics.ignoreCover = true
+        }
+
+        if (mods.ignoreArmor) {
+            computed.combatMechanics.ignoreArmor = true
+        }
+
+        if (mods.additionalDice) {
+            computed.combatMechanics.additionalDice =
+                (computed.combatMechanics.additionalDice || 0) + mods.additionalDice
+        }
+    }
+
+    /**
+     * Register conditional modifiers to be checked during combat
+     * @private
+     */
+    _registerConditionalModifiers(name, eigenschaft, computed) {
+        const conditionalMods = eigenschaft.modifiers?.conditionalModifiers || []
+
+        if (conditionalMods.length === 0) return
+
+        // Store conditional modifiers to be checked during combat
+        computed.conditionalModifiers.push(...conditionalMods)
     }
 }

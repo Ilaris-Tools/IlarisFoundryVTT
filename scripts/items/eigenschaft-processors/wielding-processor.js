@@ -26,7 +26,7 @@ export class WieldingProcessor extends BaseEigenschaftProcessor {
             computed.noRider = true
         }
 
-        if (req.condition) {
+        if (req.condition && req.condition.value) {
             this.handleCondition(req.condition, computed, actor, weapon)
         }
 
@@ -64,7 +64,7 @@ export class WieldingProcessor extends BaseEigenschaftProcessor {
     handleCondition(condition, computed, actor, weapon) {
         // Example condition handling: currently only supports strength requirement
         if (condition.type === 'attribute_check') {
-            const attributeValue = actor.system.attribute.attribute[condition.attribute].wert || 0
+            const attributeValue = actor.system.attribute[condition.attribute].wert || 0
             let checkPassed = false
             switch (condition.operator) {
                 case '<':

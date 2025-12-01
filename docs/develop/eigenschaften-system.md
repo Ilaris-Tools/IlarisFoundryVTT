@@ -1,5 +1,7 @@
 # Eigenschaften System - Design Documentation
 
+Docu for your llm as quickstart where to find everything about the topic and what the goal was.
+
 ## Overview
 
 The Eigenschaften System is a data-driven architecture for managing item properties (Waffeneigenschaften, Zaubereigenschaften, etc.) in the Ilaris FoundryVTT system. This replaces the previous hardcoded boolean property system with a flexible, extensible approach.
@@ -86,8 +88,7 @@ Location: `template.json` → `Item.types` → `waffeneigenschaft`
         },
         "conditionalModifiers": [],
         "actorModifiers": {
-            "initiative": 0,
-            "movement": 0,
+            "modifiers": [],
             "conditions": []
         },
         "customScript": ""
@@ -328,14 +329,42 @@ The `kategorie` field routes processing logic. Each kategorie has specific field
 
 ### 5. `actor_modifier` - Actor-Level Effects
 
-**Purpose**: Properties that affect the actor, not just the weapon  
-**Examples**: INI bonus from daggers, movement penalties
+**Purpose**: Properties that affect the actor's derived stats (`abgeleitete`), not just the weapon  
+**Examples**: INI bonus from daggers, BE penalties from heavy weapons, movement speed changes
 
 **Fields Used**:
 
--   `actorModifiers.initiative`: INI modifier (can be conditional)
--   `actorModifiers.movement`: Movement speed modifier
+-   `actorModifiers.modifiers[]`: Array of modifications to actor's derived stats
+    -   `property`: Which `abgeleitete` stat to modify (be, ini, gs, ws, ws_stern, mr)
+    -   `mode`: How to apply ('set' or 'augment')
+    -   `value`: Numeric modifier value
+    -   `formula`: Dynamic formula (e.g., `@actor.system.attribute.GE.wert / 2`)
 -   `actorModifiers.conditions`: Status conditions applied to actor
+
+**Modifier Structure**:
+
+```json
+{
+    "property": "ini",
+    "mode": "augment",
+    "value": 2,
+    "formula": ""
+}
+```
+
+**Available Properties**:
+
+-   `be`: Behinderung (Encumbrance)
+-   `ini`: Initiative
+-   `gs`: Geschwindigkeit (Speed)
+-   `ws`: Widerstand (Resistance)
+-   `ws_stern`: Widerstand\* (Modified Resistance)
+-   `mr`: Magieresistenz (Magic Resistance)
+
+**Modes**:
+
+-   `set`: Overwrite the actor's stat value (applied first, only highest 'set' wins)
+-   `augment`: Modify the actor's stat value (applied after 'set', only lowest 'augment' from haupt/neben wins)
 
 **Example - INI Bonus (Dolch)**:
 
@@ -343,7 +372,38 @@ The `kategorie` field routes processing logic. Each kategorie has specific field
 {
     "kategorie": "actor_modifier",
     "actorModifiers": {
-        "initiative": 2
+        "modifiers": [
+            {
+                "property": "ini",
+                "mode": "augment",
+                "value": 2,
+                "formula": ""
+            }
+        ]
+    }
+}
+```
+
+**Example - BE Penalty (Heavy Armor)**:
+
+```json
+{
+    "kategorie": "actor_modifier",
+    "actorModifiers": {
+        "modifiers": [
+            {
+                "property": "be",
+                "mode": "augment",
+                "value": -2,
+                "formula": ""
+            },
+            {
+                "property": "gs",
+                "mode": "augment",
+                "value": 0,
+                "formula": "@actor.system.attribute.GE.wert < 4 ? -1 : 0"
+            }
+        ]
     }
 }
 ```
@@ -352,21 +412,45 @@ The `kategorie` field routes processing logic. Each kategorie has specific field
 
 -   Weapons set `computed.hasActorModifiers = true`
 -   Actor's `prepareData()` checks all equipped weapons
--   Only applies INI bonus from weapon with highest INI value
--   Prevents stacking issues
+-   For 'augment' mode: Only applies lowest penalty from hauptwaffe/nebenwaffe per property
+-   For 'set' mode: Only applies highest 'set' value per property
+-   Prevents stacking issues while allowing meaningful choices
 
 **Implementation**:
 
 ```javascript
 // In actor.js prepareData()
-let highestINI = 0
-for (let weapon of actor.allWeapons) {
+const actorMods = { ini: [], be: [], gs: [], ws: [], ws_stern: [], mr: [] }
+
+for (let weapon of actor.equippedWeapons) {
     if (weapon.system.computed?.hasActorModifiers) {
-        const ini = weapon.system.actorModifiers?.initiative || 0
-        highestINI = Math.max(highestINI, ini)
+        for (let mod of weapon.system.actorModifiers?.modifiers || []) {
+            actorMods[mod.property].push({
+                mode: mod.mode,
+                value: this._evaluateModifierFormula(mod, actor),
+                weapon: weapon.name,
+            })
+        }
     }
 }
-actor.system.ini += highestINI
+
+// Apply 'set' modifiers first (highest wins)
+for (let [prop, mods] of Object.entries(actorMods)) {
+    const setMods = mods.filter((m) => m.mode === 'set')
+    if (setMods.length > 0) {
+        const highest = Math.max(...setMods.map((m) => m.value))
+        actor.system.abgeleitete[prop] = highest
+    }
+}
+
+// Apply 'augment' modifiers (lowest wins for haupt/neben)
+for (let [prop, mods] of Object.entries(actorMods)) {
+    const augmentMods = mods.filter((m) => m.mode === 'augment')
+    if (augmentMods.length > 0) {
+        const lowest = Math.min(...augmentMods.map((m) => m.value))
+        actor.system.abgeleitete[prop] += lowest
+    }
+}
 ```
 
 ---

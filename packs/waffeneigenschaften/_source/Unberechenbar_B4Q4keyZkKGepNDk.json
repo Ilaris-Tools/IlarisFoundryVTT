@@ -6,15 +6,28 @@
     "sephrastoScript": "",
     "foundryScript": "",
     "text": "",
-    "kategorie": "combat_mechanic",
+    "kategorie": "modifier",
     "modifiers": {
       "at": 0,
       "vt": 0,
       "schaden": 0,
       "schadenFormula": "",
-      "rw": 0
+      "rw": 0,
+      "fumbleThreshold": 2,
+      "critThreshold": 20,
+      "ignoreCover": false,
+      "ignoreArmor": false,
+      "additionalDice": 0,
+      "conditionalModifiers": [
+        {
+          "condition": "target_has_shield",
+          "modifiers": {
+            "at": 4
+          },
+          "description": "+4 AT gegen Schildträger"
+        }
+      ]
     },
-    "conditions": [],
     "wieldingRequirements": {
       "hands": 1,
       "penalties": {
@@ -43,22 +56,8 @@
         "value": ""
       }
     },
-    "combatMechanics": {
-      "fumbleThreshold": 2,
-      "critThreshold": 20,
-      "ignoreCover": false,
-      "ignoreArmor": false,
-      "additionalDice": 0
-    },
-    "conditionalModifiers": [
-      {
-        "trigger": "fumble",
-        "effect": "Waffe trifft den Angreifer selbst"
-      }
-    ],
     "actorModifiers": {
-      "initiative": 0,
-      "movement": 0,
+      "modifiers": [],
       "conditions": []
     },
     "customScript": "",

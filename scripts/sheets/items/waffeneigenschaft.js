@@ -72,12 +72,118 @@ export class WaffeneigenschaftSheet extends IlarisItemSheet {
             { value: 'grapple', label: 'Umklammerung' },
         ]
 
+        // Conditional modifier condition options
+        data.conditionalModifierConditions = [
+            { value: 'target_has_shield', label: 'Ziel hat Schild' },
+            { value: 'target_is_prone', label: 'Ziel liegt' },
+            { value: 'target_is_mounted', label: 'Ziel ist beritten' },
+            { value: 'attacker_is_mounted', label: 'Angreifer ist beritten' },
+            { value: 'attacker_is_charging', label: 'Angreifer stürmt' },
+            { value: 'target_is_flanked', label: 'Ziel ist flankiert' },
+            { value: 'target_is_surprised', label: 'Ziel ist überrascht' },
+            { value: 'is_ranged_attack', label: 'Fernkampfangriff' },
+            { value: 'is_melee_attack', label: 'Nahkampfangriff' },
+        ]
+
+        // Actor modifier mode options
+        data.actorModifierModes = [
+            { value: '', label: 'Keine' },
+            { value: 'set', label: 'Setzen' },
+            { value: 'augment', label: 'Modifizieren' },
+        ]
+
+        // Abgeleitete properties that can be modified
+        data.abgeleiteteProperties = [
+            { value: 'be', label: 'BE (Behinderung)' },
+            { value: 'ini', label: 'INI (Initiative)' },
+            { value: 'gs', label: 'GS (Geschwindigkeit)' },
+        ]
+
         return data
     }
 
     activateListeners(html) {
         super.activateListeners(html)
 
-        // Add any custom listeners here if needed
+        // Add conditional modifier
+        html.find('.add-conditional-modifier').click(this._onAddConditionalModifier.bind(this))
+
+        // Remove conditional modifier
+        html.find('.remove-conditional-modifier').click(
+            this._onRemoveConditionalModifier.bind(this),
+        )
+
+        // Add actor modifier
+        html.find('.add-actor-modifier').click(this._onAddActorModifier.bind(this))
+
+        // Remove actor modifier
+        html.find('.remove-actor-modifier').click(this._onRemoveActorModifier.bind(this))
+    }
+
+    /**
+     * Handle adding a new conditional modifier
+     * @param {Event} event
+     * @private
+     */
+    async _onAddConditionalModifier(event) {
+        event.preventDefault()
+        const conditionalModifiers = foundry.utils.deepClone(
+            this.item.system.modifiers?.conditionalModifiers || [],
+        )
+        conditionalModifiers.push({
+            condition: 'target_has_shield',
+            modifiers: {
+                at: 0,
+                vt: 0,
+                schaden: 0,
+            },
+            description: '',
+        })
+        await this.item.update({ 'system.modifiers.conditionalModifiers': conditionalModifiers })
+    }
+
+    /**
+     * Handle removing a conditional modifier
+     * @param {Event} event
+     * @private
+     */
+    async _onRemoveConditionalModifier(event) {
+        event.preventDefault()
+        const index = Number(event.currentTarget.dataset.index)
+        const conditionalModifiers = foundry.utils.deepClone(
+            this.item.system.modifiers?.conditionalModifiers || [],
+        )
+        conditionalModifiers.splice(index, 1)
+        await this.item.update({ 'system.modifiers.conditionalModifiers': conditionalModifiers })
+    }
+
+    /**
+     * Handle adding a new actor modifier
+     * @param {Event} event
+     * @private
+     */
+    async _onAddActorModifier(event) {
+        event.preventDefault()
+        const modifiers = foundry.utils.deepClone(this.item.system.actorModifiers.modifiers || [])
+        modifiers.push({
+            property: 'be',
+            mode: '',
+            value: 0,
+            formula: '',
+        })
+        await this.item.update({ 'system.actorModifiers.modifiers': modifiers })
+    }
+
+    /**
+     * Handle removing an actor modifier
+     * @param {Event} event
+     * @private
+     */
+    async _onRemoveActorModifier(event) {
+        event.preventDefault()
+        const index = Number(event.currentTarget.dataset.index)
+        const modifiers = foundry.utils.deepClone(this.item.system.actorModifiers?.modifiers || [])
+        modifiers.splice(index, 1)
+        await this.item.update({ 'system.actorModifiers.modifiers': modifiers })
     }
 }

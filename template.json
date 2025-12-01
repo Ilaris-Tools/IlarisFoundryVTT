@@ -429,7 +429,13 @@
         "vt": 0,
         "schaden": 0,
         "schadenFormula": "",
-        "rw": 0
+        "rw": 0,
+        "fumbleThreshold": null,
+        "critThreshold": null,
+        "ignoreCover": false,
+        "ignoreArmor": false,
+        "additionalDice": 0,
+        "conditionalModifiers": []
       },
       "wieldingRequirements": {
         "hands": 1,
@@ -469,17 +475,8 @@
           "icon": ""
         }
       },
-      "combatMechanics": {
-        "fumbleThreshold": null,
-        "critThreshold": null,
-        "ignoreCover": false,
-        "ignoreArmor": false,
-        "additionalDice": 0
-      },
-      "conditionalModifiers": [],
       "actorModifiers": {
-        "initiative": 0,
-        "movement": 0,
+        "modifiers": [],
         "conditions": []
       },
       "customScript": ""

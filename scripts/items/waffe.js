@@ -30,7 +30,8 @@ export class WaffeItem extends CombatItem {
         if (!this.parent || this.parent.documentName !== 'Actor') return
 
         // Ensure eigenschaft items are loaded
-        if (!this._eigenschaftCache.isLoaded()) {
+        const eigenschaften = this.system.eigenschaften || []
+        if (!this._eigenschaftCache.isLoaded(eigenschaften)) {
             // Queue loading for next tick
             console.log('Queuing eigenschaft load for weapon:', this.name)
             this._queueEigenschaftLoad()

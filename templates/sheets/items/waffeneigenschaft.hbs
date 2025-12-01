@@ -18,6 +18,7 @@
         
         <hr />
         
+        {{#if (eq item.system.kategorie 'modifier')}}
         <h3>Modifikatoren</h3>
         <div class="flexrow">
             <label class="flex-fest-var" style="flex-basis: 80px"><b>AT:</b></label>
@@ -37,9 +38,33 @@
             <label class="flex-fest-var" style="flex-basis: 120px"><b>Schadens-Formel:</b></label>
             <input name="system.modifiers.schadenFormula" value="{{item.system.modifiers.schadenFormula}}" type="text" data-dtype="String" placeholder="z.B. @actor.system.attribute.KK.wert" />
         </div>
+
+        <h4 style="margin-top: 15px;">Kampfmechaniken</h4>
+        <div class="flexrow">
+            <label class="flex-fest-var" style="flex-basis: 140px">Patzer-Schwelle:</label>
+            <input name="system.modifiers.fumbleThreshold" value="{{item.system.modifiers.fumbleThreshold}}" type="number" data-dtype="Number" style="width: 80px;" placeholder="normal: 1" />
+            <label class="flex-fest-var" style="flex-basis: 140px; margin-left: 10px;">Kritische-Schwelle:</label>
+            <input name="system.modifiers.critThreshold" value="{{item.system.modifiers.critThreshold}}" type="number" data-dtype="Number" style="width: 80px;" placeholder="normal: 20" />
+        </div>
+        <div class="flexrow">
+            <label style="display: flex; align-items: center; margin-right: 20px;">
+                <input name="system.modifiers.ignoreCover" type="checkbox" {{checked item.system.modifiers.ignoreCover}} />
+                <span style="margin-left: 5px;">Ignoriert Deckung</span>
+            </label>
+            <label style="display: flex; align-items: center; margin-right: 20px;">
+                <input name="system.modifiers.ignoreArmor" type="checkbox" {{checked item.system.modifiers.ignoreArmor}} />
+                <span style="margin-left: 5px;">Ignoriert Rüstung</span>
+            </label>
+        </div>
+        <div class="flexrow">
+            <label class="flex-fest-var" style="flex-basis: 140px">Zusätzliche Würfel:</label>
+            <input name="system.modifiers.additionalDice" value="{{item.system.modifiers.additionalDice}}" type="number" data-dtype="Number" style="width: 80px;" placeholder="z.B. 1" />
+        </div>
         
         <hr />
+        {{/if}}
         
+        {{#if (eq item.system.kategorie 'wielding')}}
         <h3>Führungs-Anforderungen</h3>
         <div class="flexrow" style="align-items: center;">
             <label class="flex-fest-var" style="flex-basis: 120px"><b>Benötigte Hände:</b></label>
@@ -116,35 +141,9 @@
         </div>
         
         <hr />
+        {{/if}}
         
-        <h3>Kampfmechaniken</h3>
-        <div class="flexrow">
-            <label class="flex-fest-var" style="flex-basis: 150px"><b>Patzer-Schwelle:</b></label>
-            <input name="system.combatMechanics.fumbleThreshold" value="{{item.system.combatMechanics.fumbleThreshold}}" type="number" data-dtype="Number" placeholder="z.B. 1" />
-        </div>
-        <div class="flexrow">
-            <label class="flex-fest-var" style="flex-basis: 150px"><b>Kritische-Schwelle:</b></label>
-            <input name="system.combatMechanics.critThreshold" value="{{item.system.combatMechanics.critThreshold}}" type="number" data-dtype="Number" placeholder="z.B. 19" />
-        </div>
-        <div class="flexrow">
-            <label style="display: flex; align-items: center;">
-                <input name="system.combatMechanics.ignoreCover" type="checkbox" {{checked item.system.combatMechanics.ignoreCover}} />
-                <span style="margin-left: 5px;"><b>Ignoriert Deckung</b></span>
-            </label>
-        </div>
-        <div class="flexrow">
-            <label style="display: flex; align-items: center;">
-                <input name="system.combatMechanics.ignoreArmor" type="checkbox" {{checked item.system.combatMechanics.ignoreArmor}} />
-                <span style="margin-left: 5px;"><b>Ignoriert Rüstung</b></span>
-            </label>
-        </div>
-        <div class="flexrow">
-            <label class="flex-fest-var" style="flex-basis: 150px"><b>Zusätzliche Würfel:</b></label>
-            <input name="system.combatMechanics.additionalDice" value="{{item.system.combatMechanics.additionalDice}}" type="number" data-dtype="Number" placeholder="z.B. 1" />
-        </div>
-        
-        <hr />
-        
+        {{#if (eq item.system.kategorie 'target_effect')}}
         <h3>Ziel-Effekt</h3>
         <div class="flexrow">
             <label class="flex-fest-var" style="flex-basis: 120px"><b>Effekt-Name:</b></label>
@@ -203,28 +202,78 @@
         </div>
         
         <hr />
+        {{/if}}
         
+        {{#if (eq item.system.kategorie 'modifier')}}
         <h3>Bedingte Modifikatoren</h3>
-        <div>
-            <p><i>Bedingte Modifikatoren werden als Array gespeichert (system.conditionalModifiers)</i></p>
+        <div class="conditional-modifiers-container">
+            {{#each item.system.modifiers.conditionalModifiers as |modifier index|}}
+            <div class="conditional-modifier-entry" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 4px;">
+                <div class="flexrow" style="margin-bottom: 5px;">
+                    <label class="flex-fest-var" style="flex-basis: 100px"><b>Bedingung:</b></label>
+                    <select name="system.modifiers.conditionalModifiers.{{index}}.condition" style="flex: 1;">
+                        {{selectOptions ../conditionalModifierConditions selected=modifier.condition valueAttr='value' labelAttr='label'}}
+                    </select>
+                    <button type="button" class="remove-conditional-modifier" data-index="{{index}}" style="margin-left: 10px; width: 30px;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                <div class="flexrow" style="margin-bottom: 5px;">
+                    <label class="flex-fest-var" style="flex-basis: 60px">AT:</label>
+                    <input name="system.modifiers.conditionalModifiers.{{index}}.modifiers.at" value="{{modifier.modifiers.at}}" type="number" data-dtype="Number" style="width: 60px;" />
+                    <label class="flex-fest-var" style="flex-basis: 60px; margin-left: 10px;">VT:</label>
+                    <input name="system.modifiers.conditionalModifiers.{{index}}.modifiers.vt" value="{{modifier.modifiers.vt}}" type="number" data-dtype="Number" style="width: 60px;" />
+                    <label class="flex-fest-var" style="flex-basis: 80px; margin-left: 10px;">Schaden:</label>
+                    <input name="system.modifiers.conditionalModifiers.{{index}}.modifiers.schaden" value="{{modifier.modifiers.schaden}}" type="number" data-dtype="Number" style="width: 60px;" />
+                </div>
+                <div class="flexrow">
+                    <label class="flex-fest-var" style="flex-basis: 100px"><b>Beschreibung:</b></label>
+                    <input name="system.modifiers.conditionalModifiers.{{index}}.description" value="{{modifier.description}}" type="text" style="flex: 1;" placeholder="z.B. +4 AT gegen Schildträger" />
+                </div>
+            </div>
+            {{/each}}
         </div>
+        <button type="button" class="add-conditional-modifier clickable" style="margin-top: 5px;">
+            <i class="fas fa-plus"></i> Bedingten Modifikator hinzufügen
+        </button>
         
         <hr />
+        {{/if}}
+        {{/if}}
         
+        {{#if (eq item.system.kategorie 'actor_modifier')}}
         <h3>Akteur-Modifikatoren</h3>
-        <div class="flexrow">
-            <label class="flex-fest-var" style="flex-basis: 120px"><b>Initiative:</b></label>
-            <input name="system.actorModifiers.initiative" value="{{item.system.actorModifiers.initiative}}" type="number" data-dtype="Number" />
+        <div class="actor-modifiers-container">
+            {{#each item.system.actorModifiers.modifiers as |modifier index|}}
+            <div class="actor-modifier-entry" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 4px;">
+                <div class="flexrow" style="margin-bottom: 5px;">
+                    <label class="flex-fest-var" style="flex-basis: 120px"><b>Abgeleiteter Wert:</b></label>
+                    <select name="system.actorModifiers.modifiers.{{index}}.property" style="width: 120px;">
+                        {{selectOptions ../abgeleiteteProperties selected=modifier.property valueAttr='value' labelAttr='label'}}
+                    </select>
+                    <label class="flex-fest-var" style="flex-basis: 80px; margin-left: 10px;">Modus:</label>
+                    <select name="system.actorModifiers.modifiers.{{index}}.mode" style="width: 100px;">
+                        {{selectOptions ../actorModifierModes selected=modifier.mode valueAttr='value' labelAttr='label'}}
+                    </select>
+                    <button type="button" class="remove-actor-modifier" data-index="{{index}}" style="margin-left: 10px; width: 30px;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                <div class="flexrow">
+                    <label class="flex-fest-var" style="flex-basis: 60px">Wert:</label>
+                    <input name="system.actorModifiers.modifiers.{{index}}.value" value="{{modifier.value}}" type="number" data-dtype="Number" style="width: 80px;" placeholder="z.B. 2 oder -1" />
+                    <label class="flex-fest-var" style="flex-basis: 80px; margin-left: 10px;">Formel:</label>
+                    <input name="system.actorModifiers.modifiers.{{index}}.formula" value="{{modifier.formula}}" type="text" style="flex: 1;" placeholder="z.B. @actor.system.attribute.KK.wert" />
+                </div>
+            </div>
+            {{/each}}
         </div>
-        <div class="flexrow">
-            <label class="flex-fest-var" style="flex-basis: 120px"><b>Bewegung:</b></label>
-            <input name="system.actorModifiers.movement" value="{{item.system.actorModifiers.movement}}" type="number" data-dtype="Number" />
-        </div>
-        <div>
-            <p><i>Akteur-Bedingungen werden als Array gespeichert (system.actorModifiers.conditions)</i></p>
-        </div>
+        <button type="button" class="add-actor-modifier clickable" style="margin-top: 5px;">
+            <i class="fas fa-plus"></i> Akteur-Modifikator hinzufügen
+        </button>
         
         <hr />
+        {{/if}}
         
         <h3>Erweitert</h3>
         <div>
