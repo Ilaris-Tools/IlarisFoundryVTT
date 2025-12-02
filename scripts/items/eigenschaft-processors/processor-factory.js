@@ -1,7 +1,6 @@
 import { ModifierProcessor } from './modifier-processor.js'
 import { WieldingProcessor } from './wielding-processor.js'
 import { TargetEffectProcessor } from './target-effect-processor.js'
-import { CombatMechanicProcessor } from './combat-mechanic-processor.js'
 import { PassiveProcessor } from './passive-processor.js'
 import { ActorModifierProcessor } from './actor-modifier-processor.js'
 import { executeCustomScript } from '../utils/eigenschaft-utils.js'
@@ -25,7 +24,6 @@ export class ProcessorFactory {
             ModifierProcessor,
             WieldingProcessor,
             TargetEffectProcessor,
-            CombatMechanicProcessor,
             PassiveProcessor,
             ActorModifierProcessor,
         ]

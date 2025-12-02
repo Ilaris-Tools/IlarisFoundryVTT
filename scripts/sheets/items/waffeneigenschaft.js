@@ -16,10 +16,9 @@ export class WaffeneigenschaftSheet extends IlarisItemSheet {
         // Prepare kategorie options for select dropdown
         data.kategorien = [
             { value: 'modifier', label: 'Modifikator' },
-            { value: 'conditional', label: 'Konditional' },
             { value: 'wielding', label: 'Führung' },
-            { value: 'combat_mechanic', label: 'Kampfmechanik' },
             { value: 'target_effect', label: 'Ziel-Effekt' },
+            { value: 'actor_modifier', label: 'Akteur-Modifikator' },
             { value: 'passive', label: 'Passiv' },
         ]
 

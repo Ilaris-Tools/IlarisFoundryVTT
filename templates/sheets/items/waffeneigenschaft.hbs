@@ -73,9 +73,13 @@
                 <input name="system.wieldingRequirements.ignoreNebenMalus" type="checkbox" {{checked item.system.wieldingRequirements.ignoreNebenMalus}} />
                 <span style="margin-left: 5px;">Kein Malus als Nebenwaffe</span>
             </label>
-            <label style="display: flex; align-items: center;">
+            <label style="display: flex; align-items: center; margin-right: 20px;">
                 <input name="system.wieldingRequirements.noRider" type="checkbox" {{checked item.system.wieldingRequirements.noRider}} />
                 <span style="margin-left: 5px;">Nicht reitbar</span>
+            </label>
+            <label style="display: flex; align-items: center;">
+                <input name="system.wieldingRequirements.requiresRider" type="checkbox" {{checked item.system.wieldingRequirements.requiresRider}} />
+                <span style="margin-left: 5px;">Nur zu Pferd</span>
             </label>
         </div>
         
@@ -239,7 +243,6 @@
         
         <hr />
         {{/if}}
-        {{/if}}
         
         {{#if (eq item.system.kategorie 'actor_modifier')}}
         <h3>Akteur-Modifikatoren</h3>
@@ -261,9 +264,7 @@
                 </div>
                 <div class="flexrow">
                     <label class="flex-fest-var" style="flex-basis: 60px">Wert:</label>
-                    <input name="system.actorModifiers.modifiers.{{index}}.value" value="{{modifier.value}}" type="number" data-dtype="Number" style="width: 80px;" placeholder="z.B. 2 oder -1" />
-                    <label class="flex-fest-var" style="flex-basis: 80px; margin-left: 10px;">Formel:</label>
-                    <input name="system.actorModifiers.modifiers.{{index}}.formula" value="{{modifier.formula}}" type="text" style="flex: 1;" placeholder="z.B. @actor.system.attribute.KK.wert" />
+                    <input name="system.actorModifiers.modifiers.{{index}}.value" value="{{modifier.value}}" type="number" data-dtype="Number" style="flex: 1;" placeholder="z.B. 2 oder -1" />
                 </div>
             </div>
             {{/each}}

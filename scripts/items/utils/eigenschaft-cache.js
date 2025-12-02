@@ -164,12 +164,11 @@ export class EigenschaftCache {
     }
 
     /**
-     * Clear the cache and reset loaded state
+     * Clear instance state (does not clear global cache)
      */
     clear() {
-        globalCache.clear()
-        globalLoaded = false
-        globalLoading = false
+        this._requiredNames = []
+        this._loading = false
     }
 
     /**
@@ -241,4 +240,46 @@ export function resetGlobalCache() {
     globalCache.clear()
     globalLoaded = false
     globalLoading = false
+}
+
+/**
+ * Preload all waffeneigenschaft items from world and compendiums
+ * Call this during system initialization to populate the cache
+ * @returns {Promise<number>} Number of eigenschaften loaded
+ */
+export async function preloadAllEigenschaften() {
+    if (globalLoading) {
+        console.log('Ilaris | EigenschaftCache: Already loading eigenschaften')
+        return globalCache.size
+    }
+
+    globalLoading = true
+    console.log('Ilaris | EigenschaftCache: Preloading all waffeneigenschaften...')
+
+    try {
+        // Load from world items
+        const worldEigenschaften = game.items.filter((i) => i.type === 'waffeneigenschaft')
+        for (const item of worldEigenschaften) {
+            globalCache.set(item.name, item)
+        }
+
+        // Load from compendiums
+        for (const pack of game.packs) {
+            if (pack.metadata.type === 'Item') {
+                const items = await pack.getDocuments()
+                const eigenschaften = items.filter((i) => i.type === 'waffeneigenschaft')
+                for (const item of eigenschaften) {
+                    if (!globalCache.has(item.name)) {
+                        globalCache.set(item.name, item)
+                    }
+                }
+            }
+        }
+
+        globalLoaded = true
+        console.log(`Ilaris | EigenschaftCache: Preloaded ${globalCache.size} waffeneigenschaften`)
+        return globalCache.size
+    } finally {
+        globalLoading = false
+    }
 }

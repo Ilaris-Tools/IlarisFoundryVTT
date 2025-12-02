@@ -441,6 +441,7 @@
         "hands": 1,
         "ignoreNebenMalus": false,
         "noRider": false,
+        "requiresRider": false,
         "penalties": {
           "hauptOnly": {},
           "nebenOnly": {},

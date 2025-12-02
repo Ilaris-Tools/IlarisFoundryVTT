@@ -23,7 +23,7 @@ export class WaffeItem extends CombatItem {
      * Prepare derived data for the weapon
      * Calculates combat stats based on eigenschaften and actor context
      */
-    prepareWeapon() {
+    async prepareWeapon() {
         console.log('WaffeItem.prepareDerivedData called for', this.name)
 
         // Only calculate if embedded in an actor
@@ -32,10 +32,9 @@ export class WaffeItem extends CombatItem {
         // Ensure eigenschaft items are loaded
         const eigenschaften = this.system.eigenschaften || []
         if (!this._eigenschaftCache.isLoaded(eigenschaften)) {
-            // Queue loading for next tick
-            console.log('Queuing eigenschaft load for weapon:', this.name)
-            this._queueEigenschaftLoad()
-            return
+            // Wait for loading to complete
+            console.log('Loading eigenschaften for weapon:', this.name)
+            await this._eigenschaftCache.load(eigenschaften)
         }
 
         this._calculateWeaponStats()
@@ -321,7 +320,7 @@ export class WaffeItem extends CombatItem {
     }
 
     /**
-     * Clear eigenschaft cache when item updates
+     * Handle pre-update lifecycle
      * @param {Object} changed - Changed data
      * @param {Object} options - Update options
      * @param {string} userId - User ID performing update
@@ -329,10 +328,29 @@ export class WaffeItem extends CombatItem {
      */
     async _preUpdate(changed, options, userId) {
         await super._preUpdate(changed, options, userId)
+    }
 
-        // Clear cache if eigenschaften changed
-        if (changed.system?.eigenschaften) {
-            this._eigenschaftCache.clear()
+    /**
+     * Trigger recalculation after update
+     * @param {Object} changed - Changed data
+     * @param {Object} options - Update options
+     * @param {string} userId - User ID performing update
+     * @private
+     */
+    _onUpdate(changed, options, userId) {
+        super._onUpdate(changed, options, userId)
+
+        // If eigenschaften changed and we're embedded in an actor, reload and recalculate
+        if (changed.system?.eigenschaften && this.parent?.documentName === 'Actor') {
+            console.log(`Eigenschaften changed for ${this.name}, reloading...`)
+            this._eigenschaftCache.load(this.system.eigenschaften || []).then(() => {
+                console.log(`Eigenschaften loaded for ${this.name}, triggering actor refresh`)
+                this.parent.prepareData()
+                // Also refresh the actor sheet if it's open
+                if (this.parent.sheet?.rendered) {
+                    this.parent.sheet.render(false)
+                }
+            })
         }
     }
 

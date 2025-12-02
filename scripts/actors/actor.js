@@ -468,7 +468,7 @@ export class IlarisActor extends Actor {
                 : kap
     }
 
-    _calculateKampf(actor) {
+    async _calculateKampf(actor) {
         console.log('Berechne Kampf')
         // data.data.abgeleitete.sb = sb;
         let nahkampfmod = actor.system.modifikatoren.nahkampfmod
@@ -507,10 +507,89 @@ export class IlarisActor extends Actor {
             selected_kampfstil.active = false
         }
 
-        for (let waffe of actor.items.filter(
+        // Prepare all weapons and wait for eigenschaften to load
+        const weapons = actor.items.filter(
             (i) => i.type === 'fernkampfwaffe' || i.type === 'nahkampfwaffe',
-        )) {
-            waffe.prepareWeapon()
+        )
+        await Promise.all(weapons.map((waffe) => waffe.prepareWeapon()))
+
+        // Apply actor modifiers from equipped weapons
+        this._applyWeaponActorModifiers(actor)
+    }
+
+    /**
+     * Apply actor modifiers from equipped weapons with eigenschaften
+     * @param {Actor} actor - The actor
+     * @private
+     */
+    _applyWeaponActorModifiers(actor) {
+        // Collect all actor modifiers from equipped weapons
+        const modifiersByProperty = {
+            be: [],
+            ini: [],
+            gs: [],
+            ws: [],
+            ws_stern: [],
+            mr: [],
+        }
+
+        // Get equipped weapons
+        const hauptwaffe = actor.items.find(
+            (i) =>
+                (i.type === 'fernkampfwaffe' || i.type === 'nahkampfwaffe') && i.system.hauptwaffe,
+        )
+        const nebenwaffe = actor.items.find(
+            (i) =>
+                (i.type === 'fernkampfwaffe' || i.type === 'nahkampfwaffe') &&
+                i.system.nebenwaffe &&
+                i !== hauptwaffe,
+        )
+
+        // Collect modifiers from equipped weapons
+        for (const weapon of [hauptwaffe, nebenwaffe].filter((w) => w)) {
+            if (
+                weapon.system.computed?.hasActorModifiers &&
+                weapon.system.computed?.actorModifiers
+            ) {
+                for (const mod of weapon.system.computed.actorModifiers) {
+                    if (modifiersByProperty[mod.property]) {
+                        modifiersByProperty[mod.property].push({
+                            mode: mod.mode,
+                            value: mod.value,
+                            weaponName: mod.weaponName,
+                        })
+                    }
+                }
+            } else {
+                // Weapon exists but has no actor modifiers - add default augment 0 for all properties
+                for (const property of Object.keys(modifiersByProperty)) {
+                    modifiersByProperty[property].push({
+                        mode: 'augment',
+                        value: 0,
+                        weaponName: weapon.name,
+                    })
+                }
+            }
+        }
+
+        // Apply modifiers to actor's abgeleitete stats
+        for (const [property, modifiers] of Object.entries(modifiersByProperty)) {
+            if (modifiers.length === 0) continue
+
+            // Apply 'set' modifiers first (highest wins)
+            const setMods = modifiers.filter((m) => m.mode === 'set')
+            if (setMods.length > 0) {
+                const highest = Math.max(...setMods.map((m) => m.value))
+                actor.system.abgeleitete[property] = highest
+            }
+
+            // Apply 'augment' modifiers (always take the lowest value)
+            const augmentMods = modifiers.filter((m) => m.mode === 'augment')
+            if (augmentMods.length > 0) {
+                const lowest = Math.min(...augmentMods.map((m) => m.value))
+                actor.system.abgeleitete[property] =
+                    (actor.system.abgeleitete[property] || 0) + lowest
+            }
         }
     }
 

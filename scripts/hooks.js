@@ -2,6 +2,7 @@ import { ILARIS } from './config.js'
 import { IlarisActorProxy } from './actors/proxy.js'
 import { IlarisItemProxy } from './items/proxy.js'
 import { initializeHandlebars } from './common/handlebars.js'
+import { preloadAllEigenschaften } from './items/utils/eigenschaft-cache.js'
 // import { IlarisActorSheet } from "./sheets/actor.js";
 import { HeldenSheet } from './sheets/helden.js'
 import { KreaturSheet } from './sheets/kreatur.js'
@@ -537,10 +538,12 @@ Hooks.on('renderChatMessage', (message, html, data) => {
 let hexTokenShapesEnabled = false
 
 // Apply hexagonal token shapes when setting is enabled
-Hooks.on('ready', () => {
+Hooks.on('ready', async () => {
     registerDefenseButtonHook()
     applyHexTokenSetting()
     setupIlarisSocket()
+    // Preload all waffeneigenschaften into cache
+    await preloadAllEigenschaften()
 })
 
 /**
