@@ -369,6 +369,7 @@ function registerHandlebarsHelpers() {
         if (isCrit || isFumble)
             textResult = `<${config.type}><strong style="${config.style}">${config.text}</strong></${config.type}>`
 
+        debugger
         return new Handlebars.SafeString(textResult)
     })
 }

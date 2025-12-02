@@ -1,10 +1,10 @@
-import { ManeuverPacksSettings } from './ManeuverPacksSettings.js'
-import { VorteilePacksSettings } from './VorteilePacksSettings.js'
+// import { ManeuverPacksSettings } from './ManeuverPacksSettings.js'
+// import { VorteilePacksSettings } from './VorteilePacksSettings.js'
 
 import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
-    IlarisGameSettingsMenuNames,
+    // IlarisGameSettingsMenuNames,
     IlarisAutomatisierungSettingNames,
 } from './configure-game-settings.model.js'
 
