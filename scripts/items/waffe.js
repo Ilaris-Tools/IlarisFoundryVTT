@@ -160,7 +160,6 @@ export class WaffeItem extends CombatItem {
         const actor = this.parent
         const system = this.system
         const KK = actor.system.attribute.KK.wert
-        const be = actor.system.abgeleitete?.be || 0
         let rw = system.rw
         system.rw_mod = rw
 
@@ -251,17 +250,6 @@ export class WaffeItem extends CombatItem {
             system.manoever.lcht.angepasst = lcht_angepasst
         }
 
-        let selected_kampfstil = hardcoded.getSelectedStil(actor, 'kampf')
-        if (selected_kampfstil.active) {
-            // Refactored: execute kampfstil methods and apply modifiers
-            weaponUtils._executeKampfstilMethodsAndApplyModifiers(
-                selected_kampfstil,
-                HW,
-                NW,
-                be,
-                actor,
-            )
-        }
         if (system.computed.schadenBonus !== 0) {
             system.schaden += ` ${system.computed.schadenBonus < 0 ? '-' : '+'} ${Math.abs(
                 system.computed.schadenBonus,

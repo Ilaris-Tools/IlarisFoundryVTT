@@ -1,3 +1,5 @@
+import * as weaponUtils from './weapon-utils.js'
+
 export function usesSingleWeapon(hauptWaffe, nebenWaffe, type = 'nahkampfwaffe') {
     let hauptWaffeSelected = false
     let nebenWaffeSelected = false
