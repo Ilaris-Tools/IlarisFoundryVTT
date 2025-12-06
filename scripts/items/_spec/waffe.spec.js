@@ -324,7 +324,7 @@ describe('WaffeItem', () => {
                 },
             })
 
-            // Mock Zweihändig
+            // Mock Zweihändig, but bit different
             weapon._eigenschaftCache.cache.set('Zweihändig', {
                 name: 'Zweihändig',
                 type: 'waffeneigenschaft',
@@ -345,8 +345,10 @@ describe('WaffeItem', () => {
                 type: 'waffeneigenschaft',
                 system: {
                     kategorie: 'modifier',
-                    conditions: [
-                        {
+                    wieldingRequirements: {
+                        hands: 1,
+                        penalties: {},
+                        condition: {
                             type: 'attribute_check',
                             attribute: 'KK',
                             operator: '<',
@@ -354,10 +356,10 @@ describe('WaffeItem', () => {
                             onFailure: {
                                 at: -2,
                                 vt: -2,
-                                message: 'KK < 4: -2 AT/VT',
+                                schaden: 0,
                             },
                         },
-                    ],
+                    },
                 },
             })
         })
@@ -367,11 +369,14 @@ describe('WaffeItem', () => {
 
             // AT: 1 (base) + 0 (Schwer, KK >= 4) + 0 (Zweihändig as hauptOnly) - 2 (BE) = -1
             // VT: 0 (base) + 0 (Schwer, KK >= 4) - 2 (Zweihändig as hauptOnly) - 2 (BE) = -4
-            // Damage: 8 (Kopflastig: KK.wert)
+            // Damage: 0 (Kopflastig: KK.wert/4, SB: KK.wert/4, Zweihändig as hauptonly: -4)
             expect(weapon.system.computed.at).toBe(-1)
             expect(weapon.system.computed.vt).toBe(-4)
-            expect(weapon.system.computed.schadenBonus).toBe(8)
-            expect(weapon.system.computed.penalties).toContain('BE: -2')
+            expect(weapon.system.computed.schadenBonus).toBe(0)
+            expect(weapon.system.computed.modifiers.at).toContain('BE: -2')
+            expect(weapon.system.computed.modifiers.vt).toContain('BE: -2')
+            expect(weapon.system.computed.modifiers.vt).toContain('Zweihändig: -2')
+            expect(weapon.system.computed.modifiers.dmg).toContain('Zweihändig: -4')
         })
     })
 })
