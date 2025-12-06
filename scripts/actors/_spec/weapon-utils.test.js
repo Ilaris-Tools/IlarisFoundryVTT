@@ -5,6 +5,8 @@ import {
     ignoreSideWeaponMalus,
     checkCombatStyleConditions,
     applyModifierToWeapons,
+    _executeKampfstilMethodsAndApplyModifiers,
+    manoverAusgleich,
 } from '../weapon-utils.js'
 
 describe('weapon-requirements.js', () => {
@@ -1089,6 +1091,166 @@ describe('weapon-requirements.js', () => {
                 expect(nebenWaffe.system.computed.at).toBe(originalNebenAt)
                 expect(nebenWaffe.system.computed.vt).toBe(originalNebenVt)
             })
+        })
+    })
+
+    describe('_executeKampfstilMethodsAndApplyModifiers', () => {
+        let hauptWaffe, nebenWaffe, actor
+
+        beforeEach(() => {
+            hauptWaffe = {
+                id: 'main-weapon-1',
+                type: 'nahkampfwaffe',
+                system: {
+                    at: 10,
+                    vt: 8,
+                    schaden: '1W6+2',
+                    manoverausgleich: {
+                        value: 0,
+                        overcomplicated: false,
+                    },
+                    computed: {
+                        at: 10,
+                        vt: 8,
+                        fk: 0,
+                        rw: 0,
+                        schadenBonus: 0,
+                        modifiers: { at: [], vt: [], dmg: [] },
+                    },
+                },
+            }
+
+            nebenWaffe = {
+                id: 'side-weapon-1',
+                type: 'nahkampfwaffe',
+                system: {
+                    at: 8,
+                    vt: 6,
+                    schaden: '1W6',
+                    manoverausgleich: {
+                        value: 0,
+                        overcomplicated: false,
+                    },
+                    computed: {
+                        at: 8,
+                        vt: 6,
+                        fk: 0,
+                        rw: 0,
+                        schadenBonus: 0,
+                        modifiers: { at: [], vt: [], dmg: [] },
+                    },
+                },
+            }
+
+            actor = {
+                system: {
+                    misc: {
+                        ist_beritten: false,
+                    },
+                    abgeleitete: {
+                        be: 5,
+                    },
+                },
+            }
+        })
+
+        it('should execute kampfstil method and apply modifiers', () => {
+            const kampfstil = {
+                name: 'Test Kampfstil',
+                foundryScriptMethods: ['manoverAusgleich(2)'],
+                modifiers: { at: 2, vt: 1, be: 3, damage: 0, rw: 0 },
+            }
+
+            _executeKampfstilMethodsAndApplyModifiers(kampfstil, hauptWaffe, nebenWaffe, actor)
+
+            // Check that manoverAusgleich was applied
+            expect(hauptWaffe.system.manoverausgleich.value).toBe(2)
+            expect(nebenWaffe.system.manoverausgleich.value).toBe(2)
+
+            // Check that weapon modifiers were applied
+            expect(hauptWaffe.system.computed.at).toBe(15) // 10 + 2 (at) + 3 (be)
+            expect(hauptWaffe.system.computed.vt).toBe(12) // 8 + 1 (vt) + 3 (be)
+
+            // Check that actor BE was reduced
+            expect(actor.system.abgeleitete.be).toBe(2) // 5 - 3
+        })
+
+        it('should handle multiple method calls', () => {
+            const kampfstil = {
+                name: 'Multi Method Kampfstil',
+                foundryScriptMethods: ['manoverAusgleich(1)', 'manoverAusgleich(2)'],
+                modifiers: { at: 1, vt: 0, be: 1, damage: 0, rw: 0 },
+            }
+
+            _executeKampfstilMethodsAndApplyModifiers(kampfstil, hauptWaffe, nebenWaffe, actor)
+
+            // manoverAusgleich should be called twice, adding up
+            expect(hauptWaffe.system.manoverausgleich.value).toBe(3) // 1 + 2
+
+            // Modifiers still applied once
+            expect(hauptWaffe.system.computed.at).toBe(12) // 10 + 1 + 1
+        })
+
+        it('should handle kampfstil without methods', () => {
+            const kampfstil = {
+                name: 'No Methods Kampfstil',
+                foundryScriptMethods: [],
+                modifiers: { at: 2, vt: 1, be: 2, damage: 1, rw: 0 },
+            }
+
+            _executeKampfstilMethodsAndApplyModifiers(kampfstil, hauptWaffe, nebenWaffe, actor)
+
+            // No method calls, so manoverausgleich stays 0
+            expect(hauptWaffe.system.manoverausgleich.value).toBe(0)
+
+            // But modifiers should still be applied
+            expect(hauptWaffe.system.computed.at).toBe(14) // 10 + 2 + 2
+            expect(hauptWaffe.system.computed.schadenBonus).toBe(1)
+            expect(actor.system.abgeleitete.be).toBe(3) // 5 - 2
+        })
+
+        it('should not reduce BE below zero', () => {
+            actor.system.abgeleitete.be = 1
+
+            const kampfstil = {
+                name: 'High BE Kampfstil',
+                foundryScriptMethods: [],
+                modifiers: { at: 1, vt: 1, be: 5, damage: 0, rw: 0 },
+            }
+
+            _executeKampfstilMethodsAndApplyModifiers(kampfstil, hauptWaffe, nebenWaffe, actor)
+
+            // BE should not go negative
+            expect(actor.system.abgeleitete.be).toBe(-4) // 1 - 5
+        })
+
+        it('should handle invalid method format gracefully', () => {
+            const kampfstil = {
+                name: 'Invalid Method Kampfstil',
+                foundryScriptMethods: ['invalidMethodFormat', 'manoverAusgleich(1)'],
+                modifiers: { at: 1, vt: 0, be: 0, damage: 0, rw: 0 },
+            }
+
+            // Should not throw
+            expect(() => {
+                _executeKampfstilMethodsAndApplyModifiers(kampfstil, hauptWaffe, nebenWaffe, actor)
+            }).not.toThrow()
+
+            // Valid method should still execute
+            expect(hauptWaffe.system.manoverausgleich.value).toBe(1)
+        })
+
+        it('should handle method with complex parameters', () => {
+            const kampfstil = {
+                name: 'Complex Param Kampfstil',
+                foundryScriptMethods: ['manoverAusgleich(3, false)'],
+                modifiers: { at: 0, vt: 0, be: 0, damage: 0, rw: 0 },
+            }
+
+            _executeKampfstilMethodsAndApplyModifiers(kampfstil, hauptWaffe, nebenWaffe, actor)
+
+            expect(hauptWaffe.system.manoverausgleich.value).toBe(3)
+            expect(hauptWaffe.system.manoverausgleich.overcomplicated).toBe(false)
         })
     })
 })

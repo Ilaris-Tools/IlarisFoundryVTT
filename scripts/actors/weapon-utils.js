@@ -409,9 +409,9 @@ export function checkCombatStyleConditions(
  * @param {Object} selected_kampfstil - The selected kampfstil object
  * @param {Object} HW - Hauptwaffe
  * @param {Object} NW - Nebenwaffe
- * @param {number} be - BE value
+ * @param {Object} actor - The actor object
  */
-export function _executeKampfstilMethodsAndApplyModifiers(selected_kampfstil, HW, NW, be, actor) {
+export function _executeKampfstilMethodsAndApplyModifiers(selected_kampfstil, HW, NW, actor) {
     let methodResults = []
     let ist_beritten = actor.system.misc.ist_beritten
     if (
@@ -454,12 +454,12 @@ export function _executeKampfstilMethodsAndApplyModifiers(selected_kampfstil, HW
         }
     }
     if (methodResults && methodResults.length > 0 && methodResults.includes('ranged')) {
-        applyModifierToWeapons(HW, NW, be, selected_kampfstil, true)
+        applyModifierToWeapons(HW, NW, actor.system.abgeleitete?.be || 0, selected_kampfstil, true)
     } else {
-        applyModifierToWeapons(HW, NW, be, selected_kampfstil)
+        applyModifierToWeapons(HW, NW, actor.system.abgeleitete?.be || 0, selected_kampfstil)
     }
-    if (be > 0) {
-        be -= selected_kampfstil.modifiers.be
+    if (actor.system.abgeleitete?.be && actor.system.abgeleitete.be > 0) {
+        actor.system.abgeleitete.be -= selected_kampfstil.modifiers.be
     }
     return methodResults
 }

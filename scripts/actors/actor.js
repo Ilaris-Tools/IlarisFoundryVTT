@@ -519,13 +519,7 @@ export class IlarisActor extends Actor {
 
         if (selected_kampfstil.active) {
             // Refactored: execute kampfstil methods and apply modifiers
-            weaponUtils._executeKampfstilMethodsAndApplyModifiers(
-                selected_kampfstil,
-                HW,
-                NW,
-                be,
-                actor,
-            )
+            weaponUtils._executeKampfstilMethodsAndApplyModifiers(selected_kampfstil, HW, NW, actor)
         }
     }
 
