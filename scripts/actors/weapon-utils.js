@@ -75,8 +75,8 @@ export function ignoreSideWeaponMalus(
     nebenWaffe.system.computed.at += 4
     nebenWaffe.system.computed.vt += 4
 
-    nebenWaffe.system.computed.modifiers.at.push('Nebenwaffe Malus ignoriert: +4 AT')
-    nebenWaffe.system.computed.modifiers.vt.push('Nebenwaffe Malus ignoriert: +4 VT')
+    nebenWaffe.system.computed.modifiers?.at.push('Nebenwaffe Malus ignoriert: +4 AT')
+    nebenWaffe.system.computed.modifiers?.vt.push('Nebenwaffe Malus ignoriert: +4 VT')
 }
 
 export function affectsRangedWeaponOnly(hauptWaffe, nebenWaffe, ist_beritten) {
@@ -260,7 +260,7 @@ export function checkCombatStyleConditions(
         return false
     }
 
-    if (!kampfstil?.stilBedingungen || kampfstil.stilBedingungen.trim() === '') {
+    if (kampfstil?.stilBedingungen || kampfstil.stilBedingungen.trim() === '') {
         return true
     }
 
