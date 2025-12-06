@@ -310,6 +310,7 @@ describe('weapon-requirements.js', () => {
         })
 
         it('should return false if no stil or key is "ohne"', () => {
+            const mockWeapon = createMockWeapon('weapon1')
             expect(
                 checkCombatStyleConditions(undefined, mockWeapon, undefined, true, actor()),
             ).toBe(false)
@@ -557,9 +558,9 @@ describe('weapon-requirements.js', () => {
         describe('weapon property conditions', () => {
             const actor = () => ({ misc: { selected_kampfstil_conditions_not_met: '' } })
             it('should check positive weapon properties correctly', () => {
-                const weaponWithReittier = createMockWeapon('weapon1', 'nahkampfwaffe', {
-                    reittier: true,
-                })
+                const weaponWithReittier = createMockWeapon('weapon1', 'nahkampfwaffe', [
+                    'reittier',
+                ])
                 expect(
                     checkCombatStyleConditions(
                         kampfstil('stil', 'reittier'),
@@ -797,6 +798,10 @@ describe('weapon-requirements.js', () => {
                 expect(hauptWaffe.system.computed.vt).toBe(12) // 8 + 1 + 3
                 expect(nebenWaffe.system.computed.at).toBe(13) // 8 + 2 + 3
                 expect(nebenWaffe.system.computed.vt).toBe(10) // 6 + 1 + 3
+                expect(hauptWaffe.system.at).toBe(15) // 10 + 2 + 3
+                expect(hauptWaffe.system.vt).toBe(12) // 8 + 1 + 3
+                expect(nebenWaffe.system.at).toBe(13) // 8 + 2 + 3
+                expect(nebenWaffe.system.vt).toBe(10) // 6 + 1 + 3
             })
 
             it('should cap BE reduction at available belastung', () => {

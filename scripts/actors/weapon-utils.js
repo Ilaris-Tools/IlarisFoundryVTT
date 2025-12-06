@@ -195,14 +195,14 @@ export function applyModifierToWeapons(
                 )
             }
         }
-        if (nebenWaffe.system.fk) {
-            nebenWaffe.system.fk += bonusFromBeReduction
+        if (nebenWaffe.system.computed.fk) {
+            nebenWaffe.system.computed.fk += bonusFromBeReduction
         }
-        if (nebenWaffe.system.at) {
-            nebenWaffe.system.at += bonusFromBeReduction
+        if (nebenWaffe.system.computed.at) {
+            nebenWaffe.system.computed.at += bonusFromBeReduction
         }
-        if (nebenWaffe.system.vt) {
-            nebenWaffe.system.vt += bonusFromBeReduction
+        if (nebenWaffe.system.computed.vt) {
+            nebenWaffe.system.computed.vt += bonusFromBeReduction
         }
         if (bonusFromBeReduction) {
             nebenWaffe.system.computed.modifiers.at.push(
@@ -211,6 +211,20 @@ export function applyModifierToWeapons(
             nebenWaffe.system.computed.modifiers.vt.push(
                 `${selected_kampfstil.name}: ${bonusFromBeReduction} BE Bonus`,
             )
+        }
+
+        if (hauptWaffe.type == 'nahkampfwaffe') {
+            hauptWaffe.system.at = hauptWaffe.system.computed.at
+            hauptWaffe.system.vt = hauptWaffe.system.computed.vt
+        } else if (hauptWaffe.type == 'fernkampfwaffe' && hauptWaffe.system.fk !== '-') {
+            hauptWaffe.system.fk = hauptWaffe.system.computed.fk
+        }
+
+        if (nebenWaffe.type == 'nahkampfwaffe') {
+            nebenWaffe.system.at = nebenWaffe.system.computed.at
+            nebenWaffe.system.vt = nebenWaffe.system.computed.vt
+        } else if (nebenWaffe.type == 'fernkampfwaffe' && nebenWaffe.system.fk !== '-') {
+            nebenWaffe.system.fk = nebenWaffe.system.computed.fk
         }
     }
 }
@@ -260,7 +274,7 @@ export function checkCombatStyleConditions(
         return false
     }
 
-    if (kampfstil?.stilBedingungen || kampfstil.stilBedingungen.trim() === '') {
+    if (!kampfstil?.stilBedingungen || kampfstil.stilBedingungen.trim() === '') {
         return true
     }
 
