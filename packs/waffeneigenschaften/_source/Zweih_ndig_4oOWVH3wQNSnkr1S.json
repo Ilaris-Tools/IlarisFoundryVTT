@@ -26,16 +26,16 @@
       "noRider": false,
       "penalties": {
         "hauptOnly": {
-          "at": 0,
+          "at": -2,
           "vt": -2
         },
         "nebenOnly": {
-          "at": -4,
-          "vt": -4
+          "at": -2,
+          "vt": -2
         },
         "nebenWithoutExemption": {
-          "at": -4,
-          "vt": -4
+          "at": -2,
+          "vt": -2
         }
       }
     },
