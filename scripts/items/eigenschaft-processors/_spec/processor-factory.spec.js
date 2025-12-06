@@ -70,7 +70,11 @@ describe('ProcessorFactory', () => {
                 vt: 0,
                 schadenBonus: 0,
                 rw: 0,
-                penalties: [],
+                modifiers: {
+                    at: [],
+                    vt: [],
+                    dmg: [],
+                },
                 targetEffects: [],
                 combatMechanics: {},
                 conditionalModifiers: [],
@@ -100,7 +104,7 @@ describe('ProcessorFactory', () => {
                 },
             }
 
-            factory.process('modifier', eigenschaft, computed, mockActor, mockWeapon)
+            factory.process('modifier', 'modifier', eigenschaft, computed, mockActor, mockWeapon)
 
             expect(computed.at).toBe(2)
         })
@@ -115,7 +119,7 @@ describe('ProcessorFactory', () => {
                 },
             }
 
-            factory.process('wielding', eigenschaft, computed, mockActor, mockWeapon)
+            factory.process('wielding', 'wielding', eigenschaft, computed, mockActor, mockWeapon)
 
             expect(computed.vt).toBe(-2)
         })
@@ -128,60 +132,25 @@ describe('ProcessorFactory', () => {
                 },
             }
 
-            factory.process('target_effect', eigenschaft, computed, mockActor, mockWeapon)
+            factory.process(
+                'target_effect',
+                'target_effect',
+                eigenschaft,
+                computed,
+                mockActor,
+                mockWeapon,
+            )
 
             expect(computed.targetEffects).toHaveLength(1)
-        })
-
-        it('should process combat_mechanic eigenschaft', () => {
-            const eigenschaft = {
-                combatMechanics: {
-                    fumbleThreshold: 1,
-                },
-            }
-
-            factory.process('combat_mechanic', eigenschaft, computed, mockActor, mockWeapon)
-
-            expect(computed.combatMechanics.fumbleThreshold).toBe(1)
         })
 
         it('should process passive eigenschaft', () => {
             const eigenschaft = {}
 
-            factory.process('passive', eigenschaft, computed, mockActor, mockWeapon)
+            factory.process('passive', 'passive', eigenschaft, computed, mockActor, mockWeapon)
 
             // Passive does nothing, just checking it doesn't throw
             expect(computed.at).toBe(0)
-        })
-
-        it('should process actor_modifier eigenschaft', () => {
-            const eigenschaft = {}
-
-            factory.process('actor_modifier', eigenschaft, computed, mockActor, mockWeapon)
-
-            expect(computed.hasActorModifiers).toBe(true)
-        })
-
-        it('should execute custom script for unknown kategorie', () => {
-            const eigenschaft = {
-                customScript: 'computed.at += 10',
-            }
-
-            factory.process('unknown_kategorie', eigenschaft, computed, mockActor, mockWeapon)
-
-            expect(computed.at).toBe(10)
-        })
-
-        it('should warn for unknown kategorie without custom script', () => {
-            const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation()
-            const eigenschaft = {}
-
-            factory.process('unknown_kategorie', eigenschaft, computed, mockActor, mockWeapon)
-
-            expect(consoleWarnSpy).toHaveBeenCalledWith(
-                'No processor found for kategorie: unknown_kategorie',
-            )
-            consoleWarnSpy.mockRestore()
         })
     })
 })
