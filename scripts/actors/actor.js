@@ -477,7 +477,6 @@ export class IlarisActor extends Actor {
         // data.misc.selected_kampfstil = "ohne";
         actor.misc.kampfstile_list = kampfstile
         let selected_kampfstil = hardcoded.getSelectedStil(actor, 'kampf')
-        const be = actor.system.abgeleitete?.be || 0
 
         // Handle supernatural styles
         let uebernatuerliche_stile = hardcoded.getUebernatuerlicheStile(actor)

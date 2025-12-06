@@ -453,7 +453,7 @@ export function _executeKampfstilMethodsAndApplyModifiers(selected_kampfstil, HW
             }
         }
     }
-    if (methodResults && methodResults.length > 0 && methodResults.includes('ranged')) {
+    if (methodResults.length > 0 && methodResults.includes('ranged')) {
         applyModifierToWeapons(HW, NW, actor.system.abgeleitete?.be || 0, selected_kampfstil, true)
     } else {
         applyModifierToWeapons(HW, NW, actor.system.abgeleitete?.be || 0, selected_kampfstil)

@@ -156,7 +156,6 @@ export function shouldRunMigration() {
         return false
     }
 
-    const currentVersion = game.system.version
     const worldSchemaVersion = game.settings.get('Ilaris', 'worldSchemaVersion') || '0.0.0'
 
     // Check if world schema version is less than 12.2.6
@@ -174,7 +173,7 @@ export async function runMigrationIfNeeded() {
     console.log('Ilaris | Running weapon eigenschaften migration for world...')
 
     try {
-        const result = await migrateAllHeldActors()
+        await migrateAllHeldActors()
 
         // Update world schema version
         await game.settings.set('Ilaris', 'worldSchemaVersion', '12.2.6')

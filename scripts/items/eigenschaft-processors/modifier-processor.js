@@ -1,5 +1,5 @@
 import { BaseEigenschaftProcessor } from './base-processor.js'
-import { checkCondition, evaluateFormula } from '../utils/eigenschaft-utils.js'
+import { evaluateFormula } from '../utils/eigenschaft-utils.js'
 
 /**
  * Processor for 'modifier' kategorie eigenschaften
