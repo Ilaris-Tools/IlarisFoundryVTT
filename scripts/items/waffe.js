@@ -2,7 +2,6 @@ import { CombatItem } from './combat.js'
 import { EigenschaftCache } from './utils/eigenschaft-cache.js'
 import { ProcessorFactory } from './eigenschaft-processors/processor-factory.js'
 import * as hardcoded from './../actors/hardcodedvorteile.js'
-import * as weaponUtils from './../actors/weapon-utils.js'
 
 /**
  * Base class for weapon items (Nahkampfwaffe and Fernkampfwaffe)
@@ -124,7 +123,6 @@ export class WaffeItem extends CombatItem {
             system.computed.fk -= wundabzuege
             system.computed.modifiers.at.push(`Wunden: -${wundabzuege}`)
             system.computed.modifiers.vt.push(`Wunden: -${wundabzuege}`)
-            system.computed.modifiers.fk.push(`Wunden: -${wundabzuege}`)
         }
     }
 

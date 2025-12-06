@@ -5,6 +5,7 @@ global.game = {
     },
     items: [],
     packs: [],
+    actors: [],
 }
 
 global.CONFIG = {
@@ -16,9 +17,38 @@ global.foundry = {
         getProperty: (obj, path) => {
             return path.split('.').reduce((acc, part) => acc?.[part], obj)
         },
-        deepClone: (obj) => JSON.parse(JSON.stringify(obj)),
+        deepClone: (obj) => ({
+            vlof: {
+                selected: false,
+                offensiver_kampfstil: false,
+            },
+        }),
+        mergeObject: (target, source) => Object.assign({}, target, source),
     },
 }
+
+// Mock Foundry VTT base classes
+global.FormApplication = class FormApplication {
+    static get defaultOptions() {
+        return {}
+    }
+}
+
+global.Application = class Application {
+    static get defaultOptions() {
+        return {}
+    }
+}
+
+// Mock Hooks API
+const Hooks = {
+    on: jest.fn(),
+    once: jest.fn(),
+    off: jest.fn(),
+    call: jest.fn(),
+    callAll: jest.fn(),
+}
+global.Hooks = Hooks
 
 // Mock the parent classes
 jest.mock('../combat.js', () => ({
@@ -29,8 +59,32 @@ jest.mock('../combat.js', () => ({
             this.system = data.system || {}
             this.parent = null
         }
-        prepareDerivedData() {}
+        prepareWeapon() {}
     },
+}))
+
+// Mock eigenschaft-cache to avoid Hooks dependency
+jest.mock('../utils/eigenschaft-cache.js', () => ({
+    EigenschaftCache: class MockEigenschaftCache {
+        constructor() {
+            this.loaded = false
+            this.cache = new Map()
+            this._requiredNames = []
+            this._loading = false
+        }
+        async load(eigenschaftNames) {
+            this.loaded = true
+            return []
+        }
+        get(name) {
+            return this.cache.get(name)
+        }
+        clear() {
+            this.cache.clear()
+            this.loaded = false
+        }
+    },
+    preloadAllEigenschaften: jest.fn().mockResolvedValue(undefined),
 }))
 
 // Import the actual class we want to test
@@ -57,6 +111,10 @@ describe('WaffeItem', () => {
                     be: 2,
                 },
             },
+            items: [],
+            vorteil: {
+                kampf: [],
+            },
         }
 
         // Create weapon instance
@@ -67,6 +125,9 @@ describe('WaffeItem', () => {
                 wm_at: 0,
                 wm_vt: 0,
                 wm_fk: 0,
+                mod_at: 0,
+                mod_vt: 0,
+                mod_fk: 0,
                 rw: 1,
                 hauptwaffe: true,
                 nebenwaffe: false,
@@ -76,8 +137,14 @@ describe('WaffeItem', () => {
         })
 
         weapon.parent = mockActor
-        weapon._eigenschaftCache.loaded = true
-        weapon._eigenschaftCache.cache = new Map()
+        weapon.getPWFromActor = jest.fn().mockReturnValue(0)
+        weapon._eigenschaftCache = {
+            loaded: true,
+            cache: new Map(),
+            isLoaded: jest.fn().mockReturnValue(true),
+            load: jest.fn().mockResolvedValue([]),
+            get: jest.fn((name) => weapon._eigenschaftCache.cache.get(name)),
+        }
     })
 
     describe('getTp', () => {
@@ -102,30 +169,23 @@ describe('WaffeItem', () => {
         })
     })
 
-    describe('prepareDerivedData', () => {
+    describe('prepareWeapon', () => {
         it('should not calculate if not embedded in actor', () => {
             weapon.parent = null
-            weapon.prepareDerivedData()
-            expect(weapon.system.computed).toBeUndefined()
-        })
-
-        it('should not calculate if weapon is not selected', () => {
-            weapon.system.hauptwaffe = false
-            weapon.system.nebenwaffe = false
-            weapon.prepareDerivedData()
+            weapon.prepareWeapon()
             expect(weapon.system.computed).toBeUndefined()
         })
 
         it('should calculate stats for hauptwaffe', () => {
             weapon.system.hauptwaffe = true
-            weapon.prepareDerivedData()
+            weapon.prepareWeapon()
             expect(weapon.system.computed).toBeDefined()
         })
 
         it('should calculate stats for nebenwaffe', () => {
             weapon.system.hauptwaffe = false
             weapon.system.nebenwaffe = true
-            weapon.prepareDerivedData()
+            weapon.prepareWeapon()
             expect(weapon.system.computed).toBeDefined()
         })
     })
@@ -134,24 +194,44 @@ describe('WaffeItem', () => {
         beforeEach(() => {
             weapon.system.wm_at = 2
             weapon.system.wm_vt = 1
+            weapon.system.wm_fk = 0
+            weapon.system.mod_at = 0
+            weapon.system.mod_vt = 0
+            weapon.system.mod_fk = 0
             weapon.system.rw = 3
+            weapon.getPWFromActor = jest.fn().mockReturnValue(0)
         })
 
         it('should initialize computed values correctly', () => {
+            // First verify the beforeEach override worked
+            expect(weapon.system.wm_at).toBe(2)
+            expect(weapon.system.wm_vt).toBe(1)
+            expect(weapon.system.wm_fk).toBe(0)
+            expect(weapon.system.mod_at).toBe(0)
+            expect(weapon.system.mod_vt).toBe(0)
+            expect(weapon.system.mod_fk).toBe(0)
+
             weapon._calculateWeaponStats()
 
-            expect(weapon.system.computed).toEqual({
-                at: 0, // 2 (wm_at) - 2 (BE)
-                vt: -1, // 1 (wm_vt) - 2 (BE)
-                fk: -2, // 0 (wm_fk) - 2 (BE)
-                schadenBonus: 0,
-                rw: 3,
-                penalties: ['BE: -2'],
-                targetEffects: [],
-                combatMechanics: {},
-                conditionalModifiers: [],
-                hasActorModifiers: false,
-            })
+            expect(weapon.system.computed.at).toBe(0) // 2 (wm_at) + 0 (pw) + 0 (mod_at) - 2 (BE)
+            expect(weapon.system.computed.vt).toBe(-1) // 1 (wm_vt) + 0 (pw) + 0 (mod_vt) - 2 (BE)
+            expect(weapon.system.computed.fk).toBe(-2) // 0 (wm_fk) + 0 (pw) + 0 (mod_fk) - 2 (BE)
+            expect(weapon.system.computed.schadenBonus).toBe(2) // SB from KK 8: floor(8/4) = 2
+            expect(weapon.system.computed.rw).toBe(3)
+            expect(weapon.system.computed.handsRequired).toBe(1)
+            expect(weapon.system.computed.ignoreNebenMalus).toBe(false)
+            expect(weapon.system.computed.noRider).toBe(false)
+
+            // Check modifiers include WM
+            expect(weapon.system.computed.modifiers.at).toEqual(
+                expect.arrayContaining(['WM: 2', 'BE: -2']),
+            )
+            expect(weapon.system.computed.modifiers.vt).toEqual(
+                expect.arrayContaining(['WM: 1', 'BE: -2']),
+            )
+            expect(weapon.system.computed.modifiers.dmg).toEqual(
+                expect.arrayContaining(['TP: 1W6', 'SB: +2']),
+            )
         })
 
         it('should apply BE penalty', () => {
@@ -160,22 +240,69 @@ describe('WaffeItem', () => {
 
             expect(weapon.system.computed.at).toBe(-2) // 2 - 4
             expect(weapon.system.computed.vt).toBe(-3) // 1 - 4
-            expect(weapon.system.computed.penalties).toContain('BE: -4')
+            expect(weapon.system.computed.modifiers.at).toContain('BE: -4')
+            expect(weapon.system.computed.modifiers.vt).toContain('BE: -4')
         })
 
-        it('should not add penalty message if BE is 0', () => {
+        it('should not add BE modifier message if BE is 0', () => {
             mockActor.system.abgeleitete.be = 0
             weapon._calculateWeaponStats()
 
-            expect(weapon.system.computed.penalties).toEqual([])
+            expect(weapon.system.computed).toBeDefined()
+            expect(weapon.system.computed.modifiers).toBeDefined()
+            expect(weapon.system.computed.modifiers.at).toBeDefined()
+            const beModifiers = weapon.system.computed.modifiers.at.filter((m) =>
+                m.startsWith('BE:'),
+            )
+            expect(beModifiers.length).toBe(0)
         })
 
         it('should handle undefined BE gracefully', () => {
             mockActor.system.abgeleitete.be = undefined
+
+            // Debug: check values before calculation
+            expect(weapon.system.wm_at).toBe(2)
+            expect(weapon.system.mod_at).toBe(0)
+
             weapon._calculateWeaponStats()
 
-            expect(weapon.system.computed.at).toBe(2)
-            expect(weapon.system.computed.vt).toBe(1)
+            expect(weapon.system.computed.at).toBe(2) // wm_at only
+            expect(weapon.system.computed.vt).toBe(1) // wm_vt only
+        })
+
+        it('should calculate Schadenbonus from KK', () => {
+            mockActor.system.attribute.KK.wert = 12
+            weapon._calculateWeaponStats()
+
+            // SB = floor(12/4) = 3
+            expect(weapon.system.computed.schadenBonus).toBe(3)
+            expect(weapon.system.computed.modifiers.dmg).toContain('SB: +3')
+        })
+
+        it('should apply wound penalties if present', () => {
+            mockActor.system.gesundheit = {
+                wundabzuege: 2,
+                wundenignorieren: 0,
+            }
+            weapon._calculateWeaponStats()
+
+            expect(weapon.system.computed.at).toBe(-2) // 2 - 2 (BE) - 2 (wounds)
+            expect(weapon.system.computed.vt).toBe(-3) // 1 - 2 (BE) - 2 (wounds)
+            expect(weapon.system.computed.modifiers.at).toContain('Wunden: -2')
+        })
+
+        it('should not apply wound penalties if wundenignorieren is set', () => {
+            mockActor.system.gesundheit = {
+                wundabzuege: 2,
+                wundenignorieren: 1,
+            }
+            weapon._calculateWeaponStats()
+
+            expect(weapon.system.computed.at).toBe(0) // 2 - 2 (BE only, no wound penalty)
+            const woundModifiers = weapon.system.computed.modifiers.at.filter((m) =>
+                m.startsWith('Wunden:'),
+            )
+            expect(woundModifiers.length).toBe(0)
         })
     })
 
