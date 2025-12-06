@@ -55,7 +55,12 @@ Location: `template.json` → `Item.types` → `waffeneigenschaft`
             "vt": 0,
             "schaden": 0,
             "schadenFormula": "",
-            "rw": 0
+            "rw": 0,
+            "fumbleThreshold": null,
+            "critThreshold": null,
+            "ignoreCover": false,
+            "ignoreArmor": false,
+            "additionalDice": 0
         },
         "conditions": [],
         "wieldingRequirements": {
@@ -78,13 +83,6 @@ Location: `template.json` → `Item.types` → `waffeneigenschaft`
                 "duration": "",
                 "value": ""
             }
-        },
-        "combatMechanics": {
-            "fumbleThreshold": null,
-            "critThreshold": null,
-            "ignoreCover": false,
-            "ignoreArmor": false,
-            "additionalDice": 0
         },
         "conditionalModifiers": [],
         "actorModifiers": {
@@ -308,18 +306,18 @@ The `kategorie` field routes processing logic. Each kategorie has specific field
 ```json
 {
     "kategorie": "combat_mechanic",
-    "combatMechanics": {
-        "fumbleThreshold": 2
-    },
-    "conditionalModifiers": [
-        {
-            "condition": "target_has_shield",
-            "modifiers": {
-                "at": 4
-            },
-            "description": "+4 AT gegen Schildträger"
-        }
-    ]
+    "modifiers": {
+        "fumbleThreshold": 2,
+        "conditionalModifiers": [
+            {
+                "condition": "target_has_shield",
+                "modifiers": {
+                    "at": 4
+                },
+                "description": "+4 AT gegen Schildträger"
+            }
+        ]
+    }
 }
 ```
 
