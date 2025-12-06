@@ -2,7 +2,6 @@ const { ProcessorFactory } = require('../processor-factory.js')
 const { ModifierProcessor } = require('../modifier-processor.js')
 const { WieldingProcessor } = require('../wielding-processor.js')
 const { TargetEffectProcessor } = require('../target-effect-processor.js')
-const { CombatMechanicProcessor } = require('../combat-mechanic-processor.js')
 const { PassiveProcessor } = require('../passive-processor.js')
 const { ActorModifierProcessor } = require('../actor-modifier-processor.js')
 
@@ -24,7 +23,7 @@ describe('ProcessorFactory', () => {
 
     describe('constructor', () => {
         it('should register all processor classes', () => {
-            expect(factory.processors.size).toBe(6)
+            expect(factory.processors.size).toBe(5)
         })
     })
 
@@ -42,11 +41,6 @@ describe('ProcessorFactory', () => {
         it('should return TargetEffectProcessor for "target_effect" kategorie', () => {
             const processor = factory.getProcessor('target_effect')
             expect(processor).toBeInstanceOf(TargetEffectProcessor)
-        })
-
-        it('should return CombatMechanicProcessor for "combat_mechanic" kategorie', () => {
-            const processor = factory.getProcessor('combat_mechanic')
-            expect(processor).toBeInstanceOf(CombatMechanicProcessor)
         })
 
         it('should return PassiveProcessor for "passive" kategorie', () => {

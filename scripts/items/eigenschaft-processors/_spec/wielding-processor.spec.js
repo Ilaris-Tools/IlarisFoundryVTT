@@ -13,7 +13,11 @@ describe('WieldingProcessor', () => {
             at: 0,
             vt: 0,
             schadenBonus: 0,
-            penalties: [],
+            modifiers: {
+                at: [],
+                vt: [],
+                dmg: [],
+            },
         }
 
         mockActor = {}
@@ -42,40 +46,9 @@ describe('WieldingProcessor', () => {
             }
             mockWeapon.system.hauptwaffe = true
             mockWeapon.system.nebenwaffe = false
-            processor.process(eigenschaft, computed, mockActor, mockWeapon)
+            processor.process('eigenschaft', eigenschaft, computed, mockActor, mockWeapon)
             expect(computed.at).toBe(0)
             expect(computed.vt).toBe(0)
-        })
-
-        it('should apply -4 AT/-4 VT for nebenwaffe without ignoreNebenMalus', () => {
-            const eigenschaft = {
-                wieldingRequirements: {
-                    hands: 1,
-                },
-            }
-            mockWeapon.system.hauptwaffe = false
-            mockWeapon.system.nebenwaffe = true
-            processor.process(eigenschaft, computed, mockActor, mockWeapon)
-            expect(computed.at).toBe(-4)
-            expect(computed.vt).toBe(-4)
-            expect(computed.penalties).toContain('Nebenwaffe: -4 AT/-4 VT')
-        })
-
-        it('should NOT apply -4 AT/-4 VT for nebenwaffe with ignoreNebenMalus', () => {
-            const eigenschaft = {
-                wieldingRequirements: {
-                    hands: 1,
-                    ignoreNebenMalus: true,
-                },
-            }
-            mockWeapon.system.hauptwaffe = false
-            mockWeapon.system.nebenwaffe = true
-            // Simulate computed.ignoreNebenMalus set by processor
-            computed.ignoreNebenMalus = true
-            processor.process(eigenschaft, computed, mockActor, mockWeapon)
-            expect(computed.at).toBe(0)
-            expect(computed.vt).toBe(0)
-            expect(computed.penalties).not.toContain('Nebenwaffe: -4 AT/-4 VT')
         })
 
         it('should apply hauptOnly penalties', () => {
@@ -91,11 +64,11 @@ describe('WieldingProcessor', () => {
                 },
             }
 
-            processor.process(eigenschaft, computed, mockActor, mockWeapon)
+            processor.process('Only main hand', eigenschaft, computed, mockActor, mockWeapon)
 
             expect(computed.at).toBe(0)
             expect(computed.vt).toBe(-2)
-            expect(computed.penalties).toContain('Only main hand')
+            expect(computed.modifiers.vt).toContain('Only main hand: -2')
         })
 
         it('should apply nebenOnly penalties', () => {
@@ -111,11 +84,12 @@ describe('WieldingProcessor', () => {
                 },
             }
 
-            processor.process(eigenschaft, computed, mockActor, mockWeapon)
+            processor.process('Only off hand', eigenschaft, computed, mockActor, mockWeapon)
 
-            expect(computed.at).toBe(-8)
-            expect(computed.vt).toBe(-8)
-            expect(computed.penalties).toContain('Only off hand')
+            expect(computed.at).toBe(-4)
+            expect(computed.vt).toBe(-4)
+            expect(computed.modifiers.vt).toContain('Only off hand: -4')
+            expect(computed.modifiers.at).toContain('Only off hand: -4')
         })
 
         it('should not apply penalties for two-handed weapon used in both hands', () => {
@@ -132,7 +106,7 @@ describe('WieldingProcessor', () => {
                 },
             }
 
-            processor.process(eigenschaft, computed, mockActor, mockWeapon)
+            processor.process('eigenschaft', eigenschaft, computed, mockActor, mockWeapon)
 
             expect(computed.at).toBe(0)
             expect(computed.vt).toBe(0)
@@ -153,7 +127,7 @@ describe('WieldingProcessor', () => {
                 },
             }
 
-            processor.process(eigenschaft, computed, mockActor, mockWeapon)
+            processor.process('eigenschaft', eigenschaft, computed, mockActor, mockWeapon)
 
             expect(computed.at).toBe(0)
             expect(computed.vt).toBe(0)
