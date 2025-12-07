@@ -63,7 +63,7 @@ export function evaluateFormula(formula, actor) {
         // eslint-disable-next-line no-eval
         return eval(replaced) || 0
     } catch (e) {
-        console.error('Error evaluating formula:', formula, e)
+        console.warn('Error evaluating formula:', formula, e)
         return 0
     }
 }
