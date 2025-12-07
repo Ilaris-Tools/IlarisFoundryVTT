@@ -3,7 +3,6 @@ import { WieldingProcessor } from './wielding-processor.js'
 import { TargetEffectProcessor } from './target-effect-processor.js'
 import { PassiveProcessor } from './passive-processor.js'
 import { ActorModifierProcessor } from './actor-modifier-processor.js'
-import { executeCustomScript } from '../utils/eigenschaft-utils.js'
 
 /**
  * Factory for creating eigenschaft processors
@@ -61,13 +60,6 @@ export class ProcessorFactory {
                 `Using processor: ${processor.constructor.name} for kategorie: ${kategorie}`,
             )
             processor.process(name, eigenschaft, computed, actor, weapon)
-        } else {
-            // Fallback: Try custom script if present
-            if (eigenschaft.customScript) {
-                executeCustomScript(eigenschaft.customScript, computed, actor, weapon)
-            } else {
-                console.warn(`No processor found for kategorie: ${kategorie}`)
-            }
         }
     }
 }

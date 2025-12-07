@@ -7,12 +7,7 @@ global.foundry = {
     },
 }
 
-const {
-    checkCondition,
-    compareValues,
-    evaluateFormula,
-    executeCustomScript,
-} = require('../eigenschaft-utils.js')
+const { checkCondition, compareValues, evaluateFormula } = require('../eigenschaft-utils.js')
 
 describe('eigenschaft-utils', () => {
     let mockActor
@@ -156,40 +151,6 @@ describe('eigenschaft-utils', () => {
             }
 
             expect(checkCondition(condition, mockActor)).toBe(true)
-        })
-    })
-
-    describe('executeCustomScript', () => {
-        it('should execute script with weapon, computed, and actor context', () => {
-            const script = 'return actor.system.attribute.KK.wert + 10'
-            const result = executeCustomScript(script, {}, mockActor)
-            expect(result).toBe(18) // 8 + 10
-        })
-
-        it('should modify computed object', () => {
-            const computed = { at: 0 }
-            const script = 'computed.at += 5; return true'
-            executeCustomScript(script, computed, mockActor)
-            expect(computed.at).toBe(5)
-        })
-
-        it('should have access to weapon parameter', () => {
-            const weapon = { name: 'Test Sword' }
-            const script = 'return weapon.name'
-            const result = executeCustomScript(script, {}, mockActor, weapon)
-            expect(result).toBe('Test Sword')
-        })
-
-        it('should return false on script error', () => {
-            const script = 'invalid javascript @@'
-            const result = executeCustomScript(script, {}, mockActor)
-            expect(result).toBe(false)
-        })
-
-        it('should handle null weapon parameter', () => {
-            const script = 'return weapon === null'
-            const result = executeCustomScript(script, {}, mockActor, null)
-            expect(result).toBe(true)
         })
     })
 })

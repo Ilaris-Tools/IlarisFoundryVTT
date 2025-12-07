@@ -16,9 +16,6 @@ export function checkCondition(condition, actor) {
             const attrValue = foundry.utils.getProperty(actor, attrPath) || 0
             return compareValues(attrValue, condition.operator, condition.value)
 
-        case 'custom_script':
-            return executeCustomScript(condition.script, {}, actor)
-
         default:
             return true
     }
@@ -68,23 +65,5 @@ export function evaluateFormula(formula, actor) {
     } catch (e) {
         console.error('Error evaluating formula:', formula, e)
         return 0
-    }
-}
-
-/**
- * Execute a custom script
- * @param {string} script - JavaScript code to execute
- * @param {Object} computed - Computed stats object
- * @param {Actor} actor - The owning actor
- * @param {Object} weapon - The weapon item (optional)
- * @returns {*} Result of script execution
- */
-export function executeCustomScript(script, computed, actor, weapon = null) {
-    try {
-        const func = new Function('weapon', 'computed', 'actor', script)
-        return func(weapon, computed, actor)
-    } catch (e) {
-        console.error('Error executing custom script:', e)
-        return false
     }
 }
