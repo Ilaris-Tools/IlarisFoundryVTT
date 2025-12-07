@@ -8,6 +8,20 @@ let globalLoading = false
 let hooksRegistered = false
 
 /**
+ * Get the list of pack IDs from the world setting
+ * @returns {string[]} Array of pack collection IDs
+ */
+function getConfiguredPacks() {
+    try {
+        const setting = game.settings.get('Ilaris', 'waffeneigenschaftenPacks')
+        return JSON.parse(setting)
+    } catch (e) {
+        console.warn('Ilaris | Could not load waffeneigenschaften-packs setting, using default')
+        return ['Ilaris.waffeneigenschaften']
+    }
+}
+
+/**
  * Register hooks to listen for waffeneigenschaft item changes
  * Called automatically on first EigenschaftCache instantiation
  */
@@ -216,10 +230,12 @@ export class EigenschaftCache {
         // Search world items
         let item = game.items.find((i) => i.type === 'waffeneigenschaft' && i.name === name)
 
-        // Search compendiums if not found
+        // Search configured compendiums if not found
         if (!item) {
-            for (const pack of game.packs) {
-                if (pack.metadata.type === 'Item') {
+            const configuredPacks = getConfiguredPacks()
+            for (const packId of configuredPacks) {
+                const pack = game.packs.get(packId)
+                if (pack && pack.metadata.type === 'Item') {
                     const items = await pack.getDocuments()
                     item = items.find((i) => i.type === 'waffeneigenschaft' && i.name === name)
                     if (item) break
@@ -263,9 +279,11 @@ export async function preloadAllEigenschaften() {
             globalCache.set(item.name, item)
         }
 
-        // Load from compendiums
-        for (const pack of game.packs) {
-            if (pack.metadata.type === 'Item') {
+        // Load from configured compendiums
+        const configuredPacks = getConfiguredPacks()
+        for (const packId of configuredPacks) {
+            const pack = game.packs.get(packId)
+            if (pack && pack.metadata.type === 'Item') {
                 const items = await pack.getDocuments()
                 const eigenschaften = items.filter((i) => i.type === 'waffeneigenschaft')
                 for (const item of eigenschaften) {
