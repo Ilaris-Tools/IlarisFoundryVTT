@@ -213,6 +213,7 @@
       "eigenheit",
       "gegenstand",
       "eigenschaft",
+      "waffeneigenschaft",
       "angriff",
       "info",
       "freiestalent",
@@ -244,6 +245,25 @@
         "manoverausgleich": {
           "value": 0,
           "overcomplicated": true
+        },
+        "computed": {
+          "at": 0,
+          "vt": 0,
+          "fk": 0,
+          "schadenBonus": 0,
+          "rw": 0,
+          "handsRequired": 1,
+          "ignoreNebenMalus": false,
+          "noRider": false,
+          "modifiers": {
+            "at": [],
+            "vt": [],
+            "dmg": []
+          },
+          "targetEffects": [],
+          "combatMechanics": {},
+          "conditionalModifiers": [],
+          "hasActorModifiers": false
         }
       },
       "fertigkeit": {
@@ -301,42 +321,13 @@
       "templates": ["gesundheit", "waffe", "gegenstand"],
       "wm_at": 0,
       "wm_vt": 0,
-      "eigenschaften": {
-        "kopflastig": false,
-        "niederwerfen": false,
-        "parierwaffe": false,
-        "reittier": false,
-        "ruestungsbrechend": false,
-        "schild": false,
-        "schwer_4": false,
-        "schwer_8": false,
-        "stumpf": false,
-        "unberechenbar": false,
-        "unzerstoerbar": false,
-        "wendig": false,
-        "zerbrechlich": false,
-        "zweihaendig": false,
-        "kein_malus_nebenwaffe": false
-      }
+      "eigenschaften": []
     },
     "fernkampfwaffe": {
       "templates": ["gesundheit", "waffe", "gegenstand"],
       "wm_fk": 0,
       "lz": 0,
-      "eigenschaften": {
-        "kein_reiter": false,
-        "niederwerfen": false,
-        "niederwerfen_4": false,
-        "niederwerfen_8": false,
-        "schwer_4": false,
-        "schwer_8": false,
-        "stationaer": false,
-        "stumpf": false,
-        "umklammern_212": false,
-        "umklammern_416": false,
-        "umklammern_816": false,
-        "zweihaendig": false
-      }
+      "eigenschaften": []
     },
     "ruestung": {
       "templates": ["gesundheit", "gegenstand"],
@@ -432,7 +423,65 @@
       "name": "",
       "sephrastoScript": "",
       "foundryScript": "",
-      "text": ""
+      "text": "",
+      "kategorie": "modifier",
+      "modifiers": {
+        "at": 0,
+        "vt": 0,
+        "schaden": 0,
+        "schadenFormula": "",
+        "rw": 0,
+        "fumbleThreshold": null,
+        "critThreshold": null,
+        "ignoreCover": false,
+        "ignoreArmor": false,
+        "additionalDice": 0,
+        "conditionalModifiers": []
+      },
+      "wieldingRequirements": {
+        "hands": 1,
+        "ignoreNebenMalus": false,
+        "noRider": false,
+        "requiresRider": false,
+        "penalties": {
+          "hauptOnly": {},
+          "nebenOnly": {},
+          "nebenWithoutExemption": {}
+        },
+        "condition": {
+          "type": "attribute_check",
+          "attribute": "KK",
+          "operator": "<",
+          "value": 0,
+          "onFailure": {
+            "at": 0,
+            "vt": 0,
+            "schaden": 0
+          }
+        }
+      },
+      "targetEffect": {
+        "name": "",
+        "trigger": "on_hit",
+        "resistCheck": {
+          "type": "none",
+          "attackerAttribute": "",
+          "defenderAttribute": "",
+          "attackerModifier": 0,
+          "defenderModifier": 0
+        },
+        "effect": {
+          "type": "status",
+          "statusName": "",
+          "duration": "",
+          "icon": ""
+        }
+      },
+      "actorModifiers": {
+        "modifiers": [],
+        "conditions": []
+      },
+      "customScript": ""
     }
   }
 }

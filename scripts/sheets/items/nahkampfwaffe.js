@@ -1,6 +1,6 @@
-import { IlarisItemSheet } from './item.js'
+import { WaffeBaseSheet } from './waffe-base.js'
 
-export class NahkampfwaffeSheet extends IlarisItemSheet {
+export class NahkampfwaffeSheet extends WaffeBaseSheet {
     async getData() {
         const data = await super.getData()
 
@@ -8,15 +8,17 @@ export class NahkampfwaffeSheet extends IlarisItemSheet {
             data.speicherplatz_list = this.item.actor.misc.speicherplatz_list
         }
 
-        // for migration from dice_anzahl and dice_plus to tp
-        // Only migrate if tp is not set yet AND old fields exist
-        if (!this.item.system.tp && (this.item.system.dice_plus || this.item.system.dice_anzahl)) {
-            this.item.system.tp = `${this.item.system.dice_anzahl}W6${
-                this.item.system.dice_plus < 0 ? '' : '+'
-            }${this.item.system.dice_plus}`
-            delete this.item.system.dice_anzahl
-            delete this.item.system.dice_plus
+        // Fetch available waffeneigenschaften from all compendiums
+        data.availableEigenschaften = await this._getAvailableEigenschaften()
+
+        // Ensure eigenschaften is an array
+        if (!Array.isArray(this.item.system.eigenschaften)) {
+            this.item.system.eigenschaften = []
         }
+
+        // Migrate legacy damage format
+        this._migrateLegacyDamageFormat(data)
+
         return data
     }
 

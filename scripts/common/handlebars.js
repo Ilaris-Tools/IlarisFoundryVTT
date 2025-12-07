@@ -320,6 +320,19 @@ function registerHandlebarsHelpers() {
     })
 
     /**
+     * Handlebars helper to check if an array includes a value
+     * @param {Array} array - The array to check
+     * @param {*} value - The value to look for
+     * @returns {boolean} True if the array includes the value
+     */
+    Handlebars.registerHelper('includes', function (array, value) {
+        if (!Array.isArray(array)) {
+            return false
+        }
+        return array.includes(value)
+    })
+
+    /**
      * Handlebars helper to format Foundry dice notation into user-friendly German display
      * @param {string} diceFormula - The Foundry dice formula (e.g., "3d20dl1dh1", "2d20dl1", "1d20")
      * @returns {string} User-friendly German display (e.g., "3W20 (Median)", "2W20 (Schip)", "1W20")

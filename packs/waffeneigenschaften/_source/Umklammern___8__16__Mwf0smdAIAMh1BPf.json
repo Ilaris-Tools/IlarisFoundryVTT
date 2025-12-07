@@ -1,0 +1,80 @@
+{
+  "name": "Umklammern (-8; 16)",
+  "type": "waffeneigenschaft",
+  "system": {
+    "name": "",
+    "sephrastoScript": "",
+    "foundryScript": "",
+    "text": "",
+    "kategorie": "target_effect",
+    "modifiers": {
+      "at": 0,
+      "vt": 0,
+      "schaden": 0,
+      "schadenFormula": "",
+      "rw": 0,
+      "fumbleThreshold": null,
+      "critThreshold": null,
+      "ignoreCover": false,
+      "ignoreArmor": false,
+      "additionalDice": 0,
+      "conditionalModifiers": []
+    },
+    "wieldingRequirements": {
+      "hands": 1,
+      "penalties": {
+        "hauptOnly": null,
+        "nebenOnly": null,
+        "nebenWithoutExemption": null
+      }
+    },
+    "targetEffect": {
+      "name": "Umklammern",
+      "trigger": "on_hit",
+      "resistCheck": {
+        "type": "none",
+        "attackerAttribute": "",
+        "defenderAttribute": "",
+        "attackerModifier": 0,
+        "defenderModifier": 0,
+        "attribute": "KK",
+        "difficulty": -8,
+        "minimumRoll": 16
+      },
+      "effect": {
+        "type": "grapple",
+        "statusName": "",
+        "duration": "",
+        "icon": "",
+        "value": "Umklammert"
+      }
+    },
+    "actorModifiers": {
+      "modifiers": [],
+      "conditions": []
+    },
+    "customScript": "",
+    "beschreibung": "Bei einem Treffer kann das Ziel versuchen, mit einer KK-Probe -8 (Mindestwurf 16) nicht umklammert zu werden."
+  },
+  "_id": "Mwf0smdAIAMh1BPf",
+  "img": "icons/svg/item-bag.svg",
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "bRsoRPItEVb33T1L": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.343",
+    "systemId": "Ilaris",
+    "systemVersion": "12.2.5",
+    "createdTime": 1762753607402,
+    "modifiedTime": 1762753607402,
+    "lastModifiedBy": "bRsoRPItEVb33T1L"
+  },
+  "_key": "!items!Mwf0smdAIAMh1BPf"
+}
