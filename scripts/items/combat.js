@@ -4,7 +4,7 @@ import {
     ConfigureGameSettingsCategories,
     IlarisAutomatisierungSettingNames,
 } from './../settings/configure-game-settings.model.js'
-import { ILARIS } from '../config.js'
+import { ILARIS, MANOEVER_GRUPPE } from '../config.js'
 
 export class CombatItem extends IlarisItem {
     // Create a maneuver object from an item
@@ -106,7 +106,12 @@ export class CombatItem extends IlarisItem {
                 id: 'mod' + index,
                 type: 'manoever',
                 system: {
-                    gruppe: this.type === 'zauber' ? 2 : this.type === 'liturgie' ? 3 : 4,
+                    gruppe:
+                        this.type === 'zauber'
+                            ? MANOEVER_GRUPPE.ZAUBER
+                            : this.type === 'liturgie'
+                            ? MANOEVER_GRUPPE.LITURGIE
+                            : MANOEVER_GRUPPE.ANRUFUNG,
                     probe: erschwernis,
                     text: contentWithoutErschwernis || name.trim(),
                     modifications: {},
@@ -265,7 +270,8 @@ export class CombatItem extends IlarisItem {
             packItems.forEach((item) => {
                 if (
                     item.type === 'manoever' &&
-                    (item.system.gruppe == 0 || item.system.gruppe == 4) &&
+                    (item.system.gruppe === MANOEVER_GRUPPE.NAHKAMPF ||
+                        item.system.gruppe === MANOEVER_GRUPPE.VERTEIDIGUNG) &&
                     item._manoeverRequirementsFulfilled(this.actor, this)
                 ) {
                     this.manoever.push(this._createManeuverFromItem(item))
@@ -296,7 +302,7 @@ export class CombatItem extends IlarisItem {
             packItems.forEach((item) => {
                 if (
                     item.type === 'manoever' &&
-                    item.system.gruppe == 1 &&
+                    item.system.gruppe === MANOEVER_GRUPPE.FERNKAMPF &&
                     item._manoeverRequirementsFulfilled(this.actor, this)
                 ) {
                     this.manoever.push(this._createManeuverFromItem(item))
@@ -309,7 +315,7 @@ export class CombatItem extends IlarisItem {
             packItems.forEach((item) => {
                 if (
                     item.type === 'manoever' &&
-                    item.system.gruppe == 2 &&
+                    item.system.gruppe === MANOEVER_GRUPPE.ZAUBER &&
                     item._manoeverRequirementsFulfilled(this.actor, this)
                 ) {
                     this.manoever.push(this._createManeuverFromItem(item))
@@ -326,7 +332,7 @@ export class CombatItem extends IlarisItem {
             packItems.forEach((item) => {
                 if (
                     item.type === 'manoever' &&
-                    item.system.gruppe == 3 &&
+                    item.system.gruppe === MANOEVER_GRUPPE.LITURGIE &&
                     item._manoeverRequirementsFulfilled(this.actor, this)
                 ) {
                     this.manoever.push(this._createManeuverFromItem(item))
@@ -343,7 +349,7 @@ export class CombatItem extends IlarisItem {
             packItems.forEach((item) => {
                 if (
                     item.type === 'manoever' &&
-                    item.system.gruppe == 4 &&
+                    item.system.gruppe === MANOEVER_GRUPPE.ANRUFUNG &&
                     item._manoeverRequirementsFulfilled(this.actor, this)
                 ) {
                     this.manoever.push(this._createManeuverFromItem(item))
