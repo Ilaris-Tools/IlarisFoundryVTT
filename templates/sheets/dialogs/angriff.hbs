@@ -70,9 +70,26 @@
             <input type="checkbox" id="isHumanoid-{{dialogId}}" {{checked isHumanoid}} />
         </div>
         {{/if}}
-
         <hr>
-
+        {{#if useTargetSelection}}
+        <div class="flexrow" style="margin: 10px 0; justify-content: space-between; align-items: flex-start;">
+            <div class="selected-actors-display" style="flex: 1;">
+                <div class="selected-actors-list">
+                    {{#if selectedActors.length}}
+                        <div style="font-weight: bold; margin-bottom: 5px;">Ausgewählte Ziele:</div>
+                        {{#each selectedActors}}
+                            <div>{{this.name}} ({{this.distance}} Distanz)</div>
+                        {{/each}}
+                    {{/if}}
+                </div>
+            </div>
+            <button style="max-width: 150px" type="button" class="show-nearby">
+                <i class="fas fa-users"></i>
+                Andere Akteure
+            </button>
+        </div>
+        <hr>
+        {{/if}}
         <div>
             <div class="maneuver-header collapsed">
                 <h3>Manöver:</h3>
@@ -84,7 +101,7 @@
             <div class="maneuver-grid collapsed">
                 {{#each item.manoever as |manoever|}}
                     <div class="maneuver-item {{#if (or manoever.inputValue.value manoever.inputValue.checked)}}has-value{{/if}}">
-                        <label>{{manoever.name}} ({{manoever.system.probe}})</label>
+                        <label data-tooltip="{{{manoever.system.text}}}">{{manoever.name}} ({{manoever.system.probe}})</label>
                         {{#if (ifEq manoever.inputValue.field "CHECKBOX")}}
                             <input
                                 type="checkbox"
@@ -134,8 +151,6 @@
                 {{selectOptions rollModes selected=item.system.manoever.rllm.selected localize=true}}
             </select>
         </div>
-
-
     </div>
 
     <!-- Right Column - Modifier Summary -->

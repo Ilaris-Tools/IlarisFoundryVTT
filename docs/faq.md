@@ -42,3 +42,21 @@ einhändige Führung angerechnet
 -   Lagerplatz/Transportmittel: Wenn man bei einem Gegenstand ein negatives Gewicht einträgt, wird er als externer Speicherort gelistet (zB Eselskarren oder eigenes Haus)
 -   Wenn das Durchhaltevermögen (dh\*) auf 0 oder niedriger fällt, ist man überladen. (Die Behinderung durch die Rüstung wird vor der Behinderung durch die Traglast berechnet; durch Rüstung kann dh nicht unter 1 fallen)
 -   Das Gewicht der Waffen im Kompendium ist einfachst automatisch aus der Sephrasto-Datenbank berechnet => Anpassungen werden nötig sein
+
+**Wie kann ich Fertigkeiten in Würfelformeln verwenden?**
+
+Fertigkeiten können jetzt in Würfelformeln über das `@`-Symbol referenziert werden, ähnlich wie Attribute. Dies ist besonders nützlich für Spielleiter, die bestimmte Würfe über Chat oder Journal von Spielern verlangen möchten.
+
+Syntax:
+
+-   `@fertigkeiten.Name.pw` - Probewert der Fertigkeit
+-   `@fertigkeiten.Name.pwt` - Probewert mit Talenten
+-   `@fertigkeiten.Name.fw` - Fertigkeitswert
+
+Beispiele:
+
+-   `@fertigkeiten.Athletik.pw` - Gibt den Probewert von Athletik zurück
+-   `@fertigkeiten.Klettern.pwt` - Gibt den Probewert mit Talenten von Klettern zurück
+-   `1d20 + @fertigkeiten.Athletik.pw` - Würfelt 1d20 und addiert den Athletik-Probewert
+
+Dies funktioniert sowohl für profane Fertigkeiten als auch für übernatürliche Fertigkeiten.

@@ -483,6 +483,7 @@ let angriff_typ = {
 ILARIS.angriff_typ = angriff_typ
 
 let schadenstypen = {
+    NORMAL: '',
     PROFAN: 'Profan',
     STUMPF: 'Stumpf',
     STICH: 'Stich',
@@ -522,6 +523,7 @@ let vorteilsgruppen = [
     { value: '5', label: 'Zauber Traditionen' },
     { value: '6', label: 'Karma' },
     { value: '7', label: 'Geweihte Traditionen' },
+    { value: '8', label: 'Tiergeist' },
 ]
 ILARIS.vorteilsgruppen = vorteilsgruppen
 
