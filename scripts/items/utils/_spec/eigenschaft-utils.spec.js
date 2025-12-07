@@ -86,8 +86,13 @@ describe('eigenschaft-utils', () => {
         })
 
         it('should return 0 on evaluation error', () => {
+            const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation()
+
             const result = evaluateFormula('invalid javascript syntax @@', mockActor)
             expect(result).toBe(0)
+            expect(consoleWarnSpy).toHaveBeenCalled()
+
+            consoleWarnSpy.mockRestore()
         })
     })
 
