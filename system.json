@@ -167,7 +167,7 @@
   "secondaryTokenAttribute": null,
   "background": "/systems/Ilaris/assets/images/background/splash.jpg",
   "url": "https://github.com/Ilaris-Tools/IlarisFoundryVTT/",
-  "manifest": "https://raw.githubusercontent.com/Ilaris-Tools/IlarisFoundryVTT/66bdc9ccd6f9aed8c667556defc9c735eb99d08c/system.json",
-  "download": "https://github.com/Ilaris-Tools/IlarisFoundryVTT/releases/download/0.0.1-66bdc9ccd6f9aed8c667556defc9c735eb99d08c/Ilaris.zip",
+  "manifest": "https://raw.githubusercontent.com/Ilaris-Tools/IlarisFoundryVTT/refs/heads/main/system.json",
+  "download": "https://github.com/Ilaris-Tools/IlarisFoundryVTT/archive/refs/heads/main.zip",
   "license": ""
 }

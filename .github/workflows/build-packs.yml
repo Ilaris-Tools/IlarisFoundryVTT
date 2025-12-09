@@ -3,19 +3,22 @@ name: 🔨 Build DB for Ilaris in Foundry VTT
 on:
     workflow_call:
         inputs:
-            system_name:
-                description: 'The name of the Foundry VTT system'
-                default: 'Ilaris'
+            pre_release:
+                description: Should be pre-release with hash
+                type: boolean
                 required: false
-                type: string
+                default: true
     workflow_dispatch:
+        inputs:
+            pre_release:
+                description: Should be pre-release with hash
+                type: boolean
+                required: false
+                default: true
     push: # for testing
 
 permissions:
     contents: write
-
-env:
-    SYSTEM_NAME: ${{ inputs.system_name || 'Ilaris' }}
 
 jobs:
     pack:
@@ -35,35 +38,68 @@ jobs:
                   # Show folder structure in comp_packs
                   ls -al comp_packs
                   ls -al comp_packs/beispiel-helden
+            - name: 📖 Read system.json
+              id: read-system-json
+              run: echo "SYSTEM_JSON=$(jq -c . < system.json)" >> $GITHUB_OUTPUT
+            - name: ✍️ Define variables for reusage
+              id: variables
+              run: |
+                  # Read out information from system.json
+                  system="${{fromJson(steps.read-system-json.outputs.SYSTEM_JSON).id}}"
+                  echo "SYSTEM_NAME=${system}" >> $GITHUB_OUTPUT
+                  echo "SYSTEM_NAME=${system}"
+                  vers="${{fromJson(steps.read-system-json.outputs.SYSTEM_JSON).version}}"
+                  echo "VERSION=${vers}"
+
+                  # define release tag
+                  if [ ${{ inputs.pre_release }} = false ]; then
+                    tag="${vers}"
+                  else
+                    tag="${vers}-${{ github.sha }}"
+                  fi
+                  echo "TAG_NAME=${tag}" >> $GITHUB_OUTPUT
+                  echo "TAG_NAME=${tag}"
+
+                  # define filename
+                  file="${system}.zip"
+                  echo "FILENAME=${file}" >> $GITHUB_OUTPUT
+                  echo "FILENAME=${file}"
+            - name: 🧐 Adjust system.json, manifest and download link
+              run: |
+                manifest="${{fromJson(steps.read-system-json.outputs.SYSTEM_JSON).manifest}}"
+                echo "Previous manifest: ${manifest}"
+                manifest_release_path="https://github.com/${{ github.repository }}/releases/download/${{ steps.variables.outputs.TAG_NAME }}/system.json"
+                download="${{fromJson(steps.read-system-json.outputs.SYSTEM_JSON).download}}"
+                echo "Previous download: ${download}"
+                download_release_path="https://github.com/${{ github.repository }}/releases/download/${{ steps.variables.outputs.TAG_NAME }}/${{ steps.variables.outputs.FILENAME }}"
+                jq --arg manifest "$manifest_release_path" --arg download "$download_release_path" \
+                  '.manifest = $manifest | .download = $download' system.json > tmp && mv tmp system.json
+                echo "Overwrote system.json"
+                echo "Adjusted manifest: $(jq .manifest system.json)"
+                echo "Adjusted download: $(jq .download system.json)"
             - name: 📂 Prepare app folder
               run: |
                   # Moving all files for system integration in here
-                  mkdir "${{ env.SYSTEM_NAME }}"
-                  mv -t "${{ env.SYSTEM_NAME }}" assets comp_packs css docs scripts styles templates utils
-                  mv babel.config.cjs jsconfig.json LICENSE package.json package-lock.json README.md svgo.config.js system.json template.json update-creature-items.js -t "${{ env.SYSTEM_NAME }}"
-            - name: ✍️ Define Zip name
-              id: zip-name
-              run: |
-                  SYSTEM_NAME="${{ env.SYSTEM_NAME }}"
-                  OUT="${SYSTEM_NAME}.zip"
-                  echo "file=${OUT}" >> $GITHUB_OUTPUT
-                  echo $OUT
+                  mkdir "${{ steps.variables.outputs.SYSTEM_NAME }}"
+                  mv -t "${{ steps.variables.outputs.SYSTEM_NAME }}" assets comp_packs css docs scripts styles templates utils
+                  mv babel.config.cjs jsconfig.json LICENSE package.json package-lock.json README.md svgo.config.js system.json template.json update-creature-items.js -t "${{ steps.variables.outputs.SYSTEM_NAME }}"
             - name: 📦 Zip application
               run: |
-                  echo "Creating ${{ steps.zip-name.outputs.file }} from workspace"
+                  echo "Creating ${{ steps.variables.outputs.FILENAME }} from workspace"
                   sudo apt-get update -y
                   sudo apt-get install -y zip
-                  zip -r "${{ steps.zip-name.outputs.file }}" ./${{ env.SYSTEM_NAME }}
+                  zip -r "${{ steps.variables.outputs.FILENAME }}" ./${{ steps.variables.outputs.SYSTEM_NAME }}
             - name: Bump version and push tag
               uses: laputansoft/github-tag-action@v4.6
               with:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
-                  tag: "0.0.1-${{ github.sha }}"
+                  tag: "${{ steps.variables.outputs.TAG_NAME }}"
             - name: 🎉 Release
               uses: softprops/action-gh-release@v2
               with:
-                  tag_name: "0.0.1-${{ github.sha }}"
-                  prerelease: true
+                  tag_name: "${{ steps.variables.outputs.TAG_NAME }}"
+                  prerelease: "${{ inputs.pre_release || true }}"
                   files: |
                       CHANGELOG.md
-                      ${{ steps.zip-name.outputs.file }}
+                      ${{ steps.variables.outputs.SYSTEM_NAME }}/system.json
+                      ${{ steps.variables.outputs.FILENAME }}
