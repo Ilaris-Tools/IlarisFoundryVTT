@@ -15,7 +15,6 @@ on:
                 type: boolean
                 required: false
                 default: true
-    push: # for testing
 
 permissions:
     contents: write
