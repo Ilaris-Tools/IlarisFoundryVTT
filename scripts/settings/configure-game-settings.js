@@ -2,6 +2,9 @@ import { ManeuverPacksSettings } from './ManeuverPacksSettings.js'
 import { VorteilePacksSettings } from './VorteilePacksSettings.js'
 import { WaffeneigenschaftenPacksSettings } from './WaffeneigenschaftenPacksSettings.js'
 import { AbgeleiteteWertePacksSettings } from './AbgeleiteteWertePacksSettings.js'
+import { FertigkeitenPacksSettings } from './FertigkeitenPacksSettings.js'
+import { WaffenPacksSettings } from './WaffenPacksSettings.js'
+import { TalentePacksSettings } from './TalentePacksSettings.js'
 
 import {
     IlarisGameSettingNames,
@@ -28,6 +31,48 @@ export const registerIlarisGameSettings = () => {
             requiresReload: true,
         },
         {
+            // Register fertigkeiten packs setting
+            settingsName: IlarisGameSettingNames.fertigkeitenPacks,
+            name: 'Fertigkeiten Kompendien',
+            hint: 'Hier kannst du die Kompendien auswählen, die Fertigkeiten enthalten.',
+            scope: 'world',
+            config: false,
+            type: String,
+            default: '["Ilaris.fertigkeiten-und-talente"]',
+            requiresReload: true,
+            onChange: (value) => {
+                Hooks.callAll('ilarisFertigkeitenPacksChanged', JSON.parse(value))
+            },
+        },
+        {
+            // Register waffen packs setting
+            settingsName: IlarisGameSettingNames.waffenPacks,
+            name: 'Waffen Kompendien',
+            hint: 'Hier kannst du die Kompendien auswählen, die Waffen enthalten.',
+            scope: 'world',
+            config: false,
+            type: String,
+            default: '["Ilaris.waffen"]',
+            requiresReload: true,
+            onChange: (value) => {
+                Hooks.callAll('ilarisWaffenPacksChanged', JSON.parse(value))
+            },
+        },
+        {
+            // Register talente packs setting
+            settingsName: IlarisGameSettingNames.talentePacks,
+            name: 'Talente Kompendien',
+            hint: 'Hier kannst du die Kompendien auswählen, die Talente enthalten.',
+            scope: 'world',
+            config: false,
+            type: String,
+            default: '["Ilaris.fertigkeiten-und-talente"]',
+            requiresReload: true,
+            onChange: (value) => {
+                Hooks.callAll('ilarisTalentePacksChanged', JSON.parse(value))
+            },
+        },
+        {
             // Register maneuver packs setting
             settingsName: IlarisGameSettingNames.manoeverPacks,
             name: 'Manöver Kompendien',
@@ -36,6 +81,7 @@ export const registerIlarisGameSettings = () => {
             config: false, // Hide from settings menu since we use custom menu
             type: String,
             default: '["Ilaris.manover"]', // Default to Ilaris.manoever pack
+            requiresReload: true,
             onChange: (value) => {
                 // Notify that maneuver packs have changed
                 Hooks.callAll('ilarisManoeverPacksChanged', JSON.parse(value))
@@ -50,6 +96,7 @@ export const registerIlarisGameSettings = () => {
             config: false, // Hide from settings menu since we use custom menu
             type: String,
             default: '["Ilaris.vorteile"]', // Default to Ilaris.vorteile pack
+            requiresReload: true,
             onChange: (value) => {
                 // Notify that vorteile packs have changed
                 Hooks.callAll('ilarisVorteilePacksChanged', JSON.parse(value))
@@ -64,6 +111,7 @@ export const registerIlarisGameSettings = () => {
             config: false, // Hide from settings menu since we use custom menu
             type: String,
             default: '["Ilaris.waffeneigenschaften"]', // Default to Ilaris.waffeneigenschaften pack
+            requiresReload: true,
             onChange: (value) => {
                 // Notify that waffeneigenschaften packs have changed
                 Hooks.callAll('ilarisWaffeneigenschaftenPacksChanged', JSON.parse(value))
@@ -78,6 +126,7 @@ export const registerIlarisGameSettings = () => {
             config: false, // Hide from settings menu since we use custom menu
             type: String,
             default: '[]', // NO DEFAULT - empty array
+            requiresReload: true,
             onChange: (value) => {
                 // Notify that abgeleitete werte packs have changed
                 Hooks.callAll('ilarisAbgeleiteteWertePacksChanged', JSON.parse(value))
@@ -205,6 +254,33 @@ export const registerIlarisGameSettings = () => {
         })
     })
     ;[
+        {
+            settingsName: IlarisGameSettingsMenuNames.fertigkeitenPacksMenu,
+            name: 'Fertigkeiten Kompendien',
+            label: 'Fertigkeiten Kompendien Konfigurieren',
+            hint: 'Hier kannst du die Kompendien auswählen, die Fertigkeiten enthalten.',
+            icon: 'fas fa-book',
+            type: FertigkeitenPacksSettings,
+            restricted: true,
+        },
+        {
+            settingsName: IlarisGameSettingsMenuNames.waffenPacksMenu,
+            name: 'Waffen Kompendien',
+            label: 'Waffen Kompendien Konfigurieren',
+            hint: 'Hier kannst du die Kompendien auswählen, die Waffen enthalten.',
+            icon: 'fas fa-book',
+            type: WaffenPacksSettings,
+            restricted: true,
+        },
+        {
+            settingsName: IlarisGameSettingsMenuNames.talentePacksMenu,
+            name: 'Talente Kompendien',
+            label: 'Talente Kompendien Konfigurieren',
+            hint: 'Hier kannst du die Kompendien auswählen, die Talente enthalten.',
+            icon: 'fas fa-book',
+            type: TalentePacksSettings,
+            restricted: true,
+        },
         {
             // Register the settings menu for maneuvers
             settingsName: IlarisGameSettingsMenuNames.manoeverPacksMenu,

@@ -7,6 +7,9 @@ export const ConfigureGameSettingsCategories = {
 export const IlarisGameSettingNames = {
     acceptChangesV12_1: 'acceptChangesV12_1',
     weaponSpaceRequirement: 'weaponSpaceRequirement',
+    fertigkeitenPacks: 'fertigkeitenPacks',
+    waffenPacks: 'waffenPacks',
+    talentePacks: 'talentePacks',
     manoeverPacks: 'manoeverPacks',
     vorteilePacks: 'vorteilePacks',
     waffeneigenschaftenPacks: 'waffeneigenschaftenPacks',
@@ -25,6 +28,9 @@ export const IlarisAutomatisierungSettingNames = {
 }
 
 export const IlarisGameSettingsMenuNames = {
+    fertigkeitenPacksMenu: 'fertigkeitenPacksMenu',
+    waffenPacksMenu: 'waffenPacksMenu',
+    talentePacksMenu: 'talentePacksMenu',
     manoeverPacksMenu: 'manoeverPacksMenu',
     vorteilePacksMenu: 'vorteilePacksMenu',
     waffeneigenschaftenPacksMenu: 'waffeneigenschaftenPacksMenu',

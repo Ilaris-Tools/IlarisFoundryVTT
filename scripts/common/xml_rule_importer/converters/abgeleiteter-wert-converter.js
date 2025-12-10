@@ -11,10 +11,10 @@ export class AbgeleiteterWertConverter extends BaseConverter {
      * @returns {Object} Foundry item object
      */
     convert(element) {
-        const name = this.getAttr(element, 'name', '')
-        const formel = this.getAttr(element, 'formel', '')
-        const script = this.getAttr(element, 'script', '')
-        const finalscript = this.getAttr(element, 'finalscript', '')
+        const name = this.getAttribute(element, 'name', '')
+        const formel = this.getAttribute(element, 'formel', '')
+        const script = this.getAttribute(element, 'script', '')
+        const finalscript = this.getAttribute(element, 'finalscript', '')
         const text = element.textContent?.trim() || ''
 
         const systemData = {

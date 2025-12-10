@@ -428,7 +428,6 @@
       "text": ""
     },
     "waffeneigenschaft": {
-      "name": "",
       "sephrastoScript": "",
       "foundryScript": "",
       "text": "",
@@ -469,7 +468,6 @@
         }
       },
       "targetEffect": {
-        "name": "",
         "trigger": "on_hit",
         "resistCheck": {
           "type": "none",

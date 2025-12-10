@@ -17,7 +17,7 @@ export class DialogHandler {
             content: content,
             buttons: this._getRuleImportDialogButtons(onImport),
             default: 'import',
-        }).render()
+        }).render(true)
     }
 
     /**
@@ -44,12 +44,12 @@ export class DialogHandler {
 
     /**
      * Handle the rule import process from dialog callback
-     * @param {HTMLElement} html - Dialog HTML content
+     * @param {jQuery} html - Dialog HTML content (jQuery object)
      * @param {Function} onImport - Callback function to handle import
      * @private
      */
     static async _handleRuleImport(html, onImport) {
-        const fileInput = html.querySelector('input[name="xmlFile"]')
+        const fileInput = html.find('input[name="xmlFile"]')[0]
         const file = fileInput?.files[0]
 
         if (!file) {
