@@ -20,13 +20,24 @@ export class WeaponConverter extends BaseConverter {
         const plus = parseInt(this.getAttribute(element, 'plus', '0')) || 0
         const tp = `${würfel}W${würfelSeiten}${plus !== 0 ? (plus > 0 ? '+' + plus : plus) : ''}`
 
-        // Parse eigenschaften from text content (comma-separated)
-        // The text content contains the eigenschaften, NOT the description
-        const eigenschaftenRaw = this.getTextContent(element)
-        const eigenschaften = eigenschaftenRaw
-            .split(',')
-            .map((e) => e.trim())
-            .filter((e) => e.length > 0)
+        // Parse eigenschaften - can be either in 'eigenschaften' attribute (character import)
+        // or in text content (rule import)
+        let eigenschaften = []
+        const eigenschaftenAttr = this.getAttribute(element, 'eigenschaften', '')
+        if (eigenschaftenAttr) {
+            // Character import format: eigenschaften in attribute
+            eigenschaften = eigenschaftenAttr
+                .split(',')
+                .map((e) => e.trim())
+                .filter((e) => e.length > 0)
+        } else {
+            // Rule import format: eigenschaften in text content
+            const eigenschaftenRaw = this.getTextContent(element)
+            eigenschaften = eigenschaftenRaw
+                .split(',')
+                .map((e) => e.trim())
+                .filter((e) => e.length > 0)
+        }
 
         // Basic weapon system data (shared between both types)
         const systemData = {
