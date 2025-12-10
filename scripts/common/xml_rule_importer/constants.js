@@ -13,6 +13,7 @@ export const XML_TO_FOUNDRY_TYPE = {
     Rüstung: 'ruestung',
     Talent: 'talent',
     Manöver: 'manoever',
+    AbgeleiteterWert: 'abgeleiteter-wert',
 }
 
 /**
@@ -72,6 +73,12 @@ export const PACK_DEFINITIONS = [
         label: 'Vorteile',
         type: 'Item',
         xmlElement: 'Vorteil',
+    },
+    {
+        key: 'abgeleiteteWerte',
+        label: 'Abgeleitete Werte',
+        type: 'Item',
+        xmlElement: 'AbgeleiteterWert',
     },
 ]
 

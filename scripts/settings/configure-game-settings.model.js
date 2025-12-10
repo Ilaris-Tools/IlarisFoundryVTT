@@ -10,6 +10,7 @@ export const IlarisGameSettingNames = {
     manoeverPacks: 'manoeverPacks',
     vorteilePacks: 'vorteilePacks',
     waffeneigenschaftenPacks: 'waffeneigenschaftenPacks',
+    abgeleiteteWertePacks: 'abgeleiteteWertePacks',
     realFumbleCrits: 'realFumbleCrits',
     restrictEnergyCostSetting: 'restrictEnergyCostSetting',
     hideSyncKampfstileButton: 'hideSyncKampfstileButton',
@@ -27,4 +28,5 @@ export const IlarisGameSettingsMenuNames = {
     manoeverPacksMenu: 'manoeverPacksMenu',
     vorteilePacksMenu: 'vorteilePacksMenu',
     waffeneigenschaftenPacksMenu: 'waffeneigenschaftenPacksMenu',
+    abgeleiteteWertePacksMenu: 'abgeleiteteWertePacksMenu',
 }

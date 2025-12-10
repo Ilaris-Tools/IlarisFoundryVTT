@@ -1,0 +1,67 @@
+{{log 'abgeleiteter-wert' this}}
+<form class="{{cssClass}}">
+    <div>
+        <div>
+            <header class="sheet-header">
+                <div class="header-fields">
+                    <h1 class="charname">
+                        <input name="name" type="text" value="{{item.name}}" placeholder="Interner Name (z.B. WS, MR, INI)" />
+                    </h1>
+                </div>
+            </header>
+        </div>
+
+        <div class="flexrow" style="margin-bottom: 10px;">
+            <label style="flex: 0 0 150px;"><b>Name:</b></label>
+            <input 
+                name="system.name" 
+                type="text" 
+                value="{{item.system.name}}" 
+                placeholder="z.B. Wundschwelle"
+                data-dtype="String"
+            />
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            <label><b>Formel (Beschreibung):</b></label>
+            <input 
+                name="system.formel" 
+                type="text" 
+                value="{{item.system.formel}}" 
+                placeholder="z.B. 4 + 1 je 4 KO"
+                data-dtype="String"
+            />
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            <label><b>Berechnungs-Script:</b></label>
+            <textarea 
+                rows="3" 
+                name="system.script" 
+                placeholder="z.B. 4 + roundDown(getAttribut('KO')/4)"
+            >{{item.system.script}}</textarea>
+        </div>
+
+        <div style="margin-bottom: 10px;">
+            <label><b>Final-Script (optional):</b></label>
+            <textarea 
+                rows="3" 
+                name="system.finalscript"
+                placeholder="z.B. getWS() + getRS()"
+            >{{item.system.finalscript}}</textarea>
+        </div>
+
+        <div>
+            <label><b>Beschreibung:</b></label>
+            <textarea rows="8" name="system.text">{{item.system.text}}</textarea>
+        </div>
+
+        <hr />
+        <a class="item-delete" data-itemid="{{item._id}}">
+            <button class="clickable" type="button">
+                Löschen
+                <i class="fas fa-trash"></i>
+            </button>
+        </a>
+    </div>
+</form>

@@ -217,7 +217,8 @@
       "angriff",
       "info",
       "freiestalent",
-      "waffeneigenschaft"
+      "waffeneigenschaft",
+      "abgeleiteter-wert"
     ],
     "templates": {
       "gesundheit": {
@@ -418,6 +419,13 @@
       "text": "",
       "pw": "",
       "profan": true
+    },
+    "abgeleiteter-wert": {
+      "name": "",
+      "formel": "",
+      "script": "",
+      "finalscript": "",
+      "text": ""
     },
     "waffeneigenschaft": {
       "name": "",

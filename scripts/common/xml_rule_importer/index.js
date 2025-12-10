@@ -14,6 +14,7 @@ import {
     TalentExtractor,
     ManoeverExtractor,
     VorteilExtractor,
+    AbgeleiteterWertExtractor,
 } from './extractors/index.js'
 
 /**
@@ -56,6 +57,7 @@ export class XMLRuleImporter {
             uebernatuerlicheTalente: [],
             manoever: [],
             vorteile: [],
+            abgeleiteteWerte: [],
             totalItems: 0,
         }
 
@@ -113,6 +115,14 @@ export class XMLRuleImporter {
             console.error('Error extracting vorteile:', error.message)
         }
 
+        // Extract abgeleitete werte
+        try {
+            const abgeleiteterWertExtractor = new AbgeleiteterWertExtractor(this.xmlDoc)
+            results.abgeleiteteWerte = abgeleiteterWertExtractor.extract()
+        } catch (error) {
+            console.error('Error extracting abgeleitete werte:', error.message)
+        }
+
         // Calculate totals
         results.totalItems =
             results.fertigkeiten.length +
@@ -123,7 +133,8 @@ export class XMLRuleImporter {
             results.talente.length +
             results.uebernatuerlicheTalente.length +
             results.manoever.length +
-            results.vorteile.length
+            results.vorteile.length +
+            results.abgeleiteteWerte.length
 
         return results
     }

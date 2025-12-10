@@ -1,6 +1,7 @@
 import { ManeuverPacksSettings } from './ManeuverPacksSettings.js'
 import { VorteilePacksSettings } from './VorteilePacksSettings.js'
 import { WaffeneigenschaftenPacksSettings } from './WaffeneigenschaftenPacksSettings.js'
+import { AbgeleiteteWertePacksSettings } from './AbgeleiteteWertePacksSettings.js'
 
 import {
     IlarisGameSettingNames,
@@ -66,6 +67,20 @@ export const registerIlarisGameSettings = () => {
             onChange: (value) => {
                 // Notify that waffeneigenschaften packs have changed
                 Hooks.callAll('ilarisWaffeneigenschaftenPacksChanged', JSON.parse(value))
+            },
+        },
+        {
+            // Register abgeleitete werte packs setting - NO DEFAULT VALUE
+            settingsName: IlarisGameSettingNames.abgeleiteteWertePacks,
+            name: 'Abgeleitete Werte Kompendien',
+            hint: 'Hier kannst du die Kompendien auswählen, die Abgeleitete Werte enthalten. Wenn keine Kompendien ausgewählt sind, werden die Standard-Berechnungen verwendet.',
+            scope: 'world',
+            config: false, // Hide from settings menu since we use custom menu
+            type: String,
+            default: '[]', // NO DEFAULT - empty array
+            onChange: (value) => {
+                // Notify that abgeleitete werte packs have changed
+                Hooks.callAll('ilarisAbgeleiteteWertePacksChanged', JSON.parse(value))
             },
         },
         {
@@ -216,6 +231,15 @@ export const registerIlarisGameSettings = () => {
             hint: 'Hier kannst du die Kompendien auswählen, die Waffeneigenschaften enthalten.',
             icon: 'fas fa-book',
             type: WaffeneigenschaftenPacksSettings,
+            restricted: true,
+        },
+        {
+            settingsName: IlarisGameSettingsMenuNames.abgeleiteteWertePacksMenu,
+            name: 'Abgeleitete Werte Kompendien',
+            label: 'Abgeleitete Werte Kompendien Konfigurieren',
+            hint: 'Hier kannst du die Kompendien auswählen, die Abgeleitete Werte enthalten. Wenn keine Kompendien ausgewählt sind, werden die Standard-Berechnungen verwendet.',
+            icon: 'fas fa-calculator',
+            type: AbgeleiteteWertePacksSettings,
             restricted: true,
         },
     ].forEach((setting) => {

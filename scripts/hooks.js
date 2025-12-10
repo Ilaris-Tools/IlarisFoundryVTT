@@ -23,6 +23,7 @@ import { EigenheitSheet } from './sheets/items/eigenheit.js'
 import { EigenschaftSheet } from './sheets/items/eigenschaft.js'
 import { WaffeneigenschaftSheet } from './sheets/items/waffeneigenschaft.js'
 import { InfoSheet } from './sheets/items/info.js'
+import { AbgeleiteterWertSheet } from './sheets/items/abgeleiteter-wert.js'
 import { AngriffSheet } from './sheets/items/angriff.js'
 import { FreiesTalentSheet } from './sheets/items/freies_talent.js'
 import { registerIlarisGameSettings } from './settings/configure-game-settings.js'
@@ -92,6 +93,10 @@ Hooks.once('init', () => {
     })
     Items.registerSheet('Ilaris', AngriffSheet, { types: ['angriff'], makeDefault: true })
     Items.registerSheet('Ilaris', InfoSheet, { types: ['info'], makeDefault: true })
+    Items.registerSheet('Ilaris', AbgeleiteterWertSheet, {
+        types: ['abgeleiteter-wert'],
+        makeDefault: true,
+    })
     Items.registerSheet('Ilaris', FreiesTalentSheet, { types: ['freiestalent'], makeDefault: true })
     // Items.registerSheet("Ilaris", VorteilSheet, {types: ["allgemein_vorteil", "profan_vorteil", "kampf_vorteil", "kampfstil", "magie_vorteil", "magie_tradition", "karma_vorteil", "karma_tradition"], makeDefault: true});
 

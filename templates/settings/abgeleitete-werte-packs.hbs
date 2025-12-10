@@ -1,0 +1,34 @@
+<form>
+    <div class="form-group">
+        <label>Verfügbare Abgeleitete Werte Kompendien:</label>
+        <p style="font-style: italic; font-size: 0.9em; margin-bottom: 10px;">
+            Wenn keine Kompendien ausgewählt sind, werden die Standard-Berechnungen verwendet.
+        </p>
+        {{#if packs}}
+        {{#each packs}}
+        <div class="form-group pack-entry">
+            <div class="pack-row">
+                <label class="checkbox">
+                    <input type="checkbox" name="{{this.id}}" {{#if this.selected}}checked{{/if}}>
+                    {{this.name}}
+                </label>
+            </div>
+        </div>
+        {{/each}}
+        {{else}}
+        <p style="color: #999; font-style: italic;">
+            Keine Kompendien mit Abgeleiteten Werten gefunden. Importiere zuerst Regel-XMLs mit AbgeleiteterWert-Definitionen.
+        </p>
+        {{/if}}
+    </div>
+    <div class="form-group">
+        <button type="submit" name="submit">
+            <i class="far fa-save"></i>
+            Speichern
+        </button>
+        <button type="button" name="reset">
+            <i class="fas fa-undo"></i>
+            Zurücksetzen (Keine Auswahl)
+        </button>
+    </div>
+</form>
