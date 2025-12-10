@@ -52,14 +52,44 @@ export class ProcessorFactory {
      * @param {Object} weapon - The weapon item
      */
     process(kategorie, name, eigenschaft, computed, actor, weapon) {
-        console.log(`ProcessorFactory.process called for kategorie: ${kategorie}`)
+        // Validate inputs
+        if (!eigenschaft || typeof eigenschaft !== 'object') {
+            console.warn(`Invalid eigenschaft data for "${name}" - skipping`)
+            return
+        }
+
+        console.log(`ProcessorFactory.process called for kategorie: ${kategorie || 'undefined'}`)
+
+        // Handle missing or invalid kategorie - do nothing
+        if (!kategorie || typeof kategorie !== 'string') {
+            console.warn(`Eigenschaft "${name}" has no valid kategorie - skipping`)
+            return
+        }
+
         const processor = this.getProcessor(kategorie)
 
         if (processor) {
             console.log(
                 `Using processor: ${processor.constructor.name} for kategorie: ${kategorie}`,
             )
-            processor.process(name, eigenschaft, computed, actor, weapon)
+            try {
+                processor.process(name, eigenschaft, computed, actor, weapon)
+            } catch (error) {
+                console.error(`Processor error for "${name}" (kategorie: ${kategorie}):`, error)
+            }
+        } else {
+            // Fallback: Try custom script if present
+            if (eigenschaft.customScript) {
+                try {
+                    executeCustomScript(eigenschaft.customScript, computed, actor, weapon)
+                } catch (error) {
+                    console.error(`Error executing custom script for "${name}":`, error)
+                }
+            } else {
+                console.warn(
+                    `No processor found for kategorie: ${kategorie} and no custom script for "${name}"`,
+                )
+            }
         }
     }
 }
