@@ -241,7 +241,7 @@
         "rw_mod": 0,
         "hauptwaffe": false,
         "nebenwaffe": false,
-        "eigenschaftenList": [],
+        "eigenschaften": [],
         "text": "",
         "manoverausgleich": {
           "value": 0,

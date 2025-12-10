@@ -13,7 +13,6 @@ export class WeaponConverter extends BaseConverter {
      */
     convert(element, itemType) {
         const name = this.getAttribute(element, 'name', `Unnamed ${itemType}`)
-        const text = this.getTextContent(element)
 
         // Construct TP from würfel, würfelSeiten, and plus
         const würfel = this.getAttribute(element, 'würfel', '0')
@@ -22,8 +21,9 @@ export class WeaponConverter extends BaseConverter {
         const tp = `${würfel}W${würfelSeiten}${plus !== 0 ? (plus > 0 ? '+' + plus : plus) : ''}`
 
         // Parse eigenschaften from text content (comma-separated)
+        // The text content contains the eigenschaften, NOT the description
         const eigenschaftenRaw = this.getTextContent(element)
-        const eigenschaftenList = eigenschaftenRaw
+        const eigenschaften = eigenschaftenRaw
             .split(',')
             .map((e) => e.trim())
             .filter((e) => e.length > 0)
@@ -35,8 +35,7 @@ export class WeaponConverter extends BaseConverter {
             fertigkeit: this.getAttribute(element, 'fertigkeit'),
             talent: this.getAttribute(element, 'talent'),
             rw: parseInt(this.getAttribute(element, 'rw', '0')) || 0,
-            eigenschaftenList,
-            text,
+            eigenschaften,
         }
 
         // Add type-specific WM properties
