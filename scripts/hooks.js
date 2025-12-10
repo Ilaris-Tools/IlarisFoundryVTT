@@ -31,8 +31,8 @@ import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
 } from './settings/configure-game-settings.model.js'
-import { XmlCharacterImporter } from './common/xml_character_importer.js'
-import { XMLRuleImporter } from './common/xml_rule_importer/index.js'
+import { XmlCharacterImporter } from './importer/xml_character_importer.js'
+import { XMLRuleImporter } from './importer/xml_rule_importer/index.js'
 import { formatDiceFormula } from './common/utilities.js'
 
 // Import hooks
