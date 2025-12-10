@@ -10,9 +10,17 @@ export const IlarisGameSettingNames = {
     manoeverPacks: 'manoeverPacks',
     vorteilePacks: 'vorteilePacks',
     realFumbleCrits: 'realFumbleCrits',
+    renameTriumphWithCrit: 'renameTriumphWithCrit',
     restrictEnergyCostSetting: 'restrictEnergyCostSetting',
     hideSyncKampfstileButton: 'hideSyncKampfstileButton',
+    hexTokenShapes: 'hexTokenShapes',
     lastSeenBreakingChangesVersion: 'lastSeenBreakingChangesVersion',
+}
+
+// the heading for Automatisierung gets added via hooks.js
+export const IlarisAutomatisierungSettingNames = {
+    useSceneEnvironment: 'useSceneEnvironment',
+    useTargetSelection: 'useTargetSelection',
 }
 
 export const IlarisGameSettingsMenuNames = {

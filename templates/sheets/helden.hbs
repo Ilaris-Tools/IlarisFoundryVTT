@@ -23,7 +23,7 @@
     </div>
     <div class="attribute-grid">
       {{#each (sortAlphabetically actor.system.attribute) as |attributPair|}}
-      <div class="attribute-wrapper rollable onhover" data-rolltype="attribut" data-attribut="{{attributPair.[0]}}" title="{{attributPair.[0]}}">
+      <div class="attribute-wrapper rollable onhover" data-rolltype="fertigkeit_diag" data-probetype="attribut" data-attribut="{{attributPair.[0]}}" title="{{attributPair.[0]}}">
         <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/{{attributPair.[0]}}.webp" />
         <label class="attribute-number">
           {{attributPair.[1].pw}}

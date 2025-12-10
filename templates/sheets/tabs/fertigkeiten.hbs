@@ -21,7 +21,7 @@
             <tbody>
                 {{#each actor.profan.fertigkeiten as |profert key|}}
                 <tr class="main-row">
-                    <td class="rollable icon-small" data-rolltype="profan_fertigkeit_diag" data-fertigkeit="{{key}}">
+                    <td class="rollable icon-small" data-rolltype="fertigkeit_diag" data-probetype="fertigkeit" data-fertigkeit="{{key}}">
                         <i class="custom-icon"></i>
                     </td>
                     <td>
@@ -130,7 +130,7 @@
             <tbody>
                 {{#each actor.profan.freie as |freifert|}}
                 <tr>
-                    <td class="rollable" data-rolltype="freie_fertigkeit_diag" data-fertigkeit="{{freifert.name}}"
+                    <td class="rollable" data-rolltype="fertigkeit_diag" data-probetype="freie_fertigkeit" data-fertigkeit="{{freifert.name}}"
                         data-pw="{{freifert.system.stufe}}">
                         <i class="custom-icon"></i>
                     </td>

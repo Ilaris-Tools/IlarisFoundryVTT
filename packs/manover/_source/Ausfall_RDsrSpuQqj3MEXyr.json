@@ -27,7 +27,8 @@
     "input": {
       "label": "",
       "field": "CHECKBOX"
-    }
+    },
+    "isBaseManoever": false
   },
   "effects": [],
   "folder": null,

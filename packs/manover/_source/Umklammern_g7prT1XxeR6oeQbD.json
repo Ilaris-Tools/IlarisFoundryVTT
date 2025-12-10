@@ -34,7 +34,8 @@
     "input": {
       "label": "",
       "field": "NUMBER"
-    }
+    },
+    "isBaseManoever": true
   },
   "effects": [],
   "folder": null,
