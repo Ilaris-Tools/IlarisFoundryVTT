@@ -287,22 +287,38 @@ export class WaffeItem extends CombatItem {
         const eigenschaftItem = this._eigenschaftCache.get(name)
 
         if (!eigenschaftItem) {
-            console.warn(`Waffeneigenschaft "${name}" not found`)
+            console.warn(`Waffeneigenschaft "${name}" not found - skipping`)
             return
         }
 
         const eigenschaft = eigenschaftItem.system
 
-        console.log(`Processing eigenschaft "${name}" of category "${eigenschaft.kategorie}"`)
-        // Process using the appropriate processor based on kategorie
-        this._processorFactory.process(
-            eigenschaft.kategorie,
-            name,
-            eigenschaft,
-            computed,
-            actor,
-            this,
+        // Validate eigenschaft has required properties
+        if (!eigenschaft) {
+            console.warn(`Waffeneigenschaft "${name}" has no system data - skipping`)
+            return
+        }
+
+        console.log(
+            `Processing eigenschaft "${name}" of category "${
+                eigenschaft.kategorie || 'undefined'
+            }"`,
         )
+
+        // Wrap in try-catch to prevent one bad eigenschaft from breaking all calculations
+        try {
+            // Process using the appropriate processor based on kategorie
+            this._processorFactory.process(
+                eigenschaft.kategorie,
+                name,
+                eigenschaft,
+                computed,
+                actor,
+                this,
+            )
+        } catch (error) {
+            console.error(`Error processing eigenschaft "${name}":`, error)
+        }
     }
 
     /**

@@ -24,17 +24,30 @@ export class ModifierProcessor extends BaseEigenschaftProcessor {
         const mods = eigenschaft.modifiers || {}
         console.log(`ModifierProcessor applying basic modifiers for:`, eigenschaft, mods)
 
-        // Simple numeric modifiers
-        computed.at += mods.at || 0
-        computed.vt += mods.vt || 0
-        computed.schadenBonus += mods.schaden || 0
-        computed.rw += mods.rw || 0
+        // Simple numeric modifiers - ensure they are numbers
+        const atMod = Number(mods.at) || 0
+        const vtMod = Number(mods.vt) || 0
+        const schadenMod = Number(mods.schaden) || 0
+        const rwMod = Number(mods.rw) || 0
+
+        computed.at += atMod
+        computed.vt += vtMod
+        computed.schadenBonus += schadenMod
+        computed.rw += rwMod
 
         // Formula-based modifiers (e.g., "@actor.system.attribute.KK.wert" always with Math.floor(value/4))
         if (mods.schadenFormula) {
-            const value = Math.floor(evaluateFormula(mods.schadenFormula, actor) / 4)
-            computed.schadenBonus += value
-            computed.modifiers.dmg.push(`${name}: ${value}`)
+            try {
+                const value = Math.floor(evaluateFormula(mods.schadenFormula, actor) / 4)
+                if (!isNaN(value)) {
+                    computed.schadenBonus += value
+                    computed.modifiers.dmg.push(`${name}: ${value}`)
+                } else {
+                    console.warn(`Formula evaluation for "${name}" resulted in NaN`)
+                }
+            } catch (error) {
+                console.error(`Error evaluating schadenFormula for "${name}":`, error)
+            }
         }
     }
 
