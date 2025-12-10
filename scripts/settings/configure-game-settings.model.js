@@ -27,6 +27,7 @@ export const IlarisAutomatisierungSettingNames = {
     useTargetSelection: 'useTargetSelection',
 }
 
+// the heading for Kompendien gets added via hooks.js
 export const IlarisGameSettingsMenuNames = {
     fertigkeitenPacksMenu: 'fertigkeitenPacksMenu',
     waffenPacksMenu: 'waffenPacksMenu',

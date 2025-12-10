@@ -824,4 +824,28 @@ Hooks.on('renderSettingsConfig', (app, html) => {
             '<h3 class="setting-header" style="border-bottom: 1px solid var(--color-border-light-primary); padding: 0.5em 0; margin-top: 1em;">Automatisierung</h3>',
         )
     }
+
+    // Find the first Kompendien setting (fertigkeitenPacksMenu)
+    const kompendienSetting = html
+        .find('[data-key="Ilaris.fertigkeitenPacksMenu"]')
+        .closest('.form-group')
+
+    if (kompendienSetting.length > 0) {
+        // Insert a heading before it
+        kompendienSetting.before(
+            '<h3 class="setting-header" style="border-bottom: 1px solid var(--color-border-light-primary); padding: 0.5em 0; margin-top: 1em;">Benutzte Kompendien</h3>',
+        )
+    }
+
+    // Find the first Kompendien setting (fertigkeitenPacksMenu)
+    const normalSetting = html
+        .find('[data-setting-id="Ilaris.weaponSpaceRequirement"]')
+        .closest('.form-group')
+
+    if (normalSetting.length > 0) {
+        // Insert a heading before it
+        normalSetting.before(
+            '<h3 class="setting-header" style="border-bottom: 1px solid var(--color-border-light-primary); padding: 0.5em 0; margin-top: 1em;">Andere Einstellungen</h3>',
+        )
+    }
 })
