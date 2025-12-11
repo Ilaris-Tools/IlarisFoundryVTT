@@ -848,4 +848,44 @@ Hooks.on('renderSettingsConfig', (app, html) => {
             '<h3 class="setting-header" style="border-bottom: 1px solid var(--color-border-light-primary); padding: 0.5em 0; margin-top: 1em;">Andere Einstellungen</h3>',
         )
     }
+
+    // Replace the default ranged dodge talent text input with a dropdown
+    const dodgeTalentInput = html.find('[name="Ilaris.defaultRangedDodgeTalent"]')
+    if (dodgeTalentInput.length > 0) {
+        const currentValue = dodgeTalentInput.val()
+
+        // Get all talents from selected fertigkeiten compendiums
+        const fertigkeitenPacks = JSON.parse(
+            game.settings.get(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.fertigkeitenPacks,
+            ),
+        )
+
+        const talents = new Map()
+        for (const packId of fertigkeitenPacks) {
+            const pack = game.packs.get(packId)
+            if (!pack) continue
+
+            for (const indexEntry of pack.index) {
+                if (indexEntry.type === 'talent') {
+                    // Use UUID as key for uniqueness
+                    const uuid = `Compendium.${packId}.${indexEntry._id}`
+                    talents.set(uuid, indexEntry.name)
+                }
+            }
+        }
+
+        // Create dropdown
+        let selectHtml = '<select name="Ilaris.defaultRangedDodgeTalent">'
+        selectHtml += '<option value="">-- Kein Standard-Talent --</option>'
+
+        for (const [uuid, name] of talents) {
+            const selected = uuid === currentValue ? ' selected' : ''
+            selectHtml += `<option value="${uuid}"${selected}>${name}</option>`
+        }
+        selectHtml += '</select>'
+
+        dodgeTalentInput.replaceWith(selectHtml)
+    }
 })

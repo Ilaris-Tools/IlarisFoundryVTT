@@ -18,6 +18,7 @@ export const IlarisGameSettingNames = {
     restrictEnergyCostSetting: 'restrictEnergyCostSetting',
     hideSyncKampfstileButton: 'hideSyncKampfstileButton',
     hexTokenShapes: 'hexTokenShapes',
+    defaultRangedDodgeTalent: 'defaultRangedDodgeTalent',
     lastSeenBreakingChangesVersion: 'lastSeenBreakingChangesVersion',
 }
 

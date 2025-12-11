@@ -1,4 +1,8 @@
 import { AngriffDialog } from './angriff.js'
+import {
+    IlarisGameSettingNames,
+    ConfigureGameSettingsCategories,
+} from '../../settings/configure-game-settings.model.js'
 
 /**
  * Handles Akrobatik-based defense (dodging ranged attacks)
@@ -16,41 +20,58 @@ async function handleAkrobatikDefense(actor, rollResult, html) {
     const allButtons = html.find('.defend-button')
     allButtons.prop('disabled', true)
 
+    // Get the talent from settings or default to Akrobatik
+    const talentUuid = game.settings.get(
+        ConfigureGameSettingsCategories.Ilaris,
+        IlarisGameSettingNames.defaultRangedDodgeTalent,
+    )
+
+    let talentName = 'Akrobatik'
+    let fertigkeitName = 'Athletik'
+
+    if (talentUuid) {
+        try {
+            const talentItem = await fromUuid(talentUuid)
+            if (talentItem) {
+                talentName = talentItem.name
+                fertigkeitName = talentItem.system?.fertigkeit || 'Athletik'
+            }
+        } catch (e) {
+            console.warn('Failed to load talent from UUID:', talentUuid, e)
+        }
+    }
+
     let skillValue = 0
-    let label = 'Ausweichen mit Akrobatik'
+    let label = `Ausweichen mit ${talentName}`
 
     // Handle creatures differently - check freietalente
     if (actor.type === 'kreatur') {
-        const akrobatikOrAthletik = actor.freietalente?.find(
-            (t) => t.name === 'Akrobatik' || t.name === 'Athletik',
+        const dodgeTalent = actor.freietalente?.find(
+            (t) => t.name === talentName || t.name === fertigkeitName,
         )
 
-        if (!akrobatikOrAthletik) {
-            ui.notifications.warn(`${actor.name} hat weder Akrobatik noch Athletik.`)
+        if (!dodgeTalent) {
+            ui.notifications.warn(`${actor.name} hat weder ${talentName} noch ${fertigkeitName}.`)
             return
         }
 
-        skillValue = akrobatikOrAthletik.system?.pw || 0
+        skillValue = dodgeTalent.system?.pw || 0
     } else {
-        // For regular actors, find the Athletik skill (Akrobatik is a talent of Athletik)
-        const athletikSkill = actor.profan?.fertigkeiten?.find((f) => f.name === 'Athletik')
+        // For regular actors, find the skill that contains the talent
+        const skill = actor.profan?.fertigkeiten?.find((f) => f.name === fertigkeitName)
 
-        if (!athletikSkill) {
-            ui.notifications.warn(`${actor.name} hat keine Athletik-Fertigkeit.`)
+        if (!skill) {
+            ui.notifications.warn(`${actor.name} hat keine ${fertigkeitName}-Fertigkeit.`)
             return
         }
 
-        // Check if the actor has the Akrobatik talent
-        const hasAkrobatikTalent = athletikSkill.system?.talente?.some(
-            (t) => t.name === 'Akrobatik',
-        )
+        // Check if the actor has the talent
+        const hasTalent = skill.system?.talente?.some((t) => t.name === talentName)
 
         // Use PWT if they have the talent, otherwise use PW
-        skillValue = hasAkrobatikTalent
-            ? athletikSkill.system.pwt || 0
-            : athletikSkill.system.pw || 0
+        skillValue = hasTalent ? skill.system.pwt || 0 : skill.system.pw || 0
 
-        if (hasAkrobatikTalent) {
+        if (hasTalent) {
             label += ' (Talent)'
         }
     }
@@ -75,7 +96,7 @@ async function handleAkrobatikDefense(actor, rollResult, html) {
 
     const d = new Dialog(
         {
-            title: 'Ausweichen mit Akrobatik',
+            title: `Ausweichen mit ${talentName}`,
             content: dialogHtml,
             buttons: {
                 one: {

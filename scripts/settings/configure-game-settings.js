@@ -114,6 +114,16 @@ export const registerIlarisGameSettings = () => {
             scope: 'world',
             default: false,
         },
+        {
+            // Register default ranged dodge talent setting
+            settingsName: IlarisAutomatisierungSettingNames.defaultRangedDodgeTalent,
+            name: 'Standard Fernkampf-Ausweichen Talent',
+            hint: 'Das Standard-Talent, das zum Ausweichen von Fernkampfangriffen verwendet wird.',
+            config: true,
+            type: String,
+            scope: 'world',
+            default: '',
+        },
     ].forEach((setting) => {
         game.settings.register(ConfigureGameSettingsCategories.Ilaris, setting.settingsName, {
             name: setting.name,
