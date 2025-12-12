@@ -15,6 +15,7 @@ export const IlarisGameSettingNames = {
     waffeneigenschaftenPacks: 'waffeneigenschaftenPacks',
     abgeleiteteWertePacks: 'abgeleiteteWertePacks',
     realFumbleCrits: 'realFumbleCrits',
+    renameTriumphWithCrit: 'renameTriumphWithCrit',
     restrictEnergyCostSetting: 'restrictEnergyCostSetting',
     hideSyncKampfstileButton: 'hideSyncKampfstileButton',
     hexTokenShapes: 'hexTokenShapes',

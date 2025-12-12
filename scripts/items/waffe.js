@@ -186,11 +186,11 @@ export class WaffeItem extends CombatItem {
         this._applyActorModifiers(actor)
 
         // Process each eigenschaft
-        const eigenschaften = this.system.eigenschaften || []
-        if (Array.isArray(eigenschaften)) {
-            for (const eigenschaftName of eigenschaften) {
-                this._processEigenschaft(eigenschaftName, this.system.computed, this.parent)
-            }
+        const eigenschaften = Array.isArray(this.system.eigenschaften)
+            ? this.system.eigenschaften
+            : []
+        for (const eigenschaftName of eigenschaften) {
+            this._processEigenschaft(eigenschaftName, this.system.computed, this.parent)
         }
 
         this._applyNebenwaffeMalus()

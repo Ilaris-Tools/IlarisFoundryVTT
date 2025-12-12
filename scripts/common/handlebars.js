@@ -1,4 +1,5 @@
 import { formatDiceFormula } from './utilities.js'
+import * as settings from './../settings/index.js'
 
 export const initializeHandlebars = () => {
     registerHandlebarsHelpers()
@@ -346,5 +347,41 @@ function registerHandlebarsHelpers() {
      */
     Handlebars.registerHelper('formatDiceFormula', function (diceFormula) {
         return formatDiceFormula(diceFormula)
+    })
+
+    Handlebars.registerHelper('formatCritFumble', function (isCrit, isFumble) {
+        const highlightFumbleCrits = game.settings.get(
+            settings.ConfigureGameSettingsCategories.Ilaris,
+            settings.IlarisGameSettingNames.realFumbleCrits,
+        )
+        const renameTriumphWithCrit = game.settings.get(
+            settings.ConfigureGameSettingsCategories.Ilaris,
+            settings.IlarisGameSettingNames.renameTriumphWithCrit,
+        )
+
+        var textResult = ''
+
+        var config = isCrit
+            ? {
+                  style: highlightFumbleCrits
+                      ? 'color:#18520b; font-size: larger;'
+                      : 'color:#18520b;',
+                  text: renameTriumphWithCrit ? 'Crit' : 'Triumph',
+                  type: highlightFumbleCrits ? 'h2' : 'h3',
+              }
+            : isFumble
+            ? {
+                  style: highlightFumbleCrits
+                      ? 'color:#aa0200; font-size: larger;'
+                      : 'color:#aa0200;',
+                  text: 'Patzer',
+                  type: highlightFumbleCrits ? 'h2' : 'h3',
+              }
+            : {}
+
+        if (isCrit || isFumble)
+            textResult = `<${config.type}><strong style="${config.style}">${config.text}</strong></${config.type}>`
+
+        return new Handlebars.SafeString(textResult)
     })
 }
