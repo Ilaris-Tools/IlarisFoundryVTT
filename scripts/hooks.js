@@ -29,6 +29,7 @@ import { FreiesTalentSheet } from './sheets/items/freies_talent.js'
 import { registerIlarisGameSettings } from './settings/configure-game-settings.js'
 import {
     IlarisGameSettingNames,
+    IlarisAutomatisierungSettingNames,
     ConfigureGameSettingsCategories,
 } from './settings/configure-game-settings.model.js'
 import { XmlCharacterImporter } from './importer/xml_character_importer.js'
@@ -878,7 +879,7 @@ Hooks.on('renderSettingsConfig', (app, html) => {
 
         // Create dropdown
         let selectHtml = '<select name="Ilaris.defaultRangedDodgeTalent">'
-        selectHtml += '<option value="">-- Kein Standard-Talent --</option>'
+        selectHtml += '<option value="">-- Kein Alternativ-Talent --</option>'
 
         for (const [uuid, name] of talents) {
             const selected = uuid === currentValue ? ' selected' : ''

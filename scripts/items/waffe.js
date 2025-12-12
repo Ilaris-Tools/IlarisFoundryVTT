@@ -30,7 +30,7 @@ export class WaffeItem extends CombatItem {
 
         // Ensure eigenschaft items are loaded
         const eigenschaften = this.system.eigenschaften || []
-        if (!this._eigenschaftCache.isLoaded(eigenschaften)) {
+        if (Array.isArray(eigenschaften) && !this._eigenschaftCache.isLoaded(eigenschaften)) {
             // Wait for loading to complete
             console.log('Loading eigenschaften for weapon:', this.name)
             await this._eigenschaftCache.load(eigenschaften)
@@ -187,8 +187,10 @@ export class WaffeItem extends CombatItem {
 
         // Process each eigenschaft
         const eigenschaften = this.system.eigenschaften || []
-        for (const eigenschaftName of eigenschaften) {
-            this._processEigenschaft(eigenschaftName, this.system.computed, this.parent)
+        if (Array.isArray(eigenschaften)) {
+            for (const eigenschaftName of eigenschaften) {
+                this._processEigenschaft(eigenschaftName, this.system.computed, this.parent)
+            }
         }
 
         this._applyNebenwaffeMalus()
