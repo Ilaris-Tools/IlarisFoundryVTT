@@ -50,7 +50,7 @@ export class HeldActor extends IlarisActor {
         this._calculateFear(this.system) // muss vor _calculateAbgeleitete kommen (wegen globalermod)
         this._calculateWundschwellenRuestung(this)
         this._calculateModifikatoren(this.system)
-        await this._calculateAbgeleitete(this)
+        this._calculateAbgeleitete(this)
         this._calculateProfanFertigkeiten(this)
         this._calculateUebernaturlichFertigkeiten(this)
         this._calculateUebernaturlichTalente(this) //Nach Uebernatürliche Fertigkeiten

@@ -10,6 +10,7 @@ import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
     IlarisAutomatisierungSettingNames,
+    IlarisGameSettingsMenuNames,
 } from './configure-game-settings.model.js'
 
 export const registerIlarisGameSettings = () => {

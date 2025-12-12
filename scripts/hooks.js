@@ -3,6 +3,7 @@ import { IlarisActorProxy } from './actors/proxy.js'
 import { IlarisItemProxy } from './items/proxy.js'
 import { initializeHandlebars } from './common/handlebars.js'
 import { preloadAllEigenschaften } from './items/utils/eigenschaft-cache.js'
+import { preloadAbgeleiteteWerteDefinitions } from './actors/actor.js'
 import { runMigrationIfNeeded } from './migrations/migrate-waffen-eigenschaften.js'
 // import { IlarisActorSheet } from "./sheets/actor.js";
 import { HeldenSheet } from './sheets/helden.js'
@@ -588,6 +589,8 @@ Hooks.on('ready', async () => {
     setupIlarisSocket()
     // Preload all waffeneigenschaften into cache
     await preloadAllEigenschaften()
+    // Preload abgeleitete werte definitions into cache
+    await preloadAbgeleiteteWerteDefinitions()
     // Run world migration if needed (GM only, once per world)
     await runMigrationIfNeeded()
 })

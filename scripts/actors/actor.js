@@ -2,6 +2,12 @@ import * as hardcoded from './hardcodedvorteile.js'
 import * as weaponUtils from './weapon-utils.js'
 
 /**
+ * Global cache for abgeleitete werte definitions
+ * @type {Map<string, object>}
+ */
+const abgeleiteteWerteCache = new Map()
+
+/**
  * Sort comparator function for sorting items by name
  * @param {Object} a - First item to compare
  * @param {Object} b - Second item to compare
@@ -405,11 +411,11 @@ export class IlarisActor extends Actor {
         systemData.abgeleitete.globalermoddisplay += `${systemData.abgeleitete.globalermod} auf alle Proben`
     }
 
-    async _calculateAbgeleitete(actor) {
+    _calculateAbgeleitete(actor) {
         console.log('Berechne abgeleitete Werte')
 
-        // Get custom abgeleitete werte definitions from compendiums
-        const customDefinitions = await this._getAbgeleiteteWerteDefinitions()
+        // Get custom abgeleitete werte definitions from cache
+        const customDefinitions = this._getAbgeleiteteWerteDefinitions()
 
         // Helper function to execute custom script or use default calculation
         const calculateValue = (valueName, defaultCalculation) => {
@@ -519,48 +525,12 @@ export class IlarisActor extends Actor {
     }
 
     /**
-     * Get custom abgeleitete werte definitions from compendiums
-     * @returns {Promise<Map<string, object>>} Map of value names to their definitions
+     * Get custom abgeleitete werte definitions from cache
+     * @returns {Map<string, object>} Map of value names to their definitions
      * @private
      */
-    async _getAbgeleiteteWerteDefinitions() {
-        const definitions = new Map()
-
-        try {
-            // Get selected packs from settings
-            const selectedPacks = JSON.parse(
-                game.settings.get('Ilaris', 'abgeleiteteWertePacks') || '[]',
-            )
-
-            // If no packs selected, return empty map (use default calculations)
-            if (!selectedPacks || selectedPacks.length === 0) {
-                return definitions
-            }
-
-            // Load items from selected packs
-            for (const packId of selectedPacks) {
-                const pack = game.packs.get(packId)
-                if (!pack) continue
-
-                const items = await pack.getDocuments()
-                for (const item of items) {
-                    if (item.type === 'abgeleiteter-wert') {
-                        // Store by item name (e.g., "WS", "INI", "MR", "GS", "SchiP")
-                        definitions.set(item.name, {
-                            name: item.name,
-                            formel: item.system.formel,
-                            script: item.system.script,
-                            finalscript: item.system.finalscript,
-                            text: item.system.text,
-                        })
-                    }
-                }
-            }
-        } catch (error) {
-            console.error('Error loading abgeleitete werte definitions:', error)
-        }
-
-        return definitions
+    _getAbgeleiteteWerteDefinitions() {
+        return abgeleiteteWerteCache
     }
 
     async _calculateKampf(actor) {
@@ -977,5 +947,59 @@ export class IlarisActor extends Actor {
             actor.freietalente = freietalente
             actor.uebernatuerlich.fertigkeiten = freie_uebernatuerliche_fertigkeiten
         }
+    }
+}
+
+/**
+ * Preload custom abgeleitete werte definitions from compendiums into global cache
+ * Should be called during system initialization (ready hook)
+ * @returns {Promise<number>} Number of definitions loaded
+ */
+export async function preloadAbgeleiteteWerteDefinitions() {
+    console.log('Ilaris | Preloading abgeleitete werte definitions...')
+
+    abgeleiteteWerteCache.clear()
+
+    try {
+        // Get selected packs from settings
+        const selectedPacks = JSON.parse(
+            game.settings.get('Ilaris', 'abgeleiteteWertePacks') || '[]',
+        )
+
+        // If no packs selected, return empty cache (use default calculations)
+        if (!selectedPacks || selectedPacks.length === 0) {
+            console.log(
+                'Ilaris | No abgeleitete werte packs configured, using default calculations',
+            )
+            return 0
+        }
+
+        // Load items from selected packs
+        for (const packId of selectedPacks) {
+            const pack = game.packs.get(packId)
+            if (!pack) continue
+
+            const items = await pack.getDocuments()
+            for (const item of items) {
+                if (item.type === 'abgeleiteter-wert') {
+                    // Store by item name (e.g., "WS", "INI", "MR", "GS", "SchiP")
+                    abgeleiteteWerteCache.set(item.name, {
+                        name: item.name,
+                        formel: item.system.formel,
+                        script: item.system.script,
+                        finalscript: item.system.finalscript,
+                        text: item.system.text,
+                    })
+                }
+            }
+        }
+
+        console.log(
+            `Ilaris | Preloaded ${abgeleiteteWerteCache.size} abgeleitete werte definitions`,
+        )
+        return abgeleiteteWerteCache.size
+    } catch (error) {
+        console.error('Ilaris | Error loading abgeleitete werte definitions:', error)
+        return 0
     }
 }
