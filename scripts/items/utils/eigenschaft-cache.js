@@ -29,8 +29,32 @@ function registerGlobalHooks() {
         onItemChange(item, 'delete')
     })
 
+    // Listen for waffeneigenschaften pack changes
+    Hooks.on('ilarisWaffeneigenschaftenPacksChanged', () => {
+        globalCache.clear()
+        globalLoaded = false
+        console.log('Ilaris | EigenschaftCache: Cache cleared due to pack configuration change')
+    })
+
     hooksRegistered = true
     console.log('Ilaris | EigenschaftCache global hooks registered')
+}
+
+/**
+ * Get the configured waffeneigenschaften packs from settings
+ * @returns {string[]} Array of pack IDs
+ */
+function getConfiguredPacks() {
+    try {
+        const packsJson = game.settings.get('Ilaris', 'waffeneigenschaftenPacks')
+        return JSON.parse(packsJson)
+    } catch (error) {
+        console.warn(
+            'Ilaris | EigenschaftCache: Failed to parse waffeneigenschaftenPacks setting',
+            error,
+        )
+        return []
+    }
 }
 
 /**
@@ -104,8 +128,10 @@ export class EigenschaftCache {
      */
     isLoaded(eigenschaftNames) {
         const namesToCheck = eigenschaftNames || this._requiredNames
+        // Ensure namesToCheck is an array
+        if (!Array.isArray(namesToCheck)) return true
         // If no eigenschaften are required, consider it loaded
-        if (!namesToCheck || namesToCheck.length === 0) return true
+        if (namesToCheck.length === 0) return true
         return namesToCheck.every((name) => globalCache.has(name))
     }
 
@@ -216,10 +242,12 @@ export class EigenschaftCache {
         // Search world items
         let item = game.items.find((i) => i.type === 'waffeneigenschaft' && i.name === name)
 
-        // Search compendiums if not found
+        // Search configured compendiums if not found
         if (!item) {
-            for (const pack of game.packs) {
-                if (pack.metadata.type === 'Item') {
+            const selectedPacks = getConfiguredPacks()
+            for (const packId of selectedPacks) {
+                const pack = game.packs.get(packId)
+                if (pack && pack.metadata.type === 'Item') {
                     const items = await pack.getDocuments()
                     item = items.find((i) => i.type === 'waffeneigenschaft' && i.name === name)
                     if (item) break
@@ -263,9 +291,11 @@ export async function preloadAllEigenschaften() {
             globalCache.set(item.name, item)
         }
 
-        // Load from compendiums
-        for (const pack of game.packs) {
-            if (pack.metadata.type === 'Item') {
+        // Load from configured compendiums only
+        const selectedPacks = getConfiguredPacks()
+        for (const packId of selectedPacks) {
+            const pack = game.packs.get(packId)
+            if (pack && pack.metadata.type === 'Item') {
                 const items = await pack.getDocuments()
                 const eigenschaften = items.filter((i) => i.type === 'waffeneigenschaft')
                 for (const item of eigenschaften) {
@@ -277,7 +307,9 @@ export async function preloadAllEigenschaften() {
         }
 
         globalLoaded = true
-        console.log(`Ilaris | EigenschaftCache: Preloaded ${globalCache.size} waffeneigenschaften`)
+        console.log(
+            `Ilaris | EigenschaftCache: Preloaded ${globalCache.size} waffeneigenschaften from ${selectedPacks.length} configured packs`,
+        )
         return globalCache.size
     } finally {
         globalLoading = false
