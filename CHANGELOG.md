@@ -2,6 +2,10 @@
 
 ## v12
 
+### v12.2.7
+
+-   Fix: Ruhige Hand Bonus für Zielen nicht eingerechnet
+
 ### v12.2.6
 
 -   Fix: Attribute roll dialog now correctly reads modifier and high quality fields

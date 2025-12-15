@@ -60,7 +60,9 @@ export function processModification(
     // Special case for "Zielen" with "Ruhige Hand"
     let isZielenMitRuhigeHand = false
     if (manoeverName === 'Zielen' && rollValues.context) {
-        const ruhigeHand = rollValues.context.item?.system?.manoever?.fm_zlen?.ruhige_hand
+        const ruhigeHand = rollValues.context.actor?.vorteil?.kampf?.find(
+            (vorteil) => vorteil.name === 'Ruhige Hand',
+        )
         if (ruhigeHand && modification.type === 'ATTACK') {
             value = value * 2 // Double the bonus with Ruhige Hand
             isZielenMitRuhigeHand = true
