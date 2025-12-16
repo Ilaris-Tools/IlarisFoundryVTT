@@ -2,6 +2,18 @@ import { label } from './config/label.js'
 
 export const ILARIS = {}
 
+/**
+ * Maneuver gruppe constants
+ */
+export const MANOEVER_GRUPPE = {
+    NAHKAMPF: 0,
+    FERNKAMPF: 1,
+    ZAUBER: 2,
+    LITURGIE: 3,
+    ANRUFUNG: 4,
+    VERTEIDIGUNG: 13,
+}
+
 let stat_desc = {
     ws: {
         name: 'Wundschwelle',
@@ -330,7 +342,8 @@ let manoever = {
         1: 'Fernkampf',
         2: 'Magie',
         3: 'Karma',
-        4: 'Nahkampf Verteidigung',
+        13: 'Nahkampf Verteidigung',
+        6: 'Anrufung',
     },
     selector_type: {
         CHECKBOX: 'Checkbox',

@@ -844,6 +844,18 @@ hr {
     padding-left: 4px;
 }
 
+.rule-button {
+  border: 1px solid #000;
+  border-radius: 3px;
+  padding: 4px 8px;
+  width: calc(100% - 10px);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+}
+
 /* Tooltip styling for maneuver descriptions */
 #tooltip {
     text-align: left !important;

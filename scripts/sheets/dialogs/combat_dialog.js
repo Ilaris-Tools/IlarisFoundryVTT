@@ -18,7 +18,6 @@ export class CombatDialog extends Dialog {
 
         this.speaker = ChatMessage.getSpeaker({ actor: this.actor })
         this.rollmode = game.settings.get('core', 'rollMode')
-        this.item.system.manoever.rllm.selected = game.settings.get('core', 'rollMode')
         this.fumble_val = 1
     }
 
@@ -100,6 +99,12 @@ export class CombatDialog extends Dialog {
             this._manoeversSet = true
             this._manoeversPromise = null
         }
+
+        // Set rollmode after manoevers are loaded (for weapons where it wasn't set in constructor)
+        if (this.item.system.manoever?.rllm && !this.item.system.manoever.rllm.selected) {
+            this.item.system.manoever.rllm.selected = this.rollmode
+        }
+
         // damit wird das template gefüttert
         return {
             distance_choice: CONFIG.ILARIS.distance_choice,
