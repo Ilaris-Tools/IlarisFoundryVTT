@@ -1,3 +1,7 @@
+import { ManeuverPacksSettings } from './ManeuverPacksSettings.js'
+import { VorteilePacksSettings } from './VorteilePacksSettings.js'
+import { WaffeneigenschaftenPacksSettings } from './WaffeneigenschaftenPacksSettings.js'
+
 import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
@@ -47,6 +51,20 @@ export const registerIlarisGameSettings = () => {
             onChange: (value) => {
                 // Notify that vorteile packs have changed
                 Hooks.callAll('ilarisVorteilePacksChanged', JSON.parse(value))
+            },
+        },
+        {
+            // Register waffeneigenschaften packs setting
+            settingsName: IlarisGameSettingNames.waffeneigenschaftenPacks,
+            name: 'Waffeneigenschaften Kompendien',
+            hint: 'Hier kannst du die Kompendien auswählen, die Waffeneigenschaften enthalten.',
+            scope: 'world',
+            config: false, // Hide from settings menu since we use custom menu
+            type: String,
+            default: '["Ilaris.waffeneigenschaften"]', // Default to Ilaris.waffeneigenschaften pack
+            onChange: (value) => {
+                // Notify that waffeneigenschaften packs have changed
+                Hooks.callAll('ilarisWaffeneigenschaftenPacksChanged', JSON.parse(value))
             },
         },
         {
@@ -154,6 +172,31 @@ export const registerIlarisGameSettings = () => {
             requiresReload: setting.requiresReload,
         })
     })
+
+    // the heading for Automatisierung gets added via hooks.js
+    ;[
+        {
+            // Register use scene environment setting
+            settingsName: IlarisAutomatisierungSettingNames.useSceneEnvironment,
+            name: 'Scene-Umgebungseinstellungen verwenden',
+            hint: 'Wenn aktiviert, werden Licht und Wetter aus den Scene-Einstellungen automatisch in Fernkampf-Dialogen vorausgewählt.',
+            config: true,
+            type: new foundry.data.fields.BooleanField(),
+            scope: 'world',
+            default: true,
+        },
+    ].forEach((setting) => {
+        game.settings.register(ConfigureGameSettingsCategories.Ilaris, setting.settingsName, {
+            name: setting.name,
+            hint: setting.hint,
+            config: setting.config,
+            type: setting.type,
+            scope: setting.scope,
+            default: setting.default,
+            onChange: setting.onChange,
+            requiresReload: setting.requiresReload,
+        })
+    })
     ;[
         {
             // Register the settings menu for maneuvers
@@ -165,15 +208,24 @@ export const registerIlarisGameSettings = () => {
             type: ManeuverPacksSettings,
             restricted: true,
         },
-        // {
-        //     settingsName: IlarisGameSettingsMenuNames.vorteilePacksMenu,
-        //     name: 'Vorteile Kompendien',
-        //     label: 'Vorteile Kompendien Konfigurieren',
-        //     hint: 'Hier kannst du die Kompendien auswählen, die Vorteile enthalten.',
-        //     icon: 'fas fa-book',
-        //     type: VorteilePacksSettings,
-        //     restricted: true,
-        // },
+        {
+            settingsName: IlarisGameSettingsMenuNames.vorteilePacksMenu,
+            name: 'Vorteile Kompendien',
+            label: 'Vorteile Kompendien Konfigurieren',
+            hint: 'Hier kannst du die Kompendien auswählen, die Vorteile enthalten.',
+            icon: 'fas fa-book',
+            type: VorteilePacksSettings,
+            restricted: true,
+        },
+        {
+            settingsName: IlarisGameSettingsMenuNames.waffeneigenschaftenPacksMenu,
+            name: 'Waffeneigenschaften Kompendien',
+            label: 'Waffeneigenschaften Kompendien Konfigurieren',
+            hint: 'Hier kannst du die Kompendien auswählen, die Waffeneigenschaften enthalten.',
+            icon: 'fas fa-book',
+            type: WaffeneigenschaftenPacksSettings,
+            restricted: true,
+        },
     ].forEach((setting) => {
         game.settings.registerMenu(ConfigureGameSettingsCategories.Ilaris, setting.settingsName, {
             name: setting.name,

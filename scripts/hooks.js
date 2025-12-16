@@ -2,6 +2,8 @@ import { ILARIS } from './config.js'
 import { IlarisActorProxy } from './actors/proxy.js'
 import { IlarisItemProxy } from './items/proxy.js'
 import { initializeHandlebars } from './common/handlebars.js'
+import { preloadAllEigenschaften } from './items/utils/eigenschaft-cache.js'
+import { runMigrationIfNeeded } from './migrations/migrate-waffen-eigenschaften.js'
 // import { IlarisActorSheet } from "./sheets/actor.js";
 import { HeldenSheet } from './sheets/helden.js'
 import { KreaturSheet } from './sheets/kreatur.js'
@@ -19,6 +21,7 @@ import { VorteilSheet } from './sheets/items/vorteil.js'
 import { ManoeverSheet } from './sheets/items/manoever.js'
 import { EigenheitSheet } from './sheets/items/eigenheit.js'
 import { EigenschaftSheet } from './sheets/items/eigenschaft.js'
+import { WaffeneigenschaftSheet } from './sheets/items/waffeneigenschaft.js'
 import { InfoSheet } from './sheets/items/info.js'
 import { AngriffSheet } from './sheets/items/angriff.js'
 import { FreiesTalentSheet } from './sheets/items/freies_talent.js'
@@ -82,10 +85,24 @@ Hooks.once('init', () => {
     Items.registerSheet('Ilaris', ManoeverSheet, { types: ['manoever'], makeDefault: true })
     Items.registerSheet('Ilaris', EigenheitSheet, { types: ['eigenheit'], makeDefault: true })
     Items.registerSheet('Ilaris', EigenschaftSheet, { types: ['eigenschaft'], makeDefault: true })
+    Items.registerSheet('Ilaris', WaffeneigenschaftSheet, {
+        types: ['waffeneigenschaft'],
+        makeDefault: true,
+    })
     Items.registerSheet('Ilaris', AngriffSheet, { types: ['angriff'], makeDefault: true })
     Items.registerSheet('Ilaris', InfoSheet, { types: ['info'], makeDefault: true })
     Items.registerSheet('Ilaris', FreiesTalentSheet, { types: ['freiestalent'], makeDefault: true })
     // Items.registerSheet("Ilaris", VorteilSheet, {types: ["allgemein_vorteil", "profan_vorteil", "kampf_vorteil", "kampfstil", "magie_vorteil", "magie_tradition", "karma_vorteil", "karma_tradition"], makeDefault: true});
+
+    // Register world schema version for migrations
+    game.settings.register('Ilaris', 'worldSchemaVersion', {
+        name: 'World Schema Version',
+        scope: 'world',
+        config: false,
+        type: String,
+        default: '0.0.0',
+    })
+
     initializeHandlebars()
     // game.sephrasto = new SephrastoImporter();
     CONFIG.ILARIS = ILARIS
@@ -532,10 +549,14 @@ Hooks.on('renderChatMessage', (message, html, data) => {
 let hexTokenShapesEnabled = false
 
 // Apply hexagonal token shapes when setting is enabled
-Hooks.on('ready', () => {
+Hooks.on('ready', async () => {
     registerDefenseButtonHook()
     applyHexTokenSetting()
     setupIlarisSocket()
+    // Preload all waffeneigenschaften into cache
+    await preloadAllEigenschaften()
+    // Run world migration if needed (GM only, once per world)
+    await runMigrationIfNeeded()
 })
 
 /**
