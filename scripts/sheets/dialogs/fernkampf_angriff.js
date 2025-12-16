@@ -13,7 +13,14 @@ export class FernkampfAngriffDialog extends CombatDialog {
             width: 900,
             height: 'auto',
         }
+
+        // Generate unique dialog ID to avoid conflicts when multiple dialogs are open
         super(actor, item, dialog, options)
+
+        // Get fumble threshold from computed combat mechanics (calculated by eigenschaft system)
+        if (this.item.system.computed?.combatMechanics?.fumbleThreshold) {
+            this.fumble_val = this.item.system.computed.combatMechanics.fumbleThreshold
+        }
 
         // Ranged combat has no specific additional properties beyond base
         this.aufbauendeManoeverAktivieren()
@@ -206,6 +213,14 @@ export class FernkampfAngriffDialog extends CombatDialog {
 
         summary += '</div></div>'
         return summary
+    }
+
+    eigenschaftenText() {
+        if (!this.item.system.eigenschaften || this.item.system.eigenschaften.length === 0) {
+            return
+        }
+        this.text_at += '\nEigenschaften: '
+        this.text_at += this.item.system.eigenschaften.join(', ')
     }
 
     async _angreifenKlick(html) {
