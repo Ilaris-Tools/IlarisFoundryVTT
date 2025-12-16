@@ -3,6 +3,7 @@ import {
     ConfigureGameSettingsCategories,
 } from './../settings/configure-game-settings.model.js'
 import { XmlCharacterImportDialogs } from './xml-character-import-dialogs.js'
+import { WeaponConverter } from './xml_rule_importer/converters/weapon-converter.js'
 
 /**
  * XML Character Importer for Ilaris System
@@ -11,6 +12,7 @@ import { XmlCharacterImportDialogs } from './xml-character-import-dialogs.js'
 export class XmlCharacterImporter {
     constructor() {
         this.xmlParser = new DOMParser()
+        this.weaponConverter = new WeaponConverter()
     }
 
     /**
@@ -232,25 +234,13 @@ export class XmlCharacterImporter {
             }
         })
 
-        // Extract weapons
+        // Extract weapons - store XML elements for later conversion
         const weaponNodes = xmlDoc.querySelectorAll('Objekte > Waffen > Waffe')
-        weaponNodes.forEach((weapon) => {
-            const name = weapon.getAttribute('name')
+        weaponNodes.forEach((weaponElement) => {
+            const name = weaponElement.getAttribute('name')
             if (name && name.trim()) {
-                const weaponData = {
-                    name,
-                    id: weapon.getAttribute('id'),
-                    wuerfel: parseInt(weapon.getAttribute('würfel')) || 0,
-                    wuerfelSeiten: parseInt(weapon.getAttribute('würfelSeiten')) || 6,
-                    plus: parseInt(weapon.getAttribute('plus')) || 0,
-                    eigenschaften: weapon.getAttribute('eigenschaften') || '',
-                    haerte: parseInt(weapon.getAttribute('härte')) || 0,
-                    rw: parseInt(weapon.getAttribute('rw')) || 0,
-                    kampfstil: weapon.getAttribute('kampfstil') || '',
-                    wm: parseInt(weapon.getAttribute('wm')) || 0,
-                    wmVt: parseInt(weapon.getAttribute('wmVt')) || 0,
-                }
-                characterData.weapons.push(weaponData)
+                // Store the element itself for conversion by WeaponConverter
+                characterData.weapons.push(weaponElement)
             }
         })
 
@@ -710,22 +700,14 @@ export class XmlCharacterImporter {
 
         // Process weapons (skip during sync operations to preserve existing inventory)
         if (!skipInventoryItems) {
-            for (const weapon of characterData.weapons) {
-                if (weapon.name) {
-                    // Skip empty weapons
-                    const foundWeapon = await this.findWeaponInCompendium(weapon.id)
-                    if (foundWeapon) {
-                        const weaponData = foundWeapon.toObject()
-                        if (markAsImported) {
-                            weaponData.flags = { ilaris: { xmlImported: true } }
-                        }
-                        itemsToCreate.push(weaponData)
-                    } else {
-                        console.warn(
-                            `Weapon not found in compendium: ${weapon.name} (ID: ${weapon.id})`,
-                        )
-                    }
+            for (const weaponElement of characterData.weapons) {
+                // Use WeaponConverter to convert XML element to Foundry item
+                const weaponData = this.weaponConverter.convertWaffe(weaponElement)
+
+                if (markAsImported) {
+                    weaponData.flags = { ilaris: { xmlImported: true } }
                 }
+                itemsToCreate.push(weaponData)
             }
         } else {
             console.debug('Skipping weapons during sync - preserving existing inventory')
@@ -835,62 +817,6 @@ export class XmlCharacterImporter {
         if (itemsToCreate.length > 0) {
             await actor.createEmbeddedDocuments('Item', itemsToCreate)
         }
-    }
-
-    /**
-     * Find a weapon in the compendiums by matching XML weapon ID with compendium item name
-     * @param {string} weaponId - Weapon ID from XML to match with compendium item name
-     * @returns {Promise<Item|null>} Found weapon or null
-     */
-    async findWeaponInCompendium(weaponId) {
-        if (!weaponId) {
-            return null
-        }
-
-        // Search through ALL compendium packs that have items (both system and world)
-        const compendiumsToSearch = []
-
-        // Get all compendium packs and filter for those that contain items
-        for (const pack of game.packs) {
-            try {
-                // Load the compendium index to check if it has items
-                await pack.getIndex()
-
-                // Only include packs that have items and are item-type packs
-                if (pack.index && pack.index.size > 0 && pack.documentName === 'Item') {
-                    compendiumsToSearch.push(pack)
-                }
-            } catch (error) {
-                console.warn(`Could not load compendium ${pack.metadata.id}:`, error)
-            }
-        }
-
-        for (const pack of compendiumsToSearch) {
-            try {
-                // Search for weapon items where the compendium item name matches the XML weapon ID
-                for (const indexEntry of pack.index) {
-                    // Check if this is a weapon type and if the name matches the weaponId
-                    if (
-                        (indexEntry.type === 'nahkampfwaffe' ||
-                            indexEntry.type === 'fernkampfwaffe') &&
-                        indexEntry.name === weaponId
-                    ) {
-                        const item = await pack.getDocument(indexEntry._id)
-                        if (item) {
-                            console.debug(
-                                `Found weapon with ID match: "${weaponId}" in compendium "${pack.metadata.label}" (${pack.metadata.id})`,
-                            )
-                            return item
-                        }
-                    }
-                }
-            } catch (error) {
-                console.warn(`Error searching compendium ${pack.metadata.id}:`, error)
-                continue
-            }
-        }
-
-        return null
     }
 
     /**
@@ -1044,13 +970,11 @@ export class XmlCharacterImporter {
             }
         }
 
-        for (const weapon of characterData.weapons) {
-            const found = await this.findWeaponInCompendium(weapon.id)
-            if (found) {
-                analysis.weapons.found.push(weapon.name)
-            } else {
-                analysis.weapons.missing.push(weapon.name)
-            }
+        for (const weaponElement of characterData.weapons) {
+            const weaponName = weaponElement.getAttribute('name')
+            // Weapons are now always created from XML using WeaponConverter
+            // No compendium lookup needed
+            analysis.weapons.found.push(weaponName)
         }
 
         // Analyze armors - armors are always created directly from XML, not looked up in compendium

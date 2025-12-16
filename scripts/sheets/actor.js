@@ -1,8 +1,4 @@
 import { wuerfelwurf } from '../common/wuerfel.js'
-import {
-    IlarisGameSettingNames,
-    ConfigureGameSettingsCategories,
-} from '../settings/configure-game-settings.model.js'
 import { ILARIS } from '../config.js'
 
 export class IlarisActorSheet extends ActorSheet {

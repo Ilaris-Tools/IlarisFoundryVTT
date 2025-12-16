@@ -3,7 +3,6 @@ import { WieldingProcessor } from './wielding-processor.js'
 import { TargetEffectProcessor } from './target-effect-processor.js'
 import { PassiveProcessor } from './passive-processor.js'
 import { ActorModifierProcessor } from './actor-modifier-processor.js'
-import { executeCustomScript } from '../utils/eigenschaft-utils.js'
 
 /**
  * Factory for creating eigenschaft processors

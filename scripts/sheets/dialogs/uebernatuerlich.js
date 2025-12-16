@@ -23,6 +23,8 @@ export class UebernatuerlichDialog extends CombatDialog {
         // Specific properties for supernatural abilities
         this.text_energy = ''
         this.is16OrHigher = false
+        // Initialize manoever structure if it doesn't exist yet
+        this.item.system.manoever = this.item.system.manoever || {}
         this.item.system.manoever.blutmagie = this.item.system.manoever.blutmagie || {}
         this.item.system.manoever.verbotene_pforten =
             this.item.system.manoever.verbotene_pforten || {}
