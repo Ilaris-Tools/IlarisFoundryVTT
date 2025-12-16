@@ -9,8 +9,16 @@ globalThis.Hooks = Hooks
 
 global.game = {
     items: [],
-    packs: [],
+    packs: new Map(),
     actors: [],
+    settings: {
+        get: jest.fn((namespace, key) => {
+            if (namespace === 'Ilaris' && key === 'waffeneigenschaftenPacks') {
+                return JSON.stringify(['Ilaris.waffeneigenschaften'])
+            }
+            return undefined
+        }),
+    },
 }
 
 const { EigenschaftCache, resetGlobalCache } = require('../eigenschaft-cache.js')
@@ -19,9 +27,15 @@ describe('EigenschaftCache', () => {
     let cache
     let mockEigenschaft1
     let mockEigenschaft2
+    let consoleLogSpy
+    let consoleWarnSpy
 
     beforeEach(() => {
         jest.clearAllMocks()
+
+        // Suppress console output during tests
+        consoleLogSpy = jest.spyOn(console, 'log').mockImplementation()
+        consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation()
 
         // Reset the global cache before each test
         resetGlobalCache()
@@ -42,8 +56,13 @@ describe('EigenschaftCache', () => {
 
         // Reset game items and packs
         game.items = []
-        game.packs = []
+        game.packs.clear()
         game.actors = []
+    })
+
+    afterEach(() => {
+        consoleLogSpy.mockRestore()
+        consoleWarnSpy.mockRestore()
     })
 
     describe('constructor', () => {
@@ -131,7 +150,7 @@ describe('EigenschaftCache', () => {
                 metadata: { type: 'Item' },
                 getDocuments: jest.fn().mockResolvedValue([mockEigenschaft1]),
             }
-            game.packs = [mockPack]
+            game.packs.set('Ilaris.waffeneigenschaften', mockPack)
 
             await cache.load(['Kopflastig'])
 
@@ -159,7 +178,7 @@ describe('EigenschaftCache', () => {
                 metadata: { type: 'Item' },
                 getDocuments: jest.fn().mockResolvedValue([compendiumItem]),
             }
-            game.packs = [mockPack]
+            game.packs.set('Ilaris.waffeneigenschaften', mockPack)
 
             await cache.load(['Kopflastig'])
 
@@ -212,7 +231,7 @@ describe('EigenschaftCache', () => {
                 metadata: { type: 'Item' },
                 getDocuments: jest.fn(),
             }
-            game.packs = [mockPack]
+            game.packs.set('Ilaris.waffeneigenschaften', mockPack)
 
             await cache.load(['Kopflastig'])
 
@@ -225,7 +244,7 @@ describe('EigenschaftCache', () => {
                 metadata: { type: 'Actor' },
                 getDocuments: jest.fn(),
             }
-            game.packs = [actorPack]
+            game.packs.set('Ilaris.actors', actorPack)
 
             await cache.load(['Kopflastig'])
 

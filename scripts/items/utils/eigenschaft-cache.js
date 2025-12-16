@@ -151,7 +151,12 @@ export class EigenschaftCache {
     async load(eigenschaftNames) {
         if (this._loading) return
 
-        this._requiredNames = eigenschaftNames || []
+        // Ensure eigenschaftNames is an array
+        if (!Array.isArray(eigenschaftNames)) {
+            eigenschaftNames = []
+        }
+
+        this._requiredNames = eigenschaftNames
 
         // Check if all are already cached
         if (this.isLoaded()) return

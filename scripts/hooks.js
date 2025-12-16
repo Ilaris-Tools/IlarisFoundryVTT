@@ -3,6 +3,7 @@ import { IlarisActorProxy } from './actors/proxy.js'
 import { IlarisItemProxy } from './items/proxy.js'
 import { initializeHandlebars } from './common/handlebars.js'
 import { preloadAllEigenschaften } from './items/utils/eigenschaft-cache.js'
+import { preloadAbgeleiteteWerteDefinitions } from './actors/actor.js'
 import { runMigrationIfNeeded } from './migrations/migrate-waffen-eigenschaften.js'
 // import { IlarisActorSheet } from "./sheets/actor.js";
 import { HeldenSheet } from './sheets/helden.js'
@@ -23,14 +24,17 @@ import { EigenheitSheet } from './sheets/items/eigenheit.js'
 import { EigenschaftSheet } from './sheets/items/eigenschaft.js'
 import { WaffeneigenschaftSheet } from './sheets/items/waffeneigenschaft.js'
 import { InfoSheet } from './sheets/items/info.js'
+import { AbgeleiteterWertSheet } from './sheets/items/abgeleiteter-wert.js'
 import { AngriffSheet } from './sheets/items/angriff.js'
 import { FreiesTalentSheet } from './sheets/items/freies_talent.js'
 import { registerIlarisGameSettings } from './settings/configure-game-settings.js'
 import {
     IlarisGameSettingNames,
+    IlarisAutomatisierungSettingNames,
     ConfigureGameSettingsCategories,
 } from './settings/configure-game-settings.model.js'
-import { XmlCharacterImporter } from './common/xml_character_importer.js'
+import { XmlCharacterImporter } from './importer/xml_character_importer.js'
+import { XMLRuleImporter } from './importer/xml_rule_importer/index.js'
 import { formatDiceFormula } from './common/utilities.js'
 
 // Import hooks
@@ -91,6 +95,10 @@ Hooks.once('init', () => {
     })
     Items.registerSheet('Ilaris', AngriffSheet, { types: ['angriff'], makeDefault: true })
     Items.registerSheet('Ilaris', InfoSheet, { types: ['info'], makeDefault: true })
+    Items.registerSheet('Ilaris', AbgeleiteterWertSheet, {
+        types: ['abgeleiteter-wert'],
+        makeDefault: true,
+    })
     Items.registerSheet('Ilaris', FreiesTalentSheet, { types: ['freiestalent'], makeDefault: true })
     // Items.registerSheet("Ilaris", VorteilSheet, {types: ["allgemein_vorteil", "profan_vorteil", "kampf_vorteil", "kampfstil", "magie_vorteil", "magie_tradition", "karma_vorteil", "karma_tradition"], makeDefault: true});
 
@@ -495,6 +503,32 @@ Hooks.on('renderActorDirectory', (app, html) => {
     })
 })
 
+// Add XML rule import button to the Compendium Directory
+Hooks.on('renderCompendiumDirectory', (app, html) => {
+    // Add XML import button to the compendium directory header (only if GM)
+    if (game.user.isGM) {
+        const header = html[0].querySelector('.directory-header')
+        if (header) {
+            // Create import button
+            const importButton = document.createElement('button')
+            importButton.className = 'import-xml-rules rule-button'
+            importButton.title = 'Import Rules from XML'
+            importButton.innerHTML = '<i class="fas fa-file-import"></i> Import Regeln XML'
+            importButton.addEventListener('click', () => XMLRuleImporter.showRuleImportDialog())
+
+            // Create update button
+            const updateButton = document.createElement('button')
+            updateButton.className = 'update-xml-rules rule-button'
+            updateButton.title = 'Update Rules from XML'
+            updateButton.innerHTML = '<i class="fas fa-sync-alt"></i> Update Regeln XML'
+            updateButton.addEventListener('click', () => XMLRuleImporter.showRuleUpdateDialog())
+
+            header.appendChild(importButton)
+            header.appendChild(updateButton)
+        }
+    }
+})
+
 // Combined hook for chat message rendering
 Hooks.on('renderChatMessage', (message, html, data) => {
     // Format dice formulas in chat messages
@@ -555,6 +589,8 @@ Hooks.on('ready', async () => {
     setupIlarisSocket()
     // Preload all waffeneigenschaften into cache
     await preloadAllEigenschaften()
+    // Preload abgeleitete werte definitions into cache
+    await preloadAbgeleiteteWerteDefinitions()
     // Run world migration if needed (GM only, once per world)
     await runMigrationIfNeeded()
 })
@@ -791,5 +827,69 @@ Hooks.on('renderSettingsConfig', (app, html) => {
         automationSetting.before(
             '<h3 class="setting-header" style="border-bottom: 1px solid var(--color-border-light-primary); padding: 0.5em 0; margin-top: 1em;">Automatisierung</h3>',
         )
+    }
+
+    // Find the first Kompendien setting (fertigkeitenPacksMenu)
+    const kompendienSetting = html
+        .find('[data-key="Ilaris.fertigkeitenPacksMenu"]')
+        .closest('.form-group')
+
+    if (kompendienSetting.length > 0) {
+        // Insert a heading before it
+        kompendienSetting.before(
+            '<h3 class="setting-header" style="border-bottom: 1px solid var(--color-border-light-primary); padding: 0.5em 0; margin-top: 1em;">Benutzte Kompendien</h3>',
+        )
+    }
+
+    // Find the first Kompendien setting (fertigkeitenPacksMenu)
+    const normalSetting = html
+        .find('[data-setting-id="Ilaris.weaponSpaceRequirement"]')
+        .closest('.form-group')
+
+    if (normalSetting.length > 0) {
+        // Insert a heading before it
+        normalSetting.before(
+            '<h3 class="setting-header" style="border-bottom: 1px solid var(--color-border-light-primary); padding: 0.5em 0; margin-top: 1em;">Andere Einstellungen</h3>',
+        )
+    }
+
+    // Replace the default ranged dodge talent text input with a dropdown
+    const dodgeTalentInput = html.find('[name="Ilaris.defaultRangedDodgeTalent"]')
+    if (dodgeTalentInput.length > 0) {
+        const currentValue = dodgeTalentInput.val()
+
+        // Get all talents from selected fertigkeiten compendiums
+        const fertigkeitenPacks = JSON.parse(
+            game.settings.get(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.fertigkeitenPacks,
+            ),
+        )
+
+        const talents = new Map()
+        for (const packId of fertigkeitenPacks) {
+            const pack = game.packs.get(packId)
+            if (!pack) continue
+
+            for (const indexEntry of pack.index) {
+                if (indexEntry.type === 'talent') {
+                    // Use UUID as key for uniqueness
+                    const uuid = `Compendium.${packId}.${indexEntry._id}`
+                    talents.set(uuid, indexEntry.name)
+                }
+            }
+        }
+
+        // Create dropdown
+        let selectHtml = '<select name="Ilaris.defaultRangedDodgeTalent">'
+        selectHtml += '<option value="">-- Kein Alternativ-Talent --</option>'
+
+        for (const [uuid, name] of talents) {
+            const selected = uuid === currentValue ? ' selected' : ''
+            selectHtml += `<option value="${uuid}"${selected}>${name}</option>`
+        }
+        selectHtml += '</select>'
+
+        dodgeTalentInput.replaceWith(selectHtml)
     }
 })

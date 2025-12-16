@@ -27,6 +27,7 @@ This repository is a Foundry VTT game system module to support the Ilaris rulese
 -   Always add comments to new functions or classes, especially when using Foundry-specific idioms.
 -   When writing roll formulas, use the Foundry Roll syntax and utilities.
 -   Use the most up-to-date version of the Foundry API (see https://foundryvtt.com/api/).
+-   if checking for null or undefined use value == null or value != null and not value === null && value === undefined or value !== null && value !== undefined
 
 ## Should Not
 

@@ -21,6 +21,13 @@ export class HeldenSheet extends IlarisActorSheet {
     }
 
     async getData() {
+        // Ensure actor data is fully calculated before rendering
+        try {
+            await this.actor._initializeActor()
+        } catch (error) {
+            console.error('Error in _initializeActor:', error)
+        }
+
         return {
             ...(await super.getData()),
             isWeaponSpaceRequirementActive: game.settings.get(

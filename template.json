@@ -216,7 +216,9 @@
       "waffeneigenschaft",
       "angriff",
       "info",
-      "freiestalent"
+      "freiestalent",
+      "waffeneigenschaft",
+      "abgeleiteter-wert"
     ],
     "templates": {
       "gesundheit": {
@@ -380,7 +382,7 @@
       "foundryScript": ""
     },
     "manoever": {
-      "voraussetzungen": [],
+      "voraussetzungen": "",
       "input": {
         "label": "Checkbox",
         "field": "CHECKBOX"
@@ -418,8 +420,14 @@
       "pw": "",
       "profan": true
     },
-    "waffeneigenschaft": {
+    "abgeleiteter-wert": {
       "name": "",
+      "formel": "",
+      "script": "",
+      "finalscript": "",
+      "text": ""
+    },
+    "waffeneigenschaft": {
       "sephrastoScript": "",
       "foundryScript": "",
       "text": "",
@@ -460,7 +468,6 @@
         }
       },
       "targetEffect": {
-        "name": "",
         "trigger": "on_hit",
         "resistCheck": {
           "type": "none",
