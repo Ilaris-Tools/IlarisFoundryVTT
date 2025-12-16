@@ -30,7 +30,7 @@ export class WaffeItem extends CombatItem {
 
         // Ensure eigenschaft items are loaded
         const eigenschaften = this.system.eigenschaften || []
-        if (Array.isArray(eigenschaften) && !this._eigenschaftCache.isLoaded(eigenschaften)) {
+        if (!this._eigenschaftCache.isLoaded(eigenschaften)) {
             // Wait for loading to complete
             console.log('Loading eigenschaften for weapon:', this.name)
             await this._eigenschaftCache.load(eigenschaften)
@@ -65,14 +65,14 @@ export class WaffeItem extends CombatItem {
         system.schaden = `${this.system.tp}`
         system.computed.modifiers.dmg.push(`TP: ${this.system.tp}`)
 
-        const pw = this.getPWFromActor(actor, this)
+        const pw = this.getPWFromActor(actor, this) || 0
         system.computed.at += pw
         system.computed.vt += pw
         system.computed.fk += pw
 
-        system.computed.at += system.mod_at
-        system.computed.vt += system.mod_vt
-        system.computed.fk += system.mod_fk
+        system.computed.at += system.mod_at || 0
+        system.computed.vt += system.mod_vt || 0
+        system.computed.fk += system.mod_fk || 0
         if (pw > 0) {
             system.computed.modifiers.at.push(`PW: +${pw}`)
             system.computed.modifiers.vt.push(`PW: +${pw}`)

@@ -36,13 +36,16 @@ export class AngriffDialog extends CombatDialog {
     }
 
     async getData() {
-        let data = super.getData()
+        let data = {
+            isHumanoid: this.isHumanoid,
+            lcht_choice: CONFIG.ILARIS.lcht_choice,
+            ...(await super.getData()),
+        }
         data.isDefenseMode = this.isDefenseMode
         data.attackingActor = this.attackingActor
         if (this.isDefenseMode && this.attackingActor) {
             this.selectedActors = [this.attackingActor]
         }
-        data.isHumanoid = this.isHumanoid
         return data
     }
 
@@ -580,6 +583,7 @@ export class AngriffDialog extends CombatDialog {
         manoever.rllm.selected = html.find(`#rollMode-${this.dialogId}`)[0]?.value || false // RollMode
 
         this.isHumanoid = html.find(`#isHumanoid-${this.dialogId}`)[0]?.checked || false // isHumanoid
+        manoever.lcht.selected = html.find(`#lcht-${this.dialogId}`)[0]?.value || '0' // Lichtverhältnisse
 
         super.manoeverAuswaehlen(html)
     }
@@ -600,6 +604,22 @@ export class AngriffDialog extends CombatDialog {
         let schaden = this.item.getTp()
         let damageType = 'NORMAL'
         let trueDamage = false
+
+        // Light conditions for melee (simpler penalties than ranged combat)
+        let licht = Number(manoever.lcht.selected)
+        if (licht == 1) {
+            // Dämmerung
+            mod_at -= 2
+            text_at = text_at.concat('Dämmerung: -2\n')
+        } else if (licht == 2) {
+            // Mondlicht
+            mod_at -= 4
+            text_at = text_at.concat('Mondlicht: -4\n')
+        } else if (licht == 3) {
+            // Sternenlicht
+            mod_at -= 8
+            text_at = text_at.concat('Sternenlicht: -8\n')
+        }
 
         // Collect all modifications from all maneuvers
         const allModifications = []

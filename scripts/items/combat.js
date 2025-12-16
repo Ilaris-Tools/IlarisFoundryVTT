@@ -266,6 +266,10 @@ export class CombatItem extends IlarisItem {
             ('angriff' === this.type && this.system.typ === 'Nah')
         ) {
             this.system.manoever = ILARIS.manoever_nahkampf
+
+            // Apply scene environment settings if available
+            this._applySceneEnvironment()
+
             this.manoever = []
             packItems.forEach((item) => {
                 if (
