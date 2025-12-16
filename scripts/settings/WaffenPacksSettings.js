@@ -28,7 +28,9 @@ export class WaffenPacksSettings extends FormApplication {
         for (const pack of game.packs) {
             if (pack.metadata.type === 'Item' && pack.index.size > 0) {
                 // Check if any item in the pack has type 'waffe'
-                const hasWaffe = pack.index.contents.some((item) => item.type === 'waffe')
+                const hasWaffe = pack.index.contents.some(
+                    (item) => item.type === 'fernkampfwaffe' || item.type === 'nahkampfwaffe',
+                )
                 if (hasWaffe) {
                     availablePacks.push({
                         id: pack.collection,
