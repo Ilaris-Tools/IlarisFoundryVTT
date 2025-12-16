@@ -27,10 +27,7 @@ export class ManoeverItem extends IlarisItem {
                 switch (type) {
                     case 'Waffeneigenschaft':
                         // Find the key where the value matches
-                        const eigenschaftKey = Object.entries(
-                            CONFIG.ILARIS.waffeneigenschaften,
-                        ).find(([key, val]) => val === value)?.[0]
-                        return eigenschaftKey ? item.system.eigenschaften[eigenschaftKey] : false
+                        return item.system.eigenschaften.includes(value)
                     case 'Vorteil':
                         return actor._hasVorteil(value, item)
                     default:

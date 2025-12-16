@@ -62,6 +62,7 @@
         "zauberspruche-und-rituale",
         "zaubertricks-advanced",
         "waffen",
+        "waffeneigenschaften",
         "gegenstande",
         "manover",
         "macro-tools"
@@ -131,6 +132,13 @@
       "type": "Item",
       "name": "waffen",
       "path": "./comp_packs/waffen",
+      "system": "Ilaris"
+    },
+    {
+      "label": "Waffeneigenschaften",
+      "type": "Item",
+      "name": "waffeneigenschaften",
+      "path": "./packs/waffeneigenschaften",
       "system": "Ilaris"
     },
     {
