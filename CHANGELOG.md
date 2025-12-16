@@ -8,6 +8,8 @@
 
 -   Im Szene-Config Menü gibt es jetzt eine kleine Sektion bei der man Wetter und Licht in einer Szene setzen kann.
 -   Der Fernkampfdialog übernimmt automatisch beim öffnen die eingestellten Parameter aus der Szene. (kann man in den World Settings ein und ausschalten)
+-   Waffeneigenschaften sind jetzt konfigurierbar und liegen jetzt als Liste auf den Waffen und nicht mehr als hardgecodetes Objekt. Damit können auch neue Waffeneigenschaften hinzugefügt werden.
+-   Zeigt alle Boni und Mali als Tooltip auf den jeweiligen Waffenwerten, die auf die Waffe wirken. (zb. Kampfstil, BE, WM der Waffe, etc)
 
 ### v12.2.6
 

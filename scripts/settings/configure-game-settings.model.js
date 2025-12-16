@@ -9,6 +9,7 @@ export const IlarisGameSettingNames = {
     weaponSpaceRequirement: 'weaponSpaceRequirement',
     manoeverPacks: 'manoeverPacks',
     vorteilePacks: 'vorteilePacks',
+    waffeneigenschaftenPacks: 'waffeneigenschaftenPacks',
     realFumbleCrits: 'realFumbleCrits',
     renameTriumphWithCrit: 'renameTriumphWithCrit',
     restrictEnergyCostSetting: 'restrictEnergyCostSetting',
@@ -26,4 +27,5 @@ export const IlarisAutomatisierungSettingNames = {
 export const IlarisGameSettingsMenuNames = {
     manoeverPacksMenu: 'manoeverPacksMenu',
     vorteilePacksMenu: 'vorteilePacksMenu',
+    waffeneigenschaftenPacksMenu: 'waffeneigenschaftenPacksMenu',
 }
