@@ -65,14 +65,14 @@ export class WaffeItem extends CombatItem {
         system.schaden = `${this.system.tp}`
         system.computed.modifiers.dmg.push(`TP: ${this.system.tp}`)
 
-        const pw = this.getPWFromActor(actor, this)
+        const pw = this.getPWFromActor(actor, this) || 0
         system.computed.at += pw
         system.computed.vt += pw
         system.computed.fk += pw
 
-        system.computed.at += system.mod_at
-        system.computed.vt += system.mod_vt
-        system.computed.fk += system.mod_fk
+        system.computed.at += system.mod_at || 0
+        system.computed.vt += system.mod_vt || 0
+        system.computed.fk += system.mod_fk || 0
         if (pw > 0) {
             system.computed.modifiers.at.push(`PW: +${pw}`)
             system.computed.modifiers.vt.push(`PW: +${pw}`)
@@ -371,12 +371,10 @@ export class WaffeItem extends CombatItem {
         let pwt = actorFertigkeit?.system.pwt || 0
         console.log('PW:', pw, 'PWT:', pwt)
         console.log('PW:', pw, 'PWT:', pwt, 'Talent gefunden:', actorTalent)
-        if (typeof pw !== 'undefined') {
-            if (actorTalent) {
-                return pwt
-            } else {
-                return pw
-            }
+        if (actorTalent && pwt !== undefined) {
+            return pwt
+        } else if (pw !== undefined) {
+            return pw
         }
 
         return 0
