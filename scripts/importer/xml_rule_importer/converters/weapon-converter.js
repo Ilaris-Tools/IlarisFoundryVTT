@@ -56,7 +56,7 @@ export class WeaponConverter extends BaseConverter {
             systemData.wm_at = wm
             // Check if wmVt is present and not null/undefined
             const wmVt = this.getAttribute(element, 'wmVt', null)
-            if (wmVt !== null && wmVt !== undefined && wmVt !== '') {
+            if (wmVt != null && wmVt !== '') {
                 systemData.wm_vt = parseInt(wmVt) || 0
             } else {
                 systemData.wm_vt = wm
@@ -78,7 +78,7 @@ export class WeaponConverter extends BaseConverter {
     determineWeaponType(element) {
         const lz = this.getAttribute(element, 'lz', null)
         // If lz is present and not null/undefined/empty, it's a fernkampfwaffe
-        return lz !== null && lz !== undefined && lz !== '' ? 'fernkampfwaffe' : 'nahkampfwaffe'
+        return lz != null && lz !== '' ? 'fernkampfwaffe' : 'nahkampfwaffe'
     }
 
     /**
