@@ -53,7 +53,7 @@ export class BaseConverter {
      */
     getAttribute(element, attrName, defaultValue = '') {
         const value = element.getAttribute(attrName)
-        return value !== null ? value : defaultValue
+        return value != null ? value : defaultValue
     }
 
     /**
