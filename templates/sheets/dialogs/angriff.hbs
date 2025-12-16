@@ -70,6 +70,14 @@
             <input type="checkbox" id="isHumanoid-{{dialogId}}" {{checked isHumanoid}} />
         </div>
         {{/if}}
+
+        <div class="flexrow">
+            <label>{{get_label "lcht"}}</label>
+            <select id="lcht-{{dialogId}}">
+                {{selectOptions lcht_choice selected=item.system.manoever.lcht.selected localize=true}}
+            </select>
+        </div>
+
         <hr>
         {{#if useTargetSelection}}
         <div class="flexrow" style="margin: 10px 0; justify-content: space-between; align-items: flex-start;">
