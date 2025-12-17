@@ -7,14 +7,19 @@ export const ConfigureGameSettingsCategories = {
 export const IlarisGameSettingNames = {
     acceptChangesV12_1: 'acceptChangesV12_1',
     weaponSpaceRequirement: 'weaponSpaceRequirement',
+    fertigkeitenPacks: 'fertigkeitenPacks',
+    waffenPacks: 'waffenPacks',
+    talentePacks: 'talentePacks',
     manoeverPacks: 'manoeverPacks',
     vorteilePacks: 'vorteilePacks',
     waffeneigenschaftenPacks: 'waffeneigenschaftenPacks',
+    abgeleiteteWertePacks: 'abgeleiteteWertePacks',
     realFumbleCrits: 'realFumbleCrits',
     renameTriumphWithCrit: 'renameTriumphWithCrit',
     restrictEnergyCostSetting: 'restrictEnergyCostSetting',
     hideSyncKampfstileButton: 'hideSyncKampfstileButton',
     hexTokenShapes: 'hexTokenShapes',
+    defaultRangedDodgeTalent: 'defaultRangedDodgeTalent',
     lastSeenBreakingChangesVersion: 'lastSeenBreakingChangesVersion',
 }
 
@@ -24,8 +29,13 @@ export const IlarisAutomatisierungSettingNames = {
     useTargetSelection: 'useTargetSelection',
 }
 
+// the heading for Kompendien gets added via hooks.js
 export const IlarisGameSettingsMenuNames = {
+    fertigkeitenPacksMenu: 'fertigkeitenPacksMenu',
+    waffenPacksMenu: 'waffenPacksMenu',
+    talentePacksMenu: 'talentePacksMenu',
     manoeverPacksMenu: 'manoeverPacksMenu',
     vorteilePacksMenu: 'vorteilePacksMenu',
     waffeneigenschaftenPacksMenu: 'waffeneigenschaftenPacksMenu',
+    abgeleiteteWertePacksMenu: 'abgeleiteteWertePacksMenu',
 }

@@ -2,6 +2,12 @@ import * as hardcoded from './hardcodedvorteile.js'
 import * as weaponUtils from './weapon-utils.js'
 
 /**
+ * Global cache for abgeleitete werte definitions
+ * @type {Map<string, object>}
+ */
+const abgeleiteteWerteCache = new Map()
+
+/**
  * Sort comparator function for sorting items by name
  * @param {Object} a - First item to compare
  * @param {Object} b - Second item to compare
@@ -448,19 +454,66 @@ export class IlarisActor extends Actor {
     _calculateAbgeleitete(actor) {
         console.log('Berechne abgeleitete Werte')
 
-        // Apply hardcoded modifications to base values (which may have been modified by effects)
+        // Get custom abgeleitete werte definitions from cache
+        const customDefinitions = this._getAbgeleiteteWerteDefinitions()
 
-        // Initiative: apply hardcoded modifications
-        let ini = actor.system.abgeleitete.ini || 0
+        // Helper function to execute custom script or use default calculation
+        const calculateValue = (valueName, defaultCalculation) => {
+            const customDef = customDefinitions.get(valueName)
+            if (customDef && customDef.script) {
+                try {
+                    // Create evaluation context with actor data and helper functions
+                    const getAttribut = (attr) => actor.system.attribute[attr]?.wert || 0
+                    const roundDown = Math.floor
+                    const getWS = () => actor.system.abgeleitete.ws || 0
+                    const getRS = () => {
+                        let rs = 0
+                        for (let ruestung of actor.ruestungen) {
+                            if (ruestung.system.aktiv) rs += ruestung.system.rs
+                        }
+                        return rs
+                    }
+
+                    // Evaluate the script
+                    const result = eval(customDef.script)
+                    console.log(
+                        `Using custom calculation for ${valueName}: ${customDef.script} = ${result}`,
+                    )
+                    return result
+                } catch (error) {
+                    console.error(
+                        `Error evaluating custom script for ${valueName}: ${error.message}`,
+                    )
+                    console.error(`Script was: ${customDef.script}`)
+                    return defaultCalculation()
+                }
+            }
+            return defaultCalculation()
+        }
+
+        // Calculate INI
+        let ini = calculateValue('INI', () => {
+            let val = actor.system.attribute.IN.wert
+            val = hardcoded.initiative(val, actor)
+            return val
+        })
         actor.system.abgeleitete.ini = ini
         actor.system.initiative = ini + 0.5
 
-        // Magic Resistance: apply hardcoded modifications
-        let mr = actor.system.abgeleitete.mr || 0
-        mr = hardcoded.magieresistenz(mr, actor)
+        // Calculate MR
+        let mr = calculateValue('MR', () => {
+            let val = 4 + Math.floor(actor.system.attribute.MU.wert / 4)
+            val = hardcoded.magieresistenz(val, actor)
+            return val
+        })
         actor.system.abgeleitete.mr = mr
 
-        // Calculate carried weight (this is dynamic, not a base value)
+        let traglast_intervall = actor.system.attribute.KK.wert
+        traglast_intervall = traglast_intervall >= 1 ? traglast_intervall : 1
+        actor.system.abgeleitete.traglast_intervall = traglast_intervall
+        let traglast = 2 * actor.system.attribute.KK.wert
+        traglast = traglast >= 1 ? traglast : 1
+        actor.system.abgeleitete.traglast = traglast
         let summeGewicht = 0
         for (let i of actor.inventar.mitfuehrend) {
             summeGewicht += i.system.gewicht
@@ -476,15 +529,23 @@ export class IlarisActor extends Actor {
         let dh = hardcoded.durchhalte(actor)
         actor.system.abgeleitete.dh = dh
 
-        // Geschwindigkeit: apply hardcoded modifications and BE reduction
-        let gs = actor.system.abgeleitete.gs || 0
-        gs -= actor.system.abgeleitete.be
-        gs = gs >= 1 ? gs : 1
+        // Calculate GS
+        let gs = calculateValue('GS', () => {
+            let val = 4 + Math.floor(actor.system.attribute.GE.wert / 4)
+            val = hardcoded.geschwindigkeit(val, actor)
+            val -= actor.system.abgeleitete.be
+            val = val >= 1 ? val : 1
+            return val
+        })
         actor.system.abgeleitete.gs = gs
 
-        // ASP: apply hardcoded modifications and add/subtract purchased/spent values
-        let asp = actor.system.abgeleitete.asp || 0
-        hardcoded.zauberer(actor)
+        // Calculate SchiP (Schicksalspunkte)
+        let schips = calculateValue('SchiP', () => {
+            return hardcoded.schips(actor)
+        })
+        actor.system.schips.schips = schips
+
+        let asp = hardcoded.zauberer(actor)
         actor.system.abgeleitete.zauberer = asp > 0 ? true : false
         asp += Number(actor.system.abgeleitete.asp_zugekauft) || 0
         asp -= Number(actor.system.abgeleitete.gasp) || 0
@@ -506,6 +567,15 @@ export class IlarisActor extends Actor {
             actor.system.abgeleitete.kap_stern !== undefined
                 ? Number(actor.system.abgeleitete.kap_stern)
                 : kap
+    }
+
+    /**
+     * Get custom abgeleitete werte definitions from cache
+     * @returns {Map<string, object>} Map of value names to their definitions
+     * @private
+     */
+    _getAbgeleiteteWerteDefinitions() {
+        return abgeleiteteWerteCache
     }
 
     async _calculateKampf(actor) {
@@ -922,5 +992,59 @@ export class IlarisActor extends Actor {
             actor.freietalente = freietalente
             actor.uebernatuerlich.fertigkeiten = freie_uebernatuerliche_fertigkeiten
         }
+    }
+}
+
+/**
+ * Preload custom abgeleitete werte definitions from compendiums into global cache
+ * Should be called during system initialization (ready hook)
+ * @returns {Promise<number>} Number of definitions loaded
+ */
+export async function preloadAbgeleiteteWerteDefinitions() {
+    console.log('Ilaris | Preloading abgeleitete werte definitions...')
+
+    abgeleiteteWerteCache.clear()
+
+    try {
+        // Get selected packs from settings
+        const selectedPacks = JSON.parse(
+            game.settings.get('Ilaris', 'abgeleiteteWertePacks') || '[]',
+        )
+
+        // If no packs selected, return empty cache (use default calculations)
+        if (!selectedPacks || selectedPacks.length === 0) {
+            console.log(
+                'Ilaris | No abgeleitete werte packs configured, using default calculations',
+            )
+            return 0
+        }
+
+        // Load items from selected packs
+        for (const packId of selectedPacks) {
+            const pack = game.packs.get(packId)
+            if (!pack) continue
+
+            const items = await pack.getDocuments()
+            for (const item of items) {
+                if (item.type === 'abgeleiteter-wert') {
+                    // Store by item name (e.g., "WS", "INI", "MR", "GS", "SchiP")
+                    abgeleiteteWerteCache.set(item.name, {
+                        name: item.name,
+                        formel: item.system.formel,
+                        script: item.system.script,
+                        finalscript: item.system.finalscript,
+                        text: item.system.text,
+                    })
+                }
+            }
+        }
+
+        console.log(
+            `Ilaris | Preloaded ${abgeleiteteWerteCache.size} abgeleitete werte definitions`,
+        )
+        return abgeleiteteWerteCache.size
+    } catch (error) {
+        console.error('Ilaris | Error loading abgeleitete werte definitions:', error)
+        return 0
     }
 }

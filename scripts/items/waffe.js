@@ -144,8 +144,8 @@ export class WaffeItem extends CombatItem {
             system.computed.vt -= 4
             system.computed.fk -= 4
 
-            system.computed.modifiers.at.push('Nebenwaffe: -4 AT/FK')
-            system.computed.modifiers.vt.push('Nebenwaffe: -4 VT')
+            system.computed.modifiers.at.push('Nebenwaffe: -4')
+            system.computed.modifiers.vt.push('Nebenwaffe: -4')
             system.computed._nebenwaffeMalusApplied = true
         }
     }
@@ -371,10 +371,12 @@ export class WaffeItem extends CombatItem {
         let pwt = actorFertigkeit?.system.pwt || 0
         console.log('PW:', pw, 'PWT:', pwt)
         console.log('PW:', pw, 'PWT:', pwt, 'Talent gefunden:', actorTalent)
-        if (actorTalent && pwt !== undefined) {
-            return pwt
-        } else if (pw !== undefined) {
-            return pw
+        if (typeof pw !== 'undefined') {
+            if (actorTalent) {
+                return pwt
+            } else {
+                return pw
+            }
         }
 
         return 0

@@ -547,7 +547,6 @@ Router method that delegates to specific processors based on kategorie.
 -   `_checkCondition()`: Evaluates condition objects (attribute checks, custom scripts)
 -   `_compareValues()`: Comparison operators (<, >, ==, etc.)
 -   `_evaluateFormula()`: Parses formulas with @actor references
--   `_executeCustomScript()`: Runs custom JavaScript (escape hatch)
 
 #### Caching System
 
