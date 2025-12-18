@@ -1,5 +1,7 @@
 # Anpassungen
 
+> **💡 Tipp**: Es gibt eine geführte Tour zu den Welteinstellungen! Du findest sie im Foundry VTT Tour-Manager (Fragezeichen-Symbol in der rechten Seitenleiste oder über Einstellungen → Tour-Manager).
+
 ## Welteneinstellungen
 
 Einige Welteinstellungen können nur von der SL gesetzt werden und tauchen im Einstellungsdialog
