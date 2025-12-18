@@ -41,9 +41,7 @@
     "styles/dialogs/changelog-notification.css",
     "styles/chat/defense-prompt.css"
   ],
-  "tours": [
-    "tours/welteinstellungen-und-systemoptionen.json"
-  ],
+  "tours": ["tours/welteinstellungen-und-systemoptionen.json"],
   "packFolders": [
     {
       "name": "Charaktere",
