@@ -112,6 +112,9 @@
                 {{#each actor.vorteil.geweihtentradition as |vorteil|}}
                     <a class="item-edit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
                 {{/each}}
+                {{#each actor.vorteil.tiergeist as |vorteil|}}
+                    <a class="item-edit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
+                {{/each}}
         </div>
 
         {{#if actor.system.attribute}}
@@ -125,7 +128,7 @@
                 >
                         <b >{{key}}</b>
                         <input name="system.attribute.{{key}}.pw" type="text" value="{{attribut.pw}}" data-dtype="Number" style="width: 30px;">
-                        <a class="rollable icon-small" data-rolltype="attribut_diag" data-attribut="{{key}}">
+                        <a class="rollable icon-small" data-rolltype="fertigkeit_diag" data-probetype="attribut" data-attribut="{{key}}">
                             <i class="fas fa-dice-d20"></i>
                         </a>
                 </div>
@@ -249,8 +252,9 @@
                 > 
                     <a
                         class="rollable icon-small"
-                        data-rolltype="simpleprobe_diag"
-                        data-name="{{freiestalent.name}}"
+                        data-rolltype="fertigkeit_diag"
+                        data-probetype="simple"
+                        data-fertigkeit="{{freiestalent.name}}"
                         data-pw="{{freiestalent.system.pw}}"
                         ><i class="fas fa-dice-d20"></i
                     ></a>
@@ -329,8 +333,9 @@
                 >  
                     <a
                         class="rollable icon-small"
-                        data-rolltype="simpleprobe_diag"
-                        data-name="{{freiestalent.name}}"
+                        data-rolltype="fertigkeit_diag"
+                        data-probetype="simple"
+                        data-fertigkeit="{{freiestalent.name}}"
                         data-pw="{{freiestalent.system.pw}}"
                         ><i class="fas fa-dice-d20"></i
                     ></a>

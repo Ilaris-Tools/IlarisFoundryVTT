@@ -3,7 +3,7 @@ import { signed } from '../../common/wuerfel/chatutilities.js'
 import { handleModifications } from './shared_dialog_helpers.js'
 import { CombatDialog } from './combat_dialog.js'
 import * as hardcoded from '../../actors/hardcodedvorteile.js'
-import { sanitizeEnergyCost, isNumericCost } from '../../common/utilities.js'
+import { sanitizeEnergyCost, isNumericCost, formatDiceFormula } from '../../common/utilities.js'
 import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
@@ -18,59 +18,28 @@ export class UebernatuerlichDialog extends CombatDialog {
             width: 900,
             height: 'auto',
         }
-        super(dialog, options)
-        // this can be probendialog (more abstract)
-        this.text_at = ''
-        this.text_dm = ''
+        super(actor, item, dialog, options)
+
+        // Specific properties for supernatural abilities
         this.text_energy = ''
         this.is16OrHigher = false
-        this.item = item
-        this.actor = actor
-        console.log('actor', this.actor)
-        this.speaker = ChatMessage.getSpeaker({ actor: this.actor })
-        this.rollmode = game.settings.get('core', 'rollMode') // public, private....
-        this.item.system.manoever.rllm.selected = game.settings.get('core', 'rollMode') // TODO: either manoever or dialog property.
+        // Initialize manoever structure if it doesn't exist yet
+        this.item.system.manoever = this.item.system.manoever || {}
         this.item.system.manoever.blutmagie = this.item.system.manoever.blutmagie || {}
         this.item.system.manoever.verbotene_pforten =
             this.item.system.manoever.verbotene_pforten || {}
         this.item.system.manoever.set_energy_cost = this.item.system.manoever.set_energy_cost || {}
         this.calculatedWounds = 0
-        this.fumble_val = 1
+
+        console.log('actor', this.actor)
         this.aufbauendeManoeverAktivieren()
     }
 
     activateListeners(html) {
         super.activateListeners(html)
 
-        // Store modifier element reference for performance
-        this._modifierElement = html.find('#modifier-summary')
-
-        // Store a reference to prevent multiple updates
-        this._updateTimeout = null
-
-        if (this._modifierElement.length === 0) {
-            console.warn('MAGIE MODIFIER DISPLAY: Element nicht im Template gefunden')
-            return
-        }
-
-        // Add listeners for real-time modifier updates with debouncing
-        html.find('input, select').on('change input', () => {
-            // Clear previous timeout
-            if (this._updateTimeout) {
-                clearTimeout(this._updateTimeout)
-            }
-
-            // Set new timeout to debounce rapid changes
-            this._updateTimeout = setTimeout(() => {
-                this.updateModifierDisplay(html)
-            }, 300)
-        })
-
-        // Add summary click listeners
-        this.addSummaryClickListeners(html)
-
-        // Initial display update
-        setTimeout(() => this.updateModifierDisplay(html), 500)
+        // Setup modifier display with debounced listeners
+        this.setupModifierDisplay(html)
     }
 
     getSummaryClickActions(html) {
@@ -135,7 +104,9 @@ export class UebernatuerlichDialog extends CombatDialog {
         const maneuverMod = this.mod_at || 0
         const totalMod = maneuverMod + statusMods + nahkampfMods
         const finalPW = basePW + totalMod
-        const finalFormula = finalPW >= 0 ? `${diceFormula}+${finalPW}` : `${diceFormula}${finalPW}`
+        const formattedDice = formatDiceFormula(diceFormula)
+        const finalFormula =
+            finalPW >= 0 ? `${formattedDice}+${finalPW}` : `${formattedDice}${finalPW}`
 
         const itemType = this.item.type === 'zauber' ? 'Zauber' : 'Liturgie'
         const icon = this.item.type === 'zauber' ? '🔮' : '✨'
@@ -401,7 +372,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         await ChatMessage.create({
             speaker: this.speaker,
             content: html_roll,
-            type: 5, // CONST.CHAT_MESSAGE_TYPES.ROLL
+            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
             whisper:
                 this.rollmode === 'gmroll'
                     ? ChatMessage.getWhisperRecipients('GM')
@@ -483,7 +454,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         await ChatMessage.create({
             speaker: this.speaker,
             content: html_roll,
-            type: 5, // CONST.CHAT_MESSAGE_TYPES.ROLL
+            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
             whisper:
                 this.rollmode === 'gmroll'
                     ? ChatMessage.getWhisperRecipients('GM')

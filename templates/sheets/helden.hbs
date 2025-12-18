@@ -23,7 +23,7 @@
     </div>
     <div class="attribute-grid">
       {{#each (sortAlphabetically actor.system.attribute) as |attributPair|}}
-      <div class="attribute-wrapper rollable onhover" data-rolltype="attribut" data-attribut="{{attributPair.[0]}}" title="{{attributPair.[0]}}">
+      <div class="attribute-wrapper rollable onhover" data-rolltype="fertigkeit_diag" data-probetype="attribut" data-attribut="{{attributPair.[0]}}" title="{{attributPair.[0]}}">
         <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/{{attributPair.[0]}}.webp" />
         <label class="attribute-number">
           {{attributPair.[1].pw}}
@@ -139,7 +139,7 @@
     </div>
     {{#unless (gameSetting "hideSyncKampfstileButton")}}
     <div style="margin-top: 0.5em; text-align: center;">
-      <a class="sync-items clickable" title="Synchronisiere alle Vorteile und Übernatürliche Talente mit ihren Kompendium-Gegenstücken. Du kannst den Button in den Gamesettings deaktivieren.">
+      <a class="sync-items clickable" title="Synchronisiere alle Vorteile, Übernatürliche Talente und Waffen mit ihren Kompendium-Gegenstücken. Du kannst den Button in den Gamesettings deaktivieren.">
         <i class="fas fa-sync-alt"></i> Charakter mit Kompendium synchronisieren
       </a>
     </div>

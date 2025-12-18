@@ -856,6 +856,25 @@ hr {
 .combat-draggable:hover {
     background-color: rgba(255, 255, 255, 0.05);
 }
+.rule-button {
+  border: 1px solid #000;
+  border-radius: 3px;
+  padding: 4px 8px;
+  width: calc(100% - 10px);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+/* Tooltip styling for maneuver descriptions */
+#tooltip {
+    text-align: left !important;
+    white-space: pre-line;
+    max-width: 400px;
+    line-height: 1.4;
+}
 
 /* Hexagonal token shapes for hex grids */
 .ilaris-hex-tokens-enabled .token-image,

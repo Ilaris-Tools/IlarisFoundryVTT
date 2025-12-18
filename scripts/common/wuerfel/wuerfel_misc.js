@@ -8,18 +8,16 @@ export function get_statuseffect_by_id(actor, statusId) {
     return false
 }
 
-export async function roll_crit_message(
-    formula,
-    label,
-    text,
-    speaker,
-    rollmode,
-    crit_eval = true,
-    fumble_val = 1,
-    success_val,
-) {
-    const roll = new Roll(formula)
-    const result = await roll.evaluate()
+/**
+ * Evaluates a roll for critical successes and fumbles based on Ilaris rules.
+ * @param {Roll} roll - The evaluated Foundry Roll object
+ * @param {Object} result - The roll result object
+ * @param {number} fumble_val - The fumble threshold (default 1)
+ * @param {number} success_val - The target number for success (optional)
+ * @param {boolean} crit_eval - Whether to evaluate crits/fumbles
+ * @returns {Object} Object containing crit, fumble, isSuccess, and is16OrHigher flags
+ */
+function evaluateCriticalResults(roll, result, fumble_val, success_val, crit_eval) {
     let fumble = false
     let crit = false
     let isSuccess = false
@@ -67,6 +65,21 @@ export async function roll_crit_message(
         }
     }
 
+    return { crit, fumble, isSuccess, is16OrHigher }
+}
+
+/**
+ * Prepares the template path and data for rendering roll results.
+ * @param {string} label - The roll label/title
+ * @param {string} text - The roll description text
+ * @param {boolean} crit - Whether the roll was a critical success
+ * @param {boolean} fumble - Whether the roll was a fumble
+ * @param {boolean} isSuccess - Whether the roll succeeded
+ * @param {boolean} is16OrHigher - Whether the die result was 16 or higher
+ * @param {number} success_val - The target number for success (optional)
+ * @returns {Object} Object containing templatePath and templateData
+ */
+function prepareRollTemplate(label, text, crit, fumble, isSuccess, is16OrHigher, success_val) {
     let templatePath = 'systems/Ilaris/templates/chat/probenchat_profan.hbs'
     let templateData = {
         title: `${label}`,
@@ -89,6 +102,42 @@ export async function roll_crit_message(
         }
     }
 
+    return { templatePath, templateData }
+}
+
+export async function roll_crit_message(
+    formula,
+    label,
+    text,
+    speaker,
+    rollmode,
+    crit_eval = true,
+    fumble_val = 1,
+    success_val,
+) {
+    const roll = new Roll(formula)
+    const result = await roll.evaluate()
+
+    // Evaluate critical results using shared helper
+    const { crit, fumble, isSuccess, is16OrHigher } = evaluateCriticalResults(
+        roll,
+        result,
+        fumble_val,
+        success_val,
+        crit_eval,
+    )
+
+    // Prepare template data using shared helper
+    const { templatePath, templateData } = prepareRollTemplate(
+        label,
+        text,
+        crit,
+        fumble,
+        isSuccess,
+        is16OrHigher,
+        success_val,
+    )
+
     const html_roll = await renderTemplate(templatePath, templateData)
     let roll_msg = roll.toMessage(
         {
@@ -100,6 +149,67 @@ export async function roll_crit_message(
         },
     )
     return [isSuccess || crit, is16OrHigher]
+}
+
+/**
+ * Evaluates a roll with critical success/fumble detection and prepares template data.
+ * Unlike roll_crit_message, this function doesn't post the result to chat but returns
+ * all the data needed for the caller to handle the result.
+ * @param {string} formula - The dice roll formula (e.g., "1d20+5")
+ * @param {string} label - The roll label/title
+ * @param {string} text - The roll description text
+ * @param {number} success_val - The target number for success (optional)
+ * @param {number} fumble_val - The fumble threshold (default 1)
+ * @param {boolean} crit_eval - Whether to evaluate crits/fumbles (default true)
+ * @returns {Promise<Object>} Object containing:
+ *   - success: boolean - Whether the roll succeeded (including crits)
+ *   - is16OrHigher: boolean - Whether the die result was 16 or higher
+ *   - crit: boolean - Whether the roll was a critical success
+ *   - fumble: boolean - Whether the roll was a fumble
+ *   - roll: Roll - The Foundry Roll object
+ *   - templatePath: string - Path to the appropriate template
+ *   - templateData: Object - Data for rendering the template
+ */
+export async function evaluate_roll_with_crit(
+    formula,
+    label,
+    text,
+    success_val,
+    fumble_val = 1,
+    crit_eval = true,
+) {
+    const roll = new Roll(formula)
+    const result = await roll.evaluate()
+
+    // Evaluate critical results using shared helper
+    const { crit, fumble, isSuccess, is16OrHigher } = evaluateCriticalResults(
+        roll,
+        result,
+        fumble_val,
+        success_val,
+        crit_eval,
+    )
+
+    // Prepare template data using shared helper
+    const { templatePath, templateData } = prepareRollTemplate(
+        label,
+        text,
+        crit,
+        fumble,
+        isSuccess,
+        is16OrHigher,
+        success_val,
+    )
+
+    return {
+        success: isSuccess || crit,
+        is16OrHigher: is16OrHigher,
+        crit: crit,
+        fumble: fumble,
+        roll: roll,
+        templatePath: templatePath,
+        templateData: templateData,
+    }
 }
 
 export function calculate_diceschips(html, text, actor, dialogId = '') {

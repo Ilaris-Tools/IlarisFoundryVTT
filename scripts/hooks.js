@@ -2,6 +2,9 @@ import { ILARIS } from './config.js'
 import { IlarisActorProxy } from './actors/proxy.js'
 import { IlarisItemProxy } from './items/proxy.js'
 import { initializeHandlebars } from './common/handlebars.js'
+import { preloadAllEigenschaften } from './items/utils/eigenschaft-cache.js'
+import { preloadAbgeleiteteWerteDefinitions } from './actors/actor.js'
+import { runMigrationIfNeeded } from './migrations/migrate-waffen-eigenschaften.js'
 // import { IlarisActorSheet } from "./sheets/actor.js";
 import { HeldenSheet } from './sheets/helden.js'
 import { KreaturSheet } from './sheets/kreatur.js'
@@ -19,19 +22,26 @@ import { VorteilSheet } from './sheets/items/vorteil.js'
 import { ManoeverSheet } from './sheets/items/manoever.js'
 import { EigenheitSheet } from './sheets/items/eigenheit.js'
 import { EigenschaftSheet } from './sheets/items/eigenschaft.js'
+import { WaffeneigenschaftSheet } from './sheets/items/waffeneigenschaft.js'
 import { InfoSheet } from './sheets/items/info.js'
+import { AbgeleiteterWertSheet } from './sheets/items/abgeleiteter-wert.js'
 import { AngriffSheet } from './sheets/items/angriff.js'
 import { FreiesTalentSheet } from './sheets/items/freies_talent.js'
 import { registerIlarisGameSettings } from './settings/configure-game-settings.js'
 import {
     IlarisGameSettingNames,
+    IlarisAutomatisierungSettingNames,
     ConfigureGameSettingsCategories,
 } from './settings/configure-game-settings.model.js'
 import { XmlCharacterImporter } from './common/xml_character_importer.js'
 import { onHotbarDrop } from './common/hotbar.js'
+import { XmlCharacterImporter } from './importer/xml_character_importer.js'
+import { XMLRuleImporter } from './importer/xml_rule_importer/index.js'
+import { formatDiceFormula } from './common/utilities.js'
 
 // Import hooks
 import './hooks/changelog-notification.js'
+import { registerDefenseButtonHook } from './sheets/dialogs/defense_button_hook.js'
 
 // Status effect tint colors
 const STATUS_EFFECT_COLORS = {
@@ -81,10 +91,28 @@ Hooks.once('init', () => {
     Items.registerSheet('Ilaris', ManoeverSheet, { types: ['manoever'], makeDefault: true })
     Items.registerSheet('Ilaris', EigenheitSheet, { types: ['eigenheit'], makeDefault: true })
     Items.registerSheet('Ilaris', EigenschaftSheet, { types: ['eigenschaft'], makeDefault: true })
+    Items.registerSheet('Ilaris', WaffeneigenschaftSheet, {
+        types: ['waffeneigenschaft'],
+        makeDefault: true,
+    })
     Items.registerSheet('Ilaris', AngriffSheet, { types: ['angriff'], makeDefault: true })
     Items.registerSheet('Ilaris', InfoSheet, { types: ['info'], makeDefault: true })
+    Items.registerSheet('Ilaris', AbgeleiteterWertSheet, {
+        types: ['abgeleiteter-wert'],
+        makeDefault: true,
+    })
     Items.registerSheet('Ilaris', FreiesTalentSheet, { types: ['freiestalent'], makeDefault: true })
     // Items.registerSheet("Ilaris", VorteilSheet, {types: ["allgemein_vorteil", "profan_vorteil", "kampf_vorteil", "kampfstil", "magie_vorteil", "magie_tradition", "karma_vorteil", "karma_tradition"], makeDefault: true});
+
+    // Register world schema version for migrations
+    game.settings.register('Ilaris', 'worldSchemaVersion', {
+        name: 'World Schema Version',
+        scope: 'world',
+        config: false,
+        type: String,
+        default: '0.0.0',
+    })
+
     initializeHandlebars()
     // game.sephrasto = new SephrastoImporter();
     CONFIG.ILARIS = ILARIS
@@ -480,15 +508,137 @@ Hooks.on('renderActorDirectory', (app, html) => {
 // Register hotbar drop handler
 Hooks.on('hotbarDrop', (bar, data, slot) => {
     return onHotbarDrop(bar, data, slot)
+}
+// Add XML rule import button to the Compendium Directory
+Hooks.on('renderCompendiumDirectory', (app, html) => {
+    // Add XML import button to the compendium directory header (only if GM)
+    if (game.user.isGM) {
+        const header = html[0].querySelector('.directory-header')
+        if (header) {
+            // Create import button
+            const importButton = document.createElement('button')
+            importButton.className = 'import-xml-rules rule-button'
+            importButton.title = 'Import Rules from XML'
+            importButton.innerHTML = '<i class="fas fa-file-import"></i> Import Regeln XML'
+            importButton.addEventListener('click', () => XMLRuleImporter.showRuleImportDialog())
+
+            // Create update button
+            const updateButton = document.createElement('button')
+            updateButton.className = 'update-xml-rules rule-button'
+            updateButton.title = 'Update Rules from XML'
+            updateButton.innerHTML = '<i class="fas fa-sync-alt"></i> Update Regeln XML'
+            updateButton.addEventListener('click', () => XMLRuleImporter.showRuleUpdateDialog())
+
+            header.appendChild(importButton)
+            header.appendChild(updateButton)
+        }
+    }
+})
+
+// Combined hook for chat message rendering
+Hooks.on('renderChatMessage', (message, html, data) => {
+    // Format dice formulas in chat messages
+    const diceFormulaElements = html.find('.dice-formula')
+    diceFormulaElements.each((index, element) => {
+        const $element = $(element)
+        const originalFormula = $element.text().trim()
+
+        // Extract just the dice part (before any + or -)
+        const diceFormulaMatch = originalFormula.match(/^(\d+d\d+(?:dl\d+)?(?:dh\d+)?)/)
+        if (diceFormulaMatch) {
+            const diceFormula = diceFormulaMatch[1]
+            const formattedDice = formatDiceFormula(diceFormula)
+
+            // Replace the dice part with the formatted version, keep the rest
+            const remainder = originalFormula.substring(diceFormula.length)
+            $element.text(formattedDice + remainder)
+        }
+    })
+
+    // Handle defense prompt message visibility
+    const isDefensePrompt = message.flags?.Ilaris?.defensePrompt
+    if (isDefensePrompt) {
+        // Skip if defense has already been handled
+        if (html.hasClass('defense-handled')) {
+            return
+        }
+
+        // Check if the current user should see the content
+        const targetActorId = message.flags.Ilaris.targetActorId
+        const currentUserCharacterId = game.user.character?.id
+        const isTarget = currentUserCharacterId === targetActorId
+
+        // If the user is not the target, hide the content
+        if (!isTarget && !game.user.isGM) {
+            const contentDiv = html.find('.message-content')
+            if (contentDiv.length > 0) {
+                contentDiv.html(
+                    '<p style="font-style: italic; opacity: 0.6;">Deine Verteidigungsaufforderung an einen anderen Spieler</p>',
+                )
+            }
+        }
+
+        if (isTarget || game.user.isGM) {
+            // Highlight the message for the target player
+            html.addClass('ilaris-defense-prompt-highlight')
+        }
+    }
 })
 
 // Cache for hex token shapes setting
 let hexTokenShapesEnabled = false
 
 // Apply hexagonal token shapes when setting is enabled
-Hooks.on('ready', () => {
+Hooks.on('ready', async () => {
+    registerDefenseButtonHook()
     applyHexTokenSetting()
+    setupIlarisSocket()
+    // Preload all waffeneigenschaften into cache
+    await preloadAllEigenschaften()
+    // Preload abgeleitete werte definitions into cache
+    await preloadAbgeleiteteWerteDefinitions()
+    // Run world migration if needed (GM only, once per world)
+    await runMigrationIfNeeded()
 })
+
+/**
+ * Set up socket listeners for Ilaris system
+ * This allows players to request the GM to perform actions they don't have permission for
+ */
+function setupIlarisSocket() {
+    game.socket.on('system.Ilaris', async (data) => {
+        // Only GM should handle these requests
+        if (!game.user.isGM) return
+
+        switch (data.type) {
+            case 'applyDamage':
+                await handleApplyDamageRequest(data.data)
+                break
+            default:
+                console.warn(`Unknown Ilaris socket request type: ${data.type}`)
+        }
+    })
+}
+
+/**
+ * Handle a damage application request from a player
+ * Only called on GM's client
+ */
+async function handleApplyDamageRequest(data) {
+    const { targetActorId, damage, damageType, trueDamage, speaker } = data
+
+    const targetActor = game.actors.get(targetActorId)
+    if (!targetActor) {
+        console.error(`Target actor ${targetActorId} not found`)
+        return
+    }
+
+    // Import the helper function
+    const { _applyDamageDirectly } = await import('./sheets/dialogs/shared_dialog_helpers.js')
+
+    // Apply damage as GM
+    await _applyDamageDirectly(targetActor, damage, damageType, trueDamage, speaker)
+}
 
 // Update when setting changes
 Hooks.on('updateSetting', (setting) => {
@@ -683,5 +833,69 @@ Hooks.on('renderSettingsConfig', (app, html) => {
         automationSetting.before(
             '<h3 class="setting-header" style="border-bottom: 1px solid var(--color-border-light-primary); padding: 0.5em 0; margin-top: 1em;">Automatisierung</h3>',
         )
+    }
+
+    // Find the first Kompendien setting (fertigkeitenPacksMenu)
+    const kompendienSetting = html
+        .find('[data-key="Ilaris.fertigkeitenPacksMenu"]')
+        .closest('.form-group')
+
+    if (kompendienSetting.length > 0) {
+        // Insert a heading before it
+        kompendienSetting.before(
+            '<h3 class="setting-header" style="border-bottom: 1px solid var(--color-border-light-primary); padding: 0.5em 0; margin-top: 1em;">Benutzte Kompendien</h3>',
+        )
+    }
+
+    // Find the first Kompendien setting (fertigkeitenPacksMenu)
+    const normalSetting = html
+        .find('[data-setting-id="Ilaris.weaponSpaceRequirement"]')
+        .closest('.form-group')
+
+    if (normalSetting.length > 0) {
+        // Insert a heading before it
+        normalSetting.before(
+            '<h3 class="setting-header" style="border-bottom: 1px solid var(--color-border-light-primary); padding: 0.5em 0; margin-top: 1em;">Andere Einstellungen</h3>',
+        )
+    }
+
+    // Replace the default ranged dodge talent text input with a dropdown
+    const dodgeTalentInput = html.find('[name="Ilaris.defaultRangedDodgeTalent"]')
+    if (dodgeTalentInput.length > 0) {
+        const currentValue = dodgeTalentInput.val()
+
+        // Get all talents from selected fertigkeiten compendiums
+        const fertigkeitenPacks = JSON.parse(
+            game.settings.get(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.fertigkeitenPacks,
+            ),
+        )
+
+        const talents = new Map()
+        for (const packId of fertigkeitenPacks) {
+            const pack = game.packs.get(packId)
+            if (!pack) continue
+
+            for (const indexEntry of pack.index) {
+                if (indexEntry.type === 'talent') {
+                    // Use UUID as key for uniqueness
+                    const uuid = `Compendium.${packId}.${indexEntry._id}`
+                    talents.set(uuid, indexEntry.name)
+                }
+            }
+        }
+
+        // Create dropdown
+        let selectHtml = '<select name="Ilaris.defaultRangedDodgeTalent">'
+        selectHtml += '<option value="">-- Kein Alternativ-Talent --</option>'
+
+        for (const [uuid, name] of talents) {
+            const selected = uuid === currentValue ? ' selected' : ''
+            selectHtml += `<option value="${uuid}"${selected}>${name}</option>`
+        }
+        selectHtml += '</select>'
+
+        dodgeTalentInput.replaceWith(selectHtml)
     }
 })

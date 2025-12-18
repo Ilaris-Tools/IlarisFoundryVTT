@@ -1,3 +1,6 @@
+import { formatDiceFormula } from './utilities.js'
+import * as settings from './../settings/index.js'
+
 export const initializeHandlebars = () => {
     registerHandlebarsHelpers()
     preloadHandlebarsTemplates()
@@ -315,5 +318,70 @@ function registerHandlebarsHelpers() {
         return Object.entries(object).sort(([keyA], [keyB]) => {
             return keyA.localeCompare(keyB)
         })
+    })
+
+    /**
+     * Handlebars helper to check if an array includes a value
+     * @param {Array} array - The array to check
+     * @param {*} value - The value to look for
+     * @returns {boolean} True if the array includes the value
+     */
+    Handlebars.registerHelper('includes', function (array, value) {
+        if (!Array.isArray(array)) {
+            return false
+        }
+        return array.includes(value)
+    })
+
+    /**
+     * Handlebars helper to format Foundry dice notation into user-friendly German display
+     * @param {string} diceFormula - The Foundry dice formula (e.g., "3d20dl1dh1", "2d20dl1", "1d20")
+     * @returns {string} User-friendly German display (e.g., "3W20 (Median)", "2W20 (Schip)", "1W20")
+     *
+     * Conversion rules:
+     * - 3d20dl1dh1 → 3W20 (Median) - drop lowest and highest = median
+     * - 2d20dl1 → 2W20 (Schip) - drop lowest with 2 dice = schip
+     * - 3d20dl2 → 3W20 (Schip) - drop 2 lowest with 3 dice = schip
+     * - 4d20dl2dh1 → 4W20 (Median, Schip) - median + schip combined
+     * - 1d20 → 1W20 - simple single die
+     */
+    Handlebars.registerHelper('formatDiceFormula', function (diceFormula) {
+        return formatDiceFormula(diceFormula)
+    })
+
+    Handlebars.registerHelper('formatCritFumble', function (isCrit, isFumble) {
+        const highlightFumbleCrits = game.settings.get(
+            settings.ConfigureGameSettingsCategories.Ilaris,
+            settings.IlarisGameSettingNames.realFumbleCrits,
+        )
+        const renameTriumphWithCrit = game.settings.get(
+            settings.ConfigureGameSettingsCategories.Ilaris,
+            settings.IlarisGameSettingNames.renameTriumphWithCrit,
+        )
+
+        var textResult = ''
+
+        var config = isCrit
+            ? {
+                  style: highlightFumbleCrits
+                      ? 'color:#18520b; font-size: larger;'
+                      : 'color:#18520b;',
+                  text: renameTriumphWithCrit ? 'Crit' : 'Triumph',
+                  type: highlightFumbleCrits ? 'h2' : 'h3',
+              }
+            : isFumble
+            ? {
+                  style: highlightFumbleCrits
+                      ? 'color:#aa0200; font-size: larger;'
+                      : 'color:#aa0200;',
+                  text: 'Patzer',
+                  type: highlightFumbleCrits ? 'h2' : 'h3',
+              }
+            : {}
+
+        if (isCrit || isFumble)
+            textResult = `<${config.type}><strong style="${config.style}">${config.text}</strong></${config.type}>`
+
+        return new Handlebars.SafeString(textResult)
     })
 }

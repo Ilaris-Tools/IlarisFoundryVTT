@@ -2,6 +2,18 @@ import { label } from './config/label.js'
 
 export const ILARIS = {}
 
+/**
+ * Maneuver gruppe constants
+ */
+export const MANOEVER_GRUPPE = {
+    NAHKAMPF: 0,
+    FERNKAMPF: 1,
+    ZAUBER: 2,
+    LITURGIE: 3,
+    ANRUFUNG: 4,
+    VERTEIDIGUNG: 13,
+}
+
 let stat_desc = {
     ws: {
         name: 'Wundschwelle',
@@ -330,7 +342,8 @@ let manoever = {
         1: 'Fernkampf',
         2: 'Magie',
         3: 'Karma',
-        4: 'Nahkampf Verteidigung',
+        13: 'Nahkampf Verteidigung',
+        6: 'Anrufung',
     },
     selector_type: {
         CHECKBOX: 'Checkbox',
@@ -395,7 +408,7 @@ ILARIS.manoever = manoever
 
 let manoever_nahkampf = {
     kbak: { selected: false },
-    mod: { selected: false },
+    mod: { selected: 0 },
     rllm: { selected: '' },
     vlof: {
         selected: false,
@@ -413,12 +426,15 @@ let manoever_nahkampf = {
     pssl: {
         selected: false,
     },
+    lcht: {
+        selected: '0',
+    },
 }
 ILARIS.manoever_nahkampf = manoever_nahkampf
 
 let manoever_fernkampf = {
     kbak: { selected: false },
-    mod: { selected: false },
+    mod: { selected: 0 },
     rllm: { selected: '' },
     gzkl: {
         selected: '2',
@@ -457,7 +473,7 @@ ILARIS.manoever_fernkampf = manoever_fernkampf
 
 let manoever_ueber = {
     kbak: { selected: false },
-    mod: { selected: false },
+    mod: { selected: 0 },
     rllm: { selected: '' },
 }
 ILARIS.manoever_ueber = manoever_ueber
@@ -482,6 +498,7 @@ let angriff_typ = {
 ILARIS.angriff_typ = angriff_typ
 
 let schadenstypen = {
+    NORMAL: '',
     PROFAN: 'Profan',
     STUMPF: 'Stumpf',
     STICH: 'Stich',
@@ -521,6 +538,7 @@ let vorteilsgruppen = [
     { value: '5', label: 'Zauber Traditionen' },
     { value: '6', label: 'Karma' },
     { value: '7', label: 'Geweihte Traditionen' },
+    { value: '8', label: 'Tiergeist' },
 ]
 ILARIS.vorteilsgruppen = vorteilsgruppen
 

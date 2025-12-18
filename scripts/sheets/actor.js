@@ -1,8 +1,4 @@
 import { wuerfelwurf } from '../common/wuerfel.js'
-import {
-    IlarisGameSettingNames,
-    ConfigureGameSettingsCategories,
-} from '../settings/configure-game-settings.model.js'
 import { ILARIS } from '../config.js'
 
 export class IlarisActorSheet extends ActorSheet {
@@ -100,7 +96,7 @@ export class IlarisActorSheet extends ActorSheet {
     async _onToggleBool(event) {
         const togglevariable = event.currentTarget.dataset.togglevariable
         let attr = `${togglevariable}`
-        let bool_status = getProperty(this.actor, attr)
+        let bool_status = foundry.utils.getProperty(this.actor, attr)
         await this.actor.update({ [attr]: !bool_status })
 
         // Update open combat dialogs if wound penalties were toggled
@@ -150,20 +146,20 @@ export class IlarisActorSheet extends ActorSheet {
     async _onToggleItem(event) {
         const itemId = event.currentTarget.dataset.itemid
         const item = this.actor.items.get(itemId)
-        console.log(item)
+        console.log(item.system)
         const toggletype = event.currentTarget.dataset.toggletype
         let attr = `system.${toggletype}`
         const otherHandType = toggletype === 'hauptwaffe' ? 'nebenwaffe' : 'hauptwaffe'
         const otherHandAttr = `system.${otherHandType}`
 
         if (toggletype == 'hauptwaffe' || toggletype == 'nebenwaffe') {
-            let item_status = getProperty(item, attr)
+            let item_status = foundry.utils.getProperty(item, attr)
 
             // Handle two-handed ranged weapons
             if (
                 item_status &&
                 item.type === 'fernkampfwaffe' &&
-                item.system.eigenschaften.zweihaendig
+                item.system.computed?.handsRequired === 2
             ) {
                 await this._unequipWeapon(itemId)
                 return
@@ -175,7 +171,7 @@ export class IlarisActorSheet extends ActorSheet {
                     (toggletype == 'hauptwaffe' && item.system.nebenwaffe) ||
                     (toggletype == 'nebenwaffe' && item.system.hauptwaffe)
                 ) {
-                    if (!item.system.eigenschaften.zweihaendig) {
+                    if (item.system.computed?.handsRequired !== 2) {
                         await item.update({ [otherHandAttr]: false })
                     }
                 }
@@ -184,7 +180,7 @@ export class IlarisActorSheet extends ActorSheet {
                 this._unequipTwoHandedRangedWeapons()
 
                 // If equipping a two-handed weapon, unequip all other weapons
-                if (item.system.eigenschaften.zweihaendig) {
+                if (item.system.computed?.handsRequired === 2) {
                     this._unequipAllWeaponsExcept(itemId)
                 } else {
                     // For one-handed weapons, only unequip from the toggled hand
@@ -196,14 +192,14 @@ export class IlarisActorSheet extends ActorSheet {
             }
 
             // For two-handed weapons, always equip in both hands by default
-            if (item.system.eigenschaften.zweihaendig && !item_status) {
+            if (item.system.computed?.handsRequired === 2 && !item_status) {
                 await item.update({ [otherHandAttr]: true })
             }
 
             await item.update({ [attr]: !item_status })
         } else {
             attr = `system.${toggletype}`
-            await item.update({ [attr]: !getProperty(item, attr) })
+            await item.update({ [attr]: !foundry.utils.getProperty(item, attr) })
         }
     }
 
@@ -222,7 +218,7 @@ export class IlarisActorSheet extends ActorSheet {
     async _unequipTwoHandedRangedWeapons() {
         for (let waffe of this.actor.fernkampfwaffen) {
             if (
-                waffe.system.eigenschaften.zweihaendig &&
+                waffe.system.computed?.handsRequired === 2 &&
                 (waffe.system.hauptwaffe || waffe.system.nebenwaffe)
             ) {
                 await this._unequipWeapon(waffe.id)
@@ -252,7 +248,7 @@ export class IlarisActorSheet extends ActorSheet {
         // Check melee weapons
         for (let waffe of this.actor.nahkampfwaffen) {
             if (
-                waffe.system.eigenschaften.zweihaendig &&
+                waffe.system.computed?.handsRequired === 2 &&
                 waffe.system.hauptwaffe &&
                 waffe.system.nebenwaffe
             ) {
@@ -263,7 +259,7 @@ export class IlarisActorSheet extends ActorSheet {
         // Check ranged weapons
         for (let waffe of this.actor.fernkampfwaffen) {
             if (
-                waffe.system.eigenschaften.zweihaendig &&
+                waffe.system.computed?.handsRequired === 2 &&
                 waffe.system.hauptwaffe &&
                 waffe.system.nebenwaffe
             ) {
@@ -323,16 +319,14 @@ export class IlarisActorSheet extends ActorSheet {
         // TODO: rolltype=dialog, diagtype=nahkampf/profan/simple usw..
         let dialoge = [
             'angriff_diag',
-            'profan_fertigkeit_diag',
             'nahkampf_diag',
-            'attribut_diag',
             'simpleprobe_diag',
             'simpleformula_diag',
             'fernkampf_diag',
-            'freie_fertigkeit_diag',
             'magie_diag',
             'karma_diag',
             'uefert_diag',
+            'fertigkeit_diag',
         ]
         console.log('rolltype')
         console.log(rolltype)
@@ -341,38 +335,6 @@ export class IlarisActorSheet extends ActorSheet {
             wuerfelwurf(event, this.actor)
             return 0
         }
-        // if (rolltype == 'profan_fertigkeit_diag') {
-        //     wuerfelwurf(event, this.actor);
-        //     return 0;
-        // } else if (rolltype == 'nahkampf_diag') {
-        //     wuerfelwurf(event, this.actor);
-        //     return 0;
-        // } else if (rolltype == 'attribut_diag') {
-        //     wuerfelwurf(event, this.actor);
-        //     return 0;
-        // } else if (rolltype == 'simpleprobe_diag') {
-        //     wuerfelwurf(event, this.actor);
-        //     return 0;
-        // } else if (rolltype == 'simpleformula_diag') {
-        //     wuerfelwurf(event, this.actor);
-        //     return 0;
-        // } else if (rolltype == 'fernkampf_diag') {
-        //     wuerfelwurf(event, this.actor);
-        //     return 0;
-        // } else if (rolltype == 'freie_fertigkeit_diag') {
-        //     wuerfelwurf(event, this.actor);
-        //     return 0;
-        // } else if (rolltype == 'magie_diag') {
-        //     wuerfelwurf(event, this.actor);
-        //     return 0;
-        // } else if (rolltype == 'karma_diag') {
-        //     wuerfelwurf(event, this.actor);
-        //     return 0;
-        // } else if (rolltype == 'uefert_diag') {
-        //     console.log(event);
-        //     wuerfelwurf(event, this.actor);
-        //     return 0;
-        // } else
         if (rolltype == 'at') {
             // TODO: simplify this: if rolltype in [...]
             dice = '1d20'
@@ -669,7 +631,7 @@ export class IlarisActorSheet extends ActorSheet {
     }
 
     async _onSyncItems(event) {
-        console.log('Sync Items (Vorteile and Übernatürliche Talente)')
+        console.log('Sync Items (Vorteile, Übernatürliche Talente, and Waffen)')
 
         try {
             // Get all available Item compendiums in the world
@@ -687,20 +649,22 @@ export class IlarisActorSheet extends ActorSheet {
 
             console.log(`Found ${selectedPacks.length} Item compendiums to search`)
 
-            // Get all vorteile and übernatürliche talente from the actor
+            // Get all vorteile, übernatürliche talente, and waffen from the actor
             const itemsToSync = this.actor.items.filter(
                 (item) =>
                     item.type === 'vorteil' ||
                     item.type === 'zauber' ||
                     item.type === 'liturgie' ||
-                    item.type === 'anrufung',
+                    item.type === 'anrufung' ||
+                    item.type === 'nahkampfwaffe' ||
+                    item.type === 'fernkampfwaffe',
             )
 
             console.log(`Found ${itemsToSync.length} items to sync`)
 
             if (itemsToSync.length === 0) {
                 ui.notifications.info(
-                    'Keine Vorteile oder Übernatürliche Talente zum Synchronisieren gefunden.',
+                    'Keine Vorteile, Übernatürliche Talente oder Waffen zum Synchronisieren gefunden.',
                 )
                 return
             }
@@ -805,6 +769,46 @@ export class IlarisActorSheet extends ActorSheet {
                                 if (compendiumItem.system.erlernen !== undefined) {
                                     updateData['system.erlernen'] = compendiumItem.system.erlernen
                                 }
+                            } else if (
+                                compendiumItem.type === 'nahkampfwaffe' ||
+                                compendiumItem.type === 'fernkampfwaffe'
+                            ) {
+                                // Update weapon-specific fields
+                                if (compendiumItem.system.eigenschaften !== undefined) {
+                                    updateData['system.eigenschaften'] =
+                                        compendiumItem.system.eigenschaften
+                                }
+                                if (compendiumItem.system.gewicht !== undefined) {
+                                    updateData['system.gewicht'] = compendiumItem.system.gewicht
+                                }
+                                if (compendiumItem.system.preis !== undefined) {
+                                    updateData['system.preis'] = compendiumItem.system.preis
+                                }
+                                if (compendiumItem.system.tp !== undefined) {
+                                    updateData['system.tp'] = compendiumItem.system.tp
+                                }
+                                if (compendiumItem.system.at_mod !== undefined) {
+                                    updateData['system.at_mod'] = compendiumItem.system.at_mod
+                                }
+                                if (compendiumItem.system.vt_mod !== undefined) {
+                                    updateData['system.vt_mod'] = compendiumItem.system.vt_mod
+                                }
+                                if (compendiumItem.system.beschreibung !== undefined) {
+                                    updateData['system.beschreibung'] =
+                                        compendiumItem.system.beschreibung
+                                }
+
+                                // Additional fields for fernkampfwaffe
+                                if (compendiumItem.type === 'fernkampfwaffe') {
+                                    if (compendiumItem.system.reichweite_mod !== undefined) {
+                                        updateData['system.reichweite_mod'] =
+                                            compendiumItem.system.reichweite_mod
+                                    }
+                                    if (compendiumItem.system.ladezeit !== undefined) {
+                                        updateData['system.ladezeit'] =
+                                            compendiumItem.system.ladezeit
+                                    }
+                                }
                             }
 
                             updatePromises.push(updateData)
@@ -871,6 +875,57 @@ export class IlarisActorSheet extends ActorSheet {
                     actorItem.system.kosten !== compendiumItem.system.kosten) ||
                 (compendiumItem.system.erlernen !== undefined &&
                     actorItem.system.erlernen !== compendiumItem.system.erlernen)
+        } else if (actorItem.type === 'nahkampfwaffe' || actorItem.type === 'fernkampfwaffe') {
+            // Check weapon-specific fields
+            // Helper function to compare eigenschaften arrays
+            const eigenschaftenChanged = () => {
+                const actorEigen = actorItem.system.eigenschaften
+                const compEigen = compendiumItem.system.eigenschaften
+
+                // If both are arrays, compare them
+                if (Array.isArray(actorEigen) && Array.isArray(compEigen)) {
+                    if (actorEigen.length !== compEigen.length) return true
+                    const sortedActor = [...actorEigen].sort()
+                    const sortedComp = [...compEigen].sort()
+                    return sortedActor.some((val, idx) => val !== sortedComp[idx])
+                }
+
+                // If formats differ (one is object, one is array), needs update
+                if (typeof actorEigen !== typeof compEigen) return true
+
+                // If both are objects (old format), compare them
+                if (
+                    typeof actorEigen === 'object' &&
+                    !Array.isArray(actorEigen) &&
+                    typeof compEigen === 'object' &&
+                    !Array.isArray(compEigen)
+                ) {
+                    return JSON.stringify(actorEigen) !== JSON.stringify(compEigen)
+                }
+
+                return false
+            }
+
+            needsUpdate =
+                needsUpdate ||
+                eigenschaftenChanged() ||
+                (compendiumItem.system.gewicht !== undefined &&
+                    actorItem.system.gewicht !== compendiumItem.system.gewicht) ||
+                (compendiumItem.system.preis !== undefined &&
+                    actorItem.system.preis !== compendiumItem.system.preis) ||
+                (compendiumItem.system.tp !== undefined &&
+                    actorItem.system.tp !== compendiumItem.system.tp) ||
+                (compendiumItem.system.at_mod !== undefined &&
+                    actorItem.system.at_mod !== compendiumItem.system.at_mod) ||
+                (compendiumItem.system.vt_mod !== undefined &&
+                    actorItem.system.vt_mod !== compendiumItem.system.vt_mod) ||
+                (compendiumItem.system.beschreibung !== undefined &&
+                    actorItem.system.beschreibung !== compendiumItem.system.beschreibung) ||
+                (compendiumItem.type === 'fernkampfwaffe' &&
+                    ((compendiumItem.system.reichweite_mod !== undefined &&
+                        actorItem.system.reichweite_mod !== compendiumItem.system.reichweite_mod) ||
+                        (compendiumItem.system.ladezeit !== undefined &&
+                            actorItem.system.ladezeit !== compendiumItem.system.ladezeit)))
         }
         return needsUpdate
     }
