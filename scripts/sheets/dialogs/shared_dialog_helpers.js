@@ -262,11 +262,20 @@ export async function applyDamageToTarget(
  */
 export async function _applyDamageDirectly(targetActor, damage, damageType, trueDamage, speaker) {
     // Get WS and WS* of the target
+    const useLepSystem = game.settings.get(
+        ConfigureGameSettingsCategories.Ilaris,
+        IlarisGameSettingNames.lepSystem,
+    )
     const ws = targetActor.system.abgeleitete.ws
     const ws_stern = targetActor.system.abgeleitete.ws_stern
 
+    let woundsToAdd = trueDamage ? Math.floor(damage / ws) : Math.floor(damage / ws_stern)
+
+    if (useLepSystem) {
+        woundsToAdd = trueDamage ? damage : damage - ws_stern
+    }
+
     // Calculate wounds based on whether it's true damage
-    const woundsToAdd = trueDamage ? Math.floor(damage / ws) : Math.floor(damage / ws_stern)
 
     if (woundsToAdd > 0) {
         // Get current value and update the appropriate stat based on damage type
