@@ -1,0 +1,88 @@
+{
+  "_id": "oJbJF4tSyNgdpMXK",
+  "name": "Spezialdialoge im Ilaris-System",
+  "type": "Tour",
+  "img": "systems/Ilaris/assets/images/background/splash.jpg",
+  "system": {},
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {
+    "core": {}
+  },
+  "_stats": {
+    "systemId": "Ilaris",
+    "systemVersion": "12.2.6",
+    "coreVersion": "12.0.0",
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null
+  },
+  "folder": null,
+  "description": "<p>Eine geführte Tour durch die wichtigsten Spezialdialoge im Ilaris-System für Foundry VTT</p>",
+  "navigation": true,
+  "display": true,
+  "steps": [
+    {
+      "id": "intro",
+      "title": "Willkommen zur Spezialdialoge-Tour",
+      "content": "<h2>Spezialdialoge im Ilaris-System</h2><p>Diese Tour führt Sie durch die wichtigsten Spezialdialoge im Ilaris-System. Diese Dialoge helfen Ihnen, Würfelproben, Kämpfe und übernatürliche Fähigkeiten effizient zu verwalten.</p><p><strong>Was Sie lernen werden:</strong></p><ul><li>Welche Spezialdialoge es gibt</li><li>Wo Sie diese finden und wie Sie sie aufrufen</li><li>Welche Optionen und Einstellungen verfügbar sind</li><li>Typische Stolpersteine und Hinweise zur Bedienung</li></ul><p>Klicken Sie auf \"Weiter\", um zu beginnen!</p>",
+      "selector": null
+    },
+    {
+      "id": "fertigkeit-dialog",
+      "title": "Fertigkeitsprobe-Dialog",
+      "content": "<h3>Fertigkeitsprobe-Dialog</h3><p><strong>Wo zu finden:</strong> Öffnen Sie ein Charakterblatt und klicken Sie auf eine Fertigkeit im Fertigkeiten-Tab.</p><p><strong>Funktion:</strong> Dieser Dialog ermöglicht Fertigkeitsproben und Attributsproben. Er zeigt den Probenwert (PW) an und ermöglicht verschiedene Modifikatoren.</p><p><strong>Wichtige Optionen:</strong></p><ul><li><strong>Modifikator:</strong> Addiert oder subtrahiert einen Wert vom Probenwert (z.B. -2 für erschwerte Bedingungen)</li><li><strong>xd20-Auswahl:</strong> Wählen Sie zwischen 1W20 (normale Probe) oder 3W20 (mit Schicksalspunkt)</li><li><strong>Schicksalspunkte:</strong> Nur verfügbar, wenn der Charakter Schicksalspunkte hat</li><li><strong>Talent-Auswahl:</strong> Wenn Talente für diese Fertigkeit vorhanden sind, können Sie diese auswählen</li></ul><p><strong>Live-Vorschau:</strong> Der Dialog zeigt eine Live-Vorschau der Würfelformel und des finalen Probenwerts.</p><p><strong>Stolpersteine:</strong></p><ul><li>Schicksalspunkte funktionieren nur, wenn tatsächlich Schicksalspunkte vorhanden sind</li><li>Die Würfelformel wird automatisch berechnet basierend auf Ihren Eingaben</li></ul>",
+      "selector": null
+    },
+    {
+      "id": "nahkampf-dialog",
+      "title": "Nahkampf-Dialog",
+      "content": "<h3>Nahkampf-Dialog</h3><p><strong>Wo zu finden:</strong> Öffnen Sie ein Charakterblatt, gehen Sie zum Kampf-Tab, und klicken Sie auf eine ausgerüstete Nahkampfwaffe.</p><p><strong>Funktion:</strong> Dieser Dialog verwaltet Nahkampfangriffe und Verteidigungen. Er berechnet automatisch Angriffswerte (AT), Verteidigungswerte (VT) und Schaden.</p><p><strong>Wichtige Optionen:</strong></p><ul><li><strong>Angreifen:</strong> Führt einen Angriffswurf durch</li><li><strong>Verteidigen:</strong> Führt eine Verteidigungsprobe durch</li><li><strong>Schaden:</strong> Würfelt den Schaden nach einem erfolgreichen Angriff</li><li><strong>Manöver:</strong> Wählen Sie Kampfmanöver aus (nur verfügbar, wenn Voraussetzungen erfüllt sind)</li><li><strong>Lichtverhältnisse:</strong> Modifikator für schlechte Sicht</li><li><strong>Gegner-Auswahl:</strong> Wählen Sie Ziele aus (wenn Target-Auswahl aktiviert ist)</li></ul><p><strong>Live-Vorschau:</strong> Der Dialog zeigt automatisch berechnete Werte für AT, VT und Schaden mit allen Modifikatoren.</p><p><strong>Stolpersteine:</strong></p><ul><li>Waffen müssen als Haupt- oder Nebenwaffe ausgerüstet sein</li><li>Zweihändige Waffen müssen sowohl als Haupt- als auch als Nebenwaffe ausgerüstet sein</li><li>Manöver sind nur verfügbar, wenn die entsprechenden Vorteile/Sonderfertigkeiten vorhanden sind</li><li>Kampfstile werden nur für ausgerüstete Waffen berechnet</li></ul>",
+      "selector": null
+    },
+    {
+      "id": "fernkampf-dialog",
+      "title": "Fernkampf-Dialog",
+      "content": "<h3>Fernkampf-Dialog</h3><p><strong>Wo zu finden:</strong> Öffnen Sie ein Charakterblatt, gehen Sie zum Kampf-Tab, und klicken Sie auf eine ausgerüstete Fernkampfwaffe.</p><p><strong>Funktion:</strong> Dieser Dialog verwaltet Fernkampfangriffe. Er berechnet den Fernkampfwert (FK) und berücksichtigt Entfernung, Bewegung und andere Modifikatoren.</p><p><strong>Wichtige Optionen:</strong></p><ul><li><strong>Reichweite:</strong> Modifikator basierend auf der Entfernung zum Ziel (Kurz/Mittel/Weit)</li><li><strong>Größenklasse des Ziels:</strong> Bonus oder Malus je nach Zielgröße</li><li><strong>Lichtverhältnisse:</strong> Modifikator für schlechte Sicht</li><li><strong>Wetter:</strong> Einfluss von Wind und Wetter</li><li><strong>Bewegung:</strong> Malus wenn Schütze oder Ziel sich bewegt</li><li><strong>Deckung:</strong> Malus wenn Ziel in Deckung ist</li><li><strong>Kampfgetümmel:</strong> Malus beim Schießen in den Nahkampf</li></ul><p><strong>Live-Vorschau:</strong> Der Dialog zeigt den berechneten FK-Wert mit allen angewendeten Modifikatoren.</p><p><strong>Stolpersteine:</strong></p><ul><li>Berücksichtigen Sie die Reichweite Ihrer Waffe</li><li>Mehrere Modifikatoren können sich schnell addieren</li><li>Die Entfernung zum Ziel wird automatisch berechnet, wenn Ziele ausgewählt sind</li></ul>",
+      "selector": null
+    },
+    {
+      "id": "uebernatuerlich-dialog",
+      "title": "Dialog für Übernatürliche Fertigkeiten",
+      "content": "<h3>Dialog für Übernatürliche Fertigkeiten</h3><p><strong>Wo zu finden:</strong> Öffnen Sie ein Charakterblatt, gehen Sie zum Tab \"Übernatürliches\" und klicken Sie auf einen Zauberspruch, ein Ritual, eine Liturgie oder ein Mirakel.</p><p><strong>Funktion:</strong> Dieser Dialog verwaltet den Einsatz übernatürlicher Fähigkeiten wie Zauber und Liturgien. Er berechnet den Probenwert und verwaltet Astral- bzw. Karmapunkte (AsP/KaP).</p><p><strong>Wichtige Optionen:</strong></p><ul><li><strong>Energiekosten:</strong> Zeigt die AsP oder KaP Kosten der Fertigkeit</li><li><strong>Modifikatoren:</strong> Zusätzliche Boni oder Mali auf die Probe</li><li><strong>Angriff:</strong> Für Zauber mit Angriffswirkung</li><li><strong>Energie bei Erfolg/Misserfolg:</strong> Verrechnet die Energiekosten basierend auf dem Ergebnis</li><li><strong>Spezielle Manöver:</strong> Blutmagie, Verbotene Pforten, etc. (wenn verfügbar)</li></ul><p><strong>Live-Vorschau:</strong> Der Dialog zeigt den Probenwert und die Energiekosten-Zusammenfassung.</p><p><strong>Wichtige Hinweise:</strong></p><ul><li>Astral- und Karmapunkte werden nur angezeigt, wenn die Vorteile \"Zauberer\" oder \"Geweiht\" aktiviert sind</li><li>Der Zukauf von AsP und KaP kann durch Mausklick auf das Label AsP/KaP eingestellt werden</li><li>Energiekosten können variabel sein (z.B. \"1 pro Stufe\")</li><li>Bei Misserfolg werden oft nur halbe Kosten fällig</li></ul><p><strong>Stolpersteine:</strong></p><ul><li>Prüfen Sie, ob genug Astral- oder Karmapunkte vorhanden sind</li><li>Manche Zauber haben Voraussetzungen (z.B. bestimmte Merkmale)</li><li>Reichweite und Wirkungsdauer beachten</li></ul>",
+      "selector": null
+    },
+    {
+      "id": "manover-system",
+      "title": "Manöver-System",
+      "content": "<h3>Manöver in den Dialogen</h3><p><strong>Was sind Manöver?</strong> Manöver sind spezielle Kampftechniken oder Zaubermodifikationen, die zusätzliche taktische Optionen bieten.</p><p><strong>Wo zu finden:</strong> Manöver erscheinen in den Kampf- und Übernatürlich-Dialogen, wenn die Voraussetzungen erfüllt sind.</p><p><strong>Wichtig zu wissen:</strong></p><ul><li>Manöver im Kompendium schalten die Manöver NICHT frei</li><li>Freischaltung erfolgt über die entsprechenden Vorteile/Sonderfertigkeiten</li><li>Voraussetzungen können sein: Waffeneigenschaften, Kampfstil, bestimmte Fertigkeiten</li><li>Manöver für Magie und Karma sind teilweise noch in Entwicklung</li></ul><p><strong>Beispiele für Manöver:</strong></p><ul><li><strong>Nahkampf:</strong> Finte, Sturmangriff, Niederwerfen</li><li><strong>Fernkampf:</strong> Gezielter Schuss, Schnellschuss</li><li><strong>Magie:</strong> Blutmagie, Verbotene Pforten (wenn freigeschaltet)</li></ul><p><strong>Stolpersteine:</strong></p><ul><li>Wenn Manöver nicht auswählbar sind, prüfen Sie die Voraussetzungen</li><li>Waffeneigenschaften, ausgerüstete Waffe, Kampfstil, Sonderfertigkeit</li></ul>",
+      "selector": null
+    },
+    {
+      "id": "target-selection",
+      "title": "Ziel-Auswahl und Automatisierung",
+      "content": "<h3>Ziel-Auswahl in Dialogen</h3><p><strong>Funktion:</strong> Das System kann Ziele automatisch aus der Foundry-Auswahl übernehmen und Entfernungen berechnen.</p><p><strong>Aktivierung:</strong> In den Systemeinstellungen unter \"Automatisierung\" kann die Zielauswahl aktiviert werden.</p><p><strong>Wie es funktioniert:</strong></p><ul><li>Wählen Sie auf der Szene ein oder mehrere Token als Ziele aus (Rechtsklick auf Token → \"Ziel\")</li><li>Öffnen Sie einen Kampf- oder Übernatürlich-Dialog</li><li>Die ausgewählten Ziele werden automatisch angezeigt</li><li>Die Entfernung wird automatisch berechnet</li></ul><p><strong>Vorteile:</strong></p><ul><li>Schnellere Kampfabwicklung</li><li>Automatische Entfernungsberechnung für Fernkampf</li><li>Übersichtliche Zieldarstellung</li></ul><p><strong>Schaden anwenden:</strong> Nach einem erfolgreichen Angriff kann der Schaden direkt auf ausgewählte Ziele angewendet werden.</p>",
+      "selector": null
+    },
+    {
+      "id": "live-preview",
+      "title": "Live-Vorschau-Funktion",
+      "content": "<h3>Live-Vorschau in allen Dialogen</h3><p><strong>Funktion:</strong> Alle modernen Dialoge zeigen eine Live-Vorschau der Würfelformel und der finalen Werte.</p><p><strong>Was wird angezeigt:</strong></p><ul><li>Die vollständige Würfelformel (z.B. \"1d20 + 12\")</li><li>Aufschlüsselung aller Modifikatoren</li><li>Basiswerte (PW, AT, VT, FK)</li><li>Angewendete Boni und Mali</li><li>Energiekosten (bei übernatürlichen Fertigkeiten)</li></ul><p><strong>Interaktivität:</strong> Die Vorschau wird automatisch aktualisiert, wenn Sie Optionen ändern. So können Sie experimentieren und die Auswirkungen verschiedener Modifikatoren sofort sehen.</p><p><strong>Klickbare Zusammenfassungen:</strong> In vielen Dialogen können Sie direkt auf die Zusammenfassung klicken, um den entsprechenden Wurf auszuführen.</p>",
+      "selector": null
+    },
+    {
+      "id": "tipps-und-tricks",
+      "title": "Tipps und Tricks",
+      "content": "<h3>Allgemeine Tipps für die Dialoge</h3><p><strong>Effizienz-Tipps:</strong></p><ul><li>Nutzen Sie die Live-Vorschau, um Modifikatoren zu überprüfen</li><li>Wählen Sie Ziele vor dem Öffnen des Dialogs aus</li><li>Verwenden Sie Makros für häufig genutzte Aktionen</li><li>Klicken Sie auf die Zusammenfassungen statt auf separate Buttons</li></ul><p><strong>Häufige Probleme:</strong></p><ul><li><strong>Waffen nicht auswählbar:</strong> Waffe muss ausgerüstet sein (Symbol links neben dem Namen anklicken)</li><li><strong>Rüstung wird nicht berechnet:</strong> Rüstung muss angelegt werden</li><li><strong>Manöver fehlen:</strong> Prüfen Sie Voraussetzungen und Vorteile</li><li><strong>Keine Schicksalspunkte-Option:</strong> Charakter muss Schicksalspunkte haben</li><li><strong>AsP/KaP nicht sichtbar:</strong> Vorteil \"Zauberer\" oder \"Geweiht\" muss aktiviert sein</li></ul><p><strong>Weiterführende Informationen:</strong></p><ul><li>FAQ: Siehe Dokumentation unter docs/faq.md</li><li>YouTube-Tutorials verfügbar (siehe README)</li><li>Discord-Community für Fragen und Hilfe</li></ul>",
+      "selector": null
+    },
+    {
+      "id": "abschluss",
+      "title": "Tour abgeschlossen!",
+      "content": "<h3>Herzlichen Glückwunsch!</h3><p>Sie haben die Tour durch die Spezialdialoge des Ilaris-Systems abgeschlossen.</p><p><strong>Zusammenfassung der Dialoge:</strong></p><ul><li><strong>Fertigkeitsprobe-Dialog:</strong> Für Fertigkeits- und Attributsproben</li><li><strong>Nahkampf-Dialog:</strong> Für Nahkampfangriffe und Verteidigung</li><li><strong>Fernkampf-Dialog:</strong> Für Fernkampfangriffe mit Reichweiten-Modifikatoren</li><li><strong>Übernatürlich-Dialog:</strong> Für Zauber, Rituale, Liturgien und Mirakel</li></ul><p><strong>Nächste Schritte:</strong></p><ul><li>Probieren Sie die verschiedenen Dialoge mit einem Beispiel-Charakter aus</li><li>Experimentieren Sie mit verschiedenen Modifikatoren</li><li>Erkunden Sie die Einstellungen für Automatisierung</li><li>Schauen Sie sich die weiteren Touren an (falls verfügbar)</li></ul><p><strong>Hilfe benötigt?</strong></p><ul><li>Besuchen Sie das <a href=\"https://dsaforum.de/viewtopic.php?f=180&t=55746\">DSA-Forum</a></li><li>Treten Sie dem <a href=\"https://discord.gg/qEKBnjsspX\">Discord-Server</a> bei</li><li>Schauen Sie die <a href=\"https://www.youtube.com/playlist?list=PLgv_FQFVPJ-6vOKI3jrfy9d2xfqzQSE-X\">YouTube-Screencasts</a></li></ul><p>Viel Spaß beim Spielen!</p>",
+      "selector": null
+    }
+  ]
+}
