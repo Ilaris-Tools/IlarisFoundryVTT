@@ -273,37 +273,54 @@ export async function _applyDamageDirectly(targetActor, damage, damageType, true
 
     if (useLepSystem) {
         woundsToAdd = trueDamage ? damage : damage - ws_stern
-    }
 
-    // Calculate wounds based on whether it's true damage
+        if (woundsToAdd > 0) {
+            await targetActor.update({
+                [`system.gesundheit.wunden`]: currentValue + woundsToAdd,
+            })
 
-    if (woundsToAdd > 0) {
-        // Get current value and update the appropriate stat based on damage type
-        const currentValue =
-            damageType === 'STUMPF'
-                ? targetActor.system.gesundheit.erschoepfung || 0
-                : targetActor.system.gesundheit.wunden || 0
-
-        await targetActor.update({
-            [`system.gesundheit.${damageType === 'STUMPF' ? 'erschoepfung' : 'wunden'}`]:
-                currentValue + woundsToAdd,
-        })
-
-        // Send a message to chat
-        await ChatMessage.create({
-            content: `${targetActor.name} erleidet ${woundsToAdd} Einschränkung${
-                woundsToAdd > 1 ? 'en' : ''
-            }! (${damageType ? CONFIG.ILARIS.schadenstypen[damageType] : ''} Schaden: ${damage})`,
-            speaker: speaker,
-            type: CONST.CHAT_MESSAGE_STYLES.OTHER,
-        })
+            // Send a message to chat
+            await ChatMessage.create({
+                content: `${targetActor.name} erleidet Schaden! (${
+                    damageType ? CONFIG.ILARIS.schadenstypen[damageType] : ''
+                })`,
+                speaker: speaker,
+                type: CONST.CHAT_MESSAGE_STYLES.OTHER,
+            })
+        }
     } else {
-        // Send a message when damage wasn't high enough
-        await ChatMessage.create({
-            content: `${targetActor.name} erleidet keine Einschränkungen - der Schaden (${damage}) war nicht hoch genug.`,
-            speaker: speaker,
-            type: CONST.CHAT_MESSAGE_STYLES.OTHER,
-        })
+        // Calculate wounds based on whether it's true damage
+
+        if (woundsToAdd > 0) {
+            // Get current value and update the appropriate stat based on damage type
+            const currentValue =
+                damageType === 'STUMPF'
+                    ? targetActor.system.gesundheit.erschoepfung || 0
+                    : targetActor.system.gesundheit.wunden || 0
+
+            await targetActor.update({
+                [`system.gesundheit.${damageType === 'STUMPF' ? 'erschoepfung' : 'wunden'}`]:
+                    currentValue + woundsToAdd,
+            })
+
+            // Send a message to chat
+            await ChatMessage.create({
+                content: `${targetActor.name} erleidet ${woundsToAdd} Einschränkung${
+                    woundsToAdd > 1 ? 'en' : ''
+                }! (${
+                    damageType ? CONFIG.ILARIS.schadenstypen[damageType] : ''
+                } Schaden: ${damage})`,
+                speaker: speaker,
+                type: CONST.CHAT_MESSAGE_STYLES.OTHER,
+            })
+        } else {
+            // Send a message when damage wasn't high enough
+            await ChatMessage.create({
+                content: `${targetActor.name} erleidet keine Einschränkungen - der Schaden (${damage}) war nicht hoch genug.`,
+                speaker: speaker,
+                type: CONST.CHAT_MESSAGE_STYLES.OTHER,
+            })
+        }
     }
 }
 
