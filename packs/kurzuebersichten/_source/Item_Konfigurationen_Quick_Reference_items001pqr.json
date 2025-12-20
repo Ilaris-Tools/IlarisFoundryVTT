@@ -1,0 +1,49 @@
+{
+  "name": "Kurzübersicht: Item-Konfigurationen",
+  "type": "JournalEntry",
+  "_id": "kurzitems001",
+  "pages": [
+    {
+      "_id": "kurzitpage003",
+      "name": "Item-Konfigurationen - Schnellübersicht",
+      "type": "text",
+      "title": {
+        "show": true,
+        "level": 1
+      },
+      "text": {
+        "format": 1,
+        "content": "<h1>Item-Konfigurationen - Schnellübersicht</h1>\n<p>Das Ilaris-System bietet umfangreiche Möglichkeiten zur Konfiguration von Items. Diese Übersicht zeigt die wichtigsten Item-Typen und ihre Konfigurationsmöglichkeiten.</p>\n\n<h2>✨ Vorteile (Vorteile)</h2>\n\n<h3>Zugriff</h3>\n<p>📦 <strong>Kompendium:</strong> \"Vorteile\" im Kompendium-Tab<br>\n➕ <strong>Hinzufügen:</strong> Drag & Drop auf Charakterbogen oder über \"+\" Button</p>\n\n<h3>Wichtige Vorteilsgruppen</h3>\n\n<h4>🎯 Kampfvorteile</h4>\n<ul>\n<li><strong>Kampfstile:</strong> Offensiver/Defensiver Kampfstil</li>\n<li><strong>Waffenspezialisierungen:</strong> Beidhändiger Kampf (I-IV), Schildkampf (I-IV), Parierwaffenkampf (I-IV)</li>\n<li><strong>Kampffertigkeiten:</strong> Reiterkampf, Waffenloser Kampf, Ausfall, Niederwerfen</li>\n<li><strong>Steigerungen:</strong> Kraftvoller/Schneller Kampf (I-IV), Flink (I-II), Kampfreflexe</li>\n</ul>\n\n<h4>⚡ Magische Vorteile</h4>\n<ul>\n<li><strong>Traditionen:</strong> Gildenmagier, Hexen, Druiden, Elfen, etc. (I-IV)</li>\n<li><strong>Zauber-Effizienz:</strong> Effizientes/Müheloses Zaubern, Flinke Magie</li>\n<li><strong>Spezialfähigkeiten:</strong> Flexible Magie, Kontrolliertes Zaubern, Matrixverständnis</li>\n<li><strong>Regeneration:</strong> Astrale Regeneration, Meisterliche astrale Regeneration</li>\n</ul>\n\n<h4>🙏 Klerikale Vorteile</h4>\n<ul>\n<li><strong>Geweiht (I-IV):</strong> Basis für Geweihte aller Gottheiten</li>\n<li><strong>Traditionsspezifisch:</strong> Tradition der [Gottheit]geweihten (I-IV)</li>\n<li><strong>Liturgische Fähigkeiten:</strong> Liturgische Routine, Sorgfalt, Disziplin</li>\n<li><strong>Segen:</strong> Aura der Heiligkeit, Segnung der Gläubigen</li>\n</ul>\n\n<h4>💪 Körperliche Vorteile</h4>\n<ul>\n<li><strong>Attribute:</strong> Routiniert, Scharfsinnig, Willensstark (I-II)</li>\n<li><strong>Robustheit:</strong> Abgehärtet (I-II), Resistenzen, Immunität</li>\n<li><strong>Besondere:</strong> Katzenhaft, Muskelprotz, Natürliche Rüstung, Schnelle Heilung</li>\n</ul>\n\n<h4>🎭 Soziale und Besondere Vorteile</h4>\n<ul>\n<li><strong>Sozial:</strong> Eindrucksvoll (I-II), Empathie, Privilegien</li>\n<li><strong>Glück:</strong> Glück (I-II), Gefahreninstinkt</li>\n<li><strong>Ressourcen:</strong> Einkommen (I-IV), Besonderer Besitz, Verbindungen</li>\n</ul>\n\n<h3>📝 Konfigurationstipps für Vorteile</h3>\n<div style=\"background-color: #f0fff0; padding: 10px; border-left: 4px solid #32cd32; margin: 10px 0;\">\n<ul>\n<li>✅ Prüfe <strong>Voraussetzungen</strong> im Vorteilstext</li>\n<li>✅ Beachte <strong>Steigerungsstufen</strong> (I-IV) - müssen meist aufeinander aufbauen</li>\n<li>✅ Manche Vorteile schließen sich <strong>gegenseitig aus</strong> (z.B. Offensiver/Defensiver Kampfstil)</li>\n<li>✅ Berücksichtige <strong>EP-Kosten</strong> für Charaktererstellung und Steigerung</li>\n</ul>\n</div>\n\n<h2>⚔️ Manöver (Manöver)</h2>\n\n<h3>Zugriff</h3>\n<p>📦 <strong>Kompendium:</strong> \"Manöver\" im Kompendium-Tab<br>\n➕ <strong>Hinzufügen:</strong> Drag & Drop auf Charakterbogen</p>\n\n<h3>Manöver-Kategorien</h3>\n\n<h4>Offensive Manöver</h4>\n<ul>\n<li><strong>Sturmangriff:</strong> Macht nach Bewegung, erhöhter Schaden</li>\n<li><strong>Hammerschlag:</strong> Besonders kraftvoller Angriff</li>\n<li><strong>Todesstoß:</strong> Zielgerichteter tödlicher Angriff</li>\n<li><strong>Niederwerfen:</strong> Gegner zu Boden werfen</li>\n</ul>\n\n<h4>Defensive Manöver</h4>\n<ul>\n<li><strong>Gegenhalten:</strong> Verteidigungsbonus gegen Angriffe</li>\n<li><strong>Ausfall:</strong> Täuschungsmanöver</li>\n</ul>\n\n<h4>Spezialmanöver</h4>\n<ul>\n<li><strong>Klingentanz:</strong> Mehrfachangriff</li>\n<li><strong>Meisterschuss:</strong> Präziser Fernkampfangriff</li>\n<li><strong>Reflexschuss:</strong> Schneller Schuss ohne Vorbereitung</li>\n</ul>\n\n<h3>📝 Konfigurationstipps für Manöver</h3>\n<div style=\"background-color: #f0f8ff; padding: 10px; border-left: 4px solid #1e90ff; margin: 10px 0;\">\n<ul>\n<li>✅ Manöver haben oft spezifische <strong>Voraussetzungen</strong> (Vorteile, Waffenart)</li>\n<li>✅ Berücksichtige <strong>Aktionskosten</strong> (manche kosten mehrere Aktionen)</li>\n<li>✅ Manche Manöver verursachen <strong>Erschöpfung</strong></li>\n<li>✅ Im Kampfdialog können verfügbare Manöver direkt ausgewählt werden</li>\n</ul>\n</div>\n\n<h2>🗡️ Waffen und Ausrüstung</h2>\n\n<h3>Waffeneigenschaften</h3>\n<p>📦 <strong>Kompendium:</strong> \"Waffen\" und \"Waffeneigenschaften\"</p>\n\n<h4>Wichtige Eigenschaften</h4>\n<ul>\n<li><strong>Reichweite:</strong> Kurz, Mittel, Lang (wichtig für Nahkampf)</li>\n<li><strong>Waffenart:</strong> Schwert, Axt, Stab, etc. (relevant für Vorteile)</li>\n<li><strong>Schaden:</strong> Würfeltyp und Boni</li>\n<li><strong>Kampftechnik:</strong> Benötigte Fertigkeit</li>\n<li><strong>Besondere Eigenschaften:</strong> Zweihand, Parierwaffe, Fernkampf, etc.</li>\n</ul>\n\n<h3>📝 Konfigurationstipps für Waffen</h3>\n<div style=\"background-color: #fff8dc; padding: 10px; border-left: 4px solid #daa520; margin: 10px 0;\">\n<ul>\n<li>✅ <strong>Eigene Waffen erstellen:</strong> Nutze existierende Waffe als Vorlage</li>\n<li>✅ <strong>Waffeneigenschaften:</strong> Können individuell zugewiesen werden</li>\n<li>✅ <strong>Schadensmodifikatoren:</strong> Berücksichtigen Attribute und Vorteile automatisch</li>\n<li>✅ <strong>Reichweite beachten:</strong> Wichtig für Platzbedarf (wenn aktiviert)</li>\n</ul>\n</div>\n\n<h2>🎯 Kampfstile im Detail</h2>\n\n<h3>Offensiver Kampfstil</h3>\n<p><strong>Vorteil:</strong> Offensiver Kampfstil</p>\n<ul>\n<li>➕ Bonus auf Angriffswerte</li>\n<li>➖ Mali auf Verteidigung</li>\n<li>🎯 Gut für: Aggressive Kämpfer, Berserker</li>\n</ul>\n\n<h3>Defensiver Kampfstil</h3>\n<p><strong>Vorteil:</strong> Defensiver Kampfstil</p>\n<ul>\n<li>➕ Bonus auf Verteidigungswerte</li>\n<li>➖ Mali auf Angriff</li>\n<li>🛡️ Gut für: Tanks, Beschützer, geduldige Kämpfer</li>\n</ul>\n\n<h3>Standard-Kampfstil</h3>\n<p><strong>Kein Vorteil benötigt</strong></p>\n<ul>\n<li>Ausgewogene Werte</li>\n<li>Keine Boni oder Mali</li>\n<li>🎭 Gut für: Vielseitige Kämpfer, Anfänger</li>\n</ul>\n\n<h2>💡 Allgemeine Tipps</h2>\n\n<div style=\"background-color: #ffe4e1; padding: 10px; border-left: 4px solid #dc143c; margin: 10px 0;\">\n<p><strong>⚠️ Wichtig bei der Charaktererstellung:</strong></p>\n<ul>\n<li>Plane Vorteile langfristig - Steigerungspfade beachten</li>\n<li>Kombination von Vorteilen und Manövern erhöht Effektivität</li>\n<li>Nicht alle Items aus allen Kompendien sind für jeden Charakter geeignet</li>\n<li>Berücksichtige die \"Advanced\"-Variante für erweiterte Regeln</li>\n</ul>\n</div>\n\n<h2>📚 Weiterführende Ressourcen</h2>\n<ul>\n<li>📦 <strong>Kompendien:</strong> Alle Items sind in den System-Kompendien verfügbar</li>\n<li>🔄 <strong>Sync-Funktion:</strong> Charaktere können mit Kompendium-Vorteilen synchronisiert werden</li>\n<li>📖 <strong>Item-Beschreibungen:</strong> Jedes Item enthält detaillierte Regeltexte</li>\n<li>💬 <strong>Community:</strong> Tausche dich über bewährte Item-Kombinationen aus</li>\n</ul>\n\n<hr>\n<p><em>💡 Experimentiere mit verschiedenen Kombinationen, um den perfekten Build für deinen Charakter zu finden!</em></p>"
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "sort": 0,
+      "ownership": {
+        "default": -1
+      },
+      "flags": {},
+      "_key": "!journal.pages!kurzitems001.kurzitpage003"
+    }
+  ],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "_key": "!journal!kurzitems001"
+}

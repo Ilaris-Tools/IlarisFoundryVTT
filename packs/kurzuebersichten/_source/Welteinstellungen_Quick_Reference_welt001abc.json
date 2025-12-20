@@ -1,0 +1,49 @@
+{
+  "name": "Kurzübersicht: Welteinstellungen",
+  "type": "JournalEntry",
+  "_id": "kurzweltein001",
+  "pages": [
+    {
+      "_id": "kurzwpage001",
+      "name": "Welteinstellungen - Schnellübersicht",
+      "type": "text",
+      "title": {
+        "show": true,
+        "level": 1
+      },
+      "text": {
+        "format": 1,
+        "content": "<h1>Welteinstellungen - Schnellübersicht</h1>\n<p>Die wichtigsten Welteinstellungen für das Ilaris-System können über den letzten Tab in der Seitenleiste geöffnet werden. Diese Einstellungen können nur von der Spielleitung vorgenommen werden.</p>\n\n<h2>Zugriff</h2>\n<p>📍 Seitenleiste → Letzter Tab → Welteinstellungen</p>\n\n<h2>Wichtigste Einstellungen</h2>\n\n<h3>🎯 Platzbedarf berücksichtigen</h3>\n<p><strong>Hausregel aus Ilaris Advanced.</strong> Ohne Haken wird der Platzbedarf nicht angezeigt und in Berechnungen als 0 angenommen.</p>\n<p><em>⚠️ Erfordert Neustart von Foundry nach Änderung</em></p>\n\n<h3>🎲 Echte Patzer und Krits</h3>\n<p>Für alle, die es bevorzugen, dass eine 1 immer ein Patzer ist und eine 20 immer ein kritischer Erfolg - unabhängig von der Schwierigkeit der Probe.</p>\n\n<h3>⚡ Energiekosten-Einstellung</h3>\n<p>Wenn aktiviert: Energiekosten können nur bei Unitatio-Vorteil oder nicht-numerischen Kosten manuell gesetzt werden.<br>\nWenn deaktiviert: Energiekosten können immer manuell gesetzt werden.</p>\n\n<h3>⬡ Hexagonale Token-Bilder</h3>\n<p>Charakterbilder auf Hexfeld-Karten werden als Hexagone zugeschnitten. Verbessert die visuelle Darstellung auf Hexfeld-Gittern.</p>\n\n<h3>🔄 Charakter-Synchronisation Button ausblenden</h3>\n<p>Blendet den \"Charakter mit Kompendium-Vorteilen Synchronisieren\"-Button auf dem Heldensheet aus.</p>\n\n<h2>Automatisierung</h2>\n\n<h3>🌤️ Scene-Umgebungseinstellungen verwenden</h3>\n<p>Wenn aktiviert: Licht und Wetter aus den Scene-Einstellungen werden automatisch in Fernkampf-Dialogen vorausgewählt.<br>\nUmgebungsbedingungen können direkt im Szene-Config Menü gesetzt werden.</p>\n\n<h3>🎯 Zielauswahl-System verwenden</h3>\n<p>Aktiviert Zielauswahl-Funktion und automatische Verteidigungsaufforderungen in Kampfdialogen:</p>\n<ul>\n<li>Ermöglicht Auswahl von Zielen für Angriffe</li>\n<li>Sendet automatisch Verteidigungsprompts an angegriffene Akteure</li>\n<li>Bei Fernkampf: Ziele können mit Schilden oder durch Ausweichen mit Akrobatik verteidigen</li>\n</ul>\n\n<hr>\n\n<h2>📚 Weiterführende Informationen</h2>\n<p>Für eine ausführliche Beschreibung aller Einstellungen, siehe die vollständige Dokumentation unter <code>docs/einstellungen.md</code> oder im MkDocs-Guide des Systems.</p>\n\n<p><em>💡 Tipp: Experimentiere mit den Automatisierungseinstellungen, um den Spielfluss für deine Gruppe zu optimieren!</em></p>"
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "sort": 0,
+      "ownership": {
+        "default": -1
+      },
+      "flags": {},
+      "_key": "!journal.pages!kurzweltein001.kurzwpage001"
+    }
+  ],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "_key": "!journal!kurzweltein001"
+}
