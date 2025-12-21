@@ -68,6 +68,13 @@
         "macro-tools"
       ],
       "folders": []
+    },
+    {
+      "name": "Anleitungen",
+      "sorting": "a",
+      "color": "#95E1D3",
+      "packs": ["system-guides"],
+      "folders": []
     }
   ],
   "packs": [
@@ -167,6 +174,13 @@
       "type": "Macro",
       "name": "macro-tools",
       "path": "packs/macro-tools",
+      "system": "Ilaris"
+    },
+    {
+      "label": "System-Guides (Deutsch)",
+      "type": "JournalEntry",
+      "name": "system-guides",
+      "path": "./packs/system-guides",
       "system": "Ilaris"
     }
   ],

@@ -1,0 +1,138 @@
+{
+  "name": "Guide: Item-Sondermöglichkeiten",
+  "pages": [
+    {
+      "name": "Übersicht",
+      "type": "text",
+      "title": {
+        "show": true,
+        "level": 1
+      },
+      "text": {
+        "format": 1,
+        "content": "<h1>Item-Sondermöglichkeiten im Ilaris System</h1><p>Dieser Guide erklärt die besonderen Features und Möglichkeiten von Items im Ilaris FoundryVTT System.</p><p><strong>Navigation:</strong></p><ul><li>@UUID[.items_vorteile]{Vorteile auswählen und verwenden}</li><li>@UUID[.items_manoever]{Manöver-System}</li><li>@UUID[.items_waffen]{Waffen und Kampfstile}</li><li>@UUID[.items_tipps]{Tipps und Best Practices}</li></ul><p><em>Siehe auch:</em></p><ul><li>@Compendium[Ilaris.system-guides.welteinstellungen_guide]{Guide: Welteinstellungen}</li><li>@Compendium[Ilaris.system-guides.spezialdialoge_guide]{Guide: Spezialdialoge}</li></ul>"
+      },
+      "_id": "items_uebersicht",
+      "image": {},
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "sort": 0,
+      "ownership": {
+        "default": -1
+      },
+      "flags": {}
+    },
+    {
+      "name": "Vorteile",
+      "type": "text",
+      "title": {
+        "show": true,
+        "level": 1
+      },
+      "text": {
+        "format": 1,
+        "content": "<h1>Vorteile auswählen und verwenden</h1><h2>Was sind Vorteile?</h2><p>Vorteile sind besondere Charaktereigenschaften, die:</p><ul><li>Boni auf Proben geben</li><li>Neue Fähigkeiten freischalten</li><li>Voraussetzungen für Manöver erfüllen</li><li>Charakter individualisieren</li></ul><h2>Vorteile hinzufügen</h2><h3>Aus dem Kompendium</h3><ol><li>Öffne Kompendium \"Vorteile\" (Sidebar)</li><li>Suche gewünschten Vorteil</li><li>Ziehe per Drag&Drop auf Charakterbogen</li><li>Vorteil erscheint im Tab \"Vorteile\"</li></ol><p><strong>Beispiele:</strong></p><ul><li><strong>Flink:</strong> +2 auf Ausweichen und Initiative</li><li><strong>Zäh:</strong> +2 auf Konstitution-Proben</li><li><strong>Zauberer:</strong> Ermöglicht Zaubern, zeigt AsP an</li><li><strong>Geweiht:</strong> Ermöglicht Liturgien, zeigt KaP an</li></ul><h3>Per Sephrasto-Import</h3><p>Charaktere aus Sephrasto enthalten bereits alle Vorteile:</p><ol><li>Exportiere Charakter in Sephrasto (Foundry-Format)</li><li>Ziehe .json-Datei in Foundry</li><li>Alle Vorteile werden automatisch importiert</li></ol><p><strong>Achtung:</strong> Bei erneutem Import werden alle Vorteile überschrieben!</p><h2>Vorteil-Typen</h2><h3>Passive Vorteile</h3><p>Wirken permanent ohne Aktivierung - Beispiel: Flink (+2 Initiative, +2 Ausweichen)</p><h3>Aktive Vorteile</h3><p>Müssen bewusst eingesetzt werden - Beispiel: Kampfreflexe (ermöglicht Manöver \"Blitzreaktion\")</p><h2>Vorteile synchronisieren</h2><p>Button \"Charakter mit Kompendium-Vorteilen Synchronisieren\":</p><ul><li><strong>Funktion:</strong> Aktualisiert Vorteile mit neuesten Kompendium-Versionen</li><li><strong>Risiko:</strong> Überschreibt manuelle Anpassungen!</li><li><strong>Ausblenden:</strong> Welteinstellungen → \"Charakter-Synchronisation Button ausblenden\"</li></ul><h2>Häufige Fehler</h2><p><strong>\"Vorteil wird nicht angewendet\"</strong></p><ul><li>→ Prüfe, ob Vorteil vollständig implementiert ist</li><li>→ Manche Vorteile sind nur narrativ</li><li>→ Charakterbogen neu laden (F5)</li></ul><p><strong>\"Manöver erscheint trotz Vorteil nicht\"</strong></p><ul><li>→ Weitere Voraussetzungen? (Waffe, Kampfstil)</li><li>→ Manöver-Kompendium aktiviert?</li><li>→ Namen müssen exakt übereinstimmen</li></ul>"
+      },
+      "_id": "items_vorteile",
+      "image": {},
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "sort": 100000,
+      "ownership": {
+        "default": -1
+      },
+      "flags": {}
+    },
+    {
+      "name": "Manöver-System",
+      "type": "text",
+      "title": {
+        "show": true,
+        "level": 1
+      },
+      "text": {
+        "format": 1,
+        "content": "<h1>Manöver-System</h1><h2>Was sind Manöver?</h2><p>Manöver sind spezielle Kampftechniken, die:</p><ul><li>Im Kampfdialog auswählbar sind</li><li>Modifikatoren auf AT/VW/Schaden anwenden</li><li>Besondere Effekte ermöglichen</li><li>Voraussetzungen haben (Vorteil, Waffe, Kampfstil)</li></ul><h2>Manöver verwenden</h2><ol><li>Öffne Nahkampf- oder Fernkampf-Dialog</li><li>Verfügbare Manöver erscheinen im Dialog</li><li>Aktiviere Checkbox beim gewünschten Manöver</li><li>Modifikatoren werden automatisch angewendet</li><li>Würfeln</li></ol><h2>Voraussetzungen</h2><p>Manöver benötigen oft mehrere Voraussetzungen gleichzeitig:</p><ul><li><strong>Vorteil:</strong> Z.B. \"Waffenmeister\" für \"Meisterparade\"</li><li><strong>Waffeneigenschaft:</strong> Z.B. \"Wuchtig\" für \"Wuchtschlag\"</li><li><strong>Kampfstil:</strong> Z.B. \"Fechten\" für \"Finte\"</li><li><strong>Ausgerüstete Waffe:</strong> Entsprechende Waffe muss aktiv sein</li></ul><p><strong>Hinweis:</strong> Manöver ohne erfüllte Voraussetzungen werden ausgegraut oder nicht angezeigt.</p><h2>Häufige Manöver</h2><h3>Nahkampf-Manöver</h3><ul><li><strong>Wuchtschlag:</strong> -2 AT, +2 Schaden (Waffe: Wuchtig)</li><li><strong>Präziser Stich:</strong> -2 AT, ignoriert Rüstung (Waffe: Präzise)</li><li><strong>Finte:</strong> -2 AT, Gegner -2 VW (Kampfstil: Fechten)</li><li><strong>Defensive Kampfweise:</strong> +2 VW, -2 AT (Immer verfügbar)</li></ul><h3>Fernkampf-Manöver</h3><ul><li><strong>Gezielter Schuss:</strong> -4 AT, spezifische Körperstelle</li><li><strong>Schnellschuss:</strong> Zweiter Schuss mit -4 AT (Vorteil erforderlich)</li></ul><h2>Manöver-Kompendien</h2><p>Welche Manöver verfügbar sind, wird in Welteinstellungen kontrolliert:</p><ol><li>Welteinstellungen → Systemeinstellungen konfigurieren → Kompendien</li><li>\"Manöver Kompendien\" auswählen</li><li>Standard: <code>[\"Ilaris.manover\"]</code></li><li>Eigene Kompendien hinzufügen möglich</li></ol><h2>Eigene Manöver erstellen</h2><ol><li>Erstelle Kompendium (Typ: Item)</li><li>Erstelle neues Item (Typ: Manöver)</li><li>Konfiguriere:<ul><li>Name und Beschreibung</li><li>Voraussetzungen (Vorteil, Waffeneigenschaft)</li><li>Modifikatoren (AT, VW, Schaden)</li><li>Optionen (Checkboxen, Eingabefelder)</li></ul></li><li>Aktiviere Kompendium in Welteinstellungen</li><li>Foundry neu starten</li></ol><p><strong>Tipp:</strong> Kopiere existierendes Manöver als Vorlage!</p><h2>Manöver-Eingabeelemente</h2><p>Manöver können verschiedene Eingabeelemente haben:</p><ul><li><strong>Checkbox:</strong> An/Aus (z.B. \"Defensive Kampfweise\")</li><li><strong>Zahleneingabe:</strong> Variable Modifikatoren</li><li><strong>Dropdown:</strong> Mehrere Optionen (z.B. Körperstelle)</li></ul><h2>Häufige Fehler</h2><p><strong>\"Manöver wird nicht angezeigt\"</strong></p><ul><li>→ Voraussetzungen erfüllt? (Vorteil, Waffe, Kampfstil)</li><li>→ Waffe ausgerüstet?</li><li>→ Kampfstil gewählt?</li><li>→ Manöver-Kompendium in Welteinstellungen aktiviert?</li></ul><p><strong>\"Manöver kann nicht ausgewählt werden\"</strong></p><ul><li>→ Ausgegraut = Voraussetzungen nicht erfüllt</li><li>→ Prüfe Tooltip für Details</li></ul><p><strong>\"Modifikatoren werden nicht angewendet\"</strong></p><ul><li>→ Checkbox aktiviert?</li><li>→ Dialog neu öffnen</li><li>→ Bug melden (GitHub)</li></ul><p><em>Siehe auch:</em> @Compendium[Ilaris.system-guides.spezialdialoge_guide]{Guide: Spezialdialoge}</p>"
+      },
+      "_id": "items_manoever",
+      "image": {},
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "sort": 200000,
+      "ownership": {
+        "default": -1
+      },
+      "flags": {}
+    },
+    {
+      "name": "Waffen und Kampfstile",
+      "type": "text",
+      "title": {
+        "show": true,
+        "level": 1
+      },
+      "text": {
+        "format": 1,
+        "content": "<h1>Waffen und Kampfstile</h1><h2>Waffen ausrüsten</h2><h3>Nahkampfwaffen</h3><ol><li>Waffe aus Kompendium oder Inventar</li><li>Klicke auf Symbol links neben dem Namen (Ausrüsten)</li><li>Wähle: <strong>Hauptwaffe</strong> oder <strong>Nebenwaffe</strong></li><li>Waffe wird im Kampf-Tab angezeigt</li></ol><p><strong>Wichtig:</strong></p><ul><li><strong>Einhändige Waffe:</strong> Als Hauptwaffe ausrüsten</li><li><strong>Zweihändige Waffe:</strong> Als BEIDE (Haupt- UND Nebenwaffe) ausrüsten!</li></ul><p><strong>Fehler-Tipp:</strong> Zweihändige Waffen nur als Hauptwaffe = Abzüge für einhändige Führung!</p><h3>Fernkampfwaffen</h3><p>Fernkampfwaffen werden nur ausgerüstet (ein Symbol), keine Haupt/Neben-Unterscheidung.</p><h2>Waffeneigenschaften</h2><p>Waffeneigenschaften beeinflussen verfügbare Manöver:</p><ul><li><strong>Wuchtig:</strong> Ermöglicht \"Wuchtschlag\"</li><li><strong>Präzise:</strong> Ermöglicht \"Präziser Stich\"</li><li><strong>Lang:</strong> Reichweitenvorteil</li><li><strong>Defensiv:</strong> +1 VW</li><li><strong>Parierwaffe:</strong> Bonus auf Parade</li></ul><p>Eigenschaften werden automatisch erkannt und beeinflussen Manöver-Verfügbarkeit.</p><h2>Kampfstile</h2><p>Kampfstile modifizieren Kampfweise und schalten Manöver frei:</p><h3>Kampfstil wählen</h3><ol><li>Charakterbogen → Tab \"Kampf\"</li><li>Dropdown \"Kampfstil\"</li><li>Wähle aktiven Stil</li></ol><h3>Wichtige Kampfstile</h3><ul><li><strong>Standard:</strong> Keine Boni, keine Mali</li><li><strong>Fechten:</strong> +AT, -Schaden, Finten-Manöver</li><li><strong>Schildkampf:</strong> +VW, Schildmanöver</li><li><strong>Raufen:</strong> Waffenloser Kampf</li></ul><p><strong>Hinweis:</strong> Kampfstile werden nur für ausgerüstete Haupt- und Nebenwaffen berechnet.</p><h2>Waffen-Werte</h2><h3>Angriffswert (AT)</h3><p>Berechnet aus:</p><ul><li>Waffenfertigkeit (FW)</li><li>Attribute (je nach Waffe)</li><li>Waffe selbst (AT-Wert)</li><li>Kampfstil</li><li>Talente</li></ul><h3>Verteidigungswert (VW)</h3><p>Berechnet aus:</p><ul><li>Waffenfertigkeit</li><li>Attribute</li><li>Waffe (VW-Wert, oft niedriger als AT)</li><li>Kampfstil</li></ul><h3>Schaden</h3><p>Berechnet aus:</p><ul><li>Waffenschaden (Würfel + Bonus)</li><li>Kraftbonus (KK-abhängig)</li><li>Manöver-Modifikatoren</li></ul><h2>Schilder</h2><p>Schilder sind Nebenwaffen mit besonderen Eigenschaften:</p><ul><li><strong>Verteidigungsbonus:</strong> +VW</li><li><strong>Schildmanöver:</strong> Schildstoß, Schilddeckung</li><li><strong>Fernkampf-Verteidigung:</strong> Parade gegen Projektile</li></ul><p><strong>Ausrüsten:</strong> Als Nebenwaffe neben Hauptwaffe</p><h2>Platzbedarf (Advanced)</h2><p>Wenn \"Platzbedarf berücksichtigen\" aktiviert ist:</p><ul><li>Waffen haben Platzbedarf-Wert</li><li>Beeinflusst Engkampf-Situationen</li><li>Große Waffen in engen Räumen: Mali</li></ul><p><strong>Aktivierung:</strong> Welteinstellungen → \"Platzbedarf berücksichtigen\" (erfordert Neustart)</p><h2>Waffenzustände</h2><h3>Beschädigt</h3><ul><li>Reduzierte Werte</li><li>Muss repariert werden (Handwerk-Probe)</li></ul><h3>Verbessert</h3><ul><li>Meisterwerk: Bonus auf AT/Schaden</li><li>Magisch: Spezielle Effekte</li></ul><h2>Häufige Fehler</h2><p><strong>\"Waffe zeigt falsche Werte\"</strong></p><ul><li>→ Ist Waffe ausgerüstet (Symbol aktiv)?</li><li>→ Zweihändige Waffe als Haupt UND Neben?</li><li>→ Fertigkeit vorhanden und trainiert?</li></ul><p><strong>\"Kampfstil wird nicht angewendet\"</strong></p><ul><li>→ Kampfstil gewählt?</li><li>→ Waffen ausgerüstet?</li><li>→ Kampfstilberechnung nur für ausgerüstete Waffen</li></ul><p><strong>\"Keine Verteidigung möglich\"</strong></p><ul><li>→ Waffe hat VW-Wert?</li><li>→ Nicht alle Waffen sind zum Parieren geeignet</li><li>→ Alternative: Ausweichen</li></ul><h2>Best Practices</h2><ul><li><strong>Backup-Waffe:</strong> Immer zweite Waffe dabei (falls entwaffnet)</li><li><strong>Situationsanpassung:</strong> Verschiedene Waffen für verschiedene Situationen</li><li><strong>Kampfstil wechseln:</strong> Je nach Gegner anpassen</li><li><strong>Waffenpflege:</strong> Beschädigungen zeitnah reparieren</li></ul>"
+      },
+      "_id": "items_waffen",
+      "image": {},
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "sort": 300000,
+      "ownership": {
+        "default": -1
+      },
+      "flags": {}
+    },
+    {
+      "name": "Tipps und Best Practices",
+      "type": "text",
+      "title": {
+        "show": true,
+        "level": 1
+      },
+      "text": {
+        "format": 1,
+        "content": "<h1>Tipps und Best Practices</h1><h2>Inventar-Management</h2><h3>Gewicht und Traglast</h3><p>Ilaris nutzt Traglast-Regeln aus Ilaris Advanced:</p><ul><li><strong>Tragend:</strong> An der Person, kein Gewicht (z.B. Kleidung)</li><li><strong>Mitführend:</strong> An der Person, mit Gewicht (Waffen, Ausrüstung)</li><li><strong>Lagerplatz:</strong> Negatives Gewicht = externer Speicher (z.B. Karren, Haus)</li></ul><p><strong>Überladen:</strong> Wenn Durchhaltevermögen (dh*) ≤ 0</p><h3>Inventar organisieren</h3><ul><li>Wichtige Items nach oben sortieren</li><li>Kategorien nutzen (Waffen, Rüstung, Verbrauchsgüter)</li><li>Nicht benötigte Items in Lagerplatz verschieben</li></ul><h2>Rüstungen</h2><h3>Rüstung ausrüsten</h3><ol><li>Rüstung aus Kompendium/Inventar</li><li>Symbol links anklicken (Ausrüsten)</li><li>Rüstungsschutz (RS) wird berechnet</li><li>Behinderung wird auf Proben angerechnet</li></ol><p><strong>Wichtig:</strong> Rüstungen werden erst berechnet, wenn sie angelegt werden!</p><h3>Rüstungszonen (Advanced)</h3><p>Bei detailliertem Spiel:</p><ul><li>Verschiedene Rüstungsteile für Körperzonen</li><li>Unterschiedlicher RS je Zone</li><li>Gezielter Schuss kann Schwachstellen ausnutzen</li></ul><h2>Gegenstände erstellen</h2><h3>Einfache Items</h3><ol><li>Charakterbogen → Items-Tab</li><li>\"Item erstellen\" Button</li><li>Typ wählen (Gegenstand, Waffe, Rüstung, etc.)</li><li>Name, Beschreibung, Werte eingeben</li></ol><h3>Erweiterte Items</h3><p>Für komplexe Items mit Effekten:</p><ul><li>Nutze Kompendium als Vorlage</li><li>Kopiere ähnliches Item</li><li>Passe Werte an</li><li>Teste ausgiebig!</li></ul><h2>Fertigkeiten und Talente</h2><h3>Neue Fertigkeit hinzufügen</h3><ol><li>Aus Kompendium auf Charakter ziehen</li><li>FW setzen (Fertigkeitswert)</li><li>Ggf. Talente zuordnen</li></ol><h3>Talente verknüpfen</h3><p>Talente werden automatisch erkannt, wenn:</p><ul><li>Name korrekt ist</li><li>Zuordnung zur richtigen Fertigkeit</li><li>Talent-Item auf Charakter vorhanden</li></ul><h2>Charakterimport und -export</h2><h3>Sephrasto-Import</h3><p><strong>Vorteile:</strong></p><ul><li>Vollständiger Charakter mit allen Werten</li><li>Automatische Berechnung</li><li>Alle Vorteile/Fertigkeiten dabei</li></ul><p><strong>Nachteile:</strong></p><ul><li>Überschreibt bei erneutem Import alles!</li><li>Inventar geht verloren</li><li>Aktuelle Ressourcen zurückgesetzt</li></ul><p><strong>Workaround:</strong></p><ul><li>Inventar vor Re-Import in Notizen kopieren</li><li>Nur initial importieren, dann manuell steigern</li></ul><h3>Foundry-Export</h3><ol><li>Rechtsklick auf Charakter → Export</li><li>.json-Datei speichern</li><li>Als Backup oder zum Teilen</li></ol><h2>Kompendien nutzen</h2><h3>System-Kompendien</h3><ul><li><strong>Nicht bearbeiten!</strong> Werden bei Updates überschrieben</li><li>Stattdessen: Kopieren in eigenes Kompendium</li></ul><h3>Eigene Kompendien</h3><ol><li>Sidebar → Compendium Packs</li><li>\"Kompendium erstellen\"</li><li>Typ wählen (Actor, Item, etc.)</li><li>Eigene Inhalte speichern</li></ol><p><strong>Vorteile:</strong></p><ul><li>Update-sicher</li><li>Teilbar mit anderen Welten</li><li>Exportierbar</li></ul><h2>Fehlerbehebung</h2><h3>Charakterwerte falsch</h3><ol><li>Prüfe Grundwerte (Attribute)</li><li>Prüfe Fertigkeitswerte</li><li>Sind alle Items korrekt ausgerüstet?</li><li>Wunden/Erschöpfung berücksichtigt?</li><li>Vorteile korrekt?</li></ol><h3>Items verschwinden</h3><ul><li>→ Prüfe Filter im Items-Tab</li><li>→ Suche in verschiedenen Kategorien</li><li>→ Ggf. aus Backup wiederherstellen</li></ul><h3>Berechnungen inkorrekt</h3><ul><li>→ F5 (Neu laden)</li><li>→ Item löschen und neu hinzufügen</li><li>→ Charakterbogen neu öffnen</li><li>→ Bug melden wenn reproduzierbar</li></ul><h2>Performance</h2><h3>Zu viele Items</h3><ul><li>Nicht benötigte Items in Kompendium verschieben</li><li>Lagerplatz für selten genutzte Gegenstände</li><li>Alte/kaputte Items löschen</li></ul><h3>Große Charakterbögen</h3><ul><li>Bilder optimieren (kleinere Auflösung)</li><li>Nicht benötigte Vorteile entfernen</li><li>Historische Items archivieren</li></ul><h2>Zusammenarbeit mit SL</h2><h3>Kommunikation</h3><ul><li>Informiere SL über neue Vorteile</li><li>Kläre Hausregeln für eigene Items</li><li>Berichte Bugs/Unklarheiten</li></ul><h3>Regelinterpretation</h3><ul><li>System ist nicht 100% vollständig</li><li>Manche Vorteile nur narrativ</li><li>SL hat finales Wort</li></ul><h2>Nützliche Links</h2><ul><li><strong>FAQ:</strong> Siehe docs/faq.md</li><li><strong>GitHub:</strong> <a href=\"https://github.com/Ilaris-Tools/IlarisFoundryVTT\">Repository</a></li><li><strong>Discord:</strong> <a href=\"https://discord.gg/qEKBnjsspX\">Community</a></li><li><strong>Forum:</strong> <a href=\"https://dsaforum.de/viewtopic.php?f=180&t=55746\">DSA-Forum</a></li></ul><hr /><p><em>Zuletzt aktualisiert: Version 12.2.6</em></p>"
+      },
+      "_id": "items_tipps",
+      "image": {},
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "sort": 400000,
+      "ownership": {
+        "default": -1
+      },
+      "flags": {}
+    }
+  ],
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "Ilaris",
+    "systemVersion": "12.2.6"
+  }
+}

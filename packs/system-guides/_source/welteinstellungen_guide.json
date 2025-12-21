@@ -1,0 +1,138 @@
+{
+  "name": "Guide: Welteinstellungen",
+  "pages": [
+    {
+      "name": "Übersicht",
+      "type": "text",
+      "title": {
+        "show": true,
+        "level": 1
+      },
+      "text": {
+        "format": 1,
+        "content": "<h1>Welteinstellungen im Ilaris System</h1><p>Dieser umfassende Guide erklärt alle verfügbaren Welteinstellungen für das Ilaris FoundryVTT System. Welteinstellungen können nur von der Spielleitung (SL) konfiguriert werden und sind über das Zahnrad-Symbol in der Seitenleiste zugänglich.</p><p><strong>Navigation:</strong></p><ul><li>@UUID[.welteinstellungen_allgemein]{Allgemeine Einstellungen}</li><li>@UUID[.welteinstellungen_automatisierung]{Automatisierung}</li><li>@UUID[.welteinstellungen_kompendien]{Kompendien}</li><li>@UUID[.welteinstellungen_tipps]{Tipps und Fehlerquellen}</li></ul><p><em>Siehe auch:</em> @Compendium[Ilaris.system-guides.spezialdialoge_guide]{Guide: Spezialdialoge}</p>"
+      },
+      "_id": "welteinstellungen_uebersicht",
+      "image": {},
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "sort": 0,
+      "ownership": {
+        "default": -1
+      },
+      "flags": {}
+    },
+    {
+      "name": "Allgemeine Einstellungen",
+      "type": "text",
+      "title": {
+        "show": true,
+        "level": 1
+      },
+      "text": {
+        "format": 1,
+        "content": "<h1>Allgemeine Welteinstellungen</h1><p>Diese Einstellungen beeinflussen grundlegende Spielmechaniken und Darstellung.</p><h2>Platzbedarf berücksichtigen</h2><p><strong>Typ:</strong> Welteinstellung (erfordert Neustart)</p><p><strong>Beschreibung:</strong> Platzbedarf ist eine Hausregel aus <em>Ilaris Advanced</em>. Wenn aktiviert, wird der Platzbedarf von Waffen angezeigt und in Berechnungen berücksichtigt. Ohne Haken wird der Platzbedarf als 0 angenommen.</p><p><strong>Empfehlung:</strong> Aktiviere diese Option nur, wenn du die Hausregeln aus Ilaris Advanced verwendest und dich mit den Platzbedarf-Mechaniken auskennst.</p><p><strong>Typische Fehlerquellen:</strong></p><ul><li>Nach Änderung dieser Einstellung muss Foundry neu gestartet werden</li><li>Charaktere müssen möglicherweise ihre Waffen neu ausrüsten</li><li>Nicht alle Waffen im Kompendium haben Platzbedarf-Werte gesetzt</li></ul><hr /><h2>Echte Patzer und Krits</h2><p><strong>Typ:</strong> Welteinstellung</p><p><strong>Beschreibung:</strong> Diese Einstellung ist für Gruppen gedacht, die möchten, dass eine gewürfelte 1 immer ein Patzer ist und eine 20 immer ein kritischer Erfolg (Triumph) - unabhängig davon, ob die Probe auch ohne diese Würfelergebnisse gelungen oder misslungen wäre.</p><p><strong>Standard-Ilaris-Regel:</strong> Eine 1 ist nur ein Patzer, wenn die Probe misslingt. Eine 20 ist nur ein Krit, wenn die Probe gelingt.</p><p><strong>Mit aktivierter Option:</strong> Eine 1 ist immer ein Patzer, eine 20 immer ein Krit.</p><p><strong>Empfehlung:</strong> Dies ist reine Geschmackssache. Die Standardregel ist regelkonformer, die Alternative sorgt für mehr dramatische Momente.</p><hr /><h2>Umbenennen von Triumph in Crit</h2><p><strong>Typ:</strong> Welteinstellung</p><p><strong>Beschreibung:</strong> Ersetzt das Wort \"Triumph\" durch \"Crit\" in allen Texten und Ausgaben.</p><p><strong>Empfehlung:</strong> Nutze diese Option, wenn deine Gruppe lieber den Begriff \"Crit\" verwendet.</p><hr /><h2>Energiekosten-Einstellung einschränken</h2><p><strong>Typ:</strong> Welteinstellung</p><p><strong>Beschreibung:</strong> Kontrolliert, wann Energiekosten (AsP/KaP) manuell gesetzt werden können.</p><ul><li><strong>Aktiviert:</strong> Energiekosten können nur bei Unitatio-Vorteil oder nicht-numerischen Kosten (z.B. \"permanent\", \"variabel\") manuell gesetzt werden</li><li><strong>Deaktiviert:</strong> Energiekosten können immer manuell angepasst werden</li></ul><p><strong>Empfehlung:</strong> Aktiviere diese Option für regelkonforme Spiele. Deaktiviere sie, wenn du Hausregeln verwendest oder mehr Flexibilität brauchst.</p><p><strong>Typische Fehlerquellen:</strong></p><ul><li>Spieler können ihre Zauber nicht anpassen → Prüfe diese Einstellung</li><li>Bei modifizierten Zaubern erscheint kein Eingabefeld → Überprüfe, ob der Charakter den Unitatio-Vorteil hat</li></ul><hr /><h2>Charakter-Synchronisation Button ausblenden</h2><p><strong>Typ:</strong> Client-Einstellung (jeder Spieler individuell)</p><p><strong>Beschreibung:</strong> Blendet den Button \"Charakter mit Kompendium-Vorteilen Synchronisieren\" auf dem Heldenbogen aus.</p><p><strong>Empfehlung:</strong> Standardmäßig aktiviert. Deaktiviere nur, wenn du den Sync-Button aktiv nutzen möchtest.</p><p><strong>Hinweis:</strong> Der Sync-Button aktualisiert Charaktere mit den neuesten Vorteilen aus den Kompendien, kann aber auch unerwünschte Änderungen vornehmen.</p><hr /><h2>Hexagonale Token-Bilder</h2><p><strong>Typ:</strong> Welteinstellung</p><p><strong>Beschreibung:</strong> Schneidet Charakterbilder auf Karten mit Hexfeld-Gittern als Hexagone zu, für eine bessere visuelle Darstellung.</p><p><strong>Empfehlung:</strong> Aktiviere diese Option nur, wenn du hauptsächlich Hex-Grids verwendest.</p><p><strong>Beispiel:</strong> Auf einer Hex-Karte werden Token automatisch hexagonal statt rund/quadratisch dargestellt.</p><hr /><h2>Alternativ Fernkampf-Ausweichen Talent</h2><p><strong>Typ:</strong> Welteinstellung (Text)</p><p><strong>Beschreibung:</strong> Legt fest, welches Talent alternativ zu Akrobatik zum Ausweichen von Fernkampfangriffen verwendet werden kann.</p><p><strong>Standard:</strong> Akrobatik</p><p><strong>Empfehlung:</strong> Lasse dieses Feld leer, es sei denn, du verwendest Hausregeln für Ausweichmanöver.</p>"
+      },
+      "_id": "welteinstellungen_allgemein",
+      "image": {},
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "sort": 100000,
+      "ownership": {
+        "default": -1
+      },
+      "flags": {}
+    },
+    {
+      "name": "Automatisierung",
+      "type": "text",
+      "title": {
+        "show": true,
+        "level": 1
+      },
+      "text": {
+        "format": 1,
+        "content": "<h1>Automatisierungs-Einstellungen</h1><p>Diese Einstellungen aktivieren automatische Features, die das Spielen erleichtern.</p><h2>Scene-Umgebungseinstellungen verwenden</h2><p><strong>Typ:</strong> Welteinstellung</p><p><strong>Standard:</strong> Aktiviert</p><p><strong>Beschreibung:</strong> Wenn aktiviert, werden Licht- und Wetterbedingungen aus den Szeneneinstellungen automatisch in Fernkampf-Dialogen vorausgewählt.</p><p><strong>So funktioniert es:</strong></p><ol><li>Öffne eine Szene</li><li>Klicke auf das Zahnrad-Symbol der Szene (Szene konfigurieren)</li><li>Setze unter \"Umgebung\" die Lichtverhältnisse (z.B. \"Dämmerung\", \"Dunkelheit\")</li><li>Setze Wetterbedingungen (z.B. \"Regen\", \"Nebel\")</li><li>Beim Auslösen eines Fernkampfangriffs werden diese Werte automatisch vorselektiert</li></ol><p><strong>Vorteile:</strong></p><ul><li>Keine manuelle Eingabe von Umgebungsbedingungen bei jedem Angriff</li><li>Konsistente Modifikatoren für alle Spieler auf derselben Szene</li><li>Zeitersparnis im Kampf</li></ul><p><strong>Empfehlung:</strong> Sollte aktiviert bleiben für effizienteres Spiel.</p><p><strong>Typische Fehlerquellen:</strong></p><ul><li>Vergiss nicht, die Umgebungsbedingungen in der Szene zu setzen</li><li>Spieler können die Werte im Dialog noch überschreiben, falls nötig</li></ul><hr /><h2>Zielauswahl-System verwenden</h2><p><strong>Typ:</strong> Welteinstellung</p><p><strong>Standard:</strong> Deaktiviert</p><p><strong>Beschreibung:</strong> Aktiviert erweiterte Zielauswahl-Features und automatische Verteidigungsaufforderungen in Kampfdialogen.</p><p><strong>Funktionen bei Aktivierung:</strong></p><ul><li><strong>Zielauswahl:</strong> Klicke auf Token, um sie als Ziel zu markieren (erscheint mit Fadenkreuz)</li><li><strong>Automatische Verteidigung:</strong> Angegriffene Spieler erhalten automatisch eine Verteidigungsaufforderung</li><li><strong>Fernkampf-Verteidigung:</strong> Ziele können mit Schild oder Akrobatik (Ausweichen) reagieren</li><li><strong>Nahkampf-Verteidigung:</strong> Ziele können Parieren oder Ausweichen wählen</li></ul><p><strong>Anwendung:</strong></p><ol><li>Token auf der Karte auswählen (Angreifer)</li><li>Ziel-Token anklicken (erscheint mit Fadenkreuz-Symbol)</li><li>Angriff ausführen</li><li>Dem Ziel wird automatisch ein Verteidigungsdialog angezeigt</li></ol><p><strong>Empfehlung:</strong> Ideal für Gruppen, die viel Kampf-Automatisierung wünschen. Kann für Einsteiger anfangs überwältigend sein.</p><p><strong>Voraussetzungen:</strong></p><ul><li>Token müssen Eigentümer (Owner) haben</li><li>Charaktere benötigen entsprechende Verteidigungswaffen/-fertigkeiten</li></ul><p><strong>Typische Fehlerquellen:</strong></p><ul><li>\"Verteidigung erscheint nicht\" → Prüfe Token-Ownership und ob Charakter Verteidigungsmöglichkeiten hat</li><li>\"Kann kein Ziel auswählen\" → Token muss mit Linksklick markiert werden</li><li>\"Falsche Spieler erhalten Verteidigung\" → Prüfe Token-Ownership-Einstellungen</li></ul><p><strong>Kombination mit Scene-Umgebung:</strong> Beide Features ergänzen sich gut. Umgebungsbedingungen werden auch bei automatischen Verteidigungsaufforderungen berücksichtigt.</p><hr /><h2>Deaktivierte Automatisierung - Manuelles Spiel</h2><p>Wenn beide Automatisierungs-Features deaktiviert sind:</p><ul><li>Alle Modifikatoren müssen manuell eingegeben werden</li><li>Verteidigung erfolgt über Chat-Nachfragen oder manuell</li><li>Mehr Kontrolle, aber zeitaufwändiger</li><li>Empfohlen für Gruppen, die langsames, narratives Spiel bevorzugen</li></ul>"
+      },
+      "_id": "welteinstellungen_automatisierung",
+      "image": {},
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "sort": 200000,
+      "ownership": {
+        "default": -1
+      },
+      "flags": {}
+    },
+    {
+      "name": "Kompendien-Einstellungen",
+      "type": "text",
+      "title": {
+        "show": true,
+        "level": 1
+      },
+      "text": {
+        "format": 1,
+        "content": "<h1>Kompendien-Einstellungen</h1><p>Diese erweiterten Einstellungen kontrollieren, welche Kompendien das System für verschiedene Spielelemente verwendet. Sie sind über die Einstellungsmenüs zugänglich, nicht direkt in der Welteinstellungen-Liste.</p><h2>Fertigkeiten Kompendien</h2><p><strong>Zugriff:</strong> Welteinstellungen → Systemeinstellungen konfigurieren → Kompendien</p><p><strong>Beschreibung:</strong> Wähle die Kompendien aus, die Fertigkeiten enthalten.</p><p><strong>Standard:</strong> <code>[\"Ilaris.fertigkeiten-und-talente\"]</code></p><p><strong>Anwendungsfälle:</strong></p><ul><li>Eigene Fertigkeiten-Kompendien mit Hausregeln erstellen</li><li>Mehrere Kompendien kombinieren (z.B. Standard + ADVANCED)</li><li>Kompendien aus Modulen einbinden</li></ul><p><strong>Wichtig:</strong> Änderungen erfordern einen Neustart von Foundry</p><hr /><h2>Waffen Kompendien</h2><p><strong>Standard:</strong> <code>[\"Ilaris.waffen\"]</code></p><p><strong>Beschreibung:</strong> Legt fest, welche Kompendien Waffen enthalten.</p><p><strong>Anwendungsfälle:</strong></p><ul><li>Eigene Waffen mit modifizierten Werten</li><li>Zusätzliche Waffen aus Hausregeln oder Settings</li><li>Waffen aus importierten Abenteuern</li></ul><hr /><h2>Talente Kompendien</h2><p><strong>Standard:</strong> <code>[\"Ilaris.fertigkeiten-und-talente\"]</code></p><p><strong>Beschreibung:</strong> Wähle Kompendien mit Talenten.</p><p><strong>Hinweis:</strong> Talente sind oft im selben Kompendium wie Fertigkeiten gespeichert.</p><hr /><h2>Manöver Kompendien</h2><p><strong>Standard:</strong> <code>[\"Ilaris.manover\"]</code></p><p><strong>Beschreibung:</strong> Diese Einstellung ist besonders wichtig! Sie bestimmt, welche Manöver in Kampfdialogen zur Verfügung stehen.</p><p><strong>Anwendungsfälle:</strong></p><ul><li>Eigene Kampfmanöver als Hausregeln</li><li>Einschränkung verfügbarer Manöver für bestimmte Kampagnen</li><li>Test-Manöver ohne Beeinflussung des Hauptkompendiums</li></ul><p><strong>Beispiel - Eigenes Manöver-Kompendium erstellen:</strong></p><ol><li>Erstelle ein neues Kompendium (Typ: Item)</li><li>Kopiere Manöver aus <code>Ilaris.manover</code> oder erstelle neue</li><li>Öffne Welteinstellungen → Systemeinstellungen konfigurieren → Kompendien</li><li>Füge dein Kompendium zu \"Manöver Kompendien\" hinzu: <code>[\"Ilaris.manover\", \"world.meine-manoever\"]</code></li><li>Foundry neu starten</li></ol><p><strong>Typische Fehlerquellen:</strong></p><ul><li>\"Manöver werden nicht angezeigt\" → Prüfe, ob das Kompendium in den Einstellungen aktiviert ist</li><li>\"Manöver können nicht ausgewählt werden\" → Prüfe Voraussetzungen (Waffe, Kampfstil, Vorteil)</li><li>\"Nach Update sind eigene Manöver weg\" → System-Kompendien werden überschrieben, nutze eigene Kompendien für Hausregeln</li></ul><hr /><h2>Vorteile Kompendien</h2><p><strong>Standard:</strong> <code>[\"Ilaris.vorteile\"]</code></p><p><strong>Beschreibung:</strong> Legt fest, aus welchen Kompendien Vorteile geladen werden.</p><p><strong>Wichtig für:</strong></p><ul><li>Synchronisation von Charakteren mit Kompendium-Vorteilen</li><li>Berechnung von Vorteilseffekten</li><li>Voraussetzungen für Manöver</li></ul><hr /><h2>Waffeneigenschaften Kompendien</h2><p><strong>Standard:</strong> <code>[\"Ilaris.waffeneigenschaften\"]</code></p><p><strong>Beschreibung:</strong> Kompendien mit Waffeneigenschaften (z.B. \"Wuchtig\", \"Präzise\").</p><p><strong>Anwendung:</strong> Waffeneigenschaften beeinflussen verfügbare Manöver und Kampfmechaniken.</p><hr /><h2>Abgeleitete Werte Kompendien</h2><p><strong>Standard:</strong> Systemkompendium</p><p><strong>Beschreibung:</strong> Enthält Formeln für abgeleitete Werte (Lebensenergie, Zähigkeit, etc.)</p><p><strong>Warnung:</strong> Nur ändern, wenn du genau weißt, was du tust! Falsche Formeln können Charakterberechnungen zerstören.</p><hr /><h2>Best Practices für eigene Kompendien</h2><ol><li><strong>Benenne eindeutig:</strong> z.B. \"world.meine-welt-fertigkeiten\" statt nur \"fertigkeiten\"</li><li><strong>Sichere regelmäßig:</strong> Exportiere eigene Kompendien als Backup</li><li><strong>Teste isoliert:</strong> Teste neue Items zunächst in einer Test-Welt</li><li><strong>Dokumentiere Änderungen:</strong> Notiere, warum du Einstellungen geändert hast</li><li><strong>Update-Sicher:</strong> Nutze eigene Kompendien für Hausregeln, nie System-Kompendien direkt bearbeiten</li></ol><p><em>Siehe auch:</em> @Compendium[Ilaris.system-guides.item_features_guide]{Guide: Item-Sondermöglichkeiten}</p>"
+      },
+      "_id": "welteinstellungen_kompendien",
+      "image": {},
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "sort": 300000,
+      "ownership": {
+        "default": -1
+      },
+      "flags": {}
+    },
+    {
+      "name": "Tipps und Fehlerquellen",
+      "type": "text",
+      "title": {
+        "show": true,
+        "level": 1
+      },
+      "text": {
+        "format": 1,
+        "content": "<h1>Tipps und häufige Fehlerquellen</h1><h2>Häufige Probleme und Lösungen</h2><h3>\"Einstellungen werden nicht angewendet\"</h3><ul><li>Prüfe, ob ein Neustart erforderlich ist (bei Platzbedarf, Kompendien)</li><li>Stelle sicher, dass du als SL angemeldet bist</li><li>Prüfe, ob es eine Client- oder Welteinstellung ist</li></ul><h3>\"Spieler sehen verschiedene Werte\"</h3><ul><li>Welteinstellungen gelten für alle</li><li>Client-Einstellungen (wie Sync-Button) sind pro Nutzer</li><li>Browser-Cache leeren und neu laden</li></ul><h3>\"Nach Update funktioniert etwas nicht mehr\"</h3><ul><li>Lies die Breaking Changes (erscheinen automatisch beim Start)</li><li>Prüfe, ob neue Einstellungen hinzugekommen sind</li><li>Überprüfe eigene Kompendien auf Kompatibilität</li></ul><h3>\"Automatisierung funktioniert nicht\"</h3><ul><li>Prüfe Token-Ownership (Rechtsklick auf Token → Konfigurieren → Eigentümerschaft)</li><li>Stelle sicher, dass Charaktere die nötigen Fertigkeiten/Items haben</li><li>Prüfe, ob Automatisierungs-Einstellungen aktiviert sind</li></ul><hr /><h2>Empfohlene Einstellungen für verschiedene Spielstile</h2><h3>Einsteiger-freundlich</h3><ul><li>❌ Platzbedarf berücksichtigen</li><li>✅ Echte Patzer und Krits (für mehr Drama)</li><li>✅ Energiekosten einschränken</li><li>✅ Sync-Button ausblenden</li><li>✅ Scene-Umgebung verwenden</li><li>❌ Zielauswahl-System (erst später aktivieren)</li></ul><h3>Regelkonform / Turnierspiel</h3><ul><li>❌ Platzbedarf (außer Ilaris Advanced)</li><li>❌ Echte Patzer und Krits</li><li>✅ Energiekosten einschränken</li><li>✅ Scene-Umgebung verwenden</li><li>✅ Zielauswahl-System</li></ul><h3>Hausregeln / Advanced</h3><ul><li>✅ Platzbedarf berücksichtigen</li><li>⚙️ Patzer/Krits nach Wunsch</li><li>❌ Energiekosten einschränken (für Flexibilität)</li><li>✅ Alle Automatisierungs-Features</li><li>⚙️ Eigene Kompendien aktiviert</li></ul><h3>Narrativ / Theater of Mind</h3><ul><li>❌ Platzbedarf</li><li>✅ Echte Patzer und Krits</li><li>⚙️ Energiekosten nach Wunsch</li><li>❌ Scene-Umgebung (manuelle Eingabe für Immersion)</li><li>❌ Zielauswahl-System</li></ul><hr /><h2>Troubleshooting Checkliste</h2><p>Wenn etwas nicht funktioniert, gehe diese Schritte durch:</p><ol><li>✅ Bin ich als Spielleiter angemeldet?</li><li>✅ Habe ich die Einstellung als Welteinstellung (nicht Client) gesetzt?</li><li>✅ Habe ich Foundry nach der Änderung neu gestartet (falls erforderlich)?</li><li>✅ Sind meine Kompendien korrekt konfiguriert?</li><li>✅ Hat der betroffene Charakter die nötigen Items/Fertigkeiten?</li><li>✅ Habe ich die Breaking Changes nach Updates gelesen?</li><li>✅ Ist die Token-Ownership korrekt gesetzt?</li><li>✅ Gibt es Konflikte mit aktiven Modulen?</li></ol><hr /><h2>Performance-Tipps</h2><ul><li><strong>Zu viele Kompendien:</strong> Aktiviere nur benötigte Kompendien</li><li><strong>Große Welten:</strong> Nutze Kompendien statt alle Items in der Welt zu speichern</li><li><strong>Langsame Dialoge:</strong> Deaktiviere nicht genutzte Automatisierungs-Features</li></ul><hr /><h2>Weitere Ressourcen</h2><ul><li>@Compendium[Ilaris.system-guides.spezialdialoge_guide]{Guide: Spezialdialoge}</li><li>@Compendium[Ilaris.system-guides.item_features_guide]{Guide: Item-Sondermöglichkeiten}</li><li><a href=\"https://github.com/Ilaris-Tools/IlarisFoundryVTT/issues\">GitHub Issues</a> für Bug-Reports</li><li><a href=\"https://discord.gg/qEKBnjsspX\">Discord Community</a> für Fragen</li><li><a href=\"https://dsaforum.de/viewtopic.php?f=180&t=55746\">DSA-Forum Thread</a></li></ul><p><em>Zuletzt aktualisiert: Version 12.2.6</em></p>"
+      },
+      "_id": "welteinstellungen_tipps",
+      "image": {},
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "sort": 400000,
+      "ownership": {
+        "default": -1
+      },
+      "flags": {}
+    }
+  ],
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "systemId": "Ilaris",
+    "systemVersion": "12.2.6"
+  }
+}
