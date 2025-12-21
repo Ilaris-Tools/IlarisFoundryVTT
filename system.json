@@ -180,7 +180,7 @@
       "label": "System-Guides (Deutsch)",
       "type": "JournalEntry",
       "name": "system-guides",
-      "path": "./packs/system-guides",
+      "path": "packs/system-guides",
       "system": "Ilaris"
     }
   ],
