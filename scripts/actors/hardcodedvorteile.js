@@ -50,10 +50,6 @@ export function beTraglast(systemData) {
 
 export function wundschwelle(ws, actor) {
     if (actor.vorteil.profan.find((x) => x.name == 'Unverwüstlich')) ws += 1
-    // let uv = data.vorteil.profan.find(x => x.name == "Unverwüstlich");
-    // let nr = data.vorteil.allgemein.find(x => x.name == "Natürliche Rüstung");
-    // if (uv) ws += 1;
-    // if (nr) ws += 1;
     return ws
 }
 

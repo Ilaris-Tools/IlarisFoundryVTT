@@ -46,11 +46,10 @@ export class HeldActor extends IlarisActor {
         console.log(this)
         this._sortItems(this) //Als erstes, darauf basieren Berechnungen
         this._calculatePWAttribute(this.system)
-        this._calculateWounds(this.system) // muss vor _calculateAbgeleitete kommen (wegen globalermod)
-        this._calculateFear(this.system) // muss vor _calculateAbgeleitete kommen (wegen globalermod)
-        this._calculateWundschwellenRuestung(this)
-        this._calculateModifikatoren(this.system)
         this._calculateAbgeleitete(this)
+        this._calculateWounds(this.system)
+        this._calculateFear(this.system)
+        this._calculateModifikatoren(this.system)
         this._calculateProfanFertigkeiten(this)
         this._calculateUebernaturlichFertigkeiten(this)
         this._calculateUebernaturlichTalente(this) //Nach Uebernatürliche Fertigkeiten
