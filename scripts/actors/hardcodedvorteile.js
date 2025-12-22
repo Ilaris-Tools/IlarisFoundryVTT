@@ -48,6 +48,11 @@ export function beTraglast(systemData) {
     return be_mod
 }
 
+export function wundschwelle(ws, actor) {
+    if (actor.vorteil.profan.find((x) => x.name == 'Unverwüstlich')) ws += 1
+    return ws
+}
+
 export function wundschwelleStern(ws, actor) {
     if (actor.vorteil.allgemein.find((x) => x.name == 'Natürliche Rüstung')) ws += 1
     return ws

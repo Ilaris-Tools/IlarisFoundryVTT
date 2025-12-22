@@ -1,5 +1,9 @@
 import * as hardcoded from './hardcodedvorteile.js'
 import * as weaponUtils from './weapon-utils.js'
+import {
+    IlarisGameSettingNames,
+    ConfigureGameSettingsCategories,
+} from '../settings/configure-game-settings.model.js'
 
 /**
  * Global cache for abgeleitete werte definitions
@@ -315,31 +319,50 @@ export class IlarisActor extends Actor {
     }
 
     _calculateWounds(systemData) {
+        // Check if LEP system is active
+        // even with this an actor should get more wounds through damage just differently calculated
+        const useLepSystem = game.settings.get(
+            ConfigureGameSettingsCategories.Ilaris,
+            IlarisGameSettingNames.lepSystem,
+        )
         console.log('Berechne Wunden')
         let einschraenkungen = Math.floor(
             systemData.gesundheit.wunden + systemData.gesundheit.erschoepfung,
         )
         let gesundheitzusatz = ``
-        // let old_hp = data.data.gesundheit.hp.value;
-        let new_hp = systemData.gesundheit.hp.max - einschraenkungen
-        if (einschraenkungen == 0) {
-            systemData.gesundheit.wundabzuege = 0
-            gesundheitzusatz = `(Volle Gesundheit)`
-        } else if (einschraenkungen > 0 && einschraenkungen <= 2) {
-            systemData.gesundheit.wundabzuege = 0
-            gesundheitzusatz = `(Kaum ein Kratzer)`
-        } else if (einschraenkungen >= 3 && einschraenkungen <= 4) {
-            systemData.gesundheit.wundabzuege = -(einschraenkungen - 2) * 2
-            gesundheitzusatz = `(Verwundet)`
-        } else if (einschraenkungen >= 5 && einschraenkungen <= 8) {
-            systemData.gesundheit.wundabzuege = -(einschraenkungen - 2) * 2
-            gesundheitzusatz = `(Kampfunfähig)`
-        } else if (einschraenkungen >= 9) {
-            systemData.gesundheit.wundabzuege = -(einschraenkungen - 2) * 2
-            gesundheitzusatz = `(Tot)`
+        const max_hp = systemData.gesundheit.hp.max
+        let new_hp = max_hp - einschraenkungen
+
+        if (useLepSystem) {
+            // LEP system: no penalties until 2/8 of max_hp, then -2 per 1/8 interval
+            const threshold = max_hp * (2 / 8)
+            if (einschraenkungen < threshold) {
+                systemData.gesundheit.wundabzuege = 0
+            } else {
+                const intervalsAboveThreshold =
+                    Math.floor((einschraenkungen - threshold) / (max_hp / 8)) + 1
+                systemData.gesundheit.wundabzuege = -2 * intervalsAboveThreshold
+            }
         } else {
-            systemData.gesundheit.display = 'Fehler bei Berechnung der Wundabzüge'
-            return
+            if (einschraenkungen == 0) {
+                systemData.gesundheit.wundabzuege = 0
+                gesundheitzusatz = `(Volle Gesundheit)`
+            } else if (einschraenkungen > 0 && einschraenkungen <= 2) {
+                systemData.gesundheit.wundabzuege = 0
+                gesundheitzusatz = `(Kaum ein Kratzer)`
+            } else if (einschraenkungen >= 3 && einschraenkungen <= 4) {
+                systemData.gesundheit.wundabzuege = -(einschraenkungen - 2) * 2
+                gesundheitzusatz = `(Verwundet)`
+            } else if (einschraenkungen >= 5 && einschraenkungen <= 8) {
+                systemData.gesundheit.wundabzuege = -(einschraenkungen - 2) * 2
+                gesundheitzusatz = `(Kampfunfähig)`
+            } else if (einschraenkungen >= 9) {
+                systemData.gesundheit.wundabzuege = -(einschraenkungen - 2) * 2
+                gesundheitzusatz = `(Tot)`
+            } else {
+                systemData.gesundheit.display = 'Fehler bei Berechnung der Wundabzüge'
+                return
+            }
         }
         if (systemData.gesundheit.wundenignorieren > 0) {
             systemData.gesundheit.wundabzuege = 0
@@ -507,6 +530,62 @@ export class IlarisActor extends Actor {
             return val
         })
         actor.system.abgeleitete.mr = mr
+
+        // Calculate WS (Wundschwelle) and armor
+        let ws = calculateValue('WS', () => {
+            let val = 4 + Math.floor(actor.system.attribute.KO.wert / 4)
+            val = hardcoded.wundschwelle(val, actor)
+            return val
+        })
+        actor.system.abgeleitete.ws = ws
+
+        // Calculate WS* (with armor) and body part armor
+        // Check if LEP system is active
+        const useLepSystem = game.settings.get(
+            ConfigureGameSettingsCategories.Ilaris,
+            IlarisGameSettingNames.lepSystem,
+        )
+
+        if (useLepSystem) {
+            actor.system.gesundheit.hp.max = ws
+            actor.system.gesundheit.hp.value = ws
+        } else {
+            actor.system.gesundheit.hp.max = 9
+            actor.system.gesundheit.hp.value = 9
+        }
+
+        // In LEP system, ws_stern starts at 0 instead of being based on ws
+        let ws_stern = hardcoded.wundschwelleStern(useLepSystem ? 0 : ws, actor)
+        let be = 0
+        let ws_beine = ws_stern
+        let ws_larm = ws_stern
+        let ws_rarm = ws_stern
+        let ws_bauch = ws_stern
+        let ws_brust = ws_stern
+        let ws_kopf = ws_stern
+
+        for (let ruestung of actor.ruestungen) {
+            if (ruestung.system.aktiv == true) {
+                ws_stern += ruestung.system.rs
+                be += ruestung.system.be
+                ws_beine += ruestung.system.rs_beine
+                ws_larm += ruestung.system.rs_larm
+                ws_rarm += ruestung.system.rs_rarm
+                ws_bauch += ruestung.system.rs_bauch
+                ws_brust += ruestung.system.rs_brust
+                ws_kopf += ruestung.system.rs_kopf
+            }
+        }
+
+        be = hardcoded.behinderung(be, actor)
+        actor.system.abgeleitete.ws_stern = ws_stern
+        actor.system.abgeleitete.be = be
+        actor.system.abgeleitete.ws_beine = ws_beine
+        actor.system.abgeleitete.ws_larm = ws_larm
+        actor.system.abgeleitete.ws_rarm = ws_rarm
+        actor.system.abgeleitete.ws_bauch = ws_bauch
+        actor.system.abgeleitete.ws_brust = ws_brust
+        actor.system.abgeleitete.ws_kopf = ws_kopf
 
         let traglast_intervall = actor.system.attribute.KK.wert
         traglast_intervall = traglast_intervall >= 1 ? traglast_intervall : 1
