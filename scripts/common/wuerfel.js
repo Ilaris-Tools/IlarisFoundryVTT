@@ -8,7 +8,7 @@ export async function wuerfelwurf(event, actor) {
     console.log(event)
     let speaker = ChatMessage.getSpeaker({ actor: actor })
     let systemData = actor.system
-    let rolltype = $(event.currentTarget).data('rolltype')
+    let rolltype = $(event.currentTarget).data('rolltype') || event.currentTarget.dataset.rolltype
     let globalermod = systemData.abgeleitete.globalermod
     let nahkampfmod = systemData.modifikatoren.nahkampfmod
     let pw = 0

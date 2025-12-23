@@ -15,3 +15,31 @@ Einige Begriffe aus dem FoundryVTT-Jargon kurz erklärt:
     -   Zauber, Vorteile, Fertigkeiten, Liturgien ... (aus Sephrasto importiert)
     -   Kreaturen und Kreatureigenschaften (aus ilaris-online.de/api generiert)
     -   Beispielhelden (von Hand erstellt)
+
+## Actionleiste (Hotbar)
+
+Die Actionleiste am unteren Bildschirmrand ermöglicht schnellen Zugriff auf häufig verwendete Aktionen.
+
+### Kampfaktionen zur Hotbar hinzufügen
+
+Du kannst Waffen, Zauber und Liturgien direkt aus dem Charakterbogen zur Hotbar ziehen:
+
+1. Öffne deinen Charakterbogen
+2. Navigiere zum entsprechenden Tab:
+    - **Kampf**: für Nahkampf- und Fernkampfwaffen
+    - **Übernatürlich**: für Zauber und Liturgien
+3. Klicke auf eine Zeile in der Tabelle und ziehe sie mit gedrückter Maustaste zur Hotbar am unteren Bildschirmrand
+4. Lasse die Maustaste über einem freien Slot los, um das Makro zu erstellen
+
+### Kampfdialog aus der Hotbar öffnen
+
+Nach dem Hinzufügen einer Kampfaktion zur Hotbar:
+
+1. Klicke auf das Makro in der Hotbar, um den entsprechenden Kampfdialog zu öffnen
+2. Der Dialog öffnet sich mit allen relevanten Optionen (Manöver, Modifikatoren, etc.)
+3. Das Makro funktioniert mit:
+    - Dem zugeordneten Charakter (wenn das Makro von einem spezifischen Charakter erstellt wurde)
+    - Dem ausgewählten Token auf der Karte
+    - Dem dem Benutzer zugewiesenen Charakter
+
+**Tipp**: Du kannst dieselbe Waffe oder denselben Zauber mehrmals zur Hotbar hinzufügen und verschiedene Slots verwenden.

@@ -33,6 +33,8 @@ import {
     IlarisAutomatisierungSettingNames,
     ConfigureGameSettingsCategories,
 } from './settings/configure-game-settings.model.js'
+import { XmlCharacterImporter } from './common/xml_character_importer.js'
+import { onHotbarDrop } from './common/hotbar.js'
 import { XmlCharacterImporter } from './importer/xml_character_importer.js'
 import { XMLRuleImporter } from './importer/xml_rule_importer/index.js'
 import { formatDiceFormula } from './common/utilities.js'
@@ -503,6 +505,10 @@ Hooks.on('renderActorDirectory', (app, html) => {
     })
 })
 
+// Register hotbar drop handler
+Hooks.on('hotbarDrop', (bar, data, slot) => {
+    return onHotbarDrop(bar, data, slot)
+}
 // Add XML rule import button to the Compendium Directory
 Hooks.on('renderCompendiumDirectory', (app, html) => {
     // Add XML import button to the compendium directory header (only if GM)
