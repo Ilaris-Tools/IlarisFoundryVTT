@@ -55,5 +55,6 @@ export class HeldActor extends IlarisActor {
         this._calculateUebernaturlichTalente(this) //Nach Uebernatürliche Fertigkeiten
         await this._calculateKampf(this)
         this._calculateUebernatuerlichProbendiag(this)
+        this.system.initiative += 0.5
     }
 }

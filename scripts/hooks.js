@@ -653,6 +653,12 @@ Hooks.on('ready', async () => {
     await preloadAllEigenschaften()
     // Preload abgeleitete werte definitions into cache
     await preloadAbgeleiteteWerteDefinitions()
+
+    // Force actors to recalculate now that cache is loaded
+    for (const actor of game.actors) {
+        actor.prepareData()
+    }
+
     // Run world migration if needed (GM only, once per world)
     await runMigrationIfNeeded()
 })
