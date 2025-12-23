@@ -18,4 +18,5 @@ nav:
     - FoundryVTT: index.md
     - Grundlagen: foundry-basics.md
     - FAQ: faq.md
+    - Geführte Touren: touren.md
     - Release: develop/release.md
