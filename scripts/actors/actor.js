@@ -441,16 +441,7 @@ export class IlarisActor extends Actor {
         }
         systemData.gesundheit.display +=
             `${systemData.gesundheit.wundabzuege} auf alle Proben ` + gesundheitzusatz
-        // if (old_hp != new_hp) {
         systemData.gesundheit.hp.value = new_hp
-        //     // console.log(data);
-        //     let actor = game.actors.get(data._id);
-        //     // console.log(actor);
-        //     // eigentlich async:
-        //     if (actor) {
-        //         actor.update({ "data.gesundheit.hp.value": new_hp });
-        //     }
-        // }
     }
 
     _calculateFear(systemData) {
