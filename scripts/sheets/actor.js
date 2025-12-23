@@ -583,24 +583,33 @@ export class IlarisActorSheet extends ActorSheet {
 
     _onItemEdit(event) {
         console.log('ItemEdit')
-        // console.log(event);
-        // console.log(event.currentTarget);
-        // const li = $(ev.currentTarget).parents(".item");
-        // const item = this.actor.getOwnedItem(li.data("itemId"));
-        // item.sheet.render(true);
         const itemID = event.currentTarget.dataset.itemid
-        // const item = this.actor.getOwnedItem(itemID);
+        const itemClass = event.currentTarget.dataset.itemclass
+
+        // Handle effects differently from items
+        if (itemClass === 'effect') {
+            const effect = this.actor.effects.get(itemID)
+            if (effect) {
+                effect.sheet.render(true)
+            } else {
+                console.error('Effect not found with ID:', itemID)
+            }
+            return
+        }
+
         const item = this.actor.items.get(itemID)
-        // console.log(itemID);
-        // console.log(this.actor.items);
-        // TODO: update actor from here? always? only for kreatur? NO initialize wird schon getriggert
         item.sheet.render(true)
     }
 
     _onItemDelete(event) {
         console.log('ItemDelete')
         const itemID = event.currentTarget.dataset.itemid
-        this.actor.deleteEmbeddedDocuments('Item', [itemID])
+        const itemClass = event.currentTarget.dataset.itemclass
+        if (itemClass === 'effect') {
+            this.actor.deleteEmbeddedDocuments('ActiveEffect', [itemID])
+        } else {
+            this.actor.deleteEmbeddedDocuments('Item', [itemID])
+        }
         // li.slideUp(200, () => this.render(false));
     }
 
