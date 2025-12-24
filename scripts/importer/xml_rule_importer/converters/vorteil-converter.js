@@ -172,8 +172,10 @@ export class VorteilConverter extends BaseConverter {
         const changes = []
 
         // Pattern: modifyXX(value) where XX is WS, MR, GS, INI, DH, AsP, KaP, AsPBasis, KaPBasis
-        // Use greedy match (.+) to capture full expression including nested parentheses
-        const modifyPattern = /modify(WS|MR|GS|INI|DH|AsP|KaP|AsPBasis|KaPBasis)\s*\(\s*(.+)\s*\)/gi
+        // Matches content with nested parentheses (e.g., getAttribute(KO)*5)
+        // Pattern explanation: [^()]* matches non-paren chars, (?:\([^()]*\)[^()]*)* matches nested parens
+        const modifyPattern =
+            /modify(WS|MR|GS|INI|DH|AsP|KaP|AsPBasis|KaPBasis)\s*\(([^()]*(?:\([^()]*\)[^()]*)*)\)/gi
 
         let match
         while ((match = modifyPattern.exec(script)) !== null) {

@@ -542,26 +542,26 @@ Deine Waffe ignoriert die übliche Erschwernis für Nebenwaffen.`
     })
 
     describe('convert with effects', () => {
-        beforeEach(() => {
-            // Create a minimal XML document for testing
-            const xmlString = '<Datenbank></Datenbank>'
-            const parser = new DOMParser()
-            const xmlDoc = parser.parseFromString(xmlString, 'text/xml')
-            converter = new VorteilConverter(xmlDoc)
-        })
+        /**
+         * Helper function to create a mock XML element
+         */
+        function createMockElement(attributes = {}, textContent = '') {
+            return {
+                getAttribute: (name) => attributes[name] || null,
+                textContent: textContent,
+            }
+        }
 
         it('should create vorteil with effect for simple script', () => {
-            const xmlString = `
-                <Vorteil name="Willensstark I" 
-                         voraussetzungen="Attribut MU 4" 
-                         kategorie="1" 
-                         script="modifyMR(1)">
-                    Deine MR steigt um 1 Punkt.
-                </Vorteil>
-            `
-            const parser = new DOMParser()
-            const doc = parser.parseFromString(xmlString, 'text/xml')
-            const element = doc.querySelector('Vorteil')
+            const element = createMockElement(
+                {
+                    name: 'Willensstark I',
+                    voraussetzungen: 'Attribut MU 4',
+                    kategorie: '1',
+                    script: 'modifyMR(1)',
+                },
+                'Deine MR steigt um 1 Punkt.',
+            )
 
             const result = converter.convert(element)
 
@@ -580,17 +580,15 @@ Deine Waffe ignoriert die übliche Erschwernis für Nebenwaffen.`
         })
 
         it('should create vorteil with effect for formula script', () => {
-            const xmlString = `
-                <Vorteil name="Unverwüstlich" 
-                         voraussetzungen="Attribut KO 10" 
-                         kategorie="1" 
-                         script="modifyWS(getAttribute(KO)*5)">
-                    +5*KO LeP.
-                </Vorteil>
-            `
-            const parser = new DOMParser()
-            const doc = parser.parseFromString(xmlString, 'text/xml')
-            const element = doc.querySelector('Vorteil')
+            const element = createMockElement(
+                {
+                    name: 'Unverwüstlich',
+                    voraussetzungen: 'Attribut KO 10',
+                    kategorie: '1',
+                    script: 'modifyWS(getAttribute(KO)*5)',
+                },
+                '+5*KO LeP.',
+            )
 
             const result = converter.convert(element)
 
@@ -605,38 +603,34 @@ Deine Waffe ignoriert die übliche Erschwernis für Nebenwaffen.`
         })
 
         it('should create vorteil without effects for kampfstil (kategorie 3)', () => {
-            const xmlString = `
-                <Vorteil name="Kampfstil Test" 
-                         kategorie="3" 
-                         script="modifyWS(5)">
-                    Test kampfstil.
-                </Vorteil>
-            `
-            const parser = new DOMParser()
-            const doc = parser.parseFromString(xmlString, 'text/xml')
-            const element = doc.querySelector('Vorteil')
+            const element = createMockElement(
+                {
+                    name: 'Kampfstil Test',
+                    kategorie: '3',
+                    script: 'modifyWS(5)',
+                },
+                'Test kampfstil.',
+            )
 
             const result = converter.convert(element)
 
             expect(result.name).toBe('Kampfstil Test')
-            expect(result.effects).toBeUndefined()
+            expect(result.effects).toEqual([])
         })
 
         it('should create vorteil without effects when no script present', () => {
-            const xmlString = `
-                <Vorteil name="No Script Vorteil" 
-                         kategorie="1">
-                    Test without script.
-                </Vorteil>
-            `
-            const parser = new DOMParser()
-            const doc = parser.parseFromString(xmlString, 'text/xml')
-            const element = doc.querySelector('Vorteil')
+            const element = createMockElement(
+                {
+                    name: 'No Script Vorteil',
+                    kategorie: '1',
+                },
+                'Test without script.',
+            )
 
             const result = converter.convert(element)
 
             expect(result.name).toBe('No Script Vorteil')
-            expect(result.effects).toBeUndefined()
+            expect(result.effects).toEqual([])
         })
     })
 })
