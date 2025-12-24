@@ -31,14 +31,18 @@
       "transfer": true,
       "img": "icons/svg/aura.svg",
       "_id": "IzT5uYrWh2qXD74u",
-      "type": "vorteil",
+      "type": "base",
       "system": {},
       "description": "",
       "origin": null,
       "tint": "#ffffff",
       "statuses": [],
       "sort": 0,
-      "flags": {},
+      "flags": {
+        "ilaris": {
+          "sourceType": "vorteil"
+        }
+      },
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,

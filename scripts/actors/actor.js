@@ -156,9 +156,23 @@ export class IlarisActor extends Actor {
 
             // Base ASP (will be modified by hardcoded and zugekauft/gasp later)
             this.system.abgeleitete.asp = 0
+            this.system.abgeleitete.asp += Number(this.system.abgeleitete.asp_zugekauft) || 0
+            this.system.abgeleitete.asp -= Number(this.system.abgeleitete.gasp) || 0
+            this.system.abgeleitete.asp_stern =
+                this.system.abgeleitete.asp_stern !== null &&
+                this.system.abgeleitete.asp_stern !== undefined
+                    ? Number(this.system.abgeleitete.asp_stern)
+                    : this.system.abgeleitete.asp
 
             // Base KAP (will be modified by hardcoded and zugekauft/gkap later)
             this.system.abgeleitete.kap = 0
+            this.system.abgeleitete.kap += Number(this.system.abgeleitete.kap_zugekauft) || 0
+            this.system.abgeleitete.kap -= Number(this.system.abgeleitete.gkap) || 0
+            this.system.abgeleitete.kap_stern =
+                this.system.abgeleitete.kap_stern !== null &&
+                this.system.abgeleitete.kap_stern !== undefined
+                    ? Number(this.system.abgeleitete.kap_stern)
+                    : this.system.abgeleitete.kap
 
             // Calculate base SchiPs
             this.system.schips.schips = calculateValue('SchiP', () => {
@@ -556,28 +570,8 @@ export class IlarisActor extends Actor {
         actor.system.abgeleitete.be += be_mod
         actor.system.abgeleitete.be_traglast = be_mod
 
-        let asp = hardcoded.zauberer(actor)
-        actor.system.abgeleitete.zauberer = asp > 0 ? true : false
-        asp += Number(actor.system.abgeleitete.asp_zugekauft) || 0
-        asp -= Number(actor.system.abgeleitete.gasp) || 0
-        actor.system.abgeleitete.asp = asp
-        actor.system.abgeleitete.asp_stern =
-            actor.system.abgeleitete.asp_stern !== null &&
-            actor.system.abgeleitete.asp_stern !== undefined
-                ? Number(actor.system.abgeleitete.asp_stern)
-                : asp
-
-        // KAP: apply hardcoded modifications and add/subtract purchased/spent values
-        let kap = actor.system.abgeleitete.kap || 0
-        actor.system.abgeleitete.geweihter = kap > 0 ? true : false
-        kap += Number(actor.system.abgeleitete.kap_zugekauft) || 0
-        kap -= Number(actor.system.abgeleitete.gkap) || 0
-        actor.system.abgeleitete.kap = kap
-        actor.system.abgeleitete.kap_stern =
-            actor.system.abgeleitete.kap_stern !== null &&
-            actor.system.abgeleitete.kap_stern !== undefined
-                ? Number(actor.system.abgeleitete.kap_stern)
-                : kap
+        this.system.abgeleitete.zauberer = this.system.abgeleitete.asp > 0 ? true : false
+        this.system.abgeleitete.geweihter = this.system.abgeleitete.kap > 0 ? true : false
     }
 
     /**

@@ -87,6 +87,16 @@ export class CompendiumUpdater {
                 }
             }
 
+            // For vorteile with scripts: replace effects with new ones from XML
+            // Only replace if the vorteil has a sephrastoScript (meaning effects should be regenerated)
+            if (xmlItem.type === 'vorteil' && xmlItem.system?.sephrastoScript) {
+                // Use effects from XML (newly generated from script)
+                merged.effects = xmlItem.effects || []
+            } else if (existingItem.effects) {
+                // Preserve existing effects if no script to regenerate them
+                merged.effects = existingItem.effects
+            }
+
             // Preserve the _id for updating
             merged._id = existingItem._id
         } else {
@@ -166,17 +176,71 @@ export class CompendiumUpdater {
                         const existingItem = existingItemsMap.get(name)
 
                         if (existingItem) {
-                            // Update existing item
                             const fullExistingItem = await pack.getDocument(existingItem._id)
-                            const mergedData = this.mergeItemData(fullExistingItem, xmlItem)
 
-                            await fullExistingItem.update(mergedData)
+                            // Check if this is a vorteil with script that should be completely replaced
+                            const shouldReplace =
+                                xmlItem.type === 'vorteil' &&
+                                xmlItem.system?.sephrastoScript &&
+                                ![3, 5, 7].includes(xmlItem.system?.kategorie)
 
-                            results.updated.push({
-                                name: name,
-                                pack: pack.metadata.label,
-                                type: packKey,
-                            })
+                            if (shouldReplace) {
+                                // Delete the existing item completely
+                                await fullExistingItem.delete()
+
+                                // Create a new item from scratch
+                                const itemData = this.mergeItemData(null, xmlItem)
+                                await Item.create(itemData, { pack: pack.collection })
+
+                                results.updated.push({
+                                    name: name,
+                                    pack: pack.metadata.label,
+                                    type: packKey,
+                                    replaced: true,
+                                })
+                            } else {
+                                // Update existing item (standard flow)
+                                const mergedData = this.mergeItemData(fullExistingItem, xmlItem)
+
+                                // Handle effects separately to avoid duplication
+                                const newEffects = mergedData.effects
+                                delete mergedData.effects // Remove from update data
+
+                                // Update the item first
+                                await fullExistingItem.update(mergedData)
+
+                                // If we have new effects to set (from vorteil with script)
+                                if (
+                                    xmlItem.type === 'vorteil' &&
+                                    xmlItem.system?.sephrastoScript &&
+                                    newEffects
+                                ) {
+                                    // Delete existing effects that came from vorteil script
+                                    const existingVorteilEffects = fullExistingItem.effects.filter(
+                                        (e) => e.flags?.ilaris?.sourceType === 'vorteil',
+                                    )
+                                    if (existingVorteilEffects.length > 0) {
+                                        await fullExistingItem.deleteEmbeddedDocuments(
+                                            'ActiveEffect',
+                                            existingVorteilEffects.map((e) => e.id),
+                                        )
+                                    }
+
+                                    // Create new effects
+                                    if (newEffects.length > 0) {
+                                        await fullExistingItem.createEmbeddedDocuments(
+                                            'ActiveEffect',
+                                            newEffects,
+                                        )
+                                    }
+                                }
+
+                                results.updated.push({
+                                    name: name,
+                                    pack: pack.metadata.label,
+                                    type: packKey,
+                                })
+                            }
                         } else {
                             // Create new item
                             const itemData = this.mergeItemData(null, xmlItem)

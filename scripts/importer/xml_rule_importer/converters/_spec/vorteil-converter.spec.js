@@ -291,6 +291,135 @@ Deine Waffe ignoriert die übliche Erschwernis für Nebenwaffen.`
         })
     })
 
+    describe('generateEffectDescription', () => {
+        it('should generate description for single WS change', () => {
+            const changes = [
+                {
+                    key: 'system.abgeleitete.ws',
+                    mode: 2,
+                    value: '5',
+                    priority: 20,
+                },
+            ]
+            const result = converter.generateEffectDescription(changes)
+            expect(result).toBe('WS +5')
+        })
+
+        it('should generate description for single MR change', () => {
+            const changes = [
+                {
+                    key: 'system.abgeleitete.mr',
+                    mode: 2,
+                    value: '1',
+                    priority: 20,
+                },
+            ]
+            const result = converter.generateEffectDescription(changes)
+            expect(result).toBe('MR +1')
+        })
+
+        it('should generate description for negative value', () => {
+            const changes = [
+                {
+                    key: 'system.abgeleitete.gs',
+                    mode: 2,
+                    value: '-2',
+                    priority: 20,
+                },
+            ]
+            const result = converter.generateEffectDescription(changes)
+            expect(result).toBe('GS -2')
+        })
+
+        it('should generate description for formula with attribute', () => {
+            const changes = [
+                {
+                    key: 'system.abgeleitete.ws',
+                    mode: 2,
+                    value: '@attribute.KO.wert * 5',
+                    priority: 20,
+                },
+            ]
+            const result = converter.generateEffectDescription(changes)
+            expect(result).toBe('WS +KO*5')
+        })
+
+        it('should generate description for complex formula', () => {
+            const changes = [
+                {
+                    key: 'system.abgeleitete.ws',
+                    mode: 2,
+                    value: '@attribute.KO.wert * 2 + 5',
+                    priority: 20,
+                },
+            ]
+            const result = converter.generateEffectDescription(changes)
+            expect(result).toBe('WS +KO*2+5')
+        })
+
+        it('should generate description for multiple changes', () => {
+            const changes = [
+                {
+                    key: 'system.abgeleitete.mr',
+                    mode: 2,
+                    value: '1',
+                    priority: 20,
+                },
+                {
+                    key: 'system.abgeleitete.gs',
+                    mode: 2,
+                    value: '2',
+                    priority: 20,
+                },
+            ]
+            const result = converter.generateEffectDescription(changes)
+            expect(result).toBe('MR +1, GS +2')
+        })
+
+        it('should handle INI and DH stats', () => {
+            const changes = [
+                {
+                    key: 'system.abgeleitete.ini',
+                    mode: 2,
+                    value: '3',
+                    priority: 20,
+                },
+                {
+                    key: 'system.abgeleitete.dh',
+                    mode: 2,
+                    value: '1',
+                    priority: 20,
+                },
+            ]
+            const result = converter.generateEffectDescription(changes)
+            expect(result).toBe('INI +3, DH +1')
+        })
+
+        it('should handle empty changes array', () => {
+            const result = converter.generateEffectDescription([])
+            expect(result).toBe('')
+        })
+
+        it('should skip changes with invalid keys', () => {
+            const changes = [
+                {
+                    key: 'system.abgeleitete',
+                    mode: 2,
+                    value: '1',
+                    priority: 20,
+                },
+                {
+                    key: 'system.abgeleitete.mr',
+                    mode: 2,
+                    value: '2',
+                    priority: 20,
+                },
+            ]
+            const result = converter.generateEffectDescription(changes)
+            expect(result).toBe('MR +2')
+        })
+    })
+
     describe('parseScriptToEffects', () => {
         it('should return empty array for empty script', () => {
             const result = converter.parseScriptToEffects('', 1)

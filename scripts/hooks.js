@@ -1,4 +1,5 @@
 import { ILARIS } from './config.js'
+import { IlarisActiveEffect } from './documents/active-effect.js'
 import { IlarisActorProxy } from './actors/proxy.js'
 import { IlarisItemProxy } from './items/proxy.js'
 import { initializeHandlebars } from './common/handlebars.js'
@@ -54,6 +55,10 @@ Hooks.once('init', () => {
     // CONFIG.debug.hooks = true;
     // ACTORS
     CONFIG.Actor.documentClass = IlarisActorProxy // TODO: Proxy
+
+    // ACTIVE EFFECTS
+    CONFIG.ActiveEffect.documentClass = IlarisActiveEffect
+
     Actors.unregisterSheet('core', ActorSheet)
     Actors.registerSheet('Ilaris', HeldenSheet, { types: ['held'], makeDefault: true })
     Actors.registerSheet('Ilaris', KreaturSheet, { types: ['kreatur'], makeDefault: true })

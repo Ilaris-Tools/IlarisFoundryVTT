@@ -109,11 +109,11 @@ export class VorteilConverter extends BaseConverter {
      */
     generateEffectDescription(changes) {
         const statNames = {
-            ws: 'Wundschwelle',
-            mr: 'Magieresistenz',
-            gs: 'Geschwindigkeit',
-            ini: 'Initiative',
-            dh: 'Durchhaltevermögen',
+            ws: 'WS',
+            mr: 'MR',
+            gs: 'GS',
+            ini: 'INI',
+            dh: 'DH',
         }
 
         const descriptions = changes.map((change) => {
@@ -122,7 +122,10 @@ export class VorteilConverter extends BaseConverter {
             if (!statMatch) return null
 
             const stat = statMatch[1]
-            const statName = statNames[stat] || stat.toUpperCase()
+            // Only process valid stat names
+            if (!statNames[stat]) return null
+
+            const statName = statNames[stat]
 
             // Format the value for display
             let displayValue = change.value
@@ -167,7 +170,8 @@ export class VorteilConverter extends BaseConverter {
         const changes = []
 
         // Pattern: modifyXX(value) where XX is WS, MR, GS, INI, DH
-        const modifyPattern = /modify(WS|MR|GS|INI|DH)\s*\(\s*(.+?)\s*\)/gi
+        // Use greedy match (.+) to capture full expression including nested parentheses
+        const modifyPattern = /modify(WS|MR|GS|INI|DH)\s*\(\s*(.+)\s*\)/gi
 
         let match
         while ((match = modifyPattern.exec(script)) !== null) {
@@ -184,7 +188,9 @@ export class VorteilConverter extends BaseConverter {
             // Check if it contains getAttribute() and convert to @attribute format
             if (/getAttribute/i.test(valueExpression)) {
                 foundryValue = valueExpression
-                    .replace(/getAttribute\s*\(\s*(\w+)\s*\)/gi, '@attribute.$1.wert')
+                    .replace(/getAttribute\s*\(\s*(\w+)\s*\)/gi, (match, attrName) => {
+                        return `@attribute.${attrName.toUpperCase()}.wert`
+                    })
                     .replace(/\*/g, ' * ')
                     .replace(/\+/g, ' + ')
                     .replace(/\-/g, ' - ')
@@ -253,7 +259,11 @@ export class VorteilConverter extends BaseConverter {
                     changes: effectChanges,
                     desscription: effectDescription,
                     transfer: true, // Transfer to actor when item is added
-                    type: 'vorteil',
+                    flags: {
+                        ilaris: {
+                            sourceType: 'vorteil',
+                        },
+                    },
                 },
             ]
         }
