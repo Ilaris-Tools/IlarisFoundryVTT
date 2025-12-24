@@ -57,6 +57,7 @@ Hooks.once('init', () => {
     CONFIG.Actor.documentClass = IlarisActorProxy // TODO: Proxy
 
     // ACTIVE EFFECTS
+    CONFIG.ActiveEffect.legacyTransferral = false
     CONFIG.ActiveEffect.documentClass = IlarisActiveEffect
 
     Actors.unregisterSheet('core', ActorSheet)
@@ -527,47 +528,6 @@ Hooks.on('renderActorDirectory', (app, html) => {
             header.append(importButton)
         }
     }
-
-    // Add sync buttons to each actor entry (only if user owns the actor, can create actors, and can upload files)
-    html.find('.directory-item.actor').each((i, element) => {
-        const $element = $(element)
-        const actorId = $element.data('document-id')
-        const actor = game.actors.get(actorId)
-
-        if (
-            actor &&
-            actor.type === 'held' &&
-            actor.isOwner &&
-            game.user.can('ACTOR_CREATE') &&
-            game.user.can('FILES_UPLOAD')
-        ) {
-            // Only add sync button to character actors that the user owns and has create/upload permissions
-            const syncButton = $(`
-                <div class="sync-xml-character onhover" title="Sync Character with XML" data-actor-id="${actorId}">
-                    <i class="fas fa-sync-alt onhover"></i>
-                </div>
-            `)
-
-            syncButton.click(async (event) => {
-                event.stopPropagation() // Prevent opening the actor sheet
-                const targetActor = game.actors.get(actorId)
-                if (targetActor) {
-                    await XmlCharacterImporter.showSyncDialog(targetActor)
-                }
-            })
-
-            // Insert the sync button before the existing controls
-            const controls = $element.find('.directory-item-controls')
-            if (controls.length > 0) {
-                syncButton.prependTo(controls)
-            } else {
-                // If no controls exist, create them
-                const newControls = $('<div class="directory-item-controls"></div>')
-                newControls.append(syncButton)
-                $element.append(newControls)
-            }
-        }
-    })
 })
 
 // Add XML rule import button to the Compendium Directory

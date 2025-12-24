@@ -706,6 +706,27 @@ export class IlarisActorSheet extends ActorSheet {
                                     compendiumItem.system.foundryScript
                                 updateData['system.voraussetzung'] =
                                     compendiumItem.system.voraussetzung
+
+                                // Update active effects for vorteile
+                                // Delete ALL old effects from the item
+                                const oldEffects = Array.from(actorItem.effects)
+                                if (oldEffects.length > 0) {
+                                    await actorItem.deleteEmbeddedDocuments(
+                                        'ActiveEffect',
+                                        oldEffects.map((e) => e.id),
+                                    )
+                                }
+
+                                // Create new effects from compendium
+                                if (compendiumItem.effects && compendiumItem.effects.size > 0) {
+                                    const newEffects = Array.from(compendiumItem.effects).map((e) =>
+                                        e.toObject(),
+                                    )
+                                    await actorItem.createEmbeddedDocuments(
+                                        'ActiveEffect',
+                                        newEffects,
+                                    )
+                                }
                             } else if (
                                 compendiumItem.type === 'zauber' ||
                                 compendiumItem.type === 'liturgie' ||

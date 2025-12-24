@@ -34,6 +34,7 @@ export class HeldenSheet extends IlarisActorSheet {
                 settings.ConfigureGameSettingsCategories.Ilaris,
                 settings.IlarisGameSettingNames.weaponSpaceRequirement,
             ),
+            effects: this.actor.appliedEffects,
         }
     }
 

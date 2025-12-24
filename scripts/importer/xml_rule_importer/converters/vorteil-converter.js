@@ -114,6 +114,8 @@ export class VorteilConverter extends BaseConverter {
             gs: 'GS',
             ini: 'INI',
             dh: 'DH',
+            asp: 'AsP',
+            kap: 'KaP',
         }
 
         const descriptions = changes.map((change) => {
@@ -156,7 +158,7 @@ export class VorteilConverter extends BaseConverter {
 
     /**
      * Parse Sephrasto script and create Active Effect changes
-     * Handles scripts like: modifyWS(getAttribute(KO)*5), modifyMR(1), modifyGS(1)
+     * Handles scripts like: modifyWS(getAttribute(KO)*5), modifyMR(1), modifyGS(1), modifyAsP(5), modifyKaP(3)
      * @param {string} script - The Sephrasto script string
      * @param {number} kategorie - The vorteil kategorie (ignore script for 3, 5, 7)
      * @returns {Array} Array of effect change objects
@@ -169,17 +171,29 @@ export class VorteilConverter extends BaseConverter {
 
         const changes = []
 
-        // Pattern: modifyXX(value) where XX is WS, MR, GS, INI, DH
+        // Pattern: modifyXX(value) where XX is WS, MR, GS, INI, DH, AsP, KaP, AsPBasis, KaPBasis
         // Use greedy match (.+) to capture full expression including nested parentheses
-        const modifyPattern = /modify(WS|MR|GS|INI|DH)\s*\(\s*(.+)\s*\)/gi
+        const modifyPattern = /modify(WS|MR|GS|INI|DH|AsP|KaP|AsPBasis|KaPBasis)\s*\(\s*(.+)\s*\)/gi
 
         let match
         while ((match = modifyPattern.exec(script)) !== null) {
-            const stat = match[1].toUpperCase() // WS, MR, GS, INI, DH
+            const stat = match[1] // WS, MR, GS, INI, DH, AsP, KaP, AsPBasis, KaPBasis
             const valueExpression = match[2].trim()
 
-            // Determine the key for the effect
-            const key = `system.abgeleitete.${stat.toLowerCase()}`
+            // Map stat to the correct key
+            let key
+            if (stat === 'AsPBasis') {
+                key = 'system.abgeleitete.asp'
+            } else if (stat === 'KaPBasis') {
+                key = 'system.abgeleitete.kap'
+            } else if (stat === 'AsP') {
+                key = 'system.abgeleitete.asp'
+            } else if (stat === 'KaP') {
+                key = 'system.abgeleitete.kap'
+            } else {
+                // WS, MR, GS, INI, DH
+                key = `system.abgeleitete.${stat.toLowerCase()}`
+            }
 
             // Convert the value expression to Foundry format
             // Always use ADD mode (mode 2) - it can handle both numbers and formulas
