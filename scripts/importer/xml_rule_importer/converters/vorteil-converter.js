@@ -199,10 +199,15 @@ export class VorteilConverter extends BaseConverter {
             // Always use ADD mode (mode 2) - it can handle both numbers and formulas
             let foundryValue = valueExpression
 
-            // Check if it contains getAttribute() and convert to @attribute format
-            if (/getAttribute/i.test(valueExpression)) {
+            // Check if it contains getAttribute() or getXX() (e.g., getCH(), getKO()) and convert to @attribute format
+            if (/getAttribute|get(CH|FF|GE|IN|KK|KL|KO|MU)\s*\(/i.test(valueExpression)) {
                 foundryValue = valueExpression
+                    // Convert getAttribute(XX) to @attribute.XX.wert
                     .replace(/getAttribute\s*\(\s*(\w+)\s*\)/gi, (match, attrName) => {
+                        return `@attribute.${attrName.toUpperCase()}.wert`
+                    })
+                    // Convert getXX() to @attribute.XX.wert (e.g., getCH() -> @attribute.CH.wert)
+                    .replace(/get(CH|FF|GE|IN|KK|KL|KO|MU)\s*\(\s*\)/gi, (match, attrName) => {
                         return `@attribute.${attrName.toUpperCase()}.wert`
                     })
                     .replace(/\*/g, ' * ')
