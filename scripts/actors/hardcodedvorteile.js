@@ -48,11 +48,6 @@ export function beTraglast(systemData) {
     return be_mod
 }
 
-export function wundschwelle(ws, actor) {
-    if (actor.vorteil.profan.find((x) => x.name == 'Unverwüstlich')) ws += 1
-    return ws
-}
-
 export function wundschwelleStern(ws, actor) {
     if (actor.vorteil.allgemein.find((x) => x.name == 'Natürliche Rüstung')) ws += 1
     return ws
@@ -64,31 +59,6 @@ export function globalermod(systemData) {
         systemData.furcht.furchtabzuege +
         systemData.modifikatoren.manuellermod
     )
-}
-
-export function magieresistenz(mr, actor) {
-    let ub = actor.vorteil.profan.find((x) => x.name == 'Unbeugsamkeit')
-    if (ub) mr += Math.round(actor.system.attribute.MU.wert / 2)
-    return mr
-}
-
-export function durchhalte(actor) {
-    //Reihenfolge der Berechnung?
-    let be_traglast = actor.system.abgeleitete.be_traglast
-    let be = actor.system.abgeleitete.be - be_traglast
-    let dh = actor.system.attribute.KO.wert
-    let agh = actor.vorteil.profan.find((x) => x.name == 'Abgehärtet II')
-    if (agh) dh += 2
-    dh -= 2 * be
-    dh = dh > 1 ? dh : 1
-    dh -= 2 * be_traglast
-    return dh
-}
-
-// export function zauberer(asp, data) {
-export function zauberer(actor) {
-    if (actor.vorteil.magie.find((x) => x.name == 'Gefäß der Sterne'))
-        actor.system.abgeleitete.asp += 4 + actor.system.attribute.CH.wert
 }
 
 export function getKampfstile(actor) {
