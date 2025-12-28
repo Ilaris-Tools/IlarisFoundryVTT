@@ -2,6 +2,10 @@
 
 ## v12
 
+### v12.2.8
+
+-   Fix: Kreaturen/NPCs haben keine übernatürlichen Manöver
+
 ### v12.2.7
 
 -   Fix: Ruhige Hand Bonus für Zielen nicht eingerechnet

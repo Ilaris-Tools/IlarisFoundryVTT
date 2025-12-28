@@ -55,6 +55,13 @@ export class IlarisActor extends Actor {
 
     _hasVorteil(vorteilRequirement, item) {
         // use _stats.compendiumSource or flags.core.sourceId to check for requirement
+        if (
+            this.type === 'kreatur' &&
+            (item.type === 'zauber' || item.type === 'liturgie') &&
+            !vorteilRequirement.toLowerCase().includes('tradition')
+        ) {
+            return true
+        }
         return (
             this.vorteil.allgemein.some((vorteil) => {
                 return this._checkVorteilSource(vorteilRequirement, vorteil, item)
