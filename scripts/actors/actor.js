@@ -54,7 +54,14 @@ export class IlarisActor extends Actor {
     }
 
     _hasVorteil(vorteilRequirement, item) {
-        // use _stats.compendiumSource or flags.core.sourceId to check for requirement
+        // for kreaturen and npcs allow all manovers for zauber and liturgien and anrufungen, but exclude the ones that need a tradition for now
+        if (
+            this.type === 'kreatur' &&
+            (item.type === 'zauber' || item.type === 'liturgie' || item.type === 'anrufung') &&
+            !vorteilRequirement.toLowerCase().includes('tradition')
+        ) {
+            return true
+        }
         return (
             this.vorteil.allgemein.some((vorteil) => {
                 return this._checkVorteilSource(vorteilRequirement, vorteil, item)
