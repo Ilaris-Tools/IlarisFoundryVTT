@@ -418,13 +418,43 @@ export class IlarisActor extends Actor {
         if (useLepSystem) {
             // LEP system: no penalties until 2/8 of max_hp, then -2 per 1/8 interval
             const threshold = max_hp * (2 / 8)
-            if (einschraenkungen < threshold) {
-                systemData.gesundheit.wundabzuege = 0
-            } else {
-                const intervalsAboveThreshold =
-                    Math.floor((einschraenkungen - threshold) / (max_hp / 8)) + 1
-                systemData.gesundheit.wundabzuege = -2 * intervalsAboveThreshold
+
+            console.log(
+                'LEP System active - calculating wounds differently',
+                new_hp,
+                Math.ceil(max_hp * (6 / 8)),
+            )
+            switch (new_hp) {
+                case Math.ceil(max_hp * (1 / 8)):
+                    systemData.gesundheit.wundabzuege = -12
+                    break
+                case Math.ceil(max_hp * (2 / 8)):
+                    systemData.gesundheit.wundabzuege = -10
+                    break
+                case Math.ceil(max_hp * (3 / 8)):
+                    systemData.gesundheit.wundabzuege = -8
+                    break
+                case Math.ceil(max_hp * (4 / 8)):
+                    systemData.gesundheit.wundabzuege = -6
+                    break
+                case Math.ceil(max_hp * (5 / 8)):
+                    systemData.gesundheit.wundabzuege = -4
+                    break
+                case Math.ceil(max_hp * (6 / 8)):
+                    systemData.gesundheit.wundabzuege = -2
+                    break
+                case Math.ceil(max_hp * (7 / 8)):
+                case Math.ceil(max_hp * (8 / 8)):
+                    systemData.gesundheit.wundabzuege = 0
+                    break
             }
+            // if (einschraenkungen < threshold) {
+            //     systemData.gesundheit.wundabzuege = 0
+            // } else {
+            //     const intervalsAboveThreshold =
+            //         Math.ceil((einschraenkungen - threshold) / (max_hp / 8))
+            //     systemData.gesundheit.wundabzuege = -2 * intervalsAboveThreshold
+            // }
         } else {
             if (einschraenkungen == 0) {
                 systemData.gesundheit.wundabzuege = 0
