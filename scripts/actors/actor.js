@@ -417,34 +417,29 @@ export class IlarisActor extends Actor {
 
         if (useLepSystem) {
             // LEP system: no penalties until 2/8 of max_hp, then -2 per 1/8 interval
-            const threshold = max_hp * (2 / 8)
+            const law = Math.ceil(max_hp / 8)
+            const woundFreeSegment = max_hp - law * 6
 
-            console.log(
-                'LEP System active - calculating wounds differently',
-                new_hp,
-                Math.ceil(max_hp * (6 / 8)),
-            )
             switch (new_hp) {
-                case Math.ceil(max_hp * (1 / 8)):
+                case law:
                     systemData.gesundheit.wundabzuege = -12
                     break
-                case Math.ceil(max_hp * (2 / 8)):
+                case law * 2:
                     systemData.gesundheit.wundabzuege = -10
                     break
-                case Math.ceil(max_hp * (3 / 8)):
+                case law * 3:
                     systemData.gesundheit.wundabzuege = -8
                     break
-                case Math.ceil(max_hp * (4 / 8)):
+                case law * 4:
                     systemData.gesundheit.wundabzuege = -6
                     break
-                case Math.ceil(max_hp * (5 / 8)):
+                case law * 5:
                     systemData.gesundheit.wundabzuege = -4
                     break
-                case Math.ceil(max_hp * (6 / 8)):
+                case law * 6:
                     systemData.gesundheit.wundabzuege = -2
                     break
-                case Math.ceil(max_hp * (7 / 8)):
-                case Math.ceil(max_hp * (8 / 8)):
+                case woundFreeSegment:
                     systemData.gesundheit.wundabzuege = 0
                     break
             }
