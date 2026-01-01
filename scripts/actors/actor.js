@@ -416,7 +416,7 @@ export class IlarisActor extends Actor {
         let new_hp = max_hp - einschraenkungen
 
         if (useLepSystem) {
-            // LEP system: no penalties until 2/8 of max_hp, then -2 per 1/8 interval
+            // LEP system: no penalties until max_hp - 6 * LAW of max_hp, then -2 per LAW segment
             const law = Math.ceil(max_hp / 8)
             const woundFreeSegment = max_hp - law * 6
 
