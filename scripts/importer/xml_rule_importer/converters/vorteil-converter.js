@@ -175,7 +175,7 @@ export class VorteilConverter extends BaseConverter {
         // Matches content with nested parentheses (e.g., getAttribute(KO)*5)
         // Pattern explanation: [^()]* matches non-paren chars, (?:\([^()]*\)[^()]*)* matches nested parens
         const modifyPattern =
-            /modify(WS|MR|GS|INI|DH|AsP|KaP|AsPBasis|KaPBasis)\s*\(([^()]*(?:\([^()]*\)[^()]*)*)\)/gi
+            /modify(WS|BE|MR|GS|INI|DH|AsP|KaP|AsPBasis|KaPBasis)\s*\(([^()]*(?:\([^()]*\)[^()]*)*)\)/gi
 
         let match
         while ((match = modifyPattern.exec(script)) !== null) {

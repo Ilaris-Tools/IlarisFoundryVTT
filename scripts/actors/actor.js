@@ -155,6 +155,7 @@ export class IlarisActor extends Actor {
             }
 
             // In LEP system, ws_stern starts at 0 instead of being based on ws
+            this.system.abgeleitete.be = 0
             let ws_stern = useLepSystem ? 0 : this.system.abgeleitete.ws
             this.system.abgeleitete.ws_stern = ws_stern
             this.system.abgeleitete.ws_beine = ws_stern
@@ -543,7 +544,7 @@ export class IlarisActor extends Actor {
     }
 
     _calculateAbgeleitete() {
-        let be = 0
+        let be = this.system.abgeleitete.be
         for (let ruestung of this.ruestungen) {
             if (ruestung.system.aktiv == true) {
                 this.system.abgeleitete.ws_stern += ruestung.system.rs
@@ -556,7 +557,8 @@ export class IlarisActor extends Actor {
                 this.system.abgeleitete.ws_kopf += ruestung.system.rs_kopf
             }
         }
-        be = hardcoded.behinderung(be, this)
+        // be = hardcoded.behinderung(be, this)
+        if (be < 0) be = 0
         this.system.abgeleitete.be = be
 
         console.log('Berechne abgeleitete Werte', this.system)
