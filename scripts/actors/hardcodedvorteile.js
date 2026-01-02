@@ -6,20 +6,6 @@ export function sum(a, b) {
     return a + b
 }
 
-export function behinderung(be, systemData) {
-    // let pw = data.profan.fertigkeiten.find(x => x.name == fertigkeit)?.data.pw;
-    let rg = systemData.vorteil.kampf.find((x) => x.name == 'Rüstungsgewöhnung')
-    let vrg = systemData.vorteil.kampf.find((x) => x.name == 'Verbesserte Rüstungsgewöhnung')
-    if (be > 0 && rg) {
-        be -= 1
-    }
-    if (be > 0 && vrg) {
-        be -= 2
-        be = be >= 0 ? be : 0
-    }
-    return be
-}
-
 export function beTraglast(systemData) {
     let be_mod = 0
     let weaponSpaceRequirement = game.settings.get(
