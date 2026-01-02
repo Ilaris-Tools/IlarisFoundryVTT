@@ -149,9 +149,20 @@ export class IlarisActor extends Actor {
             )
 
             if (useLepSystem) {
+                console.log('LEP system active - adjusting HP and WS calculations')
                 this.system.gesundheit.hp.max = this.system.abgeleitete.ws
                 this.system.gesundheit.hp.value = this.system.abgeleitete.ws
             }
+
+            // In LEP system, ws_stern starts at 0 instead of being based on ws
+            let ws_stern = useLepSystem ? 0 : this.system.abgeleitete.ws
+            this.system.abgeleitete.ws_stern = ws_stern
+            this.system.abgeleitete.ws_beine = ws_stern
+            this.system.abgeleitete.ws_larm = ws_stern
+            this.system.abgeleitete.ws_rarm = ws_stern
+            this.system.abgeleitete.ws_bauch = ws_stern
+            this.system.abgeleitete.ws_brust = ws_stern
+            this.system.abgeleitete.ws_kopf = ws_stern
 
             // Base ASP (will be modified by hardcoded and zugekauft/gasp later)
             this.system.abgeleitete.asp = 0
@@ -177,6 +188,9 @@ export class IlarisActor extends Actor {
             this.system.schips.schips = calculateValue('SchiP', () => {
                 return 4
             })
+
+            this.system.abgeleitete.zauberer = this.system.abgeleitete.asp > 0 ? true : false
+            this.system.abgeleitete.geweihter = this.system.abgeleitete.kap > 0 ? true : false
         }
     }
 
@@ -528,64 +542,44 @@ export class IlarisActor extends Actor {
         systemData.abgeleitete.globalermoddisplay += `${systemData.abgeleitete.globalermod} auf alle Proben`
     }
 
-    _calculateAbgeleitete(actor) {
-        console.log('Berechne abgeleitete Werte', actor.system)
-        let ws = actor.system.abgeleitete.ws
-
-        const useLepSystem = game.settings.get(
-            ConfigureGameSettingsCategories.Ilaris,
-            IlarisGameSettingNames.lepSystem,
-        )
-
-        // In LEP system, ws_stern starts at 0 instead of being based on ws
-        let ws_stern = hardcoded.wundschwelleStern(useLepSystem ? 0 : ws, actor)
+    _calculateAbgeleitete() {
         let be = 0
-        let ws_beine = ws_stern
-        let ws_larm = ws_stern
-        let ws_rarm = ws_stern
-        let ws_bauch = ws_stern
-        let ws_brust = ws_stern
-        let ws_kopf = ws_stern
-
-        for (let ruestung of actor.ruestungen) {
+        for (let ruestung of this.ruestungen) {
             if (ruestung.system.aktiv == true) {
-                ws_stern += ruestung.system.rs
+                this.system.abgeleitete.ws_stern += ruestung.system.rs
                 be += ruestung.system.be
-                ws_beine += ruestung.system.rs_beine
-                ws_larm += ruestung.system.rs_larm
-                ws_rarm += ruestung.system.rs_rarm
-                ws_bauch += ruestung.system.rs_bauch
-                ws_brust += ruestung.system.rs_brust
-                ws_kopf += ruestung.system.rs_kopf
+                this.system.abgeleitete.ws_beine += ruestung.system.rs_beine
+                this.system.abgeleitete.ws_larm += ruestung.system.rs_larm
+                this.system.abgeleitete.ws_rarm += ruestung.system.rs_rarm
+                this.system.abgeleitete.ws_bauch += ruestung.system.rs_bauch
+                this.system.abgeleitete.ws_brust += ruestung.system.rs_brust
+                this.system.abgeleitete.ws_kopf += ruestung.system.rs_kopf
             }
         }
+        be = hardcoded.behinderung(be, this)
+        this.system.abgeleitete.be = be
 
-        be = hardcoded.behinderung(be, actor)
-        actor.system.abgeleitete.ws_stern = ws_stern
-        actor.system.abgeleitete.be = be
-        actor.system.abgeleitete.ws_beine = ws_beine
-        actor.system.abgeleitete.ws_larm = ws_larm
-        actor.system.abgeleitete.ws_rarm = ws_rarm
-        actor.system.abgeleitete.ws_bauch = ws_bauch
-        actor.system.abgeleitete.ws_brust = ws_brust
-        actor.system.abgeleitete.ws_kopf = ws_kopf
-
-        let traglast_intervall = actor.system.attribute.KK.wert
+        console.log('Berechne abgeleitete Werte', this.system)
+        let traglast_intervall = this.system.attribute.KK.wert
         traglast_intervall = traglast_intervall >= 1 ? traglast_intervall : 1
-        actor.system.abgeleitete.traglast_intervall = traglast_intervall
-        let traglast = 2 * actor.system.attribute.KK.wert
+        this.system.abgeleitete.traglast_intervall = traglast_intervall
+        let traglast = 2 * this.system.attribute.KK.wert
         traglast = traglast >= 1 ? traglast : 1
-        actor.system.abgeleitete.traglast = traglast
+        this.system.abgeleitete.traglast = traglast
         let summeGewicht = 0
-        for (let i of actor.inventar.mitfuehrend) {
+        for (let i of this.inventar.mitfuehrend) {
             summeGewicht += i.system.gewicht
         }
-        actor.system.getragen = summeGewicht
+        this.system.getragen = summeGewicht
 
         // Calculate BE modification from carried weight
-        let be_mod = hardcoded.beTraglast(actor.system)
-        actor.system.abgeleitete.be += be_mod
-        actor.system.abgeleitete.be_traglast = be_mod
+        let be_mod = hardcoded.beTraglast(this.system)
+        this.system.abgeleitete.be += be_mod
+        this.system.abgeleitete.be_traglast = be_mod
+        let be_traglast = this.system.abgeleitete.be_traglast
+        console.log('BE Modifikator:', this.system.abgeleitete.be)
+        this.system.abgeleitete.dh =
+            this.system.abgeleitete.dh - 2 * (this.system.abgeleitete.be - be_traglast)
 
         this.system.abgeleitete.gs = Math.max(
             1,
@@ -618,7 +612,6 @@ export class IlarisActor extends Actor {
         // Handle supernatural styles
         let uebernatuerliche_stile = hardcoded.getUebernatuerlicheStile(actor)
         actor.misc.uebernatuerliche_stile_list = uebernatuerliche_stile
-        let selected_uebernatuerlicher_stil = hardcoded.getSelectedStil(actor, 'uebernatuerlich')
 
         let HW =
             actor.nahkampfwaffen.find((x) => x.system.hauptwaffe == true) ||

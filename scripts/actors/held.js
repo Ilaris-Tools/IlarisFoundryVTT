@@ -35,6 +35,7 @@ export class HeldActor extends IlarisActor {
     async prepareData() {
         // sieht jetzt gleich aus, kann in actor.js?
         super.prepareData()
+        console.log('HeldActor.prepareData()')
         await this._initializeActor() // TODO: warum wird data überall durchgegeben, ist doch sowieso instanziert??
     }
 

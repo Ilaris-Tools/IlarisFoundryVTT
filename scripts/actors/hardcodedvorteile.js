@@ -48,11 +48,6 @@ export function beTraglast(systemData) {
     return be_mod
 }
 
-export function wundschwelleStern(ws, actor) {
-    if (actor.vorteil.allgemein.find((x) => x.name == 'Natürliche Rüstung')) ws += 1
-    return ws
-}
-
 export function globalermod(systemData) {
     return (
         systemData.gesundheit.wundabzuege +

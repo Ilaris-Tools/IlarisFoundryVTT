@@ -621,6 +621,7 @@ Hooks.on('ready', async () => {
 
     // Force actors to recalculate now that cache is loaded
     for (const actor of game.actors) {
+        console.log(`Preparing data for actor ${actor.name} to recalculate derived values`)
         actor.prepareData()
     }
 
