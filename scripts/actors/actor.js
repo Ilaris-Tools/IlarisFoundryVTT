@@ -443,13 +443,6 @@ export class IlarisActor extends Actor {
                     systemData.gesundheit.wundabzuege = 0
                     break
             }
-            // if (einschraenkungen < threshold) {
-            //     systemData.gesundheit.wundabzuege = 0
-            // } else {
-            //     const intervalsAboveThreshold =
-            //         Math.ceil((einschraenkungen - threshold) / (max_hp / 8))
-            //     systemData.gesundheit.wundabzuege = -2 * intervalsAboveThreshold
-            // }
         } else {
             if (einschraenkungen == 0) {
                 systemData.gesundheit.wundabzuege = 0
