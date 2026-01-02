@@ -220,6 +220,7 @@ export class VorteilConverter extends BaseConverter {
                 // Simple numeric value - ensure it's a valid number
                 const numericValue = parseFloat(valueExpression)
                 if (isNaN(numericValue)) {
+                    console.warn(`✗ Invalid numeric value in script: ${valueExpression}`)
                     continue // Skip invalid values
                 }
                 foundryValue = numericValue.toString()
@@ -278,7 +279,7 @@ export class VorteilConverter extends BaseConverter {
                     disabled: false,
                     duration: {},
                     changes: effectChanges,
-                    desscription: effectDescription,
+                    description: effectDescription,
                     transfer: true, // Transfer to actor when item is added
                     flags: {
                         ilaris: {

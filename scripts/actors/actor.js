@@ -61,7 +61,6 @@ export class IlarisActor extends Actor {
         if (this.system.attribute && this.system.abgeleitete) {
             // Get custom abgeleitete werte definitions from cache
             const customDefinitions = this._getAbgeleiteteWerteDefinitions()
-            const actor = this
 
             console.log('Custom abgeleitete werte definitions:', customDefinitions)
             // Helper function to execute custom script or use default calculation
@@ -70,12 +69,12 @@ export class IlarisActor extends Actor {
                 if (customDef && customDef.script) {
                     try {
                         // Create evaluation context with actor data and helper functions
-                        const getAttribut = (attr) => actor.system.attribute[attr]?.wert || 0
+                        const getAttribut = (attr) => this.system.attribute[attr]?.wert || 0
                         const roundDown = Math.floor
-                        const getWS = () => actor.system.abgeleitete.ws || 0
+                        const getWS = () => this.system.abgeleitete.ws || 0
                         const getRS = () => {
                             let rs = 0
-                            for (let ruestung of actor.ruestungen || []) {
+                            for (let ruestung of this.ruestungen || []) {
                                 if (ruestung.system.aktiv) rs += ruestung.system.rs
                             }
                             return rs
@@ -135,8 +134,8 @@ export class IlarisActor extends Actor {
                 })
             }
 
-            if (actor.system.gesundheit?.hp?.max == undefined) {
-                actor.system.gesundheit.hp = {
+            if (this.system.gesundheit?.hp?.max == undefined) {
+                this.system.gesundheit.hp = {
                     max: 9,
                     value: 9,
                 }
@@ -150,8 +149,8 @@ export class IlarisActor extends Actor {
             )
 
             if (useLepSystem) {
-                actor.system.gesundheit.hp.max = this.system.abgeleitete.ws
-                actor.system.gesundheit.hp.value = this.system.abgeleitete.ws
+                this.system.gesundheit.hp.max = this.system.abgeleitete.ws
+                this.system.gesundheit.hp.value = this.system.abgeleitete.ws
             }
 
             // Base ASP (will be modified by hardcoded and zugekauft/gasp later)
@@ -587,6 +586,11 @@ export class IlarisActor extends Actor {
         let be_mod = hardcoded.beTraglast(actor.system)
         actor.system.abgeleitete.be += be_mod
         actor.system.abgeleitete.be_traglast = be_mod
+
+        this.system.abgeleitete.gs = Math.max(
+            1,
+            this.system.abgeleitete.gs - (this.system.abgeleitete?.be ?? 0),
+        )
 
         this.system.abgeleitete.zauberer = this.system.abgeleitete.asp > 0 ? true : false
         this.system.abgeleitete.geweihter = this.system.abgeleitete.kap > 0 ? true : false
