@@ -1,0 +1,81 @@
+{
+  "id": "Ilaris.welteinstellungen-tour",
+  "title": "Welteinstellungen und Systemoptionen",
+  "description": "Eine geführte Tour durch die wichtigsten Welteinstellungen und globalen Optionen des Ilaris-Systems.",
+  "namespace": "Ilaris",
+  "canBeResumed": false,
+  "display": false,
+  "steps": [
+    {
+      "id": "willkommen",
+      "title": "Willkommen zur Ilaris Einstellungen Tour!",
+      "content": "<p>Diese Tour führt dich durch die wichtigsten Welteinstellungen und Systemoptionen für das Ilaris-System in Foundry VTT.</p><p>Du wirst lernen:</p><ul><li>Wo du die Welteinstellungen findest</li><li>Welche besonderen Optionen verfügbar sind</li><li>Welche Einstellungen einen Neustart erfordern</li><li>Den Unterschied zwischen Welt- und Client-Einstellungen</li></ul><p>Für weitere Details kannst du auch die <a href=\"https://ilaris-tools.github.io/IlarisFoundryVTT/einstellungen/\" target=\"_blank\">vollständige Dokumentation</a> konsultieren.</p>"
+    },
+    {
+      "id": "einstellungen-dialog",
+      "title": "Der Einstellungen-Dialog",
+      "content": "<p>Im Einstellungen-Dialog findest du verschiedene Kategorien:</p><ul><li><strong>Foundry VTT (Core):</strong> Grundeinstellungen von Foundry</li><li><strong>Ilaris:</strong> Systemspezifische Einstellungen</li><li><strong>Module:</strong> Einstellungen für installierte Module</li></ul><p>Die Ilaris-Einstellungen sind in mehrere Bereiche unterteilt: <strong>Andere Einstellungen</strong>, <strong>Automatisierung</strong> und <strong>Benutzte Kompendien</strong>.</p>",
+      "selector": "[id='client-settings']"
+    },
+    {
+      "id": "kompendien-fertigkeiten",
+      "title": "Benutzte Kompendien",
+      "content": "<p>Im Bereich <strong>Benutzte Kompendien</strong> kannst du festlegen, welche Kompendien das System verwenden soll (per Default sind hier die Kompendien von Ilaris ausgewählt):</p><ul><li>Fertigkeiten Kompendien</li><li>Waffen Kompendien</li><li>Talente Kompendien</li><li>Manöver Kompendien</li><li>Vorteile Kompendien</li><li>Waffeneigenschaften Kompendien</li><li>Abgeleitete Werte Kompendien</li></ul><p>Diese Einstellungen ermöglichen es dir, eigene Kompendien zu erstellen und zu verwenden oder zwischen verschiedenen Regelversionen zu wechseln.</p><p><strong>⚠️ Wichtig:</strong> Änderungen dieser Einstellungen <strong>erfordern einen Neustart von Foundry VTT</strong>!</p><p>Dieser Neustart wird leider nicht von Foundry erzwungen, muss jedoch ausgeführt werden, damit die Einstellungen wirksam werden!</p>",
+      "selector": "[data-key='Ilaris.fertigkeitenPacksMenu']"
+    },
+    {
+      "id": "kompendien-abgeleitete-werte",
+      "title": "Abgeleitete Werte Kompendien",
+      "content": "<p>Dieses Kompendium verfügt nicht über einen default Wert und sollte nur verwendet werden, wenn man ein Kompedium mit abgeleiteten Werten hat. Die vom Ilaris Standardverhalten abweichen.</p><p><strong>⚠️ Wichtig:</strong> Änderungen dieser Einstellungen <strong>erfordern einen Neustart von Foundry VTT</strong>!</p><p>Dieser Neustart wird leider nicht von Foundry erzwungen, muss jedoch ausgeführt werden, damit die Einstellungen wirksam werden!</p>",
+      "selector": "[data-key='Ilaris.fertigkeitenPacksMenu']"
+    },
+    {
+      "id": "platzbedarf",
+      "title": "Platzbedarf berücksichtigen",
+      "content": "<p><strong>Platzbedarf berücksichtigen</strong> ist eine Hausregel aus Ilaris Advanced.</p><p>Wenn diese Option deaktiviert ist:</p><ul><li>Der Platzbedarf wird nicht angezeigt</li><li>In Berechnungen wird der Platzbedarf als 0 angenommen</li></ul><p><strong>⚠️ Wichtig:</strong> Die Änderung dieser Einstellung <strong>erfordert einen Neustart von Foundry VTT</strong>!</p>",
+      "selector": "[data-setting-id='Ilaris.weaponSpaceRequirement']"
+    },
+    {
+      "id": "echte-patzer-krits",
+      "title": "Echte Patzer und Krits",
+      "content": "<p>Die Einstellung <strong>Echte Patzer und Krits</strong> ist für alle gedacht, die es nicht mögen, dass:</p><ul><li>Eine gewürfelte <strong>1</strong> kein Patzer ist, weil die Probe mit einem Würfelwurf von 1 gelungen wäre</li><li>Eine gewürfelte <strong>20</strong> kein Krit ist, weil die Probe mehr als 20 benötigen würde</li></ul><p>Wenn aktiviert, werden 1 und 20 immer als Patzer bzw. Kritischer Erfolg gewertet, unabhängig vom Probenwert.</p>",
+      "selector": "[data-setting-id='Ilaris.realFumbleCrits']"
+    },
+    {
+      "id": "energiekosten-einstellung",
+      "title": "Energiekosten-Einstellung einschränken",
+      "content": "<p><strong>Energiekosten-Einstellung einschränken</strong> kontrolliert, wann Energiekosten manuell gesetzt werden können:</p><ul><li><strong>Aktiviert:</strong> Energiekosten können nur bei Unitatio-Vorteil oder nicht-numerischen Kosten gesetzt werden</li><li><strong>Deaktiviert:</strong> Energiekosten können immer manuell gesetzt werden</li></ul><p>Diese Einstellung hilft dabei, das Regelwerk konsistent anzuwenden.</p>",
+      "selector": "[data-setting-id='Ilaris.restrictEnergyCostSetting']"
+    },
+    {
+      "id": "weitere-einstellungen",
+      "title": "Weitere Einstellungen",
+      "content": "<p>Es gibt noch weitere nützliche Einstellungen im Ilaris-System:</p><ul><li><strong>Hexagonale Token-Bilder:</strong> Passt Token-Bilder an Hexfeld-Karten an</li><li><strong>Umbenennen von Triumph in Crit:</strong> Ändert die Terminologie für kritische Erfolge</li><li><strong>Charakter-Synchronisation Button ausblenden:</strong> Blendet den Sync-Button auf dem Heldensheet aus</li><li><strong>Alternativ Fernkampf-Ausweichen Talent:</strong> Legt ein alternatives Talent zum Ausweichen fest</li></ul>",
+      "selector": "[id='client-settings']"
+    },
+    {
+      "id": "automatisierung",
+      "title": "Automatisierung",
+      "content": "<p>Im Bereich <strong>Automatisierung</strong> findest du Einstellungen, die das Spielen vereinfachen:</p><ul><li><strong>Scene-Umgebungseinstellungen verwenden:</strong> Licht und Wetter werden aus den Szeneneinstellungen in Fernkampf-Dialogen vorausgewählt</li><li><strong>Zielauswahl-System verwenden:</strong> Ermöglicht Zielauswahl in Kampfdialogen und automatische Verteidigungsaufforderungen</li></ul><p>Diese Features können das Spiel erheblich beschleunigen!</p>",
+      "selector": "[data-setting-id='Ilaris.useSceneEnvironment']"
+    },
+    {
+      "id": "welt-vs-client",
+      "title": "Welteinstellungen vs. Client-Einstellungen",
+      "content": "<p>Es gibt einen wichtigen Unterschied zwischen zwei Arten von Einstellungen:</p><h4>Welteinstellungen (World Settings):</h4><ul><li>Gelten für <strong>alle Benutzer:innen</strong> in dieser Welt</li><li>Können meist nur von <strong>Spielleiter:innen</strong> geändert werden</li><li>Beeinflussen die Spielmechanik und Regeln</li><li>Beispiele: Platzbedarf, Echte Patzer und Krits, Kompendien</li></ul><h4>Client-Einstellungen (Client Settings):</h4><ul><li>Gelten nur für <strong>deinen Computer/Browser</strong></li><li>Können von jedem Benutzer individuell gesetzt werden</li><li>Beeinflussen die persönliche Darstellung</li><li>Beispiel: Charakter-Synchronisation Button ausblenden</li></ul>",
+      "selector": "[id='client-settings']"
+    },
+    {
+      "id": "neustart-erforderlich",
+      "title": "Neustart erforderlich",
+      "content": "<p>Einige Einstellungen erfordern einen <strong>Neustart von Foundry VTT</strong>, um wirksam zu werden:</p><ul><li>✅ <strong>Platzbedarf berücksichtigen</strong></li><li>✅ <strong>Alle Kompendien-Einstellungen</strong> (Fertigkeiten, Waffen, Talente, etc.)</li></ul><p>Wenn du eine dieser Einstellungen änderst, erscheint in Foundry eine Warnung, dass ein Neustart erforderlich ist.</p><p>Um Foundry neu zu starten:</p><ol><li>Schließe die Einstellungen</li><li>Klicke auf das Foundry-Logo (oben links)</li><li>Wähle \"Zur Setup-Seite zurückkehren\"</li><li>Starte die Welt erneut</li></ol>",
+      "selector": "[id='client-settings']"
+    },
+    {
+      "id": "dokumentation",
+      "title": "Weitere Informationen",
+      "content": "<p>Herzlichen Glückwunsch! Du hast die Tour durch die Ilaris Welteinstellungen abgeschlossen! 🎉</p><p>Für weitere Informationen empfehlen wir:</p><ul><li><strong>📖 Dokumentation:</strong> <a href=\"https://ilaris-tools.github.io/IlarisFoundryVTT/einstellungen/\" target=\"_blank\">Einstellungen-Dokumentation</a></li><li><strong>📝 FAQ:</strong> <a href=\"https://ilaris-tools.github.io/IlarisFoundryVTT/faq/\" target=\"_blank\">Häufig gestellte Fragen</a></li><li><strong>💬 Community:</strong> <a href=\"https://discord.gg/qEKBnjsspX\" target=\"_blank\">Discord</a> oder <a href=\"https://dsaforum.de/viewtopic.php?f=180&t=55746\" target=\"_blank\">Forum</a></li></ul><p>Viel Spaß beim Spielen mit Ilaris auf Foundry VTT!</p>",
+      "selector": "[id='client-settings']"
+    }
+  ]
+}

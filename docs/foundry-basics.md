@@ -2,6 +2,14 @@
 
 FoundryVTT wird als Webapp, auf einem Server (oder Home-PC) ausgeführt, dafür muss eine Lizenz erworben werden. Das Ilaris als `System` für FoundryVTT (dieses Projekt), kann über eine url direkt aus der Weboberfläche als Erweiterung installiert werden. Oder auf dem Server direkt nach `foundrydata/systems/` oder `foundrydata/Data/systems` geklont werden siehe [Entwicklerinstallation](CONTRIBUTING.md).
 
+## Geführte Touren
+
+Das Ilaris-System bietet geführte Touren an, die dir helfen, dich mit den wichtigsten Funktionen vertraut zu machen:
+
+-   **Welteinstellungen und Systemoptionen**: Eine Tour durch die wichtigsten Welteinstellungen und globalen Optionen des Ilaris-Systems. Du findest diese Tour im Foundry VTT Tour-Manager (erreichbar über das Fragezeichen-Symbol in der rechten Seitenleiste oder über Einstellungen → Tour-Manager).
+
+Die Touren sind besonders hilfreich für neue Benutzer:innen, um die Besonderheiten des Ilaris-Systems kennenzulernen.
+
 Einige Begriffe aus dem FoundryVTT-Jargon kurz erklärt:
 
 -   **module**: Eigenständiges Plugin, das optional zu beliebigen oder bestimmten Systemen installiert werden kann. zB: [Dice so Nice](https://foundryvtt.com/packages/dice-so-nice/) für animierte 3D Würfel.
