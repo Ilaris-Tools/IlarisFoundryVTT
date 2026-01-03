@@ -21,6 +21,7 @@ export const IlarisGameSettingNames = {
     hexTokenShapes: 'hexTokenShapes',
     defaultRangedDodgeTalent: 'defaultRangedDodgeTalent',
     lastSeenBreakingChangesVersion: 'lastSeenBreakingChangesVersion',
+    lepSystem: 'lepSystem',
 }
 
 // the heading for Automatisierung gets added via hooks.js
