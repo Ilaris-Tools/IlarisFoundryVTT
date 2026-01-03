@@ -40,6 +40,7 @@ import { formatDiceFormula } from './common/utilities.js'
 
 // Import hooks
 import './hooks/changelog-notification.js'
+import './hooks/dot-effects.js'
 import { registerDefenseButtonHook } from './sheets/dialogs/defense_button_hook.js'
 
 // Status effect tint colors

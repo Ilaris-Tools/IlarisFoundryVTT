@@ -3,7 +3,7 @@
     <h2>Effekte</h2>
     {{#each effects as |effect|}}
     <a class="item-edit" data-itemclass="effect" data-itemid="{{effect._id}}">
-        {{effect.name}}
+        {{effect.name}} | {{#if effect.duration.turns}}{{effect.duration.turns}} Runden{{/if}}
     </a>
     {{#unless (eq effect.flags.ilaris.sourceType "vorteil")}}
     <a class="item-delete" data-itemclass="effect" data-itemid="{{effect._id}}">

@@ -2,9 +2,15 @@ import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
 } from '../settings/configure-game-settings.model.js'
+
 /**
  * Custom ActiveEffect class for Ilaris system
  * Handles formula resolution in effect values with @ references
+ *
+ * DOT (Damage Over Time) Usage:
+ * - Use Change Mode: Custom (10)
+ * - Set Attribute Key to: "dot" (or any key starting with "dot")
+ * - Set Effect Value to: damage amount (supports @references)
  */
 export class IlarisActiveEffect extends ActiveEffect {
     /**
@@ -52,6 +58,96 @@ export class IlarisActiveEffect extends ActiveEffect {
             actor.system.gesundheit.hp.max = actor.system.abgeleitete.ws
             actor.system.gesundheit.hp.value = actor.system.abgeleitete.ws
         }
+    }
+
+    /**
+     * Get all DOT (Damage Over Time) effects from an actor
+     * DOT effects are identified by:
+     * - Change Mode: Custom (10)
+     * - Attribute Key starting with "system.gesundheit.wunden"
+     * @param {Actor} actor - The actor to check
+     * @returns {Array} Array of {effect, change} objects with DOT mode
+     */
+    static getDotEffects(actor) {
+        if (!actor) return []
+
+        const dotEffects = []
+        // Use .contents to iterate over the effects collection properly
+        const effects = actor.appliedEffects || []
+
+        console.log(`Checking actor ${actor.name} for DOT effects`, effects)
+        for (const effect of effects) {
+            if (effect.disabled || effect.isSuppressed) continue
+
+            for (const change of effect.changes) {
+                // Check for Custom mode (10) and key starting with "system.gesundheit.wunden"
+                if (
+                    change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM &&
+                    change.key?.toLowerCase().startsWith('system.gesundheit.wunden')
+                ) {
+                    dotEffects.push({ effect, change })
+                }
+            }
+        }
+        return dotEffects
+    }
+
+    /**
+     * Apply a DOT effect to an actor (called from combat hook)
+     * @param {Actor} actor - The actor to apply DOT to
+     * @param {Object} change - The change object with DOT configuration
+     * @returns {Promise<void>}
+     */
+    static async applyDotDamage(actor, change) {
+        // Resolve formula if it contains @ references
+        let damageValue = change.value
+        if (typeof damageValue === 'string' && damageValue.includes('@')) {
+            const effect = new IlarisActiveEffect()
+            const resolved = effect.resolveFormulaValue(damageValue, actor)
+            damageValue = resolved ? parseFloat(resolved) : 0
+        } else {
+            damageValue = parseFloat(damageValue) || 0
+        }
+
+        // Apply damage to HP
+        const currentHp = actor.system.gesundheit?.wunden ?? 0
+        const newHp = currentHp + damageValue
+
+        await actor.update({
+            'system.gesundheit.wunden': newHp,
+        })
+
+        // Send chat message about DOT damage
+        const effectName = change.key || 'Schaden über Zeit'
+        ChatMessage.create({
+            speaker: ChatMessage.getSpeaker({ actor }),
+            content: `<div class="ilaris-chat-card">
+                <h3>${effectName}</h3>
+                <p>${actor.name} erleidet ${damageValue} Schadenspunkte.</p>
+            </div>`,
+        })
+
+        console.log(`DOT: Applied ${damageValue} damage to ${actor.name}`)
+    }
+
+    /**
+     * Override _applyCustom to handle DOT effects
+     * DOT effects are applied via combat hooks, not during normal application
+     * @param {Actor} actor - The actor to apply changes to
+     * @param {Object} change - The change object
+     * @returns {*} The result of the custom application
+     * @override
+     */
+    _applyCustom(actor, change) {
+        // Check if this is a DOT effect (key starts with "dot")
+        if (change.key?.toLowerCase().startsWith('system.gesundheit.wunden')) {
+            // DOT effects are handled by combat hooks, not during normal apply
+            // Return null to skip normal application
+            return null
+        }
+
+        // For other custom effects, call parent implementation
+        return super._applyCustom(actor, change)
     }
 
     /**
