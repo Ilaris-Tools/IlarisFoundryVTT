@@ -17,6 +17,11 @@ This repository is a Foundry VTT game system module to support the Ilaris rulese
 
 -   The main entry point is in `scripts/` (not `src/`).
 -   Use Foundry VTT API idioms: prefer hooks, game.system, and actor/item patterns.
+-   **Active Effects & Legacy Transfer:**
+    -   This system uses `CONFIG.ActiveEffect.legacyTransferral = false` (set during system initialization).
+    -   **Important:** When retrieving all active effects applicable to an actor (including those from owned items), always use `actor.allApplicableEffects` or `actor.appliedEffects`.
+    -   **Do not use `actor.effects`** for this purpose, as it will only return effects directly applied to the actor document and miss those transferred from items.
+    -   Effects from items with `transfer: true` are applied directly from the item origin; they are not copied to the actor.
 -   Never generate or modify anything in `.gitlab/` or unrelated legacy directories.
 -   Do NOT generate, remove, or rename `system.json` by hand – only modify it when required by manifest/schema change, and always keep keys sorted.
 -   For Handlebars templates:

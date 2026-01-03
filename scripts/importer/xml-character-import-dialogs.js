@@ -19,6 +19,8 @@ export class XmlCharacterImportDialogs {
                 <p><strong>Charakter:</strong> ${characterData.name}</p>
             </div>
             
+            ${this.generateConfiguredPacksInfo(importAnalysis.configuredPacks)}
+            
             <div style="margin-bottom: 15px;">
                 <h4 style="color: #2e7d32; margin-bottom: 8px;">✅ Wird IMPORTIERT:</h4>
                 <ul style="margin-left: 20px; margin-bottom: 0;">
@@ -211,6 +213,54 @@ export class XmlCharacterImportDialogs {
                 },
             ).render(true)
         })
+    }
+
+    /**
+     * Generate section showing configured compendium packs
+     * @param {Object} packInfo - Pack information from getConfiguredPacks
+     * @returns {string} HTML string for pack information
+     */
+    static generateConfiguredPacksInfo(packInfo) {
+        if (!packInfo) {
+            return ''
+        }
+
+        const sections = []
+
+        if (packInfo.skills && packInfo.skills.length > 0) {
+            sections.push(
+                `<li><strong>Fertigkeiten-Kompendien:</strong> ${packInfo.skills.join(', ')}</li>`,
+            )
+        }
+
+        if (packInfo.talents && packInfo.talents.length > 0) {
+            sections.push(
+                `<li><strong>Talente-Kompendien:</strong> ${packInfo.talents.join(', ')}</li>`,
+            )
+        }
+
+        if (packInfo.advantages && packInfo.advantages.length > 0) {
+            sections.push(
+                `<li><strong>Vorteile-Kompendien:</strong> ${packInfo.advantages.join(', ')}</li>`,
+            )
+        }
+
+        if (sections.length === 0) {
+            return `
+                <div style="background-color: #ffebee; border: 1px solid #f44336; padding: 10px; border-radius: 4px; margin-bottom: 15px;">
+                    <strong>⚠️ Warnung:</strong> Keine Kompendien konfiguriert! Bitte konfigurieren Sie die zu verwendenden Kompendien in den Welteinstellungen.
+                </div>
+            `
+        }
+
+        return `
+            <div style="background-color: #e3f2fd; border: 1px solid #2196f3; padding: 10px; border-radius: 4px; margin-bottom: 15px;">
+                <strong>📚 Verwendete Kompendien:</strong>
+                <ul style="margin-left: 20px; margin-bottom: 0; margin-top: 8px;">
+                    ${sections.join('')}
+                </ul>
+            </div>
+        `
     }
 
     /**

@@ -1,4 +1,5 @@
 import { ILARIS } from './config.js'
+import { IlarisActiveEffect } from './documents/active-effect.js'
 import { IlarisActorProxy } from './actors/proxy.js'
 import { IlarisItemProxy } from './items/proxy.js'
 import { initializeHandlebars } from './common/handlebars.js'
@@ -39,6 +40,7 @@ import { formatDiceFormula } from './common/utilities.js'
 
 // Import hooks
 import './hooks/changelog-notification.js'
+import './hooks/dot-effects.js'
 import { registerDefenseButtonHook } from './sheets/dialogs/defense_button_hook.js'
 
 // Status effect tint colors
@@ -54,6 +56,11 @@ Hooks.once('init', () => {
     // CONFIG.debug.hooks = true;
     // ACTORS
     CONFIG.Actor.documentClass = IlarisActorProxy // TODO: Proxy
+
+    // ACTIVE EFFECTS
+    CONFIG.ActiveEffect.legacyTransferral = false
+    CONFIG.ActiveEffect.documentClass = IlarisActiveEffect
+
     Actors.unregisterSheet('core', ActorSheet)
     Actors.registerSheet('Ilaris', HeldenSheet, { types: ['held'], makeDefault: true })
     Actors.registerSheet('Ilaris', KreaturSheet, { types: ['kreatur'], makeDefault: true })
@@ -314,14 +321,76 @@ Hooks.once('init', () => {
     registerIlarisGameSettings()
 })
 
-Hooks.on('applyActiveEffect', (actor, data, options, userId) => {
-    console.log(data)
-    console.log(actor)
-    console.log('EFFECT!!! ')
-    data.changes = []
-    console.log(actor)
-    console.log(options)
-    return userId
+Hooks.on('getSceneControlButtons', (controls) => {
+    // Add character import button to the notes/journal control
+    const notesControl = controls.find((c) => c.name === 'notes')
+    if (notesControl && game.user.can('ACTOR_CREATE') && game.user.can('FILES_UPLOAD')) {
+        notesControl.tools.push({
+            name: 'import-xml-character',
+            title: 'XML Character Import',
+            icon: 'fas fa-file-import',
+            button: true,
+            onClick: () => XmlCharacterImporter.showImportDialog(),
+        })
+    }
+})
+
+Hooks.on('renderActorDirectory', (app, html) => {
+    // Add XML import button to the actors directory header (only if user can create actors and upload files)
+    if (game.user.can('ACTOR_CREATE') && game.user.can('FILES_UPLOAD')) {
+        const header = html.find('.directory-header')
+        if (header.length > 0) {
+            const importButton = $(`
+                <button class="import-xml-character" title="Import Character from XML">
+                    <i class="fas fa-file-import"></i> Import Charakter XML
+                </button>
+            `)
+
+            importButton.click(() => XmlCharacterImporter.showImportDialog())
+            header.append(importButton)
+        }
+    }
+
+    // Add sync buttons to each actor entry (only if user owns the actor, can create actors, and can upload files)
+    html.find('.directory-item.actor').each((i, element) => {
+        const $element = $(element)
+        const actorId = $element.data('document-id')
+        const actor = game.actors.get(actorId)
+
+        if (
+            actor &&
+            actor.type === 'held' &&
+            actor.isOwner &&
+            game.user.can('ACTOR_CREATE') &&
+            game.user.can('FILES_UPLOAD')
+        ) {
+            // Only add sync button to character actors that the user owns and has create/upload permissions
+            const syncButton = $(`
+                <div class="sync-xml-character onhover" title="Sync Character with XML" data-actor-id="${actorId}">
+                    <i class="fas fa-sync-alt onhover"></i>
+                </div>
+            `)
+
+            syncButton.click(async (event) => {
+                event.stopPropagation() // Prevent opening the actor sheet
+                const targetActor = game.actors.get(actorId)
+                if (targetActor) {
+                    await XmlCharacterImporter.showSyncDialog(targetActor)
+                }
+            })
+
+            // Insert the sync button before the existing controls
+            const controls = $element.find('.directory-item-controls')
+            if (controls.length > 0) {
+                syncButton.prependTo(controls)
+            } else {
+                // If no controls exist, create them
+                const newControls = $('<div class="directory-item-controls"></div>')
+                newControls.append(syncButton)
+                $element.append(newControls)
+            }
+        }
+    })
 })
 
 // Force apply tint colors to status effect picker icons using direct CSS styling
@@ -460,47 +529,6 @@ Hooks.on('renderActorDirectory', (app, html) => {
             header.append(importButton)
         }
     }
-
-    // Add sync buttons to each actor entry (only if user owns the actor, can create actors, and can upload files)
-    html.find('.directory-item.actor').each((i, element) => {
-        const $element = $(element)
-        const actorId = $element.data('document-id')
-        const actor = game.actors.get(actorId)
-
-        if (
-            actor &&
-            actor.type === 'held' &&
-            actor.isOwner &&
-            game.user.can('ACTOR_CREATE') &&
-            game.user.can('FILES_UPLOAD')
-        ) {
-            // Only add sync button to character actors that the user owns and has create/upload permissions
-            const syncButton = $(`
-                <div class="sync-xml-character onhover" title="Sync Character with XML" data-actor-id="${actorId}">
-                    <i class="fas fa-sync-alt onhover"></i>
-                </div>
-            `)
-
-            syncButton.click(async (event) => {
-                event.stopPropagation() // Prevent opening the actor sheet
-                const targetActor = game.actors.get(actorId)
-                if (targetActor) {
-                    await XmlCharacterImporter.showSyncDialog(targetActor)
-                }
-            })
-
-            // Insert the sync button before the existing controls
-            const controls = $element.find('.directory-item-controls')
-            if (controls.length > 0) {
-                syncButton.prependTo(controls)
-            } else {
-                // If no controls exist, create them
-                const newControls = $('<div class="directory-item-controls"></div>')
-                newControls.append(syncButton)
-                $element.append(newControls)
-            }
-        }
-    })
 })
 
 // Add XML rule import button to the Compendium Directory
@@ -591,6 +619,13 @@ Hooks.on('ready', async () => {
     await preloadAllEigenschaften()
     // Preload abgeleitete werte definitions into cache
     await preloadAbgeleiteteWerteDefinitions()
+
+    // Force actors to recalculate now that cache is loaded
+    for (const actor of game.actors) {
+        console.log(`Preparing data for actor ${actor.name} to recalculate derived values`)
+        actor.prepareData()
+    }
+
     // Run world migration if needed (GM only, once per world)
     await runMigrationIfNeeded()
 })

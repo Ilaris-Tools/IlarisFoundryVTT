@@ -3,18 +3,105 @@
   "type": "vorteil",
   "system": {
     "voraussetzung": "",
-    "gruppe": 0,
-    "text": "Du verfügst über ein dichtes Fell oder zähe Schuppenhaut, wodurch dein RS um 1 steigt. Die BE verändert sich dadurch nicht.\n\nDieser Vorteil kann üblicherweise nur von Achaz, Orks und ähnlichen Rassen gewählt werden."
+    "gruppe": "0",
+    "text": "Du verfügst über ein dichtes Fell oder zähe Schuppenhaut, wodurch dein RS um 1 steigt. Die BE verändert sich dadurch nicht.\n\nDieser Vorteil kann üblicherweise nur von Achaz, Orks und ähnlichen Rassen gewählt werden.",
+    "sephrastoScript": "",
+    "stilBedingungen": "",
+    "foundryScript": ""
   },
   "_id": "8QBsWosVqLPf54qP",
-  "effects": [],
+  "effects": [
+    {
+      "name": "RS+1",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "changes": [
+        {
+          "key": "system.abgeleitete.ws_stern",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.abgeleitete.ws_beine",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.abgeleitete.ws_larm",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.abgeleitete.ws_rarm",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.abgeleitete.ws_bauch",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.abgeleitete.ws_brust",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.abgeleitete.ws_kopf",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "transfer": true,
+      "img": "icons/svg/aura.svg",
+      "_id": "Uru1nGTYgiYpNwvY",
+      "type": "base",
+      "system": {},
+      "description": "",
+      "origin": null,
+      "tint": "#ffffff",
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "ilaris": {
+          "sourceType": "vorteil"
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.343",
+        "systemId": "Ilaris",
+        "systemVersion": "12.2.6",
+        "createdTime": 1767368200385,
+        "modifiedTime": 1767389963243,
+        "lastModifiedBy": "bRsoRPItEVb33T1L"
+      },
+      "_key": "!items.effects!8QBsWosVqLPf54qP.Uru1nGTYgiYpNwvY"
+    }
+  ],
   "_stats": {
-    "coreVersion": "12.331",
-    "systemId": null,
-    "systemVersion": null,
+    "coreVersion": "12.343",
+    "systemId": "Ilaris",
+    "systemVersion": "12.2.6",
     "createdTime": null,
-    "modifiedTime": null,
-    "lastModifiedBy": null,
+    "modifiedTime": 1767368314975,
+    "lastModifiedBy": "bRsoRPItEVb33T1L",
     "compendiumSource": null,
     "duplicateSource": null
   },

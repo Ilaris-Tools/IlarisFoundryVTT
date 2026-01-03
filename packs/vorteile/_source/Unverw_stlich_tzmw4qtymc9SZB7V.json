@@ -3,24 +3,72 @@
   "type": "vorteil",
   "system": {
     "voraussetzung": "Attribut KO 10",
-    "gruppe": 1,
+    "gruppe": "1",
     "text": "Deine WS steigt um 1 Punkt.\n\nWenn Zähigkeitsproben zum Ignorieren von Kampfunfähigkeit misslingen, erleidest du keine Erschöpfung."
   },
   "_id": "tzmw4qtymc9SZB7V",
-  "effects": [],
+  "effects": [
+    {
+      "name": "WS+1",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "changes": [
+        {
+          "key": "system.abgeleitete.ws",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        }
+      ],
+      "transfer": true,
+      "img": "icons/svg/aura.svg",
+      "_id": "HtX6Ev4PwjMBTfDo",
+      "type": "base",
+      "system": {},
+      "description": "",
+      "origin": null,
+      "tint": "#ffffff",
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "ilaris": {
+          "sourceType": "vorteil"
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.1.2",
+        "createdTime": 1757617547580,
+        "modifiedTime": 1757617568814,
+        "lastModifiedBy": "FAZTz2Txaxttf8zC"
+      },
+      "_key": "!items.effects!tzmw4qtymc9SZB7V.HtX6Ev4PwjMBTfDo"
+    }
+  ],
   "_stats": {
     "coreVersion": "12.331",
-    "systemId": null,
-    "systemVersion": null,
+    "systemId": "Ilaris",
+    "systemVersion": "12.1.2",
     "createdTime": null,
-    "modifiedTime": null,
-    "lastModifiedBy": null,
+    "modifiedTime": 1757617571590,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
     "compendiumSource": null,
     "duplicateSource": null
   },
   "img": "icons/svg/item-bag.svg",
   "folder": null,
-  "sort": 0,
+  "sort": 29900000,
   "ownership": {
     "default": 0
   },
