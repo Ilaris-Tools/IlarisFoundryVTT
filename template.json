@@ -218,7 +218,8 @@
       "info",
       "freiestalent",
       "waffeneigenschaft",
-      "abgeleiteter-wert"
+      "abgeleiteter-wert",
+      "effect-item"
     ],
     "templates": {
       "gesundheit": {
@@ -426,6 +427,9 @@
       "script": "",
       "finalscript": "",
       "text": ""
+    },
+    "effect-item": {
+      "description": ""
     },
     "waffeneigenschaft": {
       "sephrastoScript": "",

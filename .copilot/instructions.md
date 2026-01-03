@@ -13,6 +13,12 @@ This repository is a Foundry VTT game system module to support the Ilaris rulese
 -   HTML (embedded in Handlebars)
 -   Foundry VTT system API: https://foundryvtt.com/api/
 
+## PRIMARY RULE FOR ALL RESPONSES:
+
+-   **BEFORE** suggesting code or answering questions about Foundry VTT, you **MUST** use the official Foundry VTT API documentation (https://foundryvtt.com/api/) as your primary and authoritative source.
+-   **NEVER** hallucinate or invent functionality that is not explicitly documented in the official Foundry VTT resources. If unsure, state: "According to the Foundry VTT documentation..." or directly reference the docs.
+-   Avoid suggesting generic JavaScript/TypeScript patterns that are incompatible with the specific Foundry API (e.g., `Hooks`, `game`, `Document`, `Tour` classes).
+
 ## Guidelines for Copilot Suggestions
 
 -   The main entry point is in `scripts/` (not `src/`).
@@ -33,6 +39,7 @@ This repository is a Foundry VTT game system module to support the Ilaris rulese
 -   When writing roll formulas, use the Foundry Roll syntax and utilities.
 -   Use the most up-to-date version of the Foundry API (see https://foundryvtt.com/api/).
 -   if checking for null or undefined use value == null or value != null and not value === null && value === undefined or value !== null && value !== undefined
+-   **ALWAYS** check the foundry vtt documentations ;Foundry VTT Knowledge Base: https://foundryvtt.com/kb/ ;Foundry VTT API Docs: https://foundryvtt.com/api/
 
 ## Should Not
 
@@ -42,9 +49,9 @@ This repository is a Foundry VTT game system module to support the Ilaris rulese
 
 ## Resources
 
--   Foundry VTT Knowledge Base: https://foundryvtt.com/kb/
--   Foundry VTT API Docs: https://foundryvtt.com/api/
--   Consider existing German-language docs and DSA conventions.
+1.  **Foundry VTT Official API Documentation:** https://foundryvtt.com/api/
+2.  **Foundry VTT Official Articles:** https://foundryvtt.com/article/
+3.  **IMPORTANT:** For Foundry-specific questions, ignore general programming websites (like W3Schools, MDN for DOM manipulation). Foundry uses its own proprietary API layer.
 
 ## Common Pitfalls
 

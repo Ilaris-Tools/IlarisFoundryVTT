@@ -28,6 +28,7 @@ import { InfoSheet } from './sheets/items/info.js'
 import { AbgeleiteterWertSheet } from './sheets/items/abgeleiteter-wert.js'
 import { AngriffSheet } from './sheets/items/angriff.js'
 import { FreiesTalentSheet } from './sheets/items/freies_talent.js'
+import { EffectItemSheet } from './sheets/items/effect-item.js'
 import { registerIlarisGameSettings } from './settings/configure-game-settings.js'
 import {
     IlarisGameSettingNames,
@@ -107,6 +108,7 @@ Hooks.once('init', () => {
         makeDefault: true,
     })
     Items.registerSheet('Ilaris', FreiesTalentSheet, { types: ['freiestalent'], makeDefault: true })
+    Items.registerSheet('Ilaris', EffectItemSheet, { types: ['effect-item'], makeDefault: true })
     // Items.registerSheet("Ilaris", VorteilSheet, {types: ["allgemein_vorteil", "profan_vorteil", "kampf_vorteil", "kampfstil", "magie_vorteil", "magie_tradition", "karma_vorteil", "karma_tradition"], makeDefault: true});
 
     // Register world schema version for migrations
