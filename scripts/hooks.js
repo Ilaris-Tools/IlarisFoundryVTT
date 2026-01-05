@@ -40,6 +40,7 @@ import { XMLRuleImporter } from './importer/xml_rule_importer/index.js'
 import { formatDiceFormula } from './common/utilities.js'
 
 // Import hooks
+import './hooks/active-effects.js'
 import './hooks/changelog-notification.js'
 import './hooks/dot-effects.js'
 import { registerDefenseButtonHook } from './sheets/dialogs/defense_button_hook.js'

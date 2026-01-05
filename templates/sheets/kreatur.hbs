@@ -385,6 +385,17 @@
             </label>
             {{/each}}
         </div>
+
+        <div class="effekte statblockreihe">
+            <b>Effekt</b>
+            {{#each actor.appliedEffects as |effect key|}}
+            <label>
+                <label>
+                    <a class="item-edit" data-itemid="{{effect.id}}">{{effect.name}} </a>
+                </label> 
+            </label>
+            {{/each}}
+        </div>
         
         {{#if actor.infos}}
         <div class="infos statblockreihe">
