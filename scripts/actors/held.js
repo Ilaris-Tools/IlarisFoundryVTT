@@ -42,6 +42,9 @@ export class HeldActor extends IlarisActor {
         // NOTE: sieht aus als wäre _initialize eine methode von Actor,
         // die man nicht einfach überschreiben sollte
         // daher umbenannt in _initializeActor
+        if (!this.system.modifikatoren.verteidigungmod) {
+            this.system.modifikatoren.verteidigungmod = 0
+        }
         this._sortItems(this) //Als erstes, darauf basieren Berechnungen
         this._calculatePWAttribute(this.system)
         this._calculateAbgeleitete(this)
