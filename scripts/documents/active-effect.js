@@ -98,12 +98,12 @@ export class IlarisActiveEffect extends ActiveEffect {
      * @param {Object} change - The change object with DOT configuration
      * @returns {Promise<void>}
      */
-    static async applyDotDamage(actor, change) {
+    static async applyDotDamage(actor, change, effect) {
         // Resolve formula if it contains @ references
         let damageValue = change.value
         if (typeof damageValue === 'string' && damageValue.includes('@')) {
-            const effect = new IlarisActiveEffect()
-            const resolved = effect.resolveFormulaValue(damageValue, actor)
+            const effectInstance = new IlarisActiveEffect()
+            const resolved = effectInstance.resolveFormulaValue(damageValue, actor)
             damageValue = resolved ? parseFloat(resolved) : 0
         } else {
             damageValue = parseFloat(damageValue) || 0
@@ -118,7 +118,8 @@ export class IlarisActiveEffect extends ActiveEffect {
         })
 
         // Send chat message about DOT damage
-        const effectName = change.key || 'Schaden über Zeit'
+        console.log('Applying DOT damage', change)
+        const effectName = effect.name || 'Schaden über Zeit'
         ChatMessage.create({
             speaker: ChatMessage.getSpeaker({ actor }),
             content: `<div class="ilaris-chat-card">

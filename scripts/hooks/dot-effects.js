@@ -46,16 +46,6 @@ import { IlarisActiveEffect } from '../documents/active-effect.js'
  * Fired when any combatant's turn ends and a new turn begins
  */
 Hooks.on('combatTurn', async (combat, updateData, updateOptions) => {
-    // Only process on the GM's client to avoid duplicate processing
-    if (!game.user.isGM) return
-
-    console.log('combatTurn hook triggered for DOT effects', {
-        updateData,
-        currentTurn: combat.turn,
-        currentRound: combat.round,
-        previousTurn: updateData.turn,
-    })
-
     // The combatant whose turn just ended is in updateData
     // updateData contains the NEW turn info, so we need to look at who was active before
     // However, we can get the current combatant from combat directly
@@ -74,15 +64,6 @@ Hooks.on('combatTurn', async (combat, updateData, updateOptions) => {
  * Fired when a new round starts, meaning the last combatant's turn just ended
  */
 Hooks.on('combatRound', async (combat, updateData, updateOptions) => {
-    // Only process on the GM's client to avoid duplicate processing
-    if (!game.user.isGM) return
-
-    console.log('combatRound hook triggered for DOT effects', {
-        updateData,
-        currentRound: combat.round,
-        currentTurn: combat.turn,
-    })
-
     // When a new round starts, the last combatant of the previous round just finished
     // The combat is now at turn 0 of the new round
     // Get the last combatant from the turns array
@@ -114,36 +95,7 @@ async function applyDotEffectsToActor(actor, combat, combatant) {
     // Apply each DOT effect
     for (const { effect, change } of dotEffects) {
         try {
-            await IlarisActiveEffect.applyDotDamage(actor, change)
-
-            // Handle duration decrement
-            // Only process duration once per effect (an effect might have multiple DOT changes)
-            if (!processedEffectIds.has(effect.id)) {
-                processedEffectIds.add(effect.id)
-
-                const duration = effect.duration
-                // Check if turns is defined and not null (user requirement)
-                if (duration.turns !== null && duration.turns !== undefined) {
-                    const newTurns = duration.turns - 1
-
-                    if (newTurns <= 0) {
-                        await effect.delete()
-                        ChatMessage.create({
-                            speaker: ChatMessage.getSpeaker({ actor }),
-                            content: `<div class="ilaris-chat-card">
-                                <h3>${effect.name}</h3>
-                                <p>Der Effekt ist abgelaufen.</p>
-                            </div>`,
-                        })
-                        console.log(`DOT: Effect ${effect.name} expired and was removed.`)
-                    } else {
-                        await effect.update({ 'duration.turns': newTurns })
-                        console.log(
-                            `DOT: Effect ${effect.name} duration decremented to ${newTurns} turns.`,
-                        )
-                    }
-                }
-            }
+            await IlarisActiveEffect.applyDotDamage(actor, change, effect)
         } catch (error) {
             console.error(`Failed to apply DOT effect to ${actor.name}:`, error)
             ui.notifications.error(`Fehler beim Anwenden des DOT-Effekts auf ${actor.name}`)
