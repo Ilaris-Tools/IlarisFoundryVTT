@@ -183,9 +183,6 @@ export class IlarisActor extends Actor {
 
             // Calculate base SchiPs
             this.system.schips.schips = calculateValue('SchiP', 4)
-
-            this.system.abgeleitete.zauberer = this.system.abgeleitete.asp > 0
-            this.system.abgeleitete.geweihter = this.system.abgeleitete.kap > 0
         }
     }
 
@@ -536,6 +533,9 @@ export class IlarisActor extends Actor {
     }
 
     _calculateAbgeleitete() {
+        this.system.abgeleitete.zauberer = this.system.abgeleitete.asp > 0
+        this.system.abgeleitete.geweihter = this.system.abgeleitete.kap > 0
+
         let be = this.system.abgeleitete.be
         for (let ruestung of this.ruestungen) {
             if (ruestung.system.aktiv == true) {
