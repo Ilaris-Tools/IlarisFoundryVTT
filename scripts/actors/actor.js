@@ -104,7 +104,10 @@ export class IlarisActor extends Actor {
 
             // Base Magic Resistance
             if (this.system.attribute.MU?.wert != undefined) {
-                this.system.abgeleitete.mr = calculateValue('MR', this.system.attribute.MU.wert)
+                this.system.abgeleitete.mr = calculateValue(
+                    'MR',
+                    4 + Math.floor(this.system.attribute.MU.wert / 4),
+                )
             }
 
             // Base GS (Geschwindigkeit)
