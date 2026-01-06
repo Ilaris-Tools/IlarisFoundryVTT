@@ -184,13 +184,9 @@ export class VorteilConverter extends BaseConverter {
 
             // Map stat to the correct key
             let key
-            if (stat === 'AsPBasis') {
+            if (stat === 'AsPBasis' || stat === 'AsP') {
                 key = 'system.abgeleitete.asp'
-            } else if (stat === 'KaPBasis') {
-                key = 'system.abgeleitete.kap'
-            } else if (stat === 'AsP') {
-                key = 'system.abgeleitete.asp'
-            } else if (stat === 'KaP') {
+            } else if (stat === 'KaPBasis' || stat === 'KaP') {
                 key = 'system.abgeleitete.kap'
             } else {
                 // WS, MR, GS, INI, DH
