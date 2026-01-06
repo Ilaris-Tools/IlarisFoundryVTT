@@ -166,7 +166,10 @@ Hooks.once('init', () => {
             id: 'schlechtesicht1',
             name: 'Schlechte Sicht (Dämmerung)',
             duration: [],
-            changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 4, value: -2 }],
+            changes: [
+                { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 4, value: -2 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 4, value: -2 },
+            ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/sight-disabled.svg',
             tint: STATUS_EFFECT_COLORS.YELLOW,
@@ -175,7 +178,10 @@ Hooks.once('init', () => {
             id: 'schlechtesicht2',
             name: 'Schlechte Sicht (Mondlicht)',
             duration: [],
-            changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 6, value: -4 }],
+            changes: [
+                { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 6, value: -4 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 6, value: -4 },
+            ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/sight-disabled.svg',
             tint: STATUS_EFFECT_COLORS.ORANGE,
@@ -184,7 +190,10 @@ Hooks.once('init', () => {
             id: 'schlechtesicht3',
             name: 'Schlechte Sicht (Sternenlicht)',
             duration: [],
-            changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 7, value: -8 }],
+            changes: [
+                { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 7, value: -8 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 7, value: -8 },
+            ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/sight-disabled.svg',
             tint: STATUS_EFFECT_COLORS.RED,
@@ -195,6 +204,7 @@ Hooks.once('init', () => {
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 8, value: -16 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 8, value: -16 },
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/sight-disabled.svg',
@@ -204,7 +214,10 @@ Hooks.once('init', () => {
             id: 'untergrund1',
             name: 'Unsicherer Untergrund (knietiefes Wasser)',
             duration: [],
-            changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 4, value: -2 }],
+            changes: [
+                { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 4, value: -2 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 4, value: -2 },
+            ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/sticky-boot.svg',
             tint: STATUS_EFFECT_COLORS.YELLOW,
@@ -213,7 +226,10 @@ Hooks.once('init', () => {
             id: 'untergrund2',
             name: 'Unsicherer Untergrund (eisglatt, hüfttiefes Wasser)',
             duration: [],
-            changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 6, value: -4 }],
+            changes: [
+                { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 6, value: -4 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 6, value: -4 },
+            ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/sticky-boot.svg',
             tint: STATUS_EFFECT_COLORS.ORANGE,
@@ -222,7 +238,10 @@ Hooks.once('init', () => {
             id: 'untergrund3',
             name: 'Unsicherer Untergrund (schultertiefes Wasser)',
             duration: [],
-            changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 7, value: -8 }],
+            changes: [
+                { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 7, value: -8 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 7, value: -8 },
+            ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/sticky-boot.svg',
             tint: STATUS_EFFECT_COLORS.RED,
@@ -233,6 +252,7 @@ Hooks.once('init', () => {
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 8, value: -16 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 8, value: -16 },
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/sticky-boot.svg',
@@ -242,7 +262,10 @@ Hooks.once('init', () => {
             id: 'Position1',
             name: 'Sehr vorteilhafte Position',
             duration: [],
-            changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 9, value: +4 }],
+            changes: [
+                { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 9, value: +4 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 9, value: +4 },
+            ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/hill-fort-green.svg',
         },
@@ -252,6 +275,7 @@ Hooks.once('init', () => {
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 10, value: +2 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 10, value: +2 },
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/hill-conquest-light-green.svg',
@@ -262,6 +286,7 @@ Hooks.once('init', () => {
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 12, value: -2 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 12, value: -2 },
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/kneeling-yellow.svg',
@@ -272,6 +297,7 @@ Hooks.once('init', () => {
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 13, value: -4 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 13, value: -4 },
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/falling-orange.svg',
@@ -280,7 +306,10 @@ Hooks.once('init', () => {
             id: 'Nahkampf1',
             name: 'Nahkampf +4',
             duration: [],
-            changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 9, value: +4 }],
+            changes: [
+                { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 9, value: +4 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 9, value: +4 },
+            ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/swordwoman.svg',
             tint: STATUS_EFFECT_COLORS.GREEN,
@@ -291,6 +320,7 @@ Hooks.once('init', () => {
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 10, value: +2 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 10, value: +2 },
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/swordwoman.svg',
@@ -302,6 +332,7 @@ Hooks.once('init', () => {
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 12, value: -2 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 12, value: -2 },
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/swordwoman.svg',
@@ -313,6 +344,7 @@ Hooks.once('init', () => {
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 13, value: -4 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 13, value: -4 },
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/swordwoman.svg',

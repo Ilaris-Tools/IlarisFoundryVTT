@@ -107,7 +107,12 @@ export class AngriffDialog extends CombatDialog {
         allSummaries += this.getAttackSummary(baseAT, statusMods, nahkampfMods, diceFormula)
 
         // Defense Summary
-        allSummaries += this.getDefenseSummary(baseVT, statusMods, nahkampfMods, diceFormula)
+        allSummaries += this.getDefenseSummary(
+            baseVT,
+            statusMods,
+            this.actor.system.modifikatoren.verteidigungmod,
+            diceFormula,
+        )
 
         // Damage Summary
         allSummaries += this.getDamageSummary()
@@ -336,7 +341,7 @@ export class AngriffDialog extends CombatDialog {
         let diceFormula = this.getDiceFormula(html)
         let formula = `${diceFormula} ${signed(this.item.system.vt)} ${signed(
             this.vt_abzuege_mod,
-        )} ${signed(this.item.actor.system.modifikatoren.nahkampfmod)} ${signed(this.mod_vt)}`
+        )} ${signed(this.item.actor.system.modifikatoren.verteidigungmod)} ${signed(this.mod_vt)}`
 
         // Use the new evaluation function
         const rollResult = await evaluate_roll_with_crit(

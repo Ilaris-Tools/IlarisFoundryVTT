@@ -357,8 +357,15 @@ export class IlarisActorSheet extends ActorSheet {
             pw = $(event.currentTarget).data('pw')
         }
         let formula = `${dice} + ${pw} + ${globalermod}`
-        if (rolltype == 'at' || rolltype == 'vt') {
-            formula += ` + ${systemData.modifikatoren.nahkampfmod}`
+        if (rolltype == 'at') {
+            formula += ` ${systemData.modifikatoren.nahkampfmod > 0 ? '+' : ''}${
+                systemData.modifikatoren.nahkampfmod
+            }`
+        }
+        if (rolltype == 'vt') {
+            formula += ` ${systemData.modifikatoren.verteidigungmod > 0 ? '+' : ''}${
+                systemData.modifikatoren.verteidigungmod
+            }`
         }
         if (rolltype == 'schaden') {
             formula = pw

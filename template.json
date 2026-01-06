@@ -45,7 +45,8 @@
       "modifikatoren": {
         "modifikatoren": {
           "manuellermod": 0,
-          "nahkampfmod": 0
+          "nahkampfmod": 0,
+          "verteidigungmod": 0
         }
       },
       "misc": {

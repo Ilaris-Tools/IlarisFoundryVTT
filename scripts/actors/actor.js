@@ -525,14 +525,11 @@ export class IlarisActor extends Actor {
         let globalermod = hardcoded.globalermod(systemData)
         systemData.abgeleitete.globalermod = globalermod
         // displayed text for nahkampfmod
-        systemData.abgeleitete.nahkampfmoddisplay = ``
-        if (systemData.modifikatoren.nahkampfmod == 0) {
-            systemData.abgeleitete.nahkampfmoddisplay += `-`
-        } else if (systemData.modifikatoren.nahkampfmod > 0) {
-            systemData.abgeleitete.nahkampfmoddisplay += `+`
-        }
-        // let nahkampfmodgesamt = data.data.modifikatoren.nahkampfmod + data.data.modifikatoren.globalermod;
-        systemData.abgeleitete.nahkampfmoddisplay += `${systemData.modifikatoren.nahkampfmod} auf AT/VT durch Status am Token`
+        systemData.abgeleitete.nahkampfmoddisplay = `${
+            systemData.modifikatoren.nahkampfmod > 0 ? '+' : ''
+        }${systemData.modifikatoren.nahkampfmod}/${
+            systemData.modifikatoren.verteidigungmod > 0 ? '+' : ''
+        }${systemData.modifikatoren.verteidigungmod} auf AT/VT durch Status am Token`
         // displayed text for globalermod (auf alle Proben insgesamt)
         systemData.abgeleitete.globalermoddisplay = ``
         if (systemData.abgeleitete.globalermod == 0) {
@@ -604,7 +601,6 @@ export class IlarisActor extends Actor {
     async _calculateKampf(actor) {
         console.log('Berechne Kampf')
         // data.data.abgeleitete.sb = sb;
-        let nahkampfmod = actor.system.modifikatoren.nahkampfmod
         // let wundabzuege = data.data.gesundheit.wundabzuege;
         let kampfstile = hardcoded.getKampfstile(actor)
         // data.misc.selected_kampfstil = "ohne";

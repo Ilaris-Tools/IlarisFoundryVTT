@@ -32,6 +32,9 @@ export class KreaturActor extends IlarisActor {
         if (!this.system.modifikatoren.nahkampfmod) {
             this.system.modifikatoren.nahkampfmod = 0
         }
+        if (!this.system.modifikatoren.verteidigungmod) {
+            this.system.modifikatoren.verteidigungmod = 0
+        }
         this._sortItems(this)
         this._calculateWounds(this.system)
         this._calculateFear(this.system)
