@@ -430,32 +430,23 @@ Hooks.on('renderActorDirectory', (app, html) => {
 
 // Force apply tint colors to status effect picker icons using direct CSS styling
 Hooks.on('renderTokenHUD', (app, html, data) => {
-    console.log('TokenHUD rendered, looking for status effects...')
-
     // Wait for DOM to be ready
     setTimeout(() => {
         // Look for the status effects container
         const statusEffectsContainer = html.find('.status-effects')
-        console.log('Status effects container found:', statusEffectsContainer.length)
 
         if (statusEffectsContainer.length > 0) {
             // Find all effect controls within the status effects container
             const effectControls = statusEffectsContainer.find('.effect-control')
-            console.log('Effect controls found:', effectControls.length)
 
             effectControls.each((index, control) => {
                 const $control = $(control)
                 const statusId = $control.data('status-id')
 
-                console.log(`Processing control ${index}: statusId=${statusId}`)
-                console.log($control[0]) // Log the actual DOM element
-
                 // Find the matching status effect configuration
                 const statusConfig = CONFIG.statusEffects.find((effect) => effect.id === statusId)
 
                 if (statusConfig && statusConfig.tint) {
-                    console.log(`Applying tint ${statusConfig.tint} to status ${statusId}`)
-
                     // Apply filter to change only the white SVG fill to the desired color
                     const filterValue = getFilterForColor(statusConfig.tint)
                     $control.css({
@@ -472,10 +463,6 @@ Hooks.on('renderTokenHUD', (app, html, data) => {
                     )
 
                     $control.addClass('ilaris-tinted')
-                } else if (statusConfig) {
-                    console.log(`Status ${statusId} found but no tint:`, statusConfig)
-                } else {
-                    console.log(`No status config found for ${statusId}`)
                 }
             })
         }

@@ -1,4 +1,8 @@
 import { IlarisActor } from './actor.js'
+import {
+    IlarisGameSettingNames,
+    ConfigureGameSettingsCategories,
+} from '../settings/configure-game-settings.model.js'
 
 export class KreaturActor extends IlarisActor {
     async _preCreate(data, options, user) {
@@ -34,6 +38,15 @@ export class KreaturActor extends IlarisActor {
         }
         if (!this.system.modifikatoren.verteidigungmod) {
             this.system.modifikatoren.verteidigungmod = 0
+        }
+        const useLepSystem = game.settings.get(
+            ConfigureGameSettingsCategories.Ilaris,
+            IlarisGameSettingNames.lepSystem,
+        )
+
+        if (useLepSystem) {
+            this.system.gesundheit.hp.max = this.system.kampfwerte.ws
+            this.system.gesundheit.hp.value = this.system.kampfwerte.ws
         }
         this._sortItems(this)
         this._calculateWounds(this.system)
