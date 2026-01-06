@@ -595,7 +595,7 @@ export class IlarisActorSheet extends ActorSheet {
 
         // Handle effects differently from items
         if (itemClass === 'effect') {
-            const effect = this.actor.effects.get(itemID)
+            const effect = this.actor.appliedEffects.find((e) => e.id === itemID)
             if (effect) {
                 effect.sheet.render(true)
             } else {

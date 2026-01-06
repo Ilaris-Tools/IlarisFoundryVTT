@@ -182,7 +182,8 @@ export class CompendiumUpdater {
                             const shouldReplace =
                                 xmlItem.type === 'vorteil' &&
                                 xmlItem.system?.sephrastoScript &&
-                                ![3, 5, 7].includes(xmlItem.system?.kategorie)
+                                ![3, 5, 7].includes(xmlItem.system?.kategorie) &&
+                                !['3', '5', '7'].includes(xmlItem.system?.kategorie)
 
                             if (shouldReplace) {
                                 // Delete the existing item completely

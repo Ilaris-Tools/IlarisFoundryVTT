@@ -165,7 +165,7 @@ export class IlarisActor extends Actor {
             this.system.abgeleitete.ws_brust = ws_stern
             this.system.abgeleitete.ws_kopf = ws_stern
 
-            // Base ASP (will be modified by hardcoded and zugekauft/gasp later)
+            // Base ASP
             this.system.abgeleitete.asp = 0
             this.system.abgeleitete.asp += Number(this.system.abgeleitete.asp_zugekauft) || 0
             this.system.abgeleitete.asp -= Number(this.system.abgeleitete.gasp) || 0
@@ -175,7 +175,7 @@ export class IlarisActor extends Actor {
                     ? Number(this.system.abgeleitete.asp_stern)
                     : this.system.abgeleitete.asp
 
-            // Base KAP (will be modified by hardcoded and zugekauft/gkap later)
+            // Base KAP
             this.system.abgeleitete.kap = 0
             this.system.abgeleitete.kap += Number(this.system.abgeleitete.kap_zugekauft) || 0
             this.system.abgeleitete.kap -= Number(this.system.abgeleitete.gkap) || 0
@@ -432,6 +432,7 @@ export class IlarisActor extends Actor {
         if (useLepSystem) {
             // LEP system: no penalties until max_hp - 6 * LAW of max_hp, then -2 per LAW segment
             const law = Math.ceil(max_hp / 8)
+            this.system.abgeleitete.law = law
             const woundFreeSegment = max_hp - law * 6
 
             switch (new_hp) {
@@ -525,11 +526,11 @@ export class IlarisActor extends Actor {
         let globalermod = hardcoded.globalermod(systemData)
         systemData.abgeleitete.globalermod = globalermod
         // displayed text for nahkampfmod
-        systemData.abgeleitete.nahkampfmoddisplay = `${
-            systemData.modifikatoren.nahkampfmod > 0 ? '+' : ''
-        }${systemData.modifikatoren.nahkampfmod}/${
-            systemData.modifikatoren.verteidigungmod > 0 ? '+' : ''
-        }${systemData.modifikatoren.verteidigungmod} auf AT/VT durch Status am Token`
+        systemData.abgeleitete.nahkampfmoddisplay = `
+        ${systemData.modifikatoren.nahkampfmod > 0 ? '+' : ''}
+        ${systemData.modifikatoren.nahkampfmod}/
+        ${systemData.modifikatoren.verteidigungmod > 0 ? '+' : ''}
+        ${systemData.modifikatoren.verteidigungmod} auf AT/VT durch Status am Token`
         // displayed text for globalermod (auf alle Proben insgesamt)
         systemData.abgeleitete.globalermoddisplay = ``
         if (systemData.abgeleitete.globalermod == 0) {
@@ -558,7 +559,6 @@ export class IlarisActor extends Actor {
         if (be < 0) be = 0
         this.system.abgeleitete.be = be
 
-        console.log('Berechne abgeleitete Werte', this.system)
         let traglast_intervall = this.system.attribute.KK.wert
         traglast_intervall = traglast_intervall >= 1 ? traglast_intervall : 1
         this.system.abgeleitete.traglast_intervall = traglast_intervall
@@ -576,7 +576,6 @@ export class IlarisActor extends Actor {
         this.system.abgeleitete.be += be_mod
         this.system.abgeleitete.be_traglast = be_mod
         let be_traglast = this.system.abgeleitete.be_traglast
-        console.log('BE Modifikator:', this.system.abgeleitete.be)
         this.system.abgeleitete.dh =
             this.system.abgeleitete.dh - 2 * (this.system.abgeleitete.be - be_traglast)
 
@@ -584,9 +583,6 @@ export class IlarisActor extends Actor {
             1,
             this.system.abgeleitete.gs - (this.system.abgeleitete?.be ?? 0),
         )
-
-        this.system.abgeleitete.zauberer = this.system.abgeleitete.asp > 0 ? true : false
-        this.system.abgeleitete.geweihter = this.system.abgeleitete.kap > 0 ? true : false
     }
 
     /**
@@ -600,10 +596,7 @@ export class IlarisActor extends Actor {
 
     async _calculateKampf(actor) {
         console.log('Berechne Kampf')
-        // data.data.abgeleitete.sb = sb;
-        // let wundabzuege = data.data.gesundheit.wundabzuege;
         let kampfstile = hardcoded.getKampfstile(actor)
-        // data.misc.selected_kampfstil = "ohne";
         actor.misc.kampfstile_list = kampfstile
         let selected_kampfstil = hardcoded.getSelectedStil(actor, 'kampf')
 
