@@ -188,7 +188,7 @@ export class WaffeItem extends CombatItem {
         // Process each eigenschaft
         const eigenschaften = Array.isArray(this.system.eigenschaften)
             ? this.system.eigenschaften
-            : []
+            : Object.values(this.system.eigenschaften || [])
         for (const eigenschaft of eigenschaften) {
             // Support both string format (legacy) and object format (new)
             if (typeof eigenschaft === 'string') {

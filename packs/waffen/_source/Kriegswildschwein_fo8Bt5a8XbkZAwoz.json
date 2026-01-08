@@ -11,8 +11,14 @@
     "hauptwaffe": false,
     "nebenwaffe": false,
     "eigenschaften": [
-      "Niederwerfen",
-      "Reittier"
+      {
+        "key": "Niederwerfen",
+        "parameters": []
+      },
+      {
+        "key": "Reittier",
+        "parameters": []
+      }
     ],
     "text": "",
     "aufbewahrungs_ort": "mitführend",

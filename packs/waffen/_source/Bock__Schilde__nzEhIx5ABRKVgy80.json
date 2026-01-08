@@ -11,8 +11,14 @@
     "hauptwaffe": false,
     "nebenwaffe": false,
     "eigenschaften": [
-      "Parierwaffe",
-      "Schild"
+      {
+        "key": "Parierwaffe",
+        "parameters": []
+      },
+      {
+        "key": "Schild",
+        "parameters": []
+      }
     ],
     "text": "",
     "aufbewahrungs_ort": "mitführend",

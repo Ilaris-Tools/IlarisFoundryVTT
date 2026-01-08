@@ -11,8 +11,16 @@
     "hauptwaffe": false,
     "nebenwaffe": false,
     "eigenschaften": [
-      "Schwer (4)",
-      "Zweihändig"
+      {
+        "key": "Schwer",
+        "parameters": [
+          4
+        ]
+      },
+      {
+        "key": "Zweihändig",
+        "parameters": []
+      }
     ],
     "text": "",
     "aufbewahrungs_ort": "mitführend",

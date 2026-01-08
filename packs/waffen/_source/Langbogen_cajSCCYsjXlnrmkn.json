@@ -11,9 +11,20 @@
     "hauptwaffe": false,
     "nebenwaffe": false,
     "eigenschaften": [
-      "kein Reiter",
-      "Schwer (4)",
-      "Zweihändig"
+      {
+        "key": "kein Reiter",
+        "parameters": []
+      },
+      {
+        "key": "Schwer",
+        "parameters": [
+          4
+        ]
+      },
+      {
+        "key": "Zweihändig",
+        "parameters": []
+      }
     ],
     "text": "",
     "aufbewahrungs_ort": "mitführend",

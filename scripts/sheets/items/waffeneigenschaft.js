@@ -163,7 +163,8 @@ export class WaffeneigenschaftSheet extends IlarisItemSheet {
      */
     async _onAddParameterSlot(event) {
         event.preventDefault()
-        const slots = [...(this.item.system.parameterSlots || [])]
+        const currentData = this.item.system.parameterSlots
+        const slots = Array.isArray(currentData) ? currentData : Object.values(currentData) || []
         slots.push({
             name: '',
             type: 'number',
@@ -183,7 +184,8 @@ export class WaffeneigenschaftSheet extends IlarisItemSheet {
     async _onRemoveParameterSlot(event) {
         event.preventDefault()
         const index = parseInt(event.currentTarget.dataset.index)
-        const slots = [...(this.item.system.parameterSlots || [])]
+        const currentData = this.item.system.parameterSlots
+        const slots = Array.isArray(currentData) ? currentData : Object.values(currentData) || []
         slots.splice(index, 1)
         await this.item.update({ 'system.parameterSlots': slots })
     }
