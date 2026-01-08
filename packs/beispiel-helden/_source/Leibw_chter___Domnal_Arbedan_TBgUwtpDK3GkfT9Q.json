@@ -1647,12 +1647,30 @@
         "hauptwaffe": false,
         "nebenwaffe": false,
         "eigenschaften": [
-          "Kopflastig",
-          "Parierwaffe",
-          "Stumpf",
-          "Wendig",
-          "Zerbrechlich",
-          "Kein Malus als Nebenwaffe"
+          {
+            "key": "Kopflastig",
+            "parameters": []
+          },
+          {
+            "key": "Parierwaffe",
+            "parameters": []
+          },
+          {
+            "key": "Stumpf",
+            "parameters": []
+          },
+          {
+            "key": "Wendig",
+            "parameters": []
+          },
+          {
+            "key": "Zerbrechlich",
+            "parameters": []
+          },
+          {
+            "key": "Kein Malus als Nebenwaffe",
+            "parameters": []
+          }
         ],
         "text": "",
         "aufbewahrungs_ort": "tragend",
@@ -1700,9 +1718,18 @@
         "hauptwaffe": false,
         "nebenwaffe": false,
         "eigenschaften": [
-          "Parierwaffe",
-          "Schild",
-          "Stumpf"
+          {
+            "key": "Parierwaffe",
+            "parameters": []
+          },
+          {
+            "key": "Schild",
+            "parameters": []
+          },
+          {
+            "key": "Stumpf",
+            "parameters": []
+          }
         ],
         "text": "",
         "aufbewahrungs_ort": "tragend",
@@ -1796,9 +1823,18 @@
         "hauptwaffe": false,
         "nebenwaffe": false,
         "eigenschaften": [
-          "Parierwaffe",
-          "Schild",
-          "Stumpf"
+          {
+            "key": "Parierwaffe",
+            "parameters": []
+          },
+          {
+            "key": "Schild",
+            "parameters": []
+          },
+          {
+            "key": "Stumpf",
+            "parameters": []
+          }
         ],
         "text": "",
         "aufbewahrungs_ort": "tragend",
@@ -1846,7 +1882,10 @@
         "hauptwaffe": false,
         "nebenwaffe": false,
         "eigenschaften": [
-          "Parierwaffe"
+          {
+            "key": "Parierwaffe",
+            "parameters": []
+          }
         ],
         "text": "",
         "aufbewahrungs_ort": "tragend",

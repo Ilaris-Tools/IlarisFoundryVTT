@@ -117,6 +117,24 @@ function migrateEigenschaften(eigenschaften) {
 }
 
 /**
+ * Migrate eigenschaften in a weapon object (modifies in place)
+ */
+function migrateWeaponEigenschaften(weapon) {
+  if (!weapon.system?.eigenschaften) return false
+  
+  const eigenschaften = weapon.system.eigenschaften
+  
+  // Already migrated?
+  if (Array.isArray(eigenschaften) && eigenschaften.length > 0 && eigenschaften[0]?.key !== undefined) {
+    return false
+  }
+  
+  // Migrate
+  weapon.system.eigenschaften = migrateEigenschaften(eigenschaften)
+  return true
+}
+
+/**
  * Migrate a single weapon file
  */
 function migrateWeaponFile(filePath) {
@@ -128,24 +146,54 @@ function migrateWeaponFile(filePath) {
     return { migrated: false, reason: 'not a weapon' }
   }
   
-  // Check if eigenschaften exist
-  if (!weapon.system.eigenschaften) {
-    return { migrated: false, reason: 'no eigenschaften' }
-  }
+  const migrated = migrateWeaponEigenschaften(weapon)
   
-  // Check if already migrated
-  const eigenschaften = weapon.system.eigenschaften
-  if (Array.isArray(eigenschaften) && eigenschaften.length > 0 && eigenschaften[0]?.key !== undefined) {
-    return { migrated: false, reason: 'already migrated' }
+  if (!migrated) {
+    return { migrated: false, reason: 'already migrated or no eigenschaften' }
   }
-  
-  // Migrate
-  weapon.system.eigenschaften = migrateEigenschaften(eigenschaften)
   
   // Write back
   fs.writeFileSync(filePath, JSON.stringify(weapon, null, 2) + '\n')
   
   return { migrated: true }
+}
+
+/**
+ * Migrate an actor file with embedded weapon items
+ */
+function migrateActorFile(filePath) {
+  const content = fs.readFileSync(filePath, 'utf-8')
+  const actor = JSON.parse(content)
+  
+  // Only process actor documents
+  if (actor.type !== 'held' && actor.type !== 'npc') {
+    return { migrated: 0, reason: 'not an actor' }
+  }
+  
+  // Check if actor has items
+  if (!actor.items || !Array.isArray(actor.items)) {
+    return { migrated: 0, reason: 'no items' }
+  }
+  
+  let migratedCount = 0
+  
+  // Migrate weapons in actor's items
+  for (const item of actor.items) {
+    if (item.type === 'nahkampfwaffe' || item.type === 'fernkampfwaffe') {
+      if (migrateWeaponEigenschaften(item)) {
+        migratedCount++
+      }
+    }
+  }
+  
+  if (migratedCount === 0) {
+    return { migrated: 0, reason: 'no weapons to migrate' }
+  }
+  
+  // Write back
+  fs.writeFileSync(filePath, JSON.stringify(actor, null, 2) + '\n')
+  
+  return { migrated: migratedCount }
 }
 
 /**
@@ -164,20 +212,42 @@ function migrateCompendiumSource(packName) {
   
   console.log(`\nMigrating ${packName} (${files.length} files)...`)
   
-  let migrated = 0
+  let migratedFiles = 0
+  let migratedWeapons = 0
   let skipped = 0
   let errors = 0
   
   for (const file of files) {
     const filePath = path.join(sourceDir, file)
     try {
-      const result = migrateWeaponFile(filePath)
-      if (result.migrated) {
-        migrated++
-        console.log(`  ✓ ${file}`)
-      } else {
+      const content = fs.readFileSync(filePath, 'utf-8')
+      const doc = JSON.parse(content)
+      
+      // Try weapon migration
+      if (doc.type === 'nahkampfwaffe' || doc.type === 'fernkampfwaffe') {
+        const result = migrateWeaponFile(filePath)
+        if (result.migrated) {
+          migratedFiles++
+          migratedWeapons++
+          console.log(`  ✓ ${file}`)
+        } else {
+          skipped++
+        }
+      }
+      // Try actor migration
+      else if (doc.type === 'held' || doc.type === 'npc') {
+        const result = migrateActorFile(filePath)
+        if (result.migrated > 0) {
+          migratedFiles++
+          migratedWeapons += result.migrated
+          console.log(`  ✓ ${file} (${result.migrated} weapons)`)
+        } else {
+          skipped++
+        }
+      }
+      // Other document types
+      else {
         skipped++
-        // console.log(`  - ${file} (${result.reason})`)
       }
     } catch (error) {
       errors++
@@ -186,7 +256,8 @@ function migrateCompendiumSource(packName) {
   }
   
   console.log(`\nResults for ${packName}:`)
-  console.log(`  Migrated: ${migrated}`)
+  console.log(`  Files migrated: ${migratedFiles}`)
+  console.log(`  Weapons migrated: ${migratedWeapons}`)
   console.log(`  Skipped: ${skipped}`)
   console.log(`  Errors: ${errors}`)
 }
@@ -196,6 +267,7 @@ console.log('=== Waffeneigenschaften Compendium Migration ===\n')
 
 // Migrate weapon packs
 migrateCompendiumSource('waffen')
+migrateCompendiumSource('beispiel-helden')
 
 console.log('\n✓ Migration complete!')
 console.log('\nNext steps:')

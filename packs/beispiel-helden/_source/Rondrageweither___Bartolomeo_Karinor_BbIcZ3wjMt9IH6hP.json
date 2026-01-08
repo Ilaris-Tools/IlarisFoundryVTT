@@ -2264,10 +2264,22 @@
         "hauptwaffe": false,
         "nebenwaffe": false,
         "eigenschaften": [
-          "Parierwaffe",
-          "Stumpf",
-          "Zerbrechlich",
-          "Kein Malus als Nebenwaffe"
+          {
+            "key": "Parierwaffe",
+            "parameters": []
+          },
+          {
+            "key": "Stumpf",
+            "parameters": []
+          },
+          {
+            "key": "Zerbrechlich",
+            "parameters": []
+          },
+          {
+            "key": "Kein Malus als Nebenwaffe",
+            "parameters": []
+          }
         ],
         "text": "",
         "aufbewahrungs_ort": "tragend",
@@ -2315,9 +2327,20 @@
         "hauptwaffe": false,
         "nebenwaffe": false,
         "eigenschaften": [
-          "Kopflastig",
-          "Schwer (+4)",
-          "Zweihändig"
+          {
+            "key": "Kopflastig",
+            "parameters": []
+          },
+          {
+            "key": "Schwer",
+            "parameters": [
+              4
+            ]
+          },
+          {
+            "key": "Zweihändig",
+            "parameters": []
+          }
         ],
         "text": "",
         "aufbewahrungs_ort": "tragend",

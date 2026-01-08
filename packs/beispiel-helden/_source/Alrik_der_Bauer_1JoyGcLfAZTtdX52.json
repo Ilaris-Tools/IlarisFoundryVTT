@@ -1014,10 +1014,22 @@
         "hauptwaffe": false,
         "nebenwaffe": false,
         "eigenschaften": [
-          "Parierwaffe",
-          "Stumpf",
-          "Zerbrechlich",
-          "Kein Malus als Nebenwaffe"
+          {
+            "key": "Parierwaffe",
+            "parameters": []
+          },
+          {
+            "key": "Stumpf",
+            "parameters": []
+          },
+          {
+            "key": "Zerbrechlich",
+            "parameters": []
+          },
+          {
+            "key": "Kein Malus als Nebenwaffe",
+            "parameters": []
+          }
         ],
         "text": "",
         "aufbewahrungs_ort": "tragend",
@@ -1070,9 +1082,18 @@
         "hauptwaffe": false,
         "nebenwaffe": false,
         "eigenschaften": [
-          "Stumpf",
-          "Zerbrechlich",
-          "Kein Malus als Nebenwaffe"
+          {
+            "key": "Stumpf",
+            "parameters": []
+          },
+          {
+            "key": "Zerbrechlich",
+            "parameters": []
+          },
+          {
+            "key": "Kein Malus als Nebenwaffe",
+            "parameters": []
+          }
         ],
         "text": "",
         "aufbewahrungs_ort": "tragend",
@@ -1692,7 +1713,10 @@
         "hauptwaffe": true,
         "nebenwaffe": true,
         "eigenschaften": [
-          "Zweihändig"
+          {
+            "key": "Zweihändig",
+            "parameters": []
+          }
         ],
         "text": "",
         "aufbewahrungs_ort": "mitführend",
@@ -1745,8 +1769,14 @@
         "hauptwaffe": false,
         "nebenwaffe": false,
         "eigenschaften": [
-          "Kopflastig",
-          "Stumpf"
+          {
+            "key": "Kopflastig",
+            "parameters": []
+          },
+          {
+            "key": "Stumpf",
+            "parameters": []
+          }
         ],
         "text": "",
         "aufbewahrungs_ort": "mitführend",
@@ -1984,7 +2014,10 @@
         "hauptwaffe": false,
         "nebenwaffe": false,
         "eigenschaften": [
-          "Stumpf"
+          {
+            "key": "Stumpf",
+            "parameters": []
+          }
         ],
         "text": "",
         "aufbewahrungs_ort": "tragend",
