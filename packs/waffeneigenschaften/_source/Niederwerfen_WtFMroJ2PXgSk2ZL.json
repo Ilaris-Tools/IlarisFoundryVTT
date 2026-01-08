@@ -2,11 +2,20 @@
   "name": "Niederwerfen",
   "type": "waffeneigenschaft",
   "system": {
-    "name": "",
     "sephrastoScript": "",
     "foundryScript": "",
     "text": "",
     "kategorie": "target_effect",
+    "parameterSlots": {
+      "0": {
+        "name": "targetMod",
+        "type": "number",
+        "label": "zusätzliche Verteidiger-Erschwernis",
+        "usage": "targetEffect.resistCheck.defenderModifier",
+        "defaultValue": null,
+        "required": false
+      }
+    },
     "modifiers": {
       "at": 0,
       "vt": 0,
@@ -22,14 +31,27 @@
     },
     "wieldingRequirements": {
       "hands": 1,
+      "ignoreNebenMalus": false,
+      "noRider": false,
+      "requiresRider": false,
       "penalties": {
         "hauptOnly": null,
         "nebenOnly": null,
         "nebenWithoutExemption": null
+      },
+      "condition": {
+        "type": "attribute_check",
+        "attribute": "KK",
+        "operator": "<",
+        "value": 0,
+        "onFailure": {
+          "at": 0,
+          "vt": 0,
+          "schaden": 0
+        }
       }
     },
     "targetEffect": {
-      "name": "Niederwerfen",
       "trigger": "on_hit",
       "resistCheck": {
         "type": "none",
@@ -46,13 +68,15 @@
         "duration": "",
         "icon": "",
         "value": "Liegend"
-      }
+      },
+      "name": "Niederwerfen"
     },
     "actorModifiers": {
       "modifiers": [],
       "conditions": []
     },
     "customScript": "",
+    "name": "",
     "beschreibung": "Bei einem Treffer kann das Ziel versuchen, mit einer KK-Probe nicht niedergeworfen zu werden."
   },
   "_id": "WtFMroJ2PXgSk2ZL",
@@ -70,9 +94,9 @@
     "duplicateSource": null,
     "coreVersion": "12.343",
     "systemId": "Ilaris",
-    "systemVersion": "12.2.5",
+    "systemVersion": "12.2.6",
     "createdTime": 1762753607334,
-    "modifiedTime": 1762753607334,
+    "modifiedTime": 1767865146391,
     "lastModifiedBy": "bRsoRPItEVb33T1L"
   },
   "_key": "!items!WtFMroJ2PXgSk2ZL"
