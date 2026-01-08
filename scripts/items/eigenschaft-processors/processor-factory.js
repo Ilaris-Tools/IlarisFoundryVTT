@@ -46,19 +46,29 @@ export class ProcessorFactory {
      * Process an eigenschaft using the appropriate processor
      * Falls back to custom script if no processor found
      * @param {string} kategorie - The eigenschaft kategorie
+     * @param {string} name - The eigenschaft name/key
      * @param {Object} eigenschaft - The eigenschaft system data
+     * @param {Array<string|number>} parameters - Parameter values from the weapon
      * @param {Object} computed - Computed stats object to modify
      * @param {Actor} actor - The owning actor
      * @param {Object} weapon - The weapon item
      */
-    process(kategorie, name, eigenschaft, computed, actor, weapon) {
+    process(kategorie, name, eigenschaft, parameters, computed, actor, weapon) {
         // Validate inputs
         if (!eigenschaft || typeof eigenschaft !== 'object') {
             console.warn(`Invalid eigenschaft data for "${name}" - skipping`)
             return
         }
 
-        console.log(`ProcessorFactory.process called for kategorie: ${kategorie || 'undefined'}`)
+        // Ensure parameters is an array
+        const safeParameters = Array.isArray(parameters) ? parameters : []
+
+        console.log(
+            `ProcessorFactory.process called for kategorie: ${
+                kategorie || 'undefined'
+            }, parameters:`,
+            safeParameters,
+        )
 
         // Handle missing or invalid kategorie - do nothing
         if (!kategorie || typeof kategorie !== 'string') {
@@ -73,7 +83,7 @@ export class ProcessorFactory {
                 `Using processor: ${processor.constructor.name} for kategorie: ${kategorie}`,
             )
             try {
-                processor.process(name, eigenschaft, computed, actor, weapon)
+                processor.process(name, eigenschaft, safeParameters, computed, actor, weapon)
             } catch (error) {
                 console.error(`Processor error for "${name}" (kategorie: ${kategorie}):`, error)
             }

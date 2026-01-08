@@ -189,8 +189,20 @@ export class WaffeItem extends CombatItem {
         const eigenschaften = Array.isArray(this.system.eigenschaften)
             ? this.system.eigenschaften
             : []
-        for (const eigenschaftName of eigenschaften) {
-            this._processEigenschaft(eigenschaftName, this.system.computed, this.parent)
+        for (const eigenschaft of eigenschaften) {
+            // Support both string format (legacy) and object format (new)
+            if (typeof eigenschaft === 'string') {
+                // Legacy string format - process with empty parameters
+                this._processEigenschaft(eigenschaft, [], this.system.computed, this.parent)
+            } else if (eigenschaft && typeof eigenschaft === 'object') {
+                // New object format with parameters
+                this._processEigenschaft(
+                    eigenschaft.key,
+                    eigenschaft.parameters || [],
+                    this.system.computed,
+                    this.parent,
+                )
+            }
         }
 
         this._applyNebenwaffeMalus()
@@ -279,17 +291,18 @@ export class WaffeItem extends CombatItem {
 
     /**
      * Process a single waffeneigenschaft using the appropriate processor
-     * @param {string} name - Name of the eigenschaft
+     * @param {string} key - Key/name of the eigenschaft (base name without parameters)
+     * @param {Array<string|number>} parameters - Parameter values for this eigenschaft
      * @param {Object} computed - Computed stats object to modify
      * @param {Actor} actor - The owning actor
      * @private
      */
-    _processEigenschaft(name, computed, actor) {
-        // Get the eigenschaft item from cache
-        const eigenschaftItem = this._eigenschaftCache.get(name)
+    _processEigenschaft(key, parameters, computed, actor) {
+        // Get the eigenschaft item from cache (by base key)
+        const eigenschaftItem = this._eigenschaftCache.get(key)
 
         if (!eigenschaftItem) {
-            console.warn(`Waffeneigenschaft "${name}" not found - skipping`)
+            console.warn(`Waffeneigenschaft "${key}" not found - skipping`)
             return
         }
 
@@ -297,14 +310,15 @@ export class WaffeItem extends CombatItem {
 
         // Validate eigenschaft has required properties
         if (!eigenschaft) {
-            console.warn(`Waffeneigenschaft "${name}" has no system data - skipping`)
+            console.warn(`Waffeneigenschaft "${key}" has no system data - skipping`)
             return
         }
 
         console.log(
-            `Processing eigenschaft "${name}" of category "${
+            `Processing eigenschaft "${key}" of category "${
                 eigenschaft.kategorie || 'undefined'
-            }"`,
+            }" with parameters:`,
+            parameters,
         )
 
         // Wrap in try-catch to prevent one bad eigenschaft from breaking all calculations
@@ -312,14 +326,15 @@ export class WaffeItem extends CombatItem {
             // Process using the appropriate processor based on kategorie
             this._processorFactory.process(
                 eigenschaft.kategorie,
-                name,
+                key,
                 eigenschaft,
+                parameters,
                 computed,
                 actor,
                 this,
             )
         } catch (error) {
-            console.error(`Error processing eigenschaft "${name}":`, error)
+            console.error(`Error processing eigenschaft "${key}":`, error)
         }
     }
 
