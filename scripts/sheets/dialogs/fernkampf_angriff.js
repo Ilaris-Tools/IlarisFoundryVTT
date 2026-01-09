@@ -247,6 +247,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
             true, // crit_eval
         )
 
+        Hooks.call('Ilaris.fernkampfAngriffClick', rollResult, this.actor, this.item)
         await this.handleTargetSelection(rollResult, 'ranged')
         super._updateSchipsStern(html)
     }
