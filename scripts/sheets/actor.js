@@ -357,8 +357,15 @@ export class IlarisActorSheet extends ActorSheet {
             pw = $(event.currentTarget).data('pw')
         }
         let formula = `${dice} + ${pw} + ${globalermod}`
-        if (rolltype == 'at' || rolltype == 'vt') {
-            formula += ` + ${systemData.modifikatoren.nahkampfmod}`
+        if (rolltype == 'at') {
+            formula += ` ${systemData.modifikatoren.nahkampfmod > 0 ? '+' : ''}${
+                systemData.modifikatoren.nahkampfmod
+            }`
+        }
+        if (rolltype == 'vt') {
+            formula += ` ${systemData.modifikatoren.verteidigungmod > 0 ? '+' : ''}${
+                systemData.modifikatoren.verteidigungmod
+            }`
         }
         if (rolltype == 'schaden') {
             formula = pw
@@ -583,24 +590,33 @@ export class IlarisActorSheet extends ActorSheet {
 
     _onItemEdit(event) {
         console.log('ItemEdit')
-        // console.log(event);
-        // console.log(event.currentTarget);
-        // const li = $(ev.currentTarget).parents(".item");
-        // const item = this.actor.getOwnedItem(li.data("itemId"));
-        // item.sheet.render(true);
         const itemID = event.currentTarget.dataset.itemid
-        // const item = this.actor.getOwnedItem(itemID);
+        const itemClass = event.currentTarget.dataset.itemclass
+
+        // Handle effects differently from items
+        if (itemClass === 'effect') {
+            const effect = this.actor.appliedEffects.find((e) => e.id === itemID)
+            if (effect) {
+                effect.sheet.render(true)
+            } else {
+                console.error('Effect not found with ID:', itemID)
+            }
+            return
+        }
+
         const item = this.actor.items.get(itemID)
-        // console.log(itemID);
-        // console.log(this.actor.items);
-        // TODO: update actor from here? always? only for kreatur? NO initialize wird schon getriggert
         item.sheet.render(true)
     }
 
     _onItemDelete(event) {
         console.log('ItemDelete')
         const itemID = event.currentTarget.dataset.itemid
-        this.actor.deleteEmbeddedDocuments('Item', [itemID])
+        const itemClass = event.currentTarget.dataset.itemclass
+        if (itemClass === 'effect') {
+            this.actor.deleteEmbeddedDocuments('ActiveEffect', [itemID])
+        } else {
+            this.actor.deleteEmbeddedDocuments('Item', [itemID])
+        }
         // li.slideUp(200, () => this.render(false));
     }
 
@@ -697,6 +713,27 @@ export class IlarisActorSheet extends ActorSheet {
                                     compendiumItem.system.foundryScript
                                 updateData['system.voraussetzung'] =
                                     compendiumItem.system.voraussetzung
+
+                                // Update active effects for vorteile
+                                // Delete ALL old effects from the item
+                                const oldEffects = Array.from(actorItem.effects)
+                                if (oldEffects.length > 0) {
+                                    await actorItem.deleteEmbeddedDocuments(
+                                        'ActiveEffect',
+                                        oldEffects.map((e) => e.id),
+                                    )
+                                }
+
+                                // Create new effects from compendium
+                                if (compendiumItem.effects && compendiumItem.effects.size > 0) {
+                                    const newEffects = Array.from(compendiumItem.effects).map((e) =>
+                                        e.toObject(),
+                                    )
+                                    await actorItem.createEmbeddedDocuments(
+                                        'ActiveEffect',
+                                        newEffects,
+                                    )
+                                }
                             } else if (
                                 compendiumItem.type === 'zauber' ||
                                 compendiumItem.type === 'liturgie' ||

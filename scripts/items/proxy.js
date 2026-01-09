@@ -3,6 +3,7 @@ import { ManoeverItem } from './manoever.js'
 import { AngriffItem } from './angriff.js'
 import { WaffeItem } from './waffe.js'
 import { CombatItem } from './combat.js'
+import { EffectItem } from './effect-item.js'
 
 const handler = {
     construct(_, args) {
@@ -18,6 +19,8 @@ const handler = {
                 return new CombatItem(...args)
             case 'manoever':
                 return new ManoeverItem(...args)
+            case 'effect-item':
+                return new EffectItem(...args)
             default:
                 return new IlarisItem(...args)
         }

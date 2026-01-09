@@ -56,6 +56,137 @@ export class IlarisActor extends Actor {
     prepareBaseData() {
         console.log('prepareBaseData')
         super.prepareBaseData()
+
+        // Calculate all base derived values before effects are applied
+        if (this.system.attribute && this.system.abgeleitete) {
+            // Get custom abgeleitete werte definitions from cache
+            const customDefinitions = this._getAbgeleiteteWerteDefinitions()
+
+            console.log('Custom abgeleitete werte definitions:', customDefinitions)
+            // Helper function to execute custom script or use default calculation
+            const calculateValue = (valueName, defaultValue) => {
+                const customDef = customDefinitions.get(valueName)
+                if (customDef && customDef.script) {
+                    try {
+                        // Create evaluation context with actor data and helper functions
+                        const getAttribut = (attr) => this.system.attribute[attr]?.wert || 0
+                        const roundDown = Math.floor
+                        const getWS = () => this.system.abgeleitete.ws || 0
+                        const getRS = () => {
+                            let rs = 0
+                            for (let ruestung of this.ruestungen || []) {
+                                if (ruestung.system.aktiv) rs += ruestung.system.rs
+                            }
+                            return rs
+                        }
+
+                        // Evaluate the script
+                        const result = eval(customDef.script)
+                        console.log(
+                            `Using custom calculation for ${valueName}: ${customDef.script} = ${result}`,
+                        )
+                        return result
+                    } catch (error) {
+                        console.error(
+                            `Error evaluating custom script for ${valueName}: ${error.message}`,
+                        )
+                        console.error(`Script was: ${customDef.script}`)
+                        return defaultValue
+                    }
+                }
+                return defaultValue
+            }
+
+            // Base Initiative
+            if (this.system.attribute.IN?.wert != undefined) {
+                this.system.abgeleitete.ini = calculateValue('INI', this.system.attribute.IN.wert)
+            }
+
+            // Base Magic Resistance
+            if (this.system.attribute.MU?.wert != undefined) {
+                this.system.abgeleitete.mr = calculateValue(
+                    'MR',
+                    4 + Math.floor(this.system.attribute.MU.wert / 4),
+                )
+            }
+
+            // Base GS (Geschwindigkeit)
+            if (this.system.attribute.GE?.wert != undefined) {
+                this.system.abgeleitete.gs = calculateValue(
+                    'GS',
+                    4 + Math.floor(this.system.attribute.GE.wert / 4),
+                )
+            }
+
+            // Base Traglast and Traglast Intervall
+            if (this.system.attribute.KK?.wert != undefined) {
+                let kk = this.system.attribute.KK.wert
+                this.system.abgeleitete.traglast_intervall = kk >= 1 ? kk : 1
+                this.system.abgeleitete.traglast = kk >= 1 ? 2 * kk : 1
+            }
+
+            // Base Durchhaltevermögen (will be modified by hardcoded later)
+            if (this.system.attribute.KO?.wert != undefined) {
+                // Basic formula before hardcoded modifications
+                this.system.abgeleitete.dh = this.system.attribute.KO.wert
+                this.system.abgeleitete.ws = calculateValue(
+                    'WS',
+                    4 + Math.floor(this.system.attribute.KO.wert / 4),
+                )
+            }
+
+            if (this.system.gesundheit?.hp?.max == undefined) {
+                this.system.gesundheit.hp = {
+                    max: 9,
+                    value: 9,
+                }
+            }
+
+            // Calculate WS* (with armor) and body part armor
+            // Check if LEP system is active
+            const useLepSystem = game.settings.get(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.lepSystem,
+            )
+
+            if (useLepSystem) {
+                console.log('LEP system active - adjusting HP and WS calculations')
+                this.system.gesundheit.hp.max = this.system.abgeleitete.ws
+                this.system.gesundheit.hp.value = this.system.abgeleitete.ws
+            }
+
+            // In LEP system, ws_stern starts at 0 instead of being based on ws
+            this.system.abgeleitete.be = 0
+            let ws_stern = useLepSystem ? 0 : this.system.abgeleitete.ws
+            this.system.abgeleitete.ws_stern = ws_stern
+            this.system.abgeleitete.ws_beine = ws_stern
+            this.system.abgeleitete.ws_larm = ws_stern
+            this.system.abgeleitete.ws_rarm = ws_stern
+            this.system.abgeleitete.ws_bauch = ws_stern
+            this.system.abgeleitete.ws_brust = ws_stern
+            this.system.abgeleitete.ws_kopf = ws_stern
+
+            // Base ASP
+            this.system.abgeleitete.asp = 0
+            this.system.abgeleitete.asp += Number(this.system.abgeleitete.asp_zugekauft) || 0
+            this.system.abgeleitete.asp -= Number(this.system.abgeleitete.gasp) || 0
+            this.system.abgeleitete.asp_stern =
+                this.system.abgeleitete.asp_stern != null
+                    ? Number(this.system.abgeleitete.asp_stern)
+                    : this.system.abgeleitete.asp
+
+            // Base KAP
+            this.system.abgeleitete.kap = 0
+            this.system.abgeleitete.kap += Number(this.system.abgeleitete.kap_zugekauft) || 0
+            this.system.abgeleitete.kap -= Number(this.system.abgeleitete.gkap) || 0
+            this.system.abgeleitete.kap_stern =
+                this.system.abgeleitete.kap_stern != null
+                    ? Number(this.system.abgeleitete.kap_stern)
+                    : this.system.abgeleitete.kap
+
+            // Calculate base SchiPs
+            this.system.schips.schips = calculateValue('SchiP', 4)
+        }
     }
 
     /**
@@ -293,14 +424,33 @@ export class IlarisActor extends Actor {
         let new_hp = max_hp - einschraenkungen
 
         if (useLepSystem) {
-            // LEP system: no penalties until 2/8 of max_hp, then -2 per 1/8 interval
-            const threshold = max_hp * (2 / 8)
-            if (einschraenkungen < threshold) {
-                systemData.gesundheit.wundabzuege = 0
-            } else {
-                const intervalsAboveThreshold =
-                    Math.floor((einschraenkungen - threshold) / (max_hp / 8)) + 1
-                systemData.gesundheit.wundabzuege = -2 * intervalsAboveThreshold
+            // LEP system: no penalties until max_hp - 6 * LAW of max_hp, then -2 per LAW segment
+            const law = Math.ceil(max_hp / 8)
+            this.system.abgeleitete.law = law
+            const woundFreeSegment = max_hp - law * 6
+
+            switch (new_hp) {
+                case law:
+                    systemData.gesundheit.wundabzuege = -12
+                    break
+                case law * 2:
+                    systemData.gesundheit.wundabzuege = -10
+                    break
+                case law * 3:
+                    systemData.gesundheit.wundabzuege = -8
+                    break
+                case law * 4:
+                    systemData.gesundheit.wundabzuege = -6
+                    break
+                case law * 5:
+                    systemData.gesundheit.wundabzuege = -4
+                    break
+                case law * 6:
+                    systemData.gesundheit.wundabzuege = -2
+                    break
+                case woundFreeSegment:
+                    systemData.gesundheit.wundabzuege = 0
+                    break
             }
         } else {
             if (einschraenkungen == 0) {
@@ -332,16 +482,7 @@ export class IlarisActor extends Actor {
         }
         systemData.gesundheit.display +=
             `${systemData.gesundheit.wundabzuege} auf alle Proben ` + gesundheitzusatz
-        // if (old_hp != new_hp) {
         systemData.gesundheit.hp.value = new_hp
-        //     // console.log(data);
-        //     let actor = game.actors.get(data._id);
-        //     // console.log(actor);
-        //     // eigentlich async:
-        //     if (actor) {
-        //         actor.update({ "data.gesundheit.hp.value": new_hp });
-        //     }
-        // }
     }
 
     _calculateFear(systemData) {
@@ -379,14 +520,11 @@ export class IlarisActor extends Actor {
         let globalermod = hardcoded.globalermod(systemData)
         systemData.abgeleitete.globalermod = globalermod
         // displayed text for nahkampfmod
-        systemData.abgeleitete.nahkampfmoddisplay = ``
-        if (systemData.modifikatoren.nahkampfmod == 0) {
-            systemData.abgeleitete.nahkampfmoddisplay += `-`
-        } else if (systemData.modifikatoren.nahkampfmod > 0) {
-            systemData.abgeleitete.nahkampfmoddisplay += `+`
-        }
-        // let nahkampfmodgesamt = data.data.modifikatoren.nahkampfmod + data.data.modifikatoren.globalermod;
-        systemData.abgeleitete.nahkampfmoddisplay += `${systemData.modifikatoren.nahkampfmod} auf AT/VT durch Status am Token`
+        systemData.abgeleitete.nahkampfmoddisplay = `
+        ${systemData.modifikatoren.nahkampfmod > 0 ? '+' : ''}
+        ${systemData.modifikatoren.nahkampfmod}/
+        ${systemData.modifikatoren.verteidigungmod > 0 ? '+' : ''}
+        ${systemData.modifikatoren.verteidigungmod} auf AT/VT durch Status am Token`
         // displayed text for globalermod (auf alle Proben insgesamt)
         systemData.abgeleitete.globalermoddisplay = ``
         if (systemData.abgeleitete.globalermod == 0) {
@@ -397,173 +535,51 @@ export class IlarisActor extends Actor {
         systemData.abgeleitete.globalermoddisplay += `${systemData.abgeleitete.globalermod} auf alle Proben`
     }
 
-    _calculateAbgeleitete(actor) {
-        console.log('Berechne abgeleitete Werte')
+    _calculateAbgeleitete() {
+        this.system.abgeleitete.zauberer = this.system.abgeleitete.asp > 0
+        this.system.abgeleitete.geweihter = this.system.abgeleitete.kap > 0
 
-        // Get custom abgeleitete werte definitions from cache
-        const customDefinitions = this._getAbgeleiteteWerteDefinitions()
-
-        // Helper function to execute custom script or use default calculation
-        const calculateValue = (valueName, defaultCalculation) => {
-            const customDef = customDefinitions.get(valueName)
-            if (customDef && customDef.script) {
-                try {
-                    // Create evaluation context with actor data and helper functions
-                    const getAttribut = (attr) => actor.system.attribute[attr]?.wert || 0
-                    const roundDown = Math.floor
-                    const getWS = () => actor.system.abgeleitete.ws || 0
-                    const getRS = () => {
-                        let rs = 0
-                        for (let ruestung of actor.ruestungen) {
-                            if (ruestung.system.aktiv) rs += ruestung.system.rs
-                        }
-                        return rs
-                    }
-
-                    // Evaluate the script
-                    const result = eval(customDef.script)
-                    console.log(
-                        `Using custom calculation for ${valueName}: ${customDef.script} = ${result}`,
-                    )
-                    return result
-                } catch (error) {
-                    console.error(
-                        `Error evaluating custom script for ${valueName}: ${error.message}`,
-                    )
-                    console.error(`Script was: ${customDef.script}`)
-                    return defaultCalculation()
-                }
-            }
-            return defaultCalculation()
-        }
-
-        // Calculate INI
-        let ini = calculateValue('INI', () => {
-            let val = actor.system.attribute.IN.wert
-            val = hardcoded.initiative(val, actor)
-            return val
-        })
-        actor.system.abgeleitete.ini = ini
-        actor.system.initiative = ini + 0.5
-
-        // Calculate MR
-        let mr = calculateValue('MR', () => {
-            let val = 4 + Math.floor(actor.system.attribute.MU.wert / 4)
-            val = hardcoded.magieresistenz(val, actor)
-            return val
-        })
-        actor.system.abgeleitete.mr = mr
-
-        // Calculate WS (Wundschwelle) and armor
-        let ws = calculateValue('WS', () => {
-            let val = 4 + Math.floor(actor.system.attribute.KO.wert / 4)
-            val = hardcoded.wundschwelle(val, actor)
-            return val
-        })
-        actor.system.abgeleitete.ws = ws
-
-        // Calculate WS* (with armor) and body part armor
-        // Check if LEP system is active
-        const useLepSystem = game.settings.get(
-            ConfigureGameSettingsCategories.Ilaris,
-            IlarisGameSettingNames.lepSystem,
-        )
-
-        if (useLepSystem) {
-            actor.system.gesundheit.hp.max = ws
-            actor.system.gesundheit.hp.value = ws
-        } else {
-            actor.system.gesundheit.hp.max = 9
-            actor.system.gesundheit.hp.value = 9
-        }
-
-        // In LEP system, ws_stern starts at 0 instead of being based on ws
-        let ws_stern = hardcoded.wundschwelleStern(useLepSystem ? 0 : ws, actor)
-        let be = 0
-        let ws_beine = ws_stern
-        let ws_larm = ws_stern
-        let ws_rarm = ws_stern
-        let ws_bauch = ws_stern
-        let ws_brust = ws_stern
-        let ws_kopf = ws_stern
-
-        for (let ruestung of actor.ruestungen) {
+        let be = this.system.abgeleitete.be
+        for (let ruestung of this.ruestungen) {
             if (ruestung.system.aktiv == true) {
-                ws_stern += ruestung.system.rs
+                this.system.abgeleitete.ws_stern += ruestung.system.rs
                 be += ruestung.system.be
-                ws_beine += ruestung.system.rs_beine
-                ws_larm += ruestung.system.rs_larm
-                ws_rarm += ruestung.system.rs_rarm
-                ws_bauch += ruestung.system.rs_bauch
-                ws_brust += ruestung.system.rs_brust
-                ws_kopf += ruestung.system.rs_kopf
+                this.system.abgeleitete.ws_beine += ruestung.system.rs_beine
+                this.system.abgeleitete.ws_larm += ruestung.system.rs_larm
+                this.system.abgeleitete.ws_rarm += ruestung.system.rs_rarm
+                this.system.abgeleitete.ws_bauch += ruestung.system.rs_bauch
+                this.system.abgeleitete.ws_brust += ruestung.system.rs_brust
+                this.system.abgeleitete.ws_kopf += ruestung.system.rs_kopf
             }
         }
+        // be = hardcoded.behinderung(be, this)
+        if (be < 0) be = 0
+        this.system.abgeleitete.be = be
 
-        be = hardcoded.behinderung(be, actor)
-        actor.system.abgeleitete.ws_stern = ws_stern
-        actor.system.abgeleitete.be = be
-        actor.system.abgeleitete.ws_beine = ws_beine
-        actor.system.abgeleitete.ws_larm = ws_larm
-        actor.system.abgeleitete.ws_rarm = ws_rarm
-        actor.system.abgeleitete.ws_bauch = ws_bauch
-        actor.system.abgeleitete.ws_brust = ws_brust
-        actor.system.abgeleitete.ws_kopf = ws_kopf
-
-        let traglast_intervall = actor.system.attribute.KK.wert
+        let traglast_intervall = this.system.attribute.KK.wert
         traglast_intervall = traglast_intervall >= 1 ? traglast_intervall : 1
-        actor.system.abgeleitete.traglast_intervall = traglast_intervall
-        let traglast = 2 * actor.system.attribute.KK.wert
+        this.system.abgeleitete.traglast_intervall = traglast_intervall
+        let traglast = 2 * this.system.attribute.KK.wert
         traglast = traglast >= 1 ? traglast : 1
-        actor.system.abgeleitete.traglast = traglast
+        this.system.abgeleitete.traglast = traglast
         let summeGewicht = 0
-        for (let i of actor.inventar.mitfuehrend) {
+        for (let i of this.inventar.mitfuehrend) {
             summeGewicht += i.system.gewicht
         }
-        actor.system.getragen = summeGewicht
-        let be_mod = hardcoded.beTraglast(actor.system)
-        actor.system.abgeleitete.be += be_mod
-        actor.system.abgeleitete.be_traglast = be_mod
-        let dh = hardcoded.durchhalte(actor)
-        actor.system.abgeleitete.dh = dh
+        this.system.getragen = summeGewicht
 
-        // Calculate GS
-        let gs = calculateValue('GS', () => {
-            let val = 4 + Math.floor(actor.system.attribute.GE.wert / 4)
-            val = hardcoded.geschwindigkeit(val, actor)
-            val -= actor.system.abgeleitete.be
-            val = val >= 1 ? val : 1
-            return val
-        })
-        actor.system.abgeleitete.gs = gs
+        // Calculate BE modification from carried weight
+        let be_mod = hardcoded.beTraglast(this.system)
+        this.system.abgeleitete.be += be_mod
+        this.system.abgeleitete.be_traglast = be_mod
+        let be_traglast = this.system.abgeleitete.be_traglast
+        this.system.abgeleitete.dh =
+            this.system.abgeleitete.dh - 2 * (this.system.abgeleitete.be - be_traglast)
 
-        // Calculate SchiP (Schicksalspunkte)
-        let schips = calculateValue('SchiP', () => {
-            return hardcoded.schips(actor)
-        })
-        actor.system.schips.schips = schips
-
-        let asp = hardcoded.zauberer(actor)
-        actor.system.abgeleitete.zauberer = asp > 0 ? true : false
-        asp += Number(actor.system.abgeleitete.asp_zugekauft) || 0
-        asp -= Number(actor.system.abgeleitete.gasp) || 0
-        actor.system.abgeleitete.asp = asp
-        actor.system.abgeleitete.asp_stern =
-            actor.system.abgeleitete.asp_stern !== null &&
-            actor.system.abgeleitete.asp_stern !== undefined
-                ? Number(actor.system.abgeleitete.asp_stern)
-                : asp
-
-        let kap = hardcoded.geweihter(actor)
-        actor.system.abgeleitete.geweihter = kap > 0 ? true : false
-        kap += Number(actor.system.abgeleitete.kap_zugekauft) || 0
-        kap -= Number(actor.system.abgeleitete.gkap) || 0
-        actor.system.abgeleitete.kap = kap
-        actor.system.abgeleitete.kap_stern =
-            actor.system.abgeleitete.kap_stern !== null &&
-            actor.system.abgeleitete.kap_stern !== undefined
-                ? Number(actor.system.abgeleitete.kap_stern)
-                : kap
+        this.system.abgeleitete.gs = Math.max(
+            1,
+            this.system.abgeleitete.gs - (this.system.abgeleitete?.be ?? 0),
+        )
     }
 
     /**
@@ -577,18 +593,13 @@ export class IlarisActor extends Actor {
 
     async _calculateKampf(actor) {
         console.log('Berechne Kampf')
-        // data.data.abgeleitete.sb = sb;
-        let nahkampfmod = actor.system.modifikatoren.nahkampfmod
-        // let wundabzuege = data.data.gesundheit.wundabzuege;
         let kampfstile = hardcoded.getKampfstile(actor)
-        // data.misc.selected_kampfstil = "ohne";
         actor.misc.kampfstile_list = kampfstile
         let selected_kampfstil = hardcoded.getSelectedStil(actor, 'kampf')
 
         // Handle supernatural styles
         let uebernatuerliche_stile = hardcoded.getUebernatuerlicheStile(actor)
         actor.misc.uebernatuerliche_stile_list = uebernatuerliche_stile
-        let selected_uebernatuerlicher_stil = hardcoded.getSelectedStil(actor, 'uebernatuerlich')
 
         let HW =
             actor.nahkampfwaffen.find((x) => x.system.hauptwaffe == true) ||

@@ -2,8 +2,13 @@
 <div>
     <h2>Effekte</h2>
     {{#each effects as |effect|}}
-    <a class="item-edit" data-itemclass="talent" data-itemid="{{unsortal.effect}}">
-        {{effect.name}}
+    <a class="item-edit" data-itemclass="effect" data-itemid="{{effect._id}}">
+        {{effect.name}} | {{#if effect.duration.turns}}{{effect.duration.turns}} Runden{{/if}}
     </a>
+    {{#unless (eq effect.flags.ilaris.sourceType "vorteil")}}
+    <a class="item-delete" data-itemclass="effect" data-itemid="{{effect._id}}">
+        <i class="fas fa-trash"></i>
+    </a>
+    {{/unless}}
     &nbsp; | &nbsp; {{/each}}
 </div>

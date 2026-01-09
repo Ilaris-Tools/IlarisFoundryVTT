@@ -103,6 +103,137 @@ export class VorteilConverter extends BaseConverter {
     }
 
     /**
+     * Generate a human-readable description from effect changes
+     * @param {Array} changes - Array of effect change objects
+     * @returns {string} Human-readable description
+     */
+    generateEffectDescription(changes) {
+        const statNames = {
+            ws: 'WS',
+            mr: 'MR',
+            gs: 'GS',
+            ini: 'INI',
+            dh: 'DH',
+            asp: 'AsP',
+            kap: 'KaP',
+        }
+
+        const descriptions = changes.map((change) => {
+            // Extract stat name from key (e.g., "system.abgeleitete.ws" -> "ws")
+            const statMatch = change.key.match(/\.(\w+)$/)
+            if (!statMatch) return null
+
+            const stat = statMatch[1]
+            // Only process valid stat names
+            if (!statNames[stat]) return null
+
+            const statName = statNames[stat]
+
+            // Format the value for display
+            let displayValue = change.value
+
+            // Convert Foundry formula back to readable format
+            if (typeof displayValue === 'string' && displayValue.includes('@attribute')) {
+                displayValue = displayValue
+                    .replace(/@attribute\.(\w+)\.wert/g, '$1')
+                    .replace(/\s+/g, '')
+            }
+
+            // Add + sign for positive numeric values
+            if (!isNaN(parseFloat(displayValue)) && !displayValue.startsWith('-')) {
+                displayValue = '+' + displayValue
+            } else if (
+                typeof displayValue === 'string' &&
+                !displayValue.startsWith('+') &&
+                !displayValue.startsWith('-')
+            ) {
+                displayValue = '+' + displayValue
+            }
+
+            return `${statName} ${displayValue}`
+        })
+
+        return descriptions.filter((d) => d).join(', ')
+    }
+
+    /**
+     * Parse Sephrasto script and create Active Effect changes
+     * Handles scripts like: modifyWS(getAttribute(KO)*5), modifyMR(1), modifyGS(1), modifyAsP(5), modifyKaP(3)
+     * @param {string} script - The Sephrasto script string
+     * @param {number} kategorie - The vorteil kategorie (ignore script for 3, 5, 7)
+     * @returns {Array} Array of effect change objects
+     */
+    parseScriptToEffects(script, kategorie) {
+        // Ignore script for kampfstil categories (3, 5, 7)
+        if (!script || [3, 5, 7].includes(kategorie)) {
+            return []
+        }
+
+        const changes = []
+
+        // Pattern: modifyXX(value) where XX is WS, MR, GS, INI, DH, AsP, KaP, AsPBasis, KaPBasis
+        // Matches content with nested parentheses (e.g., getAttribute(KO)*5)
+        // Pattern explanation: [^()]* matches non-paren chars, (?:\([^()]*\)[^()]*)* matches nested parens
+        const modifyPattern =
+            /modify(WS|BE|MR|GS|INI|DH|AsP|KaP|AsPBasis|KaPBasis)\s*\(([^()]*(?:\([^()]*\)[^()]*)*)\)/gi
+
+        let match
+        while ((match = modifyPattern.exec(script)) !== null) {
+            const stat = match[1] // WS, MR, GS, INI, DH, AsP, KaP, AsPBasis, KaPBasis
+            const valueExpression = match[2].trim()
+
+            // Map stat to the correct key
+            let key
+            if (stat === 'AsPBasis' || stat === 'AsP') {
+                key = 'system.abgeleitete.asp'
+            } else if (stat === 'KaPBasis' || stat === 'KaP') {
+                key = 'system.abgeleitete.kap'
+            } else {
+                // WS, MR, GS, INI, DH
+                key = `system.abgeleitete.${stat.toLowerCase()}`
+            }
+
+            // Convert the value expression to Foundry format
+            // Always use ADD mode (mode 2) - it can handle both numbers and formulas
+            let foundryValue = valueExpression
+
+            // Check if it contains getAttribute() or getXX() (e.g., getCH(), getKO()) and convert to @attribute format
+            if (/getAttribute|get(CH|FF|GE|IN|KK|KL|KO|MU)\s*\(/i.test(valueExpression)) {
+                foundryValue = valueExpression
+                    // Convert getAttribute(XX) to @attribute.XX.wert
+                    .replace(/getAttribute\s*\(\s*(\w+)\s*\)/gi, (match, attrName) => {
+                        return `@attribute.${attrName.toUpperCase()}.wert`
+                    })
+                    // Convert getXX() to @attribute.XX.wert (e.g., getCH() -> @attribute.CH.wert)
+                    .replace(/get(CH|FF|GE|IN|KK|KL|KO|MU)\s*\(\s*\)/gi, (match, attrName) => {
+                        return `@attribute.${attrName.toUpperCase()}.wert`
+                    })
+                    .replace(/\*/g, ' * ')
+                    .replace(/\+/g, ' + ')
+                    .replace(/\-/g, ' - ')
+                    .replace(/\//g, ' / ')
+            } else {
+                // Simple numeric value - ensure it's a valid number
+                const numericValue = parseFloat(valueExpression)
+                if (isNaN(numericValue)) {
+                    console.warn(`✗ Invalid numeric value in script: ${valueExpression}`)
+                    continue // Skip invalid values
+                }
+                foundryValue = numericValue.toString()
+            }
+
+            changes.push({
+                key,
+                mode: 2, // ADD mode - works for both numbers and formulas
+                value: foundryValue,
+                priority: 20,
+            })
+        }
+
+        return changes
+    }
+
+    /**
      * Convert Vorteil XML element to Foundry item
      * @param {Element} element - XML DOM element
      * @returns {Object} Foundry item
@@ -128,6 +259,33 @@ export class VorteilConverter extends BaseConverter {
             foundryScript,
         }
 
-        return this.createFoundryItem(name, 'vorteil', systemData)
+        // Parse script to create effects
+        const effectChanges = this.parseScriptToEffects(sephrastoScript, kategorie)
+
+        // Create the base item
+        const item = this.createFoundryItem(name, 'vorteil', systemData)
+
+        // Add effects if any were parsed from the script
+        if (effectChanges.length > 0) {
+            const effectDescription = this.generateEffectDescription(effectChanges)
+            item.effects = [
+                {
+                    name: `${name} Effekt`,
+                    icon: 'icons/svg/upgrade.svg',
+                    disabled: false,
+                    duration: {},
+                    changes: effectChanges,
+                    description: effectDescription,
+                    transfer: true, // Transfer to actor when item is added
+                    flags: {
+                        ilaris: {
+                            sourceType: 'vorteil',
+                        },
+                    },
+                },
+            ]
+        }
+
+        return item
     }
 }
