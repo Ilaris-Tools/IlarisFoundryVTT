@@ -45,7 +45,8 @@
       "modifikatoren": {
         "modifikatoren": {
           "manuellermod": 0,
-          "nahkampfmod": 0
+          "nahkampfmod": 0,
+          "verteidigungmod": 0
         }
       },
       "misc": {
@@ -218,7 +219,8 @@
       "info",
       "freiestalent",
       "waffeneigenschaft",
-      "abgeleiteter-wert"
+      "abgeleiteter-wert",
+      "effect-item"
     ],
     "templates": {
       "gesundheit": {
@@ -426,6 +428,9 @@
       "script": "",
       "finalscript": "",
       "text": ""
+    },
+    "effect-item": {
+      "description": ""
     },
     "waffeneigenschaft": {
       "sephrastoScript": "",

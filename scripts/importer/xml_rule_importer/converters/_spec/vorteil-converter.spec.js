@@ -290,4 +290,347 @@ Deine Waffe ignoriert die übliche Erschwernis für Nebenwaffen.`
             })
         })
     })
+
+    describe('generateEffectDescription', () => {
+        it('should generate description for single WS change', () => {
+            const changes = [
+                {
+                    key: 'system.abgeleitete.ws',
+                    mode: 2,
+                    value: '5',
+                    priority: 20,
+                },
+            ]
+            const result = converter.generateEffectDescription(changes)
+            expect(result).toBe('WS +5')
+        })
+
+        it('should generate description for single MR change', () => {
+            const changes = [
+                {
+                    key: 'system.abgeleitete.mr',
+                    mode: 2,
+                    value: '1',
+                    priority: 20,
+                },
+            ]
+            const result = converter.generateEffectDescription(changes)
+            expect(result).toBe('MR +1')
+        })
+
+        it('should generate description for negative value', () => {
+            const changes = [
+                {
+                    key: 'system.abgeleitete.gs',
+                    mode: 2,
+                    value: '-2',
+                    priority: 20,
+                },
+            ]
+            const result = converter.generateEffectDescription(changes)
+            expect(result).toBe('GS -2')
+        })
+
+        it('should generate description for formula with attribute', () => {
+            const changes = [
+                {
+                    key: 'system.abgeleitete.ws',
+                    mode: 2,
+                    value: '@attribute.KO.wert * 5',
+                    priority: 20,
+                },
+            ]
+            const result = converter.generateEffectDescription(changes)
+            expect(result).toBe('WS +KO*5')
+        })
+
+        it('should generate description for complex formula', () => {
+            const changes = [
+                {
+                    key: 'system.abgeleitete.ws',
+                    mode: 2,
+                    value: '@attribute.KO.wert * 2 + 5',
+                    priority: 20,
+                },
+            ]
+            const result = converter.generateEffectDescription(changes)
+            expect(result).toBe('WS +KO*2+5')
+        })
+
+        it('should generate description for multiple changes', () => {
+            const changes = [
+                {
+                    key: 'system.abgeleitete.mr',
+                    mode: 2,
+                    value: '1',
+                    priority: 20,
+                },
+                {
+                    key: 'system.abgeleitete.gs',
+                    mode: 2,
+                    value: '2',
+                    priority: 20,
+                },
+            ]
+            const result = converter.generateEffectDescription(changes)
+            expect(result).toBe('MR +1, GS +2')
+        })
+
+        it('should handle INI and DH stats', () => {
+            const changes = [
+                {
+                    key: 'system.abgeleitete.ini',
+                    mode: 2,
+                    value: '3',
+                    priority: 20,
+                },
+                {
+                    key: 'system.abgeleitete.dh',
+                    mode: 2,
+                    value: '1',
+                    priority: 20,
+                },
+            ]
+            const result = converter.generateEffectDescription(changes)
+            expect(result).toBe('INI +3, DH +1')
+        })
+
+        it('should handle empty changes array', () => {
+            const result = converter.generateEffectDescription([])
+            expect(result).toBe('')
+        })
+
+        it('should skip changes with invalid keys', () => {
+            const changes = [
+                {
+                    key: 'system.abgeleitete',
+                    mode: 2,
+                    value: '1',
+                    priority: 20,
+                },
+                {
+                    key: 'system.abgeleitete.mr',
+                    mode: 2,
+                    value: '2',
+                    priority: 20,
+                },
+            ]
+            const result = converter.generateEffectDescription(changes)
+            expect(result).toBe('MR +2')
+        })
+    })
+
+    describe('parseScriptToEffects', () => {
+        it('should return empty array for empty script', () => {
+            const result = converter.parseScriptToEffects('', 1)
+            expect(result).toEqual([])
+        })
+
+        it('should return empty array for null script', () => {
+            const result = converter.parseScriptToEffects(null, 1)
+            expect(result).toEqual([])
+        })
+
+        it('should ignore scripts for kategorie 3 (Kampfstil)', () => {
+            const result = converter.parseScriptToEffects('modifyWS(5)', 3)
+            expect(result).toEqual([])
+        })
+
+        it('should ignore scripts for kategorie 5 (Zaubertradition)', () => {
+            const result = converter.parseScriptToEffects('modifyMR(1)', 5)
+            expect(result).toEqual([])
+        })
+
+        it('should ignore scripts for kategorie 7 (Geweihtentradition)', () => {
+            const result = converter.parseScriptToEffects('modifyGS(1)', 7)
+            expect(result).toEqual([])
+        })
+
+        it('should parse simple numeric modifyMR', () => {
+            const result = converter.parseScriptToEffects('modifyMR(1)', 1)
+            expect(result).toHaveLength(1)
+            expect(result[0]).toEqual({
+                key: 'system.abgeleitete.mr',
+                mode: 2, // ADD mode
+                value: '1',
+                priority: 20,
+            })
+        })
+
+        it('should parse simple numeric modifyGS', () => {
+            const result = converter.parseScriptToEffects('modifyGS(1)', 1)
+            expect(result).toHaveLength(1)
+            expect(result[0]).toEqual({
+                key: 'system.abgeleitete.gs',
+                mode: 2, // ADD mode
+                value: '1',
+                priority: 20,
+            })
+        })
+
+        it('should parse formula with getAttribute for WS', () => {
+            const result = converter.parseScriptToEffects('modifyWS(getAttribute(KO)*5)', 1)
+            expect(result).toHaveLength(1)
+            expect(result[0]).toEqual({
+                key: 'system.abgeleitete.ws',
+                mode: 2, // ADD mode (handles formulas)
+                value: '@attribute.KO.wert * 5',
+                priority: 20,
+            })
+        })
+
+        it('should parse formula with getAttribute for INI', () => {
+            const result = converter.parseScriptToEffects('modifyINI(getAttribute(IN)/2)', 1)
+            expect(result).toHaveLength(1)
+            expect(result[0]).toEqual({
+                key: 'system.abgeleitete.ini',
+                mode: 2, // ADD mode (handles formulas)
+                value: '@attribute.IN.wert / 2',
+                priority: 20,
+            })
+        })
+
+        it('should parse formula with complex expression', () => {
+            const result = converter.parseScriptToEffects('modifyWS(getAttribute(KO)*2+5)', 1)
+            expect(result).toHaveLength(1)
+            expect(result[0]).toEqual({
+                key: 'system.abgeleitete.ws',
+                mode: 2, // ADD mode (handles formulas)
+                value: '@attribute.KO.wert * 2 + 5',
+                priority: 20,
+            })
+        })
+
+        it('should parse multiple modifies in one script', () => {
+            const result = converter.parseScriptToEffects('modifyMR(1);modifyGS(2)', 1)
+            expect(result).toHaveLength(2)
+            expect(result[0]).toEqual({
+                key: 'system.abgeleitete.mr',
+                mode: 2,
+                value: '1',
+                priority: 20,
+            })
+            expect(result[1]).toEqual({
+                key: 'system.abgeleitete.gs',
+                mode: 2,
+                value: '2',
+                priority: 20,
+            })
+        })
+
+        it('should handle negative numeric values', () => {
+            const result = converter.parseScriptToEffects('modifyGS(-1)', 1)
+            expect(result).toHaveLength(1)
+            expect(result[0]).toEqual({
+                key: 'system.abgeleitete.gs',
+                mode: 2,
+                value: '-1',
+                priority: 20,
+            })
+        })
+
+        it('should handle whitespace in script', () => {
+            const result = converter.parseScriptToEffects('modifyMR( 1 )', 1)
+            expect(result).toHaveLength(1)
+            expect(result[0]).toEqual({
+                key: 'system.abgeleitete.mr',
+                mode: 2,
+                value: '1',
+                priority: 20,
+            })
+        })
+    })
+
+    describe('convert with effects', () => {
+        /**
+         * Helper function to create a mock XML element
+         */
+        function createMockElement(attributes = {}, textContent = '') {
+            return {
+                getAttribute: (name) => attributes[name] || null,
+                textContent: textContent,
+            }
+        }
+
+        it('should create vorteil with effect for simple script', () => {
+            const element = createMockElement(
+                {
+                    name: 'Willensstark I',
+                    voraussetzungen: 'Attribut MU 4',
+                    kategorie: '1',
+                    script: 'modifyMR(1)',
+                },
+                'Deine MR steigt um 1 Punkt.',
+            )
+
+            const result = converter.convert(element)
+
+            expect(result.name).toBe('Willensstark I')
+            expect(result.type).toBe('vorteil')
+            expect(result.system.sephrastoScript).toBe('modifyMR(1)')
+            expect(result.effects).toHaveLength(1)
+            expect(result.effects[0].name).toBe('Willensstark I Effekt')
+            expect(result.effects[0].changes).toHaveLength(1)
+            expect(result.effects[0].changes[0]).toEqual({
+                key: 'system.abgeleitete.mr',
+                mode: 2,
+                value: '1',
+                priority: 20,
+            })
+        })
+
+        it('should create vorteil with effect for formula script', () => {
+            const element = createMockElement(
+                {
+                    name: 'Unverwüstlich',
+                    voraussetzungen: 'Attribut KO 10',
+                    kategorie: '1',
+                    script: 'modifyWS(getAttribute(KO)*5)',
+                },
+                '+5*KO LeP.',
+            )
+
+            const result = converter.convert(element)
+
+            expect(result.name).toBe('Unverwüstlich')
+            expect(result.effects).toHaveLength(1)
+            expect(result.effects[0].changes[0]).toEqual({
+                key: 'system.abgeleitete.ws',
+                mode: 2,
+                value: '@attribute.KO.wert * 5',
+                priority: 20,
+            })
+        })
+
+        it('should create vorteil without effects for kampfstil (kategorie 3)', () => {
+            const element = createMockElement(
+                {
+                    name: 'Kampfstil Test',
+                    kategorie: '3',
+                    script: 'modifyWS(5)',
+                },
+                'Test kampfstil.',
+            )
+
+            const result = converter.convert(element)
+
+            expect(result.name).toBe('Kampfstil Test')
+            expect(result.effects).toEqual([])
+        })
+
+        it('should create vorteil without effects when no script present', () => {
+            const element = createMockElement(
+                {
+                    name: 'No Script Vorteil',
+                    kategorie: '1',
+                },
+                'Test without script.',
+            )
+
+            const result = converter.convert(element)
+
+            expect(result.name).toBe('No Script Vorteil')
+            expect(result.effects).toEqual([])
+        })
+    })
 })
