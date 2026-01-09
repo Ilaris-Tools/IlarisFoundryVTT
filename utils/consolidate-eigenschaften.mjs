@@ -2,7 +2,7 @@
  * Utility to consolidate duplicate waffeneigenschaft items
  * Merges eigenschaften with different parameters into a single base eigenschaft
  * with parameter slots
- * 
+ *
  * Usage: node utils/consolidate-eigenschaften.mjs
  */
 
@@ -16,18 +16,18 @@ const CONSOLIDATION_MAP = {
     'Schwer (8)': { base: 'Schwer', deleteAfter: true },
     'Schwer (+4)': { base: 'Schwer', deleteAfter: true },
     'Schwer (+8)': { base: 'Schwer', deleteAfter: true },
-    
+
     // Niederwerfen variants
     'Niederwerfen (+4)': { base: 'Niederwerfen', deleteAfter: true },
     'Niederwerfen (+8)': { base: 'Niederwerfen', deleteAfter: true },
-    
+
     // Umklammern variants
     'Umklammern (-2; 12)': { base: 'Umklammern', deleteAfter: true },
     'Umklammern (-4; 16)': { base: 'Umklammern', deleteAfter: true },
     'Umklammern (-8; 16)': { base: 'Umklammern', deleteAfter: true },
     'Umklammern (±2/12)': { base: 'Umklammern', deleteAfter: true },
     'Umklammern (±4/16)': { base: 'Umklammern', deleteAfter: true },
-    'Umklammern (±8/16)': { base: 'Umklammern', deleteAfter: true }
+    'Umklammern (±8/16)': { base: 'Umklammern', deleteAfter: true },
 }
 
 /**
@@ -35,34 +35,34 @@ const CONSOLIDATION_MAP = {
  * These will be added to the base eigenschaften after consolidation
  */
 const PARAMETER_SLOTS = {
-    'Schwer': [
+    Schwer: [
         {
             name: 'kkThreshold',
             type: 'number',
             label: 'KK-Schwellenwert',
             usage: 'wieldingRequirements.condition.value',
             required: true,
-            defaultValue: 4
-        }
+            defaultValue: 4,
+        },
     ],
-    'Niederwerfen': [
+    Niederwerfen: [
         {
             name: 'bonus',
             type: 'number',
             label: 'Bonus',
             usage: 'modifiers.at',
             required: false,
-            defaultValue: 4
-        }
+            defaultValue: 4,
+        },
     ],
-    'Umklammern': [
+    Umklammern: [
         {
             name: 'malus',
             type: 'number',
             label: 'Malus AT/VT',
             usage: 'modifiers.at',
             required: true,
-            defaultValue: -2
+            defaultValue: -2,
         },
         {
             name: 'kkCheck',
@@ -70,14 +70,16 @@ const PARAMETER_SLOTS = {
             label: 'KK-Voraussetzung',
             usage: 'wieldingRequirements.condition.value',
             required: true,
-            defaultValue: 12
-        }
-    ]
+            defaultValue: 12,
+        },
+    ],
 }
 
 console.log('Ilaris | Consolidate Waffeneigenschaften Utility')
 console.log('This utility is designed to run in a Foundry VTT world context')
-console.log('It should be converted to run within Foundry or used as a reference for manual consolidation')
+console.log(
+    'It should be converted to run within Foundry or used as a reference for manual consolidation',
+)
 console.log('')
 console.log('Consolidation map:', CONSOLIDATION_MAP)
 console.log('Parameter slots:', PARAMETER_SLOTS)
