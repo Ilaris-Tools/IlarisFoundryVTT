@@ -1,4 +1,5 @@
 import { ILARIS } from './config.js'
+import { IlarisActiveEffect } from './documents/active-effect.js'
 import { IlarisActorProxy } from './actors/proxy.js'
 import { IlarisItemProxy } from './items/proxy.js'
 import { initializeHandlebars } from './common/handlebars.js'
@@ -27,6 +28,7 @@ import { InfoSheet } from './sheets/items/info.js'
 import { AbgeleiteterWertSheet } from './sheets/items/abgeleiteter-wert.js'
 import { AngriffSheet } from './sheets/items/angriff.js'
 import { FreiesTalentSheet } from './sheets/items/freies_talent.js'
+import { EffectItemSheet } from './sheets/items/effect-item.js'
 import { registerIlarisGameSettings } from './settings/configure-game-settings.js'
 import {
     IlarisGameSettingNames,
@@ -38,7 +40,9 @@ import { XMLRuleImporter } from './importer/xml_rule_importer/index.js'
 import { formatDiceFormula } from './common/utilities.js'
 
 // Import hooks
+import './hooks/active-effects.js'
 import './hooks/changelog-notification.js'
+import './hooks/dot-effects.js'
 import { registerDefenseButtonHook } from './sheets/dialogs/defense_button_hook.js'
 
 // Status effect tint colors
@@ -54,6 +58,11 @@ Hooks.once('init', () => {
     // CONFIG.debug.hooks = true;
     // ACTORS
     CONFIG.Actor.documentClass = IlarisActorProxy // TODO: Proxy
+
+    // ACTIVE EFFECTS
+    CONFIG.ActiveEffect.legacyTransferral = false
+    CONFIG.ActiveEffect.documentClass = IlarisActiveEffect
+
     Actors.unregisterSheet('core', ActorSheet)
     Actors.registerSheet('Ilaris', HeldenSheet, { types: ['held'], makeDefault: true })
     Actors.registerSheet('Ilaris', KreaturSheet, { types: ['kreatur'], makeDefault: true })
@@ -100,6 +109,7 @@ Hooks.once('init', () => {
         makeDefault: true,
     })
     Items.registerSheet('Ilaris', FreiesTalentSheet, { types: ['freiestalent'], makeDefault: true })
+    Items.registerSheet('Ilaris', EffectItemSheet, { types: ['effect-item'], makeDefault: true })
     // Items.registerSheet("Ilaris", VorteilSheet, {types: ["allgemein_vorteil", "profan_vorteil", "kampf_vorteil", "kampfstil", "magie_vorteil", "magie_tradition", "karma_vorteil", "karma_tradition"], makeDefault: true});
 
     // Register world schema version for migrations
@@ -156,7 +166,10 @@ Hooks.once('init', () => {
             id: 'schlechtesicht1',
             name: 'Schlechte Sicht (Dämmerung)',
             duration: [],
-            changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 4, value: -2 }],
+            changes: [
+                { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 4, value: -2 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 4, value: -2 },
+            ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/sight-disabled.svg',
             tint: STATUS_EFFECT_COLORS.YELLOW,
@@ -165,7 +178,10 @@ Hooks.once('init', () => {
             id: 'schlechtesicht2',
             name: 'Schlechte Sicht (Mondlicht)',
             duration: [],
-            changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 6, value: -4 }],
+            changes: [
+                { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 6, value: -4 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 6, value: -4 },
+            ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/sight-disabled.svg',
             tint: STATUS_EFFECT_COLORS.ORANGE,
@@ -174,7 +190,10 @@ Hooks.once('init', () => {
             id: 'schlechtesicht3',
             name: 'Schlechte Sicht (Sternenlicht)',
             duration: [],
-            changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 7, value: -8 }],
+            changes: [
+                { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 7, value: -8 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 7, value: -8 },
+            ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/sight-disabled.svg',
             tint: STATUS_EFFECT_COLORS.RED,
@@ -185,6 +204,7 @@ Hooks.once('init', () => {
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 8, value: -16 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 8, value: -16 },
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/sight-disabled.svg',
@@ -194,7 +214,10 @@ Hooks.once('init', () => {
             id: 'untergrund1',
             name: 'Unsicherer Untergrund (knietiefes Wasser)',
             duration: [],
-            changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 4, value: -2 }],
+            changes: [
+                { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 4, value: -2 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 4, value: -2 },
+            ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/sticky-boot.svg',
             tint: STATUS_EFFECT_COLORS.YELLOW,
@@ -203,7 +226,10 @@ Hooks.once('init', () => {
             id: 'untergrund2',
             name: 'Unsicherer Untergrund (eisglatt, hüfttiefes Wasser)',
             duration: [],
-            changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 6, value: -4 }],
+            changes: [
+                { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 6, value: -4 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 6, value: -4 },
+            ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/sticky-boot.svg',
             tint: STATUS_EFFECT_COLORS.ORANGE,
@@ -212,7 +238,10 @@ Hooks.once('init', () => {
             id: 'untergrund3',
             name: 'Unsicherer Untergrund (schultertiefes Wasser)',
             duration: [],
-            changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 7, value: -8 }],
+            changes: [
+                { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 7, value: -8 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 7, value: -8 },
+            ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/sticky-boot.svg',
             tint: STATUS_EFFECT_COLORS.RED,
@@ -223,6 +252,7 @@ Hooks.once('init', () => {
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 8, value: -16 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 8, value: -16 },
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/sticky-boot.svg',
@@ -232,7 +262,10 @@ Hooks.once('init', () => {
             id: 'Position1',
             name: 'Sehr vorteilhafte Position',
             duration: [],
-            changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 9, value: +4 }],
+            changes: [
+                { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 9, value: +4 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 9, value: +4 },
+            ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/hill-fort-green.svg',
         },
@@ -242,6 +275,7 @@ Hooks.once('init', () => {
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 10, value: +2 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 10, value: +2 },
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/hill-conquest-light-green.svg',
@@ -252,6 +286,7 @@ Hooks.once('init', () => {
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 12, value: -2 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 12, value: -2 },
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/kneeling-yellow.svg',
@@ -262,6 +297,7 @@ Hooks.once('init', () => {
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 13, value: -4 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 13, value: -4 },
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/falling-orange.svg',
@@ -270,7 +306,10 @@ Hooks.once('init', () => {
             id: 'Nahkampf1',
             name: 'Nahkampf +4',
             duration: [],
-            changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 9, value: +4 }],
+            changes: [
+                { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 9, value: +4 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 9, value: +4 },
+            ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/swordwoman.svg',
             tint: STATUS_EFFECT_COLORS.GREEN,
@@ -281,6 +320,7 @@ Hooks.once('init', () => {
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 10, value: +2 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 10, value: +2 },
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/swordwoman.svg',
@@ -292,6 +332,7 @@ Hooks.once('init', () => {
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 12, value: -2 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 12, value: -2 },
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/swordwoman.svg',
@@ -303,6 +344,7 @@ Hooks.once('init', () => {
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', mode: 2, priority: 13, value: -4 },
+                { key: 'system.modifikatoren.verteidigungmod', mode: 2, priority: 13, value: -4 },
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/swordwoman.svg',
@@ -314,44 +356,97 @@ Hooks.once('init', () => {
     registerIlarisGameSettings()
 })
 
-Hooks.on('applyActiveEffect', (actor, data, options, userId) => {
-    console.log(data)
-    console.log(actor)
-    console.log('EFFECT!!! ')
-    data.changes = []
-    console.log(actor)
-    console.log(options)
-    return userId
+Hooks.on('getSceneControlButtons', (controls) => {
+    // Add character import button to the notes/journal control
+    const notesControl = controls.find((c) => c.name === 'notes')
+    if (notesControl && game.user.can('ACTOR_CREATE') && game.user.can('FILES_UPLOAD')) {
+        notesControl.tools.push({
+            name: 'import-xml-character',
+            title: 'XML Character Import',
+            icon: 'fas fa-file-import',
+            button: true,
+            onClick: () => XmlCharacterImporter.showImportDialog(),
+        })
+    }
+})
+
+Hooks.on('renderActorDirectory', (app, html) => {
+    // Add XML import button to the actors directory header (only if user can create actors and upload files)
+    if (game.user.can('ACTOR_CREATE') && game.user.can('FILES_UPLOAD')) {
+        const header = html.find('.directory-header')
+        if (header.length > 0) {
+            const importButton = $(`
+                <button class="import-xml-character" title="Import Character from XML">
+                    <i class="fas fa-file-import"></i> Import Charakter XML
+                </button>
+            `)
+
+            importButton.click(() => XmlCharacterImporter.showImportDialog())
+            header.append(importButton)
+        }
+    }
+
+    // Add sync buttons to each actor entry (only if user owns the actor, can create actors, and can upload files)
+    html.find('.directory-item.actor').each((i, element) => {
+        const $element = $(element)
+        const actorId = $element.data('document-id')
+        const actor = game.actors.get(actorId)
+
+        if (
+            actor &&
+            actor.type === 'held' &&
+            actor.isOwner &&
+            game.user.can('ACTOR_CREATE') &&
+            game.user.can('FILES_UPLOAD')
+        ) {
+            // Only add sync button to character actors that the user owns and has create/upload permissions
+            const syncButton = $(`
+                <div class="sync-xml-character onhover" title="Sync Character with XML" data-actor-id="${actorId}">
+                    <i class="fas fa-sync-alt onhover"></i>
+                </div>
+            `)
+
+            syncButton.click(async (event) => {
+                event.stopPropagation() // Prevent opening the actor sheet
+                const targetActor = game.actors.get(actorId)
+                if (targetActor) {
+                    await XmlCharacterImporter.showSyncDialog(targetActor)
+                }
+            })
+
+            // Insert the sync button before the existing controls
+            const controls = $element.find('.directory-item-controls')
+            if (controls.length > 0) {
+                syncButton.prependTo(controls)
+            } else {
+                // If no controls exist, create them
+                const newControls = $('<div class="directory-item-controls"></div>')
+                newControls.append(syncButton)
+                $element.append(newControls)
+            }
+        }
+    })
 })
 
 // Force apply tint colors to status effect picker icons using direct CSS styling
 Hooks.on('renderTokenHUD', (app, html, data) => {
-    console.log('TokenHUD rendered, looking for status effects...')
-
     // Wait for DOM to be ready
     setTimeout(() => {
         // Look for the status effects container
         const statusEffectsContainer = html.find('.status-effects')
-        console.log('Status effects container found:', statusEffectsContainer.length)
 
         if (statusEffectsContainer.length > 0) {
             // Find all effect controls within the status effects container
             const effectControls = statusEffectsContainer.find('.effect-control')
-            console.log('Effect controls found:', effectControls.length)
 
             effectControls.each((index, control) => {
                 const $control = $(control)
                 const statusId = $control.data('status-id')
 
-                console.log(`Processing control ${index}: statusId=${statusId}`)
-                console.log($control[0]) // Log the actual DOM element
-
                 // Find the matching status effect configuration
                 const statusConfig = CONFIG.statusEffects.find((effect) => effect.id === statusId)
 
                 if (statusConfig && statusConfig.tint) {
-                    console.log(`Applying tint ${statusConfig.tint} to status ${statusId}`)
-
                     // Apply filter to change only the white SVG fill to the desired color
                     const filterValue = getFilterForColor(statusConfig.tint)
                     $control.css({
@@ -368,10 +463,6 @@ Hooks.on('renderTokenHUD', (app, html, data) => {
                     )
 
                     $control.addClass('ilaris-tinted')
-                } else if (statusConfig) {
-                    console.log(`Status ${statusId} found but no tint:`, statusConfig)
-                } else {
-                    console.log(`No status config found for ${statusId}`)
                 }
             })
         }
@@ -460,47 +551,6 @@ Hooks.on('renderActorDirectory', (app, html) => {
             header.append(importButton)
         }
     }
-
-    // Add sync buttons to each actor entry (only if user owns the actor, can create actors, and can upload files)
-    html.find('.directory-item.actor').each((i, element) => {
-        const $element = $(element)
-        const actorId = $element.data('document-id')
-        const actor = game.actors.get(actorId)
-
-        if (
-            actor &&
-            actor.type === 'held' &&
-            actor.isOwner &&
-            game.user.can('ACTOR_CREATE') &&
-            game.user.can('FILES_UPLOAD')
-        ) {
-            // Only add sync button to character actors that the user owns and has create/upload permissions
-            const syncButton = $(`
-                <div class="sync-xml-character onhover" title="Sync Character with XML" data-actor-id="${actorId}">
-                    <i class="fas fa-sync-alt onhover"></i>
-                </div>
-            `)
-
-            syncButton.click(async (event) => {
-                event.stopPropagation() // Prevent opening the actor sheet
-                const targetActor = game.actors.get(actorId)
-                if (targetActor) {
-                    await XmlCharacterImporter.showSyncDialog(targetActor)
-                }
-            })
-
-            // Insert the sync button before the existing controls
-            const controls = $element.find('.directory-item-controls')
-            if (controls.length > 0) {
-                syncButton.prependTo(controls)
-            } else {
-                // If no controls exist, create them
-                const newControls = $('<div class="directory-item-controls"></div>')
-                newControls.append(syncButton)
-                $element.append(newControls)
-            }
-        }
-    })
 })
 
 // Add XML rule import button to the Compendium Directory
@@ -591,6 +641,13 @@ Hooks.on('ready', async () => {
     await preloadAllEigenschaften()
     // Preload abgeleitete werte definitions into cache
     await preloadAbgeleiteteWerteDefinitions()
+
+    // Force actors to recalculate now that cache is loaded
+    for (const actor of game.actors) {
+        console.log(`Preparing data for actor ${actor.name} to recalculate derived values`)
+        actor.prepareData()
+    }
+
     // Run world migration if needed (GM only, once per world)
     await runMigrationIfNeeded()
 })

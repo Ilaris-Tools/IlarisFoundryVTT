@@ -41,9 +41,10 @@ export class HeldActor extends IlarisActor {
     async _initializeActor() {
         // NOTE: sieht aus als wäre _initialize eine methode von Actor,
         // die man nicht einfach überschreiben sollte
-        // daher umbenannt in initialiseActor
-        console.log('init')
-        console.log(this)
+        // daher umbenannt in _initializeActor
+        if (!this.system.modifikatoren.verteidigungmod) {
+            this.system.modifikatoren.verteidigungmod = 0
+        }
         this._sortItems(this) //Als erstes, darauf basieren Berechnungen
         this._calculatePWAttribute(this.system)
         this._calculateAbgeleitete(this)
@@ -55,5 +56,7 @@ export class HeldActor extends IlarisActor {
         this._calculateUebernaturlichTalente(this) //Nach Uebernatürliche Fertigkeiten
         await this._calculateKampf(this)
         this._calculateUebernatuerlichProbendiag(this)
+        // damit kommen Helden immer vor NPCs in der Init-Reihenfolge mit gleichen Ini-Werten
+        this.system.initiative += 0.5
     }
 }

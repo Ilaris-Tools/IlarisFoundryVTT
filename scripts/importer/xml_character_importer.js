@@ -821,6 +821,7 @@ export class XmlCharacterImporter {
 
     /**
      * Find an item in the compendiums by name and type
+     * Uses the configured compendiums from world settings based on item type
      * @param {string} itemName - Name of the item to find
      * @param {string|Array} itemType - Type(s) of the item
      * @returns {Promise<Item|null>} Found item or null
@@ -828,11 +829,49 @@ export class XmlCharacterImporter {
     async findItemInCompendium(itemName, itemType) {
         const typesToSearch = Array.isArray(itemType) ? itemType : [itemType]
 
-        // Search through ALL compendium packs that have items (both system and world)
+        // Map item types to their corresponding pack settings
+        const typeToSettingMap = {
+            fertigkeit: IlarisGameSettingNames.fertigkeitenPacks,
+            talent: IlarisGameSettingNames.talentePacks,
+            zauber: IlarisGameSettingNames.talentePacks, // Supernatural talents use talentePacks
+            liturgie: IlarisGameSettingNames.talentePacks, // Liturgies also use talentePacks
+            vorteil: IlarisGameSettingNames.vorteilePacks,
+            uebernatuerliche_fertigkeit: IlarisGameSettingNames.fertigkeitenPacks,
+        }
+
+        // Collect all relevant configured compendiums for the types being searched
+        const configuredCompendiumIds = new Set()
+        for (const type of typesToSearch) {
+            const settingName = typeToSettingMap[type]
+            if (settingName) {
+                try {
+                    const packsJson = game.settings.get(
+                        ConfigureGameSettingsCategories.Ilaris,
+                        settingName,
+                    )
+                    const packs = JSON.parse(packsJson)
+                    packs.forEach((packId) => configuredCompendiumIds.add(packId))
+                } catch (error) {
+                    console.warn(`Error loading setting ${settingName}:`, error)
+                }
+            }
+        }
+
+        if (configuredCompendiumIds.size === 0) {
+            console.warn(`No compendiums configured for item types: ${typesToSearch.join(', ')}`)
+            return null
+        }
+
+        // Search through configured compendium packs only
         const compendiumsToSearch = []
 
-        // Get all compendium packs and filter for those that contain items
-        for (const pack of game.packs) {
+        for (const compendiumId of configuredCompendiumIds) {
+            const pack = game.packs.get(compendiumId)
+            if (!pack) {
+                console.warn(`Configured compendium not found: ${compendiumId}`)
+                continue
+            }
+
             try {
                 // Load the compendium index to check if it has items
                 await pack.getIndex()
@@ -842,8 +881,13 @@ export class XmlCharacterImporter {
                     compendiumsToSearch.push(pack)
                 }
             } catch (error) {
-                console.warn(`Could not load compendium ${pack.metadata.id}:`, error)
+                console.warn(`Could not load compendium ${compendiumId}:`, error)
             }
+        }
+
+        if (compendiumsToSearch.length === 0) {
+            console.warn('No valid item compendiums found in configured settings')
+            return null
         }
 
         for (const pack of compendiumsToSearch) {
@@ -885,6 +929,63 @@ export class XmlCharacterImporter {
     }
 
     /**
+     * Get configured compendium packs for display
+     * @returns {Object} Pack information organized by category
+     */
+    getConfiguredPacks() {
+        const packInfo = {
+            skills: [],
+            talents: [],
+            advantages: [],
+        }
+
+        try {
+            // Get skills/supernatural skills packs
+            const fertigkeitenPacksJson = game.settings.get(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.fertigkeitenPacks,
+            )
+            const fertigkeitenPacks = JSON.parse(fertigkeitenPacksJson)
+            fertigkeitenPacks.forEach((packId) => {
+                const pack = game.packs.get(packId)
+                if (pack) {
+                    packInfo.skills.push(pack.metadata.label)
+                }
+            })
+
+            // Get talents packs
+            const talentePacksJson = game.settings.get(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.talentePacks,
+            )
+            const talentePacks = JSON.parse(talentePacksJson)
+            talentePacks.forEach((packId) => {
+                const pack = game.packs.get(packId)
+                if (pack) {
+                    packInfo.talents.push(pack.metadata.label)
+                }
+            })
+
+            // Get advantages packs
+            const vorteilePacksJson = game.settings.get(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.vorteilePacks,
+            )
+            const vorteilePacks = JSON.parse(vorteilePacksJson)
+            vorteilePacks.forEach((packId) => {
+                const pack = game.packs.get(packId)
+                if (pack) {
+                    packInfo.advantages.push(pack.metadata.label)
+                }
+            })
+        } catch (error) {
+            console.warn('Error loading pack information:', error)
+        }
+
+        return packInfo
+    }
+
+    /**
      * Analyze what items will be found vs missing in compendiums
      * @param {Object} characterData - The parsed character data from XML
      * @returns {Promise<Object>} Analysis of what will be found vs missing
@@ -898,6 +999,7 @@ export class XmlCharacterImporter {
             weapons: { found: [], missing: [] },
             armors: { found: [], missing: [] }, // Armors are always created from XML, not looked up
             freeSkills: { total: 0 }, // Free skills are always created directly
+            configuredPacks: this.getConfiguredPacks(), // Add pack information
         }
 
         // Analyze skills
