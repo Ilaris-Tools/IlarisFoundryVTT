@@ -65,7 +65,7 @@ describe('ModifierProcessor', () => {
                 },
             }
 
-            processor.process('simple', eigenschaft, computed, mockActor, mockWeapon)
+            processor.process('simple', eigenschaft, [], computed, mockActor, mockWeapon)
 
             expect(computed.at).toBe(2)
             expect(computed.vt).toBe(1)
@@ -80,7 +80,7 @@ describe('ModifierProcessor', () => {
                 },
             }
 
-            processor.process('schadenformula', eigenschaft, computed, mockActor, mockWeapon)
+            processor.process('schadenformula', eigenschaft, [], computed, mockActor, mockWeapon)
 
             expect(computed.schadenBonus).toBe(2) // KK.wert = 8/4 = 2
         })
@@ -94,7 +94,7 @@ describe('ModifierProcessor', () => {
                 },
             }
 
-            processor.process('combined', eigenschaft, computed, mockActor, mockWeapon)
+            processor.process('combined', eigenschaft, [], computed, mockActor, mockWeapon)
 
             expect(computed.at).toBe(1)
             expect(computed.schadenBonus).toBe(4) // 2 + 8/4 (KK)
@@ -103,7 +103,7 @@ describe('ModifierProcessor', () => {
         it('should handle eigenschaft with no modifiers or conditions', () => {
             const eigenschaft = {}
 
-            processor.process('combined', eigenschaft, computed, mockActor, mockWeapon)
+            processor.process('combined', eigenschaft, [], computed, mockActor, mockWeapon)
 
             expect(computed.at).toBe(0)
             expect(computed.vt).toBe(0)

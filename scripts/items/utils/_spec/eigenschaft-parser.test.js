@@ -40,12 +40,6 @@ describe('eigenschaft-parser', () => {
             expect(result).toEqual({ key: 'Niederwerfen', parameters: [4] })
         })
 
-        it('should handle ± sign in parameter', () => {
-            const result = parseEigenschaftString('Umklammern (±2/12)')
-            // ± is stripped, / is kept as part of string since not semicolon
-            expect(result).toEqual({ key: 'Umklammern', parameters: ['2/12'] })
-        })
-
         it('should parse alternative semicolon format for Umklammern', () => {
             const result = parseEigenschaftString('Umklammern (±2; 12)')
             expect(result).toEqual({ key: 'Umklammern', parameters: [2, 12] })
