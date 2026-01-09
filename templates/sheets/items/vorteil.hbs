@@ -23,6 +23,10 @@
             <label><b>Beschreibung:</b></label>
             <textarea rows="8" name="system.text">{{item.system.text}}</textarea>
         </div>
+        
+        <!-- Include the effects section partial -->
+        {{> "systems/Ilaris/templates/helper/effects-section.hbs"}}
+        
         {{#if (ifEq item.system.gruppe "3")}}
         <div class="flexrow">
             <label><b>Sephrasto Script:</b><i class="fas fa-info-circle" 
