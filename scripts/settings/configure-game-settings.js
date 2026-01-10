@@ -98,6 +98,17 @@ export const registerIlarisGameSettings = () => {
             scope: 'world',
             default: '',
         },
+        {
+            // Register LEP system setting
+            settingsName: IlarisGameSettingNames.lepSystem,
+            name: 'LEP-System verwenden',
+            hint: 'Wenn aktiviert, wird das Wundensystem durch ein direktes Lebenspunkte (LEP) System ersetzt. Schaden reduziert direkt die HP anstatt Wunden zu verursachen. Änderung dieser Einstellung benötigt einen Neustart von Foundry.',
+            config: true,
+            type: new foundry.data.fields.BooleanField(),
+            scope: 'world',
+            default: false,
+            requiresReload: true,
+        },
     ].forEach((setting) => {
         game.settings.register(ConfigureGameSettingsCategories.Ilaris, setting.settingsName, {
             name: setting.name,

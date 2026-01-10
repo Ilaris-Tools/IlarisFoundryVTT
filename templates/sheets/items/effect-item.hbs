@@ -1,0 +1,43 @@
+{{!-- Effect Item Sheet Template --}}
+<form class="{{cssClass}} flexcol" autocomplete="off">
+    
+    {{!-- Sheet Header --}}
+    <header class="sheet-header">
+        <img class="profile-img" src="{{item.img}}" data-edit="img" title="{{item.name}}" height="64" width="64"/>
+        
+        <div class="header-fields">
+            <h1 class="charname">
+                <input name="name" type="text" value="{{item.name}}" placeholder="Effect Container Name"/>
+            </h1>
+            
+            <div class="resource">
+                <label>Typ:</label>
+                <span>{{item.type}}</span>
+            </div>
+        </div>
+    </header>
+
+    {{!-- Sheet Body --}}
+    <section class="sheet-body">
+        
+        {{!-- Description Section --}}
+        <div class="form-group stacked" style="margin-bottom: 1rem;">
+            <label>Beschreibung</label>
+            <textarea rows="6" name="system.description">{{item.system.description}}</textarea>
+        </div>
+        
+        
+        {{!-- Effects Section --}}
+        {{> "systems/Ilaris/templates/helper/effects-section.hbs"}}
+        
+        <hr style="margin: 1rem 0;" />
+        
+        {{!-- Info Text --}}
+        <div class="hint" style="font-size: 0.9em; color: #666; padding: 0.5rem; background: rgba(0,0,0,0.05); border-radius: 4px;">
+            <i class="fas fa-info-circle"></i> 
+            <strong>Hinweis:</strong> Dieses Item dient als Container für Active Effects. 
+            Wenn es auf einen Actor gezogen wird, werden die enthaltenen Effects auf den Actor angewendet.
+        </div>
+
+    </section>
+</form>

@@ -41,20 +41,22 @@ export class HeldActor extends IlarisActor {
     async _initializeActor() {
         // NOTE: sieht aus als wäre _initialize eine methode von Actor,
         // die man nicht einfach überschreiben sollte
-        // daher umbenannt in initialiseActor
-        console.log('init')
-        console.log(this)
+        // daher umbenannt in _initializeActor
+        if (!this.system.modifikatoren.verteidigungmod) {
+            this.system.modifikatoren.verteidigungmod = 0
+        }
         this._sortItems(this) //Als erstes, darauf basieren Berechnungen
         this._calculatePWAttribute(this.system)
-        this._calculateWounds(this.system) // muss vor _calculateAbgeleitete kommen (wegen globalermod)
-        this._calculateFear(this.system) // muss vor _calculateAbgeleitete kommen (wegen globalermod)
-        this._calculateWundschwellenRuestung(this)
-        this._calculateModifikatoren(this.system)
         this._calculateAbgeleitete(this)
+        this._calculateWounds(this.system)
+        this._calculateFear(this.system)
+        this._calculateModifikatoren(this.system)
         this._calculateProfanFertigkeiten(this)
         this._calculateUebernaturlichFertigkeiten(this)
         this._calculateUebernaturlichTalente(this) //Nach Uebernatürliche Fertigkeiten
         await this._calculateKampf(this)
         this._calculateUebernatuerlichProbendiag(this)
+        // damit kommen Helden immer vor NPCs in der Init-Reihenfolge mit gleichen Ini-Werten
+        this.system.initiative += 0.5
     }
 }
