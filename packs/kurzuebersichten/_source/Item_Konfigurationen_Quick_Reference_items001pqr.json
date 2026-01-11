@@ -1,11 +1,11 @@
 {
-  "name": "Kurzübersicht: Item-Konfigurationen",
+  "name": "Übersicht: Item-Konfigurationen",
   "type": "JournalEntry",
   "_id": "kurzitems001",
   "pages": [
     {
       "_id": "kurzitpage003",
-      "name": "Item-Konfigurationen - Schnellübersicht",
+      "name": "Item-Konfigurationen - Übersicht",
       "type": "text",
       "title": {
         "show": true,

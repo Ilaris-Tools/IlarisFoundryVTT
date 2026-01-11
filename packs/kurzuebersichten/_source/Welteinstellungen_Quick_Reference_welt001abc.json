@@ -1,11 +1,11 @@
 {
-  "name": "Kurzübersicht: Welteinstellungen",
+  "name": "Übersicht: Welteinstellungen",
   "type": "JournalEntry",
   "_id": "kurzweltein001",
   "pages": [
     {
       "_id": "kurzwpage001",
-      "name": "Welteinstellungen - Schnellübersicht",
+      "name": "Welteinstellungen - Übersicht",
       "type": "text",
       "title": {
         "show": true,

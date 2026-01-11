@@ -1,11 +1,11 @@
 {
-  "name": "Kurzübersicht: Dialoge",
+  "name": "Übersicht: Dialoge",
   "type": "JournalEntry",
   "_id": "kurzkampf001",
   "pages": [
     {
       "_id": "kurzkpage002",
-      "name": "Dialoge - Schnellübersicht",
+      "name": "Dialoge - Übersicht",
       "type": "text",
       "title": {
         "show": true,
