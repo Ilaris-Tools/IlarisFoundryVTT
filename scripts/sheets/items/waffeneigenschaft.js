@@ -89,6 +89,8 @@ export class WaffeneigenschaftSheet extends IlarisItemSheet {
             { value: '', label: 'Keine' },
             { value: 'set', label: 'Setzen' },
             { value: 'augment', label: 'Modifizieren' },
+            { value: 'actionNegAugment', label: 'Bei Aktion Negativ Modifizieren' },
+            { value: 'actionAugment', label: 'Bei Aktion Positiv Modifizieren' },
         ]
 
         // Abgeleitete properties that can be modified
@@ -132,6 +134,10 @@ export class WaffeneigenschaftSheet extends IlarisItemSheet {
             { value: 'modifiers.rw', label: 'Modifikator: Reichweite' },
             { value: 'modifiers.fumbleThreshold', label: 'Modifikator: Patzer-Schwelle' },
             { value: 'modifiers.critThreshold', label: 'Modifikator: Kritische Schwelle' },
+            {
+                value: 'actorModifiers.modifiers.{{index}}.value',
+                label: 'Actor-Modifikator: Value',
+            },
         ]
 
         return data
@@ -235,13 +241,21 @@ export class WaffeneigenschaftSheet extends IlarisItemSheet {
     async _onAddActorModifier(event) {
         event.preventDefault()
         const modifiers = foundry.utils.deepClone(this.item.system.actorModifiers?.modifiers || [])
-        modifiers.push({
+        let modifiersArray = modifiers || []
+        if (
+            modifiersArray &&
+            typeof modifiersArray === 'object' &&
+            !Array.isArray(modifiersArray)
+        ) {
+            modifiersArray = Object.values(modifiersArray)
+        }
+        modifiersArray.push({
             property: 'be',
             mode: '',
             value: 0,
             formula: '',
         })
-        await this.item.update({ 'system.actorModifiers.modifiers': modifiers })
+        await this.item.update({ 'system.actorModifiers.modifiers': modifiersArray })
     }
 
     /**
@@ -253,7 +267,15 @@ export class WaffeneigenschaftSheet extends IlarisItemSheet {
         event.preventDefault()
         const index = Number(event.currentTarget.dataset.index)
         const modifiers = foundry.utils.deepClone(this.item.system.actorModifiers?.modifiers || [])
-        modifiers.splice(index, 1)
-        await this.item.update({ 'system.actorModifiers.modifiers': modifiers })
+        let modifiersArray = modifiers || []
+        if (
+            modifiersArray &&
+            typeof modifiersArray === 'object' &&
+            !Array.isArray(modifiersArray)
+        ) {
+            modifiersArray = Object.values(modifiersArray)
+        }
+        modifiersArray.splice(index, 1)
+        await this.item.update({ 'system.actorModifiers.modifiers': modifiersArray })
     }
 }
