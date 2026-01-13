@@ -28,15 +28,15 @@ export class ActorModifierProcessor extends BaseEigenschaftProcessor {
             ? eigenschaft.actorModifiers.modifiers
             : Object.values(eigenschaft.actorModifiers.modifiers)
 
-        for (const mod of modifiers) {
+        modifiers.forEach((mod, index) => {
             if (mod && mod.mode && mod.property) {
                 computed.actorModifiers.push({
                     property: mod.property,
                     mode: mod.mode,
-                    value: mod.value || 0,
+                    value: parameters[index] !== undefined ? parameters[index] : mod.value || 0,
                     weaponName: weapon.name,
                 })
             }
-        }
+        })
     }
 }

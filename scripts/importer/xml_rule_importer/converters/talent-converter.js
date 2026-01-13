@@ -118,14 +118,32 @@ export class TalentConverter extends BaseConverter {
 
     /**
      * Convert Talent XML element to Foundry item based on kategorie attribute
+     * kategorie 0: normal talent (Handwerk, etc.)
+     * kategorie 1: zauber (Zauberer spell)
+     * kategorie 2: liturgie (Geweiht liturgy)
+     * kategorie 3: anrufung (invocation)
      * @param {Object} element - XML element
      * @returns {Object} Foundry item (talent, zauber, liturgie, or anrufung)
      */
     convert(element) {
-        const kategorie = parseInt(this.getAttribute(element, 'kategorie', '0')) || 0
+        const kategorieStr = this.getAttribute(element, 'kategorie', '0')
+        const kategorie = parseInt(kategorieStr, 10)
+
+        console.log(`Converting talent with kategorie: ${kategorie}`)
+
+        // Validate kategorie is a number (handle NaN case)
+        if (isNaN(kategorie)) {
+            console.warn(`Invalid kategorie value "${kategorieStr}" for talent, defaulting to 0`)
+            return this.convertBasicTalent(element)
+        }
 
         // Determine item type based on kategorie
-        const itemType = TALENT_KATEGORIE_TO_TYPE[kategorie] || 'talent'
+        const itemType = TALENT_KATEGORIE_TO_TYPE[kategorie]
+
+        if (!itemType) {
+            console.warn(`Unknown kategorie ${kategorie} for talent, defaulting to 'talent'`)
+            return this.convertBasicTalent(element)
+        }
 
         if (itemType === 'talent') {
             return this.convertBasicTalent(element)
