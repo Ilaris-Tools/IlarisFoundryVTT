@@ -108,7 +108,7 @@ export class WeaponConverter extends BaseConverter {
             name,
             sephrastoScript: script,
             foundryScript: '', // Empty by default, can be filled manually later
-            text,
+            beschreibung: text,
         }
 
         return this.createFoundryItem(name, 'waffeneigenschaft', systemData)

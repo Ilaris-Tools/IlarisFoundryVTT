@@ -32,11 +32,7 @@ export class VorteilePacksSettings extends FormApplication {
         // Get all available packs that contain vorteile
         const availablePacks = []
         for (const pack of game.packs) {
-            if (
-                pack.metadata.type === 'Item' &&
-                pack.index.size > 0 &&
-                (pack.metadata.packageType === 'world' || pack.metadata.id === 'Ilaris.vorteile')
-            ) {
+            if (pack.metadata.type === 'Item' && pack.index.size > 0) {
                 // Check if any item in the pack has type 'vorteil'
                 if (pack.metadata.id === 'Ilaris.vorteile') {
                     availablePacks.push({

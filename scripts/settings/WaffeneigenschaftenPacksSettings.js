@@ -26,12 +26,7 @@ export class WaffeneigenschaftenPacksSettings extends FormApplication {
         // Get all available packs that contain waffeneigenschaften
         const availablePacks = []
         for (const pack of game.packs) {
-            if (
-                pack.metadata.type === 'Item' &&
-                pack.index.size > 0 &&
-                (pack.metadata.packageType === 'world' ||
-                    pack.metadata.id === 'Ilaris.waffeneigenschaften')
-            ) {
+            if (pack.metadata.type === 'Item' && pack.index.size > 0) {
                 // Check if any item in the pack has type 'waffeneigenschaft'
                 if (pack.metadata.id === 'Ilaris.waffeneigenschaften') {
                     availablePacks.push({

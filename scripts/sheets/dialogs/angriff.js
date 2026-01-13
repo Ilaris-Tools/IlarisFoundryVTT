@@ -311,7 +311,7 @@ export class AngriffDialog extends CombatDialog {
         await this.manoeverAuswaehlen(html)
         await this.updateManoeverMods(html) // durch manoever
         this.updateStatusMods()
-        this.eigenschaftenText()
+        super.eigenschaftenText()
 
         let label = `Attacke (${this.item.name})`
         let formula = `${diceFormula} ${signed(this.item.system.at)} \
@@ -836,14 +836,6 @@ export class AngriffDialog extends CombatDialog {
         }
         this.vt_abzuege_mod = this.actor.system.abgeleitete.globalermod
         super.updateStatusMods()
-    }
-
-    eigenschaftenText() {
-        if (!this.item.system.eigenschaften || this.item.system.eigenschaften.length === 0) {
-            return
-        }
-        this.text_at += '\nEigenschaften: '
-        this.text_at += this.item.system.eigenschaften.join(', ')
     }
 
     isGezieltSchlagActive() {

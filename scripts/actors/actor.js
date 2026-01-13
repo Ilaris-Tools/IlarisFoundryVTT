@@ -100,6 +100,10 @@ export class IlarisActor extends Actor {
             // Base Initiative
             if (this.system.attribute.IN?.wert != undefined) {
                 this.system.abgeleitete.ini = calculateValue('INI', this.system.attribute.IN.wert)
+                this.system.abgeleitete.baseIni = calculateValue(
+                    'INI',
+                    this.system.attribute.IN.wert,
+                )
             }
 
             // Base Magic Resistance
