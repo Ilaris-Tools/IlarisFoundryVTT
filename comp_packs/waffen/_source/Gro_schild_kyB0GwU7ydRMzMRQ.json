@@ -11,8 +11,14 @@
     "hauptwaffe": false,
     "nebenwaffe": false,
     "eigenschaften": [
-      "Schild",
-      "Stumpf"
+      {
+        "key": "Schild",
+        "parameters": []
+      },
+      {
+        "key": "Stumpf",
+        "parameters": []
+      }
     ],
     "text": "",
     "aufbewahrungs_ort": "mitführend",

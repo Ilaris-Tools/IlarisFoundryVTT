@@ -11,8 +11,14 @@
     "hauptwaffe": false,
     "nebenwaffe": false,
     "eigenschaften": [
-      "Rüstungsbrechend",
-      "Zweihändig"
+      {
+        "key": "Rüstungsbrechend",
+        "parameters": []
+      },
+      {
+        "key": "Zweihändig",
+        "parameters": []
+      }
     ],
     "text": "",
     "aufbewahrungs_ort": "mitführend",

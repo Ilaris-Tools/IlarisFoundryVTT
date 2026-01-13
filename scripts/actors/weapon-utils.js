@@ -40,12 +40,12 @@ export function anyWeaponNeedsToMeetRequirement(hauptWaffe, nebenWaffe, requirem
     const requirementLower = requirement.toLowerCase()
 
     if (hauptWaffe && hauptWaffe.system && hauptWaffe.system.eigenschaften) {
-        if (hauptWaffe.system.eigenschaften.some((e) => e.toLowerCase() === requirementLower)) {
+        if (hauptWaffe.system.eigenschaften.some((e) => e.key.toLowerCase() === requirementLower)) {
             return true
         }
     }
     if (nebenWaffe && nebenWaffe.system && nebenWaffe.system.eigenschaften) {
-        if (nebenWaffe.system.eigenschaften.some((e) => e.toLowerCase() === requirementLower)) {
+        if (nebenWaffe.system.eigenschaften.some((e) => e.key.toLowerCase() === requirementLower)) {
             return true
         }
     }
@@ -66,7 +66,7 @@ export function ignoreSideWeaponMalus(
     if (waffenEigenschaft) {
         // Check if weapon has the specified eigenschaft (case-insensitive)
         const hasEigenschaft = nebenWaffe.system.eigenschaften.some(
-            (e) => e.toLowerCase() === waffenEigenschaft.toLowerCase(),
+            (e) => e.key.toLowerCase() === waffenEigenschaft.toLowerCase(),
         )
 
         if (!hasEigenschaft) return

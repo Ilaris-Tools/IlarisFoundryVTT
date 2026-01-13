@@ -10,19 +10,35 @@ export class ModifierProcessor extends BaseEigenschaftProcessor {
         return 'modifier'
     }
 
-    process(name, eigenschaft, computed, actor, weapon) {
-        this._applyBasicModifiers(name, eigenschaft, computed, actor)
+    process(name, eigenschaft, parameters, computed, actor, weapon) {
+        this._applyBasicModifiers(name, eigenschaft, parameters, computed, actor)
         this._applyCombatMechanics(name, eigenschaft, computed)
         this._registerConditionalModifiers(name, eigenschaft, computed)
     }
 
     /**
      * Apply basic numeric and formula-based modifiers
+     * Parameters can override values defined in eigenschaft.modifiers
+     * @param {string} name - Eigenschaft name
+     * @param {Object} eigenschaft - Eigenschaft system data
+     * @param {Array<string|number>} parameters - Parameter values from weapon
+     * @param {Object} computed - Computed stats to modify
+     * @param {Actor} actor - The owning actor
      * @private
      */
-    _applyBasicModifiers(name, eigenschaft, computed, actor) {
+    _applyBasicModifiers(name, eigenschaft, parameters, computed, actor) {
         const mods = eigenschaft.modifiers || {}
-        console.log(`ModifierProcessor applying basic modifiers for:`, eigenschaft, mods)
+        const slots = eigenschaft.parameterSlots || []
+        console.log(
+            `ModifierProcessor applying basic modifiers for:`,
+            eigenschaft,
+            mods,
+            'with parameters:',
+            parameters,
+        )
+
+        // Build parameter context for formula evaluation
+        const paramContext = this._buildParameterContext(slots, parameters)
 
         // Simple numeric modifiers - ensure they are numbers
         const atMod = Number(mods.at) || 0
@@ -91,5 +107,40 @@ export class ModifierProcessor extends BaseEigenschaftProcessor {
 
         // Store conditional modifiers to be checked during combat
         computed.conditionalModifiers.push(...conditionalMods)
+    }
+
+    /**
+     * Build a parameter context object from slots and values
+     * Maps slot names to parameter values for formula evaluation
+     * @param {Array} slots - Parameter slot definitions from eigenschaft
+     * @param {Array} parameters - Parameter values from weapon
+     * @returns {Object} Map of slot names to values
+     * @private
+     */
+    _buildParameterContext(slots, parameters) {
+        const context = {}
+
+        // Convert slots to array if it's an object
+        let slotsArray = slots || []
+        if (slotsArray && typeof slotsArray === 'object' && !Array.isArray(slotsArray)) {
+            slotsArray = Object.values(slotsArray)
+        }
+
+        if (!Array.isArray(slotsArray) || !Array.isArray(parameters)) {
+            return context
+        }
+
+        slotsArray.forEach((slot, index) => {
+            if (slot && slot.name) {
+                // Use provided parameter value or default
+                const value =
+                    parameters[index] !== undefined ? parameters[index] : slot.defaultValue
+                context[slot.name] = value
+                // Also provide positional access
+                context[`$${index + 1}`] = value
+            }
+        })
+
+        return context
     }
 }
