@@ -535,24 +535,6 @@ Hooks.on('renderSceneConfig', async (app, html, data) => {
     basicTab.append(environmentHTML)
 })
 
-// (Removed: closeSceneConfig hook is unnecessary; rely on Foundry's native form handling)
-Hooks.on('renderActorDirectory', (app, html) => {
-    // Add XML import button to the actors directory header (only if user can create actors and upload files)
-    if (game.user.can('ACTOR_CREATE') && game.user.can('FILES_UPLOAD')) {
-        const header = html.find('.directory-header')
-        if (header.length > 0) {
-            const importButton = $(`
-                <button class="import-xml-character" title="Import Character from XML">
-                    <i class="fas fa-file-import"></i> Import Charakter XML
-                </button>
-            `)
-
-            importButton.click(() => XmlCharacterImporter.showImportDialog())
-            header.append(importButton)
-        }
-    }
-})
-
 // Add XML rule import button to the Compendium Directory
 Hooks.on('renderCompendiumDirectory', (app, html) => {
     // Add XML import button to the compendium directory header (only if GM)
