@@ -86,7 +86,8 @@ function onItemChange(item, action) {
 
 /**
  * Refresh all actors that have weapons using a specific eigenschaft
- * @param {string} eigenschaftName - Name of the changed eigenschaft
+ * Now supports both string and object eigenschaft formats
+ * @param {string} eigenschaftName - Name of the changed eigenschaft (base name)
  */
 function refreshActorsWithEigenschaft(eigenschaftName) {
     for (const actor of game.actors) {
@@ -94,7 +95,17 @@ function refreshActorsWithEigenschaft(eigenschaftName) {
             (item) =>
                 (item.type === 'nahkampfwaffe' || item.type === 'fernkampfwaffe') &&
                 Array.isArray(item.system.eigenschaften) &&
-                item.system.eigenschaften.includes(eigenschaftName),
+                item.system.eigenschaften.some((eig) => {
+                    // Support both string format and object format
+                    if (typeof eig === 'string') {
+                        // Extract base name from string like "Schwer (4)"
+                        const baseName = eig.split('(')[0].trim()
+                        return baseName === eigenschaftName || eig === eigenschaftName
+                    } else if (eig && typeof eig === 'object') {
+                        return eig.key === eigenschaftName
+                    }
+                    return false
+                }),
         )
         if (hasEigenschaft) {
             console.log(`Ilaris | Refreshing actor "${actor.name}" due to eigenschaft change`)
@@ -123,7 +134,7 @@ export class EigenschaftCache {
 
     /**
      * Check if all required eigenschaften for this instance are loaded
-     * @param {string[]} [eigenschaftNames] - Optional names to check, defaults to _requiredNames
+     * @param {string[]|Array<{key, parameters}>} [eigenschaftNames] - Optional names to check, defaults to _requiredNames
      * @returns {boolean}
      */
     isLoaded(eigenschaftNames) {
@@ -132,7 +143,10 @@ export class EigenschaftCache {
         if (!Array.isArray(namesToCheck)) return true
         // If no eigenschaften are required, consider it loaded
         if (namesToCheck.length === 0) return true
-        return namesToCheck.every((name) => globalCache.has(name))
+
+        // Extract keys from eigenschaften (handle both string and object formats)
+        const keys = namesToCheck.map((eig) => this._extractKey(eig))
+        return keys.every((key) => globalCache.has(key))
     }
 
     /**
@@ -145,7 +159,8 @@ export class EigenschaftCache {
 
     /**
      * Load all eigenschaft items for the given names
-     * @param {string[]} eigenschaftNames - Names of eigenschaften to load
+     * Supports both string array and object array formats
+     * @param {Array<string|{key, parameters}>} eigenschaftNames - Names/objects of eigenschaften to load
      * @returns {Promise<void>}
      */
     async load(eigenschaftNames) {
@@ -165,9 +180,12 @@ export class EigenschaftCache {
         globalLoading = true
 
         try {
-            for (const name of eigenschaftNames) {
-                if (!globalCache.has(name)) {
-                    await this._loadEigenschaftItem(name)
+            // Extract unique keys from eigenschaften
+            const keys = [...new Set(eigenschaftNames.map((eig) => this._extractKey(eig)))]
+
+            for (const key of keys) {
+                if (!globalCache.has(key)) {
+                    await this._loadEigenschaftItem(key)
                 }
             }
         } finally {
@@ -263,6 +281,23 @@ export class EigenschaftCache {
         // Cache the result (even if null to avoid repeated searches)
         globalCache.set(name, item)
         return item
+    }
+
+    /**
+     * Extract the base key/name from an eigenschaft
+     * Handles both string and object formats
+     * @param {string|{key, parameters}} eigenschaft - Eigenschaft in any format
+     * @returns {string} The base eigenschaft key
+     * @private
+     */
+    _extractKey(eigenschaft) {
+        if (typeof eigenschaft === 'string') {
+            // Extract base name from string like "Schwer (4)" → "Schwer"
+            return eigenschaft.split('(')[0].trim()
+        } else if (eigenschaft && typeof eigenschaft === 'object' && eigenschaft.key) {
+            return eigenschaft.key
+        }
+        return String(eigenschaft || '')
     }
 }
 

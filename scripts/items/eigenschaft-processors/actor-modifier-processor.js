@@ -9,7 +9,7 @@ export class ActorModifierProcessor extends BaseEigenschaftProcessor {
         return 'actor_modifier'
     }
 
-    process(name, eigenschaft, computed, actor, weapon) {
+    process(name, eigenschaft, parameters, computed, actor, weapon) {
         // Check if eigenschaft has actorModifiers structure
         if (!eigenschaft.actorModifiers || !eigenschaft.actorModifiers.modifiers) {
             return
