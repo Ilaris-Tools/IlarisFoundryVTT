@@ -21,11 +21,19 @@ export class TalentExtractor extends BaseExtractor {
         // Filter for basic talents (kategorie=0)
         talentElements.forEach((element, index) => {
             try {
-                const kategorie = parseInt(element.getAttribute('kategorie') || '0') || 0
+                const kategorieStr = element.getAttribute('kategorie') || '0'
+                const kategorie = parseInt(kategorieStr, 10)
+
                 if (kategorie === 0) {
                     const talent = this.converter.convertBasicTalent(element)
-                    if (talent) {
+                    // Verify it's actually a talent type
+                    if (talent && talent.type === 'talent') {
                         talente.push(talent)
+                    } else if (talent) {
+                        console.warn(
+                            `Talent with kategorie=0 produced wrong type: ${talent.type}`,
+                            talent.name,
+                        )
                     }
                 }
             } catch (error) {
@@ -49,11 +57,20 @@ export class TalentExtractor extends BaseExtractor {
         // Filter for übernatürliche talents (kategorie != 0)
         talentElements.forEach((element, index) => {
             try {
-                const kategorie = parseInt(element.getAttribute('kategorie') || '0') || 0
-                if (kategorie !== 0) {
+                const kategorieStr = element.getAttribute('kategorie') || '0'
+                const kategorie = parseInt(kategorieStr, 10)
+
+                // Only process if kategorie is 1, 2, or 3 (not 0)
+                if (!isNaN(kategorie) && kategorie !== 0) {
                     const talent = this.converter.convert(element)
-                    if (talent) {
+                    // Verify it's NOT a basic talent type
+                    if (talent && talent.type !== 'talent') {
                         uebernatuerlicheTalente.push(talent)
+                    } else if (talent && talent.type === 'talent') {
+                        console.warn(
+                            `Talent with kategorie=${kategorie} produced wrong type 'talent'`,
+                            talent.name,
+                        )
                     }
                 }
             } catch (error) {
