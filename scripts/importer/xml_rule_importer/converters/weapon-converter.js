@@ -1,5 +1,6 @@
 import { BaseConverter } from './base-converter.js'
 import { DEFAULT_WEAPON_VALUES } from '../constants.js'
+import { parseEigenschaftenArray } from '../../../items/utils/eigenschaft-parser.js'
 
 /**
  * Converter for Waffe and Waffeneigenschaft
@@ -26,17 +27,19 @@ export class WeaponConverter extends BaseConverter {
         const eigenschaftenAttr = this.getAttribute(element, 'eigenschaften', '')
         if (eigenschaftenAttr) {
             // Character import format: eigenschaften in attribute
-            eigenschaften = eigenschaftenAttr
+            const eigenschaftenStrings = eigenschaftenAttr
                 .split(',')
                 .map((e) => e.trim())
                 .filter((e) => e.length > 0)
+            eigenschaften = parseEigenschaftenArray(eigenschaftenStrings)
         } else {
             // Rule import format: eigenschaften in text content
             const eigenschaftenRaw = this.getTextContent(element)
-            eigenschaften = eigenschaftenRaw
+            const eigenschaftenStrings = eigenschaftenRaw
                 .split(',')
                 .map((e) => e.trim())
                 .filter((e) => e.length > 0)
+            eigenschaften = parseEigenschaftenArray(eigenschaftenStrings)
         }
 
         // Basic weapon system data (shared between both types)

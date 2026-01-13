@@ -11,10 +11,22 @@
     "hauptwaffe": false,
     "nebenwaffe": false,
     "eigenschaften": [
-      "Parierwaffe",
-      "Stumpf",
-      "Zerbrechlich",
-      "kein Malus als Nebenwaffe"
+      {
+        "key": "Parierwaffe",
+        "parameters": []
+      },
+      {
+        "key": "Stumpf",
+        "parameters": []
+      },
+      {
+        "key": "Zerbrechlich",
+        "parameters": []
+      },
+      {
+        "key": "kein Malus als Nebenwaffe",
+        "parameters": []
+      }
     ],
     "text": "",
     "aufbewahrungs_ort": "mitführend",

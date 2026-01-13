@@ -9,7 +9,7 @@ export class TargetEffectProcessor extends BaseEigenschaftProcessor {
         return 'target_effect'
     }
 
-    process(name, eigenschaft, computed, actor, weapon) {
+    process(name, eigenschaft, parameters, computed, actor, weapon) {
         if (!eigenschaft.targetEffect) return
 
         // Store target effects that can be triggered during combat

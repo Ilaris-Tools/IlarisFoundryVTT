@@ -9,13 +9,21 @@ export class WieldingProcessor extends BaseEigenschaftProcessor {
         return 'wielding'
     }
 
-    process(name, eigenschaft, computed, actor, weapon) {
+    process(name, eigenschaft, parameters, computed, actor, weapon) {
         const req = eigenschaft.wieldingRequirements
+        const slots = eigenschaft.parameterSlots || []
 
         if (!req) return
 
         // Store flags first
-        console.log('Processing wielding for weapon:', weapon.name, 'with requirements:', req)
+        console.log(
+            'Processing wielding for weapon:',
+            weapon.name,
+            'with requirements:',
+            req,
+            'parameters:',
+            parameters,
+        )
         if (req.hands) {
             computed.handsRequired = Math.max(computed.handsRequired || 1, req.hands)
         }
@@ -26,8 +34,15 @@ export class WieldingProcessor extends BaseEigenschaftProcessor {
             computed.noRider = true
         }
 
-        if (req.condition && req.condition.value) {
-            this.handleCondition(req.condition, computed, actor, weapon)
+        // Handle condition with parameter override for value
+        if (req.condition && (req.condition.value || parameters.length > 0)) {
+            // Build effective condition - parameters can override condition.value
+            const effectiveCondition = this._buildEffectiveCondition(
+                req.condition,
+                slots,
+                parameters,
+            )
+            this.handleCondition(effectiveCondition, computed, actor, weapon, name)
         }
 
         const isHauptOnly = weapon.system.hauptwaffe && !weapon.system.nebenwaffe
@@ -61,10 +76,10 @@ export class WieldingProcessor extends BaseEigenschaftProcessor {
         }
     }
 
-    handleCondition(condition, computed, actor, weapon) {
+    handleCondition(condition, computed, actor, weapon, name) {
         // Example condition handling: currently only supports strength requirement
         if (condition.type === 'attribute_check') {
-            const attributeValue = actor.system.attribute[condition.attribute].wert || 0
+            const attributeValue = actor.system.attribute[condition.attribute]?.wert || 0
             let checkPassed = false
             switch (condition.operator) {
                 case '<':
@@ -93,24 +108,61 @@ export class WieldingProcessor extends BaseEigenschaftProcessor {
                 computed.vt += penalty.vt || 0
                 computed.schadenBonus += penalty.schaden || 0
 
+                const displayName = name || condition.attribute
                 if (penalty.schaden) {
                     computed.modifiers.dmg.push(
-                        `${condition.attribute} Voraussetzung nicht erfüllt: ${
-                            penalty.schaden || 0
-                        }`,
+                        `${displayName} (${condition.attribute} !${condition.operator} ${
+                            condition.value
+                        }): ${penalty.schaden || 0}`,
                     )
                 }
                 if (penalty.at) {
                     computed.modifiers.at.push(
-                        `${condition.attribute} Voraussetzung nicht erfüllt: ${penalty.at || 0}`,
+                        `${displayName} (${condition.attribute} !${condition.operator} ${
+                            condition.value
+                        }): ${penalty.at || 0}`,
                     )
                 }
                 if (penalty.vt) {
                     computed.modifiers.vt.push(
-                        `${condition.attribute} Voraussetzung nicht erfüllt: ${penalty.vt || 0}`,
+                        `${displayName} (${condition.attribute} !${condition.operator} ${
+                            condition.value
+                        }): ${penalty.vt || 0}`,
                     )
                 }
             }
         }
+    }
+
+    /**
+     * Build effective condition by applying parameter overrides
+     * @param {Object} baseCondition - The condition template from eigenschaft
+     * @param {Array} slots - Parameter slot definitions
+     * @param {Array} parameters - Parameter values from weapon
+     * @returns {Object} Condition with parameter values applied
+     * @private
+     */
+    _buildEffectiveCondition(baseCondition, slots, parameters) {
+        const condition = { ...baseCondition }
+
+        // Convert slots to array if it's an object
+        let slotsArray = slots || []
+        if (slotsArray && typeof slotsArray === 'object' && !Array.isArray(slotsArray)) {
+            slotsArray = Object.values(slotsArray)
+        }
+
+        // Find parameter slot that maps to condition.value
+        const valueSlotIndex = slotsArray.findIndex(
+            (slot) => slot && slot.usage === 'wieldingRequirements.condition.value',
+        )
+
+        if (valueSlotIndex !== -1 && parameters[valueSlotIndex] !== undefined) {
+            condition.value = Number(parameters[valueSlotIndex]) || 0
+        } else if (parameters.length > 0 && typeof parameters[0] === 'number') {
+            // Fallback: first parameter is the threshold value
+            condition.value = parameters[0]
+        }
+
+        return condition
     }
 }

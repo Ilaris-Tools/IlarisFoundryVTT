@@ -11,9 +11,18 @@
     "hauptwaffe": false,
     "nebenwaffe": false,
     "eigenschaften": [
-      "Parierwaffe",
-      "Schild",
-      "Stumpf"
+      {
+        "key": "Parierwaffe",
+        "parameters": []
+      },
+      {
+        "key": "Schild",
+        "parameters": []
+      },
+      {
+        "key": "Stumpf",
+        "parameters": []
+      }
     ],
     "text": "",
     "aufbewahrungs_ort": "mitführend",

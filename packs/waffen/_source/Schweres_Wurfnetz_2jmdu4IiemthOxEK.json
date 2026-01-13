@@ -11,8 +11,17 @@
     "hauptwaffe": false,
     "nebenwaffe": false,
     "eigenschaften": [
-      "Umklammern (-8; 16)",
-      "Zweihändig"
+      {
+        "key": "Umklammern",
+        "parameters": [
+          -8,
+          16
+        ]
+      },
+      {
+        "key": "Zweihändig",
+        "parameters": []
+      }
     ],
     "text": "",
     "aufbewahrungs_ort": "mitführend",

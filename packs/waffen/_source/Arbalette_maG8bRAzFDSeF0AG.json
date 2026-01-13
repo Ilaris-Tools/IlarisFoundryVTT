@@ -11,8 +11,16 @@
     "hauptwaffe": false,
     "nebenwaffe": false,
     "eigenschaften": [
-      "Niederwerfen (4)",
-      "Zweihändig"
+      {
+        "key": "Niederwerfen",
+        "parameters": [
+          4
+        ]
+      },
+      {
+        "key": "Zweihändig",
+        "parameters": []
+      }
     ],
     "text": "",
     "aufbewahrungs_ort": "mitführend",
