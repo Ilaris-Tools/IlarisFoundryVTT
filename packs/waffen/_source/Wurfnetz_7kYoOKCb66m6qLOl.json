@@ -11,7 +11,13 @@
     "hauptwaffe": false,
     "nebenwaffe": false,
     "eigenschaften": [
-      "Umklammern (-4; 16)"
+      {
+        "key": "Umklammern",
+        "parameters": [
+          -4,
+          16
+        ]
+      }
     ],
     "text": "",
     "aufbewahrungs_ort": "mitführend",

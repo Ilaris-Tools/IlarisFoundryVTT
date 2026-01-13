@@ -104,7 +104,15 @@ describe('ProcessorFactory', () => {
                 },
             }
 
-            factory.process('modifier', 'modifier', eigenschaft, computed, mockActor, mockWeapon)
+            factory.process(
+                'modifier',
+                'modifier',
+                eigenschaft,
+                [],
+                computed,
+                mockActor,
+                mockWeapon,
+            )
 
             expect(computed.at).toBe(2)
         })
@@ -119,7 +127,15 @@ describe('ProcessorFactory', () => {
                 },
             }
 
-            factory.process('wielding', 'wielding', eigenschaft, computed, mockActor, mockWeapon)
+            factory.process(
+                'wielding',
+                'wielding',
+                eigenschaft,
+                [],
+                computed,
+                mockActor,
+                mockWeapon,
+            )
 
             expect(computed.vt).toBe(-2)
         })
@@ -136,6 +152,7 @@ describe('ProcessorFactory', () => {
                 'target_effect',
                 'target_effect',
                 eigenschaft,
+                [],
                 computed,
                 mockActor,
                 mockWeapon,
@@ -147,7 +164,7 @@ describe('ProcessorFactory', () => {
         it('should process passive eigenschaft', () => {
             const eigenschaft = {}
 
-            factory.process('passive', 'passive', eigenschaft, computed, mockActor, mockWeapon)
+            factory.process('passive', 'passive', eigenschaft, [], computed, mockActor, mockWeapon)
 
             // Passive does nothing, just checking it doesn't throw
             expect(computed.at).toBe(0)

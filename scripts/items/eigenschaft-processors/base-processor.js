@@ -5,13 +5,15 @@
 export class BaseEigenschaftProcessor {
     /**
      * Process an eigenschaft and modify the computed stats
+     * @param {string} name - The eigenschaft name/key
      * @param {Object} eigenschaft - The eigenschaft system data
+     * @param {Array<string|number>} parameters - Parameter values from the weapon
      * @param {Object} computed - Computed stats object to modify
      * @param {Actor} actor - The owning actor
      * @param {Object} weapon - The weapon item
      * @abstract
      */
-    process(name, eigenschaft, computed, actor, weapon) {
+    process(name, eigenschaft, parameters, computed, actor, weapon) {
         throw new Error('process() must be implemented by subclass')
     }
 

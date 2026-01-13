@@ -11,8 +11,14 @@
     "hauptwaffe": false,
     "nebenwaffe": false,
     "eigenschaften": [
-      "Kopflastig",
-      "Unberechenbar"
+      {
+        "key": "Kopflastig",
+        "parameters": []
+      },
+      {
+        "key": "Unberechenbar",
+        "parameters": []
+      }
     ],
     "text": "",
     "aufbewahrungs_ort": "mitführend",

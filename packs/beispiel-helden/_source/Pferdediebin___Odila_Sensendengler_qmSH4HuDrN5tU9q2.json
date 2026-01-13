@@ -1558,10 +1558,22 @@
         "hauptwaffe": false,
         "nebenwaffe": false,
         "eigenschaften": [
-          "Parierwaffe",
-          "Stumpf",
-          "Zerbrechlich",
-          "Kein Malus als Nebenwaffe"
+          {
+            "key": "Parierwaffe",
+            "parameters": []
+          },
+          {
+            "key": "Stumpf",
+            "parameters": []
+          },
+          {
+            "key": "Zerbrechlich",
+            "parameters": []
+          },
+          {
+            "key": "Kein Malus als Nebenwaffe",
+            "parameters": []
+          }
         ],
         "text": "",
         "aufbewahrungs_ort": "tragend",
@@ -1609,8 +1621,14 @@
         "hauptwaffe": false,
         "nebenwaffe": false,
         "eigenschaften": [
-          "Niederwerfen",
-          "Reittier"
+          {
+            "key": "Niederwerfen",
+            "parameters": []
+          },
+          {
+            "key": "Reittier",
+            "parameters": []
+          }
         ],
         "text": "",
         "aufbewahrungs_ort": "tragend",
@@ -1658,9 +1676,18 @@
         "hauptwaffe": false,
         "nebenwaffe": false,
         "eigenschaften": [
-          "Kopflastig",
-          "Rüstungsbrechend",
-          "Stumpf"
+          {
+            "key": "Kopflastig",
+            "parameters": []
+          },
+          {
+            "key": "Rüstungsbrechend",
+            "parameters": []
+          },
+          {
+            "key": "Stumpf",
+            "parameters": []
+          }
         ],
         "text": "",
         "aufbewahrungs_ort": "tragend",
@@ -1708,8 +1735,14 @@
         "hauptwaffe": false,
         "nebenwaffe": false,
         "eigenschaften": [
-          "Schild",
-          "Stumpf"
+          {
+            "key": "Schild",
+            "parameters": []
+          },
+          {
+            "key": "Stumpf",
+            "parameters": []
+          }
         ],
         "text": "",
         "aufbewahrungs_ort": "tragend",
@@ -1757,7 +1790,10 @@
         "hauptwaffe": false,
         "nebenwaffe": false,
         "eigenschaften": [
-          "Zweihändig"
+          {
+            "key": "Zweihändig",
+            "parameters": []
+          }
         ],
         "text": "",
         "aufbewahrungs_ort": "tragend",
