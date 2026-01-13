@@ -52,11 +52,17 @@ export class CompendiumUpdater {
     static getPackKeyFromName(packName, xmlFileName) {
         const sanitizedFileName = CompendiumCreator.sanitizePackId(xmlFileName)
 
-        for (const packDef of PACK_DEFINITIONS) {
+        // Sort PACK_DEFINITIONS by key length (descending) to match more specific keys first
+        // This prevents 'talente' from matching before 'uebernatuerlicheTalente'
+        const sortedPackDefs = [...PACK_DEFINITIONS].sort((a, b) => b.key.length - a.key.length)
+
+        for (const packDef of sortedPackDefs) {
             const sanitizedKey = CompendiumCreator.sanitizePackId(packDef.key)
             const expectedPackId = `${sanitizedFileName}-${sanitizedKey}`
 
-            if (packName.includes(expectedPackId) || packName.endsWith(sanitizedKey)) {
+            // Exact match: pack name must be exactly the expected pack ID
+            // This prevents 'xmlFileName-talente' from matching 'xmlFileName-uebernatuerlichetalente'
+            if (packName === expectedPackId) {
                 return packDef.key
             }
         }

@@ -75,6 +75,7 @@
           "mr": 0,
           "gs": 0,
           "ini": 0,
+          "baseIni": 0,
           "dh": 0,
           "traglast_intervall": 0,
           "traglast": 0
@@ -182,6 +183,7 @@
         "ws": 0,
         "ws_stern": 0,
         "ini": 0,
+        "baseIni": 0,
         "gs": 1,
         "koloss": 0,
         "mr": 0

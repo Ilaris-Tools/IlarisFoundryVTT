@@ -766,11 +766,34 @@ export class CombatDialog extends Dialog {
      * Used by both melee and ranged combat dialogs.
      */
     eigenschaftenText() {
-        // if (this.item.system.eigenschaften.length === 0) {
-        //     return
-        // }
-        // this.text_at += '\nEigenschaften: '
-        // this.text_at += this.item.system.eigenschaften.map((e) => e.name).join(', ')
+        if (!this.item.system.eigenschaften || this.item.system.eigenschaften.length === 0) {
+            return
+        }
+        this.text_at += '\nEigenschaften: '
+        // Handle array format: [{key: "name", parameters: ["param1", "param2"]}, ...]
+        if (Array.isArray(this.item.system.eigenschaften)) {
+            this.text_at += this.item.system.eigenschaften
+                .map((e) => {
+                    if (!e || !e.key) return ''
+
+                    // If parameters exist and array is not empty, add them in parentheses separated by semicolons
+                    if (e.parameters && Array.isArray(e.parameters) && e.parameters.length > 0) {
+                        return `${e.key}(${e.parameters.join(';')})`
+                    }
+
+                    return e.key
+                })
+                .filter((s) => s)
+                .join(', ')
+        }
+
+        // Handle object format: {property1: true, property2: false, ...}
+        if (typeof this.item.system.eigenschaften === 'object') {
+            const trueProperties = Object.keys(this.item.system.eigenschaften).filter(
+                (key) => this.item.system.eigenschaften[key] === true,
+            )
+            this.text_at += trueProperties.join(', ')
+        }
     }
 
     /**
