@@ -1,4 +1,8 @@
 import { signed } from '../../common/wuerfel/chatutilities.js'
+import {
+    ConfigureGameSettingsCategories,
+    IlarisGameSettingNames,
+} from '../../settings/configure-game-settings.model.js'
 /**
  * Applies the specified operator to the current value
  * @param {number} currentValue - The current value to modify
@@ -278,13 +282,14 @@ export async function _applyDamageDirectly(targetActor, damage, damageType, true
 
         if (woundsToAdd > 0) {
             await targetActor.update({
-                [`system.gesundheit.wunden`]: currentValue + woundsToAdd,
+                [`system.gesundheit.wunden`]:
+                    (targetActor.system.gesundheit.wunden || 0) + woundsToAdd,
             })
 
             // Send a message to chat
             await ChatMessage.create({
-                content: `${targetActor.name} erleidet Schaden! (${
-                    damageType ? CONFIG.ILARIS.schadenstypen[damageType] : ''
+                content: `${targetActor.name} erleidet ${woundsToAdd} Schaden! (${
+                    damageType ? CONFIG.ILARIS.schadenstypen[damageType] : 'profan'
                 })`,
                 speaker: speaker,
                 type: CONST.CHAT_MESSAGE_STYLES.OTHER,
