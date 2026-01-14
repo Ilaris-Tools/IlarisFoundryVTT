@@ -898,15 +898,15 @@ Hooks.on('renderSettingsConfig', (app, html) => {
         const currentValue = dodgeTalentInput.val()
 
         // Get all talents from selected fertigkeiten compendiums
-        const fertigkeitenPacks = JSON.parse(
+        const talentePacks = JSON.parse(
             game.settings.get(
                 ConfigureGameSettingsCategories.Ilaris,
-                IlarisGameSettingNames.fertigkeitenPacks,
+                IlarisGameSettingNames.talentePacks,
             ),
         )
 
         const talents = new Map()
-        for (const packId of fertigkeitenPacks) {
+        for (const packId of talentePacks) {
             const pack = game.packs.get(packId)
             if (!pack) continue
 
