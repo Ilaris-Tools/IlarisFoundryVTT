@@ -28,7 +28,12 @@ export class TalentePacksSettings extends FormApplication {
         for (const pack of game.packs) {
             if (pack.metadata.type === 'Item' && pack.index.size > 0) {
                 // Check if any item in the pack has type 'talent'
-                const hasTalent = pack.index.contents.some((item) => item.type === 'talent')
+                const hasTalent = pack.index.contents.some(
+                    (item) =>
+                        item.type === 'talent' ||
+                        item.type === 'liturgie' ||
+                        item.type === 'zauber',
+                )
                 if (hasTalent) {
                     availablePacks.push({
                         id: pack.collection,
