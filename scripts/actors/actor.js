@@ -438,11 +438,31 @@ export class IlarisActor extends Actor {
             const law = Math.ceil(max_hp / 8)
             this.system.abgeleitete.law = law
 
-            // Calculate penalty based on remaining HP relative to LAW
-            const penalties = [0, -2, -4, -6, -8, -10, -12]
             const lawSegment = Math.ceil(new_hp / law)
-            const penaltyIndex = Math.max(0, 7 - lawSegment)
-            systemData.gesundheit.wundabzuege = penalties[penaltyIndex]
+
+            if (lawSegment <= 1) {
+                systemData.gesundheit.wundabzuege = -12
+            } else {
+                switch (lawSegment) {
+                    case 2:
+                        systemData.gesundheit.wundabzuege = -10
+                        break
+                    case 3:
+                        systemData.gesundheit.wundabzuege = -8
+                        break
+                    case 4:
+                        systemData.gesundheit.wundabzuege = -6
+                        break
+                    case 5:
+                        systemData.gesundheit.wundabzuege = -4
+                        break
+                    case 6:
+                        systemData.gesundheit.wundabzuege = -2
+                        break
+                    default:
+                        systemData.gesundheit.wundabzuege = 0
+                }
+            }
         } else {
             if (einschraenkungen == 0) {
                 systemData.gesundheit.wundabzuege = 0
