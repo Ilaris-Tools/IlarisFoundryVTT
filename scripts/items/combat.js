@@ -11,7 +11,7 @@ export class CombatItem extends IlarisItem {
     _createManeuverFromItem(item) {
         return {
             ...item,
-            id: item.name.replace(/[\s\W]/g, '_'),
+            id: item._id,
             inputValue: {
                 ...item.system.input,
                 value: '',
@@ -275,8 +275,8 @@ export class CombatItem extends IlarisItem {
             packItems.forEach((item) => {
                 if (
                     item.type === 'manoever' &&
-                    (item.system.gruppe === MANOEVER_GRUPPE.NAHKAMPF ||
-                        item.system.gruppe === MANOEVER_GRUPPE.VERTEIDIGUNG) &&
+                    (item.system.gruppe == MANOEVER_GRUPPE.NAHKAMPF ||
+                        item.system.gruppe == MANOEVER_GRUPPE.VERTEIDIGUNG) &&
                     item._manoeverRequirementsFulfilled(this.actor, this)
                 ) {
                     this.manoever.push(this._createManeuverFromItem(item))
@@ -307,7 +307,7 @@ export class CombatItem extends IlarisItem {
             packItems.forEach((item) => {
                 if (
                     item.type === 'manoever' &&
-                    item.system.gruppe === MANOEVER_GRUPPE.FERNKAMPF &&
+                    item.system.gruppe == MANOEVER_GRUPPE.FERNKAMPF &&
                     item._manoeverRequirementsFulfilled(this.actor, this)
                 ) {
                     this.manoever.push(this._createManeuverFromItem(item))
@@ -320,7 +320,7 @@ export class CombatItem extends IlarisItem {
             packItems.forEach((item) => {
                 if (
                     item.type === 'manoever' &&
-                    item.system.gruppe === MANOEVER_GRUPPE.ZAUBER &&
+                    item.system.gruppe == MANOEVER_GRUPPE.ZAUBER &&
                     item._manoeverRequirementsFulfilled(this.actor, this)
                 ) {
                     this.manoever.push(this._createManeuverFromItem(item))
@@ -337,7 +337,7 @@ export class CombatItem extends IlarisItem {
             packItems.forEach((item) => {
                 if (
                     item.type === 'manoever' &&
-                    item.system.gruppe === MANOEVER_GRUPPE.LITURGIE &&
+                    item.system.gruppe == MANOEVER_GRUPPE.LITURGIE &&
                     item._manoeverRequirementsFulfilled(this.actor, this)
                 ) {
                     this.manoever.push(this._createManeuverFromItem(item))
