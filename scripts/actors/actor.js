@@ -427,9 +427,8 @@ export class IlarisActor extends Actor {
             IlarisGameSettingNames.lepSystem,
         )
         console.log('Berechne Wunden')
-        let einschraenkungen = Math.floor(
-            systemData.gesundheit.wunden + systemData.gesundheit.erschoepfung,
-        )
+        let einschraenkungen = systemData.gesundheit.wunden + systemData.gesundheit.erschoepfung
+
         let gesundheitzusatz = ``
         const max_hp = systemData.gesundheit.hp.max
         let new_hp = max_hp - einschraenkungen
@@ -438,31 +437,12 @@ export class IlarisActor extends Actor {
             // LEP system: no penalties until max_hp - 6 * LAW of max_hp, then -2 per LAW segment
             const law = Math.ceil(max_hp / 8)
             this.system.abgeleitete.law = law
-            const woundFreeSegment = max_hp - law * 6
 
-            switch (new_hp) {
-                case law:
-                    systemData.gesundheit.wundabzuege = -12
-                    break
-                case law * 2:
-                    systemData.gesundheit.wundabzuege = -10
-                    break
-                case law * 3:
-                    systemData.gesundheit.wundabzuege = -8
-                    break
-                case law * 4:
-                    systemData.gesundheit.wundabzuege = -6
-                    break
-                case law * 5:
-                    systemData.gesundheit.wundabzuege = -4
-                    break
-                case law * 6:
-                    systemData.gesundheit.wundabzuege = -2
-                    break
-                case woundFreeSegment:
-                    systemData.gesundheit.wundabzuege = 0
-                    break
-            }
+            // Calculate penalty based on remaining HP relative to LAW
+            const penalties = [0, -2, -4, -6, -8, -10, -12]
+            const lawSegment = Math.ceil(new_hp / law)
+            const penaltyIndex = Math.max(0, 7 - lawSegment)
+            systemData.gesundheit.wundabzuege = penalties[penaltyIndex]
         } else {
             if (einschraenkungen == 0) {
                 systemData.gesundheit.wundabzuege = 0
