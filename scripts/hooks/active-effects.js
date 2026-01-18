@@ -73,12 +73,6 @@ Hooks.on('combatRound', async (combat, updateData, updateOptions) => {
 
 // Listen for when an Active Effect is updated
 Hooks.on('updateActiveEffect', async (activeEffect, data, options, userId) => {
-    console.log(
-        `Active Effect "${activeEffect.name}" was ${data.disabled ? 'disabled' : 'enabled'}.`,
-        activeEffect,
-        options,
-        userId,
-    )
     await handleEffectExpiration(activeEffect, activeEffect.parent)
 })
 
