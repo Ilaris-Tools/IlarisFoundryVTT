@@ -568,7 +568,7 @@ export class IlarisActor extends Actor {
         this.system.abgeleitete.traglast = traglast
         let summeGewicht = 0
         for (let i of this.inventar.mitfuehrend) {
-            summeGewicht += i.system.gewicht
+            summeGewicht += i.system.gewicht * i.system.quantity
         }
         this.system.getragen = summeGewicht
 
@@ -944,16 +944,16 @@ export class IlarisActor extends Actor {
                 item_tragend.push(i)
             } else if (aufbewahrung == 'mitführend') {
                 item_mitfuehrend.push(i)
-                actor.system.getragen += i.system.gewicht
+                actor.system.getragen += i.system.gewicht * i.system.quantity
             } else if (speicherplatz_list.includes(aufbewahrung)) {
                 // item_list.find(x => x.name == aufbewahrung).system.bewahrt_auf.push(i);
                 let idx = item_list.indexOf(item_list.find((x) => x.name == aufbewahrung))
                 item_list[idx].system.bewahrt_auf.push(i)
-                item_list[idx].system.gewicht_summe += i.system.gewicht
+                item_list[idx].system.gewicht_summe += i.system.gewicht * i.system.quantity
             } else {
                 i.system.aufbewahrungs_ort == 'mitführend'
                 item_mitfuehrend.push(i)
-                actor.system.getragen += i.system.gewicht
+                actor.system.getragen += i.system.gewicht * i.system.quantity
             }
         }
 
