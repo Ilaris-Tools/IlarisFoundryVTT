@@ -950,12 +950,16 @@ export class IlarisActor extends Actor {
                 let idx = item_list.indexOf(item_list.find((x) => x.name == aufbewahrung))
                 item_list[idx].system.bewahrt_auf.push(i)
                 item_list[idx].system.gewicht_summe += i.system.gewicht * i.system.quantity
+                item_list[idx].system.gewicht_summe =
+                    Math.round(item_list[idx].system.gewicht_summe * 1000) / 1000
+                actor.system.getragen += i.system.gewicht * i.system.quantity
             } else {
                 i.system.aufbewahrungs_ort == 'mitführend'
                 item_mitfuehrend.push(i)
                 actor.system.getragen += i.system.gewicht * i.system.quantity
             }
         }
+        actor.system.getragen = Math.round(actor.system.getragen * 1000) / 1000
 
         // data.magie = {};
         // data.karma = {};
