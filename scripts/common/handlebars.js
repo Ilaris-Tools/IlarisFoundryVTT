@@ -157,10 +157,8 @@ function registerHandlebarsHelpers() {
 
     //if arg1 greater then arg2
     Handlebars.registerHelper('ifGt', function (arg1, arg2) {
-        if (Number.isInteger(arg1) && Number.isInteger(arg2)) {
+        if (Number.isInteger(+arg1) && Number.isInteger(+arg2)) {
             return arg1 > arg2
-        } else {
-            throw new Error('handelbars.js - ifGt - atleast one parameter is not a number')
         }
     })
 
