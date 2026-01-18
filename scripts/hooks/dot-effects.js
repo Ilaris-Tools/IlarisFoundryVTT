@@ -2,7 +2,7 @@ import { IlarisActiveEffect } from '../documents/active-effect.js'
 
 /**
  * Hook handler for DOT (Damage Over Time) effects
- * Applies DOT damage at the end of each combatant's turn
+ * Applies DOT damage on duration tick down
  *
  * USAGE:
  * ------
@@ -25,7 +25,7 @@ import { IlarisActiveEffect } from '../documents/active-effect.js'
  *
  * BEHAVIOR:
  * ---------
- * - DOT effects are applied automatically at the START of the actor's turn in combat
+ * - DOT effects are applied automatically when their duration ticks down
  * - The damage is added to the actor's wounds (system.gesundheit.wunden)
  * - A chat message is posted showing the damage dealt
  * - Multiple DOT effects on the same actor stack (all are applied)
@@ -41,59 +41,30 @@ import { IlarisActiveEffect } from '../documents/active-effect.js'
  * - Custom mode (10) is used with keys starting with "dot" to identify DOT effects
  */
 
-/**
- * Handle combat turn changes to apply DOT effects
- * Fired when any combatant's turn ends and a new turn begins
- */
-Hooks.on('combatTurn', async (combat, updateData, updateOptions) => {
-    // The combatant whose turn just ended is in updateData
-    // updateData contains the NEW turn info, so we need to look at who was active before
-    // However, we can get the current combatant from combat directly
-    const currentCombatant = combat.combatant
-
-    // Apply DOT effects to the combatant whose turn just started
-    // (effects apply at the START of their turn, representing damage from the previous turn)
-    if (currentCombatant?.actor) {
-        console.log(`Applying DOT effects to ${currentCombatant.actor.name} (turn just started)`)
-        await applyDotEffectsToActor(currentCombatant.actor, combat, currentCombatant)
-    }
+// Listen for when an Active Effect is updated
+Hooks.on('updateActiveEffect', async (activeEffect, data, options, userId) => {
+    await applyDotEffectToActor(activeEffect, activeEffect.parent)
 })
 
 /**
- * Handle combat round changes to apply DOT effects to the last combatant
- * Fired when a new round starts, meaning the last combatant's turn just ended
+ * DOT Effects apply when they tick down, which happens when they reduce their duration
+ * @param {Effect} activeEffect - The Active Effect being updated
+ * @param {Actor} actor - The actor to apply DOT effect to
  */
-Hooks.on('combatRound', async (combat, updateData, updateOptions) => {
-    // When a new round starts, the last combatant of the previous round just finished
-    // The combat is now at turn 0 of the new round
-    // Get the last combatant from the turns array
-    const lastCombatant = combat.turns[combat.turns.length - 1]
+async function applyDotEffectToActor(effect, actor) {
+    if (!actor || !effect) return
+    if (effect.disabled || effect.isSuppressed) return
+    if (effect.changes.length === 0) return
 
-    if (lastCombatant?.actor) {
-        console.log(
-            `Applying DOT effects to ${lastCombatant.actor.name} (last turn of previous round just ended)`,
-        )
-        await applyDotEffectsToActor(lastCombatant.actor, combat, lastCombatant)
-    }
-})
+    const dotChanges = effect.changes.filter(
+        (c) =>
+            c.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM &&
+            c.key.toLowerCase().startsWith('system.gesundheit.wunden'),
+    )
+    if (dotChanges.length === 0) return
 
-/**
- * Apply all DOT effects to a specific actor
- * @param {Actor} actor - The actor to apply DOT effects to
- * @param {Combat} combat - The combat instance
- * @param {Combatant} combatant - The combatant whose turn just ended
- */
-async function applyDotEffectsToActor(actor, combat, combatant) {
-    const dotEffects = IlarisActiveEffect.getDotEffects(actor)
-
-    if (dotEffects.length === 0) return
-
-    console.log(`Applying ${dotEffects.length} DOT effect(s) to ${actor.name}`)
-
-    const processedEffectIds = new Set()
-
-    // Apply each DOT effect
-    for (const { effect, change } of dotEffects) {
+    // Apply DOT effect
+    for (const change of dotChanges) {
         try {
             await IlarisActiveEffect.applyDotDamage(actor, change, effect)
         } catch (error) {
