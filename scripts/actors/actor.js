@@ -570,7 +570,8 @@ export class IlarisActor extends Actor {
         for (let i of this.inventar.mitfuehrend) {
             summeGewicht += i.system.gewicht * i.system.quantity
         }
-        this.system.getragen = summeGewicht
+        console.log('Summe Gewicht: ', summeGewicht, parseFloat(summeGewicht.toFixed(3)))
+        this.system.getragen = parseFloat(summeGewicht.toFixed(3))
 
         // Calculate BE modification from carried weight
         let be_mod = hardcoded.beTraglast(this.system)
@@ -950,8 +951,9 @@ export class IlarisActor extends Actor {
                 let idx = item_list.indexOf(item_list.find((x) => x.name == aufbewahrung))
                 item_list[idx].system.bewahrt_auf.push(i)
                 item_list[idx].system.gewicht_summe += i.system.gewicht * i.system.quantity
-                item_list[idx].system.gewicht_summe =
-                    Math.round(item_list[idx].system.gewicht_summe * 1000) / 1000
+                item_list[idx].system.gewicht_summe = parseFloat(
+                    item_list[idx].system.gewicht_summe.toFixed(3),
+                )
                 actor.system.getragen += i.system.gewicht * i.system.quantity
             } else {
                 i.system.aufbewahrungs_ort == 'mitführend'
@@ -959,7 +961,7 @@ export class IlarisActor extends Actor {
                 actor.system.getragen += i.system.gewicht * i.system.quantity
             }
         }
-        actor.system.getragen = Math.round(actor.system.getragen * 1000) / 1000
+        actor.system.getragen = parseFloat(actor.system.getragen.toFixed(3))
 
         // data.magie = {};
         // data.karma = {};
