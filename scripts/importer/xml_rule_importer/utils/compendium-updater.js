@@ -21,6 +21,7 @@ export class CompendiumUpdater {
             'sort',
             'ownership',
             'flags',
+            'img',
         ]
     }
 
