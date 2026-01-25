@@ -10,7 +10,7 @@ on:
 
 env:
     SYSTEM_NAME: 'Ilaris'
-    SYSTEM_PATH: '/home/leo/docker/foundryvtt-internal/foundry/data/Data/systems/Ilaris'
+    SYSTEM_PATH: '/root/foundry-dev/foundry/data/Data/systems/Ilaris'
 
 jobs:
     validate:
@@ -178,7 +178,7 @@ jobs:
                       echo "🌿 Branch: ${{ steps.context.outputs.branch }}"
 
                       # Zum Repository-Verzeichnis wechseln
-                      cd /home/leo/docker/foundryvtt-internal/foundry/git || {
+                      cd /root/foundry-dev/git || {
                         echo "❌ Repository directory not found"
                         exit 1
                       }
