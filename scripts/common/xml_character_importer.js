@@ -324,6 +324,13 @@ export class XmlCharacterImporter {
             name: characterData.name || fileName.replace(/\.[^/.]+$/, ''),
             type: 'held',
             system: {
+                abgeleitete: {
+                    asp_zugekauft: 0,
+                    kap_zugekauft: 0,
+                    gup_zugekauft: 0,
+                    gasp: 0,
+                    gkap: 0,
+                },
                 attribute: {},
                 energien: {
                     asp: { max: 0, value: 0, threshold: 0 },
@@ -358,6 +365,19 @@ export class XmlCharacterImporter {
         if (characterData.energies.AsP) {
             actorData.system.energien.asp.max = characterData.energies.AsP.value
             actorData.system.energien.asp.value = characterData.energies.AsP.value
+            actorData.system.abgeleitete.asp_zugekauft = characterData.energies.AsP.value
+            actorData.system.abgeleitete.gasp = characterData.energies.AsP.bound
+        }
+        if (characterData.energies.KaP) {
+            actorData.system.energien.kap.max = characterData.energies.KaP.value
+            actorData.system.energien.kap.value = characterData.energies.KaP.value
+            actorData.system.abgeleitete.kap_zugekauft = characterData.energies.KaP.value
+            actorData.system.abgeleitete.gkap = characterData.energies.KaP.bound
+        }
+        if (characterData.energies.GuP) {
+            actorData.system.energien.gup.max = characterData.energies.GuP.value
+            actorData.system.energien.gup.value = characterData.energies.GuP.value
+            actorData.system.abgeleitete.gup_zugekauft = characterData.energies.GuP.value
         }
 
         // Note: KaP and other energies can be added similarly if they exist in the XML
@@ -375,6 +395,13 @@ export class XmlCharacterImporter {
             // Update the character name from XML
             name: characterData.name,
             system: {
+                abgeleitete: {
+                    asp_zugekauft: 0,
+                    kap_zugekauft: 0,
+                    gup_zugekauft: 0,
+                    gasp: 0,
+                    gkap: 0,
+                },
                 attribute: {},
                 energien: {
                     asp: { max: 0, value: 0, threshold: 0 },
@@ -412,6 +439,8 @@ export class XmlCharacterImporter {
                 value: characterData.energies.AsP.value,
                 threshold: 0,
             }
+            updates.system.abgeleitete.asp_zugekauft = characterData.energies.AsP.value
+            updates.system.abgeleitete.gasp = characterData.energies.AsP.bound
         }
 
         // Map other energies if they exist in XML
@@ -421,6 +450,8 @@ export class XmlCharacterImporter {
                 value: characterData.energies.KaP.value,
                 threshold: 0,
             }
+            updates.system.abgeleitete.kap_zugekauft = characterData.energies.KaP.value
+            updates.system.abgeleitete.gkap = characterData.energies.KaP.bound
         }
 
         if (characterData.energies.GuP) {
@@ -429,6 +460,7 @@ export class XmlCharacterImporter {
                 value: characterData.energies.GuP.value,
                 threshold: 0,
             }
+            updates.system.abgeleitete.gup_zugekauft = characterData.energies.GuP.value
         }
 
         console.debug('Actor update data:', updates)
