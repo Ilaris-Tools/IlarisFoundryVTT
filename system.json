@@ -2,7 +2,7 @@
   "id": "Ilaris",
   "title": "Ilaris",
   "description": "Schnelle und schlanke Regeln für das beliebteste deutsche P&P Setting.",
-  "version": "12.2.6",
+  "version": "12.2.8",
   "compatibility": {
     "minimum": 12,
     "verified": 12
@@ -142,6 +142,13 @@
       "system": "Ilaris"
     },
     {
+      "label": "Waffeneigenschaften",
+      "type": "Item",
+      "name": "waffeneigenschaften",
+      "path": "./packs/waffeneigenschaften",
+      "system": "Ilaris"
+    },
+    {
       "label": "Gegenstände",
       "type": "Item",
       "name": "gegenstande",
@@ -181,6 +188,13 @@
       "type": "JournalEntry",
       "name": "kurzuebersichten",
       "path": "./comp_packs/kurzuebersichten",
+      "system": "Ilaris"
+    },
+    {
+      "label": "Guides & Tutorials",
+      "type": "JournalEntry",
+      "name": "kurzuebersichten",
+      "path": "./packs/kurzuebersichten",
       "system": "Ilaris"
     }
   ],

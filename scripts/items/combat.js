@@ -351,15 +351,16 @@ export class CombatItem extends IlarisItem {
         if ('anrufung' === this.type) {
             this.system.manoever = ILARIS.manoever_ueber
             this.manoever = []
-            packItems.forEach((item) => {
-                if (
-                    item.type === 'manoever' &&
-                    item.system.gruppe == MANOEVER_GRUPPE.ANRUFUNG &&
-                    item._manoeverRequirementsFulfilled(this.actor, this)
-                ) {
-                    this.manoever.push(this._createManeuverFromItem(item))
-                }
-            })
+            // TODO Bug 347 https://github.com/Ilaris-Tools/IlarisFoundryVTT/issues/347
+            // packItems.forEach((item) => {
+            //     if (
+            //         item.type === 'manoever' &&
+            //         item.system.gruppe == 4 &&
+            //         item._manoeverRequirementsFulfilled(this.actor, this)
+            //     ) {
+            //         this.manoever.push(this._createManeuverFromItem(item))
+            //     }
+            // })
 
             // Parse modifikationen string and add dynamic maneuvers
             const dynamicManeuvers = this._parseModifikationen(this.system.modifikationen)

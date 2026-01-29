@@ -12,6 +12,14 @@
 -   Waffeneigenschaften sind jetzt konfigurierbar und liegen jetzt als Liste auf den Waffen und nicht mehr als hardgecodetes Objekt. Damit können auch neue Waffeneigenschaften hinzugefügt werden.
 -   Zeigt alle Boni und Mali als Tooltip auf den jeweiligen Waffenwerten, die auf die Waffe wirken. (zb. Kampfstil, BE, WM der Waffe, etc)
 
+### v12.2.8
+
+-   Fix: Kreaturen/NPCs haben keine übernatürlichen Manöver
+
+### v12.2.7
+
+-   Fix: Ruhige Hand Bonus für Zielen nicht eingerechnet
+
 ### v12.2.6
 
 -   Fix: Attribute roll dialog now correctly reads modifier and high quality fields
