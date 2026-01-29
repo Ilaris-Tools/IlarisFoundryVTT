@@ -24,6 +24,64 @@ console.log(
         .join(', ')}`,
 )
 
+// Load HTML templates into JournalEntry pages
+console.log('\nLoading HTML templates into JournalEntry pages...')
+for (const packDir of packDirs) {
+    const sourcePath = path.join(packDir, '_source')
+    const templatesPath = path.join(sourcePath, 'templates')
+
+    // Skip if no templates folder exists
+    if (!fs.existsSync(templatesPath)) {
+        continue
+    }
+
+    // Get all JSON files in the _source folder
+    const jsonFiles = fs
+        .readdirSync(sourcePath)
+        .filter(
+            (file) => file.endsWith('.json') && fs.statSync(path.join(sourcePath, file)).isFile(),
+        )
+
+    for (const jsonFile of jsonFiles) {
+        const jsonPath = path.join(sourcePath, jsonFile)
+        let modified = false
+
+        try {
+            const data = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'))
+
+            // Only process JournalEntry types
+            if (data.type === 'JournalEntry' && Array.isArray(data.pages)) {
+                for (const page of data.pages) {
+                    // Check if a template file exists for this page
+                    const templateFile = path.join(templatesPath, `${page._id}.html`)
+
+                    if (fs.existsSync(templateFile)) {
+                        const templateContent = fs.readFileSync(templateFile, 'utf-8')
+
+                        // Update the page content
+                        if (!page.text) {
+                            page.text = {}
+                        }
+                        page.text.content = templateContent
+                        modified = true
+
+                        console.log(
+                            `  ✅ Loaded template for page "${page.name}" (${page._id}) in ${jsonFile}`,
+                        )
+                    }
+                }
+
+                // Write back the modified JSON if any templates were loaded
+                if (modified) {
+                    fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2), 'utf-8')
+                }
+            }
+        } catch (error) {
+            console.error(`  ❌ Error processing ${jsonFile}:`, error.message)
+        }
+    }
+}
+
 // Clean up existing pack files (except _source folder)
 for (const packsDir of packDirs) {
     if (fs.existsSync(packsDir)) {
