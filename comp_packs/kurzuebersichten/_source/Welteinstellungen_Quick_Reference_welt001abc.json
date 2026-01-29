@@ -1,0 +1,49 @@
+{
+  "name": "Übersicht: Welteinstellungen",
+  "type": "JournalEntry",
+  "_id": "kurzweltein001",
+  "pages": [
+    {
+      "_id": "kurzwpage001",
+      "name": "Welteinstellungen - Übersicht",
+      "type": "text",
+      "title": {
+        "show": true,
+        "level": 1
+      },
+      "text": {
+        "format": 1,
+        "content": "<p>\n    Die wichtigsten Welteinstellungen für das Ilaris-System können über den letzten Tab in der\n    Seitenleiste geöffnet werden. Diese Einstellungen können nur von der Spielleitung vorgenommen\n    werden.\n</p>\n<p>\n    Grundsätzlich gilt:<em>\n        ⚠️ Führe einen Neustart von Foundry nach Änderung an den Settings durch!!</em\n    >\n</p>\n<h2>Zugriff</h2>\n<p>📍 Seitenleiste → Letzter Tab → Welteinstellungen</p>\n\n<h2>Benutzte Kompendien</h2>\n<p>\n    Im Foundry-System werden grunsätzlich die Kompendien von Ilaris verwendet. Kompedien sind im\n    Foundry-Kontext Sammlungen von Inhalten wie Charakteren, Gegenständen oder Regeln. Mit den\n    folgenden Welteinstellungen kannst du steuern, welche Kompendien genutzt werden, wenn es um die\n    Bestimmung von Waffeneigenschaften und Manövern gehen soll. Es ist vor allem\n    <strong>ESSENTIELL WICHTIG</strong>, wenn man Hausregeln verwenden will. Denn nur mit der Wahl\n    der richtigen Kompendien können die Charaktere richtig über die Sephrasto XMLs aktualisiertund\n    importiert werden.\n</p>\n<ul>\n    <li>Fertigkeiten</li>\n    <li>Waffeneigenschaften</li>\n    <li>Talente</li>\n    <li>Manöver</li>\n    <li>Vorteile</li>\n    <li>Waffeneigenschaften</li>\n    <li>\n        Abgeleitete Werte: Dieses Kompendium überschreibt bei Benutzung die Default-Werte der\n        Abgeleiteten Werte wie WS,DH, etc. Jedoch nur standardmäßig Bestehende, keine frei\n        erfundenen Neuen.\n    </li>\n</ul>\n\n<h2>Wichtigste Einstellungen</h2>\n\n<h3>🎯 Platzbedarf berücksichtigen</h3>\n<p>\n    <strong>Hausregel aus Ilaris Advanced.</strong> Ohne Haken wird der Platzbedarf nicht angezeigt\n    und in Berechnungen als 0 angenommen.\n</p>\n\n<h3>🎲 Echte Patzer und Krits</h3>\n<p>\n    Für alle, die es bevorzugen, dass eine 1 immer ein Patzer ist und eine 20 immer ein kritischer\n    Erfolg - unabhängig von der Schwierigkeit der Probe.\n</p>\n\n<h3>🎲 Umbennen von Triumph in Crit im Text</h3>\n<p>\n    Einfach eine persönliche Präferenz der Entwickler für die Anzeige von Triumphen als Kritische\n    Erfolge.\n</p>\n\n<h3>⚡ Energiekosten-Einstellung</h3>\n<p>\n    Wenn aktiviert: Energiekosten können nur bei Unitatio-Vorteil oder nicht-numerischen Kosten\n    manuell gesetzt werden.<br />\n    Wenn deaktiviert: Energiekosten können immer manuell gesetzt werden.\n</p>\n\n<h3>⬡ Hexagonale Token-Bilder</h3>\n<p>\n    Charakterbilder auf Hexfeld-Karten werden als Hexagone zugeschnitten. Verbessert die visuelle\n    Darstellung auf Hexfeld-Gittern.\n</p>\n\n<h3>🔄 Charakter-Synchronisation Button ausblenden</h3>\n<p>\n    Blendet den \"Charakter mit Kompendium-Vorteilen Synchronisieren\"-Button auf dem Heldensheet aus.\n    Dieser Button ermöglicht es, Charakterdaten mit den Vorteilen,Waffen etc. aus den Kompendien\n    abzugleichen. Ist für Charaktere gedacht, die nicht den XML-Import benutzen können, da sie in\n    einer veralteten Sephrasto-Version erstellt wurden.\n</p>\n\n<h3>📚 Alternativ Fernkampf-Ausweichen Talent</h3>\n<p>\n    Per Default wird beim Spielen mit Zielauswahl das standardmäßige Talent zum Ausweichen gegen\n    Fernkampfangriff aus Ilaris verwendet. Wenn nur Fertigkeiten-Kompedien benutzt werden, die nicht\n    über das Talent verfügen, kann hier ein alternatives Talent ausgewählt werden.\n</p>\n\n<h2>Automatisierung</h2>\n\n<h3>🌤️ Scene-Umgebungseinstellungen verwenden</h3>\n<p>\n    Wenn aktiviert: Licht und Wetter aus den Scene-Einstellungen werden automatisch in\n    Fernkampf-Dialogen vorausgewählt.<br />\n    Umgebungsbedingungen können direkt im Szene-Config Menü gesetzt werden.\n</p>\n\n<h3>🎯 Zielauswahl-System verwenden</h3>\n<p>Aktiviert Zielauswahl-Funktion und automatische Verteidigungsaufforderungen in Kampfdialogen:</p>\n<ul>\n    <li>Ermöglicht Auswahl von Zielen für Angriffe</li>\n    <li>Sendet automatisch Verteidigungsprompts an angegriffene Akteure</li>\n    <li>\n        Bei Fernkampf: Ziele können mit Schilden oder durch Ausweichen mit Akrobatik verteidigen\n    </li>\n</ul>\n\n<p>\n    <em\n        >💡 Tipp: Experimentiere mit den Automatisierungseinstellungen, um den Spielfluss für deine\n        Gruppe zu optimieren!</em\n    >\n</p>\n"
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "sort": 0,
+      "ownership": {
+        "default": -1
+      },
+      "flags": {},
+      "_key": "!journal.pages!kurzweltein001.kurzwpage001"
+    }
+  ],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "_key": "!journal!kurzweltein001"
+}

@@ -13,10 +13,7 @@
     "eigenschaften": [
       {
         "key": "Umklammern",
-        "parameters": [
-          -4,
-          16
-        ]
+        "parameters": [-4, 16]
       }
     ],
     "text": "",

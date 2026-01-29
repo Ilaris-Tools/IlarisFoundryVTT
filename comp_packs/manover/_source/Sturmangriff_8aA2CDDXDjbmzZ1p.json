@@ -17,10 +17,7 @@
     "probe": "Bewegung und AT",
     "gegenprobe": "",
     "text": "Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Außerdem richtet die nächste Attacke GS Trefferpunkte zusätzlich an. Voraussetzungen: Vorteil Sturmangriff oder Reiterkampf I und Kampf in diesem Stil; die Bewegung muss vor dem Angriff ausgeführt werden. Anmerkung: Sturzflugangriffe von fliegenden Gegnern folgen denselben Regeln. Bei besonders kleinen Gegnern oder kurzem Anlauf sollte der Spielleiter den Schaden verringern.",
-    "selectors": [
-      "INPUT",
-      "CHECKBOX"
-    ],
+    "selectors": ["INPUT", "CHECKBOX"],
     "input": {
       "label": "GS",
       "field": "NUMBER"

@@ -173,7 +173,21 @@
       "label": "Macro-Tools",
       "type": "Macro",
       "name": "macro-tools",
-      "path": "comp_packs/macro-tools",
+      "path": "./comp_packs/macro-tools",
+      "system": "Ilaris"
+    },
+    {
+      "label": "Waffeneigenschaften",
+      "type": "Item",
+      "name": "waffeneigenschaften",
+      "path": "./comp_packs/waffeneigenschaften",
+      "system": "Ilaris"
+    },
+    {
+      "label": "Guides & Tutorials",
+      "type": "JournalEntry",
+      "name": "kurzuebersichten",
+      "path": "./comp_packs/kurzuebersichten",
       "system": "Ilaris"
     },
     {
