@@ -145,14 +145,7 @@
       "label": "Waffeneigenschaften",
       "type": "Item",
       "name": "waffeneigenschaften",
-      "path": "./packs/waffeneigenschaften",
-      "system": "Ilaris"
-    },
-    {
-      "label": "Waffeneigenschaften",
-      "type": "Item",
-      "name": "waffeneigenschaften",
-      "path": "./packs/waffeneigenschaften",
+      "path": "./comp_packs/waffeneigenschaften",
       "system": "Ilaris"
     },
     {
@@ -184,24 +177,10 @@
       "system": "Ilaris"
     },
     {
-      "label": "Waffeneigenschaften",
-      "type": "Item",
-      "name": "waffeneigenschaften",
-      "path": "./comp_packs/waffeneigenschaften",
-      "system": "Ilaris"
-    },
-    {
       "label": "Guides & Tutorials",
       "type": "JournalEntry",
       "name": "kurzuebersichten",
       "path": "./comp_packs/kurzuebersichten",
-      "system": "Ilaris"
-    },
-    {
-      "label": "Guides & Tutorials",
-      "type": "JournalEntry",
-      "name": "kurzuebersichten",
-      "path": "./packs/kurzuebersichten",
       "system": "Ilaris"
     }
   ],
