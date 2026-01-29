@@ -8,13 +8,13 @@ class ChangelogNotificationDialog extends foundry.applications.api.DialogV2 {
 }
 
 /**
- * Fetch the pre-generated breaking changes HBS template
+ * Fetch the pre-generated breaking changes Markdown template
  * @param {string} version - The version to fetch (e.g., "12.2")
- * @returns {Promise<string|null>} The HTML content or null if not found
+ * @returns {Promise<string|null>} The Markdown content or null if not found
  */
 async function fetchBreakingChangesTemplate(version) {
     try {
-        const templatePath = `systems/${game.system.id}/templates/changes/breaking-changes-${version}.hbs`
+        const templatePath = `systems/${game.system.id}/templates/changes/breaking-changes-${version}.md`
         const response = await fetch(templatePath)
 
         if (!response.ok) {
@@ -77,17 +77,30 @@ async function checkAndShowChangelogNotification() {
             return
         }
 
-        // Fetch the pre-generated breaking changes template
-        const breakingChangesContent = await fetchBreakingChangesTemplate(majorMinorVersion)
+        // Fetch the pre-generated breaking changes Markdown template
+        const breakingChangesMarkdown = await fetchBreakingChangesTemplate(majorMinorVersion)
 
-        if (!breakingChangesContent) {
+        if (!breakingChangesMarkdown) {
             // No breaking changes for this version, mark as seen
             await game.settings.set('Ilaris', 'lastSeenBreakingChangesVersion', majorMinorVersion)
             return
         }
 
+        // Render Markdown to HTML using Foundry's TextEditor APIs
+        const html = await TextEditor._markdownToHTML(breakingChangesMarkdown)
+        const enrichedHtml = await TextEditor.enrichHTML(html, { async: true })
+
+        // Wrap the enriched content with additional context
+        const fullContent = `<div class="ilaris-changelog-content">
+    <p><strong>Version ${majorMinorVersion} enthält wichtige Änderungen, die deine Aufmerksamkeit erfordern:</strong></p>
+    <p style="margin-top: 1em; font-style: italic;">
+        Diese Nachricht wird nur einmal angezeigt. Du kannst die vollständigen Änderungen jederzeit im CHANGELOG.md einsehen.
+    </p>
+    ${enrichedHtml}
+</div>`
+
         // Show the notification
-        showChangelogNotification(majorMinorVersion, breakingChangesContent)
+        showChangelogNotification(majorMinorVersion, fullContent)
     } catch (error) {
         console.error('Ilaris | Error in changelog notification:', error)
     }

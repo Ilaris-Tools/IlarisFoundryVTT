@@ -31,7 +31,9 @@ jobs:
             - name: 🚀 Install Dependencies
               run: |
                   npm install
-            - name: 📦 Package database files
+            - name: � Generate breaking changes template
+              run: node utils/generate-breaking-changes.js
+            - name: �📦 Package database files
               run: |
                   node utils/pack-all.js
                   # Show folder structure in comp_packs
@@ -65,17 +67,17 @@ jobs:
                   echo "FILENAME=${file}"
             - name: 🧐 Adjust system.json, manifest and download link
               run: |
-                manifest="${{fromJson(steps.read-system-json.outputs.SYSTEM_JSON).manifest}}"
-                echo "Previous manifest: ${manifest}"
-                manifest_release_path="https://github.com/${{ github.repository }}/releases/download/${{ steps.variables.outputs.TAG_NAME }}/system.json"
-                download="${{fromJson(steps.read-system-json.outputs.SYSTEM_JSON).download}}"
-                echo "Previous download: ${download}"
-                download_release_path="https://github.com/${{ github.repository }}/releases/download/${{ steps.variables.outputs.TAG_NAME }}/${{ steps.variables.outputs.FILENAME }}"
-                jq --arg manifest "$manifest_release_path" --arg download "$download_release_path" \
-                  '.manifest = $manifest | .download = $download' system.json > tmp && mv tmp system.json
-                echo "Overwrote system.json"
-                echo "Adjusted manifest: $(jq .manifest system.json)"
-                echo "Adjusted download: $(jq .download system.json)"
+                  manifest="${{fromJson(steps.read-system-json.outputs.SYSTEM_JSON).manifest}}"
+                  echo "Previous manifest: ${manifest}"
+                  manifest_release_path="https://github.com/${{ github.repository }}/releases/download/${{ steps.variables.outputs.TAG_NAME }}/system.json"
+                  download="${{fromJson(steps.read-system-json.outputs.SYSTEM_JSON).download}}"
+                  echo "Previous download: ${download}"
+                  download_release_path="https://github.com/${{ github.repository }}/releases/download/${{ steps.variables.outputs.TAG_NAME }}/${{ steps.variables.outputs.FILENAME }}"
+                  jq --arg manifest "$manifest_release_path" --arg download "$download_release_path" \
+                    '.manifest = $manifest | .download = $download' system.json > tmp && mv tmp system.json
+                  echo "Overwrote system.json"
+                  echo "Adjusted manifest: $(jq .manifest system.json)"
+                  echo "Adjusted download: $(jq .download system.json)"
             - name: 📂 Prepare app folder
               run: |
                   # Moving all files for system integration in here
@@ -92,12 +94,12 @@ jobs:
               uses: laputansoft/github-tag-action@v4.6
               with:
                   github_token: ${{ secrets.GITHUB_TOKEN }}
-                  tag: "${{ steps.variables.outputs.TAG_NAME }}"
+                  tag: '${{ steps.variables.outputs.TAG_NAME }}'
             - name: 🎉 Release
               uses: softprops/action-gh-release@v2
               with:
-                  tag_name: "${{ steps.variables.outputs.TAG_NAME }}"
-                  prerelease: "${{ inputs.pre_release || true }}"
+                  tag_name: '${{ steps.variables.outputs.TAG_NAME }}'
+                  prerelease: '${{ inputs.pre_release || true }}'
                   files: |
                       CHANGELOG.md
                       ${{ steps.variables.outputs.SYSTEM_NAME }}/system.json

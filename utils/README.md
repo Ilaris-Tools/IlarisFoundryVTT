@@ -12,15 +12,15 @@ node utils/pack-all.js
 
 ## generate-breaking-changes.js
 
-Generates a Handlebars template file with breaking changes extracted from `CHANGELOG.md`.
+Generates a Markdown file with breaking changes extracted from `CHANGELOG.md`.
 
 ### What it does
 
 1. Reads the current version from `system.json`
-2. Parses `CHANGELOG.md` to find the "Breaking Change" section for that version
-3. Converts the markdown to HTML
-4. Generates a `.hbs` template file in `templates/changes/`
-5. If no breaking changes are found, it cleans up any existing template for that version
+2. Parses `CHANGELOG.md` to find the "Breaking Change" section for that version (supports flexible heading variants)
+3. Generates a `.md` file in `templates/changes/` with the pure Markdown content
+4. If no breaking changes are found, it cleans up any existing template for that version
+5. Removes old `.hbs` files (legacy format)
 
 ### Usage
 
@@ -43,10 +43,10 @@ Add it to your GitHub Actions workflow or other CI/CD pipeline:
 The script generates a file like:
 
 ```
-templates/changes/breaking-changes-12.2.hbs
+templates/changes/breaking-changes-12.2.md
 ```
 
-This template is then automatically loaded by the changelog notification system in FoundryVTT.
+This Markdown file is then automatically loaded and rendered by the changelog notification system in FoundryVTT.
 
 ### CHANGELOG.md Format
 
@@ -65,6 +65,15 @@ The script expects this format in your CHANGELOG.md:
 -   Other changes...
 ```
 
+**Flexible heading support:**
+The script recognizes various heading formats (case-insensitive):
+
+-   `#### Breaking Change`
+-   `#### Breaking Changes` (plural)
+-   `#### ⚠️ Breaking Changes` (with emoji)
+-   `#### BREAKING CHANGE:` (uppercase with colon)
+-   Any combination of the above
+
 ### When to run
 
 You should run this script:
@@ -76,7 +85,12 @@ You should run this script:
 
 ### Integration with FoundryVTT
 
-The generated `.hbs` files are served as static files by FoundryVTT. The changelog notification hook (`scripts/hooks/changelog-notification.js`) automatically fetches and displays the appropriate template based on the current system version.
+The generated `.md` files are served as static files by FoundryVTT. The changelog notification hook (`scripts/hooks/changelog-notification.js`) automatically fetches and renders the appropriate Markdown file based on the current system version using Foundry's `TextEditor` APIs:
+
+1. Loads the `.md` file as text
+2. Converts Markdown to HTML using `TextEditor._markdownToHTML()`
+3. Enriches the HTML with Foundry features using `TextEditor.enrichHTML()`
+4. Displays the result in a read-only dialog
 
 This approach ensures that:
 
@@ -84,3 +98,4 @@ This approach ensures that:
 -   ✅ Breaking changes are always available, even in deployed environments
 -   ✅ Templates are version-specific and can be cached
 -   ✅ No network requests to external URLs needed
+-   ✅ Markdown content is rendered with full Foundry VTT formatting support
