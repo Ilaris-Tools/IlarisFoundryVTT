@@ -1,0 +1,1975 @@
+{
+  "_id": "p9LD74XZPHbpgItd",
+  "name": "Hyralkor, ein Kaiserdrache",
+  "type": "kreatur",
+  "img": "systems/Ilaris/assets/images/token/kreaturentypen/mythen.png",
+  "system": {
+    "gesundheit": {
+      "erschoepfung": 0,
+      "wunden": 0,
+      "wundabzuege": 0,
+      "wundenignorieren": false,
+      "display": "Volle Gesundheit",
+      "hp": {
+        "max": 9,
+        "value": 9,
+        "threshold": 0
+      }
+    },
+    "energien": {
+      "asp": {
+        "max": 140,
+        "value": 140,
+        "threshold": 0
+      },
+      "gup": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      },
+      "kap": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      }
+    },
+    "initiative": 0,
+    "furcht": {
+      "furchtstufe": 0,
+      "furchtabzuege": 0,
+      "display": ""
+    },
+    "modifikatoren": {
+      "manuellermod": 0,
+      "nahkampfmod": 0
+    },
+    "schips": {
+      "schips": 4,
+      "schips_stern": 4
+    },
+    "attribute": {
+      "KO": {
+        "wert": 0,
+        "pw": 220
+      },
+      "MU": {
+        "wert": 0,
+        "pw": 30
+      },
+      "GE": {
+        "wert": 0,
+        "pw": 12
+      },
+      "KK": {
+        "wert": 0,
+        "pw": 200
+      },
+      "IN": {
+        "wert": 0,
+        "pw": null
+      },
+      "KL": {
+        "wert": 0,
+        "pw": 20
+      },
+      "CH": {
+        "wert": 0,
+        "pw": null
+      },
+      "FF": {
+        "wert": 0,
+        "pw": null
+      }
+    },
+    "edit": false,
+    "kreaturentyp": "mythen",
+    "kurzbeschreibung": "Herrscher seines Landstrichs; sehr großer Endgegner",
+    "kampfwerte": {
+      "ws": -1,
+      "ws_stern": null,
+      "ini": 9,
+      "gs": 4,
+      "koloss": null,
+      "mr": 17,
+      "gs_schwimmend": null
+    },
+    "talente": [],
+    "freietalente": [],
+    "kampfunfaehig": "",
+    "text": "",
+    "abgeleitete": {
+      "globalermod": 0,
+      "nahkampfmoddisplay": "-",
+      "globalermoddisplay": "-"
+    }
+  },
+  "items": [
+    {
+      "_id": "l9DgFquEevuaHTsj",
+      "name": "Hammerschlag",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "Attribut KK 8",
+        "gruppe": 2,
+        "text": "Erlaubt das Manöver Hammerschlag (AT -8): Der Angriff richtet doppelten Waffenschaden an. Zusätzliche TP aus Kommandos, anderen Manövern usw. werden nicht verdoppelt."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.l9DgFquEevuaHTsj"
+    },
+    {
+      "_id": "O1XW6UAb8rVP0ZSB",
+      "name": "Offensiver Kampfstil",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "Attribut MU 6",
+        "gruppe": 2,
+        "text": "Der Verteidigungs-Malus durch volle Offensive sinkt auf -4."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.O1XW6UAb8rVP0ZSB"
+    },
+    {
+      "_id": "4daMN8fYAnCppXIA",
+      "name": "Sturmangriff",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "Attribut GE 6",
+        "gruppe": 2,
+        "text": "Erlaubt das Manöver Sturmangriff (Bewegung und AT): Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Außerdem richtet die nächste Attacke GS Trefferpunkte zusätzlich an."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.4daMN8fYAnCppXIA"
+    },
+    {
+      "_id": "Y9OzB170iLO8TE6A",
+      "name": "Aura",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Aura (Art, Probe, Intervall, Auswirkung) stellt einen\r\nschädlichen Flächeneffekt dar, der rund um die Kreatur wirkt.\r\nDie Stichworte in der Klammer geben die Art der Aura an\r\nund welche Probe wie oft abgelegt werden muss, um ihrer\r\nAuswirkung zu widerstehen. Diese Probe ist für jeden Schritt\r\nEntfernung von der Kreatur um +1 erleichtert."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.Y9OzB170iLO8TE6A"
+    },
+    {
+      "_id": "DMLZvKi8oDk8I04F",
+      "name": "Flugfähig",
+      "type": "eigenschaft",
+      "system": {
+        "text": ""
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.DMLZvKi8oDk8I04F"
+    },
+    {
+      "_id": "WfEeOL8mWMmZNvlG",
+      "name": "Immunität (Feuer)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Immunität (Schadensquelle): Das Wesen erleidet keinen\r\nSchaden aus der angegebenen Quelle.\r\n\r\nProfan: prof. Waffen, Stürze, Tierangriffe\r\nMagisch: mag. Waffen, Schadenszauber\r\nGeweiht: gew. Waffen, Bannstrahl\r\nDämonisch: Angriffe von Dämonen, Paktierer-Fähigkeiten\r\nElementar: Lagerfeuer (Feuer), Aquafaxius (Wasser),\r\nAngriffe von Luftelementaren (Luft),\r\nFausthieb (Humus), Kälte (Eis), Schwert (Erz)"
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.WfEeOL8mWMmZNvlG"
+    },
+    {
+      "_id": "uObAQTP3A4gvmy4f",
+      "name": "Schreckgestalt II",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Schreckgestalt I/II/III/IV: Bei der Begegnung mit der\r\nKreatur erleidet dein Charakter einen Furcht-Effekt Stufe I/II/\r\nIII/IV (S. 46). Der Furcht-Effekt dauert an, bis der Gegner\r\nbesiegt wurde oder dein Charakter sich in sicherer Entfernung\r\nbefindet."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.uObAQTP3A4gvmy4f"
+    },
+    {
+      "_id": "by4I7mw9rvTvwFg2",
+      "name": "Verwundbarkeit",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Verwundbarkeit I/II/III/IV (Schadensquelle): Wann\r\nimmer die Kreatur Wunden durch diese Schadensquelle\r\nerleidet, bekommt sie 1/2/3/4 zusätzliche Wunden."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.by4I7mw9rvTvwFg2"
+    },
+    {
+      "_id": "aJVSQFwlV59ubkLi",
+      "name": "Zusätzliche Attacke",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Zusätzliche Attacke I/II/III/IV: Die Kreatur kann in\r\nihrer Initiativephase 1/2/3/4 zusätzliche Aktionen Konflikt\r\nfür Attacken nutzen. Üblicherweise erfolgen die Angriffe mit\r\nunterschiedlichen Gliedmaßen."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.aJVSQFwlV59ubkLi"
+    },
+    {
+      "_id": "TZRJMFVZ5caDsVse",
+      "name": "vorgehen",
+      "type": "info",
+      "system": {
+        "text": "Hyralkor bleibt auf Distanz und nutzt seine Flammenangriffe. Nur wenn seine Flügel schwer verletzt wurden oder er in beengten Verhältnissen kämpft, geht Hyralkor in den Nahkampf über - bevorzugt mit einem Sturmangriff aus der Luft. Am Boden verwendet Hyralkor seine Feuerangriffe gegen entfernte Gegner und seinen Prankenhieb gegen Angreifer in Schlagreichweite. Kämpfer unter sich versucht er zu zertrampeln, während er Angreifer hinter sich mit Schwanzhieben zur Seite fegt. Rücken ihm zu viele Angreifer zu nahe, versucht er sie mit einem Windstoß umzuwerfen um sich dann mit einem gewaltigen Satz Luft zu verschaffen. Sein Gebiss setzt er nur gegen schwer angeschlagene oder sehr widerstandsfähige Gegner ein, da er schmerzhafte Gegenangriffe in den Rachen befürchtet. Schwachpunkte: Um den Drachen zu töten, muss sein Rumpf oder Kopf vernichtet werden. Ersterer ist extrem zäh, während zweiterer für Nahkampfwaffen unerreichbar ist. Deswegen sollten zuerst anderer Zonen angegriffen werden: Ohne die Flügel wird Hyralkor auf den Boden gezwungen und wenn seine Beine einknicken, kommt der Kopf in Reichweite. Dabei hilft eine alte Verletzung Hyralkors: Einst rammten ihm die Brüder Turgosch und Targosch einen Drachentöter durch den rechten Hinterlauf. Die Spitze der Waffe steckt noch immer in der Wunde. Kennt ein Charakter die zwergische Geschichte, kann er mit einer GE- oder Akrobatik-Probe (24) in Position gelangen und die Waffe mit einer AT:  -12 weiter ins Bein treiben. Dadurch wird der Drache für eine INI:phase handlungsunfähig und heißes Blut schießt aus der Wunde (Akrobatik (24) oder 4W6 Schadenspunkte). Kampfunfähigkeit: Hyralkor flieht, wenn er 6 Wunden erlitten hat. In seinem Hort kämpft er jedoch bis zum Tod."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.TZRJMFVZ5caDsVse"
+    },
+    {
+      "_id": "eHM3dpMDaQzqS8n7",
+      "name": "Biss",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Zerbrechlich",
+            "text": null
+          }
+        ],
+        "tp": "2W20+10",
+        "haerte": 0,
+        "rw": 2,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 19,
+        "vt": 10
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.eHM3dpMDaQzqS8n7"
+    },
+    {
+      "_id": "66Nz53GcfsPkqM0t",
+      "name": "Flammenstrahl",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Nachbrennen",
+            "text": null
+          }
+        ],
+        "tp": "5W6+8",
+        "haerte": 0,
+        "rw": 32,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 0,
+        "vt": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.66Nz53GcfsPkqM0t"
+    },
+    {
+      "_id": "g9JvBjZzpxhs5xBt",
+      "name": "Flammeninferno",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": " Nachbrennen",
+            "text": null
+          },
+          {
+            "name": "Flächenangriff (90° vor dem Drachen)",
+            "text": null
+          }
+        ],
+        "tp": "4W6+4",
+        "haerte": 0,
+        "rw": 16,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 0,
+        "vt": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.g9JvBjZzpxhs5xBt"
+    },
+    {
+      "_id": "nvC6I1HahEe6k28f",
+      "name": "Trampeln (Beine)",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": " Niederwerfen (-8)",
+            "text": null
+          },
+          {
+            "name": "Flächenangriff (1 Schritt Umkreis)",
+            "text": null
+          }
+        ],
+        "tp": "3W20",
+        "haerte": 0,
+        "rw": 0,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 11,
+        "vt": 6
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.nvC6I1HahEe6k28f"
+    },
+    {
+      "_id": "Iz1cD5x6BHEx8LaL",
+      "name": "Pranken (Beine)",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Niederwerfen (-8)",
+            "text": null
+          }
+        ],
+        "tp": "2W20+5",
+        "haerte": 0,
+        "rw": 1,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 16,
+        "vt": 10
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.Iz1cD5x6BHEx8LaL"
+    },
+    {
+      "_id": "35ajZM5xtcVJIzv7",
+      "name": "Schwanzhieb (S.)",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": " Niederwerfen (-4)",
+            "text": null
+          },
+          {
+            "name": "Flächenangriff (90° hinter dem Drachen)",
+            "text": null
+          }
+        ],
+        "tp": "4W6+2",
+        "haerte": 0,
+        "rw": 8,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 16,
+        "vt": 8
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.35ajZM5xtcVJIzv7"
+    },
+    {
+      "_id": "mWvkxNYHwSytrFhK",
+      "name": "Windstoß (Flügel)",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": " Zurückstoßen",
+            "text": null
+          },
+          {
+            "name": "Flächenangriff (360 ° um den Drachen)",
+            "text": null
+          },
+          {
+            "name": " wenn Hyralkor seine Flügel voll spannen kann)",
+            "text": null
+          },
+          {
+            "name": " Raumgreifend (nur einsetzbar",
+            "text": null
+          }
+        ],
+        "tp": null,
+        "haerte": 0,
+        "rw": 4,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 20,
+        "vt": 6
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.mWvkxNYHwSytrFhK"
+    },
+    {
+      "_id": "IEM2HMsp0PfjBhWI",
+      "name": "Anführen",
+      "type": "freiestalent",
+      "system": {
+        "text": "Mit Anführen leitest und motivierst du Untergebene. Du kannst mit Anführen Löscharbeiten oder eine Truppe von Kämpfern koordinieren, um ihnen so Vorteile zu verschaffen (S. 46). Gerade in großen Schlachten entscheidet der Heerführer über Sieg oder Niederlage.",
+        "pw": 10,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.IEM2HMsp0PfjBhWI"
+    },
+    {
+      "_id": "0Dz1bv9lsz7otkoc",
+      "name": "Einschüchtern",
+      "type": "freiestalent",
+      "system": {
+        "text": "Einschüchtern jagt dem Gegenüber Angst ein und bringt ihn so zu einer gewünschten Handlung. Die Probe wird oft vergleichend gegen den MU oder die Menschenkenntnis des Gegenübers abgelegt.",
+        "pw": 20,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.0Dz1bv9lsz7otkoc"
+    },
+    {
+      "_id": "SUqIp4M3M0Yobf4E",
+      "name": "Fliegen",
+      "type": "freiestalent",
+      "system": {
+        "text": null,
+        "pw": 14,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.SUqIp4M3M0Yobf4E"
+    },
+    {
+      "_id": "jr0UWMCGvrhncok1",
+      "name": "Menschenkenntnis",
+      "type": "freiestalent",
+      "system": {
+        "text": "Menschenkenntnis ist deine Fähigkeit, die Absichten deines Gegenüber zu durchschauen. Damit enttarnst du Lügen und falsche Annäherungsversuche.",
+        "pw": 16,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.jr0UWMCGvrhncok1"
+    },
+    {
+      "_id": "4eT9L7ShOYrxYQX1",
+      "name": "Wachsamkeit",
+      "type": "freiestalent",
+      "system": {
+        "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
+        "pw": 12,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.4eT9L7ShOYrxYQX1"
+    },
+    {
+      "_id": "aQ2whZDLBYNginVB",
+      "name": "Zähigkeit",
+      "type": "freiestalent",
+      "system": {
+        "text": "Zähigkeit hilft dir, Schmerzen und Strapazen zu widerstehen. So kannst du trotz zahlreicher Wunden noch handlungsfähig bleiben und einen Kampf zu euren Gunsten wenden oder eine ganze Nacht hindurch wachen.",
+        "pw": 24,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.aQ2whZDLBYNginVB"
+    },
+    {
+      "_id": "Uf4csOgow1UnVgk8",
+      "name": "Einfluss",
+      "type": "freiestalent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "pw": 20,
+        "profan": false
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.Uf4csOgow1UnVgk8"
+    },
+    {
+      "_id": "tk0wMV0FXDG08SDe",
+      "name": "Band und Fessel",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Einfluss",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Dein Opfer kann einen kreisförmigen Bereich von 4 Schritt Radius nicht verlassen. Alle zwei Stunden darf es versuchen, sich mit einer Konterprobe (MU, 16) vom Zauber zu befreien. Dabei handelt es sich um eine mentale Barriere. Wird das Ziel mit Gewalt über die Barriere getragen – wogegen es sich wehren wird – endet der Effekt.",
+        "maechtig": "",
+        "schwierigkeit": "Magieresistenz",
+        "modifikationen": "",
+        "vorbereitung": "4 Aktionen",
+        "ziel": "Einzelwesen",
+        "reichweite": "8 Schritt",
+        "wirkungsdauer": "8 Stunden",
+        "kosten": "8 AsP",
+        "erlernen": "Elf 14; Hex 16; Dru, Mag 18; Ach, Bor, Geo 20",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.tk0wMV0FXDG08SDe"
+    },
+    {
+      "_id": "aqJTYlHgF0sb1vIH",
+      "name": "Bannbaladin",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Einfluss",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "In Rededuellen mit dem Ziel bist du immun gegen die Auswirkungen von ungewohnter Umgebung (S. 55).",
+        "maechtig": "",
+        "schwierigkeit": "Magieresistenz\nMächtige Magie: Für je zwei Stufen gilt dein Vorhaben in einem Rededuell als um eine Stufe ungefährlicher (S. 57).",
+        "modifikationen": "Gemeinsame Erinnerung (–4; du teilst eine von dir bestimmte positive Erinnerung mit dem Ziel.)",
+        "vorbereitung": "2 Aktionen",
+        "ziel": "Einzelperson",
+        "reichweite": "4 Schritt",
+        "wirkungsdauer": "1 Stunde",
+        "kosten": "8 AsP",
+        "erlernen": "Elf 8; Mag 12; Alch, Dru, Hex, Srl 18",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.aqJTYlHgF0sb1vIH"
+    },
+    {
+      "_id": "61IvEvvAnH6Lawgp",
+      "name": "Blitz dich find",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Einfluss",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Dein Ziel ist geblendet und erleidet eine Erschwernis von –2 auf Proben.",
+        "maechtig": "Erhöht den Malus um –1.",
+        "schwierigkeit": "Magieresistenz",
+        "modifikationen": "",
+        "vorbereitung": "0 Aktionen",
+        "ziel": "Einzelwesen",
+        "reichweite": "8 Schritt",
+        "wirkungsdauer": "4 Initiativphasen",
+        "kosten": "4 AsP",
+        "erlernen": "Elf 8; Mag 12; Dru, Hex 14; Ach, Geo, Sch, Srl 16",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.61IvEvvAnH6Lawgp"
+    },
+    {
+      "_id": "SY5Bd5lXfAhjelO1",
+      "name": "Große Gier",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Einfluss",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du erweckst im Ziel ein dringendes Bedürfnis nach einem Gegenstand, einer Handlung oder einem Ort. Das Opfer wird aber keine großen Risiken eingehen, um das Bedürfnis zu erfüllen. Der Zauber ist um 2 bis 4 Punkte erleichtert, wenn er eine Charakterschwäche des Ziels besonders anspricht.",
+        "maechtig": "Das Ziel nimmt Schmerzen oder eine peinliche Situation/kleinere Verletzungen oder einen momentanen Gesichtsverlust/schwere Verletzungen oder dauerhaften Verlust seines Rufes/jedes Risiko auf sich.",
+        "schwierigkeit": "Magieresistenz",
+        "modifikationen": "",
+        "vorbereitung": "1 Aktion",
+        "ziel": "Einzelperson",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "1 Stunde",
+        "kosten": "8 AsP",
+        "erlernen": "Hex 8; Geo 16",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.SY5Bd5lXfAhjelO1"
+    },
+    {
+      "_id": "qPrHHsmZLEfPuTZW",
+      "name": "Halluzination",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Einfluss",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Deinem Opfer erscheint eine Halluzination deiner Wahl („ein Oger“, „köstlicher Tharf“), die es mit allen fünf Sinnen wahrzunehmen glaubt. Wird das Opfer von der Halluzination „getötet“, fällt es für 16 Initiativphasen in Ohnmacht. Nach dem Erwachen sind alle durch die Halluzination verursachten Wunden verschwunden.",
+        "maechtig": "",
+        "schwierigkeit": "Magieresistenz",
+        "modifikationen": "Traumbilder (–8; die Halluzination erscheint im Traum eines Schlafenden.)",
+        "vorbereitung": "2 Aktionen",
+        "ziel": "Einzelperson",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "4 Minuten",
+        "kosten": "8 AsP",
+        "erlernen": "Dru 14; Geo 12; Hex, Mag, Srl 20",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.qPrHHsmZLEfPuTZW"
+    },
+    {
+      "_id": "JovFluEeQb3kXUeU",
+      "name": "Herr über das Tierreich",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Einfluss",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du zwingst ein Tier unter deinen Bann. Es verhält sich, als wäre es gut dressiert und dir bedingungslos loyal und erfüllt deine Befehle. Nur Befehle, die seinen Instinkten klar widersprechen, kann es mit einer Konterprobe (MU, 16) widerstehen.",
+        "maechtig": "",
+        "schwierigkeit": "Magieresistenz",
+        "modifikationen": "Herr der Fliegen (–4; du beherrschst einen Schwarm Kleintiere.)",
+        "vorbereitung": "2 Aktionen",
+        "ziel": "Tier",
+        "reichweite": "4 Schritt",
+        "wirkungsdauer": "1 Stunde",
+        "kosten": "8 AsP",
+        "erlernen": "Dru 8; Geo 12; Elf, Hex 18; Ach, Mag 20",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.JovFluEeQb3kXUeU"
+    },
+    {
+      "_id": "DFYsbby1jmFrKW1m",
+      "name": "Horriphobus Schreckgestalt",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Einfluss",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Dein Opfer hat schreckliche Angst vor dir und erleidet einen Furcht-Effekt Stufe 2.",
+        "maechtig": "Der Furcht-Effekt steigt um eine Stufe.",
+        "schwierigkeit": "Magieresistenz",
+        "modifikationen": "",
+        "vorbereitung": "0 Aktionen",
+        "ziel": "Einzelwesen",
+        "reichweite": "8 Schritt",
+        "wirkungsdauer": "1 Stunde",
+        "kosten": "8 AsP",
+        "erlernen": "Mag 12; Bor 16; Alch 18",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.DFYsbby1jmFrKW1m"
+    },
+    {
+      "_id": "SSXBrRUzYGbrnWFe",
+      "name": "Imperavi Handlungszwang",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Einfluss",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Dein Ziel muss einen einzigen Befehl von dir ausführen und darf währenddessen nicht gegen dich vorgehen. Widerspricht der Befehl den tiefsten Überzeugungen oder dem Selbsterhaltungstrieb des Zieles, kann es mit einer Konterprobe (Willenskraft, 16) widerstehen. Eine Verschachtelung von Befehlen („Folge allen weiteren Befehlen!“) ist nicht möglich.",
+        "maechtig": "",
+        "schwierigkeit": "Magieresistenz",
+        "modifikationen": "Sofort (–4, 0 Aktionen, 8 AsP; das Ziel muss einen kurzen Befehl sofort ausführen.)\nSpäter (–4; der Zauber wirkt erst, sobald ein einfacher Auslöser eintritt.)\nDauerhafter Diener (–4, 4 Minuten, Berührung, Wirkungsdauer 16 Tage, 32 AsP; du kannst bis zu 16 Befehle äußern.)",
+        "vorbereitung": "4 Aktionen",
+        "ziel": "Einzelperson",
+        "reichweite": "2 Schritt",
+        "wirkungsdauer": "8 Stunden oder bis der Befehl erfüllt ist",
+        "kosten": "16 AsP",
+        "erlernen": "Mag, Dru 16; Bor 18",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.SSXBrRUzYGbrnWFe"
+    },
+    {
+      "_id": "DclLERuMaJMhttRJ",
+      "name": "Respondami Wahrheitszwang",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Einfluss",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Das Ziel muss eine Ja/Nein-Frage wahrheitsgemäß beantworten. Ist die Frage nicht mit Ja oder Nein zu beantworten, erleidet es 1W6 SP.",
+        "maechtig": "Erlaubt eine weitere Frage.",
+        "schwierigkeit": "Magieresistenz",
+        "modifikationen": "",
+        "vorbereitung": "1 Aktion",
+        "ziel": "Einzelperson",
+        "reichweite": "2 Schritt",
+        "wirkungsdauer": "4 Minuten",
+        "kosten": "4 AsP",
+        "erlernen": "Dru, Geo, Mag 14; Elf, Hex 16; Alch 18",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.DclLERuMaJMhttRJ"
+    },
+    {
+      "_id": "EwfZvcbxNNQFa2Aw",
+      "name": "Zauberzwang",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Einfluss",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du erlegst dem Opfer eine Aufgabe auf, die nicht tödlich sein darf. Stehen die moralischen Vorstellungen des Opfers der Aufgabe entgegen, kann es mit einer Konterprobe (Willenskraft, 16) widerstehen. Ignoriert das Opfer die Aufgabe oder lässt sie absichtlich scheitern, erleidet es pro Woche 1 Wunde, die während der Wirkungsdauer nicht geheilt oder regeneriert werden kann.",
+        "maechtig": "",
+        "schwierigkeit": "Magieresistenz",
+        "modifikationen": "",
+        "vorbereitung": "1 Stunde",
+        "ziel": "Einzelperson",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "Bis die Aufgabe gelöst wurde, maximal 1 Monat",
+        "kosten": "32 AsP",
+        "erlernen": "Hex 14; Dru 18; Mag 20",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.EwfZvcbxNNQFa2Aw"
+    },
+    {
+      "_id": "XLj5TRN3bOfzHERJ",
+      "name": "Hellsicht",
+      "type": "freiestalent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "pw": 16,
+        "profan": false
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.XLj5TRN3bOfzHERJ"
+    },
+    {
+      "_id": "jQ4HWbiHHjLGu4Ln",
+      "name": "Allegorische Analyse (passiv)",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Schalenzauber",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du lässt einen 1 gAsP in die Schale fließen. Fortan leuchten bei der Analyse einer Astralstruktur in deiner Schale arkane Symbole auf der Schale auf. Dadurch erhältst du bei Intensitätsanalysen +1 Analysegrad (S. 80). .",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "Alch 12; Hex, Mag 16",
+        "pw": 0,
+        "gruppe": 14
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.jQ4HWbiHHjLGu4Ln"
+    },
+    {
+      "_id": "fK2Omf3aLwwfIWK8",
+      "name": "Auris Nasus Oculus",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Illusion",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Eine statische Illusion (Sicht, Gehör oder Geruch) deiner Wahl erscheint. Ihre maximale Größe beträgt PW Illusionx4 Raumschritt.",
+        "maechtig": "Die Illusion betrifft einen weiteren, oben genannten Sinn.",
+        "schwierigkeit": "12",
+        "modifikationen": "Bewegte Illusion (-4; die Illusion führt eine beim Zaubern bestimmte Bewegung aus.)\nKontrollierte Illusion (–4; du kannst die Illusion aktiv steuern, was Konzentration erfordert.)",
+        "vorbereitung": "2 Aktionen",
+        "ziel": "Zone",
+        "reichweite": "32 Schritt",
+        "wirkungsdauer": "16 Minuten",
+        "kosten": "8 AsP",
+        "erlernen": "Srl 12; Mag 14",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.fK2Omf3aLwwfIWK8"
+    },
+    {
+      "_id": "YE2VUYMEcYKKcOvr",
+      "name": "Blick aufs Wesen",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Hellsicht",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Der Zauber offenbart dir die Fertigkeiten deines Ziels. Du erhältst einen groben Eindruck von seinen körperlichen, geistigen, handwerklichen, kämpferischen und zauberischen Fähigkeiten.",
+        "maechtig": "Du erfährst auch besonders hohe Fertigkeiten/markante Vorteile/Eigenheiten/Vorlieben und Vorgehen.",
+        "schwierigkeit": "Magieresistenz",
+        "modifikationen": "Leuchtende Persönlichkeit (–4; du erkennst in einer Gruppe von bis zu 8 Personen diejenige, die in einem von dir gewählten Bereich am meisten heraussticht. Durch eine Konterprobe (MR, 16) können sich die Personen vor der Entdeckung schützen.)",
+        "vorbereitung": "16 Aktionen",
+        "ziel": "Einzelwesen",
+        "reichweite": "8 Schritt",
+        "wirkungsdauer": "augenblicklich",
+        "kosten": "8 AsP",
+        "erlernen": "Elf 12; Geo, Mag 14; Ach, Alch, Dru, Hex, Sch 16",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.YE2VUYMEcYKKcOvr"
+    },
+    {
+      "_id": "zIe8TVg07MUxm7H4",
+      "name": "Blick durch fremde Augen",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Hellsicht, Verständigung",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du blickst während der Wirkungsdauer durch die Augen deines Opfers, das davon nichts ahnt. Du kannst nur Opfer verzaubern, die du sehr gut kennst oder von denen du ein Körperteil besitzt.",
+        "maechtig": "Es reicht, wenn dir das Ziel persönlich bekannt ist/du es eine Weile beobachtet hast/du es vom Hörensagen kennst.",
+        "schwierigkeit": "Magieresistenz",
+        "modifikationen": "Mehrere Sinne (–4; du teilst einen weiteren Sinn mit dem Opfer. Mehrfach wählbar.)\nFremder Zauber (–8; du kannst während der Wirkungsdauer aus den Augen deines Opfers zaubern. Du musst dabei selbstverständlich auf Gesten und Formeln verzichten.)",
+        "vorbereitung": "4 Minuten",
+        "ziel": "Einzelwesen",
+        "reichweite": "16 Meilen",
+        "wirkungsdauer": "1 Stunde",
+        "kosten": "8 AsP",
+        "erlernen": "Dru, Sch 18; Mag 20",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.zIe8TVg07MUxm7H4"
+    },
+    {
+      "_id": "aLiX18kJQ6b00Esh",
+      "name": "Blick in die Gedanken",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Hellsicht",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du siehst die Gedanken deines Ziels als verschwommene Bilder vor dir. Weiß das Ziel, dass seine Gedanken gelesen werden, kann es dich mit einer Konterprobe (Willenskraft, 20) in die Irre führen.\nMächtige Liturgie: Du erhältst einen deutlichen/klaren Einblick in die Gedanken deines Ziels.",
+        "maechtig": "",
+        "schwierigkeit": "Magieresistenz",
+        "modifikationen": "Kampfsinn (nur Elf, –4; du kannst die AT des Gegners vorhersehen, VT gegen diesen Gegner sind um +4 erleichtert.)\nTraumreise (–4, Wirkungsdauer 1 Stunde; du kannst an den Träumen des Ziels teilhaben.)\nVerhandlungssinn (nicht Elf, –4, Wirkungsdauer 1 Stunde; du kannst die Argumente und Absichten deines Ziels vorhersehen, gesellschaftliche Proben sind um +2 erleichtert.)",
+        "vorbereitung": "4 Aktionen",
+        "ziel": "Einzelperson",
+        "reichweite": "4 Schritt",
+        "wirkungsdauer": "16 Initiativphasen",
+        "kosten": "8 AsP",
+        "erlernen": "Elf, Mag 14; Dru, Hex 16; Geo 18",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.aLiX18kJQ6b00Esh"
+    },
+    {
+      "_id": "krKyunaZFOcUGNCu",
+      "name": "Exposami Lebenskraft",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Hellsicht",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du nimmst Lebewesen als grün leuchtende Flecken wahr. Der Zauber kann alle Elemente bis auf Erz und Eis durchdringen.",
+        "maechtig": "Du kannst Angehörige verschiedener Spezies/verschiedene Individuen unterscheiden und wiedererkennen.",
+        "schwierigkeit": "12",
+        "modifikationen": "Reinheit der Aura (–8; der Zauber zeigt den Gesundheitszustand des Ziels, dämonische Verseuchungen usw.)",
+        "vorbereitung": "1 Aktion",
+        "ziel": "Einzelperson",
+        "reichweite": "16 Schritt",
+        "wirkungsdauer": "8 Initiativphasen",
+        "kosten": "4 AsP",
+        "erlernen": "Elf 12; Ach, Alch, Dru, Geo 16; Hex, Mag 18",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.krKyunaZFOcUGNCu"
+    },
+    {
+      "_id": "6jIvjjhOxfk2cba4",
+      "name": "Odem Arcanum",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Hellsicht, Kraft",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du nimmst magische Kraft um das Ziel kurz als roten Schimmer wahr. Das entspricht einem Analysegrad von 1 für die Intensitätsanalyse (mehr dazu S. 80).",
+        "maechtig": "Der Analysegrad steigt um 1.",
+        "schwierigkeit": "12",
+        "modifikationen": "Sichtbereich (–4, Zone; wirkt auf alle Objekte im Sichtfeld.)",
+        "vorbereitung": "1 Aktion",
+        "ziel": "Einzelwesen, Einzelobjekt",
+        "reichweite": "8 Schritt",
+        "wirkungsdauer": "2 Initiativphasen",
+        "kosten": "4 AsP",
+        "erlernen": "Ach, Alch, Elf, Mag 8; Dru, Geo, Hex 12; Bor, Sch, Srl 14",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.6jIvjjhOxfk2cba4"
+    },
+    {
+      "_id": "O5BIQA45MbYMncz9",
+      "name": "Sensibar",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Hellsicht",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": null,
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "",
+        "ziel": "",
+        "reichweite": "",
+        "wirkungsdauer": "",
+        "kosten": "",
+        "erlernen": "",
+        "pw": 16,
+        "gruppe": -1
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.O5BIQA45MbYMncz9"
+    },
+    {
+      "_id": "2r7VEyLb0H75yeJa",
+      "name": "Umwelt",
+      "type": "freiestalent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "pw": 16,
+        "profan": false
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.2r7VEyLb0H75yeJa"
+    },
+    {
+      "_id": "PETLXtAAJH6kIoVr",
+      "name": "Dunkelheit",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Umwelt",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Um deinen Körper herum entsteht eine Zone der Dunkelheit von 4 Schritt Radius. Die Helligkeit sinkt um eine Stufe (etwa von normal auf Dämmerung, von Sternenlicht auf absolute Dunkelheit, S. 38). Du selbst bist von dem Zauber nicht betroffen.",
+        "maechtig": "Senkt die Helligkeit um eine weitere Stufe.",
+        "schwierigkeit": "12",
+        "modifikationen": "Begleiter (–4; die Dunkelheit bewegt sich mit dir.)",
+        "vorbereitung": "8 Aktionen",
+        "ziel": "Zone",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "4 Minuten",
+        "kosten": "8 AsP",
+        "erlernen": "Dru 8; Alch, Geo, Mag 16; Ach, Hex, Srl 18; Elf 20",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.PETLXtAAJH6kIoVr"
+    },
+    {
+      "_id": "d92vVrX2GLYjcC6d",
+      "name": "Flim Flam Funkel",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Umwelt",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Ein bläuliches Licht erscheint und steigert die Helligkeit in einem Radius von 4 Schritt um eine Stufe (etwa von Mondlicht auf Dämmerung S. 38). Erlaubt Aufrechterhalten.",
+        "maechtig": "Steigert die Helligkeit um eine weitere Stufe. Nach je 4 Schritt Radius nimmt die Helligkeit um eine Stufe weniger zu.",
+        "schwierigkeit": "12",
+        "modifikationen": "Variable Helligkeit (–4; du kannst die Helligkeit beliebig reduzieren und wieder auf das ursprüngliche Maß erhöhen.)\nBegleiter (–4; die Lichtkugel bewegt sich mit dir.)\nLeuchtturm (–4; Die Lichtkugel erscheint in 10 Schritt Höhe.)\nLichtblitz (–8, 8 AsP; du kannst die Kugel in einer Aktion Bereit machen explodieren lassen. Alle Beobachter sind 2 Initiativphasen lang geblendet, ihre Proben sind um die doppelte Helligkeitsstufe erschwert.)",
+        "vorbereitung": "0 Aktionen",
+        "ziel": "Zone",
+        "reichweite": "8 Schritt",
+        "wirkungsdauer": "4 Minuten",
+        "kosten": "1 AsP",
+        "erlernen": "Ach, Alch, Elf, Mag 8; Dru, Hex 12;  Geo 14; Sch, Srl 16",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.d92vVrX2GLYjcC6d"
+    },
+    {
+      "_id": "Eha4HOB22AQolqOy",
+      "name": "Motoricus Geisterhand",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Umwelt",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du kannst einen Gegenstand mit einer KK von 2 anheben und mit maximal 4 Schritt pro Initiativephase durch die Luft fliegen lassen. Besonders komplizierte und feine Bewegungen sind um bis zu 8 Punkte erschwert. Erfordert Konzentration.",
+        "maechtig": "Erhöht KK und die Schritte pro Initiativephase um +2.",
+        "schwierigkeit": "12",
+        "modifikationen": "Unsichtbarer Hieb (Wirkungsdauer augenblicklich, 4 AsP; der Zauber fügt einem Objekt 2W6 SP zu. Mächtige Magie erhöht den Schaden um +4.)\nMagische Abwehr (–4, wird in einer Reaktion gewirkt, Wirkungsdauer augenblicklich, 4 AsP; die Zauberprobe gilt als VT gegen einen Nahkampfangriff in Reichweite.)\nFesselfeld (–8, 32 AsP; in einer Zone von 4 Schritt Radius wird die Bewegung jedes unbelebten Objekts mit einer KK von 2 behindert, was Kampfhandlungen mit Waffen fast unmöglich macht.)",
+        "vorbereitung": "1 Aktion",
+        "ziel": "Einzelobjekt",
+        "reichweite": "8 Schritt",
+        "wirkungsdauer": "4 Minuten",
+        "kosten": "4 AsP",
+        "erlernen": "Mag 12; Alch, Sch 14; Ach, Elf, Hex, Srl; 16",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.Eha4HOB22AQolqOy"
+    },
+    {
+      "_id": "y2i7mExISZsnzaH8",
+      "name": "Nihilogravo Schwerelos",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Umwelt",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Du hebst in einer Zone von 4 Schritt Radius die Schwerkraft auf. Nach unten wird die Zone vom Boden (oder der Wasseroberfläche) begrenzt, nach oben hin ist sie unbegrenzt. Wer sie verlässt, unterliegt sofort wieder der Schwerkraft.",
+        "maechtig": "Der Radius steigt um 2 Schritt.",
+        "schwierigkeit": "12",
+        "modifikationen": "Begleiter (–4; die Zone bewegt sich mit dir.)\nLevitation (–8, selbst, 8 AsP; statt einer Zone bist nur du selbst betroffen.)",
+        "vorbereitung": "8 Aktionen",
+        "ziel": "Zone",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "4 Minuten",
+        "kosten": "16 AsP",
+        "erlernen": "Mag, Sch 18; Alch 20",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.y2i7mExISZsnzaH8"
+    },
+    {
+      "_id": "XUaF7J3ZRAEZsoNq",
+      "name": "Wettermeisterschaft",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Luft, Umwelt",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Das Wetter in einer Zone von bis zu 1 Meile Radius verändert sich nach deinem Willen. Du kannst folgende Skalen um insgesamt zwei Stufen verändern:\nNiederschlag: trocken/Nieselregen/Regen/starker Regen/Wolkenbruch\nWind: windstill/leichte Brise/steife Brise/Sturm/Orkan\nTemperatur: heiß/warm/mittel/kühl/kalt.",
+        "maechtig": "Du kannst die Skalen um eine weitere Stufe verändern.",
+        "schwierigkeit": "12",
+        "modifikationen": "",
+        "vorbereitung": "4 Minuten",
+        "ziel": "Zone",
+        "reichweite": "1 Meile",
+        "wirkungsdauer": "1 Stunde",
+        "kosten": "32 AsP",
+        "erlernen": "Dru 14; Geo 16; Ach 18; Hex, Mag 20",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!p9LD74XZPHbpgItd.XUaF7J3ZRAEZsoNq"
+    }
+  ],
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "prototypeToken": {
+    "displayName": 20,
+    "actorLink": false,
+    "width": 1,
+    "height": 1,
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "light": {
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "coloration": 1,
+      "dim": 0,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false,
+        "type": null
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      },
+      "attenuation": 0.5,
+      "negative": false,
+      "priority": 0,
+      "color": null
+    },
+    "disposition": 1,
+    "displayBars": 50,
+    "bar1": {
+      "attribute": "gesundheit.hp"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "flags": {},
+    "randomImg": false,
+    "name": "Hyralkor, ein Kaiserdrache",
+    "texture": {
+      "src": "systems/Ilaris/assets/images/token/kreaturentypen/mythen.png",
+      "scaleX": 1,
+      "scaleY": 1,
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "offsetX": 0,
+      "offsetY": 0,
+      "fit": "contain",
+      "rotation": 0,
+      "tint": "#ffffff",
+      "alphaThreshold": 0.75
+    },
+    "sight": {
+      "angle": 360,
+      "enabled": false,
+      "range": 0,
+      "brightness": 1,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "appendNumber": false,
+    "prependAdjective": false,
+    "hexagonalShape": 0,
+    "detectionModes": [],
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    }
+  },
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!actors!p9LD74XZPHbpgItd"
+}

@@ -40,6 +40,16 @@ node_modules
 /packs/*/LOG.old
 /packs/*/LOCK
 /packs/*/MANIFEST-*
+# As packs contains historic entries in the githistory - we switch to `comp_packs`
+# to ignore the generated files
+/comp_packs/*/*.db
+/comp_packs/*/*.ldb
+/comp_packs/*/*.log
+/comp_packs/*/CURRENT
+/comp_packs/*/LOG
+/comp_packs/*/LOG.old
+/comp_packs/*/LOCK
+/comp_packs/*/MANIFEST-*
 
 # Test coverage reports
 /coverage/

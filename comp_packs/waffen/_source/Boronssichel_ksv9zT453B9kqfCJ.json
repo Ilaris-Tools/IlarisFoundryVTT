@@ -1,0 +1,52 @@
+{
+  "name": "Boronssichel",
+  "type": "nahkampfwaffe",
+  "system": {
+    "haerte": 8,
+    "beschaedigung": 0,
+    "tp": "3W6+5",
+    "fertigkeit": "Klingenwaffen",
+    "talent": "Zweihandklingenwaffen",
+    "rw": 2,
+    "hauptwaffe": false,
+    "nebenwaffe": false,
+    "eigenschaften": [
+      {
+        "key": "Schwer",
+        "parameters": [4]
+      },
+      {
+        "key": "Zweihändig",
+        "parameters": []
+      }
+    ],
+    "text": "",
+    "aufbewahrungs_ort": "mitführend",
+    "bewahrt_auf": [],
+    "gewicht_summe": 0,
+    "gewicht": 2,
+    "preis": 400,
+    "wm_at": -2,
+    "wm_vt": -2
+  },
+  "_id": "ksv9zT453B9kqfCJ",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!ksv9zT453B9kqfCJ"
+}

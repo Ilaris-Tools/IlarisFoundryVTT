@@ -1,0 +1,497 @@
+{
+  "_id": "IWGuepUkN1NjkIXF",
+  "name": "Riesenaffe",
+  "type": "kreatur",
+  "img": "systems/Ilaris/assets/images/token/kreaturentypen/tier.png",
+  "system": {
+    "gesundheit": {
+      "erschoepfung": 0,
+      "wunden": 0,
+      "wundabzuege": 0,
+      "wundenignorieren": false,
+      "display": "Volle Gesundheit",
+      "hp": {
+        "max": 9,
+        "value": 9,
+        "threshold": 0
+      }
+    },
+    "energien": {
+      "asp": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      },
+      "gup": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      },
+      "kap": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      }
+    },
+    "initiative": 0,
+    "furcht": {
+      "furchtstufe": 0,
+      "furchtabzuege": 0,
+      "display": ""
+    },
+    "modifikatoren": {
+      "manuellermod": 0,
+      "nahkampfmod": 0
+    },
+    "schips": {
+      "schips": 4,
+      "schips_stern": 4
+    },
+    "attribute": {
+      "KO": {
+        "wert": 0,
+        "pw": 32
+      },
+      "MU": {
+        "wert": 0,
+        "pw": 20
+      },
+      "GE": {
+        "wert": 0,
+        "pw": 8
+      },
+      "KK": {
+        "wert": 0,
+        "pw": 40
+      },
+      "IN": {
+        "wert": 0,
+        "pw": null
+      },
+      "KL": {
+        "wert": 0,
+        "pw": null
+      },
+      "CH": {
+        "wert": 0,
+        "pw": null
+      },
+      "FF": {
+        "wert": 0,
+        "pw": null
+      }
+    },
+    "edit": false,
+    "kreaturentyp": "tier",
+    "kurzbeschreibung": "Erstaunlich Intelligenter und gefährlicher Dschungelbewohner",
+    "kampfwerte": {
+      "ws": 11,
+      "ws_stern": null,
+      "ini": null,
+      "gs": 6,
+      "koloss": 1,
+      "mr": 2,
+      "gs_schwimmend": null
+    },
+    "talente": [],
+    "freietalente": [],
+    "kampfunfaehig": "",
+    "text": "",
+    "abgeleitete": {
+      "globalermod": 0,
+      "nahkampfmoddisplay": "-",
+      "globalermoddisplay": "-"
+    }
+  },
+  "items": [
+    {
+      "_id": "c4QDNS1rDk7nQwpF",
+      "name": "Niederwerfen",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "Attribut KK 4",
+        "gruppe": 2,
+        "text": "Erlaubt das Manöver Niederwerfen (AT -4): Gegenprobe: KK. Dein Ziel stürzt und liegt am Boden."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!IWGuepUkN1NjkIXF.c4QDNS1rDk7nQwpF"
+    },
+    {
+      "_id": "fAHgr5lOmSWLcvSj",
+      "name": "Prankenhieb",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Stumpf",
+            "text": null
+          }
+        ],
+        "tp": "3W6+4",
+        "haerte": 0,
+        "rw": 1,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 8,
+        "vt": 4
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!IWGuepUkN1NjkIXF.fAHgr5lOmSWLcvSj"
+    },
+    {
+      "_id": "mlUjtZYreOMz7CH6",
+      "name": "Knüppel",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Befreiungsschlag",
+            "text": null
+          }
+        ],
+        "tp": "5W6+2",
+        "haerte": 0,
+        "rw": 2,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 7,
+        "vt": 3
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!IWGuepUkN1NjkIXF.mlUjtZYreOMz7CH6"
+    },
+    {
+      "_id": "OKJrk70qPPpOxP56",
+      "name": "Wachsamkeit",
+      "type": "freiestalent",
+      "system": {
+        "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
+        "pw": 8,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!IWGuepUkN1NjkIXF.OKJrk70qPPpOxP56"
+    },
+    {
+      "_id": "xzm4vtpTYj6u3bqf",
+      "name": "Zähigkeit",
+      "type": "freiestalent",
+      "system": {
+        "text": "Zähigkeit hilft dir, Schmerzen und Strapazen zu widerstehen. So kannst du trotz zahlreicher Wunden noch handlungsfähig bleiben und einen Kampf zu euren Gunsten wenden oder eine ganze Nacht hindurch wachen.",
+        "pw": 16,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!IWGuepUkN1NjkIXF.xzm4vtpTYj6u3bqf"
+    },
+    {
+      "_id": "wtGCFEtXTeQBfcgZ",
+      "name": "Pirschen",
+      "type": "freiestalent",
+      "system": {
+        "text": "Pirschen ermöglicht das Schleichen, Verstecken und Lauern in der freien Natur. Du pirschst dich auf der Jagd an einen wilden Hirsch heran, legst einen Hinterhalt an einer Reichsstraße oder beobachtest ungesehen das Lager einer Orkbande.",
+        "pw": 10,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!IWGuepUkN1NjkIXF.wtGCFEtXTeQBfcgZ"
+    },
+    {
+      "_id": "cNj8PAlPmE0UTCvu",
+      "name": "Klettern",
+      "type": "freiestalent",
+      "system": {
+        "text": "Mit Klettern überwindest du alle Arten von Hindernissen.",
+        "pw": 12,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!IWGuepUkN1NjkIXF.cNj8PAlPmE0UTCvu"
+    },
+    {
+      "_id": "mvkSTwURMTcrXgEx",
+      "name": "Laufen",
+      "type": "freiestalent",
+      "system": {
+        "text": "Laufen kommt in Verfolgungsjagden zu Fuß zum Einsatz, wenn du einen Verbrecher stellen oder einem Raubtier entkommen möchtest.",
+        "pw": 14,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!IWGuepUkN1NjkIXF.mvkSTwURMTcrXgEx"
+    },
+    {
+      "_id": "jEyKe7fkbQJTEmNQ",
+      "name": "Akrobatik",
+      "type": "freiestalent",
+      "system": {
+        "text": "Akrobatik wird für gewagte Kunststücke und Balanceakte verwendet und kann auch den Fallschaden reduzieren.",
+        "pw": 10,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!IWGuepUkN1NjkIXF.jEyKe7fkbQJTEmNQ"
+    }
+  ],
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "prototypeToken": {
+    "displayName": 20,
+    "actorLink": false,
+    "width": 1,
+    "height": 1,
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "light": {
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "coloration": 1,
+      "dim": 0,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false,
+        "type": null
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      },
+      "attenuation": 0.5,
+      "negative": false,
+      "priority": 0,
+      "color": null
+    },
+    "disposition": 1,
+    "displayBars": 50,
+    "bar1": {
+      "attribute": "gesundheit.hp"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "flags": {},
+    "randomImg": false,
+    "name": "Riesenaffe",
+    "texture": {
+      "src": "systems/Ilaris/assets/images/token/kreaturentypen/tier.png",
+      "scaleX": 1,
+      "scaleY": 1,
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "offsetX": 0,
+      "offsetY": 0,
+      "fit": "contain",
+      "rotation": 0,
+      "tint": "#ffffff",
+      "alphaThreshold": 0.75
+    },
+    "sight": {
+      "angle": 360,
+      "enabled": false,
+      "range": 0,
+      "brightness": 1,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "appendNumber": false,
+    "prependAdjective": false,
+    "hexagonalShape": 0,
+    "detectionModes": [],
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    }
+  },
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!actors!IWGuepUkN1NjkIXF"
+}

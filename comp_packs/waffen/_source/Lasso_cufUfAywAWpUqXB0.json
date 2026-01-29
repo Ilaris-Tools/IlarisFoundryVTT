@@ -1,0 +1,48 @@
+{
+  "name": "Lasso",
+  "type": "fernkampfwaffe",
+  "system": {
+    "haerte": 2,
+    "beschaedigung": 0,
+    "tp": "",
+    "fertigkeit": "Wurfwaffen",
+    "talent": "Schleudern",
+    "rw": 4,
+    "hauptwaffe": false,
+    "nebenwaffe": false,
+    "eigenschaften": [
+      {
+        "key": "Umklammern",
+        "parameters": [-2, 12]
+      }
+    ],
+    "text": "",
+    "aufbewahrungs_ort": "mitführend",
+    "bewahrt_auf": [],
+    "gewicht_summe": 0,
+    "gewicht": 1,
+    "preis": 0,
+    "wm_fk": 0,
+    "lz": 0
+  },
+  "_id": "cufUfAywAWpUqXB0",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!cufUfAywAWpUqXB0"
+}
