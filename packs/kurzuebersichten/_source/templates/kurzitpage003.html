@@ -1,0 +1,129 @@
+<p>Das Ilaris-System bietet umfangreiche Möglichkeiten zur Konfiguration von Items. Diese Übersicht zeigt die wichtigsten Item-Typen und ihre Konfigurationsmöglichkeiten.</p>
+
+<h2>✨ Vorteile</h2>
+
+<h3>Zugriff</h3>
+<p>📦 <strong>Kompendium:</strong> "Vorteile" im Kompendium-Tab<br>
+➕ <strong>Hinzufügen:</strong> Drag & Drop auf Charakterbogen oder über "+" Button</p>
+
+<h3>📝 Konfigurationstipps für Vorteile</h3>
+<div style="background-color: #f0f8ff; padding: 10px; border-left: 4px solid #1e90ff; margin: 10px 0;">
+<ul>
+    <li>Prüfe <strong>Voraussetzungen</strong> im Vorteilstext: Bei Vorteile sind die Voraussetzungen nur zur Zierede da, ES WIRD NICHT geprüft ob eine Voraussetzungen erfüllt ist! Dafür ist Sephrasto zuständig.</li>
+    <li>Genauso wenig haben die EP-Kosten Auswirkung auf den Charakter in Foundry</li>
+    <li>Kampfstil-Vorteile:
+        <ul>
+            <li><strong>Sephrasto Script Parameter:</strong> Steht in Foundry nur den Kampfstil-Vorteilen zur Verfügung. z.B.: modifyKampfstil('Beidhändiger Kampf', 1, 0, 0, 0), das Script macht genau das gleiche wie in Sephrasto auch, also modifiyKampfstil('Name(ist in foundry selbst eher unwichtig)',AT,VT,TP,RW,BE)</li>
+            <li>Die Stilbedingungen bestimmen, welche Voraussetzungen erfüllt sein müssen, damit der Kampfstil aktiv ist:
+                <ul>
+                    <li><strong>Leeres Feld:</strong> Kampfstil ist immer aktiv</li>
+                    <li><strong>Reittier:</strong> 'beritten' oder 'nicht beritten'</li>
+                    <li><strong>Trennung:</strong> Einzelne Bedingungen mit Komma trennen<br><em>Beispiel: 'beritten, Schild'</em></li>
+                    <li><strong>Waffeneigenschaften:</strong> Direkt angeben<br><em>Beispiele: 'Schild', 'Parierwaffe', 'Wendig'</em></li>
+                    <li><strong>Waffentypen:</strong>'Nahkampfwaffe' oder 'Fernkampfwaffe','einzelne Nahkampfwaffe' = nur eine Nahkampfwaffe,'zwei einhändige Nahkampfwaffen' = zwei Waffen</li>
+                    <li><strong>man kann Kampfstile auch auf Fertigkeiten einschränken:</strong> 'Fertigkeit <Name>'<em>Beispiel: 'Fertigkeit Wurfwaffen'</em></li>
+                </ul>
+            </li>
+            <li>Verfügbare Foundry-Scripts für Kampfstil-Modifikationen.</p>
+                <ul>
+                    <li>
+                        <strong>ignoreSideWeaponMalus(Eigenschaft)</strong><br>
+                        <em>Ignoriert Erschwernisse für Nebenwaffe</em><br>
+                        <small>Parameter: Eigenschaft (optional)</small><br>
+                        <code style='padding: 2px 4px; font-size: 11px;'>ignoreSideWeaponMalus('Wendig')</code>
+                    </li>
+                    <li>
+                        <strong>affectsRangedWeaponOnly()</strong><br>
+                        <em>Modifier wirken nur auf Fernkampfwaffen: in Sephrasto und ohne dieses Foundry-Script wirken sich die Modifier von modifiyKampfstil nur auf Nahkampfwaffen aus. Dieses Script bewirkt, dass sich ALLE Modifier nur auf Fernkampfwaffen auswirken. Damit ist es möglich auch Fernkampfstile zu haben.</em><br>
+                        <small>Keine zusätzlichen Parameter</small><br>
+                        <code style='padding: 2px 4px; font-size: 11px;'>affectsRangedWeaponOnly()</code>
+                    </li>
+                    <li>
+                        <strong>ignoreMountedRangePenalty()</strong><br>
+                        <em>Ignoriert Fernkampf-Malus beim Reiten</em><br>
+                        <small>Keine zusätzlichen Parameter</small><br>
+                        <code style='padding: 2px 4px; font-size: 11px;'>ignoreMountedRangePenalty()</code>
+                    </li>
+                    <li>
+                        <strong>manoverAusgleich(Wert)</strong><br>
+                        <em>Setzt Manöverausgleich für Kampfstil: Deckt für Ilaris zum Beispiel den Vorteil von Parierwaffenkampf ab. Kommt erst im Kampfdialog zum Tragen und nur wenn auch Manöver ausgewählt sind. Im Script kann noch ein false mit gegeben werden (per default benutzt das Script true), dieser Parameter bewirkt, dass sich die Manövererleichterung auf alle Manöver auswirkt und nicht nur Basis-Manöver.</em><br>
+                        <small>Parameter: Wert = Manöverausgleichwert (Zahl), Auswirkung auf alle Manöver/Basis-Manöver: true/false (default ist true)</small><br>
+                        <code style='padding: 2px 4px; font-size: 11px;'>manoverAusgleich(2)</code>
+                    </li>
+                </ul>
+                <strong>⚠️ Mehrere Methoden mit Semikolon trennen</strong>
+            </li>
+        </ul>
+    </li>
+    <li>Andere Vorteile benutzen die Active Effekts Mechanik von Foundry, um ihre Boni auf den Charakter zu bringen. Zur Zeit sind das nur Statische Effekte ohne weitere Einschränkungen z.B. Unverwündlich mit +1WS funktioniert, Eindrucksvoll I mit Bonus +2 in Rededuellen funktioniert nicht! Um Effekte zu verändern oder hinzuzufügen, sollte man sich mal https://foundryvtt.com/article/active-effects/ oder eine Anleitung von DnD zum Thema anschauen https://github-wiki-see.page/m/foundryvtt/dnd5e/wiki/Active-Effect-Guide . Grundsätzlich können alle Keys, die sich im System des Charakters befinden benutzt werden, schaut dazu in die template.json. <strong>Beim Import von Vorteilen mit dem XML Import aus Sephrasto:</strong> Wenn man Vorbildhaft in Sephrasto modifyGS/DH/... verwendet hat werden diese Scripte in Foundry in Effekte umgewandelt.</li>
+</ul>
+</div>
+
+<h2>⚔️ Manöver (Manöver)</h2>
+
+<h3>Zugriff</h3>
+<p>Manöver stehen einem Actor (Helden und Kreaturen) automatisch im Kampfdialog zur Verfügung, wenn die Voraussetzungen dafür erfüllt sind! Kreaturen ignorieren die Voraussetzungen für Übernatürliche Manöver (in Sephrasto ist das IMMER eine Tradition oder Zauberer). Außerdem kommen die übernatürlichen Vorteile WIE in Sephrasto auch mit dem Zusatz L/M vor, falls Dopplungen bestehen zb. Kosten Sparen!</p>
+
+<h3>Manöver-Kategorien</h3>
+<p>In Foundry kommen die Manöver in folgenden Kategorien vor, die sich jeweils an den Kategorien aus Sephrasto anlehnen, mit dem Zusatz von Verteidigungsmanövern:</p>
+<ul>
+<li>Nahkampfmanöver</li>
+<li>Fernkampfmanöver</li>
+<li>Magische Manöver</li>
+<li>Liturgische Manöver</li>
+<li>AnrufungsManöver</li>
+<li>Verteidigungsmanöver</li>
+</ul>
+
+<h3>📝 Konfigurationstipps für Manöver</h3>
+<div style="background-color: #f0f8ff; padding: 10px; border-left: 4px solid #1e90ff; margin: 10px 0;">
+<ul>
+<li>Manöver haben oft spezifische <strong>Voraussetzungen</strong> (Vorteile, Waffeneigenschaften): Es MUSS auf die korrekte Schreibweise geachtet werden, sonst steht das Manöver möglicherweise nicht zur Verfügung!</li>
+<li>Für die Automatisierung von Manövern können Manöver-Modifikationen verwendet werden, diese funktionieren wie folgt:
+    <ul>
+        <li><strong>Input:</strong> Manöver haben können eine von 3 Inputmöglichkeiten haben. Entweder ein Inputfeld für Zahlen (mit min und max, max leer lassen, bedeutet, dass man keine obere Grenze hat), eine Checkbox oder ein Dropdown-Menü mit den Trefferzonen.</li>
+        <li><strong>Modifikatoren</strong>, bestimmen wie das Manöver beim Auswählen verhalten soll:
+            <ul>
+                <li>Modifikatortyp, gibt an was auf welchen Stat sich das Manöver auswirkt, zB. kann mit 'Angriff,Fernkampf,Übernatürliche Fertigkeit' der 'Angriffs'-Probenwert beeinflusst werden. Die folgenden Typen haben eine Implementierung im System:
+                    <ul>
+                        <li>Angriff,Fernkampf,Übernatürliche Fertigkeit: Angriff-Probenwert</li>
+                        <li>Schaden: TP für Nahkampfangriffe und Fernkampfangriffe, hat keine Auswirkung auf Übernatürliche Talente</li>
+                        <li>Verteidigung: Wirkt nur auf den VT-Wert bei Nahkampfangriffen</li>
+                        <li>Resource für Zauber/Liturgie: beeinflusst die jeweilige Energie beim Einsatz von übernatürlichen Talenten</li>
+                        <li>Waffenschaden: Speziell ist hier Waffenschaden gemeint zB. für Hammerschlag</li>
+                        <li>Kein Schaden: Lässt das Manöver 0 Schaden anrichten und macht andere ähnliche Manöver nicht selektierbar</li>
+                        <li>Spezialeffekt: kann bei allen Manövern verwendet werden und gibt im Chat einfach nur Text aus, was das Manöver spezielles macht. ZB hat das Manöver Rüstungsbrecher den Spezialeffekt, dass es Rüstung ignoriert. Was dann im Chat so ausgegeben wird.</li>
+                    </ul>
+                </li>
+            </ul>
+            <p>Allgemein finden sich in den Manövern wohl alle möglichen Kombinationen von Input und Modifikatoren wieder. Falls man selbst eines erstellt, kann man sich hier an den Vorhandenen orientieren. Beim XML-Import von Sephrasto für Hausregeln werden viele Modifikationen schon automatisch gesetzt, das ganze sollte aber auf jeden Fall auf seine Richtigkeit überprüft werden, da der Importer nur rudimentär bzw klassisch über Regex an das Ganze herangeht.</p>
+        </li>
+        <li>Operatoren umfassen: Addieren, Subtrahieren, Multiplizieren und Dividieren. Punkt wird vor Strich verrechnet!</li>
+        <li>Target: In diesem Feld kann man den Key eines Wertes im System des Actors angeben, also zb actor.system.abgeleitete.be, um den Wert für Behinderung zu bekommen. Dieser Wert wird dann entsprechend mit dem jeweiligen Operator als Modifikator verwendet</li>
+        <li>Die Checkbox ganz am Ende "Wird von Input beeinflusst", ist nur für das Inputfeld mit Zahlen wichtig und gibt an, dass der Modifikator mit der Zahl im Inputfeld multipliziert wird.</li>
+    </ul>
+</li>
+<li>Im Kampfdialog können verfügbare Manöver direkt ausgewählt werden</li>
+</ul>
+</div>
+
+
+<h2>Waffeneigenschaften</h2>
+<p>📦 <strong>Kompendium:</strong> "Waffeneigenschaften"</p>
+
+<h4>Wichtige Punkte für Waffeneigenschaften</h4>
+<p>Waffeneigenschaften können in Foundry individuell gestaltet werden. Hier sind einige Eckpunkte für die Erstellung.</p>
+<p>
+    <strong>Kategorie</strong>, gibt allgemein vor, um welche Art von Eigenschaft es sich handelt. Zur Zeit gibt es die folgenden Kategorien:
+    <ul>
+        <li>Modifikator: Damit kann die Waffe direkt noch mit einer erhöhten Patzer/Crit Chance oder einem Wert im System des Actors modifiziert werden, der Wert wird hier in der Formel abgerundet Wert/4 verwendet, dadurch lässt sich zb Kopflastig über @actor.system.attribute.KK.wert abdecken.</li>
+        <li>Führung: Hierunter fallen zb die Waffeneigenschaften 'Zweihändig' oder 'Schwer', also Waffeneigenschaften die je nach nicht sachgemäßer Führung bestimmte Auswirkungen haben. Hier kann auch gesetzt werden ob eine Waffe 'kein Malus als Nebenwaffe' hat oder ein Reittier erfordert oder nur ohne Reittier geführt werden kann.</li>
+        <li>Akteur-Modifikator: Hiermit kann die Waffeneigenschaft direkt einen dieser Werte auf dem Actor modifizieren oder setzen BE,GS,INI. Damit kann man zum Beispiel von einem Reittier die GS des Actors auf einen neuen Wert setzen oder weiter modifizeren.</li>
+        <li>Ziel-Effekt: noch nicht implementiert!</li>
+        <li>Passiv: Ist einfach nur eine Passive Waffeneigenschaft wie Schild oder Parierwaffe, die an sich keine direkten Auswirkungen auf die Waffe oder den Acotr haben</li>
+    </ul>
+</p>
+<p></p>
+
+
+</div>

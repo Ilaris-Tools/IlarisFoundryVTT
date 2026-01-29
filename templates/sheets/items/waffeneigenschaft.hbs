@@ -19,24 +19,10 @@
         <hr />
         
         {{#if (eq item.system.kategorie 'modifier')}}
-        <h3>Modifikatoren</h3>
-        <div class="flexrow">
-            <label class="flex-fest-var" style="flex-basis: 80px"><b>AT:</b></label>
-            <input name="system.modifiers.at" value="{{item.system.modifiers.at}}" type="number" data-dtype="Number" />
-            <label class="flex-fest-var" style="flex-basis: 80px; margin-left: 10px;"><b>VT:</b></label>
-            <input name="system.modifiers.vt" value="{{item.system.modifiers.vt}}" type="number" data-dtype="Number" />
-        </div>
-        
-        <div class="flexrow">
-            <label class="flex-fest-var" style="flex-basis: 80px"><b>Schaden:</b></label>
-            <input name="system.modifiers.schaden" value="{{item.system.modifiers.schaden}}" type="number" data-dtype="Number" />
-            <label class="flex-fest-var" style="flex-basis: 80px; margin-left: 10px;"><b>RW:</b></label>
-            <input name="system.modifiers.rw" value="{{item.system.modifiers.rw}}" type="number" data-dtype="Number" />
-        </div>
-        
+        <h3>Modifikatoren</h3>        
         <div class="flexrow">
             <label class="flex-fest-var" style="flex-basis: 120px"><b>Schadens-Formel:</b></label>
-            <input name="system.modifiers.schadenFormula" value="{{item.system.modifiers.schadenFormula}}" type="text" data-dtype="String" placeholder="z.B. @actor.system.attribute.KK.wert" />
+            <input name="system.modifiers.schadenFormula" value="{{item.system.modifiers.schadenFormula}}" type="text" data-dtype="String" placeholder="z.B. @actor.system.attribute.KK.wert wird in der Formel abgerundet (Wert/4) verwendet" />
         </div>
 
         <h4 style="margin-top: 15px;">Kampfmechaniken</h4>
@@ -45,20 +31,6 @@
             <input name="system.modifiers.fumbleThreshold" value="{{item.system.modifiers.fumbleThreshold}}" type="number" data-dtype="Number" style="width: 80px;" placeholder="normal: 1" />
             <label class="flex-fest-var" style="flex-basis: 140px; margin-left: 10px;">Kritische-Schwelle:</label>
             <input name="system.modifiers.critThreshold" value="{{item.system.modifiers.critThreshold}}" type="number" data-dtype="Number" style="width: 80px;" placeholder="normal: 20" />
-        </div>
-        <div class="flexrow">
-            <label style="display: flex; align-items: center; margin-right: 20px;">
-                <input name="system.modifiers.ignoreCover" type="checkbox" {{checked item.system.modifiers.ignoreCover}} />
-                <span style="margin-left: 5px;">Ignoriert Deckung</span>
-            </label>
-            <label style="display: flex; align-items: center; margin-right: 20px;">
-                <input name="system.modifiers.ignoreArmor" type="checkbox" {{checked item.system.modifiers.ignoreArmor}} />
-                <span style="margin-left: 5px;">Ignoriert Rüstung</span>
-            </label>
-        </div>
-        <div class="flexrow">
-            <label class="flex-fest-var" style="flex-basis: 140px">Zusätzliche Würfel:</label>
-            <input name="system.modifiers.additionalDice" value="{{item.system.modifiers.additionalDice}}" type="number" data-dtype="Number" style="width: 80px;" placeholder="z.B. 1" />
         </div>
         
         <hr />
@@ -343,7 +315,7 @@
             <textarea rows="4" name="system.customScript" placeholder="JavaScript Code für erweiterte Funktionalität">{{item.system.customScript}}</textarea>
         </div>
         
-        <hr />
+        <hr /> --}}
         
         <a class="item-delete" data-itemid="{{item._id}}">
             <button class="clickable" type="button">
