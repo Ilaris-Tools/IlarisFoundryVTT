@@ -1,0 +1,53 @@
+{
+  "name": "Hammerschlag",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": "Vorteil Hammerschlag",
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": -8,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      },
+      "1": {
+        "type": "WEAPON_DAMAGE",
+        "value": 2,
+        "operator": "MULTIPLY",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
+    "gruppe": "0",
+    "probe": "AT -8",
+    "gegenprobe": "",
+    "text": "Der Angriff richtet doppelten Waffenschaden an. Zusätzliche TP aus Kommandos, anderen Manövern usw. werden nicht verdoppelt.",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    },
+    "isBaseManoever": false
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "90GXiYXQQTvML5gA",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "12.0.2",
+    "createdTime": null,
+    "modifiedTime": 1746878058464,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!90GXiYXQQTvML5gA"
+}

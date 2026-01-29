@@ -1,0 +1,56 @@
+{
+  "name": "Felsspalter",
+  "type": "nahkampfwaffe",
+  "system": {
+    "haerte": 11,
+    "beschaedigung": 0,
+    "tp": "3W6+2",
+    "fertigkeit": "Hiebwaffen",
+    "talent": "Zweihandhiebwaffen",
+    "rw": 1,
+    "hauptwaffe": false,
+    "nebenwaffe": false,
+    "eigenschaften": [
+      {
+        "key": "Kopflastig",
+        "parameters": []
+      },
+      {
+        "key": "Schwer",
+        "parameters": [4]
+      },
+      {
+        "key": "Zweihändig",
+        "parameters": []
+      }
+    ],
+    "text": "",
+    "aufbewahrungs_ort": "mitführend",
+    "bewahrt_auf": [],
+    "gewicht_summe": 0,
+    "gewicht": 2,
+    "preis": 300,
+    "wm_at": -1,
+    "wm_vt": -1
+  },
+  "_id": "bKja4aOsMpLU10e7",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!bKja4aOsMpLU10e7"
+}

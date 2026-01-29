@@ -1,0 +1,674 @@
+{
+  "_id": "SO22FGdcj4D0NtYr",
+  "name": "Riesenoktopode",
+  "type": "kreatur",
+  "img": "systems/Ilaris/assets/images/token/kreaturentypen/daimonid.png",
+  "system": {
+    "gesundheit": {
+      "erschoepfung": 0,
+      "wunden": 0,
+      "wundabzuege": 0,
+      "wundenignorieren": false,
+      "display": "Volle Gesundheit",
+      "hp": {
+        "max": 9,
+        "value": 9,
+        "threshold": 0
+      }
+    },
+    "energien": {
+      "asp": {
+        "max": 32,
+        "value": 32,
+        "threshold": 0
+      },
+      "gup": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      },
+      "kap": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      }
+    },
+    "initiative": 0,
+    "furcht": {
+      "furchtstufe": 0,
+      "furchtabzuege": 0,
+      "display": ""
+    },
+    "modifikatoren": {
+      "manuellermod": 0,
+      "nahkampfmod": 0
+    },
+    "schips": {
+      "schips": 4,
+      "schips_stern": 4
+    },
+    "attribute": {
+      "KO": {
+        "wert": 0,
+        "pw": 80
+      },
+      "MU": {
+        "wert": 0,
+        "pw": 20
+      },
+      "GE": {
+        "wert": 0,
+        "pw": null
+      },
+      "KK": {
+        "wert": 0,
+        "pw": 10
+      },
+      "IN": {
+        "wert": 0,
+        "pw": null
+      },
+      "KL": {
+        "wert": 0,
+        "pw": null
+      },
+      "CH": {
+        "wert": 0,
+        "pw": null
+      },
+      "FF": {
+        "wert": 0,
+        "pw": null
+      }
+    },
+    "edit": false,
+    "kreaturentyp": "daimonid",
+    "kurzbeschreibung": "vielarmiger Schrecken der Küsten und Sümpfe; großer Gegner",
+    "kampfwerte": {
+      "ws": 8,
+      "ws_stern": 10,
+      "ini": 2,
+      "gs": 2,
+      "koloss": 1,
+      "mr": 14,
+      "gs_schwimmend": 11
+    },
+    "talente": [],
+    "freietalente": [],
+    "kampfunfaehig": "",
+    "text": "",
+    "abgeleitete": {
+      "globalermod": 0,
+      "nahkampfmoddisplay": "-",
+      "globalermoddisplay": "-"
+    }
+  },
+  "items": [
+    {
+      "_id": "cxuWhj2MDtqDnQio",
+      "name": "Amphibisch",
+      "type": "eigenschaft",
+      "system": {
+        "text": ""
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!SO22FGdcj4D0NtYr.cxuWhj2MDtqDnQio"
+    },
+    {
+      "_id": "fpRonLnc9TSLiSc3",
+      "name": "Schreckgestalt I",
+      "type": "eigenschaft",
+      "system": {
+        "text": ""
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!SO22FGdcj4D0NtYr.fpRonLnc9TSLiSc3"
+    },
+    {
+      "_id": "y6XTe8AsO04LmOBU",
+      "name": "Angepasst II (Wasser)",
+      "type": "eigenschaft",
+      "system": {
+        "text": ""
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!SO22FGdcj4D0NtYr.y6XTe8AsO04LmOBU"
+    },
+    {
+      "_id": "Rf3x4xPZANsIuTul",
+      "name": "Zusätzliche Attacke II (nur Tentakel)",
+      "type": "eigenschaft",
+      "system": {
+        "text": ""
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!SO22FGdcj4D0NtYr.Rf3x4xPZANsIuTul"
+    },
+    {
+      "_id": "TWse5AkQYI2tPX6q",
+      "name": "Wundschwelle",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Die angegebene WS bezieht sich nur auf den Rumpf. Zusätzlich hat sie 1W6+7 Tentakel mit einer WS von 6/8."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!SO22FGdcj4D0NtYr.TWse5AkQYI2tPX6q"
+    },
+    {
+      "_id": "VbWeA1rSkv6jhDpn",
+      "name": "Kampfverhalten",
+      "type": "info",
+      "system": {
+        "text": "Der Riesenoktopode versucht zu Kampfbeginn mit 1W3 Fangarmen ein Opfer zu umklammern und an sein Maul zu führen. Anschließend beißt er es solange, bis es stirbt. Mit den anderen Fangarmen versucht er, die restlichen Gegner abzuwehren."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!SO22FGdcj4D0NtYr.VbWeA1rSkv6jhDpn"
+    },
+    {
+      "_id": "4Oc2X1JpatBgoBcs",
+      "name": "Anmerkung",
+      "type": "info",
+      "system": {
+        "text": "Der Riesenoktopode ist dem Krakenmolch ähnlich, aber kleiner und schwächer, dafür daimonisch und magiebegabt."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!SO22FGdcj4D0NtYr.4Oc2X1JpatBgoBcs"
+    },
+    {
+      "_id": "QCqBBjYXW1EfaWtJ",
+      "name": "Biss",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [],
+        "tp": "3W6+3",
+        "haerte": 0,
+        "rw": 1,
+        "lz": null,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 10,
+        "vt": 4
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!SO22FGdcj4D0NtYr.QCqBBjYXW1EfaWtJ"
+    },
+    {
+      "_id": "FCFnh95Lf39OgXWZ",
+      "name": "Tentakelhieb",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Niederwerfen",
+            "text": ""
+          }
+        ],
+        "tp": "2W6+2",
+        "haerte": 0,
+        "rw": 5,
+        "lz": null,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 12,
+        "vt": 8
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!SO22FGdcj4D0NtYr.FCFnh95Lf39OgXWZ"
+    },
+    {
+      "_id": "eB93eJZ3kUe8Yz7u",
+      "name": "Tentakelklammer",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Umklammern (-4, 20)",
+            "text": ""
+          }
+        ],
+        "tp": "1W6+2",
+        "haerte": 0,
+        "rw": 5,
+        "lz": null,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 11,
+        "vt": 8
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!SO22FGdcj4D0NtYr.eB93eJZ3kUe8Yz7u"
+    },
+    {
+      "_id": "XmOymbLJQS7LqWNd",
+      "name": "Pirschen",
+      "type": "freiestalent",
+      "system": {
+        "text": "",
+        "pw": 6,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!SO22FGdcj4D0NtYr.XmOymbLJQS7LqWNd"
+    },
+    {
+      "_id": "XgLcekN1rIzeQEv1",
+      "name": "Schwimmen",
+      "type": "freiestalent",
+      "system": {
+        "text": "",
+        "pw": 14,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!SO22FGdcj4D0NtYr.XgLcekN1rIzeQEv1"
+    },
+    {
+      "_id": "YJOdB2I4MS5cPNIA",
+      "name": "Wachsamkeit",
+      "type": "freiestalent",
+      "system": {
+        "text": "",
+        "pw": 10,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!SO22FGdcj4D0NtYr.YJOdB2I4MS5cPNIA"
+    },
+    {
+      "_id": "1HUEHAtimRTnv4Ms",
+      "name": "Kraft",
+      "type": "freiestalent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "pw": 12,
+        "profan": false
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!SO22FGdcj4D0NtYr.1HUEHAtimRTnv4Ms"
+    },
+    {
+      "_id": "LzBVxskPpCUPgIH8",
+      "name": "Fulminictus Donnerkeil",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Kraft",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "Eine unsichtbare Welle magischer Kraft fügt deinem Ziel 2W6 SP zu. Ein Fulminictus verursacht keine Wundschmerzeffekte.",
+        "maechtig": "Erhöht die SP um 4.",
+        "schwierigkeit": "12",
+        "modifikationen": "Welle des Schmerzes (–4, 16 AsP; der Zauber trifft alle Ziele in bis zu 4 Schritt Entfernung.)\nWelle der Reinigung (1 AsP; der Zauber tötet alle Schädlinge und andere winzige Wesen in bis zu 8 Schritt Entfernung.)",
+        "vorbereitung": "0 Aktionen",
+        "ziel": "Einzelwesen",
+        "reichweite": "8 Schritt",
+        "wirkungsdauer": "augenblicklich",
+        "kosten": "8 AsP",
+        "erlernen": "Elf 8; Mag 14; Bor, Hex 18",
+        "pw": 0,
+        "gruppe": 0
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!SO22FGdcj4D0NtYr.LzBVxskPpCUPgIH8"
+    }
+  ],
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "prototypeToken": {
+    "displayName": 20,
+    "actorLink": false,
+    "width": 1,
+    "height": 1,
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "light": {
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "coloration": 1,
+      "dim": 0,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false,
+        "type": null
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      },
+      "attenuation": 0.5,
+      "negative": false,
+      "priority": 0,
+      "color": null
+    },
+    "disposition": 1,
+    "displayBars": 50,
+    "bar1": {
+      "attribute": "gesundheit.hp"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "flags": {},
+    "randomImg": false,
+    "name": "Riesenoktopode",
+    "texture": {
+      "src": "systems/Ilaris/assets/images/token/kreaturentypen/daimonid.png",
+      "scaleX": 1,
+      "scaleY": 1,
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "offsetX": 0,
+      "offsetY": 0,
+      "fit": "contain",
+      "rotation": 0,
+      "tint": "#ffffff",
+      "alphaThreshold": 0.75
+    },
+    "sight": {
+      "angle": 360,
+      "enabled": false,
+      "range": 0,
+      "brightness": 1,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "appendNumber": false,
+    "prependAdjective": false,
+    "hexagonalShape": 0,
+    "detectionModes": [],
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    }
+  },
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!actors!SO22FGdcj4D0NtYr"
+}

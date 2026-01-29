@@ -1,0 +1,840 @@
+{
+  "_id": "bq4YIJjkCVi5gtZM",
+  "name": "YO'NAHOH",
+  "type": "kreatur",
+  "img": "systems/Ilaris/assets/images/token/kreaturentypen/daemon.png",
+  "system": {
+    "gesundheit": {
+      "erschoepfung": 0,
+      "wunden": 0,
+      "wundabzuege": 0,
+      "wundenignorieren": false,
+      "display": "Volle Gesundheit",
+      "hp": {
+        "max": 9,
+        "value": 9,
+        "threshold": 0
+      }
+    },
+    "energien": {
+      "asp": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      },
+      "gup": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      },
+      "kap": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      }
+    },
+    "initiative": 0,
+    "furcht": {
+      "furchtstufe": 0,
+      "furchtabzuege": 0,
+      "display": ""
+    },
+    "modifikatoren": {
+      "manuellermod": 0,
+      "nahkampfmod": 0
+    },
+    "schips": {
+      "schips": 4,
+      "schips_stern": 4
+    },
+    "attribute": {
+      "KO": {
+        "wert": 0,
+        "pw": null
+      },
+      "MU": {
+        "wert": 0,
+        "pw": null
+      },
+      "GE": {
+        "wert": 0,
+        "pw": null
+      },
+      "KK": {
+        "wert": 0,
+        "pw": null
+      },
+      "IN": {
+        "wert": 0,
+        "pw": null
+      },
+      "KL": {
+        "wert": 0,
+        "pw": null
+      },
+      "CH": {
+        "wert": 0,
+        "pw": null
+      },
+      "FF": {
+        "wert": 0,
+        "pw": null
+      }
+    },
+    "edit": false,
+    "kreaturentyp": "daemon",
+    "kurzbeschreibung": "Die Multipode oder der Neunkrake, die Arme aus der Tiefe; zehngehörnter und einzigartiger Diener Charyptoroths, sehr großer Gegner",
+    "kampfwerte": {
+      "ws": -1,
+      "ws_stern": null,
+      "ini": 4,
+      "gs": null,
+      "koloss": 2,
+      "mr": 24,
+      "gs_schwimmend": 8
+    },
+    "talente": [],
+    "freietalente": [],
+    "kampfunfaehig": "",
+    "text": "",
+    "abgeleitete": {
+      "globalermod": 0,
+      "nahkampfmoddisplay": "-",
+      "globalermoddisplay": "-"
+    }
+  },
+  "items": [
+    {
+      "_id": "FpuhAyLKOzXHIYXX",
+      "name": "Unaufhaltsam",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "Attribut KK 10",
+        "gruppe": 2,
+        "text": "Selbst bei einer gelungenen gegnerischen Verteidigung richtest du halben Schaden an. Ausweichen vermeidet diesen Schaden. Manövereffekte wirken weiterhin nur bei gelungenen Attacken."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!bq4YIJjkCVi5gtZM.FpuhAyLKOzXHIYXX"
+    },
+    {
+      "_id": "UFK05GdFTWp4AQxf",
+      "name": "Regeneration II",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Regeneration I/II/III/IV erlaubt der Kreatur, in jeder\r\nInitiativephase 1/2/3/4 Wunden zu schließen."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!bq4YIJjkCVi5gtZM.UFK05GdFTWp4AQxf"
+    },
+    {
+      "_id": "OaMrExXrpJFn82bl",
+      "name": "Schreckgestalt III",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Schreckgestalt I/II/III/IV: Bei der Begegnung mit der\r\nKreatur erleidet dein Charakter einen Furcht-Effekt Stufe I/II/\r\nIII/IV (S. 46). Der Furcht-Effekt dauert an, bis der Gegner\r\nbesiegt wurde oder dein Charakter sich in sicherer Entfernung\r\nbefindet."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!bq4YIJjkCVi5gtZM.OaMrExXrpJFn82bl"
+    },
+    {
+      "_id": "dTagTuWn3pU9S0GM",
+      "name": "Wasserwesen",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Wasserwesen sind an das Leben unter Wasser gewöhnt\r\nund erleiden dort keinerlei Abzüge. An Land können sie sich\r\njedoch kaum oder gar nicht bewegen."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!bq4YIJjkCVi5gtZM.dTagTuWn3pU9S0GM"
+    },
+    {
+      "_id": "91COyQnZumCxyvRI",
+      "name": "Zusätzliche Attacke",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Zusätzliche Attacke I/II/III/IV: Die Kreatur kann in\r\nihrer Initiativephase 1/2/3/4 zusätzliche Aktionen Konflikt\r\nfür Attacken nutzen. Üblicherweise erfolgen die Angriffe mit\r\nunterschiedlichen Gliedmaßen."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!bq4YIJjkCVi5gtZM.91COyQnZumCxyvRI"
+    },
+    {
+      "_id": "oHoUoXo55uxcA0v2",
+      "name": "Astralsinn",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Astralsinn erlaubt es der Kreatur, ihre Umgebung magisch\r\nwahrzunehmen. Sie erleidet keine Abzüge durch schlechte\r\nSicht. Der Astralsinn kann durch Antimagie, zum Beispiel\r\nHellsicht trüben in der Modifikation Magie unterdrücken,\r\ngestört werden. Die Schwierigkeit dafür liegt mindestens bei\r\n20, bei mächtigen Wesen deutlich höher."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!bq4YIJjkCVi5gtZM.oHoUoXo55uxcA0v2"
+    },
+    {
+      "_id": "p9srVNZpLt0Jptrk",
+      "name": "Immunität (Eigenschaften, Einfluss, Hellsicht, Illusion, Umwelt, Verwandlung, Krankheiten, Gifte, Hitze, Kälte)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Immunität (Fertigkeit): Die Kreatur ist immun gegen\r\nalle Zauber, die (auch) der entsprechenden Fertigkeit\r\nzugeordnet sind. Davon ausgenommen sind Effekte, die\r\ndas Wesen nur indirekt betreffen – zum Beispiel erfasst ein\r\nOdem auch einen Dämon mit Immunität (Hellsicht) und eine\r\nImmunität (Umwelt) schützt nicht vor dem Regen, der mittels\r\nWettermeisterschaft gerufen wurde."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!bq4YIJjkCVi5gtZM.p9srVNZpLt0Jptrk"
+    },
+    {
+      "_id": "5ihUIRmEBl0O4B25",
+      "name": "Körperlosigkeit",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Körperlosigkeit bedeutet, dass der Körper der Kreatur\r\nkeine lebenserhaltende Funktion hat. Selbst schwerste\r\nVerwundungen schränken sie nicht ein. Das Wesen erleidet\r\nkeine Abzüge durch Wunden und wird nicht kampfunfähig.\r\nDie neunte Wunde vernichtet aber auch eine körperlose\r\nKreatur."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!bq4YIJjkCVi5gtZM.5ihUIRmEBl0O4B25"
+    },
+    {
+      "_id": "xEnfkLyj3W8d8va9",
+      "name": "Paraphysikalität",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Paraphysikalität setzt die Naturgesetze für das Wesen\r\naußer Kraft. Es kann an Wänden oder an der Decke gehen,\r\naus dem Stand auf Höchstgeschwindigkeit beschleunigen und\r\ngewaltige Sprünge vollführen. Es ist immun gegen Umreißen-,\r\nNiederwerfen-, Zurückstoßen- und Niederschmettern-Effekte."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!bq4YIJjkCVi5gtZM.xEnfkLyj3W8d8va9"
+    },
+    {
+      "_id": "k1GwNHdVwmKxV9Cf",
+      "name": "Resistenz I (profan)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Eine Resistenz I/II/III/IV (Schadensquelle) verringert\r\nden Schaden durch diese Schadensquelle (s.o.). Wann immer\r\ndie Kreatur Wunden erleiden würde, erleidet sie 1/2/3/4\r\nWunden weniger."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!bq4YIJjkCVi5gtZM.k1GwNHdVwmKxV9Cf"
+    },
+    {
+      "_id": "1RUhaIi5UaoAnFY6",
+      "name": "Schmerzimmun II",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Schmerzimmun I/II: Die erste Stufe verleiht Immunität\r\ngegen Blutungen und die Wundschmerzeffekte Betäubt und\r\nOrgantreffer. Die zweite Stufe verleiht Immunität gegen alle\r\nWundschmerzeffekte."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!bq4YIJjkCVi5gtZM.1RUhaIi5UaoAnFY6"
+    },
+    {
+      "_id": "rpOXnbwlED8UrUXy",
+      "name": "Unheilig",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Unheilige Kreaturen sind besonders anfällig gegen\r\nbestimmte karmale Wirkungen, siehe S. 91."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!bq4YIJjkCVi5gtZM.rpOXnbwlED8UrUXy"
+    },
+    {
+      "_id": "RFdBd2lanOvwZUDG",
+      "name": "Verwundbarkeit I (geweihte Waffen oder Gegenstände der Gegengottheit)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Verwundbarkeit I/II/III/IV (Schadensquelle): Wann\r\nimmer die Kreatur Wunden durch diese Schadensquelle\r\nerleidet, bekommt sie 1/2/3/4 zusätzliche Wunden."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!bq4YIJjkCVi5gtZM.RFdBd2lanOvwZUDG"
+    },
+    {
+      "_id": "JQRHXEKYJokj5WvL",
+      "name": "Beispieldienste",
+      "type": "info",
+      "system": {
+        "text": "Schiff festhalten (, 4); Schiff oder großes Meerestier vernichten (, ); Ort bewachen (1 Woche, 4)"
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!bq4YIJjkCVi5gtZM.JQRHXEKYJokj5WvL"
+    },
+    {
+      "_id": "kDstxJWnJrXpkZG5",
+      "name": "Beschwörung",
+      "type": "info",
+      "system": {
+        "text": "Invocatio (36), 80 AsP"
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!bq4YIJjkCVi5gtZM.kDstxJWnJrXpkZG5"
+    },
+    {
+      "_id": "msf6IOt2sC9FIDwM",
+      "name": "Biss (Rumpf)",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Rüstungsbrechend",
+            "text": null
+          }
+        ],
+        "tp": "3W20+10",
+        "haerte": 0,
+        "rw": 1,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 16,
+        "vt": 4
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!bq4YIJjkCVi5gtZM.msf6IOt2sC9FIDwM"
+    },
+    {
+      "_id": "9jFCd3LmVxbz2QsU",
+      "name": "Tentakelhieb",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": " Zurückstoßen",
+            "text": null
+          },
+          {
+            "name": " Niederwerfen (-8)",
+            "text": null
+          },
+          {
+            "name": "Flächenangriff (45°)",
+            "text": null
+          }
+        ],
+        "tp": "4W6+2",
+        "haerte": 0,
+        "rw": 12,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 20,
+        "vt": 10
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!bq4YIJjkCVi5gtZM.9jFCd3LmVxbz2QsU"
+    },
+    {
+      "_id": "eUVaPxxEjshYWk6x",
+      "name": "Tentakelklammer",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Umklammern (-4",
+            "text": null
+          },
+          {
+            "name": " 32)",
+            "text": null
+          }
+        ],
+        "tp": "4W6",
+        "haerte": 0,
+        "rw": 10,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 18,
+        "vt": 10
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!bq4YIJjkCVi5gtZM.eUVaPxxEjshYWk6x"
+    },
+    {
+      "_id": "OdcKSAut2gP2K732",
+      "name": "Pirschen",
+      "type": "freiestalent",
+      "system": {
+        "text": "Pirschen ermöglicht das Schleichen, Verstecken und Lauern in der freien Natur. Du pirschst dich auf der Jagd an einen wilden Hirsch heran, legst einen Hinterhalt an einer Reichsstraße oder beobachtest ungesehen das Lager einer Orkbande.",
+        "pw": 16,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!bq4YIJjkCVi5gtZM.OdcKSAut2gP2K732"
+    },
+    {
+      "_id": "A4EeGHcs8KeROSm2",
+      "name": "Schwimmen",
+      "type": "freiestalent",
+      "system": {
+        "text": "Schwimmen erlaubt eine schnellere Fortbewegung im Wasser und längere Tauchgänge.",
+        "pw": 20,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!bq4YIJjkCVi5gtZM.A4EeGHcs8KeROSm2"
+    },
+    {
+      "_id": "u3zPuR8kL42JaEPI",
+      "name": "Wachsamkeit",
+      "type": "freiestalent",
+      "system": {
+        "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
+        "pw": 16,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!bq4YIJjkCVi5gtZM.u3zPuR8kL42JaEPI"
+    }
+  ],
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "prototypeToken": {
+    "displayName": 20,
+    "actorLink": false,
+    "width": 1,
+    "height": 1,
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "light": {
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "coloration": 1,
+      "dim": 0,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false,
+        "type": null
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      },
+      "attenuation": 0.5,
+      "negative": false,
+      "priority": 0,
+      "color": null
+    },
+    "disposition": 1,
+    "displayBars": 50,
+    "bar1": {
+      "attribute": "gesundheit.hp"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "flags": {},
+    "randomImg": false,
+    "name": "YO'NAHOH",
+    "texture": {
+      "src": "systems/Ilaris/assets/images/token/kreaturentypen/daemon.png",
+      "scaleX": 1,
+      "scaleY": 1,
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "offsetX": 0,
+      "offsetY": 0,
+      "fit": "contain",
+      "rotation": 0,
+      "tint": "#ffffff",
+      "alphaThreshold": 0.75
+    },
+    "sight": {
+      "angle": 360,
+      "enabled": false,
+      "range": 0,
+      "brightness": 1,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "appendNumber": false,
+    "prependAdjective": false,
+    "hexagonalShape": 0,
+    "detectionModes": [],
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    }
+  },
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!actors!bq4YIJjkCVi5gtZM"
+}

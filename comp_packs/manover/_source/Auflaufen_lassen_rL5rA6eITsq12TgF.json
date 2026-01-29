@@ -1,0 +1,53 @@
+{
+  "name": "Auflaufen lassen",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": "",
+    "modifications": {
+      "0": {
+        "type": "DEFENCE",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": false
+      },
+      "1": {
+        "type": "DAMAGE",
+        "value": 1,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
+    "gruppe": "13",
+    "probe": "VT -4",
+    "gegenprobe": "",
+    "text": "Der Verteidiger fügt dem Angreifer seinen Waffenschaden plus die GS des Angreifers zu. Voraussetzungen: größere Reichweite; Gegner kombiniert die Aktionen Bewegung und Konflikt; die Bewegung muss vor dem Angriff ausgeführt werden.",
+    "input": {
+      "label": "GS Gegner",
+      "field": "NUMBER"
+    },
+    "isBaseManoever": true
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "rL5rA6eITsq12TgF",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "12.0.2",
+    "createdTime": null,
+    "modifiedTime": 1746879139740,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!rL5rA6eITsq12TgF"
+}
