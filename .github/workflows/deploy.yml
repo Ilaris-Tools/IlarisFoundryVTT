@@ -195,7 +195,7 @@ jobs:
                       if [ -f "deploy.sh" ]; then
                         echo "📋 Using deploy.sh script"
                         chmod +x deploy.sh
-                        ./deploy.sh
+                        FOUNDRY_DATA_PATH="/root/foundry-dev/foundry/data" ./deploy.sh
                       else
                         echo "📋 Deploy script not found, running manual deployment..."
                         
@@ -203,7 +203,7 @@ jobs:
                         # Foundry stoppen (ohne sudo)
                         systemctl --user stop foundry 2>/dev/null || echo "⚠️ Could not stop foundry service (may not be running)"
                         
-                        SYSTEM_PATH="/home/leo/docker/foundryvtt-internal/foundry/data/Data/systems/Ilaris"
+                        SYSTEM_PATH="/root/foundry-dev/foundry/data/Data/systems/Ilaris"
                         mkdir -p "$(dirname "$SYSTEM_PATH")"
                         
                         # Dateien mit korrekten Berechtigungen entfernen
