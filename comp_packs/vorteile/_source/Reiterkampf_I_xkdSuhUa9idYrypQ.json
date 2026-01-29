@@ -1,0 +1,32 @@
+{
+  "name": "Reiterkampf I",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut GE 4 ODER Attribut KK 4",
+    "gruppe": 3,
+    "text": "Bedingung: beritten.\n\nDu erhältst Waffenschaden +1, AT +1 und VT +1.\n\nErlaubt das Manöver Sturmangriff (Bewegung und AT) mit dem Pferd: Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Außerdem richtet die nächste Attacke GS Trefferpunkte zusätzlich an.",
+    "sephrastoScript": "modifyKampfstil('Reiterkampf', 1, 1, 1, 0)",
+    "stilBedingungen": "beritten",
+    "foundryScript": ""
+  },
+  "_id": "xkdSuhUa9idYrypQ",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!xkdSuhUa9idYrypQ"
+}

@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Derwische II",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut FF 6, Vorteil Tradition der Derwische I",
+    "gruppe": 5,
+    "text": "Deine Rhythmen sind auf größere Entfernung hörbar. Alle deine Zauber mit dem Ziel Zone wirken auf alle Ziele im Umkreis von 8 Schritt (statt 4 Schritt)."
+  },
+  "_id": "psuHyAd54ZQxj4Dy",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!psuHyAd54ZQxj4Dy"
+}

@@ -1,0 +1,41 @@
+{
+  "name": "Geisterbote",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Geister rufen, Verständigung",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Durch das Geisterreich schließt du eine Verbindung mit dem Ziel, von dem du einen Körperteil (z.B: ein Haar oder einen Blutstropfen) besitzt. Der Körperteil wird dabei verbraucht. Während der Wirkungsdauer kannst einmal am Tag einen beliebigen Zauber auf das Ziel sprechen, als könntest du es berühren. Die Zauber müssen wie üblich die Magieresistenz überwinden.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "1 Stunde",
+    "ziel": "Einzelperson",
+    "reichweite": "aventurienweit",
+    "wirkungsdauer": "1 Woche",
+    "kosten": "16 AsP",
+    "erlernen": "Smn 14",
+    "pw": 0,
+    "gruppe": 7
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "KWrEijzXfUk0K68z",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!KWrEijzXfUk0K68z"
+}

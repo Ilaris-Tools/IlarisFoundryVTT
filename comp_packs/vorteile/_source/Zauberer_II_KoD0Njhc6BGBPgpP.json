@@ -1,0 +1,77 @@
+{
+  "name": "Zauberer II",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Vorteil Zauberer I",
+    "gruppe": "0",
+    "text": "Du verfügst über 16 Astralpunkte und kannst magische Traditionen erlernen. Dämonen, Elementare oder Hellsichtsmagier können dich magisch wahrnehmen. Zauberer II entspricht einem wenig begabten Alchemisten. "
+  },
+  "_id": "KoD0Njhc6BGBPgpP",
+  "effects": [
+    {
+      "name": "Zauberer II",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "changes": [
+        {
+          "key": "system.abgeleitete.asp",
+          "mode": 2,
+          "value": "8",
+          "priority": null
+        }
+      ],
+      "transfer": true,
+      "img": "icons/svg/aura.svg",
+      "_id": "yTivVruHa0lOI0eq",
+      "type": "base",
+      "system": {},
+      "description": "",
+      "origin": null,
+      "tint": "#ffffff",
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "ilaris": {
+          "sourceType": "vorteil"
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.1.2",
+        "createdTime": 1757617906076,
+        "modifiedTime": 1757618137322,
+        "lastModifiedBy": "FAZTz2Txaxttf8zC"
+      },
+      "_key": "!items.effects!KoD0Njhc6BGBPgpP.yTivVruHa0lOI0eq"
+    }
+  ],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "12.1.2",
+    "createdTime": null,
+    "modifiedTime": 1757617924730,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 10900000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!KoD0Njhc6BGBPgpP"
+}

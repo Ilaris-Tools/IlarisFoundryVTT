@@ -1,0 +1,29 @@
+{
+  "name": "Reaktivierung",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I, Attribut FF 4",
+    "gruppe": 4,
+    "text": "Du kannst wieder aufladbare Artefakte erschaffen und reaktivieren (S. 78)."
+  },
+  "_id": "wzlIoqj6s2Ufqwq2",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!wzlIoqj6s2Ufqwq2"
+}

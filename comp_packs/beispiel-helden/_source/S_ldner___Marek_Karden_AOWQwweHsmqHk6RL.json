@@ -1,0 +1,2016 @@
+{
+  "name": "Söldner - Marek Karden",
+  "type": "held",
+  "img": "systems/Ilaris/assets/images/token/kreaturentypen/humanoid.png",
+  "system": {
+    "gesundheit": {
+      "erschoepfung": 0,
+      "wunden": 0,
+      "wundabzuege": 0,
+      "wundenignorieren": 0,
+      "display": "Volle Gesundheit",
+      "hp": {
+        "max": 9,
+        "value": 9,
+        "threshold": 0
+      }
+    },
+    "attribute": {
+      "CH": {
+        "wert": 4,
+        "pw": 0
+      },
+      "FF": {
+        "wert": 4,
+        "pw": 0
+      },
+      "GE": {
+        "wert": 2,
+        "pw": 0
+      },
+      "IN": {
+        "wert": 2,
+        "pw": 0
+      },
+      "KK": {
+        "wert": 6,
+        "pw": 0
+      },
+      "KL": {
+        "wert": 2,
+        "pw": 0
+      },
+      "KO": {
+        "wert": 6,
+        "pw": 0
+      },
+      "MU": {
+        "wert": 4,
+        "pw": 0
+      }
+    },
+    "abgeleitete": {
+      "globalermod": 0,
+      "ws": 0,
+      "ws_stern": 0,
+      "be": 0,
+      "be_traglast": 0,
+      "ws_beine": 0,
+      "ws_larm": 0,
+      "ws_rarm": 0,
+      "ws_bauch": 0,
+      "ws_brust": 0,
+      "ws_kopf": 0,
+      "mr": 0,
+      "gs": 0,
+      "ini": 0,
+      "dh": 0,
+      "traglast_intervall": 0,
+      "traglast": 0
+    },
+    "schips": {
+      "schips": 4,
+      "schips_stern": 4
+    },
+    "initiative": 0,
+    "furcht": {
+      "furchtstufe": 0,
+      "furchtabzuege": 0,
+      "display": ""
+    },
+    "modifikatoren": {
+      "manuellermod": 0,
+      "nahkampfmod": 0
+    },
+    "misc": {
+      "selected_kampfstil": "ohne",
+      "selected_uebernatuerlicher_stil": "ohne",
+      "ist_beritten": false
+    },
+    "geld": {
+      "dukaten": 0,
+      "silbertaler": 0,
+      "heller": 0,
+      "kreuzer": 0
+    },
+    "getragen": 1,
+    "notes": ""
+  },
+  "prototypeToken": {
+    "name": "Marek Karden",
+    "displayName": 20,
+    "actorLink": true,
+    "appendNumber": false,
+    "prependAdjective": false,
+    "width": 1,
+    "height": 1,
+    "texture": {
+      "src": "systems/Ilaris/assets/images/token/kreaturentypen/humanoid.png",
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "offsetX": 0,
+      "offsetY": 0,
+      "fit": "contain",
+      "scaleX": 1,
+      "scaleY": 1,
+      "rotation": 0,
+      "tint": "#ffffff",
+      "alphaThreshold": 0.75
+    },
+    "hexagonalShape": 0,
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "disposition": 1,
+    "displayBars": 50,
+    "bar1": {
+      "attribute": "gesundheit.hp"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "light": {
+      "negative": false,
+      "priority": 0,
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "color": null,
+      "coloration": 1,
+      "dim": 0,
+      "attenuation": 0.5,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "type": null,
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      }
+    },
+    "sight": {
+      "enabled": true,
+      "range": 10,
+      "angle": 360,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "brightness": 0,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "detectionModes": [],
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    },
+    "flags": {},
+    "randomImg": false
+  },
+  "items": [
+    {
+      "_id": "nCH2Stzbb7NwFZ6N",
+      "name": "Zerstörerisch I",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "KK 4",
+        "gruppe": 1,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Proben zum Zerstören oder Durchbrechen von Gegenständen sind um +4 erleichtert.</body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.fN6AUnJ1XbbnzYrw",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.nCH2Stzbb7NwFZ6N"
+    },
+    {
+      "_id": "fEyvfieirbX8JoGu",
+      "name": "Ausfall",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "MU 4",
+        "gruppe": 2,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Erlaubt das Manöver Ausfall.</body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.gHmsU24FcdGSB5Xe",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.fEyvfieirbX8JoGu"
+    },
+    {
+      "_id": "JXLvlaPExTZNtvAC",
+      "name": "Niederwerfen",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "KK 4",
+        "gruppe": 2,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Erlaubt das Manöver Niederwerfen.</body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.Fh4aGtx9D0flsKKe",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.JXLvlaPExTZNtvAC"
+    },
+    {
+      "_id": "ypNvVeEFW1vtUUd4",
+      "name": "Ruhige Hand",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "FF 4",
+        "gruppe": 2,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Verdoppelt im Fernkampf den Bonus durch Zielen.</body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.9cEyrf6xsr6nUeRs",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.ypNvVeEFW1vtUUd4"
+    },
+    {
+      "_id": "3BPRLJaIdiy65tCN",
+      "name": "Rüstungsgewöhnung",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "KO 6",
+        "gruppe": 2,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Die BE aller Rüstungen ist um 1 gesenkt.</body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.yolbyoQTaaWVkwvz",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.3BPRLJaIdiy65tCN"
+    },
+    {
+      "_id": "nD5fO0CjtWkM7OFX",
+      "name": "Schildkampf I",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "Attribut KK 4",
+        "gruppe": 3,
+        "text": "Bedingung: Schild.\n\nDu erhältst VT +1.",
+        "sephrastoScript": "modifyKampfstil('Schildkampf', 0, 1, 0, 0)",
+        "stilBedingungen": "Schild",
+        "foundryScript": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.X5bgYIusB6yq4TVs",
+        "duplicateSource": null,
+        "coreVersion": "12.343",
+        "systemId": "Ilaris",
+        "systemVersion": "12.2.0",
+        "createdTime": null,
+        "modifiedTime": 1759478678600,
+        "lastModifiedBy": "bRsoRPItEVb33T1L"
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.nD5fO0CjtWkM7OFX"
+    },
+    {
+      "_id": "3VulWeDvbDQffUTy",
+      "name": "Schildkampf II",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "Attribut KK 6, Vorteil Schildkampf I",
+        "gruppe": 3,
+        "text": "Du erhältst VT +1.\n\nDein Schild ignoriert die übliche Erschwernis für Nebenwaffen (S. 39). Außerdem kannst du die erste VT zwischen zwei Initiativphasen als Freie Reaktion ausführen.",
+        "sephrastoScript": "modifyKampfstil('Schildkampf', 0, 1, 0, 0)",
+        "stilBedingungen": "",
+        "foundryScript": "ignoreSideWeaponMalus('Schild')"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.JiCWTTC19BJI7qOY",
+        "duplicateSource": null,
+        "coreVersion": "12.343",
+        "systemId": "Ilaris",
+        "systemVersion": "12.2.0",
+        "createdTime": null,
+        "modifiedTime": 1759478678600,
+        "lastModifiedBy": "bRsoRPItEVb33T1L"
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.3VulWeDvbDQffUTy"
+    },
+    {
+      "_id": "eoA85xlsvgavqaQw",
+      "name": "Waffenloser Kampf",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "KK 6",
+        "gruppe": 2,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Deine unbewaffneten Angriffe erhalten die Waffeneigenschaften Kopflastig und Wendig (S.&nbsp;47).</body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.Vu9fMLkonemnNJhV",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.eoA85xlsvgavqaQw"
+    },
+    {
+      "_id": "eMWIbktYM0qH1xyu",
+      "name": "Ehrbarer Söldner",
+      "type": "eigenheit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.eMWIbktYM0qH1xyu"
+    },
+    {
+      "_id": "7jAWkFziNAUaeTiG",
+      "name": "Romantischer Träumer",
+      "type": "eigenheit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.7jAWkFziNAUaeTiG"
+    },
+    {
+      "_id": "47GKfsmR47yFh9H3",
+      "name": "Ich kenne meinen Platz",
+      "type": "eigenheit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.47GKfsmR47yFh9H3"
+    },
+    {
+      "_id": "EFIHCEYFjn8s9Vqc",
+      "name": "Provinzler",
+      "type": "eigenheit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.EFIHCEYFjn8s9Vqc"
+    },
+    {
+      "_id": "vaUrBDu3flFCB7Ot",
+      "name": "Handgemenge",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 8,
+        "pw": 8,
+        "attribut_0": "GE",
+        "attribut_1": "KK",
+        "attribut_2": "MU",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Auf Handgemenge würfelst du bei allen waffenlosen Nahkampftechniken, im Umgang mit Handgemengewaffen wie Messern, Dolchen, Schlagstöcken und bei der Verwendung von Schilden.</body>",
+        "pwt": 12
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.vaUrBDu3flFCB7Ot"
+    },
+    {
+      "_id": "DvTbXw2gdpHall5m",
+      "name": "Hiebwaffen",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 8,
+        "pw": 8,
+        "attribut_0": "GE",
+        "attribut_1": "KK",
+        "attribut_2": "MU",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Mit der Fertigkeit Hiebwaffen führst du alle Arten von stumpfen und scharfen Hiebwaffen, wie Keulen, Äxte und Hämmer. </body>",
+        "pwt": 12
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.DvTbXw2gdpHall5m"
+    },
+    {
+      "_id": "j9i0Ddzj6gNQrOvU",
+      "name": "Klingenwaffen",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 4,
+        "attribut_0": "GE",
+        "attribut_1": "KK",
+        "attribut_2": "MU",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Im Kampf mit allen Varianten von Schwertern, Säbeln und Fechtwaffen werden Proben auf die Fertigkeit Klingenwaffen abgelegt. Dolche gehören nicht zu den Klingenwaffen - sie werden mit der Fertigkeit Handgemenge genutzt.</body>",
+        "pwt": 4
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.j9i0Ddzj6gNQrOvU"
+    },
+    {
+      "_id": "S7ZArT6ZAyzuaVyE",
+      "name": "Stangenwaffen",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 4,
+        "attribut_0": "GE",
+        "attribut_1": "KK",
+        "attribut_2": "MU",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Alle Waffen mit einem langen Schaft gelten als Stangenwaffen. Zu den klassischen Stangenwaffen zählen Speere, Hellebarden und der Schnitter. Zusätzlich werden Kampfstäbe und die Lanzen berittener Kämpfer werden mit diesem Talent genutzt.</body>",
+        "pwt": 4
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.S7ZArT6ZAyzuaVyE"
+    },
+    {
+      "_id": "gF2Qf6tRuqIfnkLn",
+      "name": "Schusswaffen",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 5,
+        "pw": 7,
+        "attribut_0": "FF",
+        "attribut_1": "IN",
+        "attribut_2": "KK",
+        "gruppe": 1,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Mit der Fertigkeit Schusswaffen bedienst du alle Waffen, mit denen Geschosse auf den Gegner abgefeuert werden. Dazu gehören so verbreitete Schusswaffen wie der Bogen oder die Armbrust, aber auch das Blasrohr.</body>",
+        "pwt": 9
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.gF2Qf6tRuqIfnkLn"
+    },
+    {
+      "_id": "hcZDXHzZ5MQD9SBH",
+      "name": "Wurfwaffen",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 4,
+        "attribut_0": "FF",
+        "attribut_1": "IN",
+        "attribut_2": "KK",
+        "gruppe": 1,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Als Wurfwaffen gelten sämtliche geworfenen Geschosse wie Diskusse oder Wurfspeere. Zusätzlich umfassen sie kurze Wurfwaffen, zu denen Dolche, Wurfsterne und improvisierte Geschosse wie einen Stein oder eine Flasche gehören.</body>",
+        "pwt": 4
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.hcZDXHzZ5MQD9SBH"
+    },
+    {
+      "_id": "12VU3vhlxucxURZK",
+      "name": "Athletik",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 5,
+        "pw": 8,
+        "attribut_0": "GE",
+        "attribut_1": "KK",
+        "attribut_2": "KO",
+        "gruppe": 2,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Athletik umfasst alle Aktivitäten, bei denen der Charakter seinen gesamten Körper kurz- oder längerfristig koordiniert einsetzen muss.</body>",
+        "pwt": 10
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.12VU3vhlxucxURZK"
+    },
+    {
+      "_id": "K6tduDrJe1VPU8zl",
+      "name": "Heimlichkeit",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 3,
+        "pw": 5,
+        "attribut_0": "MU",
+        "attribut_1": "IN",
+        "attribut_2": "GE",
+        "gruppe": 2,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Heimlichkeit ermöglicht es deinem Charakter, ungehört und ungesehen zu bleiben. Die Probe wird häufig vergleichend gegen die Wachsamkeit deines Kontrahenten gewürfelt.</body>",
+        "pwt": 6
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.K6tduDrJe1VPU8zl"
+    },
+    {
+      "_id": "MKAI6nIMAcNxOit6",
+      "name": "Selbstbeherrschung",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 5,
+        "pw": 8,
+        "attribut_0": "MU",
+        "attribut_1": "MU",
+        "attribut_2": "KO",
+        "gruppe": 2,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Selbstbeherrschung erlaubt es dir, widrige Umstände, körperliche Schmerzen oder andere Ablenkungen zu ignorieren und dich auf das einzig Wichtige zu konzentrieren.</body>",
+        "pwt": 10
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.MKAI6nIMAcNxOit6"
+    },
+    {
+      "_id": "MCIbYsBptZxwWSDk",
+      "name": "Wahrnehmung",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 4,
+        "pw": 4,
+        "attribut_0": "IN",
+        "attribut_1": "IN",
+        "attribut_2": "KL",
+        "gruppe": 2,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Wahrnehmung ist die Fähigkeit, selbst kleinste Sinneseindrücke wahrzunehmen und richtig zu interpretieren.</body>",
+        "pwt": 6
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.MCIbYsBptZxwWSDk"
+    },
+    {
+      "_id": "dfYjBApV0woQhhmn",
+      "name": "Autorität",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 1,
+        "pw": 4,
+        "attribut_0": "CH",
+        "attribut_1": "KL",
+        "attribut_2": "MU",
+        "gruppe": 3,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Autorität erlaubt es deinem Charakter, sich Respekt zu verschaffen und seinen Willen durchzusetzen.</body>",
+        "pwt": 4
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.dfYjBApV0woQhhmn"
+    },
+    {
+      "_id": "Smck3Vb6kIBNti54",
+      "name": "Beeinflussung",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 5,
+        "pw": 6,
+        "attribut_0": "CH",
+        "attribut_1": "CH",
+        "attribut_2": "IN",
+        "gruppe": 3,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Hierunter fallen sämtliche Techniken, um das Gegenüber zu einer gewünschten Handlung zu bewegen. Dabei werden Betören und Überreden oft als vergleichende Proben gegen die Menschenkenntnis des Opfers gewürfelt.</body>",
+        "pwt": 8
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.Smck3Vb6kIBNti54"
+    },
+    {
+      "_id": "SH4bjiAnBFCPs6xn",
+      "name": "Gebräuche",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 5,
+        "pw": 6,
+        "attribut_0": "CH",
+        "attribut_1": "IN",
+        "attribut_2": "KL",
+        "gruppe": 3,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Gebräuche stellt das Wissen um fremde und vertraute Kulturen sowie die dort herrschenden gesellschaftlichen Normen dar. Wie heißt der Markgrafen und wie sprichst du ihn an? In welchem Viertel findest du eine vertrauenswürdige Herberge, verschwiegene Schläger oder die neuesten Gerüchte? Wie funktioniert das Kamelspiel und auf welches Getränk könntest du deinen Gegner einladen? Herrscht in der nächsten Stadt ein Waffenverbot und wie streng wird es ausgelegt? Gebräuche beantwortet all diese Fragen und verhindert, dass du unangenehm auffällst.</body>",
+        "pwt": 8
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.SH4bjiAnBFCPs6xn"
+    },
+    {
+      "_id": "rwubYw6tu1sVODwz",
+      "name": "Derekunde",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 1,
+        "pw": 4,
+        "attribut_0": "KL",
+        "attribut_1": "IN",
+        "attribut_2": "FF",
+        "gruppe": 4,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Darunter fällt das theoretische Wissen über Natur, Tiere und Pflanzen, sowie um die Geographie.</body>",
+        "pwt": 4
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.rwubYw6tu1sVODwz"
+    },
+    {
+      "_id": "DBONNdo7BBxLzjl2",
+      "name": "Mythenkunde",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 1,
+        "pw": 3,
+        "attribut_0": "KL",
+        "attribut_1": "KL",
+        "attribut_2": "IN",
+        "gruppe": 4,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Mythenkunde ist das Wissen über die Götter und ihre Diener, sowohl die eigene Religion, als auch – weniger genau – fremde Religionen betreffend. Zusätzlich gehört dazu die Kenntnis der Geschichte sowie bekannter Sagen und Legenden, was meist schwer voneinander zu trennen ist.</body>",
+        "pwt": 3
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.DBONNdo7BBxLzjl2"
+    },
+    {
+      "_id": "HTRyO52Tagk3WCSy",
+      "name": "Magiekunde",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 3,
+        "attribut_0": "KL",
+        "attribut_1": "KL",
+        "attribut_2": "MU",
+        "gruppe": 4,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Die astrale Kraft durchzieht die ganze Welt und wird seit Jahrtausenden von Zauberern genutzt. Magiekunde ist das theoretische Wissen über diese Kraft und ihre Verwendung.</body>",
+        "pwt": 3
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.HTRyO52Tagk3WCSy"
+    },
+    {
+      "_id": "yErOoZSdPcwIuYw4",
+      "name": "Überleben",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 1,
+        "pw": 5,
+        "attribut_0": "FF",
+        "attribut_1": "GE",
+        "attribut_2": "KO",
+        "gruppe": 4,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Hierunter fallen alle Fähigkeiten, die zum Überleben in der Wildnis erforderlich sind. Du kannst dich orientieren oder einen Lagerplatz, Nahrung und Wasser finden. Außerdem bist du mit typischen Gefahren der Wildnis vertraut und kannst tierische und menschliche Fährten deuten und ihnen folgen.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dieses Wissen ist rein praktisch; exotische Tiere, Monster oder seltene Heilpflanzen fallen nicht in diesen Bereich.</body>",
+        "pwt": 5
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.yErOoZSdPcwIuYw4"
+    },
+    {
+      "_id": "rTvCRNeOFlkmQvz3",
+      "name": "Verschlagenheit",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 3,
+        "attribut_0": "FF",
+        "attribut_1": "IN",
+        "attribut_2": "MU",
+        "gruppe": 5,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Verschlagenheit ist das Handwerk von zwielichtigen Gestalten, die Diebstahl, Falschsspiel und Einbruch nicht scheuen.</body>",
+        "pwt": 3
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.rTvCRNeOFlkmQvz3"
+    },
+    {
+      "_id": "eRcbaDXNm1JXumgY",
+      "name": "Alchemie",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 3,
+        "attribut_0": "FF",
+        "attribut_1": "FF",
+        "attribut_2": "KL",
+        "gruppe": 5,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Alchemie ist die Wissenschaft von der Umwandlung der Stoffe. Mit ihr kannst du nützliche Tränke herstellen oder unbekannte Gebräue analysieren; für beides ist aber zumindest ein einfacher Analysekoffer notwendig.</body>",
+        "pwt": 3
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.eRcbaDXNm1JXumgY"
+    },
+    {
+      "_id": "jev4wYrXzVPZsAMO",
+      "name": "Heilkunde",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 3,
+        "pw": 5,
+        "attribut_0": "CH",
+        "attribut_1": "FF",
+        "attribut_2": "KL",
+        "gruppe": 5,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Ein Heilkundiger bekämpft tödliche Blutungen, heimtückische Gifte sowie langwierige Krankheiten und hilft seinen Gefährten so, wieder auf die Beine zu kommen. </body>",
+        "pwt": 6
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.jev4wYrXzVPZsAMO"
+    },
+    {
+      "_id": "bLkkmGIp4E2oU3ke",
+      "name": "Handwerk",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 1,
+        "pw": 6,
+        "attribut_0": "FF",
+        "attribut_1": "FF",
+        "attribut_2": "KK",
+        "gruppe": 5,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Mit Handwerk schmiedest du Waffen und Rüstungen, fertigst filigrane Mechaniken und stabile Truhen.</body>",
+        "pwt": 6
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.bLkkmGIp4E2oU3ke"
+    },
+    {
+      "_id": "55htPj9jPKlCQ1bX",
+      "name": "Gebräuche: Mittelreich",
+      "type": "talent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "fertigkeit": "Gebräuche"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.55htPj9jPKlCQ1bX"
+    },
+    {
+      "_id": "8QWo7epdZsl09Uwo",
+      "name": "Schilde",
+      "type": "talent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "fertigkeit": "Handgemenge"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.8QWo7epdZsl09Uwo"
+    },
+    {
+      "_id": "8lyKZp7sioxOcWDO",
+      "name": "Unbewaffnet",
+      "type": "talent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "fertigkeit": "Handgemenge"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.8lyKZp7sioxOcWDO"
+    },
+    {
+      "_id": "jfkjgWxL4j2lPt7f",
+      "name": "Einhandhiebwaffen",
+      "type": "talent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "fertigkeit": "Hiebwaffen"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.jfkjgWxL4j2lPt7f"
+    },
+    {
+      "_id": "zbMQEvraGjHPGV4O",
+      "name": "Armbrüste",
+      "type": "talent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "fertigkeit": "Schusswaffen"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.zbMQEvraGjHPGV4O"
+    },
+    {
+      "_id": "WmKRuPfhWQIcxipV",
+      "name": "Laufen",
+      "type": "talent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "fertigkeit": "Athletik"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.WmKRuPfhWQIcxipV"
+    },
+    {
+      "_id": "eoAOxMrNC4reohBN",
+      "name": "Zähigkeit",
+      "type": "talent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "fertigkeit": "Selbstbeherrschung"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.eoAOxMrNC4reohBN"
+    },
+    {
+      "_id": "7pFUw3zvwBEgANuv",
+      "name": "Wachsamkeit",
+      "type": "talent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "fertigkeit": "Wahrnehmung"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.7pFUw3zvwBEgANuv"
+    },
+    {
+      "_id": "wRhpxgTwebuwUd8e",
+      "name": "Überreden",
+      "type": "talent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "fertigkeit": "Beeinflussung"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.wRhpxgTwebuwUd8e"
+    },
+    {
+      "_id": "aRU53ajr92n9KCC3",
+      "name": "Sprache: Garethi",
+      "type": "freie_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "stufe": 2,
+        "text": "Sprache: Garethi",
+        "gruppe": "1"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.aRU53ajr92n9KCC3"
+    },
+    {
+      "_id": "SoZ7AmtkFXQN7mOr",
+      "name": "Schrift: Kusliker Zeichen",
+      "type": "freie_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "stufe": 2,
+        "text": "Schrift: Kusliker Zeichen",
+        "gruppe": "1"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.SoZ7AmtkFXQN7mOr"
+    },
+    {
+      "_id": "OL2PQkygFihTyTdM",
+      "name": "Tanzen",
+      "type": "freie_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "stufe": 1,
+        "text": " Tanzen ",
+        "gruppe": "1"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.OL2PQkygFihTyTdM"
+    },
+    {
+      "_id": "AxZN8LwLzOaaJ05X",
+      "name": "Hand",
+      "type": "nahkampfwaffe",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 0,
+        "beschaedigung": 0,
+        "tp": "",
+        "fertigkeit": "Handgemenge",
+        "talent": "Unbewaffnet",
+        "rw": 0,
+        "hauptwaffe": false,
+        "nebenwaffe": false,
+        "eigenschaften": [
+          {
+            "key": "Kopflastig",
+            "parameters": []
+          },
+          {
+            "key": "Parierwaffe",
+            "parameters": []
+          },
+          {
+            "key": "Stumpf",
+            "parameters": []
+          },
+          {
+            "key": "Wendig",
+            "parameters": []
+          },
+          {
+            "key": "Zerbrechlich",
+            "parameters": []
+          },
+          {
+            "key": "Kein Malus als Nebenwaffe",
+            "parameters": []
+          }
+        ],
+        "text": "",
+        "aufbewahrungs_ort": "tragend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "wm_at": 0,
+        "wm_vt": 0,
+        "dice_anzahl": 1,
+        "dice_plus": 0,
+        "mod_at": null,
+        "mod_vt": null,
+        "mod_schaden": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.AxZN8LwLzOaaJ05X"
+    },
+    {
+      "_id": "zexfON5TJ1ZOXVbl",
+      "name": "Streitaxt",
+      "type": "nahkampfwaffe",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 8,
+        "beschaedigung": 0,
+        "tp": "",
+        "fertigkeit": "Hiebwaffen",
+        "talent": "Einhandhiebwaffen",
+        "rw": 1,
+        "hauptwaffe": false,
+        "nebenwaffe": false,
+        "eigenschaften": [
+          {
+            "key": "Kopflastig",
+            "parameters": []
+          }
+        ],
+        "text": "",
+        "aufbewahrungs_ort": "tragend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "wm_at": 0,
+        "wm_vt": 0,
+        "dice_anzahl": 2,
+        "dice_plus": 1,
+        "mod_at": null,
+        "mod_vt": null,
+        "mod_schaden": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.zexfON5TJ1ZOXVbl"
+    },
+    {
+      "_id": "TqEZZDLuTQEFyDrz",
+      "name": "Holzschild (SK)",
+      "type": "nahkampfwaffe",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 8,
+        "beschaedigung": 0,
+        "tp": "",
+        "fertigkeit": "Handgemenge",
+        "talent": "Schilde",
+        "rw": 0,
+        "hauptwaffe": false,
+        "nebenwaffe": false,
+        "eigenschaften": [
+          {
+            "key": "Schild",
+            "parameters": []
+          },
+          {
+            "key": "Stumpf",
+            "parameters": []
+          }
+        ],
+        "text": "",
+        "aufbewahrungs_ort": "tragend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "wm_at": 1,
+        "wm_vt": 1,
+        "dice_anzahl": 1,
+        "dice_plus": 0,
+        "mod_at": null,
+        "mod_vt": null,
+        "mod_schaden": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.TqEZZDLuTQEFyDrz"
+    },
+    {
+      "_id": "8GEPsJRBLzYEsP67",
+      "name": "Dolch",
+      "type": "nahkampfwaffe",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 9,
+        "beschaedigung": 0,
+        "tp": "",
+        "fertigkeit": "Handgemenge",
+        "talent": "Handgemengewaffen",
+        "rw": 0,
+        "hauptwaffe": false,
+        "nebenwaffe": false,
+        "eigenschaften": [],
+        "text": "",
+        "aufbewahrungs_ort": "tragend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "wm_at": 0,
+        "wm_vt": 0,
+        "dice_anzahl": 1,
+        "dice_plus": 1,
+        "mod_at": null,
+        "mod_vt": null,
+        "mod_schaden": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.8GEPsJRBLzYEsP67"
+    },
+    {
+      "_id": "X1vKAW3NzwJCq4w5",
+      "name": "Leichte Armbrust",
+      "type": "fernkampfwaffe",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 4,
+        "beschaedigung": 0,
+        "tp": "",
+        "fertigkeit": "Schusswaffen",
+        "talent": "Armbrüste",
+        "rw": 32,
+        "hauptwaffe": false,
+        "nebenwaffe": false,
+        "eigenschaften": [
+          {
+            "key": "Zweihändig",
+            "parameters": []
+          }
+        ],
+        "text": "",
+        "aufbewahrungs_ort": "tragend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "wm_fk": 0,
+        "lz": 4,
+        "dice_anzahl": 3,
+        "dice_plus": 1,
+        "wm_at": 0,
+        "wm_vt": 0,
+        "mod_at": null,
+        "mod_vt": null,
+        "mod_schaden": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.X1vKAW3NzwJCq4w5"
+    },
+    {
+      "_id": "CEI0t9F6AT1zUld0",
+      "name": "Kettenhemd mit Lederteilen",
+      "type": "ruestung",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 0,
+        "beschaedigung": 0,
+        "aufbewahrungs_ort": "mitführend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "rs": 2,
+        "be": 2,
+        "rs_beine": 1,
+        "rs_larm": 2,
+        "rs_rarm": 2,
+        "rs_bauch": 2,
+        "rs_brust": 3,
+        "rs_kopf": 2,
+        "aktiv": false,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body></body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.CEI0t9F6AT1zUld0"
+    },
+    {
+      "_id": "ld0rap82UsDDLPj9",
+      "name": "10 Bolzen im Köcher",
+      "type": "gegenstand",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 0,
+        "beschaedigung": 0,
+        "aufbewahrungs_ort": "mitführend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "text": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.ld0rap82UsDDLPj9"
+    },
+    {
+      "_id": "JGwgEQ3wdUjimrWZ",
+      "name": "Rucksack, Mantel, Wolldecke",
+      "type": "gegenstand",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 0,
+        "beschaedigung": 0,
+        "aufbewahrungs_ort": "mitführend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "text": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.JGwgEQ3wdUjimrWZ"
+    },
+    {
+      "_id": "aWBQ0TIyvIzHfhWr",
+      "name": "Ersatzkleidung und gute Wanderstiefel",
+      "type": "gegenstand",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 0,
+        "beschaedigung": 0,
+        "aufbewahrungs_ort": "mitführend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "text": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.aWBQ0TIyvIzHfhWr"
+    },
+    {
+      "_id": "wtbUgPbpy1BG0R5Y",
+      "name": "3 Tage Proviant, Wasserschlauch",
+      "type": "gegenstand",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 0,
+        "beschaedigung": 0,
+        "aufbewahrungs_ort": "mitführend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "text": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.wtbUgPbpy1BG0R5Y"
+    },
+    {
+      "_id": "Zs8kBgGA0kUyYcIj",
+      "name": "Einfaches Essgeschirr",
+      "type": "gegenstand",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 0,
+        "beschaedigung": 0,
+        "aufbewahrungs_ort": "mitführend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "text": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!AOWQwweHsmqHk6RL.Zs8kBgGA0kUyYcIj"
+    }
+  ],
+  "effects": [],
+  "folder": null,
+  "ownership": {
+    "default": 0,
+    "oa0cULjciXK52aoL": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "12.0.2",
+    "createdTime": 1747089138334,
+    "modifiedTime": 1747089889172,
+    "lastModifiedBy": "oa0cULjciXK52aoL"
+  },
+  "_id": "AOWQwweHsmqHk6RL",
+  "sort": 1400000,
+  "_key": "!actors!AOWQwweHsmqHk6RL"
+}

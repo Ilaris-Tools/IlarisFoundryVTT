@@ -1,0 +1,41 @@
+{
+  "name": "Kirschblütenregen",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Friede",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Kirschblüten regnen aus dem Himmel herab. Nah- und Fernkampfangriffe auf dich sind um –4 erschwert, solange du selbst nicht angreifst.",
+    "maechtig": "Der Malus steigt um –1.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "2 Aktionen",
+    "ziel": "selbst",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "4 Minuten",
+    "kosten": "8 KaP",
+    "erlernen": "Tsa 14",
+    "pw": 0,
+    "gruppe": 50
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "1R4sZ9S1BiJjN9fh",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!1R4sZ9S1BiJjN9fh"
+}

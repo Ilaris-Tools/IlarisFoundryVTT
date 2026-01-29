@@ -1,0 +1,29 @@
+{
+  "name": "Laufen",
+  "type": "talent",
+  "img": "systems/Ilaris/assets/images/skills/profan-talent.svg",
+  "system": {
+    "text": "Laufen kommt in Verfolgungsjagden zu Fuß zum Einsatz, wenn du einen Verbrecher stellen oder einem Raubtier entkommen möchtest.",
+    "fertigkeit": "Athletik"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "H6FrgvQ5oIQAspqL",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!H6FrgvQ5oIQAspqL"
+}

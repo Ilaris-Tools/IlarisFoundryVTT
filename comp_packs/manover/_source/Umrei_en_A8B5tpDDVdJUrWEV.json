@@ -1,0 +1,46 @@
+{
+  "name": "Umreißen",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": "",
+    "modifications": {
+      "0": {
+        "type": "ZERO_DAMAGE",
+        "value": 0,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
+    "gruppe": "0",
+    "probe": "AT",
+    "gegenprobe": "GE oder (nur für große und sehr große Gegner) KO",
+    "text": "Dein Ziel stürzt und liegt am Boden. Das Manöver senkt den Schaden des Angriffes auf 0. Sollte der Angriff ohnehin keinen Schaden anrichten, ist das Manöver nicht möglich.",
+    "input": {
+      "label": "",
+      "field": "CHECKBOX"
+    },
+    "isBaseManoever": true
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "A8B5tpDDVdJUrWEV",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "12.0.2",
+    "createdTime": null,
+    "modifiedTime": 1746878486959,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!A8B5tpDDVdJUrWEV"
+}

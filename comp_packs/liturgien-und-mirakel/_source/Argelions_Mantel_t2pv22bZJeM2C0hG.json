@@ -1,0 +1,41 @@
+{
+  "name": "Argelions Mantel",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Abu al'Mada, Magie, Magiebann",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du ignorierst bei allen auf dich gewirkten, schädlichen Zaubern zwei Stufen Mächtige Magie. Schädliche Zauber ohne Mächtige Magie haben auf dich keine Wirkung.",
+    "maechtig": "Du ignorierst eine weitere Stufe Mächtige Magie.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "16 Aktionen",
+    "ziel": "selbst",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Stunde",
+    "kosten": "8 KaP",
+    "erlernen": "Pra 14; Hes 16; Phe 18",
+    "pw": 0,
+    "gruppe": 30
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "t2pv22bZJeM2C0hG",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!t2pv22bZJeM2C0hG"
+}

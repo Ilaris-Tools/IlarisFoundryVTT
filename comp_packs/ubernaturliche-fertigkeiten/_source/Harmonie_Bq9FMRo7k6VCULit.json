@@ -1,0 +1,36 @@
+{
+  "name": "Harmonie",
+  "type": "uebernatuerliche_fertigkeit",
+  "img": "systems/Ilaris/assets/images/skills/karmal-skill.svg",
+  "system": {
+    "basis": 0,
+    "fw": 0,
+    "pw": 0,
+    "attribut_0": "CH",
+    "attribut_1": "FF",
+    "attribut_2": "IN",
+    "gruppe": 1,
+    "text": "Im güldenländisch geprägten Kult West- und Nordaventuriens steht die Harmonie der Göttin im Vordergrund. Die Geweihten widmen sich der Ausrichtung von Festen, der Pferdezucht, dem Weinbau und den schönen Künsten.",
+    "voraussetzung": "Vorteil Tradition der Rahjageweihten I"
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "Bq9FMRo7k6VCULit",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!Bq9FMRo7k6VCULit"
+}

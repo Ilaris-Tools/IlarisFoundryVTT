@@ -1,0 +1,48 @@
+{
+  "name": "Mächtige Liturgie",
+  "type": "manoever",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "voraussetzungen": "Vorteil Geweiht I",
+    "input": {
+      "label": "",
+      "field": "NUMBER",
+      "min": 0,
+      "max": null
+    },
+    "modifications": {
+      "0": {
+        "type": "ATTACK",
+        "value": -4,
+        "operator": "ADD",
+        "target": "",
+        "affectedByInput": true
+      }
+    },
+    "gruppe": "3",
+    "probe": "Liturgie -4",
+    "gegenprobe": "",
+    "text": "Verstärkt die Wirkung der Liturgie (siehe Liturgie). Zusätzlich steigt die Schwierigkeit von Konterproben (S. 124) gegen die Liturgie um +4 Punkte.",
+    "isBaseManoever": true
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "wxO3RaUQFgMcP859",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "12.0.2",
+    "createdTime": null,
+    "modifiedTime": 1747813775968,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!wxO3RaUQFgMcP859"
+}

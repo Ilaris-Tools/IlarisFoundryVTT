@@ -1,0 +1,1243 @@
+{
+  "name": "Alrik die leere Vorlage",
+  "type": "held",
+  "img": "systems/Ilaris/assets/images/icon/alrik.svg",
+  "system": {
+    "gesundheit": {
+      "erschoepfung": 0,
+      "wunden": 0,
+      "wundabzuege": 0,
+      "wundenignorieren": false,
+      "display": "Volle Gesundheit",
+      "hp": {
+        "max": 9,
+        "value": 9,
+        "threshold": 0
+      }
+    },
+    "attribute": {
+      "KO": {
+        "wert": 0,
+        "pw": 0
+      },
+      "MU": {
+        "wert": 0,
+        "pw": 0
+      },
+      "GE": {
+        "wert": 0,
+        "pw": 0
+      },
+      "KK": {
+        "wert": 0,
+        "pw": 0
+      },
+      "IN": {
+        "wert": 0,
+        "pw": 0
+      },
+      "KL": {
+        "wert": 0,
+        "pw": 0
+      },
+      "CH": {
+        "wert": 0,
+        "pw": 0
+      },
+      "FF": {
+        "wert": 0,
+        "pw": 0
+      }
+    },
+    "abgeleitete": {
+      "globalermod": 0,
+      "ws": 0,
+      "ws_stern": 0,
+      "be": 0,
+      "be_traglast": 0,
+      "ws_beine": 0,
+      "ws_larm": 0,
+      "ws_rarm": 0,
+      "ws_bauch": 0,
+      "ws_brust": 0,
+      "ws_kopf": 0,
+      "mr": 0,
+      "gs": 0,
+      "ini": 0,
+      "dh": 0,
+      "traglast_intervall": 0,
+      "traglast": 0
+    },
+    "schips": {
+      "schips": 4,
+      "schips_stern": 4
+    },
+    "initiative": 0,
+    "furcht": {
+      "furchtstufe": 0,
+      "furchtabzuege": 0,
+      "display": ""
+    },
+    "modifikatoren": {
+      "manuellermod": 0,
+      "nahkampfmod": 0
+    },
+    "geld": {
+      "dukaten": 0,
+      "silbertaler": 0,
+      "heller": 0,
+      "kreuzer": 0
+    },
+    "getragen": 0,
+    "notes": "Hallo",
+    "misc": {
+      "selected_kampfstil": "ohne"
+    }
+  },
+  "items": [
+    {
+      "_id": "6YEjaDDrYs5SpupG",
+      "name": "Muttersprache",
+      "type": "freie_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "stufe": "3",
+        "text": "",
+        "gruppe": "4"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "b5zxAh2tnhbWdvfZ": 3
+      },
+      "_key": "!actors.items!lKTejPIi4AkUndN7.6YEjaDDrYs5SpupG"
+    },
+    {
+      "_id": "0aVL5EDQ75VIChYt",
+      "name": "Handgemenge",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 0,
+        "attribut_0": "GE",
+        "attribut_1": "KK",
+        "attribut_2": "MU",
+        "gruppe": 0,
+        "text": "Auf Handgemenge würfelst du bei allen waffenlosen Nahkampftechniken, im Umgang mit Handgemengewaffen wie Messern, Dolchen, Schlagstöcken und bei der Verwendung von Schilden.",
+        "pwt": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {
+        "core": {
+          "sourceId": "Compendium.world.fertigkeiten-und-talente.nKYwjrMWjQTWWJaI"
+        }
+      },
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "b5zxAh2tnhbWdvfZ": 3
+      },
+      "_key": "!actors.items!lKTejPIi4AkUndN7.0aVL5EDQ75VIChYt"
+    },
+    {
+      "_id": "2iJhamb29TagD2c8",
+      "name": "Hiebwaffen",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 0,
+        "attribut_0": "GE",
+        "attribut_1": "KK",
+        "attribut_2": "MU",
+        "gruppe": 0,
+        "text": "Mit der Fertigkeit Hiebwaffen führst du alle Arten von stumpfen und scharfen Hiebwaffen, wie Keulen, Äxte und Hämmer.",
+        "pwt": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {
+        "core": {
+          "sourceId": "Compendium.world.fertigkeiten-und-talente.VKuo0tLbuc8NJNZ7"
+        }
+      },
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "b5zxAh2tnhbWdvfZ": 3
+      },
+      "_key": "!actors.items!lKTejPIi4AkUndN7.2iJhamb29TagD2c8"
+    },
+    {
+      "_id": "KEWNv9v1nizwzSy5",
+      "name": "Klingenwaffen",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 0,
+        "attribut_0": "GE",
+        "attribut_1": "KK",
+        "attribut_2": "MU",
+        "gruppe": 0,
+        "text": "Im Kampf mit allen Varianten von Schwertern, Säbeln und Fechtwaffen werden Proben auf die Fertigkeit Klingenwaffen abgelegt. Dolche gehören nicht zu den Klingenwaffen - sie werden mit der Fertigkeit Handgemenge genutzt.",
+        "pwt": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {
+        "core": {
+          "sourceId": "Compendium.world.fertigkeiten-und-talente.e8EhAuDcBD5SmCoq"
+        }
+      },
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "b5zxAh2tnhbWdvfZ": 3
+      },
+      "_key": "!actors.items!lKTejPIi4AkUndN7.KEWNv9v1nizwzSy5"
+    },
+    {
+      "_id": "NPvlGcuvDE85tl3x",
+      "name": "Stangenwaffen",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 0,
+        "attribut_0": "GE",
+        "attribut_1": "KK",
+        "attribut_2": "MU",
+        "gruppe": 0,
+        "text": "Alle Waffen mit einem langen Schaft gelten als Stangenwaffen. Zu den klassischen Stangenwaffen zählen Speere, Hellebarden und der Schnitter. Zusätzlich werden Kampfstäbe und die Lanzen berittener Kämpfer werden mit diesem Talent genutzt.",
+        "pwt": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {
+        "core": {
+          "sourceId": "Compendium.world.fertigkeiten-und-talente.RkxanE4szkIwJVon"
+        }
+      },
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "b5zxAh2tnhbWdvfZ": 3
+      },
+      "_key": "!actors.items!lKTejPIi4AkUndN7.NPvlGcuvDE85tl3x"
+    },
+    {
+      "_id": "lkO2aMLvJnkLLaWl",
+      "name": "Schusswaffen",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 0,
+        "attribut_0": "FF",
+        "attribut_1": "IN",
+        "attribut_2": "KK",
+        "gruppe": 1,
+        "text": "Mit der Fertigkeit Schusswaffen bedienst du alle Waffen, mit denen Geschosse auf den Gegner abgefeuert werden. Dazu gehören so verbreitete Schusswaffen wie der Bogen oder die Armbrust, aber auch das Blasrohr.",
+        "pwt": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {
+        "core": {
+          "sourceId": "Compendium.world.fertigkeiten-und-talente.PkBuHluisylsISqU"
+        }
+      },
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "b5zxAh2tnhbWdvfZ": 3
+      },
+      "_key": "!actors.items!lKTejPIi4AkUndN7.lkO2aMLvJnkLLaWl"
+    },
+    {
+      "_id": "jl3ZtOZ3yP0IMIKX",
+      "name": "Wurfwaffen",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 0,
+        "attribut_0": "FF",
+        "attribut_1": "IN",
+        "attribut_2": "KK",
+        "gruppe": 1,
+        "text": "Als Wurfwaffen gelten sämtliche geworfenen Geschosse wie Diskusse oder Wurfspeere. Zusätzlich umfassen sie kurze Wurfwaffen, zu denen Dolche, Wurfsterne und improvisierte Geschosse wie einen Stein oder eine Flasche gehören.",
+        "pwt": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {
+        "core": {
+          "sourceId": "Compendium.world.fertigkeiten-und-talente.Txvu7JfYV1x5caDC"
+        }
+      },
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "b5zxAh2tnhbWdvfZ": 3
+      },
+      "_key": "!actors.items!lKTejPIi4AkUndN7.jl3ZtOZ3yP0IMIKX"
+    },
+    {
+      "_id": "gjqBLF4B6MHTG2kP",
+      "name": "Athletik",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 0,
+        "attribut_0": "GE",
+        "attribut_1": "KK",
+        "attribut_2": "KO",
+        "gruppe": 2,
+        "text": "Athletik umfasst alle Aktivitäten, bei denen der Charakter seinen gesamten Körper kurz- oder längerfristig koordiniert einsetzen muss.",
+        "pwt": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {
+        "core": {
+          "sourceId": "Compendium.world.fertigkeiten-und-talente.xfUrXqG2lKvV7p14"
+        }
+      },
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "b5zxAh2tnhbWdvfZ": 3
+      },
+      "_key": "!actors.items!lKTejPIi4AkUndN7.gjqBLF4B6MHTG2kP"
+    },
+    {
+      "_id": "ZfW8Ybr9faT5YheQ",
+      "name": "Heimlichkeit",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 0,
+        "attribut_0": "MU",
+        "attribut_1": "IN",
+        "attribut_2": "GE",
+        "gruppe": 2,
+        "text": "Heimlichkeit ermöglicht es deinem Charakter, ungehört und ungesehen zu bleiben. Die Probe wird häufig vergleichend gegen die Wachsamkeit deines Kontrahenten gewürfelt.",
+        "pwt": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {
+        "core": {
+          "sourceId": "Compendium.world.fertigkeiten-und-talente.HF4mWQQRqYbponn3"
+        }
+      },
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "b5zxAh2tnhbWdvfZ": 3
+      },
+      "_key": "!actors.items!lKTejPIi4AkUndN7.ZfW8Ybr9faT5YheQ"
+    },
+    {
+      "_id": "etCNnZAE4g7kCXlD",
+      "name": "Selbstbeherrschung",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 0,
+        "attribut_0": "MU",
+        "attribut_1": "MU",
+        "attribut_2": "KO",
+        "gruppe": 2,
+        "text": "Selbstbeherrschung erlaubt es dir, widrige Umstände, körperliche Schmerzen oder andere Ablenkungen zu ignorieren und dich auf das einzig Wichtige zu konzentrieren.",
+        "pwt": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {
+        "core": {
+          "sourceId": "Compendium.world.fertigkeiten-und-talente.YMG0hPi8vyYAGw3a"
+        }
+      },
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "b5zxAh2tnhbWdvfZ": 3
+      },
+      "_key": "!actors.items!lKTejPIi4AkUndN7.etCNnZAE4g7kCXlD"
+    },
+    {
+      "_id": "znrECRXMCcVXMENW",
+      "name": "Wahrnehmung",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 0,
+        "attribut_0": "IN",
+        "attribut_1": "IN",
+        "attribut_2": "KL",
+        "gruppe": 2,
+        "text": "Wahrnehmung ist die Fähigkeit, selbst kleinste Sinneseindrücke wahrzunehmen und richtig zu interpretieren.",
+        "pwt": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {
+        "core": {
+          "sourceId": "Compendium.world.fertigkeiten-und-talente.SLGJdjzVDh5094DG"
+        }
+      },
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "b5zxAh2tnhbWdvfZ": 3
+      },
+      "_key": "!actors.items!lKTejPIi4AkUndN7.znrECRXMCcVXMENW"
+    },
+    {
+      "_id": "N6cwDJ9DTSMSwd9n",
+      "name": "Autorität",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 0,
+        "attribut_0": "CH",
+        "attribut_1": "KL",
+        "attribut_2": "MU",
+        "gruppe": 3,
+        "text": "Autorität erlaubt es deinem Charakter, sich Respekt zu verschaffen und seinen Willen durchzusetzen.",
+        "pwt": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {
+        "core": {
+          "sourceId": "Compendium.world.fertigkeiten-und-talente.Ir4Gtss1z6kleR9z"
+        }
+      },
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "b5zxAh2tnhbWdvfZ": 3
+      },
+      "_key": "!actors.items!lKTejPIi4AkUndN7.N6cwDJ9DTSMSwd9n"
+    },
+    {
+      "_id": "06mGQMfXOVvKyHV2",
+      "name": "Beeinflussung",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 0,
+        "attribut_0": "CH",
+        "attribut_1": "CH",
+        "attribut_2": "IN",
+        "gruppe": 3,
+        "text": "Hierunter fallen sämtliche Techniken, um das Gegenüber zu einer gewünschten Handlung zu bewegen. Dabei werden Betören und Überreden oft als vergleichende Proben gegen die Menschenkenntnis des Opfers gewürfelt.",
+        "pwt": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {
+        "core": {
+          "sourceId": "Compendium.world.fertigkeiten-und-talente.VgfJxfP1fVESaOVC"
+        }
+      },
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "b5zxAh2tnhbWdvfZ": 3
+      },
+      "_key": "!actors.items!lKTejPIi4AkUndN7.06mGQMfXOVvKyHV2"
+    },
+    {
+      "_id": "qv8ujs5p5SEjvnQW",
+      "name": "Gebräuche",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 0,
+        "attribut_0": "CH",
+        "attribut_1": "IN",
+        "attribut_2": "KL",
+        "gruppe": 3,
+        "text": "Gebräuche stellt das Wissen um fremde und vertraute Kulturen sowie die dort herrschenden gesellschaftlichen Normen dar. Wie heißt der Markgrafen und wie sprichst du ihn an? In welchem Viertel findest du eine vertrauenswürdige Herberge, verschwiegene Schläger oder die neuesten Gerüchte? Wie funktioniert das Kamelspiel und auf welches Getränk könntest du deinen Gegner einladen? Herrscht in der nächsten Stadt ein Waffenverbot und wie streng wird es ausgelegt? Gebräuche beantwortet all diese Fragen und verhindert, dass du unangenehm auffällst.",
+        "pwt": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {
+        "core": {
+          "sourceId": "Compendium.world.fertigkeiten-und-talente.HT25sLjeSTlGGctz"
+        }
+      },
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "b5zxAh2tnhbWdvfZ": 3
+      },
+      "_key": "!actors.items!lKTejPIi4AkUndN7.qv8ujs5p5SEjvnQW"
+    },
+    {
+      "_id": "hteEBDsYR1Iri9Pw",
+      "name": "Derekunde",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 0,
+        "attribut_0": "KL",
+        "attribut_1": "IN",
+        "attribut_2": "FF",
+        "gruppe": 4,
+        "text": "Darunter fällt das theoretische Wissen über Natur, Tiere und Pflanzen, sowie um die Geographie.",
+        "pwt": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {
+        "core": {
+          "sourceId": "Compendium.world.fertigkeiten-und-talente.9KkOyjqF43zq26BS"
+        }
+      },
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "b5zxAh2tnhbWdvfZ": 3
+      },
+      "_key": "!actors.items!lKTejPIi4AkUndN7.hteEBDsYR1Iri9Pw"
+    },
+    {
+      "_id": "azo4mNJebWDq9Roz",
+      "name": "Magiekunde",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 0,
+        "attribut_0": "KL",
+        "attribut_1": "KL",
+        "attribut_2": "MU",
+        "gruppe": 4,
+        "text": "Die astrale Kraft durchzieht die ganze Welt und wird seit Jahrtausenden von Zauberern genutzt. Magiekunde ist das theoretische Wissen über diese Kraft und ihre Verwendung.",
+        "pwt": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {
+        "core": {
+          "sourceId": "Compendium.world.fertigkeiten-und-talente.J9V7wMqNO35xFG4r"
+        }
+      },
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "b5zxAh2tnhbWdvfZ": 3
+      },
+      "_key": "!actors.items!lKTejPIi4AkUndN7.azo4mNJebWDq9Roz"
+    },
+    {
+      "_id": "RFZbs41mYCgswCmM",
+      "name": "Mythenkunde",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 0,
+        "attribut_0": "KL",
+        "attribut_1": "KL",
+        "attribut_2": "IN",
+        "gruppe": 4,
+        "text": "Mythenkunde ist das Wissen über die Götter und ihre Diener, sowohl die eigene Religion, als auch – weniger genau – fremde Religionen betreffend. Zusätzlich gehört dazu die Kenntnis der Geschichte sowie bekannter Sagen und Legenden, was meist schwer voneinander zu trennen ist.",
+        "pwt": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {
+        "core": {
+          "sourceId": "Compendium.world.fertigkeiten-und-talente.YrvEJheymt2Ik51K"
+        }
+      },
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "b5zxAh2tnhbWdvfZ": 3
+      },
+      "_key": "!actors.items!lKTejPIi4AkUndN7.RFZbs41mYCgswCmM"
+    },
+    {
+      "_id": "7pi6Hlx9MkAQeBKU",
+      "name": "Überleben",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 0,
+        "attribut_0": "FF",
+        "attribut_1": "GE",
+        "attribut_2": "KO",
+        "gruppe": 5,
+        "text": "Hierunter fallen alle Fähigkeiten, die zum Überleben in der Wildnis erforderlich sind. Du kannst dich orientieren oder einen Lagerplatz, Nahrung und Wasser finden. Außerdem bist du mit typischen Gefahren der Wildnis vertraut und kannst tierische und menschliche Fährten deuten und ihnen folgen.\nDieses Wissen ist rein praktisch; exotische Tiere, Monster oder seltene Heilpflanzen fallen nicht in diesen Bereich.",
+        "pwt": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {
+        "core": {
+          "sourceId": "Compendium.world.fertigkeiten-und-talente.KHwQkvVexCIP0BLp"
+        }
+      },
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "b5zxAh2tnhbWdvfZ": 3
+      },
+      "_key": "!actors.items!lKTejPIi4AkUndN7.7pi6Hlx9MkAQeBKU"
+    },
+    {
+      "_id": "K3Lw4ZXSrSHnrya5",
+      "name": "Alchemie",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 0,
+        "attribut_0": "FF",
+        "attribut_1": "FF",
+        "attribut_2": "KL",
+        "gruppe": 6,
+        "text": "Alchemie ist die Wissenschaft von der Umwandlung der Stoffe. Mit ihr kannst du nützliche Tränke herstellen oder unbekannte Gebräue analysieren; für beides ist aber zumindest ein einfacher Analysekoffer notwendig.",
+        "pwt": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {
+        "core": {
+          "sourceId": "Compendium.world.fertigkeiten-und-talente.YouQvVw2dbQHA4ca"
+        }
+      },
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "b5zxAh2tnhbWdvfZ": 3
+      },
+      "_key": "!actors.items!lKTejPIi4AkUndN7.K3Lw4ZXSrSHnrya5"
+    },
+    {
+      "_id": "vhNTIi57Lt5a7izF",
+      "name": "Handwerk",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 0,
+        "attribut_0": "FF",
+        "attribut_1": "FF",
+        "attribut_2": "KK",
+        "gruppe": 6,
+        "text": "Mit Handwerk schmiedest du Waffen und Rüstungen, fertigst filigrane Mechaniken und stabile Truhen.",
+        "pwt": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {
+        "core": {
+          "sourceId": "Compendium.world.fertigkeiten-und-talente.XkGRx5H7vyXQN1Ah"
+        }
+      },
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "b5zxAh2tnhbWdvfZ": 3
+      },
+      "_key": "!actors.items!lKTejPIi4AkUndN7.vhNTIi57Lt5a7izF"
+    },
+    {
+      "_id": "5pbbrSUmD4ccl49Z",
+      "name": "Heilkunde",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 0,
+        "attribut_0": "CH",
+        "attribut_1": "FF",
+        "attribut_2": "KL",
+        "gruppe": 6,
+        "text": "Ein Heilkundiger bekämpft tödliche Blutungen, heimtückische Gifte sowie langwierige Krankheiten und hilft seinen Gefährten so, wieder auf die Beine zu kommen.",
+        "pwt": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {
+        "core": {
+          "sourceId": "Compendium.world.fertigkeiten-und-talente.c6jaEsYJb8gOlsJp"
+        }
+      },
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "b5zxAh2tnhbWdvfZ": 3
+      },
+      "_key": "!actors.items!lKTejPIi4AkUndN7.5pbbrSUmD4ccl49Z"
+    },
+    {
+      "_id": "z2VsopujlmWkiN61",
+      "name": "Verschlagenheit",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 0,
+        "attribut_0": "FF",
+        "attribut_1": "IN",
+        "attribut_2": "MU",
+        "gruppe": 6,
+        "text": "Verschlagenheit ist das Handwerk von zwielichtigen Gestalten, die Diebstahl, Falschsspiel und Einbruch nicht scheuen.",
+        "pwt": 0
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {
+        "core": {
+          "sourceId": "Compendium.world.fertigkeiten-und-talente.mPXOFDqVbhC2b6at"
+        }
+      },
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "b5zxAh2tnhbWdvfZ": 3
+      },
+      "_key": "!actors.items!lKTejPIi4AkUndN7.z2VsopujlmWkiN61"
+    },
+    {
+      "_id": "EhZyfQISwqjLfTY3",
+      "name": "Heimatland",
+      "type": "talent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "fertigkeit": "Gebräuche"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "b5zxAh2tnhbWdvfZ": 3
+      },
+      "_key": "!actors.items!lKTejPIi4AkUndN7.EhZyfQISwqjLfTY3"
+    },
+    {
+      "_id": "pH4r4DKxJvOBGgOQ",
+      "name": "Hand",
+      "type": "nahkampfwaffe",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 1,
+        "beschaedigung": 0,
+        "tp": "1W6",
+        "fertigkeit": "Handgemenge",
+        "talent": "Unbewaffnet",
+        "rw": 0,
+        "hauptwaffe": false,
+        "nebenwaffe": false,
+        "eigenschaften": [
+          {
+            "key": "Parierwaffe",
+            "parameters": []
+          },
+          {
+            "key": "Stumpf",
+            "parameters": []
+          },
+          {
+            "key": "Zerbrechlich",
+            "parameters": []
+          },
+          {
+            "key": "Kein Malus als Nebenwaffe",
+            "parameters": []
+          }
+        ],
+        "text": "",
+        "aufbewahrungs_ort": "tragend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "wm_at": 0,
+        "wm_vt": 0,
+        "mod_at": null,
+        "mod_vt": null,
+        "mod_schaden": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {
+        "core": {
+          "sourceId": "Compendium.world.waffen.irgimIykDJE19yYp"
+        }
+      },
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "b5zxAh2tnhbWdvfZ": 3
+      },
+      "_key": "!actors.items!lKTejPIi4AkUndN7.pH4r4DKxJvOBGgOQ"
+    },
+    {
+      "_id": "fjrJY5b1GtTfGmba",
+      "name": "Fuß",
+      "type": "nahkampfwaffe",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 1,
+        "beschaedigung": 0,
+        "tp": "1W6",
+        "fertigkeit": "Handgemenge",
+        "talent": "Unbewaffnet",
+        "rw": 0,
+        "hauptwaffe": false,
+        "nebenwaffe": false,
+        "eigenschaften": [
+          {
+            "key": "Stumpf",
+            "parameters": []
+          },
+          {
+            "key": "Zerbrechlich",
+            "parameters": []
+          },
+          {
+            "key": "Kein Malus als Nebenwaffe",
+            "parameters": []
+          }
+        ],
+        "text": "",
+        "aufbewahrungs_ort": "tragend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "wm_at": 0,
+        "wm_vt": 0,
+        "mod_at": null,
+        "mod_vt": null,
+        "mod_schaden": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {
+        "core": {
+          "sourceId": "Compendium.world.waffen.02WOTiujrcJv8o4z"
+        }
+      },
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "ownership": {
+        "default": 0,
+        "b5zxAh2tnhbWdvfZ": 3
+      },
+      "_key": "!actors.items!lKTejPIi4AkUndN7.fjrJY5b1GtTfGmba"
+    }
+  ],
+  "effects": [],
+  "folder": null,
+  "sort": 1800000,
+  "flags": {
+    "core": {
+      "sourceId": "Actor.Vb8ON8tmyNTGlMuw"
+    }
+  },
+  "_id": "lKTejPIi4AkUndN7",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": 1747089889172,
+    "lastModifiedBy": "oa0cULjciXK52aoL",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3,
+    "VCi329Hkm8zJgCsL": 3
+  },
+  "prototypeToken": {
+    "name": "Alrik die leere Vorlage",
+    "displayName": 20,
+    "actorLink": true,
+    "width": 1,
+    "height": 1,
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "disposition": 1,
+    "displayBars": 50,
+    "bar1": {
+      "attribute": "gesundheit.hp"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "flags": {},
+    "randomImg": false,
+    "light": {
+      "dim": 0,
+      "bright": 0,
+      "angle": 360,
+      "color": null,
+      "alpha": 0.25,
+      "animation": {
+        "speed": 5,
+        "intensity": 5,
+        "type": null,
+        "reverse": false
+      },
+      "negative": false,
+      "priority": 0,
+      "coloration": 1,
+      "attenuation": 0.5,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "darkness": {
+        "min": 0,
+        "max": 1
+      }
+    },
+    "texture": {
+      "src": "systems/Ilaris/assets/images/icon/alrik.svg",
+      "tint": "#ffffff",
+      "scaleX": 1,
+      "scaleY": 1,
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "offsetX": 0,
+      "offsetY": 0,
+      "fit": "contain",
+      "rotation": 0,
+      "alphaThreshold": 0.75
+    },
+    "sight": {
+      "angle": 360,
+      "enabled": true,
+      "range": 15,
+      "brightness": 1,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "appendNumber": false,
+    "prependAdjective": false,
+    "hexagonalShape": 0,
+    "detectionModes": [],
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    }
+  },
+  "_key": "!actors!lKTejPIi4AkUndN7"
+}

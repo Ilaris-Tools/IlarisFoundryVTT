@@ -1,0 +1,2969 @@
+{
+  "name": "Elviner Magierin - Coruna Timerlan",
+  "type": "held",
+  "img": "systems/Ilaris/assets/images/token/kreaturentypen/humanoid.png",
+  "system": {
+    "gesundheit": {
+      "erschoepfung": 0,
+      "wunden": 0,
+      "wundabzuege": 0,
+      "wundenignorieren": 0,
+      "display": "Volle Gesundheit",
+      "hp": {
+        "max": 9,
+        "value": 9,
+        "threshold": 0
+      }
+    },
+    "attribute": {
+      "CH": {
+        "wert": 4,
+        "pw": 0
+      },
+      "FF": {
+        "wert": 2,
+        "pw": 0
+      },
+      "GE": {
+        "wert": 3,
+        "pw": 0
+      },
+      "IN": {
+        "wert": 5,
+        "pw": 0
+      },
+      "KK": {
+        "wert": 2,
+        "pw": 0
+      },
+      "KL": {
+        "wert": 8,
+        "pw": 0
+      },
+      "KO": {
+        "wert": 2,
+        "pw": 0
+      },
+      "MU": {
+        "wert": 6,
+        "pw": 0
+      }
+    },
+    "abgeleitete": {
+      "globalermod": 0,
+      "ws": 0,
+      "ws_stern": 0,
+      "be": 0,
+      "be_traglast": 0,
+      "ws_beine": 0,
+      "ws_larm": 0,
+      "ws_rarm": 0,
+      "ws_bauch": 0,
+      "ws_brust": 0,
+      "ws_kopf": 0,
+      "mr": 0,
+      "gs": 0,
+      "ini": 0,
+      "dh": 0,
+      "traglast_intervall": 0,
+      "traglast": 0,
+      "asp_zugekauft": 0,
+      "gasp": null,
+      "asp_stern": 32
+    },
+    "schips": {
+      "schips": 4,
+      "schips_stern": 4
+    },
+    "initiative": 0,
+    "furcht": {
+      "furchtstufe": 0,
+      "furchtabzuege": 0,
+      "display": ""
+    },
+    "modifikatoren": {
+      "manuellermod": 0,
+      "nahkampfmod": 0
+    },
+    "misc": {
+      "selected_kampfstil": "ohne",
+      "selected_uebernatuerlicher_stil": "ohne",
+      "ist_beritten": false
+    },
+    "geld": {
+      "dukaten": 0,
+      "silbertaler": 0,
+      "heller": 0,
+      "kreuzer": 0
+    },
+    "getragen": 1,
+    "notes": ""
+  },
+  "prototypeToken": {
+    "name": "Elviner Magierin - Coruna Timerlan",
+    "displayName": 20,
+    "actorLink": true,
+    "appendNumber": false,
+    "prependAdjective": false,
+    "width": 1,
+    "height": 1,
+    "texture": {
+      "src": "systems/Ilaris/assets/images/token/kreaturentypen/humanoid.png",
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "offsetX": 0,
+      "offsetY": 0,
+      "fit": "contain",
+      "scaleX": 1,
+      "scaleY": 1,
+      "rotation": 0,
+      "tint": "#ffffff",
+      "alphaThreshold": 0.75
+    },
+    "hexagonalShape": 0,
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "disposition": 1,
+    "displayBars": 50,
+    "bar1": {
+      "attribute": "gesundheit.hp"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "light": {
+      "negative": false,
+      "priority": 0,
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "color": null,
+      "coloration": 1,
+      "dim": 0,
+      "attenuation": 0.5,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "type": null,
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      }
+    },
+    "sight": {
+      "enabled": true,
+      "range": 10,
+      "angle": 360,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "brightness": 0,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "detectionModes": [],
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    },
+    "flags": {},
+    "randomImg": false
+  },
+  "items": [
+    {
+      "_id": "zVvek4xDZhhccTqC",
+      "name": "Scharfsinnig II",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "KL 6",
+        "gruppe": 1,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Proben bei einer Ermittlung oder Recherche sind um +2 erleichtert.<br><br>Bei Recherchen erhältst du einen zusätzlichen Informationsgrad, wenn der gewertete Würfel eine 12 oder höher zeigt.</body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.p5XjDqav98vnQ3DZ",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.zVvek4xDZhhccTqC"
+    },
+    {
+      "_id": "sSPfypDj751POfKD",
+      "name": "Scharfsinnig I",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "KL 4",
+        "gruppe": 1,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Proben bei einer Ermittlung oder Recherche sind um +2 erleichtert.</body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.a5u8kV590mZiWT6x",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.sSPfypDj751POfKD"
+    },
+    {
+      "_id": "jxxRgTD4V1q3604F",
+      "name": "Willensstark I",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "MU 4",
+        "gruppe": 1,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Deine MR steigt um 4 Punkte.</body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.Z56jPFeXc07gOQz2",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.jxxRgTD4V1q3604F"
+    },
+    {
+      "_id": "OQC083WxUojheaMk",
+      "name": "Willensstark II",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "MU 6",
+        "gruppe": 1,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Deine MR steigt um 4 Punkte.<br><br>Auf dich wirkende Furcht-Effekte (S.&nbsp;46) zählen als eine Stufe niedriger.</body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.w8JVKgBmRIDo8rAH",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.OQC083WxUojheaMk"
+    },
+    {
+      "_id": "Jp6MSWDZHQz6mNnP",
+      "name": "Zauberer I",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "keine",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Du verfügst über 8 Astralpunkte und kannst magische Traditionen erlernen. Dämonen, Elementare oder Hellsichtsmagier können dich magisch wahrnehmen. Zauberer I entspricht einem einfachen Magiedilettanten.</body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.ClPMi6Au35vgyndN",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.Jp6MSWDZHQz6mNnP"
+    },
+    {
+      "_id": "HFl2gpVectti7k3R",
+      "name": "Zauberer II",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "Zauberer I",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Du verfügst über 16 Astralpunkte und kannst magische Traditionen erlernen. Dämonen, Elementare oder Hellsichtsmagier können dich magisch wahrnehmen. Zauberer II entspricht einem wenig begabten Alchemisten. </body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.KoD0Njhc6BGBPgpP",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.HFl2gpVectti7k3R"
+    },
+    {
+      "_id": "2PtEzNcvjdSKZczp",
+      "name": "Zauberer III",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "Zauberer II",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Du verfügst über 24 Astralpunkte und kannst magische Traditionen erlernen. Dämonen, Elementare oder Hellsichtsmagier können dich magisch wahrnehmen. Zauberer III entspricht einem ausgebildeten Zauberer.</body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.y4ezFEZLXmQzSZos",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.2PtEzNcvjdSKZczp"
+    },
+    {
+      "_id": "kuTiEdniy6EJw504",
+      "name": "Zauberer IV",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "Zauberer III",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Du verfügst über 32 Astralpunkte und kannst magische Traditionen erlernen. Dämonen, Elementare oder Hellsichtsmagier können dich magisch wahrnehmen. Zauberer IV entspricht einem sehr kompetenten Zauberer.</body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.UUjAfy5gIg2lRq2y",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.kuTiEdniy6EJw504"
+    },
+    {
+      "_id": "zStv8CELyTQ10KGH",
+      "name": "Tradition der Gildenmagier I",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "KL 4; Zauberer I",
+        "gruppe": 5,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Du kannst Zauber in der Tradition der Gildenmagier erlernen und benutzen. Solche Zauber findest du unter den allgemeinen Zaubern, unter Kugelzauber (S.&nbsp;169), Schalenzauber (S.&nbsp;171) und Stabzauber (S.&nbsp;172).<br><br>Wenn du beim Vorbereiten eines Zaubers gestört wirst, sind entsprechende Willenskraftproben um zusätzliche -4 erschwert.</body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.SnmUQpEIOwZ2HiMQ",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.zStv8CELyTQ10KGH"
+    },
+    {
+      "_id": "WRIZ9YA8hSyDRELr",
+      "name": "Tradition der Gildenmagier II",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "KL 6; Tradition der Gildenmagier I",
+        "gruppe": 5,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Gildenmagier verstehen die Matrix eines Zaubers und können ihn leichter verändern. Wenn du einen Zauber mit mindestens zwei unterschiedlichen Basismodifikationen wirkst, ist er zusätzlich um +2 erleichtert.</body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.mXhHKxKqE0EVXQhf",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.WRIZ9YA8hSyDRELr"
+    },
+    {
+      "_id": "Kkh8J8MOw5MRm1CX",
+      "name": "Kontrolliertes Zaubern",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "Zauberer I oder Tradition der Borbaradianer I; KL 4",
+        "gruppe": 4,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Du kannst Zauber während ihrer Wirkungsdauer jederzeit beenden.</body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.sTYLounJXy6iCO2H",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.Kkh8J8MOw5MRm1CX"
+    },
+    {
+      "_id": "dzqOi1sZTaKfpScx",
+      "name": "Effizientes Zaubern",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "Zauberer I oder Tradition der Borbaradianer I; KL 8",
+        "gruppe": 4,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Ermöglicht die spontane Modifikation Kosten sparen.</body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.JduwQhhEtraSUkL0",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.dzqOi1sZTaKfpScx"
+    },
+    {
+      "_id": "ykHRJwIMnnri9Zkx",
+      "name": "Privilegien (Gildenmagier)",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "Zauberer I; Tradition der Gildenmagier I",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Du darfst Geld für magische Dienstleistungen verlangen und hast erleichterten Zugang zu Bibliotheken und Lehrmeistern der eigenen Gilde. Von weltlichen Gerichten kannst du nur in deiner Anwesenheit verurteilt werden oder du wirst vor ein Gildengericht gestellt. Im Gegenzug musst du dich den Bedingungen des Codex Albyricus unterwerfen, also stets als Gildenmagier erkenntlich sein. Auch die meisten Waffen und fast alle Rüstungen mit einem RS von mehr als 1 sind verboten. Diese Privilegien gelten im Einflussgebiet des Codex Albyricus, wie im Mittel- und Horasreich, dem Bornland, im Kalifat und in Aranien, sowie eingeschränkt in Südaventurien.</body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.z3rYA5lHuw0NMlxX",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.ykHRJwIMnnri9Zkx"
+    },
+    {
+      "_id": "KZjmEbYAXhWKefzU",
+      "name": "Der Zweck heiligt die Mittel",
+      "type": "eigenheit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.KZjmEbYAXhWKefzU"
+    },
+    {
+      "_id": "lLytqyRHowI4HXxL",
+      "name": "Niederes Gewürm",
+      "type": "eigenheit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.lLytqyRHowI4HXxL"
+    },
+    {
+      "_id": "4deYkLmUhXiboAfe",
+      "name": "Kurzathmig",
+      "type": "eigenheit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.4deYkLmUhXiboAfe"
+    },
+    {
+      "_id": "z5zogrCSdN7lliPY",
+      "name": "Handgemenge",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 4,
+        "attribut_0": "GE",
+        "attribut_1": "KK",
+        "attribut_2": "MU",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Auf Handgemenge würfelst du bei allen waffenlosen Nahkampftechniken, im Umgang mit Handgemengewaffen wie Messern, Dolchen, Schlagstöcken und bei der Verwendung von Schilden.</body>",
+        "pwt": 4
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.z5zogrCSdN7lliPY"
+    },
+    {
+      "_id": "EaM44OnBDrCRDVk4",
+      "name": "Hiebwaffen",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 4,
+        "attribut_0": "GE",
+        "attribut_1": "KK",
+        "attribut_2": "MU",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Mit der Fertigkeit Hiebwaffen führst du alle Arten von stumpfen und scharfen Hiebwaffen, wie Keulen, Äxte und Hämmer. </body>",
+        "pwt": 4
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.EaM44OnBDrCRDVk4"
+    },
+    {
+      "_id": "wzBQrz4h7IDkmUEO",
+      "name": "Klingenwaffen",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 4,
+        "attribut_0": "GE",
+        "attribut_1": "KK",
+        "attribut_2": "MU",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Im Kampf mit allen Varianten von Schwertern, Säbeln und Fechtwaffen werden Proben auf die Fertigkeit Klingenwaffen abgelegt. Dolche gehören nicht zu den Klingenwaffen - sie werden mit der Fertigkeit Handgemenge genutzt.</body>",
+        "pwt": 4
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.wzBQrz4h7IDkmUEO"
+    },
+    {
+      "_id": "pGFur15KFnpwszT8",
+      "name": "Stangenwaffen",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 3,
+        "pw": 6,
+        "attribut_0": "GE",
+        "attribut_1": "KK",
+        "attribut_2": "MU",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Alle Waffen mit einem langen Schaft gelten als Stangenwaffen. Zu den klassischen Stangenwaffen zählen Speere, Hellebarden und der Schnitter. Zusätzlich werden Kampfstäbe und die Lanzen berittener Kämpfer werden mit diesem Talent genutzt.</body>",
+        "pwt": 7
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.pGFur15KFnpwszT8"
+    },
+    {
+      "_id": "W9kL2fnPg4MvCf35",
+      "name": "Schusswaffen",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 3,
+        "attribut_0": "FF",
+        "attribut_1": "IN",
+        "attribut_2": "KK",
+        "gruppe": 1,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Mit der Fertigkeit Schusswaffen bedienst du alle Waffen, mit denen Geschosse auf den Gegner abgefeuert werden. Dazu gehören so verbreitete Schusswaffen wie der Bogen oder die Armbrust, aber auch das Blasrohr.</body>",
+        "pwt": 3
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.W9kL2fnPg4MvCf35"
+    },
+    {
+      "_id": "1lHO7xWUzSgs70KL",
+      "name": "Wurfwaffen",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 3,
+        "attribut_0": "FF",
+        "attribut_1": "IN",
+        "attribut_2": "KK",
+        "gruppe": 1,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Als Wurfwaffen gelten sämtliche geworfenen Geschosse wie Diskusse oder Wurfspeere. Zusätzlich umfassen sie kurze Wurfwaffen, zu denen Dolche, Wurfsterne und improvisierte Geschosse wie einen Stein oder eine Flasche gehören.</body>",
+        "pwt": 3
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.1lHO7xWUzSgs70KL"
+    },
+    {
+      "_id": "W9pO1ZtxWVsFelM5",
+      "name": "Athletik",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 2,
+        "pw": 3,
+        "attribut_0": "GE",
+        "attribut_1": "KK",
+        "attribut_2": "KO",
+        "gruppe": 2,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Athletik umfasst alle Aktivitäten, bei denen der Charakter seinen gesamten Körper kurz- oder längerfristig koordiniert einsetzen muss.</body>",
+        "pwt": 4
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.W9pO1ZtxWVsFelM5"
+    },
+    {
+      "_id": "VcwDNPceIf9LlLWL",
+      "name": "Heimlichkeit",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 4,
+        "pw": 7,
+        "attribut_0": "MU",
+        "attribut_1": "IN",
+        "attribut_2": "GE",
+        "gruppe": 2,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Heimlichkeit ermöglicht es deinem Charakter, ungehört und ungesehen zu bleiben. Die Probe wird häufig vergleichend gegen die Wachsamkeit deines Kontrahenten gewürfelt.</body>",
+        "pwt": 9
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.VcwDNPceIf9LlLWL"
+    },
+    {
+      "_id": "NclnDffw5H0fAEdo",
+      "name": "Selbstbeherrschung",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 5,
+        "pw": 8,
+        "attribut_0": "MU",
+        "attribut_1": "MU",
+        "attribut_2": "KO",
+        "gruppe": 2,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Selbstbeherrschung erlaubt es dir, widrige Umstände, körperliche Schmerzen oder andere Ablenkungen zu ignorieren und dich auf das einzig Wichtige zu konzentrieren.</body>",
+        "pwt": 10
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.NclnDffw5H0fAEdo"
+    },
+    {
+      "_id": "FZsMI5GCdjvHkyK5",
+      "name": "Wahrnehmung",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 6,
+        "attribut_0": "IN",
+        "attribut_1": "IN",
+        "attribut_2": "KL",
+        "gruppe": 2,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Wahrnehmung ist die Fähigkeit, selbst kleinste Sinneseindrücke wahrzunehmen und richtig zu interpretieren.</body>",
+        "pwt": 6
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.FZsMI5GCdjvHkyK5"
+    },
+    {
+      "_id": "DPXET3iYsWKGYQf1",
+      "name": "Autorität",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 3,
+        "pw": 8,
+        "attribut_0": "CH",
+        "attribut_1": "KL",
+        "attribut_2": "MU",
+        "gruppe": 3,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Autorität erlaubt es deinem Charakter, sich Respekt zu verschaffen und seinen Willen durchzusetzen.</body>",
+        "pwt": 9
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.DPXET3iYsWKGYQf1"
+    },
+    {
+      "_id": "90NUf5wCgE5C6O9p",
+      "name": "Beeinflussung",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 4,
+        "pw": 6,
+        "attribut_0": "CH",
+        "attribut_1": "CH",
+        "attribut_2": "IN",
+        "gruppe": 3,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Hierunter fallen sämtliche Techniken, um das Gegenüber zu einer gewünschten Handlung zu bewegen. Dabei werden Betören und Überreden oft als vergleichende Proben gegen die Menschenkenntnis des Opfers gewürfelt.</body>",
+        "pwt": 8
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.90NUf5wCgE5C6O9p"
+    },
+    {
+      "_id": "yu5xi9JOxVPeVLHU",
+      "name": "Gebräuche",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 3,
+        "pw": 8,
+        "attribut_0": "CH",
+        "attribut_1": "IN",
+        "attribut_2": "KL",
+        "gruppe": 3,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Gebräuche stellt das Wissen um fremde und vertraute Kulturen sowie die dort herrschenden gesellschaftlichen Normen dar. Wie heißt der Markgrafen und wie sprichst du ihn an? In welchem Viertel findest du eine vertrauenswürdige Herberge, verschwiegene Schläger oder die neuesten Gerüchte? Wie funktioniert das Kamelspiel und auf welches Getränk könntest du deinen Gegner einladen? Herrscht in der nächsten Stadt ein Waffenverbot und wie streng wird es ausgelegt? Gebräuche beantwortet all diese Fragen und verhindert, dass du unangenehm auffällst.</body>",
+        "pwt": 9
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.yu5xi9JOxVPeVLHU"
+    },
+    {
+      "_id": "zN773s6yWNuWj8dI",
+      "name": "Derekunde",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 2,
+        "pw": 6,
+        "attribut_0": "KL",
+        "attribut_1": "IN",
+        "attribut_2": "FF",
+        "gruppe": 4,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Darunter fällt das theoretische Wissen über Natur, Tiere und Pflanzen, sowie um die Geographie.</body>",
+        "pwt": 7
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.zN773s6yWNuWj8dI"
+    },
+    {
+      "_id": "WFfL5d8tZUuqoupm",
+      "name": "Mythenkunde",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 3,
+        "pw": 9,
+        "attribut_0": "KL",
+        "attribut_1": "KL",
+        "attribut_2": "IN",
+        "gruppe": 4,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Mythenkunde ist das Wissen über die Götter und ihre Diener, sowohl die eigene Religion, als auch – weniger genau – fremde Religionen betreffend. Zusätzlich gehört dazu die Kenntnis der Geschichte sowie bekannter Sagen und Legenden, was meist schwer voneinander zu trennen ist.</body>",
+        "pwt": 10
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.WFfL5d8tZUuqoupm"
+    },
+    {
+      "_id": "jkxd4pkNl80fVlJt",
+      "name": "Magiekunde",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 5,
+        "pw": 10,
+        "attribut_0": "KL",
+        "attribut_1": "KL",
+        "attribut_2": "MU",
+        "gruppe": 4,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Die astrale Kraft durchzieht die ganze Welt und wird seit Jahrtausenden von Zauberern genutzt. Magiekunde ist das theoretische Wissen über diese Kraft und ihre Verwendung.</body>",
+        "pwt": 12
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.jkxd4pkNl80fVlJt"
+    },
+    {
+      "_id": "2RmjUxBlGpxuplmM",
+      "name": "Überleben",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 2,
+        "attribut_0": "FF",
+        "attribut_1": "GE",
+        "attribut_2": "KO",
+        "gruppe": 4,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Hierunter fallen alle Fähigkeiten, die zum Überleben in der Wildnis erforderlich sind. Du kannst dich orientieren oder einen Lagerplatz, Nahrung und Wasser finden. Außerdem bist du mit typischen Gefahren der Wildnis vertraut und kannst tierische und menschliche Fährten deuten und ihnen folgen.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dieses Wissen ist rein praktisch; exotische Tiere, Monster oder seltene Heilpflanzen fallen nicht in diesen Bereich.</body>",
+        "pwt": 2
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.2RmjUxBlGpxuplmM"
+    },
+    {
+      "_id": "3rKeZIhP1K7duYQg",
+      "name": "Verschlagenheit",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 4,
+        "attribut_0": "FF",
+        "attribut_1": "IN",
+        "attribut_2": "MU",
+        "gruppe": 5,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Verschlagenheit ist das Handwerk von zwielichtigen Gestalten, die Diebstahl, Falschsspiel und Einbruch nicht scheuen.</body>",
+        "pwt": 4
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.3rKeZIhP1K7duYQg"
+    },
+    {
+      "_id": "kZWrMijYeQ9ZVX0H",
+      "name": "Alchemie",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 2,
+        "pw": 5,
+        "attribut_0": "FF",
+        "attribut_1": "FF",
+        "attribut_2": "KL",
+        "gruppe": 5,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Alchemie ist die Wissenschaft von der Umwandlung der Stoffe. Mit ihr kannst du nützliche Tränke herstellen oder unbekannte Gebräue analysieren; für beides ist aber zumindest ein einfacher Analysekoffer notwendig.</body>",
+        "pwt": 6
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.kZWrMijYeQ9ZVX0H"
+    },
+    {
+      "_id": "kOMQjVWI6VL5fljQ",
+      "name": "Heilkunde",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 2,
+        "pw": 6,
+        "attribut_0": "CH",
+        "attribut_1": "FF",
+        "attribut_2": "KL",
+        "gruppe": 5,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Ein Heilkundiger bekämpft tödliche Blutungen, heimtückische Gifte sowie langwierige Krankheiten und hilft seinen Gefährten so, wieder auf die Beine zu kommen. </body>",
+        "pwt": 7
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.kOMQjVWI6VL5fljQ"
+    },
+    {
+      "_id": "TW8MhYVK07UyHKLl",
+      "name": "Handwerk",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 2,
+        "attribut_0": "FF",
+        "attribut_1": "FF",
+        "attribut_2": "KK",
+        "gruppe": 5,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Mit Handwerk schmiedest du Waffen und Rüstungen, fertigst filigrane Mechaniken und stabile Truhen.</body>",
+        "pwt": 2
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.TW8MhYVK07UyHKLl"
+    },
+    {
+      "_id": "Rs9ol1T5fqPYRuc0",
+      "name": "Gebräuche: Mittelreich",
+      "type": "talent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "fertigkeit": "Gebräuche"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.Rs9ol1T5fqPYRuc0"
+    },
+    {
+      "_id": "BxVxEVPi8TqMTsYW",
+      "name": "Infanteriewaffen und Speere",
+      "type": "talent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "fertigkeit": "Stangenwaffen"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.BxVxEVPi8TqMTsYW"
+    },
+    {
+      "_id": "pc2VAlAHaV67tkD8",
+      "name": "Untertauchen",
+      "type": "talent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "fertigkeit": "Heimlichkeit"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.pc2VAlAHaV67tkD8"
+    },
+    {
+      "_id": "Ig1EPys6uJVmdioK",
+      "name": "Willenskraft",
+      "type": "talent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "fertigkeit": "Selbstbeherrschung"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.Ig1EPys6uJVmdioK"
+    },
+    {
+      "_id": "txuT3XIaQY28w6rj",
+      "name": "Magietheorie",
+      "type": "talent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "fertigkeit": "Magiekunde"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.txuT3XIaQY28w6rj"
+    },
+    {
+      "_id": "wfgur2pclZ0zhYGu",
+      "name": "Sprache: Garethi",
+      "type": "freie_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "stufe": 3,
+        "text": "Sprache: Garethi",
+        "gruppe": "1"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.wfgur2pclZ0zhYGu"
+    },
+    {
+      "_id": "zcCLmhI0Bg8TtMJD",
+      "name": "Schrift: Kusliker Zeichen",
+      "type": "freie_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "stufe": 2,
+        "text": "Schrift: Kusliker Zeichen",
+        "gruppe": "1"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.zcCLmhI0Bg8TtMJD"
+    },
+    {
+      "_id": "biXHF80TXOkahAST",
+      "name": "Sprache: Bosparano",
+      "type": "freie_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "stufe": 2,
+        "text": "Sprache: Bosparano",
+        "gruppe": "1"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.biXHF80TXOkahAST"
+    },
+    {
+      "_id": "cnjHuOQG7SICyhS2",
+      "name": "Antimagie",
+      "type": "uebernatuerliche_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 6,
+        "fw": 0,
+        "pw": 6,
+        "attribut_0": "CH",
+        "attribut_1": "KL",
+        "attribut_2": "MU",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Mit Antimagie kannst du Zauber während der Vorbereitung stören, bereits gewirkte Zauber aufheben und beschworene Wesenheiten bannen. Gerade Magier der Weißen Gilde gelten als Experten der Antimagie.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Die meisten antimagischen Zauber richten sich gegen alle Zauber einer bestimmten übernatürlichen Fertigkeit (siehe Zauber) und verfügen über die <b>vier Modifikationen</b> Gegenzauber, Magie unterdrücken, Zauber aufheben und Wesenheit bannen. Eine dieser vier Modifikationen kombinierst du mit einem antimagischen Zauber. Zum Beispiel kannst du mit dem Zauber Einfluss bannen und der Modifikation Zauber aufheben einen Imperavi aufheben, oder mit dem Elementarbann und Wesenheit bannen einen Dschinn austreiben.</body>",
+        "voraussetzung": "Tradition der Borbaradianer I, Alchemisten I, Geoden I, Gildenmagier I, Druiden I, Elfen I, Hexen I, Kristallomanten I, Schelme I, Scharlatane I oder Magiedilettant"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.cnjHuOQG7SICyhS2"
+    },
+    {
+      "_id": "K4CT1KURxW9oBiuF",
+      "name": "Dämonisch",
+      "type": "uebernatuerliche_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 5,
+        "fw": 0,
+        "pw": 5,
+        "attribut_0": "CH",
+        "attribut_1": "MU",
+        "attribut_2": "MU",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Diese finstere Zauberei ruft Dämonen in die dritte Sphäre, erhebt Untote, erschafft Chimären und Golems oder nutzt die Macht der Niederhöllen für andere zerstörerische Effekte.</body>",
+        "voraussetzung": "Tradition der Borbaradianer I, Alchemisten I, Geoden I, Gildenmagier I, Druiden I, Elfen I, Hexen I, Kristallomanten I, Schelme I, Scharlatane I oder Magiedilettant"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.K4CT1KURxW9oBiuF"
+    },
+    {
+      "_id": "qtIA1xtMHWOcD7LG",
+      "name": "Eigenschaften",
+      "type": "uebernatuerliche_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 3,
+        "fw": 0,
+        "pw": 3,
+        "attribut_0": "GE",
+        "attribut_1": "IN",
+        "attribut_2": "KO",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Mit Eigenschaftsmagie kannst du deine Fähigkeiten und die deiner Gefährten verbessern oder Feinde behindern. </body>",
+        "voraussetzung": "Tradition der Borbaradianer I, Alchemisten I, Geoden I, Gildenmagier I, Druiden I, Elfen I, Hexen I, Kristallomanten I, Schelme I, Scharlatane I oder Magiedilettant"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.qtIA1xtMHWOcD7LG"
+    },
+    {
+      "_id": "183dvajrc15zX1c0",
+      "name": "Einfluss",
+      "type": "uebernatuerliche_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 4,
+        "fw": 7,
+        "pw": 11,
+        "attribut_0": "CH",
+        "attribut_1": "CH",
+        "attribut_2": "IN",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Als Einflusszauberer kannst du die Gedanken, Sinne und Gefühle deiner Mitmenschen manipulieren. Manche Einflusszauber (z.B. Bannbaladin) wirken äußerst subtil und sind während der Wirkung nicht zu bemerken. Im Zweifelsfall kann das Ziel nach dem Ende der Wirkung eine <i>Konterprobe</i> (KL, 16) ablegen, um sich die Verzauberung bewusst zu machen.</body>",
+        "voraussetzung": "Tradition der Borbaradianer I, Alchemisten I, Geoden I, Gildenmagier I, Druiden I, Elfen I, Hexen I, Kristallomanten I, Schelme I, Scharlatane I oder Magiedilettant"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.183dvajrc15zX1c0"
+    },
+    {
+      "_id": "7OXQBGGihzvklq45",
+      "name": "Eis",
+      "type": "uebernatuerliche_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 4,
+        "fw": 0,
+        "pw": 4,
+        "attribut_0": "CH",
+        "attribut_1": "KO",
+        "attribut_2": "MU",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Neben der Kälte wird Eis auch mit Stillstand, Tod, Gefühlskälte und Vernunft assoziiert. Diese Charakterzüge treffen auch auf die elementaren Wesenheiten des Eises zu.</body>",
+        "voraussetzung": "Tradition der Borbaradianer I, Alchemisten I, Geoden I, Gildenmagier I, Druiden I, Elfen I, Hexen I, Kristallomanten I, Schelme I, Scharlatane I oder Magiedilettant"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.7OXQBGGihzvklq45"
+    },
+    {
+      "_id": "TZIkeiyeMYYw73Y9",
+      "name": "Erz",
+      "type": "uebernatuerliche_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 5,
+        "fw": 0,
+        "pw": 5,
+        "attribut_0": "CH",
+        "attribut_1": "KL",
+        "attribut_2": "KO",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Härte und Beständigkeit gelten als Eigenschaften des Erzes, die mit Erzzauberei verstärkt werden können und von Erzelementaren verkörpert werden. </body>",
+        "voraussetzung": "Tradition der Borbaradianer I, Alchemisten I, Geoden I, Gildenmagier I, Druiden I, Elfen I, Hexen I, Kristallomanten I, Schelme I, Scharlatane I oder Magiedilettant"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.TZIkeiyeMYYw73Y9"
+    },
+    {
+      "_id": "i98DmXLSO6hDCCJ1",
+      "name": "Feuer",
+      "type": "uebernatuerliche_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 5,
+        "fw": 0,
+        "pw": 5,
+        "attribut_0": "CH",
+        "attribut_1": "IN",
+        "attribut_2": "MU",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Mit Feuerzauberei kannst du Gegenstände erwärmen oder verbrennen und die lodernden Wesenheiten des Feuers herbeirufen. </body>",
+        "voraussetzung": "Tradition der Borbaradianer I, Alchemisten I, Geoden I, Gildenmagier I, Druiden I, Elfen I, Hexen I, Kristallomanten I, Schelme I, Scharlatane I oder Magiedilettant"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.i98DmXLSO6hDCCJ1"
+    },
+    {
+      "_id": "bBfonvKtnAtKrF88",
+      "name": "Hellsicht",
+      "type": "uebernatuerliche_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 7,
+        "fw": 4,
+        "pw": 11,
+        "attribut_0": "IN",
+        "attribut_1": "KL",
+        "attribut_2": "KL",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Die Hellsicht kann deine Sinne verstärken oder erweitern, sodass du magische Kräfte, Wärme oder Gefühle wahrnehmen kannst. Hellseher sind auch Experten für die Analyse von Zaubern und Artefakten. </body>",
+        "voraussetzung": "Tradition der Borbaradianer I, Alchemisten I, Geoden I, Gildenmagier I, Druiden I, Elfen I, Hexen I, Kristallomanten I, Schelme I, Scharlatane I oder Magiedilettant"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.bBfonvKtnAtKrF88"
+    },
+    {
+      "_id": "dqgV9BAhTUV7HGiW",
+      "name": "Humus",
+      "type": "uebernatuerliche_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 4,
+        "fw": 0,
+        "pw": 4,
+        "attribut_0": "CH",
+        "attribut_1": "CH",
+        "attribut_2": "IN",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Mit Humusmagie kannst du die Kraft der lebenden Natur nutzen, um Wunden zu heilen, Pflanzen wachsen zu lassen oder Humuselementare herbeizurufen. </body>",
+        "voraussetzung": "Tradition der Borbaradianer I, Alchemisten I, Geoden I, Gildenmagier I, Druiden I, Elfen I, Hexen I, Kristallomanten I, Schelme I, Scharlatane I oder Magiedilettant"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.dqgV9BAhTUV7HGiW"
+    },
+    {
+      "_id": "LFNbpFsmqUaRGxzc",
+      "name": "Illusion",
+      "type": "uebernatuerliche_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 4,
+        "fw": 0,
+        "pw": 4,
+        "attribut_0": "CH",
+        "attribut_1": "FF",
+        "attribut_2": "IN",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Illusionen sind Trugbilder, mit denen Scharlatane ihr Publikum in den Bann ziehen. Aber auch manche Dämonen erschaffen Illusionen, um ihre Opfer zu täuschen. </body>",
+        "voraussetzung": "Tradition der Borbaradianer I, Alchemisten I, Geoden I, Gildenmagier I, Druiden I, Elfen I, Hexen I, Kristallomanten I, Schelme I, Scharlatane I oder Magiedilettant"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.LFNbpFsmqUaRGxzc"
+    },
+    {
+      "_id": "xe7jPhyfybjBkDu2",
+      "name": "Kraft",
+      "type": "uebernatuerliche_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 4,
+        "fw": 0,
+        "pw": 4,
+        "attribut_0": "FF",
+        "attribut_1": "KL",
+        "attribut_2": "KO",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Mit dieser Zauberei kannst die Zauberkraft selbst beherrschen, sie verändern und mit ihr Artefakte und magische Waffen erschaffen oder durch den Limbus reisen.</body>",
+        "voraussetzung": "Tradition der Borbaradianer I, Alchemisten I, Geoden I, Gildenmagier I, Druiden I, Elfen I, Hexen I, Kristallomanten I, Schelme I, Scharlatane I oder Magiedilettant"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.xe7jPhyfybjBkDu2"
+    },
+    {
+      "_id": "8rR1jAHC7gh7pWct",
+      "name": "Luft",
+      "type": "uebernatuerliche_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 4,
+        "fw": 0,
+        "pw": 4,
+        "attribut_0": "CH",
+        "attribut_1": "KO",
+        "attribut_2": "MU",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Luftzauberer können Stürme erzeugen und beruhigen, das Wetter beeinflussen und die unsteten Luftelementare herbeirufen. </body>",
+        "voraussetzung": "Tradition der Borbaradianer I, Alchemisten I, Geoden I, Gildenmagier I, Druiden I, Elfen I, Hexen I, Kristallomanten I, Schelme I, Scharlatane I oder Magiedilettant"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.8rR1jAHC7gh7pWct"
+    },
+    {
+      "_id": "AA9CU5takCgF4Ok8",
+      "name": "Temporal",
+      "type": "uebernatuerliche_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 5,
+        "fw": 0,
+        "pw": 5,
+        "attribut_0": "CH",
+        "attribut_1": "KL",
+        "attribut_2": "KO",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Die mysteriöse Temporalmagie greift in den Lauf der Zeit ein und ermöglicht Legenden zufolge immerwährende Zauber oder sogar die Unsterblichkeit. Doch wer die Zeitmagie missbraucht, zieht den Zorn Satinavs auf sich.</body>",
+        "voraussetzung": "Tradition der Borbaradianer I, Alchemisten I, Geoden I, Gildenmagier I, Druiden I, Elfen I, Hexen I, Kristallomanten I, Schelme I, Scharlatane I oder Magiedilettant"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.AA9CU5takCgF4Ok8"
+    },
+    {
+      "_id": "9yFsGguODpBcUNzX",
+      "name": "Umwelt",
+      "type": "uebernatuerliche_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 5,
+        "fw": 0,
+        "pw": 5,
+        "attribut_0": "KK",
+        "attribut_1": "KL",
+        "attribut_2": "MU",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Mit Umweltzaubern kannst du deine direkte Umgebung - also Wetter, Helligkeit oder Schwerkraft - verändern oder mittels Telekinese Gegenstände bewegen. </body>",
+        "voraussetzung": "Tradition der Borbaradianer I, Alchemisten I, Geoden I, Gildenmagier I, Druiden I, Elfen I, Hexen I, Kristallomanten I, Schelme I, Scharlatane I oder Magiedilettant"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.9yFsGguODpBcUNzX"
+    },
+    {
+      "_id": "FZdy272lClsubbyA",
+      "name": "Verständigung",
+      "type": "uebernatuerliche_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 5,
+        "fw": 0,
+        "pw": 5,
+        "attribut_0": "CH",
+        "attribut_1": "IN",
+        "attribut_2": "MU",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Mit Verständigung kannst du Gefühle und Gedanken übertragen oder Tiere, Geister oder magische Wesen zur Hilfe rufen. </body>",
+        "voraussetzung": "Tradition der Borbaradianer I, Alchemisten I, Geoden I, Gildenmagier I, Druiden I, Elfen I, Hexen I, Kristallomanten I, Schelme I, Scharlatane I oder Magiedilettant"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.FZdy272lClsubbyA"
+    },
+    {
+      "_id": "Mis718BGTEOraXQ5",
+      "name": "Verwandlung",
+      "type": "uebernatuerliche_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 4,
+        "fw": 0,
+        "pw": 4,
+        "attribut_0": "FF",
+        "attribut_1": "KL",
+        "attribut_2": "KO",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Verwandler können sich selbst, andere Menschen und sogar Gegenstände verwandeln. </body>",
+        "voraussetzung": "Tradition der Borbaradianer I, Alchemisten I, Geoden I, Gildenmagier I, Druiden I, Elfen I, Hexen I, Kristallomanten I, Schelme I, Scharlatane I oder Magiedilettant"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.Mis718BGTEOraXQ5"
+    },
+    {
+      "_id": "kepPEgKAKxWxlkhP",
+      "name": "Wasser",
+      "type": "uebernatuerliche_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 6,
+        "fw": 0,
+        "pw": 6,
+        "attribut_0": "CH",
+        "attribut_1": "KL",
+        "attribut_2": "MU",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Als Wasserzauberer beherrschst du das unergründlichste aller Elemente und kannst die wechselhaften und unberechenbaren Elementare des Wassers herbeirufen.</body>",
+        "voraussetzung": "Tradition der Borbaradianer I, Alchemisten I, Geoden I, Gildenmagier I, Druiden I, Elfen I, Hexen I, Kristallomanten I, Schelme I, Scharlatane I oder Magiedilettant"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.kepPEgKAKxWxlkhP"
+    },
+    {
+      "_id": "l0UbmFWT4aEr3K4N",
+      "name": "Kugelzauber",
+      "type": "uebernatuerliche_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 4,
+        "fw": 0,
+        "pw": 4,
+        "attribut_0": "CH",
+        "attribut_1": "FF",
+        "attribut_2": "IN",
+        "gruppe": 1,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Die Kristallkugel eines Scharlatans oder Gildenmagiers dient als Fokus für Illusionen, aber auch als Spionagewerkzeug. Alle Talente gelten als <i>Objektrituale</i>.</body>",
+        "voraussetzung": "Tradition der Scharlatane I oder Gildenmagier I"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.l0UbmFWT4aEr3K4N"
+    },
+    {
+      "_id": "aBVdwjGQJWSTd7yu",
+      "name": "Schalenzauber",
+      "type": "uebernatuerliche_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 5,
+        "fw": 0,
+        "pw": 5,
+        "attribut_0": "FF",
+        "attribut_1": "IN",
+        "attribut_2": "KL",
+        "gruppe": 1,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Dieses Ritualinstrument aus Silber oder Mondsilber wird von Alchemisten und einigen Gildenmagiern benutzt. Hexen verwenden stattdessen einen Kessel. Die Talente gelten als <i>Objektrituale</i>, die passiven Effekte der Schale erfordern jedoch keine ständige Berührung.</body>",
+        "voraussetzung": "Tradition der Alchemisten I, Hexen I oder Gildenmagier I"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.aBVdwjGQJWSTd7yu"
+    },
+    {
+      "_id": "K3Pb43UWEAP2b7YY",
+      "name": "Stabzauber",
+      "type": "uebernatuerliche_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 7,
+        "fw": 0,
+        "pw": 7,
+        "attribut_0": "IN",
+        "attribut_1": "KL",
+        "attribut_2": "KL",
+        "gruppe": 1,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Der Zauberstab eines Gildenmagiers ist sicherlich das bekannteste Ritualinstrument. Er unterstützt den Magier als Fackel, Seil oder magischer Rammbock, kann aber auch Astralenergie speichern. Alle Talente gelten als <i>Objektrituale</i>. </body>",
+        "voraussetzung": "Tradition der Gildenmagier I"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.K3Pb43UWEAP2b7YY"
+    },
+    {
+      "_id": "YJoVLyHMjrAJLYLE",
+      "name": "Einfluss bannen",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Antimagie, Einfluss",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Du hebst einen bereits gewirkten Einfluss-Zauber auf, in den keine gAsP geflossen sind. Dein Zauber gilt als <i>Konterprobe</i> (12), bei deren Gelingen der Zielzauber sofort aufgehoben wird.<br><b>Probenschwierigkeit:</b> 12<br><b>Modifikationen:</b> Gegenzauber (Vorbereitungszeit 0 Aktionen, 16 Schritt, 4 AsP; stört einen anderen Zauberer während er einen Einfluss-Zauber vorbereitet. Wirkt als <i>Konterprobe</i> (12), bei deren Gelingen der Zielzauber sofort scheitert.)<br>Magie unterdrücken (Vorbereitungszeit 16 Aktionen, Ziel Zone, Wirkungsdauer 1 Stunde, 8 AsP; in einer Zone von 16 Schritt Radius sind alle zukünftigen Einfluss-Zauber um -8 erschwert. Mächtige Magie erhöht den Malus um -4.)<br><b>Vorbereitungszeit:</b> 8 Aktionen<br><b>Ziel:</b> Zauber<br><b>Reichweite:</b> 8 Schritt<br><b>Wirkungsdauer:</b> augenblicklich<br><b>Kosten:</b> halbe Basiskosten des Zaubers<br><b>Fertigkeiten:</b> Antimagie, Einfluss<br><b>Erlernen:</b> Dru 8; Geo, Hex 12; Ach, Elf, Mag 14; Alch, Sch, Srl 16; 40 EP</body>",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "8 Aktionen",
+        "ziel": "",
+        "reichweite": "8 Schritt",
+        "wirkungsdauer": "augenblicklich",
+        "kosten": "halbe Basiskosten des Zaubers",
+        "erlernen": "",
+        "pw": -1,
+        "gruppe": 1
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.YJoVLyHMjrAJLYLE"
+    },
+    {
+      "_id": "sAtYb8dhG4vNCIs7",
+      "name": "Memorans Gedächtniskraft",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Eigenschaften, Hellsicht",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Du kannst dir sämtliche Bilder, Schriftstücke, Inschriften und ähnliches für immer einprägen. Eine Seite eines Buches kostet dich etwa eine Minute.<br><b>Probenschwierigkeit:</b> 12<br><b>Modifikationen:</b> Drachengedächtnis (-8, Wirkungsdauer 16 Initiativephasen; alles, was du während der Wirkungsdauer siehst, ist dir für immer ins Gedächtnis gebrannt.)<br><b>Vorbereitungszeit:</b> 4 Minuten<br><b>Ziel:</b> selbst<br><b>Reichweite:</b> 4 Schritt<br><b>Wirkungsdauer:</b> 4 Minuten<br><b>Kosten:</b> 8 AsP<br><b>Fertigkeiten:</b> Eigenschaften, Hellsicht<br><b>Erlernen:</b> Alch, Mag 16; Dru 20; 40 EP</body>",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "4 Minuten",
+        "ziel": "",
+        "reichweite": "4 Schritt",
+        "wirkungsdauer": "4 Minuten",
+        "kosten": "8 AsP",
+        "erlernen": "",
+        "pw": -1,
+        "gruppe": 1
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.sAtYb8dhG4vNCIs7"
+    },
+    {
+      "_id": "OQe7wJxCzG6oVQKO",
+      "name": "Bannbaladin",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Einfluss",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>In Rededuellen mit dem Ziel bist du immun gegen die Auswirkungen von ungewohnter Umgebung (S.&nbsp;55).<br><b>Probenschwierigkeit:</b> Magieresistenz<br><b>Mächtige Magie:</b> Für je zwei Stufen gilt dein Vorhaben in einem Rededuell als um eine Stufe ungefährlicher (S.&nbsp;57).<br><b>Modifikationen:</b> Gemeinsame Erinnerung (-4; du teilst eine von dir bestimmte positive Erinnerung mit dem Ziel.)<br><b>Vorbereitungszeit:</b> 2 Aktionen<br><b>Ziel:</b> Einzelperson<br><b>Reichweite:</b> 4 Schritt<br><b>Wirkungsdauer:</b> 1 Stunde<br><b>Kosten:</b> 8 AsP<br><b>Fertigkeiten:</b> Einfluss<br><b>Erlernen:</b> Elf 8; Mag 12; Alch, Dru, Hex, Srl 18; 40 EP</body>",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "2 Aktionen",
+        "ziel": "",
+        "reichweite": "4 Schritt",
+        "wirkungsdauer": "1 Stunde",
+        "kosten": "8 AsP",
+        "erlernen": "",
+        "pw": -1,
+        "gruppe": 1
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.OQe7wJxCzG6oVQKO"
+    },
+    {
+      "_id": "qOAJoQW1adsM0aFo",
+      "name": "Blitz dich find",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Einfluss",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Dein Ziel ist geblendet und erleidet eine Erschwernis von -2 auf Proben.<br><b>Mächtige Magie:</b> Erhöht den Malus um -1.<br><b>Probenschwierigkeit:</b> Magieresistenz<br><b>Vorbereitungszeit:</b> 0 Aktionen<br><b>Ziel:</b> Einzelwesen<br><b>Reichweite:</b> 8 Schritt<br><b>Wirkungsdauer:</b> 4 Initiativephasen<br><b>Kosten:</b> 4 AsP<br><b>Fertigkeiten:</b> Einfluss<br><b>Erlernen:</b> Elf 8; Mag 12; Dru, Hex 14; Ach, Geo, Sch, Srl 16; 40 EP</body>",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "0 Aktionen",
+        "ziel": "",
+        "reichweite": "8 Schritt",
+        "wirkungsdauer": "4 Initiativephasen",
+        "kosten": "4 AsP",
+        "erlernen": "",
+        "pw": -1,
+        "gruppe": 1
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.qOAJoQW1adsM0aFo"
+    },
+    {
+      "_id": "T0aWWmHxHAeCMemp",
+      "name": "Horriphobus Schreckgestalt",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Einfluss",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Dein Opfer hat schreckliche Angst vor dir und erleidet einen Furcht-Effekt Stufe 2.<br><b>Mächtige Magie:</b> Der Furcht-Effekt steigt um eine Stufe.<br><b>Probenschwierigkeit:</b> Magieresistenz<br><b>Vorbereitungszeit:</b> 0 Aktionen<br><b>Ziel:</b> Einzelwesen<br><b>Reichweite:</b> 8 Schritt<br><b>Wirkungsdauer:</b> 1 Stunde<br><b>Kosten:</b> 8 AsP<br><b>Fertigkeiten:</b> Einfluss<br><b>Erlernen:</b> Mag 12; Bor 16; Alch 18; 40 EP</body>",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "0 Aktionen",
+        "ziel": "",
+        "reichweite": "8 Schritt",
+        "wirkungsdauer": "1 Stunde",
+        "kosten": "8 AsP",
+        "erlernen": "",
+        "pw": -1,
+        "gruppe": 1
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.T0aWWmHxHAeCMemp"
+    },
+    {
+      "_id": "SNstbEwAQkRDLCc9",
+      "name": "Imperavi Handlungszwang",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Einfluss",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Dein Ziel muss einen einzigen Befehl von dir ausführen und darf währenddessen nicht gegen dich vorgehen. Widerspricht der Befehl den tiefsten Überzeugungen oder dem Selbsterhaltungstrieb des Zieles, kann es mit einer <i>Konterprobe</i> (Willenskraft, 16) widerstehen. Eine Verschachtelung von Befehlen („Folge allen weiteren Befehlen!“) ist nicht möglich.<br><b>Probenschwierigkeit:</b> Magieresistenz<br><b>Modifikationen:</b> Sofort (-4, 0 Aktionen, 8 AsP; das Ziel muss einen kurzen Befehl sofort ausführen.)<br>Später (-4; der Zauber wirkt erst, sobald ein einfacher Auslöser eintritt.)<br>Dauerhafter Diener (-4, 4 Minuten, Berührung, Wirkungsdauer 16 Tage, 32 AsP; du kannst bis zu 16 Befehle äußern.)<br><b>Vorbereitungszeit:</b> 4 Aktionen<br><b>Ziel:</b> Einzelperson<br><b>Reichweite:</b> 2 Schritt<br><b>Wirkungsdauer:</b> 8 Stunden oder bis der Befehl erfüllt ist<br><b>Kosten:</b> 16 AsP<br><b>Fertigkeiten:</b> Einfluss<br><b>Erlernen:</b> Mag, Dru 16; Bor 18; 60 EP</body>",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "4 Aktionen",
+        "ziel": "",
+        "reichweite": "2 Schritt",
+        "wirkungsdauer": "8 Stunden oder bis der Befehl erfüllt ist",
+        "kosten": "16 AsP",
+        "erlernen": "",
+        "pw": -1,
+        "gruppe": 1
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.SNstbEwAQkRDLCc9"
+    },
+    {
+      "_id": "GBr74Lqh5MI6ZOG9",
+      "name": "Respondami Wahrheitszwang",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Einfluss",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Das Ziel muss eine Ja/Nein-Frage wahrheitsgemäß beantworten. Ist die Frage nicht mit Ja oder Nein zu beantworten, erleidet es 1W6 SP.<br><b>Mächtige Magie:</b> Erlaubt eine weitere Frage.<br><b>Probenschwierigkeit:</b> Magieresistenz<br><b>Vorbereitungszeit:</b> 1 Aktion<br><b>Ziel:</b> Einzelperson<br><b>Reichweite:</b> 2 Schritt<br><b>Wirkungsdauer:</b> 4 Minuten<br><b>Kosten:</b> 4 AsP<br><b>Fertigkeiten:</b> Einfluss<br><b>Erlernen:</b> Dru, Geo, Mag 14; Elf, Hex 16; Alch 18; 40 EP</body>",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "1 Aktion",
+        "ziel": "",
+        "reichweite": "2 Schritt",
+        "wirkungsdauer": "4 Minuten",
+        "kosten": "4 AsP",
+        "erlernen": "",
+        "pw": -1,
+        "gruppe": 1
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.GBr74Lqh5MI6ZOG9"
+    },
+    {
+      "_id": "GQiYJ6CcAViKvp3l",
+      "name": "Somnigravis",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Einfluss",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Ein Ziel in einer ruhenden Position sinkt langsam in einen Tiefschlaf, aus dem es durch lauten Lärm oder Schmerzen geweckt werden kann.<br><b>Probenschwierigkeit:</b> Magieresistenz<br><b>Modifikationen:</b> Beliebiges Wesen (-4; der Zauber wirkt auf alle Wesen, die Schlaf kennen.)<br>Ohnmacht (-8, 1 Aktion, Wirkungsdauer 16 Initiativephasen; das Opfer wird schlagartig ohnmächtig und ist nicht zu wecken.)<br><b>Vorbereitungszeit:</b> 2 Aktionen<br><b>Ziel:</b> Einzelperson<br><b>Reichweite:</b> 4 Schritt<br><b>Wirkungsdauer:</b> 4 Stunden<br><b>Kosten:</b> 8 AsP<br><b>Fertigkeiten:</b> Einfluss<br><b>Erlernen:</b> Elf 12; Mag 14; Alch 16; Ach, Dru, Geo, Hex, Sch, Srl 18; 40 EP</body>",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "2 Aktionen",
+        "ziel": "",
+        "reichweite": "4 Schritt",
+        "wirkungsdauer": "4 Stunden",
+        "kosten": "8 AsP",
+        "erlernen": "",
+        "pw": -1,
+        "gruppe": 1
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.GQiYJ6CcAViKvp3l"
+    },
+    {
+      "_id": "81wT6dR58DG6P4jG",
+      "name": "Blick in die Gedanken",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Hellsicht",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Du siehst die Gedanken deines Ziels als verschwommene Bilder vor dir. Weiß das Ziel, dass seine Gedanken gelesen werden, kann es dich mit einer <i>Konterprobe</i> (Willenskraft, 20) in die Irre führen.<br><b>Mächtige Magie:</b> Du erhältst einen deutlichen/klaren Einblick in die Gedanken deines Ziels.<br><b>Probenschwierigkeit:</b> Magieresistenz<br><b>Modifikationen:</b> Kampfsinn (nur Elf, -4; du kannst die AT des Gegners vorhersehen, VT gegen diesen Gegner sind um +4 erleichtert.)<br>Traumreise (-4, Wirkungsdauer 1 Stunde; du kannst an den Träumen des Ziels teilhaben.)<br>Verhandlungssinn (nicht Elf, -4, Wirkungsdauer 1 Stunde; du kannst die Argumente und Absichten deines Ziels vorhersehen, gesellschaftliche Proben sind um +2 erleichtert.)<br><b>Vorbereitungszeit:</b> 4 Aktionen<br><b>Ziel:</b> Einzelperson<br><b>Reichweite:</b> 4 Schritt<br><b>Wirkungsdauer:</b> 16 Initiativephasen<br><b>Kosten:</b> 8 AsP<br><b>Fertigkeiten:</b> Hellsicht<br><b>Erlernen:</b> Elf, Mag 14; Dru, Hex 16; Geo 18; 40 EP</body>",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "4 Aktionen",
+        "ziel": "",
+        "reichweite": "4 Schritt",
+        "wirkungsdauer": "16 Initiativephasen",
+        "kosten": "8 AsP",
+        "erlernen": "",
+        "pw": -1,
+        "gruppe": 1
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.81wT6dR58DG6P4jG"
+    },
+    {
+      "_id": "tIMZ0toImE2pUdat",
+      "name": "Odem Arcanum",
+      "type": "zauber",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Hellsicht, Kraft",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Du nimmst magische Kraft um das Ziel kurz als roten Schimmer wahr. Das entspricht einem Analysegrad von 1 für die Intensitätsanalyse (mehr dazu S.&nbsp;80).<br><b>Mächtige Magie:</b> Der Analysegrad steigt um 1.<br><b>Probenschwierigkeit:</b> 12<br><b>Modifikationen:</b> Sichtbereich (-4, Zone; wirkt auf alle Objekte im Sichtfeld.)<br><b>Vorbereitungszeit:</b> 1 Aktion<br><b>Ziel:</b> Einzelwesen, Einzelobjekt<br><b>Reichweite:</b> 8 Schritt<br><b>Wirkungsdauer:</b> 2 Initiativephasen<br><b>Kosten:</b> 4 AsP<br><b>Fertigkeiten:</b> Hellsicht, Kraft<br><b>Erlernen:</b> Ach, Alch, Elf, Mag 8; Dru, Geo, Hex 12; Bor, Sch, Srl 14; 40 EP</body>",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "1 Aktion",
+        "ziel": "",
+        "reichweite": "8 Schritt",
+        "wirkungsdauer": "2 Initiativephasen",
+        "kosten": "4 AsP",
+        "erlernen": "",
+        "pw": -1,
+        "gruppe": 1
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.tIMZ0toImE2pUdat"
+    },
+    {
+      "_id": "WSOEiU3vvlZ4Pe4N",
+      "name": "Hand",
+      "type": "nahkampfwaffe",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 0,
+        "beschaedigung": 0,
+        "tp": "",
+        "fertigkeit": "Handgemenge",
+        "talent": "Unbewaffnet",
+        "rw": 0,
+        "hauptwaffe": false,
+        "nebenwaffe": false,
+        "eigenschaften": [
+          {
+            "key": "Parierwaffe",
+            "parameters": []
+          },
+          {
+            "key": "Stumpf",
+            "parameters": []
+          },
+          {
+            "key": "Zerbrechlich",
+            "parameters": []
+          },
+          {
+            "key": "Kein Malus als Nebenwaffe",
+            "parameters": []
+          }
+        ],
+        "text": "",
+        "aufbewahrungs_ort": "tragend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "wm_at": 0,
+        "wm_vt": 0,
+        "dice_anzahl": 1,
+        "dice_plus": 0,
+        "mod_at": null,
+        "mod_vt": null,
+        "mod_schaden": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.WSOEiU3vvlZ4Pe4N"
+    },
+    {
+      "_id": "Ex0259SjYAsPIgFU",
+      "name": "Magierstab",
+      "type": "nahkampfwaffe",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 1,
+        "beschaedigung": 0,
+        "tp": "",
+        "fertigkeit": "Stangenwaffen",
+        "talent": "Infanteriewaffen und Speere",
+        "rw": 2,
+        "hauptwaffe": false,
+        "nebenwaffe": false,
+        "eigenschaften": [
+          {
+            "key": "Stumpf",
+            "parameters": []
+          },
+          {
+            "key": "Unzerstörbar",
+            "parameters": []
+          },
+          {
+            "key": "Zweihändig",
+            "parameters": []
+          }
+        ],
+        "text": "",
+        "aufbewahrungs_ort": "tragend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "wm_at": 0,
+        "wm_vt": 0,
+        "dice_anzahl": 1,
+        "dice_plus": 1,
+        "mod_at": null,
+        "mod_vt": null,
+        "mod_schaden": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.Ex0259SjYAsPIgFU"
+    },
+    {
+      "_id": "1jScqX14QPn1bNTg",
+      "name": "Magierrobe und Kappe",
+      "type": "ruestung",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 0,
+        "beschaedigung": 0,
+        "aufbewahrungs_ort": "mitführend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "rs": 0,
+        "be": 0,
+        "rs_beine": 0,
+        "rs_larm": 0,
+        "rs_rarm": 0,
+        "rs_bauch": 0,
+        "rs_brust": 0,
+        "rs_kopf": 0,
+        "aktiv": false,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body></body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.1jScqX14QPn1bNTg"
+    },
+    {
+      "_id": "g3erORP9x99lNcjz",
+      "name": "Lederne Umhängetasche",
+      "type": "gegenstand",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 0,
+        "beschaedigung": 0,
+        "aufbewahrungs_ort": "mitführend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "text": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.g3erORP9x99lNcjz"
+    },
+    {
+      "_id": "aKArFM6qdj9dTdNs",
+      "name": "Diarium",
+      "type": "gegenstand",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 0,
+        "beschaedigung": 0,
+        "aufbewahrungs_ort": "mitführend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "text": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.aKArFM6qdj9dTdNs"
+    },
+    {
+      "_id": "irCamSlUsWj7C6LI",
+      "name": "Schreibzeug",
+      "type": "gegenstand",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 0,
+        "beschaedigung": 0,
+        "aufbewahrungs_ort": "mitführend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "text": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.irCamSlUsWj7C6LI"
+    },
+    {
+      "_id": "NJDhySHIC3USlE2g",
+      "name": "Reisekleidung",
+      "type": "gegenstand",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 0,
+        "beschaedigung": 0,
+        "aufbewahrungs_ort": "mitführend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "text": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.NJDhySHIC3USlE2g"
+    },
+    {
+      "_id": "DW2ZwFs3SJU9V6NP",
+      "name": "Seife, Bürste, Kamm",
+      "type": "gegenstand",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 0,
+        "beschaedigung": 0,
+        "aufbewahrungs_ort": "mitführend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "text": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.DW2ZwFs3SJU9V6NP"
+    },
+    {
+      "_id": "FeTKwvzmYna23YkK",
+      "name": "Feuerstein, Stahl, Zunder",
+      "type": "gegenstand",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 0,
+        "beschaedigung": 0,
+        "aufbewahrungs_ort": "mitführend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "text": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.FeTKwvzmYna23YkK"
+    },
+    {
+      "_id": "r1tJOAjAIIKfj8lB",
+      "name": "Geldbeutel, 5 Dukaten, 20 Silbertlaer",
+      "type": "gegenstand",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 0,
+        "beschaedigung": 0,
+        "aufbewahrungs_ort": "mitführend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "text": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!t90hRsXnk6oD1uaZ.r1tJOAjAIIKfj8lB"
+    }
+  ],
+  "effects": [],
+  "folder": null,
+  "ownership": {
+    "default": 0,
+    "oa0cULjciXK52aoL": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.343",
+    "systemId": "Ilaris",
+    "systemVersion": "12.2.0",
+    "createdTime": 1747089643833,
+    "modifiedTime": 1759478592000,
+    "lastModifiedBy": "bRsoRPItEVb33T1L"
+  },
+  "_id": "t90hRsXnk6oD1uaZ",
+  "sort": 500000,
+  "_key": "!actors!t90hRsXnk6oD1uaZ"
+}

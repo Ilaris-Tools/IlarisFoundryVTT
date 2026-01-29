@@ -1,0 +1,40 @@
+{
+  "name": "Seefahrt",
+  "type": "fertigkeit",
+  "img": "systems/Ilaris/assets/images/skills/profan-skill.svg",
+  "system": {
+    "basis": 0,
+    "fw": 0,
+    "pw": 0,
+    "attribut_0": "FF",
+    "attribut_1": "GE",
+    "attribut_2": "KK",
+    "gruppe": "6",
+    "text": "Mit Seefahrt kannst du Boote und Schiffe bedienen und instand halten. Erfahrene Seefahrer nehmen als Navigator das Ruder in die Hand.\n\nTalente: Boote, Schiffe, Navigation",
+    "pwt": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {
+    "core": {
+      "sourceId": "Item.vckeyuhmk58SVWBx"
+    }
+  },
+  "_id": "mbPDUkbsFvUpU6lt",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "Ww4drILJ63YXG1Vc": 3
+  },
+  "_key": "!items!mbPDUkbsFvUpU6lt"
+}

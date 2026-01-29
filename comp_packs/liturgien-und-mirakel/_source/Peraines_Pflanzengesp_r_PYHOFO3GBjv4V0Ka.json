@@ -1,0 +1,41 @@
+{
+  "name": "Peraines Pflanzengespür",
+  "type": "liturgie",
+  "img": "systems/Ilaris/assets/images/skills/karmal-talent.svg",
+  "system": {
+    "fertigkeiten": "Wachstum",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du erhältst einen groben Eindruck von der Wirkung der berührten Pflanze – etwa ob sie heilsam, essbar oder giftig ist.",
+    "maechtig": "Du kannst eine weitere Pflanze untersuchen und erhältst einen ungefähren/guten/genauen/detaillierten Eindruck.",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "4 Minuten",
+    "ziel": "Pflanze",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "augenblicklich",
+    "kosten": "2 KaP",
+    "erlernen": "Per 12",
+    "pw": 0,
+    "gruppe": 36
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "PYHOFO3GBjv4V0Ka",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!PYHOFO3GBjv4V0Ka"
+}

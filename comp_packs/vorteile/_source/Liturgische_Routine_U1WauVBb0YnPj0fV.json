@@ -1,0 +1,29 @@
+{
+  "name": "Liturgische Routine",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut KL 4, Vorteil Geweiht I",
+    "gruppe": 6,
+    "text": "Bei Liturgien gewürfelte Patzer gelten nur als gewöhnlich misslungen."
+  },
+  "_id": "U1WauVBb0YnPj0fV",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!U1WauVBb0YnPj0fV"
+}

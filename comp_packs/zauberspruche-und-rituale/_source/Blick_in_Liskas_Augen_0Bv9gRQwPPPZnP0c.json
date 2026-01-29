@@ -1,0 +1,41 @@
+{
+  "name": "Blick in Liskas Augen",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Hellsicht, Geister rufen",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du erhältst den Vorteil Prophezeien (S. 30) und erleidest keine Erschöpfung durch den Einsatz dieser Gabe. Besitzt du die Gabe bereits, sind entsprechende Proben um +4 erleichtert. Notwendige Proben kannst du auf Geister rufen statt auf Willenskraft ablegen.",
+    "maechtig": "",
+    "schwierigkeit": "12",
+    "modifikationen": "",
+    "vorbereitung": "1 Stunde",
+    "ziel": "selbst",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "1 Stunde",
+    "kosten": "8 AsP",
+    "erlernen": "Smn 12",
+    "pw": 0,
+    "gruppe": 7
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "0Bv9gRQwPPPZnP0c",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!0Bv9gRQwPPPZnP0c"
+}

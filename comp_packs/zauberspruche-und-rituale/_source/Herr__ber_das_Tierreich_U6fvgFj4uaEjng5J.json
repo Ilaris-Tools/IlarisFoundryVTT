@@ -1,0 +1,41 @@
+{
+  "name": "Herr über das Tierreich",
+  "type": "zauber",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Einfluss",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Du zwingst ein Tier unter deinen Bann. Es verhält sich, als wäre es gut dressiert und dir bedingungslos loyal und erfüllt deine Befehle. Nur Befehle, die seinen Instinkten klar widersprechen, kann es mit einer Konterprobe (MU, 16) widerstehen.",
+    "maechtig": "",
+    "schwierigkeit": "Magieresistenz",
+    "modifikationen": "Herr der Fliegen (–4; du beherrschst einen Schwarm Kleintiere.)",
+    "vorbereitung": "2 Aktionen",
+    "ziel": "Tier",
+    "reichweite": "4 Schritt",
+    "wirkungsdauer": "1 Stunde",
+    "kosten": "8 AsP",
+    "erlernen": "Dru 8; Geo 12; Elf, Hex 18; Ach, Mag 20",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "flags": {},
+  "_id": "U6fvgFj4uaEjng5J",
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "ownership": {
+    "default": 0,
+    "b5zxAh2tnhbWdvfZ": 3
+  },
+  "_key": "!items!U6fvgFj4uaEjng5J"
+}

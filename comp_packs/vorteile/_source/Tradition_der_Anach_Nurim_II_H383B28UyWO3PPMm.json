@@ -1,0 +1,29 @@
+{
+  "name": "Tradition der Anach-Nurim II",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut KO 6, Vorteil Tradition der Anach-Nurim I",
+    "gruppe": 5,
+    "text": "Wenn du einen Zauber mit verbotenen Pforten oder Blutmagie wirkst, kannst du eine Basismodifikation (z.B. 1x Mächtige Magie) ohne Erschwernis ausführen."
+  },
+  "_id": "H383B28UyWO3PPMm",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!H383B28UyWO3PPMm"
+}

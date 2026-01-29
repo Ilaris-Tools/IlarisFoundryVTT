@@ -1,0 +1,77 @@
+{
+  "name": "Zauberer III",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Vorteil Zauberer II",
+    "gruppe": "0",
+    "text": "Du verfügst über 24 Astralpunkte und kannst magische Traditionen erlernen. Dämonen, Elementare oder Hellsichtsmagier können dich magisch wahrnehmen. Zauberer III entspricht einem ausgebildeten Zauberer."
+  },
+  "_id": "y4ezFEZLXmQzSZos",
+  "effects": [
+    {
+      "name": "Zauberer III",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "changes": [
+        {
+          "key": "system.abgeleitete.asp",
+          "mode": 2,
+          "value": "8",
+          "priority": null
+        }
+      ],
+      "transfer": true,
+      "img": "icons/svg/aura.svg",
+      "_id": "C0ODGPoO2orKU3qt",
+      "type": "base",
+      "system": {},
+      "description": "",
+      "origin": null,
+      "tint": "#ffffff",
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "ilaris": {
+          "sourceType": "vorteil"
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.1.2",
+        "createdTime": 1757617928076,
+        "modifiedTime": 1757618145055,
+        "lastModifiedBy": "FAZTz2Txaxttf8zC"
+      },
+      "_key": "!items.effects!y4ezFEZLXmQzSZos.C0ODGPoO2orKU3qt"
+    }
+  ],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "12.1.2",
+    "createdTime": null,
+    "modifiedTime": 1757617944967,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 32300000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!y4ezFEZLXmQzSZos"
+}

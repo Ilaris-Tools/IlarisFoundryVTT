@@ -1,0 +1,77 @@
+{
+  "name": "Zauberer IV",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Vorteil Zauberer III",
+    "gruppe": "0",
+    "text": "Du verfügst über 32 Astralpunkte und kannst magische Traditionen erlernen. Dämonen, Elementare oder Hellsichtsmagier können dich magisch wahrnehmen. Zauberer IV entspricht einem sehr kompetenten Zauberer."
+  },
+  "_id": "UUjAfy5gIg2lRq2y",
+  "effects": [
+    {
+      "name": "Zauberer IV",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "changes": [
+        {
+          "key": "system.abgeleitete.asp",
+          "mode": 2,
+          "value": "8",
+          "priority": null
+        }
+      ],
+      "transfer": true,
+      "img": "icons/svg/aura.svg",
+      "_id": "D0fLBGVxGVSkA1GY",
+      "type": "base",
+      "system": {},
+      "description": "",
+      "origin": null,
+      "tint": "#ffffff",
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "ilaris": {
+          "sourceType": "vorteil"
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.1.2",
+        "createdTime": 1757617948741,
+        "modifiedTime": 1757618155296,
+        "lastModifiedBy": "FAZTz2Txaxttf8zC"
+      },
+      "_key": "!items.effects!UUjAfy5gIg2lRq2y.D0fLBGVxGVSkA1GY"
+    }
+  ],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "12.1.2",
+    "createdTime": null,
+    "modifiedTime": 1757617984925,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 16000000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!UUjAfy5gIg2lRq2y"
+}

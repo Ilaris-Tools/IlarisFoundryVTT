@@ -1,0 +1,52 @@
+{
+  "name": "Tuzakmesser",
+  "type": "nahkampfwaffe",
+  "system": {
+    "haerte": 10,
+    "beschaedigung": 0,
+    "tp": "2W6+3",
+    "fertigkeit": "Klingenwaffen",
+    "talent": "Zweihandklingenwaffen",
+    "rw": 2,
+    "hauptwaffe": false,
+    "nebenwaffe": false,
+    "eigenschaften": [
+      {
+        "key": "Wendig",
+        "parameters": []
+      },
+      {
+        "key": "Zweihändig",
+        "parameters": []
+      }
+    ],
+    "text": "",
+    "aufbewahrungs_ort": "mitführend",
+    "bewahrt_auf": [],
+    "gewicht_summe": 0,
+    "gewicht": 2,
+    "preis": 400,
+    "wm_at": 0,
+    "wm_vt": 0
+  },
+  "_id": "vaTpfbTXq7NXKOOg",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!vaTpfbTXq7NXKOOg"
+}

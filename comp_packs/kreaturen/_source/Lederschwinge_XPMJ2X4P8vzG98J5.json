@@ -1,0 +1,706 @@
+{
+  "_id": "XPMJ2X4P8vzG98J5",
+  "name": "Lederschwinge",
+  "type": "kreatur",
+  "img": "systems/Ilaris/assets/images/token/kreaturentypen/daimonid.png",
+  "system": {
+    "gesundheit": {
+      "erschoepfung": 0,
+      "wunden": 0,
+      "wundabzuege": 0,
+      "wundenignorieren": false,
+      "display": "Volle Gesundheit",
+      "hp": {
+        "max": 9,
+        "value": 9,
+        "threshold": 0
+      }
+    },
+    "energien": {
+      "asp": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      },
+      "gup": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      },
+      "kap": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      }
+    },
+    "initiative": 0,
+    "furcht": {
+      "furchtstufe": 0,
+      "furchtabzuege": 0,
+      "display": ""
+    },
+    "modifikatoren": {
+      "manuellermod": 0,
+      "nahkampfmod": 0
+    },
+    "schips": {
+      "schips": 4,
+      "schips_stern": 4
+    },
+    "attribute": {
+      "KO": {
+        "wert": 0,
+        "pw": 8
+      },
+      "MU": {
+        "wert": 0,
+        "pw": 10
+      },
+      "GE": {
+        "wert": 0,
+        "pw": 8
+      },
+      "KK": {
+        "wert": 0,
+        "pw": 8
+      },
+      "IN": {
+        "wert": 0,
+        "pw": 8
+      },
+      "KL": {
+        "wert": 0,
+        "pw": -12
+      },
+      "CH": {
+        "wert": 0,
+        "pw": 4
+      },
+      "FF": {
+        "wert": 0,
+        "pw": 6
+      }
+    },
+    "edit": false,
+    "kreaturentyp": "daimonid",
+    "kurzbeschreibung": "Mensch und Fledermaus",
+    "kampfwerte": {
+      "ws": 6,
+      "ws_stern": 7,
+      "ini": 4,
+      "gs": 8,
+      "koloss": null,
+      "mr": 5,
+      "gs_schwimmend": null
+    },
+    "talente": [],
+    "freietalente": [],
+    "kampfunfaehig": "",
+    "text": "",
+    "abgeleitete": {
+      "globalermod": 0,
+      "nahkampfmoddisplay": "-",
+      "globalermoddisplay": "-"
+    }
+  },
+  "items": [
+    {
+      "_id": "u3EbwF3lc1qzpZyi",
+      "name": "Niederwerfen",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "Attribut KK 4",
+        "gruppe": 2,
+        "text": "Erlaubt das Manöver Niederwerfen (AT -4): Gegenprobe: KK. Dein Ziel stürzt und liegt am Boden."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!XPMJ2X4P8vzG98J5.u3EbwF3lc1qzpZyi"
+    },
+    {
+      "_id": "NfWh8Olo08f6nPz2",
+      "name": "Sturmangriff",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "Attribut GE 6",
+        "gruppe": 2,
+        "text": "Erlaubt das Manöver Sturmangriff (Bewegung und AT): Die Kombination der Aktionen Bewegung und Konflikt ist nicht erschwert. Außerdem richtet die nächste Attacke GS Trefferpunkte zusätzlich an."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!XPMJ2X4P8vzG98J5.NfWh8Olo08f6nPz2"
+    },
+    {
+      "_id": "iqSFgrymHwcWnz8W",
+      "name": "Flieger",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Flieger bewegen sich üblicherweise fliegend, die\r\nangegebenen Werte gelten für Angriffe und Bewegung in der\r\nLuft. Am Boden stellen solche Kreaturen meist keine Gefahr\r\ndar. Im Gegensatz dazu kämpfen flugfähige Kreaturen in der\r\nLuft und am Boden gleichermaßen gewandt."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!XPMJ2X4P8vzG98J5.iqSFgrymHwcWnz8W"
+    },
+    {
+      "_id": "sZPJiWd26njiKSyX",
+      "name": "Immunität (Einfluss, Verwandlung)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Immunität (Fertigkeit): Die Kreatur ist immun gegen\r\nalle Zauber, die (auch) der entsprechenden Fertigkeit\r\nzugeordnet sind. Davon ausgenommen sind Effekte, die\r\ndas Wesen nur indirekt betreffen – zum Beispiel erfasst ein\r\nOdem auch einen Dämon mit Immunität (Hellsicht) und eine\r\nImmunität (Umwelt) schützt nicht vor dem Regen, der mittels\r\nWettermeisterschaft gerufen wurde."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!XPMJ2X4P8vzG98J5.sZPJiWd26njiKSyX"
+    },
+    {
+      "_id": "AyVuKt4GP0YaLNMa",
+      "name": "Schmerzimmun I",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Schmerzimmun I/II: Die erste Stufe verleiht Immunität\r\ngegen Blutungen und die Wundschmerzeffekte Betäubt und\r\nOrgantreffer. Die zweite Stufe verleiht Immunität gegen alle\r\nWundschmerzeffekte."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!XPMJ2X4P8vzG98J5.AyVuKt4GP0YaLNMa"
+    },
+    {
+      "_id": "9X7ZB3bX1HJ6XQVU",
+      "name": "Unheilig",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Unheilige Kreaturen sind besonders anfällig gegen\r\nbestimmte karmale Wirkungen, siehe S. 91."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!XPMJ2X4P8vzG98J5.9X7ZB3bX1HJ6XQVU"
+    },
+    {
+      "_id": "bMETWx42xC6QwgCn",
+      "name": "Verwundbarkeit I (geweihte Waffen oder Gegenstände der Gegengottheit)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Verwundbarkeit I/II/III/IV (Schadensquelle): Wann\r\nimmer die Kreatur Wunden durch diese Schadensquelle\r\nerleidet, bekommt sie 1/2/3/4 zusätzliche Wunden."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!XPMJ2X4P8vzG98J5.bMETWx42xC6QwgCn"
+    },
+    {
+      "_id": "If60n4Oy0GrlsiPh",
+      "name": "In die Luft",
+      "type": "info",
+      "system": {
+        "text": "Gelingt der Lederschwinge eine Umklammerung. kann sie ihr Opfer jetzt und in jeder folgenden INI-Ph. 1W3 Schritt nach oben reißen. Löst sich das Opfer aus der Umklammerung, erhält es unter Umständen Fallschaden."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!XPMJ2X4P8vzG98J5.If60n4Oy0GrlsiPh"
+    },
+    {
+      "_id": "jjjCqeRWHi6Uj75i",
+      "name": "Krallen",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Wendig",
+            "text": null
+          }
+        ],
+        "tp": "2W6+1",
+        "haerte": 0,
+        "rw": 0,
+        "lz": 0,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 7,
+        "vt": 7
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!XPMJ2X4P8vzG98J5.jjjCqeRWHi6Uj75i"
+    },
+    {
+      "_id": "ceFCyAXGGYVgnPik",
+      "name": "Klettern",
+      "type": "freiestalent",
+      "system": {
+        "text": "Mit Klettern überwindest du alle Arten von Hindernissen.",
+        "pw": 2,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!XPMJ2X4P8vzG98J5.ceFCyAXGGYVgnPik"
+    },
+    {
+      "_id": "BaY066uKLGVQVRKt",
+      "name": "Akrobatik",
+      "type": "freiestalent",
+      "system": {
+        "text": "Akrobatik wird für gewagte Kunststücke und Balanceakte verwendet und kann auch den Fallschaden reduzieren.",
+        "pw": 4,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!XPMJ2X4P8vzG98J5.BaY066uKLGVQVRKt"
+    },
+    {
+      "_id": "A4AG08p8xbequM3S",
+      "name": "Pirschen",
+      "type": "freiestalent",
+      "system": {
+        "text": "Pirschen ermöglicht das Schleichen, Verstecken und Lauern in der freien Natur. Du pirschst dich auf der Jagd an einen wilden Hirsch heran, legst einen Hinterhalt an einer Reichsstraße oder beobachtest ungesehen das Lager einer Orkbande.",
+        "pw": 4,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!XPMJ2X4P8vzG98J5.A4AG08p8xbequM3S"
+    },
+    {
+      "_id": "tjShjF2PMY0uEdDd",
+      "name": "Fliegen",
+      "type": "freiestalent",
+      "system": {
+        "text": null,
+        "pw": 7,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!XPMJ2X4P8vzG98J5.tjShjF2PMY0uEdDd"
+    },
+    {
+      "_id": "qnaxjKJ6wtaLVGwr",
+      "name": "Willenskraft",
+      "type": "freiestalent",
+      "system": {
+        "text": "Willenskraft erlaubt dir, Beeinflussungen und Versuchungen zu widerstehen und dich nicht ablenken zu lassen. Du kannst dich im Chaos eines Gefechts auf einen Zauber konzentrieren oder einem Heiligen Befehl widerstehen.",
+        "pw": 4,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!XPMJ2X4P8vzG98J5.qnaxjKJ6wtaLVGwr"
+    },
+    {
+      "_id": "rjTkN46JWCESuLls",
+      "name": "Zähigkeit",
+      "type": "freiestalent",
+      "system": {
+        "text": "Zähigkeit hilft dir, Schmerzen und Strapazen zu widerstehen. So kannst du trotz zahlreicher Wunden noch handlungsfähig bleiben und einen Kampf zu euren Gunsten wenden oder eine ganze Nacht hindurch wachen.",
+        "pw": 4,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!XPMJ2X4P8vzG98J5.rjTkN46JWCESuLls"
+    },
+    {
+      "_id": "Ox7IJkIG6iXRcg4T",
+      "name": "Einschüchtern",
+      "type": "freiestalent",
+      "system": {
+        "text": "Einschüchtern jagt dem Gegenüber Angst ein und bringt ihn so zu einer gewünschten Handlung. Die Probe wird oft vergleichend gegen den MU oder die Menschenkenntnis des Gegenübers abgelegt.",
+        "pw": 7,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!XPMJ2X4P8vzG98J5.Ox7IJkIG6iXRcg4T"
+    },
+    {
+      "_id": "LWz4rmGzAkRQEk6M",
+      "name": "Wachsamkeit",
+      "type": "freiestalent",
+      "system": {
+        "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
+        "pw": 6,
+        "profan": true
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!XPMJ2X4P8vzG98J5.LWz4rmGzAkRQEk6M"
+    }
+  ],
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "prototypeToken": {
+    "displayName": 20,
+    "actorLink": false,
+    "width": 1,
+    "height": 1,
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "light": {
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "coloration": 1,
+      "dim": 0,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false,
+        "type": null
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      },
+      "attenuation": 0.5,
+      "negative": false,
+      "priority": 0,
+      "color": null
+    },
+    "disposition": 1,
+    "displayBars": 50,
+    "bar1": {
+      "attribute": "gesundheit.hp"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "flags": {},
+    "randomImg": false,
+    "name": "Lederschwinge",
+    "texture": {
+      "src": "systems/Ilaris/assets/images/token/kreaturentypen/daimonid.png",
+      "scaleX": 1,
+      "scaleY": 1,
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "offsetX": 0,
+      "offsetY": 0,
+      "fit": "contain",
+      "rotation": 0,
+      "tint": "#ffffff",
+      "alphaThreshold": 0.75
+    },
+    "sight": {
+      "angle": 360,
+      "enabled": false,
+      "range": 0,
+      "brightness": 1,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "appendNumber": false,
+    "prependAdjective": false,
+    "hexagonalShape": 0,
+    "detectionModes": [],
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    }
+  },
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!actors!XPMJ2X4P8vzG98J5"
+}

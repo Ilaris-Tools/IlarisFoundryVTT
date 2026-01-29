@@ -1,0 +1,32 @@
+{
+  "name": "Schildkampf I",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Attribut KK 4",
+    "gruppe": 3,
+    "text": "Bedingung: Schild.\n\nDu erhältst VT +1.",
+    "sephrastoScript": "modifyKampfstil('Schildkampf', 0, 1, 0, 0)",
+    "stilBedingungen": "Schild",
+    "foundryScript": ""
+  },
+  "_id": "X5bgYIusB6yq4TVs",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!X5bgYIusB6yq4TVs"
+}

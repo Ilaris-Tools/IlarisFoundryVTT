@@ -1,0 +1,56 @@
+{
+  "name": "Hellebarde",
+  "type": "nahkampfwaffe",
+  "system": {
+    "haerte": 7,
+    "beschaedigung": 0,
+    "tp": "2W6+2",
+    "fertigkeit": "Stangenwaffen",
+    "talent": "Infanteriewaffen und Speere",
+    "rw": 2,
+    "hauptwaffe": false,
+    "nebenwaffe": false,
+    "eigenschaften": [
+      {
+        "key": "Kopflastig",
+        "parameters": []
+      },
+      {
+        "key": "Rüstungsbrechend",
+        "parameters": []
+      },
+      {
+        "key": "Zweihändig",
+        "parameters": []
+      }
+    ],
+    "text": "",
+    "aufbewahrungs_ort": "mitführend",
+    "bewahrt_auf": [],
+    "gewicht_summe": 0,
+    "gewicht": 2,
+    "preis": 75,
+    "wm_at": 0,
+    "wm_vt": 0
+  },
+  "_id": "XkoZm8oqy08ks1xb",
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!XkoZm8oqy08ks1xb"
+}

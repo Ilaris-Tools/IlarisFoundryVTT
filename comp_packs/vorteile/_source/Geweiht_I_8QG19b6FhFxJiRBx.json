@@ -1,0 +1,77 @@
+{
+  "name": "Geweiht I",
+  "type": "vorteil",
+  "system": {
+    "voraussetzung": "Kein Vorteil Paktierer I",
+    "gruppe": "0",
+    "text": "Du verfügst über 8 Karmapunkte und kannst kirchliche Traditionen erlernen."
+  },
+  "_id": "8QG19b6FhFxJiRBx",
+  "effects": [
+    {
+      "name": "Geweiht I",
+      "disabled": false,
+      "duration": {
+        "startTime": null,
+        "seconds": null,
+        "combat": null,
+        "rounds": null,
+        "turns": null,
+        "startRound": null,
+        "startTurn": null
+      },
+      "changes": [
+        {
+          "key": "system.abgeleitete.kap",
+          "mode": 2,
+          "value": "8",
+          "priority": null
+        }
+      ],
+      "transfer": true,
+      "img": "icons/svg/aura.svg",
+      "_id": "MB72TETkEiRQc50v",
+      "type": "base",
+      "system": {},
+      "description": "",
+      "origin": null,
+      "tint": "#ffffff",
+      "statuses": [],
+      "sort": 0,
+      "flags": {
+        "ilaris": {
+          "sourceType": "vorteil"
+        }
+      },
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.1.2",
+        "createdTime": 1757618036319,
+        "modifiedTime": 1757618053015,
+        "lastModifiedBy": "FAZTz2Txaxttf8zC"
+      },
+      "_key": "!items.effects!8QG19b6FhFxJiRBx.MB72TETkEiRQc50v"
+    }
+  ],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": "Ilaris",
+    "systemVersion": "12.1.2",
+    "createdTime": null,
+    "modifiedTime": 1757618054585,
+    "lastModifiedBy": "FAZTz2Txaxttf8zC",
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "img": "icons/svg/item-bag.svg",
+  "folder": null,
+  "sort": 3900000,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!items!8QG19b6FhFxJiRBx"
+}
