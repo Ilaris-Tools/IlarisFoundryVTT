@@ -68,6 +68,13 @@
         "macro-tools"
       ],
       "folders": []
+    },
+    {
+      "name": "Hilfe & Dokumentation",
+      "sorting": "a",
+      "color": "#95E1D3",
+      "packs": ["kurzuebersichten"],
+      "folders": []
     }
   ],
   "packs": [
@@ -167,6 +174,13 @@
       "type": "Macro",
       "name": "macro-tools",
       "path": "comp_packs/macro-tools",
+      "system": "Ilaris"
+    },
+    {
+      "label": "Guides & Tutorials",
+      "type": "JournalEntry",
+      "name": "kurzuebersichten",
+      "path": "./packs/kurzuebersichten",
       "system": "Ilaris"
     }
   ],
