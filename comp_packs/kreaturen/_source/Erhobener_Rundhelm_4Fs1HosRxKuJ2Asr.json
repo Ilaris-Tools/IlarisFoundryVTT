@@ -1,0 +1,501 @@
+{
+  "_id": "4Fs1HosRxKuJ2Asr",
+  "name": "Erhobener Rundhelm",
+  "type": "kreatur",
+  "img": "systems/Ilaris/assets/images/token/kreaturentypen/untot.png",
+  "system": {
+    "gesundheit": {
+      "erschoepfung": 0,
+      "wunden": 0,
+      "wundabzuege": 0,
+      "wundenignorieren": false,
+      "display": "Volle Gesundheit",
+      "hp": {
+        "max": 9,
+        "value": 9,
+        "threshold": 0
+      }
+    },
+    "energien": {
+      "asp": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      },
+      "gup": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      },
+      "kap": {
+        "max": null,
+        "value": null,
+        "threshold": 0
+      }
+    },
+    "initiative": 0,
+    "furcht": {
+      "furchtstufe": 0,
+      "furchtabzuege": 0,
+      "display": ""
+    },
+    "modifikatoren": {
+      "manuellermod": 0,
+      "nahkampfmod": 0
+    },
+    "schips": {
+      "schips": 4,
+      "schips_stern": 4
+    },
+    "attribute": {
+      "KO": {
+        "wert": 0,
+        "pw": null
+      },
+      "MU": {
+        "wert": 0,
+        "pw": null
+      },
+      "GE": {
+        "wert": 0,
+        "pw": null
+      },
+      "KK": {
+        "wert": 0,
+        "pw": null
+      },
+      "IN": {
+        "wert": 0,
+        "pw": null
+      },
+      "KL": {
+        "wert": 0,
+        "pw": null
+      },
+      "CH": {
+        "wert": 0,
+        "pw": null
+      },
+      "FF": {
+        "wert": 0,
+        "pw": null
+      }
+    },
+    "edit": false,
+    "kreaturentyp": "untot",
+    "kurzbeschreibung": "Von Korobar erhobener Rundhelm",
+    "kampfwerte": {
+      "ws": 4,
+      "ws_stern": 6,
+      "ini": 3,
+      "gs": 3,
+      "koloss": null,
+      "mr": 9,
+      "gs_schwimmend": null
+    },
+    "talente": [],
+    "freietalente": [],
+    "kampfunfaehig": "",
+    "text": "",
+    "abgeleitete": {
+      "globalermod": 0,
+      "nahkampfmoddisplay": "-",
+      "globalermoddisplay": "-"
+    }
+  },
+  "items": [
+    {
+      "_id": "2cKf6A8PXONNMkZI",
+      "name": "Niederwerfen",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "Attribut KK 4",
+        "gruppe": 2,
+        "text": "Erlaubt das Manöver Niederwerfen (AT -4): Gegenprobe: KK. Dein Ziel stürzt und liegt am Boden."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!4Fs1HosRxKuJ2Asr.2cKf6A8PXONNMkZI"
+    },
+    {
+      "_id": "sMs75MDUbxOkNUtH",
+      "name": "Schreckgestalt (MU 20, I)",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Beim ersten Anblick (Nahkampf) ist eine MU-Probe (I, 20) erforderlich sonst Furcht 1"
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!4Fs1HosRxKuJ2Asr.sMs75MDUbxOkNUtH"
+    },
+    {
+      "_id": "7M69QWY8ZMvWCzxK",
+      "name": "Lichtscheu",
+      "type": "eigenschaft",
+      "system": {
+        "text": ""
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!4Fs1HosRxKuJ2Asr.7M69QWY8ZMvWCzxK"
+    },
+    {
+      "_id": "6xcT58c8OPX6txlB",
+      "name": "Schmerzimmun",
+      "type": "eigenschaft",
+      "system": {
+        "text": "Schmerzen und Wundeinbußen kennen sie nicht."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!4Fs1HosRxKuJ2Asr.6xcT58c8OPX6txlB"
+    },
+    {
+      "_id": "UNncJ6oHmCfYQgbo",
+      "name": "Verhalten",
+      "type": "info",
+      "system": {
+        "text": "Während die Söldner Alrik Streitzer und Perainidan unter dem Bann von Korobar stehen und dabei noch vernunftbegabt sind, kämpfen diese erhobenen sinn- und geisteslos. Ihr komplexestes Manöver ist Wuchtschlag."
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!4Fs1HosRxKuJ2Asr.UNncJ6oHmCfYQgbo"
+    },
+    {
+      "_id": "eRboMJ4VXo6PnLQn",
+      "name": "Hand",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [],
+        "tp": "1W6+2",
+        "haerte": 0,
+        "rw": 0,
+        "lz": null,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 8,
+        "vt": 8
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!4Fs1HosRxKuJ2Asr.eRboMJ4VXo6PnLQn"
+    },
+    {
+      "_id": "b1zCBJM9CON59QB5",
+      "name": "Säbel",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Eigenschaft",
+            "text": ""
+          }
+        ],
+        "tp": "2W6+2",
+        "haerte": 0,
+        "rw": 1,
+        "lz": null,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 8,
+        "vt": 8
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!4Fs1HosRxKuJ2Asr.b1zCBJM9CON59QB5"
+    },
+    {
+      "_id": "aYy136GO8e24GGoa",
+      "name": "Armbrust",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [
+          {
+            "name": "Unkontrolliert",
+            "text": "Schießt aus der Hüfte, bei 18+ verliert er einen Teil der Hand"
+          }
+        ],
+        "tp": "4W6",
+        "haerte": 0,
+        "rw": 20,
+        "lz": null,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 5,
+        "vt": null
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!4Fs1HosRxKuJ2Asr.aYy136GO8e24GGoa"
+    },
+    {
+      "_id": "eDEh0bFqjof5vE6O",
+      "name": "Speer",
+      "type": "angriff",
+      "system": {
+        "eigenschaften": [],
+        "tp": "3W6",
+        "haerte": 0,
+        "rw": 2,
+        "lz": null,
+        "wm": 0,
+        "typ": "Nah",
+        "at": 10,
+        "vt": 10
+      },
+      "effects": [],
+      "_stats": {
+        "coreVersion": "12.331",
+        "systemId": null,
+        "systemVersion": null,
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null,
+        "compendiumSource": null,
+        "duplicateSource": null
+      },
+      "img": "icons/svg/item-bag.svg",
+      "folder": null,
+      "sort": 0,
+      "ownership": {
+        "default": 0
+      },
+      "flags": {},
+      "_key": "!actors.items!4Fs1HosRxKuJ2Asr.eDEh0bFqjof5vE6O"
+    }
+  ],
+  "effects": [],
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "prototypeToken": {
+    "displayName": 20,
+    "actorLink": false,
+    "width": 1,
+    "height": 1,
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "light": {
+      "alpha": 0.5,
+      "angle": 360,
+      "bright": 0,
+      "coloration": 1,
+      "dim": 0,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "animation": {
+        "speed": 5,
+        "intensity": 5,
+        "reverse": false,
+        "type": null
+      },
+      "darkness": {
+        "min": 0,
+        "max": 1
+      },
+      "attenuation": 0.5,
+      "negative": false,
+      "priority": 0,
+      "color": null
+    },
+    "disposition": 1,
+    "displayBars": 50,
+    "bar1": {
+      "attribute": "gesundheit.hp"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "flags": {},
+    "randomImg": false,
+    "name": "Erhobener Rundhelm",
+    "texture": {
+      "src": "systems/Ilaris/assets/images/token/kreaturentypen/untot.png",
+      "scaleX": 1,
+      "scaleY": 1,
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "offsetX": 0,
+      "offsetY": 0,
+      "fit": "contain",
+      "rotation": 0,
+      "tint": "#ffffff",
+      "alphaThreshold": 0.75
+    },
+    "sight": {
+      "angle": 360,
+      "enabled": false,
+      "range": 0,
+      "brightness": 1,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "appendNumber": false,
+    "prependAdjective": false,
+    "hexagonalShape": 0,
+    "detectionModes": [],
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    }
+  },
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_key": "!actors!4Fs1HosRxKuJ2Asr"
+}

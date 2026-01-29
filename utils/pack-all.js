@@ -1,9 +1,9 @@
-import { compilePack, extractPack } from '@foundryvtt/foundryvtt-cli'
+import { compilePack } from '@foundryvtt/foundryvtt-cli'
 import fs from 'fs'
 import path from 'path'
 
 // Get all pack directories that have a _source folder
-const packsRootDir = 'packs'
+const packsRootDir = 'comp_packs'
 const packDirs = []
 
 if (fs.existsSync(packsRootDir)) {
@@ -103,7 +103,7 @@ for (const packsDir of packDirs) {
 }
 
 // Compile all LevelDB compendium packs
-console.log('\nCompiling packs...')
+console.log('\nCompiling compendium packs...')
 for (const packDir of packDirs) {
     const sourcePath = path.join(packDir, '_source')
     try {
