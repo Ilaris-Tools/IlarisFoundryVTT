@@ -11,11 +11,28 @@
     "hauptwaffe": false,
     "nebenwaffe": false,
     "eigenschaften": [
-      "Kopflastig",
-      "Rüstungsbrechend",
-      "Schwer (4)",
-      "Stumpf",
-      "Zweihändig"
+      {
+        "key": "Kopflastig",
+        "parameters": []
+      },
+      {
+        "key": "Rüstungsbrechend",
+        "parameters": []
+      },
+      {
+        "key": "Schwer",
+        "parameters": [
+          4
+        ]
+      },
+      {
+        "key": "Stumpf",
+        "parameters": []
+      },
+      {
+        "key": "Zweihändig",
+        "parameters": []
+      }
     ],
     "text": "",
     "aufbewahrungs_ort": "mitführend",

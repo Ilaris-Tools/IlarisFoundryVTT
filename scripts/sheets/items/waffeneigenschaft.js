@@ -89,6 +89,8 @@ export class WaffeneigenschaftSheet extends IlarisItemSheet {
             { value: '', label: 'Keine' },
             { value: 'set', label: 'Setzen' },
             { value: 'augment', label: 'Modifizieren' },
+            { value: 'actionNegAugment', label: 'Bei Aktion Negativ Modifizieren' },
+            { value: 'actionAugment', label: 'Bei Aktion Positiv Modifizieren' },
         ]
 
         // Abgeleitete properties that can be modified
@@ -98,29 +100,104 @@ export class WaffeneigenschaftSheet extends IlarisItemSheet {
             { value: 'gs', label: 'GS (Geschwindigkeit)' },
         ]
 
+        // Usage path options for parameter slots
+        data.usagePfade = [
+            { value: '', label: '-- Kein Usage --' },
+            {
+                value: 'wieldingRequirements.condition.value',
+                label: 'Führung: Attribut-Schwellenwert',
+            },
+            { value: 'wieldingRequirements.hands', label: 'Führung: Anzahl Hände' },
+            {
+                value: 'wieldingRequirements.condition.onFailure.at',
+                label: 'Führung: Fehlschlag AT-Malus',
+            },
+            {
+                value: 'wieldingRequirements.condition.onFailure.vt',
+                label: 'Führung: Fehlschlag VT-Malus',
+            },
+            {
+                value: 'wieldingRequirements.condition.onFailure.schaden',
+                label: 'Führung: Fehlschlag Schadens-Malus',
+            },
+            {
+                value: 'targetEffect.resistCheck.attackerModifier',
+                label: 'Ziel-Effekt: Angreifer-Modifikator',
+            },
+            {
+                value: 'targetEffect.resistCheck.defenderModifier',
+                label: 'Ziel-Effekt: Verteidiger-Modifikator',
+            },
+            { value: 'modifiers.at', label: 'Modifikator: AT' },
+            { value: 'modifiers.vt', label: 'Modifikator: VT' },
+            { value: 'modifiers.schaden', label: 'Modifikator: Schaden' },
+            { value: 'modifiers.rw', label: 'Modifikator: Reichweite' },
+            { value: 'modifiers.fumbleThreshold', label: 'Modifikator: Patzer-Schwelle' },
+            { value: 'modifiers.critThreshold', label: 'Modifikator: Kritische Schwelle' },
+            {
+                value: 'actorModifiers.modifiers.{{index}}.value',
+                label: 'Actor-Modifikator: Value',
+            },
+        ]
+
         return data
     }
 
+    /** @override */
     activateListeners(html) {
         super.activateListeners(html)
 
-        // Add conditional modifier
-        html.find('.add-conditional-modifier').click(this._onAddConditionalModifier.bind(this))
+        // Parameter slot management
+        html.find('.add-parameter-slot').click(this._onAddParameterSlot.bind(this))
+        html.find('.remove-parameter-slot').click(this._onRemoveParameterSlot.bind(this))
 
-        // Remove conditional modifier
+        // Conditional modifiers
+        html.find('.add-conditional-modifier').click(this._onAddConditionalModifier.bind(this))
         html.find('.remove-conditional-modifier').click(
             this._onRemoveConditionalModifier.bind(this),
         )
 
-        // Add actor modifier
+        // Actor modifiers
         html.find('.add-actor-modifier').click(this._onAddActorModifier.bind(this))
-
-        // Remove actor modifier
         html.find('.remove-actor-modifier').click(this._onRemoveActorModifier.bind(this))
     }
 
     /**
-     * Handle adding a new conditional modifier
+     * Handle adding a parameter slot
+     * @param {Event} event - The click event
+     * @private
+     */
+    async _onAddParameterSlot(event) {
+        event.preventDefault()
+        const currentData = this.item.system.parameterSlots
+        const slots = Array.isArray(currentData) ? currentData : Object.values(currentData) || []
+        slots.push({
+            name: '',
+            type: 'number',
+            label: '',
+            usage: '',
+            required: false,
+            defaultValue: null,
+        })
+        await this.item.update({ 'system.parameterSlots': slots })
+    }
+
+    /**
+     * Handle removing a parameter slot
+     * @param {Event} event - The click event
+     * @private
+     */
+    async _onRemoveParameterSlot(event) {
+        event.preventDefault()
+        const index = parseInt(event.currentTarget.dataset.index)
+        const currentData = this.item.system.parameterSlots
+        const slots = Array.isArray(currentData) ? currentData : Object.values(currentData) || []
+        slots.splice(index, 1)
+        await this.item.update({ 'system.parameterSlots': slots })
+    }
+
+    /**
+     * Handle adding a conditional modifier
      * @param {Event} event
      * @private
      */
@@ -157,20 +234,28 @@ export class WaffeneigenschaftSheet extends IlarisItemSheet {
     }
 
     /**
-     * Handle adding a new actor modifier
+     * Handle adding an actor modifier
      * @param {Event} event
      * @private
      */
     async _onAddActorModifier(event) {
         event.preventDefault()
-        const modifiers = foundry.utils.deepClone(this.item.system.actorModifiers.modifiers || [])
-        modifiers.push({
+        const modifiers = foundry.utils.deepClone(this.item.system.actorModifiers?.modifiers || [])
+        let modifiersArray = modifiers || []
+        if (
+            modifiersArray &&
+            typeof modifiersArray === 'object' &&
+            !Array.isArray(modifiersArray)
+        ) {
+            modifiersArray = Object.values(modifiersArray)
+        }
+        modifiersArray.push({
             property: 'be',
             mode: '',
             value: 0,
             formula: '',
         })
-        await this.item.update({ 'system.actorModifiers.modifiers': modifiers })
+        await this.item.update({ 'system.actorModifiers.modifiers': modifiersArray })
     }
 
     /**
@@ -182,7 +267,15 @@ export class WaffeneigenschaftSheet extends IlarisItemSheet {
         event.preventDefault()
         const index = Number(event.currentTarget.dataset.index)
         const modifiers = foundry.utils.deepClone(this.item.system.actorModifiers?.modifiers || [])
-        modifiers.splice(index, 1)
-        await this.item.update({ 'system.actorModifiers.modifiers': modifiers })
+        let modifiersArray = modifiers || []
+        if (
+            modifiersArray &&
+            typeof modifiersArray === 'object' &&
+            !Array.isArray(modifiersArray)
+        ) {
+            modifiersArray = Object.values(modifiersArray)
+        }
+        modifiersArray.splice(index, 1)
+        await this.item.update({ 'system.actorModifiers.modifiers': modifiersArray })
     }
 }

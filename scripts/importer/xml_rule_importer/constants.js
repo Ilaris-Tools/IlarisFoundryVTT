@@ -133,9 +133,14 @@ export const DEFAULT_ATTRIBUTES = 'KO|KO|KO'
 export const SUPPORTED_MANOEVER_TYPES = [0, 1, 2, 3, 6]
 
 /**
- * Mapping of talent kategorie to übernatürliche talent type
+ * Mapping of talent kategorie to talent type
+ * kategorie 0: normal talent
+ * kategorie 1: zauber (spell)
+ * kategorie 2: liturgie (liturgy)
+ * kategorie 3: anrufung (invocation)
  */
 export const TALENT_KATEGORIE_TO_TYPE = {
+    0: 'talent',
     1: 'zauber',
     2: 'liturgie',
     3: 'anrufung',

@@ -40,7 +40,7 @@ describe('TargetEffectProcessor', () => {
                 },
             }
 
-            processor.process('niederwerfen', eigenschaft, computed, mockActor, mockWeapon)
+            processor.process('niederwerfen', eigenschaft, [], computed, mockActor, mockWeapon)
 
             expect(computed.targetEffects).toHaveLength(1)
             expect(computed.targetEffects[0].name).toBe('Niederwerfen')
@@ -73,8 +73,8 @@ describe('TargetEffectProcessor', () => {
                 },
             }
 
-            processor.process('niederwerfen', eigenschaft1, computed, mockActor, mockWeapon)
-            processor.process('bleed', eigenschaft2, computed, mockActor, mockWeapon)
+            processor.process('niederwerfen', eigenschaft1, [], computed, mockActor, mockWeapon)
+            processor.process('bleed', eigenschaft2, [], computed, mockActor, mockWeapon)
 
             expect(computed.targetEffects).toHaveLength(2)
             expect(computed.targetEffects[0].name).toBe('Niederwerfen')

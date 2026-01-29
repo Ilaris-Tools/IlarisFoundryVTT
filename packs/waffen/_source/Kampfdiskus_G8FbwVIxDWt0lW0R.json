@@ -11,7 +11,12 @@
     "hauptwaffe": false,
     "nebenwaffe": false,
     "eigenschaften": [
-      "Schwer (4)"
+      {
+        "key": "Schwer",
+        "parameters": [
+          4
+        ]
+      }
     ],
     "text": "",
     "aufbewahrungs_ort": "mitführend",

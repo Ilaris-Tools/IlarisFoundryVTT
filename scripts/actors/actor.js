@@ -100,6 +100,10 @@ export class IlarisActor extends Actor {
             // Base Initiative
             if (this.system.attribute.IN?.wert != undefined) {
                 this.system.abgeleitete.ini = calculateValue('INI', this.system.attribute.IN.wert)
+                this.system.abgeleitete.baseIni = calculateValue(
+                    'INI',
+                    this.system.attribute.IN.wert,
+                )
             }
 
             // Base Magic Resistance
@@ -416,9 +420,8 @@ export class IlarisActor extends Actor {
             IlarisGameSettingNames.lepSystem,
         )
         console.log('Berechne Wunden')
-        let einschraenkungen = Math.floor(
-            systemData.gesundheit.wunden + systemData.gesundheit.erschoepfung,
-        )
+        let einschraenkungen = systemData.gesundheit.wunden + systemData.gesundheit.erschoepfung
+
         let gesundheitzusatz = ``
         const max_hp = systemData.gesundheit.hp.max
         let new_hp = max_hp - einschraenkungen
@@ -427,30 +430,31 @@ export class IlarisActor extends Actor {
             // LEP system: no penalties until max_hp - 6 * LAW of max_hp, then -2 per LAW segment
             const law = Math.ceil(max_hp / 8)
             this.system.abgeleitete.law = law
-            const woundFreeSegment = max_hp - law * 6
 
-            switch (new_hp) {
-                case law:
-                    systemData.gesundheit.wundabzuege = -12
-                    break
-                case law * 2:
-                    systemData.gesundheit.wundabzuege = -10
-                    break
-                case law * 3:
-                    systemData.gesundheit.wundabzuege = -8
-                    break
-                case law * 4:
-                    systemData.gesundheit.wundabzuege = -6
-                    break
-                case law * 5:
-                    systemData.gesundheit.wundabzuege = -4
-                    break
-                case law * 6:
-                    systemData.gesundheit.wundabzuege = -2
-                    break
-                case woundFreeSegment:
-                    systemData.gesundheit.wundabzuege = 0
-                    break
+            const lawSegment = Math.ceil(new_hp / law)
+
+            if (lawSegment <= 1) {
+                systemData.gesundheit.wundabzuege = -12
+            } else {
+                switch (lawSegment) {
+                    case 2:
+                        systemData.gesundheit.wundabzuege = -10
+                        break
+                    case 3:
+                        systemData.gesundheit.wundabzuege = -8
+                        break
+                    case 4:
+                        systemData.gesundheit.wundabzuege = -6
+                        break
+                    case 5:
+                        systemData.gesundheit.wundabzuege = -4
+                        break
+                    case 6:
+                        systemData.gesundheit.wundabzuege = -2
+                        break
+                    default:
+                        systemData.gesundheit.wundabzuege = 0
+                }
             }
         } else {
             if (einschraenkungen == 0) {
@@ -564,9 +568,10 @@ export class IlarisActor extends Actor {
         this.system.abgeleitete.traglast = traglast
         let summeGewicht = 0
         for (let i of this.inventar.mitfuehrend) {
-            summeGewicht += i.system.gewicht
+            summeGewicht += i.system.gewicht * i.system.quantity
         }
-        this.system.getragen = summeGewicht
+        console.log('Summe Gewicht: ', summeGewicht, parseFloat(summeGewicht.toFixed(3)))
+        this.system.getragen = parseFloat(summeGewicht.toFixed(3))
 
         // Calculate BE modification from carried weight
         let be_mod = hardcoded.beTraglast(this.system)
@@ -940,18 +945,23 @@ export class IlarisActor extends Actor {
                 item_tragend.push(i)
             } else if (aufbewahrung == 'mitführend') {
                 item_mitfuehrend.push(i)
-                actor.system.getragen += i.system.gewicht
+                actor.system.getragen += i.system.gewicht * i.system.quantity
             } else if (speicherplatz_list.includes(aufbewahrung)) {
                 // item_list.find(x => x.name == aufbewahrung).system.bewahrt_auf.push(i);
                 let idx = item_list.indexOf(item_list.find((x) => x.name == aufbewahrung))
                 item_list[idx].system.bewahrt_auf.push(i)
-                item_list[idx].system.gewicht_summe += i.system.gewicht
+                item_list[idx].system.gewicht_summe += i.system.gewicht * i.system.quantity
+                item_list[idx].system.gewicht_summe = parseFloat(
+                    item_list[idx].system.gewicht_summe.toFixed(3),
+                )
+                actor.system.getragen += i.system.gewicht * i.system.quantity
             } else {
                 i.system.aufbewahrungs_ort == 'mitführend'
                 item_mitfuehrend.push(i)
-                actor.system.getragen += i.system.gewicht
+                actor.system.getragen += i.system.gewicht * i.system.quantity
             }
         }
+        actor.system.getragen = parseFloat(actor.system.getragen.toFixed(3))
 
         // data.magie = {};
         // data.karma = {};

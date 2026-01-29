@@ -215,14 +215,6 @@ export class FernkampfAngriffDialog extends CombatDialog {
         return summary
     }
 
-    eigenschaftenText() {
-        if (!this.item.system.eigenschaften || this.item.system.eigenschaften.length === 0) {
-            return
-        }
-        this.text_at += '\nEigenschaften: '
-        this.text_at += this.item.system.eigenschaften.join(', ')
-    }
-
     async _angreifenKlick(html) {
         // NOTE: var names not very descriptive:
         // at_abzuege_mod kommen vom status/gesundheit, at_mod aus ansagen, nahkampfmod?
@@ -230,7 +222,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
         await this.manoeverAuswaehlen(html)
         await this.updateManoeverMods() // durch manoever
         this.updateStatusMods()
-        this.eigenschaftenText()
+        super.eigenschaftenText()
 
         let label = `Fernkampf (${this.item.name})`
         let formula = `${diceFormula} ${signed(this._getFKValue())} \
@@ -247,6 +239,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
             true, // crit_eval
         )
 
+        Hooks.call('Ilaris.fernkampfAngriffClick', rollResult, this.actor, this.item)
         await this.handleTargetSelection(rollResult, 'ranged')
         super._updateSchipsStern(html)
     }

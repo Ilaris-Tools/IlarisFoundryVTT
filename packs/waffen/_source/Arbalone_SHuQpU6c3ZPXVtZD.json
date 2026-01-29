@@ -11,9 +11,20 @@
     "hauptwaffe": false,
     "nebenwaffe": false,
     "eigenschaften": [
-      "kein Reiter",
-      "Niederwerfen (8)",
-      "stationär"
+      {
+        "key": "kein Reiter",
+        "parameters": []
+      },
+      {
+        "key": "Niederwerfen",
+        "parameters": [
+          8
+        ]
+      },
+      {
+        "key": "stationär",
+        "parameters": []
+      }
     ],
     "text": "",
     "aufbewahrungs_ort": "mitführend",

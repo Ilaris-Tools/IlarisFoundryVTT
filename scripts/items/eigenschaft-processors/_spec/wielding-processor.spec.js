@@ -46,7 +46,7 @@ describe('WieldingProcessor', () => {
             }
             mockWeapon.system.hauptwaffe = true
             mockWeapon.system.nebenwaffe = false
-            processor.process('eigenschaft', eigenschaft, computed, mockActor, mockWeapon)
+            processor.process('eigenschaft', eigenschaft, [], computed, mockActor, mockWeapon)
             expect(computed.at).toBe(0)
             expect(computed.vt).toBe(0)
         })
@@ -64,7 +64,7 @@ describe('WieldingProcessor', () => {
                 },
             }
 
-            processor.process('Only main hand', eigenschaft, computed, mockActor, mockWeapon)
+            processor.process('Only main hand', eigenschaft, [], computed, mockActor, mockWeapon)
 
             expect(computed.at).toBe(0)
             expect(computed.vt).toBe(-2)
@@ -84,7 +84,7 @@ describe('WieldingProcessor', () => {
                 },
             }
 
-            processor.process('Only off hand', eigenschaft, computed, mockActor, mockWeapon)
+            processor.process('Only off hand', eigenschaft, [], computed, mockActor, mockWeapon)
 
             expect(computed.at).toBe(-4)
             expect(computed.vt).toBe(-4)
@@ -106,7 +106,7 @@ describe('WieldingProcessor', () => {
                 },
             }
 
-            processor.process('eigenschaft', eigenschaft, computed, mockActor, mockWeapon)
+            processor.process('eigenschaft', eigenschaft, [], computed, mockActor, mockWeapon)
 
             expect(computed.at).toBe(0)
             expect(computed.vt).toBe(0)
@@ -127,7 +127,7 @@ describe('WieldingProcessor', () => {
                 },
             }
 
-            processor.process('eigenschaft', eigenschaft, computed, mockActor, mockWeapon)
+            processor.process('eigenschaft', eigenschaft, [], computed, mockActor, mockWeapon)
 
             expect(computed.at).toBe(0)
             expect(computed.vt).toBe(0)

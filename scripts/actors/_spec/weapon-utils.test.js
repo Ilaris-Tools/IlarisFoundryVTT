@@ -29,11 +29,15 @@ describe('weapon-requirements.js', () => {
     const mockMeleeWeapon2 = createMockWeapon('weapon2', 'nahkampfwaffe', [])
     const mockSameWeapon = createMockWeapon('weapon1', 'nahkampfwaffe', [])
     const mockRangedWeapon = createMockWeapon('ranged1', 'fernkampfwaffe', [])
-    const mockRidingWeapon = createMockWeapon('riding1', 'nahkampfwaffe', ['Reittier'])
-    const mockShieldWeapon = createMockWeapon('shield1', 'nahkampfwaffe', ['Schild'])
+    const mockRidingWeapon = createMockWeapon('riding1', 'nahkampfwaffe', [
+        { key: 'Reittier', parameters: [] },
+    ])
+    const mockShieldWeapon = createMockWeapon('shield1', 'nahkampfwaffe', [
+        { key: 'Schild', parameters: [] },
+    ])
     const mockRidingShieldWeapon = createMockWeapon('ridingShield1', 'nahkampfwaffe', [
-        'Reittier',
-        'Schild',
+        { key: 'Reittier', parameters: [] },
+        { key: 'Schild', parameters: [] },
     ])
 
     describe('usesSingleMeleeWeapon', () => {
@@ -203,7 +207,7 @@ describe('weapon-requirements.js', () => {
 
         it('should test with custom requirement properties', () => {
             const weaponWithCustomProperty = createMockWeapon('weapon8', 'nahkampfwaffe', [
-                'CustomProperty',
+                { key: 'CustomProperty', parameters: [] },
             ])
             const result = anyWeaponNeedsToMeetRequirement(
                 weaponWithCustomProperty,
@@ -236,7 +240,9 @@ describe('weapon-requirements.js', () => {
         })
 
         it('should apply bonus if weapon has schild property', () => {
-            const nebenwaffe = createMockWeapon('nebenwaffe', 'nahkampfwaffe', ['Schild'])
+            const nebenwaffe = createMockWeapon('nebenwaffe', 'nahkampfwaffe', [
+                { key: 'Schild', parameters: [] },
+            ])
             ignoreSideWeaponMalus(undefined, nebenwaffe, false, 'schild')
             expect(nebenwaffe.system.computed.at).toBe(4)
             expect(nebenwaffe.system.computed.vt).toBe(4)
@@ -561,7 +567,7 @@ describe('weapon-requirements.js', () => {
             const actor = () => ({ misc: { selected_kampfstil_conditions_not_met: '' } })
             it('should check positive weapon properties correctly', () => {
                 const weaponWithReittier = createMockWeapon('weapon1', 'nahkampfwaffe', [
-                    'reittier',
+                    { key: 'reittier', parameters: [] },
                 ])
                 expect(
                     checkCombatStyleConditions(
@@ -596,7 +602,7 @@ describe('weapon-requirements.js', () => {
 
             it('should check negative weapon properties correctly', () => {
                 const weaponWithReittier = createMockWeapon('weapon1', 'nahkampfwaffe', [
-                    'Reittier',
+                    { key: 'Reittier', parameters: [] },
                 ])
                 expect(
                     checkCombatStyleConditions(
@@ -627,7 +633,7 @@ describe('weapon-requirements.js', () => {
                 const weaponWithReittier = createMockWeaponWithSkill(
                     'weapon1',
                     'nahkampfwaffe',
-                    ['Reittier'],
+                    [{ key: 'Reittier', parameters: [] }],
                     'hiebwaffen',
                 )
 
@@ -655,7 +661,7 @@ describe('weapon-requirements.js', () => {
 
                 // Mixed positive and negative conditions
                 const weaponWithoutSchild = createMockWeapon('weapon2', 'nahkampfwaffe', [
-                    'Reittier',
+                    { key: 'Reittier', parameters: [] },
                 ])
                 expect(
                     checkCombatStyleConditions(
@@ -668,8 +674,8 @@ describe('weapon-requirements.js', () => {
                 ).toBe(true)
 
                 const weaponWithSchild = createMockWeapon('weapon3', 'nahkampfwaffe', [
-                    'Reittier',
-                    'Schild',
+                    { key: 'Reittier', parameters: [] },
+                    { key: 'Schild', parameters: [] },
                 ])
                 expect(
                     checkCombatStyleConditions(
@@ -684,7 +690,7 @@ describe('weapon-requirements.js', () => {
 
             it('should handle conditions with extra whitespace', () => {
                 const weaponWithReittier = createMockWeapon('weapon1', 'nahkampfwaffe', [
-                    'Reittier',
+                    { key: 'Reittier', parameters: [] },
                 ])
                 expect(
                     checkCombatStyleConditions(
@@ -731,7 +737,7 @@ describe('weapon-requirements.js', () => {
                 ).toBe(true)
 
                 const weaponWithReittier = createMockWeapon('weapon1', 'nahkampfwaffe', [
-                    'Reittier',
+                    { key: 'Reittier', parameters: [] },
                 ])
                 expect(
                     checkCombatStyleConditions(

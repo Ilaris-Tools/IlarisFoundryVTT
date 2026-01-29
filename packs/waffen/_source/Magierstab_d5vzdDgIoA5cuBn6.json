@@ -11,9 +11,18 @@
     "hauptwaffe": false,
     "nebenwaffe": false,
     "eigenschaften": [
-      "Stumpf",
-      "Unzerstörbar",
-      "Zweihändig"
+      {
+        "key": "Stumpf",
+        "parameters": []
+      },
+      {
+        "key": "Unzerstörbar",
+        "parameters": []
+      },
+      {
+        "key": "Zweihändig",
+        "parameters": []
+      }
     ],
     "text": "",
     "aufbewahrungs_ort": "mitführend",

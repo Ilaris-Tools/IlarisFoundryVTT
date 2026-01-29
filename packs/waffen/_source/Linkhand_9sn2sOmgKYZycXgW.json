@@ -11,8 +11,14 @@
     "hauptwaffe": false,
     "nebenwaffe": false,
     "eigenschaften": [
-      "Parierwaffe",
-      "Wendig"
+      {
+        "key": "Parierwaffe",
+        "parameters": []
+      },
+      {
+        "key": "Wendig",
+        "parameters": []
+      }
     ],
     "text": "",
     "aufbewahrungs_ort": "mitführend",
