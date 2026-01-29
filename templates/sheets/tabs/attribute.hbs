@@ -36,7 +36,7 @@
             <a class="item-create" data-itemclass="eigenheit"><i class="fas fa-plus"></i>Neue Eigenheit</a>
             <div>
                 {{#each actor.eigenheiten}}
-                <a class="item-edit" data-itemid="{{this.id}}"> {{this.name}}</a>
+                <a class="item-edit" data-itemid="{{this.id}}"> {{this.system.text}}</a>
                 <a class="item-delete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
                 <br> {{/each}}
                 <h2>Vorteile</h2>
