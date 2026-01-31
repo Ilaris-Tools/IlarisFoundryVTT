@@ -169,9 +169,9 @@ function registerHandlebarsHelpers() {
     Handlebars.registerHelper('isCaster', function (actor) {
         console.log('caster?')
         return (
-            actor.system.energien.asp.max +
-                actor.system.energien.gup.max +
-                actor.system.energien.kap.max >
+            (actor.system.energien.asp.max ?? 0) +
+                (actor.system.energien.gup.max ?? 0) +
+                (actor.system.energien.kap.max ?? 0) >
             0
         )
     })

@@ -10,6 +10,7 @@
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { marked } from 'marked'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
@@ -21,36 +22,35 @@ const __dirname = path.dirname(__filename)
  * @returns {string|null} Markdown formatted breaking changes or null if none found
  */
 function parseBreakingChanges(changelogText, version) {
-    // Match the version section (e.g., "### v12.2")
-    const versionRegex = new RegExp(
-        `###\\s+v${version.replace('.', '\\.')}\\s*\\n[\\s\\S]*?(?=\\n###\\s+v|\\n##\\s+v|$)`,
-        'i',
+    // Flexible Regex für Breaking Changes Überschriften
+    // Unterstützt: Emoji, Singular/Plural, Groß-/Kleinschreibung, optionaler Doppelpunkt
+    // Erfasst alles von der Breaking Changes Überschrift bis zur Horizontal Rule (---)
+    const breakingChangesRegex = new RegExp(
+        `^###\\s+(?:v|\\[)?${version.replace('.', '\\.')}\\]?.*?$` + // Version Header (mit optionalem 'v' Präfix)
+            `[\\s\\S]*?` + // Beliebiger Inhalt bis...
+            `^####\\s*(?:⚠️\\s*)?breaking\\s+change(?:s)?\\s*:?\\s*$` + // Breaking Changes Überschrift (case-insensitive, flexibel)
+            `([\\s\\S]*?)` + // Capture: Inhalt
+            `^---\\s*$`, // Horizontal rule am Zeilenende
+        'im', // i = case-insensitive, m = multiline
     )
 
-    const versionMatch = changelogText.match(versionRegex)
-
-    if (!versionMatch) {
+    const match = changelogText.match(breakingChangesRegex)
+    if (!match || !match[1]) {
         return null
     }
 
-    const versionSection = versionMatch[0]
+    return match[1].trim()
+}
 
-    // Look for "#### Breaking Change" section with flexible variants:
-    // - Optional emoji at the beginning (⚠️, etc.)
-    // - "Breaking" or "BREAKING" (case-insensitive)
-    // - Optional "Change" or "Changes"
-    // - Optional colon at the end
-    // Extract everything after the heading until the next --- (horizontal rule)
-    const breakingChangeRegex =
-        /####\s*(?:[^\w\s]+\s*)?breaking(?:\s+changes?)?\s*:?\s*\n+([\s\S]*?)(?=\n---|\n####[^#]|$)/i
-    const breakingMatch = versionSection.match(breakingChangeRegex)
-
-    if (!breakingMatch) {
-        return null
-    }
-
-    // Extract the content after the Breaking Change heading and trim whitespace
-    return breakingMatch[1].trim()
+/**
+ * Convert Markdown to HTML using marked library
+ * @param {string} markdown - The Markdown content to convert
+ * @returns {string} HTML content
+ */
+function markdownToHtml(markdown) {
+    // 'marked' parst zuverlässig Listen, Fettdruck, Links, etc.
+    // Die Option 'headerIds: false' verhindert automatisch generierte IDs für Überschriften
+    return marked.parse(markdown.trim(), { headerIds: false })
 }
 
 /**
@@ -65,15 +65,15 @@ function cleanupOldBreakingChanges(currentVersion) {
     }
 
     const files = fs.readdirSync(outputDir)
-    // Remove both old .md files and legacy .hbs files
+    // Remove old .hbs files (keep only current version)
     const breakingChangesFiles = files.filter(
-        (f) => f.startsWith('breaking-changes-') && (f.endsWith('.md') || f.endsWith('.hbs')),
+        (f) => f.startsWith('breaking-changes-') && f.endsWith('.hbs'),
     )
 
     let deletedCount = 0
     breakingChangesFiles.forEach((file) => {
-        // Keep only the current version .md file
-        if (file !== `breaking-changes-${currentVersion}.md`) {
+        // Keep only the current version .hbs file
+        if (file !== `breaking-changes-${currentVersion}.hbs`) {
             const filePath = path.join(outputDir, file)
             fs.unlinkSync(filePath)
             console.log(`🗑️  Removed old breaking changes file: ${file}`)
@@ -87,11 +87,11 @@ function cleanupOldBreakingChanges(currentVersion) {
 }
 
 /**
- * Generate the Markdown file
+ * Generate the Handlebars (.hbs) file with HTML content
  * @param {string} version - The version number
  * @param {string} breakingChanges - The breaking changes content (Markdown)
  */
-function generateMdFile(version, breakingChanges) {
+function generateHbsFile(version, breakingChanges) {
     // Ensure the templates/changes directory exists
     const outputDir = path.join(__dirname, '..', 'templates', 'changes')
     if (!fs.existsSync(outputDir)) {
@@ -101,9 +101,12 @@ function generateMdFile(version, breakingChanges) {
     // Clean up old breaking changes files before generating new one
     cleanupOldBreakingChanges(version)
 
-    // Write the pure Markdown file
-    const outputPath = path.join(outputDir, `breaking-changes-${version}.md`)
-    fs.writeFileSync(outputPath, breakingChanges, 'utf-8')
+    // Convert Markdown to HTML using marked
+    const htmlContent = markdownToHtml(breakingChanges)
+
+    // Write the .hbs file with HTML content
+    const outputPath = path.join(outputDir, `breaking-changes-${version}.hbs`)
+    fs.writeFileSync(outputPath, htmlContent, 'utf-8')
 
     console.log(`✅ Generated breaking changes template: ${outputPath}`)
     return outputPath
@@ -137,32 +140,28 @@ function main() {
         const breakingChangesMarkdown = parseBreakingChanges(changelogText, majorMinorVersion)
 
         if (!breakingChangesMarkdown) {
-            console.log(`ℹ️  No breaking changes found for version ${majorMinorVersion}`)
+            console.log(`ℹ️ No breaking changes found for version ${majorMinorVersion}`)
 
             // Clean up any existing breaking changes file for this version
             const outputDir = path.join(__dirname, '..', 'templates', 'changes')
-            const mdPath = path.join(outputDir, `breaking-changes-${majorMinorVersion}.md`)
             const hbsPath = path.join(outputDir, `breaking-changes-${majorMinorVersion}.hbs`)
 
-            if (fs.existsSync(mdPath)) {
-                fs.unlinkSync(mdPath)
-                console.log(`🗑️  Removed old breaking changes file: ${mdPath}`)
-            }
             if (fs.existsSync(hbsPath)) {
                 fs.unlinkSync(hbsPath)
-                console.log(`🗑️  Removed old breaking changes file: ${hbsPath}`)
+                console.log(`🗑️ Removed old breaking changes file: ${hbsPath}`)
             }
 
-            process.exit(0)
+            process.exit(0) // Erfolg, auch ohne Breaking Changes
         }
 
-        // Generate Markdown file (no HTML conversion needed)
-        generateMdFile(majorMinorVersion, breakingChangesMarkdown)
+        // Generate .hbs file with HTML content from Markdown
+        generateHbsFile(majorMinorVersion, breakingChangesMarkdown)
 
         console.log('✅ Breaking changes template generated successfully!')
+        process.exit(0) // Erfolg
     } catch (error) {
-        console.error('❌ Error generating breaking changes:', error)
-        process.exit(1)
+        console.error('❌ Error generating breaking changes:', error.message)
+        process.exit(1) // Echter Fehler
     }
 }
 

@@ -27,6 +27,11 @@ export class ManoeverItem extends IlarisItem {
                 switch (type) {
                     case 'Waffeneigenschaft':
                         // Find the key where the value matches
+                        if (item.type === 'angriff') {
+                            return Object.values(item.system.eigenschaften).some(
+                                (eigenschaft) => eigenschaft.name === value,
+                            )
+                        }
                         return item.system.eigenschaften.includes(value)
                     case 'Vorteil':
                         return actor._hasVorteil(value, item)
