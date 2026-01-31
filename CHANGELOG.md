@@ -6,7 +6,7 @@
 
 #### Breaking Change
 
-Bitte wie immer die Charaktere neu importieren, bei Charakteren aus neueren Sephrasto-Versionen 5.1.0 über den Import-Knopf, welcher jetzt beim **ersten** Import auch Custom-Waffen richtig importiert. Für die älteren Charaktere steht immer noch der Json-Import und der Aktualisierungs-Knopf im Charakter-Sheet zur Verfügung. Wir supporten gerne und relativ schnell, aber nur wenn die Instruktionen für die Breaking-Changes auch befolgt wurden.
+Bitte wie immer die Charaktere neu importieren, bei Charakteren aus neueren Sephrasto-Versionen 5.1.0 über den Import-Knopf, welcher jetzt beim **ersten** Import auch Custom-Waffen richtig importiert. Für die älteren Charaktere steht immer noch der Json-Import und der Aktualisierungs-Knopf im Charakter-Sheet zur Verfügung.
 
 ##### Waffeneigenschaften-System komplett überarbeitet
 
