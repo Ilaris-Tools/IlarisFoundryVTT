@@ -159,7 +159,7 @@ jobs:
 
             - name: 🚀 Publish to Foundry Package API
               env:
-                  FOUNDRY_RELEASE_TOKEN: ${{ secrets.FOUNDRY_RELEASE_TOKEN }}
+                  FOUNDRY_RELEASE_TOKEN: ${{ secrets.FOUNDRY_API_KEY }}
               run: |
                   # Baue JSON-Request-Body
                   REQUEST_BODY=$(jq -n \
