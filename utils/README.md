@@ -12,15 +12,25 @@ node utils/pack-all.js
 
 ## generate-breaking-changes.js
 
-Generates a Handlebars template file with breaking changes extracted from `CHANGELOG.md`.
+Generates a Handlebars (`.hbs`) template file with breaking changes extracted from `CHANGELOG.md`. The Markdown content is converted to HTML during the build process using the `marked` library.
 
 ### What it does
 
 1. Reads the current version from `system.json`
-2. Parses `CHANGELOG.md` to find the "Breaking Change" section for that version
-3. Converts the markdown to HTML
-4. Generates a `.hbs` template file in `templates/changes/`
+2. Parses `CHANGELOG.md` to find the "Breaking Change" section for that version (supports flexible heading variants)
+3. Converts the Markdown content to HTML using the `marked` library
+4. Generates a `.hbs` file in `templates/changes/` with the HTML content
 5. If no breaking changes are found, it cleans up any existing template for that version
+6. Removes old `.hbs` files from previous versions
+
+### Markdown-to-HTML Conversion
+
+The script uses the `marked` library for reliable Markdown-to-HTML conversion:
+
+-   Supports lists, bold text, links, code blocks, and other Markdown features
+-   Option `headerIds: false` prevents automatic ID generation for headings
+-   More robust than manual string manipulation
+-   Handles nested lists and complex formatting correctly
 
 ### Usage
 
@@ -43,27 +53,44 @@ Add it to your GitHub Actions workflow or other CI/CD pipeline:
 The script generates a file like:
 
 ```
-templates/changes/breaking-changes-12.2.hbs
+templates/changes/breaking-changes-12.3.hbs
 ```
 
-This template is then automatically loaded by the changelog notification system in FoundryVTT.
+This `.hbs` file contains HTML content converted from Markdown and is automatically loaded by the changelog notification system in FoundryVTT.
 
 ### CHANGELOG.md Format
 
 The script expects this format in your CHANGELOG.md:
 
 ```markdown
-### v12.2
+### v12.3
 
 #### Breaking Change
 
+Bitte wie immer die Charaktere neu importieren...
+
+##### Sub-section
+
 -   Your breaking change item 1
 -   Your breaking change item 2
+
+---
 
 #### Features
 
 -   Other changes...
 ```
+
+**Important:** The Breaking Changes section must end with a horizontal rule (`---`) to mark the end of the section.
+
+**Flexible heading support:**
+The script recognizes various heading formats (case-insensitive):
+
+-   `#### Breaking Change` (singular)
+-   `#### Breaking Changes` (plural)
+-   `#### ⚠️ Breaking Changes` (with emoji)
+-   `#### BREAKING CHANGE:` (uppercase with/without colon)
+-   Any combination of the above
 
 ### When to run
 
@@ -76,11 +103,18 @@ You should run this script:
 
 ### Integration with FoundryVTT
 
-The generated `.hbs` files are served as static files by FoundryVTT. The changelog notification hook (`scripts/hooks/changelog-notification.js`) automatically fetches and displays the appropriate template based on the current system version.
+The generated `.hbs` files are served as static files by FoundryVTT. The changelog notification hook (`scripts/hooks/changelog-notification.js`) automatically fetches and displays the appropriate template based on the current system version:
+
+1. Loads the `.hbs` file as HTML
+2. Applies Foundry's `TextEditor.enrichHTML()` for @UUID links and other enrichment
+3. Displays the result in a read-only dialog
 
 This approach ensures that:
 
--   ✅ No client-side parsing of CHANGELOG.md needed
+-   ✅ HTML is generated at build time using the reliable `marked` library
+-   ✅ No client-side Markdown parsing needed
 -   ✅ Breaking changes are always available, even in deployed environments
 -   ✅ Templates are version-specific and can be cached
 -   ✅ No network requests to external URLs needed
+-   ✅ Supports complex Markdown features (nested lists, links, bold text, etc.)
+-   ✅ Markdown content is rendered with full Foundry VTT formatting support

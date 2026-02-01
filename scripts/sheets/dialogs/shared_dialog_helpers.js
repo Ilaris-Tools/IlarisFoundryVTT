@@ -272,10 +272,26 @@ export async function _applyDamageDirectly(targetActor, damage, damageType, true
         ConfigureGameSettingsCategories.Ilaris,
         IlarisGameSettingNames.lepSystem,
     )
-    const ws = targetActor.system.abgeleitete.ws
-    const ws_stern = targetActor.system.abgeleitete.ws_stern
+    let ws = targetActor.system.abgeleitete.ws
+    let ws_stern = targetActor.system.abgeleitete.ws_stern
 
-    let woundsToAdd = trueDamage ? Math.floor(damage / ws) : Math.floor(damage / ws_stern)
+    if (targetActor.type === 'kreatur') {
+        ws = targetActor.system.kampfwerte.ws
+        ws_stern = targetActor.system.kampfwerte.ws_stern ?? targetActor.system.kampfwerte.ws
+    }
+
+    // Calculate wounds: Damage must be STRICTLY GREATER than WS to cause wounds
+    // Formula: Math.floor((damage - 1) / ws) counts how many full WS thresholds are exceeded
+    // Examples with WS=5: damage=5 -> 0 wounds, damage=6 -> 1 wound, damage=10 -> 1 wound,
+    //                     damage=11 -> 2 wounds, damage=16 -> 3 wounds
+    // The (damage - 1) shift ensures damage must exceed WS, not just equal it
+    let woundsToAdd = trueDamage
+        ? damage > ws
+            ? Math.floor((damage - 1) / ws)
+            : 0
+        : damage > ws_stern
+        ? Math.floor((damage - 1) / ws_stern)
+        : 0
 
     if (useLepSystem) {
         woundsToAdd = trueDamage ? damage : damage - ws_stern
