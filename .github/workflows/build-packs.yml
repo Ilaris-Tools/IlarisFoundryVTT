@@ -1,0 +1,218 @@
+name: 🔨 Build DB for Ilaris in Foundry VTT
+
+on:
+    workflow_call:
+        inputs:
+            pre_release:
+                description: Should be pre-release with hash
+                type: boolean
+                required: false
+                default: true
+            skip_foundry_release:
+                description: Skip Foundry API release step
+                type: boolean
+                required: false
+                default: false
+    workflow_dispatch:
+        inputs:
+            pre_release:
+                description: Should be pre-release with hash
+                type: boolean
+                required: false
+                default: true
+            skip_foundry_release:
+                description: Skip Foundry API release step
+                type: boolean
+                required: false
+                default: false
+
+permissions:
+    contents: write
+
+jobs:
+    pack:
+        name: 📦 Package application
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v5
+            - uses: actions/setup-node@v6
+              with:
+                  node-version: 22
+            - name: 🚀 Install Dependencies
+              run: |
+                  npm install
+            - name: � Generate breaking changes template
+              run: node utils/generate-breaking-changes.js
+            - name: �📦 Package database files
+              run: |
+                  node utils/pack-all.js
+                  # Show folder structure in comp_packs
+                  ls -al comp_packs
+                  ls -al comp_packs/beispiel-helden
+            - name: 📖 Read system.json
+              id: read-system-json
+              run: echo "SYSTEM_JSON=$(jq -c . < system.json)" >> $GITHUB_OUTPUT
+            - name: ✍️ Define variables for reusage
+              id: variables
+              run: |
+                  # Read out information from system.json
+                  system="${{fromJson(steps.read-system-json.outputs.SYSTEM_JSON).id}}"
+                  echo "SYSTEM_NAME=${system}" >> $GITHUB_OUTPUT
+                  echo "SYSTEM_NAME=${system}"
+                  vers="${{fromJson(steps.read-system-json.outputs.SYSTEM_JSON).version}}"
+                  echo "VERSION=${vers}"
+
+                  # define release tag
+                  if [ ${{ inputs.pre_release }} = false ]; then
+                    tag="${vers}"
+                  else
+                    tag="${vers}-${{ github.sha }}"
+                  fi
+                  echo "TAG_NAME=${tag}" >> $GITHUB_OUTPUT
+                  echo "TAG_NAME=${tag}"
+
+                  # define filename
+                  file="${system}.zip"
+                  echo "FILENAME=${file}" >> $GITHUB_OUTPUT
+                  echo "FILENAME=${file}"
+            - name: 🧐 Adjust system.json, manifest and download link
+              run: |
+                  manifest="${{fromJson(steps.read-system-json.outputs.SYSTEM_JSON).manifest}}"
+                  echo "Previous manifest: ${manifest}"
+                  manifest_release_path="https://github.com/${{ github.repository }}/releases/download/${{ steps.variables.outputs.TAG_NAME }}/system.json"
+                  download="${{fromJson(steps.read-system-json.outputs.SYSTEM_JSON).download}}"
+                  echo "Previous download: ${download}"
+                  download_release_path="https://github.com/${{ github.repository }}/releases/download/${{ steps.variables.outputs.TAG_NAME }}/${{ steps.variables.outputs.FILENAME }}"
+                  jq --arg manifest "$manifest_release_path" --arg download "$download_release_path" \
+                    '.manifest = $manifest | .download = $download' system.json > tmp && mv tmp system.json
+                  echo "Overwrote system.json"
+                  echo "Adjusted manifest: $(jq .manifest system.json)"
+                  echo "Adjusted download: $(jq .download system.json)"
+            - name: 📂 Prepare app folder
+              run: |
+                  # Moving all files for system integration in here
+                  mkdir "${{ steps.variables.outputs.SYSTEM_NAME }}"
+                  mv -t "${{ steps.variables.outputs.SYSTEM_NAME }}" assets comp_packs css docs scripts styles templates utils
+                  mv babel.config.cjs jsconfig.json LICENSE package.json package-lock.json README.md svgo.config.js system.json template.json -t "${{ steps.variables.outputs.SYSTEM_NAME }}"
+            - name: 📦 Zip application
+              run: |
+                  echo "Creating ${{ steps.variables.outputs.FILENAME }} from workspace"
+                  sudo apt-get update -y
+                  sudo apt-get install -y zip
+                  zip -r "${{ steps.variables.outputs.FILENAME }}" ./${{ steps.variables.outputs.SYSTEM_NAME }}
+            - name: Bump version and push tag
+              uses: laputansoft/github-tag-action@v4.6
+              with:
+                  github_token: ${{ secrets.GITHUB_TOKEN }}
+                  tag: '${{ steps.variables.outputs.TAG_NAME }}'
+            - name: 🎉 Release
+              uses: softprops/action-gh-release@v2
+              with:
+                  tag_name: '${{ steps.variables.outputs.TAG_NAME }}'
+                  prerelease: '${{ inputs.pre_release || true }}'
+                  files: |
+                      CHANGELOG.md
+                      ${{ steps.variables.outputs.SYSTEM_NAME }}/system.json
+                      ${{ steps.variables.outputs.FILENAME }}
+
+    release-foundry:
+        name: 🚀 Release to Foundry VTT
+        runs-on: ubuntu-latest
+        needs: [pack]
+        if: ${{ !inputs.skip_foundry_release }}
+        steps:
+            - uses: actions/checkout@v5
+
+            - name: 📖 Read system.json
+              id: read-system-json
+              run: echo "SYSTEM_JSON=$(jq -c . < system.json)" >> $GITHUB_OUTPUT
+
+            - name: ✍️ Prepare API Request Data
+              id: api-data
+              run: |
+                  # Extrahiere Werte aus system.json
+                  id="${{fromJson(steps.read-system-json.outputs.SYSTEM_JSON).id}}"
+                  version="${{fromJson(steps.read-system-json.outputs.SYSTEM_JSON).version}}"
+                  comp_min="${{fromJson(steps.read-system-json.outputs.SYSTEM_JSON).compatibility.minimum}}"
+                  comp_ver="${{fromJson(steps.read-system-json.outputs.SYSTEM_JSON).compatibility.verified}}"
+
+                  # Bestimme Tag-Name (wie im pack-Job)
+                  if [ ${{ inputs.pre_release }} = false ]; then
+                    tag="${version}"
+                    dry_run="false"
+                  else
+                    tag="${version}-${{ github.sha }}"
+                    dry_run="true"
+                  fi
+
+                  # Baue URLs zum GitHub Release
+                  manifest_url="https://github.com/${{ github.repository }}/releases/download/${tag}/system.json"
+                  notes_url="https://github.com/${{ github.repository }}/releases/tag/${tag}"
+
+                  echo "ID=${id}" >> $GITHUB_OUTPUT
+                  echo "DRY_RUN=${dry_run}" >> $GITHUB_OUTPUT
+                  echo "VERSION=${version}" >> $GITHUB_OUTPUT
+                  echo "MANIFEST_URL=${manifest_url}" >> $GITHUB_OUTPUT
+                  echo "NOTES_URL=${notes_url}" >> $GITHUB_OUTPUT
+                  echo "COMP_MIN=${comp_min}" >> $GITHUB_OUTPUT
+                  echo "COMP_VER=${comp_ver}" >> $GITHUB_OUTPUT
+
+            - name: 🚀 Publish to Foundry Package API
+              env:
+                  FOUNDRY_RELEASE_TOKEN: ${{ secrets.FOUNDRY_API_KEY }}
+              run: |
+                  # Baue JSON-Request-Body
+                  REQUEST_BODY=$(jq -n \
+                    --arg id "${{ steps.api-data.outputs.ID }}" \
+                    --arg dry_run "${{ steps.api-data.outputs.DRY_RUN }}" \
+                    --arg version "${{ steps.api-data.outputs.VERSION }}" \
+                    --arg manifest "${{ steps.api-data.outputs.MANIFEST_URL }}" \
+                    --arg notes "${{ steps.api-data.outputs.NOTES_URL }}" \
+                    --arg comp_min "${{ steps.api-data.outputs.COMP_MIN }}" \
+                    --arg comp_ver "${{ steps.api-data.outputs.COMP_VER }}" \
+                    '{
+                      "id": $id,
+                      "dry-run": ($dry_run == "true"),
+                      "release": {
+                        "version": $version,
+                        "manifest": $manifest,
+                        "notes": $notes,
+                        "compatibility": {
+                          "minimum": $comp_min,
+                          "verified": $comp_ver
+                        }
+                      }
+                    }')
+
+                  echo "Request Body:"
+                  echo "$REQUEST_BODY" | jq .
+
+                  # Sende API-Request mit Retry bei 429
+                  attempt=1
+                  max_attempts=2
+                  while [ $attempt -le $max_attempts ]; do
+                    response=$(curl -s -w "\n%{http_code}" -X POST \
+                      -H "Content-Type: application/json" \
+                      -H "Authorization: $FOUNDRY_RELEASE_TOKEN" \
+                      -d "$REQUEST_BODY" \
+                      "https://foundryvtt.com/_api/packages/release_version/")
+                    
+                    http_code=$(echo "$response" | tail -n1)
+                    body=$(echo "$response" | sed '$d')
+                    
+                    echo "HTTP Status: $http_code"
+                    echo "Response Body:"
+                    echo "$body" | jq . || echo "$body"
+                    
+                    if [ "$http_code" = "200" ]; then
+                      echo "✅ Successfully published to Foundry VTT"
+                      exit 0
+                    elif [ "$http_code" = "429" ] && [ $attempt -lt $max_attempts ]; then
+                      echo "⏳ Rate limit hit. Waiting 60 seconds before retry..."
+                      sleep 60
+                      attempt=$((attempt + 1))
+                    else
+                      echo "❌ API request failed with status $http_code"
+                      exit 1
+                    fi
+                  done

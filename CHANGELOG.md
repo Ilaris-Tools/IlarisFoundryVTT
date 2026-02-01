@@ -4,13 +4,196 @@
 
 ### v12.3
 
-#### Features
+#### Breaking Change
 
--   Regelimporter für Sephrasto XML (5.1.0). Der Regelimporter importiert alle Regeln aus einer Regel.xml von Sephrasto nach Foundry in eigene nach Foundry Items getrennte Kompendien. Nach einem Import sollten, alle Regeln auf ihre Richtigkeit überprüft werden. Vor allem Kampfstilvorteile und Manöver. In beiden Kategorien wird Patternrecognition (also solange ein bestimmtes Pattern erfüllt ist, funktioniert es auch sonst nicht) verwendet, um bestimmte Properties in den Items automatisch zu befüllen. Bei Manövern kann in den meisten Fällen automatisch herausgefunden werden welcher Input benötigt wird und wie die erste Modifikation aussieht (wenn der Wert für Probe befüllt ist und interpretierbar zb (AT/VT/FK +/-X; AT/VT/FK +2)). Bei Kampfstilen wird automatisch erkannt ob die Erschwernis für eine generelle oder spezielle Nebenwaffe ignoriert werden soll (wenn dem Ilaris üblichen Pattern von "Dein <Waffeneigenschaft>/<zweit Waffe> ignoriert die übliche(n) Erschwernis(se) für Nebenwaffen" gefolgt wird! (also auch sowas wie "Dein Wendig ignoriert die üblichen Erschwernisse für Nebenwaffe", hört zwar Panne, aber damit würde es konsistent bleiben)), die Besonderheit für Manöverausgleich von Parierwaffen wird automatisch erkannt (wenn dem Ilaris Pattern "Du kannst gegen humanoide Gegner/Schlagen/bei Mondlicht/wenn eine Integralrechnung rückwärts gemacht wird -1 Erschwernis aus Manövern ignorieren." gefolgt wird! Auch erlaubt ist "Du kannst -1 Erschwernis aus Manövern ignorieren.", für Leute die ebenfalls von langweiligen Extraklauseln in Ilaris genervt sind), zu Letzt wird das Ignorieren für berittenen Fernkampf automatisch erkannt (wenn dem Ilaris Pattern "Außerdem ignorierst du im Fernkampf du den Malus für berittene Schützen"/"Du ignorierst den Malus für berittene Schützen im Fernkampf" gefolgt wird). Bei allem ist korrekte Schreibweise überaus wichtig. Der Regelimporter soll allen Hausreglern viel Arbeit abnehmen, aber alle super kleinen Sonderregeln wird es nie abdecken! Es kann natürlich auch alles von Hand geändert werden.
--   Im Szene-Config Menü gibt es jetzt eine kleine Sektion bei der man Wetter und Licht in einer Szene setzen kann.
--   Der Fernkampfdialog übernimmt automatisch beim öffnen die eingestellten Parameter aus der Szene. (kann man in den World Settings ein und ausschalten)
--   Waffeneigenschaften sind jetzt konfigurierbar und liegen jetzt als Liste auf den Waffen und nicht mehr als hardgecodetes Objekt. Damit können auch neue Waffeneigenschaften hinzugefügt werden.
--   Zeigt alle Boni und Mali als Tooltip auf den jeweiligen Waffenwerten, die auf die Waffe wirken. (zb. Kampfstil, BE, WM der Waffe, etc)
+Bitte wie immer die Charaktere neu importieren, bei Charakteren aus neueren Sephrasto-Versionen 5.1.0 über den Import-Knopf, welcher jetzt beim **ersten** Import auch Custom-Waffen richtig importiert. Für die älteren Charaktere steht immer noch der Json-Import und der Aktualisierungs-Knopf im Charakter-Sheet zur Verfügung.
+
+##### Waffeneigenschaften-System komplett überarbeitet
+
+-   Waffeneigenschaften werden jetzt als eigenständige Items verwaltet
+-   Alle Waffen wurden migriert, um das neue Eigenschaften-System zu nutzen
+-   Eigenschaften können jetzt dynamisch konfiguriert werden mit:
+    -   Modifikatoren (z.B. AT +1, PA -2)
+    -   Bedingungen (wann Eigenschaft aktiv ist)
+    -   Zieleffekte (Effekte auf das Ziel)
+    -   Führungsarten (Einhand, Zweihand, etc.)
+-   **Migration erforderlich:** Bestehende Waffen werden automatisch migriert
+
+##### Effekt-System Grundlage gelegt
+
+-   Einführung eines Active Effect Systems
+-   Vorbereitung für zukünftige dauerhafte Effekte und Buffs/Debuffs
+-   Neue Effekt-Items als Basis für das System
+
+---
+
+#### 🟢 Major Features
+
+##### 1. Rule Importer - XML Import System (**Sephrasto 5.1.0**)
+
+-   sagen wir mal das ist die erste Beta des XML-Regelimporters. Bitte **immer** überprüfen ob alles stimmt und sich nicht einfach darauf verlassen
+-   Komplettes Import-System für Regeldaten aus XML-Dateien
+-   Automatischer Import von:
+    -   Fertigkeiten & Talenten
+    -   Manövern
+    -   Vorteilen
+    -   Waffen & Waffeneigenschaften
+    -   Abgeleiteten Werten
+    -   Rüstungen
+-   Intelligente Update-Funktion mit Bestätigungsdialog
+-   Vollständige Compendium-Verwaltung
+-   Fehlerbehandlung und Validierung
+-   Man kann es gerne mit Hausregeln aus älteren Sephrasto Versionen versuchen, aber dafür übernehmen wir keine Garantie
+
+##### 2. Zielauswahl-System
+
+-   Neue Zielauswahl für Kampf und Zauber
+-   Automatische Erfassung anvisierter Tokens
+-   Anzeige von Zielinformationen im Kampfdialog
+-   Verbesserte taktische Übersicht
+-   Integration in alle Kampfdialoge
+
+##### 3. Kurzübersichten Journal Pack
+
+-   Neue Compendium mit Referenzkarten
+-   Quick Reference Cards für schnellen Zugriff
+-   Wichtige Regelübersichten im Journal-Format
+
+##### 4. Licht- & Wetter-Config in Fernkampf- und Nahkampf-Dialog
+
+-   Scene Config Integration
+-   Automatische Übernahme in Fernkampf-Dialog
+-   World-Setting für automatisches Pullen der Werte
+-   Dokumentation in einstellungen.md
+
+##### 5. Hexagonale Token-Formen
+
+-   Token-Clipping für Hex-Grids
+-   Sechseckige Token-Masken für Hex-Grids
+-   Performance-optimiert mit Caching
+-   Optional aktivierbar per World-Setting
+-   Farbige Borders je nach Token-Typ (Foundry Color System)
+
+---
+
+#### 🟡 Minor Features & Improvements
+
+##### Kampfsystem
+
+-   Gildenmagier II Bonus implementiert (Basis-Manöver zählen doppelt)
+-   Tooltips für Manöver-Namen in Kampfdialogen
+-   Würfelformeln werden jetzt in benutzerfreundlicher deutscher Notation angezeigt
+-   Kritische Treffer und Patzer werden im Chat hervorgehoben
+-   Umgebungslicht-Modifikator im Nahkampf-Dialog
+
+##### Manöver-System
+
+-   Manöver-Checks akzeptieren jetzt Strings UND Zahlen
+-   Waffeneigenschaften-Verbesserungen für Manöver
+
+##### Datenstruktur & Technisches
+
+-   "Tiergeister" Kategorie für Vorteile hinzugefügt (Sephrasto-Kompatibilität)
+-   Fertigkeiten zu getRollData hinzugefügt (für Roll-Formeln zugänglich)
+-   Deprecated Files entfernt
+-   Diverse kleinere Verbesserungen
+
+---
+
+#### 📦 Compendium Updates
+
+##### Massives Waffen-Update
+
+-   **Alle Waffen** (150+ Items) auf neues Eigenschaften-System migriert
+-   Binäre Pack-Dateien vollständig neu generiert
+-   Source JSON-Dateien für alle Waffen aktualisiert
+
+##### Neue Waffeneigenschaften Items
+
+17 neue Waffeneigenschaften-Items erstellt:
+
+-   Kopflastig
+-   Magazin
+-   Niederwerfen
+-   Parierwaffe
+-   Rüstungsbrechend
+-   Reittier
+-   Schild
+-   Schwer
+-   Stumpf
+-   Umklammern
+-   Unberechenbar
+-   Unzerstörbar
+-   Wendig
+-   Zerbrechlich
+-   Zweihändig
+-   kein Malus als Nebenwaffe
+-   kein Reiter
+-   stationär
+
+##### Vorteile Update
+
+-   Neue Vorteile hinzugefügt
+-   Bestehende Vorteile aktualisiert für Kampfstil-System
+-   Tiergeister-Kategorie integriert
+
+##### Zauber & Rituale
+
+-   Über 300 Zauber mit Tiergeist-Varianten aktualisiert
+-   Source-Dateien für bessere Wartbarkeit
+
+##### Kreaturen, Helden, Manöver
+
+-   Beispiel-Helden aktualisiert
+-   Kreaturen-Pack überarbeitet
+-   Manöver-Compendium erweitert
+
+---
+
+#### 🧪 Tests & Qualität
+
+##### Neue Test-Suites
+
+-   `weapon-utils.test.js` - Umfangreiche Waffen-Utility-Tests (685 Zeilen)
+-   `waffe.spec.js` - Waffen-Item-Tests (382 Zeilen)
+-   `uebernatuerlich.spec.js` - Tests für übernatürliche Fertigkeiten
+-   `eigenschaft-cache.spec.js` - Eigenschaften-Cache-Tests (315 Zeilen)
+-   `eigenschaft-parser.test.js` - Parser-Tests (221 Zeilen)
+-   `eigenschaft-utils.spec.js` - Utility-Tests (161 Zeilen)
+-   `modifier-processor.spec.js` - Modifikator-Tests
+-   `processor-factory.spec.js` - Factory-Pattern-Tests
+-   `wuerfel_misc.spec.js` - Erweiterte Würfel-Tests (391 Zeilen)
+
+##### Code-Qualität
+
+-   Jest Setup erweitert (87 Zeilen)
+-   Jest Config optimiert
+-   Prettier Code-Formatting
+
+---
+
+#### 📊 Statistik-Zusammenfassung
+
+| Kategorie                          | Anzahl      |
+| ---------------------------------- | ----------- |
+| **Commits**                        | 29          |
+| **Pull Requests**                  | ~20         |
+| **Geänderte Dateien**              | 2.247       |
+| **Neue JavaScript-Dateien**        | 40+         |
+| **Neue Test-Dateien**              | 15+         |
+| **Neue Templates**                 | 11          |
+| **Neue Dokumentation**             | 4 Dokumente |
+| **Aktualisierte Compendium-Items** | 500+        |
+| **Code-Zeilen hinzugefügt**        | ~23.281     |
+| **Code-Zeilen entfernt**           | ~2.028      |
+
+---
+
+#### 🚀 Migration
+
+-   Waffen werden automatisch auf neues Eigenschaften-System migriert
+-   Compendium-Packs werden automatisch aktualisiert
+-   Die Charaktere bitte neu importieren, dass löst einiges an Problemen
 
 ### v12.2.8
 
