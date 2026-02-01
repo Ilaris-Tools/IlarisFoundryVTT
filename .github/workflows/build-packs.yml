@@ -93,7 +93,7 @@ jobs:
                   # Moving all files for system integration in here
                   mkdir "${{ steps.variables.outputs.SYSTEM_NAME }}"
                   mv -t "${{ steps.variables.outputs.SYSTEM_NAME }}" assets comp_packs css docs scripts styles templates utils
-                  mv babel.config.cjs jsconfig.json LICENSE package.json package-lock.json README.md svgo.config.js system.json template.json update-creature-items.js -t "${{ steps.variables.outputs.SYSTEM_NAME }}"
+                  mv babel.config.cjs jsconfig.json LICENSE package.json package-lock.json README.md svgo.config.js system.json template.json -t "${{ steps.variables.outputs.SYSTEM_NAME }}"
             - name: 📦 Zip application
               run: |
                   echo "Creating ${{ steps.variables.outputs.FILENAME }} from workspace"

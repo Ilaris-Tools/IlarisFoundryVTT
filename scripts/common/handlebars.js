@@ -167,7 +167,6 @@ function registerHandlebarsHelpers() {
     })
 
     Handlebars.registerHelper('isCaster', function (actor) {
-        console.log('caster?')
         return (
             (actor.system.energien.asp.max ?? 0) +
                 (actor.system.energien.gup.max ?? 0) +

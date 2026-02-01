@@ -32,7 +32,9 @@ export class ManoeverItem extends IlarisItem {
                                 (eigenschaft) => eigenschaft.name === value,
                             )
                         }
-                        return item.system.eigenschaften.includes(value)
+                        return item.system.eigenschaften.some(
+                            (eigenschaft) => eigenschaft.key === value,
+                        )
                     case 'Vorteil':
                         return actor._hasVorteil(value, item)
                     default:
