@@ -135,7 +135,7 @@ jobs:
                   version="${{fromJson(steps.read-system-json.outputs.SYSTEM_JSON).version}}"
                   comp_min="${{fromJson(steps.read-system-json.outputs.SYSTEM_JSON).compatibility.minimum}}"
                   comp_ver="${{fromJson(steps.read-system-json.outputs.SYSTEM_JSON).compatibility.verified}}"
-                  
+
                   # Bestimme Tag-Name (wie im pack-Job)
                   if [ ${{ inputs.pre_release }} = false ]; then
                     tag="${version}"
@@ -144,11 +144,11 @@ jobs:
                     tag="${version}-${{ github.sha }}"
                     dry_run="true"
                   fi
-                  
+
                   # Baue URLs zum GitHub Release
                   manifest_url="https://github.com/${{ github.repository }}/releases/download/${tag}/system.json"
                   notes_url="https://github.com/${{ github.repository }}/releases/tag/${tag}"
-                  
+
                   echo "ID=${id}" >> $GITHUB_OUTPUT
                   echo "DRY_RUN=${dry_run}" >> $GITHUB_OUTPUT
                   echo "VERSION=${version}" >> $GITHUB_OUTPUT
@@ -183,10 +183,10 @@ jobs:
                         }
                       }
                     }')
-                  
+
                   echo "Request Body:"
                   echo "$REQUEST_BODY" | jq .
-                  
+
                   # Sende API-Request mit Retry bei 429
                   attempt=1
                   max_attempts=2
