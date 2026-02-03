@@ -237,84 +237,84 @@
 
         
         {{#if (isCaster actor)}}
-        <div class="freietalente statblockreihe">
-            <b>Übernatürliche Fertigkeiten: </b>
-            {{#each actor.uebernatuerlich.fertigkeiten as |freiestalent key|}}
-            <label>
+            <div class="freietalente statblockreihe">
+                <b>Übernatürliche Fertigkeiten: </b>
+                {{#each actor.uebernatuerlich.fertigkeiten as |freiestalent key|}}
                 <label>
-                    <a class="item-edit" data-itemid="{{freiestalent.id}}">{{freiestalent.name}} </a> (
-                    <label
-                    class="rollable onhover"
-                    data-rolltype="profan_fertigkeit_pw"
-                    data-fertigkeit="{{freiestalent.name}}"
-                    data-pw="{{freiestalent.system.pw}}"
-                    >{{freiestalent.system.pw}}</label
-                > 
-                    <a
-                        class="rollable icon-small"
-                        data-rolltype="fertigkeit_diag"
-                        data-probetype="simple"
+                    <label>
+                        <a class="item-edit" data-itemid="{{freiestalent.id}}">{{freiestalent.name}} </a> (
+                        <label
+                        class="rollable onhover"
+                        data-rolltype="profan_fertigkeit_pw"
                         data-fertigkeit="{{freiestalent.name}}"
                         data-pw="{{freiestalent.system.pw}}"
-                        ><i class="fas fa-dice-d20"></i
-                    ></a>
-                    ), 
-                </label> 
-            </label>
-            {{/each}}
-        </div>
+                        >{{freiestalent.system.pw}}</label
+                    > 
+                        <a
+                            class="rollable icon-small"
+                            data-rolltype="fertigkeit_diag"
+                            data-probetype="simple"
+                            data-fertigkeit="{{freiestalent.name}}"
+                            data-pw="{{freiestalent.system.pw}}"
+                            ><i class="fas fa-dice-d20"></i
+                        ></a>
+                        ), 
+                    </label> 
+                </label>
+                {{/each}}
+            </div>
 
-        <div class="freietalente statblockreihe">
-            <b>Zauber/Liturgien/Anrufungen: </b>
-            {{#each actor.uebernatuerlich.zauber as |zauber key|}}
-            <label>
+            <div class="freietalente statblockreihe">
+                <b>Zauber/Liturgien/Anrufungen: </b>
+                {{#each actor.uebernatuerlich.zauber as |zauber key|}}
                 <label>
-                    <a class="item-edit" data-itemid="{{zauber.id}}">{{zauber.name}} </a> (
-                    <label
-                    class="rollable onhover"
-                    data-rolltype="profan_fertigkeit_pw"
-                    data-fertigkeit="{{zauber.name}}"
-                    data-pw="{{zauber.system.pw}}"
-                    >{{zauber.system.pw}}</label
-                >  
-                <a class="rollable icon-small" data-rolltype="magie_diag" data-itemid="{{zauber.id}}"><i class="fas fa-dice-d20"></i></a>
-                    ), 
-                </label> 
-            </label>
-            {{/each}}
-            {{#each actor.uebernatuerlich.liturgien as |liturgie key|}}
-            <label>
+                    <label>
+                        <a class="item-edit" data-itemid="{{zauber.id}}">{{zauber.name}} </a> (
+                        <label
+                        class="rollable onhover"
+                        data-rolltype="profan_fertigkeit_pw"
+                        data-fertigkeit="{{zauber.name}}"
+                        data-pw="{{zauber.system.pw}}"
+                        >{{zauber.system.pw}}</label
+                    >  
+                    <a class="rollable icon-small" data-rolltype="magie_diag" data-itemid="{{zauber.id}}"><i class="fas fa-dice-d20"></i></a>
+                        ), 
+                    </label> 
+                </label>
+                {{/each}}
+                {{#each actor.uebernatuerlich.liturgien as |liturgie key|}}
                 <label>
-                    <a class="item-edit" data-itemid="{{liturgie.id}}">{{liturgie.name}} </a> (
-                    <label
-                    class="rollable onhover"
-                    data-rolltype="profan_fertigkeit_pw"
-                    data-fertigkeit="{{liturgie.name}}"
-                    data-pw="{{liturgie.system.pw}}"
-                    >{{liturgie.system.pw}}</label
-                >  
-                <a class="rollable icon-small" data-rolltype="karma_diag" data-itemid="{{liturgie.id}}"><i class="fas fa-dice-d20"></i></a>
-                    ), 
-                </label> 
-            </label>
-            {{/each}}
-            {{#each actor.uebernatuerlich.anrufungen as |anrufung key|}}
-            <label>
+                    <label>
+                        <a class="item-edit" data-itemid="{{liturgie.id}}">{{liturgie.name}} </a> (
+                        <label
+                        class="rollable onhover"
+                        data-rolltype="profan_fertigkeit_pw"
+                        data-fertigkeit="{{liturgie.name}}"
+                        data-pw="{{liturgie.system.pw}}"
+                        >{{liturgie.system.pw}}</label
+                    >  
+                    <a class="rollable icon-small" data-rolltype="karma_diag" data-itemid="{{liturgie.id}}"><i class="fas fa-dice-d20"></i></a>
+                        ), 
+                    </label> 
+                </label>
+                {{/each}}
+                {{#each actor.uebernatuerlich.anrufungen as |anrufung key|}}
                 <label>
-                    <a class="item-edit" data-itemid="{{anrufung.id}}">{{anrufung.name}} </a> (
-                    <label
-                    class="rollable onhover"
-                    data-rolltype="profan_fertigkeit_pw"
-                    data-fertigkeit="{{anrufung.name}}"
-                    data-pw="{{anrufung.system.pw}}"
-                    >{{anrufung.system.pw}}</label
-                >  
-                <a class="rollable icon-small" data-rolltype="magie_diag" data-itemid="{{anrufung.id}}"><i class="fas fa-dice-d20"></i></a>
-                    ), 
-                </label> 
-            </label>
-            {{/each}}
-        </div>
+                    <label>
+                        <a class="item-edit" data-itemid="{{anrufung.id}}">{{anrufung.name}} </a> (
+                        <label
+                        class="rollable onhover"
+                        data-rolltype="profan_fertigkeit_pw"
+                        data-fertigkeit="{{anrufung.name}}"
+                        data-pw="{{anrufung.system.pw}}"
+                        >{{anrufung.system.pw}}</label
+                    >  
+                    <a class="rollable icon-small" data-rolltype="magie_diag" data-itemid="{{anrufung.id}}"><i class="fas fa-dice-d20"></i></a>
+                        ), 
+                    </label> 
+                </label>
+                {{/each}}
+            </div>
         {{/if}}
 
         {{#if actor.freietalente}}
@@ -346,41 +346,12 @@
         </div>
         {{/if}}
 
-        <div class="freietalente statblockreihe">
-            <b>Zauber</b><a class="item-create plus-button" data-itemclass="zauber">[+]</a><b>: </b><br/>
-            {{#each actor.uebernatuerlich.zauber as |zauber key|}}
+        <div class="effekte statblockreihe">
+            <b>Effekt</b>
+            {{#each actor.appliedEffects as |effect key|}}
             <label>
                 <label>
-                    <a class="item-edit" data-itemid="{{zauber.id}}">{{zauber.name}} </a> (
-                    <label
-                    class="rollable onhover"
-                    data-rolltype="profan_fertigkeit_pw"
-                    data-fertigkeit="{{zauber.name}}"
-                    data-pw="{{zauber.system.pw}}"
-                    >{{zauber.system.pw}}</label
-                >  
-                <a class="rollable icon-small" data-rolltype="magie_diag" data-itemid="{{zauber.id}}"><i class="fas fa-dice-d20"></i></a>
-                    ), 
-                </label> 
-            </label>
-            {{/each}}
-        </div>
-
-        <div class="freietalente statblockreihe">
-            <b>Liturgien</b><a class="item-create plus-button" data-itemclass="liturgie">[+]</a><b>: </b><br/>
-            {{#each actor.uebernatuerlich.liturgien as |liturgie key|}}
-            <label>
-                <label>
-                    <a class="item-edit" data-itemid="{{liturgie.id}}">{{liturgie.name}} </a> (
-                    <label
-                    class="rollable onhover"
-                    data-rolltype="profan_fertigkeit_pw"
-                    data-fertigkeit="{{liturgie.name}}"
-                    data-pw="{{liturgie.system.pw}}"
-                    >{{liturgie.system.pw}}</label
-                >  
-                <a class="rollable icon-small" data-rolltype="magie_diag" data-itemid="{{liturgie.id}}"><i class="fas fa-dice-d20"></i></a>
-                    ), 
+                    <a class="item-edit" data-itemid="{{effect.id}}" data-itemClass="effect">{{effect.name}} </a>
                 </label> 
             </label>
             {{/each}}

@@ -1,4 +1,8 @@
 import { signed } from '../../common/wuerfel/chatutilities.js'
+import {
+    ConfigureGameSettingsCategories,
+    IlarisGameSettingNames,
+} from '../../settings/configure-game-settings.model.js'
 /**
  * Applies the specified operator to the current value
  * @param {number} currentValue - The current value to modify
@@ -60,7 +64,9 @@ export function processModification(
     // Special case for "Zielen" with "Ruhige Hand"
     let isZielenMitRuhigeHand = false
     if (manoeverName === 'Zielen' && rollValues.context) {
-        const ruhigeHand = rollValues.context.item?.system?.manoever?.fm_zlen?.ruhige_hand
+        const ruhigeHand = rollValues.context.actor?.vorteil?.kampf?.find(
+            (vorteil) => vorteil.name === 'Ruhige Hand',
+        )
         if (ruhigeHand && modification.type === 'ATTACK') {
             value = value * 2 // Double the bonus with Ruhige Hand
             isZielenMitRuhigeHand = true
@@ -266,23 +272,40 @@ export async function _applyDamageDirectly(targetActor, damage, damageType, true
         ConfigureGameSettingsCategories.Ilaris,
         IlarisGameSettingNames.lepSystem,
     )
-    const ws = targetActor.system.abgeleitete.ws
-    const ws_stern = targetActor.system.abgeleitete.ws_stern
+    let ws = targetActor.system.abgeleitete.ws
+    let ws_stern = targetActor.system.abgeleitete.ws_stern
 
-    let woundsToAdd = trueDamage ? Math.floor(damage / ws) : Math.floor(damage / ws_stern)
+    if (targetActor.type === 'kreatur') {
+        ws = targetActor.system.kampfwerte.ws
+        ws_stern = targetActor.system.kampfwerte.ws_stern ?? targetActor.system.kampfwerte.ws
+    }
+
+    // Calculate wounds: Damage must be STRICTLY GREATER than WS to cause wounds
+    // Formula: Math.floor((damage - 1) / ws) counts how many full WS thresholds are exceeded
+    // Examples with WS=5: damage=5 -> 0 wounds, damage=6 -> 1 wound, damage=10 -> 1 wound,
+    //                     damage=11 -> 2 wounds, damage=16 -> 3 wounds
+    // The (damage - 1) shift ensures damage must exceed WS, not just equal it
+    let woundsToAdd = trueDamage
+        ? damage > ws
+            ? Math.floor((damage - 1) / ws)
+            : 0
+        : damage > ws_stern
+        ? Math.floor((damage - 1) / ws_stern)
+        : 0
 
     if (useLepSystem) {
         woundsToAdd = trueDamage ? damage : damage - ws_stern
 
         if (woundsToAdd > 0) {
             await targetActor.update({
-                [`system.gesundheit.wunden`]: currentValue + woundsToAdd,
+                [`system.gesundheit.wunden`]:
+                    (targetActor.system.gesundheit.wunden || 0) + woundsToAdd,
             })
 
             // Send a message to chat
             await ChatMessage.create({
-                content: `${targetActor.name} erleidet Schaden! (${
-                    damageType ? CONFIG.ILARIS.schadenstypen[damageType] : ''
+                content: `${targetActor.name} erleidet ${woundsToAdd} Schaden! (${
+                    damageType ? CONFIG.ILARIS.schadenstypen[damageType] : 'profan'
                 })`,
                 speaker: speaker,
                 type: CONST.CHAT_MESSAGE_STYLES.OTHER,

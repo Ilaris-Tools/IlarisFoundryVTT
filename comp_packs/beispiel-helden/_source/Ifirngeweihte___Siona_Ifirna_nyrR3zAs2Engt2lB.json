@@ -1,0 +1,2287 @@
+{
+  "name": "Ifirngeweihte - Siona Ifirna",
+  "type": "held",
+  "img": "systems/Ilaris/assets/images/token/kreaturentypen/humanoid.png",
+  "system": {
+    "gesundheit": {
+      "erschoepfung": 0,
+      "wunden": 0,
+      "wundabzuege": 0,
+      "wundenignorieren": 0,
+      "display": "Volle Gesundheit",
+      "hp": {
+        "max": 9,
+        "value": 9,
+        "threshold": 0
+      }
+    },
+    "attribute": {
+      "CH": {
+        "wert": 4,
+        "pw": 0
+      },
+      "FF": {
+        "wert": 6,
+        "pw": 0
+      },
+      "GE": {
+        "wert": 2,
+        "pw": 0
+      },
+      "IN": {
+        "wert": 6,
+        "pw": 0
+      },
+      "KK": {
+        "wert": 4,
+        "pw": 0
+      },
+      "KL": {
+        "wert": 2,
+        "pw": 0
+      },
+      "KO": {
+        "wert": 2,
+        "pw": 0
+      },
+      "MU": {
+        "wert": 4,
+        "pw": 0
+      }
+    },
+    "abgeleitete": {
+      "globalermod": 0,
+      "ws": 0,
+      "ws_stern": 0,
+      "be": 0,
+      "be_traglast": 0,
+      "ws_beine": 0,
+      "ws_larm": 0,
+      "ws_rarm": 0,
+      "ws_bauch": 0,
+      "ws_brust": 0,
+      "ws_kopf": 0,
+      "mr": 0,
+      "gs": 0,
+      "ini": 0,
+      "dh": 0,
+      "traglast_intervall": 0,
+      "traglast": 0,
+      "kap_zugekauft": 0,
+      "gkap": null,
+      "kap_stern": 24
+    },
+    "schips": {
+      "schips": 4,
+      "schips_stern": 4
+    },
+    "initiative": 0,
+    "furcht": {
+      "furchtstufe": 0,
+      "furchtabzuege": 0,
+      "display": ""
+    },
+    "modifikatoren": {
+      "manuellermod": 0,
+      "nahkampfmod": 0
+    },
+    "misc": {
+      "selected_kampfstil": "ohne",
+      "selected_uebernatuerlicher_stil": "ohne",
+      "ist_beritten": false
+    },
+    "geld": {
+      "dukaten": 0,
+      "silbertaler": 0,
+      "heller": 0,
+      "kreuzer": 0
+    },
+    "getragen": 1,
+    "notes": ""
+  },
+  "items": [
+    {
+      "_id": "oyq4u4N6Gr1PzAaE",
+      "name": "Geweiht I",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "kein Paktierer I",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Du verfügst über 8 Karmapunkte und kannst kirchliche Traditionen erlernen.</body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.8QG19b6FhFxJiRBx",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.oyq4u4N6Gr1PzAaE"
+    },
+    {
+      "_id": "M5qX3DxlVn7NwUXo",
+      "name": "Geweiht II",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "Geweiht I",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Du verfügst über 16 Karmapunkte und kannst kirchliche Traditionen erlernen.</body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.BsJoXOKNNcRAGeal",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.M5qX3DxlVn7NwUXo"
+    },
+    {
+      "_id": "PCfsEJ149UJkLBMV",
+      "name": "Geweiht III",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "Geweiht II",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Du verfügst über 24 Karmapunkte und kannst kirchliche Traditionen erlernen.</body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.p690yO1AZfRgeVq6",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.PCfsEJ149UJkLBMV"
+    },
+    {
+      "_id": "qCG7O5OF2QqU9zKs",
+      "name": "Resistenz gegen Kälte",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "keine",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Verschiebt die Temperaturstufe bei niedrigen Temperaturen um eine Stufe in Richtung normal.</body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.oHFIBFJjHdOp3xDF",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.qCG7O5OF2QqU9zKs"
+    },
+    {
+      "_id": "wk0kw8BHWhJKznNp",
+      "name": "Reflexschuss",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "FF 6",
+        "gruppe": 2,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Im Fernkampf sinken Abzüge durch Bewegung oder Wind um 1 Stufe.</body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.qVK4M851hrv2MlTT",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.wk0kw8BHWhJKznNp"
+    },
+    {
+      "_id": "qGblJnFQoLYau6Mq",
+      "name": "Ruhige Hand",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "FF 4",
+        "gruppe": 2,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Verdoppelt im Fernkampf den Bonus durch Zielen.</body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.9cEyrf6xsr6nUeRs",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.qGblJnFQoLYau6Mq"
+    },
+    {
+      "_id": "30L16idztV22vYYe",
+      "name": "Tradition der Ifirngeweihten I",
+      "type": "vorteil",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "voraussetzung": "IN 4; Geweiht I; keine andere Geweihtentradition",
+        "gruppe": 7,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Du kannst Liturgien in der Tradition der Ifirngeweihten erlernen und benutzen. Solche Liturgien findest du unter den allgemeinen Liturgien, unter Jagd und Wildnis (ab S.&nbsp;184).<br><br>Liturgien sind um 2-8 Punkte erschwert, wenn ihr Einsatz gegen die Prinzipien des Geweihten verstößt.</body>"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": "Compendium.Ilaris.vorteil.Item.9ME4YiESKZ0dqVon",
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.30L16idztV22vYYe"
+    },
+    {
+      "_id": "bmckqmhkkJ1vEQVJ",
+      "name": "Im Dienste der Schwänin",
+      "type": "eigenheit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.bmckqmhkkJ1vEQVJ"
+    },
+    {
+      "_id": "La3E3tZZUipjfWCM",
+      "name": "Die Geister, die du riefst...",
+      "type": "eigenheit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.La3E3tZZUipjfWCM"
+    },
+    {
+      "_id": "PAWJTuNdx0VsESv5",
+      "name": "Meine Heimat ist die Weite",
+      "type": "eigenheit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.PAWJTuNdx0VsESv5"
+    },
+    {
+      "_id": "fRljgCoKwtYcHX1Z",
+      "name": "Das Gute im Menschen",
+      "type": "eigenheit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.fRljgCoKwtYcHX1Z"
+    },
+    {
+      "_id": "OE2C8to843BaaViF",
+      "name": "Handgemenge",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 2,
+        "pw": 4,
+        "attribut_0": "GE",
+        "attribut_1": "KK",
+        "attribut_2": "MU",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Auf Handgemenge würfelst du bei allen waffenlosen Nahkampftechniken, im Umgang mit Handgemengewaffen wie Messern, Dolchen, Schlagstöcken und bei der Verwendung von Schilden.</body>",
+        "pwt": 5
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.OE2C8to843BaaViF"
+    },
+    {
+      "_id": "8F4i0gaTAQ1HTVeh",
+      "name": "Hiebwaffen",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 3,
+        "attribut_0": "GE",
+        "attribut_1": "KK",
+        "attribut_2": "MU",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Mit der Fertigkeit Hiebwaffen führst du alle Arten von stumpfen und scharfen Hiebwaffen, wie Keulen, Äxte und Hämmer. </body>",
+        "pwt": 3
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.8F4i0gaTAQ1HTVeh"
+    },
+    {
+      "_id": "m7xGWtgZxiaOvMPO",
+      "name": "Klingenwaffen",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 3,
+        "attribut_0": "GE",
+        "attribut_1": "KK",
+        "attribut_2": "MU",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Im Kampf mit allen Varianten von Schwertern, Säbeln und Fechtwaffen werden Proben auf die Fertigkeit Klingenwaffen abgelegt. Dolche gehören nicht zu den Klingenwaffen - sie werden mit der Fertigkeit Handgemenge genutzt.</body>",
+        "pwt": 3
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.m7xGWtgZxiaOvMPO"
+    },
+    {
+      "_id": "qK3j9NMexEZYHVL4",
+      "name": "Stangenwaffen",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 3,
+        "attribut_0": "GE",
+        "attribut_1": "KK",
+        "attribut_2": "MU",
+        "gruppe": 0,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Alle Waffen mit einem langen Schaft gelten als Stangenwaffen. Zu den klassischen Stangenwaffen zählen Speere, Hellebarden und der Schnitter. Zusätzlich werden Kampfstäbe und die Lanzen berittener Kämpfer werden mit diesem Talent genutzt.</body>",
+        "pwt": 3
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.qK3j9NMexEZYHVL4"
+    },
+    {
+      "_id": "mAvuATIIqziDH36G",
+      "name": "Schusswaffen",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 7,
+        "pw": 9,
+        "attribut_0": "FF",
+        "attribut_1": "IN",
+        "attribut_2": "KK",
+        "gruppe": 1,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Mit der Fertigkeit Schusswaffen bedienst du alle Waffen, mit denen Geschosse auf den Gegner abgefeuert werden. Dazu gehören so verbreitete Schusswaffen wie der Bogen oder die Armbrust, aber auch das Blasrohr.</body>",
+        "pwt": 12
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.mAvuATIIqziDH36G"
+    },
+    {
+      "_id": "oeiMWt8zWoK6XULq",
+      "name": "Wurfwaffen",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 5,
+        "attribut_0": "FF",
+        "attribut_1": "IN",
+        "attribut_2": "KK",
+        "gruppe": 1,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Als Wurfwaffen gelten sämtliche geworfenen Geschosse wie Diskusse oder Wurfspeere. Zusätzlich umfassen sie kurze Wurfwaffen, zu denen Dolche, Wurfsterne und improvisierte Geschosse wie einen Stein oder eine Flasche gehören.</body>",
+        "pwt": 5
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.oeiMWt8zWoK6XULq"
+    },
+    {
+      "_id": "GSSwEWQ20FCypyke",
+      "name": "Athletik",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 3,
+        "pw": 5,
+        "attribut_0": "GE",
+        "attribut_1": "KK",
+        "attribut_2": "KO",
+        "gruppe": 2,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Athletik umfasst alle Aktivitäten, bei denen der Charakter seinen gesamten Körper kurz- oder längerfristig koordiniert einsetzen muss.</body>",
+        "pwt": 6
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.GSSwEWQ20FCypyke"
+    },
+    {
+      "_id": "0gSyP0KKe6XDHm7S",
+      "name": "Heimlichkeit",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 5,
+        "pw": 7,
+        "attribut_0": "MU",
+        "attribut_1": "IN",
+        "attribut_2": "GE",
+        "gruppe": 2,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Heimlichkeit ermöglicht es deinem Charakter, ungehört und ungesehen zu bleiben. Die Probe wird häufig vergleichend gegen die Wachsamkeit deines Kontrahenten gewürfelt.</body>",
+        "pwt": 9
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.0gSyP0KKe6XDHm7S"
+    },
+    {
+      "_id": "7AkeH9dPF4oTh7Zk",
+      "name": "Selbstbeherrschung",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 3,
+        "pw": 5,
+        "attribut_0": "MU",
+        "attribut_1": "MU",
+        "attribut_2": "KO",
+        "gruppe": 2,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Selbstbeherrschung erlaubt es dir, widrige Umstände, körperliche Schmerzen oder andere Ablenkungen zu ignorieren und dich auf das einzig Wichtige zu konzentrieren.</body>",
+        "pwt": 6
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.7AkeH9dPF4oTh7Zk"
+    },
+    {
+      "_id": "iXnRprNJm6c15yss",
+      "name": "Wahrnehmung",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 3,
+        "pw": 7,
+        "attribut_0": "IN",
+        "attribut_1": "IN",
+        "attribut_2": "KL",
+        "gruppe": 2,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Wahrnehmung ist die Fähigkeit, selbst kleinste Sinneseindrücke wahrzunehmen und richtig zu interpretieren.</body>",
+        "pwt": 8
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.iXnRprNJm6c15yss"
+    },
+    {
+      "_id": "16XygvM5p3vcdzHd",
+      "name": "Autorität",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 3,
+        "attribut_0": "CH",
+        "attribut_1": "KL",
+        "attribut_2": "MU",
+        "gruppe": 3,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Autorität erlaubt es deinem Charakter, sich Respekt zu verschaffen und seinen Willen durchzusetzen.</body>",
+        "pwt": 3
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.16XygvM5p3vcdzHd"
+    },
+    {
+      "_id": "7SubpitAuPA9hIDK",
+      "name": "Beeinflussung",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 5,
+        "attribut_0": "CH",
+        "attribut_1": "CH",
+        "attribut_2": "IN",
+        "gruppe": 3,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Hierunter fallen sämtliche Techniken, um das Gegenüber zu einer gewünschten Handlung zu bewegen. Dabei werden Betören und Überreden oft als vergleichende Proben gegen die Menschenkenntnis des Opfers gewürfelt.</body>",
+        "pwt": 5
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.7SubpitAuPA9hIDK"
+    },
+    {
+      "_id": "9Oqh0uRHrwtJh81V",
+      "name": "Gebräuche",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 1,
+        "pw": 5,
+        "attribut_0": "CH",
+        "attribut_1": "IN",
+        "attribut_2": "KL",
+        "gruppe": 3,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Gebräuche stellt das Wissen um fremde und vertraute Kulturen sowie die dort herrschenden gesellschaftlichen Normen dar. Wie heißt der Markgrafen und wie sprichst du ihn an? In welchem Viertel findest du eine vertrauenswürdige Herberge, verschwiegene Schläger oder die neuesten Gerüchte? Wie funktioniert das Kamelspiel und auf welches Getränk könntest du deinen Gegner einladen? Herrscht in der nächsten Stadt ein Waffenverbot und wie streng wird es ausgelegt? Gebräuche beantwortet all diese Fragen und verhindert, dass du unangenehm auffällst.</body>",
+        "pwt": 5
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.9Oqh0uRHrwtJh81V"
+    },
+    {
+      "_id": "25jaIUsRPuQ80qIg",
+      "name": "Derekunde",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 3,
+        "pw": 7,
+        "attribut_0": "KL",
+        "attribut_1": "IN",
+        "attribut_2": "FF",
+        "gruppe": 4,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Darunter fällt das theoretische Wissen über Natur, Tiere und Pflanzen, sowie um die Geographie.</body>",
+        "pwt": 8
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.25jaIUsRPuQ80qIg"
+    },
+    {
+      "_id": "Rb5RfPtggqEPwvR5",
+      "name": "Mythenkunde",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 5,
+        "pw": 6,
+        "attribut_0": "KL",
+        "attribut_1": "KL",
+        "attribut_2": "IN",
+        "gruppe": 4,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Mythenkunde ist das Wissen über die Götter und ihre Diener, sowohl die eigene Religion, als auch – weniger genau – fremde Religionen betreffend. Zusätzlich gehört dazu die Kenntnis der Geschichte sowie bekannter Sagen und Legenden, was meist schwer voneinander zu trennen ist.</body>",
+        "pwt": 8
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.Rb5RfPtggqEPwvR5"
+    },
+    {
+      "_id": "NWcMZmte4wQvP70q",
+      "name": "Magiekunde",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 3,
+        "attribut_0": "KL",
+        "attribut_1": "KL",
+        "attribut_2": "MU",
+        "gruppe": 4,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Die astrale Kraft durchzieht die ganze Welt und wird seit Jahrtausenden von Zauberern genutzt. Magiekunde ist das theoretische Wissen über diese Kraft und ihre Verwendung.</body>",
+        "pwt": 3
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.NWcMZmte4wQvP70q"
+    },
+    {
+      "_id": "8DaXOconRlnXirOF",
+      "name": "Überleben",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 7,
+        "pw": 7,
+        "attribut_0": "FF",
+        "attribut_1": "GE",
+        "attribut_2": "KO",
+        "gruppe": 4,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Hierunter fallen alle Fähigkeiten, die zum Überleben in der Wildnis erforderlich sind. Du kannst dich orientieren oder einen Lagerplatz, Nahrung und Wasser finden. Außerdem bist du mit typischen Gefahren der Wildnis vertraut und kannst tierische und menschliche Fährten deuten und ihnen folgen.<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Dieses Wissen ist rein praktisch; exotische Tiere, Monster oder seltene Heilpflanzen fallen nicht in diesen Bereich.</body>",
+        "pwt": 10
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.8DaXOconRlnXirOF"
+    },
+    {
+      "_id": "YKly1ghPHa2bCzvW",
+      "name": "Verschlagenheit",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 5,
+        "attribut_0": "FF",
+        "attribut_1": "IN",
+        "attribut_2": "MU",
+        "gruppe": 5,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Verschlagenheit ist das Handwerk von zwielichtigen Gestalten, die Diebstahl, Falschsspiel und Einbruch nicht scheuen.</body>",
+        "pwt": 5
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.YKly1ghPHa2bCzvW"
+    },
+    {
+      "_id": "JCgSv2EvfpHIJxBc",
+      "name": "Alchemie",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 0,
+        "pw": 5,
+        "attribut_0": "FF",
+        "attribut_1": "FF",
+        "attribut_2": "KL",
+        "gruppe": 5,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Alchemie ist die Wissenschaft von der Umwandlung der Stoffe. Mit ihr kannst du nützliche Tränke herstellen oder unbekannte Gebräue analysieren; für beides ist aber zumindest ein einfacher Analysekoffer notwendig.</body>",
+        "pwt": 5
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.JCgSv2EvfpHIJxBc"
+    },
+    {
+      "_id": "MwRG1KzYF8yllzri",
+      "name": "Heilkunde",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 6,
+        "pw": 7,
+        "attribut_0": "CH",
+        "attribut_1": "FF",
+        "attribut_2": "KL",
+        "gruppe": 5,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Ein Heilkundiger bekämpft tödliche Blutungen, heimtückische Gifte sowie langwierige Krankheiten und hilft seinen Gefährten so, wieder auf die Beine zu kommen. </body>",
+        "pwt": 10
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.MwRG1KzYF8yllzri"
+    },
+    {
+      "_id": "KEpbxyix51vZJmQY",
+      "name": "Handwerk",
+      "type": "fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 0,
+        "fw": 3,
+        "pw": 7,
+        "attribut_0": "FF",
+        "attribut_1": "FF",
+        "attribut_2": "KK",
+        "gruppe": 5,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Mit Handwerk schmiedest du Waffen und Rüstungen, fertigst filigrane Mechaniken und stabile Truhen.</body>",
+        "pwt": 8
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.KEpbxyix51vZJmQY"
+    },
+    {
+      "_id": "erdOJahPbkeobrQe",
+      "name": "Gebräuche: Mittelreich",
+      "type": "talent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "fertigkeit": "Gebräuche"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.erdOJahPbkeobrQe"
+    },
+    {
+      "_id": "dvWDh8aYZ9UwnoJ0",
+      "name": "Bögen",
+      "type": "talent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "fertigkeit": "Schusswaffen"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.dvWDh8aYZ9UwnoJ0"
+    },
+    {
+      "_id": "XOlKFGdz8dXc65ug",
+      "name": "Überleben: Hoher Norden",
+      "type": "talent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "fertigkeit": "Überleben"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.XOlKFGdz8dXc65ug"
+    },
+    {
+      "_id": "Zn5V7CuCEePjPNAK",
+      "name": "Wundheilung",
+      "type": "talent",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "text": "",
+        "fertigkeit": "Heilkunde"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.Zn5V7CuCEePjPNAK"
+    },
+    {
+      "_id": "EZzTmAYSCtZKKcig",
+      "name": "Sprache: Garethi",
+      "type": "freie_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "stufe": 3,
+        "text": "Sprache: Garethi",
+        "gruppe": "1"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.EZzTmAYSCtZKKcig"
+    },
+    {
+      "_id": "7CFZKLGPa69TS0e5",
+      "name": "Schrift: Kusliker Zeichen",
+      "type": "freie_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "stufe": 3,
+        "text": "Schrift: Kusliker Zeichen",
+        "gruppe": "1"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.7CFZKLGPa69TS0e5"
+    },
+    {
+      "_id": "EctAyU1517KPmEVc",
+      "name": "Abrichten",
+      "type": "freie_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "stufe": 2,
+        "text": "Abrichten",
+        "gruppe": "1"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.EctAyU1517KPmEVc"
+    },
+    {
+      "_id": "81QnQqQ7lKkyPzG5",
+      "name": "Schlitten fahren",
+      "type": "freie_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "stufe": 2,
+        "text": "Schlitten fahren",
+        "gruppe": "1"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.81QnQqQ7lKkyPzG5"
+    },
+    {
+      "_id": "fD06PJjgRVZg636u",
+      "name": "Kürschner",
+      "type": "freie_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "stufe": 1,
+        "text": "Kürschner",
+        "gruppe": "1"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.fD06PJjgRVZg636u"
+    },
+    {
+      "_id": "Mp9GBUl2KLuQmasK",
+      "name": "Zwölfgöttlicher Ritus",
+      "type": "uebernatuerliche_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 5,
+        "fw": 3,
+        "pw": 8,
+        "attribut_0": "CH",
+        "attribut_1": "IN",
+        "attribut_2": "MU",
+        "gruppe": 2,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Durch die Zusammenarbeit der Kirchen hat sich ein Grundstock allgemein bekannter Liturgien ergeben, die aus dem Leben des Geweihten nicht mehr wegzudenken sind.<br><br>Fast alle Geweihten der Zwölf beherrschen die zwölf Segnungen: Eid-, Feuer-, Geburts-, Glücks-, Grab-, Harmonie-, Heilungs-, Märtyrer-, Schutz-, Speise-, Trank- und Weisheitssegen.</body>",
+        "voraussetzung": "Geweiht I"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.Mp9GBUl2KLuQmasK"
+    },
+    {
+      "_id": "kV2NZW58JiTsds2W",
+      "name": "Jagd",
+      "type": "uebernatuerliche_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 4,
+        "fw": 5,
+        "pw": 9,
+        "attribut_0": "IN",
+        "attribut_1": "GE",
+        "attribut_2": "MU",
+        "gruppe": 3,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Die Hüter der Jagd begleiten Jagdgesellschaften und achten über die Einhaltung der waidmännischen Regeln.</body>",
+        "voraussetzung": "Tradition der Ifirngeweihten I oder Firungeweihten I"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.kV2NZW58JiTsds2W"
+    },
+    {
+      "_id": "k0r1m4xsSsRO1zQT",
+      "name": "Wildnis",
+      "type": "uebernatuerliche_fertigkeit",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "basis": 5,
+        "fw": 3,
+        "pw": 8,
+        "attribut_0": "FF",
+        "attribut_1": "IN",
+        "attribut_2": "MU",
+        "gruppe": 3,
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Die Waldläufer des Nordens streifen oft monatelang abseits aller Wege durch die Wildnis, ohne ihr Ziel aus den Augen zu verlieren.</body>",
+        "voraussetzung": "Tradition der Ifirngeweihten I oder Firungeweihten I"
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.k0r1m4xsSsRO1zQT"
+    },
+    {
+      "_id": "oJHyxgA13759z594",
+      "name": "Feuersegen",
+      "type": "liturgie",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Heiliges Feuer, Zwölfgöttlicher Ritus",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Eine kleine Flamme entsteht in deiner Hand. Die Flamme und ein mit ihr entzündetes Feuer wird durch Wind oder Regen nicht gelöscht.<br><b>Probenschwierigkeit:</b> 12<br><b>Vorbereitungszeit:</b> 2 Aktionen<br><b>Ziel:</b> Zone<br><b>Reichweite:</b> Berührung<br><b>Wirkungsdauer:</b> 1 Stunde<br><b>Kosten:</b> 1 KaP<br><b>Fertigkeiten:</b> Heiliges Feuer, Zwölfgöttlicher Ritus<br><b>Erlernen:</b> Ang, Ing 4; Aves, Brn, Fir, Hes, Ifi, Kor, Nan, Per, Phe, Pra, Rah, Ron, Swa, Tra, Tsa 8; Eff 12; 0 EP</body>",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "2 Aktionen",
+        "ziel": "",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "1 Stunde",
+        "kosten": "1 KaP",
+        "erlernen": "",
+        "pw": -1,
+        "gruppe": 2
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.oJHyxgA13759z594"
+    },
+    {
+      "_id": "UaVS7z16dFFQzOVa",
+      "name": "Geburtssegen",
+      "type": "liturgie",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Zwölfgöttlicher Ritus, Neubeginn",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Das gesegnete Kind ist immun gegen Einflüsterungen von Dämonen und Kobolden.<br><b>Probenschwierigkeit:</b> 12<br><b>Vorbereitungszeit:</b> 16 Aktionen<br><b>Ziel:</b> Einzelperson<br><b>Reichweite:</b> Berührung<br><b>Wirkungsdauer:</b> bis zum 12. Lebensjahr<br><b>Kosten:</b> 2 KaP<br><b>Fertigkeiten:</b> Zwölfgöttlicher Ritus, Neubeginn<br><b>Erlernen:</b> Tsa 4; Aves, Brn, Eff, Fir, Hes, Ifi, Ing, Nan, Per, Phe, Pra, Rah, Ron, Swa, Tra 8; Kor 12; 0 EP</body>",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "16 Aktionen",
+        "ziel": "",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "bis zum 12. Lebensjahr",
+        "kosten": "2 KaP",
+        "erlernen": "",
+        "pw": -1,
+        "gruppe": 2
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.UaVS7z16dFFQzOVa"
+    },
+    {
+      "_id": "6X0lQCzW3BZKRzWJ",
+      "name": "Grabsegen",
+      "type": "liturgie",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Tod, Zwölfgöttlicher Ritus",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Du segnest ein Grab, das fortan als geweihter Boden gilt. Beschwörungen von unheiligen Wesenheiten sind um -8 erschwert.<br><b>Mächtige Liturgie:</b> Der Malus steigt um -4.<br><b>Probenschwierigkeit:</b> 12<br><b>Vorbereitungszeit:</b> 16 Aktionen<br><b>Ziel:</b> Zone<br><b>Reichweite:</b> Berührung<br><b>Wirkungsdauer:</b> permanent<br><b>Kosten:</b> 2 KaP<br><b>Fertigkeiten:</b> Tod, Zwölfgöttlicher Ritus<br><b>Erlernen:</b> Brn 4; Aves, Eff, Fir, Hes, Ifi, Ing, Kor, Nan, Per, Phe, Pra, Rah, Ron, Tra, Tsa, Swa 8; 0 EP</body>",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "16 Aktionen",
+        "ziel": "",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "permanent",
+        "kosten": "2 KaP",
+        "erlernen": "",
+        "pw": -1,
+        "gruppe": 2
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.6X0lQCzW3BZKRzWJ"
+    },
+    {
+      "_id": "rKQnt340ab4YH34Z",
+      "name": "Heilungssegen",
+      "type": "liturgie",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Heilung, Zwölfgöttlicher Ritus",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Der Gesegnete regeneriert eine Wunde.<br><b>Mächtige Liturgie:</b> Für je zwei Stufen regeneriert der Gesegnete eine weitere Wunde.<br><b>Probenschwierigkeit:</b> 12<br><b>Vorbereitungszeit:</b> 16 Minuten<br><b>Ziel:</b> Einzelperson<br><b>Reichweite:</b> Berührung<br><b>Wirkungsdauer:</b> augenblicklich<br><b>Kosten:</b> 2 KaP<br><b>Fertigkeiten:</b> Heilung, Zwölfgöttlicher Ritus<br><b>Erlernen:</b> Ifi, Per 4; Ang, Aves, Brn, Eff, Fir, Hes, Ing, Nan, Phe, Pra, Rah, Ron, Tra, Tsa, Swa 8; Kor 14; 40 EP</body>",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "16 Minuten",
+        "ziel": "",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "augenblicklich",
+        "kosten": "2 KaP",
+        "erlernen": "",
+        "pw": -1,
+        "gruppe": 2
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.rKQnt340ab4YH34Z"
+    },
+    {
+      "_id": "ZgCmOSI0qIGIWX6C",
+      "name": "Speisesegen",
+      "type": "liturgie",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Heim und Herd, Zwölfgöttlicher Ritus",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Du reinigst eine Mahlzeit für bis zu 16 Personen von Schmutz, Fäulnis und Krankheiten.<br><b>Probenschwierigkeit:</b> 12<br><b>Vorbereitungszeit:</b> 4 Aktionen<br><b>Ziel:</b> Zone<br><b>Reichweite:</b> Berührung<br><b>Wirkungsdauer:</b> augenblicklich<br><b>Kosten:</b> 2 KaP<br><b>Fertigkeiten:</b> Heim und Herd, Zwölfgöttlicher Ritus<br><b>Erlernen:</b> Tra 4; Ang, Aves, Eff, Brn, Fir, Hes, Ifi, Ing, Kor, Nan, Per, Phe, Pra, Rah, Ron, Tsa, Swa 8; 0 EP</body>",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "4 Aktionen",
+        "ziel": "",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "augenblicklich",
+        "kosten": "2 KaP",
+        "erlernen": "",
+        "pw": -1,
+        "gruppe": 2
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.ZgCmOSI0qIGIWX6C"
+    },
+    {
+      "_id": "omNshLat872gvnqK",
+      "name": "Tranksegen",
+      "type": "liturgie",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Seefahrt, Zwölfgöttlicher Ritus",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Du reinigst 4 Liter Wasser von Schmutz, Fäulnis, Meersalz oder Krankheiten.<br><b>Probenschwierigkeit:</b> 12<br><b>Vorbereitungszeit:</b> 4 Aktionen<br><b>Ziel:</b> Einzelobjekt<br><b>Reichweite:</b> Berührung<br><b>Wirkungsdauer:</b> augenblicklich<br><b>Kosten:</b> 2 KaP<br><b>Fertigkeiten:</b> Seefahrt, Zwölfgöttlicher Ritus<br><b>Erlernen:</b> Eff, Swa 4; Aves, Brn, Fir, Hes, Ifi, Ing, Kor, Nan, Per, Phe, Pra, Rah, Ron, Tra, Tsa 8; 0 EP</body>",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "4 Aktionen",
+        "ziel": "",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "augenblicklich",
+        "kosten": "2 KaP",
+        "erlernen": "",
+        "pw": -1,
+        "gruppe": 2
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.omNshLat872gvnqK"
+    },
+    {
+      "_id": "CaoqbeqH65lor5RY",
+      "name": "Gemeinschaft treuer Gefährten",
+      "type": "liturgie",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Fröhlicher Wanderer, Jagd, Sichere Heimkehr",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Du stärkst die Bindung zwischen einem Tier und seinem Besitzer. Proben im Umgang mit dem Tier sind um +4 erleichtert, Freie Fertigkeiten (wie Abrichter) zählen als eine Stufe höher.<br><b>Mächtige Liturgie:</b> Der Bonus steigt um +2, je zwei Stufen erhöhen Freie Fertigkeiten um eine weitere Stufe.<br><b>Probenschwierigkeit:</b> 12<br><b>Vorbereitungszeit:</b> 1 Woche<br><b>Ziel:</b> Tier und Einzelperson<br><b>Reichweite:</b> Berührung<br><b>Wirkungsdauer:</b> bis die Bindung gelöst wird<br><b>Kosten:</b> 8 KaP, davon 2 gKaP<br><b>Fertigkeiten:</b> Fröhlicher Wanderer, Jagd, Sichere Heimkehr<br><b>Erlernen:</b> Ifi 14, Aves, Tra 16; 40 EP<br><b>Anmerkung:</b> Besonders große und starke Tiere erhöhen die gKaP-Kosten auf 4 oder sogar 8.</body>",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "1 Woche",
+        "ziel": "",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "bis die Bindung gelöst wird",
+        "kosten": "8 KaP, davon 2 gKaP",
+        "erlernen": "",
+        "pw": -1,
+        "gruppe": 2
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.CaoqbeqH65lor5RY"
+    },
+    {
+      "_id": "6EQafuwUjOtGvcox",
+      "name": "Mirakel: Wahrnehmung",
+      "type": "liturgie",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Tod, Wind und Wogen, Jagd, Heilung, Ordnung, Rausch, Sichere Heimkehr",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Dein nächster Wurf auf Wahrnehmung ist um +4 Punkte erleichtert.<br><b>Mächtige Liturgie:</b> Erhöht die Erleichterung um +2.<br><b>Probenschwierigkeit:</b> 12<br><b>Vorbereitungszeit:</b> 0 Aktionen<br><b>Ziel:</b> selbst<br><b>Reichweite:</b> Berührung<br><b>Wirkungsdauer:</b> 4 Minuten<br><b>Kosten:</b> 4 KaP<br><b>Erlernen:</b> 20 EP</body>",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "0 Aktionen",
+        "ziel": "",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "4 Minuten",
+        "kosten": "4 KaP",
+        "erlernen": "",
+        "pw": -1,
+        "gruppe": 2
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.6EQafuwUjOtGvcox"
+    },
+    {
+      "_id": "3sCqM35kP1EK5GQx",
+      "name": "Segnung des Heiligen Mikail",
+      "type": "liturgie",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Jagd",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Du bittest den Heiligen Mikail um Treffsicherheit für den Schützen. Der nächste Fernkampfangriff ist um +4 erleichtert und ignoriert eine Stufe Deckung des Ziels (S.&nbsp;46).<br><b>Mächtige Liturgie:</b> Der Bonus steigt um +2.<br><b>Probenschwierigkeit:</b> 12<br><b>Modifikationen:</b> Langer Segen (-8, 8 KaP; die Liturgie wirkt auf alle Fernkampfangriffe während der Wirkungsdauer.)<br><b>Vorbereitungszeit:</b> 0 Aktionen<br><b>Ziel:</b> Einzelperson<br><b>Reichweite:</b> Berührung<br><b>Wirkungsdauer:</b> 8 Initiativephasen<br><b>Kosten:</b> 4 KaP<br><b>Fertigkeiten:</b> Jagd<br><b>Erlernen:</b> Fir 12, Ifi 14; 20 EP</body>",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "0 Aktionen",
+        "ziel": "",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "8 Initiativephasen",
+        "kosten": "4 KaP",
+        "erlernen": "",
+        "pw": -1,
+        "gruppe": 2
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.3sCqM35kP1EK5GQx"
+    },
+    {
+      "_id": "CNQbTAWgiZJPI6Ew",
+      "name": "Tierempathie",
+      "type": "liturgie",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Friede, Jagd",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Du erhältst den Vorteil Tierempathie und erleidest keine Erschöpfung durch den Einsatz dieser Gabe. Außerdem kannst du notwendige Proben auf Jagd (Ifi) oder Friede (Tsa) statt Überleben ablegen. Beherrschst du die Gabe bereits, sind damit verbundene Proben um +4 erleichtert.<br><b>Probenschwierigkeit:</b> 12<br><b>Vorbereitungszeit:</b> 16 Aktionen<br><b>Ziel:</b> selbst<br><b>Reichweite:</b> Berührung<br><b>Wirkungsdauer:</b> 1 Stunde<br><b>Kosten:</b> 8 KaP<br><b>Fertigkeiten:</b> Friede, Jagd<br><b>Erlernen:</b> Ifi 16; Tsa 18; 40 EP</body>",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "16 Aktionen",
+        "ziel": "",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "1 Stunde",
+        "kosten": "8 KaP",
+        "erlernen": "",
+        "pw": -1,
+        "gruppe": 2
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.CNQbTAWgiZJPI6Ew"
+    },
+    {
+      "_id": "vTU4qmlXkdquwgCD",
+      "name": "Geteiltes Leid",
+      "type": "liturgie",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Heim und Herd, Wildnis",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Du rufst den Mantel der Heiligen Matscha und schneidest für den Gesegneten ein Stück ab. Der Mantel verleiht ihm Immunität gegen Kälteschaden, bis er an angemessene Kleidung gelangen kann.<br><b>Probenschwierigkeit:</b> 12<br><b>Vorbereitungszeit:</b> 16 Aktionen<br><b>Ziel:</b> Einzelperson<br><b>Reichweite:</b> Berührung<br><b>Wirkungsdauer:</b> 1 Monat<br><b>Kosten:</b> 8 KaP<br><b>Fertigkeiten:</b> Heim und Herd, Wildnis<br><b>Erlernen:</b> Ifi 12; Tra 14; 20 EP</body>",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "16 Aktionen",
+        "ziel": "",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "1 Monat",
+        "kosten": "8 KaP",
+        "erlernen": "",
+        "pw": -1,
+        "gruppe": 2
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.vTU4qmlXkdquwgCD"
+    },
+    {
+      "_id": "tJDFgEVEPchwalxL",
+      "name": "Mirakel: Heilkunde",
+      "type": "liturgie",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Vergessen, Wildnis, Heilung, Heim und Herd, Friede",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Dein nächster Wurf auf Heilkunde ist um +4 Punkte erleichtert.<br><b>Mächtige Liturgie:</b> Erhöht die Erleichterung um +2.<br><b>Probenschwierigkeit:</b> 12<br><b>Vorbereitungszeit:</b> 0 Aktionen<br><b>Ziel:</b> selbst<br><b>Reichweite:</b> Berührung<br><b>Wirkungsdauer:</b> 4 Minuten<br><b>Kosten:</b> 4 KaP<br><b>Erlernen:</b> 20 EP</body>",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "0 Aktionen",
+        "ziel": "",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "4 Minuten",
+        "kosten": "4 KaP",
+        "erlernen": "",
+        "pw": -1,
+        "gruppe": 2
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.tJDFgEVEPchwalxL"
+    },
+    {
+      "_id": "NhvYlV9a7SsRZ0Vq",
+      "name": "Sichere Wanderung im Schnee",
+      "type": "liturgie",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Wildnis, Winter",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Der Gesegnete kann in tiefstem Schnee und auf Eis laufen, als würde er über festen Boden gehen. Erlaubt <i>Aufrechterhalten</i>.<br><b>Probenschwierigkeit:</b> 12<br><b>Modifikationen:</b> Eiskletterer (-4; der Gesegnete kann an Eiswänden wie auf Fels klettern.)<br><b>Vorbereitungszeit:</b> 16 Aktionen<br><b>Ziel:</b> Einzelperson<br><b>Reichweite:</b> Berührung<br><b>Wirkungsdauer:</b> 4 Stunden<br><b>Kosten:</b> 4 KaP<br><b>Fertigkeiten:</b> Wildnis, Winter<br><b>Erlernen:</b> Fir, Ifi 12; 20 EP</body>",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "16 Aktionen",
+        "ziel": "",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "4 Stunden",
+        "kosten": "4 KaP",
+        "erlernen": "",
+        "pw": -1,
+        "gruppe": 2
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.NhvYlV9a7SsRZ0Vq"
+    },
+    {
+      "_id": "HQ9dfQTcI47pBbKK",
+      "name": "Zuflucht finden",
+      "type": "liturgie",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "fertigkeiten": "Sichere Heimkehr, Wildnis",
+        "fertigkeit_ausgewaehlt": "auto",
+        "text": "<head><style>\nh4 { margin: 0px; margin-top: 1em; }\ntable { margin-top: 1em; margin-bottom: 1em; border-collapse: collapse; }\nth { border-bottom: 1px solid #4A000B; }\ntd { padding: 0.1em; }\nul { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 12.6px; }\nol { padding: 0; margin: 0; -qt-list-indent: 0; margin-left: 16.2px; }\n</style></head><body>Du findest intuitiv den Weg zur nächsten sicheren Lagerstätte. Entsprechende Überleben-Proben sind um +4 erleichtert.<br><b>Mächtige Liturgie:</b> Der Bonus steigt um +2<br><b>Probenschwierigkeit:</b> 12<br><b>Vorbereitungszeit:</b> 16 Aktionen<br><b>Ziel:</b> selbst<br><b>Reichweite:</b> Berührung<br><b>Wirkungsdauer:</b> 1 Stunde<br><b>Kosten:</b> 4 KaP<br><b>Fertigkeiten:</b> Sichere Heimkehr, Wildnis<br><b>Erlernen:</b> Fir, Ifi 12; Tra 14; 20 EP</body>",
+        "maechtig": "",
+        "schwierigkeit": "",
+        "modifikationen": "",
+        "vorbereitung": "16 Aktionen",
+        "ziel": "",
+        "reichweite": "Berührung",
+        "wirkungsdauer": "1 Stunde",
+        "kosten": "4 KaP",
+        "erlernen": "",
+        "pw": -1,
+        "gruppe": 2
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.HQ9dfQTcI47pBbKK"
+    },
+    {
+      "_id": "jTeTQYopvu5bguTL",
+      "name": "Hand",
+      "type": "nahkampfwaffe",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 0,
+        "beschaedigung": 0,
+        "tp": "",
+        "fertigkeit": "Handgemenge",
+        "talent": "Unbewaffnet",
+        "rw": 0,
+        "hauptwaffe": false,
+        "nebenwaffe": false,
+        "eigenschaften": [
+          {
+            "key": "Parierwaffe",
+            "parameters": []
+          },
+          {
+            "key": "Stumpf",
+            "parameters": []
+          },
+          {
+            "key": "Zerbrechlich",
+            "parameters": []
+          },
+          {
+            "key": "Kein Malus als Nebenwaffe",
+            "parameters": []
+          }
+        ],
+        "text": "",
+        "aufbewahrungs_ort": "tragend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "wm_at": 0,
+        "wm_vt": 0,
+        "dice_anzahl": 1,
+        "dice_plus": 0,
+        "mod_at": null,
+        "mod_vt": null,
+        "mod_schaden": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.jTeTQYopvu5bguTL"
+    },
+    {
+      "_id": "HOOk9CnG2qvHfUY9",
+      "name": "Kurzbogen",
+      "type": "fernkampfwaffe",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 3,
+        "beschaedigung": 0,
+        "tp": "",
+        "fertigkeit": "Schusswaffen",
+        "talent": "Bögen",
+        "rw": 16,
+        "hauptwaffe": false,
+        "nebenwaffe": false,
+        "eigenschaften": [
+          {
+            "key": "Zweihändig",
+            "parameters": []
+          }
+        ],
+        "text": "",
+        "aufbewahrungs_ort": "tragend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "wm_fk": 0,
+        "lz": 0,
+        "dice_anzahl": 2,
+        "dice_plus": 1,
+        "wm_at": 0,
+        "wm_vt": 0,
+        "mod_at": null,
+        "mod_vt": null,
+        "mod_schaden": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.HOOk9CnG2qvHfUY9"
+    },
+    {
+      "_id": "pkEac0x0vcPjuE1O",
+      "name": "Langbogen",
+      "type": "fernkampfwaffe",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 3,
+        "beschaedigung": 0,
+        "tp": "",
+        "fertigkeit": "Schusswaffen",
+        "talent": "Bögen",
+        "rw": 64,
+        "hauptwaffe": false,
+        "nebenwaffe": false,
+        "eigenschaften": [
+          {
+            "key": "Nicht für Reiter",
+            "parameters": []
+          },
+          {
+            "key": "Schwer",
+            "parameters": [4]
+          },
+          {
+            "key": "Zweihändig",
+            "parameters": []
+          }
+        ],
+        "text": "",
+        "aufbewahrungs_ort": "tragend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "wm_fk": 0,
+        "lz": 1,
+        "dice_anzahl": 2,
+        "dice_plus": 3,
+        "wm_at": 0,
+        "wm_vt": 0,
+        "mod_at": null,
+        "mod_vt": null,
+        "mod_schaden": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.pkEac0x0vcPjuE1O"
+    },
+    {
+      "_id": "qYRlxWFAnZ0y6CN6",
+      "name": "Dolch",
+      "type": "nahkampfwaffe",
+      "img": "icons/svg/item-bag.svg",
+      "system": {
+        "haerte": 9,
+        "beschaedigung": 0,
+        "tp": "",
+        "fertigkeit": "Handgemenge",
+        "talent": "Handgemengewaffen",
+        "rw": 0,
+        "hauptwaffe": false,
+        "nebenwaffe": false,
+        "eigenschaften": [],
+        "text": "",
+        "aufbewahrungs_ort": "tragend",
+        "bewahrt_auf": [],
+        "gewicht_summe": 0,
+        "gewicht": 0,
+        "preis": 0,
+        "wm_at": 0,
+        "wm_vt": 0,
+        "dice_anzahl": 1,
+        "dice_plus": 1,
+        "mod_at": null,
+        "mod_vt": null,
+        "mod_schaden": ""
+      },
+      "effects": [],
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "coreVersion": "12.331",
+        "systemId": "Ilaris",
+        "systemVersion": "12.0.2",
+        "createdTime": null,
+        "modifiedTime": null,
+        "lastModifiedBy": null
+      },
+      "ownership": {},
+      "_key": "!actors.items!nyrR3zAs2Engt2lB.qYRlxWFAnZ0y6CN6"
+    }
+  ],
+  "effects": [],
+  "folder": null,
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.343",
+    "systemId": "Ilaris",
+    "systemVersion": "12.2.0",
+    "createdTime": 1747090051459,
+    "modifiedTime": 1759478609911,
+    "lastModifiedBy": "bRsoRPItEVb33T1L"
+  },
+  "ownership": {
+    "default": 0,
+    "oa0cULjciXK52aoL": 3
+  },
+  "prototypeToken": {
+    "name": "Ifirngeweihte - Siona Ifirna",
+    "displayName": 20,
+    "actorLink": true,
+    "width": 1,
+    "height": 1,
+    "lockRotation": false,
+    "rotation": 0,
+    "alpha": 1,
+    "disposition": 1,
+    "displayBars": 50,
+    "bar1": {
+      "attribute": "gesundheit.hp"
+    },
+    "bar2": {
+      "attribute": null
+    },
+    "flags": {},
+    "randomImg": false,
+    "light": {
+      "dim": 0,
+      "bright": 0,
+      "angle": 360,
+      "color": null,
+      "alpha": 0.5,
+      "animation": {
+        "speed": 5,
+        "intensity": 5,
+        "type": null,
+        "reverse": false
+      },
+      "negative": false,
+      "priority": 0,
+      "coloration": 1,
+      "attenuation": 0.5,
+      "luminosity": 0.5,
+      "saturation": 0,
+      "contrast": 0,
+      "shadows": 0,
+      "darkness": {
+        "min": 0,
+        "max": 1
+      }
+    },
+    "texture": {
+      "src": "systems/Ilaris/assets/images/token/kreaturentypen/humanoid.png",
+      "tint": "#ffffff",
+      "scaleX": 1,
+      "scaleY": 1,
+      "anchorX": 0.5,
+      "anchorY": 0.5,
+      "offsetX": 0,
+      "offsetY": 0,
+      "fit": "contain",
+      "rotation": 0,
+      "alphaThreshold": 0.75
+    },
+    "sight": {
+      "angle": 360,
+      "enabled": true,
+      "range": 10,
+      "brightness": 0,
+      "visionMode": "basic",
+      "color": null,
+      "attenuation": 0.1,
+      "saturation": 0,
+      "contrast": 0
+    },
+    "appendNumber": false,
+    "prependAdjective": false,
+    "hexagonalShape": 0,
+    "detectionModes": [],
+    "occludable": {
+      "radius": 0
+    },
+    "ring": {
+      "enabled": false,
+      "colors": {
+        "ring": null,
+        "background": null
+      },
+      "effects": 1,
+      "subject": {
+        "scale": 1,
+        "texture": null
+      }
+    }
+  },
+  "_id": "nyrR3zAs2Engt2lB",
+  "sort": 0,
+  "_key": "!actors!nyrR3zAs2Engt2lB"
+}

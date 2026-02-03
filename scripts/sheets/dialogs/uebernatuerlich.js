@@ -184,7 +184,7 @@ export class UebernatuerlichDialog extends CombatDialog {
 
         // Base energy cost
         let originalCost = sanitizeEnergyCost(this.item.system.kosten) || 0
-        if (this.energy_override) {
+        if (this.energy_override != null) {
             originalCost = this.energy_override
         }
         summary += `<div class="modifier-item base-value">Basiskosten: <span>${originalCost} Energie</span></div>`
@@ -501,8 +501,11 @@ export class UebernatuerlichDialog extends CombatDialog {
             multiplier: Number(verbotenePfortenValue) || 4,
             activated: verbotenePfortenValue !== undefined && verbotenePfortenValue !== '0',
         }
+
+        const energyOverride = html.find('input[name="item.system.manoever.energyOverride"]')[0]
+            ?.value
         manoever.set_energy_cost.value =
-            Number(html.find('input[name="item.system.manoever.energyOverride"]')[0]?.value) || 0
+            energyOverride !== '' && energyOverride != null ? +energyOverride : null
 
         console.log('manoever', manoever.set_energy_cost.value)
         // Get values from the HTML elements
@@ -616,7 +619,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         let mod_vt = 0
         let mod_dm = 0
         let mod_energy = sanitizeEnergyCost(this.item.system.kosten)
-        if (manoever.set_energy_cost?.value) {
+        if (manoever.set_energy_cost?.value != null) {
             mod_energy = manoever.set_energy_cost.value
             this.energy_override = manoever.set_energy_cost.value
         }
@@ -628,6 +631,8 @@ export class UebernatuerlichDialog extends CombatDialog {
         let nodmg = { name: '', value: false }
         let trefferzone = 0
         let fumble_val = 1
+        let damageType = 'NORMAL'
+        let trueDamage = false
 
         // Get the minimum available resource based on actor and item type
         const availableEnergy = this.getAvailableEnergy()
@@ -689,6 +694,8 @@ export class UebernatuerlichDialog extends CombatDialog {
             trefferzone,
             schaden,
             nodmg,
+            damageType,
+            trueDamage,
             this.energy_override,
         ] = handleModifications(allModifications, {
             mod_at,
@@ -702,6 +709,8 @@ export class UebernatuerlichDialog extends CombatDialog {
             trefferzone,
             schaden: null,
             nodmg: null,
+            damageType,
+            trueDamage,
             context: this,
         })
 

@@ -314,10 +314,11 @@ export function calculateModifiedCost(
     isSuccess,
     is16OrHigher,
     currentCost,
-    energyOverride = 0,
+    energyOverride = null,
 ) {
     let cost = currentCost
-    const baseKosten = energyOverride > 0 ? energyOverride : sanitizeEnergyCost(item.system.kosten)
+    const baseKosten =
+        energyOverride != null ? energyOverride : sanitizeEnergyCost(item.system.kosten)
 
     const selectedStil = getSelectedStil(actor, 'uebernatuerlich')
     const hasDurroDunII =

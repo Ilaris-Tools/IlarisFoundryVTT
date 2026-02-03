@@ -53,6 +53,68 @@ Checklist für ein größeres Versionsupdate:
 -   Sind Anpassungen der Dokumentation nötig?
 -   Ist das Update eine Erwähnung im Forum wert?
 
+### Automatisierte Foundry VTT Package-Veröffentlichung
+
+Der Build-Workflow (`build-packs.yml`) veröffentlicht das Package nach erfolgreichem GitHub-Release automatisch auch auf der offiziellen Foundry VTT Website über die Package Release API.
+
+#### Setup des FOUNDRY_RELEASE_TOKEN
+
+Der Token muss einmalig als GitHub Repository Secret eingerichtet werden:
+
+1. Gehe zur Foundry VTT Package-Seite im Package-Builder (https://foundryvtt.com/packages/)
+2. Öffne das Ilaris-Package und generiere/kopiere den Release Token
+3. In GitHub: Gehe zu Repository → Settings → Secrets and variables → Actions
+4. Erstelle ein neues Secret mit:
+    - Name: `FOUNDRY_RELEASE_TOKEN`
+    - Value: Der kopierte Token
+
+Der Token wird ausschließlich über die verschlüsselte GitHub-Variable eingebunden und erscheint niemals im Klartext in Logs.
+
+#### Workflow-Parameter
+
+Der Workflow kann mit folgenden Parametern gesteuert werden:
+
+-   **`pre_release`** (boolean, Standard: `true`):
+    -   `true`: Pre-Release mit SHA-Hash im Tag-Namen, führt Dry-Run durch (keine echte Veröffentlichung auf Foundry)
+    -   `false`: Normales Release, wird tatsächlich auf Foundry veröffentlicht
+-   **`skip_foundry_release`** (boolean, Standard: `false`):
+    -   `true`: Überspringt den Foundry-Release-Schritt komplett
+    -   `false`: Foundry-Release wird durchgeführt
+
+#### Normaler Release-Prozess
+
+Bei einem normalen Release (PR develop→main mit `pre_release: false`):
+
+1. Der `pack` Job erstellt das GitHub-Release mit ZIP und system.json
+2. Der `release-foundry` Job liest automatisch die Metadaten aus system.json
+3. Package wird über die Foundry Package API veröffentlicht mit:
+    - Version aus system.json
+    - Manifest-URL zum system.json im GitHub-Release
+    - Notes-URL zu den GitHub Release Notes
+    - Compatibility-Werte (minimum, verified)
+
+#### Pre-Releases und Testing
+
+Pre-Releases (Standard bei workflow_dispatch):
+
+-   Verwenden Tag-Format: `{version}-{git-sha}` (z.B. `12.3.0-abc123`)
+-   Führen nur einen Dry-Run auf der Foundry-API durch
+-   Validieren die Daten ohne tatsächliche Veröffentlichung
+
+#### Fehlerbehandlung
+
+**Versionskollision:** Wenn die Version bereits auf Foundry existiert, schlägt der Job mit HTTP 400 fehl.
+
+**Rate Limiting:** Bei HTTP 429 (Rate Limit) wartet der Workflow automatisch 60 Sekunden und versucht es ein zweites Mal.
+
+**Manueller Retry:** Bei Fehlern kann der Workflow manuell über GitHub Actions gestartet werden:
+
+1. Gehe zu Actions → Build DB for Ilaris in Foundry VTT
+2. Klicke auf "Run workflow"
+3. Wähle den Branch und setze Parameter entsprechend
+
+**Manueller Fallback:** Falls der automatisierte Prozess fehlschlägt, kann das Package immer noch manuell über den Foundry Package-Builder veröffentlicht werden.
+
 ## Code Struktur
 
 In der template.json steht die grobe Datenstruktur für Actors und Items. Es können darin auch templates zum wiederverwenden erstellt werden um zB Nahkampfwaffen, Fernkampfwaffen und Rüstungen alle Eigenschaften eines Gegenstandes zu geben (gewicht, platz, härte, wert ...)

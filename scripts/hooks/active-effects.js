@@ -71,6 +71,11 @@ Hooks.on('combatRound', async (combat, updateData, updateOptions) => {
     }
 })
 
+// Listen for when an Active Effect is updated
+Hooks.on('updateActiveEffect', async (activeEffect, data, options, userId) => {
+    await handleEffectExpiration(activeEffect, activeEffect.parent)
+})
+
 /**
  * Process all active effects with durations for a specific actor
  * Decrements duration.turns and removes expired effects
@@ -98,22 +103,8 @@ async function processEffectDurationsForActor(actor) {
             const duration = effect.duration
             const newTurns = duration.turns - 1
 
-            if (newTurns <= 0) {
-                await effect.delete()
-                ChatMessage.create({
-                    speaker: ChatMessage.getSpeaker({ actor }),
-                    content: `<div class="ilaris-chat-card">
-                        <h3>${effect.name}</h3>
-                        <p>Der Effekt ist abgelaufen.</p>
-                    </div>`,
-                })
-                console.log(`Active Effect: ${effect.name} expired and was removed.`)
-            } else {
-                await effect.update({ 'duration.turns': newTurns })
-                console.log(
-                    `Active Effect: ${effect.name} duration decremented to ${newTurns} turns.`,
-                )
-            }
+            await effect.update({ 'duration.turns': newTurns })
+            console.log(`Active Effect: ${effect.name} duration decremented to ${newTurns} turns.`)
         } catch (error) {
             console.error(`Failed to process effect duration for ${actor.name}:`, error)
             ui.notifications.error(
@@ -121,6 +112,27 @@ async function processEffectDurationsForActor(actor) {
             )
         }
     }
+}
+
+/**
+ * Check and handle effect expiration
+ * @param {ActiveEffect} effect - The active effect to check for expiration
+ * @param {Actor} actor - The actor to process effects for
+ */
+async function handleEffectExpiration(effect, actor) {
+    if (effect.duration.turns > 0) return
+    if (effect.disabled || effect.isSuppressed) return
+    if (effect.duration.turns == null) return
+
+    await effect.delete()
+    ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor }),
+        content: `<div class="ilaris-chat-card">
+            <h3>${effect.name}</h3>
+            <p>Der Effekt ist abgelaufen.</p>
+        </div>`,
+    })
+    console.log(`Active Effect: ${effect.name} expired and was removed.`)
 }
 
 console.log('Ilaris | Active Effect Duration Management hook registered')

@@ -1,0 +1,49 @@
+{
+  "name": "Übersicht: Dialoge",
+  "type": "JournalEntry",
+  "_id": "kurzkampf001",
+  "pages": [
+    {
+      "_id": "kurzkpage002",
+      "name": "Dialoge - Übersicht",
+      "type": "text",
+      "title": {
+        "show": true,
+        "level": 1
+      },
+      "text": {
+        "format": 1,
+        "content": "<p>\n    Das Ilaris-System bietet umfangreiche Dialoge für Kampf- und andere Spielsituationen. Diese\n    Kurzanleitung hilft dir, die wichtigsten Funktionen schnell zu finden.\n</p>\n\n<h2>Dialoge</h2>\n\n<h3>Nahkampf-Dialog</h3>\n<p><strong>Öffnen:</strong> Klick auf Nahkampfwaffe im Charakterbogen</p>\n<p><strong>Wichtige Optionen:</strong></p>\n<ul>\n    <li>\n        🎯 <strong>Zielauswahl:</strong> Wähle Gegner auf der Karte (wenn aktiviert in\n        Welteinstellungen)\n    </li>\n    <li>\n        🛡️ <strong>'Verteidigungsdialog'</strong> Wenn die obengenannte Welteinstellung aktiv ist,\n        öffnet sich beim Klick auf einen Button im Chat das Nahkampfdialog mit Angriff- und\n        Schadenbutton im deaktivierten Zustand.\n    </li>\n    <li>⚡ <strong>Manöver:</strong> Wähle verfügbare Kampfmanöver</li>\n    <li>🎲 <strong>Modifikatoren:</strong> Situationsbedingte Boni/Mali</li>\n    <li>💥 <strong>Schadenswürfel:</strong> Automatische Berechnung mit Kritischen Treffern</li>\n</ul>\n\n<h3>Fernkampf-Dialog</h3>\n<p><strong>Öffnen:</strong> Klick auf Fernkampfwaffe im Charakterbogen</p>\n<p><strong>Wichtige Optionen:</strong></p>\n<ul>\n    <li>📏 <strong>Entfernung:</strong> Automatische Berechnung bei Zielauswahl</li>\n    <li>\n        🌤️ <strong>Umgebung:</strong> Licht, Wetter, Sicht (automatisch aus Scene-Settings wenn\n        aktiviert)\n    </li>\n    <li>🏃 <strong>Bewegung:</strong> Zielbewegung beeinflusst Schwierigkeit</li>\n    <li>🎯 <strong>Größe & Deckung:</strong> Berücksichtigung von Deckung und Zielgröße</li>\n    <li>⚡ <strong>Manöver:</strong> Wähle verfügbare Kampfmanöver</li>\n    <li>💥 <strong>Schadenswürfel:</strong> Automatische Berechnung mit Kritischen Treffern</li>\n</ul>\n\n<h3>Übernatürliches-Dialog</h3>\n<p><strong>Öffnen:</strong> Klick auf Zauber/Liturgie im Charakterbogen</p>\n<ul>\n    <li>⚡ <strong>Energiekosten:</strong> Anzeige und Verwaltung</li>\n    <li>\n        🎯 <strong>Zielauswahl:</strong> Für Zauberwirkung, falls Welteinstellung, hat aber noch\n        keine Auswirkungen\n    </li>\n    <li>🎲 <strong>Probe:</strong> Automatische Berechnung mit Modifikatoren</li>\n    <li>💫 <strong>Wirkung:</strong> Beschreibung und Effekte</li>\n    <li>⚡ <strong>Manöver:</strong> Wähle verfügbare übernatürliche Manöver</li>\n    <li>\n        🎲 <strong>Probenwurf:</strong> Automatische Berechnung ob Probe bestanden ist mit\n        Kritischen Treffern und Patzern\n    </li>\n</ul>\n\n<h3>Proben-Dialog</h3>\n<p><strong>Verwendung:</strong> Für allgemeine Fertigkeits- und Attributsproben</p>\n<ul>\n    <li>📊 Wähle Fertigkeit oder Attribut</li>\n    <li>🎲 Setze Modifikatoren</li>\n    <li>⚙️ Wähle Schwierigkeit oder Zielwert</li>\n</ul>\n\n<hr />\n<p>\n    <em\n        >💡 Diese Kurzübersicht wird regelmäßig aktualisiert. Für die neuesten Features, check die\n        Changelogs!</em\n    >\n</p>\n"
+      },
+      "video": {
+        "controls": true,
+        "volume": 0.5
+      },
+      "src": null,
+      "system": {},
+      "sort": 0,
+      "ownership": {
+        "default": -1
+      },
+      "flags": {},
+      "_key": "!journal.pages!kurzkampf001.kurzkpage002"
+    }
+  ],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "_key": "!journal!kurzkampf001"
+}
