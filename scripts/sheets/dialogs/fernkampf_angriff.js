@@ -111,7 +111,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
             finalFK >= 0 ? `${formattedDice}+${finalFK}` : `${formattedDice}${finalFK}`
 
         let summary = '<div class="modifier-summary attack-summary clickable-summary angreifen">'
-        summary += `<h4>🏹 Fernkampf: ${finalFormula}</h4>`
+        summary += `<div class="flex_space-between_center"><h4 style="width:100%">🏹 Fernkampf: ${finalFormula}</h4><i class="custom-icon-without-hover"></i></div>`
         summary += '<div class="modifier-list">'
 
         // Base FK
@@ -174,7 +174,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
         }
 
         let summary = '<div class="modifier-summary damage-summary clickable-summary schaden">'
-        summary += `<h4>🩸 Schaden: ${finalFormula}</h4>`
+        summary += `<div class="flex_space-between_center"><h4 style="width:100%">🩸 Schaden: ${finalFormula}</h4><i class="custom-icon-without-hover"></i></div>`
         summary += '<div class="modifier-list">'
 
         // Base damage
