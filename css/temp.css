@@ -268,7 +268,8 @@
   text-indent: -22px;
 }
 
-.custom-icon {
+.custom-icon, 
+.custom-icon-without-hover {
   display: inline-block;
   width: 32px;
   height: 32px;
@@ -283,6 +284,10 @@
 .custom-icon:hover {
   filter: drop-shadow(0 0 8px var(--color-shadow-primary));
   transform: scale(1.1);
+}
+
+.custom-icon-without-hover {
+  margin-bottom:20px;
 }
 
 /* Make the table cell containing the custom-icon larger and clickable */
@@ -936,4 +941,16 @@ body.ilaris-hex-tokens-enabled img[data-token],
 body.ilaris-hex-tokens-enabled .token img {
     clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
     -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.flex_center_center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex_space-between_center {
+display: flex;
+justify-content: space-between;
+align-items: center;
 }
