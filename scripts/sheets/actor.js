@@ -661,6 +661,8 @@ export class IlarisActorSheet extends ActorSheet {
 
             let updatedCount = 0
             const updatePromises = []
+            const itemsToDelete = []
+            const itemsToAdd = []
 
             // Get items from selected compendium packs
             for (const packId of selectedPacks) {
@@ -684,155 +686,151 @@ export class IlarisActorSheet extends ActorSheet {
                         // Check if update is needed by comparing key fields
                         const needsUpdate =
                             typeChanged || this._needsItemUpdate(actorItem, compendiumItem)
-                        if (actorItem.name === 'Bannfluch des Heiligen Khalid') {
-                            console.log('Bannfluch des Heiligen Khalid needs update:', needsUpdate)
-                        }
 
                         if (needsUpdate) {
-                            // Prepare update data based on item type
-                            const updateData = {
-                                _id: actorItem.id,
-                                'system.text': compendiumItem.system.text,
-                            }
-
-                            // Update type if it changed
-                            if (typeChanged) {
-                                updateData['type'] = compendiumItem.type
-                                console.log(
-                                    `Type mismatch for ${actorItem.name}: ${actorItem.type} -> ${compendiumItem.type}`,
-                                )
-                            }
-
-                            // Add type-specific fields (use compendiumItem.type since that's the correct type)
+                            // For vorteile, delete and re-add from compendium
                             if (compendiumItem.type === 'vorteil') {
-                                updateData['system.sephrastoScript'] =
-                                    compendiumItem.system.sephrastoScript
-                                updateData['system.stilBedingungen'] =
-                                    compendiumItem.system.stilBedingungen
-                                updateData['system.foundryScript'] =
-                                    compendiumItem.system.foundryScript
-                                updateData['system.voraussetzung'] =
-                                    compendiumItem.system.voraussetzung
+                                itemsToDelete.push(actorItem.id)
+                                itemsToAdd.push(compendiumItem.toObject())
+                                updatedCount++
+                                console.log(
+                                    `Replacing ${actorItem.name} (vorteil) with compendium version`,
+                                )
+                            } else {
+                                // For other item types, use the update approach
+                                // Prepare update data based on item type
+                                const updateData = {
+                                    _id: actorItem.id,
+                                    'system.text': compendiumItem.system.text,
+                                }
 
-                                // Update active effects for vorteile
-                                // Delete ALL old effects from the item
-                                const oldEffects = Array.from(actorItem.effects)
-                                if (oldEffects.length > 0) {
-                                    await actorItem.deleteEmbeddedDocuments(
-                                        'ActiveEffect',
-                                        oldEffects.map((e) => e.id),
+                                // Update type if it changed
+                                if (typeChanged) {
+                                    updateData['type'] = compendiumItem.type
+                                    console.log(
+                                        `Type mismatch for ${actorItem.name}: ${actorItem.type} -> ${compendiumItem.type}`,
                                     )
                                 }
 
-                                // Create new effects from compendium
-                                if (compendiumItem.effects && compendiumItem.effects.size > 0) {
-                                    const newEffects = Array.from(compendiumItem.effects).map((e) =>
-                                        e.toObject(),
-                                    )
-                                    await actorItem.createEmbeddedDocuments(
-                                        'ActiveEffect',
-                                        newEffects,
-                                    )
-                                }
-                            } else if (
-                                compendiumItem.type === 'zauber' ||
-                                compendiumItem.type === 'liturgie' ||
-                                compendiumItem.type === 'anrufung'
-                            ) {
-                                // Update all übernatürlich_talent template fields
-                                if (compendiumItem.system.fertigkeiten !== undefined) {
-                                    updateData['system.fertigkeiten'] =
-                                        compendiumItem.system.fertigkeiten
-                                }
-                                if (compendiumItem.system.fertigkeit_ausgewaehlt !== undefined) {
-                                    updateData['system.fertigkeit_ausgewaehlt'] =
-                                        compendiumItem.system.fertigkeit_ausgewaehlt
-                                }
-                                if (compendiumItem.system.maechtig !== undefined) {
-                                    updateData['system.maechtig'] = compendiumItem.system.maechtig
-                                }
-                                if (compendiumItem.system.schwierigkeit !== undefined) {
-                                    updateData['system.schwierigkeit'] =
-                                        compendiumItem.system.schwierigkeit
-                                }
-                                if (compendiumItem.system.modifikationen !== undefined) {
-                                    updateData['system.modifikationen'] =
-                                        compendiumItem.system.modifikationen
-                                }
-                                if (compendiumItem.system.vorbereitung !== undefined) {
-                                    updateData['system.vorbereitung'] =
-                                        compendiumItem.system.vorbereitung
-                                }
-                                if (compendiumItem.system.ziel !== undefined) {
-                                    updateData['system.ziel'] = compendiumItem.system.ziel
-                                }
-                                if (compendiumItem.system.reichweite !== undefined) {
-                                    updateData['system.reichweite'] =
-                                        compendiumItem.system.reichweite
-                                }
-                                if (compendiumItem.system.wirkungsdauer !== undefined) {
-                                    updateData['system.wirkungsdauer'] =
-                                        compendiumItem.system.wirkungsdauer
-                                }
-                                if (compendiumItem.system.kosten !== undefined) {
-                                    updateData['system.kosten'] = compendiumItem.system.kosten
-                                }
-                                if (compendiumItem.system.erlernen !== undefined) {
-                                    updateData['system.erlernen'] = compendiumItem.system.erlernen
-                                }
-                            } else if (
-                                compendiumItem.type === 'nahkampfwaffe' ||
-                                compendiumItem.type === 'fernkampfwaffe'
-                            ) {
-                                // Update weapon-specific fields
-                                if (compendiumItem.system.eigenschaften !== undefined) {
-                                    updateData['system.eigenschaften'] =
-                                        compendiumItem.system.eigenschaften
-                                }
-                                if (compendiumItem.system.gewicht !== undefined) {
-                                    updateData['system.gewicht'] = compendiumItem.system.gewicht
-                                }
-                                if (compendiumItem.system.preis !== undefined) {
-                                    updateData['system.preis'] = compendiumItem.system.preis
-                                }
-                                if (compendiumItem.system.tp !== undefined) {
-                                    updateData['system.tp'] = compendiumItem.system.tp
-                                }
-                                if (compendiumItem.system.at_mod !== undefined) {
-                                    updateData['system.at_mod'] = compendiumItem.system.at_mod
-                                }
-                                if (compendiumItem.system.vt_mod !== undefined) {
-                                    updateData['system.vt_mod'] = compendiumItem.system.vt_mod
-                                }
-                                if (compendiumItem.system.beschreibung !== undefined) {
-                                    updateData['system.beschreibung'] =
-                                        compendiumItem.system.beschreibung
-                                }
-
-                                // Additional fields for fernkampfwaffe
-                                if (compendiumItem.type === 'fernkampfwaffe') {
-                                    if (compendiumItem.system.reichweite_mod !== undefined) {
-                                        updateData['system.reichweite_mod'] =
-                                            compendiumItem.system.reichweite_mod
+                                // Add type-specific fields (use compendiumItem.type since that's the correct type)
+                                if (
+                                    compendiumItem.type === 'zauber' ||
+                                    compendiumItem.type === 'liturgie' ||
+                                    compendiumItem.type === 'anrufung'
+                                ) {
+                                    // Update all übernatürlich_talent template fields
+                                    if (compendiumItem.system.fertigkeiten !== undefined) {
+                                        updateData['system.fertigkeiten'] =
+                                            compendiumItem.system.fertigkeiten
                                     }
-                                    if (compendiumItem.system.ladezeit !== undefined) {
-                                        updateData['system.ladezeit'] =
-                                            compendiumItem.system.ladezeit
+                                    if (
+                                        compendiumItem.system.fertigkeit_ausgewaehlt !== undefined
+                                    ) {
+                                        updateData['system.fertigkeit_ausgewaehlt'] =
+                                            compendiumItem.system.fertigkeit_ausgewaehlt
+                                    }
+                                    if (compendiumItem.system.maechtig !== undefined) {
+                                        updateData['system.maechtig'] =
+                                            compendiumItem.system.maechtig
+                                    }
+                                    if (compendiumItem.system.schwierigkeit !== undefined) {
+                                        updateData['system.schwierigkeit'] =
+                                            compendiumItem.system.schwierigkeit
+                                    }
+                                    if (compendiumItem.system.modifikationen !== undefined) {
+                                        updateData['system.modifikationen'] =
+                                            compendiumItem.system.modifikationen
+                                    }
+                                    if (compendiumItem.system.vorbereitung !== undefined) {
+                                        updateData['system.vorbereitung'] =
+                                            compendiumItem.system.vorbereitung
+                                    }
+                                    if (compendiumItem.system.ziel !== undefined) {
+                                        updateData['system.ziel'] = compendiumItem.system.ziel
+                                    }
+                                    if (compendiumItem.system.reichweite !== undefined) {
+                                        updateData['system.reichweite'] =
+                                            compendiumItem.system.reichweite
+                                    }
+                                    if (compendiumItem.system.wirkungsdauer !== undefined) {
+                                        updateData['system.wirkungsdauer'] =
+                                            compendiumItem.system.wirkungsdauer
+                                    }
+                                    if (compendiumItem.system.kosten !== undefined) {
+                                        updateData['system.kosten'] = compendiumItem.system.kosten
+                                    }
+                                    if (compendiumItem.system.erlernen !== undefined) {
+                                        updateData['system.erlernen'] =
+                                            compendiumItem.system.erlernen
+                                    }
+                                } else if (
+                                    compendiumItem.type === 'nahkampfwaffe' ||
+                                    compendiumItem.type === 'fernkampfwaffe'
+                                ) {
+                                    // Update weapon-specific fields
+                                    if (compendiumItem.system.eigenschaften !== undefined) {
+                                        updateData['system.eigenschaften'] =
+                                            compendiumItem.system.eigenschaften
+                                    }
+                                    if (compendiumItem.system.gewicht !== undefined) {
+                                        updateData['system.gewicht'] = compendiumItem.system.gewicht
+                                    }
+                                    if (compendiumItem.system.preis !== undefined) {
+                                        updateData['system.preis'] = compendiumItem.system.preis
+                                    }
+                                    if (compendiumItem.system.tp !== undefined) {
+                                        updateData['system.tp'] = compendiumItem.system.tp
+                                    }
+                                    if (compendiumItem.system.at_mod !== undefined) {
+                                        updateData['system.at_mod'] = compendiumItem.system.at_mod
+                                    }
+                                    if (compendiumItem.system.vt_mod !== undefined) {
+                                        updateData['system.vt_mod'] = compendiumItem.system.vt_mod
+                                    }
+                                    if (compendiumItem.system.beschreibung !== undefined) {
+                                        updateData['system.beschreibung'] =
+                                            compendiumItem.system.beschreibung
+                                    }
+
+                                    // Additional fields for fernkampfwaffe
+                                    if (compendiumItem.type === 'fernkampfwaffe') {
+                                        if (compendiumItem.system.reichweite_mod !== undefined) {
+                                            updateData['system.reichweite_mod'] =
+                                                compendiumItem.system.reichweite_mod
+                                        }
+                                        if (compendiumItem.system.ladezeit !== undefined) {
+                                            updateData['system.ladezeit'] =
+                                                compendiumItem.system.ladezeit
+                                        }
                                     }
                                 }
+
+                                updatePromises.push(updateData)
+                                updatedCount++
+                                console.log(`Updating ${actorItem.name} (${actorItem.type})`)
                             }
-
-                            updatePromises.push(updateData)
-                            updatedCount++
-                            console.log(`Updating ${actorItem.name} (${actorItem.type})`)
                         }
                     }
                 }
             }
 
-            // Apply all updates at once
+            // First, delete items marked for deletion (vorteile)
+            if (itemsToDelete.length > 0) {
+                await this.actor.deleteEmbeddedDocuments('Item', itemsToDelete)
+            }
+
+            // Then add new items from compendium (vorteile)
+            if (itemsToAdd.length > 0) {
+                await this.actor.createEmbeddedDocuments('Item', itemsToAdd)
+            }
+
+            // Apply updates for other item types
             if (updatePromises.length > 0) {
                 await this.actor.updateEmbeddedDocuments('Item', updatePromises)
+            }
+
+            // Show notification
+            if (updatedCount > 0) {
                 ui.notifications.info(`${updatedCount} Items erfolgreich synchronisiert.`)
             } else {
                 ui.notifications.info('Alle Items sind bereits aktuell.')
