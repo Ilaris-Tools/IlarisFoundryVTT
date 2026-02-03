@@ -1,0 +1,41 @@
+{
+  "name": "Falkenauge Meisterschuss (Tiergeist)",
+  "type": "zauber",
+  "_id": "ogVvNvldgbizNg48",
+  "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
+  "system": {
+    "fertigkeiten": "Gaben des Odun, Gaben des Blutgeists",
+    "fertigkeit_ausgewaehlt": "auto",
+    "text": "Dein nächster Fernkampfangriff ist um +4 erleichtert.",
+    "maechtig": "Der Bonus steigt um +2.",
+    "schwierigkeit": "12",
+    "modifikationen": "Dauerndes Band (–8, 8 AsP; der Zauber wirkt auf alle Fernkampfangriffe während der Wirkungsdauer.)",
+    "vorbereitung": "1 Aktion",
+    "ziel": "Einzelperson",
+    "reichweite": "Berührung",
+    "wirkungsdauer": "8 Initiativphasen",
+    "kosten": "4 AsP",
+    "erlernen": "Elf 12",
+    "pw": 0,
+    "gruppe": 0
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "bRsoRPItEVb33T1L": 3
+  },
+  "flags": {},
+  "_stats": {
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "coreVersion": "12.343",
+    "systemId": "Ilaris",
+    "systemVersion": "12.2.0",
+    "createdTime": 1760386712873,
+    "modifiedTime": 1760386712873,
+    "lastModifiedBy": "bRsoRPItEVb33T1L"
+  },
+  "_key": "!items!ogVvNvldgbizNg48"
+}

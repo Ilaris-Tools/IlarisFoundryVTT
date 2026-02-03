@@ -1,4 +1,4 @@
-name: 🧪 Deploy Ilaris to Test Server (develop)
+name: 🧑‍💻 Deploy Ilaris to Test Server (develop)
 
 on:
     push:
