@@ -149,13 +149,6 @@
       "system": "Ilaris"
     },
     {
-      "label": "Waffeneigenschaften",
-      "type": "Item",
-      "name": "waffeneigenschaften",
-      "path": "./packs/waffeneigenschaften",
-      "system": "Ilaris"
-    },
-    {
       "label": "Gegenstände",
       "type": "Item",
       "name": "gegenstande",
