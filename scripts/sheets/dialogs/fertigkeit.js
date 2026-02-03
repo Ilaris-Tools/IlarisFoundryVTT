@@ -131,7 +131,7 @@ export class FertigkeitDialog extends Dialog {
 
         let summary = '<div class="all-summaries">'
         summary += '<div class="modifier-summary probe-summary clickable-summary">'
-        summary += `<h4>🎲 ${label}: ${finalFormula}</h4>`
+        summary += `<div class="flex_space-between_center"><h4 style="width:100%">🎲 ${label}: ${finalFormula}</h4><i class="custom-icon-without-hover"></i></div>`
         summary += '<div class="modifier-list">'
 
         // Base PW - show PW(T) if talent is selected

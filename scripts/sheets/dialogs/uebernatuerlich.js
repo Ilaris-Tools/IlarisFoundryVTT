@@ -112,7 +112,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         const icon = this.item.type === 'zauber' ? '🔮' : '✨'
 
         let summary = '<div class="modifier-summary talent-summary clickable-summary angreifen">'
-        summary += `<h4>${icon} ${itemType}: ${finalFormula}</h4>`
+        summary += `<div class="flex_space-between_center"><h4  style="width:100%">${icon} ${itemType}: ${finalFormula}</h4><i class="custom-icon-without-hover"></i></div>`
         summary += '<div class="modifier-list">'
 
         // Base PW
@@ -179,7 +179,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         const icon = '⚡'
 
         let summary = '<div class="modifier-summary energy-summary">'
-        summary += `<h4>${icon} Energiekosten: ${baseEnergy} Energie</h4>`
+        summary += `<div class="flex_space-between_center"><h4 style="width:100%">${icon} Energiekosten: ${baseEnergy} Energie</h4><i class="custom-icon-without-hover"></i></div>`
         summary += '<div class="modifier-list">'
 
         // Base energy cost

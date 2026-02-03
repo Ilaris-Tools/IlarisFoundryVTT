@@ -136,7 +136,7 @@ export class AngriffDialog extends CombatDialog {
         const isClickableStyle = this.isDefenseMode ? '' : 'clickable-summary'
         const isDisabledStyle = this.isDefenseMode ? 'disabled' : ''
         let summary = `<div class="modifier-summary attack-summary ${isClickableStyle} angreifen">`
-        summary += `<h4 class="${isDisabledStyle}">🗡️ Angriff: ${finalFormula}</h4>`
+        summary += `<div class="flex_space-between_center"><h4 class="${isDisabledStyle}" style="width:100%">🗡️ Angriff: ${finalFormula}</h4><i class="custom-icon-without-hover"></i></div>`
         summary += '<div class="modifier-list">'
 
         // Base AT
@@ -197,7 +197,7 @@ export class AngriffDialog extends CombatDialog {
             finalVT >= 0 ? `${formattedDice}+${finalVT}` : `${formattedDice}${finalVT}`
 
         let summary = '<div class="modifier-summary defense-summary clickable-summary verteidigen">'
-        summary += `<h4>🛡️ Verteidigung: ${finalFormula}</h4>`
+        summary += `<div class="flex_space-between_center"><h4 style="width:100%">🛡️ Verteidigung: ${finalFormula}</h4><i class="custom-icon-without-hover"></i></div>`
         summary += '<div class="modifier-list">'
 
         // Base VT
@@ -263,7 +263,7 @@ export class AngriffDialog extends CombatDialog {
         const isDisabledStyle = this.isDefenseMode && !this.riposte ? 'disabled' : ''
 
         let summary = `<div class="modifier-summary damage-summary ${isClickableStyle} schaden">`
-        summary += `<h4 class="${isDisabledStyle}">🩸 Schaden: ${finalFormula}</h4>`
+        summary += `<div class="flex_space-between_center"><h4  class="${isDisabledStyle}" style="width:100%">🩸 Schaden: ${finalFormula}</h4><i class="custom-icon-without-hover"></i></div>`
         summary += '<div class="modifier-list">'
 
         // Base damage
