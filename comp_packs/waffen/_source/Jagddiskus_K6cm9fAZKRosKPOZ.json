@@ -10,20 +10,12 @@
     "rw": 16,
     "hauptwaffe": false,
     "nebenwaffe": false,
-    "eigenschaften": {
-      "kein_reiter": false,
-      "niederwerfen": false,
-      "niederwerfen_4": false,
-      "niederwerfen_8": false,
-      "schwer_4": false,
-      "schwer_8": false,
-      "stationaer": false,
-      "stumpf": true,
-      "umklammern_212": false,
-      "umklammern_416": false,
-      "umklammern_816": false,
-      "zweihaendig": false
-    },
+    "eigenschaften": [
+      {
+        "key": "Stumpf",
+        "parameters": []
+      }
+    ],
     "text": "",
     "aufbewahrungs_ort": "mitführend",
     "bewahrt_auf": [],

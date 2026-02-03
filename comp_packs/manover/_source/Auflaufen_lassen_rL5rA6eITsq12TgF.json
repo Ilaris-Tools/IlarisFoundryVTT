@@ -20,14 +20,15 @@
         "affectedByInput": true
       }
     },
-    "gruppe": "4",
+    "gruppe": "13",
     "probe": "VT -4",
     "gegenprobe": "",
     "text": "Der Verteidiger fügt dem Angreifer seinen Waffenschaden plus die GS des Angreifers zu. Voraussetzungen: größere Reichweite; Gegner kombiniert die Aktionen Bewegung und Konflikt; die Bewegung muss vor dem Angriff ausgeführt werden.",
     "input": {
       "label": "GS Gegner",
       "field": "NUMBER"
-    }
+    },
+    "isBaseManoever": true
   },
   "effects": [],
   "folder": null,

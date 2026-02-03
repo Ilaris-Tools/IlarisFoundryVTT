@@ -2,15 +2,16 @@ import { IlarisItem } from './item.js'
 import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
+    IlarisAutomatisierungSettingNames,
 } from './../settings/configure-game-settings.model.js'
-import { ILARIS } from '../config.js'
+import { ILARIS, MANOEVER_GRUPPE } from '../config.js'
 
 export class CombatItem extends IlarisItem {
     // Create a maneuver object from an item
     _createManeuverFromItem(item) {
         return {
             ...item,
-            id: item.name.replace(/[\s\W]/g, '_'),
+            id: item._id,
             inputValue: {
                 ...item.system.input,
                 value: '',
@@ -105,7 +106,12 @@ export class CombatItem extends IlarisItem {
                 id: 'mod' + index,
                 type: 'manoever',
                 system: {
-                    gruppe: this.type === 'zauber' ? 2 : this.type === 'liturgie' ? 3 : 4,
+                    gruppe:
+                        this.type === 'zauber'
+                            ? MANOEVER_GRUPPE.ZAUBER
+                            : this.type === 'liturgie'
+                            ? MANOEVER_GRUPPE.LITURGIE
+                            : MANOEVER_GRUPPE.ANRUFUNG,
                     probe: erschwernis,
                     text: contentWithoutErschwernis || name.trim(),
                     modifications: {},
@@ -198,8 +204,40 @@ export class CombatItem extends IlarisItem {
         return maneuvers
     }
 
+    /**
+     * Apply scene environment settings to the item's manoevers if available
+     * Only applies scene-specific settings: light and weather
+     * Target-specific settings (movement, cover, melee, size) remain at their defaults
+     * @private
+     */
+    _applySceneEnvironment() {
+        // Check if the feature is enabled in world settings
+        const useSceneEnvironment = game.settings.get(
+            ConfigureGameSettingsCategories.Ilaris,
+            IlarisAutomatisierungSettingNames.useSceneEnvironment,
+        )
+        if (!useSceneEnvironment) return
+
+        const scene = game.scenes.viewed
+        if (!scene) return
+
+        const environment = scene.getFlag('Ilaris', 'sceneConditions')
+        if (!environment) return
+
+        // Apply only scene-specific environment settings (light and weather)
+        if (this.system.manoever.lcht !== undefined && environment.lcht !== undefined) {
+            this.system.manoever.lcht.selected = String(environment.lcht)
+        }
+        if (this.system.manoever.wttr !== undefined && environment.wttr !== undefined) {
+            this.system.manoever.wttr.selected = String(environment.wttr)
+        }
+        // Note: Movement (bwng), Cover (dckg), Melee (kgtl), and Size (gzkl) are target-specific
+        // and should be set per-combat, not per-scene
+    }
+
     async setManoevers() {
         // TODO: this needs to be changed sooner than later, system is not the right place for this
+        console.log('Setting maneuvers for item:', this.name)
         this.system.manoever = {
             kbak: { selected: false },
             mod: { selected: false },
@@ -229,11 +267,16 @@ export class CombatItem extends IlarisItem {
             ('angriff' === this.type && this.system.typ === 'Nah')
         ) {
             this.system.manoever = ILARIS.manoever_nahkampf
+
+            // Apply scene environment settings if available
+            this._applySceneEnvironment()
+
             this.manoever = []
             packItems.forEach((item) => {
                 if (
                     item.type === 'manoever' &&
-                    (item.system.gruppe == 0 || item.system.gruppe == 4) &&
+                    (item.system.gruppe == MANOEVER_GRUPPE.NAHKAMPF ||
+                        item.system.gruppe == MANOEVER_GRUPPE.VERTEIDIGUNG) &&
                     item._manoeverRequirementsFulfilled(this.actor, this)
                 ) {
                     this.manoever.push(this._createManeuverFromItem(item))
@@ -257,11 +300,14 @@ export class CombatItem extends IlarisItem {
             // Add specific properties for fernkampfwaffe or angriff with Fern type
             this.system.manoever = ILARIS.manoever_fernkampf
 
+            // Apply scene environment settings if available
+            this._applySceneEnvironment()
+
             this.manoever = []
             packItems.forEach((item) => {
                 if (
                     item.type === 'manoever' &&
-                    item.system.gruppe == 1 &&
+                    item.system.gruppe == MANOEVER_GRUPPE.FERNKAMPF &&
                     item._manoeverRequirementsFulfilled(this.actor, this)
                 ) {
                     this.manoever.push(this._createManeuverFromItem(item))
@@ -274,7 +320,7 @@ export class CombatItem extends IlarisItem {
             packItems.forEach((item) => {
                 if (
                     item.type === 'manoever' &&
-                    item.system.gruppe == 2 &&
+                    item.system.gruppe == MANOEVER_GRUPPE.ZAUBER &&
                     item._manoeverRequirementsFulfilled(this.actor, this)
                 ) {
                     this.manoever.push(this._createManeuverFromItem(item))
@@ -291,7 +337,7 @@ export class CombatItem extends IlarisItem {
             packItems.forEach((item) => {
                 if (
                     item.type === 'manoever' &&
-                    item.system.gruppe == 3 &&
+                    item.system.gruppe == MANOEVER_GRUPPE.LITURGIE &&
                     item._manoeverRequirementsFulfilled(this.actor, this)
                 ) {
                     this.manoever.push(this._createManeuverFromItem(item))

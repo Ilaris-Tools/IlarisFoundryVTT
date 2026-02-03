@@ -67,143 +67,29 @@
                     />
                 </div>
             </div>
-            <!-- "kein_reiter": false,
-                 "niederwerfen": false,
-                 "niederwerfen_4": false,
-                 "niederwerfen_8": false,
-                 "schwer_4": false,
-                 "schwer_8": false,
-                 "stationaer": false,
-                 "stumpf": false,
-                 "umklammern_212": false,
-                 "umklammern_416": false,
-                 "umklammern_816": false,
-                 "zweihaendig": false -->
-            <div class="flexrow">
+            <div style="margin-bottom: 10px;">
                 <label class="flex-fest-var" style="flex-basis: 100px"><b>Eigenschaften:</b></label>
-                <div>
-                    <span>
-                        <label>| Nicht für Reiter:</label>
-                        <input
-                            name="system.eigenschaften.kein_reiter"
-                            data-dtype="Boolean"
-                            type="checkbox"
-                            {{checked
-                            item.system.eigenschaften.kein_reiter}}
-                        />
-                    </span>
-                    <span>
-                        <label>| Niederwerfen:</label>
-                        <input
-                            name="system.eigenschaften.niederwerfen"
-                            data-dtype="Boolean"
-                            type="checkbox"
-                            {{checked
-                            item.system.eigenschaften.niederwerfen}}
-                        />
-                    </span>
-                    <span>
-                        <label>| Niederwerfen (-4):</label>
-                        <input
-                            name="system.eigenschaften.niederwerfen_4"
-                            data-dtype="Boolean"
-                            type="checkbox"
-                            {{checked
-                            item.system.eigenschaften.niederwerfen_4}}
-                        />
-                    </span>
-                    <span>
-                        <label>| Niederwerfen (-8):</label>
-                        <input
-                            name="system.eigenschaften.niederwerfen_8"
-                            data-dtype="Boolean"
-                            type="checkbox"
-                            {{checked
-                            item.system.eigenschaften.niederwerfen_8}}
-                        />
-                    </span>
-                    <span>
-                        <label>| Schwer (4):</label>
-                        <input
-                            name="system.eigenschaften.schwer_4"
-                            data-dtype="Boolean"
-                            type="checkbox"
-                            {{checked
-                            item.system.eigenschaften.schwer_4}}
-                        />
-                    </span>
-                    <span>
-                        <label>| Schwer (8):</label>
-                        <input
-                            name="system.eigenschaften.schwer_8"
-                            data-dtype="Boolean"
-                            type="checkbox"
-                            {{checked
-                            item.system.eigenschaften.schwer_8}}
-                        />
-                    </span>
-                    <span>
-                        <label>| Stationär:</label>
-                        <input
-                            name="system.eigenschaften.stationaer"
-                            data-dtype="Boolean"
-                            type="checkbox"
-                            {{checked
-                            item.system.eigenschaften.stationaer}}
-                        />
-                    </span>
-                    <span>
-                        <label>| Stumpf:</label>
-                        <input
-                            name="system.eigenschaften.stumpf"
-                            data-dtype="Boolean"
-                            type="checkbox"
-                            {{checked
-                            item.system.eigenschaften.stumpf}}
-                        />
-                    </span>
-                    <span>
-                        <label>| Umklammern (2,12):</label>
-                        <input
-                            name="system.eigenschaften.umklammern_212"
-                            data-dtype="Boolean"
-                            type="checkbox"
-                            {{checked
-                            item.system.eigenschaften.umklammern_212}}
-                        />
-                    </span>
-                    <span>
-                        <label>| Umklammern (4,16):</label>
-                        <input
-                            name="system.eigenschaften.umklammern_416"
-                            data-dtype="Boolean"
-                            type="checkbox"
-                            {{checked
-                            item.system.eigenschaften.umklammern_416}}
-                        />
-                    </span>
-                    <span>
-                        <label>| Umklammern (8,16):</label>
-                        <input
-                            name="system.eigenschaften.umklammern_816"
-                            data-dtype="Boolean"
-                            type="checkbox"
-                            {{checked
-                            item.system.eigenschaften.umklammern_816}}
-                        />
-                    </span>
-                    <span>
-                        <label>| Zweihändig:</label>
-                        <input
-                            name="system.eigenschaften.zweihaendig"
-                            data-dtype="Boolean"
-                            type="checkbox"
-                            {{checked
-                            item.system.eigenschaften.zweihaendig}}
-                        />
-                    </span>
+                <div class="eigenschaften-list" style="display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px;">
+                    {{#each item.system.eigenschaften as |eig|}}
+                    <div class="eigenschaft-row" data-index="{{@index}}" style="display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 3px; border: 1px solid var(--color-border-light-tertiary);">
+                        <span style="font-size: 0.95em;"><strong>{{eig.key}}</strong>{{#if eig.parameters.length}}({{#each eig.parameters as |param|}}{{#unless @first}}, {{/unless}}{{param}}{{/each}}){{/if}}</span>
+                        <button type="button" class="remove-eigenschaft" data-index="{{@index}}" style="margin-left: 6px; padding: 2px 4px; font-size: 0.8em; line-height: 1;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    {{/each}}
                 </div>
+                <button type="button" class="add-eigenschaft clickable" style="margin-top: 5px;">
+                    <i class="fas fa-plus"></i> Eigenschaft hinzufügen
+                </button>
             </div>
+            {{#if needsMigration}}
+            <div class="flexrow" style="margin-top: 5px;">
+                <button type="button" class="migrate-eigenschaften" style="width: 100%;">
+                    <i class="fas fa-sync-alt"></i> Eigenschaften migrieren (alte → neue Format)
+                </button>
+            </div>
+            {{/if}}
             {{#if hasOwner}}
             <label class="flex-fest-var" style="flex-basis: 100px"><b>Eigene Mod.:</b></label>
             <div class="flexrow">

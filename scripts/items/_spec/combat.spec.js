@@ -29,6 +29,14 @@ jest.mock('../../settings/configure-game-settings.model.js', () => ({
 // Mock the config import
 jest.mock('../../config.js', () => ({
     ILARIS: {},
+    MANOEVER_GRUPPE: {
+        NAHKAMPF: 0,
+        FERNKAMPF: 1,
+        ZAUBER: 2,
+        LITURGIE: 3,
+        ANRUFUNG: 4,
+        NAHKAMPF_KREATUR: 13,
+    },
 }))
 
 // Import the actual class we want to test

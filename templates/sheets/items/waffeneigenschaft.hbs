@@ -1,0 +1,327 @@
+{{log 'waffeneigenschaft' this}}
+<form class="{{cssClass}}">
+    <div>
+        <input class="titel-input" name="name" type="text" value="{{item.name}}" />
+        <hr />
+        
+        <div class="flexrow">
+            <label><b>Kategorie:</b></label>
+            <select name="system.kategorie">
+                {{selectOptions kategorien selected=item.system.kategorie valueAttr='value' labelAttr='label'}}
+            </select>
+        </div>
+        
+        <div>
+            <label><b>Beschreibung:</b></label>
+            <textarea rows="4" name="system.beschreibung">{{item.system.beschreibung}}</textarea>
+        </div>
+        
+        <hr />
+        
+        {{#if (eq item.system.kategorie 'modifier')}}
+        <h3>Modifikatoren</h3>        
+        <div class="flexrow">
+            <label class="flex-fest-var" style="flex-basis: 120px"><b>Schadens-Formel:</b></label>
+            <input name="system.modifiers.schadenFormula" value="{{item.system.modifiers.schadenFormula}}" type="text" data-dtype="String" placeholder="z.B. @actor.system.attribute.KK.wert wird in der Formel abgerundet (Wert/4) verwendet" />
+        </div>
+
+        <h4 style="margin-top: 15px;">Kampfmechaniken</h4>
+        <div class="flexrow">
+            <label class="flex-fest-var" style="flex-basis: 140px">Patzer-Schwelle:</label>
+            <input name="system.modifiers.fumbleThreshold" value="{{item.system.modifiers.fumbleThreshold}}" type="number" data-dtype="Number" style="width: 80px;" placeholder="normal: 1" />
+            <label class="flex-fest-var" style="flex-basis: 140px; margin-left: 10px;">Kritische-Schwelle:</label>
+            <input name="system.modifiers.critThreshold" value="{{item.system.modifiers.critThreshold}}" type="number" data-dtype="Number" style="width: 80px;" placeholder="normal: 20" />
+        </div>
+        
+        <hr />
+        {{/if}}
+        
+        {{#if (eq item.system.kategorie 'wielding')}}
+        <h3>Führungs-Anforderungen</h3>
+        <div class="flexrow" style="align-items: center;">
+            <label class="flex-fest-var" style="flex-basis: 120px"><b>Benötigte Hände:</b></label>
+            <input name="system.wieldingRequirements.hands" value="{{item.system.wieldingRequirements.hands}}" type="number" data-dtype="Number" min="1" max="2" style="width: 50px; margin-right: 20px;" />
+            <label style="display: flex; align-items: center; margin-right: 20px;">
+                <input name="system.wieldingRequirements.ignoreNebenMalus" type="checkbox" {{checked item.system.wieldingRequirements.ignoreNebenMalus}} />
+                <span style="margin-left: 5px;">Kein Malus als Nebenwaffe</span>
+            </label>
+            <label style="display: flex; align-items: center; margin-right: 20px;">
+                <input name="system.wieldingRequirements.noRider" type="checkbox" {{checked item.system.wieldingRequirements.noRider}} />
+                <span style="margin-left: 5px;">Nicht reitbar</span>
+            </label>
+            <label style="display: flex; align-items: center;">
+                <input name="system.wieldingRequirements.requiresRider" type="checkbox" {{checked item.system.wieldingRequirements.requiresRider}} />
+                <span style="margin-left: 5px;">Nur zu Pferd</span>
+            </label>
+        </div>
+        
+        <div style="margin-top: 10px;">
+            <label><b>Mali (nur Hauptwaffe):</b></label>
+            <div class="flexrow" style="margin-left: 20px;">
+                <label class="flex-fest-var" style="flex-basis: 60px">AT:</label>
+                <input name="system.wieldingRequirements.penalties.hauptOnly.at" value="{{item.system.wieldingRequirements.penalties.hauptOnly.at}}" type="number" data-dtype="Number" />
+                <label class="flex-fest-var" style="flex-basis: 60px; margin-left: 10px;">VT:</label>
+                <input name="system.wieldingRequirements.penalties.hauptOnly.vt" value="{{item.system.wieldingRequirements.penalties.hauptOnly.vt}}" type="number" data-dtype="Number" />
+            </div>
+        </div>
+        
+        <div style="margin-top: 10px;">
+            <label><b>Mali (nur Nebenwaffe):</b></label>
+            <div class="flexrow" style="margin-left: 20px;">
+                <label class="flex-fest-var" style="flex-basis: 60px">AT:</label>
+                <input name="system.wieldingRequirements.penalties.nebenOnly.at" value="{{item.system.wieldingRequirements.penalties.nebenOnly.at}}" type="number" data-dtype="Number" />
+                <label class="flex-fest-var" style="flex-basis: 60px; margin-left: 10px;">VT:</label>
+                <input name="system.wieldingRequirements.penalties.nebenOnly.vt" value="{{item.system.wieldingRequirements.penalties.nebenOnly.vt}}" type="number" data-dtype="Number" />
+            </div>
+        </div>
+        
+        <div style="margin-top: 10px;">
+            <label><b>Mali (Nebenwaffe ohne Ausnahme):</b></label>
+            <div class="flexrow" style="margin-left: 20px;">
+                <label class="flex-fest-var" style="flex-basis: 60px">AT:</label>
+                <input name="system.wieldingRequirements.penalties.nebenWithoutExemption.at" value="{{item.system.wieldingRequirements.penalties.nebenWithoutExemption.at}}" type="number" data-dtype="Number" />
+                <label class="flex-fest-var" style="flex-basis: 60px; margin-left: 10px;">VT:</label>
+                <input name="system.wieldingRequirements.penalties.nebenWithoutExemption.vt" value="{{item.system.wieldingRequirements.penalties.nebenWithoutExemption.vt}}" type="number" data-dtype="Number" />
+            </div>
+        </div>
+        
+        <div style="margin-top: 10px;">
+            <label><b>Bedingungs-Prüfung:</b></label>
+            <div class="flexrow" style="margin-left: 20px;">
+                <label class="flex-fest-var" style="flex-basis: 60px">Typ:</label>
+                <select name="system.wieldingRequirements.condition.type" style="width: 150px;">
+                    {{selectOptions bedingungsTypen selected=item.system.wieldingRequirements.condition.type valueAttr='value' labelAttr='label'}}
+                </select>
+            </div>
+            <div class="flexrow" style="margin-left: 20px; margin-top: 5px;">
+                <label class="flex-fest-var" style="flex-basis: 60px">Attribut:</label>
+                <select name="system.wieldingRequirements.condition.attribute" style="width: 80px;">
+                    {{selectOptions attribute selected=item.system.wieldingRequirements.condition.attribute valueAttr='value' labelAttr='label'}}
+                </select>
+                <label class="flex-fest-var" style="flex-basis: 80px; margin-left: 10px;">Operator:</label>
+                <select name="system.wieldingRequirements.condition.operator" style="width: 60px;">
+                    {{selectOptions operatoren selected=item.system.wieldingRequirements.condition.operator valueAttr='value' labelAttr='label'}}
+                </select>
+                <label class="flex-fest-var" style="flex-basis: 50px; margin-left: 10px;">Wert:</label>
+                <input name="system.wieldingRequirements.condition.value" value="{{item.system.wieldingRequirements.condition.value}}" type="number" data-dtype="Number" style="width: 60px;" />
+            </div>
+            <div class="flexrow" style="margin-left: 20px; margin-top: 5px;">
+                <label class="flex-fest-var" style="flex-basis: 100px">Bei Fehlschlag:</label>
+                <label class="flex-fest-var" style="flex-basis: 40px;">AT:</label>
+                <input name="system.wieldingRequirements.condition.onFailure.at" value="{{item.system.wieldingRequirements.condition.onFailure.at}}" type="number" data-dtype="Number" style="width: 50px;" />
+                <label class="flex-fest-var" style="flex-basis: 40px; margin-left: 10px;">VT:</label>
+                <input name="system.wieldingRequirements.condition.onFailure.vt" value="{{item.system.wieldingRequirements.condition.onFailure.vt}}" type="number" data-dtype="Number" style="width: 50px;" />
+                <label class="flex-fest-var" style="flex-basis: 60px; margin-left: 10px;">Schaden:</label>
+                <input name="system.wieldingRequirements.condition.onFailure.schaden" value="{{item.system.wieldingRequirements.condition.onFailure.schaden}}" type="number" data-dtype="Number" style="width: 50px;" />
+            </div>
+        </div>
+        
+        <hr />
+        {{/if}}
+        
+        {{#if (eq item.system.kategorie 'target_effect')}}
+        <h3>Ziel-Effekt</h3>
+        <div class="flexrow">
+            <label class="flex-fest-var" style="flex-basis: 120px"><b>Effekt-Name:</b></label>
+            <input name="system.targetEffect.name" value="{{item.system.targetEffect.name}}" type="text" data-dtype="String" placeholder="z.B. Niederwerfen" />
+        </div>
+        <div class="flexrow">
+            <label class="flex-fest-var" style="flex-basis: 120px"><b>Auslöser:</b></label>
+            <select name="system.targetEffect.trigger">
+                {{selectOptions ausloeser selected=item.system.targetEffect.trigger valueAttr='value' labelAttr='label'}}
+            </select>
+        </div>
+        
+        <div style="margin-top: 10px;">
+            <label><b>Widerstandsprobe:</b></label>
+            <div class="flexrow" style="margin-left: 20px;">
+                <label class="flex-fest-var" style="flex-basis: 60px">Typ:</label>
+                <select name="system.targetEffect.resistCheck.type" style="width: 120px;">
+                    {{selectOptions widerstandsprobeTypen selected=item.system.targetEffect.resistCheck.type valueAttr='value' labelAttr='label'}}
+                </select>
+            </div>
+            <div class="flexrow" style="margin-left: 20px; margin-top: 5px;">
+                <label class="flex-fest-var" style="flex-basis: 120px">Angreifer-Attribut:</label>
+                <select name="system.targetEffect.resistCheck.attackerAttribute" style="width: 80px;">
+                    {{selectOptions attributeMitLeer selected=item.system.targetEffect.resistCheck.attackerAttribute valueAttr='value' labelAttr='label'}}
+                </select>
+                <label class="flex-fest-var" style="flex-basis: 80px; margin-left: 10px;">Modifikator:</label>
+                <input name="system.targetEffect.resistCheck.attackerModifier" value="{{item.system.targetEffect.resistCheck.attackerModifier}}" type="number" data-dtype="Number" style="width: 60px;" />
+            </div>
+            <div class="flexrow" style="margin-left: 20px; margin-top: 5px;">
+                <label class="flex-fest-var" style="flex-basis: 120px">Verteidiger-Attribut:</label>
+                <select name="system.targetEffect.resistCheck.defenderAttribute" style="width: 80px;">
+                    {{selectOptions attributeMitLeer selected=item.system.targetEffect.resistCheck.defenderAttribute valueAttr='value' labelAttr='label'}}
+                </select>
+                <label class="flex-fest-var" style="flex-basis: 80px; margin-left: 10px;">Modifikator:</label>
+                <input name="system.targetEffect.resistCheck.defenderModifier" value="{{item.system.targetEffect.resistCheck.defenderModifier}}" type="number" data-dtype="Number" style="width: 60px;" />
+            </div>
+        </div>
+        
+        <div class="flexrow" style="margin-top: 5px;">
+            <label class="flex-fest-var" style="flex-basis: 120px"><b>Effekt-Typ:</b></label>
+            <select name="system.targetEffect.effect.type">
+                {{selectOptions effektTypen selected=item.system.targetEffect.effect.type valueAttr='value' labelAttr='label'}}
+            </select>
+        </div>
+        <div class="flexrow">
+            <label class="flex-fest-var" style="flex-basis: 120px"><b>Status-Name:</b></label>
+            <input name="system.targetEffect.effect.statusName" value="{{item.system.targetEffect.effect.statusName}}" type="text" data-dtype="String" placeholder="z.B. Liegend" />
+        </div>
+        <div class="flexrow">
+            <label class="flex-fest-var" style="flex-basis: 120px"><b>Dauer:</b></label>
+            <input name="system.targetEffect.effect.duration" value="{{item.system.targetEffect.effect.duration}}" type="text" data-dtype="String" placeholder="z.B. 1 Runde" />
+        </div>
+        <div class="flexrow">
+            <label class="flex-fest-var" style="flex-basis: 120px"><b>Icon:</b></label>
+            <input name="system.targetEffect.effect.icon" value="{{item.system.targetEffect.effect.icon}}" type="text" data-dtype="String" placeholder="z.B. icons/svg/falling.svg" />
+        </div>
+        
+        <hr />
+        {{/if}}
+        
+        {{#if (eq item.system.kategorie 'modifier')}}
+        <h3>Bedingte Modifikatoren</h3>
+        <div class="conditional-modifiers-container">
+            {{#each item.system.modifiers.conditionalModifiers as |modifier index|}}
+            <div class="conditional-modifier-entry" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 4px;">
+                <div class="flexrow" style="margin-bottom: 5px;">
+                    <label class="flex-fest-var" style="flex-basis: 100px"><b>Bedingung:</b></label>
+                    <select name="system.modifiers.conditionalModifiers.{{index}}.condition" style="flex: 1;">
+                        {{selectOptions ../conditionalModifierConditions selected=modifier.condition valueAttr='value' labelAttr='label'}}
+                    </select>
+                    <button type="button" class="remove-conditional-modifier" data-index="{{index}}" style="margin-left: 10px; width: 30px;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                <div class="flexrow" style="margin-bottom: 5px;">
+                    <label class="flex-fest-var" style="flex-basis: 60px">AT:</label>
+                    <input name="system.modifiers.conditionalModifiers.{{index}}.modifiers.at" value="{{modifier.modifiers.at}}" type="number" data-dtype="Number" style="width: 60px;" />
+                    <label class="flex-fest-var" style="flex-basis: 60px; margin-left: 10px;">VT:</label>
+                    <input name="system.modifiers.conditionalModifiers.{{index}}.modifiers.vt" value="{{modifier.modifiers.vt}}" type="number" data-dtype="Number" style="width: 60px;" />
+                    <label class="flex-fest-var" style="flex-basis: 80px; margin-left: 10px;">Schaden:</label>
+                    <input name="system.modifiers.conditionalModifiers.{{index}}.modifiers.schaden" value="{{modifier.modifiers.schaden}}" type="number" data-dtype="Number" style="width: 60px;" />
+                </div>
+                <div class="flexrow">
+                    <label class="flex-fest-var" style="flex-basis: 100px"><b>Beschreibung:</b></label>
+                    <input name="system.modifiers.conditionalModifiers.{{index}}.description" value="{{modifier.description}}" type="text" style="flex: 1;" placeholder="z.B. +4 AT gegen Schildträger" />
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        <button type="button" class="add-conditional-modifier clickable" style="margin-top: 5px;">
+            <i class="fas fa-plus"></i> Bedingten Modifikator hinzufügen
+        </button>
+        
+        <hr />
+        {{/if}}
+        
+        {{#if (eq item.system.kategorie 'actor_modifier')}}
+        <h3>Akteur-Modifikatoren</h3>
+        <div class="actor-modifiers-container">
+            {{#each item.system.actorModifiers.modifiers as |modifier index|}}
+            <div class="actor-modifier-entry" style="border: 1px solid #ccc; padding: 10px; margin-bottom: 10px; border-radius: 4px;">
+                <div class="flexrow" style="margin-bottom: 5px;">
+                    <label class="flex-fest-var" style="flex-basis: 120px"><b>Abgeleiteter Wert:</b></label>
+                    <select name="system.actorModifiers.modifiers.{{index}}.property" style="width: 120px;">
+                        {{selectOptions ../abgeleiteteProperties selected=modifier.property valueAttr='value' labelAttr='label'}}
+                    </select>
+                    <label class="flex-fest-var" style="flex-basis: 80px; margin-left: 10px;">Modus:</label>
+                    <select name="system.actorModifiers.modifiers.{{index}}.mode" style="width: 100px;">
+                        {{selectOptions ../actorModifierModes selected=modifier.mode valueAttr='value' labelAttr='label'}}
+                    </select>
+                    <button type="button" class="remove-actor-modifier" data-index="{{index}}" style="margin-left: 10px; width: 30px;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                <div class="flexrow">
+                    <label class="flex-fest-var" style="flex-basis: 60px">Wert:</label>
+                    <input name="system.actorModifiers.modifiers.{{index}}.value" value="{{modifier.value}}" type="number" data-dtype="Number" style="flex: 1;" placeholder="z.B. 2 oder -1" />
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        <button type="button" class="add-actor-modifier clickable" style="margin-top: 5px;">
+            <i class="fas fa-plus"></i> Akteur-Modifikator hinzufügen
+        </button>
+        
+        <hr />
+        {{/if}}
+        
+        <h3>Parameter-Slots</h3>
+        <p style="font-size: 0.9em; color: #666; margin-bottom: 10px;">
+            Parameter erlauben es, Werte beim Einsatz dieser Eigenschaft anzugeben (z.B. "Schwer (4)" → KK-Schwellenwert = 4)
+        </p>
+        <div class="parameter-slots-container">
+            {{#each item.system.parameterSlots as |slot index|}}
+            <div class="parameter-slot-entry" style="padding: 10px; margin-bottom: 10px; border-radius: 4px; border: 1px solid var(--color-border-light-tertiary);">
+                <div class="flexrow" style="margin-bottom: 5px; align-items: center;">
+                    <label class="flex-fest-var" style="flex-basis: 50px; font-weight: bold;">{{add index 1}}.</label>
+                    <label class="flex-fest-var" style="flex-basis: 100px">Parameter-Name:</label>
+                    <input name="system.parameterSlots.{{index}}.name" 
+                           value="{{slot.name}}" 
+                           type="text" 
+                           style="width: 150px;" 
+                           placeholder="z.B. kkThreshold" />
+                    <label class="flex-fest-var" style="flex-basis: 50px; margin-left: 10px;">Typ:</label>
+                    <select name="system.parameterSlots.{{index}}.type" style="width: 100px;">
+                        <option value="number" {{#if (eq slot.type 'number')}}selected{{/if}}>Number</option>
+                        <option value="string" {{#if (eq slot.type 'string')}}selected{{/if}}>String</option>
+                    </select>
+                    <button type="button" class="remove-parameter-slot" data-index="{{index}}" style="margin-left: 10px; width: 30px; height: 30px;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                <div class="flexrow" style="margin-bottom: 5px;">
+                    <label class="flex-fest-var" style="flex-basis: 150px">Anzeige-Label:</label>
+                    <input name="system.parameterSlots.{{index}}.label" 
+                           value="{{slot.label}}" 
+                           type="text" 
+                           style="flex: 1;" 
+                           placeholder="z.B. KK-Schwellenwert" />
+                </div>
+                <div class="flexrow" style="margin-bottom: 5px;">
+                    <label class="flex-fest-var" style="flex-basis: 150px">Usage-Pfad:</label>
+                    <select name="system.parameterSlots.{{index}}.usage" style="flex: 1;">
+                        {{selectOptions ../usagePfade selected=slot.usage valueAttr='value' labelAttr='label'}}
+                    </select>
+                </div>
+                <div class="flexrow">
+                    <label class="flex-fest-var" style="flex-basis: 150px">Standard-Wert:</label>
+                    <input name="system.parameterSlots.{{index}}.defaultValue" 
+                           value="{{slot.defaultValue}}" 
+                           type="{{#if (eq slot.type 'number')}}number{{else}}text{{/if}}" 
+                           style="width: 100px;" 
+                           placeholder="Optional" />
+                    <label style="display: flex; align-items: center; margin-left: 20px;">
+                        <input name="system.parameterSlots.{{index}}.required" 
+                               type="checkbox" 
+                               {{checked slot.required}} />
+                        <span style="margin-left: 5px;">Pflichtfeld</span>
+                    </label>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        <button type="button" class="add-parameter-slot clickable" style="margin-top: 5px;">
+            <i class="fas fa-plus"></i> Parameter-Slot hinzufügen
+        </button>
+        
+        <hr />
+        
+        <h3>Erweitert</h3>
+        <div>
+            <label><b>Custom Script:</b></label>
+            <textarea rows="4" name="system.customScript" placeholder="JavaScript Code für erweiterte Funktionalität">{{item.system.customScript}}</textarea>
+        </div>
+        
+        <hr />
+        
+        <a class="item-delete" data-itemid="{{item._id}}">
+            <button class="clickable" type="button">
+                Waffeneigenschaft Löschen
+                <i class="fas fa-trash"></i>
+            </button>
+        </a>
+    </div>
+</form>

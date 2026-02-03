@@ -10,23 +10,16 @@
     "rw": 0,
     "hauptwaffe": false,
     "nebenwaffe": false,
-    "eigenschaften": {
-      "kopflastig": false,
-      "niederwerfen": true,
-      "parierwaffe": false,
-      "reittier": true,
-      "ruestungsbrechend": false,
-      "schild": false,
-      "schwer_4": false,
-      "schwer_8": false,
-      "stumpf": false,
-      "unberechenbar": false,
-      "unzerstoerbar": false,
-      "wendig": false,
-      "zerbrechlich": false,
-      "zweihaendig": false,
-      "kein_malus_nebenwaffe": false
-    },
+    "eigenschaften": [
+      {
+        "key": "Niederwerfen",
+        "parameters": []
+      },
+      {
+        "key": "Reittier",
+        "parameters": []
+      }
+    ],
     "text": "",
     "aufbewahrungs_ort": "mitführend",
     "bewahrt_auf": [],

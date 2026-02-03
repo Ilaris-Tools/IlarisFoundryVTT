@@ -13,14 +13,15 @@
         "affectedByInput": true
       }
     },
-    "gruppe": "4",
+    "gruppe": "13",
     "probe": "VT -X",
     "gegenprobe": "",
     "text": "Bis zum Ende der nächsten eigenen Initiativephase sind alle Verteidigungen des Gegners um -X (maximal 8) erschwert.",
     "input": {
       "label": "",
       "field": "NUMBER"
-    }
+    },
+    "isBaseManoever": true
   },
   "effects": [],
   "folder": null,

@@ -268,7 +268,8 @@
   text-indent: -22px;
 }
 
-.custom-icon {
+.custom-icon, 
+.custom-icon-without-hover {
   display: inline-block;
   width: 32px;
   height: 32px;
@@ -283,6 +284,10 @@
 .custom-icon:hover {
   filter: drop-shadow(0 0 8px var(--color-shadow-primary));
   transform: scale(1.1);
+}
+
+.custom-icon-without-hover {
+  margin-bottom:20px;
 }
 
 /* Make the table cell containing the custom-icon larger and clickable */
@@ -787,6 +792,64 @@ hr {
   white-space: pre-line;
 }
 
+/* Effects Section Styles */
+.effects-section {
+  margin: 10px 0;
+}
+
+.effects-section label {
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.effects-list {
+  margin-top: 10px;
+  border: 1px solid #232323;
+  border-radius: 4px;
+}
+
+.effect-item {
+  padding: 8px 12px;
+  border-bottom: 1px solid #232323;
+  align-items: center;
+  gap: 10px;
+}
+
+.effect-item:last-child {
+  border-bottom: none;
+}
+
+.effect-image {
+  flex: 0 0 auto;
+}
+
+.effect-image img {
+  border-radius: 3px;
+  border: 1px solid #999;
+}
+
+.effect-name {
+  flex: 1;
+  font-size: 14px;
+}
+
+.effect-name em {
+  color: #666;
+  font-size: 12px;
+}
+
+.effect-controls {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 5px;
+}
+.no-effects {
+  padding: 20px;
+  text-align: center;
+  color: #666;
+  font-style: italic;
+}
+/* Sync kampfstile button styling */
 /* Sync items button styling */
 .sync-items {
   color: #4f4f4f;
@@ -842,4 +905,52 @@ hr {
     cursor: pointer;
     font-size: 10px;
     padding-left: 4px;
+}
+
+.rule-button {
+  border: 1px solid #000;
+  border-radius: 3px;
+  padding: 4px 8px;
+  width: calc(100% - 10px);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+}
+
+/* Tooltip styling for maneuver descriptions */
+#tooltip {
+    text-align: left !important;
+    white-space: pre-line;
+    max-width: 400px;
+    line-height: 1.4;
+}
+
+/* Hexagonal token shapes for hex grids */
+.ilaris-hex-tokens-enabled .token-image,
+.ilaris-hex-tokens-enabled .token-image img,
+.ilaris-hex-tokens-enabled .TokenConfig .profile,
+.ilaris-hex-tokens-enabled .TokenConfig img.portrait {
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+/* Apply hex shape to token images in chat and other UI elements */
+body.ilaris-hex-tokens-enabled img[data-token],
+body.ilaris-hex-tokens-enabled .token img {
+    clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+    -webkit-clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+}
+
+.flex_center_center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex_space-between_center {
+display: flex;
+justify-content: space-between;
+align-items: center;
 }

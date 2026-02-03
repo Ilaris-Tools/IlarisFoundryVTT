@@ -2263,23 +2263,24 @@
         "rw": 0,
         "hauptwaffe": false,
         "nebenwaffe": false,
-        "eigenschaften": {
-          "kopflastig": false,
-          "niederwerfen": false,
-          "parierwaffe": true,
-          "reittier": false,
-          "ruestungsbrechend": false,
-          "schild": false,
-          "schwer_4": false,
-          "schwer_8": false,
-          "stumpf": true,
-          "unberechenbar": false,
-          "unzerstoerbar": false,
-          "wendig": false,
-          "zerbrechlich": true,
-          "zweihaendig": false,
-          "kein_malus_nebenwaffe": true
-        },
+        "eigenschaften": [
+          {
+            "key": "Parierwaffe",
+            "parameters": []
+          },
+          {
+            "key": "Stumpf",
+            "parameters": []
+          },
+          {
+            "key": "Zerbrechlich",
+            "parameters": []
+          },
+          {
+            "key": "Kein Malus als Nebenwaffe",
+            "parameters": []
+          }
+        ],
         "text": "",
         "aufbewahrungs_ort": "tragend",
         "bewahrt_auf": [],
@@ -2325,23 +2326,20 @@
         "rw": 2,
         "hauptwaffe": false,
         "nebenwaffe": false,
-        "eigenschaften": {
-          "kopflastig": true,
-          "niederwerfen": false,
-          "parierwaffe": false,
-          "reittier": false,
-          "ruestungsbrechend": false,
-          "schild": false,
-          "schwer_4": true,
-          "schwer_8": false,
-          "stumpf": false,
-          "unberechenbar": false,
-          "unzerstoerbar": false,
-          "wendig": false,
-          "zerbrechlich": false,
-          "zweihaendig": true,
-          "kein_malus_nebenwaffe": false
-        },
+        "eigenschaften": [
+          {
+            "key": "Kopflastig",
+            "parameters": []
+          },
+          {
+            "key": "Schwer",
+            "parameters": [4]
+          },
+          {
+            "key": "Zweihändig",
+            "parameters": []
+          }
+        ],
         "text": "",
         "aufbewahrungs_ort": "tragend",
         "bewahrt_auf": [],
@@ -2387,23 +2385,7 @@
         "rw": 0,
         "hauptwaffe": false,
         "nebenwaffe": false,
-        "eigenschaften": {
-          "kopflastig": false,
-          "niederwerfen": false,
-          "parierwaffe": false,
-          "reittier": false,
-          "ruestungsbrechend": false,
-          "schild": false,
-          "schwer_4": false,
-          "schwer_8": false,
-          "stumpf": false,
-          "unberechenbar": false,
-          "unzerstoerbar": false,
-          "wendig": false,
-          "zerbrechlich": false,
-          "zweihaendig": false,
-          "kein_malus_nebenwaffe": false
-        },
+        "eigenschaften": [],
         "text": "",
         "aufbewahrungs_ort": "tragend",
         "bewahrt_auf": [],

@@ -1,78 +1,34 @@
-// Mock Foundry's Item class
-class MockItem {
-    constructor() {
-        // Add any foundry Item properties needed for tests
-    }
-}
-
-// Mock IlarisItem class
-class MockIlarisItem extends MockItem {
-    constructor() {
-        super()
-        // Add any IlarisItem specific properties needed for tests
-    }
-}
-
-// Mock our actual class but extend from MockIlarisItem
-class IlarisManoever extends MockIlarisItem {
-    _manoeverRequirementsFulfilled(actor, item) {
-        if (!this.system.voraussetzungen) {
-            return true
+// Mock the parent class
+jest.mock('../item.js', () => ({
+    IlarisItem: class MockIlarisItem {
+        constructor(data = {}) {
+            this.name = data.name || 'Test Item'
+            this.system = data.system || {}
         }
+    },
+}))
 
-        // First split by comma to get AND conditions
-        const andConditions = this.system.voraussetzungen.split(',').map((c) => c.trim())
+// Import the actual class we want to test
+const { ManoeverItem } = require('../manoever.js')
 
-        // For each AND condition, check if any of its OR parts is fulfilled
-        return andConditions.every((andCondition) => {
-            // Split by ODER to get OR conditions
-            const orParts = andCondition.split(' ODER ')
-
-            // Check if any of the OR parts is fulfilled
-            return orParts.some((condition) => {
-                const parts = condition.trim().split(' ')
-                const type = parts[0]
-                const value = parts.slice(1).join(' ')
-
-                switch (type) {
-                    case 'Waffeneigenschaft':
-                        // Find the key where the value matches
-                        const eigenschaftKey = Object.entries(
-                            CONFIG.ILARIS.waffeneigenschaften,
-                        ).find(([key, val]) => val === value)?.[0]
-                        return eigenschaftKey ? item.system.eigenschaften[eigenschaftKey] : false
-                    case 'Vorteil':
-                        return actor._hasVorteil(value)
-                    default:
-                        return false
-                }
-            })
-        })
-    }
-}
-
-describe('IlarisManoever', () => {
+describe('ManoeverItem', () => {
     let manoever
     let mockActor
     let mockItem
 
     beforeEach(() => {
-        manoever = new IlarisManoever()
+        manoever = new ManoeverItem({
+            name: 'Test Manöver',
+            system: {},
+        })
         mockActor = {
             _hasVorteil: jest.fn(),
         }
         mockItem = {
+            type: 'waffe',
             system: {
-                eigenschaften: {},
-            },
-        }
-        global.CONFIG = {
-            ILARIS: {
-                waffeneigenschaften: {
-                    zweihaendig: 'Zweihändig',
-                    kopflastig: 'Kopflastig',
-                    scharf: 'Scharf',
-                },
+                eigenschaften: [],
+                angriffmanover: [],
             },
         }
     })
@@ -83,12 +39,19 @@ describe('IlarisManoever', () => {
             expect(manoever._manoeverRequirementsFulfilled(mockActor, mockItem)).toBe(true)
         })
 
+        it('should bypass requirements if maneuver is in item angriffmanover list', () => {
+            manoever.system = { voraussetzungen: 'Vorteil Kampfgespür' }
+            mockItem.system.angriffmanover = ['Test Manöver']
+            mockActor._hasVorteil.mockReturnValue(false)
+            expect(manoever._manoeverRequirementsFulfilled(mockActor, mockItem)).toBe(true)
+        })
+
         it('should check single Waffeneigenschaft requirement', () => {
             manoever.system = { voraussetzungen: 'Waffeneigenschaft Zweihändig' }
-            mockItem.system.eigenschaften.zweihaendig = true
+            mockItem.system.eigenschaften = [{ key: 'Zweihändig' }]
             expect(manoever._manoeverRequirementsFulfilled(mockActor, mockItem)).toBe(true)
 
-            mockItem.system.eigenschaften.zweihaendig = false
+            mockItem.system.eigenschaften = []
             expect(manoever._manoeverRequirementsFulfilled(mockActor, mockItem)).toBe(false)
         })
 
@@ -105,14 +68,14 @@ describe('IlarisManoever', () => {
             manoever.system = {
                 voraussetzungen: 'Waffeneigenschaft Zweihändig, Vorteil Kampfgespür',
             }
-            mockItem.system.eigenschaften.zweihaendig = true
+            mockItem.system.eigenschaften = [{ key: 'Zweihändig' }]
             mockActor._hasVorteil.mockReturnValue(true)
             expect(manoever._manoeverRequirementsFulfilled(mockActor, mockItem)).toBe(true)
 
-            mockItem.system.eigenschaften.zweihaendig = false
+            mockItem.system.eigenschaften = []
             expect(manoever._manoeverRequirementsFulfilled(mockActor, mockItem)).toBe(false)
 
-            mockItem.system.eigenschaften.zweihaendig = true
+            mockItem.system.eigenschaften = [{ key: 'Zweihändig' }]
             mockActor._hasVorteil.mockReturnValue(false)
             expect(manoever._manoeverRequirementsFulfilled(mockActor, mockItem)).toBe(false)
         })
@@ -121,15 +84,15 @@ describe('IlarisManoever', () => {
             manoever.system = {
                 voraussetzungen: 'Waffeneigenschaft Zweihändig ODER Vorteil Kampfgespür',
             }
-            mockItem.system.eigenschaften.zweihaendig = true
+            mockItem.system.eigenschaften = [{ key: 'Zweihändig' }]
             mockActor._hasVorteil.mockReturnValue(false)
             expect(manoever._manoeverRequirementsFulfilled(mockActor, mockItem)).toBe(true)
 
-            mockItem.system.eigenschaften.zweihaendig = false
+            mockItem.system.eigenschaften = []
             mockActor._hasVorteil.mockReturnValue(true)
             expect(manoever._manoeverRequirementsFulfilled(mockActor, mockItem)).toBe(true)
 
-            mockItem.system.eigenschaften.zweihaendig = false
+            mockItem.system.eigenschaften = []
             mockActor._hasVorteil.mockReturnValue(false)
             expect(manoever._manoeverRequirementsFulfilled(mockActor, mockItem)).toBe(false)
         })

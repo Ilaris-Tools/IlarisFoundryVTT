@@ -21,7 +21,8 @@
     "input": {
       "label": "GS",
       "field": "NUMBER"
-    }
+    },
+    "isBaseManoever": false
   },
   "effects": [],
   "folder": null,

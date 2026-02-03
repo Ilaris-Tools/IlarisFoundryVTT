@@ -3,7 +3,7 @@ import { signed } from '../../common/wuerfel/chatutilities.js'
 import { handleModifications } from './shared_dialog_helpers.js'
 import { CombatDialog } from './combat_dialog.js'
 import * as hardcoded from '../../actors/hardcodedvorteile.js'
-import { sanitizeEnergyCost, isNumericCost } from '../../common/utilities.js'
+import { sanitizeEnergyCost, isNumericCost, formatDiceFormula } from '../../common/utilities.js'
 import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
@@ -18,59 +18,28 @@ export class UebernatuerlichDialog extends CombatDialog {
             width: 900,
             height: 'auto',
         }
-        super(dialog, options)
-        // this can be probendialog (more abstract)
-        this.text_at = ''
-        this.text_dm = ''
+        super(actor, item, dialog, options)
+
+        // Specific properties for supernatural abilities
         this.text_energy = ''
         this.is16OrHigher = false
-        this.item = item
-        this.actor = actor
-        console.log('actor', this.actor)
-        this.speaker = ChatMessage.getSpeaker({ actor: this.actor })
-        this.rollmode = game.settings.get('core', 'rollMode') // public, private....
-        this.item.system.manoever.rllm.selected = game.settings.get('core', 'rollMode') // TODO: either manoever or dialog property.
+        // Initialize manoever structure if it doesn't exist yet
+        this.item.system.manoever = this.item.system.manoever || {}
         this.item.system.manoever.blutmagie = this.item.system.manoever.blutmagie || {}
         this.item.system.manoever.verbotene_pforten =
             this.item.system.manoever.verbotene_pforten || {}
         this.item.system.manoever.set_energy_cost = this.item.system.manoever.set_energy_cost || {}
         this.calculatedWounds = 0
-        this.fumble_val = 1
+
+        console.log('actor', this.actor)
         this.aufbauendeManoeverAktivieren()
     }
 
     activateListeners(html) {
         super.activateListeners(html)
 
-        // Store modifier element reference for performance
-        this._modifierElement = html.find('#modifier-summary')
-
-        // Store a reference to prevent multiple updates
-        this._updateTimeout = null
-
-        if (this._modifierElement.length === 0) {
-            console.warn('MAGIE MODIFIER DISPLAY: Element nicht im Template gefunden')
-            return
-        }
-
-        // Add listeners for real-time modifier updates with debouncing
-        html.find('input, select').on('change input', () => {
-            // Clear previous timeout
-            if (this._updateTimeout) {
-                clearTimeout(this._updateTimeout)
-            }
-
-            // Set new timeout to debounce rapid changes
-            this._updateTimeout = setTimeout(() => {
-                this.updateModifierDisplay(html)
-            }, 300)
-        })
-
-        // Add summary click listeners
-        this.addSummaryClickListeners(html)
-
-        // Initial display update
-        setTimeout(() => this.updateModifierDisplay(html), 500)
+        // Setup modifier display with debounced listeners
+        this.setupModifierDisplay(html)
     }
 
     getSummaryClickActions(html) {
@@ -135,13 +104,15 @@ export class UebernatuerlichDialog extends CombatDialog {
         const maneuverMod = this.mod_at || 0
         const totalMod = maneuverMod + statusMods + nahkampfMods
         const finalPW = basePW + totalMod
-        const finalFormula = finalPW >= 0 ? `${diceFormula}+${finalPW}` : `${diceFormula}${finalPW}`
+        const formattedDice = formatDiceFormula(diceFormula)
+        const finalFormula =
+            finalPW >= 0 ? `${formattedDice}+${finalPW}` : `${formattedDice}${finalPW}`
 
         const itemType = this.item.type === 'zauber' ? 'Zauber' : 'Liturgie'
         const icon = this.item.type === 'zauber' ? '🔮' : '✨'
 
         let summary = '<div class="modifier-summary talent-summary clickable-summary angreifen">'
-        summary += `<h4>${icon} ${itemType}: ${finalFormula}</h4>`
+        summary += `<div class="flex_space-between_center"><h4  style="width:100%">${icon} ${itemType}: ${finalFormula}</h4><i class="custom-icon-without-hover"></i></div>`
         summary += '<div class="modifier-list">'
 
         // Base PW
@@ -208,12 +179,12 @@ export class UebernatuerlichDialog extends CombatDialog {
         const icon = '⚡'
 
         let summary = '<div class="modifier-summary energy-summary">'
-        summary += `<h4>${icon} Energiekosten: ${baseEnergy} Energie</h4>`
+        summary += `<div class="flex_space-between_center"><h4 style="width:100%">${icon} Energiekosten: ${baseEnergy} Energie</h4><i class="custom-icon-without-hover"></i></div>`
         summary += '<div class="modifier-list">'
 
         // Base energy cost
         let originalCost = sanitizeEnergyCost(this.item.system.kosten) || 0
-        if (this.energy_override) {
+        if (this.energy_override != null) {
             originalCost = this.energy_override
         }
         summary += `<div class="modifier-item base-value">Basiskosten: <span>${originalCost} Energie</span></div>`
@@ -401,7 +372,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         await ChatMessage.create({
             speaker: this.speaker,
             content: html_roll,
-            type: 5, // CONST.CHAT_MESSAGE_TYPES.ROLL
+            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
             whisper:
                 this.rollmode === 'gmroll'
                     ? ChatMessage.getWhisperRecipients('GM')
@@ -483,7 +454,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         await ChatMessage.create({
             speaker: this.speaker,
             content: html_roll,
-            type: 5, // CONST.CHAT_MESSAGE_TYPES.ROLL
+            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
             whisper:
                 this.rollmode === 'gmroll'
                     ? ChatMessage.getWhisperRecipients('GM')
@@ -530,8 +501,11 @@ export class UebernatuerlichDialog extends CombatDialog {
             multiplier: Number(verbotenePfortenValue) || 4,
             activated: verbotenePfortenValue !== undefined && verbotenePfortenValue !== '0',
         }
+
+        const energyOverride = html.find('input[name="item.system.manoever.energyOverride"]')[0]
+            ?.value
         manoever.set_energy_cost.value =
-            Number(html.find('input[name="item.system.manoever.energyOverride"]')[0]?.value) || 0
+            energyOverride !== '' && energyOverride != null ? +energyOverride : null
 
         console.log('manoever', manoever.set_energy_cost.value)
         // Get values from the HTML elements
@@ -645,7 +619,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         let mod_vt = 0
         let mod_dm = 0
         let mod_energy = sanitizeEnergyCost(this.item.system.kosten)
-        if (manoever.set_energy_cost?.value) {
+        if (manoever.set_energy_cost?.value != null) {
             mod_energy = manoever.set_energy_cost.value
             this.energy_override = manoever.set_energy_cost.value
         }
@@ -657,6 +631,8 @@ export class UebernatuerlichDialog extends CombatDialog {
         let nodmg = { name: '', value: false }
         let trefferzone = 0
         let fumble_val = 1
+        let damageType = 'NORMAL'
+        let trueDamage = false
 
         // Get the minimum available resource based on actor and item type
         const availableEnergy = this.getAvailableEnergy()
@@ -664,6 +640,8 @@ export class UebernatuerlichDialog extends CombatDialog {
         // Collect all modifications from all maneuvers
         const allModifications = []
         let manoeverAmount = 0
+        let baseManoeverCount = 0
+
         this.item.manoever.forEach((dynamicManoever) => {
             let check = undefined
             let number = undefined
@@ -685,6 +663,12 @@ export class UebernatuerlichDialog extends CombatDialog {
                 return
 
             manoeverAmount++
+
+            // Count base maneuvers for Gildenmagier II bonus
+            if (dynamicManoever.system.isBaseManoever) {
+                baseManoeverCount++
+            }
+
             // Add valid modifications to the collection
             Object.values(dynamicManoever.system.modifications).forEach((modification) => {
                 allModifications.push({
@@ -710,6 +694,8 @@ export class UebernatuerlichDialog extends CombatDialog {
             trefferzone,
             schaden,
             nodmg,
+            damageType,
+            trueDamage,
             this.energy_override,
         ] = handleModifications(allModifications, {
             mod_at,
@@ -723,6 +709,8 @@ export class UebernatuerlichDialog extends CombatDialog {
             trefferzone,
             schaden: null,
             nodmg: null,
+            damageType,
+            trueDamage,
             context: this,
         })
 
@@ -739,6 +727,15 @@ export class UebernatuerlichDialog extends CombatDialog {
             mod_at += modifikator
             text_vt = text_vt.concat(`Modifikator: ${modifikator}\n`)
             text_at = text_at.concat(`Modifikator: ${modifikator}\n`)
+        }
+
+        // Gildenmagier II Bonus: +2 wenn mindestens 2 verschiedene Basismanöver verwendet werden
+        if (baseManoeverCount >= 2 && this.actor.type === 'held' && this.item.type === 'zauber') {
+            const selectedStil = hardcoded.getSelectedStil(this.actor, 'uebernatuerlich')
+            if (selectedStil?.name.includes('Gildenmagier') && selectedStil.stufe >= 2) {
+                mod_at += 2
+                text_at = text_at.concat('Gildenmagier II: +2\n')
+            }
         }
 
         // Handle Blutmagie and Verbotene Pforten

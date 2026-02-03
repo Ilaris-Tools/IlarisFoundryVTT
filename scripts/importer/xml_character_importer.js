@@ -3,6 +3,7 @@ import {
     ConfigureGameSettingsCategories,
 } from './../settings/configure-game-settings.model.js'
 import { XmlCharacterImportDialogs } from './xml-character-import-dialogs.js'
+import { WeaponConverter } from './xml_rule_importer/converters/weapon-converter.js'
 
 /**
  * XML Character Importer for Ilaris System
@@ -11,6 +12,7 @@ import { XmlCharacterImportDialogs } from './xml-character-import-dialogs.js'
 export class XmlCharacterImporter {
     constructor() {
         this.xmlParser = new DOMParser()
+        this.weaponConverter = new WeaponConverter()
     }
 
     /**
@@ -232,25 +234,13 @@ export class XmlCharacterImporter {
             }
         })
 
-        // Extract weapons
+        // Extract weapons - store XML elements for later conversion
         const weaponNodes = xmlDoc.querySelectorAll('Objekte > Waffen > Waffe')
-        weaponNodes.forEach((weapon) => {
-            const name = weapon.getAttribute('name')
+        weaponNodes.forEach((weaponElement) => {
+            const name = weaponElement.getAttribute('name')
             if (name && name.trim()) {
-                const weaponData = {
-                    name,
-                    id: weapon.getAttribute('id'),
-                    wuerfel: parseInt(weapon.getAttribute('würfel')) || 0,
-                    wuerfelSeiten: parseInt(weapon.getAttribute('würfelSeiten')) || 6,
-                    plus: parseInt(weapon.getAttribute('plus')) || 0,
-                    eigenschaften: weapon.getAttribute('eigenschaften') || '',
-                    haerte: parseInt(weapon.getAttribute('härte')) || 0,
-                    rw: parseInt(weapon.getAttribute('rw')) || 0,
-                    kampfstil: weapon.getAttribute('kampfstil') || '',
-                    wm: parseInt(weapon.getAttribute('wm')) || 0,
-                    wmVt: parseInt(weapon.getAttribute('wmVt')) || 0,
-                }
-                characterData.weapons.push(weaponData)
+                // Store the element itself for conversion by WeaponConverter
+                characterData.weapons.push(weaponElement)
             }
         })
 
@@ -710,22 +700,14 @@ export class XmlCharacterImporter {
 
         // Process weapons (skip during sync operations to preserve existing inventory)
         if (!skipInventoryItems) {
-            for (const weapon of characterData.weapons) {
-                if (weapon.name) {
-                    // Skip empty weapons
-                    const foundWeapon = await this.findWeaponInCompendium(weapon.id)
-                    if (foundWeapon) {
-                        const weaponData = foundWeapon.toObject()
-                        if (markAsImported) {
-                            weaponData.flags = { ilaris: { xmlImported: true } }
-                        }
-                        itemsToCreate.push(weaponData)
-                    } else {
-                        console.warn(
-                            `Weapon not found in compendium: ${weapon.name} (ID: ${weapon.id})`,
-                        )
-                    }
+            for (const weaponElement of characterData.weapons) {
+                // Use WeaponConverter to convert XML element to Foundry item
+                const weaponData = this.weaponConverter.convertWaffe(weaponElement)
+
+                if (markAsImported) {
+                    weaponData.flags = { ilaris: { xmlImported: true } }
                 }
+                itemsToCreate.push(weaponData)
             }
         } else {
             console.debug('Skipping weapons during sync - preserving existing inventory')
@@ -838,63 +820,8 @@ export class XmlCharacterImporter {
     }
 
     /**
-     * Find a weapon in the compendiums by matching XML weapon ID with compendium item name
-     * @param {string} weaponId - Weapon ID from XML to match with compendium item name
-     * @returns {Promise<Item|null>} Found weapon or null
-     */
-    async findWeaponInCompendium(weaponId) {
-        if (!weaponId) {
-            return null
-        }
-
-        // Search through ALL compendium packs that have items (both system and world)
-        const compendiumsToSearch = []
-
-        // Get all compendium packs and filter for those that contain items
-        for (const pack of game.packs) {
-            try {
-                // Load the compendium index to check if it has items
-                await pack.getIndex()
-
-                // Only include packs that have items and are item-type packs
-                if (pack.index && pack.index.size > 0 && pack.documentName === 'Item') {
-                    compendiumsToSearch.push(pack)
-                }
-            } catch (error) {
-                console.warn(`Could not load compendium ${pack.metadata.id}:`, error)
-            }
-        }
-
-        for (const pack of compendiumsToSearch) {
-            try {
-                // Search for weapon items where the compendium item name matches the XML weapon ID
-                for (const indexEntry of pack.index) {
-                    // Check if this is a weapon type and if the name matches the weaponId
-                    if (
-                        (indexEntry.type === 'nahkampfwaffe' ||
-                            indexEntry.type === 'fernkampfwaffe') &&
-                        indexEntry.name === weaponId
-                    ) {
-                        const item = await pack.getDocument(indexEntry._id)
-                        if (item) {
-                            console.debug(
-                                `Found weapon with ID match: "${weaponId}" in compendium "${pack.metadata.label}" (${pack.metadata.id})`,
-                            )
-                            return item
-                        }
-                    }
-                }
-            } catch (error) {
-                console.warn(`Error searching compendium ${pack.metadata.id}:`, error)
-                continue
-            }
-        }
-
-        return null
-    }
-
-    /**
      * Find an item in the compendiums by name and type
+     * Uses the configured compendiums from world settings based on item type
      * @param {string} itemName - Name of the item to find
      * @param {string|Array} itemType - Type(s) of the item
      * @returns {Promise<Item|null>} Found item or null
@@ -902,11 +829,49 @@ export class XmlCharacterImporter {
     async findItemInCompendium(itemName, itemType) {
         const typesToSearch = Array.isArray(itemType) ? itemType : [itemType]
 
-        // Search through ALL compendium packs that have items (both system and world)
+        // Map item types to their corresponding pack settings
+        const typeToSettingMap = {
+            fertigkeit: IlarisGameSettingNames.fertigkeitenPacks,
+            talent: IlarisGameSettingNames.talentePacks,
+            zauber: IlarisGameSettingNames.talentePacks, // Supernatural talents use talentePacks
+            liturgie: IlarisGameSettingNames.talentePacks, // Liturgies also use talentePacks
+            vorteil: IlarisGameSettingNames.vorteilePacks,
+            uebernatuerliche_fertigkeit: IlarisGameSettingNames.fertigkeitenPacks,
+        }
+
+        // Collect all relevant configured compendiums for the types being searched
+        const configuredCompendiumIds = new Set()
+        for (const type of typesToSearch) {
+            const settingName = typeToSettingMap[type]
+            if (settingName) {
+                try {
+                    const packsJson = game.settings.get(
+                        ConfigureGameSettingsCategories.Ilaris,
+                        settingName,
+                    )
+                    const packs = JSON.parse(packsJson)
+                    packs.forEach((packId) => configuredCompendiumIds.add(packId))
+                } catch (error) {
+                    console.warn(`Error loading setting ${settingName}:`, error)
+                }
+            }
+        }
+
+        if (configuredCompendiumIds.size === 0) {
+            console.warn(`No compendiums configured for item types: ${typesToSearch.join(', ')}`)
+            return null
+        }
+
+        // Search through configured compendium packs only
         const compendiumsToSearch = []
 
-        // Get all compendium packs and filter for those that contain items
-        for (const pack of game.packs) {
+        for (const compendiumId of configuredCompendiumIds) {
+            const pack = game.packs.get(compendiumId)
+            if (!pack) {
+                console.warn(`Configured compendium not found: ${compendiumId}`)
+                continue
+            }
+
             try {
                 // Load the compendium index to check if it has items
                 await pack.getIndex()
@@ -916,8 +881,13 @@ export class XmlCharacterImporter {
                     compendiumsToSearch.push(pack)
                 }
             } catch (error) {
-                console.warn(`Could not load compendium ${pack.metadata.id}:`, error)
+                console.warn(`Could not load compendium ${compendiumId}:`, error)
             }
+        }
+
+        if (compendiumsToSearch.length === 0) {
+            console.warn('No valid item compendiums found in configured settings')
+            return null
         }
 
         for (const pack of compendiumsToSearch) {
@@ -959,6 +929,63 @@ export class XmlCharacterImporter {
     }
 
     /**
+     * Get configured compendium packs for display
+     * @returns {Object} Pack information organized by category
+     */
+    getConfiguredPacks() {
+        const packInfo = {
+            skills: [],
+            talents: [],
+            advantages: [],
+        }
+
+        try {
+            // Get skills/supernatural skills packs
+            const fertigkeitenPacksJson = game.settings.get(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.fertigkeitenPacks,
+            )
+            const fertigkeitenPacks = JSON.parse(fertigkeitenPacksJson)
+            fertigkeitenPacks.forEach((packId) => {
+                const pack = game.packs.get(packId)
+                if (pack) {
+                    packInfo.skills.push(pack.metadata.label)
+                }
+            })
+
+            // Get talents packs
+            const talentePacksJson = game.settings.get(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.talentePacks,
+            )
+            const talentePacks = JSON.parse(talentePacksJson)
+            talentePacks.forEach((packId) => {
+                const pack = game.packs.get(packId)
+                if (pack) {
+                    packInfo.talents.push(pack.metadata.label)
+                }
+            })
+
+            // Get advantages packs
+            const vorteilePacksJson = game.settings.get(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.vorteilePacks,
+            )
+            const vorteilePacks = JSON.parse(vorteilePacksJson)
+            vorteilePacks.forEach((packId) => {
+                const pack = game.packs.get(packId)
+                if (pack) {
+                    packInfo.advantages.push(pack.metadata.label)
+                }
+            })
+        } catch (error) {
+            console.warn('Error loading pack information:', error)
+        }
+
+        return packInfo
+    }
+
+    /**
      * Analyze what items will be found vs missing in compendiums
      * @param {Object} characterData - The parsed character data from XML
      * @returns {Promise<Object>} Analysis of what will be found vs missing
@@ -972,6 +999,7 @@ export class XmlCharacterImporter {
             weapons: { found: [], missing: [] },
             armors: { found: [], missing: [] }, // Armors are always created from XML, not looked up
             freeSkills: { total: 0 }, // Free skills are always created directly
+            configuredPacks: this.getConfiguredPacks(), // Add pack information
         }
 
         // Analyze skills
@@ -1044,13 +1072,11 @@ export class XmlCharacterImporter {
             }
         }
 
-        for (const weapon of characterData.weapons) {
-            const found = await this.findWeaponInCompendium(weapon.id)
-            if (found) {
-                analysis.weapons.found.push(weapon.name)
-            } else {
-                analysis.weapons.missing.push(weapon.name)
-            }
+        for (const weaponElement of characterData.weapons) {
+            const weaponName = weaponElement.getAttribute('name')
+            // Weapons are now always created from XML using WeaponConverter
+            // No compendium lookup needed
+            analysis.weapons.found.push(weaponName)
         }
 
         // Analyze armors - armors are always created directly from XML, not looked up in compendium

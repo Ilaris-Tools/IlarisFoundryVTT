@@ -1,4 +1,8 @@
 import { signed } from '../../common/wuerfel/chatutilities.js'
+import {
+    ConfigureGameSettingsCategories,
+    IlarisGameSettingNames,
+} from '../../settings/configure-game-settings.model.js'
 /**
  * Applies the specified operator to the current value
  * @param {number} currentValue - The current value to modify
@@ -142,12 +146,14 @@ export function processModification(
                 trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''
             }: Schadenstyp zu ${CONFIG.ILARIS.schadenstypen[modification.value]}\n`
             rollValues.text_dm = rollValues.text_dm.concat(text)
+            rollValues.damageType = CONFIG.ILARIS.schadenstypen[modification.value]
             break
         case 'ARMOR_BREAKING':
             text = `${manoeverName}${
                 trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''
             }: Ignoriert Rüstung\n`
             rollValues.text_dm = rollValues.text_dm.concat(text)
+            rollValues.trueDamage = true
             break
         case 'SPECIAL_TEXT':
             text = `${manoeverName}${
@@ -200,6 +206,145 @@ export function processModification(
     }
 
     return { rollValues, originalRessourceCost }
+}
+
+/**
+ * Applies damage to a target actor and calculates wounds based on WS*
+ * @param {Object} target - The target object containing actorId
+ * @param {number} damage - The total damage to apply
+ * @param {string} damageType - The type of damage being dealt
+ * @param {boolean} trueDamage - If true, damage ignores WS* calculation
+ * @param {Object} speaker - The speaker object for chat messages
+ */
+export async function applyDamageToTarget(
+    target,
+    damage,
+    damageType = 'PROFAN',
+    trueDamage = false,
+    speaker,
+) {
+    // If the current user doesn't have permission to update the target actor,
+    // request the GM to do it via socket
+    const targetActor = game.actors.get(target.actorId || target._id)
+    if (!targetActor) {
+        ui.notifications.error('Zielakteur wurde nicht gefunden.')
+        return
+    }
+
+    // Check if current user can update the target actor
+    if (!targetActor.canUserModify(game.user, 'update')) {
+        // User doesn't have permission - send socket request to GM
+        if (game.user.isGM) {
+            // This shouldn't happen, but just in case
+            console.error('GM user cannot update actor - this should not occur')
+            return
+        }
+
+        // Emit socket event for GM to handle
+        game.socket.emit('system.Ilaris', {
+            type: 'applyDamage',
+            data: {
+                targetActorId: targetActor.id,
+                damage: damage,
+                damageType: damageType,
+                trueDamage: trueDamage,
+                speaker: speaker,
+            },
+        })
+
+        // Notify the player that the request was sent
+        ui.notifications.info(`Schadensanfrage an Spielleiter gesendet für ${targetActor.name}...`)
+        return
+    }
+
+    // User has permission - apply damage directly
+    await _applyDamageDirectly(targetActor, damage, damageType, trueDamage, speaker)
+}
+
+/**
+ * Internal function that actually applies the damage to an actor
+ * This is called either directly if user has permission, or by GM via socket
+ * Exported so it can be called by the socket handler in hooks.js
+ */
+export async function _applyDamageDirectly(targetActor, damage, damageType, trueDamage, speaker) {
+    // Get WS and WS* of the target
+    const useLepSystem = game.settings.get(
+        ConfigureGameSettingsCategories.Ilaris,
+        IlarisGameSettingNames.lepSystem,
+    )
+    let ws = targetActor.system.abgeleitete.ws
+    let ws_stern = targetActor.system.abgeleitete.ws_stern
+
+    if (targetActor.type === 'kreatur') {
+        ws = targetActor.system.kampfwerte.ws
+        ws_stern = targetActor.system.kampfwerte.ws_stern ?? targetActor.system.kampfwerte.ws
+    }
+
+    // Calculate wounds: Damage must be STRICTLY GREATER than WS to cause wounds
+    // Formula: Math.floor((damage - 1) / ws) counts how many full WS thresholds are exceeded
+    // Examples with WS=5: damage=5 -> 0 wounds, damage=6 -> 1 wound, damage=10 -> 1 wound,
+    //                     damage=11 -> 2 wounds, damage=16 -> 3 wounds
+    // The (damage - 1) shift ensures damage must exceed WS, not just equal it
+    let woundsToAdd = trueDamage
+        ? damage > ws
+            ? Math.floor((damage - 1) / ws)
+            : 0
+        : damage > ws_stern
+        ? Math.floor((damage - 1) / ws_stern)
+        : 0
+
+    if (useLepSystem) {
+        woundsToAdd = trueDamage ? damage : damage - ws_stern
+
+        if (woundsToAdd > 0) {
+            await targetActor.update({
+                [`system.gesundheit.wunden`]:
+                    (targetActor.system.gesundheit.wunden || 0) + woundsToAdd,
+            })
+
+            // Send a message to chat
+            await ChatMessage.create({
+                content: `${targetActor.name} erleidet ${woundsToAdd} Schaden! (${
+                    damageType ? CONFIG.ILARIS.schadenstypen[damageType] : 'profan'
+                })`,
+                speaker: speaker,
+                type: CONST.CHAT_MESSAGE_STYLES.OTHER,
+            })
+        }
+    } else {
+        // Calculate wounds based on whether it's true damage
+
+        if (woundsToAdd > 0) {
+            // Get current value and update the appropriate stat based on damage type
+            const currentValue =
+                damageType === 'STUMPF'
+                    ? targetActor.system.gesundheit.erschoepfung || 0
+                    : targetActor.system.gesundheit.wunden || 0
+
+            await targetActor.update({
+                [`system.gesundheit.${damageType === 'STUMPF' ? 'erschoepfung' : 'wunden'}`]:
+                    currentValue + woundsToAdd,
+            })
+
+            // Send a message to chat
+            await ChatMessage.create({
+                content: `${targetActor.name} erleidet ${woundsToAdd} Einschränkung${
+                    woundsToAdd > 1 ? 'en' : ''
+                }! (${
+                    damageType ? CONFIG.ILARIS.schadenstypen[damageType] : ''
+                } Schaden: ${damage})`,
+                speaker: speaker,
+                type: CONST.CHAT_MESSAGE_STYLES.OTHER,
+            })
+        } else {
+            // Send a message when damage wasn't high enough
+            await ChatMessage.create({
+                content: `${targetActor.name} erleidet keine Einschränkungen - der Schaden (${damage}) war nicht hoch genug.`,
+                speaker: speaker,
+                type: CONST.CHAT_MESSAGE_STYLES.OTHER,
+            })
+        }
+    }
 }
 
 /**
@@ -278,6 +423,8 @@ export function handleModifications(allModifications, rollValues) {
         rollValues.trefferzone,
         rollValues.schaden,
         rollValues.nodmg,
+        rollValues.damageType,
+        rollValues.trueDamage,
         originalRessourceCost,
     ]
 }

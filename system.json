@@ -2,7 +2,7 @@
   "id": "Ilaris",
   "title": "Ilaris",
   "description": "Schnelle und schlanke Regeln für das beliebteste deutsche P&P Setting.",
-  "version": "12.2.8",
+  "version": "12.3.0",
   "compatibility": {
     "minimum": 12,
     "verified": 12
@@ -38,7 +38,8 @@
   "styles": [
     "css/temp.css",
     "styles/sheets/manoever.css",
-    "styles/dialogs/changelog-notification.css"
+    "styles/dialogs/changelog-notification.css",
+    "styles/chat/defense-prompt.css"
   ],
   "packFolders": [
     {
@@ -61,10 +62,18 @@
         "zauberspruche-und-rituale",
         "zaubertricks-advanced",
         "waffen",
+        "waffeneigenschaften",
         "gegenstande",
         "manover",
         "macro-tools"
       ],
+      "folders": []
+    },
+    {
+      "name": "Hilfe & Dokumentation",
+      "sorting": "a",
+      "color": "#95E1D3",
+      "packs": ["kurzuebersichten"],
       "folders": []
     }
   ],
@@ -133,6 +142,13 @@
       "system": "Ilaris"
     },
     {
+      "label": "Waffeneigenschaften",
+      "type": "Item",
+      "name": "waffeneigenschaften",
+      "path": "./comp_packs/waffeneigenschaften",
+      "system": "Ilaris"
+    },
+    {
       "label": "Gegenstände",
       "type": "Item",
       "name": "gegenstande",
@@ -157,7 +173,14 @@
       "label": "Macro-Tools",
       "type": "Macro",
       "name": "macro-tools",
-      "path": "comp_packs/macro-tools",
+      "path": "./comp_packs/macro-tools",
+      "system": "Ilaris"
+    },
+    {
+      "label": "Guides & Tutorials",
+      "type": "JournalEntry",
+      "name": "kurzuebersichten",
+      "path": "./comp_packs/kurzuebersichten",
       "system": "Ilaris"
     }
   ],

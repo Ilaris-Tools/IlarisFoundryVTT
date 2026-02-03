@@ -10,23 +10,16 @@
     "rw": 0,
     "hauptwaffe": false,
     "nebenwaffe": false,
-    "eigenschaften": {
-      "kopflastig": false,
-      "niederwerfen": false,
-      "parierwaffe": true,
-      "reittier": false,
-      "ruestungsbrechend": false,
-      "schild": true,
-      "schwer_4": false,
-      "schwer_8": false,
-      "stumpf": false,
-      "unberechenbar": false,
-      "unzerstoerbar": false,
-      "wendig": false,
-      "zerbrechlich": false,
-      "zweihaendig": false,
-      "kein_malus_nebenwaffe": false
-    },
+    "eigenschaften": [
+      {
+        "key": "Parierwaffe",
+        "parameters": []
+      },
+      {
+        "key": "Schild",
+        "parameters": []
+      }
+    ],
     "text": "",
     "aufbewahrungs_ort": "mitführend",
     "bewahrt_auf": [],

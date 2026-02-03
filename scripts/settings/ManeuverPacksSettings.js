@@ -32,11 +32,7 @@ export class ManeuverPacksSettings extends FormApplication {
         // Get all available packs that contain maneuvers
         const availablePacks = []
         for (const pack of game.packs) {
-            if (
-                pack.metadata.type === 'Item' &&
-                pack.index.size > 0 &&
-                (pack.metadata.packageType === 'world' || pack.metadata.id === 'Ilaris.manover')
-            ) {
+            if (pack.metadata.type === 'Item' && pack.index.size > 0) {
                 // Check if any item in the pack has type 'manoever'
                 if (pack.metadata.id === 'Ilaris.manover') {
                     availablePacks.push({

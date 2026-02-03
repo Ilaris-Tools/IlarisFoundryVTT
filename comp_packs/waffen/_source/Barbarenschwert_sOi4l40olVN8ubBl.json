@@ -10,23 +10,16 @@
     "rw": 1,
     "hauptwaffe": false,
     "nebenwaffe": false,
-    "eigenschaften": {
-      "kopflastig": true,
-      "niederwerfen": false,
-      "parierwaffe": false,
-      "reittier": false,
-      "ruestungsbrechend": false,
-      "schild": false,
-      "schwer_4": true,
-      "schwer_8": false,
-      "stumpf": false,
-      "unberechenbar": false,
-      "unzerstoerbar": false,
-      "wendig": false,
-      "zerbrechlich": false,
-      "zweihaendig": false,
-      "kein_malus_nebenwaffe": false
-    },
+    "eigenschaften": [
+      {
+        "key": "Kopflastig",
+        "parameters": []
+      },
+      {
+        "key": "Schwer",
+        "parameters": [4]
+      }
+    ],
     "text": "",
     "aufbewahrungs_ort": "mitführend",
     "bewahrt_auf": [],

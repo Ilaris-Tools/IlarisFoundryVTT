@@ -10,20 +10,12 @@
     "rw": 8,
     "hauptwaffe": false,
     "nebenwaffe": false,
-    "eigenschaften": {
-      "kein_reiter": false,
-      "niederwerfen": false,
-      "niederwerfen_4": false,
-      "niederwerfen_8": false,
-      "schwer_4": false,
-      "schwer_8": false,
-      "stationaer": false,
-      "stumpf": false,
-      "umklammern_212": true,
-      "umklammern_416": false,
-      "umklammern_816": false,
-      "zweihaendig": false
-    },
+    "eigenschaften": [
+      {
+        "key": "Umklammern",
+        "parameters": [-2, 12]
+      }
+    ],
     "text": "",
     "aufbewahrungs_ort": "mitführend",
     "bewahrt_auf": [],

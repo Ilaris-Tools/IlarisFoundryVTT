@@ -67,21 +67,29 @@
                     />
                 </div>
             </div>
-            <div class="flexrow">
+            <div style="margin-bottom: 10px;">
                 <label class="flex-fest-var" style="flex-basis: 100px"><b>Eigenschaften:</b></label>
-                <span>
-                    {{#each item.system.eigenschaften as |val key|}}
-                    <label>{{get_label key}}</label>
-                    <input
-                        name="system.eigenschaften.{{key}}"
-                        data-dtype="Boolean"
-                        type="checkbox"
-                        {{checked val}}
-                    />
-                    <label>| &nbsp;</label>
+                <div class="eigenschaften-list" style="display: flex; flex-wrap: wrap; gap: 5px; margin-top: 5px;">
+                    {{#each item.system.eigenschaften as |eig|}}
+                    <div class="eigenschaft-row" data-index="{{@index}}" style="display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 3px; border: 1px solid var(--color-border-light-tertiary);">
+                        <span style="font-size: 0.95em;"><strong>{{eig.key}}</strong>{{#if eig.parameters.length}}({{#each eig.parameters as |param|}}{{#unless @first}}, {{/unless}}{{param}}{{/each}}){{/if}}</span>
+                        <button type="button" class="remove-eigenschaft" data-index="{{@index}}" style="margin-left: 6px; padding: 2px 4px; font-size: 0.8em; line-height: 1;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
                     {{/each}}
-                </span>
+                </div>
+                <button type="button" class="add-eigenschaft clickable" style="margin-top: 5px;">
+                    <i class="fas fa-plus"></i> Eigenschaft hinzufügen
+                </button>
             </div>
+            {{#if needsMigration}}
+            <div class="flexrow" style="margin-top: 5px;">
+                <button type="button" class="migrate-eigenschaften" style="width: 100%;">
+                    <i class="fas fa-sync-alt"></i> Eigenschaften migrieren (alte → neue Format)
+                </button>
+            </div>
+            {{/if}}
             {{#if hasOwner}}
             <label class="flex-fest-var" style="flex-basis: 100px"><b>Eigene Mod.:</b></label>
             <div class="flexrow">
