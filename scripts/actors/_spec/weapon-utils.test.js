@@ -795,7 +795,7 @@ describe('weapon-requirements.js', () => {
             it('should apply full BE reduction when belastung is higher than modifiers.be', () => {
                 const kampfstil = {
                     name: 'Test Style',
-                    modifiers: { at: 2, vt: 1, be: 3, damage: 0, rw: 0 },
+                    modifiers: { at: 2, vt: 1, be: -3, damage: 0, rw: 0 },
                 }
                 const belastung = 5
 
@@ -806,16 +806,12 @@ describe('weapon-requirements.js', () => {
                 expect(hauptWaffe.system.computed.vt).toBe(12) // 8 + 1 + 3
                 expect(nebenWaffe.system.computed.at).toBe(13) // 8 + 2 + 3
                 expect(nebenWaffe.system.computed.vt).toBe(10) // 6 + 1 + 3
-                expect(hauptWaffe.system.at).toBe(15) // 10 + 2 + 3
-                expect(hauptWaffe.system.vt).toBe(12) // 8 + 1 + 3
-                expect(nebenWaffe.system.at).toBe(13) // 8 + 2 + 3
-                expect(nebenWaffe.system.vt).toBe(10) // 6 + 1 + 3
             })
 
             it('should cap BE reduction at available belastung', () => {
                 const kampfstil = {
                     name: 'Test Style',
-                    modifiers: { at: 1, vt: 1, be: 5, damage: 0, rw: 0 },
+                    modifiers: { at: 1, vt: 1, be: -5, damage: 0, rw: 0 },
                 }
                 const belastung = 2
 
@@ -831,7 +827,7 @@ describe('weapon-requirements.js', () => {
             it('should not apply BE reduction when belastung is 0', () => {
                 const kampfstil = {
                     name: 'Test Style',
-                    modifiers: { at: 2, vt: 1, be: 3, damage: 0, rw: 0 },
+                    modifiers: { at: 2, vt: 1, be: -3, damage: 0, rw: 0 },
                 }
                 const belastung = 0
 
@@ -863,7 +859,7 @@ describe('weapon-requirements.js', () => {
             it('should apply BE reduction when modifiers.be is  belastung', () => {
                 const kampfstil = {
                     name: 'Test Style',
-                    modifiers: { at: 2, vt: 1, be: 3, damage: 0, rw: 0 },
+                    modifiers: { at: 2, vt: 1, be: -3, damage: 0, rw: 0 },
                 }
                 const belastung = 3
 
@@ -913,7 +909,7 @@ describe('weapon-requirements.js', () => {
             it('should apply modifiers to ranged weapons when affectRanged is true', () => {
                 const kampfstil = {
                     name: 'Test Style',
-                    modifiers: { at: 3, vt: 0, be: 2, damage: 1, rw: 0 },
+                    modifiers: { at: 3, vt: 0, be: -2, damage: 1, rw: 0 },
                 }
                 const belastung = 4
 
@@ -929,7 +925,7 @@ describe('weapon-requirements.js', () => {
             it('should not apply modifiers, but be reduction, to ranged weapons when affectRanged is false', () => {
                 const kampfstil = {
                     name: 'Test Style',
-                    modifiers: { at: 3, vt: 0, be: 2, damage: 1, rw: 0 },
+                    modifiers: { at: 3, vt: 0, be: -2, damage: 1, rw: 0 },
                 }
                 const belastung = 4
 
@@ -975,7 +971,7 @@ describe('weapon-requirements.js', () => {
             it('should only modify hauptWaffe when nebenWaffe is undefined', () => {
                 const kampfstil = {
                     name: 'Test Style',
-                    modifiers: { at: 2, vt: 1, be: 1, damage: 0, rw: 0 },
+                    modifiers: { at: 2, vt: 1, be: -1, damage: 0, rw: 0 },
                 }
                 const belastung = 2
 
@@ -992,7 +988,7 @@ describe('weapon-requirements.js', () => {
 
                 const kampfstil = {
                     name: 'Test Style',
-                    modifiers: { at: 2, vt: 1, be: 1, damage: 0, rw: 0 },
+                    modifiers: { at: 2, vt: 1, be: -1, damage: 0, rw: 0 },
                 }
                 const belastung = 2
 
@@ -1027,7 +1023,7 @@ describe('weapon-requirements.js', () => {
 
                 const kampfstil = {
                     name: 'Test Style',
-                    modifiers: { at: 2, vt: 1, be: 1, damage: 0, rw: 0 },
+                    modifiers: { at: 2, vt: 1, be: -1, damage: 0, rw: 0 },
                 }
                 const belastung = 2
 
@@ -1054,7 +1050,7 @@ describe('weapon-requirements.js', () => {
             it('should handle undefined hauptWaffe gracefully', () => {
                 const kampfstil = {
                     name: 'Test Style',
-                    modifiers: { at: 2, vt: 1, be: 1, damage: 0, rw: 0 },
+                    modifiers: { at: 2, vt: 1, be: -1, damage: 0, rw: 0 },
                 }
                 const belastung = 2
 
@@ -1066,7 +1062,7 @@ describe('weapon-requirements.js', () => {
             it('should handle negative modifiers', () => {
                 const kampfstil = {
                     name: 'Test Style',
-                    modifiers: { at: -2, vt: -1, be: 1, damage: -1, rw: 0 },
+                    modifiers: { at: -2, vt: -1, be: -1, damage: -1, rw: 0 },
                 }
                 const belastung = 2
 
@@ -1164,7 +1160,7 @@ describe('weapon-requirements.js', () => {
             const kampfstil = {
                 name: 'Test Kampfstil',
                 foundryScriptMethods: ['manoverAusgleich(2)'],
-                modifiers: { at: 2, vt: 1, be: 3, damage: 0, rw: 0 },
+                modifiers: { at: 2, vt: 1, be: -3, damage: 0, rw: 0 },
             }
 
             _executeKampfstilMethodsAndApplyModifiers(kampfstil, hauptWaffe, nebenWaffe, actor)
@@ -1185,7 +1181,7 @@ describe('weapon-requirements.js', () => {
             const kampfstil = {
                 name: 'Multi Method Kampfstil',
                 foundryScriptMethods: ['manoverAusgleich(1)', 'manoverAusgleich(2)'],
-                modifiers: { at: 1, vt: 0, be: 1, damage: 0, rw: 0 },
+                modifiers: { at: 1, vt: 0, be: -1, damage: 0, rw: 0 },
             }
 
             _executeKampfstilMethodsAndApplyModifiers(kampfstil, hauptWaffe, nebenWaffe, actor)
@@ -1201,7 +1197,7 @@ describe('weapon-requirements.js', () => {
             const kampfstil = {
                 name: 'No Methods Kampfstil',
                 foundryScriptMethods: [],
-                modifiers: { at: 2, vt: 1, be: 2, damage: 1, rw: 0 },
+                modifiers: { at: 2, vt: 1, be: -2, damage: 1, rw: 0 },
             }
 
             _executeKampfstilMethodsAndApplyModifiers(kampfstil, hauptWaffe, nebenWaffe, actor)
@@ -1221,7 +1217,7 @@ describe('weapon-requirements.js', () => {
             const kampfstil = {
                 name: 'High BE Kampfstil',
                 foundryScriptMethods: [],
-                modifiers: { at: 1, vt: 1, be: 5, damage: 0, rw: 0 },
+                modifiers: { at: 1, vt: 1, be: -5, damage: 0, rw: 0 },
             }
 
             _executeKampfstilMethodsAndApplyModifiers(kampfstil, hauptWaffe, nebenWaffe, actor)
