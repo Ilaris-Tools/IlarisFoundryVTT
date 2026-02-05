@@ -12,6 +12,10 @@
 
 #### Breaking Change
 
+**--------------EXTREM WICHTIG--------------**
+**BITTE BEACHTEN**, wenn du das erste mal auf dieses Version migrierst, gehe nochmal ins Setup zurück und deinstalliere und installiere das System nochmals, bevor du weiter machst.
+**--------------EXTREM WICHTIG--------------**
+
 Bitte wie immer die Charaktere neu importieren, bei Charakteren aus neueren Sephrasto-Versionen 5.1.0 über den Import-Knopf, welcher jetzt beim **ersten** Import auch Custom-Waffen richtig importiert. Für die älteren Charaktere steht immer noch der Json-Import und der Aktualisierungs-Knopf im Charakter-Sheet zur Verfügung.
 
 ##### Waffeneigenschaften-System komplett überarbeitet
