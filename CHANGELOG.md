@@ -2,9 +2,19 @@
 
 ## v12
 
+### v12.3.1
+
+-   Kampfstile wurden nicht mehr mit eingerechnet
+-   nicht gefundener Bug bei Reiterkampf bzw Kampfstilen, die Belastung reduzieren
+-   Zauber/Liturigen als Teil der Talentpacks
+
 ### v12.3
 
 #### Breaking Change
+
+**--------------EXTREM WICHTIG--------------**
+**BITTE BEACHTEN**, wenn du das erste mal auf dieses Version migrierst, gehe nochmal ins Setup zurück und deinstalliere und installiere das System nochmals, bevor du weiter machst. Wir entschuldigen uns für die Unannehmlichkeit es ist jedoch wegen Änderungen an den Kompedium packs im System erforderlich.
+**--------------EXTREM WICHTIG--------------**
 
 Bitte wie immer die Charaktere neu importieren, bei Charakteren aus neueren Sephrasto-Versionen 5.1.0 über den Import-Knopf, welcher jetzt beim **ersten** Import auch Custom-Waffen richtig importiert. Für die älteren Charaktere steht immer noch der Json-Import und der Aktualisierungs-Knopf im Charakter-Sheet zur Verfügung.
 

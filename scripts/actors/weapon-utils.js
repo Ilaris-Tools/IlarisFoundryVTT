@@ -94,7 +94,8 @@ export function applyModifierToWeapons(
     let bonusFromBeReduction = 0
     const modifiers = selected_kampfstil.modifiers
     if (belastung > 0 && modifiers.be !== 0) {
-        bonusFromBeReduction = Math.min(modifiers.be, belastung)
+        // * -1 because reducing BE gives positive bonus
+        bonusFromBeReduction = Math.min(modifiers.be * -1, belastung)
     }
     if (modifiers.damage !== 0) {
         schaden += modifiers.damage
@@ -211,20 +212,6 @@ export function applyModifierToWeapons(
             nebenWaffe.system.computed.modifiers.vt.push(
                 `${selected_kampfstil.name}: ${bonusFromBeReduction} BE Bonus`,
             )
-        }
-
-        if (hauptWaffe.type == 'nahkampfwaffe') {
-            hauptWaffe.system.at = hauptWaffe.system.computed.at
-            hauptWaffe.system.vt = hauptWaffe.system.computed.vt
-        } else if (hauptWaffe.type == 'fernkampfwaffe' && hauptWaffe.system.fk !== '-') {
-            hauptWaffe.system.fk = hauptWaffe.system.computed.fk
-        }
-
-        if (nebenWaffe.type == 'nahkampfwaffe') {
-            nebenWaffe.system.at = nebenWaffe.system.computed.at
-            nebenWaffe.system.vt = nebenWaffe.system.computed.vt
-        } else if (nebenWaffe.type == 'fernkampfwaffe' && nebenWaffe.system.fk !== '-') {
-            nebenWaffe.system.fk = nebenWaffe.system.computed.fk
         }
     }
 }
@@ -459,7 +446,30 @@ export function _executeKampfstilMethodsAndApplyModifiers(selected_kampfstil, HW
         applyModifierToWeapons(HW, NW, actor.system.abgeleitete?.be || 0, selected_kampfstil)
     }
     if (actor.system.abgeleitete?.be && actor.system.abgeleitete.be > 0) {
-        actor.system.abgeleitete.be -= selected_kampfstil.modifiers.be
+        actor.system.abgeleitete.be += selected_kampfstil.modifiers.be
+    }
+
+    HW.system.at = HW.system.computed.at
+    HW.system.vt = HW.system.computed.vt
+    HW.system.rw = HW.system.computed.rw
+    if (HW.type === 'fernkampfwaffe' && HW.system.fk !== '-') {
+        HW.system.fk = HW.system.computed.fk
+    }
+    HW.system.schaden = `${HW.system.tp}`
+    HW.system.schaden += ` ${HW.system.computed.schadenBonus < 0 ? '-' : '+'} ${Math.abs(
+        HW.system.computed.schadenBonus,
+    )}`
+    if (NW && HW.id != NW.id) {
+        NW.system.at = NW.system.computed.at
+        NW.system.vt = NW.system.computed.vt
+        NW.system.rw = NW.system.computed.rw
+        if (NW.type === 'fernkampfwaffe' && NW.system.fk !== '-') {
+            NW.system.fk = NW.system.computed.fk
+        }
+        NW.system.schaden = `${NW.system.tp}`
+        NW.system.schaden += ` ${NW.system.computed.schadenBonus < 0 ? '-' : '+'} ${Math.abs(
+            NW.system.computed.schadenBonus,
+        )}`
     }
     return methodResults
 }

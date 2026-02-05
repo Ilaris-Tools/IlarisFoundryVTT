@@ -167,7 +167,8 @@ export const registerIlarisGameSettings = () => {
             scope: 'world',
             config: false,
             type: String,
-            default: '["Ilaris.fertigkeiten-und-talente"]',
+            default:
+                '["Ilaris.fertigkeiten-und-talente","Ilaris.fertigkeiten-und-talente-advanced","Ilaris.ubernaturliche-fertigkeiten"]',
             requiresReload: true,
             onChange: (value) => {
                 Hooks.callAll('ilarisFertigkeitenPacksChanged', JSON.parse(value))
@@ -195,7 +196,8 @@ export const registerIlarisGameSettings = () => {
             scope: 'world',
             config: false,
             type: String,
-            default: '["Ilaris.fertigkeiten-und-talente"]',
+            default:
+                '["Ilaris.fertigkeiten-und-talente","Ilaris.fertigkeiten-und-talente-advanced","Ilaris.liturgien-und-mirakel","Ilaris.zauberspruche-und-rituale","Ilaris.zaubertricks-advanced"]',
             requiresReload: true,
             onChange: (value) => {
                 Hooks.callAll('ilarisTalentePacksChanged', JSON.parse(value))

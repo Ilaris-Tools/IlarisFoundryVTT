@@ -68,8 +68,15 @@ export class TalentePacksSettings extends FormApplication {
             await game.settings.set(
                 ConfigureGameSettingsCategories.Ilaris,
                 IlarisGameSettingNames.talentePacks,
-                JSON.stringify(['Ilaris.fertigkeiten-und-talente']),
+                JSON.stringify([
+                    'Ilaris.fertigkeiten-und-talente',
+                    'Ilaris.fertigkeiten-und-talente-advanced',
+                    'Ilaris.liturgien-und-mirakel',
+                    'Ilaris.zauberspruche-und-rituale',
+                    'Ilaris.zaubertricks-advanced',
+                ]),
             )
+
             this.render(true)
         })
     }

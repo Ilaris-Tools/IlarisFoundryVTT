@@ -703,7 +703,17 @@ export class XmlCharacterImporter {
             for (const weaponElement of characterData.weapons) {
                 // Use WeaponConverter to convert XML element to Foundry item
                 const weaponData = this.weaponConverter.convertWaffe(weaponElement)
+                const weaponBaseName = weaponElement.getAttribute('id')
 
+                const compendiumWeapon = await this.findItemInCompendium(weaponBaseName, [
+                    'nahkampfwaffe',
+                    'fernkampfwaffe',
+                ])
+
+                if (compendiumWeapon) {
+                    weaponData.system.fertigkeit = compendiumWeapon.system.fertigkeit
+                    weaponData.system.talent = compendiumWeapon.system.talent
+                }
                 if (markAsImported) {
                     weaponData.flags = { ilaris: { xmlImported: true } }
                 }
@@ -837,6 +847,8 @@ export class XmlCharacterImporter {
             liturgie: IlarisGameSettingNames.talentePacks, // Liturgies also use talentePacks
             vorteil: IlarisGameSettingNames.vorteilePacks,
             uebernatuerliche_fertigkeit: IlarisGameSettingNames.fertigkeitenPacks,
+            nahkampfwaffe: IlarisGameSettingNames.waffenPacks,
+            fernkampfwaffe: IlarisGameSettingNames.waffenPacks,
         }
 
         // Collect all relevant configured compendiums for the types being searched

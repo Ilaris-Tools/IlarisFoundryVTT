@@ -28,7 +28,10 @@ export class FertigkeitenPacksSettings extends FormApplication {
         for (const pack of game.packs) {
             if (pack.metadata.type === 'Item' && pack.index.size > 0) {
                 // Check if any item in the pack has type 'fertigkeit'
-                const hasFertigkeit = pack.index.contents.some((item) => item.type === 'fertigkeit')
+                const hasFertigkeit = pack.index.contents.some(
+                    (item) =>
+                        item.type === 'fertigkeit' || item.type === 'uebernatuerliche_fertigkeit',
+                )
                 if (hasFertigkeit) {
                     availablePacks.push({
                         id: pack.collection,
@@ -63,7 +66,11 @@ export class FertigkeitenPacksSettings extends FormApplication {
             await game.settings.set(
                 ConfigureGameSettingsCategories.Ilaris,
                 IlarisGameSettingNames.fertigkeitenPacks,
-                JSON.stringify(['Ilaris.fertigkeiten-und-talente']),
+                JSON.stringify([
+                    'Ilaris.fertigkeiten-und-talente',
+                    'Ilaris.fertigkeiten-und-talente-advanced',
+                    'Ilaris.ubernaturliche-fertigkeiten',
+                ]),
             )
             this.render(true)
         })
