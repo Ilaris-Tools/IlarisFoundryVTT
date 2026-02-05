@@ -2,6 +2,12 @@
 
 ## v12
 
+### v12.3.1
+
+-   Kampfstile wurden nicht mehr mit eingerechnet
+-   nicht gefundener Bug bei Reiterkampf bzw Kampfstilen, die Belastung reduzieren
+-   Zauber/Liturigen als Teil der Talentpacks
+
 ### v12.3
 
 #### Breaking Change
