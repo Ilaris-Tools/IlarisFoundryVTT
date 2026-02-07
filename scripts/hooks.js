@@ -356,76 +356,56 @@ Hooks.once('init', () => {
     registerIlarisGameSettings()
 })
 
-Hooks.on('getSceneControlButtons', (controls) => {
-    // Add character import button to the notes/journal control
-    const notesControl = controls.find((c) => c.name === 'notes')
-    if (notesControl && game.user.can('ACTOR_CREATE') && game.user.can('FILES_UPLOAD')) {
-        notesControl.tools.push({
-            name: 'import-xml-character',
-            title: 'XML Character Import',
-            icon: 'fas fa-file-import',
-            button: true,
-            onClick: () => XmlCharacterImporter.showImportDialog(),
-        })
-    }
-})
-
-Hooks.on('renderActorDirectory', (app, html) => {
+Hooks.on('renderActorDirectory', (app, htmlDOM) => {
     // Add XML import button to the actors directory header (only if user can create actors and upload files)
     if (game.user.can('ACTOR_CREATE') && game.user.can('FILES_UPLOAD')) {
-        const header = html.find('.directory-header')
-        if (header.length > 0) {
-            const importButton = $(`
-                <button class="import-xml-character" title="Import Character from XML">
-                    <i class="fas fa-file-import"></i> Import Charakter XML
-                </button>
-            `)
+        const header = htmlDOM.querySelector('.directory-header')
+        const headerActions = header?.querySelector('.header-actions')
+        if (headerActions) {
+            const importButton = document.createElement('button')
+            importButton.className = 'import-xml-character'
+            importButton.title = 'Import Character from XML'
+            importButton.innerHTML = `<i class="fas fa-file-import"></i> Import Charakter XML`
 
-            importButton.click(() => XmlCharacterImporter.showImportDialog())
-            header.append(importButton)
+            importButton.addEventListener('click', () => XmlCharacterImporter.showImportDialog())
+            headerActions.appendChild(importButton)
         }
-    }
 
-    // Add sync buttons to each actor entry (only if user owns the actor, can create actors, and can upload files)
-    html.find('.directory-item.actor').each((i, element) => {
-        const $element = $(element)
-        const actorId = $element.data('document-id')
-        const actor = game.actors.get(actorId)
+        // Add sync buttons to each actor entry (only if user owns the actor, can create actors, and can upload files)
+        htmlDOM.querySelectorAll('.directory-item.actor').forEach((element, i) => {
+            const $element = $(element)
+            const actorId = $element.data('entry-id')
+            const actor = game.actors.get(actorId)
 
-        if (
-            actor &&
-            actor.type === 'held' &&
-            actor.isOwner &&
-            game.user.can('ACTOR_CREATE') &&
-            game.user.can('FILES_UPLOAD')
-        ) {
-            // Only add sync button to character actors that the user owns and has create/upload permissions
-            const syncButton = $(`
-                <div class="sync-xml-character onhover" title="Sync Character with XML" data-actor-id="${actorId}">
-                    <i class="fas fa-sync-alt onhover"></i>
-                </div>
-            `)
+            if (actor && actor.type === 'held' && actor.isOwner) {
+                // Only add sync button to character actors that the user owns and has create/upload permissions
+                const syncButton = document.createElement('div')
+                syncButton.className = 'sync-xml-character onhover'
+                syncButton.title = 'Sync Character with XML'
+                syncButton.dataset.actorId = actorId
+                syncButton.innerHTML = `<i class="fas fa-sync-alt onhover"></i>`
 
-            syncButton.click(async (event) => {
-                event.stopPropagation() // Prevent opening the actor sheet
-                const targetActor = game.actors.get(actorId)
-                if (targetActor) {
-                    await XmlCharacterImporter.showSyncDialog(targetActor)
+                syncButton.addEventListener('click', async (event) => {
+                    event.stopPropagation() // Prevent opening the actor sheet
+                    const targetActor = game.actors.get(actorId)
+                    if (targetActor) {
+                        await XmlCharacterImporter.showSyncDialog(targetActor)
+                    }
+                })
+
+                // Insert the sync button before the existing controls
+                const controls = $element.find('.directory-item-controls')
+                if (controls.length > 0) {
+                    controls.prepend(syncButton)
+                } else {
+                    // If no controls exist, create them
+                    const newControls = $('<div class="directory-item-controls"></div>')
+                    newControls.append(syncButton)
+                    $element.append(newControls)
                 }
-            })
-
-            // Insert the sync button before the existing controls
-            const controls = $element.find('.directory-item-controls')
-            if (controls.length > 0) {
-                syncButton.prependTo(controls)
-            } else {
-                // If no controls exist, create them
-                const newControls = $('<div class="directory-item-controls"></div>')
-                newControls.append(syncButton)
-                $element.append(newControls)
             }
-        }
-    })
+        })
+    }
 })
 
 // Force apply tint colors to status effect picker icons using direct CSS styling
@@ -487,20 +467,6 @@ function getFilterForColor(hexColor) {
     }
 }
 
-Hooks.on('getSceneControlButtons', (controls) => {
-    // Add character import button to the notes/journal control
-    const notesControl = controls.find((c) => c.name === 'notes')
-    if (notesControl && game.user.can('ACTOR_CREATE') && game.user.can('FILES_UPLOAD')) {
-        notesControl.tools.push({
-            name: 'import-xml-character',
-            title: 'XML Character Import',
-            icon: 'fas fa-file-import',
-            button: true,
-            onClick: () => XmlCharacterImporter.showImportDialog(),
-        })
-    }
-})
-
 // Extend Scene Config with environment settings in Basic tab
 Hooks.on('renderSceneConfig', async (app, html, data) => {
     // Check if already injected (to avoid duplicates when dialog is re-opened)
@@ -536,11 +502,12 @@ Hooks.on('renderSceneConfig', async (app, html, data) => {
 })
 
 // Add XML rule import button to the Compendium Directory
-Hooks.on('renderCompendiumDirectory', (app, html) => {
+Hooks.on('renderCompendiumDirectory', (app, htmlDOM) => {
     // Add XML import button to the compendium directory header (only if GM)
     if (game.user.isGM) {
-        const header = html[0].querySelector('.directory-header')
-        if (header) {
+        const header = htmlDOM.querySelector('.directory-header')
+        const headerActions = header?.querySelector('.header-actions')
+        if (headerActions) {
             // Create import button
             const importButton = document.createElement('button')
             importButton.className = 'import-xml-rules rule-button'
@@ -555,8 +522,8 @@ Hooks.on('renderCompendiumDirectory', (app, html) => {
             updateButton.innerHTML = '<i class="fas fa-sync-alt"></i> Update Regeln XML'
             updateButton.addEventListener('click', () => XMLRuleImporter.showRuleUpdateDialog())
 
-            header.appendChild(importButton)
-            header.appendChild(updateButton)
+            headerActions.appendChild(importButton)
+            headerActions.appendChild(updateButton)
         }
     }
 })
