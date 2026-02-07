@@ -53,6 +53,14 @@ Checklist für ein größeres Versionsupdate:
 -   Sind Anpassungen der Dokumentation nötig?
 -   Ist das Update eine Erwähnung im Forum wert?
 
+Als Merge Strategie nach main steht nur squash and rebase zur Verfügung, dadruch gibt es auf main eine cleane History. Nach erfolgreichem Release ist folgendes zu tun, damit develop und main nicht auseinander laufen:
+
+```
+git checkout develop
+git reset --hard main
+git push origin develop --force-with-lease
+```
+
 ### Automatisierte Foundry VTT Package-Veröffentlichung
 
 Der Build-Workflow (`build-packs.yml`) veröffentlicht das Package nach erfolgreichem GitHub-Release automatisch auch auf der offiziellen Foundry VTT Website über die Package Release API.
