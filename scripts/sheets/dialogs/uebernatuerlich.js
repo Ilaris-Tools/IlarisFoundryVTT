@@ -377,8 +377,8 @@ export class UebernatuerlichDialog extends CombatDialog {
                 this.rollmode === 'gmroll'
                     ? ChatMessage.getWhisperRecipients('GM')
                     : this.rollmode === 'selfroll'
-                    ? [game.user.id]
-                    : undefined,
+                      ? [game.user.id]
+                      : undefined,
             blind: this.rollmode === 'blindroll',
         })
     }
@@ -459,8 +459,8 @@ export class UebernatuerlichDialog extends CombatDialog {
                 this.rollmode === 'gmroll'
                     ? ChatMessage.getWhisperRecipients('GM')
                     : this.rollmode === 'selfroll'
-                    ? [game.user.id]
-                    : undefined,
+                      ? [game.user.id]
+                      : undefined,
             blind: this.rollmode === 'blindroll',
         })
     }

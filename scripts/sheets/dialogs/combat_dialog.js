@@ -610,14 +610,14 @@ export class CombatDialog extends Dialog {
                         <button class="defend-button" data-actor-id="${
                             targetActor.id
                         }" data-weapon-id="${weapon.id}" data-distance="${
-                        target.distance
-                    }" data-attacker-id="${
-                        this.actor.id
-                    }" data-attack-type="${attackType}" data-roll-result='${encodeURIComponent(
-                        JSON.stringify(rollResult, (key, value) =>
-                            typeof value === 'function' ? undefined : value,
-                        ),
-                    )}'>
+                            target.distance
+                        }" data-attacker-id="${
+                            this.actor.id
+                        }" data-attack-type="${attackType}" data-roll-result='${encodeURIComponent(
+                            JSON.stringify(rollResult, (key, value) =>
+                                typeof value === 'function' ? undefined : value,
+                            ),
+                        )}'>
                             <i class="fas fa-shield-alt"></i>
                             Verteidigen mit ${weapon.name}
                         </button>`
@@ -629,14 +629,14 @@ export class CombatDialog extends Dialog {
                         <button class="defend-button defend-akrobatik" data-actor-id="${
                             targetActor.id
                         }" data-weapon-id="akrobatik" data-distance="${
-                        target.distance
-                    }" data-attacker-id="${
-                        this.actor.id
-                    }" data-attack-type="${attackType}" data-roll-result='${encodeURIComponent(
-                        JSON.stringify(rollResult, (key, value) =>
-                            typeof value === 'function' ? undefined : value,
-                        ),
-                    )}'>
+                            target.distance
+                        }" data-attacker-id="${
+                            this.actor.id
+                        }" data-attack-type="${attackType}" data-roll-result='${encodeURIComponent(
+                            JSON.stringify(rollResult, (key, value) =>
+                                typeof value === 'function' ? undefined : value,
+                            ),
+                        )}'>
                             <i class="fas fa-running"></i>
                             Verteidigen mit Akrobatik
                         </button>`

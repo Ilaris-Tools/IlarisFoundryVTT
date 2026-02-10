@@ -368,14 +368,14 @@ function registerHandlebarsHelpers() {
                   type: highlightFumbleCrits ? 'h2' : 'h3',
               }
             : isFumble
-            ? {
-                  style: highlightFumbleCrits
-                      ? 'color:#aa0200; font-size: larger;'
-                      : 'color:#aa0200;',
-                  text: 'Patzer',
-                  type: highlightFumbleCrits ? 'h2' : 'h3',
-              }
-            : {}
+              ? {
+                    style: highlightFumbleCrits
+                        ? 'color:#aa0200; font-size: larger;'
+                        : 'color:#aa0200;',
+                    text: 'Patzer',
+                    type: highlightFumbleCrits ? 'h2' : 'h3',
+                }
+              : {}
 
         if (isCrit || isFumble)
             textResult = `<${config.type}><strong style="${config.style}">${config.text}</strong></${config.type}>`

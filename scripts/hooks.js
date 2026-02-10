@@ -6,7 +6,6 @@ import { initializeHandlebars } from './common/handlebars.js'
 import { preloadAllEigenschaften } from './items/utils/eigenschaft-cache.js'
 import { preloadAbgeleiteteWerteDefinitions } from './actors/actor.js'
 import { runMigrationIfNeeded } from './migrations/migrate-waffen-eigenschaften.js'
-// import { IlarisActorSheet } from "./sheets/actor.js";
 import { HeldenSheet } from './sheets/helden.js'
 import { KreaturSheet } from './sheets/kreatur.js'
 import { RuestungSheet } from './sheets/items/ruestung.js'
@@ -14,7 +13,6 @@ import { UebernatuerlichFertigkeitSheet } from './sheets/items/uebernatuerlich_f
 import { UebernatuerlichTalentSheet } from './sheets/items/uebernatuerlich_talent.js'
 import { FertigkeitSheet } from './sheets/items/fertigkeit.js'
 import { TalentSheet } from './sheets/items/talent.js'
-// import { SephrastoImporter } from "./common/sephrasto_importer.js";
 import { NahkampfwaffeSheet } from './sheets/items/nahkampfwaffe.js'
 import { FernkampfwaffeSheet } from './sheets/items/fernkampfwaffe.js'
 import { GegenstandSheet } from './sheets/items/gegenstand.js'
@@ -63,7 +61,7 @@ Hooks.once('init', () => {
     CONFIG.ActiveEffect.legacyTransferral = false
     CONFIG.ActiveEffect.documentClass = IlarisActiveEffect
 
-    Actors.unregisterSheet('core', ActorSheet)
+    Actors.unregisterSheet('core', foundry.applications.sheets.ActorSheetV2)
     Actors.registerSheet('Ilaris', HeldenSheet, { types: ['held'], makeDefault: true })
     Actors.registerSheet('Ilaris', KreaturSheet, { types: ['kreatur'], makeDefault: true })
 

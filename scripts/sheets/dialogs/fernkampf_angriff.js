@@ -69,7 +69,9 @@ export class FernkampfAngriffDialog extends CombatDialog {
      * @returns {number} The FK value to use for the attack
      */
     _getFKValue() {
-        return this.item.system.fk ?? (this.actor.type === 'kreatur' ? this.item.system.at ?? 0 : 0)
+        return (
+            this.item.system.fk ?? (this.actor.type === 'kreatur' ? (this.item.system.at ?? 0) : 0)
+        )
     }
 
     /**
