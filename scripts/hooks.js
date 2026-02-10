@@ -43,6 +43,9 @@ import './hooks/changelog-notification.js'
 import './hooks/dot-effects.js'
 import { registerDefenseButtonHook } from './sheets/dialogs/defense_button_hook.js'
 
+const Actors = foundry.documents.collections.Actors
+const Items = foundry.documents.collections.Items
+
 // Status effect tint colors
 const STATUS_EFFECT_COLORS = {
     YELLOW: '#FFFF00', // Light penalty/warning
@@ -67,7 +70,7 @@ Hooks.once('init', () => {
 
     // ITEMS
     CONFIG.Item.documentClass = IlarisItemProxy
-    Items.unregisterSheet('core', ItemSheet)
+    Items.unregisterSheet('core', foundry.applications.sheets.ItemSheetV2)
     Items.registerSheet('Ilaris', RuestungSheet, { types: ['ruestung'], makeDefault: true })
     Items.registerSheet('Ilaris', NahkampfwaffeSheet, {
         types: ['nahkampfwaffe'],
@@ -527,10 +530,10 @@ Hooks.on('renderCompendiumDirectory', (app, htmlDOM) => {
 })
 
 // Combined hook for chat message rendering
-Hooks.on('renderChatMessage', (message, html, data) => {
+Hooks.on('renderChatMessageHTML', (message, htmlDOM, data) => {
     // Format dice formulas in chat messages
-    const diceFormulaElements = html.find('.dice-formula')
-    diceFormulaElements.each((index, element) => {
+    const diceFormulaElements = htmlDOM.querySelectorAll('.dice-formula')
+    diceFormulaElements.forEach((element) => {
         const $element = $(element)
         const originalFormula = $element.text().trim()
 
@@ -550,7 +553,7 @@ Hooks.on('renderChatMessage', (message, html, data) => {
     const isDefensePrompt = message.flags?.Ilaris?.defensePrompt
     if (isDefensePrompt) {
         // Skip if defense has already been handled
-        if (html.hasClass('defense-handled')) {
+        if (htmlDOM.hasClass('defense-handled')) {
             return
         }
 
@@ -561,17 +564,16 @@ Hooks.on('renderChatMessage', (message, html, data) => {
 
         // If the user is not the target, hide the content
         if (!isTarget && !game.user.isGM) {
-            const contentDiv = html.find('.message-content')
-            if (contentDiv.length > 0) {
-                contentDiv.html(
-                    '<p style="font-style: italic; opacity: 0.6;">Deine Verteidigungsaufforderung an einen anderen Spieler</p>',
-                )
+            const contentDiv = htmlDOM.querySelector('.message-content')
+            if (contentDiv) {
+                contentDiv.innerHTML =
+                    '<p style="font-style: italic; opacity: 0.6;">Deine Verteidigungsaufforderung an einen anderen Spieler</p>'
             }
         }
 
         if (isTarget || game.user.isGM) {
             // Highlight the message for the target player
-            html.addClass('ilaris-defense-prompt-highlight')
+            htmlDOM.classList.add('ilaris-defense-prompt-highlight')
         }
     }
 })
@@ -820,9 +822,9 @@ function applyHexMaskToToken(token) {
     token._ilarisHexBorder = hexBorder
 }
 // Add Automatisierung heading in settings, pretty scuffed solution but i did not manage to add a separate category to the settings without adding a new module
-Hooks.on('renderSettingsConfig', (app, html) => {
+Hooks.on('renderSettingsConfig', (app, htmlDOM) => {
     // Find the first Automatisierung setting
-    const automationSetting = html
+    const automationSetting = htmlDOM
         .find('[name="Ilaris.useSceneEnvironment"]')
         .closest('.form-group')
 
@@ -834,7 +836,7 @@ Hooks.on('renderSettingsConfig', (app, html) => {
     }
 
     // Find the first Kompendien setting (fertigkeitenPacksMenu)
-    const kompendienSetting = html
+    const kompendienSetting = htmlDOM
         .find('[data-key="Ilaris.fertigkeitenPacksMenu"]')
         .closest('.form-group')
 
@@ -846,7 +848,7 @@ Hooks.on('renderSettingsConfig', (app, html) => {
     }
 
     // Find the first Kompendien setting (fertigkeitenPacksMenu)
-    const normalSetting = html
+    const normalSetting = htmlDOM
         .find('[data-setting-id="Ilaris.weaponSpaceRequirement"]')
         .closest('.form-group')
 
@@ -858,7 +860,7 @@ Hooks.on('renderSettingsConfig', (app, html) => {
     }
 
     // Replace the default ranged dodge talent text input with a dropdown
-    const dodgeTalentInput = html.find('[name="Ilaris.defaultRangedDodgeTalent"]')
+    const dodgeTalentInput = htmlDOM.find('[name="Ilaris.defaultRangedDodgeTalent"]')
     if (dodgeTalentInput.length > 0) {
         const currentValue = dodgeTalentInput.val()
 

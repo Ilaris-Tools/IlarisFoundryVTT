@@ -1,5 +1,6 @@
 import { formatDiceFormula } from './utilities.js'
 import * as settings from './../settings/index.js'
+const loadTemplates = foundry.applications.handlebars.loadTemplates
 
 export const initializeHandlebars = () => {
     registerHandlebarsHelpers()

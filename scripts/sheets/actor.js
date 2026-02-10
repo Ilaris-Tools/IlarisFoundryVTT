@@ -3,6 +3,7 @@ import { ILARIS } from '../config.js'
 
 const { HandlebarsApplicationMixin } = foundry.applications.api
 const { ActorSheetV2 } = foundry.applications.sheets
+const TextEditor = foundry.applications.ux.TextEditor.implementation
 
 export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     /** @override */
