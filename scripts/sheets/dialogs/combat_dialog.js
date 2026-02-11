@@ -107,6 +107,7 @@ export class CombatDialog extends Dialog {
 
         // damit wird das template gefüttert
         return {
+            config: CONFIG.ILARIS,
             distance_choice: CONFIG.ILARIS.distance_choice,
             rollModes: CONFIG.Dice.rollModes,
             trefferzonen: CONFIG.ILARIS.trefferzonen,

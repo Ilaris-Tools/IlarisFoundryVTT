@@ -39,6 +39,11 @@ export class IlarisItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
 
         context.hasOwner = hasActor && isOwner && notInPack
 
+        // Make CONFIG.ILARIS available in all templates as 'config' for consistency with actor sheets
+        context.config = CONFIG.ILARIS
+        // Also expose full CONFIG for other uses
+        context.CONFIG = CONFIG
+
         return context
     }
 
