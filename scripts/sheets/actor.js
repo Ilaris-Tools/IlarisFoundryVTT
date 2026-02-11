@@ -27,7 +27,6 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             itemCreate: IlarisActorSheet.onItemCreate,
             itemEdit: IlarisActorSheet.onItemEdit,
             itemDelete: IlarisActorSheet.onItemDelete,
-            toggleItem: IlarisActorSheet.onToggleItem,
             toggleBool: IlarisActorSheet.onToggleBool,
             syncItems: IlarisActorSheet.onSyncItems,
         },
@@ -155,80 +154,6 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         this._healthUpdateTimeout = setTimeout(() => {
             this._updateOpenCombatDialogs()
         }, 300)
-    }
-
-    /**
-     * Toggle item equipment state (hauptwaffe/nebenwaffe)
-     * @param {PointerEvent} event - The click event
-     * @param {HTMLElement} target - The target element with data-action
-     */
-    static async onToggleItem(event, target) {
-        try {
-            const itemId = target.dataset.itemid
-            const item = this.actor.items.get(itemId)
-            if (!item) {
-                ui.notifications.warn('Item nicht gefunden.')
-                return
-            }
-
-            const toggletype = target.dataset.toggletype
-            let attr = `system.${toggletype}`
-            const otherHandType = toggletype === 'hauptwaffe' ? 'nebenwaffe' : 'hauptwaffe'
-            const otherHandAttr = `system.${otherHandType}`
-
-            if (toggletype === 'hauptwaffe' || toggletype === 'nebenwaffe') {
-                const item_status = foundry.utils.getProperty(item, attr)
-
-                // Handle two-handed ranged weapons
-                if (
-                    item_status &&
-                    item.type === 'fernkampfwaffe' &&
-                    item.system.computed?.handsRequired === 2
-                ) {
-                    await this._unequipWeapon(itemId)
-                    return
-                }
-
-                if (item_status === false) {
-                    // Handle switching hands for one-handed weapons
-                    if (
-                        (toggletype === 'hauptwaffe' && item.system.nebenwaffe) ||
-                        (toggletype === 'nebenwaffe' && item.system.hauptwaffe)
-                    ) {
-                        if (item.system.computed?.handsRequired !== 2) {
-                            await item.update({ [otherHandAttr]: false })
-                        }
-                    }
-
-                    // Unequip two-handed ranged weapons when equipping any other weapon
-                    await this._unequipTwoHandedRangedWeapons()
-
-                    // If equipping a two-handed weapon, unequip all other weapons
-                    if (item.system.computed?.handsRequired === 2) {
-                        await this._unequipAllWeaponsExcept(itemId)
-                    } else {
-                        // For one-handed weapons, only unequip from the toggled hand
-                        await this._unequipHandWeapons(toggletype)
-
-                        // If a two-handed weapon is equipped in both hands, unequip it
-                        await this._unequipTwoHandedWeaponsInBothHands()
-                    }
-                }
-
-                // For two-handed weapons, always equip in both hands by default
-                if (item.system.computed?.handsRequired === 2 && !item_status) {
-                    await item.update({ [otherHandAttr]: true })
-                }
-
-                await item.update({ [attr]: !item_status })
-            } else {
-                attr = `system.${toggletype}`
-                await item.update({ [attr]: !foundry.utils.getProperty(item, attr) })
-            }
-        } catch (err) {
-            console.error('ILARIS | Error toggling item:', err)
-            ui.notifications.error('Fehler beim Umschalten des Items.')
-        }
     }
 
     // Helper method to unequip a specific weapon from both hands

@@ -43,12 +43,45 @@
   justify-content: space-between;
 }
 
+.ilaris.actor.helden {
+  .hw {
+    color: #7f7e75;
+
+    &.true {
+      color: black;
+    }
+  }
+  .nw {
+    color: #7f7e75;
+    &.true {
+      color: black;
+    }
+  }
+}
+
 .ilaris.actor.helden .window-content .heroattributes {
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-around;
   align-items: center;
   padding-top: 5px;
+}
+
+.ilaris.item .window-content {
+  overflow: auto;
+
+  textarea {
+    width: 100%;
+  }
+}
+
+.ilaris.item .window-content .sheet-header {
+  display: flex;
+  align-items: center;
+
+  img {
+    height: 100px;
+  }
 }
 
 .attribute-grid {
@@ -151,11 +184,12 @@
 }
 
 /* Tab content visibility - hide inactive tabs */
-section.tab {
+/* Only hide tabs within sheet windows, not sidebar tabs like compendiums */
+.window-app .window-content section.tab:not(.sidebar-tab) {
   display: none;
 }
 
-section.tab.active {
+.window-app .window-content section.tab.active:not(.sidebar-tab) {
   display: flex;
   flex-direction: column;
 }

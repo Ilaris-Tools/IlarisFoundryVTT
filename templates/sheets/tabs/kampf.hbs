@@ -49,13 +49,13 @@
                     </a>
                 </td>
                 <td class="icon-small">
-                    <a data-action="toggleItem" class="{{nwaffe.system.hauptwaffe}}" data-itemid="{{nwaffe.id}}"
+                    <a data-action="toggleItem" class="hw {{nwaffe.system.hauptwaffe}}" data-itemid="{{nwaffe.id}}"
                         data-toggletype="hauptwaffe">
                         <i class="far fa-hand-paper"></i>
                     </a>
                 </td>
                 <td class="icon-small">
-                    <a data-action="toggleItem" class="{{nwaffe.system.nebenwaffe}}" data-itemid="{{nwaffe.id}}"
+                    <a data-action="toggleItem" class="nw {{nwaffe.system.nebenwaffe}}" data-itemid="{{nwaffe.id}}"
                         data-toggletype="nebenwaffe">
                         <i class="far fa-hand-paper"></i>
                     </a>
@@ -130,9 +130,9 @@
                 <tr>
                     <td><a data-action="rollable" class="icon-small" data-rolltype="fernkampf_diag" data-itemid="{{fwaffe.id}}"><i
                                 class="custom-icon"></i></a></td>
-                    <td><a data-action="toggleItem" class="icon-small {{fwaffe.system.hauptwaffe}}" data-itemid="{{fwaffe.id}}"
+                    <td class="icon-small"><a data-action="toggleItem" class="hw {{fwaffe.system.hauptwaffe}}" data-itemid="{{fwaffe.id}}"
                             data-toggletype="hauptwaffe"><i class="far fa-hand-paper"></i></a></td>
-                    <td><a data-action="toggleItem" class="icon-small {{fwaffe.system.nebenwaffe}}" data-itemid="{{fwaffe.id}}"
+                    <td class="icon-small"><a data-action="toggleItem" class="nw {{fwaffe.system.nebenwaffe}}" data-itemid="{{fwaffe.id}}"
                             data-toggletype="nebenwaffe"><i class="far fa-hand-paper"></i></a></td>
                     <td class="onhover" data-action="ausklappView" data-ausklappentarget="{{fwaffe.id}}">{{fwaffe.name}}</td>
                     <td>{{fwaffe.system.rw_mod}}</td>

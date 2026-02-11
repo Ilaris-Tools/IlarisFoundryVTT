@@ -14,7 +14,8 @@ export class IlarisItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
         },
         form: {
             handler: IlarisItemSheet.#onSubmitForm,
-            submitOnChange: false,
+            submitOnChange: true,
+            closeOnSubmit: false,
         },
         window: {
             icon: 'fas fa-suitcase',
@@ -34,6 +35,7 @@ export class IlarisItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
         const hasActor = this.document.actor != null
         const isOwner = this.document.actor?.isOwner
         const notInPack = this.document.actor?.pack == null
+        context.item = this.item
 
         context.hasOwner = hasActor && isOwner && notInPack
 
