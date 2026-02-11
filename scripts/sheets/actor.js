@@ -250,6 +250,8 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     static async onRollable(event, target) {
         const systemData = this.actor.system
         const rolltype = target.dataset.rolltype
+
+        console.log('ILARIS | onRollable triggered', event, target, rolltype)
         if (rolltype === 'basic') {
             // NOTE: als Einfaches Beispiel ohne weitere Dialoge und logische Verknüpfungen.
             const label = target.dataset.label
@@ -283,7 +285,8 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             'fertigkeit_diag',
         ]
         if (dialoge.includes(rolltype)) {
-            wuerfelwurf(event, this.actor)
+            console.log(event.currentTarget)
+            wuerfelwurf(target, this.actor)
             return 0
         }
         if (rolltype === 'at') {
@@ -291,6 +294,7 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             label = target.dataset.item
             label = `Attacke (${label})`
             pw = target.dataset.pw
+            console.log('ILARIS | onRollable AT', { label, pw, globalermod, target })
         } else if (rolltype === 'vt') {
             dice = '1d20'
             label = target.dataset.item
@@ -332,18 +336,19 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         }
         let formula = `${dice} + ${pw} + ${globalermod}`
         if (rolltype === 'at') {
-            formula += ` ${systemData.modifikatoren.nahkampfmod > 0 ? '+' : ''}${
+            formula += ` ${systemData.modifikatoren.nahkampfmod >= 0 ? '+' : ''}${
                 systemData.modifikatoren.nahkampfmod
             }`
         }
         if (rolltype === 'vt') {
-            formula += ` ${systemData.modifikatoren.verteidigungmod > 0 ? '+' : ''}${
+            formula += ` ${systemData.modifikatoren.verteidigungmod >= 0 ? '+' : ''}${
                 systemData.modifikatoren.verteidigungmod
             }`
         }
         if (rolltype === 'schaden') {
             formula = pw
         }
+        console.log('ILARIS | onRollable final formula', formula)
         const roll = new Roll(formula)
         await roll.evaluate()
         const critfumble = roll.dice[0].results.find((a) => a.active === true).result
