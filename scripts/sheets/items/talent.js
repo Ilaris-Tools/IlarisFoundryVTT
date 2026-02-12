@@ -1,45 +1,26 @@
 import { IlarisItemSheet } from './item.js'
 
 export class TalentSheet extends IlarisItemSheet {
-    async getData() {
-        const data = super.getData()
-        if (data.hasOwner) {
-            data.fertigkeit_list = this.item.actor.misc.profan_fertigkeit_list
-        }
-        // console.log("In item.js");
-        // console.log(data.actor);
-        // console.log(data);
-        return data
+    /** @override */
+    static DEFAULT_OPTIONS = {
+        classes: ['ilaris', 'sheet', 'item', 'talent'],
     }
 
-    static get defaultOptions() {
-        return foundry.utils.mergeObject(super.defaultOptions, {
-            classes: ['ilaris', 'sheet', 'item', 'talent'],
+    /** @override */
+    static PARTS = {
+        form: {
             template: 'systems/Ilaris/templates/sheets/items/talent.hbs',
-            // width: 720,
-            // height: 800,
-            // resizable: false,
-            // tabs: [
-            //     {
-            //         navSelector: ".sheet-tabs",
-            //         contentSelector: ".sheet-body",
-            //         initial: "fertigkeiten",
-            //     },
-            // ]
-        })
+        },
     }
 
-    // getData() {
-    //     const data = super.getData();
-    //     return data;
-    // }
+    /** @override */
+    async _prepareContext(options) {
+        const context = await super._prepareContext(options)
 
-    // _getHeaderButtons() {
-    //     let buttons = super._getHeaderButtons();
-    //     return buttons;
-    // }
+        if (context.hasOwner) {
+            context.fertigkeit_list = this.document.actor.misc.profan_fertigkeit_list
+        }
 
-    // activateListeners(html) {
-    //     super.activateListeners(html);
-    // }
+        return context
+    }
 }

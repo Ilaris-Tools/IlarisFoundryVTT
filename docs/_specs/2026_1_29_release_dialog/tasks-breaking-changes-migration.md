@@ -11,18 +11,18 @@ Passe die `parseBreakingChanges()`-Funktion an, um flexible Überschrifts-Varian
 
 **Akzeptanzkriterien:**
 
--   ✅ Regex erkennt folgende Varianten (case-insensitive):
-    -   `#### Breaking Change`
-    -   `#### Breaking Changes` (Plural)
-    -   `#### ⚠️ Breaking Changes` (mit Emoji vor oder nach dem Text)
-    -   `#### BREAKING CHANGE:` (Großbuchstaben mit optionalem Doppelpunkt)
-    -   Beliebige Kombinationen: Emoji, Großbuchstaben, Singular/Plural, Doppelpunkt
--   ✅ Die Regex extrahiert nur den Inhalt nach der Überschrift (bis zur nächsten `####`, `###` oder EOF)
--   ✅ Whitespace und Leerzeilen am Anfang/Ende werden korrekt bereinigt
+- ✅ Regex erkennt folgende Varianten (case-insensitive):
+    - `#### Breaking Change`
+    - `#### Breaking Changes` (Plural)
+    - `#### ⚠️ Breaking Changes` (mit Emoji vor oder nach dem Text)
+    - `#### BREAKING CHANGE:` (Großbuchstaben mit optionalem Doppelpunkt)
+    - Beliebige Kombinationen: Emoji, Großbuchstaben, Singular/Plural, Doppelpunkt
+- ✅ Die Regex extrahiert nur den Inhalt nach der Überschrift (bis zur nächsten `####`, `###` oder EOF)
+- ✅ Whitespace und Leerzeilen am Anfang/Ende werden korrekt bereinigt
 
 **Zu ändernde Datei:**
 
--   [utils/generate-breaking-changes.js](utils/generate-breaking-changes.js) - Funktion `parseBreakingChanges()`
+- [utils/generate-breaking-changes.js](utils/generate-breaking-changes.js) - Funktion `parseBreakingChanges()`
 
 **Implementierungs-Hinweise:**
 
@@ -44,21 +44,21 @@ Ersetze die HTML-Generierung durch reine Markdown-Ausgabe. Entferne die `markdow
 
 **Akzeptanzkriterien:**
 
--   ✅ Funktion `generateHbsFile()` wird durch `generateMdFile()` ersetzt
--   ✅ `generateMdFile()` schreibt nur den puren Markdown-Text (ohne HTML, ohne HBS-Template)
--   ✅ Die generierten Dateien heißen `templates/changes/breaking-changes-<major.minor>.md` (nicht `.hbs`)
--   ✅ Die `markdownToHtml()`-Funktion wird vollständig entfernt
--   ✅ Das Verzeichnis `templates/changes/` wird ggf. erstellt (falls nicht vorhanden)
+- ✅ Funktion `generateHbsFile()` wird durch `generateMdFile()` ersetzt
+- ✅ `generateMdFile()` schreibt nur den puren Markdown-Text (ohne HTML, ohne HBS-Template)
+- ✅ Die generierten Dateien heißen `templates/changes/breaking-changes-<major.minor>.md` (nicht `.hbs`)
+- ✅ Die `markdownToHtml()`-Funktion wird vollständig entfernt
+- ✅ Das Verzeichnis `templates/changes/` wird ggf. erstellt (falls nicht vorhanden)
 
 **Zu ändernde Datei:**
 
--   [utils/generate-breaking-changes.js](utils/generate-breaking-changes.js)
+- [utils/generate-breaking-changes.js](utils/generate-breaking-changes.js)
 
 **Beispiel-Output:**
 
 ```markdown
--   Breaking Change 1: ...
--   Breaking Change 2: ...
+- Breaking Change 1: ...
+- Breaking Change 2: ...
 ```
 
 ---
@@ -70,14 +70,14 @@ Passe die Bereinigung veralteter Breaking Changes Dateien an die neue `.md`-Exte
 
 **Akzeptanzkriterien:**
 
--   ✅ Funktion sucht nach Dateien mit Pattern `breaking-changes-*.md` (nicht `.hbs`)
--   ✅ Alle alten `.hbs`-Dateien werden gelöscht (falls vorhanden)
--   ✅ Nur die aktuelle Version bleibt bestehen
--   ✅ Console-Outputs bleiben aussagekräftig
+- ✅ Funktion sucht nach Dateien mit Pattern `breaking-changes-*.md` (nicht `.hbs`)
+- ✅ Alle alten `.hbs`-Dateien werden gelöscht (falls vorhanden)
+- ✅ Nur die aktuelle Version bleibt bestehen
+- ✅ Console-Outputs bleiben aussagekräftig
 
 **Zu ändernde Datei:**
 
--   [utils/generate-breaking-changes.js](utils/generate-breaking-changes.js) - Funktion `cleanupOldBreakingChanges()`
+- [utils/generate-breaking-changes.js](utils/generate-breaking-changes.js) - Funktion `cleanupOldBreakingChanges()`
 
 ---
 
@@ -88,18 +88,18 @@ Aktualisiere die `main()`-Funktion, um die neuen Funktionen zu verwenden.
 
 **Akzeptanzkriterien:**
 
--   ✅ `markdownToHtml()` wird NICHT aufgerufen (Markdown bleibt unverändert)
--   ✅ `generateMdFile()` wird statt `generateHbsFile()` aufgerufen
--   ✅ Exit Code ist 0, wenn keine Breaking Changes gefunden werden
--   ✅ Exit Code ist 0 (erfolg) oder 1 (fehler), siehe Übergabe an GitHub Action
--   ✅ Console-Output bleibt aussagekräftig:
-    -   `📖 Processing version: 12.2 (full: 12.2.8)`
-    -   `ℹ️ No breaking changes found for version 12.2`
-    -   `✅ Breaking changes template generated successfully!`
+- ✅ `markdownToHtml()` wird NICHT aufgerufen (Markdown bleibt unverändert)
+- ✅ `generateMdFile()` wird statt `generateHbsFile()` aufgerufen
+- ✅ Exit Code ist 0, wenn keine Breaking Changes gefunden werden
+- ✅ Exit Code ist 0 (erfolg) oder 1 (fehler), siehe Übergabe an GitHub Action
+- ✅ Console-Output bleibt aussagekräftig:
+    - `📖 Processing version: 12.2 (full: 12.2.8)`
+    - `ℹ️ No breaking changes found for version 12.2`
+    - `✅ Breaking changes template generated successfully!`
 
 **Zu ändernde Datei:**
 
--   [utils/generate-breaking-changes.js](utils/generate-breaking-changes.js) - Funktion `main()`
+- [utils/generate-breaking-changes.js](utils/generate-breaking-changes.js) - Funktion `main()`
 
 ---
 
@@ -110,16 +110,16 @@ Füge einen neuen Step in den `pack`-Job ein, der das Breaking Changes Skript au
 
 **Akzeptanzkriterien:**
 
--   ✅ Neuer Step wird **nach** `🚀 Install Dependencies` eingefügt
--   ✅ Neuer Step wird **vor** `📦 Package database files` eingefügt
--   ✅ Step lädt das Skript aus: `node utils/generate-breaking-changes.js`
--   ✅ Workflow setzt nicht ab, wenn das Skript Exit Code 0 zurückgibt (auch bei "Keine Breaking Changes")
--   ✅ Workflow bricht mit Fehler ab, wenn das Skript Exit Code 1 zurückgibt (z.B. CHANGELOG.md nicht gefunden)
--   ✅ Step-Name beschreibt kurz, was getan wird (z.B. `🔄 Generate breaking changes template`)
+- ✅ Neuer Step wird **nach** `🚀 Install Dependencies` eingefügt
+- ✅ Neuer Step wird **vor** `📦 Package database files` eingefügt
+- ✅ Step lädt das Skript aus: `node utils/generate-breaking-changes.js`
+- ✅ Workflow setzt nicht ab, wenn das Skript Exit Code 0 zurückgibt (auch bei "Keine Breaking Changes")
+- ✅ Workflow bricht mit Fehler ab, wenn das Skript Exit Code 1 zurückgibt (z.B. CHANGELOG.md nicht gefunden)
+- ✅ Step-Name beschreibt kurz, was getan wird (z.B. `🔄 Generate breaking changes template`)
 
 **Zu ändernde Datei:**
 
--   [.github/workflows/build-packs.yml](.github/workflows/build-packs.yml)
+- [.github/workflows/build-packs.yml](.github/workflows/build-packs.yml)
 
 **Beispiel:**
 
@@ -137,15 +137,15 @@ Passe die `fetchBreakingChangesTemplate()`-Funktion an, um `.md`-Dateien statt `
 
 **Akzeptanzkriterien:**
 
--   ✅ Ändert den Pfad von `.hbs` zu `.md`:
-    -   Alt: `systems/${game.system.id}/templates/changes/breaking-changes-${version}.hbs`
-    -   Neu: `systems/${game.system.id}/templates/changes/breaking-changes-${version}.md`
--   ✅ Gibt die raw Markdown-Datei zurück (keine HTML)
--   ✅ Error-Handling bleibt erhalten
+- ✅ Ändert den Pfad von `.hbs` zu `.md`:
+    - Alt: `systems/${game.system.id}/templates/changes/breaking-changes-${version}.hbs`
+    - Neu: `systems/${game.system.id}/templates/changes/breaking-changes-${version}.md`
+- ✅ Gibt die raw Markdown-Datei zurück (keine HTML)
+- ✅ Error-Handling bleibt erhalten
 
 **Zu ändernde Datei:**
 
--   [scripts/hooks/changelog-notification.js](scripts/hooks/changelog-notification.js) - Funktion `fetchBreakingChangesTemplate()`
+- [scripts/hooks/changelog-notification.js](scripts/hooks/changelog-notification.js) - Funktion `fetchBreakingChangesTemplate()`
 
 ---
 
@@ -156,17 +156,17 @@ Implementiere Markdown-zu-HTML-Rendering mit Foundry's `TextEditor` APIs in der 
 
 **Akzeptanzkriterien:**
 
--   ✅ Die `checkAndShowChangelogNotification()`-Funktion rendert das geladene Markdown mit:
-    -   `TextEditor._markdownToHTML(markdownContent)` → HTML
-    -   `TextEditor.enrichHTML(htmlContent)` → mit Foundry-Features angereichert (Links, etc.)
--   ✅ Das generierte HTML wird an `showChangelogNotification()` übergeben
--   ✅ Die Dialog-Inhalte sind **nicht editierbar** (read-only)
--   ✅ Performance: Das Laden und Rendern verzögert den Systemstart nicht spürbar
--   ✅ Error-Handling: Falls `.md`-Datei nicht existiert oder Fehler beim Rendering, wird Dialog nicht angezeigt
+- ✅ Die `checkAndShowChangelogNotification()`-Funktion rendert das geladene Markdown mit:
+    - `TextEditor._markdownToHTML(markdownContent)` → HTML
+    - `TextEditor.enrichHTML(htmlContent)` → mit Foundry-Features angereichert (Links, etc.)
+- ✅ Das generierte HTML wird an `showChangelogNotification()` übergeben
+- ✅ Die Dialog-Inhalte sind **nicht editierbar** (read-only)
+- ✅ Performance: Das Laden und Rendern verzögert den Systemstart nicht spürbar
+- ✅ Error-Handling: Falls `.md`-Datei nicht existiert oder Fehler beim Rendering, wird Dialog nicht angezeigt
 
 **Zu ändernde Datei:**
 
--   [scripts/hooks/changelog-notification.js](scripts/hooks/changelog-notification.js) - Funktionen `checkAndShowChangelogNotification()` und ggf. `showChangelogNotification()`
+- [scripts/hooks/changelog-notification.js](scripts/hooks/changelog-notification.js) - Funktionen `checkAndShowChangelogNotification()` und ggf. `showChangelogNotification()`
 
 **Beispiel-Ablauf:**
 
@@ -184,13 +184,13 @@ Stelle sicher, dass die neuen `.md`-Dateien in `templates/changes/` nicht `.giti
 
 **Akzeptanzkriterien:**
 
--   ✅ `.md`-Dateien in `templates/changes/` sind NOT in `.gitignore`
--   ✅ Das Verzeichnis `templates/changes/` wird tracked (ggf. `.gitkeep` einfügen)
--   ✅ Alte `.hbs`-Dateien können gelöscht werden
+- ✅ `.md`-Dateien in `templates/changes/` sind NOT in `.gitignore`
+- ✅ Das Verzeichnis `templates/changes/` wird tracked (ggf. `.gitkeep` einfügen)
+- ✅ Alte `.hbs`-Dateien können gelöscht werden
 
 **Zu überprüfende Datei:**
 
--   [.gitignore](.gitignore)
+- [.gitignore](.gitignore)
 
 ---
 
@@ -201,14 +201,14 @@ Aktualisiere die Dokumentation des Skripts, um die neuen `.md`-Dateien statt `.h
 
 **Akzeptanzkriterien:**
 
--   ✅ Output-Abschnitt erwähnt `.md` statt `.hbs`
--   ✅ CHANGELOG.md Format bleibt gleich (Breaking Change Abschnitt)
--   ✅ Integration with FoundryVTT erklärt, dass `.md`-Dateien mit `TextEditor` APIs gerendert werden
--   ✅ Flexible Überschriften werden dokumentiert
+- ✅ Output-Abschnitt erwähnt `.md` statt `.hbs`
+- ✅ CHANGELOG.md Format bleibt gleich (Breaking Change Abschnitt)
+- ✅ Integration with FoundryVTT erklärt, dass `.md`-Dateien mit `TextEditor` APIs gerendert werden
+- ✅ Flexible Überschriften werden dokumentiert
 
 **Zu ändernde Datei:**
 
--   [utils/README.md](utils/README.md)
+- [utils/README.md](utils/README.md)
 
 ---
 
@@ -219,14 +219,14 @@ Validiere die Implementierung mit manuellen Tests.
 
 **Akzeptanzkriterien:**
 
--   ✅ Skript läuft fehlerfrei mit `node utils/generate-breaking-changes.js`
--   ✅ Für Version 12.2 wird `templates/changes/breaking-changes-12.2.md` generiert
--   ✅ Inhalt der `.md`-Datei ist purer Markdown (keine HTML, kein HBS-Template)
--   ✅ Alte `.hbs`-Dateien werden gelöscht
--   ✅ Wenn CHANGELOG.md keine Breaking Changes für aktuelle Version hat: Kein Exit-Code-Fehler, keine Datei generiert
--   ✅ GitHub Action läuft fehlerfrei in `build-packs.yml`
--   ✅ Dialog wird im Client angezeigt und rendert Markdown korrekt
--   ✅ Dialog ist read-only (nicht editierbar)
+- ✅ Skript läuft fehlerfrei mit `node utils/generate-breaking-changes.js`
+- ✅ Für Version 12.2 wird `templates/changes/breaking-changes-12.2.md` generiert
+- ✅ Inhalt der `.md`-Datei ist purer Markdown (keine HTML, kein HBS-Template)
+- ✅ Alte `.hbs`-Dateien werden gelöscht
+- ✅ Wenn CHANGELOG.md keine Breaking Changes für aktuelle Version hat: Kein Exit-Code-Fehler, keine Datei generiert
+- ✅ GitHub Action läuft fehlerfrei in `build-packs.yml`
+- ✅ Dialog wird im Client angezeigt und rendert Markdown korrekt
+- ✅ Dialog ist read-only (nicht editierbar)
 
 ---
 

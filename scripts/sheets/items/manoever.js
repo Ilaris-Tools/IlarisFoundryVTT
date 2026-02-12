@@ -27,28 +27,37 @@ import { IlarisItemSheet } from './item.js'
 */
 
 export class ManoeverSheet extends IlarisItemSheet {
-    static get defaultOptions() {
-        return foundry.utils.mergeObject(super.defaultOptions, {
+    /** @override */
+    static DEFAULT_OPTIONS = {
+        classes: ['ilaris', 'sheet', 'item', 'manoever'],
+        actions: {
+            addModification: ManoeverSheet.#onAddModification,
+            deleteModification: ManoeverSheet.#onDeleteModification,
+        },
+    }
+
+    /** @override */
+    static PARTS = {
+        form: {
             template: 'systems/Ilaris/templates/sheets/items/manoever.hbs',
-        })
+        },
     }
 
-    async getData() {
-        const data = await super.getData()
-        data.manoever = CONFIG.ILARIS.manoever
-        data.schadenstypen = CONFIG.ILARIS.schadenstypen
-        console.log(data)
-        return data
+    /** @override */
+    async _prepareContext(options) {
+        const context = await super._prepareContext(options)
+        context.manoever = CONFIG.ILARIS.manoever
+        context.schadenstypen = CONFIG.ILARIS.schadenstypen
+        return context
     }
 
-    activateListeners(html) {
-        super.activateListeners(html)
-        html.find('.add-modification').click(() => this._onAddModification())
-        html.find('.delete-modification').click((ev) => this._onDeleteModification(ev))
-    }
-
-    async _onAddModification() {
-        const modifications = Object.values(this.item.system.modifications)
+    /**
+     * Handle add modification action
+     * @param {PointerEvent} event
+     * @param {HTMLElement} target
+     */
+    static async #onAddModification(event, target) {
+        const modifications = Object.values(this.document.system.modifications)
         modifications.push({
             type: 'ATTACK',
             value: 0,
@@ -57,17 +66,22 @@ export class ManoeverSheet extends IlarisItemSheet {
             affectedByInput: true,
         })
 
-        await this.item.update({
+        await this.document.update({
             'system.modifications': modifications,
         })
     }
 
-    async _onDeleteModification(event) {
-        let eigid = $(event.currentTarget).data('modificationid')
-        const modifications = Object.values(this.item.system.modifications)
-        modifications.splice(eigid, 1)
+    /**
+     * Handle delete modification action
+     * @param {PointerEvent} event
+     * @param {HTMLElement} target
+     */
+    static async #onDeleteModification(event, target) {
+        const modificationId = target.dataset.modificationid
+        const modifications = Object.values(this.document.system.modifications)
+        modifications.splice(parseInt(modificationId), 1)
 
-        await this.item.update({
+        await this.document.update({
             'system.modifications': modifications,
         })
     }

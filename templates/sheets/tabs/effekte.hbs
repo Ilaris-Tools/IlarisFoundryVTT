@@ -1,14 +1,14 @@
 {{log 'effekte' this}}
-<div>
+<section class="tab effekte {{tab.cssClass}}" data-group="primary" data-tab="effekte">
     <h2>Effekte</h2>
     {{#each effects as |effect|}}
-    <a class="item-edit" data-itemclass="effect" data-itemid="{{effect._id}}">
+    <a data-action="itemEdit" data-itemclass="effect" data-itemid="{{effect._id}}">
         {{effect.name}} | {{#if effect.duration.turns}}{{effect.duration.turns}} Runden{{/if}}
     </a>
     {{#unless (eq effect.flags.ilaris.sourceType "vorteil")}}
-    <a class="item-delete" data-itemclass="effect" data-itemid="{{effect._id}}">
+    <a data-action="itemDelete" data-itemclass="effect" data-itemid="{{effect._id}}">
         <i class="fas fa-trash"></i>
     </a>
     {{/unless}}
     &nbsp; | &nbsp; {{/each}}
-</div>
+</section>

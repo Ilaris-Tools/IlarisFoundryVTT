@@ -553,6 +553,31 @@ let fertigkeitsgruppen = [
 ]
 ILARIS.fertigkeitsgruppen = fertigkeitsgruppen
 
+let attribute = [
+    { value: 'KO', label: 'KO' },
+    { value: 'MU', label: 'MU' },
+    { value: 'GE', label: 'GE' },
+    { value: 'KK', label: 'KK' },
+    { value: 'IN', label: 'IN' },
+    { value: 'KL', label: 'KL' },
+    { value: 'CH', label: 'CH' },
+    { value: 'FF', label: 'FF' },
+]
+ILARIS.attribute = attribute
+
+// Array version for selectOptions helper
+let trefferzonenOptions = [
+    { value: '0', label: 'kein' },
+    { value: '1', label: 'Beine' },
+    { value: '2', label: 'Schildarm' },
+    { value: '3', label: 'Schwertarm' },
+    { value: '4', label: 'Bauch' },
+    { value: '5', label: 'Brust' },
+    { value: '6', label: 'Kopf' },
+    { value: '7', label: 'andere' },
+]
+ILARIS.trefferzonenOptions = trefferzonenOptions
+
 let stufen = [
     { value: '1', label: '1' },
     { value: '2', label: '2' },

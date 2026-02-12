@@ -27,10 +27,10 @@ Generates a Handlebars (`.hbs`) template file with breaking changes extracted fr
 
 The script uses the `marked` library for reliable Markdown-to-HTML conversion:
 
--   Supports lists, bold text, links, code blocks, and other Markdown features
--   Option `headerIds: false` prevents automatic ID generation for headings
--   More robust than manual string manipulation
--   Handles nested lists and complex formatting correctly
+- Supports lists, bold text, links, code blocks, and other Markdown features
+- Option `headerIds: false` prevents automatic ID generation for headings
+- More robust than manual string manipulation
+- Handles nested lists and complex formatting correctly
 
 ### Usage
 
@@ -71,14 +71,14 @@ Bitte wie immer die Charaktere neu importieren...
 
 ##### Sub-section
 
--   Your breaking change item 1
--   Your breaking change item 2
+- Your breaking change item 1
+- Your breaking change item 2
 
 ---
 
 #### Features
 
--   Other changes...
+- Other changes...
 ```
 
 **Important:** The Breaking Changes section must end with a horizontal rule (`---`) to mark the end of the section.
@@ -86,20 +86,20 @@ Bitte wie immer die Charaktere neu importieren...
 **Flexible heading support:**
 The script recognizes various heading formats (case-insensitive):
 
--   `#### Breaking Change` (singular)
--   `#### Breaking Changes` (plural)
--   `#### ⚠️ Breaking Changes` (with emoji)
--   `#### BREAKING CHANGE:` (uppercase with/without colon)
--   Any combination of the above
+- `#### Breaking Change` (singular)
+- `#### Breaking Changes` (plural)
+- `#### ⚠️ Breaking Changes` (with emoji)
+- `#### BREAKING CHANGE:` (uppercase with/without colon)
+- Any combination of the above
 
 ### When to run
 
 You should run this script:
 
--   ✅ Before creating a new release
--   ✅ After updating the CHANGELOG.md with breaking changes
--   ✅ As part of your automated deployment process
--   ✅ Before testing the breaking changes dialog locally
+- ✅ Before creating a new release
+- ✅ After updating the CHANGELOG.md with breaking changes
+- ✅ As part of your automated deployment process
+- ✅ Before testing the breaking changes dialog locally
 
 ### Integration with FoundryVTT
 
@@ -111,10 +111,10 @@ The generated `.hbs` files are served as static files by FoundryVTT. The changel
 
 This approach ensures that:
 
--   ✅ HTML is generated at build time using the reliable `marked` library
--   ✅ No client-side Markdown parsing needed
--   ✅ Breaking changes are always available, even in deployed environments
--   ✅ Templates are version-specific and can be cached
--   ✅ No network requests to external URLs needed
--   ✅ Supports complex Markdown features (nested lists, links, bold text, etc.)
--   ✅ Markdown content is rendered with full Foundry VTT formatting support
+- ✅ HTML is generated at build time using the reliable `marked` library
+- ✅ No client-side Markdown parsing needed
+- ✅ Breaking changes are always available, even in deployed environments
+- ✅ Templates are version-specific and can be cached
+- ✅ No network requests to external URLs needed
+- ✅ Supports complex Markdown features (nested lists, links, bold text, etc.)
+- ✅ Markdown content is rendered with full Foundry VTT formatting support

@@ -53,8 +53,6 @@
 {{#if hasOwner}}
     <label class="flex-fest-var" style="flex-basis: 100px"><b>Aufbewahrungsort:</b></label>
     <select name="system.aufbewahrungs_ort">
-        {{#select item.system.aufbewahrungs_ort}} {{#each speicherplatz_list as |ort|}}
-        <option value="{{ort}}">{{ort}}</option>
-        {{/each}} {{/select}}
+        {{selectOptions speicherplatz_list selected=item.system.aufbewahrungs_ort}}
     </select>
 {{/if}}

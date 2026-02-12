@@ -30,10 +30,10 @@ The Eigenschaften System is a data-driven architecture for managing item propert
 
 **Rationale**:
 
--   **Item-to-Item Modifications**: Active Effects can only target actors, not other items. We need weapon properties to modify weapon stats.
--   **Performance**: Derived Data only recalculates when source data changes, not on every render
--   **Control**: More direct control over calculation order and conditional logic
--   **Complexity**: Active Effects would require complex application types and conditionals that don't map well to our needs
+- **Item-to-Item Modifications**: Active Effects can only target actors, not other items. We need weapon properties to modify weapon stats.
+- **Performance**: Derived Data only recalculates when source data changes, not on every render
+- **Control**: More direct control over calculation order and conditional logic
+- **Complexity**: Active Effects would require complex application types and conditionals that don't map well to our needs
 
 **Research**: Examined WFRP4e's sophisticated effect system but found it over-engineered for our requirements. Their conditional modifiers and application types inspired our simpler design.
 
@@ -130,12 +130,12 @@ The `kategorie` field routes processing logic. Each kategorie has specific field
 
 **Fields Used**:
 
--   `modifiers.at`: Attack value modifier
--   `modifiers.vt`: Defense value modifier
--   `modifiers.schaden`: Flat damage bonus
--   `modifiers.schadenFormula`: Dynamic formula (e.g., `@actor.system.attribute.KK.wert` for Kopflastig)
--   `modifiers.rw`: Range modifier
--   `conditions`: Array of conditional checks
+- `modifiers.at`: Attack value modifier
+- `modifiers.vt`: Defense value modifier
+- `modifiers.schaden`: Flat damage bonus
+- `modifiers.schadenFormula`: Dynamic formula (e.g., `@actor.system.attribute.KK.wert` for Kopflastig)
+- `modifiers.rw`: Range modifier
+- `conditions`: Array of conditional checks
 
 **Condition Structure**:
 
@@ -195,10 +195,10 @@ The `kategorie` field routes processing logic. Each kategorie has specific field
 
 **Fields Used**:
 
--   `wieldingRequirements.hands`: Number of hands required (1 or 2)
--   `wieldingRequirements.penalties.hauptOnly`: Penalty when used as hauptwaffe only
--   `wieldingRequirements.penalties.nebenOnly`: Penalty when used as nebenwaffe only
--   `wieldingRequirements.penalties.nebenWithoutExemption`: Penalty when used as nebenwaffe without proper training
+- `wieldingRequirements.hands`: Number of hands required (1 or 2)
+- `wieldingRequirements.penalties.hauptOnly`: Penalty when used as hauptwaffe only
+- `wieldingRequirements.penalties.nebenOnly`: Penalty when used as nebenwaffe only
+- `wieldingRequirements.penalties.nebenWithoutExemption`: Penalty when used as nebenwaffe without proper training
 
 **Example - Zweihändig**:
 
@@ -227,9 +227,9 @@ The `kategorie` field routes processing logic. Each kategorie has specific field
 
 **Logic**:
 
--   Checks if weapon is hauptwaffe, nebenwaffe, or both
--   Applies appropriate penalties based on wielding configuration
--   Interacts with "kein Malus als Nebenwaffe" eigenschaft for exemptions
+- Checks if weapon is hauptwaffe, nebenwaffe, or both
+- Applies appropriate penalties based on wielding configuration
+- Interacts with "kein Malus als Nebenwaffe" eigenschaft for exemptions
 
 ---
 
@@ -240,11 +240,11 @@ The `kategorie` field routes processing logic. Each kategorie has specific field
 
 **Fields Used**:
 
--   `targetEffect.name`: Display name
--   `targetEffect.trigger`: When effect triggers (e.g., "on_hit", "on_crit")
--   `targetEffect.resistCheck.attribute`: Attribute for resist check (e.g., "KK")
--   `targetEffect.resistCheck.difficulty`: Difficulty threshold
--   `targetEffect.effect`: The actual effect applied
+- `targetEffect.name`: Display name
+- `targetEffect.trigger`: When effect triggers (e.g., "on_hit", "on_crit")
+- `targetEffect.resistCheck.attribute`: Attribute for resist check (e.g., "KK")
+- `targetEffect.resistCheck.difficulty`: Difficulty threshold
+- `targetEffect.effect`: The actual effect applied
 
 **Example - Niederwerfen**:
 
@@ -269,9 +269,9 @@ The `kategorie` field routes processing logic. Each kategorie has specific field
 
 **Usage**:
 
--   Stored in `weapon.system.computed.targetEffects[]`
--   Combat dialogs check this array and offer trigger buttons
--   Resist checks handled by dialog system
+- Stored in `weapon.system.computed.targetEffects[]`
+- Combat dialogs check this array and offer trigger buttons
+- Resist checks handled by dialog system
 
 ---
 
@@ -282,12 +282,12 @@ The `kategorie` field routes processing logic. Each kategorie has specific field
 
 **Fields Used**:
 
--   `combatMechanics.fumbleThreshold`: Highest value that counts as fumble (default: 1)
--   `combatMechanics.critThreshold`: Lowest value that counts as critical (default: 20)
--   `combatMechanics.ignoreCover`: Ignore cover bonuses
--   `combatMechanics.ignoreArmor`: Ignore armor (for Stumpf)
--   `combatMechanics.additionalDice`: Add dice to damage
--   `conditionalModifiers`: Context-dependent bonuses
+- `combatMechanics.fumbleThreshold`: Highest value that counts as fumble (default: 1)
+- `combatMechanics.critThreshold`: Lowest value that counts as critical (default: 20)
+- `combatMechanics.ignoreCover`: Ignore cover bonuses
+- `combatMechanics.ignoreArmor`: Ignore armor (for Stumpf)
+- `combatMechanics.additionalDice`: Add dice to damage
+- `conditionalModifiers`: Context-dependent bonuses
 
 **Conditional Modifier Structure**:
 
@@ -332,12 +332,12 @@ The `kategorie` field routes processing logic. Each kategorie has specific field
 
 **Fields Used**:
 
--   `actorModifiers.modifiers[]`: Array of modifications to actor's derived stats
-    -   `property`: Which `abgeleitete` stat to modify (be, ini, gs, ws, ws_stern, mr)
-    -   `mode`: How to apply ('set' or 'augment')
-    -   `value`: Numeric modifier value
-    -   `formula`: Dynamic formula (e.g., `@actor.system.attribute.GE.wert / 2`)
--   `actorModifiers.conditions`: Status conditions applied to actor
+- `actorModifiers.modifiers[]`: Array of modifications to actor's derived stats
+    - `property`: Which `abgeleitete` stat to modify (be, ini, gs, ws, ws_stern, mr)
+    - `mode`: How to apply ('set' or 'augment')
+    - `value`: Numeric modifier value
+    - `formula`: Dynamic formula (e.g., `@actor.system.attribute.GE.wert / 2`)
+- `actorModifiers.conditions`: Status conditions applied to actor
 
 **Modifier Structure**:
 
@@ -352,17 +352,17 @@ The `kategorie` field routes processing logic. Each kategorie has specific field
 
 **Available Properties**:
 
--   `be`: Behinderung (Encumbrance)
--   `ini`: Initiative
--   `gs`: Geschwindigkeit (Speed)
--   `ws`: Widerstand (Resistance)
--   `ws_stern`: Widerstand\* (Modified Resistance)
--   `mr`: Magieresistenz (Magic Resistance)
+- `be`: Behinderung (Encumbrance)
+- `ini`: Initiative
+- `gs`: Geschwindigkeit (Speed)
+- `ws`: Widerstand (Resistance)
+- `ws_stern`: Widerstand\* (Modified Resistance)
+- `mr`: Magieresistenz (Magic Resistance)
 
 **Modes**:
 
--   `set`: Overwrite the actor's stat value (applied first, only highest 'set' wins)
--   `augment`: Modify the actor's stat value (applied after 'set', only lowest 'augment' from haupt/neben wins)
+- `set`: Overwrite the actor's stat value (applied first, only highest 'set' wins)
+- `augment`: Modify the actor's stat value (applied after 'set', only lowest 'augment' from haupt/neben wins)
 
 **Example - INI Bonus (Dolch)**:
 
@@ -408,11 +408,11 @@ The `kategorie` field routes processing logic. Each kategorie has specific field
 
 **Special Handling**:
 
--   Weapons set `computed.hasActorModifiers = true`
--   Actor's `prepareData()` checks all equipped weapons
--   For 'augment' mode: Only applies lowest penalty from hauptwaffe/nebenwaffe per property
--   For 'set' mode: Only applies highest 'set' value per property
--   Prevents stacking issues while allowing meaningful choices
+- Weapons set `computed.hasActorModifiers = true`
+- Actor's `prepareData()` checks all equipped weapons
+- For 'augment' mode: Only applies lowest penalty from hauptwaffe/nebenwaffe per property
+- For 'set' mode: Only applies highest 'set' value per property
+- Prevents stacking issues while allowing meaningful choices
 
 **Implementation**:
 
@@ -480,18 +480,18 @@ if (weapon.system.eigenschaften.includes('Unzerstörbar')) {
 
 Entry point, called by Foundry when item data changes.
 
--   Only runs for weapons equipped on an actor
--   Triggers eigenschaft loading if not cached
--   Calls `_calculateWeaponStats()` when ready
+- Only runs for weapons equipped on an actor
+- Triggers eigenschaft loading if not cached
+- Calls `_calculateWeaponStats()` when ready
 
 #### `_calculateWeaponStats()`
 
 Main computation engine.
 
--   Initializes `system.computed` object
--   Processes each eigenschaft by name
--   Applies actor-wide modifiers (BE, wounds)
--   Results stored for later use
+- Initializes `system.computed` object
+- Processes each eigenschaft by name
+- Applies actor-wide modifiers (BE, wounds)
+- Results stored for later use
 
 **Computed Object Structure**:
 
@@ -536,25 +536,25 @@ Router method that delegates to specific processors based on kategorie.
 
 #### Category Processors
 
--   `_applyModifiers()`: Handles modifiers kategorie
--   `_applyWieldingRequirements()`: Handles wielding kategorie
--   `_registerTargetEffect()`: Handles target_effect kategorie
--   `_applyCombatMechanics()`: Handles combat_mechanic kategorie
--   Conditional modifiers also registered here
+- `_applyModifiers()`: Handles modifiers kategorie
+- `_applyWieldingRequirements()`: Handles wielding kategorie
+- `_registerTargetEffect()`: Handles target_effect kategorie
+- `_applyCombatMechanics()`: Handles combat_mechanic kategorie
+- Conditional modifiers also registered here
 
 #### Helper Methods
 
--   `_checkCondition()`: Evaluates condition objects (attribute checks, custom scripts)
--   `_compareValues()`: Comparison operators (<, >, ==, etc.)
--   `_evaluateFormula()`: Parses formulas with @actor references
+- `_checkCondition()`: Evaluates condition objects (attribute checks, custom scripts)
+- `_compareValues()`: Comparison operators (<, >, ==, etc.)
+- `_evaluateFormula()`: Parses formulas with @actor references
 
 #### Caching System
 
--   `_getEigenschaftItem()`: Async loader, searches world and compendiums
--   `_getCachedEigenschaftItem()`: Synchronous getter from cache
--   `_loadEigenschaften()`: Preloads all weapon's eigenschaften
--   `_queueEigenschaftLoad()`: Queues async load and triggers actor refresh
--   Cache cleared on eigenschaft changes via `_preUpdate()`
+- `_getEigenschaftItem()`: Async loader, searches world and compendiums
+- `_getCachedEigenschaftItem()`: Synchronous getter from cache
+- `_loadEigenschaften()`: Preloads all weapon's eigenschaften
+- `_queueEigenschaftLoad()`: Queues async load and triggers actor refresh
+- Cache cleared on eigenschaft changes via `_preUpdate()`
 
 ---
 
@@ -639,24 +639,24 @@ for (let weapon of allWeapons) {
 
 ### Completed
 
--   ✅ `template.json`: Updated waffeneigenschaft structure, changed weapon eigenschaften to arrays
--   ✅ `scripts/items/waffe.js`: Implemented WaffeItem class with full calculation engine
--   ✅ `scripts/items/proxy.js`: Already routes nahkampfwaffe/fernkampfwaffe to WaffeItem
--   ✅ `templates/sheets/nahkampfwaffe.hbs`: Changed to multiselect dropdown
--   ✅ `templates/sheets/fernkampfwaffe.hbs`: Changed to multiselect dropdown
--   ✅ `scripts/sheets/waffe-base.js`: Created base class for weapon sheets
--   ✅ `scripts/sheets/nahkampfwaffe.js`: Extends WaffeBaseSheet
--   ✅ `scripts/sheets/fernkampfwaffe.js`: Extends WaffeBaseSheet
--   ✅ `scripts/common/handlebars.js`: Added `includes()` helper
+- ✅ `template.json`: Updated waffeneigenschaft structure, changed weapon eigenschaften to arrays
+- ✅ `scripts/items/waffe.js`: Implemented WaffeItem class with full calculation engine
+- ✅ `scripts/items/proxy.js`: Already routes nahkampfwaffe/fernkampfwaffe to WaffeItem
+- ✅ `templates/sheets/nahkampfwaffe.hbs`: Changed to multiselect dropdown
+- ✅ `templates/sheets/fernkampfwaffe.hbs`: Changed to multiselect dropdown
+- ✅ `scripts/sheets/waffe-base.js`: Created base class for weapon sheets
+- ✅ `scripts/sheets/nahkampfwaffe.js`: Extends WaffeBaseSheet
+- ✅ `scripts/sheets/fernkampfwaffe.js`: Extends WaffeBaseSheet
+- ✅ `scripts/common/handlebars.js`: Added `includes()` helper
 
 ### TODO
 
--   ⏳ `scripts/actors/actor.js`: Remove hardcoded weapon calculations (lines 449-580)
--   ⏳ `scripts/actors/weapon-utils.js`: Update dual-wielding checks
--   ⏳ `scripts/sheets/dialogs/angriff.js`: Update for computed values and conditional modifiers
--   ⏳ Create waffeneigenschaft compendium items
--   ⏳ Create migration script for existing weapons
--   ⏳ Update tests
+- ⏳ `scripts/actors/actor.js`: Remove hardcoded weapon calculations (lines 449-580)
+- ⏳ `scripts/actors/weapon-utils.js`: Update dual-wielding checks
+- ⏳ `scripts/sheets/dialogs/angriff.js`: Update for computed values and conditional modifiers
+- ⏳ Create waffeneigenschaft compendium items
+- ⏳ Create migration script for existing weapons
+- ⏳ Update tests
 
 ---
 
@@ -712,9 +712,9 @@ The exact same architecture will work for spells with minimal changes:
 
 Similar to WaffeItem but with spell-specific logic:
 
--   `_calculateSpellStats()` instead of `_calculateWeaponStats()`
--   Processors for spell-specific categories
--   Different computed object structure
+- `_calculateSpellStats()` instead of `_calculateWeaponStats()`
+- Processors for spell-specific categories
+- Different computed object structure
 
 **Example Computed Object**:
 
@@ -742,37 +742,37 @@ system.computed = {
 
 ### Waffeneigenschaften to Test
 
--   [ ] **Kopflastig**: Adds SB to damage using formula
--   [ ] **Schwer (4)**: -2 AT/VT if KK < 4 (conditional)
--   [ ] **Schwer (8)**: -2 AT/VT if KK < 8 (conditional)
--   [ ] **Zweihändig**: Correct penalties based on wielding (hauptOnly, nebenOnly)
--   [ ] **Kein Malus als Nebenwaffe**: Exemption from nebenwaffe penalty
--   [ ] **Niederwerfen**: Registers target effect with KK resist check
--   [ ] **Umklammern**: Registers target effect with appropriate values
--   [ ] **Unberechenbar**:
-    -   [ ] Fumble threshold = 2
-    -   [ ] +4 AT vs shield bearers (conditional modifier)
--   [ ] **INI Bonus (Dolch)**:
-    -   [ ] Adds to actor INI
-    -   [ ] Only highest weapon counts
--   [ ] **Parierwaffe**: +1 VT (simple modifier)
--   [ ] **Wendig**: Bonus to defensive maneuvers
--   [ ] **Stumpf**: Ignores armor (combat mechanic)
--   [ ] **Unzerstörbar**: Just presence check (passive)
--   [ ] **Zerbrechlich**: Just presence check (passive)
+- [ ] **Kopflastig**: Adds SB to damage using formula
+- [ ] **Schwer (4)**: -2 AT/VT if KK < 4 (conditional)
+- [ ] **Schwer (8)**: -2 AT/VT if KK < 8 (conditional)
+- [ ] **Zweihändig**: Correct penalties based on wielding (hauptOnly, nebenOnly)
+- [ ] **Kein Malus als Nebenwaffe**: Exemption from nebenwaffe penalty
+- [ ] **Niederwerfen**: Registers target effect with KK resist check
+- [ ] **Umklammern**: Registers target effect with appropriate values
+- [ ] **Unberechenbar**:
+    - [ ] Fumble threshold = 2
+    - [ ] +4 AT vs shield bearers (conditional modifier)
+- [ ] **INI Bonus (Dolch)**:
+    - [ ] Adds to actor INI
+    - [ ] Only highest weapon counts
+- [ ] **Parierwaffe**: +1 VT (simple modifier)
+- [ ] **Wendig**: Bonus to defensive maneuvers
+- [ ] **Stumpf**: Ignores armor (combat mechanic)
+- [ ] **Unzerstörbar**: Just presence check (passive)
+- [ ] **Zerbrechlich**: Just presence check (passive)
 
 ### Edge Cases
 
--   [ ] Multiple Schwer conditions (should only apply highest)
--   [ ] Zweihändig + Kein Malus als Nebenwaffe interaction
--   [ ] Multiple weapons with INI bonus (only highest applies)
--   [ ] Dual-wielding with different eigenschaften
--   [ ] BE penalties stack correctly with eigenschaft penalties
--   [ ] Conditional modifiers display in combat dialog
--   [ ] Target effects trigger correctly
--   [ ] Custom scripts execute safely with error handling
--   [ ] Formula evaluation handles missing attributes gracefully
--   [ ] Cache invalidation on eigenschaft changes
+- [ ] Multiple Schwer conditions (should only apply highest)
+- [ ] Zweihändig + Kein Malus als Nebenwaffe interaction
+- [ ] Multiple weapons with INI bonus (only highest applies)
+- [ ] Dual-wielding with different eigenschaften
+- [ ] BE penalties stack correctly with eigenschaft penalties
+- [ ] Conditional modifiers display in combat dialog
+- [ ] Target effects trigger correctly
+- [ ] Custom scripts execute safely with error handling
+- [ ] Formula evaluation handles missing attributes gracefully
+- [ ] Cache invalidation on eigenschaft changes
 
 ---
 
@@ -861,18 +861,18 @@ For truly unique eigenschaften that don't fit any kategorie:
 
 ## References
 
--   **WFRP4e Effects**: `/systems/wfrp4e/modules/system/effect.js` - Complex conditional system
--   **Foundry Derived Data**: https://foundryvtt.com/article/system-data-models/
--   **Template.json Spec**: https://foundryvtt.com/article/system-data-models/#template
--   **Active Effects**: https://foundryvtt.com/article/active-effects/
+- **WFRP4e Effects**: `/systems/wfrp4e/modules/system/effect.js` - Complex conditional system
+- **Foundry Derived Data**: https://foundryvtt.com/article/system-data-models/
+- **Template.json Spec**: https://foundryvtt.com/article/system-data-models/#template
+- **Active Effects**: https://foundryvtt.com/article/active-effects/
 
 ---
 
 ## Changelog
 
--   **2024-11-09**: Initial design and implementation of waffeneigenschaft system
-    -   Created template.json structure
-    -   Implemented WaffeItem class with full calculation engine
-    -   Updated weapon sheets to use multiselect dropdowns
-    -   Created WaffeBaseSheet to eliminate duplication
-    -   Documented architecture and design decisions
+- **2024-11-09**: Initial design and implementation of waffeneigenschaft system
+    - Created template.json structure
+    - Implemented WaffeItem class with full calculation engine
+    - Updated weapon sheets to use multiselect dropdowns
+    - Created WaffeBaseSheet to eliminate duplication
+    - Documented architecture and design decisions

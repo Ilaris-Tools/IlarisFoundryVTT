@@ -7,28 +7,38 @@ import { migrateWeapon, isOldEigenschaftenFormat } from '../../common/waffen-mig
  */
 export class WaffeBaseSheet extends IlarisItemSheet {
     /** @override */
-    async getData() {
-        const data = await super.getData()
+    static DEFAULT_OPTIONS = {
+        classes: ['ilaris', 'sheet', 'item', 'waffe'],
+        actions: {
+            migrateEigenschaften: WaffeBaseSheet.#onMigrateEigenschaften,
+            addEigenschaft: WaffeBaseSheet.#onAddEigenschaft,
+            removeEigenschaft: WaffeBaseSheet.#onRemoveEigenschaft,
+        },
+    }
+
+    /** @override */
+    async _prepareContext(options) {
+        const context = await super._prepareContext(options)
 
         // Add migration status flag
-        data.needsMigration = isOldEigenschaftenFormat(this.item.system.eigenschaften)
+        context.needsMigration = isOldEigenschaftenFormat(this.document.system.eigenschaften)
 
         // Get available eigenschaften for the select
-        data.availableEigenschaften = await this._getAvailableEigenschaften()
+        context.availableEigenschaften = await this._getAvailableEigenschaften()
 
         // Enrich eigenschaften with metadata from eigenschaft items
-        await this._enrichEigenschaftenData(data)
+        await this._enrichEigenschaftenData(context)
 
-        return data
+        return context
     }
 
     /**
      * Enrich eigenschaften data with parameterSlots from eigenschaft items
-     * @param {Object} data - The template data
+     * @param {Object} context - The template context
      * @private
      */
-    async _enrichEigenschaftenData(data) {
-        const eigenschaften = data.item.system.eigenschaften
+    async _enrichEigenschaftenData(context) {
+        const eigenschaften = context.document.system.eigenschaften
         if (!Array.isArray(eigenschaften)) return
 
         // Import parser utilities
@@ -55,8 +65,8 @@ export class WaffeBaseSheet extends IlarisItemSheet {
             }
         }
 
-        // Update data with enriched eigenschaften
-        data.item.system.eigenschaften = normalized
+        // Update context with enriched eigenschaften
+        context.document.system.eigenschaften = normalized
     }
 
     /**
@@ -85,27 +95,24 @@ export class WaffeBaseSheet extends IlarisItemSheet {
     }
 
     /** @override */
-    activateListeners(html) {
-        super.activateListeners(html)
+    _onRender(context, options) {
+        super._onRender(context, options)
 
-        // Migration button
-        html.find('.migrate-eigenschaften').click(this._onMigrateEigenschaften.bind(this))
-
-        // Eigenschaft management
-        html.find('.add-eigenschaft').click(this._onAddEigenschaft.bind(this))
-        html.find('.remove-eigenschaft').click(this._onRemoveEigenschaft.bind(this))
-        html.find('.eigenschaft-select').change(this._onEigenschaftChange.bind(this))
+        // Handle change event for eigenschaft-select (not a click action)
+        const eigenschaftSelects = this.element.querySelectorAll('.eigenschaft-select')
+        eigenschaftSelects.forEach((select) => {
+            select.addEventListener('change', (ev) => this._onEigenschaftChange(ev))
+        })
     }
 
     /**
      * Handle adding a new eigenschaft
-     * @param {Event} event - The click event
+     * @param {PointerEvent} event - The click event
+     * @param {HTMLElement} target - The clicked element
      * @private
      */
-    async _onAddEigenschaft(event) {
-        event.preventDefault()
-
-        // Get available eigenschaften
+    static async #onAddEigenschaft(event, target) {
+        // Get available eigenschaften (need to bind this context)
         const availableEigenschaften = await this._getAvailableEigenschaften()
 
         if (availableEigenschaften.length === 0) {
@@ -119,6 +126,8 @@ export class WaffeBaseSheet extends IlarisItemSheet {
         const options = availableEigenschaften
             .map((e) => `<option value="${e.name}">${e.name}</option>`)
             .join('')
+
+        const self = this // Save context for callbacks
 
         const dialog = new Dialog({
             title: 'Waffeneigenschaft hinzufügen',
@@ -160,9 +169,9 @@ export class WaffeBaseSheet extends IlarisItemSheet {
                                 parameters.push(value)
                             })
 
-                            const eigenschaften = [...(this.item.system.eigenschaften || [])]
+                            const eigenschaften = [...(self.document.system.eigenschaften || [])]
                             eigenschaften.push({ key: selected, parameters: parameters })
-                            await this.item.update({ 'system.eigenschaften': eigenschaften })
+                            await self.document.update({ 'system.eigenschaften': eigenschaften })
                         }
                     },
                 },
@@ -174,7 +183,6 @@ export class WaffeBaseSheet extends IlarisItemSheet {
             default: 'add',
             height: 500,
             render: async (html) => {
-                const self = this
                 // Add change listener to load parameters when eigenschaft is selected
                 html.find('#eigenschaft-select').on('change', async function (e) {
                     const selectedName = $(this).val()
@@ -241,15 +249,15 @@ export class WaffeBaseSheet extends IlarisItemSheet {
 
     /**
      * Handle removing an eigenschaft
-     * @param {Event} event - The click event
+     * @param {PointerEvent} event - The click event
+     * @param {HTMLElement} target - The clicked element
      * @private
      */
-    async _onRemoveEigenschaft(event) {
-        event.preventDefault()
-        const index = parseInt(event.currentTarget.dataset.index)
-        const eigenschaften = [...(this.item.system.eigenschaften || [])]
+    static async #onRemoveEigenschaft(event, target) {
+        const index = parseInt(target.dataset.index)
+        const eigenschaften = [...(this.document.system.eigenschaften || [])]
         eigenschaften.splice(index, 1)
-        await this.item.update({ 'system.eigenschaften': eigenschaften })
+        await this.document.update({ 'system.eigenschaften': eigenschaften })
     }
 
     /**
@@ -259,40 +267,40 @@ export class WaffeBaseSheet extends IlarisItemSheet {
      * @private
      */
     async _onEigenschaftChange(event) {
-        event.preventDefault()
-
         // Get the form data and update
-        const formData = this._getSubmitData()
-        await this.item.update(formData)
+        const formElement = this.element.querySelector('form')
+        if (!formElement) return
+
+        const formData = new FormDataExtended(formElement)
+        const updateData = foundry.utils.expandObject(formData.object)
+        await this.document.update(updateData)
     }
 
     /**
      * Handle migration button click
-     * @param {Event} event - The click event
+     * @param {PointerEvent} event - The click event
+     * @param {HTMLElement} target - The clicked element
      * @private
      */
-    async _onMigrateEigenschaften(event) {
-        event.preventDefault()
-
-        const button = event.currentTarget
-        button.disabled = true
+    static async #onMigrateEigenschaften(event, target) {
+        target.disabled = true
 
         try {
-            const wasMigrated = await migrateWeapon(this.item)
+            const wasMigrated = await migrateWeapon(this.document)
 
             if (wasMigrated) {
                 ui.notifications.info(
-                    `Weapon "${this.item.name}" successfully migrated to new eigenschaften format`,
+                    `Weapon "${this.document.name}" successfully migrated to new eigenschaften format`,
                 )
                 this.render(false)
             } else {
-                ui.notifications.warn(`Weapon "${this.item.name}" is already in new format`)
+                ui.notifications.warn(`Weapon "${this.document.name}" is already in new format`)
             }
         } catch (error) {
             ui.notifications.error(`Error migrating weapon: ${error.message}`)
             console.error('Migration error:', error)
         } finally {
-            button.disabled = false
+            target.disabled = false
         }
     }
 
@@ -331,18 +339,21 @@ export class WaffeBaseSheet extends IlarisItemSheet {
 
     /**
      * Migrate legacy damage format (dice_anzahl and dice_plus) to tp format
-     * @param {Object} data - The item data
+     * @param {Object} context - The context data
      * @protected
      */
-    _migrateLegacyDamageFormat(data) {
+    _migrateLegacyDamageFormat(context) {
         // for migration from dice_anzahl and dice_plus to tp
         // Only migrate if tp is not set yet AND old fields exist
-        if (!this.item.system.tp && (this.item.system.dice_plus || this.item.system.dice_anzahl)) {
-            this.item.system.tp = `${this.item.system.dice_anzahl}W6${
-                this.item.system.dice_plus < 0 ? '' : '+'
-            }${this.item.system.dice_plus}`
-            delete this.item.system.dice_anzahl
-            delete this.item.system.dice_plus
+        if (
+            !this.document.system.tp &&
+            (this.document.system.dice_plus || this.document.system.dice_anzahl)
+        ) {
+            this.document.system.tp = `${this.document.system.dice_anzahl}W6${
+                this.document.system.dice_plus < 0 ? '' : '+'
+            }${this.document.system.dice_plus}`
+            delete this.document.system.dice_anzahl
+            delete this.document.system.dice_plus
         }
     }
 }

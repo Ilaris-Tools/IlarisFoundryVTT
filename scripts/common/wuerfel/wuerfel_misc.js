@@ -138,7 +138,10 @@ export async function roll_crit_message(
         success_val,
     )
 
-    const html_roll = await renderTemplate(templatePath, templateData)
+    const html_roll = await foundry.applications.handlebars.renderTemplate(
+        templatePath,
+        templateData,
+    )
     let roll_msg = roll.toMessage(
         {
             speaker: speaker,

@@ -4,10 +4,10 @@
 
 Wähle das passende Template für deinen PR:
 
--   **Für Feature/Bugfix PRs**: Verwende dieses Standard-Template
--   **Für Minor Release PRs**: Verwende das [Minor Release Template](https://github.com/pattt333/IlarisFoundryVTT/compare/develop...main?template=pr_minor_release.md)
--   **Für Major Release PRs**: Verwende das [Major Release Template](https://github.com/pattt333/IlarisFoundryVTT/compare/develop...main?template=pr_major_release.md)
--   **Für Versionsupdate PRs**: Verwende das [Versionsupdate Template](https://github.com/pattt333/IlarisFoundryVTT/compare/develop...main?template=pr_version_update.md)
+- **Für Feature/Bugfix PRs**: Verwende dieses Standard-Template
+- **Für Minor Release PRs**: Verwende das [Minor Release Template](https://github.com/pattt333/IlarisFoundryVTT/compare/develop...main?template=pr_minor_release.md)
+- **Für Major Release PRs**: Verwende das [Major Release Template](https://github.com/pattt333/IlarisFoundryVTT/compare/develop...main?template=pr_major_release.md)
+- **Für Versionsupdate PRs**: Verwende das [Versionsupdate Template](https://github.com/pattt333/IlarisFoundryVTT/compare/develop...main?template=pr_version_update.md)
 
 ---
 

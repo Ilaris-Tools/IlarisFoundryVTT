@@ -1,85 +1,96 @@
-export class IlarisItemSheet extends ItemSheet {
-    // Setze ich das an der richtigen Stelle?
-    async getData() {
-        const data = super.getData()
-        // Items sind editierbar, wenn der Actor einem Spieler gehört
-        // UND der Actor nicht mehr im Compendium ist (pack == null bedeutet "in der World")
-        const hasActor = this.item.actor != null
-        const isOwner = this.item.actor?.isOwner
-        const notInPack = this.item.actor?.pack == null
+const { HandlebarsApplicationMixin } = foundry.applications.api
+const { ItemSheetV2 } = foundry.applications.sheets
 
-        data.hasOwner = hasActor && isOwner && notInPack
-
-        return data
+export class IlarisItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
+    /** @override */
+    static DEFAULT_OPTIONS = {
+        classes: ['ilaris', 'sheet', 'item'],
+        position: {
+            width: 600,
+            height: 'auto',
+        },
+        actions: {
+            deleteItem: IlarisItemSheet.#onDeleteItem,
+        },
+        form: {
+            handler: IlarisItemSheet.#onSubmitForm,
+            submitOnChange: true,
+            closeOnSubmit: false,
+        },
+        window: {
+            icon: 'fas fa-suitcase',
+            controls: [],
+        },
     }
 
-    async _updateObject(event, formData) {
+    // NOTE: PARTS must be defined in subclasses with their specific templates
+    // Example: static PARTS = { form: { template: 'path/to/template.hbs' } }
+
+    /** @override */
+    async _prepareContext(options) {
+        const context = await super._prepareContext(options)
+
+        // Items sind editierbar, wenn der Actor einem Spieler gehört
+        // UND der Actor nicht mehr im Compendium ist (pack == null bedeutet "in der World")
+        const hasActor = this.document.actor != null
+        const isOwner = this.document.actor?.isOwner
+        const notInPack = this.document.actor?.pack == null
+        context.item = this.item
+
+        context.hasOwner = hasActor && isOwner && notInPack
+
+        // Make CONFIG.ILARIS available in all templates as 'config' for consistency with actor sheets
+        context.config = CONFIG.ILARIS
+        // Also expose full CONFIG for other uses
+        context.CONFIG = CONFIG
+
+        return context
+    }
+
+    /**
+     * Handle form submission
+     * @param {SubmitEvent} event - The form submit event
+     * @param {HTMLFormElement} form - The form element
+     * @param {FormDataExtended} formData - The form data
+     */
+    static async #onSubmitForm(event, form, formData) {
         try {
-            // Try normal update first
-            const result = await super._updateObject(event, formData)
-
-            // If super failed, try direct update with proper method for embedded items
-            if (!result) {
-                let directResult
-                if (this.item.isEmbedded) {
-                    // For embedded items, update through the parent Actor
-                    directResult = await this.item.actor.updateEmbeddedDocuments('Item', [
-                        { _id: this.item.id, ...formData },
-                    ])
-                } else {
-                    // For standalone items, update directly
-                    directResult = await this.item.update(formData)
-                }
-                return directResult
-            }
-
-            return result
+            const updateData = foundry.utils.expandObject(formData.object)
+            await this.document.update(updateData)
         } catch (error) {
             console.error('Item update failed:', error)
+            ui.notifications?.error(game.i18n.format('ERROR.ItemUpdate', { error: error.message }))
             throw error
         }
     }
 
-    activateListeners(html) {
-        super.activateListeners(html)
-        html.find('.item-delete').click((ev) => this._onItemDelete(ev))
+    /**
+     * Handle delete item action
+     * @param {PointerEvent} event - The click event
+     * @param {HTMLElement} target - The clicked element
+     */
+    static async #onDeleteItem(event, target) {
+        const confirm = await foundry.applications.api.DialogV2.confirm({
+            window: { title: game.i18n.localize('ITEM.DeleteTitle') },
+            content: `<p>${game.i18n.localize('ITEM.DeleteConfirm')}</p>`,
+            rejectClose: false,
+            modal: true,
+        })
+
+        if (!confirm) return
+
+        try {
+            await this.document.delete()
+            this.close()
+        } catch (error) {
+            console.error('Item delete failed:', error)
+            ui.notifications?.error(game.i18n.format('ERROR.ItemDelete', { error: error.message }))
+        }
     }
 
-    _onItemDelete(event) {
-        const itemID = event.currentTarget.dataset.itemid
-        if (!itemID) {
-            ui.notifications?.warn('Cannot delete item: No item ID found')
-            return
-        }
-
-        if (this.actor) {
-            // If item is embedded in an actor, delete it from the actor
-            this.actor.deleteEmbeddedDocuments('Item', [itemID])
-        } else {
-            // If item is not embedded, delete the item itself
-            this.item.delete()
-        }
+    /** @override */
+    _onRender(context, options) {
+        super._onRender(context, options)
+        // Hook for subclasses to add non-action event listeners
     }
-
-    // activateListeners(html) {
-    //     super.activateListeners(html);
-    //     html.find("input").focusin(ev => this._onFocusIn(ev));
-    // }
-
-    // _getHeaderButtons() {
-    //     let buttons = super._getHeaderButtons();
-    //     buttons = [
-    //         {
-    //             label: game.i18n.localize("BUTTON.POST_ITEM"),
-    //             class: "item-post",
-    //             icon: "fas fa-comment",
-    //             onclick: (ev) => this.item.sendToChat(),
-    //         }
-    //     ].concat(buttons);
-    //     return buttons;
-    // }
-
-    // _onFocusIn(event) {
-    //     $(event.currentTarget).select();
-    // }
 }

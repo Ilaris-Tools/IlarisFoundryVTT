@@ -65,6 +65,19 @@ global.foundry = {
             return result
         },
     },
+    applications: {
+        handlebars: {
+            loadTemplates: jest.fn().mockResolvedValue(undefined),
+            renderTemplate: jest.fn().mockImplementation((path, data) => {
+                // Return a simple HTML string based on the template data
+                if (data?.crit) return '<h3>Kritischer Erfolg</h3>'
+                if (data?.fumble) return '<h3>Patzer</h3>'
+                if (data?.success) return '<h3>Erfolg</h3>'
+                if (data?.noSuccess) return '<h3>Misserfolg</h3>'
+                return '<div>Default Template</div>'
+            }),
+        },
+    },
 }
 
 // Mock game object

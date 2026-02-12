@@ -29,15 +29,21 @@ describe('roll_crit_message', () => {
             },
         }
 
-        // Mock renderTemplate function
-        global.renderTemplate = jest.fn().mockImplementation((path, data) => {
-            // Return a simple HTML string based on the template data
-            if (data.crit) return '<h3>Kritischer Erfolg</h3>'
-            if (data.fumble) return '<h3>Patzer</h3>'
-            if (data.success) return '<h3>Erfolg</h3>'
-            if (data.noSuccess) return '<h3>Misserfolg</h3>'
-            return '<div>Default Template</div>'
-        })
+        // Mock foundry.applications.handlebars.renderTemplate
+        global.foundry = {
+            applications: {
+                handlebars: {
+                    renderTemplate: jest.fn().mockImplementation((path, data) => {
+                        // Return a simple HTML string based on the template data
+                        if (data.crit) return '<h3>Kritischer Erfolg</h3>'
+                        if (data.fumble) return '<h3>Patzer</h3>'
+                        if (data.success) return '<h3>Erfolg</h3>'
+                        if (data.noSuccess) return '<h3>Misserfolg</h3>'
+                        return '<div>Default Template</div>'
+                    }),
+                },
+            },
+        }
 
         // Default mock roll behavior
         mockRoll = {
@@ -58,7 +64,7 @@ describe('roll_crit_message', () => {
 
             await roll_crit_message('1d20+5', 'Test Roll', '', null, 'roll', true, 1, 20)
 
-            expect(global.renderTemplate).toHaveBeenCalledWith(
+            expect(foundry.applications.handlebars.renderTemplate).toHaveBeenCalledWith(
                 'systems/Ilaris/templates/chat/probenchat_profan.hbs',
                 expect.objectContaining({ crit: true }),
             )
@@ -70,7 +76,7 @@ describe('roll_crit_message', () => {
 
             await roll_crit_message('1d20+5', 'Test Roll', '', null, 'roll', true, 1, 30)
 
-            expect(global.renderTemplate).toHaveBeenCalledWith(
+            expect(foundry.applications.handlebars.renderTemplate).toHaveBeenCalledWith(
                 'systems/Ilaris/templates/chat/probenchat_profan.hbs',
                 expect.not.objectContaining({ crit: true }),
             )
@@ -82,7 +88,7 @@ describe('roll_crit_message', () => {
 
             await roll_crit_message('1d20+5', 'Test Roll', '', null, 'roll', true, 1, 15)
 
-            expect(global.renderTemplate).toHaveBeenCalledWith(
+            expect(foundry.applications.handlebars.renderTemplate).toHaveBeenCalledWith(
                 'systems/Ilaris/templates/chat/probenchat_profan.hbs',
                 expect.objectContaining({ fumble: true }),
             )
@@ -94,7 +100,7 @@ describe('roll_crit_message', () => {
 
             await roll_crit_message('1d20+15', 'Test Roll', '', null, 'roll', true, 1, 5)
 
-            expect(global.renderTemplate).toHaveBeenCalledWith(
+            expect(foundry.applications.handlebars.renderTemplate).toHaveBeenCalledWith(
                 'systems/Ilaris/templates/chat/probenchat_profan.hbs',
                 expect.not.objectContaining({ fumble: true }),
             )
@@ -112,7 +118,7 @@ describe('roll_crit_message', () => {
 
             await roll_crit_message('1d20+5', 'Test Roll', '', null, 'roll', true, 1, 30) // Impossible target
 
-            expect(global.renderTemplate).toHaveBeenCalledWith(
+            expect(foundry.applications.handlebars.renderTemplate).toHaveBeenCalledWith(
                 'systems/Ilaris/templates/chat/probenchat_profan.hbs',
                 expect.objectContaining({ crit: true }),
             )
@@ -124,7 +130,7 @@ describe('roll_crit_message', () => {
 
             await roll_crit_message('1d20+15', 'Test Roll', '', null, 'roll', true, 1, 5) // Easy target
 
-            expect(global.renderTemplate).toHaveBeenCalledWith(
+            expect(foundry.applications.handlebars.renderTemplate).toHaveBeenCalledWith(
                 'systems/Ilaris/templates/chat/probenchat_profan.hbs',
                 expect.objectContaining({ fumble: true }),
             )
@@ -137,7 +143,7 @@ describe('roll_crit_message', () => {
 
         await roll_crit_message('1d20+5', 'Test Roll', '', null, 'roll', true, 1, 15)
 
-        expect(global.renderTemplate).toHaveBeenCalledWith(
+        expect(foundry.applications.handlebars.renderTemplate).toHaveBeenCalledWith(
             'systems/Ilaris/templates/chat/probenchat_profan.hbs',
             expect.objectContaining({ success: true }),
         )
@@ -149,7 +155,7 @@ describe('roll_crit_message', () => {
 
         await roll_crit_message('1d20+5', 'Test Roll', '', null, 'roll', true, 1, 15)
 
-        expect(global.renderTemplate).toHaveBeenCalledWith(
+        expect(foundry.applications.handlebars.renderTemplate).toHaveBeenCalledWith(
             'systems/Ilaris/templates/chat/probenchat_profan.hbs',
             expect.objectContaining({ noSuccess: true }),
         )
@@ -161,7 +167,7 @@ describe('roll_crit_message', () => {
 
         await roll_crit_message('1d20+5', 'Test Roll', '', null, 'roll', false)
 
-        expect(global.renderTemplate).toHaveBeenCalledWith(
+        expect(foundry.applications.handlebars.renderTemplate).toHaveBeenCalledWith(
             'systems/Ilaris/templates/chat/probenchat_profan.hbs',
             expect.not.objectContaining({ crit: true }),
         )
@@ -182,7 +188,7 @@ describe('roll_crit_message', () => {
             15,
         )
 
-        expect(global.renderTemplate).toHaveBeenCalledWith(
+        expect(foundry.applications.handlebars.renderTemplate).toHaveBeenCalledWith(
             'systems/Ilaris/templates/chat/spell_result.hbs',
             expect.objectContaining({
                 success: true,

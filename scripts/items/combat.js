@@ -110,8 +110,8 @@ export class CombatItem extends IlarisItem {
                         this.type === 'zauber'
                             ? MANOEVER_GRUPPE.ZAUBER
                             : this.type === 'liturgie'
-                            ? MANOEVER_GRUPPE.LITURGIE
-                            : MANOEVER_GRUPPE.ANRUFUNG,
+                              ? MANOEVER_GRUPPE.LITURGIE
+                              : MANOEVER_GRUPPE.ANRUFUNG,
                     probe: erschwernis,
                     text: contentWithoutErschwernis || name.trim(),
                     modifications: {},

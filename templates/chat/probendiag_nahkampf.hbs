@@ -119,8 +119,7 @@
 <div class="flexrow">
     <label>{{get_label "km_gzsl"}}</label>
     <select id="km_gzsl" name="item.system.manoever.km_gzsl.selected">
-        {{#select item.system.manoever.km_gzsl.selected}} {{>
-        systems/Ilaris/templates/helper/select_trefferzone.hbs}} {{/select}}
+        {{selectOptions config.trefferzonenOptions selected=item.system.manoever.km_gzsl.selected valueAttr="value" labelAttr="label"}}
     </select>
 </div>
 {{/if}} {{#if manoever.km_umre.possible}}

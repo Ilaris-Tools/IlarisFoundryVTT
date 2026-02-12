@@ -11,14 +11,26 @@ import {
 import { ILARIS } from '../../config.js'
 
 export class UebernatuerlichDialog extends CombatDialog {
-    constructor(actor, item) {
-        const dialog = { title: `Übernatürliche Fertigkeit: ${item.name}` }
-        const options = {
+    /** @override */
+    static DEFAULT_OPTIONS = {
+        actions: {
+            energieErfolg: UebernatuerlichDialog.#onEnergieErfolg,
+            energieMisserfolg: UebernatuerlichDialog.#onEnergieMisserfolg,
+        },
+    }
+
+    /** @override */
+    static PARTS = {
+        form: {
             template: 'systems/Ilaris/templates/sheets/dialogs/uebernatuerlich.hbs',
-            width: 900,
-            height: 'auto',
-        }
-        super(actor, item, dialog, options)
+        },
+    }
+
+    constructor(actor, item, options = {}) {
+        super(actor, item, {
+            ...options,
+            window: { title: `Übernatürliche Fertigkeit: ${item.name}` },
+        })
 
         // Specific properties for supernatural abilities
         this.text_energy = ''
@@ -35,26 +47,57 @@ export class UebernatuerlichDialog extends CombatDialog {
         this.aufbauendeManoeverAktivieren()
     }
 
-    activateListeners(html) {
-        super.activateListeners(html)
+    /**
+     * @override
+     * @param {object} context - Prepared context data
+     * @param {object} options - Render options
+     */
+    async _onRender(context, options) {
+        await super._onRender(context, options)
 
         // Setup modifier display with debounced listeners
-        this.setupModifierDisplay(html)
+        this.setupModifierDisplay()
     }
 
-    getSummaryClickActions(html) {
+    /* -------------------------------------------- */
+    /*  Action Handlers                             */
+    /* -------------------------------------------- */
+
+    /**
+     * Handle the "energieErfolg" action button click.
+     * @param {PointerEvent} event
+     * @param {HTMLElement} target
+     */
+    static async #onEnergieErfolg(event, target) {
+        await this._energieAbrechnenKlick(true)
+    }
+
+    /**
+     * Handle the "energieMisserfolg" action button click.
+     * @param {PointerEvent} event
+     * @param {HTMLElement} target
+     */
+    static async #onEnergieMisserfolg(event, target) {
+        await this._energieAbrechnenKlick(false)
+    }
+
+    /* -------------------------------------------- */
+    /*  Summary Click Actions                       */
+    /* -------------------------------------------- */
+
+    getSummaryClickActions() {
         return [
             {
                 selector: '.clickable-summary.angreifen',
-                handler: (html) => this._angreifenKlick(html),
+                handler: () => this._angreifenKlick(),
             },
             {
                 selector: '.clickable-summary.energie-erfolg',
-                handler: (html) => this._energieAbrechnenKlick(html, true),
+                handler: () => this._energieAbrechnenKlick(true),
             },
             {
                 selector: '.clickable-summary.energie-misserfolg',
-                handler: (html) => this._energieAbrechnenKlick(html, false),
+                handler: () => this._energieAbrechnenKlick(false),
             },
         ]
     }
@@ -69,14 +112,16 @@ export class UebernatuerlichDialog extends CombatDialog {
     }
 
     /**
-     * Override getDiceFormula to handle the special xd20 logic for supernatural abilities
+     * Override getDiceFormula to handle the special xd20 logic for supernatural abilities.
+     * Uses native DOM API instead of jQuery.
      */
-    getDiceFormula(html, xd20_choice = null) {
+    getDiceFormula(xd20_choice = null) {
         if (xd20_choice === null) {
-            xd20_choice = Number(html.find('input[name="xd20"]:checked')[0]?.value) || 0
+            xd20_choice =
+                Number(this.element.querySelector('input[name="xd20"]:checked')?.value) || 0
             xd20_choice = xd20_choice == 0 ? 1 : 3
         }
-        return super.getDiceFormula(html, xd20_choice)
+        return super.getDiceFormula(xd20_choice)
     }
 
     /**
@@ -244,8 +289,14 @@ export class UebernatuerlichDialog extends CombatDialog {
         return summary
     }
 
-    async getData() {
-        // damit wird das template gefüttert
+    /**
+     * @override
+     * @param {object} options - Render options
+     * @returns {Promise<object>} Context data for the template
+     */
+    async _prepareContext(options) {
+        const context = await super._prepareContext(options)
+
         const hasBlutmagie =
             this.actor.vorteil.magie.some((v) => v.name === 'Blutmagie') &&
             this.item.type === 'zauber'
@@ -266,6 +317,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         const isNonStandardDifficulty = isNaN(difficulty) || !difficulty
 
         return {
+            ...context,
             choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: '1',
             choices_verbotene_pforten: {
@@ -277,18 +329,20 @@ export class UebernatuerlichDialog extends CombatDialog {
             hasVerbotenePforten,
             isNonStandardDifficulty,
             canSetEnergyCost,
-            ...(await super.getData()),
         }
     }
 
-    async _angreifenKlick(html) {
-        // NOTE: var names not very descriptive:
-        // at_abzuege_mod kommen vom status/gesundheit, at_mod aus ansagen, nahkampfmod?
-        let xd20_choice = Number(html.find('input[name="xd20"]:checked')[0]?.value) || 0
+    /* -------------------------------------------- */
+    /*  Combat Actions                              */
+    /* -------------------------------------------- */
+
+    async _angreifenKlick() {
+        let xd20_choice =
+            Number(this.element.querySelector('input[name="xd20"]:checked')?.value) || 0
         xd20_choice = xd20_choice == 0 ? 1 : 3
-        let diceFormula = this.getDiceFormula(html, xd20_choice)
-        await this.manoeverAuswaehlen(html)
-        await this.updateManoeverMods() // durch manoever
+        let diceFormula = this.getDiceFormula(xd20_choice)
+        await this.manoeverAuswaehlen()
+        await this.updateManoeverMods()
         this.updateStatusMods()
 
         // Initialize and check energy values
@@ -329,7 +383,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         this.is16OrHigher = is16OrHigher
         if (difficulty) {
             await this.applyEnergyCost(isSuccess, is16OrHigher)
-            // If not enough resources, show erro
+            // If not enough resources, show error
             if (this.currentEnergy < this.endCost) {
                 ui.notifications.error(
                     `Nicht genug Ressourcen! Benötigt: ${this.endCost}, Vorhanden: ${this.currentEnergy}. Unter bestimmten Voraussetzungen zieht dir das System einfach Energie ab, bis du bei 0 angelangt bist. Du kannst diese Information nach eigenem Ermessen weiterverwenden.`,
@@ -338,18 +392,18 @@ export class UebernatuerlichDialog extends CombatDialog {
             // Refresh dialog data after energy application
             await this.refreshActorData()
         }
-        super._updateSchipsStern(html)
+        super._updateSchipsStern()
     }
 
-    async _energieAbrechnenKlick(html, isSuccess) {
-        await this.manoeverAuswaehlen(html)
-        await this.updateManoeverMods() // durch manoever
+    async _energieAbrechnenKlick(isSuccess) {
+        await this.manoeverAuswaehlen()
+        await this.updateManoeverMods()
         // Initialize and check energy values
         await this.initializeEnergyValues()
 
         await this.applyEnergyCost(isSuccess, this.is16OrHigher)
 
-        // If not enough resources, show erro
+        // If not enough resources, show error
         if (this.currentEnergy < this.endCost) {
             ui.notifications.error(
                 `Nicht genug Ressourcen! Benötigt: ${this.endCost}, Vorhanden: ${this.currentEnergy}. Unter bestimmten Voraussetzungen zieht dir das System einfach Energie ab, bis du bei 0 angelangt bist. Du kannst diese Information nach eigenem Ermessen weiterverwenden.`,
@@ -377,11 +431,15 @@ export class UebernatuerlichDialog extends CombatDialog {
                 this.rollmode === 'gmroll'
                     ? ChatMessage.getWhisperRecipients('GM')
                     : this.rollmode === 'selfroll'
-                    ? [game.user.id]
-                    : undefined,
+                      ? [game.user.id]
+                      : undefined,
             blind: this.rollmode === 'blindroll',
         })
     }
+
+    /* -------------------------------------------- */
+    /*  Energy Management                           */
+    /* -------------------------------------------- */
 
     async initializeEnergyValues() {
         // Check if we have enough resources
@@ -459,13 +517,21 @@ export class UebernatuerlichDialog extends CombatDialog {
                 this.rollmode === 'gmroll'
                     ? ChatMessage.getWhisperRecipients('GM')
                     : this.rollmode === 'selfroll'
-                    ? [game.user.id]
-                    : undefined,
+                      ? [game.user.id]
+                      : undefined,
             blind: this.rollmode === 'blindroll',
         })
     }
 
-    async manoeverAuswaehlen(html) {
+    /* -------------------------------------------- */
+    /*  Maneuver Processing                         */
+    /* -------------------------------------------- */
+
+    /**
+     * Parse maneuver selections from the dialog form.
+     * Uses native DOM API instead of jQuery.
+     */
+    async manoeverAuswaehlen() {
         // Ensure manoever exists
         if (!this.item.system.manoever) {
             this.item.system.manoever = ILARIS.manoever_ueber
@@ -484,7 +550,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         }
 
         // allgemeine optionen
-        manoever.kbak.selected = html.find('#kbak')[0]?.checked || false // Kombinierte Aktion
+        manoever.kbak.selected = this.element.querySelector('#kbak')?.checked || false // Kombinierte Aktion
 
         // Initialize blutmagie and verbotene_pforten if they don't exist
         manoever.blutmagie = manoever.blutmagie || {}
@@ -492,29 +558,31 @@ export class UebernatuerlichDialog extends CombatDialog {
         manoever.set_energy_cost = manoever.set_energy_cost || { value: 0 }
 
         // Get values from Blutmagie and Verbotene Pforten if they exist
-        manoever.blutmagie.value = Number(html.find('#blutmagie')[0]?.value) || 0
+        manoever.blutmagie.value = Number(this.element.querySelector('#blutmagie')?.value) || 0
 
         // For verbotene_pforten, check if a radio button is selected (not the default "0")
-        const verbotenePfortenValue = html.find('input[name="verbotene_pforten_toggle"]:checked')[0]
-            ?.value
+        const verbotenePfortenValue = this.element.querySelector(
+            'input[name="verbotene_pforten_toggle"]:checked',
+        )?.value
         manoever.verbotene_pforten = {
             multiplier: Number(verbotenePfortenValue) || 4,
             activated: verbotenePfortenValue !== undefined && verbotenePfortenValue !== '0',
         }
 
-        const energyOverride = html.find('input[name="item.system.manoever.energyOverride"]')[0]
-            ?.value
+        const energyOverride = this.element.querySelector(
+            'input[name="item.system.manoever.energyOverride"]',
+        )?.value
         manoever.set_energy_cost.value =
             energyOverride !== '' && energyOverride != null ? +energyOverride : null
 
         console.log('manoever', manoever.set_energy_cost.value)
-        // Get values from the HTML elements
 
-        manoever.mod.selected = Number(html.find(`#modifikator-${this.dialogId}`)[0]?.value) || 0 // Modifikator
+        manoever.mod.selected =
+            Number(this.element.querySelector(`#modifikator-${this.dialogId}`)?.value) || 0 // Modifikator
         manoever.rllm.selected =
-            html.find(`#rollMode-${this.dialogId}`)[0]?.value ||
+            this.element.querySelector(`#rollMode-${this.dialogId}`)?.value ||
             game.settings.get('core', 'rollMode') // RollMode
-        await super.manoeverAuswaehlen(html)
+        await super.manoeverAuswaehlen()
     }
 
     /**
@@ -587,7 +655,8 @@ export class UebernatuerlichDialog extends CombatDialog {
     }
 
     /**
-     * Refreshes the dialog's actor reference and updates displays after actor changes
+     * Refreshes the dialog's actor reference and updates displays after actor changes.
+     * Uses native DOM API instead of jQuery.
      */
     async refreshActorData() {
         // Get the updated actor from the game
@@ -600,14 +669,9 @@ export class UebernatuerlichDialog extends CombatDialog {
             await this.initializeEnergyValues()
 
             // Update the modifier display if it exists
-            const html = this.element
-            if (
-                html &&
-                html.length > 0 &&
-                this._modifierElement &&
-                this._modifierElement.length > 0
-            ) {
-                this.updateModifierDisplay(html)
+            const modifierEl = this.element?.querySelector('#modifier-summary')
+            if (modifierEl) {
+                this.updateModifierDisplay()
             }
         }
     }

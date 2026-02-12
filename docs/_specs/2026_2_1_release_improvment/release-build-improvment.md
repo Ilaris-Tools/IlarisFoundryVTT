@@ -8,12 +8,12 @@ Hier ist der **Feature-Plan für die Integration der Foundry Package Release API
 
 #### **1. Grundprinzip & Anforderungen**
 
--   **Single Source of Truth:** Die `system.json` im GitHub-Release ist die maßgebliche Quelle für alle Metadaten (Version, Manifest-URL, Download-URL, Compatibility).
--   **API-First Release:** Der Release-Prozess auf Foundry wird vollständig über deren REST-API (`https://foundryvtt.com/_api/packages/release_version/`) gesteuert, anstatt manuell im Package-Builder-Interface.
--   **Kein Breaking des Bestehenden:** Der existierende Prozess (Erstellen des ZIP-Archivs, Taggen, GitHub-Release) bleibt unverändert und wird um den finalen API-Schritt erweitert.
--   **Sicherheit:** Der Foundry-Package-Release-Token (`FOUNDRY_RELEASE_TOKEN`) wird als GitHub-Repository Secret gespeichert und niemals im Klartext im Workflow oder Logs ausgegeben.
--   **Dry-Run für Pre-Releases:** Pre-Release-Builds (`pre_release: true`) triggern einen Dry-Run-API-Call zur Validierung ohne tatsächliche Veröffentlichung.
--   **Rate Limiting:** Die API erlaubt maximal 1 Release pro 60 Sekunden. Bei `429 Too Many Requests` wird ein Retry nach 60s durchgeführt.
+- **Single Source of Truth:** Die `system.json` im GitHub-Release ist die maßgebliche Quelle für alle Metadaten (Version, Manifest-URL, Download-URL, Compatibility).
+- **API-First Release:** Der Release-Prozess auf Foundry wird vollständig über deren REST-API (`https://foundryvtt.com/_api/packages/release_version/`) gesteuert, anstatt manuell im Package-Builder-Interface.
+- **Kein Breaking des Bestehenden:** Der existierende Prozess (Erstellen des ZIP-Archivs, Taggen, GitHub-Release) bleibt unverändert und wird um den finalen API-Schritt erweitert.
+- **Sicherheit:** Der Foundry-Package-Release-Token (`FOUNDRY_RELEASE_TOKEN`) wird als GitHub-Repository Secret gespeichert und niemals im Klartext im Workflow oder Logs ausgegeben.
+- **Dry-Run für Pre-Releases:** Pre-Release-Builds (`pre_release: true`) triggern einen Dry-Run-API-Call zur Validierung ohne tatsächliche Veröffentlichung.
+- **Rate Limiting:** Die API erlaubt maximal 1 Release pro 60 Sekunden. Bei `429 Too Many Requests` wird ein Retry nach 60s durchgeführt.
 
 #### **2. Vorbereitung & Setup (Einmalig)**
 
@@ -134,27 +134,27 @@ release-foundry:
 
 **Keine Änderungen am `pack`-Job erforderlich:**
 
--   Der `release-foundry`-Job benötigt **keine Artifacts**, da die Foundry-API die Dateien selbst von den GitHub-Release-URLs herunterlädt.
--   Der Job greift nur auf die bereits committete `system.json` zu, um Metadaten auszulesen.
+- Der `release-foundry`-Job benötigt **keine Artifacts**, da die Foundry-API die Dateien selbst von den GitHub-Release-URLs herunterlädt.
+- Der Job greift nur auf die bereits committete `system.json` zu, um Metadaten auszulesen.
 
 #### **4. Behandlung von Versionierung & Konflikten**
 
--   **Version-Konflikt:** Wenn die in der `system.json` angegebene Version bereits auf Foundry existiert, antwortet die API mit `400 Bad Request` und dem Fehler `"Package Version with this Package and Version Number already exists."`. Dies ist gewollt und schützt vor versehentlichen Überschreibungen.
--   **Workflow-Reaktion:** Im Fehlerfall schlägt der `release-foundry`-Job fehl. Das GitHub-Release bleibt bestehen, aber die Veröffentlichung auf Foundry ist blockiert.
--   **Manueller Retry:** Bei Fehler kann der Job manuell über `workflow_dispatch` erneut getriggert werden (siehe Abschnitt 6).
--   **Rollback/Unpublish:** Die Foundry-API bietet **keine** `DELETE`- oder Unpublish-Funktion. Ein veröffentlichtes Release ist endgültig.
--   **Pre-Release-Validierung:** Pre-Releases mit Hash-Version (`12.3.0-abc123`) werden als Dry-Run validiert, ohne tatsächlich auf Foundry veröffentlicht zu werden.
+- **Version-Konflikt:** Wenn die in der `system.json` angegebene Version bereits auf Foundry existiert, antwortet die API mit `400 Bad Request` und dem Fehler `"Package Version with this Package and Version Number already exists."`. Dies ist gewollt und schützt vor versehentlichen Überschreibungen.
+- **Workflow-Reaktion:** Im Fehlerfall schlägt der `release-foundry`-Job fehl. Das GitHub-Release bleibt bestehen, aber die Veröffentlichung auf Foundry ist blockiert.
+- **Manueller Retry:** Bei Fehler kann der Job manuell über `workflow_dispatch` erneut getriggert werden (siehe Abschnitt 6).
+- **Rollback/Unpublish:** Die Foundry-API bietet **keine** `DELETE`- oder Unpublish-Funktion. Ein veröffentlichtes Release ist endgültig.
+- **Pre-Release-Validierung:** Pre-Releases mit Hash-Version (`12.3.0-abc123`) werden als Dry-Run validiert, ohne tatsächlich auf Foundry veröffentlicht zu werden.
 
 #### **5. Fehlerbehandlung & Monitoring**
 
--   **HTTP-Status-Codes:**
-    -   `200 OK` → Erfolgreiche Veröffentlichung
-    -   `400 Bad Request` → Validierungsfehler (z.B. fehlende Felder, Versions-Duplikat, ungültige URLs)
-    -   `429 Too Many Requests` → Rate Limit (automatischer Retry nach 60s)
-    -   Andere Codes → Allgemeiner Fehler (Job schlägt fehl)
--   **Fehler-Output:** Der vollständige API-Response wird im Job-Log ausgegeben, inkl. detaillierter Feld-Fehler bei `400`.
--   **Benachrichtigung:** Bei Fehler des `release-foundry`-Jobs erscheint eine Workflow-Failure-Notification in GitHub.
--   **Manueller Fallback:** Der manuelle Upload im Package-Builder bleibt als Fallback-Option verfügbar, falls die API unerwartet nicht erreichbar ist.
+- **HTTP-Status-Codes:**
+    - `200 OK` → Erfolgreiche Veröffentlichung
+    - `400 Bad Request` → Validierungsfehler (z.B. fehlende Felder, Versions-Duplikat, ungültige URLs)
+    - `429 Too Many Requests` → Rate Limit (automatischer Retry nach 60s)
+    - Andere Codes → Allgemeiner Fehler (Job schlägt fehl)
+- **Fehler-Output:** Der vollständige API-Response wird im Job-Log ausgegeben, inkl. detaillierter Feld-Fehler bei `400`.
+- **Benachrichtigung:** Bei Fehler des `release-foundry`-Jobs erscheint eine Workflow-Failure-Notification in GitHub.
+- **Manueller Fallback:** Der manuelle Upload im Package-Builder bleibt als Fallback-Option verfügbar, falls die API unerwartet nicht erreichbar ist.
 
 #### **6. Manueller Trigger (Workflow Dispatch)**
 
@@ -195,11 +195,11 @@ release-foundry:
 
 #### **7. Akzeptanzkriterien (Definition of Done)**
 
--   [ ] **AC1 (Automatisierung):** Bei Auslösung eines Workflows mit `pre_release: false` wird nach erfolgreichem GitHub-Release automatisch ein API-Call an Foundry gemacht.
--   [ ] **AC2 (Sicherheit):** Der Foundry-Release-Token wird ausschließlich über das GitHub Secret `FOUNDRY_RELEASE_TOKEN` eingebunden und taucht in keinem Log auf.
--   [ ] **AC3 (Robustheit):** Bei einer Versionskollision (Version bereits auf Foundry vorhanden) schlägt der Job mit aussagekräftiger Fehlermeldung fehl.
--   [ ] **AC4 (Korrektheit):** Die Foundry-API erhält korrekte URLs zu `system.json` und ZIP-Archiv im GitHub-Release sowie korrekte Compatibility-Werte aus der `system.json`.
--   [ ] **AC5 (Pre-Release/Dry-Run):** Workflows mit `pre_release: true` führen einen Dry-Run durch (Validierung ohne Veröffentlichung).
--   [ ] **AC6 (Rate Limiting):** Bei HTTP 429 wartet der Job 60s und versucht es ein zweites Mal.
--   [ ] **AC7 (Manueller Trigger):** Der Workflow kann manuell mit `workflow_dispatch` gestartet werden, um fehlgeschlagene Foundry-Releases zu wiederholen.
--   [ ] **AC8 (Release Notes):** Die `notes`-URL verweist auf die GitHub Release Notes für diese Version.
+- [ ] **AC1 (Automatisierung):** Bei Auslösung eines Workflows mit `pre_release: false` wird nach erfolgreichem GitHub-Release automatisch ein API-Call an Foundry gemacht.
+- [ ] **AC2 (Sicherheit):** Der Foundry-Release-Token wird ausschließlich über das GitHub Secret `FOUNDRY_RELEASE_TOKEN` eingebunden und taucht in keinem Log auf.
+- [ ] **AC3 (Robustheit):** Bei einer Versionskollision (Version bereits auf Foundry vorhanden) schlägt der Job mit aussagekräftiger Fehlermeldung fehl.
+- [ ] **AC4 (Korrektheit):** Die Foundry-API erhält korrekte URLs zu `system.json` und ZIP-Archiv im GitHub-Release sowie korrekte Compatibility-Werte aus der `system.json`.
+- [ ] **AC5 (Pre-Release/Dry-Run):** Workflows mit `pre_release: true` führen einen Dry-Run durch (Validierung ohne Veröffentlichung).
+- [ ] **AC6 (Rate Limiting):** Bei HTTP 429 wartet der Job 60s und versucht es ein zweites Mal.
+- [ ] **AC7 (Manueller Trigger):** Der Workflow kann manuell mit `workflow_dispatch` gestartet werden, um fehlgeschlagene Foundry-Releases zu wiederholen.
+- [ ] **AC8 (Release Notes):** Die `notes`-URL verweist auf die GitHub Release Notes für diese Version.

@@ -4,11 +4,12 @@ import { UebernatuerlichDialog } from '../sheets/dialogs/uebernatuerlich.js'
 import { FertigkeitDialog } from '../sheets/dialogs/fertigkeit.js'
 import { calculate_diceschips, roll_crit_message } from './wuerfel/wuerfel_misc.js'
 
-export async function wuerfelwurf(event, actor) {
-    console.log(event)
+export async function wuerfelwurf(target, actor) {
+    console.log(target)
     let speaker = ChatMessage.getSpeaker({ actor: actor })
     let systemData = actor.system
-    let rolltype = $(event.currentTarget).data('rolltype')
+    let rolltype = target.dataset.rolltype
+    console.log('ILARIS | wuerfelwurf triggered', target, rolltype)
     let globalermod = systemData.abgeleitete.globalermod
     let nahkampfmod = systemData.modifikatoren.nahkampfmod
     let pw = 0
@@ -16,25 +17,25 @@ export async function wuerfelwurf(event, actor) {
     let dialogId = `dialog-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`
 
     if (rolltype == 'angriff_diag') {
-        let item = actor.items.get(event.currentTarget.dataset.itemid)
+        let item = actor.items.get(target.dataset.itemid)
         let d = new AngriffDialog(actor, item)
         await d.render(true)
     } else if (rolltype == 'fernkampf_diag') {
-        let item = actor.items.get(event.currentTarget.dataset.itemid)
+        let item = actor.items.get(target.dataset.itemid)
         let d = new FernkampfAngriffDialog(actor, item)
         await d.render(true)
     } else if (rolltype == 'magie_diag' || rolltype == 'karma_diag') {
-        let item = actor.items.get(event.currentTarget.dataset.itemid)
+        let item = actor.items.get(target.dataset.itemid)
         console.log('item', item)
         let d = new UebernatuerlichDialog(actor, item)
 
         await d.render(true)
     } else if (rolltype == 'fertigkeit_diag') {
         // Unified skill/attribute dialog with preview
-        const probeType = $(event.currentTarget).data('probetype') || 'fertigkeit'
+        const probeType = target.dataset.probetype || 'fertigkeit'
 
         if (probeType === 'attribut') {
-            const attribut_name = $(event.currentTarget).data('attribut')
+            const attribut_name = target.dataset.attribut
             const label = CONFIG.ILARIS.label[attribut_name]
             const pw = systemData.attribute[attribut_name].pw
 
@@ -46,8 +47,8 @@ export async function wuerfelwurf(event, actor) {
             })
             await d.render(true)
         } else if (probeType === 'freie_fertigkeit') {
-            const fertigkeitName = $(event.currentTarget).data('fertigkeit')
-            const stufe = Number($(event.currentTarget).data('pw'))
+            const fertigkeitName = target.dataset.fertigkeit
+            const stufe = Number(target.dataset.pw)
             const pw = stufe * 8 - 2
 
             let d = new FertigkeitDialog(actor, {
@@ -59,8 +60,8 @@ export async function wuerfelwurf(event, actor) {
             await d.render(true)
         } else if (probeType === 'simple') {
             // Simple skill with direct PW (e.g. creature skills)
-            const fertigkeitName = $(event.currentTarget).data('fertigkeit')
-            const pw = Number($(event.currentTarget).data('pw'))
+            const fertigkeitName = target.dataset.fertigkeit
+            const pw = Number(target.dataset.pw)
 
             let d = new FertigkeitDialog(actor, {
                 probeType: 'simple',
@@ -71,7 +72,7 @@ export async function wuerfelwurf(event, actor) {
             await d.render(true)
         } else {
             // Regular skill (fertigkeit)
-            const fertigkeit = $(event.currentTarget).data('fertigkeit')
+            const fertigkeit = target.dataset.fertigkeit
             const fertigkeitData = actor.profan.fertigkeiten[fertigkeit]
             const fertigkeitName = fertigkeitData.name
             const pw = fertigkeitData.system.pw
@@ -93,8 +94,8 @@ export async function wuerfelwurf(event, actor) {
             await d.render(true)
         }
     } else if (rolltype == 'simpleformula_diag') {
-        label = $(event.currentTarget).data('name')
-        let formula = $(event.currentTarget).data('formula')
+        label = target.dataset.name
+        let formula = target.dataset.formula
         const html = await renderTemplate(
             'systems/Ilaris/templates/chat/probendiag_simpleformula.hbs',
             {
@@ -142,15 +143,15 @@ export async function wuerfelwurf(event, actor) {
         )
         d.render(true)
     } else if (rolltype == 'simpleprobe_diag') {
-        label = $(event.currentTarget).data('name')
-        pw = Number($(event.currentTarget).data('pw'))
-        let probentyp = $(event.currentTarget).data('probentyp')
+        label = target.dataset.name
+        pw = Number(target.dataset.pw)
+        let probentyp = target.dataset.probentyp
         let spezialmod = 0
         if (probentyp == 'nahkampf') {
             spezialmod = nahkampfmod
         }
         let xd20 = '1'
-        if ($(event.currentTarget).data('xd20') == '0') {
+        if (target.dataset.xd20 == '0') {
             xd20 = '0'
         }
         const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_attribut.hbs', {

@@ -6,6 +6,10 @@
   },
   "parserOptions": {
     "sourceType": "module",
-    "ecmaVersion": "latest"
+    "ecmaVersion": 2022
+  },
+  "env": {
+    "browser": true,
+    "es2022": true
   }
 }

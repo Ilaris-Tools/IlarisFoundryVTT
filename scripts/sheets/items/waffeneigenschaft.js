@@ -1,20 +1,39 @@
 import { IlarisItemSheet } from './item.js'
 
 export class WaffeneigenschaftSheet extends IlarisItemSheet {
-    static get defaultOptions() {
-        return foundry.utils.mergeObject(super.defaultOptions, {
-            template: 'systems/Ilaris/templates/sheets/items/waffeneigenschaft.hbs',
+    /** @override */
+    static DEFAULT_OPTIONS = {
+        classes: ['ilaris', 'sheet', 'item', 'waffeneigenschaft'],
+        position: {
             width: 600,
             height: 800,
+        },
+        window: {
             resizable: true,
-        })
+        },
+        actions: {
+            addParameterSlot: WaffeneigenschaftSheet.#onAddParameterSlot,
+            removeParameterSlot: WaffeneigenschaftSheet.#onRemoveParameterSlot,
+            addConditionalModifier: WaffeneigenschaftSheet.#onAddConditionalModifier,
+            removeConditionalModifier: WaffeneigenschaftSheet.#onRemoveConditionalModifier,
+            addActorModifier: WaffeneigenschaftSheet.#onAddActorModifier,
+            removeActorModifier: WaffeneigenschaftSheet.#onRemoveActorModifier,
+        },
     }
 
-    async getData() {
-        const data = await super.getData()
+    /** @override */
+    static PARTS = {
+        form: {
+            template: 'systems/Ilaris/templates/sheets/items/waffeneigenschaft.hbs',
+        },
+    }
+
+    /** @override */
+    async _prepareContext(options) {
+        const context = await super._prepareContext(options)
 
         // Prepare kategorie options for select dropdown
-        data.kategorien = [
+        context.kategorien = [
             { value: 'modifier', label: 'Modifikator' },
             { value: 'wielding', label: 'Führung' },
             { value: 'target_effect', label: 'Ziel-Effekt' },
@@ -23,7 +42,7 @@ export class WaffeneigenschaftSheet extends IlarisItemSheet {
         ]
 
         // Attribute options
-        data.attribute = [
+        context.attribute = [
             { value: 'KK', label: 'KK' },
             { value: 'KO', label: 'KO' },
             { value: 'GE', label: 'GE' },
@@ -35,10 +54,10 @@ export class WaffeneigenschaftSheet extends IlarisItemSheet {
         ]
 
         // Attribute options with empty option
-        data.attributeMitLeer = [{ value: '', label: '-' }, ...data.attribute]
+        context.attributeMitLeer = [{ value: '', label: '-' }, ...context.attribute]
 
         // Operator options
-        data.operatoren = [
+        context.operatoren = [
             { value: '<', label: '<' },
             { value: '<=', label: '<=' },
             { value: '>', label: '>' },
@@ -48,23 +67,23 @@ export class WaffeneigenschaftSheet extends IlarisItemSheet {
         ]
 
         // Condition type options
-        data.bedingungsTypen = [{ value: 'attribute_check', label: 'Attribut-Prüfung' }]
+        context.bedingungsTypen = [{ value: 'attribute_check', label: 'Attribut-Prüfung' }]
 
         // Target effect trigger options
-        data.ausloeser = [
+        context.ausloeser = [
             { value: '', label: 'Kein' },
             { value: 'on_hit', label: 'Bei Treffer' },
             { value: 'on_crit', label: 'Bei Kritischem Treffer' },
         ]
 
         // Resist check type options
-        data.widerstandsprobeTypen = [
+        context.widerstandsprobeTypen = [
             { value: 'none', label: 'Keine' },
             { value: 'attribute_vs_attribute', label: 'Attribut vs Attribut' },
         ]
 
         // Effect type options
-        data.effektTypen = [
+        context.effektTypen = [
             { value: '', label: 'Kein' },
             { value: 'status', label: 'Status' },
             { value: 'condition', label: 'Zustand' },
@@ -72,7 +91,7 @@ export class WaffeneigenschaftSheet extends IlarisItemSheet {
         ]
 
         // Conditional modifier condition options
-        data.conditionalModifierConditions = [
+        context.conditionalModifierConditions = [
             { value: 'target_has_shield', label: 'Ziel hat Schild' },
             { value: 'target_is_prone', label: 'Ziel liegt' },
             { value: 'target_is_mounted', label: 'Ziel ist beritten' },
@@ -85,7 +104,7 @@ export class WaffeneigenschaftSheet extends IlarisItemSheet {
         ]
 
         // Actor modifier mode options
-        data.actorModifierModes = [
+        context.actorModifierModes = [
             { value: '', label: 'Keine' },
             { value: 'set', label: 'Setzen' },
             { value: 'augment', label: 'Modifizieren' },
@@ -94,14 +113,14 @@ export class WaffeneigenschaftSheet extends IlarisItemSheet {
         ]
 
         // Abgeleitete properties that can be modified
-        data.abgeleiteteProperties = [
+        context.abgeleiteteProperties = [
             { value: 'be', label: 'BE (Behinderung)' },
             { value: 'ini', label: 'INI (Initiative)' },
             { value: 'gs', label: 'GS (Geschwindigkeit)' },
         ]
 
         // Usage path options for parameter slots
-        data.usagePfade = [
+        context.usagePfade = [
             { value: '', label: '-- Kein Usage --' },
             {
                 value: 'wieldingRequirements.condition.value',
@@ -140,36 +159,17 @@ export class WaffeneigenschaftSheet extends IlarisItemSheet {
             },
         ]
 
-        return data
-    }
-
-    /** @override */
-    activateListeners(html) {
-        super.activateListeners(html)
-
-        // Parameter slot management
-        html.find('.add-parameter-slot').click(this._onAddParameterSlot.bind(this))
-        html.find('.remove-parameter-slot').click(this._onRemoveParameterSlot.bind(this))
-
-        // Conditional modifiers
-        html.find('.add-conditional-modifier').click(this._onAddConditionalModifier.bind(this))
-        html.find('.remove-conditional-modifier').click(
-            this._onRemoveConditionalModifier.bind(this),
-        )
-
-        // Actor modifiers
-        html.find('.add-actor-modifier').click(this._onAddActorModifier.bind(this))
-        html.find('.remove-actor-modifier').click(this._onRemoveActorModifier.bind(this))
+        return context
     }
 
     /**
      * Handle adding a parameter slot
-     * @param {Event} event - The click event
+     * @param {PointerEvent} event - The click event
+     * @param {HTMLElement} target - The clicked element
      * @private
      */
-    async _onAddParameterSlot(event) {
-        event.preventDefault()
-        const currentData = this.item.system.parameterSlots
+    static async #onAddParameterSlot(event, target) {
+        const currentData = this.document.system.parameterSlots
         const slots = Array.isArray(currentData) ? currentData : Object.values(currentData) || []
         slots.push({
             name: '',
@@ -179,32 +179,32 @@ export class WaffeneigenschaftSheet extends IlarisItemSheet {
             required: false,
             defaultValue: null,
         })
-        await this.item.update({ 'system.parameterSlots': slots })
+        await this.document.update({ 'system.parameterSlots': slots })
     }
 
     /**
      * Handle removing a parameter slot
-     * @param {Event} event - The click event
+     * @param {PointerEvent} event - The click event
+     * @param {HTMLElement} target - The clicked element
      * @private
      */
-    async _onRemoveParameterSlot(event) {
-        event.preventDefault()
-        const index = parseInt(event.currentTarget.dataset.index)
-        const currentData = this.item.system.parameterSlots
+    static async #onRemoveParameterSlot(event, target) {
+        const index = parseInt(target.dataset.index)
+        const currentData = this.document.system.parameterSlots
         const slots = Array.isArray(currentData) ? currentData : Object.values(currentData) || []
         slots.splice(index, 1)
-        await this.item.update({ 'system.parameterSlots': slots })
+        await this.document.update({ 'system.parameterSlots': slots })
     }
 
     /**
      * Handle adding a conditional modifier
-     * @param {Event} event
+     * @param {PointerEvent} event
+     * @param {HTMLElement} target
      * @private
      */
-    async _onAddConditionalModifier(event) {
-        event.preventDefault()
+    static async #onAddConditionalModifier(event, target) {
         const conditionalModifiers = foundry.utils.deepClone(
-            this.item.system.modifiers?.conditionalModifiers || [],
+            this.document.system.modifiers?.conditionalModifiers || [],
         )
         conditionalModifiers.push({
             condition: 'target_has_shield',
@@ -215,32 +215,38 @@ export class WaffeneigenschaftSheet extends IlarisItemSheet {
             },
             description: '',
         })
-        await this.item.update({ 'system.modifiers.conditionalModifiers': conditionalModifiers })
+        await this.document.update({
+            'system.modifiers.conditionalModifiers': conditionalModifiers,
+        })
     }
 
     /**
      * Handle removing a conditional modifier
-     * @param {Event} event
+     * @param {PointerEvent} event
+     * @param {HTMLElement} target
      * @private
      */
-    async _onRemoveConditionalModifier(event) {
-        event.preventDefault()
-        const index = Number(event.currentTarget.dataset.index)
+    static async #onRemoveConditionalModifier(event, target) {
+        const index = Number(target.dataset.index)
         const conditionalModifiers = foundry.utils.deepClone(
-            this.item.system.modifiers?.conditionalModifiers || [],
+            this.document.system.modifiers?.conditionalModifiers || [],
         )
         conditionalModifiers.splice(index, 1)
-        await this.item.update({ 'system.modifiers.conditionalModifiers': conditionalModifiers })
+        await this.document.update({
+            'system.modifiers.conditionalModifiers': conditionalModifiers,
+        })
     }
 
     /**
      * Handle adding an actor modifier
-     * @param {Event} event
+     * @param {PointerEvent} event
+     * @param {HTMLElement} target
      * @private
      */
-    async _onAddActorModifier(event) {
-        event.preventDefault()
-        const modifiers = foundry.utils.deepClone(this.item.system.actorModifiers?.modifiers || [])
+    static async #onAddActorModifier(event, target) {
+        const modifiers = foundry.utils.deepClone(
+            this.document.system.actorModifiers?.modifiers || [],
+        )
         let modifiersArray = modifiers || []
         if (
             modifiersArray &&
@@ -255,18 +261,20 @@ export class WaffeneigenschaftSheet extends IlarisItemSheet {
             value: 0,
             formula: '',
         })
-        await this.item.update({ 'system.actorModifiers.modifiers': modifiersArray })
+        await this.document.update({ 'system.actorModifiers.modifiers': modifiersArray })
     }
 
     /**
      * Handle removing an actor modifier
-     * @param {Event} event
+     * @param {PointerEvent} event
+     * @param {HTMLElement} target
      * @private
      */
-    async _onRemoveActorModifier(event) {
-        event.preventDefault()
-        const index = Number(event.currentTarget.dataset.index)
-        const modifiers = foundry.utils.deepClone(this.item.system.actorModifiers?.modifiers || [])
+    static async #onRemoveActorModifier(event, target) {
+        const index = Number(target.dataset.index)
+        const modifiers = foundry.utils.deepClone(
+            this.document.system.actorModifiers?.modifiers || [],
+        )
         let modifiersArray = modifiers || []
         if (
             modifiersArray &&
@@ -276,6 +284,6 @@ export class WaffeneigenschaftSheet extends IlarisItemSheet {
             modifiersArray = Object.values(modifiersArray)
         }
         modifiersArray.splice(index, 1)
-        await this.item.update({ 'system.actorModifiers.modifiers': modifiersArray })
+        await this.document.update({ 'system.actorModifiers.modifiers': modifiersArray })
     }
 }
