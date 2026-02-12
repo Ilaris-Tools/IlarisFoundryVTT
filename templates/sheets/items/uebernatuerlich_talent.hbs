@@ -14,11 +14,8 @@
         {{#if hasOwner}}
         <label>Fertigkeit:</label>
         <select name="system.fertigkeit_ausgewaehlt">
-            {{#select item.system.fertigkeit_ausgewaehlt}}
             <option value="auto">auto</option>
-            {{#each fertigkeit_list as |fert key|}}
-            <option value="{{fert}}">{{fert}}</option>
-            {{/each}} {{/select}}
+            {{selectOptions fertigkeit_list selected=item.system.fertigkeit_ausgewaehlt}}
         </select>
         {{/if}}
         <div>

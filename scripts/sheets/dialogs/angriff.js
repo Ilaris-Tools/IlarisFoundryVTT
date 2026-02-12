@@ -5,19 +5,28 @@ import { CombatDialog } from './combat_dialog.js'
 import { formatDiceFormula } from '../../common/utilities.js'
 
 export class AngriffDialog extends CombatDialog {
+    /** @override */
+    static DEFAULT_OPTIONS = {
+        classes: ['angriff-dialog'],
+        actions: {
+            verteidigen: AngriffDialog.#onVerteidigen,
+            schaden: AngriffDialog.#onSchaden,
+        },
+    }
+
+    /** @override */
+    static PARTS = {
+        form: {
+            template: 'systems/Ilaris/templates/sheets/dialogs/angriff.hbs',
+        },
+    }
+
     constructor(actor, item, options = {}) {
         const title = options.isDefenseMode
             ? `Verteidigung gegen ${options?.attackingActor?.name || 'Unbekannt'} (${item.name})`
             : `Kampf: ${item.name}`
 
-        const dialog = { title }
-        const dialogOptions = {
-            template: 'systems/Ilaris/templates/sheets/dialogs/angriff.hbs',
-            width: 900,
-            height: 'auto',
-            classes: ['angriff-dialog'],
-        }
-        super(actor, item, dialog, dialogOptions)
+        super(actor, item, { ...options, window: { title } })
 
         // Specific properties for melee combat
         this.text_vt = ''
@@ -35,53 +44,100 @@ export class AngriffDialog extends CombatDialog {
         this.aufbauendeManoeverAktivieren()
     }
 
-    async getData() {
-        let data = {
-            isHumanoid: this.isHumanoid,
-            lcht_choice: CONFIG.ILARIS.lcht_choice,
-            ...(await super.getData()),
-        }
-        data.isDefenseMode = this.isDefenseMode
-        data.attackingActor = this.attackingActor
+    /**
+     * @override
+     * @param {object} options - Render options
+     * @returns {Promise<object>} Context data for the template
+     */
+    async _prepareContext(options) {
+        const context = await super._prepareContext(options)
         if (this.isDefenseMode && this.attackingActor) {
             this.selectedActors = [this.attackingActor]
         }
-        return data
+        return {
+            ...context,
+            isHumanoid: this.isHumanoid,
+            lcht_choice: CONFIG.ILARIS.lcht_choice,
+            isDefenseMode: this.isDefenseMode,
+            attackingActor: this.attackingActor,
+        }
     }
 
-    activateListeners(html) {
-        super.activateListeners(html)
-        html.find('.verteidigen').click((ev) => this._verteidigenKlick(html))
-        html.find('.schaden').click((ev) => this._schadenKlick(html))
+    /**
+     * @override
+     * @param {object} context - Prepared context data
+     * @param {object} options - Render options
+     */
+    async _onRender(context, options) {
+        await super._onRender(context, options)
 
         // If in defense mode, disable attack-related buttons
         if (this.isDefenseMode) {
-            html.find('.angreifen').prop('disabled', true).css('opacity', '0.5')
-            html.find('.show-nearby').prop('disabled', true).css('opacity', '0.5')
-            if (this.riposte) {
-                html.find('.schaden').prop('disabled', false).css('opacity', '1')
-            } else {
-                html.find('.schaden').prop('disabled', true).css('opacity', '0.5')
+            const angreifenBtn = this.element.querySelector('[data-action="angreifen"]')
+            const showNearbyBtn = this.element.querySelector('[data-action="showNearby"]')
+            if (angreifenBtn) {
+                angreifenBtn.disabled = true
+                angreifenBtn.style.opacity = '0.5'
+            }
+            if (showNearbyBtn) {
+                showNearbyBtn.disabled = true
+                showNearbyBtn.style.opacity = '0.5'
+            }
+            const schadenBtn = this.element.querySelector('[data-action="schaden"]')
+            if (schadenBtn) {
+                if (this.riposte) {
+                    schadenBtn.disabled = false
+                    schadenBtn.style.opacity = '1'
+                } else {
+                    schadenBtn.disabled = true
+                    schadenBtn.style.opacity = '0.5'
+                }
             }
         }
 
         // Setup modifier display with debounced listeners
-        this.setupModifierDisplay(html)
+        this.setupModifierDisplay()
     }
 
-    getSummaryClickActions(html) {
+    /* -------------------------------------------- */
+    /*  Action Handlers                             */
+    /* -------------------------------------------- */
+
+    /**
+     * Handle the "verteidigen" action button click.
+     * @param {PointerEvent} event
+     * @param {HTMLElement} target
+     */
+    static async #onVerteidigen(event, target) {
+        await this._verteidigenKlick()
+    }
+
+    /**
+     * Handle the "schaden" action button click.
+     * @param {PointerEvent} event
+     * @param {HTMLElement} target
+     */
+    static async #onSchaden(event, target) {
+        await this._schadenKlick()
+    }
+
+    /* -------------------------------------------- */
+    /*  Summary Click Actions                       */
+    /* -------------------------------------------- */
+
+    getSummaryClickActions() {
         return [
             {
                 selector: '.clickable-summary.angreifen',
-                handler: (html) => this._angreifenKlick(html),
+                handler: () => this._angreifenKlick(),
             },
             {
                 selector: '.clickable-summary.verteidigen',
-                handler: (html) => this._verteidigenKlick(html),
+                handler: () => this._verteidigenKlick(),
             },
             {
                 selector: '.clickable-summary.schaden',
-                handler: (html) => this._schadenKlick(html),
+                handler: () => this._schadenKlick(),
             },
         ]
     }
@@ -304,12 +360,14 @@ export class AngriffDialog extends CombatDialog {
         return summary
     }
 
-    async _angreifenKlick(html) {
-        // NOTE: var names not very descriptive:
-        // at_abzuege_mod kommen vom status/gesundheit, at_mod aus ansagen, nahkampfmod?
-        let diceFormula = this.getDiceFormula(html)
-        await this.manoeverAuswaehlen(html)
-        await this.updateManoeverMods(html) // durch manoever
+    /* -------------------------------------------- */
+    /*  Combat Actions                              */
+    /* -------------------------------------------- */
+
+    async _angreifenKlick() {
+        let diceFormula = this.getDiceFormula()
+        await this.manoeverAuswaehlen()
+        await this.updateManoeverMods()
         this.updateStatusMods()
         super.eigenschaftenText()
 
@@ -328,17 +386,17 @@ export class AngriffDialog extends CombatDialog {
             this.fumble_val,
             true, // crit_eval
         )
-        super._updateSchipsStern(html)
-        this.updateModifierDisplay(html)
+        super._updateSchipsStern()
+        this.updateModifierDisplay()
         await this.handleTargetSelection(rollResult, 'melee')
     }
 
-    async _verteidigenKlick(html) {
-        await this.manoeverAuswaehlen(html)
-        await this.updateManoeverMods(html)
+    async _verteidigenKlick() {
+        await this.manoeverAuswaehlen()
+        await this.updateManoeverMods()
         this.updateStatusMods()
         let label = `Verteidigung (${this.item.name})`
-        let diceFormula = this.getDiceFormula(html)
+        let diceFormula = this.getDiceFormula()
         let formula = `${diceFormula} ${signed(this.item.system.vt)} ${signed(
             this.vt_abzuege_mod,
         )} ${signed(this.item.actor.system.modifikatoren.verteidigungmod)} ${signed(this.mod_vt)}`
@@ -357,13 +415,11 @@ export class AngriffDialog extends CombatDialog {
         if (this.isDefenseMode) {
             const templateData = {
                 ...rollResult.templateData,
-                // Hide specific results
                 success: false,
                 fumble: false,
                 crit: false,
                 is16OrHigher: false,
                 noSuccess: false,
-                // Add a message indicating hidden roll
                 text: rollResult.templateData.text + '\nVerteidigungsergebnis verborgen.',
             }
 
@@ -391,7 +447,7 @@ export class AngriffDialog extends CombatDialog {
             }
 
             // Resolve the attack vs defense
-            await this.resolveAttackVsDefense(html)
+            await this.resolveAttackVsDefense()
         } else {
             // Normal defense roll (not in response to an attack)
             const html_roll = await renderTemplate(rollResult.templatePath, rollResult.templateData)
@@ -407,7 +463,7 @@ export class AngriffDialog extends CombatDialog {
         }
     }
 
-    async resolveAttackVsDefense(html, overrideAttackRoll = null) {
+    async resolveAttackVsDefense(overrideAttackRoll = null) {
         // Ensure we have both rolls
         if (!this.lastDefenseRoll || !this.attackRoll) return
 
@@ -508,13 +564,13 @@ export class AngriffDialog extends CombatDialog {
         // Clean up the stored rolls
         this.lastDefenseRoll = null
         this.attackRoll = null
-        super._updateSchipsStern(html)
-        this.updateModifierDisplay(html)
+        super._updateSchipsStern()
+        this.updateModifierDisplay()
     }
 
-    async _schadenKlick(html) {
-        await this.manoeverAuswaehlen(html)
-        await this.updateManoeverMods(html)
+    async _schadenKlick() {
+        await this.manoeverAuswaehlen()
+        await this.updateManoeverMods()
         let label = `Schaden (${this.item.name})`
         let formula = `${this.schaden} ${signed(this.mod_dm)}`
 
@@ -554,6 +610,10 @@ export class AngriffDialog extends CombatDialog {
         }
     }
 
+    /* -------------------------------------------- */
+    /*  Maneuver Processing                         */
+    /* -------------------------------------------- */
+
     aufbauendeManoeverAktivieren() {
         let manoever = this.item.system.manoever
         let vorteile = this.actor.vorteil.kampf.map((v) => v.name)
@@ -562,38 +622,40 @@ export class AngriffDialog extends CombatDialog {
         super.aufbauendeManoeverAktivieren()
     }
 
-    async manoeverAuswaehlen(html) {
-        /* parsed den angriff dialog und schreibt entsprechende werte 
-        in die waffen items. Ersetzt ehemalige angriffUpdate aus angriff_prepare.js
-        TODO: kann ggf. mit manoeverAnwenden zusammengelegt werden?
-        TODO: kann evt in ein abstraktes waffen item verschoben werden oder
-        in einn abstrakten angriffsdialog für allgemeine manöver wunden etc, und spezifisch
-        überschrieben werden.. 
-        TODO: könnte das nicht direkt via template passieren für einen großteil der werte? 
-        sodass ne form direkt die werte vom item ändert und keine update funktion braucht?
-        dann wäre die ganze funktion hier nicht nötig.
-        TODO: alle simplen booleans könnten einfach in eine loop statt einzeln aufgeschrieben werden
-        */
+    /**
+     * Parse maneuver selections from the dialog form.
+     * Uses native DOM API instead of jQuery.
+     */
+    async manoeverAuswaehlen() {
         let manoever = this.item.system.manoever
 
         // allgemeine optionen
-        manoever.kbak.selected = html.find(`#kbak-${this.dialogId}`)[0]?.checked || false // Kombinierte Aktion
-        manoever.vlof.selected = html.find(`#vlof-${this.dialogId}`)[0]?.checked || false // Volle Offensive
-        manoever.vldf.selected = html.find(`#vldf-${this.dialogId}`)[0]?.checked || false // Volle Defensive
-        manoever.pssl.selected = html.find(`#pssl-${this.dialogId}`)[0]?.checked || false // Passierschlag pssl
-        manoever.rwdf.selected = html.find(`#rwdf-${this.dialogId}`)[0]?.value || false // Reichweitenunterschied
-        manoever.rkaz.selected = html.find(`#rkaz-${this.dialogId}`)[0]?.value || false // Reaktionsanzahl
+        manoever.kbak.selected =
+            this.element.querySelector(`#kbak-${this.dialogId}`)?.checked || false // Kombinierte Aktion
+        manoever.vlof.selected =
+            this.element.querySelector(`#vlof-${this.dialogId}`)?.checked || false // Volle Offensive
+        manoever.vldf.selected =
+            this.element.querySelector(`#vldf-${this.dialogId}`)?.checked || false // Volle Defensive
+        manoever.pssl.selected =
+            this.element.querySelector(`#pssl-${this.dialogId}`)?.checked || false // Passierschlag pssl
+        manoever.rwdf.selected =
+            this.element.querySelector(`#rwdf-${this.dialogId}`)?.value || false // Reichweitenunterschied
+        manoever.rkaz.selected =
+            this.element.querySelector(`#rkaz-${this.dialogId}`)?.value || false // Reaktionsanzahl
 
-        manoever.mod.selected = html.find(`#modifikator-${this.dialogId}`)[0]?.value || false // Modifikator
-        manoever.rllm.selected = html.find(`#rollMode-${this.dialogId}`)[0]?.value || false // RollMode
+        manoever.mod.selected =
+            this.element.querySelector(`#modifikator-${this.dialogId}`)?.value || false // Modifikator
+        manoever.rllm.selected =
+            this.element.querySelector(`#rollMode-${this.dialogId}`)?.value || false // RollMode
 
-        this.isHumanoid = html.find(`#isHumanoid-${this.dialogId}`)[0]?.checked || false // isHumanoid
-        manoever.lcht.selected = html.find(`#lcht-${this.dialogId}`)[0]?.value || '0' // Lichtverhältnisse
+        this.isHumanoid =
+            this.element.querySelector(`#isHumanoid-${this.dialogId}`)?.checked || false // isHumanoid
+        manoever.lcht.selected = this.element.querySelector(`#lcht-${this.dialogId}`)?.value || '0' // Lichtverhältnisse
 
-        super.manoeverAuswaehlen(html)
+        await super.manoeverAuswaehlen()
     }
 
-    async updateManoeverMods(html) {
+    async updateManoeverMods() {
         let manoever = this.item.system.manoever
 
         let mod_at = 0
@@ -726,7 +788,6 @@ export class AngriffDialog extends CombatDialog {
             }
         }
 
-        // Handle standard maneuvers first
         // Handle Riposte special rule: attack maneuver penalties also apply to defense
         const riposteManeuver = this.item.manoever.find(
             (m) => m.name === 'Riposte' && m.inputValue.value,
@@ -820,9 +881,6 @@ export class AngriffDialog extends CombatDialog {
     }
 
     updateStatusMods() {
-        /* aus gesundheit und furcht wird at- und vt_abzuege_mod
-        berechnet.
-        */
         this.vt_abzuege_mod = 0
 
         if (
@@ -839,7 +897,6 @@ export class AngriffDialog extends CombatDialog {
     }
 
     isGezieltSchlagActive() {
-        // Check if Gezielter Schlag (km_gzsl) maneuver is selected
         return (
             this.item.system.manoever.km_gzsl && this.item.system.manoever.km_gzsl.selected !== '0'
         )

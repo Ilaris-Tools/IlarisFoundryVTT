@@ -1,42 +1,26 @@
 import { IlarisItemSheet } from './item.js'
 
 export class RuestungSheet extends IlarisItemSheet {
-    async getData() {
-        const data = await super.getData()
-        if (data.hasOwner) {
-            data.speicherplatz_list = this.item.actor.misc.speicherplatz_list
-        }
-        return data
+    /** @override */
+    static DEFAULT_OPTIONS = {
+        classes: ['ilaris', 'sheet', 'item', 'ruestung'],
     }
 
-    static get defaultOptions() {
-        return foundry.utils.mergeObject(super.defaultOptions, {
-            // classes: ["ilaris", "sheet"],
+    /** @override */
+    static PARTS = {
+        form: {
             template: 'systems/Ilaris/templates/sheets/items/ruestung.hbs',
-            // width: 720,
-            // height: 800,
-            // resizable: false,
-            // tabs: [
-            //     {
-            //         navSelector: ".sheet-tabs",
-            //         contentSelector: ".sheet-body",
-            //         initial: "fertigkeiten",
-            //     },
-            // ]
-        })
+        },
     }
 
-    // getData() {
-    //     const data = super.getData();
-    //     return data;
-    // }
+    /** @override */
+    async _prepareContext(options) {
+        const context = await super._prepareContext(options)
 
-    // _getHeaderButtons() {
-    //     let buttons = super._getHeaderButtons();
-    //     return buttons;
-    // }
+        if (context.hasOwner) {
+            context.speicherplatz_list = this.document.actor.misc.speicherplatz_list
+        }
 
-    // activateListeners(html) {
-    //     super.activateListeners(html);
-    // }
+        return context
+    }
 }

@@ -290,8 +290,8 @@ export async function _applyDamageDirectly(targetActor, damage, damageType, true
             ? Math.floor((damage - 1) / ws)
             : 0
         : damage > ws_stern
-        ? Math.floor((damage - 1) / ws_stern)
-        : 0
+          ? Math.floor((damage - 1) / ws_stern)
+          : 0
 
     if (useLepSystem) {
         woundsToAdd = trueDamage ? damage : damage - ws_stern
