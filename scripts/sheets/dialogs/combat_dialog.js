@@ -3,9 +3,42 @@ import {
     ConfigureGameSettingsCategories,
 } from '../../settings/configure-game-settings.model.js'
 
-export class CombatDialog extends Dialog {
-    constructor(actor, item, dialogData, options) {
-        super(dialogData, options)
+const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api
+
+/**
+ * Base class for all combat dialogs in Ilaris.
+ * Migrated from legacy Dialog to ApplicationV2 + HandlebarsApplicationMixin.
+ *
+ * @extends HandlebarsApplicationMixin(ApplicationV2)
+ */
+export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
+    /** @override */
+    static DEFAULT_OPTIONS = {
+        classes: ['ilaris', 'combat-dialog'],
+        position: {
+            width: 900,
+            height: 'auto',
+        },
+        window: {
+            resizable: true,
+            title: 'Kampf Dialog',
+        },
+        actions: {
+            angreifen: CombatDialog.#onAngreifen,
+            showNearby: CombatDialog.#onShowNearby,
+        },
+    }
+
+    /** @override - Subclasses must define their own PARTS with the correct template */
+    static PARTS = {}
+
+    /**
+     * @param {Actor} actor - The actor performing the combat action
+     * @param {Item} item - The weapon or ability being used
+     * @param {object} [options={}] - ApplicationV2 configuration options
+     */
+    constructor(actor, item, options = {}) {
+        super(options)
 
         // Common initialization for all combat dialogs
         this.text_at = ''
@@ -88,7 +121,16 @@ export class CombatDialog extends Dialog {
         }
     }
 
-    async getData() {
+    /**
+     * Prepare context data for template rendering.
+     * Replaces the legacy getData() method.
+     * @override
+     * @param {object} options - Render options
+     * @returns {Promise<object>} Context data for the template
+     */
+    async _prepareContext(options) {
+        const context = await super._prepareContext(options)
+
         // Prevent race condition: if maneuvers are being set, wait for that to complete
         if (this._manoeversPromise) {
             await this._manoeversPromise
@@ -107,6 +149,7 @@ export class CombatDialog extends Dialog {
 
         // damit wird das template gefüttert
         return {
+            ...context,
             config: CONFIG.ILARIS,
             distance_choice: CONFIG.ILARIS.distance_choice,
             rollModes: CONFIG.Dice.rollModes,
@@ -128,24 +171,113 @@ export class CombatDialog extends Dialog {
     }
 
     /**
-     * Generic updateModifierDisplay method that works for all combat dialogs
-     * Subclasses should implement getBaseValues() and getAllModifierSummaries()
+     * Actions performed after any render of the Application.
+     * Replaces the legacy activateListeners() method.
+     * @override
+     * @param {object} context - Prepared context data
+     * @param {object} options - Render options
      */
-    async updateModifierDisplay(html) {
+    async _onRender(context, options) {
+        await super._onRender(context, options)
+
+        // Add expand/collapse functionality for maneuver headers
+        this.element.querySelectorAll('.maneuver-header').forEach((header) => {
+            header.addEventListener('click', (ev) => {
+                const grid = header.nextElementSibling
+                const isCollapsed = header.classList.contains('collapsed')
+                const text = header.querySelector('h4')
+
+                header.classList.toggle('collapsed')
+                grid.classList.toggle('collapsed')
+
+                // Update text based on state
+                text.textContent = isCollapsed ? 'Einklappen' : 'Ausklappen'
+            })
+        })
+
+        // Update has-value class when inputs change
+        this.element
+            .querySelectorAll('.maneuver-item input, .maneuver-item select')
+            .forEach((input) => {
+                input.addEventListener('change', (ev) => {
+                    const item = ev.currentTarget.closest('.maneuver-item')
+                    const hasValue = Array.from(item.querySelectorAll('input, select')).some(
+                        (inp) => {
+                            if (inp.type === 'checkbox') return inp.checked
+                            return inp.value && inp.value !== '0'
+                        },
+                    )
+                    item.classList.toggle('has-value', hasValue)
+                })
+            })
+
+        // Add specific listener for maneuver to handle ZERO_DAMAGE conflicts
+        this.element
+            .querySelectorAll('.maneuver-item input, .maneuver-item select')
+            .forEach((input) => {
+                input.addEventListener('change', () => {
+                    this.handleZeroDamageConflicts()
+                })
+            })
+
+        // Initial conflict check on dialog load
+        // The 500ms timeout provides a safety buffer to ensure that:
+        // - All maneuver checkboxes have been created and are queryable
+        // - The dialog's HTML structure is completely built
+        // - Any initial values or states have been properly set
+        setTimeout(() => {
+            this.handleZeroDamageConflicts()
+        }, 500)
+
+        // Colorize numbers in maneuver labels
+        this.colorizeManeuverNumbers()
+    }
+
+    /* -------------------------------------------- */
+    /*  Action Handlers (ApplicationV2 actions)     */
+    /* -------------------------------------------- */
+
+    /**
+     * Handle the "angreifen" action button click.
+     * @param {PointerEvent} event - The originating click event
+     * @param {HTMLElement} target - The element with data-action="angreifen"
+     */
+    static async #onAngreifen(event, target) {
+        await this._angreifenKlick()
+    }
+
+    /**
+     * Handle the "showNearby" action button click.
+     * @param {PointerEvent} event - The originating click event
+     * @param {HTMLElement} target - The element with data-action="showNearby"
+     */
+    static async #onShowNearby(event, target) {
+        await this._showNearbyActors()
+    }
+
+    /* -------------------------------------------- */
+    /*  Modifier Display                            */
+    /* -------------------------------------------- */
+
+    /**
+     * Generic updateModifierDisplay method that works for all combat dialogs.
+     * Subclasses should implement getBaseValues() and getAllModifierSummaries().
+     * Uses native DOM API instead of jQuery.
+     */
+    async updateModifierDisplay() {
         try {
-            // Use the stored reference instead of searching for the element
-            if (!this._modifierElement || this._modifierElement.length === 0) {
+            const modifierEl = this.element.querySelector('#modifier-summary')
+            if (!modifierEl) {
                 console.warn('MODIFIER DISPLAY: Element-Referenz nicht verfügbar')
                 return
             }
 
             // Show loading state
-            this._modifierElement.html(
-                '<div class="modifier-summary"><h4>Würfelwurf Zusammenfassungen:</h4><div class="modifier-item neutral">Wird berechnet...</div></div>',
-            )
+            modifierEl.innerHTML =
+                '<div class="modifier-summary"><h4>Würfelwurf Zusammenfassungen:</h4><div class="modifier-item neutral">Wird berechnet...</div></div>'
 
             // Temporarily parse values to calculate modifiers
-            await this.manoeverAuswaehlen(html)
+            await this.manoeverAuswaehlen()
             await this.updateManoeverMods()
             await this.updateStatusMods()
 
@@ -155,7 +287,7 @@ export class CombatDialog extends Dialog {
             const nahkampfMods = this.actor.system.modifikatoren.nahkampfmod || 0
 
             // Get dice formula
-            const diceFormula = this.getDiceFormula(html)
+            const diceFormula = this.getDiceFormula()
 
             // Create all summaries (subclass specific)
             const summaries = this.getAllModifierSummaries(
@@ -166,14 +298,16 @@ export class CombatDialog extends Dialog {
             )
 
             // Update the display element
-            this._modifierElement.html(summaries)
+            modifierEl.innerHTML = summaries
+
+            // Re-attach click listeners after innerHTML update
+            this.addSummaryClickListeners()
         } catch (error) {
             console.error('MODIFIER DISPLAY: Fehler beim Update:', error)
-            // Show error state
-            if (this._modifierElement && this._modifierElement.length > 0) {
-                this._modifierElement.html(
-                    '<div class="modifier-summary"><h4>Würfelwurf Zusammenfassungen:</h4><div class="modifier-item neutral">Fehler beim Berechnen...</div></div>',
-                )
+            const modifierEl = this.element?.querySelector('#modifier-summary')
+            if (modifierEl) {
+                modifierEl.innerHTML =
+                    '<div class="modifier-summary"><h4>Würfelwurf Zusammenfassungen:</h4><div class="modifier-item neutral">Fehler beim Berechnen...</div></div>'
             }
         }
     }
@@ -193,16 +327,21 @@ export class CombatDialog extends Dialog {
     }
 
     /**
-     * Generic method to add summary click listeners
-     * Subclasses can override getSummaryClickActions() to specify their own actions
+     * Generic method to add summary click listeners.
+     * Subclasses can override getSummaryClickActions() to specify their own actions.
+     * Uses native DOM API.
      */
-    addSummaryClickListeners(html) {
-        const actions = this.getSummaryClickActions(html)
+    addSummaryClickListeners() {
+        const actions = this.getSummaryClickActions()
+        const modSummaryEl = this.element.querySelector('#modifier-summary')
+        if (!modSummaryEl) return
 
         actions.forEach((action) => {
-            html.find('#modifier-summary').on('click', action.selector, (ev) => {
-                ev.preventDefault()
-                action.handler(html)
+            modSummaryEl.querySelectorAll(action.selector).forEach((el) => {
+                el.addEventListener('click', (ev) => {
+                    ev.preventDefault()
+                    action.handler()
+                })
             })
         })
     }
@@ -210,60 +349,13 @@ export class CombatDialog extends Dialog {
     /**
      * Subclasses should override this to return their specific click actions
      */
-    getSummaryClickActions(html) {
+    getSummaryClickActions() {
         return []
     }
 
-    activateListeners(html) {
-        super.activateListeners(html)
-
-        html.find('.angreifen').click((ev) => this._angreifenKlick(html))
-        // Add expand/collapse functionality
-        html.find('.maneuver-header').click((ev) => {
-            const header = ev.currentTarget
-            const grid = header.nextElementSibling
-            const isCollapsed = header.classList.contains('collapsed')
-            const text = header.querySelector('h4')
-
-            header.classList.toggle('collapsed')
-            grid.classList.toggle('collapsed')
-
-            // Update text based on state
-            text.textContent = isCollapsed ? 'Einklappen' : 'Ausklappen'
-        })
-
-        // Update has-value class when inputs change
-        html.find('.maneuver-item input, .maneuver-item select').change((ev) => {
-            const item = ev.currentTarget.closest('.maneuver-item')
-            const hasValue = Array.from(item.querySelectorAll('input, select')).some((input) => {
-                if (input.type === 'checkbox') return input.checked
-                return input.value && input.value !== '0'
-            })
-            item.classList.toggle('has-value', hasValue)
-        })
-        html.find('.show-nearby').click((ev) => this._showNearbyActors(html))
-
-        // Add specific listener for maneuver to handle ZERO_DAMAGE conflicts
-        html.find('.maneuver-item input, .maneuver-item select').on('change', () => {
-            this.handleZeroDamageConflicts(html)
-        })
-
-        // Initial conflict check on dialog load
-        // The 500ms timeout provides a safety buffer to ensure that:
-        // - All maneuver checkboxes have been created and are queryable
-        // - The dialog's HTML structure is completely built
-        // - Any initial values or states have been properly set
-        setTimeout(() => {
-            this.handleZeroDamageConflicts(html)
-        }, 500)
-
-        // Colorize numbers in maneuver labels
-        this.colorizeManeuverNumbers(html)
-    }
-
-    colorizeManeuverNumbers(html) {
+    colorizeManeuverNumbers() {
         // Apply to both maneuver labels and other labels in the dialog
-        html.find('.maneuver-item label, .flexrow label').each((index, label) => {
+        this.element.querySelectorAll('.maneuver-item label, .flexrow label').forEach((label) => {
             let text = label.textContent
 
             // Find all parentheses content
@@ -308,31 +400,26 @@ export class CombatDialog extends Dialog {
         let vorteile = this.actor.vorteil.kampf.map((v) => v.name)
     }
 
-    async manoeverAuswaehlen(html) {
-        /* TODO: könnte das nicht direkt via template passieren für einen großteil der werte? 
-        sodass ne form direkt die werte vom item ändert und keine update funktion braucht?
-        dann wäre die ganze funktion hier nicht nötig.
-        TODO: alle simplen booleans könnten einfach in eine loop statt einzeln aufgeschrieben werden
-        */
+    /**
+     * Parse maneuver selections from the dialog form.
+     * Uses native DOM API instead of jQuery.
+     * Note: Uses getElementById instead of querySelector to support IDs starting with digits.
+     */
+    async manoeverAuswaehlen() {
         this.rollmode = this.item.system.manoever.rllm.selected
 
         this.item.manoever.forEach((manoever) => {
             const elementId = `${manoever.id}${manoever.inputValue.field}-${this.dialogId}`
+            const element = document.getElementById(elementId)
             if (manoever.inputValue.field == 'CHECKBOX') {
-                manoever.inputValue.value = html.find(`#${elementId}`)[0]?.checked || false
+                manoever.inputValue.value = element?.checked || false
             } else {
-                manoever.inputValue.value = html.find(`#${elementId}`)[0]?.value || false
+                manoever.inputValue.value = element?.value || false
             }
         })
     }
 
     updateStatusMods() {
-        /* aus gesundheit und furcht wird at- und vt_abzuege_mod
-        berechnet.
-        */
-        // TODO: das ignorieren von Wunden ist nicht so gut gelöst,
-        // da der Modifier wie hoch der Wundabzug ist einfach auf 0 gesetzt wird
-        // deshalb wird hier der Modifier noch neu berechnet damit man den Vorteil von Kalter Wut zeigen kann
         this.at_abzuege_mod = 0
 
         if (
@@ -347,25 +434,25 @@ export class CombatDialog extends Dialog {
         this.at_abzuege_mod = this.actor.system.abgeleitete.globalermod
     }
 
-    async _showNearbyActors(html) {
+    async _showNearbyActors() {
         const { TargetSelectionDialog } = await import('./target_selection.js')
         const dialog = new TargetSelectionDialog(this.actor, (selectedActors) => {
             this.selectedActors = selectedActors
-            this.updateSelectedActorsDisplay(html)
+            this.updateSelectedActorsDisplay()
         })
         dialog.render(true)
     }
 
-    updateSelectedActorsDisplay(html) {
-        // Get the parent dialog element that contains the original angriff.hbs content
-
+    updateSelectedActorsDisplay() {
         // Re-render the dialog to update the template
         this.render(true)
     }
 
-    _updateSchipsStern(html) {
+    _updateSchipsStern() {
         const schipsOption =
-            Number(html.find(`input[name="schips-${this.dialogId}"]:checked`)[0]?.value) || 0
+            Number(
+                this.element.querySelector(`input[name="schips-${this.dialogId}"]:checked`)?.value,
+            ) || 0
         if (schipsOption !== 0 && this.actor.system.schips.schips_stern > 0) {
             this.actor.update({
                 'system.schips.schips_stern': this.actor.system.schips.schips_stern - 1,
@@ -373,9 +460,15 @@ export class CombatDialog extends Dialog {
         }
     }
 
-    getDiceFormula(html, xd20_choice = 1) {
+    /**
+     * Get dice formula based on schips selection.
+     * Uses native DOM API instead of jQuery.
+     */
+    getDiceFormula(xd20_choice = 1) {
         let schipsOption =
-            Number(html.find(`input[name="schips-${this.dialogId}"]:checked`)[0]?.value) || 0
+            Number(
+                this.element.querySelector(`input[name="schips-${this.dialogId}"]:checked`)?.value,
+            ) || 0
         let text = ''
         let diceFormula = `${xd20_choice}d20${xd20_choice == 1 ? '' : 'dl1dh1'}`
         if (schipsOption == 0) {
@@ -416,9 +509,10 @@ export class CombatDialog extends Dialog {
     }
 
     /**
-     * Handles ZERO_DAMAGE maneuver conflicts by disabling other ZERO_DAMAGE maneuvers when one is selected
+     * Handles ZERO_DAMAGE maneuver conflicts.
+     * Uses native DOM API instead of jQuery.
      */
-    handleZeroDamageConflicts(html) {
+    handleZeroDamageConflicts() {
         // Find all ZERO_DAMAGE maneuvers
         const zeroDamageManeuvers = this.item.manoever.filter((manoever) =>
             this.hasZeroDamageModification(manoever),
@@ -429,7 +523,7 @@ export class CombatDialog extends Dialog {
         // Find the currently selected ZERO_DAMAGE maneuver (if any)
         const selectedZeroDamage = zeroDamageManeuvers.find((manoever) => {
             const elementId = `${manoever.id}${manoever.inputValue.field}-${this.dialogId}`
-            const element = html.find(`#${elementId}`)[0]
+            const element = document.getElementById(elementId)
             if (manoever.inputValue.field === 'CHECKBOX') {
                 return element?.checked
             } else if (manoever.inputValue.field === 'NUMBER') {
@@ -443,7 +537,7 @@ export class CombatDialog extends Dialog {
         // Update the state of all ZERO_DAMAGE maneuvers
         zeroDamageManeuvers.forEach((manoever) => {
             const elementId = `${manoever.id}${manoever.inputValue.field}-${this.dialogId}`
-            const element = html.find(`#${elementId}`)[0]
+            const element = document.getElementById(elementId)
 
             if (!element) return
 
@@ -465,7 +559,6 @@ export class CombatDialog extends Dialog {
                 const maneuverItem = element.closest('.maneuver-item')
                 if (maneuverItem) {
                     maneuverItem.classList.add('disabled-conflict')
-                    // Add tooltip or title to explain why it's disabled
                     element.title =
                         'Kann nicht mit anderen Manövern kombiniert werden, die den Schaden auf 0 setzen'
                 }
@@ -506,22 +599,18 @@ export class CombatDialog extends Dialog {
         }
 
         // Determine if we should hide the roll result
-        // Only hide roll for melee attacks with targets
         const hideRoll =
             attackType !== 'ranged' && this.selectedActors && this.selectedActors.length > 0
 
         console.log(rollResult)
-        // Modify template data to hide results if needed
         const templateData = hideRoll
             ? {
                   ...rollResult.templateData,
-                  // Hide specific results but keep flavor text
                   success: false,
                   fumble: false,
                   crit: false,
                   is16OrHigher: false,
                   noSuccess: false,
-                  // Add a message indicating hidden roll
                   text:
                       rollResult.templateData.text +
                       '\nErgebnis verborgen bis alle Verteidigungen abgeschlossen sind.',
@@ -534,8 +623,8 @@ export class CombatDialog extends Dialog {
             {
                 speaker: this.speaker,
                 flavor: html_roll,
-                blind: hideRoll, // Make the roll blind if we have targets
-                whisper: hideRoll ? [game.user.id] : [], // Only whisper to GM if hidden
+                blind: hideRoll,
+                whisper: hideRoll ? [game.user.id] : [],
             },
             {
                 rollMode: hideRoll ? 'gmroll' : this.rollmode,
@@ -564,15 +653,12 @@ export class CombatDialog extends Dialog {
 
                 let weapons = []
 
-                // Check if this is a creature (has angriffe) or a regular actor (has nahkampfwaffen)
                 if (
                     targetActor.type === 'kreatur' &&
                     targetActor.angriffe &&
                     Array.isArray(targetActor.angriffe)
                 ) {
-                    // For creatures, use all their angriffe as weapons
                     weapons = targetActor.angriffe
-                    // Filter weapons for ranged attacks: only weapons with Schild eigenschaft can be used
                     if (attackType === 'ranged') {
                         weapons = weapons.filter((weapon) =>
                             weapon.system?.eigenschaften?.find((eig) => {
@@ -581,7 +667,6 @@ export class CombatDialog extends Dialog {
                         )
                     }
                 } else {
-                    // For regular actors, find main and secondary weapons
                     const mainWeapon = targetActor.items.find(
                         (item) => item.type === 'nahkampfwaffe' && item.system.hauptwaffe === true,
                     )
@@ -590,13 +675,12 @@ export class CombatDialog extends Dialog {
                         (item) =>
                             item.type === 'nahkampfwaffe' &&
                             item.system.nebenwaffe === true &&
-                            (!mainWeapon || item.id !== mainWeapon.id), // Don't include if it's the same as main weapon
+                            (!mainWeapon || item.id !== mainWeapon.id),
                     )
 
                     if (mainWeapon) weapons.push(mainWeapon)
                     if (secondaryWeapon) weapons.push(secondaryWeapon)
 
-                    // Filter weapons for ranged attacks: only weapons with Schild eigenschaft can be used
                     if (attackType === 'ranged') {
                         weapons = weapons.filter(
                             (weapon) => weapon.system?.eigenschaften?.schild === true,
@@ -643,13 +727,11 @@ export class CombatDialog extends Dialog {
                         </button>`
                 }
 
-                // If no weapons found, add a warning (only for melee or if no akrobatik for ranged)
                 if (!buttonsHtml) {
                     buttonsHtml =
                         '<p style="color: #aa0000;">Keine Haupt- oder Nebenwaffe gefunden.</p>'
                 }
 
-                // Create defense prompt message content
                 const content = `
                     <div class="defense-prompt" style="padding: 10px;">
                         <p>${this.actor.name} greift dich mit ${this.item.name} an!</p>
@@ -660,7 +742,6 @@ export class CombatDialog extends Dialog {
                     </div>
                 `
 
-                // Send the message to chat using a system speaker
                 const chatData = {
                     speaker: { alias: 'Combat System' },
                     content: content,
@@ -687,21 +768,9 @@ export class CombatDialog extends Dialog {
     /**
      * Applies common damage roll logic including zero damage handling,
      * trefferzone rolling, and modifikator application.
-     * This helper consolidates logic shared between melee and ranged combat.
      *
      * @param {Object} params - Configuration object
-     * @param {Object} params.nodmg - Zero damage configuration {name: string, value: boolean}
-     * @param {number} params.mod_dm - Current damage modifier
-     * @param {string} params.schaden - Current damage value/formula
-     * @param {string} params.text_dm - Current damage text
-     * @param {number} params.trefferzone - Current trefferzone value
-     * @param {number} params.mod_at - Attack modifier
-     * @param {number} params.mod_vt - Defense modifier (optional)
-     * @param {string} params.text_at - Attack text
-     * @param {string} params.text_vt - Defense text (optional)
-     * @param {string} params.damageType - Damage type (optional, e.g., 'NORMAL', 'TRUE')
-     * @param {boolean} params.trueDamage - Whether damage bypasses armor (optional)
-     * @returns {Object} Updated values {mod_dm, schaden, text_dm, trefferzone, mod_at, mod_vt, text_at, text_vt, damageType, trueDamage}
+     * @returns {Object} Updated values
      */
     async applyCommonDamageLogic({
         nodmg,
@@ -764,31 +833,27 @@ export class CombatDialog extends Dialog {
 
     /**
      * Adds weapon properties text to attack description.
-     * Used by both melee and ranged combat dialogs.
      */
     eigenschaftenText() {
         if (!this.item.system.eigenschaften || this.item.system.eigenschaften.length === 0) {
             return
         }
         this.text_at += '\nEigenschaften: '
-        // Handle array format: [{key: "name", parameters: ["param1", "param2"]}, ...]
+        // Handle array format
         if (Array.isArray(this.item.system.eigenschaften)) {
             this.text_at += this.item.system.eigenschaften
                 .map((e) => {
                     if (!e || !e.key) return ''
-
-                    // If parameters exist and array is not empty, add them in parentheses separated by semicolons
                     if (e.parameters && Array.isArray(e.parameters) && e.parameters.length > 0) {
                         return `${e.key}(${e.parameters.join(';')})`
                     }
-
                     return e.key
                 })
                 .filter((s) => s)
                 .join(', ')
         }
 
-        // Handle object format: {property1: true, property2: false, ...}
+        // Handle object format
         if (typeof this.item.system.eigenschaften === 'object') {
             const trueProperties = Object.keys(this.item.system.eigenschaften).filter(
                 (key) => this.item.system.eigenschaften[key] === true,
@@ -799,7 +864,6 @@ export class CombatDialog extends Dialog {
 
     /**
      * Checks if the "Gezielter Schlag" (Aimed Strike) maneuver is active.
-     * Used to determine if trefferzone (hit zone) should be rolled.
      * @returns {boolean} True if Gezielter Schlag is selected
      */
     isGezieltSchlagActive() {
@@ -810,38 +874,40 @@ export class CombatDialog extends Dialog {
 
     /**
      * Sets up the modifier display element and listeners for real-time updates.
-     * This common setup is used by all combat dialog subclasses.
-     * @param {jQuery} html - The rendered HTML of the dialog
+     * Uses native DOM API instead of jQuery.
      */
-    setupModifierDisplay(html) {
-        // Store modifier element reference for performance
-        this._modifierElement = html.find('#modifier-summary')
+    setupModifierDisplay() {
+        const modifierEl = this.element.querySelector('#modifier-summary')
 
         // Store a reference to prevent multiple updates
         this._updateTimeout = null
 
-        if (this._modifierElement.length === 0) {
+        if (!modifierEl) {
             console.warn('MODIFIER DISPLAY: Element nicht im Template gefunden')
             return
         }
 
         // Add listeners for real-time modifier updates with debouncing
-        html.find('input, select').on('change input', () => {
-            // Clear previous timeout
-            if (this._updateTimeout) {
-                clearTimeout(this._updateTimeout)
-            }
-
-            // Set new timeout to debounce rapid changes
-            this._updateTimeout = setTimeout(() => {
-                this.updateModifierDisplay(html)
-            }, 300)
+        this.element.querySelectorAll('input, select').forEach((input) => {
+            input.addEventListener('change', () => {
+                if (this._updateTimeout) {
+                    clearTimeout(this._updateTimeout)
+                }
+                this._updateTimeout = setTimeout(() => {
+                    this.updateModifierDisplay()
+                }, 300)
+            })
+            input.addEventListener('input', () => {
+                if (this._updateTimeout) {
+                    clearTimeout(this._updateTimeout)
+                }
+                this._updateTimeout = setTimeout(() => {
+                    this.updateModifierDisplay()
+                }, 300)
+            })
         })
 
-        // Add summary click listeners
-        this.addSummaryClickListeners(html)
-
-        // Initial display update
-        setTimeout(() => this.updateModifierDisplay(html), 500)
+        // Initial display update (listeners will be added after innerHTML update)
+        setTimeout(() => this.updateModifierDisplay(), 500)
     }
 }

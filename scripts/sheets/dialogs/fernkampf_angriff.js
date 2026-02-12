@@ -2,20 +2,28 @@ import { evaluate_roll_with_crit } from '../../common/wuerfel/wuerfel_misc.js'
 import { signed } from '../../common/wuerfel/chatutilities.js'
 import { handleModifications, applyDamageToTarget } from './shared_dialog_helpers.js'
 import { CombatDialog } from './combat_dialog.js'
-import * as hardcoded from '../../actors/hardcodedvorteile.js'
 import { formatDiceFormula } from '../../common/utilities.js'
 
 export class FernkampfAngriffDialog extends CombatDialog {
-    constructor(actor, item) {
-        const dialog = { title: `Fernkampfangriff: ${item.name}` }
-        const options = {
-            template: 'systems/Ilaris/templates/sheets/dialogs/fernkampf_angriff.hbs',
-            width: 900,
-            height: 'auto',
-        }
+    /** @override */
+    static DEFAULT_OPTIONS = {
+        actions: {
+            schaden: FernkampfAngriffDialog.#onSchaden,
+        },
+    }
 
-        // Generate unique dialog ID to avoid conflicts when multiple dialogs are open
-        super(actor, item, dialog, options)
+    /** @override */
+    static PARTS = {
+        form: {
+            template: 'systems/Ilaris/templates/sheets/dialogs/fernkampf_angriff.hbs',
+        },
+    }
+
+    constructor(actor, item, options = {}) {
+        super(actor, item, {
+            ...options,
+            window: { title: `Fernkampfangriff: ${item.name}` },
+        })
 
         // Get fumble threshold from computed combat mechanics (calculated by eigenschaft system)
         if (this.item.system.computed?.combatMechanics?.fumbleThreshold) {
@@ -26,9 +34,15 @@ export class FernkampfAngriffDialog extends CombatDialog {
         this.aufbauendeManoeverAktivieren()
     }
 
-    async getData() {
-        // damit wird das template gefüttert
-        let data = {
+    /**
+     * @override
+     * @param {object} options - Render options
+     * @returns {Promise<object>} Context data for the template
+     */
+    async _prepareContext(options) {
+        const context = await super._prepareContext(options)
+        return {
+            ...context,
             rw_choice: this.item.system.manoever.rw,
             rw_checked: false,
             gzkl_choice: CONFIG.ILARIS.gzkl_choice,
@@ -37,28 +51,47 @@ export class FernkampfAngriffDialog extends CombatDialog {
             bwng_choice: CONFIG.ILARIS.bwng_choice,
             dckg_choice: CONFIG.ILARIS.dckg_choice,
             kgtl_choice: CONFIG.ILARIS.kgtl_choice,
-            ...(await super.getData()),
         }
-        return data
     }
 
-    activateListeners(html) {
-        super.activateListeners(html)
-        html.find('.schaden').click((ev) => this._schadenKlick(html))
+    /**
+     * @override
+     * @param {object} context - Prepared context data
+     * @param {object} options - Render options
+     */
+    async _onRender(context, options) {
+        await super._onRender(context, options)
 
         // Setup modifier display with debounced listeners
-        this.setupModifierDisplay(html)
+        this.setupModifierDisplay()
     }
 
-    getSummaryClickActions(html) {
+    /* -------------------------------------------- */
+    /*  Action Handlers                             */
+    /* -------------------------------------------- */
+
+    /**
+     * Handle the "schaden" action button click.
+     * @param {PointerEvent} event
+     * @param {HTMLElement} target
+     */
+    static async #onSchaden(event, target) {
+        await this._schadenKlick()
+    }
+
+    /* -------------------------------------------- */
+    /*  Summary Click Actions                       */
+    /* -------------------------------------------- */
+
+    getSummaryClickActions() {
         return [
             {
                 selector: '.clickable-summary.angreifen',
-                handler: (html) => this._angreifenKlick(html),
+                handler: () => this._angreifenKlick(),
             },
             {
                 selector: '.clickable-summary.schaden',
-                handler: (html) => this._schadenKlick(html),
+                handler: () => this._schadenKlick(),
             },
         ]
     }
@@ -217,12 +250,14 @@ export class FernkampfAngriffDialog extends CombatDialog {
         return summary
     }
 
-    async _angreifenKlick(html) {
-        // NOTE: var names not very descriptive:
-        // at_abzuege_mod kommen vom status/gesundheit, at_mod aus ansagen, nahkampfmod?
-        let diceFormula = this.getDiceFormula(html)
-        await this.manoeverAuswaehlen(html)
-        await this.updateManoeverMods() // durch manoever
+    /* -------------------------------------------- */
+    /*  Combat Actions                              */
+    /* -------------------------------------------- */
+
+    async _angreifenKlick() {
+        let diceFormula = this.getDiceFormula()
+        await this.manoeverAuswaehlen()
+        await this.updateManoeverMods()
         this.updateStatusMods()
         super.eigenschaftenText()
 
@@ -243,13 +278,12 @@ export class FernkampfAngriffDialog extends CombatDialog {
 
         Hooks.call('Ilaris.fernkampfAngriffClick', rollResult, this.actor, this.item)
         await this.handleTargetSelection(rollResult, 'ranged')
-        super._updateSchipsStern(html)
+        super._updateSchipsStern()
     }
 
-    async _schadenKlick(html) {
-        await this.manoeverAuswaehlen(html)
+    async _schadenKlick() {
+        await this.manoeverAuswaehlen()
         await this.updateManoeverMods()
-        // Rollmode
         let label = `Schaden (${this.item.name})`
         let formula = `${this.schaden} ${signed(this.mod_dm)}`
         // Use the new evaluation function for damage (no crit evaluation)
@@ -288,33 +322,40 @@ export class FernkampfAngriffDialog extends CombatDialog {
         }
     }
 
-    async manoeverAuswaehlen(html) {
-        /* parsed den angriff dialog und schreibt entsprechende werte 
-        in die waffen items. Ersetzt ehemalige angriffUpdate aus angriff_prepare.js
-        TODO: kann ggf. mit manoeverAnwenden zusammengelegt werden?
-        TODO: kann evt in ein abstraktes waffen item verschoben werden oder
-        in einn abstrakten angriffsdialog für allgemeine manöver wunden etc, und spezifisch
-        überschrieben werden.. 
-        TODO: könnte das nicht direkt via template passieren für einen großteil der werte? 
-        sodass ne form direkt die werte vom item ändert und keine update funktion braucht?
-        dann wäre die ganze funktion hier nicht nötig.
-        TODO: alle simplen booleans könnten einfach in eine loop statt einzeln aufgeschrieben werden
-        */
+    /* -------------------------------------------- */
+    /*  Maneuver Processing                         */
+    /* -------------------------------------------- */
+
+    /**
+     * Parse maneuver selections from the dialog form.
+     * Uses native DOM API instead of jQuery.
+     */
+    async manoeverAuswaehlen() {
         let manoever = this.item.system.manoever
 
         // allgemeine optionen
-        manoever.kbak.selected = html.find(`#kbak-${this.dialogId}`)[0]?.checked || false // Kombinierte Aktion
-        manoever.gzkl.selected = html.find(`#gzkl-${this.dialogId}`)[0]?.value || false // Größenklasse
-        manoever.bwng.selected = html.find(`#bwng-${this.dialogId}`)[0]?.value || false // Bewegung
-        manoever.lcht.selected = html.find(`#lcht-${this.dialogId}`)[0]?.value || false // Lichtverhältnisse
-        manoever.wttr.selected = html.find(`#wttr-${this.dialogId}`)[0]?.value || false // Wetter
-        manoever.dckg.selected = html.find(`#dckg-${this.dialogId}`)[0]?.value || false // Deckung
-        manoever.kgtl.selected = html.find(`#kgtl-${this.dialogId}`)[0]?.value || false // Kampfgetümmel
-        manoever.fm_gzss.selected = html.find(`#fm_gzss-${this.dialogId}`)[0]?.checked || false // Reflexschuss
+        manoever.kbak.selected =
+            this.element.querySelector(`#kbak-${this.dialogId}`)?.checked || false // Kombinierte Aktion
+        manoever.gzkl.selected =
+            this.element.querySelector(`#gzkl-${this.dialogId}`)?.value || false // Größenklasse
+        manoever.bwng.selected =
+            this.element.querySelector(`#bwng-${this.dialogId}`)?.value || false // Bewegung
+        manoever.lcht.selected =
+            this.element.querySelector(`#lcht-${this.dialogId}`)?.value || false // Lichtverhältnisse
+        manoever.wttr.selected =
+            this.element.querySelector(`#wttr-${this.dialogId}`)?.value || false // Wetter
+        manoever.dckg.selected =
+            this.element.querySelector(`#dckg-${this.dialogId}`)?.value || false // Deckung
+        manoever.kgtl.selected =
+            this.element.querySelector(`#kgtl-${this.dialogId}`)?.value || false // Kampfgetümmel
+        manoever.fm_gzss.selected =
+            this.element.querySelector(`#fm_gzss-${this.dialogId}`)?.checked || false // Reflexschuss
 
-        manoever.mod.selected = html.find(`#modifikator-${this.dialogId}`)[0]?.value || false // Modifikator
-        manoever.rllm.selected = html.find(`#rollMode-${this.dialogId}`)[0]?.value || false // RollMode
-        await super.manoeverAuswaehlen(html)
+        manoever.mod.selected =
+            this.element.querySelector(`#modifikator-${this.dialogId}`)?.value || false // Modifikator
+        manoever.rllm.selected =
+            this.element.querySelector(`#rollMode-${this.dialogId}`)?.value || false // RollMode
+        await super.manoeverAuswaehlen()
     }
 
     async updateManoeverMods() {

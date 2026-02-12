@@ -67,6 +67,10 @@
   padding-top: 5px;
 }
 
+.ilaris.combat-dialog .window-content {
+  overflow: auto;
+}
+
 .ilaris.item .window-content {
   overflow: auto;
 
