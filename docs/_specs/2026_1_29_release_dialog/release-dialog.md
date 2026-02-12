@@ -11,10 +11,9 @@
     - ...bereinigt veraltete `breaking-changes-*.hbs`-Dateien im Zielordner.
 
 - **AC2 (GitHub Action):** Der `pack`-Job in `build-packs.yml` wird um einen Schritt erweitert, der...
-
-              -   ...**vor** dem `📦 Package database files`-Schritt ausgeführt wird.
-              -   ...das Skript `node utils/generate-breaking-changes.js` aufruft.
-              -   ...den Workflow **fehlerfrei und ohne leere Dateien fortsetzt**, wenn das Skript keine Breaking Changes findet (Exit Code 0).
+    - ...**vor** dem `📦 Package database files`-Schritt ausgeführt wird.
+    - ...das Skript `node utils/generate-breaking-changes.js` aufruft.
+    - ...den Workflow **fehlerfrei und ohne leere Dateien fortsetzt**, wenn das Skript keine Breaking Changes findet (Exit Code 0).
 
     hbs
 
