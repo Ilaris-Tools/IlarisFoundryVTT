@@ -575,7 +575,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         manoever.set_energy_cost.value =
             energyOverride !== '' && energyOverride != null ? +energyOverride : null
 
-        console.log('manoever', manoever.blutmagie.value)
+        console.log('manoever', manoever.set_energy_cost.value)
 
         manoever.mod.selected =
             Number(this.element.querySelector(`#modifikator-${this.dialogId}`)?.value) || 0 // Modifikator

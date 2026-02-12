@@ -17,6 +17,10 @@ export class NahkampfwaffeSheet extends WaffeBaseSheet {
     async _prepareContext(options) {
         const context = await super._prepareContext(options)
 
+        if (context.hasOwner) {
+            context.speicherplatz_list = this.document.actor.misc.speicherplatz_list
+        }
+
         // Fetch available waffeneigenschaften from all compendiums
         context.availableEigenschaften = await this._getAvailableEigenschaften()
 

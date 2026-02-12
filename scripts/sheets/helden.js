@@ -10,18 +10,13 @@ export class HeldenSheet extends IlarisActorSheet {
             height: 750,
         },
         window: {
-            icon: 'fa-solid fa-person',
+            title: 'meep',
         },
         actions: {
             schipsClick: HeldenSheet.schipsClick,
             triStateClick: HeldenSheet.triStateClick,
             toggleItem: HeldenSheet.onToggleItem,
         },
-    }
-
-    /** @override */
-    get title() {
-        return `Held: ${this.actor.name}`
     }
 
     /** @override */
@@ -91,20 +86,11 @@ export class HeldenSheet extends IlarisActorSheet {
             settings.IlarisGameSettingNames.weaponSpaceRequirement,
         )
 
-        // Add applied effects - ALWAYS needed for the effects tab
+        // Add applied effects
         context.effects = this.actor.appliedEffects
 
         // Add tab data for template
         context.tabs = this._prepareTabs('primary')
-
-        // Enrich content for display
-        context.notesHTML = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
-            this.document.system.notes,
-            {
-                secrets: this.document.isOwner,
-                relativeTo: this.document,
-            },
-        )
 
         return context
     }
