@@ -824,45 +824,45 @@ function applyHexMaskToToken(token) {
 // Add Automatisierung heading in settings, pretty scuffed solution but i did not manage to add a separate category to the settings without adding a new module
 Hooks.on('renderSettingsConfig', (app, htmlDOM) => {
     // Find the first Automatisierung setting
-    const automationSetting = htmlDOM
-        .find('[name="Ilaris.useSceneEnvironment"]')
-        .closest('.form-group')
+    const automationInput = htmlDOM.querySelector('[name="Ilaris.useSceneEnvironment"]')
+    const automationSetting = automationInput?.closest('.form-group')
 
-    if (automationSetting.length > 0) {
+    if (automationSetting) {
         // Insert a heading before it
-        automationSetting.before(
+        automationSetting.insertAdjacentHTML(
+            'beforebegin',
             '<h3 class="setting-header" style="border-bottom: 1px solid var(--color-border-light-primary); padding: 0.5em 0; margin-top: 1em;">Automatisierung</h3>',
         )
     }
 
     // Find the first Kompendien setting (fertigkeitenPacksMenu)
-    const kompendienSetting = htmlDOM
-        .find('[data-key="Ilaris.fertigkeitenPacksMenu"]')
-        .closest('.form-group')
+    const kompendienElement = htmlDOM.querySelector('[data-key="Ilaris.fertigkeitenPacksMenu"]')
+    const kompendienSetting = kompendienElement?.closest('.form-group')
 
-    if (kompendienSetting.length > 0) {
+    if (kompendienSetting) {
         // Insert a heading before it
-        kompendienSetting.before(
+        kompendienSetting.insertAdjacentHTML(
+            'beforebegin',
             '<h3 class="setting-header" style="border-bottom: 1px solid var(--color-border-light-primary); padding: 0.5em 0; margin-top: 1em;">Benutzte Kompendien</h3>',
         )
     }
 
     // Find the first Kompendien setting (fertigkeitenPacksMenu)
-    const normalSetting = htmlDOM
-        .find('[data-setting-id="Ilaris.weaponSpaceRequirement"]')
-        .closest('.form-group')
+    const normalElement = htmlDOM.querySelector('[data-setting-id="Ilaris.weaponSpaceRequirement"]')
+    const normalSetting = normalElement?.closest('.form-group')
 
-    if (normalSetting.length > 0) {
+    if (normalSetting) {
         // Insert a heading before it
-        normalSetting.before(
+        normalSetting.insertAdjacentHTML(
+            'beforebegin',
             '<h3 class="setting-header" style="border-bottom: 1px solid var(--color-border-light-primary); padding: 0.5em 0; margin-top: 1em;">Andere Einstellungen</h3>',
         )
     }
 
     // Replace the default ranged dodge talent text input with a dropdown
-    const dodgeTalentInput = htmlDOM.find('[name="Ilaris.defaultRangedDodgeTalent"]')
-    if (dodgeTalentInput.length > 0) {
-        const currentValue = dodgeTalentInput.val()
+    const dodgeTalentInput = htmlDOM.querySelector('[name="Ilaris.defaultRangedDodgeTalent"]')
+    if (dodgeTalentInput) {
+        const currentValue = dodgeTalentInput.value
 
         // Get all talents from selected fertigkeiten compendiums
         const talentePacks = JSON.parse(
@@ -896,6 +896,7 @@ Hooks.on('renderSettingsConfig', (app, htmlDOM) => {
         }
         selectHtml += '</select>'
 
-        dodgeTalentInput.replaceWith(selectHtml)
+        dodgeTalentInput.insertAdjacentHTML('afterend', selectHtml)
+        dodgeTalentInput.remove()
     }
 })
