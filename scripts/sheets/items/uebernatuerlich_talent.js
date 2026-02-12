@@ -1,43 +1,26 @@
 import { IlarisItemSheet } from './item.js'
 
 export class UebernatuerlichTalentSheet extends IlarisItemSheet {
-    async getData() {
-        const data = super.getData()
-        if (data.hasOwner) {
-            data.fertigkeit_list = this.item.actor.misc.uebernatuerlich_fertigkeit_list
-            console.log(data)
-        }
-        return data
+    /** @override */
+    static DEFAULT_OPTIONS = {
+        classes: ['ilaris', 'sheet', 'item', 'uebernatuerlich-talent'],
     }
 
-    static get defaultOptions() {
-        return foundry.utils.mergeObject(super.defaultOptions, {
-            // classes: ["ilaris", "sheet"],
+    /** @override */
+    static PARTS = {
+        form: {
             template: 'systems/Ilaris/templates/sheets/items/uebernatuerlich_talent.hbs',
-            // width: 720,
-            // height: 800,
-            // resizable: false,
-            // tabs: [
-            //     {
-            //         navSelector: ".sheet-tabs",
-            //         contentSelector: ".sheet-body",
-            //         initial: "fertigkeiten",
-            //     },
-            // ]
-        })
+        },
     }
 
-    // getData() {
-    //     const data = super.getData();
-    //     return data;
-    // }
+    /** @override */
+    async _prepareContext(options) {
+        const context = await super._prepareContext(options)
 
-    // _getHeaderButtons() {
-    //     let buttons = super._getHeaderButtons();
-    //     return buttons;
-    // }
+        if (context.hasOwner) {
+            context.fertigkeit_list = this.document.actor.misc.uebernatuerlich_fertigkeit_list
+        }
 
-    // activateListeners(html) {
-    //     super.activateListeners(html);
-    // }
+        return context
+    }
 }

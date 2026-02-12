@@ -4,7 +4,7 @@
  */
 
 import { parseEigenschaftString } from '../items/utils/eigenschaft-parser.js'
-
+const isNewerVersion = foundry.utils.isNewerVersion
 /**
  * Mapping from old property names and string formats to new parametrized format
  */

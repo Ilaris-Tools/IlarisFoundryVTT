@@ -1,81 +1,120 @@
 import { wuerfelwurf } from '../common/wuerfel.js'
 import { ILARIS } from '../config.js'
 
-export class IlarisActorSheet extends ActorSheet {
-    /*
-      data ist nicht actor. Ändern, so dass ich nicht mehr in Actor, sondern über data schreibe?
-      Und welche Items soll ich nehmen? Actor, data, oder direkt?
-      Ansehen, was references und was copys sind.
-    */
+const { HandlebarsApplicationMixin } = foundry.applications.api
+const { ActorSheetV2 } = foundry.applications.sheets
+const TextEditor = foundry.applications.ux.TextEditor.implementation
 
-    static get defaultOptions() {
-        return foundry.utils.mergeObject(super.defaultOptions, {
-            classes: ['ilaris', 'sheet', 'actor'],
+export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
+    /** @override */
+    static DEFAULT_OPTIONS = {
+        classes: ['ilaris', 'sheet', 'actor'],
+        position: {
             width: 850,
             height: 750,
-            tabs: [
-                { navSelector: '.sheet-tabs', contentSelector: '.sheet-body', initial: 'kampf' },
-            ],
-            scrollY: ['.herotab'], // Preserves scroll position for scrollable tab content!
-        })
+        },
+        window: {
+            resizable: true,
+        },
+        form: {
+            submitOnChange: true,
+            closeOnSubmit: false,
+        },
+        actions: {
+            ausklappView: IlarisActorSheet.ausklappView,
+            rollable: IlarisActorSheet.onRollable,
+            clickable: IlarisActorSheet.onClickable,
+            itemCreate: IlarisActorSheet.onItemCreate,
+            itemEdit: IlarisActorSheet.onItemEdit,
+            itemDelete: IlarisActorSheet.onItemDelete,
+            toggleBool: IlarisActorSheet.onToggleBool,
+            syncItems: IlarisActorSheet.onSyncItems,
+        },
     }
 
-    async getData() {
-        const context = super.getData()
-        console.log(context)
+    /** @override */
+    static PARTS = {}
 
+    /** @override */
+    async _prepareContext(options) {
+        const context = await super._prepareContext(options)
+
+        // Add actor reference for templates
+        context.actor = this.actor
+
+        // Add configuration
+        context.config = CONFIG.ILARIS
+
+        // Enrich biography text
         context.enrichedBiography = await TextEditor.enrichHTML(this.actor.system.notes, {
             async: true,
         })
+
         return context
     }
 
-    activateListeners(html) {
-        super.activateListeners(html)
-        html.find('.ausklappen-trigger').click((ev) => this._ausklappView(ev))
-        html.find('.rollable').click((ev) => this._onRollable(ev))
-        html.find('.clickable').click((ev) => this._onClickable(ev))
-        html.find('.item-create').click((ev) => this._onItemCreate(ev))
-        html.find('.item-edit').click((ev) => this._onItemEdit(ev))
-        html.find('.item-delete').click((ev) => this._onItemDelete(ev))
-        // html.find('.item-toggle').click(this._onToggleItem.bind(this));
-        html.find('.item-toggle').click((ev) => this._onToggleItem(ev))
-        html.find('.toggle-bool').click((ev) => this._onToggleBool(ev))
-        html.find('.hp-update').on('input change', (ev) => this._onHpUpdate(ev))
+    /**
+     * Bind event listeners after render
+     * @param {ApplicationRenderContext} context - The render context
+     * @param {RenderOptions} options - Render options
+     * @protected
+     */
+    _onRender(context, options) {
+        super._onRender(context, options)
 
-        // Add listeners for wound and exhaustion fields on hero sheets (input for real-time updates)
-        html.find('input[name="system.gesundheit.wunden"]').on('input', (ev) =>
-            this._onHealthValueChange(ev),
+        // Bind input listeners for real-time health updates
+        const woundsInput = this.element.querySelector('input[name="system.gesundheit.wunden"]')
+        if (woundsInput) {
+            woundsInput.addEventListener('input', (ev) => this._onHealthValueChange(ev))
+        }
+
+        const exhaustionInput = this.element.querySelector(
+            'input[name="system.gesundheit.erschoepfung"]',
         )
-        html.find('input[name="system.gesundheit.erschoepfung"]').on('input', (ev) =>
-            this._onHealthValueChange(ev),
-        )
+        if (exhaustionInput) {
+            exhaustionInput.addEventListener('input', (ev) => this._onHealthValueChange(ev))
+        }
 
-        // Add listener for sync items button
-        html.find('.sync-items').click((ev) => this._onSyncItems(ev))
-    }
-
-    _ausklappView(event) {
-        // Beachte Block: Ausklappen bei asp/kap sieht kacke aus -> inline
-        const targetkey = $(event.currentTarget).data('ausklappentarget')
-        const targetId = 'ausklappen-view-'.concat(targetkey)
-        var toggleView = document.getElementById(targetId)
-        if (toggleView.style.display === 'none') {
-            toggleView.style.display = 'table-row'
-        } else {
-            toggleView.style.display = 'none'
+        // Bind input listener for hp updates
+        const hpUpdates = this.element.querySelectorAll('.hp-update')
+        for (const elem of hpUpdates) {
+            elem.addEventListener('input', (ev) => this._onHpUpdate(ev))
         }
     }
 
-    async _onToggleBool(event) {
-        const togglevariable = event.currentTarget.dataset.togglevariable
-        let attr = `${togglevariable}`
-        let bool_status = foundry.utils.getProperty(this.actor, attr)
-        await this.actor.update({ [attr]: !bool_status })
+    /**
+     * Toggle visibility of expandable sections
+     * @param {PointerEvent} event - The click event
+     * @param {HTMLElement} target - The target element with data-action
+     */
+    static ausklappView(event, target) {
+        const targetkey = target.dataset.ausklappentarget
+        const targetId = `ausklappen-view-${targetkey}`
+        const toggleView = this.element.querySelector(`#${targetId}`)
+        if (toggleView) {
+            toggleView.style.display = toggleView.style.display === 'none' ? 'table-row' : 'none'
+        }
+    }
 
-        // Update open combat dialogs if wound penalties were toggled
-        if (togglevariable === 'system.gesundheit.wundenignorieren') {
-            this._updateOpenCombatDialogs()
+    /**
+     * Toggle a boolean value on the actor
+     * @param {PointerEvent} event - The click event
+     * @param {HTMLElement} target - The target element with data-action
+     */
+    static async onToggleBool(event, target) {
+        try {
+            const togglevariable = target.dataset.togglevariable
+            const attr = `${togglevariable}`
+            const bool_status = foundry.utils.getProperty(this.actor, attr)
+            await this.actor.update({ [attr]: !bool_status })
+
+            // Update open combat dialogs if wound penalties were toggled
+            if (togglevariable === 'system.gesundheit.wundenignorieren') {
+                this._updateOpenCombatDialogs()
+            }
+        } catch (err) {
+            console.error('ILARIS | Error toggling boolean:', err)
+            ui.notifications.error('Fehler beim Umschalten des Wertes.')
         }
     }
 
@@ -115,66 +154,6 @@ export class IlarisActorSheet extends ActorSheet {
         this._healthUpdateTimeout = setTimeout(() => {
             this._updateOpenCombatDialogs()
         }, 300)
-    }
-
-    async _onToggleItem(event) {
-        const itemId = event.currentTarget.dataset.itemid
-        const item = this.actor.items.get(itemId)
-        console.log(item.system)
-        const toggletype = event.currentTarget.dataset.toggletype
-        let attr = `system.${toggletype}`
-        const otherHandType = toggletype === 'hauptwaffe' ? 'nebenwaffe' : 'hauptwaffe'
-        const otherHandAttr = `system.${otherHandType}`
-
-        if (toggletype == 'hauptwaffe' || toggletype == 'nebenwaffe') {
-            let item_status = foundry.utils.getProperty(item, attr)
-
-            // Handle two-handed ranged weapons
-            if (
-                item_status &&
-                item.type === 'fernkampfwaffe' &&
-                item.system.computed?.handsRequired === 2
-            ) {
-                await this._unequipWeapon(itemId)
-                return
-            }
-
-            if (item_status == false) {
-                // Handle switching hands for one-handed weapons
-                if (
-                    (toggletype == 'hauptwaffe' && item.system.nebenwaffe) ||
-                    (toggletype == 'nebenwaffe' && item.system.hauptwaffe)
-                ) {
-                    if (item.system.computed?.handsRequired !== 2) {
-                        await item.update({ [otherHandAttr]: false })
-                    }
-                }
-
-                // Unequip two-handed ranged weapons when equipping any other weapon
-                this._unequipTwoHandedRangedWeapons()
-
-                // If equipping a two-handed weapon, unequip all other weapons
-                if (item.system.computed?.handsRequired === 2) {
-                    this._unequipAllWeaponsExcept(itemId)
-                } else {
-                    // For one-handed weapons, only unequip from the toggled hand
-                    this._unequipHandWeapons(toggletype)
-
-                    // If a two-handed weapon is equipped in both hands, unequip it
-                    this._unequipTwoHandedWeaponsInBothHands()
-                }
-            }
-
-            // For two-handed weapons, always equip in both hands by default
-            if (item.system.computed?.handsRequired === 2 && !item_status) {
-                await item.update({ [otherHandAttr]: true })
-            }
-
-            await item.update({ [attr]: !item_status })
-        } else {
-            attr = `system.${toggletype}`
-            await item.update({ [attr]: !foundry.utils.getProperty(item, attr) })
-        }
     }
 
     // Helper method to unequip a specific weapon from both hands
@@ -263,35 +242,38 @@ export class IlarisActorSheet extends ActorSheet {
         }
     }
 
-    async _onRollable(event) {
-        let systemData = this.actor.system
-        // console.log($(event.currentTarget));
-        let rolltype = $(event.currentTarget).data('rolltype')
-        if (rolltype == 'basic') {
+    /**
+     * Handle rollable actions (dice rolls)
+     * @param {PointerEvent} event - The click event
+     * @param {HTMLElement} target - The target element with data-action
+     */
+    static async onRollable(event, target) {
+        const systemData = this.actor.system
+        const rolltype = target.dataset.rolltype
+
+        console.log('ILARIS | onRollable triggered', event, target, rolltype)
+        if (rolltype === 'basic') {
             // NOTE: als Einfaches Beispiel ohne weitere Dialoge und logische Verknüpfungen.
-            let label = $(event.currentTarget).data('label')
-            let formula = $(event.currentTarget).data('formula')
-            let roll = new Roll(formula)
-            console.log(formula)
-            let speaker = ChatMessage.getSpeaker({ actor: this.actor })
+            const label = target.dataset.label
+            const formula = target.dataset.formula
+            const roll = new Roll(formula)
+            const speaker = ChatMessage.getSpeaker({ actor: this.actor })
             await roll.evaluate()
             const html_roll = await renderTemplate(
                 'systems/Ilaris/templates/chat/probenchat_profan.hbs',
                 { title: `${label}` },
             )
-            // console.log(html_roll);
             roll.toMessage({
                 speaker: speaker,
                 flavor: html_roll,
             })
             return 0
         }
-        let globalermod = systemData.abgeleitete.globalermod
+        const globalermod = systemData.abgeleitete.globalermod
         let pw = 0
         let label = 'Probe'
         let dice = '3d20dl1dh1'
-        // TODO: rolltype=dialog, diagtype=nahkampf/profan/simple usw..
-        let dialoge = [
+        const dialoge = [
             'angriff_diag',
             'nahkampf_diag',
             'simpleprobe_diag',
@@ -302,172 +284,144 @@ export class IlarisActorSheet extends ActorSheet {
             'uefert_diag',
             'fertigkeit_diag',
         ]
-        console.log('rolltype')
-        console.log(rolltype)
         if (dialoge.includes(rolltype)) {
-            console.log('diag')
-            wuerfelwurf(event, this.actor)
+            console.log(event.currentTarget)
+            wuerfelwurf(target, this.actor)
             return 0
         }
-        if (rolltype == 'at') {
-            // TODO: simplify this: if rolltype in [...]
+        if (rolltype === 'at') {
             dice = '1d20'
-            label = $(event.currentTarget).data('item')
+            label = target.dataset.item
             label = `Attacke (${label})`
-            pw = $(event.currentTarget).data('pw')
-        } else if (rolltype == 'vt') {
+            pw = target.dataset.pw
+            console.log('ILARIS | onRollable AT', { label, pw, globalermod, target })
+        } else if (rolltype === 'vt') {
             dice = '1d20'
-            label = $(event.currentTarget).data('item')
+            label = target.dataset.item
             label = `Verteidigung (${label})`
-            pw = $(event.currentTarget).data('pw')
-        } else if (rolltype == 'fk') {
+            pw = target.dataset.pw
+        } else if (rolltype === 'fk') {
             dice = '1d20'
-            label = $(event.currentTarget).data('item')
+            label = target.dataset.item
             label = `Fernkampf (${label})`
-            pw = $(event.currentTarget).data('pw')
-        } else if (rolltype == 'schaden') {
-            label = $(event.currentTarget).data('item')
+            pw = target.dataset.pw
+        } else if (rolltype === 'schaden') {
+            label = target.dataset.item
             label = `Schaden (${label})`
-            pw = $(event.currentTarget).data('pw').replace(/[Ww]/g, 'd')
-        } else if (rolltype == 'attribut') {
-            const attribut_name = $(event.currentTarget).data('attribut')
+            pw = target.dataset.pw.replace(/[Ww]/g, 'd')
+        } else if (rolltype === 'attribut') {
+            const attribut_name = target.dataset.attribut
             label = CONFIG.ILARIS.label[attribut_name]
             pw = systemData.attribute[attribut_name].pw
-        } else if (rolltype == 'profan_fertigkeit_pw') {
-            label = $(event.currentTarget).data('fertigkeit')
-            pw = $(event.currentTarget).data('pw')
-        } else if (rolltype == 'profan_fertigkeit_pwt') {
-            label = $(event.currentTarget).data('fertigkeit')
+        } else if (rolltype === 'profan_fertigkeit_pw') {
+            label = target.dataset.fertigkeit
+            pw = target.dataset.pw
+        } else if (rolltype === 'profan_fertigkeit_pwt') {
+            label = target.dataset.fertigkeit
             label = label.concat(' (Talent)')
-            pw = $(event.currentTarget).data('pwt')
-        } else if (rolltype == 'profan_talent') {
-            label = $(event.currentTarget).data('fertigkeit')
-            label = label.concat(' (', $(event.currentTarget).data('talent'), ')')
-            pw = $(event.currentTarget).data('pw')
-        } else if (rolltype == 'freie_fertigkeit') {
-            label = $(event.currentTarget).data('fertigkeit')
-            // console.log($(event.currentTarget).data("pw"))
-            pw = Number($(event.currentTarget).data('pw')) * 8 - 2
-            // } else if (rolltype == "magie_fertigkeit" || rolltype == "karma_fertigkeit") {
-        } else if (rolltype == 'uebernatuerliche_fertigkeit') {
-            label = $(event.currentTarget).data('fertigkeit')
-            pw = $(event.currentTarget).data('pw')
-        } else if (rolltype == 'zauber' || rolltype == 'liturgie') {
-            label = $(event.currentTarget).data('talent')
-            pw = $(event.currentTarget).data('pw')
+            pw = target.dataset.pwt
+        } else if (rolltype === 'profan_talent') {
+            label = target.dataset.fertigkeit
+            label = label.concat(' (', target.dataset.talent, ')')
+            pw = target.dataset.pw
+        } else if (rolltype === 'freie_fertigkeit') {
+            label = target.dataset.fertigkeit
+            pw = Number(target.dataset.pw) * 8 - 2
+        } else if (rolltype === 'uebernatuerliche_fertigkeit') {
+            label = target.dataset.fertigkeit
+            pw = target.dataset.pw
+        } else if (rolltype === 'zauber' || rolltype === 'liturgie') {
+            label = target.dataset.talent
+            pw = target.dataset.pw
         }
         let formula = `${dice} + ${pw} + ${globalermod}`
-        if (rolltype == 'at') {
+        if (rolltype === 'at') {
             formula += ` ${systemData.modifikatoren.nahkampfmod >= 0 ? '+' : ''}${
                 systemData.modifikatoren.nahkampfmod
             }`
         }
-        if (rolltype == 'vt') {
+        if (rolltype === 'vt') {
             formula += ` ${systemData.modifikatoren.verteidigungmod >= 0 ? '+' : ''}${
                 systemData.modifikatoren.verteidigungmod
             }`
         }
-        if (rolltype == 'schaden') {
+        if (rolltype === 'schaden') {
             formula = pw
         }
-        // let formula = `${data.pw} + 3d20dhdl`;
-        let roll = new Roll(formula)
-        // roll.roll();
+        console.log('ILARIS | onRollable final formula', formula)
+        const roll = new Roll(formula)
         await roll.evaluate()
-        // console.log(roll);
-        // let critfumble = roll.result.split(" + ")[1];
-        let critfumble = roll.dice[0].results.find((a) => a.active == true).result
+        const critfumble = roll.dice[0].results.find((a) => a.active === true).result
         let fumble = false
         let crit = false
-        if (critfumble == 20) {
+        if (critfumble === 20) {
             crit = true
-        } else if (critfumble == 1) {
+        } else if (critfumble === 1) {
             fumble = true
         }
-        // let templateData = {
-        //     // title: `${label}-Probe`,
-        //     title: label,
-        //     crit: crit,
-        //     fumble: fumble
-        // };
-        // // console.log(templateData);
-        // let template = 'systems/Ilaris/templates/chat/dreid20.hbs';
-        // renderTemplate(template, templateData, roll).then(content => {
-        //     if (formula != null) {
-        //         roll.toMessage({
-        //             flavor: content
-        //         });
-        //     }
-        // });
-        let speaker = ChatMessage.getSpeaker({ actor: this.actor })
-        // console.log(speaker);
-        // console.log(speaker.alias);
-        // console.log(this.actor.id);
+        const speaker = ChatMessage.getSpeaker({ actor: this.actor })
         const html_roll = await renderTemplate(
             'systems/Ilaris/templates/chat/probenchat_profan.hbs',
             {
-                // user: speaker.alias,
-                // user: this.actor.id,
-                // speaker: speaker.alias,
                 title: `${label}`,
                 crit: crit,
-                fumble: fumble, //,wunden
+                fumble: fumble,
             },
         )
-        // console.log(html_roll);
         roll.toMessage({
             speaker: speaker,
             flavor: html_roll,
         })
     }
 
-    async _onClickable(event) {
-        let systemData = this.actor.system
-        // console.log($(event.currentTarget));
-        let clicktype = $(event.currentTarget).data('clicktype')
-        if (clicktype == 'shorten_money') {
+    /**
+     * Handle clickable actions (non-roll clicks)
+     * @param {PointerEvent} event - The click event
+     * @param {HTMLElement} target - The target element with data-action
+     */
+    static async onClickable(event, target) {
+        const systemData = this.actor.system
+        const clicktype = target.dataset.clicktype
+        if (clicktype === 'shorten_money') {
             let kreuzer = systemData.geld.kreuzer
             let heller = systemData.geld.heller
             let silbertaler = systemData.geld.silbertaler
             let dukaten = systemData.geld.dukaten
             if (kreuzer > 10) {
-                let div = Math.floor(kreuzer / 10)
+                const div = Math.floor(kreuzer / 10)
                 heller += div
                 kreuzer -= div * 10
             }
             if (heller > 10) {
-                let div = Math.floor(heller / 10)
+                const div = Math.floor(heller / 10)
                 silbertaler += div
                 heller -= div * 10
             }
             if (silbertaler > 10) {
-                let div = Math.floor(silbertaler / 10)
+                const div = Math.floor(silbertaler / 10)
                 dukaten += div
                 silbertaler -= div * 10
             }
-            this.actor.update({ 'system.geld.kreuzer': kreuzer })
-            this.actor.update({ 'system.geld.heller': heller })
-            this.actor.update({ 'system.geld.silbertaler': silbertaler })
-            this.actor.update({ 'system.geld.dukaten': dukaten })
-        } /* else if (clicktype == "togglewundenignorieren") {
-            data.gesundheit.wundenignorieren = !data.gesundheit.wundenignorieren;
-        } */
+            await this.actor.update({
+                'system.geld.kreuzer': kreuzer,
+                'system.geld.heller': heller,
+                'system.geld.silbertaler': silbertaler,
+                'system.geld.dukaten': dukaten,
+            })
+        }
     }
 
+    /**
+     * Handle HP update when wounds/exhaustion change
+     * @param {Event} event - The input event
+     * @protected
+     */
     _onHpUpdate(event) {
-        // console.log("HpUpdate");
-        // this.actor.token.refresh();
-        // console.log(event);
-        let einschraenkungen = Math.floor(
+        const einschraenkungen = Math.floor(
             this.actor.system.gesundheit.wunden + this.actor.system.gesundheit.erschoepfung,
         )
-        // let old_hp = this.actor.data.data.gesundheit.hp.value;
-        let new_hp = this.actor.system.gesundheit.hp.max - einschraenkungen
-        // this.actor.data.data.gesundheit.hp.value = new_hp;
+        const new_hp = this.actor.system.gesundheit.hp.max - einschraenkungen
         this.actor.update({ 'system.gesundheit.hp.value': new_hp })
-        // this.actor.token.actor.data.data.gesundheit.hp.value = new_hp;
-        // this.actor.token?.refresh();
-        console.log(this.actor)
 
         // Update open combat dialogs when wounds or exhaustion change (with debouncing)
         if (this._hpUpdateTimeout) {
@@ -477,50 +431,24 @@ export class IlarisActorSheet extends ActorSheet {
         this._hpUpdateTimeout = setTimeout(() => {
             this._updateOpenCombatDialogs()
         }, 300)
-
-        // let token = this.actor.token;
-        // console.log(token);
-        // this.actor.token.update();
-        // token.refresh();
-        // console.log(token);
-        // console.log(this.actor.token);
-        // if (old_hp != new_hp) {
-        //     // this.actor.data.data.gesundheit.hp.value = new_hp;
-        //     // // console.log(data);
-        //     // let actor = game.actors.get(data._id);
-        //     // // console.log(actor);
-        //     // // eigentlich async:
-        //     // if (actor) {
-        //     //     actor.update({ "data.gesundheit.hp.value": new_hp });
-        //     // }
-        //     this.actor.update({ "data.gesundheit.hp.value": new_hp });
-        // }
     }
 
     _onSelectedKampfstil(event) {
-        console.log('_onSelectedKampfstil')
-        // console.log(event);
-        // var selectElement = event.target;
-        // console.log(selectElement);
-        // var value = selectElement.value;
-        let selected_kampfstil = event.target.value
-        console.log(selected_kampfstil)
+        const selected_kampfstil = event.target.value
         this.actor.system.misc.selected_kampfstil = selected_kampfstil
         this.actor.update({ 'system.misc.selected_kampfstil': selected_kampfstil })
     }
 
     _onSelectedUebernatuerlichenStil(event) {
-        console.log('_onSelectedUebernatuerlichenStil')
-        let selected_stil = event.target.value
-        console.log(selected_stil)
+        const selected_stil = event.target.value
         this.actor.system.misc.selected_uebernatuerlicher_stil = selected_stil
         this.actor.update({ 'system.misc.selected_uebernatuerlicher_stil': selected_stil })
     }
 
     _onDropItemCreate(item) {
-        if (item.type == 'manoever') {
+        if (item.type === 'manoever') {
             let bogen = 'Bogen'
-            if (this.actor.type == 'held') {
+            if (this.actor.type === 'held') {
                 bogen = 'Heldenbogen'
             } else {
                 bogen = 'Werteblock'
@@ -534,10 +462,13 @@ export class IlarisActorSheet extends ActorSheet {
         }
     }
 
-    async _onItemCreate(event) {
-        console.log('ItemCreate')
-        let itemclass = $(event.currentTarget).data('itemclass')
-        console.log(itemclass)
+    /**
+     * Handle item creation
+     * @param {PointerEvent} event - The click event
+     * @param {HTMLElement} target - The target element with data-action
+     */
+    static async onItemCreate(event, target) {
+        const itemclass = target.dataset.itemclass
 
         // Get item templates from config
         const itemTemplates = ILARIS.itemTemplates
@@ -561,8 +492,6 @@ export class IlarisActorSheet extends ActorSheet {
             logMessage: 'Neues generisches Item',
         }
 
-        console.log(template.logMessage)
-
         // Create base item data
         let itemData = {
             name: template.name,
@@ -575,23 +504,26 @@ export class IlarisActorSheet extends ActorSheet {
             template.customHandler(itemData, event)
         }
 
-        // Log for generic items
-        if (!itemTemplates[itemclass]) {
-            console.log(itemclass)
-            console.log(itemData)
-        }
-
-        // Create the item and render its sheet
-        const created = await this.actor.createEmbeddedDocuments('Item', [itemData])
-        if (created && created.length > 0) {
-            created[0].sheet.render(true)
+        try {
+            // Create the item and render its sheet
+            const created = await this.actor.createEmbeddedDocuments('Item', [itemData])
+            if (created && created.length > 0) {
+                created[0].sheet.render(true)
+            }
+        } catch (err) {
+            console.error('ILARIS | Error creating item:', err)
+            ui.notifications.error('Fehler beim Erstellen des Items.')
         }
     }
 
-    _onItemEdit(event) {
-        console.log('ItemEdit')
-        const itemID = event.currentTarget.dataset.itemid
-        const itemClass = event.currentTarget.dataset.itemclass
+    /**
+     * Handle item editing
+     * @param {PointerEvent} event - The click event
+     * @param {HTMLElement} target - The target element with data-action
+     */
+    static onItemEdit(event, target) {
+        const itemID = target.dataset.itemid
+        const itemClass = target.dataset.itemclass
 
         // Handle effects differently from items
         if (itemClass === 'effect') {
@@ -599,30 +531,46 @@ export class IlarisActorSheet extends ActorSheet {
             if (effect) {
                 effect.sheet.render(true)
             } else {
-                console.error('Effect not found with ID:', itemID)
+                ui.notifications.warn('Effekt nicht gefunden.')
             }
             return
         }
 
         const item = this.actor.items.get(itemID)
-        item.sheet.render(true)
-    }
-
-    _onItemDelete(event) {
-        console.log('ItemDelete')
-        const itemID = event.currentTarget.dataset.itemid
-        const itemClass = event.currentTarget.dataset.itemclass
-        if (itemClass === 'effect') {
-            this.actor.deleteEmbeddedDocuments('ActiveEffect', [itemID])
+        if (item) {
+            item.sheet.render(true)
         } else {
-            this.actor.deleteEmbeddedDocuments('Item', [itemID])
+            ui.notifications.warn('Item nicht gefunden.')
         }
-        // li.slideUp(200, () => this.render(false));
     }
 
-    async _onSyncItems(event) {
-        console.log('Sync Items (Vorteile, Übernatürliche Talente, and Waffen)')
+    /**
+     * Handle item deletion
+     * @param {PointerEvent} event - The click event
+     * @param {HTMLElement} target - The target element with data-action
+     */
+    static async onItemDelete(event, target) {
+        const itemID = target.dataset.itemid
+        const itemClass = target.dataset.itemclass
 
+        try {
+            if (itemClass === 'effect') {
+                await this.actor.deleteEmbeddedDocuments('ActiveEffect', [itemID])
+            } else {
+                await this.actor.deleteEmbeddedDocuments('Item', [itemID])
+            }
+        } catch (err) {
+            console.error('ILARIS | Error deleting item:', err)
+            ui.notifications.error('Fehler beim Löschen des Items.')
+        }
+    }
+
+    /**
+     * Sync items from compendium
+     * @param {PointerEvent} event - The click event
+     * @param {HTMLElement} target - The target element with data-action
+     */
+    static async onSyncItems(event, target) {
         try {
             // Get all available Item compendiums in the world
             const selectedPacks = []
@@ -637,8 +585,6 @@ export class IlarisActorSheet extends ActorSheet {
                 return
             }
 
-            console.log(`Found ${selectedPacks.length} Item compendiums to search`)
-
             // Get all vorteile, übernatürliche talente, and waffen from the actor
             const itemsToSync = this.actor.items.filter(
                 (item) =>
@@ -649,8 +595,6 @@ export class IlarisActorSheet extends ActorSheet {
                     item.type === 'nahkampfwaffe' ||
                     item.type === 'fernkampfwaffe',
             )
-
-            console.log(`Found ${itemsToSync.length} items to sync`)
 
             if (itemsToSync.length === 0) {
                 ui.notifications.info(
@@ -670,8 +614,6 @@ export class IlarisActorSheet extends ActorSheet {
                 if (!pack) continue
 
                 const packItems = await pack.getDocuments()
-
-                console.log(`Checking pack: ${pack.metadata.label} with ${packItems.length} items`)
 
                 for (const actorItem of itemsToSync) {
                     // Find matching item in compendium by name (ignore type as it might be wrong)
@@ -693,9 +635,6 @@ export class IlarisActorSheet extends ActorSheet {
                                 itemsToDelete.push(actorItem.id)
                                 itemsToAdd.push(compendiumItem.toObject())
                                 updatedCount++
-                                console.log(
-                                    `Replacing ${actorItem.name} (vorteil) with compendium version`,
-                                )
                             } else {
                                 // For other item types, use the update approach
                                 // Prepare update data based on item type
@@ -707,9 +646,6 @@ export class IlarisActorSheet extends ActorSheet {
                                 // Update type if it changed
                                 if (typeChanged) {
                                     updateData['type'] = compendiumItem.type
-                                    console.log(
-                                        `Type mismatch for ${actorItem.name}: ${actorItem.type} -> ${compendiumItem.type}`,
-                                    )
                                 }
 
                                 // Add type-specific fields (use compendiumItem.type since that's the correct type)
@@ -807,7 +743,6 @@ export class IlarisActorSheet extends ActorSheet {
 
                                 updatePromises.push(updateData)
                                 updatedCount++
-                                console.log(`Updating ${actorItem.name} (${actorItem.type})`)
                             }
                         }
                     }
@@ -835,8 +770,8 @@ export class IlarisActorSheet extends ActorSheet {
             } else {
                 ui.notifications.info('Alle Items sind bereits aktuell.')
             }
-        } catch (error) {
-            console.error('Error syncing items:', error)
+        } catch (err) {
+            console.error('ILARIS | Error syncing items:', err)
             ui.notifications.error('Fehler beim Synchronisieren der Items.')
         }
     }
@@ -941,7 +876,7 @@ export class IlarisActorSheet extends ActorSheet {
 
     async _onSyncKampfstile(event) {
         // Keep the old method for backward compatibility, but redirect to new one
-        return this._onSyncItems(event)
+        return IlarisActorSheet.onSyncItems.call(this, event, event.currentTarget)
     }
 
     _needsKampfstilUpdate(actorItem, compendiumItem) {

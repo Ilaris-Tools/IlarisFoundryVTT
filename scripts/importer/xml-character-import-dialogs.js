@@ -32,14 +32,14 @@ export class XmlCharacterImportDialogs {
                         Object.keys(characterData.energies).length
                     } Energien (${Object.keys(characterData.energies).join(', ')})</li>
                     <li><strong>Fertigkeiten:</strong> ${importAnalysis.skills.found.length}/${
-            characterData.skills.length
-        } gefunden</li>
+                        characterData.skills.length
+                    } gefunden</li>
                     <li><strong>Talente:</strong> ${importAnalysis.talents.found.length}/${
-            importAnalysis.talents.total
-        } gefunden</li>
+                        importAnalysis.talents.total
+                    } gefunden</li>
                     <li><strong>Vorteile:</strong> ${importAnalysis.advantages.found.length}/${
-            characterData.advantages.length
-        } gefunden</li>
+                        characterData.advantages.length
+                    } gefunden</li>
                     <li><strong>Übernatürliche Fertigkeiten:</strong> ${
                         importAnalysis.supernaturalSkills.found.length
                     }/${importAnalysis.supernaturalSkills.total} gefunden</li>
@@ -47,11 +47,11 @@ export class XmlCharacterImportDialogs {
                         importAnalysis.freeSkills.total
                     } Freie Fertigkeiten</li>
                     <li><strong>Waffen:</strong> ${importAnalysis.weapons.found.length}/${
-            characterData.weapons.filter((w) => w.name).length
-        } gefunden</li>
+                        characterData.weapons.filter((w) => w.name).length
+                    } gefunden</li>
                     <li><strong>Rüstungen:</strong> ${importAnalysis.armors.found.length}/${
-            characterData.armors.filter((a) => a.name).length
-        } werden erstellt</li>
+                        characterData.armors.filter((a) => a.name).length
+                    } werden erstellt</li>
                     <li><strong>Eigenheiten:</strong> ${
                         characterData.eigenheiten.length
                     } Eigenheiten</li>

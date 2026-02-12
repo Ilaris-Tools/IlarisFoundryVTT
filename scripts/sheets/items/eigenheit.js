@@ -1,34 +1,15 @@
 import { IlarisItemSheet } from './item.js'
 
 export class EigenheitSheet extends IlarisItemSheet {
-    static get defaultOptions() {
-        return foundry.utils.mergeObject(super.defaultOptions, {
-            // classes: ["ilaris", "sheet"],
-            template: 'systems/Ilaris/templates/sheets/items/eigenheit.hbs',
-            // width: 720,
-            // height: 800,
-            // resizable: false,
-            // tabs: [
-            //     {
-            //         navSelector: ".sheet-tabs",
-            //         contentSelector: ".sheet-body",
-            //         initial: "fertigkeiten",
-            //     },
-            // ]
-        })
+    /** @override */
+    static DEFAULT_OPTIONS = {
+        classes: ['ilaris', 'sheet', 'item', 'eigenheit'],
     }
 
-    // getData() {
-    //     const data = super.getData();
-    //     return data;
-    // }
-
-    // _getHeaderButtons() {
-    //     let buttons = super._getHeaderButtons();
-    //     return buttons;
-    // }
-
-    // activateListeners(html) {
-    //     super.activateListeners(html);
-    // }
+    /** @override */
+    static PARTS = {
+        form: {
+            template: 'systems/Ilaris/templates/sheets/items/eigenheit.hbs',
+        },
+    }
 }
