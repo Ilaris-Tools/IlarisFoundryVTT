@@ -37,20 +37,22 @@ Wird ein Skript benötigt werden diese unterhalb des _.vscode_ Ordners unter _ta
 #### Foundry starten
 
 - Taskname: _Start foundry_
-- Konfiguration: Damit der Task ausgeführt werden kann muss eine _developer.env_ basierend auf dem Template _developer.template.env_ und dem Betriebssystem neben der _developer.template.env_ im Ordner _tasks-scripts/start-foundry_ erstellt werden. Den Inhalt für das nicht benötigte Betriebssystem entfernen. Je nach Betriebssystem kann der Eintrag folgendermaßen aussehen (<span style="color:green">Muss angepasst werden in den Beispielen</span>):
+- Konfiguration: Damit der Task ausgeführt werden kann muss eine _developer.env_ basierend auf dem Template _developer.template.env_ und dem Betriebssystem neben der _developer.template.env_ im Ordner _tasks-scripts/start-foundry_ erstellt werden. Den Inhalt für das nicht benötigte Betriebssystem entfernen. Je nach Betriebssystem kann der Eintrag folgendermaßen aussehen (Pfade müssen angepasst werden):
 
-    <details>
-      <summary>Windows</summary>
-      REM FoundryVTT Configuration  
-      set PATH_TO_FOUNDRY=<span style="color:green">C:\Program Files\Foundry Virtual Tabletop\\</span>  
-      set FILE_TO_START_FOUNDRY=<span style="color:green">Foundry Virtual Tabletop.exe</span>
-    </details>
+    **Windows:**
 
-    <details>
-      <summary>Linux</summary>
-      PATH_TO_FOUNDRY="<span style="color:green">Downloads/FoundryVTT-12.331/</span>"
-      FILE_TO_START_FOUNDRY="<span style="color:green">./foundryvtt</span>"
-    </details>
+    ```cmd
+    REM FoundryVTT Configuration
+    set PATH_TO_FOUNDRY=C:\Program Files\Foundry Virtual Tabletop\
+    set FILE_TO_START_FOUNDRY=Foundry Virtual Tabletop.exe
+    ```
+
+    **Linux:**
+
+    ```bash
+    PATH_TO_FOUNDRY="Downloads/FoundryVTT-12.331/"
+    FILE_TO_START_FOUNDRY="./foundryvtt"
+    ```
 
 - Verwendung: Starten von Foundry direkt aus VS Code heraus.
 
