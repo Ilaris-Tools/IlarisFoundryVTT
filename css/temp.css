@@ -519,6 +519,14 @@ td.rollable.icon-small {
   color: #000000;
 }
 
+.chat-message h2 {
+  font-size: 24px;
+}
+
+.chat-message h3 {
+  font-size: 20px;
+}
+
 .editor {
   height: 100% !important;
   width: 100%;

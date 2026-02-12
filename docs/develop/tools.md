@@ -6,9 +6,9 @@ Die Einrichtung der IDE kann mit dem VS Code [Task](#task): [_Setup IDE_](#vs-co
 
 ### Empfohlene Plugins
 
--   [Unit Tests: Jest Runner](https://marketplace.visualstudio.com/items?itemName=Orta.vscode-jest)
--   [Code Formatting: Prettier](https://marketplace.visualstudio.com/items/?itemName=esbenp.prettier-vscode)
--   [Darstellung von Github Emojis](https://marketplace.visualstudio.com/items?itemName=bierner.markdown-emoji)
+- [Unit Tests: Jest Runner](https://marketplace.visualstudio.com/items?itemName=Orta.vscode-jest)
+- [Code Formatting: Prettier](https://marketplace.visualstudio.com/items/?itemName=esbenp.prettier-vscode)
+- [Darstellung von Github Emojis](https://marketplace.visualstudio.com/items?itemName=bierner.markdown-emoji)
 
 ## Task
 
@@ -30,29 +30,29 @@ Wird ein Skript benötigt werden diese unterhalb des _.vscode_ Ordners unter _ta
 
 #### IDE einrichten<a id="vs-code-task-setup-ide"></a>
 
--   Taskname: Setup IDE
--   Konfiguration: --
--   Verwendung: Einrichten der IDE
+- Taskname: Setup IDE
+- Konfiguration: --
+- Verwendung: Einrichten der IDE
 
 #### Foundry starten
 
--   Taskname: _Start foundry_
--   Konfiguration: Damit der Task ausgeführt werden kann muss eine _developer.env_ basierend auf dem Template _developer.template.env_ und dem Betriebssystem neben der _developer.template.env_ im Ordner _tasks-scripts/start-foundry_ erstellt werden. Den Inhalt für das nicht benötigte Betriebssystem entfernen. Je nach Betriebssystem kann der Eintrag folgendermaßen aussehen (<span style="color:green">Muss angepasst werden in den Beispielen</span>):
-      <details>
-      <summary>Windows</summary>
+- Taskname: _Start foundry_
+- Konfiguration: Damit der Task ausgeführt werden kann muss eine _developer.env_ basierend auf dem Template _developer.template.env_ und dem Betriebssystem neben der _developer.template.env_ im Ordner _tasks-scripts/start-foundry_ erstellt werden. Den Inhalt für das nicht benötigte Betriebssystem entfernen. Je nach Betriebssystem kann der Eintrag folgendermaßen aussehen (<span style="color:green">Muss angepasst werden in den Beispielen</span>):
+  <details>
+  <summary>Windows</summary>
 
     REM FoundryVTT Configuration  
      set PATH_TO_FOUNDRY=<span style="color:green">C:\Program Files\Foundry Virtual Tabletop\\</span>  
      set FILE_TO_START_FOUNDRY=<span style="color:green">Foundry Virtual Tabletop.exe</span>
-      </details>
+    </details>
 
-      <details>
-      <summary>Linux</summary>
-      PATH_TO_FOUNDRY="<span style="color:green">Downloads/FoundryVTT-12.331/</span>"
-      FILE_TO_START_FOUNDRY="<span style="color:green">./foundryvtt</span>"
-      </details>
+        <details>
+        <summary>Linux</summary>
+        PATH_TO_FOUNDRY="<span style="color:green">Downloads/FoundryVTT-12.331/</span>"
+        FILE_TO_START_FOUNDRY="<span style="color:green">./foundryvtt</span>"
+        </details>
 
--   Verwendung: Starten von Foundry direkt aus VS Code heraus.
+- Verwendung: Starten von Foundry direkt aus VS Code heraus.
 
 ## Entwicklertools
 
@@ -93,11 +93,11 @@ npm run optimize-svgs
 
 **Was wird optimiert:**
 
--   Entfernung von Inkscape/Sodipodi Metadaten
--   Bereinigung unnötiger Namespaces
--   Minimierung von Inline-Styles
--   Entfernung von Kommentaren und ungenutzten Definitionen
--   Komprimierung der SVG-Struktur
+- Entfernung von Inkscape/Sodipodi Metadaten
+- Bereinigung unnötiger Namespaces
+- Minimierung von Inline-Styles
+- Entfernung von Kommentaren und ungenutzten Definitionen
+- Komprimierung der SVG-Struktur
 
 Das Skript verarbeitet alle SVG-Dateien im `assets/` Verzeichnis und reduziert typischerweise die Dateigröße um 50-70% ohne Qualitätsverlust.
 

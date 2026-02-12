@@ -106,36 +106,36 @@ The migration automatically maps old property names to new eigenschaft names:
 
 The system maintains backward compatibility during the transition:
 
--   **Old format weapons** will continue to work using legacy calculation code
--   **New format weapons** use the data-driven WaffeItem calculation system
--   You'll see console warnings for weapons still using the old format
--   Mixed formats (some weapons old, some new) are fully supported
+- **Old format weapons** will continue to work using legacy calculation code
+- **New format weapons** use the data-driven WaffeItem calculation system
+- You'll see console warnings for weapons still using the old format
+- Mixed formats (some weapons old, some new) are fully supported
 
 ## Migration Statistics
 
 After running a migration command, you'll see a notification with statistics:
 
--   **Migrated**: Number of weapons successfully converted
--   **Skipped**: Number of weapons already in new format
--   **Errors**: Number of weapons that failed to migrate
+- **Migrated**: Number of weapons successfully converted
+- **Skipped**: Number of weapons already in new format
+- **Errors**: Number of weapons that failed to migrate
 
 ## Troubleshooting
 
 ### Migration button doesn't appear
 
--   The weapon is already in the new format
--   Refresh the sheet to see updated status
+- The weapon is already in the new format
+- Refresh the sheet to see updated status
 
 ### Migration fails with error
 
--   Check the console for detailed error messages
--   Ensure the weapon item is not read-only
--   Make sure the compendium pack is unlocked
+- Check the console for detailed error messages
+- Ensure the weapon item is not read-only
+- Make sure the compendium pack is unlocked
 
 ### Weapon still shows old format after migration
 
--   Refresh the sheet (close and reopen)
--   Check if the weapon was actually migrated (look at console logs)
+- Refresh the sheet (close and reopen)
+- Check if the weapon was actually migrated (look at console logs)
 
 ## For Module/World Developers
 
@@ -180,9 +180,9 @@ await IlarisMigration.migrateAllWeapons()
 
 **Functions Available**:
 
--   `migrateWeapon(weapon)` - Migrate single weapon
--   `migrateWeaponCollection(weapons)` - Migrate array/collection
--   `isOldEigenschaftenFormat(eigenschaften)` - Check format
--   `migrateEigenschaften(oldEigenschaften)` - Convert data structure
+- `migrateWeapon(weapon)` - Migrate single weapon
+- `migrateWeaponCollection(weapons)` - Migrate array/collection
+- `isOldEigenschaftenFormat(eigenschaften)` - Check format
+- `migrateEigenschaften(oldEigenschaften)` - Convert data structure
 
 **Hook**: Migration commands registered on `ready` hook via `scripts/hooks/waffen-migration.js`

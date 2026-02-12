@@ -33,7 +33,9 @@ for (const packDir of packDirs) {
 
     const jsonFiles = fs
         .readdirSync(sourcePath)
-        .filter((file) => file.endsWith('.json') && fs.statSync(path.join(sourcePath, file)).isFile())
+        .filter(
+            (file) => file.endsWith('.json') && fs.statSync(path.join(sourcePath, file)).isFile(),
+        )
 
     for (const jsonFile of jsonFiles) {
         const jsonPath = path.join(sourcePath, jsonFile)
