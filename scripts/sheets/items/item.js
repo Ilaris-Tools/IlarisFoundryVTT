@@ -9,6 +9,7 @@ export class IlarisItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
             width: 600,
             height: 'auto',
         },
+        tag: 'form',
         actions: {
             deleteItem: IlarisItemSheet.#onDeleteItem,
         },
@@ -48,20 +49,27 @@ export class IlarisItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
     }
 
     /**
+     * Override isEditable to handle embedded items correctly
+     * @override
+     */
+    get isEditable() {
+        // For embedded items, check if the parent actor is editable
+        if (this.document.actor) {
+            return this.document.actor.isOwner && !this.document.actor.pack
+        }
+        // For standalone items, use the default logic
+        return super.isEditable
+    }
+
+    /**
      * Handle form submission
      * @param {SubmitEvent} event - The form submit event
      * @param {HTMLFormElement} form - The form element
      * @param {FormDataExtended} formData - The form data
      */
     static async #onSubmitForm(event, form, formData) {
-        try {
-            const updateData = foundry.utils.expandObject(formData.object)
-            await this.document.update(updateData)
-        } catch (error) {
-            console.error('Item update failed:', error)
-            ui.notifications?.error(game.i18n.format('ERROR.ItemUpdate', { error: error.message }))
-            throw error
-        }
+        const updateData = foundry.utils.expandObject(formData.object)
+        await this.document.update(updateData)
     }
 
     /**
