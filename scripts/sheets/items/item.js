@@ -78,15 +78,6 @@ export class IlarisItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
      * @param {HTMLElement} target - The clicked element
      */
     static async #onDeleteItem(event, target) {
-        const confirm = await foundry.applications.api.DialogV2.confirm({
-            window: { title: game.i18n.localize('ITEM.DeleteTitle') },
-            content: `<p>${game.i18n.localize('ITEM.DeleteConfirm')}</p>`,
-            rejectClose: false,
-            modal: true,
-        })
-
-        if (!confirm) return
-
         try {
             await this.document.delete()
             this.close()
