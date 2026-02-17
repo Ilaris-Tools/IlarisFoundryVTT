@@ -10,7 +10,7 @@ on:
 
 env:
     SYSTEM_NAME: 'Ilaris'
-    SYSTEM_PATH: '/root/foundry-dev/foundry/data/Data/systems/Ilaris'
+    SYSTEM_PATH: '/data/foundryvtt/Data/systems/Ilaris'
 
 jobs:
     validate:
@@ -195,15 +195,15 @@ jobs:
                       if [ -f "deploy.sh" ]; then
                         echo "📋 Using deploy.sh script"
                         chmod +x deploy.sh
-                        FOUNDRY_DATA_PATH="/root/foundry-dev/foundry/data" ./deploy.sh
+                        FOUNDRY_DATA_PATH="/data/foundryvtt" ./deploy.sh
                       else
                         echo "📋 Deploy script not found, running manual deployment..."
                         
                         # Fallback: Manuelles Deployment
                         # Foundry stoppen (ohne sudo)
-                        systemctl --user stop foundry 2>/dev/null || echo "⚠️ Could not stop foundry service (may not be running)"
+                        systemctl stop foundryvtt 2>/dev/null || echo "⚠️ Could not stop foundry service (may not be running)"
                         
-                        SYSTEM_PATH="/root/foundry-dev/foundry/data/Data/systems/Ilaris"
+                        SYSTEM_PATH="/data/foundryvtt/Data/systems/Ilaris"
                         mkdir -p "$(dirname "$SYSTEM_PATH")"
                         
                         # Dateien mit korrekten Berechtigungen entfernen
@@ -220,7 +220,7 @@ jobs:
                         chmod -R 755 "$SYSTEM_PATH"
                         
                         # Foundry starten
-                        systemctl --user start foundry 2>/dev/null || echo "⚠️ Could not start foundry service"
+                        systemctl start foundryvtt 2>/dev/null || echo "⚠️ Could not start foundry service"
                         
                         echo "✅ Manual deployment completed"
                       fi
