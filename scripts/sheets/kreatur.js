@@ -1,42 +1,6 @@
 import { IlarisActorSheet } from './actor.js'
-const TextEditor = foundry.applications.ux.TextEditor.implementation
 
 export class KreaturSheet extends IlarisActorSheet {
-    /**
-     * @param {object} options - Application options
-     */
-    constructor(options = {}) {
-        super(options)
-        this.#dragDrop = this.#createDragDropHandlers()
-    }
-
-    /**
-     * Create drag-drop handlers for the sheet
-     * @returns {DragDrop[]}
-     */
-    #createDragDropHandlers() {
-        return this.options.dragDrop.map((d) => {
-            d.permissions = {
-                dragstart: this._canDragStart.bind(this),
-                drop: this._canDragDrop.bind(this),
-            }
-            d.callbacks = {
-                dragstart: this._onDragStart.bind(this),
-                dragover: this._onDragOver.bind(this),
-                drop: this._onDrop.bind(this),
-            }
-            return new DragDrop(d)
-        })
-    }
-
-    /** @type {DragDrop[]} */
-    #dragDrop
-
-    /** @returns {DragDrop[]} */
-    get dragDrop() {
-        return this.#dragDrop
-    }
-
     /** @override */
     static DEFAULT_OPTIONS = {
         classes: ['ilaris', 'kreatur'],
@@ -67,19 +31,6 @@ export class KreaturSheet extends IlarisActorSheet {
     }
 
     /**
-     * Bind event listeners after render
-     * @param {ApplicationRenderContext} context - The render context
-     * @param {RenderOptions} options - Render options
-     * @protected
-     */
-    _onRender(context, options) {
-        super._onRender(context, options)
-
-        // Bind DragDrop handlers
-        this.dragDrop.forEach((d) => d.bind(this.element))
-    }
-
-    /**
      * Show info about adding advantages
      * @param {PointerEvent} event - The click event
      * @param {HTMLElement} target - The target element
@@ -98,76 +49,6 @@ export class KreaturSheet extends IlarisActorSheet {
         } catch (err) {
             console.error('ILARIS | Error showing vorteil info:', err)
             ui.notifications.error('Fehler beim Öffnen der Vorteile-Kompendium.')
-        }
-    }
-
-    /**
-     * Check if user can drag from selector
-     * @param {string} selector - The drag selector
-     * @returns {boolean}
-     * @protected
-     */
-    _canDragStart(selector) {
-        return this.isEditable
-    }
-
-    /**
-     * Check if user can drop on selector
-     * @param {string} selector - The drop selector
-     * @returns {boolean}
-     * @protected
-     */
-    _canDragDrop(selector) {
-        return this.isEditable
-    }
-
-    /**
-     * Handle drag start
-     * @param {DragEvent} event - The drag event
-     * @protected
-     */
-    _onDragStart(event) {
-        const li = event.currentTarget.closest('.item')
-        if (!li) return
-        if (li.classList.contains('inventory-header')) return
-
-        const dragData = {
-            type: 'Item',
-            uuid: li.dataset.itemId ? `Actor.${this.actor.id}.Item.${li.dataset.itemId}` : null,
-        }
-
-        event.dataTransfer.setData('text/plain', JSON.stringify(dragData))
-    }
-
-    /**
-     * Handle drag over
-     * @param {DragEvent} event - The drag event
-     * @protected
-     */
-    _onDragOver(event) {
-        event.preventDefault()
-    }
-
-    /**
-     * Handle drop
-     * @param {DragEvent} event - The drag event
-     * @protected
-     */
-    async _onDrop(event) {
-        event.preventDefault()
-
-        try {
-            const data = TextEditor.getDragEventData(event)
-            if (data.type !== 'Item') return
-
-            const item = await Item.implementation.fromDropData(data)
-            if (!item) return
-
-            // Convert dropped item based on type
-            return this._onDropItemCreate(item)
-        } catch (err) {
-            console.error('ILARIS | Error handling drop:', err)
-            ui.notifications.error('Fehler beim Verarbeiten des gezogenen Elements.')
         }
     }
 
