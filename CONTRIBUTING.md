@@ -5,11 +5,11 @@ Wenn du noch nicht mit Foundry gearbeitet hast lohnt sich vielleicht ein Blick a
 
 ## Installation für Entwickler
 
-- [Foundry für node.js installieren (dedicated server)](https://foundryvtt.com/article/installation/)
-- `foundrydata`-Ordner ausserhalb des Installationsordners anlegen
-- Einmal foundry starten `node resources/app/main.js --dataPath=../foundrydata`, Token eingeben, Adminpasswort setzen etc.
-- Dieses Repository in den `foundrydata/Data/systems` Ordner clonen. (ggf. in "Ilaris" umbenennen?)
-- `develop` oder Feature-Branch auschecken und foundry neu starten
+-   [Foundry für node.js installieren (dedicated server)](https://foundryvtt.com/article/installation/)
+-   `foundrydata`-Ordner ausserhalb des Installationsordners anlegen
+-   Einmal foundry starten `node resources/app/main.js --dataPath=../foundrydata`, Token eingeben, Adminpasswort setzen etc.
+-   Dieses Repository in den `foundrydata/Data/systems` Ordner clonen. (ggf. in "Ilaris" umbenennen?)
+-   `develop` oder Feature-Branch auschecken und foundry neu starten
 
 In der Dokumentation finden sich weitere Schritte zum
 [Einrichten von VS Code](./docs/develop/tools.md#vs-code)
@@ -39,19 +39,19 @@ Als Faustregel bekommt ein PR develop->main eine neue Version und entspricht ein
 
 Für PRs in den main-Branch stehen verschiedene Templates zur Verfügung:
 
-- **Minor Release**: Grundlegende manuelle Tests und technische Checkliste
-- **Major Release**: Umfangreiche manuelle Tests und erweiterte technische Checkliste
-- **Versionsupdate**: Reine technische Checkliste ohne manuelle Tests
+-   **Minor Release**: Grundlegende manuelle Tests und technische Checkliste
+-   **Major Release**: Umfangreiche manuelle Tests und erweiterte technische Checkliste
+-   **Versionsupdate**: Reine technische Checkliste ohne manuelle Tests
 
 Die Templates enthalten manuelle Testfälle für Charaktererstellung, Kampfsystem, Browser-Kompatibilität und andere kritische Funktionen um Bugs vor Releases zu vermeiden.
 
 Checklist für ein größeres Versionsupdate:
 
-- Neue Version in system.json (zB `x.1.x` auf `x.2.x`)
-- Prüfe den dazugehörigen Meilenstein und ob ggf. noch offene Issues auf die nächste version geschoben werden.
-- Updates im Changelog (Blick auf commits seit letztem eintrag und closed issues im Meilenstein)
-- Sind Anpassungen der Dokumentation nötig?
-- Ist das Update eine Erwähnung im Forum wert?
+-   Neue Version in system.json (zB `x.1.x` auf `x.2.x`)
+-   Prüfe den dazugehörigen Meilenstein und ob ggf. noch offene Issues auf die nächste version geschoben werden.
+-   Updates im Changelog (Blick auf commits seit letztem eintrag und closed issues im Meilenstein)
+-   Sind Anpassungen der Dokumentation nötig?
+-   Ist das Update eine Erwähnung im Forum wert?
 
 Als Merge Strategie nach main steht nur squash and rebase zur Verfügung, dadruch gibt es auf main eine cleane History. Nach erfolgreichem Release ist folgendes zu tun, damit develop und main nicht auseinander laufen:
 
@@ -82,12 +82,12 @@ Der Token wird ausschließlich über die verschlüsselte GitHub-Variable eingebu
 
 Der Workflow kann mit folgenden Parametern gesteuert werden:
 
-- **`pre_release`** (boolean, Standard: `true`):
-    - `true`: Pre-Release mit SHA-Hash im Tag-Namen, führt Dry-Run durch (keine echte Veröffentlichung auf Foundry)
-    - `false`: Normales Release, wird tatsächlich auf Foundry veröffentlicht
-- **`skip_foundry_release`** (boolean, Standard: `false`):
-    - `true`: Überspringt den Foundry-Release-Schritt komplett
-    - `false`: Foundry-Release wird durchgeführt
+-   **`pre_release`** (boolean, Standard: `true`):
+    -   `true`: Pre-Release mit SHA-Hash im Tag-Namen, führt Dry-Run durch (keine echte Veröffentlichung auf Foundry)
+    -   `false`: Normales Release, wird tatsächlich auf Foundry veröffentlicht
+-   **`skip_foundry_release`** (boolean, Standard: `false`):
+    -   `true`: Überspringt den Foundry-Release-Schritt komplett
+    -   `false`: Foundry-Release wird durchgeführt
 
 #### Normaler Release-Prozess
 
@@ -105,9 +105,9 @@ Bei einem normalen Release (PR develop→main mit `pre_release: false`):
 
 Pre-Releases (Standard bei workflow_dispatch):
 
-- Verwenden Tag-Format: `{version}-{git-sha}` (z.B. `12.3.0-abc123`)
-- Führen nur einen Dry-Run auf der Foundry-API durch
-- Validieren die Daten ohne tatsächliche Veröffentlichung
+-   Verwenden Tag-Format: `{version}-{git-sha}` (z.B. `12.3.0-abc123`)
+-   Führen nur einen Dry-Run auf der Foundry-API durch
+-   Validieren die Daten ohne tatsächliche Veröffentlichung
 
 #### Fehlerbehandlung
 
@@ -139,22 +139,12 @@ Sie müssen um live verwendet werden zu können erst wieder gepackt werden. [Meh
 
 TODO: Dateistruktur und wichtige Dateien erklären
 
-## Import Datenbank.xml aus Sephrasto
-
-- ~~Aktuelle `datenbank.xml` nach `./local_db/org/datenbank.xml` kopieren.~~
-- ~~Änderungen oder neue Einträge in der jeweiligen `./local_db/json_user/` eintragen~~  
-   ~~Wichtig: Beachte die korrekte Struktur! (siehe template.json)~~
-- ~~`node create_database.js & node import_database`~~  
-   ~~Es wird (zur Kontrolle) eine json in `./local_db/db/` erstellt, sowie ein fertiges Kompendium in `./packs`~~.
-- ~~Damit ist hoffentlich alles fertig und bereit.~~
-- Alles Quark: Import V3 direkt als Plugin für Sephrasto schreiben
-
 ### Anmerkungen:
 
-- Dateipfade sind fest. Die in einer configdatei abzulegen wäre wohl deutlich klüger (falls man die Dateien umbenennt, etc.)
-- Root-directory ist blöd. Sollten in ein einzelnes Verzeichnes, das nicht in die zip für Foundry gepackt wird. Mache ich später sobald:
-- package.json updaten und sinnvoll nutzen. Statt per Hand gibt es dann einen update_db Befehl oder so. Und meine persönlichen Pythonskripts zum starten können auch gleich integriert werden.
-- Eigenes Pack für freie Fertigkeiten und/oder Sprachen, oder mit in fertigkeiten-und-talente.db?
+-   Dateipfade sind fest. Die in einer configdatei abzulegen wäre wohl deutlich klüger (falls man die Dateien umbenennt, etc.)
+-   Root-directory ist blöd. Sollten in ein einzelnes Verzeichnes, das nicht in die zip für Foundry gepackt wird. Mache ich später sobald:
+-   package.json updaten und sinnvoll nutzen. Statt per Hand gibt es dann einen update_db Befehl oder so. Und meine persönlichen Pythonskripts zum starten können auch gleich integriert werden.
+-   Eigenes Pack für freie Fertigkeiten und/oder Sprachen, oder mit in fertigkeiten-und-talente.db?
 
 ## Nützliche Links
 
