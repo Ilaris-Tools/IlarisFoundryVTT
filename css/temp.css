@@ -21,12 +21,12 @@
 }
 
 .ilaris.helden {
-  font-family: var(--font-andada);
+  font-family: var(--font-andada) !important;
   background-image: url('../assets/images/background/hintergrund.jpg');
 }
 
 .ilaris.kreatur {
-  font-family: var(--font-andada);
+  font-family: var(--font-andada) !important;
   background-image: url('../assets/images/background/hintergrund.jpg');
 }
 

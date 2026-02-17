@@ -552,9 +552,9 @@ export class UebernatuerlichDialog extends CombatDialog {
         // allgemeine optionen
         manoever.kbak.selected = this.element.querySelector('#kbak')?.checked || false // Kombinierte Aktion
 
-        // Initialize blutmagie and verbotene_pforten if they don't exist
-        manoever.blutmagie = manoever.blutmagie || {}
-        manoever.verbotene_pforten = manoever.verbotene_pforten || {}
+        // Initialize blutmagie and verbotene_pforten if they don't existc
+        manoever.blutmagie = manoever.blutmagie || { value: 0 }
+        manoever.verbotene_pforten = manoever.verbotene_pforten || { value: 0 }
         manoever.set_energy_cost = manoever.set_energy_cost || { value: 0 }
 
         // Get values from Blutmagie and Verbotene Pforten if they exist
@@ -575,7 +575,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         manoever.set_energy_cost.value =
             energyOverride !== '' && energyOverride != null ? +energyOverride : null
 
-        console.log('manoever', manoever.set_energy_cost.value)
+        console.log('manoever', manoever.blutmagie.value)
 
         manoever.mod.selected =
             Number(this.element.querySelector(`#modifikator-${this.dialogId}`)?.value) || 0 // Modifikator
@@ -802,13 +802,18 @@ export class UebernatuerlichDialog extends CombatDialog {
             }
         }
 
+        console.log(
+            'mod_energy before Blutmagie/Verbotene Pforten',
+            mod_energy,
+            'availableEnergy',
+            availableEnergy,
+            manoever.blutmagie?.value,
+        )
         // Handle Blutmagie and Verbotene Pforten
         if (manoever.blutmagie?.value || manoever.verbotene_pforten?.activated) {
-            const energyNeeded = mod_energy - availableEnergy
-
             // Handle Blutmagie
             if (manoever.blutmagie?.value) {
-                const blutmagieReduction = Math.min(energyNeeded, manoever.blutmagie.value)
+                const blutmagieReduction = Math.min(mod_energy, manoever.blutmagie.value)
                 if (blutmagieReduction > 0) {
                     mod_energy -= blutmagieReduction
                     text_energy = text_energy.concat(`Blutmagie: -${blutmagieReduction} Energie\n`)
@@ -824,21 +829,16 @@ export class UebernatuerlichDialog extends CombatDialog {
                 const multiplier = manoever.verbotene_pforten.multiplier
 
                 // Calculate required wounds using the extracted method
-                const remainingEnergyNeeded = mod_energy - availableEnergy
-                this.calculatedWounds = this.calculateRequiredWounds(
-                    ws,
-                    multiplier,
-                    remainingEnergyNeeded,
-                )
+                this.calculatedWounds = this.calculateRequiredWounds(ws, multiplier, mod_energy)
 
-                if (this.calculatedWounds > 0) {
+                // Ensure mod_energy doesn't go below availableEnergy
+                const maxReduction = mod_energy - availableEnergy
+                if (this.calculatedWounds > 0 && maxReduction > 0) {
                     const verbotenePfortenReduction = (ws + multiplier) * this.calculatedWounds
-                    // Ensure mod_energy doesn't go below availableEnergy
-                    const maxReduction = mod_energy - availableEnergy
                     const actualReduction = Math.min(verbotenePfortenReduction, maxReduction)
                     mod_energy -= actualReduction
                     text_energy = text_energy.concat(
-                        `Verbotene Pforten (${this.calculatedWounds} Wunden): +${verbotenePfortenReduction} Energie\n`,
+                        `Verbotene Pforten (${this.calculatedWounds} Wunden): ${actualReduction} Energie\n`,
                     )
                 }
             }
