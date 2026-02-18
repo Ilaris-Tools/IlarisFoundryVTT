@@ -45,11 +45,6 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         // Add configuration
         context.config = CONFIG.ILARIS
 
-        // Enrich biography text
-        context.enrichedBiography = await TextEditor.enrichHTML(this.actor.system.notes, {
-            async: true,
-        })
-
         return context
     }
 

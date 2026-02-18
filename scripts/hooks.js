@@ -374,8 +374,7 @@ Hooks.on('renderActorDirectory', (app, htmlDOM) => {
 
         // Add sync buttons to each actor entry (only if user owns the actor, can create actors, and can upload files)
         htmlDOM.querySelectorAll('.directory-item.actor').forEach((element, i) => {
-            const $element = $(element)
-            const actorId = $element.data('entry-id')
+            const actorId = element.dataset.entryId
             const actor = game.actors.get(actorId)
 
             if (actor && actor.type === 'held' && actor.isOwner) {
@@ -395,14 +394,15 @@ Hooks.on('renderActorDirectory', (app, htmlDOM) => {
                 })
 
                 // Insert the sync button before the existing controls
-                const controls = $element.find('.directory-item-controls')
-                if (controls.length > 0) {
-                    controls.prepend(syncButton)
+                const controls = element.querySelector('.directory-item-controls')
+                if (controls) {
+                    controls.insertBefore(syncButton, controls.firstChild)
                 } else {
                     // If no controls exist, create them
-                    const newControls = $('<div class="directory-item-controls"></div>')
-                    newControls.append(syncButton)
-                    $element.append(newControls)
+                    const newControls = document.createElement('div')
+                    newControls.className = 'directory-item-controls'
+                    newControls.appendChild(syncButton)
+                    element.appendChild(newControls)
                 }
             }
         })
@@ -410,19 +410,18 @@ Hooks.on('renderActorDirectory', (app, htmlDOM) => {
 })
 
 // Force apply tint colors to status effect picker icons using direct CSS styling
-Hooks.on('renderTokenHUD', (app, html, data) => {
+Hooks.on('renderTokenHUD', (app, htmlDOM, data) => {
     // Wait for DOM to be ready
     setTimeout(() => {
         // Look for the status effects container
-        const statusEffectsContainer = html.find('.status-effects')
+        const statusEffectsContainer = htmlDOM.querySelector('.status-effects')
 
-        if (statusEffectsContainer.length > 0) {
+        if (statusEffectsContainer) {
             // Find all effect controls within the status effects container
-            const effectControls = statusEffectsContainer.find('.effect-control')
+            const effectControls = statusEffectsContainer.querySelectorAll('.effect-control')
 
-            effectControls.each((index, control) => {
-                const $control = $(control)
-                const statusId = $control.data('status-id')
+            effectControls.forEach((control) => {
+                const statusId = control.dataset.statusId
 
                 // Find the matching status effect configuration
                 const statusConfig = CONFIG.statusEffects.find((effect) => effect.id === statusId)
@@ -430,20 +429,19 @@ Hooks.on('renderTokenHUD', (app, html, data) => {
                 if (statusConfig && statusConfig.tint) {
                     // Apply filter to change only the white SVG fill to the desired color
                     const filterValue = getFilterForColor(statusConfig.tint)
-                    $control.css({
-                        filter: filterValue,
-                        '-webkit-filter': filterValue,
-                    })
+                    control.style.filter = filterValue
+                    control.style.webkitFilter = filterValue
 
-                    // Force override with !important using attr
-                    $control.attr(
+                    // Force override with !important using setAttribute
+                    const existingStyle = control.getAttribute('style') || ''
+                    control.setAttribute(
                         'style',
-                        ($control.attr('style') || '') +
+                        existingStyle +
                             `; filter: ${filterValue} !important;` +
                             `; -webkit-filter: ${filterValue} !important;`,
                     )
 
-                    $control.addClass('ilaris-tinted')
+                    control.classList.add('ilaris-tinted')
                 }
             })
         }
@@ -534,8 +532,7 @@ Hooks.on('renderChatMessageHTML', (message, htmlDOM, data) => {
     // Format dice formulas in chat messages
     const diceFormulaElements = htmlDOM.querySelectorAll('.dice-formula')
     diceFormulaElements.forEach((element) => {
-        const $element = $(element)
-        const originalFormula = $element.text().trim()
+        const originalFormula = element.textContent.trim()
 
         // Extract just the dice part (before any + or -)
         const diceFormulaMatch = originalFormula.match(/^(\d+d\d+(?:dl\d+)?(?:dh\d+)?)/)
@@ -545,7 +542,7 @@ Hooks.on('renderChatMessageHTML', (message, htmlDOM, data) => {
 
             // Replace the dice part with the formatted version, keep the rest
             const remainder = originalFormula.substring(diceFormula.length)
-            $element.text(formattedDice + remainder)
+            element.textContent = formattedDice + remainder
         }
     })
 
@@ -553,7 +550,7 @@ Hooks.on('renderChatMessageHTML', (message, htmlDOM, data) => {
     const isDefensePrompt = message.flags?.Ilaris?.defensePrompt
     if (isDefensePrompt) {
         // Skip if defense has already been handled
-        if (htmlDOM.hasClass('defense-handled')) {
+        if (htmlDOM.classList.contains('defense-handled')) {
             return
         }
 
