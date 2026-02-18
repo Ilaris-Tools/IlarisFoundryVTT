@@ -467,14 +467,15 @@ function getFilterForColor(hexColor) {
 }
 
 // Extend Scene Config with environment settings in Basic tab
-Hooks.on('renderSceneConfig', async (app, html, data) => {
+Hooks.on('renderSceneConfig', async (app, htmlDOM, data) => {
     // Check if already injected (to avoid duplicates when dialog is re-opened)
-    if (html.find('.ilaris-environment-setting').length > 0) {
+    if (htmlDOM.querySelector('.ilaris-environment-setting')) {
         return
     }
 
     // Get existing environment settings from scene flags
-    const environment = app.object.getFlag('Ilaris', 'sceneConditions') || {
+    const scene = app.document || app.object
+    const environment = scene.getFlag('Ilaris', 'sceneConditions') || {
         lcht: '0', // Lichtverhältnisse
         wttr: '0', // Wetter
     }
@@ -493,11 +494,12 @@ Hooks.on('renderSceneConfig', async (app, html, data) => {
     )
 
     // Simply append to the basic tab (within ambience group)
-    const basicTab = html.find('.tab[data-tab="basic"][data-group="ambience"]')
-    basicTab.append(
+    const basicTab = htmlDOM.querySelector('.tab[data-tab="basic"][data-group="ambience"]')
+    basicTab.insertAdjacentHTML(
+        'beforeend',
         '<hr style="margin: 1.5em 0; border: none; border-top: 2px solid var(--color-border-light-primary);">',
     )
-    basicTab.append(environmentHTML)
+    basicTab.insertAdjacentHTML('beforeend', environmentHTML)
 })
 
 // Add XML rule import button to the Compendium Directory
