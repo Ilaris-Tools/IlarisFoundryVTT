@@ -10,13 +10,18 @@ export class HeldenSheet extends IlarisActorSheet {
             height: 750,
         },
         window: {
-            title: 'meep',
+            icon: 'fa-solid fa-person',
         },
         actions: {
             schipsClick: HeldenSheet.schipsClick,
             triStateClick: HeldenSheet.triStateClick,
             toggleItem: HeldenSheet.onToggleItem,
         },
+    }
+
+    /** @override */
+    get title() {
+        return `Held: ${this.actor.name}`
     }
 
     /** @override */

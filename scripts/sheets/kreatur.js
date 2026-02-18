@@ -14,6 +14,11 @@ export class KreaturSheet extends IlarisActorSheet {
     }
 
     /** @override */
+    get title() {
+        return `Kreatur/NSC: ${this.actor.name}`
+    }
+
+    /** @override */
     static PARTS = {
         form: {
             template: 'systems/Ilaris/templates/sheets/kreatur.hbs',
