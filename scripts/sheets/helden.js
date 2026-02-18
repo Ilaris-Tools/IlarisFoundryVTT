@@ -92,6 +92,15 @@ export class HeldenSheet extends IlarisActorSheet {
         // Add tab data for template
         context.tabs = this._prepareTabs('primary')
 
+        // Enrich content for display
+        context.notesHTML = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
+            this.document.system.notes,
+            {
+                secrets: this.document.isOwner,
+                relativeTo: this.document,
+            },
+        )
+
         return context
     }
 

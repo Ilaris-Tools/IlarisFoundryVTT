@@ -528,19 +528,7 @@ td.rollable.icon-small {
 }
 
 .editor {
-  height: 100% !important;
   width: 100%;
-  overflow: auto;
-}
-
-.editor-content {
-  min-height: 50px;
-  min-height: 500px;
-  min-width: 300px;
-  height: 100% !important;
-  width: 100%;
-  overflow: auto;
-  /*     font-weight: bold; */
 }
 
 .schips-button {
