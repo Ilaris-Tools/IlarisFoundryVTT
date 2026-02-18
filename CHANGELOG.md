@@ -1,5 +1,17 @@
 # Changelog
 
+## v13
+
+### v13.0.0
+
+#### Breaking Change
+
+**BITTE BEACHTEN**, bitte in den Settings in Foundry das Theme auf Light stellen. Dark Theme wird vom Ilaris System noch nicht unterstützt und kann an manchen Stellen deshalb weniger gut aussehen bis unbrauchbar sein.
+
+#### Foundry v13 update
+
+System-Update auf Foundry v13.
+
 ## v12
 
 ### v12.3.1
