@@ -1,5 +1,4 @@
 import { IlarisActorSheet } from './actor.js'
-const TextEditor = foundry.applications.ux.TextEditor.implementation
 
 export class KreaturSheet extends IlarisActorSheet {
     /** @override */
