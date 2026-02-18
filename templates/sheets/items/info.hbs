@@ -1,5 +1,5 @@
 {{log 'info' this}}
-<form class="{{cssClass}}">
+<section class="{{cssClass}}">
     <div>
         <div>
             <header class="sheet-header">
@@ -12,11 +12,11 @@
         </div>
         <textarea rows="8" name="system.text">{{item.system.text}}</textarea>
         <hr />
-        <a class="item-delete" data-itemid="{{item._id}}">
+        <a data-action="deleteItem" data-itemid="{{item._id}}">
             <button class="clickable" type="button">
                 Löschen
                 <i class="fas fa-trash"></i>
             </button>
         </a>
     </div>
-</form>
+</section>

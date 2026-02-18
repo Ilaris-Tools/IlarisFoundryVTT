@@ -21,12 +21,12 @@
 }
 
 .ilaris.helden {
-  font-family: var(--font-andada);
+  font-family: var(--font-andada) !important;
   background-image: url('../assets/images/background/hintergrund.jpg');
 }
 
 .ilaris.kreatur {
-  font-family: var(--font-andada);
+  font-family: var(--font-andada) !important;
   background-image: url('../assets/images/background/hintergrund.jpg');
 }
 
@@ -528,19 +528,7 @@ td.rollable.icon-small {
 }
 
 .editor {
-  height: 100% !important;
   width: 100%;
-  overflow: auto;
-}
-
-.editor-content {
-  min-height: 50px;
-  min-height: 500px;
-  min-width: 300px;
-  height: 100% !important;
-  width: 100%;
-  overflow: auto;
-  /*     font-weight: bold; */
 }
 
 .schips-button {
