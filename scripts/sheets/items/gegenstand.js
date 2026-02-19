@@ -17,10 +17,6 @@ export class GegenstandSheet extends IlarisItemSheet {
     async _prepareContext(options) {
         const context = await super._prepareContext(options)
 
-        if (context.hasOwner) {
-            context.speicherplatz_list = this.document.actor.misc.speicherplatz_list
-        }
-
         return context
     }
 }

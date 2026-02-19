@@ -54,7 +54,7 @@
     {{#if (gte item.system.gewicht 0)}}
         <label class="flex-fest-var" style="flex-basis: 100px"><b>Aufbewahrungsort:</b></label>
         <select name="system.aufbewahrungs_ort">
-            {{selectOptions speicherplatz_list selected=item.system.aufbewahrungs_ort}}
+            {{selectOptions speicherplatz_list selected=item.system.aufbewahrungs_ort valueAttr="value" labelAttr="label"}}
         </select>
     {{/if}}
 {{/if}}
