@@ -460,6 +460,10 @@ td.rollable.icon-small {
   flex-grow: 0;
   flex-shrink: 0;
   font-size: 15px;
+
+  &.false {
+    color: #b5b3a4;
+  }
 }
 
 .flex-fest-var {

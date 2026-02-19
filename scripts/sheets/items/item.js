@@ -24,6 +24,11 @@ export class IlarisItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
         },
     }
 
+    /** @override */
+    get title() {
+        return `${this.item.type}: ${this.item.name}`
+    }
+
     // NOTE: PARTS must be defined in subclasses with their specific templates
     // Example: static PARTS = { form: { template: 'path/to/template.hbs' } }
 
@@ -37,6 +42,13 @@ export class IlarisItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
         const isOwner = this.document.actor?.isOwner
         const notInPack = this.document.actor?.pack == null
         context.item = this.item
+
+        context.speicherplatz_list = this.actor.misc.speicherplatz_list.map((platz) => ({
+            value: platz,
+            label: platz,
+        }))
+
+        console.log(context.speicherplatz_list)
 
         context.hasOwner = hasActor && isOwner && notInPack
 
