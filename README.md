@@ -37,17 +37,17 @@ Es gibt ausserdem (nicht sehr aktuelle, aber dafür praxisorientierte) [Screenca
 
 ## Bekannte Probleme
 
--   Abfragen zur Berechnung von Fertigkeitn/Vorteilen/etc. basieren rein auf Strings: Ein Leerzeichen an der falschen Stelle kann daher die Berechnung kaputt machen => Item löschen und neu importieren, bevor ein Bug gemeldet wird.
--   Bereits gemeldete Probleme werden [hier als Issues](https://github.com/Ilaris-Tools/IlarisFoundryVTT/issues?q=is%3Aissue%20state%3Aopen%20label%3Abug) gesammelt
--   In der Dokumentation finden sich auch noch ein paar [nützliche Hinweise zur Benutzung](docs/faq.md)
+- Abfragen zur Berechnung von Fertigkeitn/Vorteilen/etc. basieren rein auf Strings: Ein Leerzeichen an der falschen Stelle kann daher die Berechnung kaputt machen => Item löschen und neu importieren, bevor ein Bug gemeldet wird.
+- Bereits gemeldete Probleme werden [hier als Issues](https://github.com/Ilaris-Tools/IlarisFoundryVTT/issues?q=is%3Aissue%20state%3Aopen%20label%3Abug) gesammelt
+- In der Dokumentation finden sich auch noch ein paar [nützliche Hinweise zur Benutzung](docs/faq.md)
 
 ## Danke!
 
--   Selbstverständlich an das Team von [Ilaris](https://ilarisblog.wordpress.com/), das in seiner Freizeit ein so großartiges System erstellt hat.
--   An [Ulisses](https://ulisses-spiele.de), die Ilaris als Fanregeln sogar in gedruckter Form in ihrem Shop [anbieten](https://www.f-shop.de/detail/index/sArticle/1372).
--   Der Charaktereditor [Sephrasto](https://github.com/Aeolitus/Sephrasto), aus dessen Datenbank wir uns schamlos bedient haben und werden.
--   [Ilaris Advanced](https://dsaforum.de/viewtopic.php?f=180&t=49412&sid=8837ba1ffde6b5396050628f78a92dce), dessen Regelerweiterungen wir sträflichst vernachlässigt haben.
--   für den Ilaris Charaktersheet auf Roll20, der uns über zahlreiche Sessions Freude bereitet hat (und immer noch Features aufweist, die wir noch nicht haben^^)
+- Selbstverständlich an das Team von [Ilaris](https://ilarisblog.wordpress.com/), das in seiner Freizeit ein so großartiges System erstellt hat.
+- An [Ulisses](https://ulisses-spiele.de), die Ilaris als Fanregeln sogar in gedruckter Form in ihrem Shop [anbieten](https://www.f-shop.de/detail/index/sArticle/1372).
+- Der Charaktereditor [Sephrasto](https://github.com/Aeolitus/Sephrasto), aus dessen Datenbank wir uns schamlos bedient haben und werden.
+- [Ilaris Advanced](https://dsaforum.de/viewtopic.php?f=180&t=49412&sid=8837ba1ffde6b5396050628f78a92dce), dessen Regelerweiterungen wir sträflichst vernachlässigt haben.
+- für den Ilaris Charaktersheet auf Roll20, der uns über zahlreiche Sessions Freude bereitet hat (und immer noch Features aufweist, die wir noch nicht haben^^)
 
 ## Lizenz und Rechtliches
 

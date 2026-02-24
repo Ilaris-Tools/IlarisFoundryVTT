@@ -6,7 +6,6 @@ import { initializeHandlebars } from './common/handlebars.js'
 import { preloadAllEigenschaften } from './items/utils/eigenschaft-cache.js'
 import { preloadAbgeleiteteWerteDefinitions } from './actors/actor.js'
 import { runMigrationIfNeeded } from './migrations/migrate-waffen-eigenschaften.js'
-// import { IlarisActorSheet } from "./sheets/actor.js";
 import { HeldenSheet } from './sheets/helden.js'
 import { KreaturSheet } from './sheets/kreatur.js'
 import { RuestungSheet } from './sheets/items/ruestung.js'
@@ -14,7 +13,6 @@ import { UebernatuerlichFertigkeitSheet } from './sheets/items/uebernatuerlich_f
 import { UebernatuerlichTalentSheet } from './sheets/items/uebernatuerlich_talent.js'
 import { FertigkeitSheet } from './sheets/items/fertigkeit.js'
 import { TalentSheet } from './sheets/items/talent.js'
-// import { SephrastoImporter } from "./common/sephrasto_importer.js";
 import { NahkampfwaffeSheet } from './sheets/items/nahkampfwaffe.js'
 import { FernkampfwaffeSheet } from './sheets/items/fernkampfwaffe.js'
 import { GegenstandSheet } from './sheets/items/gegenstand.js'
@@ -45,6 +43,9 @@ import './hooks/changelog-notification.js'
 import './hooks/dot-effects.js'
 import { registerDefenseButtonHook } from './sheets/dialogs/defense_button_hook.js'
 
+const Actors = foundry.documents.collections.Actors
+const Items = foundry.documents.collections.Items
+
 // Status effect tint colors
 const STATUS_EFFECT_COLORS = {
     YELLOW: '#FFFF00', // Light penalty/warning
@@ -63,13 +64,13 @@ Hooks.once('init', () => {
     CONFIG.ActiveEffect.legacyTransferral = false
     CONFIG.ActiveEffect.documentClass = IlarisActiveEffect
 
-    Actors.unregisterSheet('core', ActorSheet)
+    Actors.unregisterSheet('core', foundry.applications.sheets.ActorSheetV2)
     Actors.registerSheet('Ilaris', HeldenSheet, { types: ['held'], makeDefault: true })
     Actors.registerSheet('Ilaris', KreaturSheet, { types: ['kreatur'], makeDefault: true })
 
     // ITEMS
     CONFIG.Item.documentClass = IlarisItemProxy
-    Items.unregisterSheet('core', ItemSheet)
+    Items.unregisterSheet('core', foundry.applications.sheets.ItemSheetV2)
     Items.registerSheet('Ilaris', RuestungSheet, { types: ['ruestung'], makeDefault: true })
     Items.registerSheet('Ilaris', NahkampfwaffeSheet, {
         types: ['nahkampfwaffe'],
@@ -356,92 +357,71 @@ Hooks.once('init', () => {
     registerIlarisGameSettings()
 })
 
-Hooks.on('getSceneControlButtons', (controls) => {
-    // Add character import button to the notes/journal control
-    const notesControl = controls.find((c) => c.name === 'notes')
-    if (notesControl && game.user.can('ACTOR_CREATE') && game.user.can('FILES_UPLOAD')) {
-        notesControl.tools.push({
-            name: 'import-xml-character',
-            title: 'XML Character Import',
-            icon: 'fas fa-file-import',
-            button: true,
-            onClick: () => XmlCharacterImporter.showImportDialog(),
+Hooks.on('renderActorDirectory', (app, htmlDOM) => {
+    // Add XML import button to the actors directory header (only if user can create actors and upload files)
+    if (game.user.can('ACTOR_CREATE') && game.user.can('FILES_UPLOAD')) {
+        const header = htmlDOM.querySelector('.directory-header')
+        const headerActions = header?.querySelector('.header-actions')
+        if (headerActions) {
+            const importButton = document.createElement('button')
+            importButton.className = 'import-xml-character'
+            importButton.title = 'Import Character from XML'
+            importButton.innerHTML = `<i class="fas fa-file-import"></i> Import Charakter XML`
+
+            importButton.addEventListener('click', () => XmlCharacterImporter.showImportDialog())
+            headerActions.appendChild(importButton)
+        }
+
+        // Add sync buttons to each actor entry (only if user owns the actor, can create actors, and can upload files)
+        htmlDOM.querySelectorAll('.directory-item.actor').forEach((element, i) => {
+            const actorId = element.dataset.entryId
+            const actor = game.actors.get(actorId)
+
+            if (actor && actor.type === 'held' && actor.isOwner) {
+                // Only add sync button to character actors that the user owns and has create/upload permissions
+                const syncButton = document.createElement('div')
+                syncButton.className = 'sync-xml-character onhover'
+                syncButton.title = 'Sync Character with XML'
+                syncButton.dataset.actorId = actorId
+                syncButton.innerHTML = `<i class="fas fa-sync-alt onhover"></i>`
+
+                syncButton.addEventListener('click', async (event) => {
+                    event.stopPropagation() // Prevent opening the actor sheet
+                    const targetActor = game.actors.get(actorId)
+                    if (targetActor) {
+                        await XmlCharacterImporter.showSyncDialog(targetActor)
+                    }
+                })
+
+                // Insert the sync button before the existing controls
+                const controls = element.querySelector('.directory-item-controls')
+                if (controls) {
+                    controls.insertBefore(syncButton, controls.firstChild)
+                } else {
+                    // If no controls exist, create them
+                    const newControls = document.createElement('div')
+                    newControls.className = 'directory-item-controls'
+                    newControls.appendChild(syncButton)
+                    element.appendChild(newControls)
+                }
+            }
         })
     }
 })
 
-Hooks.on('renderActorDirectory', (app, html) => {
-    // Add XML import button to the actors directory header (only if user can create actors and upload files)
-    if (game.user.can('ACTOR_CREATE') && game.user.can('FILES_UPLOAD')) {
-        const header = html.find('.directory-header')
-        if (header.length > 0) {
-            const importButton = $(`
-                <button class="import-xml-character" title="Import Character from XML">
-                    <i class="fas fa-file-import"></i> Import Charakter XML
-                </button>
-            `)
-
-            importButton.click(() => XmlCharacterImporter.showImportDialog())
-            header.append(importButton)
-        }
-    }
-
-    // Add sync buttons to each actor entry (only if user owns the actor, can create actors, and can upload files)
-    html.find('.directory-item.actor').each((i, element) => {
-        const $element = $(element)
-        const actorId = $element.data('document-id')
-        const actor = game.actors.get(actorId)
-
-        if (
-            actor &&
-            actor.type === 'held' &&
-            actor.isOwner &&
-            game.user.can('ACTOR_CREATE') &&
-            game.user.can('FILES_UPLOAD')
-        ) {
-            // Only add sync button to character actors that the user owns and has create/upload permissions
-            const syncButton = $(`
-                <div class="sync-xml-character onhover" title="Sync Character with XML" data-actor-id="${actorId}">
-                    <i class="fas fa-sync-alt onhover"></i>
-                </div>
-            `)
-
-            syncButton.click(async (event) => {
-                event.stopPropagation() // Prevent opening the actor sheet
-                const targetActor = game.actors.get(actorId)
-                if (targetActor) {
-                    await XmlCharacterImporter.showSyncDialog(targetActor)
-                }
-            })
-
-            // Insert the sync button before the existing controls
-            const controls = $element.find('.directory-item-controls')
-            if (controls.length > 0) {
-                syncButton.prependTo(controls)
-            } else {
-                // If no controls exist, create them
-                const newControls = $('<div class="directory-item-controls"></div>')
-                newControls.append(syncButton)
-                $element.append(newControls)
-            }
-        }
-    })
-})
-
 // Force apply tint colors to status effect picker icons using direct CSS styling
-Hooks.on('renderTokenHUD', (app, html, data) => {
+Hooks.on('renderTokenHUD', (app, htmlDOM, data) => {
     // Wait for DOM to be ready
     setTimeout(() => {
         // Look for the status effects container
-        const statusEffectsContainer = html.find('.status-effects')
+        const statusEffectsContainer = htmlDOM.querySelector('.status-effects')
 
-        if (statusEffectsContainer.length > 0) {
+        if (statusEffectsContainer) {
             // Find all effect controls within the status effects container
-            const effectControls = statusEffectsContainer.find('.effect-control')
+            const effectControls = statusEffectsContainer.querySelectorAll('.effect-control')
 
-            effectControls.each((index, control) => {
-                const $control = $(control)
-                const statusId = $control.data('status-id')
+            effectControls.forEach((control) => {
+                const statusId = control.dataset.statusId
 
                 // Find the matching status effect configuration
                 const statusConfig = CONFIG.statusEffects.find((effect) => effect.id === statusId)
@@ -449,20 +429,19 @@ Hooks.on('renderTokenHUD', (app, html, data) => {
                 if (statusConfig && statusConfig.tint) {
                     // Apply filter to change only the white SVG fill to the desired color
                     const filterValue = getFilterForColor(statusConfig.tint)
-                    $control.css({
-                        filter: filterValue,
-                        '-webkit-filter': filterValue,
-                    })
+                    control.style.filter = filterValue
+                    control.style.webkitFilter = filterValue
 
-                    // Force override with !important using attr
-                    $control.attr(
+                    // Force override with !important using setAttribute
+                    const existingStyle = control.getAttribute('style') || ''
+                    control.setAttribute(
                         'style',
-                        ($control.attr('style') || '') +
+                        existingStyle +
                             `; filter: ${filterValue} !important;` +
                             `; -webkit-filter: ${filterValue} !important;`,
                     )
 
-                    $control.addClass('ilaris-tinted')
+                    control.classList.add('ilaris-tinted')
                 }
             })
         }
@@ -487,29 +466,16 @@ function getFilterForColor(hexColor) {
     }
 }
 
-Hooks.on('getSceneControlButtons', (controls) => {
-    // Add character import button to the notes/journal control
-    const notesControl = controls.find((c) => c.name === 'notes')
-    if (notesControl && game.user.can('ACTOR_CREATE') && game.user.can('FILES_UPLOAD')) {
-        notesControl.tools.push({
-            name: 'import-xml-character',
-            title: 'XML Character Import',
-            icon: 'fas fa-file-import',
-            button: true,
-            onClick: () => XmlCharacterImporter.showImportDialog(),
-        })
-    }
-})
-
 // Extend Scene Config with environment settings in Basic tab
-Hooks.on('renderSceneConfig', async (app, html, data) => {
+Hooks.on('renderSceneConfig', async (app, htmlDOM, data) => {
     // Check if already injected (to avoid duplicates when dialog is re-opened)
-    if (html.find('.ilaris-environment-setting').length > 0) {
+    if (htmlDOM.querySelector('.ilaris-environment-setting')) {
         return
     }
 
     // Get existing environment settings from scene flags
-    const environment = app.object.getFlag('Ilaris', 'sceneConditions') || {
+    const scene = app.document || app.object
+    const environment = scene.getFlag('Ilaris', 'sceneConditions') || {
         lcht: '0', // Lichtverhältnisse
         wttr: '0', // Wetter
     }
@@ -528,19 +494,21 @@ Hooks.on('renderSceneConfig', async (app, html, data) => {
     )
 
     // Simply append to the basic tab (within ambience group)
-    const basicTab = html.find('.tab[data-tab="basic"][data-group="ambience"]')
-    basicTab.append(
+    const basicTab = htmlDOM.querySelector('.tab[data-tab="basic"][data-group="ambience"]')
+    basicTab.insertAdjacentHTML(
+        'beforeend',
         '<hr style="margin: 1.5em 0; border: none; border-top: 2px solid var(--color-border-light-primary);">',
     )
-    basicTab.append(environmentHTML)
+    basicTab.insertAdjacentHTML('beforeend', environmentHTML)
 })
 
 // Add XML rule import button to the Compendium Directory
-Hooks.on('renderCompendiumDirectory', (app, html) => {
+Hooks.on('renderCompendiumDirectory', (app, htmlDOM) => {
     // Add XML import button to the compendium directory header (only if GM)
     if (game.user.isGM) {
-        const header = html[0].querySelector('.directory-header')
-        if (header) {
+        const header = htmlDOM.querySelector('.directory-header')
+        const headerActions = header?.querySelector('.header-actions')
+        if (headerActions) {
             // Create import button
             const importButton = document.createElement('button')
             importButton.className = 'import-xml-rules rule-button'
@@ -555,19 +523,18 @@ Hooks.on('renderCompendiumDirectory', (app, html) => {
             updateButton.innerHTML = '<i class="fas fa-sync-alt"></i> Update Regeln XML'
             updateButton.addEventListener('click', () => XMLRuleImporter.showRuleUpdateDialog())
 
-            header.appendChild(importButton)
-            header.appendChild(updateButton)
+            headerActions.appendChild(importButton)
+            headerActions.appendChild(updateButton)
         }
     }
 })
 
 // Combined hook for chat message rendering
-Hooks.on('renderChatMessage', (message, html, data) => {
+Hooks.on('renderChatMessageHTML', (message, htmlDOM, data) => {
     // Format dice formulas in chat messages
-    const diceFormulaElements = html.find('.dice-formula')
-    diceFormulaElements.each((index, element) => {
-        const $element = $(element)
-        const originalFormula = $element.text().trim()
+    const diceFormulaElements = htmlDOM.querySelectorAll('.dice-formula')
+    diceFormulaElements.forEach((element) => {
+        const originalFormula = element.textContent.trim()
 
         // Extract just the dice part (before any + or -)
         const diceFormulaMatch = originalFormula.match(/^(\d+d\d+(?:dl\d+)?(?:dh\d+)?)/)
@@ -577,7 +544,7 @@ Hooks.on('renderChatMessage', (message, html, data) => {
 
             // Replace the dice part with the formatted version, keep the rest
             const remainder = originalFormula.substring(diceFormula.length)
-            $element.text(formattedDice + remainder)
+            element.textContent = formattedDice + remainder
         }
     })
 
@@ -585,7 +552,7 @@ Hooks.on('renderChatMessage', (message, html, data) => {
     const isDefensePrompt = message.flags?.Ilaris?.defensePrompt
     if (isDefensePrompt) {
         // Skip if defense has already been handled
-        if (html.hasClass('defense-handled')) {
+        if (htmlDOM.classList.contains('defense-handled')) {
             return
         }
 
@@ -596,17 +563,16 @@ Hooks.on('renderChatMessage', (message, html, data) => {
 
         // If the user is not the target, hide the content
         if (!isTarget && !game.user.isGM) {
-            const contentDiv = html.find('.message-content')
-            if (contentDiv.length > 0) {
-                contentDiv.html(
-                    '<p style="font-style: italic; opacity: 0.6;">Deine Verteidigungsaufforderung an einen anderen Spieler</p>',
-                )
+            const contentDiv = htmlDOM.querySelector('.message-content')
+            if (contentDiv) {
+                contentDiv.innerHTML =
+                    '<p style="font-style: italic; opacity: 0.6;">Deine Verteidigungsaufforderung an einen anderen Spieler</p>'
             }
         }
 
         if (isTarget || game.user.isGM) {
             // Highlight the message for the target player
-            html.addClass('ilaris-defense-prompt-highlight')
+            htmlDOM.classList.add('ilaris-defense-prompt-highlight')
         }
     }
 })
@@ -855,47 +821,47 @@ function applyHexMaskToToken(token) {
     token._ilarisHexBorder = hexBorder
 }
 // Add Automatisierung heading in settings, pretty scuffed solution but i did not manage to add a separate category to the settings without adding a new module
-Hooks.on('renderSettingsConfig', (app, html) => {
+Hooks.on('renderSettingsConfig', (app, htmlDOM) => {
     // Find the first Automatisierung setting
-    const automationSetting = html
-        .find('[name="Ilaris.useSceneEnvironment"]')
-        .closest('.form-group')
+    const automationInput = htmlDOM.querySelector('[name="Ilaris.useSceneEnvironment"]')
+    const automationSetting = automationInput?.closest('.form-group')
 
-    if (automationSetting.length > 0) {
+    if (automationSetting) {
         // Insert a heading before it
-        automationSetting.before(
+        automationSetting.insertAdjacentHTML(
+            'beforebegin',
             '<h3 class="setting-header" style="border-bottom: 1px solid var(--color-border-light-primary); padding: 0.5em 0; margin-top: 1em;">Automatisierung</h3>',
         )
     }
 
     // Find the first Kompendien setting (fertigkeitenPacksMenu)
-    const kompendienSetting = html
-        .find('[data-key="Ilaris.fertigkeitenPacksMenu"]')
-        .closest('.form-group')
+    const kompendienElement = htmlDOM.querySelector('[data-key="Ilaris.fertigkeitenPacksMenu"]')
+    const kompendienSetting = kompendienElement?.closest('.form-group')
 
-    if (kompendienSetting.length > 0) {
+    if (kompendienSetting) {
         // Insert a heading before it
-        kompendienSetting.before(
+        kompendienSetting.insertAdjacentHTML(
+            'beforebegin',
             '<h3 class="setting-header" style="border-bottom: 1px solid var(--color-border-light-primary); padding: 0.5em 0; margin-top: 1em;">Benutzte Kompendien</h3>',
         )
     }
 
     // Find the first Kompendien setting (fertigkeitenPacksMenu)
-    const normalSetting = html
-        .find('[data-setting-id="Ilaris.weaponSpaceRequirement"]')
-        .closest('.form-group')
+    const normalElement = htmlDOM.querySelector('[data-setting-id="Ilaris.weaponSpaceRequirement"]')
+    const normalSetting = normalElement?.closest('.form-group')
 
-    if (normalSetting.length > 0) {
+    if (normalSetting) {
         // Insert a heading before it
-        normalSetting.before(
+        normalSetting.insertAdjacentHTML(
+            'beforebegin',
             '<h3 class="setting-header" style="border-bottom: 1px solid var(--color-border-light-primary); padding: 0.5em 0; margin-top: 1em;">Andere Einstellungen</h3>',
         )
     }
 
     // Replace the default ranged dodge talent text input with a dropdown
-    const dodgeTalentInput = html.find('[name="Ilaris.defaultRangedDodgeTalent"]')
-    if (dodgeTalentInput.length > 0) {
-        const currentValue = dodgeTalentInput.val()
+    const dodgeTalentInput = htmlDOM.querySelector('[name="Ilaris.defaultRangedDodgeTalent"]')
+    if (dodgeTalentInput) {
+        const currentValue = dodgeTalentInput.value
 
         // Get all talents from selected fertigkeiten compendiums
         const talentePacks = JSON.parse(
@@ -929,6 +895,7 @@ Hooks.on('renderSettingsConfig', (app, html) => {
         }
         selectHtml += '</select>'
 
-        dodgeTalentInput.replaceWith(selectHtml)
+        dodgeTalentInput.insertAdjacentHTML('afterend', selectHtml)
+        dodgeTalentInput.remove()
     }
 })

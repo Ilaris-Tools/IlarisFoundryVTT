@@ -1,5 +1,5 @@
 {{log 'waffeneigenschaft' this}}
-<form class="{{cssClass}}">
+<section class="{{cssClass}}">
     <div>
         <input class="titel-input" name="name" type="text" value="{{item.name}}" />
         <hr />
@@ -317,11 +317,11 @@
         
         <hr />
         
-        <a class="item-delete" data-itemid="{{item._id}}">
+        <a data-action="deleteItem" data-itemid="{{item._id}}">
             <button class="clickable" type="button">
                 Waffeneigenschaft Löschen
                 <i class="fas fa-trash"></i>
             </button>
         </a>
     </div>
-</form>
+</section>

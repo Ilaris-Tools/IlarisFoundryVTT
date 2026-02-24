@@ -1,111 +1,108 @@
 import { IlarisActorSheet } from './actor.js'
 
 export class KreaturSheet extends IlarisActorSheet {
-    static get defaultOptions() {
-        return foundry.utils.mergeObject(super.defaultOptions, {
-            // classes: ["ilaris", "sheet"],
-            classes: ['ilaris'],
-            template: 'systems/Ilaris/templates/sheets/kreatur.hbs',
-            tabs: [
-                {
-                    navSelector: '.sheet-tabs',
-                    contentSelector: '.sheet-body',
-                    initial: 'profan',
-                },
-            ],
-        })
+    /** @override */
+    static DEFAULT_OPTIONS = {
+        classes: ['ilaris', 'kreatur'],
+        window: {
+            icon: 'fa-solid fa-dragon',
+        },
+        actions: {
+            addVorteilInfo: KreaturSheet.addVorteilInfo,
+        },
+        dragDrop: [{ dragSelector: '[data-drag]', dropSelector: null }],
     }
 
-    async getData() {
-        const context = await super.getData()
+    /** @override */
+    get title() {
+        return `Kreatur/NSC: ${this.actor.name}`
+    }
+
+    /** @override */
+    static PARTS = {
+        form: {
+            template: 'systems/Ilaris/templates/sheets/kreatur.hbs',
+            scrollable: [''],
+        },
+    }
+
+    // Note: kreatur.hbs does not use tabs - single page layout
+
+    /** @override */
+    async _prepareContext(options) {
+        const context = await super._prepareContext(options)
         context.kreaturItemOptions = foundry.utils.duplicate(CONFIG.ILARIS.kreatur_item_options)
         return context
     }
 
-    async _onClickable(event) {
-        super._onClickable(event)
-        let clicktype = $(event.currentTarget).data('clicktype')
-        if (clicktype == 'addvorteilinfo') {
-            game.packs.get('Ilaris.vorteile').render(true)
+    /**
+     * Show info about adding advantages
+     * @param {PointerEvent} event - The click event
+     * @param {HTMLElement} target - The target element
+     */
+    static addVorteilInfo(event, target) {
+        try {
+            const pack = game.packs.get('Ilaris.vorteile')
+            if (pack) {
+                pack.render(true)
+            }
             Dialog.prompt({
                 content:
                     'Du kannst Vorteile direkt aus den Kompendium Packs auf den Statblock ziehen. Für eigene Vor/Nachteile zu erstellen, die nicht im Regelwerk enthalten sind, benutze die Eigenschaften.',
                 callback: () => {},
             })
-        } else if (clicktype == 'addanyitem') {
-            // not used.. dropdown for itemcreate (actor) is used instead of another dialog
-            const html = await renderTemplate(
-                'systems/Ilaris/templates/sheets/dialogs/addkreaturitem.hbs',
-                {},
-            )
-            let d = new Dialog({
-                title: 'Item Hinzufügen:',
-                content: html,
-                buttons: {
-                    one: {
-                        label: 'Zauber',
-                        callback: () => {
-                            console.log('Klicked')
-                            super._onItemCreate(event)
-                        },
-                    },
-                },
-            })
-            d.render(true)
-            //                 two: {
-            //                     icon: '<i class="fas fa-times"></i>',
-            //                     label: 'Abbrechen',
-            //                     callback: () => console.log('Abbruch'),
-            //                 },
-            //             },
-            //         },
-            //         {
-            //             jQuery: true,
-            //         },
-            //     );
-            //     d.render(true);
+        } catch (err) {
+            console.error('ILARIS | Error showing vorteil info:', err)
+            ui.notifications.error('Fehler beim Öffnen der Vorteile-Kompendium.')
         }
     }
 
-    _onDropItemCreate(item) {
-        console.log('Item gedroppt!')
-        console.log(item)
-
-        let itemData = {}
-        switch (item.type) {
-            case 'talent':
-            case 'fertigkeit':
-                console.log('Item drop abgefangen. Erstelle Freies Talent..')
-                itemData = {
-                    name: item.name,
-                    type: 'freiestalent',
-                    system: {
-                        ...item.system,
-                        profan: true,
-                    },
-                }
-                super._onDropItemCreate(item)
-                return this.actor.createEmbeddedDocuments('Item', [itemData])
-            case 'uebernatuerliche_fertigkeit':
-                console.log('Item drop abgefangen. Erstelle Uebernatuerliches Freies Talent..')
-                itemData = {
-                    name: item.name,
-                    type: 'freiestalent',
-                    system: {
-                        ...item.system,
-                        profan: false,
-                    },
-                }
-                super._onDropItemCreate(item)
-                return this.actor.createEmbeddedDocuments('Item', [itemData])
-            default:
-                console.log('Item drop abgefangen. Erstelle Kopie..')
-                itemData = {
-                    name: item.name,
-                    type: item.type,
-                    system: item.system,
-                }
-                super._onDropItemCreate(item)
+    /**
+     * Handle dropped item creation with type conversion for creatures
+     * @param {Item} item - The dropped item
+     * @protected
+     */
+    async _onDropItemCreate(item) {
+        try {
+            let itemData = {}
+            switch (item.type) {
+                case 'talent':
+                case 'fertigkeit':
+                    // Convert skill/talent to free talent for creatures
+                    itemData = {
+                        name: item.name,
+                        type: 'freiestalent',
+                        system: {
+                            ...item.system,
+                            profan: true,
+                        },
+                    }
+                    super._onDropItemCreate(item)
+                    return this.actor.createEmbeddedDocuments('Item', [itemData])
+                case 'uebernatuerliche_fertigkeit':
+                    // Convert supernatural skill to supernatural free talent
+                    itemData = {
+                        name: item.name,
+                        type: 'freiestalent',
+                        system: {
+                            ...item.system,
+                            profan: false,
+                        },
+                    }
+                    super._onDropItemCreate(item)
+                    return this.actor.createEmbeddedDocuments('Item', [itemData])
+                default:
+                    // Create direct copy
+                    itemData = {
+                        name: item.name,
+                        type: item.type,
+                        system: item.system,
+                    }
+                    super._onDropItemCreate(item)
+            }
+        } catch (err) {
+            console.error('ILARIS | Error creating dropped item:', err)
+            ui.notifications.error('Fehler beim Erstellen des Elements.')
         }
     }
 }

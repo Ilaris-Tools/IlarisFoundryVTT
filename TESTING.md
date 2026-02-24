@@ -21,9 +21,9 @@ CONFIG.Dice.randomUniform = () => 0.5
 
 ### 2. Kampfszenarien testen
 
--   Die festen Würfelergebnisse oben verwenden um kritische Treffer (hohe Würfe) oder Patzer (niedrige Würfe) zu testen
--   Angriffstaster, Fertigkeitsproben und Schadenswürfe mit vorhersagbaren Ergebnissen testen
--   Nützlich zur Überprüfung von Kampfberechnungen und Manövereffekten
+- Die festen Würfelergebnisse oben verwenden um kritische Treffer (hohe Würfe) oder Patzer (niedrige Würfe) zu testen
+- Angriffstaster, Fertigkeitsproben und Schadenswürfe mit vorhersagbaren Ergebnissen testen
+- Nützlich zur Überprüfung von Kampfberechnungen und Manövereffekten
 
 ---
 

@@ -15,21 +15,21 @@ This document serves as the authoritative specification for implementing or exte
 
 ## Terminology
 
--   **Eigenschaft** (plural: Eigenschaften): A weapon property/trait (e.g., "Schwer", "Zweihändig", "Umklammern")
--   **Kategorie**: Processing category that determines how an eigenschaft modifies weapon stats (modifier, wielding, target_effect, actor_modifier, passive)
--   **Processor**: Component that implements kategorie-specific logic to apply eigenschaft effects
--   **Computed Object**: Transient object holding calculated weapon statistics (AT, VT, damage, etc.)
--   **Parameter**: Runtime value passed to an eigenschaft (e.g., KK threshold 4 for "Schwer (4)")
--   **Parameter Slot**: Schema definition for an eigenschaft parameter (name, type, usage path)
--   **Cache**: Singleton storage for preloaded eigenschaft items
+- **Eigenschaft** (plural: Eigenschaften): A weapon property/trait (e.g., "Schwer", "Zweihändig", "Umklammern")
+- **Kategorie**: Processing category that determines how an eigenschaft modifies weapon stats (modifier, wielding, target_effect, actor_modifier, passive)
+- **Processor**: Component that implements kategorie-specific logic to apply eigenschaft effects
+- **Computed Object**: Transient object holding calculated weapon statistics (AT, VT, damage, etc.)
+- **Parameter**: Runtime value passed to an eigenschaft (e.g., KK threshold 4 for "Schwer (4)")
+- **Parameter Slot**: Schema definition for an eigenschaft parameter (name, type, usage path)
+- **Cache**: Singleton storage for preloaded eigenschaft items
 
 ## Conventions
 
 This specification uses RFC 2119 keywords:
 
--   **MUST/REQUIRED**: Absolute requirement
--   **SHOULD/RECOMMENDED**: Strong recommendation with valid exceptions
--   **MAY/OPTIONAL**: Truly optional feature
+- **MUST/REQUIRED**: Absolute requirement
+- **SHOULD/RECOMMENDED**: Strong recommendation with valid exceptions
+- **MAY/OPTIONAL**: Truly optional feature
 
 Reference implementation paths use format `[file.js](path/to/file.js)` and are **normative** unless marked **informative**.
 
@@ -63,16 +63,16 @@ The Waffeneigenschaften system aims to:
 
 ### 1.2 Core Principles
 
--   **Single Source of Truth**: Eigenschaft items define behavior, weapons reference them
--   **Lazy Loading with Preload**: Cache preloads on init, loads on-demand if needed
--   **Immutable Processing**: Processors MUST NOT mutate eigenschaft items, only modify computed object
--   **Graceful Degradation**: Missing eigenschaften log warnings but don't break calculations
+- **Single Source of Truth**: Eigenschaft items define behavior, weapons reference them
+- **Lazy Loading with Preload**: Cache preloads on init, loads on-demand if needed
+- **Immutable Processing**: Processors MUST NOT mutate eigenschaft items, only modify computed object
+- **Graceful Degradation**: Missing eigenschaften log warnings but don't break calculations
 
 ### 1.3 Design Constraints
 
--   **Foundry Data Model**: Arrays stored as objects `{0: {...}, 1: {...}}`, requiring `Object.values()` conversion
--   **Async Preparation**: `WaffeItem.prepareWeapon()` MAY be async for cache loading
--   **UI Reactivity**: Changes to eigenschaft items MUST trigger cache invalidation and re-render
+- **Foundry Data Model**: Arrays stored as objects `{0: {...}, 1: {...}}`, requiring `Object.values()` conversion
+- **Async Preparation**: `WaffeItem.prepareWeapon()` MAY be async for cache loading
+- **UI Reactivity**: Changes to eigenschaft items MUST trigger cache invalidation and re-render
 
 ---
 
@@ -149,15 +149,15 @@ sequenceDiagram
 
 #### 2.3.1 Why Global Cache?
 
--   **Performance**: Avoids repeated database queries for commonly used eigenschaften
--   **Preload**: Ready before actor sheets render
--   **Singleton Pattern**: Shared across all weapon instances
+- **Performance**: Avoids repeated database queries for commonly used eigenschaften
+- **Preload**: Ready before actor sheets render
+- **Singleton Pattern**: Shared across all weapon instances
 
 #### 2.3.2 Why Processor Pattern?
 
--   **Separation of Concerns**: Each kategorie has isolated logic
--   **Extensibility**: New processors without modifying existing code
--   **Testability**: Processors can be unit tested in isolation
+- **Separation of Concerns**: Each kategorie has isolated logic
+- **Extensibility**: New processors without modifying existing code
+- **Testability**: Processors can be unit tested in isolation
 
 #### 2.3.3 Why Parameters Instead of Variants?
 
@@ -174,9 +174,9 @@ sequenceDiagram
 
 **Benefits**:
 
--   Reduces item proliferation
--   Flexible: Can support any KK threshold without new items
--   Migrateable: Parser converts legacy strings to new format
+- Reduces item proliferation
+- Flexible: Can support any KK threshold without new items
+- Migrateable: Parser converts legacy strings to new format
 
 ---
 
@@ -374,9 +374,9 @@ interface ComputedWeapon {
 
 Convert legacy string formats to structured objects:
 
--   `"Schwer (4)"` → `{key: "Schwer", parameters: [4]}`
--   `"Umklammern (-2; 12)"` → `{key: "Umklammern", parameters: [-2, 12]}`
--   `"Zweihändig"` → `{key: "Zweihändig", parameters: []}`
+- `"Schwer (4)"` → `{key: "Schwer", parameters: [4]}`
+- `"Umklammern (-2; 12)"` → `{key: "Umklammern", parameters: [-2, 12]}`
+- `"Zweihändig"` → `{key: "Zweihändig", parameters: []}`
 
 ### 4.2 Required Functions
 
@@ -389,12 +389,12 @@ Implementations MUST provide these functions:
 
 **Requirements**:
 
--   MUST extract property name (trim whitespace)
--   MUST support nested parentheses for complex parameters
--   MUST split parameters by semicolon or comma
--   MUST convert numeric strings to number type
--   MUST preserve non-numeric strings as string type
--   SHOULD log warning for invalid formats, return null
+- MUST extract property name (trim whitespace)
+- MUST support nested parentheses for complex parameters
+- MUST split parameters by semicolon or comma
+- MUST convert numeric strings to number type
+- MUST preserve non-numeric strings as string type
+- SHOULD log warning for invalid formats, return null
 
 **Examples**:
 
@@ -419,9 +419,9 @@ parseEigenschaftString('Zweihändig')
 
 **Requirements**:
 
--   MUST call `parseEigenschaftString` for each element
--   MUST filter out null results
--   SHOULD preserve order
+- MUST call `parseEigenschaftString` for each element
+- MUST filter out null results
+- SHOULD preserve order
 
 #### `normalizeEigenschaften(input: unknown): EigenschaftReference[]`
 
@@ -430,10 +430,10 @@ parseEigenschaftString('Zweihändig')
 
 **Requirements**:
 
--   MUST handle string arrays: `["Schwer (4)", "Zweihändig"]`
--   MUST handle object arrays: `[{key: "Schwer", parameters: [4]}]` (pass-through)
--   MAY handle legacy object format: `{schwer_4: true}` (via migration map)
--   MUST return empty array for invalid input
+- MUST handle string arrays: `["Schwer (4)", "Zweihändig"]`
+- MUST handle object arrays: `[{key: "Schwer", parameters: [4]}]` (pass-through)
+- MAY handle legacy object format: `{schwer_4: true}` (via migration map)
+- MUST return empty array for invalid input
 
 #### `formatEigenschaftDisplay(eig: EigenschaftReference): string`
 
@@ -444,8 +444,8 @@ parseEigenschaftString('Zweihändig')
 
 **Requirements**:
 
--   MUST use compact notation (comma-separated parameters)
--   MUST omit parentheses if no parameters
+- MUST use compact notation (comma-separated parameters)
+- MUST omit parentheses if no parameters
 
 **Example**:
 
@@ -464,9 +464,9 @@ formatEigenschaftDisplay({ key: 'Umklammern', parameters: [-2, 12] })
 
 **Requirements**:
 
--   MUST extract key from objects: `{key: "Schwer", ...}` → `"Schwer"`
--   MUST parse strings: `"Schwer (4)"` → `"Schwer"`
--   MUST return null for invalid input
+- MUST extract key from objects: `{key: "Schwer", ...}` → `"Schwer"`
+- MUST parse strings: `"Schwer (4)"` → `"Schwer"`
+- MUST return null for invalid input
 
 ### 4.3 Regex Pattern Recommendation
 
@@ -478,17 +478,17 @@ const EIGENSCHAFT_PATTERN = /^([^(]+)(?:\(([^)]+(?:\([^)]+\))?)\))?$/
 
 **Explanation**:
 
--   `^([^(]+)`: Capture property name (everything before first `(`)
--   `(?:\(([^)]+(?:\([^)]+\))?)\))?`: Optional parameters group
-    -   Supports one level of nested parentheses
-    -   Captures parameter string for further splitting
+- `^([^(]+)`: Capture property name (everything before first `(`)
+- `(?:\(([^)]+(?:\([^)]+\))?)\))?`: Optional parameters group
+    - Supports one level of nested parentheses
+    - Captures parameter string for further splitting
 
 ### 4.4 Implementation Notes
 
--   **Type Conversion**: Use `parseFloat()` and check `!isNaN()` for number detection
--   **Whitespace**: Always trim before and after extraction
--   **Delimiters**: Support both semicolon `;` and comma `,` as parameter separators
--   **Error Handling**: Log to console but don't throw exceptions
+- **Type Conversion**: Use `parseFloat()` and check `!isNaN()` for number detection
+- **Whitespace**: Always trim before and after extraction
+- **Delimiters**: Support both semicolon `;` and comma `,` as parameter separators
+- **Error Handling**: Log to console but don't throw exceptions
 
 ---
 
@@ -511,12 +511,12 @@ Implementations MUST provide:
 
 **Requirements**:
 
--   MUST extract base keys (e.g., "Schwer" from "Schwer (4)")
--   MUST deduplicate keys before loading
--   MUST search world items first
--   MUST search configured compendiums if not in world
--   MUST handle concurrent load calls (prevent duplicate loading)
--   SHOULD complete within 5 seconds for reasonable item counts
+- MUST extract base keys (e.g., "Schwer" from "Schwer (4)")
+- MUST deduplicate keys before loading
+- MUST search world items first
+- MUST search configured compendiums if not in world
+- MUST handle concurrent load calls (prevent duplicate loading)
+- SHOULD complete within 5 seconds for reasonable item counts
 
 #### `get(key: string): Item | undefined`
 
@@ -524,9 +524,9 @@ Implementations MUST provide:
 
 **Requirements**:
 
--   MUST use base key (without parameters)
--   MUST return undefined if not cached
--   MUST NOT trigger async loading
+- MUST use base key (without parameters)
+- MUST return undefined if not cached
+- MUST NOT trigger async loading
 
 #### `has(key: string): boolean`
 
@@ -538,8 +538,8 @@ Implementations MUST provide:
 
 **Requirements**:
 
--   MUST extract base keys before checking
--   MUST return true only if ALL keys are cached
+- MUST extract base keys before checking
+- MUST return true only if ALL keys are cached
 
 #### `isLoading(): boolean`
 
@@ -563,12 +563,12 @@ Implementations MUST provide global preloading:
 
 **Requirements**:
 
--   MUST run on Foundry 'ready' hook
--   MUST load from world items (type='waffeneigenschaft')
--   MUST load from configured compendiums
--   MUST deduplicate by key
--   SHOULD log progress/completion
--   MUST complete before actor sheets render
+- MUST run on Foundry 'ready' hook
+- MUST load from world items (type='waffeneigenschaft')
+- MUST load from configured compendiums
+- MUST deduplicate by key
+- SHOULD log progress/completion
+- MUST complete before actor sheets render
 
 **Hook Registration**:
 
@@ -582,10 +582,10 @@ Hooks.on('ready', async () => {
 
 Implementations MUST invalidate cache on:
 
--   `Hooks.on('updateItem')` if item type is 'waffeneigenschaft'
--   `Hooks.on('createItem')` if item type is 'waffeneigenschaft'
--   `Hooks.on('deleteItem')` if item type is 'waffeneigenschaft'
--   Settings change hook for eigenschaft compendium configuration
+- `Hooks.on('updateItem')` if item type is 'waffeneigenschaft'
+- `Hooks.on('createItem')` if item type is 'waffeneigenschaft'
+- `Hooks.on('deleteItem')` if item type is 'waffeneigenschaft'
+- Settings change hook for eigenschaft compendium configuration
 
 **Invalidation Strategy**: Clear global cache, trigger re-render of affected sheets
 
@@ -593,16 +593,16 @@ Implementations MUST invalidate cache on:
 
 System SHOULD provide settings for:
 
--   Which compendiums to include in preload/search
--   Default: System compendium `Ilaris.waffen-eigenschaften` (or similar)
--   GM can add/remove compendium sources
+- Which compendiums to include in preload/search
+- Default: System compendium `Ilaris.waffen-eigenschaften` (or similar)
+- GM can add/remove compendium sources
 
 ### 5.6 Key Extraction
 
 Cache MUST extract base keys using one of:
 
--   Parser `extractEigenschaftKey()` function
--   Regex pattern to remove parameters: `/^([^(]+)/`
+- Parser `extractEigenschaftKey()` function
+- Regex pattern to remove parameters: `/^([^(]+)/`
 
 **Example**:
 
@@ -663,21 +663,21 @@ Processors implement kategorie-specific logic to apply eigenschaft effects to we
 
 **Parameters**:
 
--   `kategorie`: Processor category string
--   `key`: Eigenschaft base name
--   `eigenschaft`: Eigenschaft item object
--   `parameters`: Array of parameter values
--   `computed`: Weapon computed object (mutated)
--   `actor`: Optional actor context
--   `weapon`: Weapon item instance
+- `kategorie`: Processor category string
+- `key`: Eigenschaft base name
+- `eigenschaft`: Eigenschaft item object
+- `parameters`: Array of parameter values
+- `computed`: Weapon computed object (mutated)
+- `actor`: Optional actor context
+- `weapon`: Weapon item instance
 
 **Requirements**:
 
--   MUST maintain Map registry of `kategorie → ProcessorClass`
--   MUST validate kategorie exists in registry
--   MUST instantiate processor and call `process()` method
--   SHOULD log warning if kategorie not found
--   MUST NOT throw exceptions (graceful degradation)
+- MUST maintain Map registry of `kategorie → ProcessorClass`
+- MUST validate kategorie exists in registry
+- MUST instantiate processor and call `process()` method
+- SHOULD log warning if kategorie not found
+- MUST NOT throw exceptions (graceful degradation)
 
 **Registry Example**:
 
@@ -699,11 +699,11 @@ All processors MUST extend BaseProcessor and implement:
 
 **Requirements**:
 
--   MUST NOT mutate `eigenschaft` parameter
--   MUST only modify `computed` parameter
--   MAY read from `actor` and `weapon` contexts
--   MUST handle invalid/missing data gracefully
--   SHOULD log warnings for configuration errors
+- MUST NOT mutate `eigenschaft` parameter
+- MUST only modify `computed` parameter
+- MAY read from `actor` and `weapon` contexts
+- MUST handle invalid/missing data gracefully
+- SHOULD log warnings for configuration errors
 
 #### `validate(eigenschaft): boolean` (OPTIONAL)
 
@@ -711,8 +711,8 @@ All processors MUST extend BaseProcessor and implement:
 
 **Requirements**:
 
--   SHOULD return true if valid, false otherwise
--   MAY be used for editor validation
+- SHOULD return true if valid, false otherwise
+- MAY be used for editor validation
 
 ### 6.4 ModifierProcessor
 
@@ -775,10 +775,10 @@ function buildParameterContext(eigenschaft, parameters) {
 
 **Formula Context**:
 
--   `@actor.system.eigenschaften.GE`: Actor attribute
--   `@weapon.system.at`: Weapon base stat
--   `$1`, `$2`, ...: Parameter positional access
--   Slot names: Parameter named access
+- `@actor.system.eigenschaften.GE`: Actor attribute
+- `@weapon.system.at`: Weapon base stat
+- `$1`, `$2`, ...: Parameter positional access
+- Slot names: Parameter named access
 
 ### 6.5 WieldingProcessor
 
@@ -905,9 +905,9 @@ slots.findIndex((s) => s.name === 'kkThreshold') // Works
 
 **Affected Areas**:
 
--   Reading parameterSlots from eigenschaft items
--   Iterating over actorModifiers
--   Any array property from Foundry documents
+- Reading parameterSlots from eigenschaft items
+- Iterating over actorModifiers
+- Any array property from Foundry documents
 
 ---
 
@@ -1132,9 +1132,9 @@ class IlarisActor extends Actor {
 
 **Display Format**:
 
--   No parameters: "Zweihändig"
--   Single parameter: "Schwer(4)"
--   Multiple parameters: "Umklammern(-2, 12)"
+- No parameters: "Zweihändig"
+- Single parameter: "Schwer(4)"
+- Multiple parameters: "Umklammern(-2, 12)"
 
 **Sheet Class - getData()**:
 
@@ -1506,9 +1506,9 @@ function migrateWeaponEigenschaften(weapon) {
 
 Migrations SHOULD run on:
 
--   System version upgrade hook
--   Actor first load (cached check)
--   Manual migration utility
+- System version upgrade hook
+- Actor first load (cached check)
+- Manual migration utility
 
 ```javascript
 Hooks.on('ready', async () => {
@@ -1566,11 +1566,11 @@ const CONSOLIDATION_MAP = {
 
 After migration, verify:
 
--   [ ] All weapons have object array eigenschaften
--   [ ] All eigenschaft keys exist in world or compendiums
--   [ ] Parameters match expected types (number vs string)
--   [ ] Weapon stat calculations unchanged
--   [ ] No console errors during actor preparation
+- [ ] All weapons have object array eigenschaften
+- [ ] All eigenschaft keys exist in world or compendiums
+- [ ] Parameters match expected types (number vs string)
+- [ ] Weapon stat calculations unchanged
+- [ ] No console errors during actor preparation
 
 ---
 
@@ -1596,9 +1596,9 @@ slots.findIndex((s) => s.name === 'kkThreshold') // Works
 
 **Affected Areas**:
 
--   Reading parameterSlots from eigenschaft items
--   Iterating actorModifiers
--   Any array property from Foundry documents
+- Reading parameterSlots from eigenschaft items
+- Iterating actorModifiers
+- Any array property from Foundry documents
 
 #### 10.1.2 Import Path Correction
 
@@ -1642,32 +1642,32 @@ render: (html) => {
 
 #### Unit Tests
 
--   Parser: All format combinations
--   Processors: Each kategorie with various inputs
--   Cache: Load, get, invalidation
--   Migration: All legacy formats
+- Parser: All format combinations
+- Processors: Each kategorie with various inputs
+- Cache: Load, get, invalidation
+- Migration: All legacy formats
 
 #### Integration Tests
 
--   Weapon preparation with eigenschaften
--   Actor stat calculation with weapon eigenschaften
--   UI: Add/remove eigenschaften, parameter input
+- Weapon preparation with eigenschaften
+- Actor stat calculation with weapon eigenschaften
+- UI: Add/remove eigenschaften, parameter input
 
 #### Manual Tests
 
--   Create weapon with parametrized eigenschaft
--   Verify KK threshold calculation (Schwer 4 vs 8)
--   XML import with properties
--   Migration from old save file
+- Create weapon with parametrized eigenschaft
+- Verify KK threshold calculation (Schwer 4 vs 8)
+- XML import with properties
+- Migration from old save file
 
 ### 10.4 Error Handling
 
 Implementations SHOULD:
 
--   Log warnings for missing eigenschaften
--   Log warnings for invalid parameters
--   Continue processing on eigenschaft errors
--   Never throw exceptions in processors
+- Log warnings for missing eigenschaften
+- Log warnings for invalid parameters
+- Continue processing on eigenschaft errors
+- Never throw exceptions in processors
 
 Example:
 
@@ -1706,60 +1706,60 @@ try {
 
 Implementations MUST:
 
--   [ ] Support all three data formats (parsing + migration)
--   [ ] Implement global cache singleton
--   [ ] Preload cache on 'ready' hook
--   [ ] Provide all five processor kategorien
--   [ ] Use `Object.values()` before array operations on Foundry properties
--   [ ] Validate kategorie before processing
--   [ ] Handle missing eigenschaften gracefully
--   [ ] NOT mutate eigenschaft items in processors
--   [ ] Initialize computed object with all required fields
--   [ ] Support parameter override in WieldingProcessor
--   [ ] Provide migration mapping for known legacy keys
--   [ ] NOT persist computed objects to database
+- [ ] Support all three data formats (parsing + migration)
+- [ ] Implement global cache singleton
+- [ ] Preload cache on 'ready' hook
+- [ ] Provide all five processor kategorien
+- [ ] Use `Object.values()` before array operations on Foundry properties
+- [ ] Validate kategorie before processing
+- [ ] Handle missing eigenschaften gracefully
+- [ ] NOT mutate eigenschaft items in processors
+- [ ] Initialize computed object with all required fields
+- [ ] Support parameter override in WieldingProcessor
+- [ ] Provide migration mapping for known legacy keys
+- [ ] NOT persist computed objects to database
 
 ### 11.2 SHOULD Requirements
 
 Implementations SHOULD:
 
--   [ ] Complete cache preload within 5 seconds
--   [ ] Log warnings for missing/invalid data
--   [ ] Provide UI for parameter input via dialog
--   [ ] Use compact display notation for eigenschaften
--   [ ] Implement cache invalidation hooks
--   [ ] Provide settings for compendium configuration
--   [ ] Include unit tests for parser and processors
--   [ ] Document new processor kategorien
--   [ ] Batch weapon migrations
--   [ ] Verify migration results
+- [ ] Complete cache preload within 5 seconds
+- [ ] Log warnings for missing/invalid data
+- [ ] Provide UI for parameter input via dialog
+- [ ] Use compact display notation for eigenschaften
+- [ ] Implement cache invalidation hooks
+- [ ] Provide settings for compendium configuration
+- [ ] Include unit tests for parser and processors
+- [ ] Document new processor kategorien
+- [ ] Batch weapon migrations
+- [ ] Verify migration results
 
 ### 11.3 MAY Requirements
 
 Implementations MAY:
 
--   [ ] Support formula evaluation in modifiers
--   [ ] Provide validation in eigenschaft editor
--   [ ] Implement conditional modifiers
--   [ ] Add actor modifier collection
--   [ ] Support target effects on hit
--   [ ] Provide migration utility UI
--   [ ] Include eigenschaft templates/presets
+- [ ] Support formula evaluation in modifiers
+- [ ] Provide validation in eigenschaft editor
+- [ ] Implement conditional modifiers
+- [ ] Add actor modifier collection
+- [ ] Support target effects on hit
+- [ ] Provide migration utility UI
+- [ ] Include eigenschaft templates/presets
 
 ### 11.4 Test Checklist
 
--   [ ] Parser handles all format variations
--   [ ] Cache preload completes successfully
--   [ ] Cache invalidates on item update/create/delete
--   [ ] Processors apply effects to computed object
--   [ ] Parameters override processor defaults
--   [ ] Migration preserves semantic meaning
--   [ ] UI dialog loads parameters dynamically
--   [ ] Weapon stats calculate correctly
--   [ ] Actor modifiers apply to equipped weapons only
--   [ ] No console errors during normal operation
--   [ ] Object.values() used consistently
--   [ ] Import paths correct for module structure
+- [ ] Parser handles all format variations
+- [ ] Cache preload completes successfully
+- [ ] Cache invalidates on item update/create/delete
+- [ ] Processors apply effects to computed object
+- [ ] Parameters override processor defaults
+- [ ] Migration preserves semantic meaning
+- [ ] UI dialog loads parameters dynamically
+- [ ] Weapon stats calculate correctly
+- [ ] Actor modifiers apply to equipped weapons only
+- [ ] No console errors during normal operation
+- [ ] Object.values() used consistently
+- [ ] Import paths correct for module structure
 
 ---
 
@@ -1904,9 +1904,9 @@ Implementations MAY:
 
 ## 14. References
 
--   Foundry VTT Documentation: https://foundryvtt.com/api/
--   RFC 2119 Keywords: https://www.ietf.org/rfc/rfc2119.txt
--   Reference Implementation: Ilaris System v12.3.0+
+- Foundry VTT Documentation: https://foundryvtt.com/api/
+- RFC 2119 Keywords: https://www.ietf.org/rfc/rfc2119.txt
+- Reference Implementation: Ilaris System v12.3.0+
 
 ---
 

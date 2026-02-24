@@ -1,5 +1,5 @@
 {{log 'kreatur-sheet' this}}
-<form class="{{cssClass}} kreatur-sheet">
+<section class="{{cssClass}} kreatur-sheet">
     <header class="sheet-header kreatur-header">
         <div style="display: flex; justify-content: space-between;">
             <div class="header-fields">
@@ -53,7 +53,8 @@
                         
                         <label style="{{#if actor.system.gesundheit.wundenignorieren }}text-decoration:line-through;{{/if}}">{{actor.system.gesundheit.display}}</label>
                         <a
-                            class="icon-small toggle-bool {{actor.system.gesundheit.wundenignorieren}}"
+                            data-action="toggleBool"
+                            class="icon-small {{actor.system.gesundheit.wundenignorieren}}"
                             data-togglevariable="system.gesundheit.wundenignorieren"
                             title="tooltip_text"
                         >
@@ -81,39 +82,40 @@
         <div class="eigenschaften statblockreihe">
             <b>Eigenschaften: </b>
                 {{#each actor.eigenschaften as |eigenschaft|}}
-                    <a class="item-edit" data-itemid="{{eigenschaft.id}}">{{eigenschaft.name}}, </a>
+                    <a data-action="itemEdit" data-itemid="{{eigenschaft.id}}">{{eigenschaft.name}}, </a>
                 {{/each}}
         </div>
         {{/if}}
         
         <div class="vorteile statblockreihe">
             <b>Vorteile: </b>
+            <a data-action="addVorteilInfo" title="Vorteil hinzufügen"><i class="fas fa-plus"></i></a>
                 {{#each actor.vorteil.allgemein as |vorteil|}}
-                    <a class="item-edit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
+                    <a data-action="itemEdit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
                 {{/each}}
                 {{#each actor.vorteil.profan as |vorteil|}}
-                    <a class="item-edit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
+                    <a data-action="itemEdit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
                 {{/each}}
                 {{#each actor.vorteil.kampf as |vorteil|}}
-                    <a class="item-edit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
+                    <a data-action="itemEdit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
                 {{/each}}
                 {{#each actor.vorteil.kampfstil as |vorteil|}}
-                    <a class="item-edit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
+                    <a data-action="itemEdit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
                 {{/each}}
                 {{#each actor.vorteil.magie as |vorteil|}}
-                    <a class="item-edit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
+                    <a data-action="itemEdit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
                 {{/each}}
                 {{#each actor.vorteil.zaubertraditionen as |vorteil|}}
-                    <a class="item-edit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
+                    <a data-action="itemEdit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
                 {{/each}}
                 {{#each actor.vorteil.karma as |vorteil|}}
-                    <a class="item-edit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
+                    <a data-action="itemEdit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
                 {{/each}}
                 {{#each actor.vorteil.geweihtentradition as |vorteil|}}
-                    <a class="item-edit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
+                    <a data-action="itemEdit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
                 {{/each}}
                 {{#each actor.vorteil.tiergeist as |vorteil|}}
-                    <a class="item-edit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
+                    <a data-action="itemEdit" data-itemid="{{vorteil.id}}">{{vorteil.name}}</a>, 
                 {{/each}}
         </div>
 
@@ -128,7 +130,7 @@
                 >
                         <b >{{key}}</b>
                         <input name="system.attribute.{{key}}.pw" type="text" value="{{attribut.pw}}" data-dtype="Number" style="width: 30px;">
-                        <a class="rollable icon-small" data-rolltype="fertigkeit_diag" data-probetype="attribut" data-attribut="{{key}}">
+                        <a data-action="rollable" class="icon-small" data-rolltype="fertigkeit_diag" data-probetype="attribut" data-attribut="{{key}}">
                             <i class="fas fa-dice-d20"></i>
                         </a>
                 </div>
@@ -156,7 +158,8 @@
                         <input name="system.kampfwerte.{{key}}" type="text" value="{{obj}}" data-dtype="Number" style="width: 30px;">
                         {{#if (ifEq key 'mr')}}
                         <a
-                            class="rollable icon-small"
+                            data-action="rollable"
+                            class="icon-small"
                             data-rolltype="simpleprobe_diag"
                             data-probentyp=""
                             data-name="Magieresistenz"
@@ -178,7 +181,8 @@
             <div class="flexrow">
                 {{#if (waffe_ist_fernkampf angriff) }}
                 <a 
-                    class="rollable icon-small" 
+                    data-action="rollable"
+                    class="icon-small" 
                     data-rolltype="fernkampf_diag" 
                     data-itemid="{{angriff.id}}"
                 >
@@ -186,7 +190,8 @@
                 </a>
                 {{else}}
                 <a 
-                    class="rollable icon-small" 
+                    data-action="rollable"
+                    class="icon-small" 
                     data-rolltype="angriff_diag" 
                     data-itemid="{{angriff.id}}"
                 >
@@ -194,7 +199,7 @@
                 {{/if}}
                 
                         
-                <label><b><a class="item-edit" data-itemid="{{angriff.id}}">{{angriff.name}} </a></b></label>
+                <label><b><a data-action="itemEdit" data-itemid="{{angriff.id}}">{{angriff.name}} </a></b></label>
                 {{#if (waffe_ist_fernkampf angriff) }}
                 <label>
                     LZ: {{angriff.system.lz}}
@@ -202,7 +207,8 @@
                 {{/if}}
                 <label>RW: {{angriff.system.rw}}</label>
                 AT<label
-                    class="rollable onhover"
+                    data-action="rollable"
+                    class="onhover"
                     data-rolltype="at"
                     data-pw="{{angriff.system.at}}"
                     data-item="{{angriff.name}}"
@@ -210,7 +216,8 @@
                     >: {{angriff.system.at}}</label
                 >
                 VT<label
-                    class="rollable onhover"
+                    data-action="rollable"
+                    class="onhover"
                     data-rolltype="vt"
                     data-pw="{{angriff.system.vt}}"
                     data-item="{{angriff.name}}"
@@ -219,7 +226,8 @@
                 >
                 TP<label>
                     <a
-                    class="rollable icon-small"
+                    data-action="rollable"
+                    class="icon-small"
                     data-rolltype="basic"
                     data-formula="{{translate_formula angriff.system.tp}}"
                     data-label="Schaden ({{angriff.name}})"
@@ -242,16 +250,18 @@
                 {{#each actor.uebernatuerlich.fertigkeiten as |freiestalent key|}}
                 <label>
                     <label>
-                        <a class="item-edit" data-itemid="{{freiestalent.id}}">{{freiestalent.name}} </a> (
+                        <a data-action="itemEdit" data-itemid="{{freiestalent.id}}">{{freiestalent.name}} </a> (
                         <label
-                        class="rollable onhover"
+                        data-action="rollable"
+                        class="onhover"
                         data-rolltype="profan_fertigkeit_pw"
                         data-fertigkeit="{{freiestalent.name}}"
                         data-pw="{{freiestalent.system.pw}}"
                         >{{freiestalent.system.pw}}</label
                     > 
                         <a
-                            class="rollable icon-small"
+                            data-action="rollable"
+                            class="icon-small"
                             data-rolltype="fertigkeit_diag"
                             data-probetype="simple"
                             data-fertigkeit="{{freiestalent.name}}"
@@ -269,15 +279,16 @@
                 {{#each actor.uebernatuerlich.zauber as |zauber key|}}
                 <label>
                     <label>
-                        <a class="item-edit" data-itemid="{{zauber.id}}">{{zauber.name}} </a> (
+                        <a data-action="itemEdit" data-itemid="{{zauber.id}}">{{zauber.name}} </a> (
                         <label
-                        class="rollable onhover"
+                        data-action="rollable"
+                        class="onhover"
                         data-rolltype="profan_fertigkeit_pw"
                         data-fertigkeit="{{zauber.name}}"
                         data-pw="{{zauber.system.pw}}"
                         >{{zauber.system.pw}}</label
                     >  
-                    <a class="rollable icon-small" data-rolltype="magie_diag" data-itemid="{{zauber.id}}"><i class="fas fa-dice-d20"></i></a>
+                    <a data-action="rollable" class="icon-small" data-rolltype="magie_diag" data-itemid="{{zauber.id}}"><i class="fas fa-dice-d20"></i></a>
                         ), 
                     </label> 
                 </label>
@@ -285,15 +296,16 @@
                 {{#each actor.uebernatuerlich.liturgien as |liturgie key|}}
                 <label>
                     <label>
-                        <a class="item-edit" data-itemid="{{liturgie.id}}">{{liturgie.name}} </a> (
+                        <a data-action="itemEdit" data-itemid="{{liturgie.id}}">{{liturgie.name}} </a> (
                         <label
-                        class="rollable onhover"
+                        data-action="rollable"
+                        class="onhover"
                         data-rolltype="profan_fertigkeit_pw"
                         data-fertigkeit="{{liturgie.name}}"
                         data-pw="{{liturgie.system.pw}}"
                         >{{liturgie.system.pw}}</label
                     >  
-                    <a class="rollable icon-small" data-rolltype="karma_diag" data-itemid="{{liturgie.id}}"><i class="fas fa-dice-d20"></i></a>
+                    <a data-action="rollable" class="icon-small" data-rolltype="karma_diag" data-itemid="{{liturgie.id}}"><i class="fas fa-dice-d20"></i></a>
                         ), 
                     </label> 
                 </label>
@@ -301,15 +313,16 @@
                 {{#each actor.uebernatuerlich.anrufungen as |anrufung key|}}
                 <label>
                     <label>
-                        <a class="item-edit" data-itemid="{{anrufung.id}}">{{anrufung.name}} </a> (
+                        <a data-action="itemEdit" data-itemid="{{anrufung.id}}">{{anrufung.name}} </a> (
                         <label
-                        class="rollable onhover"
+                        data-action="rollable"
+                        class="onhover"
                         data-rolltype="profan_fertigkeit_pw"
                         data-fertigkeit="{{anrufung.name}}"
                         data-pw="{{anrufung.system.pw}}"
                         >{{anrufung.system.pw}}</label
                     >  
-                    <a class="rollable icon-small" data-rolltype="magie_diag" data-itemid="{{anrufung.id}}"><i class="fas fa-dice-d20"></i></a>
+                    <a data-action="rollable" class="icon-small" data-rolltype="magie_diag" data-itemid="{{anrufung.id}}"><i class="fas fa-dice-d20"></i></a>
                         ), 
                     </label> 
                 </label>
@@ -323,16 +336,18 @@
             {{#each actor.freietalente as |freiestalent key|}}
             <label>
                 <label>
-                    <a class="item-edit" data-itemid="{{freiestalent.id}}">{{freiestalent.name}} </a> (
+                    <a data-action="itemEdit" data-itemid="{{freiestalent.id}}">{{freiestalent.name}} </a> (
                     <label
-                    class="rollable onhover"
+                    data-action="rollable"
+                    class="onhover"
                     data-rolltype="profan_fertigkeit_pw"
                     data-fertigkeit="{{freiestalent.name}}"
                     data-pw="{{freiestalent.system.pw}}"
                     >{{freiestalent.system.pw}}</label
                 >  
                     <a
-                        class="rollable icon-small"
+                        data-action="rollable"
+                        class="icon-small"
                         data-rolltype="fertigkeit_diag"
                         data-probetype="simple"
                         data-fertigkeit="{{freiestalent.name}}"
@@ -351,7 +366,7 @@
             {{#each actor.appliedEffects as |effect key|}}
             <label>
                 <label>
-                    <a class="item-edit" data-itemid="{{effect.id}}" data-itemClass="effect">{{effect.name}} </a>
+                    <a data-action="itemEdit" data-itemid="{{effect.id}}" data-itemClass="effect">{{effect.name}} </a>
                 </label> 
             </label>
             {{/each}}
@@ -361,7 +376,7 @@
         <div class="infos statblockreihe">
             {{#each actor.infos as |info|}}
             <div class="hangingindent">
-                <b><a class="item-edit" data-itemid="{{info.id}}">{{info.name}}</a>:</b>
+                <b><a data-action="itemEdit" data-itemid="{{info.id}}">{{info.name}}</a>:</b>
                 {{info.system.text}}
             </div>
             {{/each}}
@@ -373,7 +388,7 @@
             </select> 
             <button 
                 style="max-width: 150px;" 
-                class="item-create" 
+                data-action="itemCreate"
                 data-itemclass="{{actor.system.additemtype}}"
                 type="button"
             >
@@ -381,4 +396,4 @@
             </button>
         </div>
     </div>
-</form>
+</section>

@@ -20,37 +20,72 @@
   --font-andada: 'Andada';
 }
 
-.herosheet {
-  display: grid;
-  grid-template-areas: 'header header' 'sidebar navigation1'
-    'sidebar navigation2' 'sidebar tabs';
-  grid-template-rows: 100px 45px 100px 5fr;
-  grid-template-columns: 1fr 4fr;
-  font-family: var(--font-andada);
-  overflow-y: hidden;
-    background-image: url('../assets/images/background/hintergrund.jpg');
+.ilaris.helden {
+  font-family: var(--font-andada) !important;
+  background-image: url('../assets/images/background/hintergrund.jpg');
 }
 
-.heroheader {
-  grid-area: header;
-  justify-content: space-around;
-  align-items: center;
-  padding-left: 240px;
-  padding-right: -100px;
+.ilaris.kreatur {
+  font-family: var(--font-andada) !important;
+  background-image: url('../assets/images/background/hintergrund.jpg');
+}
+
+.ilaris.actor.helden .window-content .heroheader {
+  padding-left: 36px;
+  padding-right: 36px;
   display: flex;
   flex-direction: row;
   background-image: url(/systems/Ilaris/assets/images/Ilaris/Pergamentrolle.webp);
   background-size: cover;
   background-repeat: round;
+  flex: auto;
+  align-items: center;
+  justify-content: space-between;
 }
 
-.heroattributes {
+.ilaris.actor.helden {
+  .hw {
+    color: #7f7e75;
+
+    &.true {
+      color: black;
+    }
+  }
+  .nw {
+    color: #7f7e75;
+    &.true {
+      color: black;
+    }
+  }
+}
+
+.ilaris.actor.helden .window-content .heroattributes {
   display: flex;
   flex-wrap: nowrap;
   justify-content: space-around;
-  /* gleichmäßige Verteilung */
   align-items: center;
   padding-top: 5px;
+}
+
+.ilaris.combat-dialog .window-content {
+  overflow: auto;
+}
+
+.ilaris.item .window-content {
+  overflow: auto;
+
+  textarea {
+    width: 100%;
+  }
+}
+
+.ilaris.item .window-content .sheet-header {
+  display: flex;
+  align-items: center;
+
+  img {
+    height: 100px;
+  }
 }
 
 .attribute-grid {
@@ -96,6 +131,14 @@
   cursor: pointer;
 }
 
+.icon-row {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-evenly;
+  gap: 0.5rem;
+}
+
 /* special case for MR */
 .icon-row .attribute-wrapper {
   width: auto;          /* stop forcing 100% width */
@@ -104,44 +147,32 @@
   align-items: center;
 }
 
-.herotabnavigation {
-  grid-area: navigation2;
-  position: relative;
-  padding-right: -15px;
-}
-
-.herotab {
-  grid-area: tabs;
-  margin-left: 1rem;
-  margin-bottom: 20px;
-  margin-right: 1rem;
-  padding-right: -15px;
-  margin-top: -20px;
-  overflow-y: scroll;
-}
-
 .sheet-tabs.tabs {
   display: flex;
-  align-items: first;
+  align-items: center;
   position: relative;
   z-index: 1;
-  justify-content: flex-start; /* Aligns items to the left */
+  justify-content: space-between;
+  gap: 0;
 }
 
-.tab-item {
+.ilaris.actor.helden .window-content nav .tab-item {
   display: flex;
   justify-content: center;
   align-items: center;
-  padding: 10px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  position: relative;
-  background-color: #00000011;
-  /* maybe inset (out for active) shaddows for 3d effect instead of darker color */
+  padding: 2px;
   border-bottom: 2px solid #B87333;
+  background-color: #00000011;
+  color: black;
+  font-weight: 800;
+  height: 100%;
+  flex: auto;
+  i {
+    margin-right: 2px;
+  }
 }
 
-.tab-item.active {
+.ilaris.actor.helden .window-content nav .tab-item.active {
   border-radius: 5px 5px 0 0;
   border: 2px solid #c97628;
   border-bottom: 0px;
@@ -156,6 +187,57 @@
   /* background-color: #e0e0d1; */
 }
 
+/* Tab content visibility - hide inactive tabs */
+/* Only hide tabs within sheet windows, not sidebar tabs like compendiums */
+.window-app .window-content section.tab:not(.sidebar-tab) {
+  display: none;
+}
+
+.window-app .window-content section.tab.active:not(.sidebar-tab) {
+  display: flex;
+  flex-direction: column;
+}
+
+.ilaris.actor.kreatur .window-content {
+  overflow: auto;
+}
+
+.ilaris.actor.helden .window-content {
+  display: grid;
+  grid-template-columns: 250px calc(100% - 250px - 5px);
+  grid-template-rows: 150px 50px calc(100% - 200px - 10px);
+  grid-template-areas:
+      "sidebar header"
+      "sidebar navigation"
+      "sidebar tab";
+  gap: 5px;
+  padding: 0  0.5rem 0.5rem 0.5rem;
+}
+
+[data-application-part="header"]    { 
+  grid-area: header;   
+  display: flex;
+  flex-direction: column;
+}
+[data-application-part="sidebar"] { grid-area: sidebar; }
+[data-application-part="tabs"] { grid-area: navigation; }
+.tab {
+  grid-area: tab;
+  overflow: auto;
+  color: black;
+}
+
+.ilaris.actor.helden .window-content section.sidebar .herosidebar .energy-modifiers {
+  color: #efe6d8;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+.ilaris.actor.helden .window-content nav {
+  border-bottom: 0;
+  border-top: 0;
+}
+
 .ausklappen-trigger:hover {
   text-shadow: 0 0 10px var(--color-shadow-primary);
   /* background-color: #e0e0d1; */
@@ -164,7 +246,6 @@
 .herosidebar {
   grid-area: sidebar;
   position: relative;
-  overflow: hidden;
   z-index: 2;
   color: black;
   font-size: 30px;
@@ -172,18 +253,15 @@
   padding-top: 1rem;
   text-align: center;
   box-shadow: 8px 0 5px rgba(0, 0, 0, 0.3);
-  margin-left: 0.5rem;
-  margin-top: -80px;
-  margin-bottom: 20px;
-  border-top-left-radius: 5px;
   border-bottom-left-radius: 200px;
-  border-top-right-radius: 5px;
   border-bottom-right-radius: 200px;
   display: flex;
   flex-direction: column;
   max-width: 240px;
   min-width: 240px;
   min-height: 600px;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 /* Gebürstete Bronze-Struktur */
@@ -238,14 +316,7 @@
 
 /* XML Character Import Button Styles */
 .import-xml-character {
-    border: 1px solid #000;
-    border-radius: 3px;
-    padding: 4px 8px;
-    width: calc(100% - 10px);
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
+  margin: 4px 0;
 }
 
 /* XML Character Sync Button Styles */
@@ -328,11 +399,12 @@ td.rollable.icon-small {
   border: none;
 }
 
-#lebensleiste {
+.ilaris.actor.helden .window-content .heroattributes #lebensleiste {
   max-width: 800px;
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 0.25rem;
 }
 
 .triStateBtn {
@@ -388,6 +460,10 @@ td.rollable.icon-small {
   flex-grow: 0;
   flex-shrink: 0;
   font-size: 15px;
+
+  &.false {
+    color: #b5b3a4;
+  }
 }
 
 .flex-fest-var {
@@ -447,20 +523,16 @@ td.rollable.icon-small {
   color: #000000;
 }
 
-.editor {
-  height: 100% !important;
-  width: 100%;
-  overflow: auto;
+.chat-message h2 {
+  font-size: 24px;
 }
 
-.editor-content {
-  min-height: 50px;
-  min-height: 500px;
-  min-width: 300px;
-  height: 100% !important;
+.chat-message h3 {
+  font-size: 20px;
+}
+
+.editor {
   width: 100%;
-  overflow: auto;
-  /*     font-weight: bold; */
 }
 
 .schips-button {
@@ -501,7 +573,7 @@ td.rollable.icon-small {
 }
 
 .table {
-  width: 100%;
+  width: calc(100% - 1px);
   border-collapse: collapse;
   /* Tabellenzellen zusammenführen */
 }
@@ -518,6 +590,7 @@ tr:not(:nth-child(4n+1)) {
 .table th {
   color: black; /* Hier deine Wunschfarbe */
   text-shadow: none;
+  padding-left: 0;
 }
 
 input[name="name"] {
@@ -675,6 +748,8 @@ input.titel-input {
   border: none;
   resize: none;
   font-family: var(--font-crimson);
+  width: 100%;
+  margin-top: 8px;
 }
 
 .statblockreihe {
@@ -908,15 +983,7 @@ hr {
 }
 
 .rule-button {
-  border: 1px solid #000;
-  border-radius: 3px;
-  padding: 4px 8px;
-  width: calc(100% - 10px);
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  margin-top: 4px;
+  margin: 4px 0;
 }
 
 /* Tooltip styling for maneuver descriptions */

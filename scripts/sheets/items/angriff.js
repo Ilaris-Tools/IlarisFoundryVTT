@@ -5,14 +5,33 @@ import {
 } from '../../settings/configure-game-settings.model.js'
 
 export class AngriffSheet extends IlarisItemSheet {
-    async getData() {
-        const data = await super.getData()
-        data.angrifftypen = CONFIG.ILARIS.angriff_typ
+    /** @override */
+    static DEFAULT_OPTIONS = {
+        classes: ['ilaris', 'sheet', 'item', 'angriff'],
+        actions: {
+            addEigenschaft: AngriffSheet.#onAddEigenschaft,
+            delEigenschaft: AngriffSheet.#onDelEigenschaft,
+            addManeuver: AngriffSheet.#onAddManeuver,
+            removeManeuver: AngriffSheet.#onRemoveManeuver,
+        },
+    }
+
+    /** @override */
+    static PARTS = {
+        form: {
+            template: 'systems/Ilaris/templates/sheets/items/angriff.hbs',
+        },
+    }
+
+    /** @override */
+    async _prepareContext(options) {
+        const context = await super._prepareContext(options)
+        context.angrifftypen = CONFIG.ILARIS.angriff_typ
 
         // Get available maneuvers from selected packs
-        data.availableManeuvers = await this._getAvailableManeuvers()
+        context.availableManeuvers = await this._getAvailableManeuvers()
 
-        return data
+        return context
     }
 
     async _getAvailableManeuvers() {
@@ -46,22 +65,22 @@ export class AngriffSheet extends IlarisItemSheet {
         return maneuvers
     }
 
-    static get defaultOptions() {
-        return foundry.utils.mergeObject(super.defaultOptions, {
-            template: 'systems/Ilaris/templates/sheets/items/angriff.hbs',
-        })
+    /** @override */
+    _onRender(context, options) {
+        super._onRender(context, options)
+
+        // Handle change event for maneuver selector (not a click action)
+        const maneuverSelector = this.element.querySelector('.maneuver-selector')
+        if (maneuverSelector) {
+            maneuverSelector.addEventListener('change', (ev) => this._onManeuverSelectorChange(ev))
+        }
     }
 
-    activateListeners(html) {
-        super.activateListeners(html)
-        console.log('Angriff listeners')
-        html.find('.add-eigenschaft').click((ev) => this._onAddEigenschaft(ev))
-        html.find('.del-eigenschaft').click((ev) => this._onDelEigenschaft(ev))
-        html.find('.maneuver-selector').change((ev) => this._onAddManeuver(ev))
-        html.find('.remove-maneuver').click((ev) => this._onRemoveManeuver(ev))
-    }
-
-    async _onAddManeuver(event) {
+    /**
+     * Handle maneuver selector change event
+     * @private
+     */
+    async _onManeuverSelectorChange(event) {
         const select = event.currentTarget
         const selectedId = select.value
         const selectedName = select.options[select.selectedIndex].dataset.name
@@ -88,9 +107,23 @@ export class AngriffSheet extends IlarisItemSheet {
         select.value = ''
     }
 
-    async _onRemoveManeuver(event) {
-        event.preventDefault()
-        const maneuverToRemove = event.currentTarget.dataset.maneuver
+    /**
+     * Handle add maneuver action
+     * @param {PointerEvent} event
+     * @param {HTMLElement} target
+     */
+    static async #onAddManeuver(event, target) {
+        // This is now handled by the change event in _onRender
+        // Kept for backwards compatibility if needed
+    }
+
+    /**
+     * Handle remove maneuver action
+     * @param {PointerEvent} event
+     * @param {HTMLElement} target
+     */
+    static async #onRemoveManeuver(event, target) {
+        const maneuverToRemove = target.dataset.maneuver
 
         // Get current maneuvers and filter out the one to remove
         const currentManeuvers = (this.document.system.angriffmanover || []).filter(
@@ -105,46 +138,44 @@ export class AngriffSheet extends IlarisItemSheet {
             'system.angriffmanover': maneuvers,
         }
 
-        if (this.document.isEmbedded) {
-            await this.document.actor.updateEmbeddedDocuments('Item', [
-                {
-                    _id: this.document.id,
-                    ...updateData,
-                },
-            ])
-        } else {
-            await this.document.update(updateData)
-        }
+        // Use this.document.update() - works for both embedded and standalone!
+        await this.document.update(updateData)
 
         // Re-render the sheet to update the dropdown options
         this.render(false)
     }
 
-    _onAddEigenschaft(event) {
-        //let item = this.document.data;
+    /**
+     * Handle add eigenschaft action
+     * @param {PointerEvent} event
+     * @param {HTMLElement} target
+     */
+    static async #onAddEigenschaft(event, target) {
         this.document.system.eigenschaften = Object.values(this.document.system.eigenschaften)
         this.document.system.eigenschaften.push({ name: 'Neue Eigenschaft', text: '' })
-        console.log(this.document)
-        this.document.render()
+
+        await this.document.update({
+            'system.eigenschaften': this.document.system.eigenschaften,
+        })
+
+        this.render(false)
     }
 
-    async _onDelEigenschaft(event) {
-        let eigid = $(event.currentTarget).data('eigenschaftid')
-        this.document.system.eigenschaften = Object.values(this.document.system.eigenschaften)
-        this.document.system.eigenschaften.splice(eigid, 1)
+    /**
+     * Handle delete eigenschaft action
+     * @param {PointerEvent} event
+     * @param {HTMLElement} target
+     */
+    static async #onDelEigenschaft(event, target) {
+        const eigid = target.dataset.eigenschaftid
+        if (eigid === undefined) return
 
-        // Update the embedded item through the parent actor
-        if (this.document.isEmbedded) {
-            await this.document.actor.updateEmbeddedDocuments('Item', [
-                {
-                    _id: this.document.id,
-                    'system.eigenschaften': this.document.system.eigenschaften,
-                },
-            ])
-        } else {
-            await this.document.update({
-                'system.eigenschaften': this.document.system.eigenschaften,
-            })
-        }
+        this.document.system.eigenschaften = Object.values(this.document.system.eigenschaften)
+        this.document.system.eigenschaften.splice(parseInt(eigid), 1)
+
+        // Use this.document.update() - works for both embedded and standalone!
+        await this.document.update({
+            'system.eigenschaften': this.document.system.eigenschaften,
+        })
     }
 }

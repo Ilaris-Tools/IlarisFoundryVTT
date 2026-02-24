@@ -13,9 +13,9 @@ Installiere die `marked` Library als Development Dependency im Projekt.
 
 **Akzeptanzkriterien:**
 
--   ✅ `marked` ist in `package.json` unter `devDependencies` eingetragen
--   ✅ `package-lock.json` wurde aktualisiert
--   ✅ Die Installation funktioniert mit `npm install`
+- ✅ `marked` ist in `package.json` unter `devDependencies` eingetragen
+- ✅ `package-lock.json` wurde aktualisiert
+- ✅ Die Installation funktioniert mit `npm install`
 
 **Command:**
 
@@ -34,13 +34,13 @@ Füge den Import der `marked` Library am Anfang des Skripts hinzu.
 
 **Akzeptanzkriterien:**
 
--   ✅ Import erfolgt als ES Module: `import { marked } from 'marked';`
--   ✅ Import steht zusammen mit den anderen Imports am Dateianfang
--   ✅ Keine Syntax-Fehler beim Ausführen des Skripts
+- ✅ Import erfolgt als ES Module: `import { marked } from 'marked';`
+- ✅ Import steht zusammen mit den anderen Imports am Dateianfang
+- ✅ Keine Syntax-Fehler beim Ausführen des Skripts
 
 **Zu ändernde Datei:**
 
--   `utils/generate-breaking-changes.js`
+- `utils/generate-breaking-changes.js`
 
 **Implementierungs-Hinweise:**
 
@@ -60,14 +60,14 @@ Vereinfache die `markdownToHtml()`-Funktion, um `marked.parse()` zu nutzen. Dies
 
 **Akzeptanzkriterien:**
 
--   ✅ Funktion `markdownToHtml()` nutzt `marked.parse()` intern
--   ✅ Option `headerIds: false` wird gesetzt (verhindert automatische ID-Generierung für Überschriften)
--   ✅ Input wird vor dem Parsen getrimmt (`.trim()`)
--   ✅ Alle vorhandenen Markdown-Features funktionieren: Listen, Fettdruck, Links, Code-Blöcke
+- ✅ Funktion `markdownToHtml()` nutzt `marked.parse()` intern
+- ✅ Option `headerIds: false` wird gesetzt (verhindert automatische ID-Generierung für Überschriften)
+- ✅ Input wird vor dem Parsen getrimmt (`.trim()`)
+- ✅ Alle vorhandenen Markdown-Features funktionieren: Listen, Fettdruck, Links, Code-Blöcke
 
 **Zu ändernde Datei:**
 
--   `utils/generate-breaking-changes.js` - Funktion `markdownToHtml()`
+- `utils/generate-breaking-changes.js` - Funktion `markdownToHtml()`
 
 **Alte Implementierung:**
 
@@ -106,18 +106,18 @@ Passe die `parseBreakingChanges()`-Funktion an, um verschiedene Schreibweisen vo
 
 **Akzeptanzkriterien:**
 
--   ✅ Regex erkennt folgende Varianten (case-insensitive):
-    -   `#### Breaking Change` (Singular)
-    -   `#### Breaking Changes` (Plural)
-    -   `#### ⚠️ Breaking Changes` (mit Emoji)
-    -   `#### BREAKING CHANGE:` (Großbuchstaben, mit/ohne Doppelpunkt)
-    -   Beliebige Kombinationen der obigen
--   ✅ Regex extrahiert nur den Inhalt nach der Überschrift (bis zur nächsten `####`, `###` oder EOF)
--   ✅ Whitespace wird korrekt bereinigt
+- ✅ Regex erkennt folgende Varianten (case-insensitive):
+    - `#### Breaking Change` (Singular)
+    - `#### Breaking Changes` (Plural)
+    - `#### ⚠️ Breaking Changes` (mit Emoji)
+    - `#### BREAKING CHANGE:` (Großbuchstaben, mit/ohne Doppelpunkt)
+    - Beliebige Kombinationen der obigen
+- ✅ Regex extrahiert nur den Inhalt nach der Überschrift (bis zur nächsten `####`, `###` oder EOF)
+- ✅ Whitespace wird korrekt bereinigt
 
 **Zu ändernde Datei:**
 
--   `utils/generate-breaking-changes.js` - Funktion `parseBreakingChanges()`
+- `utils/generate-breaking-changes.js` - Funktion `parseBreakingChanges()`
 
 **Implementierungs-Hinweise:**
 
@@ -152,16 +152,16 @@ Verifiziere, dass das Skript mit Exit Code 0 beendet wird, wenn keine Breaking C
 
 **Akzeptanzkriterien:**
 
--   ✅ Exit Code 0: Erfolgreiche Ausführung (mit oder ohne Breaking Changes)
--   ✅ Exit Code 1: Nur bei echten Fehlern (Datei nicht gefunden, Parsing-Fehler, etc.)
--   ✅ Console-Output ist aussagekräftig:
-    -   `ℹ️ No breaking changes found for version X.Y` (bei keinen Breaking Changes)
-    -   `✅ Breaking changes template generated successfully!` (bei Erfolg)
-    -   `❌ Error: ...` (bei Fehler)
+- ✅ Exit Code 0: Erfolgreiche Ausführung (mit oder ohne Breaking Changes)
+- ✅ Exit Code 1: Nur bei echten Fehlern (Datei nicht gefunden, Parsing-Fehler, etc.)
+- ✅ Console-Output ist aussagekräftig:
+    - `ℹ️ No breaking changes found for version X.Y` (bei keinen Breaking Changes)
+    - `✅ Breaking changes template generated successfully!` (bei Erfolg)
+    - `❌ Error: ...` (bei Fehler)
 
 **Zu ändernde Datei:**
 
--   `utils/generate-breaking-changes.js` - Funktion `main()`
+- `utils/generate-breaking-changes.js` - Funktion `main()`
 
 **Implementierungs-Hinweise:**
 
@@ -195,14 +195,14 @@ Stelle sicher, dass die `cleanupOldBreakingChanges()`-Funktion alte `.hbs`-Datei
 
 **Akzeptanzkriterien:**
 
--   ✅ Funktion sucht nach Dateien mit Pattern `breaking-changes-*.hbs` (nicht `.md`)
--   ✅ Nur die Datei der aktuellen Version bleibt bestehen
--   ✅ Alle anderen `.hbs`-Dateien werden gelöscht
--   ✅ Console-Output zeigt gelöschte Dateien an
+- ✅ Funktion sucht nach Dateien mit Pattern `breaking-changes-*.hbs` (nicht `.md`)
+- ✅ Nur die Datei der aktuellen Version bleibt bestehen
+- ✅ Alle anderen `.hbs`-Dateien werden gelöscht
+- ✅ Console-Output zeigt gelöschte Dateien an
 
 **Zu ändernde Datei:**
 
--   `utils/generate-breaking-changes.js` - Funktion `cleanupOldBreakingChanges()`
+- `utils/generate-breaking-changes.js` - Funktion `cleanupOldBreakingChanges()`
 
 **Hinweis:** Diese Funktion sollte bereits korrekt funktionieren, muss aber verifiziert werden.
 
@@ -215,14 +215,14 @@ Führe manuelle Tests durch, um sicherzustellen, dass das Skript korrekt funktio
 
 **Akzeptanzkriterien:**
 
--   ✅ Skript läuft fehlerfrei: `node utils/generate-breaking-changes.js`
--   ✅ Generierte `.hbs`-Datei enthält valides HTML (keine Raw-Markdown-Syntax mehr)
--   ✅ Listen werden als `<ul><li>...</li></ul>` gerendert
--   ✅ Fettdruck wird als `<strong>...</strong>` gerendert
--   ✅ Links werden als `<a href="...">...</a>` gerendert
--   ✅ Überschriften haben keine automatischen IDs (wegen `headerIds: false`)
--   ✅ Bei fehlenden Breaking Changes: Exit Code 0, keine Datei generiert
--   ✅ Alte `.hbs`-Dateien werden gelöscht
+- ✅ Skript läuft fehlerfrei: `node utils/generate-breaking-changes.js`
+- ✅ Generierte `.hbs`-Datei enthält valides HTML (keine Raw-Markdown-Syntax mehr)
+- ✅ Listen werden als `<ul><li>...</li></ul>` gerendert
+- ✅ Fettdruck wird als `<strong>...</strong>` gerendert
+- ✅ Links werden als `<a href="...">...</a>` gerendert
+- ✅ Überschriften haben keine automatischen IDs (wegen `headerIds: false`)
+- ✅ Bei fehlenden Breaking Changes: Exit Code 0, keine Datei generiert
+- ✅ Alte `.hbs`-Dateien werden gelöscht
 
 **Test-Schritte:**
 
@@ -241,14 +241,14 @@ Prüfe, ob der bestehende GitHub Action Step für das Skript noch funktioniert, 
 
 **Akzeptanzkriterien:**
 
--   ✅ GitHub Action läuft in `build-packs.yml` fehlerfrei
--   ✅ Step führt `node utils/generate-breaking-changes.js` aus
--   ✅ Workflow setzt sich fort, auch wenn keine Breaking Changes gefunden werden (Exit Code 0)
--   ✅ Workflow bricht mit Fehler ab bei Exit Code 1
+- ✅ GitHub Action läuft in `build-packs.yml` fehlerfrei
+- ✅ Step führt `node utils/generate-breaking-changes.js` aus
+- ✅ Workflow setzt sich fort, auch wenn keine Breaking Changes gefunden werden (Exit Code 0)
+- ✅ Workflow bricht mit Fehler ab bei Exit Code 1
 
 **Zu prüfende Datei:**
 
--   `.github/workflows/build-packs.yml`
+- `.github/workflows/build-packs.yml`
 
 **Erwarteter Step (sollte bereits vorhanden sein):**
 
@@ -268,15 +268,15 @@ Verifiziere, dass die Client-Seite die neuen `.hbs`-Dateien korrekt lädt und re
 
 **Akzeptanzkriterien:**
 
--   ✅ `fetchBreakingChangesTemplate()` lädt `.hbs`-Dateien (nicht `.md`)
--   ✅ `TextEditor.enrichHTML()` wird auf den HTML-Inhalt angewendet
--   ✅ Dialog zeigt korrekt gerenderten HTML-Inhalt an
--   ✅ Listen, Fettdruck, Links werden korrekt dargestellt
--   ✅ Dialog ist read-only (nicht editierbar)
+- ✅ `fetchBreakingChangesTemplate()` lädt `.hbs`-Dateien (nicht `.md`)
+- ✅ `TextEditor.enrichHTML()` wird auf den HTML-Inhalt angewendet
+- ✅ Dialog zeigt korrekt gerenderten HTML-Inhalt an
+- ✅ Listen, Fettdruck, Links werden korrekt dargestellt
+- ✅ Dialog ist read-only (nicht editierbar)
 
 **Zu prüfende Datei:**
 
--   `scripts/hooks/changelog-notification.js`
+- `scripts/hooks/changelog-notification.js`
 
 **Hinweis:** Es sollten keine Code-Änderungen nötig sein, da die Client-Seite bereits `.hbs`-Dateien lädt. Das HTML ist nun einfach besser gerendert (durch `marked`).
 
@@ -289,14 +289,14 @@ Aktualisiere die Dokumentation in `utils/README.md`, um die Verwendung von `mark
 
 **Akzeptanzkriterien:**
 
--   ✅ Erwähne `marked` Library für Markdown-zu-HTML-Konvertierung
--   ✅ Beschreibe die Vorteile: Zuverlässigeres Rendering von Listen, Links, etc.
--   ✅ Aktualisiere Beispiele, falls nötig
--   ✅ Flexible Überschriften werden dokumentiert
+- ✅ Erwähne `marked` Library für Markdown-zu-HTML-Konvertierung
+- ✅ Beschreibe die Vorteile: Zuverlässigeres Rendering von Listen, Links, etc.
+- ✅ Aktualisiere Beispiele, falls nötig
+- ✅ Flexible Überschriften werden dokumentiert
 
 **Zu ändernde Datei:**
 
--   `utils/README.md`
+- `utils/README.md`
 
 **Beispiel-Ergänzung:**
 
@@ -305,18 +305,18 @@ Aktualisiere die Dokumentation in `utils/README.md`, um die Verwendung von `mark
 
 Das Skript nutzt die `marked` Library für zuverlässiges Rendering von Markdown zu HTML:
 
--   Unterstützt Listen, Fettdruck, Links, Code-Blöcke, etc.
--   Option `headerIds: false` verhindert automatische ID-Generierung
--   Robuster als manuelle String-Manipulation
+- Unterstützt Listen, Fettdruck, Links, Code-Blöcke, etc.
+- Option `headerIds: false` verhindert automatische ID-Generierung
+- Robuster als manuelle String-Manipulation
 
 ### Unterstützte Breaking Changes Überschriften
 
 Das Skript erkennt folgende Varianten (case-insensitive):
 
--   `#### Breaking Change` (Singular)
--   `#### Breaking Changes` (Plural)
--   `#### ⚠️ Breaking Changes` (mit Emoji)
--   `#### BREAKING CHANGE:` (Großbuchstaben, mit/ohne Doppelpunkt)
+- `#### Breaking Change` (Singular)
+- `#### Breaking Changes` (Plural)
+- `#### ⚠️ Breaking Changes` (mit Emoji)
+- `#### BREAKING CHANGE:` (Großbuchstaben, mit/ohne Doppelpunkt)
 ```
 
 ---

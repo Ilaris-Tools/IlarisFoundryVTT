@@ -1,1 +1,15 @@
-{{editor enrichedBiography target='system.notes' button=true editable=editable}}
+<section class="tab notes {{tab.cssClass}}" data-group="primary" data-tab="notes">
+    <h2>Notizen</h2>    
+    {{#if editable}}
+    <prose-mirror
+        name="system.notes"
+        button="true"
+        editable="{{editable}}"
+        toggled="false"
+        value="{{system.notes}}">
+        {{{notesHTML}}}
+    </prose-mirror>
+    {{else}}
+    {{{notesHTML}}}
+    {{/if}}
+</section>

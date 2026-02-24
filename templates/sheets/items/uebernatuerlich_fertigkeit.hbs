@@ -1,5 +1,5 @@
 {{log 'uebernatuerliche' this}}
-<form class="{{cssClass}}">
+<section class="{{cssClass}}">
     <div>
         <div>
             <header class="sheet-header">
@@ -24,16 +24,13 @@
             </div>
             <div class="flexrow">
                 <select name="system.attribut_0">
-                    {{#select item.system.attribut_0}} {{>
-                    systems/Ilaris/templates/helper/select_attribut.hbs}} {{/select}}
+                    {{selectOptions config.attribute selected=item.system.attribut_0 valueAttr="value" labelAttr="label"}}
                 </select>
                 <select name="system.attribut_1">
-                    {{#select item.system.attribut_1}} {{>
-                    systems/Ilaris/templates/helper/select_attribut.hbs}} {{/select}}
+                    {{selectOptions config.attribute selected=item.system.attribut_1 valueAttr="value" labelAttr="label"}}
                 </select>
                 <select name="system.attribut_2">
-                    {{#select item.system.attribut_2}} {{>
-                    systems/Ilaris/templates/helper/select_attribut.hbs}} {{/select}}
+                    {{selectOptions config.attribute selected=item.system.attribut_2 valueAttr="value" labelAttr="label"}}
                 </select>
                 {{#if hasOwner}}
                 <input
@@ -48,4 +45,4 @@
             <textarea rows="6" name="system.text">{{item.system.text}}</textarea>
         </div>
     </div>
-</form>
+</section>

@@ -1,6 +1,6 @@
 <!-- 2022-01-30 Streuner² -->
 {{log 'talent' this}}
-<form class="{{cssClass}} flexcol" autocomplete="off">
+<section class="{{cssClass}} flexcol" autocomplete="off">
     <header class="sheet-header">
         <img src="{{item.img}}" data-edit="img" title="{{item.name}}" height="64" width="64" />
         <h1>
@@ -17,9 +17,7 @@
         <label><b>Fertigkeit:</b></label>
         {{#if hasOwner}}
         <select name="system.fertigkeit">
-            {{#select item.system.fertigkeit}} {{#each fertigkeit_list as |fert|}}
-            <option value="{{fert}}">{{fert}}</option>
-            {{/each}} {{/select}}
+            {{selectOptions fertigkeit_list selected=item.system.fertigkeit}}
         </select>
         {{else}}
         <input
@@ -34,4 +32,4 @@
         <label><b>Beschreibung</b></label>
         <textarea rows="6" name="system.description">{{item.system.text}}</textarea>
     </div>
-</form>
+</section>
