@@ -227,6 +227,12 @@ export class WaffeItem extends CombatItem {
             system.manoever.vlof.offensiver_kampfstil = actor.vorteil.kampf.some(
                 (x) => x.name == 'Offensiver Kampfstil',
             )
+            let lcht_angepasst = hardcoded.getAngepasst('Dunkelheit', actor)
+            system.manoever.lcht = system.manoever.lcht || {
+                angepasst: '0',
+                selected: '0',
+            }
+            system.manoever.lcht.angepasst = lcht_angepasst
         }
         if (this.type == 'fernkampfwaffe') {
             system.manoever =
@@ -261,6 +267,10 @@ export class WaffeItem extends CombatItem {
             // console.log(`licht angepasst: ${lcht_angepasst}`);
             system.manoever.lcht.angepasst = lcht_angepasst
         }
+
+        system.manoever.kbak = { selected: false }
+        system.manoever.mod = { selected: false }
+        system.manoever.rllm = { selected: game.settings.get('core', 'rollMode') }
 
         if (system.computed.schadenBonus !== 0) {
             system.schaden += ` ${system.computed.schadenBonus < 0 ? '-' : '+'} ${Math.abs(

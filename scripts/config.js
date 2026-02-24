@@ -427,6 +427,7 @@ let manoever_nahkampf = {
         selected: false,
     },
     lcht: {
+        angepasst: '0',
         selected: '0',
     },
 }
