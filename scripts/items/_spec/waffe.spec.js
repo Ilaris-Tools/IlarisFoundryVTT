@@ -114,6 +114,7 @@ describe('WaffeItem', () => {
             items: [],
             vorteil: {
                 kampf: [],
+                allgemein: [],
             },
         }
 
