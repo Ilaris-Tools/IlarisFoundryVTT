@@ -2,6 +2,10 @@
 
 ## v12
 
+### v12.3.2
+
+-   Ini im Kampf wird nun richtig angezeigt
+
 ### v12.3.1
 
 -   Kampfstile wurden nicht mehr mit eingerechnet

@@ -57,6 +57,7 @@ export class HeldActor extends IlarisActor {
         await this._calculateKampf(this)
         this._calculateUebernatuerlichProbendiag(this)
         // damit kommen Helden immer vor NPCs in der Init-Reihenfolge mit gleichen Ini-Werten
+        this.system.initiative = this.system.abgeleitete.ini || 0
         this.system.initiative += 0.5
     }
 }
