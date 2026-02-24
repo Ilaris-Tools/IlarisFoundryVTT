@@ -358,12 +358,12 @@ export class IlarisActorSheet extends ActorSheet {
         }
         let formula = `${dice} + ${pw} + ${globalermod}`
         if (rolltype == 'at') {
-            formula += ` ${systemData.modifikatoren.nahkampfmod > 0 ? '+' : ''}${
+            formula += ` ${systemData.modifikatoren.nahkampfmod >= 0 ? '+' : ''}${
                 systemData.modifikatoren.nahkampfmod
             }`
         }
         if (rolltype == 'vt') {
-            formula += ` ${systemData.modifikatoren.verteidigungmod > 0 ? '+' : ''}${
+            formula += ` ${systemData.modifikatoren.verteidigungmod >= 0 ? '+' : ''}${
                 systemData.modifikatoren.verteidigungmod
             }`
         }
