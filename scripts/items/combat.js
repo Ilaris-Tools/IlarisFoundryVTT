@@ -110,8 +110,8 @@ export class CombatItem extends IlarisItem {
                         this.type === 'zauber'
                             ? MANOEVER_GRUPPE.ZAUBER
                             : this.type === 'liturgie'
-                              ? MANOEVER_GRUPPE.LITURGIE
-                              : MANOEVER_GRUPPE.ANRUFUNG,
+                            ? MANOEVER_GRUPPE.LITURGIE
+                            : MANOEVER_GRUPPE.ANRUFUNG,
                     probe: erschwernis,
                     text: contentWithoutErschwernis || name.trim(),
                     modifications: {},
@@ -239,11 +239,17 @@ export class CombatItem extends IlarisItem {
         // TODO: this needs to be changed sooner than later, system is not the right place for this
         console.log('Setting maneuvers for item:', this.name)
         if (this.type === 'angriff') {
-            this.system.manoever = {
+            const defaults = {
                 kbak: { selected: false },
                 mod: { selected: false },
                 rllm: { selected: game.settings.get('core', 'rollMode') },
             }
+            const existing = foundry.utils.deepClone(this.system.manoever || {})
+            this.system.manoever = foundry.utils.mergeObject(
+                foundry.utils.deepClone(defaults),
+                existing,
+                { inplace: false, overwrite: true },
+            )
         }
 
         // Get selected maneuver packs from settings
@@ -268,7 +274,13 @@ export class CombatItem extends IlarisItem {
             'nahkampfwaffe' === this.type ||
             ('angriff' === this.type && this.system.typ === 'Nah')
         ) {
-            this.system.manoever = ILARIS.manoever_nahkampf
+            // Merge defaults into existing, so opening the dialog doesn't reset stored values
+            // (e.g. lcht.angepasst from "Angepasst (Dunkelheit)")
+            this.system.manoever = foundry.utils.mergeObject(
+                foundry.utils.deepClone(ILARIS.manoever_nahkampf),
+                foundry.utils.deepClone(this.system.manoever || {}),
+                { inplace: false, overwrite: true },
+            )
 
             // Apply scene environment settings if available
             this._applySceneEnvironment()
@@ -300,7 +312,13 @@ export class CombatItem extends IlarisItem {
             ('angriff' === this.type && this.system.typ === 'Fern')
         ) {
             // Add specific properties for fernkampfwaffe or angriff with Fern type
-            this.system.manoever = ILARIS.manoever_fernkampf
+            // Merge defaults into existing, so opening the dialog doesn't reset stored values
+            // (e.g. lcht.angepasst from "Angepasst (Dunkelheit)")
+            this.system.manoever = foundry.utils.mergeObject(
+                foundry.utils.deepClone(ILARIS.manoever_fernkampf),
+                foundry.utils.deepClone(this.system.manoever || {}),
+                { inplace: false, overwrite: true },
+            )
 
             // Apply scene environment settings if available
             this._applySceneEnvironment()
@@ -317,7 +335,11 @@ export class CombatItem extends IlarisItem {
             })
         }
         if ('zauber' === this.type) {
-            this.system.manoever = ILARIS.manoever_ueber
+            this.system.manoever = foundry.utils.mergeObject(
+                foundry.utils.deepClone(ILARIS.manoever_ueber),
+                foundry.utils.deepClone(this.system.manoever || {}),
+                { inplace: false, overwrite: true },
+            )
             this.manoever = []
             packItems.forEach((item) => {
                 if (
@@ -334,7 +356,11 @@ export class CombatItem extends IlarisItem {
             this.manoever.push(...dynamicManeuvers)
         }
         if ('liturgie' === this.type) {
-            this.system.manoever = ILARIS.manoever_ueber
+            this.system.manoever = foundry.utils.mergeObject(
+                foundry.utils.deepClone(ILARIS.manoever_ueber),
+                foundry.utils.deepClone(this.system.manoever || {}),
+                { inplace: false, overwrite: true },
+            )
             this.manoever = []
             packItems.forEach((item) => {
                 if (
@@ -351,7 +377,11 @@ export class CombatItem extends IlarisItem {
             this.manoever.push(...dynamicManeuvers)
         }
         if ('anrufung' === this.type) {
-            this.system.manoever = ILARIS.manoever_ueber
+            this.system.manoever = foundry.utils.mergeObject(
+                foundry.utils.deepClone(ILARIS.manoever_ueber),
+                foundry.utils.deepClone(this.system.manoever || {}),
+                { inplace: false, overwrite: true },
+            )
             this.manoever = []
             // TODO Bug 347 https://github.com/Ilaris-Tools/IlarisFoundryVTT/issues/347
             // packItems.forEach((item) => {

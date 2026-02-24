@@ -713,7 +713,7 @@ export class AngriffDialog extends CombatDialog {
         // Light conditions for melee (simpler penalties than ranged combat)
         let licht = Number(manoever.lcht.selected)
         if (manoever.lcht.angepasst) {
-            licht = Math.min(licht - Number(manoever.lcht.angepasst), 0) // Angepasst kann nur die Lichtstufe verbessern, niemals verschlechtern
+            licht = Math.max(licht - Number(manoever.lcht.angepasst), 0) // Angepasst kann nur die Lichtstufe verbessern, niemals verschlechtern
         }
         if (licht == 1) {
             // Dämmerung
