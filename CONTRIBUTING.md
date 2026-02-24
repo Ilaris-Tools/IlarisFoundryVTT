@@ -139,16 +139,6 @@ Sie müssen um live verwendet werden zu können erst wieder gepackt werden. [Meh
 
 TODO: Dateistruktur und wichtige Dateien erklären
 
-## Import Datenbank.xml aus Sephrasto
-
-- ~~Aktuelle `datenbank.xml` nach `./local_db/org/datenbank.xml` kopieren.~~
-- ~~Änderungen oder neue Einträge in der jeweiligen `./local_db/json_user/` eintragen~~  
-   ~~Wichtig: Beachte die korrekte Struktur! (siehe template.json)~~
-- ~~`node create_database.js & node import_database`~~  
-   ~~Es wird (zur Kontrolle) eine json in `./local_db/db/` erstellt, sowie ein fertiges Kompendium in `./packs`~~.
-- ~~Damit ist hoffentlich alles fertig und bereit.~~
-- Alles Quark: Import V3 direkt als Plugin für Sephrasto schreiben
-
 ### Anmerkungen:
 
 - Dateipfade sind fest. Die in einer configdatei abzulegen wäre wohl deutlich klüger (falls man die Dateien umbenennt, etc.)

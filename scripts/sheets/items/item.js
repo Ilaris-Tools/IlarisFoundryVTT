@@ -48,8 +48,6 @@ export class IlarisItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
             label: platz,
         }))
 
-        console.log(context.speicherplatz_list)
-
         context.hasOwner = hasActor && isOwner && notInPack
 
         // Make CONFIG.ILARIS available in all templates as 'config' for consistency with actor sheets
