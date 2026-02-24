@@ -610,22 +610,6 @@ export class AngriffDialog extends CombatDialog {
         let damageType = 'NORMAL'
         let trueDamage = false
 
-        // Light conditions for melee (simpler penalties than ranged combat)
-        let licht = Number(manoever.lcht.selected)
-        if (licht == 1) {
-            // Dämmerung
-            mod_at -= 2
-            text_at = text_at.concat('Dämmerung: -2\n')
-        } else if (licht == 2) {
-            // Mondlicht
-            mod_at -= 4
-            text_at = text_at.concat('Mondlicht: -4\n')
-        } else if (licht == 3) {
-            // Sternenlicht
-            mod_at -= 8
-            text_at = text_at.concat('Sternenlicht: -8\n')
-        }
-
         // Collect all modifications from all maneuvers
         const allModifications = []
         this.item.manoever.forEach((dynamicManoever) => {
@@ -724,6 +708,25 @@ export class AngriffDialog extends CombatDialog {
                 mod_vt += vt_ausgleich
                 text_vt = text_vt.concat(`Manöverausgleich: +${vt_ausgleich}\n`)
             }
+        }
+
+        // Light conditions for melee (simpler penalties than ranged combat)
+        let licht = Number(manoever.lcht.selected)
+        if (manoever.lcht.angepasst) {
+            licht = Math.min(licht - Number(manoever.lcht.angepasst), 0) // Angepasst kann nur die Lichtstufe verbessern, niemals verschlechtern
+        }
+        if (licht == 1) {
+            // Dämmerung
+            mod_at -= 2
+            text_at = text_at.concat('Dämmerung: -2\n')
+        } else if (licht == 2) {
+            // Mondlicht
+            mod_at -= 4
+            text_at = text_at.concat('Mondlicht: -4\n')
+        } else if (licht == 3) {
+            // Sternenlicht
+            mod_at -= 8
+            text_at = text_at.concat('Sternenlicht: -8\n')
         }
 
         // Handle standard maneuvers first

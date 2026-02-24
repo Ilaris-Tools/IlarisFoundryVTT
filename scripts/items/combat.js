@@ -110,8 +110,8 @@ export class CombatItem extends IlarisItem {
                         this.type === 'zauber'
                             ? MANOEVER_GRUPPE.ZAUBER
                             : this.type === 'liturgie'
-                            ? MANOEVER_GRUPPE.LITURGIE
-                            : MANOEVER_GRUPPE.ANRUFUNG,
+                              ? MANOEVER_GRUPPE.LITURGIE
+                              : MANOEVER_GRUPPE.ANRUFUNG,
                     probe: erschwernis,
                     text: contentWithoutErschwernis || name.trim(),
                     modifications: {},
@@ -238,10 +238,19 @@ export class CombatItem extends IlarisItem {
     async setManoevers() {
         // TODO: this needs to be changed sooner than later, system is not the right place for this
         console.log('Setting maneuvers for item:', this.name)
-        this.system.manoever = {
-            kbak: { selected: false },
-            mod: { selected: false },
-            rllm: { selected: game.settings.get('core', 'rollMode') },
+        if (this.system.manoever) {
+            this.system.manoever = {
+                ...this.system.manoever,
+                kbak: { selected: false },
+                mod: { selected: false },
+                rllm: { selected: game.settings.get('core', 'rollMode') },
+            }
+        } else {
+            this.system.manoever = {
+                kbak: { selected: false },
+                mod: { selected: false },
+                rllm: { selected: game.settings.get('core', 'rollMode') },
+            }
         }
 
         // Get selected maneuver packs from settings
