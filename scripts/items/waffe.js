@@ -228,7 +228,10 @@ export class WaffeItem extends CombatItem {
                 (x) => x.name == 'Offensiver Kampfstil',
             )
             let lcht_angepasst = hardcoded.getAngepasst('Dunkelheit', actor)
-            // console.log(`licht angepasst: ${lcht_angepasst}`);
+            system.manoever.lcht = system.manoever.lcht || {
+                angepasst: '0',
+                selected: '0',
+            }
             system.manoever.lcht.angepasst = lcht_angepasst
         }
         if (this.type == 'fernkampfwaffe') {
