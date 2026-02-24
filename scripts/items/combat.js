@@ -238,11 +238,7 @@ export class CombatItem extends IlarisItem {
     async setManoevers() {
         // TODO: this needs to be changed sooner than later, system is not the right place for this
         console.log('Setting maneuvers for item:', this.name)
-        if (this.system.manoever) {
-            this.system.manoever.kbak = { selected: false }
-            this.system.manoever.mod = { selected: false }
-            this.system.manoever.rllm = { selected: game.settings.get('core', 'rollMode') }
-        } else {
+        if (this.type === 'angriff') {
             this.system.manoever = {
                 kbak: { selected: false },
                 mod: { selected: false },

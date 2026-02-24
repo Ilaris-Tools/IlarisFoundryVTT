@@ -268,6 +268,10 @@ export class WaffeItem extends CombatItem {
             system.manoever.lcht.angepasst = lcht_angepasst
         }
 
+        system.manoever.kbak = { selected: false }
+        system.manoever.mod = { selected: false }
+        system.manoever.rllm = { selected: game.settings.get('core', 'rollMode') }
+
         if (system.computed.schadenBonus !== 0) {
             system.schaden += ` ${system.computed.schadenBonus < 0 ? '-' : '+'} ${Math.abs(
                 system.computed.schadenBonus,
