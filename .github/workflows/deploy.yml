@@ -195,7 +195,7 @@ jobs:
                       if [ -f "deploy.sh" ]; then
                         echo "📋 Using deploy.sh script"
                         chmod +x deploy.sh
-                        FOUNDRY_DATA_PATH="/data/foundryvtt" ./deploy.sh
+                        FOUNDRY_SERVICE="foundryvtt" FOUNDRY_DATA_PATH="/data/foundryvtt" ./deploy.sh
                       else
                         echo "📋 Deploy script not found, running manual deployment..."
                         
