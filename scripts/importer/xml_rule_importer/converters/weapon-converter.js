@@ -1,6 +1,6 @@
 import { BaseConverter } from './base-converter.js'
 import { DEFAULT_WEAPON_VALUES } from '../constants.js'
-import { parseEigenschaftenArray } from '../../../items/utils/eigenschaft-parser.js'
+import { parseEigenschaftenArray } from '../../../waffe/properties/utils/eigenschaft-parser.js'
 
 /**
  * Converter for Waffe and Waffeneigenschaft

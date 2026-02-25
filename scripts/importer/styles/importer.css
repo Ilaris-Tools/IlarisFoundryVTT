@@ -1,0 +1,28 @@
+/* ----------------------------------------- */
+/*  Importer Feature Styles                   */
+/* ----------------------------------------- */
+
+/* XML Character Import Button Styles */
+.import-xml-character {
+  margin: 4px 0;
+}
+
+/* XML Character Sync Button Styles */
+.directory-item-controls {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 16px;
+}
+
+.sync-xml-character {
+    font-size: 20px;
+    width: 60px;
+    display: flex;
+    justify-content: center;
+    height: 48px;
+    align-items: center;
+}
+
+.rule-button {
+  margin: 4px 0;
+}

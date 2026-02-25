@@ -1,0 +1,55 @@
+/* ----------------------------------------- */
+/*  Combat Feature Styles                     */
+/* ----------------------------------------- */
+
+.ilaris.combat-dialog .window-content {
+  overflow: auto;
+}
+
+/* Clickable Summary Sections */
+.clickable-summary {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.clickable-summary:hover {
+  transform: translateY(-1px);
+}
+
+.clickable-summary h4 {
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.clickable-summary.angreifen:hover {
+  border-color: #8b0000;
+  box-shadow: 0 0 8px rgba(139, 0, 0, 0.3);
+}
+
+.clickable-summary.angreifen:hover h4 {
+  color: #8b0000 !important;
+  text-shadow: 0 0 3px rgba(139, 0, 0, 0.5);
+}
+
+.clickable-summary.verteidigen:hover {
+  border-color: #006400;
+  box-shadow: 0 0 8px rgba(0, 100, 0, 0.3);
+}
+
+.clickable-summary.verteidigen:hover h4 {
+  color: #006400 !important;
+  text-shadow: 0 0 3px rgba(0, 100, 0, 0.5);
+}
+
+.clickable-summary.schaden:hover {
+  border-color: #cc4400;
+  box-shadow: 0 0 8px rgba(204, 68, 0, 0.3);
+}
+
+.clickable-summary.schaden:hover h4 {
+  color: #cc4400 !important;
+  text-shadow: 0 0 3px rgba(204, 68, 0, 0.5);
+}

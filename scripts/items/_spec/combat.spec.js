@@ -10,7 +10,7 @@ global.CONFIG = {
 }
 
 // Mock the parent classes
-jest.mock('../item.js', () => ({
+jest.mock('../data/item.js', () => ({
     IlarisItem: class MockIlarisItem {
         constructor(data = {}) {
             this.name = data.name || 'Test Item'
@@ -27,7 +27,7 @@ jest.mock('../../settings/configure-game-settings.model.js', () => ({
 }))
 
 // Mock the config import
-jest.mock('../../config.js', () => ({
+jest.mock('../../core/config.js', () => ({
     ILARIS: {},
     MANOEVER_GRUPPE: {
         NAHKAMPF: 0,
@@ -40,7 +40,7 @@ jest.mock('../../config.js', () => ({
 }))
 
 // Import the actual class we want to test
-const { CombatItem } = require('../combat.js')
+const { CombatItem } = require('../data/combat-item.js')
 
 describe('CombatItem', () => {
     let combatItem

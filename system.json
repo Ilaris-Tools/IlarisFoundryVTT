@@ -34,12 +34,22 @@
     }
   ],
   "scripts": [],
-  "esmodules": ["scripts/hooks.js"],
+  "esmodules": ["scripts/core/hooks.js"],
   "styles": [
-    "css/temp.css",
-    "styles/sheets/manoever.css",
-    "styles/dialogs/changelog-notification.css",
-    "styles/chat/defense-prompt.css"
+    "scripts/core/styles/core.css",
+    "scripts/actors/styles/actors.css",
+    "scripts/actors/styles/sidebar.css",
+    "scripts/items/styles/items.css",
+    "scripts/items/styles/manoever.css",
+    "scripts/waffe/styles/waffe.css",
+    "scripts/combat/styles/combat.css",
+    "scripts/combat/styles/defense-prompt.css",
+    "scripts/effects/styles/effects.css",
+    "scripts/tokens/styles/tokens.css",
+    "scripts/importer/styles/importer.css",
+    "scripts/settings/styles/settings.css",
+    "scripts/dice/styles/dice.css",
+    "scripts/changelog/styles/changelog-notification.css"
   ],
   "packFolders": [
     {

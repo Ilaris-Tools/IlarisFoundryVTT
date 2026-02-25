@@ -8,7 +8,7 @@ export class WaffenPacksSettings extends FormApplication {
         return foundry.utils.mergeObject(super.defaultOptions, {
             id: 'waffen-packs-settings',
             title: 'Waffen Kompendien Einstellungen',
-            template: 'systems/Ilaris/templates/settings/waffen-packs.hbs',
+            template: 'systems/Ilaris/scripts/settings/templates/waffen-packs.hbs',
             width: 500,
             height: 'auto',
             closeOnSubmit: true,
