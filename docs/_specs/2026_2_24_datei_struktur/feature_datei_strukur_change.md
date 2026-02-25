@@ -48,11 +48,11 @@ todos:
       content: Update all import paths across the entire codebase to reflect new file locations
       status: pending
     - id: update-template-paths
-      content: Update all Handlebars template path strings in JS files and system.json esmodules path
+      content: 'Update all Handlebars template path strings in JS files and system.json esmodules path. Use Regex-based search/replace script to find patterns like "templates/sheets/..." and replace with "scripts/*/templates/..." paths. Automate where possible; manual review required for dynamic template paths.'
       status: pending
     - id: delete-local-db
-      content: Delete the local_db/ directory
-      status: pending
+      content: 'local_db/ directory not found in current workspace. If it exists, delete it. Otherwise, skip.'
+      status: completed
     - id: cleanup
       content: Remove empty templates/, styles/, css/ top-level directories, delete old scripts/hooks.js and scripts/hooks/ directory, verify no broken references remain
       status: pending
@@ -113,18 +113,18 @@ Extracted from `Hooks.once('init', ...)` -- only system-wide concerns:
 
 ### Per-feature hooks (what moves where)
 
-- `**actors/hooks.js**`: `Actors.unregisterSheet` + `registerSheet` calls (`init`)
+- `**actors/hooks.js**`: `Actors.unregisterSheet` + `registerSheet` calls (`init`), export `export function actorsReady() {}` for sequential calling
 - `**items/hooks.js**`: `Items.unregisterSheet` + non-weapon item `registerSheet` calls (`init`)
-- `**waffe/hooks.js**`: Weapon-specific `Items.unregisterSheet` + `registerSheet` calls for nahkampfwaffe, fernkampfwaffe, waffeneigenschaft (`init`). Note: eigenschaft preloading is called from `core/init.js` ready hook to maintain ordering dependencies.
-- `**combat/hooks.js**`: `CONFIG.statusEffects` (`init`), defense prompt in `renderChatMessage`, `renderTokenHUD` tinting, `registerDefenseButtonHook` + `setupIlarisSocket` (`ready`)
+- `**waffe/hooks.js**`: Weapon-specific `Items.unregisterSheet` + `registerSheet` calls for nahkampfwaffe, fernkampfwaffe, waffeneigenschaft (`init`)
+- `**combat/hooks.js**`: `CONFIG.statusEffects` (`init`), defense prompt in `renderChatMessage`, `renderTokenHUD` tinting. Export `export function combatReady() { registerDefenseButtonHook(); setupIlarisSocket(); }` for sequential calling from `core/init.js`
 - `**dice/hooks.js**`: Dice formula formatting in `renderChatMessage`
-- `**tokens/hooks.js**`: Hex token `drawToken`/`refreshToken`/`updateSetting` hooks + `applyHexTokenSetting` (`ready`)
-- `**importer/hooks.js**`: `getSceneControlButtons` (deduplicated), `renderActorDirectory`, `renderCompendiumDirectory`
+- `**tokens/hooks.js**`: Hex token `drawToken`/`refreshToken`/`updateSetting` hooks. Export `export function tokensReady() { applyHexTokenSetting(); }` for sequential calling from `core/init.js`
+- `**importer/hooks.js**`: `getSceneControlButtons` (deduplicated), `renderActorDirectory`, `renderCompendiumDirectory`. Export `export function importerReady() {}` for sequential calling
 - `**settings/hooks.js**`: `renderSettingsConfig`, `renderSceneConfig`
-- `**migrations/hooks.js**`: `worldSchemaVersion` registration (`init`), `runMigrationIfNeeded` (`ready`)
+- `**migrations/hooks.js**`: `worldSchemaVersion` registration (`init`)
 - `**effects/hooks.js**`, `**changelog/hooks.js**`: Already exist as separate files, just relocate
 
-### Async `ready` hook -- ordering safety
+### Async `ready` hook -- ordering safety & sequential orchestration
 
 FoundryVTT does **not** `await` async hook callbacks. When `Hooks.callAll('ready')` fires, each async listener starts concurrently. The current `ready` hook has a critical ordering dependency:
 
@@ -135,36 +135,45 @@ actor.prepareData() loop               -- depends on both caches
 runMigrationIfNeeded()                 -- depends on caches
 ```
 
-**Solution:** Keep a single `ready` orchestrator in `core/init.js` for the ordered async chain. Independent `ready` logic can safely live in feature `hooks.js` files:
+**Additionally**, all feature-specific `ready` logic (defense button setup, socket initialization, hex token settings) must run **sequentially after** the core cache+migration chain completes, not concurrently.
+
+**Solution:** Keep a single `ready` orchestrator in `core/init.js` that runs ALL ready logic sequentially in one callback:
 
 ```js
 // core/init.js -- ordered async startup (MUST stay together)
 // Imports preloadAllEigenschaften from waffe/ module
 import { preloadAllEigenschaften } from '../waffe/properties/utils/eigenschaft-cache.js'
-import { preloadAbgeleiteteWerteDefinitions } from './path/to/abgeleitete-werte.js'
+import { preloadAbgeleiteteWerteDefinitions } from '../actors/actor.js' // stays in actor.js
+import { runMigrationIfNeeded } from '../migrations/migrate-waffen-eigenschaften.js'
+
+// Import feature-specific ready callbacks (defined in feature hooks.js files)
+import { combatReady } from '../combat/hooks.js'
+import { tokensReady } from '../tokens/hooks.js'
+import { importerReady } from '../importer/hooks.js'
 
 Hooks.on('ready', async () => {
-    await preloadAllEigenschaften() // from waffe feature
+    // 1. Core cache preload (critical ordering)
+    await preloadAllEigenschaften()
     await preloadAbgeleiteteWerteDefinitions()
+
+    // 2. Actor preparation
     for (const actor of game.actors) {
         actor.prepareData()
     }
+
+    // 3. Data migrations
     await runMigrationIfNeeded()
-})
 
-// combat/hooks.js -- independent, no ordering dependency
-Hooks.on('ready', () => {
-    registerDefenseButtonHook()
-    setupIlarisSocket()
-})
-
-// tokens/hooks.js -- independent
-Hooks.on('ready', () => {
-    applyHexTokenSetting()
+    // 4. Feature-specific ready logic (sequential)
+    combatReady()
+    tokensReady()
+    importerReady()
 })
 ```
 
-**Note:** `preloadAllEigenschaften()` is defined in `waffe/properties/utils/eigenschaft-cache.js` but is called from `core/init.js` to maintain the critical ordering dependency with actor preparation and migrations.
+Each feature's ready logic is extracted into a named export (e.g., `export function combatReady() { ... }` in `combat/hooks.js`) and called sequentially from the main orchestrator.
+
+**Note:** `preloadAbgeleiteteWerteDefinitions()` remains in `scripts/actors/actor.js` (not extracted to separate file).
 
 ## Proposed Folder Structure (feature-based)
 
@@ -521,6 +530,69 @@ graph LR
         Main --> ChangelogH["changelog/hooks.js"]
     end
 ```
+
+### Ready hook orchestration (sequential)
+
+```mermaid
+graph TD
+    Ready["core/init.js: Hooks.on('ready')"]
+    Ready --> P1["1. await preloadAllEigenschaften()"]
+    P1 --> P2["2. await preloadAbgeleiteteWerteDefinitions()"]
+    P2 --> P3["3. actor.prepareData() loop"]
+    P3 --> P4["4. await runMigrationIfNeeded()"]
+    P4 --> C["5. combatReady()"]
+    C --> T["6. tokensReady()"]
+    T --> I["7. importerReady()"]
+    I --> Done["✓ System ready"]
+```
+
+---
+
+## Implementation Notes & Clarifications
+
+### 0. Clarifications from Review
+
+**Skills Feature Scope:**
+
+- `scripts/skills/` contains nur: `dialogs/` (fertigkeit.js, uebernatuerlich.js), `dice/` (magie_prepare.js, karma_prepare.js), `templates/` (dialogs + chat), no hooks.js (skill triggers handled by other features)
+
+**CSS Split Approach:**
+
+- CSS class mappings are defined to best effort; borderline cases (e.g., shared utility classes) are assigned to the most appropriate feature (usually `core.css`). Fine-tuning can happen post-migration.
+
+**Circular Dependencies:**
+
+- No circular imports expected. `items/` may depend on `waffe/` for schema, but `waffe/` should not import from `items/`.
+
+**Feature Ready Exports:**
+
+- Only `combat/hooks.js`, `tokens/hooks.js`, and `importer/hooks.js` export `ready` functions for sequential calling from `core/init.js`.
+
+### 1. Ready Hook Orchestration (CRITICAL)
+
+- All `ready` logic must be orchestrated sequentially in a single callback in `core/init.js`
+- Features export named ready functions (e.g., `export function combatReady() {}`) instead of defining Hooks.on('ready') directly
+- Order: caches → preloadDefs → actorPrepare → migrations → feature callbacks
+- This prevents race conditions and ensures data dependencies are satisfied
+
+### 2. Template Path Mapping Strategy
+
+Create a mapping file (e.g., `TEMPLATE_PATHS.md`) documenting current → new paths:
+
+- `templates/sheets/helden.hbs` → `scripts/actors/templates/helden.hbs`
+- `templates/dialogs/angriff.hbs` → `scripts/combat/templates/dialogs/angriff.hbs`
+- etc.
+
+Then use Regex-based find/replace in VS Code or a script to update all references.
+
+### 3. Weapon Pack Settings Location
+
+Weapon-related settings templates remain in `scripts/settings/templates/`:
+
+- `waffen-packs.hbs` - lists available weapon packs
+- `waffeneigenschaften-packs.hbs` - lists available weapon property packs
+
+These are part of the Settings UI and should not be moved to `waffe/` feature (keeping settings centralized).
 
 ### Folder structure
 
