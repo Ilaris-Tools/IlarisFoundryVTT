@@ -13,15 +13,16 @@ export function fernkampfUpdate(html, actor, item) {
         Object.assign(updateData, { manoever: { kabak: { selected: checked } } })
     }
     // Volle Defensive
-    // "vldf": {
-    //     "possible": false,
-    //         "selected": false
-    // },
-    // if (html.find("#vldf").length > 0) {
-    //     checked = html.find("#vldf")[0].checked;
-    //     item.system.manoever.vldf.selected = checked;
-    //     Object.assign(updateData, { "manoever": { "vldf": { "selected": checked } } });
-    // }
+    if (html.find('#vldf').length > 0) {
+        checked = html.find('#vldf')[0].checked
+        item.system.manoever.vldf.selected = checked
+        Object.assign(updateData, { manoever: { vldf: { selected: checked } } })
+        // If Volle Defensive selected, also persist Kombinierte Aktion
+        if (checked) {
+            item.system.manoever.kbak.selected = true
+            Object.assign(updateData, { manoever: { kabak: { selected: true } } })
+        }
+    }
     // Reichweite erhöhen
     // "rw": {
     //     "0": "1 Schritt",

@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- Die Checkbox "Volle Offensive" schält nun die Checkbox "kombinierte Aktion" mit an.
+
 ## v13
 
 ### v13.0.0

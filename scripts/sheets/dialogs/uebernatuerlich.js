@@ -552,6 +552,11 @@ export class UebernatuerlichDialog extends CombatDialog {
         // allgemeine optionen
         manoever.kbak.selected = this.element.querySelector('#kbak')?.checked || false // Kombinierte Aktion
 
+        // If Volle Defensive is active in saved data, ensure Kombinierte Aktion is also active
+        manoever.kbak.selected = manoever.kbak.selected || (manoever.vldf && manoever.vldf.selected)
+        const _kbakUi = this.element.querySelector('#kbak')
+        if (_kbakUi) _kbakUi.checked = manoever.kbak.selected
+
         // Initialize blutmagie and verbotene_pforten if they don't existc
         manoever.blutmagie = manoever.blutmagie || { value: 0 }
         manoever.verbotene_pforten = manoever.verbotene_pforten || { value: 0 }

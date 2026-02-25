@@ -636,6 +636,11 @@ export class AngriffDialog extends CombatDialog {
             this.element.querySelector(`#vlof-${this.dialogId}`)?.checked || false // Volle Offensive
         manoever.vldf.selected =
             this.element.querySelector(`#vldf-${this.dialogId}`)?.checked || false // Volle Defensive
+
+        // If Volle Defensive is selected, also activate Kombinierte Aktion and reflect in UI
+        manoever.kbak.selected = manoever.kbak.selected || manoever.vldf.selected
+        const _kbakEl = this.element.querySelector(`#kbak-${this.dialogId}`)
+        if (_kbakEl) _kbakEl.checked = manoever.kbak.selected
         manoever.pssl.selected =
             this.element.querySelector(`#pssl-${this.dialogId}`)?.checked || false // Passierschlag pssl
         manoever.rwdf.selected =

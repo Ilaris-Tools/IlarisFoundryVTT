@@ -42,6 +42,11 @@ export function nahkampfUpdate(html, actor, item, dialogId = '') {
     checked = html.find(vldfSelector)[0].checked
     item.system.manoever.vldf.selected = checked
     Object.assign(updateData, { manoever: { vldf: { selected: checked } } })
+    // If Volle Defensive selected, also persist Kombinierte Aktion
+    if (checked) {
+        item.system.manoever.kbak.selected = true
+        Object.assign(updateData, { manoever: { kabak: { selected: true } } })
+    }
     // Reichweitenunterschied
     const rwdfSelector = dialogId ? `input[name='rwdf-${dialogId}']` : `input[name='rwdf']`
     let rwdf_check = html.find(rwdfSelector)

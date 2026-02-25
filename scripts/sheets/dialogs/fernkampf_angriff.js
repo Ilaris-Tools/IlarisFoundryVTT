@@ -336,6 +336,12 @@ export class FernkampfAngriffDialog extends CombatDialog {
         // allgemeine optionen
         manoever.kbak.selected =
             this.element.querySelector(`#kbak-${this.dialogId}`)?.checked || false // Kombinierte Aktion
+
+        // Ensure Kombinierte Aktion is active when Volle Defensive flag exists and is selected
+        manoever.kbak.selected =
+            manoever.kbak.selected || (manoever.vldf && manoever.vldf.selected)
+        const _kbakEl = this.element.querySelector(`#kbak-${this.dialogId}`)
+        if (_kbakEl) _kbakEl.checked = manoever.kbak.selected
         manoever.gzkl.selected =
             this.element.querySelector(`#gzkl-${this.dialogId}`)?.value || false // Größenklasse
         manoever.bwng.selected =
