@@ -42,46 +42,45 @@
             </div>
         </div>
         <div class="energy-modifiers">
-            <div style="font-size: 12px">
+            <div class="hero-energy-font-small">
                 {{#if actor.system.abgeleitete.zauberer}}
-                <label class="onhover" data-action="ausklappView" data-ausklappentarget="aspzugekauft" style="margin-right: 0.5em;"><b>AsP:</b></label>
-                <label style="margin-right: 0.5em;">{{actor.system.abgeleitete.asp}}</label>
+                <label class="onhover hero-energy-label-spacing" data-action="ausklappView" data-ausklappentarget="aspzugekauft"><b>AsP:</b></label>
+                <label class="hero-energy-label-spacing">{{actor.system.abgeleitete.asp}}</label>
             
-                <label style="margin-right: 0.1em;"><b>gAsP:</b></label>
-                <input style="color: #efe6d8; background-color: transparent; width: 3em; margin-right: 0.5em; padding: 0; padding-left: 4px;" name="system.abgeleitete.gasp" value="{{actor.system.abgeleitete.gasp}}" type="number" />
+                <label class="hero-energy-label-compact"><b>gAsP:</b></label>
+                <input class="hero-energy-input" name="system.abgeleitete.gasp" value="{{actor.system.abgeleitete.gasp}}" type="number" />
             
-                <label style="margin-right: 0.1em;"><b>AsP*:</b></label>
-                <input style="color: #efe6d8; background-color: transparent; width: 3em; margin-right: 0.5em; padding: 0; padding-left: 4px;" name="system.abgeleitete.asp_stern" value="{{actor.system.abgeleitete.asp_stern}}" type="number" data-dtype="Number" />
+                <label class="hero-energy-label-compact"><b>AsP*:</b></label>
+                <input class="hero-energy-input" name="system.abgeleitete.asp_stern" value="{{actor.system.abgeleitete.asp_stern}}" type="number" data-dtype="Number" />
             
-                <span id="ausklappen-view-aspzugekauft" style="display: none; margin-left: 0.5em;">
-                    <label style="margin-right: 0.1em;">Zugekauft:</label>
-                    <input style="color: #efe6d8; background-color: transparent; width: 3em;" name="system.abgeleitete.asp_zugekauft" value="{{actor.system.abgeleitete.asp_zugekauft}}" type="number" data-dtype="Number" />
+                <span id="ausklappen-view-aspzugekauft" class="hero-energy-expandable">
+                    <label class="hero-energy-label-compact">Zugekauft:</label>
+                    <input class="hero-energy-input" name="system.abgeleitete.asp_zugekauft" value="{{actor.system.abgeleitete.asp_zugekauft}}" type="number" data-dtype="Number" />
                 </span>
                 <br>
                 {{/if}}
             
                 {{#if actor.system.abgeleitete.geweihter}}
-                <label class="onhover" data-action="ausklappView" data-ausklappentarget="kapzugekauft" style="margin-right: 0.5em;"><b>KaP:</b></label>
-                <label style="margin-right: 0.5em;">{{actor.system.abgeleitete.kap}}</label>
+                <label class="onhover hero-energy-label-spacing" data-action="ausklappView" data-ausklappentarget="kapzugekauft"><b>KaP:</b></label>
+                <label class="hero-energy-label-spacing">{{actor.system.abgeleitete.kap}}</label>
             
-                <label style="margin-right: 0.1em;"><b>gKaP:</b></label>
-                <input style="color: #efe6d8; background-color: transparent; width: 3em; margin-right: 0.5em; padding: 0; padding-left: 4px;" name="system.abgeleitete.gkap" value="{{actor.system.abgeleitete.gkap}}" type="number" data-dtype="Number" />
+                <label class="hero-energy-label-compact"><b>gKaP:</b></label>
+                <input class="hero-energy-input" name="system.abgeleitete.gkap" value="{{actor.system.abgeleitete.gkap}}" type="number" data-dtype="Number" />
             
-                <label style="margin-right: 0.1em;"><b>KaP*:</b></label>
-                <input style="color: #efe6d8; background-color: transparent; width: 3em; margin-right: 0.5em; padding: 0; padding-left: 4px;" name="system.abgeleitete.kap_stern" value="{{actor.system.abgeleitete.kap_stern}}" type="number" data-dtype="Number" />
+                <label class="hero-energy-label-compact"><b>KaP*:</b></label>
+                <input class="hero-energy-input" name="system.abgeleitete.kap_stern" value="{{actor.system.abgeleitete.kap_stern}}" type="number" data-dtype="Number" />
             
-                <span id="ausklappen-view-kapzugekauft" style="display: none; margin-left: 0.5em;">
-                    <label style="margin-right: 0.1em;">Zugekauft:</label>
-                    <input style="color: #efe6d8; background-color: transparent; width: 3em;" name="system.abgeleitete.kap_zugekauft" value="{{actor.system.abgeleitete.kap_zugekauft}}" type="number" data-dtype="Number" />
+                <span id="ausklappen-view-kapzugekauft" class="hero-energy-expandable">
+                    <label class="hero-energy-label-compact">Zugekauft:</label>
+                    <input class="hero-energy-input" name="system.abgeleitete.kap_zugekauft" value="{{actor.system.abgeleitete.kap_zugekauft}}" type="number" data-dtype="Number" />
                 </span>
                 <br />
                 {{/if}}
             </div>
-            <div style="margin-top: 1.5em; font-size: 12px;">
-                <a class="icon-small {{system.gesundheit.wundenignorieren}}"
+            <div class="hero-energy-section-spacing hero-energy-section-spacing-lg">
+                <a class="icon-small hero-wound-toggle {{#if actor.system.gesundheit.wundenignorieren}}true{{/if}}"
                 data-action="toggleBool"
-                data-togglevariable="system.gesundheit.wundenignorieren"
-                style="color: {{#if actor.system.gesundheit.wundenignorieren}}#efe6d8{{else}}#000000{{/if}};">
+                data-togglevariable="system.gesundheit.wundenignorieren">
                 Wundabzüge
                 {{#if actor.system.gesundheit.wundenignorieren}}
                 ignorieren
@@ -90,22 +89,22 @@
                 {{/if}}
                 </a>
             </div>
-            <div class="flexrow" style="margin-top: 0.5em; font-size: 12px;">
-                <b><label style=" font-size: 12pt">{{actor.system.abgeleitete.globalermoddisplay}}</label></b>
+            <div class="flexrow hero-energy-section-spacing">
+                <b><label class="hero-global-mod-label">{{actor.system.abgeleitete.globalermoddisplay}}</label></b>
             </div>
-            <div style="margin-top: 0.5em; font-size: 12px;">
+            <div class="hero-energy-section-spacing">
                 <label><b>Manueller Mod:</b></label>
-                <input style="color: #efe6d8; background-color: transparent; width: 3em; padding: 0; padding-left: 4px;" 
+                <input class="hero-energy-input"
                     name="system.modifikatoren.manuellermod"
                     value="{{actor.system.modifikatoren.manuellermod}}"
                     type="number"
-                    data-dtype="Number";
+                        data-dtype="Number"
                     />
             </div>
         </div>    
   </div>
   {{#unless (gameSetting "hideSyncKampfstileButton")}}
-    <div style="margin-top: 0.5em; text-align: center;">
+    <div class="hero-sync-button-wrapper">
         <a data-action="syncItems" title="Synchronisiere alle Vorteile, Übernatürliche Talente und Waffen mit ihren Kompendium-Gegenstücken. Du kannst den Button in den Gamesettings deaktivieren.">
             <i class="fas fa-sync-alt"></i> Charakter mit Kompendium synchronisieren
         </a>

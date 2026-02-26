@@ -4,7 +4,7 @@ import * as settings from '../../settings/index.js'
 export class HeldenSheet extends IlarisActorSheet {
     /** @override */
     static DEFAULT_OPTIONS = {
-        classes: ['ilaris', 'helden'],
+        classes: ['helden'],
         position: {
             width: 950,
             height: 750,

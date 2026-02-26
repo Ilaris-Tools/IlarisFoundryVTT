@@ -1,25 +1,24 @@
 {{log 'kampf' this}}
 <section class="tab kampf {{tab.cssClass}}" data-group="primary" data-tab="kampf">
     {{#if actor.system.modifikatoren.nahkampfmod}}
-    <div class="flexrow" style="float: right">
-        <b><label
-                style="color: {{modColor actor.system.modifikatoren.nahkampfmod}}">{{actor.system.abgeleitete.nahkampfmoddisplay}}</label></b>
+    <div class="flexrow hero-kampf-mod-float-right">
+        <b><label class="{{modColor actor.system.modifikatoren.nahkampfmod}}">{{actor.system.abgeleitete.nahkampfmoddisplay}}</label></b>
     </div>
     {{/if}}
     <h2>Kampfstil und Beritten</h2>
-    <div style="display: flex; align-items: center; gap: 10px;">
+    <div class="hero-kampf-style-container">
         <select class="selected-kampfstil" name="system.misc.selected_kampfstil">
             {{selectOptions actor.misc.kampfstile_list selected=actor.system.misc.selected_kampfstil}}
         </select>
-        <label style="display: flex; align-items: center; gap: 5px;">
+        <label class="hero-kampf-checkbox-container">
             <input type="checkbox" name="system.misc.ist_beritten" {{checked actor.system.misc.ist_beritten}} />
             Beritten
         </label>
     </div>
 
     {{#if actor.misc.selected_kampfstil_conditions_not_met}}
-        <div style="margin-top: 8px; padding: 8px; background-color: #f8d7da; border: 1px solid #f5c6cb; border-radius: 4px; color: #721c24;">
-            <i class="fas fa-exclamation-triangle" style="color: #dc3545; margin-right: 5px;"></i>
+        <div class="hero-kampf-alert-warning">
+            <i class="fas fa-exclamation-triangle hero-kampf-alert-icon"></i>
             <strong>Kampfstil inaktiv:</strong> {{actor.misc.selected_kampfstil_conditions_not_met}}
         </div>
     {{/if}}
@@ -85,7 +84,7 @@
                     </a>
                 </td>
             </tr>
-            <tr id="ausklappen-view-{{nwaffe.id}}" style="display: none">
+            <tr id="ausklappen-view-{{nwaffe.id}}" class="hero-expandable-row-hidden">
                 <td colspan="10">
                     <hr />
                     <div><b>Schaden:</b> {{nwaffe.system.schaden}}</div>
@@ -98,7 +97,7 @@
                     <div><b>Eigene Modifikatoren</b></div>
                     <div><b>WM:</b> {{nwaffe.system.mod_at}} / {{nwaffe.system.mod_vt}}</div>
                     <div><b>Schadensbonus:</b> {{nwaffe.system.mod_schaden}}</div>
-                    <div><b>Beschreibung:</b><br /><span style="white-space: pre-line">{{{nwaffe.system.text}}}</span>
+                    <div><b>Beschreibung:</b><br /><span class="hero-text-preformatted">{{{nwaffe.system.text}}}</span>
                     </div>
                     <hr />
                 </td>
@@ -110,7 +109,7 @@
     <h2>Fernkampfwaffen</h2>
     <a data-action="itemCreate" data-itemclass="fernkampfwaffe"><i class="fas fa-plus"></i>Neue Fernkampfwaffe</a>
     <div>
-        <table class="table" style="width: 100%; border-collapse: collapse;">
+        <table class="table hero-table-full-width">
             <thead>
                 <tr>
                     <th class="icon-small"></th>
@@ -146,7 +145,7 @@
                     <td><a data-action="itemDelete" class="icon-small" data-itemclass="fernkampfwaffe" data-itemid="{{fwaffe.id}}"><i
                                 class="fas fa-trash"></i></a></td>
                 </tr>
-                <tr id="ausklappen-view-{{fwaffe.id}}" style="display:none;">
+                <tr id="ausklappen-view-{{fwaffe.id}}" class="hero-expandable-row-hidden">
                     <td colspan="10">
                         <hr />
                         <div><b>Schaden:</b> {{fwaffe.system.schaden}}</div>
@@ -160,7 +159,7 @@
                         <div><b>WM:</b> {{fwaffe.system.mod_fk}}</div>
                         <div><b>Schadensbonus:</b> {{fwaffe.system.mod_schaden}}</div>
                         <div><b>Beschreibung:</b><br />
-                            <span style="white-space: pre-line">{{{fwaffe.system.text}}}</span>
+                            <span class="hero-text-preformatted">{{{fwaffe.system.text}}}</span>
                         </div>
                         <hr />
                     </td>
@@ -173,7 +172,7 @@
 
     <h2>Rüstungen</h2>
     <a data-action="itemCreate" data-itemclass="ruestung"><i class="fas fa-plus"></i>Neue Rüstung</a>
-<table class="table" style="width: 100%; border-collapse: collapse;">
+<table class="table hero-table-full-width">
   <thead>
     <tr>
       <th class="icon-small"><i class="fas fa-shield-alt"></i></th>

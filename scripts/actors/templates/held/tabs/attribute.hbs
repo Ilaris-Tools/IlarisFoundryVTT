@@ -1,9 +1,9 @@
 {{log 'attribute' this}}
 <section class="tab attribute {{tab.cssClass}}" data-group="primary" data-tab="attribute">
-    <div style="display: flex; gap: 1em; align-items: flex-start;">
+    <div class="hero-tab-container-flex">
         <div>
             <h2>Attribute</h2>
-            <table class="table" style="font-size:10pt; border-collapse: collapse; width: auto; table-layout: auto;">
+            <table class="table hero-table-compact">
                 <thead>
                     <tr>
                         <th class="icon-small"></th>
@@ -14,14 +14,14 @@
                 </thead>
                 <tbody>
                     {{#each (sortAlphabetically actor.system.attribute) as |attributPair|}}
-                    <tr style="background-color: rgba(255, 255, 255, 0);">
+                    <tr class="hero-table-row-transparent">
                         <td data-action="rollable" class="icon-small" data-rolltype="fertigkeit_diag" data-probetype="attribut" data-attribut="{{attributPair.[0]}}">
                             <i class="custom-icon"></i>
                         </td>
                         <td>{{get_label attributPair.[0]}}</td>
                         <td>
-                            <input name="system.attribute.{{attributPair.[0]}}.wert" value="{{attributPair.[1].wert}}" type="number" step="1"
-                                data-dtype="Number" style="width: 4em; text-align: center;" />
+                            <input class="hero-input-compact" name="system.attribute.{{attributPair.[0]}}.wert" value="{{attributPair.[1].wert}}" type="number" step="1"
+                                data-dtype="Number" />
                         </td>
                         <td data-action="rollable" class="onhover" data-rolltype="attribut" data-attribut="{{attributPair.[0]}}">
                             {{attributPair.[1].pw}}

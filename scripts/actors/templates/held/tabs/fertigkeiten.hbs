@@ -3,7 +3,7 @@
     <h2>Fertigkeiten</h2>
     <div>
         <a data-action="itemCreate" data-itemclass="fertigkeit"><i class="fas fa-plus"></i> Neue Fertigkeit</a>
-        <a data-action="itemCreate" data-itemclass="talent" style="margin-left: 1em;"><i class="fas fa-plus"></i> Neues
+        <a data-action="itemCreate" data-itemclass="talent" class="hero-button-spacing"><i class="fas fa-plus"></i> Neues
         Talent</a>
     </div>
 
@@ -13,7 +13,7 @@
                 <th class="icon-small"></th>
                 <th>Name</th>
                 <th>Talente</th>
-            <th style="flex-basis: 40px; width: 40px;">PW</th>
+            <th class="hero-table-col-fixed-40">PW</th>
                 <th>PW(T)</th>
                 <th class="icon-small"></th>
                 <th class="icon-small"></th>
@@ -31,8 +31,8 @@
                     </label>
                 </td>
                 <td>{{ProfanFertigkeitList profert.system.talente}}</td>
-                <td data-action="rollable" class="flex-fest-var onhover" data-rolltype="profan_fertigkeit_pw"
-                    data-fertigkeit="{{profert.name}}" data-pw="{{profert.system.pw}}" style="flex-basis: 40px;">
+                <td data-action="rollable" class="flex-fest-var onhover hero-table-col-fixed-40" data-rolltype="profan_fertigkeit_pw"
+                    data-fertigkeit="{{profert.name}}" data-pw="{{profert.system.pw}}">
                     {{profert.system.pw}}
                 </td>
                 <td data-action="rollable" class="onhover" data-rolltype="profan_fertigkeit_pwt"
@@ -46,40 +46,38 @@
                     <i class="fas fa-trash"></i>
                 </td>
             </tr>
-            <tr id="ausklappen-view-{{profert.id}}" style="display:none;">
-                <td colspan="7" style="padding: 0.5em 1em; background: #f9f9f9;">
+            <tr id="ausklappen-view-{{profert.id}}" class="hero-expandable-row-hidden">
+                <td colspan="7" class="hero-expandable-row-cell">
                     <hr />
-                    <div style="display: flex; gap: 1em; font-weight: bold; margin-bottom: 0.2em;">
+                    <div class="hero-expandable-header">
                         <div>Attribute:</div>
                         <div>Basis:</div>
                         <div>FW:</div>
                     </div>
-                    <div style="display: flex; gap: 1em; margin-bottom: 0.8em;">
+                    <div class="hero-expandable-values">
                         <div>{{AttributeFertigkeit_from_data profert.system}}</div>
                         <div>{{profert.system.basis}}</div>
                         <div>{{profert.system.fw}}</div>
                     </div>
                     <div>
                         <label><b>Beschreibung:</b></label><br />
-                        <label style="white-space: pre-line;">{{{profert.system.text}}}</label>
+                        <label class="hero-text-preformatted">{{{profert.system.text}}}</label>
                     </div>
                     {{#if profert.system.talente}}
-                    <div style="margin-top: 1em;">
+                    <div class="hero-section-spacing">
                         <label><b>Talente:</b></label><br />
                         {{#each profert.system.talente as |protal|}}
-                        <div style="margin-bottom: 0.5em; border-bottom: 1px solid #ccc; padding-bottom: 0.3em;">
+                        <div class="hero-talent-item">
                             <label data-action="rollable" class="onhover" data-rolltype="profan_talent"
                                 data-fertigkeit="{{profert.name}}" data-talent="{{protal.name}}"
                                 data-pw="{{profert.system.pwt}}">
                                 <i>{{protal.name}}</i>:
                             </label>
-                            <label style="white-space: pre-line;">{{{protal.system.text}}}</label>
-                            <a data-action="itemEdit" class="icon-small" data-itemclass="talent" data-itemid="{{protal.id}}"
-                                style="float: right; margin-left: 0.3em;">
+                            <label class="hero-text-preformatted">{{{protal.system.text}}}</label>
+                            <a data-action="itemEdit" class="icon-small hero-action-float-right" data-itemclass="talent" data-itemid="{{protal.id}}">
                                 <i class="fas fa-edit"></i>
                             </a>
-                            <a data-action="itemDelete" class="icon-small" data-itemclass="talent" data-itemid="{{protal.id}}"
-                                style="float: right;">
+                            <a data-action="itemDelete" class="icon-small hero-action-float-left" data-itemclass="talent" data-itemid="{{protal.id}}">
                                 <i class="fas fa-trash"></i>
                             </a>
                         </div>
@@ -118,7 +116,7 @@
     <h2>Freie Fertigkeiten</h2>
     <a data-action="itemCreate" data-itemclass="freie_fertigkeit"><i class="fas fa-plus"></i> Neue freie Fertigkeit</a>
 
-    <table class="table" style="font-size:10pt; width: 100%; border-collapse: collapse; margin-top: 0.5em;">
+    <table class="table hero-table-free-fertigkeiten">
         <thead>
             <tr>
                 <th></th>

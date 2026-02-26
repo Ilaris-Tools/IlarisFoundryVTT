@@ -37,8 +37,7 @@
   "esmodules": ["scripts/core/hooks.js"],
   "styles": [
     "scripts/core/styles/core.css",
-    "scripts/actors/styles/actors.css",
-    "scripts/actors/styles/sidebar.css",
+    "scripts/actors/styles/actor-sheet.css",
     "scripts/items/styles/items.css",
     "scripts/items/styles/manoever.css",
     "scripts/waffe/styles/waffe.css",

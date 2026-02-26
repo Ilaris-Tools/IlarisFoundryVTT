@@ -13,14 +13,14 @@
     <a data-action="itemCreate" data-itemclass="uebernatuerliche_fertigkeit">
         <i class="fas fa-plus"></i> Neue Übernatürliche Fertigkeit
     </a>
-    <table class="table" style="font-size:10pt; width: 100%; border-collapse: collapse; margin-top: 0.5em;">
+    <table class="table hero-table-free-fertigkeiten">
         <thead>
             <tr>
                 <th class="icon-small"></th>
                 <th>Fertigkeit</th>
                 <th>Attribute</th>
                 <th>Basis</th>
-                <th style="flex-basis: 40px; width: 40px;">FW</th>
+                <th class="hero-table-col-fixed-40">FW</th>
                 <th>PW</th>
                 <th class="icon-small"></th>
                 <th class="icon-small"></th>
@@ -48,9 +48,9 @@
                     <i class="fas fa-trash"></i>
                 </td>
             </tr>
-            <tr id="ausklappen-view-{{uefert.id}}" style="display:none;">
-                <td colspan="8" style="padding: 0.5em 1em; background: #f9f9f9;">
-                    <label style="white-space: pre-line;">{{{uefert.system.text}}}</label>
+            <tr id="ausklappen-view-{{uefert.id}}" class="hero-expandable-row-hidden">
+                <td colspan="8" class="hero-expandable-row-cell">
+                    <label class="hero-text-preformatted">{{{uefert.system.text}}}</label>
                 </td>
             </tr>
             {{/each}}
@@ -63,7 +63,7 @@
         <a data-action="itemCreate" data-itemclass="zauber"><i class="fas fa-plus"></i> Neuer Zauber</a>
         <a data-action="itemCreate" data-itemclass="liturgie"><i class="fas fa-plus"></i> Neue Liturgie</a>
 
-        <table class=table style="font-size:10pt; width: 100%; border-collapse: collapse;">
+        <table class="table hero-table-full-width hero-table-font-compact">
             <thead>
                 <tr>
                     <th class="icon-small"></th>
@@ -72,7 +72,7 @@
                     <th>Reichweite</th>
                     <th>Wirkungsd</th>
                     <th>Kosten</th>
-                    <th style="width: 40px;">PW</th>
+                    <th class="hero-table-col-fixed-40">PW</th>
                     <th class="icon-small"></th>
                     <th class="icon-small"></th>
                 </tr>
@@ -102,15 +102,14 @@
                         <i class="fas fa-trash"></i>
                     </td>
                 </tr>
-                <tr id="ausklappen-view-{{magtal.id}}" style="display:none">
-                    <td colspan="9" style="padding: 0.5em 1em; background: #f9f9f9;">
-                        <div><b>Mächtige Magie: </b><span style="white-space: pre-line;">{{magtal.system.maechtig}}</span>
+                <tr id="ausklappen-view-{{magtal.id}}" class="hero-expandable-row-hidden">
+                    <td colspan="9" class="hero-expandable-row-cell">
+                        <div><b>Mächtige Magie: </b><span class="hero-text-preformatted">{{magtal.system.maechtig}}</span>
                         </div>
                         <div><b>Schwierigkeit: </b>{{magtal.system.schwierigkeit}}</div>
-                        <div><b>Modifikationen: </b><span
-                                style="white-space: pre-line;">{{magtal.system.modifikationen}}</span></div>
+                        <div><b>Modifikationen: </b><span class="hero-text-preformatted">{{magtal.system.modifikationen}}</span></div>
                         <div><b>Ziel: </b>{{magtal.system.ziel}}</div>
-                        <div><b>Beschreibung: </b><span style="white-space: pre-line;">{{{magtal.system.text}}}</span></div>
+                        <div><b>Beschreibung: </b><span class="hero-text-preformatted">{{{magtal.system.text}}}</span></div>
                     </td>
                 </tr>
 
@@ -140,17 +139,15 @@
                         <i class="fas fa-trash"></i>
                     </td>
                 </tr>
-                <tr id="ausklappen-view-{{kartal.id}}" style="display:none;">
-                    <td colspan="9" style="padding: 0.5em 1em; background: #f9f9f9;">
+                <tr id="ausklappen-view-{{kartal.id}}" class="hero-expandable-row-hidden">
+                    <td colspan="9" class="hero-expandable-row-cell">
                         <hr />
                         <div>
-                            <div><b>Mächtige Magie: </b><span
-                                    style="white-space: pre-line;">{{kartal.system.maechtig}}</span></div>
+                            <div><b>Mächtige Magie: </b><span class="hero-text-preformatted">{{kartal.system.maechtig}}</span></div>
                             <div><b>Schwierigkeit: </b>{{kartal.system.schwierigkeit}}</div>
-                            <div><b>Modifikationen: </b><span
-                                    style="white-space: pre-line;">{{kartal.system.modifikationen}}</span></div>
+                            <div><b>Modifikationen: </b><span class="hero-text-preformatted">{{kartal.system.modifikationen}}</span></div>
                             <div><b>Ziel: </b>{{kartal.system.ziel}}</div>
-                            <div><b>Beschreibung: </b><span style="white-space: pre-line;">{{{kartal.system.text}}}</span>
+                            <div><b>Beschreibung: </b><span class="hero-text-preformatted">{{{kartal.system.text}}}</span>
                             </div>
                         </div>
                         <hr />

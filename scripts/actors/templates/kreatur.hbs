@@ -1,15 +1,15 @@
 {{log 'kreatur-sheet' this}}
 <section class="{{cssClass}} kreatur-sheet">
     <header class="sheet-header kreatur-header">
-        <div style="display: flex; justify-content: space-between;">
+        <div class="kreatur-header-layout">
             <div class="header-fields">
-                <input class="titel-input" style="" name="name" type="text" value="{{actor.name}}" placeholder="Name"/>
+                <input class="titel-input" name="name" type="text" value="{{actor.name}}" placeholder="Name"/>
                 <textarea rows="2" name="system.kurzbeschreibung" type="text">{{actor.system.kurzbeschreibung}}</textarea>
             </div>
             <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
         </div>
     </header>
-    <div style="clear: both"></div>
+    <div></div>
 
     <div class="sheet-body">
         <div class="status statblockreihe">
@@ -51,7 +51,7 @@
                 <div class="flexcol">
                     <div>
                         
-                        <label style="{{#if actor.system.gesundheit.wundenignorieren }}text-decoration:line-through;{{/if}}">{{actor.system.gesundheit.display}}</label>
+                        <label class="{{#if actor.system.gesundheit.wundenignorieren}}strikethrough{{/if}}">{{actor.system.gesundheit.display}}</label>
                         <a
                             data-action="toggleBool"
                             class="icon-small {{actor.system.gesundheit.wundenignorieren}}"
@@ -70,9 +70,9 @@
                         <input class="flex0" name="system.modifikatoren.manuellermod" value="{{actor.system.modifikatoren.manuellermod}}" type="text" data-dtype="Number">
                         <label>auf alle Proben (Manuell) </label>
                     </div>
-                    <hr style="width: 100%; padding-top: 1px; padding-bottom: 1px; margin-top: 1px; margin-bottom: 1px; border-top: 1px solid darkred; border-bottom: 0px;" />
+                    <hr class="kreatur-divider-red" />
                     <div class="flexrow">
-                        <b><label style="color: {{modColor actor.system.abgeleitete.globalermod}}">{{actor.system.abgeleitete.globalermoddisplay}}</label></b>
+                        <b><label class="{{modColor actor.system.abgeleitete.globalermod}}">{{actor.system.abgeleitete.globalermoddisplay}}</label></b>
                     </div>
                 </div>
             </div>
@@ -123,13 +123,12 @@
         <div class="attribute statblockreihe">
             <div class="flexrow">
                 {{#each actor.system.attribute as |attribut key|}}
-                <div class="attributblock flex1 flex-group-center"
+                <div class="attributblock flex1 flex-group-center {{#if (ifEq attribut.pw 0)}}kreatur-section-disabled{{/if}}"
                 {{#if (ifEq attribut.pw 0)}} 
-                style="opacity: 0.4;"
                 {{/if}}
                 >
                         <b >{{key}}</b>
-                        <input name="system.attribute.{{key}}.pw" type="text" value="{{attribut.pw}}" data-dtype="Number" style="width: 30px;">
+                    <input class="kreatur-input-narrow" name="system.attribute.{{key}}.pw" type="text" value="{{attribut.pw}}" data-dtype="Number">
                         <a data-action="rollable" class="icon-small" data-rolltype="fertigkeit_diag" data-probetype="attribut" data-attribut="{{key}}">
                             <i class="fas fa-dice-d20"></i>
                         </a>
@@ -142,20 +141,19 @@
         {{#if actor.system.kampfwerte}}
         <div class="kampfwerte statblockreihe">
             {{#if actor.system.modifikatoren.nahkampfmod}}
-            <div class="flexrow" style="float: right">
-                <b><label style="color: {{modColor actor.system.modifikatoren.nahkampfmod}}">{{actor.system.abgeleitete.nahkampfmoddisplay}}</label></b>
+            <div class="flexrow kreatur-kampfwerte-float-right">
+                <b><label class="{{modColor actor.system.modifikatoren.nahkampfmod}}">{{actor.system.abgeleitete.nahkampfmoddisplay}}</label></b>
             </div>
             {{/if}}
             <div class="flexrow">
                 {{#each actor.system.kampfwerte as |obj key|}}
-                <div class="attributblock flex1 flex-group-center" 
+                <div class="attributblock flex1 flex-group-center {{#if (ifEq obj 0)}}kreatur-section-disabled{{/if}}" 
                     {{#if (ifEq obj 0)}} 
-                    style="opacity: 0.4;"
                     {{/if}}
                 >
                         <b>{{get_stat_short key}}</b>
                     <!--<div>-->
-                        <input name="system.kampfwerte.{{key}}" type="text" value="{{obj}}" data-dtype="Number" style="width: 30px;">
+                        <input class="kreatur-input-narrow" name="system.kampfwerte.{{key}}" type="text" value="{{obj}}" data-dtype="Number">
                         {{#if (ifEq key 'mr')}}
                         <a
                             data-action="rollable"
@@ -383,11 +381,11 @@
         </div>
         {{/if}}
         <div class="form-group select">
-            <select name="system.additemtype" style="max-width: 150px;">
+            <select class="kreatur-select-narrow" name="system.additemtype">
                 {{selectOptions kreaturItemOptions selected=actor.system.additemtype}}
             </select> 
             <button 
-                style="max-width: 150px;" 
+                class="kreatur-select-narrow"
                 data-action="itemCreate"
                 data-itemclass="{{actor.system.additemtype}}"
                 type="button"
