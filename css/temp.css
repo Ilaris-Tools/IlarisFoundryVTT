@@ -21,12 +21,12 @@
 }
 
 .ilaris.helden {
-  font-family: var(--font-andada) !important;
+  font-family: var(--font-andada);
   background-image: url('../assets/images/background/hintergrund.jpg');
 }
 
 .ilaris.kreatur {
-  font-family: var(--font-andada) !important;
+  font-family: var(--font-andada);
   background-image: url('../assets/images/background/hintergrund.jpg');
 }
 
@@ -525,6 +525,16 @@ td.rollable.icon-small {
 
 .chat-message h2 {
   font-size: 24px;
+}
+
+.chat-message h3 {
+  font-size: 20px;
+}
+
+.editor {
+  height: 100% !important;
+  width: 100%;
+  overflow: auto;
 }
 
 .chat-message h3 {

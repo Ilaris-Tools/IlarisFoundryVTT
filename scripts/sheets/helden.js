@@ -91,7 +91,7 @@ export class HeldenSheet extends IlarisActorSheet {
             settings.IlarisGameSettingNames.weaponSpaceRequirement,
         )
 
-        // Add applied effects - ALWAYS needed for the effects tab
+        // Add applied effects
         context.effects = this.actor.appliedEffects
 
         // Add tab data for template

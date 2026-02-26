@@ -398,7 +398,6 @@ Hooks.on('renderActorDirectory', (app, htmlDOM) => {
                 if (controls) {
                     controls.insertBefore(syncButton, controls.firstChild)
                 } else {
-                    // If no controls exist, create them
                     const newControls = document.createElement('div')
                     newControls.className = 'directory-item-controls'
                     newControls.appendChild(syncButton)
