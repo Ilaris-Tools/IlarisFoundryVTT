@@ -28,7 +28,7 @@
         </thead>
         <tbody>
             {{#each actor.uebernatuerlich.fertigkeiten as |uefert|}}
-            <tr class="main-row">
+            <tr class="main-row" data-action="ausklappView" data-ausklappentarget="{{uefert.id}}">
                 <td></td> <!-- Leer für Icon, falls benötigt -->
                 <td>
                     <label data-action="ausklappView" class="onhover" data-ausklappentarget="{{uefert.id}}">

@@ -21,7 +21,7 @@
         </thead>
         <tbody>
             {{#each actor.profan.fertigkeiten as |profert key|}}
-            <tr class="main-row">
+            <tr class="main-row" data-action="ausklappView" data-ausklappentarget="{{profert.id}}">
                 <td data-action="rollable" class="icon-small" data-rolltype="fertigkeit_diag" data-probetype="fertigkeit" data-fertigkeit="{{key}}">
                     <i class="custom-icon"></i>
                 </td>

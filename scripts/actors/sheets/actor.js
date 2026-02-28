@@ -87,7 +87,7 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         const targetId = `ausklappen-view-${targetkey}`
         const toggleView = this.element.querySelector(`#${targetId}`)
         if (toggleView) {
-            toggleView.style.display = toggleView.style.display === 'none' ? 'table-row' : 'none'
+            toggleView.classList.toggle('hero-expandable-row-hidden')
         }
     }
 
