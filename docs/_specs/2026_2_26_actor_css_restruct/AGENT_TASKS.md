@@ -273,10 +273,13 @@ Apply same replacements as Task 2.1 but for KaP instead of AsP:
     ```
 
 4. Line 109 (Manueller Mod input):
+
     ```handlebars
 
     ```
+
     Replace with:
+
     ```handlebars
 
     ```
