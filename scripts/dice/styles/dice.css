@@ -6,7 +6,7 @@
   color: #000000;
   font-family: var(--font-crimson);
   /* TODO CR: Wegen Bild fragen */
-  background-image: url('../../../../assets/images/background/hintergrund.jpg');
+  background-image: url('/systems/Ilaris/assets/images/background/hintergrund.jpg');
 }
 
 .chat-message .message-header {

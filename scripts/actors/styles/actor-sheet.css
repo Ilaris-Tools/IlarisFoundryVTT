@@ -31,22 +31,20 @@
   justify-content: space-between;
 }
 
-.ilaris.sheet.actor.helden {
-  .hw {
-    color: #7f7e75;
+.ilaris.sheet.actor.helden .hw {
+  color: #7f7e75;
+}
 
-    &.true {
-      color: black;
-    }
-  }
+.ilaris.sheet.actor.helden .hw.true {
+  color: black;
+}
 
-  .nw {
-    color: #7f7e75;
+.ilaris.sheet.actor.helden .nw {
+  color: #7f7e75;
+}
 
-    &.true {
-      color: black;
-    }
-  }
+.ilaris.sheet.actor.helden .nw.true {
+  color: black;
 }
 
 .ilaris.sheet.actor.helden .window-content .heroattributes {
@@ -180,10 +178,10 @@
   font-weight: 800;
   height: 100%;
   flex: auto;
+}
 
-  i {
-    margin-right: 2px;
-  }
+.ilaris.sheet.actor.helden .window-content nav .tab-item i {
+  margin-right: 2px;
 }
 
 .ilaris.sheet.actor.helden .window-content nav .tab-item.active {
@@ -361,19 +359,19 @@
   border-radius: inherit;
 }
 
-.ilaris.sheet.actor.helden .hero-energy-font-small {
+.ilaris.sheet.actor.helden .herosidebar .hero-energy-font-small {
   font-size: 12px;
 }
 
-.ilaris.sheet.actor.helden .hero-energy-label-spacing {
+.ilaris.sheet.actor.helden .herosidebar .hero-energy-label-spacing {
   margin-right: 0.5em;
 }
 
-.ilaris.sheet.actor.helden .hero-energy-label-compact {
+.ilaris.sheet.actor.helden .herosidebar .hero-energy-label-compact {
   margin-right: 0.1em;
 }
 
-.ilaris.sheet.actor.helden .hero-energy-input {
+.ilaris.sheet.actor.helden .herosidebar .hero-energy-input {
   color: #efe6d8;
   background-color: transparent;
   width: 3em;
