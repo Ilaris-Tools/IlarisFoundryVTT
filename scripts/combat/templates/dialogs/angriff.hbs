@@ -47,7 +47,7 @@
         <!-- eingaben -->
         <div class="flexrow">
             <label>Reichweitenunterschied: </label>
-            <select id="rwdf-{{dialogId}}" name="item.system.manoever.rwdf.selected" style="max-width: 150px">
+            <select id="rwdf-{{dialogId}}" name="item.system.manoever.rwdf.selected" class="combat-select-narrow">
                 <option value="0" {{#if (eq item.system.manoever.rwdf.selected "0")}}selected{{/if}}>Ideal</option>
                 <option value="1" {{#if (eq item.system.manoever.rwdf.selected "1")}}selected{{/if}}>1 Feld</option>
                 <option value="2" {{#if (eq item.system.manoever.rwdf.selected "2")}}selected{{/if}}>2 Felder</option>
@@ -80,18 +80,18 @@
 
         <hr>
         {{#if useTargetSelection}}
-        <div class="flexrow" style="margin: 10px 0; justify-content: space-between; align-items: flex-start;">
-            <div class="selected-actors-display" style="flex: 1;">
+        <div class="flexrow target-selection-container">
+            <div class="selected-actors-display selected-actors-display-flex">
                 <div class="selected-actors-list">
                     {{#if selectedActors.length}}
-                        <div style="font-weight: bold; margin-bottom: 5px;">Ausgewählte Ziele:</div>
+                        <div class="selected-actors-title">Ausgewählte Ziele:</div>
                         {{#each selectedActors}}
                             <div>{{this.name}} ({{this.distance}} Distanz)</div>
                         {{/each}}
                     {{/if}}
                 </div>
             </div>
-            <button style="max-width: 150px" type="button" data-action="showNearby">
+            <button class="combat-button-narrow" type="button" data-action="showNearby">
                 <i class="fas fa-users"></i>
                 Andere Akteure
             </button>
@@ -133,7 +133,7 @@
                             />
                         {{/if}}
                         {{#if (ifEq manoever.inputValue.field "TREFFER_ZONE")}}
-                            <select id="{{manoever.id}}TREFFER_ZONE-{{../dialogId}}" name="manoever.inputValue.value" style="max-width: 150px">
+                            <select id="{{manoever.id}}TREFFER_ZONE-{{../dialogId}}" name="manoever.inputValue.value" class="combat-select-narrow">
                                 {{selectOptions ../trefferzonen selected=manoever.inputValue.value}}
                             </select>
                         {{/if}}

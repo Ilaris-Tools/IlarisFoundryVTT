@@ -73,18 +73,18 @@
         {{/if}}
         <hr />
         {{#if useTargetSelection}}
-        <div class="flexrow" style="margin: 10px 0; justify-content: space-between; align-items: flex-start;">
-            <div class="selected-actors-display" style="flex: 1;">
+        <div class="flexrow target-selection-container">
+            <div class="selected-actors-display selected-actors-display-flex">
                 <div class="selected-actors-list">
                     {{#if selectedActors.length}}
-                        <div style="font-weight: bold; margin-bottom: 5px;">Ausgewählte Ziele:</div>
+                        <div class="selected-actors-title">Ausgewählte Ziele:</div>
                         {{#each selectedActors}}
                             <div>{{this.name}} ({{this.distance}} Distanz)</div>
                         {{/each}}
                     {{/if}}
                 </div>
             </div>
-            <button style="max-width: 150px" type="button" data-action="showNearby">
+            <button class="combat-button-narrow" type="button" data-action="showNearby">
                 <i class="fas fa-users"></i>
                 Andere Akteure
             </button>
@@ -133,7 +133,7 @@
                     <select
                         id="{{manoever.id}}TREFFER_ZONE-{{../dialogId}}"
                         name="manoever.inputValue.value"
-                        style="max-width: 150px"
+                        class="combat-select-narrow"
                     >
                         {{selectOptions ../trefferzonen selected=manoever.inputValue.value}}
                     </select>

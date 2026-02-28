@@ -41,7 +41,7 @@ export class TargetSelectionDialog extends Dialog {
             template: 'systems/Ilaris/scripts/combat/templates/dialogs/target_selection.hbs',
             width: 500,
             height: 'auto',
-            classes: ['target-selection-dialog'],
+            classes: ['ilaris', 'combat-dialog', 'target-sel', 'target-selection-dialog'],
             buttons: {},
         }
 
@@ -99,15 +99,15 @@ export class TargetSelectionDialog extends Dialog {
                 switch (t.document.disposition) {
                     case -1:
                         disposition = 'Feindlich'
-                        dispositionClass = 'hostile'
+                        dispositionClass = 'target-sel-hostile'
                         break
                     case 0:
                         disposition = 'Neutral'
-                        dispositionClass = 'neutral'
+                        dispositionClass = 'target-sel-neutral'
                         break
                     case 1:
                         disposition = 'Freundlich'
-                        dispositionClass = 'friendly'
+                        dispositionClass = 'target-sel-friendly'
                         break
                 }
 
@@ -147,10 +147,10 @@ export class TargetSelectionDialog extends Dialog {
             this.close()
         })
         // Handle row clicks using Foundry's event system
-        html.find('.actor-row').on('click', (event) => {
+        html.find('.target-sel-row').on('click', (event) => {
             const row = event.currentTarget
             // Don't handle clicks on the separator
-            if ($(row).hasClass('separator')) return
+            if ($(row).hasClass('target-sel-separator-row')) return
 
             const tokenId = row.dataset.tokenId
 
@@ -168,7 +168,7 @@ export class TargetSelectionDialog extends Dialog {
                 selectionList.text('Keine')
             } else {
                 const selectedNames = html
-                    .find('.actor-row.selected')
+                    .find('.target-sel-row.selected')
                     .map(function () {
                         return $(this).find('td').eq(1).text().trim()
                     })
@@ -188,7 +188,7 @@ export class TargetSelectionDialog extends Dialog {
      * @private
      */
     _handleSelection(html, onSelectionComplete) {
-        const selectedIds = Array.from(html.find('.actor-row.selected')).map((row) => ({
+        const selectedIds = Array.from(html.find('.target-sel-row.selected')).map((row) => ({
             tokenId: row.dataset.tokenId,
             actorId: row.dataset.actorId,
             name: row.cells[1].textContent.trim(),

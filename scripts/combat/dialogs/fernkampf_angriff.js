@@ -7,6 +7,7 @@ import { formatDiceFormula } from '../../core/utilities.js'
 export class FernkampfAngriffDialog extends CombatDialog {
     /** @override */
     static DEFAULT_OPTIONS = {
+        classes: ['fernkampf-dialog'],
         actions: {
             schaden: FernkampfAngriffDialog.#onSchaden,
         },

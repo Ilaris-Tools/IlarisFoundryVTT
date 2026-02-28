@@ -13,6 +13,7 @@ import { ILARIS } from '../../core/config.js'
 export class UebernatuerlichDialog extends CombatDialog {
     /** @override */
     static DEFAULT_OPTIONS = {
+        classes: ['uebernatuerlich-dialog'],
         actions: {
             energieErfolg: UebernatuerlichDialog.#onEnergieErfolg,
             energieMisserfolg: UebernatuerlichDialog.#onEnergieMisserfolg,
