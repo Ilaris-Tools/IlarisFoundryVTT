@@ -4,7 +4,7 @@ import {
     getKampfstilStufe,
     calculateModifiedCost,
     beTraglast,
-} from '../hardcodedvorteile.js'
+} from '../data/hardcodedvorteile.js'
 
 // jest.mock('../hardcodedvorteile.js', () => ({
 //     ...jest.requireActual('../hardcodedvorteile.js'),

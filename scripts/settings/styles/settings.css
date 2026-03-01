@@ -1,0 +1,46 @@
+/* ----------------------------------------- */
+/*  Settings Feature Styles                   */
+/* ----------------------------------------- */
+
+.system-pack {
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #782e22;
+}
+
+.system-pack input[type='checkbox'] {
+  transform: scale(1.2);
+  margin-right: 10px;
+}
+
+.pack-entry {
+  margin-bottom: 4px;
+}
+
+.pack-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.checkbox.disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.checkbox.disabled input[type='checkbox'] {
+  cursor: not-allowed;
+}
+
+.disabled-reason {
+  font-style: italic;
+  color: #782e22;
+  font-size: 0.9em;
+}

@@ -1,0 +1,281 @@
+/* ----------------------------------------- */
+/*  Core System Styles                        */
+/*  Fonts, CSS variables, global utilities    */
+/* ----------------------------------------- */
+
+/* --- Web Fonts --- */
+
+@font-face {
+  font-family: 'Crimson Text';
+  src: url('/systems/Ilaris/assets/fonts/CrimsonText-Regular.ttf');
+}
+
+@font-face {
+  font-family: 'Aniron';
+  src: url('/systems/Ilaris/assets/fonts/anirm___.ttf');
+}
+
+@font-face {
+  font-family: 'Andada';
+  src: url('/systems/Ilaris/assets/fonts/AndadaSC-Regular.otf');
+}
+
+/* --- CSS Custom Properties --- */
+
+:root {
+  /* --font-text: "Crimson Text", serif; */
+  --font-crimson: 'Crimson Text';
+  --font-aniron: 'Aniron';
+  --font-andada: 'Andada';
+}
+
+/* --- Base Ilaris Sheet --- */
+
+.ilaris {
+  min-width: 360px;
+  min-height: 320px;
+}
+
+.ilaris form > * {
+  flex: 0;
+}
+
+.ilaris .form-group.description {
+  flex: 1;
+}
+
+.ilaris .form-group.description label {
+  height: 24px;
+}
+
+.ilaris .form-group.description textarea {
+  height: calc(100% - 24px);
+  resize: none;
+}
+
+.ilaris .titel-input {
+  font-size: 32px;
+  border: None;
+  color: rgb(83, 0, 0);
+  font-family: var(--font-andada);
+}
+
+input.titel-input {
+  font-size: 32px;
+  color: rgb(83, 0, 0);
+  font-family: var(--font-andada);
+}
+
+/* --- Global Utility Classes --- */
+
+.profile-img {
+  border: none;
+}
+
+.editor {
+  height: 100% !important;
+  width: 100%;
+  overflow: auto;
+}
+
+.notes {
+  white-space: pre-line;
+}
+
+.hangingindent {
+  padding-left: 22px;
+  text-indent: -22px;
+}
+
+.round-icon {
+  border-radius: 50%;
+  border-color: #573618;
+  border-width: 2px;
+}
+
+.flex-fest-var {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.icon-small {
+  flex-basis: 20px;
+  flex-grow: 0;
+  flex-shrink: 0;
+  font-size: 15px;
+
+  &.false {
+    color: #b5b3a4;
+  }
+}
+
+.button-icon {
+  height: 3ex;
+  border: none;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.flexrow {
+  margin: 4px 0;
+  align-items: center;
+}
+
+.flexrow .label {
+  min-width: 150px;
+}
+
+.flex_center_center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex_space-between_center {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* --- Custom Icon --- */
+
+.custom-icon,
+.custom-icon-without-hover {
+  display: inline-block;
+  width: 32px;
+  height: 32px;
+  background-image: url("/systems/Ilaris/assets/images/Ilaris/icon_clear.webp");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.custom-icon:hover {
+  filter: drop-shadow(0 0 8px var(--color-shadow-primary));
+  transform: scale(1.1);
+}
+
+.custom-icon-without-hover {
+  margin-bottom: 20px;
+}
+
+/* Make the table cell containing the custom-icon larger and clickable */
+td.rollable.icon-small {
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  padding-right: 8px;
+}
+
+/* Edit and delete icon styling with hover effects */
+.fas.fa-edit,
+.fas.fa-trash {
+  cursor: pointer;
+  transition: all 0.2s ease;
+  padding-right: 8px;
+}
+
+.fas.fa-edit:hover,
+.fas.fa-trash:hover {
+  filter: drop-shadow(0 0 8px var(--color-shadow-primary));
+  transform: scale(1.1);
+}
+
+/* --- FoundryVTT UI Overrides --- */
+
+#pause {
+  .fa-spin {
+    content: url("/systems/Ilaris/assets/images/Ilaris/icon_rot.webp")
+  }
+}
+
+#logo {
+  content: url("/systems/Ilaris/assets/images/Ilaris/Ilaris.webp")
+}
+
+/* --- Form Inputs --- */
+
+input[name="name"] {
+  border: none;
+  outline: none;
+  background: transparent;
+  text-align: center;
+  font-family: var(--font-aniron);
+  font-size: 18px;
+}
+
+/* Erzwinge native Spinner */
+input[type="number"] {
+  appearance: auto !important;
+  -webkit-appearance: auto !important;
+  -moz-appearance: auto !important;
+}
+
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: auto !important;
+  appearance: auto !important;
+  margin: 0 !important;
+  display: inline-block !important;
+}
+
+input[type='text']:focus,
+input[type='number']:focus,
+select:focus,
+textarea:focus {
+  border-color: #782e22;
+  box-shadow: 0 0 3px rgba(120, 46, 34, 0.3);
+}
+
+hr {
+  margin: 16px 0;
+  border: 0;
+  border-top: 1px solid #353535;
+}
+
+/* --- Validation Feedback --- */
+
+.validation-icon {
+  font-size: 1.2em;
+  flex: 0;
+  margin-left: 16px;
+}
+
+.regex-check:valid + .validation-icon::before {
+  content: '✔';
+  color: green;
+}
+
+.regex-check:valid {
+  border-color: green;
+  border-width: 2px;
+}
+
+.regex-check:invalid + .validation-icon::before {
+  content: '✘';
+  color: red;
+}
+
+.regex-check:invalid {
+  border-color: red;
+  border-width: 2px;
+}
+
+.maximum-load-exceeded {
+  display: flex;
+  justify-content: center;
+  border: red 3px solid;
+}
+
+/* --- Tooltip --- */
+
+#tooltip {
+    text-align: left !important;
+    white-space: pre-line;
+    max-width: 400px;
+    line-height: 1.4;
+}

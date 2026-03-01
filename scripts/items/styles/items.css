@@ -1,0 +1,114 @@
+/* ----------------------------------------- */
+/*  Items Feature Styles                      */
+/* ----------------------------------------- */
+
+.ilaris.item .window-content {
+  overflow: auto;
+
+  textarea {
+    width: 100%;
+  }
+}
+
+.ilaris.item .window-content .sheet-header {
+  display: flex;
+  align-items: center;
+
+  img {
+    height: 100px;
+  }
+}
+
+/* Item toggling states */
+.item-toggle.false {
+  color: #989898;
+}
+
+.item-toggle.active {
+  color: black;
+}
+
+.toggle-bool.false {
+  color: #989898;
+}
+
+.toggle-bool.active {
+  color: #00990d;
+}
+
+/* Sync items button styling */
+.sync-items {
+  color: #4f4f4f;
+  cursor: pointer;
+  margin-left: 10px;
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+.sync-items:hover {
+  color: #2e5c8a;
+  transform: scale(1.1);
+}
+
+.sync-items i {
+  margin-right: 3px;
+}
+
+/* Backward compatibility for old class name */
+.sync-kampfstile {
+  color: #4f4f4f;
+  cursor: pointer;
+  margin-left: 10px;
+  font-size: 14px;
+  transition: color 0.2s ease;
+}
+
+.sync-kampfstile:hover {
+  color: #2e5c8a;
+  transform: scale(1.1);
+}
+
+.sync-kampfstile i {
+  margin-right: 3px;
+}
+
+/* Manoever prerequisites layout */
+.multi-select {
+  display: flex !important;
+}
+
+.manoever-voraussetzungen {
+  margin-top: 8px;
+  margin-bottom: 8px;
+  .voraussetzung {
+    margin: 8px 16px 0 16px;
+    .row {
+      margin-bottom: 8px
+    }
+    .delete-button {
+      margin-left: 8px;
+      margin-top: 2px;
+    }
+  }
+}
+
+/* Maneuver chip-based selector styling */
+.maneuver-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    min-height: 20px;
+    margin-bottom: 8px;
+}
+
+.maneuver-chip {
+    border: 1px solid #3b3b3a;
+    border-radius: 16px;
+    padding: 4px 8px;
+}
+
+.maneuver-chip .remove-maneuver {
+    cursor: pointer;
+    font-size: 10px;
+    padding-left: 4px;
+}

@@ -1,0 +1,267 @@
+import { IlarisActorSheet } from './actor.js'
+import * as settings from '../../settings/index.js'
+
+export class HeldenSheet extends IlarisActorSheet {
+    /** @override */
+    static DEFAULT_OPTIONS = {
+        classes: ['helden'],
+        position: {
+            width: 950,
+            height: 750,
+        },
+        window: {
+            icon: 'fa-solid fa-person',
+        },
+        actions: {
+            schipsClick: HeldenSheet.schipsClick,
+            triStateClick: HeldenSheet.triStateClick,
+            toggleItem: HeldenSheet.onToggleItem,
+        },
+    }
+
+    /** @override */
+    get title() {
+        return `Held: ${this.actor.name}`
+    }
+
+    /** @override */
+    static PARTS = {
+        header: {
+            template: 'systems/Ilaris/scripts/actors/templates/held/held-header.hbs',
+        },
+        sidebar: {
+            template: 'systems/Ilaris/scripts/actors/templates/held/held-sidebar.hbs',
+        },
+        tabs: {
+            template: 'systems/Ilaris/scripts/actors/templates/held/held-navigation.hbs',
+        },
+        attribute: {
+            template: 'systems/Ilaris/scripts/actors/templates/held/tabs/attribute.hbs',
+            scrollable: [''],
+        },
+        fertigkeiten: {
+            template: 'systems/Ilaris/scripts/actors/templates/held/tabs/fertigkeiten.hbs',
+            scrollable: [''],
+        },
+        uebernatuerlich: {
+            template: 'systems/Ilaris/scripts/actors/templates/held/tabs/uebernatuerlich.hbs',
+            scrollable: [''],
+        },
+        kampf: {
+            template: 'systems/Ilaris/scripts/actors/templates/held/tabs/kampf.hbs',
+            scrollable: [''],
+        },
+        inventar: {
+            template: 'systems/Ilaris/scripts/actors/templates/held/tabs/inventar.hbs',
+            scrollable: [''],
+        },
+        notes: {
+            template: 'systems/Ilaris/scripts/actors/templates/held/tabs/notes.hbs',
+            scrollable: [''],
+        },
+        effects: {
+            template: 'systems/Ilaris/scripts/actors/templates/held/tabs/effekte.hbs',
+            scrollable: [''],
+        },
+    }
+
+    /** @override */
+    static TABS = {
+        primary: {
+            initial: 'fertigkeiten',
+            tabs: [
+                { id: 'attribute', label: 'Attribute' },
+                { id: 'fertigkeiten', label: 'Fertigkeiten' },
+                { id: 'uebernatuerlich', label: 'Übernatürlich' },
+                { id: 'kampf', label: 'Kampf' },
+                { id: 'inventar', label: 'Inventar' },
+                { id: 'notes', label: 'Notizen' },
+                { id: 'effects', label: 'Effekte' },
+            ],
+        },
+    }
+
+    /** @override */
+    async _prepareContext(options) {
+        const context = await super._prepareContext(options)
+
+        // Add weapon space requirement setting
+        context.isWeaponSpaceRequirementActive = game.settings.get(
+            settings.ConfigureGameSettingsCategories.Ilaris,
+            settings.IlarisGameSettingNames.weaponSpaceRequirement,
+        )
+
+        // Add applied effects
+        context.effects = this.actor.appliedEffects
+
+        // Add tab data for template
+        context.tabs = this._prepareTabs('primary')
+
+        // Enrich content for display
+        context.notesHTML = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
+            this.document.system.notes,
+            {
+                secrets: this.document.isOwner,
+                relativeTo: this.document,
+            },
+        )
+
+        return context
+    }
+
+    async _preparePartContext(partId, context) {
+        switch (partId) {
+            case 'attribute':
+            case 'fertigkeiten':
+            case 'uebernatuerlich':
+            case 'kampf':
+            case 'inventar':
+            case 'notes':
+            case 'effects':
+                context.tab = context.tabs[partId]
+                break
+            default:
+        }
+
+        return context
+    }
+
+    /**
+     * Handle schicksalspunkt (fate point) button clicks
+     * @param {PointerEvent} event - The click event
+     * @param {HTMLElement} target - The button element
+     */
+    static async schipsClick(event, target) {
+        try {
+            const isFilled = target.classList.contains('filled')
+            const currentValue = this.actor.system.schips.schips_stern
+            const newValue = isFilled ? currentValue - 1 : currentValue + 1
+
+            await this.actor.update({
+                'system.schips.schips_stern': newValue,
+            })
+            return this.render()
+        } catch (err) {
+            console.error('ILARIS | Error updating schips:', err)
+            ui.notifications.error('Fehler beim Aktualisieren der Schicksalspunkte.')
+        }
+    }
+
+    /**
+     * Handle tri-state button clicks for health conditions (wounds/exhaustion)
+     * @param {PointerEvent} event - The click event
+     * @param {HTMLElement} target - The button element
+     */
+    static async triStateClick(event, target) {
+        try {
+            let state = parseInt(target.dataset.state) || 0
+
+            // Cycle through states: 0 -> 1 -> 2 -> 0
+            state = (state + 1) % 3
+            target.dataset.state = state
+
+            // Find all tri-state buttons in the same container
+            const parentContainer = target.closest('#lebensleiste')
+            if (!parentContainer) return
+
+            const buttons = Array.from(
+                parentContainer.querySelectorAll('[data-action="triStateClick"]'),
+            )
+            const wunden = buttons.filter((btn) => parseInt(btn.dataset.state) === 1).length
+            const erschoepfung = buttons.filter((btn) => parseInt(btn.dataset.state) === 2).length
+
+            await this.actor.update({
+                'system.gesundheit.wunden': wunden,
+                'system.gesundheit.erschoepfung': erschoepfung,
+            })
+
+            // Update open combat dialogs with debouncing
+            if (this._triStateUpdateTimeout) {
+                clearTimeout(this._triStateUpdateTimeout)
+            }
+
+            this._triStateUpdateTimeout = setTimeout(() => {
+                this._updateOpenCombatDialogs()
+            }, 300)
+
+            return this.render()
+        } catch (err) {
+            console.error('ILARIS | Error updating health state:', err)
+            ui.notifications.error('Fehler beim Aktualisieren des Gesundheitszustands.')
+        }
+    }
+
+    /**
+     * Toggle item equipment state (hauptwaffe/nebenwaffe)
+     * @param {PointerEvent} event - The click event
+     * @param {HTMLElement} target - The target element with data-action
+     */
+    static async onToggleItem(event, target) {
+        try {
+            const itemId = target.dataset.itemid
+            const item = this.actor.items.get(itemId)
+            if (!item) {
+                ui.notifications.warn('Item nicht gefunden.')
+                return
+            }
+
+            const toggletype = target.dataset.toggletype
+            let attr = `system.${toggletype}`
+            const otherHandType = toggletype === 'hauptwaffe' ? 'nebenwaffe' : 'hauptwaffe'
+            const otherHandAttr = `system.${otherHandType}`
+
+            if (toggletype === 'hauptwaffe' || toggletype === 'nebenwaffe') {
+                const item_status = foundry.utils.getProperty(item, attr)
+
+                // Handle two-handed ranged weapons
+                if (
+                    item_status &&
+                    item.type === 'fernkampfwaffe' &&
+                    item.system.computed?.handsRequired === 2
+                ) {
+                    await this._unequipWeapon(itemId)
+                    return
+                }
+
+                if (item_status === false) {
+                    // Handle switching hands for one-handed weapons
+                    if (
+                        (toggletype === 'hauptwaffe' && item.system.nebenwaffe) ||
+                        (toggletype === 'nebenwaffe' && item.system.hauptwaffe)
+                    ) {
+                        if (item.system.computed?.handsRequired !== 2) {
+                            await item.update({ [otherHandAttr]: false })
+                        }
+                    }
+
+                    // Unequip two-handed ranged weapons when equipping any other weapon
+                    await this._unequipTwoHandedRangedWeapons()
+
+                    // If equipping a two-handed weapon, unequip all other weapons
+                    if (item.system.computed?.handsRequired === 2) {
+                        await this._unequipAllWeaponsExcept(itemId)
+                    } else {
+                        // For one-handed weapons, only unequip from the toggled hand
+                        await this._unequipHandWeapons(toggletype)
+
+                        // If a two-handed weapon is equipped in both hands, unequip it
+                        await this._unequipTwoHandedWeaponsInBothHands()
+                    }
+                }
+
+                // For two-handed weapons, always equip in both hands by default
+                if (item.system.computed?.handsRequired === 2 && !item_status) {
+                    await item.update({ [otherHandAttr]: true })
+                }
+
+                await item.update({ [attr]: !item_status })
+            } else {
+                attr = `system.${toggletype}`
+                await item.update({ [attr]: !foundry.utils.getProperty(item, attr) })
+            }
+        } catch (err) {
+            console.error('ILARIS | Error toggling item:', err)
+            ui.notifications.error('Fehler beim Umschalten des Items.')
+        }
+    }
+}

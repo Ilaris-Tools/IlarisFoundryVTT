@@ -1,0 +1,44 @@
+<div id="selected-actors" class="target-sel-selected-actors">
+    <strong>Ausgewählte Akteure:</strong> <span id="selection-list">Keine</span>
+</div>
+<table id="target-selection-table" class="target-sel-table-full">
+    <thead>
+        <tr>
+            <th class="target-sel-th target-sel-col-image">Bild</th>
+            <th class="target-sel-th target-sel-col-name">Name</th>
+            <th class="target-sel-th target-sel-col-distance">Distanz</th>
+            <th class="target-sel-th target-sel-col-status">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr class="target-sel-row target-sel-current" data-token-id="{{currentToken.id}}" data-actor-id="{{currentToken.actorId}}" data-distance="0">
+            <td class="target-sel-td"><img src="{{currentToken.img}}" class="target-sel-actor-image" alt="{{currentToken.name}}"></td>
+            <td class="target-sel-td"><i class="fas fa-user"></i> {{currentToken.name}}</td>
+            <td class="target-sel-td">0</td>
+            <td class="target-sel-td">Selbst</td>
+        </tr>
+        <tr class="target-sel-separator-row">
+            <td class="target-sel-td" colspan="4"><hr class="target-sel-separator"></td>
+        </tr>
+        {{#each tokens}}
+        <tr class="target-sel-row" data-token-id="{{this.id}}" data-actor-id="{{this.actorId}}" data-distance="{{this.distance}}">
+            <td class="target-sel-td"><img src="{{this.img}}" class="target-sel-actor-image" alt="{{this.name}}"></td>
+            <td class="target-sel-td">{{this.name}}</td>
+            <td class="target-sel-td">{{this.distance}}</td>
+            <td class="target-sel-td {{this.dispositionClass}}">{{this.disposition}}</td>
+        </tr>
+        {{/each}}
+    </tbody>
+</table>
+
+<div class="flexrow">
+    <button class="submit" type="button">
+        <i class="fas fa-check"></i>
+        Auswählen
+    </button>
+    <button class="close" type="button">
+        <i class="fas fa-times"></i>
+        Schließen
+    </button>
+</div>
+

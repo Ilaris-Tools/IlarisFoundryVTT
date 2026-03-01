@@ -1,0 +1,113 @@
+<section class="sidebar" data-group="primary">
+    <div class="herosidebar">
+        <div>
+        <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100" />
+        </div>
+        <div class="attribute-grid">
+        {{#each (sortAlphabetically actor.system.attribute) as |attributPair|}}
+        <div class="attribute-wrapper onhover" data-action="rollable" data-rolltype="fertigkeit_diag" data-probetype="attribut" data-attribut="{{attributPair.[0]}}" title="{{attributPair.[0]}}">
+            <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/{{attributPair.[0]}}.webp" />
+            <label class="attribute-number">
+            {{attributPair.[1].pw}}
+            </label>
+        </div>
+        {{/each}}
+        </div>
+        <div class="icon-row">
+            <div class="icon-overlay-container">
+                <img src="/systems/Ilaris/assets/images/Ilaris/ws.svg" title="WS" />
+                <span class="overlay-label">{{actor.system.abgeleitete.ws}}</span>
+            </div>
+            <div class="icon-overlay-container">
+                <img src="/systems/Ilaris/assets/images/Ilaris/wsstern.webp" title="WS*" />
+                <span class="overlay-label">{{actor.system.abgeleitete.ws_stern}}</span>
+            </div>
+            <div class="attribute-wrapper onhover" data-action="rollable" data-rolltype="simpleprobe_diag" data-name="Magierresistenz"
+            data-pw="{{actor.system.abgeleitete.mr}}">
+                <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/mr.webp" title="MR" />
+                <label class="attribute-number" title="MR">
+                {{actor.system.abgeleitete.mr}}
+                </label>
+            </div>
+            <div class="icon-overlay-container">
+                <img src="/systems/Ilaris/assets/images/Ilaris/ini.webp" title="INI" />
+                <span class="overlay-label">{{actor.system.abgeleitete.ini}}</span>
+            </div>
+            <div class="icon-overlay-container"> <img src="/systems/Ilaris/assets/images/Ilaris/gs.svg" title="GS" />
+                <span class="overlay-label">{{actor.system.abgeleitete.gs}}</span>
+            </div>
+            <div class="icon-overlay-container">
+                <img src="/systems/Ilaris/assets/images/Ilaris/DH.webp" title="DH" />
+                <span class="overlay-label">{{actor.system.abgeleitete.dh}}</span>
+            </div>
+        </div>
+        <div class="energy-modifiers">
+            <div class="hero-energy-font-small">
+                {{#if actor.system.abgeleitete.zauberer}}
+                <label class="onhover hero-energy-label-spacing" data-action="ausklappView" data-ausklappentarget="aspzugekauft"><b>AsP:</b></label>
+                <label class="hero-energy-label-spacing">{{actor.system.abgeleitete.asp}}</label>
+            
+                <label class="hero-energy-label-compact"><b>gAsP:</b></label>
+                <input class="hero-energy-input" name="system.abgeleitete.gasp" value="{{actor.system.abgeleitete.gasp}}" type="number" />
+            
+                <label class="hero-energy-label-compact"><b>AsP*:</b></label>
+                <input class="hero-energy-input" name="system.abgeleitete.asp_stern" value="{{actor.system.abgeleitete.asp_stern}}" type="number" data-dtype="Number" />
+            
+                <span id="ausklappen-view-aspzugekauft" class="hero-energy-expandable">
+                    <label class="hero-energy-label-compact">Zugekauft:</label>
+                    <input class="hero-energy-input" name="system.abgeleitete.asp_zugekauft" value="{{actor.system.abgeleitete.asp_zugekauft}}" type="number" data-dtype="Number" />
+                </span>
+                <br>
+                {{/if}}
+            
+                {{#if actor.system.abgeleitete.geweihter}}
+                <label class="onhover hero-energy-label-spacing" data-action="ausklappView" data-ausklappentarget="kapzugekauft"><b>KaP:</b></label>
+                <label class="hero-energy-label-spacing">{{actor.system.abgeleitete.kap}}</label>
+            
+                <label class="hero-energy-label-compact"><b>gKaP:</b></label>
+                <input class="hero-energy-input" name="system.abgeleitete.gkap" value="{{actor.system.abgeleitete.gkap}}" type="number" data-dtype="Number" />
+            
+                <label class="hero-energy-label-compact"><b>KaP*:</b></label>
+                <input class="hero-energy-input" name="system.abgeleitete.kap_stern" value="{{actor.system.abgeleitete.kap_stern}}" type="number" data-dtype="Number" />
+            
+                <span id="ausklappen-view-kapzugekauft" class="hero-energy-expandable">
+                    <label class="hero-energy-label-compact">Zugekauft:</label>
+                    <input class="hero-energy-input" name="system.abgeleitete.kap_zugekauft" value="{{actor.system.abgeleitete.kap_zugekauft}}" type="number" data-dtype="Number" />
+                </span>
+                <br />
+                {{/if}}
+            </div>
+            <div class="hero-energy-section-spacing hero-energy-section-spacing-lg">
+                <a class="icon-small hero-wound-toggle {{#if actor.system.gesundheit.wundenignorieren}}true{{/if}}"
+                data-action="toggleBool"
+                data-togglevariable="system.gesundheit.wundenignorieren">
+                Wundabzüge
+                {{#if actor.system.gesundheit.wundenignorieren}}
+                ignorieren
+                {{else}}
+                nicht ignorieren
+                {{/if}}
+                </a>
+            </div>
+            <div class="flexrow hero-energy-section-spacing">
+                <b><label class="hero-global-mod-label">{{actor.system.abgeleitete.globalermoddisplay}}</label></b>
+            </div>
+            <div class="hero-energy-section-spacing">
+                <label><b>Manueller Mod:</b></label>
+                <input class="hero-energy-input"
+                    name="system.modifikatoren.manuellermod"
+                    value="{{actor.system.modifikatoren.manuellermod}}"
+                    type="number"
+                        data-dtype="Number"
+                    />
+            </div>
+        </div>    
+  </div>
+  {{#unless (gameSetting "hideSyncKampfstileButton")}}
+    <div class="hero-sync-button-wrapper">
+        <a data-action="syncItems" title="Synchronisiere alle Vorteile, Übernatürliche Talente und Waffen mit ihren Kompendium-Gegenstücken. Du kannst den Button in den Gamesettings deaktivieren.">
+            <i class="fas fa-sync-alt"></i> Charakter mit Kompendium synchronisieren
+        </a>
+    </div>
+  {{/unless}}
+</section>
