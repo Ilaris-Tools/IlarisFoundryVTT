@@ -3,7 +3,7 @@ import { IlarisActorSheet } from './actor.js'
 export class KreaturSheet extends IlarisActorSheet {
     /** @override */
     static DEFAULT_OPTIONS = {
-        classes: ['ilaris', 'kreatur'],
+        classes: ['kreaturen'],
         window: {
             icon: 'fa-solid fa-dragon',
         },
