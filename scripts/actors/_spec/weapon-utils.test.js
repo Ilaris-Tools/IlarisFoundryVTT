@@ -7,7 +7,7 @@ import {
     applyModifierToWeapons,
     _executeKampfstilMethodsAndApplyModifiers,
     manoverAusgleich,
-} from '../weapon-utils.js'
+} from '../data/actor-weapon-utils.js'
 
 describe('weapon-requirements.js', () => {
     // Mock weapon objects for testing

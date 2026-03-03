@@ -8,7 +8,7 @@ export class TalentePacksSettings extends FormApplication {
         return foundry.utils.mergeObject(super.defaultOptions, {
             id: 'talente-packs-settings',
             title: 'Talente Kompendien Einstellungen',
-            template: 'systems/Ilaris/templates/settings/talente-packs.hbs',
+            template: 'systems/Ilaris/scripts/settings/templates/talente-packs.hbs',
             width: 500,
             height: 'auto',
             closeOnSubmit: true,

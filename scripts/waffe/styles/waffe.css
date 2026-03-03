@@ -1,0 +1,14 @@
+/* ----------------------------------------- */
+/*  Waffe (Weapon) Feature Styles             */
+/* ----------------------------------------- */
+
+/* Weapon action button displayed in chat / attack dialogs */
+.button-icon-nahkampf {
+  height: 4ex;
+  border: none;
+  /* display:inline-block; */
+  display: block;
+  /* vertical-align:middle; */
+  margin-left: auto;
+  margin-right: auto;
+}

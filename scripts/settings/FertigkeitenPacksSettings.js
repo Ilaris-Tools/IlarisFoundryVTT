@@ -8,7 +8,7 @@ export class FertigkeitenPacksSettings extends FormApplication {
         return foundry.utils.mergeObject(super.defaultOptions, {
             id: 'fertigkeiten-packs-settings',
             title: 'Fertigkeiten Kompendien Einstellungen',
-            template: 'systems/Ilaris/templates/settings/fertigkeiten-packs.hbs',
+            template: 'systems/Ilaris/scripts/settings/templates/fertigkeiten-packs.hbs',
             width: 500,
             height: 'auto',
             closeOnSubmit: true,

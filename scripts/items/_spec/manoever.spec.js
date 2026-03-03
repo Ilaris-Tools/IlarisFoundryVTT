@@ -1,5 +1,5 @@
 // Mock the parent class
-jest.mock('../item.js', () => ({
+jest.mock('../data/item.js', () => ({
     IlarisItem: class MockIlarisItem {
         constructor(data = {}) {
             this.name = data.name || 'Test Item'
@@ -9,7 +9,7 @@ jest.mock('../item.js', () => ({
 }))
 
 // Import the actual class we want to test
-const { ManoeverItem } = require('../manoever.js')
+const { ManoeverItem } = require('../data/manoever.js')
 
 describe('ManoeverItem', () => {
     let manoever

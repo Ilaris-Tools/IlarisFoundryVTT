@@ -1,0 +1,121 @@
+/* ----------------------------------------- */
+/*  Actors Sidebar / Table Utility Styles     */
+/* ----------------------------------------- */
+
+/* --- Icon Overlay (used in sidebar energy/LP display) --- */
+
+.icon-overlay-container {
+  position: relative;
+  display: inline-block;
+  width: 55px;
+  height: 55px;
+}
+
+.icon-overlay-container img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: none;
+}
+
+.overlay-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: black;
+  font-weight: bold;
+  font-size: 20px;
+  text-shadow: 0 0 2px black;
+  pointer-events: none;
+}
+
+/* --- Lebensleiste (HP bar) --- */
+
+.ilaris.actor.helden .window-content .heroattributes #lebensleiste {
+  max-width: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+/* --- TriState Buttons (LP tracker) --- */
+
+.triStateBtn {
+  width: 30px;
+  height: 30px;
+  border: 2px solid brown;
+  border-radius: 0;
+  cursor: pointer;
+  background-color: #ac3100;
+  position: relative;
+}
+
+/* Hintergrundfarbe für die ersten 4 Buttons */
+#lebensleiste .triStateBtn:nth-child(-n+5) {
+  background-color: #f5f5dc;
+}
+
+/* Zustand 1: Kreuz */
+.state-1::before,
+.state-1::after {
+  content: "";
+  position: absolute;
+  top: 45%;
+  left: -7%;
+  width: 30px;
+  height: 4px;
+  background-color: black;
+}
+
+.state-1::before {
+  transform: rotate(45deg);
+}
+
+.state-1::after {
+  transform: rotate(-45deg);
+}
+
+/* Zustand 2: einfache diagonale Linie */
+.state-2::after {
+  content: "";
+  position: absolute;
+  top: 45%;
+  left: -7%;
+  width: 30px;
+  height: 4px;
+  background-color: black;
+  transform: rotate(135deg);
+}
+
+/* --- Table / Row Striping --- */
+
+.twokindrow div:nth-child(odd) {
+  background-color: #ece3cd;
+}
+
+.twokindrow {
+  width: 100%;
+  column-width: auto;
+  background-color: #e5c4a9;
+}
+
+.table {
+  width: calc(100% - 1px);
+  border-collapse: collapse;
+}
+
+tr:nth-child(4n+1) {
+  background-color: #e5c4a9;
+}
+
+tr:not(:nth-child(4n+1)) {
+    background-color: #ece3cd;
+}
+
+.table th {
+  color: black;
+  text-shadow: none;
+  padding-left: 0;
+}
