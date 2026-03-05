@@ -72,6 +72,14 @@ input.titel-input {
   border: none;
 }
 
+img[data-action="editImage"] {
+  cursor: pointer;
+}
+
+img[data-action="editImage"]:hover {
+  opacity: 0.8;
+}
+
 .editor {
   height: 100% !important;
   width: 100%;

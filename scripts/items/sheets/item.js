@@ -12,6 +12,7 @@ export class IlarisItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
         tag: 'form',
         actions: {
             deleteItem: IlarisItemSheet.#onDeleteItem,
+            editImage: IlarisItemSheet.#onEditImage,
         },
         form: {
             handler: IlarisItemSheet.#onSubmitForm,
@@ -95,6 +96,22 @@ export class IlarisItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
             console.error('Item delete failed:', error)
             ui.notifications?.error(game.i18n.format('ERROR.ItemDelete', { error: error.message }))
         }
+    }
+
+    /**
+     * Handle item image editing
+     * @param {PointerEvent} event - The click event
+     * @param {HTMLElement} target - The clicked element
+     */
+    static #onEditImage(event, target) {
+        const fp = new FilePicker({
+            type: 'image',
+            current: this.item.img,
+            callback: (path) => {
+                this.item.update({ img: path })
+            },
+        })
+        fp.browse()
     }
 
     /** @override */
