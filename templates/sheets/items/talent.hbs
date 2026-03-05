@@ -2,7 +2,10 @@
 {{log 'talent' this}}
 <section class="{{cssClass}} flexcol" autocomplete="off">
     <header class="sheet-header">
-        <img src="{{item.img}}" data-edit="img" title="{{item.name}}" height="64" width="64" />
+        <div class="image-edit-container">
+            <img src="{{item.img}}" data-action="editImage" title="{{item.name}}" height="64" width="64" />
+            <i class="fas fa-edit image-edit-overlay"></i>
+        </div>
         <h1>
             <input
                 name="name"

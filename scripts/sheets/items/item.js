@@ -12,6 +12,7 @@ export class IlarisItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
         tag: 'form',
         actions: {
             deleteItem: IlarisItemSheet.#onDeleteItem,
+            editImage: IlarisItemSheet.#onEditImage,
         },
         form: {
             handler: IlarisItemSheet.#onSubmitForm,
@@ -97,6 +98,24 @@ export class IlarisItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
             console.error('Item delete failed:', error)
             ui.notifications?.error(game.i18n.format('ERROR.ItemDelete', { error: error.message }))
         }
+    }
+
+    /**
+     * Handle click on item image to open file picker for image editing
+     * @param {PointerEvent} event - The click event
+     * @param {HTMLElement} target - The clicked element
+     */
+    static async #onEditImage(event, target) {
+        const attr = target.dataset.edit ?? 'img'
+        const current = foundry.utils.getProperty(this.item, attr)
+        const fp = new FilePicker({
+            type: 'image',
+            current: current,
+            callback: (path) => {
+                this.item.update({ [attr]: path })
+            },
+        })
+        fp.browse()
     }
 
     /** @override */

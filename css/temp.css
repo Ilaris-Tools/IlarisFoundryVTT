@@ -399,6 +399,35 @@ td.rollable.icon-small {
   border: none;
 }
 
+/* Image edit container with hover overlay */
+.image-edit-container {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+}
+
+.image-edit-container .image-edit-overlay {
+  position: absolute;
+  bottom: 4px;
+  right: 4px;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.55);
+  border-radius: 3px;
+  padding: 2px 4px;
+  font-size: 12px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.image-edit-container:hover .image-edit-overlay {
+  opacity: 1;
+}
+
+.image-edit-container img {
+  display: block;
+}
+
 .ilaris.actor.helden .window-content .heroattributes #lebensleiste {
   max-width: 800px;
   display: flex;

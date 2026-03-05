@@ -6,7 +6,10 @@
                 <input class="titel-input" style="" name="name" type="text" value="{{actor.name}}" placeholder="Name"/>
                 <textarea rows="2" name="system.kurzbeschreibung" type="text">{{actor.system.kurzbeschreibung}}</textarea>
             </div>
-            <img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/>
+            <div class="image-edit-container">
+                <img class="profile-img" src="{{actor.img}}" data-action="editImage" title="{{actor.name}}" height="100" width="100"/>
+                <i class="fas fa-edit image-edit-overlay"></i>
+            </div>
         </div>
     </header>
     <div style="clear: both"></div>

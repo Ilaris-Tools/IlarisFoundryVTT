@@ -29,6 +29,7 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             itemDelete: IlarisActorSheet.onItemDelete,
             toggleBool: IlarisActorSheet.onToggleBool,
             syncItems: IlarisActorSheet.onSyncItems,
+            editImage: IlarisActorSheet.onEditImage,
         },
     }
 
@@ -75,6 +76,24 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         for (const elem of hpUpdates) {
             elem.addEventListener('input', (ev) => this._onHpUpdate(ev))
         }
+    }
+
+    /**
+     * Handle click on actor image to open file picker for image editing
+     * @param {PointerEvent} event - The click event
+     * @param {HTMLElement} target - The target element with data-action
+     */
+    static async onEditImage(event, target) {
+        const attr = target.dataset.edit ?? 'img'
+        const current = foundry.utils.getProperty(this.actor, attr)
+        const fp = new FilePicker({
+            type: 'image',
+            current: current,
+            callback: (path) => {
+                this.actor.update({ [attr]: path })
+            },
+        })
+        fp.browse()
     }
 
     /**
