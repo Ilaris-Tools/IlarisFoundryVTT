@@ -29,6 +29,7 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             itemDelete: IlarisActorSheet.onItemDelete,
             toggleBool: IlarisActorSheet.onToggleBool,
             syncItems: IlarisActorSheet.onSyncItems,
+            editImage: IlarisActorSheet.onEditImage,
         },
     }
 
@@ -455,6 +456,22 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         } else {
             super._onDropItemCreate(item)
         }
+    }
+
+    /**
+     * Handle actor image editing
+     * @param {PointerEvent} event - The click event
+     * @param {HTMLElement} target - The target element with data-action
+     */
+    static onEditImage(event, target) {
+        const fp = new FilePicker({
+            type: 'image',
+            current: this.actor.img,
+            callback: (path) => {
+                this.actor.update({ img: path })
+            },
+        })
+        fp.browse()
     }
 
     /**
