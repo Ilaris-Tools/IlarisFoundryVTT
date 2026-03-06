@@ -42,7 +42,7 @@ export class WaffeBaseSheet extends IlarisItemSheet {
         if (!Array.isArray(eigenschaften)) return
 
         // Import parser utilities
-        const { normalizeEigenschaften } = await import('../../items/utils/eigenschaft-parser.js')
+        const { normalizeEigenschaften } = await import('../properties/utils/eigenschaft-parser.js')
 
         // Normalize eigenschaften to object format
         const normalized = normalizeEigenschaften(eigenschaften)
