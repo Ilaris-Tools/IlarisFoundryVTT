@@ -5,6 +5,7 @@
 ### v13.0.1
 
 - fix Effekt in Effekt-Item hinzufügen funktioniert nicht oder sonstige Aktionen
+- fix Speicherplatz Bug für Items, die nicht auf Actor liegen
 
 ### v13.0.0
 
