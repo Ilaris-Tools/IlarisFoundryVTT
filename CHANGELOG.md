@@ -2,6 +2,11 @@
 
 ## v13
 
+### v13.0.1
+
+- fix Effekt in Effekt-Item und Vorteile hinzufügen funktioniert nicht oder sonstige Aktionen
+- fix Speicherplatz Bug für Items, die nicht auf Actor liegen
+
 ### v13.0.0
 
 #### Breaking Change
