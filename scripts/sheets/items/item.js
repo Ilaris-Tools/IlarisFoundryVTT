@@ -43,14 +43,14 @@ export class IlarisItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
         const notInPack = this.document.actor?.pack == null
         context.item = this.item
 
-        context.speicherplatz_list = this.actor.misc.speicherplatz_list.map((platz) => ({
-            value: platz,
-            label: platz,
-        }))
-
-        console.log(context.speicherplatz_list)
-
         context.hasOwner = hasActor && isOwner && notInPack
+
+        if (context.hasOwner) {
+            context.speicherplatz_list = this.actor.misc.speicherplatz_list.map((platz) => ({
+                value: platz,
+                label: platz,
+            }))
+        }
 
         // Make CONFIG.ILARIS available in all templates as 'config' for consistency with actor sheets
         context.config = CONFIG.ILARIS
