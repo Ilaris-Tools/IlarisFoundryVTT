@@ -1,10 +1,16 @@
 import { IlarisItemSheet } from './item.js'
-import { EffectsManager } from '../../effects/effects-manager.js'
+import { EffectsManager } from '../common/effects-manager.js'
 
 export class VorteilSheet extends IlarisItemSheet {
     /** @override */
     static DEFAULT_OPTIONS = {
         classes: ['ilaris', 'sheet', 'item', 'vorteil'],
+        actions: {
+            create: VorteilSheet.#onEffectControl,
+            edit: VorteilSheet.#onEffectControl,
+            delete: VorteilSheet.#onEffectControl,
+            toggle: VorteilSheet.#onEffectControl,
+        },
     }
 
     /** @override */
@@ -25,12 +31,26 @@ export class VorteilSheet extends IlarisItemSheet {
         return EffectsManager.prepareEffectsData.call(this, context)
     }
 
-    /** @override */
-    _onRender(context, options) {
-        super._onRender(context, options)
+    /**
+     * Handle effect control buttons (create, edit, delete, toggle)
+     * @param {PointerEvent} event - The originating click event
+     * @param {HTMLElement} target - The clicked element
+     * @private
+     */
+    static async #onEffectControl(event, target) {
+        const action = target.dataset.action
+        const effectId = target.dataset.effectId
 
-        // Use the effects manager for effect controls
-        EffectsManager.activateEffectListeners.call(this, this.element)
+        switch (action) {
+            case 'create':
+                return this._createEffect()
+            case 'edit':
+                return this._editEffect(effectId)
+            case 'delete':
+                return this._deleteEffect(effectId)
+            case 'toggle':
+                return this._toggleEffect(effectId)
+        }
     }
 }
 
