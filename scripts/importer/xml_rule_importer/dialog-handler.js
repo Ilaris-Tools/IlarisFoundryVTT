@@ -9,7 +9,7 @@ export class DialogHandler {
      */
     static async showRuleImportDialog(onImport) {
         const content = await renderTemplate(
-            'systems/Ilaris/templates/importer/rule-import-dialog.hbs',
+            'systems/Ilaris/scripts/importer/templates/rule-import-dialog.hbs',
         )
 
         new Dialog({

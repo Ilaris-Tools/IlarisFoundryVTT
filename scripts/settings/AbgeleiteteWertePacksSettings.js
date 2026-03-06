@@ -8,7 +8,7 @@ export class AbgeleiteteWertePacksSettings extends FormApplication {
         return foundry.utils.mergeObject(super.defaultOptions, {
             id: 'abgeleitete-werte-packs-settings',
             title: 'Abgeleitete Werte Kompendien Einstellungen',
-            template: 'systems/Ilaris/templates/settings/abgeleitete-werte-packs.hbs',
+            template: 'systems/Ilaris/scripts/settings/templates/abgeleitete-werte-packs.hbs',
             width: 500,
             height: 'auto',
             closeOnSubmit: true,

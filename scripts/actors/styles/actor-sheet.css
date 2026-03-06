@@ -1,0 +1,665 @@
+/* ----------------------------------------- */
+/*  Ilaris Actor Sheet Styles (Consolidated) */
+/*  Date: 2026-02-26                          */
+/*  Scope: .ilaris.sheet.actor*               */
+/* ----------------------------------------- */
+
+/* --- Base Actor Sheet Backgrounds --- */
+
+.ilaris.sheet.actor.helden {
+  font-family: var(--font-andada);
+  background-image: url('/systems/Ilaris/assets/images/background/hintergrund.jpg');
+}
+
+.ilaris.sheet.actor.kreaturen {
+  font-family: var(--font-andada);
+  background-image: url('/systems/Ilaris/assets/images/background/hintergrund.jpg');
+}
+
+/* --- Hero Window Layout --- */
+
+.ilaris.sheet.actor.helden .window-content .heroheader {
+  padding-left: 36px;
+  padding-right: 36px;
+  display: flex;
+  flex-direction: row;
+  background-image: url(/systems/Ilaris/assets/images/Ilaris/Pergamentrolle.webp);
+  background-size: cover;
+  background-repeat: round;
+  flex: auto;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.ilaris.sheet.actor.helden .hw {
+  color: #7f7e75;
+}
+
+.ilaris.sheet.actor.helden .hw.true {
+  color: black;
+}
+
+.ilaris.sheet.actor.helden .nw {
+  color: #7f7e75;
+}
+
+.ilaris.sheet.actor.helden .nw.true {
+  color: black;
+}
+
+.ilaris.sheet.actor.helden .window-content .heroattributes {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: space-around;
+  align-items: center;
+  padding-top: 5px;
+}
+
+.ilaris.sheet.actor.kreaturen .window-content {
+  overflow: auto;
+}
+
+.ilaris.sheet.actor.helden .window-content {
+  display: grid;
+  grid-template-columns: 250px calc(100% - 250px - 5px);
+  grid-template-rows: 150px 50px calc(100% - 200px - 10px);
+  grid-template-areas:
+    "sidebar header"
+    "sidebar navigation"
+    "sidebar tab";
+  gap: 5px;
+  padding: 0 0.5rem 0.5rem 0.5rem;
+}
+
+.ilaris.sheet.actor [data-application-part="header"] {
+  grid-area: header;
+  display: flex;
+  flex-direction: column;
+}
+
+.ilaris.sheet.actor [data-application-part="sidebar"] {
+  grid-area: sidebar;
+}
+
+.ilaris.sheet.actor [data-application-part="tabs"] {
+  grid-area: navigation;
+}
+
+.ilaris.sheet.actor .tab {
+  grid-area: tab;
+  overflow: auto;
+  color: black;
+}
+
+.ilaris.sheet.actor.helden .window-content nav {
+  border-bottom: 0;
+  border-top: 0;
+}
+
+/* --- Attribute Display Grid --- */
+
+.ilaris.sheet.actor .attribute-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.05rem;
+}
+
+.ilaris.sheet.actor .attribute-wrapper {
+  position: relative;
+  width: 55px;
+  height: 55px;
+}
+
+.ilaris.sheet.actor .attribute-wrapper img {
+  width: 100%;
+  height: 100%;
+}
+
+.ilaris.sheet.actor .attribute-number {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: black;
+  font-weight: bold;
+  font-size: 22px;
+  text-shadow: 2px 2px 2px rgb(255, 255, 255);
+}
+
+.ilaris.sheet.actor .attribute-wrapper:hover .attribute-number {
+  text-shadow: 0 0 10px var(--color-shadow-primary);
+  cursor: pointer;
+}
+
+.ilaris.sheet.actor .attribute-wrapper:hover {
+  filter: drop-shadow(0 0 8px var(--color-shadow-primary));
+  transform: scale(1.1);
+}
+
+.ilaris.sheet.actor .onhover:hover {
+  text-shadow: 0 0 8px red;
+  cursor: pointer;
+}
+
+.ilaris.sheet.actor .icon-row .attribute-wrapper {
+  width: auto;
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+}
+
+.ilaris.sheet.actor .icon-row {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-evenly;
+  gap: 0.5rem;
+}
+
+/* --- Hero Tab Styles --- */
+
+.ilaris.sheet.actor .sheet-tabs.tabs {
+  display: flex;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  justify-content: space-between;
+  gap: 0;
+}
+
+.ilaris.sheet.actor.helden .window-content nav .tab-item {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2px;
+  border-bottom: 2px solid #B87333;
+  background-color: #00000011;
+  color: black;
+  font-weight: 800;
+  height: 100%;
+  flex: auto;
+}
+
+.ilaris.sheet.actor.helden .window-content nav .tab-item i {
+  margin-right: 2px;
+}
+
+.ilaris.sheet.actor.helden .window-content nav .tab-item.active {
+  border-radius: 5px 5px 0 0;
+  border: 2px solid #c97628;
+  border-bottom: 0;
+  background-color: #0000;
+  cursor: default;
+  z-index: 2;
+  text-shadow: none !important;
+}
+
+.ilaris.sheet.actor .tab-item:hover {
+  text-shadow: 0 0 10px var(--color-shadow-primary);
+}
+
+.ilaris.sheet.actor .window-app .window-content section.tab:not(.sidebar-tab) {
+  display: none;
+}
+
+.ilaris.sheet.actor .window-app .window-content section.tab.active:not(.sidebar-tab) {
+  display: flex;
+  flex-direction: column;
+}
+
+/* --- Icon Overlay (from sidebar.css) --- */
+
+.ilaris.sheet.actor .icon-overlay-container {
+  position: relative;
+  display: inline-block;
+  width: 55px;
+  height: 55px;
+}
+
+.ilaris.sheet.actor .icon-overlay-container img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  border: none;
+}
+
+.ilaris.sheet.actor .overlay-label {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: black;
+  font-weight: bold;
+  font-size: 20px;
+  text-shadow: 0 0 2px black;
+  pointer-events: none;
+}
+
+/* --- Lebensleiste & TriState Buttons --- */
+
+.ilaris.sheet.actor.helden .window-content .heroattributes #lebensleiste {
+  max-width: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.ilaris.sheet.actor .triStateBtn {
+  width: 30px;
+  height: 30px;
+  border: 2px solid brown;
+  border-radius: 0;
+  cursor: pointer;
+  background-color: #ac3100;
+  position: relative;
+}
+
+.ilaris.sheet.actor #lebensleiste .triStateBtn:nth-child(-n+5) {
+  background-color: #f5f5dc;
+}
+
+.ilaris.sheet.actor .state-1::before,
+.ilaris.sheet.actor .state-1::after {
+  content: "";
+  position: absolute;
+  top: 45%;
+  left: -7%;
+  width: 30px;
+  height: 4px;
+  background-color: black;
+}
+
+.ilaris.sheet.actor .state-1::before {
+  transform: rotate(45deg);
+}
+
+.ilaris.sheet.actor .state-1::after {
+  transform: rotate(-45deg);
+}
+
+.ilaris.sheet.actor .state-2::after {
+  content: "";
+  position: absolute;
+  top: 45%;
+  left: -7%;
+  width: 30px;
+  height: 4px;
+  background-color: black;
+  transform: rotate(135deg);
+}
+
+/* --- Table / Row Striping (from sidebar.css) --- */
+
+.ilaris.sheet.actor .twokindrow div:nth-child(odd) {
+  background-color: #ece3cd;
+}
+
+.ilaris.sheet.actor .twokindrow {
+  width: 100%;
+  column-width: auto;
+  background-color: #e5c4a9;
+}
+
+.ilaris.sheet.actor .table {
+  width: calc(100% - 1px);
+  border-collapse: collapse;
+}
+
+.ilaris.sheet.actor tr:nth-child(4n+1) {
+  background-color: #e5c4a9;
+}
+
+.ilaris.sheet.actor tr:not(:nth-child(4n+1)) {
+  background-color: #ece3cd;
+}
+
+.ilaris.sheet.actor .table th {
+  color: black;
+  text-shadow: none;
+  padding-left: 0;
+}
+
+/* --- NEW: Hero Energy Modifiers --- */
+
+.ilaris.sheet.actor.helden .window-content section.sidebar .herosidebar .energy-modifiers {
+  color: #efe6d8;
+  padding: 0.5rem;
+  width: 100%;
+}
+
+.ilaris.sheet.actor.helden .herosidebar {
+  grid-area: sidebar;
+  position: relative;
+  z-index: 2;
+  color: black;
+  font-size: 30px;
+  font-weight: bold;
+  padding-top: 1rem;
+  text-align: center;
+  box-shadow: 8px 0 5px rgba(0, 0, 0, 0.3);
+  border-bottom-left-radius: 200px;
+  border-bottom-right-radius: 200px;
+  display: flex;
+  flex-direction: column;
+  max-width: 240px;
+  min-width: 240px;
+  min-height: 600px;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.ilaris.sheet.actor.helden .herosidebar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background-image: url("/systems/Ilaris/assets/images/Ilaris/bronze_glatt.webp");
+  background-size: cover;
+  border-radius: inherit;
+}
+
+.ilaris.sheet.actor.helden .herosidebar .hero-energy-font-small {
+  font-size: 12px;
+}
+
+.ilaris.sheet.actor.helden .herosidebar .hero-energy-label-spacing {
+  margin-right: 0.5em;
+}
+
+.ilaris.sheet.actor.helden .herosidebar .hero-energy-label-compact {
+  margin-right: 0.1em;
+}
+
+.ilaris.sheet.actor.helden .herosidebar .hero-energy-input {
+  color: #efe6d8;
+  background-color: transparent;
+  width: 3em;
+  margin-right: 0.5em;
+  padding: 0;
+  padding-left: 4px;
+}
+
+.ilaris.sheet.actor.helden .hero-energy-expandable {
+  display: none;
+  margin-left: 0.5em;
+}
+
+.ilaris.sheet.actor.helden .hero-energy-section-spacing {
+  margin-top: 0.5em;
+  font-size: 12px;
+}
+
+.ilaris.sheet.actor.helden .hero-energy-section-spacing-lg {
+  margin-top: 1.5em;
+  font-size: 12px;
+}
+
+.ilaris.sheet.actor.helden .hero-wound-toggle {
+  color: #000;
+}
+
+.ilaris.sheet.actor.helden .hero-wound-toggle.true {
+  color: #efe6d8;
+}
+
+.ilaris.sheet.actor.helden .hero-global-mod-label {
+  font-size: 12pt;
+}
+
+.ilaris.sheet.actor.helden .hero-sync-button-wrapper {
+  margin-top: 0.5em;
+  text-align: center;
+}
+
+/* --- NEW: Hero Tab Styles --- */
+
+.ilaris.sheet.actor.helden .hero-tab-container-flex {
+  display: flex;
+  gap: 1em;
+  align-items: flex-start;
+}
+
+.ilaris.sheet.actor.helden .hero-table-compact {
+  font-size: 10pt;
+  border-collapse: collapse;
+  width: auto;
+  table-layout: auto;
+}
+
+.ilaris.sheet.actor.helden .hero-table-row-transparent {
+  background-color: rgba(255, 255, 255, 0);
+}
+
+.ilaris.sheet.actor.helden .hero-input-compact {
+  width: 4em;
+  text-align: center;
+}
+
+.ilaris.sheet.actor.helden .hero-button-spacing {
+  margin-left: 1em;
+}
+
+.ilaris.sheet.actor.helden .hero-table-col-fixed-40 {
+  flex-basis: 40px;
+  width: 40px;
+}
+
+.ilaris.sheet.actor.helden .hero-expandable-row-hidden {
+  display: none;
+}
+
+.ilaris.sheet.actor.helden .hero-expandable-row-cell {
+  padding: 0.5em 1em;
+  background: #f9f9f9;
+}
+
+.ilaris.sheet.actor.helden .hero-expandable-header {
+  display: flex;
+  gap: 1em;
+  font-weight: bold;
+  margin-bottom: 0.2em;
+}
+
+.ilaris.sheet.actor.helden .hero-expandable-values {
+  display: flex;
+  gap: 1em;
+  margin-bottom: 0.8em;
+}
+
+.ilaris.sheet.actor.helden .hero-text-preformatted {
+  white-space: pre-line;
+}
+
+.ilaris.sheet.actor.helden .hero-section-spacing {
+  margin-top: 1em;
+}
+
+.ilaris.sheet.actor.helden .hero-talent-item {
+  margin-bottom: 0.5em;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 0.3em;
+}
+
+.ilaris.sheet.actor.helden .hero-action-float-right {
+  float: right;
+  margin-left: 0.3em;
+}
+
+.ilaris.sheet.actor.helden .hero-action-float-left {
+  float: right;
+}
+
+.ilaris.sheet.actor.helden .hero-table-free-fertigkeiten {
+  font-size: 10pt;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5em;
+}
+
+.ilaris.sheet.actor.helden .hero-kampf-mod-float-right {
+  float: right;
+}
+
+.ilaris.sheet.actor.helden .hero-kampf-style-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ilaris.sheet.actor.helden .hero-kampf-checkbox-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.ilaris.sheet.actor.helden .hero-kampf-alert-warning {
+  margin-top: 8px;
+  padding: 8px;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+  border-radius: 4px;
+  color: #721c24;
+}
+
+.ilaris.sheet.actor.helden .hero-kampf-alert-icon {
+  color: #dc3545;
+  margin-right: 5px;
+}
+
+.ilaris.sheet.actor.helden .hero-table-full-width {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.ilaris.sheet.actor.helden .hero-table-font-compact {
+  font-size: 10pt;
+}
+
+/* --- NEW: Kreatur-Specific Styles --- */
+
+.ilaris.sheet.actor.kreaturen .kreatur-sheet input {
+  border: none;
+}
+
+/* [UNUSED] - Class "plus-button" defined in CSS but not found in HBS files.
+   Review before deletion. */
+.ilaris.sheet.actor.kreaturen .kreatur-sheet .plus-button {
+  color: rgb(54, 37, 37);
+  font-size: 18px;
+}
+
+.ilaris.sheet.actor.kreaturen .attributblock h2 {
+  font-family: var(--font-aniron);
+  font-size: 14px;
+  color: rgb(54, 37, 37);
+  border: none;
+}
+
+.ilaris.sheet.actor.kreaturen .kreatur-header textarea {
+  border: none;
+  resize: none;
+  font-family: var(--font-crimson);
+  width: 100%;
+  margin-top: 8px;
+}
+
+.ilaris.sheet.actor.kreaturen .statblockreihe {
+  background-color: rgba(247, 68, 37, 0.13);
+  padding: 10px;
+  border-top: solid darkred 2px;
+}
+
+.ilaris.sheet.actor.kreaturen .statblockreihe input {
+  width: 40px;
+  height: 16px;
+  background: rgba(250, 250, 250, 0.2);
+}
+
+.ilaris.sheet.actor.kreaturen .kreatur-header-layout {
+  display: flex;
+  justify-content: space-between;
+}
+
+.ilaris.sheet.actor.kreaturen .strikethrough {
+  text-decoration: line-through;
+}
+
+.ilaris.sheet.actor.kreaturen .kreatur-divider-red {
+  width: 100%;
+  padding-top: 1px;
+  padding-bottom: 1px;
+  margin-top: 1px;
+  margin-bottom: 1px;
+  border-top: 1px solid darkred;
+  border-bottom: 0;
+}
+
+.ilaris.sheet.actor.kreaturen .kreatur-section-disabled {
+  opacity: 0.4;
+}
+
+.ilaris.sheet.actor.kreaturen .kreatur-input-narrow {
+  width: 30px;
+}
+
+.ilaris.sheet.actor.kreaturen .kreatur-kampfwerte-float-right {
+  float: right;
+}
+
+.ilaris.sheet.actor.kreaturen .kreatur-select-narrow {
+  max-width: 150px;
+}
+
+.ilaris.sheet.actor .darkgreen {
+  color: darkgreen;
+}
+
+.ilaris.sheet.actor .darkred {
+  color: darkred;
+}
+
+.ilaris.sheet.actor .black {
+  color: black;
+}
+
+/* --- Schips (Destiny Points) --- */
+
+.ilaris.sheet.actor .schips-button {
+  display: inline-block;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #333;
+  background-color: grey;
+  background-size: cover;
+  background-position: center;
+  transition: background-image 0.3s ease;
+  cursor: pointer;
+  margin-right: 8px;
+}
+
+.ilaris.sheet.actor .schips-button:last-child {
+  margin-right: 0;
+}
+
+.ilaris.sheet.actor .schips-button:hover {
+  filter: drop-shadow(0 0 8px var(--color-shadow-primary));
+  transform: scale(1.1);
+}
+
+.ilaris.sheet.actor .filled {
+  background-image: url('/systems/Ilaris/assets/images/Ilaris/phex.svg');
+}
+
+.ilaris.sheet.actor .ausklappen-trigger:hover {
+  text-shadow: 0 0 10px var(--color-shadow-primary);
+}
+
+/* --- [UNUSED] Legacy Classes --- */
+
+/* [UNUSED] - Review candidate: .attribute-wrapper:hover .attribute-number
+   Not found in HBS files as explicit class usage. Delete only if hover effect is no longer needed. */
+
+/* [UNUSED] - Review candidate: .tab-item:hover
+   Not found in HBS files as explicit class usage. Delete if Foundry tab-item class is not required. */
