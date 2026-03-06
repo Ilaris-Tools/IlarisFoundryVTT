@@ -1,5 +1,5 @@
 import { IlarisItemSheet } from './item.js'
-import { EffectsManager } from '../common/effects-manager.js'
+import { EffectsManager } from '../../effects/effects-manager.js'
 
 export class VorteilSheet extends IlarisItemSheet {
     /** @override */
