@@ -10,6 +10,10 @@ export class EffectItemSheet extends IlarisItemSheet {
         },
         actions: {
             effectControl: EffectItemSheet.#onEffectControl,
+            create: EffectItemSheet.#onEffectControl,
+            edit: EffectItemSheet.#onEffectControl,
+            delete: EffectItemSheet.#onEffectControl,
+            toggle: EffectItemSheet.#onEffectControl,
         },
     }
 
