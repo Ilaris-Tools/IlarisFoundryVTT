@@ -11,6 +11,7 @@ export class IlarisItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
         },
         tag: 'form',
         actions: {
+            editImage: IlarisItemSheet.#onEditImage,
             deleteItem: IlarisItemSheet.#onDeleteItem,
         },
         form: {
@@ -97,6 +98,30 @@ export class IlarisItemSheet extends HandlebarsApplicationMixin(ItemSheetV2) {
             console.error('Item delete failed:', error)
             ui.notifications?.error(game.i18n.format('ERROR.ItemDelete', { error: error.message }))
         }
+    }
+
+    /**
+     * Open file picker to edit item image
+     * @param {PointerEvent} event - The click event
+     * @param {HTMLElement} target - The clicked element
+     */
+    static async #onEditImage(event, target) {
+        if (!this.isEditable) return
+
+        const current = this.item.img || ''
+        const root = this.positioned ?? { left: 0, top: 0 }
+
+        const picker = new FilePicker({
+            type: 'imagevideo',
+            current,
+            top: root.top + 40,
+            left: root.left + 10,
+            callback: async (path) => {
+                await this.item.update({ img: path })
+            },
+        })
+
+        return picker.browse()
     }
 
     /** @override */
