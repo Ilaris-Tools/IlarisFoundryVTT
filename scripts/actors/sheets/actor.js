@@ -21,6 +21,7 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             closeOnSubmit: false,
         },
         actions: {
+            editImage: IlarisActorSheet.onEditImage,
             ausklappView: IlarisActorSheet.ausklappView,
             rollable: IlarisActorSheet.onRollable,
             clickable: IlarisActorSheet.onClickable,
@@ -89,6 +90,30 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         if (toggleView) {
             toggleView.classList.toggle('hero-expandable-row-hidden')
         }
+    }
+
+    /**
+     * Open file picker to edit actor profile image
+     * @param {PointerEvent} event - The click event
+     * @param {HTMLElement} target - The target element with data-action
+     */
+    static async onEditImage(event, target) {
+        if (!this.isEditable) return
+
+        const current = this.actor.img || ''
+        const root = this.positioned ?? { left: 0, top: 0 }
+
+        const picker = new FilePicker({
+            type: 'imagevideo',
+            current,
+            top: root.top + 40,
+            left: root.left + 10,
+            callback: async (path) => {
+                await this.actor.update({ img: path })
+            },
+        })
+
+        return picker.browse()
     }
 
     /**
