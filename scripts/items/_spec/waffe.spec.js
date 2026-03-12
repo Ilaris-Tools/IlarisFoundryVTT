@@ -289,6 +289,7 @@ describe('WaffeItem', () => {
 
             expect(weapon.system.computed.at).toBe(-2) // 2 - 2 (BE) + (-2) (wounds)
             expect(weapon.system.computed.vt).toBe(-3) // 1 - 2 (BE) + (-2) (wounds)
+            expect(weapon.system.computed.fk).toBe(-4) // 0 - 2 (BE) + (-2) (wounds)
             expect(weapon.system.computed.modifiers.at).toContain('Wunden: -2')
         })
 
