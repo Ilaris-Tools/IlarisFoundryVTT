@@ -118,11 +118,11 @@ export class WaffeItem extends CombatItem {
         }
 
         if (wundabzuege && !wundenignorieren) {
-            system.computed.at -= wundabzuege
-            system.computed.vt -= wundabzuege
-            system.computed.fk -= wundabzuege
-            system.computed.modifiers.at.push(`Wunden: -${wundabzuege}`)
-            system.computed.modifiers.vt.push(`Wunden: -${wundabzuege}`)
+            system.computed.at += wundabzuege
+            system.computed.vt += wundabzuege
+            system.computed.fk += wundabzuege
+            system.computed.modifiers.at.push(`Wunden: ${wundabzuege}`)
+            system.computed.modifiers.vt.push(`Wunden: ${wundabzuege}`)
         }
     }
 
