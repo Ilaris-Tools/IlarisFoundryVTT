@@ -78,3 +78,21 @@ Instruction precedence (highest to lowest):
 4. **`.agents/` documentation** — detailed project knowledge base
 
 In case of conflict, higher-precedence instructions override lower ones. See `.agents/README.md` for the full documentation map.
+
+## Agent Profile Resolution (Mandatory)
+
+When delegating work to a subagent, use `.github/agents/*.md` as the canonical source for that subagent's role, scope, boundaries, and output format.
+
+Canonical mapping:
+
+- `Planner` -> `.github/agents/planner.md`
+- `Researcher` -> `.github/agents/researcher.md`
+- `Reviewer` -> `.github/agents/reviewer.md`
+- `Setup Specialist` -> `.github/agents/setup-specialist.md`
+
+Operational rules:
+
+- Before using one of these subagents, consult the mapped profile file in the current workspace.
+- Use the YAML frontmatter `name` and `description` as the canonical identity metadata.
+- Do not invent responsibilities that are not present in the mapped profile.
+- If a mapped profile is missing, fall back to `AGENTS.md` and clearly state this fallback in the handoff/report.

@@ -26,6 +26,22 @@ Die vollständige Agent-Dokumentation ist auf mehrere Dateien aufgeteilt:
 | `.github/agents/`                        | Agent-Profile (Planner, Researcher, Reviewer, Setup)       |
 | `.github/skills/`                        | Wiederverwendbare Skills (Planning, Review, Foundry-Setup) |
 
+### Verbindliche Agent-Profil-Zuordnung
+
+Für Delegation an Subagents ist `.github/agents/` die kanonische Quelle.
+
+- `Planner` -> `.github/agents/planner.md`
+- `Researcher` -> `.github/agents/researcher.md`
+- `Reviewer` -> `.github/agents/reviewer.md`
+- `Setup Specialist` -> `.github/agents/setup-specialist.md`
+
+Pflichtregeln:
+
+1. Vor jeder Delegation das zugeordnete Agent-Profil konsultieren.
+2. `name` und `description` aus der YAML-Frontmatter als kanonische Identitaet verwenden.
+3. Keine Rollenverantwortungen erfinden, die nicht im Profil stehen.
+4. Falls ein Profil fehlt, auf `AGENTS.md` zurueckfallen und den Fallback explizit nennen.
+
 ## Instrukions-Rangfolge
 
 1. **Pfad-spezifisch** (`.github/instructions/`) — höchste Priorität
