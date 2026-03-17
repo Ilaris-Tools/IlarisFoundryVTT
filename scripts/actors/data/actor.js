@@ -1,35 +1,16 @@
 import * as hardcoded from './hardcodedvorteile.js'
-import * as weaponUtils from './actor-weapon-utils.js'
+
 import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
 } from '../../settings/configure-game-settings.model.js'
+import { sortByName, sortByGruppe } from '../../../utils/sort-functions.js'
 
 /**
  * Global cache for abgeleitete werte definitions
  * @type {Map<string, object>}
  */
 const abgeleiteteWerteCache = new Map()
-
-/**
- * Sort comparator function for sorting items by name
- * @param {Object} a - First item to compare
- * @param {Object} b - Second item to compare
- * @returns {number} -1, 0, or 1 for sorting
- */
-function sortByName(a, b) {
-    return a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-}
-
-/**
- * Sort comparator function for sorting items by gruppe (system.gruppe)
- * @param {Object} a - First item to compare
- * @param {Object} b - Second item to compare
- * @returns {number} -1, 0, or 1 for sorting
- */
-function sortByGruppe(a, b) {
-    return a.system.gruppe > b.system.gruppe ? 1 : b.system.gruppe > a.system.gruppe ? -1 : 0
-}
 
 export class IlarisActor extends Actor {
     async _preCreate(data, options, user) {
@@ -42,156 +23,158 @@ export class IlarisActor extends Actor {
         console.log('prepareData')
         super.prepareData()
     }
+    // Not used?
+    // prepareEmbeddedEntities() {
+    //     console.log('prepareEmbeddedEntities')
+    //     super.prepareEmbeddedEntities()
+    // }
 
-    prepareEmbeddedEntities() {
-        console.log('prepareEmbeddedEntities')
-        super.prepareEmbeddedEntities()
-    }
+    // Not used?
+    // prepareDerivedData() {
+    //     console.log('prepareDerivedData')
+    //     super.prepareDerivedData()
+    // }
 
-    prepareDerivedData() {
-        console.log('prepareDerivedData')
-        super.prepareDerivedData()
-    }
+    // Not used?
+    // prepareBaseData() {
+    //     console.log('prepareBaseData')
+    //     super.prepareBaseData()
 
-    prepareBaseData() {
-        console.log('prepareBaseData')
-        super.prepareBaseData()
+    //     // Calculate all base derived values before effects are applied
+    //     if (this.system.attribute && this.system.abgeleitete) {
+    //         // Get custom abgeleitete werte definitions from cache
+    //         const customDefinitions = this._getAbgeleiteteWerteDefinitions()
 
-        // Calculate all base derived values before effects are applied
-        if (this.system.attribute && this.system.abgeleitete) {
-            // Get custom abgeleitete werte definitions from cache
-            const customDefinitions = this._getAbgeleiteteWerteDefinitions()
+    //         console.log('Custom abgeleitete werte definitions:', customDefinitions)
+    //         // Helper function to execute custom script or use default calculation
+    //         const calculateValue = (valueName, defaultValue) => {
+    //             const customDef = customDefinitions.get(valueName)
+    //             if (customDef && customDef.script) {
+    //                 try {
+    //                     // Create evaluation context with actor data and helper functions
+    //                     const getAttribut = (attr) => this.system.attribute[attr]?.wert || 0
+    //                     const roundDown = Math.floor
+    //                     const getWS = () => this.system.abgeleitete.ws || 0
+    //                     const getRS = () => {
+    //                         let rs = 0
+    //                         for (let ruestung of this.ruestungen || []) {
+    //                             if (ruestung.system.aktiv) rs += ruestung.system.rs
+    //                         }
+    //                         return rs
+    //                     }
 
-            console.log('Custom abgeleitete werte definitions:', customDefinitions)
-            // Helper function to execute custom script or use default calculation
-            const calculateValue = (valueName, defaultValue) => {
-                const customDef = customDefinitions.get(valueName)
-                if (customDef && customDef.script) {
-                    try {
-                        // Create evaluation context with actor data and helper functions
-                        const getAttribut = (attr) => this.system.attribute[attr]?.wert || 0
-                        const roundDown = Math.floor
-                        const getWS = () => this.system.abgeleitete.ws || 0
-                        const getRS = () => {
-                            let rs = 0
-                            for (let ruestung of this.ruestungen || []) {
-                                if (ruestung.system.aktiv) rs += ruestung.system.rs
-                            }
-                            return rs
-                        }
+    //                     // Evaluate the script
+    //                     const result = eval(customDef.script)
+    //                     console.log(
+    //                         `Using custom calculation for ${valueName}: ${customDef.script} = ${result}`,
+    //                     )
+    //                     return result
+    //                 } catch (error) {
+    //                     console.error(
+    //                         `Error evaluating custom script for ${valueName}: ${error.message}`,
+    //                     )
+    //                     console.error(`Script was: ${customDef.script}`)
+    //                     return defaultValue
+    //                 }
+    //             }
+    //             return defaultValue
+    //         }
 
-                        // Evaluate the script
-                        const result = eval(customDef.script)
-                        console.log(
-                            `Using custom calculation for ${valueName}: ${customDef.script} = ${result}`,
-                        )
-                        return result
-                    } catch (error) {
-                        console.error(
-                            `Error evaluating custom script for ${valueName}: ${error.message}`,
-                        )
-                        console.error(`Script was: ${customDef.script}`)
-                        return defaultValue
-                    }
-                }
-                return defaultValue
-            }
+    //         // Base Initiative
+    //         if (this.system.attribute.IN?.wert != undefined) {
+    //             this.system.abgeleitete.ini = calculateValue('INI', this.system.attribute.IN.wert)
+    //             this.system.abgeleitete.baseIni = calculateValue(
+    //                 'INI',
+    //                 this.system.attribute.IN.wert,
+    //             )
+    //         }
 
-            // Base Initiative
-            if (this.system.attribute.IN?.wert != undefined) {
-                this.system.abgeleitete.ini = calculateValue('INI', this.system.attribute.IN.wert)
-                this.system.abgeleitete.baseIni = calculateValue(
-                    'INI',
-                    this.system.attribute.IN.wert,
-                )
-            }
+    //         // Base Magic Resistance
+    //         if (this.system.attribute.MU?.wert != undefined) {
+    //             this.system.abgeleitete.mr = calculateValue(
+    //                 'MR',
+    //                 4 + Math.floor(this.system.attribute.MU.wert / 4),
+    //             )
+    //         }
 
-            // Base Magic Resistance
-            if (this.system.attribute.MU?.wert != undefined) {
-                this.system.abgeleitete.mr = calculateValue(
-                    'MR',
-                    4 + Math.floor(this.system.attribute.MU.wert / 4),
-                )
-            }
+    //         // Base GS (Geschwindigkeit)
+    //         if (this.system.attribute.GE?.wert != undefined) {
+    //             this.system.abgeleitete.gs = calculateValue(
+    //                 'GS',
+    //                 4 + Math.floor(this.system.attribute.GE.wert / 4),
+    //             )
+    //         }
 
-            // Base GS (Geschwindigkeit)
-            if (this.system.attribute.GE?.wert != undefined) {
-                this.system.abgeleitete.gs = calculateValue(
-                    'GS',
-                    4 + Math.floor(this.system.attribute.GE.wert / 4),
-                )
-            }
+    //         // Base Traglast and Traglast Intervall
+    //         if (this.system.attribute.KK?.wert != undefined) {
+    //             let kk = this.system.attribute.KK.wert
+    //             this.system.abgeleitete.traglast_intervall = kk >= 1 ? kk : 1
+    //             this.system.abgeleitete.traglast = kk >= 1 ? 2 * kk : 1
+    //         }
 
-            // Base Traglast and Traglast Intervall
-            if (this.system.attribute.KK?.wert != undefined) {
-                let kk = this.system.attribute.KK.wert
-                this.system.abgeleitete.traglast_intervall = kk >= 1 ? kk : 1
-                this.system.abgeleitete.traglast = kk >= 1 ? 2 * kk : 1
-            }
+    //         // Base Durchhaltevermögen (will be modified by hardcoded later)
+    //         if (this.system.attribute.KO?.wert != undefined) {
+    //             // Basic formula before hardcoded modifications
+    //             this.system.abgeleitete.dh = this.system.attribute.KO.wert
+    //             this.system.abgeleitete.ws = calculateValue(
+    //                 'WS',
+    //                 4 + Math.floor(this.system.attribute.KO.wert / 4),
+    //             )
+    //         }
 
-            // Base Durchhaltevermögen (will be modified by hardcoded later)
-            if (this.system.attribute.KO?.wert != undefined) {
-                // Basic formula before hardcoded modifications
-                this.system.abgeleitete.dh = this.system.attribute.KO.wert
-                this.system.abgeleitete.ws = calculateValue(
-                    'WS',
-                    4 + Math.floor(this.system.attribute.KO.wert / 4),
-                )
-            }
+    //         if (this.system.gesundheit?.hp?.max == undefined) {
+    //             this.system.gesundheit.hp = {
+    //                 max: 9,
+    //                 value: 9,
+    //             }
+    //         }
 
-            if (this.system.gesundheit?.hp?.max == undefined) {
-                this.system.gesundheit.hp = {
-                    max: 9,
-                    value: 9,
-                }
-            }
+    //         // Calculate WS* (with armor) and body part armor
+    //         // Check if LEP system is active
+    //         const useLepSystem = game.settings.get(
+    //             ConfigureGameSettingsCategories.Ilaris,
+    //             IlarisGameSettingNames.lepSystem,
+    //         )
 
-            // Calculate WS* (with armor) and body part armor
-            // Check if LEP system is active
-            const useLepSystem = game.settings.get(
-                ConfigureGameSettingsCategories.Ilaris,
-                IlarisGameSettingNames.lepSystem,
-            )
+    //         if (useLepSystem) {
+    //             console.log('LEP system active - adjusting HP and WS calculations')
+    //             this.system.gesundheit.hp.max = this.system.abgeleitete.ws
+    //             this.system.gesundheit.hp.value = this.system.abgeleitete.ws
+    //         }
 
-            if (useLepSystem) {
-                console.log('LEP system active - adjusting HP and WS calculations')
-                this.system.gesundheit.hp.max = this.system.abgeleitete.ws
-                this.system.gesundheit.hp.value = this.system.abgeleitete.ws
-            }
+    //         // In LEP system, ws_stern starts at 0 instead of being based on ws
+    //         this.system.abgeleitete.be = 0
+    //         let ws_stern = useLepSystem ? 0 : this.system.abgeleitete.ws
+    //         this.system.abgeleitete.ws_stern = ws_stern
+    //         this.system.abgeleitete.ws_beine = ws_stern
+    //         this.system.abgeleitete.ws_larm = ws_stern
+    //         this.system.abgeleitete.ws_rarm = ws_stern
+    //         this.system.abgeleitete.ws_bauch = ws_stern
+    //         this.system.abgeleitete.ws_brust = ws_stern
+    //         this.system.abgeleitete.ws_kopf = ws_stern
 
-            // In LEP system, ws_stern starts at 0 instead of being based on ws
-            this.system.abgeleitete.be = 0
-            let ws_stern = useLepSystem ? 0 : this.system.abgeleitete.ws
-            this.system.abgeleitete.ws_stern = ws_stern
-            this.system.abgeleitete.ws_beine = ws_stern
-            this.system.abgeleitete.ws_larm = ws_stern
-            this.system.abgeleitete.ws_rarm = ws_stern
-            this.system.abgeleitete.ws_bauch = ws_stern
-            this.system.abgeleitete.ws_brust = ws_stern
-            this.system.abgeleitete.ws_kopf = ws_stern
+    //         // Base ASP
+    //         this.system.abgeleitete.asp = 0
+    //         this.system.abgeleitete.asp += Number(this.system.abgeleitete.asp_zugekauft) || 0
+    //         this.system.abgeleitete.asp -= Number(this.system.abgeleitete.gasp) || 0
+    //         this.system.abgeleitete.asp_stern =
+    //             this.system.abgeleitete.asp_stern != null
+    //                 ? Number(this.system.abgeleitete.asp_stern)
+    //                 : this.system.abgeleitete.asp
 
-            // Base ASP
-            this.system.abgeleitete.asp = 0
-            this.system.abgeleitete.asp += Number(this.system.abgeleitete.asp_zugekauft) || 0
-            this.system.abgeleitete.asp -= Number(this.system.abgeleitete.gasp) || 0
-            this.system.abgeleitete.asp_stern =
-                this.system.abgeleitete.asp_stern != null
-                    ? Number(this.system.abgeleitete.asp_stern)
-                    : this.system.abgeleitete.asp
+    //         // Base KAP
+    //         this.system.abgeleitete.kap = 0
+    //         this.system.abgeleitete.kap += Number(this.system.abgeleitete.kap_zugekauft) || 0
+    //         this.system.abgeleitete.kap -= Number(this.system.abgeleitete.gkap) || 0
+    //         this.system.abgeleitete.kap_stern =
+    //             this.system.abgeleitete.kap_stern != null
+    //                 ? Number(this.system.abgeleitete.kap_stern)
+    //                 : this.system.abgeleitete.kap
 
-            // Base KAP
-            this.system.abgeleitete.kap = 0
-            this.system.abgeleitete.kap += Number(this.system.abgeleitete.kap_zugekauft) || 0
-            this.system.abgeleitete.kap -= Number(this.system.abgeleitete.gkap) || 0
-            this.system.abgeleitete.kap_stern =
-                this.system.abgeleitete.kap_stern != null
-                    ? Number(this.system.abgeleitete.kap_stern)
-                    : this.system.abgeleitete.kap
-
-            // Calculate base SchiPs
-            this.system.schips.schips = calculateValue('SchiP', 4)
-        }
-    }
+    //         // Calculate base SchiPs
+    //         this.system.schips.schips = calculateValue('SchiP', 4)
+    //     }
+    // }
 
     /**
      * Override getRollData to provide data for inline rolls and formulas.
@@ -287,56 +270,6 @@ export class IlarisActor extends Actor {
                 return this._checkVorteilSource(vorteilRequirement, vorteil, item)
             })
         )
-    }
-
-    __getStatuseffectById(data, statusId) {
-        let iterator = data.effects.values()
-        for (const effect of iterator) {
-            console.log(effect.statuses)
-            // Get the first entry from the Set
-            const firstStatus = effect.statuses.values().next().value
-            if (firstStatus == statusId) {
-                return true
-            }
-        }
-        return false
-    }
-
-    _calculatePWAttribute(systemData) {
-        for (let attribut of Object.values(systemData.attribute)) {
-            attribut.pw = 2 * attribut.wert
-        }
-    }
-
-    _calculateProfanFertigkeiten(actor) {
-        console.log('Berechne Profane Fertigkeiten')
-        for (let fertigkeit of actor.profan.fertigkeiten) {
-            let basiswert = 0
-            // console.log(data.data.attribute);
-            // console.log(fertigkeit.data);
-            basiswert = basiswert + actor.system.attribute[fertigkeit.system.attribut_0].wert
-            basiswert = basiswert + actor.system.attribute[fertigkeit.system.attribut_1].wert
-            basiswert = basiswert + actor.system.attribute[fertigkeit.system.attribut_2].wert
-            basiswert = Math.round(basiswert / 3)
-            fertigkeit.system.basis = basiswert
-            fertigkeit.system.pw = basiswert + Math.round(Number(fertigkeit.system.fw) * 0.5)
-            fertigkeit.system.pwt = basiswert + Number(fertigkeit.system.fw)
-        }
-    }
-
-    // Werte werden nicht gespeichert, sonder jedes mal neu berechnet?
-    _calculateUebernaturlichFertigkeiten(actor) {
-        console.log('Berechne Übernatürliche Fertigkeiten')
-        for (let fertigkeit of actor.uebernatuerlich.fertigkeiten) {
-            // console.log(fertigkeit);
-            let basiswert = 0
-            basiswert = basiswert + actor.system.attribute[fertigkeit.system.attribut_0].wert
-            basiswert = basiswert + actor.system.attribute[fertigkeit.system.attribut_1].wert
-            basiswert = basiswert + actor.system.attribute[fertigkeit.system.attribut_2].wert
-            basiswert = Math.round(basiswert / 3)
-            fertigkeit.system.basis = basiswert
-            fertigkeit.system.pw = basiswert + Number(fertigkeit.system.fw)
-        }
     }
 
     __getAlleUebernatuerlichenFertigkeiten(actor) {
@@ -546,187 +479,15 @@ export class IlarisActor extends Actor {
         systemData.abgeleitete.globalermoddisplay += `${systemData.abgeleitete.globalermod} auf alle Proben`
     }
 
-    _calculateAbgeleitete() {
-        this.system.abgeleitete.zauberer = this.system.abgeleitete.asp > 0
-        this.system.abgeleitete.geweihter = this.system.abgeleitete.kap > 0
-
-        let be = this.system.abgeleitete.be
-        for (let ruestung of this.ruestungen) {
-            if (ruestung.system.aktiv == true) {
-                this.system.abgeleitete.ws_stern += ruestung.system.rs
-                be += ruestung.system.be
-                this.system.abgeleitete.ws_beine += ruestung.system.rs_beine
-                this.system.abgeleitete.ws_larm += ruestung.system.rs_larm
-                this.system.abgeleitete.ws_rarm += ruestung.system.rs_rarm
-                this.system.abgeleitete.ws_bauch += ruestung.system.rs_bauch
-                this.system.abgeleitete.ws_brust += ruestung.system.rs_brust
-                this.system.abgeleitete.ws_kopf += ruestung.system.rs_kopf
-            }
-        }
-        // be = hardcoded.behinderung(be, this)
-        if (be < 0) be = 0
-        this.system.abgeleitete.be = be
-
-        let traglast_intervall = this.system.attribute.KK.wert
-        traglast_intervall = traglast_intervall >= 1 ? traglast_intervall : 1
-        this.system.abgeleitete.traglast_intervall = traglast_intervall
-        let traglast = 2 * this.system.attribute.KK.wert
-        traglast = traglast >= 1 ? traglast : 1
-        this.system.abgeleitete.traglast = traglast
-        let summeGewicht = 0
-        for (let i of this.inventar.mitfuehrend) {
-            summeGewicht += i.system.gewicht * i.system.quantity
-        }
-        console.log('Summe Gewicht: ', summeGewicht, parseFloat(summeGewicht.toFixed(3)))
-        this.system.getragen = parseFloat(summeGewicht.toFixed(3))
-
-        // Calculate BE modification from carried weight
-        let be_mod = hardcoded.beTraglast(this.system)
-        this.system.abgeleitete.be += be_mod
-        this.system.abgeleitete.be_traglast = be_mod
-        let be_traglast = this.system.abgeleitete.be_traglast
-        this.system.abgeleitete.dh =
-            this.system.abgeleitete.dh - 2 * (this.system.abgeleitete.be - be_traglast)
-
-        this.system.abgeleitete.gs = Math.max(
-            1,
-            this.system.abgeleitete.gs - (this.system.abgeleitete?.be ?? 0),
-        )
-    }
-
-    /**
-     * Get custom abgeleitete werte definitions from cache
-     * @returns {Map<string, object>} Map of value names to their definitions
-     * @private
-     */
-    _getAbgeleiteteWerteDefinitions() {
-        return abgeleiteteWerteCache
-    }
-
-    async _calculateKampf(actor) {
-        console.log('Berechne Kampf')
-        let kampfstile = hardcoded.getKampfstile(actor)
-        actor.misc.kampfstile_list = kampfstile
-        let selected_kampfstil = hardcoded.getSelectedStil(actor, 'kampf')
-
-        // Handle supernatural styles
-        let uebernatuerliche_stile = hardcoded.getUebernatuerlicheStile(actor)
-        actor.misc.uebernatuerliche_stile_list = uebernatuerliche_stile
-
-        let HW =
-            actor.nahkampfwaffen.find((x) => x.system.hauptwaffe == true) ||
-            actor.fernkampfwaffen.find((x) => x.system.hauptwaffe == true)
-        let NW =
-            actor.nahkampfwaffen.find((x) => x.system.nebenwaffe == true) ||
-            actor.fernkampfwaffen.find((x) => x.system.nebenwaffe == true)
-
-        actor.misc.selected_kampfstil_conditions_not_met = ''
-
-        if (
-            weaponUtils.checkCombatStyleConditions(
-                selected_kampfstil,
-                HW,
-                NW,
-                this.system.misc.ist_beritten,
-                actor,
-            )
-        ) {
-            actor.misc.selected_kampfstil_conditions_not_met = ''
-            selected_kampfstil.active = true
-        } else {
-            selected_kampfstil.active = false
-        }
-
-        // Prepare all weapons and wait for eigenschaften to load
-        const weapons = actor.items.filter(
-            (i) => i.type === 'fernkampfwaffe' || i.type === 'nahkampfwaffe',
-        )
-        await Promise.all(weapons.map((waffe) => waffe.prepareWeapon()))
-
-        // Apply actor modifiers from equipped weapons
-        this._applyWeaponActorModifiers(actor)
-
-        if (selected_kampfstil.active) {
-            // Refactored: execute kampfstil methods and apply modifiers
-            weaponUtils._executeKampfstilMethodsAndApplyModifiers(selected_kampfstil, HW, NW, actor)
-        }
-    }
-
-    /**
-     * Apply actor modifiers from equipped weapons with eigenschaften
-     * @param {Actor} actor - The actor
-     * @private
-     */
-    _applyWeaponActorModifiers(actor) {
-        // Collect all actor modifiers from equipped weapons
-        const modifiersByProperty = {
-            be: [],
-            ini: [],
-            gs: [],
-            ws: [],
-            ws_stern: [],
-            mr: [],
-        }
-
-        // Get equipped weapons
-        const hauptwaffe = actor.items.find(
-            (i) =>
-                (i.type === 'fernkampfwaffe' || i.type === 'nahkampfwaffe') && i.system.hauptwaffe,
-        )
-        const nebenwaffe = actor.items.find(
-            (i) =>
-                (i.type === 'fernkampfwaffe' || i.type === 'nahkampfwaffe') &&
-                i.system.nebenwaffe &&
-                i !== hauptwaffe,
-        )
-
-        // Collect modifiers from equipped weapons
-        for (const weapon of [hauptwaffe, nebenwaffe].filter((w) => w)) {
-            if (
-                weapon.system.computed?.hasActorModifiers &&
-                weapon.system.computed?.actorModifiers
-            ) {
-                for (const mod of weapon.system.computed.actorModifiers) {
-                    if (modifiersByProperty[mod.property]) {
-                        modifiersByProperty[mod.property].push({
-                            mode: mod.mode,
-                            value: mod.value,
-                            weaponName: mod.weaponName,
-                        })
-                    }
-                }
-            } else {
-                // Weapon exists but has no actor modifiers - add default augment 0 for all properties
-                for (const property of Object.keys(modifiersByProperty)) {
-                    modifiersByProperty[property].push({
-                        mode: 'augment',
-                        value: 0,
-                        weaponName: weapon.name,
-                    })
-                }
-            }
-        }
-
-        // Apply modifiers to actor's abgeleitete stats
-        for (const [property, modifiers] of Object.entries(modifiersByProperty)) {
-            if (modifiers.length === 0) continue
-
-            // Apply 'set' modifiers first (highest wins)
-            const setMods = modifiers.filter((m) => m.mode === 'set')
-            if (setMods.length > 0) {
-                const highest = Math.max(...setMods.map((m) => m.value))
-                actor.system.abgeleitete[property] = highest
-            }
-
-            // Apply 'augment' modifiers (always take the lowest value)
-            const augmentMods = modifiers.filter((m) => m.mode === 'augment')
-            if (augmentMods.length > 0) {
-                const lowest = Math.min(...augmentMods.map((m) => m.value))
-                actor.system.abgeleitete[property] =
-                    (actor.system.abgeleitete[property] || 0) + lowest
-            }
-        }
-    }
+    // Used in unused method?
+    // /**
+    //  * Get custom abgeleitete werte definitions from cache
+    //  * @returns {Map<string, object>} Map of value names to their definitions
+    //  * @private
+    //  */
+    // _getAbgeleiteteWerteDefinitions() {
+    //     return abgeleiteteWerteCache
+    // }
 
     _calculateUebernatuerlichProbendiag(actor) {
         // data.data.uebernatuerlich.fertigkeiten = uebernatuerliche_fertigkeiten;
