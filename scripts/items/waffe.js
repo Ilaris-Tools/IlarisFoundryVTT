@@ -98,15 +98,13 @@ export class WaffeItem extends CombatItem {
     }
 
     /**
-     * Apply actor-wide modifiers (BE, wounds, etc.) to the weapon's computed stats
+     * Apply actor-wide modifiers (BE, etc.) to the weapon's computed stats
      * @param {Object} actor - The owning actor
      * @private
      */
     _applyActorModifiers(actor) {
         const system = this.system
         const be = actor.system.abgeleitete?.be || 0
-        const wundabzuege = actor.system.gesundheit?.wundabzuege || 0
-        const wundenignorieren = actor.system.gesundheit?.wundenignorieren || 0
 
         system.computed.at -= be
         system.computed.vt -= be
@@ -115,14 +113,6 @@ export class WaffeItem extends CombatItem {
         if (be > 0) {
             system.computed.modifiers.at.push(`BE: -${be}`)
             system.computed.modifiers.vt.push(`BE: -${be}`)
-        }
-
-        if (wundabzuege && !wundenignorieren) {
-            system.computed.at -= wundabzuege
-            system.computed.vt -= wundabzuege
-            system.computed.fk -= wundabzuege
-            system.computed.modifiers.at.push(`Wunden: -${wundabzuege}`)
-            system.computed.modifiers.vt.push(`Wunden: -${wundabzuege}`)
         }
     }
 
