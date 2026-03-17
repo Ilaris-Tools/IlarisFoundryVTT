@@ -87,7 +87,10 @@ async function checkAndShowChangelogNotification() {
         }
 
         // Apply Foundry's enrichHTML for @UUID links, etc.
-        const enrichedHtml = await TextEditor.enrichHTML(breakingChangesHtml, { async: true })
+        const enrichedHtml = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
+            breakingChangesHtml,
+            { async: true },
+        )
 
         // Wrap the enriched content with additional context
         const fullContent = `<div class="ilaris-changelog-content">
