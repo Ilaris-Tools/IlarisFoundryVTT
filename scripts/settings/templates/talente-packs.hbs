@@ -5,8 +5,14 @@
         <div class="form-group pack-entry">
             <div class="pack-row">
                 <label class="checkbox">
-                    <input type="checkbox" name="{{this.id}}" {{#if this.selected}}checked{{/if}}>
+                    <input
+                        type="checkbox"
+                        name="{{this.id}}"
+                        {{#if this.selected}}checked{{/if}}
+                        autofocus
+                    >
                     {{this.name}}
+                    </input>
                 </label>
             </div>
         </div>
