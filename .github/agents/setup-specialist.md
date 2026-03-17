@@ -26,7 +26,7 @@ Reliable environment detection, bootstrap, recovery, and verification for the Il
 ### 1. Detect Environment
 
 - Check OS (Windows/Linux/macOS)
-- Verify Node.js version (compatible with Foundry VTT v13)
+- Verify Node.js version (compatible with Foundry VTT)
 - Check if `npm install` has been run (`node_modules/` exists)
 - Verify Foundry VTT CLI availability (`fvtt` command)
 - Check for `developer.env` in `.vscode/tasks-scripts/start-foundry/`

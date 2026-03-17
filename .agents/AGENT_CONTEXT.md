@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-**Ilaris** is a Foundry VTT v13 game system implementing the Ilaris tabletop RPG ruleset — a streamlined alternative ruleset for the German P&P setting "Das Schwarze Auge" (The Dark Eye).
+**Ilaris** is a Foundry VTT game system implementing the Ilaris tabletop RPG ruleset — a streamlined alternative ruleset for the German P&P setting "Das Schwarze Auge" (The Dark Eye).
 
 - **What**: A browser-based virtual tabletop system providing character sheets, combat mechanics, skill checks, spells, weapons, and compendium data.
 - **Why**: Allows players and game masters to manage Ilaris campaigns digitally with automated rules support.
@@ -11,7 +11,7 @@
 
 ### Tech Stack
 
-- **Runtime**: Foundry VTT v13 (browser-based application server)
+- **Runtime**: Foundry VTT (browser-based application server)
 - **Language**: JavaScript (ES Modules), HTML (Handlebars `.hbs`), CSS
 - **Testing**: Jest + Babel
 - **Build**: npm scripts, `@foundryvtt/foundryvtt-cli`

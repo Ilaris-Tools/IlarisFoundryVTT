@@ -2,10 +2,10 @@
 
 ## Project Summary
 
-Ilaris is a **Foundry VTT v13 game system** implementing the Ilaris tabletop RPG ruleset (German P&P). It provides character sheets (Helden, Kreaturen), combat mechanics, skill checks, spells/liturgies, weapon properties, and compendium data management.
+Ilaris is a **Foundry VTT game system** implementing the Ilaris tabletop RPG ruleset (German P&P). It provides character sheets (Helden, Kreaturen), combat mechanics, skill checks, spells/liturgies, weapon properties, and compendium data management.
 
 - **Repository**: <https://github.com/Ilaris-Tools/IlarisFoundryVTT>
-- **Runtime**: Foundry VTT v13 (browser-based, ES modules)
+- **Runtime**: Foundry VTT (browser-based, ES modules)
 - **Language**: JavaScript (ES modules), HTML (Handlebars `.hbs`), CSS
 - **Domain language**: German (labels, identifiers, comments, compendium data). Code structure and documentation use a mix of German and English.
 
