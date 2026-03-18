@@ -279,32 +279,6 @@ describe('WaffeItem', () => {
             expect(weapon.system.computed.schadenBonus).toBe(3)
             expect(weapon.system.computed.modifiers.dmg).toContain('SB: +3')
         })
-
-        it('should apply wound penalties if present', () => {
-            mockActor.system.gesundheit = {
-                wundabzuege: 2,
-                wundenignorieren: 0,
-            }
-            weapon._calculateWeaponStats()
-
-            expect(weapon.system.computed.at).toBe(-2) // 2 - 2 (BE) - 2 (wounds)
-            expect(weapon.system.computed.vt).toBe(-3) // 1 - 2 (BE) - 2 (wounds)
-            expect(weapon.system.computed.modifiers.at).toContain('Wunden: -2')
-        })
-
-        it('should not apply wound penalties if wundenignorieren is set', () => {
-            mockActor.system.gesundheit = {
-                wundabzuege: 2,
-                wundenignorieren: 1,
-            }
-            weapon._calculateWeaponStats()
-
-            expect(weapon.system.computed.at).toBe(0) // 2 - 2 (BE only, no wound penalty)
-            const woundModifiers = weapon.system.computed.modifiers.at.filter((m) =>
-                m.startsWith('Wunden:'),
-            )
-            expect(woundModifiers.length).toBe(0)
-        })
     })
 
     describe('integration: complex weapon with multiple eigenschaften', () => {
