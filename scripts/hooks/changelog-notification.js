@@ -43,6 +43,7 @@ function showChangelogNotification(version, content) {
         classes: ['ilaris-changelog-notification'],
         position: {
             width: 600,
+            height: 520,
         },
         content,
         buttons: [
@@ -91,11 +92,13 @@ async function checkAndShowChangelogNotification() {
 
         // Wrap the enriched content with additional context
         const fullContent = `<div class="ilaris-changelog-content">
-    <p><strong>Version ${majorMinorVersion} enthält wichtige Änderungen, die deine Aufmerksamkeit erfordern:</strong></p>
-    <p style="margin-top: 1em; font-style: italic;">
+    <p class="ilaris-changelog-intro"><strong>Version ${majorMinorVersion} enthält wichtige Änderungen, die deine Aufmerksamkeit erfordern:</strong></p>
+    <p class="ilaris-changelog-note">
         Diese Nachricht wird nur einmal angezeigt. Du kannst die vollständigen Änderungen jederzeit im CHANGELOG.md einsehen.
     </p>
-    ${enrichedHtml}
+    <div class="ilaris-changelog-body">
+        ${enrichedHtml}
+    </div>
 </div>`
 
         // Show the notification
