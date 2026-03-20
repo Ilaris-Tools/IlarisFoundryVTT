@@ -624,11 +624,17 @@ function setupIlarisSocket() {
  * Only called on GM's client
  */
 async function handleApplyDamageRequest(data) {
-    const { targetActorId, damage, damageType, trueDamage, speaker } = data
+    const { targetActorId, tokenId, actorLink, damage, damageType, trueDamage, speaker } = data
 
-    const targetActor = game.actors.get(targetActorId)
+    const targetToken = tokenId ? canvas?.tokens?.get(tokenId) : null
+    const resolvedActorLink = actorLink ?? targetToken?.document?.actorLink ?? true
+    const targetActor =
+        !resolvedActorLink && targetToken?.actor
+            ? targetToken.actor
+            : game.actors.get(targetActorId) || targetToken?.actor
+
     if (!targetActor) {
-        console.error(`Target actor ${targetActorId} not found`)
+        console.error(`Target actor ${targetActorId ?? tokenId} not found`)
         return
     }
 

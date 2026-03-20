@@ -8,6 +8,8 @@
 - fix Bild defaultet auf Baum Icon
 - fix Waffeneigenschaften hinzufügen
 - fix andere fehlende Aktionen in Sheets
+- fix changelog script und scrollable machen
+- fix Schaden auf nicht verlinkte Actors
 
 ### v13.0.2
 
