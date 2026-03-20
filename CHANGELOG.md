@@ -7,6 +7,7 @@
 - fix Bild in Sheets ändern
 - fix Bild defaultet auf Baum Icon
 - fix Waffeneigenschaften hinzufügen
+- fix andere fehlende Aktionen in Sheets
 
 ### v13.0.2
 
