@@ -2,6 +2,7 @@ import {
     IlarisAutomatisierungSettingNames,
     ConfigureGameSettingsCategories,
 } from '../../settings/configure-game-settings.model.js'
+import { postRollToChat } from '../../dice/wuerfel_misc.js'
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api
 
@@ -355,6 +356,73 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         return []
     }
 
+    _buildSignedModifierItem(mod, label, extraClass = '') {
+        if (mod === 0) {
+            return ''
+        }
+
+        const color = mod > 0 ? 'positive' : 'negative'
+        const sign = mod > 0 ? '+' : ''
+        const className = extraClass ? ` ${extraClass}` : ''
+
+        return `<div class="modifier-item ${color}${className}">${label}: <span>${sign}${mod}</span></div>`
+    }
+
+    _buildModifierLines(textField, options = {}) {
+        if (!textField || !textField.trim()) {
+            return ''
+        }
+
+        const {
+            sectionTitle = '',
+            filterLine = () => true,
+            transformLine = (line) => line,
+            getLineClass = (line) => {
+                if (line.includes('+')) return 'positive'
+                if (line.includes('-')) return 'negative'
+                return 'neutral'
+            },
+        } = options
+
+        const rows = textField
+            .trim()
+            .split('\n')
+            .map((line) => line.trim())
+            .filter((line) => line && filterLine(line))
+            .map((line) => {
+                const displayLine = transformLine(line)?.trim()
+                if (!displayLine) {
+                    return ''
+                }
+
+                const color = getLineClass(line, displayLine)
+                return `<div class="modifier-item maneuver ${color}">${displayLine}</div>`
+            })
+            .filter((line) => line)
+            .join('')
+
+        if (!rows) {
+            return ''
+        }
+
+        let summary = ''
+        if (sectionTitle) {
+            summary += `<div class="modifier-section">${sectionTitle}</div>`
+        }
+        summary += rows
+        return summary
+    }
+
+    _buildTotalModifierItem(totalMod) {
+        if (totalMod === 0) {
+            return ''
+        }
+
+        const color = totalMod > 0 ? 'positive' : 'negative'
+        const sign = totalMod > 0 ? '+' : ''
+        return `<div class="modifier-item total ${color}"><strong>Addierte Modifikatoren: ${sign}${totalMod}</strong></div>`
+    }
+
     colorizeManeuverNumbers() {
         // Apply to both maneuver labels and other labels in the dialog
         this.element.querySelectorAll('.maneuver-item label, .flexrow label').forEach((label) => {
@@ -587,16 +655,7 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
 
         if (!useTargetSelection) {
             // If target selection is disabled, just send the chat message without defense prompts
-            const html_roll = await renderTemplate(rollResult.templatePath, rollResult.templateData)
-            await rollResult.roll.toMessage(
-                {
-                    speaker: this.speaker,
-                    flavor: html_roll,
-                },
-                {
-                    rollMode: this.rollmode,
-                },
-            )
+            await postRollToChat(rollResult, this.speaker, this.rollmode)
             return
         }
 
@@ -619,19 +678,22 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
               }
             : rollResult.templateData
 
-        // Send the chat message
-        const html_roll = await renderTemplate(rollResult.templatePath, templateData)
-        await rollResult.roll.toMessage(
-            {
-                speaker: this.speaker,
-                flavor: html_roll,
-                blind: hideRoll,
-                whisper: hideRoll ? [game.user.id] : [],
-            },
-            {
-                rollMode: hideRoll ? 'gmroll' : this.rollmode,
-            },
-        )
+        if (hideRoll) {
+            const html_roll = await renderTemplate(rollResult.templatePath, templateData)
+            await rollResult.roll.toMessage(
+                {
+                    speaker: this.speaker,
+                    flavor: html_roll,
+                    blind: true,
+                    whisper: [game.user.id],
+                },
+                {
+                    rollMode: 'gmroll',
+                },
+            )
+        } else {
+            await postRollToChat(rollResult, this.speaker, this.rollmode)
+        }
 
         // Store the roll result for later use with defense rolls
         if (hideRoll) {
