@@ -110,7 +110,9 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
                 }
 
                 this.selectedActors.push({
+                    tokenId: token.id,
                     actorId: token.actor?.id,
+                    actorLink: token.document?.actorLink ?? true,
                     name: token.actor?.name || token.name,
                     distance: distance,
                 })

@@ -22,24 +22,75 @@ const __dirname = path.dirname(__filename)
  * @returns {string|null} Markdown formatted breaking changes or null if none found
  */
 function parseBreakingChanges(changelogText, version) {
-    // Flexible Regex für Breaking Changes Überschriften
-    // Unterstützt: Emoji, Singular/Plural, Groß-/Kleinschreibung, optionaler Doppelpunkt
-    // Erfasst alles von der Breaking Changes Überschrift bis zur Horizontal Rule (---)
-    const breakingChangesRegex = new RegExp(
-        `^###\\s+(?:v|\\[)?${version.replace('.', '\\.')}\\]?.*?$` + // Version Header (mit optionalem 'v' Präfix)
-            `[\\s\\S]*?` + // Beliebiger Inhalt bis...
-            `^####\\s*(?:⚠️\\s*)?breaking\\s+change(?:s)?\\s*:?\\s*$` + // Breaking Changes Überschrift (case-insensitive, flexibel)
-            `([\\s\\S]*?)` + // Capture: Inhalt
-            `^---\\s*$`, // Horizontal rule am Zeilenende
-        'im', // i = case-insensitive, m = multiline
-    )
+    const lines = changelogText.split(/\r?\n/)
 
-    const match = changelogText.match(breakingChangesRegex)
-    if (!match || !match[1]) {
+    // Match entries like "### v13.0.1" and keep only releases for the requested major.minor.
+    const versionHeaderRegex = /^###\s+v?(\d+\.\d+(?:\.\d+)?)\s*$/i
+    const matchingVersionHeaderIndexes = []
+
+    for (let i = 0; i < lines.length; i++) {
+        const versionMatch = lines[i].match(versionHeaderRegex)
+        if (!versionMatch) {
+            continue
+        }
+
+        const releaseVersion = versionMatch[1]
+        if (releaseVersion === version || releaseVersion.startsWith(`${version}.`)) {
+            matchingVersionHeaderIndexes.push(i)
+        }
+    }
+
+    if (matchingVersionHeaderIndexes.length === 0) {
         return null
     }
 
-    return match[1].trim()
+    const levelThreeHeaderRegex = /^###\s+/ // next release section boundary
+    const breakingHeaderRegex = /^####\s*(?:⚠️\s*)?breaking\s+change(?:s)?\s*:?\s*$/i
+    const levelFourHeaderRegex = /^####\s+/ // next subsection boundary
+
+    // Iterate top-down so we take the newest matching release that has breaking changes.
+    for (const sectionStart of matchingVersionHeaderIndexes) {
+        let sectionEnd = lines.length
+        for (let i = sectionStart + 1; i < lines.length; i++) {
+            if (levelThreeHeaderRegex.test(lines[i])) {
+                sectionEnd = i
+                break
+            }
+        }
+
+        let breakingHeaderIndex = -1
+        for (let i = sectionStart + 1; i < sectionEnd; i++) {
+            if (breakingHeaderRegex.test(lines[i])) {
+                breakingHeaderIndex = i
+                break
+            }
+        }
+
+        if (breakingHeaderIndex === -1) {
+            continue
+        }
+
+        let breakingEnd = sectionEnd
+        for (let i = breakingHeaderIndex + 1; i < sectionEnd; i++) {
+            if (levelFourHeaderRegex.test(lines[i])) {
+                breakingEnd = i
+                break
+            }
+        }
+
+        const content = lines
+            .slice(breakingHeaderIndex + 1, breakingEnd)
+            .join('\n')
+            .trim()
+
+        if (content) {
+            const releaseHeading = lines[sectionStart].trim()
+            const breakingHeading = lines[breakingHeaderIndex].trim()
+            return `${releaseHeading}\n\n${breakingHeading}\n\n${content}`
+        }
+    }
+
+    return null
 }
 
 /**
