@@ -1,5 +1,7 @@
 # Foundry Basics
 
+> **Für AI-Agents**: Dieses Dokument enthält die wichtigsten FoundryVTT-Begriffe. Für eine ausführliche englische Referenz mit Code-Bezug siehe [`.agents/GLOSSARY.md`](../.agents/GLOSSARY.md). Architektur und Patterns: [`.agents/CODEBASE_ARCHITECTURE.md`](../.agents/CODEBASE_ARCHITECTURE.md).
+
 FoundryVTT wird als Webapp, auf einem Server (oder Home-PC) ausgeführt, dafür muss eine Lizenz erworben werden. Das Ilaris als `System` für FoundryVTT (dieses Projekt), kann über eine url direkt aus der Weboberfläche als Erweiterung installiert werden. Oder auf dem Server direkt nach `foundrydata/systems/` oder `foundrydata/Data/systems` geklont werden siehe [Entwicklerinstallation](CONTRIBUTING.md).
 
 Einige Begriffe aus dem FoundryVTT-Jargon kurz erklärt:
