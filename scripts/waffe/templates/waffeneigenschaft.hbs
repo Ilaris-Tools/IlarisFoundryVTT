@@ -190,7 +190,7 @@
                     <select name="system.modifiers.conditionalModifiers.{{index}}.condition" style="flex: 1;">
                         {{selectOptions ../conditionalModifierConditions selected=modifier.condition valueAttr='value' labelAttr='label'}}
                     </select>
-                    <button type="button" class="remove-conditional-modifier" data-index="{{index}}" style="margin-left: 10px; width: 30px;">
+                    <button type="button" class="remove-conditional-modifier" data-action="removeConditionalModifier" data-index="{{index}}" style="margin-left: 10px; width: 30px;">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
@@ -209,7 +209,7 @@
             </div>
             {{/each}}
         </div>
-        <button type="button" class="add-conditional-modifier clickable" style="margin-top: 5px;">
+        <button type="button" class="add-conditional-modifier clickable" data-action="addConditionalModifier" style="margin-top: 5px;">
             <i class="fas fa-plus"></i> Bedingten Modifikator hinzufügen
         </button>
         
@@ -230,7 +230,7 @@
                     <select name="system.actorModifiers.modifiers.{{index}}.mode" style="width: 100px;">
                         {{selectOptions ../actorModifierModes selected=modifier.mode valueAttr='value' labelAttr='label'}}
                     </select>
-                    <button type="button" class="remove-actor-modifier" data-index="{{index}}" style="margin-left: 10px; width: 30px;">
+                    <button type="button" class="remove-actor-modifier" data-action="removeActorModifier" data-index="{{index}}" style="margin-left: 10px; width: 30px;">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
@@ -241,7 +241,7 @@
             </div>
             {{/each}}
         </div>
-        <button type="button" class="add-actor-modifier clickable" style="margin-top: 5px;">
+        <button type="button" class="add-actor-modifier clickable" data-action="addActorModifier" style="margin-top: 5px;">
             <i class="fas fa-plus"></i> Akteur-Modifikator hinzufügen
         </button>
         
@@ -268,7 +268,7 @@
                         <option value="number" {{#if (eq slot.type 'number')}}selected{{/if}}>Number</option>
                         <option value="string" {{#if (eq slot.type 'string')}}selected{{/if}}>String</option>
                     </select>
-                    <button type="button" class="remove-parameter-slot" data-index="{{index}}" style="margin-left: 10px; width: 30px; height: 30px;">
+                    <button type="button" class="remove-parameter-slot" data-action="removeParameterSlot" data-index="{{index}}" style="margin-left: 10px; width: 30px; height: 30px;">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
@@ -303,7 +303,7 @@
             </div>
             {{/each}}
         </div>
-        <button type="button" class="add-parameter-slot clickable" style="margin-top: 5px;">
+        <button type="button" class="add-parameter-slot clickable" data-action="addParameterSlot" style="margin-top: 5px;">
             <i class="fas fa-plus"></i> Parameter-Slot hinzufügen
         </button>
         
