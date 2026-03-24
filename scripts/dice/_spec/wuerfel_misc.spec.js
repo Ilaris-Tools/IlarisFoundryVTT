@@ -1,6 +1,7 @@
 import {
     roll_crit_message,
     evaluate_roll_with_crit,
+    postRollToChat,
     get_statuseffect_by_id,
     calculate_diceschips,
 } from '../wuerfel_misc.js'
@@ -318,6 +319,40 @@ describe('evaluate_roll_with_crit', () => {
 
         expect(result.templateData.crit).toBe(false)
         expect(result.templateData.fumble).toBe(false)
+    })
+})
+
+describe('postRollToChat', () => {
+    test('should render the template and post the roll message', async () => {
+        const mockRoll = {
+            toMessage: jest.fn().mockResolvedValue({ id: 'chat-message' }),
+        }
+        const rollResult = {
+            roll: mockRoll,
+            templatePath: 'systems/Ilaris/scripts/skills/templates/chat/probenchat_profan.hbs',
+            templateData: {
+                title: 'Test Roll',
+                success: true,
+            },
+        }
+        const speaker = { alias: 'Test' }
+
+        const result = await postRollToChat(rollResult, speaker, 'gmroll')
+
+        expect(foundry.applications.handlebars.renderTemplate).toHaveBeenCalledWith(
+            rollResult.templatePath,
+            rollResult.templateData,
+        )
+        expect(mockRoll.toMessage).toHaveBeenCalledWith(
+            {
+                speaker,
+                flavor: '<h3>Erfolg</h3>',
+            },
+            {
+                rollMode: 'gmroll',
+            },
+        )
+        expect(result).toEqual({ id: 'chat-message' })
     })
 })
 
