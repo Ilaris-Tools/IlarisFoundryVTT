@@ -18,7 +18,7 @@
 
     <div class="heroattributes">
         <div id="lebensleiste">
-        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/Leben.webp" data-edit="img" title="Leben"
+        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/Leben.webp" title="Leben"
             height="50" width="50" />
         {{#each (range 0 8) as |index|}}
         <button type="button"
@@ -27,7 +27,7 @@
             data-state="{{getButtonState index ../actor.system.gesundheit.wunden ../actor.system.gesundheit.erschoepfung}}">
         </button>
         {{/each}}
-        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/Tod.webp" data-edit="img" title="Tod"
+        <img class="profile-img" src="/systems/Ilaris/assets/images/Ilaris/Tod.webp" title="Tod"
             height="50" width="50" />
         </div>
         <div class="status-effects">

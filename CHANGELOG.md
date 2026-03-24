@@ -2,6 +2,19 @@
 
 ## v13
 
+### v13.0.3
+
+- fix Bild in Sheets ändern
+- fix Bild defaultet auf Baum Icon
+- fix Waffeneigenschaften hinzufügen
+- fix andere fehlende Aktionen in Sheets
+- fix changelog script und scrollable machen
+- fix Schaden auf nicht verlinkte Actors
+
+### v13.0.2
+
+- fix Wundabzuege
+
 ### v13.0.1
 
 - fix Effekt in Effekt-Item und Vorteile hinzufügen funktioniert nicht oder sonstige Aktionen
