@@ -215,6 +215,23 @@ export async function evaluate_roll_with_crit(
     }
 }
 
+export async function postRollToChat(rollResult, speaker, rollmode) {
+    const html_roll = await foundry.applications.handlebars.renderTemplate(
+        rollResult.templatePath,
+        rollResult.templateData,
+    )
+
+    return rollResult.roll.toMessage(
+        {
+            speaker: speaker,
+            flavor: html_roll,
+        },
+        {
+            rollMode: rollmode,
+        },
+    )
+}
+
 export function calculate_diceschips(html, text, actor, dialogId = '') {
     // let text = "";
     const xd20Name = dialogId ? `xd20-${dialogId}` : 'xd20'
