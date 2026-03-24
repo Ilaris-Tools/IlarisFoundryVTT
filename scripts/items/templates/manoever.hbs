@@ -135,7 +135,7 @@
             <div class="section-header">
                 <div>
                     <b>{{manoever.labels.modifications}}</b>
-                    <a class="add-modification">[+]</a>
+                    <a class="add-modification" data-action="addModification">[+]</a>
                 </div>
             </div>
             <div class="section-description">
@@ -155,6 +155,7 @@
                     </select>
                     <a
                         class="delete-modification icon-small delete-button"
+                        data-action="deleteModification"
                         data-modificationid="{{@index}}"
                     >
                         <i class="fas fa-trash"></i>
