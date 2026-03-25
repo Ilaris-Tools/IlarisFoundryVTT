@@ -11,7 +11,7 @@ Implement a Foundry VTT `TypeDataModel` subclass (`HeldModel`) for the `held` ac
 - The project targets Foundry VTT v12/v13 where `foundry.abstract.TypeDataModel` is the correct base class for actor system data.
 - The `template.json` is the source of truth for stored fields; computed fields (e.g. `abgeleitete.ws_stern`) are derived at runtime and **need not** be persisted — they are `prepareDerivedData()` outputs and can be declared as non-schema helper fields if needed.
 - The existing `HeldActor` class (`scripts/actors/data/held.js`) keeps its role as the `Actor` document subclass; `HeldModel` is a separate **data model** that describes `this.system` only.
-- The `fertigkeiten` template referenced in `template.json` under `held.templates` has no corresponding definition block in `template.json` (it is fulfilled through embedded Items, not system fields). This is left `[NEEDS INPUT]` — confirm whether it maps to embedded items or if a schema block is needed.
+- The `fertigkeiten` template referenced in `template.json` under `held.templates` has no corresponding definition block in `template.json`. **Confirmed**: `fertigkeiten` are embedded Items assigned to the actor — they are **not** `system` data fields and must **not** appear in `HeldModel.defineSchema()`. They are accessed at runtime via `actor.items` (e.g. `actor.profan.fertigkeiten`).
 - The field `abgeleitete.asp_zugekauft`, `abgeleitete.gasp`, `abgeleitete.kap_zugekauft`, `abgeleitete.gkap` appear in `scripts/actors/data/actor.js` but are absent from `template.json`. These must be added to both `template.json` and `HeldModel`. `[NEEDS INPUT]` — confirm default values.
 - Existing compendium data (`comp_packs/beispiel-helden/_source/`) must remain forward-compatible; no migration is needed if new fields have sensible defaults.
 - Tests must use the existing Jest infrastructure (`jest.config.mjs`, `jest.setup.js`).
@@ -21,6 +21,8 @@ Implement a Foundry VTT `TypeDataModel` subclass (`HeldModel`) for the `held` ac
 ### Field Inventory
 
 The following table maps every `system.*` field for the `held` actor type as resolved from `template.json` templates plus runtime usage in `actor.js`.
+
+> **Note**: `fertigkeiten` (profan and übernatürlich) are **not** system data fields. They are embedded Items (`type: "fertigkeit"`, `type: "uebernatuerliche_fertigkeit"`, etc.) stored in `actor.items` and accessed at runtime via helper getters (e.g. `actor.profan.fertigkeiten`). They must **not** appear in `HeldModel.defineSchema()`.
 
 #### Template: `gesundheit` → `system.gesundheit`
 
