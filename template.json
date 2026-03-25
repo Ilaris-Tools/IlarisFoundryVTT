@@ -78,7 +78,11 @@
           "baseIni": 0,
           "dh": 0,
           "traglast_intervall": 0,
-          "traglast": 0
+          "traglast": 0,
+          "asp_zugekauft": 0,
+          "gasp": 0,
+          "kap_zugekauft": 0,
+          "gkap": 0
         }
       },
       "schips": {
@@ -136,7 +140,6 @@
       "templates": [
         "gesundheit",
         "attribute",
-        "fertigkeiten",
         "abgeleitete",
         "schips",
         "initiative",
@@ -152,7 +155,6 @@
       "templates": [
         "gesundheit",
         "attribute",
-        "fertigkeiten",
         "abgeleitete",
         "schips",
         "initiative",
