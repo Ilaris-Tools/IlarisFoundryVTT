@@ -134,12 +134,16 @@
           "heller": 0,
           "kreuzer": 0
         }
+      },
+      "fertigkeiten": {
+        "fertigkeiten": {}
       }
     },
     "held": {
       "templates": [
         "gesundheit",
         "attribute",
+        "fertigkeiten",
         "abgeleitete",
         "schips",
         "initiative",
@@ -155,6 +159,7 @@
       "templates": [
         "gesundheit",
         "attribute",
+        "fertigkeiten",
         "abgeleitete",
         "schips",
         "initiative",
