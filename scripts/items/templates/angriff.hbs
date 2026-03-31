@@ -5,7 +5,7 @@
             <header class="sheet-header">
                 <div class="header-fields">
                     <h1 class="charname">
-                        <input name="name" type="text" value="{{item.name}}" />
+                        <input name="name" type="text" value="{{item.name}}" autofocus />
                     </h1>
                 </div>
             </header>
@@ -60,7 +60,7 @@
         </div>
         <div>
             <b>Eigenschaften</b>
-            <a class="add-eigenschaft" data-itemclass="Neue Eigenschaft">[+]</a>
+            <a class="add-eigenschaft" data-action="addEigenschaft" data-itemclass="Neue Eigenschaft">[+]</a>
             <b>:</b>
             {{#each item.system.eigenschaften as |eig key|}}
             <div class="flexrow">
@@ -79,7 +79,7 @@
                     />
                 </div>
                 <div class="flex0">
-                    <a class="del-eigenschaft" data-eigenschaftid="{{key}}">
+                    <a class="del-eigenschaft" data-action="delEigenschaft" data-eigenschaftid="{{key}}">
                         <i class="fas fa-trash"></i>
                     </a>
                 </div>
@@ -96,7 +96,7 @@
                 {{#each item.system.angriffmanover as |maneuver|}}
                 <span class="maneuver-chip" data-maneuver="{{maneuver}}">
                     {{maneuver}}
-                    <i class="fas fa-times remove-maneuver" data-maneuver="{{maneuver}}" title="Manöver entfernen"></i>
+                    <i class="fas fa-times remove-maneuver" data-action="removeManeuver" data-maneuver="{{maneuver}}" title="Manöver entfernen"></i>
                 </span>
                 {{/each}}
             </div>

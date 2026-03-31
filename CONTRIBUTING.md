@@ -146,6 +146,37 @@ TODO: Dateistruktur und wichtige Dateien erklären
 - package.json updaten und sinnvoll nutzen. Statt per Hand gibt es dann einen update_db Befehl oder so. Und meine persönlichen Pythonskripts zum starten können auch gleich integriert werden.
 - Eigenes Pack für freie Fertigkeiten und/oder Sprachen, oder mit in fertigkeiten-und-talente.db?
 
+## Für Entwickler mit AI-Agents
+
+AI-Agents (GitHub Copilot, Claude, etc.) können bei der Entwicklung am Ilaris-System unterstützen. Hier ein Überblick:
+
+### Setup für Agents
+
+- Agent-spezifische Dokumentation liegt in [`.agents/README.md`](.agents/README.md).
+- Repository-weite Instrukionen in `.github/copilot-instructions.md`.
+- Pfad-spezifische Regeln in `.github/instructions/`.
+
+### Was Agents gut können
+
+- **Compendium-Verwaltung**: Repetitive JSON-Bearbeitung in `comp_packs/_source/`
+- **Sheet-Erstellung**: Ähnliche Strukturen, variierende Inhalte (AppV2-Pattern)
+- **Bug-Fixes**: Code-Suche + Linting + automatische Tests
+- **Testschreiben**: Generierung von Jest-Tests basierend auf vorhandenen Patterns
+
+### Einschränkungen
+
+- **Foundry VTT API**: Agents müssen die [offizielle API-Doku](https://foundryvtt.com/api/) konsultieren — niemals raten.
+- **Domain-Wissen**: Ilaris-Regelwerk ist spezialisiert; bei Unklarheiten den User fragen.
+- **LevelDB**: Niemals direkt bearbeiten — immer `_source/` JSON + `npm run pack-all`.
+
+### Review von Agent-generierten Changes
+
+- Immer `npm test` und `npm run lint` nach Agent-Änderungen ausführen.
+- Compendium-Daten nach Bearbeitung mit `npm run pack-all` neu bauen.
+- Bei Datenmodell-Änderungen prüfen ob eine Migration nötig ist.
+
+---
+
 ## Nützliche Links
 
 Existierende CSS Helper

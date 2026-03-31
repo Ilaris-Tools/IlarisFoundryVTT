@@ -1,4 +1,4 @@
-import { roll_crit_message } from '../../dice/wuerfel_misc.js'
+import { evaluate_roll_with_crit, postRollToChat } from '../../dice/wuerfel_misc.js'
 import { signed } from '../../dice/chatutilities.js'
 import { handleModifications } from './shared_dialog_helpers.js'
 import { CombatDialog } from './combat_dialog.js'
@@ -175,42 +175,13 @@ export class UebernatuerlichDialog extends CombatDialog {
             }
         }
 
-        // Status modifiers
-        if (statusMods !== 0) {
-            const statusColor = statusMods > 0 ? 'positive' : 'negative'
-            const statusSign = statusMods > 0 ? '+' : ''
-            summary += `<div class="modifier-item ${statusColor}">Status (Wunden/Furcht): <span>${statusSign}${statusMods}</span></div>`
-        }
-
-        // Nahkampf token modifiers
-        if (nahkampfMods !== 0) {
-            const nahkampfColor = nahkampfMods > 0 ? 'positive' : 'negative'
-            const nahkampfSign = nahkampfMods > 0 ? '+' : ''
-            summary += `<div class="modifier-item ${nahkampfColor}">Token Status: <span>${nahkampfSign}${nahkampfMods}</span></div>`
-        }
-
-        // Parse text_at for maneuver modifiers
-        if (this.text_at && this.text_at.trim()) {
-            summary += '<div class="modifier-section">Manöver:</div>'
-            const lines = this.text_at.trim().split('\n')
-            lines.forEach((line) => {
-                if (line.trim()) {
-                    let color = 'neutral'
-                    if (line.includes('+')) color = 'positive'
-                    else if (line.includes('-')) color = 'negative'
-                    summary += `<div class="modifier-item maneuver ${color}">${line}</div>`
-                }
-            })
-        }
+        summary += this._buildSignedModifierItem(statusMods, 'Status (Wunden/Furcht)')
+        summary += this._buildSignedModifierItem(nahkampfMods, 'Token Status')
+        summary += this._buildModifierLines(this.text_at, { sectionTitle: 'Manöver:' })
 
         summary += '<hr>'
 
-        // Show total modifiers if any exist
-        if (totalMod !== 0) {
-            const totalModColor = totalMod > 0 ? 'positive' : 'negative'
-            const totalModSign = totalMod > 0 ? '+' : ''
-            summary += `<div class="modifier-item total ${totalModColor}"><strong>Addierte Modifikatoren: ${totalModSign}${totalMod}</strong></div>`
-        }
+        summary += this._buildTotalModifierItem(totalMod)
 
         summary += '</div></div>'
         return summary
@@ -367,19 +338,19 @@ export class UebernatuerlichDialog extends CombatDialog {
             }
         }
 
-        // Show roll result
-        let isSuccess = false
-        let is16OrHigher = false
-        ;[isSuccess, is16OrHigher] = await roll_crit_message(
+        const rollResult = await evaluate_roll_with_crit(
             formula,
             label,
             this.text_at + '\n' + this.text_energy + additionalText,
-            this.speaker,
-            this.rollmode,
-            true,
-            this.fumble_val,
             difficulty,
+            this.fumble_val,
+            true,
         )
+
+        await postRollToChat(rollResult, this.speaker, this.rollmode)
+
+        const isSuccess = rollResult.success
+        const is16OrHigher = rollResult.is16OrHigher
 
         this.is16OrHigher = is16OrHigher
         if (difficulty) {

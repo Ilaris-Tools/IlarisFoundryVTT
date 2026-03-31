@@ -1,4 +1,4 @@
-import { evaluate_roll_with_crit } from '../../dice/wuerfel_misc.js'
+import { evaluate_roll_with_crit, postRollToChat } from '../../dice/wuerfel_misc.js'
 import { signed } from '../../dice/chatutilities.js'
 import { handleModifications, applyDamageToTarget } from './shared_dialog_helpers.js'
 import { CombatDialog } from './combat_dialog.js'
@@ -153,42 +153,13 @@ export class FernkampfAngriffDialog extends CombatDialog {
         // Base FK
         summary += `<div class="modifier-item base-value">Basis FK: <span>${baseFK}</span></div>`
 
-        // Status modifiers
-        if (statusMods !== 0) {
-            const statusColor = statusMods > 0 ? 'positive' : 'negative'
-            const statusSign = statusMods > 0 ? '+' : ''
-            summary += `<div class="modifier-item ${statusColor}">Status (Wunden/Furcht): <span>${statusSign}${statusMods}</span></div>`
-        }
-
-        // Nahkampf token modifiers
-        if (nahkampfMods !== 0) {
-            const nahkampfColor = nahkampfMods > 0 ? 'positive' : 'negative'
-            const nahkampfSign = nahkampfMods > 0 ? '+' : ''
-            summary += `<div class="modifier-item ${nahkampfColor}">Token Status: <span>${nahkampfSign}${nahkampfMods}</span></div>`
-        }
-
-        // Parse text_at for maneuver modifiers
-        if (this.text_at && this.text_at.trim()) {
-            summary += '<div class="modifier-section">Manöver:</div>'
-            const lines = this.text_at.trim().split('\n')
-            lines.forEach((line) => {
-                if (line.trim()) {
-                    let color = 'neutral'
-                    if (line.includes('+')) color = 'positive'
-                    else if (line.includes('-')) color = 'negative'
-                    summary += `<div class="modifier-item maneuver ${color}">${line}</div>`
-                }
-            })
-        }
+        summary += this._buildSignedModifierItem(statusMods, 'Status (Wunden/Furcht)')
+        summary += this._buildSignedModifierItem(nahkampfMods, 'Token Status')
+        summary += this._buildModifierLines(this.text_at, { sectionTitle: 'Manöver:' })
 
         summary += '<hr>'
 
-        // Show total modifiers if any exist
-        if (totalMod !== 0) {
-            const totalModColor = totalMod > 0 ? 'positive' : 'negative'
-            const totalModSign = totalMod > 0 ? '+' : ''
-            summary += `<div class="modifier-item total ${totalModColor}"><strong>Addierte Modifikatoren: ${totalModSign}${totalMod}</strong></div>`
-        }
+        summary += this._buildTotalModifierItem(totalMod)
 
         summary += '</div></div>'
         return summary
@@ -216,34 +187,20 @@ export class FernkampfAngriffDialog extends CombatDialog {
         // Base damage
         summary += `<div class="modifier-item base-value">Basis Schaden: <span>${baseDamage}</span></div>`
 
-        // Parse text_dm for maneuver modifiers
-        if (this.text_dm && this.text_dm.trim()) {
-            summary += '<div class="modifier-section">Modifikatoren:</div>'
-            const lines = this.text_dm.trim().split('\n')
-            lines.forEach((line) => {
-                if (line.trim()) {
-                    // Skip trefferzone lines if Gezielter Schlag is not active
-                    if (
-                        !this.isGezieltSchlagActive() &&
-                        (line.includes('Trefferzone:') || line.includes('Gezielter Schlag:'))
-                    ) {
-                        return
-                    }
-
-                    let color = 'neutral'
-                    if (line.includes('+')) color = 'positive'
-                    else if (line.includes('-')) color = 'negative'
-                    else if (line.includes('Kein Schaden')) color = 'negative'
-
-                    // Clean up trefferzone text
-                    let cleanedLine = line.trim()
-                    cleanedLine = cleanedLine.replace(/\s*Trefferzone gewählt$/i, '')
-                    cleanedLine = cleanedLine.replace(/\s*gewählt$/i, '')
-
-                    summary += `<div class="modifier-item maneuver ${color}">${cleanedLine}</div>`
-                }
-            })
-        }
+        summary += this._buildModifierLines(this.text_dm, {
+            sectionTitle: 'Modifikatoren:',
+            filterLine: (line) =>
+                this.isGezieltSchlagActive() ||
+                (!line.includes('Trefferzone:') && !line.includes('Gezielter Schlag:')),
+            transformLine: (line) =>
+                line.replace(/\s*Trefferzone gewählt$/i, '').replace(/\s*gewählt$/i, ''),
+            getLineClass: (line) => {
+                if (line.includes('Kein Schaden')) return 'negative'
+                if (line.includes('+')) return 'positive'
+                if (line.includes('-')) return 'negative'
+                return 'neutral'
+            },
+        })
 
         summary += '<hr>'
 
@@ -297,20 +254,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
             false, // crit_eval
         )
 
-        // Send the chat message
-        const html_roll = await foundry.applications.handlebars.renderTemplate(
-            rollResult.templatePath,
-            rollResult.templateData,
-        )
-        await rollResult.roll.toMessage(
-            {
-                speaker: this.speaker,
-                flavor: html_roll,
-            },
-            {
-                rollMode: this.rollmode,
-            },
-        )
+        await postRollToChat(rollResult, this.speaker, this.rollmode)
 
         // Apply damage to selected targets if any
         if (this.selectedActors && this.selectedActors.length > 0) {

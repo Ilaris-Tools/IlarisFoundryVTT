@@ -223,9 +223,16 @@ export async function applyDamageToTarget(
     trueDamage = false,
     speaker,
 ) {
+    const targetToken = target?.tokenId ? canvas?.tokens?.get(target.tokenId) : null
+    const actorLink = target?.actorLink ?? targetToken?.document?.actorLink ?? true
+
     // If the current user doesn't have permission to update the target actor,
     // request the GM to do it via socket
-    const targetActor = game.actors.get(target.actorId || target._id)
+    const targetActor =
+        !actorLink && targetToken?.actor
+            ? targetToken.actor
+            : game.actors.get(target?.actorId || target?._id) || targetToken?.actor
+
     if (!targetActor) {
         ui.notifications.error('Zielakteur wurde nicht gefunden.')
         return
@@ -245,6 +252,8 @@ export async function applyDamageToTarget(
             type: 'applyDamage',
             data: {
                 targetActorId: targetActor.id,
+                tokenId: target?.tokenId,
+                actorLink: actorLink,
                 damage: damage,
                 damageType: damageType,
                 trueDamage: trueDamage,

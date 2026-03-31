@@ -36,6 +36,7 @@ import { registerDefenseButtonHook } from '../combat/dialogs/defense_button_hook
 import { XmlCharacterImporter } from '../importer/xml_character_importer.js'
 import { XMLRuleImporter } from '../importer/xml_rule_importer/index.js'
 import { formatDiceFormula } from './utilities.js'
+import { initializeKeybinds } from './keybinds.js'
 
 const Actors = foundry.documents.collections.Actors
 const Items = foundry.documents.collections.Items
@@ -116,6 +117,7 @@ Hooks.once('init', () => {
     })
 
     initializeHandlebars()
+    initializeKeybinds()
     // game.sephrasto = new SephrastoImporter();
     CONFIG.ILARIS = ILARIS
     CONFIG.Combat.initiative = { formula: '@initiative', decimals: 1 }

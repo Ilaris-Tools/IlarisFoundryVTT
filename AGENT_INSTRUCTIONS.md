@@ -1,28 +1,50 @@
-# 🚨 Agent Instructions - WICHTIG
+# Agent Instructions — Ilaris FoundryVTT System
 
-## Foundry VTT API - IMMER IN DIE DOKU SCHAUEN!
+> **Wichtigste Regel**: Für alle Foundry VTT API-Fragen **immer zuerst** die offizielle Doku konsultieren: <https://foundryvtt.com/api/> — Niemals raten!
 
-Für **ALLE** Fragen zu:
+## Dokumentationsstruktur
 
-- **Hooks** (z.B. `Hooks.on()`, `Hooks.call()`, `Hooks.once()`)
-- **Util-Methoden** (z.B. `foundry.utils.duplicate()`, `foundry.utils.mergeObject()`)
-- **API-Funktionen** (z.B. `Actor`, `Item`, `Combat`, `Scene`, etc.)
-- **Datenstrukturen** (Document-Struktur, Actor/Item-Datenmodell)
-- **Events** und **Lifecycle**
-- **Socket-Kommunikation**
-- **Canvas** und **Rendering**
+Die vollständige Agent-Dokumentation ist auf mehrere Dateien aufgeteilt:
 
-**👉 ZUERST die offizielle Doku konsultieren:**
+| Dokument                                                               | Zweck                                                 |
+| ---------------------------------------------------------------------- | ----------------------------------------------------- |
+| [`.agents/README.md`](.agents/README.md)                               | **Einstiegspunkt** — Navigation aller Agent-Dokumente |
+| [`.agents/AGENT_CONTEXT.md`](.agents/AGENT_CONTEXT.md)                 | Projektüberblick, Key Files, Common Tasks             |
+| [`.agents/GLOSSARY.md`](.agents/GLOSSARY.md)                           | Foundry VTT + Ilaris Fachbegriffe                     |
+| [`.agents/CODEBASE_ARCHITECTURE.md`](.agents/CODEBASE_ARCHITECTURE.md) | Verzeichnisstruktur, Schlüsseldateien, Patterns       |
+| [`.agents/CODE_CONVENTIONS.md`](.agents/CODE_CONVENTIONS.md)           | Code-Stil, Namenskonventionen, Beispiele              |
+| [`.agents/PATTERNS_AND_EXAMPLES.md`](.agents/PATTERNS_AND_EXAMPLES.md) | Step-by-Step Implementierungsmuster                   |
+| [`.agents/BUILD_AND_DEVELOPMENT.md`](.agents/BUILD_AND_DEVELOPMENT.md) | npm Scripts, Entwicklungs-Workflows, Tests            |
+| [`AGENTS.md`](AGENTS.md)                                               | Tool-agnostische Orchestrierungsregeln                |
 
-- https://foundryvtt.com/api/
+### GitHub Copilot spezifisch
 
-**NIEMALS RATEN ODER ANNAHMEN TREFFEN!**
-Wenn etwas in der API-Dokumentation nicht klar ist, ASK THE USER statt Quatsch zu erzählen.
+| Dokument                                 | Zweck                                                      |
+| ---------------------------------------- | ---------------------------------------------------------- |
+| `.github/copilot-instructions.md`        | Repository-weite Baseline-Instruktionen                    |
+| `.github/instructions/*.instructions.md` | Pfad-spezifische Instruktionen (JS, Compendium, Docs)      |
+| `.github/agents/`                        | Agent-Profile (Planner, Researcher, Reviewer, Setup)       |
+| `.github/skills/`                        | Wiederverwendbare Skills (Planning, Review, Foundry-Setup) |
 
----
+### Verbindliche Agent-Profil-Zuordnung
 
-## Wie der User das nutzt:
+Für Delegation an Subagents ist `.github/agents/` die kanonische Quelle.
 
-Zu Beginn eines Chats: _"Beachte die AGENT_INSTRUCTIONS.md"_
+- `Planner` -> `.github/agents/planner.md`
+- `Researcher` -> `.github/agents/researcher.md`
+- `Reviewer` -> `.github/agents/reviewer.md`
+- `Setup Specialist` -> `.github/agents/setup-specialist.md`
 
-Dann weiß der Agent, dass die Foundry-Doku konsultiert werden muss.
+Pflichtregeln:
+
+1. Vor jeder Delegation das zugeordnete Agent-Profil konsultieren.
+2. `name` und `description` aus der YAML-Frontmatter als kanonische Identitaet verwenden.
+3. Keine Rollenverantwortungen erfinden, die nicht im Profil stehen.
+4. Falls ein Profil fehlt, auf `AGENTS.md` zurueckfallen und den Fallback explizit nennen.
+
+## Instrukions-Rangfolge
+
+1. **Pfad-spezifisch** (`.github/instructions/`) — höchste Priorität
+2. **Repository-weit** (`.github/copilot-instructions.md`)
+3. **Tool-agnostisch** (`AGENTS.md`)
+4. **Wissensbasis** (`.agents/`)
