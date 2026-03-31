@@ -170,6 +170,7 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
                 ConfigureGameSettingsCategories.Ilaris,
                 IlarisAutomatisierungSettingNames.useTargetSelection,
             ),
+            summary: {},
         }
     }
 
