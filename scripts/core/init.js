@@ -117,7 +117,6 @@ Hooks.once('init', () => {
     })
 
     initializeHandlebars()
-    initializeKeybinds()
     // game.sephrasto = new SephrastoImporter();
     CONFIG.ILARIS = ILARIS
     CONFIG.Combat.initiative = { formula: '@initiative', decimals: 1 }
@@ -350,6 +349,7 @@ Hooks.once('init', () => {
     ]
 
     registerIlarisGameSettings()
+    initializeKeybinds()
 })
 
 Hooks.on('ready', async () => {
