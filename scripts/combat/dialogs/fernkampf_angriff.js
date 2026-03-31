@@ -298,7 +298,10 @@ export class FernkampfAngriffDialog extends CombatDialog {
         )
 
         // Send the chat message
-        const html_roll = await renderTemplate(rollResult.templatePath, rollResult.templateData)
+        const html_roll = await foundry.applications.handlebars.renderTemplate(
+            rollResult.templatePath,
+            rollResult.templateData,
+        )
         await rollResult.roll.toMessage(
             {
                 speaker: this.speaker,

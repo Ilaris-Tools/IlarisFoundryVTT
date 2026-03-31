@@ -585,7 +585,10 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
 
         if (!useTargetSelection) {
             // If target selection is disabled, just send the chat message without defense prompts
-            const html_roll = await renderTemplate(rollResult.templatePath, rollResult.templateData)
+            const html_roll = await foundry.applications.handlebars.renderTemplate(
+                rollResult.templatePath,
+                rollResult.templateData,
+            )
             await rollResult.roll.toMessage(
                 {
                     speaker: this.speaker,
@@ -618,7 +621,10 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             : rollResult.templateData
 
         // Send the chat message
-        const html_roll = await renderTemplate(rollResult.templatePath, templateData)
+        const html_roll = await foundry.applications.handlebars.renderTemplate(
+            rollResult.templatePath,
+            templateData,
+        )
         await rollResult.roll.toMessage(
             {
                 speaker: this.speaker,

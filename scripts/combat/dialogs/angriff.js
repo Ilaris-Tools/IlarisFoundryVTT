@@ -424,7 +424,10 @@ export class AngriffDialog extends CombatDialog {
             }
 
             // Send the hidden defense roll
-            const html_roll = await renderTemplate(rollResult.templatePath, templateData)
+            const html_roll = await foundry.applications.handlebars.renderTemplate(
+                rollResult.templatePath,
+                templateData,
+            )
             await rollResult.roll.toMessage(
                 {
                     speaker: this.speaker,
@@ -450,7 +453,10 @@ export class AngriffDialog extends CombatDialog {
             await this.resolveAttackVsDefense()
         } else {
             // Normal defense roll (not in response to an attack)
-            const html_roll = await renderTemplate(rollResult.templatePath, rollResult.templateData)
+            const html_roll = await foundry.applications.handlebars.renderTemplate(
+                rollResult.templatePath,
+                rollResult.templateData,
+            )
             await rollResult.roll.toMessage(
                 {
                     speaker: this.speaker,
@@ -585,7 +591,10 @@ export class AngriffDialog extends CombatDialog {
         )
 
         // Send the chat message
-        const html_roll = await renderTemplate(rollResult.templatePath, rollResult.templateData)
+        const html_roll = await foundry.applications.handlebars.renderTemplate(
+            rollResult.templatePath,
+            rollResult.templateData,
+        )
         await rollResult.roll.toMessage(
             {
                 speaker: this.speaker,

@@ -416,7 +416,7 @@ export class UebernatuerlichDialog extends CombatDialog {
 
         // Create chat message with energy cost information
         const label = `${this.item.name} (Kosten: ${this.endCost} Energie)`
-        const html_roll = await renderTemplate(
+        const html_roll = await foundry.applications.handlebars.renderTemplate(
             'systems/Ilaris/scripts/skills/templates/chat/probenchat_profan.hbs',
             {
                 title: label,
@@ -504,7 +504,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         await this.actor.update(updates)
 
         // Create chat message with energy cost information
-        const html_roll = await renderTemplate(
+        const html_roll = await foundry.applications.handlebars.renderTemplate(
             'systems/Ilaris/scripts/dice/templates/spell_result.hbs',
             {
                 success: isSuccess,

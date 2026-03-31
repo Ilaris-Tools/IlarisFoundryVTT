@@ -181,13 +181,15 @@ export class NahkampfDialog extends Dialog {
         }
         // console.log(templateData);
         let template = 'systems/Ilaris/scripts/dice/templates/dreid20.hbs'
-        renderTemplate(template, templateData, roll).then((content) => {
-            if (formula != null) {
-                roll.toMessage({
-                    flavor: content,
-                })
-            }
-        })
+        foundry.applications.handlebars
+            .renderTemplate(template, templateData, roll)
+            .then((content) => {
+                if (formula != null) {
+                    roll.toMessage({
+                        flavor: content,
+                    })
+                }
+            })
     }
 
     _onItemCreate(event) {
