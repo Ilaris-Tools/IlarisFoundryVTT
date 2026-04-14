@@ -62,6 +62,8 @@ How to verify each step and the overall result:
 3. **Assign** — Map each step to the appropriate specialist role.
 4. **Define checks** — Specify validation criteria for each step.
 5. **Emit plan** — Produce the structured output above.
+6. **Emit Points for need input in chat at the end** — List all `[NEEDS INPUT]` items identified during the planning process and prompt the user for clarification.
+7. **Document the plan if no `[NEEDS INPUT]` items** — write the output into a markdown file in docs/\_specs in a new folder with date and a descriptive name with underscores (e.g., `2024_06_15_new_feature_planning`), the file should be named with the descriptive name and \_plan (e.g., `new_feature_plan.md`).
 
 ## Context Sources
 

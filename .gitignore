@@ -38,5 +38,8 @@ node_modules
 # Test coverage reports
 /coverage/
 
+# Playwright test results
+/test-results/
+
 .vscode/tasks-scripts/start-foundry/developer.env
 *.code-workspace
