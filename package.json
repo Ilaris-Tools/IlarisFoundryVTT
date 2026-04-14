@@ -28,8 +28,6 @@
     "lint": "eslint --fix .",
     "prettier": "prettier --write .",
     "test:e2e": "playwright test e2e/cases",
-    "test:e2e:ref": "playwright test e2e/cases/e2e-001-nahkampf-angriffsdialog/e2e-001-nahkampf-angriffsdialog.spec.ts",
-    "test:e2e:ref:list": "playwright test e2e/cases/e2e-001-nahkampf-angriffsdialog/e2e-001-nahkampf-angriffsdialog.spec.ts --list",
     "prepare": "husky",
     "optimize-svgs": "node scripts/optimize-svgs.js",
     "pack-all": "node utils/pack-all.js",
