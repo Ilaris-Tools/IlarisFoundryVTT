@@ -113,6 +113,9 @@ Before generation, at least these fields must be clarified via follow-up questio
 - Key findings (if any)
 - Remaining risks or open to-dos, if applicable
 
+11. **Run playwright test, check results and fix issues if any**
+    If the new test case fails, investigate and fix until it passes. Document the final regression result in chat.
+
 ## Chat Output Format
 
 Before file generation:
