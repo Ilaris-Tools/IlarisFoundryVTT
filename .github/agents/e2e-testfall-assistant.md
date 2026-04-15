@@ -21,14 +21,14 @@ Reusable building blocks (fixtures, helpers) are stored centrally:
 
 ## Hard Rules
 
-1. **Direct follow-up questions in chat are mandatory.**
-   If information is missing, ask the user directly. Do not guess critical fields.
+1. **Direct follow-up questions must be asked via the `vscode_askQuestions` tool directly in the chat window.**
+   All missing required fields are collected through the `vscode_askQuestions` tool as an interactive Q&A flow in the chat — not as a text summary at the end, not as a free-text answer block. The tool allows questions to be asked inline in the chat window without interrupting the agent workflow. Do not guess critical fields.
 
 2. **No artifacts without clarification.**
    As long as required fields are missing, do not generate a final `testfall.md` or final `*.spec.ts`.
 
-3. **Follow-up loop until complete.**
-   Before generating documents, keep asking follow-up questions in chat until **all required fields** are clarified and the user explicitly confirms the summary. Only then may you generate files.
+3. **Interactive follow-up loop via `vscode_askQuestions`.**
+   All remaining required fields are collected in **a single `vscode_askQuestions` call** (not individually with manual stops). The agent calls the tool, waits for all answers at once, and then proceeds to the next step. Only if fields are unclear or contradictory, a further `vscode_askQuestions` call is made for follow-up questions.
 
 4. **Robust locator strategy.**
    In dynamic lists, prefer semantic text anchors or stable data attributes. Pure position-based selectors are last resort only.
