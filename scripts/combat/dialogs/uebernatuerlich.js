@@ -196,7 +196,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         const icon = '⚡'
 
         let summary = '<div class="modifier-summary energy-summary">'
-        summary += `<div class="flex_space-between_center"><h4 style="width:100%">${icon} Energiekosten: ${baseEnergy} Energie</h4><i class="custom-icon-without-hover"></i></div>`
+        summary += `<div class="flex_space-between_center"><h4 style="width:100%">${icon} Energiekosten: ${baseEnergy} Energie</h4></div>`
         summary += '<div class="modifier-list">'
 
         // Base energy cost
