@@ -479,14 +479,14 @@ export class IlarisActor extends Actor {
     }
 
     // Used in unused method?
-    // /**
-    //  * Get custom abgeleitete werte definitions from cache
-    //  * @returns {Map<string, object>} Map of value names to their definitions
-    //  * @private
-    //  */
-    // _getAbgeleiteteWerteDefinitions() {
-    //     return abgeleiteteWerteCache
-    // }
+    /**
+     * Get custom abgeleitete werte definitions from cache
+     * @returns {Map<string, object>} Map of value names to their definitions
+     * @private
+     */
+    _getAbgeleiteteWerteDefinitions() {
+        return abgeleiteteWerteCache
+    }
 
     _calculateUebernatuerlichProbendiag(actor) {
         // data.data.uebernatuerlich.fertigkeiten = uebernatuerliche_fertigkeiten;
