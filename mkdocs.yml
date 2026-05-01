@@ -18,4 +18,6 @@ nav:
     - FoundryVTT: index.md
     - Grundlagen: foundry-basics.md
     - FAQ: faq.md
-    - Release: develop/release.md
+    - Entwicklung:
+          - Release: develop/release.md
+          - E2E-Tests: develop/e2e-testing.md
