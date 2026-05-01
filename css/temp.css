@@ -533,6 +533,7 @@ td.rollable.icon-small {
 
 .editor {
   width: 100%;
+  height: calc(100% - 60px);
 }
 
 .schips-button {

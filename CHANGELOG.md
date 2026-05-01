@@ -2,6 +2,11 @@
 
 ## v13
 
+### v13.0.4
+
+- Notizen über ganze Größe
+- Minimieren von Heldensheet
+
 ### v13.0.3
 
 - fix Bild in Sheets ändern
