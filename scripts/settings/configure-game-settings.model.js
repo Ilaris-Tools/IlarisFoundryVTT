@@ -18,6 +18,7 @@ export const IlarisGameSettingNames = {
     renameTriumphWithCrit: 'renameTriumphWithCrit',
     restrictEnergyCostSetting: 'restrictEnergyCostSetting',
     hideSyncKampfstileButton: 'hideSyncKampfstileButton',
+    enableTabbingCharacterSheet: 'enableTabbingCharacterSheet',
     hexTokenShapes: 'hexTokenShapes',
     defaultRangedDodgeTalent: 'defaultRangedDodgeTalent',
     lastSeenBreakingChangesVersion: 'lastSeenBreakingChangesVersion',
