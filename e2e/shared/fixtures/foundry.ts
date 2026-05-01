@@ -225,3 +225,60 @@ export async function openMeleeAttackDialogForWeapon(actorWindow: Locator, weapo
     const rollable = row.locator('[data-action="rollable"][data-rolltype="angriff_diag"]').first()
     await rollable.click()
 }
+
+/**
+ * Navigates to the Kampf-Tab and opens the Fernkampf-Angriff dialog.
+ * If weaponName is given, the row is filtered by that name.
+ * If omitted, the first available [data-rolltype="fernkampf_diag"] button is clicked.
+ */
+export async function openRangedAttackDialogForWeapon(actorWindow: Locator, weaponName?: string) {
+    await actorWindow.locator('nav [data-tab="kampf"]').click()
+
+    let rollable: Locator
+
+    if (weaponName) {
+        const row = actorWindow
+            .locator('section.tab.kampf tbody tr')
+            .filter({ hasText: weaponName })
+            .first()
+        await expect(row).toBeVisible({ timeout: 15000 })
+        rollable = row.locator('[data-action="rollable"][data-rolltype="fernkampf_diag"]').first()
+    } else {
+        rollable = actorWindow
+            .locator('section.tab.kampf [data-action="rollable"][data-rolltype="fernkampf_diag"]')
+            .first()
+    }
+
+    await expect(rollable).toBeVisible({ timeout: 15000 })
+    await rollable.click()
+}
+
+/**
+ * Navigates to the "Übernatürlich" tab and clicks the roll icon for a spell or liturgy.
+ * Handles both magie_diag (Zauber) and karma_diag (Liturgie) roll types.
+ *
+ * @param actorWindow - Locator for the actor sheet window
+ * @param spellName - Optional spell/liturgy name to target; uses the first found if omitted
+ */
+export async function openSpellDialog(actorWindow: Locator, spellName?: string) {
+    await actorWindow.locator('nav [data-tab="uebernatuerlich"]').click()
+
+    let rollable: Locator
+
+    const rollTypeSelector =
+        '[data-action="rollable"][data-rolltype="magie_diag"], [data-action="rollable"][data-rolltype="karma_diag"]'
+
+    if (spellName) {
+        const row = actorWindow
+            .locator('section.tab.uebernatuerlich tbody tr')
+            .filter({ hasText: spellName })
+            .first()
+        await expect(row).toBeVisible({ timeout: 15000 })
+        rollable = row.locator(rollTypeSelector).first()
+    } else {
+        rollable = actorWindow.locator(`section.tab.uebernatuerlich ${rollTypeSelector}`).first()
+    }
+
+    await expect(rollable).toBeVisible({ timeout: 15000 })
+    await rollable.click()
+}
