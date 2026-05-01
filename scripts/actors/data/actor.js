@@ -35,146 +35,145 @@ export class IlarisActor extends Actor {
     //     super.prepareDerivedData()
     // }
 
-    // Not used?
-    // prepareBaseData() {
-    //     console.log('prepareBaseData')
-    //     super.prepareBaseData()
+    prepareBaseData() {
+        console.log('prepareBaseData')
+        super.prepareBaseData()
 
-    //     // Calculate all base derived values before effects are applied
-    //     if (this.system.attribute && this.system.abgeleitete) {
-    //         // Get custom abgeleitete werte definitions from cache
-    //         const customDefinitions = this._getAbgeleiteteWerteDefinitions()
+        // Calculate all base derived values before effects are applied
+        if (this.system.attribute && this.system.abgeleitete) {
+            // Get custom abgeleitete werte definitions from cache
+            const customDefinitions = this._getAbgeleiteteWerteDefinitions()
 
-    //         console.log('Custom abgeleitete werte definitions:', customDefinitions)
-    //         // Helper function to execute custom script or use default calculation
-    //         const calculateValue = (valueName, defaultValue) => {
-    //             const customDef = customDefinitions.get(valueName)
-    //             if (customDef && customDef.script) {
-    //                 try {
-    //                     // Create evaluation context with actor data and helper functions
-    //                     const getAttribut = (attr) => this.system.attribute[attr]?.wert || 0
-    //                     const roundDown = Math.floor
-    //                     const getWS = () => this.system.abgeleitete.ws || 0
-    //                     const getRS = () => {
-    //                         let rs = 0
-    //                         for (let ruestung of this.ruestungen || []) {
-    //                             if (ruestung.system.aktiv) rs += ruestung.system.rs
-    //                         }
-    //                         return rs
-    //                     }
+            console.log('Custom abgeleitete werte definitions:', customDefinitions)
+            // Helper function to execute custom script or use default calculation
+            const calculateValue = (valueName, defaultValue) => {
+                const customDef = customDefinitions.get(valueName)
+                if (customDef && customDef.script) {
+                    try {
+                        // Create evaluation context with actor data and helper functions
+                        const getAttribut = (attr) => this.system.attribute[attr]?.wert || 0
+                        const roundDown = Math.floor
+                        const getWS = () => this.system.abgeleitete.ws || 0
+                        const getRS = () => {
+                            let rs = 0
+                            for (let ruestung of this.ruestungen || []) {
+                                if (ruestung.system.aktiv) rs += ruestung.system.rs
+                            }
+                            return rs
+                        }
 
-    //                     // Evaluate the script
-    //                     const result = eval(customDef.script)
-    //                     console.log(
-    //                         `Using custom calculation for ${valueName}: ${customDef.script} = ${result}`,
-    //                     )
-    //                     return result
-    //                 } catch (error) {
-    //                     console.error(
-    //                         `Error evaluating custom script for ${valueName}: ${error.message}`,
-    //                     )
-    //                     console.error(`Script was: ${customDef.script}`)
-    //                     return defaultValue
-    //                 }
-    //             }
-    //             return defaultValue
-    //         }
+                        // Evaluate the script
+                        const result = eval(customDef.script)
+                        console.log(
+                            `Using custom calculation for ${valueName}: ${customDef.script} = ${result}`,
+                        )
+                        return result
+                    } catch (error) {
+                        console.error(
+                            `Error evaluating custom script for ${valueName}: ${error.message}`,
+                        )
+                        console.error(`Script was: ${customDef.script}`)
+                        return defaultValue
+                    }
+                }
+                return defaultValue
+            }
 
-    //         // Base Initiative
-    //         if (this.system.attribute.IN?.wert != undefined) {
-    //             this.system.abgeleitete.ini = calculateValue('INI', this.system.attribute.IN.wert)
-    //             this.system.abgeleitete.baseIni = calculateValue(
-    //                 'INI',
-    //                 this.system.attribute.IN.wert,
-    //             )
-    //         }
+            // Base Initiative
+            if (this.system.attribute.IN?.wert != undefined) {
+                this.system.abgeleitete.ini = calculateValue('INI', this.system.attribute.IN.wert)
+                this.system.abgeleitete.baseIni = calculateValue(
+                    'INI',
+                    this.system.attribute.IN.wert,
+                )
+            }
 
-    //         // Base Magic Resistance
-    //         if (this.system.attribute.MU?.wert != undefined) {
-    //             this.system.abgeleitete.mr = calculateValue(
-    //                 'MR',
-    //                 4 + Math.floor(this.system.attribute.MU.wert / 4),
-    //             )
-    //         }
+            // Base Magic Resistance
+            if (this.system.attribute.MU?.wert != undefined) {
+                this.system.abgeleitete.mr = calculateValue(
+                    'MR',
+                    4 + Math.floor(this.system.attribute.MU.wert / 4),
+                )
+            }
 
-    //         // Base GS (Geschwindigkeit)
-    //         if (this.system.attribute.GE?.wert != undefined) {
-    //             this.system.abgeleitete.gs = calculateValue(
-    //                 'GS',
-    //                 4 + Math.floor(this.system.attribute.GE.wert / 4),
-    //             )
-    //         }
+            // Base GS (Geschwindigkeit)
+            if (this.system.attribute.GE?.wert != undefined) {
+                this.system.abgeleitete.gs = calculateValue(
+                    'GS',
+                    4 + Math.floor(this.system.attribute.GE.wert / 4),
+                )
+            }
 
-    //         // Base Traglast and Traglast Intervall
-    //         if (this.system.attribute.KK?.wert != undefined) {
-    //             let kk = this.system.attribute.KK.wert
-    //             this.system.abgeleitete.traglast_intervall = kk >= 1 ? kk : 1
-    //             this.system.abgeleitete.traglast = kk >= 1 ? 2 * kk : 1
-    //         }
+            // Base Traglast and Traglast Intervall
+            if (this.system.attribute.KK?.wert != undefined) {
+                let kk = this.system.attribute.KK.wert
+                this.system.abgeleitete.traglast_intervall = kk >= 1 ? kk : 1
+                this.system.abgeleitete.traglast = kk >= 1 ? 2 * kk : 1
+            }
 
-    //         // Base Durchhaltevermögen (will be modified by hardcoded later)
-    //         if (this.system.attribute.KO?.wert != undefined) {
-    //             // Basic formula before hardcoded modifications
-    //             this.system.abgeleitete.dh = this.system.attribute.KO.wert
-    //             this.system.abgeleitete.ws = calculateValue(
-    //                 'WS',
-    //                 4 + Math.floor(this.system.attribute.KO.wert / 4),
-    //             )
-    //         }
+            // Base Durchhaltevermögen (will be modified by hardcoded later)
+            if (this.system.attribute.KO?.wert != undefined) {
+                // Basic formula before hardcoded modifications
+                this.system.abgeleitete.dh = this.system.attribute.KO.wert
+                this.system.abgeleitete.ws = calculateValue(
+                    'WS',
+                    4 + Math.floor(this.system.attribute.KO.wert / 4),
+                )
+            }
 
-    //         if (this.system.gesundheit?.hp?.max == undefined) {
-    //             this.system.gesundheit.hp = {
-    //                 max: 9,
-    //                 value: 9,
-    //             }
-    //         }
+            if (this.system.gesundheit?.hp?.max == undefined) {
+                this.system.gesundheit.hp = {
+                    max: 9,
+                    value: 9,
+                }
+            }
 
-    //         // Calculate WS* (with armor) and body part armor
-    //         // Check if LEP system is active
-    //         const useLepSystem = game.settings.get(
-    //             ConfigureGameSettingsCategories.Ilaris,
-    //             IlarisGameSettingNames.lepSystem,
-    //         )
+            // Calculate WS* (with armor) and body part armor
+            // Check if LEP system is active
+            const useLepSystem = game.settings.get(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.lepSystem,
+            )
 
-    //         if (useLepSystem) {
-    //             console.log('LEP system active - adjusting HP and WS calculations')
-    //             this.system.gesundheit.hp.max = this.system.abgeleitete.ws
-    //             this.system.gesundheit.hp.value = this.system.abgeleitete.ws
-    //         }
+            if (useLepSystem) {
+                console.log('LEP system active - adjusting HP and WS calculations')
+                this.system.gesundheit.hp.max = this.system.abgeleitete.ws
+                this.system.gesundheit.hp.value = this.system.abgeleitete.ws
+            }
 
-    //         // In LEP system, ws_stern starts at 0 instead of being based on ws
-    //         this.system.abgeleitete.be = 0
-    //         let ws_stern = useLepSystem ? 0 : this.system.abgeleitete.ws
-    //         this.system.abgeleitete.ws_stern = ws_stern
-    //         this.system.abgeleitete.ws_beine = ws_stern
-    //         this.system.abgeleitete.ws_larm = ws_stern
-    //         this.system.abgeleitete.ws_rarm = ws_stern
-    //         this.system.abgeleitete.ws_bauch = ws_stern
-    //         this.system.abgeleitete.ws_brust = ws_stern
-    //         this.system.abgeleitete.ws_kopf = ws_stern
+            // In LEP system, ws_stern starts at 0 instead of being based on ws
+            this.system.abgeleitete.be = 0
+            let ws_stern = useLepSystem ? 0 : this.system.abgeleitete.ws
+            this.system.abgeleitete.ws_stern = ws_stern
+            this.system.abgeleitete.ws_beine = ws_stern
+            this.system.abgeleitete.ws_larm = ws_stern
+            this.system.abgeleitete.ws_rarm = ws_stern
+            this.system.abgeleitete.ws_bauch = ws_stern
+            this.system.abgeleitete.ws_brust = ws_stern
+            this.system.abgeleitete.ws_kopf = ws_stern
 
-    //         // Base ASP
-    //         this.system.abgeleitete.asp = 0
-    //         this.system.abgeleitete.asp += Number(this.system.abgeleitete.asp_zugekauft) || 0
-    //         this.system.abgeleitete.asp -= Number(this.system.abgeleitete.gasp) || 0
-    //         this.system.abgeleitete.asp_stern =
-    //             this.system.abgeleitete.asp_stern != null
-    //                 ? Number(this.system.abgeleitete.asp_stern)
-    //                 : this.system.abgeleitete.asp
+            // Base ASP
+            this.system.abgeleitete.asp = 0
+            this.system.abgeleitete.asp += Number(this.system.abgeleitete.asp_zugekauft) || 0
+            this.system.abgeleitete.asp -= Number(this.system.abgeleitete.gasp) || 0
+            this.system.abgeleitete.asp_stern =
+                this.system.abgeleitete.asp_stern != null
+                    ? Number(this.system.abgeleitete.asp_stern)
+                    : this.system.abgeleitete.asp
 
-    //         // Base KAP
-    //         this.system.abgeleitete.kap = 0
-    //         this.system.abgeleitete.kap += Number(this.system.abgeleitete.kap_zugekauft) || 0
-    //         this.system.abgeleitete.kap -= Number(this.system.abgeleitete.gkap) || 0
-    //         this.system.abgeleitete.kap_stern =
-    //             this.system.abgeleitete.kap_stern != null
-    //                 ? Number(this.system.abgeleitete.kap_stern)
-    //                 : this.system.abgeleitete.kap
+            // Base KAP
+            this.system.abgeleitete.kap = 0
+            this.system.abgeleitete.kap += Number(this.system.abgeleitete.kap_zugekauft) || 0
+            this.system.abgeleitete.kap -= Number(this.system.abgeleitete.gkap) || 0
+            this.system.abgeleitete.kap_stern =
+                this.system.abgeleitete.kap_stern != null
+                    ? Number(this.system.abgeleitete.kap_stern)
+                    : this.system.abgeleitete.kap
 
-    //         // Calculate base SchiPs
-    //         this.system.schips.schips = calculateValue('SchiP', 4)
-    //     }
-    // }
+            // Calculate base SchiPs
+            this.system.schips.schips = calculateValue('SchiP', 4)
+        }
+    }
 
     /**
      * Override getRollData to provide data for inline rolls and formulas.
