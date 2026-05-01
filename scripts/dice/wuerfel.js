@@ -154,15 +154,18 @@ export async function wuerfelwurf(target, actor) {
         if (target.dataset.xd20 == '0') {
             xd20 = '0'
         }
-        const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_attribut.hbs', {
-            choices_xd20: CONFIG.ILARIS.xd20_choice,
-            checked_xd20: xd20,
-            choices_schips: CONFIG.ILARIS.schips_choice,
-            checked_schips: '0',
-            rollModes: CONFIG.Dice.rollModes,
-            defaultRollMode: game.settings.get('core', 'rollMode'),
-            dialogId: dialogId,
-        })
+        const html = await renderTemplate(
+            'systems/Ilaris/scripts/dice/templates/probendiag_attribut.hbs',
+            {
+                choices_xd20: CONFIG.ILARIS.xd20_choice,
+                checked_xd20: xd20,
+                choices_schips: CONFIG.ILARIS.schips_choice,
+                checked_schips: '0',
+                rollModes: CONFIG.Dice.rollModes,
+                defaultRollMode: game.settings.get('core', 'rollMode'),
+                dialogId: dialogId,
+            },
+        )
         let d = new Dialog(
             {
                 title: 'Probe ( ' + label + ')',
