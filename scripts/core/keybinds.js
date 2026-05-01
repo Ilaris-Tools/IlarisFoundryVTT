@@ -1,9 +1,17 @@
+import * as settings from '../settings/index.js'
+
 export function initializeKeybinds() {
     registerNewKeybinds()
 }
 
 function registerNewKeybinds() {
-    registerHeldTabbing()
+    let enableTabbingCharacterSheet = game.settings.get(
+        settings.ConfigureGameSettingsCategories.Ilaris,
+        settings.IlarisGameSettingNames.enableTabbingCharacterSheet,
+    )
+    if (enableTabbingCharacterSheet) {
+        registerHeldTabbing()
+    }
 }
 
 // TAB keybind to rotate through "Held" sheet tabs with TAB key
