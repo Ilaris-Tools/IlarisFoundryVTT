@@ -829,7 +829,7 @@ Hooks.on('renderSceneConfig', async (app, htmlDOM, data) => {
     }
 
     // Render the template
-    const environmentHTML = await renderTemplate(
+    const environmentHTML = await foundry.applications.handlebars.renderTemplate(
         'systems/Ilaris/scripts/settings/templates/scene_environment_fields.hbs',
         templateData,
     )

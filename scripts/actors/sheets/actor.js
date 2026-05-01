@@ -279,7 +279,7 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             const roll = new Roll(formula)
             const speaker = ChatMessage.getSpeaker({ actor: this.actor })
             await roll.evaluate()
-            const html_roll = await renderTemplate(
+            const html_roll = await foundry.applications.handlebars.renderTemplate(
                 'systems/Ilaris/scripts/skills/templates/chat/probenchat_profan.hbs',
                 { title: `${label}` },
             )
@@ -380,7 +380,7 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             fumble = true
         }
         const speaker = ChatMessage.getSpeaker({ actor: this.actor })
-        const html_roll = await renderTemplate(
+        const html_roll = await foundry.applications.handlebars.renderTemplate(
             'systems/Ilaris/scripts/skills/templates/chat/probenchat_profan.hbs',
             {
                 title: `${label}`,

@@ -352,7 +352,10 @@ export class AngriffDialog extends CombatDialog {
             }
 
             // Send the hidden defense roll
-            const html_roll = await renderTemplate(rollResult.templatePath, templateData)
+            const html_roll = await foundry.applications.handlebars.renderTemplate(
+                rollResult.templatePath,
+                templateData,
+            )
             await rollResult.roll.toMessage(
                 {
                     speaker: this.speaker,

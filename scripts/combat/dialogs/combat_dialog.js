@@ -679,7 +679,10 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             : rollResult.templateData
 
         if (hideRoll) {
-            const html_roll = await renderTemplate(rollResult.templatePath, templateData)
+            const html_roll = await foundry.applications.handlebars.renderTemplate(
+                rollResult.templatePath,
+                templateData,
+            )
             await rollResult.roll.toMessage(
                 {
                     speaker: this.speaker,

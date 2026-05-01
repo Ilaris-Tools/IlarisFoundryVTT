@@ -8,7 +8,7 @@ export class DialogHandler {
      * @param {Function} onImport - Callback function to handle import with (file) parameter
      */
     static async showRuleImportDialog(onImport) {
-        const content = await renderTemplate(
+        const content = await foundry.applications.handlebars.renderTemplate(
             'systems/Ilaris/scripts/importer/templates/rule-import-dialog.hbs',
         )
 

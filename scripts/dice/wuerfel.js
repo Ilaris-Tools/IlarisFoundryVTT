@@ -96,7 +96,7 @@ export async function wuerfelwurf(target, actor) {
     } else if (rolltype == 'simpleformula_diag') {
         label = target.dataset.name
         let formula = target.dataset.formula
-        const html = await renderTemplate(
+        const html = await foundry.applications.handlebars.renderTemplate(
             'systems/Ilaris/templates/chat/probendiag_simpleformula.hbs',
             {
                 rollModes: CONFIG.Dice.rollModes,

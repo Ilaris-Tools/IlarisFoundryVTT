@@ -81,7 +81,7 @@ async function handleAkrobatikDefense(actor, rollResult, html) {
     const dialogId = `dialog-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`
 
     // Show dialog for user to enter modifikator (e.g., multiple defenses malus)
-    const dialogHtml = await renderTemplate(
+    const dialogHtml = await foundry.applications.handlebars.renderTemplate(
         'systems/Ilaris/scripts/dice/templates/probendiag_attribut.hbs',
         {
             choices_xd20: CONFIG.ILARIS.xd20_choice,
