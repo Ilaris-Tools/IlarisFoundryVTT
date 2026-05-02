@@ -55,8 +55,8 @@ export class HeldenSheet extends IlarisActorSheet {
             template: 'systems/Ilaris/scripts/actors/templates/held/tabs/inventar.hbs',
             scrollable: [''],
         },
-        notes: {
-            template: 'systems/Ilaris/scripts/actors/templates/held/tabs/notes.hbs',
+        notizen: {
+            template: 'systems/Ilaris/scripts/actors/templates/held/tabs/notizen.hbs',
             scrollable: [''],
         },
         effects: {
@@ -75,7 +75,7 @@ export class HeldenSheet extends IlarisActorSheet {
                 { id: 'uebernatuerlich', label: 'Übernatürlich' },
                 { id: 'kampf', label: 'Kampf' },
                 { id: 'inventar', label: 'Inventar' },
-                { id: 'notes', label: 'Notizen' },
+                { id: 'notizen', label: 'Notizen' },
                 { id: 'effects', label: 'Effekte' },
             ],
         },
@@ -116,7 +116,7 @@ export class HeldenSheet extends IlarisActorSheet {
             case 'uebernatuerlich':
             case 'kampf':
             case 'inventar':
-            case 'notes':
+            case 'notizen':
             case 'effects':
                 context.tab = context.tabs[partId]
                 break

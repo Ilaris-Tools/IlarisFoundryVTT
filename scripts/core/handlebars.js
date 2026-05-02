@@ -14,7 +14,7 @@ function preloadHandlebarsTemplates() {
         'systems/Ilaris/scripts/actors/templates/held/tabs/kampf.hbs',
         'systems/Ilaris/scripts/actors/templates/held/tabs/inventar.hbs',
         'systems/Ilaris/scripts/actors/templates/held/tabs/uebernatuerlich.hbs',
-        'systems/Ilaris/scripts/actors/templates/held/tabs/notes.hbs',
+        'systems/Ilaris/scripts/actors/templates/held/tabs/notizen.hbs',
         'systems/Ilaris/scripts/actors/templates/held/tabs/effekte.hbs',
 
         'systems/Ilaris/scripts/actors/templates/held/tabs/inventory/carrying.hbs',
