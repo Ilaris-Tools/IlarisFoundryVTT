@@ -223,51 +223,130 @@ export async function applyDamageToTarget(
     trueDamage = false,
     speaker,
 ) {
+    await routeDamageToOwner(target, damage, damageType, trueDamage, speaker)
+}
+
+/**
+ * Resolve the concrete actor document that should receive damage.
+ * For unlinked tokens, this prefers the token actor instance.
+ *
+ * @param {Object} target - Target payload from dialog selection
+ * @returns {{ targetActor: Actor|null, targetToken: Token|null, actorLink: boolean }}
+ */
+export function resolveTargetActorForDamage(target) {
     const targetToken = target?.tokenId ? canvas?.tokens?.get(target.tokenId) : null
     const actorLink = target?.actorLink ?? targetToken?.document?.actorLink ?? true
 
-    // If the current user doesn't have permission to update the target actor,
-    // request the GM to do it via socket
     const targetActor =
         !actorLink && targetToken?.actor
             ? targetToken.actor
             : game.actors.get(target?.actorId || target?._id) || targetToken?.actor
+
+    return { targetActor, targetToken, actorLink }
+}
+
+/**
+ * Select the responsible active user who should execute a damage update.
+ * Priority: active non-GM OWNER -> active GM -> requesting user (if possible).
+ *
+ * @param {Actor|null} targetActor - Actor that should receive damage
+ * @returns {string|null} User id of executor, or null when no eligible user exists
+ */
+export function resolveDamageExecutorUserId(targetActor) {
+    if (!targetActor) return null
+
+    const ownerLevel = CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER
+    const activeNonGmOwners = game.users
+        .filter(
+            (user) =>
+                user.active &&
+                !user.isGM &&
+                targetActor.testUserPermission(user, ownerLevel, { exact: false }),
+        )
+        .sort((a, b) => a.id.localeCompare(b.id))
+
+    if (activeNonGmOwners.length > 0) {
+        return activeNonGmOwners[0].id
+    }
+
+    const activeGms = game.users
+        .filter((user) => user.active && user.isGM)
+        .sort((a, b) => a.id.localeCompare(b.id))
+
+    if (activeGms.length > 0) {
+        return activeGms[0].id
+    }
+
+    if (targetActor.canUserModify(game.user, 'update')) {
+        return game.user.id
+    }
+
+    return null
+}
+
+/**
+ * Route damage handling to the responsible owner client via socket event.
+ *
+ * @param {Object} target - The target object containing actor/token reference
+ * @param {number} damage - The total damage to apply
+ * @param {string} damageType - The type of damage being dealt
+ * @param {boolean} trueDamage - If true, damage ignores WS* calculation
+ * @param {Object} speaker - The speaker object for chat messages
+ */
+export async function routeDamageToOwner(
+    target,
+    damage,
+    damageType = 'PROFAN',
+    trueDamage = false,
+    speaker,
+) {
+    const { targetActor, actorLink } = resolveTargetActorForDamage(target)
 
     if (!targetActor) {
         ui.notifications.error('Zielakteur wurde nicht gefunden.')
         return
     }
 
-    // Check if current user can update the target actor
-    if (!targetActor.canUserModify(game.user, 'update')) {
-        // User doesn't have permission - send socket request to GM
-        if (game.user.isGM) {
-            // This shouldn't happen, but just in case
-            console.error('GM user cannot update actor - this should not occur')
-            return
-        }
+    const eventId = foundry.utils.randomID(16)
+    const executorUserId = resolveDamageExecutorUserId(targetActor)
 
-        // Emit socket event for GM to handle
-        game.socket.emit('system.Ilaris', {
-            type: 'applyDamage',
-            data: {
-                targetActorId: targetActor.id,
-                tokenId: target?.tokenId,
-                actorLink: actorLink,
-                damage: damage,
-                damageType: damageType,
-                trueDamage: trueDamage,
-                speaker: speaker,
-            },
-        })
-
-        // Notify the player that the request was sent
-        ui.notifications.info(`Schadensanfrage an Spielleiter gesendet für ${targetActor.name}...`)
+    if (!executorUserId) {
+        ui.notifications.error(
+            `Schaden konnte nicht angewendet werden: Kein berechtigter Benutzer online für ${targetActor.name}.`,
+        )
         return
     }
 
-    // User has permission - apply damage directly
-    await _applyDamageDirectly(targetActor, damage, damageType, trueDamage, speaker)
+    const payload = {
+        eventId,
+        executorUserId,
+        requesterUserId: game.user.id,
+        timestamp: Date.now(),
+        target: {
+            actorId: target?.actorId || target?._id || targetActor.id,
+            tokenId: target?.tokenId || null,
+            actorLink,
+        },
+        damage,
+        damageType,
+        trueDamage,
+        speaker,
+    }
+
+    game.socket.emit('system.Ilaris', {
+        type: 'applyDamageByOwner',
+        data: payload,
+    })
+
+    if (executorUserId === game.user.id) {
+        if (!window._ilarisProcessedDamageEvents) {
+            window._ilarisProcessedDamageEvents = new Set()
+        }
+        window._ilarisProcessedDamageEvents.add(eventId)
+        await _applyDamageDirectly(targetActor, damage, damageType, trueDamage, speaker)
+    } else {
+        ui.notifications.info(`Schadensanfrage gesendet: ${targetActor.name}`)
+    }
 }
 
 /**

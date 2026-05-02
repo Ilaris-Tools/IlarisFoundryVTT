@@ -9,6 +9,10 @@ import {
     ConfigureGameSettingsCategories,
 } from '../../settings/configure-game-settings.model.js'
 import { ILARIS } from '../../core/config.js'
+import {
+    callIlarisHookAllWithGlobalMirror,
+    callIlarisHookWithGlobalMirror,
+} from '../hooks/global_combat_hooks.js'
 
 export class UebernatuerlichDialog extends CombatDialog {
     /** @override */
@@ -309,7 +313,7 @@ export class UebernatuerlichDialog extends CombatDialog {
     /* -------------------------------------------- */
 
     async _angreifenKlick() {
-        if (Hooks.call('Ilaris.preAngriff', this) === false) return
+        if (callIlarisHookWithGlobalMirror('Ilaris.preAngriff', this) === false) return
         let xd20_choice =
             Number(this.element.querySelector('input[name="xd20"]:checked')?.value) || 0
         xd20_choice = xd20_choice == 0 ? 1 : 3
@@ -349,7 +353,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         )
 
         await postRollToChat(rollResult, this.speaker, this.rollmode)
-        Hooks.callAll('Ilaris.postAngriff', rollResult, this)
+        callIlarisHookAllWithGlobalMirror('Ilaris.postAngriff', rollResult, this)
 
         const isSuccess = rollResult.success
         const is16OrHigher = rollResult.is16OrHigher
