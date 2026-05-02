@@ -71,6 +71,9 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         }
 
         if (!this.selectedActors && game.user.targets && game.user.targets.size > 0) {
+            const candidates = Array.from(game.user.targets)
+            if (Hooks.call('Ilaris.preTargetSelection', this, candidates) === false) return
+
             this.selectedActors = []
 
             for (const token of game.user.targets) {
@@ -121,6 +124,7 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             console.log(
                 `Auto-populated ${this.selectedActors.length} targets from Foundry selection`,
             )
+            Hooks.callAll('Ilaris.targetSelectionComplete', this, this.selectedActors)
         }
     }
 
@@ -234,6 +238,8 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
 
         // Colorize numbers in maneuver labels
         this.colorizeManeuverNumbers()
+
+        Hooks.callAll('Ilaris.combatDialogRendered', this)
     }
 
     /* -------------------------------------------- */
@@ -506,8 +512,10 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
 
     async _showNearbyActors() {
         const { TargetSelectionDialog } = await import('./target_selection.js')
+        if (Hooks.call('Ilaris.preTargetSelection', this, null) === false) return
         const dialog = new TargetSelectionDialog(this.actor, (selectedActors) => {
             this.selectedActors = selectedActors
+            Hooks.callAll('Ilaris.targetSelectionComplete', this, this.selectedActors)
             this.updateSelectedActorsDisplay()
         })
         dialog.render(true)

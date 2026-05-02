@@ -213,6 +213,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
     /* -------------------------------------------- */
 
     async _angreifenKlick() {
+        if (Hooks.call('Ilaris.preAngriff', this) === false) return
         let diceFormula = this.getDiceFormula()
         await this.manoeverAuswaehlen()
         await this.updateManoeverMods()
@@ -234,12 +235,13 @@ export class FernkampfAngriffDialog extends CombatDialog {
             true, // crit_eval
         )
 
-        Hooks.call('Ilaris.fernkampfAngriffClick', rollResult, this.actor, this.item)
+        Hooks.callAll('Ilaris.postAngriff', rollResult, this)
         await this.handleTargetSelection(rollResult, 'ranged')
         super._updateSchipsStern()
     }
 
     async _schadenKlick() {
+        if (Hooks.call('Ilaris.preSchaden', this) === false) return
         await this.manoeverAuswaehlen()
         await this.updateManoeverMods()
         let label = `Schaden (${this.item.name})`
@@ -255,6 +257,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
         )
 
         await postRollToChat(rollResult, this.speaker, this.rollmode)
+        Hooks.callAll('Ilaris.postSchaden', rollResult, this)
 
         // Apply damage to selected targets if any
         if (this.selectedActors && this.selectedActors.length > 0) {

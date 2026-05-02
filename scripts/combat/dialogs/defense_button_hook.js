@@ -1,4 +1,4 @@
-import { AngriffDialog } from './angriff.js'
+import { openCombatDialog } from '../combat-api.js'
 import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
@@ -347,12 +347,11 @@ export function registerDefenseButtonHook() {
                         }
                     }
 
-                    const d = new AngriffDialog(actor, weapon, {
+                    await openCombatDialog(actor, weapon, 'melee', {
                         isDefenseMode: true,
                         attackingActor: attackingActor,
                         attackRoll: effectiveRollResult,
                     })
-                    d.render(true)
                 })
             })
         })

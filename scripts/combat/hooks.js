@@ -15,3 +15,7 @@
  *     // Defense prompt rendering (currently in core/init.js)
  * })
  */
+
+// DEBUG: Uncomment the line below to enable hook logging for all combat dialog hooks.
+// Remove before shipping to production.
+import './hooks-debug-example.js'

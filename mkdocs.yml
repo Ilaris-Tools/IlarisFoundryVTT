@@ -21,3 +21,4 @@ nav:
     - Entwicklung:
           - Release: develop/release.md
           - E2E-Tests: develop/e2e-testing.md
+          - Hooks: develop/hooks.md

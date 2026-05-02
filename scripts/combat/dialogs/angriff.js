@@ -293,6 +293,7 @@ export class AngriffDialog extends CombatDialog {
     /* -------------------------------------------- */
 
     async _angreifenKlick() {
+        if (Hooks.call('Ilaris.preAngriff', this) === false) return
         let diceFormula = this.getDiceFormula()
         await this.manoeverAuswaehlen()
         await this.updateManoeverMods()
@@ -314,12 +315,14 @@ export class AngriffDialog extends CombatDialog {
             this.fumble_val,
             true, // crit_eval
         )
+        Hooks.callAll('Ilaris.postAngriff', rollResult, this)
         super._updateSchipsStern()
         this.updateModifierDisplay()
         await this.handleTargetSelection(rollResult, 'melee')
     }
 
     async _verteidigenKlick() {
+        if (Hooks.call('Ilaris.preVerteidigung', this) === false) return
         await this.manoeverAuswaehlen()
         await this.updateManoeverMods()
         this.updateStatusMods()
@@ -340,6 +343,7 @@ export class AngriffDialog extends CombatDialog {
         )
 
         // In defense mode, always hide the roll result initially
+        Hooks.callAll('Ilaris.postVerteidigung', rollResult, this)
         if (this.isDefenseMode) {
             const templateData = {
                 ...rollResult.templateData,
@@ -491,6 +495,7 @@ export class AngriffDialog extends CombatDialog {
     }
 
     async _schadenKlick() {
+        if (Hooks.call('Ilaris.preSchaden', this) === false) return
         await this.manoeverAuswaehlen()
         await this.updateManoeverMods()
         let label = `Schaden (${this.item.name})`
@@ -507,6 +512,7 @@ export class AngriffDialog extends CombatDialog {
         )
 
         await postRollToChat(rollResult, this.speaker, this.rollmode)
+        Hooks.callAll('Ilaris.postSchaden', rollResult, this)
 
         // Apply damage to selected targets if any
         if (this.selectedActors && this.selectedActors.length > 0) {
