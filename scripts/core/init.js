@@ -3,9 +3,11 @@ import { IlarisActiveEffect } from './documents/active-effect.js'
 import { IlarisActorProxy } from '../actors/data/proxy.js'
 import { IlarisItemProxy } from '../items/data/proxy.js'
 import { initializeHandlebars } from './handlebars.js'
+import { registerIlarisTypeDataModels } from './model-data/type-data-models.js'
 import { preloadAllEigenschaften } from '../waffe/properties/utils/eigenschaft-cache.js'
 import { preloadAbgeleiteteWerteDefinitions } from '../actors/data/actor.js'
 import { runMigrationIfNeeded } from '../waffe/migrations/migrate-waffen-eigenschaften.js'
+import { runModelDataNormalizationMigrationIfNeeded } from './migrations/migrate-modeldata-normalization.js'
 import { HeldenSheet } from '../actors/sheets/held.js'
 import { KreaturSheet } from '../actors/sheets/kreatur.js'
 import { RuestungSheet } from '../items/sheets/ruestung.js'
@@ -52,6 +54,8 @@ const STATUS_EFFECT_COLORS = {
 
 Hooks.once('init', () => {
     // CONFIG.debug.hooks = true;
+    registerIlarisTypeDataModels()
+
     // ACTORS
     CONFIG.Actor.documentClass = IlarisActorProxy // TODO: Proxy
 
@@ -373,6 +377,7 @@ Hooks.on('ready', async () => {
 
     // Run world migration if needed (GM only, once per world)
     await runMigrationIfNeeded()
+    await runModelDataNormalizationMigrationIfNeeded()
 })
 
 /**

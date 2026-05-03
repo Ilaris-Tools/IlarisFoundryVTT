@@ -812,9 +812,12 @@ export async function preloadAbgeleiteteWerteDefinitions() {
             const items = await pack.getDocuments()
             for (const item of items) {
                 if (item.type === 'abgeleiteter-wert') {
-                    // Store by item name (e.g., "WS", "INI", "MR", "GS", "SchiP")
-                    abgeleiteteWerteCache.set(item.name, {
+                    // Prefer technical key; fallback to item name for legacy data.
+                    const key = item.system?.key || item.system?.name || item.name
+
+                    abgeleiteteWerteCache.set(key, {
                         name: item.name,
+                        key,
                         formel: item.system.formel,
                         script: item.system.script,
                         finalscript: item.system.finalscript,

@@ -2,7 +2,9 @@ import { IlarisItem } from './item.js'
 
 export class ManoeverItem extends IlarisItem {
     _manoeverRequirementsFulfilled(actor, item) {
-        if (!this.system.voraussetzungen) {
+        const voraussetzung = this.system.voraussetzung || this.system.voraussetzungen
+
+        if (!voraussetzung) {
             return true
         }
 
@@ -11,7 +13,7 @@ export class ManoeverItem extends IlarisItem {
             return item.system.angriffmanover.includes(this.name)
         }
         // First split by comma to get AND conditions
-        const andConditions = this.system.voraussetzungen.split(',').map((c) => c.trim())
+        const andConditions = voraussetzung.split(',').map((c) => c.trim())
 
         // For each AND condition, check if any of its OR parts is fulfilled
         return andConditions.every((andCondition) => {

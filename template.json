@@ -136,7 +136,6 @@
       "templates": [
         "gesundheit",
         "attribute",
-        "fertigkeiten",
         "abgeleitete",
         "schips",
         "initiative",
@@ -152,7 +151,6 @@
       "templates": [
         "gesundheit",
         "attribute",
-        "fertigkeiten",
         "abgeleitete",
         "schips",
         "initiative",
@@ -172,8 +170,7 @@
         "furcht",
         "modifikatoren",
         "schips",
-        "attribute",
-        "initiative"
+        "attribute"
       ],
       "additemtype": "angriff",
       "edit": false,
@@ -220,12 +217,11 @@
       "angriff",
       "info",
       "freiestalent",
-      "waffeneigenschaft",
       "abgeleiteter-wert",
       "effect-item"
     ],
     "templates": {
-      "gesundheit": {
+      "gegenstandszustand": {
         "haerte": 0,
         "beschaedigung": 0
       },
@@ -242,7 +238,6 @@
         "fertigkeit": "",
         "talent": "",
         "rw": 0,
-        "rw_mod": 0,
         "hauptwaffe": false,
         "nebenwaffe": false,
         "eigenschaften": [],
@@ -250,25 +245,6 @@
         "manoverausgleich": {
           "value": 0,
           "overcomplicated": true
-        },
-        "computed": {
-          "at": 0,
-          "vt": 0,
-          "fk": 0,
-          "schadenBonus": 0,
-          "rw": 0,
-          "handsRequired": 1,
-          "ignoreNebenMalus": false,
-          "noRider": false,
-          "modifiers": {
-            "at": [],
-            "vt": [],
-            "dmg": []
-          },
-          "targetEffects": [],
-          "combatMechanics": {},
-          "conditionalModifiers": [],
-          "hasActorModifiers": false
         }
       },
       "fertigkeit": {
@@ -297,45 +273,23 @@
         "pw": 0,
         "gruppe": -1
       },
-      "schadenstypen": {
-        "schadenstypen": {
-          "profan": true,
-          "stumpf": false,
-          "stich": false,
-          "scharf": false,
-          "magisch": false,
-          "geweiht": false,
-          "eis": false,
-          "erz": false,
-          "feuer": false,
-          "humus": false,
-          "luft": false,
-          "wasser": false
-        }
-      },
-      "munition": {
-        "hat_munition": false,
-        "bolzen_pfeile": false,
-        "anzahl_munition": 0,
-        "anzahl_ruestung": 0,
-        "anzahl_stumpf": 0,
-        "anzahl_krieg": 0
+      "gesundheit": {
+        "haerte": 0,
+        "beschaedigung": 0
       }
     },
     "nahkampfwaffe": {
-      "templates": ["gesundheit", "waffe", "gegenstand"],
+      "templates": ["gegenstandszustand", "waffe", "gegenstand"],
       "wm_at": 0,
-      "wm_vt": 0,
-      "eigenschaften": []
+      "wm_vt": 0
     },
     "fernkampfwaffe": {
-      "templates": ["gesundheit", "waffe", "gegenstand"],
+      "templates": ["gegenstandszustand", "waffe", "gegenstand"],
       "wm_fk": 0,
-      "lz": 0,
-      "eigenschaften": []
+      "lz": 0
     },
     "ruestung": {
-      "templates": ["gesundheit", "gegenstand"],
+      "templates": ["gegenstandszustand", "gegenstand"],
       "rs": 0,
       "be": 0,
       "rs_beine": 0,
@@ -348,7 +302,7 @@
       "text": ""
     },
     "gegenstand": {
-      "templates": ["gesundheit", "gegenstand"],
+      "templates": ["gegenstandszustand", "gegenstand"],
       "text": ""
     },
     "fertigkeit": {
@@ -386,7 +340,7 @@
       "foundryScript": ""
     },
     "manoever": {
-      "voraussetzungen": "",
+      "voraussetzung": "",
       "input": {
         "label": "Checkbox",
         "field": "CHECKBOX"
@@ -411,6 +365,7 @@
       "rw": 0,
       "lz": 0,
       "wm": 0,
+      "wm_at": 0,
       "typ": "Nah",
       "at": 0,
       "vt": 0,
@@ -425,7 +380,7 @@
       "profan": true
     },
     "abgeleiteter-wert": {
-      "name": "",
+      "key": "",
       "formel": "",
       "script": "",
       "finalscript": "",

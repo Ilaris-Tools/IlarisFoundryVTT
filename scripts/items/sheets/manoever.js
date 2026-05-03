@@ -48,6 +48,11 @@ export class ManoeverSheet extends IlarisItemSheet {
         const context = await super._prepareContext(options)
         context.manoever = CONFIG.ILARIS.manoever
         context.schadenstypen = CONFIG.ILARIS.schadenstypen
+
+        if (!context.item.system.voraussetzung && context.item.system.voraussetzungen) {
+            context.item.system.voraussetzung = context.item.system.voraussetzungen
+        }
+
         return context
     }
 
