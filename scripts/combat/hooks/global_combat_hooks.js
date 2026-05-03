@@ -101,7 +101,7 @@ function emitGlobalCombatHook(hookName, args) {
     // Sender should also receive the mirrored global hook.
     Hooks.callAll(payload.mirrorHookName, payload)
 
-    game.socket.emit('system.Ilaris', {
+    game?.socket?.emit('system.Ilaris', {
         type: 'broadcastCombatHook',
         data: payload,
     })

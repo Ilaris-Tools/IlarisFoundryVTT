@@ -333,7 +333,7 @@ export async function routeDamageToOwner(
         speaker,
     }
 
-    game.socket.emit('system.Ilaris', {
+    game?.socket?.emit('system.Ilaris', {
         type: 'applyDamageByOwner',
         data: payload,
     })

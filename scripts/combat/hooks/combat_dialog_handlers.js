@@ -152,7 +152,7 @@ async function routeDefensePromptToOwner(targetActor, content) {
         whisperUserIds,
     }
 
-    game.socket.emit('system.Ilaris', {
+    game?.socket?.emit('system.Ilaris', {
         type: 'createDefensePromptByOwner',
         data: payload,
     })
