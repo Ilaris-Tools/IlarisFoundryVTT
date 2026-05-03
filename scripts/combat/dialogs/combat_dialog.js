@@ -3,6 +3,10 @@ import {
     ConfigureGameSettingsCategories,
 } from '../../settings/configure-game-settings.model.js'
 import { postRollToChat } from '../../dice/wuerfel_misc.js'
+import {
+    callIlarisHookAllWithGlobalMirror,
+    callIlarisHookWithGlobalMirror,
+} from '../hooks/global_combat_hooks.js'
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api
 
@@ -72,7 +76,11 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
 
         if (!this.selectedActors && game.user.targets && game.user.targets.size > 0) {
             const candidates = Array.from(game.user.targets)
-            if (Hooks.call('Ilaris.preTargetSelection', this, candidates) === false) return
+            if (
+                callIlarisHookWithGlobalMirror('Ilaris.preTargetSelection', this, candidates) ===
+                false
+            )
+                return
 
             this.selectedActors = []
 
@@ -124,7 +132,11 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             console.log(
                 `Auto-populated ${this.selectedActors.length} targets from Foundry selection`,
             )
-            Hooks.callAll('Ilaris.targetSelectionComplete', this, this.selectedActors)
+            callIlarisHookAllWithGlobalMirror(
+                'Ilaris.targetSelectionComplete',
+                this,
+                this.selectedActors,
+            )
         }
     }
 
@@ -239,7 +251,7 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         // Colorize numbers in maneuver labels
         this.colorizeManeuverNumbers()
 
-        Hooks.callAll('Ilaris.combatDialogRendered', this)
+        callIlarisHookAllWithGlobalMirror('Ilaris.combatDialogRendered', this)
     }
 
     /* -------------------------------------------- */
@@ -512,10 +524,15 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
 
     async _showNearbyActors() {
         const { TargetSelectionDialog } = await import('./target_selection.js')
-        if (Hooks.call('Ilaris.preTargetSelection', this, null) === false) return
+        if (callIlarisHookWithGlobalMirror('Ilaris.preTargetSelection', this, null) === false)
+            return
         const dialog = new TargetSelectionDialog(this.actor, (selectedActors) => {
             this.selectedActors = selectedActors
-            Hooks.callAll('Ilaris.targetSelectionComplete', this, this.selectedActors)
+            callIlarisHookAllWithGlobalMirror(
+                'Ilaris.targetSelectionComplete',
+                this,
+                this.selectedActors,
+            )
             this.updateSelectedActorsDisplay()
         })
         dialog.render(true)
@@ -654,6 +671,16 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         })
     }
 
+    /**
+     * Posts the attack roll to chat, hiding it when melee targets are selected
+     * (the result is revealed once all defense rolls are resolved).
+     *
+     * Defense prompt dispatch is handled separately by the `Ilaris.postAngriff`
+     * hook handler in `scripts/combat/hooks/combat_dialog_handlers.js`.
+     *
+     * @param {object} rollResult - The evaluated attack roll result.
+     * @param {'melee'|'ranged'} attackType - The type of attack.
+     */
     async handleTargetSelection(rollResult, attackType) {
         // Check if target selection feature is enabled
         const useTargetSelection = game.settings.get(
@@ -671,7 +698,6 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         const hideRoll =
             attackType !== 'ranged' && this.selectedActors && this.selectedActors.length > 0
 
-        console.log(rollResult)
         const templateData = hideRoll
             ? {
                   ...rollResult.templateData,
@@ -713,129 +739,6 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
                 success: rollResult.success,
                 is16OrHigher: rollResult.is16OrHigher,
                 templateData: rollResult.templateData,
-            }
-        }
-
-        // If we have selected targets and the attack was successful, send them defense prompts
-        if (
-            this.selectedActors &&
-            this.selectedActors.length > 0 &&
-            ((rollResult.success && attackType === 'ranged') || attackType === 'melee')
-        ) {
-            for (const target of this.selectedActors) {
-                const targetActor = game.actors.get(target.actorId)
-                if (!targetActor) continue
-
-                let weapons = []
-
-                if (
-                    targetActor.type === 'kreatur' &&
-                    targetActor.angriffe &&
-                    Array.isArray(targetActor.angriffe)
-                ) {
-                    weapons = targetActor.angriffe
-                    if (attackType === 'ranged') {
-                        weapons = weapons.filter((weapon) =>
-                            weapon.system?.eigenschaften?.find((eig) => {
-                                return eig.name === 'Schild'
-                            }),
-                        )
-                    }
-                } else {
-                    const mainWeapon = targetActor.items.find(
-                        (item) => item.type === 'nahkampfwaffe' && item.system.hauptwaffe === true,
-                    )
-
-                    const secondaryWeapon = targetActor.items.find(
-                        (item) =>
-                            item.type === 'nahkampfwaffe' &&
-                            item.system.nebenwaffe === true &&
-                            (!mainWeapon || item.id !== mainWeapon.id),
-                    )
-
-                    if (mainWeapon) weapons.push(mainWeapon)
-                    if (secondaryWeapon) weapons.push(secondaryWeapon)
-
-                    if (attackType === 'ranged') {
-                        weapons = weapons.filter(
-                            (weapon) => weapon.system?.eigenschaften?.schild === true,
-                        )
-                    }
-                }
-
-                // Create defense buttons HTML
-                let buttonsHtml = ''
-                for (const weapon of weapons) {
-                    buttonsHtml += `
-                        <button class="defend-button" data-actor-id="${
-                            targetActor.id
-                        }" data-weapon-id="${weapon.id}" data-distance="${
-                            target.distance
-                        }" data-attacker-id="${
-                            this.actor.id
-                        }" data-attack-type="${attackType}" data-roll-result='${encodeURIComponent(
-                            JSON.stringify(rollResult, (key, value) =>
-                                typeof value === 'function' ? undefined : value,
-                            ),
-                        )}'>
-                            <i class="fas fa-shield-alt"></i>
-                            Verteidigen mit ${weapon.name}
-                        </button>`
-                }
-
-                // Add Akrobatik defense button for ranged attacks
-                if (attackType === 'ranged') {
-                    buttonsHtml += `
-                        <button class="defend-button defend-akrobatik" data-actor-id="${
-                            targetActor.id
-                        }" data-weapon-id="akrobatik" data-distance="${
-                            target.distance
-                        }" data-attacker-id="${
-                            this.actor.id
-                        }" data-attack-type="${attackType}" data-roll-result='${encodeURIComponent(
-                            JSON.stringify(rollResult, (key, value) =>
-                                typeof value === 'function' ? undefined : value,
-                            ),
-                        )}'>
-                            <i class="fas fa-running"></i>
-                            Verteidigen mit Akrobatik
-                        </button>`
-                }
-
-                if (!buttonsHtml) {
-                    buttonsHtml =
-                        '<p style="color: #aa0000;">Keine Haupt- oder Nebenwaffe gefunden.</p>'
-                }
-
-                const content = `
-                    <div class="defense-prompt" style="padding: 10px;">
-                        <p>${this.actor.name} greift dich mit ${this.item.name} an!</p>
-                        <p>Entfernung: ${target.distance} Distanz</p>
-                        <div class="defense-buttons" style="display: flex; flex-wrap: wrap;">
-                            ${buttonsHtml}
-                        </div>
-                    </div>
-                `
-
-                const chatData = {
-                    speaker: { alias: 'Combat System' },
-                    content: content,
-                    whisper:
-                        [game.users.find((u) => u.character?.id === targetActor.id)?.id].filter(
-                            (id) => id,
-                        ).length > 0
-                            ? [
-                                  game.users.find((u) => u.character?.id === targetActor.id)?.id,
-                              ].filter((id) => id)
-                            : ChatMessage.getWhisperRecipients('GM'),
-                    flags: {
-                        Ilaris: {
-                            defensePrompt: true,
-                            targetActorId: targetActor.id,
-                        },
-                    },
-                }
-                await ChatMessage.create(chatData)
             }
         }
     }

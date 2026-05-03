@@ -1,8 +1,12 @@
 import { evaluate_roll_with_crit, postRollToChat } from '../../dice/wuerfel_misc.js'
 import { signed } from '../../dice/chatutilities.js'
-import { handleModifications, applyDamageToTarget } from './shared_dialog_helpers.js'
+import { handleModifications } from './shared_dialog_helpers.js'
 import { CombatDialog } from './combat_dialog.js'
 import { formatDiceFormula } from '../../core/utilities.js'
+import {
+    callIlarisHookAllWithGlobalMirror,
+    callIlarisHookWithGlobalMirror,
+} from '../hooks/global_combat_hooks.js'
 
 export class FernkampfAngriffDialog extends CombatDialog {
     /** @override */
@@ -213,7 +217,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
     /* -------------------------------------------- */
 
     async _angreifenKlick() {
-        if (Hooks.call('Ilaris.preAngriff', this) === false) return
+        if (callIlarisHookWithGlobalMirror('Ilaris.preAngriff', this) === false) return
         let diceFormula = this.getDiceFormula()
         await this.manoeverAuswaehlen()
         await this.updateManoeverMods()
@@ -235,13 +239,14 @@ export class FernkampfAngriffDialog extends CombatDialog {
             true, // crit_eval
         )
 
-        Hooks.callAll('Ilaris.postAngriff', rollResult, this)
-        await this.handleTargetSelection(rollResult, 'ranged')
+        this.attackType = 'ranged'
         super._updateSchipsStern()
+        await this.handleTargetSelection(rollResult, 'ranged')
+        callIlarisHookAllWithGlobalMirror('Ilaris.postAngriff', rollResult, this)
     }
 
     async _schadenKlick() {
-        if (Hooks.call('Ilaris.preSchaden', this) === false) return
+        if (callIlarisHookWithGlobalMirror('Ilaris.preSchaden', this) === false) return
         await this.manoeverAuswaehlen()
         await this.updateManoeverMods()
         let label = `Schaden (${this.item.name})`
@@ -257,20 +262,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
         )
 
         await postRollToChat(rollResult, this.speaker, this.rollmode)
-        Hooks.callAll('Ilaris.postSchaden', rollResult, this)
-
-        // Apply damage to selected targets if any
-        if (this.selectedActors && this.selectedActors.length > 0) {
-            for (const target of this.selectedActors) {
-                await applyDamageToTarget(
-                    target,
-                    rollResult.roll.total,
-                    this.damageType,
-                    this.trueDamage,
-                    this.speaker,
-                )
-            }
-        }
+        callIlarisHookAllWithGlobalMirror('Ilaris.postSchaden', rollResult, this)
     }
 
     /* -------------------------------------------- */
