@@ -1,10 +1,13 @@
 import { expect, test } from '@playwright/test'
 
 import {
+    ActorDefaultSnapshot,
+    captureActorDefaultSnapshot,
     clearChatLog,
     foundryConfig,
     loginAndJoinWorld,
     openActorSheet,
+    restoreActorFromDefaultSnapshot,
 } from '../../shared/fixtures/foundry'
 
 /**
@@ -40,174 +43,185 @@ test.describe('E2E-006 Fertigkeit Wuerfeldialog Profan', () => {
         await loginAndJoinWorld(page, foundryConfig)
         await clearChatLog(page)
 
-        // Reset HatAlles's Schips to a known value so the test is idempotent.
-        // The FertigkeitDialog only renders Schips radio buttons when schips_stern > 0
-        // ({{#if hasSchips}} in fertigkeit.hbs). Without this, a prior test run that
-        // consumed Schips would cause all schips-radio locators to time out.
-        await page.evaluate(async () => {
-            const actor = game.actors?.getName('HatAlles') as any
-            if (actor) {
-                await actor.update({ 'system.schips.schips_stern': 10 })
-            }
-        })
-
-        // Read globalermod from actor data before the dialog is opened.
-        // actor.system.abgeleitete.globalermod is a computed numeric value (0 if no status effect).
-        const globalermod = await page.evaluate(
-            () =>
-                ((game.actors?.getName('HatAlles') as any)?.system?.abgeleitete
-                    ?.globalermod as number) ?? 0,
+        const actorDefaultSnapshot: ActorDefaultSnapshot = await captureActorDefaultSnapshot(
+            page,
+            'HatAlles',
         )
 
-        const actorWindow = await openActorSheet(page, 'HatAlles')
-
-        // Navigate to Fertigkeiten tab
-        await actorWindow.locator('nav [data-tab="fertigkeiten"]').click()
-        await expect(actorWindow.locator('section.tab.fertigkeiten')).toBeVisible({
-            timeout: 10000,
-        })
-
-        // Click the dice icon of the first profane Fertigkeit row.
-        // td[data-rolltype="fertigkeit_diag"] is the rollable icon cell in each tr.main-row.
-        const firstFertigkeitRollable = actorWindow
-            .locator(
-                'section.tab.fertigkeiten tbody tr.main-row td[data-action="rollable"][data-rolltype="fertigkeit_diag"]',
-            )
-            .first()
-        await expect(firstFertigkeitRollable).toBeVisible({ timeout: 15000 })
-        await firstFertigkeitRollable.click()
-
-        // Wait for the FertigkeitDialog to open
-        const fertigkeitDialog = page.locator('.application.ilaris.fertigkeit-dialog').last()
-        await expect(fertigkeitDialog).toBeVisible({ timeout: 15000 })
-        await expect(fertigkeitDialog).toContainText('Fertigkeitsprobe:')
-
-        // ------------------------------------------------------------------ //
-        // Set Hohe Qualitaet = 3 and Modifikator = 5.
-        // Input IDs contain a runtime dialogId suffix (e.g. "hohequalitaet-dialog-1234-abc9").
-        // Use attribute-starts-with selectors to avoid coupling to the runtime suffix.
-        // ------------------------------------------------------------------ //
-        const hoheQualitaetInput = fertigkeitDialog.locator('input[id^="hohequalitaet-"]')
-        await hoheQualitaetInput.fill('3')
-        await hoheQualitaetInput.dispatchEvent('input')
-
-        const modifikatorInput = fertigkeitDialog.locator('input[id^="modifikator-"]')
-        await modifikatorInput.fill('5')
-        await modifikatorInput.dispatchEvent('input')
-
-        // ------------------------------------------------------------------ //
-        // Verify the modifier preview (debounced 150 ms update in FertigkeitDialog).
-        // ------------------------------------------------------------------ //
-        // Hohe Qualitaet 3 => 3 * -4 = -12
-        await expect(
-            fertigkeitDialog.locator('.modifier-item').filter({ hasText: 'Hohe Qualität' }),
-        ).toContainText('-12', { timeout: 5000 })
-
-        // Modifikator 5 => +5
-        // Use 'Modifikator:' (with colon) to avoid matching 'Addierte Modifikatoren:' total row.
-        await expect(
-            fertigkeitDialog.locator('.modifier-item').filter({ hasText: 'Modifikator:' }),
-        ).toContainText('+5', { timeout: 5000 })
-
-        // globalermod appears as "Status (Wunden/Furcht)" entry when non-zero
-        if (globalermod !== 0) {
-            await expect(
-                fertigkeitDialog
-                    .locator('.modifier-item')
-                    .filter({ hasText: 'Status (Wunden/Furcht)' }),
-            ).toBeVisible({ timeout: 5000 })
-        }
-
-        // ------------------------------------------------------------------ //
-        // Roll each combination and verify the chat formula.
-        // The dialog stays open after rolling; inputs are changed between rolls.
-        // ------------------------------------------------------------------ //
-        for (const combo of DICE_COMBINATIONS) {
-            // Select xd20 mode: value "1" = 3W20 (default), value "0" = 1W20
-            const xd20Radio = fertigkeitDialog.locator(
-                `input[name^="xd20-"][value="${combo.xd20}"]`,
-            )
-            await xd20Radio.check()
-            await xd20Radio.dispatchEvent('change')
-
-            // Select Schips mode: value "0" = kein, "1" = ohne Eigenheit, "2" = mit Eigenheit
-            const schipsRadio = fertigkeitDialog.locator(
-                `input[name^="schips-"][value="${combo.schips}"]`,
-            )
-            await schipsRadio.check()
-            await schipsRadio.dispatchEvent('change')
-
-            // Wait for the debounced preview to settle and the roll button to be ready
-            await expect(fertigkeitDialog.locator('[data-action="previewClick"]')).toBeVisible({
-                timeout: 5000,
-            })
-
-            const beforeCount = await page.evaluate(() => game.messages.contents.length)
-
-            // Click the preview/roll button (AppV2 action "previewClick" => _executeRoll)
-            const rollButton = fertigkeitDialog.locator('[data-action="previewClick"]')
-            await rollButton.click()
-
-            const chatIncreasedAfterClick = await page
-                .waitForFunction(
-                    (baseline) => game.messages.contents.length > baseline,
-                    beforeCount,
-                    { timeout: 4000 },
-                )
-                .then(() => true)
-                .catch(() => false)
-
-            if (!chatIncreasedAfterClick) {
-                // Fallback for flaky click delivery through AppV2 overlays
-                await page.evaluate(() => {
-                    const node = document.querySelector(
-                        '.application.ilaris.fertigkeit-dialog [data-action="previewClick"]',
-                    )
-                    node?.dispatchEvent(
-                        new MouseEvent('click', { bubbles: true, cancelable: true }),
-                    )
-                })
-            }
-
-            await page.waitForFunction(
-                (baseline) => game.messages.contents.length === baseline + 1,
-                beforeCount,
-                { timeout: 20000 },
-            )
-
-            const lastMessage = await page.evaluate(() => {
-                const msg = game.messages.contents.at(-1)
-                return {
-                    flavor: msg?.flavor ?? '',
-                    total: msg?.rolls?.[0]?.total ?? null,
-                    formula: msg?.rolls?.[0]?.formula ?? '',
+        try {
+            // Reset HatAlles's Schips to a known value so the test is idempotent.
+            // The FertigkeitDialog only renders Schips radio buttons when schips_stern > 0
+            // ({{#if hasSchips}} in fertigkeit.hbs). Without this, a prior test run that
+            // consumed Schips would cause all schips-radio locators to time out.
+            await page.evaluate(async () => {
+                const actor = game.actors?.getName('HatAlles') as any
+                if (actor) {
+                    await actor.update({ 'system.schips.schips_stern': 10 })
                 }
             })
 
-            // Formula is built as:
-            // `${diceFormula} + ${effectivePW} + ${globalermod} + ${hoheQualitaetMod} + ${modifikator}`
-            // Foundry normalizes "+ -12" to "- 12" in the Roll formula string.
+            // Read globalermod from actor data before the dialog is opened.
+            // actor.system.abgeleitete.globalermod is a computed numeric value (0 if no status effect).
+            const globalermod = await page.evaluate(
+                () =>
+                    ((game.actors?.getName('HatAlles') as any)?.system?.abgeleitete
+                        ?.globalermod as number) ?? 0,
+            )
 
-            expect(
-                lastMessage.formula,
-                `[${combo.label}] Wuerfelformel soll mit "${combo.expectedDice}" beginnen`,
-            ).toMatch(new RegExp(`^${combo.expectedDice.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`))
+            const actorWindow = await openActorSheet(page, 'HatAlles')
 
-            expect(
-                lastMessage.formula,
-                `[${combo.label}] Formel soll Hohe-Qualitaet-Modifier "-12" enthalten`,
-            ).toMatch(/-\s*12/)
+            // Navigate to Fertigkeiten tab
+            await actorWindow.locator('nav [data-tab="fertigkeiten"]').click()
+            await expect(actorWindow.locator('section.tab.fertigkeiten')).toBeVisible({
+                timeout: 10000,
+            })
 
-            // Modifikator = 5 is always the last term in the formula template
-            expect(
-                lastMessage.formula,
-                `[${combo.label}] Formel soll Modifikator "+5" als letztes Glied enthalten`,
-            ).toMatch(/\+\s*5\s*$/)
+            // Click the dice icon of the first profane Fertigkeit row.
+            // td[data-rolltype="fertigkeit_diag"] is the rollable icon cell in each tr.main-row.
+            const firstFertigkeitRollable = actorWindow
+                .locator(
+                    'section.tab.fertigkeiten tbody tr.main-row td[data-action="rollable"][data-rolltype="fertigkeit_diag"]',
+                )
+                .first()
+            await expect(firstFertigkeitRollable).toBeVisible({ timeout: 15000 })
+            await firstFertigkeitRollable.click()
 
-            expect(
-                lastMessage.flavor,
-                `[${combo.label}] Flavor darf kein 'undefined' enthalten`,
-            ).not.toContain('undefined')
+            // Wait for the FertigkeitDialog to open
+            const fertigkeitDialog = page.locator('.application.ilaris.fertigkeit-dialog').last()
+            await expect(fertigkeitDialog).toBeVisible({ timeout: 15000 })
+            await expect(fertigkeitDialog).toContainText('Fertigkeitsprobe:')
+
+            // ------------------------------------------------------------------ //
+            // Set Hohe Qualitaet = 3 and Modifikator = 5.
+            // Input IDs contain a runtime dialogId suffix (e.g. "hohequalitaet-dialog-1234-abc9").
+            // Use attribute-starts-with selectors to avoid coupling to the runtime suffix.
+            // ------------------------------------------------------------------ //
+            const hoheQualitaetInput = fertigkeitDialog.locator('input[id^="hohequalitaet-"]')
+            await hoheQualitaetInput.fill('3')
+            await hoheQualitaetInput.dispatchEvent('input')
+
+            const modifikatorInput = fertigkeitDialog.locator('input[id^="modifikator-"]')
+            await modifikatorInput.fill('5')
+            await modifikatorInput.dispatchEvent('input')
+
+            // ------------------------------------------------------------------ //
+            // Verify the modifier preview (debounced 150 ms update in FertigkeitDialog).
+            // ------------------------------------------------------------------ //
+            // Hohe Qualitaet 3 => 3 * -4 = -12
+            await expect(
+                fertigkeitDialog.locator('.modifier-item').filter({ hasText: 'Hohe Qualität' }),
+            ).toContainText('-12', { timeout: 5000 })
+
+            // Modifikator 5 => +5
+            // Use 'Modifikator:' (with colon) to avoid matching 'Addierte Modifikatoren:' total row.
+            await expect(
+                fertigkeitDialog.locator('.modifier-item').filter({ hasText: 'Modifikator:' }),
+            ).toContainText('+5', { timeout: 5000 })
+
+            // globalermod appears as "Status (Wunden/Furcht)" entry when non-zero
+            if (globalermod !== 0) {
+                await expect(
+                    fertigkeitDialog
+                        .locator('.modifier-item')
+                        .filter({ hasText: 'Status (Wunden/Furcht)' }),
+                ).toBeVisible({ timeout: 5000 })
+            }
+
+            // ------------------------------------------------------------------ //
+            // Roll each combination and verify the chat formula.
+            // The dialog stays open after rolling; inputs are changed between rolls.
+            // ------------------------------------------------------------------ //
+            for (const combo of DICE_COMBINATIONS) {
+                // Select xd20 mode: value "1" = 3W20 (default), value "0" = 1W20
+                const xd20Radio = fertigkeitDialog.locator(
+                    `input[name^="xd20-"][value="${combo.xd20}"]`,
+                )
+                await xd20Radio.check()
+                await xd20Radio.dispatchEvent('change')
+
+                // Select Schips mode: value "0" = kein, "1" = ohne Eigenheit, "2" = mit Eigenheit
+                const schipsRadio = fertigkeitDialog.locator(
+                    `input[name^="schips-"][value="${combo.schips}"]`,
+                )
+                await schipsRadio.check()
+                await schipsRadio.dispatchEvent('change')
+
+                // Wait for the debounced preview to settle and the roll button to be ready
+                await expect(fertigkeitDialog.locator('[data-action="previewClick"]')).toBeVisible({
+                    timeout: 5000,
+                })
+
+                const beforeCount = await page.evaluate(() => game.messages.contents.length)
+
+                // Click the preview/roll button (AppV2 action "previewClick" => _executeRoll)
+                const rollButton = fertigkeitDialog.locator('[data-action="previewClick"]')
+                await rollButton.click()
+
+                const chatIncreasedAfterClick = await page
+                    .waitForFunction(
+                        (baseline) => game.messages.contents.length > baseline,
+                        beforeCount,
+                        { timeout: 4000 },
+                    )
+                    .then(() => true)
+                    .catch(() => false)
+
+                if (!chatIncreasedAfterClick) {
+                    // Fallback for flaky click delivery through AppV2 overlays
+                    await page.evaluate(() => {
+                        const node = document.querySelector(
+                            '.application.ilaris.fertigkeit-dialog [data-action="previewClick"]',
+                        )
+                        node?.dispatchEvent(
+                            new MouseEvent('click', { bubbles: true, cancelable: true }),
+                        )
+                    })
+                }
+
+                await page.waitForFunction(
+                    (baseline) => game.messages.contents.length === baseline + 1,
+                    beforeCount,
+                    { timeout: 20000 },
+                )
+
+                const lastMessage = await page.evaluate(() => {
+                    const msg = game.messages.contents.at(-1)
+                    return {
+                        flavor: msg?.flavor ?? '',
+                        total: msg?.rolls?.[0]?.total ?? null,
+                        formula: msg?.rolls?.[0]?.formula ?? '',
+                    }
+                })
+
+                // Formula is built as:
+                // `${diceFormula} + ${effectivePW} + ${globalermod} + ${hoheQualitaetMod} + ${modifikator}`
+                // Foundry normalizes "+ -12" to "- 12" in the Roll formula string.
+
+                expect(
+                    lastMessage.formula,
+                    `[${combo.label}] Wuerfelformel soll mit "${combo.expectedDice}" beginnen`,
+                ).toMatch(
+                    new RegExp(`^${combo.expectedDice.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`),
+                )
+
+                expect(
+                    lastMessage.formula,
+                    `[${combo.label}] Formel soll Hohe-Qualitaet-Modifier "-12" enthalten`,
+                ).toMatch(/-\s*12/)
+
+                // Modifikator = 5 is always the last term in the formula template
+                expect(
+                    lastMessage.formula,
+                    `[${combo.label}] Formel soll Modifikator "+5" als letztes Glied enthalten`,
+                ).toMatch(/\+\s*5\s*$/)
+
+                expect(
+                    lastMessage.flavor,
+                    `[${combo.label}] Flavor darf kein 'undefined' enthalten`,
+                ).not.toContain('undefined')
+            }
+        } finally {
+            await restoreActorFromDefaultSnapshot(page, actorDefaultSnapshot)
         }
     })
 })
