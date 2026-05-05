@@ -221,6 +221,7 @@ describe('weapon-requirements.js', () => {
     describe('ignoreSideWeaponMalus', () => {
         it('should not apply bonus if kein_malus_nebenwaffe is true', () => {
             const nebenwaffe = createMockWeapon('nebenwaffe', 'nahkampfwaffe', [])
+            const hauptWaffe = createMockWeapon('hauptwaffe', 'nahkampfwaffe', [])
             nebenwaffe.system.computed.ignoreNebenMalus = true
             ignoreSideWeaponMalus(hauptWaffe, nebenwaffe, false)
             expect(nebenwaffe.system.computed.at).toBe(0)
@@ -229,6 +230,7 @@ describe('weapon-requirements.js', () => {
 
         it('should apply bonus if kein_malus_nebenwaffe is false', () => {
             const nebenwaffe = createMockWeapon('nebenwaffe', 'nahkampfwaffe', [])
+            const hauptWaffe = createMockWeapon('hauptwaffe', 'nahkampfwaffe', [])
             ignoreSideWeaponMalus(hauptWaffe, nebenwaffe, false)
             expect(nebenwaffe.system.computed.at).toBe(4)
             expect(nebenwaffe.system.computed.vt).toBe(4)
@@ -239,10 +241,24 @@ describe('weapon-requirements.js', () => {
             expect(result).toBeUndefined()
         })
 
+        it('should not apply bonus if hauptWaffe is undefined', () => {
+            const nebenwaffe = createMockWeapon('nebenwaffe', 'nahkampfwaffe', [])
+            const result = ignoreSideWeaponMalus(undefined, nebenwaffe, false)
+            expect(result).toBeUndefined()
+        })
+
+        it('should not apply bonus if hauptWaffe is same as nebenWaffe', () => {
+            const nebenwaffe = createMockWeapon('nebenwaffe', 'nahkampfwaffe', [])
+            const hauptWaffe = createMockWeapon('nebenwaffe', 'nahkampfwaffe', [])
+            const result = ignoreSideWeaponMalus(hauptWaffe, nebenwaffe, false)
+            expect(result).toBeUndefined()
+        })
+
         it('should apply bonus if weapon has schild property', () => {
             const nebenwaffe = createMockWeapon('nebenwaffe', 'nahkampfwaffe', [
                 { key: 'Schild', parameters: [] },
             ])
+            const hauptWaffe = createMockWeapon('hauptwaffe', 'nahkampfwaffe', [])
             ignoreSideWeaponMalus(hauptWaffe, nebenwaffe, false, 'schild')
             expect(nebenwaffe.system.computed.at).toBe(4)
             expect(nebenwaffe.system.computed.vt).toBe(4)
