@@ -47,8 +47,7 @@ export function createItemTypeDataModels(TypeDataModel, h) {
             const itemBase = createItemTemplateFields(h)
 
             return {
-                gegenstandszustand: itemBase.gegenstandszustand,
-                gegenstand: itemBase.gegenstand,
+                ...itemBase,
                 ...createWaffeFields(),
                 wm_at: h.number(0),
                 wm_vt: h.number(0),
@@ -63,8 +62,7 @@ export function createItemTypeDataModels(TypeDataModel, h) {
             const itemBase = createItemTemplateFields(h)
 
             return {
-                gegenstandszustand: itemBase.gegenstandszustand,
-                gegenstand: itemBase.gegenstand,
+                ...itemBase,
                 ...createWaffeFields(),
                 wm_fk: h.number(0),
                 lz: h.number(0),
@@ -79,8 +77,7 @@ export function createItemTypeDataModels(TypeDataModel, h) {
             const itemBase = createItemTemplateFields(h)
 
             return {
-                gegenstandszustand: itemBase.gegenstandszustand,
-                gegenstand: itemBase.gegenstand,
+                ...itemBase,
                 rs: h.number(0),
                 be: h.number(0),
                 rs_beine: h.number(0),
@@ -100,8 +97,7 @@ export function createItemTypeDataModels(TypeDataModel, h) {
             const itemBase = createItemTemplateFields(h)
 
             return {
-                gegenstandszustand: itemBase.gegenstandszustand,
-                gegenstand: itemBase.gegenstand,
+                ...itemBase,
                 text: h.string(''),
             }
         }
@@ -242,7 +238,7 @@ export function createItemTypeDataModels(TypeDataModel, h) {
         static defineSchema() {
             return {
                 text: h.string(''),
-                pw: h.string(''),
+                pw: h.number(0),
                 profan: h.bool(true),
             }
         }
