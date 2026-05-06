@@ -400,13 +400,19 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
      * @param {HTMLElement} target - The target element with data-action
      */
     static async onClickable(event, target) {
-        const systemData = this.actor.system
         const clicktype = target.dataset.clicktype
         if (clicktype === 'shorten_money') {
-            let kreuzer = systemData.geld.kreuzer
-            let heller = systemData.geld.heller
-            let silbertaler = systemData.geld.silbertaler
-            let dukaten = systemData.geld.dukaten
+            const form = target.closest('form') ?? this.element
+            const getValue = (name) => {
+                const input = form.querySelector(`[name="${name}"]`)
+                return input
+                    ? Number(input.value) || 0
+                    : this.actor.system.geld[name.split('.').pop()]
+            }
+            let kreuzer = getValue('system.geld.kreuzer')
+            let heller = getValue('system.geld.heller')
+            let silbertaler = getValue('system.geld.silbertaler')
+            let dukaten = getValue('system.geld.dukaten')
             if (kreuzer > 10) {
                 const div = Math.floor(kreuzer / 10)
                 heller += div

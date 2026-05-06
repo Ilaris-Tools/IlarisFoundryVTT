@@ -7,6 +7,16 @@ export type FoundryCredentials = {
     password?: string
 }
 
+export type ActorDefaultSnapshot = {
+    actorId: string
+    actorName: string
+    system: Record<string, unknown>
+    items: Array<{
+        id: string
+        source: Record<string, unknown>
+    }>
+}
+
 export const foundryConfig: FoundryCredentials = {
     url: process.env.E2E_FOUNDRY_URL ?? 'http://localhost:30000',
     username: process.env.E2E_FOUNDRY_USER ?? 'Gamemaster',
@@ -281,4 +291,80 @@ export async function openSpellDialog(actorWindow: Locator, spellName?: string) 
 
     await expect(rollable).toBeVisible({ timeout: 15000 })
     await rollable.click()
+}
+
+/**
+ * Captures the current default state of an actor so tests can safely restore it in cleanup.
+ * Snapshot includes actor.system and all embedded item systems.
+ */
+export async function captureActorDefaultSnapshot(
+    page: Page,
+    actorName: string,
+): Promise<ActorDefaultSnapshot> {
+    const snapshot = await page.evaluate((name) => {
+        const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T
+        const actor = game.actors?.getName(name)
+        if (!actor) throw new Error(`Actor not found for snapshot: ${name}`)
+
+        return {
+            actorId: actor.id,
+            actorName: actor.name,
+            system: clone(actor.system),
+            items: actor.items.map((item: any) => ({
+                id: item.id,
+                source: clone(item.toObject()),
+            })),
+        }
+    }, actorName)
+
+    return snapshot as ActorDefaultSnapshot
+}
+
+/**
+ * Restores an actor to a previously captured snapshot.
+ * This method is generic and can be reused by any E2E case.
+ */
+export async function restoreActorFromDefaultSnapshot(page: Page, snapshot: ActorDefaultSnapshot) {
+    await page.evaluate(async (state) => {
+        const clone = <T>(value: T): T => JSON.parse(JSON.stringify(value)) as T
+        const actor = game.actors?.get(state.actorId) ?? game.actors?.getName(state.actorName)
+        if (!actor) {
+            throw new Error(`Actor not found during restore: ${state.actorName} (${state.actorId})`)
+        }
+
+        await actor.update({ system: clone(state.system) })
+
+        const snapshotIds = new Set(state.items.map((i) => i.id))
+        const currentIds = actor.items.map((i: any) => i.id)
+
+        const toDelete = currentIds.filter((id: string) => !snapshotIds.has(id))
+        if (toDelete.length > 0) {
+            await actor.deleteEmbeddedDocuments('Item', toDelete)
+        }
+
+        const toCreate = state.items
+            .filter((saved) => !actor.items.get(saved.id))
+            .map((saved) => {
+                const data = clone(saved.source)
+                delete data._id
+                return data
+            })
+        if (toCreate.length > 0) {
+            await actor.createEmbeddedDocuments('Item', toCreate)
+        }
+
+        const updates = state.items
+            .map((saved) => {
+                const current = actor.items.get(saved.id)
+                if (!current) return null
+                const data = clone(saved.source)
+                data._id = saved.id
+                return data
+            })
+            .filter((u) => !!u)
+
+        if (updates.length > 0) {
+            await actor.updateEmbeddedDocuments('Item', updates)
+        }
+    }, snapshot)
 }

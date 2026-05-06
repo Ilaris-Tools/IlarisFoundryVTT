@@ -1,6 +1,13 @@
 import { expect, test } from '@playwright/test'
 
-import { foundryConfig, loginAndJoinWorld, openActorSheet } from '../../shared/fixtures/foundry'
+import {
+    ActorDefaultSnapshot,
+    captureActorDefaultSnapshot,
+    foundryConfig,
+    loginAndJoinWorld,
+    openActorSheet,
+    restoreActorFromDefaultSnapshot,
+} from '../../shared/fixtures/foundry'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -111,15 +118,8 @@ for (const char of CHARACTERS) {
                 }
             })
 
-            // Preserve original portrait and manuellermod for cleanup.
-            const origImg = await page.evaluate(
-                (n: string) => ((game as any).actors?.getName(n) as any)?.img ?? '',
-                char.name,
-            )
-            const origManuellermod = await page.evaluate(
-                (n: string) =>
-                    ((game as any).actors?.getName(n) as any)?.system?.modifikatoren
-                        ?.manuellermod ?? 0,
+            const actorDefaultSnapshot: ActorDefaultSnapshot = await captureActorDefaultSnapshot(
+                page,
                 char.name,
             )
 
@@ -536,46 +536,7 @@ for (const char of CHARACTERS) {
                 // CLEANUP — Restore all modified state (runs even if assertions fail)
                 // ================================================================
 
-                await page.evaluate(
-                    async (params: {
-                        name: string
-                        origImg: string
-                        origManuellermod: number
-                        gaspInit: number | null
-                        aspSternInit: number
-                        hasKap: boolean
-                        gkapInit: number
-                        kapSternInit: number
-                    }) => {
-                        const actor = (game as any).actors?.getName(params.name)
-                        if (!actor) return
-                        const update: Record<string, unknown> = {
-                            img: params.origImg,
-                            'system.modifikatoren.manuellermod': params.origManuellermod,
-                            'system.gesundheit.wunden': 0,
-                            'system.gesundheit.erschoepfung': 0,
-                            'system.gesundheit.wundenignorieren': false,
-                            'system.schips.schips_stern': actor.system.schips.schips,
-                            'system.abgeleitete.gasp': params.gaspInit,
-                            'system.abgeleitete.asp_stern': params.aspSternInit,
-                        }
-                        if (params.hasKap) {
-                            update['system.abgeleitete.gkap'] = params.gkapInit
-                            update['system.abgeleitete.kap_stern'] = params.kapSternInit
-                        }
-                        await actor.update(update)
-                    },
-                    {
-                        name: char.name,
-                        origImg,
-                        origManuellermod,
-                        gaspInit: char.gaspInit,
-                        aspSternInit: char.aspSternInit,
-                        hasKap: char.hasKap,
-                        gkapInit: char.gkapInit,
-                        kapSternInit: char.kapSternInit,
-                    },
-                )
+                await restoreActorFromDefaultSnapshot(page, actorDefaultSnapshot)
             } // end finally
         })
     })

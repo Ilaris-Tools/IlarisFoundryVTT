@@ -18,11 +18,14 @@
 import { expect, Page, Locator } from '@playwright/test'
 import { test } from '@playwright/test'
 import {
+    ActorDefaultSnapshot,
+    captureActorDefaultSnapshot,
     clearChatLog,
     foundryConfig,
     loginAndJoinWorld,
     openActorSheet,
     openSpellDialog,
+    restoreActorFromDefaultSnapshot,
 } from '../../shared/fixtures/foundry'
 
 const ACTOR_NAME = 'HatAlles'
@@ -36,9 +39,7 @@ const s: {
     page: Page
     actorWindow: Locator
     firstSpellName: string
-    initialAsp: number
-    initialKap: number
-    initialWunden: number
+    actorDefaultSnapshot: ActorDefaultSnapshot | null
 } = {} as never
 
 // ---------------------------------------------------------------------------
@@ -145,6 +146,8 @@ test.describe('E2E-009 · UebernatuerlichDialog — Übernatürliche Fertigkeit'
         s.page = await browser.newPage()
         await loginAndJoinWorld(s.page, foundryConfig)
 
+        s.actorDefaultSnapshot = await captureActorDefaultSnapshot(s.page, ACTOR_NAME)
+
         // Auf bekannte Startwerte setzen – unabhängig vom vorherigen Zustand
         await s.page.evaluate((name: string) => {
             const actor = game.actors.getName(name) as any
@@ -154,9 +157,6 @@ test.describe('E2E-009 · UebernatuerlichDialog — Übernatürliche Fertigkeit'
                 'system.gesundheit.wunden': 0,
             })
         }, ACTOR_NAME)
-        s.initialAsp = 50
-        s.initialKap = 32
-        s.initialWunden = 0
 
         await clearChatLog(s.page)
         s.actorWindow = await openActorSheet(s.page, ACTOR_NAME)
@@ -170,35 +170,9 @@ test.describe('E2E-009 · UebernatuerlichDialog — Übernatürliche Fertigkeit'
 
     test.afterAll(async () => {
         if (!s.page) return
-        // Ausgangswerte wiederherstellen
-        await s.page
-            .evaluate(
-                ({
-                    actorName,
-                    asp,
-                    kap,
-                    wunden,
-                }: {
-                    actorName: string
-                    asp: number
-                    kap: number
-                    wunden: number
-                }) => {
-                    const actor = game.actors.getName(actorName) as any
-                    return actor?.update({
-                        'system.abgeleitete.asp_stern': asp,
-                        'system.abgeleitete.kap_stern': kap,
-                        'system.gesundheit.wunden': wunden,
-                    })
-                },
-                {
-                    actorName: ACTOR_NAME,
-                    asp: s.initialAsp,
-                    kap: s.initialKap,
-                    wunden: s.initialWunden,
-                },
-            )
-            .catch(() => {})
+        if (s.actorDefaultSnapshot) {
+            await restoreActorFromDefaultSnapshot(s.page, s.actorDefaultSnapshot).catch(() => {})
+        }
         await s.page.close()
     })
 

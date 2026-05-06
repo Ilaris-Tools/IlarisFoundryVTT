@@ -1,0 +1,502 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE xsl:stylesheet [
+   <!ENTITY nbsp "&#160;">
+]>
+<Charakter>
+  <Version>
+    <CharakterVersion>8</CharakterVersion>
+    <Plugins></Plugins>
+    <Hausregeln>Keine</Hausregeln>
+  </Version>
+  <Beschreibung>
+    <Name>HatAllesXMLIMPORTTEST</Name>
+    <Spezies>Mensch</Spezies>
+    <Status>0</Status>
+    <Kurzbeschreibung>Ein Testheld mit allen Vorteilen</Kurzbeschreibung>
+    <Finanzen>0</Finanzen>
+    <Heimat>Mittelreich</Heimat>
+    <Eigenheiten>
+      <Eigenheit>Alleskönner</Eigenheit>
+    </Eigenheiten>
+  </Beschreibung>
+  <Attribute>
+    <Attribut name="KO" wert="15"/>
+    <Attribut name="MU" wert="16"/>
+    <Attribut name="GE" wert="23"/>
+    <Attribut name="KK" wert="12"/>
+    <Attribut name="IN" wert="22"/>
+    <Attribut name="KL" wert="12"/>
+    <Attribut name="CH" wert="14"/>
+    <Attribut name="FF" wert="16"/>
+  </Attribute>
+  <Energien>
+    <Energie name="KaP" wert="0" gebunden="0"/>
+    <Energie name="AsP" wert="0" gebunden="0"/>
+  </Energien>
+  <Vorteile>
+    <Vorteil name="Achaz"/>
+    <Vorteil name="Angepasst (Dunkelheit) I"/>
+    <Vorteil name="Angepasst (Dunkelheit) II"/>
+    <Vorteil name="Angepasst (Schnee) I"/>
+    <Vorteil name="Angepasst (Schnee) II"/>
+    <Vorteil name="Angepasst (Wald) I"/>
+    <Vorteil name="Angepasst (Wald) II"/>
+    <Vorteil name="Angepasst (Wasser) I"/>
+    <Vorteil name="Angepasst (Wasser) II"/>
+    <Vorteil name="Angepasst I" variableKosten="20" kommentar="Test"/>
+    <Vorteil name="Angepasst II" variableKosten="20" kommentar="Test"/>
+    <Vorteil name="Besonderer Besitz" variableKosten="40" kommentar="Test"/>
+    <Vorteil name="Einkommen I"/>
+    <Vorteil name="Einkommen II"/>
+    <Vorteil name="Einkommen III"/>
+    <Vorteil name="Einkommen IV"/>
+    <Vorteil name="Gefahreninstinkt"/>
+    <Vorteil name="Geweiht I"/>
+    <Vorteil name="Geweiht II"/>
+    <Vorteil name="Geweiht III"/>
+    <Vorteil name="Geweiht IV"/>
+    <Vorteil name="Glück I"/>
+    <Vorteil name="Glück II"/>
+    <Vorteil name="Kreis der Verdammnis I"/>
+    <Vorteil name="Kreis der Verdammnis II"/>
+    <Vorteil name="Kreis der Verdammnis III"/>
+    <Vorteil name="Kreis der Verdammnis IV"/>
+    <Vorteil name="Kreis der Verdammnis V"/>
+    <Vorteil name="Kreis der Verdammnis VI"/>
+    <Vorteil name="Kreis der Verdammnis VII"/>
+    <Vorteil name="Magieabweisend"/>
+    <Vorteil name="Magiegespür"/>
+    <Vorteil name="Minderpakt" kommentar="Abgehärtet I" voraussetzungen="Vorteil Abgehärtet I"/>
+    <Vorteil name="Abgehärtet I" voraussetzungen="Vorteil Minderpakt"/>
+    <Vorteil name="Natürliche Rüstung"/>
+    <Vorteil name="Privilegien" variableKosten="20" kommentar="Test"/>
+    <Vorteil name="Privilegien (Adel)"/>
+    <Vorteil name="Privilegien (Krieger)"/>
+    <Vorteil name="Prophezeien"/>
+    <Vorteil name="Resistenz gegen Gifte"/>
+    <Vorteil name="Resistenz gegen Hitze"/>
+    <Vorteil name="Resistenz gegen Kälte"/>
+    <Vorteil name="Resistenz gegen Krankheiten"/>
+    <Vorteil name="Tierempathie" variableKosten="60" kommentar="Test"/>
+    <Vorteil name="Verbindungen" variableKosten="20" kommentar="Test"/>
+    <Vorteil name="Zauberer I"/>
+    <Vorteil name="Zauberer II"/>
+    <Vorteil name="Zauberer III"/>
+    <Vorteil name="Zauberer IV"/>
+    <Vorteil name="Zwergennase"/>
+    <Vorteil name="Abgehärtet II"/>
+    <Vorteil name="Adrenalinschub"/>
+    <Vorteil name="Bedächtig"/>
+    <Vorteil name="Eindrucksvoll I"/>
+    <Vorteil name="Eindrucksvoll II"/>
+    <Vorteil name="Eingebung"/>
+    <Vorteil name="Empathie"/>
+    <Vorteil name="Flink I"/>
+    <Vorteil name="Flink II"/>
+    <Vorteil name="Geisterpanzer"/>
+    <Vorteil name="Katzenhaft"/>
+    <Vorteil name="Improvisation"/>
+    <Vorteil name="Körperbeherrschung"/>
+    <Vorteil name="Meisterwerk"/>
+    <Vorteil name="Muskelprotz"/>
+    <Vorteil name="Routiniert I"/>
+    <Vorteil name="Routiniert II"/>
+    <Vorteil name="Scharfsinnig II"/>
+    <Vorteil name="Scharfsinnig I"/>
+    <Vorteil name="Schnelle Heilung"/>
+    <Vorteil name="Soziale Anpassungsfähigkeit"/>
+    <Vorteil name="Starke Aura"/>
+    <Vorteil name="Unbeugsamkeit"/>
+    <Vorteil name="Unverwüstlich"/>
+    <Vorteil name="Vorausschauend I"/>
+    <Vorteil name="Vorausschauend II"/>
+    <Vorteil name="Vorbereitung"/>
+    <Vorteil name="Willensstark I"/>
+    <Vorteil name="Willensstark II"/>
+    <Vorteil name="Zerstörerisch I"/>
+    <Vorteil name="Zerstörerisch II"/>
+    <Vorteil name="Atemtechnik"/>
+    <Vorteil name="Aufmerksamkeit"/>
+    <Vorteil name="Ausfall"/>
+    <Vorteil name="Defensiver Kampfstil"/>
+    <Vorteil name="Durchatmen"/>
+    <Vorteil name="Gegenhalten"/>
+    <Vorteil name="Hammerschlag"/>
+    <Vorteil name="Kalte Wut"/>
+    <Vorteil name="Kampfreflexe"/>
+    <Vorteil name="Klingentanz"/>
+    <Vorteil name="Kommando: Formiert Euch!"/>
+    <Vorteil name="Kommando: Haltet Stand!"/>
+    <Vorteil name="Kommando: Keine Gefangenen!"/>
+    <Vorteil name="Kommando: Kennt Keinen Schmerz!"/>
+    <Vorteil name="Meisterschuss"/>
+    <Vorteil name="Niederwerfen"/>
+    <Vorteil name="Offensiver Kampfstil"/>
+    <Vorteil name="Präzision"/>
+    <Vorteil name="Reflexschuss"/>
+    <Vorteil name="Ruhige Hand"/>
+    <Vorteil name="Rüstungsgewöhnung"/>
+    <Vorteil name="Schnellziehen"/>
+    <Vorteil name="Standfest"/>
+    <Vorteil name="Sturmangriff"/>
+    <Vorteil name="Todesstoß"/>
+    <Vorteil name="Unaufhaltsam"/>
+    <Vorteil name="Verbesserte Rüstungsgewöhnung"/>
+    <Vorteil name="Waffenloser Kampf"/>
+    <Vorteil name="Beidhändiger Kampf I"/>
+    <Vorteil name="Beidhändiger Kampf II"/>
+    <Vorteil name="Beidhändiger Kampf III"/>
+    <Vorteil name="Beidhändiger Kampf IV" kommentar="Test" editorScript=""/>
+    <Vorteil name="Kraftvoller Kampf I"/>
+    <Vorteil name="Kraftvoller Kampf II"/>
+    <Vorteil name="Kraftvoller Kampf III"/>
+    <Vorteil name="Kraftvoller Kampf IV" kommentar="" editorScript=""/>
+    <Vorteil name="Parierwaffenkampf I"/>
+    <Vorteil name="Parierwaffenkampf II"/>
+    <Vorteil name="Parierwaffenkampf III"/>
+    <Vorteil name="Parierwaffenkampf IV" kommentar="" editorScript=""/>
+    <Vorteil name="Reiterkampf I"/>
+    <Vorteil name="Reiterkampf II"/>
+    <Vorteil name="Reiterkampf III"/>
+    <Vorteil name="Reiterkampf IV" kommentar="" editorScript=""/>
+    <Vorteil name="Schildkampf I"/>
+    <Vorteil name="Schildkampf II"/>
+    <Vorteil name="Schildkampf III"/>
+    <Vorteil name="Schildkampf IV" kommentar="" editorScript=""/>
+    <Vorteil name="Schneller Kampf I"/>
+    <Vorteil name="Schneller Kampf II"/>
+    <Vorteil name="Schneller Kampf III"/>
+    <Vorteil name="Schneller Kampf IV" kommentar="" editorScript=""/>
+    <Vorteil name="Astrale Regeneration"/>
+    <Vorteil name="Bändiger der Elemente"/>
+    <Vorteil name="Bändiger der Kreaturen"/>
+    <Vorteil name="Blutmagie"/>
+    <Vorteil name="Effizientes Zaubern"/>
+    <Vorteil name="Flexible Magie"/>
+    <Vorteil name="Flinke Magie"/>
+    <Vorteil name="Gebieter der Finsternis"/>
+    <Vorteil name="Gebieter der Urgewalten"/>
+    <Vorteil name="Gefäß der Sterne"/>
+    <Vorteil name="Kontrolliertes Zaubern"/>
+    <Vorteil name="Kraftlinienmagie"/>
+    <Vorteil name="Matrixverständnis"/>
+    <Vorteil name="Meister der Seelenlosen"/>
+    <Vorteil name="Meister der Wünsche"/>
+    <Vorteil name="Meisterliche astrale Regeneration"/>
+    <Vorteil name="Mühelose Magie"/>
+    <Vorteil name="Reaktivierung"/>
+    <Vorteil name="Semipermanenz"/>
+    <Vorteil name="Thaumaturg"/>
+    <Vorteil name="Unitatio"/>
+    <Vorteil name="Verbesserte astrale Regeneration"/>
+    <Vorteil name="Verbotene Pforten"/>
+    <Vorteil name="Vorbereitendes Zaubern"/>
+    <Vorteil name="Magiedilettant"/>
+    <Vorteil name="Tradition der Alchemisten I"/>
+    <Vorteil name="Tradition der Alchemisten II"/>
+    <Vorteil name="Tradition der Alchemisten III"/>
+    <Vorteil name="Tradition der Alchemisten IV" kommentar="Test" editorScript=""/>
+    <Vorteil name="Tradition der Anach-Nurim I"/>
+    <Vorteil name="Tradition der Anach-Nurim II"/>
+    <Vorteil name="Tradition der Anach-Nurim III"/>
+    <Vorteil name="Tradition der Anach-Nurim IV" kommentar="Test" editorScript=""/>
+    <Vorteil name="Tradition der Borbaradianer I"/>
+    <Vorteil name="Tradition der Borbaradianer II"/>
+    <Vorteil name="Tradition der Borbaradianer III"/>
+    <Vorteil name="Tradition der Borbaradianer IV" kommentar="Test" editorScript=""/>
+    <Vorteil name="Tradition der Derwische I"/>
+    <Vorteil name="Tradition der Derwische II"/>
+    <Vorteil name="Tradition der Derwische III"/>
+    <Vorteil name="Tradition der Derwische IV" kommentar="Test" editorScript=""/>
+    <Vorteil name="Tradition der Druiden I"/>
+    <Vorteil name="Tradition der Druiden II"/>
+    <Vorteil name="Tradition der Druiden III"/>
+    <Vorteil name="Tradition der Druiden IV" kommentar="Test" editorScript=""/>
+    <Vorteil name="Tradition der Durro-dun I"/>
+    <Vorteil name="Tradition der Durro-dun II"/>
+    <Vorteil name="Tradition der Durro-dun III"/>
+    <Vorteil name="Tradition der Durro-dun IV" kommentar="Test" editorScript=""/>
+    <Vorteil name="Tradition der Elfen I"/>
+    <Vorteil name="Tradition der Elfen II"/>
+    <Vorteil name="Tradition der Elfen III"/>
+    <Vorteil name="Tradition der Elfen IV" kommentar="Test" editorScript=""/>
+    <Vorteil name="Tradition der Geoden I" kommentar="Feuer"/>
+    <Vorteil name="Tradition der Geoden II"/>
+    <Vorteil name="Tradition der Geoden III"/>
+    <Vorteil name="Tradition der Geoden IV" kommentar="Test" editorScript=""/>
+    <Vorteil name="Tradition der Gildenmagier I"/>
+    <Vorteil name="Tradition der Gildenmagier II"/>
+    <Vorteil name="Tradition der Gildenmagier III"/>
+    <Vorteil name="Tradition der Gildenmagier IV" kommentar="Test" editorScript=""/>
+    <Vorteil name="Tradition der Hexen I"/>
+    <Vorteil name="Tradition der Hexen II"/>
+    <Vorteil name="Tradition der Hexen III"/>
+    <Vorteil name="Tradition der Hexen IV" kommentar="Test" editorScript=""/>
+    <Vorteil name="Tradition der Kristallomanten I"/>
+    <Vorteil name="Tradition der Kristallomanten II"/>
+    <Vorteil name="Tradition der Kristallomanten III"/>
+    <Vorteil name="Tradition der Kristallomanten IV" kommentar="Test" editorScript=""/>
+    <Vorteil name="Tradition der Schamanen I"/>
+    <Vorteil name="Tradition der Schamanen II"/>
+    <Vorteil name="Tradition der Schamanen III"/>
+    <Vorteil name="Tradition der Schamanen IV" kommentar="Test" editorScript=""/>
+    <Vorteil name="Tradition der Scharlatane I"/>
+    <Vorteil name="Tradition der Scharlatane II"/>
+    <Vorteil name="Tradition der Scharlatane III"/>
+    <Vorteil name="Tradition der Scharlatane IV" kommentar="Test" editorScript=""/>
+    <Vorteil name="Tradition der Schelme I"/>
+    <Vorteil name="Tradition der Schelme II"/>
+    <Vorteil name="Tradition der Schelme III"/>
+    <Vorteil name="Tradition der Schelme IV" kommentar="Test" editorScript=""/>
+    <Vorteil name="Tradition der Zauberbarden I"/>
+    <Vorteil name="Tradition der Zauberbarden II"/>
+    <Vorteil name="Tradition der Zauberbarden III"/>
+    <Vorteil name="Tradition der Zauberbarden IV" kommentar="Test" editorScript=""/>
+    <Vorteil name="Tradition der Zaubertänzer I"/>
+    <Vorteil name="Tradition der Zaubertänzer II"/>
+    <Vorteil name="Tradition der Zaubertänzer III"/>
+    <Vorteil name="Tradition der Zaubertänzer IV" kommentar="Test" editorScript=""/>
+    <Vorteil name="Aura der Heiligkeit"/>
+    <Vorteil name="Beeindruckendes Wunder"/>
+    <Vorteil name="Gemeinsames Wunder"/>
+    <Vorteil name="Gemeinschaft der Gläubigen"/>
+    <Vorteil name="Gesegnete Waffe"/>
+    <Vorteil name="Göttliche Nähe"/>
+    <Vorteil name="Liebling der Gottheit"/>
+    <Vorteil name="Liturgische Disziplin"/>
+    <Vorteil name="Liturgische Routine"/>
+    <Vorteil name="Segnung der Gläubigen"/>
+    <Vorteil name="Stärke des Glaubens"/>
+    <Vorteil name="Liturgische Sorgfalt"/>
+    <Vorteil name="Streiter der Schöpfung"/>
+    <Vorteil name="Unterstützung der Gläubigen"/>
+    <Vorteil name="Verseuchung erspüren"/>
+    <Vorteil name="Zuverlässiges Wunder"/>
+    <Vorteil name="Tradition der Angroschgeweihten I"/>
+    <Vorteil name="Tradition der Angroschgeweihten II"/>
+    <Vorteil name="Tradition der Angroschgeweihten III"/>
+    <Vorteil name="Tradition der Angroschgeweihten IV" kommentar="" editorScript=""/>
+    <Vorteil name="Tiergeist (Affe)"/>
+    <Vorteil name="Tiergeist (Bär)"/>
+    <Vorteil name="Tiergeist (Elefant)"/>
+    <Vorteil name="Tiergeist (Eule)"/>
+    <Vorteil name="Tiergeist (Falke)"/>
+    <Vorteil name="Tiergeist (Fischotter)"/>
+    <Vorteil name="Tiergeist (Fuchs)"/>
+    <Vorteil name="Tiergeist (Gebirgsbock)"/>
+    <Vorteil name="Tiergeist (Khoramsbestie)"/>
+    <Vorteil name="Tiergeist (Löwe)"/>
+    <Vorteil name="Tiergeist (Mammut)"/>
+    <Vorteil name="Tiergeist (Mungo)"/>
+    <Vorteil name="Tiergeist (Panther)"/>
+    <Vorteil name="Tiergeist (Rabe)"/>
+    <Vorteil name="Tiergeist (Schlange)"/>
+    <Vorteil name="Tiergeist (Stier)"/>
+    <Vorteil name="Tiergeist (Wolf)"/>
+    <Vorteil name="Tiergeist (Wildschwein)"/>
+    <Vorteil name="Tiergeist (Wildkatze)"/>
+  </Vorteile>
+  <Fertigkeiten>
+    <Fertigkeit name="Handgemenge" wert="12"/>
+    <Fertigkeit name="Hiebwaffen" wert="11"/>
+    <Fertigkeit name="Klingenwaffen" wert="10"/>
+    <Fertigkeit name="Stangenwaffen" wert="9"/>
+    <Fertigkeit name="Schusswaffen" wert="11"/>
+    <Fertigkeit name="Wurfwaffen" wert="12"/>
+    <Fertigkeit name="Athletik" wert="12"/>
+    <Fertigkeit name="Heimlichkeit" wert="12"/>
+    <Fertigkeit name="Selbstbeherrschung" wert="4"/>
+    <Fertigkeit name="Wahrnehmung" wert="5"/>
+    <Fertigkeit name="Autorität" wert="7"/>
+    <Fertigkeit name="Beeinflussung" wert="8"/>
+    <Fertigkeit name="Gebräuche" wert="9"/>
+    <Fertigkeit name="Derekunde" wert="10"/>
+    <Fertigkeit name="Mythenkunde" wert="1"/>
+    <Fertigkeit name="Magiekunde" wert="11"/>
+    <Fertigkeit name="Überleben" wert="2"/>
+    <Fertigkeit name="Verschlagenheit" wert="6"/>
+    <Fertigkeit name="Alchemie" wert="3"/>
+    <Fertigkeit name="Heilkunde" wert="5"/>
+    <Fertigkeit name="Handwerk" wert="4"/>
+  </Fertigkeiten>
+  <FreieFertigkeiten>
+    <FreieFertigkeit name="Test" wert="3"/>
+    <FreieFertigkeit name="Test2" wert="2"/>
+    <FreieFertigkeit name="Test3" wert="1"/>
+    <FreieFertigkeit name="Test4" wert="1"/>
+    <FreieFertigkeit name="Test" wert="1"/>
+    <FreieFertigkeit name="Test" wert="1"/>
+    <FreieFertigkeit name="Test" wert="1"/>
+    <FreieFertigkeit name="Test" wert="1"/>
+    <FreieFertigkeit name="Test" wert="1"/>
+    <FreieFertigkeit name="Test" wert="1"/>
+    <FreieFertigkeit name="Test" wert="1"/>
+    <FreieFertigkeit name="Test" wert="1"/>
+    <FreieFertigkeit name="Test" wert="1"/>
+    <FreieFertigkeit name="Test" wert="1"/>
+    <FreieFertigkeit name="Test" wert="1"/>
+    <FreieFertigkeit name="Test" wert="1"/>
+    <FreieFertigkeit name="Test" wert="1"/>
+    <FreieFertigkeit name="Test" wert="1"/>
+    <FreieFertigkeit name="Test" wert="1"/>
+    <FreieFertigkeit name="Test" wert="1"/>
+    <FreieFertigkeit name="Test" wert="1"/>
+    <FreieFertigkeit name="Test" wert="1"/>
+    <FreieFertigkeit name="Test" wert="1"/>
+    <FreieFertigkeit name="Test" wert="1"/>
+    <FreieFertigkeit name="Test" wert="1"/>
+    <FreieFertigkeit name="Test" wert="1"/>
+    <FreieFertigkeit name="Test" wert="1"/>
+    <FreieFertigkeit name="Test" wert="1"/>
+  </FreieFertigkeiten>
+  <Talente>
+    <Talent name="Gebräuche: Mittelreich"/>
+    <Talent name="Handgemengewaffen"/>
+    <Talent name="Schilde"/>
+    <Talent name="Unbewaffnet"/>
+    <Talent name="Einhandhiebwaffen"/>
+    <Talent name="Zweihandhiebwaffen"/>
+    <Talent name="Einhandklingenwaffen"/>
+    <Talent name="Zweihandklingenwaffen"/>
+    <Talent name="Infanteriewaffen und Speere"/>
+    <Talent name="Lanzenreiten"/>
+    <Talent name="Armbrüste"/>
+    <Talent name="Blasrohre"/>
+    <Talent name="Bögen"/>
+    <Talent name="Diskusse"/>
+    <Talent name="Kurze Wurfwaffen"/>
+    <Talent name="Schleudern"/>
+    <Talent name="Wurfspeere"/>
+    <Talent name="Akrobatik"/>
+    <Talent name="Klettern"/>
+    <Talent name="Laufen"/>
+    <Talent name="Reiten"/>
+    <Talent name="Schwimmen"/>
+    <Talent name="Pirschen"/>
+    <Talent name="Untertauchen"/>
+    <Talent name="Willenskraft"/>
+    <Talent name="Zähigkeit"/>
+    <Talent name="Menschenkenntnis"/>
+    <Talent name="Sinnenschärfe"/>
+    <Talent name="Wachsamkeit"/>
+    <Talent name="Anführen"/>
+    <Talent name="Einschüchtern"/>
+    <Talent name="Rhetorik"/>
+    <Talent name="Betören"/>
+    <Talent name="Überreden"/>
+    <Talent name="Gebräuche: Bornland"/>
+    <Talent name="Gebräuche: Elfen"/>
+    <Talent name="Gebräuche: Horasreich"/>
+    <Talent name="Gebräuche: Maraskan"/>
+    <Talent name="Gebräuche: Südaventurien"/>
+    <Talent name="Gebräuche: Thorwal"/>
+    <Talent name="Gebräuche: Tulamidenlande"/>
+    <Talent name="Gebräuche: Zwerge"/>
+    <Talent name="Geographie"/>
+    <Talent name="Pflanzenkunde"/>
+    <Talent name="Tierkunde"/>
+    <Talent name="Dämonenkunde"/>
+    <Talent name="Elementarkunde"/>
+    <Talent name="Magietheorie"/>
+    <Talent name="Zauberpraxis"/>
+    <Talent name="Geschichten und Legenden"/>
+    <Talent name="Götter und Kulte"/>
+    <Talent name="Überleben: Gebirge"/>
+    <Talent name="Überleben: Hoher Norden"/>
+    <Talent name="Überleben: Maraskan"/>
+    <Talent name="Überleben: Meer"/>
+    <Talent name="Überleben: Mittelaventurien"/>
+    <Talent name="Überleben: Nordaventurien"/>
+    <Talent name="Überleben: Südaventurien"/>
+    <Talent name="Überleben: Tiefer Süden"/>
+    <Talent name="Überleben: Wüste"/>
+    <Talent name="Alchemistische Analyse"/>
+    <Talent name="Magische Elixiere"/>
+    <Talent name="Profane Alchemika"/>
+    <Talent name="Holzbearbeitung"/>
+    <Talent name="Mechanik"/>
+    <Talent name="Schmieden"/>
+    <Talent name="Gifte und Krankheiten"/>
+    <Talent name="Wundheilung"/>
+    <Talent name="Falschspiel"/>
+    <Talent name="Schlösser knacken"/>
+    <Talent name="Stehlen"/>
+    <Talent name="Eherne Kraft"/>
+    <Talent name="Geläutert sei Erz und Goldgestein"/>
+    <Talent name="Largorax' Hammer"/>
+    <Talent name="Licht des verborgenen Pfades"/>
+    <Talent name="Feuersegen"/>
+    <Talent name="Glückssegen"/>
+    <Talent name="Großer Eidsegen"/>
+    <Talent name="Märtyrersegen"/>
+    <Talent name="Objektsegen"/>
+    <Talent name="Bannschwert"/>
+    <Talent name="Dämonenbann"/>
+    <Talent name="Destructibo Arcanitas"/>
+    <Talent name="Einfluss bannen"/>
+    <Talent name="Herzschlag ruhe!"/>
+    <Talent name="Höllenpein zerreiße dich!"/>
+    <Talent name="Invocatio"/>
+    <Talent name="Schutzkreis gegen Untote"/>
+    <Talent name="Schwarz und Rot"/>
+    <Talent name="Skelettarius Totenherr"/>
+  </Talente>
+  <Objekte>
+    <Zonensystem>0</Zonensystem>
+    <Rüstungen>
+      <Rüstung name="Amazonenrüstung" be="3" rs="3/3/3/3/3/3"/>
+      <Rüstung name="Eisenmantel" be="2" rs="2/2/2/2/2/2"/>
+      <Rüstung name="" be="0" rs="0/0/0/0/0/0"/>
+    </Rüstungen>
+    <Waffen>
+      <Waffe name="Hand" id="Hand" würfel="1" würfelSeiten="6" plus="0" eigenschaften="Parierwaffe, Stumpf, Zerbrechlich, kein Malus als Nebenwaffe, Kopflastig, Wendig" härte="0" rw="0" beSlot="1" kampfstil="Kein Kampfstil" wm="0"/>
+      <Waffe name="Sonnenszepter" id="Sonnenszepter" würfel="2" würfelSeiten="6" plus="0" eigenschaften="" härte="10" rw="1" beSlot="1" kampfstil="Kein Kampfstil" wm="-1"/>
+      <Waffe name="Großschild" id="Großschild" würfel="1" würfelSeiten="6" plus="-1" eigenschaften="Schild, Stumpf" härte="7" rw="0" beSlot="1" kampfstil="Kein Kampfstil" wm="2"/>
+      <Waffe name="Kriegspferd" id="Kriegspferd" würfel="2" würfelSeiten="6" plus="2" eigenschaften="Niederwerfen, Reittier" härte="15" rw="1" beSlot="1" kampfstil="Kein Kampfstil" wm="1"/>
+      <Waffe name="CustomAnderthalbhänder" id="Anderthalbhänder" würfel="2" würfelSeiten="6" plus="5" eigenschaften="Zweihändig, Test, Reittier" härte="14" rw="3" beSlot="1" kampfstil="Kein Kampfstil" wm="2"/>
+      <Waffe name="Langbogen" id="Langbogen" würfel="2" würfelSeiten="6" plus="3" eigenschaften="Schwer (4), kein Reittier, Zweihändig" härte="3" rw="64" beSlot="1" kampfstil="Kein Kampfstil" wm="0" lz="1"/>
+    </Waffen>
+    <Ausrüstung/>
+  </Objekte>
+  <ÜbernatürlicheFertigkeiten>
+    <ÜbernatürlicheFertigkeit name="Zwölfgöttlicher Ritus" wert="3" exportieren="1"/>
+    <ÜbernatürlicheFertigkeit name="Antimagie" wert="12" exportieren="1"/>
+    <ÜbernatürlicheFertigkeit name="Dämonisch" wert="13" exportieren="1"/>
+    <ÜbernatürlicheFertigkeit name="Kraft" wert="18" exportieren="0"/>
+    <ÜbernatürlicheFertigkeit name="Feuer" wert="15" exportieren="0"/>
+    <ÜbernatürlicheFertigkeit name="Heiliges Erz" wert="5" exportieren="1"/>
+    <ÜbernatürlicheFertigkeit name="Heiliges Feuer" wert="7" exportieren="0"/>
+    <ÜbernatürlicheFertigkeit name="Heiliges Handwerk" wert="8" exportieren="0"/>
+    <ÜbernatürlicheFertigkeit name="Gaben des Blutgeists" wert="9" exportieren="1"/>
+    <ÜbernatürlicheFertigkeit name="Dolchzauber" wert="5" exportieren="1"/>
+    <ÜbernatürlicheFertigkeit name="Elfenlieder" wert="7" exportieren="1"/>
+  </ÜbernatürlicheFertigkeiten>
+  <Erfahrung>
+    <Gesamt>0</Gesamt>
+    <Ausgegeben>41431</Ausgegeben>
+  </Erfahrung>
+  <Notiz></Notiz>
+  <Einstellungen>
+    <VoraussetzungenPrüfen>1</VoraussetzungenPrüfen>
+    <Charakterbogen>Standard Charakterbogen</Charakterbogen>
+    <FinanzenAnzeigen>1</FinanzenAnzeigen>
+    <ÜbernatürlichesPDFSpalteAnzeigen>0</ÜbernatürlichesPDFSpalteAnzeigen>
+    <DetailsAnzeigen>0</DetailsAnzeigen>
+    <RegelnAnhängen>1</RegelnAnhängen>
+    <RegelnGrösse>8</RegelnGrösse>
+    <DeaktivierteRegelKategorien></DeaktivierteRegelKategorien>
+    <FormularEditierbarkeit>1</FormularEditierbarkeit>
+    <VorteilFavoriten></VorteilFavoriten>
+  </Einstellungen>
+  <BeschreibungDetails>
+    <Kultur></Kultur>
+    <Profession></Profession>
+    <Geschlecht></Geschlecht>
+    <Geburtsdatum></Geburtsdatum>
+    <Grösse></Grösse>
+    <Gewicht></Gewicht>
+    <Haarfarbe></Haarfarbe>
+    <Augenfarbe></Augenfarbe>
+    <Titel></Titel>
+  </BeschreibungDetails>
+</Charakter>

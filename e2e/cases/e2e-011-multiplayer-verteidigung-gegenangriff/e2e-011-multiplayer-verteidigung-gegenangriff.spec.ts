@@ -1,11 +1,14 @@
 import { expect, test } from '@playwright/test'
 
 import {
+    ActorDefaultSnapshot,
+    captureActorDefaultSnapshot,
     clearChatLog,
     foundryConfig,
     loginAndJoinWorld,
     openActorSheet,
     openMeleeAttackDialogForWeapon,
+    restoreActorFromDefaultSnapshot,
 } from '../../shared/fixtures/foundry'
 
 const ATTACKER_NAME = 'HatAlles'
@@ -115,8 +118,8 @@ test.describe('E2E-011 Multiplayer: Verteidigung und Gegenangriff', () => {
         const player3Config = { ...foundryConfig, username: 'Player3' }
 
         // Track cleanup state
-        let defenderResetState: { actorId: string; wunden: number } | null = null
-        let attackerResetState: { actorId: string; wunden: number } | null = null
+        let defenderDefaultSnapshot: ActorDefaultSnapshot | null = null
+        let attackerDefaultSnapshot: ActorDefaultSnapshot | null = null
 
         try {
             // ── Login both users ──────────────────────────────────────────
@@ -132,6 +135,9 @@ test.describe('E2E-011 Multiplayer: Verteidigung und Gegenangriff', () => {
             )
 
             // ── Snapshot both actors ──────────────────────────────────────
+            defenderDefaultSnapshot = await captureActorDefaultSnapshot(gmPage, DEFENDER_NAME)
+            attackerDefaultSnapshot = await captureActorDefaultSnapshot(gmPage, ATTACKER_NAME)
+
             const defenderBefore = await gmPage.evaluate((name: string) => {
                 const actor = game.actors.getName(name)
                 if (!actor) return null
@@ -147,10 +153,6 @@ test.describe('E2E-011 Multiplayer: Verteidigung und Gegenangriff', () => {
                 }
             }, DEFENDER_NAME)
             expect(defenderBefore).not.toBeNull()
-            defenderResetState = {
-                actorId: defenderBefore!.actorId,
-                wunden: defenderBefore!.wunden,
-            }
 
             const attackerBefore = await gmPage.evaluate((name: string) => {
                 const actor = game.actors.getName(name)
@@ -167,10 +169,6 @@ test.describe('E2E-011 Multiplayer: Verteidigung und Gegenangriff', () => {
                 }
             }, ATTACKER_NAME)
             expect(attackerBefore).not.toBeNull()
-            attackerResetState = {
-                actorId: attackerBefore!.actorId,
-                wunden: attackerBefore!.wunden,
-            }
 
             // ── Choose attack weapon for HatAlles ─────────────────────────
             const attackerWeapon = await gmPage.evaluate((name: string) => {
@@ -597,21 +595,15 @@ test.describe('E2E-011 Multiplayer: Verteidigung und Gegenangriff', () => {
             expect(deltaWunden2).toBe(expectedIncrement2)
         } finally {
             // ── Cleanup: reset both actors ────────────────────────────────
-            if (defenderResetState) {
-                await gmPage
-                    .evaluate(async ({ actorId, wunden }) => {
-                        const actor = game.actors.get(actorId)
-                        if (actor) await actor.update({ 'system.gesundheit.wunden': wunden })
-                    }, defenderResetState)
-                    .catch(() => {})
+            if (defenderDefaultSnapshot) {
+                await restoreActorFromDefaultSnapshot(gmPage, defenderDefaultSnapshot).catch(
+                    () => {},
+                )
             }
-            if (attackerResetState) {
-                await gmPage
-                    .evaluate(async ({ actorId, wunden }) => {
-                        const actor = game.actors.get(actorId)
-                        if (actor) await actor.update({ 'system.gesundheit.wunden': wunden })
-                    }, attackerResetState)
-                    .catch(() => {})
+            if (attackerDefaultSnapshot) {
+                await restoreActorFromDefaultSnapshot(gmPage, attackerDefaultSnapshot).catch(
+                    () => {},
+                )
             }
             await gmContext.close().catch(() => {})
             await player3Context.close().catch(() => {})
