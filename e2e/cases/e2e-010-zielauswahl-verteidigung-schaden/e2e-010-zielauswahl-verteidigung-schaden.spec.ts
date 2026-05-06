@@ -1,11 +1,14 @@
 import { expect, test } from '@playwright/test'
 
 import {
+    ActorDefaultSnapshot,
+    captureActorDefaultSnapshot,
     clearChatLog,
     foundryConfig,
     loginAndJoinWorld,
     openActorSheet,
     openMeleeAttackDialogForWeapon,
+    restoreActorFromDefaultSnapshot,
 } from '../../shared/fixtures/foundry'
 
 const ATTACKER_NAME = 'HatAlles'
@@ -110,12 +113,11 @@ test.describe('E2E-010 Zielauswahl, Verteidigung und Schaden', () => {
         expect(defenderBefore).not.toBeNull()
         expect(defenderBefore?.actorId).toBeTruthy()
 
-        const defenderResetState = {
-            actorId: defenderBefore!.actorId,
-            wunden: defenderBefore!.wunden,
-        }
+        let defenderDefaultSnapshot: ActorDefaultSnapshot | null = null
 
         try {
+            defenderDefaultSnapshot = await captureActorDefaultSnapshot(page, DEFENDER_NAME)
+
             const actorWindow = await openActorSheet(page, ATTACKER_NAME)
             await openMeleeAttackDialogForWeapon(actorWindow, attackerWeapon!.name)
 
@@ -346,15 +348,9 @@ test.describe('E2E-010 Zielauswahl, Verteidigung und Schaden', () => {
                 expect(deltaWunden).toBe(expectedIncrement)
             }
         } finally {
-            await page
-                .evaluate(async ({ actorId, wunden }) => {
-                    const actor = game.actors.get(actorId)
-                    if (!actor) return
-                    await actor.update({
-                        'system.gesundheit.wunden': wunden,
-                    })
-                }, defenderResetState)
-                .catch(() => {})
+            if (defenderDefaultSnapshot) {
+                await restoreActorFromDefaultSnapshot(page, defenderDefaultSnapshot).catch(() => {})
+            }
         }
     })
 })
