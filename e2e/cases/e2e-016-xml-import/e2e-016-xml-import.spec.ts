@@ -74,16 +74,30 @@ test.describe('E2E-016 Sephrasto XML-Import', () => {
         await expect(confirmBtn).toBeVisible({ timeout: 15000 })
 
         // Dialog-Inhalt enthält den Charakternamen aus der XML
-        const dialogWindow = page.locator('.app.dialog, .window-app, .application').filter({
-            has: confirmBtn,
-        })
-        await expect(dialogWindow).toContainText(ACTOR_NAME, { timeout: 5000 })
+        const dialogContent = page.locator('.dialog-content')
+        await expect(dialogContent).toContainText(ACTOR_NAME, { timeout: 5000 })
 
         await confirmBtn.click()
 
         // ── Phase 4: Warten bis Actor importiert ist ─────────────────────
         await page.waitForFunction(
             (name: string) => !!(game as any).actors?.getName(name),
+            ACTOR_NAME,
+            { timeout: 30000 },
+        )
+
+        // Import läuft intern mehrstufig (Actor zuerst, Items danach).
+        // Daher explizit warten, bis die erwarteten Items vorhanden sind.
+        await page.waitForFunction(
+            (name: string) => {
+                const actor = (game as any).actors?.getName(name)
+                if (!actor) return false
+                const hasKlingenwaffen = actor.items.some(
+                    (i: any) => i.type === 'fertigkeit' && i.name?.trim() === 'Klingenwaffen',
+                )
+                const hasFernkampfwaffe = actor.items.some((i: any) => i.type === 'fernkampfwaffe')
+                return hasKlingenwaffen && hasFernkampfwaffe
+            },
             ACTOR_NAME,
             { timeout: 30000 },
         )
@@ -108,12 +122,12 @@ test.describe('E2E-016 Sephrasto XML-Import', () => {
         }, ACTOR_NAME)
 
         expect(actorData, `Actor "${ACTOR_NAME}" nicht in game.actors gefunden`).not.toBeNull()
+        importedActorId = actorData!.id
+
         expect(actorData!.muWert).toBe(EXPECTED_MU)
         expect(actorData!.geWert).toBe(EXPECTED_GE)
         expect(actorData!.klingenwaffenWert).toBe(EXPECTED_KLINGENWAFFEN)
         expect(actorData!.hasFernkampfwaffe).toBe(true)
-
-        importedActorId = actorData!.id
 
         // Negativprüfung Cleanup-Vorbereitung: ID ist gesetzt → afterEach löscht
         expect(importedActorId).toBeTruthy()

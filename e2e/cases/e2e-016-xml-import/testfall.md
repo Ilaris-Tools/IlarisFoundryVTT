@@ -77,7 +77,7 @@ Die Datei `testcharakter.xml` liegt im selben Verzeichnis wie dieser Testfall (`
 12. Via `page.evaluate` Actor-Daten lesen:
     - `actor.system.attribute.MU.wert === 16`
     - `actor.system.attribute.GE.wert === 23`
-    - Fertigkeit `Klingenwaffen` (type `'fertigkeit'`) hat `system.wert === 10`
+    - Fertigkeit `Klingenwaffen` (type `'fertigkeit'`) hat `system.fw === 10`
     - Mindestens eine `fernkampfwaffe` (Langbogen) vorhanden
 13. `importedActorId` aus `actor.id` merken (für Cleanup).
 
@@ -85,16 +85,16 @@ Die Datei `testcharakter.xml` liegt im selben Verzeichnis wie dieser Testfall (`
 
 ## Erwartetes Ergebnis (Then)
 
-| Assertion                                                  | Bedingung |
-| ---------------------------------------------------------- | --------- |
-| `button.import-xml-character` in Akteure-Sidebar sichtbar  | ✅        |
-| Bestätigungs-Dialog erscheint mit Charaktername            | ✅        |
-| Actor `HatAllesXMLIMPORTTEST` nach Import in `game.actors` | ✅        |
-| `actor.system.attribute.MU.wert === 16`                    | ✅        |
-| `actor.system.attribute.GE.wert === 23`                    | ✅        |
-| Fertigkeit `Klingenwaffen` mit `wert === 10` vorhanden     | ✅        |
-| Mindestens eine `fernkampfwaffe` (Langbogen) vorhanden     | ✅        |
-| Actor nach Testende nicht mehr in `game.actors`            | ✅        |
+| Assertion                                                   | Bedingung |
+| ----------------------------------------------------------- | --------- |
+| `button.import-xml-character` in Akteure-Sidebar sichtbar   | ✅        |
+| Bestätigungs-Dialog erscheint mit Charaktername             | ✅        |
+| Actor `HatAllesXMLIMPORTTEST` nach Import in `game.actors`  | ✅        |
+| `actor.system.attribute.MU.wert === 16`                     | ✅        |
+| `actor.system.attribute.GE.wert === 23`                     | ✅        |
+| Fertigkeit `Klingenwaffen` mit `system.fw === 10` vorhanden | ✅        |
+| Mindestens eine `fernkampfwaffe` (Langbogen) vorhanden      | ✅        |
+| Actor nach Testende nicht mehr in `game.actors`             | ✅        |
 
 ---
 
@@ -109,7 +109,7 @@ Die Datei `testcharakter.xml` liegt im selben Verzeichnis wie dieser Testfall (`
 
 - `importedActorId` wird nach erfolgreichem Import gesetzt.
 - In `afterEach`: falls `importedActorId` gesetzt → `actor.delete()` per API.
-- In `beforeEach` (Phase 0): Guard-Delete für stale Actors aus vorherigen Läufen (Idempotenz für CI).
+- In Phase 0 des Tests: Guard-Delete für stale Actors aus vorherigen Läufen (Idempotenz für CI).
 
 ---
 
@@ -119,4 +119,4 @@ Die Datei `testcharakter.xml` liegt im selben Verzeichnis wie dieser Testfall (`
 2. **Bestätigungs-Dialog ist Standard-Foundry-Dialog** (`.app.dialog` oder `.window-app.dialog`, nicht AppV2): Selektor über Button-Text `"Charakter importieren"` ist robuster als Container-Selektor.
 3. **Items aus Kompendium**: Fertigkeiten, Talente, Vorteile werden per Name aus Kompendien gesucht — nicht gefundene werden übersprungen (kein Fehler). Nur Attribute und Waffen sind immer garantiert.
 4. **Import-Button nur für GM**: `ACTOR_CREATE + FILES_UPLOAD` Berechtigung erforderlich. Test schlägt fehl wenn als Spieler eingeloggt.
-5. **XML-Fixture im Repo**: Die Datei `testcharakter.xml` liegt im gleichen Ordner wie der Test → headless CI kann den Pfad via `__dirname` auflösen.
+5. **XML-Fixture im Repo**: Die Datei `testcharakter.xml` liegt im gleichen Ordner wie der Test → headless CI kann den Pfad via `import.meta.url` auflösen.
