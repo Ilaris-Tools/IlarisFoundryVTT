@@ -523,7 +523,7 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
     }
 
     async _showNearbyActors() {
-        const { TargetSelectionDialog } = await import('./target_selection.js')
+        const { TargetSelectionDialog } = await import('./target-selection.js')
         if (callIlarisHookWithGlobalMirror('Ilaris.preTargetSelection', this, null) === false)
             return
         const dialog = new TargetSelectionDialog(this.actor, (selectedActors) => {

@@ -11,14 +11,14 @@ import { runModelDataNormalizationMigrationIfNeeded } from './migrations/migrate
 import { HeldenSheet } from '../actors/sheets/held.js'
 import { KreaturSheet } from '../actors/sheets/kreatur.js'
 import { RuestungSheet } from '../items/sheets/ruestung.js'
-import { UebernatuerlichFertigkeitSheet } from '../items/sheets/uebernatuerlich_fertigkeit.js'
-import { UebernatuerlichTalentSheet } from '../items/sheets/uebernatuerlich_talent.js'
+import { UebernatuerlichFertigkeitSheet } from '../items/sheets/uebernatuerlich-fertigkeit.js'
+import { UebernatuerlichTalentSheet } from '../items/sheets/uebernatuerlich-talent.js'
 import { FertigkeitSheet } from '../items/sheets/fertigkeit.js'
 import { TalentSheet } from '../items/sheets/talent.js'
 import { NahkampfwaffeSheet } from '../waffe/sheets/nahkampfwaffe.js'
 import { FernkampfwaffeSheet } from '../waffe/sheets/fernkampfwaffe.js'
 import { GegenstandSheet } from '../items/sheets/gegenstand.js'
-import { FreieFertigkeitSheet } from '../items/sheets/freie_fertigkeit.js'
+import { FreieFertigkeitSheet } from '../items/sheets/freie-fertigkeit.js'
 import { VorteilSheet } from '../items/sheets/vorteil.js'
 import { ManoeverSheet } from '../items/sheets/manoever.js'
 import { EigenheitSheet } from '../items/sheets/eigenheit.js'
@@ -27,14 +27,14 @@ import { WaffeneigenschaftSheet } from '../waffe/sheets/waffeneigenschaft.js'
 import { InfoSheet } from '../items/sheets/info.js'
 import { AbgeleiteterWertSheet } from '../items/sheets/abgeleiteter-wert.js'
 import { AngriffSheet } from '../items/sheets/angriff.js'
-import { FreiesTalentSheet } from '../items/sheets/freies_talent.js'
+import { FreiesTalentSheet } from '../items/sheets/freies-talent.js'
 import { EffectItemSheet } from '../items/sheets/effect-item.js'
 import { registerIlarisGameSettings } from '../settings/configure-game-settings.js'
 import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
 } from '../settings/configure-game-settings.model.js'
-import { registerDefenseButtonHook } from '../combat/dialogs/defense_button_hook.js'
+import { registerDefenseButtonHook } from '../combat/dialogs/defense-button-hook.js'
 import { XmlCharacterImporter } from '../importer/xml_character_importer.js'
 import { XMLRuleImporter } from '../importer/xml_rule_importer/index.js'
 import { formatDiceFormula } from './utilities.js'
@@ -423,7 +423,7 @@ async function handleApplyDamageRequest(data) {
     }
 
     // Import the helper function
-    const { _applyDamageDirectly } = await import('../combat/dialogs/shared_dialog_helpers.js')
+    const { _applyDamageDirectly } = await import('../combat/dialogs/shared-dialog-helpers.js')
 
     // Apply damage as GM
     await _applyDamageDirectly(targetActor, damage, damageType, trueDamage, speaker)
@@ -448,7 +448,7 @@ async function handleApplyDamageByOwnerRequest(data) {
     if (executorUserId !== game.user.id) return
 
     const { _applyDamageDirectly, resolveTargetActorForDamage } =
-        await import('../combat/dialogs/shared_dialog_helpers.js')
+        await import('../combat/dialogs/shared-dialog-helpers.js')
 
     const { targetActor } = resolveTargetActorForDamage(target)
     if (!targetActor) {

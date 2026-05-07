@@ -1,5 +1,5 @@
 import { AngriffDialog } from './dialogs/angriff.js'
-import { FernkampfAngriffDialog } from './dialogs/fernkampf_angriff.js'
+import { FernkampfAngriffDialog } from './dialogs/fernkampf-angriff.js'
 import { UebernatuerlichDialog } from './dialogs/uebernatuerlich.js'
 import {
     IlarisGameSettingNames,
