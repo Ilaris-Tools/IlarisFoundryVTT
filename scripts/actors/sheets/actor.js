@@ -464,13 +464,11 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
     _onSelectedKampfstil(event) {
         const selected_kampfstil = event.target.value
-        this.actor.system.misc.selected_kampfstil = selected_kampfstil
         this.actor.update({ 'system.misc.selected_kampfstil': selected_kampfstil })
     }
 
     _onSelectedUebernatuerlichenStil(event) {
         const selected_stil = event.target.value
-        this.actor.system.misc.selected_uebernatuerlicher_stil = selected_stil
         this.actor.update({ 'system.misc.selected_uebernatuerlicher_stil': selected_stil })
     }
 

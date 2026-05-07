@@ -1,10 +1,12 @@
+const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api
+
 /**
  * Dialog for selecting nearby actors/tokens as targets for combat actions.
  * Displays all visible tokens on the current scene with their distances and dispositions,
  * allowing the user to select one or more targets. The selection is synced with Foundry's
  * built-in targeting system.
  *
- * @extends {Dialog}
+ * @extends {HandlebarsApplicationMixin(ApplicationV2)}
  *
  * @example
  * // Basic usage with callback
@@ -16,15 +18,34 @@
  *
  * @example
  * // Usage in combat dialog
- * async _showNearbyActors(html) {
+ * async _showNearbyActors() {
  *     const dialog = new TargetSelectionDialog(this.actor, (selectedActors) => {
  *         this.selectedActors = selectedActors;
- *         this.updateSelectedActorsDisplay(html);
+ *         this.updateSelectedActorsDisplay();
  *     });
  *     dialog.render(true);
  * }
  */
-export class TargetSelectionDialog extends Dialog {
+export class TargetSelectionDialog extends HandlebarsApplicationMixin(ApplicationV2) {
+    /** @override */
+    static DEFAULT_OPTIONS = {
+        classes: ['ilaris', 'combat-dialog', 'target-sel', 'target-selection-dialog'],
+        position: {
+            width: 500,
+            height: 'auto',
+        },
+        window: {
+            title: 'Nahe Akteure',
+        },
+    }
+
+    /** @override */
+    static PARTS = {
+        form: {
+            template: 'systems/Ilaris/scripts/combat/templates/dialogs/target_selection.hbs',
+        },
+    }
+
     /**
      * Creates a new target selection dialog.
      *
@@ -34,18 +55,7 @@ export class TargetSelectionDialog extends Dialog {
      *                                         [{tokenId: string, actorId: string, name: string, distance: number}, ...]
      */
     constructor(actor, onSelectionComplete) {
-        const dialog = {
-            title: 'Nahe Akteure',
-        }
-        const dialogOptions = {
-            template: 'systems/Ilaris/scripts/combat/templates/dialogs/target_selection.hbs',
-            width: 500,
-            height: 'auto',
-            classes: ['ilaris', 'combat-dialog', 'target-sel', 'target-selection-dialog'],
-            buttons: {},
-        }
-
-        super(dialog, dialogOptions)
+        super({})
         this.actor = actor
         this.selectedActors = new Set()
         this.onSelectionComplete = onSelectionComplete
@@ -56,17 +66,19 @@ export class TargetSelectionDialog extends Dialog {
      * Retrieves all visible tokens on the current scene, calculates their distances
      * from the actor's token, and determines their dispositions.
      *
-     * @returns {Promise<Object|null>} Template data object containing:
+     * @override
+     * @param {object} options - Render options
+     * @returns {Promise<object>} Template data object containing:
      *   - currentToken: {id, actorId, name} - The actor's token information
      *   - tokens: Array of token objects with {id, actorId, name, distance, disposition, dispositionClass}
-     *   Returns null if the actor has no active token on the scene.
      */
-    async getData() {
+    async _prepareContext(options) {
         // Get the token for the current actor
         const token = this.actor.getActiveTokens()[0]
         if (!token) {
             ui.notifications.warn('Kein Token für diesen Akteur auf der Szene gefunden.')
-            return null
+            this.close()
+            return { currentToken: null, tokens: [] }
         }
 
         // Get all tokens on the current scene
@@ -127,54 +139,53 @@ export class TargetSelectionDialog extends Dialog {
     }
 
     /**
-     * Activates event listeners for the dialog.
-     * Sets up handlers for:
-     * - Submit button (confirms selection and closes dialog)
-     * - Close button (closes dialog without confirming)
-     * - Row clicks (toggles selection of individual tokens)
-     *
-     * @param {jQuery} html - The rendered HTML of the dialog
+     * Actions performed after any render of the Application.
+     * Replaces the legacy activateListeners() method.
+     * @override
+     * @param {object} context - Prepared context data
+     * @param {object} options - Render options
      */
-    activateListeners(html) {
-        super.activateListeners(html)
+    async _onRender(context, options) {
+        await super._onRender(context, options)
 
         // Add button listeners
-        html.find('.submit').on('click', (event) => {
-            this._handleSelection(html, this.onSelectionComplete)
+        this.element.querySelector('.submit')?.addEventListener('click', () => {
+            this._handleSelection(this.onSelectionComplete)
             this.close()
         })
-        html.find('.close').on('click', (event) => {
+        this.element.querySelector('.close')?.addEventListener('click', () => {
             this.close()
         })
-        // Handle row clicks using Foundry's event system
-        html.find('.target-sel-row').on('click', (event) => {
-            const row = event.currentTarget
-            // Don't handle clicks on the separator
-            if ($(row).hasClass('target-sel-separator-row')) return
 
-            const tokenId = row.dataset.tokenId
+        // Handle row clicks
+        this.element.querySelectorAll('.target-sel-row').forEach((row) => {
+            row.addEventListener('click', () => {
+                // Don't handle clicks on the separator
+                if (row.classList.contains('target-sel-separator-row')) return
 
-            // Toggle selection
-            $(row).toggleClass('selected')
-            if ($(row).hasClass('selected')) {
-                this.selectedActors.add(tokenId)
-            } else {
-                this.selectedActors.delete(tokenId)
-            }
+                const tokenId = row.dataset.tokenId
 
-            // Update selection display
-            const selectionList = html.find('#selection-list')
-            if (this.selectedActors.size === 0) {
-                selectionList.text('Keine')
-            } else {
-                const selectedNames = html
-                    .find('.target-sel-row.selected')
-                    .map(function () {
-                        return $(this).find('td').eq(1).text().trim()
-                    })
-                    .get()
-                selectionList.text(selectedNames.join(', '))
-            }
+                // Toggle selection
+                row.classList.toggle('selected')
+                if (row.classList.contains('selected')) {
+                    this.selectedActors.add(tokenId)
+                } else {
+                    this.selectedActors.delete(tokenId)
+                }
+
+                // Update selection display
+                const selectionList = this.element.querySelector('#selection-list')
+                if (this.selectedActors.size === 0) {
+                    selectionList.textContent = 'Keine'
+                } else {
+                    const selectedNames = Array.from(
+                        this.element.querySelectorAll('.target-sel-row.selected'),
+                    )
+                        .map((r) => r.querySelector('td:nth-child(2)')?.textContent.trim())
+                        .filter(Boolean)
+                    selectionList.textContent = selectedNames.join(', ')
+                }
+            })
         })
     }
 
@@ -183,12 +194,13 @@ export class TargetSelectionDialog extends Dialog {
      * Collects all selected tokens, syncs them with Foundry's targeting system,
      * and invokes the onSelectionComplete callback with the selected data.
      *
-     * @param {jQuery} html - The rendered HTML of the dialog
      * @param {Function} onSelectionComplete - Callback to invoke with selected targets
      * @private
      */
-    _handleSelection(html, onSelectionComplete) {
-        const selectedIds = Array.from(html.find('.target-sel-row.selected')).map((row) => ({
+    _handleSelection(onSelectionComplete) {
+        const selectedIds = Array.from(
+            this.element.querySelectorAll('.target-sel-row.selected'),
+        ).map((row) => ({
             tokenId: row.dataset.tokenId,
             actorId: row.dataset.actorId,
             name: row.cells[1].textContent.trim(),
