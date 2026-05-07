@@ -238,7 +238,7 @@ export function createItemTypeDataModels(TypeDataModel, h) {
         static defineSchema() {
             return {
                 text: h.string(''),
-                pw: h.number(0),
+                pw: h.string(''),
                 profan: h.bool(true),
             }
         }
@@ -279,8 +279,8 @@ export function createItemTypeDataModels(TypeDataModel, h) {
                     schaden: h.number(0),
                     schadenFormula: h.string(''),
                     rw: h.number(0),
-                    fumbleThreshold: h.number(0),
-                    critThreshold: h.number(0),
+                    fumbleThreshold: h.number(null),
+                    critThreshold: h.number(null),
                     ignoreCover: h.bool(false),
                     ignoreArmor: h.bool(false),
                     additionalDice: h.number(0),
