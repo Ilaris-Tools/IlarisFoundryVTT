@@ -2,7 +2,7 @@ import {
     applyDamageToTarget,
     resolveDamageExecutorUserId,
     resolveTargetActorForDamage,
-} from '../dialogs/shared_dialog_helpers.js'
+} from '../dialogs/shared-dialog-helpers.js'
 import {
     IlarisAutomatisierungSettingNames,
     ConfigureGameSettingsCategories,

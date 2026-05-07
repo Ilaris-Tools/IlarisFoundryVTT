@@ -1,7 +1,7 @@
 import { roll_crit_message } from '../../dice/wuerfel_misc.js'
 import { signed } from '../../dice/chatutilities.js'
-import { handleModifications } from '../../combat/dialogs/shared_dialog_helpers.js'
-import { CombatDialog } from '../../combat/dialogs/combat_dialog.js'
+import { handleModifications } from '../../combat/dialogs/shared-dialog-helpers.js'
+import { CombatDialog } from '../../combat/dialogs/combat-dialog.js'
 import * as hardcoded from '../../actors/data/hardcodedvorteile.js'
 import { sanitizeEnergyCost, isNumericCost, formatDiceFormula } from '../../core/utilities.js'
 import {
