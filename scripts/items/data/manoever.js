@@ -2,7 +2,7 @@ import { IlarisItem } from './item.js'
 
 export class ManoeverItem extends IlarisItem {
     _manoeverRequirementsFulfilled(actor, item) {
-        const voraussetzung = this.system.voraussetzung || this.system.voraussetzungen
+        const voraussetzung = this.system.voraussetzung
 
         if (!voraussetzung) {
             return true

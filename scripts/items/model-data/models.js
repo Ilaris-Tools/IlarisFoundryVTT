@@ -181,7 +181,6 @@ export function createItemTypeDataModels(TypeDataModel, h) {
         static defineSchema() {
             return {
                 voraussetzung: h.string(''),
-                voraussetzungen: h.string(''),
                 input: h.schema({
                     label: h.string('Checkbox'),
                     field: h.string('CHECKBOX'),
@@ -218,7 +217,6 @@ export function createItemTypeDataModels(TypeDataModel, h) {
                 haerte: h.number(0),
                 rw: h.number(0),
                 lz: h.number(0),
-                wm: h.number(0),
                 wm_at: h.number(0),
                 typ: h.string('Nah'),
                 at: h.number(0),

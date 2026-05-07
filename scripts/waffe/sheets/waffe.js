@@ -343,17 +343,13 @@ export class WaffeBaseSheet extends IlarisItemSheet {
      * @protected
      */
     _migrateLegacyDamageFormat(context) {
-        // for migration from dice_anzahl and dice_plus to tp
-        // Only migrate if tp is not set yet AND old fields exist
-        if (
-            !this.document.system.tp &&
-            (this.document.system.dice_plus || this.document.system.dice_anzahl)
-        ) {
-            this.document.system.tp = `${this.document.system.dice_anzahl}W6${
-                this.document.system.dice_plus < 0 ? '' : '+'
-            }${this.document.system.dice_plus}`
-            delete this.document.system.dice_anzahl
-            delete this.document.system.dice_plus
-        }
+        // Render-only fallback for legacy data. Persistence cleanup belongs to migration code,
+        // not to sheet rendering.
+        if (context.document.system.tp) return
+        if (!context.document.system.dice_plus && !context.document.system.dice_anzahl) return
+
+        context.document.system.tp = `${context.document.system.dice_anzahl}W6${
+            context.document.system.dice_plus < 0 ? '' : '+'
+        }${context.document.system.dice_plus}`
     }
 }

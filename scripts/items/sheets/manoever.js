@@ -2,7 +2,7 @@ import { IlarisItemSheet } from './item.js'
 
 /* template.json
     "manoever": {
-      "voraussetzungen": "Vorteil Name1",
+    "voraussetzung": "Vorteil Name1",
       "inputs": {
             "label": "Checkbox | Auswahl | X",
             "field": "CHECKBOX | SELECTOR | NUMBER",
@@ -48,10 +48,6 @@ export class ManoeverSheet extends IlarisItemSheet {
         const context = await super._prepareContext(options)
         context.manoever = CONFIG.ILARIS.manoever
         context.schadenstypen = CONFIG.ILARIS.schadenstypen
-
-        if (!context.item.system.voraussetzung && context.item.system.voraussetzungen) {
-            context.item.system.voraussetzung = context.item.system.voraussetzungen
-        }
 
         return context
     }

@@ -39,6 +39,8 @@ export class IlarisActor extends Actor {
         console.log('prepareBaseData')
         super.prepareBaseData()
 
+        // ModelData migration note: these paths are now guaranteed by TypeDataModel
+        // (see scripts/actors/model-data/*). Keep runtime writes aligned with that schema.
         // Calculate all base derived values before effects are applied
         if (this.system.attribute && this.system.abgeleitete) {
             // Get custom abgeleitete werte definitions from cache
@@ -122,6 +124,7 @@ export class IlarisActor extends Actor {
             }
 
             if (this.system.gesundheit?.hp?.max == undefined) {
+                // Compatibility fallback for legacy actors created before strict schema defaults.
                 this.system.gesundheit.hp = {
                     max: 9,
                     value: 9,
