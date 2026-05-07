@@ -57,7 +57,7 @@ test.describe('E2E-015 Effekte-Tab', () => {
 
         const actorWindow = await openActorSheet(page, ACTOR_NAME)
 
-        await actorWindow.locator('nav [data-tab="effects"]').click()
+        await actorWindow.locator('nav [data-tab="effekte"]').click()
         const effekteTab = actorWindow.locator('section.tab.effekte')
         await expect(effekteTab).toBeVisible({ timeout: 10000 })
 
@@ -132,7 +132,7 @@ test.describe('E2E-015 Effekte-Tab', () => {
         }, ACTOR_NAME)
 
         // Tab erneut anklicken zur Sicherheit
-        await actorWindow.locator('nav [data-tab="effects"]').click()
+        await actorWindow.locator('nav [data-tab="effekte"]').click()
         await expect(effekteTab).toBeVisible({ timeout: 5000 })
 
         // ── Phase 3: Testeffekt sichtbar & Dauer-Anzeige ─────────────────
