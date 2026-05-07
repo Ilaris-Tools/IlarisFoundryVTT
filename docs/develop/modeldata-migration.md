@@ -127,3 +127,35 @@ Bei ModelData-aendernden PRs sollte immer mitgeliefert werden:
 5. Hinweis fuer Nutzer:innen, ob Nacharbeiten notwendig sind.
 
 So bleiben Releases fuer Spielleitungen, Maintainer und Beitragende nachvollziehbar und frustarm.
+
+## Breaking Changes fuer Entwickler:innen
+
+Dieser Abschnitt dokumentiert Felder, die umbenannt oder strukturell geaendert wurden und Anpassungen in Modulen, Makros oder externen Skripten erfordern koennen.
+
+### `voraussetzungen` → `voraussetzung` (Singular)
+
+**Betrifft:** Alle Item-Typen, die Voraussetzungen tragen (z. B. `vorteil`, `talent`, `manoever`, `waffeneigenschaft`).
+
+| Alt                           | Neu                         |
+| ----------------------------- | --------------------------- |
+| `item.system.voraussetzungen` | `item.system.voraussetzung` |
+
+**Hintergrund:** Das Feld hielt keine Liste, sondern einen einzelnen String. Der Alias `voraussetzungen` wurde entfernt; schreibende Zugriffe muessen auf `voraussetzung` umgestellt werden.
+
+**Migration:** Lesender Zugriff auf `voraussetzungen` liefert weiterhin den Wert (Foundry-Alias-Kompatibilitaet), wird aber in einer kuenftigen Version vollstaendig entfernt. Aktiv schreibende Stellen (Makros, Module, externe Importer) muessen jetzt den neuen Key verwenden.
+
+---
+
+### `wm` → `wm_at` (Nahkampf- und Fernkampfwaffen)
+
+**Betrifft:** `nahkampfwaffe`, `fernkampfwaffe`.
+
+| Alt              | Neu                 |
+| ---------------- | ------------------- |
+| `item.system.wm` | `item.system.wm_at` |
+
+**Hintergrund:** `wm` war ein veralteter Alias fuer den Waffenmodifikator auf Attacke/Parade. Das Feld heisst nun `wm_at`, analog zu den anderen `wm_*`-Feldern. Der Alias `wm` wurde aus dem TypeDataModel entfernt.
+
+**Migration:** Lesende Zugriffe ueber den alten Key `wm` werden nicht mehr aufgeloest. Alle schreibenden und lesenden Stellen in Makros, Modulen oder externen Importern muessen auf `wm_at` umgestellt werden.
+
+**Importers:** Die eingebauten Importer (`sephrasto_importer.js`, `xml_rule_importer`) schreiben bereits `wm_at` — kein Handlungsbedarf dort.
