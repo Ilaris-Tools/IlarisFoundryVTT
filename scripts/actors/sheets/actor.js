@@ -58,6 +58,8 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     _onRender(context, options) {
         super._onRender(context, options)
 
+        // These selectors intentionally bind to canonical system paths that are
+        // stabilized via TypeDataModel schemas and migration normalization.
         // Bind input listeners for real-time health updates
         const woundsInput = this.element.querySelector('input[name="system.gesundheit.wunden"]')
         if (woundsInput) {
@@ -125,6 +127,7 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         try {
             const togglevariable = target.dataset.togglevariable
             const attr = `${togglevariable}`
+            // Keep toggle paths schema-backed (no ad-hoc keys), otherwise updates can fail validation.
             const bool_status = foundry.utils.getProperty(this.actor, attr)
             await this.actor.update({ [attr]: !bool_status })
 
