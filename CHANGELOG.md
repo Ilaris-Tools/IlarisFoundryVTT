@@ -2,6 +2,39 @@
 
 ## v13
 
+### v13.1
+
+#### Datenmodell-Normalisierung (ModelData)
+
+- Neue versionierte Normalisierungs-Migration eingeführt (`worldSchemaVersion` Target `13.2.0`)
+- Migration läuft GM-only, idempotent und verarbeitet:
+    - World Items
+    - Actor Embedded Items
+    - entsperrte Ilaris-Compendiums (Item/Actor)
+- Kritischer Fix für `effect-item` Typvergleich umgesetzt (`effect-item` statt `effectItem`)
+- Explizite Foundry TypeDataModel-Registrierung ergänzt:
+    - eigene, handgeschriebene DataModel-Klasse pro Actor- und Item-Typ
+    - Registrierung über `CONFIG.Actor.dataModels` und `CONFIG.Item.dataModels`
+    - strenge, verschachtelte Schemas via `SchemaField`/`NumberField`/`StringField`/`BooleanField` statt generischer Laufzeit-Ableitung
+
+#### Breaking/Technische Änderungen
+
+- Feldharmonisierung bei Manövern: `system.voraussetzungen` -> `system.voraussetzung`
+- Feldharmonisierung bei abgeleiteten Werten: `system.name` -> `system.key`
+- Alias-Normalisierung bei Angriffen: `system.wm` -> `system.wm_at`
+- Runtime-Persistenzfelder bei Waffen bereinigt: `system.rw_mod` und `system.computed` werden entfernt
+
+#### Kompatibilität
+
+- Legacy-Lesepfade bleiben aktiv (z. B. Manöver-Voraussetzungen alt/neu)
+- Alte Daten werden beim Migrationslauf automatisch angehoben
+- XML-Regelimporter schreibt Manöver-Voraussetzungen in das neue Feld `system.voraussetzung`
+
+#### Qualitätsabsicherung
+
+- Unit-Test-Suite um migrationsspezifische Normalisierungs-Tests erweitert
+- Bestehende Jest-Suite weiterhin grün
+
 ### v13.0.4
 
 - Notizen über ganze Größe

@@ -506,6 +506,19 @@ for (const char of CHARACTERS) {
                     await expect(
                         actorWindow.locator('input[name="system.abgeleitete.asp_stern"]'),
                     ).toHaveValue('16', { timeout: 10000 })
+
+                    // Wait for AppV2 to persist asp_stern to the actor before proceeding.
+                    // The toHaveValue assertion above passes as soon as the DOM reflects the typed
+                    // value, but the async actor.update() triggered by Tab may still be in-flight.
+                    // If it resolves while we are interacting with the gKaP input, the re-render
+                    // replaces the DOM element and the fill is lost.
+                    await page.waitForFunction(
+                        (name: string) =>
+                            (game as any).actors?.getName(name)?.system?.abgeleitete?.asp_stern ===
+                            16,
+                        char.name,
+                        { timeout: 10000 },
+                    )
                 }
 
                 // ================================================================
@@ -513,7 +526,9 @@ for (const char of CHARACTERS) {
                 // ================================================================
 
                 if (char.hasKap) {
+                    // Confirm the gKaP input is stable (re-render from ASP save has settled).
                     const gkapInput = actorWindow.locator('input[name="system.abgeleitete.gkap"]')
+                    await expect(gkapInput).toBeVisible({ timeout: 5000 })
                     await gkapInput.fill('3')
                     await gkapInput.press('Tab')
 

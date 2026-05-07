@@ -21,12 +21,16 @@ A reusable skill for decomposing any user request into an executable plan with v
 - Identify the core goal and any secondary goals.
 - Note constraints and preferences.
 
-### Step 2: Gather Context
+### Step 2: Gather Context (Mandatory — use Researcher agent)
 
-- Check `.agents/CODEBASE_ARCHITECTURE.md` for relevant directories.
-- Check `.agents/PATTERNS_AND_EXAMPLES.md` for similar past implementations.
-- Check `template.json` if data models are involved.
-- Check the Foundry VTT API docs if Hook/Document changes are needed.
+- **Always delegate to the `Researcher` agent** before decomposing. Do not gather context inline.
+- Pass the objective and the list of relevant context sources below to the Researcher.
+- Wait for the Researcher's report before proceeding to Step 3.
+- Relevant context sources:
+    - `.agents/CODEBASE_ARCHITECTURE.md` for relevant directories
+    - `.agents/PATTERNS_AND_EXAMPLES.md` for similar past implementations
+    - `template.json` if data models are involved
+    - Foundry VTT API docs if Hook/Document changes are needed
 
 ### Step 3: Identify Affected Areas
 
@@ -60,6 +64,12 @@ For each step, define:
 ### Step 6: Produce Plan
 
 Output using the Implementation Plan Template from `.agents/HANDOFFS_AND_STANDARDS.md`.
+
+### Step 7: Document Plan (Always mandatory)
+
+- **Always** write the plan to a markdown file in `docs/_specs/` in a new folder named with date and descriptive underscored name (e.g., `2024_06_15_new_feature_planning/new_feature_plan.md`).
+- If `[NEEDS INPUT]` items remain, still write the file and mark it as `DRAFT` in the title.
+- Never skip this step.
 
 ## Quality Criteria
 

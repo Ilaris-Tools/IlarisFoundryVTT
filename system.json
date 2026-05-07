@@ -192,6 +192,36 @@
       "system": "Ilaris"
     }
   ],
+  "documentTypes": {
+    "Actor": {
+      "held": {},
+      "kreatur": {},
+      "nsc": {}
+    },
+    "Item": {
+      "nahkampfwaffe": {},
+      "fernkampfwaffe": {},
+      "ruestung": {},
+      "fertigkeit": {},
+      "talent": {},
+      "freie_fertigkeit": {},
+      "uebernatuerliche_fertigkeit": {},
+      "zauber": {},
+      "liturgie": {},
+      "anrufung": {},
+      "vorteil": {},
+      "manoever": {},
+      "eigenheit": {},
+      "gegenstand": {},
+      "eigenschaft": {},
+      "waffeneigenschaft": {},
+      "angriff": {},
+      "info": {},
+      "freiestalent": {},
+      "abgeleiteter-wert": {},
+      "effect-item": {}
+    }
+  },
   "socket": true,
   "languages": [],
   "grid": {
