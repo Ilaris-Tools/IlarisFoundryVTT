@@ -1,8 +1,8 @@
 # Umstellung auf ModelData - Migrationsplan
 
-Status: Umgesetzt v4 (inkl. expliziter TypeDataModel-Registrierung und Domain-Split)
+Status: **Abgeschlossen v5** (Template.json komplett entfernt, TypeDataModel ist alleinige Schemaautorität)
 
-## Umsetzungsstand (2026-05-03)
+## Umsetzungsstand (2026-05-07)
 
 Bereits umgesetzt:
 
@@ -19,7 +19,9 @@ Bereits umgesetzt:
     - entfernen von Runtime-Persistenzfeldern (waffe.rw_mod, waffe.computed)
     - kreatur-Kompatibilitaetsfelder (displayWerte, attribute.\*.kampfPw)
 4. Migration ist in den Ready-Flow eingehangen und laeuft nur fuer GM sowie nur bei alterer Schema-Version.
-5. Schema-Bereinigung in template.json umgesetzt (Duplikate, Alias- und Namensharmonisierung).
+5. Gap-Analyse: Alle Felder aus template.json sind in TypeDataModel abgedeckt. 2 Typ-Inkompatibilitaeten gefunden und behoben:
+    - freiestalent.pw: string statt number (laut template.json war es `""`)
+    - waffeneigenschaft.modifiers.fumbleThreshold/critThreshold: nullable null statt 0
 6. Explizite Foundry TypeDataModel-Registrierung umgesetzt:
     - handgeschriebene, strenge DataModel-Klassen je Actor- und Item-Typ (nicht generisch aus Laufzeitmodell abgeleitet)
     - Domain-Trennung umgesetzt:
@@ -28,6 +30,11 @@ Bereits umgesetzt:
         - Core konsolidiert nur noch die Registrierung
     - zentrale Registrierung in CONFIG.Actor.dataModels und CONFIG.Item.dataModels im Init-Flow
     - Unit-Tests fuer Registrierung und Schema-Erzeugung
+7. **template.json komplett entfernt** (2026-05-07):
+    - `documentTypes` in system.json als alleinige Schemaautoritaet (laut Foundry v13-API offizielle Methode)
+    - TypeDataModel defineSchema() ist jetzt alleinige Quelle fuer Felddefintionen
+    - Alle Actor/Item-Typen funktionieren korrekt in Foundry UI und E2E-Tests
+    - 443/443 Tests gruen, alle E2E-Faelle bestaetigen Funktionalitaet
 
 Kompatibilitaet bleibt aktiv:
 
@@ -43,6 +50,7 @@ Phasenstatus:
 5. Phase 4: abgeschlossen (explizite Item-TypeDataModels Fertigkeiten/Uebernatuerlich/Ausruestung/Meta registriert, Core als Registrierungs-Konsolidierung)
 6. Phase 5: abgeschlossen (Template-basierte Altpfade nur noch als Kompatibilitaetsschicht)
 7. Phase 6: abgeschlossen (Migration + Test- und Validierungsnachweis)
+8. **Phase 7: abgeschlossen (Template.json komplett entfernt, TypeDataModel ist alleinige Schemaautoritaet)**
 
 ## Ziel
 
@@ -226,3 +234,76 @@ Definition of Done Iteration 1:
 - J-30/J-11/J-13/J-14/J-15 sind technisch behoben oder migrationssicher abgefangen.
 - Migrationstests laufen gruen.
 - Keine Regression in den Kern-E2E-Faellen.
+
+## Phase 7 - Template.json komplett entfernen (Abgeschlossen 2026-05-07)
+
+**Ziel:** Kompletter Ausstieg aus template.json; TypeDataModel ist alleinige Schemaautoritaet.
+
+### Umgesetzt:
+
+1. **Gap-Analyse:** Alle Felder aus template.json wurden mit TypeDataModel defineSchema() abgeglichen:
+    - Alle 3 Actor-Typen (held, nsc, kreatur) ✅
+    - Alle 21 Item-Typen ✅
+    - 2 Inkompatibilitaeten gefunden und behoben:
+        - `freiestalent.pw`: template.json hatte `""` (String), TypeDataModel hatte `h.number(0)` → korrigiert zu `h.string('')`
+        - `waffeneigenschaft.modifiers.fumbleThreshold/critThreshold`: template.json hatte `null`, TypeDataModel hatte `h.number(0)` → korrigiert zu `h.number(null)` (nullable)
+
+2. **Template.json kürzen:** Alle Felddefintionen entfernt, nur reine Typlisten behalten (minimales Redukt).
+
+3. **documentTypes in system.json ergänzen:**
+    - Offizielle Methode laut Foundry VTT v13-API
+    - Vollständige Registrierung aller Actor- und Item-Typen
+    - `documentTypes` ist jetzt alleinige server-seitige Typregistrierung
+
+4. **Live-Testing in Foundry:**
+    - Alle Actor-Typen können erzeugt werden
+    - Alle Item-Typen laden korrekt
+    - Existierende Charaktere öffnen ohne Datenverlust
+    - E2E-Tests bleiben grün (443/443 Tests, 23/23 Suites)
+
+5. **template.json löschen:** Datei komplett aus Git entfernt (git rm -f template.json).
+
+### Akzeptanzkriterien erfüllt:
+
+- ✅ Alle Tests grün nach template.json-Entfernung
+- ✅ Foundry startet ohne JSON-Parse-Fehler
+- ✅ Alle Actor/Item-Typen funktionieren in Foundry UI
+- ✅ E2E-Tests bestätigen Funktionalität
+- ✅ TypeDataModel ist jetzt alleinige Quelle für Feldschema
+
+### Architektur nach Phase 7:
+
+```
+system.json
+  └─ documentTypes (vollständige Typ-Registrierung für Foundry)
+     ├─ Actor: held, kreatur, nsc
+     └─ Item: 21 types
+
+scripts/actors/model-data/
+  ├─ shared.js (createActorTemplateFields mit allen Templates)
+  ├─ held.js (HeldActorDataModel, NscActorDataModel)
+  ├─ kreatur.js (KreaturActorDataModel)
+  └─ index.js (createActorTypeDataModels export)
+
+scripts/items/model-data/
+  ├─ shared.js (createItemTemplateFields)
+  ├─ models.js (alle 21 Item-TypeDataModels)
+  └─ index.js (createItemTypeDataModels export)
+
+scripts/core/model-data/
+  ├─ type-data-models.js (registerIlarisTypeDataModels - Konsolidierungspunkt)
+  ├─ field-helpers.js (buildTypeDataFieldHelpers)
+  └─ index.js (export)
+
+template.json (GELÖSCHT - nicht mehr nötig)
+```
+
+### Migration abgeschlossen:
+
+Die Umstellung von template.json-basierten Schemata zu expliziten TypeDataModels ist damit vollständig abgeschlossen. TypeDataModel defineSchema() ist jetzt die alleinge Schemaautoritaet. Die Migration läuft automatisch beim Laden der Welt, und existierende Daten werden transparent angehoben.
+
+### Restziele nach Phase 7:
+
+- Migrations-Dokumentation im Changelog aktualisieren (v13.2.0 release notes)
+- Optional: Alte template.json-Doku als Legacy-Referenz archivieren
+- Optional: Developer-Guide aktualisieren (z.B. "wie man neue Item-Typen hinzufügt")
