@@ -3,7 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": "Vorteil Tradition der Rondrageweihten III",
+    "voraussetzung": "Vorteil Tradition der Rondrageweihten III",
     "input": {
       "label": "",
       "field": "CHECKBOX"

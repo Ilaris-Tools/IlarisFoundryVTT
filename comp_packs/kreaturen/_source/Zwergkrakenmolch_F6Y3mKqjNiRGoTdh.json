@@ -321,7 +321,7 @@
     {
       "_id": "PPfX7PBNzJB8UROx",
       "name": "Pirschen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 10,
@@ -350,7 +350,7 @@
     {
       "_id": "dg4ShYeHN2zkLhih",
       "name": "Schwimmen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 16,
@@ -379,7 +379,7 @@
     {
       "_id": "pStpGN3Uj78V7gZM",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 10,

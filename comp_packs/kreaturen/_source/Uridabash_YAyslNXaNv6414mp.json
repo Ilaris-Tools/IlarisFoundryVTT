@@ -550,7 +550,7 @@
     {
       "_id": "SM6uSoLOx8jyuGCs",
       "name": "Magiekunde",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 22,
@@ -579,7 +579,7 @@
     {
       "_id": "oKrEHRmOsxriJR9N",
       "name": "Mythenkunde",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 22,
@@ -608,7 +608,7 @@
     {
       "_id": "KmBG2B2fB95Y1p7K",
       "name": "Menschenkenntnis",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Menschenkenntnis ist deine Fähigkeit, die Absichten deines Gegenüber zu durchschauen. Damit enttarnst du Lügen und falsche Annäherungsversuche.",
         "pw": 16,
@@ -637,7 +637,7 @@
     {
       "_id": "W03Xoc9bZnvU8Zk4",
       "name": "Rhetorik",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Rhetorik beinhaltet zahlreiche Fähigkeiten und Kniffe, um die eigenen Argumente wirkungsvoll einzusetzen und die des Gegenüber zu entkräften. Du kannst Rhetorik nur einsetzen, wenn dein Charakter von seinem Standpunkt überzeugt ist - dreiste Lügen fallen unter Überreden.",
         "pw": 20,
@@ -666,7 +666,7 @@
     {
       "_id": "FpV1zUB7kJNCGtxl",
       "name": "Überreden",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Überreden bedeutet den geschickten Einsatz von Übertreibungen, Unwahrheiten oder Lügen, um das Gegenüber zumindest kurzfristig zu beeinflussen. Mit Überreden feilschst du am Marktplatz, bestichst eine Stadtwache oder infiltrierst ein Borbaradianerkloster.",
         "pw": 20,
@@ -695,7 +695,7 @@
     {
       "_id": "oP4gEp8rP72AcZ6C",
       "name": "Untertauchen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Untertauchen erlaubt dir das Schleichen, Verstecken und Beschatten in der Zivilisation. Du verschwindest in der Menschenmenge am Marktplatz, steigst ungehört in eine Villa eines Ratsherren ein oder beschattest unauffällig einen Hehler.",
         "pw": 10,
@@ -724,7 +724,7 @@
     {
       "_id": "xxD2uMPsGHC0bVmb",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 18,
@@ -753,7 +753,7 @@
     {
       "_id": "0F9e2cncPh9C34X2",
       "name": "Antimagie",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",
@@ -822,7 +822,7 @@
     {
       "_id": "o6ymF1rYtpXyplLr",
       "name": "Illusion",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",
@@ -891,7 +891,7 @@
     {
       "_id": "hstb1qqS8vC3HYyP",
       "name": "Kraft",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

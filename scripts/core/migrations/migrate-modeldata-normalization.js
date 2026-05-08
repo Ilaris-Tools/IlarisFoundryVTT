@@ -1,6 +1,16 @@
 const isNewerVersion = foundry.utils.isNewerVersion
 
-const TARGET_SCHEMA_VERSION = '13.2.0'
+// Keep this strictly increasing, independent from system.json version,
+// so newly added migration steps re-run on already-upgraded worlds.
+const TARGET_SCHEMA_VERSION = '13.4.0'
+
+const ITEM_TYPE_RENAME_MAP = {
+    freiestalent: 'freiesTalent',
+    freie_fertigkeit: 'freieFertigkeit',
+    uebernatuerliche_fertigkeit: 'uebernatuerlicheFertigkeit',
+    'effect-item': 'effectItem',
+    'abgeleiteter-wert': 'abgeleiteterWert',
+}
 
 function isObject(value) {
     return value && typeof value === 'object' && !Array.isArray(value)
@@ -175,11 +185,11 @@ function normalizeItemData(itemData) {
         changed = normalizeWaffeneigenschaftParameterSlots(system) || changed
     }
 
-    if (type === 'freie_fertigkeit') {
+    if (type === 'freieFertigkeit') {
         changed = normalizeFreieFertigkeitNumericFields(system) || changed
     }
 
-    if (type === 'freiestalent') {
+    if (type === 'freiesTalent') {
         changed = normalizeFreiesTalentPw(system) || changed
     }
 
@@ -191,7 +201,7 @@ function normalizeItemData(itemData) {
         changed = normalizeAngriffWmAlias(system) || changed
     }
 
-    if (type === 'abgeleiteter-wert') {
+    if (type === 'abgeleiteterWert') {
         changed = normalizeAbgeleiteterWertKey(system, itemName) || changed
     }
 
@@ -243,6 +253,186 @@ function normalizeActorData(actorData) {
     return { changed, system }
 }
 
+function buildTypeRenameUpdate(doc, newType) {
+    return {
+        type: newType,
+        system: foundry.utils.deepClone(doc?.system || {}),
+    }
+}
+
+function createMigrationProgressNotification() {
+    return ui.notifications?.info?.('Ilaris: ModelData-Normalisierung wird vorbereitet...', {
+        permanent: true,
+    })
+}
+
+function updateMigrationProgressNotification(progressNotification, message) {
+    progressNotification?.update?.({ message })
+}
+
+function removeMigrationProgressNotification(progressNotification) {
+    progressNotification?.remove?.()
+}
+
+async function renameWorldItemTypes() {
+    let migrated = 0
+    let skipped = 0
+    let errors = 0
+
+    const oldTypes = new Set(Object.keys(ITEM_TYPE_RENAME_MAP))
+    const items = game.items.filter((item) => oldTypes.has(item.type))
+
+    for (const item of items) {
+        try {
+            await item.update(buildTypeRenameUpdate(item, ITEM_TYPE_RENAME_MAP[item.type]), {
+                recursive: false,
+            })
+            migrated++
+        } catch (error) {
+            errors++
+            console.error(`Ilaris | Type rename failed for world item ${item.name}:`, error)
+        }
+    }
+
+    return { migrated, skipped, errors }
+}
+
+async function renameActorEmbeddedItemTypes() {
+    let migrated = 0
+    let skipped = 0
+    let errors = 0
+
+    const oldTypes = new Set(Object.keys(ITEM_TYPE_RENAME_MAP))
+
+    for (const actor of game.actors) {
+        let actorHadLegacyItems = false
+
+        for (const item of actor.items) {
+            if (!oldTypes.has(item.type)) continue
+            actorHadLegacyItems = true
+
+            try {
+                await item.update(buildTypeRenameUpdate(item, ITEM_TYPE_RENAME_MAP[item.type]), {
+                    recursive: false,
+                })
+                migrated++
+            } catch (error) {
+                errors++
+                console.error(
+                    `Ilaris | Type rename failed for embedded item ${item.name} on actor ${actor.name}:`,
+                    error,
+                )
+            }
+        }
+
+        if (!actorHadLegacyItems) {
+            skipped++
+        }
+    }
+
+    return { migrated, skipped, errors }
+}
+
+async function renameCompendiumItemTypes() {
+    let migrated = 0
+    let skipped = 0
+    let errors = 0
+
+    const oldTypes = new Set(Object.keys(ITEM_TYPE_RENAME_MAP))
+    const packs = game.packs.filter(
+        (pack) => pack.metadata.type === 'Item' && pack.collection?.startsWith('Ilaris.'),
+    )
+
+    for (const pack of packs) {
+        if (pack.locked) continue
+
+        let documents = []
+        try {
+            documents = await pack.getDocuments()
+        } catch (error) {
+            errors++
+            console.error(`Ilaris | Type rename failed to read pack ${pack.collection}:`, error)
+            continue
+        }
+
+        for (const doc of documents) {
+            if (!oldTypes.has(doc.type)) continue
+
+            try {
+                await doc.update(buildTypeRenameUpdate(doc, ITEM_TYPE_RENAME_MAP[doc.type]), {
+                    recursive: false,
+                })
+                migrated++
+            } catch (error) {
+                errors++
+                console.error(
+                    `Ilaris | Type rename failed for compendium item ${doc.name} in ${pack.collection}:`,
+                    error,
+                )
+            }
+        }
+    }
+
+    return { migrated, skipped, errors }
+}
+
+async function renameCompendiumActorEmbeddedItemTypes() {
+    let migrated = 0
+    let skipped = 0
+    let errors = 0
+
+    const oldTypes = new Set(Object.keys(ITEM_TYPE_RENAME_MAP))
+    const packs = game.packs.filter(
+        (pack) => pack.metadata.type === 'Actor' && pack.collection?.startsWith('Ilaris.'),
+    )
+
+    for (const pack of packs) {
+        if (pack.locked) continue
+
+        let documents = []
+        try {
+            documents = await pack.getDocuments()
+        } catch (error) {
+            errors++
+            console.error(
+                `Ilaris | Type rename failed to read actor pack ${pack.collection}:`,
+                error,
+            )
+            continue
+        }
+
+        for (const doc of documents) {
+            if (!doc.items) continue
+            let docHadLegacyItems = false
+
+            for (const item of doc.items) {
+                if (!oldTypes.has(item.type)) continue
+                docHadLegacyItems = true
+
+                try {
+                    await item.update(
+                        buildTypeRenameUpdate(item, ITEM_TYPE_RENAME_MAP[item.type]),
+                        { recursive: false },
+                    )
+                    migrated++
+                } catch (error) {
+                    errors++
+                    console.error(
+                        `Ilaris | Type rename failed for embedded item ${item.name} on compendium actor ${doc.name} in ${pack.collection}:`,
+                        error,
+                    )
+                }
+            }
+
+            if (!docHadLegacyItems) {
+                skipped++
+            }
+        }
+    }
+
+    return { migrated, skipped, errors }
+}
+
 async function migrateWorldItems() {
     let migrated = 0
     let skipped = 0
@@ -251,10 +441,10 @@ async function migrateWorldItems() {
     const candidateTypes = new Set([
         'manoever',
         'waffeneigenschaft',
-        'freie_fertigkeit',
-        'freiestalent',
+        'freieFertigkeit',
+        'freiesTalent',
         'angriff',
-        'abgeleiteter-wert',
+        'abgeleiteterWert',
         'nahkampfwaffe',
         'fernkampfwaffe',
     ])
@@ -290,10 +480,10 @@ async function migrateActorEmbeddedItems() {
     const candidateTypes = new Set([
         'manoever',
         'waffeneigenschaft',
-        'freie_fertigkeit',
-        'freiestalent',
+        'freieFertigkeit',
+        'freiesTalent',
         'angriff',
-        'abgeleiteter-wert',
+        'abgeleiteterWert',
         'nahkampfwaffe',
         'fernkampfwaffe',
     ])
@@ -349,10 +539,10 @@ async function migrateCompendiumItems() {
     const candidateTypes = new Set([
         'manoever',
         'waffeneigenschaft',
-        'freie_fertigkeit',
-        'freiestalent',
+        'freieFertigkeit',
+        'freiesTalent',
         'angriff',
-        'abgeleiteter-wert',
+        'abgeleiteterWert',
         'nahkampfwaffe',
         'fernkampfwaffe',
     ])
@@ -497,33 +687,40 @@ export async function runModelDataNormalizationMigrationIfNeeded() {
         errors: 0,
     }
 
+    const phases = [
+        { label: 'Weltdaten umbenennen', run: renameWorldItemTypes },
+        { label: 'Akteur-Items umbenennen', run: renameActorEmbeddedItemTypes },
+        { label: 'Kompendium-Items umbenennen', run: renameCompendiumItemTypes },
+        {
+            label: 'Kompendium-Akteur-Items umbenennen',
+            run: renameCompendiumActorEmbeddedItemTypes,
+        },
+        { label: 'Weltdaten normalisieren', run: migrateWorldItems },
+        { label: 'Akteur-Items normalisieren', run: migrateActorEmbeddedItems },
+        { label: 'Kompendium-Items normalisieren', run: migrateCompendiumItems },
+        { label: 'Welt-Akteure normalisieren', run: migrateWorldActors },
+        { label: 'Kompendium-Akteure normalisieren', run: migrateCompendiumActors },
+    ]
+
+    const progressNotification = createMigrationProgressNotification()
+
     try {
-        const worldStats = await migrateWorldItems()
-        totals.migrated += worldStats.migrated
-        totals.skipped += worldStats.skipped
-        totals.errors += worldStats.errors
+        for (const [index, phase] of phases.entries()) {
+            updateMigrationProgressNotification(progressNotification, `Ilaris: ${phase.label}...`)
 
-        const actorStats = await migrateActorEmbeddedItems()
-        totals.migrated += actorStats.migrated
-        totals.skipped += actorStats.skipped
-        totals.errors += actorStats.errors
+            const stats = await phase.run()
+            totals.migrated += stats.migrated
+            totals.skipped += stats.skipped
+            totals.errors += stats.errors
+        }
 
-        const packStats = await migrateCompendiumItems()
-        totals.migrated += packStats.migrated
-        totals.skipped += packStats.skipped
-        totals.errors += packStats.errors
-
-        const worldActorStats = await migrateWorldActors()
-        totals.migrated += worldActorStats.migrated
-        totals.skipped += worldActorStats.skipped
-        totals.errors += worldActorStats.errors
-
-        const packActorStats = await migrateCompendiumActors()
-        totals.migrated += packActorStats.migrated
-        totals.skipped += packActorStats.skipped
-        totals.errors += packActorStats.errors
+        updateMigrationProgressNotification(
+            progressNotification,
+            'Ilaris: ModelData-Normalisierung wird abgeschlossen...',
+        )
 
         await game.settings.set('Ilaris', 'worldSchemaVersion', TARGET_SCHEMA_VERSION)
+        removeMigrationProgressNotification(progressNotification)
 
         console.log(
             `Ilaris | ModelData normalization migration done: ${totals.migrated} migrated, ${totals.skipped} skipped, ${totals.errors} errors`,
@@ -535,6 +732,7 @@ export async function runModelDataNormalizationMigrationIfNeeded() {
             )
         }
     } catch (error) {
+        removeMigrationProgressNotification(progressNotification)
         console.error('Ilaris | ModelData normalization migration failed:', error)
         ui.notifications.error(
             'Ilaris: ModelData-Normalisierung fehlgeschlagen. Details in der Konsole.',

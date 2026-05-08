@@ -1,5 +1,7 @@
 let shouldRunModelDataNormalizationMigration
 let runModelDataNormalizationMigrationIfNeeded
+const TARGET_SCHEMA_VERSION = '13.4.0'
+let progressNotification
 
 function createDoc({ id, name, type, system }) {
     return {
@@ -8,6 +10,9 @@ function createDoc({ id, name, type, system }) {
         type,
         system,
         update: jest.fn(async function (data) {
+            if (data?.type) {
+                this.type = data.type
+            }
             if (data?.system) {
                 this.system = data.system
             }
@@ -34,6 +39,10 @@ function createActor({ id, name, type, system, items = [] }) {
                 if (updateData.system) {
                     item.system = updateData.system
                     continue
+                }
+
+                if (updateData.type) {
+                    item.type = updateData.type
                 }
 
                 if (updateData['system.eigenschaften']) {
@@ -69,9 +78,14 @@ describe('migrate-modeldata-normalization', () => {
 
         global.foundry.utils.isNewerVersion = jest.fn(semverIsNewer)
 
+        progressNotification = {
+            update: jest.fn(),
+            remove: jest.fn(),
+        }
+
         global.ui = {
             notifications: {
-                info: jest.fn(),
+                info: jest.fn(() => progressNotification),
                 error: jest.fn(),
             },
         }
@@ -99,7 +113,7 @@ describe('migrate-modeldata-normalization', () => {
         expect(shouldRunModelDataNormalizationMigration()).toBe(false)
 
         game.user.isGM = true
-        game.settings.get.mockReturnValue('13.2.0')
+        game.settings.get.mockReturnValue(TARGET_SCHEMA_VERSION)
         expect(shouldRunModelDataNormalizationMigration()).toBe(false)
     })
 
@@ -132,7 +146,7 @@ describe('migrate-modeldata-normalization', () => {
         const worldFreieFertigkeit = createDoc({
             id: 'w3',
             name: 'Gassenwissen',
-            type: 'freie_fertigkeit',
+            type: 'freieFertigkeit',
             system: {
                 stufe: '3',
                 gruppe: '0',
@@ -142,7 +156,7 @@ describe('migrate-modeldata-normalization', () => {
         const worldFreiesTalent = createDoc({
             id: 'w4',
             name: 'Freies Talent',
-            type: 'freiestalent',
+            type: 'freiesTalent',
             system: {
                 pw: '10',
             },
@@ -160,7 +174,7 @@ describe('migrate-modeldata-normalization', () => {
         const worldAbgeleiteterWert = createDoc({
             id: 'w6',
             name: 'Initiative',
-            type: 'abgeleiteter-wert',
+            type: 'abgeleiteterWert',
             system: {
                 name: 'INI',
             },
@@ -301,7 +315,140 @@ describe('migrate-modeldata-normalization', () => {
         expect(compendiumKreatur.system.initiative).toBe(5)
         expect(compendiumKreatur.system.attribute.MU.kampfPw).toBe(4)
 
-        expect(game.settings.set).toHaveBeenCalledWith('Ilaris', 'worldSchemaVersion', '13.2.0')
+        expect(game.settings.set).toHaveBeenCalledWith(
+            'Ilaris',
+            'worldSchemaVersion',
+            TARGET_SCHEMA_VERSION,
+        )
+        expect(ui.notifications.info).toHaveBeenCalledWith(
+            'Ilaris: ModelData-Normalisierung wird vorbereitet...',
+            {
+                permanent: true,
+            },
+        )
+        expect(progressNotification.update).toHaveBeenCalled()
+        expect(progressNotification.remove).toHaveBeenCalled()
         expect(ui.notifications.info).toHaveBeenCalled()
+    })
+
+    it('should rename legacy item types in world, actor embedded and compendium documents', async () => {
+        const worldLegacyFreeSkill = createDoc({
+            id: 'w-old-1',
+            name: 'Alt Freie Fertigkeit',
+            type: 'freie_fertigkeit',
+            system: {
+                stufe: '2',
+                gruppe: '1',
+            },
+        })
+
+        game.items = [worldLegacyFreeSkill]
+
+        const worldActorEmbeddedLegacy = createDoc({
+            id: 'e-old-1',
+            name: 'Alt ÜF',
+            type: 'uebernatuerliche_fertigkeit',
+            system: {
+                fw: 3,
+            },
+        })
+
+        const worldActor = createActor({
+            id: 'a-old-1',
+            name: 'Alt Held',
+            type: 'held',
+            system: {},
+            items: [worldActorEmbeddedLegacy],
+        })
+
+        game.actors = [worldActor]
+
+        const compendiumLegacyEffect = createDoc({
+            id: 'c-old-1',
+            name: 'Alt Effekt',
+            type: 'effect-item',
+            system: {},
+        })
+
+        const compendiumActorEmbeddedLegacy = createDoc({
+            id: 'ce-old-1',
+            name: 'Alt AW',
+            type: 'abgeleiteter-wert',
+            system: { name: 'INI' },
+        })
+
+        const compendiumActor = createActor({
+            id: 'ca-old-1',
+            name: 'Alt Kompendiums-Held',
+            type: 'held',
+            system: {},
+            items: [compendiumActorEmbeddedLegacy],
+        })
+
+        game.packs = [
+            {
+                metadata: { type: 'Item' },
+                collection: 'Ilaris.gegenstande',
+                locked: false,
+                getDocuments: jest.fn().mockResolvedValue([compendiumLegacyEffect]),
+            },
+            {
+                metadata: { type: 'Actor' },
+                collection: 'Ilaris.beispiel-helden',
+                locked: false,
+                getDocuments: jest.fn().mockResolvedValue([compendiumActor]),
+            },
+        ]
+
+        await runModelDataNormalizationMigrationIfNeeded()
+
+        expect(worldLegacyFreeSkill.type).toBe('freieFertigkeit')
+        expect(worldLegacyFreeSkill.system.stufe).toBe(2)
+        expect(worldLegacyFreeSkill.system.gruppe).toBe(1)
+        expect(worldLegacyFreeSkill.update).toHaveBeenCalledWith(
+            {
+                type: 'freieFertigkeit',
+                system: {
+                    stufe: '2',
+                    gruppe: '1',
+                },
+            },
+            { recursive: false },
+        )
+
+        expect(worldActorEmbeddedLegacy.update).toHaveBeenCalledWith(
+            {
+                type: 'uebernatuerlicheFertigkeit',
+                system: {
+                    fw: 3,
+                },
+            },
+            { recursive: false },
+        )
+        expect(worldActorEmbeddedLegacy.type).toBe('uebernatuerlicheFertigkeit')
+
+        expect(compendiumLegacyEffect.type).toBe('effectItem')
+        expect(compendiumLegacyEffect.update).toHaveBeenCalledWith(
+            {
+                type: 'effectItem',
+                system: {},
+            },
+            { recursive: false },
+        )
+
+        expect(compendiumActorEmbeddedLegacy.update).toHaveBeenCalledWith(
+            {
+                type: 'abgeleiteterWert',
+                system: { name: 'INI' },
+            },
+            { recursive: false },
+        )
+        expect(compendiumActorEmbeddedLegacy.type).toBe('abgeleiteterWert')
+
+        expect(game.settings.set).toHaveBeenCalledWith(
+            'Ilaris',
+            'worldSchemaVersion',
+            TARGET_SCHEMA_VERSION,
+        )
     })
 })

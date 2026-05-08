@@ -19,6 +19,7 @@ const handler = {
                 return new CombatItem(...args)
             case 'manoever':
                 return new ManoeverItem(...args)
+            case 'effectItem':
             case 'effect-item':
                 return new EffectItem(...args)
             default:

@@ -40,7 +40,9 @@ test.describe('E2E-014 Übernatürliche Fertigkeiten-Tab', () => {
             if (!actor) throw new Error(`Actor "${aName}" not found`)
 
             const fertigkeit = actor.items.find(
-                (i: any) => i.type === 'uebernatuerliche_fertigkeit',
+                (i: any) =>
+                    i.type === 'uebernatuerlicheFertigkeit' ||
+                    i.type === 'uebernatuerliche_fertigkeit',
             )
             const liturgie = actor.items.find((i: any) => i.type === 'liturgie')
 
@@ -180,11 +182,11 @@ test.describe('E2E-014 Übernatürliche Fertigkeiten-Tab', () => {
         })
 
         // ── Phase 4: Fertigkeit PW-Zelle → direkter Chat-Würfelwurf ─────────
-        // Hinweis: data-rolltype="uebernatuerliche_fertigkeit" öffnet KEINEN Dialog,
+        // Hinweis: data-rolltype="uebernatuerlicheFertigkeit" öffnet KEINEN Dialog,
         // sondern würfelt direkt in den Chat (kein UebernatuerlichDialog).
 
         const fertigkeitRollCell = uebernatuerlichTab.locator(
-            `td[data-action="rollable"][data-rolltype="uebernatuerliche_fertigkeit"][data-fertigkeit="${fertigkeitName}"]`,
+            `td[data-action="rollable"][data-rolltype="uebernatuerlicheFertigkeit"][data-fertigkeit="${fertigkeitName}"]`,
         )
         await expect(fertigkeitRollCell).toBeVisible({ timeout: 10000 })
 

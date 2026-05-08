@@ -350,7 +350,7 @@
     {
       "_id": "tF1anTyCBcEtbMj0",
       "name": "Willenskraft 20",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 0,
@@ -379,7 +379,7 @@
     {
       "_id": "lv1QiRMUhHxja70K",
       "name": "Einschüchtern 2",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 0,
@@ -408,7 +408,7 @@
     {
       "_id": "vvUGj8Et8QAvFHpv",
       "name": "Wahrnehmung 8",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 0,

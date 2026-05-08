@@ -1553,7 +1553,7 @@
     {
       "_id": "Nft0UrlX6vQuYSJk",
       "name": "Sprache: Garethi",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1580,7 +1580,7 @@
     {
       "_id": "ijOEBXNerJmCOCsr",
       "name": "Schrift: Kusliker Zeichen",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1607,7 +1607,7 @@
     {
       "_id": "am92LdNWDMyo669v",
       "name": "Minnesang",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1634,7 +1634,7 @@
     {
       "_id": "cRwhQLTo676t11gk",
       "name": "Abrichten",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1661,7 +1661,7 @@
     {
       "_id": "93UdcPH798EvO8Ya",
       "name": "Sprache: Oloarkh",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,

@@ -452,7 +452,7 @@
     {
       "_id": "oG3BI2qc9DytFSox",
       "name": "Gebirge (Überleben)",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 32,
@@ -481,7 +481,7 @@
     {
       "_id": "1Tzdm4jbi0u993fV",
       "name": "Nordaventurien (Gebräuche)",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 12,
@@ -510,7 +510,7 @@
     {
       "_id": "j9QFHxbHBV4mlvs9",
       "name": "Sinnenschärfe",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Sinnenschärfe ist die aktive Verwendung deiner Sinne, um einen Kollaborateur in einem geschäftigen Wirtshaus zu belauschen, die Flagge eines nahenden Schiffes zu erkennen oder die Nadel im Heuhaufen zu finden.",
         "pw": 30,
@@ -539,7 +539,7 @@
     {
       "_id": "4KQUXaOgyE0ppech",
       "name": "Tierkunde",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Tierkunde bedeutet die Kenntnis der aventurischen Fauna. Dein Charakter kann einen Schleimfleck als Spur einer Riesenamöbe erkennen, einen gereizten Bären beruhigen und kennt die Schwachstelle eines Tatzelwurms.",
         "pw": 24,
@@ -568,7 +568,7 @@
     {
       "_id": "lGGrfqiFVyVUyGLP",
       "name": "Eis",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

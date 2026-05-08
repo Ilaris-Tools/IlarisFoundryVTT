@@ -440,7 +440,7 @@
     {
       "_id": "I6dVgJ8G8stCU3od",
       "name": "Überreden",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 16,
@@ -469,7 +469,7 @@
     {
       "_id": "RUys5hEQFaNsBSql",
       "name": "Zechen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 10,
@@ -498,7 +498,7 @@
     {
       "_id": "h6x2aVQh3ciDRmER",
       "name": "Heim und Herd",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

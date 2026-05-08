@@ -21,7 +21,7 @@ export class FreieFertigkeitSheet extends IlarisItemSheet {
         context.stufen = CONFIG.ILARIS.stufen
 
         // Convert existing freie_fertigkeiten object to array format
-        context.freieFertigkeitsgruppen = Object.entries(CONFIG.ILARIS.freie_fertigkeiten).map(
+        context.freieFertigkeitsgruppen = Object.entries(CONFIG.ILARIS.freieFertigkeiten).map(
             ([value, label]) => ({
                 value: value,
                 label: label,

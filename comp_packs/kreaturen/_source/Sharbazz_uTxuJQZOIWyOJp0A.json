@@ -676,7 +676,7 @@
     {
       "_id": "hBbzNlHzNxzBJ4W5",
       "name": "Anführen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Mit Anführen leitest und motivierst du Untergebene. Du kannst mit Anführen Löscharbeiten oder eine Truppe von Kämpfern koordinieren, um ihnen so Vorteile zu verschaffen (S. 46). Gerade in großen Schlachten entscheidet der Heerführer über Sieg oder Niederlage.",
         "pw": 20,
@@ -705,7 +705,7 @@
     {
       "_id": "iff0OLDAgczj6VgM",
       "name": "Einschüchtern",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Einschüchtern jagt dem Gegenüber Angst ein und bringt ihn so zu einer gewünschten Handlung. Die Probe wird oft vergleichend gegen den MU oder die Menschenkenntnis des Gegenübers abgelegt.",
         "pw": 20,
@@ -734,7 +734,7 @@
     {
       "_id": "eS4kocR2zIt1o5u2",
       "name": "Pirschen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Pirschen ermöglicht das Schleichen, Verstecken und Lauern in der freien Natur. Du pirschst dich auf der Jagd an einen wilden Hirsch heran, legst einen Hinterhalt an einer Reichsstraße oder beobachtest ungesehen das Lager einer Orkbande.",
         "pw": 0,
@@ -763,7 +763,7 @@
     {
       "_id": "UlXVX5x4VJdAGYrU",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 12,
@@ -792,7 +792,7 @@
     {
       "_id": "PfMIuG6xICHPGhEE",
       "name": "Dämonisch",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

@@ -30,7 +30,7 @@ export class FertigkeitenPacksSettings extends FormApplication {
                 // Check if any item in the pack has type 'fertigkeit'
                 const hasFertigkeit = pack.index.contents.some(
                     (item) =>
-                        item.type === 'fertigkeit' || item.type === 'uebernatuerliche_fertigkeit',
+                        item.type === 'fertigkeit' || item.type === 'uebernatuerlicheFertigkeit',
                 )
                 if (hasFertigkeit) {
                     availablePacks.push({

@@ -646,7 +646,7 @@
     {
       "_id": "OdcKSAut2gP2K732",
       "name": "Pirschen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Pirschen ermöglicht das Schleichen, Verstecken und Lauern in der freien Natur. Du pirschst dich auf der Jagd an einen wilden Hirsch heran, legst einen Hinterhalt an einer Reichsstraße oder beobachtest ungesehen das Lager einer Orkbande.",
         "pw": 16,
@@ -675,7 +675,7 @@
     {
       "_id": "A4EeGHcs8KeROSm2",
       "name": "Schwimmen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Schwimmen erlaubt eine schnellere Fortbewegung im Wasser und längere Tauchgänge.",
         "pw": 20,
@@ -704,7 +704,7 @@
     {
       "_id": "u3zPuR8kL42JaEPI",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 16,

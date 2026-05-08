@@ -71,7 +71,7 @@ export class KreaturSheet extends IlarisActorSheet {
                     // Convert skill/talent to free talent for creatures
                     itemData = {
                         name: item.name,
-                        type: 'freiestalent',
+                        type: 'freiesTalent',
                         system: {
                             ...item.system,
                             profan: true,
@@ -79,11 +79,11 @@ export class KreaturSheet extends IlarisActorSheet {
                     }
                     super._onDropItemCreate(item)
                     return this.actor.createEmbeddedDocuments('Item', [itemData])
-                case 'uebernatuerliche_fertigkeit':
+                case 'uebernatuerlicheFertigkeit':
                     // Convert supernatural skill to supernatural free talent
                     itemData = {
                         name: item.name,
-                        type: 'freiestalent',
+                        type: 'freiesTalent',
                         system: {
                             ...item.system,
                             profan: false,

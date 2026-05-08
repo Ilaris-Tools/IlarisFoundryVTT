@@ -619,9 +619,12 @@ export class IlarisActor extends Actor {
                 // profan_talente[i.name] = [];
             } else if (item.type == 'talent') {
                 profan_talente.push(item)
-            } else if (item.type == 'freie_fertigkeit') {
+            } else if (item.type == 'freieFertigkeit' || item.type == 'freie_fertigkeit') {
                 freie_fertigkeiten.push(item)
-            } else if (item.type == 'uebernatuerliche_fertigkeit') {
+            } else if (
+                item.type == 'uebernatuerlicheFertigkeit' ||
+                item.type == 'uebernatuerliche_fertigkeit'
+            ) {
                 // console.log("Magiefertigkeit gefunden");
                 // console.log(i);
                 uebernatuerliche_fertigkeiten.push(item)
@@ -654,7 +657,7 @@ export class IlarisActor extends Actor {
             } else if (item.type == 'info') {
                 // kreatur only
                 infos.push(item)
-            } else if (item.type == 'freiestalent') {
+            } else if (item.type == 'freiesTalent') {
                 if (item.system.profan == true) {
                     freietalente.push(item)
                     console.log('Freies Talent eingetragen')
@@ -814,7 +817,7 @@ export async function preloadAbgeleiteteWerteDefinitions() {
 
             const items = await pack.getDocuments()
             for (const item of items) {
-                if (item.type === 'abgeleiteter-wert') {
+                if (item.type === 'abgeleiteterWert') {
                     // Prefer technical key; fallback to item name for legacy data.
                     const key = item.system?.key || item.system?.name || item.name
 

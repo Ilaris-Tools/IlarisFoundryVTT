@@ -296,7 +296,7 @@
     {
       "_id": "geRdsEbcCf6th6DZ",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 8,
@@ -325,7 +325,7 @@
     {
       "_id": "KvkdOB1VxVpamDLs",
       "name": "Laufen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 22,
@@ -354,7 +354,7 @@
     {
       "_id": "0eXbik21glANwAqT",
       "name": "Zähigkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 16,
@@ -383,7 +383,7 @@
     {
       "_id": "OU2urqeQeG3094yW",
       "name": "Umwelt",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",
@@ -452,7 +452,7 @@
     {
       "_id": "OSkbbO0Xg8IJGjY2",
       "name": "Hellsicht",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",
@@ -521,7 +521,7 @@
     {
       "_id": "CQJHAwD0qNv4Zo5U",
       "name": "Einfluss",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

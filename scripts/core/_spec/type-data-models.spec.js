@@ -86,7 +86,7 @@ describe('registerIlarisTypeDataModels', () => {
         expect(CONFIG.Actor.dataModels.held).toBeDefined()
         expect(CONFIG.Item.dataModels.manoever).toBeDefined()
         expect(CONFIG.Actor.dataModels.kreatur).toBeDefined()
-        expect(CONFIG.Item.dataModels['abgeleiteter-wert']).toBeDefined()
+        expect(CONFIG.Item.dataModels['abgeleiteterWert']).toBeDefined()
     })
 
     it('creates schema fields matching top-level model defaults', () => {

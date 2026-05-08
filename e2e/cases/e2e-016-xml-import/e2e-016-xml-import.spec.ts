@@ -118,6 +118,14 @@ test.describe('E2E-016 Sephrasto XML-Import', () => {
                 geWert: (actor.system.attribute?.GE?.wert ?? null) as number | null,
                 klingenwaffenWert: (klingenwaffen?.system?.fw ?? null) as number | null,
                 hasFernkampfwaffe: !!fernkampfwaffe,
+                hasLegacyTypeItems: actor.items.some(
+                    (i: any) =>
+                        i.type === 'freie_fertigkeit' ||
+                        i.type === 'uebernatuerliche_fertigkeit' ||
+                        i.type === 'freiestalent' ||
+                        i.type === 'effect-item' ||
+                        i.type === 'abgeleiteter-wert',
+                ) as boolean,
             }
         }, ACTOR_NAME)
 
@@ -128,6 +136,7 @@ test.describe('E2E-016 Sephrasto XML-Import', () => {
         expect(actorData!.geWert).toBe(EXPECTED_GE)
         expect(actorData!.klingenwaffenWert).toBe(EXPECTED_KLINGENWAFFEN)
         expect(actorData!.hasFernkampfwaffe).toBe(true)
+        expect(actorData!.hasLegacyTypeItems).toBe(false)
 
         // Negativprüfung Cleanup-Vorbereitung: ID ist gesetzt → afterEach löscht
         expect(importedActorId).toBeTruthy()

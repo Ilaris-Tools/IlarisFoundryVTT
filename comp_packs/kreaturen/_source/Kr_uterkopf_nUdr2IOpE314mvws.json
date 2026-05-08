@@ -390,7 +390,7 @@
     {
       "_id": "EddHR47u9am99Yh5",
       "name": "Gifte und Krankheiten (Heilkunde)",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 10,
@@ -419,7 +419,7 @@
     {
       "_id": "dtCW8uHCV0PGUL9T",
       "name": "Mittelaventurien (Überleben)",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 14,
@@ -448,7 +448,7 @@
     {
       "_id": "JFZWy5GTOA6U9R4m",
       "name": "Mittelreich (Gebräuche)",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 4,
@@ -477,7 +477,7 @@
     {
       "_id": "js37SUABV7SGjauk",
       "name": "Pflanzenkunde",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Pflanzenkundige erforschen die vielen nützlichen, gefährlichen oder wundersamen Pflanzen Aventuriens. Sie sammeln die Kräuter für eine Heilsalbe, kennen die Gefahr von Jagdgras und finden essbare Früchte oder Wurzeln.",
         "pw": 12,
@@ -506,7 +506,7 @@
     {
       "_id": "GU7jkMIhUiBLv4Hu",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 4,
@@ -535,7 +535,7 @@
     {
       "_id": "0aj5ig2TQrrg4e12",
       "name": "Humus",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

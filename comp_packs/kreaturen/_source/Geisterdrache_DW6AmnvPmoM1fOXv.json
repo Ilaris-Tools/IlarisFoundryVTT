@@ -495,7 +495,7 @@
     {
       "_id": "QA48PqDp9YSwKEzh",
       "name": "Einschüchtern",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Einschüchtern jagt dem Gegenüber Angst ein und bringt ihn so zu einer gewünschten Handlung. Die Probe wird oft vergleichend gegen den MU oder die Menschenkenntnis des Gegenübers abgelegt.",
         "pw": 14,
@@ -524,7 +524,7 @@
     {
       "_id": "oS9sryfeYJVbCYL9",
       "name": "Menschenkenntnis",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Menschenkenntnis ist deine Fähigkeit, die Absichten deines Gegenüber zu durchschauen. Damit enttarnst du Lügen und falsche Annäherungsversuche.",
         "pw": 8,
@@ -553,7 +553,7 @@
     {
       "_id": "lPRWL38Mzffvuw9B",
       "name": "Sinnesschärfe",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 6,
@@ -582,7 +582,7 @@
     {
       "_id": "558t6NyQYQujpWpd",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 6,
@@ -611,7 +611,7 @@
     {
       "_id": "DLmmad0neQeMExbi",
       "name": "Überreden",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Überreden bedeutet den geschickten Einsatz von Übertreibungen, Unwahrheiten oder Lügen, um das Gegenüber zumindest kurzfristig zu beeinflussen. Mit Überreden feilschst du am Marktplatz, bestichst eine Stadtwache oder infiltrierst ein Borbaradianerkloster.",
         "pw": 4,
@@ -640,7 +640,7 @@
     {
       "_id": "bLsiLQ8WhoPA4kCF",
       "name": "Willenskraft",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Willenskraft erlaubt dir, Beeinflussungen und Versuchungen zu widerstehen und dich nicht ablenken zu lassen. Du kannst dich im Chaos eines Gefechts auf einen Zauber konzentrieren oder einem Heiligen Befehl widerstehen.",
         "pw": 10,
@@ -669,7 +669,7 @@
     {
       "_id": "KPcNZfVpBP6gxBOj",
       "name": "Magiekunde",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 18,
@@ -698,7 +698,7 @@
     {
       "_id": "7sLNqEIX8ZUs29So",
       "name": "Derekunde",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 18,
@@ -727,7 +727,7 @@
     {
       "_id": "t5LyMPcFXmOstYWl",
       "name": "Mythenkunde",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 18,
@@ -756,7 +756,7 @@
     {
       "_id": "6Cki1Y5detzo1vlW",
       "name": "Kraft",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",
@@ -825,7 +825,7 @@
     {
       "_id": "rQnervS3gqm0nCBF",
       "name": "Illusion",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

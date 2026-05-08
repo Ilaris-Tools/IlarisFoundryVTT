@@ -40,13 +40,13 @@ export async function wuerfelwurf(target, actor) {
                 pw: pw,
             })
             await d.render(true)
-        } else if (probeType === 'freie_fertigkeit') {
+        } else if (probeType === 'freieFertigkeit' || probeType === 'freie_fertigkeit') {
             const fertigkeitName = target.dataset.fertigkeit
             const stufe = Number(target.dataset.pw)
             const pw = stufe * 8 - 2
 
             let d = new FertigkeitDialog(actor, {
-                probeType: 'freie_fertigkeit',
+                probeType: 'freieFertigkeit',
                 fertigkeitKey: null,
                 fertigkeitName: fertigkeitName,
                 pw: pw,

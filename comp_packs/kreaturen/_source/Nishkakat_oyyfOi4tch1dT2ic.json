@@ -495,7 +495,7 @@
     {
       "_id": "cPw7pZbvCvn4SjgB",
       "name": "Dämonenkunde",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Dämonenkunde beschäftigt sich mit den Erzdämonen, ihren Dienern und dämonischen Zaubern. Du kannst Dämonen bennenen und kennst ihre Schwachstellen.",
         "pw": 20,
@@ -524,7 +524,7 @@
     {
       "_id": "UyXvuPx6YxsYEbuo",
       "name": "Derekunde",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 16,
@@ -553,7 +553,7 @@
     {
       "_id": "SDvo0djQpCGpRMVl",
       "name": "Handwerk",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 16,
@@ -582,7 +582,7 @@
     {
       "_id": "gyCVe8LUWI3Bz5Pf",
       "name": "Magietheorie",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Magietheorie hilft dir bei der Einschätzung und der Analyse von magischen Phänomenen.",
         "pw": 16,
@@ -611,7 +611,7 @@
     {
       "_id": "05BHpBrbzTbQo9rU",
       "name": "Mythenkunde",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 16,
@@ -640,7 +640,7 @@
     {
       "_id": "BiKxufK8fN1r3Dqu",
       "name": "Verwandlung",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

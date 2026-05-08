@@ -8,7 +8,7 @@ export class SkillConverter extends BaseConverter {
     /**
      * Convert skill-based XML elements (Fertigkeit and ÜbernatürlicheFertigkeit) to Foundry items
      * @param {Element} element - DOM Element
-     * @param {string} itemType - 'fertigkeit' or 'uebernatuerliche_fertigkeit'
+     * @param {string} itemType - 'fertigkeit' or 'uebernatuerlicheFertigkeit'
      * @returns {Object} Foundry item
      */
     convert(element, itemType) {
@@ -36,7 +36,7 @@ export class SkillConverter extends BaseConverter {
         }
 
         // Add ÜbernatürlicheFertigkeit specific field
-        if (itemType === 'uebernatuerliche_fertigkeit') {
+        if (itemType === 'uebernatuerlicheFertigkeit') {
             systemData.voraussetzung = voraussetzungen
         }
 
@@ -58,6 +58,6 @@ export class SkillConverter extends BaseConverter {
      * @returns {Object} Foundry item
      */
     convertUebernatuerlicheFertigkeit(element) {
-        return this.convert(element, 'uebernatuerliche_fertigkeit')
+        return this.convert(element, 'uebernatuerlicheFertigkeit')
     }
 }
