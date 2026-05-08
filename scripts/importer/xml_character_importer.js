@@ -5,6 +5,22 @@ import {
 import { XmlCharacterImportDialogs } from './xml-character-import-dialogs.js'
 import { WeaponConverter } from './xml_rule_importer/converters/weapon-converter.js'
 
+const LEGACY_TO_CANONICAL_ITEM_TYPE_MAP = {
+    freiestalent: 'freiesTalent',
+    freie_fertigkeit: 'freieFertigkeit',
+    uebernatuerliche_fertigkeit: 'uebernatuerlicheFertigkeit',
+    'effect-item': 'effectItem',
+    'abgeleiteter-wert': 'abgeleiteterWert',
+}
+
+const CANONICAL_TO_LEGACY_ITEM_TYPE_MAP = {
+    freiesTalent: ['freiestalent'],
+    freieFertigkeit: ['freie_fertigkeit'],
+    uebernatuerlicheFertigkeit: ['uebernatuerliche_fertigkeit'],
+    effectItem: ['effect-item'],
+    abgeleiteterWert: ['abgeleiteter-wert'],
+}
+
 /**
  * XML Character Importer for Ilaris System
  * Imports character data from external character creation tool XML files
@@ -13,6 +29,25 @@ export class XmlCharacterImporter {
     constructor() {
         this.xmlParser = new DOMParser()
         this.weaponConverter = new WeaponConverter()
+    }
+
+    expandItemTypeAliases(itemType) {
+        const requestedTypes = Array.isArray(itemType) ? itemType : [itemType]
+        const expandedTypes = new Set()
+
+        for (const type of requestedTypes) {
+            expandedTypes.add(type)
+
+            const canonicalType = LEGACY_TO_CANONICAL_ITEM_TYPE_MAP[type] || type
+            expandedTypes.add(canonicalType)
+
+            const legacyAliases = CANONICAL_TO_LEGACY_ITEM_TYPE_MAP[canonicalType] || []
+            for (const alias of legacyAliases) {
+                expandedTypes.add(alias)
+            }
+        }
+
+        return [...expandedTypes]
     }
 
     /**
@@ -837,7 +872,7 @@ export class XmlCharacterImporter {
      * @returns {Promise<Item|null>} Found item or null
      */
     async findItemInCompendium(itemName, itemType) {
-        const typesToSearch = Array.isArray(itemType) ? itemType : [itemType]
+        const typesToSearch = this.expandItemTypeAliases(itemType)
 
         // Map item types to their corresponding pack settings
         const typeToSettingMap = {
@@ -854,7 +889,8 @@ export class XmlCharacterImporter {
         // Collect all relevant configured compendiums for the types being searched
         const configuredCompendiumIds = new Set()
         for (const type of typesToSearch) {
-            const settingName = typeToSettingMap[type]
+            const canonicalType = LEGACY_TO_CANONICAL_ITEM_TYPE_MAP[type] || type
+            const settingName = typeToSettingMap[canonicalType]
             if (settingName) {
                 try {
                     const packsJson = game.settings.get(

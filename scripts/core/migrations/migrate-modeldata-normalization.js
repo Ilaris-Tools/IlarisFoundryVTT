@@ -1,6 +1,8 @@
 const isNewerVersion = foundry.utils.isNewerVersion
 
-const TARGET_SCHEMA_VERSION = '13.3.0'
+// Keep this strictly increasing, independent from system.json version,
+// so newly added migration steps re-run on already-upgraded worlds.
+const TARGET_SCHEMA_VERSION = '13.4.0'
 
 const ITEM_TYPE_RENAME_MAP = {
     freiestalent: 'freiesTalent',
@@ -251,6 +253,27 @@ function normalizeActorData(actorData) {
     return { changed, system }
 }
 
+function buildTypeRenameUpdate(doc, newType) {
+    return {
+        type: newType,
+        system: foundry.utils.deepClone(doc?.system || {}),
+    }
+}
+
+function createMigrationProgressNotification() {
+    return ui.notifications?.info?.('Ilaris: ModelData-Normalisierung wird vorbereitet...', {
+        permanent: true,
+    })
+}
+
+function updateMigrationProgressNotification(progressNotification, message) {
+    progressNotification?.update?.({ message })
+}
+
+function removeMigrationProgressNotification(progressNotification) {
+    progressNotification?.remove?.()
+}
+
 async function renameWorldItemTypes() {
     let migrated = 0
     let skipped = 0
@@ -261,7 +284,9 @@ async function renameWorldItemTypes() {
 
     for (const item of items) {
         try {
-            await item.update({ type: ITEM_TYPE_RENAME_MAP[item.type] })
+            await item.update(buildTypeRenameUpdate(item, ITEM_TYPE_RENAME_MAP[item.type]), {
+                recursive: false,
+            })
             migrated++
         } catch (error) {
             errors++
@@ -280,29 +305,27 @@ async function renameActorEmbeddedItemTypes() {
     const oldTypes = new Set(Object.keys(ITEM_TYPE_RENAME_MAP))
 
     for (const actor of game.actors) {
-        const updates = []
+        let actorHadLegacyItems = false
 
         for (const item of actor.items) {
             if (!oldTypes.has(item.type)) continue
+            actorHadLegacyItems = true
 
-            updates.push({
-                _id: item.id,
-                type: ITEM_TYPE_RENAME_MAP[item.type],
-            })
-        }
-
-        if (updates.length > 0) {
             try {
-                await actor.updateEmbeddedDocuments('Item', updates)
-                migrated += updates.length
+                await item.update(buildTypeRenameUpdate(item, ITEM_TYPE_RENAME_MAP[item.type]), {
+                    recursive: false,
+                })
+                migrated++
             } catch (error) {
-                errors += updates.length
+                errors++
                 console.error(
-                    `Ilaris | Type rename failed for embedded items on actor ${actor.name}:`,
+                    `Ilaris | Type rename failed for embedded item ${item.name} on actor ${actor.name}:`,
                     error,
                 )
             }
-        } else {
+        }
+
+        if (!actorHadLegacyItems) {
             skipped++
         }
     }
@@ -336,7 +359,9 @@ async function renameCompendiumItemTypes() {
             if (!oldTypes.has(doc.type)) continue
 
             try {
-                await doc.update({ type: ITEM_TYPE_RENAME_MAP[doc.type] })
+                await doc.update(buildTypeRenameUpdate(doc, ITEM_TYPE_RENAME_MAP[doc.type]), {
+                    recursive: false,
+                })
                 migrated++
             } catch (error) {
                 errors++
@@ -378,27 +403,29 @@ async function renameCompendiumActorEmbeddedItemTypes() {
 
         for (const doc of documents) {
             if (!doc.items) continue
-            const updates = []
+            let docHadLegacyItems = false
 
             for (const item of doc.items) {
                 if (!oldTypes.has(item.type)) continue
-                updates.push({
-                    _id: item.id,
-                    type: ITEM_TYPE_RENAME_MAP[item.type],
-                })
-            }
+                docHadLegacyItems = true
 
-            if (updates.length > 0) {
                 try {
-                    await doc.updateEmbeddedDocuments('Item', updates)
-                    migrated += updates.length
+                    await item.update(
+                        buildTypeRenameUpdate(item, ITEM_TYPE_RENAME_MAP[item.type]),
+                        { recursive: false },
+                    )
+                    migrated++
                 } catch (error) {
-                    errors += updates.length
+                    errors++
                     console.error(
-                        `Ilaris | Type rename failed for embedded items on compendium actor ${doc.name} in ${pack.collection}:`,
+                        `Ilaris | Type rename failed for embedded item ${item.name} on compendium actor ${doc.name} in ${pack.collection}:`,
                         error,
                     )
                 }
+            }
+
+            if (!docHadLegacyItems) {
+                skipped++
             }
         }
     }
@@ -660,53 +687,40 @@ export async function runModelDataNormalizationMigrationIfNeeded() {
         errors: 0,
     }
 
+    const phases = [
+        { label: 'Weltdaten umbenennen', run: renameWorldItemTypes },
+        { label: 'Akteur-Items umbenennen', run: renameActorEmbeddedItemTypes },
+        { label: 'Kompendium-Items umbenennen', run: renameCompendiumItemTypes },
+        {
+            label: 'Kompendium-Akteur-Items umbenennen',
+            run: renameCompendiumActorEmbeddedItemTypes,
+        },
+        { label: 'Weltdaten normalisieren', run: migrateWorldItems },
+        { label: 'Akteur-Items normalisieren', run: migrateActorEmbeddedItems },
+        { label: 'Kompendium-Items normalisieren', run: migrateCompendiumItems },
+        { label: 'Welt-Akteure normalisieren', run: migrateWorldActors },
+        { label: 'Kompendium-Akteure normalisieren', run: migrateCompendiumActors },
+    ]
+
+    const progressNotification = createMigrationProgressNotification()
+
     try {
-        const renameWorldStats = await renameWorldItemTypes()
-        totals.migrated += renameWorldStats.migrated
-        totals.skipped += renameWorldStats.skipped
-        totals.errors += renameWorldStats.errors
+        for (const [index, phase] of phases.entries()) {
+            updateMigrationProgressNotification(progressNotification, `Ilaris: ${phase.label}...`)
 
-        const renameEmbeddedStats = await renameActorEmbeddedItemTypes()
-        totals.migrated += renameEmbeddedStats.migrated
-        totals.skipped += renameEmbeddedStats.skipped
-        totals.errors += renameEmbeddedStats.errors
+            const stats = await phase.run()
+            totals.migrated += stats.migrated
+            totals.skipped += stats.skipped
+            totals.errors += stats.errors
+        }
 
-        const renameCompendiumStats = await renameCompendiumItemTypes()
-        totals.migrated += renameCompendiumStats.migrated
-        totals.skipped += renameCompendiumStats.skipped
-        totals.errors += renameCompendiumStats.errors
-
-        const renameCompendiumActorStats = await renameCompendiumActorEmbeddedItemTypes()
-        totals.migrated += renameCompendiumActorStats.migrated
-        totals.skipped += renameCompendiumActorStats.skipped
-        totals.errors += renameCompendiumActorStats.errors
-
-        const worldStats = await migrateWorldItems()
-        totals.migrated += worldStats.migrated
-        totals.skipped += worldStats.skipped
-        totals.errors += worldStats.errors
-
-        const actorStats = await migrateActorEmbeddedItems()
-        totals.migrated += actorStats.migrated
-        totals.skipped += actorStats.skipped
-        totals.errors += actorStats.errors
-
-        const packStats = await migrateCompendiumItems()
-        totals.migrated += packStats.migrated
-        totals.skipped += packStats.skipped
-        totals.errors += packStats.errors
-
-        const worldActorStats = await migrateWorldActors()
-        totals.migrated += worldActorStats.migrated
-        totals.skipped += worldActorStats.skipped
-        totals.errors += worldActorStats.errors
-
-        const packActorStats = await migrateCompendiumActors()
-        totals.migrated += packActorStats.migrated
-        totals.skipped += packActorStats.skipped
-        totals.errors += packActorStats.errors
+        updateMigrationProgressNotification(
+            progressNotification,
+            'Ilaris: ModelData-Normalisierung wird abgeschlossen...',
+        )
 
         await game.settings.set('Ilaris', 'worldSchemaVersion', TARGET_SCHEMA_VERSION)
+        removeMigrationProgressNotification(progressNotification)
 
         console.log(
             `Ilaris | ModelData normalization migration done: ${totals.migrated} migrated, ${totals.skipped} skipped, ${totals.errors} errors`,
@@ -718,6 +732,7 @@ export async function runModelDataNormalizationMigrationIfNeeded() {
             )
         }
     } catch (error) {
+        removeMigrationProgressNotification(progressNotification)
         console.error('Ilaris | ModelData normalization migration failed:', error)
         ui.notifications.error(
             'Ilaris: ModelData-Normalisierung fehlgeschlagen. Details in der Konsole.',
