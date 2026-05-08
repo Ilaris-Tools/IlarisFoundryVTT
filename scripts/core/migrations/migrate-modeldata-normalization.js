@@ -1,6 +1,14 @@
 const isNewerVersion = foundry.utils.isNewerVersion
 
-const TARGET_SCHEMA_VERSION = '13.2.0'
+const TARGET_SCHEMA_VERSION = '13.3.0'
+
+const ITEM_TYPE_RENAME_MAP = {
+    freiestalent: 'freiesTalent',
+    freie_fertigkeit: 'freieFertigkeit',
+    uebernatuerliche_fertigkeit: 'uebernatuerlicheFertigkeit',
+    'effect-item': 'effectItem',
+    'abgeleiteter-wert': 'abgeleiteterWert',
+}
 
 function isObject(value) {
     return value && typeof value === 'object' && !Array.isArray(value)
@@ -175,11 +183,11 @@ function normalizeItemData(itemData) {
         changed = normalizeWaffeneigenschaftParameterSlots(system) || changed
     }
 
-    if (type === 'freie_fertigkeit') {
+    if (type === 'freieFertigkeit') {
         changed = normalizeFreieFertigkeitNumericFields(system) || changed
     }
 
-    if (type === 'freiestalent') {
+    if (type === 'freiesTalent') {
         changed = normalizeFreiesTalentPw(system) || changed
     }
 
@@ -191,7 +199,7 @@ function normalizeItemData(itemData) {
         changed = normalizeAngriffWmAlias(system) || changed
     }
 
-    if (type === 'abgeleiteter-wert') {
+    if (type === 'abgeleiteterWert') {
         changed = normalizeAbgeleiteterWertKey(system, itemName) || changed
     }
 
@@ -243,6 +251,161 @@ function normalizeActorData(actorData) {
     return { changed, system }
 }
 
+async function renameWorldItemTypes() {
+    let migrated = 0
+    let skipped = 0
+    let errors = 0
+
+    const oldTypes = new Set(Object.keys(ITEM_TYPE_RENAME_MAP))
+    const items = game.items.filter((item) => oldTypes.has(item.type))
+
+    for (const item of items) {
+        try {
+            await item.update({ type: ITEM_TYPE_RENAME_MAP[item.type] })
+            migrated++
+        } catch (error) {
+            errors++
+            console.error(`Ilaris | Type rename failed for world item ${item.name}:`, error)
+        }
+    }
+
+    return { migrated, skipped, errors }
+}
+
+async function renameActorEmbeddedItemTypes() {
+    let migrated = 0
+    let skipped = 0
+    let errors = 0
+
+    const oldTypes = new Set(Object.keys(ITEM_TYPE_RENAME_MAP))
+
+    for (const actor of game.actors) {
+        const updates = []
+
+        for (const item of actor.items) {
+            if (!oldTypes.has(item.type)) continue
+
+            updates.push({
+                _id: item.id,
+                type: ITEM_TYPE_RENAME_MAP[item.type],
+            })
+        }
+
+        if (updates.length > 0) {
+            try {
+                await actor.updateEmbeddedDocuments('Item', updates)
+                migrated += updates.length
+            } catch (error) {
+                errors += updates.length
+                console.error(
+                    `Ilaris | Type rename failed for embedded items on actor ${actor.name}:`,
+                    error,
+                )
+            }
+        } else {
+            skipped++
+        }
+    }
+
+    return { migrated, skipped, errors }
+}
+
+async function renameCompendiumItemTypes() {
+    let migrated = 0
+    let skipped = 0
+    let errors = 0
+
+    const oldTypes = new Set(Object.keys(ITEM_TYPE_RENAME_MAP))
+    const packs = game.packs.filter(
+        (pack) => pack.metadata.type === 'Item' && pack.collection?.startsWith('Ilaris.'),
+    )
+
+    for (const pack of packs) {
+        if (pack.locked) continue
+
+        let documents = []
+        try {
+            documents = await pack.getDocuments()
+        } catch (error) {
+            errors++
+            console.error(`Ilaris | Type rename failed to read pack ${pack.collection}:`, error)
+            continue
+        }
+
+        for (const doc of documents) {
+            if (!oldTypes.has(doc.type)) continue
+
+            try {
+                await doc.update({ type: ITEM_TYPE_RENAME_MAP[doc.type] })
+                migrated++
+            } catch (error) {
+                errors++
+                console.error(
+                    `Ilaris | Type rename failed for compendium item ${doc.name} in ${pack.collection}:`,
+                    error,
+                )
+            }
+        }
+    }
+
+    return { migrated, skipped, errors }
+}
+
+async function renameCompendiumActorEmbeddedItemTypes() {
+    let migrated = 0
+    let skipped = 0
+    let errors = 0
+
+    const oldTypes = new Set(Object.keys(ITEM_TYPE_RENAME_MAP))
+    const packs = game.packs.filter(
+        (pack) => pack.metadata.type === 'Actor' && pack.collection?.startsWith('Ilaris.'),
+    )
+
+    for (const pack of packs) {
+        if (pack.locked) continue
+
+        let documents = []
+        try {
+            documents = await pack.getDocuments()
+        } catch (error) {
+            errors++
+            console.error(
+                `Ilaris | Type rename failed to read actor pack ${pack.collection}:`,
+                error,
+            )
+            continue
+        }
+
+        for (const doc of documents) {
+            if (!doc.items) continue
+            const updates = []
+
+            for (const item of doc.items) {
+                if (!oldTypes.has(item.type)) continue
+                updates.push({
+                    _id: item.id,
+                    type: ITEM_TYPE_RENAME_MAP[item.type],
+                })
+            }
+
+            if (updates.length > 0) {
+                try {
+                    await doc.updateEmbeddedDocuments('Item', updates)
+                    migrated += updates.length
+                } catch (error) {
+                    errors += updates.length
+                    console.error(
+                        `Ilaris | Type rename failed for embedded items on compendium actor ${doc.name} in ${pack.collection}:`,
+                        error,
+                    )
+                }
+            }
+        }
+    }
+
+    return { migrated, skipped, errors }
+}
+
 async function migrateWorldItems() {
     let migrated = 0
     let skipped = 0
@@ -251,10 +414,10 @@ async function migrateWorldItems() {
     const candidateTypes = new Set([
         'manoever',
         'waffeneigenschaft',
-        'freie_fertigkeit',
-        'freiestalent',
+        'freieFertigkeit',
+        'freiesTalent',
         'angriff',
-        'abgeleiteter-wert',
+        'abgeleiteterWert',
         'nahkampfwaffe',
         'fernkampfwaffe',
     ])
@@ -290,10 +453,10 @@ async function migrateActorEmbeddedItems() {
     const candidateTypes = new Set([
         'manoever',
         'waffeneigenschaft',
-        'freie_fertigkeit',
-        'freiestalent',
+        'freieFertigkeit',
+        'freiesTalent',
         'angriff',
-        'abgeleiteter-wert',
+        'abgeleiteterWert',
         'nahkampfwaffe',
         'fernkampfwaffe',
     ])
@@ -349,10 +512,10 @@ async function migrateCompendiumItems() {
     const candidateTypes = new Set([
         'manoever',
         'waffeneigenschaft',
-        'freie_fertigkeit',
-        'freiestalent',
+        'freieFertigkeit',
+        'freiesTalent',
         'angriff',
-        'abgeleiteter-wert',
+        'abgeleiteterWert',
         'nahkampfwaffe',
         'fernkampfwaffe',
     ])
@@ -498,6 +661,26 @@ export async function runModelDataNormalizationMigrationIfNeeded() {
     }
 
     try {
+        const renameWorldStats = await renameWorldItemTypes()
+        totals.migrated += renameWorldStats.migrated
+        totals.skipped += renameWorldStats.skipped
+        totals.errors += renameWorldStats.errors
+
+        const renameEmbeddedStats = await renameActorEmbeddedItemTypes()
+        totals.migrated += renameEmbeddedStats.migrated
+        totals.skipped += renameEmbeddedStats.skipped
+        totals.errors += renameEmbeddedStats.errors
+
+        const renameCompendiumStats = await renameCompendiumItemTypes()
+        totals.migrated += renameCompendiumStats.migrated
+        totals.skipped += renameCompendiumStats.skipped
+        totals.errors += renameCompendiumStats.errors
+
+        const renameCompendiumActorStats = await renameCompendiumActorEmbeddedItemTypes()
+        totals.migrated += renameCompendiumActorStats.migrated
+        totals.skipped += renameCompendiumActorStats.skipped
+        totals.errors += renameCompendiumActorStats.errors
+
         const worldStats = await migrateWorldItems()
         totals.migrated += worldStats.migrated
         totals.skipped += worldStats.skipped

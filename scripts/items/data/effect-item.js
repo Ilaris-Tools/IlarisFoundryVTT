@@ -54,6 +54,6 @@ export class EffectItem extends IlarisItem {
      * @returns {boolean}
      */
     get isEffectContainer() {
-        return this.type === 'effect-item' || this.effects?.size > 0
+        return this.type === 'effectItem' || this.effects?.size > 0
     }
 }

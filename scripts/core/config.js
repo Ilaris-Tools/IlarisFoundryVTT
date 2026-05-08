@@ -83,7 +83,7 @@ let freie_fertigkeiten = {
     3: 'Freizeit',
     4: 'Anderes',
 }
-ILARIS.freie_fertigkeiten = freie_fertigkeiten
+ILARIS.freieFertigkeiten = freie_fertigkeiten
 
 let xd20_choice = {
     0: '1W20',
@@ -143,18 +143,27 @@ let itemTemplates = {
         system: {},
         logMessage: 'Neues Talent',
     },
-    freie_fertigkeit: {
+    freieFertigkeit: {
         name: 'freie Fertigkeit',
-        type: 'freie_fertigkeit',
+        type: 'freieFertigkeit',
         system: {
             stufe: 1,
             gruppe: 4,
         },
         logMessage: 'Neue freie Fertigkeit',
     },
-    uebernatuerliche_fertigkeit: {
+    freie_fertigkeit: {
+        name: 'freie Fertigkeit',
+        type: 'freieFertigkeit',
+        system: {
+            stufe: 1,
+            gruppe: 4,
+        },
+        logMessage: 'Neue freie Fertigkeit',
+    },
+    uebernatuerlicheFertigkeit: {
         name: 'Fertigkeit',
-        type: 'uebernatuerliche_fertigkeit',
+        type: 'uebernatuerlicheFertigkeit',
         system: {},
         logMessage: 'Neue übernatürliche Fertigkeit',
     },
@@ -182,9 +191,9 @@ let itemTemplates = {
         system: {},
         logMessage: 'Neuer Gegenstand',
     },
-    freiestalent: {
+    freiesTalent: {
         name: 'Neue Kreaturenfertigkeit',
-        type: 'freiestalent',
+        type: 'freiesTalent',
         system: {},
         logMessage: 'Neues freies Talent',
         customHandler: (itemData, event) => {
@@ -192,9 +201,9 @@ let itemTemplates = {
             itemData.system.profan = $(event.currentTarget).data('profan')
         },
     },
-    uebernatfreiestalent: {
+    uebernatFreiesTalent: {
         name: 'Neue Kreaturenfertigkeit',
-        type: 'freiestalent',
+        type: 'freiesTalent',
         system: {},
         logMessage: 'Neues übernatürliches freies Talent',
         customHandler: (itemData) => {
@@ -483,8 +492,8 @@ let kreatur_item_options = {
     angriff: 'Angriff',
     eigenschaft: 'Eigenschaft',
     vorteil: 'Vorteil',
-    freiestalent: 'Fertigkeit',
-    uebernatfreiestalent: 'Übernat. Fertigkeit',
+    freiesTalent: 'Fertigkeit',
+    uebernatFreiesTalent: 'Übernat. Fertigkeit',
     zauber: 'Zauber',
     liturgie: 'Liturgie',
     anrufung: 'Anrufung',

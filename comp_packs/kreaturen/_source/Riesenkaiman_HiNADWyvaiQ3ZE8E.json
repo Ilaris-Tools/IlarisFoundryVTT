@@ -299,7 +299,7 @@
     {
       "_id": "r3cqQIKhTZHv5OGT",
       "name": "Pirschen 14",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 0,
@@ -328,7 +328,7 @@
     {
       "_id": "5z0PeA3S8rd5Kfd8",
       "name": "Schwimmen 10",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 0,
@@ -357,7 +357,7 @@
     {
       "_id": "OwO1SDHSc8qrqFuo",
       "name": "Wachsamkeit 6",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 0,

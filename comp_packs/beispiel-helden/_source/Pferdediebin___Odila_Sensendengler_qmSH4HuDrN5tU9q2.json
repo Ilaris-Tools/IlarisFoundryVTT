@@ -1465,7 +1465,7 @@
     {
       "_id": "6OYrS9dF7MHnznEj",
       "name": "Rosstäuscher",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1492,7 +1492,7 @@
     {
       "_id": "tZnw0fxuusd8hKcy",
       "name": "Sprache: Atak (+Schrift)",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1519,7 +1519,7 @@
     {
       "_id": "RiM8VXD9CLTk2gdZ",
       "name": "Volkslieder",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,

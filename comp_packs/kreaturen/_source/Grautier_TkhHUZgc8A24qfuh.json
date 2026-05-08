@@ -211,7 +211,7 @@
     {
       "_id": "J0zOeBPB3Jg4ImGE",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 8,
@@ -240,7 +240,7 @@
     {
       "_id": "hSM9FflRo4qD1DTF",
       "name": "Zähigkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 7,

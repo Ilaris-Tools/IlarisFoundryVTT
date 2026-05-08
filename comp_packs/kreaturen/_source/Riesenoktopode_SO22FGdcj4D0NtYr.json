@@ -411,7 +411,7 @@
     {
       "_id": "XmOymbLJQS7LqWNd",
       "name": "Pirschen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 6,
@@ -440,7 +440,7 @@
     {
       "_id": "XgLcekN1rIzeQEv1",
       "name": "Schwimmen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 14,
@@ -469,7 +469,7 @@
     {
       "_id": "YJOdB2I4MS5cPNIA",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 10,
@@ -498,7 +498,7 @@
     {
       "_id": "1HUEHAtimRTnv4Ms",
       "name": "Kraft",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

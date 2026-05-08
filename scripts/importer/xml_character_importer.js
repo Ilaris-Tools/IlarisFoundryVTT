@@ -467,8 +467,8 @@ export class XmlCharacterImporter {
         const characterItemTypes = [
             'fertigkeit',
             'talent',
-            'freie_fertigkeit',
-            'uebernatuerliche_fertigkeit',
+            'freieFertigkeit',
+            'uebernatuerlicheFertigkeit',
             'zauber',
             'liturgie',
             'anrufung',
@@ -573,7 +573,7 @@ export class XmlCharacterImporter {
         for (const freeSkill of characterData.freeSkills) {
             const freeSkillData = {
                 name: freeSkill.name,
-                type: 'freie_fertigkeit',
+                type: 'freieFertigkeit',
                 system: {
                     stufe: freeSkill.value,
                     gruppe: '1',
@@ -661,7 +661,7 @@ export class XmlCharacterImporter {
 
             const foundSkill = await this.findItemInCompendium(
                 supernaturalSkill.name,
-                'uebernatuerliche_fertigkeit',
+                'uebernatuerlicheFertigkeit',
             )
             if (foundSkill) {
                 const skillData = foundSkill.toObject()
@@ -678,7 +678,7 @@ export class XmlCharacterImporter {
                 )
                 const customSkill = {
                     name: supernaturalSkill.name,
-                    type: 'uebernatuerliche_fertigkeit',
+                    type: 'uebernatuerlicheFertigkeit',
                     system: {
                         fw: supernaturalSkill.value,
                         basis: 0,
@@ -846,7 +846,7 @@ export class XmlCharacterImporter {
             zauber: IlarisGameSettingNames.talentePacks, // Supernatural talents use talentePacks
             liturgie: IlarisGameSettingNames.talentePacks, // Liturgies also use talentePacks
             vorteil: IlarisGameSettingNames.vorteilePacks,
-            uebernatuerliche_fertigkeit: IlarisGameSettingNames.fertigkeitenPacks,
+            uebernatuerlicheFertigkeit: IlarisGameSettingNames.fertigkeitenPacks,
             nahkampfwaffe: IlarisGameSettingNames.waffenPacks,
             fernkampfwaffe: IlarisGameSettingNames.waffenPacks,
         }
@@ -1075,7 +1075,7 @@ export class XmlCharacterImporter {
         for (const supernaturalSkill of supernaturalSkillsWithValues) {
             const found = await this.findItemInCompendium(
                 supernaturalSkill.name,
-                'uebernatuerliche_fertigkeit',
+                'uebernatuerlicheFertigkeit',
             )
             if (found) {
                 analysis.supernaturalSkills.found.push(supernaturalSkill.name)

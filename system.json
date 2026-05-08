@@ -206,7 +206,9 @@
       "ruestung": {},
       "fertigkeit": {},
       "talent": {},
+      "freieFertigkeit": {},
       "freie_fertigkeit": {},
+      "uebernatuerlicheFertigkeit": {},
       "uebernatuerliche_fertigkeit": {},
       "zauber": {},
       "liturgie": {},
@@ -219,8 +221,11 @@
       "waffeneigenschaft": {},
       "angriff": {},
       "info": {},
+      "freiesTalent": {},
       "freiestalent": {},
+      "abgeleiteterWert": {},
       "abgeleiteter-wert": {},
+      "effectItem": {},
       "effect-item": {}
     }
   },

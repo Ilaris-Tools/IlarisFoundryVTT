@@ -27,9 +27,9 @@ export class AbgeleiteteWertePacksSettings extends FormApplication {
         const availablePacks = []
         for (const pack of game.packs) {
             if (pack.metadata.type === 'Item' && pack.index.size > 0) {
-                // Check if any item in the pack has type 'abgeleiteter-wert'
+                // Check if any item in the pack has type 'abgeleiteterWert' (legacy: 'abgeleiteter-wert')
                 const hasAbgeleiteterWert = pack.index.contents.some(
-                    (item) => item.type === 'abgeleiteter-wert',
+                    (item) => item.type === 'abgeleiteterWert' || item.type === 'abgeleiteter-wert',
                 )
                 if (hasAbgeleiteterWert) {
                     availablePacks.push({

@@ -83,7 +83,7 @@ Hooks.once('init', () => {
     Items.registerSheet('Ilaris', FertigkeitSheet, { types: ['fertigkeit'], makeDefault: true })
     Items.registerSheet('Ilaris', TalentSheet, { types: ['talent'], makeDefault: true })
     Items.registerSheet('Ilaris', UebernatuerlichFertigkeitSheet, {
-        types: ['uebernatuerliche_fertigkeit'],
+        types: ['uebernatuerlicheFertigkeit'],
         makeDefault: true,
     })
     Items.registerSheet('Ilaris', UebernatuerlichTalentSheet, {
@@ -91,7 +91,7 @@ Hooks.once('init', () => {
         makeDefault: true,
     })
     Items.registerSheet('Ilaris', FreieFertigkeitSheet, {
-        types: ['freie_fertigkeit'],
+        types: ['freieFertigkeit', 'freie_fertigkeit'],
         makeDefault: true,
     })
     Items.registerSheet('Ilaris', VorteilSheet, { types: ['vorteil'], makeDefault: true })
@@ -105,11 +105,17 @@ Hooks.once('init', () => {
     Items.registerSheet('Ilaris', AngriffSheet, { types: ['angriff'], makeDefault: true })
     Items.registerSheet('Ilaris', InfoSheet, { types: ['info'], makeDefault: true })
     Items.registerSheet('Ilaris', AbgeleiteterWertSheet, {
-        types: ['abgeleiteter-wert'],
+        types: ['abgeleiteterWert', 'abgeleiteter-wert'],
         makeDefault: true,
     })
-    Items.registerSheet('Ilaris', FreiesTalentSheet, { types: ['freiestalent'], makeDefault: true })
-    Items.registerSheet('Ilaris', EffectItemSheet, { types: ['effect-item'], makeDefault: true })
+    Items.registerSheet('Ilaris', FreiesTalentSheet, {
+        types: ['freiesTalent', 'freiestalent'],
+        makeDefault: true,
+    })
+    Items.registerSheet('Ilaris', EffectItemSheet, {
+        types: ['effectItem', 'effect-item'],
+        makeDefault: true,
+    })
 
     // Register world schema version for migrations
     game.settings.register('Ilaris', 'worldSchemaVersion', {

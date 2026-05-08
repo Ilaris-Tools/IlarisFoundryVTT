@@ -347,10 +347,13 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             label = target.dataset.fertigkeit
             label = label.concat(' (', target.dataset.talent, ')')
             pw = target.dataset.pw
-        } else if (rolltype === 'freie_fertigkeit') {
+        } else if (rolltype === 'freieFertigkeit' || rolltype === 'freie_fertigkeit') {
             label = target.dataset.fertigkeit
             pw = Number(target.dataset.pw) * 8 - 2
-        } else if (rolltype === 'uebernatuerliche_fertigkeit') {
+        } else if (
+            rolltype === 'uebernatuerlicheFertigkeit' ||
+            rolltype === 'uebernatuerliche_fertigkeit'
+        ) {
             label = target.dataset.fertigkeit
             pw = target.dataset.pw
         } else if (rolltype === 'zauber' || rolltype === 'liturgie') {

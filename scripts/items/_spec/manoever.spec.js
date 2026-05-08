@@ -28,7 +28,6 @@ describe('ManoeverItem', () => {
             type: 'waffe',
             system: {
                 eigenschaften: [],
-                angriffmanover: [],
             },
         }
     })
@@ -46,6 +45,24 @@ describe('ManoeverItem', () => {
             expect(manoever._manoeverRequirementsFulfilled(mockActor, mockItem)).toBe(true)
         })
 
+        it('should return false for Angriff items when maneuver is not in unlocked list', () => {
+            manoever.system = { voraussetzung: 'Vorteil Kampfgespür' }
+            mockItem.system.angriffmanover = []
+            mockActor._hasVorteil.mockReturnValue(true)
+            expect(manoever._manoeverRequirementsFulfilled(mockActor, mockItem)).toBe(false)
+        })
+
+        it('should fall back to requirement checks if unlocked list is not present', () => {
+            manoever.system = { voraussetzung: 'Vorteil Kampfgespür' }
+            delete mockItem.system.angriffmanover
+
+            mockActor._hasVorteil.mockReturnValue(true)
+            expect(manoever._manoeverRequirementsFulfilled(mockActor, mockItem)).toBe(true)
+
+            mockActor._hasVorteil.mockReturnValue(false)
+            expect(manoever._manoeverRequirementsFulfilled(mockActor, mockItem)).toBe(false)
+        })
+
         it('should check single Waffeneigenschaft requirement', () => {
             manoever.system = { voraussetzung: 'Waffeneigenschaft Zweihändig' }
             mockItem.system.eigenschaften = [{ key: 'Zweihändig' }]
@@ -57,6 +74,15 @@ describe('ManoeverItem', () => {
 
         it('should check single Vorteil requirement', () => {
             manoever.system = { voraussetzung: 'Vorteil Kampfgespür' }
+            mockActor._hasVorteil.mockReturnValue(true)
+            expect(manoever._manoeverRequirementsFulfilled(mockActor, mockItem)).toBe(true)
+
+            mockActor._hasVorteil.mockReturnValue(false)
+            expect(manoever._manoeverRequirementsFulfilled(mockActor, mockItem)).toBe(false)
+        })
+
+        it('should support legacy voraussetzungen field', () => {
+            manoever.system = { voraussetzungen: 'Vorteil Kampfgespür' }
             mockActor._hasVorteil.mockReturnValue(true)
             expect(manoever._manoeverRequirementsFulfilled(mockActor, mockItem)).toBe(true)
 

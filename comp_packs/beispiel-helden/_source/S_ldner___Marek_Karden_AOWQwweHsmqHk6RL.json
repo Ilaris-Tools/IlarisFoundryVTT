@@ -1437,7 +1437,7 @@
     {
       "_id": "aRU53ajr92n9KCC3",
       "name": "Sprache: Garethi",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1464,7 +1464,7 @@
     {
       "_id": "SoZ7AmtkFXQN7mOr",
       "name": "Schrift: Kusliker Zeichen",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1491,7 +1491,7 @@
     {
       "_id": "OL2PQkygFihTyTdM",
       "name": "Tanzen",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,

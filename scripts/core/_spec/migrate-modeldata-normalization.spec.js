@@ -99,7 +99,7 @@ describe('migrate-modeldata-normalization', () => {
         expect(shouldRunModelDataNormalizationMigration()).toBe(false)
 
         game.user.isGM = true
-        game.settings.get.mockReturnValue('13.2.0')
+        game.settings.get.mockReturnValue('13.3.0')
         expect(shouldRunModelDataNormalizationMigration()).toBe(false)
     })
 
@@ -132,7 +132,7 @@ describe('migrate-modeldata-normalization', () => {
         const worldFreieFertigkeit = createDoc({
             id: 'w3',
             name: 'Gassenwissen',
-            type: 'freie_fertigkeit',
+            type: 'freieFertigkeit',
             system: {
                 stufe: '3',
                 gruppe: '0',
@@ -142,7 +142,7 @@ describe('migrate-modeldata-normalization', () => {
         const worldFreiesTalent = createDoc({
             id: 'w4',
             name: 'Freies Talent',
-            type: 'freiestalent',
+            type: 'freiesTalent',
             system: {
                 pw: '10',
             },
@@ -160,7 +160,7 @@ describe('migrate-modeldata-normalization', () => {
         const worldAbgeleiteterWert = createDoc({
             id: 'w6',
             name: 'Initiative',
-            type: 'abgeleiteter-wert',
+            type: 'abgeleiteterWert',
             system: {
                 name: 'INI',
             },
@@ -301,7 +301,7 @@ describe('migrate-modeldata-normalization', () => {
         expect(compendiumKreatur.system.initiative).toBe(5)
         expect(compendiumKreatur.system.attribute.MU.kampfPw).toBe(4)
 
-        expect(game.settings.set).toHaveBeenCalledWith('Ilaris', 'worldSchemaVersion', '13.2.0')
+        expect(game.settings.set).toHaveBeenCalledWith('Ilaris', 'worldSchemaVersion', '13.3.0')
         expect(ui.notifications.info).toHaveBeenCalled()
     })
 })

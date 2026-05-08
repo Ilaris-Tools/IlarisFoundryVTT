@@ -3,7 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I",
+    "voraussetzung": "Vorteil Zauberer I ODER Vorteil Tradition der Borbaradianer I",
     "input": {
       "label": "",
       "field": "NUMBER",

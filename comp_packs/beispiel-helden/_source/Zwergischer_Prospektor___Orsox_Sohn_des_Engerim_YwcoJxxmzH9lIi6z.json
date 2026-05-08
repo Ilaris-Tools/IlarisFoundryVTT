@@ -1253,7 +1253,7 @@
     {
       "_id": "3uVj6skgd4JKqcxo",
       "name": "Sprache: Rogolan",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 3,
@@ -1280,7 +1280,7 @@
     {
       "_id": "QXOjDeelRnfqgc86",
       "name": "Schrift: Kusliker Zeichen",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1307,7 +1307,7 @@
     {
       "_id": "LjhYKhkkeo4MULge",
       "name": "Sprache: Angram",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1334,7 +1334,7 @@
     {
       "_id": "8I6r4onOuDbeSzJq",
       "name": "Sprache: Garethi",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,

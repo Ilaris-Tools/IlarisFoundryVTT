@@ -760,7 +760,7 @@
     {
       "_id": "tk0Q85IuzZen894r",
       "name": "Anführen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Mit Anführen leitest und motivierst du Untergebene. Du kannst mit Anführen Löscharbeiten oder eine Truppe von Kämpfern koordinieren, um ihnen so Vorteile zu verschaffen (S. 46). Gerade in großen Schlachten entscheidet der Heerführer über Sieg oder Niederlage.",
         "pw": 15,
@@ -789,7 +789,7 @@
     {
       "_id": "GktHQN7AR6ndKdg2",
       "name": "Einschüchtern",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Einschüchtern jagt dem Gegenüber Angst ein und bringt ihn so zu einer gewünschten Handlung. Die Probe wird oft vergleichend gegen den MU oder die Menschenkenntnis des Gegenübers abgelegt.",
         "pw": 15,
@@ -818,7 +818,7 @@
     {
       "_id": "MK3KM1ThNgFL0TUI",
       "name": "Menschenkenntnis",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Menschenkenntnis ist deine Fähigkeit, die Absichten deines Gegenüber zu durchschauen. Damit enttarnst du Lügen und falsche Annäherungsversuche.",
         "pw": 12,
@@ -847,7 +847,7 @@
     {
       "_id": "zwaqOsMXuGdSokZX",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 12,
@@ -876,7 +876,7 @@
     {
       "_id": "fVIjui9wDE9X6VvZ",
       "name": "Überreden",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Überreden bedeutet den geschickten Einsatz von Übertreibungen, Unwahrheiten oder Lügen, um das Gegenüber zumindest kurzfristig zu beeinflussen. Mit Überreden feilschst du am Marktplatz, bestichst eine Stadtwache oder infiltrierst ein Borbaradianerkloster.",
         "pw": 13,

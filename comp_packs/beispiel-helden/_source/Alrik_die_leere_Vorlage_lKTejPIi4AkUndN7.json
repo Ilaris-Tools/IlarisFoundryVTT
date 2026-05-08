@@ -98,7 +98,7 @@
     {
       "_id": "6YEjaDDrYs5SpupG",
       "name": "Muttersprache",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": "3",
