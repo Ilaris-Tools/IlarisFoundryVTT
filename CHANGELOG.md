@@ -2,6 +2,10 @@
 
 ## v13
 
+### v13.0.5
+
+- Zauberer und Geweither durch Energie, gebundene Energie und Energie zugekauft bestimmen
+
 ### v13.0.4
 
 - Notizen über ganze Größe
