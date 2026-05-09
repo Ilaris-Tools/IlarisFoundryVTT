@@ -35,6 +35,10 @@
 - Unit-Test-Suite um migrationsspezifische Normalisierungs-Tests erweitert
 - Bestehende Jest-Suite weiterhin grün
 
+### v13.0.5
+
+- Zauberer und Geweither durch Energie, gebundene Energie und Energie zugekauft bestimmen
+
 ### v13.0.4
 
 - Notizen über ganze Größe
