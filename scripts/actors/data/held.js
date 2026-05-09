@@ -101,8 +101,14 @@ export class HeldActor extends IlarisActor {
     }
 
     _calculateAbgeleitete() {
-        this.system.abgeleitete.zauberer = this.system.abgeleitete.asp > 0
-        this.system.abgeleitete.geweihter = this.system.abgeleitete.kap > 0
+        this.system.abgeleitete.zauberer =
+            this.system.abgeleitete.asp > 0 ||
+            this.system.abgeleitete.gasp ||
+            this.system.abgeleitete.asp_zugekauft
+        this.system.abgeleitete.geweihter =
+            this.system.abgeleitete.kap > 0 ||
+            this.system.abgeleitete.gkap ||
+            this.system.abgeleitete.kap_zugekauft
 
         let be = this.system.abgeleitete.be
         for (let ruestung of this.ruestungen) {

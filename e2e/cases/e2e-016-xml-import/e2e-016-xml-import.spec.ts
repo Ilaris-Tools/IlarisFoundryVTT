@@ -4,6 +4,11 @@ import { fileURLToPath } from 'url'
 import { expect, test } from '@playwright/test'
 
 import { foundryConfig, loginAndJoinWorld } from '../../shared/fixtures/foundry'
+import {
+    extractFoundryCharacterData,
+    parseXmlCharacter,
+    validateCharacterIntegrity,
+} from '../../shared/helpers/xml-integrity-validator'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -140,5 +145,37 @@ test.describe('E2E-016 Sephrasto XML-Import', () => {
 
         // Negativprüfung Cleanup-Vorbereitung: ID ist gesetzt → afterEach löscht
         expect(importedActorId).toBeTruthy()
+
+        // ── Phase 6: Tiefgreifende Datenintegritätsprüfung ──────────────────
+        // Validiere, dass ALLE Felder aus der Original-XML korrekt in Foundry
+        // abgebildet wurden (Attribute, Skills, Vorteile, Waffen, Rüstungen, Talente)
+        let xmlData
+        try {
+            xmlData = parseXmlCharacter(XML_FIXTURE_PATH)
+        } catch (error) {
+            throw new Error(
+                `Phase 6 failed: Unable to parse XML fixture "${XML_FIXTURE_PATH}": ${error instanceof Error ? error.message : String(error)}`,
+            )
+        }
+
+        const foundryData = await extractFoundryCharacterData(page, ACTOR_NAME)
+        const integrityResult = validateCharacterIntegrity(xmlData, foundryData)
+
+        // Detaillierte Fehlerausgabe bei Mismatch
+        if (!integrityResult.valid) {
+            const errorLog = integrityResult.mismatches
+                .map(
+                    (m) =>
+                        `${m.category}: ${m.field} | Expected: ${JSON.stringify(m.expected)} | Actual: ${JSON.stringify(m.actual)}`,
+                )
+                .join('\n')
+
+            console.error('Character Integrity Violations:\n' + errorLog)
+        }
+
+        expect(
+            integrityResult.valid,
+            `Character integrity check failed: ${integrityResult.summary}\n${integrityResult.mismatches.map((m) => `- ${m.category}: ${m.field}`).join('\n')}`,
+        ).toBe(true)
     })
 })
