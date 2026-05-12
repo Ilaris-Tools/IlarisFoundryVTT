@@ -12,6 +12,56 @@ import { sortByName, sortByGruppe } from '../../../utils/sort-functions.js'
  */
 const abgeleiteteWerteCache = new Map()
 
+const actorSpecificEnergyConfigurations = Object.freeze({
+    asp: Object.freeze({
+        key: 'asp',
+        source: 'abgeleitete',
+        currentPath: 'system.abgeleitete.asp_stern',
+        maxPath: 'system.abgeleitete.asp',
+        thresholdPath: null,
+        boundPath: 'system.abgeleitete.gasp',
+        purchasedPath: 'system.abgeleitete.asp_zugekauft',
+    }),
+    kap: Object.freeze({
+        key: 'kap',
+        source: 'abgeleitete',
+        currentPath: 'system.abgeleitete.kap_stern',
+        maxPath: 'system.abgeleitete.kap',
+        thresholdPath: null,
+        boundPath: 'system.abgeleitete.gkap',
+        purchasedPath: 'system.abgeleitete.kap_zugekauft',
+    }),
+})
+
+function toNumericValue(value, fallback = 0) {
+    if (value == null || value === '') {
+        return fallback
+    }
+
+    const numericValue = Number(value)
+    return Number.isFinite(numericValue) ? numericValue : fallback
+}
+
+function readNumericProperty(target, path, fallback = 0) {
+    if (!path) {
+        return fallback
+    }
+
+    return toNumericValue(foundry.utils.getProperty(target, path), fallback)
+}
+
+function createStructuredEnergyConfiguration(energyKey) {
+    return {
+        key: energyKey,
+        source: 'energien',
+        currentPath: `system.energien.${energyKey}.value`,
+        maxPath: `system.energien.${energyKey}.max`,
+        thresholdPath: `system.energien.${energyKey}.threshold`,
+        boundPath: null,
+        purchasedPath: null,
+    }
+}
+
 export class IlarisActor extends Actor {
     async _preCreate(data, options, user) {
         //this.data.update(data);  // should this be called here?
@@ -176,6 +226,57 @@ export class IlarisActor extends Actor {
             // Calculate base SchiPs
             this.system.schips.schips = calculateValue('SchiP', 4)
         }
+    }
+
+    /**
+     * Normalizes energy access across legacy held/NSC data and structured energy pools.
+     * @param {string} energyKey Energy identifier, e.g. asp, kap, gup.
+     * @returns {object|null} Normalized energy state or null for unknown keys.
+     */
+    getEnergyState(energyKey) {
+        const configuration = this._getEnergyConfiguration(energyKey)
+        if (!configuration) {
+            return null
+        }
+
+        return {
+            key: configuration.key,
+            source: configuration.source,
+            current: readNumericProperty(this, configuration.currentPath),
+            max: readNumericProperty(this, configuration.maxPath),
+            threshold: readNumericProperty(this, configuration.thresholdPath),
+            bound: configuration.boundPath
+                ? readNumericProperty(this, configuration.boundPath)
+                : null,
+            purchased: configuration.purchasedPath
+                ? readNumericProperty(this, configuration.purchasedPath)
+                : null,
+            currentPath: configuration.currentPath,
+            maxPath: configuration.maxPath,
+            thresholdPath: configuration.thresholdPath,
+            boundPath: configuration.boundPath,
+            purchasedPath: configuration.purchasedPath,
+        }
+    }
+
+    _getEnergyConfiguration(energyKey) {
+        const normalizedEnergyKey = String(energyKey ?? '').toLowerCase()
+        if (!normalizedEnergyKey) {
+            return null
+        }
+
+        if (
+            ['held', 'nsc'].includes(this.type) &&
+            actorSpecificEnergyConfigurations[normalizedEnergyKey]
+        ) {
+            return actorSpecificEnergyConfigurations[normalizedEnergyKey]
+        }
+
+        if (['asp', 'kap', 'gup'].includes(normalizedEnergyKey)) {
+            return createStructuredEnergyConfiguration(normalizedEnergyKey)
+        }
+
+        return actorSpecificEnergyConfigurations[normalizedEnergyKey] || null
     }
 
     /**
