@@ -278,9 +278,8 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
     /* -------------------------------------------- */
 
     /**
-     * Generic updateModifierDisplay method that works for all combat dialogs.
-     * Subclasses should implement getBaseValues() and getAllModifierSummaries().
-     * Uses native DOM API instead of jQuery.
+     * Generic summary update for combat dialogs.
+     * Combat dialogs render summaries through the dedicated AppV2 summaries part.
      */
     async updateModifierDisplay() {
         try {
@@ -297,44 +296,21 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             // Get dice formula
             const diceFormula = this.getDiceFormula()
 
-            if (typeof this.getSummaryContext === 'function' && this.constructor.PARTS?.summaries) {
-                this.summary = this.getSummaryContext(
-                    baseValues,
-                    statusMods,
-                    nahkampfMods,
-                    diceFormula,
+            if (
+                typeof this.getSummaryContext !== 'function' ||
+                !this.constructor.PARTS?.summaries
+            ) {
+                throw new Error(
+                    'Combat dialogs must implement getSummaryContext() and define PARTS.summaries',
                 )
-                await this.render({ parts: ['summaries'] })
-                return
             }
 
-            // Create all summaries (subclass specific)
-            const summaries = this.getAllModifierSummaries(
-                baseValues,
-                statusMods,
-                nahkampfMods,
-                diceFormula,
-            )
-
-            // Update the display element
-            modifierEl.innerHTML = summaries
-
-            // Re-attach click listeners after innerHTML update
-            this.addSummaryClickListeners()
+            this.summary = this.getSummaryContext(baseValues, statusMods, nahkampfMods, diceFormula)
+            await this.render({ parts: ['summaries'] })
         } catch (error) {
             console.error('MODIFIER DISPLAY: Fehler beim Update:', error)
-
-            if (this.constructor.PARTS?.summaries) {
-                this.summary = this.getErrorSummaryContext()
-                await this.render({ parts: ['summaries'] })
-                return
-            }
-
-            const modifierEl = this.element?.querySelector('#modifier-summary')
-            if (modifierEl) {
-                modifierEl.innerHTML =
-                    '<div class="modifier-summary"><h4>Würfelwurf Zusammenfassungen:</h4><div class="modifier-item neutral">Fehler beim Berechnen...</div></div>'
-            }
+            this.summary = this.getErrorSummaryContext()
+            await this.render({ parts: ['summaries'] })
         }
     }
 
@@ -343,40 +319,6 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
      */
     getBaseValues() {
         throw new Error('getBaseValues() must be implemented by subclass')
-    }
-
-    /**
-     * Subclasses should override this to return their specific modifier summaries
-     */
-    getAllModifierSummaries(baseValues, statusMods, nahkampfMods, diceFormula) {
-        throw new Error('getAllModifierSummaries() must be implemented by subclass')
-    }
-
-    /**
-     * Generic method to add summary click listeners.
-     * Subclasses can override getSummaryClickActions() to specify their own actions.
-     * Uses native DOM API.
-     */
-    addSummaryClickListeners() {
-        const actions = this.getSummaryClickActions()
-        const modSummaryEl = this.element.querySelector('#modifier-summary')
-        if (!modSummaryEl) return
-
-        actions.forEach((action) => {
-            modSummaryEl.querySelectorAll(action.selector).forEach((el) => {
-                el.addEventListener('click', (ev) => {
-                    ev.preventDefault()
-                    action.handler()
-                })
-            })
-        })
-    }
-
-    /**
-     * Subclasses should override this to return their specific click actions
-     */
-    getSummaryClickActions() {
-        return []
     }
 
     getDefaultSummaryContext() {
@@ -471,73 +413,6 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             text: `Addierte Modifikatoren: ${sign}${totalMod}`,
             cssClass: `modifier-item total ${color}`,
         }
-    }
-
-    _buildSignedModifierItem(mod, label, extraClass = '') {
-        if (mod === 0) {
-            return ''
-        }
-
-        const color = mod > 0 ? 'positive' : 'negative'
-        const sign = mod > 0 ? '+' : ''
-        const className = extraClass ? ` ${extraClass}` : ''
-
-        return `<div class="modifier-item ${color}${className}">${label}: <span>${sign}${mod}</span></div>`
-    }
-
-    _buildModifierLines(textField, options = {}) {
-        if (!textField || !textField.trim()) {
-            return ''
-        }
-
-        const {
-            sectionTitle = '',
-            filterLine = () => true,
-            transformLine = (line) => line,
-            getLineClass = (line) => {
-                if (line.includes('+')) return 'positive'
-                if (line.includes('-')) return 'negative'
-                return 'neutral'
-            },
-        } = options
-
-        const rows = textField
-            .trim()
-            .split('\n')
-            .map((line) => line.trim())
-            .filter((line) => line && filterLine(line))
-            .map((line) => {
-                const displayLine = transformLine(line)?.trim()
-                if (!displayLine) {
-                    return ''
-                }
-
-                const color = getLineClass(line, displayLine)
-                return `<div class="modifier-item maneuver ${color}">${displayLine}</div>`
-            })
-            .filter((line) => line)
-            .join('')
-
-        if (!rows) {
-            return ''
-        }
-
-        let summary = ''
-        if (sectionTitle) {
-            summary += `<div class="modifier-section">${sectionTitle}</div>`
-        }
-        summary += rows
-        return summary
-    }
-
-    _buildTotalModifierItem(totalMod) {
-        if (totalMod === 0) {
-            return ''
-        }
-
-        const color = totalMod > 0 ? 'positive' : 'negative'
-        const sign = totalMod > 0 ? '+' : ''
-        return `<div class="modifier-item total ${color}"><strong>Addierte Modifikatoren: ${sign}${totalMod}</strong></div>`
     }
 
     colorizeManeuverNumbers() {

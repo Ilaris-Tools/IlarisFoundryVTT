@@ -49,7 +49,6 @@ export class UebernatuerlichDialog extends CombatDialog {
         this.item.system.manoever.set_energy_cost = this.item.system.manoever.set_energy_cost || {}
         this.calculatedWounds = 0
 
-        console.log('actor', this.actor)
         this.aufbauendeManoeverAktivieren()
     }
 
@@ -547,8 +546,6 @@ export class UebernatuerlichDialog extends CombatDialog {
         manoever.set_energy_cost.value =
             energyOverride !== '' && energyOverride != null ? +energyOverride : null
 
-        console.log('manoever', manoever.blutmagie.value)
-
         manoever.mod.selected =
             Number(this.element.querySelector(`#modifikator-${this.dialogId}`)?.value) || 0 // Modifikator
         manoever.rllm.selected =
@@ -640,9 +637,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             // Update energy values based on the refreshed actor
             await this.initializeEnergyValues()
 
-            // Update the modifier display if it exists
-            const modifierEl = this.element?.querySelector('#modifier-summary')
-            if (modifierEl) {
+            if (this.element) {
                 this.updateModifierDisplay()
             }
         }
@@ -774,13 +769,6 @@ export class UebernatuerlichDialog extends CombatDialog {
             }
         }
 
-        console.log(
-            'mod_energy before Blutmagie/Verbotene Pforten',
-            mod_energy,
-            'availableEnergy',
-            availableEnergy,
-            manoever.blutmagie?.value,
-        )
         // Handle Blutmagie and Verbotene Pforten
         if (manoever.blutmagie?.value || manoever.verbotene_pforten?.activated) {
             // Handle Blutmagie
@@ -816,7 +804,6 @@ export class UebernatuerlichDialog extends CombatDialog {
             }
         }
 
-        console.log('mod_energy', mod_energy)
         // Ensure mod_energy is never less than 0
         mod_energy = Math.max(0, mod_energy)
         this.mod_at = mod_at
@@ -829,5 +816,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         this.text_energy = text_energy
         this.schaden = schaden
         this.fumble_val = fumble_val
+        this.damageType = damageType
+        this.trueDamage = trueDamage
     }
 }
