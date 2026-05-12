@@ -1,13 +1,53 @@
-{{log 'angriff' this}}
-
-<!-- Right Column - Modifier Summary -->
 <div>
     <div class="flex_center_center">
-        <div>Würfelaktionen: {{summary.totalMod}}</div>
+        <div>{{summary.title}}</div>
     </div>
     <div id="modifier-summary" class="modifier-summary-container">
         <div class="all-summaries">
+            {{#if summary.isError}}
+                <div class="modifier-summary">
+                    <div class="modifier-item neutral">{{summary.message}}</div>
+                </div>
+            {{else if summary.isEmpty}}
+                <div class="modifier-summary">
+                    <div class="modifier-item neutral">{{summary.message}}</div>
+                </div>
+            {{else}}
+                {{#each summary.sections as |section|}}
+                    <div class="{{section.cssClass}}" data-action="{{section.action}}">
+                        <div class="flex_space-between_center">
+                            <h4 style="width:100%">{{section.heading}}</h4>
+                            <i class="custom-icon-without-hover"></i>
+                        </div>
+                        <div class="modifier-list">
+                            {{#each section.rows as |row|}}
+                                <div class="{{row.cssClass}}">
+                                    {{row.label}}: <span>{{row.value}}</span>
+                                </div>
+                            {{/each}}
 
+                            {{#each section.sections as |subsection|}}
+                                {{#if subsection.title}}
+                                    <div class="modifier-section">{{subsection.title}}</div>
+                                {{/if}}
+                                {{#each subsection.items as |item|}}
+                                    <div class="{{item.cssClass}}">{{item.text}}</div>
+                                {{/each}}
+                            {{/each}}
+
+                            {{#if section.showDivider}}
+                                <hr>
+                            {{/if}}
+
+                            {{#if section.totalRow}}
+                                <div class="{{section.totalRow.cssClass}}">
+                                    <strong>{{section.totalRow.text}}</strong>
+                                </div>
+                            {{/if}}
+                        </div>
+                    </div>
+                {{/each}}
+            {{/if}}
         </div>
     </div>
 </div>

@@ -15,6 +15,7 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api
 export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
     /** @override */
     static DEFAULT_OPTIONS = {
+        ...super.DEFAULT_OPTIONS,
         classes: ['ilaris', 'combat-dialog'],
         position: {
             width: 900,
@@ -46,6 +47,8 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         this.text_dm = ''
         this.item = item
         this.actor = actor
+        this.dialogId = `dialog-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`
+        this.summary = this.getDefaultSummaryContext()
 
         // Initialize selected actors from Foundry targets after actor/item are set
         this._initializeSelectedActorsFromTargets()
@@ -162,16 +165,27 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             mod_at: this.mod_at,
             choices_schips: CONFIG.ILARIS.schips_choice,
             checked_schips: '0',
-            dialogId: (this.dialogId = `dialog-${Date.now()}-${Math.random()
-                .toString(36)
-                .substring(2, 11)}`),
+            dialogId: this.dialogId,
             selectedActors: this.selectedActors || [],
             useTargetSelection: game.settings.get(
                 ConfigureGameSettingsCategories.Ilaris,
                 IlarisAutomatisierungSettingNames.useTargetSelection,
             ),
-            summary: {},
+            summary: this.summary,
         }
+    }
+
+    async _preparePartContext(partId, context, options) {
+        let partContext = context
+        if (typeof super._preparePartContext === 'function') {
+            partContext = await super._preparePartContext(partId, context, options)
+        }
+
+        if (partId === 'summaries') {
+            partContext.summary = this.summary || this.getDefaultSummaryContext()
+        }
+
+        return partContext
     }
 
     /**
@@ -270,16 +284,6 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
      */
     async updateModifierDisplay() {
         try {
-            const modifierEl = this.element.querySelector('#modifier-summary')
-            if (!modifierEl) {
-                console.warn('MODIFIER DISPLAY: Element-Referenz nicht verfügbar')
-                return
-            }
-
-            // Show loading state
-            modifierEl.innerHTML =
-                '<div class="modifier-summary"><h4>Würfelwurf Zusammenfassungen:</h4><div class="modifier-item neutral">Wird berechnet...</div></div>'
-
             // Temporarily parse values to calculate modifiers
             await this.manoeverAuswaehlen()
             await this.updateManoeverMods()
@@ -292,6 +296,17 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
 
             // Get dice formula
             const diceFormula = this.getDiceFormula()
+
+            if (typeof this.getSummaryContext === 'function' && this.constructor.PARTS?.summaries) {
+                this.summary = this.getSummaryContext(
+                    baseValues,
+                    statusMods,
+                    nahkampfMods,
+                    diceFormula,
+                )
+                await this.render({ parts: ['summaries'] })
+                return
+            }
 
             // Create all summaries (subclass specific)
             const summaries = this.getAllModifierSummaries(
@@ -308,6 +323,13 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             this.addSummaryClickListeners()
         } catch (error) {
             console.error('MODIFIER DISPLAY: Fehler beim Update:', error)
+
+            if (this.constructor.PARTS?.summaries) {
+                this.summary = this.getErrorSummaryContext()
+                await this.render({ parts: ['summaries'] })
+                return
+            }
+
             const modifierEl = this.element?.querySelector('#modifier-summary')
             if (modifierEl) {
                 modifierEl.innerHTML =
@@ -355,6 +377,100 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
      */
     getSummaryClickActions() {
         return []
+    }
+
+    getDefaultSummaryContext() {
+        return {
+            title: 'Würfelaktionen:',
+            sections: [],
+            isEmpty: true,
+            isError: false,
+            message: 'Wird berechnet...',
+        }
+    }
+
+    getErrorSummaryContext() {
+        return {
+            title: 'Würfelaktionen:',
+            sections: [],
+            isEmpty: false,
+            isError: true,
+            message: 'Fehler beim Berechnen...',
+        }
+    }
+
+    _buildSignedModifierData(mod, label, extraClass = '') {
+        if (mod === 0) {
+            return null
+        }
+
+        const color = mod > 0 ? 'positive' : 'negative'
+        const sign = mod > 0 ? '+' : ''
+        const className = extraClass ? ` ${extraClass}` : ''
+
+        return {
+            label,
+            value: `${sign}${mod}`,
+            cssClass: `modifier-item ${color}${className}`,
+        }
+    }
+
+    _buildModifierSectionData(textField, options = {}) {
+        if (!textField || !textField.trim()) {
+            return null
+        }
+
+        const {
+            sectionTitle = '',
+            filterLine = () => true,
+            transformLine = (line) => line,
+            getLineClass = (line) => {
+                if (line.includes('+')) return 'positive'
+                if (line.includes('-')) return 'negative'
+                return 'neutral'
+            },
+        } = options
+
+        const items = textField
+            .trim()
+            .split('\n')
+            .map((line) => line.trim())
+            .filter((line) => line && filterLine(line))
+            .map((line) => {
+                const displayLine = transformLine(line)?.trim()
+                if (!displayLine) {
+                    return null
+                }
+
+                const color = getLineClass(line, displayLine)
+                return {
+                    text: displayLine,
+                    cssClass: `modifier-item maneuver ${color}`,
+                }
+            })
+            .filter((item) => item)
+
+        if (!items.length) {
+            return null
+        }
+
+        return {
+            title: sectionTitle,
+            items,
+        }
+    }
+
+    _buildTotalModifierData(totalMod) {
+        if (totalMod === 0) {
+            return null
+        }
+
+        const color = totalMod > 0 ? 'positive' : 'negative'
+        const sign = totalMod > 0 ? '+' : ''
+        return {
+            text: `Addierte Modifikatoren: ${sign}${totalMod}`,
+            cssClass: `modifier-item total ${color}`,
+        }
     }
 
     _buildSignedModifierItem(mod, label, extraClass = '') {
@@ -942,37 +1058,27 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
      * Uses native DOM API instead of jQuery.
      */
     setupModifierDisplay() {
-        const modifierEl = this.element.querySelector('#modifier-summary')
-
-        // Store a reference to prevent multiple updates
-        this._updateTimeout = null
-
-        if (!modifierEl) {
-            console.warn('MODIFIER DISPLAY: Element nicht im Template gefunden')
+        if (!this.element || this._modifierDisplayListenersBound) {
             return
         }
 
-        // Add listeners for real-time modifier updates with debouncing
+        this._modifierDisplayListenersBound = true
+
+        const triggerSummaryUpdate = () => {
+            if (this._updateTimeout) {
+                clearTimeout(this._updateTimeout)
+            }
+
+            this._updateTimeout = setTimeout(() => {
+                this.updateModifierDisplay()
+            }, 150)
+        }
+
         this.element.querySelectorAll('input, select').forEach((input) => {
-            input.addEventListener('change', () => {
-                if (this._updateTimeout) {
-                    clearTimeout(this._updateTimeout)
-                }
-                this._updateTimeout = setTimeout(() => {
-                    this.updateModifierDisplay()
-                }, 300)
-            })
-            input.addEventListener('input', () => {
-                if (this._updateTimeout) {
-                    clearTimeout(this._updateTimeout)
-                }
-                this._updateTimeout = setTimeout(() => {
-                    this.updateModifierDisplay()
-                }, 300)
-            })
+            input.addEventListener('change', triggerSummaryUpdate)
+            input.addEventListener('input', triggerSummaryUpdate)
         })
 
-        // Initial display update (listeners will be added after innerHTML update)
-        setTimeout(() => this.updateModifierDisplay(), 500)
+        void this.updateModifierDisplay()
     }
 }

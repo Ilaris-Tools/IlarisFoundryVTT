@@ -7,8 +7,10 @@ import { formatDiceFormula } from '../../core/utilities.js'
 export class FernkampfAngriffDialog extends CombatDialog {
     /** @override */
     static DEFAULT_OPTIONS = {
+        ...super.DEFAULT_OPTIONS,
         classes: ['fernkampf-dialog'],
         actions: {
+            ...super.DEFAULT_OPTIONS.actions,
             schaden: FernkampfAngriffDialog.#onSchaden,
         },
     }
@@ -72,10 +74,6 @@ export class FernkampfAngriffDialog extends CombatDialog {
         this.setupModifierDisplay()
     }
 
-    /* -------------------------------------------- */
-    /*  Action Handlers                             */
-    /* -------------------------------------------- */
-
     /**
      * Handle the "schaden" action button click.
      * @param {PointerEvent} event
@@ -83,23 +81,6 @@ export class FernkampfAngriffDialog extends CombatDialog {
      */
     static async #onSchaden(event, target) {
         await this._schadenKlick()
-    }
-
-    /* -------------------------------------------- */
-    /*  Summary Click Actions                       */
-    /* -------------------------------------------- */
-
-    getSummaryClickActions() {
-        return [
-            {
-                selector: '.clickable-summary.angreifen',
-                handler: () => this._angreifenKlick(),
-            },
-            {
-                selector: '.clickable-summary.schaden',
-                handler: () => this._schadenKlick(),
-            },
-        ]
     }
 
     /**
@@ -122,28 +103,24 @@ export class FernkampfAngriffDialog extends CombatDialog {
         }
     }
 
-    /**
-     * Creates formatted summaries for all roll types
-     */
-    getAllModifierSummaries(baseValues, statusMods, nahkampfMods, diceFormula) {
+    getSummaryContext(baseValues, statusMods, nahkampfMods, diceFormula) {
         const { baseFK } = baseValues
-        let allSummaries = '<div class="all-summaries">'
 
-        // Attack Summary
-        allSummaries += this.getAttackSummary(baseFK, statusMods, nahkampfMods, diceFormula)
-
-        // Damage Summary
-        allSummaries += this.getDamageSummary()
-
-        allSummaries += '</div>'
-        return allSummaries
+        return {
+            title: 'Würfelaktionen:',
+            isEmpty: false,
+            isError: false,
+            sections: [
+                this.getAttackSummaryContext(baseFK, statusMods, nahkampfMods, diceFormula),
+                this.getDamageSummaryContext(),
+            ],
+        }
     }
 
     /**
      * Creates attack roll summary
      */
-    getAttackSummary(baseFK, statusMods, nahkampfMods, diceFormula) {
-        // Calculate totals first for the heading
+    getAttackSummaryContext(baseFK, statusMods, nahkampfMods, diceFormula) {
         const maneuverMod = this.mod_at || 0
         const totalMod = maneuverMod + statusMods + nahkampfMods
         const finalFK = baseFK + totalMod
@@ -151,30 +128,36 @@ export class FernkampfAngriffDialog extends CombatDialog {
         const finalFormula =
             finalFK >= 0 ? `${formattedDice}+${finalFK}` : `${formattedDice}${finalFK}`
 
-        let summary = '<div class="modifier-summary attack-summary clickable-summary angreifen">'
-        summary += `<div class="flex_space-between_center"><h4 style="width:100%">🏹 Fernkampf: ${finalFormula}</h4><i class="custom-icon-without-hover"></i></div>`
-        summary += '<div class="modifier-list">'
+        const rows = [
+            {
+                label: 'Basis FK',
+                value: `${baseFK}`,
+                cssClass: 'modifier-item base-value',
+            },
+            this._buildSignedModifierData(statusMods, 'Status (Wunden/Furcht)'),
+            this._buildSignedModifierData(nahkampfMods, 'Token Status'),
+        ].filter((row) => row)
 
-        // Base FK
-        summary += `<div class="modifier-item base-value">Basis FK: <span>${baseFK}</span></div>`
+        const maneuverSection = this._buildModifierSectionData(this.text_at, {
+            sectionTitle: 'Manöver:',
+        })
+        const totalRow = this._buildTotalModifierData(totalMod)
 
-        summary += this._buildSignedModifierItem(statusMods, 'Status (Wunden/Furcht)')
-        summary += this._buildSignedModifierItem(nahkampfMods, 'Token Status')
-        summary += this._buildModifierLines(this.text_at, { sectionTitle: 'Manöver:' })
-
-        summary += '<hr>'
-
-        summary += this._buildTotalModifierItem(totalMod)
-
-        summary += '</div></div>'
-        return summary
+        return {
+            action: 'angreifen',
+            cssClass: 'modifier-summary attack-summary clickable-summary',
+            heading: `🏹 Fernkampf: ${finalFormula}`,
+            rows,
+            sections: maneuverSection ? [maneuverSection] : [],
+            totalRow,
+            showDivider: Boolean(maneuverSection || totalRow),
+        }
     }
 
     /**
      * Creates damage roll summary
      */
-    getDamageSummary() {
-        // Calculate totals first for the heading
+    getDamageSummaryContext() {
         const baseDamage = this.schaden || this.item.getTp()
         const maneuverMod = this.mod_dm || 0
         let finalFormula
@@ -185,14 +168,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
             finalFormula = `${baseDamage} ${sign}${maneuverMod}`
         }
 
-        let summary = '<div class="modifier-summary damage-summary clickable-summary schaden">'
-        summary += `<div class="flex_space-between_center"><h4 style="width:100%">🩸 Schaden: ${finalFormula}</h4><i class="custom-icon-without-hover"></i></div>`
-        summary += '<div class="modifier-list">'
-
-        // Base damage
-        summary += `<div class="modifier-item base-value">Basis Schaden: <span>${baseDamage}</span></div>`
-
-        summary += this._buildModifierLines(this.text_dm, {
+        const modifierSection = this._buildModifierSectionData(this.text_dm, {
             sectionTitle: 'Modifikatoren:',
             filterLine: (line) =>
                 this.isGezieltSchlagActive() ||
@@ -207,10 +183,20 @@ export class FernkampfAngriffDialog extends CombatDialog {
             },
         })
 
-        summary += '<hr>'
-
-        summary += '</div></div>'
-        return summary
+        return {
+            action: 'schaden',
+            cssClass: 'modifier-summary damage-summary clickable-summary',
+            heading: `🩸 Schaden: ${finalFormula}`,
+            rows: [
+                {
+                    label: 'Basis Schaden',
+                    value: `${baseDamage}`,
+                    cssClass: 'modifier-item base-value',
+                },
+            ],
+            sections: modifierSection ? [modifierSection] : [],
+            showDivider: Boolean(modifierSection),
+        }
     }
 
     /* -------------------------------------------- */
