@@ -1,8 +1,4 @@
-{{log 'uebernatuerlich' this}}
-
-<div class="combat-dialog-container">
-    <!-- Left Column - Main Controls -->
-    <div class="left-column">
+<div class="left-column">
         <div>
             <label>Anzahl W20:</label>
             <label>{{radioBoxes "xd20" choices_xd20 checked=checked_xd20}}</label>
@@ -161,15 +157,4 @@
                 {{selectOptions rollModes selected=item.system.manoever.rllm.selected localize=true}}
             </select>
         </div>
-    </div>
-
-    <!-- Right Column - Modifier Summary -->
-    <div class="right-column">
-        <div class="flex_center_center">
-            <div>Würfelaktionen:</div>   
-        </div>
-        <div id="modifier-summary" class="modifier-summary-container">
-            <!-- This will be populated by JavaScript -->
-        </div>
-    </div>
 </div>

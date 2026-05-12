@@ -1058,7 +1058,16 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
      * Uses native DOM API instead of jQuery.
      */
     setupModifierDisplay() {
-        if (!this.element || this._modifierDisplayListenersBound) {
+        if (!this.element) {
+            return
+        }
+
+        if (this._modifierDisplayBoundElement !== this.element) {
+            this._modifierDisplayListenersBound = false
+            this._modifierDisplayBoundElement = this.element
+        }
+
+        if (this._modifierDisplayListenersBound) {
             return
         }
 
