@@ -22,7 +22,7 @@ export class AngriffDialog extends CombatDialog {
             template: 'systems/Ilaris/scripts/combat/templates/dialogs/angriff.hbs',
         },
         summaries: {
-            template: 'systems/Ilaris/scripts/combat/templates/dialogs/angriff/summaries.hbs',
+            template: 'systems/Ilaris/scripts/combat/templates/dialogs/shared/summaries.hbs',
         },
     }
 

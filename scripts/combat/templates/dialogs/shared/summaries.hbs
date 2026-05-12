@@ -14,9 +14,9 @@
                 </div>
             {{else}}
                 {{#each summary.sections as |section|}}
-                    <div class="{{section.cssClass}}" data-action="{{section.action}}">
+                    <div class="{{section.cssClass}}" {{#if section.action}}data-action="{{section.action}}"{{/if}}>
                         <div class="flex_space-between_center">
-                            <h4 style="width:100%">{{section.heading}}</h4>
+                            <h4 class="{{section.headingClass}}" style="width:100%">{{section.heading}}</h4>
                             <i class="custom-icon-without-hover"></i>
                         </div>
                         <div class="modifier-list">
@@ -37,6 +37,28 @@
 
                             {{#if section.showDivider}}
                                 <hr>
+                            {{/if}}
+
+                            {{#each section.footerRows as |row|}}
+                                <div class="{{row.cssClass}}">
+                                    {{#if row.label}}
+                                        {{row.label}}: <span>{{row.value}}</span>
+                                    {{else if row.strong}}
+                                        <strong>{{row.text}}</strong>
+                                    {{else}}
+                                        {{row.text}}
+                                    {{/if}}
+                                </div>
+                            {{/each}}
+
+                            {{#if section.actionButtons.length}}
+                                <hr>
+                                <div class="modifier-section">Energie abrechnen:</div>
+                                {{#each section.actionButtons as |button|}}
+                                    <div class="{{button.cssClass}}" data-action="{{button.action}}" style="{{button.style}}">
+                                        {{button.text}}
+                                    </div>
+                                {{/each}}
                             {{/if}}
 
                             {{#if section.totalRow}}

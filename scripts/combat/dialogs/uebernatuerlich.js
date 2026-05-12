@@ -28,8 +28,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             template: 'systems/Ilaris/scripts/combat/templates/dialogs/uebernatuerlich.hbs',
         },
         summaries: {
-            template:
-                'systems/Ilaris/scripts/combat/templates/dialogs/uebernatuerlich/summaries.hbs',
+            template: 'systems/Ilaris/scripts/combat/templates/dialogs/shared/summaries.hbs',
         },
     }
 

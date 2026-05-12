@@ -22,8 +22,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
                 'systems/Ilaris/scripts/combat/templates/dialogs/fernkampf_angriff/fernkampf_angriff.hbs',
         },
         summaries: {
-            template:
-                'systems/Ilaris/scripts/combat/templates/dialogs/fernkampf_angriff/summaries.hbs',
+            template: 'systems/Ilaris/scripts/combat/templates/dialogs/shared/summaries.hbs',
         },
     }
 
