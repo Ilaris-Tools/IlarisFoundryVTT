@@ -32,6 +32,7 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         actions: {
             angreifen: CombatDialog.#onAngreifen,
             showNearby: CombatDialog.#onShowNearby,
+            toggleManeuvers: CombatDialog.#onToggleManeuvers,
         },
     }
 
@@ -216,21 +217,6 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
     async _onRender(context, options) {
         await super._onRender(context, options)
 
-        // Add expand/collapse functionality for maneuver headers
-        this.element.querySelectorAll('.maneuver-header').forEach((header) => {
-            header.addEventListener('click', (ev) => {
-                const grid = header.nextElementSibling
-                const isCollapsed = header.classList.contains('collapsed')
-                const text = header.querySelector('h4')
-
-                header.classList.toggle('collapsed')
-                grid.classList.toggle('collapsed')
-
-                // Update text based on state
-                text.textContent = isCollapsed ? 'Einklappen' : 'Ausklappen'
-            })
-        })
-
         // Update has-value class when inputs change
         this.element
             .querySelectorAll('.maneuver-item input, .maneuver-item select')
@@ -291,6 +277,33 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
      */
     static async #onShowNearby(event, target) {
         await this._showNearbyActors()
+    }
+
+    /**
+     * Handle the maneuver accordion toggle action.
+     * @param {PointerEvent} event - The originating click event
+     * @param {HTMLElement} target - The element with data-action="toggleManeuvers"
+     */
+    static async #onToggleManeuvers(event, target) {
+        this.toggleManeuvers(target)
+    }
+
+    toggleManeuvers(target) {
+        const header = target.closest('.maneuver-header') || target
+        const grid = header?.nextElementSibling
+        if (!header || !grid) {
+            return
+        }
+
+        const isCollapsed = header.classList.contains('collapsed')
+        const toggleText = header.querySelector('.toggle-display h4')
+
+        header.classList.toggle('collapsed')
+        grid.classList.toggle('collapsed')
+
+        if (toggleText) {
+            toggleText.textContent = isCollapsed ? 'Einklappen' : 'Ausklappen'
+        }
     }
 
     /* -------------------------------------------- */
