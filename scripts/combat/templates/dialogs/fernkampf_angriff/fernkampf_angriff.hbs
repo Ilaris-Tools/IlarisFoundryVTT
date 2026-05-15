@@ -80,7 +80,7 @@
     </div>
     <hr />
     {{/if}}
-
+    {{#if maneuvers.length}}
     <div>
         <div class="maneuver-header collapsed">
             <h3>Manöver:</h3>
@@ -90,7 +90,7 @@
             </div>
         </div>
         <div class="maneuver-grid collapsed">
-            {{#each item.manoever as |manoever|}}
+            {{#each maneuvers as |manoever|}}
             <div
                 class="maneuver-item {{#if (or manoever.inputValue.value manoever.inputValue.checked)}}has-value{{/if}}"
             >
@@ -129,6 +129,7 @@
             {{/each}}
         </div>
     </div>
+    {{/if}}
 
     <hr />
     <div class="flexrow">

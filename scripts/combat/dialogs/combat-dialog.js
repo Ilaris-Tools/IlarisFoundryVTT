@@ -170,6 +170,7 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         }
 
         // damit wird das template gefüttert
+        const maneuvers = this.item.manoever || []
         return {
             ...context,
             config: CONFIG.ILARIS,
@@ -182,6 +183,7 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             choices_schips: CONFIG.ILARIS.schips_choice,
             checked_schips: '0',
             dialogId: this.dialogId,
+            maneuvers,
             selectedActors: this.selectedActors || [],
             useTargetSelection: game.settings.get(
                 ConfigureGameSettingsCategories.Ilaris,
