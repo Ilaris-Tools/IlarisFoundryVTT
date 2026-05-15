@@ -12,7 +12,6 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api
 
 /**
  * Base class for all combat dialogs in Ilaris.
- * Migrated from legacy Dialog to ApplicationV2 + HandlebarsApplicationMixin.
  *
  * @extends HandlebarsApplicationMixin(ApplicationV2)
  */
@@ -133,9 +132,6 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
                 })
             }
 
-            console.log(
-                `Auto-populated ${this.selectedActors.length} targets from Foundry selection`,
-            )
             callIlarisHookAllWithGlobalMirror(
                 'Ilaris.targetSelectionComplete',
                 this,
@@ -146,7 +142,6 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
 
     /**
      * Prepare context data for template rendering.
-     * Replaces the legacy getData() method.
      * @override
      * @param {object} options - Render options
      * @returns {Promise<object>} Context data for the template
@@ -209,7 +204,6 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
 
     /**
      * Actions performed after any render of the Application.
-     * Replaces the legacy activateListeners() method.
      * @override
      * @param {object} context - Prepared context data
      * @param {object} options - Render options
@@ -217,27 +211,18 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
     async _onRender(context, options) {
         await super._onRender(context, options)
 
-        // Update has-value class when inputs change
         this.element
             .querySelectorAll('.maneuver-item input, .maneuver-item select')
             .forEach((input) => {
                 input.addEventListener('change', (ev) => {
                     const item = ev.currentTarget.closest('.maneuver-item')
                     const hasValue = Array.from(item.querySelectorAll('input, select')).some(
-                        (inp) => {
-                            if (inp.type === 'checkbox') return inp.checked
-                            return inp.value && inp.value !== '0'
+                        (entry) => {
+                            if (entry.type === 'checkbox') return entry.checked
+                            return entry.value && entry.value !== '0'
                         },
                     )
                     item.classList.toggle('has-value', hasValue)
-                })
-            })
-
-        // Add specific listener for maneuver to handle ZERO_DAMAGE conflicts
-        this.element
-            .querySelectorAll('.maneuver-item input, .maneuver-item select')
-            .forEach((input) => {
-                input.addEventListener('change', () => {
                     this.handleZeroDamageConflicts()
                 })
             })
@@ -490,14 +475,8 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         })
     }
 
-    aufbauendeManoeverAktivieren() {
-        let manoever = this.item.system.manoever
-        let vorteile = this.actor.vorteil.kampf.map((v) => v.name)
-    }
-
     /**
      * Parse maneuver selections from the dialog form.
-     * Uses native DOM API instead of jQuery.
      * Note: Uses getElementById instead of querySelector to support IDs starting with digits.
      */
     async manoeverAuswaehlen() {
@@ -564,7 +543,6 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
 
     /**
      * Get dice formula based on schips selection.
-     * Uses native DOM API instead of jQuery.
      */
     getDiceFormula(xd20_choice = 1) {
         let schipsOption =
@@ -612,7 +590,6 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
 
     /**
      * Handles ZERO_DAMAGE maneuver conflicts.
-     * Uses native DOM API instead of jQuery.
      */
     handleZeroDamageConflicts() {
         // Find all ZERO_DAMAGE maneuvers
@@ -859,7 +836,6 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
 
     /**
      * Sets up the modifier display element and listeners for real-time updates.
-     * Uses native DOM API instead of jQuery.
      */
     setupModifierDisplay() {
         if (!this.element) {

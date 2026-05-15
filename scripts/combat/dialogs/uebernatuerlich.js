@@ -32,7 +32,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             template: 'systems/Ilaris/scripts/combat/templates/dialogs/uebernatuerlich.hbs',
         },
         summaries: {
-            template: 'systems/Ilaris/scripts/combat/templates/dialogs/shared/summaries.hbs',
+            template: 'systems/Ilaris/scripts/combat/templates/dialogs/summaries.hbs',
         },
     }
 
@@ -50,8 +50,6 @@ export class UebernatuerlichDialog extends CombatDialog {
         this.verbotene_pforten = { multiplier: 4, activated: false }
         this.set_energy_cost = { value: null }
         this.calculatedWounds = 0
-
-        this.aufbauendeManoeverAktivieren()
     }
 
     /**
@@ -99,7 +97,6 @@ export class UebernatuerlichDialog extends CombatDialog {
 
     /**
      * Override getDiceFormula to handle the special xd20 logic for supernatural abilities.
-     * Uses native DOM API instead of jQuery.
      */
     getDiceFormula(xd20_choice = null) {
         if (xd20_choice === null) {
@@ -510,7 +507,6 @@ export class UebernatuerlichDialog extends CombatDialog {
 
     /**
      * Parse maneuver selections from the dialog form.
-     * Uses native DOM API instead of jQuery.
      */
     async manoeverAuswaehlen() {
         // Ensure manoever exists
@@ -630,7 +626,6 @@ export class UebernatuerlichDialog extends CombatDialog {
 
     /**
      * Refreshes the dialog's actor reference and updates displays after actor changes.
-     * Uses native DOM API instead of jQuery.
      */
     async refreshActorData() {
         // Get the updated actor from the game

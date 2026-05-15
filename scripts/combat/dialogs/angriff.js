@@ -26,7 +26,7 @@ export class AngriffDialog extends CombatDialog {
             template: 'systems/Ilaris/scripts/combat/templates/dialogs/angriff.hbs',
         },
         summaries: {
-            template: 'systems/Ilaris/scripts/combat/templates/dialogs/shared/summaries.hbs',
+            template: 'systems/Ilaris/scripts/combat/templates/dialogs/summaries.hbs',
         },
     }
 
@@ -532,12 +532,10 @@ export class AngriffDialog extends CombatDialog {
         let vorteile = this.actor.vorteil.kampf.map((v) => v.name)
 
         manoever.vlof.offensiver_kampfstil = vorteile.includes('Offensiver Kampfstil')
-        super.aufbauendeManoeverAktivieren()
     }
 
     /**
      * Parse maneuver selections from the dialog form.
-     * Uses native DOM API instead of jQuery.
      */
     async manoeverAuswaehlen() {
         let manoever = this.item.system.manoever

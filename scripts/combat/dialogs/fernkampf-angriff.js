@@ -22,11 +22,10 @@ export class FernkampfAngriffDialog extends CombatDialog {
     /** @override */
     static PARTS = {
         settings: {
-            template:
-                'systems/Ilaris/scripts/combat/templates/dialogs/fernkampf_angriff/fernkampf_angriff.hbs',
+            template: 'systems/Ilaris/scripts/combat/templates/dialogs/fernkampf_angriff.hbs',
         },
         summaries: {
-            template: 'systems/Ilaris/scripts/combat/templates/dialogs/shared/summaries.hbs',
+            template: 'systems/Ilaris/scripts/combat/templates/dialogs/summaries.hbs',
         },
     }
 
@@ -40,9 +39,6 @@ export class FernkampfAngriffDialog extends CombatDialog {
         if (this.item.system.computed?.combatMechanics?.fumbleThreshold) {
             this.fumble_val = this.item.system.computed.combatMechanics.fumbleThreshold
         }
-
-        // Ranged combat has no specific additional properties beyond base
-        this.aufbauendeManoeverAktivieren()
     }
 
     /**
@@ -282,7 +278,6 @@ export class FernkampfAngriffDialog extends CombatDialog {
 
     /**
      * Parse maneuver selections from the dialog form.
-     * Uses native DOM API instead of jQuery.
      */
     async manoeverAuswaehlen() {
         let manoever = this.item.system.manoever
