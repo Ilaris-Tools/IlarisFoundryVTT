@@ -1312,7 +1312,7 @@
     {
       "_id": "I1doyYsihTBZcn35",
       "name": "Sprache: Garethi",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 3,
@@ -1339,7 +1339,7 @@
     {
       "_id": "mhN3P0l3eu5wUX84",
       "name": "Schrift: Kusliker Zeichen",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1366,7 +1366,7 @@
     {
       "_id": "PdsNUsln1zrwwJxC",
       "name": "Schrift: Tulamidya-Zeichen",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1393,7 +1393,7 @@
     {
       "_id": "Q0SA35uK1z565UgS",
       "name": "Sprache: Tulamidya",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1420,7 +1420,7 @@
     {
       "_id": "C73V7eDiMXYWwToB",
       "name": "Weinkenner",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1447,7 +1447,7 @@
     {
       "_id": "WMOeyccGVj2Wzujl",
       "name": "Tänzer",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1474,7 +1474,7 @@
     {
       "_id": "VObf8eGGIWID1hoB",
       "name": "Zwölfgöttlicher Ritus",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1507,7 +1507,7 @@
     {
       "_id": "8wM5H6ruLnZbkueC",
       "name": "Ehre",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1540,7 +1540,7 @@
     {
       "_id": "68BAvBNMf1W7WSsh",
       "name": "Heerführung",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1573,7 +1573,7 @@
     {
       "_id": "iZ52QTy0D3wyDLF3",
       "name": "Schutz der Gläubigen",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 5,

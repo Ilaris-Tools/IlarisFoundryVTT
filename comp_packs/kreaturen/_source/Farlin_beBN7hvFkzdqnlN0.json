@@ -425,7 +425,7 @@
     {
       "_id": "AWb9Hj8cr9r01Sj8",
       "name": "Mechanik",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Mit Mechanik stellst du Apparaturen wie Armbrüste, Flaschenzüge oder Südweiser her und wartest sie.",
         "pw": 16,
@@ -454,7 +454,7 @@
     {
       "_id": "NNYLzetlN9SdaYgP",
       "name": "Untertauchen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Untertauchen erlaubt dir das Schleichen, Verstecken und Beschatten in der Zivilisation. Du verschwindest in der Menschenmenge am Marktplatz, steigst ungehört in eine Villa eines Ratsherren ein oder beschattest unauffällig einen Hehler.",
         "pw": 12,
@@ -483,7 +483,7 @@
     {
       "_id": "OWq2If10yVPF6ZVa",
       "name": "Schmieden",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Schmieden ist die Herstellung und Reparatur von Schwertern und Hufeisen bis hin zu Plattenpanzern.",
         "pw": 18,
@@ -512,7 +512,7 @@
     {
       "_id": "nR96aNOvq8Oaiclw",
       "name": "Sinnenschärfe",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Sinnenschärfe ist die aktive Verwendung deiner Sinne, um einen Kollaborateur in einem geschäftigen Wirtshaus zu belauschen, die Flagge eines nahenden Schiffes zu erkennen oder die Nadel im Heuhaufen zu finden.",
         "pw": 16,
@@ -541,7 +541,7 @@
     {
       "_id": "gzQHHMfY1pRn2tXy",
       "name": "Tulamidenlande (Gebräuche)",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 8,
@@ -570,7 +570,7 @@
     {
       "_id": "Mu5w4RasTfkOtNIi",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 16,
@@ -599,7 +599,7 @@
     {
       "_id": "7hT9UWwJVvxyNEuf",
       "name": "Zähigkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Zähigkeit hilft dir, Schmerzen und Strapazen zu widerstehen. So kannst du trotz zahlreicher Wunden noch handlungsfähig bleiben und einen Kampf zu euren Gunsten wenden oder eine ganze Nacht hindurch wachen.",
         "pw": 16,
@@ -628,7 +628,7 @@
     {
       "_id": "RgMZwDfkBA4EHqWr",
       "name": "Erz",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

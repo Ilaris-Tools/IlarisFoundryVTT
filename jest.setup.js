@@ -98,3 +98,12 @@ global.Handlebars = {
     registerHelper: jest.fn(),
     registerPartial: jest.fn(),
 }
+
+// Mock Foundry Hooks
+global.Hooks = {
+    call: jest.fn().mockReturnValue(true),
+    callAll: jest.fn(),
+    on: jest.fn(),
+    once: jest.fn(),
+    off: jest.fn(),
+}

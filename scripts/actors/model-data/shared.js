@@ -1,0 +1,96 @@
+export function createActorTemplateFields(h) {
+    const createAttributeEntry = () =>
+        h.schema({
+            wert: h.number(0),
+            pw: h.number(0),
+            kampfPw: h.number(0),
+        })
+
+    return {
+        gesundheit: h.schema({
+            erschoepfung: h.number(0),
+            wunden: h.number(0),
+            wundabzuege: h.number(0),
+            wundenignorieren: h.bool(false),
+            display: h.string('Volle Gesundheit'),
+            hp: h.schema({
+                max: h.number(9),
+                value: h.number(9),
+                threshold: h.number(0),
+            }),
+        }),
+        energien: h.schema({
+            asp: h.schema({ max: h.number(0), value: h.number(0), threshold: h.number(0) }),
+            gup: h.schema({ max: h.number(0), value: h.number(0), threshold: h.number(0) }),
+            kap: h.schema({ max: h.number(0), value: h.number(0), threshold: h.number(0) }),
+        }),
+        furcht: h.schema({
+            furchtstufe: h.number(0),
+            furchtabzuege: h.number(0),
+            display: h.string(''),
+        }),
+        modifikatoren: h.schema({
+            manuellermod: h.number(0),
+            nahkampfmod: h.number(0),
+            verteidigungmod: h.number(0),
+        }),
+        misc: h.schema({
+            selected_kampfstil: h.string('ohne'),
+            selected_uebernatuerlicher_stil: h.string('ohne'),
+            ist_beritten: h.bool(false),
+        }),
+        initiative: h.number(0),
+        abgeleitete: h.schema({
+            globalermod: h.number(0),
+            ws: h.number(0),
+            ws_stern: h.number(0),
+            be: h.number(0),
+            be_traglast: h.number(0),
+            ws_beine: h.number(0),
+            ws_larm: h.number(0),
+            ws_rarm: h.number(0),
+            ws_bauch: h.number(0),
+            ws_brust: h.number(0),
+            ws_kopf: h.number(0),
+            mr: h.number(0),
+            gs: h.number(0),
+            ini: h.number(0),
+            baseIni: h.number(0),
+            dh: h.number(0),
+            traglast_intervall: h.number(0),
+            traglast: h.number(0),
+            asp_zugekauft: h.number(0),
+            gasp: h.number(0),
+            asp: h.number(0),
+            asp_stern: h.number(0),
+            kap_zugekauft: h.number(0),
+            gkap: h.number(0),
+            kap: h.number(0),
+            kap_stern: h.number(0),
+            zauberer: h.bool(false),
+            geweihter: h.bool(false),
+            nahkampfmoddisplay: h.string('-'),
+            globalermoddisplay: h.string('-'),
+        }),
+        schips: h.schema({
+            schips: h.number(4),
+            schips_stern: h.number(4),
+        }),
+        attribute: h.schema({
+            CH: createAttributeEntry(),
+            FF: createAttributeEntry(),
+            GE: createAttributeEntry(),
+            IN: createAttributeEntry(),
+            KK: createAttributeEntry(),
+            KL: createAttributeEntry(),
+            KO: createAttributeEntry(),
+            MU: createAttributeEntry(),
+        }),
+        geld: h.schema({
+            dukaten: h.number(0),
+            silbertaler: h.number(0),
+            heller: h.number(0),
+            kreuzer: h.number(0),
+        }),
+    }
+}

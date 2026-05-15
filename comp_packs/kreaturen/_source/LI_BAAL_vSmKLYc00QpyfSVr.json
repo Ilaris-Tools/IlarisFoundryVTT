@@ -546,7 +546,7 @@
     {
       "_id": "z8zY94ZDBKrwC8Dk",
       "name": "Pirschen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Pirschen ermöglicht das Schleichen, Verstecken und Lauern in der freien Natur. Du pirschst dich auf der Jagd an einen wilden Hirsch heran, legst einen Hinterhalt an einer Reichsstraße oder beobachtest ungesehen das Lager einer Orkbande.",
         "pw": 14,
@@ -575,7 +575,7 @@
     {
       "_id": "vma5JkOraa5HE2Wf",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 20,
@@ -604,7 +604,7 @@
     {
       "_id": "GS1yXXTjVzmSGRNx",
       "name": "Dämonisch",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

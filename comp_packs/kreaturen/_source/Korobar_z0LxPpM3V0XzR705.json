@@ -328,7 +328,7 @@
     {
       "_id": "3hIvSvYGVLbdLlIB",
       "name": "Antimagie",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",
@@ -437,7 +437,7 @@
     {
       "_id": "Jbp5O2axtFvyYRAb",
       "name": "Dämonisch",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",
@@ -786,7 +786,7 @@
     {
       "_id": "DqW7NXsPq5owkWl9",
       "name": "Kraft",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

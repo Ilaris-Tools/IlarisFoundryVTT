@@ -147,7 +147,7 @@
     {
       "_id": "xcCbhOMDXqbqaJKH",
       "name": "Pirschen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 14,
@@ -176,7 +176,7 @@
     {
       "_id": "kFPwL2ceNmYXmXRa",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 16,

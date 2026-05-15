@@ -648,7 +648,7 @@
     {
       "_id": "wpbOYT4SabW5SOqQ",
       "name": "Betören",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Beim Betören nutzt du deine persönliche Ausstrahlung, um zu bekommen, was du willst. Das reicht von Kleinigkeiten wie einem Freibier bis zum Verrat geheimer Staatsinformationen.",
         "pw": 24,
@@ -677,7 +677,7 @@
     {
       "_id": "0quNmGrfKqi0PSGg",
       "name": "Gebräuche",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 20,
@@ -706,7 +706,7 @@
     {
       "_id": "29V2rB2I2fJAZTK7",
       "name": "Menschenkenntnis",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Menschenkenntnis ist deine Fähigkeit, die Absichten deines Gegenüber zu durchschauen. Damit enttarnst du Lügen und falsche Annäherungsversuche.",
         "pw": 18,
@@ -735,7 +735,7 @@
     {
       "_id": "Mr1u0qM2eJpZrizm",
       "name": "Sinnenschärfe",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Sinnenschärfe ist die aktive Verwendung deiner Sinne, um einen Kollaborateur in einem geschäftigen Wirtshaus zu belauschen, die Flagge eines nahenden Schiffes zu erkennen oder die Nadel im Heuhaufen zu finden.",
         "pw": 16,
@@ -764,7 +764,7 @@
     {
       "_id": "OR5Zvbx1pwnYtvFL",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 20,

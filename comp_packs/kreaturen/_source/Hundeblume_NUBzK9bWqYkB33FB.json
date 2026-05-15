@@ -250,7 +250,7 @@
     {
       "_id": "LYD7yrjSpqDPSKtv",
       "name": "Wachsamkeit 12",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 0,
@@ -279,7 +279,7 @@
     {
       "_id": "K5y95mG9YkybgahN",
       "name": "Pirschen 10",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 0,
@@ -308,7 +308,7 @@
     {
       "_id": "ZzjRW3zaQtDeZZ4q",
       "name": "Willenskraft 7",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 0,

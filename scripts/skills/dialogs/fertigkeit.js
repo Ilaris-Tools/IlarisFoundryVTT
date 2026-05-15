@@ -54,7 +54,7 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
         switch (probeType) {
             case 'attribut':
                 return `Attributsprobe: ${options.fertigkeitName || 'Attribut'}`
-            case 'freie_fertigkeit':
+            case 'freieFertigkeit':
                 return `Freie Fertigkeitsprobe: ${options.fertigkeitName || 'Freie Fertigkeit'}`
             case 'fertigkeit':
             default:

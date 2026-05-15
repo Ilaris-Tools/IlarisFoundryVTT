@@ -227,7 +227,7 @@
     {
       "_id": "rIrRIGyVlJ7tYNMj",
       "name": "Fliegen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 12,
@@ -256,7 +256,7 @@
     {
       "_id": "H8pYudQnQNK8IBo2",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 10,

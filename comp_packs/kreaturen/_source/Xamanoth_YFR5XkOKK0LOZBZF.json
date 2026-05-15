@@ -601,7 +601,7 @@
     {
       "_id": "Xbc64uNRbtBKwHNh",
       "name": "Magiekunde",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 24,
@@ -630,7 +630,7 @@
     {
       "_id": "MSYVuFzkkxf9ymmT",
       "name": "Mythenkunde",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 24,
@@ -659,7 +659,7 @@
     {
       "_id": "NBuF1kZLQ9yRJL67",
       "name": "Untertauchen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Untertauchen erlaubt dir das Schleichen, Verstecken und Beschatten in der Zivilisation. Du verschwindest in der Menschenmenge am Marktplatz, steigst ungehört in eine Villa eines Ratsherren ein oder beschattest unauffällig einen Hehler.",
         "pw": 18,
@@ -688,7 +688,7 @@
     {
       "_id": "5c512B8GKfImmEky",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 16,

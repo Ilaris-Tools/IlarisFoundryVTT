@@ -667,7 +667,7 @@
     {
       "_id": "IcfCegfl6WSpJdgG",
       "name": "Betören",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Beim Betören nutzt du deine persönliche Ausstrahlung, um zu bekommen, was du willst. Das reicht von Kleinigkeiten wie einem Freibier bis zum Verrat geheimer Staatsinformationen.",
         "pw": 20,
@@ -696,7 +696,7 @@
     {
       "_id": "YpEMCaJ1AIF6lRuf",
       "name": "Pirschen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Pirschen ermöglicht das Schleichen, Verstecken und Lauern in der freien Natur. Du pirschst dich auf der Jagd an einen wilden Hirsch heran, legst einen Hinterhalt an einer Reichsstraße oder beobachtest ungesehen das Lager einer Orkbande.",
         "pw": 16,
@@ -725,7 +725,7 @@
     {
       "_id": "GAABx2ZalLosXTUr",
       "name": "Untertauchen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Untertauchen erlaubt dir das Schleichen, Verstecken und Beschatten in der Zivilisation. Du verschwindest in der Menschenmenge am Marktplatz, steigst ungehört in eine Villa eines Ratsherren ein oder beschattest unauffällig einen Hehler.",
         "pw": 16,
@@ -754,7 +754,7 @@
     {
       "_id": "QclMDlOCMx9StSDk",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 14,
@@ -783,7 +783,7 @@
     {
       "_id": "a6wEnqDjgpFMeujG",
       "name": "Dämonisch",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

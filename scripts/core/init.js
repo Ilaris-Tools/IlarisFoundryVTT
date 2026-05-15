@@ -3,20 +3,22 @@ import { IlarisActiveEffect } from './documents/active-effect.js'
 import { IlarisActorProxy } from '../actors/data/proxy.js'
 import { IlarisItemProxy } from '../items/data/proxy.js'
 import { initializeHandlebars } from './handlebars.js'
+import { registerIlarisTypeDataModels } from './model-data/type-data-models.js'
 import { preloadAllEigenschaften } from '../waffe/properties/utils/eigenschaft-cache.js'
 import { preloadAbgeleiteteWerteDefinitions } from '../actors/data/actor.js'
 import { runMigrationIfNeeded } from '../waffe/migrations/migrate-waffen-eigenschaften.js'
+import { runModelDataNormalizationMigrationIfNeeded } from './migrations/migrate-modeldata-normalization.js'
 import { HeldenSheet } from '../actors/sheets/held.js'
 import { KreaturSheet } from '../actors/sheets/kreatur.js'
 import { RuestungSheet } from '../items/sheets/ruestung.js'
-import { UebernatuerlichFertigkeitSheet } from '../items/sheets/uebernatuerlich_fertigkeit.js'
-import { UebernatuerlichTalentSheet } from '../items/sheets/uebernatuerlich_talent.js'
+import { UebernatuerlichFertigkeitSheet } from '../items/sheets/uebernatuerlich-fertigkeit.js'
+import { UebernatuerlichTalentSheet } from '../items/sheets/uebernatuerlich-talent.js'
 import { FertigkeitSheet } from '../items/sheets/fertigkeit.js'
 import { TalentSheet } from '../items/sheets/talent.js'
 import { NahkampfwaffeSheet } from '../waffe/sheets/nahkampfwaffe.js'
 import { FernkampfwaffeSheet } from '../waffe/sheets/fernkampfwaffe.js'
 import { GegenstandSheet } from '../items/sheets/gegenstand.js'
-import { FreieFertigkeitSheet } from '../items/sheets/freie_fertigkeit.js'
+import { FreieFertigkeitSheet } from '../items/sheets/freie-fertigkeit.js'
 import { VorteilSheet } from '../items/sheets/vorteil.js'
 import { ManoeverSheet } from '../items/sheets/manoever.js'
 import { EigenheitSheet } from '../items/sheets/eigenheit.js'
@@ -25,14 +27,14 @@ import { WaffeneigenschaftSheet } from '../waffe/sheets/waffeneigenschaft.js'
 import { InfoSheet } from '../items/sheets/info.js'
 import { AbgeleiteterWertSheet } from '../items/sheets/abgeleiteter-wert.js'
 import { AngriffSheet } from '../items/sheets/angriff.js'
-import { FreiesTalentSheet } from '../items/sheets/freies_talent.js'
+import { FreiesTalentSheet } from '../items/sheets/freies-talent.js'
 import { EffectItemSheet } from '../items/sheets/effect-item.js'
 import { registerIlarisGameSettings } from '../settings/configure-game-settings.js'
 import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
 } from '../settings/configure-game-settings.model.js'
-import { registerDefenseButtonHook } from '../combat/dialogs/defense_button_hook.js'
+import { registerDefenseButtonHook } from '../combat/dialogs/defense-button-hook.js'
 import { XmlCharacterImporter } from '../importer/xml_character_importer.js'
 import { XMLRuleImporter } from '../importer/xml_rule_importer/index.js'
 import { formatDiceFormula } from './utilities.js'
@@ -52,6 +54,8 @@ const STATUS_EFFECT_COLORS = {
 
 Hooks.once('init', () => {
     // CONFIG.debug.hooks = true;
+    registerIlarisTypeDataModels()
+
     // ACTORS
     CONFIG.Actor.documentClass = IlarisActorProxy // TODO: Proxy
 
@@ -79,7 +83,7 @@ Hooks.once('init', () => {
     Items.registerSheet('Ilaris', FertigkeitSheet, { types: ['fertigkeit'], makeDefault: true })
     Items.registerSheet('Ilaris', TalentSheet, { types: ['talent'], makeDefault: true })
     Items.registerSheet('Ilaris', UebernatuerlichFertigkeitSheet, {
-        types: ['uebernatuerliche_fertigkeit'],
+        types: ['uebernatuerlicheFertigkeit'],
         makeDefault: true,
     })
     Items.registerSheet('Ilaris', UebernatuerlichTalentSheet, {
@@ -87,7 +91,7 @@ Hooks.once('init', () => {
         makeDefault: true,
     })
     Items.registerSheet('Ilaris', FreieFertigkeitSheet, {
-        types: ['freie_fertigkeit'],
+        types: ['freieFertigkeit', 'freie_fertigkeit'],
         makeDefault: true,
     })
     Items.registerSheet('Ilaris', VorteilSheet, { types: ['vorteil'], makeDefault: true })
@@ -101,11 +105,17 @@ Hooks.once('init', () => {
     Items.registerSheet('Ilaris', AngriffSheet, { types: ['angriff'], makeDefault: true })
     Items.registerSheet('Ilaris', InfoSheet, { types: ['info'], makeDefault: true })
     Items.registerSheet('Ilaris', AbgeleiteterWertSheet, {
-        types: ['abgeleiteter-wert'],
+        types: ['abgeleiteterWert', 'abgeleiteter-wert'],
         makeDefault: true,
     })
-    Items.registerSheet('Ilaris', FreiesTalentSheet, { types: ['freiestalent'], makeDefault: true })
-    Items.registerSheet('Ilaris', EffectItemSheet, { types: ['effect-item'], makeDefault: true })
+    Items.registerSheet('Ilaris', FreiesTalentSheet, {
+        types: ['freiesTalent', 'freiestalent'],
+        makeDefault: true,
+    })
+    Items.registerSheet('Ilaris', EffectItemSheet, {
+        types: ['effectItem', 'effect-item'],
+        makeDefault: true,
+    })
 
     // Register world schema version for migrations
     game.settings.register('Ilaris', 'worldSchemaVersion', {
@@ -117,7 +127,6 @@ Hooks.once('init', () => {
     })
 
     initializeHandlebars()
-    initializeKeybinds()
     // game.sephrasto = new SephrastoImporter();
     CONFIG.ILARIS = ILARIS
     CONFIG.Combat.initiative = { formula: '@initiative', decimals: 1 }
@@ -350,6 +359,7 @@ Hooks.once('init', () => {
     ]
 
     registerIlarisGameSettings()
+    initializeKeybinds()
 })
 
 Hooks.on('ready', async () => {
@@ -373,6 +383,7 @@ Hooks.on('ready', async () => {
 
     // Run world migration if needed (GM only, once per world)
     await runMigrationIfNeeded()
+    await runModelDataNormalizationMigrationIfNeeded()
 })
 
 /**
@@ -382,12 +393,20 @@ Hooks.on('ready', async () => {
  */
 function setupIlarisSocket() {
     game.socket.on('system.Ilaris', async (data) => {
-        // Only GM should handle these requests
-        if (!game.user.isGM) return
-
         switch (data.type) {
             case 'applyDamage':
+                // Legacy path: GM executes request.
+                if (!game.user.isGM) return
                 await handleApplyDamageRequest(data.data)
+                break
+            case 'applyDamageByOwner':
+                await handleApplyDamageByOwnerRequest(data.data)
+                break
+            case 'createDefensePromptByOwner':
+                await handleCreateDefensePromptByOwnerRequest(data.data)
+                break
+            case 'broadcastCombatHook':
+                await handleBroadcastCombatHookRequest(data.data)
                 break
             default:
                 console.warn(`Unknown Ilaris socket request type: ${data.type}`)
@@ -410,10 +429,74 @@ async function handleApplyDamageRequest(data) {
     }
 
     // Import the helper function
-    const { _applyDamageDirectly } = await import('../sheets/dialogs/shared_dialog_helpers.js')
+    const { _applyDamageDirectly } = await import('../combat/dialogs/shared-dialog-helpers.js')
 
     // Apply damage as GM
     await _applyDamageDirectly(targetActor, damage, damageType, trueDamage, speaker)
+}
+
+/**
+ * Handle owner-routed damage request.
+ * The designated owner client applies damage exactly once.
+ *
+ * @param {Object} data - Socket payload
+ */
+async function handleApplyDamageByOwnerRequest(data) {
+    const { eventId, executorUserId, target, damage, damageType, trueDamage, speaker } = data || {}
+
+    if (!eventId || !executorUserId || !target) return
+
+    if (!window._ilarisProcessedDamageEvents) {
+        window._ilarisProcessedDamageEvents = new Set()
+    }
+    if (window._ilarisProcessedDamageEvents.has(eventId)) return
+
+    if (executorUserId !== game.user.id) return
+
+    const { _applyDamageDirectly, resolveTargetActorForDamage } =
+        await import('../combat/dialogs/shared-dialog-helpers.js')
+
+    const { targetActor } = resolveTargetActorForDamage(target)
+    if (!targetActor) {
+        console.error(`[Ilaris] Damage target actor not found for event ${eventId}`)
+        return
+    }
+
+    if (!targetActor.canUserModify(game.user, 'update')) {
+        console.warn(`[Ilaris] Designated owner cannot update actor for event ${eventId}`)
+        return
+    }
+
+    window._ilarisProcessedDamageEvents.add(eventId)
+    if (window._ilarisProcessedDamageEvents.size > 1000) {
+        const iterator = window._ilarisProcessedDamageEvents.values()
+        const first = iterator.next().value
+        window._ilarisProcessedDamageEvents.delete(first)
+    }
+
+    await _applyDamageDirectly(targetActor, damage, damageType, trueDamage, speaker)
+}
+
+/**
+ * Handle owner-routed defense prompt creation.
+ *
+ * @param {Object} data - Socket payload
+ */
+async function handleCreateDefensePromptByOwnerRequest(data) {
+    const { handleDefensePromptSocketEvent } =
+        await import('../combat/hooks/combat_dialog_handlers.js')
+    await handleDefensePromptSocketEvent(data)
+}
+
+/**
+ * Handle mirrored combat hook broadcasts from remote clients.
+ *
+ * @param {Object} data - Socket payload
+ */
+async function handleBroadcastCombatHookRequest(data) {
+    const { handleBroadcastCombatHookRequest: handleGlobalCombatHookBroadcast } =
+        await import('../combat/hooks/global_combat_hooks.js')
+    await handleGlobalCombatHookBroadcast(data)
 }
 
 // Cache for hex token shapes setting
@@ -783,11 +866,14 @@ Hooks.on('renderChatMessageHTML', (message, htmlDOM, data) => {
 
         // Check if the current user should see the content
         const targetActorId = message.flags.Ilaris.targetActorId
-        const currentUserCharacterId = game.user.character?.id
-        const isTarget = currentUserCharacterId === targetActorId
+        const targetActor = game.actors.get(targetActorId)
+        const ownerLevel = CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER
+        const isTargetOwner = !!targetActor?.testUserPermission(game.user, ownerLevel, {
+            exact: false,
+        })
 
         // If the user is not the target, hide the content
-        if (!isTarget && !game.user.isGM) {
+        if (!isTargetOwner && !game.user.isGM) {
             const contentDiv = htmlDOM.querySelector('.message-content')
             if (contentDiv) {
                 contentDiv.innerHTML =
@@ -795,7 +881,7 @@ Hooks.on('renderChatMessageHTML', (message, htmlDOM, data) => {
             }
         }
 
-        if (isTarget || game.user.isGM) {
+        if (isTargetOwner || game.user.isGM) {
             // Highlight the message for the target player
             htmlDOM.classList.add('ilaris-defense-prompt-highlight')
         }
@@ -829,7 +915,7 @@ Hooks.on('renderSceneConfig', async (app, htmlDOM, data) => {
     }
 
     // Render the template
-    const environmentHTML = await renderTemplate(
+    const environmentHTML = await foundry.applications.handlebars.renderTemplate(
         'systems/Ilaris/scripts/settings/templates/scene_environment_fields.hbs',
         templateData,
     )

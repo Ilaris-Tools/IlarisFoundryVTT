@@ -524,7 +524,7 @@
     {
       "_id": "zPxdr5hGpXSyDHsN",
       "name": "Laufen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Laufen kommt in Verfolgungsjagden zu Fuß zum Einsatz, wenn du einen Verbrecher stellen oder einem Raubtier entkommen möchtest.",
         "pw": 12,
@@ -553,7 +553,7 @@
     {
       "_id": "WbEW9xtdCRlq6QzB",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 8,

@@ -1358,7 +1358,7 @@
     {
       "_id": "3Mw23YXfrOYxtG7R",
       "name": "Sprache: Rogolan",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1385,7 +1385,7 @@
     {
       "_id": "AluPhYqjux5WJ0gx",
       "name": "Schrift: Rogolan-Runen",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1412,7 +1412,7 @@
     {
       "_id": "FoN1UKactKf1OAOj",
       "name": "Sprache: Garethi",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1439,7 +1439,7 @@
     {
       "_id": "jX0rJaKXtMUeo9XM",
       "name": "Schrift: Kusliker Zeichen",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1466,7 +1466,7 @@
     {
       "_id": "5WHUiy2GsgJWX20S",
       "name": "Antimagie",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1499,7 +1499,7 @@
     {
       "_id": "lDgZgV3AnE6KZlKk",
       "name": "Dämonisch",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 3,
@@ -1532,7 +1532,7 @@
     {
       "_id": "682bv5aG39vGL8so",
       "name": "Eigenschaften",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1565,7 +1565,7 @@
     {
       "_id": "mUe9S8wILT67z5GO",
       "name": "Einfluss",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 6,
@@ -1598,7 +1598,7 @@
     {
       "_id": "MWIqQclmVHUh9uVB",
       "name": "Eis",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1631,7 +1631,7 @@
     {
       "_id": "4C5nnWQBZ6Z4ZfL0",
       "name": "Erz",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 5,
@@ -1664,7 +1664,7 @@
     {
       "_id": "cdpDwr6wHUq8quBv",
       "name": "Feuer",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1697,7 +1697,7 @@
     {
       "_id": "YNceoDpRPeG1MJeB",
       "name": "Hellsicht",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 5,
@@ -1730,7 +1730,7 @@
     {
       "_id": "05aA294zp2oqw4OL",
       "name": "Humus",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 6,
@@ -1763,7 +1763,7 @@
     {
       "_id": "QUxe2MB1XCjfzqGu",
       "name": "Illusion",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 5,
@@ -1796,7 +1796,7 @@
     {
       "_id": "7i63Gsm56Inv5hEF",
       "name": "Kraft",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1829,7 +1829,7 @@
     {
       "_id": "QXnLoUJkMbhDp0bL",
       "name": "Luft",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1862,7 +1862,7 @@
     {
       "_id": "UW94AqJzSNZQOO6U",
       "name": "Temporal",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 5,
@@ -1895,7 +1895,7 @@
     {
       "_id": "EJKz15pseOso1zCh",
       "name": "Umwelt",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 3,
@@ -1928,7 +1928,7 @@
     {
       "_id": "OuyzGEqPdvPRIJKA",
       "name": "Verständigung",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1961,7 +1961,7 @@
     {
       "_id": "XYqPCWszYVlnroFw",
       "name": "Verwandlung",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1994,7 +1994,7 @@
     {
       "_id": "ZsYmZ9qM10CEfFiS",
       "name": "Wasser",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -2027,7 +2027,7 @@
     {
       "_id": "yoxREuSvwGKlZbZv",
       "name": "Dolchzauber",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 3,
@@ -2060,7 +2060,7 @@
     {
       "_id": "Erg4sRoh4mlG1XTh",
       "name": "Ringrituale",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -2093,7 +2093,7 @@
     {
       "_id": "d79ttPUjvRAalS4y",
       "name": "Vertrautenmagie",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 6,

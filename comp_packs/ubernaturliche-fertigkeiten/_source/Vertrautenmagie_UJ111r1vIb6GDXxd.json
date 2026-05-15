@@ -1,6 +1,6 @@
 {
   "name": "Vertrautenmagie",
-  "type": "uebernatuerliche_fertigkeit",
+  "type": "uebernatuerlicheFertigkeit",
   "img": "systems/Ilaris/assets/images/skills/magic-skill.svg",
   "system": {
     "basis": 0,

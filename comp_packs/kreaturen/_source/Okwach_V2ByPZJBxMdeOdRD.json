@@ -727,7 +727,7 @@
     {
       "_id": "hkpeGotnavsJRIe3",
       "name": "Laufen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 14,
@@ -756,7 +756,7 @@
     {
       "_id": "vyoDfgzaXQxEci5e",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 8,
@@ -785,7 +785,7 @@
     {
       "_id": "UzjpxBo8zE5DxtaF",
       "name": "Zähigkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 16,
@@ -814,7 +814,7 @@
     {
       "_id": "onzWhoa4fTzx2mng",
       "name": "Reiten",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 10,
@@ -843,7 +843,7 @@
     {
       "_id": "mXxsO84oIUCtBWMi",
       "name": "Einschüchtern",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 10,

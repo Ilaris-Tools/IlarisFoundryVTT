@@ -1333,7 +1333,7 @@
     {
       "_id": "rHSzTYpfTkRzjrOD",
       "name": "Sprache: Garethi",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 3,
@@ -1360,7 +1360,7 @@
     {
       "_id": "67PUGlXP6fl845jO",
       "name": "Schrift: Kusliker Zeichen",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 3,
@@ -1387,7 +1387,7 @@
     {
       "_id": "oYCjBCjPrA6yemQA",
       "name": "Sprache: Aureliani",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1414,7 +1414,7 @@
     {
       "_id": "s4yoxSl5RasvSrlk",
       "name": "Sprache: Tulamidya",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1441,7 +1441,7 @@
     {
       "_id": "Hh0dIvSzawxgOENU",
       "name": "Sprache: Bosparano",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1468,7 +1468,7 @@
     {
       "_id": "KKNVOFg0uW6j54Ju",
       "name": "Philosophie",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1495,7 +1495,7 @@
     {
       "_id": "kSZw5ryvZ1b7UB8U",
       "name": "Zwölfgöttlicher Ritus",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 5,
@@ -1528,7 +1528,7 @@
     {
       "_id": "Gz2gThlwpmXEGAKb",
       "name": "Magie",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 5,
@@ -1561,7 +1561,7 @@
     {
       "_id": "MbXOMwlDBYPchgjn",
       "name": "Wissen",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 6,

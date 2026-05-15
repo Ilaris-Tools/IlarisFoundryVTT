@@ -581,7 +581,7 @@
     {
       "_id": "soddt4FbMfenXD9Z",
       "name": "Willenskraft",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Willenskraft erlaubt dir, Beeinflussungen und Versuchungen zu widerstehen und dich nicht ablenken zu lassen. Du kannst dich im Chaos eines Gefechts auf einen Zauber konzentrieren oder einem Heiligen Befehl widerstehen.",
         "pw": 14,
@@ -610,7 +610,7 @@
     {
       "_id": "Q9c3v8s4u4XOh6vh",
       "name": "Einschüchtern",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Einschüchtern jagt dem Gegenüber Angst ein und bringt ihn so zu einer gewünschten Handlung. Die Probe wird oft vergleichend gegen den MU oder die Menschenkenntnis des Gegenübers abgelegt.",
         "pw": 16,
@@ -639,7 +639,7 @@
     {
       "_id": "1HWlqSAlrD4jJ6MY",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 8,
@@ -668,7 +668,7 @@
     {
       "_id": "vtV2sTFYlm5Ck8oR",
       "name": "Feuer",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

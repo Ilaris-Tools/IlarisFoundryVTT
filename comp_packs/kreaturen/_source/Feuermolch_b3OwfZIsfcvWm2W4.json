@@ -284,7 +284,7 @@
     {
       "_id": "Vg4YjZQJtl6eWXL5",
       "name": "Pirschen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 18,
@@ -313,7 +313,7 @@
     {
       "_id": "M0XvLhaadieNPWGH",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 8,
@@ -342,7 +342,7 @@
     {
       "_id": "nR7wyJtG65jI5Q5U",
       "name": "Zähigkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 6,

@@ -3,7 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": "Vorteil Klingentanz",
+    "voraussetzung": "Vorteil Klingentanz",
     "modifications": {
       "0": {
         "type": "ATTACK",

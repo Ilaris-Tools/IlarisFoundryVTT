@@ -556,7 +556,7 @@
     {
       "_id": "TIylfy6tWx2NqvU0",
       "name": "Einfluss",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

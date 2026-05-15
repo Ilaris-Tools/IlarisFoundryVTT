@@ -495,7 +495,7 @@
     {
       "_id": "S9ZXHm6yH9BKRk64",
       "name": "Einschüchtern",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Einschüchtern jagt dem Gegenüber Angst ein und bringt ihn so zu einer gewünschten Handlung. Die Probe wird oft vergleichend gegen den MU oder die Menschenkenntnis des Gegenübers abgelegt.",
         "pw": 10,
@@ -524,7 +524,7 @@
     {
       "_id": "lH7OALb8vIkkM5Pk",
       "name": "Fliegen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 18,
@@ -553,7 +553,7 @@
     {
       "_id": "Yrcx0Di6rmo8jBMD",
       "name": "Menschenkenntnis",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Menschenkenntnis ist deine Fähigkeit, die Absichten deines Gegenüber zu durchschauen. Damit enttarnst du Lügen und falsche Annäherungsversuche.",
         "pw": 8,
@@ -582,7 +582,7 @@
     {
       "_id": "HRCtRZvRYvXyHCFx",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 10,
@@ -611,7 +611,7 @@
     {
       "_id": "0UtJgwrL2M9yLLta",
       "name": "Zähigkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Zähigkeit hilft dir, Schmerzen und Strapazen zu widerstehen. So kannst du trotz zahlreicher Wunden noch handlungsfähig bleiben und einen Kampf zu euren Gunsten wenden oder eine ganze Nacht hindurch wachen.",
         "pw": 24,

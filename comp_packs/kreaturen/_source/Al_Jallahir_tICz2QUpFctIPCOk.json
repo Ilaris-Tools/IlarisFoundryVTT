@@ -506,7 +506,7 @@
     {
       "_id": "yc9GJud6t5gDzXun",
       "name": "Anführen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Mit Anführen leitest und motivierst du Untergebene. Du kannst mit Anführen Löscharbeiten oder eine Truppe von Kämpfern koordinieren, um ihnen so Vorteile zu verschaffen (S. 46). Gerade in großen Schlachten entscheidet der Heerführer über Sieg oder Niederlage.",
         "pw": 16,
@@ -535,7 +535,7 @@
     {
       "_id": "Ya5k4Nx66L4roicE",
       "name": "Betören",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Beim Betören nutzt du deine persönliche Ausstrahlung, um zu bekommen, was du willst. Das reicht von Kleinigkeiten wie einem Freibier bis zum Verrat geheimer Staatsinformationen.",
         "pw": 12,
@@ -564,7 +564,7 @@
     {
       "_id": "GRXfjRmLmkqnpiDp",
       "name": "Einschüchtern",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Einschüchtern jagt dem Gegenüber Angst ein und bringt ihn so zu einer gewünschten Handlung. Die Probe wird oft vergleichend gegen den MU oder die Menschenkenntnis des Gegenübers abgelegt.",
         "pw": 16,
@@ -593,7 +593,7 @@
     {
       "_id": "tDeeOVi2akk1oDmP",
       "name": "Tulamidenlande (Gebräuche)",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 12,
@@ -622,7 +622,7 @@
     {
       "_id": "v7iqGuEjJTIB3aGl",
       "name": "Rhetorik",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Rhetorik beinhaltet zahlreiche Fähigkeiten und Kniffe, um die eigenen Argumente wirkungsvoll einzusetzen und die des Gegenüber zu entkräften. Du kannst Rhetorik nur einsetzen, wenn dein Charakter von seinem Standpunkt überzeugt ist - dreiste Lügen fallen unter Überreden.",
         "pw": 12,
@@ -651,7 +651,7 @@
     {
       "_id": "6gMkAE9v1Yev9w1D",
       "name": "Sinnenschärfe",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Sinnenschärfe ist die aktive Verwendung deiner Sinne, um einen Kollaborateur in einem geschäftigen Wirtshaus zu belauschen, die Flagge eines nahenden Schiffes zu erkennen oder die Nadel im Heuhaufen zu finden.",
         "pw": 12,
@@ -680,7 +680,7 @@
     {
       "_id": "GgmzziipSW7t3emC",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 14,
@@ -709,7 +709,7 @@
     {
       "_id": "medYUgcnXi2IcdEJ",
       "name": "Feuer",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

@@ -623,7 +623,7 @@
     {
       "_id": "eg2zTzCBqLh7Ocav",
       "name": "Einhandklingenwaffen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Verbessert den Einsatz einhändig geführter Klingenwaffen wie Schwertern, Säbeln und Fechtwaffen.",
         "pw": 14,
@@ -652,7 +652,7 @@
     {
       "_id": "bDxxucRwExqTWXg4",
       "name": "Gebräuche",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 7,
@@ -681,7 +681,7 @@
     {
       "_id": "tFIJdThl1QcweNd7",
       "name": "Menschenkenntnis",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Menschenkenntnis ist deine Fähigkeit, die Absichten deines Gegenüber zu durchschauen. Damit enttarnst du Lügen und falsche Annäherungsversuche.",
         "pw": 15,
@@ -710,7 +710,7 @@
     {
       "_id": "1qmAkmMPbPi3B0B5",
       "name": "Schilde",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Verbessert den Einsatz von Schilden.",
         "pw": 15,
@@ -739,7 +739,7 @@
     {
       "_id": "9TcELufj42HmycVm",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 15,
@@ -768,7 +768,7 @@
     {
       "_id": "H0JBh9DwrBKv53z8",
       "name": "Waffenlos",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 15,
@@ -797,7 +797,7 @@
     {
       "_id": "WrfvUWbiqkTZJ2tm",
       "name": "Zähigkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Zähigkeit hilft dir, Schmerzen und Strapazen zu widerstehen. So kannst du trotz zahlreicher Wunden noch handlungsfähig bleiben und einen Kampf zu euren Gunsten wenden oder eine ganze Nacht hindurch wachen.",
         "pw": 12,

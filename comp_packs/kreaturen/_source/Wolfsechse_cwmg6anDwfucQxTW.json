@@ -493,7 +493,7 @@
     {
       "_id": "DDYUqnqlhm799Ole",
       "name": "Laufen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Laufen kommt in Verfolgungsjagden zu Fuß zum Einsatz, wenn du einen Verbrecher stellen oder einem Raubtier entkommen möchtest.",
         "pw": 10,
@@ -522,7 +522,7 @@
     {
       "_id": "Agve6rTh19zLALjb",
       "name": "Klettern",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Mit Klettern überwindest du alle Arten von Hindernissen.",
         "pw": 2,
@@ -551,7 +551,7 @@
     {
       "_id": "I23uwRew9kXdYLIz",
       "name": "Schwimmen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Schwimmen erlaubt eine schnellere Fortbewegung im Wasser und längere Tauchgänge.",
         "pw": 4,
@@ -580,7 +580,7 @@
     {
       "_id": "3MyqSKabOF7dKnWa",
       "name": "Akrobatik",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Akrobatik wird für gewagte Kunststücke und Balanceakte verwendet und kann auch den Fallschaden reduzieren.",
         "pw": 10,
@@ -609,7 +609,7 @@
     {
       "_id": "y43IWxVpnqbo3Gxz",
       "name": "Pirschen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Pirschen ermöglicht das Schleichen, Verstecken und Lauern in der freien Natur. Du pirschst dich auf der Jagd an einen wilden Hirsch heran, legst einen Hinterhalt an einer Reichsstraße oder beobachtest ungesehen das Lager einer Orkbande.",
         "pw": 11,
@@ -638,7 +638,7 @@
     {
       "_id": "R8mmB9ZvcjbJD0Uv",
       "name": "Willenskraft",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Willenskraft erlaubt dir, Beeinflussungen und Versuchungen zu widerstehen und dich nicht ablenken zu lassen. Du kannst dich im Chaos eines Gefechts auf einen Zauber konzentrieren oder einem Heiligen Befehl widerstehen.",
         "pw": 7,
@@ -667,7 +667,7 @@
     {
       "_id": "VBMJ7awBxtNmrvy6",
       "name": "Zähigkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Zähigkeit hilft dir, Schmerzen und Strapazen zu widerstehen. So kannst du trotz zahlreicher Wunden noch handlungsfähig bleiben und einen Kampf zu euren Gunsten wenden oder eine ganze Nacht hindurch wachen.",
         "pw": 8,
@@ -696,7 +696,7 @@
     {
       "_id": "jhvCizsb81i68vUD",
       "name": "Einschüchtern",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Einschüchtern jagt dem Gegenüber Angst ein und bringt ihn so zu einer gewünschten Handlung. Die Probe wird oft vergleichend gegen den MU oder die Menschenkenntnis des Gegenübers abgelegt.",
         "pw": 10,
@@ -725,7 +725,7 @@
     {
       "_id": "QxkGIIxTo7USm72i",
       "name": "Sinnesschärfe",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 8,
@@ -754,7 +754,7 @@
     {
       "_id": "S6f4dgJzdo012tA9",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 8,

@@ -1,6 +1,4 @@
-import { AngriffDialog } from '../combat/dialogs/angriff.js'
-import { FernkampfAngriffDialog } from '../combat/dialogs/fernkampf_angriff.js'
-import { UebernatuerlichDialog } from '../combat/dialogs/uebernatuerlich.js'
+import { openCombatDialog } from '../combat/combat-api.js'
 import { FertigkeitDialog } from '../skills/dialogs/fertigkeit.js'
 import { calculate_diceschips, roll_crit_message } from './wuerfel_misc.js'
 
@@ -18,18 +16,14 @@ export async function wuerfelwurf(target, actor) {
 
     if (rolltype == 'angriff_diag') {
         let item = actor.items.get(target.dataset.itemid)
-        let d = new AngriffDialog(actor, item)
-        await d.render(true)
+        await openCombatDialog(actor, item, 'melee')
     } else if (rolltype == 'fernkampf_diag') {
         let item = actor.items.get(target.dataset.itemid)
-        let d = new FernkampfAngriffDialog(actor, item)
-        await d.render(true)
+        await openCombatDialog(actor, item, 'ranged')
     } else if (rolltype == 'magie_diag' || rolltype == 'karma_diag') {
         let item = actor.items.get(target.dataset.itemid)
         console.log('item', item)
-        let d = new UebernatuerlichDialog(actor, item)
-
-        await d.render(true)
+        await openCombatDialog(actor, item, 'supernatural')
     } else if (rolltype == 'fertigkeit_diag') {
         // Unified skill/attribute dialog with preview
         const probeType = target.dataset.probetype || 'fertigkeit'
@@ -46,13 +40,13 @@ export async function wuerfelwurf(target, actor) {
                 pw: pw,
             })
             await d.render(true)
-        } else if (probeType === 'freie_fertigkeit') {
+        } else if (probeType === 'freieFertigkeit' || probeType === 'freie_fertigkeit') {
             const fertigkeitName = target.dataset.fertigkeit
             const stufe = Number(target.dataset.pw)
             const pw = stufe * 8 - 2
 
             let d = new FertigkeitDialog(actor, {
-                probeType: 'freie_fertigkeit',
+                probeType: 'freieFertigkeit',
                 fertigkeitKey: null,
                 fertigkeitName: fertigkeitName,
                 pw: pw,
@@ -96,7 +90,7 @@ export async function wuerfelwurf(target, actor) {
     } else if (rolltype == 'simpleformula_diag') {
         label = target.dataset.name
         let formula = target.dataset.formula
-        const html = await renderTemplate(
+        const html = await foundry.applications.handlebars.renderTemplate(
             'systems/Ilaris/templates/chat/probendiag_simpleformula.hbs',
             {
                 rollModes: CONFIG.Dice.rollModes,
@@ -154,15 +148,18 @@ export async function wuerfelwurf(target, actor) {
         if (target.dataset.xd20 == '0') {
             xd20 = '0'
         }
-        const html = await renderTemplate('systems/Ilaris/templates/chat/probendiag_attribut.hbs', {
-            choices_xd20: CONFIG.ILARIS.xd20_choice,
-            checked_xd20: xd20,
-            choices_schips: CONFIG.ILARIS.schips_choice,
-            checked_schips: '0',
-            rollModes: CONFIG.Dice.rollModes,
-            defaultRollMode: game.settings.get('core', 'rollMode'),
-            dialogId: dialogId,
-        })
+        const html = await renderTemplate(
+            'systems/Ilaris/scripts/dice/templates/probendiag_attribut.hbs',
+            {
+                choices_xd20: CONFIG.ILARIS.xd20_choice,
+                checked_xd20: xd20,
+                choices_schips: CONFIG.ILARIS.schips_choice,
+                checked_schips: '0',
+                rollModes: CONFIG.Dice.rollModes,
+                defaultRollMode: game.settings.get('core', 'rollMode'),
+                dialogId: dialogId,
+            },
+        )
         let d = new Dialog(
             {
                 title: 'Probe ( ' + label + ')',

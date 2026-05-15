@@ -3,7 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": "Vorteil Parierwaffenkampf III",
+    "voraussetzung": "Vorteil Parierwaffenkampf III",
     "modifications": {
       "0": {
         "type": "DEFENCE",

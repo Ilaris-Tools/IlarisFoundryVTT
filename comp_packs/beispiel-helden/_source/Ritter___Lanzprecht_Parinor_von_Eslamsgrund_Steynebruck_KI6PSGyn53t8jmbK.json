@@ -1529,7 +1529,7 @@
     {
       "_id": "LmMUpMU9Ade44XZ3",
       "name": "Minnesang",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1556,7 +1556,7 @@
     {
       "_id": "UeTmxjF0JZ3NfuyX",
       "name": "Heraldik",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1583,7 +1583,7 @@
     {
       "_id": "whAuM0Zqzqqf7DgZ",
       "name": "Schrift: Kusliker Zeichen",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,

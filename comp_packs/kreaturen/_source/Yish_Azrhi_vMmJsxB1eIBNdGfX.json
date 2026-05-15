@@ -520,7 +520,7 @@
     {
       "_id": "iREaRiYs7rSAqPlM",
       "name": "Fliegen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 12,
@@ -549,7 +549,7 @@
     {
       "_id": "fb5Lbz0eDqFQtcxG",
       "name": "Untertauchen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Untertauchen erlaubt dir das Schleichen, Verstecken und Beschatten in der Zivilisation. Du verschwindest in der Menschenmenge am Marktplatz, steigst ungehört in eine Villa eines Ratsherren ein oder beschattest unauffällig einen Hehler.",
         "pw": 16,
@@ -578,7 +578,7 @@
     {
       "_id": "dmpQ830FhQgkfzNx",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 14,
@@ -607,7 +607,7 @@
     {
       "_id": "Rar7fwTdwPFka78s",
       "name": "Überreden",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Überreden bedeutet den geschickten Einsatz von Übertreibungen, Unwahrheiten oder Lügen, um das Gegenüber zumindest kurzfristig zu beeinflussen. Mit Überreden feilschst du am Marktplatz, bestichst eine Stadtwache oder infiltrierst ein Borbaradianerkloster.",
         "pw": 18,
@@ -636,7 +636,7 @@
     {
       "_id": "sCyd5s1le8fl2syr",
       "name": "Einfluss",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

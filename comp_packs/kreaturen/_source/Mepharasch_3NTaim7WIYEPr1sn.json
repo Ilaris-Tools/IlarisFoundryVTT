@@ -419,7 +419,7 @@
     {
       "_id": "QbC7gPC3E6q12qke",
       "name": "Laufen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Laufen kommt in Verfolgungsjagden zu Fuß zum Einsatz, wenn du einen Verbrecher stellen oder einem Raubtier entkommen möchtest.",
         "pw": 10,
@@ -448,7 +448,7 @@
     {
       "_id": "dFIgXB7WOavmxK2l",
       "name": "Willenskraft",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Willenskraft erlaubt dir, Beeinflussungen und Versuchungen zu widerstehen und dich nicht ablenken zu lassen. Du kannst dich im Chaos eines Gefechts auf einen Zauber konzentrieren oder einem Heiligen Befehl widerstehen.",
         "pw": 7,
@@ -477,7 +477,7 @@
     {
       "_id": "ao5XMXzDLrPu2Iuy",
       "name": "Einschüchtern",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Einschüchtern jagt dem Gegenüber Angst ein und bringt ihn so zu einer gewünschten Handlung. Die Probe wird oft vergleichend gegen den MU oder die Menschenkenntnis des Gegenübers abgelegt.",
         "pw": 12,
@@ -506,7 +506,7 @@
     {
       "_id": "khscXKMbRZUGBkvu",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 14,
@@ -535,7 +535,7 @@
     {
       "_id": "8noRbOdxwQxIJslV",
       "name": "Feuer",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

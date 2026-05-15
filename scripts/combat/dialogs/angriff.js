@@ -1,8 +1,12 @@
 import { evaluate_roll_with_crit, postRollToChat } from '../../dice/wuerfel_misc.js'
 import { signed } from '../../dice/chatutilities.js'
-import { handleModifications, applyDamageToTarget } from './shared_dialog_helpers.js'
-import { CombatDialog } from './combat_dialog.js'
+import { handleModifications } from './shared-dialog-helpers.js'
+import { CombatDialog } from './combat-dialog.js'
 import { formatDiceFormula } from '../../core/utilities.js'
+import {
+    callIlarisHookAllWithGlobalMirror,
+    callIlarisHookWithGlobalMirror,
+} from '../hooks/global_combat_hooks.js'
 
 export class AngriffDialog extends CombatDialog {
     /** @override */
@@ -277,6 +281,7 @@ export class AngriffDialog extends CombatDialog {
     /* -------------------------------------------- */
 
     async _angreifenKlick() {
+        if (callIlarisHookWithGlobalMirror('Ilaris.preAngriff', this) === false) return
         let diceFormula = this.getDiceFormula()
         await this.manoeverAuswaehlen()
         await this.updateManoeverMods()
@@ -298,12 +303,15 @@ export class AngriffDialog extends CombatDialog {
             this.fumble_val,
             true, // crit_eval
         )
+        this.attackType = 'melee'
         super._updateSchipsStern()
         this.updateModifierDisplay()
         await this.handleTargetSelection(rollResult, 'melee')
+        callIlarisHookAllWithGlobalMirror('Ilaris.postAngriff', rollResult, this)
     }
 
     async _verteidigenKlick() {
+        if (callIlarisHookWithGlobalMirror('Ilaris.preVerteidigung', this) === false) return
         await this.manoeverAuswaehlen()
         await this.updateManoeverMods()
         this.updateStatusMods()
@@ -324,6 +332,7 @@ export class AngriffDialog extends CombatDialog {
         )
 
         // In defense mode, always hide the roll result initially
+        callIlarisHookAllWithGlobalMirror('Ilaris.postVerteidigung', rollResult, this)
         if (this.isDefenseMode) {
             const templateData = {
                 ...rollResult.templateData,
@@ -336,7 +345,10 @@ export class AngriffDialog extends CombatDialog {
             }
 
             // Send the hidden defense roll
-            const html_roll = await renderTemplate(rollResult.templatePath, templateData)
+            const html_roll = await foundry.applications.handlebars.renderTemplate(
+                rollResult.templatePath,
+                templateData,
+            )
             await rollResult.roll.toMessage(
                 {
                     speaker: this.speaker,
@@ -472,6 +484,7 @@ export class AngriffDialog extends CombatDialog {
     }
 
     async _schadenKlick() {
+        if (callIlarisHookWithGlobalMirror('Ilaris.preSchaden', this) === false) return
         await this.manoeverAuswaehlen()
         await this.updateManoeverMods()
         let label = `Schaden (${this.item.name})`
@@ -488,19 +501,7 @@ export class AngriffDialog extends CombatDialog {
         )
 
         await postRollToChat(rollResult, this.speaker, this.rollmode)
-
-        // Apply damage to selected targets if any
-        if (this.selectedActors && this.selectedActors.length > 0) {
-            for (const target of this.selectedActors) {
-                await applyDamageToTarget(
-                    target,
-                    rollResult.roll.total,
-                    this.damageType,
-                    this.trueDamage,
-                    this.speaker,
-                )
-            }
-        }
+        callIlarisHookAllWithGlobalMirror('Ilaris.postSchaden', rollResult, this)
     }
 
     /* -------------------------------------------- */

@@ -325,7 +325,7 @@
     {
       "_id": "nSpAVd86PwxYMKkU",
       "name": "Laufen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 18,
@@ -354,7 +354,7 @@
     {
       "_id": "kQRBrfo2xYZ3S4qq",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 6,
@@ -383,7 +383,7 @@
     {
       "_id": "KaichRwJiapj7ELC",
       "name": "Zähigkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 12,

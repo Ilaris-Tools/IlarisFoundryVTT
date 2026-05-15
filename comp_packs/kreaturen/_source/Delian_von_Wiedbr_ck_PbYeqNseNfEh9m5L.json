@@ -437,7 +437,7 @@
     {
       "_id": "IrZzfR0iy8igkEr3",
       "name": "Menschenkenntnis",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 15,
@@ -466,7 +466,7 @@
     {
       "_id": "x1gzePN2lSRPGg1D",
       "name": "Selbstbeherrschung",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 17,
@@ -495,7 +495,7 @@
     {
       "_id": "dc8zVFyvzGn4L3Jt",
       "name": "Gebräuche Mittelreich",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 12,
@@ -524,7 +524,7 @@
     {
       "_id": "VrJl8bIo0LSzPFVH",
       "name": "Magiekunde",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 14,
@@ -553,7 +553,7 @@
     {
       "_id": "FudKF7mjxb6VvHiz",
       "name": "Götter und Kulte",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 14,
@@ -582,7 +582,7 @@
     {
       "_id": "ZvjwLqgciXNI05C7",
       "name": "Staatskunst",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 13,
@@ -611,7 +611,7 @@
     {
       "_id": "DQ3izvdlohVFNXEy",
       "name": "Heraldik",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 16,

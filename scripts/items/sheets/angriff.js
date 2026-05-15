@@ -151,11 +151,11 @@ export class AngriffSheet extends IlarisItemSheet {
      * @param {HTMLElement} target
      */
     static async #onAddEigenschaft(event, target) {
-        this.document.system.eigenschaften = Object.values(this.document.system.eigenschaften)
-        this.document.system.eigenschaften.push({ name: 'Neue Eigenschaft', text: '' })
+        const eigenschaften = Object.values(this.document.system.eigenschaften || [])
+        eigenschaften.push({ name: 'Neue Eigenschaft', text: '' })
 
         await this.document.update({
-            'system.eigenschaften': this.document.system.eigenschaften,
+            'system.eigenschaften': eigenschaften,
         })
 
         this.render(false)
@@ -170,12 +170,12 @@ export class AngriffSheet extends IlarisItemSheet {
         const eigid = target.dataset.eigenschaftid
         if (eigid === undefined) return
 
-        this.document.system.eigenschaften = Object.values(this.document.system.eigenschaften)
-        this.document.system.eigenschaften.splice(parseInt(eigid), 1)
+        const eigenschaften = Object.values(this.document.system.eigenschaften || [])
+        eigenschaften.splice(parseInt(eigid), 1)
 
         // Use this.document.update() - works for both embedded and standalone!
         await this.document.update({
-            'system.eigenschaften': this.document.system.eigenschaften,
+            'system.eigenschaften': eigenschaften,
         })
     }
 }

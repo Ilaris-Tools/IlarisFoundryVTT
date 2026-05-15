@@ -608,7 +608,7 @@
     {
       "_id": "bRizzAu4YtqJu0nt",
       "name": "Gebräuche",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 16,
@@ -637,7 +637,7 @@
     {
       "_id": "U2p8ux54yJmLEiFZ",
       "name": "Menschenkenntnis",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Menschenkenntnis ist deine Fähigkeit, die Absichten deines Gegenüber zu durchschauen. Damit enttarnst du Lügen und falsche Annäherungsversuche.",
         "pw": 14,
@@ -666,7 +666,7 @@
     {
       "_id": "D35YnWyxKHnC7Yju",
       "name": "Pirschen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Pirschen ermöglicht das Schleichen, Verstecken und Lauern in der freien Natur. Du pirschst dich auf der Jagd an einen wilden Hirsch heran, legst einen Hinterhalt an einer Reichsstraße oder beobachtest ungesehen das Lager einer Orkbande.",
         "pw": 14,
@@ -695,7 +695,7 @@
     {
       "_id": "3zdRTXhLGr6WJvwJ",
       "name": "Schwimmen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Schwimmen erlaubt eine schnellere Fortbewegung im Wasser und längere Tauchgänge.",
         "pw": 20,
@@ -724,7 +724,7 @@
     {
       "_id": "2cbaXoNf3eln9dY4",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 12,
@@ -753,7 +753,7 @@
     {
       "_id": "pppuicjli4KC5SQn",
       "name": "Dämonisch",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

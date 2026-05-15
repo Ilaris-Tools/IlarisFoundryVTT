@@ -58,10 +58,13 @@ How to verify each step and the overall result:
 ## Process
 
 1. **Clarify** — Parse the user request. Identify ambiguities and resolve or flag them.
-2. **Decompose** — Break the request into atomic steps.
-3. **Assign** — Map each step to the appropriate specialist role.
-4. **Define checks** — Specify validation criteria for each step.
-5. **Emit plan** — Produce the structured output above.
+2. **Research** — **Mandatory**: delegate context gathering to the `Researcher` agent before decomposing. Pass the objective and the relevant context sources listed below. Wait for the Researcher's report before proceeding.
+3. **Decompose** — Break the request into atomic steps, informed by the Researcher's findings.
+4. **Assign** — Map each step to the appropriate specialist role.
+5. **Define checks** — Specify validation criteria for each step.
+6. **Emit plan** — Produce the structured output above.
+7. **Emit Points for need input in chat at the end** — List all `[NEEDS INPUT]` items identified during the planning process and prompt the user for clarification.
+8. **Document the plan** — **Always mandatory, regardless of `[NEEDS INPUT]` items**: write the output into a markdown file in `docs/_specs/` in a new folder with date and a descriptive name with underscores (e.g., `2024_06_15_new_feature_planning`), the file should be named with the descriptive name and `_plan` suffix (e.g., `new_feature_plan.md`). Do this even if `[NEEDS INPUT]` items remain — mark the document as `DRAFT` in its title.
 
 ## Context Sources
 
