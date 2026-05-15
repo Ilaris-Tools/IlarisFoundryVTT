@@ -233,17 +233,18 @@ export class AngriffDialog extends CombatDialog {
      * Creates damage roll summary
      */
     getDamageSummaryContext() {
-        const baseDamage = this.schaden || this.item.getTp()
+        const baseDamage = this.getBaseDamageFormula()
         const maneuverMod = this.mod_dm || 0
-        let finalFormula
-        if (maneuverMod === 0) {
+        const hasDamageFormula = Boolean(baseDamage)
+        let finalFormula = 'Kein Schadenwert'
+        if (hasDamageFormula && maneuverMod === 0) {
             finalFormula = baseDamage
-        } else {
+        } else if (hasDamageFormula) {
             const sign = maneuverMod > 0 ? '+' : ''
             finalFormula = `${baseDamage} ${sign}${maneuverMod}`
         }
 
-        const canClick = !(this.isDefenseMode && !this.riposte)
+        const canClick = hasDamageFormula && !(this.isDefenseMode && !this.riposte)
         const modifierSection = this._buildModifierSectionData(this.text_dm, {
             sectionTitle: 'Modifikatoren:',
             filterLine: (line) =>
@@ -267,13 +268,27 @@ export class AngriffDialog extends CombatDialog {
             rows: [
                 {
                     label: 'Basis Schaden',
-                    value: `${baseDamage}`,
+                    value: hasDamageFormula ? `${baseDamage}` : 'Nicht gesetzt',
                     cssClass: 'modifier-item base-value',
                 },
             ],
             sections: modifierSection ? [modifierSection] : [],
             showDivider: Boolean(modifierSection),
         }
+    }
+
+    getBaseDamageFormula() {
+        return `${this.schaden || this.item.getTp() || ''}`.trim()
+    }
+
+    getDamageRollFormula() {
+        const baseDamage = this.getBaseDamageFormula()
+        if (!baseDamage) {
+            return ''
+        }
+
+        const damageMod = signed(this.mod_dm)
+        return damageMod ? `${baseDamage} ${damageMod}` : baseDamage
     }
 
     /* -------------------------------------------- */
@@ -488,7 +503,11 @@ export class AngriffDialog extends CombatDialog {
         await this.manoeverAuswaehlen()
         await this.updateManoeverMods()
         let label = `Schaden (${this.item.name})`
-        let formula = `${this.schaden} ${signed(this.mod_dm)}`
+        let formula = this.getDamageRollFormula()
+        if (!formula) {
+            ui?.notifications?.warn('Für diesen Angriff ist kein Schadenswurf hinterlegt.')
+            return
+        }
 
         // Use the new evaluation function for damage (no crit evaluation)
         const rollResult = await evaluate_roll_with_crit(

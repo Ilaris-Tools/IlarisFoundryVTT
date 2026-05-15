@@ -119,4 +119,17 @@ describe('AngriffDialog summary context', () => {
         expect(summary.sections[2].headingClass).toBe('disabled')
         expect(summary.sections[1].action).toBe('verteidigen')
     })
+
+    it('disables damage summary actions when no damage formula exists', () => {
+        const dialog = createDialog()
+        dialog.item.getTp.mockReturnValue('')
+        dialog.schaden = ''
+
+        const damageSummary = dialog.getDamageSummaryContext()
+
+        expect(damageSummary.action).toBeNull()
+        expect(damageSummary.heading).toBe('🩸 Schaden: Kein Schadenwert')
+        expect(damageSummary.headingClass).toBe('disabled')
+        expect(damageSummary.rows[0].value).toBe('Nicht gesetzt')
+    })
 })

@@ -187,10 +187,6 @@ export class UebernatuerlichDialog extends CombatDialog {
         const baseEnergy = this.mod_energy || 0
         const icon = '⚡'
 
-        let summary = '<div class="modifier-summary energy-summary">'
-        summary += `<div class="flex_space-between_center"><h4 style="width:100%">${icon} Energiekosten: ${baseEnergy} Energie</h4></div>`
-        summary += '<div class="modifier-list">'
-
         // Base energy cost
         let originalCost = sanitizeEnergyCost(this.item.system.kosten) || 0
         if (this.energy_override != null) {
@@ -236,7 +232,7 @@ export class UebernatuerlichDialog extends CombatDialog {
 
         return {
             cssClass: 'modifier-summary energy-summary',
-            heading: `⚡ Energiekosten: ${baseEnergy} Energie`,
+            heading: `${icon} Energiekosten: ${baseEnergy} Energie`,
             rows: [
                 {
                     label: 'Basiskosten',

@@ -48,7 +48,7 @@ describe('FernkampfAngriffDialog summary context', () => {
                 rollModes: {},
             },
         }
-        ;({ FernkampfAngriffDialog } = await import('../dialogs/fernkampf_angriff.js'))
+        ;({ FernkampfAngriffDialog } = await import('../dialogs/fernkampf-angriff.js'))
     })
 
     beforeEach(() => {
@@ -137,5 +137,18 @@ describe('FernkampfAngriffDialog summary context', () => {
         expect(damageSummary.sections[0].items).toEqual([
             expect.objectContaining({ text: 'Wuchtschuss +2' }),
         ])
+    })
+
+    it('disables damage summary actions when no damage formula exists', () => {
+        const dialog = createDialog()
+        dialog.item.getTp.mockReturnValue('')
+        dialog.schaden = ''
+
+        const damageSummary = dialog.getDamageSummaryContext()
+
+        expect(damageSummary.action).toBeNull()
+        expect(damageSummary.heading).toBe('🩸 Schaden: Kein Schadenwert')
+        expect(damageSummary.headingClass).toBe('disabled')
+        expect(damageSummary.rows[0].value).toBe('Nicht gesetzt')
     })
 })
