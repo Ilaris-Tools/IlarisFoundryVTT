@@ -193,7 +193,6 @@
 .tab {
   grid-area: tab;
   overflow: auto;
-  color: black;
 }
 
 .ilaris.actor.helden .window-content section.sidebar .herosidebar .energy-modifiers {
