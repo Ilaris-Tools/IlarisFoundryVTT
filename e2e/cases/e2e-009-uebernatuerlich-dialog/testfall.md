@@ -61,7 +61,7 @@ Dialog sicherstellen und Energie-Anzeige prüfen. Kein Würfelwurf.
 3. Modifikator-Input (`input[id^="modifikator-"]`) auf `neutralMod` setzen
 4. `CONFIG.Dice.randomUniform = () => 0.01` → W20-Ergebnis = 20 (Triumph + Erfolg)
 5. `asp_stern` vor dem Wurf lesen
-6. Würfelwurf-Button (`.modifier-summary.talent-summary.clickable-summary.angreifen`) klicken
+6. Würfelwurf-Button (`.modifier-summary.talent-summary.clickable-summary[data-action="angreifen"]`) klicken
 7. Auf 2 neue Chat-Nachrichten warten
 
 **Erwartungen**:
@@ -213,22 +213,22 @@ Das System bucht trotzdem bis 0 ab (kein Absturz), zeigt aber die Fehlermeldung.
 
 ### Dialog-Selektoren
 
-| Zweck                     | Selektor                                                        |
-| ------------------------- | --------------------------------------------------------------- |
-| Dialog-Root               | `.application.uebernatuerlich-dialog`                           |
-| Dialog schließen          | `[data-action="close"]` (im Dialog-Header)                      |
-| Tab-Button Übernatürlich  | `nav [data-tab="uebernatuerlich"]`                              |
-| Roll-Icon Zauber          | `[data-action="rollable"][data-rolltype="magie_diag"]`          |
-| Roll-Icon Liturgie        | `[data-action="rollable"][data-rolltype="karma_diag"]`          |
-| Würfelwurf-Button         | `.modifier-summary.talent-summary.clickable-summary.angreifen`  |
-| Energie-Summary           | `.modifier-summary.energy-summary`                              |
-| Energie-Erfolg-Button     | `.clickable-summary.energie-erfolg`                             |
-| Energie-Misserfolg-Button | `.clickable-summary.energie-misserfolg`                         |
-| Modifikator-Input         | `input[id^="modifikator-"]`                                     |
-| Energy-Override-Input     | `input[name="item.system.manoever.energyOverride"]`             |
-| Verbotene-Pforten-Radio   | `input[name="verbotene_pforten_toggle"][value="4"]` (1 Vorteil) |
-| Blutmagie-Input           | `input#blutmagie`                                               |
-| Fehlermeldung             | `.notification.error`                                           |
+| Zweck                     | Selektor                                                                      |
+| ------------------------- | ----------------------------------------------------------------------------- |
+| Dialog-Root               | `.application.uebernatuerlich-dialog`                                         |
+| Dialog schließen          | `[data-action="close"]` (im Dialog-Header)                                    |
+| Tab-Button Übernatürlich  | `nav [data-tab="uebernatuerlich"]`                                            |
+| Roll-Icon Zauber          | `[data-action="rollable"][data-rolltype="magie_diag"]`                        |
+| Roll-Icon Liturgie        | `[data-action="rollable"][data-rolltype="karma_diag"]`                        |
+| Würfelwurf-Button         | `.modifier-summary.talent-summary.clickable-summary[data-action="angreifen"]` |
+| Energie-Summary           | `.modifier-summary.energy-summary`                                            |
+| Energie-Erfolg-Button     | `.clickable-summary.energie-erfolg`                                           |
+| Energie-Misserfolg-Button | `.clickable-summary.energie-misserfolg`                                       |
+| Modifikator-Input         | `input[id^="modifikator-"]`                                                   |
+| Energy-Override-Input     | `input[name="item.system.manoever.energyOverride"]`                           |
+| Verbotene-Pforten-Radio   | `input[name="verbotene_pforten_toggle"][value="4"]` (1 Vorteil)               |
+| Blutmagie-Input           | `input#blutmagie`                                                             |
+| Fehlermeldung             | `.notification.error`                                                         |
 
 ### Chat-Nachrichtenstruktur
 

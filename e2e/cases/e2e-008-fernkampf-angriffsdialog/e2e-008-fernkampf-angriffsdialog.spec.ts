@@ -18,7 +18,7 @@ async function rollAndCaptureAttack(
     const beforeCount = await page.evaluate(() => game.messages.contents.length)
 
     const attackButton = attackDialog.locator(
-        '.modifier-summary.attack-summary.clickable-summary.angreifen',
+        '.modifier-summary.attack-summary.clickable-summary[data-action="angreifen"]',
     )
     await attackButton.click()
 
@@ -33,7 +33,7 @@ async function rollAndCaptureAttack(
         // Fallback fuer flaky click delivery in AppV2 overlays
         await page.evaluate(() => {
             const node = document.querySelector(
-                '.application.fernkampf-dialog .modifier-summary.attack-summary.clickable-summary.angreifen',
+                '.application.fernkampf-dialog .modifier-summary.attack-summary.clickable-summary[data-action="angreifen"]',
             )
             node?.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }))
         })
@@ -63,7 +63,7 @@ async function rollAndCaptureDamage(
     const beforeCount = await page.evaluate(() => game.messages.contents.length)
 
     const damageButton = attackDialog.locator(
-        '.modifier-summary.damage-summary.clickable-summary.schaden',
+        '.modifier-summary.damage-summary.clickable-summary[data-action="schaden"]',
     )
     await damageButton.click()
 
@@ -77,7 +77,7 @@ async function rollAndCaptureDamage(
     if (!chatIncreased) {
         await page.evaluate(() => {
             const node = document.querySelector(
-                '.application.fernkampf-dialog .modifier-summary.damage-summary.clickable-summary.schaden',
+                '.application.fernkampf-dialog .modifier-summary.damage-summary.clickable-summary[data-action="schaden"]',
             )
             node?.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }))
         })
@@ -309,7 +309,7 @@ test.describe('E2E-008 Fernkampf-Angriffsdialog', () => {
             await expect(attackDialog).toContainText('Fernkampfangriff:')
 
             const attackButton = attackDialog.locator(
-                '.modifier-summary.attack-summary.clickable-summary.angreifen',
+                '.modifier-summary.attack-summary.clickable-summary[data-action="angreifen"]',
             )
 
             // Triumph-Text ist je nach Einstellung 'Triumph' oder 'Crit'
@@ -357,7 +357,7 @@ test.describe('E2E-008 Fernkampf-Angriffsdialog', () => {
                 if (!chatIncreased) {
                     await page.evaluate(() => {
                         const node = document.querySelector(
-                            '.application.fernkampf-dialog .modifier-summary.attack-summary.clickable-summary.angreifen',
+                            '.application.fernkampf-dialog .modifier-summary.attack-summary.clickable-summary[data-action="angreifen"]',
                         )
                         node?.dispatchEvent(
                             new MouseEvent('click', { bubbles: true, cancelable: true }),

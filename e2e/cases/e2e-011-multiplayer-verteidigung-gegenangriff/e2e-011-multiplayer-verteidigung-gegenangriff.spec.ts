@@ -226,7 +226,7 @@ test.describe('E2E-011 Multiplayer: Verteidigung und Gegenangriff', () => {
             await clickSummaryWithFallback(
                 gmPage,
                 '.application.angriff-dialog',
-                '.modifier-summary.attack-summary.clickable-summary.angreifen',
+                '.modifier-summary.attack-summary.clickable-summary[data-action="angreifen"]',
             )
             await waitForNewMessages(gmPage, baselineGm1, 2)
 
@@ -304,7 +304,7 @@ test.describe('E2E-011 Multiplayer: Verteidigung und Gegenangriff', () => {
             await clickSummaryWithFallback(
                 player3Page,
                 '.application.angriff-dialog',
-                '.modifier-summary.defense-summary.clickable-summary.verteidigen',
+                '.modifier-summary.defense-summary.clickable-summary[data-action="verteidigen"]',
             )
             await waitForNewMessages(player3Page, baselineP3Def, 2)
 
@@ -331,7 +331,7 @@ test.describe('E2E-011 Multiplayer: Verteidigung und Gegenangriff', () => {
             await clickSummaryWithFallback(
                 gmPage,
                 '.application.angriff-dialog',
-                '.modifier-summary.damage-summary.clickable-summary.schaden',
+                '.modifier-summary.damage-summary.clickable-summary[data-action="schaden"]',
             )
             await waitForNewMessages(gmPage, baselineGm3, 2)
 
@@ -458,7 +458,7 @@ test.describe('E2E-011 Multiplayer: Verteidigung und Gegenangriff', () => {
             await clickSummaryWithFallback(
                 player3Page,
                 '.application.angriff-dialog',
-                '.modifier-summary.attack-summary.clickable-summary.angreifen',
+                '.modifier-summary.attack-summary.clickable-summary[data-action="angreifen"]',
             )
             await waitForNewMessages(player3Page, baselineP3Counter, 2)
 
@@ -520,7 +520,7 @@ test.describe('E2E-011 Multiplayer: Verteidigung und Gegenangriff', () => {
             await clickSummaryWithFallback(
                 gmPage,
                 '.application.angriff-dialog',
-                '.modifier-summary.defense-summary.clickable-summary.verteidigen',
+                '.modifier-summary.defense-summary.clickable-summary[data-action="verteidigen"]',
             )
             await waitForNewMessages(gmPage, baselineGm5Def, 2)
 
@@ -547,7 +547,7 @@ test.describe('E2E-011 Multiplayer: Verteidigung und Gegenangriff', () => {
             await clickSummaryWithFallback(
                 player3Page,
                 '.application.angriff-dialog',
-                '.modifier-summary.damage-summary.clickable-summary.schaden',
+                '.modifier-summary.damage-summary.clickable-summary[data-action="schaden"]',
             )
             await waitForNewMessages(player3Page, baselineP3Dmg, 2)
 

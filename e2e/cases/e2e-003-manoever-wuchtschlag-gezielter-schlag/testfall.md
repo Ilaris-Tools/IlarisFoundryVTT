@@ -90,18 +90,18 @@
 
 ## Selektoren
 
-| Element          | Selektor                                                          |
-| ---------------- | ----------------------------------------------------------------- |
-| Angriffsdialog   | `.application.angriff-dialog` (last)                              |
-| Manoever-Header  | `.maneuver-header`                                                |
-| Manoever-Grid    | `.maneuver-grid`                                                  |
-| Wuchtschlag      | `.maneuver-item:has-text("Wuchtschlag") input[type="number"]`     |
-| Gezielter Schlag | `.maneuver-item:has-text("Gezielter Schlag") select`              |
-| Schildspalter    | `.maneuver-item:has-text("Schildspalter") input[type="checkbox"]` |
-| AT-Summary       | `.modifier-summary.attack-summary`                                |
-| Angreifen-Button | `.modifier-summary.attack-summary.clickable-summary.angreifen`    |
-| DM-Summary       | `.modifier-summary.damage-summary`                                |
-| Schaden-Button   | `.modifier-summary.damage-summary.clickable-summary.schaden`      |
+| Element          | Selektor                                                                      |
+| ---------------- | ----------------------------------------------------------------------------- |
+| Angriffsdialog   | `.application.angriff-dialog` (last)                                          |
+| Manoever-Header  | `.maneuver-header`                                                            |
+| Manoever-Grid    | `.maneuver-grid`                                                              |
+| Wuchtschlag      | `.maneuver-item:has-text("Wuchtschlag") input[type="number"]`                 |
+| Gezielter Schlag | `.maneuver-item:has-text("Gezielter Schlag") select`                          |
+| Schildspalter    | `.maneuver-item:has-text("Schildspalter") input[type="checkbox"]`             |
+| AT-Summary       | `.modifier-summary.attack-summary`                                            |
+| Angreifen-Button | `.modifier-summary.attack-summary.clickable-summary[data-action="angreifen"]` |
+| DM-Summary       | `.modifier-summary.damage-summary`                                            |
+| Schaden-Button   | `.modifier-summary.damage-summary.clickable-summary[data-action="schaden"]`   |
 
 ## Artefakte
 
