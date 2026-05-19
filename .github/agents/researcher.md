@@ -22,7 +22,7 @@ Provide comprehensive, accurate, and well-sourced research reports that enable s
 
 1. **Foundry VTT API** — Hook signatures, Document methods, utility functions
 2. **Codebase patterns** — How similar features are implemented in the Ilaris system
-3. **Data models** — `template.json` schemas, Actor/Item type definitions
+3. **Data models** — TypeDataModel schemas, `documentTypes`, Actor/Item type definitions
 4. **Domain knowledge** — Ilaris RPG rules, German terminology, compendium structure
 
 ## Source Priority

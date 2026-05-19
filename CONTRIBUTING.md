@@ -125,17 +125,17 @@ Pre-Releases (Standard bei workflow_dispatch):
 
 ## Code Struktur
 
-In der template.json steht die grobe Datenstruktur für Actors und Items. Es können darin auch templates zum wiederverwenden erstellt werden um zB Nahkampfwaffen, Fernkampfwaffen und Rüstungen alle Eigenschaften eines Gegenstandes zu geben (gewicht, platz, härte, wert ...)
+Die grobe Datenstruktur für Actors und Items wird heute über `TypeDataModel.defineSchema()` beschrieben. Die zentralen Einstiegspunkte dafür sind `scripts/core/model-data/type-data-models.js`, `scripts/actors/model-data/`, `scripts/items/model-data/models.js` und die jeweiligen `shared.js`-Dateien für gemeinsam genutzte Felder.
 
 Actor: (types: Held, Kreatur) haben jeweils eigene html Templates zum ansehen und bearbeiten (ActorSheets). In den (zwei) actor.js files stehen hooks und methoden für die actors und das UI
 
 Items: Zauber, Fertigkeiten, Gegenstände, Eigenheiten, Waffen, Vorteile usw.. sind Items mit jeweiligem type. Auch hier gibt es einzelne html snippets als formular um individuelle Items zu bearbeiten.
 
-`/packs/`: Im packs ordner befinden sich die Daten fuer die im Spiel verfuegbaren Kompendien. Letztendlich befinden
+`/comp_packs/`: Im `comp_packs/`-Ordner befinden sich die Daten fuer die im Spiel verfuegbaren Kompendien. Letztendlich befinden
 sich hier alle möglichen Ilaris-Inhalte (items, actors, effects...) wie zB Vorteile, Waffen, kreaturen.
 Foundry behandelt jeden Ordner als Datenbanktabelle mit binary Files, die sich häufig ändern. Um das ganze als Entwickler
 einfacher zu verwalten können, werden alle Einträge als .json-files in den jeweiligen \_source unterordner entpackt.
-Sie müssen um live verwendet werden zu können erst wieder gepackt werden. [Mehr dazu in den docs](./docs/packs.md).
+Sie müssen um live verwendet werden zu können erst wieder gepackt werden. Dafür wird `npm run pack-all` verwendet.
 
 TODO: Dateistruktur und wichtige Dateien erklären
 

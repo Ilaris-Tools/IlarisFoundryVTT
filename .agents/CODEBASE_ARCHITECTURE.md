@@ -5,7 +5,6 @@
 ```
 Ilaris/
 ├── system.json                    # System manifest
-├── template.json                  # Actor/Item data schemas
 ├── package.json                   # npm scripts, devDependencies
 ├── jest.config.mjs                # Jest test configuration
 ├── jest.setup.js                  # Test environment (Foundry mocks)
@@ -19,6 +18,7 @@ Ilaris/
 │   │   ├── config.js              # CONFIG.ILARIS constants
 │   │   ├── config/                # Config sub-modules
 │   │   ├── handlebars.js          # Handlebars helpers registration
+│   │   ├── model-data/            # TypeDataModel registration + helpers
 │   │   ├── documents/             # Base document classes
 │   │   │   └── active-effect.js   # IlarisActiveEffect
 │   │   ├── styles/                # Core CSS
@@ -34,6 +34,7 @@ Ilaris/
 │   │   │   ├── proxy.js           # ★ IlarisActorProxy (type dispatch)
 │   │   │   ├── actor-weapon-utils.js
 │   │   │   └── hardcodedvorteile.js
+│   │   ├── model-data/            # Actor TypeDataModels + shared actor fields
 │   │   ├── sheets/                # UI sheets (AppV2)
 │   │   │   ├── actor.js           # ★ IlarisActorSheet (base class)
 │   │   │   ├── held.js            # HeldenSheet
@@ -53,6 +54,7 @@ Ilaris/
 │   │   │   ├── combat-item.js     # Combat item base
 │   │   │   ├── effect-item.js     # Effect item model
 │   │   │   └── manoever.js        # Maneuver model
+│   │   ├── model-data/            # Item TypeDataModels + shared item fields
 │   │   ├── sheets/                # 17+ item sheet classes
 │   │   │   ├── item.js            # ★ IlarisItemSheet (base class)
 │   │   │   ├── fertigkeit.js      # Skill sheet

@@ -73,5 +73,5 @@ When researching, consult in this order:
 1. `.agents/CODEBASE_ARCHITECTURE.md` — for file locations and patterns
 2. `.agents/PATTERNS_AND_EXAMPLES.md` — for implementation precedents
 3. `.agents/GLOSSARY.md` — for domain terminology
-4. `template.json` — for data model structures
+4. `system.json` plus `scripts/core/model-data/`, `scripts/actors/model-data/`, and `scripts/items/model-data/` — for data model structures
 5. Foundry VTT API docs — <https://foundryvtt.com/api/>
