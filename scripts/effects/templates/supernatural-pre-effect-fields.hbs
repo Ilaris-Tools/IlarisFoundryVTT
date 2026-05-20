@@ -1,0 +1,89 @@
+<section class="supernatural-pre-effect-fields">
+    <header class="supernatural-pre-effect-header">
+        <h3>Ilaris Pre-Effect</h3>
+        <p>Phase 1 fuehrt nur Direktziel-Effekte sofort aus. Template- und Areal-Felder werden bereits gespeichert.</p>
+    </header>
+
+    <div class="supernatural-pre-effect-grid">
+        <label for="pre-effect-target-mode"><strong>Zielmodus</strong></label>
+        <select id="pre-effect-target-mode" name="flags.Ilaris.preEffect.targetMode">
+            {{selectOptions options.targetModes selected=preEffect.targetMode valueAttr='value' labelAttr='label'}}
+        </select>
+
+        <label for="pre-effect-target-scope"><strong>Zielumfang</strong></label>
+        <select id="pre-effect-target-scope" name="flags.Ilaris.preEffect.targetScope">
+            {{selectOptions options.targetScopes selected=preEffect.targetScope valueAttr='value' labelAttr='label'}}
+        </select>
+
+        <label for="pre-effect-application-type"><strong>Anwendungsart</strong></label>
+        <select id="pre-effect-application-type" name="flags.Ilaris.preEffect.applicationType">
+            {{selectOptions options.applicationTypes selected=preEffect.applicationType valueAttr='value' labelAttr='label'}}
+        </select>
+
+        <label for="pre-effect-start-logic"><strong>Startlogik</strong></label>
+        <select id="pre-effect-start-logic" name="flags.Ilaris.preEffect.startLogic">
+            {{selectOptions options.startLogics selected=preEffect.startLogic valueAttr='value' labelAttr='label'}}
+        </select>
+
+        <label for="pre-effect-multiplier-strategy"><strong>Multiplikator</strong></label>
+        <select id="pre-effect-multiplier-strategy" name="flags.Ilaris.preEffect.multiplierStrategy">
+            {{selectOptions options.multiplierStrategies selected=preEffect.multiplierStrategy valueAttr='value' labelAttr='label'}}
+        </select>
+
+        <label for="pre-effect-multiplier-value"><strong>Multiplikatorwert</strong></label>
+        <input
+            id="pre-effect-multiplier-value"
+            name="flags.Ilaris.preEffect.multiplierValue"
+            type="number"
+            value="{{preEffect.multiplierValue}}"
+            data-dtype="Number"
+        />
+    </div>
+
+    <div class="supernatural-pre-effect-subgrid">
+        <div class="supernatural-pre-effect-panel">
+            <h4>Template-Vorbereitung</h4>
+
+            <label for="pre-effect-template-shape">Form</label>
+            <select id="pre-effect-template-shape" name="flags.Ilaris.preEffect.template.shape">
+                {{selectOptions options.templateShapes selected=preEffect.template.shape valueAttr='value' labelAttr='label'}}
+            </select>
+
+            <label for="pre-effect-template-distance">Distanz</label>
+            <input
+                id="pre-effect-template-distance"
+                name="flags.Ilaris.preEffect.template.distance"
+                type="text"
+                value="{{preEffect.template.distance}}"
+                data-dtype="String"
+            />
+
+            <label for="pre-effect-template-width">Breite</label>
+            <input
+                id="pre-effect-template-width"
+                name="flags.Ilaris.preEffect.template.width"
+                type="text"
+                value="{{preEffect.template.width}}"
+                data-dtype="String"
+            />
+        </div>
+
+        <div class="supernatural-pre-effect-panel">
+            <h4>Areal-Vorbereitung</h4>
+
+            <label for="pre-effect-area-radius">Radius</label>
+            <input
+                id="pre-effect-area-radius"
+                name="flags.Ilaris.preEffect.area.radius"
+                type="text"
+                value="{{preEffect.area.radius}}"
+                data-dtype="String"
+            />
+
+            <label for="pre-effect-area-disposition">Zielgruppe</label>
+            <select id="pre-effect-area-disposition" name="flags.Ilaris.preEffect.area.disposition">
+                {{selectOptions options.areaDispositions selected=preEffect.area.disposition valueAttr='value' labelAttr='label'}}
+            </select>
+        </div>
+    </div>
+</section>

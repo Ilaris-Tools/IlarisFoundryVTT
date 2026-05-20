@@ -71,3 +71,43 @@
   color: #666;
   font-style: italic;
 }
+
+.supernatural-pre-effect-fields {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid #232323;
+}
+
+.supernatural-pre-effect-header p {
+  margin: 4px 0 12px;
+  color: #666;
+  font-size: 12px;
+}
+
+.supernatural-pre-effect-grid,
+.supernatural-pre-effect-subgrid {
+  display: grid;
+  gap: 8px 12px;
+}
+
+.supernatural-pre-effect-grid {
+  grid-template-columns: minmax(140px, 180px) minmax(0, 1fr);
+  align-items: center;
+}
+
+.supernatural-pre-effect-subgrid {
+  margin-top: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.supernatural-pre-effect-panel {
+  border: 1px solid #232323;
+  border-radius: 4px;
+  padding: 10px;
+  display: grid;
+  gap: 6px;
+}
+
+.supernatural-pre-effect-panel h4 {
+  margin: 0 0 4px;
+}

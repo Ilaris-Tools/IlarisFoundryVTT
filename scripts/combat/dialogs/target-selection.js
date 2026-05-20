@@ -94,6 +94,7 @@ export class TargetSelectionDialog extends HandlebarsApplicationMixin(Applicatio
             currentToken: {
                 id: token.id,
                 actorId: token.actor.id,
+                actorLink: token.document?.actorLink ?? true,
                 name: token.name,
                 img: token.actor.img || 'icons/svg/mystery-man.svg',
             },
@@ -126,6 +127,7 @@ export class TargetSelectionDialog extends HandlebarsApplicationMixin(Applicatio
                 return {
                     id: t.id,
                     actorId: t.actor.id,
+                    actorLink: t.document?.actorLink ?? true,
                     name: t.name,
                     img: t.actor.img || 'icons/svg/mystery-man.svg',
                     distance: distance,
@@ -203,6 +205,7 @@ export class TargetSelectionDialog extends HandlebarsApplicationMixin(Applicatio
         ).map((row) => ({
             tokenId: row.dataset.tokenId,
             actorId: row.dataset.actorId,
+            actorLink: row.dataset.actorLink !== 'false',
             name: row.cells[1].textContent.trim(),
             distance: parseInt(row.dataset.distance),
         }))

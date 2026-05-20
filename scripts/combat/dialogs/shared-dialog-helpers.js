@@ -234,13 +234,13 @@ export async function applyDamageToTarget(
  * @returns {{ targetActor: Actor|null, targetToken: Token|null, actorLink: boolean }}
  */
 export function resolveTargetActorForDamage(target) {
-    const targetToken = target?.tokenId ? canvas?.tokens?.get(target.tokenId) : null
+    const targetToken = target?.tokenId ? globalThis.canvas?.tokens?.get(target.tokenId) : null
     const actorLink = target?.actorLink ?? targetToken?.document?.actorLink ?? true
 
     const targetActor =
         !actorLink && targetToken?.actor
             ? targetToken.actor
-            : game.actors.get(target?.actorId || target?._id) || targetToken?.actor
+            : game.actors?.get?.(target?.actorId || target?._id) || targetToken?.actor
 
     return { targetActor, targetToken, actorLink }
 }

@@ -39,6 +39,7 @@ import { XmlCharacterImporter } from '../importer/xml_character_importer.js'
 import { XMLRuleImporter } from '../importer/xml_rule_importer/index.js'
 import { formatDiceFormula } from './utilities.js'
 import { initializeKeybinds } from './keybinds.js'
+import { handleSupernaturalEffectsSocketEvent } from '../effects/supernatural-pre-effect.js'
 
 const Actors = foundry.documents.collections.Actors
 const Items = foundry.documents.collections.Items
@@ -87,7 +88,7 @@ Hooks.once('init', () => {
         makeDefault: true,
     })
     Items.registerSheet('Ilaris', UebernatuerlichTalentSheet, {
-        types: ['zauber', 'liturgie'],
+        types: ['zauber', 'liturgie', 'anrufung'],
         makeDefault: true,
     })
     Items.registerSheet('Ilaris', FreieFertigkeitSheet, {
@@ -405,6 +406,9 @@ function setupIlarisSocket() {
             case 'createDefensePromptByOwner':
                 await handleCreateDefensePromptByOwnerRequest(data.data)
                 break
+            case 'applySupernaturalEffectsByOwner':
+                await handleApplySupernaturalEffectsByOwnerRequest(data.data)
+                break
             case 'broadcastCombatHook':
                 await handleBroadcastCombatHookRequest(data.data)
                 break
@@ -486,6 +490,10 @@ async function handleCreateDefensePromptByOwnerRequest(data) {
     const { handleDefensePromptSocketEvent } =
         await import('../combat/hooks/combat_dialog_handlers.js')
     await handleDefensePromptSocketEvent(data)
+}
+
+async function handleApplySupernaturalEffectsByOwnerRequest(data) {
+    await handleSupernaturalEffectsSocketEvent(data)
 }
 
 /**
