@@ -1,0 +1,139 @@
+<p>
+    Diese Kurzübersicht erklärt, wie du deine Sephrasto-Hausregeln per XML nach Foundry importierst,
+    wann ein Merge mit den Standardregeln notwendig ist und was du nach dem Import noch prüfen
+    musst.
+</p>
+
+<h2>Du und deine Hausregeln</h2>
+<p>
+    Es ist möglich, über einen Button-Klick seine Sephrasto-Hausregel-XML in Foundry hochzuladen.
+    Dabei wird für jede Itemkategorie ein eigenes neues Welt-Kompendium angelegt. Die neuen
+    Kompendien tauchen anschließend als normale Welt-Kompendien in deiner Foundry-Welt auf und
+    können dort wie andere Inhalte verwendet oder geprüft werden.
+</p>
+<p>
+    Vorteile, die einen statischen Effekt wie <strong>+AsP</strong> oder <strong>+WS</strong>
+    haben, werden automatisiert mit einem entsprechenden Effekt versehen. Manöver bekommen
+    halbautomatisiert mindestens ihre Erschwernisse oder passende Inputfelder zugewiesen. In beiden
+    Fällen ist es aber wichtig, das Ganze im Nachhinein zu prüfen. Für weitere Infos zu Vorteilen
+    und Manövern gibt es ein extra Tutorial-Kompendium.
+</p>
+<p>
+    <img
+        src="systems/Ilaris/assets/images/tutorial/hausregel-import-buttons.png"
+        alt="Buttons zum Import und Update von Regeln XML"
+        style="max-width: 100%; height: auto; border: 1px solid #999; border-radius: 6px"
+    />
+</p>
+<div
+    style="background-color: #fff8e6; padding: 10px; border-left: 4px solid #d4a017; margin: 10px 0"
+>
+    <strong>⚠️ Wichtig:</strong> Der Importer arbeitet an mehreren Stellen regelbasiert und bei
+    Manövern teilweise nur rudimentär über Mustererkennung. Gerade bei komplexeren Hausregeln
+    solltest du die erzeugten Einträge deshalb immer manuell gegenprüfen.
+</div>
+
+<h2>Wann muss ich meine Sephrasto-Regeln mergen und wann nicht?</h2>
+<p>
+    Wenn du einfach nur neue Vorteile, Manöver, Fertigkeiten oder andere Inhalte hinzufügst, gibt es
+    keinen Grund, warum du dein Hausregel-XML mit den normalen Sephrasto-Regeln mergen müsstest. In
+    diesem Fall reichen zusätzliche Kompendien mit deinen neuen Inhalten aus.
+</p>
+<p>
+    Solltest du Dinge aus den Sephrasto-Regeln entfernen oder verändern, ist es absolut notwendig,
+    die Regeln zu mergen. Das gilt zum Beispiel, wenn <strong>Hammerschlag</strong> bei dir
+    dreifachen statt zweifachen Schaden verursacht oder wenn du <strong>Meisterschuss</strong> ganz
+    entfernst. Ohne Merge würden in Foundry weiterhin die Standard-Ilaris-Kompendien mit den alten
+    Regeln existieren und könnten an entscheidenden Stellen weiterhin verwendet werden.
+</p>
+<div
+    style="background-color: #f0f8ff; padding: 10px; border-left: 4px solid #1e90ff; margin: 10px 0"
+>
+    <strong>💡 Merkhilfe:</strong> <em>Nur ergänzt</em> bedeutet meist <strong>kein Merge</strong>.
+    <em>Geändert oder entfernt</em> bedeutet praktisch immer <strong>Merge notwendig</strong>.
+</div>
+
+<h2>Ich habe die Regeln importiert und die Kompendien wurden erfolgreich erstellt. Was nun?</h2>
+<p>
+    Wenn du die Kompendien in deinem Spiel benutzen willst, musst du sie jetzt noch in den
+    Einstellungen aktivieren. Für jede Itemart gibt es hierfür eine eigene Option in den
+    Welteinstellungen unter <strong>Benutzte Kompendien</strong>. Erst dort entscheidest du, welche
+    Kompendien für Fertigkeiten, Vorteile, Manöver, Waffeneigenschaften und weitere Kategorien vom
+    System tatsächlich benutzt werden.
+</p>
+<p>
+    <img
+        src="systems/Ilaris/assets/images/tutorial/hausregel-import-einstellungen-button.png"
+        alt="Button zum Oeffnen der Welteinstellungen"
+        style="max-width: 100%; height: auto; border: 1px solid #999; border-radius: 6px"
+    />
+</p>
+<p>
+    <img
+        src="systems/Ilaris/assets/images/tutorial/hausregel-import-benutzte-kompendien.png"
+        alt="Bereich Benutzte Kompendien in den Welteinstellungen"
+        style="max-width: 100%; height: auto; border: 1px solid #999; border-radius: 6px"
+    />
+</p>
+<p>
+    Wenn du nur Dinge hinzugefügt hast, du also die Sephrasto-Regeln nicht in deine Hausregeln
+    gemergt hast, kannst du einfach die zusätzlichen Kompendien im Einstellungsdialog hinzufügen.
+    Die Standard-Ilaris-Kompendien bleiben dann aktiv und werden um deine neuen Inhalte ergänzt.
+</p>
+<p>
+    <img
+        src="systems/Ilaris/assets/images/tutorial/hausregel-import-kompendien-dialog.png"
+        alt="Dialog zum Konfigurieren der verwendeten Kompendien"
+        style="max-width: 100%; height: auto; border: 1px solid #999; border-radius: 6px"
+    />
+</p>
+<p>
+    Solltest du deine Hausregeln mit den Sephrasto-Regeln gemergt haben, musst du im
+    Einstellungsdialog unbedingt darauf achten, dass die Default-Ilaris-Regeln dort entfernt werden.
+    Sonst kommen Einträge doppelt vor und im Zweifel werden die falschen Items verwendet. Gerade
+    beim Charakterimport und bei der Synchronisierung mit Kompendien ist diese Auswahl
+    <strong>essenziell wichtig</strong>.
+</p>
+<ul>
+    <li>Ohne Merge: Zusätzliche Hausregel-Kompendien einfach ergänzen</li>
+    <li>Mit Merge: Default-Kompendien der betreffenden Kategorien entfernen</li>
+    <li>Danach: Einstellungen speichern und die ausgewählten Kompendien noch einmal prüfen</li>
+</ul>
+
+<h2>Mein Vorteil und mein Manöver tun noch nicht so wie ich es will?</h2>
+<p>
+    Hast du auf Rechtschreibung geachtet? Wie Sephrasto arbeitet das System nur mit der richtigen
+    Schreibweise statt mit IDs, um konsistent mit der Regelbasis und dem Charakterersteller zu
+    bleiben. Schon kleine Abweichungen bei Namen oder Begriffen können dazu führen, dass Vorteile
+    nicht gefunden oder Manöver nicht korrekt verfügbar werden.
+</p>
+<p>
+    Hast du die Items genau überprüft? Besonders bei automatisch erzeugten Effekten,
+    Voraussetzungen, Modifikatoren und Manöver-Inputs solltest du kontrollieren, ob alles korrekt
+    übernommen wurde. Wenn ein Vorteil oder Manöver noch nicht das tut, was es soll, liegt es oft an
+    einer Kleinigkeit in der Schreibweise oder an einer Import-Zuordnung, die man einmal manuell
+    nachziehen muss.
+</p>
+<p>
+    <img
+        src="systems/Ilaris/assets/images/tutorial/hausregel-import-item-konfigurationen.png"
+        alt="Uebersicht fuer Item-Konfigurationen zur Nachpruefung von Hausregel-Importen"
+        style="max-width: 100%; height: auto; border: 1px solid #999; border-radius: 6px"
+    />
+</p>
+<div
+    style="background-color: #ffecec; padding: 10px; border-left: 4px solid #cc3333; margin: 10px 0"
+>
+    <strong>⚠️ Prüfe besonders:</strong> Voraussetzungen, Namen von Vorteilen und
+    Waffeneigenschaften, Erschwernisse von Manövern, Inputfelder sowie automatisch gesetzte Active
+    Effects.
+</div>
+
+<hr />
+<p>
+    <em
+        >Wenn du nach dem Import Auffälligkeiten findest, lohnt sich fast immer zuerst ein Blick in
+        die Kompendiumseinträge selbst und danach in die Übersicht zu Item-Konfigurationen für
+        Vorteile und Manöver.</em
+    >
+</p>

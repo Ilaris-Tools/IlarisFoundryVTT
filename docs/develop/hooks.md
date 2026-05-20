@@ -34,9 +34,83 @@ Der globale Mirror-Hook erhaelt ein Payload-Objekt mit Metadaten und
 serialisierten Argumenten (`argsSummary`), nicht die originalen Live-Objekte
 der Dialoginstanz.
 
+Skill-Dialog-Hooks werden aktuell **nicht** global gespiegelt. Sie feuern lokal
+auf dem Client, der den Dialog oeffnet oder den Wurf ausloest.
+
 ---
 
 ## Dialog-Lebenszyklus
+
+### `Ilaris.preSkillDialog` _(cancellable)_
+
+Wird in `openSkillDialog()` gefeuert, bevor ein Fertigkeits-, Attribut- oder
+Freie-Fertigkeit-Dialog instanziiert wird. Rueckgabe von `false` verhindert das
+Oeffnen; die Funktion gibt dann `null` zurueck.
+
+```js
+Hooks.on('Ilaris.preSkillDialog', (actor, options) => {
+    if (actor.type === 'kreatur' && options.probeType === 'attribut') return false
+})
+```
+
+| Parameter | Typ      | Beschreibung                               |
+| --------- | -------- | ------------------------------------------ |
+| `actor`   | `Actor`  | Der handelnde Akteur                       |
+| `options` | `object` | Dialogoptionen fuer `openSkillDialog(...)` |
+
+---
+
+### `Ilaris.skillDialogRendered`
+
+Wird nach dem ersten Rendern des Dialogs gefeuert, sobald die initiale
+Preview-Berechnung abgeschlossen ist.
+
+```js
+Hooks.on('Ilaris.skillDialogRendered', (dialog, state) => {
+    console.log(dialog, state.finalPW)
+})
+```
+
+| Parameter | Typ                | Beschreibung                                |
+| --------- | ------------------ | ------------------------------------------- |
+| `dialog`  | `FertigkeitDialog` | Die gerenderte Dialoginstanz                |
+| `state`   | `object`           | Normalisierter Preview-Zustand, siehe unten |
+
+---
+
+### `Ilaris.skillDialogStateChanged`
+
+Wird nach jeder Preview-Aktualisierung gefeuert, inklusive der initialen
+Berechnung beim ersten Render.
+
+```js
+Hooks.on('Ilaris.skillDialogStateChanged', (dialog, state) => {
+    console.log(state.diceFormula, state.finalPW, state.schips)
+})
+```
+
+| Parameter | Typ                | Beschreibung                      |
+| --------- | ------------------ | --------------------------------- |
+| `dialog`  | `FertigkeitDialog` | Die Dialoginstanz                 |
+| `state`   | `object`           | Normalisierter Berechnungszustand |
+
+Relevante Felder in `state`:
+
+| Feld                   | Typ        | Beschreibung                                           |
+| ---------------------- | ---------- | ------------------------------------------------------ |
+| `reason`               | `string`   | `'render'`, `'change'` oder `'roll'`                   |
+| `probeType`            | `string`   | `'fertigkeit'`, `'attribut'`, `'freieFertigkeit'`, ... |
+| `label`                | `string`   | Effektives Probenlabel inklusive Talentzusatz          |
+| `diceFormula`          | `string`   | Rohformel wie `3d20dl1dh1`                             |
+| `formattedDiceFormula` | `string`   | Formatierte Formel fuer die Anzeige                    |
+| `effectivePW`          | `number`   | Effektiver Basis-PW bzw. PW(T)                         |
+| `finalPW`              | `number`   | Endwert inklusive Status- und Dialogmodifikatoren      |
+| `totalMod`             | `number`   | Summe aller additiven Modifikatoren                    |
+| `talent`               | `object`   | Auswahlzustand und verfuegbare Talentnamen             |
+| `schips`               | `object`   | Auswahl, Verfuegbarkeit und Textstatus fuer Schips     |
+| `modifiers.lines`      | `object[]` | Einzelne Modifikatorzeilen fuer Preview/Erweiterungen  |
+
+---
 
 ### `Ilaris.preCombatDialog` _(cancellable)_
 
@@ -114,6 +188,94 @@ Hooks.on('Ilaris.targetSelectionComplete', (dialog, selectedActors) => {
 ---
 
 ## Würfelwürfe
+
+### `Ilaris.preSkillRoll` _(cancellable)_
+
+Wird zu Beginn von `FertigkeitDialog._executeRoll()` gefeuert. Rueckgabe von
+`false` verhindert den Wurf, die Chat-Nachricht und den Schips-Verbrauch.
+
+```js
+Hooks.on('Ilaris.preSkillRoll', (dialog, payload) => {
+    if (payload.finalPW < 0) return false
+})
+```
+
+| Parameter | Typ                | Beschreibung                             |
+| --------- | ------------------ | ---------------------------------------- |
+| `dialog`  | `FertigkeitDialog` | Die aufrufende Dialoginstanz             |
+| `payload` | `object`           | Rollkontext inklusive Formel und Preview |
+
+---
+
+### `Ilaris.postSkillRoll`
+
+Wird nach dem Chat-Post des Wurfs gefeuert.
+
+```js
+Hooks.on('Ilaris.postSkillRoll', (dialog, payload) => {
+    console.log(payload.formula, payload.total, payload.chatMessage)
+})
+```
+
+| Parameter | Typ                | Beschreibung                 |
+| --------- | ------------------ | ---------------------------- |
+| `dialog`  | `FertigkeitDialog` | Die aufrufende Dialoginstanz |
+| `payload` | `object`           | Strukturierter Roll-Payload  |
+
+Relevante Zusatzfelder in `payload`:
+
+| Feld                         | Typ           | Beschreibung                                           |
+| ---------------------------- | ------------- | ------------------------------------------------------ |
+| `formula`                    | `string`      | Vollstaendige Rollformel                               |
+| `text`                       | `string`      | Zusatztext fuer den Chat-Flavor                        |
+| `rollMode`                   | `string`      | Gewaehlter Foundry-Rollmodus                           |
+| `rollResult`                 | `object`      | Rueckgabe von `evaluate_roll_with_crit(...)`           |
+| `roll`                       | `Roll`        | Die ausgewertete Foundry-Rollinstanz                   |
+| `total`                      | `number`      | Wurfergebnis                                           |
+| `crit` / `fumble`            | `boolean`     | Kritischer Erfolg bzw. Patzer                          |
+| `success`                    | `boolean`     | Erfolg gemaess `evaluate_roll_with_crit(...)`          |
+| `chatMessage`                | `ChatMessage` | Rueckgabe von `Roll.toMessage(...)`                    |
+| `schipsConsumed`             | `boolean`     | Ob tatsaechlich eine Schips-Ressource verbraucht wurde |
+| `schipsConsumptionPrevented` | `boolean`     | Ob der Pre-Schips-Hook den Verbrauch unterbunden hat   |
+
+---
+
+### `Ilaris.preSkillSchipsConsumption` _(cancellable)_
+
+Wird direkt vor `actor.update(...)` fuer den Schips-Verbrauch gefeuert.
+Rueckgabe von `false` verhindert nur den Ressourcenverbrauch; der Wurf selbst
+laeuft weiter.
+
+```js
+Hooks.on('Ilaris.preSkillSchipsConsumption', (dialog, payload) => {
+    if (payload.actor.hasPlayerOwner === false) return false
+})
+```
+
+| Parameter | Typ                | Beschreibung                                                   |
+| --------- | ------------------ | -------------------------------------------------------------- |
+| `dialog`  | `FertigkeitDialog` | Die aufrufende Dialoginstanz                                   |
+| `payload` | `object`           | Rollkontext plus `amount`, `remainingBefore`, `remainingAfter` |
+
+---
+
+### `Ilaris.postSkillSchipsConsumption`
+
+Wird direkt nach erfolgreichem `actor.update(...)` fuer den Schips-Verbrauch
+gefeuert.
+
+```js
+Hooks.on('Ilaris.postSkillSchipsConsumption', (dialog, payload) => {
+    console.log(payload.remainingBefore, payload.remainingAfter)
+})
+```
+
+| Parameter | Typ                | Beschreibung                         |
+| --------- | ------------------ | ------------------------------------ |
+| `dialog`  | `FertigkeitDialog` | Die aufrufende Dialoginstanz         |
+| `payload` | `object`           | Rollkontext plus Verbrauchsmetadaten |
+
+---
 
 ### `Ilaris.preAngriff` _(cancellable)_
 
@@ -255,10 +417,33 @@ zu müssen:
 
 ```js
 import { openCombatDialog, openDefenseForTarget } from 'systems/Ilaris/scripts/combat/combat-api.js'
+import { openSkillDialog } from 'systems/Ilaris/scripts/skills/skills-api.js'
 
 const dialog = await openCombatDialog(actor, item, 'melee')
 // dialog ist null, wenn Ilaris.preCombatDialog false zurückgegeben hat
+
+const skillDialog = await openSkillDialog(actor, {
+    probeType: 'fertigkeit',
+    fertigkeitKey: 'athletik',
+    fertigkeitName: 'Athletik',
+    pw: 14,
+    talentList: {
+        0: 'Klettern',
+    },
+})
+// skillDialog ist null, wenn Ilaris.preSkillDialog false zurückgegeben hat
 ```
+
+### `openSkillDialog(actor, options)`
+
+Gemeinsamer Einstieg fuer Fertigkeits-, Attributs-, freie und einfache Proben.
+
+| Parameter | Typ      | Beschreibung                                                         |
+| --------- | -------- | -------------------------------------------------------------------- |
+| `actor`   | `Actor`  | Der handelnde Akteur                                                 |
+| `options` | `object` | Dialogoptionen wie `probeType`, `fertigkeitName`, `pw`, `talentList` |
+
+**Rückgabe**: `Promise<FertigkeitDialog|null>`
 
 ### `openCombatDialog(actor, item, type, options?)`
 
