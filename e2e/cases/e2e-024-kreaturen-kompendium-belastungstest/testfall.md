@@ -64,7 +64,7 @@
 | Kompendium-Sidebar-Tab  | [data-tab="compendium"]                                                                                                              |
 | Kreatur-Sheet-Window    | .application.kreaturen (gefiltert auf Kreaturname)                                                                                   |
 | Angriffsdialog-Button   | .angriffe [data-action="rollable"][data-rolltype="angriff_diag"], .angriffe [data-action="rollable"][data-rolltype="fernkampf_diag"] |
-| Angriff ausfuehren      | .modifier-summary.attack-summary.clickable-summary.angreifen                                                                         |
+| Angriff ausfuehren      | .modifier-summary.attack-summary.clickable-summary[data-action="angreifen"]                                                          |
 | Attribut-Dialog starten | [data-action="rollable"][data-rolltype="fertigkeit_diag"][data-probetype="attribut"]                                                 |
 | Fertigkeitsdialog       | .application.ilaris.fertigkeit-dialog                                                                                                |
 | Probe ausfuehren        | [data-action="previewClick"]                                                                                                         |

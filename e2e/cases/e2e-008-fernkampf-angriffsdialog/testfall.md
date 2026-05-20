@@ -40,7 +40,7 @@
 8. Dialog `.application.fernkampf-dialog` ist sichtbar und Titel enthaelt `Fernkampfangriff:`.
 9. Modifier-Summary (`.modifier-summary.attack-summary`) ist sichtbar und enthaelt `Basis FK:`.
 10. Modifier-Summary enthaelt keine ungewaehlten Strafmodifier (Daemmerung, Wind, schnell, Deckung).
-11. Angreifen-Button klicken (`.clickable-summary.angreifen`).
+11. Angreifen-Button klicken (`.clickable-summary[data-action="angreifen"]`).
 12. Chat: genau eine neue Nachricht erscheint.
 
 **Erwartet (Then):**
@@ -102,7 +102,7 @@
 5. `change`-Event ausloesen.
 6. Modifier-Summary enthaelt `Scharfschuss` (nach debounce).
 7. Angreifen klicken → Chat-Nachricht pruefen.
-8. Schaden-Button klicken (`.clickable-summary.schaden`) → zweite Chat-Nachricht pruefen.
+8. Schaden-Button klicken (`.clickable-summary[data-action="schaden"]`) → zweite Chat-Nachricht pruefen.
 
 **Erwartet (Then):**
 
@@ -161,8 +161,8 @@
 
 - Dialog-Root: `.application.fernkampf-dialog` (CSS-Klasse in `FernkampfAngriffDialog.DEFAULT_OPTIONS.classes`)
 - Fenster-Titel: `Fernkampfangriff: ${item.name}`
-- Angreifen-Button: `.modifier-summary.attack-summary.clickable-summary.angreifen`
-- Schaden-Button: `.modifier-summary.damage-summary.clickable-summary.schaden`
+- Angreifen-Button: `.modifier-summary.attack-summary.clickable-summary[data-action="angreifen"]`
+- Schaden-Button: `.modifier-summary.damage-summary.clickable-summary[data-action="schaden"]`
 
 ### Selects mit ID-Suffix-Pattern (AppV2 `dialogId`)
 

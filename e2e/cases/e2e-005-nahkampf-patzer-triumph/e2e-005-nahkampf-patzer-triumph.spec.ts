@@ -34,7 +34,7 @@ test.describe('E2E-005 Nahkampf-Angriffsdialog: Patzer, Triumph und Normalwurf',
         await expect(attackDialog).toContainText('Kampf: Kurzschwert')
 
         const attackButton = attackDialog.locator(
-            '.modifier-summary.attack-summary.clickable-summary.angreifen',
+            '.modifier-summary.attack-summary.clickable-summary[data-action="angreifen"]',
         )
 
         // Einstellung pruefen: 'Triumph' oder 'Crit' je nach renameTriumphWithCrit-Setting
@@ -69,7 +69,7 @@ test.describe('E2E-005 Nahkampf-Angriffsdialog: Patzer, Triumph und Normalwurf',
                 // Fallback fuer flaky click delivery in AppV2 overlays.
                 await page.evaluate(async () => {
                     const node = document.querySelector(
-                        '.application.angriff-dialog .modifier-summary.attack-summary.clickable-summary.angreifen',
+                        '.application.angriff-dialog .modifier-summary.attack-summary.clickable-summary[data-action="angreifen"]',
                     )
                     node?.dispatchEvent(
                         new MouseEvent('click', { bubbles: true, cancelable: true }),
