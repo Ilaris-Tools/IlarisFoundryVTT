@@ -5,6 +5,7 @@ import { AbgeleiteteWertePacksSettings } from './AbgeleiteteWertePacksSettings.j
 import { FertigkeitenPacksSettings } from './FertigkeitenPacksSettings.js'
 import { WaffenPacksSettings } from './WaffenPacksSettings.js'
 import { TalentePacksSettings } from './TalentePacksSettings.js'
+import { IlarisSettingsDialog } from './ilaris-settings.dialog.js'
 
 import {
     IlarisGameSettingNames,
@@ -20,6 +21,15 @@ export const registerIlarisGameSettings = () => {
     }
 
     ;[
+        {
+            settingsName: 'Test',
+            name: 'Test',
+            label: 'ATest',
+            hint: 'Test.',
+            icon: 'fas fa-calculator',
+            type: IlarisSettingsDialog,
+            restricted: true,
+        },
         {
             settingsName: IlarisGameSettingNames.weaponSpaceRequirement,
             name: 'Platzbedarf berücksichtigen',
@@ -284,51 +294,15 @@ export const registerIlarisGameSettings = () => {
             restricted: true,
         },
         {
-            settingsName: IlarisGameSettingsMenuNames.waffenPacksMenu,
-            name: 'Waffen Kompendien',
-            label: 'Waffen Kompendien Konfigurieren',
-            hint: 'Hier kannst du die Kompendien auswählen, die Waffen enthalten.',
-            icon: 'fas fa-book',
-            type: WaffenPacksSettings,
+            settingsName: 'Test',
+            name: 'Test',
+            label: 'ATest',
+            hint: 'Test.',
+            icon: 'fas fa-calculator',
+            type: IlarisSettingsDialog,
             restricted: true,
         },
-        {
-            settingsName: IlarisGameSettingsMenuNames.talentePacksMenu,
-            name: 'Talente Kompendien',
-            label: 'Talente Kompendien Konfigurieren',
-            hint: 'Hier kannst du die Kompendien auswählen, die Talente enthalten.',
-            icon: 'fas fa-book',
-            type: TalentePacksSettings,
-            restricted: true,
-        },
-        {
-            // Register the settings menu for maneuvers
-            settingsName: IlarisGameSettingsMenuNames.manoeverPacksMenu,
-            name: 'Manöver Kompendien',
-            label: 'Manöver Kompendien Konfigurieren',
-            hint: 'Hier kannst du die Kompendien auswählen, die Manöver enthalten. Dadurch bestimmst du, welche Manöver du in Kampfdialogen sehen kannst.',
-            icon: 'fas fa-book',
-            type: ManeuverPacksSettings,
-            restricted: true,
-        },
-        {
-            settingsName: IlarisGameSettingsMenuNames.vorteilePacksMenu,
-            name: 'Vorteile Kompendien',
-            label: 'Vorteile Kompendien Konfigurieren',
-            hint: 'Hier kannst du die Kompendien auswählen, die Vorteile enthalten.',
-            icon: 'fas fa-book',
-            type: VorteilePacksSettings,
-            restricted: true,
-        },
-        {
-            settingsName: IlarisGameSettingsMenuNames.waffeneigenschaftenPacksMenu,
-            name: 'Waffeneigenschaften Kompendien',
-            label: 'Waffeneigenschaften Kompendien Konfigurieren',
-            hint: 'Hier kannst du die Kompendien auswählen, die Waffeneigenschaften enthalten.',
-            icon: 'fas fa-book',
-            type: WaffeneigenschaftenPacksSettings,
-            restricted: true,
-        },
+
         {
             settingsName: IlarisGameSettingsMenuNames.abgeleiteteWertePacksMenu,
             name: 'Abgeleitete Werte Kompendien',

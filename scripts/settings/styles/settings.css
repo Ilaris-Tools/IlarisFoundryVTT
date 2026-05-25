@@ -1,6 +1,19 @@
 /* ----------------------------------------- */
 /*  Settings Feature Styles                   */
 /* ----------------------------------------- */
+.ilaris.settings-dialog .window-content {
+  grid-template-areas: 
+    "Navigation"
+    "Tab";
+  
+}
+.ilaris.settings-dialog [data-application-part="tabs"] {
+  grid-area: Navigation;
+}
+
+.ilaris.settings-dialog .tab {
+  grid-area: Tab;
+}
 
 .system-pack {
   font-weight: bold;

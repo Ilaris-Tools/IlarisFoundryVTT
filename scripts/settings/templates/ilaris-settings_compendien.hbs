@@ -1,0 +1,42 @@
+<section class="tab automation {{tab.cssClass}}" data-group="primary" data-tab="USED_COMPENDIAN">
+    <div class="form-group">
+        <label>Verfügbare Fertigkeiten Kompendien: Hier kannst du die Kompendien auswählen, die Fertigkeiten enthalten.</label>
+        {{#each packs}}
+        <div class="form-group pack-entry">
+            <div class="pack-row">
+                <label class="checkbox">
+                    <input type="checkbox" name="{{this.id}}" {{#if this.selected}}checked{{/if}} autofocus>
+                        {{this.name}}
+                    </input>
+                </label>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+</section>
+{{!-- <form>
+    <div class="form-group">
+        <label>Verfügbare Fertigkeiten Kompendien: Hier kannst du die Kompendien auswählen, die Fertigkeiten enthalten.</label>
+        {{#each packs}}
+        <div class="form-group pack-entry">
+            <div class="pack-row">
+                <label class="checkbox">
+                    <input type="checkbox" name="{{this.id}}" {{#if this.selected}}checked{{/if}} autofocus>
+                        {{this.name}}
+                    </input>
+                </label>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    {{!-- <div class="form-group">
+        <button type="submit" name="submit">
+            <i class="far fa-save"></i>
+            Speichern
+        </button>
+        <button type="button" name="reset">
+            <i class="fas fa-undo"></i>
+            Zurücksetzen
+        </button>
+    </div> --}}
+</form> --}}
