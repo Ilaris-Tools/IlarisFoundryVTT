@@ -1,6 +1,6 @@
 import { IlarisItemSheet } from './item.js'
 
-/* template.json
+/* Reference shape for `item.system` on `manoever` items.
     "manoever": {
     "voraussetzung": "Vorteil Name1",
       "inputs": {

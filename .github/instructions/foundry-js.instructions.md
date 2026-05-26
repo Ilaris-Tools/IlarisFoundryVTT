@@ -48,8 +48,8 @@ export class MySheet extends HandlebarsApplicationMixin(ItemSheetV2) {
 
 ## Data Models
 
-- Actor types: `held`, `kreatur`, `nsc` — defined in `template.json` with shared templates (`gesundheit`, `attribute`, `energien`, etc.)
-- Item types (22): `nahkampfwaffe`, `fernkampfwaffe`, `ruestung`, `fertigkeit`, `talent`, `zauber`, `liturgie`, `vorteil`, `manoever`, `eigenschaft`, `waffeneigenschaft`, etc.
+- Actor types: `held`, `kreatur`, `nsc` — registered in `system.json` under `documentTypes.Actor` and implemented via TypeDataModels in `scripts/actors/model-data/`
+- Item types (22): `nahkampfwaffe`, `fernkampfwaffe`, `ruestung`, `fertigkeit`, `talent`, `zauber`, `liturgie`, `vorteil`, `manoever`, `eigenschaft`, `waffeneigenschaft`, etc. — registered in `system.json` under `documentTypes.Item` and defined in `scripts/items/model-data/models.js`
 - Proxy classes: `IlarisActorProxy` (`scripts/actors/data/proxy.js`), `IlarisItemProxy` (`scripts/items/data/proxy.js`)
 
 ## Naming Conventions

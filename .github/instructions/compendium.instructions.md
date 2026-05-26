@@ -44,7 +44,7 @@ Each `_source/` JSON file represents a single Foundry Document. Common fields:
     "name": "Entitätsname",
     "type": "item-type",
     "system": {
-        // type-specific data matching template.json schemas
+        // type-specific data matching the current TypeDataModel schema
     },
     "img": "systems/Ilaris/assets/images/...",
     "flags": {},
@@ -55,7 +55,7 @@ Each `_source/` JSON file represents a single Foundry Document. Common fields:
 
 ## Domain Data
 
-- Item/Actor structures follow `template.json` schemas exactly.
+- Item/Actor structures follow the current TypeDataModel schemas and migration-normalized `system.*` shape.
 - German names and descriptions are standard.
 - Image paths use `systems/Ilaris/assets/...` prefix.
 

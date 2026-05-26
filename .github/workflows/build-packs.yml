@@ -41,14 +41,15 @@ jobs:
             - name: 🚀 Install Dependencies
               run: |
                   npm install
-            - name: � Generate breaking changes template
-              run: node utils/generate-breaking-changes.js
-            - name: �📦 Package database files
+            - name: Generate breaking changes template
+              run: npm run generate-breaking-changes
+            - name: Package database files
               run: |
-                  node utils/pack-all.js
+                  npm run pack-all
                   # Show folder structure in comp_packs
                   ls -al comp_packs
                   ls -al comp_packs/beispiel-helden
+                  ls -al scripts/changelog/templates
             - name: 📖 Read system.json
               id: read-system-json
               run: echo "SYSTEM_JSON=$(jq -c . < system.json)" >> $GITHUB_OUTPUT
@@ -90,10 +91,38 @@ jobs:
                   echo "Adjusted download: $(jq .download system.json)"
             - name: 📂 Prepare app folder
               run: |
-                  # Moving all files for system integration in here
-                  mkdir "${{ steps.variables.outputs.SYSTEM_NAME }}"
-                  mv -t "${{ steps.variables.outputs.SYSTEM_NAME }}" assets comp_packs css docs scripts styles templates utils
-                  mv babel.config.cjs jsconfig.json LICENSE package.json package-lock.json README.md svgo.config.js system.json template.json -t "${{ steps.variables.outputs.SYSTEM_NAME }}"
+                  # Copy the current system layout into the release directory.
+                  system_dir="${{ steps.variables.outputs.SYSTEM_NAME }}"
+                  mkdir -p "$system_dir"
+
+                  paths=(
+                    assets
+                    comp_packs
+                    css
+                    docs
+                    scripts
+                    styles
+                    utils
+                    babel.config.cjs
+                    jsconfig.json
+                    LICENSE
+                    package.json
+                    package-lock.json
+                    README.md
+                    svgo.config.js
+                    system.json
+                  )
+
+                  for path in "${paths[@]}"; do
+                    if [ ! -e "$path" ]; then
+                      echo "ℹ️ Skipping missing path: $path"
+                      continue
+                    fi
+
+                    cp -a "$path" "$system_dir/"
+                  done
+
+                  ls -al "$system_dir"
             - name: 📦 Zip application
               run: |
                   echo "Creating ${{ steps.variables.outputs.FILENAME }} from workspace"
