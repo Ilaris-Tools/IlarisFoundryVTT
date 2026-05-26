@@ -515,7 +515,7 @@
     {
       "_id": "4U1q87qlHAB1rubG",
       "name": "Umwelt",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

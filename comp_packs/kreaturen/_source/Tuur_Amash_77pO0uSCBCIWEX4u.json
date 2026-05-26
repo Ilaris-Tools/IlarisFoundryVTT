@@ -583,7 +583,7 @@
     {
       "_id": "xP9Tj3vqFIGW8MWT",
       "name": "Sinnenschärfe",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Sinnenschärfe ist die aktive Verwendung deiner Sinne, um einen Kollaborateur in einem geschäftigen Wirtshaus zu belauschen, die Flagge eines nahenden Schiffes zu erkennen oder die Nadel im Heuhaufen zu finden.",
         "pw": 20,
@@ -612,7 +612,7 @@
     {
       "_id": "4t87N1bOa65NvvXV",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 20,
@@ -641,7 +641,7 @@
     {
       "_id": "QJhzl8AkxxfMdHTz",
       "name": "Dämonisch",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

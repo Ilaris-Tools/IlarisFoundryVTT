@@ -520,7 +520,7 @@
     {
       "_id": "grybIn0NAxxuVUDC",
       "name": "Überreden",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Überreden bedeutet den geschickten Einsatz von Übertreibungen, Unwahrheiten oder Lügen, um das Gegenüber zumindest kurzfristig zu beeinflussen. Mit Überreden feilschst du am Marktplatz, bestichst eine Stadtwache oder infiltrierst ein Borbaradianerkloster.",
         "pw": 14,
@@ -549,7 +549,7 @@
     {
       "_id": "YReQKlruZo1qUDFf",
       "name": "Menschenkenntnis",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Menschenkenntnis ist deine Fähigkeit, die Absichten deines Gegenüber zu durchschauen. Damit enttarnst du Lügen und falsche Annäherungsversuche.",
         "pw": 12,
@@ -578,7 +578,7 @@
     {
       "_id": "WkJeb8L0nckJ6CTT",
       "name": "Einfluss",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

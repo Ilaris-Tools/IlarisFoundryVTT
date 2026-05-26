@@ -1,4 +1,4 @@
-import { roll_crit_message } from '../../dice/wuerfel_misc.js'
+import { evaluate_roll_with_crit, postRollToChat } from '../../dice/wuerfel_misc.js'
 import { formatDiceFormula } from '../../core/utilities.js'
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api
@@ -43,6 +43,7 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
         this.talentList = options.talentList || {}
         this.speaker = ChatMessage.getSpeaker({ actor: this.actor })
         this.dialogId = `dialog-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`
+        this._hasEmittedRenderedHook = false
     }
 
     static #onPreviewClick(event, target) {
@@ -54,7 +55,7 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
         switch (probeType) {
             case 'attribut':
                 return `Attributsprobe: ${options.fertigkeitName || 'Attribut'}`
-            case 'freie_fertigkeit':
+            case 'freieFertigkeit':
                 return `Freie Fertigkeitsprobe: ${options.fertigkeitName || 'Freie Fertigkeit'}`
             case 'fertigkeit':
             default:
@@ -102,7 +103,12 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
         })
 
         // Initial preview update
-        setTimeout(() => this._updateModifierDisplay(), 100)
+        const statePayload = this._updateModifierDisplay('render')
+
+        if (!this._hasEmittedRenderedHook) {
+            Hooks.callAll('Ilaris.skillDialogRendered', this, statePayload)
+            this._hasEmittedRenderedHook = true
+        }
     }
 
     _handleInputChange() {
@@ -110,18 +116,19 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
             clearTimeout(this._updateTimeout)
         }
         this._updateTimeout = setTimeout(() => {
-            this._updateModifierDisplay()
+            this._updateModifierDisplay('change')
         }, 150)
     }
 
     /**
      * Calculate current modifiers and update the preview display
      */
-    _updateModifierDisplay() {
+    _updateModifierDisplay(reason = 'change') {
         if (!this._modifierElement) {
             return
         }
 
+        const modifierState = this._calculateModifiers()
         const {
             diceFormula,
             totalMod,
@@ -131,7 +138,7 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
             label,
             noTalentSelected,
             usesTalent,
-        } = this._calculateModifiers()
+        } = modifierState
         const formattedDice = formatDiceFormula(diceFormula)
         const finalFormula =
             finalPW >= 0 ? `${formattedDice}+${finalPW}` : `${formattedDice}${finalPW}`
@@ -185,6 +192,118 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
         }
 
         this._modifierElement.innerHTML = summary
+
+        const statePayload = this._buildStatePayload(modifierState, reason)
+        this._lastStatePayload = statePayload
+        Hooks.callAll('Ilaris.skillDialogStateChanged', this, statePayload)
+
+        return statePayload
+    }
+
+    _buildStatePayload(modifierState, reason = 'change') {
+        const talentSelection = this._getTalentSelection()
+
+        return {
+            reason,
+            actor: this.actor,
+            dialogId: this.dialogId,
+            probeType: this.probeType,
+            fertigkeitKey: this.fertigkeitKey,
+            fertigkeitName: this.fertigkeitName,
+            label: modifierState.label,
+            basePW: this.pw,
+            effectivePW: modifierState.effectivePW,
+            finalPW: modifierState.finalPW,
+            totalMod: modifierState.totalMod,
+            diceFormula: modifierState.diceFormula,
+            formattedDiceFormula: formatDiceFormula(modifierState.diceFormula),
+            noTalentSelected: modifierState.noTalentSelected,
+            usesTalent: modifierState.usesTalent,
+            talent: talentSelection,
+            modifiers: {
+                globalermod: modifierState.globalermod,
+                hoheQualitaet: modifierState.hoheQualitaet,
+                hoheQualitaetMod: modifierState.hoheQualitaetMod,
+                modifikator: modifierState.modifikator,
+                lines: modifierState.modLines.map((line) => ({ ...line })),
+            },
+            schips: {
+                choice: modifierState.schipsChoice,
+                applied: modifierState.schipsApplied,
+                text: modifierState.schipsText,
+                available: this.actor.system?.schips?.schips_stern || 0,
+            },
+        }
+    }
+
+    _getTalentSelection() {
+        const talentField = this.element?.querySelector(`#talent-${this.dialogId}`)
+        if (!talentField) {
+            return {
+                selectedValue: null,
+                selectedName: null,
+                choices: Object.values(this.talentList),
+            }
+        }
+
+        const selectedValue = Number(talentField.value)
+        let selectedName = null
+
+        if (selectedValue >= 0 && this.talentList[selectedValue]) {
+            selectedName = this.talentList[selectedValue]
+        } else if (selectedValue === -1) {
+            selectedName = 'Talent'
+        }
+
+        return {
+            selectedValue,
+            selectedName,
+            choices: Object.values(this.talentList),
+        }
+    }
+
+    _buildRollText(modifierState) {
+        let text = ''
+
+        if (modifierState.schipsText) {
+            text = text.concat(`${modifierState.schipsText}\n`)
+        }
+        if (modifierState.hoheQualitaet !== 0) {
+            text = text.concat(`Hohe Qualität: ${modifierState.hoheQualitaet}\n`)
+        }
+        if (modifierState.modifikator !== 0) {
+            text = text.concat(`Modifikator: ${modifierState.modifikator}\n`)
+        }
+
+        return text
+    }
+
+    _buildRollPayload({
+        statePayload,
+        formula,
+        text,
+        rollmode,
+        rollResult = null,
+        chatMessage = null,
+        schipsConsumed = false,
+        schipsConsumptionPrevented = false,
+    }) {
+        return {
+            ...statePayload,
+            formula,
+            text,
+            rollMode: rollmode,
+            rollResult,
+            roll: rollResult?.roll || null,
+            success: rollResult?.success,
+            crit: rollResult?.crit,
+            fumble: rollResult?.fumble,
+            is16OrHigher: rollResult?.is16OrHigher,
+            total: rollResult?.roll?.total,
+            chatMessage,
+            schipsConsumed,
+            schipsConsumptionPrevented,
+        }
     }
 
     /**
@@ -319,30 +438,9 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
     async _executeRoll() {
         const html = this.element
         // Reuse the same calculation used for preview - single source of truth
-        const {
-            diceFormula,
-            effectivePW,
-            label,
-            globalermod,
-            hoheQualitaet,
-            hoheQualitaetMod,
-            modifikator,
-            schipsChoice,
-            schipsApplied,
-            schipsText,
-        } = this._calculateModifiers()
-
-        // Build roll text for chat
-        let text = ''
-        if (schipsText) {
-            text = text.concat(`${schipsText}\n`)
-        }
-        if (hoheQualitaet !== 0) {
-            text = text.concat(`Hohe Qualität: ${hoheQualitaet}\n`)
-        }
-        if (modifikator !== 0) {
-            text = text.concat(`Modifikator: ${modifikator}\n`)
-        }
+        const modifierState = this._calculateModifiers()
+        const statePayload = this._buildStatePayload(modifierState, 'roll')
+        const text = this._buildRollText(modifierState)
 
         // Get roll mode
         const rollmode =
@@ -350,16 +448,57 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
             game.settings.get('core', 'rollMode')
 
         // Build formula
-        const formula = `${diceFormula} + ${effectivePW} + ${globalermod} + ${hoheQualitaetMod} + ${modifikator}`
+        const formula = `${modifierState.diceFormula} + ${modifierState.effectivePW} + ${modifierState.globalermod} + ${modifierState.hoheQualitaetMod} + ${modifierState.modifikator}`
 
-        // Update schips if used
-        if (schipsApplied && this.actor.system.schips.schips_stern > 0) {
-            await this.actor.update({
-                'system.schips.schips_stern': this.actor.system.schips.schips_stern - 1,
-            })
+        const preRollPayload = this._buildRollPayload({
+            statePayload,
+            formula,
+            text,
+            rollmode,
+        })
+
+        if (Hooks.call('Ilaris.preSkillRoll', this, preRollPayload) === false) {
+            return
         }
 
-        // Execute roll using existing function
-        await roll_crit_message(formula, label, text, this.speaker, rollmode)
+        let schipsConsumed = false
+        let schipsConsumptionPrevented = false
+
+        // Update schips if used
+        if (modifierState.schipsApplied && this.actor.system.schips.schips_stern > 0) {
+            const remainingBefore = this.actor.system.schips.schips_stern
+            const remainingAfter = Math.max(remainingBefore - 1, 0)
+            const schipsPayload = {
+                ...preRollPayload,
+                amount: 1,
+                remainingBefore,
+                remainingAfter,
+            }
+
+            if (Hooks.call('Ilaris.preSkillSchipsConsumption', this, schipsPayload) !== false) {
+                await this.actor.update({
+                    'system.schips.schips_stern': remainingAfter,
+                })
+                schipsConsumed = true
+                Hooks.callAll('Ilaris.postSkillSchipsConsumption', this, schipsPayload)
+            } else {
+                schipsConsumptionPrevented = true
+            }
+        }
+
+        const rollResult = await evaluate_roll_with_crit(formula, modifierState.label, text)
+        const chatMessage = await postRollToChat(rollResult, this.speaker, rollmode)
+        const postRollPayload = this._buildRollPayload({
+            statePayload,
+            formula,
+            text,
+            rollmode,
+            rollResult,
+            chatMessage,
+            schipsConsumed,
+            schipsConsumptionPrevented,
+        })
+
+        Hooks.callAll('Ilaris.postSkillRoll', this, postRollPayload)
     }
 }

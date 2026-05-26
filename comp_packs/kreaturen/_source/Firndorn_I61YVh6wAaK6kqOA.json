@@ -474,7 +474,7 @@
     {
       "_id": "2LFmUvS3JyJxQUJA",
       "name": "Geographie",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Geographie befasst sich nicht nur mit Reiserouten und fernen Ländern, sondern auch mit dem Sternenhimmel, der Kartographie und Navigation. Ein Geograph kann Schatzkarten lesen und anfertigen, die Position eines Schiffes bestimmen und Sternenkonstellationen deuten.",
         "pw": 8,
@@ -503,7 +503,7 @@
     {
       "_id": "qMhK4RFq0gerd8Nt",
       "name": "Hoher Norden (Überleben)",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 12,
@@ -532,7 +532,7 @@
     {
       "_id": "T3ZCbxiwmfIm9igY",
       "name": "Nordaventurien (Gebräuche)",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 8,
@@ -561,7 +561,7 @@
     {
       "_id": "8xob1NyQSPAXbCyU",
       "name": "Pirschen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Pirschen ermöglicht das Schleichen, Verstecken und Lauern in der freien Natur. Du pirschst dich auf der Jagd an einen wilden Hirsch heran, legst einen Hinterhalt an einer Reichsstraße oder beobachtest ungesehen das Lager einer Orkbande.",
         "pw": 20,
@@ -590,7 +590,7 @@
     {
       "_id": "uP0hj5NVRmr8hijH",
       "name": "Sinnenschärfe",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Sinnenschärfe ist die aktive Verwendung deiner Sinne, um einen Kollaborateur in einem geschäftigen Wirtshaus zu belauschen, die Flagge eines nahenden Schiffes zu erkennen oder die Nadel im Heuhaufen zu finden.",
         "pw": 16,
@@ -619,7 +619,7 @@
     {
       "_id": "GkH7qpg0YfXpk8UK",
       "name": "Tierkunde",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Tierkunde bedeutet die Kenntnis der aventurischen Fauna. Dein Charakter kann einen Schleimfleck als Spur einer Riesenamöbe erkennen, einen gereizten Bären beruhigen und kennt die Schwachstelle eines Tatzelwurms.",
         "pw": 16,
@@ -648,7 +648,7 @@
     {
       "_id": "aE8yWwhK3yCvUw8p",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 16,
@@ -677,7 +677,7 @@
     {
       "_id": "ZEc30bOfkhZ1wA2E",
       "name": "Zähigkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Zähigkeit hilft dir, Schmerzen und Strapazen zu widerstehen. So kannst du trotz zahlreicher Wunden noch handlungsfähig bleiben und einen Kampf zu euren Gunsten wenden oder eine ganze Nacht hindurch wachen.",
         "pw": 12,
@@ -706,7 +706,7 @@
     {
       "_id": "vTH6p6V9R4KRxdFO",
       "name": "Eis",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

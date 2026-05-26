@@ -466,7 +466,7 @@
     {
       "_id": "rip09AbRqIlUffwf",
       "name": "Einschüchtern",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Einschüchtern jagt dem Gegenüber Angst ein und bringt ihn so zu einer gewünschten Handlung. Die Probe wird oft vergleichend gegen den MU oder die Menschenkenntnis des Gegenübers abgelegt.",
         "pw": 16,
@@ -495,7 +495,7 @@
     {
       "_id": "i0DE2QiLIc8rdwPA",
       "name": "Gebräuche",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 20,
@@ -524,7 +524,7 @@
     {
       "_id": "CtMyzCAB7dkRjlAg",
       "name": "Menschenkenntnis",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Menschenkenntnis ist deine Fähigkeit, die Absichten deines Gegenüber zu durchschauen. Damit enttarnst du Lügen und falsche Annäherungsversuche.",
         "pw": 18,
@@ -553,7 +553,7 @@
     {
       "_id": "eDytxJQLR6ZNUHs6",
       "name": "Rhetorik",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Rhetorik beinhaltet zahlreiche Fähigkeiten und Kniffe, um die eigenen Argumente wirkungsvoll einzusetzen und die des Gegenüber zu entkräften. Du kannst Rhetorik nur einsetzen, wenn dein Charakter von seinem Standpunkt überzeugt ist - dreiste Lügen fallen unter Überreden.",
         "pw": 24,
@@ -582,7 +582,7 @@
     {
       "_id": "TMUA1MZVOTkUqrBl",
       "name": "Überreden",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Überreden bedeutet den geschickten Einsatz von Übertreibungen, Unwahrheiten oder Lügen, um das Gegenüber zumindest kurzfristig zu beeinflussen. Mit Überreden feilschst du am Marktplatz, bestichst eine Stadtwache oder infiltrierst ein Borbaradianerkloster.",
         "pw": 24,
@@ -611,7 +611,7 @@
     {
       "_id": "hlR6QOak6LqKldYB",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 16,
@@ -640,7 +640,7 @@
     {
       "_id": "HWS9EEtM8ijorWTS",
       "name": "Einfluss",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

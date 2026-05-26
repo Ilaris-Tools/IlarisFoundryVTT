@@ -1,8 +1,4 @@
-{{log 'uebernatuerlich' this}}
-
-<div class="combat-dialog-container">
-    <!-- Left Column - Main Controls -->
-    <div class="left-column">
+<div class="left-column">
         <div>
             <label>Anzahl W20:</label>
             <label>{{radioBoxes "xd20" choices_xd20 checked=checked_xd20}}</label>
@@ -48,8 +44,8 @@
             <input
                 type="number"
                 id="blutmagie"
-                name="item.system.manoever.blutmagie.value"
-                value="{{item.system.manoever.blutmagie.value}}"
+                name="blutmagie.value"
+                value="{{blutmagie.value}}"
                 data-dtype="Number"
                 min="0"
             />
@@ -67,6 +63,7 @@
                 name="item.system.manoever.energyOverride"
                 min="0"
                 placeholder="Energie frei setzen"
+                value="{{set_energy_cost.value}}"
             />
         </div>
         <div class="description">Mit diesem Feld kannst du die Basisenergiekosten nach Belieben festlegen.</div>
@@ -92,9 +89,9 @@
         <hr />
         {{/if}}
 
-        {{#if item.manoever.length}}
+        {{#if maneuvers.length}}
         <div>
-            <div class="maneuver-header collapsed">
+            <div class="maneuver-header collapsed" data-action="toggleManeuvers">
                 <h3>Manöver:</h3>
                 <div class="toggle-display">
                     <h4>Ausklappen</h4>
@@ -102,7 +99,7 @@
                 </div>
             </div>
             <div class="maneuver-grid collapsed">
-                {{#each item.manoever as |manoever|}}
+                {{#each maneuvers as |manoever|}}
                 <div
                     class="maneuver-item {{#if (or manoever.inputValue.value manoever.inputValue.checked)}}has-value{{/if}}"
                 >
@@ -161,15 +158,4 @@
                 {{selectOptions rollModes selected=item.system.manoever.rllm.selected localize=true}}
             </select>
         </div>
-    </div>
-
-    <!-- Right Column - Modifier Summary -->
-    <div class="right-column">
-        <div class="flex_center_center">
-            <div>Würfelaktionen:</div>   
-        </div>
-        <div id="modifier-summary" class="modifier-summary-container">
-            <!-- This will be populated by JavaScript -->
-        </div>
-    </div>
 </div>

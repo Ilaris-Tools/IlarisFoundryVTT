@@ -103,7 +103,7 @@
     {
       "_id": "6YEjaDDrYs5SpupG",
       "name": "Garethi",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": "3",
@@ -1417,7 +1417,7 @@
     {
       "_id": "8T8TXqi49gi5NDR9",
       "name": "Bauer",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": "2",
@@ -1447,7 +1447,7 @@
     {
       "_id": "KAYVGvaXFnj4WNyr",
       "name": "Viehzucht",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": "1",
@@ -1477,7 +1477,7 @@
     {
       "_id": "xXVZp72RRa7C0h3L",
       "name": "Imman (Verteidiger)",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": "2",
@@ -1507,7 +1507,7 @@
     {
       "_id": "a3cnU8fMh3n1YcTn",
       "name": "Kreuzstickerei",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": "1",
@@ -1661,7 +1661,7 @@
     {
       "_id": "njyVWYM66c1n6Z53",
       "name": "Eigenschaften",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 0,

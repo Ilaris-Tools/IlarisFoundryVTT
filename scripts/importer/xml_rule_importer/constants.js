@@ -7,13 +7,13 @@
  */
 export const XML_TO_FOUNDRY_TYPE = {
     Fertigkeit: 'fertigkeit',
-    ÜbernatürlicheFertigkeit: 'uebernatuerliche_fertigkeit',
+    ÜbernatürlicheFertigkeit: 'uebernatuerlicheFertigkeit',
     Waffeneigenschaft: 'waffeneigenschaft',
     Waffe: 'waffe',
     Rüstung: 'ruestung',
     Talent: 'talent',
     Manöver: 'manoever',
-    AbgeleiteterWert: 'abgeleiteter-wert',
+    AbgeleiteterWert: 'abgeleiteterWert',
 }
 
 /**

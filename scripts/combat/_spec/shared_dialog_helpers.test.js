@@ -2,7 +2,7 @@ import {
     processModification,
     handleModifications,
     applyOperator,
-} from '../dialogs/shared_dialog_helpers.js'
+} from '../dialogs/shared-dialog-helpers.js'
 
 describe('processModification', () => {
     let rollValues

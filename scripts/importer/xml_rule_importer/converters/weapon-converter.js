@@ -1,5 +1,9 @@
 import { BaseConverter } from './base-converter.js'
-import { DEFAULT_WEAPON_VALUES } from '../constants.js'
+import {
+    createNahkampfwaffeDefaults,
+    createFernkampfwaffeDefaults,
+    createWaffeneigenschaftDefaults,
+} from '../../../items/model-data/shared.js'
 import { parseEigenschaftenArray } from '../../../waffe/properties/utils/eigenschaft-parser.js'
 
 /**
@@ -43,8 +47,12 @@ export class WeaponConverter extends BaseConverter {
         }
 
         // Basic weapon system data (shared between both types)
+        const baseDefaults =
+            itemType === 'nahkampfwaffe'
+                ? createNahkampfwaffeDefaults()
+                : createFernkampfwaffeDefaults()
         const systemData = {
-            ...DEFAULT_WEAPON_VALUES,
+            ...baseDefaults,
             tp,
             fertigkeit: this.getAttribute(element, 'fertigkeit'),
             talent: this.getAttribute(element, 'talent'),
@@ -105,10 +113,9 @@ export class WeaponConverter extends BaseConverter {
         const script = this.getAttribute(element, 'script')
 
         const systemData = {
-            name,
+            ...createWaffeneigenschaftDefaults(),
             sephrastoScript: script,
-            foundryScript: '', // Empty by default, can be filled manually later
-            beschreibung: text,
+            text, // DataModel field is 'text', not 'beschreibung'
         }
 
         return this.createFoundryItem(name, 'waffeneigenschaft', systemData)

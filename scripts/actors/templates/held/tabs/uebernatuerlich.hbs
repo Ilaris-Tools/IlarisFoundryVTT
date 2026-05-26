@@ -10,7 +10,7 @@
         </select>
     </div>
     {{/if}}
-    <a data-action="itemCreate" data-itemclass="uebernatuerliche_fertigkeit">
+    <a data-action="itemCreate" data-itemclass="uebernatuerlicheFertigkeit">
         <i class="fas fa-plus"></i> Neue Übernatürliche Fertigkeit
     </a>
     <table class="table hero-table-free-fertigkeiten">
@@ -38,13 +38,13 @@
                 <td>{{AttributeFertigkeit_from_data uefert.system}}</td>
                 <td>{{uefert.system.basis}}</td>
                 <td>{{uefert.system.fw}}</td>
-                <td data-action="rollable" class="onhover" data-rolltype="uebernatuerliche_fertigkeit" data-fertigkeit="{{uefert.name}}" data-pw="{{uefert.system.pw}}">
+                <td data-action="rollable" class="onhover" data-rolltype="uebernatuerlicheFertigkeit" data-fertigkeit="{{uefert.name}}" data-pw="{{uefert.system.pw}}">
                     {{uefert.system.pw}}
                 </td>
-                <td data-action="itemEdit" data-itemclass="uebernatuerliche_fertigkeit" data-itemid="{{uefert.id}}">
+                <td data-action="itemEdit" data-itemclass="uebernatuerlicheFertigkeit" data-itemid="{{uefert.id}}">
                     <i class="fas fa-edit"></i>
                 </td>
-                <td data-action="itemDelete" data-itemclass="uebernatuerliche_fertigkeit" data-itemid="{{uefert.id}}">
+                <td data-action="itemDelete" data-itemclass="uebernatuerlicheFertigkeit" data-itemid="{{uefert.id}}">
                     <i class="fas fa-trash"></i>
                 </td>
             </tr>

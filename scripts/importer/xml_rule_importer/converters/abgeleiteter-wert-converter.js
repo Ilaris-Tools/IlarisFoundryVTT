@@ -1,8 +1,9 @@
 import { BaseConverter } from './base-converter.js'
+import { createAbgeleiteterWertDefaults } from '../../../items/model-data/shared.js'
 
 /**
  * Converter for AbgeleiteterWert (Derived Values)
- * Converts XML AbgeleiteterWert elements to Foundry abgeleiteter-wert items
+ * Converts XML AbgeleiteterWert elements to Foundry abgeleiteterWert items
  */
 export class AbgeleiteterWertConverter extends BaseConverter {
     /**
@@ -18,6 +19,7 @@ export class AbgeleiteterWertConverter extends BaseConverter {
         const text = element.textContent?.trim() || ''
 
         const systemData = {
+            ...createAbgeleiteterWertDefaults(name),
             formel,
             script,
             finalscript,
@@ -26,7 +28,7 @@ export class AbgeleiteterWertConverter extends BaseConverter {
 
         return this.createFoundryItem(
             name,
-            'abgeleiteter-wert',
+            'abgeleiteterWert',
             systemData,
             'systems/Ilaris/assets/images/skills/profan-skill.svg',
         )

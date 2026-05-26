@@ -448,7 +448,7 @@
     {
       "_id": "ww6ptUMNkGvXMOLO",
       "name": "Fliegen 20",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 0,
@@ -477,7 +477,7 @@
     {
       "_id": "d39QTQGjgC0Dqz8g",
       "name": "Geographie 20",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 0,
@@ -506,7 +506,7 @@
     {
       "_id": "1xniQzIDt8XhvIOO",
       "name": "Meer (Überleben) 18",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 0,
@@ -535,7 +535,7 @@
     {
       "_id": "g5IKlcASJJfH8kIM",
       "name": "Pirschen 20",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 0,
@@ -564,7 +564,7 @@
     {
       "_id": "ypzvS7OX521RmnAy",
       "name": "Sinnenschärfe 20",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 0,
@@ -593,7 +593,7 @@
     {
       "_id": "W9jfLgM0jsnhcFWb",
       "name": "Tulamidenlande (Gebräuche) 14",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 0,
@@ -622,7 +622,7 @@
     {
       "_id": "SqmPlgJkOfunCEo9",
       "name": "Untertauchen 20",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 0,
@@ -651,7 +651,7 @@
     {
       "_id": "AUjigEHZWITW5UKx",
       "name": "Wachsamkeit 20",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 0,
@@ -680,7 +680,7 @@
     {
       "_id": "7hvmCtkL8P6mWGIj",
       "name": "Luft",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

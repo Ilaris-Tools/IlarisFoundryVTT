@@ -452,7 +452,7 @@
     {
       "_id": "pZlq3Szdp3orv3rY",
       "name": "Einschüchtern",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Einschüchtern jagt dem Gegenüber Angst ein und bringt ihn so zu einer gewünschten Handlung. Die Probe wird oft vergleichend gegen den MU oder die Menschenkenntnis des Gegenübers abgelegt.",
         "pw": 30,
@@ -481,7 +481,7 @@
     {
       "_id": "4JVLd25cQZbEyDjK",
       "name": "Sinnenschärfe",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Sinnenschärfe ist die aktive Verwendung deiner Sinne, um einen Kollaborateur in einem geschäftigen Wirtshaus zu belauschen, die Flagge eines nahenden Schiffes zu erkennen oder die Nadel im Heuhaufen zu finden.",
         "pw": 12,
@@ -510,7 +510,7 @@
     {
       "_id": "1xzUOHKdLtOc3WkW",
       "name": "Schmieden",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Schmieden ist die Herstellung und Reparatur von Schwertern und Hufeisen bis hin zu Plattenpanzern.",
         "pw": 18,
@@ -539,7 +539,7 @@
     {
       "_id": "l3FCrpfZpif0btuY",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 12,
@@ -568,7 +568,7 @@
     {
       "_id": "Q5wBLl7rUfyNPzK4",
       "name": "Willenskraft",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Willenskraft erlaubt dir, Beeinflussungen und Versuchungen zu widerstehen und dich nicht ablenken zu lassen. Du kannst dich im Chaos eines Gefechts auf einen Zauber konzentrieren oder einem Heiligen Befehl widerstehen.",
         "pw": 40,
@@ -597,7 +597,7 @@
     {
       "_id": "WmxCFfhtlfV3GyYL",
       "name": "Zwerge (Gebräuche)",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 12,
@@ -626,7 +626,7 @@
     {
       "_id": "tbqXU7XAMt31cAvg",
       "name": "Feuer",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

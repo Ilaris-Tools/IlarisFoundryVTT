@@ -3,7 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": "Waffeneigenschaft Rüstungsbrechend",
+    "voraussetzung": "Waffeneigenschaft Rüstungsbrechend",
     "modifications": {
       "0": {
         "type": "ATTACK",

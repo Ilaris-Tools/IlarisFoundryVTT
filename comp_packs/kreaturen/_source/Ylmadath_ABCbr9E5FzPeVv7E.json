@@ -554,7 +554,7 @@
     {
       "_id": "d8fQHT0W38O5lAoj",
       "name": "Fliegen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 6,
@@ -583,7 +583,7 @@
     {
       "_id": "MA1EmoNTxlJCxJw2",
       "name": "Pirschen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Pirschen ermöglicht das Schleichen, Verstecken und Lauern in der freien Natur. Du pirschst dich auf der Jagd an einen wilden Hirsch heran, legst einen Hinterhalt an einer Reichsstraße oder beobachtest ungesehen das Lager einer Orkbande.",
         "pw": 10,
@@ -612,7 +612,7 @@
     {
       "_id": "8cb9KVqUkbloruha",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 8,
@@ -641,7 +641,7 @@
     {
       "_id": "5A1XdPOrDyRQpfc5",
       "name": "Willenskraft",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Willenskraft erlaubt dir, Beeinflussungen und Versuchungen zu widerstehen und dich nicht ablenken zu lassen. Du kannst dich im Chaos eines Gefechts auf einen Zauber konzentrieren oder einem Heiligen Befehl widerstehen.",
         "pw": 12,
@@ -670,7 +670,7 @@
     {
       "_id": "LpRtlWJBLsoKLCvB",
       "name": "Dämonisch",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

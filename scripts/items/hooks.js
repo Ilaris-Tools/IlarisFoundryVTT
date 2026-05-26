@@ -13,14 +13,14 @@
  * import { EigenheitSheet } from './sheets/eigenheit.js'
  * import { EigenschaftSheet } from './sheets/eigenschaft.js'
  * import { GegenstandSheet } from './sheets/gegenstand.js'
- * import { FreieFertigkeitSheet } from './sheets/freie_fertigkeit.js'
- * import { FreiesTalentSheet } from './sheets/freies_talent.js'
+ * import { FreieFertigkeitSheet } from './sheets/freie-fertigkeit.js'
+ * import { FreiesTalentSheet } from './sheets/freies-talent.js'
  * import { InfoSheet } from './sheets/info.js'
  * import { AbgeleiteterWertSheet } from './sheets/abgeleiteter-wert.js'
  * import { AngriffSheet } from './sheets/angriff.js'
  * import { EffectItemSheet } from './sheets/effect-item.js'
- * import { UebernatuerlichFertigkeitSheet } from './sheets/uebernatuerlich_fertigkeit.js'
- * import { UebernatuerlichTalentSheet } from './sheets/uebernatuerlich_talent.js'
+ * import { UebernatuerlichFertigkeitSheet } from './sheets/uebernatuerlich-fertigkeit.js'
+ * import { UebernatuerlichTalentSheet } from './sheets/uebernatuerlich-talent.js'
  *
  * Hooks.once('init', () => {
  *     const Items = foundry.documents.collections.Items

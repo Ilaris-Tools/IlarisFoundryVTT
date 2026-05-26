@@ -231,7 +231,7 @@
     {
       "_id": "uxyT70dT6ur9fTwp",
       "name": "Pirschen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 16,
@@ -260,7 +260,7 @@
     {
       "_id": "kglX2lMN8PNfNjv2",
       "name": "Schwimmen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 12,

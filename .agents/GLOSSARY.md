@@ -49,12 +49,12 @@
 
 ## Codebase Terms
 
-| Term                     | Definition                                                                                                                |
-| ------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
-| **Proxy class**          | `IlarisActorProxy` / `IlarisItemProxy` — dispatches to type-specific data models based on Actor/Item type.                |
-| **Feature module**       | Self-contained directory under `scripts/` with its own `hooks.js`, `data/`, `sheets/`, `templates/`, `styles/`, `_spec/`. |
-| **`_source/` directory** | Contains authoritative JSON source files for compendium packs. Always edit these, never LevelDB directly.                 |
-| **`pack-all`**           | npm script that rebuilds all LevelDB packs from `_source/` JSON files.                                                    |
-| **Sephrasto**            | External character creation tool for Ilaris. Data can be imported via XML.                                                |
-| **`CONFIG.ILARIS`**      | Global configuration object registered in `scripts/core/config.js`. Contains system constants.                            |
-| **`template.json`**      | Defines all Actor and Item data schemas with shared templates (e.g., `gesundheit`, `attribute`, `waffe`).                 |
+| Term                     | Definition                                                                                                                                                                                        |
+| ------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Proxy class**          | `IlarisActorProxy` / `IlarisItemProxy` — dispatches to type-specific data models based on Actor/Item type.                                                                                        |
+| **Feature module**       | Self-contained directory under `scripts/` with its own `hooks.js`, `data/`, `sheets/`, `templates/`, `styles/`, `_spec/`.                                                                         |
+| **`_source/` directory** | Contains authoritative JSON source files for compendium packs. Always edit these, never LevelDB directly.                                                                                         |
+| **`pack-all`**           | npm script that rebuilds all LevelDB packs from `_source/` JSON files.                                                                                                                            |
+| **Sephrasto**            | External character creation tool for Ilaris. Data can be imported via XML.                                                                                                                        |
+| **`CONFIG.ILARIS`**      | Global configuration object registered in `scripts/core/config.js`. Contains system constants.                                                                                                    |
+| **TypeDataModel**        | Foundry schema class used to define and validate Actor/Item `system` data. In Ilaris, these live under `scripts/core/model-data/`, `scripts/actors/model-data/`, and `scripts/items/model-data/`. |

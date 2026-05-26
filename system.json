@@ -38,6 +38,8 @@
   "styles": [
     "scripts/core/styles/core.css",
     "scripts/actors/styles/actor-sheet.css",
+    "scripts/actors/styles/actors.css",
+    "scripts/actors/styles/sidebar.css",
     "scripts/items/styles/items.css",
     "scripts/items/styles/manoever.css",
     "scripts/waffe/styles/waffe.css",
@@ -192,6 +194,41 @@
       "system": "Ilaris"
     }
   ],
+  "documentTypes": {
+    "Actor": {
+      "held": {},
+      "kreatur": {},
+      "nsc": {}
+    },
+    "Item": {
+      "nahkampfwaffe": {},
+      "fernkampfwaffe": {},
+      "ruestung": {},
+      "fertigkeit": {},
+      "talent": {},
+      "freieFertigkeit": {},
+      "freie_fertigkeit": {},
+      "uebernatuerlicheFertigkeit": {},
+      "uebernatuerliche_fertigkeit": {},
+      "zauber": {},
+      "liturgie": {},
+      "anrufung": {},
+      "vorteil": {},
+      "manoever": {},
+      "eigenheit": {},
+      "gegenstand": {},
+      "eigenschaft": {},
+      "waffeneigenschaft": {},
+      "angriff": {},
+      "info": {},
+      "freiesTalent": {},
+      "freiestalent": {},
+      "abgeleiteterWert": {},
+      "abgeleiteter-wert": {},
+      "effectItem": {},
+      "effect-item": {}
+    }
+  },
   "socket": true,
   "languages": [],
   "grid": {

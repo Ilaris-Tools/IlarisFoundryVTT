@@ -3,7 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": "Vorteil Schildkampf III",
+    "voraussetzung": "Vorteil Schildkampf III",
     "modifications": {
       "0": {
         "type": "DEFENCE",

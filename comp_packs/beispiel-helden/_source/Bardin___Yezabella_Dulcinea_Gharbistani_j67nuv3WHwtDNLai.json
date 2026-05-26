@@ -1431,7 +1431,7 @@
     {
       "_id": "WIzEt67xJ3DdBpJF",
       "name": "Musizieren",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1458,7 +1458,7 @@
     {
       "_id": "nrfLnJ3t4qjlbnEH",
       "name": "Singen",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1485,7 +1485,7 @@
     {
       "_id": "9ZTYfE2ucbdv0Q4h",
       "name": "Sprache: Tulamidya",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1512,7 +1512,7 @@
     {
       "_id": "3P4RLm7j0AL0g8Dj",
       "name": "Schrift: Kusliker Zeichen",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1539,7 +1539,7 @@
     {
       "_id": "5CDdAoor7SYGw2gD",
       "name": "Sprache: Atak (+Schrift)",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1566,7 +1566,7 @@
     {
       "_id": "eqtActXFYFn1uDPG",
       "name": "Dichtkunst",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,

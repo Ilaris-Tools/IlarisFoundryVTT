@@ -27,7 +27,7 @@ A reusable skill for performing risk-based code reviews with consistent gate dec
 - [ ] Change accomplishes the stated goal
 - [ ] No off-by-one errors, null pointer risks, or logic errors
 - [ ] Foundry VTT API methods used correctly (verify against docs)
-- [ ] Data model changes match `template.json` schema
+- [ ] Data model changes match the registered TypeDataModel schema and `documentTypes`
 - [ ] German/English language usage follows conventions
 
 ### 3. Regression Risk Assessment

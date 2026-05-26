@@ -452,7 +452,7 @@
     {
       "_id": "2N0ApDLQKHoSj5Lf",
       "name": "Tulamidenlande (Gebräuche)",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 4,
@@ -481,7 +481,7 @@
     {
       "_id": "GMpE7g3yTv1eM1kG",
       "name": "Geographie",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Geographie befasst sich nicht nur mit Reiserouten und fernen Ländern, sondern auch mit dem Sternenhimmel, der Kartographie und Navigation. Ein Geograph kann Schatzkarten lesen und anfertigen, die Position eines Schiffes bestimmen und Sternenkonstellationen deuten.",
         "pw": 16,
@@ -510,7 +510,7 @@
     {
       "_id": "JrY8aQNxnNkRcBPp",
       "name": "Meer (Überleben)",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 24,
@@ -539,7 +539,7 @@
     {
       "_id": "Xz7o9Z7HS6X85J2H",
       "name": "Pirschen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Pirschen ermöglicht das Schleichen, Verstecken und Lauern in der freien Natur. Du pirschst dich auf der Jagd an einen wilden Hirsch heran, legst einen Hinterhalt an einer Reichsstraße oder beobachtest ungesehen das Lager einer Orkbande.",
         "pw": 20,
@@ -568,7 +568,7 @@
     {
       "_id": "I25uMcpv3dxPZROr",
       "name": "Schwimmen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Schwimmen erlaubt eine schnellere Fortbewegung im Wasser und längere Tauchgänge.",
         "pw": 32,
@@ -597,7 +597,7 @@
     {
       "_id": "ib1DcdEtCWTyfPHe",
       "name": "Sinnenschärfe",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Sinnenschärfe ist die aktive Verwendung deiner Sinne, um einen Kollaborateur in einem geschäftigen Wirtshaus zu belauschen, die Flagge eines nahenden Schiffes zu erkennen oder die Nadel im Heuhaufen zu finden.",
         "pw": 28,
@@ -626,7 +626,7 @@
     {
       "_id": "z6B9lWsxtEZhLBoE",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 24,
@@ -655,7 +655,7 @@
     {
       "_id": "QvPEkBdTxiO5HvX0",
       "name": "Wasser",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

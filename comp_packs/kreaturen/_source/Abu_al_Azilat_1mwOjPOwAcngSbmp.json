@@ -429,7 +429,7 @@
     {
       "_id": "NHuvKuDEE1k5AyC4",
       "name": "Betören",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Beim Betören nutzt du deine persönliche Ausstrahlung, um zu bekommen, was du willst. Das reicht von Kleinigkeiten wie einem Freibier bis zum Verrat geheimer Staatsinformationen.",
         "pw": 16,
@@ -458,7 +458,7 @@
     {
       "_id": "FQSxL7uiYC5ug6GF",
       "name": "Tulamidenlande (Gebräuche)",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 14,
@@ -487,7 +487,7 @@
     {
       "_id": "v6l1GcGdylzXhaSp",
       "name": "Menschen­kenntnis",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Menschenkenntnis ist deine Fähigkeit, die Absichten deines Gegenüber zu durchschauen. Damit enttarnst du Lügen und falsche Annäherungsversuche.",
         "pw": 14,
@@ -516,7 +516,7 @@
     {
       "_id": "4BmILgDhJPeiurjr",
       "name": "Überreden",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Überreden bedeutet den geschickten Einsatz von Übertreibungen, Unwahrheiten oder Lügen, um das Gegenüber zumindest kurzfristig zu beeinflussen. Mit Überreden feilschst du am Marktplatz, bestichst eine Stadtwache oder infiltrierst ein Borbaradianerkloster.",
         "pw": 12,
@@ -545,7 +545,7 @@
     {
       "_id": "VuUHy8UiNnGuO2Wq",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 10,
@@ -574,7 +574,7 @@
     {
       "_id": "FcratHGEG35s4KmA",
       "name": "Willenskraft",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Willenskraft erlaubt dir, Beeinflussungen und Versuchungen zu widerstehen und dich nicht ablenken zu lassen. Du kannst dich im Chaos eines Gefechts auf einen Zauber konzentrieren oder einem Heiligen Befehl widerstehen.",
         "pw": 12,
@@ -603,7 +603,7 @@
     {
       "_id": "9jj1mR5d1Igys3u9",
       "name": "Humus",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

@@ -1,4 +1,5 @@
 import { BaseConverter } from './base-converter.js'
+import { createManoeverDefaults } from '../../../items/model-data/shared.js'
 
 /**
  * Converter for Manöver
@@ -82,7 +83,7 @@ export class ManoeverConverter extends BaseConverter {
         const kategorie = parseInt(this.getAttribute(element, 'kategorie', '0')) || 0
         const probe = this.getAttribute(element, 'probe')
         const gegenprobe = this.getAttribute(element, 'gegenprobe')
-        const voraussetzungen = this.getAttribute(element, 'voraussetzungen')
+        const voraussetzung = this.getAttribute(element, 'voraussetzungen')
 
         // Determine gruppe based on probe content for kategorie 0
         let gruppe = kategorie
@@ -95,7 +96,8 @@ export class ManoeverConverter extends BaseConverter {
         const { input, modifications } = this.parseProbe(probe)
 
         const systemData = {
-            voraussetzungen,
+            ...createManoeverDefaults(),
+            voraussetzung,
             input,
             modifications,
             gruppe,

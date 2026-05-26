@@ -458,7 +458,7 @@
     {
       "_id": "YY12phMdBZDlwsh0",
       "name": "Dämonisch",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

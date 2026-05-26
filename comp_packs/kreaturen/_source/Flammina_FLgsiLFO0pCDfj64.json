@@ -390,7 +390,7 @@
     {
       "_id": "PYyEFFmM8yzydql6",
       "name": "Magische Elixiere",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Magische Elixiere beinhaltet Heiltränke, Stärkungsmittel und Verwandlungselixiere, kurz die hohe Kunst der Alchemie. Rezepte findest du auf S. 64.",
         "pw": 12,
@@ -419,7 +419,7 @@
     {
       "_id": "uYTlbFfw5kkpXzUP",
       "name": "Mittelreich (Gebräuche)",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 4,
@@ -448,7 +448,7 @@
     {
       "_id": "We4yrr2L9hmQEmqd",
       "name": "Sinnenschärfe",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Sinnenschärfe ist die aktive Verwendung deiner Sinne, um einen Kollaborateur in einem geschäftigen Wirtshaus zu belauschen, die Flagge eines nahenden Schiffes zu erkennen oder die Nadel im Heuhaufen zu finden.",
         "pw": 12,
@@ -477,7 +477,7 @@
     {
       "_id": "4xoSrC0H3umtJbTh",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 12,
@@ -506,7 +506,7 @@
     {
       "_id": "4GNFTi8i0lw1cLmO",
       "name": "Zähigkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Zähigkeit hilft dir, Schmerzen und Strapazen zu widerstehen. So kannst du trotz zahlreicher Wunden noch handlungsfähig bleiben und einen Kampf zu euren Gunsten wenden oder eine ganze Nacht hindurch wachen.",
         "pw": 6,
@@ -535,7 +535,7 @@
     {
       "_id": "8ZYNrXyPRroTzlC0",
       "name": "Feuer",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

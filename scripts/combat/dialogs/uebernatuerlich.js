@@ -1,7 +1,7 @@
 import { evaluate_roll_with_crit, postRollToChat } from '../../dice/wuerfel_misc.js'
 import { signed } from '../../dice/chatutilities.js'
-import { handleModifications } from './shared_dialog_helpers.js'
-import { CombatDialog } from './combat_dialog.js'
+import { handleModifications } from './shared-dialog-helpers.js'
+import { CombatDialog } from './combat-dialog.js'
 import * as hardcoded from '../../actors/data/hardcodedvorteile.js'
 import { sanitizeEnergyCost, isNumericCost, formatDiceFormula } from '../../core/utilities.js'
 import {
@@ -9,12 +9,18 @@ import {
     ConfigureGameSettingsCategories,
 } from '../../settings/configure-game-settings.model.js'
 import { ILARIS } from '../../core/config.js'
+import {
+    callIlarisHookAllWithGlobalMirror,
+    callIlarisHookWithGlobalMirror,
+} from '../hooks/global_combat_hooks.js'
 
 export class UebernatuerlichDialog extends CombatDialog {
     /** @override */
     static DEFAULT_OPTIONS = {
+        ...super.DEFAULT_OPTIONS,
         classes: ['uebernatuerlich-dialog'],
         actions: {
+            ...super.DEFAULT_OPTIONS.actions,
             energieErfolg: UebernatuerlichDialog.#onEnergieErfolg,
             energieMisserfolg: UebernatuerlichDialog.#onEnergieMisserfolg,
         },
@@ -22,8 +28,11 @@ export class UebernatuerlichDialog extends CombatDialog {
 
     /** @override */
     static PARTS = {
-        form: {
+        settings: {
             template: 'systems/Ilaris/scripts/combat/templates/dialogs/uebernatuerlich.hbs',
+        },
+        summaries: {
+            template: 'systems/Ilaris/scripts/combat/templates/dialogs/summaries.hbs',
         },
     }
 
@@ -36,16 +45,11 @@ export class UebernatuerlichDialog extends CombatDialog {
         // Specific properties for supernatural abilities
         this.text_energy = ''
         this.is16OrHigher = false
-        // Initialize manoever structure if it doesn't exist yet
-        this.item.system.manoever = this.item.system.manoever || {}
-        this.item.system.manoever.blutmagie = this.item.system.manoever.blutmagie || {}
-        this.item.system.manoever.verbotene_pforten =
-            this.item.system.manoever.verbotene_pforten || {}
-        this.item.system.manoever.set_energy_cost = this.item.system.manoever.set_energy_cost || {}
+        // Dialog-session state — never written to the item document
+        this.blutmagie = { value: 0 }
+        this.verbotene_pforten = { multiplier: 4, activated: false }
+        this.set_energy_cost = { value: null }
         this.calculatedWounds = 0
-
-        console.log('actor', this.actor)
-        this.aufbauendeManoeverAktivieren()
     }
 
     /**
@@ -82,27 +86,6 @@ export class UebernatuerlichDialog extends CombatDialog {
         await this._energieAbrechnenKlick(false)
     }
 
-    /* -------------------------------------------- */
-    /*  Summary Click Actions                       */
-    /* -------------------------------------------- */
-
-    getSummaryClickActions() {
-        return [
-            {
-                selector: '.clickable-summary.angreifen',
-                handler: () => this._angreifenKlick(),
-            },
-            {
-                selector: '.clickable-summary.energie-erfolg',
-                handler: () => this._energieAbrechnenKlick(true),
-            },
-            {
-                selector: '.clickable-summary.energie-misserfolg',
-                handler: () => this._energieAbrechnenKlick(false),
-            },
-        ]
-    }
-
     /**
      * Returns base values specific to UebernatuerlichDialog
      */
@@ -114,7 +97,6 @@ export class UebernatuerlichDialog extends CombatDialog {
 
     /**
      * Override getDiceFormula to handle the special xd20 logic for supernatural abilities.
-     * Uses native DOM API instead of jQuery.
      */
     getDiceFormula(xd20_choice = null) {
         if (xd20_choice === null) {
@@ -125,28 +107,23 @@ export class UebernatuerlichDialog extends CombatDialog {
         return super.getDiceFormula(xd20_choice)
     }
 
-    /**
-     * Creates formatted summaries for all roll types
-     */
-    getAllModifierSummaries(baseValues, statusMods, nahkampfMods, diceFormula) {
+    getSummaryContext(baseValues, statusMods, nahkampfMods, diceFormula) {
         const { basePW } = baseValues
-        let allSummaries = '<div class="all-summaries">'
-
-        // Talent/Spell Summary
-        allSummaries += this.getTalentSummary(basePW, statusMods, nahkampfMods, diceFormula)
-
-        // Energy Cost Summary
-        allSummaries += this.getEnergySummary()
-
-        allSummaries += '</div>'
-        return allSummaries
+        return {
+            title: 'Würfelaktionen:',
+            isEmpty: false,
+            isError: false,
+            sections: [
+                this.getTalentSummaryContext(basePW, statusMods, nahkampfMods, diceFormula),
+                this.getEnergySummaryContext(),
+            ],
+        }
     }
 
     /**
      * Creates talent/spell roll summary
      */
-    getTalentSummary(basePW, statusMods, nahkampfMods, diceFormula) {
-        // Calculate totals first for the heading
+    getTalentSummaryContext(basePW, statusMods, nahkampfMods, diceFormula) {
         const maneuverMod = this.mod_at || 0
         const totalMod = maneuverMod + statusMods + nahkampfMods
         const finalPW = basePW + totalMod
@@ -157,108 +134,129 @@ export class UebernatuerlichDialog extends CombatDialog {
         const itemType = this.item.type === 'zauber' ? 'Zauber' : 'Liturgie'
         const icon = this.item.type === 'zauber' ? '🔮' : '✨'
 
-        let summary = '<div class="modifier-summary talent-summary clickable-summary angreifen">'
-        summary += `<div class="flex_space-between_center"><h4  style="width:100%">${icon} ${itemType}: ${finalFormula}</h4><i class="custom-icon-without-hover"></i></div>`
-        summary += '<div class="modifier-list">'
-
-        // Base PW
-        summary += `<div class="modifier-item base-value">Basis PW: <span>${basePW}</span></div>`
-
-        // Difficulty
+        const difficultyRows = []
         const schwierigkeit = this.item.system.schwierigkeit
         if (schwierigkeit) {
             const parsedDifficulty = parseInt(schwierigkeit)
             if (!isNaN(parsedDifficulty)) {
-                summary += `<div class="modifier-item base-value">Schwierigkeit: <span>${parsedDifficulty}</span></div>`
+                difficultyRows.push({
+                    label: 'Schwierigkeit',
+                    value: `${parsedDifficulty}`,
+                    cssClass: 'modifier-item base-value',
+                })
             } else {
-                summary += `<div class="modifier-item neutral">Schwierigkeit: <span>${schwierigkeit}</span></div>`
+                difficultyRows.push({
+                    label: 'Schwierigkeit',
+                    value: `${schwierigkeit}`,
+                    cssClass: 'modifier-item neutral',
+                })
             }
         }
 
-        summary += this._buildSignedModifierItem(statusMods, 'Status (Wunden/Furcht)')
-        summary += this._buildSignedModifierItem(nahkampfMods, 'Token Status')
-        summary += this._buildModifierLines(this.text_at, { sectionTitle: 'Manöver:' })
+        const maneuverSection = this._buildModifierSectionData(this.text_at, {
+            sectionTitle: 'Manöver:',
+        })
 
-        summary += '<hr>'
-
-        summary += this._buildTotalModifierItem(totalMod)
-
-        summary += '</div></div>'
-        return summary
+        return {
+            action: 'angreifen',
+            cssClass: 'modifier-summary talent-summary clickable-summary',
+            heading: `${icon} ${itemType}: ${finalFormula}`,
+            rows: [
+                {
+                    label: 'Basis PW',
+                    value: `${basePW}`,
+                    cssClass: 'modifier-item base-value',
+                },
+                ...difficultyRows,
+                this._buildSignedModifierData(statusMods, 'Status (Wunden/Furcht)'),
+                this._buildSignedModifierData(nahkampfMods, 'Token Status'),
+            ].filter((row) => row),
+            sections: maneuverSection ? [maneuverSection] : [],
+            totalRow: this._buildTotalModifierData(totalMod),
+            showDivider: Boolean(maneuverSection || totalMod),
+        }
     }
 
     /**
      * Creates energy cost summary
      */
-    getEnergySummary() {
-        // Calculate energy cost
+    getEnergySummaryContext() {
         const baseEnergy = this.mod_energy || 0
         const icon = '⚡'
-
-        let summary = '<div class="modifier-summary energy-summary">'
-        summary += `<div class="flex_space-between_center"><h4 style="width:100%">${icon} Energiekosten: ${baseEnergy} Energie</h4></div>`
-        summary += '<div class="modifier-list">'
 
         // Base energy cost
         let originalCost = sanitizeEnergyCost(this.item.system.kosten) || 0
         if (this.energy_override != null) {
             originalCost = this.energy_override
         }
-        summary += `<div class="modifier-item base-value">Basiskosten: <span>${originalCost} Energie</span></div>`
+        const availableEnergy = this.getAvailableEnergy()
 
-        // Parse text_energy for energy modifiers
-        if (this.text_energy && this.text_energy.trim()) {
-            summary += '<div class="modifier-section">Modifikatoren:</div>'
-            const lines = this.text_energy.trim().split('\n')
-            lines.forEach((line) => {
-                if (line.trim()) {
-                    let color = 'neutral'
-                    // For energy costs, negative modifiers (cost reduction) are good (green)
-                    // and positive modifiers (cost increase) are bad (red)
-                    if (line.includes('-')) color = 'positive'
-                    // Cost reduction = green
-                    else if (line.includes('+')) color = 'negative' // Cost increase = red
-                    summary += `<div class="modifier-item maneuver ${color}">${line}</div>`
-                }
+        const modifierSection = this._buildModifierSectionData(this.text_energy, {
+            sectionTitle: 'Modifikatoren:',
+            getLineClass: (line) => {
+                if (line.includes('-')) return 'positive'
+                if (line.includes('+')) return 'negative'
+                return 'neutral'
+            },
+        })
+
+        const footerRows = [
+            {
+                label: 'Verfügbar',
+                value: `${availableEnergy} Energie`,
+                cssClass: 'modifier-item base-value',
+            },
+        ]
+
+        if (baseEnergy > availableEnergy) {
+            const shortage = baseEnergy - availableEnergy
+            footerRows.push({
+                text: `Fehlend: ${shortage} Energie`,
+                cssClass: 'modifier-item negative',
+                strong: true,
+            })
+        } else {
+            const remaining = availableEnergy - baseEnergy
+            footerRows.push({
+                label: 'Verbleibend',
+                value: `${remaining} Energie`,
+                cssClass: 'modifier-item positive',
             })
         }
 
-        // Show available energy
-        const availableEnergy = this.getAvailableEnergy()
-
-        summary += '<hr>'
-        summary += `<div class="modifier-item base-value">Verfügbar: <span>${availableEnergy} Energie</span></div>`
-
-        // Check if enough energy is available
-        if (baseEnergy > availableEnergy) {
-            const shortage = baseEnergy - availableEnergy
-            summary += `<div class="modifier-item negative"><strong>Fehlend: ${shortage} Energie</strong></div>`
-        } else {
-            const remaining = availableEnergy - baseEnergy
-            summary += `<div class="modifier-item positive">Verbleibend: <span>${remaining} Energie</span></div>`
-        }
-
-        summary += '</div>'
-
-        // Add energy accounting buttons for non-standard difficulty spells
         const difficulty = +this.item.system.schwierigkeit
         const isNonStandardDifficulty = isNaN(difficulty) || !difficulty
 
-        if (isNonStandardDifficulty) {
-            summary += '<hr>'
-            summary += '<div class="modifier-section">Energie abrechnen:</div>'
-            summary +=
-                '<div class="clickable-summary energie-erfolg" style="cursor: pointer; padding: 8px; margin: 4px 0; background: rgba(0, 150, 0, 0.1); border: 1px solid rgba(0, 150, 0, 0.3); border-radius: 4px; text-align: center;">'
-            summary += '✅ Erfolgreich gewirkt'
-            summary += '</div>'
-            summary +=
-                '<div class="clickable-summary energie-misserfolg" style="cursor: pointer; padding: 8px; margin: 4px 0; background: rgba(220, 0, 0, 0.1); border: 1px solid rgba(220, 0, 0, 0.3); border-radius: 4px; text-align: center;">'
-            summary += '❌ Misslungen'
-            summary += '</div>'
+        return {
+            cssClass: 'modifier-summary energy-summary',
+            heading: `${icon} Energiekosten: ${baseEnergy} Energie`,
+            rows: [
+                {
+                    label: 'Basiskosten',
+                    value: `${originalCost} Energie`,
+                    cssClass: 'modifier-item base-value',
+                },
+            ],
+            sections: modifierSection ? [modifierSection] : [],
+            footerRows,
+            actionButtons: isNonStandardDifficulty
+                ? [
+                      {
+                          action: 'energieErfolg',
+                          text: '✅ Erfolgreich gewirkt',
+                          cssClass: 'clickable-summary energie-erfolg',
+                          style: 'cursor: pointer; padding: 8px; margin: 4px 0; background: rgba(0, 150, 0, 0.1); border: 1px solid rgba(0, 150, 0, 0.3); border-radius: 4px; text-align: center;',
+                      },
+                      {
+                          action: 'energieMisserfolg',
+                          text: '❌ Misslungen',
+                          cssClass: 'clickable-summary energie-misserfolg',
+                          style: 'cursor: pointer; padding: 8px; margin: 4px 0; background: rgba(220, 0, 0, 0.1); border: 1px solid rgba(220, 0, 0, 0.3); border-radius: 4px; text-align: center;',
+                      },
+                  ]
+                : [],
+            showDivider: true,
         }
-
-        summary += '</div>'
-        return summary
     }
 
     /**
@@ -301,6 +299,9 @@ export class UebernatuerlichDialog extends CombatDialog {
             hasVerbotenePforten,
             isNonStandardDifficulty,
             canSetEnergyCost,
+            blutmagie: this.blutmagie,
+            verbotene_pforten: this.verbotene_pforten,
+            set_energy_cost: this.set_energy_cost,
         }
     }
 
@@ -309,6 +310,7 @@ export class UebernatuerlichDialog extends CombatDialog {
     /* -------------------------------------------- */
 
     async _angreifenKlick() {
+        if (callIlarisHookWithGlobalMirror('Ilaris.preAngriff', this) === false) return
         let xd20_choice =
             Number(this.element.querySelector('input[name="xd20"]:checked')?.value) || 0
         xd20_choice = xd20_choice == 0 ? 1 : 3
@@ -348,6 +350,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         )
 
         await postRollToChat(rollResult, this.speaker, this.rollmode)
+        callIlarisHookAllWithGlobalMirror('Ilaris.postAngriff', rollResult, this)
 
         const isSuccess = rollResult.success
         const is16OrHigher = rollResult.is16OrHigher
@@ -387,7 +390,7 @@ export class UebernatuerlichDialog extends CombatDialog {
 
         // Create chat message with energy cost information
         const label = `${this.item.name} (Kosten: ${this.endCost} Energie)`
-        const html_roll = await renderTemplate(
+        const html_roll = await foundry.applications.handlebars.renderTemplate(
             'systems/Ilaris/scripts/skills/templates/chat/probenchat_profan.hbs',
             {
                 title: label,
@@ -465,7 +468,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         }
 
         // Apply wounds from Verbotene Pforten if any
-        if (this.item.system.manoever.verbotene_pforten?.activated && this.calculatedWounds > 0) {
+        if (this.verbotene_pforten?.activated && this.calculatedWounds > 0) {
             updates['system.gesundheit.wunden'] =
                 this.actor.system.gesundheit.wunden + this.calculatedWounds
         }
@@ -475,7 +478,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         await this.actor.update(updates)
 
         // Create chat message with energy cost information
-        const html_roll = await renderTemplate(
+        const html_roll = await foundry.applications.handlebars.renderTemplate(
             'systems/Ilaris/scripts/dice/templates/spell_result.hbs',
             {
                 success: isSuccess,
@@ -504,7 +507,6 @@ export class UebernatuerlichDialog extends CombatDialog {
 
     /**
      * Parse maneuver selections from the dialog form.
-     * Uses native DOM API instead of jQuery.
      */
     async manoeverAuswaehlen() {
         // Ensure manoever exists
@@ -527,19 +529,14 @@ export class UebernatuerlichDialog extends CombatDialog {
         // allgemeine optionen
         manoever.kbak.selected = this.element.querySelector('#kbak')?.checked || false // Kombinierte Aktion
 
-        // Initialize blutmagie and verbotene_pforten if they don't existc
-        manoever.blutmagie = manoever.blutmagie || { value: 0 }
-        manoever.verbotene_pforten = manoever.verbotene_pforten || { value: 0 }
-        manoever.set_energy_cost = manoever.set_energy_cost || { value: 0 }
-
-        // Get values from Blutmagie and Verbotene Pforten if they exist
-        manoever.blutmagie.value = Number(this.element.querySelector('#blutmagie')?.value) || 0
+        // Read Blutmagie/Verbotene Pforten/EnergieOverride into dialog-local state (not item document)
+        this.blutmagie.value = Number(this.element.querySelector('#blutmagie')?.value) || 0
 
         // For verbotene_pforten, check if a radio button is selected (not the default "0")
         const verbotenePfortenValue = this.element.querySelector(
             'input[name="verbotene_pforten_toggle"]:checked',
         )?.value
-        manoever.verbotene_pforten = {
+        this.verbotene_pforten = {
             multiplier: Number(verbotenePfortenValue) || 4,
             activated: verbotenePfortenValue !== undefined && verbotenePfortenValue !== '0',
         }
@@ -547,10 +544,8 @@ export class UebernatuerlichDialog extends CombatDialog {
         const energyOverride = this.element.querySelector(
             'input[name="item.system.manoever.energyOverride"]',
         )?.value
-        manoever.set_energy_cost.value =
+        this.set_energy_cost.value =
             energyOverride !== '' && energyOverride != null ? +energyOverride : null
-
-        console.log('manoever', manoever.blutmagie.value)
 
         manoever.mod.selected =
             Number(this.element.querySelector(`#modifikator-${this.dialogId}`)?.value) || 0 // Modifikator
@@ -631,7 +626,6 @@ export class UebernatuerlichDialog extends CombatDialog {
 
     /**
      * Refreshes the dialog's actor reference and updates displays after actor changes.
-     * Uses native DOM API instead of jQuery.
      */
     async refreshActorData() {
         // Get the updated actor from the game
@@ -643,9 +637,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             // Update energy values based on the refreshed actor
             await this.initializeEnergyValues()
 
-            // Update the modifier display if it exists
-            const modifierEl = this.element?.querySelector('#modifier-summary')
-            if (modifierEl) {
+            if (this.element) {
                 this.updateModifierDisplay()
             }
         }
@@ -658,9 +650,9 @@ export class UebernatuerlichDialog extends CombatDialog {
         let mod_vt = 0
         let mod_dm = 0
         let mod_energy = sanitizeEnergyCost(this.item.system.kosten)
-        if (manoever.set_energy_cost?.value != null) {
-            mod_energy = manoever.set_energy_cost.value
-            this.energy_override = manoever.set_energy_cost.value
+        if (this.set_energy_cost?.value != null) {
+            mod_energy = this.set_energy_cost.value
+            this.energy_override = this.set_energy_cost.value
         }
         let text_at = ''
         let text_vt = ''
@@ -777,18 +769,11 @@ export class UebernatuerlichDialog extends CombatDialog {
             }
         }
 
-        console.log(
-            'mod_energy before Blutmagie/Verbotene Pforten',
-            mod_energy,
-            'availableEnergy',
-            availableEnergy,
-            manoever.blutmagie?.value,
-        )
         // Handle Blutmagie and Verbotene Pforten
-        if (manoever.blutmagie?.value || manoever.verbotene_pforten?.activated) {
+        if (this.blutmagie?.value || this.verbotene_pforten?.activated) {
             // Handle Blutmagie
-            if (manoever.blutmagie?.value) {
-                const blutmagieReduction = Math.min(mod_energy, manoever.blutmagie.value)
+            if (this.blutmagie?.value) {
+                const blutmagieReduction = Math.min(mod_energy, this.blutmagie.value)
                 if (blutmagieReduction > 0) {
                     mod_energy -= blutmagieReduction
                     text_energy = text_energy.concat(`Blutmagie: -${blutmagieReduction} Energie\n`)
@@ -796,12 +781,12 @@ export class UebernatuerlichDialog extends CombatDialog {
             }
 
             // Handle Verbotene Pforten
-            if (manoever.verbotene_pforten?.activated) {
+            if (this.verbotene_pforten?.activated) {
                 const ws =
                     this.actor.type === 'held'
                         ? this.actor.system.abgeleitete.ws
                         : this.actor.system.kampfwerte.ws
-                const multiplier = manoever.verbotene_pforten.multiplier
+                const multiplier = this.verbotene_pforten.multiplier
 
                 // Calculate required wounds using the extracted method
                 this.calculatedWounds = this.calculateRequiredWounds(ws, multiplier, mod_energy)
@@ -819,7 +804,6 @@ export class UebernatuerlichDialog extends CombatDialog {
             }
         }
 
-        console.log('mod_energy', mod_energy)
         // Ensure mod_energy is never less than 0
         mod_energy = Math.max(0, mod_energy)
         this.mod_at = mod_at
@@ -832,5 +816,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         this.text_energy = text_energy
         this.schaden = schaden
         this.fumble_val = fumble_val
+        this.damageType = damageType
+        this.trueDamage = trueDamage
     }
 }

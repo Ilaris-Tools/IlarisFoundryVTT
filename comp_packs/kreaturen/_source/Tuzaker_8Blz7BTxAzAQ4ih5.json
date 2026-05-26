@@ -285,7 +285,7 @@
     {
       "_id": "sjlEl8HZJshxIilD",
       "name": "Laufen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Laufen kommt in Verfolgungsjagden zu Fuß zum Einsatz, wenn du einen Verbrecher stellen oder einem Raubtier entkommen möchtest.",
         "pw": 24,
@@ -314,7 +314,7 @@
     {
       "_id": "5ZSKfwVbl96eIbzv",
       "name": "Akrobatik",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Akrobatik wird für gewagte Kunststücke und Balanceakte verwendet und kann auch den Fallschaden reduzieren.",
         "pw": 16,
@@ -343,7 +343,7 @@
     {
       "_id": "ZEd5bpD7jxRlpp0C",
       "name": "Zähigkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Zähigkeit hilft dir, Schmerzen und Strapazen zu widerstehen. So kannst du trotz zahlreicher Wunden noch handlungsfähig bleiben und einen Kampf zu euren Gunsten wenden oder eine ganze Nacht hindurch wachen.",
         "pw": 4,
@@ -372,7 +372,7 @@
     {
       "_id": "xGQyk64UzS3ni7FS",
       "name": "Pirschen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Pirschen ermöglicht das Schleichen, Verstecken und Lauern in der freien Natur. Du pirschst dich auf der Jagd an einen wilden Hirsch heran, legst einen Hinterhalt an einer Reichsstraße oder beobachtest ungesehen das Lager einer Orkbande.",
         "pw": 12,
@@ -401,7 +401,7 @@
     {
       "_id": "XBei9Ef9Lr2jPjTu",
       "name": "Einschüchtern",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Einschüchtern jagt dem Gegenüber Angst ein und bringt ihn so zu einer gewünschten Handlung. Die Probe wird oft vergleichend gegen den MU oder die Menschenkenntnis des Gegenübers abgelegt.",
         "pw": 6,
@@ -430,7 +430,7 @@
     {
       "_id": "gjZPoOcnXVPoV1iA",
       "name": "Menschenkenntnis",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Menschenkenntnis ist deine Fähigkeit, die Absichten deines Gegenüber zu durchschauen. Damit enttarnst du Lügen und falsche Annäherungsversuche.",
         "pw": 7,
@@ -459,7 +459,7 @@
     {
       "_id": "peOBzhuABF5kCY5J",
       "name": "Sinnesschärfe",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 16,
@@ -488,7 +488,7 @@
     {
       "_id": "4u8Mj5mpLc57XAzN",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 16,

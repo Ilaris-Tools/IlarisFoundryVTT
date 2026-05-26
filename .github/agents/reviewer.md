@@ -24,15 +24,15 @@ Assess changes for correctness, regression risk, and completeness. Produce a det
 
 ### Always Evaluate
 
-| Criterion            | Check                                                       |
-| -------------------- | ----------------------------------------------------------- |
-| **Correctness**      | Does the change accomplish the stated task goal?            |
-| **Regression risk**  | Could this break existing functionality?                    |
-| **Missing tests**    | Are there new behaviors that lack test coverage?            |
-| **Doc updates**      | Do behavioral changes need documentation updates?           |
-| **API compliance**   | Does the code use Foundry VTT APIs correctly?               |
-| **Data integrity**   | Are `template.json` schemas and compendium data consistent? |
-| **Style compliance** | Does the code pass `npm run lint`?                          |
+| Criterion            | Check                                                                       |
+| -------------------- | --------------------------------------------------------------------------- |
+| **Correctness**      | Does the change accomplish the stated task goal?                            |
+| **Regression risk**  | Could this break existing functionality?                                    |
+| **Missing tests**    | Are there new behaviors that lack test coverage?                            |
+| **Doc updates**      | Do behavioral changes need documentation updates?                           |
+| **API compliance**   | Does the code use Foundry VTT APIs correctly?                               |
+| **Data integrity**   | Are TypeDataModel schemas, `documentTypes`, and compendium data consistent? |
+| **Style compliance** | Does the code pass `npm run lint`?                                          |
 
 ### Risk Classification
 

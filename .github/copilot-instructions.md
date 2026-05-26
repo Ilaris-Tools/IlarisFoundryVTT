@@ -34,7 +34,7 @@ Ilaris is a **Foundry VTT game system** implementing the Ilaris tabletop RPG rul
 ## Key Files
 
 - `system.json` — System manifest (id, version, compatibility, esmodules, styles)
-- `template.json` — Data model schemas for all Actor and Item types
+- `scripts/core/model-data/type-data-models.js` — TypeDataModel registration and shared schema helpers
 - `scripts/core/hooks.js` — ES module entry point (imports all feature hooks)
 - `scripts/core/init.js` — `Hooks.once('init', ...)` registration of sheets, document classes, config
 - `scripts/core/config.js` — `CONFIG.ILARIS` constants

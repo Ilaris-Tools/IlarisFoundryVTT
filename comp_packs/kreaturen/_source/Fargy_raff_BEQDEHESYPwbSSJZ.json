@@ -439,7 +439,7 @@
     {
       "_id": "fFDtDjGo0z2ezGCa",
       "name": "Gebräuche",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 20,
@@ -468,7 +468,7 @@
     {
       "_id": "fOXv78Swl0NDO6A8",
       "name": "Menschenkenntnis",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Menschenkenntnis ist deine Fähigkeit, die Absichten deines Gegenüber zu durchschauen. Damit enttarnst du Lügen und falsche Annäherungsversuche.",
         "pw": 24,
@@ -497,7 +497,7 @@
     {
       "_id": "iuVAWGWshlZHGmHp",
       "name": "Überreden",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Überreden bedeutet den geschickten Einsatz von Übertreibungen, Unwahrheiten oder Lügen, um das Gegenüber zumindest kurzfristig zu beeinflussen. Mit Überreden feilschst du am Marktplatz, bestichst eine Stadtwache oder infiltrierst ein Borbaradianerkloster.",
         "pw": 24,
@@ -526,7 +526,7 @@
     {
       "_id": "s4FzyWP8i1DO8jB7",
       "name": "Dämonisch",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

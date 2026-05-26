@@ -22,7 +22,7 @@
 ### Key Entry Points
 
 1. **`system.json`** — System manifest. Defines `esmodules: ["scripts/core/hooks.js"]` as the JavaScript entry point and lists all CSS files.
-2. **`template.json`** — Data model schemas for all Actor types (`held`, `kreatur`, `nsc`) and 22 Item types.
+2. **`scripts/core/model-data/type-data-models.js`** — Registers TypeDataModels used by Actor and Item system data.
 3. **`scripts/core/hooks.js`** — ES module entry point that imports `init.js` and all feature `hooks.js` files.
 4. **`scripts/core/init.js`** — Registers all sheet classes, document classes, and `CONFIG.ILARIS` constants via `Hooks.once('init', ...)`.
 
@@ -31,7 +31,6 @@
 ```
 Ilaris/
 ├── system.json              # System manifest
-├── template.json            # Data model schemas
 ├── package.json             # npm scripts & dependencies
 ├── AGENTS.md                # Tool-agnostic agent rules
 ├── CONTRIBUTING.md          # Contribution guide

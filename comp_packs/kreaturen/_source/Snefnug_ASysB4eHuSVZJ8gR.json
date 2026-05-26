@@ -403,7 +403,7 @@
     {
       "_id": "WtCB0AKUDyiki284",
       "name": "Geographie",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Geographie befasst sich nicht nur mit Reiserouten und fernen Ländern, sondern auch mit dem Sternenhimmel, der Kartographie und Navigation. Ein Geograph kann Schatzkarten lesen und anfertigen, die Position eines Schiffes bestimmen und Sternenkonstellationen deuten.",
         "pw": 8,
@@ -432,7 +432,7 @@
     {
       "_id": "s22xRZThD2G7VD53",
       "name": "Nordaventurien (Überleben)",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 8,
@@ -461,7 +461,7 @@
     {
       "_id": "GiOykOh87GZiOBCY",
       "name": "Pirschen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Pirschen ermöglicht das Schleichen, Verstecken und Lauern in der freien Natur. Du pirschst dich auf der Jagd an einen wilden Hirsch heran, legst einen Hinterhalt an einer Reichsstraße oder beobachtest ungesehen das Lager einer Orkbande.",
         "pw": 8,
@@ -490,7 +490,7 @@
     {
       "_id": "xyPDyWxnUwBnq7Uc",
       "name": "Thorwal (Gebräuche)",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 6,
@@ -519,7 +519,7 @@
     {
       "_id": "iQPrl8Oz36se7WEx",
       "name": "Tierkunde",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Tierkunde bedeutet die Kenntnis der aventurischen Fauna. Dein Charakter kann einen Schleimfleck als Spur einer Riesenamöbe erkennen, einen gereizten Bären beruhigen und kennt die Schwachstelle eines Tatzelwurms.",
         "pw": 6,
@@ -548,7 +548,7 @@
     {
       "_id": "O8cml8HgerDk8vTx",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 6,
@@ -577,7 +577,7 @@
     {
       "_id": "poNV1VDqfKvrhVqs",
       "name": "Wahrnehmung",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 8,
@@ -606,7 +606,7 @@
     {
       "_id": "K9Z0rax53s4Hwffw",
       "name": "Eis",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

@@ -18,4 +18,8 @@ nav:
     - FoundryVTT: index.md
     - Grundlagen: foundry-basics.md
     - FAQ: faq.md
-    - Release: develop/release.md
+    - Entwicklung:
+          - ModelData und Migration: develop/modeldata-migration.md
+          - Release: develop/release.md
+          - E2E-Tests: develop/e2e-testing.md
+          - Hooks: develop/hooks.md

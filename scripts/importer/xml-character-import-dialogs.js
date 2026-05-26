@@ -118,10 +118,10 @@ export class XmlCharacterImportDialogs {
         ).length
         const currentAdvantages = actor.items.filter((item) => item.type === 'vorteil').length
         const currentSupernaturalSkills = actor.items.filter(
-            (item) => item.type === 'uebernatuerliche_fertigkeit',
+            (item) => item.type === 'uebernatuerlicheFertigkeit',
         ).length
         const currentFreeSkills = actor.items.filter(
-            (item) => item.type === 'freie_fertigkeit',
+            (item) => item.type === 'freieFertigkeit',
         ).length
 
         // Count preserved items

@@ -2,16 +2,19 @@ import { IlarisItem } from './item.js'
 
 export class ManoeverItem extends IlarisItem {
     _manoeverRequirementsFulfilled(actor, item) {
-        if (!this.system.voraussetzungen) {
-            return true
-        }
+        const voraussetzung = this.system.voraussetzung || this.system.voraussetzungen
 
-        // bypass other requirements of the manover is in the angriffmanover list of the item
-        if (item.system.angriffmanover && item.system.angriffmanover.length > 0) {
+        // For Angriff items, the configured maneuver list is the source of truth.
+        // If the list exists (even empty), only listed maneuvers are available.
+        if (Array.isArray(item.system.angriffmanover)) {
             return item.system.angriffmanover.includes(this.name)
         }
+
+        if (!voraussetzung) {
+            return true
+        }
         // First split by comma to get AND conditions
-        const andConditions = this.system.voraussetzungen.split(',').map((c) => c.trim())
+        const andConditions = voraussetzung.split(',').map((c) => c.trim())
 
         // For each AND condition, check if any of its OR parts is fulfilled
         return andConditions.every((andCondition) => {

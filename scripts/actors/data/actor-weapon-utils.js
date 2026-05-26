@@ -59,6 +59,7 @@ export function ignoreSideWeaponMalus(
     waffenEigenschaft = '',
 ) {
     if (!nebenWaffe) return
+    if (hauptWaffe && hauptWaffe.id === nebenWaffe.id) return
 
     // Check if weapon ignores nebenwaffe malus (from eigenschaft data)
     if (nebenWaffe.system.computed?.ignoreNebenMalus) return

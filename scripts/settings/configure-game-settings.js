@@ -79,6 +79,17 @@ export const registerIlarisGameSettings = () => {
             default: true,
         },
         {
+            // Register enable tabbing functionality in character sheet
+            settingsName: IlarisGameSettingNames.enableTabbingCharacterSheet,
+            name: 'Heldensheet Reiter Rotation mit Tab aktivieren',
+            hint: 'Wenn aktiviert, kann auf dem Heldensheet mit Tab zwischen den Reitern rotiert werden.',
+            config: true,
+            type: new foundry.data.fields.BooleanField(),
+            scope: 'client',
+            default: false,
+            requiresReload: true,
+        },
+        {
             // Register last seen breaking changes version setting
             settingsName: IlarisGameSettingNames.lastSeenBreakingChangesVersion,
             name: 'Zuletzt gesehene Breaking Changes Version',

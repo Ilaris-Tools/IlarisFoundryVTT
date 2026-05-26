@@ -20,10 +20,10 @@ export class FernkampfwaffeSheet extends WaffeBaseSheet {
         // Fetch available waffeneigenschaften from all compendiums
         context.availableEigenschaften = await this._getAvailableEigenschaften()
 
-        // Ensure eigenschaften is an array
-        if (!Array.isArray(this.document.system.eigenschaften)) {
-            this.document.system.eigenschaften = []
-        }
+        // Ensure eigenschaften is an array for rendering only.
+        context.document.system.eigenschaften = Array.isArray(context.document.system.eigenschaften)
+            ? context.document.system.eigenschaften
+            : []
 
         // Migrate legacy damage format
         this._migrateLegacyDamageFormat(context)

@@ -114,7 +114,7 @@
 <br />
 <div>
     <h2>Freie Fertigkeiten</h2>
-    <a data-action="itemCreate" data-itemclass="freie_fertigkeit"><i class="fas fa-plus"></i> Neue freie Fertigkeit</a>
+    <a data-action="itemCreate" data-itemclass="freieFertigkeit"><i class="fas fa-plus"></i> Neue freie Fertigkeit</a>
 
     <table class="table hero-table-free-fertigkeiten">
         <thead>
@@ -129,19 +129,19 @@
         <tbody>
             {{#each actor.profan.freie as |freifert|}}
             <tr>
-                <td data-action="rollable" data-rolltype="fertigkeit_diag" data-probetype="freie_fertigkeit" data-fertigkeit="{{freifert.name}}"
+                <td data-action="rollable" data-rolltype="fertigkeit_diag" data-probetype="freieFertigkeit" data-fertigkeit="{{freifert.name}}"
                     data-pw="{{freifert.system.stufe}}">
                     <i class="custom-icon"></i>
                 </td>
-                <td data-action="rollable" class="onhover" data-rolltype="freie_fertigkeit" data-fertigkeit="{{freifert.name}}"
+                <td data-action="rollable" class="onhover" data-rolltype="freieFertigkeit" data-fertigkeit="{{freifert.name}}"
                     data-pw="{{freifert.system.stufe}}">
                     {{freifert.name}}
                 </td>
                 <td>{{freifert.system.stufe}}</td>
-                <td data-action="itemEdit" data-itemclass="freie_fertigkeit" data-itemid="{{freifert.id}}">
+                <td data-action="itemEdit" data-itemclass="freieFertigkeit" data-itemid="{{freifert.id}}">
                     <i class="fas fa-edit"></i>
                 </td>
-                <td data-action="itemDelete" data-itemclass="freie_fertigkeit" data-itemid="{{freifert.id}}">
+                <td data-action="itemDelete" data-itemclass="freieFertigkeit" data-itemid="{{freifert.id}}">
                     <i class="fas fa-trash"></i>
                 </td>
             </tr>

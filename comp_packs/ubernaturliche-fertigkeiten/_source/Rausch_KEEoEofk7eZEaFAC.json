@@ -1,6 +1,6 @@
 {
   "name": "Rausch",
-  "type": "uebernatuerliche_fertigkeit",
+  "type": "uebernatuerlicheFertigkeit",
   "img": "systems/Ilaris/assets/images/skills/karmal-skill.svg",
   "system": {
     "basis": 0,

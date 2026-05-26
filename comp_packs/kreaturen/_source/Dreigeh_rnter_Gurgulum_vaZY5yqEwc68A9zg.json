@@ -610,7 +610,7 @@
     {
       "_id": "STsllcVznBGOGltP",
       "name": "Einfluss",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

@@ -1471,7 +1471,7 @@
     {
       "_id": "DaOeWmuWFconeTQe",
       "name": "Sprache: Garethi",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 3,
@@ -1498,7 +1498,7 @@
     {
       "_id": "f2cG3mitIVVr8Z9G",
       "name": "Schrift: Kusliker Zeichen",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1525,7 +1525,7 @@
     {
       "_id": "33r1HvpIkutQau2X",
       "name": "Zwölfgöttlicher Ritus",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 5,
@@ -1558,7 +1558,7 @@
     {
       "_id": "Bs8VyN1cLFMdYqOO",
       "name": "Heilung",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1591,7 +1591,7 @@
     {
       "_id": "Y4K4LKM6A54YkrOF",
       "name": "Wachstum",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,

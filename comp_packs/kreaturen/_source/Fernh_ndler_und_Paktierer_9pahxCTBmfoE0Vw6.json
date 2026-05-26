@@ -428,7 +428,7 @@
     {
       "_id": "mjGVipAr4o5Qe64g",
       "name": "Andergast & Nostria (Gebräuche)",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 11,
@@ -457,7 +457,7 @@
     {
       "_id": "HMyUKWvIchApl8Ze",
       "name": "Autorität",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 8,
@@ -486,7 +486,7 @@
     {
       "_id": "YhUeIMgVhYEqepOc",
       "name": "Betören",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Beim Betören nutzt du deine persönliche Ausstrahlung, um zu bekommen, was du willst. Das reicht von Kleinigkeiten wie einem Freibier bis zum Verrat geheimer Staatsinformationen.",
         "pw": 14,
@@ -515,7 +515,7 @@
     {
       "_id": "TWayKLWNP4ZqAa9c",
       "name": "Überreden",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Überreden bedeutet den geschickten Einsatz von Übertreibungen, Unwahrheiten oder Lügen, um das Gegenüber zumindest kurzfristig zu beeinflussen. Mit Überreden feilschst du am Marktplatz, bestichst eine Stadtwache oder infiltrierst ein Borbaradianerkloster.",
         "pw": 14,
@@ -544,7 +544,7 @@
     {
       "_id": "pBJs3vuyEOfDEpHx",
       "name": "Untertauchen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Untertauchen erlaubt dir das Schleichen, Verstecken und Beschatten in der Zivilisation. Du verschwindest in der Menschenmenge am Marktplatz, steigst ungehört in eine Villa eines Ratsherren ein oder beschattest unauffällig einen Hehler.",
         "pw": 6,
@@ -573,7 +573,7 @@
     {
       "_id": "dkU8eXCESqggNuCN",
       "name": "Verschlagenheit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 7,
@@ -602,7 +602,7 @@
     {
       "_id": "i8ljYThMeaN4Sx47",
       "name": "Willenskraft",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Willenskraft erlaubt dir, Beeinflussungen und Versuchungen zu widerstehen und dich nicht ablenken zu lassen. Du kannst dich im Chaos eines Gefechts auf einen Zauber konzentrieren oder einem Heiligen Befehl widerstehen.",
         "pw": 11,
@@ -631,7 +631,7 @@
     {
       "_id": "ZfxpXj88Y3Wdi4zq",
       "name": "Wahrnehmung",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 11,
@@ -660,7 +660,7 @@
     {
       "_id": "89MxqJHVuu0qntL1",
       "name": "Zähigkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Zähigkeit hilft dir, Schmerzen und Strapazen zu widerstehen. So kannst du trotz zahlreicher Wunden noch handlungsfähig bleiben und einen Kampf zu euren Gunsten wenden oder eine ganze Nacht hindurch wachen.",
         "pw": 8,
@@ -689,7 +689,7 @@
     {
       "_id": "rJB4eVr10nkjihlA",
       "name": "Dämonische Hilfe (Cpt)",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

@@ -687,7 +687,7 @@
     {
       "_id": "IEM2HMsp0PfjBhWI",
       "name": "Anführen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Mit Anführen leitest und motivierst du Untergebene. Du kannst mit Anführen Löscharbeiten oder eine Truppe von Kämpfern koordinieren, um ihnen so Vorteile zu verschaffen (S. 46). Gerade in großen Schlachten entscheidet der Heerführer über Sieg oder Niederlage.",
         "pw": 10,
@@ -716,7 +716,7 @@
     {
       "_id": "0Dz1bv9lsz7otkoc",
       "name": "Einschüchtern",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Einschüchtern jagt dem Gegenüber Angst ein und bringt ihn so zu einer gewünschten Handlung. Die Probe wird oft vergleichend gegen den MU oder die Menschenkenntnis des Gegenübers abgelegt.",
         "pw": 20,
@@ -745,7 +745,7 @@
     {
       "_id": "SUqIp4M3M0Yobf4E",
       "name": "Fliegen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 14,
@@ -774,7 +774,7 @@
     {
       "_id": "jr0UWMCGvrhncok1",
       "name": "Menschenkenntnis",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Menschenkenntnis ist deine Fähigkeit, die Absichten deines Gegenüber zu durchschauen. Damit enttarnst du Lügen und falsche Annäherungsversuche.",
         "pw": 16,
@@ -803,7 +803,7 @@
     {
       "_id": "4eT9L7ShOYrxYQX1",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 12,
@@ -832,7 +832,7 @@
     {
       "_id": "aQ2whZDLBYNginVB",
       "name": "Zähigkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Zähigkeit hilft dir, Schmerzen und Strapazen zu widerstehen. So kannst du trotz zahlreicher Wunden noch handlungsfähig bleiben und einen Kampf zu euren Gunsten wenden oder eine ganze Nacht hindurch wachen.",
         "pw": 24,
@@ -861,7 +861,7 @@
     {
       "_id": "Uf4csOgow1UnVgk8",
       "name": "Einfluss",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",
@@ -1290,7 +1290,7 @@
     {
       "_id": "XLj5TRN3bOfzHERJ",
       "name": "Hellsicht",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",
@@ -1639,7 +1639,7 @@
     {
       "_id": "2r7VEyLb0H75yeJa",
       "name": "Umwelt",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

@@ -257,7 +257,7 @@
     {
       "_id": "j4hhDOMw7HAXs4q3",
       "name": "Andergast & Nostria",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 15,
@@ -286,7 +286,7 @@
     {
       "_id": "jg2p8LkIiuBbebDX",
       "name": "Einschüchtern",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Einschüchtern jagt dem Gegenüber Angst ein und bringt ihn so zu einer gewünschten Handlung. Die Probe wird oft vergleichend gegen den MU oder die Menschenkenntnis des Gegenübers abgelegt.",
         "pw": 11,
@@ -315,7 +315,7 @@
     {
       "_id": "4nUZSvBuGs3gzBK9",
       "name": "Elementarkunde",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Elementarkunde befasst sich mit den sechs Elementen, der Elementarbeschwörung und den elementaren Zaubern.",
         "pw": 14,
@@ -344,7 +344,7 @@
     {
       "_id": "ojpRuKksXbyYKHb6",
       "name": "Gifte und Krankheiten",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Mit dem Talent Gifte und Krankheiten stoppst du eine Tulmadron-Vergiftung, erkennst die ersten Anzeichen für Zorganpocken und kannst einen Ghulbiss behandeln.",
         "pw": 13,
@@ -373,7 +373,7 @@
     {
       "_id": "pZD5IHcVhrpOZf3j",
       "name": "Götter und Kulte",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Götter und Kulte befasst sich mit dem Wesen der Götter, ihrer Schöpfung und ihren sterblichen Dienern. Dein Charakter kennt den Aufbau und die Ziele der Kirchen und weiß, wie man ihren Angehörigen gegenübertritt. Genauso kann er eine alte Kultstätte einer Gottheit oder vielleicht einem Erzdämonen zuordnen.",
         "pw": 15,
@@ -402,7 +402,7 @@
     {
       "_id": "AAfirb8G81Lf941Y",
       "name": "Menschenkenntnis",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Menschenkenntnis ist deine Fähigkeit, die Absichten deines Gegenüber zu durchschauen. Damit enttarnst du Lügen und falsche Annäherungsversuche.",
         "pw": 10,
@@ -431,7 +431,7 @@
     {
       "_id": "WfjEO4faRcw5HFqv",
       "name": "Nordaventurien",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 9,
@@ -460,7 +460,7 @@
     {
       "_id": "h6Y9VRc07jtnoLil",
       "name": "Pirschen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Pirschen ermöglicht das Schleichen, Verstecken und Lauern in der freien Natur. Du pirschst dich auf der Jagd an einen wilden Hirsch heran, legst einen Hinterhalt an einer Reichsstraße oder beobachtest ungesehen das Lager einer Orkbande.",
         "pw": 8,
@@ -489,7 +489,7 @@
     {
       "_id": "mQ19idtDrKZ0NiCW",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 10,
@@ -518,7 +518,7 @@
     {
       "_id": "wgxacyUJr0pBPLiu",
       "name": "Willenskraft",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Willenskraft erlaubt dir, Beeinflussungen und Versuchungen zu widerstehen und dich nicht ablenken zu lassen. Du kannst dich im Chaos eines Gefechts auf einen Zauber konzentrieren oder einem Heiligen Befehl widerstehen.",
         "pw": 8,
@@ -547,7 +547,7 @@
     {
       "_id": "9MmhHTrGPB8abBIE",
       "name": "Dolchrituale",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",
@@ -696,7 +696,7 @@
     {
       "_id": "HZW9mmWENJWrusbk",
       "name": "Einfluss",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",
@@ -765,7 +765,7 @@
     {
       "_id": "biywJJ7UO1eH8QR6",
       "name": "Hellsicht",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",
@@ -954,7 +954,7 @@
     {
       "_id": "OaFeChhO2HWqESVU",
       "name": "Humus",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",
@@ -1183,7 +1183,7 @@
     {
       "_id": "PKJUxULhXjP4DPL2",
       "name": "Umwelt",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

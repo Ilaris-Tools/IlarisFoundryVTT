@@ -58,6 +58,8 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
     _onRender(context, options) {
         super._onRender(context, options)
 
+        // These selectors intentionally bind to canonical system paths that are
+        // stabilized via TypeDataModel schemas and migration normalization.
         // Bind input listeners for real-time health updates
         const woundsInput = this.element.querySelector('input[name="system.gesundheit.wunden"]')
         if (woundsInput) {
@@ -125,6 +127,7 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         try {
             const togglevariable = target.dataset.togglevariable
             const attr = `${togglevariable}`
+            // Keep toggle paths schema-backed (no ad-hoc keys), otherwise updates can fail validation.
             const bool_status = foundry.utils.getProperty(this.actor, attr)
             await this.actor.update({ [attr]: !bool_status })
 
@@ -279,7 +282,7 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             const roll = new Roll(formula)
             const speaker = ChatMessage.getSpeaker({ actor: this.actor })
             await roll.evaluate()
-            const html_roll = await renderTemplate(
+            const html_roll = await foundry.applications.handlebars.renderTemplate(
                 'systems/Ilaris/scripts/skills/templates/chat/probenchat_profan.hbs',
                 { title: `${label}` },
             )
@@ -344,10 +347,13 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             label = target.dataset.fertigkeit
             label = label.concat(' (', target.dataset.talent, ')')
             pw = target.dataset.pw
-        } else if (rolltype === 'freie_fertigkeit') {
+        } else if (rolltype === 'freieFertigkeit' || rolltype === 'freie_fertigkeit') {
             label = target.dataset.fertigkeit
             pw = Number(target.dataset.pw) * 8 - 2
-        } else if (rolltype === 'uebernatuerliche_fertigkeit') {
+        } else if (
+            rolltype === 'uebernatuerlicheFertigkeit' ||
+            rolltype === 'uebernatuerliche_fertigkeit'
+        ) {
             label = target.dataset.fertigkeit
             pw = target.dataset.pw
         } else if (rolltype === 'zauber' || rolltype === 'liturgie') {
@@ -380,7 +386,7 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             fumble = true
         }
         const speaker = ChatMessage.getSpeaker({ actor: this.actor })
-        const html_roll = await renderTemplate(
+        const html_roll = await foundry.applications.handlebars.renderTemplate(
             'systems/Ilaris/scripts/skills/templates/chat/probenchat_profan.hbs',
             {
                 title: `${label}`,
@@ -400,13 +406,19 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
      * @param {HTMLElement} target - The target element with data-action
      */
     static async onClickable(event, target) {
-        const systemData = this.actor.system
         const clicktype = target.dataset.clicktype
         if (clicktype === 'shorten_money') {
-            let kreuzer = systemData.geld.kreuzer
-            let heller = systemData.geld.heller
-            let silbertaler = systemData.geld.silbertaler
-            let dukaten = systemData.geld.dukaten
+            const form = target.closest('form') ?? this.element
+            const getValue = (name) => {
+                const input = form.querySelector(`[name="${name}"]`)
+                return input
+                    ? Number(input.value) || 0
+                    : this.actor.system.geld[name.split('.').pop()]
+            }
+            let kreuzer = getValue('system.geld.kreuzer')
+            let heller = getValue('system.geld.heller')
+            let silbertaler = getValue('system.geld.silbertaler')
+            let dukaten = getValue('system.geld.dukaten')
             if (kreuzer > 10) {
                 const div = Math.floor(kreuzer / 10)
                 heller += div
@@ -455,13 +467,11 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
 
     _onSelectedKampfstil(event) {
         const selected_kampfstil = event.target.value
-        this.actor.system.misc.selected_kampfstil = selected_kampfstil
         this.actor.update({ 'system.misc.selected_kampfstil': selected_kampfstil })
     }
 
     _onSelectedUebernatuerlichenStil(event) {
         const selected_stil = event.target.value
-        this.actor.system.misc.selected_uebernatuerlicher_stil = selected_stil
         this.actor.update({ 'system.misc.selected_uebernatuerlicher_stil': selected_stil })
     }
 
