@@ -71,8 +71,15 @@ export async function handleAkrobatikDefense(actor, rollResult, html) {
 
     let talentName = 'Akrobatik'
     let fertigkeitName = 'Athletik'
+    let selectedAttribute = null
 
-    if (talentUuid) {
+    if (typeof talentUuid === 'string' && talentUuid.startsWith('attribute:')) {
+        selectedAttribute = talentUuid.replace('attribute:', '')
+        talentName = `Attribut ${selectedAttribute}`
+        fertigkeitName = ''
+    }
+
+    if (talentUuid && !selectedAttribute) {
         try {
             const talentItem = await fromUuid(talentUuid)
             if (talentItem) {
@@ -86,6 +93,19 @@ export async function handleAkrobatikDefense(actor, rollResult, html) {
 
     let skillValue = 0
     let label = `Ausweichen mit ${talentName}`
+
+    if (selectedAttribute) {
+        const attributeData = actor.system?.attribute?.[selectedAttribute]
+        skillValue =
+            attributeData?.kampfPw ??
+            attributeData?.pw ??
+            Math.floor((attributeData?.wert || 0) / 4)
+
+        if (skillValue === undefined || skillValue === null) {
+            ui.notifications.warn(`${actor.name} hat kein Attribut ${selectedAttribute}.`)
+            return
+        }
+    }
 
     // Handle creatures differently - check freietalente
     if (actor.type === 'kreatur') {

@@ -1,5 +1,25 @@
-<section class="tab compendien {{tab.cssClass}}"data-group="primary" data-tab="AUTOMATION">
-<div class="">
-   <label>automation.hbs</label>
-</div>
+<section class="tab automation {{tab.cssClass}}" data-group="primary" data-tab="AUTOMATION">
+    {{#if isGM}}
+        <div class="setting-row">
+            <div class="setting-label-block">
+                <span class="setting-label">Scene-Umgebungseinstellungen verwenden</span>
+                <span class="setting-scope"><i class="fas fa-globe"></i> Welt</span>
+                <p class="setting-hint">Wenn aktiviert, werden Licht und Wetter aus den Scene-Einstellungen automatisch in Fernkampf-Dialogen vorausgewählt.</p>
+            </div>
+            <input type="checkbox" name="automation.useSceneEnvironment" {{#if settings.useSceneEnvironment}}checked{{/if}}>
+        </div>
+        <div class="setting-row">
+            <div class="setting-label-block">
+                <span class="setting-label">Zielauswahl-System verwenden</span>
+                <span class="setting-scope"><i class="fas fa-globe"></i> Welt</span>
+                <p class="setting-hint">Wenn aktiviert, werden in Kampfdialogen die Zielauswahl-Funktion und automatische Verteidigungsaufforderungen angezeigt.</p>
+            </div>
+            <input type="checkbox" name="automation.useTargetSelection" {{#if settings.useTargetSelection}}checked{{/if}}>
+        </div>
+    {{else}}
+        <p class="ilaris-gm-only-hint">
+            <i class="fas fa-lock"></i>
+            Diese Einstellungen können nur vom Spielleiter geändert werden.
+        </p>
+    {{/if}}
 </section>

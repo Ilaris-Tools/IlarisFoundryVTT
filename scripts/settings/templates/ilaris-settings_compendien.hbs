@@ -1,42 +1,46 @@
-<section class="tab automation {{tab.cssClass}}" data-group="primary" data-tab="USED_COMPENDIAN">
-    <div class="form-group">
-        <label>Verfügbare Fertigkeiten Kompendien: Hier kannst du die Kompendien auswählen, die Fertigkeiten enthalten.</label>
-        {{#each packs}}
-        <div class="form-group pack-entry">
-            <div class="pack-row">
-                <label class="checkbox">
-                    <input type="checkbox" name="{{this.id}}" {{#if this.selected}}checked{{/if}} autofocus>
-                        {{this.name}}
-                    </input>
-                </label>
+<section class="tab compendien {{tab.cssClass}}" data-group="primary" data-tab="USED_COMPENDIEN">
+    {{#if isGM}}
+        {{#each compendienPacks}}
+            <div class="setting-group">
+                {{#if (eq @key "fertigkeiten")}}
+                    <h3 class="setting-group-header">Fertigkeiten Kompendien</h3>
+                    <p class="setting-group-hint">Kompendien, die Fertigkeiten und übernatürliche Fertigkeiten enthalten.</p>
+                {{else if (eq @key "waffen")}}
+                    <h3 class="setting-group-header">Waffen Kompendien</h3>
+                    <p class="setting-group-hint">Kompendien, die Nah- und Fernkampfwaffen enthalten.</p>
+                {{else if (eq @key "talente")}}
+                    <h3 class="setting-group-header">Talente Kompendien</h3>
+                    <p class="setting-group-hint">Kompendien, die Talente, Liturgien und Zauber enthalten.</p>
+                {{else if (eq @key "manoever")}}
+                    <h3 class="setting-group-header">Manöver Kompendien</h3>
+                    <p class="setting-group-hint">Kompendien, die Manöver enthalten.</p>
+                {{else if (eq @key "vorteile")}}
+                    <h3 class="setting-group-header">Vorteile Kompendien</h3>
+                    <p class="setting-group-hint">Kompendien, die Vorteile enthalten.</p>
+                {{else if (eq @key "waffeneigenschaften")}}
+                    <h3 class="setting-group-header">Waffeneigenschaften Kompendien</h3>
+                    <p class="setting-group-hint">Kompendien, die Waffeneigenschaften enthalten.</p>
+                {{else if (eq @key "abgeleiteteWerte")}}
+                    <h3 class="setting-group-header">Abgeleitete Werte Kompendien</h3>
+                    <p class="setting-group-hint">Kompendien, die abgeleitete Werte enthalten. Wenn keine ausgewählt sind, werden die Standard-Berechnungen verwendet.</p>
+                {{/if}}
+                <div class="setting-group-content">
+                {{#each this}}
+                    <div class="form-group pack-entry {{#if this.isSystemPack}}system-pack{{/if}}">
+                        <label class="checkbox">
+                            <input type="checkbox" name="compendien.{{@../key}}.{{this.id}}" {{#if this.selected}}checked{{/if}}>
+                            {{this.name}}
+                        </label>
+                    </div>
+                {{/each}}
+                </div>
             </div>
-        </div>
         {{/each}}
-    </div>
+    {{else}}
+        <p class="ilaris-gm-only-hint">
+            <i class="fas fa-lock"></i>
+            Diese Einstellungen können nur vom Spielleiter geändert werden.
+        </p>
+    {{/if}}
 </section>
-{{!-- <form>
-    <div class="form-group">
-        <label>Verfügbare Fertigkeiten Kompendien: Hier kannst du die Kompendien auswählen, die Fertigkeiten enthalten.</label>
-        {{#each packs}}
-        <div class="form-group pack-entry">
-            <div class="pack-row">
-                <label class="checkbox">
-                    <input type="checkbox" name="{{this.id}}" {{#if this.selected}}checked{{/if}} autofocus>
-                        {{this.name}}
-                    </input>
-                </label>
-            </div>
-        </div>
-        {{/each}}
-    </div>
-    {{!-- <div class="form-group">
-        <button type="submit" name="submit">
-            <i class="far fa-save"></i>
-            Speichern
-        </button>
-        <button type="button" name="reset">
-            <i class="fas fa-undo"></i>
-            Zurücksetzen
-        </button>
-    </div> --}}
-</form> --}}
+

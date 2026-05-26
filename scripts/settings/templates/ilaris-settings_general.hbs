@@ -1,5 +1,79 @@
 <section class="tab general {{tab.cssClass}}" data-group="primary" data-tab="GENERAL">
-<div class="">
-   <label>genearl.hbs</label>
-</div>
+    {{#if isGM}}
+        <div class="setting-row">
+            <div class="setting-label-block">
+                <span class="setting-label">Platzbedarf berücksichtigen</span>
+                <span class="setting-scope"><i class="fas fa-globe"></i> Welt</span>
+                <p class="setting-hint">Platzbedarf ist eine Hausregel aus Ilaris Advanced. Ohne Haken wird der Platzbedarf nicht angezeigt und in Berechnungen als 0 angenommen.</p>
+            </div>
+            <input type="checkbox" name="general.weaponSpaceRequirement" {{#if settings.weaponSpaceRequirement}}checked{{/if}}>
+        </div>
+        <div class="setting-row">
+            <div class="setting-label-block">
+                <span class="setting-label">Echte Patzer und Krits</span>
+                <span class="setting-scope"><i class="fas fa-globe"></i> Welt</span>
+                <p class="setting-hint">Eine 1 ist immer ein Patzer und eine 20 immer ein Krit, unabhängig vom Probenergebnis.</p>
+            </div>
+            <input type="checkbox" name="general.realFumbleCrits" {{#if settings.realFumbleCrits}}checked{{/if}}>
+        </div>
+        <div class="setting-row">
+            <div class="setting-label-block">
+                <span class="setting-label">Umbenennen von Triumph in Crit</span>
+                <span class="setting-scope"><i class="fas fa-globe"></i> Welt</span>
+                <p class="setting-hint">Für alle, die lieber das Wort "Crit" anstelle von "Triumph" verwenden.</p>
+            </div>
+            <input type="checkbox" name="general.renameTriumphWithCrit" {{#if settings.renameTriumphWithCrit}}checked{{/if}}>
+        </div>
+        <div class="setting-row">
+            <div class="setting-label-block">
+                <span class="setting-label">Energiekosten-Einstellung einschränken</span>
+                <span class="setting-scope"><i class="fas fa-globe"></i> Welt</span>
+                <p class="setting-hint">Wenn aktiviert, können Energiekosten nur bei Unitatio-Vorteil oder nicht-numerischen Kosten gesetzt werden.</p>
+            </div>
+            <input type="checkbox" name="general.restrictEnergyCostSetting" {{#if settings.restrictEnergyCostSetting}}checked{{/if}}>
+        </div>
+        <div class="setting-row">
+            <div class="setting-label-block">
+                <span class="setting-label">Hexagonale Token-Bilder</span>
+                <span class="setting-scope"><i class="fas fa-globe"></i> Welt</span>
+                <p class="setting-hint">Wenn aktiviert, werden Charakterbilder auf Hexfeld-Karten als Hexagone zugeschnitten.</p>
+            </div>
+            <input type="checkbox" name="general.hexTokenShapes" {{#if settings.hexTokenShapes}}checked{{/if}}>
+        </div>
+        <div class="setting-row">
+            <div class="setting-label-block">
+                <span class="setting-label">Alternativ Fernkampf-Ausweichen Talent</span>
+                <span class="setting-scope"><i class="fas fa-globe"></i> Welt</span>
+                <p class="setting-hint">Das Alternativ-Talent zum Ausweichen von Fernkampfangriffen. Per Default wird Akrobatik verwendet.</p>
+            </div>
+            <select name="general.defaultRangedDodgeTalent" style="width: 50%;">
+                {{selectOptions defaultRangedDodgeOptions selected=settings.defaultRangedDodgeTalent localize=false}}
+            </select>
+        </div>
+        <div class="setting-row">
+            <div class="setting-label-block">
+                <span class="setting-label">LEP-System verwenden</span>
+                <span class="setting-scope"><i class="fas fa-globe"></i> Welt</span>
+                <p class="setting-hint">Ersetzt das Wundensystem durch ein direktes Lebenspunkte (LEP) System.</p>
+            </div>
+            <input type="checkbox" name="general.lepSystem" {{#if settings.lepSystem}}checked{{/if}}>
+        </div>
+    {{/if}}
+
+    <div class="setting-row">
+        <div class="setting-label-block">
+            <span class="setting-label">Charakter-Synchronisation Button ausblenden</span>
+            <span class="setting-scope"><i class="fas fa-user"></i> Lokal</span>
+            <p class="setting-hint">Wenn aktiviert, wird der Button "Charakter mit Kompendium-Vorteilen Synchronisieren" auf dem Heldensheet ausgeblendet.</p>
+        </div>
+        <input type="checkbox" name="general.hideSyncKampfstileButton" {{#if settings.hideSyncKampfstileButton}}checked{{/if}}>
+    </div>
+    <div class="setting-row">
+        <div class="setting-label-block">
+            <span class="setting-label">Heldensheet Reiter Rotation mit Tab</span>
+            <span class="setting-scope"><i class="fas fa-user"></i> Lokal</span>
+            <p class="setting-hint">Wenn aktiviert, kann auf dem Heldensheet mit Tab zwischen den Reitern rotiert werden.</p>
+        </div>
+        <input type="checkbox" name="general.enableTabbingCharacterSheet" {{#if settings.enableTabbingCharacterSheet}}checked{{/if}}>
+    </div>
 </section>

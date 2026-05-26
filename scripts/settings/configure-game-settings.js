@@ -1,10 +1,3 @@
-import { ManeuverPacksSettings } from './ManeuverPacksSettings.js'
-import { VorteilePacksSettings } from './VorteilePacksSettings.js'
-import { WaffeneigenschaftenPacksSettings } from './WaffeneigenschaftenPacksSettings.js'
-import { AbgeleiteteWertePacksSettings } from './AbgeleiteteWertePacksSettings.js'
-import { FertigkeitenPacksSettings } from './FertigkeitenPacksSettings.js'
-import { WaffenPacksSettings } from './WaffenPacksSettings.js'
-import { TalentePacksSettings } from './TalentePacksSettings.js'
 import { IlarisSettingsDialog } from './ilaris-settings.dialog.js'
 
 import {
@@ -22,22 +15,13 @@ export const registerIlarisGameSettings = () => {
 
     ;[
         {
-            settingsName: 'Test',
-            name: 'Test',
-            label: 'ATest',
-            hint: 'Test.',
-            icon: 'fas fa-calculator',
-            type: IlarisSettingsDialog,
-            restricted: true,
-        },
-        {
             settingsName: IlarisGameSettingNames.weaponSpaceRequirement,
             name: 'Platzbedarf berücksichtigen',
             hint: 'Platzbedarf ist eine Hausregel aus Ilaris Advanced. Ohne Haken wird der Platzbedarf nicht angezeigt und in Berechnungen als 0 angenommen. Änderung dieser Einstellungen benötigt einen Neustart von Foundry',
             scope: Scope.World,
             type: Boolean,
             default: false,
-            config: true,
+            config: false,
             requiresReload: true,
         },
         {
@@ -45,7 +29,7 @@ export const registerIlarisGameSettings = () => {
             settingsName: IlarisGameSettingNames.realFumbleCrits,
             name: 'Echte Patzer und Krits',
             hint: 'Die Worldsetting ist für alle gedacht, die es nicht mögen, dass eine 1 kein Patzer ist, weil die Probe mit einem Würfelwurf von 1 gelungen wäre oder es kein Krit mit 20 ist, weil die Probe mehr als eine 20 benötigen würde.',
-            config: true,
+            config: false,
             type: new foundry.data.fields.BooleanField(),
             scope: 'world',
         },
@@ -54,7 +38,7 @@ export const registerIlarisGameSettings = () => {
             settingsName: IlarisGameSettingNames.renameTriumphWithCrit,
             name: 'Umbenennen von Triumph in Crit im Text',
             hint: 'Die Worldsetting ist für alle gedacht, die lieber das Wort Crit verwenden anstelle von Triumph',
-            config: true,
+            config: false,
             type: new foundry.data.fields.BooleanField(),
             scope: 'world',
         },
@@ -63,7 +47,7 @@ export const registerIlarisGameSettings = () => {
             settingsName: IlarisGameSettingNames.restrictEnergyCostSetting,
             name: 'Energiekosten-Einstellung einschränken',
             hint: 'Wenn aktiviert, können Energiekosten nur bei Unitatio-Vorteil oder nicht-numerischen Kosten gesetzt werden. Wenn deaktiviert, können Energiekosten immer manuell gesetzt werden.',
-            config: true,
+            config: false,
             type: new foundry.data.fields.BooleanField(),
             scope: 'world',
             default: false,
@@ -73,7 +57,7 @@ export const registerIlarisGameSettings = () => {
             settingsName: IlarisGameSettingNames.hideSyncKampfstileButton,
             name: 'Charakter-Synchronisation Button ausblenden',
             hint: 'Wenn aktiviert, wird der Button "Charakter mit Kompendium-Vorteilen Synchronisieren" auf dem Heldensheet ausgeblendet.',
-            config: true,
+            config: false,
             type: new foundry.data.fields.BooleanField(),
             scope: 'client',
             default: true,
@@ -83,7 +67,7 @@ export const registerIlarisGameSettings = () => {
             settingsName: IlarisGameSettingNames.enableTabbingCharacterSheet,
             name: 'Heldensheet Reiter Rotation mit Tab aktivieren',
             hint: 'Wenn aktiviert, kann auf dem Heldensheet mit Tab zwischen den Reitern rotiert werden.',
-            config: true,
+            config: false,
             type: new foundry.data.fields.BooleanField(),
             scope: 'client',
             default: false,
@@ -104,7 +88,7 @@ export const registerIlarisGameSettings = () => {
             settingsName: IlarisGameSettingNames.hexTokenShapes,
             name: 'Hexagonale Token-Bilder',
             hint: 'Wenn aktiviert, werden Charakterbilder auf Hexfeld-Karten als Hexagone zugeschnitten.',
-            config: true,
+            config: false,
             type: new foundry.data.fields.BooleanField(),
             scope: 'world',
             default: false,
@@ -114,7 +98,7 @@ export const registerIlarisGameSettings = () => {
             settingsName: IlarisGameSettingNames.defaultRangedDodgeTalent,
             name: 'Alternativ Fernkampf-Ausweichen Talent',
             hint: 'Das Alternativ-Talent, das zum Ausweichen von Fernkampfangriffen verwendet wird. Per Default wird Akrobatik verwendet.',
-            config: true,
+            config: false,
             type: String,
             scope: 'world',
             default: '',
@@ -124,7 +108,7 @@ export const registerIlarisGameSettings = () => {
             settingsName: IlarisGameSettingNames.lepSystem,
             name: 'LEP-System verwenden',
             hint: 'Wenn aktiviert, wird das Wundensystem durch ein direktes Lebenspunkte (LEP) System ersetzt. Schaden reduziert direkt die HP anstatt Wunden zu verursachen. Änderung dieser Einstellung benötigt einen Neustart von Foundry.',
-            config: true,
+            config: false,
             type: new foundry.data.fields.BooleanField(),
             scope: 'world',
             default: false,
@@ -150,7 +134,7 @@ export const registerIlarisGameSettings = () => {
             settingsName: IlarisAutomatisierungSettingNames.useSceneEnvironment,
             name: 'Scene-Umgebungseinstellungen verwenden',
             hint: 'Wenn aktiviert, werden Licht und Wetter aus den Scene-Einstellungen automatisch in Fernkampf-Dialogen vorausgewählt.',
-            config: true,
+            config: false,
             type: new foundry.data.fields.BooleanField(),
             scope: 'world',
             default: true,
@@ -160,7 +144,7 @@ export const registerIlarisGameSettings = () => {
             settingsName: IlarisAutomatisierungSettingNames.useTargetSelection,
             name: 'Zielauswahl-System verwenden',
             hint: 'Wenn aktiviert, werden in Kampfdialogen die Zielauswahl-Funktion und automatische Verteidigungsaufforderungen angezeigt.',
-            config: true,
+            config: false,
             type: new foundry.data.fields.BooleanField(),
             scope: 'world',
             default: false,
@@ -293,44 +277,16 @@ export const registerIlarisGameSettings = () => {
         })
     })
 
-    // the heading for Kompendien gets added via hooks.js
-    ;[
+    game.settings.registerMenu(
+        ConfigureGameSettingsCategories.Ilaris,
+        IlarisGameSettingsMenuNames.ilarisSettingsMenu,
         {
-            settingsName: IlarisGameSettingsMenuNames.fertigkeitenPacksMenu,
-            name: 'Fertigkeiten Kompendien',
-            label: 'Fertigkeiten Kompendien Konfigurieren',
-            hint: 'Hier kannst du die Kompendien auswählen, die Fertigkeiten enthalten.',
-            icon: 'fas fa-book',
-            type: FertigkeitenPacksSettings,
-            restricted: true,
-        },
-        {
-            settingsName: 'Test',
-            name: 'Test',
-            label: 'ATest',
-            hint: 'Test.',
-            icon: 'fas fa-calculator',
+            name: 'Ilaris Einstellungen',
+            label: 'Ilaris Einstellungen öffnen',
+            hint: 'Konfiguriere alle Ilaris-Systemeinstellungen.',
+            icon: 'fas fa-cog',
             type: IlarisSettingsDialog,
-            restricted: true,
+            restricted: false,
         },
-
-        {
-            settingsName: IlarisGameSettingsMenuNames.abgeleiteteWertePacksMenu,
-            name: 'Abgeleitete Werte Kompendien',
-            label: 'Abgeleitete Werte Kompendien Konfigurieren',
-            hint: 'Hier kannst du die Kompendien auswählen, die Abgeleitete Werte enthalten. Wenn keine Kompendien ausgewählt sind, werden die Standard-Berechnungen verwendet.',
-            icon: 'fas fa-calculator',
-            type: AbgeleiteteWertePacksSettings,
-            restricted: true,
-        },
-    ].forEach((setting) => {
-        game.settings.registerMenu(ConfigureGameSettingsCategories.Ilaris, setting.settingsName, {
-            name: setting.name,
-            label: setting.label,
-            hint: setting.hint,
-            icon: setting.icon,
-            type: setting.type,
-            restricted: setting.restricted,
-        })
-    })
+    )
 }

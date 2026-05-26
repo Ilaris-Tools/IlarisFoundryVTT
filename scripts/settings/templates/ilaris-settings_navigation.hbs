@@ -1,15 +1,16 @@
-
-<nav class="sheet-tabs tabs herotabnavigation" data-group="primary">
-    <a data-action="tab" class="tab-item {{tabs.attribute.cssClass}}" data-group="primary" data-tab="USED_COMPENDIEN">
-        <img class="round-icon" src="/systems/Ilaris/assets/images/Ilaris/attribute.webp" height="20" width="20" />
+<nav class="sheet-tabs tabs settingtabnavigation" data-group="primary">
+    {{#if isGM}}
+    <a data-action="tab" class="tab-item {{tabs.USED_COMPENDIEN.cssClass}}" data-group="primary" data-tab="USED_COMPENDIEN">
+        <i class="fas fa-book"></i>
         <span>Benutzte Kompendien</span>
     </a>
-    <a data-action="tab" class="tab-item {{tabs.fertigkeiten.cssClass}}" data-group="primary" data-tab="AUTOMATION">
-        <img class="round-icon" src="/systems/Ilaris/assets/images/Ilaris/holzbearbeitung.webp" height="20" width="20" />
+    <a data-action="tab" class="tab-item {{tabs.AUTOMATION.cssClass}}" data-group="primary" data-tab="AUTOMATION">
+        <i class="fas fa-robot"></i>
         <span>Automatisierung</span>
     </a>
-    <a data-action="tab" class="tab-item {{tabs.fertigkeiten.cssClass}}" data-group="primary" data-tab="GENERAL">
-        <img class="round-icon" src="/systems/Ilaris/assets/images/Ilaris/holzbearbeitung.webp" height="20" width="20" />
-        <span>Allgemein</span>
+    {{/if}}
+    <a data-action="tab" class="tab-item {{tabs.GENERAL.cssClass}}" data-group="primary" data-tab="GENERAL">
+        <i class="fas fa-sliders-h"></i>
+        <span>Sonstige</span>
     </a>
 </nav>
