@@ -52,6 +52,29 @@ export class XmlCharacterImporter {
     }
 
     /**
+     * Show a full-screen loading overlay with a spinner and message.
+     * Removes any existing overlay first to avoid duplicates.
+     * @param {string} message - Message displayed below the spinner
+     */
+    static _showProgress(message) {
+        XmlCharacterImporter._hideProgress()
+        const overlay = document.createElement('div')
+        overlay.id = 'ilaris-import-progress'
+        overlay.innerHTML = `
+            <div class="ilaris-import-progress-content">
+                <i class="fas fa-spinner fa-spin"></i>
+                <span>${message}</span>
+            </div>
+        `
+        document.body.appendChild(overlay)
+    }
+
+    /** Remove the loading overlay if present. */
+    static _hideProgress() {
+        document.getElementById('ilaris-import-progress')?.remove()
+    }
+
+    /**
      * Parse XML character file and create a new actor
      * @param {string} xmlContent - The XML content as a string
      * @param {string} fileName - The name of the uploaded file (for character name fallback)
@@ -62,8 +85,15 @@ export class XmlCharacterImporter {
             const xmlDoc = this.xmlParser.parseFromString(xmlContent, 'text/xml')
             const characterData = this.parseCharacterXml(xmlDoc)
 
-            // Show confirmation dialog with details of what will be imported and what's missing
-            const importAnalysis = await this.analyzeImportData(characterData)
+            // Analyse phase: search compendiums for every item — can take ~30s
+            XmlCharacterImporter._showProgress('Analysiere Charakterdaten\u2026')
+            let importAnalysis
+            try {
+                importAnalysis = await this.analyzeImportData(characterData)
+            } finally {
+                XmlCharacterImporter._hideProgress()
+            }
+
             const confirmed = await XmlCharacterImportDialogs.showImportConfirmationDialog(
                 characterData,
                 fileName,
@@ -74,19 +104,19 @@ export class XmlCharacterImporter {
                 return null
             }
 
-            // Create base actor data
-            const actorData = await this.createActorDataFromXml(characterData, fileName)
-
-            // Create the actor
-            const actor = await Actor.create(actorData)
-
-            console.log(actor)
-            // Add items (skills, talents, advantages, etc.)
-            await this.addItemsToActor(actor, characterData)
-
-            ui.notifications.info(`Character "${actor.name}" imported successfully!`)
-            return actor
+            // Import phase: create actor and add all items
+            XmlCharacterImporter._showProgress('Importiere Charakter\u2026')
+            try {
+                const actorData = await this.createActorDataFromXml(characterData, fileName)
+                const actor = await Actor.create(actorData)
+                await this.addItemsToActor(actor, characterData)
+                ui.notifications.info(`Character "${actor.name}" imported successfully!`)
+                return actor
+            } finally {
+                XmlCharacterImporter._hideProgress()
+            }
         } catch (error) {
+            XmlCharacterImporter._hideProgress()
             console.error('Error importing character from XML:', error)
             ui.notifications.error(`Error importing character: ${error.message}`)
             throw error
