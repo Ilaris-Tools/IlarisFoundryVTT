@@ -1,0 +1,16 @@
+<nav class="sheet-tabs tabs settingtabnavigation" data-group="primary">
+    {{#if isGM}}
+    <a data-action="tab" class="tab-item {{tabs.USED_COMPENDIEN.cssClass}}" data-group="primary" data-tab="USED_COMPENDIEN">
+        <i class="fas fa-book"></i>
+        <span>Benutzte Kompendien</span>
+    </a>
+    <a data-action="tab" class="tab-item {{tabs.AUTOMATION.cssClass}}" data-group="primary" data-tab="AUTOMATION">
+        <i class="fas fa-robot"></i>
+        <span>Automatisierung</span>
+    </a>
+    {{/if}}
+    <a data-action="tab" class="tab-item {{tabs.GENERAL.cssClass}}" data-group="primary" data-tab="GENERAL">
+        <i class="fas fa-sliders-h"></i>
+        <span>Sonstige</span>
+    </a>
+</nav>
