@@ -16,6 +16,30 @@ function setupSkillDialogGlobals() {
 
         async render(force) {
             this._renderCalledWith = force
+
+            const renderOptions = typeof force === 'boolean' ? { force } : force || {}
+
+            if (!this.element) {
+                return this
+            }
+
+            const context = await this._prepareContext(renderOptions)
+            this._lastRenderContext = context
+
+            const configuredParts = this.constructor.PARTS || {}
+            const partIds = renderOptions.parts || Object.keys(configuredParts)
+            this._preparedPartContexts = {}
+
+            for (const partId of partIds) {
+                if (!configuredParts[partId]) continue
+
+                const partContext = this._preparePartContext
+                    ? await this._preparePartContext(partId, context, renderOptions)
+                    : context
+                this._preparedPartContexts[partId] = partContext
+            }
+
+            await this._onRender(context, renderOptions)
             return this
         }
 
@@ -196,6 +220,7 @@ describe('FertigkeitDialog hooks', () => {
         dialog.element = createDialogElement(dialog.dialogId, { modifikator: '1' })
 
         await dialog._onRender({}, {})
+        await dialog._initialPreviewPromise
 
         expect(Hooks.callAll).toHaveBeenCalledWith(
             'Ilaris.skillDialogStateChanged',
@@ -212,6 +237,57 @@ describe('FertigkeitDialog hooks', () => {
             'Ilaris.skillDialogRendered',
             dialog,
             expect.objectContaining({ reason: 'render', finalPW: 13 }),
+        )
+    })
+
+    it('prepares the computed summary context for summaries-only rerenders', async () => {
+        const dialog = new FertigkeitDialog(actor, {
+            probeType: 'simple',
+            fertigkeitName: 'Wahrnehmung',
+            pw: 10,
+        })
+        dialog.element = createDialogElement(dialog.dialogId, { modifikator: '1' })
+
+        const statePayload = await dialog._updateModifierDisplay('change')
+
+        expect(dialog._renderCalledWith).toEqual({ parts: ['summaries'] })
+        expect(dialog._preparedPartContexts.summaries.summary).toEqual(dialog.summary)
+        expect(dialog._preparedPartContexts.summaries.summary).toEqual(
+            expect.objectContaining({
+                title: 'Würfelaktionen:',
+                isEmpty: false,
+                isError: false,
+                sections: [
+                    expect.objectContaining({
+                        action: 'previewClick',
+                        heading: '🎲 Wahrnehmung: 3W20 (Median)+13',
+                        rows: expect.arrayContaining([
+                            expect.objectContaining({
+                                label: 'Basis PW',
+                                value: '10',
+                            }),
+                            expect.objectContaining({
+                                label: 'Status (Wunden/Furcht)',
+                                value: '+2',
+                            }),
+                            expect.objectContaining({
+                                label: 'Modifikator',
+                                value: '+1',
+                            }),
+                        ]),
+                        totalRow: expect.objectContaining({
+                            text: 'Addierte Modifikatoren: +3',
+                        }),
+                    }),
+                ],
+            }),
+        )
+        expect(statePayload).toEqual(
+            expect.objectContaining({
+                reason: 'change',
+                finalPW: 13,
+                totalMod: 3,
+            }),
         )
     })
 
