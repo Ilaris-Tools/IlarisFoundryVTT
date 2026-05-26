@@ -3,7 +3,7 @@ import {
     createNahkampfwaffeDefaults,
     createFernkampfwaffeDefaults,
     createWaffeneigenschaftDefaults,
-} from '../constants.js'
+} from '../../../../items/model-data/shared.js'
 import { parseEigenschaftenArray } from '../../../waffe/properties/utils/eigenschaft-parser.js'
 
 /**

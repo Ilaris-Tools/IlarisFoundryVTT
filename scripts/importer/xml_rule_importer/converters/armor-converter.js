@@ -1,5 +1,5 @@
 import { BaseConverter } from './base-converter.js'
-import { createRuestungDefaults } from '../constants.js'
+import { createRuestungDefaults } from '../../../../items/model-data/shared.js'
 
 /**
  * Converter for Rüstung (armor)
