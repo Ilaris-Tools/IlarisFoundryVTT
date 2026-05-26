@@ -94,3 +94,82 @@ export function createActorTemplateFields(h) {
         }),
     }
 }
+
+/**
+ * Returns a plain-JS default system object for a held actor, mirroring the
+ * HeldActorDataModel schema (model-data/held.js).
+ *
+ * Use this wherever a complete, persistable system object is needed (e.g. in
+ * the XML importer) — TypeDataModel only provides these defaults in-memory and
+ * does NOT write them to the database automatically.
+ *
+ * @returns {Object} Default system data matching HeldActorDataModel
+ */
+export function createHeldActorSystemDefaults() {
+    const attributeDefault = () => ({ wert: 0, pw: 0, kampfPw: 0 })
+
+    return {
+        gesundheit: {
+            erschoepfung: 0,
+            wunden: 0,
+            wundabzuege: 0,
+            wundenignorieren: false,
+            display: 'Volle Gesundheit',
+            hp: { max: 9, value: 9, threshold: 0 },
+        },
+        attribute: {
+            CH: attributeDefault(),
+            FF: attributeDefault(),
+            GE: attributeDefault(),
+            IN: attributeDefault(),
+            KK: attributeDefault(),
+            KL: attributeDefault(),
+            KO: attributeDefault(),
+            MU: attributeDefault(),
+        },
+        abgeleitete: {
+            globalermod: 0,
+            ws: 0,
+            ws_stern: 0,
+            be: 0,
+            be_traglast: 0,
+            ws_beine: 0,
+            ws_larm: 0,
+            ws_rarm: 0,
+            ws_bauch: 0,
+            ws_brust: 0,
+            ws_kopf: 0,
+            mr: 0,
+            gs: 0,
+            ini: 0,
+            baseIni: 0,
+            dh: 0,
+            traglast_intervall: 0,
+            traglast: 0,
+            asp_zugekauft: 0,
+            gasp: 0,
+            asp: 0,
+            asp_stern: 0,
+            kap_zugekauft: 0,
+            gkap: 0,
+            kap: 0,
+            kap_stern: 0,
+            zauberer: false,
+            geweihter: false,
+            nahkampfmoddisplay: '-',
+            globalermoddisplay: '-',
+        },
+        schips: { schips: 4, schips_stern: 4 },
+        initiative: 0,
+        furcht: { furchtstufe: 0, furchtabzuege: 0, display: '' },
+        modifikatoren: { manuellermod: 0, nahkampfmod: 0, verteidigungmod: 0 },
+        misc: {
+            selected_kampfstil: 'ohne',
+            selected_uebernatuerlicher_stil: 'ohne',
+            ist_beritten: false,
+        },
+        geld: { dukaten: 0, silbertaler: 0, heller: 0, kreuzer: 0 },
+        getragen: 0,
+        notes: '',
+    }
+}

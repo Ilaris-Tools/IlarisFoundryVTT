@@ -4,6 +4,7 @@ import {
 } from './../settings/configure-game-settings.model.js'
 import { XmlCharacterImportDialogs } from './xml-character-import-dialogs.js'
 import { WeaponConverter } from './xml_rule_importer/converters/weapon-converter.js'
+import { createHeldActorSystemDefaults } from './../actors/model-data/shared.js'
 
 const LEGACY_TO_CANONICAL_ITEM_TYPE_MAP = {
     freiestalent: 'freiesTalent',
@@ -51,6 +52,29 @@ export class XmlCharacterImporter {
     }
 
     /**
+     * Show a full-screen loading overlay with a spinner and message.
+     * Removes any existing overlay first to avoid duplicates.
+     * @param {string} message - Message displayed below the spinner
+     */
+    static _showProgress(message) {
+        XmlCharacterImporter._hideProgress()
+        const overlay = document.createElement('div')
+        overlay.id = 'ilaris-import-progress'
+        overlay.innerHTML = `
+            <div class="ilaris-import-progress-content">
+                <i class="fas fa-spinner fa-spin"></i>
+                <span>${message}</span>
+            </div>
+        `
+        document.body.appendChild(overlay)
+    }
+
+    /** Remove the loading overlay if present. */
+    static _hideProgress() {
+        document.getElementById('ilaris-import-progress')?.remove()
+    }
+
+    /**
      * Parse XML character file and create a new actor
      * @param {string} xmlContent - The XML content as a string
      * @param {string} fileName - The name of the uploaded file (for character name fallback)
@@ -61,8 +85,15 @@ export class XmlCharacterImporter {
             const xmlDoc = this.xmlParser.parseFromString(xmlContent, 'text/xml')
             const characterData = this.parseCharacterXml(xmlDoc)
 
-            // Show confirmation dialog with details of what will be imported and what's missing
-            const importAnalysis = await this.analyzeImportData(characterData)
+            // Analyse phase: search compendiums for every item — can take ~30s
+            XmlCharacterImporter._showProgress('Analysiere Charakterdaten\u2026')
+            let importAnalysis
+            try {
+                importAnalysis = await this.analyzeImportData(characterData)
+            } finally {
+                XmlCharacterImporter._hideProgress()
+            }
+
             const confirmed = await XmlCharacterImportDialogs.showImportConfirmationDialog(
                 characterData,
                 fileName,
@@ -73,18 +104,19 @@ export class XmlCharacterImporter {
                 return null
             }
 
-            // Create base actor data
-            const actorData = await this.createActorDataFromXml(characterData, fileName)
-
-            // Create the actor
-            const actor = await Actor.create(actorData)
-
-            // Add items (skills, talents, advantages, etc.)
-            await this.addItemsToActor(actor, characterData)
-
-            ui.notifications.info(`Character "${actor.name}" imported successfully!`)
-            return actor
+            // Import phase: create actor and add all items
+            XmlCharacterImporter._showProgress('Importiere Charakter\u2026')
+            try {
+                const actorData = await this.createActorDataFromXml(characterData, fileName)
+                const actor = await Actor.create(actorData)
+                await this.addItemsToActor(actor, characterData)
+                ui.notifications.info(`Character "${actor.name}" imported successfully!`)
+                return actor
+            } finally {
+                XmlCharacterImporter._hideProgress()
+            }
         } catch (error) {
+            XmlCharacterImporter._hideProgress()
             console.error('Error importing character from XML:', error)
             ui.notifications.error(`Error importing character: ${error.message}`)
             throw error
@@ -339,155 +371,100 @@ export class XmlCharacterImporter {
     }
 
     /**
-     * Create Foundry actor data from parsed XML character data
+     * Create Foundry actor data from parsed XML character data.
+     * All schema fields from HeldActorDataModel (model-data/held.js) are provided
+     * explicitly with their defaults. Actor.create() only persists what is passed —
+     * TypeDataModel defaults are in-memory only and are not written to the database.
      * @param {Object} characterData - Parsed character data
      * @param {string} fileName - Fallback name
      * @returns {Object} Actor data for Foundry
      */
     async createActorDataFromXml(characterData, fileName) {
-        const actorData = {
+        // Start from schema-aligned defaults (see shared.js) and apply XML overrides.
+        const system = createHeldActorSystemDefaults()
+
+        // notes from XML
+        system.notes = characterData.notes || ''
+
+        // Attributes: wert from XML, pw/kampfPw stay at 0
+        for (const key of ['CH', 'FF', 'GE', 'IN', 'KK', 'KL', 'KO', 'MU']) {
+            system.attribute[key].wert = characterData.attributes[key] || 0
+        }
+
+        // AsP / KaP: held actors track these via abgeleitete, not the energien schema.
+        system.abgeleitete.asp_zugekauft = characterData.energies.AsP?.value ?? 0
+        system.abgeleitete.gasp = characterData.energies.AsP?.bound ?? 0
+        system.abgeleitete.kap_zugekauft = characterData.energies.KaP?.value ?? 0
+        system.abgeleitete.gkap = characterData.energies.KaP?.bound ?? 0
+
+        // GuP: energien.gup is defined in shared.js but NOT in HeldActorDataModel schema.
+        // Stored as extra field for createStructuredEnergyConfiguration to read.
+        if (characterData.energies.GuP) {
+            system.energien = {
+                gup: {
+                    max: characterData.energies.GuP.value,
+                    value: characterData.energies.GuP.value,
+                    threshold: 0,
+                },
+            }
+        }
+
+        return {
             name: characterData.name || fileName.replace(/\.[^/.]+$/, ''),
             type: 'held',
-            system: {
-                abgeleitete: {
-                    asp_zugekauft: 0,
-                    kap_zugekauft: 0,
-                    gup_zugekauft: 0,
-                    gasp: 0,
-                    gkap: 0,
-                },
-                attribute: {},
-                energien: {
-                    asp: { max: 0, value: 0, threshold: 0 },
-                    kap: { max: 0, value: 0, threshold: 0 },
-                    gup: { max: 0, value: 0, threshold: 0 },
-                },
-                notes: characterData.notes || '',
-            },
+            system,
         }
-
-        // Map XML attributes to Foundry system
-        const attributeMapping = {
-            CH: 'CH',
-            FF: 'FF',
-            GE: 'GE',
-            IN: 'IN',
-            KK: 'KK',
-            KL: 'KL',
-            KO: 'KO',
-            MU: 'MU',
-        }
-
-        Object.entries(attributeMapping).forEach(([xmlName, systemName]) => {
-            const value = characterData.attributes[xmlName] || 0
-            actorData.system.attribute[systemName] = {
-                wert: value,
-                pw: 0, // Will be calculated by the system
-            }
-        })
-
-        // Map energies
-        if (characterData.energies.AsP) {
-            actorData.system.energien.asp.max = characterData.energies.AsP.value
-            actorData.system.energien.asp.value = characterData.energies.AsP.value
-            actorData.system.abgeleitete.asp_zugekauft = characterData.energies.AsP.value
-            actorData.system.abgeleitete.gasp = characterData.energies.AsP.bound
-        }
-        if (characterData.energies.KaP) {
-            actorData.system.energien.kap.max = characterData.energies.KaP.value
-            actorData.system.energien.kap.value = characterData.energies.KaP.value
-            actorData.system.abgeleitete.kap_zugekauft = characterData.energies.KaP.value
-            actorData.system.abgeleitete.gkap = characterData.energies.KaP.bound
-        }
-        if (characterData.energies.GuP) {
-            actorData.system.energien.gup.max = characterData.energies.GuP.value
-            actorData.system.energien.gup.value = characterData.energies.GuP.value
-            actorData.system.abgeleitete.gup_zugekauft = characterData.energies.GuP.value
-        }
-
-        // Note: KaP and other energies can be added similarly if they exist in the XML
-
-        return actorData
     }
 
     /**
-     * Create update data for an existing actor from XML character data
+     * Create update data for an existing actor from XML character data.
+     * Follows the same model-data conventions as createActorDataFromXml:
+     * only XML-sourced fields are passed; pw/kampfPw are left to the system.
+     * Energy abgeleitete fields are explicitly reset to 0 so that removing
+     * AsP/KaP from the XML correctly clears the actor (actor.update() deep-merges,
+     * so fields not listed here would otherwise be left unchanged).
      * @param {Object} characterData - Parsed character data
      * @returns {Object} Update data for Foundry
      */
     async createActorUpdatesFromXml(characterData) {
-        const updates = {
-            // Update the character name from XML
-            name: characterData.name,
-            system: {
-                abgeleitete: {
-                    asp_zugekauft: 0,
-                    kap_zugekauft: 0,
-                    gup_zugekauft: 0,
-                    gasp: 0,
-                    gkap: 0,
-                },
-                attribute: {},
-                energien: {
-                    asp: { max: 0, value: 0, threshold: 0 },
-                    kap: { max: 0, value: 0, threshold: 0 },
-                    gup: { max: 0, value: 0, threshold: 0 },
-                },
-                // Note: Deliberately NOT updating notes to preserve manual entries
+        // Explicitly reset XML-sourced energy fields to 0 before applying XML values,
+        // so a character who lost magic ends up with 0 — not their old value.
+        const system = {
+            attribute: {},
+            abgeleitete: {
+                asp_zugekauft: 0,
+                gasp: 0,
+                kap_zugekauft: 0,
+                gkap: 0,
             },
+            // notes intentionally omitted — preserve manual entries on sync
         }
 
-        // Map XML attributes to Foundry system
-        const attributeMapping = {
-            CH: 'CH',
-            FF: 'FF',
-            GE: 'GE',
-            IN: 'IN',
-            KK: 'KK',
-            KL: 'KL',
-            KO: 'KO',
-            MU: 'MU',
+        // Attributes: only wert from XML — pw and kampfPw are computed, not imported.
+        for (const key of ['CH', 'FF', 'GE', 'IN', 'KK', 'KL', 'KO', 'MU']) {
+            system.attribute[key] = { wert: characterData.attributes[key] || 0 }
         }
 
-        Object.entries(attributeMapping).forEach(([xmlName, systemName]) => {
-            const value = characterData.attributes[xmlName] || 0
-            updates.system.attribute[systemName] = {
-                wert: value,
-                pw: 0, // Will be calculated by the system
-            }
-        })
-
-        // Map energies
+        // AsP / KaP: held actors track these via abgeleitete, not the energien schema.
         if (characterData.energies.AsP) {
-            updates.system.energien.asp = {
-                max: characterData.energies.AsP.value,
-                value: characterData.energies.AsP.value,
-                threshold: 0,
-            }
-            updates.system.abgeleitete.asp_zugekauft = characterData.energies.AsP.value
-            updates.system.abgeleitete.gasp = characterData.energies.AsP.bound
+            system.abgeleitete.asp_zugekauft = characterData.energies.AsP.value
+            system.abgeleitete.gasp = characterData.energies.AsP.bound
         }
-
-        // Map other energies if they exist in XML
         if (characterData.energies.KaP) {
-            updates.system.energien.kap = {
-                max: characterData.energies.KaP.value,
-                value: characterData.energies.KaP.value,
-                threshold: 0,
-            }
-            updates.system.abgeleitete.kap_zugekauft = characterData.energies.KaP.value
-            updates.system.abgeleitete.gkap = characterData.energies.KaP.bound
+            system.abgeleitete.kap_zugekauft = characterData.energies.KaP.value
+            system.abgeleitete.gkap = characterData.energies.KaP.bound
         }
-
+        // GuP uses the shared energien schema (resolved via createStructuredEnergyConfiguration).
         if (characterData.energies.GuP) {
-            updates.system.energien.gup = {
-                max: characterData.energies.GuP.value,
-                value: characterData.energies.GuP.value,
-                threshold: 0,
+            system.energien = {
+                gup: {
+                    max: characterData.energies.GuP.value,
+                    value: characterData.energies.GuP.value,
+                },
             }
-            updates.system.abgeleitete.gup_zugekauft = characterData.energies.GuP.value
         }
 
+        const updates = { name: characterData.name, system }
         console.debug('Actor update data:', updates)
         return updates
     }

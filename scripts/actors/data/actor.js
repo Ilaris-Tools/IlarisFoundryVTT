@@ -173,7 +173,10 @@ export class IlarisActor extends Actor {
                 )
             }
 
-            if (this.system.gesundheit?.hp?.max == undefined) {
+            if (!this.system.gesundheit) {
+                this.system.gesundheit = {}
+            }
+            if (this.system.gesundheit.hp?.max == undefined) {
                 // Compatibility fallback for legacy actors created before strict schema defaults.
                 this.system.gesundheit.hp = {
                     max: 9,
