@@ -29,7 +29,7 @@ A reusable skill for decomposing any user request into an executable plan with v
 - Relevant context sources:
     - `.agents/CODEBASE_ARCHITECTURE.md` for relevant directories
     - `.agents/PATTERNS_AND_EXAMPLES.md` for similar past implementations
-    - `template.json` if data models are involved
+    - `system.json` plus `scripts/core/model-data/`, `scripts/actors/model-data/`, and `scripts/items/model-data/` if data models are involved
     - Foundry VTT API docs if Hook/Document changes are needed
 
 ### Step 3: Identify Affected Areas
@@ -40,7 +40,7 @@ List all files, directories, and subsystems that will be affected:
 - Templates (`.hbs`)
 - Styles (`.css`)
 - Compendium data (`comp_packs/_source/`)
-- Configuration (`system.json`, `template.json`)
+- Configuration (`system.json`, TypeDataModel files)
 - Tests (`_spec/`)
 - Documentation (`docs/`)
 

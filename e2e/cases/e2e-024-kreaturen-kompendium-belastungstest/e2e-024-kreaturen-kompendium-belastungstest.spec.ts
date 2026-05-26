@@ -164,14 +164,14 @@ async function runFirstAttackRoll(page: Page, creatureSheet: Locator) {
     await expect(attackDialog).toBeVisible({ timeout: 15000 })
 
     const attackSummary = attackDialog
-        .locator('.modifier-summary.attack-summary.clickable-summary.angreifen')
+        .locator('.modifier-summary.attack-summary.clickable-summary[data-action="angreifen"]')
         .last()
     await expect(attackSummary).toBeVisible({ timeout: 10000 })
 
     await clickWithFallback(
         page,
         attackSummary,
-        '.application.angriff-dialog .modifier-summary.attack-summary.clickable-summary.angreifen, .application.fernkampf-dialog .modifier-summary.attack-summary.clickable-summary.angreifen',
+        '.application.angriff-dialog .modifier-summary.attack-summary.clickable-summary[data-action="angreifen"], .application.fernkampf-dialog .modifier-summary.attack-summary.clickable-summary[data-action="angreifen"]',
     )
 
     await waitForChatIncrease(page, attackBaseline, 1)

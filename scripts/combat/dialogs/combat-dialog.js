@@ -12,13 +12,13 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api
 
 /**
  * Base class for all combat dialogs in Ilaris.
- * Migrated from legacy Dialog to ApplicationV2 + HandlebarsApplicationMixin.
  *
  * @extends HandlebarsApplicationMixin(ApplicationV2)
  */
 export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
     /** @override */
     static DEFAULT_OPTIONS = {
+        ...super.DEFAULT_OPTIONS,
         classes: ['ilaris', 'combat-dialog'],
         position: {
             width: 900,
@@ -31,6 +31,7 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         actions: {
             angreifen: CombatDialog.#onAngreifen,
             showNearby: CombatDialog.#onShowNearby,
+            toggleManeuvers: CombatDialog.#onToggleManeuvers,
         },
     }
 
@@ -50,6 +51,8 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         this.text_dm = ''
         this.item = item
         this.actor = actor
+        this.dialogId = `dialog-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`
+        this.summary = this.getDefaultSummaryContext()
 
         // Initialize selected actors from Foundry targets after actor/item are set
         this._initializeSelectedActorsFromTargets()
@@ -129,9 +132,6 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
                 })
             }
 
-            console.log(
-                `Auto-populated ${this.selectedActors.length} targets from Foundry selection`,
-            )
             callIlarisHookAllWithGlobalMirror(
                 'Ilaris.targetSelectionComplete',
                 this,
@@ -142,7 +142,6 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
 
     /**
      * Prepare context data for template rendering.
-     * Replaces the legacy getData() method.
      * @override
      * @param {object} options - Render options
      * @returns {Promise<object>} Context data for the template
@@ -167,6 +166,7 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         }
 
         // damit wird das template gefüttert
+        const maneuvers = this.item.manoever || []
         return {
             ...context,
             config: CONFIG.ILARIS,
@@ -178,20 +178,32 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             mod_at: this.mod_at,
             choices_schips: CONFIG.ILARIS.schips_choice,
             checked_schips: '0',
-            dialogId: (this.dialogId = `dialog-${Date.now()}-${Math.random()
-                .toString(36)
-                .substring(2, 11)}`),
+            dialogId: this.dialogId,
+            maneuvers,
             selectedActors: this.selectedActors || [],
             useTargetSelection: game.settings.get(
                 ConfigureGameSettingsCategories.Ilaris,
                 IlarisAutomatisierungSettingNames.useTargetSelection,
             ),
+            summary: this.summary,
         }
+    }
+
+    async _preparePartContext(partId, context, options) {
+        let partContext = context
+        if (typeof super._preparePartContext === 'function') {
+            partContext = await super._preparePartContext(partId, context, options)
+        }
+
+        if (partId === 'summaries') {
+            partContext.summary = this.summary || this.getDefaultSummaryContext()
+        }
+
+        return partContext
     }
 
     /**
      * Actions performed after any render of the Application.
-     * Replaces the legacy activateListeners() method.
      * @override
      * @param {object} context - Prepared context data
      * @param {object} options - Render options
@@ -199,42 +211,18 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
     async _onRender(context, options) {
         await super._onRender(context, options)
 
-        // Add expand/collapse functionality for maneuver headers
-        this.element.querySelectorAll('.maneuver-header').forEach((header) => {
-            header.addEventListener('click', (ev) => {
-                const grid = header.nextElementSibling
-                const isCollapsed = header.classList.contains('collapsed')
-                const text = header.querySelector('h4')
-
-                header.classList.toggle('collapsed')
-                grid.classList.toggle('collapsed')
-
-                // Update text based on state
-                text.textContent = isCollapsed ? 'Einklappen' : 'Ausklappen'
-            })
-        })
-
-        // Update has-value class when inputs change
         this.element
             .querySelectorAll('.maneuver-item input, .maneuver-item select')
             .forEach((input) => {
                 input.addEventListener('change', (ev) => {
                     const item = ev.currentTarget.closest('.maneuver-item')
                     const hasValue = Array.from(item.querySelectorAll('input, select')).some(
-                        (inp) => {
-                            if (inp.type === 'checkbox') return inp.checked
-                            return inp.value && inp.value !== '0'
+                        (entry) => {
+                            if (entry.type === 'checkbox') return entry.checked
+                            return entry.value && entry.value !== '0'
                         },
                     )
                     item.classList.toggle('has-value', hasValue)
-                })
-            })
-
-        // Add specific listener for maneuver to handle ZERO_DAMAGE conflicts
-        this.element
-            .querySelectorAll('.maneuver-item input, .maneuver-item select')
-            .forEach((input) => {
-                input.addEventListener('change', () => {
                     this.handleZeroDamageConflicts()
                 })
             })
@@ -276,27 +264,43 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         await this._showNearbyActors()
     }
 
+    /**
+     * Handle the maneuver accordion toggle action.
+     * @param {PointerEvent} event - The originating click event
+     * @param {HTMLElement} target - The element with data-action="toggleManeuvers"
+     */
+    static async #onToggleManeuvers(event, target) {
+        this.toggleManeuvers(target)
+    }
+
+    toggleManeuvers(target) {
+        const header = target.closest('.maneuver-header') || target
+        const grid = header?.nextElementSibling
+        if (!header || !grid) {
+            return
+        }
+
+        const isCollapsed = header.classList.contains('collapsed')
+        const toggleText = header.querySelector('.toggle-display h4')
+
+        header.classList.toggle('collapsed')
+        grid.classList.toggle('collapsed')
+
+        if (toggleText) {
+            toggleText.textContent = isCollapsed ? 'Einklappen' : 'Ausklappen'
+        }
+    }
+
     /* -------------------------------------------- */
     /*  Modifier Display                            */
     /* -------------------------------------------- */
 
     /**
-     * Generic updateModifierDisplay method that works for all combat dialogs.
-     * Subclasses should implement getBaseValues() and getAllModifierSummaries().
-     * Uses native DOM API instead of jQuery.
+     * Generic summary update for combat dialogs.
+     * Combat dialogs render summaries through the dedicated AppV2 summaries part.
      */
     async updateModifierDisplay() {
         try {
-            const modifierEl = this.element.querySelector('#modifier-summary')
-            if (!modifierEl) {
-                console.warn('MODIFIER DISPLAY: Element-Referenz nicht verfügbar')
-                return
-            }
-
-            // Show loading state
-            modifierEl.innerHTML =
-                '<div class="modifier-summary"><h4>Würfelwurf Zusammenfassungen:</h4><div class="modifier-item neutral">Wird berechnet...</div></div>'
-
             // Temporarily parse values to calculate modifiers
             await this.manoeverAuswaehlen()
             await this.updateManoeverMods()
@@ -310,26 +314,21 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             // Get dice formula
             const diceFormula = this.getDiceFormula()
 
-            // Create all summaries (subclass specific)
-            const summaries = this.getAllModifierSummaries(
-                baseValues,
-                statusMods,
-                nahkampfMods,
-                diceFormula,
-            )
+            if (
+                typeof this.getSummaryContext !== 'function' ||
+                !this.constructor.PARTS?.summaries
+            ) {
+                throw new Error(
+                    'Combat dialogs must implement getSummaryContext() and define PARTS.summaries',
+                )
+            }
 
-            // Update the display element
-            modifierEl.innerHTML = summaries
-
-            // Re-attach click listeners after innerHTML update
-            this.addSummaryClickListeners()
+            this.summary = this.getSummaryContext(baseValues, statusMods, nahkampfMods, diceFormula)
+            await this.render({ parts: ['summaries'] })
         } catch (error) {
             console.error('MODIFIER DISPLAY: Fehler beim Update:', error)
-            const modifierEl = this.element?.querySelector('#modifier-summary')
-            if (modifierEl) {
-                modifierEl.innerHTML =
-                    '<div class="modifier-summary"><h4>Würfelwurf Zusammenfassungen:</h4><div class="modifier-item neutral">Fehler beim Berechnen...</div></div>'
-            }
+            this.summary = this.getErrorSummaryContext()
+            await this.render({ parts: ['summaries'] })
         }
     }
 
@@ -340,55 +339,45 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         throw new Error('getBaseValues() must be implemented by subclass')
     }
 
-    /**
-     * Subclasses should override this to return their specific modifier summaries
-     */
-    getAllModifierSummaries(baseValues, statusMods, nahkampfMods, diceFormula) {
-        throw new Error('getAllModifierSummaries() must be implemented by subclass')
+    getDefaultSummaryContext() {
+        return {
+            title: 'Würfelaktionen:',
+            sections: [],
+            isEmpty: true,
+            isError: false,
+            message: 'Wird berechnet...',
+        }
     }
 
-    /**
-     * Generic method to add summary click listeners.
-     * Subclasses can override getSummaryClickActions() to specify their own actions.
-     * Uses native DOM API.
-     */
-    addSummaryClickListeners() {
-        const actions = this.getSummaryClickActions()
-        const modSummaryEl = this.element.querySelector('#modifier-summary')
-        if (!modSummaryEl) return
-
-        actions.forEach((action) => {
-            modSummaryEl.querySelectorAll(action.selector).forEach((el) => {
-                el.addEventListener('click', (ev) => {
-                    ev.preventDefault()
-                    action.handler()
-                })
-            })
-        })
+    getErrorSummaryContext() {
+        return {
+            title: 'Würfelaktionen:',
+            sections: [],
+            isEmpty: false,
+            isError: true,
+            message: 'Fehler beim Berechnen...',
+        }
     }
 
-    /**
-     * Subclasses should override this to return their specific click actions
-     */
-    getSummaryClickActions() {
-        return []
-    }
-
-    _buildSignedModifierItem(mod, label, extraClass = '') {
+    _buildSignedModifierData(mod, label, extraClass = '') {
         if (mod === 0) {
-            return ''
+            return null
         }
 
         const color = mod > 0 ? 'positive' : 'negative'
         const sign = mod > 0 ? '+' : ''
         const className = extraClass ? ` ${extraClass}` : ''
 
-        return `<div class="modifier-item ${color}${className}">${label}: <span>${sign}${mod}</span></div>`
+        return {
+            label,
+            value: `${sign}${mod}`,
+            cssClass: `modifier-item ${color}${className}`,
+        }
     }
 
-    _buildModifierLines(textField, options = {}) {
+    _buildModifierSectionData(textField, options = {}) {
         if (!textField || !textField.trim()) {
-            return ''
+            return null
         }
 
         const {
@@ -402,7 +391,7 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             },
         } = options
 
-        const rows = textField
+        const items = textField
             .trim()
             .split('\n')
             .map((line) => line.trim())
@@ -410,35 +399,38 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             .map((line) => {
                 const displayLine = transformLine(line)?.trim()
                 if (!displayLine) {
-                    return ''
+                    return null
                 }
 
                 const color = getLineClass(line, displayLine)
-                return `<div class="modifier-item maneuver ${color}">${displayLine}</div>`
+                return {
+                    text: displayLine,
+                    cssClass: `modifier-item maneuver ${color}`,
+                }
             })
-            .filter((line) => line)
-            .join('')
+            .filter((item) => item)
 
-        if (!rows) {
-            return ''
+        if (!items.length) {
+            return null
         }
 
-        let summary = ''
-        if (sectionTitle) {
-            summary += `<div class="modifier-section">${sectionTitle}</div>`
+        return {
+            title: sectionTitle,
+            items,
         }
-        summary += rows
-        return summary
     }
 
-    _buildTotalModifierItem(totalMod) {
+    _buildTotalModifierData(totalMod) {
         if (totalMod === 0) {
-            return ''
+            return null
         }
 
         const color = totalMod > 0 ? 'positive' : 'negative'
         const sign = totalMod > 0 ? '+' : ''
-        return `<div class="modifier-item total ${color}"><strong>Addierte Modifikatoren: ${sign}${totalMod}</strong></div>`
+        return {
+            text: `Addierte Modifikatoren: ${sign}${totalMod}`,
+            cssClass: `modifier-item total ${color}`,
+        }
     }
 
     colorizeManeuverNumbers() {
@@ -483,14 +475,8 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         })
     }
 
-    aufbauendeManoeverAktivieren() {
-        let manoever = this.item.system.manoever
-        let vorteile = this.actor.vorteil.kampf.map((v) => v.name)
-    }
-
     /**
      * Parse maneuver selections from the dialog form.
-     * Uses native DOM API instead of jQuery.
      * Note: Uses getElementById instead of querySelector to support IDs starting with digits.
      */
     async manoeverAuswaehlen() {
@@ -557,7 +543,6 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
 
     /**
      * Get dice formula based on schips selection.
-     * Uses native DOM API instead of jQuery.
      */
     getDiceFormula(xd20_choice = 1) {
         let schipsOption =
@@ -605,7 +590,6 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
 
     /**
      * Handles ZERO_DAMAGE maneuver conflicts.
-     * Uses native DOM API instead of jQuery.
      */
     handleZeroDamageConflicts() {
         // Find all ZERO_DAMAGE maneuvers
@@ -852,40 +836,38 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
 
     /**
      * Sets up the modifier display element and listeners for real-time updates.
-     * Uses native DOM API instead of jQuery.
      */
     setupModifierDisplay() {
-        const modifierEl = this.element.querySelector('#modifier-summary')
-
-        // Store a reference to prevent multiple updates
-        this._updateTimeout = null
-
-        if (!modifierEl) {
-            console.warn('MODIFIER DISPLAY: Element nicht im Template gefunden')
+        if (!this.element) {
             return
         }
 
-        // Add listeners for real-time modifier updates with debouncing
+        if (this._modifierDisplayBoundElement !== this.element) {
+            this._modifierDisplayListenersBound = false
+            this._modifierDisplayBoundElement = this.element
+        }
+
+        if (this._modifierDisplayListenersBound) {
+            return
+        }
+
+        this._modifierDisplayListenersBound = true
+
+        const triggerSummaryUpdate = () => {
+            if (this._updateTimeout) {
+                clearTimeout(this._updateTimeout)
+            }
+
+            this._updateTimeout = setTimeout(() => {
+                this.updateModifierDisplay()
+            }, 150)
+        }
+
         this.element.querySelectorAll('input, select').forEach((input) => {
-            input.addEventListener('change', () => {
-                if (this._updateTimeout) {
-                    clearTimeout(this._updateTimeout)
-                }
-                this._updateTimeout = setTimeout(() => {
-                    this.updateModifierDisplay()
-                }, 300)
-            })
-            input.addEventListener('input', () => {
-                if (this._updateTimeout) {
-                    clearTimeout(this._updateTimeout)
-                }
-                this._updateTimeout = setTimeout(() => {
-                    this.updateModifierDisplay()
-                }, 300)
-            })
+            input.addEventListener('change', triggerSummaryUpdate)
+            input.addEventListener('input', triggerSummaryUpdate)
         })
 
-        // Initial display update (listeners will be added after innerHTML update)
-        setTimeout(() => this.updateModifierDisplay(), 500)
+        void this.updateModifierDisplay()
     }
 }

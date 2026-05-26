@@ -8,28 +8,15 @@ Step-by-step guides for common implementation patterns, referencing actual files
 
 How to add a new item type to the Ilaris system.
 
-### Step 1: Define the Data Schema
+### Step 1: Register the Type and Define the Schema
 
-Add the new type to `template.json` under `Item.types` and define its schema.
+Register the new type in `system.json` under `documentTypes.Item` and define its schema in `scripts/items/model-data/models.js`.
 
-```json
-// template.json
-{
-  "Item": {
-    "types": ["nahkampfwaffe", "fernkampfwaffe", ..., "my_new_type"],
-    "templates": { ... },
-    "my_new_type": {
-      "templates": ["relevant_template"],
-      "custom_field": "",
-      "numeric_field": 0
-    }
-  }
-}
-```
+Use `scripts/items/model-data/shared.js` if the new type reuses existing shared fields.
 
-### Step 2: Create a Data Model (Optional)
+### Step 2: Create Runtime Logic (Optional)
 
-If the type needs computed values or special logic, create a data model.
+If the type needs computed values or special logic, create or extend the runtime data class.
 
 **Reference**: `scripts/items/data/item.js` (base), `scripts/items/data/manoever.js` (example)
 
@@ -106,9 +93,9 @@ npm run lint
 
 How to create a new actor type sheet (AppV2).
 
-### Step 1: Define Actor Type in `template.json`
+### Step 1: Register the Actor Type and Schema
 
-Add under `Actor.types` with required templates.
+Register the new actor type in `system.json` under `documentTypes.Actor` and add the corresponding TypeDataModel in `scripts/actors/model-data/`.
 
 ### Step 2: Create Data Model
 
@@ -178,10 +165,10 @@ Create a new `.json` file in the appropriate `comp_packs/<pack>/_source/` direct
 {
     "_id": "unique-16-char-id",
     "name": "Neuer Eintrag",
-    "type": "item-type-from-template-json",
+    "type": "item-type-id",
     "img": "systems/Ilaris/assets/images/icon/default.svg",
     "system": {
-        // Fields matching template.json schema for this type
+        // Fields matching the current TypeDataModel schema for this type
     },
     "effects": [],
     "flags": {},

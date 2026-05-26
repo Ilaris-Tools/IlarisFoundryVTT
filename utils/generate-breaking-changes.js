@@ -14,6 +14,7 @@ import { marked } from 'marked'
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
+const breakingChangesTemplateDir = path.join(__dirname, '..', 'scripts', 'changelog', 'templates')
 
 /**
  * Parse the CHANGELOG.md file to extract breaking changes for a specific version
@@ -109,13 +110,11 @@ function markdownToHtml(markdown) {
  * @param {string} currentVersion - The current version to keep
  */
 function cleanupOldBreakingChanges(currentVersion) {
-    const outputDir = path.join(__dirname, '..', 'templates', 'changes')
-
-    if (!fs.existsSync(outputDir)) {
+    if (!fs.existsSync(breakingChangesTemplateDir)) {
         return
     }
 
-    const files = fs.readdirSync(outputDir)
+    const files = fs.readdirSync(breakingChangesTemplateDir)
     // Remove old .hbs files (keep only current version)
     const breakingChangesFiles = files.filter(
         (f) => f.startsWith('breaking-changes-') && f.endsWith('.hbs'),
@@ -125,7 +124,7 @@ function cleanupOldBreakingChanges(currentVersion) {
     breakingChangesFiles.forEach((file) => {
         // Keep only the current version .hbs file
         if (file !== `breaking-changes-${currentVersion}.hbs`) {
-            const filePath = path.join(outputDir, file)
+            const filePath = path.join(breakingChangesTemplateDir, file)
             fs.unlinkSync(filePath)
             console.log(`🗑️  Removed old breaking changes file: ${file}`)
             deletedCount++
@@ -143,10 +142,9 @@ function cleanupOldBreakingChanges(currentVersion) {
  * @param {string} breakingChanges - The breaking changes content (Markdown)
  */
 function generateHbsFile(version, breakingChanges) {
-    // Ensure the templates/changes directory exists
-    const outputDir = path.join(__dirname, '..', 'templates', 'changes')
-    if (!fs.existsSync(outputDir)) {
-        fs.mkdirSync(outputDir, { recursive: true })
+    // Ensure the changelog template directory exists
+    if (!fs.existsSync(breakingChangesTemplateDir)) {
+        fs.mkdirSync(breakingChangesTemplateDir, { recursive: true })
     }
 
     // Clean up old breaking changes files before generating new one
@@ -156,7 +154,7 @@ function generateHbsFile(version, breakingChanges) {
     const htmlContent = markdownToHtml(breakingChanges)
 
     // Write the .hbs file with HTML content
-    const outputPath = path.join(outputDir, `breaking-changes-${version}.hbs`)
+    const outputPath = path.join(breakingChangesTemplateDir, `breaking-changes-${version}.hbs`)
     fs.writeFileSync(outputPath, htmlContent, 'utf-8')
 
     console.log(`✅ Generated breaking changes template: ${outputPath}`)
@@ -194,8 +192,10 @@ function main() {
             console.log(`ℹ️ No breaking changes found for version ${majorMinorVersion}`)
 
             // Clean up any existing breaking changes file for this version
-            const outputDir = path.join(__dirname, '..', 'templates', 'changes')
-            const hbsPath = path.join(outputDir, `breaking-changes-${majorMinorVersion}.hbs`)
+            const hbsPath = path.join(
+                breakingChangesTemplateDir,
+                `breaking-changes-${majorMinorVersion}.hbs`,
+            )
 
             if (fs.existsSync(hbsPath)) {
                 fs.unlinkSync(hbsPath)

@@ -73,31 +73,6 @@ jobs:
                     echo "⚠️ Warning: System ID is '$SYSTEM_ID', expected 'ilaris'"
                   fi
 
-            - name: 🔍 Validate template.json
-              run: |
-                  if [ -f "template.json" ]; then
-                    echo "🔍 Validating template.json..."
-                    if ! jq empty template.json; then
-                      echo "❌ template.json is not valid JSON"
-                      jq . template.json || true
-                      exit 1
-                    fi
-                    echo "✅ template.json is valid"
-                    
-                    # Template structure prüfen
-                    if jq -e '.Actor' template.json > /dev/null; then
-                      ACTOR_TYPES=$(jq -r '.Actor.types[]?' template.json | tr '\n' ', ' | sed 's/,$//')
-                      echo "📋 Actor Types: $ACTOR_TYPES"
-                    fi
-                    
-                    if jq -e '.Item' template.json > /dev/null; then
-                      ITEM_TYPES=$(jq -r '.Item.types[]?' template.json | tr '\n' ', ' | sed 's/,$//')
-                      echo "📋 Item Types: $ITEM_TYPES"
-                    fi
-                  else
-                    echo "ℹ️ template.json not found (optional)"
-                  fi
-
             - name: 🔍 Analyze System Structure
               run: |
                   echo "🔍 Analyzing system structure..."
@@ -297,7 +272,7 @@ jobs:
                   elif [ "${{ needs.validate.result }}" == "failure" ]; then
                     echo ""
                     echo "❌ VALIDATION FAILED"
-                    echo "   Fix system.json or template.json issues before deployment"
+                    echo "   Fix system.json or workflow validation issues before deployment"
                   else
                     echo ""
                     echo "⚠️ DEPLOYMENT ISSUES"

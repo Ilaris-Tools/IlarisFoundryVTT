@@ -23,7 +23,7 @@ test.describe('E2E-001 Nahkampf Angriffsdialog', () => {
         await expect(attackDialog).toContainText('Kampf: Kurzschwert')
 
         const attackButton = attackDialog.locator(
-            '.modifier-summary.attack-summary.clickable-summary.angreifen',
+            '.modifier-summary.attack-summary.clickable-summary[data-action="angreifen"]',
         )
         await attackButton.click()
 
@@ -38,7 +38,7 @@ test.describe('E2E-001 Nahkampf Angriffsdialog', () => {
             // Fallback for flaky click delivery in AppV2 overlays.
             await page.evaluate(async () => {
                 const node = document.querySelector(
-                    '.application.angriff-dialog .modifier-summary.attack-summary.clickable-summary.angreifen',
+                    '.application.angriff-dialog .modifier-summary.attack-summary.clickable-summary[data-action="angreifen"]',
                 )
                 node?.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }))
             })

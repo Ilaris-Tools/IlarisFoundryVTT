@@ -11,8 +11,10 @@ import {
 export class AngriffDialog extends CombatDialog {
     /** @override */
     static DEFAULT_OPTIONS = {
+        ...super.DEFAULT_OPTIONS,
         classes: ['angriff-dialog'],
         actions: {
+            ...super.DEFAULT_OPTIONS.actions,
             verteidigen: AngriffDialog.#onVerteidigen,
             schaden: AngriffDialog.#onSchaden,
         },
@@ -20,8 +22,11 @@ export class AngriffDialog extends CombatDialog {
 
     /** @override */
     static PARTS = {
-        form: {
+        settings: {
             template: 'systems/Ilaris/scripts/combat/templates/dialogs/angriff.hbs',
+        },
+        summaries: {
+            template: 'systems/Ilaris/scripts/combat/templates/dialogs/summaries.hbs',
         },
     }
 
@@ -125,27 +130,6 @@ export class AngriffDialog extends CombatDialog {
         await this._schadenKlick()
     }
 
-    /* -------------------------------------------- */
-    /*  Summary Click Actions                       */
-    /* -------------------------------------------- */
-
-    getSummaryClickActions() {
-        return [
-            {
-                selector: '.clickable-summary.angreifen',
-                handler: () => this._angreifenKlick(),
-            },
-            {
-                selector: '.clickable-summary.verteidigen',
-                handler: () => this._verteidigenKlick(),
-            },
-            {
-                selector: '.clickable-summary.schaden',
-                handler: () => this._schadenKlick(),
-            },
-        ]
-    }
-
     /**
      * Returns base values specific to AngriffDialog
      */
@@ -156,36 +140,29 @@ export class AngriffDialog extends CombatDialog {
         }
     }
 
-    /**
-     * Creates formatted summaries for all three roll types
-     */
-    getAllModifierSummaries(baseValues, statusMods, nahkampfMods, diceFormula) {
+    getSummaryContext(baseValues, statusMods, nahkampfMods, diceFormula) {
         const { baseAT, baseVT } = baseValues
-        let allSummaries = '<div class="all-summaries">'
-
-        // Attack Summary
-        allSummaries += this.getAttackSummary(baseAT, statusMods, nahkampfMods, diceFormula)
-
-        // Defense Summary
-        allSummaries += this.getDefenseSummary(
-            baseVT,
-            statusMods,
-            this.actor.system.modifikatoren.verteidigungmod,
-            diceFormula,
-        )
-
-        // Damage Summary
-        allSummaries += this.getDamageSummary()
-
-        allSummaries += '</div>'
-        return allSummaries
+        return {
+            title: 'Würfelaktionen:',
+            isEmpty: false,
+            isError: false,
+            sections: [
+                this.getAttackSummaryContext(baseAT, statusMods, nahkampfMods, diceFormula),
+                this.getDefenseSummaryContext(
+                    baseVT,
+                    statusMods,
+                    this.actor.system.modifikatoren.verteidigungmod,
+                    diceFormula,
+                ),
+                this.getDamageSummaryContext(),
+            ],
+        }
     }
 
     /**
      * Creates attack roll summary
      */
-    getAttackSummary(baseAT, statusMods, nahkampfMods, diceFormula) {
-        // Calculate totals first for the heading
+    getAttackSummaryContext(baseAT, statusMods, nahkampfMods, diceFormula) {
         const maneuverMod = this.mod_at || 0
         const totalMod = maneuverMod + statusMods + nahkampfMods
         const finalAT = baseAT + totalMod
@@ -193,32 +170,34 @@ export class AngriffDialog extends CombatDialog {
         const finalFormula =
             finalAT >= 0 ? `${formattedDice}+${finalAT}` : `${formattedDice}${finalAT}`
 
-        const isClickableStyle = this.isDefenseMode ? '' : 'clickable-summary'
-        const isDisabledStyle = this.isDefenseMode ? 'disabled' : ''
-        let summary = `<div class="modifier-summary attack-summary ${isClickableStyle} angreifen">`
-        summary += `<div class="flex_space-between_center"><h4 class="${isDisabledStyle}" style="width:100%">🗡️ Angriff: ${finalFormula}</h4><i class="custom-icon-without-hover"></i></div>`
-        summary += '<div class="modifier-list">'
+        const maneuverSection = this._buildModifierSectionData(this.text_at, {
+            sectionTitle: 'Manöver:',
+        })
 
-        // Base AT
-        summary += `<div class="modifier-item base-value">Basis AT: <span>${baseAT}</span></div>`
-
-        summary += this._buildSignedModifierItem(statusMods, 'Status (Wunden/Furcht)')
-        summary += this._buildSignedModifierItem(nahkampfMods, 'Token Status')
-        summary += this._buildModifierLines(this.text_at, { sectionTitle: 'Manöver:' })
-
-        summary += '<hr>'
-
-        summary += this._buildTotalModifierItem(totalMod)
-
-        summary += '</div></div>'
-        return summary
+        return {
+            action: this.isDefenseMode ? null : 'angreifen',
+            cssClass: `modifier-summary attack-summary${this.isDefenseMode ? '' : ' clickable-summary'}`,
+            heading: `🗡️ Angriff: ${finalFormula}`,
+            headingClass: this.isDefenseMode ? 'disabled' : '',
+            rows: [
+                {
+                    label: 'Basis AT',
+                    value: `${baseAT}`,
+                    cssClass: 'modifier-item base-value',
+                },
+                this._buildSignedModifierData(statusMods, 'Status (Wunden/Furcht)'),
+                this._buildSignedModifierData(nahkampfMods, 'Token Status'),
+            ].filter((row) => row),
+            sections: maneuverSection ? [maneuverSection] : [],
+            totalRow: this._buildTotalModifierData(totalMod),
+            showDivider: Boolean(maneuverSection || totalMod),
+        }
     }
 
     /**
      * Creates defense roll summary
      */
-    getDefenseSummary(baseVT, statusMods, nahkampfMods, diceFormula) {
-        // Calculate totals first for the heading
+    getDefenseSummaryContext(baseVT, statusMods, nahkampfMods, diceFormula) {
         const vtStatusMods = this.vt_abzuege_mod || 0
         const maneuverMod = this.mod_vt || 0
         const totalMod = maneuverMod + vtStatusMods + nahkampfMods
@@ -227,51 +206,46 @@ export class AngriffDialog extends CombatDialog {
         const finalFormula =
             finalVT >= 0 ? `${formattedDice}+${finalVT}` : `${formattedDice}${finalVT}`
 
-        let summary = '<div class="modifier-summary defense-summary clickable-summary verteidigen">'
-        summary += `<div class="flex_space-between_center"><h4 style="width:100%">🛡️ Verteidigung: ${finalFormula}</h4><i class="custom-icon-without-hover"></i></div>`
-        summary += '<div class="modifier-list">'
+        const maneuverSection = this._buildModifierSectionData(this.text_vt, {
+            sectionTitle: 'Manöver:',
+        })
 
-        // Base VT
-        summary += `<div class="modifier-item base-value">Basis VT: <span>${baseVT}</span></div>`
-
-        summary += this._buildSignedModifierItem(vtStatusMods, 'Status (Wunden/Furcht)')
-        summary += this._buildSignedModifierItem(nahkampfMods, 'Token Status')
-        summary += this._buildModifierLines(this.text_vt, { sectionTitle: 'Manöver:' })
-
-        summary += '<hr>'
-
-        summary += this._buildTotalModifierItem(totalMod)
-
-        summary += '</div></div>'
-        return summary
+        return {
+            action: 'verteidigen',
+            cssClass: 'modifier-summary defense-summary clickable-summary',
+            heading: `🛡️ Verteidigung: ${finalFormula}`,
+            rows: [
+                {
+                    label: 'Basis VT',
+                    value: `${baseVT}`,
+                    cssClass: 'modifier-item base-value',
+                },
+                this._buildSignedModifierData(vtStatusMods, 'Status (Wunden/Furcht)'),
+                this._buildSignedModifierData(nahkampfMods, 'Token Status'),
+            ].filter((row) => row),
+            sections: maneuverSection ? [maneuverSection] : [],
+            totalRow: this._buildTotalModifierData(totalMod),
+            showDivider: Boolean(maneuverSection || totalMod),
+        }
     }
 
     /**
      * Creates damage roll summary
      */
-    getDamageSummary() {
-        // Calculate totals first for the heading
-        const baseDamage = this.schaden || this.item.getTp()
+    getDamageSummaryContext() {
+        const baseDamage = this.getBaseDamageFormula()
         const maneuverMod = this.mod_dm || 0
-        let finalFormula
-        if (maneuverMod === 0) {
+        const hasDamageFormula = Boolean(baseDamage)
+        let finalFormula = 'Kein Schadenwert'
+        if (hasDamageFormula && maneuverMod === 0) {
             finalFormula = baseDamage
-        } else {
+        } else if (hasDamageFormula) {
             const sign = maneuverMod > 0 ? '+' : ''
             finalFormula = `${baseDamage} ${sign}${maneuverMod}`
         }
 
-        const isClickableStyle = this.isDefenseMode && !this.riposte ? '' : 'clickable-summary'
-        const isDisabledStyle = this.isDefenseMode && !this.riposte ? 'disabled' : ''
-
-        let summary = `<div class="modifier-summary damage-summary ${isClickableStyle} schaden">`
-        summary += `<div class="flex_space-between_center"><h4  class="${isDisabledStyle}" style="width:100%">🩸 Schaden: ${finalFormula}</h4><i class="custom-icon-without-hover"></i></div>`
-        summary += '<div class="modifier-list">'
-
-        // Base damage
-        summary += `<div class="modifier-item base-value">Basis Schaden: <span>${baseDamage}</span></div>`
-
-        summary += this._buildModifierLines(this.text_dm, {
+        const canClick = hasDamageFormula && !(this.isDefenseMode && !this.riposte)
+        const modifierSection = this._buildModifierSectionData(this.text_dm, {
             sectionTitle: 'Modifikatoren:',
             filterLine: (line) =>
                 this.isGezieltSchlagActive() ||
@@ -286,10 +260,35 @@ export class AngriffDialog extends CombatDialog {
             },
         })
 
-        summary += '<hr>'
+        return {
+            action: canClick ? 'schaden' : null,
+            cssClass: `modifier-summary damage-summary${canClick ? ' clickable-summary' : ''}`,
+            heading: `🩸 Schaden: ${finalFormula}`,
+            headingClass: canClick ? '' : 'disabled',
+            rows: [
+                {
+                    label: 'Basis Schaden',
+                    value: hasDamageFormula ? `${baseDamage}` : 'Nicht gesetzt',
+                    cssClass: 'modifier-item base-value',
+                },
+            ],
+            sections: modifierSection ? [modifierSection] : [],
+            showDivider: Boolean(modifierSection),
+        }
+    }
 
-        summary += '</div></div>'
-        return summary
+    getBaseDamageFormula() {
+        return `${this.schaden || this.item.getTp() || ''}`.trim()
+    }
+
+    getDamageRollFormula() {
+        const baseDamage = this.getBaseDamageFormula()
+        if (!baseDamage) {
+            return ''
+        }
+
+        const damageMod = signed(this.mod_dm)
+        return damageMod ? `${baseDamage} ${damageMod}` : baseDamage
     }
 
     /* -------------------------------------------- */
@@ -504,7 +503,11 @@ export class AngriffDialog extends CombatDialog {
         await this.manoeverAuswaehlen()
         await this.updateManoeverMods()
         let label = `Schaden (${this.item.name})`
-        let formula = `${this.schaden} ${signed(this.mod_dm)}`
+        let formula = this.getDamageRollFormula()
+        if (!formula) {
+            ui?.notifications?.warn('Für diesen Angriff ist kein Schadenswurf hinterlegt.')
+            return
+        }
 
         // Use the new evaluation function for damage (no crit evaluation)
         const rollResult = await evaluate_roll_with_crit(
@@ -529,12 +532,10 @@ export class AngriffDialog extends CombatDialog {
         let vorteile = this.actor.vorteil.kampf.map((v) => v.name)
 
         manoever.vlof.offensiver_kampfstil = vorteile.includes('Offensiver Kampfstil')
-        super.aufbauendeManoeverAktivieren()
     }
 
     /**
      * Parse maneuver selections from the dialog form.
-     * Uses native DOM API instead of jQuery.
      */
     async manoeverAuswaehlen() {
         let manoever = this.item.system.manoever
