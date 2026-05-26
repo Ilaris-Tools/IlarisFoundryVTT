@@ -5,6 +5,17 @@ describe('UebernatuerlichTalentSheet', () => {
 
     beforeAll(async () => {
         global.foundry.applications.api = {
+            ApplicationV2: class ApplicationV2 {
+                constructor() {}
+
+                async _prepareContext() {
+                    return {}
+                }
+
+                render() {
+                    return this
+                }
+            },
             HandlebarsApplicationMixin: (Base) => class extends Base {},
         }
         global.foundry.applications.sheets = {
@@ -41,41 +52,48 @@ describe('UebernatuerlichTalentSheet', () => {
             name: 'Flammenlanze',
             type: 'zauber',
             actor: null,
-            effects: [{ _id: 'effect-1', name: 'Brennend' }],
+            getFlag: jest.fn().mockReturnValue([{ id: 'effect-1', name: 'Brennend' }]),
         }
 
         const sheet = new UebernatuerlichTalentSheet(item)
         const context = await sheet._prepareContext({})
 
-        expect(context.effects).toEqual([{ _id: 'effect-1', name: 'Brennend' }])
+        expect(context.preEffects).toEqual([
+            expect.objectContaining({ id: 'effect-1', name: 'Brennend' }),
+        ])
     })
 
-    it('creates new supernatural item effects with preEffect defaults', async () => {
+    it('creates new supernatural item effects with preEffect defaults in flags', async () => {
         const item = {
             name: 'Segnung',
             type: 'liturgie',
             uuid: 'Item.liturgie-1',
             actor: null,
-            effects: [],
-            createEmbeddedDocuments: jest.fn().mockResolvedValue([]),
+            getFlag: jest.fn().mockReturnValue([]),
+            update: jest.fn().mockResolvedValue({}),
         }
 
         const sheet = new UebernatuerlichTalentSheet(item)
-        await sheet._createEffect()
+        await UebernatuerlichTalentSheet.DEFAULT_OPTIONS.actions.createPreEffect.call(sheet, null, {
+            dataset: { action: 'createPreEffect' },
+        })
 
-        expect(item.createEmbeddedDocuments).toHaveBeenCalledWith('ActiveEffect', [
-            expect.objectContaining({
-                origin: 'Item.liturgie-1',
-                flags: expect.objectContaining({
-                    Ilaris: expect.objectContaining({
-                        preEffect: expect.objectContaining({
-                            targetMode: 'direct',
-                            applicationType: 'persistent',
-                            startLogic: 'onUse',
+        expect(item.update).toHaveBeenCalledWith({
+            'flags.Ilaris.preEffects': [
+                expect.objectContaining({
+                    name: 'Segnung: Zieleffekt',
+                    targetMode: 'direct',
+                    applicationType: 'persistent',
+                    startLogic: 'onUse',
+                    changes: [
+                        expect.objectContaining({
+                            key: '',
+                            mode: 2,
+                            value: '0',
                         }),
-                    }),
+                    ],
                 }),
-            }),
-        ])
+            ],
+        })
     })
 })

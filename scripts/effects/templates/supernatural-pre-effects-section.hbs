@@ -1,0 +1,49 @@
+<hr />
+<div class="effects-section supernatural-pre-effects-section">
+    <div class="flexrow">
+        <label><b>Ziel-Effekte:</b></label>
+        <a class="pre-effect-control" data-action="createPreEffect" title="Neuen Zieleffekt erstellen">
+            <button class="clickable" type="button">
+                <i class="fas fa-plus"></i> Zieleffekt hinzufügen
+            </button>
+        </a>
+    </div>
+
+    {{#if preEffects.length}}
+    <div class="effects-list">
+        {{#each preEffects as |preEffect|}}
+        <div class="effect-item flexrow" data-pre-effect-id="{{preEffect.id}}">
+            <div class="effect-image">
+                <img src="{{preEffect.icon}}" alt="{{preEffect.name}}" width="24" height="24"/>
+            </div>
+            <div class="effect-name">
+                <strong>{{preEffect.name}}</strong>
+                <div class="supernatural-pre-effect-summary">
+                    {{preEffect.targetMode}} | {{preEffect.applicationType}}
+                </div>
+                {{#if preEffect.disabled}}<em>(Deaktiviert)</em>{{/if}}
+            </div>
+            <div class="effect-controls">
+                <a class="pre-effect-control" data-action="editPreEffect" data-pre-effect-id="{{preEffect.id}}" title="Zieleffekt bearbeiten">
+                    <i class="fas fa-edit"></i>
+                </a>
+                <a class="pre-effect-control" data-action="togglePreEffect" data-pre-effect-id="{{preEffect.id}}" title="Zieleffekt aktivieren/deaktivieren">
+                    {{#if preEffect.disabled}}
+                        <i class="fas fa-eye-slash"></i>
+                    {{else}}
+                        <i class="fas fa-eye"></i>
+                    {{/if}}
+                </a>
+                <a class="pre-effect-control" data-action="deletePreEffect" data-pre-effect-id="{{preEffect.id}}" title="Zieleffekt löschen">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    {{else}}
+    <div class="no-effects">
+        <em>Keine Ziel-Effekte vorhanden.</em>
+    </div>
+    {{/if}}
+</div>

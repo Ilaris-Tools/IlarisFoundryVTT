@@ -59,6 +59,11 @@
   font-size: 12px;
 }
 
+.supernatural-pre-effect-summary {
+  color: #666;
+  font-size: 12px;
+}
+
 .effect-controls {
   flex: 0 0 auto;
   display: flex;
@@ -110,4 +115,31 @@
 
 .supernatural-pre-effect-panel h4 {
   margin: 0 0 4px;
+}
+
+.supernatural-pre-effect-config {
+  display: grid;
+  gap: 12px;
+}
+
+.supernatural-pre-effect-config-grid {
+  display: grid;
+  grid-template-columns: minmax(140px, 180px) minmax(0, 1fr);
+  gap: 8px 12px;
+  align-items: center;
+}
+
+.supernatural-pre-effect-json-block {
+  display: grid;
+  gap: 6px;
+}
+
+.supernatural-pre-effect-json-block textarea {
+  font-family: monospace;
+}
+
+.supernatural-pre-effect-json-block p {
+  margin: 0;
+  color: #666;
+  font-size: 12px;
 }

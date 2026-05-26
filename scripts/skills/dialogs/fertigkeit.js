@@ -227,6 +227,13 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
                 modifikator: modifierState.modifikator,
                 lines: modifierState.modLines.map((line) => ({ ...line })),
             },
+            castingModifiers: {
+                maechtigeMagie: 0,
+                maechtigeLiturgie: 0,
+                maechtigeAnrufung: 0,
+                hoheQualitaet: modifierState.hoheQualitaet,
+                effectModifierCount: modifierState.hoheQualitaet,
+            },
             schips: {
                 choice: modifierState.schipsChoice,
                 applied: modifierState.schipsApplied,

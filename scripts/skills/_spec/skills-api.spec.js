@@ -201,6 +201,10 @@ describe('FertigkeitDialog hooks', () => {
             'Ilaris.skillDialogStateChanged',
             dialog,
             expect.objectContaining({
+                castingModifiers: expect.objectContaining({
+                    hoheQualitaet: 0,
+                    effectModifierCount: 0,
+                }),
                 reason: 'render',
                 diceFormula: '3d20dl1dh1',
                 finalPW: 13,
@@ -236,6 +240,10 @@ describe('FertigkeitDialog hooks', () => {
             'Ilaris.preSkillRoll',
             dialog,
             expect.objectContaining({
+                castingModifiers: expect.objectContaining({
+                    hoheQualitaet: 0,
+                    effectModifierCount: 0,
+                }),
                 formula: '4d20dl2dh1 + 10 + 2 + 0 + 1',
                 schips: expect.objectContaining({ applied: true }),
             }),
@@ -271,6 +279,10 @@ describe('FertigkeitDialog hooks', () => {
             'Ilaris.postSkillRoll',
             dialog,
             expect.objectContaining({
+                castingModifiers: expect.objectContaining({
+                    hoheQualitaet: 0,
+                    effectModifierCount: 0,
+                }),
                 formula: '4d20dl2dh1 + 10 + 2 + 0 + 1',
                 total: 17,
                 success: false,

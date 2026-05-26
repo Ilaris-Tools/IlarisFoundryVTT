@@ -8,10 +8,29 @@ export const SUPERNATURAL_ITEM_TYPES = Object.freeze(['zauber', 'liturgie', 'anr
 const SUPERNATURAL_ITEM_TYPE_SET = new Set(SUPERNATURAL_ITEM_TYPES)
 
 const SUPERNATURAL_PRE_EFFECT_DEFAULTS = Object.freeze({
+    id: '',
+    name: 'Neuer Zieleffekt',
+    icon: 'icons/svg/aura.svg',
+    description: '',
+    tint: '',
+    disabled: false,
+    duration: Object.freeze({
+        rounds: '',
+        turns: '',
+        seconds: '',
+    }),
+    changes: Object.freeze([
+        Object.freeze({
+            key: '',
+            mode: 2,
+            value: '0',
+            priority: 20,
+        }),
+    ]),
     targetMode: 'direct',
     targetScope: 'selected',
     applicationType: 'persistent',
-    multiplierStrategy: 'once',
+    multiplierStrategy: 'none',
     multiplierValue: 1,
     startLogic: 'onUse',
     template: Object.freeze({
@@ -40,9 +59,12 @@ const SUPERNATURAL_PRE_EFFECT_OPTIONS = Object.freeze({
         { value: 'immediate', label: 'Sofortige einmalige Änderung' },
     ]),
     multiplierStrategies: Object.freeze([
-        { value: 'once', label: 'Einmal anwenden' },
-        { value: 'perTarget', label: 'Pro Ziel einmal' },
-        { value: 'custom', label: 'Benutzerdefinierter Multiplikator' },
+        { value: 'none', label: 'Kein Effektmodifikator' },
+        { value: 'maechtigeMagie', label: 'Mächtige Magie' },
+        { value: 'maechtigeLiturgie', label: 'Mächtige Liturgie' },
+        { value: 'maechtigeAnrufung', label: 'Mächtige Anrufung' },
+        { value: 'hoheQualitaet', label: 'Hohe Qualität' },
+        { value: 'custom', label: 'Benutzerdefinierter Modifikator' },
     ]),
     startLogics: Object.freeze([
         { value: 'onUse', label: 'Beim Wirken starten' },
@@ -75,14 +97,152 @@ function getEffectSourceData(effect) {
     return duplicate(effect)
 }
 
+function getPreEffectMetadata(preEffect) {
+    return {
+        id: preEffect.id,
+        targetMode: preEffect.targetMode,
+        targetScope: preEffect.targetScope,
+        applicationType: preEffect.applicationType,
+        multiplierStrategy: preEffect.multiplierStrategy,
+        multiplierValue: preEffect.multiplierValue,
+        startLogic: preEffect.startLogic,
+        template: duplicate(preEffect.template),
+        area: duplicate(preEffect.area),
+    }
+}
+
 function mergePreEffectFlags(flags = {}, preEffect) {
     return {
         ...flags,
         Ilaris: {
             ...(flags.Ilaris || {}),
-            preEffect,
+            preEffect: getPreEffectMetadata(preEffect),
         },
     }
+}
+
+function sanitizeNumericField(value) {
+    if (value === '' || value == null) return ''
+    const numericValue = Number(value)
+    return Number.isNaN(numericValue) ? '' : numericValue
+}
+
+function normalizeChanges(changes = []) {
+    if (!Array.isArray(changes) || changes.length === 0) {
+        return duplicate(SUPERNATURAL_PRE_EFFECT_DEFAULTS.changes)
+    }
+
+    return changes.map((change) => ({
+        key: change?.key || '',
+        mode: Number(change?.mode ?? 2),
+        value: change?.value == null ? '0' : String(change.value),
+        priority: Number(change?.priority ?? 20),
+        applyEffectModifier: Boolean(change?.applyEffectModifier),
+    }))
+}
+
+function normalizeMultiplierStrategy(multiplierStrategy) {
+    if (
+        !multiplierStrategy ||
+        multiplierStrategy === 'once' ||
+        multiplierStrategy === 'perTarget'
+    ) {
+        return 'none'
+    }
+
+    return multiplierStrategy
+}
+
+function sanitizeModifierCount(value) {
+    const numericValue = Number(value)
+    if (!Number.isFinite(numericValue) || numericValue <= 0) return 0
+    return numericValue
+}
+
+function getCastingModifierCount(preEffect, context = {}) {
+    const castingModifiers = context.castingModifiers || {}
+
+    switch (preEffect.multiplierStrategy) {
+        case 'maechtigeMagie':
+            return sanitizeModifierCount(castingModifiers.maechtigeMagie)
+        case 'maechtigeLiturgie':
+            return sanitizeModifierCount(castingModifiers.maechtigeLiturgie)
+        case 'maechtigeAnrufung':
+            return sanitizeModifierCount(castingModifiers.maechtigeAnrufung)
+        case 'hoheQualitaet':
+            return sanitizeModifierCount(castingModifiers.hoheQualitaet)
+        case 'custom':
+            return sanitizeModifierCount(
+                context.effectModifierCount ?? castingModifiers.effectModifierCount,
+            )
+        default:
+            return 0
+    }
+}
+
+function formatNumericChangeValue(value) {
+    if (Number.isInteger(value)) return String(value)
+    return String(value)
+}
+
+function applyEffectModifierToChange(change, preEffect, context = {}) {
+    if (!change.applyEffectModifier) {
+        return {
+            key: change.key,
+            mode: change.mode,
+            value: change.value,
+            priority: change.priority,
+        }
+    }
+
+    const modifierCount = getCastingModifierCount(preEffect, context)
+    const multiplierValue = Number(preEffect.multiplierValue ?? 1)
+    const numericValue = Number(change.value)
+
+    if (modifierCount <= 0 || !Number.isFinite(multiplierValue) || !Number.isFinite(numericValue)) {
+        return {
+            key: change.key,
+            mode: change.mode,
+            value: change.value,
+            priority: change.priority,
+        }
+    }
+
+    const scaledValue = numericValue * (1 + modifierCount * multiplierValue)
+
+    return {
+        key: change.key,
+        mode: change.mode,
+        value: formatNumericChangeValue(scaledValue),
+        priority: change.priority,
+    }
+}
+
+function applyEffectModifierToChanges(preEffect, context = {}) {
+    return normalizeChanges(preEffect.changes).map((change) =>
+        applyEffectModifierToChange(change, preEffect, context),
+    )
+}
+
+function normalizeDuration(duration = {}) {
+    return {
+        rounds: sanitizeNumericField(duration?.rounds),
+        turns: sanitizeNumericField(duration?.turns),
+        seconds: sanitizeNumericField(duration?.seconds),
+    }
+}
+
+function parseChangesJson(changesJson) {
+    if (!changesJson?.trim()) {
+        return duplicate(SUPERNATURAL_PRE_EFFECT_DEFAULTS.changes)
+    }
+
+    const parsed = JSON.parse(changesJson)
+    return normalizeChanges(parsed)
+}
+
+export function stringifySupernaturalChanges(changes = []) {
+    return JSON.stringify(normalizeChanges(changes), null, 2)
 }
 
 function hasCombatDuration(duration = {}) {
@@ -119,6 +279,8 @@ export function isSupernaturalTalentItem(item) {
 export function getDefaultSupernaturalPreEffect() {
     return {
         ...duplicate(SUPERNATURAL_PRE_EFFECT_DEFAULTS),
+        duration: duplicate(SUPERNATURAL_PRE_EFFECT_DEFAULTS.duration),
+        changes: duplicate(SUPERNATURAL_PRE_EFFECT_DEFAULTS.changes),
         template: duplicate(SUPERNATURAL_PRE_EFFECT_DEFAULTS.template),
         area: duplicate(SUPERNATURAL_PRE_EFFECT_DEFAULTS.area),
     }
@@ -129,6 +291,16 @@ export function normalizeSupernaturalPreEffect(preEffect = {}) {
     return {
         ...defaults,
         ...duplicate(preEffect),
+        id: preEffect?.id || foundry.utils.randomID(16),
+        name: preEffect?.name || defaults.name,
+        icon: preEffect?.icon || defaults.icon,
+        description: preEffect?.description || '',
+        tint: preEffect?.tint || '',
+        disabled: Boolean(preEffect?.disabled),
+        multiplierStrategy: normalizeMultiplierStrategy(preEffect?.multiplierStrategy),
+        multiplierValue: Number(preEffect?.multiplierValue ?? defaults.multiplierValue),
+        duration: normalizeDuration(preEffect?.duration),
+        changes: normalizeChanges(preEffect?.changes),
         template: {
             ...defaults.template,
             ...(duplicate(preEffect.template) || {}),
@@ -144,66 +316,112 @@ export function getSupernaturalPreEffectOptions() {
     return duplicate(SUPERNATURAL_PRE_EFFECT_OPTIONS)
 }
 
-export function getNewEmbeddedEffectData(item) {
-    const effectData = {
-        name: 'Neuer Effekt',
-        icon: 'icons/svg/aura.svg',
-        disabled: false,
-        duration: {},
-        changes: [
-            {
-                key: '',
-                mode: 2,
-                value: '0',
-                priority: 20,
-            },
-        ],
-        transfer: true,
+export function getSupernaturalPreEffects(item) {
+    const preEffects =
+        item?.getFlag?.('Ilaris', 'preEffects') ?? item?.flags?.Ilaris?.preEffects ?? []
+    return Array.isArray(preEffects)
+        ? preEffects.map((preEffect) => normalizeSupernaturalPreEffect(preEffect))
+        : []
+}
+
+export function getSupernaturalPreEffectById(item, preEffectId) {
+    return getSupernaturalPreEffects(item).find((preEffect) => preEffect.id === preEffectId) ?? null
+}
+
+export function createNewSupernaturalPreEffect(item) {
+    const defaultPreEffect = getDefaultSupernaturalPreEffect()
+    return normalizeSupernaturalPreEffect({
+        ...defaultPreEffect,
+        id: foundry.utils.randomID(16),
+        name: item ? `${item.name}: Zieleffekt` : defaultPreEffect.name,
+    })
+}
+
+export async function saveSupernaturalPreEffect(item, preEffectInput) {
+    const preEffect = normalizeSupernaturalPreEffect(preEffectInput)
+    const preEffects = getSupernaturalPreEffects(item)
+    const index = preEffects.findIndex((entry) => entry.id === preEffect.id)
+
+    if (index >= 0) {
+        preEffects[index] = preEffect
+    } else {
+        preEffects.push(preEffect)
     }
 
-    if (!isSupernaturalTalentItem(item)) {
-        return effectData
-    }
+    await item.update({ 'flags.Ilaris.preEffects': preEffects })
+    return preEffect
+}
 
-    return {
-        ...effectData,
-        origin: item?.uuid || null,
-        flags: mergePreEffectFlags({}, getDefaultSupernaturalPreEffect()),
-    }
+export async function deleteSupernaturalPreEffect(item, preEffectId) {
+    const preEffects = getSupernaturalPreEffects(item).filter((entry) => entry.id !== preEffectId)
+    await item.update({ 'flags.Ilaris.preEffects': preEffects })
+}
+
+export async function toggleSupernaturalPreEffect(item, preEffectId) {
+    const preEffects = getSupernaturalPreEffects(item).map((entry) =>
+        entry.id === preEffectId ? { ...entry, disabled: !entry.disabled } : entry,
+    )
+    await item.update({ 'flags.Ilaris.preEffects': preEffects })
+}
+
+export async function createSupernaturalPreEffect(item) {
+    const preEffect = createNewSupernaturalPreEffect(item)
+    await saveSupernaturalPreEffect(item, preEffect)
+    return preEffect
 }
 
 export function getApplicableSupernaturalEffectData(item, { targetMode = 'direct' } = {}) {
     if (!isSupernaturalTalentItem(item)) return []
 
-    return Array.from(item.effects || [])
-        .map((effect) => getEffectSourceData(effect))
-        .filter((effectData) => {
-            if (!effectData || effectData.disabled) return false
-            const preEffect = normalizeSupernaturalPreEffect(effectData.flags?.Ilaris?.preEffect)
-            return preEffect.targetMode === targetMode
-        })
+    return getSupernaturalPreEffects(item).filter(
+        (preEffect) => !preEffect.disabled && preEffect.targetMode === targetMode,
+    )
 }
 
-export function prepareSupernaturalActorEffectData(effectData, context = {}) {
-    const prepared = getEffectSourceData(effectData)
-    if (!prepared) return null
+export function prepareSupernaturalActorEffectData(preEffectInput, context = {}) {
+    const preEffect = normalizeSupernaturalPreEffect(preEffectInput)
 
-    delete prepared._id
-    delete prepared.id
-
-    const preEffect = normalizeSupernaturalPreEffect(prepared.flags?.Ilaris?.preEffect)
-
-    prepared.transfer = false
-    prepared.disabled = false
-    prepared.origin = context.originUuid || prepared.origin || null
-    prepared.duration = withEffectStart(prepared.duration || {})
-    prepared.flags = mergePreEffectFlags(prepared.flags || {}, preEffect)
-
-    return prepared
+    return {
+        name: preEffect.name,
+        icon: preEffect.icon,
+        description: preEffect.description,
+        tint: preEffect.tint || null,
+        disabled: false,
+        origin: context.originUuid || null,
+        duration: withEffectStart(normalizeDuration(preEffect.duration)),
+        changes: applyEffectModifierToChanges(preEffect, context),
+        transfer: false,
+        flags: mergePreEffectFlags({}, preEffect),
+    }
 }
 
-export async function applyImmediateSupernaturalEffect(targetActor, effectData, context = {}) {
-    const prepared = prepareSupernaturalActorEffectData(effectData, context)
+export function buildSupernaturalPreEffectFromForm(formData, fallback = {}) {
+    const expanded = foundry.utils.expandObject(formData)
+    const combined = {
+        ...fallback,
+        ...expanded,
+        duration: {
+            ...(fallback.duration || {}),
+            ...(expanded.duration || {}),
+        },
+        template: {
+            ...(fallback.template || {}),
+            ...(expanded.template || {}),
+        },
+        area: {
+            ...(fallback.area || {}),
+            ...(expanded.area || {}),
+        },
+    }
+
+    combined.changes = parseChangesJson(formData.changesJson || fallback.changesJson || '')
+    delete combined.changesJson
+
+    return normalizeSupernaturalPreEffect(combined)
+}
+
+export async function applyImmediateSupernaturalEffect(targetActor, preEffect, context = {}) {
+    const prepared = prepareSupernaturalActorEffectData(preEffect, context)
     if (!prepared) return {}
 
     const EffectDocument = CONFIG.ActiveEffect.documentClass
@@ -230,20 +448,20 @@ export async function applySupernaturalEffectsToTarget(targetActor, effectsData,
     const persistentEffects = []
     const immediateEffects = []
 
-    for (const effectData of effectsData || []) {
-        const preEffect = normalizeSupernaturalPreEffect(effectData?.flags?.Ilaris?.preEffect)
+    for (const preEffectInput of effectsData || []) {
+        const preEffect = normalizeSupernaturalPreEffect(preEffectInput)
 
         if (preEffect.targetMode !== 'direct') {
             console.info(
-                `[Ilaris] Uebernatuerlicher Effekt "${effectData?.name || 'Unbenannt'}" mit Zielmodus "${preEffect.targetMode}" wird in Phase 1 nicht ausgefuehrt.`,
+                `[Ilaris] Uebernatuerlicher Effekt "${preEffect?.name || 'Unbenannt'}" mit Zielmodus "${preEffect.targetMode}" wird in Phase 1 nicht ausgefuehrt.`,
             )
             continue
         }
 
         if (preEffect.applicationType === 'immediate') {
-            immediateEffects.push(effectData)
+            immediateEffects.push(preEffect)
         } else {
-            const prepared = prepareSupernaturalActorEffectData(effectData, context)
+            const prepared = prepareSupernaturalActorEffectData(preEffect, context)
             if (prepared) persistentEffects.push(prepared)
         }
     }
@@ -256,8 +474,8 @@ export async function applySupernaturalEffectsToTarget(targetActor, effectsData,
         )
     }
 
-    for (const effectData of immediateEffects) {
-        await applyImmediateSupernaturalEffect(targetActor, effectData, context)
+    for (const preEffect of immediateEffects) {
+        await applyImmediateSupernaturalEffect(targetActor, preEffect, context)
     }
 
     return { createdEffects, immediateCount: immediateEffects.length }
@@ -287,7 +505,7 @@ export async function routeSupernaturalEffectsToOwner(target, effectsData, conte
         requesterUserId: game.user.id,
         timestamp: Date.now(),
         target: prepareTargetDescriptor(target, targetActor, actorLink),
-        effectsData: effectsData.map((effectData) => getEffectSourceData(effectData)),
+        effectsData: effectsData.map((preEffect) => normalizeSupernaturalPreEffect(preEffect)),
         context,
     }
 

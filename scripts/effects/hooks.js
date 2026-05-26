@@ -11,9 +11,4 @@
  */
 
 import './active-effects.js'
-import { registerSupernaturalPreEffectConfig } from './active-effect-config.js'
 import './dot-effects.js'
-
-Hooks.once('init', () => {
-    registerSupernaturalPreEffectConfig()
-})

@@ -313,17 +313,21 @@ Ersetzt den früheren Hook `Ilaris.fernkampfAngriffClick` (Breaking Change).
 > **Uebernatuerliche Ziel-Active-Effects (Phase 1)**: Das System registriert
 > zusaetzlich `scripts/combat/hooks/supernatural_target_effect_handlers.js` auf
 > demselben Hook. Bei `dialog.attackType === 'supernatural'` und
-> `rollResult.success === true` werden nur eingebettete Active Effects des gerade
-> verwendeten uebernatuerlichen Talents ausgewertet, deren
-> `flags.Ilaris.preEffect.targetMode` auf `direct` steht.
+> `rollResult.success === true` werden nur die auf dem Item gespeicherten
+> `flags.Ilaris.preEffects[]`-Eintraege des gerade verwendeten
+> uebernatuerlichen Talents ausgewertet, deren `targetMode` auf `direct` steht.
 >
 > Die eigentliche Ausfuehrung erfolgt owner-geroutet per Socket-Event
 > `applySupernaturalEffectsByOwner`. Das Ziel-Payload nutzt dieselbe
 > Token-/Actor-Aufloesung wie die Schadensanwendung und enthaelt deshalb
 > `tokenId`, `actorId` und `actorLink`.
 >
-> `flags.Ilaris.preEffect.applicationType === 'persistent'` erzeugt echte
-> Actor-embedded Active Effects. `applicationType === 'immediate'` fuehrt genau
+> Jeder `preEffects[]`-Eintrag enthaelt sowohl die Ilaris-Zielmetadaten als auch
+> genug ActiveEffect-Daten (`name`, `icon`, `duration`, `changes`, ...), um erst
+> zur Laufzeit einen echten Ziel-ActiveEffect zu bauen.
+>
+> `applicationType === 'persistent'` erzeugt echte Actor-embedded Active Effects.
+> `applicationType === 'immediate'` fuehrt genau
 > eine direkte Actor-Aenderung aus, ohne ein Actor-Effect-Dokument liegen zu
 > lassen. `template`- und `area`-Modi werden in Phase 1 nur gespeichert und zur
 > Laufzeit bewusst uebersprungen.

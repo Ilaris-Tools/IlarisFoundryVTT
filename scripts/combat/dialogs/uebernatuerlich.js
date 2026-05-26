@@ -40,11 +40,13 @@ export class UebernatuerlichDialog extends CombatDialog {
         // Specific properties for supernatural abilities
         this.text_energy = ''
         this.is16OrHigher = false
+        this.attackType = 'supernatural'
         // Dialog-session state — never written to the item document
         this.blutmagie = { value: 0 }
         this.verbotene_pforten = { multiplier: 4, activated: false }
         this.set_energy_cost = { value: null }
         this.calculatedWounds = 0
+        this.castingModifiers = this._getCastingModifiers()
 
         console.log('actor', this.actor)
         this.aufbauendeManoeverAktivieren()
@@ -322,6 +324,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         await this.manoeverAuswaehlen()
         await this.updateManoeverMods()
         this.updateStatusMods()
+        this.castingModifiers = this._getCastingModifiers()
 
         // Initialize and check energy values
         await this.initializeEnergyValues()
@@ -354,6 +357,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         )
 
         await postRollToChat(rollResult, this.speaker, this.rollmode)
+        rollResult.castingModifiers = foundry.utils.deepClone(this.castingModifiers)
         callIlarisHookAllWithGlobalMirror('Ilaris.postAngriff', rollResult, this)
 
         const isSuccess = rollResult.success
@@ -649,6 +653,68 @@ export class UebernatuerlichDialog extends CombatDialog {
                 this.updateModifierDisplay()
             }
         }
+    }
+
+    _getSelectedManeuverCount(dynamicManoever) {
+        const inputValue = dynamicManoever?.inputValue || {}
+
+        if (inputValue.field === 'CHECKBOX') {
+            return inputValue.value ? 1 : 0
+        }
+
+        if (inputValue.field === 'NUMBER') {
+            const numericValue = Number(inputValue.value)
+            return Number.isFinite(numericValue) && numericValue > 0 ? numericValue : 0
+        }
+
+        if (inputValue.field === 'SELECTOR' || inputValue.field === 'TREFFER_ZONE') {
+            const numericValue = Number(inputValue.value)
+            return Number.isFinite(numericValue) && numericValue > 0 ? 1 : 0
+        }
+
+        return 0
+    }
+
+    _normalizeManeuverName(name = '') {
+        return name
+            .normalize('NFD')
+            .replace(/[\u0300-\u036f]/g, '')
+            .toLowerCase()
+            .trim()
+    }
+
+    _getCastingModifiers() {
+        const castingModifiers = {
+            maechtigeMagie: 0,
+            maechtigeLiturgie: 0,
+            maechtigeAnrufung: 0,
+            hoheQualitaet: 0,
+            effectModifierCount: 0,
+        }
+
+        for (const dynamicManoever of this.item.manoever || []) {
+            const selectedCount = this._getSelectedManeuverCount(dynamicManoever)
+            if (!selectedCount) continue
+
+            const normalizedName = this._normalizeManeuverName(dynamicManoever.name)
+            if (normalizedName === 'machtige magie') {
+                castingModifiers.maechtigeMagie += selectedCount
+            } else if (normalizedName === 'machtige liturgie') {
+                castingModifiers.maechtigeLiturgie += selectedCount
+            } else if (normalizedName === 'machtige anrufung') {
+                castingModifiers.maechtigeAnrufung += selectedCount
+            }
+        }
+
+        if (this.item.type === 'zauber') {
+            castingModifiers.effectModifierCount = castingModifiers.maechtigeMagie
+        } else if (this.item.type === 'liturgie') {
+            castingModifiers.effectModifierCount = castingModifiers.maechtigeLiturgie
+        } else if (this.item.type === 'anrufung') {
+            castingModifiers.effectModifierCount = castingModifiers.maechtigeAnrufung
+        }
+
+        return castingModifiers
     }
 
     async updateManoeverMods() {

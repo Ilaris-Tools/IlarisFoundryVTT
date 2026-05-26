@@ -1,4 +1,20 @@
-import { getNewEmbeddedEffectData } from './supernatural-pre-effect.js'
+function getNewEmbeddedEffectData() {
+    return {
+        name: 'Neuer Effekt',
+        icon: 'icons/svg/aura.svg',
+        disabled: false,
+        duration: {},
+        changes: [
+            {
+                key: '',
+                mode: 2,
+                value: '0',
+                priority: 20,
+            },
+        ],
+        transfer: true,
+    }
+}
 
 /**
  * Mixin for item sheets that provides Active Effects management functionality
@@ -40,7 +56,7 @@ export const EffectsManager = {
      * @private
      */
     async _createEffect() {
-        const effectData = getNewEmbeddedEffectData(this.item)
+        const effectData = getNewEmbeddedEffectData()
 
         await this.item.createEmbeddedDocuments('ActiveEffect', [effectData])
     },

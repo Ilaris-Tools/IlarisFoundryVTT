@@ -91,6 +91,7 @@ describe('UebernatuerlichDialog roll execution', () => {
         }
 
         const dialog = new UebernatuerlichDialog(actor, item)
+        expect(dialog.attackType).toBe('supernatural')
         dialog.text_at = 'Zaubermod: +2'
         dialog.text_energy = 'Kosten sparen: -1'
         dialog.mod_at = 0

@@ -30,6 +30,8 @@ function preloadHandlebarsTemplates() {
         'systems/Ilaris/scripts/core/templates/helpers/select_trefferzone.hbs',
         'systems/Ilaris/scripts/effects/templates/effects-section.hbs',
         'systems/Ilaris/scripts/effects/templates/supernatural-pre-effect-fields.hbs',
+        'systems/Ilaris/scripts/effects/templates/supernatural-pre-effects-section.hbs',
+        'systems/Ilaris/scripts/effects/templates/supernatural-pre-effect-config.hbs',
         'systems/Ilaris/scripts/dice/templates/dreid20.hbs',
         'systems/Ilaris/scripts/skills/templates/chat/probenchat_profan.hbs',
     ]

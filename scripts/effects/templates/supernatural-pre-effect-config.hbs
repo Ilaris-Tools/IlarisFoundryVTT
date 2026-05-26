@@ -1,0 +1,95 @@
+<section class="supernatural-pre-effect-config">
+    <div class="supernatural-pre-effect-config-grid">
+        <label for="supernatural-pre-effect-name"><strong>Name</strong></label>
+        <input
+            id="supernatural-pre-effect-name"
+            name="name"
+            type="text"
+            value="{{preEffect.name}}"
+            autofocus
+        />
+
+        <label for="supernatural-pre-effect-icon"><strong>Icon</strong></label>
+        <input
+            id="supernatural-pre-effect-icon"
+            name="icon"
+            type="text"
+            value="{{preEffect.icon}}"
+        />
+
+        <label for="supernatural-pre-effect-description"><strong>Beschreibung</strong></label>
+        <textarea
+            id="supernatural-pre-effect-description"
+            name="description"
+            rows="3"
+        >{{preEffect.description}}</textarea>
+
+        <label for="supernatural-pre-effect-tint"><strong>Tint</strong></label>
+        <input
+            id="supernatural-pre-effect-tint"
+            name="tint"
+            type="text"
+            value="{{preEffect.tint}}"
+            placeholder="#ff8800"
+        />
+
+        <label for="supernatural-pre-effect-disabled"><strong>Deaktiviert</strong></label>
+        <input
+            id="supernatural-pre-effect-disabled"
+            name="disabled"
+            type="checkbox"
+            {{checked preEffect.disabled}}
+        />
+
+        <label for="supernatural-pre-effect-rounds"><strong>Dauer (Runden)</strong></label>
+        <input
+            id="supernatural-pre-effect-rounds"
+            name="duration.rounds"
+            type="number"
+            value="{{preEffect.duration.rounds}}"
+            data-dtype="Number"
+        />
+
+        <label for="supernatural-pre-effect-turns"><strong>Dauer (Zuege)</strong></label>
+        <input
+            id="supernatural-pre-effect-turns"
+            name="duration.turns"
+            type="number"
+            value="{{preEffect.duration.turns}}"
+            data-dtype="Number"
+        />
+
+        <label for="supernatural-pre-effect-seconds"><strong>Dauer (Sekunden)</strong></label>
+        <input
+            id="supernatural-pre-effect-seconds"
+            name="duration.seconds"
+            type="number"
+            value="{{preEffect.duration.seconds}}"
+            data-dtype="Number"
+        />
+    </div>
+
+    {{> "systems/Ilaris/scripts/effects/templates/supernatural-pre-effect-fields.hbs"}}
+
+    <div class="supernatural-pre-effect-json-block">
+        <label for="supernatural-pre-effect-changes"><strong>ActiveEffect-Changes (JSON)</strong></label>
+        <textarea
+            id="supernatural-pre-effect-changes"
+            name="changesJson"
+            rows="10"
+            spellcheck="false"
+        >{{preEffectChangesJson}}</textarea>
+        <p>Erwartet ein Array aus Change-Objekten mit `key`, `mode`, `value`, optional `priority` und optional `applyEffectModifier: true` fuer change-genaue Verstaerkung.</p>
+    </div>
+
+    <footer class="supernatural-pre-effect-config-footer flexrow">
+        <button type="submit">
+            <i class="fas fa-save"></i>
+            Speichern
+        </button>
+        <button type="button" data-action="close">
+            <i class="fas fa-times"></i>
+            Abbrechen
+        </button>
+    </footer>
+</section>
