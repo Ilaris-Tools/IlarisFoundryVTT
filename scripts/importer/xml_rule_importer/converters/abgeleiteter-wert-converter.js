@@ -1,4 +1,5 @@
 import { BaseConverter } from './base-converter.js'
+import { createAbgeleiteterWertDefaults } from '../constants.js'
 
 /**
  * Converter for AbgeleiteterWert (Derived Values)
@@ -18,6 +19,7 @@ export class AbgeleiteterWertConverter extends BaseConverter {
         const text = element.textContent?.trim() || ''
 
         const systemData = {
+            ...createAbgeleiteterWertDefaults(name),
             formel,
             script,
             finalscript,

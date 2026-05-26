@@ -1,4 +1,5 @@
 import { BaseConverter } from './base-converter.js'
+import { createManoeverDefaults } from '../constants.js'
 
 /**
  * Converter for Manöver
@@ -95,6 +96,7 @@ export class ManoeverConverter extends BaseConverter {
         const { input, modifications } = this.parseProbe(probe)
 
         const systemData = {
+            ...createManoeverDefaults(),
             voraussetzung,
             input,
             modifications,

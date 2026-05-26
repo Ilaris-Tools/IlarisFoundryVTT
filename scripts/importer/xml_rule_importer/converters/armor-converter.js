@@ -1,5 +1,5 @@
 import { BaseConverter } from './base-converter.js'
-import { DEFAULT_ARMOR_VALUES } from '../constants.js'
+import { createRuestungDefaults } from '../constants.js'
 
 /**
  * Converter for Rüstung (armor)
@@ -15,7 +15,7 @@ export class ArmorConverter extends BaseConverter {
         const text = this.getTextContent(element)
 
         const systemData = {
-            ...DEFAULT_ARMOR_VALUES,
+            ...createRuestungDefaults(),
             rs_beine: parseInt(this.getAttribute(element, 'rsBeine', '0')) || 0,
             rs_larm: parseInt(this.getAttribute(element, 'rsLArm', '0')) || 0,
             rs_rarm: parseInt(this.getAttribute(element, 'rsRArm', '0')) || 0,
