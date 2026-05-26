@@ -1,5 +1,5 @@
 import { BaseConverter } from './base-converter.js'
-import { createAbgeleiteterWertDefaults } from '../../../../items/model-data/shared.js'
+import { createAbgeleiteterWertDefaults } from '../../../items/model-data/shared.js'
 
 /**
  * Converter for AbgeleiteterWert (Derived Values)

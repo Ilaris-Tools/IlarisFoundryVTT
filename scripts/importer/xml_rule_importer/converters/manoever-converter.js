@@ -1,5 +1,5 @@
 import { BaseConverter } from './base-converter.js'
-import { createManoeverDefaults } from '../../../../items/model-data/shared.js'
+import { createManoeverDefaults } from '../../../items/model-data/shared.js'
 
 /**
  * Converter for Manöver
