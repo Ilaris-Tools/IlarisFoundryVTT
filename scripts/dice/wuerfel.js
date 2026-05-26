@@ -1,5 +1,5 @@
 import { openCombatDialog } from '../combat/combat-api.js'
-import { FertigkeitDialog } from '../skills/dialogs/fertigkeit.js'
+import { openSkillDialog } from '../skills/skills-api.js'
 import { calculate_diceschips, roll_crit_message } from './wuerfel_misc.js'
 
 export async function wuerfelwurf(target, actor) {
@@ -33,37 +33,34 @@ export async function wuerfelwurf(target, actor) {
             const label = CONFIG.ILARIS.label[attribut_name]
             const pw = systemData.attribute[attribut_name].pw
 
-            let d = new FertigkeitDialog(actor, {
+            await openSkillDialog(actor, {
                 probeType: 'attribut',
                 fertigkeitKey: attribut_name,
                 fertigkeitName: label,
                 pw: pw,
             })
-            await d.render(true)
         } else if (probeType === 'freieFertigkeit' || probeType === 'freie_fertigkeit') {
             const fertigkeitName = target.dataset.fertigkeit
             const stufe = Number(target.dataset.pw)
             const pw = stufe * 8 - 2
 
-            let d = new FertigkeitDialog(actor, {
+            await openSkillDialog(actor, {
                 probeType: 'freieFertigkeit',
                 fertigkeitKey: null,
                 fertigkeitName: fertigkeitName,
                 pw: pw,
             })
-            await d.render(true)
         } else if (probeType === 'simple') {
             // Simple skill with direct PW (e.g. creature skills)
             const fertigkeitName = target.dataset.fertigkeit
             const pw = Number(target.dataset.pw)
 
-            let d = new FertigkeitDialog(actor, {
+            await openSkillDialog(actor, {
                 probeType: 'simple',
                 fertigkeitKey: null,
                 fertigkeitName: fertigkeitName,
                 pw: pw,
             })
-            await d.render(true)
         } else {
             // Regular skill (fertigkeit)
             const fertigkeit = target.dataset.fertigkeit
@@ -78,14 +75,13 @@ export async function wuerfelwurf(target, actor) {
                 talentList[i] = tal.name
             }
 
-            let d = new FertigkeitDialog(actor, {
+            await openSkillDialog(actor, {
                 probeType: 'fertigkeit',
                 fertigkeitKey: fertigkeit,
                 fertigkeitName: fertigkeitName,
                 pw: pw,
                 talentList: talentList,
             })
-            await d.render(true)
         }
     } else if (rolltype == 'simpleformula_diag') {
         label = target.dataset.name

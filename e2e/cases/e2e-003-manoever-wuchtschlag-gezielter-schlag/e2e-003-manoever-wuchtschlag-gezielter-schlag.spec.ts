@@ -102,7 +102,7 @@ test.describe('E2E-003 Manoever-Kombination: Wuchtschlag + Gezielter Schlag + Sc
         const beforeAttackCount = await page.evaluate(() => game.messages.contents.length)
 
         const attackButton = attackDialog.locator(
-            '.modifier-summary.attack-summary.clickable-summary.angreifen',
+            '.modifier-summary.attack-summary.clickable-summary[data-action="angreifen"]',
         )
         await attackButton.click()
 
@@ -119,7 +119,7 @@ test.describe('E2E-003 Manoever-Kombination: Wuchtschlag + Gezielter Schlag + Sc
             // Fallback for flaky click delivery through AppV2 overlays
             await page.evaluate(() => {
                 const node = document.querySelector(
-                    '.application.angriff-dialog .modifier-summary.attack-summary.clickable-summary.angreifen',
+                    '.application.angriff-dialog .modifier-summary.attack-summary.clickable-summary[data-action="angreifen"]',
                 )
                 node?.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }))
             })
@@ -171,7 +171,7 @@ test.describe('E2E-003 Manoever-Kombination: Wuchtschlag + Gezielter Schlag + Sc
         const beforeDamageCount = await page.evaluate(() => game.messages.contents.length)
 
         const damageButton = attackDialog.locator(
-            '.modifier-summary.damage-summary.clickable-summary.schaden',
+            '.modifier-summary.damage-summary.clickable-summary[data-action="schaden"]',
         )
         await damageButton.click()
 
@@ -188,7 +188,7 @@ test.describe('E2E-003 Manoever-Kombination: Wuchtschlag + Gezielter Schlag + Sc
             // Fallback for flaky click delivery through AppV2 overlays
             await page.evaluate(() => {
                 const node = document.querySelector(
-                    '.application.angriff-dialog .modifier-summary.damage-summary.clickable-summary.schaden',
+                    '.application.angriff-dialog .modifier-summary.damage-summary.clickable-summary[data-action="schaden"]',
                 )
                 node?.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }))
             })

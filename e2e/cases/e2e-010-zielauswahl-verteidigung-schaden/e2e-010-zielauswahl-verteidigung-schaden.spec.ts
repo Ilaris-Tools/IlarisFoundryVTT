@@ -181,7 +181,7 @@ test.describe('E2E-010 Zielauswahl, Verteidigung und Schaden', () => {
             await clickSummaryWithFallback(
                 page,
                 '.application.angriff-dialog',
-                '.modifier-summary.attack-summary.clickable-summary.angreifen',
+                '.modifier-summary.attack-summary.clickable-summary[data-action="angreifen"]',
             )
 
             await waitForNewMessages(page, beforeAttackMessages, 2)
@@ -273,7 +273,7 @@ test.describe('E2E-010 Zielauswahl, Verteidigung und Schaden', () => {
             await clickSummaryWithFallback(
                 page,
                 '.application.angriff-dialog',
-                '.modifier-summary.defense-summary.clickable-summary.verteidigen',
+                '.modifier-summary.defense-summary.clickable-summary[data-action="verteidigen"]',
             )
 
             await waitForNewMessages(page, beforeDefenseMessages, 2)
@@ -299,7 +299,7 @@ test.describe('E2E-010 Zielauswahl, Verteidigung und Schaden', () => {
             await clickSummaryWithFallback(
                 page,
                 '.application.angriff-dialog',
-                '.modifier-summary.damage-summary.clickable-summary.schaden',
+                '.modifier-summary.damage-summary.clickable-summary[data-action="schaden"]',
             )
 
             await waitForNewMessages(page, beforeDamageMessages, 2)
