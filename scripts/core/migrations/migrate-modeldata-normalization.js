@@ -2,7 +2,7 @@ const isNewerVersion = foundry.utils.isNewerVersion
 
 // Keep this strictly increasing, independent from system.json version,
 // so newly added migration steps re-run on already-upgraded worlds.
-const TARGET_SCHEMA_VERSION = '13.4.0'
+const TARGET_SCHEMA_VERSION = '13.1.0'
 
 const ITEM_TYPE_RENAME_MAP = {
     freiestalent: 'freiesTalent',
