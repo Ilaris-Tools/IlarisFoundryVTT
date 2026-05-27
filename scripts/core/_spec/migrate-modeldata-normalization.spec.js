@@ -91,7 +91,7 @@ describe('migrate-modeldata-normalization', () => {
         }
 
         game.user = { isGM: true }
-        game.settings.get = jest.fn().mockReturnValue('13.1.0')
+        game.settings.get = jest.fn().mockReturnValue('13.0.0')
         game.settings.set = jest.fn().mockResolvedValue(undefined)
         game.items = []
         game.actors = []
