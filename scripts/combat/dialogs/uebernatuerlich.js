@@ -788,11 +788,12 @@ export class UebernatuerlichDialog extends CombatDialog {
                         : this.actor.system.kampfwerte.ws
                 const multiplier = this.verbotene_pforten.multiplier
 
-                // Calculate required wounds using the extracted method
-                this.calculatedWounds = this.calculateRequiredWounds(ws, multiplier, mod_energy)
-
                 // Ensure mod_energy doesn't go below availableEnergy
                 const maxReduction = mod_energy - availableEnergy
+
+                // Calculate required wounds using the extracted method
+                this.calculatedWounds = this.calculateRequiredWounds(ws, multiplier, maxReduction)
+
                 if (this.calculatedWounds > 0 && maxReduction > 0) {
                     const verbotenePfortenReduction = (ws + multiplier) * this.calculatedWounds
                     const actualReduction = Math.min(verbotenePfortenReduction, maxReduction)

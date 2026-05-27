@@ -1598,7 +1598,7 @@
       "system": {
         "haerte": 0,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6",
         "fertigkeit": "Handgemenge",
         "talent": "Unbewaffnet",
         "rw": 0,
@@ -1661,7 +1661,7 @@
       "system": {
         "haerte": 10,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6+2",
         "fertigkeit": "Handgemenge",
         "talent": "Handgemengewaffen",
         "rw": 0,
@@ -1712,7 +1712,7 @@
       "system": {
         "haerte": 8,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6",
         "fertigkeit": "Wurfwaffen",
         "talent": "Kurze Wurfwaffen",
         "rw": 4,

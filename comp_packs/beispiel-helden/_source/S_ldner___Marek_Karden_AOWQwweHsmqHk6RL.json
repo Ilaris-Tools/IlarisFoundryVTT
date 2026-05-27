@@ -1523,7 +1523,7 @@
       "system": {
         "haerte": 0,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6",
         "fertigkeit": "Handgemenge",
         "talent": "Unbewaffnet",
         "rw": 0,
@@ -1594,7 +1594,7 @@
       "system": {
         "haerte": 8,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "2W6+1",
         "fertigkeit": "Hiebwaffen",
         "talent": "Einhandhiebwaffen",
         "rw": 1,
@@ -1645,7 +1645,7 @@
       "system": {
         "haerte": 8,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6",
         "fertigkeit": "Handgemenge",
         "talent": "Schilde",
         "rw": 0,
@@ -1700,7 +1700,7 @@
       "system": {
         "haerte": 9,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6+1",
         "fertigkeit": "Handgemenge",
         "talent": "Handgemengewaffen",
         "rw": 0,
@@ -1746,7 +1746,7 @@
       "system": {
         "haerte": 4,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "3W6+1",
         "fertigkeit": "Schusswaffen",
         "talent": "Armbrüste",
         "rw": 32,

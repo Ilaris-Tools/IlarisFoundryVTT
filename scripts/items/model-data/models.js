@@ -212,7 +212,7 @@ export function createItemTypeDataModels(TypeDataModel, h) {
     class AngriffItemDataModel extends TypeDataModel {
         static defineSchema() {
             return {
-                eigenschaften: h.arrayOfStrings(),
+                eigenschaften: h.arrayOfObjects(),
                 tp: h.string(''),
                 haerte: h.number(0),
                 rw: h.number(0),

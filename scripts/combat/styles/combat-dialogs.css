@@ -13,6 +13,7 @@
 .ilaris.combat-dialog [data-application-part="settings"] {
   flex: 1;
   min-width: 400px;
+  overflow-y: auto;
 }
 
 .ilaris.combat-dialog .target-selection-container {

@@ -1960,7 +1960,7 @@
       "system": {
         "haerte": 0,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6",
         "fertigkeit": "Handgemenge",
         "talent": "Unbewaffnet",
         "rw": 0,
@@ -2023,7 +2023,7 @@
       "system": {
         "haerte": 3,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "2W6+1",
         "fertigkeit": "Schusswaffen",
         "talent": "Bögen",
         "rw": 16,
@@ -2076,7 +2076,7 @@
       "system": {
         "haerte": 3,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "2W6+3",
         "fertigkeit": "Schusswaffen",
         "talent": "Bögen",
         "rw": 64,
@@ -2137,7 +2137,7 @@
       "system": {
         "haerte": 9,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6+1",
         "fertigkeit": "Handgemenge",
         "talent": "Handgemengewaffen",
         "rw": 0,
