@@ -33,11 +33,5 @@ export const IlarisAutomatisierungSettingNames = {
 
 // the heading for Kompendien gets added via hooks.js
 export const IlarisGameSettingsMenuNames = {
-    fertigkeitenPacksMenu: 'fertigkeitenPacksMenu',
-    waffenPacksMenu: 'waffenPacksMenu',
-    talentePacksMenu: 'talentePacksMenu',
-    manoeverPacksMenu: 'manoeverPacksMenu',
-    vorteilePacksMenu: 'vorteilePacksMenu',
-    waffeneigenschaftenPacksMenu: 'waffeneigenschaftenPacksMenu',
-    abgeleiteteWertePacksMenu: 'abgeleiteteWertePacksMenu',
+    ilarisSettingsMenu: 'ilarisSettingsMenu',
 }
