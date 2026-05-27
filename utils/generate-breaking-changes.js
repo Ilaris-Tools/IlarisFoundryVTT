@@ -45,15 +45,15 @@ function parseBreakingChanges(changelogText, version) {
         return null
     }
 
-    const levelThreeHeaderRegex = /^###\s+/ // next release section boundary
+    const releaseSectionBoundaryRegex = /^#{2,3}\s+/ // next major or release section boundary
     const breakingHeaderRegex = /^####\s*(?:⚠️\s*)?breaking\s+change(?:s)?\s*:?\s*$/i
-    const levelFourHeaderRegex = /^####\s+/ // next subsection boundary
+    const breakingSectionBoundaryRegex = /^#{2,4}\s+/ // next subsection, release, or major section boundary
 
     // Iterate top-down so we take the newest matching release that has breaking changes.
     for (const sectionStart of matchingVersionHeaderIndexes) {
         let sectionEnd = lines.length
         for (let i = sectionStart + 1; i < lines.length; i++) {
-            if (levelThreeHeaderRegex.test(lines[i])) {
+            if (releaseSectionBoundaryRegex.test(lines[i])) {
                 sectionEnd = i
                 break
             }
@@ -73,7 +73,7 @@ function parseBreakingChanges(changelogText, version) {
 
         let breakingEnd = sectionEnd
         for (let i = breakingHeaderIndex + 1; i < sectionEnd; i++) {
-            if (levelFourHeaderRegex.test(lines[i])) {
+            if (breakingSectionBoundaryRegex.test(lines[i])) {
                 breakingEnd = i
                 break
             }
