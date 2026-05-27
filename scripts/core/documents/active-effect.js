@@ -79,10 +79,10 @@ export class IlarisActiveEffect extends ActiveEffect {
         for (const effect of effects) {
             if (effect.disabled || effect.isSuppressed) continue
 
-            for (const change of effect.changes) {
-                // Check for Custom mode (10) and key starting with "system.gesundheit.wunden"
+            for (const change of effect.system?.changes ?? []) {
+                // Check for Custom mode and key starting with "system.gesundheit.wunden"
                 if (
-                    change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM &&
+                    change.type === 'custom' &&
                     change.key?.toLowerCase().startsWith('system.gesundheit.wunden')
                 ) {
                     dotEffects.push({ effect, change })

@@ -54,12 +54,10 @@ Hooks.on('updateActiveEffect', async (activeEffect, data, options, userId) => {
 async function applyDotEffectToActor(effect, actor) {
     if (!actor || !effect) return
     if (effect.disabled || effect.isSuppressed) return
-    if (effect.changes.length === 0) return
+    if ((effect.system?.changes ?? []).length === 0) return
 
-    const dotChanges = effect.changes.filter(
-        (c) =>
-            c.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM &&
-            c.key.toLowerCase().startsWith('system.gesundheit.wunden'),
+    const dotChanges = (effect.system?.changes ?? []).filter(
+        (c) => c.type === 'custom' && c.key.toLowerCase().startsWith('system.gesundheit.wunden'),
     )
     if (dotChanges.length === 0) return
 

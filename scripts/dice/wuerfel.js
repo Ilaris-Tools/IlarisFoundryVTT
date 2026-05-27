@@ -95,43 +95,42 @@ export async function wuerfelwurf(target, actor) {
             },
         )
         console.log('hier')
-        let d = new Dialog(
-            {
-                title: label,
-                content: html,
-                buttons: {
-                    one: {
-                        icon: '<i><img class="button-icon" src="systems/Ilaris/assets/game-icons.net/rolling-dices.png"></i>',
-                        label: 'OK',
-                        callback: async (html) => {
-                            let text = ''
-                            let modifikator = 0
-                            if (html.find(`#modifikator-${dialogId}`).length > 0) {
-                                modifikator = Number(html.find(`#modifikator-${dialogId}`)[0].value)
-                                if (modifikator != 0) {
-                                    text = text.concat(`Modifikator: ${modifikator}\n`)
-                                    formula = formula + '+' + modifikator
-                                }
+        await foundry.applications.api.DialogV2.wait({
+            window: { title: label },
+            content: html,
+            buttons: [
+                {
+                    action: 'ok',
+                    icon: '<i><img class="button-icon" src="systems/Ilaris/assets/game-icons.net/rolling-dices.png"></i>',
+                    label: 'OK',
+                    default: true,
+                    callback: async (event, button, dialog) => {
+                        let text = ''
+                        let modifikator = 0
+                        const modInput = dialog.querySelector(`#modifikator-${dialogId}`)
+                        if (modInput) {
+                            modifikator = Number(modInput.value)
+                            if (modifikator != 0) {
+                                text = text.concat(`Modifikator: ${modifikator}\n`)
+                                formula = formula + '+' + modifikator
                             }
-                            let rollmode = ''
-                            if (html.find(`#rollMode-${dialogId}`).length > 0) {
-                                rollmode = html.find(`#rollMode-${dialogId}`)[0].value
-                            }
-                            await roll_crit_message(formula, label, text, speaker, rollmode, false)
-                        },
-                    },
-                    two: {
-                        icon: '<i class="fas fa-times"></i>',
-                        label: 'Abbrechen',
-                        callback: () => console.log('Chose Two'),
+                        }
+                        let rollmode = ''
+                        const rollModeInput = dialog.querySelector(`#rollMode-${dialogId}`)
+                        if (rollModeInput) {
+                            rollmode = rollModeInput.value
+                        }
+                        await roll_crit_message(formula, label, text, speaker, rollmode, false)
                     },
                 },
-            },
-            {
-                jQuery: true,
-            },
-        )
-        d.render(true)
+                {
+                    action: 'cancel',
+                    icon: '<i class="fas fa-times"></i>',
+                    label: 'Abbrechen',
+                },
+            ],
+            rejectClose: false,
+        })
     } else if (rolltype == 'simpleprobe_diag') {
         label = target.dataset.name
         pw = Number(target.dataset.pw)
@@ -156,64 +155,64 @@ export async function wuerfelwurf(target, actor) {
                 dialogId: dialogId,
             },
         )
-        let d = new Dialog(
-            {
-                title: 'Probe ( ' + label + ')',
-                content: html,
-                buttons: {
-                    one: {
-                        icon: '<i><img class="button-icon" src="systems/Ilaris/assets/game-icons.net/rolling-dices.png"></i>',
-                        label: 'OK',
-                        callback: async (html) => {
-                            let text = ''
-                            let dice_number = 0
-                            let discard_l = 0
-                            let discard_h = 0
-                            ;[text, dice_number, discard_l, discard_h] = calculate_diceschips(
-                                html,
-                                text,
-                                actor,
-                                dialogId,
-                            )
-                            let hohequalitaet = 0
-                            if (html.find(`#hohequalitaet-${dialogId}`).length > 0) {
-                                hohequalitaet = Number(
-                                    html.find(`#hohequalitaet-${dialogId}`)[0].value,
-                                )
-                                if (hohequalitaet != 0) {
-                                    text = text.concat(`Hohe Qualität: ${hohequalitaet}\n`)
-                                }
+        await foundry.applications.api.DialogV2.wait({
+            window: { title: 'Probe ( ' + label + ')' },
+            content: html,
+            buttons: [
+                {
+                    action: 'ok',
+                    icon: '<i><img class="button-icon" src="systems/Ilaris/assets/game-icons.net/rolling-dices.png"></i>',
+                    label: 'OK',
+                    default: true,
+                    callback: async (event, button, dialog) => {
+                        let text = ''
+                        let dice_number = 0
+                        let discard_l = 0
+                        let discard_h = 0
+                        ;[text, dice_number, discard_l, discard_h] = calculate_diceschips(
+                            dialog,
+                            text,
+                            actor,
+                            dialogId,
+                        )
+                        let hohequalitaet = 0
+                        const hohequalitaetInput = dialog.querySelector(
+                            `#hohequalitaet-${dialogId}`,
+                        )
+                        if (hohequalitaetInput) {
+                            hohequalitaet = Number(hohequalitaetInput.value)
+                            if (hohequalitaet != 0) {
+                                text = text.concat(`Hohe Qualität: ${hohequalitaet}\n`)
                             }
-                            let modifikator = 0
-                            if (html.find(`#modifikator-${dialogId}`).length > 0) {
-                                modifikator = Number(html.find(`#modifikator-${dialogId}`)[0].value)
-                                if (modifikator != 0) {
-                                    text = text.concat(`Modifikator: ${modifikator}\n`)
-                                }
+                        }
+                        let modifikator = 0
+                        const modInput = dialog.querySelector(`#modifikator-${dialogId}`)
+                        if (modInput) {
+                            modifikator = Number(modInput.value)
+                            if (modifikator != 0) {
+                                text = text.concat(`Modifikator: ${modifikator}\n`)
                             }
-                            let rollmode = ''
-                            if (html.find('#rollMode').length > 0) {
-                                rollmode = html.find('#rollMode')[0].value
-                            }
-                            hohequalitaet *= -4
+                        }
+                        let rollmode = ''
+                        const rollModeInput = dialog.querySelector('#rollMode')
+                        if (rollModeInput) {
+                            rollmode = rollModeInput.value
+                        }
+                        hohequalitaet *= -4
 
-                            let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`
-                            let formula = `${dice_form} + ${pw} + ${globalermod} + ${hohequalitaet} + ${modifikator} + ${spezialmod}`
-                            // Critfumble & Message
-                            await roll_crit_message(formula, label, text, speaker, rollmode)
-                        },
-                    },
-                    two: {
-                        icon: '<i class="fas fa-times"></i>',
-                        label: 'Abbrechen',
-                        callback: () => console.log('Chose Two'),
+                        let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`
+                        let formula = `${dice_form} + ${pw} + ${globalermod} + ${hohequalitaet} + ${modifikator} + ${spezialmod}`
+                        // Critfumble & Message
+                        await roll_crit_message(formula, label, text, speaker, rollmode)
                     },
                 },
-            },
-            {
-                jQuery: true,
-            },
-        )
-        d.render(true)
+                {
+                    action: 'cancel',
+                    icon: '<i class="fas fa-times"></i>',
+                    label: 'Abbrechen',
+                },
+            ],
+            rejectClose: false,
+        })
     }
 }
