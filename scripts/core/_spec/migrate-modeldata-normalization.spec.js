@@ -1,6 +1,6 @@
 let shouldRunModelDataNormalizationMigration
 let runModelDataNormalizationMigrationIfNeeded
-const TARGET_SCHEMA_VERSION = '13.4.0'
+const TARGET_SCHEMA_VERSION = '13.1.0'
 let progressNotification
 
 function createDoc({ id, name, type, system }) {
@@ -91,7 +91,7 @@ describe('migrate-modeldata-normalization', () => {
         }
 
         game.user = { isGM: true }
-        game.settings.get = jest.fn().mockReturnValue('13.1.0')
+        game.settings.get = jest.fn().mockReturnValue('13.0.0')
         game.settings.set = jest.fn().mockResolvedValue(undefined)
         game.items = []
         game.actors = []
@@ -106,7 +106,7 @@ describe('migrate-modeldata-normalization', () => {
 
     it('should run only for GM and older schema version', () => {
         game.user.isGM = true
-        game.settings.get.mockReturnValue('13.1.0')
+        game.settings.get.mockReturnValue('13.0.0')
         expect(shouldRunModelDataNormalizationMigration()).toBe(true)
 
         game.user.isGM = false
