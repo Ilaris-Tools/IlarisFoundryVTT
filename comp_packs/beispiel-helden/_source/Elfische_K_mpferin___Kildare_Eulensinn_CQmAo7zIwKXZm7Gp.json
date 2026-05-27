@@ -2366,7 +2366,7 @@
       "system": {
         "haerte": 0,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6",
         "fertigkeit": "Handgemenge",
         "talent": "Unbewaffnet",
         "rw": 0,
@@ -2429,7 +2429,7 @@
       "system": {
         "haerte": 6,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "2W6+1",
         "fertigkeit": "Stangenwaffen",
         "talent": "Infanteriewaffen und Speere",
         "rw": 2,
@@ -2475,7 +2475,7 @@
       "system": {
         "haerte": 5,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "2W6",
         "fertigkeit": "Wurfwaffen",
         "talent": "Wurfspeere",
         "rw": 8,
@@ -2523,7 +2523,7 @@
       "system": {
         "haerte": 5,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "2W6+1",
         "fertigkeit": "Wurfwaffen",
         "talent": "Wurfspeere",
         "rw": 16,
@@ -2576,7 +2576,7 @@
       "system": {
         "haerte": 5,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "2W6+3",
         "fertigkeit": "Wurfwaffen",
         "talent": "Wurfspeere",
         "rw": 8,
@@ -2624,7 +2624,7 @@
       "system": {
         "haerte": 9,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6+1",
         "fertigkeit": "Handgemenge",
         "talent": "Handgemengewaffen",
         "rw": 0,
