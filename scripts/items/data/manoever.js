@@ -4,10 +4,12 @@ export class ManoeverItem extends IlarisItem {
     _manoeverRequirementsFulfilled(actor, item) {
         const voraussetzung = this.system.voraussetzung || this.system.voraussetzungen
 
-        // For Angriff items, the configured maneuver list is the source of truth.
-        // If the list exists (even empty), only listed maneuvers are available.
-        if (Array.isArray(item.system.angriffmanover)) {
-            return item.system.angriffmanover.includes(this.name)
+        // If the maneuver is explicitly listed in angriffmanover, unlock it immediately.
+        if (
+            Array.isArray(item.system.angriffmanover) &&
+            item.system.angriffmanover.includes(this.name)
+        ) {
+            return true
         }
 
         if (!voraussetzung) {
