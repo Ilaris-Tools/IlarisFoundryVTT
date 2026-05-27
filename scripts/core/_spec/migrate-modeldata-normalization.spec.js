@@ -1,6 +1,6 @@
 let shouldRunModelDataNormalizationMigration
 let runModelDataNormalizationMigrationIfNeeded
-const TARGET_SCHEMA_VERSION = '13.4.0'
+const TARGET_SCHEMA_VERSION = '13.1.0'
 let progressNotification
 
 function createDoc({ id, name, type, system }) {
