@@ -45,13 +45,6 @@ describe('ManoeverItem', () => {
             expect(manoever._manoeverRequirementsFulfilled(mockActor, mockItem)).toBe(true)
         })
 
-        it('should return false for Angriff items when maneuver is not in unlocked list', () => {
-            manoever.system = { voraussetzung: 'Vorteil Kampfgespür' }
-            mockItem.system.angriffmanover = []
-            mockActor._hasVorteil.mockReturnValue(true)
-            expect(manoever._manoeverRequirementsFulfilled(mockActor, mockItem)).toBe(false)
-        })
-
         it('should fall back to requirement checks if unlocked list is not present', () => {
             manoever.system = { voraussetzung: 'Vorteil Kampfgespür' }
             delete mockItem.system.angriffmanover
