@@ -106,7 +106,7 @@ describe('migrate-modeldata-normalization', () => {
 
     it('should run only for GM and older schema version', () => {
         game.user.isGM = true
-        game.settings.get.mockReturnValue('13.1.0')
+        game.settings.get.mockReturnValue('13.0.0')
         expect(shouldRunModelDataNormalizationMigration()).toBe(true)
 
         game.user.isGM = false
