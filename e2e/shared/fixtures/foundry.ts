@@ -288,7 +288,7 @@ export async function openMeleeAttackDialogForWeapon(actorWindow: Locator, weapo
     await actorWindow.locator('nav [data-tab="kampf"]').click()
 
     const row = actorWindow
-        .locator('section.tab.kampf tbody tr')
+        .locator('section.tab.kampf tbody tr:not(.hero-expandable-row-hidden)')
         .filter({ hasText: weaponName })
         .first()
 

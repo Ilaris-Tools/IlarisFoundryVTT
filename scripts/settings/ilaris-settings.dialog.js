@@ -216,7 +216,7 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
 
             if (
                 contents.some(
-                    (i) => i.type === 'fertigkeit' || i.type === 'uebernatuerliche_fertigkeit',
+                    (i) => i.type === 'fertigkeit' || i.type === 'uebernatuerlicheFertigkeit',
                 )
             ) {
                 result.fertigkeiten.push(entry(fertigkeitenSelection.includes(pack.collection)))

@@ -1,9 +1,22 @@
 {{log 'effekte' this}}
 <section class="tab effekte {{tab.cssClass}}" data-group="primary" data-tab="effekte">
     <h2>Effekte</h2>
+    <div>
+        <a data-action="itemCreate" data-itemclass="effect"><i class="fas fa-plus"></i> Neuer Effekt</a>
+    </div>
     {{#each effects as |effect|}}
     <a data-action="itemEdit" data-itemclass="effect" data-itemid="{{effect._id}}">
-        {{effect.name}} | {{#if effect.duration.turns}}{{effect.duration.turns}} Runden{{/if}}
+                {{effect.name}}
+                {{#if effect.duration.value}}
+                {{#if (isFiniteValue effect.duration.value)}}
+                | {{effect.duration.value}}
+                    {{#if (eq effect.duration.units "turns")}}Runden{{/if}}
+                    {{#if (eq effect.duration.units "seconds")}}Sekunden{{/if}}
+                    {{#if (eq effect.duration.units "minutes")}}Minuten{{/if}}
+                    {{#if (eq effect.duration.units "hours")}}Stunden{{/if}}
+                    {{#if (eq effect.duration.units "days")}}Tage{{/if}}
+                {{/if}}
+                {{/if}}
     </a>
     {{#unless (eq effect.flags.ilaris.sourceType "vorteil")}}
     <a data-action="itemDelete" data-itemclass="effect" data-itemid="{{effect._id}}">

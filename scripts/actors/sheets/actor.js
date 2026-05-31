@@ -503,6 +503,17 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         // Get item templates from config
         const itemTemplates = ILARIS.itemTemplates
 
+        // Handle special case for ActiveEffect
+        if (itemclass === 'effect') {
+            const created = await this.actor.createEmbeddedDocuments('ActiveEffect', [
+                { name: 'Neuer Effekt', icon: 'icons/svg/aura.svg' },
+            ])
+            if (created && created.length > 0) {
+                created[0].sheet.render(true)
+            }
+            return
+        }
+
         // Handle special case for vorteil
         if (itemclass === 'vorteil') {
             game.packs.get('Ilaris.vorteile').render(true)

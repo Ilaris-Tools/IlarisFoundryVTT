@@ -41,7 +41,11 @@
       "tint": "#ffffff",
       "statuses": [],
       "sort": 0,
-      "flags": {},
+      "flags": {
+        "ilaris": {
+          "sourceType": "vorteil"
+        }
+      },
       "_stats": {
         "compendiumSource": null,
         "duplicateSource": null,
