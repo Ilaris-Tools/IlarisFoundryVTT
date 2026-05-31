@@ -46,6 +46,7 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
         this.talentList = options.talentList || {}
         this.speaker = ChatMessage.getSpeaker({ actor: this.actor })
         this.dialogId = `dialog-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`
+        this.initialXd20 = options.initialXd20 ?? '1'
         this._hasEmittedRenderedHook = false
         this.summary = this.getDefaultSummaryContext()
         this._initialPreviewPromise = null
@@ -62,6 +63,8 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
                 return `Attributsprobe: ${options.fertigkeitName || 'Attribut'}`
             case 'freieFertigkeit':
                 return `Freie Fertigkeitsprobe: ${options.fertigkeitName || 'Freie Fertigkeit'}`
+            case 'simple':
+                return `${options.fertigkeitName || 'Simple Fertigkeit'}`
             case 'fertigkeit':
             default:
                 return `Fertigkeitsprobe: ${options.fertigkeitName || 'Fertigkeit'}`
@@ -82,7 +85,7 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
             talentList: this.talentList,
             hasTalents: Object.keys(this.talentList).length > 0,
             choices_xd20: CONFIG.ILARIS.xd20_choice,
-            checked_xd20: '1',
+            checked_xd20: this.initialXd20,
             choices_schips: CONFIG.ILARIS.schips_choice,
             checked_schips: '0',
             hasSchips,

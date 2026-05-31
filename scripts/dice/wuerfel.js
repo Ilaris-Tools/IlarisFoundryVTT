@@ -1,6 +1,6 @@
 import { openCombatDialog } from '../combat/combat-api.js'
 import { openSkillDialog } from '../skills/skills-api.js'
-import { calculate_diceschips, roll_crit_message } from './wuerfel_misc.js'
+import { roll_crit_message } from './wuerfel_misc.js'
 
 export async function wuerfelwurf(target, actor) {
     console.log(target)
@@ -8,7 +8,6 @@ export async function wuerfelwurf(target, actor) {
     let systemData = actor.system
     let rolltype = target.dataset.rolltype
     console.log('ILARIS | wuerfelwurf triggered', target, rolltype)
-    let globalermod = systemData.abgeleitete.globalermod
     let nahkampfmod = systemData.modifikatoren.nahkampfmod
     let pw = 0
     let label = 'Probe'
@@ -134,85 +133,17 @@ export async function wuerfelwurf(target, actor) {
     } else if (rolltype == 'simpleprobe_diag') {
         label = target.dataset.name
         pw = Number(target.dataset.pw)
-        let probentyp = target.dataset.probentyp
+        const probentyp = target.dataset.probentyp
         let spezialmod = 0
         if (probentyp == 'nahkampf') {
             spezialmod = nahkampfmod
         }
-        let xd20 = '1'
-        if (target.dataset.xd20 == '0') {
-            xd20 = '0'
-        }
-        const html = await renderTemplate(
-            'systems/Ilaris/scripts/dice/templates/probendiag_attribut.hbs',
-            {
-                choices_xd20: CONFIG.ILARIS.xd20_choice,
-                checked_xd20: xd20,
-                choices_schips: CONFIG.ILARIS.schips_choice,
-                checked_schips: '0',
-                rollModes: CONFIG.Dice.rollModes,
-                defaultRollMode: game.settings.get('core', 'rollMode'),
-                dialogId: dialogId,
-            },
-        )
-        await foundry.applications.api.DialogV2.wait({
-            window: { title: 'Probe ( ' + label + ')' },
-            content: html,
-            buttons: [
-                {
-                    action: 'ok',
-                    icon: '<i><img class="button-icon" src="systems/Ilaris/assets/game-icons.net/rolling-dices.png"></i>',
-                    label: 'OK',
-                    default: true,
-                    callback: async (event, button, dialog) => {
-                        let text = ''
-                        let dice_number = 0
-                        let discard_l = 0
-                        let discard_h = 0
-                        ;[text, dice_number, discard_l, discard_h] = calculate_diceschips(
-                            dialog,
-                            text,
-                            actor,
-                            dialogId,
-                        )
-                        let hohequalitaet = 0
-                        const hohequalitaetInput = dialog.querySelector(
-                            `#hohequalitaet-${dialogId}`,
-                        )
-                        if (hohequalitaetInput) {
-                            hohequalitaet = Number(hohequalitaetInput.value)
-                            if (hohequalitaet != 0) {
-                                text = text.concat(`Hohe Qualität: ${hohequalitaet}\n`)
-                            }
-                        }
-                        let modifikator = 0
-                        const modInput = dialog.querySelector(`#modifikator-${dialogId}`)
-                        if (modInput) {
-                            modifikator = Number(modInput.value)
-                            if (modifikator != 0) {
-                                text = text.concat(`Modifikator: ${modifikator}\n`)
-                            }
-                        }
-                        let rollmode = ''
-                        const rollModeInput = dialog.querySelector('#rollMode')
-                        if (rollModeInput) {
-                            rollmode = rollModeInput.value
-                        }
-                        hohequalitaet *= -4
-
-                        let dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`
-                        let formula = `${dice_form} + ${pw} + ${globalermod} + ${hohequalitaet} + ${modifikator} + ${spezialmod}`
-                        // Critfumble & Message
-                        await roll_crit_message(formula, label, text, speaker, rollmode)
-                    },
-                },
-                {
-                    action: 'cancel',
-                    icon: '<i class="fas fa-times"></i>',
-                    label: 'Abbrechen',
-                },
-            ],
-            rejectClose: false,
+        const xd20 = target.dataset.xd20 == '0' ? '0' : '1'
+        await openSkillDialog(actor, {
+            probeType: 'simple',
+            fertigkeitName: label,
+            pw: pw + spezialmod,
+            initialXd20: xd20,
         })
     }
 }

@@ -47,6 +47,8 @@ async function isWorldUiVisible(page: Page): Promise<boolean> {
 }
 
 export async function loginAndJoinWorld(page: Page, config: FoundryCredentials = foundryConfig) {
+    await registerFoundryOverlayHandlers(page)
+
     await page.goto(config.url, { waitUntil: 'domcontentloaded' })
 
     // Foundry redirects asynchronously from / to /join, /game, or /setup
@@ -98,16 +100,7 @@ export async function loginAndJoinWorld(page: Page, config: FoundryCredentials =
         await passwordField.fill(config.password)
     }
 
-    // Dismiss Foundry resolution / compatibility warnings programmatically
-    await page
-        .evaluate(() => {
-            document
-                .querySelectorAll(
-                    '#notifications .notification, #notifications li, .notifications-list li',
-                )
-                .forEach((el) => el.remove())
-        })
-        .catch(() => {})
+    await dismissFoundryCompatibilityWarnings(page)
 
     // Click Join and wait for the page to navigate to /game
     await page.getByRole('button', { name: /join game session/i }).click()
@@ -144,21 +137,55 @@ export async function loginAndJoinWorld(page: Page, config: FoundryCredentials =
         { timeout: 30000 },
     )
 
+    await dismissFoundryCompatibilityWarnings(page)
+
     // Explicitly dismiss the breaking-change dialog that may have appeared during startup
     // (the dialog is rendered asynchronously after game.ready via fetch + enrichHTML).
     await dismissBreakingChangeDialogIfPresent(page)
+}
 
-    // Also register a handler for any subsequent appearance mid-test.
-    // addLocatorHandler fires before Playwright UI actions, so it complements the
-    // explicit check above for pages that are idle while another page drives the test.
+async function registerFoundryOverlayHandlers(page: Page): Promise<void> {
+    // addLocatorHandler runs before later Playwright actions and keeps transient Foundry
+    // overlays from covering click targets during E2E interaction.
     await page.addLocatorHandler(page.locator('.ilaris-changelog-notification'), async (dialog) => {
         const btn = dialog.locator(
             'button[data-action="acknowledge"], button:has-text("Verstanden")',
         )
         if (await btn.isVisible().catch(() => false)) {
             await btn.click()
+            return
         }
+
+        await dialog.evaluate((element) => element.remove()).catch(() => {})
     })
+
+    const compatibilityWarning = page
+        .locator('#notifications .notification, #notifications li, .notifications-list li')
+        .filter({ hasText: /unsupported on chromium version less than/i })
+        .first()
+
+    await page.addLocatorHandler(compatibilityWarning, async (warning) => {
+        await warning.evaluate((element) => element.remove()).catch(() => {})
+    })
+}
+
+export async function dismissFoundryCompatibilityWarnings(page: Page): Promise<void> {
+    await page
+        .evaluate(() => {
+            const warningPattern = /unsupported on chromium version less than/i
+
+            document
+                .querySelectorAll(
+                    '#notifications .notification, #notifications li, .notifications-list li',
+                )
+                .forEach((element) => {
+                    const text = element.textContent ?? ''
+                    if (warningPattern.test(text)) {
+                        element.remove()
+                    }
+                })
+        })
+        .catch(() => {})
 }
 
 /**

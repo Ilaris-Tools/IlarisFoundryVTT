@@ -400,22 +400,22 @@ for (const char of CHARACTERS) {
                 ).toHaveText(String(char.abgeleitete.dh), { timeout: 5000 })
 
                 // ================================================================
-                // SIDEBAR — MR-Dialog (simpleprobe_diag → legacy Dialog)
+                // SIDEBAR — MR-Dialog (simpleprobe_diag → FertigkeitDialog AppV2)
                 // ================================================================
 
                 await actorWindow
                     .locator('.attribute-wrapper[data-rolltype="simpleprobe_diag"]')
                     .click()
 
-                // Legacy Dialog renders as .window-app; match by contained text "Magierresistenz".
+                // FertigkeitDialog (AppV2) renders as .application.ilaris.fertigkeit-dialog.
                 const mrDialog = page
-                    .locator('.window-app')
-                    .filter({ hasText: 'Magierresistenz' })
+                    .locator('.application.ilaris.fertigkeit-dialog')
+                    .filter({ hasText: 'Magieresistenz' })
                     .last()
                 await expect(mrDialog).toBeVisible({ timeout: 15000 })
-                await expect(mrDialog).toContainText('Magierresistenz', { timeout: 5000 })
+                await expect(mrDialog).toContainText('Magieresistenz', { timeout: 5000 })
 
-                await page.keyboard.press('Escape')
+                await mrDialog.locator('button[data-action="close"]').click()
                 await expect(mrDialog).not.toBeVisible({ timeout: 5000 })
 
                 // ================================================================

@@ -163,6 +163,36 @@ Im Ilaris-Code verwendete Werte: **2 → `"add"`**, **4 → `"upgrade"`**, **5 �
 - **Wer**: code specialist
 - **Depends on**: Schritte 1-7 (separate Phase)
 
+### Phase 5: Probe-Dialoge auf AppV2 mit PARTS upgraden
+
+#### Hintergrund
+
+Nach Phase 4 verwendeten die migrierten Dialoge `DialogV2.wait()` — ein flaches single-column Rendering ohne PARTS. Damit fehlte die rechte Seite (Summary-Spalte), die `FernkampfAngriffDialog` und `FertigkeitDialog` über `PARTS = { settings, summaries }` bereitstellen.
+
+Die CSS-Klasse `.ilaris.combat-dialog` setzt `window-content` auf `display: flex; flex-direction: row`, was erst durch AppV2-PARTS greift. `DialogV2.wait()` rendert keine PARTS und kennt diese CSS-Struktur nicht.
+
+**Referenz-Implementierung**: `FertigkeitDialog` (`scripts/skills/dialogs/fertigkeit.js`) — bereits korrekt mit `PARTS = { settings, summaries }` und Live-Preview im rechten Summary-Panel.
+
+#### Schritt 9 — `simpleprobe_diag` → `openSkillDialog`
+
+- **Was**: Den `DialogV2.wait()`-Block für `simpleprobe_diag` durch `openSkillDialog` ersetzen, das `FertigkeitDialog` mit zwei Spalten (settings + summaries) öffnet.
+    - `FertigkeitDialog` erhält Option `initialXd20` (default `'1'`) für Proben die 1W20 voraussetzen (Kreaturen).
+    - `spezialmod` (nahkampfmod) wird in `pw + spezialmod` eingerechnet.
+- **Wo**:
+    - `scripts/dice/wuerfel.js` (simpleprobe_diag-Block)
+    - `scripts/skills/dialogs/fertigkeit.js` (initialXd20-Option)
+- **Wer**: code specialist
+- **Depends on**: Phase 4 abgeschlossen
+- **Status**: ✅ ERLEDIGT
+
+#### Nicht migriert: `simpleformula_diag` (bleibt `DialogV2.wait()`)
+
+- **Begründung**: Rollt eine generische Formel ohne PW-Kontext. Kein Summary-Panel sinnvoll (keine Probenwert-Berechnung). `DialogV2.wait()` ist hier korrekt und ausreichend.
+
+#### Nicht migriert: `handleAkrobatikDefense` (bleibt `DialogV2.wait()`)
+
+- **Begründung**: Erstellt ein **spezifisches** Kampf-Chat-Message mit Angriff-vs-Verteidigung-Vergleich, der außerhalb des `FertigkeitDialog`-Workflows liegt. Eine vollständige Konvertierung zu `AkrobatikDefenseDialog extends CombatDialog` ist möglich, aber komplex und in v14 nicht dringend. Kandidat für zukünftigen Schritt wenn Bedarf besteht.
+
 ---
 
 ## 6. Validation Plan

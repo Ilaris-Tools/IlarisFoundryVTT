@@ -170,11 +170,11 @@ Attribute erscheinen alphabetisch nach Schlüssel: CH, FF, GE, IN, KK, KL, KO, M
 
 ### SIDEBAR — MR-Dialog (simpleprobe_diag)
 
-| Nr  | Schritt                                                        | Erwartetes Ergebnis                                           |
-| --- | -------------------------------------------------------------- | ------------------------------------------------------------- |
-| MR1 | `.attribute-wrapper[data-rolltype="simpleprobe_diag"]` klicken | Legacy-Dialog öffnet; `.window-app` enthält "Magierresistenz" |
-| MR2 | Inhalt prüfen                                                  | Text "Magierresistenz" sichtbar                               |
-| MR3 | Escape drücken                                                 | Dialog nicht mehr sichtbar                                    |
+| Nr  | Schritt                                                        | Erwartetes Ergebnis                                          |
+| --- | -------------------------------------------------------------- | ------------------------------------------------------------ |
+| MR1 | `.attribute-wrapper[data-rolltype="simpleprobe_diag"]` klicken | Legacy-Dialog öffnet; `.window-app` enthält "Magieresistenz" |
+| MR2 | Inhalt prüfen                                                  | Text "Magieresistenz" sichtbar                               |
+| MR3 | Escape drücken                                                 | Dialog nicht mehr sichtbar                                   |
 
 ### SIDEBAR — Wundabzüge ignorieren
 
@@ -227,7 +227,7 @@ Attribute erscheinen alphabetisch nach Schlüssel: CH, FF, GE, IN, KK, KL, KO, M
 | Risiko                                 | Mitigierung                                                    |
 | -------------------------------------- | -------------------------------------------------------------- |
 | FilePicker-Struktur je Foundry-Version | API-Fallback via `actor.update({ img: ... })` implementiert    |
-| Legacy Dialog CSS-Klasse für MR        | Breiter Selektor `.window-app:has-text("Magierresistenz")`     |
+| Legacy Dialog CSS-Klasse für MR        | Breiter Selektor `.window-app:has-text("Magieresistenz")`      |
 | LEP-System aktiv                       | Guard-Prüfung am Testbeginn; Wundmalus-Assertions übersprungen |
 | triStateClick Race Condition           | Nach jedem Klick `expect().toHaveClass()` mit 5 s Timeout      |
 | AppV2 Re-Render nach Input-Tab         | `toHaveValue()` mit 10 s Timeout für Eingabe-Assertions        |

@@ -1,5 +1,10 @@
 # Changelog
 
+    [chromium] › e2e\cases\e2e-010-zielauswahl-verteidigung-schaden\e2e-010-zielauswahl-verteidigung-schaden.spec.ts:68:5 › E2E-010 Zielauswahl, Verteidigung und Schaden › Angriff sendet Defense-Prompt, Ziel verteidigt, Ergebnis und Wundwert passen
+    [chromium] › e2e\cases\e2e-011-multiplayer-verteidigung-gegenangriff\e2e-011-multiplayer-verteidigung-gegenangriff.spec.ts:109:5 › E2E-011 Multiplayer: Verteidigung und Gegenangriff › GM greift an → Player3 verteidigt und greift zurück → beide Wundwerte korrekt
+    [chromium] › e2e\cases\e2e-013-inventar-geld-gegenstaende\e2e-013-inventar-geld-gegenstaende.spec.ts:73:5 › E2E-013 Inventar-Tab — Geld und Gegenstände › Geld normalisieren, Gegenstand anlegen/löschen, Behälter anlegen, Inhalt legen, umgekehrt löschen
+    [chromium] › e2e\cases\e2e-015-effekte-tab\e2e-015-effekte-tab.spec.ts:49:5 › E2E-015 Effekte-Tab › Vorteil-Effekte ohne Löschen-Button, Testeffekt anlegen mit Dauer, löschen
+
 ## v14
 
 ### v14.0
