@@ -344,36 +344,36 @@ export class FernkampfAngriffDialog extends CombatDialog {
         let licht_angepasst = Number(manoever.lcht.angepasst)
         if (licht == 4) {
             mod_at -= 32
-            text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]}\n`)
+            text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]}: -32\n`)
         } else if (licht == 3) {
             if (licht_angepasst == 0) {
                 mod_at -= 16
-                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]}\n`)
+                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]}: -16\n`)
             } else if (licht_angepasst == 1) {
                 mod_at -= 8
-                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst I)\n`)
+                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst I): -8\n`)
             } else if (licht_angepasst == 2) {
                 mod_at -= 4
-                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst II)\n`)
+                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst II): -4\n`)
             }
         } else if (licht == 2) {
             if (licht_angepasst == 0) {
                 mod_at -= 8
-                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]}\n`)
+                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]}: -8\n`)
             } else if (licht_angepasst == 1) {
                 mod_at -= 4
-                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst I)\n`)
+                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst I): -4\n`)
             } else if (licht_angepasst == 2) {
-                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst II)\n`)
+                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst II): 0\n`)
             }
         } else if (licht == 1) {
             if (licht_angepasst == 0) {
                 mod_at -= 4
-                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]}\n`)
+                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]}: -4\n`)
             } else if (licht_angepasst == 1) {
-                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst I)\n`)
+                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst I): 0\n`)
             } else if (licht_angepasst == 2) {
-                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst II)\n`)
+                text_at = text_at.concat(`${CONFIG.ILARIS.lcht_choice[licht]} (Angepasst II): 0\n`)
             }
         }
 
@@ -392,34 +392,46 @@ export class FernkampfAngriffDialog extends CombatDialog {
                     reflex_change = 'bewegung'
                 }
             }
-            mod_at -= 4 * (wetter + bewegung)
+            const modWeatherMove = 4 * (wetter + bewegung)
+            mod_at -= modWeatherMove
             if (wetter > 0 && reflex_change != 'wetter') {
-                text_at = text_at.concat(`${CONFIG.ILARIS.wttr_choice[wetter]}\n`)
+                text_at = text_at.concat(
+                    `${CONFIG.ILARIS.wttr_choice[wetter]}: -${modWeatherMove}\n`,
+                )
             } else if (reflex_change == 'wetter') {
-                text_at = text_at.concat(`${CONFIG.ILARIS.wttr_choice[wetter]} (Reflexschuss)\n`)
+                text_at = text_at.concat(
+                    `${CONFIG.ILARIS.wttr_choice[wetter]} (Reflexschuss): -${modWeatherMove}\n`,
+                )
             }
             if (bewegung > 0 && reflex_change != 'bewegung') {
-                text_at = text_at.concat(`${CONFIG.ILARIS.bwng_choice[bewegung]}\n`)
+                text_at = text_at.concat(
+                    `${CONFIG.ILARIS.bwng_choice[bewegung]}: -${modWeatherMove}\n`,
+                )
             } else if (reflex_change == 'bewegung') {
-                text_at = text_at.concat(`${CONFIG.ILARIS.bwng_choice[bewegung]} (Reflexschuss)\n`)
+                text_at = text_at.concat(
+                    `${CONFIG.ILARIS.bwng_choice[bewegung]} (Reflexschuss): -${modWeatherMove}\n`,
+                )
             }
         } else {
             if (wetter > 0) {
-                mod_at -= 4 * wetter
-                text_at = text_at.concat(`${CONFIG.ILARIS.wttr_choice[wetter]}\n`)
+                const modWeather = 4 * wetter
+                mod_at -= modWeather
+                text_at = text_at.concat(`${CONFIG.ILARIS.wttr_choice[wetter]}: -${modWeather}\n`)
             }
             if (bewegung > 0) {
-                mod_at -= 4 * bewegung
-                text_at = text_at.concat(`${CONFIG.ILARIS.bwng_choice[bewegung]}\n`)
+                const modMove = 4 * bewegung
+                mod_at -= modMove
+                text_at = text_at.concat(`${CONFIG.ILARIS.bwng_choice[bewegung]}: -${modMove}\n`)
             }
         }
 
         // Deckung dckg
         let deckung = Number(manoever.dckg.selected)
         if (deckung < 0) {
-            mod_at += 4 * deckung
+            const modDckg = 4 * deckung
+            mod_at += modDckg
             text_at = text_at.concat(
-                `${CONFIG.ILARIS.label['dckg']}: ${CONFIG.ILARIS.dckg_choice[deckung]}\n`,
+                `${CONFIG.ILARIS.label['dckg']}: ${CONFIG.ILARIS.dckg_choice[deckung]}: ${modDckg}\n`,
             )
         }
         // Kampfgetümmel kgtl
