@@ -25,6 +25,26 @@ global.foundry = {
         }),
         mergeObject: (target, source) => Object.assign({}, target, source),
     },
+    applications: {
+        api: {
+            ApplicationV2: class ApplicationV2 {
+                constructor(options = {}) {
+                    this.options = options
+                    this.tabGroups = {}
+                }
+
+                async _prepareContext() {
+                    return {}
+                }
+
+                _prepareTabs() {
+                    return {}
+                }
+            },
+            HandlebarsApplicationMixin: (BaseApplication) => class extends BaseApplication {},
+            DialogV2: class DialogV2 {},
+        },
+    },
 }
 
 // Mock Foundry VTT base classes

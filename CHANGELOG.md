@@ -4,36 +4,25 @@
 
 ### v13.1
 
-#### Datenmodell-Normalisierung (ModelData)
+#### Breaking Change
 
-- Neue versionierte Normalisierungs-Migration eingeführt (`worldSchemaVersion` Target `13.2.0`)
-- Migration läuft GM-only, idempotent und verarbeitet:
-    - World Items
-    - Actor Embedded Items
-    - entsperrte Ilaris-Compendiums (Item/Actor)
-- Kritischer Fix für `effect-item` Typvergleich umgesetzt (`effect-item` statt `effectItem`)
-- Explizite Foundry TypeDataModel-Registrierung ergänzt:
-    - eigene, handgeschriebene DataModel-Klasse pro Actor- und Item-Typ
-    - Registrierung über `CONFIG.Actor.dataModels` und `CONFIG.Item.dataModels`
-    - strenge, verschachtelte Schemas via `SchemaField`/`NumberField`/`StringField`/`BooleanField` statt generischer Laufzeit-Ableitung
+**BITTE BEACHTEN**, das System benutzt jetzt statt einer template.json die empfohlenen data-models. Es haben sich sich auch ein paar Propertynames geändert, die Migration dafür passiert im Hintergrund. Falls doch auffällt, dass etwas nicht ganz funktioniert bitte die Charaktere und Hausregeln neuimportieren/updaten und überprüfen, ob die Voraussetzungen bei Manövern stimmen, der AT-WM bei Waffen stimmt
 
-#### Breaking/Technische Änderungen
+##### Nutzerrelevante Features
 
-- Feldharmonisierung bei Manövern: `system.voraussetzungen` -> `system.voraussetzung`
-- Feldharmonisierung bei abgeleiteten Werten: `system.name` -> `system.key`
-- Alias-Normalisierung bei Angriffen: `system.wm` -> `system.wm_at`
-- Runtime-Persistenzfelder bei Waffen bereinigt: `system.rw_mod` und `system.computed` werden entfernt
+- Neues Actor-DataModel mit Migration weg von Legacy-Strukturen.
+- Überarbeitete Kampf- und Würfeldialoge mit einheitlicher Vorschau-Logik.
+- Neue Hook-Struktur für Kampf- und Fertigkeitsdialoge für bessere Erweiterbarkeit.
+- Ilaris-Systemeinstellungen jetzt direkt als Dialog im System.
+- Verbesserte Tastaturbedienung im Charakterbogen, inklusive besserem Autofokus.
+- Verbesserter XML-/Charakter-Import, inklusive Tutorialmaterial.
 
-#### Kompatibilität
+##### Technik und Qualität
 
-- Legacy-Lesepfade bleiben aktiv (z. B. Manöver-Voraussetzungen alt/neu)
-- Alte Daten werden beim Migrationslauf automatisch angehoben
-- XML-Regelimporter schreibt Manöver-Voraussetzungen in das neue Feld `system.voraussetzung`
-
-#### Qualitätsabsicherung
-
-- Unit-Test-Suite um migrationsspezifische Normalisierungs-Tests erweitert
-- Bestehende Jest-Suite weiterhin grün
+- Playwright/E2E-Testsetup mit mehreren neuen Regressionstests.
+- Templates stärker von JS nach HBS ausgelagert.
+- Aufräumen von Legacy-Code, Ordnerstruktur und Benennungen.
+- Anpassungen an Build-/Deploy-Workflows und Agent-/Copilot-Infrastruktur.
 
 ### v13.0.5
 

@@ -143,6 +143,41 @@ export async function loginAndJoinWorld(page: Page, config: FoundryCredentials =
         undefined,
         { timeout: 30000 },
     )
+
+    // Explicitly dismiss the breaking-change dialog that may have appeared during startup
+    // (the dialog is rendered asynchronously after game.ready via fetch + enrichHTML).
+    await dismissBreakingChangeDialogIfPresent(page)
+
+    // Also register a handler for any subsequent appearance mid-test.
+    // addLocatorHandler fires before Playwright UI actions, so it complements the
+    // explicit check above for pages that are idle while another page drives the test.
+    await page.addLocatorHandler(page.locator('.ilaris-changelog-notification'), async (dialog) => {
+        const btn = dialog.locator(
+            'button[data-action="acknowledge"], button:has-text("Verstanden")',
+        )
+        if (await btn.isVisible().catch(() => false)) {
+            await btn.click()
+        }
+    })
+}
+
+/**
+ * Dismisses the Ilaris breaking-change notification dialog if it is currently visible.
+ * Waits briefly to account for the async render (fetch + enrichHTML) that happens
+ * after game.ready. Safe to call any time; does nothing if the dialog never appears.
+ */
+export async function dismissBreakingChangeDialogIfPresent(page: Page): Promise<void> {
+    const dialog = page.locator('.ilaris-changelog-notification')
+    const appeared = await dialog
+        .waitFor({ state: 'visible', timeout: 2000 })
+        .then(() => true)
+        .catch(() => false)
+    if (!appeared) return
+    await dialog
+        .locator('button[data-action="acknowledge"], button:has-text("Verstanden")')
+        .click()
+        .catch(() => {})
+    await dialog.waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {})
 }
 
 export async function clearChatLog(page: Page) {

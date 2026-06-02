@@ -4,7 +4,7 @@ import { foundryConfig, loginAndJoinWorld } from '../../shared/fixtures/foundry'
 
 const ACTOR_NAME = 'E2E Migration Legacy Actor'
 const WORLD_ITEM_NAME = 'E2E Migration Legacy World Item'
-const FORCED_OLD_SCHEMA_VERSION = '13.1.0'
+const FORCED_OLD_SCHEMA_VERSION = '13.0.0'
 
 test.describe('E2E-020 Startup Migration Legacy Types', () => {
     let actorId: string | null = null

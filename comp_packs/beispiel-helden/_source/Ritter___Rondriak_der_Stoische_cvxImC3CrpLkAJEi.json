@@ -1693,7 +1693,7 @@
       "system": {
         "haerte": 0,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6",
         "fertigkeit": "Handgemenge",
         "talent": "Unbewaffnet",
         "rw": 0,
@@ -1764,7 +1764,7 @@
       "system": {
         "haerte": 10,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "2W6+2",
         "fertigkeit": "Klingenwaffen",
         "talent": "Einhandklingenwaffen",
         "rw": 1,
@@ -1810,7 +1810,7 @@
       "system": {
         "haerte": 8,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6",
         "fertigkeit": "Handgemenge",
         "talent": "Schilde",
         "rw": 0,
@@ -1865,7 +1865,7 @@
       "system": {
         "haerte": 5,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "3W6+1",
         "fertigkeit": "Stangenwaffen",
         "talent": "Lanzenreiten",
         "rw": 2,
@@ -1911,7 +1911,7 @@
       "system": {
         "haerte": 13,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "2W6+0",
         "fertigkeit": "Athletik",
         "talent": "Reiten",
         "rw": 1,

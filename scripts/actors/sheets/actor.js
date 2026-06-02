@@ -660,8 +660,9 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
                             typeChanged || this._needsItemUpdate(actorItem, compendiumItem)
 
                         if (needsUpdate) {
-                            // For vorteile, delete and re-add from compendium
-                            if (compendiumItem.type === 'vorteil') {
+                            // For vorteile or type changes, delete and re-add from compendium
+                            // (Foundry VTT does not allow changing an item's type via update)
+                            if (compendiumItem.type === 'vorteil' || typeChanged) {
                                 itemsToDelete.push(actorItem.id)
                                 itemsToAdd.push(compendiumItem.toObject())
                                 updatedCount++
@@ -671,11 +672,6 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
                                 const updateData = {
                                     _id: actorItem.id,
                                     'system.text': compendiumItem.system.text,
-                                }
-
-                                // Update type if it changed
-                                if (typeChanged) {
-                                    updateData['type'] = compendiumItem.type
                                 }
 
                                 // Add type-specific fields (use compendiumItem.type since that's the correct type)

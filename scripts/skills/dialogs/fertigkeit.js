@@ -9,7 +9,7 @@ const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api
  */
 export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) {
     static DEFAULT_OPTIONS = {
-        classes: ['ilaris', 'fertigkeit-dialog'],
+        classes: ['ilaris', 'combat-dialog', 'fertigkeit-dialog'],
         position: { width: 900, height: 'auto' },
         window: {
             title: 'Fertigkeitsprobe',
@@ -21,8 +21,11 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
     }
 
     static PARTS = {
-        form: {
+        settings: {
             template: 'systems/Ilaris/scripts/skills/templates/dialogs/fertigkeit.hbs',
+        },
+        summaries: {
+            template: 'systems/Ilaris/scripts/combat/templates/dialogs/summaries.hbs',
         },
     }
 
@@ -44,6 +47,8 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
         this.speaker = ChatMessage.getSpeaker({ actor: this.actor })
         this.dialogId = `dialog-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`
         this._hasEmittedRenderedHook = false
+        this.summary = this.getDefaultSummaryContext()
+        this._initialPreviewPromise = null
     }
 
     static #onPreviewClick(event, target) {
@@ -84,16 +89,36 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
             rollModes: CONFIG.Dice.rollModes,
             defaultRollMode: game.settings.get('core', 'rollMode'),
             dialogId: this.dialogId,
+            summary: this.summary,
         }
+    }
+
+    async _preparePartContext(partId, context, options) {
+        let partContext = context
+        if (typeof super._preparePartContext === 'function') {
+            partContext = await super._preparePartContext(partId, context, options)
+        }
+
+        if (partId === 'summaries') {
+            partContext.summary = this.summary || this.getDefaultSummaryContext()
+        }
+
+        return partContext
     }
 
     async _onRender(context, options) {
         await super._onRender(context, options)
 
         const html = this.element
+        const renderedParts = options?.parts ?? []
+        const isSummariesOnlyRender =
+            Array.isArray(renderedParts) &&
+            renderedParts.length > 0 &&
+            renderedParts.every((part) => part === 'summaries')
 
-        // Store modifier element reference
-        this._modifierElement = html.querySelector('#modifier-summary')
+        if (isSummariesOnlyRender) {
+            return
+        }
 
         // Add listeners for real-time preview updates
         const inputs = html.querySelectorAll('input, select')
@@ -102,12 +127,16 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
             input.addEventListener('input', () => this._handleInputChange())
         })
 
-        // Initial preview update
-        const statePayload = this._updateModifierDisplay('render')
-
-        if (!this._hasEmittedRenderedHook) {
-            Hooks.callAll('Ilaris.skillDialogRendered', this, statePayload)
-            this._hasEmittedRenderedHook = true
+        if (!this._initialPreviewPromise) {
+            this._initialPreviewPromise = Promise.resolve()
+                .then(() => this._updateModifierDisplay('render'))
+                .then((statePayload) => {
+                    if (!this._hasEmittedRenderedHook) {
+                        Hooks.callAll('Ilaris.skillDialogRendered', this, statePayload)
+                        this._hasEmittedRenderedHook = true
+                    }
+                    return statePayload
+                })
         }
     }
 
@@ -116,70 +145,16 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
             clearTimeout(this._updateTimeout)
         }
         this._updateTimeout = setTimeout(() => {
-            this._updateModifierDisplay('change')
+            void this._updateModifierDisplay('change')
         }, 150)
     }
 
     /**
      * Calculate current modifiers and update the preview display
      */
-    _updateModifierDisplay(reason = 'change') {
-        if (!this._modifierElement) {
-            return
-        }
-
+    async _updateModifierDisplay(reason = 'change') {
         const modifierState = this._calculateModifiers()
-        const {
-            diceFormula,
-            totalMod,
-            modLines,
-            finalPW,
-            effectivePW,
-            label,
-            noTalentSelected,
-            usesTalent,
-        } = modifierState
-        const formattedDice = formatDiceFormula(diceFormula)
-        const finalFormula =
-            finalPW >= 0 ? `${formattedDice}+${finalPW}` : `${formattedDice}${finalPW}`
-
-        let summary = '<div class="all-summaries">'
-        summary +=
-            '<div class="modifier-summary probe-summary clickable-summary" data-action="previewClick">'
-        summary += `<div class="flex_space-between_center"><h4 style="width:100%">🎲 ${label}: ${finalFormula}</h4><i class="custom-icon-without-hover"></i></div>`
-        summary += '<div class="modifier-list">'
-
-        // Base PW - show PW(T) if talent is selected
-        const pwLabel = usesTalent ? 'Basis PW(T)' : 'Basis PW'
-        summary += `<div class="modifier-item base-value">${pwLabel}: <span>${effectivePW}</span></div>`
-
-        // Status modifiers
-        const globalermod = this.actor.system.abgeleitete.globalermod || 0
-        if (globalermod !== 0) {
-            const color = globalermod > 0 ? 'positive' : 'negative'
-            const sign = globalermod > 0 ? '+' : ''
-            summary += `<div class="modifier-item ${color}">Status (Wunden/Furcht): <span>${sign}${globalermod}</span></div>`
-        }
-
-        // Individual modifier lines
-        modLines.forEach((line) => {
-            if (line.value !== 0) {
-                const color = line.value > 0 ? 'positive' : 'negative'
-                const sign = line.value > 0 ? '+' : ''
-                summary += `<div class="modifier-item ${color}">${line.label}: <span>${sign}${line.value}</span></div>`
-            }
-        })
-
-        summary += '<hr>'
-
-        // Total modifiers
-        if (totalMod !== 0) {
-            const totalColor = totalMod > 0 ? 'positive' : 'negative'
-            const totalSign = totalMod > 0 ? '+' : ''
-            summary += `<div class="modifier-item total ${totalColor}"><strong>Addierte Modifikatoren: ${totalSign}${totalMod}</strong></div>`
-        }
-
-        summary += '</div></div></div>'
+        const { noTalentSelected } = modifierState
 
         // Update talent warning visibility in template
         const talentWarning = this.element.querySelector('.talent-warning')
@@ -191,13 +166,79 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
             }
         }
 
-        this._modifierElement.innerHTML = summary
+        this.summary = this._buildSummaryContext(modifierState)
+        await this.render({ parts: ['summaries'] })
 
         const statePayload = this._buildStatePayload(modifierState, reason)
         this._lastStatePayload = statePayload
         Hooks.callAll('Ilaris.skillDialogStateChanged', this, statePayload)
 
         return statePayload
+    }
+
+    getDefaultSummaryContext() {
+        return {
+            title: 'Würfelaktionen:',
+            sections: [],
+            isEmpty: true,
+            isError: false,
+            message: 'Wird berechnet...',
+        }
+    }
+
+    _buildSummaryContext(modifierState) {
+        const { diceFormula, totalMod, modLines, finalPW, effectivePW, label, usesTalent } =
+            modifierState
+        const formattedDice = formatDiceFormula(diceFormula)
+        const finalFormula =
+            finalPW >= 0 ? `${formattedDice}+${finalPW}` : `${formattedDice}${finalPW}`
+        const globalermod = this.actor.system.abgeleitete.globalermod || 0
+
+        return {
+            title: 'Würfelaktionen:',
+            isEmpty: false,
+            isError: false,
+            sections: [
+                {
+                    action: 'previewClick',
+                    cssClass: 'modifier-summary probe-summary clickable-summary',
+                    heading: `🎲 ${label}: ${finalFormula}`,
+                    rows: [
+                        {
+                            label: usesTalent ? 'Basis PW(T)' : 'Basis PW',
+                            value: `${effectivePW}`,
+                            cssClass: 'modifier-item base-value',
+                        },
+                        globalermod === 0
+                            ? null
+                            : {
+                                  label: 'Status (Wunden/Furcht)',
+                                  value: `${globalermod > 0 ? '+' : ''}${globalermod}`,
+                                  cssClass: `modifier-item ${globalermod > 0 ? 'positive' : 'negative'}`,
+                              },
+                        ...modLines
+                            .filter((line) => line.value !== 0)
+                            .map((line) => ({
+                                label: line.label,
+                                value: `${line.value > 0 ? '+' : ''}${line.value}`,
+                                cssClass: `modifier-item ${line.value > 0 ? 'positive' : 'negative'}`,
+                            })),
+                    ].filter((row) => row),
+                    totalRow:
+                        totalMod === 0
+                            ? null
+                            : {
+                                  text: `Addierte Modifikatoren: ${
+                                      totalMod > 0 ? '+' : ''
+                                  }${totalMod}`,
+                                  cssClass: `modifier-item total ${
+                                      totalMod > 0 ? 'positive' : 'negative'
+                                  }`,
+                              },
+                    showDivider: true,
+                },
+            ],
+        }
     }
 
     _buildStatePayload(modifierState, reason = 'change') {

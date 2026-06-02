@@ -274,6 +274,11 @@ export class CombatItem extends IlarisItem {
             'nahkampfwaffe' === this.type ||
             ('angriff' === this.type && this.system.typ === 'Nah')
         ) {
+            console.log(
+                'Setting melee maneuvers for item:',
+                this.name,
+                'angriff' === this.type && this.system.typ === 'Nah',
+            )
             // Merge defaults into existing, so opening the dialog doesn't reset stored values
             // (e.g. lcht.angepasst from "Angepasst (Dunkelheit)")
             this.system.manoever = foundry.utils.mergeObject(

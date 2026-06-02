@@ -2321,7 +2321,7 @@
       "system": {
         "haerte": 0,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6",
         "fertigkeit": "Handgemenge",
         "talent": "Unbewaffnet",
         "rw": 0,
@@ -2384,7 +2384,7 @@
       "system": {
         "haerte": 5,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "2W6+2",
         "fertigkeit": "Stangenwaffen",
         "talent": "Infanteriewaffen und Speere",
         "rw": 1,
