@@ -19,7 +19,7 @@ Generates a Handlebars (`.hbs`) template file with breaking changes extracted fr
 1. Reads the current version from `system.json`
 2. Parses `CHANGELOG.md` to find the "Breaking Change" section for that version (supports flexible heading variants)
 3. Converts the Markdown content to HTML using the `marked` library
-4. Generates a `.hbs` file in `templates/changes/` with the HTML content
+4. Generates a `.hbs` file in `scripts/changelog/templates/` with the HTML content
 5. If no breaking changes are found, it cleans up any existing template for that version
 6. Removes old `.hbs` files from previous versions
 
@@ -53,7 +53,7 @@ Add it to your GitHub Actions workflow or other CI/CD pipeline:
 The script generates a file like:
 
 ```
-templates/changes/breaking-changes-12.3.hbs
+scripts/changelog/templates/breaking-changes-12.3.hbs
 ```
 
 This `.hbs` file contains HTML content converted from Markdown and is automatically loaded by the changelog notification system in FoundryVTT.
@@ -103,7 +103,7 @@ You should run this script:
 
 ### Integration with FoundryVTT
 
-The generated `.hbs` files are served as static files by FoundryVTT. The changelog notification hook (`scripts/hooks/changelog-notification.js`) automatically fetches and displays the appropriate template based on the current system version:
+The generated `.hbs` files are served as static files by FoundryVTT. The changelog notification hook (`scripts/changelog/changelog-notification.js`) automatically fetches and displays the appropriate template based on the current system version:
 
 1. Loads the `.hbs` file as HTML
 2. Applies Foundry's `TextEditor.enrichHTML()` for @UUID links and other enrichment

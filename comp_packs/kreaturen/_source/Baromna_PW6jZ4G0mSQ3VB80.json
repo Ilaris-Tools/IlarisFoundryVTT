@@ -390,7 +390,7 @@
     {
       "_id": "vAVgKNM6W4XZD20V",
       "name": "Zwerge (Gebräuche)",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 10,
@@ -419,7 +419,7 @@
     {
       "_id": "YpXoAhA4mpe5DxCt",
       "name": "Menschenkenntnis",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Menschenkenntnis ist deine Fähigkeit, die Absichten deines Gegenüber zu durchschauen. Damit enttarnst du Lügen und falsche Annäherungsversuche.",
         "pw": 10,
@@ -448,7 +448,7 @@
     {
       "_id": "ETgkPUG6jmzlShNT",
       "name": "Schwimmen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Schwimmen erlaubt eine schnellere Fortbewegung im Wasser und längere Tauchgänge.",
         "pw": 14,
@@ -477,7 +477,7 @@
     {
       "_id": "RgGob7R9VzIZKhKn",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 6,
@@ -506,7 +506,7 @@
     {
       "_id": "urGoln0P9GJ5l9X9",
       "name": "Wahrnehmung",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 8,
@@ -535,7 +535,7 @@
     {
       "_id": "hiCZOpgSQXAgyqKr",
       "name": "Wasser",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

@@ -2,6 +2,28 @@
 
 ## v13
 
+### v13.1
+
+#### Breaking Change
+
+**BITTE BEACHTEN**, das System benutzt jetzt statt einer template.json die empfohlenen data-models. Es haben sich sich auch ein paar Propertynames geändert, die Migration dafür passiert im Hintergrund. Falls doch auffällt, dass etwas nicht ganz funktioniert bitte die Charaktere und Hausregeln neuimportieren/updaten und überprüfen, ob die Voraussetzungen bei Manövern stimmen, der AT-WM bei Waffen stimmt
+
+##### Nutzerrelevante Features
+
+- Neues Actor-DataModel mit Migration weg von Legacy-Strukturen.
+- Überarbeitete Kampf- und Würfeldialoge mit einheitlicher Vorschau-Logik.
+- Neue Hook-Struktur für Kampf- und Fertigkeitsdialoge für bessere Erweiterbarkeit.
+- Ilaris-Systemeinstellungen jetzt direkt als Dialog im System.
+- Verbesserte Tastaturbedienung im Charakterbogen, inklusive besserem Autofokus.
+- Verbesserter XML-/Charakter-Import, inklusive Tutorialmaterial.
+
+##### Technik und Qualität
+
+- Playwright/E2E-Testsetup mit mehreren neuen Regressionstests.
+- Templates stärker von JS nach HBS ausgelagert.
+- Aufräumen von Legacy-Code, Ordnerstruktur und Benennungen.
+- Anpassungen an Build-/Deploy-Workflows und Agent-/Copilot-Infrastruktur.
+
 ### v13.0.5
 
 - Zauberer und Geweither durch Energie, gebundene Energie und Energie zugekauft bestimmen

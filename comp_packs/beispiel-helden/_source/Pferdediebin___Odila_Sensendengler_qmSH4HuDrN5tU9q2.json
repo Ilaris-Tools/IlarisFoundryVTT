@@ -1465,7 +1465,7 @@
     {
       "_id": "6OYrS9dF7MHnznEj",
       "name": "Rosstäuscher",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1492,7 +1492,7 @@
     {
       "_id": "tZnw0fxuusd8hKcy",
       "name": "Sprache: Atak (+Schrift)",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1519,7 +1519,7 @@
     {
       "_id": "RiM8VXD9CLTk2gdZ",
       "name": "Volkslieder",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1551,7 +1551,7 @@
       "system": {
         "haerte": 0,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6",
         "fertigkeit": "Handgemenge",
         "talent": "Unbewaffnet",
         "rw": 0,
@@ -1614,7 +1614,7 @@
       "system": {
         "haerte": 13,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "2W6+0",
         "fertigkeit": "Athletik",
         "talent": "Reiten",
         "rw": 1,
@@ -1669,7 +1669,7 @@
       "system": {
         "haerte": 8,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "2W6",
         "fertigkeit": "Hiebwaffen",
         "talent": "Einhandhiebwaffen",
         "rw": 1,
@@ -1728,7 +1728,7 @@
       "system": {
         "haerte": 8,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "2W6",
         "fertigkeit": "Handgemenge",
         "talent": "Schilde",
         "rw": 0,
@@ -1783,7 +1783,7 @@
       "system": {
         "haerte": 3,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "2W6+1",
         "fertigkeit": "Schusswaffen",
         "talent": "Bögen",
         "rw": 16,

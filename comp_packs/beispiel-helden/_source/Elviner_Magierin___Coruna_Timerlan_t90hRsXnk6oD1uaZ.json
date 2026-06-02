@@ -1440,7 +1440,7 @@
     {
       "_id": "wfgur2pclZ0zhYGu",
       "name": "Sprache: Garethi",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 3,
@@ -1467,7 +1467,7 @@
     {
       "_id": "zcCLmhI0Bg8TtMJD",
       "name": "Schrift: Kusliker Zeichen",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1494,7 +1494,7 @@
     {
       "_id": "biXHF80TXOkahAST",
       "name": "Sprache: Bosparano",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1521,7 +1521,7 @@
     {
       "_id": "cnjHuOQG7SICyhS2",
       "name": "Antimagie",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 6,
@@ -1554,7 +1554,7 @@
     {
       "_id": "K4CT1KURxW9oBiuF",
       "name": "Dämonisch",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 5,
@@ -1587,7 +1587,7 @@
     {
       "_id": "qtIA1xtMHWOcD7LG",
       "name": "Eigenschaften",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 3,
@@ -1620,7 +1620,7 @@
     {
       "_id": "183dvajrc15zX1c0",
       "name": "Einfluss",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1653,7 +1653,7 @@
     {
       "_id": "7OXQBGGihzvklq45",
       "name": "Eis",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1686,7 +1686,7 @@
     {
       "_id": "TZIkeiyeMYYw73Y9",
       "name": "Erz",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 5,
@@ -1719,7 +1719,7 @@
     {
       "_id": "i98DmXLSO6hDCCJ1",
       "name": "Feuer",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 5,
@@ -1752,7 +1752,7 @@
     {
       "_id": "bBfonvKtnAtKrF88",
       "name": "Hellsicht",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 7,
@@ -1785,7 +1785,7 @@
     {
       "_id": "dqgV9BAhTUV7HGiW",
       "name": "Humus",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1818,7 +1818,7 @@
     {
       "_id": "LFNbpFsmqUaRGxzc",
       "name": "Illusion",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1851,7 +1851,7 @@
     {
       "_id": "xe7jPhyfybjBkDu2",
       "name": "Kraft",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1884,7 +1884,7 @@
     {
       "_id": "8rR1jAHC7gh7pWct",
       "name": "Luft",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1917,7 +1917,7 @@
     {
       "_id": "AA9CU5takCgF4Ok8",
       "name": "Temporal",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 5,
@@ -1950,7 +1950,7 @@
     {
       "_id": "9yFsGguODpBcUNzX",
       "name": "Umwelt",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 5,
@@ -1983,7 +1983,7 @@
     {
       "_id": "FZdy272lClsubbyA",
       "name": "Verständigung",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 5,
@@ -2016,7 +2016,7 @@
     {
       "_id": "Mis718BGTEOraXQ5",
       "name": "Verwandlung",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -2049,7 +2049,7 @@
     {
       "_id": "kepPEgKAKxWxlkhP",
       "name": "Wasser",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 6,
@@ -2082,7 +2082,7 @@
     {
       "_id": "l0UbmFWT4aEr3K4N",
       "name": "Kugelzauber",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -2115,7 +2115,7 @@
     {
       "_id": "aBVdwjGQJWSTd7yu",
       "name": "Schalenzauber",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 5,
@@ -2148,7 +2148,7 @@
     {
       "_id": "K3Pb43UWEAP2b7YY",
       "name": "Stabzauber",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 7,
@@ -2566,7 +2566,7 @@
       "system": {
         "haerte": 0,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6",
         "fertigkeit": "Handgemenge",
         "talent": "Unbewaffnet",
         "rw": 0,
@@ -2629,7 +2629,7 @@
       "system": {
         "haerte": 1,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6+1",
         "fertigkeit": "Stangenwaffen",
         "talent": "Infanteriewaffen und Speere",
         "rw": 2,

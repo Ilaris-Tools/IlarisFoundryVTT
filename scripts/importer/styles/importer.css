@@ -1,0 +1,62 @@
+/* ----------------------------------------- */
+/*  Importer Feature Styles                   */
+/* ----------------------------------------- */
+
+/* XML Character Import Button Styles */
+.import-xml-character {
+  margin: 4px 0;
+}
+
+/* XML Character Sync Button Styles */
+.directory-item-controls {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 16px;
+}
+
+.sync-xml-character {
+    font-size: 20px;
+    width: 60px;
+    display: flex;
+    justify-content: center;
+    height: 48px;
+    align-items: center;
+}
+
+.rule-button {
+  margin: 4px 0;
+}
+
+/* ----------------------------------------- */
+/*  Import Loading Overlay                    */
+/* ----------------------------------------- */
+
+#ilaris-import-progress {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 99999;
+}
+
+.ilaris-import-progress-content {
+    background: #1a1a1a;
+    border: 1px solid #956729;
+    border-radius: 6px;
+    padding: 24px 36px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    color: #c9a86c;
+    font-size: 1rem;
+    min-width: 240px;
+    text-align: center;
+}
+
+.ilaris-import-progress-content i {
+    font-size: 2rem;
+    color: #956729;
+}

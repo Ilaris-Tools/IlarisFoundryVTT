@@ -1249,7 +1249,7 @@
     {
       "_id": "kL2wUV3YI32EQDVt",
       "name": "Sprache: Bosparano",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1276,7 +1276,7 @@
     {
       "_id": "KLc2htaq94d3UEA3",
       "name": "Schrift: Ur-Tulamidya-Zeichen",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1303,7 +1303,7 @@
     {
       "_id": "n4M4kLorQYBU24Xz",
       "name": "Schrift: Tulamidya-Zeichen",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1330,7 +1330,7 @@
     {
       "_id": "VKmp8FREB6CkIGid",
       "name": "Schrift: Imperiale Zeichen",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1357,7 +1357,7 @@
     {
       "_id": "2dC0nSvM1cgGJ0S1",
       "name": "Schrift: Kusliker Zeichen",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1384,7 +1384,7 @@
     {
       "_id": "nxKWZlyXeRS0JF5J",
       "name": "Schrift: Zhayad-Zeichen",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1411,7 +1411,7 @@
     {
       "_id": "iFW7jzDS1zDPLbmN",
       "name": "Sprache: Tulamidya",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1438,7 +1438,7 @@
     {
       "_id": "cSHVkczGSss6ACYq",
       "name": "Weinkenner",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1465,7 +1465,7 @@
     {
       "_id": "CaWqU4DabKZzifVT",
       "name": "Sprache: Garethi",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1492,7 +1492,7 @@
     {
       "_id": "VQ9aY6sXtbpiW7kb",
       "name": "Zwölfgöttlicher Ritus",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1525,7 +1525,7 @@
     {
       "_id": "M5gqwqq76oJw5UYn",
       "name": "Schlaf",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1558,7 +1558,7 @@
     {
       "_id": "XNYUzaBlf5g9PuBh",
       "name": "Tod",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 5,
@@ -1591,7 +1591,7 @@
     {
       "_id": "cwfAMUQyZbzztNyy",
       "name": "Vergessen",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 5,
@@ -2389,7 +2389,7 @@
       "system": {
         "haerte": 0,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6",
         "fertigkeit": "Handgemenge",
         "talent": "Unbewaffnet",
         "rw": 0,
@@ -2452,7 +2452,7 @@
       "system": {
         "haerte": 9,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6+1",
         "fertigkeit": "Handgemenge",
         "talent": "Handgemengewaffen",
         "rw": 0,
@@ -2498,7 +2498,7 @@
       "system": {
         "haerte": 5,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6+2",
         "fertigkeit": "Hiebwaffen",
         "talent": "Einhandhiebwaffen",
         "rw": 1,

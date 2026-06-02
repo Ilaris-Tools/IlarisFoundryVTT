@@ -692,7 +692,7 @@
     {
       "_id": "Tbj8UFLF8u1Nl0Gg",
       "name": "Anführen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 15,
@@ -721,7 +721,7 @@
     {
       "_id": "THgvQqzdGM1KcDoj",
       "name": "Einschüchtern",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 15,
@@ -750,7 +750,7 @@
     {
       "_id": "jiS633BgxwJmo6Do",
       "name": "Menschenkenntnis",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 12,
@@ -779,7 +779,7 @@
     {
       "_id": "97iMcvIo4oiaBQL9",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 12,
@@ -808,7 +808,7 @@
     {
       "_id": "RyoI0klqLL3Wu0ys",
       "name": "Überreden",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "",
         "pw": 13,

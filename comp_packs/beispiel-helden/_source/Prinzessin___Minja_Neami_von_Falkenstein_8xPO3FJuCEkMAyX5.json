@@ -1237,7 +1237,7 @@
     {
       "_id": "AiWWfWW2OWk1ZgSu",
       "name": "Haarkünstlerin",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1264,7 +1264,7 @@
     {
       "_id": "XulTPU4LJhN8brLA",
       "name": "Schneiderin",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1291,7 +1291,7 @@
     {
       "_id": "S8lD0FrKAuTp1IvH",
       "name": "Pferdezüchterin",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1318,7 +1318,7 @@
     {
       "_id": "qaoB2kK3Aimg0vNn",
       "name": "Sprache: Tulamidya",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1350,7 +1350,7 @@
       "system": {
         "haerte": 0,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6",
         "fertigkeit": "Handgemenge",
         "talent": "Unbewaffnet",
         "rw": 0,
@@ -1413,7 +1413,7 @@
       "system": {
         "haerte": 13,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "2W6+0",
         "fertigkeit": "Athletik",
         "talent": "Reiten",
         "rw": 1,
@@ -1468,7 +1468,7 @@
       "system": {
         "haerte": 9,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6+1",
         "fertigkeit": "Handgemenge",
         "talent": "Handgemengewaffen",
         "rw": 0,

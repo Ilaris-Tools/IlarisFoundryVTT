@@ -394,7 +394,7 @@
     {
       "_id": "6J2orRPzIgdPOPzg",
       "name": "Akrobatik",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Akrobatik wird für gewagte Kunststücke und Balanceakte verwendet und kann auch den Fallschaden reduzieren.",
         "pw": 14,
@@ -423,7 +423,7 @@
     {
       "_id": "AoDmBz9QqUBpvb4n",
       "name": "Willenskraft",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Willenskraft erlaubt dir, Beeinflussungen und Versuchungen zu widerstehen und dich nicht ablenken zu lassen. Du kannst dich im Chaos eines Gefechts auf einen Zauber konzentrieren oder einem Heiligen Befehl widerstehen.",
         "pw": 7,
@@ -452,7 +452,7 @@
     {
       "_id": "3OO42CME9wXMvw6I",
       "name": "Zähigkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Zähigkeit hilft dir, Schmerzen und Strapazen zu widerstehen. So kannst du trotz zahlreicher Wunden noch handlungsfähig bleiben und einen Kampf zu euren Gunsten wenden oder eine ganze Nacht hindurch wachen.",
         "pw": 14,
@@ -481,7 +481,7 @@
     {
       "_id": "NTZIE5Jz0RrzzG6C",
       "name": "Pirschen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Pirschen ermöglicht das Schleichen, Verstecken und Lauern in der freien Natur. Du pirschst dich auf der Jagd an einen wilden Hirsch heran, legst einen Hinterhalt an einer Reichsstraße oder beobachtest ungesehen das Lager einer Orkbande.",
         "pw": 14,
@@ -510,7 +510,7 @@
     {
       "_id": "R0iyY1jcz8gAfdc7",
       "name": "Einschüchtern",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Einschüchtern jagt dem Gegenüber Angst ein und bringt ihn so zu einer gewünschten Handlung. Die Probe wird oft vergleichend gegen den MU oder die Menschenkenntnis des Gegenübers abgelegt.",
         "pw": 11,
@@ -539,7 +539,7 @@
     {
       "_id": "BxF6wZncz0ZwKR1V",
       "name": "Sinnesschärfe",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 14,
@@ -568,7 +568,7 @@
     {
       "_id": "rFerRMQHZI5PqP5k",
       "name": "Feuer",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

@@ -1,0 +1,49 @@
+{{log 'fertigkeit' this}}
+<section class="{{cssClass}} flexcol" autocomplete="off">
+    <header class="sheet-header">
+        <img class="profile-img" src="{{item.img}}" data-action="editImage" data-edit="img" title="{{item.name}}" />
+        <div class="header-fields">
+            <h1 class="charname">
+                <input
+                    name="name"
+                    type="text"
+                    value="{{item.name}}"
+                    autofocus
+                />
+            </h1>
+        </div>
+    </header>
+
+    <div class="flexrow">
+        <label><b>Attribute</b></label>
+        <select name="system.attribut_0">
+            {{selectOptions config.attribute selected=item.system.attribut_0 valueAttr="value" labelAttr="label"}}
+        </select>
+        <select name="system.attribut_1">
+            {{selectOptions config.attribute selected=item.system.attribut_1 valueAttr="value" labelAttr="label"}}
+        </select>
+        <select name="system.attribut_2">
+            {{selectOptions config.attribute selected=item.system.attribut_2 valueAttr="value" labelAttr="label"}}
+        </select>
+    </div>
+
+    <div class="flexrow">
+        <label><b>Fertigkeitsgruppe</b></label>
+        <select name="system.gruppe">
+            {{selectOptions config.fertigkeitsgruppen selected=item.system.gruppe valueAttr="value" labelAttr="label"}}
+        </select>
+    </div>
+
+    <div>
+        {{#if hasOwner}}
+        <div class="flexrow">
+            <label>FW:</label>
+            <input name="system.fw" value="{{item.system.fw}}" type="text" data-dtype="Number" />
+        </div>
+        {{/if}}
+    </div>
+    <div class="form-group stacked description">
+        <label><b>Beschreibung</b></label>
+        <textarea rows="6" name="system.text">{{item.system.text}}</textarea>
+    </div>
+</section>

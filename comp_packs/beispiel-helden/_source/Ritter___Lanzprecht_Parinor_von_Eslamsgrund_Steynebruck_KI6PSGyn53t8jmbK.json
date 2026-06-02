@@ -1529,7 +1529,7 @@
     {
       "_id": "LmMUpMU9Ade44XZ3",
       "name": "Minnesang",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1556,7 +1556,7 @@
     {
       "_id": "UeTmxjF0JZ3NfuyX",
       "name": "Heraldik",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1583,7 +1583,7 @@
     {
       "_id": "whAuM0Zqzqqf7DgZ",
       "name": "Schrift: Kusliker Zeichen",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1615,7 +1615,7 @@
       "system": {
         "haerte": 0,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6",
         "fertigkeit": "Handgemenge",
         "talent": "Unbewaffnet",
         "rw": 0,
@@ -1678,7 +1678,7 @@
       "system": {
         "haerte": 10,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "2W6+2",
         "fertigkeit": "Klingenwaffen",
         "talent": "Zweihandklingenwaffen",
         "rw": 2,
@@ -1729,7 +1729,7 @@
       "system": {
         "haerte": 16,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "2W6+4",
         "fertigkeit": "Athletik",
         "talent": "Reiten",
         "rw": 1,
@@ -1784,7 +1784,7 @@
       "system": {
         "haerte": 5,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "3W6+1",
         "fertigkeit": "Stangenwaffen",
         "talent": "Lanzenreiten",
         "rw": 2,
@@ -1830,7 +1830,7 @@
       "system": {
         "haerte": 9,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6+1",
         "fertigkeit": "Handgemenge",
         "talent": "Handgemengewaffen",
         "rw": 0,

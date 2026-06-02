@@ -56,7 +56,9 @@ for (const packDir of packDirs) {
                     const templateFile = path.join(templatesPath, `${page._id}.html`)
 
                     if (fs.existsSync(templateFile)) {
-                        const templateContent = fs.readFileSync(templateFile, 'utf-8')
+                        const templateContent = fs
+                            .readFileSync(templateFile, 'utf-8')
+                            .replace(/\r\n?/g, '\n')
 
                         // Update the page content
                         if (!page.text) {
@@ -73,7 +75,7 @@ for (const packDir of packDirs) {
 
                 // Write back the modified JSON if any templates were loaded
                 if (modified) {
-                    fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2), 'utf-8')
+                    fs.writeFileSync(jsonPath, `${JSON.stringify(data, null, 2)}\n`, 'utf-8')
                 }
             }
         } catch (error) {

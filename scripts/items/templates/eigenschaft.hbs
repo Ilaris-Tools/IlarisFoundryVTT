@@ -1,0 +1,16 @@
+{{log 'eigenschaft' this}}
+<section class="{{cssClass}}">
+    <div>
+        <input class="titel-input" name="name" type="text" value="{{item.name}}" autofocus />
+        <hr />
+        <label>Beschreibung:</label>
+        <textarea rows="8" name="system.text">{{item.system.text}}</textarea>
+        <hr />
+        <a data-action="deleteItem" data-itemid="{{item._id}}">
+            <button class="clickable" type="button">
+                Eigenschaft Löschen
+                <i class="fas fa-trash"></i>
+            </button>
+        </a>
+    </div>
+</section>

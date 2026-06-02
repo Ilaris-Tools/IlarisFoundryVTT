@@ -1,0 +1,357 @@
+/* ========================================== */
+/*  Combat Dialog Styles - Ilaris System      */
+/* ========================================== */
+
+/* --- Shared Combat Dialog Styles --- */
+.ilaris.combat-dialog .window-content {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  height: 100%;
+}
+
+.ilaris.combat-dialog [data-application-part="settings"] {
+  flex: 1;
+  min-width: 400px;
+  overflow-y: auto;
+}
+
+.ilaris.combat-dialog .target-selection-container {
+    margin: 10px 0;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.ilaris.combat-dialog .selected-actors-display-flex {
+    flex: 1;
+}
+
+.ilaris.combat-dialog .combat-select-narrow {
+    max-width: 150px;
+}
+
+.ilaris.combat-dialog .combat-button-narrow {
+    max-width: 150px;
+}
+
+.ilaris.combat-dialog .selected-actors-title {
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+
+/* ========================================== */
+/*  Combat Dialog - Summaries                 */
+/* ========================================== */
+
+.ilaris.combat-dialog [data-application-part="summaries"] {
+  flex: 0 0 350px;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  min-height: auto;
+  /* Removed background, border-left, and border-radius for cleaner look */
+}
+
+.ilaris.combat-dialog [data-application-part="summaries"] .modifier-summary-container {
+    position: sticky;
+    top: 0;
+    margin: 0;
+}
+
+/* Multiple summaries layout */
+.ilaris.combat-dialog [data-application-part="summaries"] .all-summaries {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Increased gap between sections */
+}
+
+.ilaris.combat-dialog [data-application-part="summaries"] .all-summaries .modifier-summary {
+  margin: 0;
+  padding: 12px;
+  border: 2px solid rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.ilaris.combat-dialog [data-application-part="summaries"] .attack-summary {
+  border-left: 4px solid #8b0000 !important;
+  border-color: rgba(139, 0, 0, 0.3) !important;
+}
+
+.ilaris.combat-dialog [data-application-part="summaries"] .attack-summary h4 {
+  color: #8b0000;
+  border-bottom-color: #8b0000;
+}
+
+.ilaris.combat-dialog [data-application-part="summaries"] .disabled {
+  color: #666666 !important;
+  border-bottom-color: #666666 !important;
+}
+
+.ilaris.combat-dialog [data-application-part="summaries"] .defense-summary {
+  border-left: 4px solid #006400 !important;
+  border-color: rgba(0, 100, 0, 0.3) !important;
+}
+
+.ilaris.combat-dialog [data-application-part="summaries"] .defense-summary h4 {
+  color: #006400;
+  border-bottom-color: #006400;
+}
+
+/* Positive and negative number styling for maneuver labels and inputs */
+.ilaris.combat-dialog [data-application-part="summaries"] .maneuver-positive,
+.ilaris.combat-dialog [data-application-part="summaries"] input.maneuver-positive {
+  color: #006400 !important; /* Dark green */
+}
+
+.ilaris.combat-dialog [data-application-part="summaries"] .maneuver-negative,
+.ilaris.combat-dialog [data-application-part="summaries"] input.maneuver-negative {
+  color: #8b0000 !important; /* Dark red */
+}
+
+.ilaris.combat-dialog [data-application-part="summaries"] .damage-summary {
+  border-left: 4px solid #cc4400 !important;
+  border-color: rgba(204, 68, 0, 0.3) !important;
+}
+
+.ilaris.combat-dialog [data-application-part="summaries"] .damage-summary h4 {
+  color: #cc4400;
+  border-bottom-color: #cc4400;
+}
+
+/* ZERO_DAMAGE conflict styling */
+.ilaris.combat-dialog [data-application-part="summaries"] .maneuver-item.disabled-conflict {
+  opacity: 0.5;
+  background-color: rgba(139, 0, 0, 0.1);
+  border: 1px solid rgba(139, 0, 0, 0.3);
+  border-radius: 4px;
+  padding: 4px;
+}
+
+.ilaris.combat-dialog [data-application-part="summaries"] .maneuver-item.disabled-conflict input[type="checkbox"] {
+  cursor: not-allowed;
+}
+
+.ilaris.combat-dialog [data-application-part="summaries"] .maneuver-item.disabled-conflict label {
+  color: #8b0000;
+  font-style: italic;
+}
+
+.ilaris.combat-dialog [data-application-part="summaries"] .energy-summary {
+  border-left: 4px solid #4169e1 !important;
+  border-color: rgba(65, 105, 225, 0.3) !important;
+}
+
+.ilaris.combat-dialog [data-application-part="summaries"] .energy-summary h4 {
+  color: #4169e1;
+  border-bottom-color: #4169e1;
+}
+
+.ilaris.combat-dialog [data-application-part="summaries"] .talent-summary {
+  border-left: 4px solid #8a2be2 !important;
+  border-color: rgba(138, 43, 226, 0.3) !important;
+}
+
+.ilaris.combat-dialog [data-application-part="summaries"] .talent-summary h4 {
+  color: #8a2be2;
+  border-bottom-color: #8a2be2;
+}
+
+/* Clickable summary styling */
+.ilaris.combat-dialog [data-application-part="summaries"] .clickable-summary {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ilaris.combat-dialog [data-application-part="summaries"] .clickable-summary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.ilaris.combat-dialog [data-application-part="summaries"] .clickable-summary:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* --- Angriff Dialog --- */
+/* aktuell keine dialogspezifischen Zusatzregeln nötig */
+
+/* --- Fernkampf Dialog --- */
+/* aktuell keine dialogspezifischen Zusatzregeln nötig */
+
+/* --- Übernatürlich Dialog --- */
+/* aktuell keine dialogspezifischen Zusatzregeln nötig */
+
+/* --- Target Selection Dialog --- */
+.ilaris.combat-dialog.target-sel .target-sel-selected-actors {
+    margin-bottom: 10px;
+    min-height: 20px;
+    padding: 5px;
+    border-radius: 3px;
+}
+
+.ilaris.combat-dialog.target-sel .target-sel-table-full {
+    width: 100%;
+}
+
+.ilaris.combat-dialog.target-sel .target-sel-th {
+    padding: 5px;
+}
+
+.ilaris.combat-dialog.target-sel .target-sel-td {
+    padding: 3px 5px;
+    vertical-align: middle;
+}
+
+.ilaris.combat-dialog.target-sel .target-sel-col-image {
+    text-align: left;
+    width: 50px;
+}
+
+.ilaris.combat-dialog.target-sel .target-sel-col-name,
+.ilaris.combat-dialog.target-sel .target-sel-col-distance,
+.ilaris.combat-dialog.target-sel .target-sel-col-status {
+    text-align: left;
+}
+
+.ilaris.combat-dialog.target-sel .target-sel-row {
+    cursor: pointer;
+}
+
+.ilaris.combat-dialog.target-sel .target-sel-row:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.ilaris.combat-dialog.target-sel .target-sel-row.selected {
+    background-color: rgba(0, 150, 255, 0.2);
+}
+
+.ilaris.combat-dialog.target-sel .target-sel-current {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.ilaris.combat-dialog.target-sel .target-sel-current.selected {
+    background-color: rgba(0, 150, 255, 0.3);
+}
+
+.ilaris.combat-dialog.target-sel .target-sel-separator-row {
+    background: none !important;
+    cursor: default !important;
+}
+
+.ilaris.combat-dialog.target-sel .target-sel-separator-row:hover {
+    background: none !important;
+}
+
+.ilaris.combat-dialog.target-sel .target-sel-separator {
+    margin: 5px 0;
+}
+
+.ilaris.combat-dialog.target-sel .target-sel-actor-image {
+    width: 40px;
+    height: 40px;
+    border-radius: 4px;
+    object-fit: cover;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.ilaris.combat-dialog.target-sel .target-sel-hostile {
+    color: #ff4444;
+}
+
+.ilaris.combat-dialog.target-sel .target-sel-neutral {
+    color: #ffaa00;
+}
+
+.ilaris.combat-dialog.target-sel .target-sel-friendly {
+    color: #44ff44;
+}
+
+/* --- Defense Prompt --- */
+.chat-message.ilaris-defense-prompt-highlight {
+    border: 3px solid #ff6b00 !important;
+    box-shadow: 0 0 15px rgba(255, 107, 0, 0.7) !important;
+    animation: defense-pulse 1.5s ease-in-out infinite;
+    transform: scale(1.015);
+}
+
+@keyframes defense-pulse {
+    0% {
+        box-shadow: 0 0 15px rgba(255, 107, 0, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 25px rgba(255, 107, 0, 1);
+    }
+    100% {
+        box-shadow: 0 0 15px rgba(255, 107, 0, 0.7);
+    }
+}
+
+.defend-button {
+    margin: 0 5px 5px 0;
+}
+
+.defend-button:disabled {
+    cursor: not-allowed !important;
+}
+
+/* --- [UNUSED] Legacy-Klassen --- */
+/* [UNUSED] backward-compat selectors after target_selection.hbs migration */
+/* .ilaris.combat-dialog.target-sel .hostile */
+/* .ilaris.combat-dialog.target-sel .neutral */
+/* .ilaris.combat-dialog.target-sel .friendly */
+/* .ilaris.combat-dialog.target-sel .actor-row */
+/* .ilaris.combat-dialog.target-sel .current-actor */
+/* .ilaris.combat-dialog.target-sel .separator */
+/* .ilaris.combat-dialog.target-sel .actor-image */
+
+/* [UNUSED] clickable summary classes are currently generated by dialog JS only */
+.ilaris.combat-dialog .clickable-summary {
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}
+
+.ilaris.combat-dialog .clickable-summary:hover {
+    transform: translateY(-1px);
+}
+
+.ilaris.combat-dialog .clickable-summary h4 {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.ilaris.combat-dialog .clickable-summary.angreifen:hover {
+    border-color: #8b0000;
+    box-shadow: 0 0 8px rgba(139, 0, 0, 0.3);
+}
+
+.ilaris.combat-dialog .clickable-summary.angreifen:hover h4 {
+    color: #8b0000 !important;
+    text-shadow: 0 0 3px rgba(139, 0, 0, 0.5);
+}
+
+.ilaris.combat-dialog .clickable-summary.verteidigen:hover {
+    border-color: #006400;
+    box-shadow: 0 0 8px rgba(0, 100, 0, 0.3);
+}
+
+.ilaris.combat-dialog .clickable-summary.verteidigen:hover h4 {
+    color: #006400 !important;
+    text-shadow: 0 0 3px rgba(0, 100, 0, 0.5);
+}
+
+.ilaris.combat-dialog .clickable-summary.schaden:hover {
+    border-color: #cc4400;
+    box-shadow: 0 0 8px rgba(204, 68, 0, 0.3);
+}
+
+.ilaris.combat-dialog .clickable-summary.schaden:hover h4 {
+    color: #cc4400 !important;
+    text-shadow: 0 0 3px rgba(204, 68, 0, 0.5);
+}

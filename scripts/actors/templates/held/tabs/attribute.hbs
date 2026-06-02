@@ -1,0 +1,80 @@
+{{log 'attribute' this}}
+<section class="tab attribute {{tab.cssClass}}" data-group="primary" data-tab="attribute">
+    <div class="hero-tab-container-flex">
+        <div>
+            <h2>Attribute</h2>
+            <table class="table hero-table-compact">
+                <thead>
+                    <tr>
+                        <th class="icon-small"></th>
+                        <th>Attribut</th>
+                        <th>Wert</th>
+                        <th>PW</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#each (sortAlphabetically actor.system.attribute) as |attributPair|}}
+                    <tr class="hero-table-row-transparent">
+                        <td data-action="rollable" class="icon-small" data-rolltype="fertigkeit_diag" data-probetype="attribut" data-attribut="{{attributPair.[0]}}">
+                            <i class="custom-icon"></i>
+                        </td>
+                        <td>{{get_label attributPair.[0]}}</td>
+                        <td>
+                            <input class="hero-input-compact" name="system.attribute.{{attributPair.[0]}}.wert" value="{{attributPair.[1].wert}}" type="number" step="1"
+                                data-dtype="Number" />
+                        </td>
+                        <td data-action="rollable" class="onhover" data-rolltype="attribut" data-attribut="{{attributPair.[0]}}">
+                            {{attributPair.[1].pw}}
+                        </td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
+        <div>
+            <h2>Eigenheiten</h2>
+            <a data-action="itemCreate" data-itemclass="eigenheit"><i class="fas fa-plus"></i>Neue Eigenheit</a>
+            <div>
+                {{#each actor.eigenheiten}}
+                <a data-action="itemEdit" data-itemid="{{this.id}}"> {{#if this.system.text}}{{this.system.text}}{{else}}{{this.name}}{{/if}}</a>
+                <a data-action="itemDelete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
+                <br> {{/each}}
+                <h2>Vorteile</h2>
+                {{#if actor.vorteil.allgemein}}
+                <div>
+                    <label><b>Allgemeine Vorteile:</b> <br> </label>
+                    {{#each actor.vorteil.allgemein}}
+                    <a data-action="itemEdit"
+                        data-itemid="{{this.id}}" data-tooltip="{{{this.system.text}}}">
+                        {{this.name}}
+                    </a>
+                    <a data-action="itemDelete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
+                    <br> {{/each}}
+                </div>
+                {{/if}} {{#if actor.vorteil.profan}}
+                <div>
+                    <label><b>Profane Vorteile:</b><br></label>
+                    {{#each actor.vorteil.profan}}
+                    <a data-action="itemEdit" data-itemid="{{this.id}}" data-tooltip="{{{this.system.text}}}">
+                        {{this.name}}
+                    </a>
+                    <a data-action="itemDelete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
+                    <br> {{/each}}
+                </div>
+                {{/if}} {{#if actor.unsorted}}
+                <br />
+                <hr />
+                <hr />
+                <label><b>Unsorted Items:</b><br></label>
+                {{#each actor.unsorted}}
+                <a data-action="itemEdit" data-itemid="{{this.id}}"> {{this.name}} </a>
+                <a data-action="itemDelete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
+                <br> {{/each}}
+                <hr />
+                <hr />
+                {{/if}}
+            </div>
+
+        </div>
+    </div>
+</section>

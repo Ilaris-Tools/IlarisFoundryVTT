@@ -3,7 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": "Vorteil Meisterschuss",
+    "voraussetzung": "Vorteil Meisterschuss",
     "gruppe": "1",
     "probe": "FK -8",
     "gegenprobe": "",

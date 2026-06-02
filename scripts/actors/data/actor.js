@@ -1,0 +1,948 @@
+import * as hardcoded from './hardcodedvorteile.js'
+
+import {
+    IlarisGameSettingNames,
+    ConfigureGameSettingsCategories,
+} from '../../settings/configure-game-settings.model.js'
+import { sortByName, sortByGruppe } from '../../../utils/sort-functions.js'
+
+/**
+ * Global cache for abgeleitete werte definitions
+ * @type {Map<string, object>}
+ */
+const abgeleiteteWerteCache = new Map()
+
+const actorSpecificEnergyConfigurations = Object.freeze({
+    asp: Object.freeze({
+        key: 'asp',
+        source: 'abgeleitete',
+        currentPath: 'system.abgeleitete.asp_stern',
+        maxPath: 'system.abgeleitete.asp',
+        thresholdPath: null,
+        boundPath: 'system.abgeleitete.gasp',
+        purchasedPath: 'system.abgeleitete.asp_zugekauft',
+    }),
+    kap: Object.freeze({
+        key: 'kap',
+        source: 'abgeleitete',
+        currentPath: 'system.abgeleitete.kap_stern',
+        maxPath: 'system.abgeleitete.kap',
+        thresholdPath: null,
+        boundPath: 'system.abgeleitete.gkap',
+        purchasedPath: 'system.abgeleitete.kap_zugekauft',
+    }),
+})
+
+function toNumericValue(value, fallback = 0) {
+    if (value == null || value === '') {
+        return fallback
+    }
+
+    const numericValue = Number(value)
+    return Number.isFinite(numericValue) ? numericValue : fallback
+}
+
+function readNumericProperty(target, path, fallback = 0) {
+    if (!path) {
+        return fallback
+    }
+
+    return toNumericValue(foundry.utils.getProperty(target, path), fallback)
+}
+
+function createStructuredEnergyConfiguration(energyKey) {
+    return {
+        key: energyKey,
+        source: 'energien',
+        currentPath: `system.energien.${energyKey}.value`,
+        maxPath: `system.energien.${energyKey}.max`,
+        thresholdPath: `system.energien.${energyKey}.threshold`,
+        boundPath: null,
+        purchasedPath: null,
+    }
+}
+
+export class IlarisActor extends Actor {
+    async _preCreate(data, options, user) {
+        //this.data.update(data);  // should this be called here?
+        await super._preCreate(data, options, user)
+        // console.log(data);
+    }
+
+    prepareData() {
+        console.log('prepareData')
+        super.prepareData()
+    }
+    // Not used?
+    // prepareEmbeddedEntities() {
+    //     console.log('prepareEmbeddedEntities')
+    //     super.prepareEmbeddedEntities()
+    // }
+
+    // Not used?
+    // prepareDerivedData() {
+    //     console.log('prepareDerivedData')
+    //     super.prepareDerivedData()
+    // }
+
+    prepareBaseData() {
+        console.log('prepareBaseData')
+        super.prepareBaseData()
+
+        // ModelData migration note: these paths are now guaranteed by TypeDataModel
+        // (see scripts/actors/model-data/*). Keep runtime writes aligned with that schema.
+        // Calculate all base derived values before effects are applied
+        if (this.system.attribute && this.system.abgeleitete) {
+            // Get custom abgeleitete werte definitions from cache
+            const customDefinitions = this._getAbgeleiteteWerteDefinitions()
+
+            console.log('Custom abgeleitete werte definitions:', customDefinitions)
+            // Helper function to execute custom script or use default calculation
+            const calculateValue = (valueName, defaultValue) => {
+                const customDef = customDefinitions.get(valueName)
+                if (customDef && customDef.script) {
+                    try {
+                        // Create evaluation context with actor data and helper functions
+                        const getAttribut = (attr) => this.system.attribute[attr]?.wert || 0
+                        const roundDown = Math.floor
+                        const getWS = () => this.system.abgeleitete.ws || 0
+                        const getRS = () => {
+                            let rs = 0
+                            for (let ruestung of this.ruestungen || []) {
+                                if (ruestung.system.aktiv) rs += ruestung.system.rs
+                            }
+                            return rs
+                        }
+
+                        // Evaluate the script
+                        const result = eval(customDef.script)
+                        console.log(
+                            `Using custom calculation for ${valueName}: ${customDef.script} = ${result}`,
+                        )
+                        return result
+                    } catch (error) {
+                        console.error(
+                            `Error evaluating custom script for ${valueName}: ${error.message}`,
+                        )
+                        console.error(`Script was: ${customDef.script}`)
+                        return defaultValue
+                    }
+                }
+                return defaultValue
+            }
+
+            // Base Initiative
+            if (this.system.attribute.IN?.wert != undefined) {
+                this.system.abgeleitete.ini = calculateValue('INI', this.system.attribute.IN.wert)
+                this.system.abgeleitete.baseIni = calculateValue(
+                    'INI',
+                    this.system.attribute.IN.wert,
+                )
+            }
+
+            // Base Magic Resistance
+            if (this.system.attribute.MU?.wert != undefined) {
+                this.system.abgeleitete.mr = calculateValue(
+                    'MR',
+                    4 + Math.floor(this.system.attribute.MU.wert / 4),
+                )
+            }
+
+            // Base GS (Geschwindigkeit)
+            if (this.system.attribute.GE?.wert != undefined) {
+                this.system.abgeleitete.gs = calculateValue(
+                    'GS',
+                    4 + Math.floor(this.system.attribute.GE.wert / 4),
+                )
+            }
+
+            // Base Traglast and Traglast Intervall
+            if (this.system.attribute.KK?.wert != undefined) {
+                let kk = this.system.attribute.KK.wert
+                this.system.abgeleitete.traglast_intervall = kk >= 1 ? kk : 1
+                this.system.abgeleitete.traglast = kk >= 1 ? 2 * kk : 1
+            }
+
+            // Base Durchhaltevermögen (will be modified by hardcoded later)
+            if (this.system.attribute.KO?.wert != undefined) {
+                // Basic formula before hardcoded modifications
+                this.system.abgeleitete.dh = this.system.attribute.KO.wert
+                this.system.abgeleitete.ws = calculateValue(
+                    'WS',
+                    4 + Math.floor(this.system.attribute.KO.wert / 4),
+                )
+            }
+
+            if (!this.system.gesundheit) {
+                this.system.gesundheit = {}
+            }
+            if (this.system.gesundheit.hp?.max == undefined) {
+                // Compatibility fallback for legacy actors created before strict schema defaults.
+                this.system.gesundheit.hp = {
+                    max: 9,
+                    value: 9,
+                }
+            }
+
+            // Calculate WS* (with armor) and body part armor
+            // Check if LEP system is active
+            const useLepSystem = game.settings.get(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.lepSystem,
+            )
+
+            if (useLepSystem) {
+                console.log('LEP system active - adjusting HP and WS calculations')
+                this.system.gesundheit.hp.max = this.system.abgeleitete.ws
+                this.system.gesundheit.hp.value = this.system.abgeleitete.ws
+            }
+
+            // In LEP system, ws_stern starts at 0 instead of being based on ws
+            this.system.abgeleitete.be = 0
+            let ws_stern = useLepSystem ? 0 : this.system.abgeleitete.ws
+            this.system.abgeleitete.ws_stern = ws_stern
+            this.system.abgeleitete.ws_beine = ws_stern
+            this.system.abgeleitete.ws_larm = ws_stern
+            this.system.abgeleitete.ws_rarm = ws_stern
+            this.system.abgeleitete.ws_bauch = ws_stern
+            this.system.abgeleitete.ws_brust = ws_stern
+            this.system.abgeleitete.ws_kopf = ws_stern
+
+            // Base ASP
+            this.system.abgeleitete.asp = 0
+            this.system.abgeleitete.asp += Number(this.system.abgeleitete.asp_zugekauft) || 0
+            this.system.abgeleitete.asp -= Number(this.system.abgeleitete.gasp) || 0
+            this.system.abgeleitete.asp_stern =
+                this.system.abgeleitete.asp_stern != null
+                    ? Number(this.system.abgeleitete.asp_stern)
+                    : this.system.abgeleitete.asp
+
+            // Base KAP
+            this.system.abgeleitete.kap = 0
+            this.system.abgeleitete.kap += Number(this.system.abgeleitete.kap_zugekauft) || 0
+            this.system.abgeleitete.kap -= Number(this.system.abgeleitete.gkap) || 0
+            this.system.abgeleitete.kap_stern =
+                this.system.abgeleitete.kap_stern != null
+                    ? Number(this.system.abgeleitete.kap_stern)
+                    : this.system.abgeleitete.kap
+
+            // Calculate base SchiPs
+            this.system.schips.schips = calculateValue('SchiP', 4)
+        }
+    }
+
+    /**
+     * Normalizes energy access across legacy held/NSC data and structured energy pools.
+     * @param {string} energyKey Energy identifier, e.g. asp, kap, gup.
+     * @returns {object|null} Normalized energy state or null for unknown keys.
+     */
+    getEnergyState(energyKey) {
+        const configuration = this._getEnergyConfiguration(energyKey)
+        if (!configuration) {
+            return null
+        }
+
+        return {
+            key: configuration.key,
+            source: configuration.source,
+            current: readNumericProperty(this, configuration.currentPath),
+            max: readNumericProperty(this, configuration.maxPath),
+            threshold: readNumericProperty(this, configuration.thresholdPath),
+            bound: configuration.boundPath
+                ? readNumericProperty(this, configuration.boundPath)
+                : null,
+            purchased: configuration.purchasedPath
+                ? readNumericProperty(this, configuration.purchasedPath)
+                : null,
+            currentPath: configuration.currentPath,
+            maxPath: configuration.maxPath,
+            thresholdPath: configuration.thresholdPath,
+            boundPath: configuration.boundPath,
+            purchasedPath: configuration.purchasedPath,
+        }
+    }
+
+    _getEnergyConfiguration(energyKey) {
+        const normalizedEnergyKey = String(energyKey ?? '').toLowerCase()
+        if (!normalizedEnergyKey) {
+            return null
+        }
+
+        if (
+            ['held', 'nsc'].includes(this.type) &&
+            actorSpecificEnergyConfigurations[normalizedEnergyKey]
+        ) {
+            return actorSpecificEnergyConfigurations[normalizedEnergyKey]
+        }
+
+        if (['asp', 'kap', 'gup'].includes(normalizedEnergyKey)) {
+            return createStructuredEnergyConfiguration(normalizedEnergyKey)
+        }
+
+        return actorSpecificEnergyConfigurations[normalizedEnergyKey] || null
+    }
+
+    /**
+     * Override getRollData to provide data for inline rolls and formulas.
+     * Makes fertigkeiten (skills) accessible via @fertigkeiten.Name.pw syntax.
+     * @returns {object} Roll data object containing system data and formatted fertigkeiten
+     */
+    getRollData() {
+        const data = super.getRollData()
+
+        // Add fertigkeiten in a format that allows @fertigkeiten.Name.pw access
+        if (this.profan?.fertigkeiten) {
+            data.fertigkeiten = {}
+            for (const fertigkeit of this.profan.fertigkeiten) {
+                // Use the fertigkeit name as the key and include all system properties
+                data.fertigkeiten[fertigkeit.name] = fertigkeit.system
+            }
+        }
+
+        // Add uebernatuerlich fertigkeiten as well
+        if (this.uebernatuerlich?.fertigkeiten) {
+            if (!data.fertigkeiten) {
+                data.fertigkeiten = {}
+            }
+            for (const fertigkeit of this.uebernatuerlich.fertigkeiten) {
+                // Use the fertigkeit name as the key and include all system properties
+                data.fertigkeiten[fertigkeit.name] = fertigkeit.system
+            }
+        }
+
+        return data
+    }
+
+    _checkVorteilSource(requirement, vorteil, item) {
+        // For Stile (gruppe 3, 5, or 7) on held-type actors, check with getSelectedStil
+        if (this.type === 'held' && [3, 5, 7].includes(Number(vorteil.system.gruppe))) {
+            if (
+                item.system.hauptwaffe ||
+                item.system.nebenwaffe ||
+                item.type === 'zauber' ||
+                item.type === 'liturgie'
+            ) {
+                const kampfStil = hardcoded.getSelectedStil(this, 'kampf')
+                const ueberStil = hardcoded.getSelectedStil(this, 'uebernatuerlich')
+                return (
+                    (kampfStil.active &&
+                        kampfStil?.sources.some((source) => source === requirement)) ||
+                    ueberStil?.sources.some((source) => source === requirement)
+                )
+            } else {
+                return false
+            }
+        }
+
+        // For all other cases, just check if the requirement matches the vorteil name
+        return vorteil.name === requirement
+    }
+
+    _hasVorteil(vorteilRequirement, item) {
+        // for kreaturen and npcs allow all manovers for zauber and liturgien and anrufungen, but exclude the ones that need a tradition for now
+        if (
+            this.type === 'kreatur' &&
+            (item.type === 'zauber' || item.type === 'liturgie' || item.type === 'anrufung') &&
+            !vorteilRequirement.toLowerCase().includes('tradition')
+        ) {
+            return true
+        }
+        return (
+            this.vorteil.allgemein.some((vorteil) => {
+                return this._checkVorteilSource(vorteilRequirement, vorteil, item)
+            }) ||
+            this.vorteil.kampf.some((vorteil) => {
+                return this._checkVorteilSource(vorteilRequirement, vorteil, item)
+            }) ||
+            this.vorteil.karma.some((vorteil) => {
+                return this._checkVorteilSource(vorteilRequirement, vorteil, item)
+            }) ||
+            this.vorteil.magie.some((vorteil) => {
+                return this._checkVorteilSource(vorteilRequirement, vorteil, item)
+            }) ||
+            this.vorteil.profan.some((vorteil) => {
+                return this._checkVorteilSource(vorteilRequirement, vorteil, item)
+            }) ||
+            this.vorteil.kampfstil.some((vorteil) => {
+                return this._checkVorteilSource(vorteilRequirement, vorteil, item)
+            }) ||
+            this.vorteil.zaubertraditionen.some((vorteil) => {
+                return this._checkVorteilSource(vorteilRequirement, vorteil, item)
+            }) ||
+            this.vorteil.geweihtentradition.some((vorteil) => {
+                return this._checkVorteilSource(vorteilRequirement, vorteil, item)
+            }) ||
+            this.vorteil.tiergeist.some((vorteil) => {
+                return this._checkVorteilSource(vorteilRequirement, vorteil, item)
+            })
+        )
+    }
+
+    __getAlleUebernatuerlichenFertigkeiten(actor) {
+        let fertigkeit_list = []
+        for (let fertigkeit of actor.uebernatuerlich.fertigkeiten) {
+            fertigkeit_list.push(fertigkeit.name)
+        }
+        return fertigkeit_list
+    }
+
+    _calculateUebernaturlichTalente(actor) {
+        console.log('Berechne übernatürliche Talente')
+        let fertigkeit_uebereinstimmung = []
+        // const alleMagieFertigkeiten = this.__getAlleMagieFertigkeiten(data);
+        // const alleKarmaFertigkeiten = this.__getAlleKarmaFertigkeiten(data);
+        // const alleFertigkeiten = this.__getAlleUebernatuerlichenFertigkeiten(data);
+        // for (let talent of data.magie.talente) {
+        for (let talent of actor.uebernatuerlich.zauber) {
+            let max_pw = -1
+            const fertigkeit_string = talent.system.fertigkeiten
+            let fertigkeit_array = fertigkeit_string.split(',')
+            for (let [i, fert_string] of fertigkeit_array.entries()) {
+                let fertigkeit = fert_string.trim()
+                // for (let actor_fertigkeit of data.magie.fertigkeiten) {
+                for (let actor_fertigkeit of actor.uebernatuerlich.fertigkeiten) {
+                    if (
+                        fertigkeit == actor_fertigkeit.name &&
+                        talent.system.fertigkeit_ausgewaehlt == 'auto'
+                    ) {
+                        let max_tmp = actor_fertigkeit.system.pw
+                        if (max_tmp > max_pw) {
+                            max_pw = max_tmp
+                        }
+                    } else if (talent.system.fertigkeit_ausgewaehlt == actor_fertigkeit.name) {
+                        max_pw = actor_fertigkeit.system.pw
+                    }
+                }
+            }
+            talent.system.pw = max_pw
+            // this.updateEmbeddedEntity('OwnedItem', {
+            //     _id: talent._id,
+            //     data: {
+            //         // fertigkeit_actor: alleMagieFertigkeiten,
+            //         fertigkeit_actor: alleFertigkeiten,
+            //         pw: max_pw
+            //     }
+            // });
+        }
+        // for (let talent of data.karma.talente) {
+        for (let talent of actor.uebernatuerlich.liturgien) {
+            let max_pw = -1
+            const fertigkeit_string = talent.system.fertigkeiten
+            let fertigkeit_array = fertigkeit_string.split(',')
+            for (let [i, fert_string] of fertigkeit_array.entries()) {
+                let fertigkeit = fert_string.trim()
+                // for (let actor_fertigkeit of data.karma.fertigkeiten) {
+                for (let actor_fertigkeit of actor.uebernatuerlich.fertigkeiten) {
+                    if (
+                        fertigkeit == actor_fertigkeit.name &&
+                        talent.system.fertigkeit_ausgewaehlt == 'auto'
+                    ) {
+                        let max_tmp = actor_fertigkeit.system.pw
+                        if (max_tmp > max_pw) {
+                            max_pw = max_tmp
+                        }
+                    } else if (talent.system.fertigkeit_ausgewaehlt == actor_fertigkeit.name) {
+                        max_pw = actor_fertigkeit.system.pw
+                    }
+                }
+            }
+            talent.system.pw = max_pw
+            // this.updateEmbeddedEntity('OwnedItem', {
+            //     _id: talent._id,
+            //     data: {
+            //         // fertigkeit_actor: alleKarmaFertigkeiten,
+            //         fertigkeit_actor: alleFertigkeiten,
+            //         pw: max_pw
+            //     }
+            // });
+        }
+    }
+
+    _calculateWounds(systemData) {
+        // Check if LEP system is active
+        // even with this an actor should get more wounds through damage just differently calculated
+        const useLepSystem = game.settings.get(
+            ConfigureGameSettingsCategories.Ilaris,
+            IlarisGameSettingNames.lepSystem,
+        )
+        console.log('Berechne Wunden')
+        let einschraenkungen = systemData.gesundheit.wunden + systemData.gesundheit.erschoepfung
+
+        let gesundheitzusatz = ``
+        const max_hp = systemData.gesundheit.hp.max
+        let new_hp = max_hp - einschraenkungen
+
+        if (useLepSystem) {
+            // LEP system: no penalties until max_hp - 6 * LAW of max_hp, then -2 per LAW segment
+            const law = Math.ceil(max_hp / 8)
+            this.system.abgeleitete.law = law
+
+            const lawSegment = Math.ceil(new_hp / law)
+
+            if (lawSegment <= 1) {
+                systemData.gesundheit.wundabzuege = -12
+            } else {
+                switch (lawSegment) {
+                    case 2:
+                        systemData.gesundheit.wundabzuege = -10
+                        break
+                    case 3:
+                        systemData.gesundheit.wundabzuege = -8
+                        break
+                    case 4:
+                        systemData.gesundheit.wundabzuege = -6
+                        break
+                    case 5:
+                        systemData.gesundheit.wundabzuege = -4
+                        break
+                    case 6:
+                        systemData.gesundheit.wundabzuege = -2
+                        break
+                    default:
+                        systemData.gesundheit.wundabzuege = 0
+                }
+            }
+        } else {
+            if (einschraenkungen == 0) {
+                systemData.gesundheit.wundabzuege = 0
+                gesundheitzusatz = `(Volle Gesundheit)`
+            } else if (einschraenkungen > 0 && einschraenkungen <= 2) {
+                systemData.gesundheit.wundabzuege = 0
+                gesundheitzusatz = `(Kaum ein Kratzer)`
+            } else if (einschraenkungen >= 3 && einschraenkungen <= 4) {
+                systemData.gesundheit.wundabzuege = -(einschraenkungen - 2) * 2
+                gesundheitzusatz = `(Verwundet)`
+            } else if (einschraenkungen >= 5 && einschraenkungen <= 8) {
+                systemData.gesundheit.wundabzuege = -(einschraenkungen - 2) * 2
+                gesundheitzusatz = `(Kampfunfähig)`
+            } else if (einschraenkungen >= 9) {
+                systemData.gesundheit.wundabzuege = -(einschraenkungen - 2) * 2
+                gesundheitzusatz = `(Tot)`
+            } else {
+                systemData.gesundheit.display = 'Fehler bei Berechnung der Wundabzüge'
+                return
+            }
+        }
+        if (systemData.gesundheit.wundenignorieren > 0) {
+            systemData.gesundheit.wundabzuege = 0
+        }
+        systemData.gesundheit.display = ``
+        if (systemData.gesundheit.wundabzuege == 0) {
+            systemData.gesundheit.display += `-`
+        }
+        systemData.gesundheit.display +=
+            `${systemData.gesundheit.wundabzuege} auf alle Proben ` + gesundheitzusatz
+        systemData.gesundheit.hp.value = new_hp
+    }
+
+    _calculateFear(systemData) {
+        console.log('Berechne Furchteffekt')
+        let furchtzusatz = ``
+        if (systemData.furcht.furchtstufe == 0) {
+            systemData.furcht.furchtabzuege = 0
+            furchtzusatz = `(keine Furcht)`
+        } else if (systemData.furcht.furchtstufe == 1) {
+            systemData.furcht.furchtabzuege = -2
+            furchtzusatz = `(Furcht I)`
+        } else if (systemData.furcht.furchtstufe == 2) {
+            systemData.furcht.furchtabzuege = -4
+            furchtzusatz = `(Furcht II)`
+        } else if (systemData.furcht.furchtstufe == 3) {
+            systemData.furcht.furchtabzuege = -8
+            furchtzusatz = `(Furcht III)`
+        } else if (systemData.furcht.furchtstufe >= 4) {
+            systemData.furcht.furchtabzuege = -8
+            furchtzusatz = `(Furcht IV)`
+        } else {
+            systemData.furcht.furchtstufe = 0
+            systemData.furcht.display = 'Fehler bei Berechnung der Furchtabzüge'
+            return
+        }
+        systemData.furcht.display = ``
+        if (systemData.furcht.furchtabzuege == 0) {
+            systemData.furcht.display += `-`
+        }
+        systemData.furcht.display +=
+            `${systemData.furcht.furchtabzuege} auf alle Proben ` + furchtzusatz
+    }
+
+    _calculateModifikatoren(systemData) {
+        let globalermod = hardcoded.globalermod(systemData)
+        systemData.abgeleitete.globalermod = globalermod
+        // displayed text for nahkampfmod
+        systemData.abgeleitete.nahkampfmoddisplay = `
+        ${systemData.modifikatoren.nahkampfmod > 0 ? '+' : ''}
+        ${systemData.modifikatoren.nahkampfmod}/
+        ${systemData.modifikatoren.verteidigungmod > 0 ? '+' : ''}
+        ${systemData.modifikatoren.verteidigungmod} auf AT/VT durch Status am Token`
+        // displayed text for globalermod (auf alle Proben insgesamt)
+        systemData.abgeleitete.globalermoddisplay = ``
+        if (systemData.abgeleitete.globalermod == 0) {
+            systemData.abgeleitete.globalermoddisplay += `-`
+        } else if (systemData.abgeleitete.globalermod > 0) {
+            systemData.abgeleitete.globalermoddisplay += `+`
+        }
+        systemData.abgeleitete.globalermoddisplay += `${systemData.abgeleitete.globalermod} auf alle Proben`
+    }
+
+    // Used in unused method?
+    /**
+     * Get custom abgeleitete werte definitions from cache
+     * @returns {Map<string, object>} Map of value names to their definitions
+     * @private
+     */
+    _getAbgeleiteteWerteDefinitions() {
+        return abgeleiteteWerteCache
+    }
+
+    _calculateUebernatuerlichProbendiag(actor) {
+        // data.data.uebernatuerlich.fertigkeiten = uebernatuerliche_fertigkeiten;
+        // data.data.uebernatuerlich.zauber = magie_talente;
+        // data.data.uebernatuerlich.liturgien = karma_talente;
+        // data.data.vorteil.magie = vorteil_magie;
+        // data.data.vorteil.zaubertraditionen = vorteil_zaubertraditionen;
+        // data.data.vorteil.karma = vorteil_karma;
+        // data.data.vorteil.geweihtentradition = vorteil_geweihtetraditionen;
+        // let be = data.data.abgeleitete.be;
+        for (let item of actor.uebernatuerlich.zauber) {
+            if (item.system.manoever == undefined) {
+                console.log('Ich überschreibe Magie Manöver')
+            }
+            item.system.manoever =
+                item.system.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_magie)
+            console.log(item.system)
+        }
+        for (let item of actor.uebernatuerlich.liturgien) {
+            if (item.system.manoever == undefined) {
+                console.log('Ich überschreibe Karma Manöver')
+            }
+            item.system.manoever =
+                item.system.manoever || foundry.utils.deepClone(CONFIG.ILARIS.manoever_karma)
+            console.log(item.system)
+        }
+    }
+    _sortItems(actor) {
+        console.log('_sortItems')
+        // koennen  alle noetigen variablen nicht direkt ins objekt geschrieben werden
+        let ruestungen = []
+        let nahkampfwaffen = []
+        let fernkampfwaffen = []
+        let profan_fertigkeiten = []
+        let profan_talente = []
+        let profan_fertigkeit_list = []
+        let profan_talente_unsorted = []
+        let uebernatuerliche_fertigkeiten = []
+        let magie_talente = []
+        let karma_talente = []
+        let anrufung_talente = []
+        let freie_fertigkeiten = []
+        let vorteil_allgemein = []
+        let vorteil_profan = []
+        let vorteil_kampf = []
+        let vorteil_kampfstil = []
+        let vorteil_magie = []
+        let vorteil_zaubertraditionen = []
+        let vorteil_karma = []
+        let vorteil_geweihtetraditionen = []
+        let vorteil_tiergeist = []
+        let eigenheiten = []
+        let eigenschaften = [] // kreatur only
+        let angriffe = [] // kreatur only
+        let infos = [] // kreatur only
+        let vorteile = [] // TODO: gleich machen fuer helden und kreaturen
+        let freietalente = []
+        let freie_uebernatuerliche_fertigkeiten = []
+        let unsorted = []
+        let speicherplatz_list = ['tragend', 'mitführend']
+        let item_tragend = []
+        let item_mitfuehrend = []
+        let item_list = []
+        let item_list_tmp = []
+        for (let item of actor.items) {
+            // let item = i.data;
+            if (item.type == 'ruestung') {
+                // console.log("Rüstung gefunden");
+                // console.log(i);
+                item.system.bewahrt_auf = []
+                if (item.system.gewicht < 0) {
+                    item.system.gewicht_summe = 0
+                    speicherplatz_list.push(item.name)
+                    item_list.push(item)
+                } else item_list_tmp.push(item)
+                ruestungen.push(item)
+            } else if (item.type == 'nahkampfwaffe') {
+                // console.log("Nahkampfwaffe gefunden");
+                item.system.bewahrt_auf = []
+                if (item.system.gewicht < 0) {
+                    item.system.gewicht_summe = 0
+                    speicherplatz_list.push(item.name)
+                    item_list.push(item)
+                } else item_list_tmp.push(item)
+                // for migration from dice_anzahl and dice_plus to tp
+                // Only migrate if tp is not set yet AND old fields exist
+                if (!item.system.tp && (item.system.dice_plus || item.system.dice_anzahl)) {
+                    item.system.tp = `${item.system.dice_anzahl}W6${
+                        item.system.dice_plus < 0 ? '' : '+'
+                    }${item.system.dice_plus}`
+                    delete item.system.dice_anzahl
+                    delete item.system.dice_plus
+                }
+                nahkampfwaffen.push(item)
+            } else if (item.type == 'fernkampfwaffe') {
+                // console.log("Fernkampfwaffe gefunden");
+                console.log(item)
+                item.system.bewahrt_auf = []
+                if (item.system.gewicht < 0) {
+                    item.system.gewicht_summe = 0
+                    speicherplatz_list.push(item.name)
+                    item_list.push(item)
+                } else item_list_tmp.push(item)
+                // for migration from dice_anzahl and dice_plus to tp
+                // Only migrate if tp is not set yet AND old fields exist
+                if (!item.system.tp && (item.system.dice_plus || item.system.dice_anzahl)) {
+                    item.system.tp = `${item.system.dice_anzahl}W6${
+                        item.system.dice_plus < 0 ? '' : '+'
+                    }${item.system.dice_plus}`
+                    delete item.system.dice_anzahl
+                    delete item.system.dice_plus
+                }
+                fernkampfwaffen.push(item)
+            } else if (item.type == 'gegenstand') {
+                item.system.bewahrt_auf = []
+                if (item.system.gewicht < 0) {
+                    item.system.gewicht_summe = 0
+                    speicherplatz_list.push(item.name)
+                    item_list.push(item)
+                } else item_list_tmp.push(item)
+            } else if (item.type == 'fertigkeit') {
+                // console.log("Magiefertigkeit gefunden");
+                // console.log(i);
+                item.system.talente = []
+                profan_fertigkeiten.push(item)
+                profan_fertigkeit_list.push(item.name)
+                // profan_talente[i.name] = [];
+            } else if (item.type == 'talent') {
+                profan_talente.push(item)
+            } else if (item.type == 'freieFertigkeit' || item.type == 'freie_fertigkeit') {
+                freie_fertigkeiten.push(item)
+            } else if (
+                item.type == 'uebernatuerlicheFertigkeit' ||
+                item.type == 'uebernatuerliche_fertigkeit'
+            ) {
+                // console.log("Magiefertigkeit gefunden");
+                // console.log(i);
+                uebernatuerliche_fertigkeiten.push(item)
+            } else if (item.type == 'zauber') {
+                magie_talente.push(item)
+            } else if (item.type == 'liturgie') {
+                karma_talente.push(item)
+            } else if (item.type == 'anrufung') {
+                anrufung_talente.push(item)
+            } else if (item.type == 'vorteil') {
+                if (item.system.gruppe == 0) vorteil_allgemein.push(item)
+                else if (item.system.gruppe == 1) vorteil_profan.push(item)
+                else if (item.system.gruppe == 2) vorteil_kampf.push(item)
+                else if (item.system.gruppe == 3) vorteil_kampfstil.push(item)
+                else if (item.system.gruppe == 4) vorteil_magie.push(item)
+                else if (item.system.gruppe == 5) vorteil_zaubertraditionen.push(item)
+                else if (item.system.gruppe == 6) vorteil_karma.push(item)
+                else if (item.system.gruppe == 7) vorteil_geweihtetraditionen.push(item)
+                else if (item.system.gruppe == 8) vorteil_tiergeist.push(item)
+                // else vorteil_allgemein.push(i);
+            } else if (item.type == 'eigenheit') {
+                eigenheiten.push(item)
+            } else if (item.type == 'eigenschaft') {
+                // kreatur only
+                console.log(item)
+                eigenschaften.push(item)
+            } else if (item.type == 'angriff') {
+                // kreatur only
+                angriffe.push(item)
+            } else if (item.type == 'info') {
+                // kreatur only
+                infos.push(item)
+            } else if (item.type == 'freiesTalent') {
+                if (item.system.profan == true) {
+                    freietalente.push(item)
+                    console.log('Freies Talent eingetragen')
+                } else {
+                    freie_uebernatuerliche_fertigkeiten.push(item)
+                    console.log('Freies Uebernatuerliches Talent eingetragen')
+                }
+            } else unsorted.push(item)
+        }
+        ruestungen.sort(sortByName)
+        nahkampfwaffen.sort(sortByName)
+        fernkampfwaffen.sort(sortByName)
+        item_list.sort(sortByName)
+        item_list_tmp.sort(sortByName)
+        uebernatuerliche_fertigkeiten.sort(sortByName)
+        uebernatuerliche_fertigkeiten.sort(sortByGruppe)
+        // magie_fertigkeiten.sort((a, b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
+        // magie_fertigkeiten.sort((a, b) => (a.data.gruppe > b.data.gruppe) ? 1 : ((b.data.gruppe > a.data.gruppe) ? -1 : 0));
+        magie_talente.sort(sortByName)
+        magie_talente.sort(sortByGruppe)
+        karma_talente.sort(sortByName)
+        karma_talente.sort(sortByGruppe)
+        anrufung_talente.sort(sortByName)
+        anrufung_talente.sort(sortByGruppe)
+        profan_fertigkeiten.sort(sortByName)
+        profan_fertigkeiten.sort(sortByGruppe)
+        freie_fertigkeiten.sort(sortByName)
+        freie_fertigkeiten.sort(sortByGruppe)
+        vorteil_allgemein.sort(sortByName)
+        vorteil_profan.sort(sortByName)
+        vorteil_kampf.sort(sortByName)
+        vorteil_kampfstil.sort(sortByName)
+        vorteil_magie.sort(sortByName)
+        vorteil_zaubertraditionen.sort(sortByName)
+        vorteil_karma.sort(sortByName)
+        vorteil_geweihtetraditionen.sort(sortByName)
+        vorteil_tiergeist.sort(sortByName)
+        eigenheiten.sort(sortByName)
+        freie_uebernatuerliche_fertigkeiten.sort(sortByGruppe)
+
+        // profan_fertigkeiten = _.sortBy( profan_fertigkeiten, 'name' );
+        // profan_fertigkeiten = _.sortBy( profan_fertigkeiten, 'data.gruppe' );
+
+        for (let talent of profan_talente) {
+            if (profan_fertigkeit_list.includes(talent.system.fertigkeit)) {
+                profan_fertigkeiten
+                    .find((x) => x.name == talent.system.fertigkeit)
+                    .system.talente.push(talent)
+            } else {
+                profan_talente_unsorted.push(talent)
+            }
+        }
+
+        actor.system.getragen = 0
+        for (let i of item_list_tmp) {
+            let aufbewahrung = i.system.aufbewahrungs_ort
+            if (aufbewahrung == 'tragend') {
+                item_tragend.push(i)
+            } else if (aufbewahrung == 'mitführend') {
+                item_mitfuehrend.push(i)
+                actor.system.getragen += i.system.gewicht * i.system.quantity
+            } else if (speicherplatz_list.includes(aufbewahrung)) {
+                // item_list.find(x => x.name == aufbewahrung).system.bewahrt_auf.push(i);
+                let idx = item_list.indexOf(item_list.find((x) => x.name == aufbewahrung))
+                item_list[idx].system.bewahrt_auf.push(i)
+                item_list[idx].system.gewicht_summe += i.system.gewicht * i.system.quantity
+                item_list[idx].system.gewicht_summe = parseFloat(
+                    item_list[idx].system.gewicht_summe.toFixed(3),
+                )
+                actor.system.getragen += i.system.gewicht * i.system.quantity
+            } else {
+                i.system.aufbewahrungs_ort == 'mitführend'
+                item_mitfuehrend.push(i)
+                actor.system.getragen += i.system.gewicht * i.system.quantity
+            }
+        }
+        actor.system.getragen = parseFloat(actor.system.getragen.toFixed(3))
+
+        // data.magie = {};
+        // data.karma = {};
+        actor.profan = {}
+        actor.uebernatuerlich = {}
+        actor.vorteil = {}
+        actor.inventar = {}
+        actor.inventar.tragend = item_tragend
+        actor.inventar.mitfuehrend = item_mitfuehrend
+        actor.inventar.item_list = item_list
+        actor.ruestungen = ruestungen
+        actor.nahkampfwaffen = nahkampfwaffen
+        actor.fernkampfwaffen = fernkampfwaffen
+        actor.uebernatuerlich.fertigkeiten = uebernatuerliche_fertigkeiten
+        actor.uebernatuerlich.zauber = magie_talente
+        actor.uebernatuerlich.liturgien = karma_talente
+        actor.uebernatuerlich.anrufungen = anrufung_talente
+        actor.profan.fertigkeiten = profan_fertigkeiten
+        actor.profan.talente_unsorted = profan_talente_unsorted
+        actor.profan.freie = freie_fertigkeiten
+        // vorteil singular? inkonsistent zu den anderen listen
+        // fuer kreaturen waere es wesentlich einfacher alles in einer liste zu sammeln
+        // und die kategorie als property zu behalten (kann ja auch nach gefiltert werden)
+        // in data.vorteile leg ich erstmal alle ab als zwischenloesung ;)
+        actor.vorteil.allgemein = vorteil_allgemein
+        actor.vorteil.profan = vorteil_profan
+        actor.vorteil.kampf = vorteil_kampf
+        actor.vorteil.kampfstil = vorteil_kampfstil
+        actor.vorteil.magie = vorteil_magie
+        actor.vorteil.zaubertraditionen = vorteil_zaubertraditionen
+        actor.vorteil.karma = vorteil_karma
+        actor.vorteil.geweihtentradition = vorteil_geweihtetraditionen
+        actor.vorteil.tiergeist = vorteil_tiergeist
+        actor.eigenheiten = eigenheiten
+        actor.unsorted = unsorted
+        actor.misc = actor.misc || {}
+        actor.misc.kampfstile_list = vorteil_kampfstil.map((kampfstil) => kampfstil.name)
+        actor.misc.profan_fertigkeit_list = profan_fertigkeit_list
+        actor.misc.uebernatuerlich_fertigkeit_list =
+            this.__getAlleUebernatuerlichenFertigkeiten(actor)
+        actor.misc.speicherplatz_list = speicherplatz_list
+        if (actor.type == 'kreatur') {
+            actor.eigenschaften = eigenschaften
+            actor.angriffe = angriffe
+            actor.infos = infos
+            actor.freietalente = freietalente
+            actor.uebernatuerlich.fertigkeiten = freie_uebernatuerliche_fertigkeiten
+        }
+    }
+}
+
+/**
+ * Preload custom abgeleitete werte definitions from compendiums into global cache
+ * Should be called during system initialization (ready hook)
+ * @returns {Promise<number>} Number of definitions loaded
+ */
+export async function preloadAbgeleiteteWerteDefinitions() {
+    console.log('Ilaris | Preloading abgeleitete werte definitions...')
+
+    abgeleiteteWerteCache.clear()
+
+    try {
+        // Get selected packs from settings
+        const selectedPacks = JSON.parse(
+            game.settings.get('Ilaris', 'abgeleiteteWertePacks') || '[]',
+        )
+
+        // If no packs selected, return empty cache (use default calculations)
+        if (!selectedPacks || selectedPacks.length === 0) {
+            console.log(
+                'Ilaris | No abgeleitete werte packs configured, using default calculations',
+            )
+            return 0
+        }
+
+        // Load items from selected packs
+        for (const packId of selectedPacks) {
+            const pack = game.packs.get(packId)
+            if (!pack) continue
+
+            const items = await pack.getDocuments()
+            for (const item of items) {
+                if (item.type === 'abgeleiteterWert') {
+                    // Prefer technical key; fallback to item name for legacy data.
+                    const key = item.system?.key || item.system?.name || item.name
+
+                    abgeleiteteWerteCache.set(key, {
+                        name: item.name,
+                        key,
+                        formel: item.system.formel,
+                        script: item.system.script,
+                        finalscript: item.system.finalscript,
+                        text: item.system.text,
+                    })
+                }
+            }
+        }
+
+        console.log(
+            `Ilaris | Preloaded ${abgeleiteteWerteCache.size} abgeleitete werte definitions`,
+        )
+        return abgeleiteteWerteCache.size
+    } catch (error) {
+        console.error('Ilaris | Error loading abgeleitete werte definitions:', error)
+        return 0
+    }
+}

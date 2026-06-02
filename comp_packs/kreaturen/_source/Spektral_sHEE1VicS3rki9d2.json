@@ -294,7 +294,7 @@
     {
       "_id": "FIUtm86s8x6YxtRN",
       "name": "Aktrobatik",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 18,
@@ -323,7 +323,7 @@
     {
       "_id": "ogp81AkiqIyxdbT7",
       "name": "Einschüchtern",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Einschüchtern jagt dem Gegenüber Angst ein und bringt ihn so zu einer gewünschten Handlung. Die Probe wird oft vergleichend gegen den MU oder die Menschenkenntnis des Gegenübers abgelegt.",
         "pw": 10,
@@ -352,7 +352,7 @@
     {
       "_id": "rNDAjTYFP9XXjJ0t",
       "name": "Klettern",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Mit Klettern überwindest du alle Arten von Hindernissen.",
         "pw": 18,
@@ -381,7 +381,7 @@
     {
       "_id": "aERpx0R6SBQWLyiU",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 22,
@@ -410,7 +410,7 @@
     {
       "_id": "fBncvDYaSTFcs3Jb",
       "name": "Willenskraft",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Willenskraft erlaubt dir, Beeinflussungen und Versuchungen zu widerstehen und dich nicht ablenken zu lassen. Du kannst dich im Chaos eines Gefechts auf einen Zauber konzentrieren oder einem Heiligen Befehl widerstehen.",
         "pw": 10,

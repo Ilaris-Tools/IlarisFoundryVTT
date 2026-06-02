@@ -352,7 +352,7 @@
     {
       "_id": "8Rkrh76YLly2tIvG",
       "name": "Einschüchtern",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Einschüchtern jagt dem Gegenüber Angst ein und bringt ihn so zu einer gewünschten Handlung. Die Probe wird oft vergleichend gegen den MU oder die Menschenkenntnis des Gegenübers abgelegt.",
         "pw": 10,
@@ -381,7 +381,7 @@
     {
       "_id": "yYsEnfpc2C1UeDwj",
       "name": "Klettern",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Mit Klettern überwindest du alle Arten von Hindernissen.",
         "pw": 4,
@@ -410,7 +410,7 @@
     {
       "_id": "f2V0T9jtCWG7wph0",
       "name": "Athletik",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 7,
@@ -439,7 +439,7 @@
     {
       "_id": "Uae8BXHolaQ4CP94",
       "name": "Schwimmen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Schwimmen erlaubt eine schnellere Fortbewegung im Wasser und längere Tauchgänge.",
         "pw": 4,
@@ -468,7 +468,7 @@
     {
       "_id": "JitEw6GEBvdXNxdu",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 8,
@@ -497,7 +497,7 @@
     {
       "_id": "jWZYeoNKJALBa5H3",
       "name": "Pirschen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Pirschen ermöglicht das Schleichen, Verstecken und Lauern in der freien Natur. Du pirschst dich auf der Jagd an einen wilden Hirsch heran, legst einen Hinterhalt an einer Reichsstraße oder beobachtest ungesehen das Lager einer Orkbande.",
         "pw": 6,
@@ -526,7 +526,7 @@
     {
       "_id": "xE7s0j1I2htsYrie",
       "name": "Willenskraft",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Willenskraft erlaubt dir, Beeinflussungen und Versuchungen zu widerstehen und dich nicht ablenken zu lassen. Du kannst dich im Chaos eines Gefechts auf einen Zauber konzentrieren oder einem Heiligen Befehl widerstehen.",
         "pw": 6,

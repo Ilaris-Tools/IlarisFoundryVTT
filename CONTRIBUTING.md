@@ -125,29 +125,19 @@ Pre-Releases (Standard bei workflow_dispatch):
 
 ## Code Struktur
 
-In der template.json steht die grobe Datenstruktur für Actors und Items. Es können darin auch templates zum wiederverwenden erstellt werden um zB Nahkampfwaffen, Fernkampfwaffen und Rüstungen alle Eigenschaften eines Gegenstandes zu geben (gewicht, platz, härte, wert ...)
+Die grobe Datenstruktur für Actors und Items wird heute über `TypeDataModel.defineSchema()` beschrieben. Die zentralen Einstiegspunkte dafür sind `scripts/core/model-data/type-data-models.js`, `scripts/actors/model-data/`, `scripts/items/model-data/models.js` und die jeweiligen `shared.js`-Dateien für gemeinsam genutzte Felder.
 
 Actor: (types: Held, Kreatur) haben jeweils eigene html Templates zum ansehen und bearbeiten (ActorSheets). In den (zwei) actor.js files stehen hooks und methoden für die actors und das UI
 
 Items: Zauber, Fertigkeiten, Gegenstände, Eigenheiten, Waffen, Vorteile usw.. sind Items mit jeweiligem type. Auch hier gibt es einzelne html snippets als formular um individuelle Items zu bearbeiten.
 
-`/packs/`: Im packs ordner befinden sich die Daten fuer die im Spiel verfuegbaren Kompendien. Letztendlich befinden
+`/comp_packs/`: Im `comp_packs/`-Ordner befinden sich die Daten fuer die im Spiel verfuegbaren Kompendien. Letztendlich befinden
 sich hier alle möglichen Ilaris-Inhalte (items, actors, effects...) wie zB Vorteile, Waffen, kreaturen.
 Foundry behandelt jeden Ordner als Datenbanktabelle mit binary Files, die sich häufig ändern. Um das ganze als Entwickler
 einfacher zu verwalten können, werden alle Einträge als .json-files in den jeweiligen \_source unterordner entpackt.
-Sie müssen um live verwendet werden zu können erst wieder gepackt werden. [Mehr dazu in den docs](./docs/packs.md).
+Sie müssen um live verwendet werden zu können erst wieder gepackt werden. Dafür wird `npm run pack-all` verwendet.
 
 TODO: Dateistruktur und wichtige Dateien erklären
-
-## Import Datenbank.xml aus Sephrasto
-
-- ~~Aktuelle `datenbank.xml` nach `./local_db/org/datenbank.xml` kopieren.~~
-- ~~Änderungen oder neue Einträge in der jeweiligen `./local_db/json_user/` eintragen~~  
-   ~~Wichtig: Beachte die korrekte Struktur! (siehe template.json)~~
-- ~~`node create_database.js & node import_database`~~  
-   ~~Es wird (zur Kontrolle) eine json in `./local_db/db/` erstellt, sowie ein fertiges Kompendium in `./packs`~~.
-- ~~Damit ist hoffentlich alles fertig und bereit.~~
-- Alles Quark: Import V3 direkt als Plugin für Sephrasto schreiben
 
 ### Anmerkungen:
 
@@ -155,6 +145,37 @@ TODO: Dateistruktur und wichtige Dateien erklären
 - Root-directory ist blöd. Sollten in ein einzelnes Verzeichnes, das nicht in die zip für Foundry gepackt wird. Mache ich später sobald:
 - package.json updaten und sinnvoll nutzen. Statt per Hand gibt es dann einen update_db Befehl oder so. Und meine persönlichen Pythonskripts zum starten können auch gleich integriert werden.
 - Eigenes Pack für freie Fertigkeiten und/oder Sprachen, oder mit in fertigkeiten-und-talente.db?
+
+## Für Entwickler mit AI-Agents
+
+AI-Agents (GitHub Copilot, Claude, etc.) können bei der Entwicklung am Ilaris-System unterstützen. Hier ein Überblick:
+
+### Setup für Agents
+
+- Agent-spezifische Dokumentation liegt in [`.agents/README.md`](.agents/README.md).
+- Repository-weite Instrukionen in `.github/copilot-instructions.md`.
+- Pfad-spezifische Regeln in `.github/instructions/`.
+
+### Was Agents gut können
+
+- **Compendium-Verwaltung**: Repetitive JSON-Bearbeitung in `comp_packs/_source/`
+- **Sheet-Erstellung**: Ähnliche Strukturen, variierende Inhalte (AppV2-Pattern)
+- **Bug-Fixes**: Code-Suche + Linting + automatische Tests
+- **Testschreiben**: Generierung von Jest-Tests basierend auf vorhandenen Patterns
+
+### Einschränkungen
+
+- **Foundry VTT API**: Agents müssen die [offizielle API-Doku](https://foundryvtt.com/api/) konsultieren — niemals raten.
+- **Domain-Wissen**: Ilaris-Regelwerk ist spezialisiert; bei Unklarheiten den User fragen.
+- **LevelDB**: Niemals direkt bearbeiten — immer `_source/` JSON + `npm run pack-all`.
+
+### Review von Agent-generierten Changes
+
+- Immer `npm test` und `npm run lint` nach Agent-Änderungen ausführen.
+- Compendium-Daten nach Bearbeitung mit `npm run pack-all` neu bauen.
+- Bei Datenmodell-Änderungen prüfen ob eine Migration nötig ist.
+
+---
 
 ## Nützliche Links
 

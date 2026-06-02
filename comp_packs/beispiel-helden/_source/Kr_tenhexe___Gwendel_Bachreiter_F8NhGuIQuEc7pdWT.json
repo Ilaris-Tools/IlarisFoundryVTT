@@ -1304,7 +1304,7 @@
     {
       "_id": "w7ukmjsGULLcqG16",
       "name": "Sprache: Garethi",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1331,7 +1331,7 @@
     {
       "_id": "bLV8majftDXGBEGy",
       "name": "Schrift: Kusliker Zeichen",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1358,7 +1358,7 @@
     {
       "_id": "xU0PGR9Fa6uDpAdr",
       "name": "Zeichnen",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1385,7 +1385,7 @@
     {
       "_id": "OT3ztwfjnJwsnJPH",
       "name": "Kochen",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1412,7 +1412,7 @@
     {
       "_id": "kl0B2lErjBSn0iSB",
       "name": "Gärtnern",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 3,
@@ -1439,7 +1439,7 @@
     {
       "_id": "4JcbJYlgfHTrbxBL",
       "name": "Antimagie",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1472,7 +1472,7 @@
     {
       "_id": "9JP79r6ckmekmKre",
       "name": "Dämonisch",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 3,
@@ -1505,7 +1505,7 @@
     {
       "_id": "1Pucmv378au5ADsY",
       "name": "Eigenschaften",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1538,7 +1538,7 @@
     {
       "_id": "o2XX873E3wiIaxwZ",
       "name": "Einfluss",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 5,
@@ -1571,7 +1571,7 @@
     {
       "_id": "mbIOpCmOWllyS454",
       "name": "Eis",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1604,7 +1604,7 @@
     {
       "_id": "3PyzYwqcNkRPDtX1",
       "name": "Erz",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1637,7 +1637,7 @@
     {
       "_id": "CMZKmNMo9AqIhETV",
       "name": "Feuer",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1670,7 +1670,7 @@
     {
       "_id": "sMeKN9LOLEjphruf",
       "name": "Hellsicht",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 5,
@@ -1703,7 +1703,7 @@
     {
       "_id": "p4jRQbI7rFxsGMJS",
       "name": "Humus",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 5,
@@ -1736,7 +1736,7 @@
     {
       "_id": "U0D9Ccc9rfnN3OnC",
       "name": "Illusion",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 5,
@@ -1769,7 +1769,7 @@
     {
       "_id": "40BDzPCJ13pYyOvi",
       "name": "Kraft",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1802,7 +1802,7 @@
     {
       "_id": "9a23jmRGuODrVA2p",
       "name": "Luft",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1835,7 +1835,7 @@
     {
       "_id": "PkBZrHYrck9ccHVv",
       "name": "Temporal",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1868,7 +1868,7 @@
     {
       "_id": "eA4VlGf2Jm3ym2M6",
       "name": "Umwelt",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 3,
@@ -1901,7 +1901,7 @@
     {
       "_id": "OPpQcPx8jaHCaNQd",
       "name": "Verständigung",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1934,7 +1934,7 @@
     {
       "_id": "qnQDyAdVLKzwUucT",
       "name": "Verwandlung",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1967,7 +1967,7 @@
     {
       "_id": "iAdhHaHjt6AFhCgA",
       "name": "Wasser",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -2000,7 +2000,7 @@
     {
       "_id": "aMZF9EQra7xaEVQ4",
       "name": "Hexenflüche",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -2033,7 +2033,7 @@
     {
       "_id": "mpnqPUsnaJCKSJEF",
       "name": "Schalenzauber",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 5,
@@ -2066,7 +2066,7 @@
     {
       "_id": "2a5F4GLvNhQNDeS5",
       "name": "Vertrautenmagie",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 5,
@@ -2522,7 +2522,7 @@
       "system": {
         "haerte": 0,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6",
         "fertigkeit": "Handgemenge",
         "talent": "Unbewaffnet",
         "rw": 0,
@@ -2585,7 +2585,7 @@
       "system": {
         "haerte": 9,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6+1",
         "fertigkeit": "Handgemenge",
         "talent": "Handgemengewaffen",
         "rw": 0,

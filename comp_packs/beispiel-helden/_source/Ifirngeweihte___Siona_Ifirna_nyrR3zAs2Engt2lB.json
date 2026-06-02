@@ -1189,7 +1189,7 @@
     {
       "_id": "EZzTmAYSCtZKKcig",
       "name": "Sprache: Garethi",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 3,
@@ -1216,7 +1216,7 @@
     {
       "_id": "7CFZKLGPa69TS0e5",
       "name": "Schrift: Kusliker Zeichen",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 3,
@@ -1243,7 +1243,7 @@
     {
       "_id": "EctAyU1517KPmEVc",
       "name": "Abrichten",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1270,7 +1270,7 @@
     {
       "_id": "81QnQqQ7lKkyPzG5",
       "name": "Schlitten fahren",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 2,
@@ -1297,7 +1297,7 @@
     {
       "_id": "fD06PJjgRVZg636u",
       "name": "Kürschner",
-      "type": "freie_fertigkeit",
+      "type": "freieFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "stufe": 1,
@@ -1324,7 +1324,7 @@
     {
       "_id": "Mp9GBUl2KLuQmasK",
       "name": "Zwölfgöttlicher Ritus",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 5,
@@ -1357,7 +1357,7 @@
     {
       "_id": "kV2NZW58JiTsds2W",
       "name": "Jagd",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 4,
@@ -1390,7 +1390,7 @@
     {
       "_id": "k0r1m4xsSsRO1zQT",
       "name": "Wildnis",
-      "type": "uebernatuerliche_fertigkeit",
+      "type": "uebernatuerlicheFertigkeit",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "basis": 5,
@@ -1960,7 +1960,7 @@
       "system": {
         "haerte": 0,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6",
         "fertigkeit": "Handgemenge",
         "talent": "Unbewaffnet",
         "rw": 0,
@@ -2023,7 +2023,7 @@
       "system": {
         "haerte": 3,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "2W6+1",
         "fertigkeit": "Schusswaffen",
         "talent": "Bögen",
         "rw": 16,
@@ -2076,7 +2076,7 @@
       "system": {
         "haerte": 3,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "2W6+3",
         "fertigkeit": "Schusswaffen",
         "talent": "Bögen",
         "rw": 64,
@@ -2137,7 +2137,7 @@
       "system": {
         "haerte": 9,
         "beschaedigung": 0,
-        "tp": "",
+        "tp": "1W6+1",
         "fertigkeit": "Handgemenge",
         "talent": "Handgemengewaffen",
         "rw": 0,

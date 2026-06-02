@@ -1,5 +1,7 @@
 # VS Code
 
+> **Für AI-Agents**: Für eine vollständige Übersicht über Build-Scripte, Test-Workflows und Entwicklungsumgebung siehe [`.agents/BUILD_AND_DEVELOPMENT.md`](../../.agents/BUILD_AND_DEVELOPMENT.md). Setup-Prozess als Agent-Skill: [`.github/skills/foundry-setup/SKILL.md`](../../.github/skills/foundry-setup/SKILL.md).
+
 ## Einrichtung
 
 Die Einrichtung der IDE kann mit dem VS Code [Task](#task): [_Setup IDE_](#vs-code-task-setup-ide) erleichtert werden.

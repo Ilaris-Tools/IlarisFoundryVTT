@@ -716,7 +716,7 @@
     {
       "_id": "51kXr6VfybhOj2nl",
       "name": "Anführen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Mit Anführen leitest und motivierst du Untergebene. Du kannst mit Anführen Löscharbeiten oder eine Truppe von Kämpfern koordinieren, um ihnen so Vorteile zu verschaffen (S. 46). Gerade in großen Schlachten entscheidet der Heerführer über Sieg oder Niederlage.",
         "pw": 16,
@@ -745,7 +745,7 @@
     {
       "_id": "IrTVPzJN6MOlwGKX",
       "name": "Pirschen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Pirschen ermöglicht das Schleichen, Verstecken und Lauern in der freien Natur. Du pirschst dich auf der Jagd an einen wilden Hirsch heran, legst einen Hinterhalt an einer Reichsstraße oder beobachtest ungesehen das Lager einer Orkbande.",
         "pw": 16,
@@ -774,7 +774,7 @@
     {
       "_id": "GuKLpxU9Hqo4RH0N",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 18,

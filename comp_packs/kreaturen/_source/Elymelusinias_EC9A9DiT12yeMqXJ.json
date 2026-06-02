@@ -520,7 +520,7 @@
     {
       "_id": "c9Yr8tlyVRL1JtbV",
       "name": "Geographie",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Geographie befasst sich nicht nur mit Reiserouten und fernen Ländern, sondern auch mit dem Sternenhimmel, der Kartographie und Navigation. Ein Geograph kann Schatzkarten lesen und anfertigen, die Position eines Schiffes bestimmen und Sternenkonstellationen deuten.",
         "pw": 16,
@@ -549,7 +549,7 @@
     {
       "_id": "Y0e72HfwhxezzcvG",
       "name": "Pirschen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Pirschen ermöglicht das Schleichen, Verstecken und Lauern in der freien Natur. Du pirschst dich auf der Jagd an einen wilden Hirsch heran, legst einen Hinterhalt an einer Reichsstraße oder beobachtest ungesehen das Lager einer Orkbande.",
         "pw": 16,
@@ -578,7 +578,7 @@
     {
       "_id": "NTXhfOcGW2zfd1EJ",
       "name": "Menschenkenntnis",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Menschenkenntnis ist deine Fähigkeit, die Absichten deines Gegenüber zu durchschauen. Damit enttarnst du Lügen und falsche Annäherungsversuche.",
         "pw": 14,
@@ -607,7 +607,7 @@
     {
       "_id": "LetzvUaEkhxnKy4m",
       "name": "Schwimmen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Schwimmen erlaubt eine schnellere Fortbewegung im Wasser und längere Tauchgänge.",
         "pw": 20,
@@ -636,7 +636,7 @@
     {
       "_id": "QyuYvf3HGD1XYt03",
       "name": "Überreden",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Überreden bedeutet den geschickten Einsatz von Übertreibungen, Unwahrheiten oder Lügen, um das Gegenüber zumindest kurzfristig zu beeinflussen. Mit Überreden feilschst du am Marktplatz, bestichst eine Stadtwache oder infiltrierst ein Borbaradianerkloster.",
         "pw": 16,
@@ -665,7 +665,7 @@
     {
       "_id": "V1NSWPo6hXJAcdlU",
       "name": "Überleben (Meer)",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Gilt für den Einsatz auf großen Gewässern wie zum Beispiel dem Perlenmeer.",
         "pw": 20,
@@ -694,7 +694,7 @@
     {
       "_id": "tQsy3jBwApfO3vyA",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 12,
@@ -723,7 +723,7 @@
     {
       "_id": "iE9zOVUii2wO1ony",
       "name": "Dämonisch",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

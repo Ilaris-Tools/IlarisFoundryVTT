@@ -3,7 +3,7 @@
   "type": "manoever",
   "img": "icons/svg/item-bag.svg",
   "system": {
-    "voraussetzungen": "Vorteil Tradition der Borongeweihten III ODER Vorteil Tradition der Hesindegeweihten III ODER Vorteil Tradition der Ifirngeweihten III ODER Vorteil Tradition der Perainegeweihten III ODER Vorteil Tradition der Praiosgeweihten III ODER Vorteil Tradition der Traviageweihten III ODER Vorteil Tradition der Tsageweihten III",
+    "voraussetzung": "Vorteil Tradition der Borongeweihten III ODER Vorteil Tradition der Hesindegeweihten III ODER Vorteil Tradition der Ifirngeweihten III ODER Vorteil Tradition der Perainegeweihten III ODER Vorteil Tradition der Praiosgeweihten III ODER Vorteil Tradition der Traviageweihten III ODER Vorteil Tradition der Tsageweihten III",
     "input": {
       "label": "",
       "field": "NUMBER",

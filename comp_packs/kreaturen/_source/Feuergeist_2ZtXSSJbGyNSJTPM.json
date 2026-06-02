@@ -336,7 +336,7 @@
     {
       "_id": "3RRcjYBQ1rm9WDoq",
       "name": "Akrobatik",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Akrobatik wird für gewagte Kunststücke und Balanceakte verwendet und kann auch den Fallschaden reduzieren.",
         "pw": 4,
@@ -365,7 +365,7 @@
     {
       "_id": "kRVw5lDO4vLiVvEv",
       "name": "Willenskraft",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Willenskraft erlaubt dir, Beeinflussungen und Versuchungen zu widerstehen und dich nicht ablenken zu lassen. Du kannst dich im Chaos eines Gefechts auf einen Zauber konzentrieren oder einem Heiligen Befehl widerstehen.",
         "pw": 5,
@@ -394,7 +394,7 @@
     {
       "_id": "Pe3KDbpODMBi8Aid",
       "name": "Zähigkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Zähigkeit hilft dir, Schmerzen und Strapazen zu widerstehen. So kannst du trotz zahlreicher Wunden noch handlungsfähig bleiben und einen Kampf zu euren Gunsten wenden oder eine ganze Nacht hindurch wachen.",
         "pw": 5,
@@ -423,7 +423,7 @@
     {
       "_id": "OSLAiGOmfOpaRnwV",
       "name": "Einschüchtern",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Einschüchtern jagt dem Gegenüber Angst ein und bringt ihn so zu einer gewünschten Handlung. Die Probe wird oft vergleichend gegen den MU oder die Menschenkenntnis des Gegenübers abgelegt.",
         "pw": 5,
@@ -452,7 +452,7 @@
     {
       "_id": "0whAK84RXBCLIUQb",
       "name": "Sinnesschärfe",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 5,

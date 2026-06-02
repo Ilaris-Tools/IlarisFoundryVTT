@@ -454,7 +454,7 @@
     {
       "_id": "FAJov5d9Vm2X2ilY",
       "name": "Gebräuche",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 12,
@@ -483,7 +483,7 @@
     {
       "_id": "y8Cjr9hX2xDloqKV",
       "name": "Geographie",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Geographie befasst sich nicht nur mit Reiserouten und fernen Ländern, sondern auch mit dem Sternenhimmel, der Kartographie und Navigation. Ein Geograph kann Schatzkarten lesen und anfertigen, die Position eines Schiffes bestimmen und Sternenkonstellationen deuten.",
         "pw": 14,
@@ -512,7 +512,7 @@
     {
       "_id": "DNNJcqmKij5m5tgN",
       "name": "Fliegen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": null,
         "pw": 18,
@@ -541,7 +541,7 @@
     {
       "_id": "4mkegYKB0wtxA0dU",
       "name": "Pirschen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Pirschen ermöglicht das Schleichen, Verstecken und Lauern in der freien Natur. Du pirschst dich auf der Jagd an einen wilden Hirsch heran, legst einen Hinterhalt an einer Reichsstraße oder beobachtest ungesehen das Lager einer Orkbande.",
         "pw": 10,
@@ -570,7 +570,7 @@
     {
       "_id": "UbUrKHAEryUAGXbZ",
       "name": "Untertauchen",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Untertauchen erlaubt dir das Schleichen, Verstecken und Beschatten in der Zivilisation. Du verschwindest in der Menschenmenge am Marktplatz, steigst ungehört in eine Villa eines Ratsherren ein oder beschattest unauffällig einen Hehler.",
         "pw": 10,
@@ -599,7 +599,7 @@
     {
       "_id": "xNvQFhgV3LTmnrus",
       "name": "Rhetorik",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Rhetorik beinhaltet zahlreiche Fähigkeiten und Kniffe, um die eigenen Argumente wirkungsvoll einzusetzen und die des Gegenüber zu entkräften. Du kannst Rhetorik nur einsetzen, wenn dein Charakter von seinem Standpunkt überzeugt ist - dreiste Lügen fallen unter Überreden.",
         "pw": 14,
@@ -628,7 +628,7 @@
     {
       "_id": "3vspyVHZggVfklQk",
       "name": "Überreden",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Überreden bedeutet den geschickten Einsatz von Übertreibungen, Unwahrheiten oder Lügen, um das Gegenüber zumindest kurzfristig zu beeinflussen. Mit Überreden feilschst du am Marktplatz, bestichst eine Stadtwache oder infiltrierst ein Borbaradianerkloster.",
         "pw": 14,
@@ -657,7 +657,7 @@
     {
       "_id": "52bPEgljfQlzR7Wc",
       "name": "Wachsamkeit",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "system": {
         "text": "Wachsamkeit fasst den passiven Einsatz deiner Sinne zusammen. Mit ihr entdeckst du Hinterhalte, bemerkst eine Unstimmigkeit an einem Tatort oder eine verborgene Notiz am Wegesrand.",
         "pw": 16,
@@ -686,7 +686,7 @@
     {
       "_id": "tqFd10t9WlqJFP6M",
       "name": "Luft",
-      "type": "freiestalent",
+      "type": "freiesTalent",
       "img": "icons/svg/item-bag.svg",
       "system": {
         "text": "",

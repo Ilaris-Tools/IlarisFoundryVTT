@@ -1,0 +1,234 @@
+/* ----------------------------------------- */
+/*  Settings Feature Styles                   */
+/* ----------------------------------------- */
+.ilaris.settings-dialog .window-content {
+  grid-template-areas: 
+    "Navigation"
+    "Tab";
+  gap: 10px;
+  padding: 8px;
+}
+
+.ilaris.settings-dialog [data-application-part="tabs"] {
+  grid-area: Navigation;
+}
+
+.ilaris.settings-dialog .tab {
+  grid-area: Tab;
+  max-height: 62vh;
+  overflow: auto;
+  padding: 8px 10px;
+}
+
+.ilaris.settings-dialog .tabs.settingtabnavigation {
+  border-top: 0;
+}
+
+.ilaris.settings-dialog .tabs.settingtabnavigation .tab-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  width: 100%;
+  justify-content: center;
+}
+
+.ilaris.settings-dialog .tabs.settingtabnavigation .tab-item:hover {
+  background-color: rgba(120, 46, 34, 0.08);
+  border-color: rgba(120, 46, 34, 0.4);
+}
+
+/* ----------------------------------------- */
+/*  Settings Rows                             */
+/* ----------------------------------------- */
+.ilaris.settings-dialog .setting-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 8px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 6px;
+}
+
+/* .ilaris.settings-dialog .setting-row:hover {
+  background: rgba(0, 0, 0, 0.03);
+} */
+
+.ilaris.settings-dialog .setting-row:last-child {
+  border-bottom: none;
+}
+
+.ilaris.settings-dialog .setting-label {
+  font-size: larger;
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+.ilaris.settings-dialog .setting-scope {
+  font-size: 0.75em;
+  color: #555;
+  margin-right: 8px;
+}
+
+.ilaris.settings-dialog .setting-hint {
+  margin: 0;
+  line-height: 1.35;
+}
+
+.ilaris.settings-dialog .requires-reload {
+  font-size: 0.8em;
+  color: #782e22;
+}
+
+/* ----------------------------------------- */
+/*  Compendien Groups                         */
+/* ----------------------------------------- */
+.ilaris.settings-dialog .setting-group {
+  margin-bottom: 18px;
+  border-bottom: 1px solid;
+}
+
+.ilaris.settings-dialog .setting-group:last-child {
+  margin-bottom: 18px;
+  border-bottom: 0;
+}
+
+.ilaris.settings-dialog .setting-group-header {
+  font-size: large;
+  margin-bottom: 4px;
+  padding-bottom: 4px;
+}
+
+.ilaris.settings-dialog .setting-group-hint {
+  margin-bottom: 6px;
+}
+
+.ilaris.settings-dialog .setting-group-content {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ----------------------------------------- */
+/*  Footer                                    */
+/* ----------------------------------------- */
+.ilaris.settings-dialog .ilaris-settings-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 8px 0 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.2);
+  position: sticky;
+  bottom: 0;
+  z-index: 2;
+}
+
+.ilaris.settings-dialog .ilaris-settings-footer button {
+  min-width: 170px;
+}
+
+.ilaris.settings-dialog input[type='text'] {
+  min-width: 260px;
+}
+
+.ilaris.settings-dialog input[type='checkbox'] {
+  width: 18px;
+  height: 18px;
+  margin-top: 2px;
+}
+
+.ilaris.settings-dialog input:focus-visible,
+.ilaris.settings-dialog button:focus-visible,
+.ilaris.settings-dialog .tab-item:focus-visible {
+  outline: 2px solid #782e22;
+  outline-offset: 2px;
+}
+
+/* ----------------------------------------- */
+/*  Ilaris Settings Header                    */
+/* ----------------------------------------- */
+.ilaris-settings-header {
+  text-align: center;
+  margin-bottom: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+/* ----------------------------------------- */
+/*  GM-only hint                              */
+/* ----------------------------------------- */
+.ilaris.settings-dialog .ilaris-gm-only-hint {
+  font-style: italic;
+  color: #555;
+  padding: 12px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+/* ----------------------------------------- */
+/*  Pack Entries                              */
+/* ----------------------------------------- */
+.system-pack {
+  font-weight: bold;
+  font-size: 1.2em;
+}
+
+.system-pack input[type='checkbox'] {
+  transform: scale(1.2);
+  margin-right: 10px;
+}
+
+.pack-entry {
+  margin-bottom: 6px;
+}
+
+@media (max-width: 900px) {
+  .ilaris.settings-dialog .setting-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .ilaris.settings-dialog input[type='text'] {
+    min-width: 0;
+    width: 100%;
+  }
+
+  .ilaris.settings-dialog .ilaris-settings-footer {
+    justify-content: stretch;
+    flex-wrap: wrap;
+  }
+
+  .ilaris.settings-dialog .ilaris-settings-footer button {
+    flex: 1 1 220px;
+  }
+}
+
+.pack-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.checkbox.disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.checkbox.disabled input[type='checkbox'] {
+  cursor: not-allowed;
+}
+
+.disabled-reason {
+  font-style: italic;
+  color: #782e22;
+  font-size: 0.9em;
+}
+

@@ -66,6 +66,34 @@ global.foundry = {
         },
     },
     applications: {
+        api: {
+            ApplicationV2: class ApplicationV2 {
+                constructor(options = {}) {
+                    this.options = options
+                    this.tabGroups = {}
+                }
+
+                async _prepareContext() {
+                    return {}
+                }
+
+                async _preparePartContext(partId, context) {
+                    return context
+                }
+
+                _prepareTabs() {
+                    return {}
+                }
+
+                async _onRender() {}
+
+                render() {}
+
+                close() {}
+            },
+            HandlebarsApplicationMixin: (BaseApplication) => class extends BaseApplication {},
+            DialogV2: class DialogV2 {},
+        },
         handlebars: {
             loadTemplates: jest.fn().mockResolvedValue(undefined),
             renderTemplate: jest.fn().mockImplementation((path, data) => {
@@ -97,4 +125,13 @@ global.game = {
 global.Handlebars = {
     registerHelper: jest.fn(),
     registerPartial: jest.fn(),
+}
+
+// Mock Foundry Hooks
+global.Hooks = {
+    call: jest.fn().mockReturnValue(true),
+    callAll: jest.fn(),
+    on: jest.fn(),
+    once: jest.fn(),
+    off: jest.fn(),
 }
