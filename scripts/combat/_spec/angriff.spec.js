@@ -108,6 +108,29 @@ describe('AngriffDialog summary context', () => {
         })
     })
 
+    it('does not overwrite maneuver details when schips are selected for the preview', () => {
+        const dialog = createDialog()
+        dialog.actor.system.schips.schips_stern = 2
+        dialog.dialogId = 'dialog-test'
+        dialog.element = {
+            querySelector: jest.fn((selector) => {
+                if (selector === `input[name="schips-${dialog.dialogId}"]:checked`) {
+                    return { value: '1' }
+                }
+
+                return null
+            }),
+        }
+        dialog.text_at = 'Wuchtschlag: -4\nSturmangriff: +4\n'
+        dialog.text_vt = 'Volle Defensive +4\n'
+
+        const diceFormula = dialog.getDiceFormula()
+
+        expect(diceFormula).toBe('2d20dl1')
+        expect(dialog.text_at).toBe('Wuchtschlag: -4\nSturmangriff: +4\nSchips ohne Eigenheit\n')
+        expect(dialog.text_vt).toBe('Volle Defensive +4\nSchips ohne Eigenheit\n')
+    })
+
     it('disables attack and damage summary actions in defense mode without riposte', () => {
         const dialog = createDialog({ isDefenseMode: true })
 

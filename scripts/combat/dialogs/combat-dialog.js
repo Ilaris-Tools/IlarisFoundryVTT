@@ -549,28 +549,27 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             Number(
                 this.element.querySelector(`input[name="schips-${this.dialogId}"]:checked`)?.value,
             ) || 0
-        let text = ''
         let diceFormula = `${xd20_choice}d20${xd20_choice == 1 ? '' : 'dl1dh1'}`
         if (schipsOption == 0) {
             return `${xd20_choice}d20${xd20_choice == 1 ? '' : 'dl1dh1'}`
         }
         if (this.actor.system.schips.schips_stern == 0) {
-            this.text_at = text.concat(`Keine Schips\n`)
-            this.text_vt = text.concat(`Keine Schips\n`)
+            this.text_at = `${this.text_at || ''}Keine Schips\n`
+            this.text_vt = `${this.text_vt || ''}Keine Schips\n`
             return `${xd20_choice}d20${xd20_choice == 1 ? '' : 'dl1dh1'}`
         }
 
         if (schipsOption == 1) {
-            this.text_at = text.concat(`Schips ohne Eigenheit\n`)
-            this.text_vt = text.concat(`Schips ohne Eigenheit\n`)
+            this.text_at = `${this.text_at || ''}Schips ohne Eigenheit\n`
+            this.text_vt = `${this.text_vt || ''}Schips ohne Eigenheit\n`
             diceFormula = `${xd20_choice + 1}d20${xd20_choice == 1 ? '' : 'dh1'}${
                 xd20_choice == 1 ? 'dl1' : 'dl2'
             }`
         }
 
         if (schipsOption == 2) {
-            this.text_at = text.concat(`Schips mit Eigenschaft\n`)
-            this.text_vt = text.concat(`Schips mit Eigenschaft\n`)
+            this.text_at = `${this.text_at || ''}Schips mit Eigenschaft\n`
+            this.text_vt = `${this.text_vt || ''}Schips mit Eigenschaft\n`
             diceFormula = `${xd20_choice + 2}d20${xd20_choice == 1 ? '' : 'dh1'}${
                 xd20_choice == 1 ? 'dl2' : 'dl3'
             }`
