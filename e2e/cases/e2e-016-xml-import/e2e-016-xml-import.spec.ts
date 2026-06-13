@@ -128,7 +128,6 @@ test.describe('E2E-016 Sephrasto XML-Import', () => {
                         i.type === 'freie_fertigkeit' ||
                         i.type === 'uebernatuerliche_fertigkeit' ||
                         i.type === 'freiestalent' ||
-                        i.type === 'effect-item' ||
                         i.type === 'abgeleiteter-wert',
                 ) as boolean,
             }

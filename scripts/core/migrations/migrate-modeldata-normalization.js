@@ -2,15 +2,16 @@ const isNewerVersion = foundry.utils.isNewerVersion
 
 // Keep this strictly increasing, independent from system.json version,
 // so newly added migration steps re-run on already-upgraded worlds.
-const TARGET_SCHEMA_VERSION = '13.1.0'
+const TARGET_SCHEMA_VERSION = '13.2.0'
 
 const ITEM_TYPE_RENAME_MAP = {
     freiestalent: 'freiesTalent',
     freie_fertigkeit: 'freieFertigkeit',
     uebernatuerliche_fertigkeit: 'uebernatuerlicheFertigkeit',
-    'effect-item': 'effectItem',
     'abgeleiteter-wert': 'abgeleiteterWert',
 }
+
+const EFFECT_ITEM_TYPES_TO_DELETE = new Set(['effectItem', 'effect-item'])
 
 function isObject(value) {
     return value && typeof value === 'object' && !Array.isArray(value)
@@ -433,6 +434,154 @@ async function renameCompendiumActorEmbeddedItemTypes() {
     return { migrated, skipped, errors }
 }
 
+async function deleteWorldEffectItems() {
+    let migrated = 0
+    let skipped = 0
+    let errors = 0
+
+    const items = game.items.filter((item) => EFFECT_ITEM_TYPES_TO_DELETE.has(item.type))
+
+    for (const item of items) {
+        try {
+            await item.delete()
+            migrated++
+        } catch (error) {
+            errors++
+            console.error(
+                `Ilaris | Effect-item deletion failed for world item ${item.name}:`,
+                error,
+            )
+        }
+    }
+
+    return { migrated, skipped, errors }
+}
+
+async function deleteActorEmbeddedEffectItems() {
+    let migrated = 0
+    let skipped = 0
+    let errors = 0
+
+    for (const actor of game.actors) {
+        const toDelete = actor.items
+            .filter((item) => EFFECT_ITEM_TYPES_TO_DELETE.has(item.type))
+            .map((item) => item.id)
+
+        if (toDelete.length === 0) {
+            skipped++
+            continue
+        }
+
+        try {
+            await actor.deleteEmbeddedDocuments('Item', toDelete)
+            migrated += toDelete.length
+        } catch (error) {
+            errors += toDelete.length
+            console.error(
+                `Ilaris | Effect-item deletion failed for embedded items on actor ${actor.name}:`,
+                error,
+            )
+        }
+    }
+
+    return { migrated, skipped, errors }
+}
+
+async function deleteCompendiumEffectItems() {
+    let migrated = 0
+    let skipped = 0
+    let errors = 0
+
+    const packs = game.packs.filter(
+        (pack) => pack.metadata.type === 'Item' && pack.collection?.startsWith('Ilaris.'),
+    )
+
+    for (const pack of packs) {
+        if (pack.locked) continue
+
+        let documents = []
+        try {
+            documents = await pack.getDocuments()
+        } catch (error) {
+            errors++
+            console.error(
+                `Ilaris | Effect-item deletion failed to read pack ${pack.collection}:`,
+                error,
+            )
+            continue
+        }
+
+        for (const doc of documents) {
+            if (!EFFECT_ITEM_TYPES_TO_DELETE.has(doc.type)) continue
+
+            try {
+                await doc.delete()
+                migrated++
+            } catch (error) {
+                errors++
+                console.error(
+                    `Ilaris | Effect-item deletion failed for compendium item ${doc.name} in ${pack.collection}:`,
+                    error,
+                )
+            }
+        }
+    }
+
+    return { migrated, skipped, errors }
+}
+
+async function deleteCompendiumActorEmbeddedEffectItems() {
+    let migrated = 0
+    let skipped = 0
+    let errors = 0
+
+    const packs = game.packs.filter(
+        (pack) => pack.metadata.type === 'Actor' && pack.collection?.startsWith('Ilaris.'),
+    )
+
+    for (const pack of packs) {
+        if (pack.locked) continue
+
+        let documents = []
+        try {
+            documents = await pack.getDocuments()
+        } catch (error) {
+            errors++
+            console.error(
+                `Ilaris | Effect-item deletion failed to read actor pack ${pack.collection}:`,
+                error,
+            )
+            continue
+        }
+
+        for (const doc of documents) {
+            if (!doc.items) continue
+
+            const toDelete = doc.items
+                .filter((item) => EFFECT_ITEM_TYPES_TO_DELETE.has(item.type))
+                .map((item) => item.id)
+
+            if (toDelete.length === 0) {
+                skipped++
+                continue
+            }
+
+            try {
+                await doc.deleteEmbeddedDocuments('Item', toDelete)
+                migrated += toDelete.length
+            } catch (error) {
+                errors += toDelete.length
+                console.error(
+                    `Ilaris | Effect-item deletion failed for embedded items on compendium actor ${doc.name} in ${pack.collection}:`,
+                    error,
+                )
+            }
+        }
+    }
+
+    return { migrated, skipped, errors }
+}
+
 async function migrateWorldItems() {
     let migrated = 0
     let skipped = 0
@@ -694,6 +843,19 @@ export async function runModelDataNormalizationMigrationIfNeeded() {
         {
             label: 'Kompendium-Akteur-Items umbenennen',
             run: renameCompendiumActorEmbeddedItemTypes,
+        },
+        { label: 'Legacy-Effekt-Items löschen (Welt)', run: deleteWorldEffectItems },
+        {
+            label: 'Legacy-Effekt-Items löschen (Akteur-Embedded)',
+            run: deleteActorEmbeddedEffectItems,
+        },
+        {
+            label: 'Legacy-Effekt-Items löschen (Kompendium)',
+            run: deleteCompendiumEffectItems,
+        },
+        {
+            label: 'Legacy-Effekt-Items löschen (Kompendium-Akteur)',
+            run: deleteCompendiumActorEmbeddedEffectItems,
         },
         { label: 'Weltdaten normalisieren', run: migrateWorldItems },
         { label: 'Akteur-Items normalisieren', run: migrateActorEmbeddedItems },

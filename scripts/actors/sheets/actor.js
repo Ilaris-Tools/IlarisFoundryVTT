@@ -475,6 +475,24 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
         this.actor.update({ 'system.misc.selected_uebernatuerlicher_stil': selected_stil })
     }
 
+    async _onDropActiveEffect(event, data) {
+        const effect = await ActiveEffect.fromDropData(data)
+        if (!effect) return
+
+        const effectData = effect.toObject()
+        delete effectData._id
+        effectData.origin = this.actor.uuid
+        foundry.utils.setProperty(effectData, 'flags.ilaris.sourceType', 'manual')
+
+        const created = await this.actor.createEmbeddedDocuments('ActiveEffect', [effectData])
+        if (created?.length > 0) {
+            ui.notifications.info(
+                `Effekt "${effect.name}" wurde auf ${this.actor.name} angewendet.`,
+            )
+        }
+        return created
+    }
+
     _onDropItemCreate(item) {
         if (item.type === 'manoever') {
             let bogen = 'Bogen'

@@ -28,7 +28,6 @@ import { InfoSheet } from '../items/sheets/info.js'
 import { AbgeleiteterWertSheet } from '../items/sheets/abgeleiteter-wert.js'
 import { AngriffSheet } from '../items/sheets/angriff.js'
 import { FreiesTalentSheet } from '../items/sheets/freies-talent.js'
-import { EffectItemSheet } from '../items/sheets/effect-item.js'
 import { registerIlarisGameSettings } from '../settings/configure-game-settings.js'
 import {
     IlarisGameSettingNames,
@@ -109,10 +108,6 @@ Hooks.once('init', () => {
     })
     Items.registerSheet('Ilaris', FreiesTalentSheet, {
         types: ['freiesTalent', 'freiestalent'],
-        makeDefault: true,
-    })
-    Items.registerSheet('Ilaris', EffectItemSheet, {
-        types: ['effectItem', 'effect-item'],
         makeDefault: true,
     })
 

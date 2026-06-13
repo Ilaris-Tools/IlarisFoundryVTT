@@ -10,7 +10,6 @@ const LEGACY_TO_CANONICAL_ITEM_TYPE_MAP = {
     freiestalent: 'freiesTalent',
     freie_fertigkeit: 'freieFertigkeit',
     uebernatuerliche_fertigkeit: 'uebernatuerlicheFertigkeit',
-    'effect-item': 'effectItem',
     'abgeleiteter-wert': 'abgeleiteterWert',
 }
 
@@ -18,7 +17,6 @@ const CANONICAL_TO_LEGACY_ITEM_TYPE_MAP = {
     freiesTalent: ['freiestalent'],
     freieFertigkeit: ['freie_fertigkeit'],
     uebernatuerlicheFertigkeit: ['uebernatuerliche_fertigkeit'],
-    effectItem: ['effect-item'],
     abgeleiteterWert: ['abgeleiteter-wert'],
 }
 
