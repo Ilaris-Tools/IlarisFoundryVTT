@@ -12,7 +12,7 @@ on:
                 description: Skip Foundry API release step
                 type: boolean
                 required: false
-                default: false
+                default: true
     workflow_dispatch:
         inputs:
             pre_release:
@@ -24,7 +24,7 @@ on:
                 description: Skip Foundry API release step
                 type: boolean
                 required: false
-                default: false
+                default: true
 
 permissions:
     contents: write
