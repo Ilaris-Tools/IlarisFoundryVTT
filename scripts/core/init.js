@@ -1,5 +1,6 @@
 import { ILARIS } from './config.js'
-import { IlarisActiveEffect } from './documents/active-effect.js'
+import { IlarisActiveEffect } from '../effects/active-effect.js'
+import { IlarisActiveEffectConfig } from '../effects/ilaris-effect-config.js'
 import { IlarisActorProxy } from '../actors/data/proxy.js'
 import { IlarisItemProxy } from '../items/data/proxy.js'
 import { initializeHandlebars } from './handlebars.js'
@@ -60,6 +61,27 @@ Hooks.once('init', () => {
 
     // ACTIVE EFFECTS
     CONFIG.ActiveEffect.documentClass = IlarisActiveEffect
+
+    // Register the Ilaris "dot" change type for Damage/Erschöpfung over Time.
+    // DoTs use ilarisTiming (durationType: "ownerTurns", expiresOn: "turnEnd")
+    // and modify system.gesundheit.wunden or system.gesundheit.erschoepfungen.
+    // The handler skips normal application — damage is applied via combat hooks.
+    CONFIG.ActiveEffect.changeTypes.dot = {
+        label: 'DOT',
+        defaultPriority: 0,
+        handler() {
+            // DOT effects are applied via combat-turn-hooks.js, not here.
+            // Return null — no normal application.
+            return null
+        },
+    }
+
+    foundry.applications.apps.DocumentSheetConfig.registerSheet(
+        ActiveEffect,
+        'Ilaris',
+        IlarisActiveEffectConfig,
+        { makeDefault: true, label: 'Ilaris' },
+    )
 
     Actors.unregisterSheet('core', foundry.applications.sheets.ActorSheetV2)
     Actors.registerSheet('Ilaris', HeldenSheet, { types: ['held'], makeDefault: true })

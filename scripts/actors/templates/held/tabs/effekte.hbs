@@ -7,14 +7,9 @@
     {{#each effects as |effect|}}
     <a data-action="itemEdit" data-itemclass="effect" data-itemid="{{effect._id}}">
                 {{effect.name}}
-                {{#if effect.duration.value}}
-                {{#if (isFiniteValue effect.duration.value)}}
-                | {{effect.duration.value}}
-                    {{#if (eq effect.duration.units "turns")}}Runden{{/if}}
-                    {{#if (eq effect.duration.units "seconds")}}Sekunden{{/if}}
-                    {{#if (eq effect.duration.units "minutes")}}Minuten{{/if}}
-                    {{#if (eq effect.duration.units "hours")}}Stunden{{/if}}
-                    {{#if (eq effect.duration.units "days")}}Tage{{/if}}
+                {{#if effect.system.ilarisTiming.remaining}}
+                {{#if (isFiniteValue effect.system.ilarisTiming.remaining)}}
+                | {{effect.system.ilarisTiming.remaining}} Runden
                 {{/if}}
                 {{/if}}
     </a>
