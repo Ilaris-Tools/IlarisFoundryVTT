@@ -73,6 +73,76 @@ export class IlarisActiveEffectConfig extends foundry.applications.sheets.Active
                 remInput.value = origInput.value
             })
         }
+
+        // Add datalist for attribute key autocomplete on the changes tab
+        this.#injectKeySuggestions()
+    }
+
+    /**
+     * Injects a <datalist> with valid Actor attribute keys into the changes tab,
+     * providing autocomplete suggestions for the key input fields.
+     */
+    #injectKeySuggestions() {
+        const changesTab = this.element.querySelector("section[data-tab='changes']")
+        if (!changesTab) return
+
+        const datalist = document.createElement('datalist')
+        datalist.id = 'ilaris-effect-keys'
+
+        // Collect all leaf field paths from registered Actor data models
+        const keys = []
+        for (const model of Object.values(CONFIG.Actor.dataModels || {})) {
+            this.#collectFieldPaths(model, 'system', keys)
+        }
+
+        // Deduplicate and sort
+        ;[...new Set(keys)].sort().forEach((key) => {
+            const option = document.createElement('option')
+            option.value = key
+            datalist.appendChild(option)
+        })
+
+        changesTab.appendChild(datalist)
+
+        // Attach datalist to all key input fields
+        const keyInputs = changesTab.querySelectorAll('.key input')
+        keyInputs.forEach((input) => input.setAttribute('list', datalist.id))
+    }
+
+    /**
+     * Recursively collects dotted field paths from a DataModel schema.
+     * @param {typeof foundry.abstract.TypeDataModel} model - The data model class
+     * @param {string} prefix - Current path prefix
+     * @param {string[]} out - Output array
+     */
+    #collectFieldPaths(model, prefix, out) {
+        const schema = model.defineSchema?.()
+        if (!schema) return
+
+        for (const [name, field] of Object.entries(schema)) {
+            const path = `${prefix}.${name}`
+            if (field instanceof foundry.data.fields.SchemaField) {
+                this.#collectSchemaFieldPaths(field, path, out)
+                out.push(path)
+            } else {
+                out.push(path)
+            }
+        }
+    }
+
+    /**
+     * Recursively collects paths from a nested SchemaField.
+     */
+    #collectSchemaFieldPaths(schemaField, prefix, out) {
+        for (const [name, field] of Object.entries(schemaField.fields)) {
+            const path = `${prefix}.${name}`
+            if (field instanceof foundry.data.fields.SchemaField) {
+                this.#collectSchemaFieldPaths(field, path, out)
+                out.push(path)
+            } else {
+                out.push(path)
+            }
+        }
     }
 
     /**

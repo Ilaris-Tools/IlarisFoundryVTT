@@ -141,7 +141,7 @@ describe('IlarisActiveEffectConfig._getIlarisTimingData', () => {
     test('returns defaults when system.ilarisTiming is absent', () => {
         const cfg = makeConfig({})
         expect(cfg._getIlarisTimingData()).toEqual({
-            durationType: '',
+            durationType: 'ownerTurns',
             remaining: 0,
             originalValue: 0,
             expiresOn: 'turnStart',
