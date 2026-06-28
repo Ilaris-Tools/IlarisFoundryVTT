@@ -32,11 +32,12 @@ export class IlarisActiveEffectConfig extends foundry.applications.sheets.Active
         context.ilarisTiming = this._getIlarisTimingData()
         context.ilarisDurationTypes = {
             ownerTurns: 'Eigener Zug',
+            infinite: 'Unbegrenzt',
             '': 'Keine (Standard)',
         }
         context.ilarisExpiresOnOptions = {
-            turnStart: 'Rundenbeginn',
             turnEnd: 'Rundenende',
+            turnStart: 'Rundenbeginn',
         }
         context.tabs = this._prepareTabs('sheet')
         return context
@@ -49,6 +50,7 @@ export class IlarisActiveEffectConfig extends foundry.applications.sheets.Active
             context.ilarisDurationTypes = {
                 '': 'Keine (Standard)',
                 ownerTurns: 'Eigener Zug',
+                infinite: 'Unbegrenzt',
             }
             context.ilarisExpiresOnOptions = {
                 turnEnd: 'Rundenende',
@@ -155,7 +157,7 @@ export class IlarisActiveEffectConfig extends foundry.applications.sheets.Active
             durationType: timing.durationType || 'ownerTurns',
             remaining: timing.remaining ?? 0,
             originalValue: timing.originalValue ?? 0,
-            expiresOn: timing.expiresOn || 'turnStart',
+            expiresOn: timing.expiresOn || 'turnEnd',
         }
     }
 }
