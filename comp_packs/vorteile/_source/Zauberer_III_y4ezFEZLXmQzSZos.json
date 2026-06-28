@@ -32,7 +32,11 @@
       "img": "icons/svg/aura.svg",
       "_id": "C0ODGPoO2orKU3qt",
       "type": "base",
-      "system": {},
+      "system": {
+        "ilarisTiming": {
+          "durationType": "infinite"
+        }
+      },
       "description": "",
       "origin": null,
       "tint": "#ffffff",

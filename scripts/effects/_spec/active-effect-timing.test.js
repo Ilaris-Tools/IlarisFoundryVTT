@@ -144,7 +144,7 @@ describe('IlarisActiveEffectConfig._getIlarisTimingData', () => {
             durationType: 'ownerTurns',
             remaining: 0,
             originalValue: 0,
-            expiresOn: 'turnStart',
+            expiresOn: 'turnEnd',
         })
     })
 

@@ -331,12 +331,10 @@ export function createItemTypeDataModels(TypeDataModel, h) {
         fertigkeit: FertigkeitItemDataModel,
         talent: TalentItemDataModel,
         uebernatuerlicheFertigkeit: UebernatuerlicheFertigkeitItemDataModel,
-        uebernatuerliche_fertigkeit: UebernatuerlicheFertigkeitItemDataModel,
         liturgie: LiturgieItemDataModel,
         zauber: ZauberItemDataModel,
         anrufung: AnrufungItemDataModel,
         freieFertigkeit: FreieFertigkeitItemDataModel,
-        freie_fertigkeit: FreieFertigkeitItemDataModel,
         vorteil: VorteilItemDataModel,
         manoever: ManoeverItemDataModel,
         eigenheit: EigenheitItemDataModel,
@@ -345,8 +343,6 @@ export function createItemTypeDataModels(TypeDataModel, h) {
         angriff: AngriffItemDataModel,
         info: InfoItemDataModel,
         freiesTalent: FreiesTalentItemDataModel,
-        freiestalent: FreiesTalentItemDataModel,
         abgeleiteterWert: AbgeleiteterWertItemDataModel,
-        'abgeleiteter-wert': AbgeleiteterWertItemDataModel,
     }
 }
