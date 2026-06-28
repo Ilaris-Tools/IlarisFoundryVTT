@@ -208,9 +208,7 @@
       "fertigkeit": {},
       "talent": {},
       "freieFertigkeit": {},
-      "freie_fertigkeit": {},
       "uebernatuerlicheFertigkeit": {},
-      "uebernatuerliche_fertigkeit": {},
       "zauber": {},
       "liturgie": {},
       "anrufung": {},
@@ -223,9 +221,7 @@
       "angriff": {},
       "info": {},
       "freiesTalent": {},
-      "freiestalent": {},
-      "abgeleiteterWert": {},
-      "abgeleiteter-wert": {}
+      "abgeleiteterWert": {}
     }
   },
   "socket": true,
