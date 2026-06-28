@@ -111,7 +111,7 @@ Hooks.once('init', () => {
         makeDefault: true,
     })
     Items.registerSheet('Ilaris', FreieFertigkeitSheet, {
-        types: ['freieFertigkeit', 'freie_fertigkeit'],
+        types: ['freieFertigkeit'],
         makeDefault: true,
     })
     Items.registerSheet('Ilaris', VorteilSheet, { types: ['vorteil'], makeDefault: true })
@@ -125,11 +125,11 @@ Hooks.once('init', () => {
     Items.registerSheet('Ilaris', AngriffSheet, { types: ['angriff'], makeDefault: true })
     Items.registerSheet('Ilaris', InfoSheet, { types: ['info'], makeDefault: true })
     Items.registerSheet('Ilaris', AbgeleiteterWertSheet, {
-        types: ['abgeleiteterWert', 'abgeleiteter-wert'],
+        types: ['abgeleiteterWert'],
         makeDefault: true,
     })
     Items.registerSheet('Ilaris', FreiesTalentSheet, {
-        types: ['freiesTalent', 'freiestalent'],
+        types: ['freiesTalent'],
         makeDefault: true,
     })
 

@@ -11,7 +11,6 @@ import './init.js'
 
 // Feature hooks
 import '../actors/hooks.js'
-import '../items/hooks.js'
 import '../waffe/hooks.js'
 import '../combat/hooks.js'
 import '../dice/hooks.js'

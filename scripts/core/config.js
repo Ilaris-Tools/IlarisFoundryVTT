@@ -152,15 +152,6 @@ let itemTemplates = {
         },
         logMessage: 'Neue freie Fertigkeit',
     },
-    freie_fertigkeit: {
-        name: 'freie Fertigkeit',
-        type: 'freieFertigkeit',
-        system: {
-            stufe: 1,
-            gruppe: 4,
-        },
-        logMessage: 'Neue freie Fertigkeit',
-    },
     uebernatuerlicheFertigkeit: {
         name: 'Fertigkeit',
         type: 'uebernatuerlicheFertigkeit',
