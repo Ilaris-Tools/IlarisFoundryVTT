@@ -5,7 +5,7 @@
 Prüft die UI-Interaktionen im **Effekte-Tab** des Helden-Sheets:
 
 1. **Vorteil-Effekte sichtbar**: Bestehende Effekte mit `sourceType: "vorteil"` werden im Tab angezeigt — ohne Dauer-Anzeige und **ohne** Löschen-Button.
-2. **Testeffekt anlegen**: Einen manuellen ActiveEffect per Foundry-API auf dem Actor anlegen (Name: `E2E-Testeffekt`, `duration.turns: 2`).
+2. **Testeffekt anlegen**: Einen manuellen ActiveEffect per Foundry-API auf dem Actor anlegen (Name: `E2E-Testeffekt`, Ilaris-Timing: `system.ilarisTiming.durationType: 'ownerTurns'`, `remaining: 2`, `originalValue: 2`).
 3. **Dauer-Anzeige**: Der Testeffekt erscheint im Tab mit dem Text „2 Runden".
 4. **Löschen**: Trash-Button klicken → Effekt verschwindet sofort (kein Bestätigungsdialog).
 5. **Cleanup**: Testeffekt in `afterEach` per API löschen, falls der Test vorher abbricht.
@@ -62,9 +62,16 @@ Prüft die UI-Interaktionen im **Effekte-Tab** des Helden-Sheets:
             name: 'E2E-Testeffekt',
             icon: 'icons/svg/aura.svg',
             disabled: false,
-            duration: { turns: 2 },
             changes: [],
             flags: { ilaris: { sourceType: 'manual' } },
+            system: {
+                ilarisTiming: {
+                    durationType: 'ownerTurns',
+                    remaining: 2,
+                    originalValue: 2,
+                    expiresOn: 'turnStart',
+                },
+            },
         },
     ])
     ```
@@ -126,6 +133,7 @@ Prüft die UI-Interaktionen im **Effekte-Tab** des Helden-Sheets:
 ## Bekannte Einschränkungen / Pitfalls
 
 - **`appliedEffects` enthält transferierte Item-Effekte**: Vorteil-Effekte kommen von Vorteil-Items mit `transfer: true`, erscheinen aber mit `flags.ilaris.sourceType === "vorteil"`.
+- **Ilaris-Timing**: Effekte verwenden `system.ilarisTiming` mit `durationType: 'ownerTurns'`. Die Dauer-Anzeige im Tab zeigt `ilarisTiming.remaining` (nur wenn truthy und finite).
 - **Tab-ID vs. CSS-Klasse**: Navigation per `data-tab="effects"`, Container per `section.tab.effekte`.
 - **`data-itemid` nutzt `effect._id`**: Discovery via `page.evaluate` immer `.id` (ohne Underscore).
 - **Kein Bestätigungsdialog**: `onItemDelete` im ActorSheet löscht `ActiveEffect` direkt ohne Dialog.
