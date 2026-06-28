@@ -1,6 +1,6 @@
 let shouldRunModelDataNormalizationMigration
 let runModelDataNormalizationMigrationIfNeeded
-const TARGET_SCHEMA_VERSION = '13.1.0'
+const TARGET_SCHEMA_VERSION = '13.2.0'
 let progressNotification
 
 function createDoc({ id, name, type, system }) {
@@ -17,6 +17,7 @@ function createDoc({ id, name, type, system }) {
                 this.system = data.system
             }
         }),
+        delete: jest.fn(async function () {}),
     }
 }
 
@@ -49,6 +50,9 @@ function createActor({ id, name, type, system, items = [] }) {
                     item.system.eigenschaften = updateData['system.eigenschaften']
                 }
             }
+        }),
+        deleteEmbeddedDocuments: jest.fn(async function (_embeddedType, ids) {
+            this.items = this.items.filter((item) => !ids.includes(item.id))
         }),
     }
 }
@@ -427,14 +431,8 @@ describe('migrate-modeldata-normalization', () => {
         )
         expect(worldActorEmbeddedLegacy.type).toBe('uebernatuerlicheFertigkeit')
 
-        expect(compendiumLegacyEffect.type).toBe('effectItem')
-        expect(compendiumLegacyEffect.update).toHaveBeenCalledWith(
-            {
-                type: 'effectItem',
-                system: {},
-            },
-            { recursive: false },
-        )
+        expect(compendiumLegacyEffect.delete).toHaveBeenCalled()
+        expect(compendiumLegacyEffect.update).not.toHaveBeenCalled()
 
         expect(compendiumActorEmbeddedLegacy.update).toHaveBeenCalledWith(
             {

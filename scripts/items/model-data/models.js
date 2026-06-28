@@ -255,14 +255,6 @@ export function createItemTypeDataModels(TypeDataModel, h) {
         }
     }
 
-    class EffectItemDataModel extends TypeDataModel {
-        static defineSchema() {
-            return {
-                description: h.string(''),
-            }
-        }
-    }
-
     class WaffeneigenschaftItemDataModel extends TypeDataModel {
         static defineSchema() {
             return {
@@ -356,7 +348,5 @@ export function createItemTypeDataModels(TypeDataModel, h) {
         freiestalent: FreiesTalentItemDataModel,
         abgeleiteterWert: AbgeleiteterWertItemDataModel,
         'abgeleiteter-wert': AbgeleiteterWertItemDataModel,
-        effectItem: EffectItemDataModel,
-        'effect-item': EffectItemDataModel,
     }
 }

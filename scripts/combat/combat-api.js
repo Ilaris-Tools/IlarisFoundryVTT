@@ -157,82 +157,83 @@ export async function handleAkrobatikDefense(actor, rollResult, html) {
         },
     )
 
-    const d = new Dialog(
-        {
-            title: `Ausweichen mit ${talentName}`,
-            content: dialogHtml,
-            buttons: {
-                one: {
-                    icon: '<i><img class="button-icon" src="systems/Ilaris/assets/game-icons.net/rolling-dices.png"></i>',
-                    label: 'OK',
-                    callback: async (dialogResponseHtml) => {
-                        let text = ''
-                        let dice_number = 1
-                        let discard_l = 0
-                        let discard_h = 0
+    await foundry.applications.api.DialogV2.wait({
+        window: { title: `Ausweichen mit ${talentName}` },
+        content: dialogHtml,
+        buttons: [
+            {
+                action: 'ok',
+                icon: '<i><img class="button-icon" src="systems/Ilaris/assets/game-icons.net/rolling-dices.png"></i>',
+                label: 'OK',
+                default: true,
+                callback: async (event, button, dialog) => {
+                    let text = ''
+                    let dice_number = 1
+                    let discard_l = 0
+                    let discard_h = 0
 
-                        // Handle 3d20
-                        const xd20Value = dialogResponseHtml
-                            .find(`input[name="xd20-${dialogId}"]:checked`)
-                            .val()
-                        if (xd20Value === '1') {
-                            dice_number = 3
-                            discard_l = 1
-                            discard_h = 1
-                            text += '3W20 (höchster und niedrigster werden ignoriert)\n'
+                    // Handle 3d20
+                    const xd20Input = dialog.querySelector(`input[name="xd20-${dialogId}"]:checked`)
+                    const xd20Value = xd20Input?.value
+                    if (xd20Value === '1') {
+                        dice_number = 3
+                        discard_l = 1
+                        discard_h = 1
+                        text += '3W20 (höchster und niedrigster werden ignoriert)\n'
+                    }
+
+                    // Handle Schips
+                    const schipsInput = dialog.querySelector(
+                        `input[name="schips-${dialogId}"]:checked`,
+                    )
+                    const schipsValue = schipsInput?.value
+                    if (schipsValue === '1' && actor.system.schips.schips_stern > 0) {
+                        dice_number += 1
+                        discard_l += 1
+                        text += 'Schips ohne Eigenheit\n'
+                        await actor.update({
+                            'system.schips.schips_stern': actor.system.schips.schips_stern - 1,
+                        })
+                    } else if (schipsValue === '2' && actor.system.schips.schips_stern > 0) {
+                        dice_number += 2
+                        discard_l += 2
+                        text += 'Schips mit Eigenheit\n'
+                        await actor.update({
+                            'system.schips.schips_stern': actor.system.schips.schips_stern - 1,
+                        })
+                    }
+
+                    // Get modifikator
+                    let modifikator = 0
+                    const modInput = dialog.querySelector(`#modifikator-${dialogId}`)
+                    if (modInput) {
+                        modifikator = Number(modInput.value)
+                        if (modifikator != 0) {
+                            text += `Modifikator: ${modifikator}\n`
                         }
+                    }
 
-                        // Handle Schips
-                        const schipsValue = dialogResponseHtml
-                            .find(`input[name="schips-${dialogId}"]:checked`)
-                            .val()
-                        if (schipsValue === '1' && actor.system.schips.schips_stern > 0) {
-                            dice_number += 1
-                            discard_l += 1
-                            text += 'Schips ohne Eigenheit\n'
-                            await actor.update({
-                                'system.schips.schips_stern': actor.system.schips.schips_stern - 1,
-                            })
-                        } else if (schipsValue === '2' && actor.system.schips.schips_stern > 0) {
-                            dice_number += 2
-                            discard_l += 2
-                            text += 'Schips mit Eigenheit\n'
-                            await actor.update({
-                                'system.schips.schips_stern': actor.system.schips.schips_stern - 1,
-                            })
-                        }
+                    // Get roll mode
+                    let rollmode = game.settings.get('core', 'rollMode')
+                    const rollModeInput = dialog.querySelector(`#rollMode-${dialogId}`)
+                    if (rollModeInput) {
+                        rollmode = rollModeInput.value
+                    }
 
-                        // Get modifikator
-                        let modifikator = 0
-                        if (dialogResponseHtml.find(`#modifikator-${dialogId}`).length > 0) {
-                            modifikator = Number(
-                                dialogResponseHtml.find(`#modifikator-${dialogId}`)[0].value,
-                            )
-                            if (modifikator != 0) {
-                                text += `Modifikator: ${modifikator}\n`
-                            }
-                        }
+                    // Build the roll formula
+                    const dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`
+                    const formula = `${dice_form} + ${skillValue} + ${globalermod} + ${modifikator}`
 
-                        // Get roll mode
-                        let rollmode = game.settings.get('core', 'rollMode')
-                        if (dialogResponseHtml.find(`#rollMode-${dialogId}`).length > 0) {
-                            rollmode = dialogResponseHtml.find(`#rollMode-${dialogId}`)[0].value
-                        }
+                    const roll = new Roll(formula)
+                    await roll.evaluate()
 
-                        // Build the roll formula
-                        const dice_form = `${dice_number}d20dl${discard_l}dh${discard_h}`
-                        const formula = `${dice_form} + ${skillValue} + ${globalermod} + ${modifikator}`
+                    // Determine success (compare to attack roll total)
+                    const attackTotal = rollResult.roll.total || rollResult.roll._total || 0
+                    const defenseTotal = roll.total
+                    const success = defenseTotal >= attackTotal
 
-                        const roll = new Roll(formula)
-                        await roll.evaluate()
-
-                        // Determine success (compare to attack roll total)
-                        const attackTotal = rollResult.roll.total || rollResult.roll._total || 0
-                        const defenseTotal = roll.total
-                        const success = defenseTotal >= attackTotal
-
-                        // Create chat message for Akrobatik defense
-                        const content = `
+                    // Create chat message for Akrobatik defense
+                    const content = `
                             <div class="ilaris-defense-roll">
                                 <h3>${label}</h3>
                                 <p><strong>${actor.name}</strong> versucht auszuweichen</p>
@@ -261,29 +262,26 @@ export async function handleAkrobatikDefense(actor, rollResult, html) {
                             </div>
                         `
 
-                        await ChatMessage.create({
-                            speaker: speaker,
-                            content: content,
-                            sound: CONFIG.sounds.dice,
-                            rollMode: rollmode,
-                        })
-                    },
-                },
-                two: {
-                    icon: '<i class="fas fa-times"></i>',
-                    label: 'Abbrechen',
-                    callback: () => {
-                        // Re-enable buttons if cancelled
-                        allButtons.forEach((button) => (button.disabled = false))
-                    },
+                    await ChatMessage.create({
+                        speaker: speaker,
+                        content: content,
+                        sound: CONFIG.sounds.dice,
+                        rollMode: rollmode,
+                    })
                 },
             },
-        },
-        {
-            jQuery: true,
-        },
-    )
-    d.render(true)
+            {
+                action: 'cancel',
+                icon: '<i class="fas fa-times"></i>',
+                label: 'Abbrechen',
+                callback: () => {
+                    // Re-enable buttons if cancelled
+                    allButtons.forEach((button) => (button.disabled = false))
+                },
+            },
+        ],
+        rejectClose: false,
+    })
 }
 
 /**

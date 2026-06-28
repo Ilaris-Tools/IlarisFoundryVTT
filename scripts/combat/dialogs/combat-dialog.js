@@ -402,7 +402,7 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
                     return null
                 }
 
-                const color = getLineClass(line)
+                const color = getLineClass(line, displayLine)
                 return {
                     text: displayLine,
                     cssClass: `modifier-item maneuver ${color}`,

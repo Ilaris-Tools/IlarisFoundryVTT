@@ -147,6 +147,10 @@ function registerHandlebarsHelpers() {
         return arg1 == arg2
     })
 
+    Handlebars.registerHelper('isFiniteValue', function (arg1) {
+        return Number.isFinite(arg1)
+    })
+
     Handlebars.registerHelper('contains', function (arg1, arg2) {
         return arg1.includes(arg2)
     })

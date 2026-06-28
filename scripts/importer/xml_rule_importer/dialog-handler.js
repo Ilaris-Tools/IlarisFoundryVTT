@@ -12,12 +12,27 @@ export class DialogHandler {
             'systems/Ilaris/scripts/importer/templates/rule-import-dialog.hbs',
         )
 
-        new Dialog({
-            title: 'Ilaris Regeln Importieren',
+        await foundry.applications.api.DialogV2.wait({
+            window: { title: 'Ilaris Regeln Importieren' },
             content: content,
-            buttons: this._getRuleImportDialogButtons(onImport),
-            default: 'import',
-        }).render(true)
+            buttons: [
+                {
+                    action: 'import',
+                    icon: '<i class="fas fa-file-import"></i>',
+                    label: 'Importieren',
+                    default: true,
+                    callback: async (event, button, dialog) => {
+                        await this._handleRuleImport(dialog, onImport)
+                    },
+                },
+                {
+                    action: 'cancel',
+                    icon: '<i class="fas fa-times"></i>',
+                    label: 'Abbrechen',
+                },
+            ],
+            rejectClose: false,
+        })
     }
 
     /**
@@ -25,6 +40,7 @@ export class DialogHandler {
      * @param {Function} onImport - Callback function to handle import
      * @returns {Object} Dialog button configuration
      * @private
+     * @deprecated Use showRuleImportDialog buttons array directly
      */
     static _getRuleImportDialogButtons(onImport) {
         return {
@@ -48,8 +64,8 @@ export class DialogHandler {
      * @param {Function} onImport - Callback function to handle import
      * @private
      */
-    static async _handleRuleImport(html, onImport) {
-        const fileInput = html.find('input[name="xmlFile"]')[0]
+    static async _handleRuleImport(dialog, onImport) {
+        const fileInput = dialog.querySelector('input[name="xmlFile"]')
         const file = fileInput?.files[0]
 
         if (!file) {

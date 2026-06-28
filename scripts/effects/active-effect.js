@@ -79,10 +79,10 @@ export class IlarisActiveEffect extends ActiveEffect {
         for (const effect of effects) {
             if (effect.disabled || effect.isSuppressed) continue
 
-            for (const change of effect.changes) {
-                // Check for Custom mode (10) and key starting with "system.gesundheit.wunden"
+            for (const change of effect.system?.changes ?? []) {
+                // Check for Custom mode and key starting with "system.gesundheit.wunden"
                 if (
-                    change.mode === CONST.ACTIVE_EFFECT_MODES.CUSTOM &&
+                    change.type === 'custom' &&
                     change.key?.toLowerCase().startsWith('system.gesundheit.wunden')
                 ) {
                     dotEffects.push({ effect, change })
@@ -99,6 +99,16 @@ export class IlarisActiveEffect extends ActiveEffect {
      * @returns {Promise<void>}
      */
     static async applyDotDamage(actor, change, effect) {
+        const targetPath = change.key
+        if (
+            !targetPath ||
+            (!targetPath.startsWith('system.gesundheit.wunden') &&
+                !targetPath.startsWith('system.gesundheit.erschoepfungen'))
+        ) {
+            console.warn(`Ilaris | DOT change has invalid key: ${targetPath}`)
+            return
+        }
+
         // Resolve formula if it contains @ references
         let damageValue = change.value
         if (typeof damageValue === 'string' && damageValue.includes('@')) {
@@ -109,46 +119,39 @@ export class IlarisActiveEffect extends ActiveEffect {
             damageValue = parseFloat(damageValue) || 0
         }
 
-        // Apply damage to HP
-        const currentHp = actor.system.gesundheit?.wunden ?? 0
-        const newHp = currentHp + damageValue
-
-        await actor.update({
-            'system.gesundheit.wunden': newHp,
-        })
+        // Apply to the target path (wunden or erschoepfungen)
+        const current = foundry.utils.getProperty(actor, targetPath) ?? 0
+        await actor.update({ [targetPath]: current + damageValue })
 
         // Send chat message about DOT damage
-        console.log('Applying DOT damage', change)
         const effectName = effect.name || 'Schaden über Zeit'
+        const isErschoepfung = targetPath.includes('erschoepfungen')
+        const label = isErschoepfung
+            ? `${damageValue} Erschöpfung`
+            : `${damageValue} Schadenspunkte`
         ChatMessage.create({
             speaker: ChatMessage.getSpeaker({ actor }),
             content: `<div class="ilaris-chat-card">
                 <h3>${effectName}</h3>
-                <p>${actor.name} erleidet ${damageValue} Schadenspunkte.</p>
+                <p>${actor.name} erleidet ${label}.</p>
             </div>`,
         })
-
-        console.log(`DOT: Applied ${damageValue} damage to ${actor.name}`)
     }
 
     /**
-     * Override _applyCustom to handle DOT effects
-     * DOT effects are applied via combat hooks, not during normal application
-     * @param {Actor} actor - The actor to apply changes to
-     * @param {Object} change - The change object
-     * @returns {*} The result of the custom application
-     * @override
+     * Does this effect have any DOT (type === "dot") changes?
+     * @returns {boolean}
      */
-    _applyCustom(actor, change) {
-        // Check if this is a DOT effect (key starts with "dot")
-        if (change.key?.toLowerCase().startsWith('system.gesundheit.wunden')) {
-            // DOT effects are handled by combat hooks, not during normal apply
-            // Return null to skip normal application
-            return null
-        }
+    get hasDotChanges() {
+        return (this.changes ?? []).some((c) => c.type === 'dot')
+    }
 
-        // For other custom effects, call parent implementation
-        return super._applyCustom(actor, change)
+    /**
+     * All DOT changes on this effect.
+     * @returns {Array<{key: string, mode: number, value: string, type: string, priority: number, phase: string}>}
+     */
+    get dotChanges() {
+        return (this.changes ?? []).filter((c) => c.type === 'dot')
     }
 
     /**
@@ -175,5 +178,26 @@ export class IlarisActiveEffect extends ActiveEffect {
         const result = super.apply(actor, change)
         this.recalculateHpIfNeeded(actor, change.key)
         return result
+    }
+
+    /**
+     * Prevent core from expiring Ilaris-timed effects.
+     * Owner-scoped expiry is handled by combat-turn-hooks.js instead.
+     * @override
+     */
+    isExpiryEvent(event, context) {
+        if (this.system?.ilarisTiming?.durationType === 'ownerTurns') return false
+        return super.isExpiryEvent(event, context)
+    }
+
+    /**
+     * Prevent core from decrementing duration.turns for Ilaris-timed effects.
+     * Without this guard the core would independently decrement on every combatant's
+     * turn, creating a conflicting counter alongside the owner-scoped hooks.
+     * @override
+     */
+    updateDuration(context) {
+        if (this.system?.ilarisTiming?.durationType === 'ownerTurns') return
+        return super.updateDuration(context)
     }
 }

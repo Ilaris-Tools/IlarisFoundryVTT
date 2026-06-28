@@ -238,15 +238,15 @@ export function calculate_diceschips(html, text, actor, dialogId = '') {
     console.log(xd20Name)
     const schipsName = dialogId ? `schips-${dialogId}` : 'schips'
 
-    let xd20_check = html.find(`input[name='${xd20Name}']`)
+    const xd20_check = html.querySelectorAll(`input[name='${xd20Name}']`)
     let xd20 = 0
-    for (let i of xd20_check) {
+    for (const i of xd20_check) {
         if (i.checked) xd20 = i.value
     }
     // console.log(xd20);
-    let schips_check = html.find(`input[name='${schipsName}']`)
+    const schips_check = html.querySelectorAll(`input[name='${schipsName}']`)
     let schips = 0
-    for (let i of schips_check) {
+    for (const i of schips_check) {
         if (i.checked) schips = i.value
     }
     let dice_number = 0

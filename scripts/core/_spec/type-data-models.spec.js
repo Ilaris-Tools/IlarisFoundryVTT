@@ -64,6 +64,13 @@ describe('registerIlarisTypeDataModels', () => {
                 ObjectField: MockObjectField,
                 ArrayField: MockArrayField,
             },
+            ActiveEffectTypeDataModel: class ActiveEffectTypeDataModel extends MockTypeDataModel {
+                static defineSchema() {
+                    return {
+                        changes: new MockArrayField(new MockSchemaField({})),
+                    }
+                }
+            },
         }
 
         global.CONFIG = {

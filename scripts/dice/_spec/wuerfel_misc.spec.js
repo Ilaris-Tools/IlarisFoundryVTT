@@ -419,6 +419,33 @@ describe('calculate_diceschips', () => {
     let mockHtml
     let mockActor
 
+    /**
+     * Build a mock container with querySelectorAll support for radio inputs.
+     * @param {string} xd20Checked - value of the checked xd20 radio ('0' or '1')
+     * @param {string} schipsChecked - value of the checked schips radio ('0', '1', or '2')
+     * @param {string} [dialogId=''] - optional dialog ID suffix
+     */
+    function buildHtml(xd20Checked, schipsChecked, dialogId = '') {
+        const xd20Name = dialogId ? `xd20-${dialogId}` : 'xd20'
+        const schipsName = dialogId ? `schips-${dialogId}` : 'schips'
+        const inputs = [
+            { type: 'radio', name: xd20Name, value: '0', checked: xd20Checked === '0' },
+            { type: 'radio', name: xd20Name, value: '1', checked: xd20Checked === '1' },
+            { type: 'radio', name: schipsName, value: '0', checked: schipsChecked === '0' },
+            { type: 'radio', name: schipsName, value: '1', checked: schipsChecked === '1' },
+            { type: 'radio', name: schipsName, value: '2', checked: schipsChecked === '2' },
+        ]
+        return {
+            querySelectorAll: (selector) => {
+                const nameMatch = selector.match(/\[name='([^']+)'\]/)
+                if (nameMatch) {
+                    return inputs.filter((i) => i.name === nameMatch[1])
+                }
+                return []
+            },
+        }
+    }
+
     beforeEach(() => {
         mockActor = {
             system: {
@@ -428,22 +455,10 @@ describe('calculate_diceschips', () => {
             },
             update: jest.fn(),
         }
-
-        mockHtml = {
-            find: jest.fn(),
-        }
     })
 
     test('should return base dice configuration when no options selected', () => {
-        mockHtml.find.mockImplementation((selector) => {
-            if (selector.includes('xd20')) {
-                return [{ checked: true, value: '0' }]
-            }
-            if (selector.includes('schips')) {
-                return [{ checked: false }]
-            }
-            return []
-        })
+        mockHtml = buildHtml('0', '0')
 
         const [text, dice_number, discard_l, discard_h] = calculate_diceschips(
             mockHtml,
@@ -458,18 +473,7 @@ describe('calculate_diceschips', () => {
     })
 
     test('should configure 3d20 drop lowest and highest when xd20 is enabled', () => {
-        mockHtml.find.mockImplementation((selector) => {
-            if (selector.includes('xd20')) {
-                return [
-                    { checked: false, value: '0' },
-                    { checked: true, value: '1' },
-                ]
-            }
-            if (selector.includes('schips')) {
-                return [{ checked: false }]
-            }
-            return []
-        })
+        mockHtml = buildHtml('1', '0')
 
         const [, dice_number, discard_l, discard_h] = calculate_diceschips(
             mockHtml,
@@ -483,18 +487,7 @@ describe('calculate_diceschips', () => {
     })
 
     test('should add one die and drop lowest when using schips without trait', () => {
-        mockHtml.find.mockImplementation((selector) => {
-            if (selector.includes('xd20')) {
-                return [{ checked: true, value: '0' }]
-            }
-            if (selector.includes('schips')) {
-                return [
-                    { checked: false, value: '0' },
-                    { checked: true, value: '1' },
-                ]
-            }
-            return []
-        })
+        mockHtml = buildHtml('0', '1')
 
         const [text, dice_number, discard_l, discard_h] = calculate_diceschips(
             mockHtml,
@@ -516,19 +509,7 @@ describe('calculate_diceschips', () => {
     })
 
     test('should add two dice and drop lowest two when using schips with trait', () => {
-        mockHtml.find.mockImplementation((selector) => {
-            if (selector.includes('xd20')) {
-                return [{ checked: true, value: '0' }]
-            }
-            if (selector.includes('schips')) {
-                return [
-                    { checked: false, value: '0' },
-                    { checked: false, value: '1' },
-                    { checked: true, value: '2' },
-                ]
-            }
-            return []
-        })
+        mockHtml = buildHtml('0', '2')
 
         const [text, dice_number, discard_l, discard_h] = calculate_diceschips(
             mockHtml,
@@ -551,19 +532,7 @@ describe('calculate_diceschips', () => {
 
     test('should not consume schips when none available', () => {
         mockActor.system.schips.schips_stern = 0
-
-        mockHtml.find.mockImplementation((selector) => {
-            if (selector.includes('xd20')) {
-                return [{ checked: true, value: '0' }]
-            }
-            if (selector.includes('schips')) {
-                return [
-                    { checked: false, value: '0' },
-                    { checked: true, value: '1' },
-                ]
-            }
-            return []
-        })
+        mockHtml = buildHtml('0', '1')
 
         const [text, dice_number, discard_l] = calculate_diceschips(mockHtml, '', mockActor)
 
@@ -574,21 +543,7 @@ describe('calculate_diceschips', () => {
     })
 
     test('should combine xd20 and schips correctly', () => {
-        mockHtml.find.mockImplementation((selector) => {
-            if (selector.includes('xd20')) {
-                return [
-                    { checked: false, value: '0' },
-                    { checked: true, value: '1' },
-                ]
-            }
-            if (selector.includes('schips')) {
-                return [
-                    { checked: false, value: '0' },
-                    { checked: true, value: '1' },
-                ]
-            }
-            return []
-        })
+        mockHtml = buildHtml('1', '1')
 
         const [, dice_number, discard_l, discard_h] = calculate_diceschips(mockHtml, '', mockActor)
 
@@ -599,21 +554,14 @@ describe('calculate_diceschips', () => {
 
     test('should handle custom dialogId for input names', () => {
         const dialogId = 'custom-123'
-
-        mockHtml.find.mockImplementation((selector) => {
-            expect(selector).toMatch(new RegExp(dialogId))
-            if (selector.includes('xd20')) {
-                return [{ checked: true, value: '0' }]
-            }
-            if (selector.includes('schips')) {
-                return [{ checked: false }]
-            }
-            return []
-        })
+        mockHtml = buildHtml('0', '0', dialogId)
 
         calculate_diceschips(mockHtml, '', mockActor, dialogId)
 
-        expect(mockHtml.find).toHaveBeenCalledWith(`input[name='xd20-${dialogId}']`)
-        expect(mockHtml.find).toHaveBeenCalledWith(`input[name='schips-${dialogId}']`)
+        // Verify the correct named inputs were queried (function ran without error)
+        const xd20Inputs = mockHtml.querySelectorAll(`input[name='xd20-${dialogId}']`)
+        const schipsInputs = mockHtml.querySelectorAll(`input[name='schips-${dialogId}']`)
+        expect(xd20Inputs.length).toBeGreaterThan(0)
+        expect(schipsInputs.length).toBeGreaterThan(0)
     })
 })

@@ -74,9 +74,16 @@ test.describe('E2E-019 Freie Fertigkeit Würfeldialog', () => {
         // ── Phase 3: Würfel-Icon der Freien Fertigkeit klicken ───────────────
         // data-rolltype="fertigkeit_diag" + data-probetype="freieFertigkeit" öffnet den FertigkeitDialog.
         // (data-rolltype="freieFertigkeit" würde direkt in den Chat würfeln — kein Dialog.)
-        const rollIcon = fertigkeitenSection.locator(
-            `td[data-action="rollable"][data-rolltype="fertigkeit_diag"][data-probetype="freieFertigkeit"][data-fertigkeit="${freieFertigkeitName}"]`,
-        )
+        const freieRow = fertigkeitenSection
+            .locator('tr:not(.hero-expandable-row-hidden)')
+            .filter({ hasText: freieFertigkeitName })
+            .first()
+        await expect(freieRow).toBeVisible({ timeout: 10000 })
+        const rollIcon = freieRow
+            .locator(
+                `td[data-action="rollable"][data-rolltype="fertigkeit_diag"][data-probetype="freieFertigkeit"][data-fertigkeit="${freieFertigkeitName}"]`,
+            )
+            .first()
         await expect(rollIcon).toBeVisible({ timeout: 10000 })
         await rollIcon.click()
 

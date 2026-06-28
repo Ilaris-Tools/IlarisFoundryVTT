@@ -396,7 +396,7 @@ export async function _applyDamageDirectly(targetActor, damage, damageType, true
                     damageType ? CONFIG.ILARIS.schadenstypen[damageType] : 'profan'
                 })`,
                 speaker: speaker,
-                type: CONST.CHAT_MESSAGE_STYLES.OTHER,
+                style: CONST.CHAT_MESSAGE_STYLES.OTHER,
             })
         }
     } else {
@@ -422,14 +422,14 @@ export async function _applyDamageDirectly(targetActor, damage, damageType, true
                     damageType ? CONFIG.ILARIS.schadenstypen[damageType] : ''
                 } Schaden: ${damage})`,
                 speaker: speaker,
-                type: CONST.CHAT_MESSAGE_STYLES.OTHER,
+                style: CONST.CHAT_MESSAGE_STYLES.OTHER,
             })
         } else {
             // Send a message when damage wasn't high enough
             await ChatMessage.create({
                 content: `${targetActor.name} erleidet keine Einschränkungen - der Schaden (${damage}) war nicht hoch genug.`,
                 speaker: speaker,
-                type: CONST.CHAT_MESSAGE_STYLES.OTHER,
+                style: CONST.CHAT_MESSAGE_STYLES.OTHER,
             })
         }
     }
