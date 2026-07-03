@@ -456,6 +456,23 @@ Hooks.once('init', () => {
         },
     ]
 
+    // Block creation of legacy item types while still allowing existing
+    // items to load for the ready-hook migration to rename them.
+    const LEGACY_ITEM_TYPES = new Set([
+        'freiestalent',
+        'freie_fertigkeit',
+        'uebernatuerliche_fertigkeit',
+        'abgeleiteter-wert',
+    ])
+    Hooks.on('preCreateItem', (item, data, options, userId) => {
+        if (LEGACY_ITEM_TYPES.has(item.type)) {
+            ui.notifications.warn(
+                `Der Item-Typ "${item.type}" ist veraltet und kann nicht mehr erstellt werden.`,
+            )
+            return false
+        }
+    })
+
     registerIlarisGameSettings()
     initializeKeybinds()
 })

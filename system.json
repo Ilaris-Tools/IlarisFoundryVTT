@@ -221,7 +221,12 @@
       "angriff": {},
       "info": {},
       "freiesTalent": {},
-      "abgeleiteterWert": {}
+      "abgeleiteterWert": {},
+      "freiestalent": {},
+      "freie_fertigkeit": {},
+      "uebernatuerliche_fertigkeit": {},
+      "abgeleiteter-wert": {},
+      "effect-item": {}
     }
   },
   "socket": true,
