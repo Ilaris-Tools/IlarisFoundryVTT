@@ -344,5 +344,11 @@ export function createItemTypeDataModels(TypeDataModel, h) {
         info: InfoItemDataModel,
         freiesTalent: FreiesTalentItemDataModel,
         abgeleiteterWert: AbgeleiteterWertItemDataModel,
+        // Legacy type aliases — allow old worlds to load so the ready-hook
+        // migration (migrate-modeldata-normalization.js) can rename them.
+        freiestalent: FreiesTalentItemDataModel,
+        freie_fertigkeit: FreieFertigkeitItemDataModel,
+        uebernatuerliche_fertigkeit: UebernatuerlicheFertigkeitItemDataModel,
+        'abgeleiteter-wert': AbgeleiteterWertItemDataModel,
     }
 }
