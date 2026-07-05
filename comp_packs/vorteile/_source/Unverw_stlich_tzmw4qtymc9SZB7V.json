@@ -26,6 +26,48 @@
           "mode": 2,
           "value": "1",
           "priority": null
+        },
+        {
+          "key": "system.abgeleitete.ws_stern",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.abgeleitete.ws_beine",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.abgeleitete.ws_larm",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.abgeleitete.ws_rarm",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.abgeleitete.ws_bauch",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.abgeleitete.ws_brust",
+          "mode": 2,
+          "value": "1",
+          "priority": null
+        },
+        {
+          "key": "system.abgeleitete.ws_kopf",
+          "mode": 2,
+          "value": "1",
+          "priority": null
         }
       ],
       "transfer": true,

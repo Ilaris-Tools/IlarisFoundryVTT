@@ -5,6 +5,10 @@ import {
     ConfigureGameSettingsCategories,
 } from '../../settings/configure-game-settings.model.js'
 import { sortByName, sortByGruppe } from '../../../utils/sort-functions.js'
+import {
+    createHeldActorSystemDefaults,
+    createKreaturActorSystemDefaults,
+} from '../model-data/shared.js'
 
 /**
  * Global cache for abgeleitete werte definitions
@@ -63,6 +67,66 @@ function createStructuredEnergyConfiguration(energyKey) {
 }
 
 export class IlarisActor extends Actor {
+    /**
+     * Set type-specific prototype token defaults before document construction.
+     * This runs before _preCreate and ensures defaults are applied to the source
+     * data that gets persisted to the database.
+     *
+     * Pattern follows the PF2e approach (static createDocuments override).
+     * @override
+     */
+    static async createDocuments(data = [], operation = {}) {
+        // Convert any existing document instances to plain source objects
+        const sources = data.map((d) => (d instanceof Actor ? d.toObject() : d))
+
+        for (const source of sources) {
+            switch (source.type) {
+                case 'held': {
+                    // Merge complete system defaults — TypeDataModel schema only
+                    // provides in-memory defaults, not database-persisted ones.
+                    source.system = foundry.utils.mergeObject(
+                        createHeldActorSystemDefaults(),
+                        source.system || {},
+                    )
+                    source.img =
+                        source.img ||
+                        'systems/Ilaris/assets/images/token/kreaturentypen/humanoid.png'
+                    const pt = (source.prototypeToken ??= {})
+                    pt.actorLink = true
+                    pt.bar1 = { attribute: 'gesundheit.hp' }
+                    pt.displayName = CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER
+                    pt.displayBars = CONST.TOKEN_DISPLAY_MODES.ALWAYS
+                    pt.disposition = CONST.TOKEN_DISPOSITIONS.FRIENDLY
+                    pt.name = source.name
+                    pt.vision = true
+                    pt.brightSight = 15
+                    pt.dimSight = 5
+                    break
+                }
+                case 'kreatur': {
+                    // Merge complete system defaults
+                    source.system = foundry.utils.mergeObject(
+                        createKreaturActorSystemDefaults(),
+                        source.system || {},
+                    )
+                    source.img =
+                        source.img || 'systems/Ilaris/assets/images/token/kreaturentypen/tier.png'
+                    const pt = (source.prototypeToken ??= {})
+                    pt.bar1 = { attribute: 'gesundheit.hp' }
+                    pt.displayName = CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER
+                    pt.displayBars = CONST.TOKEN_DISPLAY_MODES.ALWAYS
+                    pt.disposition = CONST.TOKEN_DISPOSITIONS.NEUTRAL
+                    pt.name = source.name
+                    break
+                }
+                default:
+                    break
+            }
+        }
+
+        return super.createDocuments(sources, operation)
+    }
+
     async _preCreate(data, options, user) {
         //this.data.update(data);  // should this be called here?
         await super._preCreate(data, options, user)
@@ -163,7 +227,7 @@ export class IlarisActor extends Actor {
                 this.system.abgeleitete.traglast = kk >= 1 ? 2 * kk : 1
             }
 
-            // Base Durchhaltevermögen (will be modified by hardcoded later)
+            // Calculate Base WS
             if (this.system.attribute.KO?.wert != undefined) {
                 // Basic formula before hardcoded modifications
                 this.system.abgeleitete.dh = this.system.attribute.KO.wert
@@ -172,6 +236,11 @@ export class IlarisActor extends Actor {
                     4 + Math.floor(this.system.attribute.KO.wert / 4),
                 )
             }
+
+            // Note: ws_stern and body-part armor initialization moved to
+            // _initializeActor in held.js / kreatur.js — they run after
+            // Active Effects have been applied to ws, so the AE-modified
+            // value is used as the base for armor calculations.
 
             if (!this.system.gesundheit) {
                 this.system.gesundheit = {}
@@ -185,28 +254,20 @@ export class IlarisActor extends Actor {
             }
 
             // Calculate WS* (with armor) and body part armor
-            // Check if LEP system is active
+            // LEP system: override hp from ws
             const useLepSystem = game.settings.get(
                 ConfigureGameSettingsCategories.Ilaris,
                 IlarisGameSettingNames.lepSystem,
             )
 
             if (useLepSystem) {
-                console.log('LEP system active - adjusting HP and WS calculations')
                 this.system.gesundheit.hp.max = this.system.abgeleitete.ws
                 this.system.gesundheit.hp.value = this.system.abgeleitete.ws
             }
 
-            // In LEP system, ws_stern starts at 0 instead of being based on ws
+            // Reset be — _calculateAbgeleitete in held.js/kreatur.js adds armor onto it.
+            // ws_stern and body-part armor are initialized there, after Active Effects.
             this.system.abgeleitete.be = 0
-            let ws_stern = useLepSystem ? 0 : this.system.abgeleitete.ws
-            this.system.abgeleitete.ws_stern = ws_stern
-            this.system.abgeleitete.ws_beine = ws_stern
-            this.system.abgeleitete.ws_larm = ws_stern
-            this.system.abgeleitete.ws_rarm = ws_stern
-            this.system.abgeleitete.ws_bauch = ws_stern
-            this.system.abgeleitete.ws_brust = ws_stern
-            this.system.abgeleitete.ws_kopf = ws_stern
 
             // Base ASP
             this.system.abgeleitete.asp = 0

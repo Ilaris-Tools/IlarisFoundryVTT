@@ -81,6 +81,7 @@ export class XmlCharacterImportDialogs {
             yes: { icon: '<i class="fas fa-download"></i>', label: 'Charakter importieren' },
             no: { icon: '<i class="fas fa-times"></i>', label: 'Abbrechen' },
             rejectClose: false,
+            classes: ['ilaris-import-dialog'],
         })
     }
 
