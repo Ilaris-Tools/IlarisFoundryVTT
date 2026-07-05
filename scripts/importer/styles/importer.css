@@ -60,3 +60,7 @@
     font-size: 2rem;
     color: #956729;
 }
+
+.ilaris-import-dialog .window-content {
+    overflow: auto;
+}
