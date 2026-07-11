@@ -323,6 +323,44 @@ export function createItemTypeDataModels(TypeDataModel, h) {
         }
     }
 
+    class AktionItemDataModel extends TypeDataModel {
+        static defineSchema() {
+            const itemBase = createItemTemplateFields(h)
+
+            return {
+                ...itemBase,
+
+                text: h.string(''),
+
+                aktionstyp: new foundry.data.fields.StringField({
+                    required: true,
+                    nullable: false,
+                    blank: false,
+                    choices: ['einfach', 'komplex'],
+                    initial: 'einfach',
+                }),
+
+                iniMod: h.number(0),
+
+                atMod: h.number(0),
+
+                vtMod: h.number(0),
+
+                bedingungen: h.schema({
+                    // Empty string '' = no weapon type restriction (selectable "beliebig").
+                    waffentyp: new foundry.data.fields.StringField({
+                        required: false,
+                        nullable: false,
+                        blank: true,
+                        choices: ['', 'nahkampfwaffe', 'fernkampfwaffe'],
+                        initial: '',
+                    }),
+                    eigenschaften: h.arrayOfStrings(),
+                }),
+            }
+        }
+    }
+
     return {
         nahkampfwaffe: NahkampfwaffeItemDataModel,
         fernkampfwaffe: FernkampfwaffeItemDataModel,
@@ -344,6 +382,7 @@ export function createItemTypeDataModels(TypeDataModel, h) {
         info: InfoItemDataModel,
         freiesTalent: FreiesTalentItemDataModel,
         abgeleiteterWert: AbgeleiteterWertItemDataModel,
+        aktion: AktionItemDataModel,
         // Legacy type aliases — allow old worlds to load so the ready-hook
         // migration (migrate-modeldata-normalization.js) can rename them.
         freiestalent: FreiesTalentItemDataModel,

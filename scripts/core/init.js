@@ -22,6 +22,7 @@ import { GegenstandSheet } from '../items/sheets/gegenstand.js'
 import { FreieFertigkeitSheet } from '../items/sheets/freie-fertigkeit.js'
 import { VorteilSheet } from '../items/sheets/vorteil.js'
 import { ManoeverSheet } from '../items/sheets/manoever.js'
+import { AktionSheet } from '../items/sheets/aktion.js'
 import { EigenheitSheet } from '../items/sheets/eigenheit.js'
 import { EigenschaftSheet } from '../items/sheets/eigenschaft.js'
 import { WaffeneigenschaftSheet } from '../waffe/sheets/waffeneigenschaft.js'
@@ -116,6 +117,7 @@ Hooks.once('init', () => {
     })
     Items.registerSheet('Ilaris', VorteilSheet, { types: ['vorteil'], makeDefault: true })
     Items.registerSheet('Ilaris', ManoeverSheet, { types: ['manoever'], makeDefault: true })
+    Items.registerSheet('Ilaris', AktionSheet, { types: ['aktion'], makeDefault: true })
     Items.registerSheet('Ilaris', EigenheitSheet, { types: ['eigenheit'], makeDefault: true })
     Items.registerSheet('Ilaris', EigenschaftSheet, { types: ['eigenschaft'], makeDefault: true })
     Items.registerSheet('Ilaris', WaffeneigenschaftSheet, {

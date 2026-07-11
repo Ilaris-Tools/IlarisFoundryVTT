@@ -100,6 +100,26 @@ export function createRuestungDefaults() {
 }
 
 /**
+ * Complete system defaults for aktion items.
+ * Mirrors AktionItemDataModel.defineSchema().
+ * @returns {Object}
+ */
+export function createAktionDefaults() {
+    return {
+        ...createItemTemplateDefaults(),
+        text: '',
+        aktionstyp: 'einfach',
+        iniMod: 0,
+        atMod: 0,
+        vtMod: 0,
+        bedingungen: {
+            waffentyp: '',
+            eigenschaften: [],
+        },
+    }
+}
+
+/**
  * Complete system defaults for manoever items.
  * @returns {Object}
  */

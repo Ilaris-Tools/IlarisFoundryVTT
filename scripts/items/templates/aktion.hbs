@@ -1,0 +1,79 @@
+{{log 'aktion' this}}
+<section class="{{cssClass}}">
+    <div>
+        <div>
+            <header class="sheet-header">
+                <div class="header-fields">
+                    <h1 class="charname">
+                        <input name="name" type="text" value="{{item.name}}" autofocus />
+                    </h1>
+                </div>
+            </header>
+        </div>
+
+        <hr />
+
+        <div class="flexrow">
+            <label><b>Aktionstyp:</b></label>
+            <select name="system.aktionstyp">
+                {{selectOptions aktionstyp_choices selected=item.system.aktionstyp}}
+            </select>
+        </div>
+
+        <hr />
+
+        <div class="flexrow">
+            <label><b>INI-Modifikator:</b></label>
+            <input
+                name="system.iniMod"
+                value="{{item.system.iniMod}}"
+                type="text"
+                data-dtype="Number"
+            />
+        </div>
+        <div class="flexrow">
+            <label><b>AT-Modifikator:</b></label>
+            <input
+                name="system.atMod"
+                value="{{item.system.atMod}}"
+                type="text"
+                data-dtype="Number"
+            />
+        </div>
+        <div class="flexrow">
+            <label><b>VT-Modifikator:</b></label>
+            <input
+                name="system.vtMod"
+                value="{{item.system.vtMod}}"
+                type="text"
+                data-dtype="Number"
+            />
+        </div>
+
+        <hr />
+
+        <h3>Bedingungen</h3>
+        <div class="flexrow">
+            <label><b>Waffentyp:</b></label>
+            <select name="system.bedingungen.waffentyp">
+                {{selectOptions waffentyp_choices selected=item.system.bedingungen.waffentyp}}
+            </select>
+        </div>
+        <div class="flexrow">
+            <label><b>Waffeneigenschaften:</b></label>
+            <input
+                name="system.bedingungen.eigenschaften"
+                value="{{item.system.bedingungen.eigenschaften}}"
+                type="text"
+                data-dtype="String"
+                placeholder="Kommagetrennt, z.B. Präzise, Wuchtig"
+            />
+        </div>
+
+        <hr />
+
+        <div>
+            {{> systems/Ilaris/scripts/items/templates/base_item_layout.hbs}}
+        </div>
+    </div>
+</section>

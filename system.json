@@ -226,7 +226,8 @@
       "freie_fertigkeit": {},
       "uebernatuerliche_fertigkeit": {},
       "abgeleiteter-wert": {},
-      "effect-item": {}
+      "effect-item": {},
+      "aktion": {}
     }
   },
   "socket": true,
