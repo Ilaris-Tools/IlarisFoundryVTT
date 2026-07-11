@@ -1066,13 +1066,14 @@ Hooks.on('renderSceneConfig', async (app, htmlDOM, data) => {
         templateData,
     )
 
-    // Simply append to the basic tab (within ambience group)
-    const basicTab = htmlDOM.querySelector('.tab[data-tab="basic"][data-group="ambience"]')
-    basicTab.insertAdjacentHTML(
+    // Append to the environment part (AppV2 uses data-application-part, not legacy tab/group selectors)
+    const environmentPart = htmlDOM.querySelector('[data-application-part="environment"]')
+    if (!environmentPart) return
+    environmentPart.insertAdjacentHTML(
         'beforeend',
         '<hr style="margin: 1.5em 0; border: none; border-top: 2px solid var(--color-border-light-primary);">',
     )
-    basicTab.insertAdjacentHTML('beforeend', environmentHTML)
+    environmentPart.insertAdjacentHTML('beforeend', environmentHTML)
 })
 
 // Add Automatisierung heading in settings, pretty scuffed solution but i did not manage to add a separate category to the settings without adding a new module
