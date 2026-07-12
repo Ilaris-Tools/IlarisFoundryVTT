@@ -221,7 +221,7 @@ export async function postRollToChat(rollResult, speaker, messageMode) {
         rollResult.templateData,
     )
 
-    return rollResult.roll.toMessage(
+    return await rollResult.roll.toMessage(
         {
             speaker: speaker,
             flavor: html_roll,
