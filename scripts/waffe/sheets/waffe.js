@@ -210,10 +210,10 @@ export class WaffeBaseSheet extends IlarisItemSheet {
                     label: 'Hinzufügen',
                     default: true,
                     callback: async (event, button, dialog) => {
-                        const selected = dialog.querySelector('#eigenschaft-select')?.value
+                        const selected = dialog.element.querySelector('#eigenschaft-select')?.value
                         if (selected) {
                             const parameters = []
-                            dialog.querySelectorAll('.parameter-input').forEach((input) => {
+                            dialog.element.querySelectorAll('.parameter-input').forEach((input) => {
                                 const type = input.dataset.type
                                 let value = input.value
 

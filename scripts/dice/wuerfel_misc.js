@@ -110,7 +110,7 @@ export async function roll_crit_message(
     label,
     text,
     speaker,
-    rollmode,
+    messageMode,
     crit_eval = true,
     fumble_val = 1,
     success_val,
@@ -148,7 +148,7 @@ export async function roll_crit_message(
             flavor: html_roll,
         },
         {
-            rollMode: rollmode,
+            messageMode: messageMode,
         },
     )
     return [isSuccess || crit, is16OrHigher]
@@ -215,7 +215,7 @@ export async function evaluate_roll_with_crit(
     }
 }
 
-export async function postRollToChat(rollResult, speaker, rollmode) {
+export async function postRollToChat(rollResult, speaker, messageMode) {
     const html_roll = await foundry.applications.handlebars.renderTemplate(
         rollResult.templatePath,
         rollResult.templateData,
@@ -227,7 +227,7 @@ export async function postRollToChat(rollResult, speaker, rollmode) {
             flavor: html_roll,
         },
         {
-            rollMode: rollmode,
+            messageMode: messageMode,
         },
     )
 }

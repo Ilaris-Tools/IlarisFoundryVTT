@@ -58,7 +58,7 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         this._initializeSelectedActorsFromTargets()
 
         this.speaker = ChatMessage.getSpeaker({ actor: this.actor })
-        this.rollmode = game.settings.get('core', 'rollMode')
+        this.rollmode = game.settings.get('core', 'messageMode')
         this.fumble_val = 1
     }
 
@@ -171,7 +171,7 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             ...context,
             config: CONFIG.ILARIS,
             distance_choice: CONFIG.ILARIS.distance_choice,
-            rollModes: CONFIG.Dice.rollModes,
+            rollModes: CONFIG.ChatMessage.modes,
             trefferzonen: CONFIG.ILARIS.trefferzonen,
             item: this.item,
             actor: this.actor,
