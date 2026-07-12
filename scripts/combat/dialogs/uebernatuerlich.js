@@ -523,7 +523,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             manoever.mod = { selected: 0 }
         }
         if (!manoever.rllm) {
-            manoever.rllm = { selected: game.settings.get('core', 'rollMode') }
+            manoever.rllm = { selected: game.settings.get('core', 'messageMode') }
         }
 
         // allgemeine optionen
@@ -551,7 +551,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             Number(this.element.querySelector(`#modifikator-${this.dialogId}`)?.value) || 0 // Modifikator
         manoever.rllm.selected =
             this.element.querySelector(`#rollMode-${this.dialogId}`)?.value ||
-            game.settings.get('core', 'rollMode') // RollMode
+            game.settings.get('core', 'messageMode') // RollMode
         await super.manoeverAuswaehlen()
     }
 

@@ -708,7 +708,7 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
                     whisper: [game.user.id],
                 },
                 {
-                    rollMode: 'gmroll',
+                    messageMode: 'gmroll',
                 },
             )
         } else {

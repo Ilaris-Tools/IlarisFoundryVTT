@@ -120,7 +120,7 @@ describe('UebernatuerlichDialog roll execution', () => {
                 speaker: { alias: 'Caster' },
                 flavor: '<h3>Kritischer Erfolg</h3>',
             }),
-            { rollMode: 'roll' },
+            { messageMode: 'roll' },
         )
         expect(dialog.applyEnergyCost).toHaveBeenCalledWith(true, true)
     })
