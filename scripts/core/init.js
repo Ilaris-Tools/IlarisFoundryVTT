@@ -466,7 +466,7 @@ Hooks.once('init', () => {
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/swordwoman.svg',
-            tint: STATUS_EFFECT_COLORS.ORANGE,
+            tint: STATUS_EFFECT_COLORS.YELLOW,
         },
         Nahkampf4: {
             id: 'Nahkampf4',
@@ -484,7 +484,7 @@ Hooks.once('init', () => {
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/swordwoman.svg',
-            tint: STATUS_EFFECT_COLORS.RED,
+            tint: STATUS_EFFECT_COLORS.ORANGE,
         },
     }
 
