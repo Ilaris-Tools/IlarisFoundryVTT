@@ -50,7 +50,8 @@ const STATUS_EFFECT_COLORS = {
     ORANGE: '#FF8000', // Medium penalty
     RED: '#FF0000', // Heavy penalty/danger
     VIOLET: '#8000FF', // Extreme penalty/maximum severity
-    GREEN: '#00FF00', // Positive effect/bonus
+    GREEN: '#7ED321', // Positive effect/bonus
+    LIGHT_GREEN: '#B8E986', // Light positive effect
 }
 
 Hooks.once('init', () => {
@@ -148,10 +149,15 @@ Hooks.once('init', () => {
     // game.sephrasto = new SephrastoImporter();
     CONFIG.ILARIS = ILARIS
     CONFIG.Combat.initiative = { formula: '@initiative', decimals: 1 }
-    CONFIG.statusEffects = [
-        {
+    // Status effects as v14 object (keyed by id) with order for grouped display.
+    // Groups: Furcht (100-103), Schlechte Sicht (200-203), Unsicherer Untergrund (300-303),
+    //         Position (400-403), Nahkampf (500-503).
+    CONFIG.statusEffects = {
+        // ── Furcht ──────────────────────────────────────────────────────────────
+        Furcht1: {
             id: 'Furcht1',
             name: 'Furcht I',
+            order: 100,
             duration: [],
             changes: [
                 { key: 'system.furcht.furchtstufe', type: 'override', priority: 1, value: 1 },
@@ -160,36 +166,42 @@ Hooks.once('init', () => {
             img: 'systems/Ilaris/assets/images/icon/terror.svg',
             tint: STATUS_EFFECT_COLORS.YELLOW,
         },
-        {
+        Furcht2: {
             id: 'Furcht2',
             name: 'Furcht II',
+            order: 101,
             duration: [],
             changes: [{ key: 'system.furcht.furchtstufe', type: 'upgrade', priority: 2, value: 2 }],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/terror.svg',
             tint: STATUS_EFFECT_COLORS.ORANGE,
         },
-        {
+        Furcht3: {
             id: 'Furcht3',
             name: 'Furcht III',
+            order: 102,
             duration: [],
             changes: [{ key: 'system.furcht.furchtstufe', type: 'upgrade', priority: 3, value: 3 }],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/terror.svg',
             tint: STATUS_EFFECT_COLORS.RED,
         },
-        {
+        Furcht4: {
             id: 'Furcht4',
             name: 'Furcht IV',
+            order: 103,
             duration: [],
             changes: [{ key: 'system.furcht.furchtstufe', type: 'upgrade', priority: 4, value: 4 }],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/terror.svg',
             tint: STATUS_EFFECT_COLORS.VIOLET,
         },
-        {
+
+        // ── Schlechte Sicht ────────────────────────────────────────────────────
+        schlechtesicht1: {
             id: 'schlechtesicht1',
             name: 'Schlechte Sicht (Dämmerung)',
+            order: 200,
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', type: 'add', priority: 4, value: -2 },
@@ -204,9 +216,10 @@ Hooks.once('init', () => {
             img: 'systems/Ilaris/assets/images/icon/sight-disabled.svg',
             tint: STATUS_EFFECT_COLORS.YELLOW,
         },
-        {
+        schlechtesicht2: {
             id: 'schlechtesicht2',
             name: 'Schlechte Sicht (Mondlicht)',
+            order: 201,
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', type: 'add', priority: 6, value: -4 },
@@ -221,9 +234,10 @@ Hooks.once('init', () => {
             img: 'systems/Ilaris/assets/images/icon/sight-disabled.svg',
             tint: STATUS_EFFECT_COLORS.ORANGE,
         },
-        {
+        schlechtesicht3: {
             id: 'schlechtesicht3',
             name: 'Schlechte Sicht (Sternenlicht)',
+            order: 202,
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', type: 'add', priority: 7, value: -8 },
@@ -238,9 +252,10 @@ Hooks.once('init', () => {
             img: 'systems/Ilaris/assets/images/icon/sight-disabled.svg',
             tint: STATUS_EFFECT_COLORS.RED,
         },
-        {
+        schlechtesicht4: {
             id: 'schlechtesicht4',
             name: 'Schlechte Sicht (Blind)',
+            order: 203,
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', type: 'add', priority: 8, value: -16 },
@@ -255,9 +270,12 @@ Hooks.once('init', () => {
             img: 'systems/Ilaris/assets/images/icon/sight-disabled.svg',
             tint: STATUS_EFFECT_COLORS.VIOLET,
         },
-        {
+
+        // ── Unsicherer Untergrund ──────────────────────────────────────────────
+        untergrund1: {
             id: 'untergrund1',
             name: 'Unsicherer Untergrund (knietiefes Wasser)',
+            order: 300,
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', type: 'add', priority: 4, value: -2 },
@@ -272,9 +290,10 @@ Hooks.once('init', () => {
             img: 'systems/Ilaris/assets/images/icon/sticky-boot.svg',
             tint: STATUS_EFFECT_COLORS.YELLOW,
         },
-        {
+        untergrund2: {
             id: 'untergrund2',
             name: 'Unsicherer Untergrund (eisglatt, hüfttiefes Wasser)',
+            order: 301,
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', type: 'add', priority: 6, value: -4 },
@@ -289,9 +308,10 @@ Hooks.once('init', () => {
             img: 'systems/Ilaris/assets/images/icon/sticky-boot.svg',
             tint: STATUS_EFFECT_COLORS.ORANGE,
         },
-        {
+        untergrund3: {
             id: 'untergrund3',
             name: 'Unsicherer Untergrund (schultertiefes Wasser)',
+            order: 302,
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', type: 'add', priority: 7, value: -8 },
@@ -306,9 +326,10 @@ Hooks.once('init', () => {
             img: 'systems/Ilaris/assets/images/icon/sticky-boot.svg',
             tint: STATUS_EFFECT_COLORS.RED,
         },
-        {
+        untergrund4: {
             id: 'untergrund4',
             name: 'Unsicherer Untergrund (Drahtseil)',
+            order: 303,
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', type: 'add', priority: 8, value: -16 },
@@ -323,9 +344,12 @@ Hooks.once('init', () => {
             img: 'systems/Ilaris/assets/images/icon/sticky-boot.svg',
             tint: STATUS_EFFECT_COLORS.VIOLET,
         },
-        {
+
+        // ── Position ───────────────────────────────────────────────────────────
+        Position1: {
             id: 'Position1',
             name: 'Sehr vorteilhafte Position',
+            order: 400,
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', type: 'add', priority: 9, value: +4 },
@@ -339,9 +363,10 @@ Hooks.once('init', () => {
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/hill-fort-green.svg',
         },
-        {
+        Position2: {
             id: 'Position2',
             name: 'Vorteilhafte Position',
+            order: 401,
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', type: 'add', priority: 10, value: +2 },
@@ -355,9 +380,10 @@ Hooks.once('init', () => {
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/hill-conquest-light-green.svg',
         },
-        {
+        Position3: {
             id: 'Position3',
             name: 'Schlechte Position (Kniend)',
+            order: 402,
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', type: 'add', priority: 12, value: -2 },
@@ -371,9 +397,10 @@ Hooks.once('init', () => {
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/kneeling-yellow.svg',
         },
-        {
+        Position4: {
             id: 'Position4',
             name: 'Sehr schlechte Position (Liegend)',
+            order: 403,
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', type: 'add', priority: 13, value: -4 },
@@ -387,9 +414,12 @@ Hooks.once('init', () => {
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/falling-orange.svg',
         },
-        {
+
+        // ── Nahkampf ───────────────────────────────────────────────────────────
+        Nahkampf1: {
             id: 'Nahkampf1',
             name: 'Nahkampf +4',
+            order: 500,
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', type: 'add', priority: 9, value: +4 },
@@ -404,9 +434,10 @@ Hooks.once('init', () => {
             img: 'systems/Ilaris/assets/images/icon/swordwoman.svg',
             tint: STATUS_EFFECT_COLORS.GREEN,
         },
-        {
+        Nahkampf2: {
             id: 'Nahkampf2',
             name: 'Nahkampf +2',
+            order: 501,
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', type: 'add', priority: 10, value: +2 },
@@ -419,11 +450,12 @@ Hooks.once('init', () => {
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/swordwoman.svg',
-            tint: STATUS_EFFECT_COLORS.YELLOW,
+            tint: STATUS_EFFECT_COLORS.LIGHT_GREEN,
         },
-        {
+        Nahkampf3: {
             id: 'Nahkampf3',
             name: 'Nahkampf -2',
+            order: 502,
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', type: 'add', priority: 12, value: -2 },
@@ -436,11 +468,12 @@ Hooks.once('init', () => {
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/swordwoman.svg',
-            tint: STATUS_EFFECT_COLORS.ORANGE,
+            tint: STATUS_EFFECT_COLORS.YELLOW,
         },
-        {
+        Nahkampf4: {
             id: 'Nahkampf4',
             name: 'Nahkampf -4',
+            order: 503,
             duration: [],
             changes: [
                 { key: 'system.modifikatoren.nahkampfmod', type: 'add', priority: 13, value: -4 },
@@ -453,10 +486,9 @@ Hooks.once('init', () => {
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/swordwoman.svg',
-            tint: STATUS_EFFECT_COLORS.RED,
-            //flags.core.overlay = true for overlay icon
+            tint: STATUS_EFFECT_COLORS.ORANGE,
         },
-    ]
+    }
 
     // Block creation of legacy item types while still allowing existing
     // items to load for the ready-hook migration to rename them.
@@ -740,7 +772,7 @@ Hooks.on('renderTokenHUD', (app, htmlDOM, data) => {
                 const statusId = control.dataset.statusId
 
                 // Find the matching status effect configuration
-                const statusConfig = CONFIG.statusEffects.find((effect) => effect.id === statusId)
+                const statusConfig = CONFIG.statusEffects[statusId]
 
                 if (statusConfig && statusConfig.tint) {
                     // Apply filter to change only the white SVG fill to the desired color
@@ -767,16 +799,18 @@ Hooks.on('renderTokenHUD', (app, htmlDOM, data) => {
 // Helper function to create CSS filters that convert white SVG to specific colors
 function getFilterForColor(hexColor) {
     switch (hexColor.toUpperCase()) {
-        case STATUS_EFFECT_COLORS.RED: // Red
-            return 'brightness(0) saturate(100%) invert(13%) sepia(94%) saturate(7151%) hue-rotate(5deg) brightness(98%) contrast(118%)'
-        case STATUS_EFFECT_COLORS.GREEN: // Green
-            return 'brightness(0) saturate(100%) invert(50%) sepia(89%) saturate(1174%) hue-rotate(88deg) brightness(118%) contrast(119%)'
-        case STATUS_EFFECT_COLORS.YELLOW: // Yellow
-            return 'brightness(0) saturate(100%) invert(85%) sepia(89%) saturate(1629%) hue-rotate(357deg) brightness(102%) contrast(104%)'
-        case STATUS_EFFECT_COLORS.ORANGE: // Orange
-            return 'brightness(0) saturate(100%) invert(42%) sepia(93%) saturate(1352%) hue-rotate(15deg) brightness(119%) contrast(119%)'
-        case STATUS_EFFECT_COLORS.VIOLET: // Violet
-            return 'brightness(0) saturate(100%) invert(27%) sepia(93%) saturate(7395%) hue-rotate(270deg) brightness(96%) contrast(128%)'
+        case STATUS_EFFECT_COLORS.RED: // #FF0000
+            return 'brightness(0) saturate(100%) invert(13%) sepia(96%) saturate(7484%) hue-rotate(3deg) brightness(96%) contrast(114%)'
+        case STATUS_EFFECT_COLORS.GREEN: // #7ED321
+            return 'brightness(0) saturate(100%) invert(61%) sepia(80%) saturate(449%) hue-rotate(46deg) brightness(103%) contrast(89%)'
+        case STATUS_EFFECT_COLORS.LIGHT_GREEN: // #B8E986
+            return 'brightness(0) saturate(100%) invert(97%) sepia(9%) saturate(2042%) hue-rotate(29deg) brightness(97%) contrast(88%)'
+        case STATUS_EFFECT_COLORS.YELLOW: // #FFFF00
+            return 'brightness(0) saturate(100%) invert(93%) sepia(58%) saturate(2379%) hue-rotate(357deg) brightness(104%) contrast(104%)'
+        case STATUS_EFFECT_COLORS.ORANGE: // #FF8000
+            return 'brightness(0) saturate(100%) invert(64%) sepia(42%) saturate(5677%) hue-rotate(358deg) brightness(100%) contrast(109%)'
+        case STATUS_EFFECT_COLORS.VIOLET: // #8000FF
+            return 'brightness(0) saturate(100%) invert(11%) sepia(83%) saturate(6118%) hue-rotate(269deg) brightness(106%) contrast(129%)'
         default:
             return 'none'
     }
@@ -1037,13 +1071,14 @@ Hooks.on('renderSceneConfig', async (app, htmlDOM, data) => {
         templateData,
     )
 
-    // Simply append to the basic tab (within ambience group)
-    const basicTab = htmlDOM.querySelector('.tab[data-tab="basic"][data-group="ambience"]')
-    basicTab.insertAdjacentHTML(
+    // Append to the environment part (AppV2 uses data-application-part, not legacy tab/group selectors)
+    const environmentPart = htmlDOM.querySelector('[data-application-part="environment"]')
+    if (!environmentPart) return
+    environmentPart.insertAdjacentHTML(
         'beforeend',
         '<hr style="margin: 1.5em 0; border: none; border-top: 2px solid var(--color-border-light-primary);">',
     )
-    basicTab.insertAdjacentHTML('beforeend', environmentHTML)
+    environmentPart.insertAdjacentHTML('beforeend', environmentHTML)
 })
 
 // Add Automatisierung heading in settings, pretty scuffed solution but i did not manage to add a separate category to the settings without adding a new module

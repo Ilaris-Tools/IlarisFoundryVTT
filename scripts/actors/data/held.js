@@ -1,36 +1,16 @@
 import { IlarisActor } from './actor.js'
 import * as hardcoded from './hardcodedvorteile.js'
 import * as weaponUtils from './actor-weapon-utils.js'
+import {
+    IlarisGameSettingNames,
+    ConfigureGameSettingsCategories,
+} from '../../settings/configure-game-settings.model.js'
 
 export class HeldActor extends IlarisActor {
-    constructor(data, options) {
-        // this is a workaround to force actor link to be set even when
-        // created through proxy. remove the proxy and this constructor
-        foundry.utils.mergeObject(data, {
-            'prototypeToken.actorLink': true,
-        })
-        super(data, options)
-    }
-
     async _preCreate(data, options, user) {
-        // TDOO: this seems not to be executed when created from "new actor"
-        // button. Looks like its bypassed by the proxy (remove proxy?)
-        console.log('HeldActor._preCreate()')
-        console.log(data)
-        foundry.utils.mergeObject(data, {
-            'prototypeToken.bar1': { attribute: 'gesundheit.hp' },
-            'prototypeToken.displayName': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
-            'prototypeToken.displayBars': CONST.TOKEN_DISPLAY_MODES.ALWAYS,
-            'prototypeToken.disposition': CONST.TOKEN_DISPOSITIONS.FRIENDLY,
-            'prototypeToken.name': data.name,
-            'prototypeToken.actorLink': true,
-        })
-        data.img = 'systems/Ilaris/assets/images/token/kreaturentypen/humanoid.png'
-        data.prototypeToken.vision = true
-        data.prototypeToken.actorLink = true
-        data.prototypeToken.brightSight = 15
-        data.prototypeToken.dimSight = 5
-        await super._preCreate(data, options, user) // IlarisActor._preCreate() -> Actor._preCreate()
+        // Prototype token defaults are set in IlarisActor.createDocuments()
+        // which runs before document construction (PF2e pattern).
+        await super._preCreate(data, options, user)
     }
 
     /** @override */
@@ -44,11 +24,27 @@ export class HeldActor extends IlarisActor {
         // NOTE: sieht aus als wäre _initialize eine methode von Actor,
         // die man nicht einfach überschreiben sollte
         // daher umbenannt in _initializeActor
-        if (!this.system.modifikatoren.verteidigungmod) {
+        if (this.system.modifikatoren && !this.system.modifikatoren?.verteidigungmod) {
             this.system.modifikatoren.verteidigungmod = 0
         }
         this._sortItems(this) //Als erstes, darauf basieren Berechnungen
         this._calculatePWAttribute(this.system)
+
+        // Initialize ws_stern and body-part armor from the current (AE-modified) ws.
+        // This runs after super.prepareData() has applied Active Effects.
+        const useLepSystem = game.settings.get(
+            ConfigureGameSettingsCategories.Ilaris,
+            IlarisGameSettingNames.lepSystem,
+        )
+        let ws_stern = useLepSystem ? 0 : this.system.abgeleitete.ws
+        this.system.abgeleitete.ws_stern = ws_stern
+        this.system.abgeleitete.ws_beine = ws_stern
+        this.system.abgeleitete.ws_larm = ws_stern
+        this.system.abgeleitete.ws_rarm = ws_stern
+        this.system.abgeleitete.ws_bauch = ws_stern
+        this.system.abgeleitete.ws_brust = ws_stern
+        this.system.abgeleitete.ws_kopf = ws_stern
+
         this._calculateAbgeleitete(this)
         this._calculateWounds(this.system)
         this._calculateFear(this.system)

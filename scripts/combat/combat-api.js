@@ -173,7 +173,9 @@ export async function handleAkrobatikDefense(actor, rollResult, html) {
                     let discard_h = 0
 
                     // Handle 3d20
-                    const xd20Input = dialog.querySelector(`input[name="xd20-${dialogId}"]:checked`)
+                    const xd20Input = dialog.element.querySelector(
+                        `input[name="xd20-${dialogId}"]:checked`,
+                    )
                     const xd20Value = xd20Input?.value
                     if (xd20Value === '1') {
                         dice_number = 3
@@ -183,7 +185,7 @@ export async function handleAkrobatikDefense(actor, rollResult, html) {
                     }
 
                     // Handle Schips
-                    const schipsInput = dialog.querySelector(
+                    const schipsInput = dialog.element.querySelector(
                         `input[name="schips-${dialogId}"]:checked`,
                     )
                     const schipsValue = schipsInput?.value
@@ -205,7 +207,7 @@ export async function handleAkrobatikDefense(actor, rollResult, html) {
 
                     // Get modifikator
                     let modifikator = 0
-                    const modInput = dialog.querySelector(`#modifikator-${dialogId}`)
+                    const modInput = dialog.element.querySelector(`#modifikator-${dialogId}`)
                     if (modInput) {
                         modifikator = Number(modInput.value)
                         if (modifikator != 0) {
@@ -215,7 +217,7 @@ export async function handleAkrobatikDefense(actor, rollResult, html) {
 
                     // Get roll mode
                     let rollmode = game.settings.get('core', 'rollMode')
-                    const rollModeInput = dialog.querySelector(`#rollMode-${dialogId}`)
+                    const rollModeInput = dialog.element.querySelector(`#rollMode-${dialogId}`)
                     if (rollModeInput) {
                         rollmode = rollModeInput.value
                     }

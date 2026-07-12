@@ -90,7 +90,7 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
             checked_schips: '0',
             hasSchips,
             rollModes: CONFIG.Dice.rollModes,
-            defaultRollMode: game.settings.get('core', 'rollMode'),
+            defaultRollMode: game.settings.get('core', 'messageMode'),
             dialogId: this.dialogId,
             summary: this.summary,
         }
@@ -336,7 +336,7 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
             ...statePayload,
             formula,
             text,
-            rollMode: rollmode,
+            messageMode: rollmode,
             rollResult,
             roll: rollResult?.roll || null,
             success: rollResult?.success,

@@ -242,7 +242,7 @@ export class CombatItem extends IlarisItem {
             const defaults = {
                 kbak: { selected: false },
                 mod: { selected: false },
-                rllm: { selected: game.settings.get('core', 'rollMode') },
+                rllm: { selected: game.settings.get('core', 'messageMode') },
             }
             const existing = foundry.utils.deepClone(this.system.manoever || {})
             this.system.manoever = foundry.utils.mergeObject(
