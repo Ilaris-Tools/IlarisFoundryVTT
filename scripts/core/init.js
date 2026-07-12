@@ -49,7 +49,8 @@ const STATUS_EFFECT_COLORS = {
     ORANGE: '#FF8000', // Medium penalty
     RED: '#FF0000', // Heavy penalty/danger
     VIOLET: '#8000FF', // Extreme penalty/maximum severity
-    GREEN: '#00FF00', // Positive effect/bonus
+    GREEN: '#7ED321', // Positive effect/bonus
+    LIGHT_GREEN: '#B8E986', // Light positive effect
 }
 
 Hooks.once('init', () => {
@@ -447,7 +448,7 @@ Hooks.once('init', () => {
             ],
             isTemporary: 0,
             img: 'systems/Ilaris/assets/images/icon/swordwoman.svg',
-            tint: STATUS_EFFECT_COLORS.YELLOW,
+            tint: STATUS_EFFECT_COLORS.LIGHT_GREEN,
         },
         Nahkampf3: {
             id: 'Nahkampf3',
@@ -796,16 +797,18 @@ Hooks.on('renderTokenHUD', (app, htmlDOM, data) => {
 // Helper function to create CSS filters that convert white SVG to specific colors
 function getFilterForColor(hexColor) {
     switch (hexColor.toUpperCase()) {
-        case STATUS_EFFECT_COLORS.RED: // Red
-            return 'brightness(0) saturate(100%) invert(13%) sepia(94%) saturate(7151%) hue-rotate(5deg) brightness(98%) contrast(118%)'
-        case STATUS_EFFECT_COLORS.GREEN: // Green
-            return 'brightness(0) saturate(100%) invert(50%) sepia(89%) saturate(1174%) hue-rotate(88deg) brightness(118%) contrast(119%)'
-        case STATUS_EFFECT_COLORS.YELLOW: // Yellow
-            return 'brightness(0) saturate(100%) invert(85%) sepia(89%) saturate(1629%) hue-rotate(357deg) brightness(102%) contrast(104%)'
-        case STATUS_EFFECT_COLORS.ORANGE: // Orange
-            return 'brightness(0) saturate(100%) invert(42%) sepia(93%) saturate(1352%) hue-rotate(15deg) brightness(119%) contrast(119%)'
-        case STATUS_EFFECT_COLORS.VIOLET: // Violet
-            return 'brightness(0) saturate(100%) invert(27%) sepia(93%) saturate(7395%) hue-rotate(270deg) brightness(96%) contrast(128%)'
+        case STATUS_EFFECT_COLORS.RED: // #FF0000
+            return 'brightness(0) saturate(100%) invert(13%) sepia(96%) saturate(7484%) hue-rotate(3deg) brightness(96%) contrast(114%)'
+        case STATUS_EFFECT_COLORS.GREEN: // #7ED321
+            return 'brightness(0) saturate(100%) invert(61%) sepia(80%) saturate(449%) hue-rotate(46deg) brightness(103%) contrast(89%)'
+        case STATUS_EFFECT_COLORS.LIGHT_GREEN: // #B8E986
+            return 'brightness(0) saturate(100%) invert(97%) sepia(9%) saturate(2042%) hue-rotate(29deg) brightness(97%) contrast(88%)'
+        case STATUS_EFFECT_COLORS.YELLOW: // #FFFF00
+            return 'brightness(0) saturate(100%) invert(93%) sepia(58%) saturate(2379%) hue-rotate(357deg) brightness(104%) contrast(104%)'
+        case STATUS_EFFECT_COLORS.ORANGE: // #FF8000
+            return 'brightness(0) saturate(100%) invert(64%) sepia(42%) saturate(5677%) hue-rotate(358deg) brightness(100%) contrast(109%)'
+        case STATUS_EFFECT_COLORS.VIOLET: // #8000FF
+            return 'brightness(0) saturate(100%) invert(11%) sepia(83%) saturate(6118%) hue-rotate(269deg) brightness(106%) contrast(129%)'
         default:
             return 'none'
     }

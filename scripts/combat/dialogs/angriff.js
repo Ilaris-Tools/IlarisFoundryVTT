@@ -372,7 +372,7 @@ export class AngriffDialog extends CombatDialog {
                     whisper: [game.user.id],
                 },
                 {
-                    rollMode: 'gmroll',
+                    messageMode: 'gmroll',
                 },
             )
 

@@ -175,6 +175,7 @@ export class XmlCharacterImportDialogs {
             yes: { icon: '<i class="fas fa-sync-alt"></i>', label: 'Charakter synchronisieren' },
             no: { icon: '<i class="fas fa-times"></i>', label: 'Abbrechen' },
             rejectClose: false,
+            classes: ['ilaris-import-dialog'],
         })
     }
 

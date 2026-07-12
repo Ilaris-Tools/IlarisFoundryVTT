@@ -1,5 +1,9 @@
 import { wuerfelwurf } from '../../dice/wuerfel.js'
 import { ILARIS } from '../../core/config.js'
+import {
+    createNahkampfwaffeDefaults,
+    createFernkampfwaffeDefaults,
+} from '../../items/model-data/shared.js'
 
 const { HandlebarsApplicationMixin } = foundry.applications.api
 const { ActorSheetV2 } = foundry.applications.sheets
@@ -758,40 +762,30 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
                                     compendiumItem.type === 'nahkampfwaffe' ||
                                     compendiumItem.type === 'fernkampfwaffe'
                                 ) {
-                                    // Update weapon-specific fields
-                                    if (compendiumItem.system.eigenschaften !== undefined) {
-                                        updateData['system.eigenschaften'] =
-                                            compendiumItem.system.eigenschaften
-                                    }
-                                    if (compendiumItem.system.gewicht !== undefined) {
-                                        updateData['system.gewicht'] = compendiumItem.system.gewicht
-                                    }
-                                    if (compendiumItem.system.preis !== undefined) {
-                                        updateData['system.preis'] = compendiumItem.system.preis
-                                    }
-                                    if (compendiumItem.system.tp !== undefined) {
-                                        updateData['system.tp'] = compendiumItem.system.tp
-                                    }
-                                    if (compendiumItem.system.at_mod !== undefined) {
-                                        updateData['system.at_mod'] = compendiumItem.system.at_mod
-                                    }
-                                    if (compendiumItem.system.vt_mod !== undefined) {
-                                        updateData['system.vt_mod'] = compendiumItem.system.vt_mod
-                                    }
-                                    if (compendiumItem.system.beschreibung !== undefined) {
-                                        updateData['system.beschreibung'] =
-                                            compendiumItem.system.beschreibung
-                                    }
+                                    // Initialize ALL weapon fields from data model schema.
+                                    // Use compendium value first, then fall back to schema default.
+                                    // This ensures JSON-imported actors get fully initialized even
+                                    // when both the actor item and compendium source lack a field.
+                                    //
+                                    // Fields intentionally NOT synced (actor-local state):
+                                    //   hauptwaffe, nebenwaffe (equip status), computed (derived),
+                                    //   quantity (top-level Item property, not system)
 
-                                    // Additional fields for fernkampfwaffe
-                                    if (compendiumItem.type === 'fernkampfwaffe') {
-                                        if (compendiumItem.system.reichweite_mod !== undefined) {
-                                            updateData['system.reichweite_mod'] =
-                                                compendiumItem.system.reichweite_mod
-                                        }
-                                        if (compendiumItem.system.ladezeit !== undefined) {
-                                            updateData['system.ladezeit'] =
-                                                compendiumItem.system.ladezeit
+                                    const defaults =
+                                        compendiumItem.type === 'nahkampfwaffe'
+                                            ? createNahkampfwaffeDefaults()
+                                            : createFernkampfwaffeDefaults()
+
+                                    // Exclude actor-local fields from sync
+                                    const SKIP = new Set(['hauptwaffe', 'nebenwaffe', 'quantity'])
+
+                                    for (const field of Object.keys(defaults)) {
+                                        if (SKIP.has(field)) continue
+                                        // Prefer compendium value, then fall back to schema default
+                                        const value =
+                                            compendiumItem.system[field] ?? defaults[field]
+                                        if (value !== undefined) {
+                                            updateData[`system.${field}`] = value
                                         }
                                     }
                                 }
@@ -908,23 +902,53 @@ export class IlarisActorSheet extends HandlebarsApplicationMixin(ActorSheetV2) {
             needsUpdate =
                 needsUpdate ||
                 eigenschaftenChanged() ||
+                (compendiumItem.system.tp !== undefined &&
+                    actorItem.system.tp !== compendiumItem.system.tp) ||
+                (compendiumItem.system.fertigkeit !== undefined &&
+                    actorItem.system.fertigkeit !== compendiumItem.system.fertigkeit) ||
+                (compendiumItem.system.talent !== undefined &&
+                    actorItem.system.talent !== compendiumItem.system.talent) ||
+                (compendiumItem.system.rw !== undefined &&
+                    actorItem.system.rw !== compendiumItem.system.rw) ||
+                (compendiumItem.system.text !== undefined &&
+                    actorItem.system.text !== compendiumItem.system.text) ||
+                (compendiumItem.system.manoverausgleich !== undefined &&
+                    JSON.stringify(actorItem.system.manoverausgleich) !==
+                        JSON.stringify(compendiumItem.system.manoverausgleich)) ||
+                (compendiumItem.system.haerte !== undefined &&
+                    actorItem.system.haerte !== compendiumItem.system.haerte) ||
+                (compendiumItem.system.beschaedigung !== undefined &&
+                    actorItem.system.beschaedigung !== compendiumItem.system.beschaedigung) ||
+                (compendiumItem.system.aufbewahrungs_ort !== undefined &&
+                    actorItem.system.aufbewahrungs_ort !==
+                        compendiumItem.system.aufbewahrungs_ort) ||
+                (compendiumItem.system.bewahrt_auf !== undefined &&
+                    JSON.stringify(actorItem.system.bewahrt_auf) !==
+                        JSON.stringify(compendiumItem.system.bewahrt_auf)) ||
+                (compendiumItem.system.gewicht_summe !== undefined &&
+                    actorItem.system.gewicht_summe !== compendiumItem.system.gewicht_summe) ||
                 (compendiumItem.system.gewicht !== undefined &&
                     actorItem.system.gewicht !== compendiumItem.system.gewicht) ||
                 (compendiumItem.system.preis !== undefined &&
                     actorItem.system.preis !== compendiumItem.system.preis) ||
-                (compendiumItem.system.tp !== undefined &&
-                    actorItem.system.tp !== compendiumItem.system.tp) ||
-                (compendiumItem.system.at_mod !== undefined &&
-                    actorItem.system.at_mod !== compendiumItem.system.at_mod) ||
-                (compendiumItem.system.vt_mod !== undefined &&
-                    actorItem.system.vt_mod !== compendiumItem.system.vt_mod) ||
-                (compendiumItem.system.beschreibung !== undefined &&
-                    actorItem.system.beschreibung !== compendiumItem.system.beschreibung) ||
+                (compendiumItem.system.quantity !== undefined &&
+                    actorItem.system.quantity !== compendiumItem.system.quantity) ||
+                // Nahkampfwaffe-specific
+                (compendiumItem.type === 'nahkampfwaffe' &&
+                    ((compendiumItem.system.wm_at !== undefined &&
+                        actorItem.system.wm_at !== compendiumItem.system.wm_at) ||
+                        (compendiumItem.system.wm_vt !== undefined &&
+                            actorItem.system.wm_vt !== compendiumItem.system.wm_vt) ||
+                        (compendiumItem.system.rw_mod !== undefined &&
+                            actorItem.system.rw_mod !== compendiumItem.system.rw_mod))) ||
+                // Fernkampfwaffe-specific
                 (compendiumItem.type === 'fernkampfwaffe' &&
-                    ((compendiumItem.system.reichweite_mod !== undefined &&
-                        actorItem.system.reichweite_mod !== compendiumItem.system.reichweite_mod) ||
-                        (compendiumItem.system.ladezeit !== undefined &&
-                            actorItem.system.ladezeit !== compendiumItem.system.ladezeit)))
+                    ((compendiumItem.system.wm_fk !== undefined &&
+                        actorItem.system.wm_fk !== compendiumItem.system.wm_fk) ||
+                        (compendiumItem.system.lz !== undefined &&
+                            actorItem.system.lz !== compendiumItem.system.lz) ||
+                        (compendiumItem.system.rw_mod !== undefined &&
+                            actorItem.system.rw_mod !== compendiumItem.system.rw_mod)))
         }
         return needsUpdate
     }
