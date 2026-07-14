@@ -11,6 +11,8 @@ Supernatural items (Zauber, Liturgien, Anrufungen) currently have no mechanism t
 - **ADDED**: Self-cast duration bonus (+1 turn) to compensate for immediate turn-end tick
 - **ADDED**: Pre-effects GUI on übernatürlich item sheets — new `PARTS` entry and template rendering `preEffects` as editable list with add/delete and conditional avoidTest fields
 - **ADDED**: Socket routing for resist prompts (same pattern as defense prompt routing)
+- **ADDED**: New maneuver modification types `DURATION` (extends spell/effect duration via ADD/MULTIPLY operator) and `MAECHTIGE_MAGIE` (accumulative modifier — each instance adds its value to QS, supports NUMBER input for stacking) in `shared-dialog-helpers.js`, `config.js`, and `manoever.hbs` template
+- **ADDED**: Maneuver tracking in `updateManoeverMods()` — populates `dialog.maechtigeMagieQs` and `dialog.maneuverDurationBonus` from maneuver modifications, consumed by the pre-effects processor
 - **MODIFIED**: `UebernatuerlichDialog` to call `_applyPreEffects()` after successful cast
 
 ## Capabilities
@@ -26,7 +28,7 @@ Supernatural items (Zauber, Liturgien, Anrufungen) currently have no mechanism t
 
 ## Impact
 
-- **Files modified**: `scripts/items/model-data/models.js` (`createUebernatuerlichTalentFields`), `scripts/combat/dialogs/uebernatuerlich.js` (`_angreifenKlick`, `_energieAbrechnenKlick`), `scripts/items/sheets/uebernatuerlich-talent.js` (add `preEffects` PARTS), `scripts/skills/dialogs/fertigkeit.js` (add `success_val` option support)
+- **Files modified**: `scripts/items/model-data/models.js` (`createUebernatuerlichTalentFields`), `scripts/combat/dialogs/uebernatuerlich.js` (`_angreifenKlick`, `_energieAbrechnenKlick`, `updateManoeverMods`), `scripts/items/sheets/uebernatuerlich-talent.js` (add `preEffects` PARTS), `scripts/skills/dialogs/fertigkeit.js` (add `success_val` option support), `scripts/combat/dialogs/shared-dialog-helpers.js` (`DURATION` and `MAECHTIGE_MAGIE` modification types), `scripts/core/config.js` (`modification_type` entries), `scripts/items/templates/manoever.hbs` (new type conditions)
 - **Files created**: `scripts/effects/pre-effects/` (processor, resist handler), `scripts/items/templates/pre-effects.hbs`, `scripts/items/styles/pre-effects.css`
 - **New hooks**: `Ilaris.postPreEffectResist` (fires when resist prompt is built)
 - **Hook listener added**: Listener on existing `Ilaris.postSkillRoll` hook (triggers effect creation after resist resolution, identified via `dialog._resistContext`)

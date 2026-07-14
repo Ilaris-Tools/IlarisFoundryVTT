@@ -40,6 +40,7 @@ export function createItemTypeDataModels(TypeDataModel, h) {
         erlernen: h.string(''),
         pw: h.number(0),
         gruppe: h.number(-1),
+        preEffects: h.arrayOfObjects(),
     })
 
     class NahkampfwaffeItemDataModel extends TypeDataModel {

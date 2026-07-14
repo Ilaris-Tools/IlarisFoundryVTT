@@ -525,8 +525,24 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
     }
 
     updateSelectedActorsDisplay() {
-        // Re-render the dialog to update the template
-        this.render(true)
+        // Update the target display DOM directly without full re-render (preserves form state)
+        const container = this.element.querySelector('.selected-actors-list')
+        if (!container) return
+
+        if (this.selectedActors?.length) {
+            const title = document.createElement('div')
+            title.className = 'selected-actors-title'
+            title.textContent = 'Ausgewählte Ziele:'
+            container.replaceChildren(title)
+
+            for (const target of this.selectedActors) {
+                const div = document.createElement('div')
+                div.textContent = `${target.name} (${target.distance} Distanz)`
+                container.appendChild(div)
+            }
+        } else {
+            container.replaceChildren()
+        }
     }
 
     _updateSchipsStern() {

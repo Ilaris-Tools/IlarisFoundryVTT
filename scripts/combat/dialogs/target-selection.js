@@ -207,16 +207,8 @@ export class TargetSelectionDialog extends HandlebarsApplicationMixin(Applicatio
             distance: parseInt(row.dataset.distance),
         }))
 
-        // Update Foundry's targeting system to sync with dialog selection
-        try {
-            const targetTokenIds = selectedIds.map((target) => target.tokenId)
-            game.user.updateTokenTargets(targetTokenIds)
-            console.log(
-                `Updated Foundry targets to match dialog selection: ${targetTokenIds.length} targets`,
-            )
-        } catch (error) {
-            console.warn('Could not update Foundry token targets:', error)
-        }
+        // Note: V14 has a canvas rendering bug with programmatic token targeting.
+        // Dialog selection works independently via selectedActors.
 
         if (onSelectionComplete) {
             onSelectionComplete(selectedIds)

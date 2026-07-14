@@ -1,0 +1,114 @@
+<section class="pre-effects-section">
+    <h3>Pre-Effects</h3>
+    <div class="pre-effects-list" data-section="preEffects">
+        {{#each item.system.preEffects}}
+        <fieldset class="pre-effect-card">
+            <legend>Pre-Effect</legend>
+            <button type="button" class="delete-pre-effect">✕</button>
+
+            <div class="form-group">
+                <label>Dauer (Runden):</label>
+                <input type="number" name="system.preEffects.{{@index}}.baseDuration" value="{{baseDuration}}" data-dtype="Number" />
+            </div>
+
+            <div class="form-group">
+                <label>
+                    <input type="checkbox" name="system.preEffects.{{@index}}.instant" {{checked instant}} />
+                    Sofort (kein Effekt, direkter Schaden)
+                </label>
+            </div>
+
+            <div class="changes-list">
+                <h4>Änderungen</h4>
+                {{#if changes}}
+                {{#each changes}}
+                <fieldset class="change-card">
+                    <legend>Änderung</legend>
+                    <button type="button" class="delete-change">✕</button>
+
+                    <div class="form-group">
+                        <label>Key:</label>
+                        <input type="text" name="system.preEffects.{{@../index}}.changes.{{@index}}.key" value="{{key}}" />
+                    </div>
+                    <div class="form-group">
+                        <label>Typ:</label>
+                        <select name="system.preEffects.{{@../index}}.changes.{{@index}}.type">
+                            <option value="add">add</option>
+                            <option value="custom">custom (DOT)</option>
+                            <option value="multiply">multiply</option>
+                            <option value="override">override</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Wert:</label>
+                        <input type="text" name="system.preEffects.{{@../index}}.changes.{{@index}}.value" value="{{value}}" />
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" name="system.preEffects.{{@../index}}.changes.{{@index}}.amplifiedByMaechtigeMagie" {{checked amplifiedByMaechtigeMagie}} />
+                            Verstärkt durch Mächtige Magie
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>Mächtig Bonus:</label>
+                        <input type="text" name="system.preEffects.{{@../index}}.changes.{{@index}}.maechtigBonus" value="{{maechtigBonus}}" placeholder="z.B. +2W6" />
+                    </div>
+                    <div class="form-group">
+                        <label>Schadenstyp:</label>
+                        <select name="system.preEffects.{{@../index}}.changes.{{@index}}.damageType">
+                            <option value="PROFAN">Profan (Wunden)</option>
+                            <option value="STUMPF">Stumpf (Erschöpfung)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Abgeschwächter Wert:</label>
+                        <input type="text" name="system.preEffects.{{@../index}}.changes.{{@index}}.diminishedValue" value="{{diminishedValue}}" placeholder="z.B. 1W6" />
+                    </div>
+                    <div class="form-group">
+                        <label>Abgeschwächter MM Bonus:</label>
+                        <input type="text" name="system.preEffects.{{@../index}}.changes.{{@index}}.diminishedMaechtigBonus" value="{{diminishedMaechtigBonus}}" placeholder="z.B. +5" />
+                    </div>
+                    <div class="form-group">
+                        <label>Priorität:</label>
+                        <input type="number" name="system.preEffects.{{@../index}}.changes.{{@index}}.priority" value="{{priority}}" data-dtype="Number" />
+                    </div>
+                </fieldset>
+                {{/each}}
+                {{/if}}
+                <button type="button" class="add-change">+ Änderung hinzufügen</button>
+            </div>
+
+            <div class="avoid-test-section">
+                <h4>Widerstands-Probe</h4>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="system.preEffects.{{@index}}.avoidTest.enabled" {{checked avoidTest.enabled}} />
+                        Aktiviert
+                    </label>
+                </div>
+                <div class="avoid-test-fields">
+                    <div class="form-group">
+                        <label>Fertigkeit:</label>
+                        <input type="text" name="system.preEffects.{{@index}}.avoidTest.fertigkeit" value="{{avoidTest.fertigkeit}}" />
+                    </div>
+                    <div class="form-group">
+                        <label>Attribut:</label>
+                        <input type="text" name="system.preEffects.{{@index}}.avoidTest.attribut" value="{{avoidTest.attribut}}" />
+                    </div>
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" name="system.preEffects.{{@index}}.avoidTest.diminishedOnly" {{checked avoidTest.diminishedOnly}} />
+                            Nur abgeschwächt (Diminished Only)
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label>Erschwernis:</label>
+                        <input type="number" name="system.preEffects.{{@index}}.avoidTest.resistDifficulty" value="{{avoidTest.resistDifficulty}}" data-dtype="Number" placeholder="12" />
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        {{/each}}
+        <button type="button" class="add-pre-effect">+ Pre-Effect hinzufügen</button>
+    </div>
+</section>

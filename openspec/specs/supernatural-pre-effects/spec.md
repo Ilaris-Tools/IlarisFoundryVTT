@@ -1,4 +1,8 @@
-## ADDED Requirements
+## Purpose
+
+Automatic pre-effect system for übernatürlich items (Zauber, Liturgie, Anrufung). When a spell succeeds, pre-effects apply automatically: instant damage via the existing damage pipeline, or duration-based ActiveEffects with Ilaris turn timing. Supports resist tests via FertigkeitDialog, Mächtige Magie amplification, and maneuver duration bonuses.
+
+## Requirements
 
 ### Requirement: Pre-effects stored on übernatürlich items
 
@@ -21,7 +25,7 @@
 
 ### Requirement: Pre-effect schema
 
-Each pre-effect entry SHALL contain: `baseDuration` (integer turns), `instant` (boolean: skip ActiveEffect creation), `changes` (array of change objects, each with: `key`, `type`, `value`, `amplifiedByMaechtigeMagie` boolean, `maechtigBonus` string, `damageType` string, `priority` number), and optional `avoidTest` (enabled, fertigkeit, attribut, diminishedOnly, diminishedValue, resistDifficulty). `resistDifficulty` SHALL default to 12 (system default difficulty) when not explicitly set. `damageType` SHALL be `"PROFAN"` (wounds) or `"STUMPF"` (Erschöpfung), only used for instant pre-effects targeting health.
+Each pre-effect entry SHALL contain: `baseDuration` (integer turns), `instant` (boolean: skip ActiveEffect creation), `changes` (array of change objects, each with: `key`, `type`, `value`, `amplifiedByMaechtigeMagie` boolean, `maechtigBonus` string, `damageType` string, `diminishedValue` string, `diminishedMaechtigBonus` string, `priority` number), and optional `avoidTest` (enabled, fertigkeit, attribut, diminishedOnly, resistDifficulty). `resistDifficulty` SHALL default to 12 (system default difficulty) when not explicitly set. `damageType` SHALL be `"PROFAN"` (wounds) or `"STUMPF"` (Erschöpfung), only used for instant pre-effects targeting health.
 
 #### Scenario: Instant pre-effect resolves damage via existing pipeline
 
@@ -36,7 +40,7 @@ Each pre-effect entry SHALL contain: `baseDuration` (integer turns), `instant` (
 #### Scenario: Per-change amplification flag controls Mächtige Magie
 
 - **WHEN** a change within `changes` has `amplifiedByMaechtigeMagie: true` and the caster has Mächtige Magie/Liturgie active with QS > 0
-- **THEN** that change's `maechtigBonus` SHALL be appended to its `value` before evaluation via `foundry.dice.Roll` (e.g., value="2W6", maechtigBonus="+2W6" → evaluates "2W6+2W6"); any formula pattern works (dice, flat, mixed); other changes are unaffected
+- **THEN** that change's `maechtigBonus` SHALL be appended to its `value` once per QS before evaluation via `foundry.dice.Roll` (e.g., QS=2, value="2W6", maechtigBonus="+10" → evaluates "2W6+10+10"); `maechtigBonus` without a leading sign SHALL be prefixed with `+` automatically; any formula pattern works (dice, flat, mixed); other changes are unaffected
 
 #### Scenario: No amplification when flag is false
 
@@ -65,7 +69,7 @@ When a pre-effect has `avoidTest.enabled: true`, the target SHALL receive a whis
 #### Scenario: Successful resist with diminishedOnly
 
 - **WHEN** the target succeeds their resist test and `diminishedOnly` is `true`
-- **THEN** the effect SHALL be applied with `diminishedValue` replacing `change.value`
+- **THEN** the effect SHALL be applied with `diminishedValue` replacing `change.value` and `diminishedMaechtigBonus` replacing `change.maechtigBonus` (or `''` if not set)
 
 #### Scenario: Failed resist applies full effect
 
@@ -74,31 +78,31 @@ When a pre-effect has `avoidTest.enabled: true`, the target SHALL receive a whis
 
 ### Requirement: Effect creation flow in UebernatuerlichDialog
 
-After `super._updateSchipsStern()`, `UebernatuerlichDialog` SHALL call `_applyPreEffects(rollResult)` (fire-and-forget, no await) when the spell succeeded and has preEffects.
+After `super._updateSchipsStern()`, `UebernatuerlichDialog` SHALL call `applyPreEffects(rollResult)` (fire-and-forget, no await) when the spell succeeded and has preEffects.
 
 #### Scenario: Effects fire after Schips update
 
 - **WHEN** `_angreifenKlick()` reaches line 373 (`super._updateSchipsStern()`)
-- **THEN** `_applyPreEffects(rollResult)` SHALL be called immediately after, guarded by `isSuccess && preEffects.length > 0`
+- **THEN** `applyPreEffects(rollResult)` SHALL be called immediately after, guarded by `isSuccess && preEffects.length > 0`
 
 #### Scenario: Standard difficulty effects fire after roll
 
 - **WHEN** a spell with `schwierigkeit` succeeds (`isSuccess === true` from roll against difficulty)
-- **THEN** `_applyPreEffects(rollResult)` SHALL fire after `super._updateSchipsStern()`
+- **THEN** `applyPreEffects(rollResult)` SHALL fire after `super._updateSchipsStern()`
 
 #### Scenario: Non-standard difficulty effects fire after manual confirmation
 
 - **WHEN** a spell has no `schwierigkeit` and the user clicks `✅ Erfolgreich gewirkt` → `_energieAbrechnenKlick(true)`
-- **THEN** `_applyPreEffects(rollResult)` SHALL fire from `_energieAbrechnenKlick()` after `applyEnergyCost()`, guarded by `isSuccess && preEffects.length > 0`
+- **THEN** `applyPreEffects({ success: true })` SHALL fire from `_energieAbrechnenKlick()` after `applyEnergyCost()`, guarded by `isSuccess && preEffects.length > 0`
 
 #### Scenario: Failed spell does not fire effects
 
 - **WHEN** a spell fails (`isSuccess === false`)
-- **THEN** `_applyPreEffects` SHALL NOT be called
+- **THEN** `applyPreEffects` SHALL NOT be called
 
 #### Scenario: Effects fire-and-forget
 
-- **WHEN** `_applyPreEffects()` is called
+- **WHEN** `applyPreEffects()` is called
 - **THEN** the method SHALL NOT be awaited — effects resolve asynchronously as resist tests complete
 
 #### Scenario: Multi-target creates independent effects
@@ -166,7 +170,7 @@ Resist tests SHALL be resolved by opening FertigkeitDialog with resist metadata 
 #### Scenario: Successful resist with diminishedOnly applies diminished value (still amplified)
 
 - **WHEN** the resist handler detects a resist test with `rollResult.success === true` and `diminishedOnly === true`
-- **THEN** each change in `changes` SHALL use `diminishedValue` instead of `value`; if `amplifiedByMaechtigeMagie` is true, `maechtigBonus` SHALL still be appended to the diminished value
+- **THEN** each change in `changes` SHALL use `diminishedValue` instead of `value` and `diminishedMaechtigBonus` instead of `maechtigBonus` (falling back to `''` if not set); if `amplifiedByMaechtigeMagie` is true, `diminishedMaechtigBonus` SHALL still be appended to the diminished value
 
 #### Scenario: Failed resist applies full effect
 
@@ -206,3 +210,17 @@ The übernatürlich item sheet SHALL render the `preEffects` array as an editabl
 
 - **WHEN** `avoidTest.enabled` is unchecked
 - **THEN** the avoidTest sub-fields SHALL be hidden
+
+### Requirement: Instant pre-effects in resist flow
+
+When a resist test is resolved for a pre-effect with `instant: true`, damage SHALL be applied directly via `applyInstantPreEffect` instead of creating an ActiveEffect.
+
+#### Scenario: Failed resist on instant effect applies full damage
+
+- **WHEN** the target fails their resist test against an `instant` pre-effect
+- **THEN** `applyInstantPreEffect` SHALL be called with the full change values (plus Mächtige Magie amplification)
+
+#### Scenario: Successful resist with diminishedOnly on instant effect applies diminished damage
+
+- **WHEN** the target succeeds their resist test with `diminishedOnly: true` against an `instant` pre-effect
+- **THEN** `applyInstantPreEffect` SHALL be called with diminished values (`diminishedValue` replacing `value`, `diminishedMaechtigBonus` replacing `maechtigBonus`)

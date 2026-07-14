@@ -362,6 +362,8 @@ let manoever = {
         CHANGE_DAMAGE_TYPE: 'Schadenstyp ändern',
         ARMOR_BREAKING: 'Rüstung ignorieren',
         SPECIAL_TEXT: 'Spezialeffekt',
+        DURATION: 'Wirkungsdauer',
+        MAECHTIGE_MAGIE: 'Mächtige Magie/Liturgie',
     },
     operator: {
         MULTIPLY: 'Multiplizieren',

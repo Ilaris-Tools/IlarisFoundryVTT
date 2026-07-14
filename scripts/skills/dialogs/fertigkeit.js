@@ -43,6 +43,7 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
         this.fertigkeitKey = options.fertigkeitKey || null
         this.fertigkeitName = options.fertigkeitName || ''
         this.pw = options.pw || 0
+        this.success_val = options.success_val || null
         this.talentList = options.talentList || {}
         this.speaker = ChatMessage.getSpeaker({ actor: this.actor })
         this.dialogId = `dialog-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`
@@ -89,8 +90,8 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
             choices_schips: CONFIG.ILARIS.schips_choice,
             checked_schips: '0',
             hasSchips,
-            rollModes: CONFIG.Dice.rollModes,
-            defaultRollMode: game.settings.get('core', 'messageMode'),
+            rollModes: CONFIG.ChatMessage?.modes || CONFIG.Dice.rollModes,
+            defaultRollMode: game.settings.get('core', 'messageMode') || 'publicroll',
             dialogId: this.dialogId,
             summary: this.summary,
         }
@@ -489,7 +490,8 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
         // Get roll mode
         const rollmode =
             html.querySelector(`#rollMode-${this.dialogId}`)?.value ||
-            game.settings.get('core', 'rollMode')
+            game.settings.get('core', 'messageMode') ||
+            'publicroll'
 
         // Build formula
         const formula = `${modifierState.diceFormula} + ${modifierState.effectivePW} + ${modifierState.globalermod} + ${modifierState.hoheQualitaetMod} + ${modifierState.modifikator}`
@@ -530,7 +532,12 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
             }
         }
 
-        const rollResult = await evaluate_roll_with_crit(formula, modifierState.label, text)
+        const rollResult = await evaluate_roll_with_crit(
+            formula,
+            modifierState.label,
+            text,
+            this.success_val,
+        )
         const chatMessage = await postRollToChat(rollResult, this.speaker, rollmode)
         const postRollPayload = this._buildRollPayload({
             statePayload,

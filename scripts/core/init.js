@@ -552,6 +552,9 @@ function setupIlarisSocket() {
             case 'createDefensePromptByOwner':
                 await handleCreateDefensePromptByOwnerRequest(data.data)
                 break
+            case 'createResistPromptByOwner':
+                await handleCreateResistPromptByOwnerRequest(data.data)
+                break
             case 'broadcastCombatHook':
                 await handleBroadcastCombatHookRequest(data.data)
                 break
@@ -633,6 +636,18 @@ async function handleCreateDefensePromptByOwnerRequest(data) {
     const { handleDefensePromptSocketEvent } =
         await import('../combat/hooks/combat_dialog_handlers.js')
     await handleDefensePromptSocketEvent(data)
+}
+
+/**
+ * Handle resist prompt socket event — delegates to resist-handler.js.
+ * @param {Object} data - Socket payload with resist prompt data
+ */
+async function handleCreateResistPromptByOwnerRequest(data) {
+    const { sendResistPrompt } = await import('../effects/pre-effects/resist-handler.js')
+    const targetActor = game.actors.get(data.targetActorId)
+    if (!targetActor) return
+
+    await sendResistPrompt(targetActor, data.preEffect, data.spellName, ChatMessage.getSpeaker())
 }
 
 /**

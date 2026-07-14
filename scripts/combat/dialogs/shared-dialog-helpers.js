@@ -203,6 +203,24 @@ export function processModification(
             }
             rollValues.text_energy = rollValues.text_energy.concat(text)
             break
+        case 'DURATION':
+            rollValues.durationBonus =
+                (rollValues.durationBonus || 0) +
+                (modification.operator === 'ADD'
+                    ? value
+                    : modification.operator === 'MULTIPLY'
+                      ? value
+                      : 0)
+            text = `${manoeverName}: Wirkungsdauer ${
+                modification.operator === 'ADD' ? '+' + value : '×' + value
+            }\n`
+            rollValues.text_energy = rollValues.text_energy.concat(text)
+            break
+        case 'MAECHTIGE_MAGIE':
+            rollValues.maechtigeMagieQs = (rollValues.maechtigeMagieQs || 0) + (value || 1)
+            text = `${manoeverName}: Mächtige Magie QS +${value || 1}\n`
+            rollValues.text_at = rollValues.text_at.concat(text)
+            break
     }
 
     return { rollValues, originalRessourceCost }
@@ -513,6 +531,8 @@ export function handleModifications(allModifications, rollValues) {
         rollValues.nodmg,
         rollValues.damageType,
         rollValues.trueDamage,
+        rollValues.durationBonus || 0,
+        rollValues.maechtigeMagieQs || 0,
         originalRessourceCost,
     ]
 }
