@@ -349,7 +349,7 @@ describe('postRollToChat', () => {
                 flavor: '<h3>Erfolg</h3>',
             },
             {
-                rollMode: 'gmroll',
+                messageMode: 'gmroll',
             },
         )
         expect(result).toEqual({ id: 'chat-message' })

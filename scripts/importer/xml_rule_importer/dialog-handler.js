@@ -65,7 +65,7 @@ export class DialogHandler {
      * @private
      */
     static async _handleRuleImport(dialog, onImport) {
-        const fileInput = dialog.querySelector('input[name="xmlFile"]')
+        const fileInput = dialog.element.querySelector('input[name="xmlFile"]')
         const file = fileInput?.files[0]
 
         if (!file) {

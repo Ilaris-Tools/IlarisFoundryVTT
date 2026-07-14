@@ -6,18 +6,9 @@ import {
 
 export class KreaturActor extends IlarisActor {
     async _preCreate(data, options, user) {
-        foundry.utils.mergeObject(data, {
-            'token.bar1': { attribute: 'gesundheit.hp' },
-            'token.displayName': CONST.TOKEN_DISPLAY_MODES.OWNER_HOVER,
-            'token.displayBars': CONST.TOKEN_DISPLAY_MODES.ALWAYS,
-            'token.disposition': CONST.TOKEN_DISPOSITIONS.FRIENDLY,
-            'token.name': data.name,
-        })
-        data.token.disposition = CONST.TOKEN_DISPOSITIONS.NEUTRAL
-        if (!data.img) {
-            data.img = 'systems/Ilaris/assets/images/token/kreaturentypen/tier.png'
-        }
-        await super._preCreate(data, options, user) // IlarisActor._preCreate() -> Actor._preCreate()
+        // Prototype token defaults are set in IlarisActor.createDocuments()
+        // which runs before document construction (PF2e pattern).
+        await super._preCreate(data, options, user)
     }
 
     prepareData() {

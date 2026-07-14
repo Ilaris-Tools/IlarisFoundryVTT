@@ -88,8 +88,8 @@ export async function wuerfelwurf(target, actor) {
         const html = await foundry.applications.handlebars.renderTemplate(
             'systems/Ilaris/templates/chat/probendiag_simpleformula.hbs',
             {
-                rollModes: CONFIG.Dice.rollModes,
-                defaultRollMode: game.settings.get('core', 'rollMode'),
+                messageMode: CONFIG.ChatMessage.modes,
+                defaultRollMode: game.settings.get('core', 'messageMode'),
                 dialogId: dialogId,
             },
         )
@@ -106,7 +106,7 @@ export async function wuerfelwurf(target, actor) {
                     callback: async (event, button, dialog) => {
                         let text = ''
                         let modifikator = 0
-                        const modInput = dialog.querySelector(`#modifikator-${dialogId}`)
+                        const modInput = dialog.element.querySelector(`#modifikator-${dialogId}`)
                         if (modInput) {
                             modifikator = Number(modInput.value)
                             if (modifikator != 0) {
@@ -115,7 +115,7 @@ export async function wuerfelwurf(target, actor) {
                             }
                         }
                         let rollmode = ''
-                        const rollModeInput = dialog.querySelector(`#rollMode-${dialogId}`)
+                        const rollModeInput = dialog.element.querySelector(`#rollMode-${dialogId}`)
                         if (rollModeInput) {
                             rollmode = rollModeInput.value
                         }
