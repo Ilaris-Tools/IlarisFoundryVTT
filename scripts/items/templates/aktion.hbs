@@ -11,6 +11,9 @@
             </header>
         </div>
 
+        <label><b>Beschreibung:</b></label>
+        <textarea rows="8" name="system.text">{{item.system.text}}</textarea>
+
         <hr />
 
         <div class="flexrow">
@@ -72,8 +75,22 @@
 
         <hr />
 
-        <div>
-            {{> systems/Ilaris/scripts/items/templates/base_item_layout.hbs}}
+        <h3>Turn Dialog</h3>
+        <div class="flexrow">
+            <label><b>Turn Dialog:</b></label>
+            <select name="system.turnDialog">
+                {{selectOptions turnDialog_choices selected=item.system.turnDialog}}
+            </select>
+        </div>
+        <div class="flexrow">
+            <label><b>Dialog Skill:</b></label>
+            <input
+                name="system.dialogSkill"
+                value="{{item.system.dialogSkill}}"
+                type="text"
+                data-dtype="String"
+                placeholder="Kommagetrennt, z.B. Athletik, Heimlichkeit"
+            />
         </div>
     </div>
 </section>

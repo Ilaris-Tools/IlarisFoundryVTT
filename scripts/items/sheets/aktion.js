@@ -21,6 +21,13 @@ export class AktionSheet extends IlarisItemSheet {
             { value: 'nahkampfwaffe', label: 'Nahkampfwaffe' },
             { value: 'fernkampfwaffe', label: 'Fernkampfwaffe' },
         ]
+        context.turnDialog_choices = [
+            { value: '', label: 'Kein Dialog' },
+            { value: 'melee', label: 'Nahkampf' },
+            { value: 'ranged', label: 'Fernkampf' },
+            { value: 'fertigkeit', label: 'Fertigkeit' },
+            { value: 'supernatural', label: 'Übernatürlich' },
+        ]
         return context
     }
 }

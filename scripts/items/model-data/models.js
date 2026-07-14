@@ -357,6 +357,11 @@ export function createItemTypeDataModels(TypeDataModel, h) {
                     }),
                     eigenschaften: h.arrayOfStrings(),
                 }),
+                turnDialog: new foundry.data.fields.StringField({
+                    choices: ['melee', 'ranged', 'fertigkeit', 'supernatural'],
+                    initial: 'fertigkeit',
+                }),
+                dialogSkill: new foundry.data.fields.StringField({ initial: '' }),
             }
         }
     }

@@ -116,6 +116,8 @@ export function createAktionDefaults() {
             waffentyp: '',
             eigenschaften: [],
         },
+        turnDialog: '',
+        dialogSkill: '',
     }
 }
 
