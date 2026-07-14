@@ -1,0 +1,110 @@
+## Purpose
+
+End-to-end testing infrastructure with Playwright, 21 test cases, shared fixtures, and browser channel configuration.
+
+## Requirements
+
+### Requirement: Playwright test infrastructure
+
+The system SHALL use Playwright for end-to-end testing with a shared fixture that handles Foundry login, world join, and helper utilities.
+
+#### Scenario: Test fixture logs into Foundry
+
+- **WHEN** a Playwright test runs with the shared Foundry fixture
+- **THEN** the fixture SHALL navigate to the Foundry URL, log in, and join the configured world before the test begins
+
+#### Scenario: Browser channel configured per platform
+
+- **WHEN** running tests on Windows
+- **THEN** Playwright SHALL use Microsoft Edge as the browser channel (required: Foundry V14 rejects bundled Chromium < 146)
+
+#### Scenario: Browser channel configured for non-Windows
+
+- **WHEN** running tests on macOS or Linux
+- **THEN** Playwright SHALL use Google Chrome as the browser channel
+
+#### Scenario: Browser channel override
+
+- **WHEN** `PLAYWRIGHT_CHROMIUM_CHANNEL` environment variable is set
+- **THEN** Playwright SHALL use the specified channel regardless of platform
+
+### Requirement: Test execution model
+
+The system SHALL run E2E tests sequentially (1 worker) with headless mode disabled.
+
+#### Scenario: Sequential execution
+
+- **WHEN** E2E tests run
+- **THEN** only one test SHALL execute at a time (`workers: 1`)
+
+#### Scenario: Visible browser
+
+- **WHEN** E2E tests run
+- **THEN** the browser SHALL be visible (`headless: false`)
+
+#### Scenario: Video and screenshot on failure
+
+- **WHEN** a test fails
+- **THEN** Playwright SHALL capture a video and screenshot of the failure
+
+### Requirement: Test case structure
+
+Each E2E test case SHALL consist of a Playwright `.spec.ts` file and a `testfall.md` documentation file.
+
+#### Scenario: Spec file contains Playwright test
+
+- **WHEN** looking at an E2E test case directory
+- **THEN** it SHALL contain a `.spec.ts` file with the Playwright test implementation
+
+#### Scenario: Testfall documents test case
+
+- **WHEN** looking at an E2E test case directory
+- **THEN** it SHALL contain a `testfall.md` file documenting the test purpose, steps, and expected outcomes
+
+### Requirement: Test coverage
+
+The system SHALL have E2E test coverage for all major features.
+
+#### Scenario: Combat dialog tests exist
+
+- **WHEN** checking E2E test coverage
+- **THEN** test cases SHALL exist for melee attack (e2e-001), ranged attack (e2e-008), supernatural dialog (e2e-009), targeting/defense/damage (e2e-010), and multiplayer (e2e-011)
+
+#### Scenario: Sheet and UI tests exist
+
+- **WHEN** checking E2E test coverage
+- **THEN** test cases SHALL exist for hero sheet (e2e-007), inventory (e2e-013), effects tab (e2e-015), notes tab (e2e-018), and supernatural tab (e2e-014)
+
+#### Scenario: Skill and maneuver tests exist
+
+- **WHEN** checking E2E test coverage
+- **THEN** test cases SHALL exist for skill dialog (e2e-006), free skill dialog (e2e-019), maneuvers (e2e-003, e2e-017), and mounted combat style (e2e-012)
+
+#### Scenario: Migration and import tests exist
+
+- **WHEN** checking E2E test coverage
+- **THEN** test cases SHALL exist for XML import (e2e-016) and legacy type migration (e2e-020)
+
+### Requirement: Test helpers and fixtures
+
+The system SHALL provide shared test helpers for XML integrity validation and Foundry-specific interactions.
+
+#### Scenario: XML integrity validator available
+
+- **WHEN** an XML import test runs
+- **THEN** the `xml-integrity-validator.ts` fixture SHALL be available to validate imported XML structure
+
+#### Scenario: Foundry globals declared
+
+- **WHEN** TypeScript compilation runs for test files
+- **THEN** Foundry global types SHALL be available via `foundry-globals.d.ts`
+
+## Data Model
+
+N/A — E2E testing does not define persistent data.
+
+## Cross-References
+
+- [importer](../importer/spec.md) — XML import tested by e2e-016
+- [combat](../combat/spec.md) — Combat dialogs tested by e2e-001 through e2e-012
+- [actor-sheets](../actor-sheets/spec.md) — Actor sheets tested by e2e-007, e2e-013
