@@ -391,6 +391,57 @@ export async function _applyDamageDirectly(targetActor, damage, damageType, true
     // Examples with WS=5: damage=5 -> 0 wounds, damage=6 -> 1 wound, damage=10 -> 1 wound,
     //                     damage=11 -> 2 wounds, damage=16 -> 3 wounds
     // The (damage - 1) shift ensures damage must exceed WS, not just equal it
+
+    // --- Healing branch (negative damage) ---
+    if (damage < 0) {
+        const healAmount = Math.abs(damage)
+        const statKey =
+            damageType === 'STUMPF' ? 'system.gesundheit.erschoepfung' : 'system.gesundheit.wunden'
+
+        if (useLepSystem) {
+            const currentLep = targetActor.system.gesundheit.wunden || 0
+            // LEP healing: direct addition, no WS threshold
+            const newLep = Math.min(
+                currentLep + healAmount,
+                targetActor.system.gesundheit.wunden_max || currentLep + healAmount,
+            )
+            if (newLep > currentLep) {
+                await targetActor.update({ 'system.gesundheit.wunden': newLep })
+                await ChatMessage.create({
+                    content: `${targetActor.name} erhält ${newLep - currentLep} Heilung!`,
+                    speaker: speaker,
+                    style: CONST.CHAT_MESSAGE_STYLES.OTHER,
+                })
+            }
+        } else {
+            const currentValue =
+                targetActor.system.gesundheit[
+                    damageType === 'STUMPF' ? 'erschoepfung' : 'wunden'
+                ] || 0
+            // Each full WS threshold of healing removes one wound
+            const woundsToRemove = Math.floor(healAmount / ws)
+
+            if (woundsToRemove > 0) {
+                const newValue = Math.max(0, currentValue - woundsToRemove)
+                await targetActor.update({ [statKey]: newValue })
+                await ChatMessage.create({
+                    content: `${targetActor.name} heilt ${woundsToRemove} Einschränkung${
+                        woundsToRemove > 1 ? 'en' : ''
+                    }! (Heilung: ${healAmount})`,
+                    speaker: speaker,
+                    style: CONST.CHAT_MESSAGE_STYLES.OTHER,
+                })
+            } else {
+                await ChatMessage.create({
+                    content: `${targetActor.name} erhält keine Heilung - die Heilung (${healAmount}) war nicht hoch genug (WS ${ws}).`,
+                    speaker: speaker,
+                    style: CONST.CHAT_MESSAGE_STYLES.OTHER,
+                })
+            }
+        }
+        return
+    }
+
     let woundsToAdd = trueDamage
         ? damage > ws
             ? Math.floor((damage - 1) / ws)

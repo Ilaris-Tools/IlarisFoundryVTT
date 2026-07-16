@@ -16,7 +16,55 @@
     "kosten": "8 AsP",
     "erlernen": "Elf 12; Ach, Sch 14; Mag 18",
     "pw": 0,
-    "gruppe": 0
+    "gruppe": 0,
+    "preEffects": [
+      {
+        "baseDuration": 16,
+        "instant": false,
+        "changes": [
+          {
+            "key": "system.abgeleitete.gs",
+            "type": "add",
+            "value": "4",
+            "amplifiedByMaechtigeMagie": true,
+            "maechtigBonus": "+2",
+            "damageType": "PROFAN",
+            "diminishedValue": "",
+            "diminishedMaechtigBonus": "",
+            "priority": null
+          },
+          {
+            "key": "system.modifikatoren.nahkampfmod",
+            "type": "add",
+            "value": "2",
+            "amplifiedByMaechtigeMagie": false,
+            "maechtigBonus": "",
+            "damageType": "PROFAN",
+            "diminishedValue": "",
+            "diminishedMaechtigBonus": "",
+            "priority": null
+          },
+          {
+            "key": "system.modifikatoren.verteidigungmod",
+            "type": "add",
+            "value": "2",
+            "amplifiedByMaechtigeMagie": false,
+            "maechtigBonus": "",
+            "damageType": "PROFAN",
+            "diminishedValue": "",
+            "diminishedMaechtigBonus": "",
+            "priority": null
+          }
+        ],
+        "avoidTest": {
+          "enabled": false,
+          "fertigkeit": "",
+          "attribut": "",
+          "diminishedOnly": false,
+          "resistDifficulty": 12
+        }
+      }
+    ]
   },
   "effects": [],
   "folder": null,
