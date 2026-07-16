@@ -232,3 +232,11 @@
   font-size: 0.9em;
 }
 
+.damage-types {
+  display: flex;
+  flex-direction: column;
+}
+
+.damage-type-row {
+  gap: 8px;
+}

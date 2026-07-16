@@ -76,4 +76,25 @@
         </div>
         <input type="checkbox" name="general.enableTabbingCharacterSheet" {{#if settings.enableTabbingCharacterSheet}}checked{{/if}}>
     </div>
+
+    {{#if isGM}}
+    <hr />
+    <div class="setting-row setting-row-list damage-types">
+        <div class="setting-label-block">
+            <span class="setting-label">Schadenstypen</span>
+            <span class="setting-scope"><i class="fas fa-globe"></i> Welt</span>
+            <p class="setting-hint">Definiert die verfügbaren Schadenstypen für Pre-Effects und zukünftige Systemfunktionen. Jeder Typ hat einen Wert (Key) und einen Anzeigenamen (Label).</p>
+        </div>
+        <div class="damage-type-list" data-section="damageTypes">
+            {{#each damageTypes}}
+            <div class="damage-type-row flexrow">
+                <input type="text" name="general.damageTypes.{{@index}}.value" value="{{value}}" placeholder="Key (z.B. FEUER)" style="flex: 1;" />
+                <input type="text" name="general.damageTypes.{{@index}}.label" value="{{label}}" placeholder="Label (z.B. Feuer)" style="flex: 2;" />
+                <button type="button" class="delete-damage-type" title="Entfernen">✕</button>
+            </div>
+            {{/each}}
+            <button type="button" class="add-damage-type">+ Typ hinzufügen</button>
+        </div>
+    </div>
+    {{/if}}
 </section>

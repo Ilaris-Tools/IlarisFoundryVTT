@@ -126,7 +126,24 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
                 IlarisGameSettingNames.lepSystem,
             ),
         }
+
+        // Parse damage types setting into array for template
+        context.damageTypes = this._parseDamageTypes()
+
         return context
+    }
+
+    _parseDamageTypes() {
+        try {
+            const raw = game.settings.get(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.damageTypes,
+            )
+            return JSON.parse(raw || '[]')
+        } catch (e) {
+            console.warn('Ilaris | Failed to parse damageTypes setting:', e)
+            return []
+        }
     }
 
     async _getDefaultRangedDodgeOptions() {
@@ -176,6 +193,45 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
             default:
         }
         return context
+    }
+
+    /** @override */
+    _onRender(context, options) {
+        super._onRender(context, options)
+
+        // Damage type list: add button
+        this.element.querySelector('.add-damage-type')?.addEventListener('click', () => {
+            const types = this._parseDamageTypes()
+            types.push({ value: '', label: '' })
+            const json = JSON.stringify(types)
+            game.settings.set(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.damageTypes,
+                json,
+            )
+            this.render()
+        })
+
+        // Damage type list: delete button (delegated)
+        this.element.querySelector('.damage-type-list')?.addEventListener('click', (event) => {
+            const btn = event.target.closest('.delete-damage-type')
+            if (!btn) return
+
+            const row = btn.closest('.damage-type-row')
+            const allRows = [...this.element.querySelectorAll('.damage-type-row')]
+            const index = allRows.indexOf(row)
+            if (index < 0) return
+
+            const types = this._parseDamageTypes()
+            types.splice(index, 1)
+            const json = JSON.stringify(types)
+            game.settings.set(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.damageTypes,
+                json,
+            )
+            this.render()
+        })
     }
 
     _generateAllPacksContext() {
@@ -385,6 +441,23 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
             await setIfChanged(s.name, newValue)
         }
 
+        // Damage types — collect all rows from the dynamic list
+        if (isGM) {
+            const rows = form.querySelectorAll('.damage-type-row')
+            const types = []
+            rows.forEach((row) => {
+                const valueInput = row.querySelector('input[name$=".value"]')
+                const labelInput = row.querySelector('input[name$=".label"]')
+                if (valueInput) {
+                    types.push({
+                        value: valueInput.value || '',
+                        label: labelInput?.value || '',
+                    })
+                }
+            })
+            await setIfChanged(IlarisGameSettingNames.damageTypes, JSON.stringify(types))
+        }
+
         await this.close()
         if (hasChanges) SettingsConfig.reloadConfirm()
     }
@@ -423,6 +496,10 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
                 { name: IlarisGameSettingNames.hexTokenShapes, value: false },
                 { name: IlarisGameSettingNames.defaultRangedDodgeTalent, value: '' },
                 { name: IlarisGameSettingNames.lepSystem, value: false },
+                {
+                    name: IlarisGameSettingNames.damageTypes,
+                    value: '[{"value":"PROFAN","label":"Profan (Wunden)"},{"value":"STUMPF","label":"Stumpf (Erschöpfung)"},{"value":"MAGISCH","label":"Magisch"},{"value":"GEWEIHT","label":"Geweiht"},{"value":"DAEMONISCH","label":"Dämonisch"},{"value":"FEUER","label":"Feuer"},{"value":"EIS","label":"Eis"},{"value":"ERZ","label":"Erz"},{"value":"HUMUS","label":"Humus"},{"value":"LUFT","label":"Luft"},{"value":"WASSER","label":"Wasser"}]',
+                },
                 { name: IlarisAutomatisierungSettingNames.useSceneEnvironment, value: true },
                 { name: IlarisAutomatisierungSettingNames.useTargetSelection, value: false },
             ]

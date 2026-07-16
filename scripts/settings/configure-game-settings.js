@@ -114,6 +114,17 @@ export const registerIlarisGameSettings = () => {
             default: false,
             requiresReload: true,
         },
+        {
+            // Register damage types setting
+            settingsName: IlarisGameSettingNames.damageTypes,
+            name: 'Schadenstypen',
+            hint: 'Definiert die verfügbaren Schadenstypen für Pre-Effects und zukünftige Systemfunktionen. Jeder Typ hat einen Wert (Key) und einen Anzeigenamen (Label).',
+            config: false,
+            type: String,
+            scope: 'world',
+            default:
+                '[{"value":"PROFAN","label":"Profan (Wunden)"},{"value":"STUMPF","label":"Stumpf (Erschöpfung)"},{"value":"MAGISCH","label":"Magisch"},{"value":"GEWEIHT","label":"Geweiht"},{"value":"DAEMONISCH","label":"Dämonisch"},{"value":"FEUER","label":"Feuer"},{"value":"EIS","label":"Eis"},{"value":"ERZ","label":"Erz"},{"value":"HUMUS","label":"Humus"},{"value":"LUFT","label":"Luft"},{"value":"WASSER","label":"Wasser"}]',
+        },
     ].forEach((setting) => {
         game.settings.register(ConfigureGameSettingsCategories.Ilaris, setting.settingsName, {
             name: setting.name,

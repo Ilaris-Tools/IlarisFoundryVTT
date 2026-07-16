@@ -31,7 +31,20 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
         // Populate avoidTest attribute options from fixed config
         context.avoidTestAttributeOptions = CONFIG.ILARIS.attribute || []
 
+        // Populate damage type options from world setting
+        context.damageTypeOptions = this._getDamageTypeOptions()
+
         return context
+    }
+
+    _getDamageTypeOptions() {
+        try {
+            const raw = game.settings.get('Ilaris', 'damageTypes')
+            return JSON.parse(raw || '[]')
+        } catch (e) {
+            console.warn('Ilaris | Failed to parse damageTypes setting:', e)
+            return []
+        }
     }
 
     /**

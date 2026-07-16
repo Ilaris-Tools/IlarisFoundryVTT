@@ -23,6 +23,7 @@ export const IlarisGameSettingNames = {
     defaultRangedDodgeTalent: 'defaultRangedDodgeTalent',
     lastSeenBreakingChangesVersion: 'lastSeenBreakingChangesVersion',
     lepSystem: 'lepSystem',
+    damageTypes: 'damageTypes',
 }
 
 // the heading for Automatisierung gets added via hooks.js
