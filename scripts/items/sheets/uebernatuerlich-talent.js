@@ -1,4 +1,5 @@
 import { IlarisItemSheet } from './item.js'
+import { collectActorSystemPaths } from '../../effects/utils/field-path-collector.js'
 
 export class UebernatuerlichTalentSheet extends IlarisItemSheet {
     /** @override */
@@ -133,6 +134,38 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
             preEffects[preEffectIndex].changes.splice(changeIndex, 1)
             this.document.update({ 'system.preEffects': preEffects })
         })
+
+        // Add datalist for pre-effect change key autocomplete
+        this.#injectPreEffectKeySuggestions()
+    }
+
+    /**
+     * Injects a <datalist> with valid Actor attribute keys into the pre-effects section,
+     * providing autocomplete suggestions for the key input fields of pre-effect changes.
+     */
+    #injectPreEffectKeySuggestions() {
+        const preEffectsSection = this.element.querySelector('.pre-effects-section')
+        if (!preEffectsSection) return
+
+        // Create datalist once, reuse on re-renders
+        let datalist = this.element.querySelector('#ilaris-pre-effect-keys')
+        if (!datalist) {
+            datalist = document.createElement('datalist')
+            datalist.id = 'ilaris-pre-effect-keys'
+
+            const keys = collectActorSystemPaths()
+            keys.forEach((key) => {
+                const option = document.createElement('option')
+                option.value = key
+                datalist.appendChild(option)
+            })
+
+            preEffectsSection.appendChild(datalist)
+        }
+
+        // Always re-attach (new inputs may have appeared after add/delete change)
+        const keyInputs = preEffectsSection.querySelectorAll('input[name$=".key"]')
+        keyInputs.forEach((input) => input.setAttribute('list', 'ilaris-pre-effect-keys'))
     }
 
     _defaultPreEffect() {
