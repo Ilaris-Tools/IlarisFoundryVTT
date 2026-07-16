@@ -59,15 +59,29 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
     }
 
     static _getDialogTitle(probeType, options) {
+        const resistPrefix = options.resistAgainst ? 'Widerstandsprobe' : undefined
+
         switch (probeType) {
             case 'attribut':
+                if (resistPrefix) {
+                    return `${resistPrefix}: ${options.fertigkeitName || 'Attribut'} (gegen ${options.resistAgainst})`
+                }
                 return `Attributsprobe: ${options.fertigkeitName || 'Attribut'}`
             case 'freieFertigkeit':
+                if (resistPrefix) {
+                    return `${resistPrefix}: ${options.fertigkeitName || 'Freie Fertigkeit'} (gegen ${options.resistAgainst})`
+                }
                 return `Freie Fertigkeitsprobe: ${options.fertigkeitName || 'Freie Fertigkeit'}`
             case 'simple':
+                if (resistPrefix) {
+                    return `${resistPrefix}: ${options.fertigkeitName || 'Simple Fertigkeit'} (gegen ${options.resistAgainst})`
+                }
                 return `${options.fertigkeitName || 'Simple Fertigkeit'}`
             case 'fertigkeit':
             default:
+                if (resistPrefix) {
+                    return `${resistPrefix}: ${options.fertigkeitName || 'Fertigkeit'} (gegen ${options.resistAgainst})`
+                }
                 return `Fertigkeitsprobe: ${options.fertigkeitName || 'Fertigkeit'}`
         }
     }
@@ -198,6 +212,38 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
             finalPW >= 0 ? `${formattedDice}+${finalPW}` : `${formattedDice}${finalPW}`
         const globalermod = this.actor.system.abgeleitete.globalermod || 0
 
+        // Build rows array
+        const rows = [
+            {
+                label: usesTalent ? 'Basis PW(T)' : 'Basis PW',
+                value: `${effectivePW}`,
+                cssClass: 'modifier-item base-value',
+            },
+            globalermod === 0
+                ? null
+                : {
+                      label: 'Status (Wunden/Furcht)',
+                      value: `${globalermod > 0 ? '+' : ''}${globalermod}`,
+                      cssClass: `modifier-item ${globalermod > 0 ? 'positive' : 'negative'}`,
+                  },
+            ...modLines
+                .filter((line) => line.value !== 0)
+                .map((line) => ({
+                    label: line.label,
+                    value: `${line.value > 0 ? '+' : ''}${line.value}`,
+                    cssClass: `modifier-item ${line.value > 0 ? 'positive' : 'negative'}`,
+                })),
+        ].filter((row) => row)
+
+        // Add difficulty row for resist tests
+        if (this.success_val !== null && this.success_val !== undefined) {
+            rows.push({
+                label: 'Erschwernis',
+                value: `${this.success_val}`,
+                cssClass: 'modifier-item difficulty',
+            })
+        }
+
         return {
             title: 'Würfelaktionen:',
             isEmpty: false,
@@ -207,27 +253,7 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
                     action: 'previewClick',
                     cssClass: 'modifier-summary probe-summary clickable-summary',
                     heading: `🎲 ${label}: ${finalFormula}`,
-                    rows: [
-                        {
-                            label: usesTalent ? 'Basis PW(T)' : 'Basis PW',
-                            value: `${effectivePW}`,
-                            cssClass: 'modifier-item base-value',
-                        },
-                        globalermod === 0
-                            ? null
-                            : {
-                                  label: 'Status (Wunden/Furcht)',
-                                  value: `${globalermod > 0 ? '+' : ''}${globalermod}`,
-                                  cssClass: `modifier-item ${globalermod > 0 ? 'positive' : 'negative'}`,
-                              },
-                        ...modLines
-                            .filter((line) => line.value !== 0)
-                            .map((line) => ({
-                                label: line.label,
-                                value: `${line.value > 0 ? '+' : ''}${line.value}`,
-                                cssClass: `modifier-item ${line.value > 0 ? 'positive' : 'negative'}`,
-                            })),
-                    ].filter((row) => row),
+                    rows,
                     totalRow:
                         totalMod === 0
                             ? null

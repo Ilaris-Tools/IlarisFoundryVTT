@@ -24,7 +24,52 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
             context.fertigkeit_list = this.document.actor.misc.uebernatuerlich_fertigkeit_list
         }
 
+        // Populate avoidTest skill options from configured compendium packs
+        context.avoidTestSkillOptions = await this._buildAvoidTestSkillOptions()
+
+        // Populate avoidTest attribute options from fixed config
+        context.avoidTestAttributeOptions = CONFIG.ILARIS.attribute || []
+
         return context
+    }
+
+    /**
+     * Build avoidTest skill options from configured compendium packs.
+     * @returns {Promise<Array<{packName: string, skills: Array<{name: string, type: string}>>}>}
+     */
+    async _buildAvoidTestSkillOptions() {
+        const groups = []
+        try {
+            const packsJson = game.settings.get('Ilaris', 'fertigkeitenPacks')
+            const packIds = JSON.parse(packsJson || '[]')
+
+            for (const packId of packIds) {
+                const pack = game.packs.get(packId)
+                if (!pack) continue
+
+                await pack.getIndex()
+                const skills = []
+                for (const entry of pack.index) {
+                    if (
+                        entry.type === 'fertigkeit' ||
+                        entry.type === 'uebernatuerlicheFertigkeit'
+                    ) {
+                        skills.push({ name: entry.name, type: entry.type })
+                    }
+                }
+
+                if (skills.length > 0) {
+                    groups.push({
+                        packName: pack.metadata?.label || packId,
+                        skills,
+                    })
+                }
+            }
+        } catch (e) {
+            console.warn('Ilaris | Failed to build avoidTest skill options:', e)
+        }
+
+        return groups
     }
 
     /** @override */

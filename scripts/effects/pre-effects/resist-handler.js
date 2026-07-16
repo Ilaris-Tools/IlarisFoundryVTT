@@ -54,20 +54,77 @@ async function handleResistClick(actor, preEffectData, button) {
     const avoidTest = preEffectData.avoidTest || {}
     const eventId = preEffectData.eventId
     const spellItemUuid = preEffectData.spellUuid
+    const spellName = preEffectData.spellName || ''
 
     // Compute resist difficulty
     const maechtigeQs = preEffectData.maechtigeQs || 0
     const baseDifficulty = avoidTest.resistDifficulty || 12
     const resistDifficulty = baseDifficulty + maechtigeQs * 4
 
+    // Resolve skill or attribute for the dialog
+    let dialogOptions
+
+    if (avoidTest.fertigkeit) {
+        // Skill-based resist: find the skill by name in the actor's profan.fertigkeiten array
+        const skillIndex = actor.profan.fertigkeiten.findIndex(
+            (f) => f.name === avoidTest.fertigkeit,
+        )
+
+        if (skillIndex === -1) {
+            ui.notifications.warn(
+                `Fertigkeit "${avoidTest.fertigkeit}" nicht auf diesem Akteur gefunden.`,
+            )
+            button.disabled = false
+            return
+        }
+
+        const skill = actor.profan.fertigkeiten[skillIndex]
+
+        // Build talent list from the skill's talents
+        const talentList = {}
+        const talente = skill.system.talente || []
+        for (const [i, tal] of talente.entries()) {
+            talentList[i] = tal.name
+        }
+
+        dialogOptions = {
+            probeType: 'fertigkeit',
+            fertigkeitKey: skillIndex,
+            fertigkeitName: skill.name,
+            pw: skill.system.pw,
+            talentList,
+            success_val: resistDifficulty,
+            resistAgainst: spellName,
+        }
+    } else if (avoidTest.attribut) {
+        // Attribute-based resist: compute PW from actor's attribute
+        const attributKey = avoidTest.attribut
+        const attributValue = actor.system.attribute[attributKey]?.pw
+        const attributLabel = CONFIG.ILARIS.label[attributKey] || attributKey
+
+        if (attributValue === undefined) {
+            ui.notifications.warn(`Attribut "${attributKey}" nicht auf diesem Akteur gefunden.`)
+            button.disabled = false
+            return
+        }
+
+        dialogOptions = {
+            probeType: 'attribut',
+            fertigkeitKey: attributKey,
+            fertigkeitName: attributLabel,
+            pw: attributValue,
+            success_val: resistDifficulty,
+            resistAgainst: spellName,
+        }
+    } else {
+        // Fallback: neither fertigkeit nor attribut configured
+        ui.notifications.warn('Keine Fertigkeit oder Attribut für Widerstandsprobe konfiguriert.')
+        button.disabled = false
+        return
+    }
+
     // Open FertigkeitDialog for resist test
-    const dialog = await openSkillDialog(actor, {
-        probeType: avoidTest.fertigkeit ? 'fertigkeit' : 'attribut',
-        fertigkeitKey: avoidTest.fertigkeit || undefined,
-        attributKey: avoidTest.attribut || undefined,
-        fertigkeitName: avoidTest.fertigkeit || avoidTest.attribut || 'Widerstand',
-        success_val: resistDifficulty,
-    })
+    const dialog = await openSkillDialog(actor, dialogOptions)
 
     if (!dialog) {
         button.disabled = false
@@ -241,6 +298,7 @@ export async function sendResistPrompt(targetActor, preEffect, spellName, speake
             ...preEffect,
             eventId,
             targetActorId: targetActor.id,
+            spellName,
         }),
     )
 

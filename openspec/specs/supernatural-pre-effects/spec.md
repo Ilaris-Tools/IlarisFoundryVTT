@@ -49,17 +49,29 @@ Each pre-effect entry SHALL contain: `baseDuration` (integer turns), `instant` (
 
 ### Requirement: Avoid/resist test
 
-When a pre-effect has `avoidTest.enabled: true`, the target SHALL receive a whispered chat prompt with a resist button after the spell succeeds.
+When a pre-effect has `avoidTest.enabled: true`, the target SHALL receive a whispered chat prompt with a resist button after the spell succeeds. The `avoidTest.fertigkeit` and `avoidTest.attribut` fields on the item sheet SHALL be populated from compendium data and fixed config respectively.
 
 #### Scenario: Resist prompt sent to target
 
 - **WHEN** a spell with avoidTest succeeds against a target
 - **THEN** a whispered ChatMessage with `.resist-button` SHALL be sent to the target's controlling client via socket routing
 
-#### Scenario: Resist test uses FertigkeitDialog
+#### Scenario: Resist test uses FertigkeitDialog with correct skill resolution
 
-- **WHEN** the target clicks the resist button
-- **THEN** `FertigkeitDialog` SHALL open with the configured `fertigkeit` or `attribut` probe
+- **WHEN** the target clicks the resist button and `avoidTest.fertigkeit` is set to a skill `name` (e.g., "Athletik")
+- **THEN** the resist handler SHALL find the skill in `actor.profan.fertigkeiten` by `name`, extract its array index, `system.pw`, and `system.talente`
+- **AND** `FertigkeitDialog` SHALL be opened with `probeType: 'fertigkeit'`, `fertigkeitKey: <index>`, `pw: <resolved PW>`, and `talentList: <resolved talents>`
+
+#### Scenario: Resist test uses FertigkeitDialog with correct attribute resolution
+
+- **WHEN** the target clicks the resist button and `avoidTest.attribut` is set (e.g., "KO") with no `avoidTest.fertigkeit`
+- **THEN** the resist handler SHALL compute `pw` from `actor.system.attribute["KO"].pw`
+- **AND** `FertigkeitDialog` SHALL be opened with `probeType: 'attribut'`, `fertigkeitKey: "KO"`, `fertigkeitName: "Konstitution"`, and `pw: <computed PW>`
+
+#### Scenario: Resist test warns when skill not found on actor
+
+- **WHEN** the configured `avoidTest.fertigkeit` name is not found in `actor.profan.fertigkeiten`
+- **THEN** the resist handler SHALL show a warning notification and SHALL NOT open FertigkeitDialog
 
 #### Scenario: Successful resist avoids effect
 
@@ -145,7 +157,7 @@ Each created ActiveEffect SHALL record its origin using Foundry V14's `origin` f
 
 ### Requirement: Resist resolution via FertigkeitDialog
 
-Resist tests SHALL be resolved by opening FertigkeitDialog with resist metadata attached as `_resistContext`, then listening for the existing `Ilaris.postSkillRoll` hook. Each Mächtige Magie quality stage (QS) the caster has active SHALL increase the resist difficulty by 4.
+Resist tests SHALL be resolved by opening FertigkeitDialog with resist metadata attached as `_resistContext`, then listening for the existing `Ilaris.postSkillRoll` hook. Each Mächtige Magie quality stage (QS) the caster has active SHALL increase the resist difficulty by 4. The dialog SHALL display the target difficulty ("Erschwernis") and a resist-specific title.
 
 #### Scenario: Mächtige Magie increases resist difficulty
 
@@ -156,6 +168,16 @@ Resist tests SHALL be resolved by opening FertigkeitDialog with resist metadata 
 
 - **WHEN** a resist button is clicked and FertigkeitDialog is opened
 - **THEN** `dialog._resistContext` SHALL be set to `{eventId, preEffectData, spellUuid}` after dialog construction
+
+#### Scenario: Resist dialog shows difficulty in preview
+
+- **WHEN** FertigkeitDialog is opened for a resist test with `success_val` set
+- **THEN** the preview summary SHALL include an "Erschwernis" row showing `success_val`
+
+#### Scenario: Resist dialog shows spell context in title
+
+- **WHEN** FertigkeitDialog is opened for a resist test with `resistAgainst` set to the spell name
+- **THEN** the dialog title SHALL read `"Widerstandsprobe: <skill> (gegen <spellName>)"`
 
 #### Scenario: Resist handler detects its test via \_resistContext
 

@@ -258,6 +258,27 @@ function registerHandlebarsHelpers() {
         return a + b
     })
 
+    /**
+     * Check if a skill name is present in avoidTestSkillOptions groups.
+     * Used by pre-effects.hbs to detect orphaned values.
+     */
+    Handlebars.registerHelper('isSkillInOptions', function (skillName, optionGroups) {
+        if (!skillName || !optionGroups) return false
+        for (const group of optionGroups) {
+            if (group.skills?.some((s) => s.name === skillName)) return true
+        }
+        return false
+    })
+
+    /**
+     * Check if an attribute key is present in avoidTestAttributeOptions.
+     * Used by pre-effects.hbs to detect orphaned values.
+     */
+    Handlebars.registerHelper('isAttrInOptions', function (attrKey, options) {
+        if (!attrKey || !options) return false
+        return options.some((opt) => opt.value === attrKey)
+    })
+
     Handlebars.registerHelper('getButtonState', (index, wunden, erschoepfung) => {
         if (index < wunden) return 1
         if (index < wunden + erschoepfung) return 2
