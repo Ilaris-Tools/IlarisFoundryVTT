@@ -89,6 +89,8 @@ Canonical mapping:
 - `Researcher` -> `.github/agents/researcher.md`
 - `Reviewer` -> `.github/agents/reviewer.md`
 - `Setup Specialist` -> `.github/agents/setup-specialist.md`
+- `E2E Testfall Assistant` -> `.github/agents/e2e-testfall-assistant.md`
+- `E2E Spec Generator` -> `.github/agents/e2e-spec-generator.md`
 
 Operational rules:
 

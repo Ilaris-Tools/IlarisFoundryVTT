@@ -1,3 +1,5 @@
+<!-- DEPRECATED: The canonical test specification is now in openspec/specs/<capability>/spec.md. This file is retained for reference only. -->
+
 # Testfall E2E-009 – UebernatuerlichDialog: Übernatürliche Fertigkeit
 
 ## Überblick

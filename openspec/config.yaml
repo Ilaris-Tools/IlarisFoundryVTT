@@ -25,10 +25,12 @@ rules:
     - "List every Foundry VTT API class, Hook event, and utility that this change will touch"
     - "For each mentioned Foundry class, include a link to its API doc page (e.g., https://foundryvtt.com/api/v14/classes/foundry.documents.Combat.html)"
     - "State whether the change is purely additive, modifies existing behavior, or removes functionality"
+    - "Include a 'Testing Impact' section when the change affects user-facing behavior or introduces new logic: list new unit test scenarios, existing unit tests to update, new E2E cases needed, existing E2E cases affected, and E2E environment context (players, world, shared code candidates)"
   design:
     - "Include an 'API Surface' section listing: (a) Foundry classes extended or used, (b) Hook events listened to or triggered, (c) `foundry.utils.*` helpers relied upon"
     - "For each Hook event, verify the exact signature from the API docs — do not assume parameter order or names"
     - "Check the community wiki (https://foundryvtt.wiki/en/development/api) for existing patterns or helpers that solve part of the problem"
+    - "Include a 'Testing Strategy' section when applicable: identify testable units and which test patterns apply, list E2E coverage for new or modified user flows"
   specs:
     - "Each requirement that interacts with Foundry APIs must reference the specific API doc page for the classes involved"
     - "Use the exact Foundry class and method names as they appear in the API docs"
@@ -36,3 +38,4 @@ rules:
     - "For any task that touches Foundry APIs, include a subtask: 'Verify against Foundry API docs (v14)'"
     - "For any task involving data manipulation or utilities, include a subtask: 'Check foundryvtt.wiki for relevant foundry.utils.* helpers'"
     - "After compendium data changes, always include: 'Run npm run pack-all'"
+    - "Include dedicated 'Unit Tests' and 'E2E Tests' task groups when the change requires testing, with individual tasks for each test file to create or update"

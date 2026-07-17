@@ -53,7 +53,19 @@ Archive a completed change in the experimental workflow.
 
     **If no tasks file exists:** Proceed without task-related warning.
 
-4. **Assess delta spec sync state**
+4. **Check test coverage (where applicable)**
+
+    If the change's proposal or design listed testing impact, verify that corresponding test files exist:
+    - For unit tests: check that `_spec_/` directories contain test files for the modified modules
+    - For E2E tests: check that `.spec.ts` files exist for new E2E cases listed in the Testing Impact section
+
+    **If test files are missing:**
+    - Note the gap but do NOT block archival — the "where applicable" principle applies
+    - Include the gap in the archive summary under warnings
+
+    **If no testing impact was declared:** Skip this check.
+
+5. **Assess delta spec sync state**
 
     Use `artifactPaths.specs.existingOutputPaths` from status JSON to check for delta specs. If none exist, proceed without sync prompt.
 
@@ -68,7 +80,7 @@ Archive a completed change in the experimental workflow.
 
     If user chooses sync, use Task tool (subagent_type: "general-purpose", prompt: "Use Skill tool to invoke openspec-sync-specs for change '<name>'. Delta spec analysis: <include the analyzed delta spec summary>"). Proceed to archive regardless of choice.
 
-5. **Perform the archive**
+6. **Perform the archive**
 
     Create an `archive` directory under `planningHome.changesDir` if it doesn't exist:
 
@@ -86,7 +98,7 @@ Archive a completed change in the experimental workflow.
     mv "<changeRoot>" "<planningHome.changesDir>/archive/YYYY-MM-DD-<name>"
     ```
 
-6. **Display summary**
+7. **Display summary**
 
     Show archive completion summary including:
     - Change name

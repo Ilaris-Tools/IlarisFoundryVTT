@@ -111,6 +111,10 @@ After completing all artifacts, summarize:
 - **IMPORTANT**: `context` and `rules` are constraints for YOU, not content for the file
     - Do NOT copy `<context>`, `<rules>`, `<project_context>` blocks into the artifact
     - These guide what you write, but should never appear in the output
+- **Testing-aware artifacts**:
+    - **proposal.md**: Include a "Testing Impact" section when the change affects user-facing behavior or introduces new logic. List new unit test scenarios, existing unit tests to update, new E2E cases needed, existing E2E cases affected. For E2E cases, capture environment context: players needed, world state, and shared code candidates to promote to `e2e/shared/`.
+    - **design.md**: Include a "Testing Strategy" section when applicable. Identify testable units and which existing test patterns (pure function, dynamic import, jest.mock, Object.create) apply. List E2E coverage for new or modified user flows.
+    - **tasks.md**: Include dedicated "Unit Tests" and "E2E Tests" task groups (as numbered `## N.` sections) when the change requires testing. Unit test tasks should reference the `_spec_/` file to create or update. E2E test tasks should reference the spec scenario(s) they implement and note whether existing cases need regression verification.
 
 **Guardrails**
 

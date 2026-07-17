@@ -48,6 +48,14 @@ Depending on what the user brings, you might:
 - Identify patterns already in use
 - Surface hidden complexity
 
+**Surface testing impact (where applicable)**
+
+- When a change touches UI/dialogs, note which existing E2E test cases exercise that area and ask whether they should be regression-verified
+- When a change introduces new pure functions or helpers, note that they are unit-testable and ask whether test tasks should be created
+- When a change is a pure internal refactor with no UI or API surface change, focus on unit test coverage and skip E2E questions
+- Identify which `_spec_/` directories already exist for the affected modules and which test patterns (pure function, dynamic import, jest.mock, Object.create) are used there
+- This is a lens, not a checklist — testing questions are surfaced naturally where applicable, not forced for every change
+
 **Compare options**
 
 - Brainstorm multiple approaches

@@ -1,3 +1,5 @@
+<!-- DEPRECATED: The canonical test specification is now in openspec/specs/<capability>/spec.md. This file is retained for reference only. -->
+
 # E2E-003 Manoever-Kombination: Wuchtschlag + Gezielter Schlag (Schildarm) + Schildspalter
 
 ## Metadaten

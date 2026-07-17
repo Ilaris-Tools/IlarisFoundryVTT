@@ -1,3 +1,5 @@
+<!-- DEPRECATED: The canonical test specification is now in openspec/specs/<capability>/spec.md. This file is retained for reference only. -->
+
 # E2E-005 Nahkampf-Angriffsdialog: Patzer, Triumph und Normalwurf
 
 ## Metadaten

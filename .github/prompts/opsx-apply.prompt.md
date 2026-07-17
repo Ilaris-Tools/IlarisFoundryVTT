@@ -71,6 +71,8 @@ Implement tasks from an OpenSpec change.
     - Mark task complete in the tasks file: `- [ ]` → `- [x]`
     - Continue to next task
 
+    **Test-first ordering**: When a code implementation task has a corresponding unit test task in the task list, execute the test task before the code task. Write the test, verify it fails, implement the code, then verify the test passes. For E2E test tasks, generate a `.spec.ts` file from the referenced spec scenario using existing shared fixtures as patterns, or delegate to the E2E Spec Generator agent if more complex setup is needed.
+
     **Pause if:**
     - Task is unclear → ask for clarification
     - Implementation reveals a design issue → suggest updating artifacts
