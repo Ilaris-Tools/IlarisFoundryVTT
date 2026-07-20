@@ -288,6 +288,43 @@ export const registerIlarisGameSettings = () => {
         })
     })
 
+    // LLM / KI-Einstellungen (client-scoped — nur im Browser des GMs)
+    ;[
+        {
+            settingsName: IlarisGameSettingNames.llmApiUrl,
+            name: 'LLM API URL',
+            hint: 'Die URL des OpenAI-kompatiblen Chat-Completions-Endpunkts (z.B. OpenAI, OpenRouter, DeepSeek, Ollama).',
+            scope: Scope.Client,
+            type: String,
+            default: '',
+        },
+        {
+            settingsName: IlarisGameSettingNames.llmApiKey,
+            name: 'LLM API Key',
+            hint: 'Der API-Schlüssel für den LLM-Dienst. Wird nur im Browser gespeichert und nie mit der Welt synchronisiert.',
+            scope: Scope.Client,
+            type: String,
+            default: '',
+        },
+        {
+            settingsName: IlarisGameSettingNames.llmModel,
+            name: 'LLM Model',
+            hint: 'Das zu verwendende Modell (z.B. gpt-4o, deepseek-chat, openai/gpt-4o für OpenRouter).',
+            scope: Scope.Client,
+            type: String,
+            default: '',
+        },
+    ].forEach((setting) => {
+        game.settings.register(ConfigureGameSettingsCategories.Ilaris, setting.settingsName, {
+            name: setting.name,
+            hint: setting.hint,
+            config: setting.config,
+            type: setting.type,
+            scope: setting.scope,
+            default: setting.default,
+        })
+    })
+
     game.settings.registerMenu(
         ConfigureGameSettingsCategories.Ilaris,
         IlarisGameSettingsMenuNames.ilarisSettingsMenu,

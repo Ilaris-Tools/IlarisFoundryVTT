@@ -34,6 +34,13 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
         // Populate damage type options from world setting
         context.damageTypeOptions = this._getDamageTypeOptions()
 
+        // LLM generation availability (GM only, API configured)
+        context.isGM = game.user.isGM
+        context.hasLLMConfig =
+            game.user.isGM &&
+            !!game.settings.get('Ilaris', 'llmApiUrl') &&
+            !!game.settings.get('Ilaris', 'llmApiKey')
+
         return context
     }
 
@@ -148,6 +155,11 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
             this.document.update({ 'system.preEffects': preEffects })
         })
 
+        // LLM Generate button
+        this.element.querySelector('.generate-pre-effect')?.addEventListener('click', async () => {
+            await this.#handleLLMGenerate()
+        })
+
         // Add datalist for pre-effect change key autocomplete
         this.#injectPreEffectKeySuggestions()
     }
@@ -179,6 +191,91 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
         // Always re-attach (new inputs may have appeared after add/delete change)
         const keyInputs = preEffectsSection.querySelectorAll('input[name$=".key"]')
         keyInputs.forEach((input) => input.setAttribute('list', 'ilaris-pre-effect-keys'))
+    }
+
+    /**
+     * Call the LLM API to generate pre-effects for this spell.
+     */
+    async #handleLLMGenerate() {
+        const button = this.element.querySelector('.generate-pre-effect')
+        if (!button) return
+
+        const originalText = button.textContent
+        button.textContent = '⏳ Wird generiert...'
+        button.disabled = true
+
+        try {
+            const apiUrl = game.settings.get('Ilaris', 'llmApiUrl')
+            const apiKey = game.settings.get('Ilaris', 'llmApiKey')
+            const model = game.settings.get('Ilaris', 'llmModel')
+
+            if (!apiUrl || !apiKey) {
+                ui.notifications.warn('LLM API URL oder Key ist nicht konfiguriert.')
+                return
+            }
+
+            // Collect context
+            const { collectActorSystemPaths } =
+                await import('../../effects/utils/field-path-collector.js')
+            const { buildPreEffectPrompt } =
+                await import('../../effects/utils/llm-prompt-builder.js')
+            const damageTypes = this._getDamageTypeOptions()
+            const systemKeys = collectActorSystemPaths()
+
+            const spellData = this.document.system
+            const requestBody = buildPreEffectPrompt(
+                spellData,
+                this.document.name,
+                damageTypes,
+                systemKeys,
+                model,
+            )
+
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${apiKey}`,
+                },
+                body: JSON.stringify({
+                    model: requestBody.model,
+                    messages: requestBody.messages,
+                }),
+            })
+
+            if (!response.ok) {
+                const errorText = await response.text()
+                throw new Error(`API Fehler ${response.status}: ${errorText}`)
+            }
+
+            const data = await response.json()
+            const content = data.choices?.[0]?.message?.content
+
+            if (!content) {
+                throw new Error('Keine Antwort vom LLM erhalten.')
+            }
+
+            // Parse the JSON response (strip markdown fences if present)
+            const jsonStr = content
+                .replace(/```json\n?/g, '')
+                .replace(/```\n?/g, '')
+                .trim()
+            const parsed = JSON.parse(jsonStr)
+
+            if (!parsed.preEffects || !Array.isArray(parsed.preEffects)) {
+                throw new Error('LLM-Antwort enthält kein preEffects-Array.')
+            }
+
+            // Apply preEffects
+            await this.document.update({ 'system.preEffects': parsed.preEffects })
+            ui.notifications.info('Pre-Effects erfolgreich generiert!')
+        } catch (e) {
+            console.error('Ilaris | LLM generate failed:', e)
+            ui.notifications.error(`LLM-Generierung fehlgeschlagen: ${e.message}`)
+        } finally {
+            button.textContent = originalText
+            button.disabled = false
+        }
     }
 
     _defaultPreEffect() {

@@ -135,5 +135,8 @@
         </fieldset>
         {{/each}}
         <button type="button" class="add-pre-effect">+ Pre-Effect hinzufügen</button>
+        {{#if @root.hasLLMConfig}}
+        <button type="button" class="generate-pre-effect">🤖 Generieren</button>
+        {{/if}}
     </div>
 </section>

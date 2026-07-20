@@ -125,6 +125,18 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
                 ConfigureGameSettingsCategories.Ilaris,
                 IlarisGameSettingNames.lepSystem,
             ),
+            llmApiUrl: game.settings.get(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.llmApiUrl,
+            ),
+            llmApiKey: game.settings.get(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.llmApiKey,
+            ),
+            llmModel: game.settings.get(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.llmModel,
+            ),
         }
 
         // Parse damage types setting into array for template
@@ -430,6 +442,24 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
                 scope: 'world',
                 inputType: 'checkbox',
             },
+            {
+                key: 'llmApiUrl',
+                name: IlarisGameSettingNames.llmApiUrl,
+                scope: 'client',
+                inputType: 'text',
+            },
+            {
+                key: 'llmApiKey',
+                name: IlarisGameSettingNames.llmApiKey,
+                scope: 'client',
+                inputType: 'text',
+            },
+            {
+                key: 'llmModel',
+                name: IlarisGameSettingNames.llmModel,
+                scope: 'client',
+                inputType: 'text',
+            },
         ]
         for (const s of generalDefs) {
             if (s.scope === 'world' && !isGM) continue
@@ -518,6 +548,21 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
             ConfigureGameSettingsCategories.Ilaris,
             IlarisGameSettingNames.enableTabbingCharacterSheet,
             false,
+        )
+        await game.settings.set(
+            ConfigureGameSettingsCategories.Ilaris,
+            IlarisGameSettingNames.llmApiUrl,
+            '',
+        )
+        await game.settings.set(
+            ConfigureGameSettingsCategories.Ilaris,
+            IlarisGameSettingNames.llmApiKey,
+            '',
+        )
+        await game.settings.set(
+            ConfigureGameSettingsCategories.Ilaris,
+            IlarisGameSettingNames.llmModel,
+            '',
         )
 
         this.render()
