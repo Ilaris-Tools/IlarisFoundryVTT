@@ -430,3 +430,114 @@ export async function restoreActorFromDefaultSnapshot(page: Page, snapshot: Acto
         }
     }, snapshot)
 }
+
+/**
+ * Opens an item sheet by name from the sidebar Items directory.
+ * Navigates to the Items tab, finds the item in the directory list, and opens its sheet.
+ *
+ * @param page - Playwright Page
+ * @param itemName - Name of the item to open (e.g., "Ignifaxius")
+ * @returns Locator for the opened item sheet window
+ */
+export async function openItemSheet(page: Page, itemName: string): Promise<Locator> {
+    // Navigate to Items directory tab
+    const itemsTab = page.locator('[data-tab="items"], .tabs [data-tab="items"]').first()
+    await itemsTab.click()
+
+    const itemEntry = page
+        .locator('.directory-item, li.item, [data-document-id]')
+        .filter({ hasText: itemName })
+        .first()
+
+    await expect(itemEntry).toBeVisible({ timeout: 15000 })
+
+    const itemWindow = page
+        .locator('.window-app, .application')
+        .filter({ hasText: itemName })
+        .last()
+
+    if (await itemWindow.isVisible().catch(() => false)) return itemWindow
+
+    await itemEntry.dblclick()
+
+    await itemWindow.waitFor({ state: 'visible', timeout: 15000 })
+    await expect(itemWindow).toBeVisible({ timeout: 15000 })
+    return itemWindow
+}
+
+/**
+ * Returns the current wound and exhaustion values of an actor.
+ *
+ * @param page - Playwright Page
+ * @param actorName - Name of the actor
+ * @returns `{wunden, erschoepfung}` from `actor.system.gesundheit`
+ */
+export async function getActorWounds(
+    page: Page,
+    actorName: string,
+): Promise<{ wunden: number; erschoepfung: number }> {
+    return page.evaluate((name: string) => {
+        const actor = game.actors.getName(name) as any
+        return {
+            wunden: actor?.system?.gesundheit?.wunden ?? 0,
+            erschoepfung: actor?.system?.gesundheit?.erschoepfung ?? 0,
+        }
+    }, actorName)
+}
+
+/**
+ * Clicks the pre-effects tab in an AppV2 item sheet.
+ * Looks for a tab with `data-tab="preEffects"` or a navigation link containing "Pre-Effekte".
+ *
+ * @param itemWindow - Locator for the item sheet window
+ */
+export async function openPreEffectsTab(itemWindow: Locator): Promise<void> {
+    const tab = itemWindow
+        .locator('nav [data-tab="preEffects"], nav a:has-text("Pre-Effekte")')
+        .first()
+    await expect(tab).toBeVisible({ timeout: 10000 })
+    await tab.click()
+    await itemWindow.locator('section.tab.preEffects').waitFor({ state: 'visible', timeout: 10000 })
+}
+
+/**
+ * Returns the most recent chat message's metadata.
+ *
+ * @param page - Playwright Page
+ * @returns `{flavor, content, isWhisper}` of the latest chat message, or null if chat is empty
+ */
+export async function getLatestChatMessage(
+    page: Page,
+): Promise<{ flavor: string; content: string; isWhisper: boolean } | null> {
+    return page.evaluate(() => {
+        const msgs = game.messages?.contents
+        if (!msgs || msgs.length === 0) return null
+        const last = msgs[msgs.length - 1] as any
+        return {
+            flavor: last.flavor ?? '',
+            content: last.content ?? '',
+            isWhisper: last.whisper?.length > 0 ?? false,
+        }
+    })
+}
+
+/**
+ * Finds and clicks the `.resist-button` in the most recently rendered chat message.
+ * Uses `page.evaluate` to locate the button in the DOM and dispatch a click event.
+ *
+ * @param page - Playwright Page
+ */
+export async function clickResistButton(page: Page): Promise<void> {
+    // First find the button in the DOM
+    const clicked = await page.evaluate(() => {
+        const buttons = document.querySelectorAll('.resist-button')
+        if (buttons.length === 0) return false
+        const lastButton = buttons[buttons.length - 1] as HTMLElement
+        lastButton.click()
+        return true
+    })
+
+    if (!clicked) {
+        throw new Error('No .resist-button found in the DOM')
+    }
+}

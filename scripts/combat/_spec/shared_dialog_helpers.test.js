@@ -798,3 +798,155 @@ describe('applyOperator', () => {
         })
     })
 })
+
+// ---------------------------------------------------------------
+// _applyDamageDirectly — Healing Branch Tests
+// @spec openspec/changes/add-pre-effect-unit-tests/specs/pre-effect-unit-tests/spec.md
+// ---------------------------------------------------------------
+
+import { _applyDamageDirectly } from '../dialogs/shared-dialog-helpers.js'
+
+describe('_applyDamageDirectly — Healing', () => {
+    let targetActor
+    let mockUpdate
+    let mockChatCreate
+
+    beforeEach(() => {
+        // Initialize CONFIG and CONST if not set up
+        if (!global.CONFIG) {
+            global.CONFIG = {}
+        }
+        global.CONST = {
+            CHAT_MESSAGE_STYLES: { OTHER: 0 },
+        }
+        global.ChatMessage = {
+            create: jest.fn().mockResolvedValue(undefined),
+        }
+
+        // Default: LEP system disabled
+        global.game.settings.get.mockImplementation((_ns, key) => {
+            if (key === 'lepSystem') return false
+            return undefined
+        })
+    })
+
+    function createTargetActor({ wunden = 0, erschoepfung = 0, ws = 5, name = 'TestActor' } = {}) {
+        mockUpdate = jest.fn().mockResolvedValue(undefined)
+        return {
+            name,
+            system: {
+                gesundheit: {
+                    wunden,
+                    erschoepfung,
+                },
+                abgeleitete: {
+                    ws,
+                },
+            },
+            update: mockUpdate,
+        }
+    }
+
+    it('negative damage reduces wounds by WS thresholds', async () => {
+        targetActor = createTargetActor({ wunden: 3, ws: 5 })
+
+        await _applyDamageDirectly(targetActor, -12, 'PROFAN', false, {})
+
+        // healAmount = 12, ws = 5, woundsToRemove = floor(12/5) = 2
+        // newValue = max(0, 3 - 2) = 1
+        expect(mockUpdate).toHaveBeenCalledWith({ 'system.gesundheit.wunden': 1 })
+        expect(global.ChatMessage.create).toHaveBeenCalled()
+    })
+
+    it('healing caps wounds at 0', async () => {
+        targetActor = createTargetActor({ wunden: 1, ws: 5 })
+
+        await _applyDamageDirectly(targetActor, -10, 'PROFAN', false, {})
+
+        // healAmount = 10, woundsToRemove = floor(10/5) = 2
+        // newValue = max(0, 1 - 2) = 0
+        expect(mockUpdate).toHaveBeenCalledWith({ 'system.gesundheit.wunden': 0 })
+    })
+
+    it('insufficient healing has no effect and sends "keine Heilung" message', async () => {
+        targetActor = createTargetActor({ wunden: 3, ws: 5 })
+
+        await _applyDamageDirectly(targetActor, -4, 'PROFAN', false, {})
+
+        // healAmount = 4, woundsToRemove = floor(4/5) = 0 → no update
+        expect(mockUpdate).not.toHaveBeenCalled()
+        const chatCall = global.ChatMessage.create.mock.calls[0][0]
+        expect(chatCall.content).toContain('keine Heilung')
+        expect(chatCall.speaker).toEqual({})
+        expect(chatCall.style).toBe(0)
+    })
+
+    it('STUMPF healing reduces Erschöpfung instead of wounds', async () => {
+        targetActor = createTargetActor({ erschoepfung: 3, ws: 5 })
+
+        await _applyDamageDirectly(targetActor, -12, 'STUMPF', false, {})
+
+        // healAmount = 12, ws = 5, woundsToRemove = floor(12/5) = 2
+        // newValue = max(0, 3 - 2) = 1, key = system.gesundheit.erschoepfung
+        expect(mockUpdate).toHaveBeenCalledWith({ 'system.gesundheit.erschoepfung': 1 })
+    })
+
+    it('LEP system healing restores HP directly', async () => {
+        global.game.settings.get.mockImplementation((_ns, key) => {
+            if (key === 'lepSystem') return true
+            return undefined
+        })
+
+        targetActor = {
+            name: 'TestActor',
+            system: {
+                gesundheit: {
+                    wunden: 10,
+                    wunden_max: 30,
+                },
+                abgeleitete: { ws: 5 },
+            },
+            update: (mockUpdate = jest.fn().mockResolvedValue(undefined)),
+        }
+
+        await _applyDamageDirectly(targetActor, -10, 'PROFAN', false, {})
+
+        // LEP system: direct addition, no WS threshold
+        // newLep = min(10 + 10, 30) = 20
+        expect(mockUpdate).toHaveBeenCalledWith({ 'system.gesundheit.wunden': 20 })
+    })
+
+    it('LEP healing caps at wunden_max', async () => {
+        global.game.settings.get.mockImplementation((_ns, key) => {
+            if (key === 'lepSystem') return true
+            return undefined
+        })
+
+        targetActor = {
+            name: 'TestActor',
+            system: {
+                gesundheit: {
+                    wunden: 25,
+                    wunden_max: 30,
+                },
+                abgeleitete: { ws: 5 },
+            },
+            update: (mockUpdate = jest.fn().mockResolvedValue(undefined)),
+        }
+
+        await _applyDamageDirectly(targetActor, -20, 'PROFAN', false, {})
+
+        // newLep = min(25 + 20, 30) = 30
+        expect(mockUpdate).toHaveBeenCalledWith({ 'system.gesundheit.wunden': 30 })
+    })
+
+    it('healing chat message contains "heilt"', async () => {
+        targetActor = createTargetActor({ wunden: 3, ws: 5 })
+
+        await _applyDamageDirectly(targetActor, -12, 'PROFAN', false, {})
+
+        const chatCall = global.ChatMessage.create.mock.calls[0][0]
+        expect(chatCall.content).toContain('heilt')
+        expect(chatCall.style).toBe(0)
+    })
+})
