@@ -486,18 +486,64 @@ export async function getActorWounds(
 }
 
 /**
- * Clicks the pre-effects tab in an AppV2 item sheet.
- * Looks for a tab with `data-tab="preEffects"` or a navigation link containing "Pre-Effekte".
+ * Scrolls the pre-effects section into view on an AppV2 item sheet.
+ *
+ * Pre-effects are rendered as a stacked PART (`.pre-effects-section`), not a
+ * separate tab with `data-tab="preEffects"`. On tall sheets the section sits
+ * below the fold and must be scrolled into view before interacting with it.
  *
  * @param itemWindow - Locator for the item sheet window
  */
 export async function openPreEffectsTab(itemWindow: Locator): Promise<void> {
+    // Prefer a real tab if one exists (future-proof), otherwise scroll the section.
     const tab = itemWindow
         .locator('nav [data-tab="preEffects"], nav a:has-text("Pre-Effekte")')
         .first()
-    await expect(tab).toBeVisible({ timeout: 10000 })
-    await tab.click()
-    await itemWindow.locator('section.tab.preEffects').waitFor({ state: 'visible', timeout: 10000 })
+    if (await tab.isVisible().catch(() => false)) {
+        await tab.click()
+        await itemWindow
+            .locator('section.tab.preEffects, .pre-effects-section')
+            .first()
+            .waitFor({ state: 'visible', timeout: 10000 })
+        return
+    }
+
+    const section = itemWindow.locator('.pre-effects-section').first()
+    await expect(section).toBeAttached({ timeout: 10000 })
+    await section.evaluate((el) => el.scrollIntoView({ block: 'start', behavior: 'instant' }))
+    await expect(section).toBeVisible({ timeout: 10000 })
+}
+
+/**
+ * Activates the Foundry chat sidebar tab so chat messages (and buttons inside
+ * them, e.g. `.resist-button`) are rendered and interactable.
+ *
+ * @param page - Playwright Page
+ */
+export async function openChatSidebar(page: Page): Promise<void> {
+    await page.evaluate(() => {
+        // Prefer Foundry's sidebar API (V13+/V14: changeTab; older: activateTab)
+        // https://foundryvtt.com/api/v14/classes/foundry.applications.sidebar.Sidebar.html
+        if (ui.sidebar?.changeTab) {
+            ui.sidebar.changeTab('chat', 'primary')
+        } else if (ui.sidebar?.activateTab) {
+            ui.sidebar.activateTab('chat')
+        } else {
+            const tab =
+                document.querySelector('#sidebar-tabs a[data-tab="chat"]') ||
+                document.querySelector('[data-tab="chat"]')
+            if (tab instanceof HTMLElement) tab.click()
+        }
+
+        // Ensure the latest messages (and embedded action buttons) are in view
+        ui.chat?.scrollBottom?.()
+    })
+
+    await page
+        .locator('#chat-log, .chat-log, #sidebar .chat-message')
+        .first()
+        .waitFor({ state: 'visible', timeout: 10000 })
+        .catch(() => {})
 }
 
 /**
@@ -516,7 +562,7 @@ export async function getLatestChatMessage(
         return {
             flavor: last.flavor ?? '',
             content: last.content ?? '',
-            isWhisper: last.whisper?.length > 0 ?? false,
+            isWhisper: (last.whisper?.length ?? 0) > 0,
         }
     })
 }

@@ -11,7 +11,8 @@
  *   2. The effect has `system.ilarisTiming.durationType: "ownerTurns"`
  *   3. The effect's `changes` array contains the configured modifications
  *
- * Uses Axxeleratus (or first discovered spell with non-instant pre-effects).
+ * Uses Axxeleratus. Processor tags AEs with flags.ilaris.sourceType = 'uebernatuerlich'
+ * and flags.ilaris.spellName = spell name.
  */
 
 import { expect, test } from '@playwright/test'
@@ -55,16 +56,24 @@ test.describe('E2E-028 · Pre-Effect Buff ActiveEffect Creation', () => {
             })
             .catch(() => {})
         await page
-            .evaluate((name) => {
-                const actor = game.actors.getName(name)
-                if (!actor) return
-                const effectsToRemove = actor.appliedEffects
-                    .filter((e) => e.flags?.ilaris?.sourceType === 'preEffect')
-                    .map((e) => e.id)
-                if (effectsToRemove.length > 0) {
-                    return actor.deleteEmbeddedDocuments('ActiveEffect', effectsToRemove)
-                }
-            }, ACTOR_NAME)
+            .evaluate(
+                async ({ name, spellName }) => {
+                    const actor = game.actors.getName(name)
+                    if (!actor) return
+                    // Match by spellName flag / effect name (sourceType is 'uebernatuerlich')
+                    const effectsToRemove = actor.effects
+                        .filter(
+                            (e: any) =>
+                                e.flags?.ilaris?.spellName?.includes?.(spellName) ||
+                                e.name?.includes?.(spellName),
+                        )
+                        .map((e: any) => e.id)
+                    if (effectsToRemove.length > 0) {
+                        await actor.deleteEmbeddedDocuments('ActiveEffect', effectsToRemove)
+                    }
+                },
+                { name: ACTOR_NAME, spellName: SPELL_NAME },
+            )
             .catch(() => {})
         await restoreActorFromDefaultSnapshot(page, snapshot).catch(() => {})
     })
@@ -86,15 +95,23 @@ test.describe('E2E-028 · Pre-Effect Buff ActiveEffect Creation', () => {
         await targetRow.click()
         await targetDialog.locator('button.submit').click()
 
-        const effectsBefore = await page.evaluate((name) => {
-            const actor = game.actors.getName(name)
-            return actor?.appliedEffects?.length ?? 0
-        }, ACTOR_NAME)
+        const effectsBefore = await page.evaluate(
+            ({ name, spellName }) => {
+                const actor = game.actors.getName(name)
+                if (!actor) return 0
+                return actor.effects.filter(
+                    (e: any) =>
+                        e.flags?.ilaris?.spellName?.includes?.(spellName) ||
+                        e.name?.includes?.(spellName),
+                ).length
+            },
+            { name: ACTOR_NAME, spellName: SPELL_NAME },
+        )
 
         const neutralMod = await page.evaluate(
             ({ name, spellName }) => {
                 const actor = game.actors.getName(name)
-                const spell = actor?.items.find((i) => i.name === spellName)
+                const spell = actor?.items.find((i: any) => i.name?.includes(spellName))
                 const pw = spell?.system?.pw ?? 0
                 return -pw
             },
@@ -131,37 +148,46 @@ test.describe('E2E-028 · Pre-Effect Buff ActiveEffect Creation', () => {
             })
         }
 
-        const effectCreated = await page
-            .waitForFunction(
-                ({ name, before }) => {
-                    const actor = game.actors.getName(name)
-                    return (actor?.appliedEffects?.length ?? 0) > before
-                },
-                { name: ACTOR_NAME, before: effectsBefore },
-                { timeout: 15000 },
-            )
-            .then(() => true)
-            .catch(() => false)
+        // ActiveEffect creation is fire-and-forget after the roll chat message.
+        await page.waitForFunction(
+            ({ name, spellName, before }) => {
+                const actor = game.actors.getName(name)
+                if (!actor) return false
+                const count = actor.effects.filter(
+                    (e: any) =>
+                        e.flags?.ilaris?.spellName?.includes?.(spellName) ||
+                        e.name?.includes?.(spellName),
+                ).length
+                return count > before
+            },
+            { name: ACTOR_NAME, spellName: SPELL_NAME, before: effectsBefore },
+            { timeout: 20000 },
+        )
 
-        if (effectCreated) {
-            const effectInfo = await page.evaluate((name) => {
+        const effectInfo = await page.evaluate(
+            ({ name, spellName }) => {
                 const actor = game.actors.getName(name)
                 if (!actor) return null
-                const preEffects = actor.appliedEffects.filter(
-                    (e) => e.flags?.ilaris?.sourceType === 'preEffect',
+                const matches = actor.effects.filter(
+                    (e: any) =>
+                        e.flags?.ilaris?.spellName?.includes?.(spellName) ||
+                        e.name?.includes?.(spellName),
                 )
-                if (preEffects.length === 0) return null
-                const latest = preEffects[preEffects.length - 1]
+                if (matches.length === 0) return null
+                const latest = matches[matches.length - 1] as any
                 return {
+                    name: latest.name ?? '',
                     durationType: latest.system?.ilarisTiming?.durationType ?? null,
                     changes: latest.changes ?? [],
+                    sourceType: latest.flags?.ilaris?.sourceType ?? null,
                 }
-            }, ACTOR_NAME)
+            },
+            { name: ACTOR_NAME, spellName: SPELL_NAME },
+        )
 
-            if (effectInfo) {
-                expect(effectInfo.durationType).toBe('ownerTurns')
-                expect(effectInfo.changes.length).toBeGreaterThan(0)
-            }
-        }
+        expect(effectInfo).not.toBeNull()
+        expect(effectInfo!.name).toContain(SPELL_NAME)
+        expect(effectInfo!.durationType).toBe('ownerTurns')
+        expect(effectInfo!.changes.length).toBeGreaterThan(0)
     })
 })

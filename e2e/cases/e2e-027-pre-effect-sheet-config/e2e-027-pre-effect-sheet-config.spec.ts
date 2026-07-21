@@ -19,8 +19,6 @@ import {
     captureActorDefaultSnapshot,
     foundryConfig,
     loginAndJoinWorld,
-    openActorSheet,
-    openItemSheet,
     openPreEffectsTab,
     restoreActorFromDefaultSnapshot,
 } from '../../shared/fixtures/foundry'
@@ -77,19 +75,28 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         await restoreActorFromDefaultSnapshot(page, snapshot).catch(() => {})
     })
 
-    test('Pre-effects tab is accessible and has expected structure', async ({ page }) => {
-        const actorWindow = await openActorSheet(page, ACTOR_NAME)
+    async function openImportedSpellSheet(page: import('@playwright/test').Page) {
+        // Open via Foundry API using the imported world item id (avoids directory flakiness).
+        await page.evaluate((id) => {
+            const item = game.items.get(id)
+            if (!item?.sheet) throw new Error(`Imported item not found: ${id}`)
+            item.sheet.render(true)
+        }, importedItemId)
 
-        const closeBtn = actorWindow.locator('button[data-action="close"]')
-        await closeBtn.click().catch(() => {})
-        await actorWindow.waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {})
-
-        const itemWindow = await openItemSheet(page, SPELL_NAME)
+        const itemWindow = page
+            .locator('.window-app, .application')
+            .filter({ hasText: SPELL_NAME })
+            .last()
         await expect(itemWindow).toBeVisible({ timeout: 15000 })
+        return itemWindow
+    }
 
+    test('Pre-effects tab is accessible and has expected structure', async ({ page }) => {
+        const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)
 
-        const preEffectsSection = itemWindow.locator('section.tab.preEffects')
+        // Pre-effects is a stacked PART (`.pre-effects-section`), not a tab panel.
+        const preEffectsSection = itemWindow.locator('.pre-effects-section')
         await expect(preEffectsSection).toBeVisible({ timeout: 10000 })
 
         const preEffectCards = preEffectsSection.locator('.pre-effect-card')
@@ -101,14 +108,7 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
     })
 
     test('AvoidTest skill dropdown is populated from compendium', async ({ page }) => {
-        const actorWindow = await openActorSheet(page, ACTOR_NAME)
-
-        const closeBtn = actorWindow.locator('button[data-action="close"]')
-        await closeBtn.click().catch(() => {})
-        await actorWindow.waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {})
-
-        const itemWindow = await openItemSheet(page, SPELL_NAME)
-        await expect(itemWindow).toBeVisible({ timeout: 15000 })
+        const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)
 
         const skillSelect = itemWindow.locator('select[name$="avoidTest.fertigkeit"]').first()
@@ -126,14 +126,7 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
     })
 
     test('Damage type select is populated from settings', async ({ page }) => {
-        const actorWindow = await openActorSheet(page, ACTOR_NAME)
-
-        const closeBtn = actorWindow.locator('button[data-action="close"]')
-        await closeBtn.click().catch(() => {})
-        await actorWindow.waitFor({ state: 'hidden', timeout: 5000 }).catch(() => {})
-
-        const itemWindow = await openItemSheet(page, SPELL_NAME)
-        await expect(itemWindow).toBeVisible({ timeout: 15000 })
+        const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)
 
         const damageTypeSelect = itemWindow.locator('select[name$="damageType"]').first()

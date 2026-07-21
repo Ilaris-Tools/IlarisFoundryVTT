@@ -12,7 +12,8 @@
  *   3. Dialog title contains "Widerstandsprobe"
  *   4. Erschwernis is displayed in the dialog
  *
- * Uses Ignifaxius (or first spell with avoidTest pre-effect).
+ * Uses Ignifaxius. Compendium data has avoidTest.enabled=false, so the test
+ * enables avoidTest (attribute-based) on the actor's spell before casting.
  */
 
 import { expect, test } from '@playwright/test'
@@ -24,12 +25,15 @@ import {
     foundryConfig,
     loginAndJoinWorld,
     openActorSheet,
+    openChatSidebar,
     openSpellDialog,
     restoreActorFromDefaultSnapshot,
 } from '../../shared/fixtures/foundry'
 
 const ACTOR_NAME = 'HatAlles'
 const SPELL_NAME = 'Ignifaxius'
+const RESIST_ATTRIBUT = 'KO'
+const RESIST_DIFFICULTY = 12
 
 test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
     let snapshot: ActorDefaultSnapshot
@@ -38,16 +42,72 @@ test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
         await loginAndJoinWorld(page, foundryConfig)
         snapshot = await captureActorDefaultSnapshot(page, ACTOR_NAME)
 
-        await page.evaluate((name) => {
-            const actor = game.actors.getName(name)
-            return actor?.update({
-                'system.abgeleitete.asp_stern': 50,
-                'system.gesundheit.wunden': 0,
-                'system.gesundheit.erschoepfung': 0,
-            })
-        }, ACTOR_NAME)
+        await page.evaluate(
+            async ({ name, spellName, attribut, difficulty }) => {
+                const actor = game.actors.getName(name)
+                if (!actor) throw new Error(`Actor not found: ${name}`)
+
+                await actor.update({
+                    'system.abgeleitete.asp_stern': 50,
+                    'system.gesundheit.wunden': 0,
+                    'system.gesundheit.erschoepfung': 0,
+                })
+
+                // Compendium Ignifaxius has avoidTest.enabled=false. Enable it for this test
+                // using an attribute-based resist so we don't depend on a specific skill name.
+                const spell = actor.items.find((i: any) => i.name?.includes(spellName))
+                if (!spell) throw new Error(`Spell not found on actor: ${spellName}`)
+
+                const preEffects = foundry.utils.deepClone(spell.system?.preEffects ?? [])
+                const list = Array.isArray(preEffects)
+                    ? preEffects
+                    : Object.values(preEffects as Record<string, unknown>)
+
+                if (list.length === 0) {
+                    list.push({
+                        baseDuration: 0,
+                        instant: true,
+                        changes: [
+                            {
+                                key: 'system.gesundheit.wunden',
+                                type: 'add',
+                                value: '4W6',
+                                damageType: 'FEUER',
+                            },
+                        ],
+                        avoidTest: {
+                            enabled: true,
+                            fertigkeit: '',
+                            attribut,
+                            diminishedOnly: false,
+                            resistDifficulty: difficulty,
+                        },
+                    })
+                } else {
+                    for (const pe of list as any[]) {
+                        pe.avoidTest = {
+                            ...(pe.avoidTest ?? {}),
+                            enabled: true,
+                            fertigkeit: '',
+                            attribut,
+                            diminishedOnly: false,
+                            resistDifficulty: difficulty,
+                        }
+                    }
+                }
+
+                await spell.update({ 'system.preEffects': list })
+            },
+            {
+                name: ACTOR_NAME,
+                spellName: SPELL_NAME,
+                attribut: RESIST_ATTRIBUT,
+                difficulty: RESIST_DIFFICULTY,
+            },
+        )
 
         await clearChatLog(page)
+        await openChatSidebar(page)
     })
 
     test.afterEach(async ({ page }) => {
@@ -83,7 +143,7 @@ test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
         const neutralMod = await page.evaluate(
             ({ name, spellName }) => {
                 const actor = game.actors.getName(name)
-                const spell = actor?.items.find((i) => i.name === spellName)
+                const spell = actor?.items.find((i: any) => i.name?.includes(spellName))
                 const pw = spell?.system?.pw ?? 0
                 return -pw
             },
@@ -124,17 +184,11 @@ test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
             })
         }
 
-        await page.waitForFunction(
-            (baseline) => game.messages.contents.length >= baseline + 1,
-            beforeCount,
-            { timeout: 20000 },
-        )
-
-        // Verify .resist-button exists in DOM
-        const resistButtonInDom = await page.evaluate(() => {
-            return document.querySelectorAll('.resist-button').length > 0
+        // Resist prompt is fire-and-forget after the roll message — open chat and wait for the button.
+        await openChatSidebar(page)
+        await page.waitForFunction(() => document.querySelectorAll('.resist-button').length > 0, {
+            timeout: 20000,
         })
-        expect(resistButtonInDom).toBe(true)
 
         // Click resist button
         await clickResistButton(page)

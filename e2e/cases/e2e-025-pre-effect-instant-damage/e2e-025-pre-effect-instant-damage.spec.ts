@@ -127,6 +127,18 @@ test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
             { timeout: 20000 },
         )
 
+        // The instant pre-effect damage is applied fire-and-forget AFTER the spell
+        // roll chat message is created, so we must wait for the actor update itself
+        // instead of relying on the first chat message.
+        await page.waitForFunction(
+            ({ name, before }) => {
+                const actor = game.actors.getName(name) as any
+                return (actor?.system?.gesundheit?.wunden ?? 0) > before
+            },
+            { name: ACTOR_NAME, before: wundenBefore.wunden },
+            { timeout: 20000 },
+        )
+
         // Verify wounds increased
         const wundenAfter = await getActorWounds(page, ACTOR_NAME)
         expect(wundenAfter.wunden).toBeGreaterThan(wundenBefore.wunden)
@@ -135,7 +147,7 @@ test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
         const messages = await page.evaluate(
             ({ baseline, spellName }) => {
                 const msgs = game.messages.contents.slice(baseline)
-                return msgs.map((m) => ({
+                return msgs.map((m: any) => ({
                     flavor: m.flavor ?? '',
                     content: m.content ?? '',
                 }))
@@ -144,7 +156,8 @@ test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
         )
 
         const spellMsgs = messages.filter(
-            (m) => m.flavor.includes(SPELL_NAME) || m.content.includes(SPELL_NAME),
+            (m: { flavor: string; content: string }) =>
+                m.flavor.includes(SPELL_NAME) || m.content.includes(SPELL_NAME),
         )
         expect(spellMsgs.length).toBeGreaterThan(0)
     })
