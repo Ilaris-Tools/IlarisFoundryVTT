@@ -1005,6 +1005,17 @@ Hooks.on('renderChatMessageHTML', (message, htmlDOM, data) => {
         }
     })
 
+    // Set all dice-tooltip to be expanded, to see the dice rolls directly
+    const showDiceRollInChat = game.settings.get(
+        ConfigureGameSettingsCategories.Ilaris,
+        IlarisGameSettingNames.showDiceRollInChat,
+    )
+    if (showDiceRollInChat) {
+        htmlDOM.querySelectorAll('.dice-roll').forEach((element) => {
+            element.classList.add('expanded')
+        })
+    }
+
     // Handle defense prompt message visibility
     const isDefensePrompt = message.flags?.Ilaris?.defensePrompt
     if (isDefensePrompt) {
