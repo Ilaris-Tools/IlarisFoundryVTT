@@ -381,8 +381,10 @@
 }
 
 .ilaris.sheet.actor.helden .hero-energy-expandable {
-  display: none;
   margin-left: 0.5em;
+}
+.ilaris.sheet.actor.helden .hero-energy-expandable.hero-expandable-row-hidden {
+  display: none;
 }
 
 .ilaris.sheet.actor.helden .hero-energy-section-spacing {
