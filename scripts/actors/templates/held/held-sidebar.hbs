@@ -76,6 +76,23 @@
                 </span>
                 <br />
                 {{/if}}
+
+                {{#if actor.system.abgeleitete.paktierer}}
+                <label class="onhover hero-energy-label-spacing" data-action="ausklappView" data-ausklappentarget="gupzugekauft"><b>GuP:</b></label>
+                <label class="hero-energy-label-spacing">{{actor.system.abgeleitete.gup}}</label>
+            
+                <label class="hero-energy-label-compact"><b>gGuP:</b></label>
+                <input class="hero-energy-input" name="system.abgeleitete.ggup" value="{{actor.system.abgeleitete.ggup}}" type="number" data-dtype="Number" />
+            
+                <label class="hero-energy-label-compact"><b>GuP*:</b></label>
+                <input class="hero-energy-input" name="system.abgeleitete.gup_stern" value="{{actor.system.abgeleitete.gup_stern}}" type="number" data-dtype="Number" />
+            
+                <span id="ausklappen-view-gupzugekauft" class="hero-energy-expandable hero-expandable-row-hidden">
+                    <label class="hero-energy-label-compact">Zugekauft:</label>
+                    <input class="hero-energy-input" name="system.abgeleitete.gup_zugekauft" value="{{actor.system.abgeleitete.gup_zugekauft}}" type="number" data-dtype="Number" />
+                </span>
+                <br />
+                {{/if}}
             </div>
             <div class="hero-energy-section-spacing hero-energy-section-spacing-lg">
                 <a class="icon-small hero-wound-toggle {{#if actor.system.gesundheit.wundenignorieren}}true{{/if}}"

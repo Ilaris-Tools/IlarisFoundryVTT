@@ -35,6 +35,15 @@ const actorSpecificEnergyConfigurations = Object.freeze({
         boundPath: 'system.abgeleitete.gkap',
         purchasedPath: 'system.abgeleitete.kap_zugekauft',
     }),
+    gup: Object.freeze({
+        key: 'gup',
+        source: 'abgeleitete',
+        currentPath: 'system.abgeleitete.gup_stern',
+        maxPath: 'system.abgeleitete.gup',
+        thresholdPath: null,
+        boundPath: 'system.abgeleitete.ggup',
+        purchasedPath: 'system.abgeleitete.gup_zugekauft',
+    }),
 })
 
 function toNumericValue(value, fallback = 0) {
@@ -286,6 +295,15 @@ export class IlarisActor extends Actor {
                 this.system.abgeleitete.kap_stern != null
                     ? Number(this.system.abgeleitete.kap_stern)
                     : this.system.abgeleitete.kap
+
+            // Base GUP
+            this.system.abgeleitete.gup = 0
+            this.system.abgeleitete.gup += Number(this.system.abgeleitete.gup_zugekauft) || 0
+            this.system.abgeleitete.gup -= Number(this.system.abgeleitete.ggup) || 0
+            this.system.abgeleitete.gup_stern =
+                this.system.abgeleitete.gup_stern != null
+                    ? Number(this.system.abgeleitete.gup_stern)
+                    : this.system.abgeleitete.gup
 
             // Calculate base SchiPs
             this.system.schips.schips = calculateValue('SchiP', 4)
