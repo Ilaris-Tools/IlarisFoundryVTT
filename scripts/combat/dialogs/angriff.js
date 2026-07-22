@@ -364,17 +364,12 @@ export class AngriffDialog extends CombatDialog {
                 rollResult.templatePath,
                 templateData,
             )
-            await rollResult.roll.toMessage(
-                {
-                    speaker: this.speaker,
-                    flavor: html_roll,
-                    blind: true,
-                    whisper: [game.user.id],
-                },
-                {
-                    messageMode: 'gmroll',
-                },
-            )
+            await rollResult.roll.toMessage({
+                speaker: this.speaker,
+                flavor: html_roll,
+                blind: true,
+                whisper: [game.user.id],
+            })
 
             // Store the defense roll result
             this.lastDefenseRoll = {
