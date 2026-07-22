@@ -700,17 +700,12 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
                 rollResult.templatePath,
                 templateData,
             )
-            await rollResult.roll.toMessage(
-                {
-                    speaker: this.speaker,
-                    flavor: html_roll,
-                    blind: true,
-                    whisper: [game.user.id],
-                },
-                {
-                    messageMode: 'gmroll',
-                },
-            )
+            await rollResult.roll.toMessage({
+                speaker: this.speaker,
+                flavor: html_roll,
+                blind: true,
+                whisper: [game.user.id],
+            })
         } else {
             await postRollToChat(rollResult, this.speaker, this.rollmode)
         }
