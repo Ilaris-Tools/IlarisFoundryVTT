@@ -70,8 +70,8 @@ function setupSkillDialogGlobals() {
             xd20_choice: {},
             schips_choice: {},
         },
-        Dice: {
-            rollModes: {
+        ChatMessage: {
+            modes: {
                 roll: 'roll',
             },
         },
@@ -85,7 +85,7 @@ function setupSkillDialogGlobals() {
         settings: {
             get: jest.fn((namespace, key) => {
                 if (namespace === 'Ilaris' && key === 'realFumbleCrits') return false
-                if (namespace === 'core' && key === 'rollMode') return 'roll'
+                if (namespace === 'core' && key === 'messageMode') return 'roll'
                 return null
             }),
         },
