@@ -104,8 +104,8 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
             choices_schips: CONFIG.ILARIS.schips_choice,
             checked_schips: '0',
             hasSchips,
-            rollModes: CONFIG.ChatMessage?.modes || CONFIG.Dice.rollModes,
-            defaultRollMode: game.settings.get('core', 'messageMode') || 'publicroll',
+            rollModes: CONFIG.ChatMessage.modes,
+            defaultRollMode: game.settings.get('core', 'messageMode'),
             dialogId: this.dialogId,
             summary: this.summary,
         }
@@ -516,8 +516,7 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
         // Get roll mode
         const rollmode =
             html.querySelector(`#rollMode-${this.dialogId}`)?.value ||
-            game.settings.get('core', 'messageMode') ||
-            'publicroll'
+            game.settings.get('core', 'messageMode')
 
         // Build formula
         const formula = `${modifierState.diceFormula} + ${modifierState.effectivePW} + ${modifierState.globalermod} + ${modifierState.hoheQualitaetMod} + ${modifierState.modifikator}`
