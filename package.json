@@ -27,7 +27,7 @@
     "test": "jest",
     "lint": "eslint --fix .",
     "prettier": "prettier --write .",
-    "test:e2e": "playwright test e2e/cases",
+    "test:e2e": "node e2e/tools/run.mjs",
     "prepare": "husky",
     "optimize-svgs": "node scripts/optimize-svgs.js",
     "pack-all": "node utils/pack-all.js",

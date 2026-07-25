@@ -37,6 +37,59 @@ Every handoff between roles must include:
 | `validation` | How to verify the work is correct           |
 | `status`     | `completed`, `blocked`, `needs-review`      |
 
+## OpenSpec Workflow
+
+This project uses **OpenSpec** for spec-driven development. All significant changes must go through the OpenSpec workflow.
+
+### CLI
+
+The `openspec` CLI (v1.5.0) manages changes, artifacts, and specs:
+
+- `openspec list --json` — List active changes
+- `openspec new change "<name>"` — Create a new change
+- `openspec status --change "<name>" --json` — Show artifact status and dependencies
+- `openspec instructions <artifact-id> --change "<name>" --json` — Get artifact creation instructions
+- `openspec instructions apply --change "<name>" --json` — Get implementation instructions
+
+### Workflow Phases
+
+```
+Explore ──▶ Propose ──▶ Apply ──▶ Archive
+```
+
+1. **Explore** — Think through the problem, investigate the codebase, clarify requirements. No implementation.
+2. **Propose** — Create a change with artifacts: `proposal.md`, `design.md`, `specs/`, `tasks.md`.
+3. **Apply** — Implement tasks from the `tasks.md` artifact. Test-first when applicable.
+4. **Archive** — Move the completed change to `openspec/changes/archive/YYYY-MM-DD-<name>/` and sync delta specs.
+
+### Artifact Structure
+
+Each change in `openspec/changes/<name>/` contains:
+
+| Artifact      | Purpose                                                  |
+| ------------- | -------------------------------------------------------- |
+| `proposal.md` | What & why (includes Testing Impact when applicable)     |
+| `design.md`   | How (includes API Surface and Testing Strategy)          |
+| `specs/`      | Delta specs with ADDED/MODIFIED/REMOVED/RENAMED sections |
+| `tasks.md`    | Implementation steps with `- [ ]` / `- [x]` checkboxes   |
+
+### Configuration
+
+- Schema: `spec-driven` (defined in `openspec/config.yaml`)
+- Changes: `openspec/changes/<name>/`
+- Main specs: `openspec/specs/<capability>/spec.md`
+- Archive: `openspec/changes/archive/`
+
+### Spec-Driven Rules
+
+Rules from `openspec/config.yaml` apply to all phases:
+
+- Every proposal must list Foundry VTT API classes, Hooks, and utilities the change touches, with links to API docs
+- Designs must include an API Surface section referencing Foundry API docs and `foundry.utils.*` helpers
+- Tasks must include subtasks to verify against Foundry API docs (v14) and check the community wiki for helpers
+- Compendium data changes must include "Run `npm run pack-all`" as a task
+- Dedicated Unit Tests and E2E Tests task groups when the change requires testing
+
 ## Working Rules
 
 1. **Consult the Foundry VTT API** (<https://foundryvtt.com/api/>) before making assumptions about Hooks, Documents, utilities, or rendering APIs.

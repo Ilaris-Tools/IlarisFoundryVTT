@@ -30,17 +30,22 @@ The system SHALL use Playwright for end-to-end testing with a shared fixture tha
 
 ### Requirement: Test execution model
 
-The system SHALL run E2E tests sequentially (1 worker) with headless mode disabled.
+The system SHALL run E2E tests sequentially with one worker. It SHALL use headed browser mode for local contributor execution by default and support an explicit headless CI mode. Both modes SHALL retain video and screenshot evidence on failure.
 
 #### Scenario: Sequential execution
 
 - **WHEN** E2E tests run
 - **THEN** only one test SHALL execute at a time (`workers: 1`)
 
-#### Scenario: Visible browser
+#### Scenario: Local visible browser
 
-- **WHEN** E2E tests run
-- **THEN** the browser SHALL be visible (`headless: false`)
+- **WHEN** E2E tests run without the explicit CI headless mode
+- **THEN** Playwright SHALL use a visible browser (`headless: false`)
+
+#### Scenario: CI headless browser
+
+- **WHEN** E2E tests run with the explicit CI headless mode
+- **THEN** Playwright SHALL use a headless browser (`headless: true`)
 
 #### Scenario: Video and screenshot on failure
 

@@ -1,5 +1,7 @@
 import { expect, Locator, Page } from '@playwright/test'
 
+import { assertE2EBaseline, E2E_BASELINE } from '../baseline'
+
 export type FoundryCredentials = {
     url: string
     username: string
@@ -19,8 +21,8 @@ export type ActorDefaultSnapshot = {
 
 export const foundryConfig: FoundryCredentials = {
     url: process.env.E2E_FOUNDRY_URL ?? 'http://localhost:30000',
-    username: process.env.E2E_FOUNDRY_USER ?? 'Gamemaster',
-    worldName: process.env.E2E_FOUNDRY_WORLD ?? 'Vanilla Ilaris',
+    username: process.env.E2E_FOUNDRY_USER ?? E2E_BASELINE.users.gm,
+    worldName: process.env.E2E_FOUNDRY_WORLD ?? E2E_BASELINE.world.name,
     password: process.env.E2E_FOUNDRY_PASSWORD,
 }
 
@@ -136,6 +138,8 @@ export async function loginAndJoinWorld(page: Page, config: FoundryCredentials =
         undefined,
         { timeout: 30000 },
     )
+
+    await assertE2EBaseline(page)
 
     await dismissFoundryCompatibilityWarnings(page)
 

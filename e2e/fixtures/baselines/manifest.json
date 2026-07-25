@@ -1,0 +1,16 @@
+{
+  "archive": "ilaris-e2e-world-v14363-r1.zip",
+  "sha256": "83BAC3A8A9A302C4728E86118D203C606DDDC2644A0061CBAA2845E790976A6A",
+  "worldDirectory": "ilaris-e2e-world-v14363-r1",
+  "worldId": "ilaris-e2e-world-v14363-r1",
+  "systemId": "Ilaris",
+  "systemVersion": "14.0.0",
+  "foundryVersion": "14.363",
+  "baselineRevision": "r1",
+  "requiredUsers": ["e2e-gm", "e2e-player"],
+  "requiredActors": ["HatAlles", "Testlauf-Held", "Testlauf-Npc"],
+  "playerOwnership": { "user": "e2e-player", "actor": "Testlauf-Held" },
+  "requiredSettings": ["renameTriumphWithCrit", "lepSystem"],
+  "requiredCompendiumLabels": ["Kreatur", "Zauberspruch"],
+  "releaseAsset": "https://github.com/Ilaris-Tools/IlarisFoundryVTT/releases/download/e2e-world-v14363-r1/ilaris-e2e-world-v14363-r1.zip"
+}

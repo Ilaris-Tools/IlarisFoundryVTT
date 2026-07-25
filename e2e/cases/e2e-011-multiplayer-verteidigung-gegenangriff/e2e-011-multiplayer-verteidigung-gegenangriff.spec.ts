@@ -10,15 +10,14 @@ import {
     openMeleeAttackDialogForWeapon,
     restoreActorFromDefaultSnapshot,
 } from '../../shared/fixtures/foundry'
+import { E2E_BASELINE } from '../../shared/baseline'
 
-const ATTACKER_NAME = 'HatAlles'
-const DEFENDER_NAME = 'Testlauf-Held'
-const COUNTER_WEAPON_NAME = 'Kurzschwert'
+const ATTACKER_NAME = E2E_BASELINE.actors.allCapabilities
+const DEFENDER_NAME = E2E_BASELINE.actors.hero
+const COUNTER_WEAPON_NAME = E2E_BASELINE.weapons.shortSword
 const WUCHTSCHLAG_VALUE = 8
 
-// Player3 username can be overridden via E2E_PLAYER3_USER env var
-// to match the actual Foundry user in your world (e.g. 'Spieler3', 'Player 3', …)
-const PLAYER3_USERNAME = process.env.E2E_PLAYER3_USER ?? 'Player3'
+const PLAYER3_USERNAME = process.env.E2E_PLAYER_USER ?? E2E_BASELINE.users.player
 
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
@@ -133,15 +132,14 @@ test.describe('E2E-011 Multiplayer: Verteidigung und Gegenangriff', () => {
             await loginAndJoinWorld(gmPage, foundryConfig)
             await loginAndJoinWorld(player3Page, player3Config)
 
-            // Verify Player3 is logged in as the correct user – if this fails,
-            // set E2E_PLAYER3_USER to the exact Foundry username for that account.
+            // Verify the E2E player is logged in with the expected baseline account.
             const player3ActualName = await player3Page.evaluate(
                 () => (game.user as any)?.name ?? game.user?.id ?? null,
             )
             expect(
                 player3ActualName,
-                `Player3 login fehlgeschlagen: game.user.name ist "${player3ActualName}", erwartet "${PLAYER3_USERNAME}". ` +
-                    `Setze E2E_PLAYER3_USER auf den korrekten Foundry-Benutzernamen.`,
+                `E2E-Spieler-Login fehlgeschlagen: game.user.name ist "${player3ActualName}", erwartet "${PLAYER3_USERNAME}". ` +
+                    `Setze E2E_PLAYER_USER auf den korrekten E2E-Benutzernamen.`,
             ).toBe(PLAYER3_USERNAME)
 
             await clearChatLog(gmPage)
