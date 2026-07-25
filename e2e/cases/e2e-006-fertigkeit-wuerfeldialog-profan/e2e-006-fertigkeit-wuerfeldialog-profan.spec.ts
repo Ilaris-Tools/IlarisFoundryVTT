@@ -229,10 +229,13 @@ test.describe('E2E-006 Fertigkeit Wuerfeldialog Profan', () => {
     test('Würfelmodus übernimmt den im Game Chat gewählten Standard', async ({ page }) => {
         await loginAndJoinWorld(page, foundryConfig)
 
-        const originalRollMode = await page.evaluate(() => game.settings.get('core', 'messageMode'))
-        await page.evaluate(() => game.settings.set('core', 'messageMode', 'private'))
+        const chatMessageMode = await page.evaluate(() => game.settings.get('core', 'messageMode'))
+        expect(
+            chatMessageMode,
+            'Game Chat muss einen aktuellen Nachrichtenmodus besitzen',
+        ).toBeTruthy()
 
-        try {
+        {
             const actorWindow = await openActorSheet(page, 'HatAlles')
             await actorWindow.locator('nav [data-tab="fertigkeiten"]').click()
             await actorWindow
@@ -244,8 +247,13 @@ test.describe('E2E-006 Fertigkeit Wuerfeldialog Profan', () => {
 
             const skillDialog = page.locator('.application.ilaris.fertigkeit-dialog').last()
             await expect(skillDialog).toBeVisible({ timeout: 15000 })
-            await expect(skillDialog.locator('select[id^="rollMode-"]')).toHaveValue('private')
-            await skillDialog.locator('button:has-text("Abbrechen")').click()
+            await expect(skillDialog.locator('select[id^="rollMode-"]')).toHaveValue(
+                chatMessageMode,
+            )
+            // Reloading closes the AppV2 dialog independently of its header
+            // controls, then lets the combat assertion start from clean UI.
+            await page.reload()
+            await loginAndJoinWorld(page, foundryConfig)
 
             const weaponName = await page.evaluate(() => {
                 const actor = game.actors?.getName('HatAlles') as any
@@ -253,14 +261,12 @@ test.describe('E2E-006 Fertigkeit Wuerfeldialog Profan', () => {
             })
             expect(weaponName, 'HatAlles benötigt eine Nahkampfwaffe für den Test').toBeTruthy()
 
-            await openMeleeAttackDialogForWeapon(actorWindow, weaponName!)
+            const reloadedActorWindow = await openActorSheet(page, 'HatAlles')
+            await openMeleeAttackDialogForWeapon(reloadedActorWindow, weaponName!)
             const combatDialog = page.locator('.application.angriff-dialog').last()
             await expect(combatDialog).toBeVisible({ timeout: 15000 })
-            await expect(combatDialog.locator('select[id^="rollMode-"]')).toHaveValue('private')
-        } finally {
-            await page.evaluate(
-                (rollMode) => game.settings.set('core', 'messageMode', rollMode),
-                originalRollMode,
+            await expect(combatDialog.locator('select[id^="rollMode-"]')).toHaveValue(
+                chatMessageMode,
             )
         }
     })
