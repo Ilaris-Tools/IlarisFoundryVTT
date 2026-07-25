@@ -100,6 +100,10 @@ Rules from `openspec/config.yaml` apply to all phases:
 6. **Never edit LevelDB files directly** — always modify `_source/` JSON files.
 7. **Preserve German domain language** in UI labels, data identifiers, and user-facing text.
 8. **Use English** for structural code (class names, file names, module systems).
+9. **Follow the Foundry v14 API.** Confirm relevant classes, Hooks, settings, data fields, and method signatures in the official API documentation before implementation. Prefer documented Foundry APIs over custom browser or data-layer workarounds.
+10. **Reuse Foundry helpers first.** Check `foundry.utils.*`, built-in document collection methods, and existing system helpers before introducing a new utility or manually manipulating document data.
+11. **Keep presentation in templates.** Put rendered markup in feature-specific Handlebars (`.hbs`) templates and pass structured context from JavaScript. Use JavaScript for application state, event handling, and data preparation—not large inline HTML strings—unless Foundry requires dynamic HTML at runtime.
+12. **Use the appropriate Foundry abstraction.** Prefer Documents and embedded-document APIs for persistent data, AppV2/Handlebars applications for UI, and documented Hooks for lifecycle integration.
 
 ## Precedence
 
