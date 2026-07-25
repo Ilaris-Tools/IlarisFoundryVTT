@@ -778,10 +778,7 @@ Hooks.on('renderTokenHUD', (app, htmlDOM, data) => {
         const statusEffectsContainer = htmlDOM.querySelector('.status-effects')
 
         if (statusEffectsContainer) {
-            // Find all effect controls within the status effects container
-            const effectControls = statusEffectsContainer.querySelectorAll('.effect-control')
-
-            effectControls.forEach((control) => {
+            const applyTint = (control) => {
                 const statusId = control.dataset.statusId
 
                 // Find the matching status effect configuration
@@ -804,9 +801,43 @@ Hooks.on('renderTokenHUD', (app, htmlDOM, data) => {
 
                     control.classList.add('ilaris-tinted')
                 }
+            }
+
+            const applyTints = () => {
+                statusEffectsContainer.querySelectorAll('.effect-control').forEach(applyTint)
+            }
+
+            applyTints()
+
+            // AppV2 replaces the palette controls when it is expanded. Observe
+            // those replacements so the visible palette receives the same
+            // configured tint as its initially rendered, hidden counterpart.
+            new MutationObserver(applyTints).observe(statusEffectsContainer, {
+                childList: true,
+                subtree: true,
             })
         }
     }, 100)
+})
+
+// TokenHUD palettes are re-rendered independently in Foundry V14. The
+// specialized renderTokenHUD hook only runs for the initial bind, so apply the
+// same tint when an ApplicationV2 render supplies the expanded palette.
+Hooks.on('renderApplicationV2', (app, htmlDOM) => {
+    const statusEffectsContainer = htmlDOM.querySelector?.('.status-effects')
+    if (!statusEffectsContainer) return
+
+    setTimeout(() => {
+        statusEffectsContainer.querySelectorAll('.effect-control').forEach((control) => {
+            const tint = CONFIG.statusEffects[control.dataset.statusId]?.tint
+            if (!tint) return
+
+            const filterValue = getFilterForColor(tint)
+            control.style.setProperty('filter', filterValue, 'important')
+            control.style.setProperty('-webkit-filter', filterValue, 'important')
+            control.classList.add('ilaris-tinted')
+        })
+    }, 0)
 })
 
 // Helper function to create CSS filters that convert white SVG to specific colors

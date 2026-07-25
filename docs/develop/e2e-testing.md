@@ -74,6 +74,10 @@ E2E_PLAYER_USER=e2e-player
 
 Die Tests laufen absichtlich seriell mit einem Worker. Bei einem Fehler bleiben Playwright-Video und Screenshot in `test-results/` erhalten.
 
+## Nicht unterstützte Altdaten
+
+Verwaiste oder nicht mehr definierte Token-Status-Effekte werden nicht migriert und müssen nicht weiter bearbeitbar bleiben. Wenn eine alte Welt einen solchen Status enthält, das Token entfernen und neu anlegen. Die E2E-Baseline enthält nur aktuell unterstützte Status-Effekte.
+
 ## Welt zurücksetzen
 
 Die E2E-Welt ist veränderlich. Vor einem vollständigen erneuten Lauf die Welt auf den Archivzustand zurücksetzen:

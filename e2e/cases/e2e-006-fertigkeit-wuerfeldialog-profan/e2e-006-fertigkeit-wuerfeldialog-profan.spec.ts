@@ -7,6 +7,7 @@ import {
     foundryConfig,
     loginAndJoinWorld,
     openActorSheet,
+    openMeleeAttackDialogForWeapon,
     restoreActorFromDefaultSnapshot,
 } from '../../shared/fixtures/foundry'
 
@@ -222,6 +223,45 @@ test.describe('E2E-006 Fertigkeit Wuerfeldialog Profan', () => {
             }
         } finally {
             await restoreActorFromDefaultSnapshot(page, actorDefaultSnapshot)
+        }
+    })
+
+    test('Würfelmodus übernimmt den im Game Chat gewählten Standard', async ({ page }) => {
+        await loginAndJoinWorld(page, foundryConfig)
+
+        const originalRollMode = await page.evaluate(() => game.settings.get('core', 'messageMode'))
+        await page.evaluate(() => game.settings.set('core', 'messageMode', 'private'))
+
+        try {
+            const actorWindow = await openActorSheet(page, 'HatAlles')
+            await actorWindow.locator('nav [data-tab="fertigkeiten"]').click()
+            await actorWindow
+                .locator(
+                    'section.tab.fertigkeiten tbody tr.main-row td[data-action="rollable"][data-rolltype="fertigkeit_diag"]',
+                )
+                .first()
+                .click()
+
+            const skillDialog = page.locator('.application.ilaris.fertigkeit-dialog').last()
+            await expect(skillDialog).toBeVisible({ timeout: 15000 })
+            await expect(skillDialog.locator('select[id^="rollMode-"]')).toHaveValue('private')
+            await skillDialog.locator('button:has-text("Abbrechen")').click()
+
+            const weaponName = await page.evaluate(() => {
+                const actor = game.actors?.getName('HatAlles') as any
+                return actor?.items.find((item: any) => item.type === 'nahkampfwaffe')?.name ?? null
+            })
+            expect(weaponName, 'HatAlles benötigt eine Nahkampfwaffe für den Test').toBeTruthy()
+
+            await openMeleeAttackDialogForWeapon(actorWindow, weaponName!)
+            const combatDialog = page.locator('.application.angriff-dialog').last()
+            await expect(combatDialog).toBeVisible({ timeout: 15000 })
+            await expect(combatDialog.locator('select[id^="rollMode-"]')).toHaveValue('private')
+        } finally {
+            await page.evaluate(
+                (rollMode) => game.settings.set('core', 'messageMode', rollMode),
+                originalRollMode,
+            )
         }
     })
 })
