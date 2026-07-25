@@ -5,10 +5,12 @@ import {
     captureActorDefaultSnapshot,
     clearChatLog,
     foundryConfig,
+    enableTargetSelectionForTest,
     loginAndJoinWorld,
     openActorSheet,
     openMeleeAttackDialogForWeapon,
     restoreActorFromDefaultSnapshot,
+    restoreFoundrySetting,
 } from '../../shared/fixtures/foundry'
 import { E2E_BASELINE } from '../../shared/baseline'
 
@@ -126,11 +128,13 @@ test.describe('E2E-011 Multiplayer: Verteidigung und Gegenangriff', () => {
         // Track cleanup state
         let defenderDefaultSnapshot: ActorDefaultSnapshot | null = null
         let attackerDefaultSnapshot: ActorDefaultSnapshot | null = null
+        let targetSelectionSetting = null
 
         try {
             // ── Login both users ──────────────────────────────────────────
             await loginAndJoinWorld(gmPage, foundryConfig)
             await loginAndJoinWorld(player3Page, player3Config)
+            targetSelectionSetting = await enableTargetSelectionForTest(gmPage)
 
             // Verify the E2E player is logged in with the expected baseline account.
             const player3ActualName = await player3Page.evaluate(
@@ -634,6 +638,10 @@ test.describe('E2E-011 Multiplayer: Verteidigung und Gegenangriff', () => {
                     () => {},
                 )
             }
+            if (targetSelectionSetting) {
+                await restoreFoundrySetting(gmPage, targetSelectionSetting).catch(() => {})
+            }
+            await clearChatLog(gmPage).catch(() => {})
             await gmContext.close().catch(() => {})
             await player3Context.close().catch(() => {})
         }

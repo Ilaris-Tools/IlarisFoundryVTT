@@ -51,4 +51,10 @@ The system SHALL define breaking changes in a structured format mapping versions
 
 ## Cross-References
 
+## Additional Requirements
+
+### Requirement: Reviewer-facing automated coverage map
+
+The release process SHALL publish the automated coverage map alongside the manual release checklists.
+
 - [settings](../settings/spec.md) — `lastSeenBreakingChangesVersion` is a registered game setting

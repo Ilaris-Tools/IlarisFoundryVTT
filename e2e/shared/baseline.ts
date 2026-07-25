@@ -28,7 +28,11 @@ export const E2E_BASELINE = {
         actor: 'Testlauf-Held',
         user: 'e2e-player',
     },
-    settings: ['renameTriumphWithCrit', 'lepSystem'],
+    settingDefaults: {
+        renameTriumphWithCrit: false,
+        lepSystem: false,
+        useTargetSelection: false,
+    },
     compendiums: {
         creatureLabel: 'kreatur',
         spellLabel: 'zauberspruch',
@@ -62,9 +66,14 @@ export async function assertE2EBaseline(page: import('@playwright/test').Page): 
             missingDependencies.push(`owner:${baseline.ownership.user}:${baseline.ownership.actor}`)
         }
 
-        for (const settingName of baseline.settings) {
+        for (const [settingName, expectedValue] of Object.entries(baseline.settingDefaults)) {
             try {
-                game.settings.get(baseline.world.systemId, settingName)
+                const actualValue = game.settings.get(baseline.world.systemId, settingName)
+                if (actualValue !== expectedValue) {
+                    missingDependencies.push(
+                        `setting:${baseline.world.systemId}.${settingName}=${String(expectedValue)}`,
+                    )
+                }
             } catch {
                 missingDependencies.push(`setting:${baseline.world.systemId}.${settingName}`)
             }

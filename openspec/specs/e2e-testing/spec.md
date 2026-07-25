@@ -178,6 +178,24 @@ N/A — E2E testing does not define persistent data.
 
 ## Cross-References
 
+## Additional Requirements
+
+### Requirement: Default configuration baseline
+
+The published E2E world SHALL use documented default settings. A test requiring a non-default setting SHALL apply and restore it through a shared fixture.
+
+### Requirement: Stateful E2E case restoration
+
+E2E cases SHALL restore mutated actors, chat, settings, scenes, tokens, and other shared resources before completion.
+
+### Requirement: Full-suite reproducibility
+
+Stateful E2E cases SHALL pass in isolation and in the serial full suite.
+
+### Requirement: Visible control reachability
+
+Critical E2E assertions SHALL prove controls are visibly reachable through layout or scrolling before activation.
+
 - [importer](../importer/spec.md) — XML import tested by e2e-016
 - [combat](../combat/spec.md) — Combat dialogs tested by e2e-001 through e2e-012
 - [actor-sheets](../actor-sheets/spec.md) — Actor sheets tested by e2e-007, e2e-013

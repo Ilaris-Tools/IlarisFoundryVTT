@@ -13,11 +13,17 @@ Für die Tests wird ausschließlich die dedizierte Welt `ilaris-e2e-world-v14363
 
 Die Baseline-Welt `r1` ist an Foundry VTT `14.363` und Ilaris `14.0.0` gebunden. Für eine andere Foundry-Version muss eine passend migrierte und geprüfte Baseline bereitgestellt werden.
 
+## Konfigurations-Baseline
+
+Die veröffentlichte E2E-Welt verwendet für konfigurierbare Ilaris-Welteinstellungen die System-Defaults. Insbesondere sind `useTargetSelection`, `lepSystem` und `renameTriumphWithCrit` deaktiviert. Tests, die eine abweichende Einstellung benötigen, setzen sie vor ihrem Ablauf selbst und stellen den vorherigen Wert anschließend wieder her.
+
+Client-Einstellungen wie `hideSyncKampfstileButton` und Foundrys `core.messageMode` gehören nicht zum Weltarchiv. Auch `worldSchemaVersion` wird nicht auf einen Default zurückgesetzt, weil es von der Systemmigration verwaltet wird.
+
 ## Baseline-Welt einmalig installieren
 
 1. Foundry beenden.
 2. Das Archiv [`ilaris-e2e-world-v14363-r1.zip`](https://github.com/Ilaris-Tools/IlarisFoundryVTT/releases/download/e2e-world-v14363-r1/ilaris-e2e-world-v14363-r1.zip) herunterladen.
-3. Optional die Integrität prüfen. Der erwartete SHA-256-Wert ist `83BAC3A8A9A302C4728E86118D203C606DDDC2644A0061CBAA2845E790976A6A`:
+3. Optional die Integrität prüfen. Der erwartete SHA-256-Wert ist `DC13421A531B17667F4E077558923DD1FBF597ACBE2A9A428F74E52DF38A563D`:
 
     ```powershell
     Get-FileHash .\ilaris-e2e-world-v14363-r1.zip -Algorithm SHA256
@@ -59,7 +65,7 @@ E2E_PLAYER_USER=e2e-player
 
 1. Foundry normal starten und die Welt `ilaris-e2e-world-v14363-r1` laden.
 2. Prüfen, dass die Benutzer `e2e-gm` und `e2e-player` sowie die Akteure `HatAlles`, `Testlauf-Held` und `Testlauf-Npc` vorhanden sind. `e2e-player` benötigt Besitzerrechte für `Testlauf-Held`; außerdem müssen die Kreaturen- und Zauberspruch-Kompendien sowie eine aktive Szene verfügbar sein. Der Runner prüft diese Voraussetzungen vor jedem Testlauf.
-3. Im Repository die Abhängigkeiten installieren und zunächst den Smoke-Test ausführen:
+3. Im Repository die Abhängigkeiten installieren und zunächst einen fokussierten Test ausführen:
 
     ```powershell
     npm install

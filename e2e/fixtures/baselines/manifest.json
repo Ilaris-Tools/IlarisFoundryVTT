@@ -1,6 +1,6 @@
 {
   "archive": "ilaris-e2e-world-v14363-r1.zip",
-  "sha256": "83BAC3A8A9A302C4728E86118D203C606DDDC2644A0061CBAA2845E790976A6A",
+  "sha256": "DC13421A531B17667F4E077558923DD1FBF597ACBE2A9A428F74E52DF38A563D",
   "worldDirectory": "ilaris-e2e-world-v14363-r1",
   "worldId": "ilaris-e2e-world-v14363-r1",
   "systemId": "Ilaris",
@@ -10,7 +10,11 @@
   "requiredUsers": ["e2e-gm", "e2e-player"],
   "requiredActors": ["HatAlles", "Testlauf-Held", "Testlauf-Npc"],
   "playerOwnership": { "user": "e2e-player", "actor": "Testlauf-Held" },
-  "requiredSettings": ["renameTriumphWithCrit", "lepSystem"],
+  "requiredSettingDefaults": {
+    "renameTriumphWithCrit": false,
+    "lepSystem": false,
+    "useTargetSelection": false
+  },
   "requiredCompendiumLabels": ["Kreatur", "Zauberspruch"],
   "releaseAsset": "https://github.com/Ilaris-Tools/IlarisFoundryVTT/releases/download/e2e-world-v14363-r1/ilaris-e2e-world-v14363-r1.zip"
 }

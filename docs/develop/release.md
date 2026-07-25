@@ -32,6 +32,12 @@ Diese Templates enthalten Checklisten für:
 
 Die Templates können direkt bei der PR-Erstellung ausgewählt werden und erlauben das Abhaken der getesteten Bereiche.
 
+### Automatisierte Evidenz und Ergebnisbewertung
+
+Die Einträge der Release-Templates nennen jeweils die zugehörigen E2E-Test-IDs oder begründen, warum eine Prüfung manuell bleibt. Automatisierte Evidenz reduziert den manuellen Umfang, ersetzt aber die dort markierten Sicht-, Browser- und Fachprüfungen nicht.
+
+Ein isoliert erfolgreicher E2E-Test ist kein Ersatz für einen erfolgreichen seriellen Gesamtlauf. Schlägt ein Test nur im Gesamtlauf fehl, aber beim isolierten Wiederholen nicht, wird dies als Zuverlässigkeitsproblem der E2E-Suite dokumentiert und nicht als grüner Gesamtlauf gewertet. Der Fehlerbericht soll Test-ID, Reihenfolge beziehungsweise vorausgehende Fälle, die verwendete Baseline-Revision und Playwright-Artefakte enthalten.
+
 ## Packs
 
 Die Binaries für die Kompendien müssen in den `/packs/`-Ordnern bei Änderungen neu aus den `_source/*`-Dateien gepackt werden.

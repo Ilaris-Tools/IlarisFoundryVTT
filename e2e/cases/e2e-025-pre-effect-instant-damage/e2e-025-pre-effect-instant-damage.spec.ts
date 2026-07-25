@@ -18,11 +18,13 @@ import {
     captureActorDefaultSnapshot,
     clearChatLog,
     foundryConfig,
+    enableTargetSelectionForTest,
     getActorWounds,
     loginAndJoinWorld,
     openActorSheet,
     openSpellDialog,
     restoreActorFromDefaultSnapshot,
+    restoreFoundrySetting,
 } from '../../shared/fixtures/foundry'
 
 const ACTOR_NAME = 'HatAlles'
@@ -30,9 +32,11 @@ const SPELL_NAME = 'Ignifaxius'
 
 test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
     let snapshot: ActorDefaultSnapshot
+    let targetSelectionSetting: import('../../shared/fixtures/foundry').FoundrySettingSnapshot
 
     test.beforeEach(async ({ page }) => {
         await loginAndJoinWorld(page, foundryConfig)
+        targetSelectionSetting = await enableTargetSelectionForTest(page)
         snapshot = await captureActorDefaultSnapshot(page, ACTOR_NAME)
 
         await page.evaluate((name) => {
@@ -54,6 +58,8 @@ test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
             })
             .catch(() => {})
         await restoreActorFromDefaultSnapshot(page, snapshot).catch(() => {})
+        await restoreFoundrySetting(page, targetSelectionSetting).catch(() => {})
+        await clearChatLog(page).catch(() => {})
     })
 
     test('Cast instant-damage spell updates target wounds', async ({ page }) => {
