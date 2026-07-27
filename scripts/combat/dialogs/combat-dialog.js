@@ -160,11 +160,6 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             this._manoeversPromise = null
         }
 
-        // Set rollmode after manoevers are loaded (for weapons where it wasn't set in constructor)
-        if (this.item.system.manoever?.rllm && !this.item.system.manoever.rllm.selected) {
-            this.item.system.manoever.rllm.selected = this.rollmode
-        }
-
         // damit wird das template gefüttert
         const maneuvers = this.item.manoever || []
         return {
@@ -172,6 +167,7 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             config: CONFIG.ILARIS,
             distance_choice: CONFIG.ILARIS.distance_choice,
             rollModes: CONFIG.ChatMessage.modes,
+            rollmode: this.rollmode,
             trefferzonen: CONFIG.ILARIS.trefferzonen,
             item: this.item,
             actor: this.actor,
@@ -480,7 +476,9 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
      * Note: Uses getElementById instead of querySelector to support IDs starting with digits.
      */
     async manoeverAuswaehlen() {
-        this.rollmode = this.item.system.manoever.rllm.selected
+        this.rollmode =
+            this.element.querySelector(`#rollMode-${this.dialogId}`)?.value ||
+            game.settings.get('core', 'messageMode')
 
         this.item.manoever.forEach((manoever) => {
             const elementId = `${manoever.id}${manoever.inputValue.field}-${this.dialogId}`
@@ -700,17 +698,12 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
                 rollResult.templatePath,
                 templateData,
             )
-            await rollResult.roll.toMessage(
-                {
-                    speaker: this.speaker,
-                    flavor: html_roll,
-                    blind: true,
-                    whisper: [game.user.id],
-                },
-                {
-                    messageMode: 'gmroll',
-                },
-            )
+            await rollResult.roll.toMessage({
+                speaker: this.speaker,
+                flavor: html_roll,
+                blind: true,
+                whisper: [game.user.id],
+            })
         } else {
             await postRollToChat(rollResult, this.speaker, this.rollmode)
         }
