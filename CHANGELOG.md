@@ -2,6 +2,25 @@
 
 ## v14
 
+### v14.1
+
+#### Breaking Change
+
+**BITTE BEACHTEN**, solltet ihr das Beta Feature Pre-Effekte benutzen wollen. Müsst ihr eure Charaktere am besten neuimportieren.
+
+#### ⚠️ Beta-Funktion: Pre-Effekte
+
+Pre-Effekte sind eine **Beta-Funktion**. Sie automatisieren bislang nur einen Teil der benötigten Zauber-, Liturgie- und Anrufungswirkungen und stacken zur Zeit noch. Prüft erzeugte Effekte, Zielwerte, Dauer und Widerstandsproben im Spiel; bei wichtigen Spielsituationen bleibt die Spielleitung für die Regelprüfung verantwortlich.
+
+#### Pre-Effekte
+
+- Zauber, Liturgien und Anrufungen können jetzt bearbeitbare Pre-Effekte enthalten. Ein Pre-Effekt besteht aus Änderungen, einer optionalen Dauer, optionaler Mächtiger Magie/Mächtiger Liturgie und einer optionalen Widerstandsprobe.
+- Nach einer erfolgreichen Probe werden Pre-Effekte für alle ausgewählten Ziele automatisch verarbeitet: sofortige Änderungen laufen über die Schadens-/Heilungslogik, zeitlich begrenzte Änderungen werden als ActiveEffects mit Ilaris-Rundendauer angelegt.
+- Widerstandsproben können als geflüsterte Chat-Aufforderung an das Ziel gesendet werden. Je nach Ergebnis wird der Effekt vermieden, abgeschwächt oder vollständig angewendet.
+- Mächtige Magie/Mächtige Liturgie verstärkt dafür markierte Änderungen pro Qualitätsstufe; Verlängerte Wirkung und Selbstzauber werden bei der Effektdauer berücksichtigt.
+- Im Pre-Effekt-Editor schlagen Datenpfade automatisch gültige Actor-Felder vor. Schadenstypen stammen aus den Welteinstellungen und können dort frei verwaltet werden.
+- Für GMs gibt es optional eine KI-gestützte Generierung von Pre-Effekten über eine OpenAI-kompatible API. Zugangsdaten werden nur lokal im Browser des GMs gespeichert. Generierte Daten müssen vor der Nutzung geprüft werden.
+
 ### v14.0
 
 #### Breaking Change
