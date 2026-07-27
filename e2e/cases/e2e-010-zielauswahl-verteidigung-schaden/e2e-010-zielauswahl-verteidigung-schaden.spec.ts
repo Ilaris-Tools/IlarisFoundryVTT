@@ -5,10 +5,12 @@ import {
     captureActorDefaultSnapshot,
     clearChatLog,
     foundryConfig,
+    enableTargetSelectionForTest,
     loginAndJoinWorld,
     openActorSheet,
     openMeleeAttackDialogForWeapon,
     restoreActorFromDefaultSnapshot,
+    restoreFoundrySetting,
 } from '../../shared/fixtures/foundry'
 
 const ATTACKER_NAME = 'HatAlles'
@@ -114,8 +116,10 @@ test.describe('E2E-010 Zielauswahl, Verteidigung und Schaden', () => {
         expect(defenderBefore?.actorId).toBeTruthy()
 
         let defenderDefaultSnapshot: ActorDefaultSnapshot | null = null
+        let targetSelectionSetting = null
 
         try {
+            targetSelectionSetting = await enableTargetSelectionForTest(page)
             defenderDefaultSnapshot = await captureActorDefaultSnapshot(page, DEFENDER_NAME)
 
             const actorWindow = await openActorSheet(page, ATTACKER_NAME)
@@ -351,6 +355,10 @@ test.describe('E2E-010 Zielauswahl, Verteidigung und Schaden', () => {
             if (defenderDefaultSnapshot) {
                 await restoreActorFromDefaultSnapshot(page, defenderDefaultSnapshot).catch(() => {})
             }
+            if (targetSelectionSetting) {
+                await restoreFoundrySetting(page, targetSelectionSetting).catch(() => {})
+            }
+            await clearChatLog(page).catch(() => {})
         }
     })
 })

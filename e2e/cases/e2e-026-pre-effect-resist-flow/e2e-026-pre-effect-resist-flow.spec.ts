@@ -23,11 +23,13 @@ import {
     clearChatLog,
     clickResistButton,
     foundryConfig,
+    enableTargetSelectionForTest,
     loginAndJoinWorld,
     openActorSheet,
     openChatSidebar,
     openSpellDialog,
     restoreActorFromDefaultSnapshot,
+    restoreFoundrySetting,
 } from '../../shared/fixtures/foundry'
 
 const ACTOR_NAME = 'HatAlles'
@@ -37,9 +39,11 @@ const RESIST_DIFFICULTY = 12
 
 test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
     let snapshot: ActorDefaultSnapshot
+    let targetSelectionSetting: import('../../shared/fixtures/foundry').FoundrySettingSnapshot
 
     test.beforeEach(async ({ page }) => {
         await loginAndJoinWorld(page, foundryConfig)
+        targetSelectionSetting = await enableTargetSelectionForTest(page)
         snapshot = await captureActorDefaultSnapshot(page, ACTOR_NAME)
 
         await page.evaluate(
@@ -117,6 +121,8 @@ test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
             })
             .catch(() => {})
         await restoreActorFromDefaultSnapshot(page, snapshot).catch(() => {})
+        await restoreFoundrySetting(page, targetSelectionSetting).catch(() => {})
+        await clearChatLog(page).catch(() => {})
     })
 
     test('Resist whisper is sent and FertigkeitDialog opens with correct parameters', async ({

@@ -21,10 +21,12 @@ import {
     captureActorDefaultSnapshot,
     clearChatLog,
     foundryConfig,
+    enableTargetSelectionForTest,
     loginAndJoinWorld,
     openActorSheet,
     openSpellDialog,
     restoreActorFromDefaultSnapshot,
+    restoreFoundrySetting,
 } from '../../shared/fixtures/foundry'
 
 const ACTOR_NAME = 'HatAlles'
@@ -32,9 +34,11 @@ const SPELL_NAME = 'Axxeleratus'
 
 test.describe('E2E-028 · Pre-Effect Buff ActiveEffect Creation', () => {
     let snapshot: ActorDefaultSnapshot
+    let targetSelectionSetting: import('../../shared/fixtures/foundry').FoundrySettingSnapshot
 
     test.beforeEach(async ({ page }) => {
         await loginAndJoinWorld(page, foundryConfig)
+        targetSelectionSetting = await enableTargetSelectionForTest(page)
         snapshot = await captureActorDefaultSnapshot(page, ACTOR_NAME)
 
         await page.evaluate((name) => {
@@ -76,6 +80,8 @@ test.describe('E2E-028 · Pre-Effect Buff ActiveEffect Creation', () => {
             )
             .catch(() => {})
         await restoreActorFromDefaultSnapshot(page, snapshot).catch(() => {})
+        await restoreFoundrySetting(page, targetSelectionSetting).catch(() => {})
+        await clearChatLog(page).catch(() => {})
     })
 
     test('Buff spell creates ActiveEffect with correct properties', async ({ page }) => {

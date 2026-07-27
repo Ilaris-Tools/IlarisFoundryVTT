@@ -1,5 +1,7 @@
 import { expect, Locator, Page } from '@playwright/test'
 
+import { assertE2EBaseline, E2E_BASELINE } from '../baseline'
+
 export type FoundryCredentials = {
     url: string
     username: string
@@ -17,10 +19,16 @@ export type ActorDefaultSnapshot = {
     }>
 }
 
+export type FoundrySettingSnapshot = {
+    namespace: string
+    key: string
+    value: unknown
+}
+
 export const foundryConfig: FoundryCredentials = {
     url: process.env.E2E_FOUNDRY_URL ?? 'http://localhost:30000',
-    username: process.env.E2E_FOUNDRY_USER ?? 'Gamemaster',
-    worldName: process.env.E2E_FOUNDRY_WORLD ?? 'Vanilla Ilaris',
+    username: process.env.E2E_FOUNDRY_USER ?? E2E_BASELINE.users.gm,
+    worldName: process.env.E2E_FOUNDRY_WORLD ?? E2E_BASELINE.world.name,
     password: process.env.E2E_FOUNDRY_PASSWORD,
 }
 
@@ -137,6 +145,8 @@ export async function loginAndJoinWorld(page: Page, config: FoundryCredentials =
         { timeout: 30000 },
     )
 
+    await assertE2EBaseline(page)
+
     await dismissFoundryCompatibilityWarnings(page)
 
     // Explicitly dismiss the breaking-change dialog that may have appeared during startup
@@ -235,6 +245,42 @@ export async function clearChatLog(page: Page) {
         const ids = (game.messages?.contents ?? []).map((m: any) => m.id)
         if (ids.length > 0) await ChatMessage.deleteDocuments(ids)
     })
+}
+
+/**
+ * Sets a Foundry setting for one E2E case and returns the value needed to
+ * restore the exact pre-test state in teardown.
+ */
+export async function setFoundrySettingForTest(
+    page: Page,
+    namespace: string,
+    key: string,
+    value: unknown,
+): Promise<FoundrySettingSnapshot> {
+    return page.evaluate(
+        async ({ namespace: settingNamespace, key: settingKey, value: settingValue }) => {
+            const previousValue = game.settings.get(settingNamespace, settingKey)
+            await game.settings.set(settingNamespace, settingKey, settingValue)
+            return { namespace: settingNamespace, key: settingKey, value: previousValue }
+        },
+        { namespace, key, value },
+    )
+}
+
+/** Restores a setting captured by {@link setFoundrySettingForTest}. */
+export async function restoreFoundrySetting(
+    page: Page,
+    snapshot: FoundrySettingSnapshot,
+): Promise<void> {
+    await page.evaluate(
+        async ({ namespace, key, value }) => game.settings.set(namespace, key, value),
+        snapshot,
+    )
+}
+
+/** Enables the non-default target-selection feature for one E2E case. */
+export function enableTargetSelectionForTest(page: Page): Promise<FoundrySettingSnapshot> {
+    return setFoundrySettingForTest(page, 'Ilaris', 'useTargetSelection', true)
 }
 
 export async function openActorSheet(page: Page, actorName: string) {

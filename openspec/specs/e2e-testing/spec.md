@@ -30,17 +30,22 @@ The system SHALL use Playwright for end-to-end testing with a shared fixture tha
 
 ### Requirement: Test execution model
 
-The system SHALL run E2E tests sequentially (1 worker) with headless mode disabled.
+The system SHALL run E2E tests sequentially with one worker. It SHALL use headed browser mode for local contributor execution by default and support an explicit headless CI mode. Both modes SHALL retain video and screenshot evidence on failure.
 
 #### Scenario: Sequential execution
 
 - **WHEN** E2E tests run
 - **THEN** only one test SHALL execute at a time (`workers: 1`)
 
-#### Scenario: Visible browser
+#### Scenario: Local visible browser
 
-- **WHEN** E2E tests run
-- **THEN** the browser SHALL be visible (`headless: false`)
+- **WHEN** E2E tests run without the explicit CI headless mode
+- **THEN** Playwright SHALL use a visible browser (`headless: false`)
+
+#### Scenario: CI headless browser
+
+- **WHEN** E2E tests run with the explicit CI headless mode
+- **THEN** Playwright SHALL use a headless browser (`headless: true`)
 
 #### Scenario: Video and screenshot on failure
 
@@ -172,6 +177,24 @@ The system SHALL provide shared test helpers for XML integrity validation and Fo
 N/A — E2E testing does not define persistent data.
 
 ## Cross-References
+
+## Additional Requirements
+
+### Requirement: Default configuration baseline
+
+The published E2E world SHALL use documented default settings. A test requiring a non-default setting SHALL apply and restore it through a shared fixture.
+
+### Requirement: Stateful E2E case restoration
+
+E2E cases SHALL restore mutated actors, chat, settings, scenes, tokens, and other shared resources before completion.
+
+### Requirement: Full-suite reproducibility
+
+Stateful E2E cases SHALL pass in isolation and in the serial full suite.
+
+### Requirement: Visible control reachability
+
+Critical E2E assertions SHALL prove controls are visibly reachable through layout or scrolling before activation.
 
 - [importer](../importer/spec.md) — XML import tested by e2e-016
 - [combat](../combat/spec.md) — Combat dialogs tested by e2e-001 through e2e-012
