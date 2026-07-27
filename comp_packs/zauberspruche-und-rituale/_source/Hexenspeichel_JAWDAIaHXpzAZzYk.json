@@ -25,10 +25,10 @@
           {
             "key": "system.gesundheit.wunden",
             "type": "add",
-            "value": "-2W6-4",
+            "value": "2W6+4",
             "amplifiedByMaechtigeMagie": true,
             "maechtigBonus": "+4",
-            "damageType": "PROFAN",
+            "damageType": "HEALING_WOUND",
             "diminishedValue": "",
             "diminishedMaechtigBonus": "",
             "priority": null

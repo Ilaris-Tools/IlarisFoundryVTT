@@ -133,38 +133,73 @@ The system SHALL integrate maneuvers (Manöver) into all three combat dialog typ
 
 ### Requirement: Damage application supports healing
 
-`_applyDamageDirectly` SHALL handle negative damage values as healing. When damage < 0, wounds SHALL be reduced instead of increased, with proper WS threshold calculation and a healing-specific chat message.
+`_applyDamageDirectly` SHALL determine healing behavior from the damage type's `behavior.healing` flag (obtained via `getDamageTypeBehavior(damageType)`) rather than from `damage < 0`. When `behavior.healing` is true, the damage value SHALL be interpreted as a positive healing amount. The health pool (Wunden vs Erschöpfung) SHALL be determined by `behavior.targetsErschoepfung`. Healing SHALL use the same wound threshold formula as damage: the value must **exceed** WS to heal a wound (`Math.floor((healAmount - 1) / ws)`).
 
-#### Scenario: Negative damage heals wounds
+#### Scenario: Healing type heals wounds
 
-- **WHEN** `_applyDamageDirectly` is called with `damage: -12` and the target has `WS: 5` and `wounds: 3`
-- **THEN** wounds SHALL be reduced by `Math.floor(12 / 5) = 2` (each full WS heals one wound)
+- **WHEN** `_applyDamageDirectly` is called with `damage: 12`, `damageType: "HEALING_WOUND"`, and the target has `WS: 5` and `wounds: 3`
+- **THEN** wounds SHALL be reduced by `Math.floor((12 - 1) / 5) = 2` (each full WS exceeding heals one wound)
 - **AND** final wounds SHALL be `1`
+
+#### Scenario: Healing must exceed WS threshold
+
+- **WHEN** `_applyDamageDirectly` is called with `damage: 5`, `damageType: "HEALING_WOUND"`, and the target has `WS: 5` and `wounds: 2`
+- **THEN** wounds SHALL remain unchanged (healAmount 5 does not exceed WS 5)
+- **AND** a chat message SHALL indicate "keine Heilung"
+
+#### Scenario: Healing with insufficient amount has no effect
+
+- **WHEN** `_applyDamageDirectly` is called with `damage: 4`, `damageType: "HEALING_WOUND"`, and the target has `WS: 5`
+- **THEN** wounds SHALL remain unchanged (4 < WS, no wound healed)
+- **AND** a chat message SHALL indicate "keine Heilung"
+
+#### Scenario: Healing chat message indicates healing
+
+- **WHEN** healing is applied
+- **THEN** the chat message SHALL indicate healing (e.g., "heilt X Einschränkungen") instead of damage
+- **AND** `ChatMessage.create` SHALL receive `style: CONST.CHAT_MESSAGE_STYLES.OTHER`
+
+#### Scenario: Healing works with LEP system
+
+- **WHEN** the LEP system is active and `behavior.healing` is true
+- **THEN** LEP SHALL be increased by the damage amount, capped at the actor's maximum LEP
+
+#### Scenario: HEALING_EXHAUSTION heals Erschöpfung
+
+- **WHEN** `_applyDamageDirectly` is called with `damage: 12`, `damageType: "HEALING_EXHAUSTION"`, and the target has `WS: 5` and `erschoepfung: 3`
+- **THEN** Erschöpfung SHALL be reduced by `Math.floor(12 / 5) = 2`
+- **AND** final Erschöpfung SHALL be `1`
+
+#### Scenario: Damage types without healing flag still deal damage
+
+- **WHEN** `_applyDamageDirectly` is called with `damage: 12` and `damageType: "PROFAN"` (no healing flag)
+- **THEN** the system SHALL apply damage (not healing) to Wunden
+
+#### Scenario: STUMPF damage type deals Erschöpfung damage
+
+- **WHEN** `_applyDamageDirectly` is called with `damage: 12` and `damageType: "STUMPF"` (targetsErschoepfung: true)
+- **THEN** the system SHALL apply damage to `system.gesundheit.erschoepfung`
+
+#### Scenario: Custom type with both flags heals Erschöpfung
+
+- **WHEN** `_applyDamageDirectly` is called with `damage: 12` and a custom type with `behavior: {healing: true, targetsErschoepfung: true}`
+- **THEN** the system SHALL heal `system.gesundheit.erschoepfung`
+
+#### Scenario: Damage type with bypassesArmor uses WS instead of WS\*
+
+- **WHEN** `_applyDamageDirectly` is called with `damage: 12` and a damage type with `behavior: {bypassesArmor: true}`
+- **THEN** the wound calculation SHALL use WS (not WS\*) as the threshold, same as `trueDamage`
+
+#### Scenario: Damage path clamps negative values to zero
+
+- **WHEN** `_applyDamageDirectly` is called with `damage: -5` and a non-healing damage type
+- **THEN** the damage value SHALL be clamped to `0` via `Math.max(0, damage)` before wound calculation
+- **AND** no wounds SHALL be dealt
 
 #### Scenario: Healing does not create negative wounds
 
 - **WHEN** healing would reduce wounds below 0
 - **THEN** wounds SHALL be capped at 0
-
-#### Scenario: Healing with insufficient damage has no effect
-
-- **WHEN** `_applyDamageDirectly` is called with `damage: -4` and the target has `WS: 5`
-- **THEN** wounds SHALL remain unchanged (4 < WS, no wound healed)
-
-#### Scenario: Healing chat message differs from damage
-
-- **WHEN** healing is applied
-- **THEN** the chat message SHALL indicate healing (e.g., "heilt X Wunden") instead of damage
-
-#### Scenario: Healing works with LEP system
-
-- **WHEN** the LEP system is active and damage is negative
-- **THEN** LEP SHALL be increased by `Math.abs(damage)`, capped at the actor's maximum LEP
-
-#### Scenario: Healing with STUMPF damage type
-
-- **WHEN** `_applyDamageDirectly` is called with `damage: -12` and `damageType: STUMPF`
-- **THEN** Erschöpfung SHALL be reduced instead of wounds
 
 ## Data Model
 

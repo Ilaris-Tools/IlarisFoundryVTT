@@ -15,8 +15,18 @@ const mockSpellData = {
 }
 
 const mockDamageTypes = [
-    { value: 'PROFAN', label: 'Profan (Wunden)' },
-    { value: 'FEUER', label: 'Feuer' },
+    { value: 'PROFAN', label: 'Profan (Wunden)', behavior: {} },
+    { value: 'FEUER', label: 'Feuer', behavior: {} },
+    {
+        value: 'HEALING_WOUND',
+        label: 'Heilung (Wunden)',
+        behavior: { healing: true },
+    },
+    {
+        value: 'HEALING_EXHAUSTION',
+        label: 'Heilung (Erschöpfung)',
+        behavior: { healing: true, targetsErschoepfung: true },
+    },
 ]
 
 const mockSystemKeys = [
@@ -75,6 +85,22 @@ describe('buildPreEffectPrompt', () => {
         expect(systemMsg).toContain('Profan (Wunden)')
         expect(systemMsg).toContain('FEUER')
         expect(systemMsg).toContain('Feuer')
+        expect(systemMsg).toContain('HEALING_WOUND')
+        expect(systemMsg).toContain('HEALING_EXHAUSTION')
+    })
+
+    it('documents positive healing values and the healing damage types', () => {
+        const result = buildPreEffectPrompt(
+            mockSpellData,
+            'Balsam Salabunde',
+            mockDamageTypes,
+            mockSystemKeys,
+            mockModel,
+        )
+
+        const systemMsg = result.messages[0].content
+        expect(systemMsg).toContain('damageType `HEALING_WOUND` oder `HEALING_EXHAUSTION`')
+        expect(systemMsg).toContain('value positiv')
     })
 
     it('system message lists all system keys', () => {

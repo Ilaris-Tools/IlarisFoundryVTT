@@ -118,12 +118,12 @@ export const registerIlarisGameSettings = () => {
             // Register damage types setting
             settingsName: IlarisGameSettingNames.damageTypes,
             name: 'Schadenstypen',
-            hint: 'Definiert die verfügbaren Schadenstypen für Pre-Effects und zukünftige Systemfunktionen. Jeder Typ hat einen Wert (Key) und einen Anzeigenamen (Label).',
+            hint: 'Definiert die verfügbaren Schadenstypen für Pre-Effects und zukünftige Systemfunktionen. Jeder Typ hat einen Wert (Key), einen Anzeigenamen (Label) und ein Verhalten.',
             config: false,
             type: String,
             scope: 'world',
             default:
-                '[{"value":"PROFAN","label":"Profan (Wunden)"},{"value":"STUMPF","label":"Stumpf (Erschöpfung)"},{"value":"MAGISCH","label":"Magisch"},{"value":"GEWEIHT","label":"Geweiht"},{"value":"DAEMONISCH","label":"Dämonisch"},{"value":"FEUER","label":"Feuer"},{"value":"EIS","label":"Eis"},{"value":"ERZ","label":"Erz"},{"value":"HUMUS","label":"Humus"},{"value":"LUFT","label":"Luft"},{"value":"WASSER","label":"Wasser"}]',
+                '[{"value":"PROFAN","label":"Profan (Wunden)","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"STUMPF","label":"Stumpf (Erschöpfung)","behavior":{"healing":false,"targetsErschoepfung":true,"bypassesArmor":false}},{"value":"MAGISCH","label":"Magisch","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"GEWEIHT","label":"Geweiht","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"DAEMONISCH","label":"Dämonisch","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"FEUER","label":"Feuer","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"EIS","label":"Eis","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"ERZ","label":"Erz","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"HUMUS","label":"Humus","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"LUFT","label":"Luft","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"WASSER","label":"Wasser","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"HEALING_WOUND","label":"Heilung (Wunden)","behavior":{"healing":true,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"HEALING_EXHAUSTION","label":"Heilung (Erschöpfung)","behavior":{"healing":true,"targetsErschoepfung":true,"bypassesArmor":false}}]',
         },
     ].forEach((setting) => {
         game.settings.register(ConfigureGameSettingsCategories.Ilaris, setting.settingsName, {

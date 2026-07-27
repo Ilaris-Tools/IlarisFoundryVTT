@@ -504,6 +504,8 @@ let schadenstypen = {
     NORMAL: '',
     PROFAN: 'Profan',
     STUMPF: 'Stumpf',
+    HEALING_WOUND: 'Heilung (Wunden)',
+    HEALING_EXHAUSTION: 'Heilung (Erschöpfung)',
     STICH: 'Stich',
     SCHARF: 'Scharf',
     MAGISCH: 'Magisch',

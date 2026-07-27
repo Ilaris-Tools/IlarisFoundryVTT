@@ -804,7 +804,102 @@ describe('applyOperator', () => {
 // @spec openspec/changes/add-pre-effect-unit-tests/specs/pre-effect-unit-tests/spec.md
 // ---------------------------------------------------------------
 
-import { _applyDamageDirectly } from '../dialogs/shared-dialog-helpers.js'
+import { _applyDamageDirectly, getDamageTypeBehavior } from '../dialogs/shared-dialog-helpers.js'
+
+const defaultDamageTypes = JSON.stringify([
+    { value: 'PROFAN', label: 'Profan (Wunden)', behavior: {} },
+    {
+        value: 'STUMPF',
+        label: 'Stumpf (Erschöpfung)',
+        behavior: { targetsErschoepfung: true },
+    },
+    {
+        value: 'HEALING_WOUND',
+        label: 'Heilung (Wunden)',
+        behavior: { healing: true },
+    },
+    {
+        value: 'HEALING_EXHAUSTION',
+        label: 'Heilung (Erschöpfung)',
+        behavior: { healing: true, targetsErschoepfung: true },
+    },
+    {
+        value: 'RUESTUNGSBRECHEND',
+        label: 'Rüstungsbrechend',
+        behavior: { bypassesArmor: true },
+    },
+])
+
+describe('getDamageTypeBehavior', () => {
+    beforeEach(() => {
+        jest.spyOn(console, 'warn').mockImplementation(() => {})
+        global.ui = { notifications: { warn: jest.fn() } }
+        global.game.settings.get.mockImplementation((_namespace, key) => {
+            if (key === 'damageTypes') return defaultDamageTypes
+            return undefined
+        })
+    })
+
+    it('returns all flags for a known type', () => {
+        expect(getDamageTypeBehavior('HEALING_EXHAUSTION')).toEqual({
+            healing: true,
+            targetsErschoepfung: true,
+            bypassesArmor: false,
+        })
+    })
+
+    it('returns safe defaults and warns once for an unknown type', () => {
+        expect(getDamageTypeBehavior('UNKNOWN_DAMAGE_TYPE_TEST')).toEqual({
+            healing: false,
+            targetsErschoepfung: false,
+            bypassesArmor: false,
+        })
+        expect(global.ui.notifications.warn).toHaveBeenCalledTimes(1)
+
+        getDamageTypeBehavior('UNKNOWN_DAMAGE_TYPE_TEST')
+        expect(global.ui.notifications.warn).toHaveBeenCalledTimes(1)
+    })
+
+    it('returns safe defaults for an empty damage type registry', () => {
+        global.game.settings.get.mockImplementation((_namespace, key) => {
+            if (key === 'damageTypes') return '[]'
+            return undefined
+        })
+
+        expect(getDamageTypeBehavior('EMPTY_REGISTRY_TYPE_TEST')).toEqual({
+            healing: false,
+            targetsErschoepfung: false,
+            bypassesArmor: false,
+        })
+        expect(global.ui.notifications.warn).toHaveBeenCalledTimes(1)
+    })
+
+    it('returns safe defaults for malformed settings data', () => {
+        global.game.settings.get.mockImplementation((_namespace, key) => {
+            if (key === 'damageTypes') return '{not valid json'
+            return undefined
+        })
+
+        expect(getDamageTypeBehavior('MALFORMED_TYPE_TEST')).toEqual({
+            healing: false,
+            targetsErschoepfung: false,
+            bypassesArmor: false,
+        })
+    })
+
+    it('defaults missing behavior flags to false', () => {
+        global.game.settings.get.mockImplementation((_namespace, key) => {
+            if (key === 'damageTypes') return '[{"value":"LEGACY","label":"Legacy"}]'
+            return undefined
+        })
+
+        expect(getDamageTypeBehavior('LEGACY')).toEqual({
+            healing: false,
+            targetsErschoepfung: false,
+            bypassesArmor: false,
+        })
+    })
+})
 
 describe('_applyDamageDirectly — Healing', () => {
     let targetActor
@@ -822,15 +917,34 @@ describe('_applyDamageDirectly — Healing', () => {
         global.ChatMessage = {
             create: jest.fn().mockResolvedValue(undefined),
         }
+        global.ui = { notifications: { warn: jest.fn() } }
+        global.CONFIG = {
+            ILARIS: {
+                schadenstypen: {
+                    PROFAN: 'Profan',
+                    STUMPF: 'Stumpf',
+                    HEALING_WOUND: 'Heilung (Wunden)',
+                    HEALING_EXHAUSTION: 'Heilung (Erschöpfung)',
+                    RUESTUNGSBRECHEND: 'Rüstungsbrechend',
+                },
+            },
+        }
 
         // Default: LEP system disabled
         global.game.settings.get.mockImplementation((_ns, key) => {
             if (key === 'lepSystem') return false
+            if (key === 'damageTypes') return defaultDamageTypes
             return undefined
         })
     })
 
-    function createTargetActor({ wunden = 0, erschoepfung = 0, ws = 5, name = 'TestActor' } = {}) {
+    function createTargetActor({
+        wunden = 0,
+        erschoepfung = 0,
+        ws = 5,
+        wsStern = ws,
+        name = 'TestActor',
+    } = {}) {
         mockUpdate = jest.fn().mockResolvedValue(undefined)
         return {
             name,
@@ -841,18 +955,19 @@ describe('_applyDamageDirectly — Healing', () => {
                 },
                 abgeleitete: {
                     ws,
+                    ws_stern: wsStern,
                 },
             },
             update: mockUpdate,
         }
     }
 
-    it('negative damage reduces wounds by WS thresholds', async () => {
+    it('positive HEALING_WOUND damage type reduces wounds by WS thresholds', async () => {
         targetActor = createTargetActor({ wunden: 3, ws: 5 })
 
-        await _applyDamageDirectly(targetActor, -12, 'PROFAN', false, {})
+        await _applyDamageDirectly(targetActor, 12, 'HEALING_WOUND', false, {})
 
-        // healAmount = 12, ws = 5, woundsToRemove = floor(12/5) = 2
+        // healAmount = 12, ws = 5, woundsToRemove = floor((12 - 1)/5) = 2
         // newValue = max(0, 3 - 2) = 1
         expect(mockUpdate).toHaveBeenCalledWith({ 'system.gesundheit.wunden': 1 })
         expect(global.ChatMessage.create).toHaveBeenCalled()
@@ -861,19 +976,19 @@ describe('_applyDamageDirectly — Healing', () => {
     it('healing caps wounds at 0', async () => {
         targetActor = createTargetActor({ wunden: 1, ws: 5 })
 
-        await _applyDamageDirectly(targetActor, -10, 'PROFAN', false, {})
+        await _applyDamageDirectly(targetActor, 10, 'HEALING_WOUND', false, {})
 
-        // healAmount = 10, woundsToRemove = floor(10/5) = 2
-        // newValue = max(0, 1 - 2) = 0
+        // healAmount = 10, woundsToRemove = floor((10 - 1)/5) = 1
+        // newValue = max(0, 1 - 1) = 0
         expect(mockUpdate).toHaveBeenCalledWith({ 'system.gesundheit.wunden': 0 })
     })
 
     it('insufficient healing has no effect and sends "keine Heilung" message', async () => {
         targetActor = createTargetActor({ wunden: 3, ws: 5 })
 
-        await _applyDamageDirectly(targetActor, -4, 'PROFAN', false, {})
+        await _applyDamageDirectly(targetActor, 4, 'HEALING_WOUND', false, {})
 
-        // healAmount = 4, woundsToRemove = floor(4/5) = 0 → no update
+        // healAmount = 4, woundsToRemove = floor((4 - 1)/5) = 0 → no update
         expect(mockUpdate).not.toHaveBeenCalled()
         const chatCall = global.ChatMessage.create.mock.calls[0][0]
         expect(chatCall.content).toContain('keine Heilung')
@@ -881,12 +996,21 @@ describe('_applyDamageDirectly — Healing', () => {
         expect(chatCall.style).toBe(0)
     })
 
-    it('STUMPF healing reduces Erschöpfung instead of wounds', async () => {
+    it('healing at exactly WS has no effect', async () => {
+        targetActor = createTargetActor({ wunden: 2, ws: 5 })
+
+        await _applyDamageDirectly(targetActor, 5, 'HEALING_WOUND', false, {})
+
+        expect(mockUpdate).not.toHaveBeenCalled()
+        expect(global.ChatMessage.create.mock.calls[0][0].content).toContain('keine Heilung')
+    })
+
+    it('HEALING_EXHAUSTION reduces Erschöpfung instead of wounds', async () => {
         targetActor = createTargetActor({ erschoepfung: 3, ws: 5 })
 
-        await _applyDamageDirectly(targetActor, -12, 'STUMPF', false, {})
+        await _applyDamageDirectly(targetActor, 12, 'HEALING_EXHAUSTION', false, {})
 
-        // healAmount = 12, ws = 5, woundsToRemove = floor(12/5) = 2
+        // healAmount = 12, ws = 5, woundsToRemove = floor((12 - 1)/5) = 2
         // newValue = max(0, 3 - 2) = 1, key = system.gesundheit.erschoepfung
         expect(mockUpdate).toHaveBeenCalledWith({ 'system.gesundheit.erschoepfung': 1 })
     })
@@ -894,6 +1018,7 @@ describe('_applyDamageDirectly — Healing', () => {
     it('LEP system healing restores HP directly', async () => {
         global.game.settings.get.mockImplementation((_ns, key) => {
             if (key === 'lepSystem') return true
+            if (key === 'damageTypes') return defaultDamageTypes
             return undefined
         })
 
@@ -909,7 +1034,7 @@ describe('_applyDamageDirectly — Healing', () => {
             update: (mockUpdate = jest.fn().mockResolvedValue(undefined)),
         }
 
-        await _applyDamageDirectly(targetActor, -10, 'PROFAN', false, {})
+        await _applyDamageDirectly(targetActor, 10, 'HEALING_WOUND', false, {})
 
         // LEP system: direct addition, no WS threshold
         // newLep = min(10 + 10, 30) = 20
@@ -919,6 +1044,7 @@ describe('_applyDamageDirectly — Healing', () => {
     it('LEP healing caps at wunden_max', async () => {
         global.game.settings.get.mockImplementation((_ns, key) => {
             if (key === 'lepSystem') return true
+            if (key === 'damageTypes') return defaultDamageTypes
             return undefined
         })
 
@@ -934,7 +1060,7 @@ describe('_applyDamageDirectly — Healing', () => {
             update: (mockUpdate = jest.fn().mockResolvedValue(undefined)),
         }
 
-        await _applyDamageDirectly(targetActor, -20, 'PROFAN', false, {})
+        await _applyDamageDirectly(targetActor, 20, 'HEALING_WOUND', false, {})
 
         // newLep = min(25 + 20, 30) = 30
         expect(mockUpdate).toHaveBeenCalledWith({ 'system.gesundheit.wunden': 30 })
@@ -943,10 +1069,72 @@ describe('_applyDamageDirectly — Healing', () => {
     it('healing chat message contains "heilt"', async () => {
         targetActor = createTargetActor({ wunden: 3, ws: 5 })
 
-        await _applyDamageDirectly(targetActor, -12, 'PROFAN', false, {})
+        await _applyDamageDirectly(targetActor, 12, 'HEALING_WOUND', false, {})
 
         const chatCall = global.ChatMessage.create.mock.calls[0][0]
         expect(chatCall.content).toContain('heilt')
         expect(chatCall.style).toBe(0)
+    })
+
+    it('custom healing behavior heals Erschöpfung', async () => {
+        global.game.settings.get.mockImplementation((_namespace, key) => {
+            if (key === 'lepSystem') return false
+            if (key === 'damageTypes') {
+                return '[{"value":"CUSTOM_HEAL","behavior":{"healing":true,"targetsErschoepfung":true}}]'
+            }
+            return undefined
+        })
+        targetActor = createTargetActor({ erschoepfung: 3, ws: 5 })
+
+        await _applyDamageDirectly(targetActor, 12, 'CUSTOM_HEAL', false, {})
+
+        expect(mockUpdate).toHaveBeenCalledWith({ 'system.gesundheit.erschoepfung': 1 })
+    })
+
+    it('STUMPF damage adds Erschöpfung instead of wounds', async () => {
+        targetActor = createTargetActor({ erschoepfung: 0, ws: 5, wsStern: 5 })
+
+        await _applyDamageDirectly(targetActor, 6, 'STUMPF', false, {})
+
+        expect(mockUpdate).toHaveBeenCalledWith({ 'system.gesundheit.erschoepfung': 1 })
+    })
+
+    it('PROFAN damage without behavior adds wounds', async () => {
+        targetActor = createTargetActor({ wunden: 0, ws: 5, wsStern: 5 })
+
+        await _applyDamageDirectly(targetActor, 6, 'PROFAN', false, {})
+
+        expect(mockUpdate).toHaveBeenCalledWith({ 'system.gesundheit.wunden': 1 })
+    })
+
+    it('armor-bypassing damage uses WS instead of WS*', async () => {
+        targetActor = createTargetActor({ wunden: 0, ws: 5, wsStern: 10 })
+
+        await _applyDamageDirectly(targetActor, 6, 'RUESTUNGSBRECHEND', false, {})
+
+        expect(mockUpdate).toHaveBeenCalledWith({ 'system.gesundheit.wunden': 1 })
+    })
+
+    it('empty registry falls back to Wunden damage for existing references', async () => {
+        global.game.settings.get.mockImplementation((_namespace, key) => {
+            if (key === 'lepSystem') return false
+            if (key === 'damageTypes') return '[]'
+            return undefined
+        })
+        targetActor = createTargetActor({ wunden: 0, ws: 5, wsStern: 5 })
+
+        await _applyDamageDirectly(targetActor, 6, 'EMPTY_REGISTRY_APPLY_TEST', false, {})
+
+        expect(mockUpdate).toHaveBeenCalledWith({ 'system.gesundheit.wunden': 1 })
+        expect(global.ui.notifications.warn).toHaveBeenCalledTimes(1)
+        expect(global.ChatMessage.create.mock.calls[0][0].content).toContain('Profan Schaden')
+    })
+
+    it('negative values on non-healing types do not deal damage', async () => {
+        targetActor = createTargetActor({ wunden: 0, ws: 5, wsStern: 5 })
+
+        await _applyDamageDirectly(targetActor, -5, 'PROFAN', false, {})
+
+        expect(mockUpdate).not.toHaveBeenCalled()
     })
 })

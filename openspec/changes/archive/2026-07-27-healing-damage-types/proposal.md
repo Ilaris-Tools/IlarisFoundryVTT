@@ -8,6 +8,7 @@ Healing spells currently use `damageType: "PROFAN"` with negative values (e.g., 
 - **BREAKING**: Extend the `damageTypes` setting schema from `{value, label}` to `{value, label, behavior: {healing, targetsErschoepfung}}` — a key-value map of boolean flags describing what a type does
 - **BREAKING**: Replace hardcoded `damageType === 'STUMPF'` string checks in `_applyDamageDirectly` with behavioral lookups from the damage type registry
 - **BREAKING**: Replace the `damage < 0` healing detection with `behavior.healing === true`
+- When the damage-type registry is empty, malformed, or does not contain a referenced type, fall back safely to non-healing Wunden damage and warn once per missing type; the pre-effect selector remains empty and does not crash
 - Add a `DialogV2` popup for editing individual damage types (key, label, behavior checkboxes), replacing inline text inputs in the settings page with a read-only list + edit button
 - Update 5 healing spell compendium entries (`damageType: "PROFAN"` → `"HEALING_WOUND"`, negative → positive values)
 - Update unit tests for the new behavioral logic and healing types
@@ -50,6 +51,7 @@ Healing spells currently use `damageType: "PROFAN"` with negative values (e.g., 
 - Damage with `PROFAN` (no healing flag) still deals Wunden-Schaden
 - Damage with `STUMPF` (targetsErschoepfung flag) still deals Erschöpfung-Schaden
 - Unknown damage type (missing from registry) falls back to Wunden + non-healing
+- Empty damage-type registry (`[]`) falls back to Wunden + non-healing for existing references, warns once per referenced type, and leaves the pre-effect selector empty without crashing
 - `behavior` object absent → all flags default to `false`
 
 ### Existing Unit Tests to Update

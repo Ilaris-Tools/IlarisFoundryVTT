@@ -69,6 +69,7 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
 
     constructor(options = {}) {
         super(options)
+        this.damageTypes = null
     }
 
     async _prepareContext(options) {
@@ -139,8 +140,7 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
             ),
         }
 
-        // Parse damage types setting into array for template
-        context.damageTypes = this._parseDamageTypes()
+        context.damageTypes = this.damageTypes ??= this._parseDamageTypes()
 
         return context
     }
@@ -151,7 +151,17 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
                 ConfigureGameSettingsCategories.Ilaris,
                 IlarisGameSettingNames.damageTypes,
             )
-            return JSON.parse(raw || '[]')
+            const damageTypes = JSON.parse(raw || '[]')
+            if (!Array.isArray(damageTypes)) return []
+            return damageTypes.map((type) => ({
+                value: type.value || '',
+                label: type.label || '',
+                behavior: {
+                    healing: type.behavior?.healing === true,
+                    targetsErschoepfung: type.behavior?.targetsErschoepfung === true,
+                    bypassesArmor: type.behavior?.bypassesArmor === true,
+                },
+            }))
         } catch (e) {
             console.warn('Ilaris | Failed to parse damageTypes setting:', e)
             return []
@@ -211,39 +221,73 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
     _onRender(context, options) {
         super._onRender(context, options)
 
-        // Damage type list: add button
-        this.element.querySelector('.add-damage-type')?.addEventListener('click', () => {
-            const types = this._parseDamageTypes()
-            types.push({ value: '', label: '' })
-            const json = JSON.stringify(types)
-            game.settings.set(
-                ConfigureGameSettingsCategories.Ilaris,
-                IlarisGameSettingNames.damageTypes,
-                json,
-            )
+        this.element.querySelector('.add-damage-type')?.addEventListener('click', async (event) => {
+            event.preventDefault()
+            const damageType = await this.#openDamageTypeDialog()
+            if (!damageType) return
+            this.damageTypes.push(damageType)
             this.render()
         })
 
-        // Damage type list: delete button (delegated)
-        this.element.querySelector('.damage-type-list')?.addEventListener('click', (event) => {
-            const btn = event.target.closest('.delete-damage-type')
-            if (!btn) return
+        this.element
+            .querySelector('.damage-type-list')
+            ?.addEventListener('click', async (event) => {
+                const btn = event.target.closest('.delete-damage-type')
+                const editBtn = event.target.closest('.edit-damage-type')
+                if (!btn && !editBtn) return
+                event.preventDefault()
 
-            const row = btn.closest('.damage-type-row')
-            const allRows = [...this.element.querySelectorAll('.damage-type-row')]
-            const index = allRows.indexOf(row)
-            if (index < 0) return
+                const index = Number((btn || editBtn).dataset.index)
+                if (index < 0) return
 
-            const types = this._parseDamageTypes()
-            types.splice(index, 1)
-            const json = JSON.stringify(types)
-            game.settings.set(
-                ConfigureGameSettingsCategories.Ilaris,
-                IlarisGameSettingNames.damageTypes,
-                json,
-            )
-            this.render()
+                if (btn) {
+                    this.damageTypes.splice(index, 1)
+                    this.render()
+                    return
+                }
+
+                const damageType = await this.#openDamageTypeDialog(this.damageTypes[index])
+                if (!damageType) return
+                this.damageTypes[index] = damageType
+                this.render()
+            })
+    }
+
+    async #openDamageTypeDialog(existing = null) {
+        const html = await foundry.applications.handlebars.renderTemplate(
+            'systems/Ilaris/scripts/settings/templates/damage-type-dialog.hbs',
+            {
+                value: existing?.value || '',
+                label: existing?.label || '',
+                behavior: existing?.behavior || {},
+            },
+        )
+        const content = document.createElement('div')
+        content.innerHTML = html
+        const formData = await foundry.applications.api.DialogV2.input({
+            window: { title: existing ? 'Schadenstyp bearbeiten' : 'Neuer Schadenstyp' },
+            content,
+            ok: { label: 'Übernehmen' },
         })
+        if (!formData) return null
+
+        const value = formData.value?.trim()
+        const label = formData.label?.trim()
+        if (!value || !label) {
+            ui.notifications.warn('Schadenstypen benötigen einen Key und einen Anzeigenamen.')
+            return null
+        }
+
+        return {
+            value,
+            label,
+            behavior: {
+                healing: formData.healing === true || formData.healing === 'on',
+                targetsErschoepfung:
+                    formData.targetsErschoepfung === true || formData.targetsErschoepfung === 'on',
+                bypassesArmor: formData.bypassesArmor === true || formData.bypassesArmor === 'on',
+            },
+        }
     }
 
     _generateAllPacksContext() {
@@ -471,21 +515,11 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
             await setIfChanged(s.name, newValue)
         }
 
-        // Damage types — collect all rows from the dynamic list
         if (isGM) {
-            const rows = form.querySelectorAll('.damage-type-row')
-            const types = []
-            rows.forEach((row) => {
-                const valueInput = row.querySelector('input[name$=".value"]')
-                const labelInput = row.querySelector('input[name$=".label"]')
-                if (valueInput) {
-                    types.push({
-                        value: valueInput.value || '',
-                        label: labelInput?.value || '',
-                    })
-                }
-            })
-            await setIfChanged(IlarisGameSettingNames.damageTypes, JSON.stringify(types))
+            await setIfChanged(
+                IlarisGameSettingNames.damageTypes,
+                JSON.stringify(this.damageTypes ?? this._parseDamageTypes()),
+            )
         }
 
         await this.close()
@@ -528,7 +562,7 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
                 { name: IlarisGameSettingNames.lepSystem, value: false },
                 {
                     name: IlarisGameSettingNames.damageTypes,
-                    value: '[{"value":"PROFAN","label":"Profan (Wunden)"},{"value":"STUMPF","label":"Stumpf (Erschöpfung)"},{"value":"MAGISCH","label":"Magisch"},{"value":"GEWEIHT","label":"Geweiht"},{"value":"DAEMONISCH","label":"Dämonisch"},{"value":"FEUER","label":"Feuer"},{"value":"EIS","label":"Eis"},{"value":"ERZ","label":"Erz"},{"value":"HUMUS","label":"Humus"},{"value":"LUFT","label":"Luft"},{"value":"WASSER","label":"Wasser"}]',
+                    value: '[{"value":"PROFAN","label":"Profan (Wunden)","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"STUMPF","label":"Stumpf (Erschöpfung)","behavior":{"healing":false,"targetsErschoepfung":true,"bypassesArmor":false}},{"value":"MAGISCH","label":"Magisch","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"GEWEIHT","label":"Geweiht","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"DAEMONISCH","label":"Dämonisch","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"FEUER","label":"Feuer","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"EIS","label":"Eis","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"ERZ","label":"Erz","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"HUMUS","label":"Humus","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"LUFT","label":"Luft","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"WASSER","label":"Wasser","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"HEALING_WOUND","label":"Heilung (Wunden)","behavior":{"healing":true,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"HEALING_EXHAUSTION","label":"Heilung (Erschöpfung)","behavior":{"healing":true,"targetsErschoepfung":true,"bypassesArmor":false}}]',
                 },
                 { name: IlarisAutomatisierungSettingNames.useSceneEnvironment, value: true },
                 { name: IlarisAutomatisierungSettingNames.useTargetSelection, value: false },
