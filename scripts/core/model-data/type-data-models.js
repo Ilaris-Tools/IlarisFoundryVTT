@@ -1,5 +1,6 @@
 import { createActorTypeDataModels } from '../../actors/model-data/index.js'
 import { createItemTypeDataModels } from '../../items/model-data/models.js'
+import { createActiveEffectTypeDataModels } from '../../effects/model-data/index.js'
 import { buildTypeDataFieldHelpers } from './field-helpers.js'
 
 export function registerIlarisTypeDataModels() {
@@ -25,7 +26,13 @@ export function registerIlarisTypeDataModels() {
         ...createItemTypeDataModels(TypeDataModel, helpers),
     }
 
+    CONFIG.ActiveEffect ??= {}
+    CONFIG.ActiveEffect.dataModels = {
+        ...(CONFIG.ActiveEffect.dataModels || {}),
+        ...createActiveEffectTypeDataModels(helpers),
+    }
+
     console.log(
-        `Ilaris | Registered explicit strict TypeDataModels (${Object.keys(CONFIG.Actor.dataModels).length} Actor types, ${Object.keys(CONFIG.Item.dataModels).length} Item types).`,
+        `Ilaris | Registered explicit strict TypeDataModels (${Object.keys(CONFIG.Actor.dataModels).length} Actor types, ${Object.keys(CONFIG.Item.dataModels).length} Item types, ${Object.keys(CONFIG.ActiveEffect.dataModels).length} ActiveEffect types).`,
     )
 }

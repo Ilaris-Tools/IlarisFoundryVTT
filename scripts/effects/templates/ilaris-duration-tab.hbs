@@ -1,0 +1,41 @@
+<section class="tab duration {{tab.cssClass}}" data-group="sheet" data-tab="duration">
+    <legend>Ilaris Runden-Dauer</legend>
+    <div class="form-group">
+        <label>Dauer-Typ</label>
+        <div class="form-fields">
+            <select name="system.ilarisTiming.durationType">
+                {{selectOptions ilarisDurationTypes selected=ilarisTiming.durationType}}
+            </select>
+        </div>
+        <p class="hint">"Eigener Zug" verringert die Dauer nur im Zug des Trägers.</p>
+    </div>
+
+    <div class="form-group">
+        <label>Ursprüngliche Runden</label>
+        <div class="form-fields">
+            <input type="number" name="system.ilarisTiming.originalValue"
+                   value="{{ilarisTiming.originalValue}}" min="0" step="1">
+        </div>
+        <p class="hint">Die ursprüngliche Anzahl Runden, bevor der Effekt zu zählen beginnt.</p>
+    </div>
+
+    <div class="form-group">
+        <label>Verbleibende Runden</label>
+        <div class="form-fields">
+            <input type="number" name="system.ilarisTiming.remaining"
+                   value="{{ilarisTiming.remaining}}" min="0" step="1">
+        </div>
+        <p class="hint">Wird im Zug des Trägers um 1 verringert. Bei 0 läuft der Effekt aus.</p>
+    </div>
+
+    <div class="form-group">
+        <label>Ablaufzeitpunkt</label>
+        <div class="form-fields">
+            <select name="system.ilarisTiming.expiresOn">
+                {{selectOptions ilarisExpiresOnOptions selected=ilarisTiming.expiresOn}}
+            </select>
+        </div>
+        <p class="hint">"Rundenbeginn": Effekt endet sofort wenn verbleibende Runden = 0.
+        "Rundenende": Effekt wirkt noch die letzte Runde.</p>
+    </div>
+</section>

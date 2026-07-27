@@ -43,14 +43,16 @@ export const EffectsManager = {
             icon: 'icons/svg/aura.svg',
             disabled: false,
             duration: {},
-            changes: [
-                {
-                    key: '',
-                    mode: 2,
-                    value: '0',
-                    priority: 20,
-                },
-            ],
+            system: {
+                changes: [
+                    {
+                        key: '',
+                        type: 'add',
+                        value: '0',
+                        priority: 20,
+                    },
+                ],
+            },
             transfer: true,
         }
 
@@ -75,12 +77,11 @@ export const EffectsManager = {
      * @private
      */
     async _deleteEffect(effectId) {
-        const confirmed = await Dialog.confirm({
-            title: 'Effekt löschen',
+        const confirmed = await foundry.applications.api.DialogV2.confirm({
+            window: { title: 'Effekt löschen' },
             content: '<p>Sind Sie sicher, dass Sie diesen Effekt löschen möchten?</p>',
-            yes: () => true,
-            no: () => false,
-            defaultYes: false,
+            rejectClose: false,
+            modal: true,
         })
 
         if (confirmed) {

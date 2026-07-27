@@ -110,7 +110,7 @@ export async function roll_crit_message(
     label,
     text,
     speaker,
-    rollmode,
+    messageMode,
     crit_eval = true,
     fumble_val = 1,
     success_val,
@@ -148,7 +148,7 @@ export async function roll_crit_message(
             flavor: html_roll,
         },
         {
-            rollMode: rollmode,
+            messageMode: messageMode,
         },
     )
     return [isSuccess || crit, is16OrHigher]
@@ -215,19 +215,19 @@ export async function evaluate_roll_with_crit(
     }
 }
 
-export async function postRollToChat(rollResult, speaker, rollmode) {
+export async function postRollToChat(rollResult, speaker, messageMode) {
     const html_roll = await foundry.applications.handlebars.renderTemplate(
         rollResult.templatePath,
         rollResult.templateData,
     )
 
-    return rollResult.roll.toMessage(
+    return await rollResult.roll.toMessage(
         {
             speaker: speaker,
             flavor: html_roll,
         },
         {
-            rollMode: rollmode,
+            messageMode: messageMode,
         },
     )
 }
@@ -238,15 +238,15 @@ export function calculate_diceschips(html, text, actor, dialogId = '') {
     console.log(xd20Name)
     const schipsName = dialogId ? `schips-${dialogId}` : 'schips'
 
-    let xd20_check = html.find(`input[name='${xd20Name}']`)
+    const xd20_check = html.querySelectorAll(`input[name='${xd20Name}']`)
     let xd20 = 0
-    for (let i of xd20_check) {
+    for (const i of xd20_check) {
         if (i.checked) xd20 = i.value
     }
     // console.log(xd20);
-    let schips_check = html.find(`input[name='${schipsName}']`)
+    const schips_check = html.querySelectorAll(`input[name='${schipsName}']`)
     let schips = 0
-    for (let i of schips_check) {
+    for (const i of schips_check) {
         if (i.checked) schips = i.value
     }
     let dice_number = 0

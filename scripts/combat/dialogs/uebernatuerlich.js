@@ -401,7 +401,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         await ChatMessage.create({
             speaker: this.speaker,
             content: html_roll,
-            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
+            style: CONST.CHAT_MESSAGE_STYLES.ROLL,
             whisper:
                 this.rollmode === 'gmroll'
                     ? ChatMessage.getWhisperRecipients('GM')
@@ -490,7 +490,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         await ChatMessage.create({
             speaker: this.speaker,
             content: html_roll,
-            type: CONST.CHAT_MESSAGE_STYLES.ROLL,
+            style: CONST.CHAT_MESSAGE_STYLES.ROLL,
             whisper:
                 this.rollmode === 'gmroll'
                     ? ChatMessage.getWhisperRecipients('GM')
@@ -522,10 +522,6 @@ export class UebernatuerlichDialog extends CombatDialog {
         if (!manoever.mod) {
             manoever.mod = { selected: 0 }
         }
-        if (!manoever.rllm) {
-            manoever.rllm = { selected: game.settings.get('core', 'rollMode') }
-        }
-
         // allgemeine optionen
         manoever.kbak.selected = this.element.querySelector('#kbak')?.checked || false // Kombinierte Aktion
 
@@ -549,9 +545,6 @@ export class UebernatuerlichDialog extends CombatDialog {
 
         manoever.mod.selected =
             Number(this.element.querySelector(`#modifikator-${this.dialogId}`)?.value) || 0 // Modifikator
-        manoever.rllm.selected =
-            this.element.querySelector(`#rollMode-${this.dialogId}`)?.value ||
-            game.settings.get('core', 'rollMode') // RollMode
         await super.manoeverAuswaehlen()
     }
 

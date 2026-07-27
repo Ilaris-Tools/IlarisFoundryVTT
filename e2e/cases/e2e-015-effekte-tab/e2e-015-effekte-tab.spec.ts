@@ -90,7 +90,7 @@ test.describe('E2E-015 Effekte-Tab', () => {
         // Vorteil-Effekt hat keine Dauer-Anzeige ("Runden")
         await expect(vorteilEditLink).not.toContainText('Runden')
 
-        // ── Phase 2: Testeffekt anlegen ───────────────────────────────────
+        // ── Phase 2: Testeffekt mit Ilaris-Timing anlegen ────────────────
 
         const createdId = await page.evaluate(
             ({
@@ -110,9 +110,16 @@ test.describe('E2E-015 Effekte-Tab', () => {
                             name: effectName,
                             icon: 'icons/svg/aura.svg',
                             disabled: false,
-                            duration: { turns: turns },
                             changes: [],
                             flags: { ilaris: { sourceType: 'manual' } },
+                            system: {
+                                ilarisTiming: {
+                                    durationType: 'ownerTurns',
+                                    remaining: turns,
+                                    originalValue: turns,
+                                    expiresOn: 'turnStart',
+                                },
+                            },
                         },
                     ])
                     .then((docs: any[]) => docs[0]?.id ?? null)

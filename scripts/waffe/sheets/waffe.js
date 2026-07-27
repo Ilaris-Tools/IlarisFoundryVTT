@@ -129,90 +129,38 @@ export class WaffeBaseSheet extends IlarisItemSheet {
 
         const self = this // Save context for callbacks
 
-        const dialog = new Dialog({
-            title: 'Waffeneigenschaft hinzufügen',
-            content: `
-                <form>
-                    <div class="form-group">
-                        <label>Eigenschaft:</label>
-                        <select id="eigenschaft-select" style="width: 100%;">
-                            ${options}
-                        </select>
-                    </div>
-                    <div id="parameter-container" style="margin-top: 10px; min-height: 100px;">
-                        <!-- Parameters will be loaded here dynamically -->
-                    </div>
-                </form>
-            `,
-            buttons: {
-                add: {
-                    icon: '<i class="fas fa-check"></i>',
-                    label: 'Hinzufügen',
-                    callback: async (html) => {
-                        const selected = html.find('#eigenschaft-select').val()
-                        if (selected) {
-                            // Collect parameter values
-                            const parameters = []
-                            html.find('.parameter-input').each(function () {
-                                const input = $(this)
-                                const type = input.data('type')
-                                let value = input.val()
+        Hooks.once('renderDialogV2', (_app, dialogElement) => {
+            const select = dialogElement.querySelector('#eigenschaft-select')
+            if (!select) return
 
-                                // Convert to appropriate type
-                                if (type === 'number' && value !== '') {
-                                    value = Number(value)
-                                } else if (value === '') {
-                                    const defaultVal = input.data('default')
-                                    value = defaultVal !== '' ? defaultVal : null
-                                }
+            select.addEventListener('change', async (e) => {
+                const selectedName = e.target.value
+                const container = dialogElement.querySelector('#parameter-container')
+                if (!container) return
 
-                                parameters.push(value)
-                            })
+                const eigenschaftItem = await self._loadEigenschaftItem(selectedName)
 
-                            const eigenschaften = [...(self.document.system.eigenschaften || [])]
-                            eigenschaften.push({ key: selected, parameters: parameters })
-                            await self.document.update({ 'system.eigenschaften': eigenschaften })
-                        }
-                    },
-                },
-                cancel: {
-                    icon: '<i class="fas fa-times"></i>',
-                    label: 'Abbrechen',
-                },
-            },
-            default: 'add',
-            height: 500,
-            render: async (html) => {
-                // Add change listener to load parameters when eigenschaft is selected
-                html.find('#eigenschaft-select').on('change', async function (e) {
-                    const selectedName = $(this).val()
-                    const container = html.find('#parameter-container')
+                let parameterSlots = eigenschaftItem?.system?.parameterSlots || []
+                if (
+                    parameterSlots &&
+                    typeof parameterSlots === 'object' &&
+                    !Array.isArray(parameterSlots)
+                ) {
+                    parameterSlots = Object.values(parameterSlots)
+                }
 
-                    // Load eigenschaft item to get parameter slots
-                    const eigenschaftItem = await self._loadEigenschaftItem(selectedName)
+                if (eigenschaftItem && parameterSlots && parameterSlots.length > 0) {
+                    let paramHtml =
+                        '<h4 style="margin-top: 10px; margin-bottom: 5px;">Parameter:</h4>'
 
-                    // Convert parameterSlots to array if it's an object
-                    let parameterSlots = eigenschaftItem?.system?.parameterSlots || []
-                    if (
-                        parameterSlots &&
-                        typeof parameterSlots === 'object' &&
-                        !Array.isArray(parameterSlots)
-                    ) {
-                        parameterSlots = Object.values(parameterSlots)
-                    }
+                    parameterSlots.forEach((slot, index) => {
+                        const inputType = slot.type === 'number' ? 'number' : 'text'
+                        const placeholder = slot.defaultValue
+                            ? `Standard: ${slot.defaultValue}`
+                            : 'Optional'
+                        const required = slot.required ? 'required' : ''
 
-                    if (eigenschaftItem && parameterSlots && parameterSlots.length > 0) {
-                        let paramHtml =
-                            '<h4 style="margin-top: 10px; margin-bottom: 5px;">Parameter:</h4>'
-
-                        parameterSlots.forEach((slot, index) => {
-                            const inputType = slot.type === 'number' ? 'number' : 'text'
-                            const placeholder = slot.defaultValue
-                                ? `Standard: ${slot.defaultValue}`
-                                : 'Optional'
-                            const required = slot.required ? 'required' : ''
-
-                            paramHtml += `
+                        paramHtml += `
                                 <div class="form-group" style="margin-bottom: 8px;">
                                     <label>${slot.label || slot.name}:</label>
                                     <input 
@@ -227,24 +175,72 @@ export class WaffeBaseSheet extends IlarisItemSheet {
                                     />
                                 </div>
                             `
-                        })
+                    })
 
-                        container.html(paramHtml)
-                    } else {
-                        container.html(
-                            '<p style="color: #999; font-style: italic; margin-top: 10px;">Keine Parameter erforderlich</p>',
-                        )
-                    }
-                })
+                    container.innerHTML = paramHtml
+                } else {
+                    container.innerHTML =
+                        '<p style="color: #999; font-style: italic; margin-top: 10px;">Keine Parameter erforderlich</p>'
+                }
+            })
 
-                // Trigger initial load for first option
-                setTimeout(() => {
-                    html.find('#eigenschaft-select').trigger('change')
-                }, 100)
-            },
+            setTimeout(() => select.dispatchEvent(new Event('change')), 100)
         })
 
-        dialog.render(true)
+        await foundry.applications.api.DialogV2.wait({
+            window: { title: 'Waffeneigenschaft hinzufügen', resizable: true },
+            position: { height: 500 },
+            content: `
+                <form>
+                    <div class="form-group">
+                        <label>Eigenschaft:</label>
+                        <select id="eigenschaft-select" style="width: 100%;">
+                            ${options}
+                        </select>
+                    </div>
+                    <div id="parameter-container" style="margin-top: 10px; min-height: 100px;">
+                        <!-- Parameters will be loaded here dynamically -->
+                    </div>
+                </form>
+            `,
+            buttons: [
+                {
+                    action: 'add',
+                    icon: '<i class="fas fa-check"></i>',
+                    label: 'Hinzufügen',
+                    default: true,
+                    callback: async (event, button, dialog) => {
+                        const selected = dialog.element.querySelector('#eigenschaft-select')?.value
+                        if (selected) {
+                            const parameters = []
+                            dialog.element.querySelectorAll('.parameter-input').forEach((input) => {
+                                const type = input.dataset.type
+                                let value = input.value
+
+                                if (type === 'number' && value !== '') {
+                                    value = Number(value)
+                                } else if (value === '') {
+                                    const defaultVal = input.dataset.default
+                                    value = defaultVal !== '' ? defaultVal : null
+                                }
+
+                                parameters.push(value)
+                            })
+
+                            const eigenschaften = [...(self.document.system.eigenschaften || [])]
+                            eigenschaften.push({ key: selected, parameters: parameters })
+                            await self.document.update({ 'system.eigenschaften': eigenschaften })
+                        }
+                    },
+                },
+                {
+                    action: 'cancel',
+                    icon: '<i class="fas fa-times"></i>',
+                    label: 'Abbrechen',
+                },
+            ],
+            rejectClose: false,
+        })
     }
 
     /**

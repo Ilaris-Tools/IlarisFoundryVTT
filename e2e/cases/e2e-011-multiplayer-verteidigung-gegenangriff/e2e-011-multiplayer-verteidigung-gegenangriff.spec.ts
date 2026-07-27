@@ -16,6 +16,10 @@ const DEFENDER_NAME = 'Testlauf-Held'
 const COUNTER_WEAPON_NAME = 'Kurzschwert'
 const WUCHTSCHLAG_VALUE = 8
 
+// Player3 username can be overridden via E2E_PLAYER3_USER env var
+// to match the actual Foundry user in your world (e.g. 'Spieler3', 'Player 3', …)
+const PLAYER3_USERNAME = process.env.E2E_PLAYER3_USER ?? 'Player3'
+
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 async function clickSummaryWithFallback(
@@ -98,6 +102,9 @@ async function waitForDefensePromptMessage(
 // ── Test ─────────────────────────────────────────────────────────────────────
 
 test.describe('E2E-011 Multiplayer: Verteidigung und Gegenangriff', () => {
+    // Note: afterEach uses the default Playwright page fixture which is unrelated
+    // to gmPage/player3Page (those are created inside the test). Dice cleanup for
+    // those contexts happens inside the test's finally block via context.close().
     test.afterEach(async ({ page }) => {
         await page
             .evaluate(() => {
@@ -115,7 +122,7 @@ test.describe('E2E-011 Multiplayer: Verteidigung und Gegenangriff', () => {
         const gmPage = await gmContext.newPage()
         const player3Page = await player3Context.newPage()
 
-        const player3Config = { ...foundryConfig, username: 'Player3' }
+        const player3Config = { ...foundryConfig, username: PLAYER3_USERNAME }
 
         // Track cleanup state
         let defenderDefaultSnapshot: ActorDefaultSnapshot | null = null
@@ -125,6 +132,18 @@ test.describe('E2E-011 Multiplayer: Verteidigung und Gegenangriff', () => {
             // ── Login both users ──────────────────────────────────────────
             await loginAndJoinWorld(gmPage, foundryConfig)
             await loginAndJoinWorld(player3Page, player3Config)
+
+            // Verify Player3 is logged in as the correct user – if this fails,
+            // set E2E_PLAYER3_USER to the exact Foundry username for that account.
+            const player3ActualName = await player3Page.evaluate(
+                () => (game.user as any)?.name ?? game.user?.id ?? null,
+            )
+            expect(
+                player3ActualName,
+                `Player3 login fehlgeschlagen: game.user.name ist "${player3ActualName}", erwartet "${PLAYER3_USERNAME}". ` +
+                    `Setze E2E_PLAYER3_USER auf den korrekten Foundry-Benutzernamen.`,
+            ).toBe(PLAYER3_USERNAME)
+
             await clearChatLog(gmPage)
 
             // Wait for Player3's chat to sync after clear
@@ -594,6 +613,18 @@ test.describe('E2E-011 Multiplayer: Verteidigung und Gegenangriff', () => {
             const deltaWunden2 = attackerAfter.wunden - attackerBefore!.wunden
             expect(deltaWunden2).toBe(expectedIncrement2)
         } finally {
+            // ── Cleanup: remove dice overrides from both contexts ─────────
+            await gmPage
+                .evaluate(() => {
+                    delete CONFIG.Dice.randomUniform
+                })
+                .catch(() => {})
+            await player3Page
+                .evaluate(() => {
+                    delete CONFIG.Dice.randomUniform
+                })
+                .catch(() => {})
+
             // ── Cleanup: reset both actors ────────────────────────────────
             if (defenderDefaultSnapshot) {
                 await restoreActorFromDefaultSnapshot(gmPage, defenderDefaultSnapshot).catch(

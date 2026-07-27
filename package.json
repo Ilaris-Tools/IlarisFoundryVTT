@@ -1,14 +1,14 @@
 {
   "name": "ilaris-foundryvtt",
   "description": "Ein System für [Ilaris](https://ilarisblog.wordpress.com/) zur Verwendung mit [FoundryVTT](https://foundryvtt.com/).",
-  "version": "v12.1.0",
+  "version": "v14.0.0",
   "main": "",
   "type": "module",
   "devDependencies": {
     "@babel/core": "^7.26.10",
     "@babel/preset-env": "^7.26.9",
     "@foundryvtt/foundryvtt-cli": "^3.0.0",
-    "@playwright/test": "^1.58.2",
+    "@playwright/test": "^1.60.0",
     "babel-jest": "^29.7.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",

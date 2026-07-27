@@ -255,14 +255,6 @@ export function createItemTypeDataModels(TypeDataModel, h) {
         }
     }
 
-    class EffectItemDataModel extends TypeDataModel {
-        static defineSchema() {
-            return {
-                description: h.string(''),
-            }
-        }
-    }
-
     class WaffeneigenschaftItemDataModel extends TypeDataModel {
         static defineSchema() {
             return {
@@ -339,12 +331,10 @@ export function createItemTypeDataModels(TypeDataModel, h) {
         fertigkeit: FertigkeitItemDataModel,
         talent: TalentItemDataModel,
         uebernatuerlicheFertigkeit: UebernatuerlicheFertigkeitItemDataModel,
-        uebernatuerliche_fertigkeit: UebernatuerlicheFertigkeitItemDataModel,
         liturgie: LiturgieItemDataModel,
         zauber: ZauberItemDataModel,
         anrufung: AnrufungItemDataModel,
         freieFertigkeit: FreieFertigkeitItemDataModel,
-        freie_fertigkeit: FreieFertigkeitItemDataModel,
         vorteil: VorteilItemDataModel,
         manoever: ManoeverItemDataModel,
         eigenheit: EigenheitItemDataModel,
@@ -353,10 +343,12 @@ export function createItemTypeDataModels(TypeDataModel, h) {
         angriff: AngriffItemDataModel,
         info: InfoItemDataModel,
         freiesTalent: FreiesTalentItemDataModel,
-        freiestalent: FreiesTalentItemDataModel,
         abgeleiteterWert: AbgeleiteterWertItemDataModel,
+        // Legacy type aliases — allow old worlds to load so the ready-hook
+        // migration (migrate-modeldata-normalization.js) can rename them.
+        freiestalent: FreiesTalentItemDataModel,
+        freie_fertigkeit: FreieFertigkeitItemDataModel,
+        uebernatuerliche_fertigkeit: UebernatuerlicheFertigkeitItemDataModel,
         'abgeleiteter-wert': AbgeleiteterWertItemDataModel,
-        effectItem: EffectItemDataModel,
-        'effect-item': EffectItemDataModel,
     }
 }

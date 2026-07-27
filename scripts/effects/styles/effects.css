@@ -5,6 +5,7 @@
 .status-effects {
   display: inline-flexbox;
   flex-direction: column;
+  grid-template-columns: 24px 24px 24px 24px;
 }
 
 .status-effects img.effect-control {

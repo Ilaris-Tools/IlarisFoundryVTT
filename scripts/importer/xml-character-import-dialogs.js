@@ -169,31 +169,13 @@ export class XmlCharacterImportDialogs {
             <p><strong>Sind Sie sicher, dass Sie den Charakter "${actor.name}" mit der XML-Datei "${fileName}" synchronisieren möchten?</strong></p>
         `
 
-        return new Promise((resolve) => {
-            new Dialog(
-                {
-                    title: 'Charakter-Synchronisation bestätigen',
-                    content: dialogContent,
-                    buttons: {
-                        yes: {
-                            icon: '<i class="fas fa-sync-alt"></i>',
-                            label: 'Charakter synchronisieren',
-                            callback: () => resolve(true),
-                        },
-                        no: {
-                            icon: '<i class="fas fa-times"></i>',
-                            label: 'Abbrechen',
-                            callback: () => resolve(false),
-                        },
-                    },
-                    default: 'no',
-                    close: () => resolve(false),
-                },
-                {
-                    width: 600,
-                    height: 'auto',
-                },
-            ).render(true)
+        return foundry.applications.api.DialogV2.confirm({
+            window: { title: 'Charakter-Synchronisation bestätigen' },
+            content: dialogContent,
+            yes: { icon: '<i class="fas fa-sync-alt"></i>', label: 'Charakter synchronisieren' },
+            no: { icon: '<i class="fas fa-times"></i>', label: 'Abbrechen' },
+            rejectClose: false,
+            classes: ['ilaris-import-dialog'],
         })
     }
 
