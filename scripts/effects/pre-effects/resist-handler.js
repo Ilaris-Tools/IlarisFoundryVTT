@@ -47,6 +47,10 @@ export function registerResistHandler() {
     }
 }
 
+export function resolveInitialResistTalent(talents, configuredTalent) {
+    return talents?.some((talent) => talent.name === configuredTalent) ? configuredTalent : ''
+}
+
 /**
  * Handle a resist button click: open FertigkeitDialog and wait for result.
  */
@@ -86,6 +90,7 @@ async function handleResistClick(actor, preEffectData, button) {
         for (const [i, tal] of talente.entries()) {
             talentList[i] = tal.name
         }
+        const initialTalent = resolveInitialResistTalent(talente, avoidTest.talent)
 
         dialogOptions = {
             probeType: 'fertigkeit',
@@ -93,6 +98,7 @@ async function handleResistClick(actor, preEffectData, button) {
             fertigkeitName: skill.name,
             pw: skill.system.pw,
             talentList,
+            initialTalent,
             success_val: resistDifficulty,
             resistAgainst: spellName,
         }

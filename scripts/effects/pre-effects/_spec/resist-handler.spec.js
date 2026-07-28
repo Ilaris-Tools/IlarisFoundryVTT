@@ -1,4 +1,8 @@
-import { registerResistHandler, registerResistResolutionListener } from '../resist-handler.js'
+import {
+    registerResistHandler,
+    registerResistResolutionListener,
+    resolveInitialResistTalent,
+} from '../resist-handler.js'
 
 const effectCreate = jest.fn().mockResolvedValue([])
 let hookCallbacks
@@ -108,5 +112,17 @@ describe('resist result listener', () => {
 
         expect(global.ui.notifications.warn).toHaveBeenCalled()
         expect(button.disabled).toBe(false)
+    })
+})
+
+describe('resolveInitialResistTalent', () => {
+    it('keeps a configured talent owned by the resolved profane skill', () => {
+        expect(
+            resolveInitialResistTalent([{ name: 'Akrobatik' }, { name: 'Laufen' }], 'Akrobatik'),
+        ).toBe('Akrobatik')
+    })
+
+    it('falls back to no talent when the target does not own the configured talent', () => {
+        expect(resolveInitialResistTalent([{ name: 'Laufen' }], 'Akrobatik')).toBe('')
     })
 })

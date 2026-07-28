@@ -123,6 +123,40 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         )
         const hasSkills = optionTexts.some((t) => t !== '' && t !== '— Keine —')
         expect(hasSkills || optgroups.length > 0).toBe(true)
+        expect(optionTexts.some((text) => text.includes('uebernatuerlicheFertigkeit'))).toBe(false)
+    })
+
+    test('AvoidTest talent dropdown persists a compatible profane talent', async ({ page }) => {
+        const itemWindow = await openImportedSpellSheet(page)
+        await openPreEffectsTab(itemWindow)
+
+        const skillSelect = itemWindow.locator('select[name$="avoidTest.fertigkeit"]').first()
+        const talentSelect = itemWindow.locator('select[name$="avoidTest.talent"]').first()
+        await expect(talentSelect).toBeVisible({ timeout: 10000 })
+
+        const skill = await skillSelect
+            .locator('option')
+            .evaluateAll((options) => options.map((option: any) => option.value).find(Boolean))
+        if (!skill) test.skip(true, 'No profane skill option available')
+
+        await skillSelect.selectOption(skill)
+        await skillSelect.dispatchEvent('change')
+        await page.waitForTimeout(250)
+        const talent = await talentSelect
+            .locator('option')
+            .evaluateAll((options) => options.map((option: any) => option.value).find(Boolean))
+        if (!talent) test.skip(true, 'No compatible profane talent option available')
+
+        await talentSelect.selectOption(talent)
+        await talentSelect.dispatchEvent('change')
+        await page.waitForTimeout(250)
+
+        await page.evaluate((id) => game.items.get(id)?.sheet?.close(), importedItemId)
+        const reopenedWindow = await openImportedSpellSheet(page)
+        await openPreEffectsTab(reopenedWindow)
+        await expect(
+            reopenedWindow.locator('select[name$="avoidTest.talent"]').first(),
+        ).toHaveValue(talent)
     })
 
     test('Damage type select is populated from settings', async ({ page }) => {

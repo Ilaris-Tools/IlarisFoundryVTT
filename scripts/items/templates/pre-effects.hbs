@@ -107,6 +107,26 @@
                         </select>
                     </div>
                     <div class="form-group">
+                        <label>Talent (optional):</label>
+                        <select name="system.preEffects.{{@index}}.avoidTest.talent">
+                            <option value="">— Keines —</option>
+                            {{#each @root.avoidTestTalentOptions}}
+                            <optgroup label="{{packName}}">
+                                {{#each talents}}
+                                {{#if (ifEq fertigkeit ../../avoidTest.fertigkeit)}}
+                                <option value="{{name}}" {{#if (ifEq name ../../avoidTest.talent)}}selected{{/if}}>{{name}}</option>
+                                {{/if}}
+                                {{/each}}
+                            </optgroup>
+                            {{/each}}
+                            {{#if avoidTest.talent}}
+                            {{#unless (isTalentInOptions avoidTest.talent avoidTest.fertigkeit @root.avoidTestTalentOptions)}}
+                            <option value="{{avoidTest.talent}}" selected>⚠ {{avoidTest.talent}} (nicht verfügbar)</option>
+                            {{/unless}}
+                            {{/if}}
+                        </select>
+                    </div>
+                    <div class="form-group">
                         <label>Attribut:</label>
                         <select name="system.preEffects.{{@index}}.avoidTest.attribut">
                             <option value="">— Keines —</option>

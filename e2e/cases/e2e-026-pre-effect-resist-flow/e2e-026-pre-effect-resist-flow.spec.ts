@@ -384,4 +384,70 @@ test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
         )
         expect(values).toContain(2)
     })
+
+    test('preselects a configured profane talent owned by the target', async ({ page }) => {
+        const configured = await page.evaluate(
+            async ({ name, spellName, difficulty }) => {
+                const actor = game.actors.getName(name)
+                const skill = actor?.profan?.fertigkeiten?.find(
+                    (entry: any) => entry.system.talente?.length,
+                )
+                const talent = skill?.system.talente?.[0]
+                const spell = actor?.items.find((item: any) => item.name?.includes(spellName))
+                if (!skill || !talent || !spell)
+                    throw new Error('Missing profane skill, talent, or spell')
+                const preEffects = foundry.utils.deepClone(spell.system.preEffects ?? [])
+                for (const preEffect of Object.values(preEffects) as any[]) {
+                    preEffect.avoidTest = {
+                        ...(preEffect.avoidTest ?? {}),
+                        enabled: true,
+                        fertigkeit: skill.name,
+                        talent: talent.name,
+                        attribut: '',
+                        diminishedOnly: false,
+                        resistDifficulty: difficulty,
+                    }
+                }
+                await spell.update({ 'system.preEffects': preEffects })
+                return { skill: skill.name, talent: talent.name }
+            },
+            { name: ACTOR_NAME, spellName: SPELL_NAME, difficulty: RESIST_DIFFICULTY },
+        )
+
+        const dialog = await openResistDialog(page)
+        await expect(dialog.locator('select[id^="talent-"] option:checked')).toHaveText(
+            configured.talent,
+        )
+        await expect(dialog).toContainText(configured.skill)
+    })
+
+    test('uses ohne Talent when the target lacks the configured talent', async ({ page }) => {
+        await page.evaluate(
+            async ({ name, spellName, difficulty }) => {
+                const actor = game.actors.getName(name)
+                const skill = actor?.profan?.fertigkeiten?.find(
+                    (entry: any) => entry.system.talente?.length,
+                )
+                const spell = actor?.items.find((item: any) => item.name?.includes(spellName))
+                if (!skill || !spell) throw new Error('Missing profane skill or spell')
+                const preEffects = foundry.utils.deepClone(spell.system.preEffects ?? [])
+                for (const preEffect of Object.values(preEffects) as any[]) {
+                    preEffect.avoidTest = {
+                        ...(preEffect.avoidTest ?? {}),
+                        enabled: true,
+                        fertigkeit: skill.name,
+                        talent: 'Nicht vorhandenes Talent',
+                        attribut: '',
+                        diminishedOnly: false,
+                        resistDifficulty: difficulty,
+                    }
+                }
+                await spell.update({ 'system.preEffects': preEffects })
+            },
+            { name: ACTOR_NAME, spellName: SPELL_NAME, difficulty: RESIST_DIFFICULTY },
+        )
+
+        const dialog = await openResistDialog(page)
+        await expect(dialog.locator('select[id^="talent-"]')).toHaveValue('-2')
+    })
 })
