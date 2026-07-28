@@ -74,6 +74,17 @@ export const registerIlarisGameSettings = () => {
             requiresReload: true,
         },
         {
+            // Register showing dice roll directly in chat message (instead of result only)
+            settingsName: IlarisGameSettingNames.showDiceRollInChat,
+            name: 'Würfel details im Chat direkt anzeigen',
+            hint: 'Zeigt Details zum Würfelwurf im Chat direkt an.',
+            config: false,
+            type: new foundry.data.fields.BooleanField(),
+            scope: 'client',
+            default: false,
+            requiresReload: true,
+        },
+        {
             // Register last seen breaking changes version setting
             settingsName: IlarisGameSettingNames.lastSeenBreakingChangesVersion,
             name: 'Zuletzt gesehene Breaking Changes Version',

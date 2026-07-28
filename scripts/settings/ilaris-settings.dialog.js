@@ -114,6 +114,10 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
                 ConfigureGameSettingsCategories.Ilaris,
                 IlarisGameSettingNames.enableTabbingCharacterSheet,
             ),
+            showDiceRollInChat: game.settings.get(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.showDiceRollInChat,
+            ),
             hexTokenShapes: game.settings.get(
                 ConfigureGameSettingsCategories.Ilaris,
                 IlarisGameSettingNames.hexTokenShapes,
@@ -469,6 +473,12 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
                 inputType: 'checkbox',
             },
             {
+                key: 'showDiceRollInChat',
+                name: IlarisGameSettingNames.showDiceRollInChat,
+                scope: 'client',
+                inputType: 'checkbox',
+            },
+            {
                 key: 'hexTokenShapes',
                 name: IlarisGameSettingNames.hexTokenShapes,
                 scope: 'world',
@@ -597,6 +607,11 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
             ConfigureGameSettingsCategories.Ilaris,
             IlarisGameSettingNames.llmModel,
             '',
+        )
+        await game.settings.set(
+            ConfigureGameSettingsCategories.Ilaris,
+            IlarisGameSettingNames.showDiceRollInChat,
+            false,
         )
 
         this.render()

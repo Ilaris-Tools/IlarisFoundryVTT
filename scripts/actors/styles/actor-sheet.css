@@ -29,6 +29,19 @@
   flex: auto;
   align-items: center;
   justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.ilaris.sheet.actor.helden .heroname {
+  flex: 1;
+}
+
+.ilaris.sheet.actor.helden .heroname input {
+  text-overflow: ellipsis;
+  
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 .ilaris.sheet.actor.helden .hw {

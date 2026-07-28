@@ -233,9 +233,7 @@ export async function postRollToChat(rollResult, speaker, messageMode) {
 }
 
 export function calculate_diceschips(html, text, actor, dialogId = '') {
-    // let text = "";
     const xd20Name = dialogId ? `xd20-${dialogId}` : 'xd20'
-    console.log(xd20Name)
     const schipsName = dialogId ? `schips-${dialogId}` : 'schips'
 
     const xd20_check = html.querySelectorAll(`input[name='${xd20Name}']`)
@@ -243,7 +241,6 @@ export function calculate_diceschips(html, text, actor, dialogId = '') {
     for (const i of xd20_check) {
         if (i.checked) xd20 = i.value
     }
-    // console.log(xd20);
     const schips_check = html.querySelectorAll(`input[name='${schipsName}']`)
     let schips = 0
     for (const i of schips_check) {
