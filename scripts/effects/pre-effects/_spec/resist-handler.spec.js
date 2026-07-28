@@ -1,0 +1,112 @@
+import { registerResistHandler, registerResistResolutionListener } from '../resist-handler.js'
+
+const effectCreate = jest.fn().mockResolvedValue([])
+let hookCallbacks
+
+function preEffect(overrides = {}) {
+    return {
+        targetActorId: 'target',
+        casterUuid: 'Actor.caster',
+        spellUuid: 'Item.spell',
+        baseDuration: 3,
+        maneuverBonus: 1,
+        isSelfCast: false,
+        instant: false,
+        changes: [{ key: 'system.test', type: 'add', value: '5', diminishedValue: '2' }],
+        avoidTest: { diminishedOnly: false },
+        ...overrides,
+    }
+}
+
+beforeEach(() => {
+    hookCallbacks = {}
+    global.window = {}
+    global.Hooks.on = jest.fn((event, callback) => {
+        hookCallbacks[event] = callback
+    })
+    global.ActiveEffect.createDocuments = effectCreate
+    effectCreate.mockClear()
+    global.ChatMessage = {
+        create: jest.fn().mockResolvedValue(undefined),
+        getSpeaker: jest.fn(() => ({ alias: 'Target' })),
+    }
+    global.game = {
+        actors: {
+            get: jest.fn((id) =>
+                id === 'target'
+                    ? { id: 'target', name: 'Target', system: {}, update: jest.fn() }
+                    : null,
+            ),
+        },
+        users: [],
+    }
+    global.foundry.utils.fromUuid = jest.fn((uuid) => {
+        if (uuid === 'Item.spell') return { name: 'Spell', uuid, system: {} }
+        if (uuid === 'Actor.caster') return { uuid }
+        return null
+    })
+})
+
+describe('resist result listener', () => {
+    it('applies a full non-instant effect when the resist roll fails', async () => {
+        registerResistResolutionListener()
+        const dialog = { _resistContext: { preEffectData: preEffect(), spellUuid: 'Item.spell' } }
+
+        await hookCallbacks['Ilaris.postSkillRoll'](dialog, { rollResult: { success: false } })
+
+        expect(effectCreate).toHaveBeenCalledWith(
+            [expect.objectContaining({ changes: [expect.objectContaining({ value: '5' })] })],
+            expect.any(Object),
+        )
+        expect(dialog._resistContext).toBeUndefined()
+    })
+
+    it('does not apply an effect when the resist roll succeeds normally', async () => {
+        registerResistResolutionListener()
+        const dialog = { _resistContext: { preEffectData: preEffect(), spellUuid: 'Item.spell' } }
+
+        await hookCallbacks['Ilaris.postSkillRoll'](dialog, { rollResult: { success: true } })
+
+        expect(effectCreate).not.toHaveBeenCalled()
+    })
+
+    it('applies diminished values when a diminished resist succeeds', async () => {
+        registerResistResolutionListener()
+        const dialog = {
+            _resistContext: {
+                preEffectData: preEffect({ avoidTest: { diminishedOnly: true } }),
+                spellUuid: 'Item.spell',
+            },
+        }
+
+        await hookCallbacks['Ilaris.postSkillRoll'](dialog, { rollResult: { success: true } })
+
+        expect(effectCreate).toHaveBeenCalledWith(
+            [expect.objectContaining({ changes: [expect.objectContaining({ value: '2' })] })],
+            expect.any(Object),
+        )
+    })
+
+    it('warns and re-enables the prompt button when the target actor is missing', async () => {
+        global.ui = { notifications: { warn: jest.fn() } }
+        global.game.actors.get.mockReturnValue(null)
+        registerResistHandler()
+        const button = {
+            dataset: { actorId: 'missing', preEffectData: encodeURIComponent(JSON.stringify({})) },
+            disabled: false,
+            addEventListener: jest.fn((_, callback) => {
+                button.clickHandler = callback
+            }),
+        }
+        const htmlDOM = {
+            querySelectorAll: jest.fn(() => [button]),
+            closest: jest.fn(() => ({ classList: { remove: jest.fn(), add: jest.fn() } })),
+        }
+
+        hookCallbacks.renderChatMessageHTML({}, htmlDOM)
+        await button.clickHandler.call(button)
+
+        expect(global.ui.notifications.warn).toHaveBeenCalled()
+        expect(button.disabled).toBe(false)
+    })
+})

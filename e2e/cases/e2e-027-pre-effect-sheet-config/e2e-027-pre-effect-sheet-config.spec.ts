@@ -130,10 +130,46 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         await openPreEffectsTab(itemWindow)
 
         const damageTypeSelect = itemWindow.locator('select[name$="damageType"]').first()
-        const exists = await damageTypeSelect.isVisible().catch(() => false)
-        if (exists) {
-            const options = await damageTypeSelect.locator('option').all()
-            expect(options.length).toBeGreaterThan(0)
-        }
+        await expect(damageTypeSelect).toBeVisible({ timeout: 10000 })
+        const options = await damageTypeSelect.locator('option').all()
+        expect(options.length).toBeGreaterThan(0)
+    })
+
+    test('adds, persists, and deletes a pre-effect entry', async ({ page }) => {
+        const itemWindow = await openImportedSpellSheet(page)
+        await openPreEffectsTab(itemWindow)
+        const cards = itemWindow.locator('.pre-effect-card')
+        const initialCount = await cards.count()
+
+        await itemWindow.locator('.add-pre-effect').click()
+        await expect(cards).toHaveCount(initialCount + 1)
+        const addedCard = cards.last()
+        await addedCard.locator('.add-change').click()
+        await expect(addedCard.locator('.change-card')).toHaveCount(1)
+        const duration = addedCard.locator('input[name$="baseDuration"]')
+        await duration.fill('9')
+        await duration.dispatchEvent('change')
+        const damageType = addedCard.locator('select[name$="damageType"]')
+        await damageType.selectOption('FEUER')
+        await damageType.dispatchEvent('change')
+
+        await page.waitForFunction(
+            ({ id, count }) => {
+                const preEffects = game.items.get(id)?.system?.preEffects ?? []
+                return Object.values(preEffects).length === count
+            },
+            { id: importedItemId, count: initialCount + 1 },
+            { timeout: 10000 },
+        )
+        await page.evaluate((id) => game.items.get(id)?.sheet?.close(), importedItemId)
+        await expect(itemWindow).toBeHidden({ timeout: 10000 })
+        const reopenedWindow = await openImportedSpellSheet(page)
+        await openPreEffectsTab(reopenedWindow)
+        const reopenedCard = reopenedWindow.locator('.pre-effect-card').last()
+        await expect(reopenedCard.locator('input[name$="baseDuration"]')).toHaveValue('9')
+        await expect(reopenedCard.locator('select[name$="damageType"]')).toHaveValue('FEUER')
+
+        await reopenedCard.locator('.delete-pre-effect').click()
+        await expect(reopenedWindow.locator('.pre-effect-card')).toHaveCount(initialCount)
     })
 })

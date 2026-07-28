@@ -46,9 +46,9 @@
 
 - [ ] **Komplexer Kampf**: Mehrere komplexe Kämpfe mit verschiedenen Teilnehmern durchführen. **Automatisiert:** E2E-010 und E2E-011; **manuell:** weitere Gruppenkonstellationen.
 - [ ] **Manöver-System**: Verschiedene Manöver testen und prüfen, dass alle Modifier beim Manöver mit denen im Chat übereinstimmen. **Automatisiert:** E2E-003, E2E-012 und E2E-017.
-- [ ] **Zauber-System**: Zauber im Kampf einsetzen und Auswirkungen prüfen. **Automatisiert:** E2E-009 und E2E-025 bis E2E-028; **manuell:** weitere Zauberarten.
+- [ ] **Zauber-System**: Zauber im Kampf einsetzen und Auswirkungen prüfen. **Automatisiert:** E2E-009, E2E-025 bis E2E-028 und E2E-030 (Heilung); **manuell:** weitere Zauberarten.
 - [ ] **Energieverwaltung**: Detaillierte Prüfung der Energie-/Ausdauer-/Fokus-Verwaltung. **Automatisiert:** E2E-009; **manuell:** Kombinationen der Energiearten.
-- [ ] **Schadenssystem**: Schäden korrekt anwenden und Heilung testen. **Automatisiert:** E2E-004, E2E-010, E2E-011 und E2E-025; **manuell:** Heilung.
+- [ ] **Schadenssystem**: Schäden korrekt anwenden und Heilung testen. **Automatisiert:** E2E-004, E2E-010, E2E-011, E2E-025 und E2E-030; **manuell:** weitere Heilungsarten und Sonderfälle.
 - [ ] **Initiative und Rundenmanagement**: Initiative-System und Rundenverwaltung testen. **Manuell:** keine E2E-Abdeckung.
 
 #### Kompendien und Datenbanken
@@ -59,7 +59,7 @@
 
 #### Systemeinstellungen und Konfiguration
 
-- [ ] **Welteinstellungen**: Manöver- und Vorteil-Kompendien-Konfiguration testen. **Automatisiert:** E2E-017; **manuell:** übrige Konfiguration.
+- [ ] **Welteinstellungen**: Manöver- und Vorteil-Kompendien-Konfiguration sowie Schadenstypen testen. **Automatisiert:** E2E-017 und E2E-031 (Schadenstypen); **manuell:** übrige Konfiguration.
 - [ ] **Spieler-Berechtigungen**: Verschiedene Spieler-Berechtigungsstufen testen. **Automatisiert:** E2E-011 deckt Besitzerrechte ab; **manuell:** weitere Rollen.
 - [ ] **Modul-Kompatibilität**: Kompatibilität mit häufig verwendeten Foundry-Modulen prüfen. **Manuell:** die E2E-Baseline verwendet keine Drittmodule.
 

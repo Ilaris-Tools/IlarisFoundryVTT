@@ -145,9 +145,21 @@ test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
             { timeout: 20000 },
         )
 
-        // Verify wounds increased
         const wundenAfter = await getActorWounds(page, ACTOR_NAME)
-        expect(wundenAfter.wunden).toBeGreaterThan(wundenBefore.wunden)
+        const damageAmount = await page.evaluate((baseline) => {
+            const damageMessage = game.messages.contents
+                .slice(baseline)
+                .find((message: any) => /Schaden:\s*\d+/.test(message.content ?? ''))
+            return Number((damageMessage?.content ?? '').match(/Schaden:\s*(\d+)/)?.[1] ?? NaN)
+        }, beforeCount)
+        const ws = await page.evaluate((name) => {
+            const actor = game.actors.getName(name) as any
+            return actor?.system?.abgeleitete?.ws ?? 0
+        }, ACTOR_NAME)
+        expect(damageAmount).toBeGreaterThan(0)
+        expect(wundenAfter.wunden - wundenBefore.wunden).toBe(
+            damageAmount > ws ? Math.floor((damageAmount - 1) / ws) : 0,
+        )
 
         // Verify chat messages include the spell name
         const messages = await page.evaluate(
@@ -166,5 +178,85 @@ test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
                 m.flavor.includes(SPELL_NAME) || m.content.includes(SPELL_NAME),
         )
         expect(spellMsgs.length).toBeGreaterThan(0)
+    })
+
+    test('damage at or below WS creates chat feedback without adding wounds', async ({ page }) => {
+        await page.evaluate(
+            ({ name, spellName }) => {
+                const spell = game.actors
+                    .getName(name)
+                    ?.items.find((item: any) => item.name?.includes(spellName))
+                const preEffects = foundry.utils.deepClone(spell?.system?.preEffects ?? [])
+                for (const preEffect of Object.values(preEffects) as any[]) {
+                    preEffect.instant = true
+                    for (const change of preEffect.changes ?? []) {
+                        change.value = '1'
+                        change.maechtigBonus = ''
+                    }
+                }
+                return spell?.update({ 'system.preEffects': preEffects })
+            },
+            { name: ACTOR_NAME, spellName: SPELL_NAME },
+        )
+
+        const actorWindow = await openActorSheet(page, ACTOR_NAME)
+        await openSpellDialog(actorWindow, SPELL_NAME)
+        const spellDialog = page.locator('.application.uebernatuerlich-dialog').last()
+        await spellDialog.locator('button[data-action="showNearby"]').click()
+        const targetDialog = page.locator('.target-selection-dialog').last()
+        await expect(targetDialog).toBeVisible({ timeout: 5000 })
+        await targetDialog
+            .locator('.target-sel-row')
+            .filter({ hasText: ACTOR_NAME })
+            .first()
+            .click()
+        await targetDialog.locator('button.submit').click()
+
+        const neutralMod = await page.evaluate(
+            ({ name, spellName }) => {
+                const spell = game.actors
+                    .getName(name)
+                    ?.items.find((item: any) => item.name?.includes(spellName))
+                return -(spell?.system?.pw ?? 0)
+            },
+            { name: ACTOR_NAME, spellName: SPELL_NAME },
+        )
+        const modInput = spellDialog.locator('input[id^="modifikator-"]')
+        await modInput.fill(String(neutralMod))
+        await modInput.dispatchEvent('change')
+        await page.evaluate(() => {
+            CONFIG.Dice.randomUniform = () => 0.01
+        })
+        const wundenBefore = await getActorWounds(page, ACTOR_NAME)
+        const beforeCount = await page.evaluate(() => game.messages.contents.length)
+        await spellDialog
+            .locator('.modifier-summary.talent-summary.clickable-summary[data-action="angreifen"]')
+            .click()
+        const chatIncreased = await page
+            .waitForFunction((baseline) => game.messages.contents.length > baseline, beforeCount, {
+                timeout: 4000,
+            })
+            .then(() => true)
+            .catch(() => false)
+        if (!chatIncreased) {
+            await page.evaluate(() => {
+                document
+                    .querySelector(
+                        '.application.uebernatuerlich-dialog .modifier-summary.talent-summary.clickable-summary[data-action="angreifen"]',
+                    )
+                    ?.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true }))
+            })
+        }
+        await page.waitForFunction(
+            (baseline) =>
+                game.messages.contents
+                    .slice(baseline)
+                    .some((message: any) =>
+                        /Schaden\s*\(1\).*nicht hoch genug/.test(message.content ?? ''),
+                    ),
+            beforeCount,
+            { timeout: 20000 },
+        )
+        expect((await getActorWounds(page, ACTOR_NAME)).wunden).toBe(wundenBefore.wunden)
     })
 })

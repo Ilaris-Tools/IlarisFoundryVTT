@@ -36,6 +36,8 @@ Die Templates können direkt bei der PR-Erstellung ausgewählt werden und erlaub
 
 Die Einträge der Release-Templates nennen jeweils die zugehörigen E2E-Test-IDs oder begründen, warum eine Prüfung manuell bleibt. Automatisierte Evidenz reduziert den manuellen Umfang, ersetzt aber die dort markierten Sicht-, Browser- und Fachprüfungen nicht.
 
+Für Erweiterungen des Effekt- und Schadenstypsystems liefert E2E-030 die automatisierte Evidenz für Heilung und E2E-031 die Evidenz für das Bearbeiten und Speichern von Schadenstypen. Diese Fälle ersetzen nicht die im Major-Release-Template genannten manuellen Prüfungen weiterer Heilungsarten, Sonderfälle und übriger Welteinstellungen.
+
 Ein isoliert erfolgreicher E2E-Test ist kein Ersatz für einen erfolgreichen seriellen Gesamtlauf. Schlägt ein Test nur im Gesamtlauf fehl, aber beim isolierten Wiederholen nicht, wird dies als Zuverlässigkeitsproblem der E2E-Suite dokumentiert und nicht als grüner Gesamtlauf gewertet. Der Fehlerbericht soll Test-ID, Reihenfolge beziehungsweise vorausgehende Fälle, die verwendete Baseline-Revision und Playwright-Artefakte enthalten.
 
 ## Packs

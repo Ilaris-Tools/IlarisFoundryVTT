@@ -57,7 +57,7 @@
                         <label>Schadenstyp:</label>
                         <select name="system.preEffects.{{@../index}}.changes.{{@index}}.damageType">
                             {{#each @root.damageTypeOptions}}
-                            <option value="{{value}}" {{#if (ifEq value ../../damageType)}}selected{{/if}}>{{label}}</option>
+                            <option value="{{value}}" {{#if (ifEq value ../damageType)}}selected{{/if}}>{{label}}</option>
                             {{/each}}
                         </select>
                     </div>
