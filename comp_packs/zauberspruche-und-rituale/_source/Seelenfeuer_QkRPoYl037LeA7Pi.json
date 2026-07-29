@@ -16,7 +16,34 @@
     "kosten": "16 AsP",
     "erlernen": "Geo 16",
     "pw": 0,
-    "gruppe": 13
+    "gruppe": 13,
+    "preEffects": [
+      {
+        "baseDuration": 0,
+        "instant": true,
+        "changes": [
+          {
+            "key": "system.gesundheit.wunden",
+            "type": "add",
+            "value": "2W6",
+            "amplifiedByMaechtigeMagie": true,
+            "maechtigBonus": "+4",
+            "damageType": "TRUE_DAMAGE",
+            "diminishedValue": "",
+            "diminishedMaechtigBonus": "",
+            "priority": null
+          }
+        ],
+        "avoidTest": {
+          "enabled": false,
+          "fertigkeit": "",
+          "talent": "",
+          "attribut": "",
+          "diminishedOnly": false,
+          "resistDifficulty": 12
+        }
+      }
+    ]
   },
   "effects": [],
   "folder": null,

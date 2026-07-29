@@ -350,7 +350,7 @@ test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
         ).toBe(effectsBefore)
     })
 
-    test('successful diminishedOnly resist applies diminished values through Ilaris.postSkillRoll', async ({
+    test('failed diminishedOnly resist creates the reviewed zero-value marker', async ({
         page,
     }) => {
         await page.evaluate(
@@ -361,8 +361,49 @@ test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
                 const preEffects = foundry.utils.deepClone(spell?.system?.preEffects ?? [])
                 for (const preEffect of Object.values(preEffects) as any[]) {
                     preEffect.avoidTest.diminishedOnly = true
-                    preEffect.changes[0].value = '5'
-                    preEffect.changes[0].diminishedValue = '2'
+                    preEffect.changes[0].key = 'system.modifikatoren.manuellermod'
+                    preEffect.changes[0].value = '0'
+                    preEffect.changes[0].diminishedValue = '-4'
+                }
+                return spell?.update({ 'system.preEffects': preEffects })
+            },
+            { name: ACTOR_NAME, spellName: SPELL_NAME },
+        )
+        await openResistDialog(page)
+        await resolveResist(page, false)
+        await page.waitForFunction(
+            (name) => (game.actors.getName(name)?.effects.size ?? 0) > 0,
+            ACTOR_NAME,
+            { timeout: 10000 },
+        )
+        const marker = await page.evaluate(
+            (name) =>
+                Array.from(game.actors.getName(name)?.effects ?? []).find((effect: any) =>
+                    effect.changes.some(
+                        (change: any) =>
+                            change.key === 'system.modifikatoren.manuellermod' &&
+                            String(change.value) === '0',
+                    ),
+                )?.name,
+            ACTOR_NAME,
+        )
+        expect(marker).toContain(SPELL_NAME)
+    })
+
+    test('successful diminishedOnly resist applies the reviewed -4 branch through Ilaris.postSkillRoll', async ({
+        page,
+    }) => {
+        await page.evaluate(
+            ({ name, spellName }) => {
+                const spell = game.actors
+                    .getName(name)
+                    ?.items.find((item: any) => item.name?.includes(spellName))
+                const preEffects = foundry.utils.deepClone(spell?.system?.preEffects ?? [])
+                for (const preEffect of Object.values(preEffects) as any[]) {
+                    preEffect.avoidTest.diminishedOnly = true
+                    preEffect.changes[0].key = 'system.modifikatoren.manuellermod'
+                    preEffect.changes[0].value = '0'
+                    preEffect.changes[0].diminishedValue = '-4'
                 }
                 return spell?.update({ 'system.preEffects': preEffects })
             },
@@ -382,7 +423,7 @@ test.describe('E2E-026 · Pre-Effect Resist Flow', () => {
                 ),
             ACTOR_NAME,
         )
-        expect(values).toContain(2)
+        expect(values).toContain(-4)
     })
 
     test('preselects a configured profane talent owned by the target', async ({ page }) => {

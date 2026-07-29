@@ -259,4 +259,86 @@ test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
         )
         expect((await getActorWounds(page, ACTOR_NAME)).wunden).toBe(wundenBefore.wunden)
     })
+
+    test('Pandämonium-like damage-only approximation applies exactly once', async ({ page }) => {
+        await page.evaluate(
+            ({ name, spellName }) => {
+                const spell = game.actors
+                    .getName(name)
+                    ?.items.find((item: any) => item.name?.includes(spellName))
+                return spell?.update({
+                    'system.preEffects': [
+                        {
+                            baseDuration: 0,
+                            instant: true,
+                            changes: [
+                                {
+                                    key: 'system.gesundheit.wunden',
+                                    type: 'add',
+                                    value: '2W6',
+                                    amplifiedByMaechtigeMagie: true,
+                                    maechtigBonus: '+1W6',
+                                    damageType: 'PROFAN',
+                                },
+                            ],
+                            avoidTest: { enabled: false },
+                        },
+                    ],
+                })
+            },
+            { name: ACTOR_NAME, spellName: SPELL_NAME },
+        )
+
+        const actorWindow = await openActorSheet(page, ACTOR_NAME)
+        await openSpellDialog(actorWindow, SPELL_NAME)
+        const spellDialog = page.locator('.application.uebernatuerlich-dialog').last()
+        await spellDialog.locator('button[data-action="showNearby"]').click()
+        const targetDialog = page.locator('.target-selection-dialog').last()
+        await expect(targetDialog).toBeVisible({ timeout: 5000 })
+        await targetDialog
+            .locator('.target-sel-row')
+            .filter({ hasText: ACTOR_NAME })
+            .first()
+            .click()
+        await targetDialog.locator('button.submit').click()
+
+        const neutralMod = await page.evaluate(
+            ({ name, spellName }) => {
+                const spell = game.actors
+                    .getName(name)
+                    ?.items.find((item: any) => item.name?.includes(spellName))
+                return -(spell?.system?.pw ?? 0)
+            },
+            { name: ACTOR_NAME, spellName: SPELL_NAME },
+        )
+        await spellDialog.locator('input[id^="modifikator-"]').fill(String(neutralMod))
+        await spellDialog.locator('input[id^="modifikator-"]').dispatchEvent('change')
+        await page.evaluate(() => {
+            CONFIG.Dice.randomUniform = () => 0.01
+        })
+
+        const wundenBefore = await getActorWounds(page, ACTOR_NAME)
+        const messageBaseline = await page.evaluate(() => game.messages.contents.length)
+        await spellDialog
+            .locator('.modifier-summary.talent-summary.clickable-summary[data-action="angreifen"]')
+            .click()
+        await page.waitForFunction(
+            ({ name, before }) => {
+                const actor = game.actors.getName(name) as any
+                return (actor?.system?.gesundheit?.wunden ?? 0) > before
+            },
+            { name: ACTOR_NAME, before: wundenBefore.wunden },
+            { timeout: 20000 },
+        )
+        await page.waitForTimeout(250)
+
+        const damageMessages = await page.evaluate(
+            (baseline) =>
+                game.messages.contents
+                    .slice(baseline)
+                    .filter((message: any) => /Schaden:\s*\d+/.test(message.content ?? '')).length,
+            messageBaseline,
+        )
+        expect(damageMessages).toBe(1)
+    })
 })

@@ -80,6 +80,12 @@ E2E_PLAYER_USER=e2e-player
 
 Die Tests laufen absichtlich seriell mit einem Worker. Bei einem Fehler bleiben Playwright-Video und Screenshot in `test-results/` erhalten.
 
+### Pre-effect scenarios
+
+E2E-025 and E2E-026 use `HatAlles` as both caster and selectable target and require its existing `Ignifaxius Flammenstrahl` item. They clone and temporarily replace that embedded item's `preEffects` with the reviewed marker, alternate-resistance, and Pandämonium-style one-time damage configurations, then restore the actor snapshot. The baseline therefore needs no additional spell items for these scenarios.
+
+Before running them, ensure that `e2e-gm` is not already connected. The runner intentionally refuses an occupied account; use a free configured E2E user instead of a personal game client.
+
 ## Nicht unterstützte Altdaten
 
 Verwaiste oder nicht mehr definierte Token-Status-Effekte werden nicht migriert und müssen nicht weiter bearbeitbar bleiben. Wenn eine alte Welt einen solchen Status enthält, das Token entfernen und neu anlegen. Die E2E-Baseline enthält nur aktuell unterstützte Status-Effekte.

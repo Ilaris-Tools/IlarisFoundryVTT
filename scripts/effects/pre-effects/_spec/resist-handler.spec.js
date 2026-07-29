@@ -91,6 +91,60 @@ describe('resist result listener', () => {
         )
     })
 
+    it('keeps the zero-value marker when a diminished-only resist fails', async () => {
+        registerResistResolutionListener()
+        const dialog = {
+            _resistContext: {
+                preEffectData: preEffect({
+                    changes: [
+                        {
+                            key: 'system.modifikatoren.manuellermod',
+                            type: 'add',
+                            value: '0',
+                            diminishedValue: '-4',
+                        },
+                    ],
+                    avoidTest: { diminishedOnly: true },
+                }),
+                spellUuid: 'Item.spell',
+            },
+        }
+
+        await hookCallbacks['Ilaris.postSkillRoll'](dialog, { rollResult: { success: false } })
+
+        expect(effectCreate).toHaveBeenCalledWith(
+            [expect.objectContaining({ changes: [expect.objectContaining({ value: '0' })] })],
+            expect.any(Object),
+        )
+    })
+
+    it('uses the diminished global modifier when a diminished-only resist succeeds', async () => {
+        registerResistResolutionListener()
+        const dialog = {
+            _resistContext: {
+                preEffectData: preEffect({
+                    changes: [
+                        {
+                            key: 'system.modifikatoren.manuellermod',
+                            type: 'add',
+                            value: '0',
+                            diminishedValue: '-4',
+                        },
+                    ],
+                    avoidTest: { diminishedOnly: true },
+                }),
+                spellUuid: 'Item.spell',
+            },
+        }
+
+        await hookCallbacks['Ilaris.postSkillRoll'](dialog, { rollResult: { success: true } })
+
+        expect(effectCreate).toHaveBeenCalledWith(
+            [expect.objectContaining({ changes: [expect.objectContaining({ value: '-4' })] })],
+            expect.any(Object),
+        )
+    })
+
     it('warns and re-enables the prompt button when the target actor is missing', async () => {
         global.ui = { notifications: { warn: jest.fn() } }
         global.game.actors.get.mockReturnValue(null)

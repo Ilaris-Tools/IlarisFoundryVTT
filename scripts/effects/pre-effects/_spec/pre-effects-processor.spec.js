@@ -213,6 +213,44 @@ describe('pre-effect processor', () => {
         expect(global.ActiveEffect.createDocuments).not.toHaveBeenCalled()
     })
 
+    it('creates a timed spell-named zero-modifier marker without updating the actor', async () => {
+        const target = createTargetActor()
+
+        await createActiveEffectFromPreEffect(
+            target,
+            {
+                changes: [
+                    {
+                        key: 'system.modifikatoren.manuellermod',
+                        type: 'add',
+                        value: '0',
+                    },
+                ],
+            },
+            { uuid: 'Actor.caster' },
+            { name: 'Hexengalle', uuid: 'Item.hexengalle', system: {} },
+            2,
+            0,
+        )
+
+        expect(global.ActiveEffect.createDocuments).toHaveBeenCalledWith(
+            [
+                expect.objectContaining({
+                    name: 'Hexengalle',
+                    changes: [
+                        expect.objectContaining({
+                            key: 'system.modifikatoren.manuellermod',
+                            value: '0',
+                        }),
+                    ],
+                    duration: { turns: 2 },
+                }),
+            ],
+            { parent: target },
+        )
+        expect(target.update).not.toHaveBeenCalled()
+    })
+
     it('creates independent effects for a self target and another target', async () => {
         const caster = { id: 'caster-id', uuid: 'Actor.caster' }
         const self = createTargetActor({ id: 'caster-id', name: 'Caster' })
