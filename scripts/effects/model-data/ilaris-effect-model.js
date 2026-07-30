@@ -24,6 +24,11 @@ export function createIlarisActiveEffectDataModel(h) {
                 _pendingExpiry: h.bool(false),
                 _pendingDurationChange: h.bool(false),
             })
+            // `changes` intentionally remains the native Foundry channel. Contextual
+            // Ilaris rules are authored separately so they can be resolved for a
+            // weapon, Talent, or situation without modifying prepared actor data.
+            schema.ilarisSource = h.string('ordinary')
+            schema.ilarisModifiers = h.arrayOfObjects()
             return schema
         }
     }

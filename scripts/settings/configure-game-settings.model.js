@@ -25,6 +25,7 @@ export const IlarisGameSettingNames = {
     lastSeenBreakingChangesVersion: 'lastSeenBreakingChangesVersion',
     lepSystem: 'lepSystem',
     damageTypes: 'damageTypes',
+    supernaturalEffectStacking: 'supernaturalEffectStacking',
     llmApiUrl: 'llmApiUrl',
     llmApiKey: 'llmApiKey',
     llmModel: 'llmModel',

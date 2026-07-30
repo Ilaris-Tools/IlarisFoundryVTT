@@ -136,6 +136,15 @@ export const registerIlarisGameSettings = () => {
             default:
                 '[{"value":"PROFAN","label":"Profan (Wunden)","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"STUMPF","label":"Stumpf (Erschöpfung)","behavior":{"healing":false,"targetsErschoepfung":true,"bypassesArmor":false}},{"value":"MAGISCH","label":"Magisch","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"GEWEIHT","label":"Geweiht","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"DAEMONISCH","label":"Dämonisch","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"FEUER","label":"Feuer","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"EIS","label":"Eis","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"ERZ","label":"Erz","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"HUMUS","label":"Humus","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"LUFT","label":"Luft","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"WASSER","label":"Wasser","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"HEALING_WOUND","label":"Heilung (Wunden)","behavior":{"healing":true,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"HEALING_EXHAUSTION","label":"Heilung (Erschöpfung)","behavior":{"healing":true,"targetsErschoepfung":true,"bypassesArmor":false}},{"value":"TRUE_DAMAGE","label":"SP-Schaden","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":true}}]',
         },
+        {
+            settingsName: IlarisGameSettingNames.supernaturalEffectStacking,
+            name: 'Übernatürliche Effekte stapeln',
+            hint: 'Ilaris wählt getrennt den stärksten positiven und negativen übernatürlichen Modifikator. Foundry addiert alle Ilaris-Modifikatoren.',
+            config: false,
+            type: String,
+            scope: 'world',
+            default: 'ilaris',
+        },
     ].forEach((setting) => {
         game.settings.register(ConfigureGameSettingsCategories.Ilaris, setting.settingsName, {
             name: setting.name,

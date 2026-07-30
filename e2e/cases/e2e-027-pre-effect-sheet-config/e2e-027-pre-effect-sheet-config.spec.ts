@@ -206,4 +206,61 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         await reopenedCard.locator('.delete-pre-effect').click()
         await expect(reopenedWindow.locator('.pre-effect-card')).toHaveCount(initialCount)
     })
+
+    test('adds, persists, reopens, and edits an Ilaris modifier with selectors', async ({
+        page,
+    }) => {
+        const itemWindow = await openImportedSpellSheet(page)
+        await openPreEffectsTab(itemWindow)
+        const card = itemWindow.locator('.pre-effect-card').first()
+        const modifiers = card.locator('.ilaris-modifier-card')
+        const initialCount = await modifiers.count()
+
+        await card.locator('.add-ilaris-modifier').click()
+        await expect(modifiers).toHaveCount(initialCount + 1)
+        const modifier = modifiers.last()
+        await modifier.locator('select[name$=".phase"]').selectOption('roll')
+        await modifier.locator('select[name$=".target"]').selectOption('at')
+        await modifier.locator('input[name$=".value"]').fill('2')
+        await modifier.locator('select[name$=".stacking"]').selectOption('strongest-supernatural')
+        await modifier.locator('input[name$=".selector.fertigkeit"]').fill('Klingenwaffen')
+        await modifier.locator('input[name$=".selector.fertigkeit"]').dispatchEvent('change')
+
+        await page.waitForFunction(
+            ({ id, count }) => {
+                const preEffects = game.items.get(id)?.system?.preEffects ?? []
+                const effect = Object.values(preEffects)[0] as any
+                return Object.values(effect?.ilarisModifiers ?? {}).length === count
+            },
+            { id: importedItemId, count: initialCount + 1 },
+            { timeout: 10000 },
+        )
+
+        await page.evaluate((id) => game.items.get(id)?.sheet?.close(), importedItemId)
+        const reopenedWindow = await openImportedSpellSheet(page)
+        await openPreEffectsTab(reopenedWindow)
+        const reopenedModifier = reopenedWindow
+            .locator('.pre-effect-card')
+            .first()
+            .locator('.ilaris-modifier-card')
+            .last()
+        await expect(reopenedModifier.locator('select[name$=".target"]')).toHaveValue('at')
+        await expect(reopenedModifier.locator('input[name$=".value"]')).toHaveValue('2')
+        await expect(reopenedModifier.locator('input[name$=".selector.fertigkeit"]')).toHaveValue(
+            'Klingenwaffen',
+        )
+
+        await reopenedModifier.locator('input[name$=".value"]').fill('3')
+        await reopenedModifier.locator('input[name$=".value"]').dispatchEvent('change')
+        await page.waitForFunction(
+            ({ id }) => {
+                const preEffects = game.items.get(id)?.system?.preEffects ?? []
+                const effect = Object.values(preEffects)[0] as any
+                const entries = Object.values(effect?.ilarisModifiers ?? {}) as any[]
+                return entries.at(-1)?.value === '3'
+            },
+            { id: importedItemId },
+            { timeout: 10000 },
+        )
+    })
 })

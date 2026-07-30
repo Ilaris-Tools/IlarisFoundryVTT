@@ -163,8 +163,9 @@ export class AngriffDialog extends CombatDialog {
      * Creates attack roll summary
      */
     getAttackSummaryContext(baseAT, statusMods, nahkampfMods, diceFormula) {
+        const ilaris = this.getIlarisModifierResult('at')
         const maneuverMod = this.mod_at || 0
-        const totalMod = maneuverMod + statusMods + nahkampfMods
+        const totalMod = maneuverMod + statusMods + nahkampfMods + ilaris.value
         const finalAT = baseAT + totalMod
         const formattedDice = formatDiceFormula(diceFormula)
         const finalFormula =
@@ -187,10 +188,12 @@ export class AngriffDialog extends CombatDialog {
                 },
                 this._buildSignedModifierData(statusMods, 'Status (Wunden/Furcht)'),
                 this._buildSignedModifierData(nahkampfMods, 'Token Status'),
+                ...this.getIlarisModifierRows(ilaris),
             ].filter((row) => row),
             sections: maneuverSection ? [maneuverSection] : [],
             totalRow: this._buildTotalModifierData(totalMod),
             showDivider: Boolean(maneuverSection || totalMod),
+            suppression: this.getIlarisSuppressionContext(ilaris),
         }
     }
 
@@ -198,9 +201,10 @@ export class AngriffDialog extends CombatDialog {
      * Creates defense roll summary
      */
     getDefenseSummaryContext(baseVT, statusMods, nahkampfMods, diceFormula) {
+        const ilaris = this.getIlarisModifierResult('vt')
         const vtStatusMods = this.vt_abzuege_mod || 0
         const maneuverMod = this.mod_vt || 0
-        const totalMod = maneuverMod + vtStatusMods + nahkampfMods
+        const totalMod = maneuverMod + vtStatusMods + nahkampfMods + ilaris.value
         const finalVT = baseVT + totalMod
         const formattedDice = formatDiceFormula(diceFormula)
         const finalFormula =
@@ -222,10 +226,12 @@ export class AngriffDialog extends CombatDialog {
                 },
                 this._buildSignedModifierData(vtStatusMods, 'Status (Wunden/Furcht)'),
                 this._buildSignedModifierData(nahkampfMods, 'Token Status'),
+                ...this.getIlarisModifierRows(ilaris),
             ].filter((row) => row),
             sections: maneuverSection ? [maneuverSection] : [],
             totalRow: this._buildTotalModifierData(totalMod),
             showDivider: Boolean(maneuverSection || totalMod),
+            suppression: this.getIlarisSuppressionContext(ilaris),
         }
     }
 
@@ -233,15 +239,25 @@ export class AngriffDialog extends CombatDialog {
      * Creates damage roll summary
      */
     getDamageSummaryContext() {
+        const ilaris = this.getIlarisModifierResult('damage')
         const baseDamage = this.getBaseDamageFormula()
         const maneuverMod = this.mod_dm || 0
         const hasDamageFormula = Boolean(baseDamage)
         let finalFormula = 'Kein Schadenwert'
-        if (hasDamageFormula && maneuverMod === 0) {
+        if (
+            hasDamageFormula &&
+            maneuverMod === 0 &&
+            ilaris.value === 0 &&
+            !ilaris.diceFormulas.length
+        ) {
             finalFormula = baseDamage
         } else if (hasDamageFormula) {
-            const sign = maneuverMod > 0 ? '+' : ''
-            finalFormula = `${baseDamage} ${sign}${maneuverMod}`
+            finalFormula = this.appendIlarisDamageFormula(
+                maneuverMod
+                    ? `${baseDamage} ${maneuverMod > 0 ? '+' : ''}${maneuverMod}`
+                    : baseDamage,
+                ilaris,
+            )
         }
 
         const canClick = hasDamageFormula && !(this.isDefenseMode && !this.riposte)
@@ -271,9 +287,11 @@ export class AngriffDialog extends CombatDialog {
                     value: hasDamageFormula ? `${baseDamage}` : 'Nicht gesetzt',
                     cssClass: 'modifier-item base-value',
                 },
+                ...this.getIlarisModifierRows(ilaris),
             ],
             sections: modifierSection ? [modifierSection] : [],
             showDivider: Boolean(modifierSection),
+            suppression: this.getIlarisSuppressionContext(ilaris),
         }
     }
 
@@ -288,7 +306,7 @@ export class AngriffDialog extends CombatDialog {
         }
 
         const damageMod = signed(this.mod_dm)
-        return damageMod ? `${baseDamage} ${damageMod}` : baseDamage
+        return this.appendIlarisDamageFormula(damageMod ? `${baseDamage} ${damageMod}` : baseDamage)
     }
 
     /* -------------------------------------------- */
@@ -302,12 +320,15 @@ export class AngriffDialog extends CombatDialog {
         await this.updateManoeverMods()
         this.updateStatusMods()
         super.eigenschaftenText()
+        const ilaris = this.getIlarisModifierResult('at')
+        this.text_at = `${this.text_at}${this.getIlarisModifierText(ilaris)}\n`
 
         let label = `Attacke (${this.item.name})`
         let formula = `${diceFormula} ${signed(this.item.system.at)} \
             ${signed(this.at_abzuege_mod)} \
             ${signed(this.item.actor.system.modifikatoren.nahkampfmod)} \
-            ${signed(this.mod_at)}`
+            ${signed(this.mod_at)} \
+            ${signed(ilaris.value)}`
 
         // Use the new evaluation function
         const rollResult = await evaluate_roll_with_crit(
@@ -332,9 +353,13 @@ export class AngriffDialog extends CombatDialog {
         this.updateStatusMods()
         let label = `Verteidigung (${this.item.name})`
         let diceFormula = this.getDiceFormula()
+        const ilaris = this.getIlarisModifierResult('vt')
+        this.text_vt = `${this.text_vt}${this.getIlarisModifierText(ilaris)}\n`
         let formula = `${diceFormula} ${signed(this.item.system.vt)} ${signed(
             this.vt_abzuege_mod,
-        )} ${signed(this.item.actor.system.modifikatoren.verteidigungmod)} ${signed(this.mod_vt)}`
+        )} ${signed(this.item.actor.system.modifikatoren.verteidigungmod)} ${signed(this.mod_vt)} ${signed(
+            ilaris.value,
+        )}`
 
         // Use the new evaluation function
         const rollResult = await evaluate_roll_with_crit(

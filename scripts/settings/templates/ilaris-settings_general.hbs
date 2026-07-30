@@ -58,6 +58,17 @@
             </div>
             <input type="checkbox" name="general.lepSystem" {{#if settings.lepSystem}}checked{{/if}}>
         </div>
+        <div class="setting-row">
+            <div class="setting-label-block">
+                <span class="setting-label">Übernatürliche Effekte stapeln</span>
+                <span class="setting-scope"><i class="fas fa-globe"></i> Welt</span>
+                <p class="setting-hint">Ilaris wählt den stärksten positiven und den stärksten negativen übernatürlichen Effekt getrennt. Foundry addiert alle Ilaris-Modifikatoren.</p>
+            </div>
+            <select name="general.supernaturalEffectStacking">
+                <option value="ilaris" {{#if (ifEq settings.supernaturalEffectStacking "ilaris")}}selected{{/if}}>Ilaris</option>
+                <option value="foundry" {{#if (ifEq settings.supernaturalEffectStacking "foundry")}}selected{{/if}}>Foundry</option>
+            </select>
+        </div>
     {{/if}}
 
     <div class="setting-row">

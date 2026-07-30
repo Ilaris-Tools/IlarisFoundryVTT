@@ -101,6 +101,11 @@ async function handleResistClick(actor, preEffectData, button) {
             initialTalent,
             success_val: resistDifficulty,
             resistAgainst: spellName,
+            attributeTargets: [
+                skill.system.attribut_0,
+                skill.system.attribut_1,
+                skill.system.attribut_2,
+            ],
         }
     } else if (avoidTest.attribut) {
         // Attribute-based resist: compute PW from actor's attribute
@@ -121,6 +126,7 @@ async function handleResistClick(actor, preEffectData, button) {
             pw: attributValue,
             success_val: resistDifficulty,
             resistAgainst: spellName,
+            attributeTargets: [attributKey],
         }
     } else {
         // Fallback: neither fertigkeit nor attribut configured
@@ -260,6 +266,13 @@ async function applyDiminishedEffect(preEffectData) {
                 value: change.diminishedValue || change.value,
                 maechtigBonus: change.diminishedMaechtigBonus || change.maechtigBonus || '',
             })),
+            ilarisModifiers: toArray(preEffectData.ilarisModifiers).map((modifier) => ({
+                ...modifier,
+                value: modifier.diminishedValue || modifier.value,
+                maechtigBonus: modifier.diminishedMaechtigBonus || modifier.maechtigBonus || '',
+                comparisonValue:
+                    modifier.diminishedComparisonValue || modifier.comparisonValue || '',
+            })),
         }
         await applyInstantPreEffect(targetActor, diminishedPreEffect, maechtigeQs, speaker)
         return
@@ -272,6 +285,12 @@ async function applyDiminishedEffect(preEffectData) {
             ...change,
             value: change.diminishedValue || change.value,
             maechtigBonus: change.diminishedMaechtigBonus || change.maechtigBonus || '',
+        })),
+        ilarisModifiers: toArray(preEffectData.ilarisModifiers).map((modifier) => ({
+            ...modifier,
+            value: modifier.diminishedValue || modifier.value,
+            maechtigBonus: modifier.diminishedMaechtigBonus || modifier.maechtigBonus || '',
+            comparisonValue: modifier.diminishedComparisonValue || modifier.comparisonValue || '',
         })),
     }
 

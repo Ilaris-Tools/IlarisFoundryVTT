@@ -125,4 +125,45 @@ describe('IlarisActor energy helper', () => {
         expect(actor.system.abgeleitete.ws_beine).toBe(8)
         expect(actor.system.abgeleitete.ws_kopf).toBe(8)
     })
+
+    test('applies semantic GS modifiers after native preparation without persisting actor data', () => {
+        global.game.settings.get = jest.fn().mockReturnValue('ilaris')
+        const nativePrepare = Actor.prototype.prepareData
+        Actor.prototype.prepareData = function () {
+            this.system.abgeleitete.gs = 5
+        }
+        const actor = createActorFixture({
+            system: { abgeleitete: { gs: 0 }, attribute: { GE: { wert: 12 } } },
+            allApplicableEffects: () => [
+                {
+                    name: 'Axxeleratus',
+                    system: {
+                        ilarisSource: 'uebernatuerlich',
+                        ilarisModifiers: [
+                            {
+                                phase: 'prepare',
+                                target: 'gs',
+                                value: '4',
+                                stacking: 'strongest-supernatural',
+                            },
+                            {
+                                phase: 'roll',
+                                target: 'ge',
+                                value: '8',
+                                stacking: 'strongest-supernatural',
+                            },
+                        ],
+                    },
+                },
+            ],
+            update: jest.fn(),
+        })
+
+        actor.prepareData()
+
+        expect(actor.system.abgeleitete.gs).toBe(9)
+        expect(actor.system.attribute.GE.wert).toBe(12)
+        expect(actor.update).not.toHaveBeenCalled()
+        Actor.prototype.prepareData = nativePrepare
+    })
 })

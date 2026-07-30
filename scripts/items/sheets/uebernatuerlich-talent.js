@@ -1,5 +1,13 @@
 import { IlarisItemSheet } from './item.js'
 import { collectActorSystemPaths } from '../../effects/utils/field-path-collector.js'
+import {
+    IlarisModifierPhase,
+    IlarisModifierPhaseLabels,
+    IlarisModifierStacking,
+    IlarisModifierStackingLabels,
+    IlarisModifierTarget,
+    IlarisModifierTargetLabels,
+} from '../../effects/utils/ilaris-modifier-constants.js'
 
 export class UebernatuerlichTalentSheet extends IlarisItemSheet {
     /** @override */
@@ -34,6 +42,9 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
 
         // Populate damage type options from world setting
         context.damageTypeOptions = this._getDamageTypeOptions()
+        context.ilarisModifierPhases = IlarisModifierPhaseLabels
+        context.ilarisModifierTargets = IlarisModifierTargetLabels
+        context.ilarisModifierStacking = IlarisModifierStackingLabels
 
         // LLM generation availability (GM only, API configured)
         context.isGM = game.user.isGM
@@ -157,6 +168,22 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
             this.document.update({ 'system.preEffects': preEffects })
         })
 
+        this.element.querySelector('.pre-effects-list')?.addEventListener('click', (event) => {
+            const btn = event.target.closest('.add-ilaris-modifier')
+            if (!btn) return
+
+            const card = btn.closest('.pre-effect-card')
+            const allCards = [...this.element.querySelectorAll('.pre-effect-card')]
+            const index = allCards.indexOf(card)
+            if (index < 0) return
+
+            const preEffects = foundry.utils.deepClone(this.document.system.preEffects || [])
+            if (!preEffects[index]) return
+            preEffects[index].ilarisModifiers = preEffects[index].ilarisModifiers || []
+            preEffects[index].ilarisModifiers.push(this._defaultIlarisModifier())
+            this.document.update({ 'system.preEffects': preEffects })
+        })
+
         // Delete Pre-Effect button (delegated)
         this.element.querySelector('.pre-effects-list')?.addEventListener('click', (event) => {
             const btn = event.target.closest('.delete-pre-effect')
@@ -169,6 +196,23 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
 
             const preEffects = foundry.utils.deepClone(this.document.system.preEffects || [])
             preEffects.splice(index, 1)
+            this.document.update({ 'system.preEffects': preEffects })
+        })
+
+        this.element.querySelector('.pre-effects-list')?.addEventListener('click', (event) => {
+            const btn = event.target.closest('.delete-ilaris-modifier')
+            if (!btn) return
+
+            const modifierCard = btn.closest('.ilaris-modifier-card')
+            const preEffectCard = btn.closest('.pre-effect-card')
+            const allPreEffectCards = [...this.element.querySelectorAll('.pre-effect-card')]
+            const preEffectIndex = allPreEffectCards.indexOf(preEffectCard)
+            const modifierCards = [...preEffectCard.querySelectorAll('.ilaris-modifier-card')]
+            const modifierIndex = modifierCards.indexOf(modifierCard)
+            if (preEffectIndex < 0 || modifierIndex < 0) return
+
+            const preEffects = foundry.utils.deepClone(this.document.system.preEffects || [])
+            preEffects[preEffectIndex]?.ilarisModifiers?.splice(modifierIndex, 1)
             this.document.update({ 'system.preEffects': preEffects })
         })
 
@@ -319,6 +363,7 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
             baseDuration: 0,
             instant: false,
             changes: [],
+            ilarisModifiers: [],
             avoidTest: {
                 enabled: false,
                 fertigkeit: '',
@@ -341,6 +386,22 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
             diminishedValue: '',
             diminishedMaechtigBonus: '',
             priority: null,
+        }
+    }
+
+    _defaultIlarisModifier() {
+        return {
+            phase: IlarisModifierPhase.Roll,
+            target: IlarisModifierTarget.AT,
+            value: '',
+            stacking: IlarisModifierStacking.StrongestSupernatural,
+            comparisonValue: '',
+            selector: { fertigkeit: [], talent: [], situation: [] },
+            amplifiedByMaechtigeMagie: false,
+            maechtigBonus: '',
+            diminishedValue: '',
+            diminishedMaechtigBonus: '',
+            diminishedComparisonValue: '',
         }
     }
 }

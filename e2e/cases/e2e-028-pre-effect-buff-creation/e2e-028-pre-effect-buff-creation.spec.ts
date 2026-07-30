@@ -211,8 +211,18 @@ test.describe('E2E-028 · Pre-Effect Buff ActiveEffect Creation', () => {
                     remaining: latest.system?.ilarisTiming?.remaining ?? null,
                     original: latest.system?.ilarisTiming?.originalValue ?? null,
                     changes: (latest._source?.changes ?? latest.changes ?? []).map(normalizeChange),
+                    ilarisSource: latest.system?.ilarisSource ?? null,
+                    ilarisModifiers: latest.system?.ilarisModifiers ?? [],
                     sourceType: latest.flags?.ilaris?.sourceType ?? null,
                     expectedChanges: (source?.changes ?? []).map(normalizeChange),
+                    expectedIlarisModifiers: (source?.ilarisModifiers ?? []).map(
+                        (modifier: any) => ({
+                            phase: modifier.phase,
+                            target: modifier.target,
+                            value: modifier.value,
+                            stacking: modifier.stacking,
+                        }),
+                    ),
                     expectedDuration: (source?.baseDuration ?? 0) + 1,
                 }
             },
@@ -222,9 +232,95 @@ test.describe('E2E-028 · Pre-Effect Buff ActiveEffect Creation', () => {
         expect(effectInfo).not.toBeNull()
         expect(effectInfo!.name).toContain(SPELL_NAME)
         expect(effectInfo!.durationType).toBe('ownerTurns')
+        expect(effectInfo!.ilarisSource).toBe('uebernatuerlich')
+        expect(effectInfo!.sourceType).toBe('uebernatuerlich')
         expect(effectInfo!.changes).toEqual(effectInfo!.expectedChanges)
+        expect(effectInfo!.ilarisModifiers).toEqual(
+            expect.arrayContaining(effectInfo!.expectedIlarisModifiers),
+        )
         expect(effectInfo!.turns).toBe(effectInfo!.expectedDuration)
         expect(effectInfo!.remaining).toBe(effectInfo!.expectedDuration)
         expect(effectInfo!.original).toBe(effectInfo!.expectedDuration)
+    })
+
+    test('materializes semantic amplification, keeps native changes, and redirects main attributes', async ({
+        page,
+    }) => {
+        const effectData = await page.evaluate(async (actorName) => {
+            const actor = game.actors.getName(actorName)
+            const spell = actor?.items.find((item: any) => item.name?.includes('Axxeleratus'))
+            if (!actor || !spell) throw new Error('Actor or Axxeleratus not found')
+            const existingEffectIds = new Set(actor.effects.map((effect: any) => effect.id))
+
+            const { createActiveEffectFromPreEffect } =
+                await import('/systems/Ilaris/scripts/effects/pre-effects/pre-effects-processor.js')
+            await createActiveEffectFromPreEffect(
+                actor,
+                {
+                    baseDuration: 3,
+                    instant: false,
+                    changes: [
+                        {
+                            key: 'system.attribute.GE.wert',
+                            type: 'add',
+                            value: '1',
+                            amplifiedByMaechtigeMagie: true,
+                            maechtigBonus: '+1',
+                        },
+                        {
+                            key: 'system.modifikatoren.manuellermod',
+                            type: 'add',
+                            value: '2',
+                        },
+                    ],
+                    ilarisModifiers: [
+                        {
+                            phase: 'roll',
+                            target: 'at',
+                            value: '2',
+                            stacking: 'strongest-supernatural',
+                            amplifiedByMaechtigeMagie: true,
+                            maechtigBonus: '+1',
+                            diminishedValue: '-2',
+                            diminishedMaechtigBonus: '-1',
+                        },
+                    ],
+                },
+                actor,
+                spell,
+                3,
+                2,
+            )
+
+            const latest = actor.effects.find((effect: any) => !existingEffectIds.has(effect.id))
+            if (!latest) throw new Error('Materialized effect not found')
+            return {
+                changes: Array.from(latest.changes ?? latest._source?.changes ?? []).map(
+                    (change: any) => ({ ...change }),
+                ),
+                ilarisModifiers: Array.from(latest.system?.ilarisModifiers ?? []).map(
+                    (modifier: any) => ({ ...modifier }),
+                ),
+            }
+        }, ACTOR_NAME)
+
+        expect(effectData.changes).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    key: 'system.modifikatoren.manuellermod',
+                    type: 'add',
+                    value: 2,
+                }),
+            ]),
+        )
+        expect(effectData.changes).not.toEqual(
+            expect.arrayContaining([expect.objectContaining({ key: 'system.attribute.GE.wert' })]),
+        )
+        expect(effectData.ilarisModifiers).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({ target: 'ge', value: '1+1+1' }),
+                expect.objectContaining({ target: 'at', value: '2+1+1' }),
+            ]),
+        )
     })
 })

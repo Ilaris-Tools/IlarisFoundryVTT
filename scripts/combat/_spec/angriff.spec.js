@@ -132,4 +132,76 @@ describe('AngriffDialog summary context', () => {
         expect(damageSummary.headingClass).toBe('disabled')
         expect(damageSummary.rows[0].value).toBe('Nicht gesetzt')
     })
+
+    it('shows applied effect sources while keeping suppressed components in a disclosure ledger', () => {
+        const dialog = createDialog()
+        dialog.actor.allApplicableEffects = () => [
+            {
+                name: 'Mirakel',
+                system: {
+                    ilarisSource: 'uebernatuerlich',
+                    ilarisModifiers: [
+                        {
+                            phase: 'roll',
+                            target: 'at',
+                            value: '4',
+                            stacking: 'strongest-supernatural',
+                        },
+                        {
+                            phase: 'roll',
+                            target: 'damage',
+                            value: '3',
+                            stacking: 'strongest-supernatural',
+                        },
+                        {
+                            phase: 'roll',
+                            target: 'vt',
+                            value: '3',
+                            stacking: 'strongest-supernatural',
+                        },
+                    ],
+                },
+            },
+            {
+                name: 'Attributo',
+                system: {
+                    ilarisSource: 'uebernatuerlich',
+                    ilarisModifiers: [
+                        {
+                            phase: 'roll',
+                            target: 'at',
+                            value: '2',
+                            stacking: 'strongest-supernatural',
+                        },
+                        {
+                            phase: 'roll',
+                            target: 'waffenschaden',
+                            value: '2',
+                            stacking: 'strongest-supernatural',
+                        },
+                    ],
+                },
+            },
+        ]
+
+        const summary = dialog.getSummaryContext({ baseAT: 14, baseVT: 13 }, 0, 0, '1d20')
+        const attack = summary.sections[0]
+        const defense = summary.sections[1]
+        const damage = summary.sections[2]
+
+        expect(attack.heading).toContain('1W20+18')
+        expect(attack.rows).toEqual(
+            expect.arrayContaining([expect.objectContaining({ label: 'Ilaris: Mirakel' })]),
+        )
+        expect(attack.suppression.entries).toEqual(
+            expect.arrayContaining([expect.objectContaining({ sourceName: 'Attributo' })]),
+        )
+        expect(defense.rows).toEqual(
+            expect.arrayContaining([expect.objectContaining({ label: 'Ilaris: Mirakel' })]),
+        )
+        expect(damage.heading).toContain('+3')
+        expect(damage.suppression.entries).toEqual(
+            expect.arrayContaining([expect.objectContaining({ sourceName: 'Attributo' })]),
+        )
+    })
 })

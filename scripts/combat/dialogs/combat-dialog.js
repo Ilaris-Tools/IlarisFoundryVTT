@@ -3,10 +3,13 @@ import {
     ConfigureGameSettingsCategories,
 } from '../../settings/configure-game-settings.model.js'
 import { postRollToChat } from '../../dice/wuerfel_misc.js'
+import { signed } from '../../dice/chatutilities.js'
 import {
     callIlarisHookAllWithGlobalMirror,
     callIlarisHookWithGlobalMirror,
 } from '../hooks/global_combat_hooks.js'
+import { IlarisModifierPhase } from '../../effects/utils/ilaris-modifier-constants.js'
+import { resolveIlarisModifiers } from '../../effects/utils/ilaris-modifier-resolver.js'
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api
 
@@ -343,6 +346,54 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             isError: false,
             message: 'Wird berechnet...',
         }
+    }
+
+    /** Resolve semantic effect components for the equipped weapon context. */
+    getIlarisModifierResult(target) {
+        return resolveIlarisModifiers({
+            actor: this.actor,
+            phase: IlarisModifierPhase.Roll,
+            target,
+            fertigkeit: this.item?.system?.fertigkeit || '',
+            talent: this.item?.system?.talent || '',
+        })
+    }
+
+    getIlarisModifierRows(result) {
+        return result.selected.map((entry) => ({
+            label: `Ilaris: ${entry.sourceName}`,
+            value: entry.parsed.raw,
+            cssClass: `modifier-item ${entry.parsed.expectedValue >= 0 ? 'positive' : 'negative'}`,
+        }))
+    }
+
+    getIlarisSuppressionContext(result) {
+        if (!result.hasSuppression) return null
+        return {
+            label: 'Unterdrückte Ilaris-Modifikatoren anzeigen',
+            entries: result.suppressed.map((entry) => ({
+                sourceName: entry.sourceName,
+                value: entry.parsed.raw,
+                reason: entry.reason,
+            })),
+        }
+    }
+
+    getIlarisModifierText(result) {
+        return result.selected
+            .map((entry) => `Ilaris – ${entry.sourceName}: ${entry.parsed.raw}`)
+            .join('\n')
+    }
+
+    /** Append a terminal effect-derived damage contribution after maneuvers. */
+    appendIlarisDamageFormula(formula, result = this.getIlarisModifierResult('damage')) {
+        const terms = [formula]
+        if (result.value) terms.push(signed(result.value))
+        for (const diceFormula of result.diceFormulas) {
+            const normalized = diceFormula.replace(/[Ww]/g, 'd')
+            terms.push(/^[+-]/.test(normalized) ? normalized : `+${normalized}`)
+        }
+        return terms.filter(Boolean).join(' ')
     }
 
     getErrorSummaryContext() {

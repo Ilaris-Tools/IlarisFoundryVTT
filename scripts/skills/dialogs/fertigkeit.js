@@ -1,5 +1,10 @@
 import { evaluate_roll_with_crit, postRollToChat } from '../../dice/wuerfel_misc.js'
 import { formatDiceFormula } from '../../core/utilities.js'
+import {
+    IlarisModifierPhase,
+    IlarisModifierTarget,
+} from '../../effects/utils/ilaris-modifier-constants.js'
+import { resolveIlarisModifiers } from '../../effects/utils/ilaris-modifier-resolver.js'
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api
 
@@ -53,6 +58,10 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
         this.speaker = ChatMessage.getSpeaker({ actor: this.actor })
         this.dialogId = `dialog-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`
         this.initialXd20 = options.initialXd20 ?? '1'
+        this.attributeTargets = (options.attributeTargets || []).map((attribute) =>
+            String(attribute).toLowerCase(),
+        )
+        this.situation = options.situation || (options.sozialesDuell ? 'sozialesDuell' : '')
         this._hasEmittedRenderedHook = false
         this.summary = this.getDefaultSummaryContext()
         this._initialPreviewPromise = null
@@ -210,6 +219,49 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
         }
     }
 
+    _getIlarisProbeResult(talent = '') {
+        const targets = new Set([IlarisModifierTarget.Probe])
+        if (talent) targets.add(IlarisModifierTarget.Talent)
+        for (const attribute of this.attributeTargets) targets.add(attribute)
+
+        const results = Array.from(targets).map((target) =>
+            resolveIlarisModifiers({
+                actor: this.actor,
+                phase: IlarisModifierPhase.Roll,
+                target,
+                fertigkeit: this.fertigkeitName,
+                talent,
+                situation: this.situation,
+            }),
+        )
+
+        return {
+            value: results.reduce((total, result) => total + result.value, 0),
+            selected: results.flatMap((result) => result.selected),
+            suppressed: results.flatMap((result) => result.suppressed),
+            hasSuppression: results.some((result) => result.hasSuppression),
+        }
+    }
+
+    _getIlarisModifierLines(result) {
+        return result.selected.map((entry) => ({
+            label: `Ilaris: ${entry.sourceName}`,
+            value: entry.parsed.expectedValue,
+        }))
+    }
+
+    _getIlarisSuppressionContext(result) {
+        if (!result.hasSuppression) return null
+        return {
+            label: 'Unterdrückte Ilaris-Modifikatoren anzeigen',
+            entries: result.suppressed.map((entry) => ({
+                sourceName: entry.sourceName,
+                value: entry.parsed.raw,
+                reason: entry.reason,
+            })),
+        }
+    }
+
     _buildSummaryContext(modifierState) {
         const { diceFormula, totalMod, modLines, finalPW, effectivePW, label, usesTalent } =
             modifierState
@@ -271,6 +323,7 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
                                       totalMod > 0 ? 'positive' : 'negative'
                                   }`,
                               },
+                    suppression: this._getIlarisSuppressionContext(modifierState.ilaris),
                     showDivider: true,
                 },
             ],
@@ -302,6 +355,18 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
                 hoheQualitaet: modifierState.hoheQualitaet,
                 hoheQualitaetMod: modifierState.hoheQualitaetMod,
                 modifikator: modifierState.modifikator,
+                ilaris: {
+                    value: modifierState.ilaris.value,
+                    selected: modifierState.ilaris.selected.map((entry) => ({
+                        sourceName: entry.sourceName,
+                        value: entry.parsed.raw,
+                    })),
+                    suppressed: modifierState.ilaris.suppressed.map((entry) => ({
+                        sourceName: entry.sourceName,
+                        value: entry.parsed.raw,
+                        reason: entry.reason,
+                    })),
+                },
                 lines: modifierState.modLines.map((line) => ({ ...line })),
             },
             schips: {
@@ -350,6 +415,9 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
         }
         if (modifierState.modifikator !== 0) {
             text = text.concat(`Modifikator: ${modifierState.modifikator}\n`)
+        }
+        for (const entry of modifierState.ilaris.selected) {
+            text = text.concat(`Ilaris – ${entry.sourceName}: ${entry.parsed.raw}\n`)
         }
 
         return text
@@ -460,9 +528,13 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
             }
         }
 
+        const selectedTalent = usesTalent ? label.replace(/^.*\(|\)$/g, '') : ''
+        const ilaris = this._getIlarisProbeResult(selectedTalent)
+        modLines.push(...this._getIlarisModifierLines(ilaris))
+
         // Calculate totals
         const hoheQualitaetMod = hoheQualitaet * -4
-        const totalMod = globalermod + hoheQualitaetMod + modifikator
+        const totalMod = globalermod + hoheQualitaetMod + modifikator + ilaris.value
         const finalPW = effectivePW + totalMod
 
         return {
@@ -479,6 +551,7 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
             hoheQualitaet,
             hoheQualitaetMod,
             modifikator,
+            ilaris,
             schipsChoice: selectedSchipsChoice,
             schipsApplied,
             schipsText,
@@ -525,7 +598,8 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
             game.settings.get('core', 'messageMode')
 
         // Build formula
-        const formula = `${modifierState.diceFormula} + ${modifierState.effectivePW} + ${modifierState.globalermod} + ${modifierState.hoheQualitaetMod} + ${modifierState.modifikator}`
+        const ilarisFormula = modifierState.ilaris.value ? ` + ${modifierState.ilaris.value}` : ''
+        const formula = `${modifierState.diceFormula} + ${modifierState.effectivePW} + ${modifierState.globalermod} + ${modifierState.hoheQualitaetMod} + ${modifierState.modifikator}${ilarisFormula}`
 
         const preRollPayload = this._buildRollPayload({
             statePayload,

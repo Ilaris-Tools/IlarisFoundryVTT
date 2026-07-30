@@ -13,6 +13,20 @@ für Spielerinnen garnicht auf. Sie lassen sich über den letzten Tab in der Sei
 - **Hexagonale Token-Bilder**: Wenn aktiviert, werden Charakterbilder auf Hexfeld-Karten als Hexagone zugeschnitten. Dies verbessert die visuelle Darstellung von Token auf Karten mit Hexfeld-Gittern, indem die Token-Bilder an die Form der Hexfelder angepasst werden.
 - **Charakter-Synchronisation Button ausblenden**: Als Option, wenn man seinen Charakter nicht über den Sync-Button updaten will. Wenn aktiviert, wird der Button "Charakter mit Kompendium-Vorteilen Synchronisieren" auf dem Heldensheet ausgeblendet.
 
+## Ilaris-Modifikatoren auf Active Effects
+
+Die Welteinstellung **Übernatürliche Effekte stapeln** steuert die Auflösung: `Ilaris` (Voreinstellung) wählt für jeden passenden Wert getrennt den stärksten positiven und den stärksten negativen übernatürlichen Modifikator. `Foundry` addiert alle Ilaris-Modifikatoren; bestehende Effekte müssen dafür nicht neu angelegt werden.
+
+Der Reiter **Ilaris-Modifikatoren** eines Active Effects ist für kontextabhängige Werte wie AT, VT, TP/Waffenschaden, Fertigkeiten, Talente und Situationen vorgesehen. Native Foundry-**Änderungen** bleiben für unbedingte `system.*`-Pfade erhalten.
+
+- Übernatürliche Komponenten mit _Stärkster übernatürlicher Effekt_ konkurrieren nur im gleichen Probe-Kontext. Der stärkste positive und der stärkste negative Wert wirken gleichzeitig; `-5` verdrängt also `-3`.
+- Eine Fertigkeits-, Talent- oder Situationsauswahl begrenzt den Geltungsbereich. Beispielsweise unterdrückt ein übernatürliches `+2 AT` für Klingenwaffen ein allgemeines übernatürliches `+1 AT` nur bei Klingenwaffen.
+- Hauptattribute (MU, KL, IN, CH, FF, GE, KO, KK) sind immer Probenmodifikatoren. Sie verändern weder den vorbereiteten Attributswert noch abgeleitete Werte wie GS.
+- Alle Vorteile bleiben gewöhnliche, additive Modifikatoren – auch magische und karmale Vorteile.
+- Ilaris-Schadensmodifikatoren werden erst nach Manövern an die Schadensformel angehängt. Ein Hammerschlag verändert daher weder ihre Vergleichsstärke noch ihren Beitrag.
+
+Angewendete Ilaris-Modifikatoren und ihre Quellen stehen immer in der Modifikatorübersicht. Unterdrückte Komponenten werden nicht dauerhaft ausgeblendet: Das Auge-durchgestrichen-Symbol öffnet bei Bedarf die Begründung und die betroffenen Komponenten.
+
 ### Automatisierung
 
 - **Scene-Umgebungseinstellungen verwenden**: Wenn aktiviert, werden Licht und Wetter aus den Scene-Einstellungen automatisch in Fernkampf-Dialogen vorausgewählt. Die Umgebungsbedingungen können direkt im Szene-Config Menü gesetzt werden.

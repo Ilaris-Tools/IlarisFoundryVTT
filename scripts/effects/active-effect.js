@@ -2,6 +2,7 @@ import {
     IlarisGameSettingNames,
     ConfigureGameSettingsCategories,
 } from '../settings/configure-game-settings.model.js'
+import { targetFromMainAttributePath } from './utils/ilaris-modifier-constants.js'
 
 /**
  * Custom ActiveEffect class for Ilaris system
@@ -13,6 +14,18 @@ import {
  * - Set Effect Value to: damage amount (supports @references)
  */
 export class IlarisActiveEffect extends ActiveEffect {
+    /**
+     * Direct native main-attribute changes are legacy data. Applying them
+     * changes prepared attributes and can cascade into GS, carry capacity, or
+     * other derived values. New effects are redirected by the config and
+     * Pre-Effect processors; existing ones are safely ignored here.
+     * @override
+     */
+    shouldApplyChange(change, options) {
+        if (targetFromMainAttributePath(change?.key)) return false
+        return super.shouldApplyChange(change, options)
+    }
+
     /**
      * Resolves a formula string containing @ references using actor roll data
      * @param {string} formula - The formula string to resolve
@@ -159,6 +172,8 @@ export class IlarisActiveEffect extends ActiveEffect {
      * @override
      */
     apply(actor, change) {
+        if (targetFromMainAttributePath(change?.key)) return {}
+
         // If change value contains @ references, resolve it as a formula
         if (typeof change.value === 'string' && change.value.includes('@')) {
             const resolvedValue = this.resolveFormulaValue(change.value, actor)

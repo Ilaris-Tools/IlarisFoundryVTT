@@ -130,6 +130,10 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
                 ConfigureGameSettingsCategories.Ilaris,
                 IlarisGameSettingNames.lepSystem,
             ),
+            supernaturalEffectStacking: game.settings.get(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.supernaturalEffectStacking,
+            ),
             llmApiUrl: game.settings.get(
                 ConfigureGameSettingsCategories.Ilaris,
                 IlarisGameSettingNames.llmApiUrl,
@@ -497,6 +501,12 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
                 inputType: 'checkbox',
             },
             {
+                key: 'supernaturalEffectStacking',
+                name: IlarisGameSettingNames.supernaturalEffectStacking,
+                scope: 'world',
+                inputType: 'select',
+            },
+            {
                 key: 'llmApiUrl',
                 name: IlarisGameSettingNames.llmApiUrl,
                 scope: 'client',
@@ -570,6 +580,7 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
                 { name: IlarisGameSettingNames.hexTokenShapes, value: false },
                 { name: IlarisGameSettingNames.defaultRangedDodgeTalent, value: '' },
                 { name: IlarisGameSettingNames.lepSystem, value: false },
+                { name: IlarisGameSettingNames.supernaturalEffectStacking, value: 'ilaris' },
                 {
                     name: IlarisGameSettingNames.damageTypes,
                     value: '[{"value":"PROFAN","label":"Profan (Wunden)","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"STUMPF","label":"Stumpf (Erschöpfung)","behavior":{"healing":false,"targetsErschoepfung":true,"bypassesArmor":false}},{"value":"MAGISCH","label":"Magisch","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"GEWEIHT","label":"Geweiht","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"DAEMONISCH","label":"Dämonisch","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"FEUER","label":"Feuer","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"EIS","label":"Eis","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"ERZ","label":"Erz","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"HUMUS","label":"Humus","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"LUFT","label":"Luft","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"WASSER","label":"Wasser","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"HEALING_WOUND","label":"Heilung (Wunden)","behavior":{"healing":true,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"HEALING_EXHAUSTION","label":"Heilung (Erschöpfung)","behavior":{"healing":true,"targetsErschoepfung":true,"bypassesArmor":false}},{"value":"TRUE_DAMAGE","label":"SP-Schaden","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":true}}]',

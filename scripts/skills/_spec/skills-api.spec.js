@@ -288,6 +288,92 @@ describe('FertigkeitDialog hooks', () => {
         )
     })
 
+    it('applies semantic attribute modifiers only to matching probes and honors social-duel selectors', () => {
+        actor.allApplicableEffects = () => [
+            {
+                name: 'Attributo GE',
+                system: {
+                    ilarisSource: 'uebernatuerlich',
+                    ilarisModifiers: [
+                        {
+                            phase: 'roll',
+                            target: 'ge',
+                            value: '2',
+                            stacking: 'strongest-supernatural',
+                        },
+                    ],
+                },
+            },
+            {
+                name: 'Rededuell',
+                system: {
+                    ilarisSource: 'ordinary',
+                    ilarisModifiers: [
+                        {
+                            phase: 'roll',
+                            target: 'probe',
+                            value: '3',
+                            stacking: 'add',
+                            selector: { situation: ['sozialesDuell'] },
+                        },
+                    ],
+                },
+            },
+            {
+                name: 'Schwaches Attributo GE',
+                system: {
+                    ilarisSource: 'uebernatuerlich',
+                    ilarisModifiers: [
+                        {
+                            phase: 'roll',
+                            target: 'ge',
+                            value: '1',
+                            stacking: 'strongest-supernatural',
+                        },
+                    ],
+                },
+            },
+        ]
+        const geDialog = new FertigkeitDialog(actor, {
+            probeType: 'attribut',
+            fertigkeitName: 'GE',
+            pw: 10,
+            attributeTargets: ['GE'],
+            situation: 'sozialesDuell',
+        })
+        geDialog.element = createDialogElement(geDialog.dialogId)
+
+        const kkDialog = new FertigkeitDialog(actor, {
+            probeType: 'attribut',
+            fertigkeitName: 'KK',
+            pw: 10,
+            attributeTargets: ['KK'],
+        })
+        kkDialog.element = createDialogElement(kkDialog.dialogId)
+
+        expect(geDialog._calculateModifiers()).toEqual(
+            expect.objectContaining({ totalMod: 7, finalPW: 17 }),
+        )
+        expect(kkDialog._calculateModifiers()).toEqual(
+            expect.objectContaining({ totalMod: 2, finalPW: 12 }),
+        )
+
+        const summary = geDialog._buildSummaryContext(geDialog._calculateModifiers())
+        expect(summary.sections[0].rows).toEqual(
+            expect.arrayContaining([expect.objectContaining({ label: 'Ilaris: Attributo GE' })]),
+        )
+        expect(summary.sections[0].rows).not.toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({ label: 'Ilaris: Schwaches Attributo GE' }),
+            ]),
+        )
+        expect(summary.sections[0].suppression.entries).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({ sourceName: 'Schwaches Attributo GE' }),
+            ]),
+        )
+    })
+
     it('prepares the computed summary context for summaries-only rerenders', async () => {
         const dialog = new FertigkeitDialog(actor, {
             probeType: 'simple',

@@ -21,17 +21,19 @@
       {
         "baseDuration": 8,
         "instant": false,
-        "changes": [
+        "changes": [],
+        "ilarisModifiers": [
           {
-            "key": "system.modifikatoren.nahkampfmod",
-            "type": "add",
+            "phase": "roll",
+            "target": "at",
             "value": "-4",
+            "stacking": "strongest-supernatural",
+            "comparisonValue": "",
+            "selector": {},
             "amplifiedByMaechtigeMagie": true,
             "maechtigBonus": "-2",
-            "damageType": "PROFAN",
             "diminishedValue": "",
-            "diminishedMaechtigBonus": "",
-            "priority": null
+            "diminishedMaechtigBonus": ""
           }
         ],
         "avoidTest": {

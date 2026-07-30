@@ -177,14 +177,16 @@ describe('pre-effect processor', () => {
                         { key: 'system.custom', mode: 10, value: 'x', priority: null },
                     ],
                     duration: { turns: 7 },
-                    system: {
+                    system: expect.objectContaining({
+                        ilarisSource: 'uebernatuerlich',
+                        ilarisModifiers: [],
                         ilarisTiming: {
                             durationType: 'ownerTurns',
                             expiresOn: 'turnEnd',
                             remaining: 7,
                             originalValue: 7,
                         },
-                    },
+                    }),
                     flags: {
                         ilaris: expect.objectContaining({
                             sourceType: 'uebernatuerlich',
@@ -211,6 +213,47 @@ describe('pre-effect processor', () => {
         )
 
         expect(global.ActiveEffect.createDocuments).not.toHaveBeenCalled()
+    })
+
+    it('materializes semantic modifiers and redirects native main attributes to roll-only data', async () => {
+        const target = createTargetActor()
+        await createActiveEffectFromPreEffect(
+            target,
+            {
+                changes: [
+                    {
+                        key: 'system.attribute.GE.wert',
+                        type: 'add',
+                        value: '2',
+                    },
+                ],
+                ilarisModifiers: [
+                    {
+                        phase: 'roll',
+                        target: 'at',
+                        value: '2',
+                        stacking: 'strongest-supernatural',
+                        amplifiedByMaechtigeMagie: true,
+                        maechtigBonus: '+1',
+                        diminishedValue: '1',
+                    },
+                ],
+            },
+            { uuid: 'Actor.caster' },
+            { name: 'Attributo', uuid: 'Item.attributo', system: {} },
+            3,
+            2,
+        )
+
+        const created = global.ActiveEffect.createDocuments.mock.calls[0][0][0]
+        expect(created.changes).toEqual([])
+        expect(created.system).toMatchObject({
+            ilarisSource: 'uebernatuerlich',
+            ilarisModifiers: expect.arrayContaining([
+                expect.objectContaining({ target: 'ge', value: '2' }),
+                expect.objectContaining({ target: 'at', value: '2+1+1' }),
+            ]),
+        })
     })
 
     it('creates a timed spell-named zero-modifier marker without updating the actor', async () => {

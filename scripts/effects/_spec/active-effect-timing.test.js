@@ -28,6 +28,10 @@ beforeAll(async () => {
         updateDuration(_context) {
             this._updateDurationCalled = true
         }
+
+        shouldApplyChange(_change, _options) {
+            return true
+        }
     }
 
     const mockBaseConfig = class ActiveEffectConfig {
@@ -129,11 +133,20 @@ describe('IlarisActiveEffect.updateDuration', () => {
     })
 })
 
+describe('IlarisActiveEffect native main-attribute guard', () => {
+    test('rejects legacy main-attribute changes while preserving non-attribute native changes', () => {
+        const effect = new IlarisActiveEffect()
+
+        expect(effect.shouldApplyChange({ key: 'system.attribute.GE.wert' })).toBe(false)
+        expect(effect.shouldApplyChange({ key: 'system.modifikatoren.manuellermod' })).toBe(true)
+    })
+})
+
 // ── IlarisActiveEffectConfig._getIlarisTimingData ────────────────────────────
 
 describe('IlarisActiveEffectConfig._getIlarisTimingData', () => {
     function makeConfig(systemData) {
-        const cfg = Object.create(IlarisActiveEffectConfig.prototype)
+        const cfg = new IlarisActiveEffectConfig()
         cfg.document = { system: systemData || {} }
         return cfg
     }
@@ -163,6 +176,35 @@ describe('IlarisActiveEffectConfig._getIlarisTimingData', () => {
             originalValue: 5,
             expiresOn: 'turnEnd',
         })
+    })
+
+    test('prepares Vorteil modifiers as ordinary additive entries without dropping native changes', async () => {
+        const cfg = new IlarisActiveEffectConfig()
+        cfg.document = {
+            parent: { type: 'vorteil' },
+            system: {
+                ilarisSource: 'uebernatuerlich',
+                ilarisModifiers: [
+                    {
+                        phase: 'roll',
+                        target: 'at',
+                        value: '2',
+                        stacking: 'strongest-supernatural',
+                    },
+                ],
+            },
+            changes: [{ key: 'system.modifikatoren.manuellermod', value: '1' }],
+        }
+
+        const context = await cfg._prepareContext({})
+
+        expect(context.ilarisSource).toBe('ordinary')
+        expect(context.ilarisModifiers).toEqual([
+            expect.objectContaining({ target: 'at', stacking: 'add' }),
+        ])
+        expect(cfg.document.changes).toEqual([
+            { key: 'system.modifikatoren.manuellermod', value: '1' },
+        ])
     })
 })
 

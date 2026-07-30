@@ -66,6 +66,15 @@
                                     <strong>{{section.totalRow.text}}</strong>
                                 </div>
                             {{/if}}
+
+                            {{#if section.suppression}}
+                                <details class="ilaris-suppression-ledger">
+                                    <summary aria-label="{{section.suppression.label}}" title="{{section.suppression.label}}"><i class="fas fa-eye-slash"></i></summary>
+                                    {{#each section.suppression.entries as |entry|}}
+                                        <div class="modifier-item neutral">{{entry.sourceName}}: {{entry.value}} – {{entry.reason}}</div>
+                                    {{/each}}
+                                </details>
+                            {{/if}}
                         </div>
                     </div>
                 {{/each}}

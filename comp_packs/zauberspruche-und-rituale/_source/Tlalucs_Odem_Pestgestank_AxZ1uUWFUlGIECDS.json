@@ -46,17 +46,19 @@
       {
         "baseDuration": 8,
         "instant": false,
-        "changes": [
+        "changes": [],
+        "ilarisModifiers": [
           {
-            "key": "system.modifikatoren.manuellermod",
-            "type": "add",
+            "phase": "roll",
+            "target": "probe",
             "value": "-4",
+            "stacking": "strongest-supernatural",
+            "comparisonValue": "",
+            "selector": {},
             "amplifiedByMaechtigeMagie": false,
             "maechtigBonus": "",
-            "damageType": "PROFAN",
             "diminishedValue": "",
-            "diminishedMaechtigBonus": "",
-            "priority": null
+            "diminishedMaechtigBonus": ""
           }
         ],
         "avoidTest": {

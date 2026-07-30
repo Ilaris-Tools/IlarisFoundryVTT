@@ -1,0 +1,60 @@
+<section class="tab ilaris-modifiers {{tab.cssClass}}" data-group="sheet" data-tab="ilarisModifiers">
+    <legend>Ilaris-Modifikatoren</legend>
+    <p class="hint">Kontextabhängige Modifikatoren werden bei der passenden Probe ausgewertet. Übernatürliche Komponenten werden nur nach den Ilaris-Stapelregeln verglichen.</p>
+
+    <div class="form-group">
+        <label>Quelle</label>
+        <div class="form-fields">
+            {{#if isVorteilSource}}
+                <input type="text" value="Gewöhnlich (Vorteil)" disabled>
+                <input type="hidden" name="system.ilarisSource" value="ordinary">
+            {{else}}
+                <select name="system.ilarisSource">
+                    {{selectOptions ilarisModifierSources selected=ilarisSource}}
+                </select>
+            {{/if}}
+        </div>
+        <p class="hint">Vorteile bleiben immer gewöhnliche, additive Modifikatoren.</p>
+    </div>
+
+    {{#each ilarisModifiers}}
+        <fieldset class="ilaris-modifier-card">
+            <legend>Ilaris-Modifikator</legend>
+            <button type="button" class="delete-ilaris-modifier" data-index="{{@index}}" aria-label="Ilaris-Modifikator entfernen"><i class="fas fa-trash"></i></button>
+            <div class="form-group">
+                <label>Phase</label>
+                <div class="form-fields"><select name="system.ilarisModifiers.{{@index}}.phase">{{selectOptions ../ilarisModifierPhases selected=phase}}</select></div>
+            </div>
+            <div class="form-group">
+                <label>Ziel</label>
+                <div class="form-fields"><select name="system.ilarisModifiers.{{@index}}.target">{{selectOptions ../ilarisModifierTargets selected=target}}</select></div>
+            </div>
+            <div class="form-group">
+                <label>Wert</label>
+                <div class="form-fields"><input type="text" name="system.ilarisModifiers.{{@index}}.value" value="{{value}}" placeholder="z. B. +2 oder +1W6"></div>
+            </div>
+            <div class="form-group">
+                <label>Stapelung</label>
+                <div class="form-fields"><select name="system.ilarisModifiers.{{@index}}.stacking" {{#if ../isVorteilSource}}disabled{{/if}}>{{selectOptions ../ilarisModifierStacking selected=stacking}}</select></div>
+            </div>
+            <div class="form-group">
+                <label>Vergleichswert</label>
+                <div class="form-fields"><input type="number" name="system.ilarisModifiers.{{@index}}.comparisonValue" value="{{comparisonValue}}" step="any"></div>
+            </div>
+            <div class="form-group">
+                <label>Fertigkeiten</label>
+                <div class="form-fields"><input type="text" name="system.ilarisModifiers.{{@index}}.selector.fertigkeit" value="{{selector.fertigkeit}}" placeholder="Kommagetrennt"></div>
+            </div>
+            <div class="form-group">
+                <label>Talente</label>
+                <div class="form-fields"><input type="text" name="system.ilarisModifiers.{{@index}}.selector.talent" value="{{selector.talent}}" placeholder="Kommagetrennt"></div>
+            </div>
+            <div class="form-group">
+                <label>Situation</label>
+                <div class="form-fields"><input type="text" name="system.ilarisModifiers.{{@index}}.selector.situation" value="{{selector.situation}}" placeholder="z. B. sozialesDuell"></div>
+            </div>
+        </fieldset>
+    {{/each}}
+
+    <button type="button" class="add-ilaris-modifier"><i class="fas fa-plus"></i> Ilaris-Modifikator hinzufügen</button>
+</section>

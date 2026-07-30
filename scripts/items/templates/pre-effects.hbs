@@ -79,6 +79,70 @@
                 <button type="button" class="add-change">+ Änderung hinzufügen</button>
             </div>
 
+            <div class="ilaris-modifiers-list">
+                <h4>Ilaris-Modifikatoren</h4>
+                {{#each ilarisModifiers}}
+                <fieldset class="ilaris-modifier-card">
+                    <legend>Ilaris-Modifikator</legend>
+                    <button type="button" class="delete-ilaris-modifier">✕</button>
+                    <div class="form-group">
+                        <label>Phase:</label>
+                        <select name="system.preEffects.{{@../index}}.ilarisModifiers.{{@index}}.phase">
+                            {{selectOptions @root.ilarisModifierPhases selected=phase}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Ziel:</label>
+                        <select name="system.preEffects.{{@../index}}.ilarisModifiers.{{@index}}.target">
+                            {{selectOptions @root.ilarisModifierTargets selected=target}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Wert:</label>
+                        <input type="text" name="system.preEffects.{{@../index}}.ilarisModifiers.{{@index}}.value" value="{{value}}" placeholder="z. B. +2 oder +1W6" />
+                    </div>
+                    <div class="form-group">
+                        <label>Stapelung:</label>
+                        <select name="system.preEffects.{{@../index}}.ilarisModifiers.{{@index}}.stacking">
+                            {{selectOptions @root.ilarisModifierStacking selected=stacking}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Vergleichswert:</label>
+                        <input type="text" name="system.preEffects.{{@../index}}.ilarisModifiers.{{@index}}.comparisonValue" value="{{comparisonValue}}" />
+                    </div>
+                    <div class="form-group">
+                        <label>Fertigkeiten:</label>
+                        <input type="text" name="system.preEffects.{{@../index}}.ilarisModifiers.{{@index}}.selector.fertigkeit" value="{{selector.fertigkeit}}" placeholder="Kommagetrennt" />
+                    </div>
+                    <div class="form-group">
+                        <label>Talente:</label>
+                        <input type="text" name="system.preEffects.{{@../index}}.ilarisModifiers.{{@index}}.selector.talent" value="{{selector.talent}}" placeholder="Kommagetrennt" />
+                    </div>
+                    <div class="form-group">
+                        <label>Situation:</label>
+                        <input type="text" name="system.preEffects.{{@../index}}.ilarisModifiers.{{@index}}.selector.situation" value="{{selector.situation}}" placeholder="z. B. sozialesDuell" />
+                    </div>
+                    <div class="form-group">
+                        <label><input type="checkbox" name="system.preEffects.{{@../index}}.ilarisModifiers.{{@index}}.amplifiedByMaechtigeMagie" {{checked amplifiedByMaechtigeMagie}} /> Verstärkt durch Mächtige Magie</label>
+                    </div>
+                    <div class="form-group">
+                        <label>Mächtig Bonus:</label>
+                        <input type="text" name="system.preEffects.{{@../index}}.ilarisModifiers.{{@index}}.maechtigBonus" value="{{maechtigBonus}}" placeholder="z. B. +2" />
+                    </div>
+                    <div class="form-group">
+                        <label>Abgeschwächter Wert:</label>
+                        <input type="text" name="system.preEffects.{{@../index}}.ilarisModifiers.{{@index}}.diminishedValue" value="{{diminishedValue}}" />
+                    </div>
+                    <div class="form-group">
+                        <label>Abgeschwächter Mächtig-Bonus:</label>
+                        <input type="text" name="system.preEffects.{{@../index}}.ilarisModifiers.{{@index}}.diminishedMaechtigBonus" value="{{diminishedMaechtigBonus}}" />
+                    </div>
+                </fieldset>
+                {{/each}}
+                <button type="button" class="add-ilaris-modifier">+ Ilaris-Modifikator hinzufügen</button>
+            </div>
+
             <div class="avoid-test-section">
                 <h4>Widerstands-Probe</h4>
                 <div class="form-group">

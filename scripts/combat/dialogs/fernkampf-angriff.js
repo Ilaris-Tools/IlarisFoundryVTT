@@ -120,8 +120,9 @@ export class FernkampfAngriffDialog extends CombatDialog {
      * Creates attack roll summary
      */
     getAttackSummaryContext(baseFK, statusMods, nahkampfMods, diceFormula) {
+        const ilaris = this.getIlarisModifierResult('at')
         const maneuverMod = this.mod_at || 0
-        const totalMod = maneuverMod + statusMods + nahkampfMods
+        const totalMod = maneuverMod + statusMods + nahkampfMods + ilaris.value
         const finalFK = baseFK + totalMod
         const formattedDice = formatDiceFormula(diceFormula)
         const finalFormula =
@@ -135,6 +136,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
             },
             this._buildSignedModifierData(statusMods, 'Status (Wunden/Furcht)'),
             this._buildSignedModifierData(nahkampfMods, 'Token Status'),
+            ...this.getIlarisModifierRows(ilaris),
         ].filter((row) => row)
 
         const maneuverSection = this._buildModifierSectionData(this.text_at, {
@@ -150,6 +152,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
             sections: maneuverSection ? [maneuverSection] : [],
             totalRow,
             showDivider: Boolean(maneuverSection || totalRow),
+            suppression: this.getIlarisSuppressionContext(ilaris),
         }
     }
 
@@ -157,15 +160,25 @@ export class FernkampfAngriffDialog extends CombatDialog {
      * Creates damage roll summary
      */
     getDamageSummaryContext() {
+        const ilaris = this.getIlarisModifierResult('damage')
         const baseDamage = this.getBaseDamageFormula()
         const maneuverMod = this.mod_dm || 0
         const hasDamageFormula = Boolean(baseDamage)
         let finalFormula = 'Kein Schadenwert'
-        if (hasDamageFormula && maneuverMod === 0) {
+        if (
+            hasDamageFormula &&
+            maneuverMod === 0 &&
+            ilaris.value === 0 &&
+            !ilaris.diceFormulas.length
+        ) {
             finalFormula = baseDamage
         } else if (hasDamageFormula) {
-            const sign = maneuverMod > 0 ? '+' : ''
-            finalFormula = `${baseDamage} ${sign}${maneuverMod}`
+            finalFormula = this.appendIlarisDamageFormula(
+                maneuverMod
+                    ? `${baseDamage} ${maneuverMod > 0 ? '+' : ''}${maneuverMod}`
+                    : baseDamage,
+                ilaris,
+            )
         }
 
         const modifierSection = this._buildModifierSectionData(this.text_dm, {
@@ -194,9 +207,11 @@ export class FernkampfAngriffDialog extends CombatDialog {
                     value: hasDamageFormula ? `${baseDamage}` : 'Nicht gesetzt',
                     cssClass: 'modifier-item base-value',
                 },
+                ...this.getIlarisModifierRows(ilaris),
             ],
             sections: modifierSection ? [modifierSection] : [],
             showDivider: Boolean(modifierSection),
+            suppression: this.getIlarisSuppressionContext(ilaris),
         }
     }
 
@@ -211,7 +226,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
         }
 
         const damageMod = signed(this.mod_dm)
-        return damageMod ? `${baseDamage} ${damageMod}` : baseDamage
+        return this.appendIlarisDamageFormula(damageMod ? `${baseDamage} ${damageMod}` : baseDamage)
     }
 
     /* -------------------------------------------- */
@@ -225,11 +240,14 @@ export class FernkampfAngriffDialog extends CombatDialog {
         await this.updateManoeverMods()
         this.updateStatusMods()
         super.eigenschaftenText()
+        const ilaris = this.getIlarisModifierResult('at')
+        this.text_at = `${this.text_at}${this.getIlarisModifierText(ilaris)}\n`
 
         let label = `Fernkampf (${this.item.name})`
         let formula = `${diceFormula} ${signed(this._getFKValue())} \
             ${signed(this.at_abzuege_mod)} \
-            ${signed(this.mod_at)}`
+            ${signed(this.mod_at)} \
+            ${signed(ilaris.value)}`
 
         // Use the new evaluation function
         const rollResult = await evaluate_roll_with_crit(

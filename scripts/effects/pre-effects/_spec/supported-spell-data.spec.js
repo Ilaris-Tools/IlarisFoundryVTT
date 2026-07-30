@@ -33,16 +33,11 @@ describe('reviewed supported spell pre-effect source data', () => {
             expect.objectContaining({
                 baseDuration: 16,
                 instant: false,
-                changes: expect.arrayContaining([
-                    expect.objectContaining({ key: 'system.abgeleitete.gs', value: '4' }),
-                    expect.objectContaining({
-                        key: 'system.modifikatoren.nahkampfmod',
-                        value: '2',
-                    }),
-                    expect.objectContaining({
-                        key: 'system.modifikatoren.verteidigungmod',
-                        value: '2',
-                    }),
+                changes: [],
+                ilarisModifiers: expect.arrayContaining([
+                    expect.objectContaining({ phase: 'prepare', target: 'gs', value: '4' }),
+                    expect.objectContaining({ phase: 'roll', target: 'at', value: '2' }),
+                    expect.objectContaining({ phase: 'roll', target: 'vt', value: '2' }),
                 ]),
             }),
         ])
@@ -64,14 +59,16 @@ describe('reviewed supported spell pre-effect source data', () => {
         )
     })
 
-    it('configures Plumbumbarum as an eight-phase attack modifier', () => {
+    it('configures Plumbumbarum as an eight-phase semantic attack modifier', () => {
         const preEffect = readSpell('Plumbumbarum_schwerer_Arm_jpmAxEkEsqT9cV8l.json').system
             .preEffects?.[0]
 
         expect(preEffect).toMatchObject({ baseDuration: 8, instant: false })
-        expect(preEffect.changes).toEqual([
+        expect(preEffect.changes).toEqual([])
+        expect(preEffect.ilarisModifiers).toEqual([
             expect.objectContaining({
-                key: 'system.modifikatoren.nahkampfmod',
+                phase: 'roll',
+                target: 'at',
                 value: '-4',
                 amplifiedByMaechtigeMagie: true,
                 maechtigBonus: '-2',
@@ -94,9 +91,10 @@ describe('reviewed supported spell pre-effect source data', () => {
                         fertigkeit: 'Zähigkeit',
                         resistDifficulty: 16,
                     }),
-                    changes: [
+                    changes: [],
+                    ilarisModifiers: [
                         expect.objectContaining({
-                            key: 'system.modifikatoren.manuellermod',
+                            target: 'probe',
                             value: '-4',
                         }),
                     ],
@@ -136,9 +134,10 @@ describe('reviewed supported spell pre-effect source data', () => {
                     diminishedOnly: true,
                     resistDifficulty: 16,
                 }),
-                changes: [
+                changes: [],
+                ilarisModifiers: [
                     expect.objectContaining({
-                        key: 'system.modifikatoren.manuellermod',
+                        target: 'probe',
                         value: '0',
                         diminishedValue: '-4',
                     }),
