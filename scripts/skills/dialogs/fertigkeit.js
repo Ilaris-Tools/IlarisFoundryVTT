@@ -40,11 +40,16 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
 
         this.actor = actor
         this.probeType = probeType
-        this.fertigkeitKey = options.fertigkeitKey || null
+        this.fertigkeitKey = options.fertigkeitKey ?? null
         this.fertigkeitName = options.fertigkeitName || ''
         this.pw = options.pw || 0
         this.success_val = options.success_val || null
         this.talentList = options.talentList || {}
+        this.initialTalent = options.initialTalent || ''
+        this.initialTalentKey =
+            Object.entries(this.talentList).find(
+                ([, talentName]) => talentName === this.initialTalent,
+            )?.[0] ?? '-2'
         this.speaker = ChatMessage.getSpeaker({ actor: this.actor })
         this.dialogId = `dialog-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`
         this.initialXd20 = options.initialXd20 ?? '1'
@@ -98,6 +103,7 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
             fertigkeitName: this.fertigkeitName,
             pw: this.pw,
             talentList: this.talentList,
+            selectedTalentKey: this.initialTalentKey,
             hasTalents: Object.keys(this.talentList).length > 0,
             choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: this.initialXd20,
@@ -431,7 +437,7 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
         let noTalentSelected = false
         let usesTalent = false
 
-        if (this.probeType === 'fertigkeit' && this.fertigkeitKey) {
+        if (this.probeType === 'fertigkeit' && this.fertigkeitKey !== null) {
             const talentChoice = Number(html.querySelector(`#talent-${this.dialogId}`)?.value)
             if (talentChoice === -2) {
                 // ohne Talent - use pw

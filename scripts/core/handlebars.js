@@ -271,6 +271,24 @@ function registerHandlebarsHelpers() {
     })
 
     /**
+     * Check whether a talent is available for a selected profane skill.
+     * Used by pre-effects.hbs to detect orphaned talent values.
+     */
+    Handlebars.registerHelper('isTalentInOptions', function (talentName, skillName, optionGroups) {
+        if (!talentName || !skillName || !optionGroups) return false
+        for (const group of optionGroups) {
+            if (
+                group.talents?.some(
+                    (talent) => talent.name === talentName && talent.fertigkeit === skillName,
+                )
+            ) {
+                return true
+            }
+        }
+        return false
+    })
+
+    /**
      * Check if an attribute key is present in avoidTestAttributeOptions.
      * Used by pre-effects.hbs to detect orphaned values.
      */

@@ -25,7 +25,7 @@ Automatic pre-effect system for übernatürlich items (Zauber, Liturgie, Anrufun
 
 ### Requirement: Pre-effect schema
 
-Each pre-effect entry SHALL contain: `baseDuration` (integer turns), `instant` (boolean: skip ActiveEffect creation), `changes` (array of change objects, each with: `key`, `type`, `value`, `amplifiedByMaechtigeMagie` boolean, `maechtigBonus` string, `damageType` string, `diminishedValue` string, `diminishedMaechtigBonus` string, `priority` number), and optional `avoidTest` (enabled, fertigkeit, attribut, diminishedOnly, resistDifficulty). `resistDifficulty` SHALL default to 12 (system default difficulty) when not explicitly set. `damageType` SHALL be `"PROFAN"` (wounds) or `"STUMPF"` (Erschöpfung), only used for instant pre-effects targeting health.
+Each pre-effect entry SHALL contain: `baseDuration` (integer turns), `instant` (boolean: skip ActiveEffect creation), `changes` (array of change objects, each with: `key`, `type`, `value`, `amplifiedByMaechtigeMagie` boolean, `maechtigBonus` string, `damageType` string, `diminishedValue` string, `diminishedMaechtigBonus` string, `priority` number), and optional `avoidTest` (enabled, fertigkeit, talent, attribut, diminishedOnly, resistDifficulty). `avoidTest.talent` SHALL be an optional profane talent name associated with `avoidTest.fertigkeit`. `resistDifficulty` SHALL default to 12 (system default difficulty) when not explicitly set. `damageType` SHALL be `"PROFAN"` (wounds) or `"STUMPF"` (Erschöpfung), only used for instant pre-effects targeting health.
 
 #### Scenario: Instant pre-effect resolves damage via existing pipeline
 
@@ -47,9 +47,14 @@ Each pre-effect entry SHALL contain: `baseDuration` (integer turns), `instant` (
 - **WHEN** a change has `amplifiedByMaechtigeMagie: false`
 - **THEN** its `value` SHALL be used as-is regardless of Mächtige Magie
 
+#### Scenario: Omitted talent remains a skill-only resistance check
+
+- **WHEN** an existing pre-effect has avoidTest.fertigkeit but omits avoidTest.talent
+- **THEN** the pre-effect SHALL remain valid and the resistance dialog SHALL open without a preselected talent
+
 ### Requirement: Avoid/resist test
 
-When a pre-effect has `avoidTest.enabled: true`, the target SHALL receive a whispered chat prompt with a resist button after the spell succeeds. The `avoidTest.fertigkeit` and `avoidTest.attribut` fields on the item sheet SHALL be populated from compendium data and fixed config respectively.
+When a pre-effect has `avoidTest.enabled: true`, the target SHALL receive a whispered chat prompt with a resist button after the spell succeeds. The `avoidTest.fertigkeit`, `avoidTest.talent`, and `avoidTest.attribut` fields on the item sheet SHALL be populated from profane compendium data and fixed config respectively.
 
 #### Scenario: Resist prompt sent to target
 
@@ -58,9 +63,22 @@ When a pre-effect has `avoidTest.enabled: true`, the target SHALL receive a whis
 
 #### Scenario: Resist test uses FertigkeitDialog with correct skill resolution
 
-- **WHEN** the target clicks the resist button and `avoidTest.fertigkeit` is set to a skill `name` (e.g., "Athletik")
+- **WHEN** the target clicks the resist button and `avoidTest.fertigkeit` is set to a profane skill name such as "Athletik"
 - **THEN** the resist handler SHALL find the skill in `actor.profan.fertigkeiten` by `name`, extract its array index, `system.pw`, and `system.talente`
 - **AND** `FertigkeitDialog` SHALL be opened with `probeType: 'fertigkeit'`, `fertigkeitKey: <index>`, `pw: <resolved PW>`, and `talentList: <resolved talents>`
+
+#### Scenario: Configured possessed talent is auto-selected
+
+- **WHEN** avoidTest.fertigkeit is "Athletik", avoidTest.talent is "Akrobatik", and the target's resolved Athletik skill owns a talent named "Akrobatik"
+- **THEN** FertigkeitDialog SHALL open with "Akrobatik" selected
+- **AND** the dialog SHALL use the skill's PWT for preview and roll resolution
+
+#### Scenario: Missing configured talent falls back to no talent
+
+- **WHEN** avoidTest.fertigkeit is configured and avoidTest.talent is absent from the target's resolved skill talents
+- **THEN** FertigkeitDialog SHALL open for the configured skill with ohne Talent selected
+- **AND** the dialog SHALL use the skill's PW for preview and roll resolution
+- **AND** the handler SHALL NOT show a warning solely because the optional talent is missing
 
 #### Scenario: Resist test uses FertigkeitDialog with correct attribute resolution
 
@@ -226,7 +244,7 @@ The übernatürlich item sheet SHALL render the `preEffects` array as an editabl
 #### Scenario: Avoid test fields shown conditionally
 
 - **WHEN** `avoidTest.enabled` is checked
-- **THEN** the avoidTest sub-fields (fertigkeit/attribut, diminishedOnly, diminishedValue) SHALL be displayed
+- **THEN** the avoidTest sub-fields (fertigkeit/talent/attribut, diminishedOnly, diminishedValue) SHALL be displayed
 
 #### Scenario: Avoid test fields hidden when disabled
 
@@ -246,3 +264,19 @@ When a resist test is resolved for a pre-effect with `instant: true`, damage SHA
 
 - **WHEN** the target succeeds their resist test with `diminishedOnly: true` against an `instant` pre-effect
 - **THEN** `applyInstantPreEffect` SHALL be called with diminished values (`diminishedValue` replacing `value`, `diminishedMaechtigBonus` replacing `maechtigBonus`)
+
+### Requirement: Table-visible spell-named marker convention
+
+The existing [ActiveEffect](https://foundryvtt.com/api/v14/classes/foundry.documents.ActiveEffect.html)-based pre-effect flow SHALL permit reviewed compendium entries to use a timed spell-named ActiveEffect as a table-visible marker when the rules require a condition identifier but no automatic enforcement.
+
+#### Scenario: Marker requires no new actor schema
+
+- **WHEN** a reviewed pre-effect records handlungsunfähig as a marker
+- **THEN** it SHALL use the existing spell-named ActiveEffect and a no-op numeric change
+- **AND** it SHALL NOT write an arbitrary actor-system field or introduce a generic marker schema
+
+#### Scenario: Marker mechanics remain manual
+
+- **WHEN** a spell-named marker ActiveEffect is present
+- **THEN** the table SHALL be able to see its duration and source spell
+- **AND** the system SHALL NOT claim that it automatically prevents actions

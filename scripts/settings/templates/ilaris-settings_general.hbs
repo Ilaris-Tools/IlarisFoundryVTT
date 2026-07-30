@@ -76,6 +76,14 @@
         </div>
         <input type="checkbox" name="general.enableTabbingCharacterSheet" {{#if settings.enableTabbingCharacterSheet}}checked{{/if}}>
     </div>
+    <div class="setting-row">
+        <div class="setting-label-block">
+            <span class="setting-label">Würfel details im Chat direkt anzeigen</span>
+            <span class="setting-scope"><i class="fas fa-user"></i> Lokal</span>
+            <p class="setting-hint">Zeigt Details zum Würfelwurf im Chat direkt an.</p>
+        </div>
+        <input type="checkbox" name="general.showDiceRollInChat" {{#if settings.showDiceRollInChat}}checked{{/if}}>
+    </div>
 
     {{#if isGM}}
     <hr />

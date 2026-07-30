@@ -218,7 +218,7 @@ export async function createActiveEffectFromPreEffect(
                 durationType: 'ownerTurns',
                 expiresOn: 'turnEnd',
                 remaining: effectiveDuration,
-                original: effectiveDuration,
+                originalValue: effectiveDuration,
             },
         },
         flags: {

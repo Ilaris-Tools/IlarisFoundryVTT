@@ -97,7 +97,7 @@ test.describe('E2E-030 · Pre-Effect Instant Healing', () => {
             const actor = game.actors.getName(name)
             return actor?.update({
                 'system.abgeleitete.asp_stern': 50,
-                'system.gesundheit.wunden': 3,
+                'system.gesundheit.wunden': 1,
                 'system.gesundheit.erschoepfung': 0,
             })
         }, ACTOR_NAME)
@@ -189,7 +189,20 @@ test.describe('E2E-030 · Pre-Effect Instant Healing', () => {
         )
 
         const woundsAfter = await getActorWounds(page, ACTOR_NAME)
-        expect(woundsAfter.wunden).toBeLessThan(woundsBefore.wunden)
+        const healingAmount = await page.evaluate((baseline) => {
+            const healingMessage = game.messages.contents
+                .slice(baseline)
+                .find((message: any) => (message.content ?? '').includes('Heilung:'))
+            return Number((healingMessage?.content ?? '').match(/Heilung:\s*(\d+)/)?.[1] ?? NaN)
+        }, messageCount)
+        const ws = await page.evaluate((name) => {
+            const actor = game.actors.getName(name) as any
+            return actor?.system?.abgeleitete?.ws ?? 0
+        }, ACTOR_NAME)
+        const expectedReduction = healingAmount > ws ? Math.floor((healingAmount - 1) / ws) : 0
+        expect(healingAmount).toBeGreaterThan(0)
+        expect(woundsAfter.wunden).toBe(Math.max(0, woundsBefore.wunden - expectedReduction))
+        expect(woundsAfter.wunden).toBe(0)
 
         const hasHealingMessage = await page.evaluate((baseline) => {
             return game.messages.contents.slice(baseline).some((message: any) => {

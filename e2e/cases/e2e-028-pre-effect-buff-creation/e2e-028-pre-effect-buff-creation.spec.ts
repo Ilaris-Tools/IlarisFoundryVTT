@@ -35,11 +35,19 @@ const SPELL_NAME = 'Axxeleratus'
 test.describe('E2E-028 · Pre-Effect Buff ActiveEffect Creation', () => {
     let snapshot: ActorDefaultSnapshot
     let targetSelectionSetting: import('../../shared/fixtures/foundry').FoundrySettingSnapshot
+    let initialEffectIds: string[]
 
     test.beforeEach(async ({ page }) => {
         await loginAndJoinWorld(page, foundryConfig)
         targetSelectionSetting = await enableTargetSelectionForTest(page)
         snapshot = await captureActorDefaultSnapshot(page, ACTOR_NAME)
+        initialEffectIds = await page.evaluate(
+            (name) =>
+                Array.from(game.actors.getName(name)?.effects ?? []).map(
+                    (effect: any) => effect.id,
+                ),
+            ACTOR_NAME,
+        )
 
         await page.evaluate((name) => {
             const actor = game.actors.getName(name)
@@ -59,27 +67,21 @@ test.describe('E2E-028 · Pre-Effect Buff ActiveEffect Creation', () => {
                 delete CONFIG.Dice.randomUniform
             })
             .catch(() => {})
+        await restoreActorFromDefaultSnapshot(page, snapshot).catch(() => {})
         await page
             .evaluate(
-                async ({ name, spellName }) => {
+                async ({ name, effectIds }) => {
                     const actor = game.actors.getName(name)
-                    if (!actor) return
-                    // Match by spellName flag / effect name (sourceType is 'uebernatuerlich')
-                    const effectsToRemove = actor.effects
-                        .filter(
-                            (e: any) =>
-                                e.flags?.ilaris?.spellName?.includes?.(spellName) ||
-                                e.name?.includes?.(spellName),
-                        )
-                        .map((e: any) => e.id)
-                    if (effectsToRemove.length > 0) {
-                        await actor.deleteEmbeddedDocuments('ActiveEffect', effectsToRemove)
+                    const createdEffectIds = Array.from(actor?.effects ?? [])
+                        .filter((effect: any) => !effectIds.includes(effect.id))
+                        .map((effect: any) => effect.id)
+                    if (createdEffectIds.length > 0) {
+                        await actor?.deleteEmbeddedDocuments('ActiveEffect', createdEffectIds)
                     }
                 },
-                { name: ACTOR_NAME, spellName: SPELL_NAME },
+                { name: ACTOR_NAME, effectIds: initialEffectIds },
             )
             .catch(() => {})
-        await restoreActorFromDefaultSnapshot(page, snapshot).catch(() => {})
         await restoreFoundrySetting(page, targetSelectionSetting).catch(() => {})
         await clearChatLog(page).catch(() => {})
     })
@@ -171,7 +173,7 @@ test.describe('E2E-028 · Pre-Effect Buff ActiveEffect Creation', () => {
         )
 
         const effectInfo = await page.evaluate(
-            ({ name, spellName }) => {
+            async ({ name, spellName }) => {
                 const actor = game.actors.getName(name)
                 if (!actor) return null
                 const matches = actor.effects.filter(
@@ -181,11 +183,37 @@ test.describe('E2E-028 · Pre-Effect Buff ActiveEffect Creation', () => {
                 )
                 if (matches.length === 0) return null
                 const latest = matches[matches.length - 1] as any
+                const spell = await foundry.utils.fromUuid(latest.flags?.ilaris?.spellUuid)
+                const source = Object.values(spell?.system?.preEffects ?? {})[0] as any
+                const normalizeChange = (change: any) => ({
+                    key: change.key ?? '',
+                    mode:
+                        typeof change.mode === 'number'
+                            ? change.mode
+                            : change.type === 'custom'
+                              ? 10
+                              : change.type === 'multiply'
+                                ? 4
+                                : change.type === 'override'
+                                  ? 1
+                                  : 2,
+                    value: change.value ?? '0',
+                    priority: change.priority ?? null,
+                })
                 return {
                     name: latest.name ?? '',
                     durationType: latest.system?.ilarisTiming?.durationType ?? null,
-                    changes: latest.changes ?? [],
+                    turns:
+                        latest.duration?.turns ??
+                        latest._source?.duration?.turns ??
+                        latest._source?.duration?.value ??
+                        null,
+                    remaining: latest.system?.ilarisTiming?.remaining ?? null,
+                    original: latest.system?.ilarisTiming?.originalValue ?? null,
+                    changes: (latest._source?.changes ?? latest.changes ?? []).map(normalizeChange),
                     sourceType: latest.flags?.ilaris?.sourceType ?? null,
+                    expectedChanges: (source?.changes ?? []).map(normalizeChange),
+                    expectedDuration: (source?.baseDuration ?? 0) + 1,
                 }
             },
             { name: ACTOR_NAME, spellName: SPELL_NAME },
@@ -194,6 +222,9 @@ test.describe('E2E-028 · Pre-Effect Buff ActiveEffect Creation', () => {
         expect(effectInfo).not.toBeNull()
         expect(effectInfo!.name).toContain(SPELL_NAME)
         expect(effectInfo!.durationType).toBe('ownerTurns')
-        expect(effectInfo!.changes.length).toBeGreaterThan(0)
+        expect(effectInfo!.changes).toEqual(effectInfo!.expectedChanges)
+        expect(effectInfo!.turns).toBe(effectInfo!.expectedDuration)
+        expect(effectInfo!.remaining).toBe(effectInfo!.expectedDuration)
+        expect(effectInfo!.original).toBe(effectInfo!.expectedDuration)
     })
 })

@@ -27,6 +27,7 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
 
         // Populate avoidTest skill options from configured compendium packs
         context.avoidTestSkillOptions = await this._buildAvoidTestSkillOptions()
+        context.avoidTestTalentOptions = await this._buildAvoidTestTalentOptions()
 
         // Populate avoidTest attribute options from fixed config
         context.avoidTestAttributeOptions = CONFIG.ILARIS.attribute || []
@@ -71,10 +72,7 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
                 await pack.getIndex()
                 const skills = []
                 for (const entry of pack.index) {
-                    if (
-                        entry.type === 'fertigkeit' ||
-                        entry.type === 'uebernatuerlicheFertigkeit'
-                    ) {
+                    if (entry.type === 'fertigkeit') {
                         skills.push({ name: entry.name, type: entry.type })
                     }
                 }
@@ -88,6 +86,44 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
             }
         } catch (e) {
             console.warn('Ilaris | Failed to build avoidTest skill options:', e)
+        }
+
+        return groups
+    }
+
+    /**
+     * Build avoidTest talent options from configured compendium packs.
+     * @returns {Promise<Array<{packName: string, talents: Array<{name: string, fertigkeit: string}>}>>}
+     */
+    async _buildAvoidTestTalentOptions() {
+        const groups = []
+        try {
+            const packsJson = game.settings.get('Ilaris', 'talentePacks')
+            const packIds = JSON.parse(packsJson || '[]')
+
+            for (const packId of packIds) {
+                const pack = game.packs.get(packId)
+                if (!pack) continue
+
+                await pack.getIndex({ fields: ['system.fertigkeit'] })
+                const talents = []
+                for (const entry of pack.index) {
+                    if (entry.type !== 'talent' || !entry.system?.fertigkeit) continue
+                    talents.push({
+                        name: entry.name,
+                        fertigkeit: entry.system.fertigkeit,
+                    })
+                }
+
+                if (talents.length > 0) {
+                    groups.push({
+                        packName: pack.metadata?.label || packId,
+                        talents,
+                    })
+                }
+            }
+        } catch (e) {
+            console.warn('Ilaris | Failed to build avoidTest talent options:', e)
         }
 
         return groups
@@ -286,6 +322,7 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
             avoidTest: {
                 enabled: false,
                 fertigkeit: '',
+                talent: '',
                 attribut: '',
                 diminishedOnly: false,
                 resistDifficulty: 12,

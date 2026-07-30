@@ -175,6 +175,16 @@ test.describe('E2E-010 Zielauswahl, Verteidigung und Schaden', () => {
             await expect(targetDialog).toBeHidden({ timeout: 10000 })
 
             await expect(attackDialog.locator('.selected-actors-list')).toContainText(DEFENDER_NAME)
+            await page.waitForFunction(
+                (defenderName) => {
+                    const defender = game.actors.getName(defenderName)
+                    return Array.from(game.user.targets).some(
+                        (token: any) => token.actor?.id === defender?.id,
+                    )
+                },
+                DEFENDER_NAME,
+                { timeout: 10000 },
+            )
 
             await page.evaluate(() => {
                 CONFIG.Dice.randomUniform = () => 0.01

@@ -172,6 +172,16 @@ The system SHALL provide shared test helpers for XML integrity validation and Fo
 - **WHEN** TypeScript compilation runs for test files
 - **THEN** Foundry global types SHALL be available via `foundry-globals.d.ts`
 
+### Requirement: Combat target-selection synchronization coverage
+
+The combat E2E baseline SHALL prove that selecting a target in the target-selection dialog synchronizes the selected Token into the current user's Foundry target set.
+
+#### Scenario: Dialog target is a Foundry target
+
+- **WHEN** the user selects a Token in the combat target-selection dialog and submits it
+- **THEN** the Token SHALL be present in `game.user.targets`
+- **AND** the downstream combat flow SHALL use that selected target
+
 ## Data Model
 
 N/A — E2E testing does not define persistent data.
