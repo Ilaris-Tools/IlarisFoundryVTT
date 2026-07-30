@@ -1,7 +1,7 @@
 {{log 'ue' this}}
 <section class="tab uebernatuerlich {{tab.cssClass}}" data-group="primary" data-tab="uebernatuerlich">
     <h2>Fertigkeiten</h2>
-    {{#if (or actor.vorteil.zaubertraditionen actor.vorteil.geweihtentradition actor.vorteil.tiergeist)}}
+    {{#if (or actor.vorteil.zaubertraditionen actor.vorteil.geweihtentradition actor.vorteil.tiergeist actor.vorteil.daemonischetradition)}}
     <div>
         <label><b>Aktive Übernatürliche Tradition:</b></label>
         <select class="selected-uebernatuerlicher-stil" name="system.misc.selected_uebernatuerlicher_stil">
@@ -62,6 +62,7 @@
         <h2>Talente</h2>
         <a data-action="itemCreate" data-itemclass="zauber"><i class="fas fa-plus"></i> Neuer Zauber</a>
         <a data-action="itemCreate" data-itemclass="liturgie"><i class="fas fa-plus"></i> Neue Liturgie</a>
+        <a data-action="itemCreate" data-itemclass="anrufung"><i class="fas fa-plus"></i> Neue Anrufung</a>
 
         <table class="table hero-table-full-width hero-table-font-compact">
             <thead>
@@ -154,6 +155,46 @@
                     </td>
                 </tr>
                 {{/each}}
+
+                {{#each actor.uebernatuerlich.anrufungen as |anruftal|}}
+                <tr>
+                    <td data-action="rollable" class="icon-small" data-rolltype="anrufung_diag" data-itemid="{{anruftal.id}}">
+                        <i class="custom-icon"></i>
+                    </td>
+                    <td>
+                        <label data-action="ausklappView" class="onhover"
+                            data-ausklappentarget="{{anruftal.id}}">{{anruftal.name}}</label>
+                    </td>
+                    <td>{{anruftal.system.vorbereitung}}</td>
+                    <td>{{anruftal.system.reichweite}}</td>
+                    <td>{{anruftal.system.wirkungsdauer}}</td>
+                    <td>{{anruftal.system.kosten}}</td>
+                    <td data-action="rollable" class="onhover" data-rolltype="anrufung" data-talent="{{anruftal.name}}"
+                        data-pw="{{anruftal.system.pw}}">
+                        {{anruftal.system.pw}}
+                    </td>
+                    <td data-action="itemEdit" data-itemclass="anrufung" data-itemid="{{anruftal.id}}">
+                        <i class="fas fa-edit"></i>
+                    </td>
+                    <td data-action="itemDelete" data-itemclass="anrufung" data-itemid="{{anruftal.id}}">
+                        <i class="fas fa-trash"></i>
+                    </td>
+                </tr>
+                <tr id="ausklappen-view-{{anruftal.id}}" class="hero-expandable-row-hidden">
+                    <td colspan="9" class="hero-expandable-row-cell">
+                        <hr />
+                        <div>
+                            <div><b>Mächtige Anrufung: </b><span class="hero-text-preformatted">{{anruftal.system.maechtig}}</span></div>
+                            <div><b>Schwierigkeit: </b>{{anruftal.system.schwierigkeit}}</div>
+                            <div><b>Modifikationen: </b><span class="hero-text-preformatted">{{anruftal.system.modifikationen}}</span></div>
+                            <div><b>Ziel: </b>{{anruftal.system.ziel}}</div>
+                            <div><b>Beschreibung: </b><span class="hero-text-preformatted">{{{anruftal.system.text}}}</span>
+                            </div>
+                        </div>
+                        <hr />
+                    </td>
+                </tr>
+                {{/each}}
             </tbody>
         </table>
 
@@ -206,6 +247,17 @@
         <div>
             <label><b>Tiergeist:</b>&nbsp; | &nbsp;</label>
             {{#each actor.vorteil.tiergeist}}
+            <a data-action="itemEdit"
+                data-itemid="{{this.id}}" data-tooltip="{{{this.system.text}}}">
+                {{this.name}}
+            </a>
+            <a data-action="itemDelete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
+            &nbsp; | &nbsp; {{/each}}
+        </div>
+        {{/if}} {{#if actor.vorteil.daemonischetradition}}
+        <div>
+            <label><b>Dämonische Traditionen:</b>&nbsp; | &nbsp;</label>
+            {{#each actor.vorteil.daemonischetradition}}
             <a data-action="itemEdit"
                 data-itemid="{{this.id}}" data-tooltip="{{{this.system.text}}}">
                 {{this.name}}

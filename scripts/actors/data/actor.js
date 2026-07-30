@@ -393,13 +393,14 @@ export class IlarisActor extends Actor {
     }
 
     _checkVorteilSource(requirement, vorteil, item) {
-        // For Stile (gruppe 3, 5, or 7) on held-type actors, check with getSelectedStil
-        if (this.type === 'held' && [3, 5, 7].includes(Number(vorteil.system.gruppe))) {
+        // For Stile (gruppe 3, 5, 7, or 9) on held-type actors, check with getSelectedStil
+        if (this.type === 'held' && [3, 5, 7, 9].includes(Number(vorteil.system.gruppe))) {
             if (
                 item.system.hauptwaffe ||
                 item.system.nebenwaffe ||
                 item.type === 'zauber' ||
-                item.type === 'liturgie'
+                item.type === 'liturgie' ||
+                item.type === 'anrufung'
             ) {
                 const kampfStil = hardcoded.getSelectedStil(this, 'kampf')
                 const ueberStil = hardcoded.getSelectedStil(this, 'uebernatuerlich')
@@ -452,6 +453,9 @@ export class IlarisActor extends Actor {
                 return this._checkVorteilSource(vorteilRequirement, vorteil, item)
             }) ||
             this.vorteil.tiergeist.some((vorteil) => {
+                return this._checkVorteilSource(vorteilRequirement, vorteil, item)
+            }) ||
+            this.vorteil.daemonischetradition.some((vorteil) => {
                 return this._checkVorteilSource(vorteilRequirement, vorteil, item)
             })
         )
@@ -534,6 +538,28 @@ export class IlarisActor extends Actor {
             //         pw: max_pw
             //     }
             // });
+        }
+        for (let talent of actor.uebernatuerlich.anrufungen) {
+            let max_pw = -1
+            const fertigkeit_string = talent.system.fertigkeiten
+            let fertigkeit_array = fertigkeit_string.split(',')
+            for (let [i, fert_string] of fertigkeit_array.entries()) {
+                let fertigkeit = fert_string.trim()
+                for (let actor_fertigkeit of actor.uebernatuerlich.fertigkeiten) {
+                    if (
+                        fertigkeit == actor_fertigkeit.name &&
+                        talent.system.fertigkeit_ausgewaehlt == 'auto'
+                    ) {
+                        let max_tmp = actor_fertigkeit.system.pw
+                        if (max_tmp > max_pw) {
+                            max_pw = max_tmp
+                        }
+                    } else if (talent.system.fertigkeit_ausgewaehlt == actor_fertigkeit.name) {
+                        max_pw = actor_fertigkeit.system.pw
+                    }
+                }
+            }
+            talent.system.pw = max_pw
         }
     }
 
@@ -724,6 +750,7 @@ export class IlarisActor extends Actor {
         let vorteil_karma = []
         let vorteil_geweihtetraditionen = []
         let vorteil_tiergeist = []
+        let vorteil_daemonischetradition = []
         let eigenheiten = []
         let eigenschaften = [] // kreatur only
         let angriffe = [] // kreatur only
@@ -827,6 +854,7 @@ export class IlarisActor extends Actor {
                 else if (item.system.gruppe == 6) vorteil_karma.push(item)
                 else if (item.system.gruppe == 7) vorteil_geweihtetraditionen.push(item)
                 else if (item.system.gruppe == 8) vorteil_tiergeist.push(item)
+                else if (item.system.gruppe == 9) vorteil_daemonischetradition.push(item)
                 // else vorteil_allgemein.push(i);
             } else if (item.type == 'eigenheit') {
                 eigenheiten.push(item)
@@ -878,6 +906,7 @@ export class IlarisActor extends Actor {
         vorteil_karma.sort(sortByName)
         vorteil_geweihtetraditionen.sort(sortByName)
         vorteil_tiergeist.sort(sortByName)
+        vorteil_daemonischetradition.sort(sortByName)
         eigenheiten.sort(sortByName)
         freie_uebernatuerliche_fertigkeiten.sort(sortByGruppe)
 
@@ -951,6 +980,7 @@ export class IlarisActor extends Actor {
         actor.vorteil.karma = vorteil_karma
         actor.vorteil.geweihtentradition = vorteil_geweihtetraditionen
         actor.vorteil.tiergeist = vorteil_tiergeist
+        actor.vorteil.daemonischetradition = vorteil_daemonischetradition
         actor.eigenheiten = eigenheiten
         actor.unsorted = unsorted
         actor.misc = actor.misc || {}
