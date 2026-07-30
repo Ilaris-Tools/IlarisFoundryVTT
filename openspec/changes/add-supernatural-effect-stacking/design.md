@@ -2,7 +2,7 @@
 
 Native Foundry Active Effects provide persistence, duration, transfer, and the existing configuration workflow for Ilaris buffs and debuffs. Their `changes` array is appropriate for unconditional Actor paths but cannot express weapon Fertigkeit, Talent, or situation contexts.
 
-The Ilaris rule suppresses a weaker supernatural contribution only where it overlaps a stronger one of the same sign. The strongest positive and strongest negative contribution apply independently, so an ActiveEffect can remain partly effective. Global `isSuppressed` is not suitable because it disables the whole document. Ordinary Vorteile must continue to add normally.
+The Ilaris rule suppresses a weaker supernatural contribution only where it overlaps a stronger one of the same sign. The strongest positive and strongest negative contribution apply independently, so an ActiveEffect can remain partly effective. Global `isSuppressed` is not suitable because it disables the whole document. Every Vorteil, including magical and karmic Vorteile, remains permanently additive.
 
 This change spans effect data/configuration, Actor preparation, combat and skill rolls, settings, Pre-Effect authoring, compendium data, and LLM generation. Existing native `changes` remain compatible and preparing data must not persist an Actor update.
 
@@ -22,6 +22,7 @@ This change spans effect data/configuration, Actor preparation, combat and skill
 - Model an individual suppressed component by setting `disabled` or `isSuppressed`.
 - Introduce freely executable effect scripts.
 - Let a later maneuver change the strength or resolved contribution of an Ilaris effect.
+- Classify or migrate alchemical/magical Elixiere in this iteration.
 - Require multiplayer coverage for this feature.
 
 ## Decisions
@@ -32,7 +33,7 @@ This change spans effect data/configuration, Actor preparation, combat and skill
 
 The initial canonical target registry covers explicit prepared values such as GS, roll-only attribute targets such as KK or GE, AT, VT, a shared damage output for TP/Waffenschaden effects, and general probe/talent outputs. Semantic attribute targets are never prepare-capable: they resolve only when a skill or talent probe actually uses that attribute. A modifier requiring Ilaris stacking uses a canonical target, rather than an arbitrary path, so suppression is resolved before an uncontrolled derived-value cascade occurs.
 
-Source classification belongs to the effect so the resolver can identify a supernatural origin. `stacking` belongs to components because comparison occurs at the matching modifier contribution: matching supernatural components compete even when they are stored on the same effect document. Vorteil/manual effects default to `ordinary`; Pre-Effects from Zauber, Liturgien, and Anrufungen set `uebernatuerlich`.
+Source classification belongs to the effect so the resolver can identify a supernatural origin. `stacking` belongs to components because comparison occurs at the matching modifier contribution: matching supernatural components compete even when they are stored on the same effect document. Any Vorteil, including magical and karmic Vorteile, is forced to `ordinary`/`add` and cannot be reclassified into the supernatural candidate pool. Pre-Effects from Zauber, Liturgien, and Anrufungen set `uebernatuerlich`. Alchemical and magical Elixiere are out of scope for this iteration.
 
 The alternatives were selectors inside native `changes`, untyped flag payloads, and executable scripts. They were rejected because native changes lack roll context, untyped data has no reliable editing/validation contract, and scripts are unsafe and harder to maintain.
 
@@ -66,7 +67,7 @@ Reading at resolution time makes a GM's change effective for existing permanent 
 
 ### Author both modifier forms explicitly
 
-`IlarisActiveEffectConfig` gains a German Ilaris-Modifikatoren part/tab beside the native Changes UI. The Pre-Effect editor gains a separate modifier list. The processor copies `changes` unchanged, writes `ilarisModifiers` to the created effect's system data, and marks spell effects `uebernatuerlich` while preserving existing spell/caster/origin flags.
+`IlarisActiveEffectConfig` gains a German Ilaris-Modifikatoren part/tab beside the native Changes UI. The Pre-Effect editor gains a separate modifier list. Native direct main-attribute changes are redirected to semantic roll modifiers or rejected when they cannot be represented; other native changes are copied unchanged. The processor materializes full or diminished semantic modifier values, including Mächtige Magie/Liturgie bonuses, when it creates the ActiveEffect, then marks spell effects `uebernatuerlich` while preserving existing spell/caster/origin flags.
 
 The LLM schema documents both forms and directs contextual or supernatural non-stacking bonuses to `ilarisModifiers`. It retains native changes for an unconditional path change.
 
@@ -95,14 +96,14 @@ No new Foundry Hook is introduced. Existing `combatTurn` and `updateCombat` hook
 ## Migration Plan
 
 1. Add the data fields, resolver, and setting while retaining every existing native change behavior.
-2. Add effect and Pre-Effect authoring, then migrate every spell listed in `spell-liturgy-effect-inventory.md` during the first iteration; Axxeleratus remains the reference migration pattern.
+2. Add effect and Pre-Effect authoring, then migrate every spell listed in `docs/develop/spell-liturgy-effect-inventory.md` during the first iteration; Axxeleratus remains the reference migration pattern.
 3. Run `npm run pack-all` after modifying the source compendium JSON.
 4. Existing world ActiveEffects remain valid because their `changes` are not rewritten; newly created semantic effects use the current world mode.
 5. Rollback restores the prior system and compendium source. There is no destructive automatic world-data migration; unknown semantic data is inert to an older system version.
 
 ## Testing Strategy
 
-Unit tests isolate the resolver and cover selector matching, competing supernatural components from the same effect, independent positive/negative selection, partial overlap, ordinary plus supernatural totals, reactivation after expiry, both world modes, signed values, `XW6` expected comparison, unsupported formulas, source classification, and transferred effects. Attribute tests prove that a GE or KK effect changes only matching probe calculations and never prepared attributes or derived values such as GS. Damage tests prove that TP/Waffenschaden comparisons and terminal effect contributions remain unchanged when a later maneuver modifies ordinary weapon damage. Further tests cover prepare application without Actor persistence, Pre-Effect payload mapping, combat formulas, and skill dialog integration.
+Unit tests isolate the resolver and cover selector matching, competing supernatural components from the same effect, independent positive/negative selection, partial overlap, ordinary plus supernatural totals, permanently additive magical/karmic Vorteile, reactivation after expiry, both world modes, signed values, `XW6` expected comparison, unsupported formulas, source classification, and transferred effects. Attribute tests prove that a GE or KK effect changes only matching probe calculations and never prepared attributes or derived values such as GS, including native-path redirection/legacy-path rejection. Pre-Effect tests prove semantic modifiers materialize Mächtige Magie/Liturgie and diminished-resist formulas when created. Damage tests prove that TP/Waffenschaden comparisons and terminal effect contributions remain unchanged when a later maneuver modifies ordinary weapon damage. Further tests cover prepare application without Actor persistence, combat formulas, and skill dialog integration.
 
 E2E tests extend the existing GM baseline world: configure a semantic Pre-Effect, cast it, assert the resulting ActiveEffect data and source classification, then exercise an overlapping combat or probe bonus in both setting modes. Result summaries must show applied effects directly and make suppressed contributions available through the suppression indicator. Existing effect-tab, Pre-Effect sheet/buff, melee, ranged, and skill-dialog cases remain regression coverage. No additional player account is needed.
 

@@ -8,17 +8,17 @@
 ## 2. Rule-aware ActiveEffect data and resolver
 
 - [ ] 2.1 Extend `scripts/effects/model-data/ilaris-effect-model.js` with validated `ilarisSource` and `ilarisModifiers` fields, preserving `ilarisTiming` and native `changes` compatibility.
-- [ ] 2.2 Add canonical target, phase, source-category, stacking-policy, selector, and comparison-value constants/configuration with German UI labels where users see them, including one damage comparison group for TP/Waffenschaden effects and roll-only main-attribute targets.
+- [ ] 2.2 Add canonical target, phase, source-category, stacking-policy, selector, and comparison-value constants/configuration with German UI labels where users see them, including one damage comparison group for TP/Waffenschaden effects, roll-only main-attribute targets, and a forced ordinary/add classification for every Vorteil.
 - [ ] 2.3 Create a pure `scripts/effects/utils/ilaris-modifier-resolver.js` that collects active applicable effects, matches selectors, adds ordinary contributions, independently selects the strongest matching positive and negative supernatural components across and within effects in Ilaris mode, and returns a value plus explanation ledger.
 - [ ] 2.4 Implement deterministic comparison magnitude handling for numeric and linear `XW6` values, explicit comparison values, and signed effects; select each sign independently by absolute magnitude (`-5` over `-3`), validate/reject unsupported formula shapes, and keep all effect magnitudes independent of later maneuvers.
-- [ ] 2.5 Ensure resolver suppression is transient and component-local; do not set `disabled`, `isSuppressed`, or persist a losing effect state.
+- [ ] 2.5 Ensure resolver suppression is transient and component-local; do not set `disabled`, `isSuppressed`, or persist a losing effect state; ensure all Vorteil modifiers always add and never enter the supernatural candidate pool.
 
 ## 3. ActiveEffect lifecycle and configuration
 
 - [ ] 3.1 Integrate only prepare-capable resolution into the verified Ilaris Actor ActiveEffect preparation boundary in `scripts/actors/data/actor.js`, after core changes and before dependent derived calculations, without persisting Actor data; reject or route semantic main-attribute modifiers to roll resolution.
 - [ ] 3.2 Add a German Ilaris-Modifikatoren part/tab to `scripts/effects/ilaris-effect-config.js` and a dedicated Handlebars template alongside `ilaris-duration-tab.hbs`.
-- [ ] 3.3 Implement add, edit, remove, validation, and form persistence for source category, phase, target, value, stacking policy, comparison value, and Fertigkeit/Talent/Situation selectors.
-- [ ] 3.4 Keep the native Foundry Changes tab unchanged and verify a single ActiveEffect can use both channels without double application.
+- [ ] 3.3 Implement add, edit, remove, validation, and form persistence for source category, phase, target, value, stacking policy, comparison value, and Fertigkeit/Talent/Situation selectors; prevent a Vorteil from being configured as a supernatural stacking source.
+- [ ] 3.4 Preserve the native Foundry Changes tab for non-attribute paths, redirect additive native main-attribute changes to roll-only Ilaris modifiers, reject unsupported main-attribute operations, and verify both channels do not double apply.
 
 ## 4. Roll and world-setting integration
 
@@ -32,29 +32,29 @@
 
 ## 5. Pre-Effects, generation, and compendium migration
 
-- [ ] 5.1 Extend the übernatürlich item model, `scripts/items/sheets/uebernatuerlich-talent.js`, and `scripts/items/templates/pre-effects.hbs` with a separate editable `ilarisModifiers` list alongside native changes.
-- [ ] 5.2 Update `scripts/effects/pre-effects/pre-effects-processor.js` so spell Pre-Effects copy native changes and semantic modifiers to their distinct ActiveEffect fields and classify the created effect as `uebernatuerlich` while retaining origin flags.
-- [ ] 5.3 Update `scripts/effects/utils/llm-prompt-builder.js` so generated Pre-Effect JSON distinguishes `changes` from `ilarisModifiers`, documents selectors, and retains the native-change option.
+- [ ] 5.1 Extend the übernatürlich item model, `scripts/items/sheets/uebernatuerlich-talent.js`, and `scripts/items/templates/pre-effects.hbs` with a separate editable `ilarisModifiers` list alongside native changes, including Mächtige Magie/Liturgie and diminished-resist fields equivalent to native changes.
+- [ ] 5.2 Update `scripts/effects/pre-effects/pre-effects-processor.js` so spell Pre-Effects copy non-attribute native changes and semantic modifiers to their distinct ActiveEffect fields, redirect mappable main-attribute changes, materialize full/diminished and amplified semantic values at effect creation, and classify the created effect as `uebernatuerlich` while retaining origin flags.
+- [ ] 5.3 Update `scripts/effects/utils/llm-prompt-builder.js` so generated Pre-Effect JSON distinguishes `changes` from `ilarisModifiers`, documents selectors and equivalent amplification/diminished-value fields, directs main-attribute changes to semantic modifiers, and retains the non-attribute native-change option.
 - [ ] 5.4 Migrate Axxeleratus in `comp_packs/zauberspruche-und-rituale/_source/` to +4 GS prepare and +2 AT/+2 VT roll Ilaris modifiers using supernatural strongest-effect stacking.
-- [ ] 5.5 Use `spell-liturgy-effect-inventory.md` as the first-iteration migration inventory and migrate every listed spell's affected `_source/` data to the appropriate semantic modifier or native-change representation.
+- [ ] 5.5 Use `docs/develop/spell-liturgy-effect-inventory.md` as the first-iteration migration inventory and migrate every listed spell's affected `_source/` data to the appropriate semantic modifier or native-change representation.
 - [ ] 5.6 Run `npm run pack-all` after all `_source/` compendium changes.
 
 ## 6. Unit Tests
 
-- [ ] 6.1 Add `scripts/effects/utils/_spec/ilaris-modifier-resolver.spec.js` covering selector matches, a +1 AT general plus +2 AT/Klingenwaffen supernatural pair on the same effect resolving to +2, independent +8 and -5 selection with -5 beating -3, partial overlap, ordinary plus supernatural totals, stronger-effect expiry reactivation, and Foundry stack mode.
+- [ ] 6.1 Add `scripts/effects/utils/_spec/ilaris-modifier-resolver.spec.js` covering selector matches, a +1 AT general plus +2 AT/Klingenwaffen supernatural pair on the same effect resolving to +2, independent +8 and -5 selection with -5 beating -3, partial overlap, permanently additive magical/karmic Vorteile, ordinary plus supernatural totals, stronger-effect expiry reactivation, and Foundry stack mode.
 - [ ] 6.2 Add resolver comparison tests for fixed values, positive/negative magnitude, linear `XW6` expected values, explicit comparison values, unsupported formula validation, transferred item effects, and a +3 TP versus +2 Waffenschaden case unaffected by Hammerschlag/Unaufhaltsam.
 - [ ] 6.3 Update or add Actor preparation tests under `scripts/actors/_spec/` to prove prepare modifiers run after native effect changes, before derived values, and never persist an Actor update; prove that semantic GE/KK modifiers cannot alter prepared attributes or GS.
-- [ ] 6.4 Update `scripts/effects/pre-effects/_spec/pre-effects-processor.spec.js` to verify separate native/semantic payload mapping and supernatural source classification.
-- [ ] 6.5 Update `scripts/effects/utils/_spec/llm-prompt-builder.spec.js` for the expanded generated JSON schema and selector guidance.
+- [ ] 6.4 Update `scripts/effects/pre-effects/_spec/pre-effects-processor.spec.js` to verify separate native/semantic payload mapping, main-attribute redirection, supernatural source classification, and semantic Mächtige Magie/Liturgie plus diminished-resist materialization.
+- [ ] 6.5 Update `scripts/effects/utils/_spec/llm-prompt-builder.spec.js` for the expanded generated JSON schema, selector guidance, semantic amplification/diminished-value fields, and main-attribute guidance.
 - [ ] 6.6 Update `scripts/combat/_spec/angriff.spec.js` and `fernkampf_angriff.spec.js` for contextual AT, VT, and linear damage modifier integration.
 - [ ] 6.7 Add or update dice tests under `scripts/dice/_spec/` for Fertigkeit/Talent and social-duel situation modifiers, including semantic GE/KK bonuses applied only when the probe tests that attribute.
 - [ ] 6.8 Update combat and dice summary tests to prove applied effect modifiers are always visible while suppressed entries are hidden until the suppression indicator is activated.
-- [ ] 6.9 Add focused configuration/model tests for defaults, validation, and coexistence of native changes with `ilarisModifiers`.
+- [ ] 6.9 Add focused configuration/model tests for defaults, validation, forced Vorteil classification, main-attribute rejection/redirection, and coexistence of non-attribute native changes with `ilarisModifiers`.
 
 ## 7. E2E Tests
 
 - [ ] 7.1 Extend the Pre-Effect sheet configuration E2E scenario to add, save, reopen, and edit an Ilaris modifier with selectors and stacking policy.
-- [ ] 7.2 Extend the buff ActiveEffect E2E scenario to assert `system.ilarisModifiers`, supernatural source classification, duration, and preservation of any native changes.
+- [ ] 7.2 Extend the buff ActiveEffect E2E scenario to assert `system.ilarisModifiers`, supernatural source classification, duration, preservation of non-attribute native changes, main-attribute redirection, and semantic amplification/diminished-resist materialization.
 - [ ] 7.3 Add an E2E scenario in the existing GM baseline world for competing positive and negative supernatural effects in the same combat or probe context, asserting that the strongest contribution of each sign applies in Ilaris mode.
 - [ ] 7.4 Assert in the competing-effect E2E scenario that applied modifiers are directly visible and the suppression indicator reveals the suppressed ledger on demand.
 - [ ] 7.5 Extend that scenario to switch the world setting to Foundry stack mode and assert both existing effects add without recreation.

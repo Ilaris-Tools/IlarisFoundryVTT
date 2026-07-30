@@ -27,15 +27,16 @@ contribution in the displayed modifier breakdown.
 
 ### Requirement: Probe summaries expose suppression without hiding applied modifiers
 
-FertigkeitDialog SHALL always show applied Ilaris effect modifiers in its
-normal modifier breakdown. If matching modifiers were suppressed, it SHALL
-show an accessible suppression icon or button that reveals the suppression
-ledger only when activated.
+FertigkeitDialog SHALL always show applied Ilaris effect modifiers and their
+effect sources in its normal modifier breakdown. If matching modifiers were
+suppressed, it SHALL show an accessible suppression icon or button that
+reveals the suppression ledger only when activated.
 
 #### Scenario: Applied probe modifier remains visible
 
 - **WHEN** an Ilaris modifier contributes to a FertigkeitDialog probe
-- **THEN** the dialog SHALL display the applied contribution directly
+- **THEN** the dialog SHALL display the applied contribution and its effect
+  source directly
 
 #### Scenario: Suppressed probe modifier is disclosed on demand
 

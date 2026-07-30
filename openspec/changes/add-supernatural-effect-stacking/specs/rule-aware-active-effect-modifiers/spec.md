@@ -37,6 +37,20 @@ needs a non-numeric magnitude comparison SHALL declare `comparisonValue`.
 - **THEN** it SHALL add to those matching probes during a social duel
 - **AND** it SHALL NOT be treated as an übernatürlicher competing modifier
 
+### Requirement: All Vorteile are permanently additive
+
+The system SHALL treat an Ilaris modifier originating from any Vorteil,
+including magical and karmic Vorteile, as ordinary additive behavior. It SHALL
+never allow that modifier to participate in supernatural strongest-effect
+selection while it remains active.
+
+#### Scenario: Magical Vorteil adds to a supernatural modifier
+
+- **WHEN** a character has an active magical or karmic Vorteil modifier and a
+  matching supernatural modifier
+- **THEN** the Vorteil modifier SHALL add to the resolved result
+- **AND** it SHALL not be suppressed or selected as a supernatural candidate
+
 ### Requirement: Semantic main-attribute modifiers are roll-only
 
 A semantic modifier for a main attribute such as KK or GE SHALL resolve only

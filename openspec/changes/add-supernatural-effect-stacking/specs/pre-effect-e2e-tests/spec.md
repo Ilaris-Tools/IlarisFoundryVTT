@@ -24,6 +24,13 @@ An E2E test SHALL verify that casting a spell with a non-instant pre-effect corr
   semantic modifier entries
 - **AND** it SHALL carry the übernatürlich source classification
 
+#### Scenario: Semantic modifier is materialized at application time
+
+- **WHEN** a semantic pre-effect modifier is amplified by Mächtige
+  Magie/Liturgie or reduced by a diminished-only resist result
+- **THEN** the created ActiveEffect SHALL contain the corresponding applied
+  amplified or diminished modifier value
+
 #### Scenario: ActiveEffect has correct base duration
 
 - **WHEN** the ActiveEffect is created

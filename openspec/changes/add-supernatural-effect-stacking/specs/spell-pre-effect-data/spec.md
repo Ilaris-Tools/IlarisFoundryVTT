@@ -4,7 +4,7 @@
 
 Simple buff spells (single stat modifier, Einzelperson target, non-instant duration) SHALL include pre-effect configurations that create ActiveEffects with Ilaris turn timing. Rule-aware bonuses SHALL use semantic `ilarisModifiers` where a raw actor path cannot express their scope or their non-stacking behavior; classical Foundry changes remain available for ordinary path changes.
 
-During the first iteration, every spell listed in `spell-liturgy-effect-inventory.md` that has an affected effect configuration SHALL be migrated in its `_source/` data to the appropriate native change or semantic Ilaris modifier representation.
+During the first iteration, every spell listed in `docs/develop/spell-liturgy-effect-inventory.md` that has an affected effect configuration SHALL be migrated in its `_source/` data to the appropriate native change or semantic Ilaris modifier representation.
 
 #### Scenario: Axxeleratus creates rule-aware GS, AT, and VT modifiers
 
@@ -29,7 +29,7 @@ During the first iteration, every spell listed in `spell-liturgy-effect-inventor
 #### Scenario: Complete first-iteration inventory is migrated
 
 - **WHEN** the first implementation iteration is prepared for packing
-- **THEN** every spell listed in `spell-liturgy-effect-inventory.md` with an
+- **THEN** every spell listed in `docs/develop/spell-liturgy-effect-inventory.md` with an
   affected effect configuration SHALL have its corresponding `_source/` entry
   migrated to the selected representation
 
