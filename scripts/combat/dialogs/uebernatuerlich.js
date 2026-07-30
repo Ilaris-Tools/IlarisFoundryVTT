@@ -13,6 +13,7 @@ import {
     callIlarisHookAllWithGlobalMirror,
     callIlarisHookWithGlobalMirror,
 } from '../hooks/global_combat_hooks.js'
+import { applyPreEffects } from '../../effects/pre-effects/pre-effects-processor.js'
 
 export class UebernatuerlichDialog extends CombatDialog {
     /** @override */
@@ -368,6 +369,11 @@ export class UebernatuerlichDialog extends CombatDialog {
             await this.refreshActorData()
         }
         super._updateSchipsStern()
+
+        // Fire-and-forget pre-effects on success
+        if (isSuccess && this.item.system.preEffects?.length > 0) {
+            applyPreEffects(rollResult, this)
+        }
     }
 
     async _energieAbrechnenKlick(isSuccess) {
@@ -377,6 +383,11 @@ export class UebernatuerlichDialog extends CombatDialog {
         await this.initializeEnergyValues()
 
         await this.applyEnergyCost(isSuccess, this.is16OrHigher)
+
+        // Fire-and-forget pre-effects for non-standard difficulty spells
+        if (isSuccess && this.item.system.preEffects?.length > 0) {
+            applyPreEffects({ success: true }, this)
+        }
 
         // If not enough resources, show error
         if (this.currentEnergy < this.endCost) {
@@ -657,6 +668,8 @@ export class UebernatuerlichDialog extends CombatDialog {
         let fumble_val = 1
         let damageType = 'NORMAL'
         let trueDamage = false
+        let durationBonus = 0
+        let maechtigeMagieQs = 0
 
         // Get the minimum available resource based on actor and item type
         const availableEnergy = this.getAvailableEnergy()
@@ -720,6 +733,8 @@ export class UebernatuerlichDialog extends CombatDialog {
             nodmg,
             damageType,
             trueDamage,
+            durationBonus,
+            maechtigeMagieQs,
             this.energy_override,
         ] = handleModifications(allModifications, {
             mod_at,
@@ -735,6 +750,8 @@ export class UebernatuerlichDialog extends CombatDialog {
             nodmg: null,
             damageType,
             trueDamage,
+            durationBonus,
+            maechtigeMagieQs,
             context: this,
         })
 
@@ -800,6 +817,11 @@ export class UebernatuerlichDialog extends CombatDialog {
 
         // Ensure mod_energy is never less than 0
         mod_energy = Math.max(0, mod_energy)
+
+        // Track Mächtige Magie QS and maneuver duration bonus for pre-effects
+        this.maechtigeMagieQs = maechtigeMagieQs || 0
+        this.maneuverDurationBonus = durationBonus || 0
+
         this.mod_at = mod_at
         this.mod_vt = mod_vt
         this.mod_dm = mod_dm

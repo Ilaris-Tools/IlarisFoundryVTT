@@ -1,0 +1,112 @@
+.pre-effects-section {
+    padding: 8px;
+    border-top: 2px solid var(--ilaris-border-color, #782e22);
+    margin-top: 16px;
+}
+
+.pre-effects-section h3 {
+    margin: 0 0 8px 0;
+    color: var(--ilaris-heading-color, #782e22);
+}
+
+.pre-effects-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.pre-effect-card {
+    border: 1px solid var(--ilaris-border-light, #c4a882);
+    border-radius: 4px;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.03);
+}
+
+.pre-effect-card legend {
+    font-weight: bold;
+    padding: 0 4px;
+}
+
+.delete-pre-effect,
+.delete-change {
+    display: block;
+    margin-left: auto;
+    margin-bottom: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    padding: 2px 6px;
+}
+
+.changes-list {
+    margin: 8px 0;
+    padding: 8px;
+    border: 1px dashed var(--ilaris-border-light, #c4a882);
+    border-radius: 3px;
+}
+
+.change-card {
+    border: 1px solid var(--ilaris-border-light, #c4a882);
+    border-radius: 3px;
+    padding: 8px;
+    margin-bottom: 8px;
+    background: rgba(0, 0, 0, 0.02);
+}
+
+.change-card legend {
+    font-size: 12px;
+}
+
+.avoid-test-section {
+    margin: 8px 0;
+    padding: 8px;
+    border: 1px dashed var(--ilaris-border-light, #c4a882);
+    border-radius: 3px;
+}
+
+.avoid-test-section h4 {
+    margin: 0 0 4px 0;
+    font-size: 13px;
+}
+
+.avoid-test-fields {
+    padding-left: 12px;
+}
+
+.add-pre-effect,
+.add-change {
+    background: rgba(0, 120, 0, 0.1);
+    border: 1px solid rgba(0, 120, 0, 0.3);
+    border-radius: 3px;
+    padding: 6px 12px;
+    cursor: pointer;
+    font-size: 13px;
+    width: 100%;
+}
+
+.add-pre-effect:hover,
+.add-change:hover {
+    background: rgba(0, 120, 0, 0.2);
+}
+
+.pre-effect-card .form-group,
+.change-card .form-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 4px;
+}
+
+.pre-effect-card .form-group label,
+.change-card .form-group label {
+    min-width: 120px;
+    font-size: 12px;
+}
+
+.pre-effect-card input[type="text"],
+.pre-effect-card input[type="number"],
+.pre-effect-card select,
+.change-card input[type="text"],
+.change-card input[type="number"],
+.change-card select {
+    flex: 1;
+}

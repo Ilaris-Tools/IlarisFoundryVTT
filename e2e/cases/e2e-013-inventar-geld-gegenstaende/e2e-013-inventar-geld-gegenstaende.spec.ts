@@ -196,11 +196,19 @@ test.describe('E2E-013 Inventar-Tab — Geld und Gegenstände', () => {
         const behaelterNameInput = behaelterSheet.locator('input[name="name"]')
         await behaelterNameInput.fill(ITEM_NAME_BEHAELTER)
         await behaelterNameInput.press('Tab')
+        await waitForItemExists(page, ACTOR_NAME, ITEM_NAME_BEHAELTER)
 
-        // Gewicht auf -5 setzen → wird zum Container (item_list)
-        const behaelterGewichtInput = behaelterSheet.locator('input[name="system.gewicht"]')
-        await behaelterGewichtInput.fill('-5')
-        await behaelterGewichtInput.press('Tab')
+        // Gewicht über die Document API setzen. AppV2 persistiert einen bloßen
+        // Fokuswechsel nicht verlässlich, besonders nach vorherigen Suite-Fällen.
+        await page.evaluate(
+            async ({ aName, iName }) => {
+                const actor = game.actors?.getName(aName)
+                const item = actor?.items?.find((candidate: any) => candidate.name === iName)
+                if (!item) throw new Error(`Container "${iName}" nicht gefunden`)
+                await item.update({ 'system.gewicht': -5 })
+            },
+            { aName: ACTOR_NAME, iName: ITEM_NAME_BEHAELTER },
+        )
 
         // Warten bis Container-Item persistiert ist (gewicht < 0)
         await page.waitForFunction(

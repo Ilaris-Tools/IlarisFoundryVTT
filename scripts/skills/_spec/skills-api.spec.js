@@ -240,6 +240,54 @@ describe('FertigkeitDialog hooks', () => {
         )
     })
 
+    it('uses PWT for a valid initial specific talent', () => {
+        actor.profan.fertigkeiten = [{ system: { pw: 10, pwt: 14 } }]
+        const dialog = new FertigkeitDialog(actor, {
+            probeType: 'fertigkeit',
+            fertigkeitKey: 0,
+            fertigkeitName: 'Athletik',
+            pw: 10,
+            talentList: { 0: 'Akrobatik' },
+            initialTalent: 'Akrobatik',
+        })
+        dialog.element = createDialogElement(dialog.dialogId, {
+            includeTalentField: true,
+            talentValue: dialog.initialTalentKey,
+        })
+
+        expect(dialog._calculateModifiers()).toEqual(
+            expect.objectContaining({
+                effectivePW: 14,
+                label: 'Athletik (Akrobatik)',
+                usesTalent: true,
+            }),
+        )
+    })
+
+    it('uses PW when the requested initial talent is unavailable', () => {
+        actor.profan.fertigkeiten = [{ system: { pw: 10, pwt: 14 } }]
+        const dialog = new FertigkeitDialog(actor, {
+            probeType: 'fertigkeit',
+            fertigkeitKey: 0,
+            fertigkeitName: 'Athletik',
+            pw: 10,
+            talentList: { 0: 'Laufen' },
+            initialTalent: 'Akrobatik',
+        })
+        dialog.element = createDialogElement(dialog.dialogId, {
+            includeTalentField: true,
+            talentValue: dialog.initialTalentKey,
+        })
+
+        expect(dialog._calculateModifiers()).toEqual(
+            expect.objectContaining({
+                effectivePW: 10,
+                label: 'Athletik',
+                usesTalent: false,
+            }),
+        )
+    })
+
     it('prepares the computed summary context for summaries-only rerenders', async () => {
         const dialog = new FertigkeitDialog(actor, {
             probeType: 'simple',

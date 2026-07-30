@@ -189,7 +189,7 @@
                     {{#unless (or (ifEq this.type "CHANGE_DAMAGE_TYPE") (ifEq this.type
                     "ARMOR_BREAKING") (ifEq this.type "SPECIAL_TEXT"))}}
                     <label>{{../manoever.labels.operator}}:</label>
-                    <select name="system.modifications.{{@index}}.operator">
+                    <select name="system.modifications.{{@../index}}.operator">
                         {{selectOptions ../manoever.operator selected=this.operator}}
                     </select>
                     {{/unless}}

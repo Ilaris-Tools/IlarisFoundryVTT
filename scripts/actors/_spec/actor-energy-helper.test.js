@@ -1,5 +1,6 @@
 describe('IlarisActor energy helper', () => {
     let IlarisActor
+    let HeldActor
 
     const createActorFixture = (data) => Object.assign(Object.create(IlarisActor.prototype), data)
 
@@ -16,6 +17,7 @@ describe('IlarisActor energy helper', () => {
             }
         }
         ;({ IlarisActor } = await import('../data/actor.js'))
+        ;({ HeldActor } = await import('../data/held.js'))
     })
 
     test('returns held ASP state from legacy abgeleitete fields', () => {
@@ -90,5 +92,37 @@ describe('IlarisActor energy helper', () => {
         const energyState = actor.getEnergyState('lep')
 
         expect(energyState).toBeNull()
+    })
+
+    test('initializes WS* from the ActiveEffect-modified WS', async () => {
+        global.game = {
+            settings: {
+                get: jest.fn().mockReturnValue(false),
+            },
+        }
+
+        const actor = Object.assign(Object.create(HeldActor.prototype), {
+            system: {
+                attribute: {},
+                modifikatoren: {},
+                abgeleitete: { ws: 8 },
+            },
+            _sortItems: jest.fn(),
+            _calculateAbgeleitete: jest.fn(),
+            _calculateWounds: jest.fn(),
+            _calculateFear: jest.fn(),
+            _calculateModifikatoren: jest.fn(),
+            _calculateProfanFertigkeiten: jest.fn(),
+            _calculateUebernaturlichFertigkeiten: jest.fn(),
+            _calculateUebernaturlichTalente: jest.fn(),
+            _calculateKampf: jest.fn().mockResolvedValue(undefined),
+            _calculateUebernatuerlichProbendiag: jest.fn(),
+        })
+
+        await actor._initializeActor()
+
+        expect(actor.system.abgeleitete.ws_stern).toBe(8)
+        expect(actor.system.abgeleitete.ws_beine).toBe(8)
+        expect(actor.system.abgeleitete.ws_kopf).toBe(8)
     })
 })
