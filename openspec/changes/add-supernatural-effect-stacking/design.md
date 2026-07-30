@@ -2,7 +2,7 @@
 
 Native Foundry Active Effects provide persistence, duration, transfer, and the existing configuration workflow for Ilaris buffs and debuffs. Their `changes` array is appropriate for unconditional Actor paths but cannot express weapon Fertigkeit, Talent, or situation contexts.
 
-The Ilaris rule suppresses a weaker supernatural contribution only where it overlaps a stronger one. An ActiveEffect can therefore remain partly effective. Global `isSuppressed` is not suitable because it disables the whole document. Ordinary Vorteile must continue to add normally.
+The Ilaris rule suppresses a weaker supernatural contribution only where it overlaps a stronger one of the same sign. The strongest positive and strongest negative contribution apply independently, so an ActiveEffect can remain partly effective. Global `isSuppressed` is not suitable because it disables the whole document. Ordinary Vorteile must continue to add normally.
 
 This change spans effect data/configuration, Actor preparation, combat and skill rolls, settings, Pre-Effect authoring, compendium data, and LLM generation. Existing native `changes` remain compatible and preparing data must not persist an Actor update.
 
@@ -12,7 +12,7 @@ This change spans effect data/configuration, Actor preparation, combat and skill
 
 - Keep all buffs and debuffs as native Foundry ActiveEffects.
 - Add declarative Ilaris modifiers for contextual and non-stacking rule values.
-- Add ordinary components, but select only the strongest matching supernatural component regardless of whether components share an ActiveEffect document.
+- Add ordinary components, then select the strongest matching positive supernatural component and strongest matching negative supernatural component independently, regardless of whether components share an ActiveEffect document.
 - Resolve explicit prepare modifiers in the Actor lifecycle and roll modifiers in a complete roll context; keep semantic main-attribute modifiers out of prepared Actor data.
 - Let each world select Ilaris rules or normal Foundry-style addition.
 
@@ -38,9 +38,9 @@ The alternatives were selectors inside native `changes`, untyped flag payloads, 
 
 ### Resolve ordinary and supernatural components by context
 
-`resolveIlarisModifiers(context)` is a pure service accepting Actor, phase, canonical target, and optional weapon, Fertigkeit, Talent, and situation context. It collects active effects with `Actor#allApplicableEffects()` and filters matching components. It adds every ordinary `add` contribution. In Ilaris mode it selects one strongest matching `strongest-supernatural` component from all eligible supernatural effects, including components held by the same ActiveEffect document; in Foundry mode it adds all contributions. It returns the result and a compact ledger of selected and component-locally suppressed values.
+`resolveIlarisModifiers(context)` is a pure service accepting Actor, phase, canonical target, and optional weapon, Fertigkeit, Talent, and situation context. It collects active effects with `Actor#allApplicableEffects()` and filters matching components. It adds every ordinary `add` contribution. In Ilaris mode it partitions matching `strongest-supernatural` components from all eligible supernatural effects, including components held by the same ActiveEffect document, into positive and negative contributions. It selects the strongest component from each partition; in Foundry mode it adds all contributions. It returns the result and a compact ledger of selected and component-locally suppressed values.
 
-Components compete only when they resolve to the same output context and mode. TP and Waffenschaden semantic modifiers share the damage comparison group. Strength is the absolute raw `comparisonValue`; if absent, a fixed or linear W6 value uses expected value (`XW6 = X × 3.5`). The selected signed value is applied as a terminal effect-derived damage contribution after maneuvers. Later maneuvers therefore neither alter the comparison nor multiply, halve, or otherwise change that contribution.
+Components compete only when they resolve to the same output context, mode, and sign. TP and Waffenschaden semantic modifiers share the damage comparison group. Strength is the absolute raw `comparisonValue`; if absent, a fixed or linear W6 value uses expected value (`XW6 = X × 3.5`). The selected positive and selected negative values both apply; therefore `-5` beats `-3`, while `+8` and `-5` both contribute. Damage contributions are applied as terminal effect-derived values after maneuvers. Later maneuvers therefore neither alter the comparison nor multiply, halve, or otherwise change an effect contribution.
 
 This means that, when both modifiers are supernatural, an effect granting +1 AT generally and +2 AT/Klingenwaffen contributes only +2 for Klingenwaffen; the general +1 remains effective for other Fertigkeiten. If the general +1 is ordinary instead, it adds to the selected +2 supernatural component. A general +4 effect remains active outside the Klingenwaffen overlap where a +8 effect wins. Likewise, a +3 TP effect beats a +2 Waffenschaden effect even if Hammerschlag is selected later; the maneuver changes neither +3 nor +2.
 
@@ -53,6 +53,10 @@ Prepare modifiers resolve inside the Ilaris Actor implementation of Foundry's `A
 Roll modifiers resolve only once `AngriffDialog`, `FernkampfAngriffDialog`, defense handling, or `FertigkeitDialog` has the actor, weapon, Fertigkeit, Talent, tested attributes, and optional situation. For a main-attribute modifier, `FertigkeitDialog` requests the matching attribute contribution only for the relevant check; it does not read or write a modified Actor attribute. The caller adds the resolved result to the existing formula and passes the ledger to Handlebars context for a visible effect-derived breakdown. For damage, the effect-derived contribution is appended after maneuver transformations, so a maneuver has no effect on an Ilaris effect's strength or value.
 
 The implementation must confirm the exact v14 phase name and existing Ilaris preparation order before overriding code. A separate Hook is deliberately not used because the Actor lifecycle gives a deterministic order relative to native changes.
+
+### Keep applied modifiers visible and suppressions inspectable
+
+The resolver ledger distinguishes applied and suppressed contributions. Combat and probe summaries always render the applied effect-derived total and its applied sources in the normal modifier breakdown. If the ledger contains suppression, the summary renders an accessible icon or button with a localized label. Activating it reveals the suppressed entries and their reason; the detailed entries are collapsed by default. This makes the result auditable without making routine roll dialogs noisy.
 
 ### Read the world setting during resolution
 
@@ -91,18 +95,17 @@ No new Foundry Hook is introduced. Existing `combatTurn` and `updateCombat` hook
 ## Migration Plan
 
 1. Add the data fields, resolver, and setting while retaining every existing native change behavior.
-2. Add effect and Pre-Effect authoring, then migrate affected spell `_source/` documents beginning with Axxeleratus.
+2. Add effect and Pre-Effect authoring, then migrate every spell listed in `spell-liturgy-effect-inventory.md` during the first iteration; Axxeleratus remains the reference migration pattern.
 3. Run `npm run pack-all` after modifying the source compendium JSON.
 4. Existing world ActiveEffects remain valid because their `changes` are not rewritten; newly created semantic effects use the current world mode.
 5. Rollback restores the prior system and compendium source. There is no destructive automatic world-data migration; unknown semantic data is inert to an older system version.
 
 ## Testing Strategy
 
-Unit tests isolate the resolver and cover selector matching, competing supernatural components from the same effect, partial overlap, ordinary plus supernatural totals, reactivation after expiry, both world modes, signed values, `XW6` expected comparison, unsupported formulas, source classification, and transferred effects. Attribute tests prove that a GE or KK effect changes only matching probe calculations and never prepared attributes or derived values such as GS. Damage tests prove that TP/Waffenschaden comparisons and terminal effect contributions remain unchanged when a later maneuver modifies ordinary weapon damage. Further tests cover prepare application without Actor persistence, Pre-Effect payload mapping, combat formulas, and skill dialog integration.
+Unit tests isolate the resolver and cover selector matching, competing supernatural components from the same effect, independent positive/negative selection, partial overlap, ordinary plus supernatural totals, reactivation after expiry, both world modes, signed values, `XW6` expected comparison, unsupported formulas, source classification, and transferred effects. Attribute tests prove that a GE or KK effect changes only matching probe calculations and never prepared attributes or derived values such as GS. Damage tests prove that TP/Waffenschaden comparisons and terminal effect contributions remain unchanged when a later maneuver modifies ordinary weapon damage. Further tests cover prepare application without Actor persistence, Pre-Effect payload mapping, combat formulas, and skill dialog integration.
 
-E2E tests extend the existing GM baseline world: configure a semantic Pre-Effect, cast it, assert the resulting ActiveEffect data and source classification, then exercise an overlapping combat or probe bonus in both setting modes. Existing effect-tab, Pre-Effect sheet/buff, melee, ranged, and skill-dialog cases remain regression coverage. No additional player account is needed.
+E2E tests extend the existing GM baseline world: configure a semantic Pre-Effect, cast it, assert the resulting ActiveEffect data and source classification, then exercise an overlapping combat or probe bonus in both setting modes. Result summaries must show applied effects directly and make suppressed contributions available through the suppression indicator. Existing effect-tab, Pre-Effect sheet/buff, melee, ranged, and skill-dialog cases remain regression coverage. No additional player account is needed.
 
 ## Open Questions
 
 - Confirm the initial canonical target IDs against current combat and Actor data models; public editor labels remain German regardless of stored identifiers.
-- Decide after reviewing current dialog templates whether detailed suppression ledger entries are always visible or behind a details disclosure. This does not change resolution semantics.

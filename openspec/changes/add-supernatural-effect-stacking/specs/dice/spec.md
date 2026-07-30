@@ -24,3 +24,21 @@ contribution in the displayed modifier breakdown.
   semantic GE modifier
 - **THEN** the dialog SHALL include that modifier in the GE part of the probe
 - **AND** it SHALL NOT modify the actor's prepared GE or GS values
+
+### Requirement: Probe summaries expose suppression without hiding applied modifiers
+
+FertigkeitDialog SHALL always show applied Ilaris effect modifiers in its
+normal modifier breakdown. If matching modifiers were suppressed, it SHALL
+show an accessible suppression icon or button that reveals the suppression
+ledger only when activated.
+
+#### Scenario: Applied probe modifier remains visible
+
+- **WHEN** an Ilaris modifier contributes to a FertigkeitDialog probe
+- **THEN** the dialog SHALL display the applied contribution directly
+
+#### Scenario: Suppressed probe modifier is disclosed on demand
+
+- **WHEN** one or more matching Ilaris modifiers were suppressed for a probe
+- **THEN** the dialog SHALL display the suppression indicator
+- **AND** activating it SHALL reveal the suppressed modifiers and their reason

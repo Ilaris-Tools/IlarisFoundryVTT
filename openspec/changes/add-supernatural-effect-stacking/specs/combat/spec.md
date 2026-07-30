@@ -29,3 +29,26 @@ dialog summary as an effect-derived modifier.
   expected comparison magnitudes
 - **AND** it SHALL add the selected effect contribution after maneuver
   transformations without multiplying, halving, or otherwise changing it
+
+### Requirement: Combat summaries show applied and suppressed effect results
+
+Combat dialog summaries SHALL always show the total and source of every
+applied Ilaris effect modifier in the normal modifier breakdown. When the
+resolver suppresses one or more matching contributions, the summary SHALL show
+an accessible suppression icon or button with a localized label. Activating it
+SHALL reveal the suppressed entries and their suppression reason; the detailed
+entries SHALL be collapsed by default.
+
+#### Scenario: Applied combat modifier is immediately visible
+
+- **WHEN** a resolved combat context includes an applied Ilaris AT, VT, or
+  damage modifier
+- **THEN** the dialog summary SHALL display that applied modifier without
+  requiring the user to open suppression details
+
+#### Scenario: Suppression details are available on demand
+
+- **WHEN** one or more matching combat modifiers were suppressed
+- **THEN** the dialog summary SHALL display the suppression indicator
+- **AND** activating it SHALL reveal each suppressed modifier and the stronger
+  contribution that suppressed it

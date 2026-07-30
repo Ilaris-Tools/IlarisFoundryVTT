@@ -63,10 +63,11 @@ The system SHALL resolve modifiers from the active effects returned by
 using one resolved target context and comparison group at a time. TP and
 Waffenschaden semantic modifiers SHALL use the same damage comparison group.
 It SHALL add every matching ordinary contribution. In Ilaris rule mode, it
-SHALL select only the strongest matching component whose modifier uses
-`strongest-supernatural` and whose effect is classified as übernatürlich. The
-selection SHALL compare matching components from the same ActiveEffect as well
-as from different ActiveEffects. It SHALL determine strength from
+SHALL separately select the strongest positive component and the strongest
+negative component whose modifier uses `strongest-supernatural` and whose
+effect is classified as übernatürlich. The selection SHALL compare matching
+components from the same ActiveEffect as well as from different ActiveEffects,
+but only against components of the same sign. It SHALL determine strength from
 `comparisonValue`, or from the linear value if no explicit comparison value is
 needed.
 
@@ -93,6 +94,15 @@ needed.
   contribution, and a +8 übernatürlicher contribution for the same output
   context
 - **THEN** the resolved bonus in Ilaris rule mode SHALL be +10
+
+#### Scenario: Strongest positive and negative contributions both apply
+
+- **WHEN** matching supernatural modifiers provide +8, -3, and -5 for the
+  same output context
+- **THEN** the resolver SHALL select +8 as the strongest positive contribution
+- **AND** it SHALL select -5 as the strongest negative contribution
+- **AND** the resolved supernatural total SHALL be +3 before ordinary
+  contributions are added
 
 #### Scenario: Dice comparison uses expected value
 
