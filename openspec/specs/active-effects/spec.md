@@ -52,6 +52,23 @@ The system SHALL provide `IlarisActiveEffectConfig` extending `ActiveEffectConfi
 - **WHEN** editing an effect change key
 - **THEN** the sheet SHALL provide a `<datalist>` of valid attribute keys by recursively walking all registered Actor TypeDataModel schemas
 
+#### Scenario: Long original duration shows its Ilaris hour or day equivalent
+
+- **WHEN** an owner-turn effect has `originalValue` greater than 100 Initiativephasen
+- **THEN** the duration tab SHALL keep the exact editable Initiativephase value visible
+- **AND** it SHALL render a supplementary German equivalent in hours when the value is below 23,040 Initiativephasen and in days when it is at least 23,040 Initiativephasen
+
+#### Scenario: Long remaining duration shows its Ilaris hour or day equivalent
+
+- **WHEN** an owner-turn effect has `remaining` greater than 100 Initiativephasen
+- **THEN** the duration tab SHALL keep the exact editable Initiativephase value visible
+- **AND** it SHALL render the same supplementary German hours/days equivalent for the current remaining value
+
+#### Scenario: Short duration does not show a redundant equivalent
+
+- **WHEN** an owner-turn effect has an original or remaining value of 100 Initiativephasen or fewer
+- **THEN** the duration tab SHALL not render a supplementary hours/days value for that field
+
 ### Requirement: Owner-scoped turn timing
 
 The system SHALL decrement and expire `ownerTurns` effects only on the owning combatant's turn, using a two-phase architecture (combatTurn + updateCombat hooks).

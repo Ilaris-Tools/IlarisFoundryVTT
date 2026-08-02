@@ -18,6 +18,24 @@ function toArray(value) {
     return []
 }
 
+function formatIlarisDuration(phases) {
+    if (!Number.isFinite(phases) || phases <= 100) return ''
+
+    const isDay = phases >= 23040
+    const divisor = isDay ? 23040 : 960
+    const roundedValue = Math.round((phases / divisor) * 100) / 100
+    const renderedValue = String(roundedValue).replace('.', ',')
+    const unit = isDay
+        ? roundedValue === 1
+            ? 'Tag'
+            : 'Tage'
+        : roundedValue === 1
+          ? 'Stunde'
+          : 'Stunden'
+
+    return `${renderedValue} ${unit}`
+}
+
 export class IlarisActiveEffectConfig extends foundry.applications.sheets.ActiveEffectConfig {
     static DEFAULT_OPTIONS = {
         ...foundry.applications.sheets.ActiveEffectConfig.DEFAULT_OPTIONS,
@@ -174,11 +192,18 @@ export class IlarisActiveEffectConfig extends foundry.applications.sheets.Active
      */
     _getIlarisTimingData() {
         const timing = this.document.system?.ilarisTiming || {}
+        const remaining = timing.remaining ?? 0
+        const originalValue = timing.originalValue ?? 0
+        const durationType = timing.durationType || 'ownerTurns'
         return {
-            durationType: timing.durationType || 'ownerTurns',
-            remaining: timing.remaining ?? 0,
-            originalValue: timing.originalValue ?? 0,
+            durationType,
+            remaining,
+            originalValue,
             expiresOn: timing.expiresOn || 'turnEnd',
+            humanReadableOriginal:
+                durationType === 'ownerTurns' ? formatIlarisDuration(originalValue) : '',
+            humanReadableRemaining:
+                durationType === 'ownerTurns' ? formatIlarisDuration(remaining) : '',
         }
     }
 

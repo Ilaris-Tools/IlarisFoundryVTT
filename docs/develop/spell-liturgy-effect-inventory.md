@@ -24,6 +24,13 @@ This inventory contains the compendium entries whose currently supported behavio
 - **Axxeleratus Blitzgeschwind (Tiergeist)** — same effect as Axxeleratus Blitzgeschwind
 - **Fluch des Gewürms** — spell-named marker after failed Willenskraft resistance; timed global `-4` after successful resistance
 - **Plumbumbarum schwerer Arm** — timed Nahkampf modifier `-4`; Mächtige Magie `-2`
+- **Tanz der Schwerter** — 16 Initiativephasen; GS `+4`, AT/VT `+2`; Mächtige Liturgie GS `+2`
+- **Adlerauge Luchsenohr** and **Adlerauge Luchsenohr (Tiergeist)** — 64 Initiativephasen; Sinnenschärfe/Wachsamkeit `+4`; Mächtige Magie `+2`
+- **Innere Ruhe** — 7,680 Initiativephasen; Selbstbeherrschung `+4`; Mächtige Liturgie `+2`
+- **Mondsilberzunge** — 960 Initiativephasen; Überreden `+4`; Mächtige Liturgie `+2`
+- **Rahjas Wohlgefallen** — 960 Initiativephasen; Menschenkenntnis/Betören `+4`; Mächtige Liturgie `+2`
+- **Psychostabilis** and **Psychostabilis (Tiergeist)** — 960 Initiativephasen; MR `+4`; Mächtige Magie `+2`
+- **Tanz des Ungehorsams** — 23,040 Initiativephasen; MR `+4`; Mächtige Magie `+2`
 
 ## Healing (intentionally excluded from the damage list)
 
@@ -36,6 +43,8 @@ This inventory contains the compendium entries whose currently supported behavio
 ## Intentional approximation and deferral boundaries
 
 Pandämonium, Seelenfeuer, and Wand aus Flammen deliberately apply their configured damage once only. Their zone, contact, crossing, repeated-damage, and other trigger rules still require manual handling.
+
+The reviewed numeric effects above deliberately do not extend coverage to Armatrutz, Rondras Rüstung, Attributo, Krötenkuss, Entzug von Travias Gaben, Warzen sprießen, Sensattaco, Ackersegen, or Feuersegen. They require derived armor protection, direct main-attribute behavior, contact/condition mechanics, or an ambiguous/manual rules interpretation.
 
 The following entries are deliberately absent from this active inventory. Their `_source` JSON remains unchanged; the unsupported mechanics and future design direction are documented in [pre-effect deferred mechanics](pre-effect-deferred-mechanics.md):
 

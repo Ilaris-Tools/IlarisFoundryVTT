@@ -16,7 +16,36 @@
     "kosten": "8 AsP",
     "erlernen": "Elf 8; Ach, Alch, Dru, Hex, Geo, Mag, Sch 18",
     "pw": 0,
-    "gruppe": 0
+    "gruppe": 0,
+    "preEffects": [
+      {
+        "baseDuration": 64,
+        "instant": false,
+        "changes": [],
+        "ilarisModifiers": [
+          {
+            "phase": "roll",
+            "target": "talent",
+            "value": "4",
+            "stacking": "strongest-supernatural",
+            "comparisonValue": "",
+            "selector": { "talent": ["Sinnenschärfe", "Wachsamkeit"] },
+            "amplifiedByMaechtigeMagie": true,
+            "maechtigBonus": "+2",
+            "diminishedValue": "",
+            "diminishedMaechtigBonus": ""
+          }
+        ],
+        "avoidTest": {
+          "enabled": false,
+          "fertigkeit": "",
+          "talent": "",
+          "attribut": "",
+          "diminishedOnly": false,
+          "resistDifficulty": 12
+        }
+      }
+    ]
   },
   "effects": [],
   "folder": null,

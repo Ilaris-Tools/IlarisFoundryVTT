@@ -2,6 +2,10 @@
 
 This note records spell and liturgy effects that are intentionally outside the current `preEffects` scope. It is a design boundary, not an implementation plan.
 
+## Reviewed numeric coverage
+
+`Tanz der Schwerter`, both `Adlerauge Luchsenohr` variants, `Innere Ruhe`, `Mondsilberzunge`, `Rahjas Wohlgefallen`, both `Psychostabilis` variants, and `Tanz des Ungehorsams` are not deferred: their complete numeric modifiers are represented in the active inventory. The remaining special modifications, target rules, and non-numeric outcomes on those Items remain manual unless separately documented.
+
 ## Marker effects such as `handlungsunfähig`
 
 Several effects need a timed, recognizable state marker without necessarily changing an actor value. This is particularly relevant for `handlungsunfähig`.

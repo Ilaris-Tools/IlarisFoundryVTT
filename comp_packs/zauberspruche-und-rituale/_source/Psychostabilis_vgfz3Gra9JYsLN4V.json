@@ -16,7 +16,35 @@
     "kosten": "8 AsP",
     "erlernen": "Alch, Mag 12; Dru, Geo, Hex 14; Ach, Srl, Elf 18",
     "pw": 0,
-    "gruppe": 0
+    "gruppe": 0,
+    "preEffects": [
+      {
+        "baseDuration": 960,
+        "instant": false,
+        "changes": [
+          {
+            "key": "system.abgeleitete.mr",
+            "type": "add",
+            "value": "4",
+            "amplifiedByMaechtigeMagie": true,
+            "maechtigBonus": "+2",
+            "damageType": "PROFAN",
+            "diminishedValue": "",
+            "diminishedMaechtigBonus": "",
+            "priority": null
+          }
+        ],
+        "ilarisModifiers": [],
+        "avoidTest": {
+          "enabled": false,
+          "fertigkeit": "",
+          "talent": "",
+          "attribut": "",
+          "diminishedOnly": false,
+          "resistDifficulty": 12
+        }
+      }
+    ]
   },
   "effects": [],
   "folder": null,

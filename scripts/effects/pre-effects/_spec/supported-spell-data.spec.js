@@ -7,9 +7,14 @@ const spellSourceDirectory = join(
     'zauberspruche-und-rituale',
     '_source',
 )
+const liturgySourceDirectory = join(process.cwd(), 'comp_packs', 'liturgien-und-mirakel', '_source')
 
 function readSpell(filename) {
     return JSON.parse(readFileSync(join(spellSourceDirectory, filename), 'utf8'))
+}
+
+function readLiturgy(filename) {
+    return JSON.parse(readFileSync(join(liturgySourceDirectory, filename), 'utf8'))
 }
 
 function expectDamageChange(preEffect, { value, damageType, maechtigBonus = '' }) {
@@ -161,5 +166,89 @@ describe('reviewed supported spell pre-effect source data', () => {
             readSpell('Wand_aus_Flammen_cwYNL2OTHHn8HGmA.json').system.preEffects?.[0],
             { value: '4W6', damageType: 'TRUE_DAMAGE', maechtigBonus: '+2W6' },
         )
+    })
+
+    it('configures Tanz der Schwerter with its complete 16-phase combat modifiers', () => {
+        const preEffect = readLiturgy('Tanz_der_Schwerter_0mKqCy9GHd4GPzxW.json').system
+            .preEffects?.[0]
+
+        expect(preEffect).toMatchObject({ baseDuration: 16, instant: false, changes: [] })
+        expect(preEffect.ilarisModifiers).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    phase: 'prepare',
+                    target: 'gs',
+                    value: '4',
+                    stacking: 'strongest-supernatural',
+                    amplifiedByMaechtigeMagie: true,
+                    maechtigBonus: '+2',
+                }),
+                expect.objectContaining({ phase: 'roll', target: 'at', value: '2' }),
+                expect.objectContaining({ phase: 'roll', target: 'vt', value: '2' }),
+            ]),
+        )
+    })
+
+    it('configures exact named-talent modifiers with converted Initiativephase durations', () => {
+        const cases = [
+            [
+                readSpell('Adlerauge_Luchsenohr_QjByI4mdvimnXnUy.json'),
+                64,
+                ['Sinnenschärfe', 'Wachsamkeit'],
+            ],
+            [
+                readSpell('Adlerauge_Luchsenohr__Tiergeist__RrDf1TSVA7hrsy3c.json'),
+                64,
+                ['Sinnenschärfe', 'Wachsamkeit'],
+            ],
+            [readLiturgy('Innere_Ruhe_mnib8KZWADSbWIxw.json'), 7680, ['Selbstbeherrschung']],
+            [readLiturgy('Mondsilberzunge_V3yVnzomRnXUZWFA.json'), 960, ['Überreden']],
+            [
+                readLiturgy('Rahjas_Wohlgefallen_3Lye7M6LN2L4BtC9.json'),
+                960,
+                ['Menschenkenntnis', 'Betören'],
+            ],
+        ]
+
+        for (const [item, baseDuration, talents] of cases) {
+            const preEffect = item.system.preEffects?.[0]
+            expect(preEffect).toMatchObject({ baseDuration, instant: false, changes: [] })
+            expect(preEffect.ilarisModifiers).toEqual([
+                expect.objectContaining({
+                    phase: 'roll',
+                    target: 'talent',
+                    value: '4',
+                    stacking: 'strongest-supernatural',
+                    selector: { talent: talents },
+                    amplifiedByMaechtigeMagie: true,
+                    maechtigBonus: '+2',
+                }),
+            ])
+        }
+    })
+
+    it('configures the reviewed MR effects with native changes and converted durations', () => {
+        const cases = [
+            [readSpell('Psychostabilis_vgfz3Gra9JYsLN4V.json'), 960],
+            [readSpell('Psychostabilis__Tiergeist__2SCc6VIJLbIoqXd4.json'), 960],
+            [readSpell('Tanz_des_Ungehorsams_zYncwAznu4Jiv9H2.json'), 23040],
+        ]
+
+        for (const [item, baseDuration] of cases) {
+            expect(item.system.preEffects?.[0]).toMatchObject({
+                baseDuration,
+                instant: false,
+                ilarisModifiers: [],
+                changes: [
+                    expect.objectContaining({
+                        key: 'system.abgeleitete.mr',
+                        type: 'add',
+                        value: '4',
+                        amplifiedByMaechtigeMagie: true,
+                        maechtigBonus: '+2',
+                    }),
+                ],
+            })
+        }
     })
 })

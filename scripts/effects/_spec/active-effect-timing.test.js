@@ -158,6 +158,8 @@ describe('IlarisActiveEffectConfig._getIlarisTimingData', () => {
             remaining: 0,
             originalValue: 0,
             expiresOn: 'turnEnd',
+            humanReadableOriginal: '',
+            humanReadableRemaining: '',
         })
     })
 
@@ -175,7 +177,37 @@ describe('IlarisActiveEffectConfig._getIlarisTimingData', () => {
             remaining: 3,
             originalValue: 5,
             expiresOn: 'turnEnd',
+            humanReadableOriginal: '',
+            humanReadableRemaining: '',
         })
+    })
+
+    test('adds German hour and day labels only for values above 100 Initiativephasen', () => {
+        const cfg = makeConfig({
+            ilarisTiming: {
+                durationType: 'ownerTurns',
+                remaining: 23040,
+                originalValue: 960,
+                expiresOn: 'turnEnd',
+            },
+        })
+
+        expect(cfg._getIlarisTimingData()).toEqual(
+            expect.objectContaining({
+                humanReadableOriginal: '1 Stunde',
+                humanReadableRemaining: '1 Tag',
+            }),
+        )
+        expect(
+            makeConfig({
+                ilarisTiming: { remaining: 100, originalValue: 101 },
+            })._getIlarisTimingData(),
+        ).toEqual(
+            expect.objectContaining({
+                humanReadableOriginal: '0,11 Stunden',
+                humanReadableRemaining: '',
+            }),
+        )
     })
 
     test('prepares Vorteil modifiers as ordinary additive entries without dropping native changes', async () => {

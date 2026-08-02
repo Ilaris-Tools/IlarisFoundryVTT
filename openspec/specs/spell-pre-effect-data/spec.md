@@ -50,14 +50,11 @@ Heal spells in the compendium SHALL include pre-effect configurations that heal 
 
 ### Requirement: Buff spells have duration-based pre-effects
 
-Simple buff spells (single stat modifier, Einzelperson target, non-instant duration) SHALL include pre-effect configurations that create ActiveEffects with Ilaris turn timing. Many buff spells require careful key path mapping — some effects map to derived/computed values not directly addressable as data model fields.
+Simple buff spells and liturgies (single target, fully representable numeric modifier, non-instant duration) SHALL include pre-effect configurations that create ActiveEffects using Ilaris owner-turn timing. Durations stated in minutes, hours, or days SHALL be converted at one minute = 16 Initiativephasen. Many buff spells require careful key path mapping — some effects map to derived/computed values not directly addressable as data model fields.
 
 Rule-aware bonuses SHALL use semantic `ilarisModifiers` where a raw actor path
 cannot express their scope or their non-stacking behavior; classical Foundry
-changes remain available for ordinary path changes. During the first iteration,
-every spell listed in `docs/develop/spell-liturgy-effect-inventory.md` that has
-an affected effect configuration SHALL be migrated in its `_source/` data to
-the appropriate native change or semantic Ilaris modifier representation.
+changes remain available for ordinary path changes. During the reviewed duration-aware iteration, every source Item named in the selected-coverage scenario SHALL be migrated in its `_source/` data to the appropriate native change or semantic Ilaris modifier representation.
 
 #### Scenario: Axxeleratus creates rule-aware GS, AT, and VT modifiers
 
@@ -69,22 +66,21 @@ the appropriate native change or semantic Ilaris modifier representation.
 - **AND** the AT and VT bonuses SHALL retain a general combat scope rather
   than being stored as duplicate `system.modifikatoren` path changes
 
-#### Scenario: Gardianum creates MR ActiveEffect
+#### Scenario: Psychostabilis creates an owner-turn MR ActiveEffect
 
-- **WHEN** a GM casts Gardianum and the spell succeeds
-- **THEN** an ActiveEffect targeting `system.abgeleitete.mr` SHALL be created
+- **WHEN** a GM casts Psychostabilis and the spell succeeds
+- **THEN** an ActiveEffect targeting `system.abgeleitete.mr` with `baseDuration: 960` SHALL be created
+- **AND** the effect SHALL use `system.ilarisTiming.durationType: "ownerTurns"`
 
-#### Scenario: Buff spells with minutes duration map to turns
+#### Scenario: Buff spells with minutes duration use Initiativephasen
 
-- **WHEN** a buff spell has `wirkungsdauer: "4 Minuten"`
-- **THEN** the pre-effect `baseDuration` SHALL be `4`
+- **WHEN** a reviewed buff spell has `wirkungsdauer: "4 Minuten"`
+- **THEN** its pre-effect SHALL use `baseDuration: 64`
 
-#### Scenario: Complete first-iteration inventory is migrated
+#### Scenario: Selected converted-duration source Items are migrated
 
-- **WHEN** the first implementation iteration is prepared for packing
-- **THEN** every spell listed in `docs/develop/spell-liturgy-effect-inventory.md` with an
-  affected effect configuration SHALL have its corresponding `_source/` entry
-  migrated to the selected representation
+- **WHEN** the duration-aware iteration is prepared for packing
+- **THEN** `Tanz der Schwerter`, `Adlerauge Luchsenohr`, `Adlerauge Luchsenohr (Tiergeist)`, `Innere Ruhe`, `Mondsilberzunge`, `Rahjas Wohlgefallen`, `Psychostabilis`, `Psychostabilis (Tiergeist)`, and `Tanz des Ungehorsams` SHALL each have the reviewed `_source/` pre-effect representation
 
 #### Known key path mappings
 
