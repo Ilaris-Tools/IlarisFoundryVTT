@@ -14,6 +14,7 @@ function createTargetActor(overrides = {}) {
     return {
         id: 'target-id',
         name: 'Target',
+        effects: [],
         type: 'held',
         system: {
             abgeleitete: { ws: 5, ws_stern: 5 },
@@ -329,5 +330,223 @@ describe('pre-effect processor', () => {
         expect(global.ActiveEffect.createDocuments).toHaveBeenCalledTimes(2)
         expect(global.ActiveEffect.createDocuments.mock.calls[0][0][0].duration.turns).toBe(6)
         expect(global.ActiveEffect.createDocuments.mock.calls[1][0][0].duration.turns).toBe(5)
+    })
+
+    it('records the source Pre-Effect index for each direct application', async () => {
+        const target = createTargetActor()
+        const caster = { id: 'caster-id', uuid: 'Actor.caster' }
+        global.game.actors = { get: jest.fn(() => target) }
+        const dialog = {
+            item: {
+                name: 'Component spell',
+                uuid: 'Item.component-spell',
+                system: {
+                    preEffects: [
+                        {
+                            baseDuration: 2,
+                            instant: false,
+                            changes: [{ key: 'system.first', type: 'add', value: '1' }],
+                        },
+                        {
+                            baseDuration: 2,
+                            instant: false,
+                            changes: [{ key: 'system.second', type: 'add', value: '1' }],
+                        },
+                    ],
+                },
+            },
+            selectedActors: [{ actorId: 'target-id' }],
+            actor: caster,
+            speaker: {},
+            maneuverDurationBonus: 0,
+            maechtigeMagieQs: 0,
+        }
+
+        applyPreEffects({ success: true }, dialog)
+        await Promise.resolve()
+        await Promise.resolve()
+
+        expect(
+            global.ActiveEffect.createDocuments.mock.calls[0][0][0].flags.ilaris.preEffectIndex,
+        ).toBe(0)
+        expect(
+            global.ActiveEffect.createDocuments.mock.calls[1][0][0].flags.ilaris.preEffectIndex,
+        ).toBe(1)
+        expect(
+            global.ActiveEffect.createDocuments.mock.calls[0][0][0].flags.ilaris.applicationId,
+        ).toEqual(
+            global.ActiveEffect.createDocuments.mock.calls[1][0][0].flags.ilaris.applicationId,
+        )
+    })
+
+    it('serializes the source Pre-Effect index for delayed resistance resolution', async () => {
+        const target = createTargetActor({
+            testUserPermission: jest.fn().mockReturnValue(false),
+        })
+        global.game.actors = { get: jest.fn(() => target) }
+        global.game.users = [{ id: 'gm-id', active: true, isGM: true }]
+        const dialog = {
+            item: {
+                name: 'Resisted spell',
+                uuid: 'Item.resisted-spell',
+                system: {
+                    preEffects: [
+                        {
+                            baseDuration: 2,
+                            instant: false,
+                            changes: [{ key: 'system.test', type: 'add', value: '1' }],
+                            avoidTest: { enabled: true, fertigkeit: 'Athletik' },
+                        },
+                    ],
+                },
+            },
+            selectedActors: [{ actorId: 'target-id' }],
+            actor: { id: 'caster-id', uuid: 'Actor.caster' },
+            speaker: {},
+            maneuverDurationBonus: 0,
+            maechtigeMagieQs: 0,
+        }
+
+        applyPreEffects({ success: true }, dialog)
+        await Promise.resolve()
+        await Promise.resolve()
+        await Promise.resolve()
+
+        const content = global.ChatMessage.create.mock.calls[0][0].content
+        const serialized = content.match(/data-pre-effect-data="([^"]+)"/)[1]
+        expect(JSON.parse(decodeURIComponent(serialized))).toMatchObject({
+            preEffectIndex: 0,
+            applicationId: expect.any(String),
+        })
+    })
+
+    it('retains same-spell effects in Ilaris mode', async () => {
+        const existingEffect = {
+            id: 'existing-component',
+            flags: {
+                ilaris: {
+                    sourceType: 'uebernatuerlich',
+                    spellUuid: 'Item.component-spell',
+                    preEffectIndex: 0,
+                },
+            },
+        }
+        const target = createTargetActor({
+            effects: [existingEffect],
+            deleteEmbeddedDocuments: jest.fn().mockResolvedValue([]),
+        })
+        global.game.settings.get = jest.fn((_namespace, key) =>
+            key === 'supernaturalEffectStacking' ? 'ilaris' : undefined,
+        )
+
+        await createActiveEffectFromPreEffect(
+            target,
+            { changes: [{ key: 'system.test', type: 'add', value: '1' }] },
+            { uuid: 'Actor.caster' },
+            { name: 'Component spell', uuid: 'Item.component-spell', system: {} },
+            2,
+            0,
+            0,
+        )
+
+        expect(target.deleteEmbeddedDocuments).not.toHaveBeenCalled()
+        expect(global.ActiveEffect.createDocuments).toHaveBeenCalledTimes(1)
+    })
+
+    it('replaces the whole prior spell application in Foundry mode', async () => {
+        const target = createTargetActor({
+            effects: [
+                {
+                    id: 'old-first-component',
+                    flags: {
+                        ilaris: {
+                            sourceType: 'uebernatuerlich',
+                            spellUuid: 'Item.component-spell',
+                            preEffectIndex: 0,
+                            applicationId: 'old-cast',
+                        },
+                    },
+                },
+                {
+                    id: 'old-second-component',
+                    flags: {
+                        ilaris: {
+                            sourceType: 'uebernatuerlich',
+                            spellUuid: 'Item.component-spell',
+                            preEffectIndex: 1,
+                            applicationId: 'old-cast',
+                        },
+                    },
+                },
+                {
+                    id: 'legacy',
+                    flags: {
+                        ilaris: {
+                            sourceType: 'uebernatuerlich',
+                            spellUuid: 'Item.component-spell',
+                        },
+                    },
+                },
+                {
+                    id: 'other-spell',
+                    flags: {
+                        ilaris: {
+                            sourceType: 'uebernatuerlich',
+                            spellUuid: 'Item.other-spell',
+                            applicationId: 'other-cast',
+                        },
+                    },
+                },
+            ],
+            deleteEmbeddedDocuments: jest.fn().mockImplementation(async (_type, ids) => {
+                target.effects = target.effects.filter((effect) => !ids.includes(effect.id))
+            }),
+        })
+        global.game.settings.get = jest.fn((_namespace, key) =>
+            key === 'supernaturalEffectStacking' ? 'foundry' : undefined,
+        )
+        global.ActiveEffect.createDocuments = jest.fn().mockImplementation(async ([effectData]) => {
+            target.effects.push({ id: `new-${target.effects.length}`, ...effectData })
+        })
+
+        await createActiveEffectFromPreEffect(
+            target,
+            { changes: [{ key: 'system.test', type: 'add', value: '1' }] },
+            { uuid: 'Actor.caster' },
+            { name: 'Component spell', uuid: 'Item.component-spell', system: {} },
+            7,
+            0,
+            0,
+            'new-cast',
+        )
+        await createActiveEffectFromPreEffect(
+            target,
+            { changes: [{ key: 'system.other', type: 'add', value: '2' }] },
+            { uuid: 'Actor.caster' },
+            { name: 'Component spell', uuid: 'Item.component-spell', system: {} },
+            7,
+            0,
+            1,
+            'new-cast',
+        )
+
+        expect(target.deleteEmbeddedDocuments).toHaveBeenCalledTimes(1)
+        expect(target.deleteEmbeddedDocuments).toHaveBeenCalledWith('ActiveEffect', [
+            'old-first-component',
+            'old-second-component',
+            'legacy',
+        ])
+        expect(target.effects.map((effect) => effect.id)).toEqual(['other-spell', 'new-1', 'new-2'])
+        expect(
+            target.effects
+                .filter((effect) => effect.flags?.ilaris?.spellUuid === 'Item.component-spell')
+                .map((effect) => effect.flags.ilaris),
+        ).toEqual([
+            expect.objectContaining({ preEffectIndex: 0, applicationId: 'new-cast' }),
+            expect.objectContaining({ preEffectIndex: 1, applicationId: 'new-cast' }),
+        ])
+        expect(target.deleteEmbeddedDocuments.mock.invocationCallOrder[0]).toBeLessThan(
+            global.ActiveEffect.createDocuments.mock.invocationCallOrder[0],
+        )
     })
 })

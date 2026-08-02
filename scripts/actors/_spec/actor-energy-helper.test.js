@@ -166,4 +166,39 @@ describe('IlarisActor energy helper', () => {
         expect(actor.update).not.toHaveBeenCalled()
         Actor.prototype.prepareData = nativePrepare
     })
+
+    test('applies semantic MR modifiers after native preparation without persisting actor data', () => {
+        global.game.settings.get = jest.fn().mockReturnValue('ilaris')
+        const nativePrepare = Actor.prototype.prepareData
+        Actor.prototype.prepareData = function () {
+            this.system.abgeleitete.mr = 7
+        }
+        const actor = createActorFixture({
+            system: { abgeleitete: { gs: 4, mr: 0 } },
+            allApplicableEffects: () => [
+                {
+                    name: 'Psychostabilis',
+                    system: {
+                        ilarisSource: 'uebernatuerlich',
+                        ilarisModifiers: [
+                            {
+                                phase: 'prepare',
+                                target: 'mr',
+                                value: '4',
+                                stacking: 'strongest-supernatural',
+                            },
+                        ],
+                    },
+                },
+            ],
+            update: jest.fn(),
+        })
+
+        actor.prepareData()
+
+        expect(actor.system.abgeleitete.mr).toBe(11)
+        expect(actor._ilarisPrepareModifierLedger.mr.value).toBe(4)
+        expect(actor.update).not.toHaveBeenCalled()
+        Actor.prototype.prepareData = nativePrepare
+    })
 })

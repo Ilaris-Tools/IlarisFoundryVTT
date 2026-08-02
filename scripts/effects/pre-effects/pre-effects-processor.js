@@ -1,12 +1,51 @@
 import { resolveTargetActorForDamage } from '../../combat/dialogs/shared-dialog-helpers.js'
+import { IlarisGameSettingNames } from '../../settings/configure-game-settings.model.js'
 import { sendResistPrompt } from './resist-handler.js'
-import { targetFromMainAttributePath } from '../utils/ilaris-modifier-constants.js'
+import {
+    IlarisSupernaturalStackingMode,
+    targetFromMainAttributePath,
+} from '../utils/ilaris-modifier-constants.js'
 
 /** Normalize Foundry v14 ObjectField data to a real array. */
 export function toArray(val) {
     if (Array.isArray(val)) return val
     if (val && typeof val === 'object') return Object.values(val)
     return []
+}
+
+function getSupernaturalEffectStackingMode() {
+    try {
+        return (
+            game.settings.get('Ilaris', IlarisGameSettingNames.supernaturalEffectStacking) ||
+            IlarisSupernaturalStackingMode.Ilaris
+        )
+    } catch (_error) {
+        return IlarisSupernaturalStackingMode.Ilaris
+    }
+}
+
+function getActorEffects(targetActor) {
+    if (Array.isArray(targetActor?.effects)) return targetActor.effects
+    return Array.from(targetActor?.effects?.values?.() || [])
+}
+
+function matchesPreviousSpellApplication(effect, spellUuid, applicationId) {
+    const flags = effect?.flags?.ilaris
+    return (
+        flags?.sourceType === 'uebernatuerlich' &&
+        flags.spellUuid === spellUuid &&
+        flags.applicationId !== applicationId
+    )
+}
+
+async function replacePreviousSpellApplication(targetActor, spellUuid, applicationId) {
+    if (getSupernaturalEffectStackingMode() !== IlarisSupernaturalStackingMode.Foundry) return
+
+    const ids = getActorEffects(targetActor)
+        .filter((effect) => matchesPreviousSpellApplication(effect, spellUuid, applicationId))
+        .map((effect) => effect.id)
+        .filter(Boolean)
+    if (ids.length) await targetActor.deleteEmbeddedDocuments('ActiveEffect', ids)
 }
 
 /** Materialize amplified magic/liturgy values when an ActiveEffect is created. */
@@ -90,8 +129,9 @@ export function applyPreEffects(rollResult, dialog) {
         const { targetActor } = resolveTargetActorForDamage(target)
         if (!targetActor) continue
         const isSelfCast = caster.id === targetActor.id
+        const applicationId = foundry.utils.randomID()
 
-        for (const preEffect of preEffects) {
+        for (const [preEffectIndex, preEffect] of preEffects.entries()) {
             const avoidTest = preEffect.avoidTest || {}
             if (avoidTest.enabled) {
                 sendResistPromptForEffect(
@@ -103,6 +143,8 @@ export function applyPreEffects(rollResult, dialog) {
                     maechtigeQs,
                     maneuverDurationBonus,
                     isSelfCast,
+                    preEffectIndex,
+                    applicationId,
                 )
                 continue
             }
@@ -119,6 +161,8 @@ export function applyPreEffects(rollResult, dialog) {
                     item,
                     effectiveDuration,
                     maechtigeQs,
+                    preEffectIndex,
+                    applicationId,
                 )
             }
         }
@@ -134,6 +178,8 @@ async function sendResistPromptForEffect(
     maechtigeQs,
     maneuverDurationBonus,
     isSelfCast,
+    preEffectIndex,
+    applicationId,
 ) {
     const serialized = {
         ...preEffect,
@@ -143,6 +189,8 @@ async function sendResistPromptForEffect(
         casterUuid: caster.uuid,
         spellUuid: spellItem.uuid,
         targetActorId: targetActor.id,
+        preEffectIndex,
+        applicationId,
     }
     await sendResistPrompt(targetActor, serialized, spellItem.name, speaker)
 }
@@ -180,6 +228,8 @@ export async function createActiveEffectFromPreEffect(
     spellItem,
     effectiveDuration,
     maechtigeQs,
+    preEffectIndex = 0,
+    applicationId = foundry.utils.randomID(),
 ) {
     let payload
     try {
@@ -213,11 +263,14 @@ export async function createActiveEffectFromPreEffect(
                 spellUuid: spellItem.uuid,
                 casterUuid: caster.uuid,
                 fertigkeiten: spellItem.system?.fertigkeiten || '',
+                preEffectIndex,
+                applicationId,
             },
         },
     }
 
     try {
+        await replacePreviousSpellApplication(targetActor, spellItem.uuid, applicationId)
         await ActiveEffect.createDocuments([effectData], { parent: targetActor })
         console.log(
             'Ilaris | Created pre-effect ActiveEffect on',

@@ -66,10 +66,13 @@ changes remain available for ordinary path changes. During the reviewed duration
 - **AND** the AT and VT bonuses SHALL retain a general combat scope rather
   than being stored as duplicate `system.modifikatoren` path changes
 
-#### Scenario: Psychostabilis creates an owner-turn MR ActiveEffect
+#### Scenario: Psychostabilis creates an owner-turn semantic MR ActiveEffect
 
 - **WHEN** a GM casts Psychostabilis and the spell succeeds
-- **THEN** an ActiveEffect targeting `system.abgeleitete.mr` with `baseDuration: 960` SHALL be created
+- **THEN** an ActiveEffect with `baseDuration: 960` SHALL be created
+- **AND** it SHALL contain a prepare-phase `mr` Ilaris modifier with
+  übernatürlicher strongest-effect stacking semantics
+- **AND** it SHALL not contain a native `system.abgeleitete.mr` change
 - **AND** the effect SHALL use `system.ilarisTiming.durationType: "ownerTurns"`
 
 #### Scenario: Buff spells with minutes duration use Initiativephasen
@@ -89,7 +92,7 @@ changes remain available for ordinary path changes. During the reviewed duration
 | AT (Angriff)         | Ilaris roll modifier targeting AT                                                  |
 | VT (Verteidigung)    | Ilaris roll modifier targeting VT                                                  |
 | GS (Geschwindigkeit) | Ilaris prepare modifier targeting GS                                               |
-| MR (Magieresistenz)  | `system.abgeleitete.mr`                                                            |
+| MR (Magieresistenz)  | Ilaris prepare modifier targeting MR                                               |
 | INI (Initiative)     | `system.abgeleitete.ini`                                                           |
 | RS (Rüstungsschutz)  | ❌ Derived from armor, no direct field                                             |
 | Elemental resist     | ❌ No resistance field exists                                                      |

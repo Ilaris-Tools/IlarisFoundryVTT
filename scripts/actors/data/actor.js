@@ -158,10 +158,18 @@ export class IlarisActor extends Actor {
             phase: IlarisModifierPhase.Prepare,
             target: IlarisModifierTarget.GS,
         })
-        this._ilarisPrepareModifierLedger = { gs }
+        const mr = resolveIlarisModifiers({
+            actor: this,
+            phase: IlarisModifierPhase.Prepare,
+            target: IlarisModifierTarget.MR,
+        })
+        this._ilarisPrepareModifierLedger = { gs, mr }
 
         if (gs.value !== 0 && this.system?.abgeleitete) {
             this.system.abgeleitete.gs = Number(this.system.abgeleitete.gs || 0) + gs.value
+        }
+        if (mr.value !== 0 && this.system?.abgeleitete) {
+            this.system.abgeleitete.mr = Number(this.system.abgeleitete.mr || 0) + mr.value
         }
     }
     // Not used?

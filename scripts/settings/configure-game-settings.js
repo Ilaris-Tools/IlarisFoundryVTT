@@ -139,7 +139,7 @@ export const registerIlarisGameSettings = () => {
         {
             settingsName: IlarisGameSettingNames.supernaturalEffectStacking,
             name: 'Übernatürliche Effekte stapeln',
-            hint: 'Ilaris wählt getrennt den stärksten positiven und negativen übernatürlichen Modifikator. Foundry addiert alle Ilaris-Modifikatoren.',
+            hint: 'Ilaris behält alle Effekte und wählt getrennt den stärksten positiven und negativen übernatürlichen Modifikator. Foundry addiert unterschiedliche Effekte, ersetzt beim erneuten Wirken aber alle Active Effects derselben übernatürlichen Quelle.',
             config: false,
             type: String,
             scope: 'world',

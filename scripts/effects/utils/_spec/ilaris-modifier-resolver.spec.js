@@ -2,6 +2,7 @@ import {
     getIlarisComparisonMagnitude,
     resolveIlarisModifiers,
 } from '../ilaris-modifier-resolver.js'
+import { IlarisModifierTarget } from '../ilaris-modifier-constants.js'
 
 function effect(name, modifiers, source = 'uebernatuerlich', extra = {}) {
     return {
@@ -123,6 +124,27 @@ describe('resolveIlarisModifiers', () => {
 
         expect(result.value).toBe(7)
         expect(result.hasSuppression).toBe(false)
+    })
+
+    it('resolves MR with the same strongest-effect policy as other prepare targets', () => {
+        expect(IlarisModifierTarget.MR).toBe('mr')
+
+        const effects = [
+            effect('Psychostabilis', [
+                { phase: 'prepare', target: 'mr', value: '4', stacking: 'strongest-supernatural' },
+            ]),
+            effect('Kleiner Schutz', [
+                { phase: 'prepare', target: 'mr', value: '2', stacking: 'strongest-supernatural' },
+            ]),
+            effect('Fluch', [
+                { phase: 'prepare', target: 'mr', value: '-3', stacking: 'strongest-supernatural' },
+            ]),
+        ]
+
+        expect(resolve(effects, { phase: 'prepare', target: 'mr' }).value).toBe(1)
+        expect(
+            resolve(effects, { phase: 'prepare', target: 'mr', stackingMode: 'foundry' }).value,
+        ).toBe(3)
     })
 
     it('reactivates the next strongest component after the stronger effect expires', () => {

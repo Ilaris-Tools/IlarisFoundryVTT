@@ -13,6 +13,7 @@ export const IlarisModifierPhase = Object.freeze({
 
 export const IlarisModifierTarget = Object.freeze({
     GS: 'gs',
+    MR: 'mr',
     AT: 'at',
     VT: 'vt',
     Damage: 'damage',
@@ -56,6 +57,7 @@ export const MAIN_ATTRIBUTE_TARGETS = new Set([
 
 export const IlarisModifierTargetLabels = Object.freeze({
     [IlarisModifierTarget.GS]: 'GS',
+    [IlarisModifierTarget.MR]: 'MR',
     [IlarisModifierTarget.AT]: 'AT',
     [IlarisModifierTarget.VT]: 'VT',
     [IlarisModifierTarget.Damage]: 'TP / Waffenschaden',

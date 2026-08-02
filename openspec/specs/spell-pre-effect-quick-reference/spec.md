@@ -31,6 +31,9 @@ context-sensitive Ilaris-Modifikatoren. It SHALL document preparation and roll
 phases, targets, selectors, applied/suppressed component visibility, and both
 world-setting stacking modes. It SHALL state that main attributes only modify
 matching rolls and do not change prepared values or derived values such as GS.
+It SHALL distinguish retaining/suppressing same-spell effects in Ilaris mode
+from replacing all ActiveEffects from the same supernatural source in Foundry
+mode.
 
 #### Scenario: A GM checks a specific AT modifier against a general modifier
 
@@ -44,7 +47,10 @@ matching rolls and do not change prepared values or derived values such as GS.
 #### Scenario: A GM selects Foundry stacking mode
 
 - **WHEN** a GM reads the guide's description of the `Foundry` world setting
-- **THEN** it SHALL state that all Ilaris-Modifikatoren add in that mode
+- **THEN** it SHALL state that distinct Ilaris-Modifikatoren add in that mode
+- **AND** it SHALL state that recasting the same persistent spell or liturgy
+  replaces all prior ActiveEffects from that source and refreshes their
+  duration
 
 ### Requirement: The guide preserves automation boundaries and Vorteil follow-up status
 

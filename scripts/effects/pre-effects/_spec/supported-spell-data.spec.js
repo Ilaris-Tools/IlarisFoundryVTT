@@ -227,7 +227,7 @@ describe('reviewed supported spell pre-effect source data', () => {
         }
     })
 
-    it('configures the reviewed MR effects with native changes and converted durations', () => {
+    it('configures the reviewed MR effects with semantic modifiers and converted durations', () => {
         const cases = [
             [readSpell('Psychostabilis_vgfz3Gra9JYsLN4V.json'), 960],
             [readSpell('Psychostabilis__Tiergeist__2SCc6VIJLbIoqXd4.json'), 960],
@@ -238,12 +238,13 @@ describe('reviewed supported spell pre-effect source data', () => {
             expect(item.system.preEffects?.[0]).toMatchObject({
                 baseDuration,
                 instant: false,
-                ilarisModifiers: [],
-                changes: [
+                changes: [],
+                ilarisModifiers: [
                     expect.objectContaining({
-                        key: 'system.abgeleitete.mr',
-                        type: 'add',
+                        phase: 'prepare',
+                        target: 'mr',
                         value: '4',
+                        stacking: 'strongest-supernatural',
                         amplifiedByMaechtigeMagie: true,
                         maechtigBonus: '+2',
                     }),

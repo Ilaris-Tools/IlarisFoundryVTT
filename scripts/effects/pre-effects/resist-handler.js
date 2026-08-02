@@ -232,6 +232,8 @@ async function applyPreEffectFromResist(preEffectData) {
         spellItem,
         effectiveDuration,
         maechtigeQs,
+        preEffectData.preEffectIndex,
+        preEffectData.applicationId,
     )
 }
 
@@ -301,6 +303,8 @@ async function applyDiminishedEffect(preEffectData) {
         spellItem,
         effectiveDuration,
         maechtigeQs,
+        preEffectData.preEffectIndex,
+        preEffectData.applicationId,
     )
 }
 

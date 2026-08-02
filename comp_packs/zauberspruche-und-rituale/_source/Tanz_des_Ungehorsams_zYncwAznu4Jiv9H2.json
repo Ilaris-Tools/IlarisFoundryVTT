@@ -21,20 +21,21 @@
       {
         "baseDuration": 23040,
         "instant": false,
-        "changes": [
+        "changes": [],
+        "ilarisModifiers": [
           {
-            "key": "system.abgeleitete.mr",
-            "type": "add",
+            "phase": "prepare",
+            "target": "mr",
             "value": "4",
+            "stacking": "strongest-supernatural",
+            "comparisonValue": "",
+            "selector": {},
             "amplifiedByMaechtigeMagie": true,
             "maechtigBonus": "+2",
-            "damageType": "PROFAN",
             "diminishedValue": "",
-            "diminishedMaechtigBonus": "",
-            "priority": null
+            "diminishedMaechtigBonus": ""
           }
         ],
-        "ilarisModifiers": [],
         "avoidTest": {
           "enabled": false,
           "fertigkeit": "",
