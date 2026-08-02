@@ -38,6 +38,7 @@
   "esmodules": ["scripts/core/hooks.js"],
   "styles": [
     "scripts/core/styles/core.css",
+    "scripts/core/styles/journal.css",
     "scripts/actors/styles/actor-sheet.css",
     "scripts/actors/styles/actors.css",
     "scripts/actors/styles/sidebar.css",
