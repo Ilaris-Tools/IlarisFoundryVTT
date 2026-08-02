@@ -9,6 +9,12 @@ import {
     IlarisModifierTargetLabels,
 } from '../../effects/utils/ilaris-modifier-constants.js'
 
+function toArray(value) {
+    if (Array.isArray(value)) return value
+    if (value && typeof value === 'object') return Object.values(value)
+    return []
+}
+
 export class UebernatuerlichTalentSheet extends IlarisItemSheet {
     /** @override */
     static DEFAULT_OPTIONS = {
@@ -146,7 +152,7 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
 
         // Add Pre-Effect button
         this.element.querySelector('.add-pre-effect')?.addEventListener('click', () => {
-            const preEffects = this.document.system.preEffects || []
+            const preEffects = toArray(this.document.system.preEffects)
             preEffects.push(this._defaultPreEffect())
             this.document.update({ 'system.preEffects': preEffects })
         })
@@ -161,9 +167,9 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
             const index = allCards.indexOf(card)
             if (index < 0) return
 
-            const preEffects = foundry.utils.deepClone(this.document.system.preEffects || [])
+            const preEffects = toArray(foundry.utils.deepClone(this.document.system.preEffects))
             if (!preEffects[index]) return
-            preEffects[index].changes = preEffects[index].changes || []
+            preEffects[index].changes = toArray(preEffects[index].changes)
             preEffects[index].changes.push(this._defaultChange())
             this.document.update({ 'system.preEffects': preEffects })
         })
@@ -177,9 +183,9 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
             const index = allCards.indexOf(card)
             if (index < 0) return
 
-            const preEffects = foundry.utils.deepClone(this.document.system.preEffects || [])
+            const preEffects = toArray(foundry.utils.deepClone(this.document.system.preEffects))
             if (!preEffects[index]) return
-            preEffects[index].ilarisModifiers = preEffects[index].ilarisModifiers || []
+            preEffects[index].ilarisModifiers = toArray(preEffects[index].ilarisModifiers)
             preEffects[index].ilarisModifiers.push(this._defaultIlarisModifier())
             this.document.update({ 'system.preEffects': preEffects })
         })
@@ -194,7 +200,7 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
             const index = allCards.indexOf(card)
             if (index < 0) return
 
-            const preEffects = foundry.utils.deepClone(this.document.system.preEffects || [])
+            const preEffects = toArray(foundry.utils.deepClone(this.document.system.preEffects))
             preEffects.splice(index, 1)
             this.document.update({ 'system.preEffects': preEffects })
         })
@@ -211,8 +217,12 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
             const modifierIndex = modifierCards.indexOf(modifierCard)
             if (preEffectIndex < 0 || modifierIndex < 0) return
 
-            const preEffects = foundry.utils.deepClone(this.document.system.preEffects || [])
-            preEffects[preEffectIndex]?.ilarisModifiers?.splice(modifierIndex, 1)
+            const preEffects = toArray(foundry.utils.deepClone(this.document.system.preEffects))
+            if (!preEffects[preEffectIndex]) return
+            preEffects[preEffectIndex].ilarisModifiers = toArray(
+                preEffects[preEffectIndex].ilarisModifiers,
+            )
+            preEffects[preEffectIndex].ilarisModifiers.splice(modifierIndex, 1)
             this.document.update({ 'system.preEffects': preEffects })
         })
 
@@ -229,8 +239,9 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
             const changeIndex = allChangeCards.indexOf(changeCard)
             if (preEffectIndex < 0 || changeIndex < 0) return
 
-            const preEffects = foundry.utils.deepClone(this.document.system.preEffects || [])
-            if (!preEffects[preEffectIndex]?.changes) return
+            const preEffects = toArray(foundry.utils.deepClone(this.document.system.preEffects))
+            if (!preEffects[preEffectIndex]) return
+            preEffects[preEffectIndex].changes = toArray(preEffects[preEffectIndex].changes)
             preEffects[preEffectIndex].changes.splice(changeIndex, 1)
             this.document.update({ 'system.preEffects': preEffects })
         })
