@@ -52,10 +52,22 @@ Heal spells in the compendium SHALL include pre-effect configurations that heal 
 
 Simple buff spells (single stat modifier, Einzelperson target, non-instant duration) SHALL include pre-effect configurations that create ActiveEffects with Ilaris turn timing. Many buff spells require careful key path mapping — some effects map to derived/computed values not directly addressable as data model fields.
 
-#### Scenario: Axxeleratus creates GS and modifier ActiveEffects
+Rule-aware bonuses SHALL use semantic `ilarisModifiers` where a raw actor path
+cannot express their scope or their non-stacking behavior; classical Foundry
+changes remain available for ordinary path changes. During the first iteration,
+every spell listed in `docs/develop/spell-liturgy-effect-inventory.md` that has
+an affected effect configuration SHALL be migrated in its `_source/` data to
+the appropriate native change or semantic Ilaris modifier representation.
+
+#### Scenario: Axxeleratus creates rule-aware GS, AT, and VT modifiers
 
 - **WHEN** a GM casts Axxeleratus and the spell succeeds
-- **THEN** ActiveEffects targeting `system.abgeleitete.gs` (+4), `system.modifikatoren.nahkampfmod` (+2), and `system.modifikatoren.verteidigungmod` (+2) SHALL be created with `durationType: "ownerTurns"`
+- **THEN** it SHALL create an ActiveEffect with `durationType: "ownerTurns"`
+- **AND** its GS bonus (+4) and its AT (+2) and VT (+2) bonuses SHALL be
+  represented as Ilaris modifiers with übernatürlicher strongest-effect
+  stacking semantics
+- **AND** the AT and VT bonuses SHALL retain a general combat scope rather
+  than being stored as duplicate `system.modifikatoren` path changes
 
 #### Scenario: Gardianum creates MR ActiveEffect
 
@@ -67,18 +79,25 @@ Simple buff spells (single stat modifier, Einzelperson target, non-instant durat
 - **WHEN** a buff spell has `wirkungsdauer: "4 Minuten"`
 - **THEN** the pre-effect `baseDuration` SHALL be `4`
 
+#### Scenario: Complete first-iteration inventory is migrated
+
+- **WHEN** the first implementation iteration is prepared for packing
+- **THEN** every spell listed in `docs/develop/spell-liturgy-effect-inventory.md` with an
+  affected effect configuration SHALL have its corresponding `_source/` entry
+  migrated to the selected representation
+
 #### Known key path mappings
 
-| Concept              | Key path                               |
-| -------------------- | -------------------------------------- |
-| AT (Angriff)         | `system.modifikatoren.nahkampfmod`     |
-| VT (Verteidigung)    | `system.modifikatoren.verteidigungmod` |
-| GS (Geschwindigkeit) | `system.abgeleitete.gs`                |
-| MR (Magieresistenz)  | `system.abgeleitete.mr`                |
-| INI (Initiative)     | `system.abgeleitete.ini`               |
-| RS (Rüstungsschutz)  | ❌ Derived from armor, no direct field |
-| Elemental resist     | ❌ No resistance field exists          |
-| Attribut bonus       | ❌ Multiple sub-fields per attribute   |
+| Concept              | Representation                                                                     |
+| -------------------- | ---------------------------------------------------------------------------------- |
+| AT (Angriff)         | Ilaris roll modifier targeting AT                                                  |
+| VT (Verteidigung)    | Ilaris roll modifier targeting VT                                                  |
+| GS (Geschwindigkeit) | Ilaris prepare modifier targeting GS                                               |
+| MR (Magieresistenz)  | `system.abgeleitete.mr`                                                            |
+| INI (Initiative)     | `system.abgeleitete.ini`                                                           |
+| RS (Rüstungsschutz)  | ❌ Derived from armor, no direct field                                             |
+| Elemental resist     | ❌ No resistance field exists                                                      |
+| Attribut bonus       | Ilaris roll modifier matched to the tested attribute; never changes derived values |
 
 ### Requirement: Debuff spells have duration-based pre-effects
 
