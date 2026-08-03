@@ -1,0 +1,41 @@
+schema: spec-driven
+
+context: |
+    **Ilaris** — Foundry VTT game system (v14) for the Ilaris TTRPG ruleset.
+
+    **Tech**: JavaScript ES modules, Handlebars `.hbs`, CSS. No TypeScript.
+    **Domain language**: German for UI/data/compendiums, English for structural code.
+    **Build cycle**: `npm install` → `npm test` → `npm run lint` → `npm run pack-all`
+
+    **Foundry VTT API — NEVER ASSUME**:
+    - Official API docs (class/method/hook signatures): https://foundryvtt.com/api/v14/
+    - Community wiki (patterns, `foundry.utils.*` helpers, gotchas): https://foundryvtt.wiki/en/development/api
+    - Always verify property names, method signatures, and hook signatures against the API docs.
+    - `foundry.utils.*` provides many helpers (deepClone, mergeObject, expandObject, etc.) — check the wiki before writing your own utilities.
+
+    **Key architectural patterns**:
+    - Sheets: AppV2 via `HandlebarsApplicationMixin(ActorSheetV2)` / `HandlebarsApplicationMixin(ItemSheetV2)`
+    - Data models: TypeDataModel with static `defineSchema()`, registered in `scripts/core/model-data/type-data-models.js`
+    - System config: `CONFIG.ILARIS` in `scripts/core/config.js`
+    - Hooks: Each feature has its own `hooks.js`, imported from `scripts/core/hooks.js`
+    - Compendium data: Edit `_source/` JSON, then run `npm run pack-all`
+
+rules:
+    proposal:
+        - 'List every Foundry VTT API class, Hook event, and utility that this change will touch'
+        - 'For each mentioned Foundry class, include a link to its API doc page (e.g., https://foundryvtt.com/api/v14/classes/foundry.documents.Combat.html)'
+        - 'State whether the change is purely additive, modifies existing behavior, or removes functionality'
+        - "Include a 'Testing Impact' section when the change affects user-facing behavior or introduces new logic: list new unit test scenarios, existing unit tests to update, new E2E cases needed, existing E2E cases affected, and E2E environment context (players, world, shared code candidates)"
+    design:
+        - "Include an 'API Surface' section listing: (a) Foundry classes extended or used, (b) Hook events listened to or triggered, (c) `foundry.utils.*` helpers relied upon"
+        - 'For each Hook event, verify the exact signature from the API docs — do not assume parameter order or names'
+        - 'Check the community wiki (https://foundryvtt.wiki/en/development/api) for existing patterns or helpers that solve part of the problem'
+        - "Include a 'Testing Strategy' section when applicable: identify testable units and which test patterns apply, list E2E coverage for new or modified user flows"
+    specs:
+        - 'Each requirement that interacts with Foundry APIs must reference the specific API doc page for the classes involved'
+        - 'Use the exact Foundry class and method names as they appear in the API docs'
+    tasks:
+        - "For any task that touches Foundry APIs, include a subtask: 'Verify against Foundry API docs (v14)'"
+        - "For any task involving data manipulation or utilities, include a subtask: 'Check foundryvtt.wiki for relevant foundry.utils.* helpers'"
+        - "After compendium data changes, always include: 'Run npm run pack-all'"
+        - "Include dedicated 'Unit Tests' and 'E2E Tests' task groups when the change requires testing, with individual tasks for each test file to create or update"

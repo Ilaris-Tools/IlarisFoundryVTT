@@ -3,9 +3,9 @@
 /* ----------------------------------------- */
 
 .status-effects {
-  display: inline-flexbox;
-  flex-direction: column;
+  display: grid;
   grid-template-columns: 24px 24px 24px 24px;
+  grid-auto-flow: row;
 }
 
 .status-effects img.effect-control {

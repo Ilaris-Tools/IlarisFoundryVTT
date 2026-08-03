@@ -38,10 +38,10 @@
     <div class="flexrow">
         <label>Talent:</label>
         <select id="talent-{{dialogId}}" style="max-width: 200px;">
-            <option value="-2">ohne Talent</option>
-            <option value="-1">mit Talent</option>
+            <option value="-2" {{#if (ifEq selectedTalentKey "-2")}}selected{{/if}}>ohne Talent</option>
+            <option value="-1" {{#if (ifEq selectedTalentKey "-1")}}selected{{/if}}>mit Talent</option>
             {{#each talentList as |talentName key|}}
-            <option value="{{key}}">{{talentName}}</option>
+            <option value="{{key}}" {{#if (ifEq key ../selectedTalentKey)}}selected{{/if}}>{{talentName}}</option>
             {{/each}}
         </select>
     </div>

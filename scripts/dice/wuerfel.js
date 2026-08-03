@@ -3,11 +3,9 @@ import { openSkillDialog } from '../skills/skills-api.js'
 import { roll_crit_message } from './wuerfel_misc.js'
 
 export async function wuerfelwurf(target, actor) {
-    console.log(target)
     let speaker = ChatMessage.getSpeaker({ actor: actor })
     let systemData = actor.system
     let rolltype = target.dataset.rolltype
-    console.log('ILARIS | wuerfelwurf triggered', target, rolltype)
     let nahkampfmod = systemData.modifikatoren.nahkampfmod
     let pw = 0
     let label = 'Probe'
@@ -27,7 +25,6 @@ export async function wuerfelwurf(target, actor) {
         // magie_diag/karma_diag/anrufung_diag all just open the same supernatural dialog;
         // could be collapsed into one 'supernatural_diag' rolltype value.
         let item = actor.items.get(target.dataset.itemid)
-        console.log('item', item)
         await openCombatDialog(actor, item, 'supernatural')
     } else if (rolltype == 'fertigkeit_diag') {
         // Unified skill/attribute dialog with preview
@@ -99,7 +96,6 @@ export async function wuerfelwurf(target, actor) {
                 dialogId: dialogId,
             },
         )
-        console.log('hier')
         await foundry.applications.api.DialogV2.wait({
             window: { title: label },
             content: html,

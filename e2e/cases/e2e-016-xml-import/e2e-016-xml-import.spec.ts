@@ -9,6 +9,7 @@ import {
     parseXmlCharacter,
     validateCharacterIntegrity,
 } from '../../shared/helpers/xml-integrity-validator'
+import { openActorSheet } from '../../shared/fixtures/foundry'
 
 // ── Constants ─────────────────────────────────────────────────────────────────
 
@@ -82,6 +83,15 @@ test.describe('E2E-016 Sephrasto XML-Import', () => {
         const dialogContent = page.locator('.dialog-content')
         await expect(dialogContent).toContainText(ACTOR_NAME, { timeout: 5000 })
 
+        // A visible locator alone is not sufficient: Playwright can activate a
+        // clipped footer although a user cannot reach it. Scroll the actual
+        // content area and prove that the confirmation control is in view.
+        const scrollContainer = page.locator('.application.ilaris-import-dialog .window-content')
+        await scrollContainer.evaluate((element) => {
+            element.scrollTop = element.scrollHeight
+        })
+        await expect(confirmBtn).toBeInViewport()
+
         await confirmBtn.click()
 
         // ── Phase 4: Warten bis Actor importiert ist ─────────────────────
@@ -122,6 +132,8 @@ test.describe('E2E-016 Sephrasto XML-Import', () => {
                 muWert: (actor.system.attribute?.MU?.wert ?? null) as number | null,
                 geWert: (actor.system.attribute?.GE?.wert ?? null) as number | null,
                 klingenwaffenWert: (klingenwaffen?.system?.fw ?? null) as number | null,
+                ws: (actor.system.abgeleitete?.ws ?? null) as number | null,
+                wsStern: (actor.system.abgeleitete?.ws_stern ?? null) as number | null,
                 hasFernkampfwaffe: !!fernkampfwaffe,
                 hasLegacyTypeItems: actor.items.some(
                     (i: any) =>
@@ -139,8 +151,23 @@ test.describe('E2E-016 Sephrasto XML-Import', () => {
         expect(actorData!.muWert).toBe(EXPECTED_MU)
         expect(actorData!.geWert).toBe(EXPECTED_GE)
         expect(actorData!.klingenwaffenWert).toBe(EXPECTED_KLINGENWAFFEN)
+        expect(actorData!.ws).toBe(8)
+        expect(actorData!.wsStern).toBe(8)
         expect(actorData!.hasFernkampfwaffe).toBe(true)
         expect(actorData!.hasLegacyTypeItems).toBe(false)
+
+        // A newly imported Held must also render the Kampf template. This
+        // caught the former Object.entries(undefined) failure only after a
+        // user tried to open the character sheet.
+        const renderErrors: string[] = []
+        page.on('pageerror', (error) => renderErrors.push(error.message))
+        const actorSheet = await openActorSheet(page, ACTOR_NAME)
+        await actorSheet.locator('nav [data-tab="kampf"]').click()
+        await expect(actorSheet.locator('section.tab.kampf')).toBeVisible({ timeout: 10000 })
+        await expect(
+            actorSheet.locator('select[name="system.misc.selected_kampfstil"]'),
+        ).toBeVisible()
+        expect(renderErrors).toEqual([])
 
         // Negativprüfung Cleanup-Vorbereitung: ID ist gesetzt → afterEach löscht
         expect(importedActorId).toBeTruthy()

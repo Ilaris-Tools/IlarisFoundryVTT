@@ -302,8 +302,6 @@ export class FernkampfAngriffDialog extends CombatDialog {
 
         manoever.mod.selected =
             this.element.querySelector(`#modifikator-${this.dialogId}`)?.value || false // Modifikator
-        manoever.rllm.selected =
-            this.element.querySelector(`#rollMode-${this.dialogId}`)?.value || false // RollMode
         await super.manoeverAuswaehlen()
     }
 

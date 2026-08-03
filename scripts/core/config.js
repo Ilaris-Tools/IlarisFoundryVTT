@@ -368,6 +368,8 @@ let manoever = {
         CHANGE_DAMAGE_TYPE: 'Schadenstyp ändern',
         ARMOR_BREAKING: 'Rüstung ignorieren',
         SPECIAL_TEXT: 'Spezialeffekt',
+        DURATION: 'Wirkungsdauer',
+        MAECHTIGE_MAGIE: 'Mächtige Magie/Liturgie',
     },
     operator: {
         MULTIPLY: 'Multiplizieren',
@@ -508,6 +510,8 @@ let schadenstypen = {
     NORMAL: '',
     PROFAN: 'Profan',
     STUMPF: 'Stumpf',
+    HEALING_WOUND: 'Heilung (Wunden)',
+    HEALING_EXHAUSTION: 'Heilung (Erschöpfung)',
     STICH: 'Stich',
     SCHARF: 'Scharf',
     MAGISCH: 'Magisch',

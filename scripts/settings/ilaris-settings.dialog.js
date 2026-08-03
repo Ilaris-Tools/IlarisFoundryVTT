@@ -69,6 +69,7 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
 
     constructor(options = {}) {
         super(options)
+        this.damageTypes = null
     }
 
     async _prepareContext(options) {
@@ -113,6 +114,10 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
                 ConfigureGameSettingsCategories.Ilaris,
                 IlarisGameSettingNames.enableTabbingCharacterSheet,
             ),
+            showDiceRollInChat: game.settings.get(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.showDiceRollInChat,
+            ),
             hexTokenShapes: game.settings.get(
                 ConfigureGameSettingsCategories.Ilaris,
                 IlarisGameSettingNames.hexTokenShapes,
@@ -125,8 +130,46 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
                 ConfigureGameSettingsCategories.Ilaris,
                 IlarisGameSettingNames.lepSystem,
             ),
+            llmApiUrl: game.settings.get(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.llmApiUrl,
+            ),
+            llmApiKey: game.settings.get(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.llmApiKey,
+            ),
+            llmModel: game.settings.get(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.llmModel,
+            ),
         }
+
+        context.damageTypes = this.damageTypes ??= this._parseDamageTypes()
+
         return context
+    }
+
+    _parseDamageTypes() {
+        try {
+            const raw = game.settings.get(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.damageTypes,
+            )
+            const damageTypes = JSON.parse(raw || '[]')
+            if (!Array.isArray(damageTypes)) return []
+            return damageTypes.map((type) => ({
+                value: type.value || '',
+                label: type.label || '',
+                behavior: {
+                    healing: type.behavior?.healing === true,
+                    targetsErschoepfung: type.behavior?.targetsErschoepfung === true,
+                    bypassesArmor: type.behavior?.bypassesArmor === true,
+                },
+            }))
+        } catch (e) {
+            console.warn('Ilaris | Failed to parse damageTypes setting:', e)
+            return []
+        }
     }
 
     async _getDefaultRangedDodgeOptions() {
@@ -176,6 +219,79 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
             default:
         }
         return context
+    }
+
+    /** @override */
+    _onRender(context, options) {
+        super._onRender(context, options)
+
+        this.element.querySelector('.add-damage-type')?.addEventListener('click', async (event) => {
+            event.preventDefault()
+            const damageType = await this.#openDamageTypeDialog()
+            if (!damageType) return
+            this.damageTypes.push(damageType)
+            this.render()
+        })
+
+        this.element
+            .querySelector('.damage-type-list')
+            ?.addEventListener('click', async (event) => {
+                const btn = event.target.closest('.delete-damage-type')
+                const editBtn = event.target.closest('.edit-damage-type')
+                if (!btn && !editBtn) return
+                event.preventDefault()
+
+                const index = Number((btn || editBtn).dataset.index)
+                if (index < 0) return
+
+                if (btn) {
+                    this.damageTypes.splice(index, 1)
+                    this.render()
+                    return
+                }
+
+                const damageType = await this.#openDamageTypeDialog(this.damageTypes[index])
+                if (!damageType) return
+                this.damageTypes[index] = damageType
+                this.render()
+            })
+    }
+
+    async #openDamageTypeDialog(existing = null) {
+        const html = await foundry.applications.handlebars.renderTemplate(
+            'systems/Ilaris/scripts/settings/templates/damage-type-dialog.hbs',
+            {
+                value: existing?.value || '',
+                label: existing?.label || '',
+                behavior: existing?.behavior || {},
+            },
+        )
+        const content = document.createElement('div')
+        content.innerHTML = html
+        const formData = await foundry.applications.api.DialogV2.input({
+            window: { title: existing ? 'Schadenstyp bearbeiten' : 'Neuer Schadenstyp' },
+            content,
+            ok: { label: 'Übernehmen' },
+        })
+        if (!formData) return null
+
+        const value = formData.value?.trim()
+        const label = formData.label?.trim()
+        if (!value || !label) {
+            ui.notifications.warn('Schadenstypen benötigen einen Key und einen Anzeigenamen.')
+            return null
+        }
+
+        return {
+            value,
+            label,
+            behavior: {
+                healing: formData.healing === true || formData.healing === 'on',
+                targetsErschoepfung:
+                    formData.targetsErschoepfung === true || formData.targetsErschoepfung === 'on',
+                bypassesArmor: formData.bypassesArmor === true || formData.bypassesArmor === 'on',
+            },
+        }
     }
 
     _generateAllPacksContext() {
@@ -357,6 +473,12 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
                 inputType: 'checkbox',
             },
             {
+                key: 'showDiceRollInChat',
+                name: IlarisGameSettingNames.showDiceRollInChat,
+                scope: 'client',
+                inputType: 'checkbox',
+            },
+            {
                 key: 'hexTokenShapes',
                 name: IlarisGameSettingNames.hexTokenShapes,
                 scope: 'world',
@@ -374,6 +496,24 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
                 scope: 'world',
                 inputType: 'checkbox',
             },
+            {
+                key: 'llmApiUrl',
+                name: IlarisGameSettingNames.llmApiUrl,
+                scope: 'client',
+                inputType: 'text',
+            },
+            {
+                key: 'llmApiKey',
+                name: IlarisGameSettingNames.llmApiKey,
+                scope: 'client',
+                inputType: 'text',
+            },
+            {
+                key: 'llmModel',
+                name: IlarisGameSettingNames.llmModel,
+                scope: 'client',
+                inputType: 'text',
+            },
         ]
         for (const s of generalDefs) {
             if (s.scope === 'world' && !isGM) continue
@@ -383,6 +523,13 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
             if (!field) continue
             const newValue = s.inputType === 'checkbox' ? field.checked : field.value
             await setIfChanged(s.name, newValue)
+        }
+
+        if (isGM) {
+            await setIfChanged(
+                IlarisGameSettingNames.damageTypes,
+                JSON.stringify(this.damageTypes ?? this._parseDamageTypes()),
+            )
         }
 
         await this.close()
@@ -423,6 +570,10 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
                 { name: IlarisGameSettingNames.hexTokenShapes, value: false },
                 { name: IlarisGameSettingNames.defaultRangedDodgeTalent, value: '' },
                 { name: IlarisGameSettingNames.lepSystem, value: false },
+                {
+                    name: IlarisGameSettingNames.damageTypes,
+                    value: '[{"value":"PROFAN","label":"Profan (Wunden)","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"STUMPF","label":"Stumpf (Erschöpfung)","behavior":{"healing":false,"targetsErschoepfung":true,"bypassesArmor":false}},{"value":"MAGISCH","label":"Magisch","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"GEWEIHT","label":"Geweiht","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"DAEMONISCH","label":"Dämonisch","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"FEUER","label":"Feuer","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"EIS","label":"Eis","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"ERZ","label":"Erz","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"HUMUS","label":"Humus","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"LUFT","label":"Luft","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"WASSER","label":"Wasser","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"HEALING_WOUND","label":"Heilung (Wunden)","behavior":{"healing":true,"targetsErschoepfung":false,"bypassesArmor":false}},{"value":"HEALING_EXHAUSTION","label":"Heilung (Erschöpfung)","behavior":{"healing":true,"targetsErschoepfung":true,"bypassesArmor":false}},{"value":"TRUE_DAMAGE","label":"SP-Schaden","behavior":{"healing":false,"targetsErschoepfung":false,"bypassesArmor":true}}]',
+                },
                 { name: IlarisAutomatisierungSettingNames.useSceneEnvironment, value: true },
                 { name: IlarisAutomatisierungSettingNames.useTargetSelection, value: false },
             ]
@@ -440,6 +591,26 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
         await game.settings.set(
             ConfigureGameSettingsCategories.Ilaris,
             IlarisGameSettingNames.enableTabbingCharacterSheet,
+            false,
+        )
+        await game.settings.set(
+            ConfigureGameSettingsCategories.Ilaris,
+            IlarisGameSettingNames.llmApiUrl,
+            '',
+        )
+        await game.settings.set(
+            ConfigureGameSettingsCategories.Ilaris,
+            IlarisGameSettingNames.llmApiKey,
+            '',
+        )
+        await game.settings.set(
+            ConfigureGameSettingsCategories.Ilaris,
+            IlarisGameSettingNames.llmModel,
+            '',
+        )
+        await game.settings.set(
+            ConfigureGameSettingsCategories.Ilaris,
+            IlarisGameSettingNames.showDiceRollInChat,
             false,
         )
 

@@ -16,7 +16,34 @@
     "kosten": "16 AsP",
     "erlernen": "Smn 18",
     "pw": 0,
-    "gruppe": 6
+    "gruppe": 6,
+    "preEffects": [
+      {
+        "baseDuration": 16,
+        "instant": false,
+        "changes": [
+          {
+            "key": "system.modifikatoren.manuellermod",
+            "type": "add",
+            "value": "0",
+            "amplifiedByMaechtigeMagie": false,
+            "maechtigBonus": "",
+            "damageType": "PROFAN",
+            "diminishedValue": "-4",
+            "diminishedMaechtigBonus": "",
+            "priority": null
+          }
+        ],
+        "avoidTest": {
+          "enabled": true,
+          "fertigkeit": "Willenskraft",
+          "talent": "",
+          "attribut": "",
+          "diminishedOnly": true,
+          "resistDifficulty": 16
+        }
+      }
+    ]
   },
   "effects": [],
   "folder": null,

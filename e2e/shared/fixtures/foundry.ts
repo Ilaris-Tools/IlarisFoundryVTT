@@ -1,5 +1,7 @@
 import { expect, Locator, Page } from '@playwright/test'
 
+import { assertE2EBaseline, E2E_BASELINE } from '../baseline'
+
 export type FoundryCredentials = {
     url: string
     username: string
@@ -17,10 +19,16 @@ export type ActorDefaultSnapshot = {
     }>
 }
 
+export type FoundrySettingSnapshot = {
+    namespace: string
+    key: string
+    value: unknown
+}
+
 export const foundryConfig: FoundryCredentials = {
     url: process.env.E2E_FOUNDRY_URL ?? 'http://localhost:30000',
-    username: process.env.E2E_FOUNDRY_USER ?? 'Gamemaster',
-    worldName: process.env.E2E_FOUNDRY_WORLD ?? 'Vanilla Ilaris',
+    username: process.env.E2E_FOUNDRY_USER ?? E2E_BASELINE.users.gm,
+    worldName: process.env.E2E_FOUNDRY_WORLD ?? E2E_BASELINE.world.name,
     password: process.env.E2E_FOUNDRY_PASSWORD,
 }
 
@@ -137,6 +145,8 @@ export async function loginAndJoinWorld(page: Page, config: FoundryCredentials =
         { timeout: 30000 },
     )
 
+    await assertE2EBaseline(page)
+
     await dismissFoundryCompatibilityWarnings(page)
 
     // Explicitly dismiss the breaking-change dialog that may have appeared during startup
@@ -235,6 +245,42 @@ export async function clearChatLog(page: Page) {
         const ids = (game.messages?.contents ?? []).map((m: any) => m.id)
         if (ids.length > 0) await ChatMessage.deleteDocuments(ids)
     })
+}
+
+/**
+ * Sets a Foundry setting for one E2E case and returns the value needed to
+ * restore the exact pre-test state in teardown.
+ */
+export async function setFoundrySettingForTest(
+    page: Page,
+    namespace: string,
+    key: string,
+    value: unknown,
+): Promise<FoundrySettingSnapshot> {
+    return page.evaluate(
+        async ({ namespace: settingNamespace, key: settingKey, value: settingValue }) => {
+            const previousValue = game.settings.get(settingNamespace, settingKey)
+            await game.settings.set(settingNamespace, settingKey, settingValue)
+            return { namespace: settingNamespace, key: settingKey, value: previousValue }
+        },
+        { namespace, key, value },
+    )
+}
+
+/** Restores a setting captured by {@link setFoundrySettingForTest}. */
+export async function restoreFoundrySetting(
+    page: Page,
+    snapshot: FoundrySettingSnapshot,
+): Promise<void> {
+    await page.evaluate(
+        async ({ namespace, key, value }) => game.settings.set(namespace, key, value),
+        snapshot,
+    )
+}
+
+/** Enables the non-default target-selection feature for one E2E case. */
+export function enableTargetSelectionForTest(page: Page): Promise<FoundrySettingSnapshot> {
+    return setFoundrySettingForTest(page, 'Ilaris', 'useTargetSelection', true)
 }
 
 export async function openActorSheet(page: Page, actorName: string) {
@@ -429,4 +475,161 @@ export async function restoreActorFromDefaultSnapshot(page: Page, snapshot: Acto
             await actor.updateEmbeddedDocuments('Item', updates)
         }
     }, snapshot)
+}
+
+/**
+ * Opens an item sheet by name from the sidebar Items directory.
+ * Navigates to the Items tab, finds the item in the directory list, and opens its sheet.
+ *
+ * @param page - Playwright Page
+ * @param itemName - Name of the item to open (e.g., "Ignifaxius")
+ * @returns Locator for the opened item sheet window
+ */
+export async function openItemSheet(page: Page, itemName: string): Promise<Locator> {
+    // Navigate to Items directory tab
+    const itemsTab = page.locator('[data-tab="items"], .tabs [data-tab="items"]').first()
+    await itemsTab.click()
+
+    const itemEntry = page
+        .locator('.directory-item, li.item, [data-document-id]')
+        .filter({ hasText: itemName })
+        .first()
+
+    await expect(itemEntry).toBeVisible({ timeout: 15000 })
+
+    const itemWindow = page
+        .locator('.window-app, .application')
+        .filter({ hasText: itemName })
+        .last()
+
+    if (await itemWindow.isVisible().catch(() => false)) return itemWindow
+
+    await itemEntry.dblclick()
+
+    await itemWindow.waitFor({ state: 'visible', timeout: 15000 })
+    await expect(itemWindow).toBeVisible({ timeout: 15000 })
+    return itemWindow
+}
+
+/**
+ * Returns the current wound and exhaustion values of an actor.
+ *
+ * @param page - Playwright Page
+ * @param actorName - Name of the actor
+ * @returns `{wunden, erschoepfung}` from `actor.system.gesundheit`
+ */
+export async function getActorWounds(
+    page: Page,
+    actorName: string,
+): Promise<{ wunden: number; erschoepfung: number }> {
+    return page.evaluate((name: string) => {
+        const actor = game.actors.getName(name) as any
+        return {
+            wunden: actor?.system?.gesundheit?.wunden ?? 0,
+            erschoepfung: actor?.system?.gesundheit?.erschoepfung ?? 0,
+        }
+    }, actorName)
+}
+
+/**
+ * Scrolls the pre-effects section into view on an AppV2 item sheet.
+ *
+ * Pre-effects are rendered as a stacked PART (`.pre-effects-section`), not a
+ * separate tab with `data-tab="preEffects"`. On tall sheets the section sits
+ * below the fold and must be scrolled into view before interacting with it.
+ *
+ * @param itemWindow - Locator for the item sheet window
+ */
+export async function openPreEffectsTab(itemWindow: Locator): Promise<void> {
+    // Prefer a real tab if one exists (future-proof), otherwise scroll the section.
+    const tab = itemWindow
+        .locator('nav [data-tab="preEffects"], nav a:has-text("Pre-Effekte")')
+        .first()
+    if (await tab.isVisible().catch(() => false)) {
+        await tab.click()
+        await itemWindow
+            .locator('section.tab.preEffects, .pre-effects-section')
+            .first()
+            .waitFor({ state: 'visible', timeout: 10000 })
+        return
+    }
+
+    const section = itemWindow.locator('.pre-effects-section').first()
+    await expect(section).toBeAttached({ timeout: 10000 })
+    await section.evaluate((el) => el.scrollIntoView({ block: 'start', behavior: 'instant' }))
+    await expect(section).toBeVisible({ timeout: 10000 })
+}
+
+/**
+ * Activates the Foundry chat sidebar tab so chat messages (and buttons inside
+ * them, e.g. `.resist-button`) are rendered and interactable.
+ *
+ * @param page - Playwright Page
+ */
+export async function openChatSidebar(page: Page): Promise<void> {
+    await page.evaluate(() => {
+        // Prefer Foundry's sidebar API (V13+/V14: changeTab; older: activateTab)
+        // https://foundryvtt.com/api/v14/classes/foundry.applications.sidebar.Sidebar.html
+        if (ui.sidebar?.changeTab) {
+            ui.sidebar.changeTab('chat', 'primary')
+        } else if (ui.sidebar?.activateTab) {
+            ui.sidebar.activateTab('chat')
+        } else {
+            const tab =
+                document.querySelector('#sidebar-tabs a[data-tab="chat"]') ||
+                document.querySelector('[data-tab="chat"]')
+            if (tab instanceof HTMLElement) tab.click()
+        }
+
+        // Ensure the latest messages (and embedded action buttons) are in view
+        ui.chat?.scrollBottom?.()
+    })
+
+    await page
+        .locator('#chat-log, .chat-log, #sidebar .chat-message')
+        .first()
+        .waitFor({ state: 'visible', timeout: 10000 })
+        .catch(() => {})
+}
+
+/**
+ * Returns the most recent chat message's metadata.
+ *
+ * @param page - Playwright Page
+ * @returns `{flavor, content, isWhisper}` of the latest chat message, or null if chat is empty
+ */
+export async function getLatestChatMessage(
+    page: Page,
+): Promise<{ flavor: string; content: string; isWhisper: boolean } | null> {
+    return page.evaluate(() => {
+        const msgs = game.messages?.contents
+        if (!msgs || msgs.length === 0) return null
+        const last = msgs[msgs.length - 1] as any
+        return {
+            flavor: last.flavor ?? '',
+            content: last.content ?? '',
+            isWhisper: (last.whisper?.length ?? 0) > 0,
+        }
+    })
+}
+
+/**
+ * Finds and clicks the `.resist-button` in the most recently rendered chat message.
+ * Uses `page.evaluate` to locate the button in the DOM and dispatch a click event.
+ *
+ * @param page - Playwright Page
+ */
+export async function clickResistButton(page: Page): Promise<void> {
+    // First find the button in the DOM
+    const clicked = await page.evaluate(() => {
+        const buttons = document.querySelectorAll('.resist-button')
+        if (buttons.length === 0) return false
+        const lastButton = buttons[buttons.length - 1] as HTMLElement
+        lastButton.click()
+        return true
+    })
+
+    if (!clicked) {
+        throw new Error('No .resist-button found in the DOM')
+    }
 }

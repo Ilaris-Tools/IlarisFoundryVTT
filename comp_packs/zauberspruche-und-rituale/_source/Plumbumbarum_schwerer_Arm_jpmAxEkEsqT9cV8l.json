@@ -16,7 +16,34 @@
     "kosten": "4 AsP",
     "erlernen": "Mag, Dru, Geo, Hex 12; Ach, Alch, Elf, Sch 16",
     "pw": 0,
-    "gruppe": 0
+    "gruppe": 0,
+    "preEffects": [
+      {
+        "baseDuration": 8,
+        "instant": false,
+        "changes": [
+          {
+            "key": "system.modifikatoren.nahkampfmod",
+            "type": "add",
+            "value": "-4",
+            "amplifiedByMaechtigeMagie": true,
+            "maechtigBonus": "-2",
+            "damageType": "PROFAN",
+            "diminishedValue": "",
+            "diminishedMaechtigBonus": "",
+            "priority": null
+          }
+        ],
+        "avoidTest": {
+          "enabled": false,
+          "fertigkeit": "",
+          "talent": "",
+          "attribut": "",
+          "diminishedOnly": false,
+          "resistDifficulty": 12
+        }
+      }
+    ]
   },
   "effects": [],
   "folder": null,

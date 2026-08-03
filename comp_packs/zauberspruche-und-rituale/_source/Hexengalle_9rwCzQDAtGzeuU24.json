@@ -16,7 +16,59 @@
     "kosten": "8 AsP",
     "erlernen": "Ach, Hex 16",
     "pw": 0,
-    "gruppe": 0
+    "gruppe": 0,
+    "preEffects": [
+      {
+        "baseDuration": 0,
+        "instant": true,
+        "changes": [
+          {
+            "key": "system.gesundheit.wunden",
+            "type": "add",
+            "value": "2W6",
+            "amplifiedByMaechtigeMagie": true,
+            "maechtigBonus": "+1W6",
+            "damageType": "TRUE_DAMAGE",
+            "diminishedValue": "",
+            "diminishedMaechtigBonus": "",
+            "priority": null
+          }
+        ],
+        "avoidTest": {
+          "enabled": false,
+          "fertigkeit": "",
+          "talent": "",
+          "attribut": "",
+          "diminishedOnly": false,
+          "resistDifficulty": 12
+        }
+      },
+      {
+        "baseDuration": 2,
+        "instant": false,
+        "changes": [
+          {
+            "key": "system.modifikatoren.manuellermod",
+            "type": "add",
+            "value": "0",
+            "amplifiedByMaechtigeMagie": false,
+            "maechtigBonus": "",
+            "damageType": "PROFAN",
+            "diminishedValue": "",
+            "diminishedMaechtigBonus": "",
+            "priority": null
+          }
+        ],
+        "avoidTest": {
+          "enabled": true,
+          "fertigkeit": "Zähigkeit",
+          "talent": "",
+          "attribut": "",
+          "diminishedOnly": false,
+          "resistDifficulty": 16
+        }
+      }
+    ]
   },
   "effects": [],
   "folder": null,

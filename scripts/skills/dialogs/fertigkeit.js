@@ -40,10 +40,16 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
 
         this.actor = actor
         this.probeType = probeType
-        this.fertigkeitKey = options.fertigkeitKey || null
+        this.fertigkeitKey = options.fertigkeitKey ?? null
         this.fertigkeitName = options.fertigkeitName || ''
         this.pw = options.pw || 0
+        this.success_val = options.success_val || null
         this.talentList = options.talentList || {}
+        this.initialTalent = options.initialTalent || ''
+        this.initialTalentKey =
+            Object.entries(this.talentList).find(
+                ([, talentName]) => talentName === this.initialTalent,
+            )?.[0] ?? '-2'
         this.speaker = ChatMessage.getSpeaker({ actor: this.actor })
         this.dialogId = `dialog-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`
         this.initialXd20 = options.initialXd20 ?? '1'
@@ -58,15 +64,29 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
     }
 
     static _getDialogTitle(probeType, options) {
+        const resistPrefix = options.resistAgainst ? 'Widerstandsprobe' : undefined
+
         switch (probeType) {
             case 'attribut':
+                if (resistPrefix) {
+                    return `${resistPrefix}: ${options.fertigkeitName || 'Attribut'} (gegen ${options.resistAgainst})`
+                }
                 return `Attributsprobe: ${options.fertigkeitName || 'Attribut'}`
             case 'freieFertigkeit':
+                if (resistPrefix) {
+                    return `${resistPrefix}: ${options.fertigkeitName || 'Freie Fertigkeit'} (gegen ${options.resistAgainst})`
+                }
                 return `Freie Fertigkeitsprobe: ${options.fertigkeitName || 'Freie Fertigkeit'}`
             case 'simple':
+                if (resistPrefix) {
+                    return `${resistPrefix}: ${options.fertigkeitName || 'Simple Fertigkeit'} (gegen ${options.resistAgainst})`
+                }
                 return `${options.fertigkeitName || 'Simple Fertigkeit'}`
             case 'fertigkeit':
             default:
+                if (resistPrefix) {
+                    return `${resistPrefix}: ${options.fertigkeitName || 'Fertigkeit'} (gegen ${options.resistAgainst})`
+                }
                 return `Fertigkeitsprobe: ${options.fertigkeitName || 'Fertigkeit'}`
         }
     }
@@ -83,13 +103,14 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
             fertigkeitName: this.fertigkeitName,
             pw: this.pw,
             talentList: this.talentList,
+            selectedTalentKey: this.initialTalentKey,
             hasTalents: Object.keys(this.talentList).length > 0,
             choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: this.initialXd20,
             choices_schips: CONFIG.ILARIS.schips_choice,
             checked_schips: '0',
             hasSchips,
-            rollModes: CONFIG.Dice.rollModes,
+            rollModes: CONFIG.ChatMessage.modes,
             defaultRollMode: game.settings.get('core', 'messageMode'),
             dialogId: this.dialogId,
             summary: this.summary,
@@ -197,6 +218,38 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
             finalPW >= 0 ? `${formattedDice}+${finalPW}` : `${formattedDice}${finalPW}`
         const globalermod = this.actor.system.abgeleitete.globalermod || 0
 
+        // Build rows array
+        const rows = [
+            {
+                label: usesTalent ? 'Basis PW(T)' : 'Basis PW',
+                value: `${effectivePW}`,
+                cssClass: 'modifier-item base-value',
+            },
+            globalermod === 0
+                ? null
+                : {
+                      label: 'Status (Wunden/Furcht)',
+                      value: `${globalermod > 0 ? '+' : ''}${globalermod}`,
+                      cssClass: `modifier-item ${globalermod > 0 ? 'positive' : 'negative'}`,
+                  },
+            ...modLines
+                .filter((line) => line.value !== 0)
+                .map((line) => ({
+                    label: line.label,
+                    value: `${line.value > 0 ? '+' : ''}${line.value}`,
+                    cssClass: `modifier-item ${line.value > 0 ? 'positive' : 'negative'}`,
+                })),
+        ].filter((row) => row)
+
+        // Add difficulty row for resist tests
+        if (this.success_val !== null && this.success_val !== undefined) {
+            rows.push({
+                label: 'Erschwernis',
+                value: `${this.success_val}`,
+                cssClass: 'modifier-item difficulty',
+            })
+        }
+
         return {
             title: 'Würfelaktionen:',
             isEmpty: false,
@@ -206,27 +259,7 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
                     action: 'previewClick',
                     cssClass: 'modifier-summary probe-summary clickable-summary',
                     heading: `🎲 ${label}: ${finalFormula}`,
-                    rows: [
-                        {
-                            label: usesTalent ? 'Basis PW(T)' : 'Basis PW',
-                            value: `${effectivePW}`,
-                            cssClass: 'modifier-item base-value',
-                        },
-                        globalermod === 0
-                            ? null
-                            : {
-                                  label: 'Status (Wunden/Furcht)',
-                                  value: `${globalermod > 0 ? '+' : ''}${globalermod}`,
-                                  cssClass: `modifier-item ${globalermod > 0 ? 'positive' : 'negative'}`,
-                              },
-                        ...modLines
-                            .filter((line) => line.value !== 0)
-                            .map((line) => ({
-                                label: line.label,
-                                value: `${line.value > 0 ? '+' : ''}${line.value}`,
-                                cssClass: `modifier-item ${line.value > 0 ? 'positive' : 'negative'}`,
-                            })),
-                    ].filter((row) => row),
+                    rows,
                     totalRow:
                         totalMod === 0
                             ? null
@@ -404,7 +437,7 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
         let noTalentSelected = false
         let usesTalent = false
 
-        if (this.probeType === 'fertigkeit' && this.fertigkeitKey) {
+        if (this.probeType === 'fertigkeit' && this.fertigkeitKey !== null) {
             const talentChoice = Number(html.querySelector(`#talent-${this.dialogId}`)?.value)
             if (talentChoice === -2) {
                 // ohne Talent - use pw
@@ -489,7 +522,7 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
         // Get roll mode
         const rollmode =
             html.querySelector(`#rollMode-${this.dialogId}`)?.value ||
-            game.settings.get('core', 'rollMode')
+            game.settings.get('core', 'messageMode')
 
         // Build formula
         const formula = `${modifierState.diceFormula} + ${modifierState.effectivePW} + ${modifierState.globalermod} + ${modifierState.hoheQualitaetMod} + ${modifierState.modifikator}`
@@ -530,7 +563,12 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
             }
         }
 
-        const rollResult = await evaluate_roll_with_crit(formula, modifierState.label, text)
+        const rollResult = await evaluate_roll_with_crit(
+            formula,
+            modifierState.label,
+            text,
+            this.success_val,
+        )
         const chatMessage = await postRollToChat(rollResult, this.speaker, rollmode)
         const postRollPayload = this._buildRollPayload({
             statePayload,

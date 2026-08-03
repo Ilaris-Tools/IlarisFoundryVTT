@@ -70,8 +70,8 @@ function setupSkillDialogGlobals() {
             xd20_choice: {},
             schips_choice: {},
         },
-        Dice: {
-            rollModes: {
+        ChatMessage: {
+            modes: {
                 roll: 'roll',
             },
         },
@@ -85,7 +85,7 @@ function setupSkillDialogGlobals() {
         settings: {
             get: jest.fn((namespace, key) => {
                 if (namespace === 'Ilaris' && key === 'realFumbleCrits') return false
-                if (namespace === 'core' && key === 'rollMode') return 'roll'
+                if (namespace === 'core' && key === 'messageMode') return 'roll'
                 return null
             }),
         },
@@ -237,6 +237,54 @@ describe('FertigkeitDialog hooks', () => {
             'Ilaris.skillDialogRendered',
             dialog,
             expect.objectContaining({ reason: 'render', finalPW: 13 }),
+        )
+    })
+
+    it('uses PWT for a valid initial specific talent', () => {
+        actor.profan.fertigkeiten = [{ system: { pw: 10, pwt: 14 } }]
+        const dialog = new FertigkeitDialog(actor, {
+            probeType: 'fertigkeit',
+            fertigkeitKey: 0,
+            fertigkeitName: 'Athletik',
+            pw: 10,
+            talentList: { 0: 'Akrobatik' },
+            initialTalent: 'Akrobatik',
+        })
+        dialog.element = createDialogElement(dialog.dialogId, {
+            includeTalentField: true,
+            talentValue: dialog.initialTalentKey,
+        })
+
+        expect(dialog._calculateModifiers()).toEqual(
+            expect.objectContaining({
+                effectivePW: 14,
+                label: 'Athletik (Akrobatik)',
+                usesTalent: true,
+            }),
+        )
+    })
+
+    it('uses PW when the requested initial talent is unavailable', () => {
+        actor.profan.fertigkeiten = [{ system: { pw: 10, pwt: 14 } }]
+        const dialog = new FertigkeitDialog(actor, {
+            probeType: 'fertigkeit',
+            fertigkeitKey: 0,
+            fertigkeitName: 'Athletik',
+            pw: 10,
+            talentList: { 0: 'Laufen' },
+            initialTalent: 'Akrobatik',
+        })
+        dialog.element = createDialogElement(dialog.dialogId, {
+            includeTalentField: true,
+            talentValue: dialog.initialTalentKey,
+        })
+
+        expect(dialog._calculateModifiers()).toEqual(
+            expect.objectContaining({
+                effectivePW: 10,
+                label: 'Athletik',
+                usesTalent: false,
+            }),
         )
     })
 

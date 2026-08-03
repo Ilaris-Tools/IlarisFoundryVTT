@@ -209,10 +209,15 @@ export class TargetSelectionDialog extends HandlebarsApplicationMixin(Applicatio
 
         // Update Foundry's targeting system to sync with dialog selection
         try {
-            const targetTokenIds = selectedIds.map((target) => target.tokenId)
-            game.user.updateTokenTargets(targetTokenIds)
+            game.user.targets.clear()
+            for (const target of selectedIds) {
+                const token = canvas.tokens.placeables.find((t) => t.id === target.tokenId)
+                if (token) {
+                    token.setTarget(true, { releaseOthers: false })
+                }
+            }
             console.log(
-                `Updated Foundry targets to match dialog selection: ${targetTokenIds.length} targets`,
+                `Updated Foundry targets to match dialog selection: ${game.user.targets.size} targets`,
             )
         } catch (error) {
             console.warn('Could not update Foundry token targets:', error)

@@ -1,8 +1,7 @@
 <section class="header" data-group="primary">
     <div class=heroheader>
-        <div>
-        <h1><input name="name" type="text" value="{{actor.name}}" /></h1>
-
+        <div class="heroname">
+            <h1><input name="name" type="text" value="{{actor.name}}" /></h1>
         </div>
         <div class="flexrow">
         {{#each (range 1 (add actor.system.schips.schips 1)) as |index|}}

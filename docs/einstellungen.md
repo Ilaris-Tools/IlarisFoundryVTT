@@ -17,3 +17,24 @@ für Spielerinnen garnicht auf. Sie lassen sich über den letzten Tab in der Sei
 
 - **Scene-Umgebungseinstellungen verwenden**: Wenn aktiviert, werden Licht und Wetter aus den Scene-Einstellungen automatisch in Fernkampf-Dialogen vorausgewählt. Die Umgebungsbedingungen können direkt im Szene-Config Menü gesetzt werden.
 - **Zielauswahl-System verwenden**: Wenn aktiviert, werden in Kampfdialogen die Zielauswahl-Funktion und automatische Verteidigungsaufforderungen angezeigt. Dies ermöglicht es, Ziele für Angriffe auszuwählen und sendet automatisch Verteidigungsprompts an die angegriffenen Akteure. Bei Fernkampfangriffen können Ziele mit Schilden oder durch Ausweichen mit Akrobatik verteidigen.
+
+### LLM / KI-Einstellungen
+
+Diese Einstellungen ermöglichen die automatische Generierung von Pre-Effects für Zaubersprüche über eine KI-API.
+Die Einstellungen sind **lokal** — sie werden nur im Browser der SL gespeichert und nie mit der Welt synchronisiert.
+Nicht-SL-Spieler:innen sehen diese Felder nicht.
+
+- **LLM API URL**: Die URL des OpenAI-kompatiblen Chat-Completions-Endpunkts. Unterstützte Anbieter:
+
+    | Anbieter       | URL                                             | Modell-Beispiel |
+    | -------------- | ----------------------------------------------- | --------------- |
+    | OpenAI         | `https://api.openai.com/v1/chat/completions`    | `gpt-4o`        |
+    | OpenRouter     | `https://openrouter.ai/api/v1/chat/completions` | `openai/gpt-4o` |
+    | DeepSeek       | `https://api.deepseek.com/v1/chat/completions`  | `deepseek-chat` |
+    | Ollama (lokal) | `http://localhost:11434/v1/chat/completions`    | `llama3`        |
+
+- **LLM API Key**: Der API-Schlüssel für den Dienst. Wird als Passwort-Feld maskiert und nur im Browser gespeichert.
+- **LLM Model**: Das zu verwendende Modell (z.B. `gpt-4o`, `deepseek-chat`).
+
+Nach der Konfiguration erscheint ein "🤖 Generieren"-Button im Pre-Effects-Bereich von Zaubersprüchen,
+der eine Anfrage an die KI sendet und die Antwort als Pre-Effect-Konfiguration übernimmt.
