@@ -109,7 +109,7 @@ console.log('\nCompiling compendium packs...')
 for (const packDir of packDirs) {
     const sourcePath = path.join(packDir, '_source')
     try {
-        compilePack(sourcePath, packDir, { log: false })
+        await compilePack(sourcePath, packDir, { log: false })
         console.log(`✅ Compiled: ${packDir}`)
     } catch (error) {
         console.error(`❌ Error compiling ${packDir}:`, error.message)

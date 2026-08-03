@@ -73,15 +73,25 @@ The system SHALL provide `get_statuseffect_by_id()` to look up status effects on
 ### Requirement: Skill and talent rolls resolve contextual effect modifiers
 
 The unified FertigkeitDialog SHALL resolve roll-phase Ilaris modifiers for
-its actor, Fertigkeit or Talent, and any explicitly supplied situation
-context before calculating the probe value. It SHALL include the resolved
-contribution in the displayed modifier breakdown.
+its actor, Fertigkeit or Talent, and the current selected situation context
+before calculating the probe value. It SHALL offer a localized situation
+dropdown containing no special situation, social duel, waiting in a social
+duel, investigation/research, and destroying/breaking an object. An explicitly
+supplied situation from the roll opener SHALL initialize the dialog selection.
+It SHALL include the resolved contribution in the displayed modifier
+breakdown.
 
 #### Scenario: Social-duel talent bonus applies
 
 - **WHEN** a social-duel roll uses Einschüchtern or Überreden
 - **THEN** a matching ordinary `situation: ["sozialesDuell"]` modifier SHALL
   be added to that probe
+
+#### Scenario: Waited social-duel roll retains generic effects
+
+- **WHEN** a roll selects the “Rededuell – abwartend” situation
+- **THEN** a modifier selecting `sozialesDuellAbwartend` SHALL apply
+- **AND** a modifier selecting the parent `sozialesDuell` SHALL also apply
 
 #### Scenario: Situation-bound bonus does not leak
 

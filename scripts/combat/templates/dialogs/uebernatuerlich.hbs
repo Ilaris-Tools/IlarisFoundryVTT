@@ -30,6 +30,28 @@
             <label>{{get_label "kbak"}}</label>
             <input type="checkbox" id="kbak" {{checked item.system.manoever.kbak.selected}} />
         </div>
+        {{#if (or ilarisSituationControls.boolean.length ilarisSituationControls.exclusive.length)}}
+        <hr />
+        <div>
+            <h3>Situative Vorteile und Traditionen</h3>
+            {{#each ilarisSituationControls.boolean as |condition|}}
+            <div class="flexrow">
+                <label>{{condition.label}}</label>
+                <input type="checkbox" name="ilaris-situation" value="{{condition.id}}" />
+            </div>
+            {{/each}}
+            {{#each ilarisSituationControls.exclusive as |group|}}
+            <div>
+                <label>{{group.label}}:</label>
+                {{#each group.options as |option|}}
+                <label>
+                    <input type="radio" name="ilaris-situation-{{../id}}" value="{{option.id}}" /> {{option.label}}
+                </label>
+                {{/each}}
+            </div>
+            {{/each}}
+        </div>
+        {{/if}}
         {{#if hasVerbotenePforten}}
         <div>
             <label>Verbotene Pforten:</label>

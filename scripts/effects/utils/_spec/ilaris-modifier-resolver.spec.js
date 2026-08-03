@@ -3,6 +3,11 @@ import {
     resolveIlarisModifiers,
 } from '../ilaris-modifier-resolver.js'
 import { IlarisModifierTarget } from '../ilaris-modifier-constants.js'
+import {
+    getIlarisSituationTags,
+    getRelevantSupernaturalSituationControls,
+    IlarisRollSituation,
+} from '../ilaris-roll-situations.js'
 
 function effect(name, modifiers, source = 'uebernatuerlich', extra = {}) {
     return {
@@ -203,5 +208,87 @@ describe('getIlarisComparisonMagnitude', () => {
 
     it('rejects unsupported formulas instead of silently comparing them', () => {
         expect(() => getIlarisComparisonMagnitude({ value: '1W20' })).toThrow('Unsupported')
+    })
+})
+
+describe('Ilaris roll situations', () => {
+    it('expands a waited social duel to its general social-duel tag', () => {
+        expect(getIlarisSituationTags(IlarisRollSituation.SocialDuelWaited)).toEqual([
+            IlarisRollSituation.SocialDuelWaited,
+            IlarisRollSituation.SocialDuel,
+        ])
+    })
+
+    it('keeps independent Kraftlinie strength tags exclusive in dialog state', () => {
+        expect(getIlarisSituationTags(IlarisRollSituation.Kraftlinie3)).toEqual([
+            IlarisRollSituation.Kraftlinie3,
+        ])
+    })
+
+    it('uses one tag for the shared investigation and research context', () => {
+        expect(getIlarisSituationTags(IlarisRollSituation.InvestigationResearch)).toEqual([
+            IlarisRollSituation.InvestigationResearch,
+        ])
+    })
+
+    it('derives only relevant boolean and exclusive controls from transferred Vorteil effects', () => {
+        const controls = getRelevantSupernaturalSituationControls(
+            {
+                allApplicableEffects: () => [
+                    effect(
+                        'Kraftlinienmagie',
+                        [
+                            {
+                                phase: 'roll',
+                                target: 'probe',
+                                value: '2',
+                                selector: {
+                                    fertigkeit: ['Kraft'],
+                                    situation: [IlarisRollSituation.Kraftlinie2],
+                                },
+                            },
+                            {
+                                phase: 'roll',
+                                target: 'probe',
+                                value: '3',
+                                selector: {
+                                    fertigkeit: ['Kraft'],
+                                    situation: [IlarisRollSituation.Kraftlinie3],
+                                },
+                            },
+                        ],
+                        'ordinary',
+                        { parent: { type: 'vorteil' } },
+                    ),
+                    effect(
+                        'Passender Ort',
+                        [
+                            {
+                                phase: 'roll',
+                                target: 'probe',
+                                value: '2',
+                                selector: {
+                                    fertigkeit: ['Kraft'],
+                                    situation: [IlarisRollSituation.CompatibleLocation],
+                                },
+                            },
+                        ],
+                        'ordinary',
+                        { parent: { type: 'vorteil' } },
+                    ),
+                ],
+            },
+            { fertigkeit: 'Kraft' },
+        )
+
+        expect(controls.boolean.map((control) => control.id)).toEqual([
+            IlarisRollSituation.CompatibleLocation,
+        ])
+        expect(controls.exclusive).toEqual([
+            expect.objectContaining({
+                id: 'kraftlinie',
+                optionIds: [IlarisRollSituation.Kraftlinie2, IlarisRollSituation.Kraftlinie3],
+            }),
+        ])
     })
 })

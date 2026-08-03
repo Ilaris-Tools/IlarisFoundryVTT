@@ -127,6 +127,7 @@ function createDialogElement(dialogId, overrides = {}) {
         [`#hohequalitaet-${dialogId}`]: { value: overrides.hoheQualitaet ?? '0' },
         [`#modifikator-${dialogId}`]: { value: overrides.modifikator ?? '0' },
         [`#rollMode-${dialogId}`]: { value: overrides.rollMode ?? 'roll' },
+        [`#situation-${dialogId}`]: { value: overrides.situation ?? '' },
         [`#talent-${dialogId}`]: overrides.includeTalentField
             ? { value: overrides.talentValue ?? '-2' }
             : null,
@@ -341,7 +342,9 @@ describe('FertigkeitDialog hooks', () => {
             attributeTargets: ['GE'],
             situation: 'sozialesDuell',
         })
-        geDialog.element = createDialogElement(geDialog.dialogId)
+        geDialog.element = createDialogElement(geDialog.dialogId, {
+            situation: 'sozialesDuell',
+        })
 
         const kkDialog = new FertigkeitDialog(actor, {
             probeType: 'attribut',
@@ -371,6 +374,57 @@ describe('FertigkeitDialog hooks', () => {
             expect.arrayContaining([
                 expect.objectContaining({ sourceName: 'Schwaches Attributo GE' }),
             ]),
+        )
+    })
+
+    it('expands a waited social duel so general and specific Vorteil effects both apply', async () => {
+        actor.allApplicableEffects = () => [
+            {
+                name: 'Eindrucksvoll I',
+                parent: { type: 'vorteil' },
+                system: {
+                    ilarisModifiers: [
+                        {
+                            phase: 'roll',
+                            target: 'probe',
+                            value: '2',
+                            selector: { situation: ['sozialesDuell'] },
+                        },
+                    ],
+                },
+            },
+            {
+                name: 'Bedächtig',
+                parent: { type: 'vorteil' },
+                system: {
+                    ilarisModifiers: [
+                        {
+                            phase: 'roll',
+                            target: 'probe',
+                            value: '4',
+                            selector: { situation: ['sozialesDuellAbwartend'] },
+                        },
+                    ],
+                },
+            },
+        ]
+        const dialog = new FertigkeitDialog(actor, {
+            probeType: 'simple',
+            fertigkeitName: 'Überreden',
+            pw: 10,
+            situation: 'sozialesDuellAbwartend',
+        })
+        dialog.element = createDialogElement(dialog.dialogId, {
+            situation: 'sozialesDuellAbwartend',
+        })
+
+        expect(dialog._calculateModifiers()).toEqual(
+            expect.objectContaining({ totalMod: 8, finalPW: 18 }),
+        )
+
+        const context = await dialog._prepareContext({})
+        expect(context.situationOptions).toEqual(
+            expect.arrayContaining([expect.objectContaining({ id: 'sozialesDuellAbwartend' })]),
         )
     })
 
