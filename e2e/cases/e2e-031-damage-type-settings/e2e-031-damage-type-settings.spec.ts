@@ -14,19 +14,25 @@ import {
 } from '../../shared/fixtures/foundry'
 
 const damageTypesSetting = { namespace: 'Ilaris', key: 'damageTypes' }
+const weaponDamageRollSetting = { namespace: 'Ilaris', key: 'expandWeaponDamageMultipliers' }
 
 test.describe('E2E-031 · Damage Type Settings', () => {
     let originalSetting: import('../../shared/fixtures/foundry').FoundrySettingSnapshot
+    let originalWeaponDamageRollSetting: import('../../shared/fixtures/foundry').FoundrySettingSnapshot
 
     test.beforeEach(async ({ page }) => {
         await loginAndJoinWorld(page, foundryConfig)
         originalSetting = await page.evaluate(({ namespace, key }) => {
             return { namespace, key, value: game.settings.get(namespace, key) }
         }, damageTypesSetting)
+        originalWeaponDamageRollSetting = await page.evaluate(({ namespace, key }) => {
+            return { namespace, key, value: game.settings.get(namespace, key) }
+        }, weaponDamageRollSetting)
     })
 
     test.afterEach(async ({ page }) => {
         await restoreFoundrySetting(page, originalSetting).catch(() => {})
+        await restoreFoundrySetting(page, originalWeaponDamageRollSetting).catch(() => {})
     })
 
     test('supports edit, add, delete, behavior persistence, and reopening', async ({ page }) => {
@@ -120,6 +126,31 @@ test.describe('E2E-031 · Damage Type Settings', () => {
                     (type: any) => type.value === 'TEST_HEALING',
                 ),
             undefined,
+            { timeout: 10000 },
+        )
+    })
+
+    test('GM enables and persists weapon damage roll expansion', async ({ page }) => {
+        await page.evaluate(() => {
+            const menu = game.settings.menus.get('Ilaris.ilarisSettingsMenu')
+            if (!menu?.type) throw new Error('Ilaris settings menu is not registered')
+            new menu.type().render({ force: true })
+        })
+
+        const settingsDialog = page.locator('.settings-dialog').last()
+        await expect(settingsDialog).toBeVisible({ timeout: 15000 })
+        await settingsDialog.locator('nav [data-tab="GENERAL"]').click()
+
+        const settingInput = settingsDialog.locator(
+            'input[name="general.expandWeaponDamageMultipliers"]',
+        )
+        await expect(settingInput).toBeVisible({ timeout: 10000 })
+        await settingInput.check()
+        await settingsDialog.locator('button[data-action="saveSettings"]').click()
+
+        await page.waitForFunction(
+            ({ namespace, key }) => game.settings.get(namespace, key) === true,
+            weaponDamageRollSetting,
             { timeout: 10000 },
         )
     })
