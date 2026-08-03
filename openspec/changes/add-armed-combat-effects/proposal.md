@@ -14,6 +14,9 @@ then expend their limited charges and expire.
   attack or damage contributions, and an optional charge configuration.
 - Render declared numeric inputs in `UebernatuerlichDialog` before a cast is
   committed and persist the submitted values in each resulting ActiveEffect.
+- Show each effect's authoritative remaining duration in the Held actor sheet's
+  Effekte tab and show remaining charges beside armed effects, so time-based
+  expiry and charge exhaustion remain separately visible.
 - Add a common, system-level confirmed-hit handoff for melee and ranged combat
   so an armed effect can be applied and decremented after a successful attack
   against a selected target, expiring only when its charges reach zero.
@@ -48,13 +51,16 @@ confirmed-hit resolution stage; it removes no supported functionality.
 - `supported-spell-pre-effects`: Move Falkenauge Meisterschuss and Neun
   Streiche in einem from deferred next-roll mechanics to structured supported
   source data.
+- `actor-sheets`: Display active-effect duration and armed-effect charge state
+  in the Held Effekte tab.
 
 ## Impact
 
 - Affected code: `scripts/effects/pre-effects/`,
   `scripts/effects/model-data/`, `scripts/items/sheets/`,
   `scripts/items/templates/`, `scripts/combat/dialogs/`, and
-  `scripts/combat/hooks/`.
+  `scripts/combat/hooks/`, `scripts/actors/sheets/`, and
+  `scripts/actors/templates/`.
 - Affected compendium source data: `comp_packs/zauberspruche-und-rituale/_source/`
   and `comp_packs/liturgien-und-mirakel/_source/`; packed LevelDB artifacts are
   regenerated with `npm run pack-all`.
@@ -82,6 +88,9 @@ confirmed-hit resolution stage; it removes no supported functionality.
   contributions; decrement once per confirmed hit; expire at zero; retain the
   effect after a miss, an ineligible attack, or a preview; and verify opt-in
   Mächtige-Magie charge amplification.
+- New actor-sheet tests: effect rows display the active owner-turn duration or
+  native prepared duration as applicable, and display charges only when an
+  armed effect has a remaining charge counter.
 - Existing unit tests to update: pre-effect processor coverage in
   `scripts/effects/pre-effects/_spec/`, combat dialog and hook coverage in
   `scripts/combat/_spec/`, and supported source-data coverage in

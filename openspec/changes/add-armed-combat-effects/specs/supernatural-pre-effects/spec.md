@@ -6,7 +6,6 @@ The shared übernatürlich pre-effect schema SHALL support an optional
 `armedCombat` object and its bounded numeric input descriptors. The
 übernatürlich item-sheet Pre-Effects editor SHALL allow authors to configure
 the trigger, attack scope, attack or damage contribution, and numeric input
-metadata without editing raw JSON.
 metadata without editing raw JSON. When an armed effect has charges, the editor
 SHALL expose its base charge count and optional Mächtige-Magie/Liturgie charge
 amplification fields.

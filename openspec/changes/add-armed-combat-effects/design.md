@@ -101,6 +101,23 @@ previews and normal roll modifiers. Armed effects use their own, explicit
 attack-context resolver because they have a lifecycle and persisted
 consumption semantics.
 
+### Display duration and charges as separate effect state
+
+The Held Effekte tab receives view data derived from each applied effect rather
+than embedding lifecycle choices in the Handlebars template. Each row exposes
+one duration label and an optional charge label. For effects using
+`system.ilarisTiming.durationType: "ownerTurns"`, the displayed duration comes
+from `system.ilarisTiming.remaining`, because that is the counter that actually
+controls expiry. All other timed effects display the prepared native duration
+from [ActiveEffect](https://foundryvtt.com/api/v14/classes/foundry.documents.ActiveEffect.html),
+which is maintained by `ActiveEffect#updateDuration`. Armed effects additionally
+display `Ladungen: <remaining>` from `system.ilarisArmedCombat`.
+
+This deliberately does not merge duration and charges: a charged effect can
+expire due to its normal duration with charges left, or exhaust its charges
+while duration remains. Effects without a finite duration or armed charge data
+show neither label.
+
 ### Initial source configurations
 
 - Falkenauge Meisterschuss arms the caster for one successful ranged attack and
@@ -154,6 +171,10 @@ consumption semantics.
   rather than inventing a new multi-target rules engine.
 - [Legacy data lacks armed fields] -> Treat omitted `armedCombat` as disabled;
   no migration is required.
+- [The sheet displays the wrong duration counter] -> Derive one explicit
+  duration display value per effect, preferring owner-turn timing only when it
+  is the active expiry mechanism and otherwise using Foundry's prepared native
+  duration.
 
 ## Migration Plan
 
@@ -184,6 +205,8 @@ consumption semantics.
   update or deletion.
 - Extend `supported-spell-data.spec.js` for source JSON and existing
   pre-effect processor tests for effect payload creation.
+- Add an actor-sheet context/template test covering owner-turn duration, native
+  duration, armed charges, and effects with neither display value.
 - Add one E2E flow using the baseline `HatAlles` actor and existing spell-dialog
   helpers: cast Neun Streiche with an entered count and multiple charges,
   resolve successive successful attacks, observe the damage contribution, and

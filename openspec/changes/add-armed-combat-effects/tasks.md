@@ -15,40 +15,47 @@
 - [ ] 2.3 Extend `UebernatuerlichDialog` context and Handlebars template to render declared numeric cast-time fields with configured defaults and bounds.
 - [ ] 2.4 Read submitted cast-time values at the committed successful-cast boundaries, including normal difficulty and manual energy-confirmation flows, without persisting failed casts.
 
-## 3. Confirmed-Hit Combat Integration
+## 3. Actor Effect State Display
 
-- [ ] 3.1 Verify against Foundry API docs (v14) the Actor and ActiveEffect document methods used when decrementing or removing an armed effect after a confirmed hit.
-- [ ] 3.2 Add attack-context preparation to melee and ranged combat dialogs so matching armed effects contribute to the initial attack formula and preserve their materialized damage contribution for that same attack.
-- [ ] 3.3 Serialize the attack context through existing defense prompt data and keep it available to the originating attack dialog for its follow-up damage roll.
-- [ ] 3.4 Add a shared confirmed-hit helper for direct success and failed-defense paths; it must decrement only the snapshotted source effect IDs with `Actor#updateEmbeddedDocuments`, remove only exhausted effects with `Actor#deleteEmbeddedDocuments`, and must not re-resolve arbitrary effects.
-- [ ] 3.5 Ensure a failed attack, successful defense, nonmatching attack type, preview, or standalone manual damage roll leaves armed effects and their charge count unchanged.
-- [ ] 3.6 Include a confirmed armed damage contribution in the associated damage formula after the source effect has been decremented or removed, without changing ordinary semantic modifier stacking or unrelated damage behavior.
+- [ ] 3.1 Verify against Foundry API docs (v14) the prepared ActiveEffect duration surface produced by `ActiveEffect#updateDuration` before choosing the native duration field for the Held effect-row context.
+- [ ] 3.2 Prepare dedicated Held effect-row view data that prefers `system.ilarisTiming.remaining` for owner-turn effects and otherwise exposes a finite prepared native duration.
+- [ ] 3.3 Update `scripts/actors/templates/held/tabs/effekte.hbs` to display `Dauer: <value>` from the prepared view data and `Ladungen: <remaining>` only for armed effects.
+- [ ] 3.4 Add or update `scripts/actors/_spec/` coverage for owner-turn duration, native duration, armed charges, and effects without either lifecycle label.
 
-## 4. Initial Compendium Coverage
+## 4. Confirmed-Hit Combat Integration
 
-- [ ] 4.1 Configure `Falkenauge Meisterschuss` in `comp_packs/zauberspruche-und-rituale/_source/` as a self-targeted armed next-successful-ranged-attack effect with one charge, including its stated Mächtige-Magie attack bonus.
-- [ ] 4.2 Configure `Neun Streiche in einem` in `comp_packs/liturgien-und-mirakel/_source/` as a self-targeted armed next-successful-attack effect with the bounded `Bisherige Treffer auf Ziel` input, `1W6` per stored hit, `8W6` cap, explicit charge configuration, and stated Mächtige-Liturgie attack bonus.
-- [ ] 4.3 Update source-data expectations and deferred-mechanics documentation so these two effects are no longer categorized as unsupported next-roll behavior.
-- [ ] 4.4 Run `npm run pack-all` after modifying compendium `_source/` data.
+- [ ] 4.1 Verify against Foundry API docs (v14) the Actor and ActiveEffect document methods used when decrementing or removing an armed effect after a confirmed hit.
+- [ ] 4.2 Add attack-context preparation to melee and ranged combat dialogs so matching armed effects contribute to the initial attack formula and preserve their materialized damage contribution for that same attack.
+- [ ] 4.3 Serialize the attack context through existing defense prompt data and keep it available to the originating attack dialog for its follow-up damage roll.
+- [ ] 4.4 Add a shared confirmed-hit helper for direct success and failed-defense paths; it must decrement only the snapshotted source effect IDs with `Actor#updateEmbeddedDocuments`, remove only exhausted effects with `Actor#deleteEmbeddedDocuments`, and must not re-resolve arbitrary effects.
+- [ ] 4.5 Ensure a failed attack, successful defense, nonmatching attack type, preview, or standalone manual damage roll leaves armed effects and their charge count unchanged.
+- [ ] 4.6 Include a confirmed armed damage contribution in the associated damage formula after the source effect has been decremented or removed, without changing ordinary semantic modifier stacking or unrelated damage behavior.
 
-## 5. Unit Tests
+## 5. Initial Compendium Coverage
 
-- [ ] 5.1 Create or extend `scripts/effects/pre-effects/_spec/armed-combat-effects.spec.js` with pure normalization, clamping, input and charge materialization, opt-in charge amplification, and independent-application coverage.
-- [ ] 5.2 Update `scripts/effects/pre-effects/_spec/pre-effects-processor.spec.js` to assert that armed pre-effects produce valid ActiveEffect runtime payloads and do not alter legacy pre-effects.
-- [ ] 5.3 Create or extend focused `scripts/combat/_spec/` coverage for attack-context snapshots, direct confirmed hits, failed defenses, successful defenses, per-hit `Actor#updateEmbeddedDocuments` charge decrements, and final-charge `Actor#deleteEmbeddedDocuments` expiration.
-- [ ] 5.4 Update `scripts/effects/pre-effects/_spec/supported-spell-data.spec.js` to verify Falkenauge Meisterschuss and Neun Streiche in einem source configuration, including Neun-Streiche's `0..8` input and `W6` cap.
-- [ ] 5.5 Run the affected Jest test files after `npm install` and resolve failures within this change's scope.
+- [ ] 5.1 Configure `Falkenauge Meisterschuss` in `comp_packs/zauberspruche-und-rituale/_source/` as a self-targeted armed next-successful-ranged-attack effect with one charge, including its stated Mächtige-Magie attack bonus.
+- [ ] 5.2 Configure `Neun Streiche in einem` in `comp_packs/liturgien-und-mirakel/_source/` as a self-targeted armed next-successful-attack effect with the bounded `Bisherige Treffer auf Ziel` input, `1W6` per stored hit, `8W6` cap, explicit charge configuration, and stated Mächtige-Liturgie attack bonus.
+- [ ] 5.3 Update source-data expectations and deferred-mechanics documentation so these two effects are no longer categorized as unsupported next-roll behavior.
+- [ ] 5.4 Run `npm run pack-all` after modifying compendium `_source/` data.
 
-## 6. E2E Tests
+## 6. Unit Tests
 
-- [ ] 6.1 Create an E2E case under `e2e/cases/` using `HatAlles`, the existing spell-dialog helpers, and actor snapshot restoration to verify a charged Neun-Streiche cast accepts a count, applies its matching damage on each confirmed hit, decrements after each hit, and removes the effect only at zero.
-- [ ] 6.2 Add E2E scenarios proving a failed or successfully defended matching attack and an ineligible attack type retain the armed effect with its charge count unchanged.
-- [ ] 6.3 Add E2E coverage for Falkenauge Meisterschuss applying its next-successful-ranged-attack bonus per charge, decrementing only on confirmed hits, and retaining its charge count on a miss.
-- [ ] 6.4 Run the new case and regress `e2e-009-uebernatuerlich-dialog`, `e2e-027-pre-effect-sheet-config`, and `e2e-028-pre-effect-buff-creation`; promote a confirmed-hit helper into `e2e/shared/` only if at least two cases reuse it.
+- [ ] 6.1 Create or extend `scripts/effects/pre-effects/_spec/armed-combat-effects.spec.js` with pure normalization, clamping, input and charge materialization, opt-in charge amplification, and independent-application coverage.
+- [ ] 6.2 Update `scripts/effects/pre-effects/_spec/pre-effects-processor.spec.js` to assert that armed pre-effects produce valid ActiveEffect runtime payloads and do not alter legacy pre-effects.
+- [ ] 6.3 Create or extend focused `scripts/combat/_spec/` coverage for attack-context snapshots, direct confirmed hits, failed defenses, successful defenses, per-hit `Actor#updateEmbeddedDocuments` charge decrements, and final-charge `Actor#deleteEmbeddedDocuments` expiration.
+- [ ] 6.4 Update `scripts/effects/pre-effects/_spec/supported-spell-data.spec.js` to verify Falkenauge Meisterschuss and Neun Streiche in einem source configuration, including Neun-Streiche's `0..8` input and `W6` cap.
+- [ ] 6.5 Run the affected Jest test files after `npm install` and resolve failures within this change's scope.
 
-## 7. Final Validation
+## 7. E2E Tests
 
-- [ ] 7.1 Run `npm install` if dependencies are not already installed for this workspace.
-- [ ] 7.2 Run `npm test`.
-- [ ] 7.3 Run `npm run lint`.
-- [ ] 7.4 Re-run `openspec validate` using the local CLI's supported change-validation syntax and resolve any artifact validation errors.
+- [ ] 7.1 Create an E2E case under `e2e/cases/` using `HatAlles`, the existing spell-dialog helpers, and actor snapshot restoration to verify a charged Neun-Streiche cast accepts a count, applies its matching damage on each confirmed hit, decrements after each hit, and removes the effect only at zero.
+- [ ] 7.2 Add E2E scenarios proving a failed or successfully defended matching attack and an ineligible attack type retain the armed effect with its charge count unchanged.
+- [ ] 7.3 Add E2E coverage for Falkenauge Meisterschuss applying its next-successful-ranged-attack bonus per charge, decrementing only on confirmed hits, and retaining its charge count on a miss.
+- [ ] 7.4 Run the new case and regress `e2e-009-uebernatuerlich-dialog`, `e2e-027-pre-effect-sheet-config`, and `e2e-028-pre-effect-buff-creation`; promote a confirmed-hit helper into `e2e/shared/` only if at least two cases reuse it.
+
+## 8. Final Validation
+
+- [ ] 8.1 Run `npm install` if dependencies are not already installed for this workspace.
+- [ ] 8.2 Run `npm test`.
+- [ ] 8.3 Run `npm run lint`.
+- [ ] 8.4 Re-run `openspec validate` using the local CLI's supported change-validation syntax and resolve any artifact validation errors.
