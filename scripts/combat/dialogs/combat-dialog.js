@@ -354,9 +354,26 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             actor: this.actor,
             phase: IlarisModifierPhase.Roll,
             target,
-            fertigkeit: this.item?.system?.fertigkeit || '',
+            fertigkeit: this.getIlarisFertigkeitContext(),
             talent: this.item?.system?.talent || '',
+            situation: this.getIlarisSituationTags(),
         })
+    }
+
+    getIlarisFertigkeitContext() {
+        const system = this.item?.system || {}
+        if (system.fertigkeit) return system.fertigkeit
+        if (system.fertigkeit_ausgewaehlt && system.fertigkeit_ausgewaehlt !== 'auto') {
+            return system.fertigkeit_ausgewaehlt
+        }
+        return String(system.fertigkeiten || '')
+            .split(',')
+            .map((fertigkeit) => fertigkeit.trim())
+            .filter(Boolean)
+    }
+
+    getIlarisSituationTags() {
+        return []
     }
 
     getIlarisModifierRows(result) {

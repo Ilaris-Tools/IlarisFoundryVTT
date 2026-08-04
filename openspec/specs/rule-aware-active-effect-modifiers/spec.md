@@ -12,7 +12,8 @@ An Ilaris ActiveEffect SHALL store context-sensitive rule modifiers in
 Each modifier SHALL declare its `phase` (`prepare` or `roll`), canonical
 target, additive value, stacking policy, and optional selector. A selector
 SHALL support at least `fertigkeit`, `talent`, and `situation`; an omitted
-selector dimension SHALL match every value of that dimension. A modifier that
+selector dimension SHALL match every value of that dimension. A `situation`
+selector SHALL match any tag provided in the dialog's expanded condition set. A modifier that
 needs a non-numeric magnitude comparison SHALL declare `comparisonValue`.
 
 #### Scenario: Core and semantic changes coexist
@@ -36,6 +37,13 @@ needs a non-numeric magnitude comparison SHALL declare `comparisonValue`.
   Überreden and `situation: ["sozialesDuell"]`
 - **THEN** it SHALL add to those matching probes during a social duel
 - **AND** it SHALL NOT be treated as an übernatürlicher competing modifier
+
+#### Scenario: Specific contextual tag retains its parent match
+
+- **WHEN** the dialog supplies `sozialesDuellAbwartend` with its expanded
+  `sozialesDuell` parent tag
+- **THEN** modifiers selecting either tag SHALL match according to their
+  selector
 
 ### Requirement: All Vorteile are permanently additive
 

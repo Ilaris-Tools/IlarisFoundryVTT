@@ -5,6 +5,10 @@ import {
     IlarisModifierTarget,
 } from '../../effects/utils/ilaris-modifier-constants.js'
 import { resolveIlarisModifiers } from '../../effects/utils/ilaris-modifier-resolver.js'
+import {
+    getIlarisSituationTags,
+    IlarisSkillSituationOptions,
+} from '../../effects/utils/ilaris-roll-situations.js'
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api
 
@@ -122,6 +126,8 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
             rollModes: CONFIG.ChatMessage.modes,
             defaultRollMode: game.settings.get('core', 'messageMode'),
             dialogId: this.dialogId,
+            situationOptions: IlarisSkillSituationOptions,
+            selectedSituation: this.situation,
             summary: this.summary,
         }
     }
@@ -231,7 +237,7 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
                 target,
                 fertigkeit: this.fertigkeitName,
                 talent,
-                situation: this.situation,
+                situation: getIlarisSituationTags(this._getSelectedSituation()),
             }),
         )
 
@@ -241,6 +247,12 @@ export class FertigkeitDialog extends HandlebarsApplicationMixin(ApplicationV2) 
             suppressed: results.flatMap((result) => result.suppressed),
             hasSuppression: results.some((result) => result.hasSuppression),
         }
+    }
+
+    _getSelectedSituation() {
+        const field = this.element?.querySelector(`#situation-${this.dialogId}`)
+        if (field) this.situation = field.value
+        return this.situation
     }
 
     _getIlarisModifierLines(result) {

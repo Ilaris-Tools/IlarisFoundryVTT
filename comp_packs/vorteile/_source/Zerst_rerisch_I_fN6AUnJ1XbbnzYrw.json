@@ -7,7 +7,31 @@
     "text": "Proben zum Zerstören oder Durchbrechen von Gegenständen sind um +4 erleichtert."
   },
   "_id": "fN6AUnJ1XbbnzYrw",
-  "effects": [],
+  "effects": [
+    {
+      "_id": "ZerstoerI0000001",
+      "_key": "!items.effects!fN6AUnJ1XbbnzYrw.ZerstoerI0000001",
+      "name": "Gegenstand zerstören/durchbrechen",
+      "icon": "icons/svg/aura.svg",
+      "disabled": false,
+      "duration": {},
+      "transfer": true,
+      "changes": [],
+      "system": {
+        "ilarisSource": "ordinary",
+        "ilarisModifiers": [
+          {
+            "phase": "roll",
+            "target": "probe",
+            "value": "4",
+            "stacking": "add",
+            "selector": { "situation": ["gegenstandZerstoeren"] }
+          }
+        ]
+      },
+      "flags": {}
+    }
+  ],
   "_stats": {
     "coreVersion": "12.331",
     "systemId": null,

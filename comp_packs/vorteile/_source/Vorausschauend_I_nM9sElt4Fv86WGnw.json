@@ -7,7 +7,34 @@
     "text": "In Rededuellen sind Proben auf Rhetorik und Überreden um +2 erleichtert."
   },
   "_id": "nM9sElt4Fv86WGnw",
-  "effects": [],
+  "effects": [
+    {
+      "_id": "VorausI000000001",
+      "_key": "!items.effects!nM9sElt4Fv86WGnw.VorausI000000001",
+      "name": "Rededuell: Rhetorik und Überreden",
+      "icon": "icons/svg/aura.svg",
+      "disabled": false,
+      "duration": {},
+      "transfer": true,
+      "changes": [],
+      "system": {
+        "ilarisSource": "ordinary",
+        "ilarisModifiers": [
+          {
+            "phase": "roll",
+            "target": "probe",
+            "value": "2",
+            "stacking": "add",
+            "selector": {
+              "talent": ["Rhetorik", "Überreden"],
+              "situation": ["sozialesDuell"]
+            }
+          }
+        ]
+      },
+      "flags": {}
+    }
+  ],
   "_stats": {
     "coreVersion": "12.331",
     "systemId": null,

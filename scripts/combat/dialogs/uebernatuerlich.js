@@ -14,6 +14,11 @@ import {
     callIlarisHookWithGlobalMirror,
 } from '../hooks/global_combat_hooks.js'
 import { applyPreEffects } from '../../effects/pre-effects/pre-effects-processor.js'
+import { IlarisModifierTarget } from '../../effects/utils/ilaris-modifier-constants.js'
+import {
+    getIlarisSituationTags as expandIlarisSituationTags,
+    getRelevantSupernaturalSituationControls,
+} from '../../effects/utils/ilaris-roll-situations.js'
 
 export class UebernatuerlichDialog extends CombatDialog {
     /** @override */
@@ -51,6 +56,8 @@ export class UebernatuerlichDialog extends CombatDialog {
         this.verbotene_pforten = { multiplier: 4, activated: false }
         this.set_energy_cost = { value: null }
         this.calculatedWounds = 0
+        this.ilarisSituationSelection = []
+        this.ilarisSituationControls = { boolean: [], exclusive: [] }
     }
 
     /**
@@ -157,6 +164,8 @@ export class UebernatuerlichDialog extends CombatDialog {
         const maneuverSection = this._buildModifierSectionData(this.text_at, {
             sectionTitle: 'Manöver:',
         })
+        const ilarisProbeResult =
+            this.ilarisProbeResult || this.getIlarisModifierResult(IlarisModifierTarget.Probe)
 
         return {
             action: 'angreifen',
@@ -171,9 +180,11 @@ export class UebernatuerlichDialog extends CombatDialog {
                 ...difficultyRows,
                 this._buildSignedModifierData(statusMods, 'Status (Wunden/Furcht)'),
                 this._buildSignedModifierData(nahkampfMods, 'Token Status'),
+                ...this.getIlarisModifierRows(ilarisProbeResult),
             ].filter((row) => row),
             sections: maneuverSection ? [maneuverSection] : [],
             totalRow: this._buildTotalModifierData(totalMod),
+            suppression: this.getIlarisSuppressionContext(ilarisProbeResult),
             showDivider: Boolean(maneuverSection || totalMod),
         }
     }
@@ -268,6 +279,10 @@ export class UebernatuerlichDialog extends CombatDialog {
     async _prepareContext(options) {
         const context = await super._prepareContext(options)
 
+        this.ilarisSituationControls = getRelevantSupernaturalSituationControls(this.actor, {
+            fertigkeit: this.getIlarisFertigkeitContext(),
+        })
+
         const hasBlutmagie =
             this.actor.vorteil.magie.some((v) => v.name === 'Blutmagie') &&
             this.item.type === 'zauber'
@@ -303,6 +318,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             blutmagie: this.blutmagie,
             verbotene_pforten: this.verbotene_pforten,
             set_energy_cost: this.set_energy_cost,
+            ilarisSituationControls: this.ilarisSituationControls,
         }
     }
 
@@ -344,7 +360,12 @@ export class UebernatuerlichDialog extends CombatDialog {
         const rollResult = await evaluate_roll_with_crit(
             formula,
             label,
-            this.text_at + '\n' + this.text_energy + additionalText,
+            this.text_at +
+                '\n' +
+                this.getIlarisModifierText(this.ilarisProbeResult || { selected: [] }) +
+                '\n' +
+                this.text_energy +
+                additionalText,
             difficulty,
             this.fumble_val,
             true,
@@ -648,6 +669,7 @@ export class UebernatuerlichDialog extends CombatDialog {
     }
 
     async updateManoeverMods() {
+        this._updateIlarisSituationSelection()
         let manoever = this.item.system.manoever
 
         let mod_at = 0
@@ -818,6 +840,9 @@ export class UebernatuerlichDialog extends CombatDialog {
         // Ensure mod_energy is never less than 0
         mod_energy = Math.max(0, mod_energy)
 
+        this.ilarisProbeResult = this.getIlarisModifierResult(IlarisModifierTarget.Probe)
+        mod_at += this.ilarisProbeResult.value
+
         // Track Mächtige Magie QS and maneuver duration bonus for pre-effects
         this.maechtigeMagieQs = maechtigeMagieQs || 0
         this.maneuverDurationBonus = durationBonus || 0
@@ -834,5 +859,25 @@ export class UebernatuerlichDialog extends CombatDialog {
         this.fumble_val = fumble_val
         this.damageType = damageType
         this.trueDamage = trueDamage
+    }
+
+    getIlarisSituationTags() {
+        return expandIlarisSituationTags(this.ilarisSituationSelection)
+    }
+
+    _updateIlarisSituationSelection() {
+        const element = this.element
+        if (!element?.querySelectorAll) return
+
+        const selected = Array.from(
+            element.querySelectorAll('input[name="ilaris-situation"]:checked'),
+        ).map((input) => input.value)
+        for (const group of this.ilarisSituationControls.exclusive) {
+            const input = element.querySelector(
+                `input[name="ilaris-situation-${group.id}"]:checked`,
+            )
+            if (input?.value) selected.push(input.value)
+        }
+        this.ilarisSituationSelection = selected
     }
 }

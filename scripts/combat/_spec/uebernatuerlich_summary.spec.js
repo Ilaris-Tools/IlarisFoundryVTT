@@ -110,4 +110,51 @@ describe('UebernatuerlichDialog summary context', () => {
             ]),
         )
     })
+
+    it('resolves selected session-only Vorteil conditions for the supernatural probe', () => {
+        const dialog = createDialog()
+        dialog.actor.allApplicableEffects = () => [
+            {
+                name: 'Passender Ort',
+                parent: { type: 'vorteil' },
+                system: {
+                    ilarisModifiers: [
+                        {
+                            phase: 'roll',
+                            target: 'probe',
+                            value: '2',
+                            selector: { situation: ['passenderOrt'] },
+                        },
+                    ],
+                },
+            },
+        ]
+        dialog.ilarisSituationSelection = ['passenderOrt']
+
+        const result = dialog.getIlarisModifierResult('probe')
+
+        expect(result.value).toBe(2)
+        dialog.ilarisProbeResult = result
+        const summary = dialog.getTalentSummaryContext(15, -1, 0, '3d20dl1dh1')
+        expect(summary.rows).toEqual(
+            expect.arrayContaining([expect.objectContaining({ label: 'Ilaris: Passender Ort' })]),
+        )
+    })
+
+    it('keeps selected supernatural conditions in dialog state only', () => {
+        const dialog = createDialog()
+        dialog.actor.update = jest.fn()
+        dialog.item.update = jest.fn()
+        dialog.ilarisSituationControls = { boolean: [], exclusive: [] }
+        dialog.element = {
+            querySelectorAll: jest.fn(() => [{ value: 'passenderOrt' }]),
+            querySelector: jest.fn(() => null),
+        }
+
+        dialog._updateIlarisSituationSelection()
+
+        expect(dialog.ilarisSituationSelection).toEqual(['passenderOrt'])
+        expect(dialog.actor.update).not.toHaveBeenCalled()
+        expect(dialog.item.update).not.toHaveBeenCalled()
+    })
 })
