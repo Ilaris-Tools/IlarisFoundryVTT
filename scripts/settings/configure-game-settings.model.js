@@ -24,6 +24,7 @@ export const IlarisGameSettingNames = {
     defaultRangedDodgeTalent: 'defaultRangedDodgeTalent',
     expandWeaponDamageMultipliers: 'expandWeaponDamageMultipliers',
     lastSeenBreakingChangesVersion: 'lastSeenBreakingChangesVersion',
+    lastAnnouncedMajorRelease: 'lastAnnouncedMajorRelease',
     lepSystem: 'lepSystem',
     damageTypes: 'damageTypes',
     llmApiUrl: 'llmApiUrl',

@@ -42,7 +42,11 @@ jobs:
               run: |
                   npm install
             - name: Generate breaking changes template
-              run: npm run generate-breaking-changes
+              run: |
+                  npm run generate-breaking-changes
+                  version=$(jq -r .version system.json)
+                  major=${version%%.*}
+                  test -f "scripts/changelog/templates/release-metadata-major-${major}.json"
             - name: Package database files
               run: |
                   npm run pack-all

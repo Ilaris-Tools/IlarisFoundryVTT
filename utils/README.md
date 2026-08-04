@@ -17,11 +17,12 @@ Generates a Handlebars (`.hbs`) template file with breaking changes extracted fr
 ### What it does
 
 1. Reads the current version from `system.json`
-2. Parses `CHANGELOG.md` to find the "Breaking Change" section for that version (supports flexible heading variants)
+2. Validates the current `## v<major>` and `### v<major>.<minor>` headings and parses the "Breaking Changes" section (supports flexible heading variants)
 3. Converts the Markdown content to HTML using the `marked` library
 4. Generates a `.hbs` file in `scripts/changelog/templates/` with the HTML content
-5. If no breaking changes are found, it cleans up any existing template for that version
-6. Removes old `.hbs` files from previous versions
+5. Generates versioned JSON metadata used by the major-release chat announcement
+6. If no breaking changes are found, it cleans up any existing template for that version
+7. Removes old generated files while retaining the current major-release metadata
 
 ### Markdown-to-HTML Conversion
 
@@ -63,9 +64,14 @@ This `.hbs` file contains HTML content converted from Markdown and is automatica
 The script expects this format in your CHANGELOG.md:
 
 ```markdown
-### v12.3
+## v14
+
+### v14.0
 
 #### Breaking Change
+
+Import erforderlich: Ja
+Tutorials: @UUID[Compendium.Ilaris.kurzuebersichten.JournalEntry.kurzimport001]{Charakter-Import}
 
 Bitte wie immer die Charaktere neu importieren...
 
@@ -81,7 +87,7 @@ Bitte wie immer die Charaktere neu importieren...
 - Other changes...
 ```
 
-**Important:** The Breaking Changes section must end with a horizontal rule (`---`) to mark the end of the section.
+**Important:** A breaking-change section must explicitly declare `Import erforderlich: Ja` or `Import erforderlich: Nein`. Major releases must reference at least one existing tutorial with a `Tutorials:` line. Tutorial prose belongs in the maintained tutorial/quick-reference content, not in the changelog.
 
 **Flexible heading support:**
 The script recognizes various heading formats (case-insensitive):

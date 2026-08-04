@@ -1,3 +1,5 @@
+import { IlarisGameSettingNames } from '../settings/configure-game-settings.model.js'
+
 /**
  * Dialog to display breaking changes and important announcements from the CHANGELOG.md
  */
@@ -25,6 +27,19 @@ async function fetchBreakingChangesTemplate(version) {
         return await response.text()
     } catch (error) {
         console.error('Ilaris | Error fetching breaking changes template:', error)
+        return null
+    }
+}
+
+async function fetchReleaseMetadata(version) {
+    try {
+        const response = await fetch(
+            `systems/${game.system.id}/scripts/changelog/templates/release-metadata-major-${version.split('.')[0]}.json`,
+        )
+        if (!response.ok) return null
+        return await response.json()
+    } catch (error) {
+        console.error('Ilaris | Error fetching release metadata:', error)
         return null
     }
 }
@@ -59,6 +74,52 @@ function showChangelogNotification(version, content) {
             },
         ],
     }).render(true)
+}
+
+export const MAJOR_RELEASE_TUTORIALS = [
+    '@UUID[Compendium.Ilaris.kurzuebersichten.JournalEntry.kurzimport001]{Charakter-Import-Kurzübersicht}',
+    '@UUID[Compendium.Ilaris.kurzuebersichten.JournalEntry.hausregel001]{Hausregel-Import-Kurzübersicht}',
+]
+
+export function buildMajorReleaseAnnouncement(majorVersion, metadata = {}) {
+    const tutorials = metadata.tutorials?.length ? metadata.tutorials : MAJOR_RELEASE_TUTORIALS
+    const importNotice = metadata.importRequired
+        ? '<p><strong>WICHTIG: Charaktere müssen nach diesem Update neu importiert werden.</strong> Bitte nutze dafür die Charakter-Import-Kurzübersicht.</p>'
+        : ''
+    return `<div class="ilaris-major-release-announcement">
+    <h2>Willkommen bei Ilaris v${majorVersion}</h2>
+    <p><strong>Wichtige Hinweise zum Major-Release:</strong> Bitte prüfe die folgenden bestehenden Kurzübersichten, bevor du deine nächste Sitzung startest.</p>
+    ${importNotice}
+    <ul>${tutorials.map((tutorial) => `<li>${tutorial}</li>`).join('')}</ul>
+    <p><a href="https://github.com/Ilaris-Tools/IlarisFoundryVTT/blob/main/CHANGELOG.md" target="_blank" rel="noopener">Vollständigen Changelog öffnen</a></p>
+</div>`
+}
+
+export async function announceMajorRelease(releaseMetadata = null) {
+    const currentVersion = game.system?.version
+    const majorVersion = currentVersion?.split('.')?.[0]
+    if (!majorVersion || !game.user?.isGM || !game.world) return false
+
+    const settingName = IlarisGameSettingNames.lastAnnouncedMajorRelease
+    const lastAnnounced = game.settings.get('Ilaris', settingName)
+    if (lastAnnounced === majorVersion) return false
+
+    try {
+        const metadata = releaseMetadata ?? (await fetchReleaseMetadata(`${majorVersion}.0`)) ?? {}
+        const content = await foundry.applications.ux.TextEditor.implementation.enrichHTML(
+            buildMajorReleaseAnnouncement(majorVersion, metadata),
+            { async: true },
+        )
+        await ChatMessage.create({
+            content,
+            speaker: { alias: 'Ilaris' },
+        })
+        await game.settings.set('Ilaris', settingName, majorVersion)
+        return true
+    } catch (error) {
+        console.error('Ilaris | Error announcing major release:', error)
+        return false
+    }
 }
 
 /**
@@ -113,6 +174,7 @@ async function checkAndShowChangelogNotification() {
 
 // Hook into the world ready event
 Hooks.once('ready', async function () {
+    await announceMajorRelease()
     // Small delay to ensure settings are fully loaded
     setTimeout(async () => {
         await checkAndShowChangelogNotification()

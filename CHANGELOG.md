@@ -26,6 +26,8 @@ Pre-Effekte sind eine **Beta-Funktion**. Sie automatisieren bislang nur einen Te
 #### Breaking Change
 
 **BITTE BEACHTEN**, dies ist ein Update von Ilaris auf eine neue Major Version von Foundry VTT, auf Version 14. In diesem Update ist die Foundry Version 14 auch fest im System gesetzt und wir sich weigern mit älteren oder neueren Major Verison von Foundry VTT zu starten. Der Item-Typ `effectItem`/`effect-item` wurde entfernt. ActiveEffects werden ab sofort direkt als native Foundry-ActiveEffect-Dokumente auf Actors angewendet — per Drag & Drop aus beliebigen Kompendien oder über den Effekte-Tab. Bestehende Weltdaten mit diesem Legacy-Typ werden bei der automatischen Migration (Schema 13.2.0) gelöscht. Ein Neuimport von Charakteren ist sehr empfohlen.
+Import erforderlich: Ja
+Tutorials: @UUID[Compendium.Ilaris.kurzuebersichten.JournalEntry.kurzimport001]{Charakter-Import} | @UUID[Compendium.Ilaris.kurzuebersichten.JournalEntry.hausregel001]{Hausregel-Import}
 
 - Update auf Foundry VTT v14
 
