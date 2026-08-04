@@ -1,8 +1,4 @@
-## Purpose
-
-Breaking changes notification, validated changelog display, and major-release communication for system version updates.
-
-## Requirements
+## MODIFIED Requirements
 
 ### Requirement: Breaking changes notification
 
@@ -46,6 +42,8 @@ The release build SHALL define breaking changes in structured generated data map
 - **WHEN** generating breaking changes data
 - **THEN** each system release with breaking changes SHALL have descriptions and an explicit import-required status
 
+## ADDED Requirements
+
 ### Requirement: Major-release tutorial promotion
 
 For each validated Foundry-major release, the release communication flow SHALL expose the tutorial announcement described by the `major-release-announcements` capability.
@@ -54,25 +52,3 @@ For each validated Foundry-major release, the release communication flow SHALL e
 
 - **WHEN** the current system version belongs to a major release with validated tutorial links
 - **THEN** the startup flow SHALL be able to publish the major-release tutorial chat announcement
-
-### Requirement: Reviewer-facing automated coverage map
-
-The release process SHALL publish the automated coverage map alongside the manual release checklists.
-
-#### Scenario: Coverage map published with release checklist
-
-- **WHEN** a release checklist is prepared
-- **THEN** the corresponding automated coverage map SHALL be published alongside it
-
-## Data Model
-
-### Release settings
-
-| Field                            | Type   | Description                                                              |
-| -------------------------------- | ------ | ------------------------------------------------------------------------ |
-| `lastSeenBreakingChangesVersion` | String | Last release identity whose breaking-change dialog the user acknowledged |
-
-## Cross-References
-
-- [settings](../settings/spec.md) — `lastSeenBreakingChangesVersion` is a registered client setting.
-- [major-release-announcements](../major-release-announcements/spec.md) — defines the persistent GM chat promotion.

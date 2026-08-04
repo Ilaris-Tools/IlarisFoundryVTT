@@ -23,6 +23,7 @@ export const IlarisGameSettingNames = {
     hexTokenShapes: 'hexTokenShapes',
     defaultRangedDodgeTalent: 'defaultRangedDodgeTalent',
     lastSeenBreakingChangesVersion: 'lastSeenBreakingChangesVersion',
+    lastAnnouncedMajorRelease: 'lastAnnouncedMajorRelease',
     lepSystem: 'lepSystem',
     damageTypes: 'damageTypes',
     llmApiUrl: 'llmApiUrl',

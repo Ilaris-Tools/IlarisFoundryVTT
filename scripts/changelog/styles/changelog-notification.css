@@ -61,3 +61,12 @@
     font-style: italic;
     opacity: 0.85;
 }
+
+.ilaris-major-release-announcement {
+    border-left: 4px solid #d4a017;
+    padding: 0.5rem 1rem;
+}
+
+.ilaris-major-release-announcement h2 {
+    margin-top: 0;
+}

@@ -105,6 +105,16 @@ export const registerIlarisGameSettings = () => {
             default: false,
         },
         {
+            // Register major release chat announcement state (world-scoped and hidden)
+            settingsName: IlarisGameSettingNames.lastAnnouncedMajorRelease,
+            name: 'Zuletzt angekÃ¼ndigte Major-Version',
+            hint: 'Interne Einstellung zur Verfolgung der einmaligen Major-Release-AnkÃ¼ndigung im Chat.',
+            config: false,
+            type: String,
+            scope: 'world',
+            default: '',
+        },
+        {
             // Register default ranged dodge talent setting
             settingsName: IlarisGameSettingNames.defaultRangedDodgeTalent,
             name: 'Alternativ Fernkampf-Ausweichen Talent',

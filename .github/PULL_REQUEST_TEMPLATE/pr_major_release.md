@@ -5,6 +5,11 @@
 - [ ] Neue Version in system.json (zB `x.1.x` auf `x.2.x`)
 - [ ] Prüfe den dazugehörigen Meilenstein und ob ggf. noch offene Issues auf die nächste version geschoben werden.
 - [ ] Updates im Changelog (Blick auf commits seit letztem eintrag und closed issues im Meilenstein)
+- [ ] Changelog enthält `## v<Major>` und `### v<Major>.<Minor>` sowie bei Breaking Changes den Marker `Import erforderlich: Ja|Nein`.
+- [ ] `Import erforderlich: Ja` wird nur gesetzt, wenn Charaktere tatsächlich neu importiert werden müssen; der Hinweis verweist auf die bestehende Charakter-Import-Kurzübersicht.
+- [ ] `Tutorials:` verweist auf mindestens eine bestehende Kurzübersicht; Tutorial-Inhalte werden nicht im Changelog dupliziert.
+- [ ] `npm run generate-breaking-changes` erfolgreich ausgeführt und erzeugtes Template geprüft.
+- [ ] Major-Release-Ankündigung im Chat in einer GM-Welt geprüft; keine Duplikate beim Neustart.
 - [ ] Falls nötig werden Spielwelten automatisch migriert?
 - [ ] Sind die migrations getested und gut dokumentiert? Hinweise/Anleitungen?
 - [ ] Sind sonstige Anpassungen der Dokumentation nötig?

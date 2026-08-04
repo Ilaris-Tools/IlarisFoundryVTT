@@ -1,0 +1,10 @@
+{
+  "version": "14.0",
+  "majorVersion": "14",
+  "hasBreakingChanges": true,
+  "importRequired": true,
+  "tutorials": [
+    "@UUID[Compendium.Ilaris.kurzuebersichten.JournalEntry.kurzimport001]{Charakter-Import}",
+    "@UUID[Compendium.Ilaris.kurzuebersichten.JournalEntry.hausregel001]{Hausregel-Import}"
+  ]
+}

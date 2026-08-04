@@ -1,220 +1,108 @@
 #!/usr/bin/env node
 
 /**
- * Script to generate a Handlebars template file with breaking changes from CHANGELOG.md
- * This should be run as part of the build/deployment process
- *
- * Usage: node utils/generate-breaking-changes.js
+ * Validate the release section in CHANGELOG.md and generate the static
+ * Handlebars template consumed by the in-app release notification.
  */
 
 import fs from 'fs'
 import path from 'path'
-import { fileURLToPath } from 'url'
 import { marked } from 'marked'
+import { parseReleaseMetadata } from './changelog-parser.js'
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = path.dirname(__filename)
-const breakingChangesTemplateDir = path.join(__dirname, '..', 'scripts', 'changelog', 'templates')
+const __dirname = path.join(process.cwd(), 'utils')
+const changelogPath = path.join(__dirname, '..', 'CHANGELOG.md')
+const systemJsonPath = path.join(__dirname, '..', 'system.json')
+export const breakingChangesTemplateDir = path.join(
+    __dirname,
+    '..',
+    'scripts',
+    'changelog',
+    'templates',
+)
 
-/**
- * Parse the CHANGELOG.md file to extract breaking changes for a specific version
- * @param {string} changelogText - The full text of the CHANGELOG.md file
- * @param {string} version - The version to extract (e.g., "12.2")
- * @returns {string|null} Markdown formatted breaking changes or null if none found
- */
-function parseBreakingChanges(changelogText, version) {
-    const lines = changelogText.split(/\r?\n/)
+export { parseReleaseMetadata }
 
-    // Match entries like "### v13.0.1" and keep only releases for the requested major.minor.
-    const versionHeaderRegex = /^###\s+v?(\d+\.\d+(?:\.\d+)?)\s*$/i
-    const matchingVersionHeaderIndexes = []
-
-    for (let i = 0; i < lines.length; i++) {
-        const versionMatch = lines[i].match(versionHeaderRegex)
-        if (!versionMatch) {
-            continue
-        }
-
-        const releaseVersion = versionMatch[1]
-        if (releaseVersion === version || releaseVersion.startsWith(`${version}.`)) {
-            matchingVersionHeaderIndexes.push(i)
-        }
-    }
-
-    if (matchingVersionHeaderIndexes.length === 0) {
-        return null
-    }
-
-    const releaseSectionBoundaryRegex = /^#{2,3}\s+/ // next major or release section boundary
-    const breakingHeaderRegex = /^####\s*(?:⚠️\s*)?breaking\s+change(?:s)?\s*:?\s*$/i
-    const breakingSectionBoundaryRegex = /^#{2,4}\s+/ // next subsection, release, or major section boundary
-
-    // Iterate top-down so we take the newest matching release that has breaking changes.
-    for (const sectionStart of matchingVersionHeaderIndexes) {
-        let sectionEnd = lines.length
-        for (let i = sectionStart + 1; i < lines.length; i++) {
-            if (releaseSectionBoundaryRegex.test(lines[i])) {
-                sectionEnd = i
-                break
-            }
-        }
-
-        let breakingHeaderIndex = -1
-        for (let i = sectionStart + 1; i < sectionEnd; i++) {
-            if (breakingHeaderRegex.test(lines[i])) {
-                breakingHeaderIndex = i
-                break
-            }
-        }
-
-        if (breakingHeaderIndex === -1) {
-            continue
-        }
-
-        let breakingEnd = sectionEnd
-        for (let i = breakingHeaderIndex + 1; i < sectionEnd; i++) {
-            if (breakingSectionBoundaryRegex.test(lines[i])) {
-                breakingEnd = i
-                break
-            }
-        }
-
-        const content = lines
-            .slice(breakingHeaderIndex + 1, breakingEnd)
-            .join('\n')
-            .trim()
-
-        if (content) {
-            const releaseHeading = lines[sectionStart].trim()
-            const breakingHeading = lines[breakingHeaderIndex].trim()
-            return `${releaseHeading}\n\n${breakingHeading}\n\n${content}`
-        }
-    }
-
-    return null
-}
-
-/**
- * Convert Markdown to HTML using marked library
- * @param {string} markdown - The Markdown content to convert
- * @returns {string} HTML content
- */
-function markdownToHtml(markdown) {
-    // 'marked' parst zuverlässig Listen, Fettdruck, Links, etc.
-    // Die Option 'headerIds: false' verhindert automatisch generierte IDs für Überschriften
+export function markdownToHtml(markdown) {
     return marked.parse(markdown.trim(), { headerIds: false })
 }
 
-/**
- * Clean up old breaking changes files
- * @param {string} currentVersion - The current version to keep
- */
-function cleanupOldBreakingChanges(currentVersion) {
-    if (!fs.existsSync(breakingChangesTemplateDir)) {
-        return
-    }
+export function cleanupOldBreakingChanges(currentVersion) {
+    if (!fs.existsSync(breakingChangesTemplateDir)) return
+    const majorVersion = currentVersion.split('.')[0]
 
-    const files = fs.readdirSync(breakingChangesTemplateDir)
-    // Remove old .hbs files (keep only current version)
-    const breakingChangesFiles = files.filter(
-        (f) => f.startsWith('breaking-changes-') && f.endsWith('.hbs'),
-    )
-
-    let deletedCount = 0
-    breakingChangesFiles.forEach((file) => {
-        // Keep only the current version .hbs file
-        if (file !== `breaking-changes-${currentVersion}.hbs`) {
-            const filePath = path.join(breakingChangesTemplateDir, file)
-            fs.unlinkSync(filePath)
-            console.log(`🗑️  Removed old breaking changes file: ${file}`)
-            deletedCount++
+    for (const file of fs.readdirSync(breakingChangesTemplateDir)) {
+        const isTemplate = file.startsWith('breaking-changes-') && file.endsWith('.hbs')
+        const isMetadata = file.startsWith('release-metadata-') && file.endsWith('.json')
+        const isMajorMetadata = file === `release-metadata-major-${majorVersion}.json`
+        if (!isTemplate && !isMetadata) continue
+        if (
+            file !== `breaking-changes-${currentVersion}.hbs` &&
+            file !== `release-metadata-${currentVersion}.json` &&
+            !isMajorMetadata
+        ) {
+            fs.unlinkSync(path.join(breakingChangesTemplateDir, file))
+            console.log(`Removed old breaking changes file: ${file}`)
         }
-    })
-
-    if (deletedCount > 0) {
-        console.log(`✅ Cleaned up ${deletedCount} old breaking changes file(s)`)
     }
 }
 
-/**
- * Generate the Handlebars (.hbs) file with HTML content
- * @param {string} version - The version number
- * @param {string} breakingChanges - The breaking changes content (Markdown)
- */
-function generateHbsFile(version, breakingChanges) {
-    // Ensure the changelog template directory exists
-    if (!fs.existsSync(breakingChangesTemplateDir)) {
-        fs.mkdirSync(breakingChangesTemplateDir, { recursive: true })
-    }
-
-    // Clean up old breaking changes files before generating new one
+export function generateHbsFile(version, breakingChanges, metadata = {}) {
+    fs.mkdirSync(breakingChangesTemplateDir, { recursive: true })
     cleanupOldBreakingChanges(version)
-
-    // Convert Markdown to HTML using marked
-    const htmlContent = markdownToHtml(breakingChanges)
-
-    // Write the .hbs file with HTML content
     const outputPath = path.join(breakingChangesTemplateDir, `breaking-changes-${version}.hbs`)
-    fs.writeFileSync(outputPath, htmlContent, 'utf-8')
-
-    console.log(`✅ Generated breaking changes template: ${outputPath}`)
+    fs.writeFileSync(outputPath, markdownToHtml(breakingChanges), 'utf-8')
+    const metadataJson =
+        JSON.stringify(
+            {
+                version: metadata.version ?? version,
+                majorVersion: metadata.majorVersion ?? version.split('.')[0],
+                hasBreakingChanges: metadata.hasBreakingChanges ?? true,
+                importRequired: metadata.importRequired ?? false,
+                tutorials: metadata.tutorials ?? [],
+            },
+            null,
+            2,
+        ) + '\n'
+    fs.writeFileSync(
+        path.join(breakingChangesTemplateDir, `release-metadata-${version}.json`),
+        metadataJson,
+        'utf-8',
+    )
+    if (version.endsWith('.0')) {
+        fs.writeFileSync(
+            path.join(
+                breakingChangesTemplateDir,
+                `release-metadata-major-${version.split('.')[0]}.json`,
+            ),
+            metadataJson,
+            'utf-8',
+        )
+    }
+    console.log(`Generated breaking changes template: ${outputPath}`)
     return outputPath
 }
 
-/**
- * Main function
- */
-function main() {
-    try {
-        // Read system.json to get current version
-        const systemJsonPath = path.join(__dirname, '..', 'system.json')
-        const systemJson = JSON.parse(fs.readFileSync(systemJsonPath, 'utf-8'))
-        const currentVersion = systemJson.version
+export function main() {
+    const systemJson = JSON.parse(fs.readFileSync(systemJsonPath, 'utf-8'))
+    const changelogText = fs.readFileSync(changelogPath, 'utf-8')
+    const metadata = parseReleaseMetadata(changelogText, systemJson.version)
 
-        // Extract major.minor version (e.g., "12.2.3" -> "12.2")
-        const majorMinorVersion = currentVersion.split('.').slice(0, 2).join('.')
-
-        console.log(`📖 Processing version: ${majorMinorVersion} (full: ${currentVersion})`)
-
-        // Read CHANGELOG.md
-        const changelogPath = path.join(__dirname, '..', 'CHANGELOG.md')
-        if (!fs.existsSync(changelogPath)) {
-            console.error('❌ CHANGELOG.md not found!')
-            process.exit(1)
-        }
-
-        const changelogText = fs.readFileSync(changelogPath, 'utf-8')
-
-        // Parse breaking changes
-        const breakingChangesMarkdown = parseBreakingChanges(changelogText, majorMinorVersion)
-
-        if (!breakingChangesMarkdown) {
-            console.log(`ℹ️ No breaking changes found for version ${majorMinorVersion}`)
-
-            // Clean up any existing breaking changes file for this version
-            const hbsPath = path.join(
-                breakingChangesTemplateDir,
-                `breaking-changes-${majorMinorVersion}.hbs`,
-            )
-
-            if (fs.existsSync(hbsPath)) {
-                fs.unlinkSync(hbsPath)
-                console.log(`🗑️ Removed old breaking changes file: ${hbsPath}`)
-            }
-
-            process.exit(0) // Erfolg, auch ohne Breaking Changes
-        }
-
-        // Generate .hbs file with HTML content from Markdown
-        generateHbsFile(majorMinorVersion, breakingChangesMarkdown)
-
-        console.log('✅ Breaking changes template generated successfully!')
-        process.exit(0) // Erfolg
-    } catch (error) {
-        console.error('❌ Error generating breaking changes:', error.message)
-        process.exit(1) // Echter Fehler
+    console.log(`Processing version: ${metadata.version} (full: ${systemJson.version})`)
+    if (!metadata.hasBreakingChanges) {
+        cleanupOldBreakingChanges(metadata.version)
+        console.log(`No breaking changes found for version ${metadata.version}`)
+        return null
     }
+
+    return generateHbsFile(metadata.version, metadata.markdown, metadata)
 }
 
-// Run the script
-main()
+if (process.argv[1] && process.argv[1].endsWith('generate-breaking-changes.js')) {
+    try {
+        main()
+    } catch (error) {
+        console.error(`Error generating breaking changes: ${error.message}`)
+        process.exitCode = 1
+    }
+}
