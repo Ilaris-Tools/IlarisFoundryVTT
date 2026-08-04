@@ -9,6 +9,9 @@ for a later combat action. The definition SHALL identify the
 integer cast-time inputs identified by stable keys and German labels. It MAY
 declare `charges` with a positive integral base count and an opt-in,
 non-negative integral Mächtige-Magie/Liturgie charge bonus per QS.
+The stable `nextSuccessfulAttack` trigger describes when a hit-only damage
+contribution applies; it SHALL NOT prevent charge consumption on a matching
+miss or successful defense.
 
 #### Scenario: Effect declares a reusable count-based damage contribution
 
@@ -47,23 +50,30 @@ bounds and SHALL not change the source Item.
   pre-effect input
 - **THEN** each generated ActiveEffect SHALL retain its own normalized value
 
-### Requirement: Armed effects resolve and expend charges on a confirmed hit
+### Requirement: Armed effects resolve on a hit and expend charges on a matching attack
 
 The system SHALL snapshot every active, scope-matching armed effect when its
 owner begins an attack. The snapshot SHALL contribute its attack value to that
 attack and retain its materialized damage contribution for the same attack.
-The system SHALL expend one charge only from the snapshot's source effects after
-that attack is confirmed as a hit. It SHALL update an effect that has remaining
-charges and SHALL remove an effect only when its remaining charges reach zero.
+The system SHALL expend one charge from the snapshot's source effects after
+that matching attack resolves, whether it misses, is defended, or is confirmed
+as a hit. It SHALL apply an armed damage contribution only when that attack is
+confirmed as a hit. It SHALL update an effect that has remaining charges and
+SHALL remove an effect only when its remaining charges reach zero.
 
-#### Scenario: Failed attack leaves effect armed
+#### Scenario: Failed attack consumes a charge without applying damage
 
 - **WHEN** an attack with a matching armed effect fails or is successfully
   defended
-- **THEN** the effect SHALL remain active and SHALL be eligible for a later
-  matching attack with its charge count unchanged
+- **THEN** the effect SHALL lose one charge without applying its armed damage
+- **AND** it SHALL remain active only when it still has a remaining charge
 
-#### Scenario: Confirmed hit decrements but retains a charged effect
+#### Scenario: Successful defense consumes a charge without applying damage
+
+- **WHEN** a matching attack is successfully defended
+- **THEN** the effect SHALL lose one charge without applying its armed damage
+
+#### Scenario: Confirmed hit applies damage and decrements a charged effect
 
 - **WHEN** a matching attack is confirmed as a hit and its armed effect has two
   remaining charges

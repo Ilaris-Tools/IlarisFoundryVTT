@@ -16,13 +16,14 @@ attack-context handling rather than hard-coding spell names in combat dialogs.
 
 **Goals:**
 
-- Let a pre-effect declare a reusable next-successful-attack effect with an
+- Let a pre-effect declare a reusable next-eligible-attack effect with an
   optional numeric value entered while casting.
 - Persist each submitted value with the generated ActiveEffect so concurrent
   casts do not share state.
-- Apply an armed attack or damage contribution to the appropriate attack,
-  decrement the source effect only after a confirmed hit, expire at zero
-  charges, and retain it unchanged after a miss or an ineligible attack.
+- Apply an armed attack contribution to the appropriate attack and an armed
+  damage contribution only to a confirmed hit; decrement the source effect
+  after every matching attack, expire at zero charges, and retain it unchanged
+  after only an ineligible attack.
 - Support optional, explicitly configured Mächtige-Magie/Liturgie charge
   amplification without changing effects that have no charges.
 - Configure Falkenauge Meisterschuss and Neun Streiche in einem using this
@@ -51,8 +52,13 @@ contribution. Input descriptors provide a key, German label, default, and
 numeric bounds. Damage based on an input uses a fixed per-unit formula and an
 optional maximum unit count, rather than arbitrary executable expressions.
 
-The definition may also declare `charges`. Its `base` is the number of
-successful confirmed hits the effect may affect.
+The `nextSuccessfulAttack` trigger name describes the hit-only contribution:
+an armed damage payload applies only when its matching attack hits. It does not
+alter the independent charge lifecycle, which consumes one charge for every
+scope-matching attack attempt.
+
+The definition may also declare `charges`. Its `base` is the number of matching
+attacks the effect may affect.
 `charges.amplifiedByMaechtigeMagie` defaults to `false`; when explicitly
 enabled, `charges.maechtigBonus` adds a non-negative, integral number of
 charges per Mächtige-Magie/Liturgie QS. An effect with no `charges` declaration
@@ -69,7 +75,7 @@ This is preferable to hard-coded item names or Actor flags: source data stays
 declarative, multiple casts remain independent, and the custom ActiveEffect
 TypeDataModel validates the runtime shape.
 
-### Snapshot before attack; decrement after confirmed hit
+### Snapshot before attack; consume after matching attack resolution
 
 Combat dialogs resolve eligible armed effects when they assemble an attack,
 producing an immutable attack-context snapshot containing the source effect ID,
@@ -79,19 +85,20 @@ contribution remains attached to the same dialog/serialized attack context so
 it is still available to the resulting damage roll after the source effect is
 decremented or expired.
 
-A shared confirmed-hit helper receives the attacker, target, attack type, and
-attack-context snapshot. It decrements exactly the snapshot's active source
-effects through the owning Actor after an attack succeeds without an applicable
-defense or after the defense fails. It updates a source effect whose remaining
-charges stay above zero and removes only an effect that reaches zero. The helper
-does not inspect arbitrary active effects at consumption time, avoiding a later
-re-resolution or a race with stacking changes.
+A shared armed-attack helper receives the attacker, target when available,
+attack type, outcome, and attack-context snapshot. It decrements exactly the
+snapshot's active source effects through the owning Actor after every matching
+attack resolves, including misses and successful defenses. It applies the
+snapshot damage contribution only after an attack succeeds without an
+applicable defense or after the defense fails. It updates a source effect whose
+remaining charges stay above zero and removes only an effect that reaches zero.
+The helper does not inspect arbitrary active effects at consumption time,
+avoiding a later re-resolution or a race with stacking changes.
 
 This avoids both rejected alternatives:
 
-- Deleting at attack-roll time incorrectly spends effects on misses.
 - Deleting after a generic damage roll can spend an effect on unrelated manual
-  damage and loses the guarantee that the source attack was a hit.
+  damage and loses the guarantee that the source attack was the matching one.
 
 ### Preserve the pure semantic modifier resolver
 
@@ -120,13 +127,14 @@ show neither label.
 
 ### Initial source configurations
 
-- Falkenauge Meisterschuss arms the caster for one successful ranged attack and
+- Falkenauge Meisterschuss arms the caster for one eligible ranged attack and
   contributes its configured AT bonus. It uses an explicit one-charge
   configuration; its existing Mächtige-Magie behavior remains independent from
   charge amplification unless the source data opts in.
 - Neun Streiche in einem presents `Bisherige Treffer auf Ziel` during casting,
   clamps the stored count to `0..8`, contributes that many `W6` to the next
-  successful attack's damage, and decrements on each confirmed hit. Its optional
+  eligible attack's damage only if it hits, and consumes a charge for that
+  attack regardless of its outcome. Its optional
   Mächtige Liturgie attack bonus and any extra-charge policy are configured
   separately from the count-based damage.
 
@@ -158,8 +166,8 @@ show neither label.
 - [A source effect is decremented or deleted before its damage is rolled] -> Keep the
   materialized contribution in the attack-context snapshot, not in a fresh
   ActiveEffect lookup.
-- [A miss consumes a charge] -> Invoke charge decrement only through the common
-  confirmed-hit helper after direct success or failed defense resolution.
+- [A matching attack fails to consume a charge] -> Invoke charge decrement
+  through the common armed-attack helper after every matching attack outcome.
 - [Mächtige Magie silently changes charges unexpectedly] -> Require an explicit
   `charges.amplifiedByMaechtigeMagie` opt-in and a non-negative integral
   `charges.maechtigBonus`.
@@ -199,8 +207,9 @@ show neither label.
   resolver with direct object fixtures. Follow the existing dynamic-import and
   Jest mock pattern in `scripts/effects/pre-effects/_spec/` and
   `scripts/combat/_spec/` for Foundry globals and embedded-document methods.
-- Cover source effect retention on misses/ineligible attacks, exact once-only
-  decrement on a confirmed hit, removal at zero, persisted bounded numeric
+- Cover source effect consumption on matching misses and hits, retention on
+  ineligible attacks, exact once-only decrement per matching attack, removal at
+  zero, persisted bounded numeric
   values, opt-in charge amplification, and preserved snapshot damage after an
   update or deletion.
 - Extend `supported-spell-data.spec.js` for source JSON and existing
@@ -209,6 +218,6 @@ show neither label.
   duration, armed charges, and effects with neither display value.
 - Add one E2E flow using the baseline `HatAlles` actor and existing spell-dialog
   helpers: cast Neun Streiche with an entered count and multiple charges,
-  resolve successive successful attacks, observe the damage contribution, and
-  verify removal only after the final charge. Re-run E2E-009, E2E-027, and
+  resolve successive matching attacks, observe hit-only damage contributions,
+  and verify removal only after the final charge. Re-run E2E-009, E2E-027, and
   E2E-028 as regressions.
