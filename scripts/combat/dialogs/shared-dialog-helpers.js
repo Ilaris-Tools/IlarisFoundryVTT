@@ -176,7 +176,25 @@ export function processModification(
                     trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''
                 }: ${value} / Waffenschaden\n`
             } else {
-                rollValues.schaden = `(${rollValues.schaden})*${value}`
+                const expandWeaponDamageMultipliers = game.settings.get(
+                    ConfigureGameSettingsCategories.Ilaris,
+                    IlarisGameSettingNames.expandWeaponDamageMultipliers,
+                )
+                if (expandWeaponDamageMultipliers) {
+                    try {
+                        rollValues.schaden = new Roll(rollValues.schaden).alter(value, 0, {
+                            multiplyNumeric: true,
+                        }).formula
+                    } catch (error) {
+                        console.warn(
+                            'Ilaris | Failed to expand weapon damage multiplier formula:',
+                            error,
+                        )
+                        rollValues.schaden = `(${rollValues.schaden})*${value}`
+                    }
+                } else {
+                    rollValues.schaden = `(${rollValues.schaden})*${value}`
+                }
                 text = `${manoeverName}${
                     trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''
                 }: ${value} * Waffenschaden\n`

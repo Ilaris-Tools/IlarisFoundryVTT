@@ -22,6 +22,7 @@ export const IlarisGameSettingNames = {
     showDiceRollInChat: 'showDiceRollInChat',
     hexTokenShapes: 'hexTokenShapes',
     defaultRangedDodgeTalent: 'defaultRangedDodgeTalent',
+    expandWeaponDamageMultipliers: 'expandWeaponDamageMultipliers',
     lastSeenBreakingChangesVersion: 'lastSeenBreakingChangesVersion',
     lastAnnouncedMajorRelease: 'lastAnnouncedMajorRelease',
     lepSystem: 'lepSystem',
