@@ -40,6 +40,8 @@ describe('processModification', () => {
         }
         global.signed = mockSigned
         global.CONFIG = mockConfig
+        game.settings.get.mockReturnValue(false)
+        delete global.Roll
     })
 
     afterEach(() => {
@@ -204,6 +206,69 @@ describe('processModification', () => {
 
         expect(rollValues.schaden).toBe('(1W6+3)*2')
         expect(rollValues.text_dm).toContain('Test Manoever: 2 * Waffenschaden')
+    })
+
+    it('should expand WEAPON_DAMAGE multipliers before rolling when enabled', () => {
+        const alteredRoll = { formula: '4d6 + 6' }
+        const alter = jest.fn().mockReturnValue(alteredRoll)
+        global.Roll = jest.fn().mockImplementation(() => ({ alter }))
+        game.settings.get.mockImplementation(
+            (_namespace, key) => key === 'expandWeaponDamageMultipliers',
+        )
+        rollValues.schaden = '2d6 + 3'
+        const modification = {
+            type: 'WEAPON_DAMAGE',
+            operator: 'MULTIPLY',
+            value: 2,
+            affectedByInput: true,
+        }
+
+        processModification(modification, 1, 'Test Manoever', null, rollValues)
+
+        expect(global.Roll).toHaveBeenCalledWith('2d6 + 3')
+        expect(alter).toHaveBeenCalledWith(2, 0, { multiplyNumeric: true })
+        expect(rollValues.schaden).toBe('4d6 + 6')
+    })
+
+    it('should leave flat DAMAGE modifiers outside expanded weapon damage', () => {
+        global.Roll = jest.fn()
+        game.settings.get.mockImplementation(
+            (_namespace, key) => key === 'expandWeaponDamageMultipliers',
+        )
+        const modification = {
+            type: 'DAMAGE',
+            operator: 'ADD',
+            value: 3,
+            affectedByInput: true,
+        }
+
+        processModification(modification, 1, 'Test Manoever', null, rollValues)
+
+        expect(rollValues.mod_dm).toBe(3)
+        expect(global.Roll).not.toHaveBeenCalled()
+    })
+
+    it('should retain result multiplication when formula expansion fails', () => {
+        global.Roll = jest.fn().mockImplementation(() => {
+            throw new Error('Invalid formula')
+        })
+        game.settings.get.mockImplementation(
+            (_namespace, key) => key === 'expandWeaponDamageMultipliers',
+        )
+        const warn = jest.spyOn(console, 'warn').mockImplementation(() => {})
+        rollValues.schaden = 'invalid'
+        const modification = {
+            type: 'WEAPON_DAMAGE',
+            operator: 'MULTIPLY',
+            value: 2,
+            affectedByInput: true,
+        }
+
+        processModification(modification, 1, 'Test Manoever', null, rollValues)
+
+        expect(rollValues.schaden).toBe('(invalid)*2')
+        expect(warn).toHaveBeenCalled()
+        warn.mockRestore()
     })
 
     it('should handle WEAPON_DAMAGE type with SUBTRACT operator', () => {

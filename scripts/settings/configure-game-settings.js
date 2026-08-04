@@ -34,6 +34,15 @@ export const registerIlarisGameSettings = () => {
             scope: 'world',
         },
         {
+            settingsName: IlarisGameSettingNames.expandWeaponDamageMultipliers,
+            name: 'Waffenschaden vor dem Würfeln multiplizieren',
+            hint: 'Wenn aktiviert, werden bei Waffenschaden-Multiplikatoren Würfel und feste Boni vor dem Würfeln multipliziert. Beispiel: 2W6+3 wird zu 4W6+6.',
+            config: false,
+            type: new foundry.data.fields.BooleanField(),
+            scope: 'world',
+            default: false,
+        },
+        {
             // Rename Triumph with Crit
             settingsName: IlarisGameSettingNames.renameTriumphWithCrit,
             name: 'Umbenennen von Triumph in Crit im Text',
