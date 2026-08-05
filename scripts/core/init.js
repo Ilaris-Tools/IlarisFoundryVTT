@@ -558,6 +558,12 @@ function setupIlarisSocket() {
             case 'broadcastCombatHook':
                 await handleBroadcastCombatHookRequest(data.data)
                 break
+            case 'armedAttackResolved': {
+                const { applyArmedAttackResolutionToDialog } =
+                    await import('../combat/dialogs/combat-dialog.js')
+                applyArmedAttackResolutionToDialog(data.data)
+                break
+            }
             default:
                 console.warn(`Unknown Ilaris socket request type: ${data.type}`)
         }

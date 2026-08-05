@@ -143,6 +143,38 @@
                 <button type="button" class="add-ilaris-modifier">+ Ilaris-Modifikator hinzufügen</button>
             </div>
 
+            <div class="armed-combat-section">
+                <h4>Bewaffneter Kampfeffekt</h4>
+                <div class="form-group">
+                    <label><input type="checkbox" name="system.preEffects.{{@index}}.armedCombat.enabled" {{checked armedCombat.enabled}} /> Aktiviert</label>
+                </div>
+                <div class="form-group">
+                    <label>Auslösung:</label>
+                    <select name="system.preEffects.{{@index}}.armedCombat.trigger">
+                        <option value="nextSuccessfulAttack" {{#if (ifEq armedCombat.trigger "nextSuccessfulAttack")}}selected{{/if}}>Nächster erfolgreicher Angriff</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Angriffsart:</label>
+                    <select name="system.preEffects.{{@index}}.armedCombat.scope">
+                        <option value="any" {{#if (ifEq armedCombat.scope "any")}}selected{{/if}}>Beliebig</option>
+                        <option value="melee" {{#if (ifEq armedCombat.scope "melee")}}selected{{/if}}>Nahkampf</option>
+                        <option value="ranged" {{#if (ifEq armedCombat.scope "ranged")}}selected{{/if}}>Fernkampf</option>
+                    </select>
+                </div>
+                <div class="form-group"><label>AT-Bonus:</label><input type="number" name="system.preEffects.{{@index}}.armedCombat.attackBonus" value="{{armedCombat.attackBonus}}" /></div>
+                <div class="form-group"><label>Eingabeschlüssel:</label><input type="text" name="system.preEffects.{{@index}}.armedCombat.inputs.0.key" value="{{armedCombat.inputs.0.key}}" placeholder="z. B. previousHits" /></div>
+                <div class="form-group"><label>Eingabelabel:</label><input type="text" name="system.preEffects.{{@index}}.armedCombat.inputs.0.label" value="{{armedCombat.inputs.0.label}}" /></div>
+                <div class="form-group"><label>Standard:</label><input type="number" name="system.preEffects.{{@index}}.armedCombat.inputs.0.default" value="{{armedCombat.inputs.0.default}}" /></div>
+                <div class="form-group"><label>Minimum:</label><input type="number" name="system.preEffects.{{@index}}.armedCombat.inputs.0.min" value="{{armedCombat.inputs.0.min}}" /></div>
+                <div class="form-group"><label>Maximum:</label><input type="number" name="system.preEffects.{{@index}}.armedCombat.inputs.0.max" value="{{armedCombat.inputs.0.max}}" /></div>
+                <div class="form-group"><label>Schaden-Eingabe:</label><input type="text" name="system.preEffects.{{@index}}.armedCombat.damage.input" value="{{armedCombat.damage.input}}" /></div>
+                <div class="form-group"><label>Schaden je Einheit:</label><input type="text" name="system.preEffects.{{@index}}.armedCombat.damage.perInput" value="{{armedCombat.damage.perInput}}" placeholder="W6" /></div>
+                <div class="form-group"><label>Ladungen:</label><input type="number" min="1" name="system.preEffects.{{@index}}.armedCombat.charges.base" value="{{armedCombat.charges.base}}" /></div>
+                <div class="form-group"><label><input type="checkbox" name="system.preEffects.{{@index}}.armedCombat.charges.amplifiedByMaechtigeMagie" {{checked armedCombat.charges.amplifiedByMaechtigeMagie}} /> Verstärkt durch Mächtige Magie/Liturgie</label></div>
+                <div class="form-group"><label>Ladungen je QS:</label><input type="number" min="0" name="system.preEffects.{{@index}}.armedCombat.charges.maechtigBonus" value="{{armedCombat.charges.maechtigBonus}}" /></div>
+            </div>
+
             <div class="avoid-test-section">
                 <h4>Widerstands-Probe</h4>
                 <div class="form-group">

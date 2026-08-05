@@ -310,3 +310,7 @@ entries SHALL be collapsed by default.
 - [weapons](../weapons/spec.md) — Weapon TP computation and Eigenschaft modifiers
 - [active-effects](../active-effects/spec.md) — Target effects triggered on hit
 - [settings](../settings/spec.md) — `useSceneEnvironment`, `useTargetSelection`, `realFumbleCrits`
+
+### Requirement: Combat resolves armed attack snapshots
+
+Melee and ranged dialogs SHALL serialize matching armed-effect snapshots through defense handling, consume charges once after each matching attack resolution, and apply snapshot damage only on confirmed hits.

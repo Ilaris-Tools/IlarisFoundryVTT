@@ -1,12 +1,18 @@
 import { evaluate_roll_with_crit, postRollToChat } from '../../dice/wuerfel_misc.js'
 import { signed } from '../../dice/chatutilities.js'
 import { handleModifications } from './shared-dialog-helpers.js'
-import { CombatDialog } from './combat-dialog.js'
+import { applyArmedAttackResolutionToDialog, CombatDialog } from './combat-dialog.js'
 import { formatDiceFormula } from '../../core/utilities.js'
 import {
     callIlarisHookAllWithGlobalMirror,
     callIlarisHookWithGlobalMirror,
 } from '../hooks/global_combat_hooks.js'
+import {
+    getArmedAttackBonus,
+    getArmedAttackContext,
+    getArmedDamageFormula,
+    resolveArmedAttack,
+} from '../../effects/pre-effects/armed-combat-effects.js'
 
 export class AngriffDialog extends CombatDialog {
     /** @override */
@@ -306,7 +312,11 @@ export class AngriffDialog extends CombatDialog {
         }
 
         const damageMod = signed(this.mod_dm)
-        return this.appendIlarisDamageFormula(damageMod ? `${baseDamage} ${damageMod}` : baseDamage)
+        const formula = this.appendIlarisDamageFormula(
+            damageMod ? `${baseDamage} ${damageMod}` : baseDamage,
+        )
+        const armedDamage = this.armedDamageFormula || ''
+        return armedDamage ? `${formula} + ${armedDamage}` : formula
     }
 
     /* -------------------------------------------- */
@@ -321,6 +331,8 @@ export class AngriffDialog extends CombatDialog {
         this.updateStatusMods()
         super.eigenschaftenText()
         const ilaris = this.getIlarisModifierResult('at')
+        this.armedAttackContext = getArmedAttackContext(this.actor, 'melee')
+        const armedAttackBonus = getArmedAttackBonus(this.armedAttackContext)
         this.text_at = `${this.text_at}${this.getIlarisModifierText(ilaris)}\n`
 
         let label = `Attacke (${this.item.name})`
@@ -328,7 +340,7 @@ export class AngriffDialog extends CombatDialog {
             ${signed(this.at_abzuege_mod)} \
             ${signed(this.item.actor.system.modifikatoren.nahkampfmod)} \
             ${signed(this.mod_at)} \
-            ${signed(ilaris.value)}`
+            ${signed(ilaris.value)} ${signed(armedAttackBonus)}`
 
         // Use the new evaluation function
         const rollResult = await evaluate_roll_with_crit(
@@ -340,6 +352,17 @@ export class AngriffDialog extends CombatDialog {
             true, // crit_eval
         )
         this.attackType = 'melee'
+        rollResult.ilarisArmedAttackContext = this.armedAttackContext
+        rollResult.ilarisAttackDialogId = this.dialogId
+        if (!rollResult.success || !this.selectedActors?.length) {
+            this.armedDamageFormula = await resolveArmedAttack(
+                this.actor,
+                this.armedAttackContext,
+                {
+                    confirmedHit: rollResult.success,
+                },
+            )
+        }
         super._updateSchipsStern()
         this.updateModifierDisplay()
         await this.handleTargetSelection(rollResult, 'melee')
@@ -512,6 +535,19 @@ export class AngriffDialog extends CombatDialog {
         })
 
         // Clean up the stored rolls
+        const armedContext = this.attackRoll?.ilarisArmedAttackContext
+        const armedDamage = await resolveArmedAttack(this.attackingActor, armedContext, {
+            confirmedHit: !defenderWins && this.attackRoll?.success !== false,
+        })
+        if (armedDamage) {
+            this.attackRoll.ilarisArmedDamageFormula = armedDamage
+            const payload = {
+                dialogId: this.attackRoll.ilarisAttackDialogId,
+                damageFormula: armedDamage,
+            }
+            applyArmedAttackResolutionToDialog(payload)
+            game.socket.emit('system.Ilaris', { type: 'armedAttackResolved', data: payload })
+        }
         this.lastDefenseRoll = null
         this.attackRoll = null
         super._updateSchipsStern()

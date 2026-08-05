@@ -400,3 +400,7 @@ source item.
   Vorteil, has an ordinary Ilaris modifier
 - **THEN** it SHALL remain additive even if it matches a spell modifier's
   output context
+
+### Requirement: Pre-effects support armed combat configuration
+
+An übernatürlich pre-effect MAY define `armedCombat` input, scope, contribution, and charges. The item sheet and cast dialog SHALL author and collect its bounded numeric inputs; a successful cast SHALL materialize them in the generated ActiveEffect.

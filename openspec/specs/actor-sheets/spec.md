@@ -85,3 +85,7 @@ Inherits `gesundheit` and `energie` templates from Held, adds creature-specific 
 - [active-effects](../active-effects/spec.md) — Effects applied to actors, attribute key autocomplete
 - [weapons](../weapons/spec.md) — `actorModifiers` applied to wielder stats
 - [item-sheets](../item-sheets/spec.md) — Item sheets embedded in actor sheet inventory tabs
+
+### Requirement: Held effect rows display remaining duration and armed charges
+
+The Held Effekte tab SHALL display the authoritative remaining duration and, for armed effects, `Ladungen: <remaining>`. Owner-turn effects use `system.ilarisTiming.remaining`; other timed effects use the prepared native duration.

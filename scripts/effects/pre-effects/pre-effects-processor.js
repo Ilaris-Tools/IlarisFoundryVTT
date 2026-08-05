@@ -5,6 +5,7 @@ import {
     IlarisSupernaturalStackingMode,
     targetFromMainAttributePath,
 } from '../utils/ilaris-modifier-constants.js'
+import { materializeArmedCombat } from './armed-combat-effects.js'
 
 /** Normalize Foundry v14 ObjectField data to a real array. */
 export function toArray(val) {
@@ -115,17 +116,18 @@ function getEffectPayload(preEffect, maechtigeQs) {
 }
 
 /** Apply all pre-effects from a spell to its targets. */
-export function applyPreEffects(rollResult, dialog) {
+export async function applyPreEffects(rollResult, dialog, armedInputValues = {}) {
     const item = dialog.item
     const preEffects = toArray(item?.system?.preEffects)
-    if (!preEffects.length || !dialog.selectedActors?.length) return
+    if (!preEffects.length) return
 
     const caster = dialog.actor
     const speaker = dialog.speaker
     const maneuverDurationBonus = dialog.maneuverDurationBonus || 0
     const maechtigeQs = dialog.maechtigeMagieQs || 0
 
-    for (const target of dialog.selectedActors) {
+    const targets = dialog.selectedActors?.length ? dialog.selectedActors : [{ actorId: caster.id }]
+    for (const target of targets) {
         const { targetActor } = resolveTargetActorForDamage(target)
         if (!targetActor) continue
         const isSelfCast = caster.id === targetActor.id
@@ -134,7 +136,7 @@ export function applyPreEffects(rollResult, dialog) {
         for (const [preEffectIndex, preEffect] of preEffects.entries()) {
             const avoidTest = preEffect.avoidTest || {}
             if (avoidTest.enabled) {
-                sendResistPromptForEffect(
+                await sendResistPromptForEffect(
                     targetActor,
                     preEffect,
                     item,
@@ -145,6 +147,7 @@ export function applyPreEffects(rollResult, dialog) {
                     isSelfCast,
                     preEffectIndex,
                     applicationId,
+                    armedInputValues,
                 )
                 continue
             }
@@ -152,9 +155,9 @@ export function applyPreEffects(rollResult, dialog) {
             const effectiveDuration =
                 preEffect.baseDuration + maneuverDurationBonus + (isSelfCast ? 1 : 0)
             if (preEffect.instant) {
-                applyInstantPreEffect(targetActor, preEffect, maechtigeQs, speaker)
+                await applyInstantPreEffect(targetActor, preEffect, maechtigeQs, speaker)
             } else {
-                createActiveEffectFromPreEffect(
+                await createActiveEffectFromPreEffect(
                     targetActor,
                     preEffect,
                     caster,
@@ -163,6 +166,7 @@ export function applyPreEffects(rollResult, dialog) {
                     maechtigeQs,
                     preEffectIndex,
                     applicationId,
+                    armedInputValues,
                 )
             }
         }
@@ -180,6 +184,7 @@ async function sendResistPromptForEffect(
     isSelfCast,
     preEffectIndex,
     applicationId,
+    armedInputValues,
 ) {
     const serialized = {
         ...preEffect,
@@ -191,6 +196,7 @@ async function sendResistPromptForEffect(
         targetActorId: targetActor.id,
         preEffectIndex,
         applicationId,
+        armedInputValues,
     }
     await sendResistPrompt(targetActor, serialized, spellItem.name, speaker)
 }
@@ -230,6 +236,7 @@ export async function createActiveEffectFromPreEffect(
     maechtigeQs,
     preEffectIndex = 0,
     applicationId = foundry.utils.randomID(),
+    armedInputValues = {},
 ) {
     let payload
     try {
@@ -239,7 +246,12 @@ export async function createActiveEffectFromPreEffect(
         return
     }
     const { changes, ilarisModifiers } = payload
-    if (changes.length === 0 && ilarisModifiers.length === 0) return
+    const ilarisArmedCombat = materializeArmedCombat(
+        preEffect.armedCombat,
+        armedInputValues,
+        maechtigeQs,
+    )
+    if (changes.length === 0 && ilarisModifiers.length === 0 && !ilarisArmedCombat) return
 
     const effectData = {
         name: spellItem.name,
@@ -249,6 +261,7 @@ export async function createActiveEffectFromPreEffect(
         system: {
             ilarisSource: 'uebernatuerlich',
             ilarisModifiers,
+            ilarisArmedCombat,
             ilarisTiming: {
                 durationType: 'ownerTurns',
                 expiresOn: 'turnEnd',

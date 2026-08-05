@@ -26,7 +26,7 @@ The current `diminishedOnly` mechanism can replace change values after a success
 
 ## Other deferred mechanics
 
-The current model also intentionally does not automate moving or persistent zones, delayed triggers, contact/crossing triggers, per-Initiativephase repetition, distance-based formulas, target-category filters, resource drains, or next-roll-only consumption. These are documented as deferred in the spell/liturgy effect inventory.
+The current model also intentionally does not automate moving or persistent zones, delayed triggers, contact/crossing triggers, per-Initiativephase repetition, distance-based formulas, target-category filters, resource drains, or generic next-roll-only consumption. These are documented as deferred in the spell/liturgy effect inventory. Charged next-eligible weapon attacks are the deliberate exception: `Falkenauge Meisterschuss` and `Neun Streiche in einem` use the structured `armedCombat` pre-effect payload, which consumes one charge for every matching attack and adds damage only on a confirmed hit.
 
 ## Deferred entries and rationale
 
