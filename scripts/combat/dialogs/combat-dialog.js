@@ -13,6 +13,15 @@ import { resolveIlarisModifiers } from '../../effects/utils/ilaris-modifier-reso
 
 const { ApplicationV2, HandlebarsApplicationMixin } = foundry.applications.api
 
+/** Apply an armed-damage snapshot to the initiating dialog on this client. */
+export function applyArmedAttackResolutionToDialog({ dialogId, damageFormula } = {}) {
+    const dialog = globalThis.window?._ilarisCombatDialogs?.get(dialogId)
+    if (!dialog) return false
+    dialog.armedDamageFormula = damageFormula || ''
+    dialog.updateModifierDisplay?.()
+    return true
+}
+
 /**
  * Base class for all combat dialogs in Ilaris.
  *
@@ -55,6 +64,10 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         this.item = item
         this.actor = actor
         this.dialogId = `dialog-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`
+        if (globalThis.window) {
+            window._ilarisCombatDialogs ??= new Map()
+            window._ilarisCombatDialogs.set(this.dialogId, this)
+        }
         this.summary = this.getDefaultSummaryContext()
 
         // Initialize selected actors from Foundry targets after actor/item are set

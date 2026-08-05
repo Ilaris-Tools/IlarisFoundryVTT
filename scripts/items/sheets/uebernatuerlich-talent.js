@@ -375,6 +375,15 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
             instant: false,
             changes: [],
             ilarisModifiers: [],
+            armedCombat: {
+                enabled: false,
+                trigger: 'nextSuccessfulAttack',
+                scope: 'any',
+                attackBonus: 0,
+                damage: { input: '', perInput: 'W6' },
+                inputs: [],
+                charges: { base: 1, amplifiedByMaechtigeMagie: false, maechtigBonus: 0 },
+            },
             avoidTest: {
                 enabled: false,
                 fertigkeit: '',

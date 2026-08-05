@@ -58,6 +58,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         this.calculatedWounds = 0
         this.ilarisSituationSelection = []
         this.ilarisSituationControls = { boolean: [], exclusive: [] }
+        this.armedInputValues = {}
     }
 
     /**
@@ -319,6 +320,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             verbotene_pforten: this.verbotene_pforten,
             set_energy_cost: this.set_energy_cost,
             ilarisSituationControls: this.ilarisSituationControls,
+            armedInputs: this._getArmedInputs(),
         }
     }
 
@@ -393,7 +395,7 @@ export class UebernatuerlichDialog extends CombatDialog {
 
         // Fire-and-forget pre-effects on success
         if (isSuccess && this.item.system.preEffects?.length > 0) {
-            applyPreEffects(rollResult, this)
+            await applyPreEffects(rollResult, this, this.armedInputValues)
         }
     }
 
@@ -407,7 +409,7 @@ export class UebernatuerlichDialog extends CombatDialog {
 
         // Fire-and-forget pre-effects for non-standard difficulty spells
         if (isSuccess && this.item.system.preEffects?.length > 0) {
-            applyPreEffects({ success: true }, this)
+            await applyPreEffects({ success: true }, this, this.armedInputValues)
         }
 
         // If not enough resources, show error
@@ -575,9 +577,27 @@ export class UebernatuerlichDialog extends CombatDialog {
         this.set_energy_cost.value =
             energyOverride !== '' && energyOverride != null ? +energyOverride : null
 
+        this.armedInputValues = {}
+        for (const input of this._getArmedInputs()) {
+            this.armedInputValues[input.key] = this.element.querySelector(
+                `[name="ilaris-armed-input-${input.key}"]`,
+            )?.value
+        }
+
         manoever.mod.selected =
             Number(this.element.querySelector(`#modifikator-${this.dialogId}`)?.value) || 0 // Modifikator
         await super.manoeverAuswaehlen()
+    }
+
+    _getArmedInputs() {
+        const inputs = []
+        for (const preEffect of Object.values(this.item.system.preEffects || {})) {
+            for (const input of preEffect?.armedCombat?.inputs || []) {
+                if (input?.key && !inputs.some((entry) => entry.key === input.key))
+                    inputs.push(input)
+            }
+        }
+        return inputs
     }
 
     /**

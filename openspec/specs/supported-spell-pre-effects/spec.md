@@ -90,3 +90,7 @@ Each selected source Item's stated Mächtige Magie/Liturgie increase SHALL be re
 - **WHEN** a contributor reviews this coverage set
 - **THEN** source Items requiring contact/crossing triggers, zones, repeated damage, resource changes, next-roll consumption, direct main-attribute changes, derived armor protection, condition enforcement, or ambiguous blessings SHALL remain without a new pre-effect from this change
 - **AND** the inventory documentation SHALL identify those categories as deferred or manual
+
+### Requirement: Armed source Items are configured declaratively
+
+Falkenauge Meisterschuss SHALL arm one ranged attack with +4 AT and consume on its next matching attack. Neun Streiche in einem SHALL collect `Bisherige Treffer auf Ziel` (`0..8`), add one W6 per stored hit only when its next matching attack hits, and consume its charge on that attack.

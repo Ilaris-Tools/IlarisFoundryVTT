@@ -30,6 +30,12 @@
             <label>{{get_label "kbak"}}</label>
             <input type="checkbox" id="kbak" {{checked item.system.manoever.kbak.selected}} />
         </div>
+        {{#each armedInputs}}
+        <div class="flexrow">
+            <label>{{label}}</label>
+            <input type="number" name="ilaris-armed-input-{{key}}" value="{{default}}" min="{{min}}" max="{{max}}" step="1" />
+        </div>
+        {{/each}}
         {{#if (or ilarisSituationControls.boolean.length ilarisSituationControls.exclusive.length)}}
         <hr />
         <div>

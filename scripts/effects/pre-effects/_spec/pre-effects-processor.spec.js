@@ -323,13 +323,53 @@ describe('pre-effect processor', () => {
             maechtigeMagieQs: 0,
         }
 
-        applyPreEffects({ success: true }, dialog)
-        await Promise.resolve()
-        await Promise.resolve()
+        await applyPreEffects({ success: true }, dialog)
 
         expect(global.ActiveEffect.createDocuments).toHaveBeenCalledTimes(2)
         expect(global.ActiveEffect.createDocuments.mock.calls[0][0][0].duration.turns).toBe(6)
         expect(global.ActiveEffect.createDocuments.mock.calls[1][0][0].duration.turns).toBe(5)
+    })
+
+    it('materializes bounded armed input and charges without changing the source definition', async () => {
+        const target = createTargetActor()
+        global.game.actors = { get: jest.fn(() => target) }
+        const armedCombat = {
+            trigger: 'nextSuccessfulAttack',
+            scope: 'any',
+            inputs: [{ key: 'previousHits', default: 0, min: 0, max: 8 }],
+            damage: { input: 'previousHits', perInput: 'W6' },
+            charges: { base: 1, amplifiedByMaechtigeMagie: true, maechtigBonus: 1 },
+        }
+        const dialog = {
+            item: {
+                name: 'Neun Streiche in einem',
+                uuid: 'Item.neun-streiche',
+                system: { preEffects: [{ baseDuration: 1, instant: false, armedCombat }] },
+            },
+            selectedActors: [{ actorId: 'target-id' }],
+            actor: { id: 'caster-id', uuid: 'Actor.caster' },
+            speaker: {},
+            maneuverDurationBonus: 0,
+            maechtigeMagieQs: 2,
+        }
+
+        await applyPreEffects({ success: true }, dialog, { previousHits: 99 })
+
+        expect(global.ActiveEffect.createDocuments).toHaveBeenCalledWith(
+            [
+                expect.objectContaining({
+                    system: expect.objectContaining({
+                        ilarisArmedCombat: expect.objectContaining({
+                            inputs: { previousHits: 8 },
+                            remainingCharges: 3,
+                            damage: { input: 'previousHits', perInput: 'W6', units: 8 },
+                        }),
+                    }),
+                }),
+            ],
+            { parent: target },
+        )
+        expect(armedCombat.inputs[0]).toEqual({ key: 'previousHits', default: 0, min: 0, max: 8 })
     })
 
     it('records the source Pre-Effect index for each direct application', async () => {
@@ -362,9 +402,7 @@ describe('pre-effect processor', () => {
             maechtigeMagieQs: 0,
         }
 
-        applyPreEffects({ success: true }, dialog)
-        await Promise.resolve()
-        await Promise.resolve()
+        await applyPreEffects({ success: true }, dialog)
 
         expect(
             global.ActiveEffect.createDocuments.mock.calls[0][0][0].flags.ilaris.preEffectIndex,
@@ -407,10 +445,7 @@ describe('pre-effect processor', () => {
             maechtigeMagieQs: 0,
         }
 
-        applyPreEffects({ success: true }, dialog)
-        await Promise.resolve()
-        await Promise.resolve()
-        await Promise.resolve()
+        await applyPreEffects({ success: true }, dialog)
 
         const content = global.ChatMessage.create.mock.calls[0][0].content
         const serialized = content.match(/data-pre-effect-data="([^"]+)"/)[1]

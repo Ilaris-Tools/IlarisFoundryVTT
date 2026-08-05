@@ -29,6 +29,7 @@ export function createIlarisActiveEffectDataModel(h) {
             // weapon, Talent, or situation without modifying prepared actor data.
             schema.ilarisSource = h.string('ordinary')
             schema.ilarisModifiers = h.arrayOfObjects()
+            schema.ilarisArmedCombat = h.object({})
             return schema
         }
     }

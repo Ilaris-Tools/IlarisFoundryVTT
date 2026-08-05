@@ -18,6 +18,14 @@
         </div>
         <div class="setting-row">
             <div class="setting-label-block">
+                <span class="setting-label">Waffenschaden vor dem Würfeln multiplizieren</span>
+                <span class="setting-scope"><i class="fas fa-globe"></i> Welt</span>
+                <p class="setting-hint">Wenn aktiviert, werden bei Waffenschaden-Multiplikatoren Würfel und feste Boni vor dem Würfeln multipliziert. Beispiel: 2W6+3 wird zu 4W6+6.</p>
+            </div>
+            <input type="checkbox" name="general.expandWeaponDamageMultipliers" {{#if settings.expandWeaponDamageMultipliers}}checked{{/if}}>
+        </div>
+        <div class="setting-row">
+            <div class="setting-label-block">
                 <span class="setting-label">Umbenennen von Triumph in Crit</span>
                 <span class="setting-scope"><i class="fas fa-globe"></i> Welt</span>
                 <p class="setting-hint">Für alle, die lieber das Wort "Crit" anstelle von "Triumph" verwenden.</p>

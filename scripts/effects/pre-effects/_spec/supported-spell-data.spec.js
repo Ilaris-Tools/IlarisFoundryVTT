@@ -31,6 +31,22 @@ function expectDamageChange(preEffect, { value, damageType, maechtigBonus = '' }
 }
 
 describe('reviewed supported spell pre-effect source data', () => {
+    it('configures Falkenauge and Neun Streiche as charged armed combat effects', () => {
+        const falkenauge = readSpell('Falkenauge_Meisterschuss_1IrKao8Dho4TTgsR.json')
+        const neunStreiche = readLiturgy('Neun_Streiche_in_einem_G1Ei7UA4kqCYhF8r.json')
+
+        expect(falkenauge.system.preEffects?.[0].armedCombat).toMatchObject({
+            scope: 'ranged',
+            attackBonus: 4,
+            charges: { base: 1 },
+        })
+        expect(neunStreiche.system.preEffects?.[0].armedCombat).toMatchObject({
+            scope: 'any',
+            inputs: [expect.objectContaining({ key: 'previousHits', min: 0, max: 8 })],
+            damage: { input: 'previousHits', perInput: 'W6' },
+            charges: { base: 1 },
+        })
+    })
     it('configures Axxeleratus Blitzgeschwind (Tiergeist) like its supported base spell', () => {
         const spell = readSpell('Axxeleratus_Blitzgeschwind__Tiergeist__NZax4EdnXTHTpt8F.json')
 
