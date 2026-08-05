@@ -1,0 +1,48 @@
+{
+  "name": "Phexens Wurfstern",
+  "type": "fernkampfwaffe",
+  "_id": "C9Qy0anjBUWn9TUw",
+  "img": "icons/svg/item-bag.svg",
+  "system": {
+    "haerte": 0,
+    "beschaedigung": 0,
+    "aufbewahrungs_ort": "mitführend",
+    "bewahrt_auf": [],
+    "gewicht_summe": 0,
+    "gewicht": 0,
+    "preis": 0,
+    "quantity": 1,
+    "tp": "2W20",
+    "fertigkeit": "Wurfwaffen",
+    "talent": "Kurze Wurfwaffen",
+    "rw": 4,
+    "hauptwaffe": false,
+    "nebenwaffe": false,
+    "eigenschaften": [],
+    "text": "",
+    "wm_fk": 4,
+    "lz": 0,
+    "rw_mod": 0,
+    "computed": {}
+  },
+  "effects": [],
+  "folder": null,
+  "sort": 0,
+  "ownership": {
+    "default": 0,
+    "I6YlRiEqRJwTfdEG": 3
+  },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "14.363",
+    "systemId": "Ilaris",
+    "systemVersion": "14.0.0",
+    "createdTime": 1785960508783,
+    "modifiedTime": 1785960637348,
+    "lastModifiedBy": "I6YlRiEqRJwTfdEG",
+    "compendiumSource": null,
+    "duplicateSource": null,
+    "exportSource": null
+  },
+  "_key": "!items!C9Qy0anjBUWn9TUw"
+}
