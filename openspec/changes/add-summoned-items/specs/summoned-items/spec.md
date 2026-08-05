@@ -73,14 +73,27 @@ or source Item UUID matches.
 - **WHEN** a target receives the same summon twice while the world uses Foundry stacking mode
 - **THEN** the target SHALL have two independently tracked cloned Items
 
-### Requirement: One-use expiry awaits an item-aware post-roll prerequisite
+### Requirement: Charged source-Item effects can remove an exhausted summoned weapon
 
-The summon-item capability SHALL support owner-turn expiry only. A source Item
-that must disappear after an attack roll SHALL be configured only after a
-separate, generic item-aware after-roll expiry capability is available.
+The system SHALL permit a transferable `ilarisArmedCombat` effect on a summoned
+owned weapon to opt into `onExhaust: "deleteOwningItem"`. It SHALL allow that
+terminal action only when the effect belongs to a summoned owned weapon. The
+armed-attack resolver SHALL consume that effect only when the recipient uses
+its owning Item for an eligible
+attack. On final-charge exhaustion it SHALL delete that owned Item and its
+linked owner-turn marker. It SHALL not infer disappearance from non-combat
+Item use, nor consume the effect when another weapon is used.
 
-#### Scenario: One-use source remains pending without the prerequisite
+#### Scenario: Eligible attack consumes Phexens Wurfstern
 
-- **WHEN** a summoned Item is marked by its rules as disappearing after use
-- **THEN** this change SHALL NOT infer removal from a combat roll
-- **AND** the Item SHALL continue to use its owner-turn marker until the separate post-roll capability is delivered
+- **WHEN** a recipient uses a Phexens Wurfstern clone with a one-charge
+  `deleteOwningItem` transferred effect for an eligible ranged attack
+- **THEN** the charge SHALL be consumed regardless of whether that attack hits
+  or is defended
+- **AND** the clone and its linked marker SHALL be removed after the attack
+
+#### Scenario: Different weapon does not consume the source-Item effect
+
+- **WHEN** the recipient attacks with a different weapon while the Phexens
+  Wurfstern clone exists
+- **THEN** the Phexens Wurfstern effect, Item, and marker SHALL remain intact

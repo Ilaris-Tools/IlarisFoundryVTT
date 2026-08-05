@@ -94,6 +94,28 @@ Foundry stack mode.
 Alternative: put timing data solely on the Item. Rejected because the project
 already displays and processes owner-turn timers as Actor ActiveEffects.
 
+### Reuse charged armed effects for attack-based one-use summons
+
+A manually reviewed source weapon that disappears after an eligible attack
+defines a transferable `ilarisArmedCombat` effect with one or more charges and
+an explicit `onExhaust: "deleteOwningItem"` terminal action. Its cloned Item
+retains that effect. The existing armed-attack resolver snapshots the attacking
+owned Item ID together with eligible effects. A source-Item-only effect is
+eligible only when its transferred effect belongs to that exact Item; ordinary
+actor-level armed effects retain their existing broader scope.
+
+The resolver consumes one charge on every matching attack, including a miss or
+a successful defense. On the final charge of an opted-in transferred effect it
+deletes the owning summoned Item through `Actor#deleteEmbeddedDocuments`, then
+deletes the owner-turn marker with the same Ilaris application ID. It does not
+infer any non-combat Item use. This extends the implemented custom ending
+mechanism rather than introducing a generic post-roll hook.
+
+Alternative: wait for a generic Item-use event. Rejected for attack-based
+sources because the existing charged attack lifecycle already supplies the
+necessary resolution point and charge semantics, while a generic event would
+broaden scope without improving this case.
+
 ### Make a summoned weapon the current main weapon
 
 When the clone is `nahkampfwaffe` or `fernkampfwaffe`, it receives
@@ -149,9 +171,9 @@ arbitrary formula evaluator.
   was checked; implementation must recheck it for a built-in helper before
   adding any data-copy utility.
 
-No post-roll hook is introduced or consumed by this change. The existing custom
-`Ilaris.postAngriff` event is only identified as the integration area for the
-out-of-scope one-use-expiry prerequisite.
+No generic post-roll hook is introduced. The existing armed-attack resolution
+path is extended with an attacking Item snapshot and an opt-in terminal action
+for transferred effects belonging to a summoned Item.
 
 ## Risks / Trade-offs
 
@@ -165,8 +187,12 @@ out-of-scope one-use-expiry prerequisite.
   idempotent and still remove its marker.
 - [Selecting a summoned weapon replaces the current primary weapon] → This is
   deliberate “in hand” behavior; expiry does not attempt to restore state.
-- [One-use source remains after an attack] → This is expected until the
-  external item-aware after-roll expiry prerequisite exists.
+- [Source-Item effect applies to another weapon] → Snapshot the attacking Item
+  ID and require the transferred effect's parent Item to match it.
+- [Final charge deletes an Item but leaves timing state] → Delete the linked
+  owner-turn marker by its shared application ID in the same resolution.
+- [Source text specifies a non-combat disappearance rule] → Do not configure
+  the terminal action; retain manual GM/player handling.
 
 ## Migration Plan
 
@@ -184,13 +210,17 @@ their `flags.ilaris` provenance.
   `createEmbeddedDocuments`, `updateEmbeddedDocuments`, and
   `deleteEmbeddedDocuments` calls for target fan-out and independent copies.
 - Extend owner-turn timing tests with linked-item cleanup cases.
+- Extend armed-effect tests with transferred source-item matching, miss and
+  defense consumption, final-charge Item and marker deletion, and preservation
+  of ordinary actor-level armed effects.
 - Add a Playwright scenario using the existing GM and `HatAlles` fixture to
   cast onto a selected target, inspect the target inventory and main-weapon
-  state, advance owner turns, and verify only the matching clone expires.
+  state, consume an attack-based one-use clone, advance owner turns, and verify
+  only the matching clone or marker expires.
 - Regression-test E2E-027 and E2E-028 because both exercise the pre-effect
   authoring surface and persistent application pipeline.
 
 ## Open Questions
 
-None. The generic after-roll removal mechanism is deliberately a prerequisite,
-not an unresolved implementation question for this change.
+None. Attack-based one-use disappearance is covered by the existing charged
+effect lifecycle; non-combat use conditions remain explicitly out of scope.

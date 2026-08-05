@@ -19,14 +19,17 @@ Mächtige-Magie behavior.
   `ilaris` and `foundry` supernatural-effect stacking modes.
 - Use existing owner-turn timing only for duration expiry. The expiry marker
   removes the particular linked summoned Item, without affecting other copies.
+- Reuse the existing charged armed-effect lifecycle for reviewed summoned
+  weapons that disappear after an eligible attack. A transferred effect bound
+  to the attacking summoned Item consumes a charge on that attack and, on its
+  final charge, removes that Item and its linked expiry marker.
 - Support applying Mächtige Magie values to summoned Item data, including W3
   and W20 dice terms in the Ilaris modifier-value parser.
 - Configure the reviewed summoning spells and liturgies after their source
   Items have been manually authored.
-- Document two explicit prerequisites that are out of scope for this change:
-  generic after-roll Item expiry for one-use summons, and manual authoring of
-  the reviewed summoned Item source data. Do not start implementation until
-  both prerequisites are complete.
+- Document manual authoring and review of the audited summoned Item source
+  data as the sole pre-apply prerequisite. Non-combat disappearance conditions
+  remain outside this change.
 
 This is an additive change to pre-effect behavior and compendium data. It does
 not remove existing functionality. The existing Foundry stacking behavior is
@@ -38,8 +41,8 @@ always keep independent copies.
 ### New Capabilities
 
 - `summoned-items`: Generic, target-recipient Item summoning with owner-turn
-  expiry, weapon main-hand selection, independent copies, and explicit
-  one-use-expiry prerequisite.
+  expiry, weapon main-hand selection, independent copies, and charged
+  attack-use expiry for eligible summoned weapons.
 - `summoned-item-source-data`: Reviewed compendium source Items and
   summon-item pre-effect configurations for the audited spell/liturgy set.
 
@@ -49,6 +52,9 @@ always keep independent copies.
   processing with the `summonItem` operation.
 - `rule-aware-active-effect-modifiers`: Expand additive dice-formula parsing
   from W6-only terms to W3 and W20 terms.
+- `armed-combat-effects`: Extend charged-effect resolution so a transferred
+  effect can be restricted to its owning summoned weapon and remove that Item
+  when its final charge is consumed.
 
 ## Impact
 
@@ -56,6 +62,10 @@ always keep independent copies.
   creation path and owner-turn cleanup integration.
 - `scripts/effects/combat-turn-hooks.js` cleans up a linked summoned Item when
   its timer marker expires.
+- `scripts/effects/pre-effects/armed-combat-effects.js` and the melee/ranged
+  combat dialogs distinguish a transferred source-Item effect from an
+  actor-level armed effect, and delete an exhausted summoned source Item with
+  its linked marker.
 - `scripts/items/sheets/uebernatuerlich-talent.js` and
   `scripts/items/templates/pre-effects.hbs` expose source selection from
   `waffenPacks` and summon-item authoring fields.
@@ -84,10 +94,11 @@ The relevant Foundry V14 APIs are:
   creation; the [Foundry VTT community wiki](https://foundryvtt.wiki/en/development/api/helpers)
   must be checked for applicable helpers before implementation.
 
-The one-use removal requirement needs a generic item-aware after-roll event
-that identifies the Actor and Item used. Although the system currently emits
-the custom `Ilaris.postAngriff` event, defining or extending that generic
-after-roll expiry capability is a prerequisite outside this change's scope.
+The existing charged armed-effect resolution already identifies the completed
+attack path. This change extends its serializable snapshot with the attacking
+owned Item identity, so a transferred effect can opt into source-Item-only
+consumption and final-charge Item cleanup without treating every combat roll
+as a generic Item-use event.
 
 ## Manual Prerequisites
 
@@ -123,7 +134,8 @@ summon-item contract unless separately proposed.
 - Add an E2E summon-item flow based on the pre-effect suite: a GM and the
   existing `HatAlles` world actor are sufficient; no additional player is
   needed. Cover target selection, inventory creation, Hauptwaffe selection,
-  owner-turn expiry, and multiple copies under both stacking settings.
+  owner-turn expiry, charged attack-use expiry, and multiple copies under both
+  stacking settings.
 - Regression-check E2E-027 (pre-effect sheet configuration) and E2E-028
   (persistent pre-effect creation). Shared Item/inventory snapshot helpers may
   be promoted to `e2e/shared/fixtures/foundry.ts` if the new flow needs them.

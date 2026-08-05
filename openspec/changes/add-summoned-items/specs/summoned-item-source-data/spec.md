@@ -25,7 +25,9 @@ catalog and SHALL use owner-turn durations only.
 - **WHEN** Phexens Sternenwurf is reviewed after its canonical Item exists
 - **THEN** its pre-effect SHALL reference Phexens Wurfstern
 - **AND** its duration SHALL be 64 owner turns
-- **AND** one-use removal after an attack SHALL remain contingent on the external post-roll prerequisite
+- **AND** its canonical source Item SHALL define the manually reviewed
+  transferable charged effect that removes that clone after its eligible
+  attack is resolved
 
 #### Scenario: Armalion references its reviewed source Item
 
