@@ -143,6 +143,54 @@
                 <button type="button" class="add-ilaris-modifier">+ Ilaris-Modifikator hinzufügen</button>
             </div>
 
+            <div class="summon-item-section">
+                <h4>Gegenstand beschwören</h4>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" name="system.preEffects.{{@index}}.summonItem.enabled" {{checked summonItem.enabled}} />
+                        Aktiviert
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Quelle:</label>
+                    <select name="system.preEffects.{{@index}}.summonItem.sourceUuid">
+                        <option value="">— Kein Gegenstand —</option>
+                        {{#each @root.summonItemOptions}}
+                        <optgroup label="{{packName}}">
+                            {{#each items}}
+                            <option value="{{uuid}}" {{#if (ifEq uuid ../../summonItem.sourceUuid)}}selected{{/if}}>{{name}} ({{type}})</option>
+                            {{/each}}
+                        </optgroup>
+                        {{/each}}
+                    </select>
+                </div>
+                <div class="summon-item-overrides-list">
+                    <h5>Werte auf der beschworenen Kopie</h5>
+                    {{#each summonItem.overrides}}
+                    <fieldset class="summon-item-override-card">
+                        <legend>Überschreibung</legend>
+                        <button type="button" class="delete-summon-item-override">✕</button>
+                        <div class="form-group">
+                            <label>Datenpfad:</label>
+                            <input type="text" name="system.preEffects.{{@../index}}.summonItem.overrides.{{@index}}.path" value="{{path}}" placeholder="z. B. system.tp" />
+                        </div>
+                        <div class="form-group">
+                            <label>Wert:</label>
+                            <input type="text" name="system.preEffects.{{@../index}}.summonItem.overrides.{{@index}}.value" value="{{value}}" />
+                        </div>
+                        <div class="form-group">
+                            <label><input type="checkbox" name="system.preEffects.{{@../index}}.summonItem.overrides.{{@index}}.amplifiedByMaechtigeMagie" {{checked amplifiedByMaechtigeMagie}} /> Verstärkt durch Mächtige Magie</label>
+                        </div>
+                        <div class="form-group">
+                            <label>Mächtig-Bonus:</label>
+                            <input type="text" name="system.preEffects.{{@../index}}.summonItem.overrides.{{@index}}.maechtigBonus" value="{{maechtigBonus}}" placeholder="z. B. +1W20" />
+                        </div>
+                    </fieldset>
+                    {{/each}}
+                    <button type="button" class="add-summon-item-override">+ Überschreibung hinzufügen</button>
+                </div>
+            </div>
+
             <div class="armed-combat-section">
                 <h4>Bewaffneter Kampfeffekt</h4>
                 <div class="form-group">

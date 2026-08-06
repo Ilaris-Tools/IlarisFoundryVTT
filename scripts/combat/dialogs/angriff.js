@@ -331,7 +331,7 @@ export class AngriffDialog extends CombatDialog {
         this.updateStatusMods()
         super.eigenschaftenText()
         const ilaris = this.getIlarisModifierResult('at')
-        this.armedAttackContext = getArmedAttackContext(this.actor, 'melee')
+        this.armedAttackContext = getArmedAttackContext(this.actor, 'melee', this.item.id)
         const armedAttackBonus = getArmedAttackBonus(this.armedAttackContext)
         this.text_at = `${this.text_at}${this.getIlarisModifierText(ilaris)}\n`
 

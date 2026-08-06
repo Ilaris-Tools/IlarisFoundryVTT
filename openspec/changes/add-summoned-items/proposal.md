@@ -102,9 +102,10 @@ as a generic Item-use event.
 
 ## Manual Prerequisites
 
-The following source Items were identified by the audit and must be manually
-created and reviewed before `/opsx:apply` begins. No generated values or
-inferred rules are acceptable for this data.
+Phexens Wurfstern and Armalion are the manually authored and reviewed first
+vertical-slice sources required before `/opsx:apply` begins. The remaining
+audited sources are follow-up content work; no generated values or inferred
+rules are acceptable for any of them.
 
 | Source Item                | Summoning source                          | Manual review required                                                               |
 | -------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------ |

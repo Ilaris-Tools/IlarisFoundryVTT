@@ -71,6 +71,51 @@ describe('UebernatuerlichTalentSheet resistance options', () => {
     })
 })
 
+describe('UebernatuerlichTalentSheet summon-item options', () => {
+    beforeEach(() => {
+        global.game.settings.get.mockImplementation((namespace, key) => {
+            if (namespace === 'Ilaris' && key === 'waffenPacks') return '["Ilaris.waffen"]'
+            return '[]'
+        })
+        global.game.packs = new Map([
+            [
+                'Ilaris.waffen',
+                {
+                    collection: 'Ilaris.waffen',
+                    getIndex: jest.fn(),
+                    index: [
+                        { _id: 'armalion', name: 'Armalion', type: 'nahkampfwaffe' },
+                        { _id: 'wurfstern', name: 'Phexens Wurfstern', type: 'fernkampfwaffe' },
+                    ],
+                    metadata: { label: 'Waffen' },
+                },
+            ],
+        ])
+    })
+
+    it('lists configured weapon-pack Items as stable summon source UUIDs', async () => {
+        const sheet = Object.create(UebernatuerlichTalentSheet.prototype)
+
+        await expect(sheet._buildSummonItemOptions()).resolves.toEqual([
+            {
+                packName: 'Waffen',
+                items: [
+                    {
+                        name: 'Armalion',
+                        type: 'nahkampfwaffe',
+                        uuid: 'Compendium.Ilaris.waffen.Item.armalion',
+                    },
+                    {
+                        name: 'Phexens Wurfstern',
+                        type: 'fernkampfwaffe',
+                        uuid: 'Compendium.Ilaris.waffen.Item.wurfstern',
+                    },
+                ],
+            },
+        ])
+    })
+})
+
 describe('UebernatuerlichTalentSheet Ilaris modifier removal', () => {
     it('removes a modifier when Foundry supplies object-indexed pre-effect form data', () => {
         const sheet = new UebernatuerlichTalentSheet()

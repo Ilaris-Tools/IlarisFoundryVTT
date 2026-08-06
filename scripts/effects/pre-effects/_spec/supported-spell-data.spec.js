@@ -8,6 +8,7 @@ const spellSourceDirectory = join(
     '_source',
 )
 const liturgySourceDirectory = join(process.cwd(), 'comp_packs', 'liturgien-und-mirakel', '_source')
+const weaponSourceDirectory = join(process.cwd(), 'comp_packs', 'waffen', '_source')
 
 function readSpell(filename) {
     return JSON.parse(readFileSync(join(spellSourceDirectory, filename), 'utf8'))
@@ -15,6 +16,10 @@ function readSpell(filename) {
 
 function readLiturgy(filename) {
     return JSON.parse(readFileSync(join(liturgySourceDirectory, filename), 'utf8'))
+}
+
+function readWeapon(filename) {
+    return JSON.parse(readFileSync(join(weaponSourceDirectory, filename), 'utf8'))
 }
 
 function expectDamageChange(preEffect, { value, damageType, maechtigBonus = '' }) {
@@ -31,6 +36,37 @@ function expectDamageChange(preEffect, { value, damageType, maechtigBonus = '' }
 }
 
 describe('reviewed supported spell pre-effect source data', () => {
+    it('configures Phexens Sternenwurf and Segen der Heiligen Ardare as first-slice summons', () => {
+        const phexensSternenwurf = readLiturgy('Phexens_Sternenwurf_Zd8WWyywzZvGNjrP.json')
+        const ardare = readLiturgy('Segen_der_Heiligen_Ardare_nniOXont43xAf4Bq.json')
+        const wurfstern = readWeapon('Phexens_Wurfstern_C9Qy0anjBUWn9TUw.json')
+
+        expect(phexensSternenwurf.system.preEffects?.[0]).toMatchObject({
+            baseDuration: 64,
+            summonItem: {
+                sourceUuid: 'Compendium.Ilaris.waffen.Item.C9Qy0anjBUWn9TUw',
+                overrides: [expect.objectContaining({ path: 'system.tp', maechtigBonus: '+1W20' })],
+            },
+        })
+        expect(ardare.system.preEffects?.[0]).toMatchObject({
+            baseDuration: 16,
+            summonItem: { sourceUuid: 'Compendium.Ilaris.waffen.Item.mpqeLctvVQjSMrdT' },
+        })
+        expect(wurfstern.effects).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    transfer: true,
+                    system: {
+                        ilarisArmedCombat: expect.objectContaining({
+                            sourceItemOnly: true,
+                            onExhaust: 'deleteOwningItem',
+                        }),
+                    },
+                }),
+            ]),
+        )
+    })
+
     it('configures Falkenauge and Neun Streiche as charged armed combat effects', () => {
         const falkenauge = readSpell('Falkenauge_Meisterschuss_1IrKao8Dho4TTgsR.json')
         const neunStreiche = readLiturgy('Neun_Streiche_in_einem_G1Ei7UA4kqCYhF8r.json')

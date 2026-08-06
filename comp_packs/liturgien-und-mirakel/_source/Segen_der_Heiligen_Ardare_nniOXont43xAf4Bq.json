@@ -16,7 +16,19 @@
     "kosten": "32 KaP",
     "erlernen": "Ron 20",
     "pw": 0,
-    "gruppe": 45
+    "gruppe": 45,
+    "preEffects": [
+      {
+        "baseDuration": 16,
+        "instant": false,
+        "changes": [],
+        "ilarisModifiers": [],
+        "summonItem": {
+          "sourceUuid": "Compendium.Ilaris.waffen.Item.mpqeLctvVQjSMrdT",
+          "overrides": []
+        }
+      }
+    ]
   },
   "effects": [],
   "folder": null,

@@ -169,6 +169,43 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         expect(options.length).toBeGreaterThan(0)
     })
 
+    test('summon-item source selection uses the configured weapon catalog and persists its UUID', async ({
+        page,
+    }) => {
+        const itemWindow = await openImportedSpellSheet(page)
+        await openPreEffectsTab(itemWindow)
+
+        const sourceSelect = itemWindow.locator('select[name$="summonItem.sourceUuid"]').first()
+        await expect(sourceSelect).toBeVisible({ timeout: 10000 })
+        const phexUuid = await sourceSelect.locator('option').evaluateAll((options) => {
+            const phex = options.find((option: any) =>
+                option.textContent?.includes('Phexens Wurfstern'),
+            )
+            return phex?.getAttribute('value') ?? ''
+        })
+        expect(phexUuid).toBe('Compendium.Ilaris.waffen.Item.C9Qy0anjBUWn9TUw')
+
+        await sourceSelect.selectOption(phexUuid)
+        await sourceSelect.dispatchEvent('change')
+        await page.waitForFunction(
+            ({ id, sourceUuid }) => {
+                const preEffect = Object.values(
+                    game.items.get(id)?.system?.preEffects ?? {},
+                )[0] as any
+                return preEffect?.summonItem?.sourceUuid === sourceUuid
+            },
+            { id: importedItemId, sourceUuid: phexUuid },
+            { timeout: 10000 },
+        )
+
+        await page.evaluate((id) => game.items.get(id)?.sheet?.close(), importedItemId)
+        const reopenedWindow = await openImportedSpellSheet(page)
+        await openPreEffectsTab(reopenedWindow)
+        await expect(
+            reopenedWindow.locator('select[name$="summonItem.sourceUuid"]').first(),
+        ).toHaveValue(phexUuid)
+    })
+
     test('adds, persists, and deletes a pre-effect entry', async ({ page }) => {
         const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)

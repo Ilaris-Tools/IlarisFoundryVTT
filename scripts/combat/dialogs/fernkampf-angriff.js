@@ -249,7 +249,7 @@ export class FernkampfAngriffDialog extends CombatDialog {
         this.updateStatusMods()
         super.eigenschaftenText()
         const ilaris = this.getIlarisModifierResult('at')
-        this.armedAttackContext = getArmedAttackContext(this.actor, 'ranged')
+        this.armedAttackContext = getArmedAttackContext(this.actor, 'ranged', this.item.id)
         const armedAttackBonus = getArmedAttackBonus(this.armedAttackContext)
         this.text_at = `${this.text_at}${this.getIlarisModifierText(ilaris)}\n`
 

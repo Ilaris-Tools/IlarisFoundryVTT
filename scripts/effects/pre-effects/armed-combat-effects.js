@@ -7,6 +7,11 @@ function asInteger(value, fallback = 0) {
     return Number.isFinite(number) ? Math.trunc(number) : fallback
 }
 
+function collectionValues(collection) {
+    if (!collection) return []
+    return Array.from(collection.values?.() || collection)
+}
+
 export function normalizeArmedInput(input = {}, submittedValue) {
     const min = asInteger(input.min, 0)
     const max = Math.max(min, asInteger(input.max, min))
@@ -51,21 +56,34 @@ export function materializeArmedCombat(armedCombat, submittedValues = {}, maecht
     }
 }
 
-export function getArmedAttackContext(actor, attackType) {
-    const effects = Array.from(actor?.appliedEffects || actor?.effects || [])
+export function getArmedAttackContext(actor, attackType, attackingItemId = null) {
+    const effects = collectionValues(actor?.appliedEffects || actor?.effects)
     const effectsSnapshot = effects
-        .map((effect) => ({ id: effect.id || effect._id, armed: effect.system?.ilarisArmedCombat }))
+        .map((effect) => ({
+            id: effect.id || effect._id,
+            armed: effect.system?.ilarisArmedCombat,
+            parentItemId: effect.parent?.documentName === 'Item' ? effect.parent.id : null,
+            applicationId: effect.parent?.flags?.ilaris?.applicationId,
+        }))
         .filter(
             ({ id, armed }) => id && armed && (armed.scope === 'any' || armed.scope === attackType),
         )
         .filter(({ armed }) => Number(armed.remainingCharges) > 0)
+        .filter(
+            ({ armed, parentItemId }) =>
+                !armed.sourceItemOnly || (parentItemId && parentItemId === attackingItemId),
+        )
 
     return {
         attackType,
-        effects: effectsSnapshot.map(({ id, armed }) => ({
+        attackingItemId,
+        effects: effectsSnapshot.map(({ id, armed, parentItemId, applicationId }) => ({
             effectId: id,
             attackBonus: asInteger(armed.attackBonus, 0),
             damage: armed.damage || null,
+            parentItemId,
+            applicationId,
+            onExhaust: armed.onExhaust || '',
         })),
     }
 }
@@ -91,23 +109,45 @@ export function getArmedDamageFormula(context) {
 export async function resolveArmedAttack(actor, context, { confirmedHit = false } = {}) {
     const updates = []
     const deletes = []
-    for (const { effectId } of context?.effects || []) {
+    const itemEffectUpdates = []
+    const itemsToDelete = new Set()
+    const markerIds = new Set()
+    for (const { effectId, parentItemId, applicationId, onExhaust } of context?.effects || []) {
         const effect =
             actor?.effects?.get?.(effectId) ||
-            actor?.appliedEffects?.find?.((entry) => entry.id === effectId)
+            collectionValues(actor?.appliedEffects).find((entry) => entry.id === effectId)
         const remaining = Math.max(
             0,
             asInteger(effect?.system?.ilarisArmedCombat?.remainingCharges, 0),
         )
         if (!effect || remaining < 1) continue
-        if (remaining === 1) deletes.push(effectId)
-        else
+        if (remaining === 1 && onExhaust === 'deleteOwningItem' && parentItemId) {
+            itemsToDelete.add(parentItemId)
+            for (const marker of collectionValues(actor?.effects)) {
+                if (
+                    marker.flags?.ilaris?.sourceType === 'summonItemMarker' &&
+                    marker.flags.ilaris.applicationId === applicationId &&
+                    marker.flags.ilaris.summonedItemId === parentItemId
+                )
+                    markerIds.add(marker.id)
+            }
+        } else if (remaining === 1) deletes.push(effectId)
+        else if (effect.parent?.documentName === 'Item') {
+            itemEffectUpdates.push(
+                effect.update({
+                    'system.ilarisArmedCombat.remainingCharges': remaining - 1,
+                }),
+            )
+        } else
             updates.push({
                 _id: effectId,
                 'system.ilarisArmedCombat.remainingCharges': remaining - 1,
             })
     }
     if (updates.length) await actor.updateEmbeddedDocuments('ActiveEffect', updates)
+    if (itemEffectUpdates.length) await Promise.all(itemEffectUpdates)
+    if (markerIds.size) await actor.deleteEmbeddedDocuments('ActiveEffect', Array.from(markerIds))
+    if (itemsToDelete.size) await actor.deleteEmbeddedDocuments('Item', Array.from(itemsToDelete))
     if (deletes.length) await actor.deleteEmbeddedDocuments('ActiveEffect', deletes)
     return confirmedHit ? getArmedDamageFormula(context) : ''
 }

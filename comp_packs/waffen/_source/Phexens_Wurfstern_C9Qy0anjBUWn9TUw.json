@@ -25,7 +25,27 @@
     "rw_mod": 0,
     "computed": {}
   },
-  "effects": [],
+  "effects": [
+    {
+      "_id": "phexUseCharge000",
+      "_key": "!items.effects!C9Qy0anjBUWn9TUw.phexUseCharge000",
+      "name": "Verschwindet nach dem Wurf",
+      "transfer": true,
+      "disabled": false,
+      "changes": [],
+      "duration": {},
+      "flags": {},
+      "system": {
+        "ilarisArmedCombat": {
+          "trigger": "nextSuccessfulAttack",
+          "scope": "ranged",
+          "remainingCharges": 1,
+          "sourceItemOnly": true,
+          "onExhaust": "deleteOwningItem"
+        }
+      }
+    }
+  ],
   "folder": null,
   "sort": 0,
   "ownership": {

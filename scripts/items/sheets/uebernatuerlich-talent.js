@@ -42,6 +42,7 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
         // Populate avoidTest skill options from configured compendium packs
         context.avoidTestSkillOptions = await this._buildAvoidTestSkillOptions()
         context.avoidTestTalentOptions = await this._buildAvoidTestTalentOptions()
+        context.summonItemOptions = await this._buildSummonItemOptions()
 
         // Populate avoidTest attribute options from fixed config
         context.avoidTestAttributeOptions = CONFIG.ILARIS.attribute || []
@@ -146,6 +147,37 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
         return groups
     }
 
+    /** Build source-Item options from the configured weapon compendium catalog. */
+    async _buildSummonItemOptions() {
+        const groups = []
+        try {
+            const packIds = JSON.parse(game.settings.get('Ilaris', 'waffenPacks') || '[]')
+            for (const packId of packIds) {
+                const pack = game.packs.get(packId)
+                if (!pack) continue
+
+                await pack.getIndex({ fields: ['type'] })
+                const items = Array.from(pack.index)
+                    .filter((entry) => entry._id && entry.name)
+                    .map((entry) => ({
+                        name: entry.name,
+                        type: entry.type || 'Item',
+                        uuid: `Compendium.${pack.collection}.Item.${entry._id}`,
+                    }))
+                    .sort((left, right) => left.name.localeCompare(right.name, 'de'))
+                if (items.length) {
+                    groups.push({
+                        packName: pack.metadata?.label || packId,
+                        items,
+                    })
+                }
+            }
+        } catch (error) {
+            console.warn('Ilaris | Failed to build summon Item options:', error)
+        }
+        return groups
+    }
+
     /** @override */
     _onRender(context, options) {
         super._onRender(context, options)
@@ -187,6 +219,23 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
             if (!preEffects[index]) return
             preEffects[index].ilarisModifiers = toArray(preEffects[index].ilarisModifiers)
             preEffects[index].ilarisModifiers.push(this._defaultIlarisModifier())
+            this.document.update({ 'system.preEffects': preEffects })
+        })
+
+        this.element.querySelector('.pre-effects-list')?.addEventListener('click', (event) => {
+            const btn = event.target.closest('.add-summon-item-override')
+            if (!btn) return
+
+            const card = btn.closest('.pre-effect-card')
+            const allCards = [...this.element.querySelectorAll('.pre-effect-card')]
+            const index = allCards.indexOf(card)
+            if (index < 0) return
+
+            const preEffects = toArray(foundry.utils.deepClone(this.document.system.preEffects))
+            if (!preEffects[index]) return
+            preEffects[index].summonItem ??= this._defaultSummonItem()
+            preEffects[index].summonItem.overrides = toArray(preEffects[index].summonItem.overrides)
+            preEffects[index].summonItem.overrides.push(this._defaultSummonItemOverride())
             this.document.update({ 'system.preEffects': preEffects })
         })
 
@@ -243,6 +292,26 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
             if (!preEffects[preEffectIndex]) return
             preEffects[preEffectIndex].changes = toArray(preEffects[preEffectIndex].changes)
             preEffects[preEffectIndex].changes.splice(changeIndex, 1)
+            this.document.update({ 'system.preEffects': preEffects })
+        })
+
+        this.element.querySelector('.pre-effects-list')?.addEventListener('click', (event) => {
+            const btn = event.target.closest('.delete-summon-item-override')
+            if (!btn) return
+
+            const overrideCard = btn.closest('.summon-item-override-card')
+            const preEffectCard = btn.closest('.pre-effect-card')
+            const preEffectCards = [...this.element.querySelectorAll('.pre-effect-card')]
+            const preEffectIndex = preEffectCards.indexOf(preEffectCard)
+            const overrideCards = [...preEffectCard.querySelectorAll('.summon-item-override-card')]
+            const overrideIndex = overrideCards.indexOf(overrideCard)
+            if (preEffectIndex < 0 || overrideIndex < 0) return
+
+            const preEffects = toArray(foundry.utils.deepClone(this.document.system.preEffects))
+            const summonItem = preEffects[preEffectIndex]?.summonItem
+            if (!summonItem) return
+            summonItem.overrides = toArray(summonItem.overrides)
+            summonItem.overrides.splice(overrideIndex, 1)
             this.document.update({ 'system.preEffects': preEffects })
         })
 
@@ -384,6 +453,7 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
                 inputs: [],
                 charges: { base: 1, amplifiedByMaechtigeMagie: false, maechtigBonus: 0 },
             },
+            summonItem: this._defaultSummonItem(),
             avoidTest: {
                 enabled: false,
                 fertigkeit: '',
@@ -406,6 +476,19 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
             diminishedValue: '',
             diminishedMaechtigBonus: '',
             priority: null,
+        }
+    }
+
+    _defaultSummonItem() {
+        return { enabled: false, sourceUuid: '', overrides: [] }
+    }
+
+    _defaultSummonItemOverride() {
+        return {
+            path: '',
+            value: '',
+            amplifiedByMaechtigeMagie: false,
+            maechtigBonus: '',
         }
     }
 

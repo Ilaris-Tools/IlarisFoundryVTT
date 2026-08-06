@@ -2,15 +2,15 @@
 
 ### Requirement: Audited summoned Item sources are manually authored before implementation
 
-Before implementation begins, contributors SHALL manually create and review
-canonical source Items for Phexens Wurfstern, Armalion, Lagorax' Hammer, Firuns
-Ring, Heiliger Trichter Hesindes, Phexens Meisterschlüssel, Heiliger Kessel,
-and Schimmernder Schild. The system SHALL NOT infer their statistics, Item
-types, effects, or disappearance rules from spell text.
+Before the first implementation slice begins, contributors SHALL manually
+create and review canonical source Items for Phexens Wurfstern and Armalion.
+The remaining audited sources are subsequent content work. The system SHALL
+NOT infer any source's statistics, Item types, effects, or disappearance rules
+from spell text.
 
 #### Scenario: Apply remains blocked until sources are reviewed
 
-- **WHEN** any audited source Item has not been manually created and reviewed
+- **WHEN** Phexens Wurfstern or Armalion has not been manually created and reviewed
 - **THEN** contributors SHALL NOT begin `/opsx:apply` for this change
 
 ### Requirement: Reviewed supernatural sources configure summon-item pre-effects

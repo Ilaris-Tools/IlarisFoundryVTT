@@ -6,6 +6,7 @@ import {
     targetFromMainAttributePath,
 } from '../utils/ilaris-modifier-constants.js'
 import { materializeArmedCombat } from './armed-combat-effects.js'
+import { summonItemFromPreEffect } from './summoned-items.js'
 
 /** Normalize Foundry v14 ObjectField data to a real array. */
 export function toArray(val) {
@@ -154,7 +155,18 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {})
 
             const effectiveDuration =
                 preEffect.baseDuration + maneuverDurationBonus + (isSelfCast ? 1 : 0)
-            if (preEffect.instant) {
+            if (preEffect.summonItem?.enabled || preEffect.summonItem?.sourceUuid) {
+                await summonItemFromPreEffect({
+                    targetActor,
+                    preEffect,
+                    caster,
+                    spellItem: item,
+                    effectiveDuration,
+                    maechtigeQs,
+                    preEffectIndex,
+                    applicationId,
+                })
+            } else if (preEffect.instant) {
                 await applyInstantPreEffect(targetActor, preEffect, maechtigeQs, speaker)
             } else {
                 await createActiveEffectFromPreEffect(

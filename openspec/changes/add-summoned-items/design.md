@@ -27,8 +27,8 @@ nor delete the first copy in any supernatural stacking mode.
 
 **Non-Goals:**
 
-- Implement generic after-roll removal for one-use Items. An item-aware
-  post-roll capability is a prerequisite owned by a separate change.
+- Automate disappearance after a non-combat Item use. Attack-based one-use
+  removal is covered by the charged armed-effect lifecycle.
 - Automate transformations, enchantments of existing Items, zones, or
   creatures.
 - Infer missing weapon or object statistics from rule text. The audited source

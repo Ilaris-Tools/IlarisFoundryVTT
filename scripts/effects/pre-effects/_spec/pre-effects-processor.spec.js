@@ -330,6 +330,102 @@ describe('pre-effect processor', () => {
         expect(global.ActiveEffect.createDocuments.mock.calls[1][0][0].duration.turns).toBe(5)
     })
 
+    it.each(['ilaris', 'foundry'])(
+        'creates independent summoned clones for every target in %s stacking mode',
+        async (stackingMode) => {
+            let nextItemId = 1
+            const createSummonTarget = (id) => {
+                const target = createTargetActor({
+                    id,
+                    uuid: `Actor.${id}`,
+                    items: [],
+                    createEmbeddedDocuments: jest.fn(async (_type, [data]) => {
+                        const clone = { id: `summon-${nextItemId++}`, ...data }
+                        target.items.push(clone)
+                        return [clone]
+                    }),
+                    updateEmbeddedDocuments: jest.fn().mockResolvedValue([]),
+                    deleteEmbeddedDocuments: jest.fn().mockResolvedValue([]),
+                })
+                return target
+            }
+            const firstTarget = createSummonTarget('first-target')
+            const secondTarget = createSummonTarget('second-target')
+            global.game.settings.get = jest.fn((_namespace, key) => {
+                if (key === 'waffenPacks') return '["Ilaris.waffen"]'
+                if (key === 'supernaturalEffectStacking') return stackingMode
+                return undefined
+            })
+            global.game.actors = {
+                get: jest.fn(
+                    (id) => ({ 'first-target': firstTarget, 'second-target': secondTarget })[id],
+                ),
+            }
+            global.fromUuid = jest.fn().mockResolvedValue({
+                pack: 'Ilaris.waffen',
+                uuid: 'Compendium.Ilaris.waffen.Item.source',
+                toObject: () => ({
+                    _id: 'source',
+                    name: 'Beschworene Waffe',
+                    type: 'nahkampfwaffe',
+                    effects: [{ _id: 'transferred', transfer: true }],
+                    system: { hauptwaffe: false },
+                }),
+            })
+            global.ActiveEffect.createDocuments = jest.fn().mockResolvedValue([])
+            const dialog = {
+                item: {
+                    name: 'Beschwörung',
+                    uuid: 'Item.beschwoerung',
+                    system: {
+                        preEffects: [
+                            {
+                                baseDuration: 3,
+                                instant: false,
+                                summonItem: {
+                                    sourceUuid: 'Compendium.Ilaris.waffen.Item.source',
+                                    overrides: [{ path: 'system.tp', value: '2W20' }],
+                                },
+                            },
+                        ],
+                    },
+                },
+                selectedActors: [{ actorId: 'first-target' }, { actorId: 'second-target' }],
+                actor: { id: 'caster-id', uuid: 'Actor.caster' },
+                speaker: {},
+                maneuverDurationBonus: 0,
+                maechtigeMagieQs: 0,
+            }
+
+            await applyPreEffects({ success: true }, dialog)
+            await applyPreEffects({ success: true }, dialog)
+
+            for (const target of [firstTarget, secondTarget]) {
+                expect(target.items).toHaveLength(2)
+                expect(target.items).toEqual(
+                    expect.arrayContaining([
+                        expect.objectContaining({
+                            type: 'nahkampfwaffe',
+                            effects: [{ _id: 'transferred', transfer: true }],
+                            system: expect.objectContaining({ hauptwaffe: true, tp: '2W20' }),
+                            flags: expect.objectContaining({
+                                ilaris: expect.objectContaining({
+                                    summon: true,
+                                    sourceItemUuid: 'Compendium.Ilaris.waffen.Item.source',
+                                    spellUuid: 'Item.beschwoerung',
+                                }),
+                            }),
+                        }),
+                    ]),
+                )
+                expect(
+                    new Set(target.items.map((item) => item.flags.ilaris.applicationId)).size,
+                ).toBe(2)
+            }
+            expect(global.ActiveEffect.createDocuments).toHaveBeenCalledTimes(4)
+        },
+    )
+
     it('materializes bounded armed input and charges without changing the source definition', async () => {
         const target = createTargetActor()
         global.game.actors = { get: jest.fn(() => target) }

@@ -43,6 +43,17 @@
 
 import { IlarisActiveEffect } from './active-effect.js'
 
+export async function expireEffect(actor, effect) {
+    const summonedItemId = effect.flags?.ilaris?.summonedItemId
+    if (summonedItemId) {
+        const exists =
+            actor.items?.get?.(summonedItemId) ||
+            actor.items?.find?.((item) => item.id === summonedItemId)
+        if (exists) await actor.deleteEmbeddedDocuments('Item', [summonedItemId])
+    }
+    await effect.delete()
+}
+
 Hooks.on('combatTurn', async (combat, updateData, updateOptions) => {
     // GM-only to avoid duplicate processing across clients
     if (!game.user.isGM) return
@@ -99,7 +110,7 @@ Hooks.on('updateCombat', async (combat, changed, _options, _userId) => {
             }
 
             if (newRemaining <= 0) {
-                await effect.delete()
+                await expireEffect(actor, effect)
                 ChatMessage.create({
                     content: `<p><strong>${effect.name}</strong> auf ${actor.name} ist ausgelaufen.</p>`,
                 })
@@ -137,7 +148,7 @@ async function reduceEffectDurationForCombatant(combatant) {
 
         if (timing.expiresOn === 'turnStart') {
             if (newRemaining <= 0) {
-                await effect.delete()
+                await expireEffect(actor, effect)
                 ChatMessage.create({
                     content: `<p><strong>${effect.name}</strong> auf ${actor.name} ist ausgelaufen.</p>`,
                 })
