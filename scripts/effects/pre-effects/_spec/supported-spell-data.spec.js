@@ -9,6 +9,7 @@ const spellSourceDirectory = join(
 )
 const liturgySourceDirectory = join(process.cwd(), 'comp_packs', 'liturgien-und-mirakel', '_source')
 const weaponSourceDirectory = join(process.cwd(), 'comp_packs', 'waffen', '_source')
+const itemSourceDirectory = join(process.cwd(), 'comp_packs', 'gegenstande', '_source')
 
 function readSpell(filename) {
     return JSON.parse(readFileSync(join(spellSourceDirectory, filename), 'utf8'))
@@ -20,6 +21,10 @@ function readLiturgy(filename) {
 
 function readWeapon(filename) {
     return JSON.parse(readFileSync(join(weaponSourceDirectory, filename), 'utf8'))
+}
+
+function readItem(filename) {
+    return JSON.parse(readFileSync(join(itemSourceDirectory, filename), 'utf8'))
 }
 
 function expectDamageChange(preEffect, { value, damageType, maechtigBonus = '' }) {
@@ -65,6 +70,73 @@ describe('reviewed supported spell pre-effect source data', () => {
                 }),
             ]),
         )
+    })
+
+    it('configures reviewed Largorax Hammer and Hexenkrallen summons', () => {
+        const largorax = readLiturgy('Largorax__Hammer_qT9xDYX9Df1iVYuV.json')
+        const hexenkrallen = readSpell('Hexenkrallen_M1xClzIiwBP1e2yu.json')
+        const hammer = readWeapon('Largorax__Hammer_b6qMsEBOjUhbVjPo.json')
+
+        expect(largorax.system.preEffects?.[0]).toMatchObject({
+            baseDuration: 161280,
+            summonItem: {
+                sourceUuid: 'Compendium.Ilaris.waffen.Item.b6qMsEBOjUhbVjPo',
+                overrides: [expect.objectContaining({ path: 'system.tp', maechtigBonus: '+10' })],
+            },
+        })
+        expect(hexenkrallen.system.preEffects?.[0]).toMatchObject({
+            baseDuration: 16,
+            summonItem: {
+                sourceUuid: 'Compendium.Ilaris.waffen.Item.iyoROxzExM0toe8P',
+                overrides: [expect.objectContaining({ path: 'system.tp', maechtigBonus: '+2' })],
+            },
+        })
+        expect(hammer.effects).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    transfer: true,
+                    system: {
+                        ilarisArmedCombat: expect.objectContaining({
+                            scope: 'melee',
+                            sourceItemOnly: true,
+                            onExhaust: 'deleteOwningItem',
+                        }),
+                    },
+                }),
+            ]),
+        )
+    })
+
+    it('configures reviewed ordinary Item and Flammenschwert summons', () => {
+        const firunsEinsicht = readLiturgy('Firuns_Einsicht_yjHWlMiWIJSaoyL3.json')
+        const ingalfsAlchemie = readLiturgy('Ingalfs_Alchemie_982l2HMFL4EzoCDq.json')
+        const meisterschluessel = readLiturgy('Phexens_Meisterschl_ssel_8Ti80i4sZ6u4G8wn.json')
+        const flammenschwert = readSpell('Flammenschwert_6Le0B028zxoqgr7e.json')
+        const ring = readItem('Firuns_Rings_nzMDgayAm0lz5QZP.json')
+        const trichter = readItem('Hesindes_Trichter_YDE6JC5XNS3bJatr.json')
+        const schluessel = readItem('Phexens_Meisterschl_ssel_boTWlXOLtukSGoQL.json')
+        const flameSword = readWeapon('Flammenscwert_KKOHovBsVU9bphLS.json')
+
+        expect(firunsEinsicht.system.preEffects?.[0]).toMatchObject({
+            baseDuration: 960,
+            summonItem: { sourceUuid: `Compendium.Ilaris.gegenstande.Item.${ring._id}` },
+        })
+        expect(ingalfsAlchemie.system.preEffects?.[0]).toMatchObject({
+            baseDuration: 7680,
+            summonItem: { sourceUuid: `Compendium.Ilaris.gegenstande.Item.${trichter._id}` },
+        })
+        expect(meisterschluessel.system.preEffects?.[0]).toMatchObject({
+            baseDuration: 16,
+            summonItem: { sourceUuid: `Compendium.Ilaris.gegenstande.Item.${schluessel._id}` },
+        })
+        expect(flammenschwert.system.preEffects?.[0]).toMatchObject({
+            baseDuration: 16,
+            summonItem: {
+                sourceUuid: `Compendium.Ilaris.waffen.Item.${flameSword._id}`,
+                overrides: [expect.objectContaining({ path: 'system.tp', maechtigBonus: '+2' })],
+            },
+        })
+        expect(flameSword.name).toBe('Flammenschwert')
     })
 
     it('configures Falkenauge and Neun Streiche as charged armed combat effects', () => {

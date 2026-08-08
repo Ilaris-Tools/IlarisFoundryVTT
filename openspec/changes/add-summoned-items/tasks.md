@@ -47,10 +47,10 @@
 
 ## 6. Reviewed Summoning Data
 
-- [ ] 6.1 Configure `summonItem` pre-effects for Phexens Sternenwurf, Segen der Heiligen Ardare, Largorax' Hammer, Firuns Einsicht, Ingalfs Alchemie, Phexens Meisterschlüssel, Hexenkrallen, and Flammenschwert using the manually reviewed UUIDs. Fortifex' Schimmernder Schild is out of scope because its maneuver-selected subspell context is not yet available to pre-effects; Heiliger Kessel is flavor-only and intentionally not represented as a summoned Item.
+- [x] 6.1 Configure `summonItem` pre-effects for Phexens Sternenwurf, Segen der Heiligen Ardare, Largorax' Hammer, Firuns Einsicht, Ingalfs Alchemie, Phexens Meisterschlüssel, Hexenkrallen, and Flammenschwert using the manually reviewed UUIDs. Fortifex' Schimmernder Schild is out of scope because its maneuver-selected subspell context is not yet available to pre-effects; Heiliger Kessel is flavor-only and intentionally not represented as a summoned Item.
 - [x] 6.2 Configure Phexens Wurfstern's `+1W20` per Mächtige Magie QS as a clone-scoped Item override and its manually reviewed attack-use disappearance as a transferred charged effect with `onExhaust: "deleteOwningItem"`.
-- [ ] 6.3 Configure any other source Item with an explicitly reviewed eligible-attack disappearance rule in the same way; leave non-combat disappearance conditions unautomated.
-- [x] 6.4 Run `npm run pack-all` after the compendium source changes.
+- [x] 6.3 Configure any other source Item with an explicitly reviewed eligible-attack disappearance rule in the same way; leave non-combat disappearance conditions unautomated.
+- [ ] 6.4 Run `npm run pack-all` after the compendium source changes.
 
 ## 7. Unit Tests
 
@@ -72,5 +72,5 @@
 
 - [x] 9.1 Run `npm test`.
 - [x] 9.2 Run `npm run lint`.
-- [x] 9.3 Run the focused summon-item, armed-effect, and affected pre-effect E2E tests.
+- [ ] 9.3 Run the focused summon-item, armed-effect, and affected pre-effect E2E tests.
 - [x] 9.4 Run `openspec validate add-summoned-items --strict`.

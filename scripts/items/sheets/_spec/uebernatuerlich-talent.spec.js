@@ -1,3 +1,6 @@
+const { readFileSync } = require('node:fs')
+const { join } = require('node:path')
+
 global.foundry.applications.sheets = {
     ItemSheetV2: class ItemSheetV2 {
         _onRender() {}
@@ -74,7 +77,8 @@ describe('UebernatuerlichTalentSheet resistance options', () => {
 describe('UebernatuerlichTalentSheet summon-item options', () => {
     beforeEach(() => {
         global.game.settings.get.mockImplementation((namespace, key) => {
-            if (namespace === 'Ilaris' && key === 'waffenPacks') return '["Ilaris.waffen"]'
+            if (namespace === 'Ilaris' && key === 'waffenPacks')
+                return '["Ilaris.waffen","Ilaris.gegenstande"]'
             return '[]'
         })
         global.game.packs = new Map([
@@ -88,6 +92,15 @@ describe('UebernatuerlichTalentSheet summon-item options', () => {
                         { _id: 'wurfstern', name: 'Phexens Wurfstern', type: 'fernkampfwaffe' },
                     ],
                     metadata: { label: 'Waffen' },
+                },
+            ],
+            [
+                'Ilaris.gegenstande',
+                {
+                    collection: 'Ilaris.gegenstande',
+                    getIndex: jest.fn(),
+                    index: [{ _id: 'ring', name: 'Firuns Ring', type: 'gegenstand' }],
+                    metadata: { label: 'Gegenstände' },
                 },
             ],
         ])
@@ -112,7 +125,27 @@ describe('UebernatuerlichTalentSheet summon-item options', () => {
                     },
                 ],
             },
+            {
+                packName: 'Gegenstände',
+                items: [
+                    {
+                        name: 'Firuns Ring',
+                        type: 'gegenstand',
+                        uuid: 'Compendium.Ilaris.gegenstande.Item.ring',
+                    },
+                ],
+            },
         ])
+    })
+
+    it('renders summon sources as an autocomplete input with a shared datalist', () => {
+        const template = readFileSync(
+            join(process.cwd(), 'scripts', 'items', 'templates', 'pre-effects.hbs'),
+            'utf8',
+        )
+
+        expect(template).toContain('list="ilaris-summon-item-sources"')
+        expect(template).toContain('<datalist id="ilaris-summon-item-sources">')
     })
 })
 

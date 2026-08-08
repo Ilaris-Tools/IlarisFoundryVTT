@@ -169,24 +169,27 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         expect(options.length).toBeGreaterThan(0)
     })
 
-    test('summon-item source selection uses the configured weapon catalog and persists its UUID', async ({
+    test('summon-item source autocomplete uses the configured catalog and persists its UUID', async ({
         page,
     }) => {
         const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)
 
-        const sourceSelect = itemWindow.locator('select[name$="summonItem.sourceUuid"]').first()
-        await expect(sourceSelect).toBeVisible({ timeout: 10000 })
-        const phexUuid = await sourceSelect.locator('option').evaluateAll((options) => {
-            const phex = options.find((option: any) =>
-                option.textContent?.includes('Phexens Wurfstern'),
-            )
-            return phex?.getAttribute('value') ?? ''
-        })
+        const sourceInput = itemWindow.locator('input[name$="summonItem.sourceUuid"]').first()
+        await expect(sourceInput).toBeVisible({ timeout: 10000 })
+        await expect(sourceInput).toHaveAttribute('list', 'ilaris-summon-item-sources')
+        const phexUuid = await itemWindow
+            .locator('#ilaris-summon-item-sources option')
+            .evaluateAll((options) => {
+                const phex = options.find((option: any) =>
+                    option.getAttribute('label')?.includes('Phexens Wurfstern'),
+                )
+                return phex?.getAttribute('value') ?? ''
+            })
         expect(phexUuid).toBe('Compendium.Ilaris.waffen.Item.C9Qy0anjBUWn9TUw')
 
-        await sourceSelect.selectOption(phexUuid)
-        await sourceSelect.dispatchEvent('change')
+        await sourceInput.fill(phexUuid)
+        await sourceInput.dispatchEvent('change')
         await page.waitForFunction(
             ({ id, sourceUuid }) => {
                 const preEffect = Object.values(
@@ -202,7 +205,7 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         const reopenedWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(reopenedWindow)
         await expect(
-            reopenedWindow.locator('select[name$="summonItem.sourceUuid"]').first(),
+            reopenedWindow.locator('input[name$="summonItem.sourceUuid"]').first(),
         ).toHaveValue(phexUuid)
     })
 

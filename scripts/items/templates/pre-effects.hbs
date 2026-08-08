@@ -153,16 +153,7 @@
                 </div>
                 <div class="form-group">
                     <label>Quelle:</label>
-                    <select name="system.preEffects.{{@index}}.summonItem.sourceUuid">
-                        <option value="">— Kein Gegenstand —</option>
-                        {{#each @root.summonItemOptions}}
-                        <optgroup label="{{packName}}">
-                            {{#each items}}
-                            <option value="{{uuid}}" {{#if (ifEq uuid ../../summonItem.sourceUuid)}}selected{{/if}}>{{name}} ({{type}})</option>
-                            {{/each}}
-                        </optgroup>
-                        {{/each}}
-                    </select>
+                    <input type="text" name="system.preEffects.{{@index}}.summonItem.sourceUuid" value="{{summonItem.sourceUuid}}" list="ilaris-summon-item-sources" placeholder="Gegenstand suchen …" />
                 </div>
                 <div class="summon-item-overrides-list">
                     <h5>Werte auf der beschworenen Kopie</h5>
@@ -296,9 +287,16 @@
                     </div>
                 </div>
             </div>
-        </fieldset>
-        {{/each}}
-        <button type="button" class="add-pre-effect">+ Pre-Effect hinzufügen</button>
+            </fieldset>
+            {{/each}}
+            <datalist id="ilaris-summon-item-sources">
+                {{#each @root.summonItemOptions}}
+                    {{#each items}}
+                    <option value="{{uuid}}" label="{{name}} ({{type}}, {{../packName}})"></option>
+                    {{/each}}
+                {{/each}}
+            </datalist>
+            <button type="button" class="add-pre-effect">+ Pre-Effect hinzufügen</button>
         {{#if @root.hasLLMConfig}}
         <button type="button" class="generate-pre-effect">🤖 Generieren</button>
         {{/if}}

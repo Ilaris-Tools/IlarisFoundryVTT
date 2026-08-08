@@ -3,8 +3,8 @@
 The existing pre-effect processor applies immediate damage or creates a timed
 Actor ActiveEffect. It has no operation that creates an Item for a selected
 target. Owner-turn timing already expires effects through combat hooks, and
-the actor's configured `waffenPacks` setting already provides a catalog of
-weapon compendium packs.
+the actor's configured `waffenPacks` setting provides a catalog of weapon and
+ordinary-Item compendium packs for summon sources.
 
 Physical summons must exist as owned Items so that their normal weapon data,
 transferred effects, and inventory presentation apply to the target. They must
@@ -71,17 +71,25 @@ Rejected because combat and inventory flows consume actual owned Items, while
 [Actor#allApplicableEffects](https://foundryvtt.com/api/v14/classes/foundry.documents.Actor.html#allApplicableEffects)
 already includes an owned Item's transferred effects.
 
-### Use the configured weapon-pack catalog, but keep the operation type-generic
+### Use the configured Item-source catalog, but keep the operation type-generic
 
 The pre-effect sheet presents source Items from the existing `waffenPacks`
-setting. The operation is named `summonItem`, not `summonWeapon`, and accepts
-any selected Item source; the initial audited content happens to focus on
-weapons and other physical objects. The stored UUID is validated against the
-currently configured catalog at execution time.
+setting. Its default catalog includes `Ilaris.waffen` and `Ilaris.gegenstande`.
+The operation is named `summonItem`, not `summonWeapon`, and accepts any
+selected Item source; the initial audited content happens to focus on weapons
+and other physical objects. The stored UUID is validated against the currently
+configured catalog at execution time.
 
 Alternative: create a separate world setting for summon sources. Rejected:
 the user selected the existing catalog as the authority, and duplicating pack
 configuration creates divergent availability.
+
+### Represent Flammenschwert as a separate summoned weapon
+
+Flammenschwert is implemented as a separately authored summoned weapon rather
+than mutating and later restoring the caster's existing staff. The current
+weapon model cannot represent weapon-specific damage types or Nachbrennen, so
+those properties remain described by the source Item rather than automated.
 
 ### Every summoned copy gets a linked owner-turn marker
 

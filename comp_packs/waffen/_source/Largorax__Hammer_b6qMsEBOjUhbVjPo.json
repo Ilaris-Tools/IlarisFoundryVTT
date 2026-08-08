@@ -25,7 +25,27 @@
     "rw_mod": 0,
     "computed": {}
   },
-  "effects": [],
+  "effects": [
+    {
+      "_id": "largoraxUse0000",
+      "_key": "!items.effects!b6qMsEBOjUhbVjPo.largoraxUse0000",
+      "name": "Verschwindet nach dem Angriff",
+      "transfer": true,
+      "disabled": false,
+      "changes": [],
+      "duration": {},
+      "flags": {},
+      "system": {
+        "ilarisArmedCombat": {
+          "trigger": "nextSuccessfulAttack",
+          "scope": "melee",
+          "remainingCharges": 1,
+          "sourceItemOnly": true,
+          "onExhaust": "deleteOwningItem"
+        }
+      }
+    }
+  ],
   "folder": null,
   "sort": 0,
   "ownership": {
