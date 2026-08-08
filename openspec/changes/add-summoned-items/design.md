@@ -31,6 +31,11 @@ nor delete the first copy in any supernatural stacking mode.
   removal is covered by the charged armed-effect lifecycle.
 - Automate transformations, enchantments of existing Items, zones, or
   creatures.
+- Automate maneuver-selected subspells, including Fortifex' Schimmernder
+  Schild. Its creation is currently only reachable through maneuver selection
+  and requires a separate change to expose that context to pre-effects.
+- Represent flavor-only materializations, including Speisung der Bedürftigen's
+  Heiliger Kessel, as summoned Items. They remain player- and GM-described.
 - Infer missing weapon or object statistics from rule text. The audited source
   Items are manual content work and block implementation.
 - Restore a previously selected main weapon when a summoned weapon expires.

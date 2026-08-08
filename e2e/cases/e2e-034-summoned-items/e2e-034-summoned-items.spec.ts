@@ -12,24 +12,17 @@ const ACTOR_NAME = 'HatAlles'
 test.describe('E2E-034 · summoned items', () => {
     let createdItemIds: string[] = []
     let createdEffectIds: string[] = []
-    let createdCombatIds: string[] = []
     let stackingSetting: import('../../shared/fixtures/foundry').FoundrySettingSnapshot | undefined
 
     test.beforeEach(async ({ page }) => {
         createdItemIds = []
         createdEffectIds = []
-        createdCombatIds = []
         stackingSetting = undefined
         await loginAndJoinWorld(page, foundryConfig)
         await clearChatLog(page)
     })
 
     test.afterEach(async ({ page }) => {
-        await page
-            .evaluate(async (combatIds) => {
-                await Promise.all(combatIds.map((id) => game.combats?.get(id)?.delete()))
-            }, createdCombatIds)
-            .catch(() => {})
         await page
             .evaluate(
                 async ({ actorName, itemIds, effectIds }) => {
@@ -269,15 +262,13 @@ test.describe('E2E-034 · summoned items', () => {
                     'system.ilarisTiming.remaining': 1,
                     'system.ilarisTiming.expiresOn': 'turnStart',
                 })
-                const combat = await Combat.create({
-                    name: 'E2E Beschworene Gegenstände',
-                    combatants: [{ actorId: actor.id }],
-                })
-                await combat.startCombat()
-                await combat.nextTurn()
+                // Exercise the same reducer used by the combatTurn hook. Starting
+                // a combat refreshes unrelated legacy effects in the test world.
+                const { reduceEffectDurationForCombatant } =
+                    await import('/systems/Ilaris/scripts/effects/combat-turn-hooks.js')
+                await reduceEffectDurationForCombatant({ actor })
 
                 return {
-                    combatId: combat.id,
                     createdItemIds: actor.items
                         .filter((item: any) => !itemIdsBefore.has(item.id))
                         .map((item: any) => item.id),
@@ -290,7 +281,6 @@ test.describe('E2E-034 · summoned items', () => {
                     retainedMarkerId: markers[1].id,
                 }
             }, ACTOR_NAME)
-            createdCombatIds.push(result.combatId)
             createdItemIds.push(...result.createdItemIds)
             createdEffectIds.push(...result.createdEffectIds)
 

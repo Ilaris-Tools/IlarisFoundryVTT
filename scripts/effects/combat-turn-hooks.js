@@ -133,7 +133,7 @@ Hooks.on('updateCombat', async (combat, changed, _options, _userId) => {
  *   Instead sets _pendingExpiry or _pendingDurationChange flag for Phase 2
  *   (updateCombat hook) to handle the actual update.
  */
-async function reduceEffectDurationForCombatant(combatant) {
+export async function reduceEffectDurationForCombatant(combatant) {
     const actor = combatant?.actor
     if (!actor) return
 

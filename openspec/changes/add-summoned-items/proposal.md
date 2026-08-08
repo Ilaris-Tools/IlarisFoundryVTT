@@ -107,20 +107,23 @@ vertical-slice sources required before `/opsx:apply` begins. The remaining
 audited sources are follow-up content work; no generated values or inferred
 rules are acceptable for any of them.
 
-| Source Item                | Summoning source                          | Manual review required                                                               |
-| -------------------------- | ----------------------------------------- | ------------------------------------------------------------------------------------ |
-| Phexens Wurfstern          | Phexens Sternenwurf                       | Weapon statistics, +4 FK, 2W20 TP, one-use behavior, and +1W20 per Mächtige Magie QS |
-| Armalion                   | Segen der Heiligen Ardare                 | Weapon statistics, 2W20+10 TP, WM +2, Wendig, and 16-owner-turn duration             |
-| Lagorax' Hammer            | Largorax' Hammer                          | Weapon/tool statistics, 2W20+10 TP, crafting behavior, and one-use behavior          |
-| Firuns Ring                | Firuns Einsicht                           | Item type and behavior representation                                                |
-| Heiliger Trichter Hesindes | Ingalfs Alchemie                          | Item type and alchemical-analysis behavior representation                            |
-| Phexens Meisterschlüssel   | Phexens Meisterschlüssel                  | Item type and lock-opening behavior representation                                   |
-| Heiliger Kessel            | Speisung der Bedürftigen, Heiliger Kessel | Item type, supply behavior, and disappearance condition                              |
-| Schimmernder Schild        | Fortifex arkane Wand, Schimmernder Schild | Item type, Holzschild baseline, and magical invulnerability behavior                 |
+| Source Item                | Summoning source          | Manual review required                                                               |
+| -------------------------- | ------------------------- | ------------------------------------------------------------------------------------ |
+| Phexens Wurfstern          | Phexens Sternenwurf       | Weapon statistics, +4 FK, 2W20 TP, one-use behavior, and +1W20 per Mächtige Magie QS |
+| Armalion                   | Segen der Heiligen Ardare | Weapon statistics, 2W20+10 TP, WM +2, Wendig, and 16-owner-turn duration             |
+| Lagorax' Hammer            | Largorax' Hammer          | Weapon/tool statistics, 2W20+10 TP, crafting behavior, and one-use behavior          |
+| Firuns Ring                | Firuns Einsicht           | Item type and behavior representation                                                |
+| Heiliger Trichter Hesindes | Ingalfs Alchemie          | Item type and alchemical-analysis behavior representation                            |
+| Phexens Meisterschlüssel   | Phexens Meisterschlüssel  | Item type and lock-opening behavior representation                                   |
+| Hexenkrallen               | Hexenkrallen              | Item type, weapon statistics, and applicable behavior                                |
+| Flammenschwert             | Flammenschwert            | Item type, weapon statistics, and applicable behavior                                |
 
 Transformations, enchantments of an existing Item, zones, and summoned
 creatures are not candidates for this change. They remain outside the
 summon-item contract unless separately proposed.
+
+Heiliger Kessel is a flavor-only materialization and is intentionally not
+represented as a summoned Item.
 
 ## Testing Impact
 
