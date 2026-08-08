@@ -24,6 +24,7 @@
         "changes": [],
         "ilarisModifiers": [],
         "summonItem": {
+          "sourceKind": "waffe",
           "sourceUuid": "Compendium.Ilaris.waffen.Item.C9Qy0anjBUWn9TUw",
           "overrides": [
             {

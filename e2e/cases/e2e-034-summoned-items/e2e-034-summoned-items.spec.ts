@@ -106,6 +106,69 @@ test.describe('E2E-034 · summoned items', () => {
         })
     })
 
+    test('Firuns Einsicht summons its configured Gegenstände-pack Item', async ({ page }) => {
+        const result = await page.evaluate(async (actorName) => {
+            const actor = game.actors?.getName(actorName) as any
+            const pack = game.packs?.get('Ilaris.liturgien-und-mirakel')
+            const spellSource = (await pack?.getDocuments())?.find(
+                (item: any) => item.name === 'Firuns Einsicht',
+            )
+            if (!actor || !spellSource) throw new Error('Firuns Einsicht oder HatAlles fehlt.')
+
+            const itemIdsBefore = new Set(actor.items.map((item: any) => item.id))
+            const effectIdsBefore = new Set(actor.effects.map((effect: any) => effect.id))
+            const [spell] = await actor.createEmbeddedDocuments('Item', [spellSource.toObject()])
+            const processor =
+                await import('/systems/Ilaris/scripts/effects/pre-effects/pre-effects-processor.js')
+            await processor.applyPreEffects(
+                { success: true },
+                {
+                    item: spell,
+                    actor,
+                    speaker: {},
+                    selectedActors: [{ actorId: actor.id }],
+                    maneuverDurationBonus: 0,
+                    maechtigeMagieQs: 0,
+                },
+            )
+
+            const sourceUuid = 'Compendium.Ilaris.gegenstande.Item.nzMDgayAm0lz5QZP'
+            const summoned = actor.items.find(
+                (item: any) =>
+                    item.flags?.ilaris?.summon &&
+                    item.flags.ilaris.spellUuid === spell.uuid &&
+                    item.flags.ilaris.sourceItemUuid === sourceUuid,
+            ) as any
+            const marker = actor.effects.find(
+                (effect: any) => effect.flags?.ilaris?.summonedItemId === summoned?.id,
+            ) as any
+            const configuredPacks = game.settings.get('Ilaris', 'gegenstandPacks') as string[]
+            return {
+                createdItemIds: actor.items
+                    .filter((item: any) => !itemIdsBefore.has(item.id))
+                    .map((item: any) => item.id),
+                createdEffectIds: actor.effects
+                    .filter((effect: any) => !effectIdsBefore.has(effect.id))
+                    .map((effect: any) => effect.id),
+                gegenstandeConfigured: configuredPacks.includes('Ilaris.gegenstande'),
+                type: summoned?.type,
+                sourceUuid: summoned?.flags?.ilaris?.sourceItemUuid,
+                duration: marker?.system?.ilarisTiming?.remaining,
+            }
+        }, ACTOR_NAME)
+        createdItemIds.push(...result.createdItemIds)
+        createdEffectIds.push(...result.createdEffectIds)
+
+        expect(result).toEqual({
+            createdItemIds: expect.any(Array),
+            createdEffectIds: expect.any(Array),
+            gegenstandeConfigured: true,
+            type: 'gegenstand',
+            sourceUuid: 'Compendium.Ilaris.gegenstande.Item.nzMDgayAm0lz5QZP',
+            duration: 961,
+        })
+    })
+
     test('Phexens Wurfstern ignores another weapon and vanishes after its own missed throw', async ({
         page,
     }) => {

@@ -308,6 +308,7 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
 
         const fertigkeitenSelection = getSelection(IlarisGameSettingNames.fertigkeitenPacks)
         const waffenSelection = getSelection(IlarisGameSettingNames.waffenPacks)
+        const gegenstandeSelection = getSelection(IlarisGameSettingNames.gegenstandPacks)
         const talenteSelection = getSelection(IlarisGameSettingNames.talentePacks)
         const manoeverSelection = getSelection(IlarisGameSettingNames.manoeverPacks)
         const vorteileSelection = getSelection(IlarisGameSettingNames.vorteilePacks)
@@ -319,6 +320,7 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
         const result = {
             fertigkeiten: [],
             waffen: [],
+            gegenstande: [],
             talente: [],
             manoever: [],
             vorteile: [],
@@ -350,6 +352,9 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
             }
             if (contents.some((i) => i.type === 'fernkampfwaffe' || i.type === 'nahkampfwaffe')) {
                 result.waffen.push(entry(waffenSelection.includes(pack.collection)))
+            }
+            if (contents.some((i) => i.type === 'gegenstand')) {
+                result.gegenstande.push(entry(gegenstandeSelection.includes(pack.collection)))
             }
             if (
                 contents.some(
@@ -403,6 +408,10 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
                     settingName: IlarisGameSettingNames.fertigkeitenPacks,
                 },
                 { groupKey: 'waffen', settingName: IlarisGameSettingNames.waffenPacks },
+                {
+                    groupKey: 'gegenstande',
+                    settingName: IlarisGameSettingNames.gegenstandPacks,
+                },
                 { groupKey: 'talente', settingName: IlarisGameSettingNames.talentePacks },
                 { groupKey: 'manoever', settingName: IlarisGameSettingNames.manoeverPacks },
                 { groupKey: 'vorteile', settingName: IlarisGameSettingNames.vorteilePacks },
@@ -566,6 +575,10 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
                     value: '["Ilaris.fertigkeiten-und-talente","Ilaris.fertigkeiten-und-talente-advanced","Ilaris.ubernaturliche-fertigkeiten"]',
                 },
                 { name: IlarisGameSettingNames.waffenPacks, value: '["Ilaris.waffen"]' },
+                {
+                    name: IlarisGameSettingNames.gegenstandPacks,
+                    value: '["Ilaris.gegenstande"]',
+                },
                 {
                     name: IlarisGameSettingNames.talentePacks,
                     value: '["Ilaris.fertigkeiten-und-talente","Ilaris.fertigkeiten-und-talente-advanced","Ilaris.liturgien-und-mirakel","Ilaris.zauberspruche-und-rituale","Ilaris.zaubertricks-advanced"]',

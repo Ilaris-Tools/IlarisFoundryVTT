@@ -9,7 +9,7 @@
 ## 1. Summon-Item Data and Catalog
 
 - [x] 1.1 Define the `summonItem` pre-effect configuration, including source UUID, owner-turn duration, and Item-data overrides with Mächtige-Magie fields.
-- [x] 1.2 Populate the pre-effect sheet context with source Items from the configured `waffenPacks` catalog and expose the summon-item controls in `scripts/items/templates/pre-effects.hbs`.
+- [x] 1.2 Populate the pre-effect sheet context with source Items from the configured `waffenPacks` and `gegenstandPacks` catalogs and expose the summon-item controls in `scripts/items/templates/pre-effects.hbs`. Preserve existing world selections.
 - [x] 1.3 Validate that configured source UUIDs resolve only from the active catalog and provide a user-facing failure without partial Item creation.
 - [x] 1.4 Verify against Foundry API docs (v14) for Item source serialization and configured compendium access.
 - [x] 1.5 Check foundryvtt.wiki for relevant `foundry.utils.*` helpers for safe source data copying.
@@ -50,7 +50,7 @@
 - [x] 6.1 Configure `summonItem` pre-effects for Phexens Sternenwurf, Segen der Heiligen Ardare, Largorax' Hammer, Firuns Einsicht, Ingalfs Alchemie, Phexens Meisterschlüssel, Hexenkrallen, and Flammenschwert using the manually reviewed UUIDs. Fortifex' Schimmernder Schild is out of scope because its maneuver-selected subspell context is not yet available to pre-effects; Heiliger Kessel is flavor-only and intentionally not represented as a summoned Item.
 - [x] 6.2 Configure Phexens Wurfstern's `+1W20` per Mächtige Magie QS as a clone-scoped Item override and its manually reviewed attack-use disappearance as a transferred charged effect with `onExhaust: "deleteOwningItem"`.
 - [x] 6.3 Configure any other source Item with an explicitly reviewed eligible-attack disappearance rule in the same way; leave non-combat disappearance conditions unautomated.
-- [ ] 6.4 Run `npm run pack-all` after the compendium source changes.
+- [x] 6.4 Run `npm run pack-all` after the compendium source changes.
 
 ## 7. Unit Tests
 
@@ -72,5 +72,11 @@
 
 - [x] 9.1 Run `npm test`.
 - [x] 9.2 Run `npm run lint`.
-- [ ] 9.3 Run the focused summon-item, armed-effect, and affected pre-effect E2E tests.
+- [x] 9.3 Run the focused summon-item, armed-effect, and affected pre-effect E2E tests.
 - [x] 9.4 Run `openspec validate add-summoned-items --strict`.
+
+## 10. Configured Gegenstände Catalog Correction
+
+- [x] 10.1 Add an independently configurable `gegenstandPacks` setting and require every summon pre-effect to choose either the weapon or Gegenstände catalog, without rewriting existing world settings.
+- [x] 10.2 Cover source-kind-specific authoring and runtime validation, including rejection of a source from the other catalog.
+- [x] 10.3 Run the focused summon-item E2E regression after Foundry reloads the new setting and packed source data.

@@ -169,17 +169,19 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         expect(options.length).toBeGreaterThan(0)
     })
 
-    test('summon-item source autocomplete uses the configured catalog and persists its UUID', async ({
+    test('summon-item source autocomplete follows and persists its selected source kind', async ({
         page,
     }) => {
         const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)
 
+        const sourceKind = itemWindow.locator('select[name$="summonItem.sourceKind"]').first()
         const sourceInput = itemWindow.locator('input[name$="summonItem.sourceUuid"]').first()
+        await expect(sourceKind).toHaveValue('waffe')
         await expect(sourceInput).toBeVisible({ timeout: 10000 })
-        await expect(sourceInput).toHaveAttribute('list', 'ilaris-summon-item-sources')
+        await expect(sourceInput).toHaveAttribute('list', 'ilaris-summon-item-sources-waffe')
         const phexUuid = await itemWindow
-            .locator('#ilaris-summon-item-sources option')
+            .locator('#ilaris-summon-item-sources-waffe option')
             .evaluateAll((options) => {
                 const phex = options.find((option: any) =>
                     option.getAttribute('label')?.includes('Phexens Wurfstern'),
@@ -188,25 +190,59 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
             })
         expect(phexUuid).toBe('Compendium.Ilaris.waffen.Item.C9Qy0anjBUWn9TUw')
 
-        await sourceInput.fill(phexUuid)
-        await sourceInput.dispatchEvent('change')
+        await sourceKind.selectOption('gegenstand')
+        await sourceKind.dispatchEvent('change')
         await page.waitForFunction(
-            ({ id, sourceUuid }) => {
+            ({ id }) => {
                 const preEffect = Object.values(
                     game.items.get(id)?.system?.preEffects ?? {},
                 )[0] as any
-                return preEffect?.summonItem?.sourceUuid === sourceUuid
+                return preEffect?.summonItem?.sourceKind === 'gegenstand'
             },
-            { id: importedItemId, sourceUuid: phexUuid },
+            { id: importedItemId },
             { timeout: 10000 },
         )
 
         await page.evaluate((id) => game.items.get(id)?.sheet?.close(), importedItemId)
         const reopenedWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(reopenedWindow)
+        const reopenedInput = reopenedWindow.locator('input[name$="summonItem.sourceUuid"]').first()
+        await expect(reopenedInput).toHaveAttribute('list', 'ilaris-summon-item-sources-gegenstand')
+        const ringUuid = await reopenedWindow
+            .locator('#ilaris-summon-item-sources-gegenstand option')
+            .evaluateAll((options) => {
+                const ring = options.find((option: any) =>
+                    option.getAttribute('label')?.includes('Firuns Rings'),
+                )
+                return ring?.getAttribute('value') ?? ''
+            })
+        expect(ringUuid).toBe('Compendium.Ilaris.gegenstande.Item.nzMDgayAm0lz5QZP')
+
+        await reopenedInput.fill(ringUuid)
+        await reopenedInput.dispatchEvent('change')
+        await page.waitForFunction(
+            ({ id, sourceUuid }) => {
+                const preEffect = Object.values(
+                    game.items.get(id)?.system?.preEffects ?? {},
+                )[0] as any
+                return (
+                    preEffect?.summonItem?.sourceKind === 'gegenstand' &&
+                    preEffect?.summonItem?.sourceUuid === sourceUuid
+                )
+            },
+            { id: importedItemId, sourceUuid: ringUuid },
+            { timeout: 10000 },
+        )
+
+        await page.evaluate((id) => game.items.get(id)?.sheet?.close(), importedItemId)
+        const finalWindow = await openImportedSpellSheet(page)
+        await openPreEffectsTab(finalWindow)
         await expect(
-            reopenedWindow.locator('input[name$="summonItem.sourceUuid"]').first(),
-        ).toHaveValue(phexUuid)
+            finalWindow.locator('select[name$="summonItem.sourceKind"]').first(),
+        ).toHaveValue('gegenstand')
+        await expect(
+            finalWindow.locator('input[name$="summonItem.sourceUuid"]').first(),
+        ).toHaveValue(ringUuid)
     })
 
     test('adds, persists, and deletes a pre-effect entry', async ({ page }) => {

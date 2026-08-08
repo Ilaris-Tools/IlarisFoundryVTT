@@ -11,6 +11,7 @@ describe('summoned items', () => {
         global.game.settings.get = jest.fn(() => '["Ilaris.waffen"]')
         global.fromUuid = jest.fn().mockResolvedValue({
             pack: 'Ilaris.waffen',
+            type: 'fernkampfwaffe',
             uuid: 'Compendium.Ilaris.waffen.Item.source',
             toObject: () => ({
                 _id: 'source',
@@ -20,6 +21,7 @@ describe('summoned items', () => {
             }),
         })
         global.ActiveEffect.createDocuments = jest.fn().mockResolvedValue([])
+        global.ui = { notifications: { error: jest.fn() } }
     })
 
     it('creates a configured clone and a separately linked owner-turn marker', async () => {
@@ -36,6 +38,7 @@ describe('summoned items', () => {
                 targetActor: actor,
                 preEffect: {
                     summonItem: {
+                        sourceKind: 'waffe',
                         sourceUuid: 'Compendium.Ilaris.waffen.Item.source',
                         overrides: [
                             {
@@ -83,5 +86,82 @@ describe('summoned items', () => {
             ],
             { parent: actor },
         )
+    })
+
+    it('allows a source from the separately configured Gegenstände catalog', async () => {
+        global.game.settings.get.mockImplementation((_namespace, key) => {
+            if (key === 'waffenPacks') return '["Ilaris.waffen"]'
+            if (key === 'gegenstandPacks') return '["Ilaris.gegenstande"]'
+            return '[]'
+        })
+        global.fromUuid.mockResolvedValueOnce({
+            pack: 'Ilaris.gegenstande',
+            type: 'gegenstand',
+            uuid: 'Compendium.Ilaris.gegenstande.Item.source',
+            toObject: () => ({
+                _id: 'source',
+                name: 'Beschworener Gegenstand',
+                type: 'gegenstand',
+                system: {},
+            }),
+        })
+        const clone = { id: 'clone', type: 'gegenstand', system: {} }
+        const actor = {
+            items: [],
+            createEmbeddedDocuments: jest.fn().mockResolvedValue([clone]),
+            updateEmbeddedDocuments: jest.fn(),
+            deleteEmbeddedDocuments: jest.fn(),
+        }
+
+        await expect(
+            summonItemFromPreEffect({
+                targetActor: actor,
+                preEffect: {
+                    summonItem: {
+                        sourceKind: 'gegenstand',
+                        sourceUuid: 'Compendium.Ilaris.gegenstande.Item.source',
+                    },
+                },
+                caster: { uuid: 'Actor.caster' },
+                spellItem: { name: 'Firuns Einsicht', uuid: 'Item.spell' },
+                effectiveDuration: 16,
+                maechtigeQs: 0,
+                preEffectIndex: 0,
+                applicationId: 'application',
+            }),
+        ).resolves.toBe(clone)
+
+        expect(actor.createEmbeddedDocuments).toHaveBeenCalledWith('Item', [
+            expect.objectContaining({ type: 'gegenstand' }),
+        ])
+    })
+
+    it('rejects a source from the other configured catalog', async () => {
+        global.game.settings.get.mockImplementation((_namespace, key) => {
+            if (key === 'waffenPacks') return '["Ilaris.waffen"]'
+            if (key === 'gegenstandPacks') return '[]'
+            return '[]'
+        })
+        const actor = { createEmbeddedDocuments: jest.fn() }
+
+        await expect(
+            summonItemFromPreEffect({
+                targetActor: actor,
+                preEffect: {
+                    summonItem: {
+                        sourceKind: 'gegenstand',
+                        sourceUuid: 'Compendium.Ilaris.waffen.Item.source',
+                    },
+                },
+                caster: { uuid: 'Actor.caster' },
+                spellItem: { name: 'Firuns Einsicht', uuid: 'Item.spell' },
+                effectiveDuration: 16,
+                maechtigeQs: 0,
+                preEffectIndex: 0,
+                applicationId: 'application',
+            }),
+        ).resolves.toBeNull()
+
+        expect(actor.createEmbeddedDocuments).not.toHaveBeenCalled()
     })
 })

@@ -3,8 +3,8 @@
 The existing pre-effect processor applies immediate damage or creates a timed
 Actor ActiveEffect. It has no operation that creates an Item for a selected
 target. Owner-turn timing already expires effects through combat hooks, and
-the actor's configured `waffenPacks` setting provides a catalog of weapon and
-ordinary-Item compendium packs for summon sources.
+the actor's configured `waffenPacks` and `gegenstandPacks` settings provide
+the weapon and ordinary-Item compendium catalogs for summon sources.
 
 Physical summons must exist as owned Items so that their normal weapon data,
 transferred effects, and inventory presentation apply to the target. They must
@@ -18,7 +18,7 @@ nor delete the first copy in any supernatural stacking mode.
 - Add a generic `summonItem` pre-effect operation that creates a configured
   compendium Item on every selected target.
 - Select a summon source from the Item compendia selected by `waffenPacks` and
-  store its UUID.
+  `gegenstandPacks`, and store its UUID.
 - Mark summoned weapons as the target's main weapon, give every copy
   owner-turn expiry, and remove only the matching clone when that timer ends.
 - Materialize spell-specific Item overrides, including Mächtige Magie, before
@@ -73,12 +73,13 @@ already includes an owned Item's transferred effects.
 
 ### Use the configured Item-source catalog, but keep the operation type-generic
 
-The pre-effect sheet presents source Items from the existing `waffenPacks`
-setting. Its default catalog includes `Ilaris.waffen` and `Ilaris.gegenstande`.
-The operation is named `summonItem`, not `summonWeapon`, and accepts any
-selected Item source; the initial audited content happens to focus on weapons
-and other physical objects. The stored UUID is validated against the currently
-configured catalog at execution time.
+The pre-effect sheet presents source Items from the configured `waffenPacks`
+and `gegenstandPacks` settings. Each `summonItem` chooses a `sourceKind` of
+`waffe` or `gegenstand`; authoring shows only that catalog's matching Item
+types, and execution validates only against that catalog and Item type. The
+operation is named `summonItem`, not `summonWeapon`. The two settings remain
+independently configurable; the system does not rewrite existing world
+selections.
 
 Alternative: create a separate world setting for summon sources. Rejected:
 the user selected the existing catalog as the authority, and duplicating pack

@@ -11,8 +11,10 @@ Mächtige-Magie behavior.
 - Add a generic `summonItem` pre-effect operation for Zauber, Liturgien, and
   Anrufungen. On a successful cast it creates an independent Actor-owned clone
   of the configured compendium Item on every selected target.
-- Reuse the configured `waffenPacks` catalog as the source catalog for the
-  summon-item dropdown. The stored source is a stable Item UUID, not a name.
+- Combine the configured `waffenPacks` and `gegenstandPacks` catalogs as the
+  source catalog for the summon-item dropdown. The stored source is a stable
+  Item UUID, not a name. Every summon pre-effect explicitly chooses `Waffe`
+  or `Gegenstand`, so it uses only the matching configured catalog.
 - Mark summoned weapon clones as `hauptwaffe`; the most recently summoned
   weapon becomes the selected main weapon for its recipient.
 - Track every summoned copy separately and retain multiple copies in both
@@ -68,7 +70,7 @@ always keep independent copies.
   its linked marker.
 - `scripts/items/sheets/uebernatuerlich-talent.js` and
   `scripts/items/templates/pre-effects.hbs` expose source selection from
-  `waffenPacks` and summon-item authoring fields.
+  `waffenPacks`, `gegenstandPacks`, and summon-item authoring fields.
 - `scripts/effects/utils/ilaris-modifier-resolver.js` accepts W3 and W20 terms
   in linear additive formulas.
 - `comp_packs/**/_source/` gains manually authored Item sources and updates

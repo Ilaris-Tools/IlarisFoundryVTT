@@ -222,15 +222,28 @@ export const registerIlarisGameSettings = () => {
         {
             // Register waffen packs setting
             settingsName: IlarisGameSettingNames.waffenPacks,
-            name: 'Waffen- und Gegenstandskompendien',
-            hint: 'Hier kannst du die Kompendien auswählen, die Waffen und beschwörbare Gegenstände enthalten.',
+            name: 'Waffen Kompendien',
+            hint: 'Hier kannst du die Kompendien auswählen, die Waffen enthalten.',
             scope: 'world',
             config: false,
             type: String,
-            default: '["Ilaris.waffen","Ilaris.gegenstande"]',
+            default: '["Ilaris.waffen"]',
             requiresReload: true,
             onChange: (value) => {
                 Hooks.callAll('ilarisWaffenPacksChanged', JSON.parse(value))
+            },
+        },
+        {
+            settingsName: IlarisGameSettingNames.gegenstandPacks,
+            name: 'Gegenstände Kompendien',
+            hint: 'Hier kannst du die Kompendien auswählen, die Gegenstände enthalten.',
+            scope: 'world',
+            config: false,
+            type: String,
+            default: '["Ilaris.gegenstande"]',
+            requiresReload: true,
+            onChange: (value) => {
+                Hooks.callAll('ilarisGegenstandPacksChanged', JSON.parse(value))
             },
         },
         {

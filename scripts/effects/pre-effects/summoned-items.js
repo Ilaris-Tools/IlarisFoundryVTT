@@ -1,10 +1,18 @@
 import { IlarisGameSettingNames } from '../../settings/configure-game-settings.model.js'
 
-function configuredWeaponPacks() {
+const ui = {
+    get notifications() {
+        return globalThis.ui?.notifications
+    },
+}
+
+function configuredSummonItemPacks(sourceKind) {
     try {
-        return new Set(
-            JSON.parse(game.settings.get('Ilaris', IlarisGameSettingNames.waffenPacks) || '[]'),
-        )
+        const settingName =
+            sourceKind === 'gegenstand'
+                ? IlarisGameSettingNames.gegenstandPacks
+                : IlarisGameSettingNames.waffenPacks
+        return new Set(JSON.parse(game.settings.get('Ilaris', settingName) || '[]'))
     } catch (_error) {
         return new Set()
     }
@@ -47,8 +55,11 @@ export async function summonItemFromPreEffect({
     if (!config?.sourceUuid) return null
 
     const source = await fromUuid(config.sourceUuid)
-    const allowedPacks = configuredWeaponPacks()
-    if (!source || !allowedPacks.has(source.pack)) {
+    const sourceKind = config.sourceKind === 'gegenstand' ? 'gegenstand' : 'waffe'
+    const allowedPacks = configuredSummonItemPacks(sourceKind)
+    const sourceKindMatches =
+        sourceKind === 'gegenstand' ? source?.type === 'gegenstand' : isWeapon(source || {})
+    if (!source || !allowedPacks.has(source.pack) || !sourceKindMatches) {
         ui?.notifications?.error(`BeschwÃ¶rungsquelle fÃ¼r ${spellItem.name} ist nicht verfÃ¼gbar.`)
         return null
     }

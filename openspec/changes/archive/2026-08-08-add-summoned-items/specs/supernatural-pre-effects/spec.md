@@ -3,9 +3,11 @@
 ### Requirement: Pre-effects support a generic summon-item operation
 
 An übernatürlich Item pre-effect SHALL optionally define a `summonItem`
-configuration containing a source Item UUID, owner-turn base duration, and
-optional clone-data overrides. The configured source SHALL resolve only from
-the Item compendium packs selected by the existing `waffenPacks` world setting.
+configuration containing a source Item UUID, `sourceKind`, owner-turn base
+duration, and optional clone-data overrides. The configured source SHALL
+resolve only from the catalog selected by `sourceKind`: `waffe` uses
+`waffenPacks` and a weapon Item, while `gegenstand` uses `gegenstandPacks` and
+a Gegenstand Item.
 Successful pre-effect processing SHALL apply the operation to every selected
 target and SHALL reject a missing, invalid, or unavailable source without
 creating a clone or marker.
@@ -13,7 +15,8 @@ creating a clone or marker.
 #### Scenario: Pre-effect sheet offers configured source Items
 
 - **WHEN** a GM configures a summon-item pre-effect
-- **THEN** the sheet SHALL offer Item sources from the selected `waffenPacks` compendia
+- **THEN** the GM SHALL choose whether the source is a `Waffe` or `Gegenstand`
+- **AND** the sheet SHALL offer only matching Item sources from that selected catalog
 - **AND** it SHALL persist the chosen source UUID rather than a display name
 
 #### Scenario: Invalid source prevents a partial summon

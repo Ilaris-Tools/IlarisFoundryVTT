@@ -49,13 +49,17 @@ describe('reviewed supported spell pre-effect source data', () => {
         expect(phexensSternenwurf.system.preEffects?.[0]).toMatchObject({
             baseDuration: 64,
             summonItem: {
+                sourceKind: 'waffe',
                 sourceUuid: 'Compendium.Ilaris.waffen.Item.C9Qy0anjBUWn9TUw',
                 overrides: [expect.objectContaining({ path: 'system.tp', maechtigBonus: '+1W20' })],
             },
         })
         expect(ardare.system.preEffects?.[0]).toMatchObject({
             baseDuration: 16,
-            summonItem: { sourceUuid: 'Compendium.Ilaris.waffen.Item.mpqeLctvVQjSMrdT' },
+            summonItem: {
+                sourceKind: 'waffe',
+                sourceUuid: 'Compendium.Ilaris.waffen.Item.mpqeLctvVQjSMrdT',
+            },
         })
         expect(wurfstern.effects).toEqual(
             expect.arrayContaining([
@@ -80,6 +84,7 @@ describe('reviewed supported spell pre-effect source data', () => {
         expect(largorax.system.preEffects?.[0]).toMatchObject({
             baseDuration: 161280,
             summonItem: {
+                sourceKind: 'waffe',
                 sourceUuid: 'Compendium.Ilaris.waffen.Item.b6qMsEBOjUhbVjPo',
                 overrides: [expect.objectContaining({ path: 'system.tp', maechtigBonus: '+10' })],
             },
@@ -87,6 +92,7 @@ describe('reviewed supported spell pre-effect source data', () => {
         expect(hexenkrallen.system.preEffects?.[0]).toMatchObject({
             baseDuration: 16,
             summonItem: {
+                sourceKind: 'waffe',
                 sourceUuid: 'Compendium.Ilaris.waffen.Item.iyoROxzExM0toe8P',
                 overrides: [expect.objectContaining({ path: 'system.tp', maechtigBonus: '+2' })],
             },
@@ -115,23 +121,33 @@ describe('reviewed supported spell pre-effect source data', () => {
         const ring = readItem('Firuns_Rings_nzMDgayAm0lz5QZP.json')
         const trichter = readItem('Hesindes_Trichter_YDE6JC5XNS3bJatr.json')
         const schluessel = readItem('Phexens_Meisterschl_ssel_boTWlXOLtukSGoQL.json')
-        const flameSword = readWeapon('Flammenscwert_KKOHovBsVU9bphLS.json')
+        const flameSword = readWeapon('Flammenschwert_KKOHovBsVU9bphLS.json')
 
         expect(firunsEinsicht.system.preEffects?.[0]).toMatchObject({
             baseDuration: 960,
-            summonItem: { sourceUuid: `Compendium.Ilaris.gegenstande.Item.${ring._id}` },
+            summonItem: {
+                sourceKind: 'gegenstand',
+                sourceUuid: `Compendium.Ilaris.gegenstande.Item.${ring._id}`,
+            },
         })
         expect(ingalfsAlchemie.system.preEffects?.[0]).toMatchObject({
             baseDuration: 7680,
-            summonItem: { sourceUuid: `Compendium.Ilaris.gegenstande.Item.${trichter._id}` },
+            summonItem: {
+                sourceKind: 'gegenstand',
+                sourceUuid: `Compendium.Ilaris.gegenstande.Item.${trichter._id}`,
+            },
         })
         expect(meisterschluessel.system.preEffects?.[0]).toMatchObject({
             baseDuration: 16,
-            summonItem: { sourceUuid: `Compendium.Ilaris.gegenstande.Item.${schluessel._id}` },
+            summonItem: {
+                sourceKind: 'gegenstand',
+                sourceUuid: `Compendium.Ilaris.gegenstande.Item.${schluessel._id}`,
+            },
         })
         expect(flammenschwert.system.preEffects?.[0]).toMatchObject({
             baseDuration: 16,
             summonItem: {
+                sourceKind: 'waffe',
                 sourceUuid: `Compendium.Ilaris.waffen.Item.${flameSword._id}`,
                 overrides: [expect.objectContaining({ path: 'system.tp', maechtigBonus: '+2' })],
             },

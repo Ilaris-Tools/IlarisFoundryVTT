@@ -24,6 +24,7 @@
         "changes": [],
         "ilarisModifiers": [],
         "summonItem": {
+          "sourceKind": "gegenstand",
           "sourceUuid": "Compendium.Ilaris.gegenstande.Item.boTWlXOLtukSGoQL",
           "overrides": []
         }

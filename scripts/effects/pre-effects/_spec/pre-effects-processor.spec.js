@@ -363,6 +363,7 @@ describe('pre-effect processor', () => {
             }
             global.fromUuid = jest.fn().mockResolvedValue({
                 pack: 'Ilaris.waffen',
+                type: 'nahkampfwaffe',
                 uuid: 'Compendium.Ilaris.waffen.Item.source',
                 toObject: () => ({
                     _id: 'source',

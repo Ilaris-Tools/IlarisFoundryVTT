@@ -152,8 +152,19 @@
                     </label>
                 </div>
                 <div class="form-group">
+                    <label>Art:</label>
+                    <select name="system.preEffects.{{@index}}.summonItem.sourceKind">
+                        <option value="waffe" {{#unless (ifEq summonItem.sourceKind "gegenstand")}}selected{{/unless}}>Waffe</option>
+                        <option value="gegenstand" {{#if (ifEq summonItem.sourceKind "gegenstand")}}selected{{/if}}>Gegenstand</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label>Quelle:</label>
-                    <input type="text" name="system.preEffects.{{@index}}.summonItem.sourceUuid" value="{{summonItem.sourceUuid}}" list="ilaris-summon-item-sources" placeholder="Gegenstand suchen …" />
+                    {{#if (ifEq summonItem.sourceKind "gegenstand")}}
+                    <input type="text" name="system.preEffects.{{@index}}.summonItem.sourceUuid" value="{{summonItem.sourceUuid}}" list="ilaris-summon-item-sources-gegenstand" placeholder="Gegenstand suchen …" />
+                    {{else}}
+                    <input type="text" name="system.preEffects.{{@index}}.summonItem.sourceUuid" value="{{summonItem.sourceUuid}}" list="ilaris-summon-item-sources-waffe" placeholder="Waffe suchen …" />
+                    {{/if}}
                 </div>
                 <div class="summon-item-overrides-list">
                     <h5>Werte auf der beschworenen Kopie</h5>
@@ -289,8 +300,15 @@
             </div>
             </fieldset>
             {{/each}}
-            <datalist id="ilaris-summon-item-sources">
-                {{#each @root.summonItemOptions}}
+            <datalist id="ilaris-summon-item-sources-waffe">
+                {{#each @root.summonItemOptions.waffe}}
+                    {{#each items}}
+                    <option value="{{uuid}}" label="{{name}} ({{type}}, {{../packName}})"></option>
+                    {{/each}}
+                {{/each}}
+            </datalist>
+            <datalist id="ilaris-summon-item-sources-gegenstand">
+                {{#each @root.summonItemOptions.gegenstand}}
                     {{#each items}}
                     <option value="{{uuid}}" label="{{name}} ({{type}}, {{../packName}})"></option>
                     {{/each}}

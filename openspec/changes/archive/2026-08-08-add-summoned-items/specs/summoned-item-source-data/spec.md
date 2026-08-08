@@ -17,8 +17,9 @@ from spell text.
 
 After manual source authoring, each reviewed spell or liturgy SHALL reference
 its canonical source Item by UUID in a `summonItem` pre-effect. The source
-reference SHALL be available from the world-configured weapon compendium
-catalog and SHALL use owner-turn durations only.
+reference SHALL declare the matching `sourceKind`, be available from that
+world-configured weapon or Gegenstände compendium catalog, and use owner-turn
+durations only.
 
 #### Scenario: Phexens Sternenwurf references its reviewed source Item
 

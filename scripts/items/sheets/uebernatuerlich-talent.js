@@ -8,6 +8,7 @@ import {
     IlarisModifierTarget,
     IlarisModifierTargetLabels,
 } from '../../effects/utils/ilaris-modifier-constants.js'
+import { IlarisGameSettingNames } from '../../settings/configure-game-settings.model.js'
 
 function toArray(value) {
     if (Array.isArray(value)) return value
@@ -42,7 +43,10 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
         // Populate avoidTest skill options from configured compendium packs
         context.avoidTestSkillOptions = await this._buildAvoidTestSkillOptions()
         context.avoidTestTalentOptions = await this._buildAvoidTestTalentOptions()
-        context.summonItemOptions = await this._buildSummonItemOptions()
+        context.summonItemOptions = {
+            waffe: await this._buildSummonItemOptions('waffe'),
+            gegenstand: await this._buildSummonItemOptions('gegenstand'),
+        }
 
         // Populate avoidTest attribute options from fixed config
         context.avoidTestAttributeOptions = CONFIG.ILARIS.attribute || []
@@ -147,18 +151,30 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
         return groups
     }
 
-    /** Build source-Item options from the configured weapon compendium catalog. */
-    async _buildSummonItemOptions() {
+    /** Build source-Item options from the configured source-kind catalog. */
+    async _buildSummonItemOptions(sourceKind = 'waffe') {
         const groups = []
         try {
-            const packIds = JSON.parse(game.settings.get('Ilaris', 'waffenPacks') || '[]')
+            const settingName =
+                sourceKind === 'gegenstand'
+                    ? IlarisGameSettingNames.gegenstandPacks
+                    : IlarisGameSettingNames.waffenPacks
+            const packIds = JSON.parse(game.settings.get('Ilaris', settingName) || '[]')
             for (const packId of packIds) {
                 const pack = game.packs.get(packId)
                 if (!pack) continue
 
                 await pack.getIndex({ fields: ['type'] })
                 const items = Array.from(pack.index)
-                    .filter((entry) => entry._id && entry.name)
+                    .filter(
+                        (entry) =>
+                            entry._id &&
+                            entry.name &&
+                            (sourceKind === 'gegenstand'
+                                ? entry.type === 'gegenstand'
+                                : entry.type === 'nahkampfwaffe' ||
+                                  entry.type === 'fernkampfwaffe'),
+                    )
                     .map((entry) => ({
                         name: entry.name,
                         type: entry.type || 'Item',
@@ -480,7 +496,7 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
     }
 
     _defaultSummonItem() {
-        return { enabled: false, sourceUuid: '', overrides: [] }
+        return { enabled: false, sourceKind: 'waffe', sourceUuid: '', overrides: [] }
     }
 
     _defaultSummonItemOverride() {

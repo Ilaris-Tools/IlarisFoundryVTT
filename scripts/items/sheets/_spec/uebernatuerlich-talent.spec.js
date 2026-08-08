@@ -77,8 +77,9 @@ describe('UebernatuerlichTalentSheet resistance options', () => {
 describe('UebernatuerlichTalentSheet summon-item options', () => {
     beforeEach(() => {
         global.game.settings.get.mockImplementation((namespace, key) => {
-            if (namespace === 'Ilaris' && key === 'waffenPacks')
-                return '["Ilaris.waffen","Ilaris.gegenstande"]'
+            if (namespace !== 'Ilaris') return '[]'
+            if (key === 'waffenPacks') return '["Ilaris.waffen"]'
+            if (key === 'gegenstandPacks') return '["Ilaris.gegenstande"]'
             return '[]'
         })
         global.game.packs = new Map([
@@ -106,10 +107,10 @@ describe('UebernatuerlichTalentSheet summon-item options', () => {
         ])
     })
 
-    it('lists configured weapon-pack Items as stable summon source UUIDs', async () => {
+    it('lists configured weapon and Gegenstände-pack Items as stable summon source UUIDs', async () => {
         const sheet = Object.create(UebernatuerlichTalentSheet.prototype)
 
-        await expect(sheet._buildSummonItemOptions()).resolves.toEqual([
+        await expect(sheet._buildSummonItemOptions('waffe')).resolves.toEqual([
             {
                 packName: 'Waffen',
                 items: [
@@ -125,6 +126,8 @@ describe('UebernatuerlichTalentSheet summon-item options', () => {
                     },
                 ],
             },
+        ])
+        await expect(sheet._buildSummonItemOptions('gegenstand')).resolves.toEqual([
             {
                 packName: 'Gegenstände',
                 items: [
@@ -144,8 +147,9 @@ describe('UebernatuerlichTalentSheet summon-item options', () => {
             'utf8',
         )
 
-        expect(template).toContain('list="ilaris-summon-item-sources"')
-        expect(template).toContain('<datalist id="ilaris-summon-item-sources">')
+        expect(template).toContain('summonItem.sourceKind')
+        expect(template).toContain('ilaris-summon-item-sources-waffe')
+        expect(template).toContain('ilaris-summon-item-sources-gegenstand')
     })
 })
 
