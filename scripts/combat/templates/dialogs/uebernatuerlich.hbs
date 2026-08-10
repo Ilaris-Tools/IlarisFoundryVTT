@@ -36,6 +36,35 @@
             <input type="number" name="ilaris-armed-input-{{key}}" value="{{default}}" min="{{min}}" max="{{max}}" step="1" />
         </div>
         {{/each}}
+        {{#if (or spellModificationGroups.length ungroupedSpellModifications.length)}}
+        <hr />
+        <section class="spell-modifications-section">
+            <h3>Zaubermodifikationen</h3>
+            {{#each spellModificationGroups as |group|}}
+            <fieldset class="spell-modification-group">
+                <legend>{{group.label}}{{#if group.required}} <span class="required">*</span>{{/if}}</legend>
+                {{#each group.forms as |form|}}
+                <label class="spell-modification-option" data-tooltip="{{form.description}}">
+                    <input class="spell-modification" type="radio" name="spell-modification-group-{{group.id}}" value="{{form.id}}" {{checked form.selected}} />
+                    <strong>{{form.name}}</strong>
+                    {{#if form.description}}<span class="description">{{form.description}}</span>{{/if}}
+                </label>
+                {{/each}}
+            </fieldset>
+            {{/each}}
+            {{#each ungroupedSpellModifications as |form|}}
+            <label class="spell-modification-option" data-tooltip="{{form.description}}">
+                <input class="spell-modification" type="checkbox" name="spell-modification-{{form.id}}" value="{{form.id}}" {{checked form.selected}} />
+                <strong>{{form.name}}</strong>
+                {{#if form.description}}<span class="description">{{form.description}}</span>{{/if}}
+            </label>
+            {{/each}}
+            {{#if spellModificationErrors.length}}
+            <p class="notification error">{{spellModificationErrors.[0]}}</p>
+            {{/if}}
+            <p class="description"><strong>Effektives Profil:</strong> Schwierigkeit {{spellModificationProfile.difficulty}}, Kosten {{spellModificationProfile.cost}}{{#if spellModificationProfile.target}}, Ziel {{spellModificationProfile.target}}{{/if}}{{#if spellModificationProfile.range}}, Reichweite {{spellModificationProfile.range}}{{/if}}{{#if spellModificationProfile.duration}}, Dauer {{spellModificationProfile.duration}}{{/if}}{{#if spellModificationProfile.permanentCost}}, Permanente Kosten {{spellModificationProfile.permanentCost}}{{/if}}</p>
+        </section>
+        {{/if}}
         {{#if (or ilarisSituationControls.boolean.length ilarisSituationControls.exclusive.length)}}
         <hr />
         <div>

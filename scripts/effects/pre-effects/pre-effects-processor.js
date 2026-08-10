@@ -198,6 +198,7 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {},
                     armedInputValues,
                     sourceType,
                     triggeringRollTotal,
+                    context.spellModificationId || '',
                 )
                 continue
             }
@@ -214,6 +215,7 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {},
                     maechtigeQs,
                     preEffectIndex,
                     applicationId,
+                    spellModificationId: context.spellModificationId || '',
                 })
             } else if (preEffect.instant) {
                 await applyInstantPreEffect(targetActor, preEffect, maechtigeQs, speaker)
@@ -229,6 +231,7 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {},
                     applicationId,
                     armedInputValues,
                     sourceType,
+                    context.spellModificationId || '',
                 )
             }
         }
@@ -249,6 +252,7 @@ async function sendResistPromptForEffect(
     armedInputValues,
     sourceType,
     triggeringRollTotal,
+    spellModificationId,
 ) {
     const serialized = {
         ...preEffect,
@@ -262,6 +266,7 @@ async function sendResistPromptForEffect(
         applicationId,
         armedInputValues,
         sourceType,
+        spellModificationId,
         ...(Number.isFinite(triggeringRollTotal) ? { triggeringRollTotal } : {}),
     }
     await sendResistPrompt(targetActor, serialized, spellItem.name, speaker)
@@ -304,6 +309,7 @@ export async function createActiveEffectFromPreEffect(
     applicationId = foundry.utils.randomID(),
     armedInputValues = {},
     sourceType = 'uebernatuerlich',
+    spellModificationId = '',
 ) {
     let payload
     try {
@@ -382,6 +388,7 @@ export async function createActiveEffectFromPreEffect(
                 fertigkeiten: spellItem.system?.fertigkeiten || '',
                 preEffectIndex,
                 applicationId,
+                spellModificationId,
             },
         },
     }

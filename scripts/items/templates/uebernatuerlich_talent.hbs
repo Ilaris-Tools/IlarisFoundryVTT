@@ -36,6 +36,53 @@
                 <label>Modifikationen:</label>
                 <textarea name="system.modifikationen">{{item.system.modifikationen}}</textarea>
             </div>
+            <section class="spell-modification-editor">
+                <h3>Strukturierte Zaubermodifikationen</h3>
+                <p class="hint">Diese Formen ersetzen nur die automatisch erzeugten Modifikationsmanöver. Der Regeltext oben bleibt erhalten.</p>
+                <button type="button" class="add-spell-modification-group">Gruppe hinzufügen</button>
+                {{#each item.system.spellModificationGroups as |group|}}
+                <fieldset class="spell-modification-group-card">
+                    <legend>Gruppe {{@index}}</legend>
+                    <div class="form-group"><label>ID</label><input type="text" name="system.spellModificationGroups.{{@index}}.id" value="{{group.id}}" /></div>
+                    <div class="form-group"><label>Bezeichnung</label><input type="text" name="system.spellModificationGroups.{{@index}}.label" value="{{group.label}}" /></div>
+                    <label><input type="checkbox" name="system.spellModificationGroups.{{@index}}.required" {{checked group.required}} /> Genau eine Auswahl erforderlich</label>
+                    <button type="button" class="delete-spell-modification-group" data-group-index="{{@index}}">Gruppe löschen</button>
+                </fieldset>
+                {{/each}}
+                <button type="button" class="add-spell-modification">Zaubermodifikation hinzufügen</button>
+                {{#each item.system.spellModifications as |form|}}
+                <fieldset class="spell-modification-card">
+                    <legend>Form {{@index}}: {{form.name}}</legend>
+                    <div class="form-group"><label>ID</label><input type="text" name="system.spellModifications.{{@index}}.id" value="{{form.id}}" /></div>
+                    <div class="form-group"><label>Name</label><input type="text" name="system.spellModifications.{{@index}}.name" value="{{form.name}}" /></div>
+                    <div class="form-group"><label>Beschreibung</label><textarea name="system.spellModifications.{{@index}}.description">{{form.description}}</textarea></div>
+                    <div class="form-group"><label>Gruppe</label><input type="text" name="system.spellModifications.{{@index}}.group" value="{{form.group}}" list="spell-modification-groups" /></div>
+                    <div class="form-group"><label>Effektmodus</label><select name="system.spellModifications.{{@index}}.effectMode"><option value="inherit" {{#if (ifEq form.effectMode "inherit")}}selected{{/if}}>Basis übernehmen</option><option value="extend" {{#if (ifEq form.effectMode "extend")}}selected{{/if}}>Basis erweitern</option><option value="replace" {{#if (ifEq form.effectMode "replace")}}selected{{/if}}>Basis ersetzen</option></select></div>
+                    <h4>Profil</h4>
+                    <div class="form-group"><label>Schwierigkeit</label><input type="number" name="system.spellModifications.{{@index}}.profile.difficulty" value="{{form.profile.difficulty}}" /></div>
+                    <div class="form-group"><label>Kostenmodus</label><select name="system.spellModifications.{{@index}}.profile.cost.mode"><option value="add" {{#if (ifEq form.profile.cost.mode "add")}}selected{{/if}}>Addieren</option><option value="set" {{#if (ifEq form.profile.cost.mode "set")}}selected{{/if}}>Setzen</option></select><input type="number" name="system.spellModifications.{{@index}}.profile.cost.value" value="{{form.profile.cost.value}}" /></div>
+                    <div class="form-group"><label>Permanente Kosten</label><input type="text" name="system.spellModifications.{{@index}}.profile.permanentCost" value="{{form.profile.permanentCost}}" /></div>
+                    <div class="form-group"><label>Ziel</label><input type="text" name="system.spellModifications.{{@index}}.profile.target" value="{{form.profile.target}}" /></div>
+                    <div class="form-group"><label>Reichweite</label><input type="text" name="system.spellModifications.{{@index}}.profile.range" value="{{form.profile.range}}" /></div>
+                    <div class="form-group"><label>Wirkungsdauer</label><input type="text" name="system.spellModifications.{{@index}}.profile.duration" value="{{form.profile.duration}}" /></div>
+                    <h4>Form-Pre-Effects</h4>
+                    <button type="button" class="add-spell-modification-pre-effect" data-form-index="{{@index}}">Pre-Effect hinzufügen</button>
+                    {{#each form.preEffects as |preEffect|}}
+                    <div class="spell-modification-pre-effect-card">
+                        <div class="form-group"><label>Dauer</label><input type="number" name="system.spellModifications.{{@../index}}.preEffects.{{@index}}.baseDuration" value="{{preEffect.baseDuration}}" /></div>
+                        <label><input type="checkbox" name="system.spellModifications.{{@../index}}.preEffects.{{@index}}.instant" {{checked preEffect.instant}} /> Sofortig</label>
+                        <label><input type="checkbox" name="system.spellModifications.{{@../index}}.preEffects.{{@index}}.summonItem.enabled" {{checked preEffect.summonItem.enabled}} /> Gegenstand beschwören</label>
+                        <div class="form-group"><label>Quell-UUID</label><input type="text" name="system.spellModifications.{{@../index}}.preEffects.{{@index}}.summonItem.sourceUuid" value="{{preEffect.summonItem.sourceUuid}}" /></div>
+                        <button type="button" class="delete-spell-modification-pre-effect" data-form-index="{{@../index}}" data-pre-effect-index="{{@index}}">Pre-Effect löschen</button>
+                    </div>
+                    {{/each}}
+                    <button type="button" class="move-spell-modification" data-form-index="{{@index}}" data-direction="-1">↑</button>
+                    <button type="button" class="move-spell-modification" data-form-index="{{@index}}" data-direction="1">↓</button>
+                    <button type="button" class="delete-spell-modification" data-form-index="{{@index}}">Form löschen</button>
+                </fieldset>
+                {{/each}}
+                <datalist id="spell-modification-groups">{{#each item.system.spellModificationGroups}}<option value="{{id}}">{{label}}</option>{{/each}}</datalist>
+            </section>
             <div class="flexrow">
                 <label>Vorbereitung:</label>
                 <input

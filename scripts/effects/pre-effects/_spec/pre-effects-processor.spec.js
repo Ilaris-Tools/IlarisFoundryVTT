@@ -75,6 +75,37 @@ describe('toArray', () => {
 })
 
 describe('pre-effect processor', () => {
+    it('uses an explicit form list instead of source pre-effects and records form provenance', async () => {
+        const caster = createTargetActor({ id: 'caster-id', uuid: 'Actor.caster' })
+        global.game.actors = { get: jest.fn((id) => (id === caster.id ? caster : undefined)) }
+        const spell = {
+            name: 'Fortifex',
+            uuid: 'Item.fortifex',
+            system: {
+                preEffects: [
+                    { baseDuration: 2, changes: [{ key: 'system.base', type: 'add', value: '1' }] },
+                ],
+            },
+        }
+        const replacement = {
+            baseDuration: 4,
+            changes: [{ key: 'system.replacement', type: 'add', value: '2' }],
+        }
+
+        await applyPreEffects(
+            { success: true },
+            { item: spell, actor: caster, selectedActors: [{ actorId: caster.id }], speaker: {} },
+            {},
+            { preEffects: [replacement], spellModificationId: 'schimmernder-schild' },
+        )
+
+        const created = global.ActiveEffect.createDocuments.mock.calls[0][0][0]
+        expect(created.changes).toEqual([
+            expect.objectContaining({ key: 'system.replacement', value: '2' }),
+        ])
+        expect(created.flags.ilaris.spellModificationId).toBe('schimmernder-schild')
+    })
+
     it('routes a canonical condition pre-effect to one status-bearing condition effect', async () => {
         global.CONFIG.statusEffects = {
             Position4: {
@@ -505,7 +536,12 @@ describe('pre-effect processor', () => {
                 maechtigeMagieQs: 0,
             }
 
-            await applyPreEffects({ success: true }, dialog)
+            await applyPreEffects(
+                { success: true },
+                dialog,
+                {},
+                { spellModificationId: 'shield-form' },
+            )
             await applyPreEffects({ success: true }, dialog)
 
             for (const target of [firstTarget, secondTarget]) {
@@ -531,6 +567,11 @@ describe('pre-effect processor', () => {
                 ).toBe(2)
             }
             expect(global.ActiveEffect.createDocuments).toHaveBeenCalledTimes(4)
+            expect(
+                global.ActiveEffect.createDocuments.mock.calls[0][0][0].flags.ilaris,
+            ).toMatchObject({
+                spellModificationId: 'shield-form',
+            })
         },
     )
 

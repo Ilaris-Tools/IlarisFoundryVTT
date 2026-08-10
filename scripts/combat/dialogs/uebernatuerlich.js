@@ -19,6 +19,10 @@ import {
     getIlarisSituationTags as expandIlarisSituationTags,
     getRelevantSupernaturalSituationControls,
 } from '../../effects/utils/ilaris-roll-situations.js'
+import {
+    normalizeSpellModifications,
+    resolveSpellModificationContext,
+} from '../../items/data/spell-modifications.js'
 
 export class UebernatuerlichDialog extends CombatDialog {
     /** @override */
@@ -59,6 +63,8 @@ export class UebernatuerlichDialog extends CombatDialog {
         this.ilarisSituationSelection = []
         this.ilarisSituationControls = { boolean: [], exclusive: [] }
         this.armedInputValues = {}
+        this.selectedSpellModificationIds = []
+        this.spellModificationContext = resolveSpellModificationContext(this.item, [])
     }
 
     /**
@@ -71,6 +77,12 @@ export class UebernatuerlichDialog extends CombatDialog {
 
         // Setup modifier display with debounced listeners
         this.setupModifierDisplay()
+        this.element.querySelectorAll('.spell-modification').forEach((input) => {
+            input.addEventListener('change', () => {
+                this._updateSpellModificationSelection()
+                this.render()
+            })
+        })
     }
 
     /* -------------------------------------------- */
@@ -144,7 +156,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         const icon = this.item.type === 'zauber' ? '🔮' : '✨'
 
         const difficultyRows = []
-        const schwierigkeit = this.item.system.schwierigkeit
+        const schwierigkeit = this.getEffectiveSpellProfile().difficulty
         if (schwierigkeit) {
             const parsedDifficulty = parseInt(schwierigkeit)
             if (!isNaN(parsedDifficulty)) {
@@ -198,7 +210,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         const icon = '⚡'
 
         // Base energy cost
-        let originalCost = sanitizeEnergyCost(this.item.system.kosten) || 0
+        let originalCost = this.getEffectiveSpellProfile().cost
         if (this.energy_override != null) {
             originalCost = this.energy_override
         }
@@ -237,7 +249,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             })
         }
 
-        const difficulty = +this.item.system.schwierigkeit
+        const difficulty = this.getEffectiveSpellProfile().difficulty
         const isNonStandardDifficulty = isNaN(difficulty) || !difficulty
 
         return {
@@ -300,7 +312,7 @@ export class UebernatuerlichDialog extends CombatDialog {
 
         const hasVerbotenePforten = this.hasVerbotenePfortenAccess()
 
-        const difficulty = +this.item.system.schwierigkeit
+        const difficulty = this.getEffectiveSpellProfile().difficulty
         const isNonStandardDifficulty = isNaN(difficulty) || !difficulty
 
         return {
@@ -321,6 +333,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             set_energy_cost: this.set_energy_cost,
             ilarisSituationControls: this.ilarisSituationControls,
             armedInputs: this._getArmedInputs(),
+            ...this._getSpellModificationTemplateContext(),
         }
     }
 
@@ -334,7 +347,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             Number(this.element.querySelector('input[name="xd20"]:checked')?.value) || 0
         xd20_choice = xd20_choice == 0 ? 1 : 3
         let diceFormula = this.getDiceFormula(xd20_choice)
-        await this.manoeverAuswaehlen()
+        if ((await this.manoeverAuswaehlen()) === false) return
         await this.updateManoeverMods()
         this.updateStatusMods()
 
@@ -349,7 +362,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         // Parse difficulty from item's schwierigkeit
         let difficulty = null
         let additionalText = ''
-        const schwierigkeit = this.item.system.schwierigkeit
+        const schwierigkeit = this.getEffectiveSpellProfile().difficulty
         if (schwierigkeit) {
             const parsedDifficulty = parseInt(schwierigkeit)
             if (!isNaN(parsedDifficulty)) {
@@ -358,6 +371,7 @@ export class UebernatuerlichDialog extends CombatDialog {
                 additionalText = `\n${schwierigkeit}`
             }
         }
+        additionalText += this.getEffectiveSpellProfileText()
 
         const rollResult = await evaluate_roll_with_crit(
             formula,
@@ -394,13 +408,16 @@ export class UebernatuerlichDialog extends CombatDialog {
         super._updateSchipsStern()
 
         // Fire-and-forget pre-effects on success
-        if (isSuccess && this.item.system.preEffects?.length > 0) {
-            await applyPreEffects(rollResult, this, this.armedInputValues)
+        if (isSuccess && this.getEffectiveSpellModificationContext().preEffects.length > 0) {
+            await applyPreEffects(rollResult, this, this.armedInputValues, {
+                preEffects: this.getEffectiveSpellModificationContext().preEffects,
+                spellModificationId: this.getSelectedSpellModificationId(),
+            })
         }
     }
 
     async _energieAbrechnenKlick(isSuccess) {
-        await this.manoeverAuswaehlen()
+        if ((await this.manoeverAuswaehlen()) === false) return
         await this.updateManoeverMods()
         // Initialize and check energy values
         await this.initializeEnergyValues()
@@ -408,8 +425,11 @@ export class UebernatuerlichDialog extends CombatDialog {
         await this.applyEnergyCost(isSuccess, this.is16OrHigher)
 
         // Fire-and-forget pre-effects for non-standard difficulty spells
-        if (isSuccess && this.item.system.preEffects?.length > 0) {
-            await applyPreEffects({ success: true }, this, this.armedInputValues)
+        if (isSuccess && this.getEffectiveSpellModificationContext().preEffects.length > 0) {
+            await applyPreEffects({ success: true }, this, this.armedInputValues, {
+                preEffects: this.getEffectiveSpellModificationContext().preEffects,
+                spellModificationId: this.getSelectedSpellModificationId(),
+            })
         }
 
         // If not enough resources, show error
@@ -484,7 +504,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         // Calculate cost based on success
         let cost = isSuccess
             ? this.mod_energy
-            : Math.ceil(sanitizeEnergyCost(this.item.system.kosten) / costModifier)
+            : Math.ceil(this.getEffectiveSpellProfile().cost / costModifier)
 
         // Apply all cost modifications from advantages and styles
         cost = hardcoded.calculateModifiedCost(
@@ -543,6 +563,12 @@ export class UebernatuerlichDialog extends CombatDialog {
      * Parse maneuver selections from the dialog form.
      */
     async manoeverAuswaehlen() {
+        this._updateSpellModificationSelection()
+        const spellModificationContext = this.getEffectiveSpellModificationContext()
+        if (!spellModificationContext.valid) {
+            ui.notifications.error(spellModificationContext.errors.join(' '))
+            return false
+        }
         // Ensure manoever exists
         if (!this.item.system.manoever) {
             this.item.system.manoever = ILARIS.manoever_ueber
@@ -587,11 +613,12 @@ export class UebernatuerlichDialog extends CombatDialog {
         manoever.mod.selected =
             Number(this.element.querySelector(`#modifikator-${this.dialogId}`)?.value) || 0 // Modifikator
         await super.manoeverAuswaehlen()
+        return true
     }
 
     _getArmedInputs() {
         const inputs = []
-        for (const preEffect of Object.values(this.item.system.preEffects || {})) {
+        for (const preEffect of this.getEffectiveSpellModificationContext().preEffects) {
             for (const input of preEffect?.armedCombat?.inputs || []) {
                 if (input?.key && !inputs.some((entry) => entry.key === input.key))
                     inputs.push(input)
@@ -690,12 +717,17 @@ export class UebernatuerlichDialog extends CombatDialog {
 
     async updateManoeverMods() {
         this._updateIlarisSituationSelection()
+        const spellModificationContext = this.getEffectiveSpellModificationContext()
+        this.spellModificationContext = spellModificationContext
         let manoever = this.item.system.manoever
 
         let mod_at = 0
         let mod_vt = 0
         let mod_dm = 0
-        let mod_energy = sanitizeEnergyCost(this.item.system.kosten)
+        let mod_energy = spellModificationContext.profile.cost
+        this.energy_override = spellModificationContext.selectedForms.length
+            ? spellModificationContext.profile.cost
+            : null
         if (this.set_energy_cost?.value != null) {
             mod_energy = this.set_energy_cost.value
             this.energy_override = this.set_energy_cost.value
@@ -881,6 +913,65 @@ export class UebernatuerlichDialog extends CombatDialog {
         this.fumble_val = fumble_val
         this.damageType = damageType
         this.trueDamage = trueDamage
+    }
+
+    getEffectiveSpellProfileText() {
+        const context = this.getEffectiveSpellModificationContext()
+        if (!context.selectedForms.length) return ''
+        const profile = context.profile
+        const formNames = context.selectedForms.map((form) => form.name).join(', ')
+        const descriptions = context.selectedForms
+            .map((form) => form.description)
+            .filter(Boolean)
+            .join('\n')
+        return `\nZaubermodifikation: ${formNames}\nZiel: ${profile.target || this.item.system.ziel}\nReichweite: ${profile.range || this.item.system.reichweite}\nWirkungsdauer: ${profile.duration || this.item.system.wirkungsdauer}${profile.permanentCost ? `\nPermanente Kosten: ${profile.permanentCost}` : ''}${descriptions ? `\nWirkung: ${descriptions}` : ''}`
+    }
+
+    _updateSpellModificationSelection() {
+        if (!this.element?.querySelectorAll) return
+        this.selectedSpellModificationIds = Array.from(
+            this.element.querySelectorAll('.spell-modification:checked'),
+        )
+            .map((input) => input.value)
+            .filter(Boolean)
+        this.spellModificationContext = resolveSpellModificationContext(
+            this.item,
+            this.selectedSpellModificationIds,
+        )
+    }
+
+    getEffectiveSpellModificationContext() {
+        this.spellModificationContext ??= resolveSpellModificationContext(
+            this.item,
+            this.selectedSpellModificationIds,
+        )
+        return this.spellModificationContext
+    }
+
+    getEffectiveSpellProfile() {
+        return this.getEffectiveSpellModificationContext().profile
+    }
+
+    getSelectedSpellModificationId() {
+        return this.getEffectiveSpellModificationContext().selectedForms.at(-1)?.id || ''
+    }
+
+    _getSpellModificationTemplateContext() {
+        const { groups, modifications } = normalizeSpellModifications(this.item.system)
+        const selectedIds = this.selectedSpellModificationIds
+        return {
+            spellModificationGroups: groups.map((group) => ({
+                ...group,
+                forms: modifications
+                    .filter((form) => form.group === group.id)
+                    .map((form) => ({ ...form, selected: selectedIds.includes(form.id) })),
+            })),
+            ungroupedSpellModifications: modifications
+                .filter((form) => !form.group)
+                .map((form) => ({ ...form, selected: selectedIds.includes(form.id) })),
+            spellModificationProfile: this.getEffectiveSpellProfile(),
+            spellModificationErrors: this.getEffectiveSpellModificationContext().errors,
+        }
     }
 
     getIlarisSituationTags() {

@@ -243,3 +243,71 @@ describe('UebernatuerlichTalentSheet Ilaris modifier removal', () => {
         })
     })
 })
+
+describe('UebernatuerlichTalentSheet structured spell forms', () => {
+    it('persists group/form array edits and exposes the nested Pre-Effect authoring controls', async () => {
+        const sheet = new UebernatuerlichTalentSheet()
+        const clickHandlers = []
+        const editor = {
+            addEventListener: jest.fn((_eventName, handler) => clickHandlers.push(handler)),
+        }
+        sheet.element = {
+            querySelector: jest.fn((selector) => {
+                if (selector === '.spell-modification-editor') return editor
+                return null
+            }),
+            querySelectorAll: jest.fn(() => []),
+        }
+        sheet.document = {
+            system: {
+                spellModificationGroups: { 0: { id: 'attribute', label: 'Attribut' } },
+                spellModifications: {
+                    0: { id: 'ff', name: 'FF', preEffects: { 0: { baseDuration: 1 } } },
+                },
+            },
+            update: jest.fn().mockResolvedValue(undefined),
+        }
+        const addGroup = {
+            dataset: {},
+            closest: jest.fn((selector) => {
+                if (selector === 'button') return addGroup
+                if (selector === '.add-spell-modification-group') return addGroup
+                return null
+            }),
+        }
+        const addNestedPreEffect = {
+            dataset: { formIndex: '0' },
+            closest: jest.fn((selector) => {
+                if (selector === 'button') return addNestedPreEffect
+                if (selector === '.add-spell-modification-pre-effect') return addNestedPreEffect
+                return null
+            }),
+        }
+
+        sheet._onRender({}, {})
+        await clickHandlers[0]({ target: addGroup })
+        await clickHandlers[0]({ target: addNestedPreEffect })
+
+        expect(sheet.document.update).toHaveBeenNthCalledWith(1, {
+            'system.spellModificationGroups': [
+                { id: 'attribute', label: 'Attribut' },
+                expect.objectContaining({ id: expect.stringMatching(/^gruppe-/) }),
+            ],
+        })
+        expect(sheet.document.update).toHaveBeenNthCalledWith(2, {
+            'system.spellModifications': [
+                expect.objectContaining({
+                    id: 'ff',
+                    preEffects: [expect.objectContaining({ baseDuration: 1 }), expect.any(Object)],
+                }),
+            ],
+        })
+
+        const template = readFileSync(
+            join(process.cwd(), 'scripts', 'items', 'templates', 'uebernatuerlich_talent.hbs'),
+            'utf8',
+        )
+        expect(template).toContain('spell-modification-editor')
+        expect(template).toContain('add-spell-modification-pre-effect')
+    })
+})

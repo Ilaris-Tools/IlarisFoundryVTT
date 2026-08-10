@@ -284,6 +284,7 @@ async function applyPreEffectFromResist(preEffectData) {
         preEffectData.applicationId,
         preEffectData.armedInputValues || {},
         preEffectData.sourceType || 'uebernatuerlich',
+        preEffectData.spellModificationId || '',
     )
 }
 
@@ -357,6 +358,7 @@ async function applyDiminishedEffect(preEffectData) {
         preEffectData.applicationId,
         preEffectData.armedInputValues || {},
         preEffectData.sourceType || 'uebernatuerlich',
+        preEffectData.spellModificationId || '',
     )
 }
 

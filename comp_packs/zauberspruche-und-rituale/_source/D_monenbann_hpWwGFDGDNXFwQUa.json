@@ -3,6 +3,7 @@
   "type": "zauber",
   "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
   "system": {
+    "spellModificationPreset": "antiMagic",
     "fertigkeiten": "Antimagie, Dämonisch",
     "fertigkeit_ausgewaehlt": "auto",
     "text": "Wirkt gegen Zauber der Fertigkeit Dämonisch sowie gegen Dämonen und Untote, in die keine gAsP geflossen sind. Spezielle Antimagie-Modifikationen siehe S. 126.",

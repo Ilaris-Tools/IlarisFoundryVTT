@@ -124,4 +124,85 @@ describe('UebernatuerlichDialog roll execution', () => {
         )
         expect(dialog.applyEnergyCost).toHaveBeenCalledWith(true, true)
     })
+
+    test('keeps selected spell forms dialog-local and resolves their effective profile', () => {
+        const item = {
+            name: 'Attributo',
+            type: 'zauber',
+            system: {
+                schwierigkeit: '12',
+                kosten: '4',
+                ziel: 'Selbst',
+                reichweite: 'Beruehrung',
+                wirkungsdauer: '1 Stunde',
+                spellModificationGroups: [{ id: 'attribute', required: true }],
+                spellModifications: [
+                    {
+                        id: 'ff',
+                        name: 'FF',
+                        group: 'attribute',
+                        profile: { difficulty: -2, cost: { mode: 'set', value: 8 } },
+                    },
+                ],
+            },
+            setManoevers: jest.fn(),
+        }
+        const actor = {
+            type: 'held',
+            vorteil: { magie: [], karma: [], allgemein: [], zaubertraditionen: [] },
+        }
+        const dialog = new UebernatuerlichDialog(actor, item)
+        dialog.selectedSpellModificationIds = ['ff']
+        dialog.spellModificationContext = null
+
+        expect(dialog.getEffectiveSpellProfile()).toMatchObject({ difficulty: 10, cost: 8 })
+        expect(dialog.getEffectiveSpellProfileText()).toContain('Zaubermodifikation: FF')
+        expect(item.system).not.toHaveProperty('selectedSpellModificationIds')
+    })
+
+    test('rejects a missing required spell-form choice before mutating maneuver state', async () => {
+        const item = {
+            name: 'Attributo',
+            type: 'zauber',
+            system: {
+                spellModificationGroups: [{ id: 'attribute', label: 'Attribut', required: true }],
+                spellModifications: [{ id: 'ff', group: 'attribute' }],
+            },
+            setManoevers: jest.fn(),
+        }
+        const actor = {
+            type: 'held',
+            vorteil: { magie: [], karma: [], allgemein: [], zaubertraditionen: [] },
+        }
+        const dialog = new UebernatuerlichDialog(actor, item)
+        dialog.element = { querySelectorAll: jest.fn(() => []) }
+
+        await expect(dialog.manoeverAuswaehlen()).resolves.toBe(false)
+        expect(ui.notifications.error).toHaveBeenCalledWith(expect.stringContaining('genau eine'))
+    })
+
+    test('includes selected form rules text in the cast summary', () => {
+        const dialog = Object.create(UebernatuerlichDialog.prototype)
+        dialog.item = {
+            system: { ziel: 'Selbst', reichweite: 'BerÃ¼hrung', wirkungsdauer: 'sofort' },
+        }
+        dialog.getEffectiveSpellModificationContext = () => ({
+            selectedForms: [
+                {
+                    name: 'Zauber aufheben',
+                    description: 'Die Aufhebung wird durch Spielleitung und Spieler verwaltet.',
+                },
+            ],
+            profile: {
+                target: 'Zauber',
+                range: '8 Schritt',
+                duration: 'augenblicklich',
+                permanentCost: 'Halbe Basiskosten des Zielzaubers',
+            },
+        })
+
+        expect(dialog.getEffectiveSpellProfileText()).toContain(
+            'Die Aufhebung wird durch Spielleitung und Spieler verwaltet.',
+        )
+    })
 })

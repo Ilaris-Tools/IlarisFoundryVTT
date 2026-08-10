@@ -3,6 +3,7 @@
   "type": "zauber",
   "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
   "system": {
+    "spellModificationPreset": "antiMagic",
     "fertigkeiten": "Antimagie, Eis, Erz, Feuer, Humus, Luft, Wasser",
     "fertigkeit_ausgewaehlt": "auto",
     "text": "Wirkt gegen Zauber der Fertigkeiten Eis, Erz, Feuer, Humus, Luft und Wasser, sowie gegen Elementare, in die keine gAsP geflossen sind. Spezielle Antimagie-Modifikationen siehe S. 126.",

@@ -116,6 +116,7 @@ function modifierMatchesContext(modifier, context) {
     return (
         selectorMatches(selector.fertigkeit, context.fertigkeit) &&
         selectorMatches(selector.talent, context.talent) &&
+        selectorMatches(selector.attribute, context.attributes) &&
         selectorMatches(selector.situation, context.situation)
     )
 }

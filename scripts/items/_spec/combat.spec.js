@@ -71,6 +71,19 @@ describe('CombatItem', () => {
     })
 
     describe('_parseModifikationen', () => {
+        it('keeps prose parsing as a legacy fallback but suppresses it for structured forms', () => {
+            combatItem.system.modifikationen = 'Miasmafaxius (-4, 8 AsP)'
+            combatItem.manoever = []
+            combatItem.system.spellModifications = []
+            combatItem._addLegacySpellModificationManeuvers()
+            expect(combatItem.manoever).toHaveLength(1)
+
+            combatItem.manoever = []
+            combatItem.system.spellModifications = [{ id: 'miasmafaxius' }]
+            combatItem._addLegacySpellModificationManeuvers()
+            expect(combatItem.manoever).toEqual([])
+        })
+
         it('should parse complex modification string with multiple modifications', () => {
             const modificationString =
                 'Schutz vor Übelkeit (–4; auch ungefährliche, aber unangenehme Inhalte wie Salz im Meerwasser werden entfernt.)\nSchutz vor Vergiftung (–4, Wirkungsdauer 8 Stunden; du reinigst auch alles, was dem Essen hinzugefügt wird.)'

@@ -50,6 +50,7 @@ export async function summonItemFromPreEffect({
     maechtigeQs,
     preEffectIndex,
     applicationId,
+    spellModificationId = '',
 }) {
     const config = preEffect.summonItem
     if (!config?.sourceUuid) return null
@@ -119,6 +120,7 @@ export async function summonItemFromPreEffect({
                     summonedItemId: clone.id,
                     preEffectIndex,
                     applicationId,
+                    spellModificationId,
                 },
             },
         }

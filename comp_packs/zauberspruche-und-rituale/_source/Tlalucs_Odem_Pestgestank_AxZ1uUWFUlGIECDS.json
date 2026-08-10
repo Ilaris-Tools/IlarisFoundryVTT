@@ -17,6 +17,21 @@
     "erlernen": "Mag 18; Bor, Dru, Hex 20",
     "pw": 0,
     "gruppe": 0,
+    "spellModifications": [
+      {
+        "id": "miasmafaxius",
+        "name": "Miasmafaxius",
+        "description": "Die Wolke trifft eine Einzelperson.",
+        "effectMode": "inherit",
+        "profile": {
+          "difficulty": -4,
+          "cost": { "mode": "set", "value": 8 },
+          "target": "Einzelperson"
+        },
+        "preEffects": []
+      }
+    ],
+    "spellModificationGroups": [],
     "preEffects": [
       {
         "baseDuration": 0,

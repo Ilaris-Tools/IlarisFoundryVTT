@@ -3,6 +3,7 @@
   "type": "zauber",
   "img": "systems/Ilaris/assets/images/skills/magic-talent.svg",
   "system": {
+    "spellModificationPreset": "antiMagic",
     "fertigkeiten": "Antimagie, Verwandlung",
     "fertigkeit_ausgewaehlt": "auto",
     "text": "Wirkt gegen Zauber der Fertigkeit Verwandlung und Chimären, spezielle Antimagie-Modifikationen siehe S. 126.",
