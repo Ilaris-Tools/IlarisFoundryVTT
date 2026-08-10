@@ -34,7 +34,8 @@
           "enabled": true,
           "attribut": "GE",
           "attributChoices": ["GE", "KO"],
-          "resistDifficulty": 0,
+          "resistDifficulty": 12,
+          "resistDifficultySource": "triggeringRoll",
           "diminishedOnly": false
         }
       }

@@ -548,6 +548,7 @@ export class AngriffDialog extends CombatDialog {
             defenderWins ? 'onSuccessfulDefense' : 'onConfirmedHit',
             defenderWins ? this.actor : this.lastDefenseRoll.actor,
             defenderWins ? this.actor : this.attackingActor,
+            defenderWins ? this.lastDefenseRoll : this.attackRoll,
         )
         if (armedDamage) {
             this.attackRoll.ilarisArmedDamageFormula = armedDamage
@@ -578,14 +579,20 @@ export class AngriffDialog extends CombatDialog {
             .filter((maneuver) => maneuver.system.preEffects.length)
     }
 
-    async _dispatchManeuverPreEffects(maneuvers, activation, targetActor, sourceActor) {
+    async _dispatchManeuverPreEffects(
+        maneuvers,
+        activation,
+        targetActor,
+        sourceActor,
+        triggeringRollResult,
+    ) {
         for (const maneuver of maneuvers || []) {
             const preEffects = maneuver.system.preEffects.filter(
                 (effect) => effect.activation === activation,
             )
             if (!preEffects.length) continue
             await applyPreEffects(
-                { success: true },
+                triggeringRollResult ?? { success: true },
                 {
                     item: maneuver,
                     actor: sourceActor,

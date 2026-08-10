@@ -51,6 +51,30 @@ export function resolveInitialResistTalent(talents, configuredTalent) {
     return talents?.some((talent) => talent.name === configuredTalent) ? configuredTalent : ''
 }
 
+const DEFAULT_RESIST_DIFFICULTY = 12
+
+function toFiniteNumber(value) {
+    if (value === undefined || value === null || value === '') return null
+    const number = typeof value === 'number' ? value : Number(value)
+    return Number.isFinite(number) ? number : null
+}
+
+/** Resolve the immutable difficulty of a resistance prompt. */
+export function resolveResistDifficulty(preEffectData) {
+    const avoidTest = preEffectData?.avoidTest || {}
+    if (avoidTest.resistDifficultySource === 'triggeringRoll') {
+        const triggeringRollTotal = toFiniteNumber(preEffectData?.triggeringRollTotal)
+        if (triggeringRollTotal !== null) {
+            return { difficulty: triggeringRollTotal, missingTriggeringRoll: false }
+        }
+        return { difficulty: DEFAULT_RESIST_DIFFICULTY, missingTriggeringRoll: true }
+    }
+
+    const baseDifficulty = toFiniteNumber(avoidTest.resistDifficulty) ?? DEFAULT_RESIST_DIFFICULTY
+    const maechtigeQs = toFiniteNumber(preEffectData?.maechtigeQs) ?? 0
+    return { difficulty: baseDifficulty + maechtigeQs * 4, missingTriggeringRoll: false }
+}
+
 /**
  * Handle a resist button click: open FertigkeitDialog and wait for result.
  */
@@ -60,10 +84,13 @@ async function handleResistClick(actor, preEffectData, button) {
     const spellItemUuid = preEffectData.spellUuid
     const spellName = preEffectData.spellName || ''
 
-    // Compute resist difficulty
-    const maechtigeQs = preEffectData.maechtigeQs || 0
-    const baseDifficulty = avoidTest.resistDifficulty || 12
-    const resistDifficulty = baseDifficulty + maechtigeQs * 4
+    const { difficulty: resistDifficulty, missingTriggeringRoll } =
+        resolveResistDifficulty(preEffectData)
+    if (missingTriggeringRoll) {
+        ui?.notifications?.warn(
+            'Die auslösende Probe ist nicht verfügbar. Widerstandsschwierigkeit ist 12.',
+        )
+    }
 
     const attributeChoices = (avoidTest.attributChoices || []).filter(
         (attribute) => actor.system?.attribute?.[attribute]?.pw !== undefined,

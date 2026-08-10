@@ -326,9 +326,18 @@
                         </label>
                     </div>
                     <div class="form-group">
+                        <label>Schwierigkeit aus:</label>
+                        <select name="system.preEffects.{{@index}}.avoidTest.resistDifficultySource">
+                            <option value="fixed" {{#unless (ifEq avoidTest.resistDifficultySource "triggeringRoll")}}selected{{/unless}}>Fester Wert</option>
+                            <option value="triggeringRoll" {{#if (ifEq avoidTest.resistDifficultySource "triggeringRoll")}}selected{{/if}}>Ergebnis der auslösenden Probe</option>
+                        </select>
+                    </div>
+                    {{#unless (ifEq avoidTest.resistDifficultySource "triggeringRoll")}}
+                    <div class="form-group">
                         <label>Erschwernis:</label>
                         <input type="number" name="system.preEffects.{{@index}}.avoidTest.resistDifficulty" value="{{avoidTest.resistDifficulty}}" data-dtype="Number" placeholder="12" />
                     </div>
+                    {{/unless}}
                 </div>
             </div>
             </fieldset>
@@ -348,7 +357,7 @@
                 {{/each}}
             </datalist>
             <button type="button" class="add-pre-effect">+ Pre-Effect hinzufügen</button>
-        {{#if @root.hasLLMConfig}}
+        {{#if @root.hasLLMPreEffectGeneration}}
         <button type="button" class="generate-pre-effect">🤖 Generieren</button>
         {{/if}}
     </div>

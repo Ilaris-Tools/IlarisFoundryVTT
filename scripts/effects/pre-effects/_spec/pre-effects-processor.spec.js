@@ -649,14 +649,50 @@ describe('pre-effect processor', () => {
             maechtigeMagieQs: 0,
         }
 
-        await applyPreEffects({ success: true }, dialog)
+        await applyPreEffects({ success: true, roll: { total: 18 } }, dialog)
 
         const content = global.ChatMessage.create.mock.calls[0][0].content
         const serialized = content.match(/data-pre-effect-data="([^"]+)"/)[1]
         expect(JSON.parse(decodeURIComponent(serialized))).toMatchObject({
             preEffectIndex: 0,
             applicationId: expect.any(String),
+            triggeringRollTotal: 18,
         })
+    })
+
+    it('does not serialize a triggering total when the caller has no usable Roll', async () => {
+        const target = createTargetActor({
+            testUserPermission: jest.fn().mockReturnValue(false),
+        })
+        global.game.actors = { get: jest.fn(() => target) }
+        global.game.users = [{ id: 'gm-id', active: true, isGM: true }]
+        const dialog = {
+            item: {
+                name: 'Resisted spell',
+                uuid: 'Item.resisted-spell',
+                system: {
+                    preEffects: [
+                        {
+                            baseDuration: 2,
+                            instant: false,
+                            changes: [],
+                            avoidTest: { enabled: true, attribut: 'KK' },
+                        },
+                    ],
+                },
+            },
+            selectedActors: [{ actorId: 'target-id' }],
+            actor: { id: 'caster-id', uuid: 'Actor.caster' },
+            speaker: {},
+            maneuverDurationBonus: 0,
+            maechtigeMagieQs: 0,
+        }
+
+        await applyPreEffects({ success: true, roll: { total: Number.NaN } }, dialog)
+
+        const content = global.ChatMessage.create.mock.calls[0][0].content
+        const serialized = content.match(/data-pre-effect-data="([^"]+)"/)[1]
+        expect(JSON.parse(decodeURIComponent(serialized))).not.toHaveProperty('triggeringRollTotal')
     })
 
     it('retains same-spell effects in Ilaris mode', async () => {

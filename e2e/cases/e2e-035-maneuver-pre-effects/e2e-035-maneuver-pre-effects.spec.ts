@@ -95,6 +95,57 @@ test.describe('E2E-035 · maneuver pre-effects', () => {
         )
     })
 
+    test('Niederwerfen uses the activating roll total as resistance difficulty', async ({
+        page,
+    }) => {
+        const result = await page.evaluate(
+            async ({ actorName, sourceActorName }) => {
+                const actor = game.actors?.getName(actorName) as any
+                const sourceActor = game.actors?.getName(sourceActorName) as any
+                const maneuver = (await game.packs?.get('Ilaris.manover')?.getDocuments())?.find(
+                    (item: any) => item.name === 'Niederwerfen',
+                ) as any
+                if (!actor || !sourceActor || !maneuver)
+                    throw new Error('Niederwerfen-Testdaten fehlen.')
+
+                const processor =
+                    await import('/systems/Ilaris/scripts/effects/pre-effects/pre-effects-processor.js')
+                const resistHandler =
+                    await import('/systems/Ilaris/scripts/effects/pre-effects/resist-handler.js')
+                await processor.applyPreEffects(
+                    { success: true, roll: { total: 19 } },
+                    {
+                        item: maneuver,
+                        actor: sourceActor,
+                        speaker: ChatMessage.getSpeaker({ actor: sourceActor }),
+                        selectedActors: [{ actorId: actor.id }],
+                        maneuverDurationBonus: 0,
+                        maechtigeMagieQs: 0,
+                    },
+                    {},
+                    { sourceType: 'maneuver' },
+                )
+                const message = game.messages?.contents.at(-1) as any
+                const encodedPayload = message?.content.match(/data-pre-effect-data="([^"]+)"/)?.[1]
+                if (!encodedPayload) throw new Error('Widerstandsaufforderung fehlt.')
+                const payload = JSON.parse(decodeURIComponent(encodedPayload))
+
+                return {
+                    source: payload.avoidTest.resistDifficultySource,
+                    triggeringRollTotal: payload.triggeringRollTotal,
+                    displayedDifficulty: resistHandler.resolveResistDifficulty(payload).difficulty,
+                }
+            },
+            { actorName: ACTOR_NAME, sourceActorName: SOURCE_ACTOR_NAME },
+        )
+
+        expect(result).toEqual({
+            source: 'triggeringRoll',
+            triggeringRollTotal: 19,
+            displayedDifficulty: 19,
+        })
+    })
+
     test('Niederwerfen and Umreißen materialize Liegend after their resistance gate fails', async ({
         page,
     }) => {

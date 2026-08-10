@@ -170,6 +170,7 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {},
     const speaker = dialog.speaker
     const maneuverDurationBonus = dialog.maneuverDurationBonus || 0
     const maechtigeQs = dialog.maechtigeMagieQs || 0
+    const triggeringRollTotal = Number(rollResult?.roll?.total)
 
     const targets = dialog.selectedActors?.length ? dialog.selectedActors : [{ actorId: caster.id }]
     for (const target of targets) {
@@ -196,6 +197,7 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {},
                     applicationId,
                     armedInputValues,
                     sourceType,
+                    triggeringRollTotal,
                 )
                 continue
             }
@@ -246,6 +248,7 @@ async function sendResistPromptForEffect(
     applicationId,
     armedInputValues,
     sourceType,
+    triggeringRollTotal,
 ) {
     const serialized = {
         ...preEffect,
@@ -259,6 +262,7 @@ async function sendResistPromptForEffect(
         applicationId,
         armedInputValues,
         sourceType,
+        ...(Number.isFinite(triggeringRollTotal) ? { triggeringRollTotal } : {}),
     }
     await sendResistPrompt(targetActor, serialized, spellItem.name, speaker)
 }

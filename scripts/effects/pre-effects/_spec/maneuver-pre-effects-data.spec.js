@@ -17,11 +17,19 @@ describe('reviewed maneuver pre-effect source data', () => {
 
         expect(binden.system.preEffects[0]).toMatchObject({ activation: 'onSuccessfulDefense' })
         expect(niederwerfen.system.preEffects[0].avoidTest.attribut).toBe('KK')
+        expect(niederwerfen.system.preEffects[0].avoidTest).toMatchObject({
+            resistDifficulty: 12,
+            resistDifficultySource: 'triggeringRoll',
+        })
         expect(niederwerfen.system.preEffects[0]).toMatchObject({
             changes: [],
             condition: { enabled: true, statusId: 'Position4' },
         })
         expect(umreissen.system.preEffects[0].avoidTest.attributChoices).toEqual(['GE', 'KO'])
+        expect(umreissen.system.preEffects[0].avoidTest).toMatchObject({
+            resistDifficulty: 12,
+            resistDifficultySource: 'triggeringRoll',
+        })
         expect(umreissen.system.preEffects[0]).toMatchObject({
             changes: [],
             condition: { enabled: true, statusId: 'Position4' },
@@ -30,6 +38,10 @@ describe('reviewed maneuver pre-effect source data', () => {
         expect(entwaffnen.system).toMatchObject({
             input: { field: 'SELECTOR', choices: ['Hauptwaffe', 'Nebenwaffe'] },
             preEffects: [expect.objectContaining({ operation: 'deselectEquippedWeapon' })],
+        })
+        expect(entwaffnen.system.preEffects[0].avoidTest).toMatchObject({
+            resistDifficulty: 12,
+            resistDifficultySource: 'triggeringRoll',
         })
     })
 })

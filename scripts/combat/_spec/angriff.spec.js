@@ -308,6 +308,60 @@ describe('AngriffDialog summary context', () => {
         expect(global.ActiveEffect.createDocuments.mock.calls[0][1]).toEqual({ parent: attacker })
     })
 
+    it.each([
+        ['onConfirmedHit', 18],
+        ['onSuccessfulDefense', 16],
+    ])(
+        'preserves the %s maneuver roll total for a resistance prompt',
+        async (activation, total) => {
+            const sourceActor = { id: 'source', uuid: 'Actor.source', system: {} }
+            const targetActor = { id: 'target', name: 'Target', effects: [], system: {} }
+            global.game.actors = { get: jest.fn((id) => (id === 'target' ? targetActor : null)) }
+            global.game.users = [{ id: 'gm-id', active: true, isGM: true }]
+            global.ChatMessage.create = jest.fn().mockResolvedValue(undefined)
+
+            const dialog = Object.create(AngriffDialog.prototype)
+            dialog.item = {
+                manoever: [
+                    {
+                        id: 'resist-test',
+                        uuid: 'Item.resist-test',
+                        name: 'Resistance test',
+                        inputValue: { field: 'CHECKBOX', value: true },
+                        system: {
+                            preEffects: [
+                                {
+                                    activation,
+                                    baseDuration: 0,
+                                    changes: [],
+                                    avoidTest: {
+                                        enabled: true,
+                                        attribut: 'KK',
+                                        resistDifficultySource: 'triggeringRoll',
+                                    },
+                                },
+                            ],
+                        },
+                    },
+                ],
+            }
+
+            await dialog._dispatchManeuverPreEffects(
+                dialog._selectedManeuverPreEffects(),
+                activation,
+                targetActor,
+                sourceActor,
+                { success: true, roll: { total } },
+            )
+
+            const content = global.ChatMessage.create.mock.calls[0][0].content
+            const serialized = content.match(/data-pre-effect-data="([^"]+)"/)[1]
+            expect(JSON.parse(decodeURIComponent(serialized))).toMatchObject({
+                triggeringRollTotal: total,
+            })
+        },
+    )
+
     it('does not materialize the same maneuver application twice', async () => {
         const attacker = { id: 'attacker', uuid: 'Actor.attacker', system: {} }
         const defender = { id: 'defender', name: 'Defender', effects: [], system: {} }

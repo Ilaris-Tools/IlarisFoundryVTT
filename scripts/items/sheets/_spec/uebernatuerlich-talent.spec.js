@@ -4,10 +4,45 @@ const { join } = require('node:path')
 global.foundry.applications.sheets = {
     ItemSheetV2: class ItemSheetV2 {
         _onRender() {}
+
+        async _prepareContext() {
+            return {}
+        }
     },
 }
 
 const { UebernatuerlichTalentSheet } = require('../uebernatuerlich-talent.js')
+const { PreEffectItemSheet } = require('../pre-effect-item.js')
+
+describe('UebernatuerlichTalentSheet shared Pre-Effect composition', () => {
+    it('keeps the supernatural form while inheriting the shared Pre-Effects part', () => {
+        expect(UebernatuerlichTalentSheet.prototype).toBeInstanceOf(PreEffectItemSheet)
+        expect(UebernatuerlichTalentSheet.PARTS).toMatchObject({
+            form: {
+                template: 'systems/Ilaris/scripts/items/templates/uebernatuerlich_talent.hbs',
+            },
+            preEffects: PreEffectItemSheet.PARTS.preEffects,
+        })
+    })
+
+    it('exposes LLM generation only for a configured GM', async () => {
+        global.CONFIG = { ILARIS: { attribute: [] }, statusEffects: {} }
+        global.game.user = { isGM: true }
+        global.game.packs = new Map()
+        global.game.settings.get.mockImplementation((_namespace, key) => {
+            if (key === 'llmApiUrl') return 'https://llm.example.test'
+            if (key === 'llmApiKey') return 'configured-key'
+            return '[]'
+        })
+        const sheet = new UebernatuerlichTalentSheet()
+        sheet.item = {}
+        sheet.document = { actor: null }
+
+        await expect(sheet._prepareContext({})).resolves.toMatchObject({
+            hasLLMPreEffectGeneration: true,
+        })
+    })
+})
 
 describe('UebernatuerlichTalentSheet damage type options', () => {
     beforeEach(() => {
@@ -150,6 +185,7 @@ describe('UebernatuerlichTalentSheet summon-item options', () => {
         expect(template).toContain('summonItem.sourceKind')
         expect(template).toContain('ilaris-summon-item-sources-waffe')
         expect(template).toContain('ilaris-summon-item-sources-gegenstand')
+        expect(template).toContain('@root.hasLLMPreEffectGeneration')
     })
 })
 

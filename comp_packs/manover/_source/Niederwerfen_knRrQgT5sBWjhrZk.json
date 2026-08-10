@@ -40,7 +40,8 @@
         "avoidTest": {
           "enabled": true,
           "attribut": "KK",
-          "resistDifficulty": 0,
+          "resistDifficulty": 12,
+          "resistDifficultySource": "triggeringRoll",
           "diminishedOnly": false
         }
       }

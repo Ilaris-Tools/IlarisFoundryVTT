@@ -19,6 +19,23 @@
       "ownership": { "default": -1 },
       "flags": {},
       "_key": "!journal.pages!kurzpreffect001.kurzprepage001"
+    },
+    {
+      "_id": "kurzprepage002",
+      "name": "Widerstands-Proben",
+      "type": "text",
+      "title": { "show": true, "level": 1 },
+      "text": {
+        "format": 1,
+        "content": "<h2>Widerstands-Proben</h2>\n<p>Aktiviere <strong>Widerstands-Probe</strong>, wenn ein Ziel die Wirkung eines Pre-Effects abwehren kann. Unter <strong>Schwierigkeit aus</strong> wird festgelegt, wie die Erschwernis der Widerstandsprobe bestimmt wird.</p>\n<h3>Fester Wert</h3>\n<p>Verwende <strong>Fester Wert</strong> für eine fest definierte Erschwernis. Fehlt ein Wert, verwendet Ilaris <code>12</code>. Ein expliziter Wert <code>0</code> bleibt eine echte Erschwernis von null und bedeutet <strong>nicht</strong>, dass ein Probenwert übernommen wird. Mächtige Magie oder Liturgie erhöht nur diese feste Schwierigkeit wie gewohnt um <code>+4</code> je Qualitätsstufe.</p>\n<h3>Ergebnis der auslösenden Probe</h3>\n<p>Verwende <strong>Ergebnis der auslösenden Probe</strong>, wenn die Widerstandsprobe genau gegen das Endergebnis der Probe ausgelöst werden soll, etwa bei <strong>Entwaffnen</strong>, <strong>Niederwerfen</strong> und <strong>Umreißen</strong>. Das Ergebnis wird unverändert übernommen; ein Bonus aus Mächtiger Magie oder Liturgie wird nicht zusätzlich addiert.</p>\n<p>Ist das auslösende Ergebnis ausnahmsweise nicht verfügbar, zeigt Ilaris eine Warnung und verwendet als sichere Rückfallebene <code>12</code>.</p>"
+      },
+      "video": { "controls": true, "volume": 0.5 },
+      "src": null,
+      "system": {},
+      "sort": 1,
+      "ownership": { "default": -1 },
+      "flags": {},
+      "_key": "!journal.pages!kurzpreffect001.kurzprepage002"
     }
   ],
   "folder": null,

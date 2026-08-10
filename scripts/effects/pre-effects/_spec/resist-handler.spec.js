@@ -1,6 +1,7 @@
 import {
     registerResistHandler,
     registerResistResolutionListener,
+    resolveResistDifficulty,
     resolveInitialResistTalent,
 } from '../resist-handler.js'
 
@@ -178,5 +179,44 @@ describe('resolveInitialResistTalent', () => {
 
     it('falls back to no talent when the target does not own the configured talent', () => {
         expect(resolveInitialResistTalent([{ name: 'Laufen' }], 'Akrobatik')).toBe('')
+    })
+})
+
+describe('resolveResistDifficulty', () => {
+    it('defaults a fixed difficulty to 12 and applies Mächtige Magie quality stages', () => {
+        expect(
+            resolveResistDifficulty({
+                avoidTest: { resistDifficultySource: 'fixed' },
+                maechtigeQs: 2,
+            }),
+        ).toEqual({ difficulty: 20, missingTriggeringRoll: false })
+    })
+
+    it('preserves an explicit fixed zero instead of treating it as a source sentinel', () => {
+        expect(
+            resolveResistDifficulty({
+                avoidTest: { resistDifficultySource: 'fixed', resistDifficulty: 0 },
+                maechtigeQs: 1,
+            }),
+        ).toEqual({ difficulty: 4, missingTriggeringRoll: false })
+    })
+
+    it('uses the triggering roll total exactly without adding Mächtige Magie', () => {
+        expect(
+            resolveResistDifficulty({
+                avoidTest: { resistDifficultySource: 'triggeringRoll', resistDifficulty: 99 },
+                triggeringRollTotal: 17,
+                maechtigeQs: 3,
+            }),
+        ).toEqual({ difficulty: 17, missingTriggeringRoll: false })
+    })
+
+    it('falls back to 12 and reports a missing triggering total', () => {
+        expect(
+            resolveResistDifficulty({
+                avoidTest: { resistDifficultySource: 'triggeringRoll' },
+                maechtigeQs: 3,
+            }),
+        ).toEqual({ difficulty: 12, missingTriggeringRoll: true })
     })
 })
