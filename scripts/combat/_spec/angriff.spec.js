@@ -204,4 +204,142 @@ describe('AngriffDialog summary context', () => {
             expect.arrayContaining([expect.objectContaining({ sourceName: 'Attributo' })]),
         )
     })
+
+    it('dispatches a selected confirmed-hit maneuver only to the resolved defender', async () => {
+        const attacker = { id: 'attacker', uuid: 'Actor.attacker', system: {} }
+        const defender = { id: 'defender', name: 'Defender', effects: [], system: {} }
+        global.game.actors = { get: jest.fn((id) => (id === 'defender' ? defender : null)) }
+        global.ActiveEffect.createDocuments = jest.fn().mockResolvedValue([])
+
+        const dialog = Object.create(AngriffDialog.prototype)
+        dialog.item = {
+            manoever: [
+                {
+                    id: 'niederwerfen',
+                    uuid: 'Compendium.Ilaris.manover.Item.niederwerfen',
+                    name: 'Niederwerfen',
+                    inputValue: { field: 'CHECKBOX', value: true },
+                    system: {
+                        preEffects: [
+                            {
+                                activation: 'onConfirmedHit',
+                                baseDuration: 1,
+                                changes: [
+                                    {
+                                        key: 'system.modifikatoren.nahkampfmod',
+                                        type: 'add',
+                                        value: '-4',
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                },
+            ],
+        }
+
+        await dialog._dispatchManeuverPreEffects(
+            dialog._selectedManeuverPreEffects(),
+            'onConfirmedHit',
+            defender,
+            attacker,
+        )
+
+        expect(global.ActiveEffect.createDocuments).toHaveBeenCalledWith(
+            [
+                expect.objectContaining({
+                    name: 'Niederwerfen',
+                    flags: {
+                        ilaris: expect.objectContaining({
+                            sourceType: 'maneuver',
+                            sourceActorUuid: 'Actor.attacker',
+                        }),
+                    },
+                }),
+            ],
+            { parent: defender },
+        )
+    })
+
+    it('dispatches a selected successful-defense maneuver only to the attacker', async () => {
+        const defender = { id: 'defender', uuid: 'Actor.defender', system: {} }
+        const attacker = { id: 'attacker', name: 'Attacker', effects: [], system: {} }
+        global.game.actors = { get: jest.fn((id) => (id === 'attacker' ? attacker : null)) }
+        global.ActiveEffect.createDocuments = jest.fn().mockResolvedValue([])
+
+        const dialog = Object.create(AngriffDialog.prototype)
+        dialog.item = {
+            manoever: [
+                {
+                    id: 'binden',
+                    uuid: 'Compendium.Ilaris.manover.Item.bind',
+                    name: 'Binden',
+                    inputValue: { field: 'NUMBER', value: 2 },
+                    system: {
+                        preEffects: [
+                            {
+                                activation: 'onSuccessfulDefense',
+                                baseDuration: 1,
+                                ilarisModifiers: [
+                                    {
+                                        target: 'vt',
+                                        value: '-1',
+                                        scaleWithInput: true,
+                                    },
+                                ],
+                            },
+                        ],
+                    },
+                },
+            ],
+        }
+
+        await dialog._dispatchManeuverPreEffects(
+            dialog._selectedManeuverPreEffects(),
+            'onSuccessfulDefense',
+            attacker,
+            defender,
+        )
+
+        const effect = global.ActiveEffect.createDocuments.mock.calls[0][0][0]
+        expect(effect.system.ilarisModifiers).toEqual([
+            expect.objectContaining({ target: 'vt', value: '-2' }),
+        ])
+        expect(global.ActiveEffect.createDocuments.mock.calls[0][1]).toEqual({ parent: attacker })
+    })
+
+    it('does not materialize the same maneuver application twice', async () => {
+        const attacker = { id: 'attacker', uuid: 'Actor.attacker', system: {} }
+        const defender = { id: 'defender', name: 'Defender', effects: [], system: {} }
+        global.game.actors = { get: jest.fn(() => defender) }
+        global.ActiveEffect.createDocuments = jest.fn(async ([data]) => {
+            defender.effects.push({ id: 'created', ...data })
+        })
+        const dialog = Object.create(AngriffDialog.prototype)
+        dialog.item = {
+            manoever: [
+                {
+                    id: 'test',
+                    uuid: 'Item.test',
+                    name: 'Test',
+                    inputValue: { field: 'CHECKBOX', value: true },
+                    system: {
+                        preEffects: [
+                            {
+                                activation: 'onConfirmedHit',
+                                baseDuration: 1,
+                                changes: [{ key: 'system.test', type: 'add', value: '1' }],
+                            },
+                        ],
+                    },
+                },
+            ],
+        }
+        const snapshot = dialog._selectedManeuverPreEffects()
+
+        await dialog._dispatchManeuverPreEffects(snapshot, 'onConfirmedHit', defender, attacker)
+        await dialog._dispatchManeuverPreEffects(snapshot, 'onConfirmedHit', defender, attacker)
+
+        expect(global.ActiveEffect.createDocuments).toHaveBeenCalledTimes(1)
+    })
 })

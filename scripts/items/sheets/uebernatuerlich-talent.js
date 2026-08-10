@@ -56,6 +56,10 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
         context.ilarisModifierPhases = IlarisModifierPhaseLabels
         context.ilarisModifierTargets = IlarisModifierTargetLabels
         context.ilarisModifierStacking = IlarisModifierStackingLabels
+        context.statusEffectOptions = Object.values(CONFIG.statusEffects || {}).map((effect) => ({
+            id: effect.id,
+            name: effect.name || effect.label || effect.id,
+        }))
 
         // LLM generation availability (GM only, API configured)
         context.isGM = game.user.isGM
@@ -460,6 +464,7 @@ export class UebernatuerlichTalentSheet extends IlarisItemSheet {
             instant: false,
             changes: [],
             ilarisModifiers: [],
+            condition: { enabled: false, statusId: '' },
             armedCombat: {
                 enabled: false,
                 trigger: 'nextSuccessfulAttack',

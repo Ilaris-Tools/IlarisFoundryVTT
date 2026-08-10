@@ -496,6 +496,8 @@ export class FernkampfAngriffDialog extends CombatDialog {
                     check = dynamicManoever.inputValue.value
                 } else if (dynamicManoever.inputValue.field == 'NUMBER') {
                     number = dynamicManoever.inputValue.value
+                } else if (dynamicManoever.inputValue.field == 'SELECTOR') {
+                    number = 1
                 } else {
                     trefferZoneInput = dynamicManoever.inputValue.value
                 }

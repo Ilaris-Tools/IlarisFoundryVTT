@@ -42,6 +42,7 @@
  */
 
 import { IlarisActiveEffect } from './active-effect.js'
+import { reduceConditionSourcesForCombatant } from './status-conditions.js'
 
 export async function expireEffect(actor, effect) {
     const summonedItemId = effect.flags?.ilaris?.summonedItemId
@@ -61,7 +62,8 @@ Hooks.on('combatTurn', async (combat, updateData, updateOptions) => {
     if (updateOptions?.direction === -1) return
 
     const combatant = combat.combatants.get(combat.turns[updateData.turn]._id)
-    reduceEffectDurationForCombatant(combatant)
+    await reduceEffectDurationForCombatant(combatant)
+    await reduceConditionSourcesForCombatant(combatant, 'turnStart')
 })
 
 /**
@@ -76,7 +78,8 @@ Hooks.on('combatRound', async (combat, updateData, updateOptions) => {
     // NOTE: combat.current reflects the round that just ended, not the previous.
     // This is expected V14 behavior — combat.current is updated before the hook fires.
     const combatant = combat.combatants.get(combat.turns[updateData.turn]._id)
-    reduceEffectDurationForCombatant(combatant)
+    await reduceEffectDurationForCombatant(combatant)
+    await reduceConditionSourcesForCombatant(combatant, 'turnStart')
 })
 
 /**
@@ -121,6 +124,7 @@ Hooks.on('updateCombat', async (combat, changed, _options, _userId) => {
                 })
             }
         }
+        await reduceConditionSourcesForCombatant(combatant, 'turnEnd')
     }
 })
 

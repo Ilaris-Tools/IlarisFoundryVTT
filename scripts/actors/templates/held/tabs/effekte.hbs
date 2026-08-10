@@ -9,11 +9,15 @@
                 {{effect.name}}
                 {{#if effect.effectDurationLabel}}| {{effect.effectDurationLabel}}{{/if}}
                 {{#if effect.armedChargesLabel}}| {{effect.armedChargesLabel}}{{/if}}
+                {{#if effect.conditionSourcesLabel}}| {{effect.conditionSourcesLabel}}{{/if}}
     </a>
     {{#unless (eq effect.flags.ilaris.sourceType "vorteil")}}
     <a data-action="itemDelete" data-itemclass="effect" data-itemid="{{effect._id}}">
         <i class="fas fa-trash"></i>
     </a>
     {{/unless}}
+    {{#if (eq effect.system.ilarisEnding.type "opposedEscape")}}
+    <a data-action="escapeEffect" data-itemid="{{effect._id}}"><i class="fas fa-unlink"></i> Befreiungsprobe</a>
+    {{/if}}
     &nbsp; | &nbsp; {{/each}}
 </section>

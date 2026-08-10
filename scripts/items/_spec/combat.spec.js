@@ -55,6 +55,21 @@ describe('CombatItem', () => {
         })
     })
 
+    it('preserves persisted maneuver UUIDs and selector choices for outcome pre-effects', () => {
+        const maneuver = combatItem._createManeuverFromItem({
+            _id: 'entwaffnen',
+            uuid: 'Compendium.Ilaris.manover.Item.entwaffnen',
+            system: { input: { field: 'SELECTOR', choices: ['Hauptwaffe', 'Nebenwaffe'] } },
+        })
+
+        expect(maneuver.uuid).toBe('Compendium.Ilaris.manover.Item.entwaffnen')
+        expect(maneuver.inputValue).toEqual({
+            field: 'SELECTOR',
+            choices: ['Hauptwaffe', 'Nebenwaffe'],
+            value: '',
+        })
+    })
+
     describe('_parseModifikationen', () => {
         it('should parse complex modification string with multiple modifications', () => {
             const modificationString =
@@ -70,6 +85,8 @@ describe('CombatItem', () => {
             expect(firstMod.id).toBe('mod0')
             expect(firstMod.type).toBe('manoever')
             expect(firstMod.system.gruppe).toBe(2) // zauber
+            expect(firstMod.system.preEffects).toBeUndefined()
+            expect(firstMod.system.input.choices).toBeUndefined()
             expect(firstMod.system.probe).toBe(-4)
             expect(firstMod.system.text).toBe(
                 'auch ungefährliche, aber unangenehme Inhalte wie Salz im Meerwasser werden entfernt.',

@@ -1,4 +1,4 @@
-import { IlarisItemSheet } from './item.js'
+import { UebernatuerlichTalentSheet } from './uebernatuerlich-talent.js'
 
 /* Reference shape for `item.system` on `manoever` items.
     "manoever": {
@@ -26,18 +26,21 @@ import { IlarisItemSheet } from './item.js'
     },
 */
 
-export class ManoeverSheet extends IlarisItemSheet {
+export class ManoeverSheet extends UebernatuerlichTalentSheet {
     /** @override */
     static DEFAULT_OPTIONS = {
         classes: ['ilaris', 'sheet', 'item', 'manoever'],
         actions: {
             addModification: ManoeverSheet.#onAddModification,
             deleteModification: ManoeverSheet.#onDeleteModification,
+            addSelectorChoice: ManoeverSheet.#onAddSelectorChoice,
+            deleteSelectorChoice: ManoeverSheet.#onDeleteSelectorChoice,
         },
     }
 
     /** @override */
     static PARTS = {
+        ...UebernatuerlichTalentSheet.PARTS,
         form: {
             template: 'systems/Ilaris/scripts/items/templates/manoever.hbs',
         },
@@ -48,8 +51,18 @@ export class ManoeverSheet extends IlarisItemSheet {
         const context = await super._prepareContext(options)
         context.manoever = CONFIG.ILARIS.manoever
         context.schadenstypen = CONFIG.ILARIS.schadenstypen
+        context.isManeuverPreEffect = true
 
         return context
+    }
+
+    _defaultPreEffect() {
+        return {
+            ...super._defaultPreEffect(),
+            activation: 'onConfirmedHit',
+            operation: '',
+            ilarisEnding: { type: '' },
+        }
     }
 
     /**
@@ -85,5 +98,17 @@ export class ManoeverSheet extends IlarisItemSheet {
         await this.document.update({
             'system.modifications': modifications,
         })
+    }
+
+    static async #onAddSelectorChoice(event, target) {
+        const choices = foundry.utils.deepClone(this.document.system.input?.choices || [])
+        choices.push('')
+        await this.document.update({ 'system.input.choices': choices })
+    }
+
+    static async #onDeleteSelectorChoice(event, target) {
+        const choices = foundry.utils.deepClone(this.document.system.input?.choices || [])
+        choices.splice(Number(target.dataset.choiceIndex), 1)
+        await this.document.update({ 'system.input.choices': choices })
     }
 }

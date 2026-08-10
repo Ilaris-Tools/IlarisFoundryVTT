@@ -1,4 +1,5 @@
 import { expireEffect } from '../combat-turn-hooks.js'
+import { reduceConditionSourcesForCombatant } from '../status-conditions.js'
 
 describe('summoned item expiry', () => {
     it('deletes the linked summoned item before deleting its owner-turn marker', async () => {
@@ -34,5 +35,42 @@ describe('summoned item expiry', () => {
 
         expect(actor.deleteEmbeddedDocuments).not.toHaveBeenCalled()
         expect(marker.delete).toHaveBeenCalledTimes(1)
+    })
+})
+
+describe('condition source expiry', () => {
+    it('expires an automated source without removing its independent manual source', async () => {
+        const effect = {
+            id: 'condition',
+            system: {
+                ilarisCondition: {
+                    statusId: 'Position4',
+                    sources: [
+                        { id: 'manual', type: 'manual' },
+                        {
+                            id: 'maneuver',
+                            type: 'preEffect',
+                            timing: {
+                                durationType: 'ownerTurns',
+                                expiresOn: 'turnEnd',
+                                remaining: 1,
+                            },
+                        },
+                    ],
+                },
+            },
+            update: jest.fn().mockResolvedValue(undefined),
+        }
+        const actor = {
+            effects: [effect],
+            deleteEmbeddedDocuments: jest.fn().mockResolvedValue([]),
+        }
+
+        await reduceConditionSourcesForCombatant({ actor }, 'turnEnd')
+
+        expect(effect.update).toHaveBeenCalledWith({
+            'system.ilarisCondition.sources': [{ id: 'manual', type: 'manual' }],
+        })
+        expect(actor.deleteEmbeddedDocuments).not.toHaveBeenCalled()
     })
 })

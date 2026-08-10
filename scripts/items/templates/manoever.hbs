@@ -83,6 +83,7 @@
                 {{manoever.labels.inputDescription}}
                 <ul>
                     <li>{{manoever.labels.inputTypes.checkbox}}</li>
+                    <li>Auswahl - Eine geordnete Liste von Optionen</li>
                     <li>{{manoever.labels.inputTypes.number}}</li>
                     <li>{{manoever.labels.inputTypes.hitZone}}</li>
                 </ul>
@@ -98,6 +99,18 @@
                         placeholder="{{manoever.labels.inputLabel}}"
                     />
                 </div>
+                {{#if (ifEq item.system.input.field "SELECTOR")}}
+                <div class="row">
+                    <label>Auswahlmöglichkeiten:</label>
+                    <a data-action="addSelectorChoice">[+]</a>
+                    {{#each item.system.input.choices}}
+                    <div class="flexrow">
+                        <input name="system.input.choices.{{@index}}" value="{{this}}" type="text" data-dtype="String" />
+                        <a class="delete-button" data-action="deleteSelectorChoice" data-choice-index="{{@index}}"><i class="fas fa-trash"></i></a>
+                    </div>
+                    {{/each}}
+                </div>
+                {{/if}}
                 <div class="flexrow row">
                     <label>{{manoever.labels.inputType}}:</label>
                     <select name="system.input.field">

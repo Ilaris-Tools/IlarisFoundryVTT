@@ -4,6 +4,7 @@
  * @spec openspec/changes/add-pre-effect-unit-tests/specs/pre-effect-unit-tests/spec.md
  */
 import {
+    applyPreEffectOperation,
     applyInstantPreEffect,
     applyPreEffects,
     createActiveEffectFromPreEffect,
@@ -74,6 +75,112 @@ describe('toArray', () => {
 })
 
 describe('pre-effect processor', () => {
+    it('routes a canonical condition pre-effect to one status-bearing condition effect', async () => {
+        global.CONFIG.statusEffects = {
+            Position4: {
+                id: 'Position4',
+                name: 'Sehr schlechte Position (Liegend)',
+                img: 'falling.svg',
+                changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, value: -4 }],
+            },
+        }
+        const target = createTargetActor()
+
+        await createActiveEffectFromPreEffect(
+            target,
+            { condition: { enabled: true, statusId: 'Position4' } },
+            { uuid: 'Actor.attacker' },
+            {
+                name: 'Niederwerfen',
+                uuid: 'Compendium.Ilaris.manover.Item.niederwerfen',
+                system: {},
+            },
+            0,
+            0,
+            0,
+            'knockdown',
+            {},
+            'maneuver',
+        )
+
+        expect(global.ActiveEffect.createDocuments).toHaveBeenCalledWith(
+            [
+                expect.objectContaining({
+                    name: 'Sehr schlechte Position (Liegend)',
+                    statuses: ['Position4'],
+                    system: expect.objectContaining({
+                        ilarisCondition: expect.objectContaining({
+                            statusId: 'Position4',
+                            sources: [
+                                expect.objectContaining({
+                                    id: 'knockdown:0',
+                                    type: 'preEffect',
+                                    origin: 'Compendium.Ilaris.manover.Item.niederwerfen',
+                                }),
+                            ],
+                        }),
+                    }),
+                }),
+            ],
+            { parent: target },
+        )
+    })
+
+    it('materializes maneuver provenance and its opposed-escape ending without spell replacement', async () => {
+        const target = createTargetActor()
+        await createActiveEffectFromPreEffect(
+            target,
+            {
+                changes: [{ key: 'system.modifikatoren.nahkampfmod', type: 'add', value: '-1' }],
+                ilarisEnding: { type: 'opposedEscape' },
+            },
+            { uuid: 'Actor.grappler' },
+            { name: 'Umklammern', uuid: 'Compendium.Ilaris.manover.Item.umklammern', system: {} },
+            0,
+            0,
+            2,
+            'maneuver-application',
+            {},
+            'maneuver',
+        )
+
+        const created = global.ActiveEffect.createDocuments.mock.calls[0][0][0]
+        expect(created.flags.ilaris).toMatchObject({
+            sourceType: 'maneuver',
+            maneuverUuid: 'Compendium.Ilaris.manover.Item.umklammern',
+            sourceActorUuid: 'Actor.grappler',
+            preEffectIndex: 2,
+            applicationId: 'maneuver-application',
+        })
+        expect(created.system.ilarisEnding).toEqual({
+            type: 'opposedEscape',
+            sourceActorUuid: 'Actor.grappler',
+        })
+    })
+
+    it('deselects only the selector-selected equipped weapon', async () => {
+        const mainWeapon = {
+            type: 'nahkampfwaffe',
+            system: { hauptwaffe: true, nebenwaffe: false },
+            update: jest.fn().mockResolvedValue(undefined),
+        }
+        const secondaryWeapon = {
+            type: 'nahkampfwaffe',
+            system: { hauptwaffe: false, nebenwaffe: true },
+            update: jest.fn().mockResolvedValue(undefined),
+        }
+        const target = createTargetActor({ items: [mainWeapon, secondaryWeapon] })
+
+        await applyPreEffectOperation(
+            target,
+            { operation: 'deselectEquippedWeapon' },
+            { selector: 'Nebenwaffe' },
+        )
+
+        expect(mainWeapon.update).not.toHaveBeenCalled()
+        expect(secondaryWeapon.update).toHaveBeenCalledWith({ 'system.nebenwaffe': false })
+    })
+
     it('normalizes W formulas, applies MÃ¤chtige Magie bonuses, and forwards the damage type', async () => {
         const formulas = []
         global.Roll = class {

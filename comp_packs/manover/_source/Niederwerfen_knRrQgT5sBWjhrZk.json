@@ -28,6 +28,23 @@
       "label": "",
       "field": "CHECKBOX"
     },
+    "preEffects": [
+      {
+        "activation": "onConfirmedHit",
+        "baseDuration": 0,
+        "durationType": "infinite",
+        "instant": false,
+        "changes": [],
+        "ilarisModifiers": [],
+        "condition": { "enabled": true, "statusId": "Position4" },
+        "avoidTest": {
+          "enabled": true,
+          "attribut": "KK",
+          "resistDifficulty": 0,
+          "diminishedOnly": false
+        }
+      }
+    ],
     "isBaseManoever": false
   },
   "effects": [],

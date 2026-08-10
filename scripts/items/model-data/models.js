@@ -185,10 +185,12 @@ export function createItemTypeDataModels(TypeDataModel, h) {
                 input: h.schema({
                     label: h.string('Checkbox'),
                     field: h.string('CHECKBOX'),
+                    choices: h.arrayOfStrings(),
                     min: h.number(0),
                     max: h.number(0),
                 }),
                 modifications: h.arrayOfObjects(),
+                preEffects: h.arrayOfObjects(),
                 gruppe: h.number(0),
                 probe: h.string(''),
                 gegenprobe: h.string(''),

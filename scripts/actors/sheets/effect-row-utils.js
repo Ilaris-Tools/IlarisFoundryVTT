@@ -4,6 +4,15 @@ export function prepareEffectRows(effects) {
         const remaining = ownerTurns
             ? effect.system?.ilarisTiming?.remaining
             : effect.duration?.remaining
+        const conditionSources = effect.system?.ilarisCondition?.sources
+        const sourceEntries = Array.isArray(conditionSources)
+            ? conditionSources
+            : Object.values(conditionSources || {})
+        const conditionSourcesLabel = sourceEntries.length
+            ? `Quellen: ${sourceEntries
+                  .map((source) => (source.type === 'manual' ? 'manuell' : 'automatisch'))
+                  .join(', ')}`
+            : ''
         return {
             _id: effect.id,
             name: effect.name,
@@ -13,6 +22,7 @@ export function prepareEffectRows(effects) {
             armedChargesLabel: Number.isFinite(effect.system?.ilarisArmedCombat?.remainingCharges)
                 ? `Ladungen: ${effect.system.ilarisArmedCombat.remainingCharges}`
                 : '',
+            conditionSourcesLabel,
         }
     })
 }

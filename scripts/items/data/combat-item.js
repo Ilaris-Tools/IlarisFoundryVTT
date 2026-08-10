@@ -12,6 +12,7 @@ export class CombatItem extends IlarisItem {
         return {
             ...item,
             id: item._id,
+            uuid: item.uuid,
             inputValue: {
                 ...item.system.input,
                 value: '',

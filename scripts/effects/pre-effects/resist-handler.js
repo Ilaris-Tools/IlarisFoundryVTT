@@ -55,7 +55,7 @@ export function resolveInitialResistTalent(talents, configuredTalent) {
  * Handle a resist button click: open FertigkeitDialog and wait for result.
  */
 async function handleResistClick(actor, preEffectData, button) {
-    const avoidTest = preEffectData.avoidTest || {}
+    const avoidTest = { ...(preEffectData.avoidTest || {}) }
     const eventId = preEffectData.eventId
     const spellItemUuid = preEffectData.spellUuid
     const spellName = preEffectData.spellName || ''
@@ -64,6 +64,27 @@ async function handleResistClick(actor, preEffectData, button) {
     const maechtigeQs = preEffectData.maechtigeQs || 0
     const baseDifficulty = avoidTest.resistDifficulty || 12
     const resistDifficulty = baseDifficulty + maechtigeQs * 4
+
+    const attributeChoices = (avoidTest.attributChoices || []).filter(
+        (attribute) => actor.system?.attribute?.[attribute]?.pw !== undefined,
+    )
+    if (attributeChoices.length > 1) {
+        const selectedAttribute = await foundry.applications.api.DialogV2.wait({
+            window: { title: 'Widerstandsprobe' },
+            content: '<p>Wähle das Attribut für die Widerstandsprobe.</p>',
+            buttons: attributeChoices.map((attribute) => ({
+                action: attribute,
+                label: `${CONFIG.ILARIS.label?.[attribute] || attribute} (PW ${actor.system.attribute[attribute].pw})`,
+                callback: () => attribute,
+            })),
+            rejectClose: false,
+        })
+        if (!selectedAttribute) {
+            button.disabled = false
+            return
+        }
+        avoidTest.attribut = selectedAttribute
+    }
 
     // Resolve skill or attribute for the dialog
     let dialogOptions
@@ -234,6 +255,8 @@ async function applyPreEffectFromResist(preEffectData) {
         maechtigeQs,
         preEffectData.preEffectIndex,
         preEffectData.applicationId,
+        preEffectData.armedInputValues || {},
+        preEffectData.sourceType || 'uebernatuerlich',
     )
 }
 
@@ -305,6 +328,8 @@ async function applyDiminishedEffect(preEffectData) {
         maechtigeQs,
         preEffectData.preEffectIndex,
         preEffectData.applicationId,
+        preEffectData.armedInputValues || {},
+        preEffectData.sourceType || 'uebernatuerlich',
     )
 }
 

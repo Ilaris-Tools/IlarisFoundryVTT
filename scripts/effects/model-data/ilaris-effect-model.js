@@ -30,6 +30,26 @@ export function createIlarisActiveEffectDataModel(h) {
             schema.ilarisSource = h.string('ordinary')
             schema.ilarisModifiers = h.arrayOfObjects()
             schema.ilarisArmedCombat = h.object({})
+            schema.ilarisEnding = h.object({})
+            const sourceTiming = h.schema({
+                durationType: h.string(''),
+                expiresOn: h.string(''),
+                remaining: h.number(0),
+            })
+            const conditionSource = h.schema({
+                id: h.string(''),
+                type: h.string('preEffect'),
+                origin: h.string(''),
+                timing: sourceTiming,
+            })
+            schema.ilarisCondition = h.schema({
+                statusId: h.string(''),
+                sources: new foundry.data.fields.ArrayField(conditionSource, {
+                    required: false,
+                    nullable: true,
+                    initial: () => [],
+                }),
+            })
             return schema
         }
     }

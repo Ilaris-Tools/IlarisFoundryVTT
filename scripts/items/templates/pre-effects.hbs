@@ -4,11 +4,44 @@
         {{#each item.system.preEffects}}
         <fieldset class="pre-effect-card">
             <legend>Pre-Effect</legend>
+            {{#if @root.isManeuverPreEffect}}
+            <div class="form-group">
+                <label>Auslöser:</label>
+                <select name="system.preEffects.{{@index}}.activation">
+                    <option value="onConfirmedHit" {{#if (ifEq activation "onConfirmedHit")}}selected{{/if}}>Bestätigter Treffer</option>
+                    <option value="onSuccessfulDefense" {{#if (ifEq activation "onSuccessfulDefense")}}selected{{/if}}>Erfolgreiche Verteidigung</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Manöver-Operation:</label>
+                <select name="system.preEffects.{{@index}}.operation">
+                    <option value="">— Keine —</option>
+                    <option value="deselectEquippedWeapon" {{#if (ifEq operation "deselectEquippedWeapon")}}selected{{/if}}>Ausgewählte Waffe abwählen</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Befreiungsprobe:</label>
+                <select name="system.preEffects.{{@index}}.ilarisEnding.type">
+                    <option value="">— Keine —</option>
+                    <option value="opposedEscape" {{#if (ifEq ilarisEnding.type "opposedEscape")}}selected{{/if}}>GE oder KK</option>
+                </select>
+            </div>
+            {{/if}}
             <button type="button" class="delete-pre-effect">✕</button>
 
             <div class="form-group">
                 <label>Dauer (Runden):</label>
                 <input type="number" name="system.preEffects.{{@index}}.baseDuration" value="{{baseDuration}}" data-dtype="Number" />
+            </div>
+
+            <div class="form-group">
+                <label><input type="checkbox" name="system.preEffects.{{@index}}.condition.enabled" {{checked condition.enabled}} /> Zustand anwenden</label>
+                <select name="system.preEffects.{{@index}}.condition.statusId">
+                    <option value="">-- Zustand wÃ¤hlen --</option>
+                    {{#each ../statusEffectOptions}}
+                    <option value="{{id}}" {{#if (ifEq id ../condition.statusId)}}selected{{/if}}>{{name}}</option>
+                    {{/each}}
+                </select>
             </div>
 
             <div class="form-group">

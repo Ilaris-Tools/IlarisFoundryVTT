@@ -13,6 +13,7 @@ import {
     getArmedDamageFormula,
     resolveArmedAttack,
 } from '../../effects/pre-effects/armed-combat-effects.js'
+import { applyPreEffects, toArray } from '../../effects/pre-effects/pre-effects-processor.js'
 
 export class AngriffDialog extends CombatDialog {
     /** @override */
@@ -352,6 +353,7 @@ export class AngriffDialog extends CombatDialog {
             true, // crit_eval
         )
         this.attackType = 'melee'
+        rollResult.ilarisManeuverPreEffects = this._selectedManeuverPreEffects()
         rollResult.ilarisArmedAttackContext = this.armedAttackContext
         rollResult.ilarisAttackDialogId = this.dialogId
         if (!rollResult.success || !this.selectedActors?.length) {
@@ -539,6 +541,14 @@ export class AngriffDialog extends CombatDialog {
         const armedDamage = await resolveArmedAttack(this.attackingActor, armedContext, {
             confirmedHit: !defenderWins && this.attackRoll?.success !== false,
         })
+        await this._dispatchManeuverPreEffects(
+            defenderWins
+                ? this._selectedManeuverPreEffects()
+                : this.attackRoll?.ilarisManeuverPreEffects,
+            defenderWins ? 'onSuccessfulDefense' : 'onConfirmedHit',
+            defenderWins ? this.actor : this.lastDefenseRoll.actor,
+            defenderWins ? this.actor : this.attackingActor,
+        )
         if (armedDamage) {
             this.attackRoll.ilarisArmedDamageFormula = armedDamage
             const payload = {
@@ -552,6 +562,50 @@ export class AngriffDialog extends CombatDialog {
         this.attackRoll = null
         super._updateSchipsStern()
         this.updateModifierDisplay()
+    }
+
+    _selectedManeuverPreEffects() {
+        return (this.item.manoever || [])
+            .filter((maneuver) => Boolean(maneuver.inputValue?.value))
+            .map((maneuver) => ({
+                id: maneuver.id,
+                name: maneuver.name,
+                uuid: maneuver.uuid || `Item.${maneuver.id}`,
+                applicationId: foundry.utils.randomID(),
+                system: { preEffects: toArray(maneuver.system?.preEffects) },
+                inputValue: maneuver.inputValue,
+            }))
+            .filter((maneuver) => maneuver.system.preEffects.length)
+    }
+
+    async _dispatchManeuverPreEffects(maneuvers, activation, targetActor, sourceActor) {
+        for (const maneuver of maneuvers || []) {
+            const preEffects = maneuver.system.preEffects.filter(
+                (effect) => effect.activation === activation,
+            )
+            if (!preEffects.length) continue
+            await applyPreEffects(
+                { success: true },
+                {
+                    item: maneuver,
+                    actor: sourceActor,
+                    speaker: ChatMessage.getSpeaker({ actor: sourceActor }),
+                    selectedActors: [{ actorId: targetActor.id }],
+                },
+                {
+                    selector:
+                        maneuver.inputValue?.field === 'SELECTOR' ? maneuver.inputValue.value : '',
+                    inputValue: maneuver.inputValue?.value,
+                },
+                {
+                    sourceItem: maneuver,
+                    sourceActor,
+                    sourceType: 'maneuver',
+                    preEffects,
+                    applicationId: maneuver.applicationId,
+                },
+            )
+        }
     }
 
     async _schadenKlick() {
@@ -650,6 +704,10 @@ export class AngriffDialog extends CombatDialog {
                     check = dynamicManoever.inputValue.value
                 } else if (dynamicManoever.inputValue.field == 'NUMBER') {
                     number = dynamicManoever.inputValue.value
+                } else if (dynamicManoever.inputValue.field == 'SELECTOR') {
+                    // A selector activates ordinary modifications once; its raw
+                    // value remains on inputValue for outcome pre-effects.
+                    number = 1
                 } else {
                     trefferZoneInput = dynamicManoever.inputValue.value
                 }
