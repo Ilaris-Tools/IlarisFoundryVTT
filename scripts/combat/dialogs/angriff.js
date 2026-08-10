@@ -690,7 +690,7 @@ export class AngriffDialog extends CombatDialog {
         let nodmg = { name: '', value: false }
         let trefferzone = 0
         let schaden = this.item.getTp()
-        let damageType = 'NORMAL'
+        let damageType = 'PROFAN'
         let trueDamage = false
 
         // Collect all modifications from all maneuvers

@@ -179,7 +179,7 @@
                     <label>{{../manoever.labels.value}}:</label>
                     {{#if (ifEq this.type "CHANGE_DAMAGE_TYPE")}}
                     <select name="system.modifications.{{@index}}.value">
-                        {{selectOptions ../schadenstypen selected=this.value}}
+                        {{selectOptions ../damageTypeOptions selected=this.value}}
                     </select>
                     {{else if (ifEq this.type "SPECIAL_TEXT")}}
                     <input

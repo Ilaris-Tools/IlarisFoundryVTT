@@ -36,4 +36,16 @@ describe('ManoeverSheet pre-effect authoring', () => {
         expect(preEffectsTemplate).toContain('onSuccessfulDefense')
         expect(preEffectsTemplate).toContain('deselectEquippedWeapon')
     })
+
+    it('uses the inherited world-registry options for damage-type changes', () => {
+        const maneuverTemplate = readFileSync(
+            join(process.cwd(), 'scripts', 'items', 'templates', 'manoever.hbs'),
+            'utf8',
+        )
+
+        expect(maneuverTemplate).toContain(
+            '{{selectOptions ../damageTypeOptions selected=this.value}}',
+        )
+        expect(maneuverTemplate).not.toContain('../schadenstypen')
+    })
 })

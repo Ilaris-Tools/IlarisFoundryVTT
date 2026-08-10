@@ -40,7 +40,16 @@ describe('processModification', () => {
         }
         global.signed = mockSigned
         global.CONFIG = mockConfig
-        game.settings.get.mockReturnValue(false)
+        game.settings.get.mockImplementation((_namespace, key) => {
+            if (key === 'damageTypes') {
+                return JSON.stringify([
+                    { value: 'PROFAN', label: 'Profan', behavior: {} },
+                    { value: 'FEUER', label: 'Feuer', behavior: {} },
+                    { value: 'EIS', label: 'Eis', behavior: {} },
+                ])
+            }
+            return false
+        })
         delete global.Roll
     })
 
@@ -322,9 +331,30 @@ describe('processModification', () => {
         processModification(modification, 1, 'Test Manoever', null, rollValues, mockConfig)
 
         expect(rollValues.text_dm).toContain('Test Manoever: Schadenstyp zu Feuer')
+        expect(rollValues.damageType).toBe('FEUER')
         // Should not modify any other values
         expect(rollValues.mod_dm).toBe(0)
         expect(rollValues.schaden).toBe('')
+    })
+
+    it('uses the current registry label while retaining a custom damage-type key', () => {
+        game.settings.get.mockImplementation((_namespace, key) => {
+            if (key === 'damageTypes') {
+                return JSON.stringify([{ value: 'SCHATTEN', label: 'Schattenbrand', behavior: {} }])
+            }
+            return false
+        })
+
+        processModification(
+            { type: 'CHANGE_DAMAGE_TYPE', value: 'SCHATTEN' },
+            1,
+            'Schattenhieb',
+            null,
+            rollValues,
+        )
+
+        expect(rollValues.text_dm).toContain('Schattenhieb: Schadenstyp zu Schattenbrand')
+        expect(rollValues.damageType).toBe('SCHATTEN')
     })
 
     it('should handle CHANGE_DAMAGE_TYPE type with trefferzone', () => {
@@ -963,6 +993,29 @@ describe('getDamageTypeBehavior', () => {
             targetsErschoepfung: false,
             bypassesArmor: false,
         })
+    })
+
+    it('warns again when a previously restored type is removed from a changed registry', () => {
+        const key = 'REINTRODUCED_TYPE_TEST'
+        global.game.settings.get.mockImplementation((_namespace, settingKey) => {
+            if (settingKey === 'damageTypes') return '[]'
+            return undefined
+        })
+        getDamageTypeBehavior(key)
+
+        global.game.settings.get.mockImplementation((_namespace, settingKey) => {
+            if (settingKey === 'damageTypes') return `[{"value":"${key}","label":"Test"}]`
+            return undefined
+        })
+        getDamageTypeBehavior(key)
+
+        global.game.settings.get.mockImplementation((_namespace, settingKey) => {
+            if (settingKey === 'damageTypes') return '[]'
+            return undefined
+        })
+        getDamageTypeBehavior(key)
+
+        expect(global.ui.notifications.warn).toHaveBeenCalledTimes(2)
     })
 })
 

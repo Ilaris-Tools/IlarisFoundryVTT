@@ -32,8 +32,8 @@ beforeEach(() => {
     global.game.settings.get = jest.fn((_namespace, key) => {
         if (key === 'damageTypes') {
             return JSON.stringify([
-                { value: 'PROFAN', behavior: {} },
-                { value: 'FEUER', behavior: { bypassesArmor: true } },
+                { value: 'PROFAN', label: 'Profan', behavior: {} },
+                { value: 'FEUER', label: 'Feuer', behavior: { bypassesArmor: true } },
             ])
         }
         if (key === 'lepSystem') return false

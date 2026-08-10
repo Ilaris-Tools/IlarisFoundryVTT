@@ -50,7 +50,6 @@ export class ManoeverSheet extends UebernatuerlichTalentSheet {
     async _prepareContext(options) {
         const context = await super._prepareContext(options)
         context.manoever = CONFIG.ILARIS.manoever
-        context.schadenstypen = CONFIG.ILARIS.schadenstypen
         context.isManeuverPreEffect = true
 
         return context
