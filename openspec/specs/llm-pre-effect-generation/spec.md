@@ -56,7 +56,7 @@ A pure function `buildPreEffectPrompt(spellData, damageTypes, systemKeys)` SHALL
 
 ### Requirement: Generate button on übernatürlich item sheet
 
-A "🤖 Generieren" button SHALL be present in the pre-effects section of the übernatürlich item sheet, visible only to GMs.
+A `🤖 Generieren` button SHALL be present in the shared Pre-Effects section only when it is rendered by an übernatürlich item sheet and the current user is a GM with a configured API. The LLM request handler and availability context SHALL remain owned by `UebernatuerlichTalentSheet`; another Item sheet that inherits standard Pre-Effect authoring SHALL not acquire spell-generation behavior merely through that shared base.
 
 #### Scenario: Button visible to GMs
 
@@ -77,6 +77,11 @@ A "🤖 Generieren" button SHALL be present in the pre-effects section of the ü
 
 - **WHEN** a GM opens the sheet and both `llmApiUrl` and `llmApiKey` are non-empty
 - **THEN** the "🤖 Generieren" button SHALL be rendered
+
+#### Scenario: Button hidden on a maneuver sheet
+
+- **WHEN** a GM opens a maneuver item sheet while the LLM API is configured
+- **THEN** the shared Pre-Effect section SHALL NOT render a `🤖 Generieren` button
 
 #### Scenario: Button shows loading state during request
 

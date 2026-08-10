@@ -224,12 +224,30 @@ tests.
 
 ### Requirement: Resist resolution via FertigkeitDialog
 
-Resist tests SHALL be resolved by opening FertigkeitDialog with resist metadata attached as `_resistContext`, then listening for the existing `Ilaris.postSkillRoll` hook. Each Mächtige Magie quality stage (QS) the caster has active SHALL increase the resist difficulty by 4. The dialog SHALL display the target difficulty ("Erschwernis") and a resist-specific title.
+Resist tests SHALL be resolved by opening FertigkeitDialog with resist metadata attached as `_resistContext`, then listening for the existing `Ilaris.postSkillRoll` hook. `avoidTest.resistDifficultySource` SHALL select the difficulty source: a missing or invalid value is `fixed`, while `triggeringRoll` uses the serialized final triggering-roll total. In `fixed` mode, `resistDifficulty` SHALL default to 12 only when it is absent or null; its explicit numeric value, including `0`, SHALL be retained. Each Mächtige Magie/Liturgie quality stage (QS) the caster has active SHALL increase a fixed-source difficulty by 4 and SHALL NOT alter a triggering-roll difficulty. The dialog SHALL display the resolved target difficulty (`Erschwernis`) and a resist-specific title.
 
-#### Scenario: Mächtige Magie increases resist difficulty
+#### Scenario: Fixed difficulty defaults to 12 and receives Mächtige Magie
 
-- **WHEN** a resist test is opened and the caster has Mächtige Magie/Liturgie with QS > 0
-- **THEN** FertigkeitDialog SHALL be opened with `options.success_val = avoidTest.resistDifficulty + (QS × 4)`, where `resistDifficulty` defaults to 12 if not set
+- **WHEN** a resist test uses the `fixed` source and `resistDifficulty` is absent or null
+- **THEN** FertigkeitDialog SHALL be opened with `options.success_val = 12 + (QS × 4)`
+
+#### Scenario: Explicit fixed zero is not a source sentinel
+
+- **WHEN** a resist test uses the `fixed` source and `resistDifficulty` is `0`
+- **THEN** FertigkeitDialog SHALL use `options.success_val = 0 + (QS × 4)`
+- **AND** the system SHALL NOT substitute the default merely because the value is zero
+
+#### Scenario: Triggering roll supplies the exact difficulty
+
+- **WHEN** a resist test uses `resistDifficultySource: "triggeringRoll"` and its prompt contains a finite triggering-roll total
+- **THEN** FertigkeitDialog SHALL use that total as `options.success_val`
+- **AND** the system SHALL NOT add a fixed difficulty or a Mächtige Magie/Liturgie QS bonus
+
+#### Scenario: Missing triggering roll falls back safely
+
+- **WHEN** a resist test uses `resistDifficultySource: "triggeringRoll"` but its prompt does not contain a finite triggering-roll total
+- **THEN** the system SHALL show a localized warning
+- **AND** FertigkeitDialog SHALL use the documented default difficulty of 12
 
 #### Scenario: Resist context attached to dialog
 
@@ -268,7 +286,7 @@ Resist tests SHALL be resolved by opening FertigkeitDialog with resist metadata 
 
 ### Requirement: Pre-effects GUI on item sheet
 
-The übernatürlich item sheet SHALL render the `preEffects` array as an editable list with inline form fields, using a new `PARTS` entry and Handlebars template.
+The übernatürlich item sheet SHALL render the `preEffects` array as an editable list with inline form fields by extending the shared `PreEffectItemSheet` and supplying its supernatural `form` Handlebars part. The shared base SHALL provide the Pre-Effect named part and editor lifecycle; the resulting authoring controls and persisted data SHALL remain the standard Pre-Effect structure.
 
 #### Scenario: Pre-effects section renders on sheet
 
@@ -405,6 +423,42 @@ source item.
 
 An übernatürlich pre-effect MAY define `armedCombat` input, scope, contribution, and charges. The item sheet and cast dialog SHALL author and collect its bounded numeric inputs; a successful cast SHALL materialize them in the generated ActiveEffect.
 
+#### Scenario: Armed configuration materializes a consumable effect
+
+- **WHEN** a successful cast uses a pre-effect with configured `armedCombat` inputs, scope, contribution, and charges
+- **THEN** the system SHALL materialize those bounded values in the generated ActiveEffect
+
+### Requirement: Pre-effect authoring exposes resistance difficulty sources
+
+The übernatürlich item-sheet Pre-Effect editor SHALL persist `avoidTest.resistDifficultySource` with `fixed` as its default. When an avoid test is enabled, it SHALL present the German selector `Schwierigkeit aus` with the choices `Fester Wert` (`fixed`) and `Ergebnis der auslösenden Probe` (`triggeringRoll`). The numeric `resistDifficulty` field SHALL remain available for the fixed source and show its default value of 12.
+
+#### Scenario: New avoid test defaults to a fixed difficulty
+
+- **WHEN** a GM creates a Pre-Effect with an avoid test
+- **THEN** its `avoidTest.resistDifficultySource` SHALL be `fixed`
+- **AND** its `avoidTest.resistDifficulty` SHALL be 12
+
+#### Scenario: GM selects triggering-roll difficulty
+
+- **WHEN** a GM selects `Ergebnis der auslösenden Probe` for an enabled avoid test
+- **THEN** the sheet SHALL persist `avoidTest.resistDifficultySource: "triggeringRoll"`
+- **AND** the numeric fixed field SHALL not be presented as the active source of that test's difficulty
+
+### Requirement: Resistance prompts carry a triggering-roll snapshot
+
+The pre-effect processor SHALL serialize the finite total of the roll supplied to `applyPreEffects` as `triggeringRollTotal` in the existing resistance prompt. The prompt SHALL continue to use the existing [ChatMessage](https://foundryvtt.com/api/v14/classes/foundry.documents.ChatMessage.html) transport and shall not re-evaluate or look up the source roll when the target clicks its button.
+
+#### Scenario: Supernatural roll total is copied into the prompt
+
+- **WHEN** a successful supernatural pre-effect with an avoid test receives a roll result containing `roll.total`
+- **THEN** its resistance prompt data SHALL contain that total as `triggeringRollTotal`
+
+#### Scenario: Calls without a roll do not invent a triggering total
+
+- **WHEN** a pre-effect caller supplies no Roll or a non-finite `roll.total`
+- **THEN** the resistance prompt data SHALL omit `triggeringRollTotal`
+- **AND** fixed-source resistance behaviour SHALL remain available
+
 ### Requirement: Pre-effects support a generic summon-item operation
 
 An übernatürlich Item pre-effect SHALL optionally define a `summonItem`
@@ -442,5 +496,3 @@ Items.
 - **WHEN** a summon-item TP override has value `2W20`, Mächtige Magie bonus `+1W20`, and two quality stages
 - **THEN** the clone SHALL receive `2W20+1W20+1W20` as its configured TP value
 - **AND** the target Actor's other Item data SHALL remain unchanged
-
-An übernatürlich pre-effect MAY define `armedCombat` input, scope, contribution, and charges. The item sheet and cast dialog SHALL author and collect its bounded numeric inputs; a successful cast SHALL materialize them in the generated ActiveEffect.

@@ -200,6 +200,57 @@ preparation.
 - **AND** the semantic modifier result SHALL be applied only in its defined
   Ilaris preparation step
 
+### Requirement: ActiveEffects can expose a source-linked opposed escape action
+
+The system SHALL expose a visible `Befreiungsprobe` action for an embedded ActiveEffect with `system.ilarisEnding.type: "opposedEscape"`. The ending data SHALL identify the source Actor by UUID and SHALL be limited to the supported GE/KK opposed escape configuration. Effects without that ending SHALL retain their existing effect-row behavior.
+
+#### Scenario: The affected actor starts an escape attempt
+
+- **WHEN** the affected actor activates `Befreiungsprobe` on an eligible opposed-escape effect
+- **THEN** the system SHALL offer GE and KK with their current PW values
+- **AND** it SHALL associate the resulting attempt with that exact effect
+
+### Requirement: Opposed escape resolves through a source counter-check
+
+After the affected actor submits an opposed escape roll, the system SHALL send a whispered counter-check prompt to a controlling user of the persisted source Actor, or to an active GM if none is available. A successful escape SHALL remove only the linked effect using [Actor#deleteEmbeddedDocuments](https://foundryvtt.com/api/v14/classes/foundry.documents.Actor.html#deleteEmbeddedDocuments).
+
+#### Scenario: Successful escape removes only its own hold
+
+- **WHEN** an affected actor wins the counter-check for one opposed-escape effect while another hold effect is also active
+- **THEN** the system SHALL delete only the effect linked to that escape attempt
+- **AND** the other hold effect SHALL remain active
+
+#### Scenario: Failed escape preserves the effect
+
+- **WHEN** the affected actor does not win the opposed counter-check
+- **THEN** the linked effect SHALL remain active
+
+### Requirement: Escape prompts validate their persisted context
+
+The system SHALL validate the target Actor, effect ID, ending type, source Actor UUID, and single-use interaction identity before resolving an escape prompt. It SHALL reject a stale, duplicated, or mismatched prompt without deleting an effect.
+
+#### Scenario: A duplicate prompt cannot remove an effect twice
+
+- **WHEN** a previously resolved escape prompt is activated again
+- **THEN** the system SHALL reject the prompt
+- **AND** it SHALL not delete any ActiveEffect
+
+### Requirement: Condition-source timing is independent per source
+
+The owner-turn timing lifecycle SHALL reduce and remove timed condition sources independently, without using a condition effect's global duration to delete other sources. It SHALL use the existing documented [Actor](https://foundryvtt.com/api/v14/classes/foundry.documents.Actor.html) embedded-document update/delete methods for the resulting ledger mutation.
+
+#### Scenario: Timed source expires while another source remains
+
+- **WHEN** an owner-turn source on a condition reaches its configured expiry
+- **AND** the condition has another active source
+- **THEN** the system SHALL remove only the expired source
+- **AND** the condition ActiveEffect SHALL remain active
+
+#### Scenario: Timed source is final source
+
+- **WHEN** an owner-turn source is the final source on a condition and reaches its configured expiry
+- **THEN** the system SHALL delete the condition ActiveEffect at its configured expiry point
+
 ## Data Model
 
 ### IlarisActiveEffectDataModel (`system.ilarisTiming`)

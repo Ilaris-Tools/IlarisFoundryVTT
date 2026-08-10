@@ -6,7 +6,7 @@ UI/UX enhancements for the resist dialog (Widerstandsprobe) in the fertility ski
 
 ### Requirement: Resist difficulty displayed in FertigkeitDialog preview
 
-When FertigkeitDialog is opened with `success_val` set (resist test context), the preview summary SHALL display the target difficulty as an "Erschwernis" row.
+FertigkeitDialog SHALL display the resolved numeric `success_val` as an immutable `Erschwernis` row in a resist-test preview. The value may originate from a fixed Pre-Effect value or a snapshot of the triggering roll, but the dialog SHALL not recalculate it while previewing the target's own test.
 
 #### Scenario: Difficulty row appears in summary
 
@@ -18,10 +18,11 @@ When FertigkeitDialog is opened with `success_val` set (resist test context), th
 - **WHEN** FertigkeitDialog renders with `this.success_val` as `null` (normal skill check, no resist context)
 - **THEN** the summary section SHALL NOT include an "Erschwernis" row
 
-#### Scenario: Difficulty row updates with live preview
+#### Scenario: Triggering-roll difficulty remains a prompt snapshot
 
-- **WHEN** the user changes modifiers (Hohe Qualität, Modifikator) in a resist dialog
-- **THEN** the "Erschwernis" row SHALL remain displayed unchanged (difficulty is static per resist test)
+- **WHEN** the user changes modifiers (Hohe Qualität, Modifikator) in a resist dialog whose difficulty came from a triggering roll
+- **THEN** the `Erschwernis` row SHALL remain displayed with the unchanged triggering-roll total
+- **AND** the system SHALL not re-evaluate the original roll
 
 ### Requirement: Resist dialog title differentiates from normal skill checks
 
