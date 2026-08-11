@@ -6,11 +6,11 @@
 
 #### Breaking Change
 
-**BITTE BEACHTEN**, solltet ihr das Beta Feature Pre-Effekte benutzen wollen. Müsst ihr eure Charaktere am besten neuimportieren.
+##### ⚠️ Alpha-Funktion: Pre-Effekte
 
-#### ⚠️ Beta-Funktion: Pre-Effekte
+Pre-Effekte sind eine **Alpha-Funktion**. Sie automatisieren bislang nur einen Teil der benötigten Zauber-, Liturgie- und Anrufungswirkungen und stacken zur Zeit noch. Prüft erzeugte Effekte, Zielwerte, Dauer und Widerstandsproben im Spiel; bei wichtigen Spielsituationen bleibt die Spielleitung für die Regelprüfung verantwortlich. Es sind auch **explizit nur sehr wenige** Zauber/Liturgien umgesetzt und umsetzbar.
 
-Pre-Effekte sind eine **Beta-Funktion**. Sie automatisieren bislang nur einen Teil der benötigten Zauber-, Liturgie- und Anrufungswirkungen und stacken zur Zeit noch. Prüft erzeugte Effekte, Zielwerte, Dauer und Widerstandsproben im Spiel; bei wichtigen Spielsituationen bleibt die Spielleitung für die Regelprüfung verantwortlich.
+**BITTE BEACHTEN**, solltet ihr das Alpha Feature Pre-Effekte benutzen wollen. Müsst ihr eure Charaktere am besten neuimportieren.
 
 #### Pre-Effekte
 
