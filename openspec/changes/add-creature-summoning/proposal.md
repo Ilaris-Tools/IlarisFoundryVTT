@@ -10,10 +10,15 @@ Die bestehende Pre-Effect- und strukturierte Zauberform-Architektur bietet berei
 - Kreaturen-Kompendien werden als GM-editierbares World-Setting mit `Ilaris.kreaturen` als Standard hinterlegt und in die bestehende Kompendienverwaltung aufgenommen.
 - Kreaturen-Actors erhalten `summoningDifficulty` und `summoningCost`, jeweils mit dem Default `12` auch für fehlende Alt-Daten.
 - Der Zauber-Editor kann erlaubte `kreaturentyp`-Werte konfigurieren.
+- Die Handlebars-Templates für normale und strukturierte übernatürliche Talente zeigen abhängig vom aktivierten Pre-Effect nur die zugehörigen Felder; irrelevante Felder werden ausgeblendet, damit die Konfiguration verständlich bleibt.
 - Der Zauberdialog zeigt zuerst den Kreaturentyp und anschließend alle passenden Kreaturen aus den aktivierten Kompendien.
 - Bei erfolgreicher Probe ersetzen die Werte des ausgewählten Kreaturen-Actors die normalen Zauberschwierigkeit und Zauberkosten; fehlende Werte verwenden `12`.
 - Die Kreatur wird als unlinked Token auf der aktuellen Szene erzeugt. Die Platzierung beginnt direkt neben dem Beschwörer und sucht bei belegten Feldern ringweise weiter.
+- Ein Zauber kann mit einem globalen Schalter und pro Kreaturentyp konfigurierten Einträgen eine Beherrschungsprobe des Beschwörers aktivieren. Sie verwendet eine Attribut- oder Fertigkeit/Talent-Probe gegen eine feste Schwierigkeit und wird erst nach der Token-Erzeugung gewürfelt.
+- Das Ergebnis der Beherrschungsprobe wird nur als erfolgreich oder nicht erfolgreich angezeigt. Ist die globale Funktion deaktiviert oder für den ausgewählten Kreaturentyp kein Eintrag konfiguriert, wird keine Probe verlangt; ein Fehlschlag verhindert die Beschwörung nicht.
 - Der beschworene Token bleibt bestehen, bis der Spielleiter ihn löscht. Nach der Erzeugung wird das Kreaturenblatt geöffnet.
+- Ein Zauber kann für die beschworene Kreatur eine zusätzliche `boundResourceCost` aus gAsP oder gKaP mit einem festen Betrag definieren. Der gehaltene Beschwörer zahlt diese Bindung beim Erzeugen des Tokens; beim Löschen des Tokens wird sie wieder freigegeben.
+- Ein Tutorial-Eintrag im passenden Tutorial-/Kurzübersichten-Kompendium erklärt die Einrichtung der Kreaturen-Kompendien, des `summonCreature`-Pre-Effects und der optionalen Beherrschungsprobe.
 - Die Erweiterung ist additiv, verändert aber den bestehenden Pre-Effect-Erfolgspfad um einen neuen beschwörbaren Effekt-Typ. Bestehende Gegenstands-Beschwörungen bleiben unverändert.
 
 ## Capabilities
@@ -34,7 +39,7 @@ Die bestehende Pre-Effect- und strukturierte Zauberform-Architektur bietet berei
 - Betroffene UI: Pre-Effect- und strukturierte Zauber-Templates, der übernatürliche Zauberdialog sowie die GM-Kompendien-Einstellungen.
 - Betroffene Daten: geprüfte Beschwörungszauber in `comp_packs/zauberspruche-und-rituale/_source/`; nach Änderungen ist `npm run pack-all` erforderlich.
 - Foundry VTT API v14: [Actor](https://foundryvtt.com/api/v14/classes/foundry.documents.Actor.html), [TokenDocument](https://foundryvtt.com/api/v14/classes/foundry.documents.TokenDocument.html), [Scene](https://foundryvtt.com/api/v14/classes/foundry.documents.Scene.html), [ActiveEffect](https://foundryvtt.com/api/v14/classes/foundry.documents.ActiveEffect.html), `fromUuid`, `game.settings`, `game.packs`, `canvas.tokens`, `Actor#getTokenDocument`, `Scene#createEmbeddedDocuments`, `Actor#sheet.render` sowie [foundry.utils.deepClone](https://foundryvtt.com/api/v14/functions/foundry.utils.deepClone.html).
-- Es wird kein neuer Hook benötigt; der vorhandene erfolgreiche Pre-Effect-Dispatch wird erweitert.
+- Der vorhandene erfolgreiche Pre-Effect-Dispatch wird erweitert; für die Freigabe gebundener Ressourcen wird zusätzlich der dokumentierte Token-Lösch-Lifecycle verwendet.
 
 ## Testing Impact
 
