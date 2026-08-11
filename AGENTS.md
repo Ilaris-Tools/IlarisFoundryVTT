@@ -92,6 +92,15 @@ Rules from `openspec/config.yaml` apply to all phases:
 
 ## Working Rules
 
+### Foundry lifecycle automation
+
+Use `node utils/foundry-lifecycle.mjs <Action>` whenever Foundry needs to be stopped, packed, started, restarted, or checked for E2E validation. This command works on Windows, macOS, and Linux. The default is the local `ilaris-e2e-world-v14363-r1` world on port `30000`. It uses the official [Foundry VTT CLI](https://github.com/foundryvtt/foundryvtt-cli); install it and run `fvtt configure` once on each machine.
+
+- After modifying compendium `_source/` data, run `PackAndRestart` before any E2E test.
+- After code/template-only changes that need a fresh client, run `Restart` before E2E.
+- Before E2E, run `Status`; if Foundry is unavailable, start it yourself with the script instead of asking the user to do so.
+- The script stops only the process actively listening on the selected port, clears Foundry's stale configuration lock only after that stop, runs `npm run pack-all` only while that port is free, starts `fvtt launch --world <world> --port <port>`, and waits for readiness.
+
 1. **Consult the Foundry VTT API** (<https://foundryvtt.com/api/>) before making assumptions about Hooks, Documents, utilities, or rendering APIs.
 2. **Run `npm install`** before any build or test operation.
 3. **Run `npm run pack-all`** after modifying any `_source/` compendium data.
