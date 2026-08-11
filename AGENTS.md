@@ -101,6 +101,10 @@ Use `node utils/foundry-lifecycle.mjs <Action>` whenever Foundry needs to be sto
 - Before E2E, run `Status`; if Foundry is unavailable, start it yourself with the script instead of asking the user to do so.
 - The script stops only the process actively listening on the selected port, clears Foundry's stale configuration lock only after that stop, runs `npm run pack-all` only while that port is free, starts `fvtt launch --world <world> --port <port>`, and waits for readiness.
 
+### Git handoff
+
+After the required E2E tests pass, review the diff and commit every change made by the agent for the current task. Do not stage or commit pre-existing or unrelated user changes. Use a concise, imperative commit message that accurately describes the completed change (for example, `feat: add Foundry lifecycle helper`). Do not commit when the required E2E tests fail or have not been run.
+
 1. **Consult the Foundry VTT API** (<https://foundryvtt.com/api/>) before making assumptions about Hooks, Documents, utilities, or rendering APIs.
 2. **Run `npm install`** before any build or test operation.
 3. **Run `npm run pack-all`** after modifying any `_source/` compendium data.
