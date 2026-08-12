@@ -36,6 +36,7 @@ function normalizeSource(source = {}) {
         id: source.id || foundry.utils.randomID(),
         type: source.type || 'preEffect',
         ...(source.origin ? { origin: source.origin } : {}),
+        ...(source.passiveZone ? { passiveZone: foundry.utils.deepClone(source.passiveZone) } : {}),
         ...(source.timing ? { timing: foundry.utils.deepClone(source.timing) } : {}),
     }
 }

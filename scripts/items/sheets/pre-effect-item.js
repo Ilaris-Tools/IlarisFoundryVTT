@@ -280,6 +280,7 @@ export class PreEffectItemSheet extends IlarisItemSheet {
             instant: false,
             changes: [],
             ilarisModifiers: [],
+            marker: { enabled: false },
             condition: { enabled: false, statusId: '' },
             armedCombat: {
                 enabled: false,

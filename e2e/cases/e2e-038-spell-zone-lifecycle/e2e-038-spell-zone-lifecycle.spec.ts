@@ -417,4 +417,133 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
         expect(persisted.durationType).toBe('sceneRounds')
         expect(persisted.remaining).toBe(255)
     })
+
+    test('applies, removes, reapplies, and isolates passive Zone effects', async ({ page }) => {
+        const result = await page.evaluate(
+            async ({ actorName, packId }) => {
+                const actor = game.actors?.getName(actorName) as any
+                const scene = canvas.scene as any
+                const pack = game.packs?.get(packId)
+                const spell = (await pack?.getDocuments())?.find(
+                    (entry: any) => entry.name === 'Dunkelheit',
+                ) as any
+                if (!actor || !scene || !spell)
+                    throw new Error('Akteur, Szene oder Dunkelheit fehlt.')
+                const {
+                    createPersistentZone,
+                    reconcilePersistentPassiveZones,
+                    reducePersistentZoneDurations,
+                    updatePersistentZoneMembership,
+                } = await import('/systems/Ilaris/scripts/combat/zones/zone-lifecycle.js')
+                const { createZoneRegionData } =
+                    await import('/systems/Ilaris/scripts/combat/zones/zone-region-adapter.js')
+                const origin = {
+                    x: canvas.dimensions.sceneX + canvas.grid.size * 16,
+                    y: canvas.dimensions.sceneY + canvas.grid.size * 16,
+                }
+                const [targetToken] = await scene.createEmbeddedDocuments('Token', [
+                    {
+                        name: 'E2E Passivzonen-Ziel',
+                        actorId: actor.id,
+                        x: origin.x,
+                        y: origin.y,
+                        flags: { Ilaris: { e2eZone: true } },
+                    },
+                ])
+                await new Promise((resolve) => setTimeout(resolve, 500))
+                const targetActor = canvas.tokens?.get(targetToken.id)?.actor as any
+                if (!targetActor)
+                    throw new Error('E2E Passivzonen-Ziel ist nicht auf dem Canvas bereit.')
+
+                const makeRegion = async (zone = spell.system.zone) =>
+                    createPersistentZone({
+                        scene,
+                        regionData: createZoneRegionData(zone, origin, {
+                            flags: { Ilaris: { e2eZone: true } },
+                        }),
+                        dialog: {
+                            item: spell,
+                            actor,
+                            zoneCasterTokenId: '',
+                            armedInputValues: {},
+                            maneuverDurationBonus: 0,
+                            maechtigeMagieQs: 0,
+                            getSelectedSpellModificationId: () => '',
+                        },
+                        zone,
+                        preEffects: spell.system.preEffects,
+                    })
+                const first = (await makeRegion()) as any
+                const second = (await makeRegion()) as any
+                if (!first || !second)
+                    throw new Error('Passive Dunkelheit-Zone wurde nicht erzeugt.')
+                const ownedEffects = (regions = [first, second]) =>
+                    Array.from(targetActor.effects ?? []).filter(
+                        (effect: any) =>
+                            effect.flags?.ilaris?.passiveZone &&
+                            regions.some(
+                                (region: any) => region.id === effect.flags?.ilaris?.zoneRegionId,
+                            ),
+                    )
+                const initial = ownedEffects().map(
+                    (effect: any) => effect.flags.ilaris.zoneRegionId,
+                )
+                await reconcilePersistentPassiveZones(scene)
+                await reconcilePersistentPassiveZones(scene)
+                const afterReconciliation = ownedEffects().map(
+                    (effect: any) => effect.flags.ilaris.zoneRegionId,
+                )
+                const token = scene.tokens.get(targetToken.id) as any
+                await token.update({ x: origin.x + canvas.grid.size * 10 })
+                await new Promise((resolve) => setTimeout(resolve, 500))
+                await updatePersistentZoneMembership(scene, token)
+                const afterLeave = {
+                    effectRegionIds: ownedEffects().map(
+                        (effect: any) => effect.flags.ilaris.zoneRegionId,
+                    ),
+                    memberships: [first, second].map(
+                        (region: any) => region.flags?.Ilaris?.zone?.membership ?? [],
+                    ),
+                }
+                await token.update({ x: origin.x })
+                await new Promise((resolve) => setTimeout(resolve, 500))
+                await updatePersistentZoneMembership(scene, token)
+                const afterReentry = ownedEffects().map(
+                    (effect: any) => effect.flags.ilaris.zoneRegionId,
+                )
+                await first.delete()
+                // Foundry does not await asynchronous deleteRegion hook listeners.
+                await new Promise((resolve) => setTimeout(resolve, 500))
+                const afterFirstDeletion = ownedEffects().map(
+                    (effect: any) => effect.flags.ilaris.zoneRegionId,
+                )
+                const expiringZone = foundry.utils.deepClone(spell.system.zone)
+                expiringZone.duration = { remaining: 1, originalValue: 1 }
+                const expiring = (await makeRegion(expiringZone)) as any
+                if (!expiring) throw new Error('Ablaufende passive Zone wurde nicht erzeugt.')
+                await reducePersistentZoneDurations({ scene }, {})
+                const afterExpiry = ownedEffects([first, second, expiring]).map(
+                    (effect: any) => effect.flags.ilaris.zoneRegionId,
+                )
+                return {
+                    initial,
+                    afterReconciliation,
+                    afterLeave,
+                    afterReentry,
+                    firstId: first.id,
+                    secondId: second.id,
+                    afterFirstDeletion,
+                    afterExpiry,
+                }
+            },
+            { actorName: ACTOR_NAME, packId: SPELL_PACK },
+        )
+
+        expect(result.initial.sort()).toEqual([result.firstId, result.secondId].sort())
+        expect(result.afterReconciliation.sort()).toEqual([result.firstId, result.secondId].sort())
+        expect(result.afterLeave).toEqual({ effectRegionIds: [], memberships: [[], []] })
+        expect(result.afterReentry.sort()).toEqual([result.firstId, result.secondId].sort())
+        expect(result.afterFirstDeletion).toEqual([result.secondId])
+        expect(result.afterExpiry).toEqual([result.secondId])
+    })
 })

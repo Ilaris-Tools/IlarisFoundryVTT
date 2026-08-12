@@ -41,4 +41,22 @@ describe('zone profiles', () => {
             }),
         ).toMatchObject({ targeting: { includeCaster: true } })
     })
+
+    it('defaults to triggered effects and accepts passive effects only for persistent Zones', () => {
+        expect(normalizeZoneProfile({ shape: 'circle', distance: 4 })).toMatchObject({
+            effectMode: 'triggered',
+        })
+        expect(
+            normalizeZoneProfile({
+                shape: 'circle',
+                distance: 4,
+                lifecycle: 'persistent',
+                duration: { remaining: 4 },
+                effectMode: 'passive',
+            }),
+        ).toMatchObject({ effectMode: 'passive' })
+        expect(
+            normalizeZoneProfile({ shape: 'circle', distance: 4, effectMode: 'passive' }),
+        ).toBeNull()
+    })
 })

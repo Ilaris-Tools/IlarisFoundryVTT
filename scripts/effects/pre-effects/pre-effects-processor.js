@@ -8,6 +8,9 @@ import {
 import { materializeArmedCombat } from './armed-combat-effects.js'
 import { summonItemFromPreEffect } from './summoned-items.js'
 import { addConditionSource } from '../status-conditions.js'
+import { isPassiveZoneEffect } from '../zone-effect-ownership.js'
+
+const pendingPassiveZoneCreations = new Map()
 
 /** Normalize Foundry v14 ObjectField data to a real array. */
 export function toArray(val) {
@@ -30,6 +33,17 @@ function getSupernaturalEffectStackingMode() {
 function getActorEffects(targetActor) {
     if (Array.isArray(targetActor?.effects)) return targetActor.effects
     return Array.from(targetActor?.effects?.values?.() || [])
+}
+
+function passiveZoneCreationKey(targetActor, ownership) {
+    return [
+        targetActor?.uuid || targetActor?.id || '',
+        ownership.regionId,
+        ownership.applicationId,
+        ownership.tokenId,
+        ownership.spellUuid,
+        ownership.preEffectIndex,
+    ].join(':')
 }
 
 function getActorItems(targetActor) {
@@ -177,9 +191,12 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {},
         const { targetActor } = resolveTargetActorForDamage(target)
         if (!targetActor) continue
         const isSelfCast = caster.id === targetActor.id
-        const applicationId = context.applicationId
-            ? `${context.applicationId}:${targetActor.id}`
-            : foundry.utils.randomID()
+        const passiveZone = context.passiveZone || null
+        const applicationId = passiveZone
+            ? `${passiveZone.applicationId}:${target.tokenId}`
+            : context.applicationId
+              ? `${context.applicationId}:${targetActor.id}`
+              : foundry.utils.randomID()
 
         for (const [preEffectIndex, preEffect] of preEffects.entries()) {
             const avoidTest = preEffect.avoidTest || {}
@@ -201,6 +218,8 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {},
                     triggeringRollTotal,
                     context.spellModificationId || '',
                     context.zoneRegionId || '',
+                    passiveZone,
+                    target.tokenId || '',
                 )
                 continue
             }
@@ -235,6 +254,8 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {},
                     sourceType,
                     context.spellModificationId || '',
                     context.zoneRegionId || '',
+                    passiveZone,
+                    target.tokenId || '',
                 )
             }
         }
@@ -258,6 +279,8 @@ async function sendResistPromptForEffect(
     triggeringRollTotal,
     spellModificationId,
     zoneRegionId,
+    passiveZone,
+    targetTokenId,
 ) {
     const serialized = {
         ...preEffect,
@@ -278,6 +301,8 @@ async function sendResistPromptForEffect(
         sourceType,
         spellModificationId,
         zoneRegionId,
+        passiveZone,
+        targetTokenId,
         ...(Number.isFinite(triggeringRollTotal) ? { triggeringRollTotal } : {}),
     }
     await sendResistPrompt(targetActor, serialized, spellItem.name, speaker)
@@ -322,6 +347,8 @@ export async function createActiveEffectFromPreEffect(
     sourceType = 'uebernatuerlich',
     spellModificationId = '',
     zoneRegionId = '',
+    passiveZone = null,
+    targetTokenId = '',
 ) {
     let payload
     try {
@@ -337,17 +364,28 @@ export async function createActiveEffectFromPreEffect(
         maechtigeQs,
     )
     await applyPreEffectOperation(targetActor, preEffect, armedInputValues)
+    const durationType = passiveZone ? 'infinite' : preEffect.durationType || 'ownerTurns'
 
     // Older pre-effects may only contain a statusId. In newly authored
     // pre-effects, an explicitly disabled condition must not be applied.
     const conditionStatusId =
         preEffect.condition?.enabled === false ? '' : preEffect.condition?.statusId
     if (conditionStatusId) {
-        const durationType = preEffect.durationType || 'ownerTurns'
         await addConditionSource(targetActor, conditionStatusId, {
             id: `${applicationId}:${preEffectIndex}`,
             type: 'preEffect',
             origin: spellItem.uuid,
+            ...(passiveZone
+                ? {
+                      passiveZone: {
+                          regionId: passiveZone.regionId,
+                          applicationId,
+                          tokenId: targetTokenId,
+                          spellUuid: spellItem.uuid,
+                          preEffectIndex,
+                      },
+                  }
+                : {}),
             ...(durationType === 'ownerTurns'
                 ? {
                       timing: {
@@ -363,15 +401,16 @@ export async function createActiveEffectFromPreEffect(
     const ilarisEnding = preEffect.ilarisEnding?.type
         ? { ...preEffect.ilarisEnding, sourceActorUuid: caster.uuid }
         : {}
+    const ilarisMarker = preEffect.marker?.enabled === true
     if (
         changes.length === 0 &&
         ilarisModifiers.length === 0 &&
         !ilarisArmedCombat &&
-        !ilarisEnding.type
+        !ilarisEnding.type &&
+        !ilarisMarker
     )
         return
 
-    const durationType = preEffect.durationType || 'ownerTurns'
     const effectData = {
         name: spellItem.name,
         origin: caster.uuid,
@@ -382,11 +421,12 @@ export async function createActiveEffectFromPreEffect(
             ilarisModifiers,
             ilarisArmedCombat,
             ilarisEnding,
+            ilarisMarker,
             ilarisTiming: {
                 durationType,
                 expiresOn: 'turnEnd',
-                remaining: effectiveDuration,
-                originalValue: effectiveDuration,
+                remaining: durationType === 'infinite' ? 0 : effectiveDuration,
+                originalValue: durationType === 'infinite' ? 0 : effectiveDuration,
             },
         },
         flags: {
@@ -401,32 +441,72 @@ export async function createActiveEffectFromPreEffect(
                 preEffectIndex,
                 applicationId,
                 spellModificationId,
-                zoneRegionId,
-                targetTokenId: preEffect.target?.tokenId || preEffect.targetTokenId || '',
+                zoneRegionId: passiveZone?.regionId || zoneRegionId,
+                zoneApplicationId: passiveZone ? applicationId : '',
+                passiveZone: Boolean(passiveZone),
+                targetTokenId:
+                    targetTokenId || preEffect.target?.tokenId || preEffect.targetTokenId || '',
             },
         },
     }
 
-    try {
-        if (
-            sourceType === 'maneuver' &&
-            getActorEffects(targetActor).some(
-                (effect) =>
-                    effect?.flags?.ilaris?.sourceType === 'maneuver' &&
-                    effect.flags.ilaris.applicationId === applicationId &&
-                    effect.flags.ilaris.preEffectIndex === preEffectIndex,
+    const createEffect = async () => {
+        try {
+            if (
+                sourceType === 'maneuver' &&
+                getActorEffects(targetActor).some(
+                    (effect) =>
+                        effect?.flags?.ilaris?.sourceType === 'maneuver' &&
+                        effect.flags.ilaris.applicationId === applicationId &&
+                        effect.flags.ilaris.preEffectIndex === preEffectIndex,
+                )
             )
-        )
-            return
-        await replacePreviousSpellApplication(targetActor, spellItem.uuid, applicationId)
-        await ActiveEffect.createDocuments([effectData], { parent: targetActor })
-        console.log(
-            'Ilaris | Created pre-effect ActiveEffect on',
-            targetActor.name,
-            ':',
-            effectData.name,
-        )
-    } catch (error) {
-        console.error('Ilaris | Failed to create pre-effect ActiveEffect:', error)
+                return
+            if (
+                passiveZone &&
+                getActorEffects(targetActor).some((effect) =>
+                    isPassiveZoneEffect(effect, {
+                        regionId: passiveZone.regionId,
+                        applicationId,
+                        tokenId: targetTokenId,
+                        spellUuid: spellItem.uuid,
+                        preEffectIndex,
+                    }),
+                )
+            )
+                return
+            if (!passiveZone)
+                await replacePreviousSpellApplication(targetActor, spellItem.uuid, applicationId)
+            await ActiveEffect.createDocuments([effectData], { parent: targetActor })
+            console.log(
+                'Ilaris | Created pre-effect ActiveEffect on',
+                targetActor.name,
+                ':',
+                effectData.name,
+            )
+        } catch (error) {
+            console.error('Ilaris | Failed to create pre-effect ActiveEffect:', error)
+        }
+    }
+
+    if (!passiveZone) return createEffect()
+    const ownership = {
+        regionId: passiveZone.regionId,
+        applicationId,
+        tokenId: targetTokenId,
+        spellUuid: spellItem.uuid,
+        preEffectIndex,
+    }
+    const key = passiveZoneCreationKey(targetActor, ownership)
+    const existing = pendingPassiveZoneCreations.get(key)
+    if (existing) return existing
+
+    const creation = createEffect()
+    pendingPassiveZoneCreations.set(key, creation)
+    try {
+        return await creation
+    } finally {
+        if (pendingPassiveZoneCreations.get(key) === creation)
+            pendingPassiveZoneCreations.delete(key)
     }
 }

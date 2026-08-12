@@ -3,7 +3,9 @@ import {
     createPersistentZone,
     createZoneDraftRegion,
     deleteZoneDraftRegion,
+    cleanupPassiveZoneEffects,
     reducePersistentZoneDurations,
+    reconcilePersistentPassiveZones,
     updatePersistentZoneMembership,
 } from '../zone-lifecycle.js'
 
@@ -19,6 +21,8 @@ describe('persistent zone duration', () => {
         global.foundry.utils.randomID = jest.fn(() => 'zone-application-id')
         global.foundry.utils.fromUuid = jest.fn()
         global.ChatMessage = { getSpeaker: jest.fn(() => ({ alias: 'Caster' })) }
+        global.game.actors = { get: jest.fn(), values: jest.fn(() => []) }
+        global.canvas = { tokens: { get: jest.fn(() => null) } }
     })
 
     test('decrements every scene-round zone once and deletes expired zones', async () => {
@@ -217,6 +221,212 @@ describe('persistent zone duration', () => {
 
         expect(region.update).not.toHaveBeenCalled()
         expect(global.foundry.utils.fromUuid).not.toHaveBeenCalled()
+    })
+
+    test('applies a passive Zone to initial occupants, removes it on leave, and restores it on re-entry', async () => {
+        const targetActor = {
+            id: 'target-actor',
+            name: 'Target',
+            effects: [],
+            deleteEmbeddedDocuments: jest.fn(async (_type, ids) => {
+                targetActor.effects = targetActor.effects.filter(
+                    (effect) => !ids.includes(effect.id),
+                )
+            }),
+        }
+        const target = {
+            id: 'target-token',
+            actor: targetActor,
+            actorLink: false,
+        }
+        const zone = {
+            lifecycle: 'persistent',
+            effectMode: 'passive',
+            duration: { type: 'sceneRounds', remaining: 3, originalValue: 3 },
+            targeting: { includeCaster: false },
+            trigger: { triggerOnCreate: true, onEnter: true },
+        }
+        const preEffects = [
+            {
+                baseDuration: 3,
+                instant: false,
+                changes: [{ key: 'system.test', type: 'add', value: '1' }],
+            },
+        ]
+        let state
+        const region = {
+            id: 'passive-region',
+            tokens: new Set([target]),
+            update: jest.fn(async (change) => {
+                if (change['flags.Ilaris.zone.membership'])
+                    state.membership = change['flags.Ilaris.zone.membership']
+                if ('flags.Ilaris.zone.initializing' in change)
+                    state.initializing = change['flags.Ilaris.zone.initializing']
+            }),
+        }
+        const scene = {
+            regions: [region],
+            tokens: new Map([[target.id, target]]),
+            createEmbeddedDocuments: jest.fn(async (_type, [data]) => {
+                state = data.flags.Ilaris.zone
+                region.flags = { Ilaris: { zone: state } }
+                region.parent = scene
+                return [region]
+            }),
+        }
+        global.game.actors.get.mockImplementation((id) =>
+            id === targetActor.id ? targetActor : null,
+        )
+        global.canvas.tokens.get.mockImplementation((id) => (id === target.id ? target : null))
+        global.foundry.utils.fromUuid.mockImplementation((uuid) => {
+            if (uuid === 'Item.passive') return { uuid, name: 'Passive spell', system: {} }
+            if (uuid === 'Actor.caster') return { uuid, id: 'caster', name: 'Caster' }
+            return null
+        })
+        global.ActiveEffect.createDocuments = jest.fn(async ([data]) => {
+            targetActor.effects.push({ id: `effect-${targetActor.effects.length}`, ...data })
+        })
+
+        await createPersistentZone({
+            scene,
+            regionData: { name: 'Passive Zone', shapes: [] },
+            dialog: {
+                item: { uuid: 'Item.passive' },
+                actor: { uuid: 'Actor.caster' },
+                zoneCasterTokenId: 'caster-token',
+                armedInputValues: {},
+                maneuverDurationBonus: 0,
+                maechtigeMagieQs: 0,
+                getSelectedSpellModificationId: () => '',
+            },
+            zone,
+            preEffects,
+        })
+
+        expect(targetActor.effects).toHaveLength(1)
+        expect(targetActor.effects[0].flags.ilaris).toMatchObject({
+            passiveZone: true,
+            zoneRegionId: 'passive-region',
+            targetTokenId: 'target-token',
+        })
+
+        region.tokens = new Set()
+        await updatePersistentZoneMembership(scene)
+        expect(targetActor.effects).toHaveLength(0)
+
+        region.tokens = new Set([target])
+        await updatePersistentZoneMembership(scene)
+        expect(targetActor.effects).toHaveLength(1)
+    })
+
+    test('uses the updated Token source containment when Region membership is still stale', async () => {
+        const targetActor = {
+            id: 'target-actor',
+            effects: [
+                {
+                    id: 'owned-effect',
+                    flags: {
+                        ilaris: {
+                            passiveZone: true,
+                            zoneRegionId: 'passive-region',
+                            zoneApplicationId: 'zone-application-id:target-token',
+                            targetTokenId: 'target-token',
+                            spellUuid: 'Item.passive',
+                            preEffectIndex: 0,
+                        },
+                    },
+                },
+            ],
+            deleteEmbeddedDocuments: jest.fn(async (_type, ids) => {
+                targetActor.effects = targetActor.effects.filter(
+                    (effect) => !ids.includes(effect.id),
+                )
+            }),
+        }
+        const target = {
+            id: 'target-token',
+            actor: targetActor,
+            actorLink: false,
+            testInsideRegion: jest.fn(() => false),
+        }
+        const zone = {
+            applicationId: 'zone-application-id',
+            spellUuid: 'Item.passive',
+            profile: { effectMode: 'passive', targeting: { includeCaster: false } },
+            preEffects: [{ instant: false }],
+            membership: ['target-token'],
+        }
+        const region = {
+            id: 'passive-region',
+            flags: { Ilaris: { zone } },
+            // Foundry may not have refreshed this collection when updateToken fires.
+            tokens: new Set([target]),
+            update: jest.fn(async (change) => {
+                if (change['flags.Ilaris.zone.membership'])
+                    zone.membership = change['flags.Ilaris.zone.membership']
+            }),
+        }
+        const scene = { regions: [region], tokens: new Map([[target.id, target]]) }
+
+        await updatePersistentZoneMembership(scene, target)
+
+        expect(target.testInsideRegion).toHaveBeenCalledWith(region)
+        expect(targetActor.deleteEmbeddedDocuments).toHaveBeenCalledWith('ActiveEffect', [
+            'owned-effect',
+        ])
+        expect(zone.membership).toEqual([])
+    })
+
+    test("cleans all and only a deleted Region's passive effects, including a persisted Scene reload", async () => {
+        const actor = {
+            effects: [
+                {
+                    id: 'owned',
+                    flags: {
+                        ilaris: {
+                            passiveZone: true,
+                            zoneRegionId: 'region-a',
+                            zoneApplicationId: 'cast-a:token-a',
+                            targetTokenId: 'token-a',
+                            spellUuid: 'Item.passive',
+                            preEffectIndex: 0,
+                        },
+                    },
+                },
+                {
+                    id: 'other',
+                    flags: {
+                        ilaris: {
+                            passiveZone: true,
+                            zoneRegionId: 'region-b',
+                            zoneApplicationId: 'cast-b:token-a',
+                            targetTokenId: 'token-a',
+                            spellUuid: 'Item.passive',
+                            preEffectIndex: 0,
+                        },
+                    },
+                },
+            ],
+            deleteEmbeddedDocuments: jest.fn(),
+        }
+        const zone = {
+            applicationId: 'cast-a',
+            spellUuid: 'Item.passive',
+            preEffects: [{ instant: false }],
+            profile: { effectMode: 'passive', targeting: { includeCaster: false } },
+            membership: ['token-a'],
+        }
+        const region = { id: 'region-a', flags: { Ilaris: { zone } }, tokens: new Set() }
+        await cleanupPassiveZoneEffects(region)
+        expect(actor.deleteEmbeddedDocuments).not.toHaveBeenCalled()
+
+        global.game.actors.values.mockReturnValue([actor])
+        await cleanupPassiveZoneEffects(region)
+        expect(actor.deleteEmbeddedDocuments).toHaveBeenCalledWith('ActiveEffect', ['owned'])
+
+        const reloaded = { ...region, tokens: new Set(), update: jest.fn() }
+        await reconcilePersistentPassiveZones({ regions: [reloaded] })
+        expect(reloaded.update).toHaveBeenCalledWith({ 'flags.Ilaris.zone.membership': [] })
     })
 
     test('creates a visible inert draft Region and only deletes it for its owner', async () => {

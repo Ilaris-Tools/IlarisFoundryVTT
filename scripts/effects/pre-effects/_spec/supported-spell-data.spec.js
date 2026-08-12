@@ -288,6 +288,30 @@ describe('reviewed supported spell pre-effect source data', () => {
         })
     })
 
+    it('configures Dunkelheit as a stationary, marker-only passive zone', () => {
+        const dunkelheit = readSpell('Dunkelheit_Q4kEr8XiRJQs0owu.json')
+
+        expect(dunkelheit.system.zone).toMatchObject({
+            shape: 'circle',
+            distance: 4,
+            placement: { anchor: 'caster', range: 0, pivot: 'center' },
+            lifecycle: 'persistent',
+            effectMode: 'passive',
+            duration: { remaining: 64, originalValue: 64 },
+            trigger: { triggerOnCreate: true, onEnter: true },
+            targeting: { includeCaster: false },
+        })
+        expect(dunkelheit.system.preEffects).toEqual([
+            expect.objectContaining({
+                baseDuration: 0,
+                instant: false,
+                marker: { enabled: true },
+                changes: [],
+                ilarisModifiers: [],
+            }),
+        ])
+    })
+
     it('configures spell-named marker and diminished branches without a numeric marker modifier', () => {
         const hexengalle = readSpell('Hexengalle_9rwCzQDAtGzeuU24.json').system.preEffects
         const gewuerm = readSpell('Fluch_des_Gew_rms_iLc4RFaAgAFDdvUg.json').system.preEffects

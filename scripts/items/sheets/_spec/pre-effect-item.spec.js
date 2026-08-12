@@ -19,6 +19,7 @@ describe('PreEffectItemSheet', () => {
             baseDuration: 0,
             changes: [],
             ilarisModifiers: [],
+            marker: { enabled: false },
             avoidTest: { enabled: false, resistDifficultySource: 'fixed' },
         })
     })

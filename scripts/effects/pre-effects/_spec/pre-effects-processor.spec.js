@@ -871,4 +871,130 @@ describe('pre-effect processor', () => {
             global.ActiveEffect.createDocuments.mock.invocationCallOrder[0],
         )
     })
+
+    it('keeps a passive Zone application infinite and distinct from another Region in Foundry mode', async () => {
+        const target = createTargetActor({
+            effects: [
+                {
+                    id: 'other-region',
+                    flags: {
+                        ilaris: {
+                            passiveZone: true,
+                            zoneRegionId: 'region-other',
+                            zoneApplicationId: 'cast-other:token-a',
+                            targetTokenId: 'token-a',
+                            spellUuid: 'Item.component-spell',
+                            preEffectIndex: 0,
+                        },
+                    },
+                },
+            ],
+            deleteEmbeddedDocuments: jest.fn(),
+        })
+        global.game.settings.get = jest.fn((_namespace, key) =>
+            key === 'supernaturalEffectStacking' ? 'foundry' : undefined,
+        )
+        global.game.actors = { get: jest.fn(() => target) }
+        global.canvas = { tokens: { get: jest.fn(() => null) } }
+        await applyPreEffects(
+            { success: true },
+            {
+                item: {
+                    name: 'Passive spell',
+                    uuid: 'Item.component-spell',
+                    system: {
+                        preEffects: [
+                            {
+                                baseDuration: 3,
+                                instant: false,
+                                changes: [{ key: 'system.test', type: 'add', value: '1' }],
+                            },
+                        ],
+                    },
+                },
+                selectedActors: [{ actorId: 'target-id', tokenId: 'token-a', actorLink: true }],
+                actor: { id: 'caster-id', uuid: 'Actor.caster' },
+                speaker: {},
+                maneuverDurationBonus: 0,
+                maechtigeMagieQs: 0,
+            },
+            {},
+            { passiveZone: { regionId: 'region-a', applicationId: 'cast-a' } },
+        )
+
+        const effect = global.ActiveEffect.createDocuments.mock.calls.at(-1)[0][0]
+        expect(effect.system.ilarisTiming).toMatchObject({ durationType: 'infinite', remaining: 0 })
+        expect(effect.flags.ilaris).toMatchObject({
+            passiveZone: true,
+            zoneRegionId: 'region-a',
+            zoneApplicationId: 'cast-a:token-a',
+            targetTokenId: 'token-a',
+        })
+        expect(target.deleteEmbeddedDocuments).not.toHaveBeenCalled()
+    })
+
+    it('coalesces concurrent creation for the same passive Zone application', async () => {
+        let resolveCreation
+        const target = createTargetActor()
+        global.ActiveEffect.createDocuments = jest.fn(
+            () =>
+                new Promise((resolve) => {
+                    resolveCreation = resolve
+                }),
+        )
+        const args = [
+            target,
+            { changes: [{ key: 'system.test', type: 'add', value: '1' }] },
+            { id: 'caster-id', uuid: 'Actor.caster' },
+            { name: 'Passive spell', uuid: 'Item.passive', system: {} },
+            3,
+            0,
+            0,
+            'cast-a:token-a',
+            {},
+            'uebernatuerlich',
+            '',
+            '',
+            { regionId: 'region-a', applicationId: 'cast-a' },
+            'token-a',
+        ]
+
+        const first = createActiveEffectFromPreEffect(...args)
+        const second = createActiveEffectFromPreEffect(...args)
+
+        await Promise.resolve()
+        await Promise.resolve()
+        expect(global.ActiveEffect.createDocuments).toHaveBeenCalledTimes(1)
+        resolveCreation([])
+        await Promise.all([first, second])
+    })
+
+    it('creates an explicit marker-only Pre-Effect but keeps an ordinary empty one inert', async () => {
+        const target = createTargetActor()
+        global.game.actors = { get: jest.fn(() => target) }
+        global.canvas = { tokens: { get: jest.fn(() => null) } }
+        const caster = { id: 'caster-id', uuid: 'Actor.caster' }
+        const item = { name: 'Dunkelheit', uuid: 'Item.dunkelheit', system: {} }
+
+        await createActiveEffectFromPreEffect(target, { changes: [] }, caster, item, 1, 0)
+        expect(global.ActiveEffect.createDocuments).not.toHaveBeenCalled()
+
+        await createActiveEffectFromPreEffect(
+            target,
+            { changes: [], marker: { enabled: true } },
+            caster,
+            item,
+            1,
+            0,
+        )
+        expect(global.ActiveEffect.createDocuments).toHaveBeenCalledWith(
+            [
+                expect.objectContaining({
+                    name: 'Dunkelheit',
+                    system: expect.objectContaining({ ilarisMarker: true }),
+                }),
+            ],
+            { parent: target },
+        )
+    })
 })

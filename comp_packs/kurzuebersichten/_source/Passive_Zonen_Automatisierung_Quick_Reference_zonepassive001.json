@@ -1,0 +1,56 @@
+{
+  "name": "Kurzuebersicht: Passive Zonen-Effekte",
+  "type": "JournalEntry",
+  "_id": "kurzzonepassive001",
+  "pages": [
+    {
+      "_id": "kurzzonepassivepage001",
+      "name": "Anhaltende Effekte in Zonen",
+      "type": "text",
+      "title": { "show": true, "level": 1 },
+      "text": {
+        "format": 1,
+        "content": "<h1>Passive Zonen-Effekte</h1>\n<p>Ein persistentes Zonenprofil kann mit <code>effectMode: passive</code> einen nicht sofortigen Pre-Effect waehrend des Aufenthalts eines Token in der Region anwenden. Die Zone ist dabei die Lebensdauer des Effekts: Beim Betreten wird er angelegt, beim Verlassen entfernt und beim erneuten Betreten wieder angelegt.</p>\n\n<h2>Profil</h2>\n<pre><code>{\n  &quot;shape&quot;: &quot;circle&quot;,\n  &quot;distance&quot;: 4,\n  &quot;placement&quot;: { &quot;anchor&quot;: &quot;caster&quot;, &quot;range&quot;: 0, &quot;pivot&quot;: &quot;center&quot; },\n  &quot;lifecycle&quot;: &quot;persistent&quot;,\n  &quot;effectMode&quot;: &quot;passive&quot;,\n  &quot;duration&quot;: { &quot;remaining&quot;: 16, &quot;originalValue&quot;: 16 },\n  &quot;trigger&quot;: { &quot;triggerOnCreate&quot;: true, &quot;onEnter&quot;: true }\n}</code></pre>\n<p><code>effectMode</code> ist optional und standardmaessig <code>triggered</code>. <code>passive</code> ist ausschliesslich bei <code>lifecycle: persistent</code> erlaubt. Bereits enthaltene Token erhalten den Effekt bei erfolgreichem Wirken, wenn <code>triggerOnCreate</code> nicht auf <code>false</code> gesetzt ist. Nach einem Szenen-Reload werden fehlende Effekte der weiterhin enthaltenen Token ohne Duplikate wiederhergestellt.</p>\n\n<h2>Zulaessige Pre-Effects</h2>\n<p>Passive Zonen akzeptieren nur nicht sofortige Pre-Effects ohne Widerstandsprobe. Ein solcher Effekt besitzt waehrend des Aufenthalts eine unendliche Ilaris-Dauer; seine normale <code>baseDuration</code> wird nicht heruntergezaehlt. <strong>Sofortschaden, <code>instant: true</code>, und <code>avoidTest.enabled: true</code> sind nicht zulaessig.</strong> Wiederholter Schaden, Widerstandsspeicher und turn- oder rundenbasierte Ausloeser sind eigene, noch nicht abgedeckte Zonenmechaniken.</p>\n\n<h2>Getrennte Quellen</h2>\n<p>Jeder angelegte ActiveEffect speichert Region-ID, Zonenanwendungs-ID, Token-ID, Zauber-UUID und Pre-Effect-Index. Dadurch entfernt das Verlassen einer Zone nur genau ihren eigenen Effekt. Effekte einer anderen Zone, eines anderen Wirkens, eines anderen Token oder manuell angelegte ActiveEffects bleiben unveraendert. Auch bei der Welteinstellung fuer Foundry-Stapeln koennen zwei verschiedene passive Regionen desselben Zaubers gleichzeitig bestehen.</p>\n\n<div style=\"background-color: #fff8e6; padding: 10px; border-left: 4px solid #d4a017; margin: 10px 0\">\n  <strong>Hinweis fuer Autoren:</strong> Die aktuell bereits automatisierten Zonen <em>Wand aus Dornen</em> und <em>Tlalucs Odem Pestgestank</em> verwenden Widerstand oder Sofortschaden und bleiben daher im ausgeloesten Modus. Fuege <code>effectMode: passive</code> nur zu einem regeltechnisch passenden, anhaltenden nicht-resistierten Modifier hinzu.\n</div>"
+      },
+      "video": { "controls": true, "volume": 0.5 },
+      "src": null,
+      "system": {},
+      "sort": 0,
+      "ownership": { "default": -1 },
+      "flags": {},
+      "_key": "!journal.pages!kurzzonepassive001.kurzzonepassivepage001"
+    },
+    {
+      "_id": "kurzzonepassivepage002",
+      "name": "Hinweis-Effekte und Dunkelheit",
+      "type": "text",
+      "title": { "show": true, "level": 1 },
+      "text": {
+        "format": 1,
+        "content": "<h1>Hinweis-Effekte ohne Werteänderung</h1>\n<p>Ein Pre-Effect mit <code>marker.enabled: true</code> kann ohne <code>changes</code> und ohne <code>ilarisModifiers</code> als sichtbarer ActiveEffect angelegt werden. Damit werden regelrelevante Hinweise sichtbar, auch wenn das System sie noch nicht selbst auswertet. Ein leerer Pre-Effect ohne diese Kennzeichnung bleibt wirkungslos.</p>\n\n<h2>Beispiel: Dunkelheit</h2>\n<p>Die stationäre Grundform von <em>Dunkelheit</em> ist eine passive Kreiszone mit 4 Schritt Radius und 64 Initiativephasen Dauer. Alle Token ausser dem Zaubernden erhalten innerhalb der Zone einen sichtbaren Hinweis-Effekt. Beim Verlassen wird genau dieser Zonen-Effekt entfernt.</p>\n\n<div style=\"background-color: #fff8e6; padding: 10px; border-left: 4px solid #d4a017; margin: 10px 0\">\n  <strong>Wichtig:</strong> Die Helligkeitsstufe der Szene und Sichtweiten werden nicht automatisch verändert. Auch die bewegliche Variante <em>Begleiter</em> wird weiterhin manuell gehandhabt.\n</div>"
+      },
+      "video": { "controls": true, "volume": 0.5 },
+      "src": null,
+      "system": {},
+      "sort": 1,
+      "ownership": { "default": -1 },
+      "flags": {},
+      "_key": "!journal.pages!kurzzonepassive001.kurzzonepassivepage002"
+    }
+  ],
+  "folder": null,
+  "sort": 0,
+  "ownership": { "default": 0 },
+  "flags": {},
+  "_stats": {
+    "coreVersion": "12.331",
+    "systemId": null,
+    "systemVersion": null,
+    "createdTime": null,
+    "modifiedTime": null,
+    "lastModifiedBy": null,
+    "compendiumSource": null,
+    "duplicateSource": null
+  },
+  "_key": "!journal!kurzzonepassive001"
+}

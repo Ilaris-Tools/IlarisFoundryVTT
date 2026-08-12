@@ -32,6 +32,10 @@ This inventory contains the compendium entries whose currently supported behavio
 - **Psychostabilis** and **Psychostabilis (Tiergeist)** — 960 Initiativephasen; MR `+4`; Mächtige Magie `+2`
 - **Tanz des Ungehorsams** — 23,040 Initiativephasen; MR `+4`; Mächtige Magie `+2`
 
+## Structured persistent zone markers
+
+- **Dunkelheit** — stationary 4-step circle for 64 Initiativephasen; applies a visible, marker-only Active Effect to non-caster occupants. It does not alter Foundry scene lighting or token vision. The moving _Begleiter_ variant remains manual.
+
 ## Healing (intentionally excluded from the damage list)
 
 - **Balsam Salabunde** — `2W6+4` HEALING_WOUND

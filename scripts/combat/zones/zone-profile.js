@@ -18,6 +18,7 @@ export function normalizeZoneProfile(source) {
 
     const placement = source.placement || {}
     const lifecycle = source.lifecycle === 'persistent' ? 'persistent' : 'instant'
+    const effectMode = source.effectMode === 'passive' ? 'passive' : 'triggered'
     const rawDuration = source.duration || {}
     const remaining = numeric(rawDuration.remaining ?? rawDuration.value, 0)
     const distance = numeric(source.distance)
@@ -26,6 +27,7 @@ export function normalizeZoneProfile(source) {
     if (distance <= 0 || (shape === 'cone' && angle <= 0) || (shape === 'rectangle' && width <= 0))
         return null
     if (lifecycle === 'persistent' && remaining <= 0) return null
+    if (effectMode === 'passive' && lifecycle !== 'persistent') return null
 
     const profile = {
         shape,
@@ -38,6 +40,7 @@ export function normalizeZoneProfile(source) {
             pivot: placement.pivot || defaultPivot(shape),
         },
         lifecycle,
+        effectMode,
         trigger: {
             triggerOnCreate: source.trigger?.triggerOnCreate !== false,
             onEnter: source.trigger?.onEnter === true,
