@@ -69,6 +69,13 @@ Implement tasks from an OpenSpec change.
     - Remaining tasks overview
     - Dynamic instruction from CLI
 
+### Runtime verification for Foundry-facing changes
+
+After reading the change context, classify whether it changes Foundry runtime behavior, UI, compendiums, settings, document lifecycle, or rendered results.
+
+- For a qualifying change, load and follow `$foundry-runtime-verification` before marking runtime validation or E2E tasks complete. It creates `runtime-verification.md` in the active change directory, derived from that change's proposal, design, specs, and tasks.
+- For a non-qualifying change, record why runtime verification is not applicable; do not create generic runtime cases.
+
 6. **Implement tasks (loop until done or blocked)**
 
     For each pending task:
@@ -155,6 +162,7 @@ What would you like to do?
 - Update task checkbox immediately after completing each task
 - Pause on errors, blockers, or unclear requirements - don't guess
 - Use contextFiles from CLI output, don't assume specific file names
+- Do not mark Foundry-facing validation complete without the change-specific runtime-verification record and its required cleanup/evidence.
 
 **Fluid Workflow Integration**
 
