@@ -1,7 +1,16 @@
 /** E2E-038 - Structured spell-zone resolution and persistent scene duration. */
 import { expect, test } from '@playwright/test'
 import { E2E_BASELINE } from '../../shared/baseline'
-import { clearChatLog, foundryConfig, loginAndJoinWorld } from '../../shared/fixtures/foundry'
+import {
+    clearChatLog,
+    enableTargetSelectionForTest,
+    foundryConfig,
+    loginAndJoinWorld,
+    openActorSheet,
+    openChatSidebar,
+    openSpellDialog,
+    restoreFoundrySetting,
+} from '../../shared/fixtures/foundry'
 
 const ACTOR_NAME = 'HatAlles'
 const SPELL_PACK = 'Ilaris.zauberspruche-und-rituale'
@@ -13,7 +22,7 @@ async function clearE2EZoneDocuments(page: import('@playwright/test').Page) {
             const regionIds = Array.from(scene?.regions ?? [])
                 .filter((region: any) => {
                     const flags = region.flags?.Ilaris ?? {}
-                    return Boolean(flags.e2eZone || flags.zone || flags.zoneDraft)
+                    return Boolean(flags.e2eZone)
                 })
                 .map((region: any) => region.id)
             if (regionIds.length) await scene.deleteEmbeddedDocuments('Region', regionIds)
@@ -21,6 +30,10 @@ async function clearE2EZoneDocuments(page: import('@playwright/test').Page) {
                 .filter((token: any) => token.flags?.Ilaris?.e2eZone)
                 .map((token: any) => token.id)
             if (tokenIds.length) await scene.deleteEmbeddedDocuments('Token', tokenIds)
+            const combatIds = Array.from(game.combats ?? [])
+                .filter((combat: any) => combat.flags?.Ilaris?.e2eZone)
+                .map((combat: any) => combat.id)
+            if (combatIds.length) await Combat.deleteDocuments(combatIds)
         })
         .catch(() => {})
 }
@@ -218,6 +231,442 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
         })
 
         expect(result).toEqual({ requiresPlacement: false, placementMissing: false })
+    })
+
+    test('places and casts an opt-in turn-start Zone, then triggers it through Combat Tracker controls', async ({
+        page,
+        browser,
+    }) => {
+        test.setTimeout(180000)
+        const playerContext = await browser.newContext()
+        const playerPage = await playerContext.newPage()
+        let targetSetting: Awaited<ReturnType<typeof enableTargetSelectionForTest>> | null = null
+        let created: {
+            itemId: string
+            itemUuid: string
+            targetTokenId: string
+            combatId: string
+            activeCombatIds: string[]
+            messageIdsAtStart: string[]
+            regionId?: string
+        } | null = null
+        let wasPaused = false
+        try {
+            await loginAndJoinWorld(playerPage, {
+                ...foundryConfig,
+                username: E2E_BASELINE.users.player,
+            })
+            await openChatSidebar(playerPage)
+            targetSetting = await enableTargetSelectionForTest(page)
+            created = await page.evaluate(
+                async ({ actorName, packId, targetActorName }) => {
+                    const actor = game.actors?.getName(actorName) as any
+                    const targetActor = game.actors?.getName(targetActorName) as any
+                    const scene = canvas.scene as any
+                    const pack = game.packs?.get(packId)
+                    const sourceSpell = (await pack?.getDocuments())?.find(
+                        (entry: any) => entry.name === 'Wand aus Dornen',
+                    ) as any
+                    if (!actor || !targetActor || !scene || !sourceSpell)
+                        throw new Error('E2E source data for the turn-start Zone is missing.')
+
+                    const source = sourceSpell.toObject()
+                    delete source._id
+                    source.name = 'E2E Turnstart-Zone'
+                    source.system.zone = {
+                        shape: 'circle',
+                        distance: 3,
+                        placement: { anchor: 'caster', pivot: 'center' },
+                        lifecycle: 'persistent',
+                        duration: { remaining: 4, originalValue: 4 },
+                        targeting: { includeCaster: false },
+                        trigger: { triggerOnCreate: false, onEnter: false, onTurnStart: true },
+                    }
+                    source.system.preEffects = [
+                        {
+                            baseDuration: 1,
+                            instant: false,
+                            changes: [],
+                            avoidTest: { enabled: true, attribut: 'KO', diminishedOnly: false },
+                        },
+                    ]
+                    const [item] = await actor.createEmbeddedDocuments('Item', [source])
+                    // Match getCasterToken's actor-token selection so the temporary
+                    // target is actually inside the Zone that the player places.
+                    const casterToken = canvas.tokens?.placeables?.find(
+                        (token: any) => token.actor?.id === actor.id,
+                    )
+                    if (!casterToken) throw new Error('The E2E caster has no active Scene Token.')
+                    const origin = {
+                        x: casterToken.document.x,
+                        y: casterToken.document.y,
+                    }
+                    const [targetToken] = await scene.createEmbeddedDocuments('Token', [
+                        {
+                            name: 'E2E Turnstart Target',
+                            actorId: targetActor.id,
+                            actorLink: false,
+                            x: origin.x + canvas.grid.size,
+                            y: origin.y,
+                            flags: { Ilaris: { e2eZone: true } },
+                        },
+                    ])
+                    const activeCombatIds = Array.from(game.combats ?? [])
+                        .filter((entry: any) => entry.active)
+                        .map((entry: any) => entry.id)
+                    if (activeCombatIds.length)
+                        await Combat.updateDocuments(
+                            activeCombatIds.map((id) => ({ _id: id, active: false })),
+                        )
+                    const combat = await Combat.create({
+                        name: 'E2E Turnstart Combat',
+                        scene: scene.id,
+                        active: true,
+                        round: 0,
+                        turn: null,
+                        flags: { Ilaris: { e2eZone: true } },
+                    })
+                    await combat.createEmbeddedDocuments('Combatant', [
+                        { tokenId: casterToken.id, initiative: 20 },
+                        { tokenId: targetToken.id, initiative: 10 },
+                    ])
+                    return {
+                        itemId: item.id,
+                        itemUuid: item.uuid,
+                        targetTokenId: targetToken.id,
+                        combatId: combat.id,
+                        activeCombatIds,
+                        messageIdsAtStart: (game.messages?.contents || []).map(
+                            (message: any) => message.id,
+                        ),
+                    }
+                },
+                {
+                    actorName: ACTOR_NAME,
+                    packId: SPELL_PACK,
+                    targetActorName: E2E_BASELINE.ownership.actor,
+                },
+            )
+
+            const actorWindow = await openActorSheet(page, ACTOR_NAME)
+            await openSpellDialog(actorWindow, 'E2E Turnstart-Zone')
+            const spellDialog = page.locator('.application.uebernatuerlich-dialog').last()
+            await expect(spellDialog).toBeVisible({ timeout: 15000 })
+            // The actor sheet stays open behind the spell dialog and covers the
+            // map. Close it through its rendered header control so the following
+            // placement click reaches Foundry's Pixi canvas.
+            await actorWindow.locator('.window-header button').last().click()
+            await expect(actorWindow).toBeHidden()
+            await expect(spellDialog).toBeVisible()
+            const placementButton = spellDialog.locator('button[data-action="placeZone"]')
+            await expect(placementButton).toBeVisible()
+            await placementButton.click()
+            await page.waitForFunction(
+                () => Boolean((canvas.regions as any)?._placementContext),
+                undefined,
+                { timeout: 10000 },
+            )
+            // A caster-anchored circle snaps to the caster in the Region
+            // placement callback. Confirm it through the uncovered canvas
+            // margin because the spell dialog deliberately stays visible.
+            await page.mouse.move(120, 400)
+            await page.mouse.click(120, 400)
+            await expect(spellDialog).toContainText('Zone platziert', { timeout: 10000 })
+
+            await page.evaluate(() => {
+                ;(window as any).__e2eZoneRandom = CONFIG.Dice.randomUniform
+                CONFIG.Dice.randomUniform = () => 0.01
+            })
+            const beforeCast = await page.evaluate(() => game.messages.contents.length)
+            const rollButton = spellDialog.locator(
+                '.modifier-summary.talent-summary.clickable-summary[data-action="angreifen"]',
+            )
+            await expect(rollButton).toBeVisible()
+            // AppV2 rerenders the roll summary while placement state changes,
+            // leaving this visible control perpetually "unstable" to a normal
+            // Playwright click. Force still delivers a browser click to the
+            // rendered player control; it does not invoke the cast API.
+            await rollButton.click({ force: true })
+            await page.waitForFunction(
+                (baseline) => game.messages.contents.length > baseline,
+                beforeCast,
+                { timeout: 15000 },
+            )
+            await page.waitForFunction(
+                (itemUuid) =>
+                    Array.from(canvas.scene?.regions ?? []).some(
+                        (region: any) => region.flags?.Ilaris?.zone?.spellUuid === itemUuid,
+                    ),
+                created.itemUuid,
+                { timeout: 15000 },
+            )
+            created.regionId = await page.evaluate(
+                (itemUuid) =>
+                    Array.from(canvas.scene?.regions ?? []).find(
+                        (region: any) => region.flags?.Ilaris?.zone?.spellUuid === itemUuid,
+                    )?.id ?? '',
+                created.itemUuid,
+            )
+            await expect
+                .poll(() =>
+                    page.evaluate(
+                        async ({ tokenId, regionId }) => {
+                            const { resolveZoneTargets } =
+                                await import('/systems/Ilaris/scripts/combat/zones/zone-targets.js')
+                            const region = canvas.scene?.regions?.get(regionId)
+                            return Boolean(
+                                region?.flags?.Ilaris?.zone?.profile?.trigger?.onTurnStart &&
+                                resolveZoneTargets(region).some(
+                                    (target: any) => target.tokenId === tokenId,
+                                ),
+                            )
+                        },
+                        { tokenId: created.targetTokenId, regionId: created.regionId },
+                    ),
+                )
+                .toBe(true)
+
+            // Foundry's Zone-placement confirmation is a transient UI toast;
+            // remove it after asserting the rendered placement label so it
+            // cannot cover the visible Combat Tracker tab.
+            await page
+                .locator('#notifications .notification.info')
+                .evaluateAll((notifications) =>
+                    notifications.forEach((notification) => notification.remove()),
+                )
+            wasPaused = await page.evaluate(async (combatId) => {
+                const combat = game.combats?.get(combatId)
+                if (!combat) throw new Error('The temporary E2E combat is missing.')
+                const paused = game.paused
+                if (paused) await game.togglePause(false)
+                ui.combat.viewed = combat
+                ui.combat.render(true)
+                return paused
+            }, created.combatId)
+            const combatTab = page.locator('#sidebar-tabs [data-tab="combat"]').first()
+            await expect(combatTab).toBeVisible()
+            await combatTab.click()
+            await page.evaluate((combatId) => {
+                const combat = game.combats?.get(combatId)
+                if (!combat) throw new Error('The temporary E2E combat is missing.')
+                ui.combat.viewed = combat
+                ui.combat.render(true)
+            }, created.combatId)
+            const combatControls = page.locator('#sidebar .combat-controls').first()
+            await expect(combatControls.locator('button[data-action="startCombat"]')).toBeVisible()
+            await combatControls.locator('button[data-action="startCombat"]').click()
+            await expect(
+                combatControls.locator('button[data-action="nextTurn"]').last(),
+            ).toBeVisible()
+            const promptsBeforeTurn = await playerPage.locator('.resist-button').count()
+            await combatControls.locator('button[data-action="nextTurn"]').last().click()
+            await expect
+                .poll(() => playerPage.locator('.resist-button').count(), { timeout: 15000 })
+                .toBe(promptsBeforeTurn + 1)
+
+            await combatControls.locator('button[data-action="previousTurn"]').click()
+            await expect
+                .poll(() => playerPage.locator('.resist-button').count(), { timeout: 5000 })
+                .toBe(promptsBeforeTurn + 1)
+
+            await combatControls.locator('button[data-action="nextTurn"]').last().click()
+            await page.waitForFunction(
+                (combatId) => {
+                    const combat = game.combats?.get(combatId)
+                    return combat?.round === 1 && combat?.turn === 1
+                },
+                created.combatId,
+                { timeout: 15000 },
+            )
+            await expect
+                .poll(() => playerPage.locator('.resist-button').count(), { timeout: 5000 })
+                .toBe(promptsBeforeTurn + 1)
+
+            await combatControls.locator('button[data-action="nextTurn"]').last().click()
+            await page.waitForFunction(
+                (combatId) => {
+                    const combat = game.combats?.get(combatId)
+                    return combat?.round === 2 && combat?.turn === 0
+                },
+                created.combatId,
+                { timeout: 15000 },
+            )
+            await combatControls.locator('button[data-action="nextTurn"]').last().click()
+            await page.waitForFunction(
+                (combatId) => {
+                    const combat = game.combats?.get(combatId)
+                    return combat?.round === 2 && combat?.turn === 1
+                },
+                created.combatId,
+                { timeout: 15000 },
+            )
+            await expect
+                .poll(() => playerPage.locator('.resist-button').count(), { timeout: 15000 })
+                .toBe(promptsBeforeTurn + 2)
+
+            // Move the target out through the visible canvas before its next
+            // turn. Its next turn must not dispatch a new Zone prompt.
+            await spellDialog.locator('.window-header button').last().click()
+            await expect(spellDialog).toBeHidden()
+            const positions = await page.evaluate(
+                ({ tokenId, regionId }) => {
+                    const token = canvas.tokens?.get(tokenId)
+                    const region = canvas.scene?.regions?.get(regionId)
+                    const shape = region?.shapes?.[0]
+                    if (!token || !region || !shape)
+                        throw new Error('E2E Zone target or Region is missing.')
+                    const toScreen = (point: { x: number; y: number }) => {
+                        const projected = canvas.stage.worldTransform.apply(point)
+                        const bounds = canvas.app.view.getBoundingClientRect()
+                        return { x: bounds.left + projected.x, y: bounds.top + projected.y }
+                    }
+                    return {
+                        inside: toScreen(token.center),
+                        outside: toScreen({
+                            x: shape.x + shape.radius + canvas.grid.size * 4,
+                            y: shape.y,
+                        }),
+                    }
+                },
+                { tokenId: created.targetTokenId, regionId: created.regionId },
+            )
+            await page.mouse.move(positions.inside.x, positions.inside.y)
+            await page.mouse.down()
+            await page.mouse.move(positions.outside.x, positions.outside.y, { steps: 8 })
+            await page.mouse.up()
+            await page.waitForFunction(
+                async ({ tokenId, regionId }) => {
+                    const region = canvas.scene?.regions?.get(regionId)
+                    const { resolveZoneTargets } =
+                        await import('/systems/Ilaris/scripts/combat/zones/zone-targets.js')
+                    return !resolveZoneTargets(region).some(
+                        (target: any) => target.tokenId === tokenId,
+                    )
+                },
+                { tokenId: created.targetTokenId, regionId: created.regionId },
+                { timeout: 15000 },
+            )
+            await combatControls.locator('button[data-action="nextTurn"]').last().click()
+            await page.waitForFunction(
+                (combatId) => {
+                    const combat = game.combats?.get(combatId)
+                    return combat?.round === 3 && combat?.turn === 0
+                },
+                created.combatId,
+                { timeout: 15000 },
+            )
+            await combatControls.locator('button[data-action="nextTurn"]').last().click()
+            await page.waitForFunction(
+                (combatId) => {
+                    const combat = game.combats?.get(combatId)
+                    return combat?.round === 3 && combat?.turn === 1
+                },
+                created.combatId,
+                { timeout: 15000 },
+            )
+            const finalTurnState = await page.evaluate(
+                async ({ combatId, tokenId, regionId }) => {
+                    const { resolveZoneTargets } =
+                        await import('/systems/Ilaris/scripts/combat/zones/zone-targets.js')
+                    const combat = game.combats?.get(combatId)
+                    const region = canvas.scene?.regions?.get(regionId)
+                    return {
+                        round: combat?.round,
+                        turn: combat?.turn,
+                        active: combat?.active,
+                        targetInside: resolveZoneTargets(region).some(
+                            (target: any) => target.tokenId === tokenId,
+                        ),
+                        lastTurnStartWindow: region?.flags?.Ilaris?.zone?.lastTurnStartWindow,
+                    }
+                },
+                {
+                    combatId: created.combatId,
+                    tokenId: created.targetTokenId,
+                    regionId: created.regionId,
+                },
+            )
+            expect(finalTurnState).toMatchObject({
+                round: 3,
+                turn: 1,
+                active: true,
+                targetInside: false,
+                lastTurnStartWindow: expect.stringContaining(':2:1:'),
+            })
+            await expect
+                .poll(() => playerPage.locator('.resist-button').count(), { timeout: 5000 })
+                .toBe(promptsBeforeTurn + 2)
+        } finally {
+            const teardownResult = await page
+                .evaluate(async (state) => {
+                    if ((window as any).__e2eZoneRandom) {
+                        CONFIG.Dice.randomUniform = (window as any).__e2eZoneRandom
+                        delete (window as any).__e2eZoneRandom
+                    }
+                    if (!state) return null
+                    const scene = canvas.scene as any
+                    const actor = game.actors?.getName('HatAlles') as any
+                    if (game.combats?.get(state.combatId))
+                        await Combat.deleteDocuments([state.combatId])
+                    const activeCombatIds = state.activeCombatIds.filter((id) =>
+                        game.combats?.has(id),
+                    )
+                    if (activeCombatIds.length)
+                        await Combat.updateDocuments(
+                            activeCombatIds.map((id) => ({ _id: id, active: true })),
+                        )
+                    if (state.regionId && scene?.regions?.has(state.regionId))
+                        await scene.deleteEmbeddedDocuments('Region', [state.regionId])
+                    const tokenIds = [state.targetTokenId].filter((id) => scene?.tokens?.has(id))
+                    if (tokenIds.length) await scene.deleteEmbeddedDocuments('Token', tokenIds)
+                    if (actor?.items?.get(state.itemId))
+                        await actor.deleteEmbeddedDocuments('Item', [state.itemId])
+                    const chatMessageIds = (game.messages?.contents || [])
+                        .map((message: any) => message.id)
+                        .filter((id: string) => !state.messageIdsAtStart.includes(id))
+                    if (chatMessageIds.length) await ChatMessage.deleteDocuments(chatMessageIds)
+                    return {
+                        combatRemoved: !game.combats?.has(state.combatId),
+                        regionRemoved: !scene?.regions?.has(state.regionId),
+                        tokenRemoved: !scene?.tokens?.has(state.targetTokenId),
+                        itemRemoved: !actor?.items?.has(state.itemId),
+                        chatMessagesRemoved: chatMessageIds.every(
+                            (id: string) => !game.messages?.get(id),
+                        ),
+                        originalCombatsRestored: state.activeCombatIds.every(
+                            (id) => !game.combats?.has(id) || game.combats.get(id)?.active,
+                        ),
+                    }
+                }, created)
+                .catch(() => {})
+            if (created)
+                expect(teardownResult).toEqual({
+                    combatRemoved: true,
+                    regionRemoved: true,
+                    tokenRemoved: true,
+                    itemRemoved: true,
+                    chatMessagesRemoved: true,
+                    originalCombatsRestored: true,
+                })
+            if (wasPaused)
+                await page
+                    .evaluate(async () => {
+                        if (!game.paused) await game.togglePause(true)
+                    })
+                    .catch(() => {})
+            if (targetSetting) {
+                await restoreFoundrySetting(page, targetSetting).catch(() => {})
+                await expect
+                    .poll(() =>
+                        page.evaluate(
+                            ({ namespace, key }) => game.settings.get(namespace, key),
+                            targetSetting,
+                        ),
+                    )
+                    .toBe(targetSetting.value)
+            }
+            await playerContext.close()
+        }
     })
 
     test('sends one resistance prompt to the player-owned target on creation and re-entry', async ({

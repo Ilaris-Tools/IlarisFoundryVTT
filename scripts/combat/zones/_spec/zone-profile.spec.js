@@ -16,7 +16,7 @@ describe('zone profiles', () => {
             shape: 'rectangle',
             placement: { anchor: 'free', range: 8, pivot: 'topLeft' },
             duration: { type: 'sceneRounds', remaining: 256, originalValue: 256 },
-            trigger: { triggerOnCreate: true, onEnter: true },
+            trigger: { triggerOnCreate: true, onEnter: true, onTurnStart: false },
         })
     })
 
@@ -58,5 +58,25 @@ describe('zone profiles', () => {
         expect(
             normalizeZoneProfile({ shape: 'circle', distance: 4, effectMode: 'passive' }),
         ).toBeNull()
+    })
+
+    it('keeps turn-start triggering opt-in and independent from other Zone triggers', () => {
+        expect(
+            normalizeZoneProfile({
+                shape: 'circle',
+                distance: 4,
+                lifecycle: 'persistent',
+                duration: { remaining: 4 },
+            }),
+        ).toMatchObject({ trigger: { triggerOnCreate: true, onEnter: false, onTurnStart: false } })
+        expect(
+            normalizeZoneProfile({
+                shape: 'circle',
+                distance: 4,
+                lifecycle: 'persistent',
+                duration: { remaining: 4 },
+                trigger: { triggerOnCreate: true, onEnter: true, onTurnStart: true },
+            }),
+        ).toMatchObject({ trigger: { triggerOnCreate: true, onEnter: true, onTurnStart: true } })
     })
 })

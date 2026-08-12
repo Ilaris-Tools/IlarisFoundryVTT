@@ -5,6 +5,7 @@ import { resolveZoneTargets } from './zone-targets.js'
 const FLAG_SCOPE = 'Ilaris'
 const FLAG_KEY = 'zone'
 const DRAFT_FLAG_KEY = 'zoneDraft'
+const pendingTurnStartDispatches = new Map()
 
 function activeGM() {
     const gm = game.users.find((user) => user.active && user.isGM)
@@ -48,6 +49,10 @@ function resolveZoneTargetsForSource(region, profile, casterTokenId, updatedToke
 
 function isPassiveZone(zone) {
     return zone?.profile?.effectMode === 'passive'
+}
+
+function hasTurnStartTrigger(zone) {
+    return !isPassiveZone(zone) && zone?.profile?.trigger?.onTurnStart === true
 }
 
 function invalidPassivePreEffects(preEffects = []) {
@@ -190,6 +195,58 @@ async function dispatchZoneTrigger(region, trigger, targets) {
             zoneRegionId: region.id,
         },
     )
+}
+
+function resolveDestinationToken(combat, updateData = {}) {
+    const turn = Number(updateData.turn)
+    if (!Number.isInteger(turn) || turn < 0) return null
+    const combatant = combat?.turns?.[turn]
+    const tokenId = combatant?.tokenId || combatant?.token?.id || ''
+    if (!tokenId) return null
+    return combat?.scene?.tokens?.get?.(tokenId) || null
+}
+
+function turnStartWindow(combat, updateData, region, token) {
+    return [combat?.id || '', updateData?.round, updateData?.turn, region.id, token.id].join(':')
+}
+
+/** Dispatch one eligible persistent Zone for the combatant entering a forward turn. */
+export async function dispatchPersistentZoneTurnStart(combat, updateData = {}, updateOptions = {}) {
+    if (!activeGM() || !(Number(updateOptions?.direction) > 0)) return
+    const scene = combat?.scene
+    const token = resolveDestinationToken(combat, updateData)
+    if (!scene || !token) return
+
+    for (const region of scene.regions || []) {
+        const zone = zoneState(region)
+        if (zone?.initializing || !hasTurnStartTrigger(zone)) continue
+        const targets = resolveZoneTargetsForSource(region, zone.profile, zone.casterTokenId)
+        const target = targets.find((entry) => entry.tokenId === token.id)
+        if (!target) continue
+
+        const window = turnStartWindow(combat, updateData, region, token)
+        if (zone.lastTurnStartWindow === window) continue
+        const key = `${region.id}:${window}`
+        const pending = pendingTurnStartDispatches.get(key)
+        if (pending) {
+            await pending
+            continue
+        }
+
+        const dispatch = (async () => {
+            // Persist before dispatch. The in-flight map above coalesces an
+            // immediate duplicate hook while Foundry applies this update.
+            await region.update({ [`flags.${FLAG_SCOPE}.${FLAG_KEY}.lastTurnStartWindow`]: window })
+            await dispatchZoneTrigger(region, `turnStart:${window}`, [target])
+        })()
+        pendingTurnStartDispatches.set(key, dispatch)
+        try {
+            await dispatch
+        } finally {
+            if (pendingTurnStartDispatches.get(key) === dispatch)
+                pendingTurnStartDispatches.delete(key)
+        }
+    }
 }
 
 /** Apply a Region-owned, non-expiring effect to each contained Token exactly once. */
@@ -430,5 +487,11 @@ export function registerZoneLifecycleHooks() {
     Hooks.on('canvasReady', () => reconcilePersistentPassiveZones(canvas?.scene))
     Hooks.on('combatRound', (combat, _updateData, updateOptions) =>
         reducePersistentZoneDurations(combat, updateOptions),
+    )
+    Hooks.on('combatTurn', (combat, updateData, updateOptions) =>
+        dispatchPersistentZoneTurnStart(combat, updateData, updateOptions),
+    )
+    Hooks.on('combatRound', (combat, updateData, updateOptions) =>
+        dispatchPersistentZoneTurnStart(combat, updateData, updateOptions),
     )
 }

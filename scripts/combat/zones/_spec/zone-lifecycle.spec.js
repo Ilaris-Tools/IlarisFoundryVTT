@@ -4,6 +4,7 @@ import {
     createZoneDraftRegion,
     deleteZoneDraftRegion,
     cleanupPassiveZoneEffects,
+    dispatchPersistentZoneTurnStart,
     reducePersistentZoneDurations,
     reconcilePersistentPassiveZones,
     updatePersistentZoneMembership,
@@ -66,6 +67,149 @@ describe('persistent zone duration', () => {
         await reducePersistentZoneDurations({ scene: { regions: [region] } }, { direction: -1 })
         expect(region.update).not.toHaveBeenCalled()
         expect(region.delete).not.toHaveBeenCalled()
+    })
+
+    test('dispatches one turn-start trigger for the destination Token and retries only next turn', async () => {
+        const target = {
+            id: 'target-token',
+            actor: { id: 'target-actor', name: 'Target', isToken: true },
+            actorLink: false,
+        }
+        const zone = {
+            applicationId: 'zone-application-id',
+            spellUuid: 'Item.wand-aus-dornen',
+            casterUuid: 'Actor.caster',
+            casterTokenId: 'caster-token',
+            profile: {
+                effectMode: 'triggered',
+                targeting: { includeCaster: false },
+                trigger: { onTurnStart: true },
+            },
+            preEffects: [],
+        }
+        const region = {
+            id: 'persistent-region',
+            flags: { Ilaris: { zone } },
+            tokens: new Set([target]),
+            update: jest.fn(async (change) => {
+                zone.lastTurnStartWindow = change['flags.Ilaris.zone.lastTurnStartWindow']
+            }),
+        }
+        const scene = { id: 'scene-a', regions: [region], tokens: new Map([[target.id, target]]) }
+        const combat = {
+            id: 'combat-a',
+            scene,
+            turns: [{ _id: 'combatant-a', tokenId: target.id }],
+        }
+        global.foundry.utils.fromUuid.mockImplementation((uuid) => {
+            if (uuid === zone.spellUuid) return { uuid, name: 'Wand aus Dornen' }
+            if (uuid === zone.casterUuid) return { uuid, id: 'caster', name: 'Caster' }
+            return null
+        })
+
+        await Promise.all([
+            dispatchPersistentZoneTurnStart(combat, { round: 1, turn: 0 }, { direction: 1 }),
+            dispatchPersistentZoneTurnStart(combat, { round: 1, turn: 0 }, { direction: 1 }),
+        ])
+        await dispatchPersistentZoneTurnStart(combat, { round: 2, turn: 0 }, { direction: 1 })
+
+        expect(region.update).toHaveBeenCalledTimes(2)
+        expect(region.update).toHaveBeenNthCalledWith(1, {
+            'flags.Ilaris.zone.lastTurnStartWindow': 'combat-a:1:0:persistent-region:target-token',
+        })
+        expect(region.update).toHaveBeenNthCalledWith(2, {
+            'flags.Ilaris.zone.lastTurnStartWindow': 'combat-a:2:0:persistent-region:target-token',
+        })
+        expect(global.foundry.utils.fromUuid).toHaveBeenCalledTimes(4)
+    })
+
+    test('does not dispatch a turn-start trigger for a departed Token, a passive Zone, or a rewind', async () => {
+        const target = {
+            id: 'target-token',
+            actor: { id: 'target-actor', name: 'Target', isToken: true },
+            actorLink: false,
+        }
+        const makeRegion = (id, effectMode = 'triggered') => ({
+            id,
+            flags: {
+                Ilaris: {
+                    zone: {
+                        applicationId: 'zone-application-id',
+                        spellUuid: 'Item.wand-aus-dornen',
+                        casterUuid: 'Actor.caster',
+                        profile: {
+                            effectMode,
+                            targeting: { includeCaster: false },
+                            trigger: { onTurnStart: true },
+                        },
+                        preEffects: [],
+                    },
+                },
+            },
+            tokens: new Set(),
+            update: jest.fn(),
+        })
+        const departed = makeRegion('departed')
+        const passive = makeRegion('passive', 'passive')
+        const scene = {
+            id: 'scene-a',
+            regions: [departed, passive],
+            tokens: new Map([[target.id, target]]),
+        }
+        const combat = { id: 'combat-a', scene, turns: [{ tokenId: target.id }] }
+
+        await dispatchPersistentZoneTurnStart(combat, { round: 1, turn: 0 }, { direction: 1 })
+        await dispatchPersistentZoneTurnStart(combat, { round: 1, turn: 0 }, { direction: -1 })
+
+        expect(departed.update).not.toHaveBeenCalled()
+        expect(passive.update).not.toHaveBeenCalled()
+        expect(global.foundry.utils.fromUuid).not.toHaveBeenCalled()
+    })
+
+    test('does not backfill a turn-start trigger when a Zone is created during the current turn', async () => {
+        const occupant = {
+            id: 'target-token',
+            actor: { id: 'token-actor', name: 'Unlinked Target', isToken: true },
+            actorLink: false,
+        }
+        const region = { id: 'persistent-region', tokens: new Set([occupant]), update: jest.fn() }
+        let persistedState
+        const scene = {
+            createEmbeddedDocuments: jest.fn(async (_type, [data]) => {
+                persistedState = data.flags.Ilaris.zone
+                region.flags = { Ilaris: { zone: persistedState } }
+                return [region]
+            }),
+        }
+        const zone = {
+            lifecycle: 'persistent',
+            duration: { type: 'sceneRounds', remaining: 3, originalValue: 3 },
+            targeting: { includeCaster: false },
+            trigger: { triggerOnCreate: false, onEnter: false, onTurnStart: true },
+        }
+
+        await createPersistentZone({
+            scene,
+            regionData: { name: 'Turn-start Zone', shapes: [] },
+            dialog: {
+                item: { uuid: 'Item.turn-start' },
+                actor: { uuid: 'Actor.caster' },
+                zoneCasterTokenId: 'caster-token',
+                armedInputValues: {},
+                maneuverDurationBonus: 0,
+                maechtigeMagieQs: 0,
+                getSelectedSpellModificationId: () => '',
+            },
+            zone,
+            preEffects: [],
+        })
+
+        expect(persistedState.lastTurnStartWindow).toBeUndefined()
+        expect(region.update).toHaveBeenCalledWith({
+            'flags.Ilaris.zone.membership': ['target-token'],
+            'flags.Ilaris.zone.initializing': false,
+        })
+        expect(global.foundry.utils.fromUuid).not.toHaveBeenCalled()
     })
 
     test('only marks new and re-entering tokens as entries', () => {

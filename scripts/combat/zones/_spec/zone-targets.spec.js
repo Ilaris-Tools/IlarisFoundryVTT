@@ -1,6 +1,10 @@
 import { getZoneTokens, resolveZoneTargets, tokensToSelectedActors } from '../zone-targets.js'
 
 describe('zone Region targets', () => {
+    afterEach(() => {
+        delete global.canvas
+    })
+
     test('uses the Region token collection when it is populated', () => {
         const token = {
             id: 'linked-token',
@@ -30,6 +34,46 @@ describe('zone Region targets', () => {
                 distance: 'Zone',
             },
         ])
+    })
+
+    test('uses current TokenDocument geometry over stale Region membership', () => {
+        const staleToken = {
+            id: 'stale-token',
+            actor: { id: 'stale-actor', name: 'Stale Actor' },
+        }
+        const currentToken = {
+            id: 'current-token',
+            actor: { id: 'current-actor', name: 'Current Actor' },
+            testInsideRegion: jest.fn(() => true),
+        }
+        global.canvas = { tokens: { placeables: [{ document: currentToken }] } }
+
+        expect(getZoneTokens({ tokens: new Set([staleToken]) })).toEqual([currentToken])
+        expect(currentToken.testInsideRegion).toHaveBeenCalled()
+    })
+
+    test('keeps a non-active Scene on its own Region token collection', () => {
+        const regionToken = {
+            id: 'other-scene-token',
+            actor: { id: 'other-scene-actor', name: 'Other Scene Actor' },
+        }
+        const activeSceneToken = {
+            id: 'active-scene-token',
+            actor: { id: 'active-scene-actor', name: 'Active Scene Actor' },
+            testInsideRegion: jest.fn(() => true),
+        }
+        global.canvas = {
+            scene: { id: 'active-scene' },
+            tokens: { placeables: [{ document: activeSceneToken }] },
+        }
+
+        expect(
+            getZoneTokens({
+                parent: { id: 'other-scene' },
+                tokens: new Set([regionToken]),
+            }),
+        ).toEqual([regionToken])
+        expect(activeSceneToken.testInsideRegion).not.toHaveBeenCalled()
     })
 
     test('excludes only the source token when caster targeting is disabled', () => {
