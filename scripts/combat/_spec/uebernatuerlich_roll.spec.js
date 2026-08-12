@@ -58,6 +58,7 @@ describe('UebernatuerlichDialog roll execution', () => {
         global.ui = {
             notifications: {
                 error: jest.fn(),
+                warn: jest.fn(),
             },
         }
     })
@@ -203,6 +204,72 @@ describe('UebernatuerlichDialog roll execution', () => {
 
         expect(dialog.getEffectiveSpellProfileText()).toContain(
             'Die Aufhebung wird durch Spielleitung und Spieler verwaltet.',
+        )
+    })
+
+    test('requires a placed zone only when target automation and a zone profile are both active', async () => {
+        const dialog = Object.create(UebernatuerlichDialog.prototype)
+        dialog.getEffectiveSpellModificationContext = () => ({ zone: { shape: 'cone' } })
+        dialog.zonePlacement = null
+
+        global.game.settings.get.mockReturnValue(true)
+        expect(dialog._isZonePlacementMissing()).toBe(true)
+        await expect(dialog._requireZonePlacement()).resolves.toBe(false)
+        expect(ui.notifications.warn).toHaveBeenCalledWith('Platziere zuerst die Zone.')
+
+        global.game.settings.get.mockReturnValue(false)
+        expect(dialog._isZonePlacementMissing()).toBe(false)
+        await expect(dialog._requireZonePlacement()).resolves.toBe(true)
+    })
+
+    test('does not require placement for a selected non-zone spell form', () => {
+        const dialog = Object.create(UebernatuerlichDialog.prototype)
+        dialog.getEffectiveSpellModificationContext = () => ({ zone: null })
+        dialog.zonePlacement = null
+        global.game.settings.get.mockReturnValue(true)
+
+        expect(dialog._hasZonePlacementRequirement()).toBe(false)
+        expect(dialog._isZonePlacementMissing()).toBe(false)
+    })
+
+    test('cleans up a player-owned draft through the GM socket when placement is cancelled', async () => {
+        const dialog = Object.create(UebernatuerlichDialog.prototype)
+        dialog.zonePlacement = { draftId: 'zone-draft' }
+        dialog.dialogId = 'zone-dialog'
+        dialog.zoneCasterTokenId = 'caster-token'
+        global.canvas = { scene: { id: 'scene-id' } }
+        global.game.user = { id: 'player-id', isGM: false }
+        global.game.socket = { emit: jest.fn() }
+
+        await expect(dialog._discardZoneDraft()).resolves.toBe(true)
+
+        expect(game.socket.emit).toHaveBeenCalledWith('system.Ilaris', {
+            type: 'deleteZoneDraft',
+            data: {
+                sceneId: 'scene-id',
+                draftId: 'zone-draft',
+                ownerUserId: 'player-id',
+                dialogId: 'zone-dialog',
+            },
+        })
+        expect(dialog.zonePlacement).toBeNull()
+        expect(dialog.zoneCasterTokenId).toBe('')
+    })
+
+    test('discards a prior draft and reports when a zone caster token is unavailable', async () => {
+        const dialog = Object.create(UebernatuerlichDialog.prototype)
+        dialog.manoeverAuswaehlen = jest.fn().mockResolvedValue(true)
+        dialog.updateManoeverMods = jest.fn().mockResolvedValue()
+        dialog._discardZoneDraft = jest.fn().mockResolvedValue(true)
+        dialog.getEffectiveSpellModificationContext = () => ({ zone: { shape: 'cone' } })
+        global.game.settings.get.mockReturnValue(true)
+        global.canvas = { scene: { id: 'scene-id' }, tokens: { placeables: [] } }
+
+        await dialog._placeZone()
+
+        expect(dialog._discardZoneDraft).toHaveBeenCalledTimes(1)
+        expect(ui.notifications.error).toHaveBeenCalledWith(
+            'Zonenplatzierung benötigt eine aktive Szene und einen Zauberer-Token.',
         )
     })
 })

@@ -109,6 +109,44 @@ describe('structured spell modifications', () => {
         })
     })
 
+    test('resolves a selected form zone over the optional base zone', () => {
+        const source = item({
+            ...baseSystem,
+            zone: {
+                shape: 'cone',
+                distance: 8,
+                angle: 45,
+                placement: { anchor: 'caster', pivot: 'tip' },
+            },
+            spellModifications: [
+                {
+                    id: 'miasmasphaero',
+                    zone: {
+                        shape: 'circle',
+                        distance: 8,
+                        placement: { anchor: 'caster', pivot: 'center' },
+                    },
+                },
+            ],
+        })
+
+        expect(resolveSpellModificationContext(source, ['miasmasphaero']).zone).toMatchObject({
+            shape: 'circle',
+            distance: 8,
+            placement: { anchor: 'caster', pivot: 'center' },
+        })
+        expect(resolveSpellModificationContext(item(baseSystem), []).zone).toBeNull()
+    })
+
+    test('lets a form opt out of inherited zone automation', () => {
+        const source = item({
+            ...baseSystem,
+            zone: { shape: 'circle', distance: 8, placement: { anchor: 'caster' } },
+            spellModifications: [{ id: 'faxius', zone: false }],
+        })
+        expect(resolveSpellModificationContext(source, ['faxius']).zone).toBeNull()
+    })
+
     test('requires one anti-magic preset form and accepts any one of its four choices', () => {
         const source = item({ ...baseSystem, spellModificationPreset: 'antiMagic' })
 

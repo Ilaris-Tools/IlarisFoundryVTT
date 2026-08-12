@@ -6,6 +6,7 @@ import * as hardcoded from '../../actors/data/hardcodedvorteile.js'
 import { sanitizeEnergyCost, isNumericCost, formatDiceFormula } from '../../core/utilities.js'
 import {
     IlarisGameSettingNames,
+    IlarisAutomatisierungSettingNames,
     ConfigureGameSettingsCategories,
 } from '../../settings/configure-game-settings.model.js'
 import { ILARIS } from '../../core/config.js'
@@ -23,6 +24,13 @@ import {
     normalizeSpellModifications,
     resolveSpellModificationContext,
 } from '../../items/data/spell-modifications.js'
+import { getCasterToken, placeZonePreview } from '../zones/zone-region-adapter.js'
+import {
+    createPersistentZone,
+    createZoneDraftRegion,
+    deleteZoneDraftRegion,
+    resolveInstantZoneTargets,
+} from '../zones/zone-lifecycle.js'
 
 export class UebernatuerlichDialog extends CombatDialog {
     /** @override */
@@ -33,6 +41,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             ...super.DEFAULT_OPTIONS.actions,
             energieErfolg: UebernatuerlichDialog.#onEnergieErfolg,
             energieMisserfolg: UebernatuerlichDialog.#onEnergieMisserfolg,
+            placeZone: UebernatuerlichDialog.#onPlaceZone,
         },
     }
 
@@ -65,6 +74,9 @@ export class UebernatuerlichDialog extends CombatDialog {
         this.armedInputValues = {}
         this.selectedSpellModificationIds = []
         this.spellModificationContext = resolveSpellModificationContext(this.item, [])
+        this.zonePlacement = null
+        this.zoneCasterTokenId = ''
+        this.zoneRangeBonus = 0
     }
 
     /**
@@ -78,9 +90,11 @@ export class UebernatuerlichDialog extends CombatDialog {
         // Setup modifier display with debounced listeners
         this.setupModifierDisplay()
         this.element.querySelectorAll('.spell-modification').forEach((input) => {
-            input.addEventListener('change', () => {
+            input.addEventListener('change', async () => {
+                await this._discardZoneDraft()
                 this._updateSpellModificationSelection()
-                this.render()
+                await this.render()
+                await this.updateModifierDisplay()
             })
         })
     }
@@ -105,6 +119,10 @@ export class UebernatuerlichDialog extends CombatDialog {
      */
     static async #onEnergieMisserfolg(event, target) {
         await this._energieAbrechnenKlick(false)
+    }
+
+    static async #onPlaceZone(event, target) {
+        await this._placeZone()
     }
 
     /**
@@ -180,9 +198,10 @@ export class UebernatuerlichDialog extends CombatDialog {
         const ilarisProbeResult =
             this.ilarisProbeResult || this.getIlarisModifierResult(IlarisModifierTarget.Probe)
 
+        const zonePlacementMissing = this._isZonePlacementMissing()
         return {
-            action: 'angreifen',
-            cssClass: 'modifier-summary talent-summary clickable-summary',
+            action: zonePlacementMissing ? null : 'angreifen',
+            cssClass: `modifier-summary talent-summary ${zonePlacementMissing ? 'zone-roll-disabled' : 'clickable-summary'}`,
             heading: `${icon} ${itemType}: ${finalFormula}`,
             rows: [
                 {
@@ -252,6 +271,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         const difficulty = this.getEffectiveSpellProfile().difficulty
         const isNonStandardDifficulty = isNaN(difficulty) || !difficulty
 
+        const zonePlacementMissing = this._isZonePlacementMissing()
         return {
             cssClass: 'modifier-summary energy-summary',
             heading: `${icon} Energiekosten: ${baseEnergy} Energie`,
@@ -267,15 +287,15 @@ export class UebernatuerlichDialog extends CombatDialog {
             actionButtons: isNonStandardDifficulty
                 ? [
                       {
-                          action: 'energieErfolg',
+                          action: zonePlacementMissing ? null : 'energieErfolg',
                           text: '✅ Erfolgreich gewirkt',
-                          cssClass: 'clickable-summary energie-erfolg',
+                          cssClass: `clickable-summary energie-erfolg ${zonePlacementMissing ? 'zone-roll-disabled' : ''}`,
                           style: 'cursor: pointer; padding: 8px; margin: 4px 0; background: rgba(0, 150, 0, 0.1); border: 1px solid rgba(0, 150, 0, 0.3); border-radius: 4px; text-align: center;',
                       },
                       {
-                          action: 'energieMisserfolg',
+                          action: zonePlacementMissing ? null : 'energieMisserfolg',
                           text: '❌ Misslungen',
-                          cssClass: 'clickable-summary energie-misserfolg',
+                          cssClass: `clickable-summary energie-misserfolg ${zonePlacementMissing ? 'zone-roll-disabled' : ''}`,
                           style: 'cursor: pointer; padding: 8px; margin: 4px 0; background: rgba(220, 0, 0, 0.1); border: 1px solid rgba(220, 0, 0, 0.3); border-radius: 4px; text-align: center;',
                       },
                   ]
@@ -315,6 +335,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         const difficulty = this.getEffectiveSpellProfile().difficulty
         const isNonStandardDifficulty = isNaN(difficulty) || !difficulty
 
+        const zonePlacementEnabled = this._hasZonePlacementRequirement()
         return {
             ...context,
             choices_xd20: CONFIG.ILARIS.xd20_choice,
@@ -333,6 +354,9 @@ export class UebernatuerlichDialog extends CombatDialog {
             set_energy_cost: this.set_energy_cost,
             ilarisSituationControls: this.ilarisSituationControls,
             armedInputs: this._getArmedInputs(),
+            zonePlacement: this.zonePlacement,
+            zonePlacementEnabled,
+            zonePlacementReady: this._hasZoneDraft(),
             ...this._getSpellModificationTemplateContext(),
         }
     }
@@ -350,6 +374,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         if ((await this.manoeverAuswaehlen()) === false) return
         await this.updateManoeverMods()
         this.updateStatusMods()
+        if (!(await this._requireZonePlacement())) return
 
         // Initialize and check energy values
         await this.initializeEnergyValues()
@@ -407,30 +432,21 @@ export class UebernatuerlichDialog extends CombatDialog {
         }
         super._updateSchipsStern()
 
-        // Fire-and-forget pre-effects on success
-        if (isSuccess && this.getEffectiveSpellModificationContext().preEffects.length > 0) {
-            await applyPreEffects(rollResult, this, this.armedInputValues, {
-                preEffects: this.getEffectiveSpellModificationContext().preEffects,
-                spellModificationId: this.getSelectedSpellModificationId(),
-            })
-        }
+        if (isSuccess) await this._resolveSuccessfulSpellEffects(rollResult)
+        else await this._discardZoneDraft()
     }
 
     async _energieAbrechnenKlick(isSuccess) {
         if ((await this.manoeverAuswaehlen()) === false) return
         await this.updateManoeverMods()
+        if (!(await this._requireZonePlacement())) return
         // Initialize and check energy values
         await this.initializeEnergyValues()
 
         await this.applyEnergyCost(isSuccess, this.is16OrHigher)
 
-        // Fire-and-forget pre-effects for non-standard difficulty spells
-        if (isSuccess && this.getEffectiveSpellModificationContext().preEffects.length > 0) {
-            await applyPreEffects({ success: true }, this, this.armedInputValues, {
-                preEffects: this.getEffectiveSpellModificationContext().preEffects,
-                spellModificationId: this.getSelectedSpellModificationId(),
-            })
-        }
+        if (isSuccess) await this._resolveSuccessfulSpellEffects({ success: true })
+        else await this._discardZoneDraft()
 
         // If not enough resources, show error
         if (this.currentEnergy < this.endCost) {
@@ -469,6 +485,170 @@ export class UebernatuerlichDialog extends CombatDialog {
     /* -------------------------------------------- */
     /*  Energy Management                           */
     /* -------------------------------------------- */
+
+    _isZoneAutomationEnabled() {
+        return game.settings.get(
+            ConfigureGameSettingsCategories.Ilaris,
+            IlarisAutomatisierungSettingNames.useTargetSelection,
+        )
+    }
+
+    _hasZonePlacementRequirement() {
+        const zone = this.getEffectiveSpellModificationContext().zone
+        return Boolean(this._isZoneAutomationEnabled() && zone)
+    }
+
+    _hasZoneDraft() {
+        return Boolean(this.zonePlacement?.draftId)
+    }
+
+    _isZonePlacementMissing() {
+        return this._hasZonePlacementRequirement() && !this._hasZoneDraft()
+    }
+
+    async _requireZonePlacement() {
+        if (!this._isZonePlacementMissing()) return true
+        ui.notifications.warn('Platziere zuerst die Zone.')
+        return false
+    }
+
+    async _placeZone() {
+        if ((await this.manoeverAuswaehlen()) === false) return
+        await this.updateManoeverMods()
+        const zone = this.getEffectiveSpellModificationContext().zone
+        if (!this._isZoneAutomationEnabled() || !zone) return
+
+        await this._discardZoneDraft()
+
+        const casterToken = getCasterToken(this.actor)
+        if (!globalThis.canvas?.scene || !casterToken) {
+            ui.notifications.error(
+                'Zonenplatzierung benötigt eine aktive Szene und einen Zauberer-Token.',
+            )
+            return
+        }
+
+        const placement = await placeZonePreview(zone, casterToken, {
+            rangeBonus: this.zoneRangeBonus,
+        })
+        if (!placement) {
+            await this.updateModifierDisplay()
+            return
+        }
+
+        const draftId =
+            globalThis.foundry?.utils?.randomID?.(16) ||
+            globalThis.crypto?.randomUUID?.() ||
+            `${Date.now()}`
+        this.zonePlacement = { ...placement, draftId }
+        this.zoneCasterTokenId = casterToken.id
+        const draftRequest = {
+            sceneId: canvas.scene.id,
+            regionData: placement.regionData,
+            draftId,
+            ownerUserId: game.user.id,
+            dialogId: this.dialogId,
+        }
+        if (game.user.isGM) {
+            const draft = await createZoneDraftRegion({ scene: canvas.scene, ...draftRequest })
+            if (!draft) {
+                this.zonePlacement = null
+                this.zoneCasterTokenId = ''
+                ui.notifications.error('Die Zonenplatzierung konnte nicht gespeichert werden.')
+                await this.updateModifierDisplay()
+                return
+            }
+            this.zonePlacement.draftId = draft.id
+        } else game.socket.emit('system.Ilaris', { type: 'createZoneDraft', data: draftRequest })
+        ui.notifications.info('Zone platziert. Jetzt kann der Zauber gewirkt werden.')
+        await this.updateModifierDisplay()
+    }
+
+    async _discardZoneDraft() {
+        const draftId = this.zonePlacement?.draftId
+        if (!draftId) {
+            this.zonePlacement = null
+            this.zoneCasterTokenId = ''
+            return false
+        }
+        const request = {
+            sceneId: canvas.scene?.id,
+            draftId,
+            ownerUserId: game.user.id,
+            dialogId: this.dialogId,
+        }
+        if (game.user.isGM) await deleteZoneDraftRegion({ scene: canvas.scene, ...request })
+        else game.socket.emit('system.Ilaris', { type: 'deleteZoneDraft', data: request })
+        this.zonePlacement = null
+        this.zoneCasterTokenId = ''
+        return true
+    }
+
+    async _resolveSuccessfulSpellEffects(rollResult) {
+        const context = this.getEffectiveSpellModificationContext()
+        const preEffectContext = {
+            preEffects: context.preEffects,
+            spellModificationId: this.getSelectedSpellModificationId(),
+        }
+        if (!context.zone || !this._isZoneAutomationEnabled() || !this.zonePlacement) {
+            if (context.preEffects.length)
+                await applyPreEffects(rollResult, this, this.armedInputValues, preEffectContext)
+            return
+        }
+
+        if (context.zone.lifecycle === 'persistent') {
+            if (!game.user.isGM) {
+                game.socket.emit('system.Ilaris', {
+                    type: 'createPersistentZone',
+                    data: this._serializePersistentZoneRequest(context),
+                })
+                this.zonePlacement = null
+                this.zoneCasterTokenId = ''
+                return
+            }
+            await createPersistentZone({
+                scene: canvas.scene,
+                regionData: this.zonePlacement.regionData,
+                dialog: this,
+                zone: context.zone,
+                preEffects: context.preEffects,
+            })
+            await this._discardZoneDraft()
+            return
+        }
+
+        this.selectedActors = await resolveInstantZoneTargets(this.zonePlacement.regionData, {
+            zone: context.zone,
+            casterTokenId: this.zoneCasterTokenId,
+        })
+        if (context.preEffects.length)
+            await applyPreEffects(rollResult, this, this.armedInputValues, preEffectContext)
+        await this._discardZoneDraft()
+    }
+
+    _serializePersistentZoneRequest(context) {
+        return {
+            sceneId: canvas.scene.id,
+            regionData: this.zonePlacement.regionData,
+            zone: context.zone,
+            preEffects: context.preEffects,
+            casterActorUuid: this.actor.uuid,
+            casterTokenId: this.zoneCasterTokenId,
+            spellUuid: this.item.uuid,
+            spellModificationId: this.getSelectedSpellModificationId(),
+            armedInputValues: this.armedInputValues,
+            maneuverDurationBonus: this.maneuverDurationBonus || 0,
+            maechtigeMagieQs: this.maechtigeMagieQs || 0,
+            draftRegionId: this.zonePlacement.draftId,
+            draftOwnerUserId: game.user.id,
+            dialogId: this.dialogId,
+        }
+    }
+
+    async close(options = {}) {
+        await this._discardZoneDraft()
+        return super.close(options)
+    }
 
     async initializeEnergyValues() {
         // Check if we have enough resources
@@ -793,6 +973,15 @@ export class UebernatuerlichDialog extends CombatDialog {
                 })
             })
         })
+
+        // Zone-capable casting maneuvers can declare an additive RANGE or
+        // ZONE_RANGE modification. Existing maneuvers remain unchanged.
+        this.zoneRangeBonus = allModifications.reduce((total, { modification }) => {
+            if (!['RANGE', 'ZONE_RANGE'].includes(modification?.type)) return total
+            const value = Number(modification.value)
+            if (!Number.isFinite(value)) return total
+            return total + (modification.operator === 'SUBTRACT' ? -value : value)
+        }, 0)
 
         // Process all modifications in order
         ;[

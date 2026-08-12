@@ -2,6 +2,7 @@
  * Pure, dialog-safe resolution for persisted supernatural spell forms.
  * Selections are intentionally never written back to the source Item.
  */
+import { resolveZoneProfile } from '../../combat/zones/zone-profile.js'
 
 function toArray(value) {
     if (Array.isArray(value)) return value
@@ -146,6 +147,7 @@ export function normalizeSpellModifications(system = {}) {
                 ...modification.profile,
                 ...(preset === ANTIMAGIC_PRESET ? ANTIMAGIC_PROFILE_EXTRAS[modification.id] : {}),
             }),
+            zone: clone(modification.zone),
             preEffects: toArray(clone(modification.preEffects)),
         }))
         .filter((modification) => {
@@ -232,5 +234,16 @@ export function resolveSpellModificationContext(item, selectedIds = []) {
         if (form.effectMode === 'replace') preEffects = clone(form.preEffects)
     }
 
-    return { valid: errors.length === 0, errors, selectedForms, profile, preEffects }
+    const selectedZone = selectedForms.reduce(
+        (zone, form) => resolveZoneProfile(zone, form.zone),
+        system.zone || null,
+    )
+    return {
+        valid: errors.length === 0,
+        errors,
+        selectedForms,
+        profile,
+        preEffects,
+        zone: selectedZone,
+    }
 }

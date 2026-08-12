@@ -28,7 +28,7 @@ Some zones continuously affect actors while they are inside them. The current ve
 
 ### Dependencies and risks
 
-- Depends on the first slice's persistent template metadata and membership tracker.
+- Depends on the first slice's persistent Region metadata and membership tracker.
 - Requires careful effect-origin matching so cleanup cannot remove manually created or unrelated spell effects.
 - Requires a decision about whether a resistance success suppresses only the current application or remembers immunity until leaving.
 
@@ -75,7 +75,7 @@ Some zones cause repeated damage or resistance checks on a cadence that is neith
 
 - Add a periodic trigger definition with cadence, phase, and per-token cooldown.
 - Support cadences such as every turn, every N turns, and every N initiative phases where Foundry timing permits.
-- Evaluate current membership at trigger time using the measured template as the spatial source of truth.
+- Evaluate current membership at trigger time using the Region as the spatial source of truth.
 - Apply instant damage, resistance prompts, or ActiveEffects through existing pipelines.
 - Persist enough trigger state to survive scene refreshes and avoid duplicate processing.
 - Define whether a successful resistance suppresses only one tick or the whole zone application.
@@ -91,7 +91,7 @@ Some zones cause repeated damage or resistance checks on a cadence that is neith
 
 - Depends on beginning-of-turn zone triggers and reliable zone membership reconciliation.
 - Requires a single authoritative scheduler, likely GM-scoped, to avoid multiplayer duplication.
-- Needs performance limits for scenes with many templates and tokens.
+- Needs performance limits for scenes with many Regions and tokens.
 
 ## 4. Precise Wall-Crossing Triggers
 
@@ -99,7 +99,7 @@ Some zones cause repeated damage or resistance checks on a cadence that is neith
 
 ### Problem
 
-For Wand aus Dornen, entering the rectangle is an approximation. The rules may require a resistance check when a token crosses the wall rather than whenever it overlaps the template.
+For Wand aus Dornen, entering the rectangle is an approximation. The rules may require a resistance check when a token crosses the wall rather than whenever it overlaps the Region.
 
 ### Proposed scope
 
@@ -107,7 +107,7 @@ For Wand aus Dornen, entering the rectangle is an approximation. The rules may r
 - Track the token's previous and current position relative to the rectangle's two faces.
 - Trigger a crossing only when movement passes through the wall's thickness, not when a token moves along it.
 - Define behavior for tokens that start inside the wall, teleport, are pushed, or change size.
-- Retain standard Foundry measured-template intersection for ordinary shapes; add crossing logic only for wall profiles.
+- Retain standard Foundry Region containment for ordinary shapes; add crossing logic only for wall profiles.
 
 ### Acceptance examples
 
@@ -132,7 +132,7 @@ Persistent zones need predictable cleanup, visibility, ownership, and recovery w
 
 ### Proposed scope
 
-- Add a zone registry or adapter for finding Ilaris-owned measured templates.
+- Add a zone registry or adapter for finding Ilaris-owned Regions.
 - Clean up expired zones and their zone-owned effects.
 - Handle deletion of the source actor or token without deleting the zone unless the spell specifies caster dependence.
 - Add GM-facing controls to inspect, dismiss, or force-reconcile a zone.
@@ -142,7 +142,7 @@ Persistent zones need predictable cleanup, visibility, ownership, and recovery w
 ### Acceptance examples
 
 - Expired zones disappear without leaving orphaned effects.
-- Deleting a template stops future triggers immediately.
+- Deleting a Region stops future triggers immediately.
 - Reloading a scene restores active zone behavior from flags.
 - A GM can dismiss a zone and remove only effects originating from that zone.
 - A zone on Scene A never reacts to tokens on Scene B.
@@ -151,20 +151,23 @@ Persistent zones need predictable cleanup, visibility, ownership, and recovery w
 
 - Depends on persistent zone metadata and effect-origin flags.
 - Requires explicit ownership and permission rules for player-created zones.
-- Cleanup must be idempotent so a deleted template, expired template, and manual dismissal cannot race destructively.
+- Cleanup must be idempotent so a deleted Region, expired Region, and manual dismissal cannot race destructively.
 
 ## Decision Register
 
 The following decisions are already settled for future proposals:
 
 - Placement occurs before the roll.
-- No effects, energy payment, or persistent template remain after cancellation or failure.
+- No effects, energy payment, or persistent Region remains after cancellation or failure.
 - The supernatural dialog can redo placement.
 - Free placement range is measured from the caster token center.
 - Maneuver placement modifiers are included before placement begins.
+- Zone automation is opt-in through the existing target-selection setting.
+- Persistent zones use GM-owned scene-round duration and do not age automatically outside combat.
+- Persistent zones process initial occupants by default through `triggerOnCreate`.
 - Re-entry triggers again after leaving and returning.
 - Beginning-of-turn triggers are optional per zone.
-- Foundry's standard measured-template intersection behavior is preferred.
+- Foundry's standard Region containment behavior is preferred.
 
 The following decisions remain intentionally open until the relevant follow-up proposal:
 

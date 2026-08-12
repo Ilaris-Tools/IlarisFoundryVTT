@@ -66,6 +66,7 @@ export class UebernatuerlichTalentSheet extends PreEffectItemSheet {
                 range: '',
                 duration: '',
             },
+            zone: null,
             preEffects: [],
         }
     }
@@ -104,6 +105,24 @@ export class UebernatuerlichTalentSheet extends PreEffectItemSheet {
             const forms = this.#cloneSpellModifications()
             forms.push(this.#defaultSpellModification())
             await updateForms(forms)
+            return
+        }
+        if (button.closest('.disable-spell-modification-zone')) {
+            const forms = this.#cloneSpellModifications()
+            if (!forms[formIndex]) return
+            forms[formIndex].zone = false
+            await updateForms(forms)
+            return
+        }
+        if (button.closest('.clear-spell-modification-zone')) {
+            const forms = this.#cloneSpellModifications()
+            if (!forms[formIndex]) return
+            delete forms[formIndex].zone
+            await updateForms(forms)
+            return
+        }
+        if (button.closest('.clear-zone-profile')) {
+            await this.document.update({ 'system.zone': null })
             return
         }
         if (button.closest('.delete-spell-modification')) {

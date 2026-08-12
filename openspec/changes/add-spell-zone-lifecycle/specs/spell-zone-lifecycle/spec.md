@@ -2,7 +2,7 @@
 
 ### Requirement: Structured zone profile
 
-Übernatürlich items and selected spell modifications SHALL support an optional normalized zone profile containing shape, dimensions, pivot, placement anchor, placement range, lifecycle, and trigger timing. The profile SHALL remain absent for non-zone items.
+Supernatural items and selected spell modifications SHALL support an optional normalized zone profile containing shape, dimensions, pivot, placement anchor, placement range, lifecycle, explicit duration, trigger timing, and a `targeting.includeCaster` policy. The profile SHALL remain absent for non-zone items. `targeting.includeCaster` SHALL default to `false` and SHALL filter only the source Token from automatic zone target resolution.
 
 #### Scenario: Cone profile is normalized
 
@@ -14,14 +14,27 @@
 - **WHEN** Wand aus Dornen is loaded with its zone data
 - **THEN** the normalized profile SHALL identify a rectangle with length 4, width 1, free placement, top-left pivot, and placement range 8
 
+#### Scenario: Persistent duration uses global scene rounds
+
+- **WHEN** a persistent zone profile is normalized
+- **THEN** its duration SHALL use `sceneRounds` with explicit `remaining` and `originalValue` values
+- **AND** 16 minutes SHALL be authored as 256 scene rounds using the established conversion of 16 initiative phases per minute
+
 #### Scenario: Modification replaces zone geometry
 
 - **WHEN** Miasmasphaero is selected for Tlalucs Odem Pestgestank
 - **THEN** the effective profile SHALL replace the cone with a caster-centered circle while retaining the modification's effective spell profile
 
-### Requirement: Pre-roll zone placement
+#### Scenario: Caster targeting is opt-in
 
-The supernatural dialog SHALL place a temporary Foundry measured-template preview after casting maneuvers and their range modifiers are resolved but before the spell roll. The placement range for free zones SHALL be measured from the caster token center. The Foundry `MeasuredTemplate` document/placeable API SHALL be used after v14 verification: [MeasuredTemplate](https://foundryvtt.com/api/v14/classes/foundry.documents.MeasuredTemplate.html), [TokenDocument](https://foundryvtt.com/api/v14/classes/foundry.documents.Token.html), and [Token](https://foundryvtt.com/api/v14/classes/foundry.canvas.placeables.Token.html).
+- **WHEN** a zone does not set `targeting.includeCaster`
+- **THEN** the automatic target resolver SHALL exclude its source Token while retaining other Tokens, including Tokens representing the same Actor
+- **AND WHEN** the profile sets `targeting.includeCaster` to `true`
+- **THEN** the source Token SHALL remain eligible for normal Region containment
+
+### Requirement: Visible draft-zone placement
+
+The supernatural dialog SHALL show `Zone platzieren` above `Würfelaktionen` only when target selection is enabled and the selected form has a normalized zone profile. It SHALL use the documented `canvas.regions.placeRegion(..., { create: false })` API to place a shape, then retain the result as an inert GM-owned Scene Region draft marked under `flags.Ilaris.zoneDraft`. The placement range for free zones SHALL be measured from the caster token center. Caster-anchored zones SHALL bypass free-placement range validation: circles use the caster token center without free placement, while directional shapes place their pivot at the outward boundary of the caster's public [`Token#getShape()`](https://foundryvtt.com/api/v14/classes/foundry.canvas.placeables.Token.html#getShape), in the selected direction, plus a one-pixel outward epsilon. Drafts SHALL be deleted before replacement placement, on a modification change, cancellation, dialog close, or failed cast. The implementation SHALL NOT call deprecated MeasuredTemplate APIs.
 
 #### Scenario: Maneuver range modifies placement
 
@@ -31,7 +44,18 @@ The supernatural dialog SHALL place a temporary Foundry measured-template previe
 #### Scenario: Placement is cancelled
 
 - **WHEN** the user cancels zone placement
-- **THEN** the spell SHALL not roll, pay energy, or create a persistent measured template
+- **THEN** the spell SHALL not roll, pay energy, or create an active persistent Region
+
+#### Scenario: Confirmed draft remains visible before casting
+
+- **WHEN** the user confirms `Zone platzieren`
+- **THEN** the active GM SHALL create an inert Scene Region draft visible on the map
+- **AND** roll actions SHALL become available without starting a roll
+
+#### Scenario: Draft cleanup
+
+- **WHEN** a draft is replaced, its dialog closes, the selected modification changes, or its cast fails
+- **THEN** the active GM SHALL delete that draft without applying effects or changing resources
 
 #### Scenario: Placement is redone
 
@@ -40,47 +64,51 @@ The supernatural dialog SHALL place a temporary Foundry measured-template previe
 
 ### Requirement: Successful instant-zone resolution
 
-An instant zone SHALL resolve only after a successful spell roll. Current tokens intersecting the confirmed template SHALL be converted into token-aware `selectedActors` and passed to the existing pre-effect pipeline.
+An instant zone SHALL resolve only after a successful spell roll. Current tokens contained in the confirmed Region SHALL be converted into token-aware `selectedActors` and passed to the existing pre-effect pipeline using `RegionDocument.tokens` or `TokenDocument.testInsideRegion`.
 
 #### Scenario: Tlalucs cone affects current occupants
 
 - **WHEN** Tlalucs Odem Pestgestank succeeds with a confirmed cone
-- **THEN** every token selected by Foundry's standard measured-template intersection behavior SHALL receive the existing pre-effect processing once
+- **THEN** every token selected by Foundry's standard Region containment behavior SHALL receive the existing pre-effect processing once
 
 #### Scenario: Failed instant zone has no effects
 
 - **WHEN** an instant zone spell fails
-- **THEN** no target SHALL receive damage, a resistance prompt, or a persistent zone template
+- **THEN** no target SHALL receive damage, a resistance prompt, or a persistent zone Region
 
-### Requirement: Persistent zone document
+### Requirement: Persistent zone document and global duration
 
-A persistent zone SHALL create a measured-template document on the active Scene after a successful cast, storing resolved Ilaris zone metadata in flags. The zone SHALL remain until its resolved duration expires or the template is deleted. The `Scene`, `MeasuredTemplate`, and document embedded-document APIs SHALL be verified against v14 before implementation: [Scene](https://foundryvtt.com/api/v14/classes/foundry.documents.Scene.html).
+A persistent zone SHALL create a Region document on the active Scene after a successful cast, storing resolved Ilaris zone metadata under `flags.Ilaris.zone`. The active GM SHALL own document creation and lifecycle processing. The zone SHALL remain until its resolved scene-round duration expires or the Region is deleted. The `Scene`, `RegionDocument`, and document embedded-document APIs SHALL be verified against v14 before implementation: [Scene](https://foundryvtt.com/api/v14/classes/foundry.documents.Scene.html), [RegionDocument](https://foundryvtt.com/api/v14/classes/foundry.documents.RegionDocument.html).
 
 #### Scenario: Wand aus Dornen persists
 
 - **WHEN** Wand aus Dornen succeeds with confirmed placement
-- **THEN** a measured template SHALL remain on the scene with its effective profile, caster context, spell UUID, application ID, and trigger configuration
+- **THEN** the active GM SHALL create a Region on the scene with its effective profile, caster context, spell UUID, application ID, trigger configuration, and resolved scene-round timing
+
+#### Scenario: Global duration decrements once per combat round
+
+- **WHEN** the active GM processes a forward Foundry `combatRound`
+- **THEN** every active persistent zone on that Scene SHALL reduce its remaining scene rounds by one regardless of combatant ownership
+- **AND** zones SHALL not age automatically outside combat
 
 #### Scenario: Persistent zone expires
 
 - **WHEN** a persistent zone reaches its resolved duration
-- **THEN** the measured template SHALL be removed and no future entry or turn trigger SHALL be dispatched
+- **THEN** the Region SHALL be removed and no future trigger SHALL be dispatched
 
-### Requirement: Entry and beginning-of-turn triggers
+### Requirement: Creation, entry, and re-entry triggers
 
-Persistent zones SHALL support independent `onEnter` and `onTurnStart` trigger flags. Entry SHALL include re-entry after the token leaves. Trigger handling SHALL deduplicate repeated document updates for the same zone, token, and trigger window.
+Persistent zones SHALL support `triggerOnCreate` and `onEnter` trigger flags. `triggerOnCreate` SHALL default to `true`; entry SHALL include re-entry after the token leaves. The active GM SHALL dispatch these triggers and persist enough membership and deduplication state on the Region to prevent repeated document updates from duplicating a trigger.
+
+#### Scenario: Initial occupant triggers by default
+
+- **WHEN** a persistent zone is created with an intersecting token and `triggerOnCreate` is omitted
+- **THEN** the token SHALL receive one creation trigger
 
 #### Scenario: Re-entry triggers again
 
 - **WHEN** a token leaves a persistent zone and later enters it again
 - **THEN** the zone SHALL dispatch a new entry trigger for that token
-
-#### Scenario: Beginning-of-turn trigger is optional
-
-- **WHEN** a token begins its turn inside a zone whose `onTurnStart` flag is enabled
-- **THEN** the zone SHALL dispatch one turn-start trigger for that token in that turn
-- **AND WHEN** the flag is disabled
-- **THEN** no turn-start trigger SHALL be dispatched
 
 ### Requirement: Resistance and token context
 
@@ -95,3 +123,9 @@ Zone-triggered effects SHALL reuse the existing resistance and pre-effect pipeli
 
 - **WHEN** several token updates occur while the token remains inside the wall
 - **THEN** only one prompt SHALL be created for that entry event
+
+#### Scenario: Thorn wall does not enforce movement in the first slice
+
+- **WHEN** a token enters Wand aus Dornen
+- **THEN** the zone SHALL use the configured resistance and attempt-damage outcome
+- **AND** the system SHALL not move the token back or enforce full wall crossing

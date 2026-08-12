@@ -1,5 +1,6 @@
 import { openSkillDialog } from '../../skills/skills-api.js'
 import { toArray } from './pre-effects-processor.js'
+import { resolveTargetActorForDamage } from '../../combat/dialogs/shared-dialog-helpers.js'
 
 /**
  * Register the resist test system: socket listener, click delegation, and resolution.
@@ -14,7 +15,6 @@ export function registerResistHandler() {
                     const clickedButton = this
                     clickedButton.disabled = true
 
-                    const actorId = this.dataset.actorId
                     let preEffectData
                     try {
                         preEffectData = JSON.parse(
@@ -25,7 +25,9 @@ export function registerResistHandler() {
                         return
                     }
 
-                    const actor = game.actors.get(actorId)
+                    const { targetActor: actor } = resolveTargetActorForDamage(
+                        preEffectData.target || { actorId: preEffectData.targetActorId },
+                    )
                     if (!actor) {
                         ui.notifications.warn('Akteur wurde nicht gefunden.')
                         clickedButton.disabled = false
@@ -246,7 +248,10 @@ async function processResistResult(dialog, payload, preEffectData) {
  * Apply the pre-effect with full values (resist failed).
  */
 async function applyPreEffectFromResist(preEffectData) {
-    const targetActor = game.actors.get(preEffectData.targetActorId)
+    const { targetActor } = resolveTargetActorForDamage(
+        preEffectData.target || { actorId: preEffectData.targetActorId },
+    )
+    if (!targetActor) return
 
     const spellItem = await foundry.utils.fromUuid(preEffectData.spellUuid)
     const caster = await foundry.utils.fromUuid(preEffectData.casterUuid)
@@ -285,6 +290,7 @@ async function applyPreEffectFromResist(preEffectData) {
         preEffectData.armedInputValues || {},
         preEffectData.sourceType || 'uebernatuerlich',
         preEffectData.spellModificationId || '',
+        preEffectData.zoneRegionId || '',
     )
 }
 
@@ -292,7 +298,9 @@ async function applyPreEffectFromResist(preEffectData) {
  * Apply diminished effect (resist succeeded with diminishedOnly).
  */
 async function applyDiminishedEffect(preEffectData) {
-    const targetActor = game.actors.get(preEffectData.targetActorId)
+    const { targetActor } = resolveTargetActorForDamage(
+        preEffectData.target || { actorId: preEffectData.targetActorId },
+    )
     if (!targetActor) return
 
     const spellItem = await foundry.utils.fromUuid(preEffectData.spellUuid)
@@ -359,6 +367,7 @@ async function applyDiminishedEffect(preEffectData) {
         preEffectData.armedInputValues || {},
         preEffectData.sourceType || 'uebernatuerlich',
         preEffectData.spellModificationId || '',
+        preEffectData.zoneRegionId || '',
     )
 }
 

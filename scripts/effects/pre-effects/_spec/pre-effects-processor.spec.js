@@ -96,7 +96,11 @@ describe('pre-effect processor', () => {
             { success: true },
             { item: spell, actor: caster, selectedActors: [{ actorId: caster.id }], speaker: {} },
             {},
-            { preEffects: [replacement], spellModificationId: 'schimmernder-schild' },
+            {
+                preEffects: [replacement],
+                spellModificationId: 'schimmernder-schild',
+                zoneRegionId: 'zone-region-1',
+            },
         )
 
         const created = global.ActiveEffect.createDocuments.mock.calls[0][0][0]
@@ -104,6 +108,7 @@ describe('pre-effect processor', () => {
             expect.objectContaining({ key: 'system.replacement', value: '2' }),
         ])
         expect(created.flags.ilaris.spellModificationId).toBe('schimmernder-schild')
+        expect(created.flags.ilaris.zoneRegionId).toBe('zone-region-1')
     })
 
     it('routes a canonical condition pre-effect to one status-bearing condition effect', async () => {
@@ -698,6 +703,7 @@ describe('pre-effect processor', () => {
             preEffectIndex: 0,
             applicationId: expect.any(String),
             triggeringRollTotal: 18,
+            target: { actorId: 'target-id', tokenId: '', actorLink: true },
         })
     })
 

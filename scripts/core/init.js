@@ -564,6 +564,24 @@ function setupIlarisSocket() {
                 applyArmedAttackResolutionToDialog(data.data)
                 break
             }
+            case 'createPersistentZone': {
+                const { createPersistentZoneFromRequest } =
+                    await import('../combat/zones/zone-lifecycle.js')
+                await createPersistentZoneFromRequest(data.data)
+                break
+            }
+            case 'createZoneDraft': {
+                const { createZoneDraftRegionFromRequest } =
+                    await import('../combat/zones/zone-lifecycle.js')
+                await createZoneDraftRegionFromRequest(data.data)
+                break
+            }
+            case 'deleteZoneDraft': {
+                const { deleteZoneDraftRegionFromRequest } =
+                    await import('../combat/zones/zone-lifecycle.js')
+                await deleteZoneDraftRegionFromRequest(data.data)
+                break
+            }
             default:
                 console.warn(`Unknown Ilaris socket request type: ${data.type}`)
         }

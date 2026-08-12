@@ -248,6 +248,46 @@ describe('reviewed supported spell pre-effect source data', () => {
         )
     })
 
+    it('configures the supported zone profiles for Tlalucs Odem and Wand aus Dornen', () => {
+        const tlalucs = readSpell('Tlalucs_Odem_Pestgestank_AxZ1uUWFUlGIECDS.json')
+        const dornen = readSpell('Wand_aus_Dornen_XthRIeEiC9Te02tL.json')
+
+        expect(tlalucs.system.zone).toMatchObject({
+            shape: 'cone',
+            distance: 8,
+            angle: 45,
+            placement: { anchor: 'caster', pivot: 'tip' },
+            lifecycle: 'instant',
+        })
+        expect(tlalucs.system.spellModifications).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    id: 'miasmasphaero',
+                    zone: expect.objectContaining({
+                        shape: 'circle',
+                        placement: expect.objectContaining({
+                            anchor: 'caster',
+                            pivot: 'center',
+                        }),
+                    }),
+                }),
+                expect.objectContaining({ id: 'miasmafaxius', zone: false }),
+            ]),
+        )
+        expect(dornen.system.zone).toMatchObject({
+            shape: 'rectangle',
+            distance: 4,
+            width: 1,
+            lifecycle: 'persistent',
+            duration: { remaining: 256, originalValue: 256 },
+            trigger: { triggerOnCreate: true, onEnter: true },
+        })
+        expect(dornen.system.preEffects?.[0]).toMatchObject({
+            instant: true,
+            avoidTest: { enabled: true, attribut: 'GE', resistDifficulty: 16 },
+        })
+    })
+
     it('configures spell-named marker and diminished branches without a numeric marker modifier', () => {
         const hexengalle = readSpell('Hexengalle_9rwCzQDAtGzeuU24.json').system.preEffects
         const gewuerm = readSpell('Fluch_des_Gew_rms_iLc4RFaAgAFDdvUg.json').system.preEffects

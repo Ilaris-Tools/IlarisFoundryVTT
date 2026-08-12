@@ -41,6 +41,9 @@ export function createItemTypeDataModels(TypeDataModel, h) {
         pw: h.number(0),
         gruppe: h.number(-1),
         preEffects: h.arrayOfObjects(),
+        // `null` deliberately represents the absence of zone automation.
+        // Keeping this optional avoids turning every supernatural Item into a zone.
+        zone: h.object(null),
         spellModifications: h.arrayOfObjects(),
         spellModificationGroups: h.arrayOfObjects(),
         spellModificationPreset: h.string(''),

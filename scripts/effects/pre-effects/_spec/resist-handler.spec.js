@@ -55,12 +55,30 @@ beforeEach(() => {
 describe('resist result listener', () => {
     it('applies a full non-instant effect when the resist roll fails', async () => {
         registerResistResolutionListener()
-        const dialog = { _resistContext: { preEffectData: preEffect(), spellUuid: 'Item.spell' } }
+        const dialog = {
+            _resistContext: {
+                preEffectData: preEffect({
+                    zoneRegionId: 'zone-region',
+                    targetTokenId: 'target-token',
+                }),
+                spellUuid: 'Item.spell',
+            },
+        }
 
         await hookCallbacks['Ilaris.postSkillRoll'](dialog, { rollResult: { success: false } })
 
         expect(effectCreate).toHaveBeenCalledWith(
-            [expect.objectContaining({ changes: [expect.objectContaining({ value: '5' })] })],
+            [
+                expect.objectContaining({
+                    changes: [expect.objectContaining({ value: '5' })],
+                    flags: expect.objectContaining({
+                        ilaris: expect.objectContaining({
+                            zoneRegionId: 'zone-region',
+                            targetTokenId: 'target-token',
+                        }),
+                    }),
+                }),
+            ],
             expect.any(Object),
         )
         expect(dialog._resistContext).toBeUndefined()

@@ -186,6 +186,7 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {},
             if (avoidTest.enabled) {
                 await sendResistPromptForEffect(
                     targetActor,
+                    target,
                     preEffect,
                     item,
                     caster,
@@ -199,6 +200,7 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {},
                     sourceType,
                     triggeringRollTotal,
                     context.spellModificationId || '',
+                    context.zoneRegionId || '',
                 )
                 continue
             }
@@ -232,6 +234,7 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {},
                     armedInputValues,
                     sourceType,
                     context.spellModificationId || '',
+                    context.zoneRegionId || '',
                 )
             }
         }
@@ -240,6 +243,7 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {},
 
 async function sendResistPromptForEffect(
     targetActor,
+    target,
     preEffect,
     spellItem,
     caster,
@@ -253,6 +257,7 @@ async function sendResistPromptForEffect(
     sourceType,
     triggeringRollTotal,
     spellModificationId,
+    zoneRegionId,
 ) {
     const serialized = {
         ...preEffect,
@@ -262,11 +267,17 @@ async function sendResistPromptForEffect(
         casterUuid: caster.uuid,
         spellUuid: spellItem.uuid,
         targetActorId: targetActor.id,
+        target: {
+            actorId: target?.actorId || targetActor.id,
+            tokenId: target?.tokenId || '',
+            actorLink: target?.actorLink ?? true,
+        },
         preEffectIndex,
         applicationId,
         armedInputValues,
         sourceType,
         spellModificationId,
+        zoneRegionId,
         ...(Number.isFinite(triggeringRollTotal) ? { triggeringRollTotal } : {}),
     }
     await sendResistPrompt(targetActor, serialized, spellItem.name, speaker)
@@ -310,6 +321,7 @@ export async function createActiveEffectFromPreEffect(
     armedInputValues = {},
     sourceType = 'uebernatuerlich',
     spellModificationId = '',
+    zoneRegionId = '',
 ) {
     let payload
     try {
@@ -389,6 +401,8 @@ export async function createActiveEffectFromPreEffect(
                 preEffectIndex,
                 applicationId,
                 spellModificationId,
+                zoneRegionId,
+                targetTokenId: preEffect.target?.tokenId || preEffect.targetTokenId || '',
             },
         },
     }

@@ -36,6 +36,19 @@
                 <label>Modifikationen:</label>
                 <textarea name="system.modifikationen">{{item.system.modifikationen}}</textarea>
             </div>
+            <section class="zone-profile-editor">
+                <h3>Zonenautomatisierung</h3>
+                <p class="hint">Optional. Ohne Form bleibt dieses Talent vollstaendig manuell.</p>
+                <div class="form-group"><label>Form</label><select name="system.zone.shape"><option value="">Keine Zone</option><option value="cone" {{#if (ifEq item.system.zone.shape "cone")}}selected{{/if}}>Kegel</option><option value="circle" {{#if (ifEq item.system.zone.shape "circle")}}selected{{/if}}>Kreis</option><option value="rectangle" {{#if (ifEq item.system.zone.shape "rectangle")}}selected{{/if}}>Wand/Rechteck</option></select></div>
+                <div class="form-group"><label>Laenge/Radius</label><input type="number" min="1" name="system.zone.distance" value="{{item.system.zone.distance}}" /></div>
+                <div class="form-group"><label>Kegelwinkel</label><input type="number" min="1" name="system.zone.angle" value="{{item.system.zone.angle}}" /></div>
+                <div class="form-group"><label>Wandbreite</label><input type="number" min="1" name="system.zone.width" value="{{item.system.zone.width}}" /></div>
+                <div class="form-group"><label>Verankerung</label><select name="system.zone.placement.anchor"><option value="caster" {{#if (ifEq item.system.zone.placement.anchor "caster")}}selected{{/if}}>Beim Zaubernden</option><option value="free" {{#if (ifEq item.system.zone.placement.anchor "free")}}selected{{/if}}>Frei platzierbar</option></select><label>Reichweite</label><input type="number" min="0" name="system.zone.placement.range" value="{{item.system.zone.placement.range}}" /></div>
+                <div class="form-group"><label>Lebenszyklus</label><select name="system.zone.lifecycle"><option value="instant" {{#if (ifEq item.system.zone.lifecycle "instant")}}selected{{/if}}>Sofortig</option><option value="persistent" {{#if (ifEq item.system.zone.lifecycle "persistent")}}selected{{/if}}>Bleibend</option></select><label>Szenenrunden</label><input type="number" min="1" name="system.zone.duration.remaining" value="{{item.system.zone.duration.remaining}}" /></div>
+                <label><input type="checkbox" name="system.zone.trigger.triggerOnCreate" {{checked item.system.zone.trigger.triggerOnCreate}} /> Beim Erzeugen ausloesen</label>
+                <label><input type="checkbox" name="system.zone.trigger.onEnter" {{checked item.system.zone.trigger.onEnter}} /> Beim Betreten ausloesen</label>
+                <button type="button" class="clear-zone-profile">Zonenprofil entfernen</button>
+            </section>
             <section class="spell-modification-editor">
                 <h3>Strukturierte Zaubermodifikationen</h3>
                 <p class="hint">Diese Formen ersetzen nur die automatisch erzeugten Modifikationsmanöver. Der Regeltext oben bleibt erhalten.</p>
@@ -65,6 +78,13 @@
                     <div class="form-group"><label>Ziel</label><input type="text" name="system.spellModifications.{{@index}}.profile.target" value="{{form.profile.target}}" /></div>
                     <div class="form-group"><label>Reichweite</label><input type="text" name="system.spellModifications.{{@index}}.profile.range" value="{{form.profile.range}}" /></div>
                     <div class="form-group"><label>Wirkungsdauer</label><input type="text" name="system.spellModifications.{{@index}}.profile.duration" value="{{form.profile.duration}}" /></div>
+                    <h4>Zonenform</h4>
+                    <p class="hint">Leer laesst das Basisprofil unveraendert. Eine deaktivierte Zone schaltet ein geerbtes Basisprofil aus.</p>
+                    <div class="form-group"><label>Form</label><select name="system.spellModifications.{{@index}}.zone.shape"><option value="">Keine Ueberschreibung</option><option value="cone" {{#if (ifEq form.zone.shape "cone")}}selected{{/if}}>Kegel</option><option value="circle" {{#if (ifEq form.zone.shape "circle")}}selected{{/if}}>Kreis</option><option value="rectangle" {{#if (ifEq form.zone.shape "rectangle")}}selected{{/if}}>Wand/Rechteck</option></select></div>
+                    <div class="form-group"><label>Laenge/Radius</label><input type="number" min="1" name="system.spellModifications.{{@index}}.zone.distance" value="{{form.zone.distance}}" /></div>
+                    <div class="form-group"><label>Verankerung</label><select name="system.spellModifications.{{@index}}.zone.placement.anchor"><option value="">Basis uebernehmen</option><option value="caster" {{#if (ifEq form.zone.placement.anchor "caster")}}selected{{/if}}>Beim Zaubernden</option><option value="free" {{#if (ifEq form.zone.placement.anchor "free")}}selected{{/if}}>Frei platzierbar</option></select></div>
+                    <button type="button" class="disable-spell-modification-zone" data-form-index="{{@index}}">Zone deaktivieren</button>
+                    <button type="button" class="clear-spell-modification-zone" data-form-index="{{@index}}">Zonenueberschreibung loeschen</button>
                     <h4>Form-Pre-Effects</h4>
                     <button type="button" class="add-spell-modification-pre-effect" data-form-index="{{@index}}">Pre-Effect hinzufügen</button>
                     {{#each form.preEffects as |preEffect|}}
