@@ -21,6 +21,7 @@ describe('zone profiles', () => {
                 onEnter: true,
                 onTurnStart: false,
                 onRoundStart: false,
+                onTraverse: false,
             },
         })
     })
@@ -79,6 +80,7 @@ describe('zone profiles', () => {
                 onEnter: false,
                 onTurnStart: false,
                 onRoundStart: false,
+                onTraverse: false,
             },
         })
         expect(
@@ -92,6 +94,7 @@ describe('zone profiles', () => {
                     onEnter: true,
                     onTurnStart: true,
                     onRoundStart: true,
+                    onTraverse: false,
                 },
             }),
         ).toMatchObject({
@@ -100,7 +103,50 @@ describe('zone profiles', () => {
                 onEnter: true,
                 onTurnStart: true,
                 onRoundStart: true,
+                onTraverse: false,
             },
         })
+    })
+
+    it('accepts traversal only for persistent triggered rectangle Zones', () => {
+        const traversal = {
+            avoidTest: { attribut: 'GE', resistDifficulty: 16 },
+            failureMarker: { name: 'Durchquerung fehlgeschlagen' },
+        }
+        expect(
+            normalizeZoneProfile({
+                shape: 'rectangle',
+                distance: 4,
+                width: 1,
+                lifecycle: 'persistent',
+                duration: { remaining: 4 },
+                trigger: { triggerOnCreate: false, onTraverse: true },
+                traversal,
+            }),
+        ).toMatchObject({
+            trigger: { onTraverse: true, onEnter: false },
+            traversal,
+        })
+        expect(
+            normalizeZoneProfile({
+                shape: 'circle',
+                distance: 4,
+                lifecycle: 'persistent',
+                duration: { remaining: 4 },
+                trigger: { triggerOnCreate: false, onTraverse: true },
+                traversal,
+            }),
+        ).toBeNull()
+        expect(
+            normalizeZoneProfile({
+                shape: 'rectangle',
+                distance: 4,
+                width: 1,
+                lifecycle: 'persistent',
+                duration: { remaining: 4 },
+                trigger: { triggerOnCreate: false, onTraverse: true, onEnter: true },
+                traversal,
+            }),
+        ).toBeNull()
     })
 })

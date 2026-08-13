@@ -24,7 +24,11 @@
       "placement": { "anchor": "free", "range": 8, "pivot": "topLeft" },
       "lifecycle": "persistent",
       "duration": { "remaining": 256, "originalValue": 256 },
-      "trigger": { "triggerOnCreate": true, "onEnter": true }
+      "trigger": { "triggerOnCreate": false, "onEnter": false, "onTraverse": true },
+      "traversal": {
+        "avoidTest": { "attribut": "GE", "resistDifficulty": 16 },
+        "failureMarker": { "name": "Durchquerung fehlgeschlagen" }
+      }
     },
     "preEffects": [
       {
@@ -42,15 +46,7 @@
             "diminishedMaechtigBonus": "",
             "priority": null
           }
-        ],
-        "avoidTest": {
-          "enabled": true,
-          "fertigkeit": "",
-          "talent": "",
-          "attribut": "GE",
-          "diminishedOnly": false,
-          "resistDifficulty": 16
-        }
+        ]
       }
     ]
   },

@@ -19,6 +19,23 @@
       "ownership": { "default": -1 },
       "flags": {},
       "_key": "!journal.pages!kurzzone001.kurzzonepage001"
+    },
+    {
+      "_id": "kurzzonepage002",
+      "name": "Wanddurchquerung",
+      "type": "text",
+      "title": { "show": true, "level": 1 },
+      "text": {
+        "format": 1,
+        "content": "<h1>Wanddurchquerung</h1>\n<p>Eine persistente rechteckige Zone kann mit <code>trigger.onTraverse: true</code> eine echte Bewegung durch die Wand erkennen. Diese Ausloesung ist ausschliesslich fuer Wand-Zonen: <code>triggerOnCreate</code> und <code>onEnter</code> muessen beide <code>false</code> sein.</p>\n<h2>Wand aus Dornen</h2>\n<p>Der Versuch, die Wand zu betreten oder zu durchqueren, verursacht <strong>immer 2W6 TP</strong>. Anschliessend entscheidet die Widerstandsprobe <strong>GE 16</strong> nur ueber die Bewegung:</p>\n<ul><li><strong>Erfolg:</strong> Der Token darf auf seiner neuen Position bleiben.</li><li><strong>Misserfolg:</strong> Ilaris legt den sichtbaren Hinweis <em>Durchquerung fehlgeschlagen</em> an und schreibt eine Chat-Erinnerung. Die Spielleitung setzt den Token manuell vor die Wand zurueck.</li></ul>\n<p>Ein weiterer normaler Bewegungsversuch durch die Wand loest erneut GE 16 und 2W6 TP aus. Ilaris blockiert oder verschiebt Token dabei bewusst nicht automatisch. Teleportation, erzwungene Bewegung und das Verlassen der Wand nach jeweils vier Initiativephasen bleiben Tischentscheidung und werden nicht automatisiert.</p>"
+      },
+      "video": { "controls": true, "volume": 0.5 },
+      "src": null,
+      "system": {},
+      "sort": 1,
+      "ownership": { "default": -1 },
+      "flags": {},
+      "_key": "!journal.pages!kurzzone001.kurzzonepage002"
     }
   ],
   "folder": null,

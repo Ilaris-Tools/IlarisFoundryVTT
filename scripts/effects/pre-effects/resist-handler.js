@@ -230,6 +230,17 @@ export function registerResistResolutionListener() {
 async function processResistResult(dialog, payload, preEffectData) {
     const resistSuccess = payload?.rollResult?.success
 
+    if (preEffectData?.traversal) {
+        const { targetActor } = resolveTargetActorForDamage(
+            preEffectData.target || { actorId: preEffectData.targetActorId },
+        )
+        if (!targetActor) return
+        const { resolveZoneTraversalResistance } =
+            await import('../../combat/zones/zone-lifecycle.js')
+        await resolveZoneTraversalResistance(targetActor, preEffectData.traversal, resistSuccess)
+        return
+    }
+
     if (resistSuccess) {
         const avoidTest = preEffectData.avoidTest || {}
 

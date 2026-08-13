@@ -1,5 +1,11 @@
 import { applyPreEffects } from '../../effects/pre-effects/pre-effects-processor.js'
-import { removePassiveZoneEffects } from '../../effects/zone-effect-ownership.js'
+import { sendResistPrompt } from '../../effects/pre-effects/resist-handler.js'
+import {
+    removePassiveZoneEffects,
+    removeZoneTraversalMarkers,
+    removeZoneTraversalMarkersForRegion,
+    upsertZoneTraversalMarker,
+} from '../../effects/zone-effect-ownership.js'
 import { resolveZoneTargets } from './zone-targets.js'
 
 const FLAG_SCOPE = 'Ilaris'
@@ -7,6 +13,7 @@ const FLAG_KEY = 'zone'
 const DRAFT_FLAG_KEY = 'zoneDraft'
 const pendingTurnStartDispatches = new Map()
 const pendingRoundStartDispatches = new Map()
+const pendingTraversalDispatches = new Map()
 
 function activeGM() {
     const gm = game.users.find((user) => user.active && user.isGM)
@@ -60,6 +67,51 @@ function hasRoundStartTrigger(zone) {
     return !isPassiveZone(zone) && zone?.profile?.trigger?.onRoundStart === true
 }
 
+function hasTraversalTrigger(zone) {
+    return (
+        !isPassiveZone(zone) &&
+        zone?.profile?.shape === 'rectangle' &&
+        zone?.profile?.lifecycle === 'persistent' &&
+        zone?.profile?.trigger?.onTraverse === true
+    )
+}
+
+function isTeleportAction(action) {
+    const actions =
+        globalThis.CONFIG?.Token?.movement?.actions ||
+        globalThis.CONST?.TOKEN_MOVEMENT_ACTIONS ||
+        {}
+    return actions?.[action]?.teleport === true
+}
+
+function serializeTraversalMovement(movement) {
+    return {
+        id: movement?.id || '',
+        origin: movement?.origin || null,
+        passed: {
+            waypoints: (movement?.passed?.waypoints || []).map(({ x, y, action }) => ({
+                x,
+                y,
+                action,
+            })),
+        },
+    }
+}
+
+/** Classify one documented Foundry v14 movement path as a wall traversal attempt. */
+export function classifyZoneTraversalMovement(region, token, movement) {
+    const waypoints = movement?.passed?.waypoints || []
+    if (!region?.id || !token?.id || !movement?.id || !movement?.origin || !waypoints.length)
+        return null
+    if (waypoints.some((waypoint) => isTeleportAction(waypoint?.action))) return null
+    const segments =
+        token.segmentizeRegionMovementPath?.(region, [movement.origin, ...waypoints]) || []
+    const enter = globalThis.CONST?.REGION_MOVEMENT_SEGMENTS?.ENTER
+    if (!segments.some((segment) => segment?.type === enter && !isTeleportAction(segment?.action)))
+        return null
+    return { window: [region.id, token.id, movement.id].join(':') }
+}
+
 function invalidPassivePreEffects(preEffects = []) {
     const effects = Array.isArray(preEffects)
         ? preEffects
@@ -88,6 +140,65 @@ function selectedTargetForToken(token) {
         actorLink: token.actorLink ?? token.document?.actorLink ?? true,
         name: token.actor.name || token.name,
     }
+}
+
+function traversalOwnership(traversal) {
+    return {
+        regionId: traversal.regionId,
+        applicationId: traversal.applicationId,
+        tokenId: traversal.tokenId,
+        spellUuid: traversal.spellUuid,
+    }
+}
+
+function traversalRecipients(actor, token = null) {
+    const ownerLevel = globalThis.CONST?.DOCUMENT_OWNERSHIP_LEVELS?.OWNER ?? 3
+    return (game.users || [])
+        .filter(
+            (user) =>
+                user.active &&
+                (user.isGM ||
+                    actor?.testUserPermission?.(user, ownerLevel) === true ||
+                    token?.testUserPermission?.(user, ownerLevel) === true),
+        )
+        .map((user) => user.id)
+}
+
+async function sendTraversalFailureNotice(actor, traversal, token = null) {
+    if (!globalThis.ChatMessage?.create) return
+    const recipients = traversalRecipients(actor, token)
+    await ChatMessage.create({
+        speaker: ChatMessage.getSpeaker({ actor }),
+        ...(recipients.length ? { whisper: recipients } : {}),
+        content:
+            '<div class="ilaris-zone-traversal-failure"><p><strong>Die Durchquerung ist misslungen.</strong> Bitte den Token vor der Wand platzieren; ein weiterer Durchquerungsversuch löst erneut GE 16 und 2W6 TP aus.</p></div>',
+        flags: {
+            ilaris: {
+                zoneTraversalFailure: {
+                    regionId: traversal.regionId,
+                    tokenId: traversal.tokenId,
+                },
+            },
+        },
+    })
+}
+
+/** Resolve the table-managed success/failure result of one wall traversal prompt. */
+export async function resolveZoneTraversalResistance(targetActor, traversal, success) {
+    if (!targetActor || !traversal?.sceneId || !traversal?.regionId) return
+    const region = game.scenes?.get?.(traversal.sceneId)?.regions?.get?.(traversal.regionId)
+    if (!region) return
+    const ownership = traversalOwnership(traversal)
+    if (success) {
+        await removeZoneTraversalMarkers(targetActor, ownership)
+        return
+    }
+    await upsertZoneTraversalMarker(targetActor, ownership, {
+        name: `${traversal.spellName || 'Zone'} – ${traversal.failureMarkerName || 'Durchquerung fehlgeschlagen'}`,
+        origin: traversal.casterUuid || '',
+    })
+    const targetToken = region.parent?.tokens?.get?.(traversal.tokenId) || null
+    await sendTraversalFailureNotice(targetActor, traversal, targetToken)
 }
 
 function zoneActors() {
@@ -200,6 +311,106 @@ async function dispatchZoneTrigger(region, trigger, targets) {
             zoneRegionId: region.id,
         },
     )
+}
+
+async function dispatchZoneTraversal(region, token, window) {
+    const zone = await hydrateZoneState(zoneState(region))
+    const target = selectedTargetForToken(token)
+    if (!zone || !target) return
+    const applicationId = `${zone.applicationId}:traverse:${window}`
+    const unconditionalPreEffects = (zone.preEffects || []).filter(
+        (preEffect) => preEffect?.instant === true && !preEffect?.avoidTest?.enabled,
+    )
+    if (unconditionalPreEffects.length) {
+        await applyPreEffects(
+            { success: true },
+            zoneDialog(zone, [target]),
+            zone.armedInputValues || {},
+            {
+                preEffects: unconditionalPreEffects,
+                applicationId,
+                spellModificationId: zone.spellModificationId || '',
+                zoneRegionId: region.id,
+            },
+        )
+    }
+    await sendResistPrompt(
+        token.actor,
+        {
+            avoidTest: zone.profile.traversal.avoidTest,
+            targetActorId: token.actor.id,
+            target,
+            traversal: {
+                sceneId: region.parent?.id || token.parent?.id || '',
+                regionId: region.id,
+                tokenId: token.id,
+                applicationId: zone.applicationId,
+                spellUuid: zone.spellUuid,
+                spellName: zone.spellItem.name,
+                casterUuid: zone.casterUuid,
+                failureMarkerName: zone.profile.traversal.failureMarker?.name || '',
+            },
+        },
+        zone.spellItem.name,
+        ChatMessage.getSpeaker({ actor: zone.casterActor }),
+    )
+}
+
+/** Dispatch a traversal attempt only for a processed normal map movement through an eligible wall. */
+export async function dispatchPersistentZoneTraversal(token, movement) {
+    if (!token?.parent) return
+    if (!activeGM()) {
+        const hasTraversalZone = Array.from(token.parent.regions || []).some((region) => {
+            const zone = zoneState(region)
+            return !zone?.initializing && hasTraversalTrigger(zone)
+        })
+        if (
+            hasTraversalZone &&
+            movement?.id &&
+            movement?.origin &&
+            movement?.passed?.waypoints?.length
+        )
+            game.socket?.emit?.('system.Ilaris', {
+                type: 'dispatchZoneTraversal',
+                data: {
+                    sceneId: token.parent.id,
+                    tokenId: token.id,
+                    userId: game.user.id,
+                    movement: serializeTraversalMovement(movement),
+                },
+            })
+        return
+    }
+    for (const region of token.parent.regions || []) {
+        const zone = zoneState(region)
+        if (zone?.initializing || !hasTraversalTrigger(zone)) continue
+        const attempt = classifyZoneTraversalMovement(region, token, movement)
+        if (!attempt) continue
+        const pending = pendingTraversalDispatches.get(attempt.window)
+        if (pending) {
+            await pending
+            continue
+        }
+        const dispatch = dispatchZoneTraversal(region, token, attempt.window)
+        pendingTraversalDispatches.set(attempt.window, dispatch)
+        try {
+            await dispatch
+        } finally {
+            if (pendingTraversalDispatches.get(attempt.window) === dispatch)
+                pendingTraversalDispatches.delete(attempt.window)
+        }
+    }
+}
+
+/** Execute a player-issued normal movement traversal request on the active GM client. */
+export async function dispatchPersistentZoneTraversalFromRequest(request) {
+    if (!activeGM() || !request?.sceneId || !request?.tokenId || !request?.userId) return
+    const scene = game.scenes?.get?.(request.sceneId)
+    const token = scene?.tokens?.get?.(request.tokenId)
+    const user = game.users?.get?.(request.userId)
+    const ownerLevel = globalThis.CONST?.DOCUMENT_OWNERSHIP_LEVELS?.OWNER ?? 3
+    if (!token || !user || token.testUserPermission?.(user, ownerLevel) !== true) return
+    await dispatchPersistentZoneTraversal(token, request.movement)
 }
 
 function resolveDestinationToken(combat, updateData = {}) {
@@ -370,6 +581,18 @@ export async function cleanupPassiveZoneEffects(region, token = null) {
     }
 }
 
+/** Remove all neutral traversal markers owned by an expiring or deleted wall Region. */
+export async function cleanupZoneTraversalMarkers(region) {
+    const zone = zoneState(region)
+    if (!hasTraversalTrigger(zone)) return
+    for (const actor of zoneActors())
+        await removeZoneTraversalMarkersForRegion(actor, {
+            regionId: region.id,
+            applicationId: zone.applicationId,
+            spellUuid: zone.spellUuid,
+        })
+}
+
 /** Create the persistent Region only after its originating cast has succeeded. */
 export async function createPersistentZone({ scene, regionData, dialog, zone, preEffects }) {
     if (!activeGM() || !scene || !regionData || !zone?.duration) return null
@@ -503,6 +726,7 @@ export async function reducePersistentZoneDurations(combat, updateOptions = {}) 
         const remaining = Number(zone.remaining) - 1
         if (remaining <= 0) {
             await cleanupPassiveZoneEffects(region)
+            await cleanupZoneTraversalMarkers(region)
             await region.delete()
         } else await region.update({ [`flags.${FLAG_SCOPE}.${FLAG_KEY}.remaining`]: remaining })
     }
@@ -540,7 +764,11 @@ export function registerZoneLifecycleHooks() {
             await cleanupPassiveZoneEffects(region, token)
         await updatePersistentZoneMembership(token.parent)
     })
-    Hooks.on('deleteRegion', (region) => cleanupPassiveZoneEffects(region))
+    Hooks.on('deleteRegion', async (region) => {
+        await cleanupPassiveZoneEffects(region)
+        await cleanupZoneTraversalMarkers(region)
+    })
+    Hooks.on('moveToken', (token, movement) => dispatchPersistentZoneTraversal(token, movement))
     Hooks.on('canvasReady', () => reconcilePersistentPassiveZones(canvas?.scene))
     Hooks.on('combatRound', (combat, updateData, updateOptions) =>
         runPersistentZoneRoundLifecycle(combat, updateData, updateOptions),

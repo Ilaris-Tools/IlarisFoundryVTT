@@ -93,6 +93,57 @@ describe('resist result listener', () => {
         expect(effectCreate).not.toHaveBeenCalled()
     })
 
+    it('resolves a wall traversal through its narrow Zone marker lifecycle', async () => {
+        const actor = {
+            id: 'target',
+            name: 'Target',
+            system: {},
+            effects: [],
+            createEmbeddedDocuments: jest.fn(async (_type, [data]) => {
+                const effect = { id: 'wall-marker', ...data }
+                actor.effects.push(effect)
+                return [effect]
+            }),
+            deleteEmbeddedDocuments: jest.fn(async (_type, ids) => {
+                actor.effects = actor.effects.filter((effect) => !ids.includes(effect.id))
+            }),
+        }
+        const region = {
+            id: 'wall-region',
+            flags: { Ilaris: { zone: { applicationId: 'cast-a', spellUuid: 'Item.spell' } } },
+        }
+        global.game.actors.get.mockReturnValue(actor)
+        global.game.scenes = {
+            get: jest.fn(() => ({ regions: new Map([[region.id, region]]) })),
+        }
+        global.CONST = { DOCUMENT_OWNERSHIP_LEVELS: { OWNER: 3 } }
+        registerResistResolutionListener()
+        const dialog = {
+            _resistContext: {
+                spellUuid: 'Item.spell',
+                preEffectData: preEffect({
+                    target: { actorId: 'target' },
+                    traversal: {
+                        sceneId: 'scene-a',
+                        regionId: 'wall-region',
+                        tokenId: 'target-token',
+                        applicationId: 'cast-a',
+                        spellUuid: 'Item.spell',
+                        spellName: 'Wand aus Dornen',
+                    },
+                }),
+            },
+        }
+
+        await hookCallbacks['Ilaris.postSkillRoll'](dialog, { rollResult: { success: false } })
+
+        expect(actor.createEmbeddedDocuments).toHaveBeenCalledTimes(1)
+        expect(effectCreate).not.toHaveBeenCalled()
+        expect(global.ChatMessage.create).toHaveBeenCalledWith(
+            expect.objectContaining({ content: expect.stringContaining('Token vor der Wand') }),
+        )
+    })
+
     it('applies diminished values when a diminished resist succeeds', async () => {
         registerResistResolutionListener()
         const dialog = {

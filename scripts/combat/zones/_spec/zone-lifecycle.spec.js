@@ -1,13 +1,17 @@
 import {
     classifyZoneMembership,
+    classifyZoneTraversalMovement,
     createPersistentZone,
     createZoneDraftRegion,
     deleteZoneDraftRegion,
     cleanupPassiveZoneEffects,
+    cleanupZoneTraversalMarkers,
+    dispatchPersistentZoneTraversal,
     dispatchPersistentZoneRoundStart,
     dispatchPersistentZoneTurnStart,
     reducePersistentZoneDurations,
     reconcilePersistentPassiveZones,
+    resolveZoneTraversalResistance,
     updatePersistentZoneMembership,
 } from '../zone-lifecycle.js'
 
@@ -25,6 +29,241 @@ describe('persistent zone duration', () => {
         global.ChatMessage = { getSpeaker: jest.fn(() => ({ alias: 'Caster' })) }
         global.game.actors = { get: jest.fn(), values: jest.fn(() => []) }
         global.canvas = { tokens: { get: jest.fn(() => null) } }
+    })
+
+    test('classifies only one normal ENTER movement through a Region', () => {
+        global.CONST = { REGION_MOVEMENT_SEGMENTS: { ENTER: 1, MOVE: 2, EXIT: 3 } }
+        const region = { id: 'wall-region' }
+        const token = {
+            id: 'target-token',
+            segmentizeRegionMovementPath: jest.fn(() => [
+                { type: 1, action: 'walk' },
+                { type: 2, action: 'walk' },
+                { type: 3, action: 'walk' },
+            ]),
+        }
+        const movement = {
+            id: 'movement-1',
+            origin: { x: 0, y: 0 },
+            passed: { waypoints: [{ x: 100, y: 0, action: 'walk' }] },
+        }
+
+        expect(classifyZoneTraversalMovement(region, token, movement)).toEqual({
+            window: 'wall-region:target-token:movement-1',
+        })
+        expect(token.segmentizeRegionMovementPath).toHaveBeenCalledWith(region, [
+            movement.origin,
+            ...movement.passed.waypoints,
+        ])
+    })
+
+    test('rejects internal, exit-only, and teleport movement paths', () => {
+        global.CONST = {
+            REGION_MOVEMENT_SEGMENTS: { ENTER: 1, MOVE: 2, EXIT: 3 },
+            TOKEN_MOVEMENT_ACTIONS: { teleport: { teleport: true } },
+        }
+        const region = { id: 'wall-region' }
+        const token = {
+            id: 'target-token',
+            segmentizeRegionMovementPath: jest.fn(() => [{ type: 2, action: 'walk' }]),
+        }
+        const movement = {
+            id: 'movement-1',
+            origin: { x: 0, y: 0 },
+            passed: { waypoints: [{ x: 100, y: 0, action: 'walk' }] },
+        }
+
+        expect(classifyZoneTraversalMovement(region, token, movement)).toBeNull()
+        token.segmentizeRegionMovementPath.mockReturnValue([{ type: 3, action: 'walk' }])
+        expect(classifyZoneTraversalMovement(region, token, movement)).toBeNull()
+        token.segmentizeRegionMovementPath.mockReturnValue([{ type: 1, action: 'teleport' }])
+        expect(classifyZoneTraversalMovement(region, token, movement)).toBeNull()
+    })
+
+    test('dispatches one traversal resistance for an entered wall without generic entry dispatch', async () => {
+        global.CONST = {
+            REGION_MOVEMENT_SEGMENTS: { ENTER: 1, MOVE: 2, EXIT: 3 },
+            DOCUMENT_OWNERSHIP_LEVELS: { OWNER: 3 },
+        }
+        global.ChatMessage.create = jest.fn().mockResolvedValue(undefined)
+        const target = {
+            id: 'target-token',
+            actor: { id: 'target-actor', name: 'Target', isToken: true },
+            actorLink: false,
+            segmentizeRegionMovementPath: jest.fn(() => [{ type: 1, action: 'walk' }]),
+        }
+        const zone = {
+            applicationId: 'cast-a',
+            spellUuid: 'Item.wand',
+            casterUuid: 'Actor.caster',
+            profile: {
+                shape: 'rectangle',
+                lifecycle: 'persistent',
+                effectMode: 'triggered',
+                trigger: { onTraverse: true, onEnter: false },
+                traversal: { avoidTest: { enabled: true, attribut: 'GE', resistDifficulty: 16 } },
+            },
+            preEffects: [],
+        }
+        const scene = { id: 'scene-a', regions: [] }
+        const region = { id: 'wall-region', parent: scene, flags: { Ilaris: { zone } } }
+        scene.regions = [region]
+        target.parent = scene
+        global.foundry.utils.fromUuid.mockImplementation((uuid) => {
+            if (uuid === 'Item.wand') return { uuid, name: 'Wand aus Dornen' }
+            if (uuid === 'Actor.caster') return { uuid, id: 'caster', name: 'Caster' }
+            return null
+        })
+        const movement = {
+            id: 'movement-1',
+            origin: { x: 0, y: 0 },
+            passed: { waypoints: [{ x: 100, y: 0, action: 'walk' }] },
+        }
+
+        await Promise.all([
+            dispatchPersistentZoneTraversal(target, movement),
+            dispatchPersistentZoneTraversal(target, movement),
+        ])
+
+        expect(global.ChatMessage.create).toHaveBeenCalledTimes(1)
+        expect(global.ChatMessage.create.mock.calls[0][0].content).toContain(
+            'Widerstand leisten (GE)',
+        )
+    })
+
+    test('routes an owned player traversal to the active GM without dispatching locally', async () => {
+        global.CONST = { REGION_MOVEMENT_SEGMENTS: { ENTER: 1, MOVE: 2, EXIT: 3 } }
+        global.game.user = { id: 'player', isGM: false }
+        global.game.socket = { emit: jest.fn() }
+        const target = {
+            id: 'target-token',
+            actor: { id: 'target-actor', name: 'Target', isToken: true },
+            segmentizeRegionMovementPath: jest.fn(() => [{ type: 1, action: 'walk' }]),
+        }
+        const zone = {
+            profile: {
+                shape: 'rectangle',
+                lifecycle: 'persistent',
+                effectMode: 'triggered',
+                trigger: { onTraverse: true },
+            },
+        }
+        const scene = {
+            id: 'scene-a',
+            regions: [{ id: 'wall-region', flags: { Ilaris: { zone } } }],
+        }
+        target.parent = scene
+        const movement = {
+            id: 'movement-1',
+            origin: { x: 0, y: 0 },
+            passed: { waypoints: [{ x: 100, y: 0, action: 'walk', ignored: true }] },
+        }
+
+        await dispatchPersistentZoneTraversal(target, movement)
+
+        expect(global.game.socket.emit).toHaveBeenCalledWith('system.Ilaris', {
+            type: 'dispatchZoneTraversal',
+            data: {
+                sceneId: 'scene-a',
+                tokenId: 'target-token',
+                userId: 'player',
+                movement: {
+                    id: 'movement-1',
+                    origin: { x: 0, y: 0 },
+                    passed: { waypoints: [{ x: 100, y: 0, action: 'walk' }] },
+                },
+            },
+        })
+    })
+
+    test('creates a failure marker and removes only it after a successful traversal', async () => {
+        global.CONST = { DOCUMENT_OWNERSHIP_LEVELS: { OWNER: 3 } }
+        global.ChatMessage.create = jest.fn().mockResolvedValue(undefined)
+        const actor = {
+            id: 'target-actor',
+            name: 'Target',
+            effects: [],
+            createEmbeddedDocuments: jest.fn(async (_type, [data]) => {
+                actor.effects.push({ id: 'marker-a', ...data })
+                return [actor.effects.at(-1)]
+            }),
+            deleteEmbeddedDocuments: jest.fn(async (_type, ids) => {
+                actor.effects = actor.effects.filter((effect) => !ids.includes(effect.id))
+            }),
+        }
+        const zone = { applicationId: 'cast-a', spellUuid: 'Item.wand' }
+        const region = { id: 'wall-a', flags: { Ilaris: { zone } } }
+        global.game.scenes = { get: jest.fn(() => ({ regions: new Map([[region.id, region]]) })) }
+        const traversal = {
+            sceneId: 'scene-a',
+            regionId: 'wall-a',
+            tokenId: 'token-a',
+            applicationId: 'cast-a',
+            spellUuid: 'Item.wand',
+            spellName: 'Wand aus Dornen',
+            casterUuid: 'Actor.caster',
+        }
+
+        await resolveZoneTraversalResistance(actor, traversal, false)
+        expect(actor.createEmbeddedDocuments).toHaveBeenCalledTimes(1)
+        expect(global.ChatMessage.create).toHaveBeenCalledTimes(1)
+
+        await resolveZoneTraversalResistance(actor, traversal, true)
+        expect(actor.deleteEmbeddedDocuments).toHaveBeenCalledWith('ActiveEffect', ['marker-a'])
+    })
+
+    test('removes only traversal markers owned by an expired or deleted wall Region', async () => {
+        const actor = {
+            effects: [
+                {
+                    id: 'owned',
+                    flags: {
+                        ilaris: {
+                            zoneTraversalMarker: true,
+                            zoneRegionId: 'wall-a',
+                            zoneApplicationId: 'cast-a',
+                            targetTokenId: 'token-a',
+                            spellUuid: 'Item.wand',
+                        },
+                    },
+                },
+                {
+                    id: 'other',
+                    flags: {
+                        ilaris: {
+                            zoneTraversalMarker: true,
+                            zoneRegionId: 'wall-b',
+                            zoneApplicationId: 'cast-b',
+                            targetTokenId: 'token-a',
+                            spellUuid: 'Item.wand',
+                        },
+                    },
+                },
+            ],
+            deleteEmbeddedDocuments: jest.fn(),
+        }
+        global.game.actors = { values: jest.fn(() => [actor]) }
+        const region = {
+            id: 'wall-a',
+            flags: {
+                Ilaris: {
+                    zone: {
+                        applicationId: 'cast-a',
+                        spellUuid: 'Item.wand',
+                        profile: {
+                            shape: 'rectangle',
+                            lifecycle: 'persistent',
+                            effectMode: 'triggered',
+                            trigger: { onTraverse: true },
+                        },
+                    },
+                },
+            },
+        }
+
+        await cleanupZoneTraversalMarkers(region)
+
+        expect(actor.deleteEmbeddedDocuments).toHaveBeenCalledWith('ActiveEffect', ['owned'])
     })
 
     test('decrements every scene-round zone once and deletes expired zones', async () => {

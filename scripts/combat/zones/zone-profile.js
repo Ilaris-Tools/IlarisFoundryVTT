@@ -11,6 +11,29 @@ function defaultPivot(shape) {
     return 'center'
 }
 
+function normalizeTraversal(source = {}) {
+    const avoidTest = source.avoidTest || {}
+    const attribut = typeof avoidTest.attribut === 'string' ? avoidTest.attribut : ''
+    const fertigkeit = typeof avoidTest.fertigkeit === 'string' ? avoidTest.fertigkeit : ''
+    if (!attribut && !fertigkeit) return null
+    return {
+        avoidTest: {
+            enabled: true,
+            attribut,
+            fertigkeit,
+            talent: typeof avoidTest.talent === 'string' ? avoidTest.talent : '',
+            resistDifficulty: numeric(avoidTest.resistDifficulty, 12),
+            resistDifficultySource: avoidTest.resistDifficultySource || 'fixed',
+        },
+        failureMarker: {
+            name:
+                typeof source.failureMarker?.name === 'string'
+                    ? source.failureMarker.name
+                    : 'Durchquerung fehlgeschlagen',
+        },
+    }
+}
+
 export function normalizeZoneProfile(source) {
     if (!source || typeof source !== 'object') return null
     const shape = SHAPES.has(source.shape) ? source.shape : null
@@ -29,6 +52,20 @@ export function normalizeZoneProfile(source) {
     if (lifecycle === 'persistent' && remaining <= 0) return null
     if (effectMode === 'passive' && lifecycle !== 'persistent') return null
 
+    const triggerOnCreate = source.trigger?.triggerOnCreate !== false
+    const onTraverse = source.trigger?.onTraverse === true
+    if (
+        onTraverse &&
+        (shape !== 'rectangle' ||
+            lifecycle !== 'persistent' ||
+            effectMode === 'passive' ||
+            triggerOnCreate ||
+            source.trigger?.onEnter === true)
+    )
+        return null
+    const traversal = onTraverse ? normalizeTraversal(source.traversal) : null
+    if (onTraverse && !traversal) return null
+
     const profile = {
         shape,
         distance,
@@ -42,10 +79,11 @@ export function normalizeZoneProfile(source) {
         lifecycle,
         effectMode,
         trigger: {
-            triggerOnCreate: source.trigger?.triggerOnCreate !== false,
+            triggerOnCreate,
             onEnter: source.trigger?.onEnter === true,
             onTurnStart: source.trigger?.onTurnStart === true,
             onRoundStart: source.trigger?.onRoundStart === true,
+            onTraverse,
         },
         targeting: {
             includeCaster: source.targeting?.includeCaster === true,
@@ -58,6 +96,7 @@ export function normalizeZoneProfile(source) {
             originalValue: numeric(rawDuration.originalValue, remaining),
         }
     }
+    if (traversal) profile.traversal = traversal
     return profile
 }
 
@@ -73,5 +112,6 @@ export function resolveZoneProfile(baseProfile, modificationProfile) {
         placement: { ...(base.placement || {}), ...(modification.placement || {}) },
         duration: { ...(base.duration || {}), ...(modification.duration || {}) },
         trigger: { ...(base.trigger || {}), ...(modification.trigger || {}) },
+        traversal: { ...(base.traversal || {}), ...(modification.traversal || {}) },
     })
 }

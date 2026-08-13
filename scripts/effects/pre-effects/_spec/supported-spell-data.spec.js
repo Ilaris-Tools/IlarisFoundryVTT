@@ -280,12 +280,17 @@ describe('reviewed supported spell pre-effect source data', () => {
             width: 1,
             lifecycle: 'persistent',
             duration: { remaining: 256, originalValue: 256 },
-            trigger: { triggerOnCreate: true, onEnter: true },
+            trigger: { triggerOnCreate: false, onEnter: false, onTraverse: true },
+            traversal: {
+                avoidTest: { attribut: 'GE', resistDifficulty: 16 },
+                failureMarker: { name: 'Durchquerung fehlgeschlagen' },
+            },
         })
-        expect(dornen.system.preEffects?.[0]).toMatchObject({
-            instant: true,
-            avoidTest: { enabled: true, attribut: 'GE', resistDifficulty: 16 },
+        expectDamageChange(dornen.system.preEffects?.[0], {
+            value: '2W6',
+            damageType: 'PROFAN',
         })
+        expect(dornen.system.preEffects?.[0]?.avoidTest?.enabled).not.toBe(true)
     })
 
     it('configures Dunkelheit as a stationary, marker-only passive zone', () => {

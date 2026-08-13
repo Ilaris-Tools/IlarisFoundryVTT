@@ -582,6 +582,12 @@ function setupIlarisSocket() {
                 await deleteZoneDraftRegionFromRequest(data.data)
                 break
             }
+            case 'dispatchZoneTraversal': {
+                const { dispatchPersistentZoneTraversalFromRequest } =
+                    await import('../combat/zones/zone-lifecycle.js')
+                await dispatchPersistentZoneTraversalFromRequest(data.data)
+                break
+            }
             default:
                 console.warn(`Unknown Ilaris socket request type: ${data.type}`)
         }
