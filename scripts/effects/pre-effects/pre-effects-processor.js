@@ -184,6 +184,7 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {},
     const speaker = dialog.speaker
     const maneuverDurationBonus = dialog.maneuverDurationBonus || 0
     const maechtigeQs = dialog.maechtigeMagieQs || 0
+    const castSkill = context.castSkill || dialog.getResolvedCastSkill?.() || ''
     const triggeringRollTotal = Number(rollResult?.roll?.total)
 
     const targets = dialog.selectedActors?.length ? dialog.selectedActors : [{ actorId: caster.id }]
@@ -199,12 +200,13 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {},
               : foundry.utils.randomID()
 
         for (const [preEffectIndex, preEffect] of preEffects.entries()) {
-            const avoidTest = preEffect.avoidTest || {}
+            const appliedPreEffect = { ...preEffect, castSkill }
+            const avoidTest = appliedPreEffect.avoidTest || {}
             if (avoidTest.enabled) {
                 await sendResistPromptForEffect(
                     targetActor,
                     target,
-                    preEffect,
+                    appliedPreEffect,
                     item,
                     caster,
                     speaker,
@@ -225,11 +227,11 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {},
             }
 
             const effectiveDuration =
-                preEffect.baseDuration + maneuverDurationBonus + (isSelfCast ? 1 : 0)
-            if (preEffect.summonItem?.enabled || preEffect.summonItem?.sourceUuid) {
+                appliedPreEffect.baseDuration + maneuverDurationBonus + (isSelfCast ? 1 : 0)
+            if (appliedPreEffect.summonItem?.enabled || appliedPreEffect.summonItem?.sourceUuid) {
                 await summonItemFromPreEffect({
                     targetActor,
-                    preEffect,
+                    preEffect: appliedPreEffect,
                     caster,
                     spellItem: item,
                     effectiveDuration,
@@ -238,12 +240,12 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {},
                     applicationId,
                     spellModificationId: context.spellModificationId || '',
                 })
-            } else if (preEffect.instant) {
-                await applyInstantPreEffect(targetActor, preEffect, maechtigeQs, speaker)
+            } else if (appliedPreEffect.instant) {
+                await applyInstantPreEffect(targetActor, appliedPreEffect, maechtigeQs, speaker)
             } else {
                 await createActiveEffectFromPreEffect(
                     targetActor,
-                    preEffect,
+                    appliedPreEffect,
                     caster,
                     item,
                     effectiveDuration,
@@ -375,6 +377,14 @@ export async function createActiveEffectFromPreEffect(
             id: `${applicationId}:${preEffectIndex}`,
             type: 'preEffect',
             origin: spellItem.uuid,
+            sourceItemUuid: spellItem.uuid,
+            spellUuid: spellItem.uuid,
+            spellName: spellItem.name,
+            casterUuid: caster.uuid,
+            preEffectIndex,
+            applicationId,
+            castSkill: preEffect.castSkill || '',
+            resistanceOutcome: preEffect.resistanceOutcome || '',
             ...(passiveZone
                 ? {
                       passiveZone: {
@@ -402,6 +412,8 @@ export async function createActiveEffectFromPreEffect(
         ? { ...preEffect.ilarisEnding, sourceActorUuid: caster.uuid }
         : {}
     const ilarisMarker = preEffect.marker?.enabled === true
+    const markerId = ilarisMarker ? preEffect.marker?.id || '' : ''
+    const markerLabel = ilarisMarker ? preEffect.marker?.label || '' : ''
     if (
         changes.length === 0 &&
         ilarisModifiers.length === 0 &&
@@ -412,7 +424,7 @@ export async function createActiveEffectFromPreEffect(
         return
 
     const effectData = {
-        name: spellItem.name,
+        name: markerLabel ? `${markerLabel} — ${spellItem.name}` : spellItem.name,
         origin: caster.uuid,
         changes,
         duration: durationType === 'ownerTurns' ? { turns: effectiveDuration } : {},
@@ -434,12 +446,16 @@ export async function createActiveEffectFromPreEffect(
                 sourceType,
                 spellName: spellItem.name,
                 spellUuid: spellItem.uuid,
+                sourceItemUuid: spellItem.uuid,
                 casterUuid: caster.uuid,
                 sourceActorUuid: caster.uuid,
                 maneuverUuid: sourceType === 'maneuver' ? spellItem.uuid : '',
                 fertigkeiten: spellItem.system?.fertigkeiten || '',
+                castSkill: preEffect.castSkill || '',
                 preEffectIndex,
                 applicationId,
+                resistanceOutcome: preEffect.resistanceOutcome || '',
+                markerId,
                 spellModificationId,
                 zoneRegionId: passiveZone?.regionId || zoneRegionId,
                 zoneApplicationId: passiveZone ? applicationId : '',

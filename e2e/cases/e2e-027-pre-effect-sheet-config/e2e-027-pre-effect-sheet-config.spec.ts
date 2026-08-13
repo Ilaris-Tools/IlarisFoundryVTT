@@ -107,6 +107,81 @@ test.describe('E2E-027 · Pre-Effect Sheet Configuration', () => {
         await expect(addButton).toBeVisible()
     })
 
+    test('outcome panels follow Widerstand and reveal only when enabled', async ({ page }) => {
+        const itemWindow = await openImportedSpellSheet(page)
+        await openPreEffectsTab(itemWindow)
+        const card = itemWindow.locator('.pre-effect-card').first()
+        const resistance = card.locator('.avoid-test-section')
+        const outcomes = card.locator('.resistance-outcomes-section')
+        await expect(resistance).toBeVisible()
+        await expect(outcomes).toBeVisible()
+
+        const ordered = await card.evaluate((element) => {
+            const normal = element.querySelector('input[name$=".baseDuration"]')
+            const resistanceSection = element.querySelector('.avoid-test-section')
+            const outcomeSection = element.querySelector('.resistance-outcomes-section')
+            return Boolean(
+                normal &&
+                resistanceSection &&
+                outcomeSection &&
+                normal.compareDocumentPosition(resistanceSection) &
+                    Node.DOCUMENT_POSITION_FOLLOWING &&
+                resistanceSection.compareDocumentPosition(outcomeSection) &
+                    Node.DOCUMENT_POSITION_FOLLOWING,
+            )
+        })
+        expect(ordered).toBe(true)
+
+        const failure = outcomes.locator('.outcome-payload[data-outcome="failure"]')
+        const success = outcomes.locator('.outcome-payload[data-outcome="success"]')
+        await expect(failure).toContainText('Bei misslungener Widerstandsprobe')
+        await expect(success).toContainText('Bei gelungener Widerstandsprobe')
+        await expect(failure.locator('input[name$=".marker.id"]')).toBeHidden()
+
+        await failure.locator('input[name$=".resistanceOutcomes.failure.enabled"]').check()
+        await expect(failure.locator('input[name$=".marker.id"]')).toBeVisible()
+        await itemWindow.screenshot({ path: 'test-results/resistance-outcomes-editor.png' })
+    })
+
+    test('outcome panels remain legible in Foundry light and dark application themes', async ({
+        page,
+    }) => {
+        const itemWindow = await openImportedSpellSheet(page)
+        await openPreEffectsTab(itemWindow)
+        const savedUiConfig = await page.evaluate(() =>
+            foundry.utils.deepClone(game.settings.get('core', 'uiConfig')),
+        )
+
+        try {
+            for (const theme of ['light', 'dark']) {
+                await page.evaluate(
+                    async ({ config, colorScheme }) => {
+                        await game.settings.set('core', 'uiConfig', {
+                            ...config,
+                            colorScheme: {
+                                ...(config.colorScheme ?? {}),
+                                applications: colorScheme,
+                            },
+                        })
+                    },
+                    { config: savedUiConfig, colorScheme: theme },
+                )
+                await expect(page.locator(`body.theme-${theme}`)).toBeVisible()
+                const outcomes = itemWindow.locator('.resistance-outcomes-section')
+                await expect(outcomes).toBeVisible()
+                await outcomes.scrollIntoViewIfNeeded()
+                await itemWindow.screenshot({
+                    path: `test-results/resistance-outcomes-editor-${theme}.png`,
+                })
+            }
+        } finally {
+            await page.evaluate(
+                (config) => game.settings.set('core', 'uiConfig', config),
+                savedUiConfig,
+            )
+        }
+    })
+
     test('AvoidTest skill dropdown is populated from compendium', async ({ page }) => {
         const itemWindow = await openImportedSpellSheet(page)
         await openPreEffectsTab(itemWindow)

@@ -40,12 +40,39 @@ export class PreEffectItemSheet extends IlarisItemSheet {
         context.ilarisModifierPhases = IlarisModifierPhaseLabels
         context.ilarisModifierTargets = IlarisModifierTargetLabels
         context.ilarisModifierStacking = IlarisModifierStackingLabels
+        context.preEffects = this._getEditorPreEffects(this.item.system?.preEffects)
         context.statusEffectOptions = Object.values(CONFIG.statusEffects || {}).map((effect) => ({
             id: effect.id,
             name: effect.name || effect.label || effect.id,
         }))
 
         return context
+    }
+
+    /** Supply non-persistent defaults so legacy entries expose the new editor controls. */
+    _getEditorPreEffects(preEffects) {
+        return toPreEffectArray(preEffects).map((preEffect) => {
+            const outcomes = preEffect.resistanceOutcomes || {}
+            const withDefaults = (outcome) => {
+                const defaults = this._defaultResistanceOutcome()
+                const configured = outcomes[outcome] || {}
+                return {
+                    ...defaults,
+                    ...configured,
+                    marker: { ...defaults.marker, ...(configured.marker || {}) },
+                    condition: { ...defaults.condition, ...(configured.condition || {}) },
+                    changes: toPreEffectArray(configured.changes),
+                    ilarisModifiers: toPreEffectArray(configured.ilarisModifiers),
+                }
+            }
+            return {
+                ...preEffect,
+                resistanceOutcomes: {
+                    failure: withDefaults('failure'),
+                    success: withDefaults('success'),
+                },
+            }
+        })
     }
 
     _getDamageTypeOptions() {
@@ -155,15 +182,17 @@ export class PreEffectItemSheet extends IlarisItemSheet {
         if (!button) return
         const preEffectCard = button.closest('.pre-effect-card')
         const preEffectIndex = this._getPreEffectCardIndex(preEffectCard)
+        const outcomeContainer = button.closest('.outcome-payload')
+        const outcome = outcomeContainer?.dataset.outcome || ''
+        const payloadFor = (preEffect) => this._getEditablePayload(preEffect, outcome)
 
         if (button.closest('.add-change')) {
             if (preEffectIndex < 0) return
             const preEffects = this._clonePreEffects()
             if (!preEffects[preEffectIndex]) return
-            preEffects[preEffectIndex].changes = toPreEffectArray(
-                preEffects[preEffectIndex].changes,
-            )
-            preEffects[preEffectIndex].changes.push(this._defaultChange())
+            const payload = payloadFor(preEffects[preEffectIndex])
+            payload.changes = toPreEffectArray(payload.changes)
+            payload.changes.push(this._defaultChange())
             this.document.update({ 'system.preEffects': preEffects })
             return
         }
@@ -172,10 +201,9 @@ export class PreEffectItemSheet extends IlarisItemSheet {
             if (preEffectIndex < 0) return
             const preEffects = this._clonePreEffects()
             if (!preEffects[preEffectIndex]) return
-            preEffects[preEffectIndex].ilarisModifiers = toPreEffectArray(
-                preEffects[preEffectIndex].ilarisModifiers,
-            )
-            preEffects[preEffectIndex].ilarisModifiers.push(this._defaultIlarisModifier())
+            const payload = payloadFor(preEffects[preEffectIndex])
+            payload.ilarisModifiers = toPreEffectArray(payload.ilarisModifiers)
+            payload.ilarisModifiers.push(this._defaultIlarisModifier())
             this.document.update({ 'system.preEffects': preEffects })
             return
         }
@@ -204,31 +232,29 @@ export class PreEffectItemSheet extends IlarisItemSheet {
         if (button.closest('.delete-ilaris-modifier')) {
             const modifierCard = button.closest('.ilaris-modifier-card')
             const modifierIndex = [
-                ...preEffectCard.querySelectorAll('.ilaris-modifier-card'),
+                ...(outcomeContainer || preEffectCard).querySelectorAll('.ilaris-modifier-card'),
             ].indexOf(modifierCard)
             if (preEffectIndex < 0 || modifierIndex < 0) return
             const preEffects = this._clonePreEffects()
             if (!preEffects[preEffectIndex]) return
-            preEffects[preEffectIndex].ilarisModifiers = toPreEffectArray(
-                preEffects[preEffectIndex].ilarisModifiers,
-            )
-            preEffects[preEffectIndex].ilarisModifiers.splice(modifierIndex, 1)
+            const payload = payloadFor(preEffects[preEffectIndex])
+            payload.ilarisModifiers = toPreEffectArray(payload.ilarisModifiers)
+            payload.ilarisModifiers.splice(modifierIndex, 1)
             this.document.update({ 'system.preEffects': preEffects })
             return
         }
 
         if (button.closest('.delete-change')) {
             const changeCard = button.closest('.change-card')
-            const changeIndex = [...preEffectCard.querySelectorAll('.change-card')].indexOf(
-                changeCard,
-            )
+            const changeIndex = [
+                ...(outcomeContainer || preEffectCard).querySelectorAll('.change-card'),
+            ].indexOf(changeCard)
             if (preEffectIndex < 0 || changeIndex < 0) return
             const preEffects = this._clonePreEffects()
             if (!preEffects[preEffectIndex]) return
-            preEffects[preEffectIndex].changes = toPreEffectArray(
-                preEffects[preEffectIndex].changes,
-            )
-            preEffects[preEffectIndex].changes.splice(changeIndex, 1)
+            const payload = payloadFor(preEffects[preEffectIndex])
+            payload.changes = toPreEffectArray(payload.changes)
+            payload.changes.splice(changeIndex, 1)
             this.document.update({ 'system.preEffects': preEffects })
             return
         }
@@ -253,6 +279,13 @@ export class PreEffectItemSheet extends IlarisItemSheet {
 
     _clonePreEffects() {
         return toPreEffectArray(foundry.utils.deepClone(this.document.system.preEffects))
+    }
+
+    _getEditablePayload(preEffect, outcome = '') {
+        if (!outcome) return preEffect
+        preEffect.resistanceOutcomes ??= {}
+        preEffect.resistanceOutcomes[outcome] ??= this._defaultResistanceOutcome()
+        return preEffect.resistanceOutcomes[outcome]
     }
 
     _injectPreEffectKeySuggestions() {
@@ -280,7 +313,7 @@ export class PreEffectItemSheet extends IlarisItemSheet {
             instant: false,
             changes: [],
             ilarisModifiers: [],
-            marker: { enabled: false },
+            marker: { enabled: false, id: '', label: '' },
             condition: { enabled: false, statusId: '' },
             armedCombat: {
                 enabled: false,
@@ -301,6 +334,20 @@ export class PreEffectItemSheet extends IlarisItemSheet {
                 resistDifficulty: 12,
                 resistDifficultySource: 'fixed',
             },
+            resistanceOutcomes: {
+                failure: this._defaultResistanceOutcome(),
+                success: this._defaultResistanceOutcome(),
+            },
+        }
+    }
+
+    _defaultResistanceOutcome() {
+        return {
+            enabled: false,
+            changes: [],
+            ilarisModifiers: [],
+            marker: { enabled: false, id: '', label: '' },
+            condition: { enabled: false, statusId: '' },
         }
     }
 

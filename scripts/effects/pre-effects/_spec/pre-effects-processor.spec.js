@@ -981,17 +981,36 @@ describe('pre-effect processor', () => {
 
         await createActiveEffectFromPreEffect(
             target,
-            { changes: [], marker: { enabled: true } },
+            {
+                changes: [],
+                marker: { enabled: true, id: 'handlungsunfaehig', label: 'Handlungsunfähig' },
+                castSkill: 'Dämonisch',
+                resistanceOutcome: 'failure',
+            },
             caster,
             item,
             1,
             0,
+            2,
+            'cast-a',
         )
         expect(global.ActiveEffect.createDocuments).toHaveBeenCalledWith(
             [
                 expect.objectContaining({
-                    name: 'Dunkelheit',
+                    name: 'Handlungsunfähig — Dunkelheit',
                     system: expect.objectContaining({ ilarisMarker: true }),
+                    flags: expect.objectContaining({
+                        ilaris: expect.objectContaining({
+                            sourceItemUuid: 'Item.dunkelheit',
+                            spellUuid: 'Item.dunkelheit',
+                            casterUuid: 'Actor.caster',
+                            castSkill: 'Dämonisch',
+                            preEffectIndex: 2,
+                            applicationId: 'cast-a',
+                            resistanceOutcome: 'failure',
+                            markerId: 'handlungsunfaehig',
+                        }),
+                    }),
                 }),
             ],
             { parent: target },

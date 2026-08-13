@@ -317,9 +317,10 @@ describe('reviewed supported spell pre-effect source data', () => {
         ])
     })
 
-    it('configures spell-named marker and diminished branches without a numeric marker modifier', () => {
+    it('configures explicit source-linked resistance outcome payloads', () => {
         const hexengalle = readSpell('Hexengalle_9rwCzQDAtGzeuU24.json').system.preEffects
         const gewuerm = readSpell('Fluch_des_Gew_rms_iLc4RFaAgAFDdvUg.json').system.preEffects
+        const schrecken = readSpell('Krabbelnder_Schrecken_DUHdFMwgQ69rEMoc.json').system.preEffects
 
         expect(hexengalle).toEqual(
             expect.arrayContaining([
@@ -330,12 +331,12 @@ describe('reviewed supported spell pre-effect source data', () => {
                         fertigkeit: 'Zähigkeit',
                         resistDifficulty: 16,
                     }),
-                    changes: [
-                        expect.objectContaining({
-                            key: 'system.modifikatoren.manuellermod',
-                            value: '0',
+                    changes: [],
+                    resistanceOutcomes: expect.objectContaining({
+                        failure: expect.objectContaining({
+                            marker: expect.objectContaining({ id: 'handlungsunfaehig' }),
                         }),
-                    ],
+                    }),
                 }),
             ]),
         )
@@ -345,19 +346,38 @@ describe('reviewed supported spell pre-effect source data', () => {
                 instant: false,
                 avoidTest: expect.objectContaining({
                     fertigkeit: 'Willenskraft',
-                    diminishedOnly: true,
+                    diminishedOnly: false,
                     resistDifficulty: 16,
                 }),
                 changes: [],
-                ilarisModifiers: [
-                    expect.objectContaining({
-                        target: 'probe',
-                        value: '0',
-                        diminishedValue: '-4',
+                ilarisModifiers: [],
+                resistanceOutcomes: expect.objectContaining({
+                    failure: expect.objectContaining({
+                        marker: expect.objectContaining({ id: 'handlungsunfaehig' }),
                     }),
-                ],
+                    success: expect.objectContaining({
+                        ilarisModifiers: [
+                            expect.objectContaining({ target: 'probe', value: '-4' }),
+                        ],
+                    }),
+                }),
             }),
         ])
+        expect(schrecken).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    baseDuration: 16,
+                    resistanceOutcomes: expect.objectContaining({
+                        failure: expect.objectContaining({
+                            marker: expect.objectContaining({ id: 'handlungsunfaehig' }),
+                        }),
+                        success: expect.objectContaining({
+                            ilarisModifiers: [expect.objectContaining({ value: '-4' })],
+                        }),
+                    }),
+                }),
+            ]),
+        )
     })
 
     it('adds one-time-only damage approximations for the accepted zone and contact spells', () => {

@@ -31,6 +31,7 @@ import {
     deleteZoneDraftRegion,
     resolveInstantZoneTargets,
 } from '../zones/zone-lifecycle.js'
+import { resolveCastSkillContext } from './cast-skill-context.js'
 
 export class UebernatuerlichDialog extends CombatDialog {
     /** @override */
@@ -77,6 +78,8 @@ export class UebernatuerlichDialog extends CombatDialog {
         this.zonePlacement = null
         this.zoneCasterTokenId = ''
         this.zoneRangeBonus = 0
+        this.castSkillContext = resolveCastSkillContext(actor, item)
+        this.castSkill = this.castSkillContext.castSkill
     }
 
     /**
@@ -97,6 +100,12 @@ export class UebernatuerlichDialog extends CombatDialog {
                 await this.updateModifierDisplay()
             })
         })
+        this.element
+            .querySelector('[name="ilaris-cast-skill"]')
+            ?.addEventListener('change', async (event) => {
+                this.castSkill = event.currentTarget.value || ''
+                await this.render()
+            })
     }
 
     /* -------------------------------------------- */
@@ -130,8 +139,26 @@ export class UebernatuerlichDialog extends CombatDialog {
      */
     getBaseValues() {
         return {
-            basePW: this.item.system.pw || 0,
+            basePW: this.castSkillContext.basePW ?? (this.item.system.pw || 0),
         }
+    }
+
+    getResolvedCastSkill() {
+        return this.castSkill || ''
+    }
+
+    _isCastSkillMissing() {
+        return this.castSkillContext.requiresSelection && !this.getResolvedCastSkill()
+    }
+
+    getIlarisFertigkeitContext() {
+        return this.getResolvedCastSkill() || super.getIlarisFertigkeitContext()
+    }
+
+    async _requireCastSkill() {
+        if (!this._isCastSkillMissing()) return true
+        ui.notifications.warn('Wähle zuerst die Fertigkeit für diesen Zauber.')
+        return false
     }
 
     /**
@@ -198,10 +225,10 @@ export class UebernatuerlichDialog extends CombatDialog {
         const ilarisProbeResult =
             this.ilarisProbeResult || this.getIlarisModifierResult(IlarisModifierTarget.Probe)
 
-        const zonePlacementMissing = this._isZonePlacementMissing()
+        const rollDisabled = this._isZonePlacementMissing() || this._isCastSkillMissing()
         return {
-            action: zonePlacementMissing ? null : 'angreifen',
-            cssClass: `modifier-summary talent-summary ${zonePlacementMissing ? 'zone-roll-disabled' : 'clickable-summary'}`,
+            action: rollDisabled ? null : 'angreifen',
+            cssClass: `modifier-summary talent-summary ${rollDisabled ? 'zone-roll-disabled' : 'clickable-summary'}`,
             heading: `${icon} ${itemType}: ${finalFormula}`,
             rows: [
                 {
@@ -271,7 +298,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         const difficulty = this.getEffectiveSpellProfile().difficulty
         const isNonStandardDifficulty = isNaN(difficulty) || !difficulty
 
-        const zonePlacementMissing = this._isZonePlacementMissing()
+        const rollDisabled = this._isZonePlacementMissing() || this._isCastSkillMissing()
         return {
             cssClass: 'modifier-summary energy-summary',
             heading: `${icon} Energiekosten: ${baseEnergy} Energie`,
@@ -287,15 +314,15 @@ export class UebernatuerlichDialog extends CombatDialog {
             actionButtons: isNonStandardDifficulty
                 ? [
                       {
-                          action: zonePlacementMissing ? null : 'energieErfolg',
+                          action: rollDisabled ? null : 'energieErfolg',
                           text: '✅ Erfolgreich gewirkt',
-                          cssClass: `clickable-summary energie-erfolg ${zonePlacementMissing ? 'zone-roll-disabled' : ''}`,
+                          cssClass: `clickable-summary energie-erfolg ${rollDisabled ? 'zone-roll-disabled' : ''}`,
                           style: 'cursor: pointer; padding: 8px; margin: 4px 0; background: rgba(0, 150, 0, 0.1); border: 1px solid rgba(0, 150, 0, 0.3); border-radius: 4px; text-align: center;',
                       },
                       {
-                          action: zonePlacementMissing ? null : 'energieMisserfolg',
+                          action: rollDisabled ? null : 'energieMisserfolg',
                           text: '❌ Misslungen',
-                          cssClass: `clickable-summary energie-misserfolg ${zonePlacementMissing ? 'zone-roll-disabled' : ''}`,
+                          cssClass: `clickable-summary energie-misserfolg ${rollDisabled ? 'zone-roll-disabled' : ''}`,
                           style: 'cursor: pointer; padding: 8px; margin: 4px 0; background: rgba(220, 0, 0, 0.1); border: 1px solid rgba(220, 0, 0, 0.3); border-radius: 4px; text-align: center;',
                       },
                   ]
@@ -338,6 +365,9 @@ export class UebernatuerlichDialog extends CombatDialog {
         const zonePlacementEnabled = this._hasZonePlacementRequirement()
         return {
             ...context,
+            castSkillOptions: this.castSkillContext.options,
+            castSkillSelectionRequired: this.castSkillContext.requiresSelection,
+            selectedCastSkill: this.getResolvedCastSkill(),
             choices_xd20: CONFIG.ILARIS.xd20_choice,
             checked_xd20: '1',
             choices_verbotene_pforten: {
@@ -366,6 +396,7 @@ export class UebernatuerlichDialog extends CombatDialog {
     /* -------------------------------------------- */
 
     async _angreifenKlick() {
+        if (!(await this._requireCastSkill())) return
         if (callIlarisHookWithGlobalMirror('Ilaris.preAngriff', this) === false) return
         let xd20_choice =
             Number(this.element.querySelector('input[name="xd20"]:checked')?.value) || 0
@@ -437,6 +468,7 @@ export class UebernatuerlichDialog extends CombatDialog {
     }
 
     async _energieAbrechnenKlick(isSuccess) {
+        if (!(await this._requireCastSkill())) return
         if ((await this.manoeverAuswaehlen()) === false) return
         await this.updateManoeverMods()
         if (!(await this._requireZonePlacement())) return

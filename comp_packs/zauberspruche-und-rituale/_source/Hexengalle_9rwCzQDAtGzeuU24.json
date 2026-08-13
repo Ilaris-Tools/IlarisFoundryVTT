@@ -46,19 +46,7 @@
       {
         "baseDuration": 2,
         "instant": false,
-        "changes": [
-          {
-            "key": "system.modifikatoren.manuellermod",
-            "type": "add",
-            "value": "0",
-            "amplifiedByMaechtigeMagie": false,
-            "maechtigBonus": "",
-            "damageType": "PROFAN",
-            "diminishedValue": "",
-            "diminishedMaechtigBonus": "",
-            "priority": null
-          }
-        ],
+        "changes": [],
         "avoidTest": {
           "enabled": true,
           "fertigkeit": "Zähigkeit",
@@ -66,6 +54,22 @@
           "attribut": "",
           "diminishedOnly": false,
           "resistDifficulty": 16
+        },
+        "resistanceOutcomes": {
+          "failure": {
+            "enabled": true,
+            "changes": [],
+            "ilarisModifiers": [],
+            "marker": { "enabled": true, "id": "handlungsunfaehig", "label": "Handlungsunfähig" },
+            "condition": { "enabled": false, "statusId": "" }
+          },
+          "success": {
+            "enabled": false,
+            "changes": [],
+            "ilarisModifiers": [],
+            "marker": { "enabled": false, "id": "", "label": "" },
+            "condition": { "enabled": false, "statusId": "" }
+          }
         }
       }
     ]

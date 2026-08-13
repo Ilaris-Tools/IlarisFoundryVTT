@@ -161,6 +161,131 @@ describe('resist result listener', () => {
         )
     })
 
+    it('applies only the explicit failure marker and keeps its spell provenance', async () => {
+        registerResistResolutionListener()
+        const dialog = {
+            _resistContext: {
+                preEffectData: preEffect({
+                    castSkill: 'Dämonisch',
+                    resistanceOutcomes: {
+                        failure: {
+                            enabled: true,
+                            changes: [],
+                            ilarisModifiers: [],
+                            marker: {
+                                enabled: true,
+                                id: 'handlungsunfaehig',
+                                label: 'Handlungsunfähig',
+                            },
+                            condition: { enabled: false, statusId: '' },
+                        },
+                    },
+                }),
+                spellUuid: 'Item.spell',
+            },
+        }
+
+        await hookCallbacks['Ilaris.postSkillRoll'](dialog, { rollResult: { success: false } })
+
+        expect(effectCreate).toHaveBeenCalledWith(
+            [
+                expect.objectContaining({
+                    name: 'Handlungsunfähig — Spell',
+                    changes: [],
+                    flags: expect.objectContaining({
+                        ilaris: expect.objectContaining({
+                            sourceItemUuid: 'Item.spell',
+                            spellUuid: 'Item.spell',
+                            castSkill: 'Dämonisch',
+                            resistanceOutcome: 'failure',
+                            markerId: 'handlungsunfaehig',
+                        }),
+                    }),
+                }),
+            ],
+            expect.any(Object),
+        )
+    })
+
+    it('applies an explicit success payload instead of diminished values', async () => {
+        registerResistResolutionListener()
+        const dialog = {
+            _resistContext: {
+                preEffectData: preEffect({
+                    castSkill: 'Dämonisch',
+                    avoidTest: { diminishedOnly: true },
+                    resistanceOutcomes: {
+                        success: {
+                            enabled: true,
+                            changes: [],
+                            ilarisModifiers: [
+                                {
+                                    phase: 'roll',
+                                    target: 'probe',
+                                    value: '-4',
+                                    stacking: 'strongest-supernatural',
+                                    selector: {},
+                                },
+                            ],
+                            marker: { enabled: false, id: '', label: '' },
+                            condition: { enabled: false, statusId: '' },
+                        },
+                    },
+                }),
+                spellUuid: 'Item.spell',
+            },
+        }
+
+        await hookCallbacks['Ilaris.postSkillRoll'](dialog, { rollResult: { success: true } })
+
+        expect(effectCreate).toHaveBeenCalledWith(
+            [
+                expect.objectContaining({
+                    changes: [],
+                    system: expect.objectContaining({
+                        ilarisModifiers: [expect.objectContaining({ value: '-4' })],
+                    }),
+                    flags: expect.objectContaining({
+                        ilaris: expect.objectContaining({
+                            resistanceOutcome: 'success',
+                            castSkill: 'Dämonisch',
+                        }),
+                    }),
+                }),
+            ],
+            expect.any(Object),
+        )
+    })
+
+    it('warns and falls back to legacy behavior for a malformed enabled marker', async () => {
+        global.ui = { notifications: { warn: jest.fn() } }
+        registerResistResolutionListener()
+        const dialog = {
+            _resistContext: {
+                preEffectData: preEffect({
+                    resistanceOutcomes: {
+                        failure: {
+                            enabled: true,
+                            changes: [],
+                            ilarisModifiers: [],
+                            marker: { enabled: true, id: '', label: '' },
+                            condition: { enabled: false, statusId: '' },
+                        },
+                    },
+                }),
+                spellUuid: 'Item.spell',
+            },
+        }
+
+        await hookCallbacks['Ilaris.postSkillRoll'](dialog, { rollResult: { success: false } })
+
+        expect(ui.notifications.warn).toHaveBeenCalled()
+        expect(effectCreate).toHaveBeenCalledWith(
+            [expect.objectContaining({ changes: [expect.objectContaining({ value: '5' })] })],
+            expect.any(Object),
+        )
+    })
+
     it('keeps the zero-value marker when a diminished-only resist fails', async () => {
         registerResistResolutionListener()
         const dialog = {

@@ -36,6 +36,17 @@
             <input type="number" name="ilaris-armed-input-{{key}}" value="{{default}}" min="{{min}}" max="{{max}}" step="1" />
         </div>
         {{/each}}
+        {{#if castSkillSelectionRequired}}
+        <div class="flexrow ilaris-cast-skill-selection">
+            <label>Fertigkeit:</label>
+            <select name="ilaris-cast-skill" required>
+                <option value="">— Auswahl —</option>
+                {{#each castSkillOptions}}
+                <option value="{{name}}" {{#if (ifEq name ../selectedCastSkill)}}selected{{/if}}>{{name}} (PW {{pw}})</option>
+                {{/each}}
+            </select>
+        </div>
+        {{/if}}
         {{#if (or spellModificationGroups.length ungroupedSpellModifications.length)}}
         <hr />
         <section class="spell-modifications-section">

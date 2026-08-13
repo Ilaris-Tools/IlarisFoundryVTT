@@ -85,6 +85,36 @@ describe('status condition service', () => {
         })
     })
 
+    it('retains spell and resistance provenance on a condition source', async () => {
+        const actor = createActor()
+        const source = {
+            id: 'cast-1:0',
+            type: 'preEffect',
+            origin: 'Actor.caster',
+            sourceItemUuid: 'Item.spell',
+            spellUuid: 'Item.spell',
+            spellName: 'Fluch des Gewürms',
+            casterUuid: 'Actor.caster',
+            preEffectIndex: 0,
+            applicationId: 'cast-1',
+            castSkill: 'Hexerei',
+            resistanceOutcome: 'failure',
+        }
+
+        await addConditionSource(actor, 'Position4', source)
+
+        expect(ActiveEffect.createDocuments).toHaveBeenCalledWith(
+            [
+                expect.objectContaining({
+                    system: expect.objectContaining({
+                        ilarisCondition: expect.objectContaining({ sources: [source] }),
+                    }),
+                }),
+            ],
+            { parent: actor },
+        )
+    })
+
     it('retains the effect until its final source is removed', async () => {
         const effect = {
             id: 'condition',

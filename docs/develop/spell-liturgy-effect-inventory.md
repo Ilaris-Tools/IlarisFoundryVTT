@@ -8,7 +8,7 @@ This inventory contains the compendium entries whose currently supported behavio
 - **Archofaxius** — `4W6` ERZ damage
 - **Frigifaxius** — `4W6` EIS damage
 - **Fulminictus Donnerkeil** — `2W6` TRUE_DAMAGE; Mächtige Magie `+4`
-- **Hexengalle** — `2W6` TRUE_DAMAGE; Mächtige Magie `+1W6`; separate timed marker after failed Zähigkeit resistance
+- **Hexengalle** — `2W6` TRUE_DAMAGE; Mächtige Magie `+1W6`; failed Zähigkeit resistance applies the timed `Handlungsunfähig — Hexengalle` marker
 - **Humofaxius** — `4W6` HUMUS damage
 - **Ignifaxius Flammenstrahl** — `4W6` FEUER damage
 - **Orcanofaxius** — `4W6` LUFT damage
@@ -22,7 +22,7 @@ This inventory contains the compendium entries whose currently supported behavio
 
 - **Axxeleratus Blitzgeschwind** — GS `+4`, AT/VT `+2`, and Mächtige Magie GS `+2`
 - **Axxeleratus Blitzgeschwind (Tiergeist)** — same effect as Axxeleratus Blitzgeschwind
-- **Fluch des Gewürms** — spell-named marker after failed Willenskraft resistance; timed global `-4` after successful resistance
+- **Fluch des Gewürms** and **Krabbelnder Schrecken** — failed Willenskraft resistance applies the timed `Handlungsunfähig` marker; successful resistance applies a timed global `-4` modifier. Both results retain the source spell and concrete casting skill in their effect provenance.
 - **Plumbumbarum schwerer Arm** — timed Nahkampf modifier `-4`; Mächtige Magie `-2`
 - **Tanz der Schwerter** — 16 Initiativephasen; GS `+4`, AT/VT `+2`; Mächtige Liturgie GS `+2`
 - **Adlerauge Luchsenohr** and **Adlerauge Luchsenohr (Tiergeist)** — 64 Initiativephasen; Sinnenschärfe/Wachsamkeit `+4`; Mächtige Magie `+2`

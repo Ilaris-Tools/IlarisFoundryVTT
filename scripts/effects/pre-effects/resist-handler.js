@@ -241,7 +241,9 @@ async function processResistResult(dialog, payload, preEffectData) {
         return
     }
 
-    if (resistSuccess) {
+    if (resistSuccess && hasResistanceOutcome(preEffectData, 'success')) {
+        await applyPreEffectFromResist(selectResistanceOutcome(preEffectData, 'success'))
+    } else if (resistSuccess) {
         const avoidTest = preEffectData.avoidTest || {}
 
         if (avoidTest.diminishedOnly) {
@@ -249,10 +251,40 @@ async function processResistResult(dialog, payload, preEffectData) {
             await applyDiminishedEffect(preEffectData)
         }
         // else: effect entirely avoided — do nothing
+    } else if (hasResistanceOutcome(preEffectData, 'failure')) {
+        await applyPreEffectFromResist(selectResistanceOutcome(preEffectData, 'failure'))
     } else {
         // Resist failed — apply full effect
         await applyPreEffectFromResist(preEffectData)
     }
+}
+
+const RESISTANCE_OUTCOME_FIELDS = ['changes', 'ilarisModifiers', 'marker', 'condition']
+
+function hasResistanceOutcome(preEffectData, outcome) {
+    const selected = preEffectData?.resistanceOutcomes?.[outcome]
+    if (selected?.enabled !== true) return false
+    if (selected.marker?.enabled && (!selected.marker.id || !selected.marker.label)) {
+        ui?.notifications?.warn(
+            'Ein Hinweis-Effekt für eine Widerstandsprobe benötigt Marker-ID und Anzeige.',
+        )
+        return false
+    }
+    return true
+}
+
+/** Create a result-only copy without mutating serialized source data. */
+export function selectResistanceOutcome(preEffectData, outcome) {
+    const selected = preEffectData?.resistanceOutcomes?.[outcome]
+    if (!selected?.enabled) return preEffectData
+
+    const effective = foundry.utils.deepClone(preEffectData)
+    for (const field of RESISTANCE_OUTCOME_FIELDS) {
+        const fallback = field === 'marker' || field === 'condition' ? {} : []
+        effective[field] = foundry.utils.deepClone(selected[field] || fallback)
+    }
+    effective.resistanceOutcome = outcome
+    return effective
 }
 
 /**
