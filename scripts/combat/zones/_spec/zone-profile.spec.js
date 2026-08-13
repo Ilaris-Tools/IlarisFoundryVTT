@@ -16,7 +16,12 @@ describe('zone profiles', () => {
             shape: 'rectangle',
             placement: { anchor: 'free', range: 8, pivot: 'topLeft' },
             duration: { type: 'sceneRounds', remaining: 256, originalValue: 256 },
-            trigger: { triggerOnCreate: true, onEnter: true, onTurnStart: false },
+            trigger: {
+                triggerOnCreate: true,
+                onEnter: true,
+                onTurnStart: false,
+                onRoundStart: false,
+            },
         })
     })
 
@@ -60,7 +65,7 @@ describe('zone profiles', () => {
         ).toBeNull()
     })
 
-    it('keeps turn-start triggering opt-in and independent from other Zone triggers', () => {
+    it('keeps combat triggers opt-in and independent from other Zone triggers', () => {
         expect(
             normalizeZoneProfile({
                 shape: 'circle',
@@ -68,15 +73,34 @@ describe('zone profiles', () => {
                 lifecycle: 'persistent',
                 duration: { remaining: 4 },
             }),
-        ).toMatchObject({ trigger: { triggerOnCreate: true, onEnter: false, onTurnStart: false } })
+        ).toMatchObject({
+            trigger: {
+                triggerOnCreate: true,
+                onEnter: false,
+                onTurnStart: false,
+                onRoundStart: false,
+            },
+        })
         expect(
             normalizeZoneProfile({
                 shape: 'circle',
                 distance: 4,
                 lifecycle: 'persistent',
                 duration: { remaining: 4 },
-                trigger: { triggerOnCreate: true, onEnter: true, onTurnStart: true },
+                trigger: {
+                    triggerOnCreate: true,
+                    onEnter: true,
+                    onTurnStart: true,
+                    onRoundStart: true,
+                },
             }),
-        ).toMatchObject({ trigger: { triggerOnCreate: true, onEnter: true, onTurnStart: true } })
+        ).toMatchObject({
+            trigger: {
+                triggerOnCreate: true,
+                onEnter: true,
+                onTurnStart: true,
+                onRoundStart: true,
+            },
+        })
     })
 })

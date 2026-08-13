@@ -45,6 +45,7 @@ export function normalizeZoneProfile(source) {
             triggerOnCreate: source.trigger?.triggerOnCreate !== false,
             onEnter: source.trigger?.onEnter === true,
             onTurnStart: source.trigger?.onTurnStart === true,
+            onRoundStart: source.trigger?.onRoundStart === true,
         },
         targeting: {
             includeCaster: source.targeting?.includeCaster === true,

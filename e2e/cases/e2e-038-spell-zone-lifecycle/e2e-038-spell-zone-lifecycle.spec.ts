@@ -233,7 +233,7 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
         expect(result).toEqual({ requiresPlacement: false, placementMissing: false })
     })
 
-    test('places and casts an opt-in turn-start Zone, then triggers it through Combat Tracker controls', async ({
+    test('places and casts opt-in turn-start and round-start Zone triggers through Combat Tracker controls', async ({
         page,
         browser,
     }) => {
@@ -280,7 +280,12 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
                         lifecycle: 'persistent',
                         duration: { remaining: 4, originalValue: 4 },
                         targeting: { includeCaster: false },
-                        trigger: { triggerOnCreate: false, onEnter: false, onTurnStart: true },
+                        trigger: {
+                            triggerOnCreate: false,
+                            onEnter: false,
+                            onTurnStart: true,
+                            onRoundStart: true,
+                        },
                     }
                     source.system.preEffects = [
                         {
@@ -416,6 +421,7 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
                             const region = canvas.scene?.regions?.get(regionId)
                             return Boolean(
                                 region?.flags?.Ilaris?.zone?.profile?.trigger?.onTurnStart &&
+                                region?.flags?.Ilaris?.zone?.profile?.trigger?.onRoundStart &&
                                 resolveZoneTargets(region).some(
                                     (target: any) => target.tokenId === tokenId,
                                 ),
@@ -502,7 +508,7 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
             )
             await expect
                 .poll(() => playerPage.locator('.resist-button').count(), { timeout: 15000 })
-                .toBe(promptsBeforeTurn + 2)
+                .toBe(promptsBeforeTurn + 3)
 
             // Move the target out through the visible canvas before its next
             // turn. Its next turn must not dispatch a new Zone prompt.
@@ -515,25 +521,27 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
                     const shape = region?.shapes?.[0]
                     if (!token || !region || !shape)
                         throw new Error('E2E Zone target or Region is missing.')
-                    const toScreen = (point: { x: number; y: number }) => {
-                        const projected = canvas.stage.worldTransform.apply(point)
-                        const bounds = canvas.app.view.getBoundingClientRect()
-                        return { x: bounds.left + projected.x, y: bounds.top + projected.y }
-                    }
                     return {
-                        inside: toScreen(token.center),
-                        outside: toScreen({
+                        outside: {
                             x: shape.x + shape.radius + canvas.grid.size * 4,
                             y: shape.y,
-                        }),
+                        },
                     }
                 },
                 { tokenId: created.targetTokenId, regionId: created.regionId },
             )
-            await page.mouse.move(positions.inside.x, positions.inside.y)
-            await page.mouse.down()
-            await page.mouse.move(positions.outside.x, positions.outside.y, { steps: 8 })
-            await page.mouse.up()
+            // Token dragging through Pixi is not deterministic in headless
+            // Chromium. Casting, placement, and combat advancement above stay
+            // UI-driven; this is the narrow document-level setup required to
+            // prove that a Token which left before the next tick is skipped.
+            await page.evaluate(
+                async ({ tokenId, outside }) => {
+                    const token = canvas.scene?.tokens?.get(tokenId)
+                    if (!token) throw new Error('E2E Zone target is missing before leave setup.')
+                    await token.update(outside)
+                },
+                { tokenId: created.targetTokenId, outside: positions.outside },
+            )
             await page.waitForFunction(
                 async ({ tokenId, regionId }) => {
                     const region = canvas.scene?.regions?.get(regionId)
@@ -578,6 +586,7 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
                             (target: any) => target.tokenId === tokenId,
                         ),
                         lastTurnStartWindow: region?.flags?.Ilaris?.zone?.lastTurnStartWindow,
+                        lastRoundStartWindow: region?.flags?.Ilaris?.zone?.lastRoundStartWindow,
                     }
                 },
                 {
@@ -592,10 +601,11 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
                 active: true,
                 targetInside: false,
                 lastTurnStartWindow: expect.stringContaining(':2:1:'),
+                lastRoundStartWindow: expect.stringContaining(':3:'),
             })
             await expect
                 .poll(() => playerPage.locator('.resist-button').count(), { timeout: 5000 })
-                .toBe(promptsBeforeTurn + 2)
+                .toBe(promptsBeforeTurn + 3)
         } finally {
             const teardownResult = await page
                 .evaluate(async (state) => {

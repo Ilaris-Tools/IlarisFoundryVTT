@@ -6,6 +6,7 @@ const FLAG_SCOPE = 'Ilaris'
 const FLAG_KEY = 'zone'
 const DRAFT_FLAG_KEY = 'zoneDraft'
 const pendingTurnStartDispatches = new Map()
+const pendingRoundStartDispatches = new Map()
 
 function activeGM() {
     const gm = game.users.find((user) => user.active && user.isGM)
@@ -53,6 +54,10 @@ function isPassiveZone(zone) {
 
 function hasTurnStartTrigger(zone) {
     return !isPassiveZone(zone) && zone?.profile?.trigger?.onTurnStart === true
+}
+
+function hasRoundStartTrigger(zone) {
+    return !isPassiveZone(zone) && zone?.profile?.trigger?.onRoundStart === true
 }
 
 function invalidPassivePreEffects(preEffects = []) {
@@ -208,6 +213,52 @@ function resolveDestinationToken(combat, updateData = {}) {
 
 function turnStartWindow(combat, updateData, region, token) {
     return [combat?.id || '', updateData?.round, updateData?.turn, region.id, token.id].join(':')
+}
+
+function roundStartWindow(combat, updateData, region) {
+    return [combat?.id || '', updateData?.round, region.id].join(':')
+}
+
+/** Dispatch one eligible persistent Zone for all current targets at a forward combat round. */
+export async function dispatchPersistentZoneRoundStart(
+    combat,
+    updateData = {},
+    updateOptions = {},
+) {
+    if (!activeGM() || !(Number(updateOptions?.direction) > 0)) return
+    const scene = combat?.scene
+    if (!scene) return
+
+    for (const region of scene.regions || []) {
+        const zone = zoneState(region)
+        if (zone?.initializing || !hasRoundStartTrigger(zone)) continue
+
+        const window = roundStartWindow(combat, updateData, region)
+        if (zone.lastRoundStartWindow === window) continue
+        const key = `${region.id}:${window}`
+        const pending = pendingRoundStartDispatches.get(key)
+        if (pending) {
+            await pending
+            continue
+        }
+
+        const dispatch = (async () => {
+            // Claim even an empty Region window. A Token entering afterwards
+            // waits for the next round instead of receiving a retroactive tick.
+            await region.update({
+                [`flags.${FLAG_SCOPE}.${FLAG_KEY}.lastRoundStartWindow`]: window,
+            })
+            const targets = resolveZoneTargetsForSource(region, zone.profile, zone.casterTokenId)
+            if (targets.length) await dispatchZoneTrigger(region, `roundStart:${window}`, targets)
+        })()
+        pendingRoundStartDispatches.set(key, dispatch)
+        try {
+            await dispatch
+        } finally {
+            if (pendingRoundStartDispatches.get(key) === dispatch)
+                pendingRoundStartDispatches.delete(key)
+        }
+    }
 }
 
 /** Dispatch one eligible persistent Zone for the combatant entering a forward turn. */
@@ -457,6 +508,12 @@ export async function reducePersistentZoneDurations(combat, updateOptions = {}) 
     }
 }
 
+/** Keep periodic ticks ahead of scene-round expiry without changing turn-start dispatch. */
+export async function runPersistentZoneRoundLifecycle(combat, updateData = {}, updateOptions = {}) {
+    await dispatchPersistentZoneRoundStart(combat, updateData, updateOptions)
+    await reducePersistentZoneDurations(combat, updateOptions)
+}
+
 /** Recreate only missing passive effects for the active Scene after canvas setup. */
 export async function reconcilePersistentPassiveZones(scene) {
     if (!activeGM() || !scene) return
@@ -485,8 +542,8 @@ export function registerZoneLifecycleHooks() {
     })
     Hooks.on('deleteRegion', (region) => cleanupPassiveZoneEffects(region))
     Hooks.on('canvasReady', () => reconcilePersistentPassiveZones(canvas?.scene))
-    Hooks.on('combatRound', (combat, _updateData, updateOptions) =>
-        reducePersistentZoneDurations(combat, updateOptions),
+    Hooks.on('combatRound', (combat, updateData, updateOptions) =>
+        runPersistentZoneRoundLifecycle(combat, updateData, updateOptions),
     )
     Hooks.on('combatTurn', (combat, updateData, updateOptions) =>
         dispatchPersistentZoneTurnStart(combat, updateData, updateOptions),

@@ -25,6 +25,23 @@ describe('UebernatuerlichTalentSheet shared Pre-Effect composition', () => {
         })
     })
 
+    it('keeps the round-start Zone opt-in directly after the entry trigger in the concrete editor', () => {
+        const template = readFileSync(
+            join(process.cwd(), 'scripts', 'items', 'templates', 'uebernatuerlich_talent.hbs'),
+            'utf8',
+        )
+        const createIndex = template.indexOf('system.zone.trigger.triggerOnCreate')
+        const enterIndex = template.indexOf('system.zone.trigger.onEnter')
+        const roundIndex = template.indexOf('system.zone.trigger.onRoundStart')
+        const modificationIndex = template.indexOf('spell-modification-editor')
+
+        expect(createIndex).toBeGreaterThan(-1)
+        expect(enterIndex).toBeGreaterThan(createIndex)
+        expect(roundIndex).toBeGreaterThan(enterIndex)
+        expect(modificationIndex).toBeGreaterThan(roundIndex)
+        expect(template).toContain('Zu Rundenbeginn ausloesen')
+    })
+
     it('exposes LLM generation only for a configured GM', async () => {
         global.CONFIG = { ILARIS: { attribute: [] }, statusEffects: {} }
         global.game.user = { isGM: true }

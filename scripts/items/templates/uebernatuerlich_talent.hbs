@@ -47,6 +47,7 @@
                 <div class="form-group"><label>Lebenszyklus</label><select name="system.zone.lifecycle"><option value="instant" {{#if (ifEq item.system.zone.lifecycle "instant")}}selected{{/if}}>Sofortig</option><option value="persistent" {{#if (ifEq item.system.zone.lifecycle "persistent")}}selected{{/if}}>Bleibend</option></select><label>Szenenrunden</label><input type="number" min="1" name="system.zone.duration.remaining" value="{{item.system.zone.duration.remaining}}" /></div>
                 <label><input type="checkbox" name="system.zone.trigger.triggerOnCreate" {{checked item.system.zone.trigger.triggerOnCreate}} /> Beim Erzeugen ausloesen</label>
                 <label><input type="checkbox" name="system.zone.trigger.onEnter" {{checked item.system.zone.trigger.onEnter}} /> Beim Betreten ausloesen</label>
+                <label><input type="checkbox" name="system.zone.trigger.onRoundStart" {{checked item.system.zone.trigger.onRoundStart}} /> Zu Rundenbeginn ausloesen</label>
                 <button type="button" class="clear-zone-profile">Zonenprofil entfernen</button>
             </section>
             <section class="spell-modification-editor">

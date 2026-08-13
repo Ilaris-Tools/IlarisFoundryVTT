@@ -4,6 +4,7 @@ import {
     createZoneDraftRegion,
     deleteZoneDraftRegion,
     cleanupPassiveZoneEffects,
+    dispatchPersistentZoneRoundStart,
     dispatchPersistentZoneTurnStart,
     reducePersistentZoneDurations,
     reconcilePersistentPassiveZones,
@@ -67,6 +68,125 @@ describe('persistent zone duration', () => {
         await reducePersistentZoneDurations({ scene: { regions: [region] } }, { direction: -1 })
         expect(region.update).not.toHaveBeenCalled()
         expect(region.delete).not.toHaveBeenCalled()
+    })
+
+    test('dispatches all current targets once per forward combat round and claims empty windows', async () => {
+        const first = {
+            id: 'first-token',
+            actor: { id: 'first-actor', name: 'First', isToken: true },
+            actorLink: false,
+        }
+        const second = {
+            id: 'second-token',
+            actor: { id: 'second-actor', name: 'Second', isToken: true },
+            actorLink: false,
+        }
+        const zone = {
+            applicationId: 'zone-application-id',
+            spellUuid: 'Item.periodic',
+            casterUuid: 'Actor.caster',
+            casterTokenId: 'caster-token',
+            profile: {
+                effectMode: 'triggered',
+                targeting: { includeCaster: false },
+                trigger: { onRoundStart: true },
+            },
+            preEffects: [],
+        }
+        const region = {
+            id: 'periodic-region',
+            flags: { Ilaris: { zone } },
+            tokens: new Set([first, second]),
+            update: jest.fn(async (change) => {
+                zone.lastRoundStartWindow = change['flags.Ilaris.zone.lastRoundStartWindow']
+            }),
+        }
+        const combat = { id: 'combat-a', scene: { id: 'scene-a', regions: [region] } }
+        global.foundry.utils.fromUuid.mockImplementation((uuid) => {
+            if (uuid === zone.spellUuid) return { uuid, name: 'Periodic spell' }
+            if (uuid === zone.casterUuid) return { uuid, id: 'caster', name: 'Caster' }
+            return null
+        })
+
+        await Promise.all([
+            dispatchPersistentZoneRoundStart(combat, { round: 1, turn: 0 }, { direction: 1 }),
+            dispatchPersistentZoneRoundStart(combat, { round: 1, turn: 0 }, { direction: 1 }),
+        ])
+        region.tokens = new Set()
+        await dispatchPersistentZoneRoundStart(combat, { round: 2, turn: 0 }, { direction: 1 })
+
+        expect(region.update).toHaveBeenCalledTimes(2)
+        expect(region.update).toHaveBeenNthCalledWith(1, {
+            'flags.Ilaris.zone.lastRoundStartWindow': 'combat-a:1:periodic-region',
+        })
+        expect(region.update).toHaveBeenNthCalledWith(2, {
+            'flags.Ilaris.zone.lastRoundStartWindow': 'combat-a:2:periodic-region',
+        })
+        // One pipeline call hydrates the spell/caster for all occupants together.
+        expect(global.foundry.utils.fromUuid).toHaveBeenCalledTimes(2)
+    })
+
+    test('skips passive and rewound periodic Zones and runs a final periodic tick before expiry', async () => {
+        const target = {
+            id: 'target-token',
+            actor: { id: 'target-actor', name: 'Target', isToken: true },
+            actorLink: false,
+        }
+        const triggeredZone = {
+            applicationId: 'zone-application-id',
+            spellUuid: 'Item.periodic',
+            casterUuid: 'Actor.caster',
+            profile: {
+                effectMode: 'triggered',
+                duration: { type: 'sceneRounds' },
+                targeting: { includeCaster: false },
+                trigger: { onRoundStart: true },
+            },
+            remaining: 1,
+            preEffects: [],
+        }
+        const triggered = {
+            id: 'triggered-region',
+            flags: { Ilaris: { zone: triggeredZone } },
+            tokens: new Set([target]),
+            update: jest.fn(async (change) => {
+                triggeredZone.lastRoundStartWindow =
+                    change['flags.Ilaris.zone.lastRoundStartWindow']
+            }),
+            delete: jest.fn(),
+        }
+        const passive = {
+            id: 'passive-region',
+            flags: {
+                Ilaris: {
+                    zone: {
+                        ...triggeredZone,
+                        profile: { ...triggeredZone.profile, effectMode: 'passive' },
+                    },
+                },
+            },
+            tokens: new Set([target]),
+            update: jest.fn(),
+            delete: jest.fn(),
+        }
+        const combat = { id: 'combat-a', scene: { id: 'scene-a', regions: [triggered, passive] } }
+        global.foundry.utils.fromUuid.mockImplementation((uuid) => {
+            if (uuid === triggeredZone.spellUuid) return { uuid, name: 'Periodic spell' }
+            if (uuid === triggeredZone.casterUuid) return { uuid, id: 'caster', name: 'Caster' }
+            return null
+        })
+
+        await dispatchPersistentZoneRoundStart(combat, { round: 1, turn: 0 }, { direction: -1 })
+        expect(triggered.update).not.toHaveBeenCalled()
+        expect(passive.update).not.toHaveBeenCalled()
+
+        await dispatchPersistentZoneRoundStart(combat, { round: 1, turn: 0 }, { direction: 1 })
+        await reducePersistentZoneDurations(combat, { direction: 1 })
+        expect(triggered.update).toHaveBeenCalledWith({
+            'flags.Ilaris.zone.lastRoundStartWindow': 'combat-a:1:triggered-region',
+        })
+        expect(triggered.delete).toHaveBeenCalledTimes(1)
+        expect(passive.update).not.toHaveBeenCalled()
     })
 
     test('dispatches one turn-start trigger for the destination Token and retries only next turn', async () => {
