@@ -24,6 +24,17 @@ State why runtime verification is required. For non-runtime work, state why it i
 - **Restart action:** `Status | Restart | PackAndRestart`, with reason:
 - **Foundry v14 API / wiki references consulted:**
 
+## UI acceptance contract
+
+Use this section only when the change affects a rendered Foundry surface. Otherwise write `Not applicable`.
+
+- **Affected surface(s):**
+- **Required order / placement:** top-to-bottom sections, tab, part, or control placement.
+- **Must remain visible / unchanged:**
+- **Shared vs. concrete ownership:** reusable behavior versus per-sheet layout ownership.
+- **Theme scope:** `light`, `dark`, `both`, or `not applicable`, with reason.
+- **Visual reference:** approved screenshot path, existing surface, or explicit written acceptance criteria.
+
 ## Cases
 
 ### RV-01 — <short outcome>
@@ -33,6 +44,7 @@ State why runtime verification is required. For non-runtime work, state why it i
 - **Fixture/setup:**
 - **Visible player path:** numbered UI actions and controls.
 - **Expected visible result:**
+- **Visual assertion:** rendered order, hierarchy, clipping/overflow, theme state, and screenshot artifact path; write `not applicable` only for non-UI cases.
 - **State corroboration:** chat, map, document, Active Effect, settings, duration, or reload check.
 - **`page.evaluate` use:** `none` or purpose limited to setup / inspection / cleanup; explain any exception.
 - **Console/page errors:**

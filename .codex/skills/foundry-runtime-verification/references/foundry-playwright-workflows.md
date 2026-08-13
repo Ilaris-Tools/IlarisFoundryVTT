@@ -14,6 +14,14 @@
 - Use predicate-based waits (`expect(...).toBeVisible`, `waitForFunction`, `waitForSelector`), not fixed waits. Retain the established AppV2 click fallback only when normal clicking demonstrably fails.
 - Capture browser `console` warnings/errors and `pageerror`; fail or explicitly explain each unexpected diagnostic.
 
+## Visual UI acceptance
+
+- Before implementation, turn the approved OpenSpec UI acceptance contract into assertions: identify the concrete Foundry surface, the intended top-to-bottom part/section order or tab placement, and the controls/headings that must remain visible. If this is missing, return to exploration or proposal work instead of guessing from a shared template.
+- Open the real surface through the player path, take a screenshot after it finishes rendering, and inspect it against the contract. Check section order, hierarchy, clipping/overflow, and accidental duplicate or displaced content. Keep the screenshot as test evidence or an attachment/output artifact.
+- For a reused AppV2 base, mixin, or template partial, verify both the original and the newly sharing sheet. Reuse data preparation and event listeners, but let each concrete sheet own its template part order; a shared base must not implicitly prepend or append a section globally unless that is explicitly the contract.
+- Test light and dark mode when a CSS, color, contrast, or theme-sensitive surface changed, or when the acceptance contract calls for it. Otherwise record why one theme is sufficient.
+- Use stable structural locators to assert order where possible (for example, compare element indexes within the sheet); treat screenshot inspection as the final visual safeguard, not the only assertion.
+
 ## State and cleanup
 
 - Snapshot the precise world state that a case changes. Track document IDs created by the case; never delete by broad name, type, pack, or collection scans.
@@ -24,7 +32,7 @@
 
 | Change affects    | Include when applicable                                                                                                                                             |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Dialogs or sheets | Visible controls, valid and invalid state, rerender/reopen behavior, rendered result                                                                                |
+| Dialogs or sheets | Visible controls, stated section/tab order, valid and invalid state, rerender/reopen behavior, rendered result, screenshot-based visual review                      |
 | Compendiums       | Pack/restart, item discoverability, sheet rendering, player use of authored data                                                                                    |
 | Active Effects    | Applied effect, sheet/chat visibility, modifiers, stacking/replacement, duration/charge expiry, removal                                                             |
 | Regions or zones  | Visible placement preview, placement confirmation, initial occupant, enter/leave/re-entry, concurrent Regions, expiry/deletion, reload, exact Region/effect cleanup |

@@ -15,6 +15,7 @@ Create trustworthy runtime evidence for the active OpenSpec change. Never use a 
     - **Runtime-relevant:** Foundry UI, dialogs, maps, compendium data, settings, documents, effects, lifecycle, migrations, or rendered results change.
     - **Not runtime-relevant:** documentation-only, tooling-only, or a pure internal refactor with no observable Foundry result. Create a short `runtime-verification.md` stating the reason and do not invent test cases.
 4. For runtime-relevant work, create or update `openspec/changes/<change>/runtime-verification.md` from [the checklist template](references/runtime-checklist-template.md). Derive each case from a spec scenario or task; include only applicable cases.
+5. When the change affects a rendered UI surface, read the design's UI acceptance contract before implementation. If it is absent or ambiguous, return to exploration/proposal work; do not invent an order from shared template code.
 
 ## 2. Prepare a reliable Foundry environment
 
@@ -32,6 +33,7 @@ Read [Foundry and Playwright workflow patterns](references/foundry-playwright-wo
 3. After the UI assertion, inspect the relevant chat, map, document, Active Effect, duration, or persistence state. Treat inspection as corroboration, not a substitute for the UI flow.
 4. Attach browser console/page-error collection. Investigate unexpected warnings and errors before marking a case passed; document only a specific accepted upstream compatibility warning, never a blanket exemption.
 5. Use predicate-based waits and the project fixture patterns. Do not hide timing defects with fixed sleeps.
+6. For a rendered UI change, inspect a screenshot of the real Foundry surface after the visible path. Verify the stated section/tab order, heading/control visibility, overflow/clipping, and any explicitly scoped theme appearance. Capture light and dark mode only when the change or acceptance contract affects theme-sensitive presentation.
 
 ## 4. Preserve isolation and evidence
 
@@ -39,6 +41,7 @@ Read [Foundry and Playwright workflow patterns](references/foundry-playwright-wo
 2. For stateful behavior, verify the meaningful transition(s): e.g. application and expiry, entering/leaving/re-entering a Region, replacement, deletion, reload, or duration tick as applicable.
 3. Mark each case `pass`, `fail`, `blocked`, `not-run`, or `user-confirmed`. A manual check records exactly what the user confirmed and identifies unverified boundaries; it is not silently converted to automated coverage.
 4. Do not mark validation or E2E tasks complete while a required runtime case is failed, blocked, or not run. Summarize evidence and remaining risk in the checklist.
+5. A screenshot is evidence against the written UI contract, not a substitute for it. Record the screenshot/artifact path and any intentional deviation.
 
 ## 5. Improve the workflow from real feedback
 
