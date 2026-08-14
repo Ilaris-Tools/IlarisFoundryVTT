@@ -1,7 +1,7 @@
 # Runtime Verification: refine-wall-traversal-initial-occupants
 
 **Scope:** `runtime-relevant`
-**Status:** `in-progress`
+**Status:** `complete`
 **World:** `ilaris-e2e-world-v14363-r1`
 **Server:** `http://127.0.0.1:30000`
 **Source revision:** `feature/refine-wall-traversal-initial-occupants` before implementation
@@ -49,7 +49,7 @@ results are runtime evidence, not a changed layout contract.
 - **Console/page errors:** collect and investigate unexpected diagnostics.
 - **Evidence:** `npm.cmd run test:e2e -- --grep "keeps initial wall placement inert" e2e/cases/e2e-039-wall-traversal-trigger/e2e-039-wall-traversal-trigger.spec.ts` passed on 2026-08-14; isolated existing inbound E2E-039 regression also passed.
 - **Cleanup:** remove exact created IDs and restore the baseline Token position and health.
-- **Result / unverified boundary:** passed; manual dark-theme inspection remains outstanding.
+- **Result / unverified boundary:** user-confirmed in light and dark themes.
 
 ### RV-02 — Initial wall placement is inert
 
@@ -64,7 +64,7 @@ results are runtime evidence, not a changed layout contract.
 - **Console/page errors:** collect and investigate unexpected diagnostics.
 - **Evidence:** focused outbound E2E-039 case passed: its initial Region containment assertion was true and its initial GE prompt count was zero before the player drag.
 - **Cleanup:** delete only the created Region and restore baseline state.
-- **Result / unverified boundary:** passed; the human light/dark review remains outstanding.
+- **Result / unverified boundary:** user-confirmed in light and dark themes.
 
 ### RV-03 — Outbound failure remains table-managed
 
@@ -79,12 +79,12 @@ results are runtime evidence, not a changed layout contract.
 - **Console/page errors:** collect and investigate unexpected diagnostics.
 - **Evidence:** focused outbound E2E-039 case passed after a failed resistance; it asserted the target stayed at its player-moved position, the Region-owned marker existed, and one failure notice existed.
 - **Cleanup:** remove the created Region and its marker; restore health and Token state.
-- **Result / unverified boundary:** passed; the visual light/dark review remains outstanding.
+- **Result / unverified boundary:** user-confirmed in light and dark themes.
 
 ### RV-04 — Guide reflects the boundary rule
 
 - **Trace:** `The Zone guide documents wall traversal boundary behavior`; tasks 3.1 and 5.4.
-- **Status:** `not-run`
+- **Status:** `user-confirmed`
 - **Fixture/setup:** packed quick-reference compendium.
 - **Visible player path:** open the Zone automation guide in Foundry.
 - **Expected visible result:** German text states placement over a Token is inert and normal movement into or out of the wall is a traversal attempt.
@@ -92,9 +92,9 @@ results are runtime evidence, not a changed layout contract.
 - **State corroboration:** none beyond packed Journal source.
 - **`page.evaluate` use:** none for the central reading path.
 - **Console/page errors:** collect and investigate unexpected diagnostics.
-- **Evidence:** runtime screenshots and pack/restart output.
+- **Evidence:** user confirmation of task 5.4 on 2026-08-14.
 - **Cleanup:** close the journal without modifying persistent data.
-- **Result / unverified boundary:** pending implementation.
+- **Result / unverified boundary:** user confirmed the packed guide and visible marker/chat notice in light and dark themes.
 
 ## Teardown record
 
@@ -105,6 +105,12 @@ results are runtime evidence, not a changed layout contract.
 ## Final assessment
 
 - **Passed cases:** RV-01, RV-02, RV-03.
-- **Failed / blocked / not-run cases:** RV-04 and manual light/dark inspection are not run.
+- **Failed / blocked / not-run cases:** none; RV-04 is user-confirmed.
 - **Unexpected console diagnostics and disposition:** focused E2E-039 runs passed with no unexpected page or console diagnostics.
-- **Runtime validation conclusion:** movement behavior is verified through focused real-canvas E2E; documentation and theme presentation require manual confirmation.
+- **Runtime validation conclusion:** movement behavior is verified through focused real-canvas E2E, and the required documentation/theme presentation is user-confirmed.
+
+## Manual confirmation
+
+| Tester | Verified behavior                                                                                                               | Result           | Remaining automated or unverified boundary |
+| ------ | ------------------------------------------------------------------------------------------------------------------------------- | ---------------- | ------------------------------------------ |
+| User   | Task 5.4: inert initial wall placement; one normal outbound traversal; visible marker and chat notice in light and dark themes. | `user-confirmed` | None.                                      |

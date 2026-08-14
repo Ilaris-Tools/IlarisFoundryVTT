@@ -27,7 +27,7 @@
 - [x] 5.1 Use the `foundry-runtime-verification` skill to derive and record a change-specific checklist covering inert placement, outbound traversal, resistance result, marker/notice visibility, and cleanup.
 - [x] 5.2 Extend `e2e/cases/e2e-039-wall-traversal-trigger/e2e-039-wall-traversal-trigger.spec.ts` with a normal map movement from inside _Wand aus Dornen_ to outside, including resistance result and teardown.
 - [x] 5.3 Run `node utils/foundry-lifecycle.mjs PackAndRestart` for `ilaris-e2e-world-v14363-r1`, then execute the focused E2E case and its Zone regressions.
-- [ ] 5.4 Manually verify placement over a Token is inert and a later normal outbound movement creates one traversal; inspect the visible marker and chat notice in light and dark themes.
+- [x] 5.4 Manually verify placement over a Token is inert and a later normal outbound movement creates one traversal; inspect the visible marker and chat notice in light and dark themes.
 
 ## 6. Final validation and handoff
 
