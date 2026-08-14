@@ -153,6 +153,47 @@ Persistent zones need predictable cleanup, visibility, ownership, and recovery w
 - Requires explicit ownership and permission rules for player-created zones.
 - Cleanup must be idempotent so a deleted Region, expired Region, and manual dismissal cannot race destructively.
 
+## 6. Wall Initial Occupants and Outbound Crossing
+
+**Suggested change name:** `refine-wall-traversal-initial-occupants`
+
+### Problem
+
+The current wall traversal profile deliberately detects only a Foundry `ENTER`
+movement segment. A token already within a wall when it is created can move
+inside the wall or leave it without a traversal event. Enabling
+`triggerOnCreate` would only apply ordinary Zone pre-effects at placement; it
+would not run the separate traversal resistance and would not govern a later
+outbound crossing.
+
+### Proposed scope
+
+- Decide and document the rule outcome when a wall is initially placed over a
+  token.
+- Extend the opt-in wall traversal model, if the rule interpretation requires
+  it, to distinguish outward `EXIT` crossings from internal/parallel movement.
+- Preserve the existing one-event-per-movement deduplication and the separate
+  unconditional-damage plus movement-resistance branches.
+- Keep generic Region entry/containment and non-wall Zone behavior unchanged.
+
+### Acceptance examples
+
+- A token starting inside a wall follows the explicitly authored
+  placement/initial-occupant rule.
+- Moving entirely within the wall does not create a prompt or damage event.
+- An outbound crossing either resolves exactly one configured traversal event
+  or remains intentionally exempt, according to the settled rule decision.
+- Leaving and later re-entering retains the existing normal crossing behavior.
+
+### Dependencies and risks
+
+- Builds on `add-wall-traversal-triggers` and Foundry v14
+  `TokenDocument#segmentizeRegionMovementPath` segment semantics.
+- Requires a rule decision before implementation; outgoing crossing must not
+  be silently equated with casting a wall directly on an actor.
+- Must be verified with visible map movement and ownership-scoped cleanup, not
+  only final containment state.
+
 ## Decision Register
 
 The following decisions are already settled for future proposals:
@@ -176,3 +217,6 @@ The following decisions remain intentionally open until the relevant follow-up p
 - Whether caster deletion or movement ends a zone.
 - How zones created during a combatant's turn handle that same turn's trigger.
 - Which periodic cadences are supported and which client is authoritative.
+- How a wall handles tokens initially inside it, including whether an outbound
+  crossing is a traversal attempt and whether placement itself has a separate
+  consequence.
