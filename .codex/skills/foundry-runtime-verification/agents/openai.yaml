@@ -1,4 +1,4 @@
 interface:
-  display_name: "Foundry Runtime Verification"
-  short_description: "Verify OpenSpec changes in a live Foundry world"
-  default_prompt: "Use $foundry-runtime-verification to derive and run runtime checks for the active OpenSpec change."
+    display_name: 'Foundry Runtime Verification'
+    short_description: 'Verify OpenSpec changes in a live Foundry world'
+    default_prompt: 'Use $foundry-runtime-verification to derive and run runtime checks for the active OpenSpec change.'

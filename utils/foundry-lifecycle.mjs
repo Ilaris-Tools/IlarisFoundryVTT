@@ -2,7 +2,15 @@
 
 // Cross-platform Foundry lifecycle helper for local E2E validation.
 import { spawn, spawnSync } from 'node:child_process'
-import { closeSync, existsSync, mkdirSync, openSync, rmdirSync, statSync, unlinkSync } from 'node:fs'
+import {
+    closeSync,
+    existsSync,
+    mkdirSync,
+    openSync,
+    rmdirSync,
+    statSync,
+    unlinkSync,
+} from 'node:fs'
 import http from 'node:http'
 import path from 'node:path'
 import process from 'node:process'
@@ -11,7 +19,12 @@ import { fileURLToPath } from 'node:url'
 const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..')
 const options = parseOptions(process.argv.slice(2))
 function parseOptions(args) {
-    const options = { action: args[0] || 'Status', world: 'ilaris-e2e-world-v14363-r1', port: 30000, timeout: 60 }
+    const options = {
+        action: args[0] || 'Status',
+        world: 'ilaris-e2e-world-v14363-r1',
+        port: 30000,
+        timeout: 60,
+    }
     for (let index = 1; index < args.length; index += 1) {
         const option = args[index]
         const value = args[index + 1]
@@ -20,7 +33,9 @@ function parseOptions(args) {
         if (option === '--timeout') options.timeout = Number(value)
         if (option.startsWith('--')) index += 1
     }
-    if (!['Status', 'Stop', 'Pack', 'Start', 'Restart', 'PackAndRestart'].includes(options.action)) {
+    if (
+        !['Status', 'Stop', 'Pack', 'Start', 'Restart', 'PackAndRestart'].includes(options.action)
+    ) {
         throw new Error(`Unknown action '${options.action}'.`)
     }
     if (!Number.isInteger(options.port) || options.port < 1 || options.port > 65535) {
@@ -30,7 +45,9 @@ function parseOptions(args) {
         throw new Error('Timeout must be an integer between 1 and 120 seconds.')
     }
     if (!/^[A-Za-z0-9][A-Za-z0-9_-]*$/.test(options.world)) {
-        throw new Error('World identifiers may only contain letters, numbers, underscores, and hyphens.')
+        throw new Error(
+            'World identifiers may only contain letters, numbers, underscores, and hyphens.',
+        )
     }
     return options
 }
@@ -55,7 +72,9 @@ function wait(milliseconds) {
 function getListenerPids(port) {
     if (process.platform === 'win32') {
         const powershellPids = commandOutput('powershell.exe', [
-            '-NoProfile', '-NonInteractive', '-Command',
+            '-NoProfile',
+            '-NonInteractive',
+            '-Command',
             `Get-NetTCPConnection -State Listen -LocalPort ${port} | Select-Object -ExpandProperty OwningProcess`,
         ])
             .split(/\s+/)
@@ -76,10 +95,13 @@ function getListenerPids(port) {
 
 function testFoundryReady() {
     return new Promise((resolve) => {
-        const request = http.get({ host: '127.0.0.1', port: options.port, path: '/', timeout: 1000 }, (response) => {
-            response.resume()
-            resolve(true)
-        })
+        const request = http.get(
+            { host: '127.0.0.1', port: options.port, path: '/', timeout: 1000 },
+            (response) => {
+                response.resume()
+                resolve(true)
+            },
+        )
         request.on('timeout', () => request.destroy())
         request.on('error', () => resolve(false))
     })
@@ -89,19 +111,25 @@ async function waitFoundryReady() {
     const deadline = Date.now() + options.timeout * 1000
     while (Date.now() < deadline) {
         if (await testFoundryReady()) {
-            console.log(`Foundry is ready on http://127.0.0.1:${options.port} (world: ${options.world}).`)
+            console.log(
+                `Foundry is ready on http://127.0.0.1:${options.port} (world: ${options.world}).`,
+            )
             return
         }
         await wait(1000)
     }
-    throw new Error(`Foundry did not become ready on port ${options.port} within ${options.timeout} seconds.`)
+    throw new Error(
+        `Foundry did not become ready on port ${options.port} within ${options.timeout} seconds.`,
+    )
 }
 
 async function stopFoundry() {
     const pids = getListenerPids(options.port)
     if (!pids.length) {
         if (await testFoundryReady()) {
-            throw new Error(`Foundry is reachable on port ${options.port}, but its listener PID could not be identified. Install lsof or stop Foundry manually.`)
+            throw new Error(
+                `Foundry is reachable on port ${options.port}, but its listener PID could not be identified. Install lsof or stop Foundry manually.`,
+            )
         }
         console.log(`No process is listening on port ${options.port}.`)
         return
@@ -128,11 +156,16 @@ async function stopFoundry() {
 }
 
 async function runPackAll() {
-    if (getListenerPids(options.port).length || await testFoundryReady()) {
-        throw new Error(`Foundry is still listening on port ${options.port}. Stop it before running pack-all.`)
+    if (getListenerPids(options.port).length || (await testFoundryReady())) {
+        throw new Error(
+            `Foundry is still listening on port ${options.port}. Stop it before running pack-all.`,
+        )
     }
     console.log('Running npm run pack-all...')
-    const platformCommand = commandForPlatform(process.platform === 'win32' ? 'npm.cmd' : 'npm', ['run', 'pack-all'])
+    const platformCommand = commandForPlatform(process.platform === 'win32' ? 'npm.cmd' : 'npm', [
+        'run',
+        'pack-all',
+    ])
     const result = spawnSync(platformCommand.command, platformCommand.args, {
         cwd: projectRoot,
         stdio: 'inherit',
@@ -142,12 +175,16 @@ async function runPackAll() {
 
 function removeStaleFoundryLock() {
     const platformCommand = commandForPlatform(process.platform === 'win32' ? 'fvtt.cmd' : 'fvtt', [
-        'configure', 'get', 'dataPath',
+        'configure',
+        'get',
+        'dataPath',
     ])
     const result = spawnSync(platformCommand.command, platformCommand.args, { encoding: 'utf8' })
     const dataPath = result.status === 0 ? result.stdout.trim() : ''
     if (!dataPath) {
-        console.warn('Could not determine the Foundry data directory; leaving any lock file untouched.')
+        console.warn(
+            'Could not determine the Foundry data directory; leaving any lock file untouched.',
+        )
         return
     }
     const lockPath = path.join(dataPath, 'Config', 'options.json.lock')
@@ -159,13 +196,19 @@ function removeStaleFoundryLock() {
 }
 
 function assertFoundryCliAvailable() {
-    const platformCommand = commandForPlatform(process.platform === 'win32' ? 'fvtt.cmd' : 'fvtt', ['--version'])
+    const platformCommand = commandForPlatform(process.platform === 'win32' ? 'fvtt.cmd' : 'fvtt', [
+        '--version',
+    ])
     const result = spawnSync(platformCommand.command, platformCommand.args, { encoding: 'utf8' })
     if (result.error?.code === 'ENOENT') {
-        throw new Error('The Foundry CLI was not found. Install and configure @foundryvtt/foundryvtt-cli first.')
+        throw new Error(
+            'The Foundry CLI was not found. Install and configure @foundryvtt/foundryvtt-cli first.',
+        )
     }
     if (result.status !== 0) {
-        throw new Error('The Foundry CLI is not ready. Run `fvtt configure` before starting Foundry.')
+        throw new Error(
+            'The Foundry CLI is not ready. Run `fvtt configure` before starting Foundry.',
+        )
     }
 }
 
@@ -187,7 +230,12 @@ async function startFoundry() {
     const stderr = openSync(path.join(logDirectory, `foundry-${timestamp}.err.log`), 'a')
     console.log(`Launching Foundry world '${options.world}' on port ${options.port}.`)
     const platformCommand = commandForPlatform(process.platform === 'win32' ? 'fvtt.cmd' : 'fvtt', [
-        'launch', '--world', options.world, '--port', String(options.port), '--noupnp',
+        'launch',
+        '--world',
+        options.world,
+        '--port',
+        String(options.port),
+        '--noupnp',
     ])
     const child = spawn(platformCommand.command, platformCommand.args, {
         cwd: projectRoot,
@@ -202,7 +250,8 @@ async function startFoundry() {
 
 switch (options.action) {
     case 'Status':
-        if (await testFoundryReady()) console.log(`Foundry is ready on http://127.0.0.1:${options.port}.`)
+        if (await testFoundryReady())
+            console.log(`Foundry is ready on http://127.0.0.1:${options.port}.`)
         else {
             console.log(`Foundry is not reachable on http://127.0.0.1:${options.port}.`)
             process.exitCode = 1
