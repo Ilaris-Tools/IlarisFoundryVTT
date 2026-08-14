@@ -91,3 +91,13 @@ The system SHALL generate the current parser maneuver controls from free-text `s
 
 - **WHEN** a spell has text modifications and at least one structured form
 - **THEN** the dialog SHALL show the structured section and no text-parser duplicate
+
+### Requirement: Structured forms can override complete Zone lifecycle data
+
+The effective-form resolver SHALL merge a selected form's Zone lifecycle, duration-source, and trigger values with the source Item's Zone profile before normalization. A form that omits these values SHALL retain the base Zone values. Form selection SHALL remain dialog-local.
+
+#### Scenario: Langer Atem overrides only ongoing Zone behavior
+
+- **WHEN** an instant base Zone selects a form that overrides lifecycle, duration, and triggers but uses `effectMode: "inherit"`
+- **THEN** the resolved Zone SHALL use the form's persistent behavior
+- **AND** the resolved Pre-Effect list SHALL remain the base list
