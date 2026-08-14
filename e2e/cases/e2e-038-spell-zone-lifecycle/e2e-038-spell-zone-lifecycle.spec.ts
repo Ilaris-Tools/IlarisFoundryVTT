@@ -724,10 +724,21 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
                         },
                     ])
                     const context = resolveSpellModificationContext(spell, [])
+                    // This verifies generic create/re-entry resistance prompts.
+                    // Wand aus Dornen itself is intentionally traversal-only.
+                    const zone = {
+                        ...context.zone,
+                        trigger: {
+                            ...context.zone.trigger,
+                            triggerOnCreate: true,
+                            onEnter: true,
+                            onTraverse: false,
+                        },
+                    }
                     const region = await createPersistentZone({
                         scene,
                         regionData: createZoneRegionData(
-                            context.zone,
+                            zone,
                             { ...origin, direction: 0 },
                             { flags: { Ilaris: { e2eZone: true } } },
                         ),
@@ -740,7 +751,7 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
                             maechtigeMagieQs: 0,
                             getSelectedSpellModificationId: () => '',
                         },
-                        zone: context.zone,
+                        zone,
                         preEffects: [
                             {
                                 baseDuration: 1,

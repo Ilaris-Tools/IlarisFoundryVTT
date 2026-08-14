@@ -11,6 +11,7 @@ import {
     dispatchPersistentZoneTurnStart,
     reducePersistentZoneDurations,
     reconcilePersistentPassiveZones,
+    reconcileZoneAdministration,
     resolveZoneTraversalResistance,
     updatePersistentZoneMembership,
 } from '../zone-lifecycle.js'
@@ -55,6 +56,37 @@ describe('persistent zone duration', () => {
             movement.origin,
             ...movement.passed.waypoints,
         ])
+    })
+
+    test('administrative reconciliation updates triggered-zone membership without dispatching', async () => {
+        const actor = { id: 'target-actor', name: 'Target' }
+        const token = { id: 'target-token', actor, actorLink: true }
+        const zone = {
+            applicationId: 'cast-a',
+            spellUuid: 'Item.spell',
+            profile: {
+                lifecycle: 'persistent',
+                effectMode: 'triggered',
+                trigger: { onEnter: true },
+            },
+            durationType: 'sceneRounds',
+            membership: ['stale-token'],
+        }
+        const region = {
+            id: 'region-a',
+            flags: { Ilaris: { zone } },
+            tokens: new Set([token]),
+            update: jest.fn(),
+        }
+        const scene = { regions: [region] }
+        global.ChatMessage.create = jest.fn()
+
+        await reconcileZoneAdministration(scene)
+
+        expect(region.update).toHaveBeenCalledWith({
+            'flags.Ilaris.zone.membership': ['target-token'],
+        })
+        expect(global.ChatMessage.create).not.toHaveBeenCalled()
     })
 
     test('rejects internal, exit-only, and teleport movement paths', () => {

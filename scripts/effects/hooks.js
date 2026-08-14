@@ -11,6 +11,7 @@ import {
 import { registerOpposedEscapeHandler } from './opposed-escape.js'
 import { registerStatusConditionLifecycle } from './status-conditions.js'
 import { registerZoneLifecycleHooks } from '../combat/zones/zone-lifecycle.js'
+import { registerZoneAdministrationHooks } from '../combat/zones/zone-administration-hooks.js'
 
 Hooks.once('init', () => {
     registerResistHandler()
@@ -18,4 +19,5 @@ Hooks.once('init', () => {
     registerOpposedEscapeHandler()
     registerStatusConditionLifecycle()
     registerZoneLifecycleHooks()
+    registerZoneAdministrationHooks()
 })

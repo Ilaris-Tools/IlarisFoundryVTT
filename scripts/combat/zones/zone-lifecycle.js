@@ -76,6 +76,16 @@ function hasTraversalTrigger(zone) {
     )
 }
 
+function isAdministrablePersistentZone(zone) {
+    const durationType = zone?.durationType || zone?.profile?.duration?.type
+    return Boolean(
+        zone?.applicationId &&
+        zone?.spellUuid &&
+        zone?.profile?.lifecycle === 'persistent' &&
+        (durationType === 'sceneRounds' || durationType === 'infinite'),
+    )
+}
+
 function isTeleportAction(action) {
     const actions =
         globalThis.CONFIG?.Token?.movement?.actions ||
@@ -747,6 +757,36 @@ export async function reconcilePersistentPassiveZones(scene) {
         const current = resolveZoneTargetsForSource(region, zone.profile, zone.casterTokenId)
         await applyPassiveZoneEffects(region, current)
         const membership = current.map((target) => target.tokenId)
+        if (
+            membership.length !== (zone.membership || []).length ||
+            membership.some((tokenId) => !(zone.membership || []).includes(tokenId))
+        )
+            await region.update({ [`flags.${FLAG_SCOPE}.${FLAG_KEY}.membership`]: membership })
+    }
+}
+
+/**
+ * Repair persisted Zone membership without dispatching any gameplay trigger.
+ * This is intentionally distinct from updatePersistentZoneMembership, whose
+ * enter-path is correct for live movement but unsafe for GM maintenance.
+ */
+export async function reconcileZoneAdministration(scene) {
+    if (!activeGM() || !scene) return
+    for (const region of scene.regions || []) {
+        const zone = zoneState(region)
+        if (!isAdministrablePersistentZone(zone) || zone.initializing) continue
+        const current = resolveZoneTargetsForSource(region, zone.profile, zone.casterTokenId)
+        const membership = current.map((target) => target.tokenId)
+        if (isPassiveZone(zone)) {
+            const currentIds = new Set(membership)
+            for (const tokenId of zone.membership || []) {
+                if (currentIds.has(tokenId)) continue
+                const token = scene.tokens?.get?.(tokenId)
+                const target = selectedTargetForToken(token)
+                if (target) await removePassiveEffectsForTarget(region, zone, target, token.actor)
+            }
+            await applyPassiveZoneEffects(region, current)
+        }
         if (
             membership.length !== (zone.membership || []).length ||
             membership.some((tokenId) => !(zone.membership || []).includes(tokenId))
