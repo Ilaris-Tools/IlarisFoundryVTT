@@ -111,3 +111,47 @@ Simple debuff spells (single-target, non-instant duration, stat penalty or condi
 
 - **WHEN** a debuff spell has `wirkungsdauer: "4 Initiativphasen"`
 - **THEN** the pre-effect `baseDuration` SHALL be `4`
+
+### Requirement: Reviewed resistance-outcome spell source data
+
+The reviewed spell source Items SHALL use explicit resistance outcome payloads
+when their rules assign distinct persistent results to success and failure.
+Their marker and modifier effects SHALL preserve the source spell provenance
+required by the `supernatural-pre-effects` capability.
+
+#### Scenario: Fluch des Gewürms has distinct resistance outcomes
+
+- **WHEN** _Fluch des Gewürms_ is examined in compendium `_source/`
+- **THEN** it SHALL define a Willenskraft 16 resistance Pre-Effect with a
+  failure marker labelled `Handlungsunfähig` and a success payload applying a
+  global `-4` Ilaris modifier for 16 Initiativephasen
+
+#### Scenario: Krabbelnder Schrecken has distinct resistance outcomes
+
+- **WHEN** _Krabbelnder Schrecken_ is examined in compendium `_source/`
+- **THEN** it SHALL define the same reviewed Willenskraft 16 failure-marker
+  and success-`-4` outcome pattern for 16 Initiativephasen
+
+#### Scenario: Hexengalle uses a marker instead of a numeric placeholder
+
+- **WHEN** _Hexengalle_ is examined in compendium `_source/`
+- **THEN** its failed Zähigkeit 16 resistance result SHALL use a timed,
+  spell-traceable `Handlungsunfähig` marker for two Initiativephasen
+- **AND** it SHALL not use an unrelated zero-valued modifier merely to create
+  an effect document
+
+### Requirement: Reviewed spells author structured forms
+
+The source compendium SHALL author forms for Attributo, Tlalucs Odem Pestgestank, Fortifex arkane Wand, and generic anti-magic talents. Attributo SHALL require exactly one attribute and apply roll-only modifiers without changing raw attributes/derived values. Miasmafaxius SHALL inherit Pestgestank's outcome while overriding its profile. Schimmernder Schild SHALL replace Fortifex's outcome. Every generic anti-magic talent SHALL require exactly one of Gegenzauber, Magie unterdruecken, Zauber aufheben, and Wesenheit bannen.
+
+#### Scenario: Attributo is roll-only
+
+- **WHEN** the FF Attributo form succeeds
+- **THEN** it SHALL create +2 FF attribute-test and +1 FF-selected skill-test semantic modifiers
+- **AND** it SHALL not change `system.attribute.FF.wert` or a derived value
+
+#### Scenario: Anti-magic outcome is transparently player-managed
+
+- **WHEN** a generic anti-magic form succeeds
+- **THEN** cast output SHALL identify the selected form and its configured profile
+- **AND** no misleading automatic reaction, zone, target-effect, or entity outcome SHALL be created
