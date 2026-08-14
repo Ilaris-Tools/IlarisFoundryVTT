@@ -298,4 +298,168 @@ test.describe('E2E-039 · Wand aus Dornen traversal trigger', () => {
             await playerContext.close()
         }
     })
+
+    test('keeps initial wall placement inert and resolves a normal outbound traversal', async ({
+        page,
+        browser,
+    }) => {
+        const playerContext = await browser.newContext()
+        const playerPage = await playerContext.newPage()
+        try {
+            const setup = await page.evaluate(
+                async ({ casterName, targetActorName, packId }) => {
+                    const actor = game.actors?.getName(casterName) as any
+                    const targetActor = game.actors?.getName(targetActorName) as any
+                    const player = game.users?.getName('e2e-player') as any
+                    const scene = canvas.scene as any
+                    const spell = (await game.packs?.get(packId)?.getDocuments())?.find(
+                        (entry: any) => entry.name === 'Wand aus Dornen',
+                    ) as any
+                    if (!actor || !targetActor || !player || !scene || !spell)
+                        throw new Error('E2E Wand aus Dornen fehlt.')
+                    const grid = canvas.grid.size
+                    const origin = {
+                        x: canvas.dimensions.sceneX + grid * 16,
+                        y: canvas.dimensions.sceneY + grid * 8,
+                    }
+                    const [targetDocument] = await scene.createEmbeddedDocuments('Token', [
+                        {
+                            name: 'E2E Wand-Ausgang',
+                            actorId: targetActor.id,
+                            actorLink: false,
+                            ownership: {
+                                default: 0,
+                                [player.id]: CONST.DOCUMENT_OWNERSHIP_LEVELS.OWNER,
+                            },
+                            x: origin.x,
+                            y: origin.y,
+                            flags: { Ilaris: { e2eWallTraversal: true } },
+                        },
+                    ])
+                    await new Promise((resolve) => setTimeout(resolve, 250))
+                    const target = canvas.tokens?.get(targetDocument.id)
+                    if (!target) throw new Error('E2E Wand-Ausgang konnte nicht gerendert werden.')
+                    const { createPersistentZone } =
+                        await import('/systems/Ilaris/scripts/combat/zones/zone-lifecycle.js')
+                    const { createZoneRegionData } =
+                        await import('/systems/Ilaris/scripts/combat/zones/zone-region-adapter.js')
+                    const zone = foundry.utils.deepClone(spell.system.zone)
+                    const region = await createPersistentZone({
+                        scene,
+                        regionData: createZoneRegionData(
+                            zone,
+                            {
+                                x: target.center.x - grid * 2,
+                                y: target.center.y - grid / 2,
+                                direction: 0,
+                            },
+                            { flags: { Ilaris: { e2eWallTraversal: true } } },
+                        ),
+                        dialog: {
+                            item: spell,
+                            actor,
+                            zoneCasterTokenId: '',
+                            armedInputValues: {},
+                            maneuverDurationBonus: 0,
+                            maechtigeMagieQs: 0,
+                            getSelectedSpellModificationId: () => '',
+                        },
+                        zone,
+                        preEffects: spell.system.preEffects,
+                    })
+                    if (!region) throw new Error('E2E Wand-Region wurde nicht erzeugt.')
+                    await new Promise((resolve) => setTimeout(resolve, 250))
+                    return {
+                        regionId: region.id,
+                        tokenId: targetDocument.id,
+                        start: { x: target.center.x, y: target.center.y },
+                        destination: { x: target.center.x, y: target.center.y + grid * 4 },
+                        initialInside: targetDocument.testInsideRegion(region),
+                        initialTraversalPrompts: game.messages.contents.filter((message: any) =>
+                            message.content.includes('Widerstand leisten (GE)'),
+                        ).length,
+                    }
+                },
+                { casterName: CASTER_NAME, targetActorName: TARGET_ACTOR_NAME, packId: SPELL_PACK },
+            )
+
+            expect(setup.initialInside).toBe(true)
+            expect(setup.initialTraversalPrompts).toBe(0)
+            await loginAndJoinWorld(playerPage, { ...foundryConfig, username: 'e2e-player' })
+            await page.evaluate(async () => {
+                if (game.paused) await game.togglePause(false, { broadcast: true })
+            })
+            // A client joining after the GM's broadcast may retain the stale
+            // paused bootstrap value. This fixture-only local refresh mirrors
+            // the already-unpaused session and permits the real map drag.
+            await playerPage.evaluate(() => {
+                if (game.paused) game.togglePause(false)
+            })
+            await playerPage.waitForFunction(() => !game.paused)
+            await openChatSidebar(playerPage)
+            await playerPage.evaluate(async ({ tokenId, start }) => {
+                const token = canvas.tokens?.get(tokenId)
+                if (!token) throw new Error('Spieler-Ziel ist nicht auf dem Canvas bereit.')
+                await canvas.animatePan({ x: start.x, y: start.y + canvas.grid.size * 2 })
+            }, setup)
+
+            await dragTokenAcrossWall(playerPage, setup.tokenId, setup.destination)
+            await expect
+                .poll(() =>
+                    page.evaluate(
+                        ({ tokenId, start }) =>
+                            (canvas.scene?.tokens.get(tokenId)?.y ?? start.y) > start.y,
+                        setup,
+                    ),
+                )
+                .toBe(true)
+            await expect
+                .poll(() =>
+                    page.evaluate(
+                        (regionId) =>
+                            game.messages.contents.some((message: any) => {
+                                const serialized = message.content.match(
+                                    /data-pre-effect-data="([^"]+)"/,
+                                )?.[1]
+                                return (
+                                    serialized &&
+                                    JSON.parse(decodeURIComponent(serialized)).traversal
+                                        ?.regionId === regionId
+                                )
+                            }),
+                        setup.regionId,
+                    ),
+                )
+                .toBe(true)
+
+            await resolveTraversalPrompt(playerPage, false)
+            await expect
+                .poll(() =>
+                    page.evaluate(
+                        ({ tokenId, regionId, start }) => {
+                            const token = canvas.scene?.tokens.get(tokenId)
+                            const actor = token?.actor as any
+                            return {
+                                remainedOutside: (token?.y ?? start.y) > start.y,
+                                hasMarker: Array.from(actor?.effects ?? []).some(
+                                    (effect: any) =>
+                                        effect.flags?.ilaris?.zoneTraversalMarker === true &&
+                                        effect.flags?.ilaris?.zoneRegionId === regionId,
+                                ),
+                                hasNotice: game.messages.contents.some(
+                                    (message: any) =>
+                                        message.flags?.ilaris?.zoneTraversalFailure?.regionId ===
+                                            regionId &&
+                                        message.content.includes('Token vor der Wand'),
+                                ),
+                            }
+                        },
+                        { tokenId: setup.tokenId, regionId: setup.regionId, start: setup.start },
+                    ),
+                )
+                .toEqual({ remainedOutside: true, hasMarker: true, hasNotice: true })
+        } finally {
+            await playerContext.close()
+        }
+    })
 })

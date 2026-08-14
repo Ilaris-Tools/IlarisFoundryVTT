@@ -89,7 +89,25 @@ describe('persistent zone duration', () => {
         expect(global.ChatMessage.create).not.toHaveBeenCalled()
     })
 
-    test('rejects internal, exit-only, and teleport movement paths', () => {
+    test('classifies a normal EXIT movement through a Region', () => {
+        global.CONST = { REGION_MOVEMENT_SEGMENTS: { ENTER: 1, MOVE: 2, EXIT: 3 } }
+        const region = { id: 'wall-region' }
+        const token = {
+            id: 'target-token',
+            segmentizeRegionMovementPath: jest.fn(() => [{ type: 3, action: 'walk' }]),
+        }
+        const movement = {
+            id: 'movement-exit',
+            origin: { x: 100, y: 0 },
+            passed: { waypoints: [{ x: 0, y: 0, action: 'walk' }] },
+        }
+
+        expect(classifyZoneTraversalMovement(region, token, movement)).toEqual({
+            window: 'wall-region:target-token:movement-exit',
+        })
+    })
+
+    test('rejects internal, initial, and teleport movement paths', () => {
         global.CONST = {
             REGION_MOVEMENT_SEGMENTS: { ENTER: 1, MOVE: 2, EXIT: 3 },
             TOKEN_MOVEMENT_ACTIONS: { teleport: { teleport: true } },
@@ -106,10 +124,9 @@ describe('persistent zone duration', () => {
         }
 
         expect(classifyZoneTraversalMovement(region, token, movement)).toBeNull()
-        token.segmentizeRegionMovementPath.mockReturnValue([{ type: 3, action: 'walk' }])
-        expect(classifyZoneTraversalMovement(region, token, movement)).toBeNull()
         token.segmentizeRegionMovementPath.mockReturnValue([{ type: 1, action: 'teleport' }])
         expect(classifyZoneTraversalMovement(region, token, movement)).toBeNull()
+        expect(classifyZoneTraversalMovement(region, token, null)).toBeNull()
     })
 
     test('dispatches one traversal resistance for an entered wall without generic entry dispatch', async () => {
@@ -156,6 +173,53 @@ describe('persistent zone duration', () => {
             dispatchPersistentZoneTraversal(target, movement),
             dispatchPersistentZoneTraversal(target, movement),
         ])
+
+        expect(global.ChatMessage.create).toHaveBeenCalledTimes(1)
+        expect(global.ChatMessage.create.mock.calls[0][0].content).toContain(
+            'Widerstand leisten (GE)',
+        )
+    })
+
+    test('dispatches the existing traversal resistance flow for an outbound wall movement', async () => {
+        global.CONST = {
+            REGION_MOVEMENT_SEGMENTS: { ENTER: 1, MOVE: 2, EXIT: 3 },
+            DOCUMENT_OWNERSHIP_LEVELS: { OWNER: 3 },
+        }
+        global.ChatMessage.create = jest.fn().mockResolvedValue(undefined)
+        const target = {
+            id: 'target-token',
+            actor: { id: 'target-actor', name: 'Target', isToken: true },
+            actorLink: false,
+            segmentizeRegionMovementPath: jest.fn(() => [{ type: 3, action: 'walk' }]),
+        }
+        const zone = {
+            applicationId: 'cast-a',
+            spellUuid: 'Item.wand',
+            casterUuid: 'Actor.caster',
+            profile: {
+                shape: 'rectangle',
+                lifecycle: 'persistent',
+                effectMode: 'triggered',
+                trigger: { onTraverse: true, onEnter: false },
+                traversal: { avoidTest: { enabled: true, attribut: 'GE', resistDifficulty: 16 } },
+            },
+            preEffects: [],
+        }
+        const scene = { id: 'scene-a', regions: [] }
+        const region = { id: 'wall-region', parent: scene, flags: { Ilaris: { zone } } }
+        scene.regions = [region]
+        target.parent = scene
+        global.foundry.utils.fromUuid.mockImplementation((uuid) => {
+            if (uuid === 'Item.wand') return { uuid, name: 'Wand aus Dornen' }
+            if (uuid === 'Actor.caster') return { uuid, id: 'caster', name: 'Caster' }
+            return null
+        })
+
+        await dispatchPersistentZoneTraversal(target, {
+            id: 'movement-exit',
+            origin: { x: 100, y: 0 },
+            passed: { waypoints: [{ x: 0, y: 0, action: 'walk' }] },
+        })
 
         expect(global.ChatMessage.create).toHaveBeenCalledTimes(1)
         expect(global.ChatMessage.create.mock.calls[0][0].content).toContain(

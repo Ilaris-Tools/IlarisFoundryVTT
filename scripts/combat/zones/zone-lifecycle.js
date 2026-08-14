@@ -118,7 +118,14 @@ export function classifyZoneTraversalMovement(region, token, movement) {
     const segments =
         token.segmentizeRegionMovementPath?.(region, [movement.origin, ...waypoints]) || []
     const enter = globalThis.CONST?.REGION_MOVEMENT_SEGMENTS?.ENTER
-    if (!segments.some((segment) => segment?.type === enter && !isTeleportAction(segment?.action)))
+    const exit = globalThis.CONST?.REGION_MOVEMENT_SEGMENTS?.EXIT
+    if (
+        !segments.some(
+            (segment) =>
+                (segment?.type === enter || segment?.type === exit) &&
+                !isTeleportAction(segment?.action),
+        )
+    )
         return null
     return { window: [region.id, token.id, movement.id].join(':') }
 }
