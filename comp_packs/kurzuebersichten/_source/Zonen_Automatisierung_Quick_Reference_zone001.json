@@ -36,6 +36,23 @@
       "ownership": { "default": -1 },
       "flags": {},
       "_key": "!journal.pages!kurzzone001.kurzzonepage002"
+    },
+    {
+      "_id": "kurzzonepage003",
+      "name": "Dauerquellen und Aeolitus",
+      "type": "text",
+      "title": { "show": true, "level": 1 },
+      "text": {
+        "format": 1,
+        "content": "<h1>Dauerquellen und Aeolitus Windgebraus</h1>\n<p>Bleibende Zonen können ihre Dauer als feste Szenenrunden oder aus einem <strong>Hauptattribut der zaubernden Person</strong> beziehen. Bei der erfolgreichen Platzierung wird ein Attributswert genau einmal gelesen und als gewöhnliche numerische Szenenrunden in der Region gespeichert. Eine spätere Änderung des Attributs verändert die bestehende Zone nicht. Ein fehlender oder ungültiger Wert erzeugt keine Region.</p>\n<h2>Langer Atem</h2>\n<p><strong>Aeolitus Windgebraus</strong> ist normalerweise ein sofortiger Kegel. Die Form <strong>Langer Atem</strong> hält ihn für den beim Wirken erfassten KO-Wert in Szenenrunden aufrecht und löst bei Erzeugung, beim Betreten und zu Beginn jeder Kampfrunde aus. Konzentration wird nicht automatisch erkannt: Endet sie, entfernt die Spielleitung die Zone über die Zonenverwaltung.</p>\n<h2>Zurückstoßen (Spielleitung)</h2>\n<p>Ein Pre-Effect-Ergebnis kann zusätzlich zu einem Zustand einen sichtbaren Hinweis-Effekt und <strong>Zurückstoßen (Spielleitung)</strong> verwenden. Nach einer misslungenen Widerstandsprobe erhalten Zielbesitzende und aktive Spielleitungen eine private Nachricht. Der Zustand und der Hinweis-Effekt werden normal mit Zauber, gewählter Form, Fertigkeit, Wirkender Person und Zieltoken verknüpft. Foundry bewegt, blockiert oder setzt den Token dabei niemals zurück; die Spielleitung entscheidet und positioniert ihn nach den Regeln manuell.</p>"
+      },
+      "video": { "controls": true, "volume": 0.5 },
+      "src": null,
+      "system": {},
+      "sort": 2,
+      "ownership": { "default": -1 },
+      "flags": {},
+      "_key": "!journal.pages!kurzzone001.kurzzonepage003"
     }
   ],
   "folder": null,

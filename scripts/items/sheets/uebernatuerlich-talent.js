@@ -9,10 +9,10 @@ export class UebernatuerlichTalentSheet extends PreEffectItemSheet {
 
     /** @override */
     static PARTS = {
-        ...PreEffectItemSheet.PARTS,
         form: {
             template: 'systems/Ilaris/scripts/items/templates/uebernatuerlich_talent.hbs',
         },
+        ...PreEffectItemSheet.PARTS,
     }
 
     /** @override */

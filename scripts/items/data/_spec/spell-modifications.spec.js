@@ -147,6 +147,42 @@ describe('structured spell modifications', () => {
         expect(resolveSpellModificationContext(source, ['faxius']).zone).toBeNull()
     })
 
+    test('inherits an Aeolitus-style Zone while a form switches its duration source and triggers', () => {
+        const source = item({
+            ...baseSystem,
+            zone: {
+                shape: 'cone',
+                distance: 16,
+                angle: 45,
+                placement: { anchor: 'caster', range: 0, pivot: 'tip' },
+                lifecycle: 'instant',
+            },
+            spellModifications: [
+                {
+                    id: 'langer-atem',
+                    profile: { difficulty: -8, cost: { mode: 'set', value: 8 } },
+                    zone: {
+                        lifecycle: 'persistent',
+                        duration: { source: 'casterAttribute', attribute: 'KO' },
+                        trigger: { triggerOnCreate: true, onEnter: true, onRoundStart: true },
+                    },
+                },
+            ],
+        })
+
+        expect(resolveSpellModificationContext(source, ['langer-atem'])).toMatchObject({
+            profile: { difficulty: 4, cost: 8 },
+            zone: {
+                shape: 'cone',
+                distance: 16,
+                placement: { anchor: 'caster', pivot: 'tip' },
+                lifecycle: 'persistent',
+                duration: { source: 'casterAttribute', attribute: 'KO', remaining: 0 },
+                trigger: { triggerOnCreate: true, onEnter: true, onRoundStart: true },
+            },
+        })
+    })
+
     test('requires one anti-magic preset form and accepts any one of its four choices', () => {
         const source = item({ ...baseSystem, spellModificationPreset: 'antiMagic' })
 

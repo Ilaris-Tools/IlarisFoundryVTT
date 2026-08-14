@@ -23,6 +23,7 @@ describe('UebernatuerlichTalentSheet shared Pre-Effect composition', () => {
             },
             preEffects: PreEffectItemSheet.PARTS.preEffects,
         })
+        expect(Object.keys(UebernatuerlichTalentSheet.PARTS)).toEqual(['form', 'preEffects'])
     })
 
     it('keeps the round-start Zone opt-in directly after the entry trigger in the concrete editor', () => {
@@ -326,5 +327,8 @@ describe('UebernatuerlichTalentSheet structured spell forms', () => {
         )
         expect(template).toContain('spell-modification-editor')
         expect(template).toContain('add-spell-modification-pre-effect')
+        expect(template).toContain('Dauerquelle')
+        expect(template).toContain('system.spellModifications.{{@index}}.zone.duration.source')
+        expect(template).toContain('Zurückstoßen (Spielleitung)')
     })
 })

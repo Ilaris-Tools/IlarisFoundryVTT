@@ -6,6 +6,7 @@ import {
     removeZoneTraversalMarkersForRegion,
     upsertZoneTraversalMarker,
 } from '../../effects/zone-effect-ownership.js'
+import { resolvePersistentZoneDuration } from './zone-profile.js'
 import { resolveZoneTargets } from './zone-targets.js'
 
 const FLAG_SCOPE = 'Ilaris'
@@ -606,6 +607,14 @@ export async function cleanupZoneTraversalMarkers(region) {
 /** Create the persistent Region only after its originating cast has succeeded. */
 export async function createPersistentZone({ scene, regionData, dialog, zone, preEffects }) {
     if (!activeGM() || !scene || !regionData || !zone?.duration) return null
+    const resolvedZone = resolvePersistentZoneDuration(zone, dialog?.actor)
+    if (!resolvedZone) {
+        globalThis.ui?.notifications?.error(
+            'Die Dauerquelle der Zone konnte nicht aufgelöst werden.',
+        )
+        return null
+    }
+    zone = resolvedZone
     if (zone.effectMode === 'passive' && invalidPassivePreEffects(preEffects)) {
         ui?.notifications?.error(
             'Passive Zonen dÃ¼rfen keine Sofort- oder Widerstands-Pre-Effects enthalten.',

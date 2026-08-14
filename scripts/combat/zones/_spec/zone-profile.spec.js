@@ -1,4 +1,8 @@
-import { normalizeZoneProfile, resolveZoneProfile } from '../zone-profile.js'
+import {
+    normalizeZoneProfile,
+    resolvePersistentZoneDuration,
+    resolveZoneProfile,
+} from '../zone-profile.js'
 
 describe('zone profiles', () => {
     it('normalizes persistent profiles with scene-round timing and creation triggers', () => {
@@ -148,5 +152,50 @@ describe('zone profiles', () => {
                 traversal,
             }),
         ).toBeNull()
+    })
+
+    it('keeps a caster-attribute duration source until a successful cast snapshots it', () => {
+        const profile = normalizeZoneProfile({
+            shape: 'cone',
+            distance: 16,
+            lifecycle: 'persistent',
+            duration: { source: 'casterAttribute', attribute: 'KO' },
+        })
+
+        expect(profile.duration).toEqual({
+            type: 'sceneRounds',
+            source: 'casterAttribute',
+            attribute: 'KO',
+            remaining: 0,
+            originalValue: 0,
+        })
+        expect(
+            resolvePersistentZoneDuration(profile, {
+                system: { attribute: { KO: { wert: 6 } } },
+            }),
+        ).toMatchObject({
+            duration: { type: 'sceneRounds', remaining: 6, originalValue: 6 },
+        })
+        expect(profile.duration.remaining).toBe(0)
+    })
+
+    it('rejects an invalid caster-attribute duration and preserves fixed durations', () => {
+        const sourced = normalizeZoneProfile({
+            shape: 'circle',
+            distance: 4,
+            lifecycle: 'persistent',
+            duration: { source: 'casterAttribute', attribute: 'KO' },
+        })
+        expect(
+            resolvePersistentZoneDuration(sourced, { system: { attribute: { KO: {} } } }),
+        ).toBeNull()
+
+        const fixed = normalizeZoneProfile({
+            shape: 'circle',
+            distance: 4,
+            lifecycle: 'persistent',
+            duration: { remaining: 3 },
+        })
+        expect(resolvePersistentZoneDuration(fixed, null)).toEqual(fixed)
     })
 })

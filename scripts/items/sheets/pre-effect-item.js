@@ -61,6 +61,10 @@ export class PreEffectItemSheet extends IlarisItemSheet {
                     ...configured,
                     marker: { ...defaults.marker, ...(configured.marker || {}) },
                     condition: { ...defaults.condition, ...(configured.condition || {}) },
+                    tableManagedDisplacement: {
+                        ...defaults.tableManagedDisplacement,
+                        ...(configured.tableManagedDisplacement || {}),
+                    },
                     changes: toPreEffectArray(configured.changes),
                     ilarisModifiers: toPreEffectArray(configured.ilarisModifiers),
                 }
@@ -348,6 +352,7 @@ export class PreEffectItemSheet extends IlarisItemSheet {
             ilarisModifiers: [],
             marker: { enabled: false, id: '', label: '' },
             condition: { enabled: false, statusId: '' },
+            tableManagedDisplacement: { enabled: false },
         }
     }
 

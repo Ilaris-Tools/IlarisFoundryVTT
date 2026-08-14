@@ -45,6 +45,7 @@ beforeEach(() => {
         },
         users: [],
     }
+    global.CONST = { DOCUMENT_OWNERSHIP_LEVELS: { OWNER: 3 } }
     global.foundry.utils.fromUuid = jest.fn((uuid) => {
         if (uuid === 'Item.spell') return { name: 'Spell', uuid, system: {} }
         if (uuid === 'Actor.caster') return { uuid }
@@ -205,6 +206,78 @@ describe('resist result listener', () => {
             ],
             expect.any(Object),
         )
+    })
+
+    it('keeps a failed Sturm outcome traceable and asks the table to reposition manually', async () => {
+        const targetActor = {
+            id: 'target',
+            uuid: 'Actor.target',
+            name: 'Target',
+            system: {},
+            update: jest.fn(),
+            testUserPermission: jest.fn(() => true),
+        }
+        global.game.actors.get.mockReturnValue(targetActor)
+        global.game.users = [
+            { id: 'owner', active: true, isGM: false },
+            { id: 'gm', active: true, isGM: true },
+        ]
+        registerResistResolutionListener()
+        const dialog = {
+            _resistContext: {
+                preEffectData: preEffect({
+                    castSkill: 'Elementar',
+                    spellModificationId: 'sturm',
+                    resistanceOutcomes: {
+                        failure: {
+                            enabled: true,
+                            changes: [],
+                            ilarisModifiers: [],
+                            marker: {
+                                enabled: true,
+                                id: 'zurueckgestossen',
+                                label: 'Zurückgestoßen',
+                            },
+                            condition: { enabled: false, statusId: '' },
+                            tableManagedDisplacement: { enabled: true },
+                        },
+                    },
+                }),
+                spellUuid: 'Item.spell',
+            },
+        }
+
+        await hookCallbacks['Ilaris.postSkillRoll'](dialog, { rollResult: { success: false } })
+
+        expect(effectCreate).toHaveBeenCalledWith(
+            [
+                expect.objectContaining({
+                    flags: expect.objectContaining({
+                        ilaris: expect.objectContaining({
+                            spellUuid: 'Item.spell',
+                            spellModificationId: 'sturm',
+                            castSkill: 'Elementar',
+                            resistanceOutcome: 'failure',
+                            markerId: 'zurueckgestossen',
+                        }),
+                    }),
+                }),
+            ],
+            expect.any(Object),
+        )
+        expect(ChatMessage.create).toHaveBeenCalledWith(
+            expect.objectContaining({
+                content: expect.stringContaining('Zurückstoßen (Spielleitung)'),
+                whisper: ['owner', 'gm'],
+                flags: expect.objectContaining({
+                    ilaris: expect.objectContaining({
+                        tableManagedDisplacement: true,
+                        spellModificationId: 'sturm',
+                    }),
+                }),
+            }),
+        )
+        expect(targetActor.update).not.toHaveBeenCalled()
     })
 
     it('applies an explicit success payload instead of diminished values', async () => {

@@ -34,6 +34,8 @@ This inventory contains the compendium entries whose currently supported behavio
 
 ## Structured persistent zone markers
 
+- **Aeolitus Windgebraus** — instant 16-step, 45-degree caster cone. Each non-caster target receives KK 16; a failed resistance applies the canonical `Position4` condition. **Langer Atem** changes this into a persistent cone for the caster's KO captured as Scene rounds and triggers on creation, entry, and round start; concentration remains a GM-managed early dismissal. **Sturm** additionally creates a traceable `Zurückgestoßen` marker and private manual-reposition instruction after a failed resistance. **Winde der anderen Art** is a narrative `-4` form.
+
 - **Dunkelheit** — stationary 4-step circle for 64 Initiativephasen; applies a visible, marker-only Active Effect to non-caster occupants. It does not alter Foundry scene lighting or token vision. The moving _Begleiter_ variant remains manual.
 
 ## Healing (intentionally excluded from the damage list)

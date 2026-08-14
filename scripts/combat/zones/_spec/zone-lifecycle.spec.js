@@ -678,6 +678,54 @@ describe('persistent zone duration', () => {
         })
     })
 
+    test('snapshots a caster-attribute duration before persisting a Region and rejects invalid values', async () => {
+        const region = { id: 'persistent-region', tokens: new Set(), update: jest.fn() }
+        let persistedRegionData
+        const scene = {
+            createEmbeddedDocuments: jest.fn(async (_type, [data]) => {
+                persistedRegionData = structuredClone(data)
+                return [region]
+            }),
+        }
+        const dialog = {
+            item: { uuid: 'Item.aeolitus' },
+            actor: { uuid: 'Actor.caster', system: { attribute: { KO: { wert: 5 } } } },
+            getSelectedSpellModificationId: () => 'langer-atem',
+        }
+        const zone = {
+            lifecycle: 'persistent',
+            duration: { source: 'casterAttribute', attribute: 'KO', remaining: 0 },
+            trigger: { triggerOnCreate: false },
+        }
+
+        await createPersistentZone({
+            scene,
+            regionData: { name: 'Langer Atem', shapes: [] },
+            dialog,
+            zone,
+            preEffects: [],
+        })
+
+        expect(persistedRegionData.flags.Ilaris.zone).toMatchObject({
+            remaining: 5,
+            originalValue: 5,
+            profile: { duration: { type: 'sceneRounds', remaining: 5, originalValue: 5 } },
+        })
+        expect(persistedRegionData.flags.Ilaris.zone.profile.duration).not.toHaveProperty('source')
+
+        await createPersistentZone({
+            scene,
+            regionData: { name: 'Ungültig', shapes: [] },
+            dialog: {
+                ...dialog,
+                actor: { uuid: 'Actor.caster', system: { attribute: { KO: {} } } },
+            },
+            zone,
+            preEffects: [],
+        })
+        expect(scene.createEmbeddedDocuments).toHaveBeenCalledTimes(1)
+    })
+
     test('processes entry once, then again only after a token has left the Region', async () => {
         const target = {
             id: 'target-token',

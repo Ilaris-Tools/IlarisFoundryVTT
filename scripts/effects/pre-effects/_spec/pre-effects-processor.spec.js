@@ -162,6 +162,55 @@ describe('pre-effect processor', () => {
         )
     })
 
+    it('materializes a combined Sturm condition and marker with shared spell-form provenance', async () => {
+        global.CONFIG.statusEffects = {
+            Position4: {
+                id: 'Position4',
+                name: 'Sehr schlechte Position (Liegend)',
+                changes: [{ key: 'system.modifikatoren.nahkampfmod', mode: 2, value: -4 }],
+            },
+        }
+        const target = createTargetActor()
+        const spell = { name: 'Aeolitus Windgebraus', uuid: 'Item.aeolitus', system: {} }
+
+        await createActiveEffectFromPreEffect(
+            target,
+            {
+                condition: { enabled: true, statusId: 'Position4' },
+                marker: { enabled: true, id: 'zurueckgestossen', label: 'Zurückgestoßen' },
+                castSkill: 'Luft',
+            },
+            { uuid: 'Actor.caster' },
+            spell,
+            0,
+            0,
+            0,
+            'aeolitus-cast',
+            {},
+            'uebernatuerlich',
+            'sturm',
+            'zone-aeolitus',
+            null,
+            'target-token',
+        )
+
+        const [conditionData] = global.ActiveEffect.createDocuments.mock.calls[0][0]
+        const [markerData] = global.ActiveEffect.createDocuments.mock.calls[1][0]
+        expect(conditionData.system.ilarisCondition.sources[0]).toMatchObject({
+            origin: 'Item.aeolitus',
+            castSkill: 'Luft',
+            applicationId: 'aeolitus-cast',
+        })
+        expect(markerData).toMatchObject({ name: 'Zurückgestoßen — Aeolitus Windgebraus' })
+        expect(markerData.flags.ilaris).toMatchObject({
+            spellUuid: 'Item.aeolitus',
+            casterUuid: 'Actor.caster',
+            spellModificationId: 'sturm',
+            zoneRegionId: 'zone-aeolitus',
+            targetTokenId: 'target-token',
+        })
+    })
+
     it('materializes maneuver provenance and its opposed-escape ending without spell replacement', async () => {
         const target = createTargetActor()
         await createActiveEffectFromPreEffect(

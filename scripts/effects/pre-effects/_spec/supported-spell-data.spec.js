@@ -293,6 +293,65 @@ describe('reviewed supported spell pre-effect source data', () => {
         expect(dornen.system.preEffects?.[0]?.avoidTest?.enabled).not.toBe(true)
     })
 
+    it('configures Aeolitus Windgebraus and all reviewed structured forms', () => {
+        const aeolitus = readSpell('Aeolitus_Windgebraus_ea5T01US3ahXmt6l.json')
+
+        expect(aeolitus.system.zone).toMatchObject({
+            shape: 'cone',
+            distance: 16,
+            angle: 45,
+            placement: { anchor: 'caster', range: 0, pivot: 'tip' },
+            lifecycle: 'instant',
+            targeting: { includeCaster: false },
+        })
+        expect(aeolitus.system.preEffects).toEqual([
+            expect.objectContaining({
+                condition: { enabled: true, statusId: 'Position4' },
+                avoidTest: expect.objectContaining({
+                    enabled: true,
+                    attribut: 'KK',
+                    resistDifficulty: 16,
+                }),
+            }),
+        ])
+        expect(aeolitus.system.spellModifications).toEqual(
+            expect.arrayContaining([
+                expect.objectContaining({
+                    id: 'langer-atem',
+                    effectMode: 'inherit',
+                    profile: { difficulty: -8, cost: { mode: 'set', value: 8 } },
+                    zone: expect.objectContaining({
+                        lifecycle: 'persistent',
+                        duration: { source: 'casterAttribute', attribute: 'KO' },
+                        trigger: { triggerOnCreate: true, onEnter: true, onRoundStart: true },
+                    }),
+                }),
+                expect.objectContaining({
+                    id: 'sturm',
+                    effectMode: 'replace',
+                    profile: { difficulty: -4 },
+                    preEffects: [
+                        expect.objectContaining({
+                            resistanceOutcomes: expect.objectContaining({
+                                failure: expect.objectContaining({
+                                    condition: { enabled: true, statusId: 'Position4' },
+                                    marker: expect.objectContaining({ id: 'zurueckgestossen' }),
+                                    tableManagedDisplacement: { enabled: true },
+                                }),
+                            }),
+                        }),
+                    ],
+                }),
+                expect.objectContaining({
+                    id: 'winde-der-anderen-art',
+                    effectMode: 'inherit',
+                    profile: { difficulty: -4 },
+                    preEffects: [],
+                }),
+            ]),
+        )
+    })
+
     it('configures Dunkelheit as a stationary, marker-only passive zone', () => {
         const dunkelheit = readSpell('Dunkelheit_Q4kEr8XiRJQs0owu.json')
 

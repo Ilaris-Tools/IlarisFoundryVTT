@@ -25,6 +25,7 @@ import {
     resolveSpellModificationContext,
 } from '../../items/data/spell-modifications.js'
 import { getCasterToken, placeZonePreview } from '../zones/zone-region-adapter.js'
+import { resolvePersistentZoneDuration } from '../zones/zone-profile.js'
 import {
     createPersistentZone,
     createZoneDraftRegion,
@@ -629,10 +630,16 @@ export class UebernatuerlichDialog extends CombatDialog {
         }
 
         if (context.zone.lifecycle === 'persistent') {
+            const zone = resolvePersistentZoneDuration(context.zone, this.actor)
+            if (!zone) {
+                ui.notifications.error('Die Dauerquelle der Zone konnte nicht aufgelöst werden.')
+                return
+            }
+            const persistentContext = { ...context, zone }
             if (!game.user.isGM) {
                 game.socket.emit('system.Ilaris', {
                     type: 'createPersistentZone',
-                    data: this._serializePersistentZoneRequest(context),
+                    data: this._serializePersistentZoneRequest(persistentContext),
                 })
                 this.zonePlacement = null
                 this.zoneCasterTokenId = ''
@@ -642,7 +649,7 @@ export class UebernatuerlichDialog extends CombatDialog {
                 scene: canvas.scene,
                 regionData: this.zonePlacement.regionData,
                 dialog: this,
-                zone: context.zone,
+                zone,
                 preEffects: context.preEffects,
             })
             await this._discardZoneDraft()

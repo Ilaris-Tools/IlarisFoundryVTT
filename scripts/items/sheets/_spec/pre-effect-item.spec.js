@@ -22,8 +22,16 @@ describe('PreEffectItemSheet', () => {
             marker: { enabled: false },
             avoidTest: { enabled: false, resistDifficultySource: 'fixed' },
             resistanceOutcomes: {
-                failure: { enabled: false, marker: { enabled: false, id: '', label: '' } },
-                success: { enabled: false, marker: { enabled: false, id: '', label: '' } },
+                failure: {
+                    enabled: false,
+                    marker: { enabled: false, id: '', label: '' },
+                    tableManagedDisplacement: { enabled: false },
+                },
+                success: {
+                    enabled: false,
+                    marker: { enabled: false, id: '', label: '' },
+                    tableManagedDisplacement: { enabled: false },
+                },
             },
         })
     })
