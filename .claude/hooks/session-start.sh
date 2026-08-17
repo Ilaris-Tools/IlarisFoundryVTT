@@ -1,5 +1,6 @@
 #!/bin/bash
-# SessionStart hook for Claude Code on the web.
+# SessionStart hook for Claude Code on the web — thin adapter around the
+# agent-agnostic Foundry test environment in utils/foundry-env/.
 # Installs npm dependencies and (if Foundry secrets are configured in the
 # Claude environment) downloads, licenses, and starts a Foundry VTT server
 # with the Ilaris system linked and the "Vanilla Ilaris" e2e world prepared.
@@ -33,16 +34,16 @@ fi
 # Foundry setup is best-effort: without the license/download secrets the
 # session is still fully usable for unit tests and linting.
 echo "[session-start] Setting up Foundry VTT test server..."
-if bash .claude/foundry/setup-foundry.sh; then
+if bash utils/foundry-env/setup-foundry.sh; then
     echo "[session-start] Foundry is ready at http://localhost:30000"
 else
     status=$?
     if [ "$status" -eq 3 ]; then
         echo "[session-start] Foundry secrets not configured — skipping Foundry server."
-        echo "[session-start] See .claude/foundry/README.md for the environment variables to set."
+        echo "[session-start] See utils/foundry-env/README.md for the environment variables to set."
     else
         echo "[session-start] WARNING: Foundry setup failed (exit $status). E2E tests will not run." >&2
-        echo "[session-start] Check $HOME/foundry/foundry.log and .claude/foundry/README.md" >&2
+        echo "[session-start] Check $HOME/foundry/foundry.log and utils/foundry-env/README.md" >&2
     fi
 fi
 

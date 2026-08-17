@@ -122,6 +122,21 @@ Rules from `openspec/config.yaml` apply to all phases:
 11. **Keep presentation in templates.** Put rendered markup in feature-specific Handlebars (`.hbs`) templates and pass structured context from JavaScript. Use JavaScript for application state, event handling, and data preparation—not large inline HTML strings—unless Foundry requires dynamic HTML at runtime.
 12. **Use the appropriate Foundry abstraction.** Prefer Documents and embedded-document APIs for persistent data, AppV2/Handlebars applications for UI, and documented Hooks for lifecycle integration.
 
+## E2E Test Environment (any agent, any sandbox)
+
+Ephemeral agent environments (Claude Code web, GitHub Copilot coding agent,
+Codex, CI) can run the full Playwright e2e suite against a real Foundry VTT
+server. The agent-agnostic setup lives in `utils/foundry-env/`:
+
+- `npm run foundry:env` — download, license, and start Foundry with the
+  Ilaris system linked and the e2e world "Vanilla Ilaris" seeded (idempotent;
+  soft-skips with exit code 3 if the Foundry secrets are not configured).
+- `npm run foundry:ctl status|logs|restart` — control the running server.
+- `npm run test:e2e` — run the Playwright suite against it.
+
+Required secrets and per-agent wiring (Claude SessionStart hook, Copilot
+`copilot-setup-steps.yml`) are documented in `utils/foundry-env/README.md`.
+
 ## Precedence
 
 For the shared workflow policy above, this file is authoritative. Provider adapters and path-specific instructions MUST NOT silently replace its lifecycle, handoff contract, or self-review gate. An explicit, documented exception in this file is the only permitted override.

@@ -2,10 +2,12 @@
 # Download, install, license, and start a Foundry VTT server for e2e testing.
 #
 # Idempotent: safe to run repeatedly; skips work already done (cached download,
-# extracted app, running server). Designed for the Claude Code web container but
-# works on any Linux box with node >= 18, unzip, curl, and jq.
+# extracted app, running server). Agent-agnostic: works in any ephemeral Linux
+# environment (Claude Code web, GitHub Copilot coding agent, Codex, CI, a local
+# box) with node >= 18, unzip, curl, and jq. Also invocable as `npm run foundry:env`.
 #
-# Required environment variables (set them in the Claude environment settings):
+# Required environment variables (configure them as secrets in your agent's
+# environment settings):
 #   FOUNDRY_LICENSE_KEY   Foundry license key (with or without dashes)
 #   and ONE of:
 #     FOUNDRY_USERNAME + FOUNDRY_PASSWORD   foundryvtt.com account (downloads the
@@ -21,7 +23,7 @@
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-REPO="${CLAUDE_PROJECT_DIR:-$(cd "$SCRIPT_DIR/../.." && pwd)}"
+REPO="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 FOUNDRY_HOME="${FOUNDRY_HOME:-$HOME/foundry}"
 APP_DIR="$FOUNDRY_HOME/app"

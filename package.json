@@ -31,6 +31,8 @@
     "prepare": "husky",
     "optimize-svgs": "node scripts/optimize-svgs.js",
     "pack-all": "node utils/pack-all.js",
+    "foundry:env": "bash utils/foundry-env/setup-foundry.sh",
+    "foundry:ctl": "bash utils/foundry-env/foundry.sh",
     "generate-breaking-changes": "node utils/generate-breaking-changes.js",
     "start-foundry": "npm run pack-all && fvtt launch"
   },

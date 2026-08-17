@@ -1,8 +1,8 @@
 # Actor fixtures for the e2e test world
 
 Foundry actor exports (JSON) placed in this directory are imported into the
-**Vanilla Ilaris** world when the Claude cloud test environment bootstraps
-(see `.claude/foundry/README.md`). An actor is only created if no actor with
+**Vanilla Ilaris** world when the e2e test environment bootstraps
+(see `utils/foundry-env/README.md`). An actor is only created if no actor with
 the same name exists yet, so re-runs are safe.
 
 To add one: open your reference world, right-click the actor in the sidebar →

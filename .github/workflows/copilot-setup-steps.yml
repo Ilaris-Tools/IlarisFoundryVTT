@@ -1,0 +1,57 @@
+# Environment setup for the GitHub Copilot coding agent.
+# https://docs.github.com/en/copilot/customizing-copilot/customizing-the-development-environment-for-copilot-coding-agent
+#
+# The job MUST be named `copilot-setup-steps`. It runs on the same runner
+# right before Copilot starts working. Secrets come from the repository
+# environment named `copilot` (Settings → Environments → copilot):
+#   FOUNDRY_LICENSE_KEY, and FOUNDRY_USERNAME + FOUNDRY_PASSWORD
+#   (or FOUNDRY_DOWNLOAD_URL). Without them the Foundry step soft-skips and
+#   Copilot can still run unit tests and linting.
+name: 'Copilot Setup Steps'
+
+on:
+    workflow_dispatch:
+    push:
+        paths: ['.github/workflows/copilot-setup-steps.yml']
+    pull_request:
+        paths: ['.github/workflows/copilot-setup-steps.yml']
+
+jobs:
+    copilot-setup-steps:
+        runs-on: ubuntu-latest
+        permissions:
+            contents: read
+        environment: copilot
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+
+            - name: Set up Node.js
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 22
+                  cache: npm
+
+            - name: Install dependencies
+              run: npm install --no-audit --no-fund
+
+            - name: Install Playwright Chromium
+              run: npx playwright install --with-deps chromium
+
+            - name: Start Foundry VTT test server
+              env:
+                  FOUNDRY_LICENSE_KEY: ${{ secrets.FOUNDRY_LICENSE_KEY }}
+                  FOUNDRY_USERNAME: ${{ secrets.FOUNDRY_USERNAME }}
+                  FOUNDRY_PASSWORD: ${{ secrets.FOUNDRY_PASSWORD }}
+                  FOUNDRY_DOWNLOAD_URL: ${{ secrets.FOUNDRY_DOWNLOAD_URL }}
+                  E2E_HEADLESS: '1'
+              run: |
+                  bash utils/foundry-env/setup-foundry.sh || {
+                    status=$?
+                    if [ "$status" -eq 3 ]; then
+                      echo "Foundry secrets not configured — skipping Foundry server."
+                      echo "See utils/foundry-env/README.md for the required secrets."
+                      exit 0
+                    fi
+                    exit "$status"
+                  }
