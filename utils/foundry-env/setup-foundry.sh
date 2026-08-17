@@ -27,12 +27,21 @@ REPO="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
 # Optional secrets file: lets an environment's boot/setup script (e.g. the
 # "setup script" field in the Claude app) drop per-developer credentials into
-# the container instead of using centrally stored secrets. Must contain
-# `export FOUNDRY_...=...` lines so the values propagate to child processes.
+# the container instead of using centrally stored secrets. This script never
+# writes the file, it only reads it — and variables already present in the
+# real environment always take precedence over file values, so the file only
+# fills in what is missing.
 FOUNDRY_SECRETS_FILE="${FOUNDRY_SECRETS_FILE:-$HOME/.foundry-env}"
 if [ -f "$FOUNDRY_SECRETS_FILE" ]; then
-    # shellcheck disable=SC1090
-    source "$FOUNDRY_SECRETS_FILE"
+    while IFS='=' read -r name value; do
+        case "$name" in
+            FOUNDRY_* | E2E_*)
+                if [ -z "${!name:-}" ]; then
+                    export "$name=$value"
+                fi
+                ;;
+        esac
+    done < <(bash -ac "source '$FOUNDRY_SECRETS_FILE' >/dev/null 2>&1; env")
 fi
 
 FOUNDRY_HOME="${FOUNDRY_HOME:-$HOME/foundry}"

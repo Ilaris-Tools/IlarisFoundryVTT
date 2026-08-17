@@ -58,21 +58,25 @@ GitHub repository:
 1. **Environment variables** in the Claude environment settings — add the
    `FOUNDRY_*` variables directly. Simplest, recommended.
 2. **The environment's setup script** — paste a snippet like this into the
-   script field; `setup-foundry.sh` sources `~/.foundry-env` automatically
+   script field; `setup-foundry.sh` reads `~/.foundry-env` automatically
    (override the path with `FOUNDRY_SECRETS_FILE`):
 
     ```bash
     cat > ~/.foundry-env <<'EOF'
-    export FOUNDRY_LICENSE_KEY=XXXX-XXXX-XXXX-XXXX-XXXX-XXXX
-    export FOUNDRY_USERNAME=your-foundry-account
-    export FOUNDRY_PASSWORD=your-foundry-password
+    FOUNDRY_LICENSE_KEY=XXXX-XXXX-XXXX-XXXX-XXXX-XXXX
+    FOUNDRY_USERNAME=your-foundry-account
+    FOUNDRY_PASSWORD=your-foundry-password
     EOF
     chmod 600 ~/.foundry-env
     ```
 
     Note: a plain `export` in the setup script would only affect the setup
     script's own process — that's why the snippet writes the file that the
-    Foundry scripts source later.
+    Foundry scripts read later.
+
+The scripts never write this file, they only read it. If a variable is set
+both ways, the real environment variable (option 1) wins; the file only fills
+in variables that are missing.
 
 The `~/.foundry-env` file works for any agent that lets you run a bootstrap
 command, so other agents can use the same mechanism. The Copilot coding agent
