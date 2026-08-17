@@ -33,6 +33,7 @@
     "pack-all": "node utils/pack-all.js",
     "foundry:env": "bash utils/foundry-env/setup-foundry.sh",
     "foundry:ctl": "bash utils/foundry-env/foundry.sh",
+    "foundry:share": "bash utils/foundry-env/share-foundry.sh",
     "generate-breaking-changes": "node utils/generate-breaking-changes.js",
     "start-foundry": "npm run pack-all && fvtt launch"
   },

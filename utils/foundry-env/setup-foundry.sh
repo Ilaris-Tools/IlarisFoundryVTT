@@ -25,6 +25,16 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO="$(cd "$SCRIPT_DIR/../.." && pwd)"
 
+# Optional secrets file: lets an environment's boot/setup script (e.g. the
+# "setup script" field in the Claude app) drop per-developer credentials into
+# the container instead of using centrally stored secrets. Must contain
+# `export FOUNDRY_...=...` lines so the values propagate to child processes.
+FOUNDRY_SECRETS_FILE="${FOUNDRY_SECRETS_FILE:-$HOME/.foundry-env}"
+if [ -f "$FOUNDRY_SECRETS_FILE" ]; then
+    # shellcheck disable=SC1090
+    source "$FOUNDRY_SECRETS_FILE"
+fi
+
 FOUNDRY_HOME="${FOUNDRY_HOME:-$HOME/foundry}"
 APP_DIR="$FOUNDRY_HOME/app"
 DATA_DIR="$FOUNDRY_HOME/data"

@@ -47,6 +47,38 @@ The environment must be able to reach `foundryvtt.com` and its release CDN
 restricted network policies. Exit code 3 means "secrets missing" — wrappers
 treat that as a soft skip so unit tests and linting still work.
 
+### Where to put the secrets (developer-owned, not repo-owned)
+
+These are personal credentials (your license, your foundryvtt.com account), so
+they should live with the developer, not as central repository secrets. Two
+equivalent options for Claude Code on the web — both are stored in **your**
+environment configuration, which belongs to your Claude account, not to the
+GitHub repository:
+
+1. **Environment variables** in the Claude environment settings — add the
+   `FOUNDRY_*` variables directly. Simplest, recommended.
+2. **The environment's setup script** — paste a snippet like this into the
+   script field; `setup-foundry.sh` sources `~/.foundry-env` automatically
+   (override the path with `FOUNDRY_SECRETS_FILE`):
+
+    ```bash
+    cat > ~/.foundry-env <<'EOF'
+    export FOUNDRY_LICENSE_KEY=XXXX-XXXX-XXXX-XXXX-XXXX-XXXX
+    export FOUNDRY_USERNAME=your-foundry-account
+    export FOUNDRY_PASSWORD=your-foundry-password
+    EOF
+    chmod 600 ~/.foundry-env
+    ```
+
+    Note: a plain `export` in the setup script would only affect the setup
+    script's own process — that's why the snippet writes the file that the
+    Foundry scripts source later.
+
+The `~/.foundry-env` file works for any agent that lets you run a bootstrap
+command, so other agents can use the same mechanism. The Copilot coding agent
+is the exception: it only injects secrets via the repository's `copilot`
+environment (see `copilot-setup-steps.yml`), which is repo-level by design.
+
 ## What `foundry:env` does
 
 1. downloads the Foundry release (cached in `$HOME/foundry/cache`)
@@ -74,6 +106,30 @@ maintainers' reference world. Export each actor from your real "Vanilla
 Ilaris" world (right-click the actor → _Export Data_) and commit the JSON
 files to `e2e/fixtures/actors/`. Every JSON file there is imported on
 bootstrap if no actor with the same name exists.
+
+## Sharing the server on the internet (manual testing)
+
+Agent containers have no public inbound IP, so `http://<ip>:30000` is not
+possible. Instead, `npm run foundry:share` opens a Cloudflare quick tunnel
+(outbound-only) and prints a random public URL like
+`https://<name>.trycloudflare.com` that works in any browser, WebSockets
+included. `npm run foundry:share -- unshare` kills it; the tunnel also dies
+with the container.
+
+**Security**: the test server has no admin password and the Gamemaster user
+has no password — anyone who has the URL can join as GM. The URL is random
+and short-lived, but only share while actively testing, and unshare after.
+Whether exposing a personally licensed server this way is acceptable is the
+license holder's call.
+
+**Network policy**: the tunnel needs these hosts allowlisted in the
+environment's network settings (the download of `cloudflared` itself comes
+from `github.com`, which most policies already allow):
+
+- `api.trycloudflare.com` (tunnel provisioning)
+- `*.argotunnel.com` (the tunnel's edge connection; uses port 7844, so a
+  policy that only permits port 443 will still block it)
+- `*.trycloudflare.com`
 
 ## Per-agent wiring
 
