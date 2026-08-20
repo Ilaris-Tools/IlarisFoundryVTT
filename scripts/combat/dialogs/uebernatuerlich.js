@@ -13,7 +13,7 @@ import {
     callIlarisHookAllWithGlobalMirror,
     callIlarisHookWithGlobalMirror,
 } from '../hooks/global_combat_hooks.js'
-import { applyPreEffects } from '../../effects/pre-effects/pre-effects-processor.js'
+import { applyPreEffects, hasPreEffects } from '../../effects/pre-effects/pre-effects-processor.js'
 
 export class UebernatuerlichDialog extends CombatDialog {
     /** @override */
@@ -371,7 +371,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         super._updateSchipsStern()
 
         // Fire-and-forget pre-effects on success
-        if (isSuccess && this.item.system.preEffects?.length > 0) {
+        if (isSuccess && hasPreEffects(this.item.system.preEffects)) {
             applyPreEffects(rollResult, this)
         }
     }
@@ -385,7 +385,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         await this.applyEnergyCost(isSuccess, this.is16OrHigher)
 
         // Fire-and-forget pre-effects for non-standard difficulty spells
-        if (isSuccess && this.item.system.preEffects?.length > 0) {
+        if (isSuccess && hasPreEffects(this.item.system.preEffects)) {
             applyPreEffects({ success: true }, this)
         }
 

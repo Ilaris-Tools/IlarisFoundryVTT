@@ -7,6 +7,7 @@ import {
     applyInstantPreEffect,
     applyPreEffects,
     createActiveEffectFromPreEffect,
+    hasPreEffects,
     toArray,
 } from '../pre-effects-processor.js'
 
@@ -69,6 +70,13 @@ describe('toArray', () => {
 
     it('returns empty array for empty object', () => {
         expect(toArray({})).toEqual([])
+    })
+})
+
+describe('hasPreEffects', () => {
+    it('recognizes the indexed ObjectField shape used by Foundry v14 at runtime', () => {
+        expect(hasPreEffects({ 0: { instant: true, changes: {} } })).toBe(true)
+        expect(hasPreEffects({})).toBe(false)
     })
 })
 
