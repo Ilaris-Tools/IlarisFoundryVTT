@@ -56,4 +56,4 @@ The runtime code and regression tests were included in the reviewed commit. This
 - **Migration and rollback:** This is documentation and instruction work; it does not migrate data, touch compendiums, or require packing. Its documentation changes can be reverted independently of the reviewed release fix.
 - **UI ordering:** Not applicable; no UI is changed by this proposal.
 
-**Application result:** The apply audit found no mismatch between the named commit and its delta requirements. The Codex operation wording was used to establish the shared operation source; every provider adapter now names its corresponding central section as the only active operation body. No compendium source changed, so `npm run pack-all` and a Foundry lifecycle/E2E run are not required.
+**Application result:** The apply audit found no mismatch between the named commit and its delta requirements. The complete refined Codex operation wording was extracted into the shared operation source; every provider adapter now contains only metadata and a link to its corresponding central section. No compendium source changed, so `npm run pack-all` and a Foundry lifecycle/E2E run are not required.

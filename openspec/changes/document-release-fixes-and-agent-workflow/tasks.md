@@ -17,9 +17,9 @@
 
 **Adapter audit:** `CLAUDE.md`, all `.claude/commands/`, all `.codex/skills/openspec-*`, `.github/copilot-instructions.md`, `.github/prompts/`, and `.github/skills/openspec-*` now point to `AGENTS.md`. The provider-specific files retain command/skill mechanics only; none duplicates or contradicts the lifecycle or self-review gate.
 
-- [x] 2.6 Create `.agents/OPENSPEC_OPERATIONS.md` as the single canonical body for Explore, Propose, Apply, Sync, and Archive; reduce every Claude, Codex, and GitHub OpenSpec skill/prompt to a provider-metadata adapter that instructs the AI to read its matching section.
+- [x] 2.6 Extract the complete refined Codex bodies for Explore, Propose, Apply, Sync, and Archive into `.agents/OPENSPEC_OPERATIONS.md`; reduce every Claude, Codex, and GitHub OpenSpec skill/prompt to provider metadata plus one link to its matching canonical section.
 
-**Canonical-body result:** The shared operation document uses the Codex operation wording as the reference. All provider adapters point to their matching central section and explicitly state that provider-specific material cannot override it.
+**Canonical-body result:** The shared operation document preserves the refined Codex operation wording verbatim. The provider files retain only discovery metadata and a single matching-section link; their duplicated legacy operation bodies were physically removed.
 
 ## 3. Unit tests and static validation
 
