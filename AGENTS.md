@@ -2,6 +2,12 @@
 
 This file provides tool-agnostic working rules for any AI agent operating on this repository, including GitHub Copilot, Claude, and other LLM-based tools.
 
+## Shared Workflow Source
+
+`AGENTS.md` is the canonical source for the repository's OpenSpec lifecycle, handoff contract, validation requirements, and Git handoff. Provider-specific files (for example `CLAUDE.md`, `.github/copilot-instructions.md`, and provider command prompts) SHALL link here for shared policy rather than copy it. They may add provider mechanics, path-scoped rules, or an explicit exception with its rationale.
+
+For Claude Web, start a review or change chat with: **"Read and follow `CLAUDE.md` and `AGENTS.md` in this repository before reviewing or changing it."** A hosted chat cannot be forced to load repository files automatically.
+
 ## Orchestrator Model
 
 This project uses an **orchestrator-based** agent workflow with three core roles:
@@ -41,6 +47,8 @@ Every handoff between roles must include:
 
 This project uses **OpenSpec** for spec-driven development. All significant changes must go through the OpenSpec workflow.
 
+Significant work already authored outside this workflow (by a human or another AI) SHALL receive a retrospective OpenSpec change before it is accepted for release. The proposal SHALL name the implementation commit, describe its behavior, and the apply phase SHALL audit it against every affected delta requirement before syncing or archiving.
+
 ### CLI
 
 The `openspec` CLI (v1.5.0) manages changes, artifacts, and specs:
@@ -61,6 +69,15 @@ Explore ──▶ Propose ──▶ Apply ──▶ Archive
 2. **Propose** — Create a change with artifacts: `proposal.md`, `design.md`, `specs/`, `tasks.md`.
 3. **Apply** — Implement tasks from the `tasks.md` artifact. Test-first when applicable.
 4. **Archive** — Move the completed change to `openspec/changes/archive/YYYY-MM-DD-<name>/` and sync delta specs.
+
+### Proposal self-review gate
+
+Before applying or recommending acceptance of a proposal, its author SHALL review the proposal, design, specs, and tasks and record the result under `## Proposal Self-Review` in `proposal.md`.
+
+- The record MUST use exactly one decision: `PASS`, `PASS_WITH_NOTES`, or `BLOCK`.
+- It MUST cover scope, affected requirements, API evidence, testing impact, migration/rollback, and UI ordering (explicitly state **not applicable** when there is no UI).
+- A `BLOCK` decision prevents implementation until the blocker is resolved and the record is updated.
+- Self-review is evidence, not a replacement for a separate reviewer where the change's risk warrants one.
 
 ### Artifact Structure
 
@@ -107,14 +124,16 @@ Rules from `openspec/config.yaml` apply to all phases:
 
 ## Precedence
 
-Instruction precedence (highest to lowest):
+For the shared workflow policy above, this file is authoritative. Provider adapters and path-specific instructions MUST NOT silently replace its lifecycle, handoff contract, or self-review gate. An explicit, documented exception in this file is the only permitted override.
+
+For provider-specific mechanics and technical/path-scoped instructions, precedence is:
 
 1. `.github/instructions/*.instructions.md` — path-specific, scoped by `applyTo`
-2. `.github/copilot-instructions.md` — repository-wide baseline
-3. This file (`AGENTS.md`) — tool-agnostic orchestration rules
+2. The selected provider baseline (for example `.github/copilot-instructions.md` or `CLAUDE.md`)
+3. This file's non-workflow rules
 4. `.agents/` documentation — detailed project knowledge base
 
-In case of conflict, higher-precedence rules win. This precedence is documented in exactly one place: `.github/copilot-instructions.md`.
+In case of conflict, higher-precedence rules win within this non-workflow guidance. This precedence is documented in exactly one place: `.github/copilot-instructions.md`.
 
 ## Key Documentation
 

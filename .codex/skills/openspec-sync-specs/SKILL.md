@@ -9,6 +9,8 @@ metadata:
     generatedBy: '1.5.0'
 ---
 
+> **Repository policy:** Read root [`AGENTS.md`](../../../AGENTS.md) before using this skill. It is the canonical OpenSpec workflow policy.
+
 Sync delta specs from a change to main specs.
 
 This is an **agent-driven** operation - you will read delta specs and directly edit main specs to apply the changes. This allows intelligent merging (e.g., adding a scenario without copying the entire requirement).

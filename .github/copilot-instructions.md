@@ -68,74 +68,21 @@ Always run `npm install` before building or testing. Always run `npm run pack-al
 
 Never guess about Hooks, utility methods (`foundry.utils.*`), Document classes, data models, socket communication, or Canvas/rendering APIs. If the API docs are unclear, ask the user.
 
-## OpenSpec Workflow
+## OpenSpec workflow (canonical policy)
 
-This project uses **OpenSpec** for spec-driven development. Use the `openspec` CLI and the workflow below for all significant changes. The config is at `openspec/config.yaml` (schema: `spec-driven`).
+Read and follow root [`AGENTS.md`](../AGENTS.md) before proposing, reviewing, or changing significant work. It is the single source of truth for the OpenSpec lifecycle, retrospective changes, handoff contract, validation, Git handoff, and mandatory proposal self-review.
 
-### Slash Commands
-
-| Command         | Purpose                                                             |
-| --------------- | ------------------------------------------------------------------- |
-| `/opsx:explore` | Enter explore mode — think, investigate, clarify requirements       |
-| `/opsx:propose` | Create a change with all artifacts (proposal, design, specs, tasks) |
-| `/opsx:apply`   | Implement tasks from a change                                       |
-| `/opsx:archive` | Archive a completed change and sync delta specs to main specs       |
-| `/opsx:sync`    | Sync delta specs to main specs without archiving                    |
-
-When a user asks to implement something significant, guide them through: **Explore → Propose → Apply → Archive**. Don't skip phases.
-
-### Skills
-
-When executing OpenSpec workflows, invoke the corresponding skill from `.github/skills/`:
-
-| Skill                     | When to Use                                  |
-| ------------------------- | -------------------------------------------- |
-| `openspec-explore`        | User wants to think through a problem        |
-| `openspec-propose`        | User wants to create a new change proposal   |
-| `openspec-apply-change`   | User wants to implement tasks from a change  |
-| `openspec-archive-change` | User wants to archive a completed change     |
-| `openspec-sync-specs`     | User wants to sync delta specs to main specs |
-
-### CLI Quick Reference
-
-```bash
-openspec list --json                                    # List active changes
-openspec new change "<name>"                            # Create a new change
-openspec status --change "<name>" --json                # Show artifact status
-openspec instructions apply --change "<name>" --json    # Get implementation plan
-```
-
-### Artifact Structure
-
-Each change in `openspec/changes/<name>/` contains:
-
-| Artifact      | Purpose                                                  |
-| ------------- | -------------------------------------------------------- |
-| `proposal.md` | What & why (includes Testing Impact when applicable)     |
-| `design.md`   | How (includes API Surface, Testing Strategy)             |
-| `specs/`      | Delta specs with ADDED/MODIFIED/REMOVED/RENAMED sections |
-| `tasks.md`    | Implementation steps with `- [ ]` / `- [x]` checkboxes   |
-
-### Config-Driven Rules
-
-The `openspec/config.yaml` enforces spec-driven rules that apply across all phases:
-
-- Every proposal must list Foundry VTT API classes, Hooks, and utilities touched, with links to API docs
-- Designs must include an API Surface section referencing Foundry API docs and `foundry.utils.*` helpers
-- Tasks must include "Verify against Foundry API docs (v14)" subtasks for API-touching work
-- After compendium `_source/` changes, always include "Run `npm run pack-all`" task
-- Dedicated Unit Tests and E2E Tests task groups when the change requires testing
+Copilot-specific command prompts and skills live in `.github/prompts/` and `.github/skills/`. They provide command mechanics only; they do not replace `AGENTS.md`.
 
 ## Precedence Rules
 
-Instruction precedence (highest to lowest):
+For the shared OpenSpec workflow, `AGENTS.md` is authoritative and this file does not override it. For Copilot-specific and path-scoped guidance, precedence is:
 
 1. **Path-specific instructions** (`.github/instructions/*.instructions.md`) — scoped by `applyTo` glob
 2. **This file** (`.github/copilot-instructions.md`) — repository-wide baseline
-3. **`AGENTS.md`** (root) — tool-agnostic agent behavior and orchestration contracts
-4. **`.agents/` documentation** — detailed project knowledge base
+3. **`.agents/` documentation** — detailed project knowledge base
 
-In case of conflict, higher-precedence instructions override lower ones. See `.agents/README.md` for the full documentation map.
+An explicit exception documented in `AGENTS.md` is required to override the shared workflow. See `.agents/README.md` for the full documentation map.
 
 ## Agent Profile Resolution (Mandatory)
 
