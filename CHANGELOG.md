@@ -21,6 +21,16 @@ Pre-Effekte sind eine **Alpha-Funktion**. Sie automatisieren bislang nur einen T
 - Im Pre-Effekt-Editor schlagen Datenpfade automatisch gültige Actor-Felder vor. Schadenstypen stammen aus den Welteinstellungen und können dort frei verwaltet werden.
 - Für GMs gibt es optional eine KI-gestützte Generierung von Pre-Effekten über eine OpenAI-kompatible API. Zugangsdaten werden nur lokal im Browser des GMs gespeichert. Generierte Daten müssen vor der Nutzung geprüft werden.
 
+#### Weitere Features
+
+- Schadenstypen sind jetzt in den Welteinstellungen frei konfigurierbar (Name und Verhalten: Heilung, Erschöpfung statt Wunden, Rüstung ignorieren).
+- Neue Welteinstellung für den Umgang mit Waffenschaden-Manövern: Schadensmultiplikatoren können beim Wurf automatisch ausmultipliziert werden (#440, #498).
+- Neue Einstellung, um Würfeldetails (Einzelwürfe) im Chat anzuzeigen. Standardmäßig deaktiviert, bisheriges Verhalten bleibt erhalten (#464, #485).
+
+#### Fixes
+
+- Das Namensfeld auf dem Heldenbogen wächst jetzt mit bzw. schneidet lange Namen sauber ab (#486).
+
 ### v14.0
 
 #### Breaking Change
