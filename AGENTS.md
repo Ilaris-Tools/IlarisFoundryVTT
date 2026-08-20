@@ -109,6 +109,24 @@ Rules from `openspec/config.yaml` apply to all phases:
 
 ## Working Rules
 
+### Foundry E2E lifecycle
+
+Use `node utils/foundry-lifecycle.mjs <Action>` for local E2E lifecycle work.
+It uses the official Foundry CLI and the `ilaris-e2e-world-v14363-r1` world.
+Use `--mode remote` or the documented `npm run foundry:env`/
+`npm run foundry:ctl -- <Action>` commands only when a credentialed remote
+server is needed. Remote setup is opt-in, manifest-driven, and confined to its
+dedicated `FOUNDRY_HOME`; it never replaces the external-server contract of
+`npm run test:e2e`. See `utils/foundry-env/README.md` before using credentials
+or the opt-in sharing command.
+
+For a fresh hosted Linux VM, use `npm run foundry:cloud -- <E2E paths>`. It is
+a disposable environment-only-secret bootstrap: it runs `npm ci`, starts a
+canonical isolated Foundry world, executes headless Playwright, retains
+`test-results/`, and stops only its owned process. Set a unique
+`FOUNDRY_RUN_ID` per concurrent task. Do not use it for Fable's local
+interactive or old-versus-new test workflow.
+
 1. **Consult the Foundry VTT API** (<https://foundryvtt.com/api/>) before making assumptions about Hooks, Documents, utilities, or rendering APIs.
 2. **Run `npm install`** before any build or test operation.
 3. **Run `npm run pack-all`** after modifying any `_source/` compendium data.
