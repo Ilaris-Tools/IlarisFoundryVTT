@@ -2,11 +2,11 @@
 
 ### Requirement: Agent-neutral remote Foundry provisioning
 
-The system SHALL provide a documented, opt-in provisioning command for Linux/web-agent environments that prepares and starts a real Foundry VTT server with the repository system linked from the working tree.
+The system SHALL provide a documented, opt-in cross-platform Node.js provisioning command for local and web-agent environments that prepares and starts a real Foundry VTT server with the repository system linked from the working tree.
 
 #### Scenario: Remote agent starts a canonical test server
 
-- **WHEN** a Linux/web-based agent provides the required Foundry credentials and runs the provisioning command
+- **WHEN** a contributor or web-based agent on Windows, macOS, or Linux provides the required Foundry credentials and runs the provisioning command
 - **THEN** the command SHALL prepare a dedicated data root outside the repository, link the working-tree Ilaris system, start Foundry on the configured port, and publish an `E2E_FOUNDRY_URL` suitable for the existing E2E runner
 
 #### Scenario: Credentials are unavailable
@@ -14,9 +14,14 @@ The system SHALL provide a documented, opt-in provisioning command for Linux/web
 - **WHEN** a remote agent runs the provisioning command without required Foundry credentials
 - **THEN** the command SHALL exit before downloading, licensing, or launching Foundry with a documented soft-skip result
 
+#### Scenario: Repository command runs on a supported platform
+
+- **WHEN** a contributor invokes a repository-owned lifecycle or provisioning command on Windows, macOS, or Linux
+- **THEN** the command SHALL run through the Node.js entry point and SHALL either complete using the platform adapter or report the missing external prerequisite without requiring a shell-only repository script
+
 ### Requirement: Shared lifecycle facade with isolated backends
 
-The system SHALL provide `utils/foundry-lifecycle.mjs` as the cross-platform lifecycle facade for local and remote E2E Foundry servers. It SHALL expose a consistent action vocabulary while selecting explicit local CLI and remote provisioning backends.
+The system SHALL provide `utils/foundry-lifecycle.mjs` as the cross-platform Node.js lifecycle facade for local and remote E2E Foundry servers. It SHALL expose a consistent action vocabulary while selecting explicit local CLI and remote provisioning backends.
 
 #### Scenario: Local lifecycle action is requested
 

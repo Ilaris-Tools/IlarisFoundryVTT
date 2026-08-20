@@ -8,7 +8,7 @@ The integration must therefore reuse the portable environment implementation whi
 
 **Goals:**
 
-- Provide an opt-in Linux/web-agent command that provisions a real Foundry server for the canonical published E2E baseline.
+- Provide an opt-in cross-platform command that provisions a real Foundry server for the canonical published E2E baseline in local or web-agent environments.
 - Keep license material outside the repository and make missing credentials a clear, non-destructive outcome.
 - Preserve local contributor E2E behavior and the existing `npm run test:e2e` external-server boundary.
 - Let Claude Web, Copilot, CI, and other web-based agents use the same reusable provisioning core through thin adapters.
@@ -18,7 +18,7 @@ The integration must therefore reuse the portable environment implementation whi
 - Create, maintain, or test against a new `vanilla-ilaris` world.
 - Change any game rule, compendium, E2E case semantics, or published baseline contents.
 - Collapse local and remote backend responsibilities into one implementation or require a personal license for ordinary unit/lint work.
-- Support Windows/macOS provisioning through the Linux shell scripts; those environments retain the existing lifecycle path.
+- Depend on repository-owned shell-only lifecycle or provisioning entry points. Platform-specific executable/process handling is permitted behind the Node facade.
 - Expose a persistent public Foundry server or commit credentials.
 
 ## Decisions
@@ -39,11 +39,13 @@ Alternative considered: have `test:e2e` implicitly provision Foundry. Rejected b
 
 ### Use the cross-platform lifecycle helper as a shared facade
 
-The existing `utils/foundry-lifecycle.mjs` design becomes the stable Node entry point for lifecycle actions such as `Status`, `Stop`, `Start`, `Restart`, and `PackAndRestart`. It SHALL route an explicit local mode to the configured official Foundry CLI and an explicit remote mode to the credential-gated `utils/foundry-env/` provisioning backend. Remote-only setup/download and sharing remain explicit remote actions.
+The existing `utils/foundry-lifecycle.mjs` design, introduced by `ba2c304f8cdfae71560d0eb0288b07cc3e19124a`, becomes the stable Node entry point for lifecycle actions such as `Status`, `Stop`, `Start`, `Restart`, and `PackAndRestart`. It SHALL route an explicit local mode to the configured official Foundry CLI and an explicit remote mode to the credential-gated provisioning backend. Remote-only setup/download and sharing remain explicit remote actions.
 
 The facade owns platform-neutral argument validation, readiness reporting, and action vocabulary. Each backend owns its installation and process details. The remote backend SHALL stop only the PID/process it recorded in its dedicated data root, rather than terminating any arbitrary listener on the requested port.
 
-Alternative considered: duplicate lifecycle handling in the shell provisioning scripts. Rejected because start/stop/readiness behavior would diverge across local and remote E2E paths.
+All repository-owned commands SHALL be Node.js entry points runnable on Windows, macOS, and Linux. Platform-specific details—such as invoking `.cmd` on Windows, discovering a listener, or launching Foundry—belong in narrowly scoped Node adapters. The source branch's Bash scripts are reference material only and SHALL be ported rather than adopted as required entry points.
+
+Alternative considered: duplicate lifecycle handling in shell provisioning scripts. Rejected because it both diverges lifecycle behavior and excludes Windows/macOS contributors.
 
 ### Preserve local Playwright defaults while adding remote overrides
 
@@ -72,12 +74,12 @@ Environment variables override a developer-owned secrets file. The core never wr
 - **Baseline archive URL or checksum changes** → Read only the manifest and verify the checksum before extraction; publish a new manifest/archive revision together.
 - **Remote Chromium differs from local browser channels** → Use `E2E_CHROMIUM_PATH` only when explicitly supplied and regression-test local defaults separately.
 - **Tunnel exposes an unauthenticated test GM** → Keep sharing manual, clearly warn in documentation, and provide an unshare/cleanup command.
-- **Shell tooling is Linux-only** → State the platform boundary explicitly and retain the existing local lifecycle utility.
+- **Platform process management differs** → Unit-test command selection/parsing per platform and report an actionable prerequisite when a platform lacks a required external executable.
 
 ## Migration Plan
 
 1. Start from `develop` and add the cross-platform lifecycle facade plus selectively copy/adapt the source branch's portable files; do not merge its world model or overwrite current E2E configuration wholesale.
-2. Add manifest-driven remote provisioning as a lifecycle backend and connect command/adapters to the facade.
+2. Port the required provisioning/control behavior into Node.js, add it as a cross-platform remote lifecycle backend, and connect command/adapters to the facade.
 3. Validate credential-free paths, unit tests, lint, and strict specs.
 4. With developer-provided remote credentials, provision a disposable data root and run the canonical suite.
 5. Roll back by removing the additive remote commands/adapters and `utils/foundry-env/`; the baseline archive and normal E2E runner remain unchanged.
