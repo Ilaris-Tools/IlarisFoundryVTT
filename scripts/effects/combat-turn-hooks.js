@@ -44,6 +44,13 @@
 import { IlarisActiveEffect } from './active-effect.js'
 import { reduceConditionSourcesForCombatant } from './status-conditions.js'
 
+// Transient turn windows intentionally avoid mutating infinite Zone timing.
+const pendingInfiniteDotTicks = new Set()
+
+function infiniteDotKey(actor, effect) {
+    return `${actor?.uuid || actor?.id || ''}:${effect?.uuid || effect?.id || ''}`
+}
+
 export async function expireEffect(actor, effect) {
     const summonedItemId = effect.flags?.ilaris?.summonedItemId
     if (summonedItemId) {
@@ -128,6 +135,26 @@ Hooks.on('updateCombat', async (combat, changed, _options, _userId) => {
     }
 })
 
+/** Resolve each transient infinite Zone DOT window once at owner-turn end. */
+export async function applyPendingInfiniteDotTicks(combat) {
+    for (const combatant of combat.combatants) {
+        const actor = combatant.actor
+        if (!actor) continue
+        for (const effect of actor.appliedEffects) {
+            const key = infiniteDotKey(actor, effect)
+            if (!pendingInfiniteDotTicks.has(key)) continue
+            pendingInfiniteDotTicks.delete(key)
+            for (const change of effect.dotChanges || [])
+                await IlarisActiveEffect.applyDotDamage(actor, change, effect)
+        }
+    }
+}
+
+Hooks.on('updateCombat', async (combat, changed, _options, _userId) => {
+    if (!game.user.isGM || !('turn' in changed)) return
+    await applyPendingInfiniteDotTicks(combat)
+})
+
 /**
  * Phase 1: evaluates timing for a single combatant's Ilaris-timed effects.
  *
@@ -140,6 +167,15 @@ Hooks.on('updateCombat', async (combat, changed, _options, _userId) => {
 export async function reduceEffectDurationForCombatant(combatant) {
     const actor = combatant?.actor
     if (!actor) return
+
+    for (const effect of actor.appliedEffects.filter(
+        (entry) =>
+            !entry.disabled &&
+            !entry.isSuppressed &&
+            entry.system?.ilarisTiming?.durationType === 'infinite' &&
+            entry.hasDotChanges,
+    ))
+        pendingInfiniteDotTicks.add(infiniteDotKey(actor, effect))
 
     const effects = actor.appliedEffects.filter(
         (e) =>

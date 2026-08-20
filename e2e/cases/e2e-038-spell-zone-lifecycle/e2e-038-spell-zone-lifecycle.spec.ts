@@ -1148,7 +1148,31 @@ test.describe('E2E-038 · Spell zone lifecycle', () => {
                 )
                 await first.delete()
                 // Foundry does not await asynchronous deleteRegion hook listeners.
-                await new Promise((resolve) => setTimeout(resolve, 500))
+                // Wait for the owned effect to disappear instead of assuming a fixed
+                // delay is enough on every host.
+                await new Promise<void>((resolve, reject) => {
+                    const deadline = Date.now() + 15000
+                    const check = () => {
+                        if (
+                            !ownedEffects().some(
+                                (effect: any) => effect.flags?.ilaris?.zoneRegionId === first.id,
+                            )
+                        ) {
+                            resolve()
+                            return
+                        }
+                        if (Date.now() >= deadline) {
+                            reject(
+                                new Error(
+                                    'Passive effect wurde nach dem Löschen der Region nicht entfernt.',
+                                ),
+                            )
+                            return
+                        }
+                        setTimeout(check, 50)
+                    }
+                    check()
+                })
                 const afterFirstDeletion = ownedEffects().map(
                     (effect: any) => effect.flags.ilaris.zoneRegionId,
                 )

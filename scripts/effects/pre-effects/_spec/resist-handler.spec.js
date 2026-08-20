@@ -145,6 +145,62 @@ describe('resist result listener', () => {
         )
     })
 
+    it('routes Zone movement resistance to the neutral marker lifecycle without applying a pre-effect', async () => {
+        const actor = {
+            id: 'target',
+            name: 'Target',
+            system: {},
+            effects: [],
+            createEmbeddedDocuments: jest.fn(async (_type, [data]) => {
+                const marker = { id: 'movement-marker', ...data, update: jest.fn() }
+                actor.effects.push(marker)
+                return [marker]
+            }),
+            deleteEmbeddedDocuments: jest.fn(async (_type, ids) => {
+                actor.effects = actor.effects.filter((effect) => !ids.includes(effect.id))
+            }),
+        }
+        const region = {
+            id: 'zone-region',
+            parent: { tokens: new Map([['target-token', { id: 'target-token' }]]) },
+        }
+        global.game.actors.get.mockReturnValue(actor)
+        global.game.scenes = { get: jest.fn(() => ({ regions: new Map([[region.id, region]]) })) }
+        registerResistResolutionListener()
+        const dialog = {
+            _resistContext: {
+                spellUuid: 'Item.spell',
+                preEffectData: preEffect({
+                    target: { actorId: 'target' },
+                    zoneMovementResistance: {
+                        sceneId: 'scene-a',
+                        regionId: 'zone-region',
+                        tokenId: 'target-token',
+                        applicationId: 'cast-a',
+                        spellUuid: 'Item.spell',
+                        spellName: 'Pandämonium',
+                        origin: { x: 10, y: 20 },
+                    },
+                }),
+            },
+        }
+
+        await hookCallbacks['Ilaris.postSkillRoll'](dialog, { rollResult: { success: false } })
+
+        expect(effectCreate).not.toHaveBeenCalled()
+        expect(actor.createEmbeddedDocuments).toHaveBeenCalledWith('ActiveEffect', [
+            expect.objectContaining({
+                changes: [],
+                flags: expect.objectContaining({
+                    ilaris: expect.objectContaining({
+                        zoneMovementResistanceMarker: true,
+                        zoneMovementOrigin: { x: 10, y: 20 },
+                    }),
+                }),
+            }),
+        ])
+    })
+
     it('applies diminished values when a diminished resist succeeds', async () => {
         registerResistResolutionListener()
         const dialog = {

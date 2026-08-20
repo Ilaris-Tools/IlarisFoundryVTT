@@ -241,6 +241,21 @@ async function processResistResult(dialog, payload, preEffectData) {
         return
     }
 
+    if (preEffectData?.zoneMovementResistance) {
+        const { targetActor } = resolveTargetActorForDamage(
+            preEffectData.target || { actorId: preEffectData.targetActorId },
+        )
+        if (!targetActor) return
+        const { resolveZoneMovementResistance } =
+            await import('../../combat/zones/zone-lifecycle.js')
+        await resolveZoneMovementResistance(
+            targetActor,
+            preEffectData.zoneMovementResistance,
+            resistSuccess,
+        )
+        return
+    }
+
     if (resistSuccess && hasResistanceOutcome(preEffectData, 'success')) {
         await applyPreEffectFromResist(selectResistanceOutcome(preEffectData, 'success'))
     } else if (resistSuccess) {

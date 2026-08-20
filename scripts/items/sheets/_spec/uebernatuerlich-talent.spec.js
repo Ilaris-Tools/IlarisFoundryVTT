@@ -34,13 +34,24 @@ describe('UebernatuerlichTalentSheet shared Pre-Effect composition', () => {
         const createIndex = template.indexOf('system.zone.trigger.triggerOnCreate')
         const enterIndex = template.indexOf('system.zone.trigger.onEnter')
         const roundIndex = template.indexOf('system.zone.trigger.onRoundStart')
+        const resistanceIndex = template.indexOf('system.zone.movementResistance.enabled')
+        const removalIndex = template.indexOf('clear-zone-profile')
         const modificationIndex = template.indexOf('spell-modification-editor')
 
         expect(createIndex).toBeGreaterThan(-1)
         expect(enterIndex).toBeGreaterThan(createIndex)
         expect(roundIndex).toBeGreaterThan(enterIndex)
-        expect(modificationIndex).toBeGreaterThan(roundIndex)
+        expect(resistanceIndex).toBeGreaterThan(roundIndex)
+        expect(removalIndex).toBeGreaterThan(resistanceIndex)
+        expect(modificationIndex).toBeGreaterThan(removalIndex)
         expect(template).toContain('Zu Rundenbeginn ausloesen')
+        expect(
+            template.indexOf(
+                'system.spellModifications.{{@index}}.zone.movementResistance.enabled',
+            ),
+        ).toBeGreaterThan(
+            template.indexOf('system.spellModifications.{{@index}}.zone.trigger.onRoundStart'),
+        )
     })
 
     it('exposes LLM generation only for a configured GM', async () => {

@@ -1,5 +1,6 @@
 import {
     classifyZoneMembership,
+    classifyZoneMovementResistance,
     classifyZoneTraversalMovement,
     createPersistentZone,
     createZoneDraftRegion,
@@ -12,6 +13,7 @@ import {
     reducePersistentZoneDurations,
     reconcilePersistentPassiveZones,
     reconcileZoneAdministration,
+    resolveZoneMovementResistance,
     resolveZoneTraversalResistance,
     updatePersistentZoneMembership,
 } from '../zone-lifecycle.js'
@@ -56,6 +58,69 @@ describe('persistent zone duration', () => {
             movement.origin,
             ...movement.passed.waypoints,
         ])
+    })
+
+    test('classifies MOVE, ENTER, and EXIT for movement resistance but ignores teleports', () => {
+        global.CONST = { REGION_MOVEMENT_SEGMENTS: { ENTER: 1, MOVE: 2, EXIT: 3 } }
+        const region = { id: 'zone-region' }
+        const token = {
+            id: 'target-token',
+            segmentizeRegionMovementPath: jest.fn(() => [{ type: 2, action: 'walk' }]),
+        }
+        const movement = {
+            id: 'movement-internal',
+            origin: { x: 10, y: 20 },
+            passed: { waypoints: [{ x: 20, y: 20, action: 'walk' }] },
+        }
+        expect(classifyZoneMovementResistance(region, token, movement)).toEqual({
+            window: 'zone-region:target-token:movement-internal',
+            origin: { x: 10, y: 20 },
+        })
+        token.segmentizeRegionMovementPath.mockReturnValue([{ type: 1, action: 'teleport' }])
+        global.CONFIG = { Token: { movement: { actions: { teleport: { teleport: true } } } } }
+        expect(classifyZoneMovementResistance(region, token, movement)).toBeNull()
+    })
+
+    test('keeps movement resistance marker ownership narrow and never moves the Token', async () => {
+        const actor = {
+            effects: [{ id: 'manual', flags: { ilaris: {} } }],
+            createEmbeddedDocuments: jest.fn(async (_type, [data]) => {
+                const marker = { id: 'marker', ...data, update: jest.fn() }
+                actor.effects.push(marker)
+                return [marker]
+            }),
+            deleteEmbeddedDocuments: jest.fn(async (_type, ids) => {
+                actor.effects = actor.effects.filter((effect) => !ids.includes(effect.id))
+            }),
+        }
+        const token = { id: 'target-token', x: 100, y: 200 }
+        const region = {
+            id: 'zone-region',
+            parent: { tokens: new Map([[token.id, token]]) },
+        }
+        global.game.scenes = { get: jest.fn(() => ({ regions: new Map([[region.id, region]]) })) }
+        global.ChatMessage.create = jest.fn()
+        const resistance = {
+            sceneId: 'scene',
+            regionId: region.id,
+            tokenId: token.id,
+            applicationId: 'cast-a',
+            spellUuid: 'Item.pandemonium',
+            spellName: 'Pandämonium',
+            origin: { x: 10, y: 20 },
+        }
+
+        await resolveZoneMovementResistance(actor, resistance, false)
+        await resolveZoneMovementResistance(actor, resistance, false)
+
+        expect(actor.createEmbeddedDocuments).toHaveBeenCalledTimes(1)
+        expect(actor.effects).toHaveLength(2)
+        expect(actor.effects[1].flags.ilaris.zoneMovementOrigin).toEqual({ x: 10, y: 20 })
+        expect({ x: token.x, y: token.y }).toEqual({ x: 100, y: 200 })
+
+        await resolveZoneMovementResistance(actor, resistance, true)
+        expect(actor.deleteEmbeddedDocuments).toHaveBeenCalledWith('ActiveEffect', ['marker'])
+        expect(actor.effects).toEqual([{ id: 'manual', flags: { ilaris: {} } }])
     })
 
     test('administrative reconciliation updates triggered-zone membership without dispatching', async () => {

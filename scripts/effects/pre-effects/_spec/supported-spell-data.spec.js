@@ -439,12 +439,7 @@ describe('reviewed supported spell pre-effect source data', () => {
         )
     })
 
-    it('adds one-time-only damage approximations for the accepted zone and contact spells', () => {
-        expectDamageChange(readSpell('Pand_monium_veNTD1rnQURhqGjs.json').system.preEffects?.[0], {
-            value: '2W6',
-            damageType: 'PROFAN',
-            maechtigBonus: '+1W6',
-        })
+    it('keeps one-time-only damage approximations for the accepted contact spells', () => {
         expectDamageChange(readSpell('Seelenfeuer_QkRPoYl037LeA7Pi.json').system.preEffects?.[0], {
             value: '2W6',
             damageType: 'TRUE_DAMAGE',
@@ -454,6 +449,26 @@ describe('reviewed supported spell pre-effect source data', () => {
             readSpell('Wand_aus_Flammen_cwYNL2OTHHn8HGmA.json').system.preEffects?.[0],
             { value: '4W6', damageType: 'TRUE_DAMAGE', maechtigBonus: '+2W6' },
         )
+    })
+
+    it('configures Pandämonium as a passive Zone DOT with GE 16 movement resistance', () => {
+        const pandemonium = readSpell('Pand_monium_veNTD1rnQURhqGjs.json').system
+        expect(pandemonium.zone).toMatchObject({
+            shape: 'circle',
+            distance: 2,
+            placement: { anchor: 'free', range: 16, pivot: 'center' },
+            lifecycle: 'persistent',
+            effectMode: 'passive',
+            duration: { remaining: 960, originalValue: 960 },
+            movementResistance: { enabled: true, attribut: 'GE', resistDifficulty: 16 },
+        })
+        expect(pandemonium.preEffects[0]).toMatchObject({ baseDuration: 0, instant: false })
+        expect(pandemonium.preEffects[0].changes[0]).toMatchObject({
+            type: 'dot',
+            value: '2W6',
+            damageType: 'PROFAN',
+            maechtigBonus: '+1W6',
+        })
     })
 
     it('configures Tanz der Schwerter with its complete 16-phase combat modifiers', () => {

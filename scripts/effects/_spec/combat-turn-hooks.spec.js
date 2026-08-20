@@ -1,4 +1,9 @@
-import { expireEffect } from '../combat-turn-hooks.js'
+import {
+    applyPendingInfiniteDotTicks,
+    expireEffect,
+    reduceEffectDurationForCombatant,
+} from '../combat-turn-hooks.js'
+import { IlarisActiveEffect } from '../active-effect.js'
 import { reduceConditionSourcesForCombatant } from '../status-conditions.js'
 
 describe('summoned item expiry', () => {
@@ -72,5 +77,52 @@ describe('condition source expiry', () => {
             'system.ilarisCondition.sources': [{ id: 'manual', type: 'manual' }],
         })
         expect(actor.deleteEmbeddedDocuments).not.toHaveBeenCalled()
+    })
+})
+
+describe('infinite passive Zone DOT timing', () => {
+    afterEach(() => jest.restoreAllMocks())
+
+    it('ticks an infinite Zone DOT once without mutating timing and retains finite timing behavior', async () => {
+        const infiniteDot = {
+            id: 'zone-dot',
+            disabled: false,
+            isSuppressed: false,
+            hasDotChanges: true,
+            dotChanges: [{ key: 'system.gesundheit.wunden', type: 'dot', value: '2W6' }],
+            system: { ilarisTiming: { durationType: 'infinite', remaining: 0 } },
+            update: jest.fn(),
+        }
+        const finiteEffect = {
+            id: 'finite',
+            disabled: false,
+            isSuppressed: false,
+            hasDotChanges: false,
+            system: {
+                ilarisTiming: { durationType: 'ownerTurns', expiresOn: 'turnEnd', remaining: 2 },
+            },
+            update: jest.fn(),
+        }
+        const actor = {
+            id: 'target',
+            uuid: 'Actor.target',
+            appliedEffects: [infiniteDot, finiteEffect],
+        }
+        const combatant = { actor }
+        const applyDotDamage = jest
+            .spyOn(IlarisActiveEffect, 'applyDotDamage')
+            .mockResolvedValue(undefined)
+
+        await reduceEffectDurationForCombatant(combatant)
+        await applyPendingInfiniteDotTicks({ combatants: [combatant] })
+        await applyPendingInfiniteDotTicks({ combatants: [combatant] })
+
+        expect(applyDotDamage).toHaveBeenCalledTimes(1)
+        expect(infiniteDot.update).not.toHaveBeenCalled()
+        expect(infiniteDot.system.ilarisTiming.remaining).toBe(0)
+        expect(finiteEffect.update).toHaveBeenCalledWith({
+            'system.ilarisTiming._pendingDurationChange': true,
+            'system.ilarisTiming._pendingExpiry': false,
+        })
     })
 })

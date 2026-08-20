@@ -71,6 +71,23 @@ function normalizeTraversal(source = {}) {
     }
 }
 
+function normalizeMovementResistance(source = {}) {
+    if (source?.enabled !== true) return null
+    const attribut = typeof source.attribut === 'string' ? source.attribut : ''
+    if (!MAIN_ATTRIBUTES.has(attribut)) return null
+    return {
+        enabled: true,
+        attribut,
+        resistDifficulty: numeric(source.resistDifficulty, 12),
+        failureMarker: {
+            name:
+                typeof source.failureMarker?.name === 'string'
+                    ? source.failureMarker.name
+                    : 'Bewegung fehlgeschlagen',
+        },
+    }
+}
+
 export function normalizeZoneProfile(source) {
     if (!source || typeof source !== 'object') return null
     const shape = SHAPES.has(source.shape) ? source.shape : null
@@ -104,6 +121,8 @@ export function normalizeZoneProfile(source) {
         return null
     const traversal = onTraverse ? normalizeTraversal(source.traversal) : null
     if (onTraverse && !traversal) return null
+    const movementResistance = normalizeMovementResistance(source.movementResistance)
+    if (source.movementResistance?.enabled === true && !movementResistance) return null
 
     const profile = {
         shape,
@@ -139,6 +158,7 @@ export function normalizeZoneProfile(source) {
         }
     }
     if (traversal) profile.traversal = traversal
+    if (movementResistance) profile.movementResistance = movementResistance
     return profile
 }
 
@@ -155,5 +175,9 @@ export function resolveZoneProfile(baseProfile, modificationProfile) {
         duration: { ...(base.duration || {}), ...(modification.duration || {}) },
         trigger: { ...(base.trigger || {}), ...(modification.trigger || {}) },
         traversal: { ...(base.traversal || {}), ...(modification.traversal || {}) },
+        movementResistance: {
+            ...(base.movementResistance || {}),
+            ...(modification.movementResistance || {}),
+        },
     })
 }
