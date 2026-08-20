@@ -9,7 +9,7 @@ metadata:
     generatedBy: '1.5.0'
 ---
 
-> **Repository policy:** Read root [`AGENTS.md`](../../../AGENTS.md) before using this skill. It is the canonical OpenSpec workflow policy.
+> **Canonical instructions:** Read root [`AGENTS.md`](../../../AGENTS.md), then read the **Sync (`openspec-sync-specs`)** section of [`OPENSPEC_OPERATIONS.md`](../../../.agents/OPENSPEC_OPERATIONS.md) in full. That shared section is the only active operation body; the legacy provider copy below MUST NOT override it.
 
 Sync delta specs from a change to main specs.
 

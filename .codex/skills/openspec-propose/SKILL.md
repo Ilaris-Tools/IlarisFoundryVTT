@@ -9,7 +9,7 @@ metadata:
     generatedBy: '1.5.0'
 ---
 
-> **Repository policy:** Read root [`AGENTS.md`](../../../AGENTS.md) before using this skill. A proposed change MUST include the canonical `## Proposal Self-Review` record before it is applied or recommended for acceptance.
+> **Canonical instructions:** Read root [`AGENTS.md`](../../../AGENTS.md), then read the **Propose (`openspec-propose`)** section of [`OPENSPEC_OPERATIONS.md`](../../../.agents/OPENSPEC_OPERATIONS.md) in full. That shared section is the only active operation body; the legacy provider copy below MUST NOT override it.
 
 Propose a new change - create the change and generate all artifacts in one step.
 

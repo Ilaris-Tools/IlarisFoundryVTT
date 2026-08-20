@@ -1,6 +1,6 @@
 # Claude Instructions — Ilaris FoundryVTT
 
-Before proposing, reviewing, or changing significant work, read and follow [AGENTS.md](AGENTS.md). It is the single canonical policy for OpenSpec, validation, handoffs, and Git handoff.
+Before proposing, reviewing, or changing significant work, read and follow [AGENTS.md](AGENTS.md) and the relevant section of [.agents/OPENSPEC_OPERATIONS.md](.agents/OPENSPEC_OPERATIONS.md). They are the canonical OpenSpec policy and provider-neutral operation instructions.
 
 ## Claude Web
 

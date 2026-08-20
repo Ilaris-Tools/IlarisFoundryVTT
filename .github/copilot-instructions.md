@@ -70,7 +70,7 @@ Never guess about Hooks, utility methods (`foundry.utils.*`), Document classes, 
 
 ## OpenSpec workflow (canonical policy)
 
-Read and follow root [`AGENTS.md`](../AGENTS.md) before proposing, reviewing, or changing significant work. It is the single source of truth for the OpenSpec lifecycle, retrospective changes, handoff contract, validation, Git handoff, and mandatory proposal self-review.
+Read and follow root [`AGENTS.md`](../AGENTS.md) and the relevant section of [`.agents/OPENSPEC_OPERATIONS.md`](../.agents/OPENSPEC_OPERATIONS.md) before proposing, reviewing, or changing significant work. Together they are the single source of truth for the OpenSpec lifecycle, retrospective changes, handoff contract, validation, Git handoff, self-review, and operation instructions.
 
 Copilot-specific command prompts and skills live in `.github/prompts/` and `.github/skills/`. They provide command mechanics only; they do not replace `AGENTS.md`.
 

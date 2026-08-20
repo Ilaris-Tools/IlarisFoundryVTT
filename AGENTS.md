@@ -4,7 +4,7 @@ This file provides tool-agnostic working rules for any AI agent operating on thi
 
 ## Shared Workflow Source
 
-`AGENTS.md` is the canonical source for the repository's OpenSpec lifecycle, handoff contract, validation requirements, and Git handoff. Provider-specific files (for example `CLAUDE.md`, `.github/copilot-instructions.md`, and provider command prompts) SHALL link here for shared policy rather than copy it. They may add provider mechanics, path-scoped rules, or an explicit exception with its rationale.
+`AGENTS.md` is the canonical source for the repository's OpenSpec lifecycle, handoff contract, validation requirements, and Git handoff. The complete provider-neutral operation bodies live in [`.agents/OPENSPEC_OPERATIONS.md`](.agents/OPENSPEC_OPERATIONS.md). Provider-specific files (for example `CLAUDE.md`, `.github/copilot-instructions.md`, and provider command prompts) SHALL link to both sources rather than copy them. They may add provider metadata or an explicit exception with its rationale.
 
 For Claude Web, start a review or change chat with: **"Read and follow `CLAUDE.md` and `AGENTS.md` in this repository before reviewing or changing it."** A hosted chat cannot be forced to load repository files automatically.
 

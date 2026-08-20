@@ -30,7 +30,7 @@ Alternative: revert and re-implement through a new change. Rejected because the 
 
 ### Use `AGENTS.md` as the shared policy and adapters as entry points
 
-`AGENTS.md` already declares itself tool-agnostic and is the natural source of truth. `CLAUDE.md` will be a small Claude-facing entry point and Copilot instructions will link to the shared workflow rather than replicate it. Provider files may state how their environment invokes a skill or command, but the lifecycle, handoff contract, and review gate live once in `AGENTS.md`.
+`AGENTS.md` already declares itself tool-agnostic and is the natural policy source of truth. `.agents/OPENSPEC_OPERATIONS.md` will hold the complete, provider-neutral bodies for Explore, Propose, Apply, Sync, and Archive. `CLAUDE.md` and all provider skill/prompt files will become small entry points that identify the shared section to read. Provider files retain only metadata and invocation mechanics.
 
 Alternative: add a new generic workflow document and point every file to it. Rejected because it creates another document that must be found before the already-established repository instruction file.
 

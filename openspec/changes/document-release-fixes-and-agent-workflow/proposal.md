@@ -9,7 +9,7 @@ Commit `36492f283a9ec71a760a9b6b8314017875232f42` contains reviewed, release-blo
 - Specify that an absent damage type and the legacy `NORMAL` sentinel use default behavior without a warning, and that maneuver damage-type changes retain the configured registry key rather than the human-readable label.
 - Specify the pre-effect editor's persisted select values, safe resistance target resolution through an Actor UUID (including synthetic actors), missing-target handling, and escaped resistance-prompt content.
 - Record the v14.1 release metadata and changelog audit as a retrospective implementation record.
-- Introduce one provider-neutral agent-workflow source in `AGENTS.md`; add thin provider adapters rather than copying workflow policy. The Claude adapter SHALL require OpenSpec for significant changes and a documented self-review of each proposal before it is applied or accepted.
+- Introduce one provider-neutral agent-workflow policy in `AGENTS.md` and one canonical OpenSpec operation-instruction file; reduce every provider skill/prompt to a thin adapter that reads the matching shared operation section. The Claude adapter SHALL require OpenSpec for significant changes and a documented self-review of each proposal before it is applied or accepted.
 
 This is primarily retrospective documentation and workflow governance. It modifies documented behavior, but introduces no planned breaking user-facing change beyond the reviewed commit.
 
@@ -56,4 +56,4 @@ The runtime code and regression tests were included in the reviewed commit. This
 - **Migration and rollback:** This is documentation and instruction work; it does not migrate data, touch compendiums, or require packing. Its documentation changes can be reverted independently of the reviewed release fix.
 - **UI ordering:** Not applicable; no UI is changed by this proposal.
 
-**Application result:** The apply audit found no mismatch between the named commit and its delta requirements. No compendium source changed, so `npm run pack-all` and a Foundry lifecycle/E2E run are not required.
+**Application result:** The apply audit found no mismatch between the named commit and its delta requirements. The Codex operation wording was used to establish the shared operation source; every provider adapter now names its corresponding central section as the only active operation body. No compendium source changed, so `npm run pack-all` and a Foundry lifecycle/E2E run are not required.

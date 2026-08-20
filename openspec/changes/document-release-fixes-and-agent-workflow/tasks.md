@@ -17,6 +17,10 @@
 
 **Adapter audit:** `CLAUDE.md`, all `.claude/commands/`, all `.codex/skills/openspec-*`, `.github/copilot-instructions.md`, `.github/prompts/`, and `.github/skills/openspec-*` now point to `AGENTS.md`. The provider-specific files retain command/skill mechanics only; none duplicates or contradicts the lifecycle or self-review gate.
 
+- [x] 2.6 Create `.agents/OPENSPEC_OPERATIONS.md` as the single canonical body for Explore, Propose, Apply, Sync, and Archive; reduce every Claude, Codex, and GitHub OpenSpec skill/prompt to a provider-metadata adapter that instructs the AI to read its matching section.
+
+**Canonical-body result:** The shared operation document uses the Codex operation wording as the reference. All provider adapters point to their matching central section and explicitly state that provider-specific material cannot override it.
+
 ## 3. Unit tests and static validation
 
 - [x] 3.1 Run the focused Jest coverage in `scripts/combat/_spec/shared_dialog_helpers.test.js` for LEP healing, `NORMAL`, and damage-type registry keys.
@@ -37,3 +41,4 @@
 - [x] 5.1 Complete and record the mandatory proposal self-review with a `PASS`, `PASS_WITH_NOTES`, or `BLOCK` decision, covering scope, API evidence, requirements, tests, migration, and UI ordering (not applicable for this change).
 - [x] 5.2 Run `openspec validate document-release-fixes-and-agent-workflow --strict` and resolve change-local validation errors.
 - [x] 5.3 Review the final diff, ensure only retrospective documentation and workflow-policy files are included, and commit the completed change with a concise imperative message after the required checks pass.
+- [x] 5.4 Validate the canonical operation-body consolidation, review its scoped documentation diff, and commit the follow-up update.

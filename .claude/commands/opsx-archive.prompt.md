@@ -2,7 +2,7 @@
 description: Archive a completed change in the experimental workflow
 ---
 
-> **Repository policy:** Read [`CLAUDE.md`](../../CLAUDE.md) and then [`AGENTS.md`](../../AGENTS.md) before using this command. These documents are the canonical OpenSpec workflow policy.
+> **Canonical instructions:** Read [`CLAUDE.md`](../../CLAUDE.md) and [`AGENTS.md`](../../AGENTS.md), then read the **Archive (`openspec-archive-change`)** section of [`OPENSPEC_OPERATIONS.md`](../../.agents/OPENSPEC_OPERATIONS.md) in full. That shared section is the only active operation body; the provider-specific material below MUST NOT override it.
 
 Archive a completed change in the experimental workflow.
 

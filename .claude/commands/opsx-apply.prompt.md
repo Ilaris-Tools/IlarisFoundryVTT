@@ -2,7 +2,7 @@
 description: Implement tasks from an OpenSpec change (Experimental)
 ---
 
-> **Repository policy:** Read [`CLAUDE.md`](../../CLAUDE.md) and then [`AGENTS.md`](../../AGENTS.md) before using this command. The canonical policy requires OpenSpec for significant work and a non-`BLOCK` `## Proposal Self-Review` before application.
+> **Canonical instructions:** Read [`CLAUDE.md`](../../CLAUDE.md) and [`AGENTS.md`](../../AGENTS.md), then read the **Apply (`openspec-apply-change`)** section of [`OPENSPEC_OPERATIONS.md`](../../.agents/OPENSPEC_OPERATIONS.md) in full. That shared section is the only active operation body; the provider-specific material below MUST NOT override it.
 
 Implement tasks from an OpenSpec change.
 

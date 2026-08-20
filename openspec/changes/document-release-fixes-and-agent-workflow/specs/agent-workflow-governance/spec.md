@@ -2,13 +2,14 @@
 
 ### Requirement: Canonical provider-neutral workflow policy
 
-`AGENTS.md` SHALL be the canonical repository policy for the OpenSpec lifecycle, role handoffs, validation, and Git handoff. Provider-specific instruction files SHALL link to it for shared policy and SHALL contain only provider mechanics, path-scoped rules, or an explicit exception with its rationale.
+`AGENTS.md` SHALL be the canonical repository policy for the OpenSpec lifecycle, role handoffs, validation, and Git handoff. `.agents/OPENSPEC_OPERATIONS.md` SHALL contain the complete provider-neutral bodies for the five OpenSpec operations. Provider-specific instruction, prompt, and skill files SHALL link to both sources and SHALL contain only provider metadata, invocation mechanics, or an explicit exception with its rationale.
 
 #### Scenario: Provider discovers the shared workflow
 
 - **WHEN** an AI contributor opens a provider-specific repository instruction file
 - **THEN** it SHALL identify `AGENTS.md` as the canonical OpenSpec workflow source
-- **AND** it SHALL not present a conflicting copied lifecycle
+- **AND** it SHALL instruct the AI to read the matching section in `.agents/OPENSPEC_OPERATIONS.md`
+- **AND** it SHALL not copy a provider-specific version of the operation body
 
 #### Scenario: Claude entry point exists
 

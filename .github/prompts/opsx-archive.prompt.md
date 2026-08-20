@@ -2,7 +2,7 @@
 description: Archive a completed change in the experimental workflow
 ---
 
-> **Repository policy:** Read root [`AGENTS.md`](../../AGENTS.md) before using this command. It is the canonical OpenSpec workflow policy.
+> **Canonical instructions:** Read root [`AGENTS.md`](../../AGENTS.md), then read the **Archive (`openspec-archive-change`)** section of [`OPENSPEC_OPERATIONS.md`](../../.agents/OPENSPEC_OPERATIONS.md) in full. That shared section is the only active operation body; the provider-specific material below MUST NOT override it.
 
 Archive a completed change in the experimental workflow.
 
