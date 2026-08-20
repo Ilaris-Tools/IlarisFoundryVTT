@@ -14,6 +14,20 @@ The system SHALL provide a documented, opt-in provisioning command for Linux/web
 - **WHEN** a remote agent runs the provisioning command without required Foundry credentials
 - **THEN** the command SHALL exit before downloading, licensing, or launching Foundry with a documented soft-skip result
 
+### Requirement: Shared lifecycle facade with isolated backends
+
+The system SHALL provide `utils/foundry-lifecycle.mjs` as the cross-platform lifecycle facade for local and remote E2E Foundry servers. It SHALL expose a consistent action vocabulary while selecting explicit local CLI and remote provisioning backends.
+
+#### Scenario: Local lifecycle action is requested
+
+- **WHEN** a contributor selects the local lifecycle mode and runs a supported lifecycle action
+- **THEN** the facade SHALL use the configured official Foundry CLI and the dedicated local E2E world without reading remote credentials
+
+#### Scenario: Remote lifecycle action is requested
+
+- **WHEN** a remote agent selects the remote lifecycle mode and runs a supported lifecycle action
+- **THEN** the facade SHALL delegate setup/start/stop details to the dedicated remote data root and SHALL stop only the recorded remote process
+
 ### Requirement: Manifest-driven canonical baseline provisioning
 
 The remote provisioning command SHALL use `e2e/fixtures/baselines/manifest.json` as the authoritative source for the E2E world archive, world identity, Foundry version, and required baseline content.

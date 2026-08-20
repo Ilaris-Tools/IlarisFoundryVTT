@@ -7,6 +7,7 @@ The existing Claude-Web test-environment branch provides valuable portable Found
 - Integrate the reusable, agent-neutral remote Foundry environment from `claude/ilaris-foundry-test-env-sswlsu` onto a branch based on `develop`.
 - Make `e2e/fixtures/baselines/manifest.json` the single source of truth for the remote environment's world identity, Foundry version, baseline archive, required users, and test data; do not create or seed a parallel minimal world.
 - Add thin Claude Web and Copilot setup adapters, while documenting a manual entry point for other web-based agents, CI, and Linux contributors.
+- Integrate the existing cross-platform `utils/foundry-lifecycle.mjs` design as the common lifecycle facade, with separate local CLI and remote provisioning backends rather than duplicated start/stop/readiness logic.
 - Extend Playwright configuration to support the current local/headed flow and an opt-in headless remote flow with an explicitly supplied Chromium executable.
 - Preserve the external-server E2E contract for ordinary contributors: `npm run test:e2e` continues to require an explicit `E2E_FOUNDRY_URL` and never accesses license material by itself.
 - Document secret handling, optional short-lived public sharing, cleanup, and the incompatibilities resolved from the source branch.
@@ -27,7 +28,7 @@ The change is additive for remote execution and modifies existing E2E configurat
 
 ## Impact
 
-- Affected areas: `utils/foundry-env/`, `.claude/`, `.github/`, `package.json`, `playwright.config.ts`, E2E documentation, and agent instructions.
+- Affected areas: `utils/foundry-lifecycle.mjs`, `utils/foundry-env/`, `.claude/`, `.github/`, `package.json`, `playwright.config.ts`, E2E documentation, and agent instructions.
 - Source material: commits `55c5f4e7`, `33671d42`, `8e8eaa21`, and `18fbd835` from `claude/ilaris-foundry-test-env-sswlsu`.
 - Foundry-facing surface: no new Foundry client `Document`, `Application`, or Hook API is introduced. The setup invokes the Foundry server and uses the published baseline world; runtime browser tests continue to use the existing Playwright fixture and its documented Foundry UI flow.
 - Sensitive inputs: Foundry license/download credentials remain developer-owned environment variables or a developer-owned secrets file; they are never committed or emitted in logs.
@@ -43,7 +44,7 @@ The change is additive for remote execution and modifies existing E2E configurat
 
 **Decision: PASS_WITH_NOTES**
 
-- **Scope:** Focused on integrating and adapting the remote test environment; it explicitly excludes the source branch's separate minimal world.
+- **Scope:** Focused on integrating and adapting the remote test environment and its shared lifecycle facade; it explicitly excludes the source branch's separate minimal world.
 - **Requirements:** Covers the three affected existing E2E capabilities plus the new remote setup capability.
 - **API evidence:** No new Foundry client API/Hooks are planned; implementation must still verify the supported Foundry v14 server/configuration behavior before coding.
 - **Testing:** Includes unit, remote runtime, and full canonical-baseline E2E validation.

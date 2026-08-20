@@ -17,7 +17,7 @@ The integration must therefore reuse the portable environment implementation whi
 
 - Create, maintain, or test against a new `vanilla-ilaris` world.
 - Change any game rule, compendium, E2E case semantics, or published baseline contents.
-- Replace the local cross-platform Foundry lifecycle helper or require a personal license for ordinary unit/lint work.
+- Collapse local and remote backend responsibilities into one implementation or require a personal license for ordinary unit/lint work.
 - Support Windows/macOS provisioning through the Linux shell scripts; those environments retain the existing lifecycle path.
 - Expose a persistent public Foundry server or commit credentials.
 
@@ -36,6 +36,14 @@ Alternative considered: retain `vanilla-ilaris` and extend its seeding logic. Re
 `npm run foundry:env` will be an explicit, credential-gated setup/start command for remote Linux environments. `npm run test:e2e` continues to invoke the existing E2E runner and requires `E2E_FOUNDRY_URL`; it does not download Foundry, create a data root, or access credentials.
 
 Alternative considered: have `test:e2e` implicitly provision Foundry. Rejected because it weakens the existing runtime safety boundary, makes local failures harder to diagnose, and risks accidental credential use.
+
+### Use the cross-platform lifecycle helper as a shared facade
+
+The existing `utils/foundry-lifecycle.mjs` design becomes the stable Node entry point for lifecycle actions such as `Status`, `Stop`, `Start`, `Restart`, and `PackAndRestart`. It SHALL route an explicit local mode to the configured official Foundry CLI and an explicit remote mode to the credential-gated `utils/foundry-env/` provisioning backend. Remote-only setup/download and sharing remain explicit remote actions.
+
+The facade owns platform-neutral argument validation, readiness reporting, and action vocabulary. Each backend owns its installation and process details. The remote backend SHALL stop only the PID/process it recorded in its dedicated data root, rather than terminating any arbitrary listener on the requested port.
+
+Alternative considered: duplicate lifecycle handling in the shell provisioning scripts. Rejected because start/stop/readiness behavior would diverge across local and remote E2E paths.
 
 ### Preserve local Playwright defaults while adding remote overrides
 
@@ -68,8 +76,8 @@ Environment variables override a developer-owned secrets file. The core never wr
 
 ## Migration Plan
 
-1. Start from `develop` and copy/adapt the source branch's portable files; do not merge its world model or overwrite current E2E configuration wholesale.
-2. Add manifest-driven provisioning and command/adapters.
+1. Start from `develop` and add the cross-platform lifecycle facade plus selectively copy/adapt the source branch's portable files; do not merge its world model or overwrite current E2E configuration wholesale.
+2. Add manifest-driven remote provisioning as a lifecycle backend and connect command/adapters to the facade.
 3. Validate credential-free paths, unit tests, lint, and strict specs.
 4. With developer-provided remote credentials, provision a disposable data root and run the canonical suite.
 5. Roll back by removing the additive remote commands/adapters and `utils/foundry-env/`; the baseline archive and normal E2E runner remain unchanged.

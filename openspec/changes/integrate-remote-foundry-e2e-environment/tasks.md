@@ -1,17 +1,20 @@
 ## 1. Source-branch adaptation and API research
 
-- [ ] 1.1 Inventory the reusable files from source commits `55c5f4e7`, `33671d42`, `8e8eaa21`, and `18fbd835`; copy/adapt them selectively from a branch based on `develop` without merging the source branch's `vanilla-ilaris` world model.
+- [ ] 1.1 Inventory the reusable files from source commits `55c5f4e7`, `33671d42`, `8e8eaa21`, and `18fbd835` and the supplied cross-platform lifecycle helper; add/adapt them selectively from a branch based on `develop` without merging the source branch's `vanilla-ilaris` world model.
 - [ ] 1.2 Verify against the Foundry VTT API docs (v14) the supported server configuration/startup surface used by the remote setup; remove or isolate any undocumented browser/setup endpoint workaround.
 - [ ] 1.3 Check foundryvtt.wiki for relevant Foundry server/configuration or `foundry.utils.*` patterns and record why no Foundry client utility is needed for baseline installation.
 - [ ] 1.4 Compare the remote setup's defaults with `e2e/fixtures/baselines/manifest.json`, `e2e/shared/baseline.ts`, and the E2E fixture; document every replaced stale assumption (world, users, actors, version, browser configuration).
 
 ## 2. Manifest-driven remote environment
 
-- [ ] 2.1 Add the provider-neutral `utils/foundry-env/` provisioning, control, cleanup, and optional sharing core based on the source branch, scoped to supported Linux/web-agent environments.
-- [ ] 2.2 Read the baseline manifest for archive URL, SHA-256 checksum, world ID/directory, Foundry version, and system ID; download/verify/extract the canonical baseline into a dedicated data root outside the repository.
-- [ ] 2.3 Link the working-tree Ilaris system, start the prepared world, expose its URL through documented environment configuration, and verify readiness without creating users, actors, or a second world.
-- [ ] 2.4 Implement developer-owned credential-file loading with process-environment precedence, secret-safe logging, actionable missing-credential soft skip, and cleanup of only the dedicated remote data root/processes.
-- [ ] 2.5 Keep the tunnel/manual sharing command opt-in, add unshare cleanup, and make its unauthenticated-GM security warning unavoidable in the command output and documentation.
+- [ ] 2.1 Add `utils/foundry-lifecycle.mjs` as a cross-platform lifecycle facade with validated actions/options and explicit local versus remote backend selection.
+- [ ] 2.2 Route local lifecycle actions through the configured official Foundry CLI and retain the existing local E2E-world/pack behavior.
+- [ ] 2.3 Route remote lifecycle actions through a dedicated remote process/data root; record and stop only its owned process rather than any arbitrary listener on the selected port.
+- [ ] 2.4 Add the provider-neutral `utils/foundry-env/` remote provisioning, cleanup, and optional sharing backend based on the source branch, scoped to supported Linux/web-agent environments.
+- [ ] 2.5 Read the baseline manifest for archive URL, SHA-256 checksum, world ID/directory, Foundry version, and system ID; download/verify/extract the canonical baseline into a dedicated data root outside the repository.
+- [ ] 2.6 Link the working-tree Ilaris system, start the prepared world, expose its URL through documented environment configuration, and verify readiness without creating users, actors, or a second world.
+- [ ] 2.7 Implement developer-owned credential-file loading with process-environment precedence, secret-safe logging, actionable missing-credential soft skip, and cleanup of only the dedicated remote data root/processes.
+- [ ] 2.8 Keep the tunnel/manual sharing command opt-in, add unshare cleanup, and make its unauthenticated-GM security warning unavoidable in the command output and documentation.
 
 ## 3. E2E runner and browser compatibility
 
