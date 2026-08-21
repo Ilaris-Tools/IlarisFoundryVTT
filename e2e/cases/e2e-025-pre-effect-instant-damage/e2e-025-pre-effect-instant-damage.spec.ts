@@ -29,6 +29,23 @@ import {
 
 const ACTOR_NAME = 'HatAlles'
 const SPELL_NAME = 'Ignifaxius'
+const INSTANT_DAMAGE_PRE_EFFECT = [
+    {
+        baseDuration: 0,
+        instant: true,
+        changes: [
+            {
+                key: 'system.gesundheit.wunden',
+                type: 'add',
+                value: '4W6',
+                amplifiedByMaechtigeMagie: true,
+                maechtigBonus: '+2W6',
+                damageType: 'FEUER',
+            },
+        ],
+        avoidTest: { enabled: false },
+    },
+]
 
 test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
     let snapshot: ActorDefaultSnapshot
@@ -63,6 +80,19 @@ test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
     })
 
     test('Cast instant-damage spell updates target wounds', async ({ page }) => {
+        // The baseline actor is deliberately independent from mutable spell
+        // compendium data. Configure its embedded spell immediately before
+        // opening the dialog, as a player-facing cast would read that item.
+        await page.evaluate(
+            ({ actorName, spellName, preEffects }) => {
+                const spell = game.actors
+                    .getName(actorName)
+                    ?.items.find((item: any) => item.name?.includes(spellName))
+                return spell?.update({ 'system.preEffects': preEffects })
+            },
+            { actorName: ACTOR_NAME, spellName: SPELL_NAME, preEffects: INSTANT_DAMAGE_PRE_EFFECT },
+        )
+
         const actorWindow = await openActorSheet(page, ACTOR_NAME)
         await openSpellDialog(actorWindow, SPELL_NAME)
 
@@ -95,7 +125,7 @@ test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
         await modInput.fill(String(neutralMod))
         await modInput.dispatchEvent('change')
 
-        // Force success: d20=20 (randomUniform close to 0 → high roll)
+        // Foundry v14 maps randomUniform close to 0 to d20=20.
         await page.evaluate(() => {
             CONFIG.Dice.randomUniform = () => 0.01
         })
@@ -182,11 +212,11 @@ test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
 
     test('damage at or below WS creates chat feedback without adding wounds', async ({ page }) => {
         await page.evaluate(
-            ({ name, spellName }) => {
+            ({ name, spellName, preEffects: sourcePreEffects }) => {
                 const spell = game.actors
                     .getName(name)
                     ?.items.find((item: any) => item.name?.includes(spellName))
-                const preEffects = foundry.utils.deepClone(spell?.system?.preEffects ?? [])
+                const preEffects = foundry.utils.deepClone(sourcePreEffects)
                 for (const preEffect of Object.values(preEffects) as any[]) {
                     preEffect.instant = true
                     for (const change of preEffect.changes ?? []) {
@@ -196,7 +226,11 @@ test.describe('E2E-025 · Pre-Effect Instant Damage', () => {
                 }
                 return spell?.update({ 'system.preEffects': preEffects })
             },
-            { name: ACTOR_NAME, spellName: SPELL_NAME },
+            {
+                name: ACTOR_NAME,
+                spellName: SPELL_NAME,
+                preEffects: INSTANT_DAMAGE_PRE_EFFECT,
+            },
         )
 
         const actorWindow = await openActorSheet(page, ACTOR_NAME)

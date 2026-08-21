@@ -61,6 +61,41 @@ E2E_PLAYER_USER=e2e-player
 
 `E2E_FOUNDRY_URL` muss auf den bereits gestarteten Foundry-Server zeigen. Der Runner startet und beendet Foundry nie. Optional kann `PLAYWRIGHT_CHROMIUM_CHANNEL` den Browserkanal überschreiben; ohne Angabe wird unter Windows `msedge`, sonst `chrome` verwendet. `E2E_CI_HEADLESS=true` schaltet den Browser in den Headless-Modus.
 
+## Lifecycle und optionale Remote-Umgebung
+
+For the local baseline, the cross-platform helper can check, pack, and start
+Foundry through the configured official Foundry CLI:
+
+```powershell
+npm run foundry:lifecycle -- Status
+npm run foundry:lifecycle -- PackAndRestart
+```
+
+Claude Web, Copilot, and CI can additionally use the **opt-in** remote
+environment. It requires the contributor's own license and installs only the
+manifest-driven `ilaris-e2e-world-v14363-r1` world in a separate
+`FOUNDRY_HOME`. Variables, secret precedence, reset, logs, and the security
+warning for optional sharing are documented in
+[`utils/foundry-env/README.md`](../../utils/foundry-env/README.md).
+`npm run test:e2e` remains a test against `E2E_FOUNDRY_URL`; it does not start
+a server.
+
+For a fresh hosted Linux VM, use the disposable cloud bootstrap instead of a
+shared server:
+
+```bash
+npm run foundry:cloud -- e2e/cases/e2e-001-nahkampf-angriffsdialog/e2e-001-nahkampf-angriffsdialog.spec.ts
+```
+
+The provider injects `FOUNDRY_LICENSE_KEY` and either
+`FOUNDRY_DOWNLOAD_URL` or `FOUNDRY_USERNAME`/`FOUNDRY_PASSWORD` as environment
+variables. The command runs `npm ci`, provisions the manifest baseline, starts
+an isolated local Foundry server, runs the selected test headlessly, retains
+`test-results/`, and stops its owned process. It ignores local secret files.
+Set a unique `FOUNDRY_RUN_ID` for every concurrent task. This is for
+Claude-Web/mobile or CI VMs; Fable's local lifecycle stays the appropriate
+workflow for interactive checks and old-versus-new comparisons.
+
 ## Testlauf
 
 1. Foundry normal starten und die Welt `ilaris-e2e-world-v14363-r1` laden.

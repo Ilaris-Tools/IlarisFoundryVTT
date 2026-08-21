@@ -1,150 +1,111 @@
-# Foundry VTT e2e test environment (agent-agnostic)
+# Manifest-driven Foundry E2E environment
 
-Scripts to run a real Foundry VTT server inside any ephemeral agent or CI
-environment — Claude Code on the web, GitHub Copilot coding agent, Codex,
-a plain CI job, or a local Linux box — with the Ilaris system linked from the
-working tree and the e2e world **Vanilla Ilaris** prepared, so
-`npm run test:e2e` works anywhere.
+`utils/foundry-env/remote-lifecycle.mjs` provisions an isolated Foundry server
+for web agents, CI, or another machine. It always installs the published
+`ilaris-e2e-world-v14363-r1` baseline described by
+`e2e/fixtures/baselines/manifest.json`; it never creates `vanilla-ilaris`,
+users, actors, or substitute data.
 
-The approach mirrors the `foundry-hetzner` VM scripts (download release →
-license → data dir → background start), adapted to ephemeral containers:
-Foundry runs as a plain Node process, the license/EULA/world bootstrap is
-automated with headless Chromium, and test actors are seeded on first run.
+All repository entry points are Node.js programs and work on Windows, macOS,
+and Linux. Windows uses PowerShell's `Expand-Archive`; macOS/Linux require
+`unzip` to extract release archives.
 
-## Entry points
+## Commands
 
-```bash
-npm run foundry:env          # full setup + start (idempotent) — the one command agents need
-npm run foundry:ctl status   # is the server up?
-npm run foundry:ctl logs     # tail the server log
-npm run foundry:ctl restart  # e.g. after changing system code
-npm run test:e2e             # run the Playwright suite against it
+```text
+npm run foundry:lifecycle -- Status
+npm run foundry:lifecycle -- PackAndRestart
+npm run foundry:env                         # remote Setup
+npm run foundry:ctl -- Start
+npm run foundry:ctl -- Status
+npm run foundry:ctl -- Logs --lines 100
+npm run foundry:ctl -- Stop
+npm run foundry:ctl -- Share                # explicit public tunnel
+npm run foundry:ctl -- Unshare
+npm run foundry:ctl -- Reset                 # default remote home only
+node utils/foundry-lifecycle.mjs Start --mode remote
+npm run foundry:cloud -- e2e/cases/e2e-001-nahkampf-angriffsdialog/e2e-001-nahkampf-angriffsdialog.spec.ts
 ```
 
-Requirements: Linux, Node >= 18, `unzip`, `curl`, `jq`, and a Chromium
-Playwright can use (set `E2E_CHROMIUM_PATH` if a pre-installed one should be
-used instead of Playwright's own download).
+The first two commands are local lifecycle commands. They use the configured
+official `fvtt` CLI, the local `ilaris-e2e-world-v14363-r1` world, and the
+normal browser defaults. Remote commands prepare and run a separate Node
+Foundry installation. `npm run test:e2e` remains deliberately external-server
+only: set `E2E_FOUNDRY_URL=http://127.0.0.1:30000` after remote startup.
 
-## Configuration (environment variables / secrets)
+## Disposable cloud VM
 
-| Variable               | Required | Value                                                                 |
-| ---------------------- | -------- | --------------------------------------------------------------------- |
-| `FOUNDRY_LICENSE_KEY`  | yes      | Your Foundry VTT license key                                          |
-| `FOUNDRY_USERNAME`     | yes\*    | Your foundryvtt.com account name (used to download the release)       |
-| `FOUNDRY_PASSWORD`     | yes\*    | Your foundryvtt.com account password                                  |
-| `FOUNDRY_DOWNLOAD_URL` | yes\*    | Alternative to username/password: direct URL to a Foundry NodeJS zip  |
-| `FOUNDRY_VERSION`      | no       | e.g. `14.360` — defaults to `compatibility.verified` from system.json |
-| `FOUNDRY_PORT`         | no       | default `30000` (matches `playwright.config.ts`)                      |
-| `E2E_HEADLESS`         | no       | set to `1` in environments without a display                          |
-| `E2E_CHROMIUM_PATH`    | no       | path to a pre-installed Chromium binary                               |
+`npm run foundry:cloud -- <Playwright paths>` is for a fresh hosted Linux VM,
+such as a Claude Web/mobile task. It runs `npm ci`, provisions the canonical
+baseline in an isolated local home, starts Foundry, runs the selected paths
+headlessly, then stops only the recorded process in a `finally` path. Omitting
+paths runs `e2e/cases`. Playwright videos and screenshots remain in
+`test-results/` after a failure.
 
-\* Either `FOUNDRY_USERNAME`+`FOUNDRY_PASSWORD` **or** `FOUNDRY_DOWNLOAD_URL`
-must be set. If you already host the release zip yourself (as on the Hetzner
-box), a direct URL avoids the foundryvtt.com login flow entirely.
+Cloud mode reads Foundry credentials **only** from its inherited process
+environment. It intentionally ignores `FOUNDRY_SECRETS_FILE` and
+`${HOME}/.foundry-env`; configure the hosting provider's secret mechanism to
+inject `FOUNDRY_LICENSE_KEY` and either `FOUNDRY_DOWNLOAD_URL` or
+`FOUNDRY_USERNAME` plus `FOUNDRY_PASSWORD`. Those values are passed only to
+Foundry provisioning, never to `npm ci` or Playwright.
 
-The environment must be able to reach `foundryvtt.com` and its release CDN
-(or the host behind `FOUNDRY_DOWNLOAD_URL`); allowlist those domains in
-restricted network policies. Exit code 3 means "secrets missing" — wrappers
-treat that as a soft skip so unit tests and linting still work.
+Set `FOUNDRY_RUN_ID` to a unique, alphanumeric/hyphen/underscore task ID when
+multiple tasks share a VM. It derives a separate managed home below the
+temporary cloud root and a deterministic port. `FOUNDRY_HOME` may override the
+home only when it remains below that root; `FOUNDRY_PORT` may override the port.
+Use `FOUNDRY_E2E_PATHS` (space-separated) with `.claude/hooks/foundry-env.mjs`
+to select paths for Claude Web. The VM needs Node.js, `unzip`, outbound download
+access, and a Foundry-compatible Chromium executable; set `E2E_CHROMIUM_PATH`
+when the default browser cannot be used.
 
-### Where to put the secrets (developer-owned, not repo-owned)
+## Credentials and configuration
 
-These are personal credentials (your license, your foundryvtt.com account), so
-they should live with the developer, not as central repository secrets. Two
-equivalent options for Claude Code on the web — both are stored in **your**
-environment configuration, which belongs to your Claude account, not to the
-GitHub repository:
+Remote setup needs `FOUNDRY_LICENSE_KEY` and either a direct application
+archive URL (`FOUNDRY_DOWNLOAD_URL`) or `FOUNDRY_USERNAME` plus
+`FOUNDRY_PASSWORD`. Put them in process environment variables or a private
+`${HOME}/.foundry-env` file (override its path with `FOUNDRY_SECRETS_FILE`):
 
-1. **Environment variables** in the Claude environment settings — add the
-   `FOUNDRY_*` variables directly. Simplest, recommended.
-2. **The environment's setup script** — paste a snippet like this into the
-   script field; `setup-foundry.sh` reads `~/.foundry-env` automatically
-   (override the path with `FOUNDRY_SECRETS_FILE`):
+```dotenv
+FOUNDRY_LICENSE_KEY=XXXX-XXXX-XXXX-XXXX
+FOUNDRY_DOWNLOAD_URL=https://private.example/foundry-v14.zip
+E2E_HEADLESS=true
+E2E_CHROMIUM_PATH=/path/to/chromium
+```
 
-    ```bash
-    cat > ~/.foundry-env <<'EOF'
-    FOUNDRY_LICENSE_KEY=XXXX-XXXX-XXXX-XXXX-XXXX-XXXX
-    FOUNDRY_USERNAME=your-foundry-account
-    FOUNDRY_PASSWORD=your-foundry-password
-    EOF
-    chmod 600 ~/.foundry-env
-    ```
+Process environment values override the file. The command never prints their
+values. If credentials are absent it exits `3` before downloading, linking, or
+launching; this is a soft skip for agent setup, not an E2E success.
 
-    Note: a plain `export` in the setup script would only affect the setup
-    script's own process — that's why the snippet writes the file that the
-    Foundry scripts read later.
+`FOUNDRY_HOME` defaults to `${HOME}/.ilaris-foundry-e2e`; it contains `app`,
+`cache`, `data`, `foundry.log`, and the managed PID files. The cache contains
+the verified baseline archive. `FOUNDRY_PORT` defaults to `30000`.
 
-The scripts never write this file, they only read it. If a variable is set
-both ways, the real environment variable (option 1) wins; the file only fills
-in variables that are missing.
+`Reset` removes only the default managed `FOUNDRY_HOME`; it refuses a custom
+path to avoid deleting a developer-owned directory. `Stop` and `Unshare` act
+only on the PID files from that home and never terminate an unrelated process
+that happens to use the same port.
 
-The `~/.foundry-env` file works for any agent that lets you run a bootstrap
-command, so other agents can use the same mechanism. The Copilot coding agent
-is the exception: it only injects secrets via the repository's `copilot`
-environment (see `copilot-setup-steps.yml`), which is repo-level by design.
+## Sharing
 
-## What `foundry:env` does
+`Share` is opt-in and requires `cloudflared` on `PATH`. It prints this warning
+every time: the test world has an unauthenticated GM, so anyone with its public
+URL can join as GM. Share only for a short manual check, then run `Unshare`.
+The command stores its tunnel log and owned PID under `FOUNDRY_HOME`.
 
-1. downloads the Foundry release (cached in `$HOME/foundry/cache`)
-2. extracts it to `$HOME/foundry/app`, writes `license.json` + `options.json`
-   (fixed port, no admin password, auto-launch world `vanilla-ilaris`)
-3. builds the compendium packs (`npm run pack-all`) if missing
-4. symlinks the repo into `Data/systems/Ilaris` — code edits are live after a
-   Foundry reload
-5. creates the world **Vanilla Ilaris** if missing and starts the server
-6. runs `bootstrap-foundry.mjs` (headless Chromium): accepts the license/EULA
-   on first launch, launches the world, joins as Gamemaster, and seeds actors
+## Agent adapters
 
-Foundry lives entirely outside the repo: app in `$HOME/foundry/app`, data in
-`$HOME/foundry/data`, log at `$HOME/foundry/foundry.log`.
+Claude Web may run `.claude/hooks/foundry-env.mjs`; it calls the disposable
+cloud bootstrap only when credentials are already configured. GitHub Copilot can use
+`.github/workflows/copilot-foundry-env.yml` with secrets in its `copilot`
+environment. Other agents and CI should set the same variables and call
+`npm run foundry:env` directly.
 
-## Seeded test data
+## Troubleshooting
 
-The bootstrap seeds two baseline actors if they don't exist:
-
-- **Testlauf-Held** (`held`) with the _Kurzschwert_ from the Waffen compendium
-- **Testfall-Npc** (`kreatur`) with a _Breitschwert_ attack (AT 11)
-
-Several e2e cases expect richer actors (e.g. **HatAlles**) that live in the
-maintainers' reference world. Export each actor from your real "Vanilla
-Ilaris" world (right-click the actor → _Export Data_) and commit the JSON
-files to `e2e/fixtures/actors/`. Every JSON file there is imported on
-bootstrap if no actor with the same name exists.
-
-## Sharing the server on the internet (manual testing)
-
-Agent containers have no public inbound IP, so `http://<ip>:30000` is not
-possible. Instead, `npm run foundry:share` opens a Cloudflare quick tunnel
-(outbound-only) and prints a random public URL like
-`https://<name>.trycloudflare.com` that works in any browser, WebSockets
-included. `npm run foundry:share -- unshare` kills it; the tunnel also dies
-with the container.
-
-**Security**: the test server has no admin password and the Gamemaster user
-has no password — anyone who has the URL can join as GM. The URL is random
-and short-lived, but only share while actively testing, and unshare after.
-Whether exposing a personally licensed server this way is acceptable is the
-license holder's call.
-
-**Network policy**: the tunnel needs these hosts allowlisted in the
-environment's network settings (the download of `cloudflared` itself comes
-from `github.com`, which most policies already allow):
-
-- `api.trycloudflare.com` (tunnel provisioning)
-- `*.argotunnel.com` (the tunnel's edge connection; uses port 7844, so a
-  policy that only permits port 443 will still block it)
-- `*.trycloudflare.com`
-
-## Per-agent wiring
-
-The scripts themselves are agent-neutral; each agent only needs a thin hook
-that provides the secrets and calls `npm run foundry:env`:
-
-- **Claude Code (web)** — `.claude/hooks/session-start.sh` (registered in
-  `.claude/settings.json`) runs automatically at session start. Configure the
-  secrets in the Claude environment settings for this repository.
-- **GitHub Copilot coding agent** — `.github/workflows/copilot-setup-steps.yml`
-  prepares the runner before Copilot starts. Configure the secrets in the
-  repository's **Settings → Environments → `copilot`**.
-- **Other agents (Codex, Cursor, local, CI)** — set the environment variables
-  and run `npm run foundry:env`; see also the pointer in `AGENTS.md`.
+| Symptom                   | Resolution                                                                                                                                                   |
+| ------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| Exit code `3`             | Configure the required credentials in the environment or private secrets file.                                                                               |
+| Checksum mismatch         | Delete the archive below `FOUNDRY_HOME/cache`, then rerun; verify the release asset and manifest revision.                                                   |
+| Chromium cannot start     | Set `E2E_CHROMIUM_PATH` to a Chromium executable, or configure Playwright's normal browser channel.                                                          |
+| Server is stale/not ready | Inspect `npm run foundry:ctl -- Logs`, then use `Stop` followed by `Start`.                                                                                  |
+| Baseline assertion fails  | Use `Reset` on the default home, re-provision, and confirm the manifest still names `e2e-gm`, `e2e-player`, `HatAlles`, `Testlauf-Held`, and `Testlauf-Npc`. |

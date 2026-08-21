@@ -4,16 +4,19 @@
 
 All available scripts from `package.json`:
 
-| Script                      | Command                             | Purpose                                         |
-| --------------------------- | ----------------------------------- | ----------------------------------------------- |
-| `test`                      | `npm test`                          | Run Jest test suite                             |
-| `lint`                      | `npm run lint`                      | ESLint with auto-fix                            |
-| `prettier`                  | `npm run prettier`                  | Format all files with Prettier                  |
-| `prepare`                   | `npm run prepare`                   | Install Husky git hooks (runs on `npm install`) |
-| `optimize-svgs`             | `npm run optimize-svgs`             | Remove unnecessary SVG metadata                 |
-| `pack-all`                  | `npm run pack-all`                  | Build all compendium packs from `_source/` JSON |
-| `generate-breaking-changes` | `npm run generate-breaking-changes` | Generate breaking changes report                |
-| `start-foundry`             | `npm run start-foundry`             | Pack-all + launch Foundry VTT                   |
+| Script                      | Command                               | Purpose                                         |
+| --------------------------- | ------------------------------------- | ----------------------------------------------- |
+| `test`                      | `npm test`                            | Run Jest test suite                             |
+| `lint`                      | `npm run lint`                        | ESLint with auto-fix                            |
+| `prettier`                  | `npm run prettier`                    | Format all files with Prettier                  |
+| `prepare`                   | `npm run prepare`                     | Install Husky git hooks (runs on `npm install`) |
+| `optimize-svgs`             | `npm run optimize-svgs`               | Remove unnecessary SVG metadata                 |
+| `pack-all`                  | `npm run pack-all`                    | Build all compendium packs from `_source/` JSON |
+| `foundry:lifecycle`         | `npm run foundry:lifecycle -- Status` | Local Foundry E2E lifecycle facade              |
+| `foundry:env`               | `npm run foundry:env`                 | Opt-in manifest-driven remote E2E setup         |
+| `foundry:ctl`               | `npm run foundry:ctl -- Status`       | Control the dedicated remote E2E server         |
+| `generate-breaking-changes` | `npm run generate-breaking-changes`   | Generate breaking changes report                |
+| `start-foundry`             | `npm run start-foundry`               | Pack-all + launch Foundry VTT                   |
 
 ## Development Workflow
 
