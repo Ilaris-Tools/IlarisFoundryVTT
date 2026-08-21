@@ -144,16 +144,23 @@ interactive or old-versus-new test workflow.
 
 Ephemeral agent environments (Claude Code web, GitHub Copilot coding agent,
 Codex, CI) can run the full Playwright e2e suite against a real Foundry VTT
-server. The agent-agnostic setup lives in `utils/foundry-env/`:
+server provisioned by `utils/foundry-env/` (manifest-driven
+`ilaris-e2e-world-v14363-r1` baseline world; soft-skips with exit code 3 when
+the Foundry secrets are not configured). See the "Foundry E2E lifecycle"
+working rule above for the commands. Required secrets and per-agent wiring
+(Claude SessionStart hook, Copilot `copilot-setup-steps.yml`, public tunnel
+sharing) are documented in `utils/foundry-env/README.md`.
 
-- `npm run foundry:env` — download, license, and start Foundry with the
-  Ilaris system linked and the e2e world "Vanilla Ilaris" seeded (idempotent;
-  soft-skips with exit code 3 if the Foundry secrets are not configured).
-- `npm run foundry:ctl status|logs|restart` — control the running server.
-- `npm run test:e2e` — run the Playwright suite against it.
+## Git Workflow (all agents)
 
-Required secrets and per-agent wiring (Claude SessionStart hook, Copilot
-`copilot-setup-steps.yml`) are documented in `utils/foundry-env/README.md`.
+- **Base all work on `develop`** and open pull requests against `develop` —
+  never against `main`.
+- `main` is the production branch. It is only updated by a release merge
+  (`develop` → `main`) after manual testing; agents do not target it.
+- Details and the release process are documented in
+  [CONTRIBUTING.md](CONTRIBUTING.md).
+- If a hosted agent session was started from `main` (the repository default),
+  rebase the working branch onto `origin/develop` before opening a PR.
 
 ## Precedence
 

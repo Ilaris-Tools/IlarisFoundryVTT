@@ -93,7 +93,7 @@ without a local Foundry installation, use the agent-agnostic e2e environment
 instead of Steps 6's local launch:
 
 ```bash
-npm run foundry:env    # download, license, start Foundry + seed the e2e world
+node utils/foundry-env/remote-lifecycle.mjs Start   # download, license, start Foundry + baseline e2e world
 npm run test:e2e       # run the Playwright suite against it
 ```
 

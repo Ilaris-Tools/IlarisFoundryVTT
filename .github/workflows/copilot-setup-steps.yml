@@ -5,8 +5,8 @@
 # right before Copilot starts working. Secrets come from the repository
 # environment named `copilot` (Settings → Environments → copilot):
 #   FOUNDRY_LICENSE_KEY, and FOUNDRY_USERNAME + FOUNDRY_PASSWORD
-#   (or FOUNDRY_DOWNLOAD_URL). Without them the Foundry step soft-skips and
-#   Copilot can still run unit tests and linting.
+#   (or FOUNDRY_DOWNLOAD_URL). Without them the Foundry step soft-skips
+#   (exit code 3) and Copilot can still run unit tests and linting.
 name: 'Copilot Setup Steps'
 
 on:
@@ -35,18 +35,15 @@ jobs:
             - name: Install dependencies
               run: npm install --no-audit --no-fund
 
-            - name: Install Playwright Chromium
-              run: npx playwright install --with-deps chromium
-
             - name: Start Foundry VTT test server
               env:
                   FOUNDRY_LICENSE_KEY: ${{ secrets.FOUNDRY_LICENSE_KEY }}
                   FOUNDRY_USERNAME: ${{ secrets.FOUNDRY_USERNAME }}
                   FOUNDRY_PASSWORD: ${{ secrets.FOUNDRY_PASSWORD }}
                   FOUNDRY_DOWNLOAD_URL: ${{ secrets.FOUNDRY_DOWNLOAD_URL }}
-                  E2E_HEADLESS: '1'
+                  E2E_CI_HEADLESS: 'true'
               run: |
-                  bash utils/foundry-env/setup-foundry.sh || {
+                  node utils/foundry-env/remote-lifecycle.mjs Start || {
                     status=$?
                     if [ "$status" -eq 3 ]; then
                       echo "Foundry secrets not configured — skipping Foundry server."

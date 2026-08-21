@@ -87,18 +87,35 @@ that happens to use the same port.
 
 ## Sharing
 
-`Share` is opt-in and requires `cloudflared` on `PATH`. It prints this warning
-every time: the test world has an unauthenticated GM, so anyone with its public
-URL can join as GM. Share only for a short manual check, then run `Unshare`.
-The command stores its tunnel log and owned PID under `FOUNDRY_HOME`.
+`Share` is opt-in. It uses `FOUNDRY_CLOUDFLARED`, then `cloudflared` from
+`FOUNDRY_HOME/bin` or `PATH`; on Linux it downloads the static binary from
+GitHub automatically when none is found. It prints this warning every time:
+the test world has an unauthenticated GM, so anyone with its public URL can
+join as GM. Share only for a short manual check, then run `Unshare`. The
+command stores its tunnel log and owned PID under `FOUNDRY_HOME`; the public
+`https://<name>.trycloudflare.com` URL appears in the tunnel log output.
+
+In restricted agent network policies, allowlist `api.trycloudflare.com`,
+`*.argotunnel.com` (the edge connection uses port 7844, so a 443-only policy
+still blocks it), and `*.trycloudflare.com`.
 
 ## Agent adapters
 
-Claude Web may run `.claude/hooks/foundry-env.mjs`; it calls the disposable
-cloud bootstrap only when credentials are already configured. GitHub Copilot can use
-`.github/workflows/copilot-foundry-env.yml` with secrets in its `copilot`
-environment. Other agents and CI should set the same variables and call
-`npm run foundry:env` directly.
+- **Claude Code (web)**: `.claude/hooks/session-start.sh` (registered in
+  `.claude/settings.json`) runs at session start: `npm install`, Playwright
+  environment exports, then a persistent `remote-lifecycle.mjs Start` that
+  soft-skips without credentials. Configure the secrets as environment
+  variables in the Claude environment settings, or let the environment's
+  setup script write `~/.foundry-env` (see Credentials above).
+  `.claude/hooks/foundry-env.mjs` remains available for a disposable
+  one-shot cloud run (`foundry:cloud`).
+- **GitHub Copilot coding agent**: `.github/workflows/copilot-setup-steps.yml`
+  prepares the runner before Copilot starts, with secrets from the
+  repository's `copilot` environment (repo-level by design — Copilot has no
+  per-developer secret store).
+- **Other agents and CI**: set the same variables and call
+  `npm run foundry:env` (setup only) or
+  `node utils/foundry-env/remote-lifecycle.mjs Start` directly.
 
 ## Troubleshooting
 

@@ -1,9 +1,10 @@
 #!/bin/bash
 # SessionStart hook for Claude Code on the web — thin adapter around the
-# agent-agnostic Foundry test environment in utils/foundry-env/.
+# agent-agnostic Foundry e2e environment in utils/foundry-env/.
 # Installs npm dependencies and (if Foundry secrets are configured in the
-# Claude environment) downloads, licenses, and starts a Foundry VTT server
-# with the Ilaris system linked and the "Vanilla Ilaris" e2e world prepared.
+# Claude environment or ~/.foundry-env) starts a persistent Foundry server
+# with the Ilaris system linked and the baseline e2e world installed, so
+# `npm run test:e2e` and manual browser testing work during the session.
 set -uo pipefail
 
 # Only relevant for remote (web) sessions — local devs manage Foundry themselves.
@@ -22,29 +23,30 @@ fi
 # Environment for Playwright e2e runs inside the container.
 if [ -n "${CLAUDE_ENV_FILE:-}" ]; then
     {
-        echo 'export E2E_FOUNDRY_URL="http://localhost:30000"'
+        echo 'export E2E_FOUNDRY_URL="http://127.0.0.1:30000"'
         echo 'export E2E_HEADLESS=1'
-        # Use the pre-installed Chromium instead of downloading one at runtime.
+        # Use the pre-installed Chromium instead of a browser channel that is
+        # not installed in the container.
         if [ -x /opt/pw-browsers/chromium ]; then
             echo 'export E2E_CHROMIUM_PATH="/opt/pw-browsers/chromium"'
         fi
     } >> "$CLAUDE_ENV_FILE"
 fi
 
-# Foundry setup is best-effort: without the license/download secrets the
-# session is still fully usable for unit tests and linting.
-echo "[session-start] Setting up Foundry VTT test server..."
-if bash utils/foundry-env/setup-foundry.sh; then
-    echo "[session-start] Foundry is ready at http://localhost:30000"
+# Foundry startup is best-effort: without the license/download secrets the
+# session is still fully usable for unit tests and linting (soft skip, exit 3).
+echo "[session-start] Starting Foundry VTT test server..."
+E2E_CHROMIUM_PATH="${E2E_CHROMIUM_PATH:-/opt/pw-browsers/chromium}" \
+    node utils/foundry-env/remote-lifecycle.mjs Start
+status=$?
+if [ "$status" -eq 0 ]; then
+    echo "[session-start] Foundry is ready at http://127.0.0.1:30000"
+elif [ "$status" -eq 3 ]; then
+    echo "[session-start] Foundry secrets not configured — skipping Foundry server."
+    echo "[session-start] See utils/foundry-env/README.md for the variables to set."
 else
-    status=$?
-    if [ "$status" -eq 3 ]; then
-        echo "[session-start] Foundry secrets not configured — skipping Foundry server."
-        echo "[session-start] See utils/foundry-env/README.md for the environment variables to set."
-    else
-        echo "[session-start] WARNING: Foundry setup failed (exit $status). E2E tests will not run." >&2
-        echo "[session-start] Check $HOME/foundry/foundry.log and utils/foundry-env/README.md" >&2
-    fi
+    echo "[session-start] WARNING: Foundry startup failed (exit $status). E2E tests will not run." >&2
+    echo "[session-start] Check \$HOME/.ilaris-foundry-e2e/foundry.log and utils/foundry-env/README.md" >&2
 fi
 
 exit 0
