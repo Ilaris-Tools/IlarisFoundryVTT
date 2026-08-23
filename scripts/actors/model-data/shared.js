@@ -71,6 +71,12 @@ export function createActorTemplateFields(h) {
             geweihter: h.bool(false),
             nahkampfmoddisplay: h.string('-'),
             globalermoddisplay: h.string('-'),
+
+            gup_zugekauft: h.number(0),
+            ggup: h.number(0),
+            gup: h.number(0),
+            gup_stern: h.number(0),
+            paktierer: h.bool(false),
         }),
         schips: h.schema({
             schips: h.number(4),
@@ -158,6 +164,12 @@ export function createHeldActorSystemDefaults() {
             geweihter: false,
             nahkampfmoddisplay: '-',
             globalermoddisplay: '-',
+
+            gup_zugekauft: 0,
+            ggup: 0,
+            gup: 0,
+            gup_stern: 0,
+            paktierer: false,
         },
         schips: { schips: 4, schips_stern: 4 },
         initiative: 0,

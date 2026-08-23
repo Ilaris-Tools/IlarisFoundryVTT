@@ -20,6 +20,12 @@ const warnedDamageTypes = new Set()
  * @returns {{healing: boolean, targetsErschoepfung: boolean, bypassesArmor: boolean}}
  */
 export function getDamageTypeBehavior(damageType) {
+    // 'NORMAL' is the dialogs' legacy "no specific type" sentinel (CONFIG.ILARIS.schadenstypen
+    // maps it to an empty label). It is intentionally not part of the configurable registry.
+    if (!damageType || damageType === 'NORMAL') {
+        return { ...DEFAULT_DAMAGE_TYPE_BEHAVIOR }
+    }
+
     try {
         const raw = game.settings.get(
             ConfigureGameSettingsCategories.Ilaris,
@@ -214,7 +220,9 @@ export function processModification(
                 trefferzone ? ` (${CONFIG.ILARIS.trefferzonen[trefferzone]})` : ''
             }: Schadenstyp zu ${CONFIG.ILARIS.schadenstypen[modification.value]}\n`
             rollValues.text_dm = rollValues.text_dm.concat(text)
-            rollValues.damageType = CONFIG.ILARIS.schadenstypen[modification.value]
+            // Keep the key ('STUMPF'), not the label ('Stumpf') — getDamageTypeBehavior and
+            // the damageTypes setting match on keys.
+            rollValues.damageType = modification.value
             break
         case 'ARMOR_BREAKING':
             text = `${manoeverName}${
@@ -471,16 +479,14 @@ export async function _applyDamageDirectly(targetActor, damage, damageType, true
         const healAmount = Math.max(0, damage)
 
         if (useLepSystem && !behavior.targetsErschoepfung) {
-            const currentLep = targetActor.system.gesundheit.wunden || 0
-            // LEP healing: direct addition, no WS threshold
-            const newLep = Math.min(
-                currentLep + healAmount,
-                targetActor.system.gesundheit.wunden_max || currentLep + healAmount,
-            )
-            if (newLep > currentLep) {
-                await targetActor.update({ 'system.gesundheit.wunden': newLep })
+            // Under LEP, gesundheit.wunden accumulates raw damage points (see the LEP damage
+            // branch below and hp = max_hp - wunden in actor.js), so healing removes from it.
+            const currentDamage = targetActor.system.gesundheit.wunden || 0
+            const newDamage = Math.max(0, currentDamage - healAmount)
+            if (newDamage < currentDamage) {
+                await targetActor.update({ 'system.gesundheit.wunden': newDamage })
                 await ChatMessage.create({
-                    content: `${targetActor.name} erhält ${newLep - currentLep} Heilung!`,
+                    content: `${targetActor.name} erhält ${currentDamage - newDamage} Heilung!`,
                     speaker: speaker,
                     style: CONST.CHAT_MESSAGE_STYLES.OTHER,
                 })

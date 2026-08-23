@@ -322,6 +322,8 @@ describe('processModification', () => {
         processModification(modification, 1, 'Test Manoever', null, rollValues, mockConfig)
 
         expect(rollValues.text_dm).toContain('Test Manoever: Schadenstyp zu Feuer')
+        // Stores the registry key, not the display label
+        expect(rollValues.damageType).toBe('FEUER')
         // Should not modify any other values
         expect(rollValues.mod_dm).toBe(0)
         expect(rollValues.schaden).toBe('')
@@ -332,6 +334,7 @@ describe('processModification', () => {
         processModification(modification, 1, 'Test Manoever', 1, rollValues, mockConfig)
 
         expect(rollValues.text_dm).toContain('Test Manoever (Beine): Schadenstyp zu Eis')
+        expect(rollValues.damageType).toBe('EIS')
         // Should not modify any other values
         expect(rollValues.mod_dm).toBe(0)
         expect(rollValues.schaden).toBe('')
@@ -913,6 +916,20 @@ describe('getDamageTypeBehavior', () => {
         })
     })
 
+    it('treats the legacy NORMAL sentinel as default behavior without warning', () => {
+        expect(getDamageTypeBehavior('NORMAL')).toEqual({
+            healing: false,
+            targetsErschoepfung: false,
+            bypassesArmor: false,
+        })
+        expect(getDamageTypeBehavior(undefined)).toEqual({
+            healing: false,
+            targetsErschoepfung: false,
+            bypassesArmor: false,
+        })
+        expect(global.ui.notifications.warn).not.toHaveBeenCalled()
+    })
+
     it('returns safe defaults and warns once for an unknown type', () => {
         expect(getDamageTypeBehavior('UNKNOWN_DAMAGE_TYPE_TEST')).toEqual({
             healing: false,
@@ -1080,7 +1097,7 @@ describe('_applyDamageDirectly — Healing', () => {
         expect(mockUpdate).toHaveBeenCalledWith({ 'system.gesundheit.erschoepfung': 1 })
     })
 
-    it('LEP system healing restores HP directly', async () => {
+    it('LEP system healing removes accumulated damage directly', async () => {
         global.game.settings.get.mockImplementation((_ns, key) => {
             if (key === 'lepSystem') return true
             if (key === 'damageTypes') return defaultDamageTypes
@@ -1092,21 +1109,20 @@ describe('_applyDamageDirectly — Healing', () => {
             system: {
                 gesundheit: {
                     wunden: 10,
-                    wunden_max: 30,
                 },
                 abgeleitete: { ws: 5 },
             },
             update: (mockUpdate = jest.fn().mockResolvedValue(undefined)),
         }
 
-        await _applyDamageDirectly(targetActor, 10, 'HEALING_WOUND', false, {})
+        await _applyDamageDirectly(targetActor, 4, 'HEALING_WOUND', false, {})
 
-        // LEP system: direct addition, no WS threshold
-        // newLep = min(10 + 10, 30) = 20
-        expect(mockUpdate).toHaveBeenCalledWith({ 'system.gesundheit.wunden': 20 })
+        // LEP system: wunden accumulates damage points (hp = max_hp - wunden),
+        // so healing subtracts directly, no WS threshold: 10 - 4 = 6
+        expect(mockUpdate).toHaveBeenCalledWith({ 'system.gesundheit.wunden': 6 })
     })
 
-    it('LEP healing caps at wunden_max', async () => {
+    it('LEP healing never drops accumulated damage below zero', async () => {
         global.game.settings.get.mockImplementation((_ns, key) => {
             if (key === 'lepSystem') return true
             if (key === 'damageTypes') return defaultDamageTypes
@@ -1117,8 +1133,7 @@ describe('_applyDamageDirectly — Healing', () => {
             name: 'TestActor',
             system: {
                 gesundheit: {
-                    wunden: 25,
-                    wunden_max: 30,
+                    wunden: 5,
                 },
                 abgeleitete: { ws: 5 },
             },
@@ -1127,8 +1142,31 @@ describe('_applyDamageDirectly — Healing', () => {
 
         await _applyDamageDirectly(targetActor, 20, 'HEALING_WOUND', false, {})
 
-        // newLep = min(25 + 20, 30) = 30
-        expect(mockUpdate).toHaveBeenCalledWith({ 'system.gesundheit.wunden': 30 })
+        // newDamage = max(0, 5 - 20) = 0
+        expect(mockUpdate).toHaveBeenCalledWith({ 'system.gesundheit.wunden': 0 })
+    })
+
+    it('LEP healing on an unhurt target changes nothing', async () => {
+        global.game.settings.get.mockImplementation((_ns, key) => {
+            if (key === 'lepSystem') return true
+            if (key === 'damageTypes') return defaultDamageTypes
+            return undefined
+        })
+
+        targetActor = {
+            name: 'TestActor',
+            system: {
+                gesundheit: {
+                    wunden: 0,
+                },
+                abgeleitete: { ws: 5 },
+            },
+            update: (mockUpdate = jest.fn().mockResolvedValue(undefined)),
+        }
+
+        await _applyDamageDirectly(targetActor, 10, 'HEALING_WOUND', false, {})
+
+        expect(mockUpdate).not.toHaveBeenCalled()
     })
 
     it('healing chat message contains "heilt"', async () => {
