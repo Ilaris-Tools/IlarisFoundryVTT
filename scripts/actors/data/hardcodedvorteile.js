@@ -250,11 +250,11 @@ export function getUebernatuerlicheStile(actor) {
         },
     }
 
-    // Combine geweihtentradition, zaubertraditionen and daemonischetradition
+    // Combine geweihtentradition, zaubertraditionen and pakttradition
     const allTraditions = [
         ...actor.vorteil.geweihtentradition.map((t) => ({ ...t, type: 'geweiht' })),
         ...actor.vorteil.zaubertraditionen.map((t) => ({ ...t, type: 'zauber' })),
-        ...actor.vorteil.daemonischetradition.map((t) => ({ ...t, type: 'daemonisch' })),
+        ...actor.vorteil.pakttradition.map((t) => ({ ...t, type: 'pakt' })),
     ]
 
     // Group traditions by their base name (without the level suffix)

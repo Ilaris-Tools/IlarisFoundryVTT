@@ -1,7 +1,7 @@
 {{log 'ue' this}}
 <section class="tab uebernatuerlich {{tab.cssClass}}" data-group="primary" data-tab="uebernatuerlich">
     <h2>Fertigkeiten</h2>
-    {{#if (or actor.vorteil.zaubertraditionen actor.vorteil.geweihtentradition actor.vorteil.tiergeist actor.vorteil.daemonischetradition)}}
+    {{#if (or actor.vorteil.zaubertraditionen actor.vorteil.geweihtentradition actor.vorteil.tiergeist actor.vorteil.pakttradition)}}
     <div>
         <label><b>Aktive Übernatürliche Tradition:</b></label>
         <select class="selected-uebernatuerlicher-stil" name="system.misc.selected_uebernatuerlicher_stil">
@@ -254,10 +254,10 @@
             <a data-action="itemDelete" data-itemid="{{this.id}}"><i class="fas fa-trash"></i></a>
             &nbsp; | &nbsp; {{/each}}
         </div>
-        {{/if}} {{#if actor.vorteil.daemonischetradition}}
+        {{/if}} {{#if actor.vorteil.pakttradition}}
         <div>
-            <label><b>Dämonische Traditionen:</b>&nbsp; | &nbsp;</label>
-            {{#each actor.vorteil.daemonischetradition}}
+            <label><b>Pakt Traditionen:</b>&nbsp; | &nbsp;</label>
+            {{#each actor.vorteil.pakttradition}}
             <a data-action="itemEdit"
                 data-itemid="{{this.id}}" data-tooltip="{{{this.system.text}}}">
                 {{this.name}}

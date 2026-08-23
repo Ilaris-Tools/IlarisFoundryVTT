@@ -455,7 +455,7 @@ export class IlarisActor extends Actor {
             this.vorteil.tiergeist.some((vorteil) => {
                 return this._checkVorteilSource(vorteilRequirement, vorteil, item)
             }) ||
-            this.vorteil.daemonischetradition.some((vorteil) => {
+            this.vorteil.pakttradition.some((vorteil) => {
                 return this._checkVorteilSource(vorteilRequirement, vorteil, item)
             })
         )
@@ -750,7 +750,7 @@ export class IlarisActor extends Actor {
         let vorteil_karma = []
         let vorteil_geweihtetraditionen = []
         let vorteil_tiergeist = []
-        let vorteil_daemonischetradition = []
+        let vorteil_pakttradition = []
         let eigenheiten = []
         let eigenschaften = [] // kreatur only
         let angriffe = [] // kreatur only
@@ -854,7 +854,7 @@ export class IlarisActor extends Actor {
                 else if (item.system.gruppe == 6) vorteil_karma.push(item)
                 else if (item.system.gruppe == 7) vorteil_geweihtetraditionen.push(item)
                 else if (item.system.gruppe == 8) vorteil_tiergeist.push(item)
-                else if (item.system.gruppe == 9) vorteil_daemonischetradition.push(item)
+                else if (item.system.gruppe == 9) vorteil_pakttradition.push(item)
                 // else vorteil_allgemein.push(i);
             } else if (item.type == 'eigenheit') {
                 eigenheiten.push(item)
@@ -906,7 +906,7 @@ export class IlarisActor extends Actor {
         vorteil_karma.sort(sortByName)
         vorteil_geweihtetraditionen.sort(sortByName)
         vorteil_tiergeist.sort(sortByName)
-        vorteil_daemonischetradition.sort(sortByName)
+        vorteil_pakttradition.sort(sortByName)
         eigenheiten.sort(sortByName)
         freie_uebernatuerliche_fertigkeiten.sort(sortByGruppe)
 
@@ -980,7 +980,7 @@ export class IlarisActor extends Actor {
         actor.vorteil.karma = vorteil_karma
         actor.vorteil.geweihtentradition = vorteil_geweihtetraditionen
         actor.vorteil.tiergeist = vorteil_tiergeist
-        actor.vorteil.daemonischetradition = vorteil_daemonischetradition
+        actor.vorteil.pakttradition = vorteil_pakttradition
         actor.eigenheiten = eigenheiten
         actor.unsorted = unsorted
         actor.misc = actor.misc || {}
