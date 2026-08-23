@@ -1,4 +1,3 @@
-import { IlarisActiveEffect } from '../active-effect.js'
 import { resolveTargetActorForDamage } from '../../combat/dialogs/shared-dialog-helpers.js'
 import { sendResistPrompt } from './resist-handler.js'
 
@@ -101,7 +100,7 @@ async function sendResistPromptForEffect(
         maechtigeQs,
         casterUuid: caster.uuid,
         spellUuid: spellItem.uuid,
-        targetActorId: targetActor.id,
+        targetActorUuid: targetActor.uuid,
     }
 
     await sendResistPrompt(targetActor, serialized, spellItem.name, speaker)
@@ -193,17 +192,6 @@ export async function createActiveEffectFromPreEffect(
         })
     }
 
-    console.log(
-        'Ilaris | createActiveEffectFromPreEffect: changes.length =',
-        changes.length,
-        'targetActor:',
-        targetActor?.name,
-        'spellItem:',
-        spellItem?.name,
-        'duration:',
-        effectiveDuration,
-    )
-
     if (changes.length === 0) return
 
     const effectData = {
@@ -234,12 +222,6 @@ export async function createActiveEffectFromPreEffect(
 
     try {
         await ActiveEffect.createDocuments([effectData], { parent: targetActor })
-        console.log(
-            'Ilaris | Created pre-effect ActiveEffect on',
-            targetActor.name,
-            ':',
-            effectData.name,
-        )
     } catch (e) {
         console.error('Ilaris | Failed to create pre-effect ActiveEffect:', e)
     }

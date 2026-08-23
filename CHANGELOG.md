@@ -6,11 +6,11 @@
 
 #### Breaking Change
 
-**BITTE BEACHTEN**, solltet ihr das Beta Feature Pre-Effekte benutzen wollen. Müsst ihr eure Charaktere am besten neuimportieren.
+##### ⚠️ Alpha-Funktion: Pre-Effekte
 
-#### ⚠️ Beta-Funktion: Pre-Effekte
+Pre-Effekte sind eine **Alpha-Funktion**. Sie automatisieren bislang nur einen Teil der benötigten Zauber-, Liturgie- und Anrufungswirkungen und stacken zur Zeit noch. Prüft erzeugte Effekte, Zielwerte, Dauer und Widerstandsproben im Spiel; bei wichtigen Spielsituationen bleibt die Spielleitung für die Regelprüfung verantwortlich. Es sind auch **explizit nur sehr wenige** Zauber/Liturgien umgesetzt und umsetzbar.
 
-Pre-Effekte sind eine **Beta-Funktion**. Sie automatisieren bislang nur einen Teil der benötigten Zauber-, Liturgie- und Anrufungswirkungen und stacken zur Zeit noch. Prüft erzeugte Effekte, Zielwerte, Dauer und Widerstandsproben im Spiel; bei wichtigen Spielsituationen bleibt die Spielleitung für die Regelprüfung verantwortlich.
+**BITTE BEACHTEN**, solltet ihr das Alpha Feature Pre-Effekte benutzen wollen. Müsst ihr eure Charaktere am besten neuimportieren.
 
 #### Pre-Effekte
 
@@ -20,6 +20,16 @@ Pre-Effekte sind eine **Beta-Funktion**. Sie automatisieren bislang nur einen Te
 - Mächtige Magie/Mächtige Liturgie verstärkt dafür markierte Änderungen pro Qualitätsstufe; Verlängerte Wirkung und Selbstzauber werden bei der Effektdauer berücksichtigt.
 - Im Pre-Effekt-Editor schlagen Datenpfade automatisch gültige Actor-Felder vor. Schadenstypen stammen aus den Welteinstellungen und können dort frei verwaltet werden.
 - Für GMs gibt es optional eine KI-gestützte Generierung von Pre-Effekten über eine OpenAI-kompatible API. Zugangsdaten werden nur lokal im Browser des GMs gespeichert. Generierte Daten müssen vor der Nutzung geprüft werden.
+
+#### Weitere Features
+
+- Schadenstypen sind jetzt in den Welteinstellungen frei konfigurierbar (Name und Verhalten: Heilung, Erschöpfung statt Wunden, Rüstung ignorieren).
+- Neue Welteinstellung für den Umgang mit Waffenschaden-Manövern: Schadensmultiplikatoren können beim Wurf automatisch ausmultipliziert werden (#440, #498).
+- Neue Einstellung, um Würfeldetails (Einzelwürfe) im Chat anzuzeigen. Standardmäßig deaktiviert, bisheriges Verhalten bleibt erhalten (#464, #485).
+
+#### Fixes
+
+- Das Namensfeld auf dem Heldenbogen wächst jetzt mit bzw. schneidet lange Namen sauber ab (#486).
 
 ### v14.0
 

@@ -98,6 +98,10 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
                 ConfigureGameSettingsCategories.Ilaris,
                 IlarisGameSettingNames.realFumbleCrits,
             ),
+            expandWeaponDamageMultipliers: game.settings.get(
+                ConfigureGameSettingsCategories.Ilaris,
+                IlarisGameSettingNames.expandWeaponDamageMultipliers,
+            ),
             renameTriumphWithCrit: game.settings.get(
                 ConfigureGameSettingsCategories.Ilaris,
                 IlarisGameSettingNames.renameTriumphWithCrit,
@@ -449,6 +453,12 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
                 inputType: 'checkbox',
             },
             {
+                key: 'expandWeaponDamageMultipliers',
+                name: IlarisGameSettingNames.expandWeaponDamageMultipliers,
+                scope: 'world',
+                inputType: 'checkbox',
+            },
+            {
                 key: 'renameTriumphWithCrit',
                 name: IlarisGameSettingNames.renameTriumphWithCrit,
                 scope: 'world',
@@ -565,6 +575,7 @@ export class IlarisSettingsDialog extends HandlebarsApplicationMixin(Application
             const worldDefaults = [
                 { name: IlarisGameSettingNames.weaponSpaceRequirement, value: false },
                 { name: IlarisGameSettingNames.realFumbleCrits, value: false },
+                { name: IlarisGameSettingNames.expandWeaponDamageMultipliers, value: false },
                 { name: IlarisGameSettingNames.renameTriumphWithCrit, value: false },
                 { name: IlarisGameSettingNames.restrictEnergyCostSetting, value: false },
                 { name: IlarisGameSettingNames.hexTokenShapes, value: false },

@@ -2,6 +2,37 @@ import { openSkillDialog } from '../../skills/skills-api.js'
 import { toArray } from './pre-effects-processor.js'
 
 /**
+ * Escape a string for safe interpolation into chat HTML.
+ * @param {unknown} value
+ * @returns {string}
+ */
+function escapeHTML(value) {
+    return String(value ?? '').replace(
+        /[&<>"']/g,
+        (ch) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[ch],
+    )
+}
+
+/**
+ * Resolve the target actor of a serialized resist payload.
+ * Uses the UUID so synthetic actors of unlinked tokens resolve too —
+ * their ids are not part of the world `game.actors` collection.
+ * @param {object} preEffectData
+ * @returns {Promise<Actor|null>}
+ */
+export async function resolveResistTargetActor(preEffectData) {
+    if (preEffectData?.targetActorUuid) {
+        const doc = await foundry.utils.fromUuid(preEffectData.targetActorUuid)
+        if (doc) return doc
+    }
+    // Legacy payloads (pre-14.1 final) serialized only the world-actor id
+    if (preEffectData?.targetActorId) {
+        return game.actors.get(preEffectData.targetActorId) ?? null
+    }
+    return null
+}
+
+/**
  * Register the resist test system: socket listener, click delegation, and resolution.
  */
 export function registerResistHandler() {
@@ -14,7 +45,6 @@ export function registerResistHandler() {
                     const clickedButton = this
                     clickedButton.disabled = true
 
-                    const actorId = this.dataset.actorId
                     let preEffectData
                     try {
                         preEffectData = JSON.parse(
@@ -22,10 +52,11 @@ export function registerResistHandler() {
                         )
                     } catch (e) {
                         console.error('Failed to parse resist preEffect data:', e)
+                        clickedButton.disabled = false
                         return
                     }
 
-                    const actor = game.actors.get(actorId)
+                    const actor = await resolveResistTargetActor(preEffectData)
                     if (!actor) {
                         ui.notifications.warn('Akteur wurde nicht gefunden.')
                         clickedButton.disabled = false
@@ -192,7 +223,11 @@ async function processResistResult(dialog, payload, preEffectData) {
  * Apply the pre-effect with full values (resist failed).
  */
 async function applyPreEffectFromResist(preEffectData) {
-    const targetActor = game.actors.get(preEffectData.targetActorId)
+    const targetActor = await resolveResistTargetActor(preEffectData)
+    if (!targetActor) {
+        ui.notifications.warn('Ziel der Widerstandsprobe wurde nicht gefunden.')
+        return
+    }
 
     const spellItem = await foundry.utils.fromUuid(preEffectData.spellUuid)
     const caster = await foundry.utils.fromUuid(preEffectData.casterUuid)
@@ -219,6 +254,8 @@ async function applyPreEffectFromResist(preEffectData) {
         return
     }
 
+    if (!spellItem || !caster) return
+
     await createActiveEffectFromPreEffect(
         targetActor,
         preEffect,
@@ -233,12 +270,14 @@ async function applyPreEffectFromResist(preEffectData) {
  * Apply diminished effect (resist succeeded with diminishedOnly).
  */
 async function applyDiminishedEffect(preEffectData) {
-    const targetActor = game.actors.get(preEffectData.targetActorId)
-    if (!targetActor) return
+    const targetActor = await resolveResistTargetActor(preEffectData)
+    if (!targetActor) {
+        ui.notifications.warn('Ziel der Widerstandsprobe wurde nicht gefunden.')
+        return
+    }
 
     const spellItem = await foundry.utils.fromUuid(preEffectData.spellUuid)
     const caster = await foundry.utils.fromUuid(preEffectData.casterUuid)
-    if (!spellItem || !caster) return
 
     const effectiveDuration =
         preEffectData.baseDuration +
@@ -264,6 +303,8 @@ async function applyDiminishedEffect(preEffectData) {
         await applyInstantPreEffect(targetActor, diminishedPreEffect, maechtigeQs, speaker)
         return
     }
+
+    if (!spellItem || !caster) return
 
     // Build diminished preEffect — use each change's own diminishedValue and diminishedMaechtigBonus
     const diminishedPreEffect = {
@@ -298,25 +339,27 @@ export async function sendResistPrompt(targetActor, preEffect, spellName, speake
     const isDiminished = avoidTest.diminishedOnly
     const eventId = foundry.utils.randomID(16)
 
-    // Serialize preEffect data for the button
+    // Serialize preEffect data for the button. The UUID also resolves synthetic
+    // actors of unlinked tokens, whose ids are not in the world actor collection.
     const serialized = encodeURIComponent(
         JSON.stringify({
             ...preEffect,
             eventId,
-            targetActorId: targetActor.id,
+            targetActorUuid: targetActor.uuid,
             spellName,
         }),
     )
 
+    const safeSpellName = escapeHTML(spellName)
+    const safeTestName = escapeHTML(testName)
     const content = `
         <div class="ilaris-resist-prompt">
-            <p><strong>${spellName}</strong> — Widerstandsprobe (${testName})</p>
+            <p><strong>${safeSpellName}</strong> — Widerstandsprobe (${safeTestName})</p>
             ${isDiminished ? '<p><em>Bei Erfolg: abgeschwächte Wirkung</em></p>' : '<p><em>Bei Erfolg: keine Wirkung</em></p>'}
             <button class="resist-button"
-                data-actor-id="${targetActor.id}"
                 data-pre-effect-data="${serialized}">
                 <i class="fas fa-shield-alt"></i>
-                Widerstand leisten (${testName})
+                Widerstand leisten (${safeTestName})
             </button>
         </div>
     `

@@ -33,10 +33,10 @@
                     <div class="form-group">
                         <label>Typ:</label>
                         <select name="system.preEffects.{{@../index}}.changes.{{@index}}.type">
-                            <option value="add">add</option>
-                            <option value="custom">custom (DOT)</option>
-                            <option value="multiply">multiply</option>
-                            <option value="override">override</option>
+                            <option value="add" {{#if (ifEq type "add")}}selected{{/if}}>add</option>
+                            <option value="custom" {{#if (ifEq type "custom")}}selected{{/if}}>custom (DOT)</option>
+                            <option value="multiply" {{#if (ifEq type "multiply")}}selected{{/if}}>multiply</option>
+                            <option value="override" {{#if (ifEq type "override")}}selected{{/if}}>override</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -131,7 +131,8 @@
                         <select name="system.preEffects.{{@index}}.avoidTest.attribut">
                             <option value="">— Keines —</option>
                             {{#each @root.avoidTestAttributeOptions}}
-                            <option value="{{value}}" {{#if (ifEq value ../../avoidTest.attribut)}}selected{{/if}}>{{label}}</option>
+                            {{! one #each frame deep — a single ../ reaches the preEffect }}
+                            <option value="{{value}}" {{#if (ifEq value ../avoidTest.attribut)}}selected{{/if}}>{{label}}</option>
                             {{/each}}
                             {{#if avoidTest.attribut}}
                             {{#unless (isAttrInOptions avoidTest.attribut @root.avoidTestAttributeOptions)}}
