@@ -7,16 +7,72 @@
     "text": "Du verfügst über 32 Gunstpunkte und kannst die dämonische Tradition deines Erzdämons erlernen."
   },
   "_id": "z2TkZKXx2vC3V6F2",
-  "effects": [],
+  "effects": [
+    {
+      "name": "Paktierer IV",
+      "disabled": false,
+      "duration": {
+        "value": null,
+        "units": "seconds",
+        "expiry": null,
+        "expired": false
+      },
+      "system": {
+        "changes": [
+          {
+            "key": "system.abgeleitete.gup",
+            "type": "add",
+            "value": 8,
+            "phase": "initial",
+            "priority": 20
+          }
+        ],
+        "ilarisTiming": {
+          "durationType": "infinite",
+          "originalValue": 0,
+          "remaining": 0,
+          "expiresOn": "turnStart",
+          "_pendingExpiry": false,
+          "_pendingDurationChange": false
+        }
+      },
+      "transfer": true,
+      "_id": "LYlMcp7qJocUPBvU",
+      "img": "icons/svg/aura.svg",
+      "type": "base",
+      "start": null,
+      "description": "",
+      "origin": null,
+      "tint": "#ffffff",
+      "statuses": [],
+      "showIcon": 1,
+      "folder": null,
+      "sort": 0,
+      "flags": {},
+      "_stats": {
+        "coreVersion": "14.360",
+        "systemId": "Ilaris",
+        "systemVersion": "14.0.0",
+        "createdTime": 1784631370599,
+        "modifiedTime": 1784631415729,
+        "lastModifiedBy": "XGYr9O0roLEGxhCm",
+        "compendiumSource": null,
+        "duplicateSource": null,
+        "exportSource": null
+      },
+      "_key": "!items.effects!z2TkZKXx2vC3V6F2.LYlMcp7qJocUPBvU"
+    }
+  ],
   "_stats": {
-    "coreVersion": "12.331",
+    "coreVersion": "14.360",
     "systemId": null,
     "systemVersion": null,
     "createdTime": null,
     "modifiedTime": null,
     "lastModifiedBy": null,
     "compendiumSource": null,
-    "duplicateSource": null
+    "duplicateSource": null,
+    "exportSource": null
   },
   "img": "icons/svg/item-bag.svg",
   "folder": null,

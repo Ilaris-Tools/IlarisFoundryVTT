@@ -108,7 +108,7 @@ Hooks.once('init', () => {
         makeDefault: true,
     })
     Items.registerSheet('Ilaris', UebernatuerlichTalentSheet, {
-        types: ['zauber', 'liturgie'],
+        types: ['zauber', 'liturgie', 'anrufung'],
         makeDefault: true,
     })
     Items.registerSheet('Ilaris', FreieFertigkeitSheet, {
