@@ -26,6 +26,7 @@ Pre-Effekte sind eine **Alpha-Funktion**. Sie automatisieren bislang nur einen T
 - Schadenstypen sind jetzt in den Welteinstellungen frei konfigurierbar (Name und Verhalten: Heilung, Erschöpfung statt Wunden, Rüstung ignorieren).
 - Neue Welteinstellung für den Umgang mit Waffenschaden-Manövern: Schadensmultiplikatoren können beim Wurf automatisch ausmultipliziert werden (#440, #498).
 - Neue Einstellung, um Würfeldetails (Einzelwürfe) im Chat anzuzeigen. Standardmäßig deaktiviert, bisheriges Verhalten bleibt erhalten (#464, #485).
+- Gunst-Punkte äquivalent zu AsP und KaP auf dem Heldensheet
 
 #### Fixes
 
