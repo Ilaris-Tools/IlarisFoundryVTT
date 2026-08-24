@@ -100,6 +100,10 @@ export class UebernatuerlichDialog extends CombatDialog {
      * Override getDiceFormula to handle the special xd20 logic for supernatural abilities.
      */
     getDiceFormula(xd20_choice = null) {
+        // Anrufungen werden immer mit 1W20 gewürfelt, keine Median-Option
+        if (this.item.type === 'anrufung') {
+            return super.getDiceFormula(1)
+        }
         if (xd20_choice === null) {
             xd20_choice =
                 Number(this.element.querySelector('input[name="xd20"]:checked')?.value) || 0
@@ -132,8 +136,10 @@ export class UebernatuerlichDialog extends CombatDialog {
         const finalFormula =
             finalPW >= 0 ? `${formattedDice}+${finalPW}` : `${formattedDice}${finalPW}`
 
-        const itemType = this.item.type === 'zauber' ? 'Zauber' : 'Liturgie'
-        const icon = this.item.type === 'zauber' ? '🔮' : '✨'
+        const itemTypeLabels = { zauber: 'Zauber', liturgie: 'Liturgie', anrufung: 'Anrufung' }
+        const itemTypeIcons = { zauber: '🔮', liturgie: '✨', anrufung: '👹' }
+        const itemType = itemTypeLabels[this.item.type] || 'Liturgie'
+        const icon = itemTypeIcons[this.item.type] || '✨'
 
         const difficultyRows = []
         const schwierigkeit = this.item.system.schwierigkeit
@@ -312,10 +318,12 @@ export class UebernatuerlichDialog extends CombatDialog {
 
     async _angreifenKlick() {
         if (callIlarisHookWithGlobalMirror('Ilaris.preAngriff', this) === false) return
-        let xd20_choice =
-            Number(this.element.querySelector('input[name="xd20"]:checked')?.value) || 0
-        xd20_choice = xd20_choice == 0 ? 1 : 3
-        let diceFormula = this.getDiceFormula(xd20_choice)
+        // getDiceFormula already checks this
+        // let xd20_choice =
+        //     Number(this.element.querySelector('input[name="xd20"]:checked')?.value) || 0
+        // xd20_choice = xd20_choice == 0 ? 1 : 3
+        // let diceFormula = this.getDiceFormula(xd20_choice)
+        let diceFormula = this.getDiceFormula()
         await this.manoeverAuswaehlen()
         await this.updateManoeverMods()
         this.updateStatusMods()
@@ -429,23 +437,11 @@ export class UebernatuerlichDialog extends CombatDialog {
 
     async initializeEnergyValues() {
         // Check if we have enough resources
-        if (this.actor.type == 'held') {
-            if (this.item.type === 'zauber') {
-                this.currentEnergy = this.actor.system.abgeleitete.asp_stern
-                this.energyPath = 'system.abgeleitete.asp_stern'
-            } else {
-                this.currentEnergy = this.actor.system.abgeleitete.kap_stern
-                this.energyPath = 'system.abgeleitete.kap_stern'
-            }
-        } else {
-            if (this.item.type === 'zauber') {
-                this.currentEnergy = this.actor.system.energien.asp.value
-                this.energyPath = 'system.energien.asp.value'
-            } else {
-                this.currentEnergy = this.actor.system.energien.kap.value
-                this.energyPath = 'system.energien.kap.value'
-            }
-        }
+        const energyKey =
+            this.item.type === 'anrufung' ? 'gup' : this.item.type === 'zauber' ? 'asp' : 'kap'
+        const energyState = this.actor.getEnergyState(energyKey)
+        this.currentEnergy = energyState.current
+        this.energyPath = energyState.currentPath
     }
 
     async applyEnergyCost(isSuccess, is16OrHigher) {
@@ -564,19 +560,9 @@ export class UebernatuerlichDialog extends CombatDialog {
      * @returns {number} Available energy (AsP or KaP)
      */
     getAvailableEnergy() {
-        if (this.actor.type == 'held') {
-            if (this.item.type === 'zauber') {
-                return this.actor.system.abgeleitete.asp_stern
-            } else {
-                return this.actor.system.abgeleitete.kap_stern
-            }
-        } else {
-            if (this.item.type === 'zauber') {
-                return this.actor.system.energien.asp.value
-            } else {
-                return this.actor.system.energien.kap.value
-            }
-        }
+        const energyKey =
+            this.item.type === 'anrufung' ? 'gup' : this.item.type === 'zauber' ? 'asp' : 'kap'
+        return this.actor.getEnergyState(energyKey).current
     }
 
     /**

@@ -1,7 +1,10 @@
 <div class="left-column">
         <div>
+            {{#if (ifEq item.type "anrufung")}}
+            {{else}}
             <label>Anzahl W20:</label>
             <label>{{radioBoxes "xd20" choices_xd20 checked=checked_xd20}}</label>
+            {{/if}}
         </div>
         {{#if (ifEq actor.type "held")}}
         <div>
