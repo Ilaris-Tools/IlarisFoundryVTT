@@ -34,11 +34,12 @@ async function fetchBreakingChangesTemplate(version) {
  * @param {string} version - The current system version
  * @param {string} content - HTML content with breaking changes
  */
-function showChangelogNotification(version, content) {
+export function showChangelogNotification(version, content) {
     new ChangelogNotificationDialog({
         window: {
             title: 'Wichtige Änderungen / Breaking Changes',
             icon: 'fas fa-exclamation-triangle',
+            contentClasses: ['ilaris-changelog-window-content'],
         },
         classes: ['ilaris-changelog-notification'],
         position: {
