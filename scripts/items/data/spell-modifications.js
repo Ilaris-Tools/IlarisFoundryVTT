@@ -42,82 +42,9 @@ function normalizeProfile(profile) {
     }
 }
 
-const ANTIMAGIC_PRESET = Object.freeze({
-    groups: [{ id: 'antiMagicForm', label: 'Antimagieform', required: true }],
-    modifications: [
-        {
-            id: 'gegenzauber',
-            name: 'Gegenzauber',
-            description:
-                'Konterprobe (12) gegen einen Zauber in Vorbereitung. Die weitere Abwicklung erfolgt durch Spielleitung und Spieler.',
-            profile: {
-                difficulty: 0,
-                cost: { mode: 'set', value: 4 },
-                target: 'Zauber in Vorbereitung',
-                range: '16 Schritt',
-                duration: 'augenblicklich',
-            },
-        },
-        {
-            id: 'magie-unterdruecken',
-            name: 'Magie unterdrücken',
-            description:
-                'Unterdrückt zukünftige Zauber der Fertigkeit in einer Zone. Der Malus und die Zone werden durch Spielleitung und Spieler verwaltet.',
-            profile: {
-                difficulty: 0,
-                cost: { mode: 'set', value: 8 },
-                target: 'Zone',
-                range: '8 Schritt',
-                duration: '1 Stunde',
-            },
-        },
-        {
-            id: 'zauber-aufheben',
-            name: 'Zauber aufheben',
-            description:
-                'Konterprobe (12) gegen einen bereits gewirkten Zauber ohne gAsP. Die Aufhebung wird durch Spielleitung und Spieler verwaltet.',
-            profile: {
-                difficulty: 0,
-                target: 'Zauber',
-                range: '8 Schritt',
-                duration: 'augenblicklich',
-            },
-        },
-        {
-            id: 'wesenheit-bannen',
-            name: 'Wesenheit bannen',
-            description:
-                'Bannung einer beschworenen Wesenheit ohne gAsP. Schwierigkeit und Ergebnis werden durch Spielleitung und Spieler verwaltet.',
-            profile: {
-                difficulty: 0,
-                target: 'beschworenes Wesen',
-                range: '8 Schritt',
-                duration: 'augenblicklich',
-            },
-        },
-    ],
-})
-
-const ANTIMAGIC_RULE_TEXT = Object.freeze({
-    gegenzauber:
-        'Vorbereitung 0 Aktionen. Konterprobe (12) gegen einen Zauber in Vorbereitung. Die weitere Abwicklung erfolgt durch Spielleitung und Spieler.',
-    'magie-unterdruecken':
-        'Vorbereitung 16 Aktionen. Unterdr\u00fcckt zuk\u00fcnftige Zauber der Fertigkeit in einer Zone. Der Malus und die Zone werden durch Spielleitung und Spieler verwaltet.',
-    'zauber-aufheben':
-        'Vorbereitung 16 Aktionen. Konterprobe (12) gegen einen bereits gewirkten Zauber. Die Aufhebung wird durch Spielleitung und Spieler verwaltet.',
-    'wesenheit-bannen':
-        'Vorbereitung 16 Aktionen. Bannung einer beschworenen Wesenheit. Schwierigkeit und Ergebnis werden durch Spielleitung und Spieler verwaltet.',
-})
-
-const ANTIMAGIC_PROFILE_EXTRAS = Object.freeze({
-    'zauber-aufheben': { permanentCost: 'Halbe Basiskosten des Zielzaubers' },
-    'wesenheit-bannen': { permanentCost: 'Halbe Basiskosten der Beschw\u00f6rung' },
-})
-
 /** Normalize Foundry ObjectField values to structurally safe form data. */
 export function normalizeSpellModifications(system = {}) {
-    const preset = system.spellModificationPreset === 'antiMagic' ? ANTIMAGIC_PRESET : null
-    const groups = toArray(preset?.groups || system.spellModificationGroups)
+    const groups = toArray(system.spellModificationGroups)
         .filter((group) => group && typeof group === 'object' && asText(group.id))
         .map((group) => ({
             id: asText(group.id),
@@ -127,26 +54,17 @@ export function normalizeSpellModifications(system = {}) {
 
     const knownGroupIds = new Set(groups.map((group) => group.id))
     const ids = new Set()
-    const modifications = toArray(preset?.modifications || system.spellModifications)
+    const modifications = toArray(system.spellModifications)
         .filter((modification) => modification && typeof modification === 'object')
         .map((modification) => ({
             id: asText(modification.id),
             name: asText(modification.name),
-            description: asText(
-                preset === ANTIMAGIC_PRESET
-                    ? ANTIMAGIC_RULE_TEXT[modification.id] || modification.description
-                    : modification.description,
-            ),
-            group: preset === ANTIMAGIC_PRESET ? 'antiMagicForm' : asText(modification.group),
+            description: asText(modification.description),
+            group: asText(modification.group),
             effectMode: ['inherit', 'extend', 'replace'].includes(modification.effectMode)
                 ? modification.effectMode
-                : preset === ANTIMAGIC_PRESET
-                  ? 'replace'
-                  : 'inherit',
-            profile: normalizeProfile({
-                ...modification.profile,
-                ...(preset === ANTIMAGIC_PRESET ? ANTIMAGIC_PROFILE_EXTRAS[modification.id] : {}),
-            }),
+                : 'inherit',
+            profile: normalizeProfile(modification.profile),
             zone: clone(modification.zone),
             preEffects: toArray(clone(modification.preEffects)),
         }))

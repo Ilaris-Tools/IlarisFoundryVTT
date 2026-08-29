@@ -46,7 +46,6 @@ export function createItemTypeDataModels(TypeDataModel, h) {
         zone: h.object(null),
         spellModifications: h.arrayOfObjects(),
         spellModificationGroups: h.arrayOfObjects(),
-        spellModificationPreset: h.string(''),
     })
 
     class NahkampfwaffeItemDataModel extends TypeDataModel {

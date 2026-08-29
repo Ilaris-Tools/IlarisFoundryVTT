@@ -530,6 +530,99 @@ describe('reviewed supported spell pre-effect source data', () => {
         }
     })
 
+    it('authors all anti-magic forms explicitly and configures Dämonenbann suppression', () => {
+        const filenames = [
+            'D_monenbann_hpWwGFDGDNXFwQUa.json',
+            'Eigenschaft_wiederherstellen_pj3Es4uzyY7q29LW.json',
+            'Einfluss_bannen_EUNleNzjpQinIkqC.json',
+            'Elementarbann_KAZ5SaAP2ey6q8j0.json',
+            'Hellsicht_tr_ben_op9bdZaS34Cetv4S.json',
+            'Illusion_aufl_sen_3nDS8VDkI62IjYDp.json',
+            'Kraftmagie_neutralisieren_1PPzzg8e8XhhtBVp.json',
+            'Ver_nderung_aufheben_Gj8ii7vEOGD3fsZF.json',
+            'Verst_ndigung_st_ren_UbGPpv5gU6dsDRle.json',
+            'Verwandlung_beenden_s96x6LbypdSPkDCU.json',
+        ]
+
+        for (const filename of filenames) {
+            const spell = readSpell(filename)
+            expect(spell.system).not.toHaveProperty('spellModificationPreset')
+            expect(spell.system.spellModificationGroups).toEqual([
+                { id: 'antiMagicForm', label: 'Antimagieform', required: true },
+            ])
+            expect(spell.system.spellModifications.map((form) => form.id)).toEqual([
+                'gegenzauber',
+                'magie-unterdruecken',
+                'zauber-aufheben',
+                'wesenheit-bannen',
+            ])
+            expect(spell.system.spellModifications).toEqual(
+                expect.arrayContaining([
+                    expect.objectContaining({ id: 'gegenzauber', effectMode: 'replace' }),
+                    expect.objectContaining({ id: 'magie-unterdruecken', effectMode: 'replace' }),
+                    expect.objectContaining({
+                        id: 'zauber-aufheben',
+                        effectMode: 'replace',
+                        profile: expect.objectContaining({
+                            permanentCost: 'Halbe Basiskosten des Zielzaubers',
+                        }),
+                    }),
+                    expect.objectContaining({
+                        id: 'wesenheit-bannen',
+                        effectMode: 'replace',
+                        profile: expect.objectContaining({
+                            permanentCost: 'Halbe Basiskosten der Beschwörung',
+                        }),
+                    }),
+                ]),
+            )
+        }
+
+        const daemonban = readSpell('D_monenbann_hpWwGFDGDNXFwQUa.json')
+        const suppression = daemonban.system.spellModifications.find(
+            (form) => form.id === 'magie-unterdruecken',
+        )
+        expect(suppression).toMatchObject({
+            effectMode: 'replace',
+            profile: {
+                difficulty: 0,
+                cost: { mode: 'set', value: 8 },
+                target: 'Zone',
+                range: '8 Schritt',
+                duration: '1 Stunde',
+            },
+            zone: {
+                shape: 'circle',
+                distance: 16,
+                placement: { anchor: 'free', range: 8, pivot: 'center' },
+                lifecycle: 'persistent',
+                effectMode: 'passive',
+                duration: { remaining: 960, originalValue: 960 },
+                trigger: { triggerOnCreate: true, onEnter: true },
+                targeting: { includeCaster: true },
+            },
+            preEffects: [
+                {
+                    baseDuration: 0,
+                    durationType: 'infinite',
+                    instant: false,
+                    changes: [],
+                    ilarisModifiers: [
+                        {
+                            phase: 'roll',
+                            target: 'probe',
+                            value: '-8',
+                            stacking: 'strongest-supernatural',
+                            selector: { fertigkeit: 'Dämonisch' },
+                            amplifiedByMaechtigeMagie: true,
+                            maechtigBonus: '-4',
+                        },
+                    ],
+                },
+            ],
+        })
+    })
+
     it('configures the reviewed MR effects with semantic modifiers and converted durations', () => {
         const cases = [
             [readSpell('Psychostabilis_vgfz3Gra9JYsLN4V.json'), 960],

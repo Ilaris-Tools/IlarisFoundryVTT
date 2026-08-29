@@ -183,14 +183,56 @@ describe('structured spell modifications', () => {
         })
     })
 
-    test('requires one anti-magic preset form and accepts any one of its four choices', () => {
-        const source = item({ ...baseSystem, spellModificationPreset: 'antiMagic' })
+    test('requires one explicit anti-magic form and accepts any one of its four choices', () => {
+        const source = item({
+            ...baseSystem,
+            spellModificationGroups: [{ id: 'antiMagicForm', required: true }],
+            spellModifications: [
+                {
+                    id: 'gegenzauber',
+                    group: 'antiMagicForm',
+                    effectMode: 'replace',
+                    profile: { cost: { mode: 'set', value: 4 } },
+                },
+                {
+                    id: 'magie-unterdruecken',
+                    group: 'antiMagicForm',
+                    effectMode: 'replace',
+                    profile: { cost: { mode: 'set', value: 8 } },
+                },
+                {
+                    id: 'zauber-aufheben',
+                    group: 'antiMagicForm',
+                    effectMode: 'replace',
+                    profile: { permanentCost: 'Halbe Basiskosten des Zielzaubers' },
+                },
+                {
+                    id: 'wesenheit-bannen',
+                    group: 'antiMagicForm',
+                    effectMode: 'replace',
+                    profile: { permanentCost: 'Halbe Basiskosten der Beschwörung' },
+                },
+            ],
+        })
 
         expect(resolveSpellModificationContext(source, []).valid).toBe(false)
         expect(resolveSpellModificationContext(source, ['zauber-aufheben'])).toMatchObject({
             valid: true,
             selectedForms: [expect.objectContaining({ effectMode: 'replace' })],
             profile: { permanentCost: 'Halbe Basiskosten des Zielzaubers' },
+        })
+    })
+
+    test('does not create anti-magic forms for obsolete preset-only source data', () => {
+        const source = item({ ...baseSystem, spellModificationPreset: 'antiMagic' })
+
+        expect(normalizeSpellModifications(source.system)).toEqual({
+            groups: [],
+            modifications: [],
+        })
+        expect(resolveSpellModificationContext(source, [])).toMatchObject({
+            valid: true,
+            selectedForms: [],
         })
     })
 })
