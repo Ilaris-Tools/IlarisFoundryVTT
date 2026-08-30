@@ -42,6 +42,10 @@ import {
     resolveDamageExecutorUserId,
     resolveTargetActorForDamage,
 } from './shared-dialog-helpers.js'
+import {
+    getCreatureSourceOptions,
+    normalizeCreatureTypes,
+} from '../../effects/pre-effects/summoned-creatures.js'
 
 export class UebernatuerlichDialog extends CombatDialog {
     /** @override */
@@ -92,6 +96,7 @@ export class UebernatuerlichDialog extends CombatDialog {
         this.castSkillContext = resolveCastSkillContext(actor, item)
         this.castSkill = this.castSkillContext.castSkill
         this.magicResistanceChallenge = null
+        this.summonCreatureSelections = new Map()
     }
 
     /**
@@ -118,6 +123,29 @@ export class UebernatuerlichDialog extends CombatDialog {
                 this.castSkill = event.currentTarget.value || ''
                 await this.render()
             })
+        this.element.querySelectorAll('.summon-creature-type').forEach((input) => {
+            input.addEventListener('change', () => {
+                const index = Number(input.dataset.preEffectIndex)
+                const selection = this.summonCreatureSelections.get(index) || {}
+                this.summonCreatureSelections.set(index, {
+                    ...selection,
+                    kreaturentyp: input.value,
+                    uuid: '',
+                    option: null,
+                })
+                this.spellModificationContext = null
+                this.render()
+            })
+        })
+        this.element.querySelectorAll('.summon-creature-source').forEach((input) => {
+            input.addEventListener('change', () => {
+                const index = Number(input.dataset.preEffectIndex)
+                const selection = this.summonCreatureSelections.get(index) || {}
+                this.summonCreatureSelections.set(index, { ...selection, uuid: input.value })
+                this.spellModificationContext = null
+                this.render()
+            })
+        })
     }
 
     /* -------------------------------------------- */
@@ -383,6 +411,7 @@ export class UebernatuerlichDialog extends CombatDialog {
 
         const difficulty = this._getCastingDifficulty()
         const isNonStandardDifficulty = difficulty === null
+        const summonCreatureSelectors = await this._getSummonCreatureSelectors()
 
         const zonePlacementEnabled = this._hasZonePlacementRequirement()
         return {
@@ -410,6 +439,7 @@ export class UebernatuerlichDialog extends CombatDialog {
             zonePlacementEnabled,
             zonePlacementReady: this._hasZoneDraft(),
             magicResistance: this._getMagicResistanceTemplateContext(),
+            summonCreatureSelectors,
             ...this._getSpellModificationTemplateContext(),
         }
     }
@@ -1293,15 +1323,69 @@ export class UebernatuerlichDialog extends CombatDialog {
     }
 
     getEffectiveSpellModificationContext() {
-        this.spellModificationContext ??= resolveSpellModificationContext(
-            this.item,
-            this.selectedSpellModificationIds,
-        )
+        if (!this.spellModificationContext) {
+            const context = resolveSpellModificationContext(
+                this.item,
+                this.selectedSpellModificationIds,
+            )
+            context.preEffects = foundry.utils.deepClone(context.preEffects)
+            for (const [index, selection] of this.summonCreatureSelections) {
+                if (context.preEffects[index]?.summonCreature && selection.uuid) {
+                    context.preEffects[index].summonCreature.selectedCreatureUuid = selection.uuid
+                }
+            }
+            this.spellModificationContext = context
+        }
         return this.spellModificationContext
     }
 
     getEffectiveSpellProfile() {
-        return this.getEffectiveSpellModificationContext().profile
+        const profile = { ...this.getEffectiveSpellModificationContext().profile }
+        const selectedCreature = Array.from(this.summonCreatureSelections.values()).find(
+            (selection) => selection.option?.uuid === selection.uuid,
+        )?.option
+        if (selectedCreature) {
+            profile.difficulty = selectedCreature.summoningDifficulty
+            profile.cost = selectedCreature.summoningCost
+        }
+        return profile
+    }
+
+    async _getSummonCreatureSelectors() {
+        const selectors = []
+        for (const [
+            index,
+            preEffect,
+        ] of this.getEffectiveSpellModificationContext().preEffects.entries()) {
+            const config = preEffect?.summonCreature
+            if (!config?.enabled) continue
+            const kreaturentypen = normalizeCreatureTypes(config.kreaturentypen)
+            const current = this.summonCreatureSelections.get(index) || {}
+            const kreaturentyp = kreaturentypen.includes(current.kreaturentyp)
+                ? current.kreaturentyp
+                : kreaturentypen[0] || ''
+            const options = await getCreatureSourceOptions(kreaturentyp ? [kreaturentyp] : [])
+            const option =
+                options.find((entry) => entry.uuid === current.uuid) || options[0] || null
+            this.summonCreatureSelections.set(index, {
+                kreaturentyp,
+                uuid: option?.uuid || '',
+                option,
+            })
+            if (option && this.spellModificationContext?.preEffects[index]?.summonCreature) {
+                this.spellModificationContext.preEffects[
+                    index
+                ].summonCreature.selectedCreatureUuid = option.uuid
+            }
+            selectors.push({
+                index,
+                kreaturentypen,
+                kreaturentyp,
+                options,
+                selectedUuid: option?.uuid || '',
+            })
+        }
+        return selectors
     }
 
     getSelectedSpellModificationId() {

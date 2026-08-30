@@ -225,6 +225,20 @@ export class PreEffectItemSheet extends IlarisItemSheet {
             return
         }
 
+        if (button.closest('.add-domination-check')) {
+            if (preEffectIndex < 0) return
+            const preEffects = this._clonePreEffects()
+            const summonCreature = preEffects[preEffectIndex]?.summonCreature
+            if (!summonCreature) return
+            summonCreature.dominationChecks ??= { enabled: false, entries: [] }
+            summonCreature.dominationChecks.entries = toPreEffectArray(
+                summonCreature.dominationChecks.entries,
+            )
+            summonCreature.dominationChecks.entries.push(this._defaultDominationCheck())
+            this.document.update({ 'system.preEffects': preEffects })
+            return
+        }
+
         if (button.closest('.delete-pre-effect')) {
             if (preEffectIndex < 0) return
             const preEffects = this._clonePreEffects()
@@ -259,6 +273,21 @@ export class PreEffectItemSheet extends IlarisItemSheet {
             const payload = payloadFor(preEffects[preEffectIndex])
             payload.changes = toPreEffectArray(payload.changes)
             payload.changes.splice(changeIndex, 1)
+            this.document.update({ 'system.preEffects': preEffects })
+            return
+        }
+
+        if (button.closest('.delete-domination-check')) {
+            const dominationCard = button.closest('.domination-check-card')
+            const dominationIndex = [
+                ...preEffectCard.querySelectorAll('.domination-check-card'),
+            ].indexOf(dominationCard)
+            if (preEffectIndex < 0 || dominationIndex < 0) return
+            const preEffects = this._clonePreEffects()
+            const dominationChecks = preEffects[preEffectIndex]?.summonCreature?.dominationChecks
+            if (!dominationChecks) return
+            dominationChecks.entries = toPreEffectArray(dominationChecks.entries)
+            dominationChecks.entries.splice(dominationIndex, 1)
             this.document.update({ 'system.preEffects': preEffects })
             return
         }
@@ -329,6 +358,7 @@ export class PreEffectItemSheet extends IlarisItemSheet {
                 charges: { base: 1, amplifiedByMaechtigeMagie: false, maechtigBonus: 0 },
             },
             summonItem: this._defaultSummonItem(),
+            summonCreature: this._defaultSummonCreature(),
             avoidTest: {
                 enabled: false,
                 fertigkeit: '',
@@ -372,6 +402,26 @@ export class PreEffectItemSheet extends IlarisItemSheet {
 
     _defaultSummonItem() {
         return { enabled: false, sourceKind: 'waffe', sourceUuid: '', overrides: [] }
+    }
+
+    _defaultSummonCreature() {
+        return {
+            enabled: false,
+            kreaturentypen: [],
+            boundResourceCost: { enabled: false, resource: 'gasp', amount: 0 },
+            dominationChecks: { enabled: false, entries: [] },
+        }
+    }
+
+    _defaultDominationCheck() {
+        return {
+            kreaturentyp: '',
+            difficulty: 12,
+            probeType: 'attribut',
+            attribut: '',
+            fertigkeit: '',
+            talent: '',
+        }
     }
 
     _defaultSummonItemOverride() {

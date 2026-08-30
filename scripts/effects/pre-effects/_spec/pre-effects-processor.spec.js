@@ -75,6 +75,66 @@ describe('toArray', () => {
 })
 
 describe('pre-effect processor', () => {
+    it('dispatches a successful summonCreature pre-effect without changing summonItem handling', async () => {
+        const caster = createTargetActor({ id: 'caster-id', uuid: 'Actor.caster' })
+        const created = { actor: { sheet: { render: jest.fn() } } }
+        global.game.settings.get = jest.fn((_namespace, key) =>
+            key === 'kreaturenPacks' ? '["Ilaris.kreaturen"]' : undefined,
+        )
+        global.game.actors = new Map([[caster.id, caster]])
+        global.canvas = {
+            scene: {
+                dimensions: { width: 500, height: 500 },
+                tokens: [],
+                createEmbeddedDocuments: jest.fn().mockResolvedValue([created]),
+            },
+            grid: { size: 100 },
+            tokens: {
+                controlled: [{ actor: { id: caster.id }, document: { x: 100, y: 100 } }],
+            },
+        }
+        global.fromUuid = jest.fn().mockResolvedValue({
+            documentName: 'Actor',
+            type: 'kreatur',
+            pack: 'Ilaris.kreaturen',
+            uuid: 'Compendium.Ilaris.kreaturen.Actor.daemon',
+            system: { kreaturentyp: 'daemon' },
+            getTokenDocument: jest.fn().mockResolvedValue({
+                width: 1,
+                height: 1,
+                toObject: () => ({ width: 1, height: 1 }),
+            }),
+        })
+
+        await applyPreEffects(
+            { success: true },
+            {
+                item: { name: 'Beschwörung', system: {} },
+                actor: caster,
+                selectedActors: [{ actorId: caster.id }, { actorId: caster.id }],
+                speaker: {},
+            },
+            {},
+            {
+                preEffects: [
+                    {
+                        summonCreature: {
+                            enabled: true,
+                            kreaturentypen: ['daemon'],
+                            selectedCreatureUuid: 'Compendium.Ilaris.kreaturen.Actor.daemon',
+                        },
+                    },
+                ],
+            },
+        )
+
+        expect(canvas.scene.createEmbeddedDocuments).toHaveBeenCalledWith('Token', [
+            expect.objectContaining({ actorLink: false }),
+        ])
+        expect(canvas.scene.createEmbeddedDocuments).toHaveBeenCalledTimes(1)
+        expect(created.actor.sheet.render).toHaveBeenCalledWith(true)
+    })
+
     it('uses an explicit form list instead of source pre-effects and records form provenance', async () => {
         const caster = createTargetActor({ id: 'caster-id', uuid: 'Actor.caster' })
         global.game.actors = { get: jest.fn((id) => (id === caster.id ? caster : undefined)) }

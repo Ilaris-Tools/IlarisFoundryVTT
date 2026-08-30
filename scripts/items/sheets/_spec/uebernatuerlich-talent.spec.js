@@ -341,5 +341,6 @@ describe('UebernatuerlichTalentSheet structured spell forms', () => {
         expect(template).toContain('Dauerquelle')
         expect(template).toContain('system.spellModifications.{{@index}}.zone.duration.source')
         expect(template).toContain('Zurückstoßen (Spielleitung)')
+        expect(template).toContain('add-spell-modification-domination-check')
     })
 })

@@ -20,6 +20,12 @@ describe('PreEffectItemSheet', () => {
             changes: [],
             ilarisModifiers: [],
             marker: { enabled: false },
+            summonCreature: expect.objectContaining({
+                enabled: false,
+                kreaturentypen: [],
+                boundResourceCost: expect.objectContaining({ enabled: false }),
+                dominationChecks: { enabled: false, entries: [] },
+            }),
             avoidTest: { enabled: false, resistDifficultySource: 'fixed' },
             resistanceOutcomes: {
                 failure: {
@@ -94,6 +100,19 @@ describe('PreEffectItemSheet', () => {
                     }),
                 }),
             ],
+        })
+    })
+
+    it('creates an empty, type-specific domination-check entry', () => {
+        const sheet = Object.create(PreEffectItemSheet.prototype)
+
+        expect(sheet._defaultDominationCheck()).toEqual({
+            kreaturentyp: '',
+            difficulty: 12,
+            probeType: 'attribut',
+            attribut: '',
+            fertigkeit: '',
+            talent: '',
         })
     })
 

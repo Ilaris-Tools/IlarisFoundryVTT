@@ -148,6 +148,31 @@ export class UebernatuerlichTalentSheet extends PreEffectItemSheet {
             await updateForms(forms)
             return
         }
+        if (button.closest('.add-spell-modification-domination-check')) {
+            const preEffectIndex = Number(button.dataset.preEffectIndex)
+            const forms = this.#cloneSpellModifications()
+            const summonCreature = forms[formIndex]?.preEffects?.[preEffectIndex]?.summonCreature
+            if (!summonCreature) return
+            summonCreature.dominationChecks ??= { enabled: false, entries: [] }
+            summonCreature.dominationChecks.entries = toPreEffectArray(
+                summonCreature.dominationChecks.entries,
+            )
+            summonCreature.dominationChecks.entries.push(this._defaultDominationCheck())
+            await updateForms(forms)
+            return
+        }
+        if (button.closest('.delete-spell-modification-domination-check')) {
+            const preEffectIndex = Number(button.dataset.preEffectIndex)
+            const checkIndex = Number(button.dataset.dominationCheckIndex)
+            const forms = this.#cloneSpellModifications()
+            const checks =
+                forms[formIndex]?.preEffects?.[preEffectIndex]?.summonCreature?.dominationChecks
+            if (!checks) return
+            checks.entries = toPreEffectArray(checks.entries)
+            checks.entries.splice(checkIndex, 1)
+            await updateForms(forms)
+            return
+        }
         if (button.closest('.delete-spell-modification-pre-effect')) {
             const forms = this.#cloneSpellModifications()
             if (!forms[formIndex]) return
