@@ -8,6 +8,10 @@
     "text": "Dein Opfer wird vom Unglück verfolgt. Seine Chance auf einen Patzer steigt um 1 auf dem W20 (zum Beispiel von 1 auf 1–2).",
     "maechtig": "Je zwei Stufen steigern die Chance auf einen Patzer um einen weiteren Punkt.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true,
+      "targetMode": "singleActor"
+    },
     "modifikationen": "",
     "vorbereitung": "4 Aktionen",
     "ziel": "Einzelperson",

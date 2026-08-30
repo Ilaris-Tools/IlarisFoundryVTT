@@ -1,4 +1,4 @@
-import { readFileSync } from 'node:fs'
+import { readFileSync, readdirSync } from 'node:fs'
 import { join } from 'node:path'
 
 const spellSourceDirectory = join(
@@ -41,6 +41,34 @@ function expectDamageChange(preEffect, { value, damageType, maechtigBonus = '' }
 }
 
 describe('reviewed supported spell pre-effect source data', () => {
+    it('authors target Magieresistenz only for the audited single-Actor sources', () => {
+        const eligibleTargets = new Set(['Einzelperson', 'Einzelwesen', 'einzelnes Tier', 'Tier'])
+        const spells = readdirSync(spellSourceDirectory)
+            .filter((filename) => filename.endsWith('.json'))
+            .map(readSpell)
+        const automatic = spells.filter(
+            (spell) =>
+                spell.system?.schwierigkeit?.trim() === 'Magieresistenz' &&
+                eligibleTargets.has(spell.system?.ziel),
+        )
+        const excluded = spells.filter(
+            (spell) =>
+                spell.system?.schwierigkeit?.includes('Magieresistenz') &&
+                !eligibleTargets.has(spell.system?.ziel),
+        )
+
+        expect(automatic).toHaveLength(86)
+        for (const spell of automatic) {
+            expect(spell.system.magicResistance).toEqual({
+                enabled: true,
+                targetMode: 'singleActor',
+            })
+        }
+        for (const spell of excluded) {
+            expect(spell.system.magicResistance?.enabled).not.toBe(true)
+        }
+    })
+
     it('configures Phexens Sternenwurf and Segen der Heiligen Ardare as first-slice summons', () => {
         const phexensSternenwurf = readLiturgy('Phexens_Sternenwurf_Zd8WWyywzZvGNjrP.json')
         const ardare = readLiturgy('Segen_der_Heiligen_Ardare_nniOXont43xAf4Bq.json')

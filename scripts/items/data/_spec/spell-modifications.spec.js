@@ -235,4 +235,35 @@ describe('structured spell modifications', () => {
             selectedForms: [],
         })
     })
+
+    test('retains explicit single-Actor target Magieresistenz through base and selected profiles', () => {
+        const source = item({
+            ...baseSystem,
+            magicResistance: { enabled: true, targetMode: 'singleActor' },
+            spellModifications: [
+                { id: 'manual', profile: { magicResistance: { enabled: false } } },
+            ],
+        })
+
+        expect(resolveSpellModificationContext(source, []).profile.magicResistance).toEqual({
+            enabled: true,
+            targetMode: 'singleActor',
+        })
+        expect(resolveSpellModificationContext(source, ['manual']).profile.magicResistance).toEqual(
+            {
+                enabled: false,
+                targetMode: '',
+            },
+        )
+        expect(
+            normalizeSpellModifications({
+                spellModifications: [
+                    {
+                        id: 'invalid',
+                        profile: { magicResistance: { enabled: true, targetMode: 'zone' } },
+                    },
+                ],
+            }).modifications[0].profile.magicResistance,
+        ).toEqual({ enabled: false, targetMode: '' })
+    })
 })

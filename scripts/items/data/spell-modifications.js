@@ -3,6 +3,7 @@
  * Selections are intentionally never written back to the source Item.
  */
 import { resolveZoneProfile } from '../../combat/zones/zone-profile.js'
+import { normalizeMagicResistance } from '../../combat/magic-resistance.js'
 
 function toArray(value) {
     if (Array.isArray(value)) return value
@@ -39,6 +40,7 @@ function normalizeProfile(profile) {
         target: asText(source.target),
         range: asText(source.range),
         duration: asText(source.duration),
+        magicResistance: normalizeMagicResistance(source.magicResistance),
     }
 }
 
@@ -85,6 +87,9 @@ function baseProfile(system = {}) {
         target: asText(system.ziel),
         range: asText(system.reichweite),
         duration: asText(system.wirkungsdauer),
+        magicResistance: normalizeMagicResistance(system.magicResistance, {
+            absentValue: { enabled: false, targetMode: '' },
+        }),
     }
 }
 
@@ -147,6 +152,18 @@ export function resolveSpellModificationContext(item, selectedIds = []) {
             }
             profile[key] = value
             overrideOwners.set(key, form.id)
+        }
+        if (form.profile.magicResistance !== null) {
+            if (
+                overrideOwners.has('magicResistance') &&
+                JSON.stringify(profile.magicResistance) !==
+                    JSON.stringify(form.profile.magicResistance)
+            ) {
+                addError(errors, 'Mehrere Zaubermodifikationen überschreiben Magieresistenz.')
+            } else {
+                profile.magicResistance = form.profile.magicResistance
+                overrideOwners.set('magicResistance', form.id)
+            }
         }
         if (form.effectMode === 'extend') preEffects.push(...clone(form.preEffects))
         if (form.effectMode === 'replace') preEffects = clone(form.preEffects)

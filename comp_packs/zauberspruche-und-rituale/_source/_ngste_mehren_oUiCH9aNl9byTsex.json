@@ -8,6 +8,10 @@
     "text": "Das Opfer leidet an einer Angst deiner Wahl. Wird die Angst ausgelöst, steht es unter einem Furcht-Effekt Stufe 1. Litt das Opfer bereits zuvor an dieser Angst, steigt die Stufe des Furcht-Effekts um 1.",
     "maechtig": "Der Furcht-Effekt steigt um eine Stufe.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true,
+      "targetMode": "singleActor"
+    },
     "modifikationen": "",
     "vorbereitung": "4 Aktionen",
     "ziel": "Einzelperson",

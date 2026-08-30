@@ -8,6 +8,10 @@
     "text": "Du zwingst ein Tier unter deinen Bann. Es verhält sich, als wäre es gut dressiert und dir bedingungslos loyal und erfüllt deine Befehle. Nur Befehle, die seinen Instinkten klar widersprechen, kann es mit einer Konterprobe (MU, 16) widerstehen.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true,
+      "targetMode": "singleActor"
+    },
     "modifikationen": "Herr der Fliegen (–4; du beherrschst einen Schwarm Kleintiere.)",
     "vorbereitung": "2 Aktionen",
     "ziel": "Tier",

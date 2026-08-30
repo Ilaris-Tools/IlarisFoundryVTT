@@ -9,6 +9,10 @@
     "text": "Dein Opfer hat schreckliche Angst vor dir und erleidet einen Furcht-Effekt Stufe 2.",
     "maechtig": "Der Furcht-Effekt steigt um eine Stufe.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true,
+      "targetMode": "singleActor"
+    },
     "modifikationen": "",
     "vorbereitung": "0 Aktionen",
     "ziel": "Einzelwesen",

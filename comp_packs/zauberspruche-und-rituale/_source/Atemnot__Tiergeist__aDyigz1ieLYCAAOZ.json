@@ -9,6 +9,10 @@
     "text": "Du entziehst dem Opfer einen Teil seiner Kraft. Es erleidet 2 Punkte Erschöpfung. Du regenerierst die Hälfte der angerichteten Erschöpfung.",
     "maechtig": "Verursacht 1 weiteren Punkt Erschöpfung.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true,
+      "targetMode": "singleActor"
+    },
     "modifikationen": "",
     "vorbereitung": "2 Aktionen",
     "ziel": "Einzelperson",

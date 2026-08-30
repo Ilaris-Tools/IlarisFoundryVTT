@@ -8,6 +8,10 @@
     "text": "Du blickst während der Wirkungsdauer durch die Augen deines Opfers, das davon nichts ahnt. Du kannst nur Opfer verzaubern, die du sehr gut kennst oder von denen du ein Körperteil besitzt.",
     "maechtig": "Es reicht, wenn dir das Ziel persönlich bekannt ist/du es eine Weile beobachtet hast/du es vom Hörensagen kennst.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true,
+      "targetMode": "singleActor"
+    },
     "modifikationen": "Mehrere Sinne (–4; du teilst einen weiteren Sinn mit dem Opfer. Mehrfach wählbar.)\nFremder Zauber (–8; du kannst während der Wirkungsdauer aus den Augen deines Opfers zaubern. Du musst dabei selbstverständlich auf Gesten und Formeln verzichten.)",
     "vorbereitung": "4 Minuten",
     "ziel": "Einzelwesen",

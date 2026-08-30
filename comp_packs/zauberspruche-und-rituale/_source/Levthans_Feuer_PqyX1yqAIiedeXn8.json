@@ -8,6 +8,10 @@
     "text": "Das Ziel entbrennt in heißer Leidenschaft für dich. Auf einer Skala von abstoßend/uninteressant/neutral/begehrenswert/unwiderstehlich steigt seine Einstellung dir gegenüber um eine Stufe. In einem folgenden Liebesspiel kannst du deine gesamte Wund- und AsP-Regeneration auf das Ziel übertragen oder die gesamte Regeneration des Ziels stehlen.",
     "maechtig": "Steigert die Einstellung um eine weitere Stufe.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true,
+      "targetMode": "singleActor"
+    },
     "modifikationen": "",
     "vorbereitung": "2 Aktionen",
     "ziel": "Einzelperson",

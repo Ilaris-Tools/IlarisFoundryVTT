@@ -8,6 +8,10 @@
     "text": "Du kannst bei deinem nächsten Zauber teilweise oder ganz auf die AsP des Ziels zugreifen. Der nächste Zauber kann nicht auf das Ziel des magischen Raubs gewirkt werden.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true,
+      "targetMode": "singleActor"
+    },
     "modifikationen": "",
     "vorbereitung": "16 Aktionen",
     "ziel": "Einzelperson",

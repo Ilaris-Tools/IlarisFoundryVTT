@@ -153,6 +153,19 @@
                 <i class="fas fa-users"></i>
                 Andere Akteure
             </button>
+            {{#if magicResistance.enabled}}
+            <div class="magic-resistance-section">
+                <h4>Magieresistenz</h4>
+                {{#if (ifEq magicResistance.status "missing-target")}}
+                <p class="notification warning">{{magicResistance.message}}</p>
+                {{else if (ifEq magicResistance.status "pending")}}
+                <p>{{magicResistance.targetName}}: MR {{magicResistance.magicResistance}} + 1W20</p>
+                <button class="combat-button-narrow" type="button" data-action="requestMagicResistance">MR würfeln anfragen</button>
+                {{else if (ifEq magicResistance.status "resolved")}}
+                <p><strong>Magieresistenz:</strong> {{magicResistance.magicResistance}} + {{magicResistance.d20}} = {{magicResistance.difficulty}}</p>
+                {{/if}}
+            </div>
+            {{/if}}
         </div>
         <hr />
         {{/if}}

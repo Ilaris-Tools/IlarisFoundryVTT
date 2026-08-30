@@ -8,6 +8,10 @@
     "text": "Dein Opfer windet sich in schrecklichen Schmerzen und ist bis zum Ende der Wirkungsdauer handlungsunfähig. Am Ende der Wirkungsdauer erleidet es 2 Punkte Erschöpfung. Die Wirkung endet vorzeitig, wenn das Opfer Schaden nimmt.",
     "maechtig": "Das Opfer erleidet einen weiteren Punkt Erschöpfung.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true,
+      "targetMode": "singleActor"
+    },
     "modifikationen": "",
     "vorbereitung": "2 Aktionen",
     "ziel": "Einzelwesen",

@@ -8,6 +8,10 @@
     "text": "Es fällt dem Ziel schwer, artikuliert zu sprechen. Die Zuhörer müssen eine Konterprobe (Sinnenschärfe, 16) ablegen, um den Sprecher zu verstehen. Laut gesprochene oder gesungene Zauberformeln sind dadurch unmöglich.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true,
+      "targetMode": "singleActor"
+    },
     "modifikationen": "",
     "vorbereitung": "4 Aktionen",
     "ziel": "Einzelperson",

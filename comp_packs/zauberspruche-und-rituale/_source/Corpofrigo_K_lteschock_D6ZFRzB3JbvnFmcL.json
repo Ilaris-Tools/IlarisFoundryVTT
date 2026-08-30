@@ -8,6 +8,10 @@
     "text": "Du entziehst deinem Opfer die Körperwärme, bis sich sein Körper mit Raureif überzieht. Seine GS sinkt auf die Hälfte und alle Athletik-Proben zur Bewegung sind um –4 erschwert.",
     "maechtig": "Die GS sinkt auf ein Viertel/Achtel/Sechzehntel/Zweiunddreißigstel und der Malus steigt um –2.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true,
+      "targetMode": "singleActor"
+    },
     "modifikationen": "",
     "vorbereitung": "1 Aktion",
     "ziel": "Einzelwesen",

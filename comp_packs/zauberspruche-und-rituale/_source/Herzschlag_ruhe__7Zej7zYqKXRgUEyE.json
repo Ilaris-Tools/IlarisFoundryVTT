@@ -8,6 +8,10 @@
     "text": "Das Herz deines Opfers bleibt schlagartig stehen. Nach 4 und 8 Initiativephasen erleidet es eine Wunde.",
     "maechtig": "Das Ziel erleidet nach 4 weiteren Initiativephasen eine weitere Wunde.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true,
+      "targetMode": "singleActor"
+    },
     "modifikationen": "",
     "vorbereitung": "1 Aktion",
     "ziel": "Einzelwesen",

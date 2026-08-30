@@ -8,6 +8,10 @@
     "text": "Dein Ziel wird von seiner Umgebung furchtsam gemieden. Proben auf Überreden und Rhetorik sind um –4 erschwert, Proben auf Betören sogar um –8.",
     "maechtig": "Der Malus steigt um –2/–4.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true,
+      "targetMode": "singleActor"
+    },
     "modifikationen": "",
     "vorbereitung": "4 Aktionen",
     "ziel": "Einzelperson",

@@ -8,6 +8,10 @@
     "text": "Du versetzt dein Ziel in einen friedvoll-glücklichen Rauschzustand. Alle seine Proben sind um –4 erschwert. Das Ziel erwacht aus der Trance, wenn es in direkter Lebensgefahr schwebt.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true,
+      "targetMode": "singleActor"
+    },
     "modifikationen": "",
     "vorbereitung": "2 Aktionen",
     "ziel": "Einzelperson",

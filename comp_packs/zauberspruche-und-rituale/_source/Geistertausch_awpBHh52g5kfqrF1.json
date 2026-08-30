@@ -8,6 +8,10 @@
     "text": "Wenn du ein Körperteil (z.B. Haare oder Blut) deines Opfers besitzt, kannst du mit ihm den Körper tauschen. Geistige Attribute, Fertigkeiten und Vorteile bleiben erhalten, körperliche werden getauscht. Wird einer der Körper während des Tausches vernichtet, endet der Tausch und der ursprüngliche Besitzer des vernichteten Körpers stirbt.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true,
+      "targetMode": "singleActor"
+    },
     "modifikationen": "Tiersinne (–4, Einzelwesen) Fremdtausch (–8; zwei Ziele tauschen Körper.)",
     "vorbereitung": "16 Aktionen",
     "ziel": "Einzelperson",

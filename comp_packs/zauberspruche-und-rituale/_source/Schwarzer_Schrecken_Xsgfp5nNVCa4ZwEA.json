@@ -8,6 +8,10 @@
     "text": "Das Opfer leidet an einer Angst vor einer Farbe oder Form deiner Wahl, meist wird die Farbe Schwarz gewählt. Wird die Angst ausgelöst, steht es unter einem Furcht-Effekt Stufe 1.",
     "maechtig": "Der Furcht-Effekt steigt um eine Stufe.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true,
+      "targetMode": "singleActor"
+    },
     "modifikationen": "",
     "vorbereitung": "2 Aktionen",
     "ziel": "Einzelperson",

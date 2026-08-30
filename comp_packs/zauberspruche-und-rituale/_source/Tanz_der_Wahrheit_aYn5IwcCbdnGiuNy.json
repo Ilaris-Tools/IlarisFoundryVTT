@@ -8,6 +8,10 @@
     "text": "Du siehst die Gedanken deines Ziels als verschwommene Bilder vor dir. Weiß das Ziel, dass seine Gedanken gelesen werden, kann es dich mit einer Konterprobe (Willenskraft, 16) in die Irre führen. Die Wirkung endet, wenn du aufhörst zu tanzen. Erlaubt Aufrechterhalten, erfordert Konzentration.",
     "maechtig": "Du erhältst einen deutlichen/klaren Eindruck in die Gedanken deines Ziels.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true,
+      "targetMode": "singleActor"
+    },
     "modifikationen": "Tanz des Wahrheitssinns (–8, Zone, 16 AsP; du liest die Gedanken aller Humanoiden im Radius von 4 Schritt, denen eine Konterprobe (MR, 12) misslingt.)",
     "vorbereitung": "16 Aktionen",
     "ziel": "Einzelperson",

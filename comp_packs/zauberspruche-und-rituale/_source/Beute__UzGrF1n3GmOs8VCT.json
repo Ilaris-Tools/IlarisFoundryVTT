@@ -8,6 +8,10 @@
     "text": "Tiere reagieren aggressiv auf dein Opfer. Proben zum Umgang mit Nutztieren sind um –4 erschwert und Raubtiere greifen stets das Opfer an, wobei sie +1 TP anrichten.",
     "maechtig": "Der Malus steigt um –2, die TP um +1.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true,
+      "targetMode": "singleActor"
+    },
     "modifikationen": "",
     "vorbereitung": "4 Aktionen",
     "ziel": "Einzelperson",

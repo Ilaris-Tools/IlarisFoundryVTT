@@ -8,6 +8,10 @@
     "text": "Du verwandelst dein Ziel in ein beliebiges anderes, kleineres und leichteres Tier oder eine solche Pflanze. Du musst das Zielwesen schon einmal gesehen haben, es kann nicht übernatürlich sein. Dein Ziel hat in seiner neuen Form nur noch nebulöse Erinnerungen an sein vorheriges Selbst, behält aber seine alte WS und MR.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true,
+      "targetMode": "singleActor"
+    },
     "modifikationen": "Lange Verwandlung (–4, Wirkungsdauer 1 Woche)\nPermanenz (–4, Wirkungsdauer bis die Bindung gelöst wird, 16 AsP, davon 2 gAsP), Bärenfell und Froschschenkel (–8; du kannst einzelne Gliedmaßen verwandeln.)",
     "vorbereitung": "4 Aktionen",
     "ziel": "Einzelperson",

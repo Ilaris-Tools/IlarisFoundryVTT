@@ -8,6 +8,10 @@
     "text": "Das Ziel denkt nicht zu genau über deine Worte nach und findet dich überzeugend. Alle Überreden-Proben gegen dein Ziel sind um +4 erleichtert.",
     "maechtig": "Der Bonus steigt um +2.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true,
+      "targetMode": "singleActor"
+    },
     "modifikationen": "",
     "vorbereitung": "1 Aktion",
     "ziel": "Einzelperson",

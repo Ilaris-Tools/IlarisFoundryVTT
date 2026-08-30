@@ -8,6 +8,10 @@
     "text": "Ein Ziel in einer ruhenden Position sinkt langsam in einen Tiefschlaf, aus dem es durch lauten Lärm oder Schmerzen geweckt werden kann.",
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true,
+      "targetMode": "singleActor"
+    },
     "modifikationen": "Beliebiges Wesen (–4; der Zauber wirkt auf alle Wesen, die Schlaf kennen.)\nOhnmacht (–8, 1 Aktion, Wirkungsdauer 16 Initiativphasen; das Opfer wird schlagartig ohnmächtig und ist nicht zu wecken.)",
     "vorbereitung": "2 Aktionen",
     "ziel": "Einzelperson",
