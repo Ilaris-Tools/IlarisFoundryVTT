@@ -10,8 +10,7 @@
     "maechtig": "Verursacht 1 weiteren Punkt Erschöpfung.",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "",
     "vorbereitung": "2 Aktionen",

@@ -9,8 +9,7 @@
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "Sofort (–4, 0 Aktionen, 8 AsP; das Ziel muss einen kurzen Befehl sofort ausführen.)\nSpäter (–4; der Zauber wirkt erst, sobald ein einfacher Auslöser eintritt.)\nDauerhafter Diener (–4, 4 Minuten, Berührung, Wirkungsdauer 16 Tage, 32 AsP; du kannst bis zu 16 Befehle äußern.)",
     "vorbereitung": "4 Aktionen",

@@ -9,8 +9,7 @@
     "maechtig": "Erhöht den Malus um –1.",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "",
     "vorbereitung": "0 Aktionen",

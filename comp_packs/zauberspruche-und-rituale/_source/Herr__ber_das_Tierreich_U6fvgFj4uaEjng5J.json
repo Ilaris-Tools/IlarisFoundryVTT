@@ -9,8 +9,7 @@
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "Herr der Fliegen (–4; du beherrschst einen Schwarm Kleintiere.)",
     "vorbereitung": "2 Aktionen",

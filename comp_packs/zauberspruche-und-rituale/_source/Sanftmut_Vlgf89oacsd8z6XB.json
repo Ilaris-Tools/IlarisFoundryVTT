@@ -9,8 +9,7 @@
     "maechtig": "Die Lethargie hält sogar dann, wenn das Tier gereizt/leicht verletzt/schwer verletzt wird.",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "",
     "vorbereitung": "1 Aktion",

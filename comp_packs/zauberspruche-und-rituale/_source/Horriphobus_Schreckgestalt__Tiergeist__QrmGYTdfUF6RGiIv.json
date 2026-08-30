@@ -10,8 +10,7 @@
     "maechtig": "Der Furcht-Effekt steigt um eine Stufe.",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "",
     "vorbereitung": "0 Aktionen",

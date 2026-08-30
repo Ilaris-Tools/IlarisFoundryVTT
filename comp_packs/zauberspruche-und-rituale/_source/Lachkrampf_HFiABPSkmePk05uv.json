@@ -9,8 +9,7 @@
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "Schluckauf (2 AsP; dein Opfer erhält einen kräftigen Schluckauf. Auswirkungen sind Spielleiterentscheid.)\nBlähungen (–4; alle Proben zur gesellschaftlichen Interaktion sind um –4 erschwert.)",
     "vorbereitung": "0 Aktionen",

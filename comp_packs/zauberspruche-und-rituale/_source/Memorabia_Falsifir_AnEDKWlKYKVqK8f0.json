@@ -9,8 +9,7 @@
     "maechtig": "Der Zeitraum und die maximal vergangene Zeit erhöhen sich auf 1 Tag/1 Woche/1 Monat/1 Jahr.",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "Falsche Erinnerung (–4; du kannst deinem Opfer eine neue Erinnerung grob vorgeben. Die Details füllt sein Unterbewusstsein aus.)\nTilgung von Wissen (–4; du kannst wählen, welche Ereignisse vergessen werden und welche nicht.)\nPermanenz (–4, Wirkungsdauer bis die Bindung gelöst wird, 16 AsP, davon 2 gAsP)",
     "vorbereitung": "4 Minuten",

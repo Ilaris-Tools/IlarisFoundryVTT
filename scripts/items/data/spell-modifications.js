@@ -88,7 +88,7 @@ function baseProfile(system = {}) {
         range: asText(system.reichweite),
         duration: asText(system.wirkungsdauer),
         magicResistance: normalizeMagicResistance(system.magicResistance, {
-            absentValue: { enabled: false, targetMode: '' },
+            absentValue: { enabled: false },
         }),
     }
 }

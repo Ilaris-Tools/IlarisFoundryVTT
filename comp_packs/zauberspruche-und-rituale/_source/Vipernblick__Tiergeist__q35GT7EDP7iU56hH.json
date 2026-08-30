@@ -10,8 +10,7 @@
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "Fremdgestalt (–4; du kannst eine andere Person wählen, die als Alpgestalt erscheint.)",
     "vorbereitung": "4 Aktionen",

@@ -33,7 +33,6 @@ export function createItemTypeDataModels(TypeDataModel, h) {
         schwierigkeit: h.string(''),
         magicResistance: h.schema({
             enabled: h.bool(false),
-            targetMode: h.string(''),
         }),
         modifikationen: h.string(''),
         vorbereitung: h.string(''),

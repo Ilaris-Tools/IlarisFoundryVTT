@@ -34,10 +34,6 @@
             </div>
             <div class="flexrow">
                 <label><input type="checkbox" name="system.magicResistance.enabled" {{checked item.system.magicResistance.enabled}} /> Ziel-Magieresistenz</label>
-                <select name="system.magicResistance.targetMode">
-                    <option value="">Manuell</option>
-                    <option value="singleActor" {{#if (ifEq item.system.magicResistance.targetMode "singleActor")}}selected{{/if}}>Ein Actor-Ziel</option>
-                </select>
             </div>
             <div class="flexrow">
                 <label>Modifikationen:</label>
@@ -88,7 +84,7 @@
                     <div class="form-group"><label>Ziel</label><input type="text" name="system.spellModifications.{{@index}}.profile.target" value="{{form.profile.target}}" /></div>
                     <div class="form-group"><label>Reichweite</label><input type="text" name="system.spellModifications.{{@index}}.profile.range" value="{{form.profile.range}}" /></div>
                     <div class="form-group"><label>Wirkungsdauer</label><input type="text" name="system.spellModifications.{{@index}}.profile.duration" value="{{form.profile.duration}}" /></div>
-                    <div class="form-group"><label><input type="checkbox" name="system.spellModifications.{{@index}}.profile.magicResistance.enabled" {{checked form.profile.magicResistance.enabled}} /> Ziel-Magieresistenz</label><select name="system.spellModifications.{{@index}}.profile.magicResistance.targetMode"><option value="">Manuell</option><option value="singleActor" {{#if (ifEq form.profile.magicResistance.targetMode "singleActor")}}selected{{/if}}>Ein Actor-Ziel</option></select></div>
+                    <div class="form-group"><label><input type="checkbox" name="system.spellModifications.{{@index}}.profile.magicResistance.enabled" {{checked form.profile.magicResistance.enabled}} /> Ziel-Magieresistenz</label></div>
                     <h4>Zonenform</h4>
                     <p class="hint">Leer laesst das Basisprofil unveraendert. Eine deaktivierte Zone schaltet ein geerbtes Basisprofil aus.</p>
                     <div class="form-group"><label>Form</label><select name="system.spellModifications.{{@index}}.zone.shape"><option value="">Keine Ueberschreibung</option><option value="cone" {{#if (ifEq form.zone.shape "cone")}}selected{{/if}}>Kegel</option><option value="circle" {{#if (ifEq form.zone.shape "circle")}}selected{{/if}}>Kreis</option><option value="rectangle" {{#if (ifEq form.zone.shape "rectangle")}}selected{{/if}}>Wand/Rechteck</option></select></div>

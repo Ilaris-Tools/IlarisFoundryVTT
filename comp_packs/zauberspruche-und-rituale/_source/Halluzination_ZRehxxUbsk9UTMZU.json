@@ -9,8 +9,7 @@
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "Traumbilder (–8; die Halluzination erscheint im Traum eines Schlafenden.)",
     "vorbereitung": "2 Aktionen",

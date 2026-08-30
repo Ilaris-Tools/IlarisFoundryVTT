@@ -147,7 +147,7 @@ describe('UebernatuerlichDialog roll execution', () => {
         dialog.magicResistanceChallenge = null
         dialog.getEffectiveSpellProfile = () => ({
             difficulty: 0,
-            magicResistance: { enabled: true, targetMode: 'singleActor' },
+            magicResistance: { enabled: true },
         })
 
         expect(dialog._getMagicResistanceTemplateContext()).toMatchObject({

@@ -40,8 +40,7 @@ _Blitz dich find_ is a single-Actor target and is the acceptance consumer.
 
 Add `magicResistance` as a structured field on supernatural Item data and on
 structured spell-modification profiles. Its initial form is
-`{ enabled: true, targetMode: "singleActor" }`; absent or invalid data is
-disabled. `baseProfile()` and form resolution carry this field with the same
+`{ enabled: true }`; absent or invalid data is disabled. `baseProfile()` and form resolution carry this field with the same
 single-owner override protection used for other effective profile values.
 
 The compendium audit marks only sources whose rule is an unconditional

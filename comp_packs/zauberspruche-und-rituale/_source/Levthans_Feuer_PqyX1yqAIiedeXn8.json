@@ -9,8 +9,7 @@
     "maechtig": "Steigert die Einstellung um eine weitere Stufe.",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "",
     "vorbereitung": "2 Aktionen",

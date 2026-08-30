@@ -9,8 +9,7 @@
     "maechtig": "Du erhältst einen deutlichen/klaren Eindruck in die Gedanken deines Ziels.",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "Tanz des Wahrheitssinns (–8, Zone, 16 AsP; du liest die Gedanken aller Humanoiden im Radius von 4 Schritt, denen eine Konterprobe (MR, 12) misslingt.)",
     "vorbereitung": "16 Aktionen",

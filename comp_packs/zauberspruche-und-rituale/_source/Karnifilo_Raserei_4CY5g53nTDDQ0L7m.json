@@ -9,8 +9,7 @@
     "maechtig": "Die AT steigt um +1.",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "",
     "vorbereitung": "1 Aktion",

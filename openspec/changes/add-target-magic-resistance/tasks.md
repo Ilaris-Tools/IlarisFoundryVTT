@@ -4,7 +4,7 @@
 - [x] 1.2 Check foundryvtt.wiki for relevant `foundry.utils.*` request-ID, cloning, and socket-adjacent helpers before adding a utility.
 - [x] 1.3 Audit every authoritative supernatural `_source` entry whose difficulty mentions Magieresistenz; record the exact unconditional single-Actor set and exclude conditional, Zone, multi-target, and non-Actor cases.
 - [x] 1.4 Add the optional `magicResistance` model schema, effective-profile normalization, structured-form override behavior, and item-sheet authoring controls with disabled-safe defaults.
-- [x] 1.5 Apply the audited explicit `{ enabled: true, targetMode: "singleActor" }` source data and run `npm run pack-all`.
+- [x] 1.5 Apply the audited explicit `{ enabled: true }` source data and run `npm run pack-all`.
 
 ## 2. Target-Magieresistenz request and roll flow
 
@@ -41,3 +41,4 @@
 - [x] 6.1 Run `npm install`, `npm test`, and `npm run lint`; resolve relevant failures.
 - [x] 6.2 Run `openspec validate add-target-magic-resistance --strict` and resolve validation failures.
 - [x] 6.3 Review the diff, ensure only this change's files are staged, and commit the completed implementation after unit and runtime verification pass.
+- [x] 6.4 Remove the redundant magic-resistance mode data field, authoring control, and runtime handling; retain the existing one-Actor implementation.

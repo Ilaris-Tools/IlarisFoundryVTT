@@ -1,12 +1,6 @@
-const SINGLE_ACTOR_TARGET_MODE = 'singleActor'
-
 export function normalizeMagicResistance(value, { absentValue = null } = {}) {
     if (value === undefined) return absentValue
-    if (!value || typeof value !== 'object') return { enabled: false, targetMode: '' }
-    if (value.enabled === true && value.targetMode === SINGLE_ACTOR_TARGET_MODE) {
-        return { enabled: true, targetMode: SINGLE_ACTOR_TARGET_MODE }
-    }
-    return { enabled: false, targetMode: '' }
+    return { enabled: Boolean(value && typeof value === 'object' && value.enabled === true) }
 }
 
 export function getActorMagicResistance(actor) {
@@ -56,5 +50,3 @@ export function acceptMagicResistanceResult(challenge, result) {
     if (!Number.isInteger(d20) || d20 < 1 || d20 > 20) return null
     return { ...challenge, d20, difficulty: challenge.magicResistance + d20 }
 }
-
-export const MagicResistanceTargetMode = Object.freeze({ SINGLE_ACTOR: SINGLE_ACTOR_TARGET_MODE })

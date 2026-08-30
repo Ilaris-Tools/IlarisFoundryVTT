@@ -9,8 +9,7 @@
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "Langfinger/Wurstfinger (–4 pro Gliedmaß; der Zauber betrifft nur einzelne Gliedmaßen.)",
     "vorbereitung": "1 Aktion",

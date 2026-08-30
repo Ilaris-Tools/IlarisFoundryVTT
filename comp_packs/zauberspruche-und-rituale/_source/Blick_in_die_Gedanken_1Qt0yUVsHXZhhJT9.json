@@ -9,8 +9,7 @@
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "Kampfsinn (nur Elf, –4; du kannst die AT des Gegners vorhersehen, VT gegen diesen Gegner sind um +4 erleichtert.)\nTraumreise (–4, Wirkungsdauer 1 Stunde; du kannst an den Träumen des Ziels teilhaben.)\nVerhandlungssinn (nicht Elf, –4, Wirkungsdauer 1 Stunde; du kannst die Argumente und Absichten deines Ziels vorhersehen, gesellschaftliche Proben sind um +2 erleichtert.)",
     "vorbereitung": "4 Aktionen",

@@ -3,16 +3,15 @@
 ### Requirement: Explicit target-Magieresistenz source data
 
 Übernatürlich Items SHALL expose optional `system.magicResistance` data with
-`enabled` and `targetMode` fields. Only `{ enabled: true, targetMode:
-"singleActor" }` SHALL activate automatic target-Magieresistenz. The system
-SHALL retain manual behavior for missing, malformed, or disabled data.
+an `enabled` field. Only `{ enabled: true }` SHALL activate automatic
+target-Magieresistenz. The system SHALL retain manual behavior for missing,
+malformed, or disabled data.
 
 #### Scenario: Audited single-Actor source is marked
 
 - **WHEN** an authoritative spell source has an unconditional single-Actor
   Magieresistenz difficulty
-- **THEN** it SHALL author `magicResistance.enabled: true` and
-  `targetMode: "singleActor"`
+- **THEN** it SHALL author `magicResistance.enabled: true`
 
 #### Scenario: Conditional or area Magieresistenz remains manual
 
@@ -24,7 +23,7 @@ SHALL retain manual behavior for missing, malformed, or disabled data.
 
 - **WHEN** a GM edits a Zauber, Liturgie, or Anrufung Item
 - **THEN** the normal supernatural authoring surface SHALL expose the enabled
-  state and single-Actor target mode without requiring raw JSON editing
+  state without requiring raw JSON editing
 
 ### Requirement: One selected Actor defines an MR challenge
 

@@ -9,8 +9,7 @@
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "Neues Leben (–8, Wirkungsdauer bis die Bindung gelöst wird, 32 AsP, davon 8 gAsP)",
     "vorbereitung": "1 Tag",

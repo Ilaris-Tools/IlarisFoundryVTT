@@ -9,8 +9,7 @@
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "Höhe begrenzen (–4; die maximale Höhe beträgt 8 Schritt.)\nFesselballon (–4; das Opfer bewegt sich nur vertikal, bleibt aber sonst an Ort und Stelle.)\nTierballons (–4; der Zauber wirkt auf Tiere.)\nKunstflug (–8; das Opfer fliegt Figuren, die du mit deinen Armen vorgibst. Erfordert Konzentration.)",
     "vorbereitung": "4 Aktionen",

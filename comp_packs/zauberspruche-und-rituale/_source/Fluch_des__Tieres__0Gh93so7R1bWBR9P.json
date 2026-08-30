@@ -9,8 +9,7 @@
     "maechtig": "Der Malus steigt um –1.",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "Permanenz (–4, Wirkungsdauer bis die Bindung gelöst wird, 16 AsP, davon 2 gAsP)",
     "vorbereitung": "16 Aktionen",

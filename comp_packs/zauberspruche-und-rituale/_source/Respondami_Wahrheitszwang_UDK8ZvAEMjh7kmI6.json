@@ -9,8 +9,7 @@
     "maechtig": "Erlaubt eine weitere Frage.",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "",
     "vorbereitung": "1 Aktion",

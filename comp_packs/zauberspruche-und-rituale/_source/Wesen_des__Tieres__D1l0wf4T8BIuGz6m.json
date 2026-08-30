@@ -9,8 +9,7 @@
     "maechtig": "Zusätzlich kannst du das Tier um einen kleineren/größeren/gefährlichen Gefallen bitten. Ob das Tier den Gefallen ausführen kann und will, ist Spielleiterentscheid.",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "",
     "vorbereitung": "4 Aktionen",

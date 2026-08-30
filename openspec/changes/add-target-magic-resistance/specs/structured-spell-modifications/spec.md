@@ -11,10 +11,9 @@ value using the same deterministic override policy as other profile fields.
 
 #### Scenario: Base profile exposes automatic MR
 
-- **WHEN** a supernatural Item authors valid base
-  `magicResistance.enabled: true` and `targetMode: "singleActor"`
+- **WHEN** a supernatural Item authors valid base `magicResistance.enabled: true`
 - **THEN** its resolved effective profile SHALL expose the same enabled
-  single-Actor requirement
+  target-MR requirement
 
 #### Scenario: Selected form replaces base MR behavior
 
@@ -26,7 +25,6 @@ value using the same deterministic override policy as other profile fields.
 
 #### Scenario: Invalid form data does not enable automation
 
-- **WHEN** base or selected form target-MR data is absent, malformed, or has
-  an unsupported target mode
+- **WHEN** base or selected form target-MR data is absent, malformed, or disabled
 - **THEN** effective-profile resolution SHALL treat it as disabled
 - **AND** it SHALL not create a target-MR challenge

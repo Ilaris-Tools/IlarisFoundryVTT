@@ -9,8 +9,7 @@
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "Marionettenspiel (–4; du kannst im Traum als jemand anders erscheinen.)\nTraumgestalten (–8, Wirkungsdauer 1 Stunde, 16 AsP; du kannst einige Gefährten in den Traum mitnehmen.)",
     "vorbereitung": "4 Minuten",

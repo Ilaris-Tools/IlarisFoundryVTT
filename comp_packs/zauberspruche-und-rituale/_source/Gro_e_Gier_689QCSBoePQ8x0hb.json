@@ -9,8 +9,7 @@
     "maechtig": "Das Ziel nimmt Schmerzen oder eine peinliche Situation/kleinere Verletzungen oder einen momentanen Gesichtsverlust/schwere Verletzungen oder dauerhaften Verlust seines Rufes/jedes Risiko auf sich.",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "",
     "vorbereitung": "1 Aktion",

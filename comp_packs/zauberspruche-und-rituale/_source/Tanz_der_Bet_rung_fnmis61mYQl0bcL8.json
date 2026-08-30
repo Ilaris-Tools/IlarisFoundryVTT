@@ -9,8 +9,7 @@
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "Tanz des Begehrens (–8, Zone, Wirkungsdauer 1 Stunde, alle Zuseher im Radius von 4 Schritt, denen eine Konterprobe (MR, 12) misslingt, entbrennen in Leidenschaft zu dir)",
     "vorbereitung": "1 Stunde",

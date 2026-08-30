@@ -558,11 +558,7 @@ export class UebernatuerlichDialog extends CombatDialog {
 
     _isAutomaticMagicResistance() {
         const requirement = this.getEffectiveSpellProfile().magicResistance
-        return Boolean(
-            this._isZoneAutomationEnabled() &&
-            requirement?.enabled &&
-            requirement?.targetMode === 'singleActor',
-        )
+        return Boolean(this._isZoneAutomationEnabled() && requirement?.enabled)
     }
 
     _resolveMagicResistanceTarget() {

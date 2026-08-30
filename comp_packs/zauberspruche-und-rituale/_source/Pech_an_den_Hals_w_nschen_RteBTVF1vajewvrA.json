@@ -9,8 +9,7 @@
     "maechtig": "Je zwei Stufen steigern die Chance auf einen Patzer um einen weiteren Punkt.",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "",
     "vorbereitung": "4 Aktionen",

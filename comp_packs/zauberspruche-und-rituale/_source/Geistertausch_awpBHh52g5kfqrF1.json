@@ -9,8 +9,7 @@
     "maechtig": "",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "Tiersinne (–4, Einzelwesen) Fremdtausch (–8; zwei Ziele tauschen Körper.)",
     "vorbereitung": "16 Aktionen",

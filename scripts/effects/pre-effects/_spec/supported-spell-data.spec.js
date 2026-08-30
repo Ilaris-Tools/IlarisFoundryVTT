@@ -61,7 +61,6 @@ describe('reviewed supported spell pre-effect source data', () => {
         for (const spell of automatic) {
             expect(spell.system.magicResistance).toEqual({
                 enabled: true,
-                targetMode: 'singleActor',
             })
         }
         for (const spell of excluded) {

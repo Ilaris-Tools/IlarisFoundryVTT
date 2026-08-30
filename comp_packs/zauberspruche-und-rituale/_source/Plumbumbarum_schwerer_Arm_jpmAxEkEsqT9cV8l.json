@@ -9,8 +9,7 @@
     "maechtig": "Erhöht den Malus um –2.",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "Demotivation (–8; die Erschwernis wirkt auch auf Zauberproben.)",
     "vorbereitung": "1 Aktion",

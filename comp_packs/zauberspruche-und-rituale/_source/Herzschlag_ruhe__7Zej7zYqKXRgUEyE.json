@@ -9,8 +9,7 @@
     "maechtig": "Das Ziel erleidet nach 4 weiteren Initiativephasen eine weitere Wunde.",
     "schwierigkeit": "Magieresistenz",
     "magicResistance": {
-      "enabled": true,
-      "targetMode": "singleActor"
+      "enabled": true
     },
     "modifikationen": "",
     "vorbereitung": "1 Aktion",
