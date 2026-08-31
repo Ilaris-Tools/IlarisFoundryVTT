@@ -116,6 +116,22 @@
                         <label><input type="checkbox" name="system.spellModifications.{{@../index}}.preEffects.{{@index}}.summonCreature.enabled" {{checked preEffect.summonCreature.enabled}} /> Kreatur beschwören</label>
                         {{#if preEffect.summonCreature.enabled}}
                         <div class="form-group"><label>Erlaubte Kreaturentypen</label><input type="text" name="system.spellModifications.{{@../index}}.preEffects.{{@index}}.summonCreature.kreaturentypen" value="{{preEffect.summonCreature.kreaturentypen}}" placeholder="z. B. daemon, elementar" /></div>
+                        <div class="form-group"><label>Feste Kreaturenquelle (optional)</label><input type="text" name="system.spellModifications.{{@../index}}.preEffects.{{@index}}.summonCreature.sourceUuid" value="{{preEffect.summonCreature.sourceUuid}}" list="ilaris-summon-creature-sources" placeholder="Kreatur suchen …" /></div>
+                        <div class="form-group"><label>Lebensdauer</label><select name="system.spellModifications.{{@../index}}.preEffects.{{@index}}.summonCreature.lifetime"><option value="permanent" {{#unless (ifEq preEffect.summonCreature.lifetime "timed")}}selected{{/unless}}>Permanent</option><option value="timed" {{#if (ifEq preEffect.summonCreature.lifetime "timed")}}selected{{/if}}>Zauberdauer</option></select></div>
+                        <div class="spell-modification-summon-creature-overrides-list">
+                            <h5>Werte des beschworenen Schwarms</h5>
+                            {{#each preEffect.summonCreature.overrides}}
+                            <fieldset class="spell-modification-summon-creature-override-card">
+                                <legend>Überschreibung</legend>
+                                <button type="button" class="delete-spell-modification-summon-creature-override" data-form-index="{{@../../index}}" data-pre-effect-index="{{@../index}}" data-override-index="{{@index}}">✕</button>
+                                <div class="form-group"><label>Datenpfad</label><input type="text" name="system.spellModifications.{{@../../index}}.preEffects.{{@../index}}.summonCreature.overrides.{{@index}}.path" value="{{path}}" placeholder="z. B. items.0.system.at" /></div>
+                                <div class="form-group"><label>Zusatzwert</label><input type="text" name="system.spellModifications.{{@../../index}}.preEffects.{{@../index}}.summonCreature.overrides.{{@index}}.value" value="{{value}}" /></div>
+                                <label><input type="checkbox" name="system.spellModifications.{{@../../index}}.preEffects.{{@../index}}.summonCreature.overrides.{{@index}}.amplifiedByMaechtigeMagie" {{checked amplifiedByMaechtigeMagie}} /> Verstärkt durch Mächtige Magie</label>
+                                <div class="form-group"><label>Mächtig-Bonus je QS</label><input type="text" name="system.spellModifications.{{@../../index}}.preEffects.{{@../index}}.summonCreature.overrides.{{@index}}.maechtigBonus" value="{{maechtigBonus}}" placeholder="z. B. +1" /></div>
+                            </fieldset>
+                            {{/each}}
+                            <button type="button" class="add-spell-modification-summon-creature-override" data-form-index="{{@../index}}" data-pre-effect-index="{{@index}}">+ Überschreibung hinzufügen</button>
+                        </div>
                         <label><input type="checkbox" name="system.spellModifications.{{@../index}}.preEffects.{{@index}}.summonCreature.boundResourceCost.enabled" {{checked preEffect.summonCreature.boundResourceCost.enabled}} /> gAsP/gKaP binden</label>
                         {{#if preEffect.summonCreature.boundResourceCost.enabled}}
                         <div class="form-group"><label>Ressource</label><select name="system.spellModifications.{{@../index}}.preEffects.{{@index}}.summonCreature.boundResourceCost.resource"><option value="gasp" {{#unless (ifEq preEffect.summonCreature.boundResourceCost.resource "gkap")}}selected{{/unless}}>gAsP</option><option value="gkap" {{#if (ifEq preEffect.summonCreature.boundResourceCost.resource "gkap")}}selected{{/if}}>gKaP</option></select></div>

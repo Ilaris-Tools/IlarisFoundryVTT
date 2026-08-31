@@ -35,6 +35,7 @@ export class PreEffectItemSheet extends IlarisItemSheet {
             waffe: await this._buildSummonItemOptions('waffe'),
             gegenstand: await this._buildSummonItemOptions('gegenstand'),
         }
+        context.summonCreatureOptions = await this._buildSummonCreatureOptions()
         context.avoidTestAttributeOptions = CONFIG.ILARIS.attribute || []
         context.damageTypeOptions = this._getDamageTypeOptions()
         context.ilarisModifierPhases = IlarisModifierPhaseLabels
@@ -167,6 +168,32 @@ export class PreEffectItemSheet extends IlarisItemSheet {
         return groups
     }
 
+    /** Build selectable creature Actor sources from the configured creature compendia. */
+    async _buildSummonCreatureOptions() {
+        const groups = []
+        try {
+            const packIds = JSON.parse(
+                game.settings.get('Ilaris', IlarisGameSettingNames.kreaturenPacks) || '[]',
+            )
+            for (const packId of packIds) {
+                const pack = game.packs.get(packId)
+                if (!pack || pack.metadata?.type !== 'Actor') continue
+                await pack.getIndex({ fields: ['type'] })
+                const actors = Array.from(pack.index)
+                    .filter((entry) => entry._id && entry.name && entry.type === 'kreatur')
+                    .map((entry) => ({
+                        name: entry.name,
+                        uuid: `Compendium.${pack.collection}.Actor.${entry._id}`,
+                    }))
+                    .sort((left, right) => left.name.localeCompare(right.name, 'de'))
+                if (actors.length) groups.push({ packName: pack.metadata?.label || packId, actors })
+            }
+        } catch (error) {
+            console.warn('Ilaris | Failed to build summon creature options:', error)
+        }
+        return groups
+    }
+
     /** @override */
     _onRender(context, options) {
         super._onRender(context, options)
@@ -221,6 +248,17 @@ export class PreEffectItemSheet extends IlarisItemSheet {
                 preEffects[preEffectIndex].summonItem.overrides,
             )
             preEffects[preEffectIndex].summonItem.overrides.push(this._defaultSummonItemOverride())
+            this.document.update({ 'system.preEffects': preEffects })
+            return
+        }
+
+        if (button.closest('.add-summon-creature-override')) {
+            if (preEffectIndex < 0) return
+            const preEffects = this._clonePreEffects()
+            const summonCreature = preEffects[preEffectIndex]?.summonCreature
+            if (!summonCreature) return
+            summonCreature.overrides = toPreEffectArray(summonCreature.overrides)
+            summonCreature.overrides.push(this._defaultSummonCreatureOverride())
             this.document.update({ 'system.preEffects': preEffects })
             return
         }
@@ -292,17 +330,25 @@ export class PreEffectItemSheet extends IlarisItemSheet {
             return
         }
 
-        if (!button.closest('.delete-summon-item-override')) return
-        const overrideCard = button.closest('.summon-item-override-card')
+        const isItemOverride = button.closest('.delete-summon-item-override')
+        const isCreatureOverride = button.closest('.delete-summon-creature-override')
+        if (!isItemOverride && !isCreatureOverride) return
+        const overrideCard = button.closest(
+            isItemOverride ? '.summon-item-override-card' : '.summon-creature-override-card',
+        )
         const overrideIndex = [
-            ...preEffectCard.querySelectorAll('.summon-item-override-card'),
+            ...preEffectCard.querySelectorAll(
+                isItemOverride ? '.summon-item-override-card' : '.summon-creature-override-card',
+            ),
         ].indexOf(overrideCard)
         if (preEffectIndex < 0 || overrideIndex < 0) return
         const preEffects = this._clonePreEffects()
-        const summonItem = preEffects[preEffectIndex]?.summonItem
-        if (!summonItem) return
-        summonItem.overrides = toPreEffectArray(summonItem.overrides)
-        summonItem.overrides.splice(overrideIndex, 1)
+        const summon = isItemOverride
+            ? preEffects[preEffectIndex]?.summonItem
+            : preEffects[preEffectIndex]?.summonCreature
+        if (!summon) return
+        summon.overrides = toPreEffectArray(summon.overrides)
+        summon.overrides.splice(overrideIndex, 1)
         this.document.update({ 'system.preEffects': preEffects })
     }
 
@@ -408,6 +454,9 @@ export class PreEffectItemSheet extends IlarisItemSheet {
         return {
             enabled: false,
             kreaturentypen: [],
+            sourceUuid: '',
+            lifetime: 'permanent',
+            overrides: [],
             boundResourceCost: { enabled: false, resource: 'gasp', amount: 0 },
             dominationChecks: { enabled: false, entries: [] },
         }
@@ -425,6 +474,15 @@ export class PreEffectItemSheet extends IlarisItemSheet {
     }
 
     _defaultSummonItemOverride() {
+        return {
+            path: '',
+            value: '',
+            amplifiedByMaechtigeMagie: false,
+            maechtigBonus: '',
+        }
+    }
+
+    _defaultSummonCreatureOverride() {
         return {
             path: '',
             value: '',

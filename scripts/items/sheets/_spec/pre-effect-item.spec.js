@@ -23,6 +23,9 @@ describe('PreEffectItemSheet', () => {
             summonCreature: expect.objectContaining({
                 enabled: false,
                 kreaturentypen: [],
+                sourceUuid: '',
+                lifetime: 'permanent',
+                overrides: [],
                 boundResourceCost: expect.objectContaining({ enabled: false }),
                 dominationChecks: { enabled: false, entries: [] },
             }),
@@ -97,6 +100,143 @@ describe('PreEffectItemSheet', () => {
                         success: expect.objectContaining({
                             changes: [expect.objectContaining({ key: '', value: '' })],
                         }),
+                    }),
+                }),
+            ],
+        })
+    })
+
+    it('lists only configured creature Actors as stable summon source UUIDs', async () => {
+        global.game.settings.get.mockImplementation((_namespace, key) =>
+            key === 'kreaturenPacks' ? '["Ilaris.kreaturen"]' : '[]',
+        )
+        global.game.packs = new Map([
+            [
+                'Ilaris.kreaturen',
+                {
+                    collection: 'Ilaris.kreaturen',
+                    metadata: { type: 'Actor', label: 'Kreaturen' },
+                    getIndex: jest.fn(),
+                    index: [
+                        { _id: 'raben', name: 'Krähenschwarm', type: 'kreatur' },
+                        { _id: 'held', name: 'Heldin', type: 'character' },
+                    ],
+                },
+            ],
+            [
+                'Ilaris.items',
+                {
+                    collection: 'Ilaris.items',
+                    metadata: { type: 'Item', label: 'Gegenstände' },
+                    getIndex: jest.fn(),
+                    index: [{ _id: 'not-an-actor', name: 'Nicht verfügbar', type: 'kreatur' }],
+                },
+            ],
+        ])
+        const sheet = Object.create(PreEffectItemSheet.prototype)
+
+        await expect(sheet._buildSummonCreatureOptions()).resolves.toEqual([
+            {
+                actors: [
+                    {
+                        name: 'Krähenschwarm',
+                        uuid: 'Compendium.Ilaris.kreaturen.Actor.raben',
+                    },
+                ],
+                packName: 'Kreaturen',
+            },
+        ])
+    })
+
+    it('defines independent structured creature-override defaults', () => {
+        const sheet = Object.create(PreEffectItemSheet.prototype)
+
+        expect(sheet._defaultSummonCreatureOverride()).toEqual({
+            path: '',
+            value: '',
+            amplifiedByMaechtigeMagie: false,
+            maechtigBonus: '',
+        })
+    })
+
+    it('persists a creature override without touching summon-item authoring', () => {
+        const sheet = new PreEffectItemSheet()
+        const preEffectCard = {}
+        const addOverride = {
+            closest: jest.fn((selector) => {
+                if (selector === 'button' || selector === '.add-summon-creature-override')
+                    return addOverride
+                if (selector === '.pre-effect-card') return preEffectCard
+                return null
+            }),
+        }
+        sheet.element = {
+            querySelectorAll: jest.fn((selector) =>
+                selector === '.pre-effect-card' ? [preEffectCard] : [],
+            ),
+        }
+        sheet.document = {
+            system: {
+                preEffects: [
+                    {
+                        summonItem: { enabled: true, overrides: [{ path: 'system.tp' }] },
+                        summonCreature: { enabled: true, overrides: [] },
+                    },
+                ],
+            },
+            update: jest.fn(),
+        }
+
+        sheet._handlePreEffectEditorClick({ target: addOverride })
+
+        expect(sheet.document.update).toHaveBeenCalledWith({
+            'system.preEffects': [
+                expect.objectContaining({
+                    summonItem: { enabled: true, overrides: [{ path: 'system.tp' }] },
+                    summonCreature: expect.objectContaining({
+                        overrides: [expect.objectContaining({ path: '', value: '' })],
+                    }),
+                }),
+            ],
+        })
+    })
+
+    it('persists a creature override without touching summon-item authoring', () => {
+        const sheet = new PreEffectItemSheet()
+        const preEffectCard = {}
+        const addOverride = {
+            closest: jest.fn((selector) => {
+                if (selector === 'button' || selector === '.add-summon-creature-override')
+                    return addOverride
+                if (selector === '.pre-effect-card') return preEffectCard
+                return null
+            }),
+        }
+        sheet.element = {
+            querySelectorAll: jest.fn((selector) =>
+                selector === '.pre-effect-card' ? [preEffectCard] : [],
+            ),
+        }
+        sheet.document = {
+            system: {
+                preEffects: [
+                    {
+                        summonItem: { enabled: true, overrides: [{ path: 'system.tp' }] },
+                        summonCreature: { enabled: true, overrides: [] },
+                    },
+                ],
+            },
+            update: jest.fn(),
+        }
+
+        sheet._handlePreEffectEditorClick({ target: addOverride })
+
+        expect(sheet.document.update).toHaveBeenCalledWith({
+            'system.preEffects': [
+                expect.objectContaining({
+                    summonItem: { enabled: true, overrides: [{ path: 'system.tp' }] },
+                    summonCreature: expect.objectContaining({
+                        overrides: [expect.objectContaining({ path: '', value: '' })],
                     }),
                 }),
             ],

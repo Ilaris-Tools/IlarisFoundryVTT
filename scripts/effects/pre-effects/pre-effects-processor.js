@@ -257,6 +257,11 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {},
                     caster,
                     preEffect: appliedPreEffect,
                     selectedCreatureUuid: appliedPreEffect.summonCreature.selectedCreatureUuid,
+                    effectiveDuration: appliedPreEffect.baseDuration + maneuverDurationBonus,
+                    maechtigeQs,
+                    spellItem: item,
+                    preEffectIndex,
+                    applicationId,
                 })
             } else if (appliedPreEffect.instant) {
                 await applyInstantPreEffect(targetActor, appliedPreEffect, maechtigeQs, speaker)

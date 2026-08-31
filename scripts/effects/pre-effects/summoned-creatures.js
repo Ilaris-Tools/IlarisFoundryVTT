@@ -8,6 +8,7 @@ const ui = {
 }
 
 const MAX_PLACEMENT_RING = 12
+const SUMMON_CREATURE_BASE_SOURCE_FLAG = 'summonCreatureBaseSourceUuid'
 
 function configuredCreaturePacks() {
     try {
@@ -31,6 +32,79 @@ export function normalizeCreatureTypes(value) {
         .split(',')
         .map((entry) => entry.trim())
         .filter(Boolean)
+}
+
+function numericAddition(override, maechtigeQs) {
+    const base = Number(override?.value ?? 0)
+    const amplified = override?.amplifiedByMaechtigeMagie
+        ? Number(override?.maechtigBonus ?? 0) * Math.max(0, Number(maechtigeQs) || 0)
+        : 0
+    const addition = base + amplified
+    return Number.isFinite(addition) ? addition : null
+}
+
+/** Apply configured additions to cloned Actor source data without touching the compendium source. */
+export function applySummonCreatureOverrides(sourceData, overrides, maechtigeQs = 0) {
+    for (const override of overrides || []) {
+        if (!override?.path) continue
+        const addition = numericAddition(override, maechtigeQs)
+        const current = foundry.utils.getProperty(sourceData, override.path)
+        if (addition === null || current === undefined || current === null) continue
+
+        if (
+            typeof current === 'number' ||
+            (typeof current === 'string' &&
+                current.trim() !== '' &&
+                Number.isFinite(Number(current)))
+        ) {
+            foundry.utils.setProperty(sourceData, override.path, Number(current) + addition)
+            continue
+        }
+        if (typeof current === 'string') {
+            const formula = current.replace(/\s+/g, '')
+            foundry.utils.setProperty(
+                sourceData,
+                override.path,
+                addition < 0 ? `${formula}${addition}` : `${formula}+${addition}`,
+            )
+        }
+    }
+    return sourceData
+}
+
+function cloneSourceData(source) {
+    if (typeof source?.toObject === 'function') return foundry.utils.deepClone(source.toObject())
+    return {
+        system: foundry.utils.deepClone(source?.system || {}),
+        items: foundry.utils.deepClone(source?.items || []),
+    }
+}
+
+function importedCreatureBaseActor(sourceUuid) {
+    return Array.from(game.actors?.values?.() || []).find(
+        (actor) => actor.flags?.ilaris?.[SUMMON_CREATURE_BASE_SOURCE_FLAG] === sourceUuid,
+    )
+}
+
+/**
+ * Import a configured compendium creature once so Foundry can construct an
+ * unlinked Token's synthetic Actor and ActorDelta from a world-level base.
+ */
+async function getOrImportCreatureBaseActor(source, sourceUuid) {
+    const existing = importedCreatureBaseActor(sourceUuid)
+    if (existing) return existing
+
+    const sourceData = cloneSourceData(source)
+    delete sourceData._id
+    delete sourceData._stats
+    delete sourceData.folder
+    delete sourceData.sort
+    sourceData.flags ??= {}
+    sourceData.flags.ilaris = {
+        ...(sourceData.flags.ilaris || {}),
+        [SUMMON_CREATURE_BASE_SOURCE_FLAG]: sourceUuid,
+    }
+    return Actor.implementation.create(sourceData)
 }
 
 export async function getCreatureSourceOptions(allowedTypes = []) {
@@ -229,9 +303,18 @@ async function startDominationCheck(caster, source, config) {
 }
 
 /** Create one unlinked Scene Token from a selected creature compendium Actor. */
-export async function summonCreatureFromPreEffect({ caster, preEffect, selectedCreatureUuid }) {
+export async function summonCreatureFromPreEffect({
+    caster,
+    preEffect,
+    selectedCreatureUuid,
+    effectiveDuration = 0,
+    maechtigeQs = 0,
+    spellItem,
+    preEffectIndex = 0,
+    applicationId = foundry.utils.randomID(),
+}) {
     const config = preEffect?.summonCreature
-    const sourceUuid = selectedCreatureUuid || config?.selectedCreatureUuid
+    const sourceUuid = config?.sourceUuid || selectedCreatureUuid || config?.selectedCreatureUuid
     const source = await resolveSummonCreatureSource(
         sourceUuid,
         normalizeCreatureTypes(config?.kreaturentypen),
@@ -254,7 +337,24 @@ export async function summonCreatureFromPreEffect({ caster, preEffect, selectedC
         return null
     }
 
-    const sourceToken = await source.getTokenDocument()
+    let baseActor
+    try {
+        baseActor = await getOrImportCreatureBaseActor(source, sourceUuid)
+    } catch (error) {
+        ui.notifications?.error(
+            'Die Kreatur konnte nicht als Grundlage für den beschworenen Token importiert werden.',
+        )
+        console.error('Ilaris | Failed to import creature summon base Actor:', error)
+        return null
+    }
+
+    const baseActorData = cloneSourceData(baseActor)
+    const overriddenActorData = foundry.utils.deepClone(baseActorData)
+    applySummonCreatureOverrides(overriddenActorData, config?.overrides, maechtigeQs)
+    const sourceToken = await baseActor.getTokenDocument({
+        actorLink: false,
+        delta: foundry.utils.diffObject(baseActorData, overriddenActorData),
+    })
     const placement = findSummonPlacement({
         scene,
         casterToken,
@@ -277,7 +377,7 @@ export async function summonCreatureFromPreEffect({ caster, preEffect, selectedC
     tokenData.flags.ilaris = {
         ...(tokenData.flags.ilaris || {}),
         summonCreature: {
-            sourceUuid: source.uuid,
+            sourceUuid,
             ...(reservation ? { boundResource: reservation } : {}),
         },
     }
@@ -294,6 +394,56 @@ export async function summonCreatureFromPreEffect({ caster, preEffect, selectedC
         )
         console.error('Ilaris | Failed to summon creature:', error)
         return null
+    }
+
+    if (config?.lifetime === 'timed') {
+        try {
+            if (!effectiveDuration) throw new Error('Timed creature summon needs a duration.')
+            await ActiveEffect.createDocuments(
+                [
+                    {
+                        name: spellItem?.name || source.name,
+                        origin: caster.uuid,
+                        changes: [],
+                        // Ilaris owns this lifecycle through ilarisTiming. Supplying
+                        // legacy core turn data makes Foundry v14's ActiveEffect
+                        // registry attempt a conflicting native expiry.
+                        duration: {},
+                        system: {
+                            ilarisTiming: {
+                                durationType: 'ownerTurns',
+                                expiresOn: 'turnEnd',
+                                remaining: effectiveDuration,
+                                originalValue: effectiveDuration,
+                            },
+                        },
+                        flags: {
+                            ilaris: {
+                                sourceType: 'summonCreatureMarker',
+                                sourceUuid,
+                                casterUuid: caster.uuid,
+                                spellUuid: spellItem?.uuid || '',
+                                preEffectIndex,
+                                applicationId,
+                                summonedSceneUuid: scene.uuid,
+                                summonedTokenId: created.id,
+                                summonedTokenUuid:
+                                    created.uuid || `${scene.uuid}.Token.${created.id}`,
+                            },
+                        },
+                    },
+                ],
+                { parent: caster },
+            )
+        } catch (error) {
+            await scene.deleteEmbeddedDocuments('Token', [created.id])
+            if (reservation) await releaseBoundResource(reservation)
+            ui.notifications?.error(
+                'Die zeitlich begrenzte Kreatur konnte nicht eingerichtet werden.',
+            )
+            console.error('Ilaris | Failed to create creature summon marker:', error)
+            return null
+        }
     }
 
     try {

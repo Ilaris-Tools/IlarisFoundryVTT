@@ -252,6 +252,22 @@
                     <label>Erlaubte Kreaturentypen:</label>
                     <input type="text" name="system.preEffects.{{@index}}.summonCreature.kreaturentypen" value="{{summonCreature.kreaturentypen}}" placeholder="z. B. daemon, elementar" />
                 </div>
+                <div class="form-group"><label>Feste Kreaturenquelle (optional):</label><input type="text" name="system.preEffects.{{@index}}.summonCreature.sourceUuid" value="{{summonCreature.sourceUuid}}" list="ilaris-summon-creature-sources" placeholder="Kreatur suchen …" /></div>
+                <div class="form-group"><label>Lebensdauer:</label><select name="system.preEffects.{{@index}}.summonCreature.lifetime"><option value="permanent" {{#unless (ifEq summonCreature.lifetime "timed")}}selected{{/unless}}>Permanent</option><option value="timed" {{#if (ifEq summonCreature.lifetime "timed")}}selected{{/if}}>Zauberdauer</option></select></div>
+                <div class="summon-creature-overrides-list">
+                    <h5>Werte des beschworenen Schwarms</h5>
+                    {{#each summonCreature.overrides}}
+                    <fieldset class="summon-creature-override-card">
+                        <legend>Überschreibung</legend>
+                        <button type="button" class="delete-summon-creature-override">✕</button>
+                        <div class="form-group"><label>Datenpfad:</label><input type="text" name="system.preEffects.{{@../index}}.summonCreature.overrides.{{@index}}.path" value="{{path}}" placeholder="z. B. items.0.system.at" /></div>
+                        <div class="form-group"><label>Zusatzwert:</label><input type="text" name="system.preEffects.{{@../index}}.summonCreature.overrides.{{@index}}.value" value="{{value}}" /></div>
+                        <div class="form-group"><label><input type="checkbox" name="system.preEffects.{{@../index}}.summonCreature.overrides.{{@index}}.amplifiedByMaechtigeMagie" {{checked amplifiedByMaechtigeMagie}} /> Verstärkt durch Mächtige Magie</label></div>
+                        <div class="form-group"><label>Mächtig-Bonus je QS:</label><input type="text" name="system.preEffects.{{@../index}}.summonCreature.overrides.{{@index}}.maechtigBonus" value="{{maechtigBonus}}" placeholder="z. B. +1" /></div>
+                    </fieldset>
+                    {{/each}}
+                    <button type="button" class="add-summon-creature-override">+ Überschreibung hinzufügen</button>
+                </div>
                 <div class="form-group">
                     <label><input type="checkbox" name="system.preEffects.{{@index}}.summonCreature.boundResourceCost.enabled" {{checked summonCreature.boundResourceCost.enabled}} /> gAsP/gKaP binden</label>
                 </div>
@@ -453,6 +469,13 @@
                 {{#each @root.summonItemOptions.gegenstand}}
                     {{#each items}}
                     <option value="{{uuid}}" label="{{name}} ({{type}}, {{../packName}})"></option>
+                    {{/each}}
+                {{/each}}
+            </datalist>
+            <datalist id="ilaris-summon-creature-sources">
+                {{#each @root.summonCreatureOptions}}
+                    {{#each actors}}
+                    <option value="{{uuid}}" label="{{name}} ({{../packName}})"></option>
                     {{/each}}
                 {{/each}}
             </datalist>

@@ -516,7 +516,12 @@ export class UebernatuerlichDialog extends CombatDialog {
                 )
             }
             // Refresh dialog data after energy application
+            const preEffectManeuverState = {
+                maneuverDurationBonus: this.maneuverDurationBonus || 0,
+                maechtigeMagieQs: this.maechtigeMagieQs || 0,
+            }
             await this.refreshActorData()
+            Object.assign(this, preEffectManeuverState)
         }
         super._updateSchipsStern()
 
@@ -1359,6 +1364,9 @@ export class UebernatuerlichDialog extends CombatDialog {
         ] of this.getEffectiveSpellModificationContext().preEffects.entries()) {
             const config = preEffect?.summonCreature
             if (!config?.enabled) continue
+            // A fixed source is resolved by summonCreatureFromPreEffect. It must
+            // not depend on the generic picker or its configured-pack index.
+            if (config.sourceUuid) continue
             const kreaturentypen = normalizeCreatureTypes(config.kreaturentypen)
             const current = this.summonCreatureSelections.get(index) || {}
             const kreaturentyp = kreaturentypen.includes(current.kreaturentyp)

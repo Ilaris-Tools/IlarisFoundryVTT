@@ -82,6 +82,24 @@ describe('pre-effect processor', () => {
             key === 'kreaturenPacks' ? '["Ilaris.kreaturen"]' : undefined,
         )
         global.game.actors = new Map([[caster.id, caster]])
+        global.Actor = {
+            implementation: {
+                create: jest.fn(async (data) => ({
+                    id: 'summon-base',
+                    flags: data.flags,
+                    toObject: () => data,
+                    getTokenDocument: jest.fn().mockResolvedValue({
+                        width: 1,
+                        height: 1,
+                        toObject: () => ({ width: 1, height: 1 }),
+                    }),
+                })),
+            },
+        }
+        global.foundry = {
+            ...global.foundry,
+            utils: { ...global.foundry?.utils, diffObject: jest.fn().mockReturnValue({}) },
+        }
         global.canvas = {
             scene: {
                 dimensions: { width: 500, height: 500 },

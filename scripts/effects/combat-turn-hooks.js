@@ -52,6 +52,14 @@ function infiniteDotKey(actor, effect) {
 }
 
 export async function expireEffect(actor, effect) {
+    const summonedTokenId = effect.flags?.ilaris?.summonedTokenId
+    if (summonedTokenId) {
+        const scene = await fromUuid(effect.flags?.ilaris?.summonedSceneUuid)
+        const token =
+            scene?.tokens?.get?.(summonedTokenId) ||
+            scene?.tokens?.find?.((entry) => entry.id === summonedTokenId)
+        if (token) await scene.deleteEmbeddedDocuments('Token', [summonedTokenId])
+    }
     const summonedItemId = effect.flags?.ilaris?.summonedItemId
     if (summonedItemId) {
         const exists =
@@ -95,7 +103,7 @@ Hooks.on('combatRound', async (combat, updateData, updateOptions) => {
  */
 Hooks.on('updateCombat', async (combat, changed, _options, _userId) => {
     if (!game.user.isGM) return
-    if (!('turn' in changed)) return
+    if (!changed || !('turn' in changed)) return
 
     for (const combatant of combat.combatants) {
         const actor = combatant.actor
@@ -151,7 +159,7 @@ export async function applyPendingInfiniteDotTicks(combat) {
 }
 
 Hooks.on('updateCombat', async (combat, changed, _options, _userId) => {
-    if (!game.user.isGM || !('turn' in changed)) return
+    if (!game.user.isGM || !changed || !('turn' in changed)) return
     await applyPendingInfiniteDotTicks(combat)
 })
 
