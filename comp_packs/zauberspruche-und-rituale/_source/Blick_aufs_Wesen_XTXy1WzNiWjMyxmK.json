@@ -8,6 +8,9 @@
     "text": "Der Zauber offenbart dir die Fertigkeiten deines Ziels. Du erhältst einen groben Eindruck von seinen körperlichen, geistigen, handwerklichen, kämpferischen und zauberischen Fähigkeiten.",
     "maechtig": "Du erfährst auch besonders hohe Fertigkeiten/markante Vorteile/Eigenheiten/Vorlieben und Vorgehen.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "Leuchtende Persönlichkeit (–4; du erkennst in einer Gruppe von bis zu 8 Personen diejenige, die in einem von dir gewählten Bereich am meisten heraussticht. Durch eine Konterprobe (MR, 16) können sich die Personen vor der Entdeckung schützen.)",
     "vorbereitung": "16 Aktionen",
     "ziel": "Einzelwesen",

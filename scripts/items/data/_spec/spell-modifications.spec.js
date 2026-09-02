@@ -235,4 +235,31 @@ describe('structured spell modifications', () => {
             selectedForms: [],
         })
     })
+
+    test('retains explicit target Magieresistenz through base and selected profiles', () => {
+        const source = item({
+            ...baseSystem,
+            magicResistance: { enabled: true },
+            spellModifications: [
+                { id: 'manual', profile: { magicResistance: { enabled: false } } },
+            ],
+        })
+
+        expect(resolveSpellModificationContext(source, []).profile.magicResistance).toEqual({
+            enabled: true,
+        })
+        expect(resolveSpellModificationContext(source, ['manual']).profile.magicResistance).toEqual(
+            { enabled: false },
+        )
+        expect(
+            normalizeSpellModifications({
+                spellModifications: [
+                    {
+                        id: 'invalid',
+                        profile: { magicResistance: { enabled: 'ja' } },
+                    },
+                ],
+            }).modifications[0].profile.magicResistance,
+        ).toEqual({ enabled: false })
+    })
 })

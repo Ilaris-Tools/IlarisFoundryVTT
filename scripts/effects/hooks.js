@@ -12,6 +12,10 @@ import { registerOpposedEscapeHandler } from './opposed-escape.js'
 import { registerStatusConditionLifecycle } from './status-conditions.js'
 import { registerZoneLifecycleHooks } from '../combat/zones/zone-lifecycle.js'
 import { registerZoneAdministrationHooks } from '../combat/zones/zone-administration-hooks.js'
+import {
+    registerSummonDominationResolutionListener,
+    releaseSummonedCreatureBoundResource,
+} from './pre-effects/summoned-creatures.js'
 
 Hooks.once('init', () => {
     registerResistHandler()
@@ -20,4 +24,8 @@ Hooks.once('init', () => {
     registerStatusConditionLifecycle()
     registerZoneLifecycleHooks()
     registerZoneAdministrationHooks()
+    registerSummonDominationResolutionListener()
+    Hooks.on('deleteToken', async (tokenDocument) => {
+        await releaseSummonedCreatureBoundResource(tokenDocument)
+    })
 })

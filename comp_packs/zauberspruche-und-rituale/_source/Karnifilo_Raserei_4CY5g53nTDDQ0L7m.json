@@ -8,6 +8,9 @@
     "text": "Dein Ziel verfällt in einen Kampfrausch. Es erhält die Vorteile Kalte Wut und Offensiver Kampfstil (S. 42) und nutzt in jeder Aktion volle Offensive. Sind keine Gegner mehr da, greift es auch Verbündete an.",
     "maechtig": "Die AT steigt um +1.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "",
     "vorbereitung": "1 Aktion",
     "ziel": "Einzelperson",

@@ -215,13 +215,12 @@ export class IlarisActiveEffect extends ActiveEffect {
     }
 
     /**
-     * Prevent core from decrementing duration.turns for Ilaris-timed effects.
-     * Without this guard the core would independently decrement on every combatant's
-     * turn, creating a conflicting counter alongside the owner-scoped hooks.
+     * Return Foundry's derived duration record so the v14 ActiveEffect registry
+     * remains valid. isExpiryEvent above prevents native expiry; Ilaris owns the
+     * owner-turn counter in system.ilarisTiming.
      * @override
      */
     updateDuration(context) {
-        if (this.system?.ilarisTiming?.durationType === 'ownerTurns') return
         return super.updateDuration(context)
     }
 }

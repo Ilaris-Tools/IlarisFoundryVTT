@@ -78,6 +78,12 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
         this.fumble_val = 1
     }
 
+    /** @override */
+    async close(options = {}) {
+        globalThis.window?._ilarisCombatDialogs?.delete(this.dialogId)
+        return super.close(options)
+    }
+
     /**
      * Initialize selectedActors from Foundry's game.user.targets
      * This should be called after actor and item are set
@@ -593,12 +599,14 @@ export class CombatDialog extends HandlebarsApplicationMixin(ApplicationV2) {
             return
         const dialog = new TargetSelectionDialog(this.actor, (selectedActors) => {
             this.selectedActors = selectedActors
+            this.magicResistanceChallenge = null
             callIlarisHookAllWithGlobalMirror(
                 'Ilaris.targetSelectionComplete',
                 this,
                 this.selectedActors,
             )
-            this.updateSelectedActorsDisplay()
+            if (this._isAutomaticMagicResistance?.()) this.render()
+            else this.updateSelectedActorsDisplay()
         })
         dialog.render(true)
     }

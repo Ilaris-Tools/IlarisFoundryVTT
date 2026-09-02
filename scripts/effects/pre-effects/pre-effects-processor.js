@@ -7,6 +7,7 @@ import {
 } from '../utils/ilaris-modifier-constants.js'
 import { materializeArmedCombat } from './armed-combat-effects.js'
 import { summonItemFromPreEffect } from './summoned-items.js'
+import { summonCreatureFromPreEffect } from './summoned-creatures.js'
 import { addConditionSource } from '../status-conditions.js'
 import { isPassiveZoneEffect } from '../zone-effect-ownership.js'
 
@@ -196,6 +197,7 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {},
     const triggeringRollTotal = Number(rollResult?.roll?.total)
 
     const targets = dialog.selectedActors?.length ? dialog.selectedActors : [{ actorId: caster.id }]
+    const summonedCreaturePreEffects = new Set()
     for (const target of targets) {
         const { targetActor } = resolveTargetActorForDamage(target)
         if (!targetActor) continue
@@ -247,6 +249,19 @@ export async function applyPreEffects(rollResult, dialog, armedInputValues = {},
                     preEffectIndex,
                     applicationId,
                     spellModificationId: context.spellModificationId || '',
+                })
+            } else if (appliedPreEffect.summonCreature?.enabled) {
+                if (summonedCreaturePreEffects.has(preEffectIndex)) continue
+                summonedCreaturePreEffects.add(preEffectIndex)
+                await summonCreatureFromPreEffect({
+                    caster,
+                    preEffect: appliedPreEffect,
+                    selectedCreatureUuid: appliedPreEffect.summonCreature.selectedCreatureUuid,
+                    effectiveDuration: appliedPreEffect.baseDuration + maneuverDurationBonus,
+                    maechtigeQs,
+                    spellItem: item,
+                    preEffectIndex,
+                    applicationId,
                 })
             } else if (appliedPreEffect.instant) {
                 await applyInstantPreEffect(targetActor, appliedPreEffect, maechtigeQs, speaker)

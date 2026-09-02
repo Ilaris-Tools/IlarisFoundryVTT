@@ -8,6 +8,9 @@
     "text": "Du entlockst deinem Instrument einen schrillen Klang, der für dein Ziel hundertfach verstärkt ist. Bis zu deiner nächsten Intitiativephase sind alle Proben des Ziels um –4 erschwert. Der schrille Klang wirkt nicht auf unheilige Wesen und Elementare.",
     "maechtig": "Der Malus steigt um –2.",
     "schwierigkeit": "Magieresistenz",
+    "magicResistance": {
+      "enabled": true
+    },
     "modifikationen": "",
     "vorbereitung": "0 Aktionen",
     "ziel": "Einzelwesen",
